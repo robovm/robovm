@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.nullvm</groupId>
+  <version>0.1-SNAPSHOT</version>
+  <artifactId>build</artifactId>
+  <name>NullVM</name>
+  <packaging>pom</packaging>
+  <url>http://www.nullvm.org</url>
+
+<!--  <scm>
+    <connection></connection>
+    <url></url>
+    <developerConnection></developerConnection>
+  </scm> -->
+
+  <dependencies>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.0</version>
+        <configuration>
+          <remoteTagging>true</remoteTagging>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <debug>true</debug>
+          <optimize>true</optimize>
+          <showDeprecations>true</showDeprecations>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <includes>
+            <include>**/*Test.java</include>
+          </includes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <version>2.8</version>
+        <extensions>false</extensions>
+        <inherited>true</inherited>
+        <configuration>
+          <additionalConfig>
+            <file>
+              <name>.settings/org.eclipse.jdt.core.prefs</name>
+              <location>../org.eclipse.jdt.core.prefs</location>
+            </file>
+            <file>
+              <name>.settings/org.eclipse.jdt.ui.prefs</name>
+              <location>../org.eclipse.jdt.ui.prefs</location>
+            </file>
+            <file>
+              <name>.settings/org.eclipse.core.resources.prefs</name>
+              <content>
+              <![CDATA[
+                eclipse.preferences.version=1
+                encoding/<project>=UTF-8
+              ]]>
+              </content>
+            </file>
+          </additionalConfig>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+  <reporting>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <inherited>false</inherited>
+        <configuration>
+          <aggregate>true</aggregate>
+          <breakiterator>true</breakiterator>
+          <charset>UTF-8</charset>
+          <docencoding>UTF-8</docencoding>
+          <windowtitle>${project.name} ${project.version} API Documentation</windowtitle>
+          <doctitle>${project.name} ${project.version} API Documentation</doctitle>
+          <encoding>UTF-8</encoding>
+          <locale>en_US</locale>
+          <additionalparam>
+            -link http://java.sun.com/j2se/1.5.0/docs/api/
+          </additionalparam>
+          <links>
+            <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
+          </links>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <configuration>
+          <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <inherited>false</inherited>
+        <configuration>
+          <aggregate>true</aggregate>
+          <inputEncoding>UTF-8</inputEncoding>
+          <outputEncoding>UTF-8</outputEncoding>
+          <windowTitle>${project.name} ${project.version} Cross Reference</windowTitle>
+          <docTitle>${project.name} ${project.version} Cross Reference</docTitle>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </reporting>
+
+  <repositories>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>maven.org</id>
+      <url>http://repo1.maven.org/maven2/</url>
+      <releases><enabled>true</enabled></releases>
+    </pluginRepository>
+    <pluginRepository>
+      <id>Codehaus repository</id>
+      <url>http://repository.codehaus.org/</url>
+    </pluginRepository>
+  </pluginRepositories>
+  
+  <modules>
+<!--    <module>libnullvm</module> -->
+    <module>nullvmc</module>
+    <module>rt</module>
+  </modules>
+</project>
+

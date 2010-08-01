@@ -1,0 +1,6 @@
+A {
+ global:
+  jc_*;
+ local:
+  *;
+};

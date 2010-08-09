@@ -215,6 +215,30 @@ public class LlvmUtil {
         return sb.toString();
     }
     
+    public static String mangleNativeMethodShort(ClassNode classNode, MethodNode node) {
+        return mangleNativeMethod(classNode.name, node.name, null);
+    }
+    
+    public static String mangleNativeMethodLong(ClassNode classNode, MethodNode node) {
+        return mangleNativeMethod(classNode.name, node.name, node.desc);
+    }
+    
+    public static String mangleNativeMethod(String owner, String name, String desc) {
+        Type[] args = desc != null ? Type.getArgumentTypes(desc) : new Type[0];
+        StringBuilder sb = new StringBuilder();
+        sb.append("Java_");
+        sb.append(mangleString(owner));
+        sb.append("_");
+        sb.append(mangleString(name));
+        if (args.length > 0) {
+            sb.append("__");
+            for (Type arg : args) {
+                sb.append(mangleString(arg.getDescriptor()));
+            }
+        }
+        return sb.toString();
+    }
+    
     public static String mangleString(String name) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < name.length(); i++) {
@@ -241,19 +265,66 @@ public class LlvmUtil {
     }
     
     public static String javaMethodToLlvmFunctionDeclaration(ClassNode classNode, MethodNode methodNode) {
-        return "declare " + javaMethodToLlvmFunction(classNode.name, methodNode.name, methodNode.desc, (methodNode.access & Opcodes.ACC_STATIC) > 0, true, false);
+        return "declare " + javaMethodToLlvmFunction(mangleMethod(classNode.name, methodNode.name, methodNode.desc), methodNode.desc, (methodNode.access & Opcodes.ACC_STATIC) > 0, true);
     }
     
     public static String javaMethodToLlvmFunctionDefinition(ClassNode classNode, MethodNode methodNode) {
-        return "define " + javaMethodToLlvmFunction(classNode.name, methodNode.name, methodNode.desc, (methodNode.access & Opcodes.ACC_STATIC) > 0, false, false);
+        return "define " + javaMethodToLlvmFunction(mangleMethod(classNode.name, methodNode.name, methodNode.desc), methodNode.desc, (methodNode.access & Opcodes.ACC_STATIC) > 0, false);
     }
     
-    private static String javaMethodToLlvmFunction(String owner, String name, String desc, boolean ztatic, boolean omitArgNames, boolean skipName) {
+    public static String functionDefinition(String name, String desc, boolean ztatic) {
+        return javaMethodToLlvmFunction(name, desc, ztatic, false);
+    }
+    
+    public static String functionType(String desc, boolean ztatic) {
+        return javaMethodToLlvmFunction(null, desc, ztatic, true);
+    }
+    
+    public static String nativeFunctionDefinition(String name, String desc, boolean ztatic) {
+        return javaMethodToLlvmNativeFunction(name, desc, ztatic, false);
+    }
+    
+    public static String nativeFunctionType(String desc, boolean ztatic) {
+        return javaMethodToLlvmNativeFunction(null, desc, ztatic, true);
+    }
+
+    private static String javaMethodToLlvmNativeFunction(String name, String desc, boolean ztatic, boolean omitArgNames) {
         String returnType = javaTypeToLlvmType(Type.getReturnType(desc));
-        List<String> args = new ArrayList<String>();
-        if (ztatic) {
-            args.add("%jclass*" + (omitArgNames ? "" : " %class"));
+        List<String> args = nativeDescToCallArgs(desc, ztatic, omitArgNames);
+        if (name != null) {
+            return String.format("%s @%s(%s)", returnType, name, join(args));
         } else {
+            return String.format("%s (%s)", returnType, join(args));
+        }
+    }
+
+    
+    private static String javaMethodToLlvmFunction(String name, String desc, boolean ztatic, boolean omitArgNames) {
+        String returnType = javaTypeToLlvmType(Type.getReturnType(desc));
+        List<String> args = descToCallArgs(desc, ztatic, omitArgNames);
+        if (name != null) {
+            return String.format("%s @%s(%s)", returnType, name, join(args));
+        } else {
+            return String.format("%s (%s)", returnType, join(args));
+        }
+    }
+
+    public static List<String> nativeDescToCallArgs(String desc, boolean ztatic,
+            boolean omitArgNames) {
+        
+        ArrayList<String> args = new ArrayList<String>();
+        args.add("i8*" + (omitArgNames ? "" : " %env"));
+        if (ztatic) {
+            args.add("%jclass*" + (omitArgNames ? "" : " %clazz"));
+        }
+        args.addAll(descToCallArgs(desc, ztatic, omitArgNames));
+        return args;
+    }
+    public static List<String> descToCallArgs(String desc, boolean ztatic,
+            boolean omitArgNames) {
+        
+        List<String> args = new ArrayList<String>();
+        if (!ztatic) {
             args.add("%jobject*" + (omitArgNames ? "" : " " + new Var("arg0", "%jobject*")));
         }
         int i = ztatic ? 0 : 1;
@@ -261,11 +332,7 @@ public class LlvmUtil {
             args.add(LlvmUtil.javaTypeToLlvmType(arg) + (omitArgNames ? "" : " " + new Var("arg" + i, LlvmUtil.javaTypeToLlvmType(arg))));
             i++; // += arg.getSize();
         }
-        if (!skipName) {
-            return String.format("%s @%s(%s)", returnType, mangleMethod(owner, name, desc), join(args));
-        } else {
-            return String.format("%s (%s)", returnType, join(args));
-        }
+        return args;
     }
     
     public static String javaMethodToLlvmFunctionType(MethodNode methodNode) {
@@ -273,7 +340,7 @@ public class LlvmUtil {
     }
     
     public static String javaMethodToLlvmFunctionType(String name, String desc, boolean ztatic) {
-        return javaMethodToLlvmFunction("", name, desc, ztatic, true, true) + "*";
+        return javaMethodToLlvmFunction(null, desc, ztatic, true) + "*";
     }
     
     public static String varListToParameterList(List<Var> vars) {
@@ -326,4 +393,12 @@ public class LlvmUtil {
         return false;
     }
     
+    public static MethodNode findMethodNode(ClassNode classNode, String name, String desc) {
+        for (MethodNode tmp : (List<MethodNode>) classNode.methods) {
+            if (tmp.name.equals(name) && tmp.desc.equals(desc)) {
+                return tmp;
+            }
+        }
+        return null;
+    }
 }

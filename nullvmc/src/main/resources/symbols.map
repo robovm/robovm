@@ -1,6 +1,7 @@
 A {
  global:
   jc_*;
+  Java_*;
  local:
   *;
 };

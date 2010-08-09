@@ -30,6 +30,15 @@
 #define ACC_ANNOTATION 0x2000
 #define ACC_ENUM 0x4000
 
+#define IS_PRIVATE(access) (access & ACC_PRIVATE)
+#define IS_PROTECTED(access) (access & ACC_PROTECTED)
+#define IS_PUBLIC(access) (access & ACC_PUBLIC)
+#define IS_PACKAGE_PRIVATE(access) (!IS_PRIVATE(access) && !IS_PROTECTED(access) && !IS_PUBLIC(access))
+#define IS_FINAL(access) (access & ACC_FINAL)
+#define IS_NATIVE(access) (access & ACC_NATIVE)
+#define IS_SYNCHRONIZED(access) (access & ACC_SYNCHRONIZED)
+#define IS_ABSTRACT(access) (access & ACC_ABSTRACT)
+
 typedef int64_t jlong;
 typedef int32_t jint;
 typedef int16_t jshort;
@@ -47,6 +56,7 @@ struct _jmethod {
   char* desc;
   jint access;
   void* impl;
+  void* wrapper;
   int vtableIndex;
 };
 
@@ -62,12 +72,17 @@ struct _jfield {
   void* setter;
 };
 
+struct _jobject;
+typedef struct _jobject jobject;
 struct _jclass;
 typedef struct _jclass jclass;
 struct _jclass {
   char* name;         // The name in UTF-8.
   char* packageName;         // The package name in UTF-8.
   jclass* superclass;  // Superclass pointer. Only java.lang.Object has NULL here.
+  jint access;
+  void* (*checkcast)(jobject*);
+  jint* (*instanceof)(jobject*);
 //  jclass* interfaces; // List of interfaces or NULL if there are no interfaces.
 //  int interfaces_count; // Number of interfaces in interface_count.
   jfield* fields; // Linked list of fields.
@@ -83,8 +98,6 @@ struct _jclass {
   void* data[0];
 };
 
-struct _jobject;
-typedef struct _jobject jobject;
 struct _jobject {
   jclass* clazz;
   void* data[0];
@@ -125,7 +138,10 @@ extern jobject* j_ldc_string_utf8z(char* s);
  * init.c
  */
 extern void nvmStartup(void);
+extern void* nvmAllocateMemory(int size);
+extern void* nvmAllocateExecutableMemory(int size);
 extern void nvmAbort(char* format, ...);
+extern void* nvmGetCurrentJNIEnv(void);
 
 /*
  * array.c
@@ -143,21 +159,25 @@ extern void nvmThrow(jobject* e);
 extern void nvmThrowNoClassDefFoundError(char* name);
 extern void nvmThrowIllegalAccessError(void);
 extern void nvmThrowIllegalAccessErrorField(jclass* clazz, char* name, char* desc, jclass* caller);
+extern void nvmThrowIllegalAccessErrorMethod(jclass* clazz, char* name, char* desc, jclass* caller);
 extern void nvmThrowNoSuchFieldError(char* name);
+extern void nvmThrowNoSuchMethodError(char* name);
 extern void nvmThrowIncompatibleClassChangeErrorClassField(jclass* clazz, char* name, char* desc);
 extern void nvmThrowIncompatibleClassChangeErrorInstanceField(jclass* clazz, char* name, char* desc);
+extern void nvmThrowIncompatibleClassChangeErrorMethod(jclass* clazz, char* name, char* desc);
 extern void nvmThrowClassCastException(jclass* expectedClass, jclass* actualClass);
 extern void nvmThrowNullPointerException(void);
 extern void nvmThrowAbstractMethodError(void);
 extern void nvmThrowArrayIndexOutOfBoundsException(jint index);
 extern void nvmThrowNegativeArraySizeException(void);
 extern void nvmThrowClassNotFoundException(char* name);
+extern void nvmThrowUnsatisfiedLinkError(void);
 
 /*
  * class.c
  */
 
-extern jclass* nvmAllocateClass(char* class_name, jclass* superclass, jint classDataSize, jint instanceDataSize);
+extern jclass* nvmAllocateClass(char* class_name, jclass* superclass, jint access, jint classDataSize, jint instanceDataSize);
 extern void nvmAddField(jclass* clazz, char* name, char* desc, jint access, jint offset);
 extern void nvmAddInterface(jclass* clazz, char* interface_name);
 extern void nvmAddMethod(jclass* clazz, char* name, char* desc, jint access, void* impl);
@@ -186,6 +206,9 @@ extern int nvmIsSamePackage(jclass* c1, jclass* c2);
 
 extern void nvmCheckcast(jobject* o, jclass* clazz);
 extern jboolean nvmInstanceof(jobject* o, jclass* clazz);
+
+extern void* nvmGetCheckcastFunction(char* className, char* mangledClassName, jclass* caller, void** functionPtr);
+extern void* nvmGetInstanceofFunction(char* className, char* mangledClassName, jclass* caller, void** functionPtr);
 
 /*
  * field.c
@@ -244,6 +267,17 @@ extern jint (*nvmCreateInstanceFieldGetter32(jint offset))(jobject*);
 extern void (*nvmCreateInstanceFieldSetter8(jint offset))(jobject*, jbyte);
 extern void (*nvmCreateInstanceFieldSetter16(jint offset))(jobject*, jshort);
 extern void (*nvmCreateInstanceFieldSetter32(jint offset))(jobject*, jint);
+
+/*
+ * method.c
+ */
+extern jmethod* nvmGetMethod(jclass* clazz, char* name, char* desc, jclass* caller);
+extern void* nvmGetNativeMethodImpl(char* shortMangledName, char* longMangledName, void** functionPtr);
+extern void* nvmGetInvokeStaticFunction(char* className, char* mangledClassName, char* methodName, char* methodDesc, void* caller, void** functionPtr);
+extern void* nvmGetInvokeVirtualFunction(char* className, char* mangledClassName, char* methodName, char* methodDesc, void* caller, void** functionPtr);
+extern void* nvmGetInvokeInterfaceFunction(char* className, char* mangledClassName, char* methodName, char* methodDesc, void* caller, void** functionPtr);
+extern void* nvmGetInvokeSpecialFunction(char* className, char* mangledClassName, char* methodName, char* methodDesc, void* caller, void** functionPtr);
+extern void* nvmCreateMethodWrapper(jclass* clazz, jmethod* method);
 
 #endif
 

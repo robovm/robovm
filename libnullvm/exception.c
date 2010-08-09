@@ -44,7 +44,7 @@ void j_eh_resume_unwind(struct _Unwind_Exception* exception_info) {
 }
 
 void nvmThrow(jobject* e) {
-    junwind_info* u = GC_MALLOC(sizeof(junwind_info));
+    junwind_info* u = nvmAllocateMemory(sizeof(junwind_info));
     u->exception_info.exception_class = EXCEPTION_CLASS;
     u->throwable = e;
     _Unwind_Reason_Code urc = _Unwind_RaiseException(&u->exception_info);
@@ -84,7 +84,19 @@ void nvmThrowIllegalAccessErrorField(jclass* clazz, char* name, char* desc, jcla
     nvmThrow(nvmNewInstance(nvmGetClass("java/lang/IllegalAccessError", "java_lang_IllegalAccessError", NULL)));
 }
 
+void nvmThrowIllegalAccessErrorMethod(jclass* clazz, char* name, char* desc, jclass* caller) {
+    // TODO: Message should look like ?
+    // TODO: Cache java.lang.IllegalAccessError at startup
+    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/IllegalAccessError", "java_lang_IllegalAccessError", NULL)));
+}
+
 void nvmThrowNoSuchFieldError(char* name) {
+    // TODO: Message should look like "java.lang.NoSuchFieldError: x"
+    // TODO: Cache java.lang.NoSuchFieldError at startup
+    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/NoSuchFieldError", "java_lang_NoSuchFieldError", NULL)));
+}
+
+void nvmThrowNoSuchMethodError(char* name) {
     // TODO: Message should look like "java.lang.NoSuchFieldError: x"
     // TODO: Cache java.lang.NoSuchFieldError at startup
     nvmThrow(nvmNewInstance(nvmGetClass("java/lang/NoSuchFieldError", "java_lang_NoSuchFieldError", NULL)));
@@ -98,6 +110,12 @@ void nvmThrowIncompatibleClassChangeErrorClassField(jclass* clazz, char* name, c
 
 void nvmThrowIncompatibleClassChangeErrorInstanceField(jclass* clazz, char* name, char* desc) {
     // TODO: Message should look like "java.lang.ThrowIncompatibleClassChangeError: Expected non-static field a.C.x"
+    // TODO: Cache java.lang.IncompatibleClassChangeError at startup
+    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/IncompatibleClassChangeError", "java_lang_IncompatibleClassChangeError", NULL)));
+}
+
+void nvmThrowIncompatibleClassChangeErrorMethod(jclass* clazz, char* name, char* desc) {
+    // TODO: Message should look like ?
     // TODO: Cache java.lang.IncompatibleClassChangeError at startup
     nvmThrow(nvmNewInstance(nvmGetClass("java/lang/IncompatibleClassChangeError", "java_lang_IncompatibleClassChangeError", NULL)));
 }
@@ -133,5 +151,11 @@ void nvmThrowClassNotFoundException(char* className) {
 void nvmThrowNegativeArraySizeException(void) {
     // TODO: Cache java.lang.NegativeArraySizeException at startup
     nvmThrow(nvmNewInstance(nvmGetClass("java/lang/NegativeArraySizeException", "java_lang_NegativeArraySizeException", NULL)));
+}
+
+void nvmThrowUnsatisfiedLinkError(void) {
+    // TODO: Message should look like ?
+    // TODO: Cache java.lang.UnsatisfiedLinkError at startup
+    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/UnsatisfiedLinkError", "java_lang_UnsatisfiedLinkError", NULL)));
 }
 

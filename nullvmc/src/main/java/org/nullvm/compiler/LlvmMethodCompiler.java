@@ -44,6 +44,7 @@ import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.LookupSwitchInsnNode;
 import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.MultiANewArrayInsnNode;
 import org.objectweb.asm.tree.TableSwitchInsnNode;
 import org.objectweb.asm.tree.TryCatchBlockNode;
 import org.objectweb.asm.tree.analysis.Analyzer;
@@ -64,7 +65,7 @@ public class LlvmMethodCompiler {
     
     private static int jsrLabels = 0;
 
-    private static String[] opcodeNames = {
+    static String[] opcodeNames = {
         "NOP", "ACONST_NULL", "ICONST_M1", "ICONST_0", "ICONST_1", "ICONST_2",
         "ICONST_3", "ICONST_4", "ICONST_5", "LCONST_0", "LCONST_1", "FCONST_0",
         "FCONST_1", "FCONST_2", "DCONST_0", "DCONST_1", "BIPUSH", "SIPUSH",
@@ -237,8 +238,8 @@ public class LlvmMethodCompiler {
         private LandingPad currentLandingPad;
         private Var throwablePtr = null;
         private int pc = 0;
-        private Map<String, Var> getters;
-        private Map<String, Var> setters;
+        private Var multiANewArrayLengths;
+
         
         public MethodVisitor(ClassNode classNode, MethodNode methodNode, Frame[] frames, PrintWriter out) {
             this.classNode = classNode;
@@ -281,8 +282,6 @@ public class LlvmMethodCompiler {
             }
             
             Set<String> accessors = new HashSet<String>();
-            getters = new HashMap<String, Var>();
-            setters = new HashMap<String, Var>();
             for (AbstractInsnNode insn = methodNode.instructions.getFirst(); insn != null; insn = insn.getNext()) {
                 if (insn instanceof FieldInsnNode) {
                     FieldInsnNode n = (FieldInsnNode) insn;
@@ -321,6 +320,19 @@ public class LlvmMethodCompiler {
                 }
             }
             
+            // Allocate storage for the lengths array of any MULTIANEWARRAY instruction
+            int maxDims = -1;
+            for (AbstractInsnNode insn = methodNode.instructions.getFirst(); insn != null; insn = insn.getNext()) {
+                if (insn instanceof MultiANewArrayInsnNode) {
+                    MultiANewArrayInsnNode n = (MultiANewArrayInsnNode) insn;
+                    maxDims = Math.max(maxDims, n.dims);
+                }
+            }
+            
+            if (maxDims != -1) {
+                multiANewArrayLengths = tmp("multiANewArrayLengths", String.format("[%d x i32]", maxDims));
+                out.format("    %s = alloca %s\n", multiANewArrayLengths, multiANewArrayLengths.getType());
+            }
             
             for (AbstractInsnNode insn = methodNode.instructions.getFirst(); insn != null; insn = insn.getNext()) {
                 if (nextFrame() != null) {
@@ -559,11 +571,6 @@ public class LlvmMethodCompiler {
         @Override
         public void visitFieldInsn(int opcode, String owner, String name, String desc) {
             boolean ztatic = opcode == Opcodes.GETSTATIC || opcode == Opcodes.PUTSTATIC;
-            
-//            Var clazz = tmp("clazz", "%jclass*");
-//            out.format("    %s = call %%jclass* @nvmGetClass(i8* %s, i8* %s, %%jclass* null)\n", clazz, 
-//                    LlvmUtil.getStringReference(owner), 
-//                    LlvmUtil.getStringReference(LlvmUtil.mangleString(owner)));
             
             Type t = Type.getType(desc);
             String llvmType = LlvmUtil.javaTypeToLlvmType(t);
@@ -1931,38 +1938,27 @@ public class LlvmMethodCompiler {
                 argVars.addFirst(p);
             }
             
-            Var clazz = tmp("clazz", "%jclass*");
-            if (opcode == Opcodes.INVOKESTATIC) {
-                out.format("    %s = call %%jclass* @nvmGetClass(i8* %s, i8* %s, %%jclass* null)\n", 
-                        clazz, LlvmUtil.getStringReference(owner),
-                        LlvmUtil.getStringReference(LlvmUtil.mangleString(owner)));
-                argVars.addFirst(clazz);
-            } else if (opcode == Opcodes.INVOKESPECIAL) {
+            if (opcode != Opcodes.INVOKESTATIC) {
                 Var obj = pop("obj");
                 checkNull(obj);
-                out.format("    %s = call %%jclass* @nvmGetClass(i8* %s, i8* %s, %%jclass* null)\n", 
-                        clazz, LlvmUtil.getStringReference(owner),
-                        LlvmUtil.getStringReference(LlvmUtil.mangleString(owner)));
-                argVars.addFirst(obj);
-            } else {
-                Var obj = pop("obj");
-                checkNull(obj);
-                Var clazzPtr = tmp("classPtr", "%jclass**");
-                out.format("    %s = getelementptr %%jobject* %s, i32 0, i32 0\n", clazzPtr, obj);
-                out.format("    %s = load %%jclass** %s\n", clazz, clazzPtr);
                 argVars.addFirst(obj);
             }
-            
-            String methodName = LlvmUtil.mangleMethod(owner, name, desc);
-            String methodType = LlvmUtil.javaMethodToLlvmFunctionType(name, desc, opcode == Opcodes.INVOKESTATIC);
-            Var method = tmp(methodName, "");
-            Var tmpMethod = tmp(methodName, "i8*");
-            Var caller = tmp("caller", "%jclass*");
-            out.format("    %s = load %%jclass** @clazz\n", caller);
-            out.format("    %s = call i8* @j_get_method_impl(%%jclass* %s, i8* %s, i8* %s, %%jclass* %s)\n",
-                    tmpMethod, clazz, LlvmUtil.getStringReference(name), 
-                    LlvmUtil.getStringReference(desc), caller);
-            out.format("    %s = bitcast i8* %s to %s\n", method, tmpMethod, methodType);
+
+            String method = null;
+            if (owner.equals(classNode.name)) {
+                MethodNode mnode = LlvmUtil.findMethodNode(classNode, name, desc);
+                if (mnode != null && ((classNode.access & Opcodes.ACC_STATIC) > 0 || "<init>".equals(mnode.name) || (mnode.access & Opcodes.ACC_PRIVATE) > 0 || (mnode.access & Opcodes.ACC_FINAL) > 0 || (opcode == Opcodes.INVOKESTATIC && (mnode.access & Opcodes.ACC_STATIC) > 0))) {
+                    // Constructors as well as private, final and static methods of the current class will be called directly
+                    method = "@" + LlvmUtil.mangleMethod(owner, name, desc);
+                }
+            }
+
+            if (method == null) {
+                String function = opcodeNames[opcode] + "_" + LlvmUtil.mangleMethod(owner, name, desc);
+                Var v = tmp(function, LlvmUtil.functionType(desc, opcode == Opcodes.INVOKESTATIC));
+                out.format("    %s = load %s** @%s\n", v, v.getType(), function);
+                method = v.toString();
+            }
             
             String successLabel = String.format("InvokeSuccess%d", pc);
             
@@ -2002,17 +1998,15 @@ public class LlvmMethodCompiler {
         
         @Override
         public void visitMultiANewArrayInsn(String desc, int dims) {
-            Var lengths = tmp("lengths", String.format("[%d x i32]", dims));
-            out.format("    %s = alloca %s\n", lengths, lengths.getType());
             for (int i = 0; i < dims; i++) {
                 Var ptr = tmp("ptr", "i32*");
                 Var length = pop("length" + (dims - i - 1));
-                out.format("    %s = getelementptr %s* %s, i32 0, i32 %d\n", ptr, lengths.getType(), lengths, dims - i - 1);
+                out.format("    %s = getelementptr %s* %s, i32 0, i32 %d\n", ptr, multiANewArrayLengths.getType(), multiANewArrayLengths, dims - i - 1);
                 out.format("    store i32 %s, i32* %s\n", length, ptr);
             }
             
             Var lengthsi32 = tmp("lengths", "i32*");
-            out.format("    %s = bitcast %s* %s to i32*\n", lengthsi32, lengths.getType(), lengths);
+            out.format("    %s = bitcast %s* %s to i32*\n", lengthsi32, multiANewArrayLengths.getType(), multiANewArrayLengths);
             Var res = tmpr("res");
             if (currentTryCatchBlocks.isEmpty()) {
                 out.format("    %s = call %%jobject* @nvmMultiANewArray(i8* %s, i32 %d, i32* %s)\n", 
@@ -2074,15 +2068,14 @@ public class LlvmMethodCompiler {
             }
             case Opcodes.CHECKCAST: {
                 Var obj = pop("obj");
-                Var clazz = tmp("clazz", "%jclass*");
-                out.format("    %s = call %%jclass* @nvmGetClass(i8* %s, i8* %s, %%jclass* null)\n", clazz, 
-                        LlvmUtil.getStringReference(type), 
-                        LlvmUtil.getStringReference(LlvmUtil.mangleString(type)));
+                String function = "CHECKCAST_" + LlvmUtil.mangleString(type);
+                Var v = tmp(function, "void (%jobject*)");
+                out.format("    %s = load %s** @%s\n", v, v.getType(), function);
                 if (currentTryCatchBlocks.isEmpty()) {
-                    out.format("    call void @nvmCheckcast(%%jobject* %s, %%jclass* %s)\n", obj, clazz);
+                    out.format("    call void %s(%%jobject* %s)\n", v, obj);
                 } else {
                     String successLabel = String.format("CheckCastSuccess%d", pc);
-                    out.format("    invoke void @nvmCheckcast(%%jobject* %s, %%jclass* %s) to label %%%s unwind label %%%s\n", obj, clazz, successLabel, currentLandingPad.getLabel());
+                    out.format("    invoke void %s(%%jobject* %s) to label %%%s unwind label %%%s\n", v, obj, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
                 push(obj);
@@ -2090,12 +2083,17 @@ public class LlvmMethodCompiler {
             }
             case Opcodes.INSTANCEOF: {
                 Var obj = pop("obj");
-                Var clazz = tmp("clazz", "%jclass*");
+                String function = "INSTANCEOF_" + LlvmUtil.mangleString(type);
+                Var v = tmp(function, "i32 (%jobject*)");
+                out.format("    %s = load %s** @%s\n", v, v.getType(), function);
                 Var res = tmpi("res");
-                out.format("    %s = call %%jclass* @nvmGetClass(i8* %s, i8* %s)\n", clazz, 
-                        LlvmUtil.getStringReference(type), 
-                        LlvmUtil.getStringReference(LlvmUtil.mangleString(type)));
-                out.format("    %s = call i32 @nvmInstanceof(%%jobject* %s, %%jclass* %s)\n", res, obj, clazz);
+                if (currentTryCatchBlocks.isEmpty()) {
+                    out.format("    %s = call i32 %s(%%jobject* %s)\n", res, v, obj);
+                } else {
+                    String successLabel = String.format("InstanceOfSuccess%d", pc);
+                    out.format("    %s = invoke i32 %s(%%jobject* %s) to label %%%s unwind label %%%s\n", res, v, obj, successLabel, currentLandingPad.getLabel());
+                    out.format("%s:\n", successLabel);
+                }
                 push(res);
                 break;
             }

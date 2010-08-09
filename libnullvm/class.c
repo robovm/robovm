@@ -23,7 +23,7 @@ static jclass* class_cache_get(char* className) {
 }
 
 static void class_cache_put(jclass* clazz) {
-    class_cache_entry* entry = GC_MALLOC(sizeof(class_cache_entry));
+    class_cache_entry* entry = nvmAllocateMemory(sizeof(class_cache_entry));
     entry->clazz = clazz;
     entry->next = class_cache;
     class_cache = entry;
@@ -95,68 +95,6 @@ jint j_get_vtable_index(jclass* clazz, char* name, char* desc, jclass* caller) {
     return -1;
 }
 
-/*
-void* j_get_class_field_address(jclass* clazz, char* name, char* desc, jclass* caller) {
-    jfield* field;
-    int same_class;
-    int sub_class;
-    int same_package;
-
-    same_class = clazz == caller;
-    sub_class = nvmIsSubClass(clazz, caller);
-    same_package = nvmIsSamePackage(clazz, caller);
-
-    for (field = clazz->classFields; field != NULL; field = field->next) {
-        jint access = field->access;
-        if (access & ACC_PRIVATE && !same_class) {
-            continue;
-        }
-        if (access & ACC_PROTECTED && !sub_class) {
-            continue;
-        }
-        if (!(access & ACC_PRIVATE) && !(access & ACC_PROTECTED) && !(access & ACC_PUBLIC) && !same_package) {
-            // Package private
-            continue;
-        }
-        if (!strcmp(field->name, name) && !strcmp(field->desc, desc)) {
-            return (void*) (((char*) clazz->fields_data) + field->offset);
-        }
-    }
-
-    return clazz->superclass ? j_get_class_field_address(clazz->superclass, name, desc, caller) : NULL;
-}
-
-jint j_get_instance_field_offset(jclass* clazz, char* name, char* desc, jclass* caller) {
-    jfield* field;
-    int same_class;
-    int sub_class;
-    int same_package;
-
-    same_class = clazz == caller;
-    sub_class = nvmIsSubClass(clazz, caller);
-    same_package = nvmIsSamePackage(clazz, caller);
-
-    for (field = clazz->instance_fields; field != NULL; field = field->next) {
-        jint access = field->access;
-        if (access & ACC_PRIVATE && !same_class) {
-            continue;
-        }
-        if (access & ACC_PROTECTED && !sub_class) {
-            continue;
-        }
-        if (!(access & ACC_PRIVATE) && !(access & ACC_PROTECTED) && !(access & ACC_PUBLIC) && !same_package) {
-            // Package private
-            continue;
-        }
-        if (!strcmp(field->name, name) && !strcmp(field->desc, desc)) {
-            return clazz->instance_data_offset + field->offset;
-        }
-    }
-
-    return clazz->superclass ? j_get_instance_field_offset(clazz->superclass, name, desc, caller) : -1;
-}
-*/
-
 jclass* nvmGetClass(char* className, char* mangledClassName, jclass* caller) {
     // TODO: Implement me properly using ClassLoader
     // TODO: Access checks
@@ -167,7 +105,7 @@ jclass* nvmGetClass(char* className, char* mangledClassName, jclass* caller) {
     jclass* clazz = class_cache_get(className);
     if (clazz == NULL) {
         LOG("Class '%s' not loaded\n", className);
-        char* funcName = GC_MALLOC(strlen(mangledClassName) + 4);
+        char* funcName = nvmAllocateMemory(strlen(mangledClassName) + 4);
         strcpy(funcName, "jc_");
         strcat(funcName, mangledClassName);
         LOG("Searching for class loader function '%s()'\n", funcName);
@@ -196,7 +134,8 @@ jclass* nvmGetArrayClass(char* className) {
 
     jclass* clazz = class_cache_get(className);
     if (clazz == NULL) {
-        clazz = nvmAllocateClass(className, nvmGetClass("java/lang/Object", "java_lang_Object", NULL), 0, 0);
+        // TODO: What access should an array class have?
+        clazz = nvmAllocateClass(className, nvmGetClass("java/lang/Object", "java_lang_Object", NULL), ACC_PUBLIC, 0, 0);
         // TODO: Add Cloneable interface and clone() method.
         nvmRegisterClass(clazz);
     }
@@ -204,13 +143,12 @@ jclass* nvmGetArrayClass(char* className) {
     return clazz;
 }
 
-jclass* nvmAllocateClass(char* className, jclass* superclass, jint classDataSize, jint instanceDataSize) {
+jclass* nvmAllocateClass(char* className, jclass* superclass, jint access, jint classDataSize, jint instanceDataSize) {
     jclass* clazz;
-    clazz = GC_MALLOC(sizeof(jclass) + classDataSize);
+    clazz = nvmAllocateMemory(sizeof(jclass) + classDataSize);
     clazz->name = className;
-    if (superclass) {
-        clazz->superclass = superclass;
-    }
+    clazz->superclass = superclass;
+    clazz->access = access;
     clazz->classDataSize = classDataSize;
     clazz->instanceDataSize = instanceDataSize;
     return clazz;
@@ -220,7 +158,7 @@ void nvmAddInterface(jclass* clazz, char* interfaceName) {
 }
 
 void nvmAddMethod(jclass* clazz, char* name, char* desc, jint access, void* impl) {
-    jmethod* method = GC_MALLOC(sizeof(jmethod));
+    jmethod* method = nvmAllocateMemory(sizeof(jmethod));
     method->name = name;
     method->desc = desc;
     method->access = access;
@@ -231,7 +169,7 @@ void nvmAddMethod(jclass* clazz, char* name, char* desc, jint access, void* impl
 }
 
 void nvmAddField(jclass* clazz, char* name, char* desc, jint access, jint offset) {
-    jfield* field = GC_MALLOC(sizeof(jfield));
+    jfield* field = nvmAllocateMemory(sizeof(jfield));
     field->name = name;
     field->desc = desc;
     field->access = access;
@@ -241,7 +179,6 @@ void nvmAddField(jclass* clazz, char* name, char* desc, jint access, jint offset
 }
 
 void nvmRegisterClass(jclass* clazz) {
-    // Determine the required size of the vtable
     int vtableSize;
     jmethod* method;
     jfield* field;
@@ -249,6 +186,8 @@ void nvmRegisterClass(jclass* clazz) {
     int size;
 
     vtableSize = clazz->superclass != NULL ? clazz->superclass->vtableSize : 0;
+
+    // TODO: Verify the class hierarchy (class doesn't override final methods, changes public -> private, etc)
 
     for (method = clazz->methods; method != NULL; method = method->next) {
         int vtableIndex = -1;
@@ -262,13 +201,14 @@ void nvmRegisterClass(jclass* clazz) {
         LOG("vtable index for method %s%s in class %s: %d\n", method->name, method->desc, clazz->name, vtableIndex);
     }
     if (vtableSize > 0) {
-        clazz->vtable = GC_MALLOC(vtableSize * sizeof(void*));
+        clazz->vtable = nvmAllocateMemory(vtableSize * sizeof(void*));
         clazz->vtableSize = vtableSize;
         if (clazz->superclass != NULL && clazz->superclass->vtableSize > 0) {
             memcpy(clazz->vtable, clazz->superclass->vtable, clazz->superclass->vtableSize);
         }
     }
     LOG("vtable size for %s: %d\n", clazz->name, vtableSize);
+
     for (method = clazz->methods; method != NULL; method = method->next) {
         clazz->vtable[method->vtableIndex] = method->impl;
     }
@@ -278,6 +218,11 @@ void nvmRegisterClass(jclass* clazz) {
                : 0;
     LOG("instanceDataOffset for %s: %d\n", clazz->name, offset);
     clazz->instanceDataOffset = offset;
+
+    // Set up method wrappers
+    for (method = clazz->methods; method != NULL; method = method->next) {
+        method->wrapper = nvmCreateMethodWrapper(clazz, method);
+    }
 
     // Set up setters and getters for fields
     for (field = clazz->fields; field != NULL; field = field->next) {
@@ -293,7 +238,7 @@ void nvmRegisterClass(jclass* clazz) {
 
 jobject* nvmNewInstance(jclass* clazz) {
     jint dataSize = clazz->instanceDataOffset + clazz->instanceDataSize;
-    jobject* obj = GC_MALLOC(sizeof(jobject) + dataSize);
+    jobject* obj = nvmAllocateMemory(sizeof(jobject) + dataSize);
     obj->clazz = clazz;
     return obj;
 }
@@ -312,12 +257,15 @@ jboolean nvmInstanceof(jobject* o, jclass* clazz) {
     return o && (o->clazz == clazz || nvmIsSubClass(clazz, o->clazz));
 }
 
-
-jobject* jm_java_lang_Throwable_getStackTraceImpl(void) {
-    return NULL;
+void* nvmGetCheckcastFunction(char* className, char* mangledClassName, jclass* caller, void** functionPtr) {
+    jclass* clazz = nvmGetClass(className, mangledClassName, caller);
+    *functionPtr = clazz->checkcast;
+    return clazz->checkcast;
 }
 
-jobject* jm_java_lang_Throwable_fillInStackTrace(void) {
-    return NULL;
+void* nvmGetInstanceofFunction(char* className, char* mangledClassName, jclass* caller, void** functionPtr) {
+    jclass* clazz = nvmGetClass(className, mangledClassName, caller);
+    *functionPtr = clazz->instanceof;
+    return clazz->instanceof;
 }
 

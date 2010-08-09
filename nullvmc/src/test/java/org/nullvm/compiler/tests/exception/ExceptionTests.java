@@ -531,6 +531,13 @@ public class ExceptionTests {
         } catch (NegativeArraySizeException e) {
             Echo.println("  NegativeArraySizeException thrown as expected");
         }
+        try {
+            @SuppressWarnings("unused")
+            Object[][] array = new Object[2][2][-1];
+            Echo.println("  NegativeArraySizeException expected");
+        } catch (NegativeArraySizeException e) {
+            Echo.println("  NegativeArraySizeException thrown as expected");
+        }
     }
     
     public static void main(String[] args) {

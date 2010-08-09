@@ -42,7 +42,7 @@ static jarray* newArray(jclass* array_type, jint elementSize, jint dims, jint* l
     jarray* array;
     jint length = lengths[0];
 
-    array = GC_MALLOC(sizeof(jarray) + length * elementSize);
+    array = nvmAllocateMemory(sizeof(jarray) + length * elementSize);
     // TODO: Detect if we run out of memory and return NULL and let the caller throw OOME if needed?
 
     array->clazz = array_type;
@@ -123,7 +123,7 @@ jarray* nvmANewArray(char* type, jint length) {
         nvmThrowNegativeArraySizeException();
     }
 
-    char* className = GC_MALLOC(strlen(type) + 2);
+    char* className = nvmAllocateMemory(strlen(type) + 2);
     strcpy(className, "[");
     strcat(className, type);
     jclass* array_type = nvmGetArrayClass(className);

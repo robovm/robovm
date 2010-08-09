@@ -1,11 +1,5 @@
 #include <nullvm.h>
 #include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/mman.h>
-#include <unistd.h>
-#include <inttypes.h>
-#include <stddef.h>
 
 static char classFieldGetter8TemplateX86_64[] = {
   // mov    0x123456789abcdef,%al
@@ -191,37 +185,10 @@ static char instanceFieldSetterDoubleTemplateX86_64[] = {
   0xc3
 };
 
-static void* memStart = NULL;
-static void* memEnd = NULL;
-
 static void* allocateMemoryForFunction(int size, char* templatePtr) {
-/*
-  if (!memStart || memEnd - memStart < size) {
-    long pageSize = sysconf(_SC_PAGESIZE);
-    if (posix_memalign(&memStart, pageSize, pageSize)) {
-      goto fail;
-    }
-
-    if (mprotect(memStart, pageSize, PROT_READ | PROT_WRITE | PROT_EXEC)) {
-      goto fail;
-    }
-
-    memEnd = memStart + pageSize;
-  }
-*/
-  void* m = GC_MALLOC(size);
-
-/*  void* m = memStart;
-  memStart += size;
-*/
+  void* m = nvmAllocateExecutableMemory(size);
   memcpy(m, templatePtr, size);
-
   return m;
-/*
-fail:
-  // TODO: throw OutOfMemoryError
-  if (m) free(m);
-  return NULL;*/
 }
 
 jbyte (*nvmCreateClassFieldGetter8(jbyte* ptr))(void) {
@@ -420,25 +387,20 @@ void* nvmCreateFieldSetter(jclass* clazz, jfield* field) {
 
 jfield* nvmGetField(jclass* clazz, char* name, char* desc, jclass* caller) {
     jfield* field;
-    int sameClass;
-    int subClass;
-    int samePackage;
-
-    sameClass = caller == NULL || clazz == caller;
-    subClass = caller == NULL || nvmIsSubClass(clazz, caller);
-    samePackage = caller == NULL || nvmIsSamePackage(clazz, caller);
+    int sameClass = caller == NULL || clazz == caller;
+    int subClass = caller == NULL || nvmIsSubClass(clazz, caller);
+    int samePackage = caller == NULL || nvmIsSamePackage(clazz, caller);
 
     for (field = clazz->fields; field != NULL; field = field->next) {
         if (!strcmp(field->name, name) && !strcmp(field->desc, desc)) {
             jint access = field->access;
-            if (access & ACC_PRIVATE && !sameClass) {
+            if (IS_PRIVATE(access) && !sameClass) {
                 nvmThrowIllegalAccessErrorField(clazz, name, desc, caller);
             }
-            if (access & ACC_PROTECTED && !subClass) {
+            if (IS_PROTECTED(access) && !subClass) {
                 nvmThrowIllegalAccessErrorField(clazz, name, desc, caller);
             }
-            if (!(access & ACC_PRIVATE) && !(access & ACC_PROTECTED) && !(access & ACC_PUBLIC) && !samePackage) {
-                // Package private
+            if (IS_PACKAGE_PRIVATE(access) && !samePackage) {
                 nvmThrowIllegalAccessErrorField(clazz, name, desc, caller);
             }
             return field;

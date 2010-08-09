@@ -13,6 +13,15 @@ void nvmStartup(void) {
     // Call init on modules
 }
 
+void* nvmAllocateMemory(int size) {
+    void* m = GC_MALLOC(size);
+    // TODO: Throw OutOfMemoryError if no mem is available
+    return m;
+}
+
+void* nvmAllocateExecutableMemory(int size) {
+    return nvmAllocateMemory(size);
+}
 
 void nvmAbort(char* format, ...) {
     va_list args;
@@ -21,5 +30,10 @@ void nvmAbort(char* format, ...) {
     va_end(args);
     fprintf(stderr, "\n");
     abort();
+}
+
+void* nvmGetCurrentJNIEnv(void) {
+    // TODO: Implement me
+    return NULL;
 }
 

@@ -4,7 +4,7 @@
 int main(int argc, char* argv[]) {
     nvmStartup();
 
-    jclass* JumpTests = nvmGetClass("org/nullvm/compiler/tests/opcode/JumpOpcodes", "org_nullvm_compiler_tests_opcode_JumpOpcodes", NULL);
+    Class* JumpTests = nvmGetClass("org/nullvm/compiler/tests/opcode/JumpOpcodes", "org_nullvm_compiler_tests_opcode_JumpOpcodes", NULL);
     jint (*_goto)(void) = j_get_method_impl(JumpTests, "_goto", "()I", JumpTests);
     jint (*ifeq)(jint) = j_get_method_impl(JumpTests, "ifeq", "(I)I", JumpTests);
     jint (*ifne)(jint) = j_get_method_impl(JumpTests, "ifne", "(I)I", JumpTests);
@@ -18,16 +18,16 @@ int main(int argc, char* argv[]) {
     jint (*if_icmpgt)(jint, jint) = j_get_method_impl(JumpTests, "if_icmpgt", "(II)I", JumpTests);
     jint (*if_icmple)(jint, jint) = j_get_method_impl(JumpTests, "if_icmple", "(II)I", JumpTests);
     jint (*if_icmpge)(jint, jint) = j_get_method_impl(JumpTests, "if_icmpge", "(II)I", JumpTests);
-    jint (*ifnull)(jobject*) = j_get_method_impl(JumpTests, "ifnull", "(Ljava/lang/Object;)I", JumpTests);
-    jint (*ifnonnull)(jobject*) = j_get_method_impl(JumpTests, "ifnonnull", "(Ljava/lang/Object;)I", JumpTests);
-    jint (*if_acmpeq)(jobject*, jobject*) = j_get_method_impl(JumpTests, "if_acmpeq", "(Ljava/lang/Object;Ljava/lang/Object;)I", JumpTests);
-    jint (*if_acmpne)(jobject*, jobject*) = j_get_method_impl(JumpTests, "if_acmpne", "(Ljava/lang/Object;Ljava/lang/Object;)I", JumpTests);
+    jint (*ifnull)(Object*) = j_get_method_impl(JumpTests, "ifnull", "(Ljava/lang/Object;)I", JumpTests);
+    jint (*ifnonnull)(Object*) = j_get_method_impl(JumpTests, "ifnonnull", "(Ljava/lang/Object;)I", JumpTests);
+    jint (*if_acmpeq)(Object*, Object*) = j_get_method_impl(JumpTests, "if_acmpeq", "(Ljava/lang/Object;Ljava/lang/Object;)I", JumpTests);
+    jint (*if_acmpne)(Object*, Object*) = j_get_method_impl(JumpTests, "if_acmpne", "(Ljava/lang/Object;Ljava/lang/Object;)I", JumpTests);
     jint (*tableswitch)(jint) = j_get_method_impl(JumpTests, "tableswitch", "(I)I", JumpTests);
     jint (*lookupswitch)(jint) = j_get_method_impl(JumpTests, "lookupswitch", "(I)I", JumpTests);
     jint (*jsr)(void) = j_get_method_impl(JumpTests, "jsr", "()I", JumpTests);
 
-    jobject* a = nvmNewInstance(nvmGetClass("java/lang/Object", "java_lang_Object", NULL));
-    jobject* b = nvmNewInstance(nvmGetClass("java/lang/Object", "java_lang_Object", NULL));
+    Object* a = nvmNewInstance(nvmGetClass("java/lang/Object", "java_lang_Object", NULL));
+    Object* b = nvmNewInstance(nvmGetClass("java/lang/Object", "java_lang_Object", NULL));
 
     assertEqualsInt("goto", 5, _goto());
 

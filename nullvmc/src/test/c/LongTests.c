@@ -4,7 +4,7 @@
 int main(int argc, char* argv[]) {
     nvmStartup();
 
-    jclass* LongTests = nvmGetClass("org/nullvm/compiler/tests/opcode/LongOpcodes", "org_nullvm_compiler_tests_opcode_LongOpcodes", NULL);
+    Class* LongTests = nvmGetClass("org/nullvm/compiler/tests/opcode/LongOpcodes", "org_nullvm_compiler_tests_opcode_LongOpcodes", NULL);
     jlong (*lreturn)(jlong) = j_get_method_impl(LongTests, "lreturn", "(J)J", LongTests);
     jlong (*lstore)(jlong) = j_get_method_impl(LongTests, "lstore", "(J)J", LongTests);
     jlong (*lconst_0)(void) = j_get_method_impl(LongTests, "lconst_0", "()J", LongTests);

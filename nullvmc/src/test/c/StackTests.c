@@ -4,7 +4,7 @@
 int main(int argc, char* argv[]) {
     nvmStartup();
 
-    jclass* StackOpcodes = nvmGetClass("org/nullvm/compiler/tests/opcode/StackOpcodes", "org_nullvm_compiler_tests_opcode_StackOpcodes", NULL);
+    Class* StackOpcodes = nvmGetClass("org/nullvm/compiler/tests/opcode/StackOpcodes", "org_nullvm_compiler_tests_opcode_StackOpcodes", NULL);
     jint (*swap_int)(jint, jint) = j_get_method_impl(StackOpcodes, "swap_int", "(II)I", StackOpcodes);
     jint (*dup_int)(jint) = j_get_method_impl(StackOpcodes, "dup_int", "(I)I", StackOpcodes);
     jint (*dup2_int)(jint) = j_get_method_impl(StackOpcodes, "dup2_int", "(I)I", StackOpcodes);

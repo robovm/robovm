@@ -75,7 +75,7 @@ void assertEqualsDouble(char* test, jdouble expected, jdouble actual)
   }*/
 }
 
-void assertSameObject(char* test, jobject* expected, jobject* actual) {
+void assertSameObject(char* test, Object* expected, Object* actual) {
   total_tests++;
   if (expected != actual) {
     failed_tests++;
@@ -85,7 +85,7 @@ void assertSameObject(char* test, jobject* expected, jobject* actual) {
   }
 }
 
-void assertNotNull(char* test, jobject* o) {
+void assertNotNull(char* test, Object* o) {
   total_tests++;
   if (o == NULL) {
     failed_tests++;
@@ -95,7 +95,7 @@ void assertNotNull(char* test, jobject* o) {
   }
 }
 
-void assertNull(char* test, jobject* o) {
+void assertNull(char* test, Object* o) {
   total_tests++;
   if (o != NULL) {
     failed_tests++;

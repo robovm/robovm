@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include "jni_types.h"
 
 #define LOG(format, args...)  \
   fprintf(stderr, format , ## args)
@@ -39,19 +40,28 @@
 #define IS_SYNCHRONIZED(access) (access & ACC_SYNCHRONIZED)
 #define IS_ABSTRACT(access) (access & ACC_ABSTRACT)
 
-typedef int64_t jlong;
+/*typedef int64_t jlong;
 typedef int32_t jint;
 typedef int16_t jshort;
 typedef int8_t jbyte;
 typedef uint16_t jchar;
-typedef int8_t jboolean;
+typedef uint8_t jboolean;
 typedef float jfloat;
-typedef double jdouble;
+typedef double jdouble;*/
 
-struct _jmethod;
-typedef struct _jmethod jmethod;
-struct _jmethod {
-  jmethod* next;
+struct _Object;
+typedef struct _Object Object;
+struct _Class;
+typedef struct _Class Class;
+struct _Method;
+typedef struct _Method Method;
+struct _Field;
+typedef struct _Field Field;
+struct _Array;
+typedef struct _Array Array;
+
+struct _Method {
+  Method* next;
   char* name;
   char* desc;
   jint access;
@@ -60,10 +70,8 @@ struct _jmethod {
   int vtableIndex;
 };
 
-struct _jfield;
-typedef struct _jfield jfield;
-struct _jfield {
-  jfield* next;
+struct _Field {
+  Field* next;
   char* name;
   char* desc;
   jint access;
@@ -72,23 +80,20 @@ struct _jfield {
   void* setter;
 };
 
-struct _jobject;
-typedef struct _jobject jobject;
-struct _jclass;
-typedef struct _jclass jclass;
-struct _jclass {
+struct _Class {
   char* name;         // The name in UTF-8.
   char* packageName;         // The package name in UTF-8.
-  jclass* superclass;  // Superclass pointer. Only java.lang.Object has NULL here.
+  Class* superclass;  // Superclass pointer. Only java.lang.Object has NULL here.
   jint access;
-  void (*checkcast)(jobject*);
-  jint (*instanceof)(jobject*);
-//  jclass* interfaces; // List of interfaces or NULL if there are no interfaces.
-//  int interfaces_count; // Number of interfaces in interface_count.
-  jfield* fields; // Linked list of fields.
-  jmethod* methods;       // Method pointers.
+  Object* (*newInstance)(void);
+  void (*checkcast)(Object*);
+  jint (*instanceof)(Object*);
+  Class** interfaces; // List of interfaces or NULL if there are no interfaces.
+  jint interfaceCount; // Number of interfaces implemented by this class.
+  Field* fields; // Linked list of fields.
+  Method* methods;       // Method pointers.
   jint classDataSize;
-  jint instanceDataOffset; // The offset from the base of jobject->data
+  jint instanceDataOffset; // The offset from the base of Object->data
                             // where the instance fields of this class can be found.
   jint instanceDataSize;   // The number of bytes needed to store the instance fields of this class.
                             // instanceDataOffset + instanceDataSize gives the total number of bytes
@@ -98,41 +103,37 @@ struct _jclass {
   void* data[0];
 };
 
-struct _jobject {
-  jclass* clazz;
+struct _Object {
+  Class* clazz;
   void* data[0];
 };
 
-typedef struct _jarray {
-  jclass* clazz;
+struct _Array {
+  Class* clazz;
   jint length;
-} jarray;
-typedef struct _jobject_array {
-  jclass* clazz;
-  jint length;
-  jobject* values[0];
-} jobject_array;
+};
 
-#define MAKE_ARRAY(T) \
-typedef struct _ ## T ## _array { \
-  jclass* clazz; \
+#define MAKE_ARRAY(T, N) \
+typedef struct _ ## N ## Array { \
+  Class* clazz; \
   jint length; \
   T values[0]; \
-} T ## _array;
+} N ## Array;
 
-MAKE_ARRAY(jlong)
-MAKE_ARRAY(jint)
-MAKE_ARRAY(jbyte)
-MAKE_ARRAY(jshort)
-MAKE_ARRAY(jchar)
-MAKE_ARRAY(jboolean)
-MAKE_ARRAY(jfloat)
-MAKE_ARRAY(jdouble)
+MAKE_ARRAY(Object*, Object)
+MAKE_ARRAY(jlong, Long)
+MAKE_ARRAY(jint, Int)
+MAKE_ARRAY(jbyte, Byte)
+MAKE_ARRAY(jshort, Short)
+MAKE_ARRAY(jchar, Char)
+MAKE_ARRAY(jboolean, Boolean)
+MAKE_ARRAY(jfloat, Float)
+MAKE_ARRAY(jdouble, Double)
 
-extern void* j_get_method_impl(jclass* clazz, char* name, char* desc, jclass* caller);
-extern jint j_get_vtable_index(jclass* clazz, char* name, char* desc, jclass* caller);
-extern jobject* j_ldc_string_asciiz(char* s);
-extern jobject* j_ldc_string_utf8z(char* s);
+extern void* j_get_method_impl(Class* clazz, char* name, char* desc, Class* caller);
+extern jint j_get_vtable_index(Class* clazz, char* name, char* desc, Class* caller);
+extern Object* j_ldc_string_asciiz(char* s);
+extern Object* j_ldc_string_utf8z(char* s);
 
 /*
  * init.c
@@ -147,25 +148,25 @@ extern void* nvmGetCurrentJNIEnv(void);
  * array.c
  */
 
-extern jarray* nvmNewArray(jint type, jint length);
-extern jarray* nvmANewArray(char* type, jint length);
-extern jarray* nvmMultiANewarray(char* type, jint dims, jint* lengths);
+extern Array* nvmNewArray(jint type, jint length);
+extern Array* nvmANewArray(char* type, jint length);
+extern Array* nvmMultiANewarray(char* type, jint dims, jint* lengths);
 
 /*
  * exception.c
  */
 
-extern void nvmThrow(jobject* e);
+extern void nvmThrow(Object* e);
 extern void nvmThrowNoClassDefFoundError(char* name);
 extern void nvmThrowIllegalAccessError(void);
-extern void nvmThrowIllegalAccessErrorField(jclass* clazz, char* name, char* desc, jclass* caller);
-extern void nvmThrowIllegalAccessErrorMethod(jclass* clazz, char* name, char* desc, jclass* caller);
+extern void nvmThrowIllegalAccessErrorField(Class* clazz, char* name, char* desc, Class* caller);
+extern void nvmThrowIllegalAccessErrorMethod(Class* clazz, char* name, char* desc, Class* caller);
 extern void nvmThrowNoSuchFieldError(char* name);
 extern void nvmThrowNoSuchMethodError(char* name);
-extern void nvmThrowIncompatibleClassChangeErrorClassField(jclass* clazz, char* name, char* desc);
-extern void nvmThrowIncompatibleClassChangeErrorInstanceField(jclass* clazz, char* name, char* desc);
-extern void nvmThrowIncompatibleClassChangeErrorMethod(jclass* clazz, char* name, char* desc);
-extern void nvmThrowClassCastException(jclass* expectedClass, jclass* actualClass);
+extern void nvmThrowIncompatibleClassChangeErrorClassField(Class* clazz, char* name, char* desc);
+extern void nvmThrowIncompatibleClassChangeErrorInstanceField(Class* clazz, char* name, char* desc);
+extern void nvmThrowIncompatibleClassChangeErrorMethod(Class* clazz, char* name, char* desc);
+extern void nvmThrowClassCastException(Class* expectedClass, Class* actualClass);
 extern void nvmThrowNullPointerException(void);
 extern void nvmThrowAbstractMethodError(void);
 extern void nvmThrowArrayIndexOutOfBoundsException(jint index);
@@ -177,13 +178,10 @@ extern void nvmThrowUnsatisfiedLinkError(void);
  * class.c
  */
 
-extern jclass* nvmAllocateClass(char* class_name, jclass* superclass, jint access, jint classDataSize, jint instanceDataSize);
-extern void nvmAddField(jclass* clazz, char* name, char* desc, jint access, jint offset);
-extern void nvmAddInterface(jclass* clazz, char* interface_name);
-extern void nvmAddMethod(jclass* clazz, char* name, char* desc, jint access, void* impl);
-extern void nvmRegisterClass(jclass* clazz);
-extern void nvmCheckcastClass(jclass* clazz, jobject* o);
-extern void nvmCheckcastInterface(jclass* clazz, jobject* o);
+extern Class* nvmAllocateClass(char* class_name, Class* superclass, Class** interfaces, jint access, jint classDataSize, jint instanceDataSize);
+extern void nvmAddField(Class* clazz, char* name, char* desc, jint access, jint offset);
+extern void nvmAddMethod(Class* clazz, char* name, char* desc, jint access, void* impl);
+extern void nvmRegisterClass(Class* clazz);
 
 /**
  * Returns the class with the specified name. Locates and loads it if it hasn't
@@ -192,24 +190,25 @@ extern void nvmCheckcastInterface(jclass* clazz, jobject* o);
  * @throws ClassNotFoundException
  * @throws IllegalAccessError if the class isn't accessible to the caller class.
  */
-extern jclass* nvmGetClass(char* className, char* mangledClassName, jclass* caller);
+extern Class* nvmGetClass(char* className, char* mangledClassName, Class* caller);
 
-extern jclass* nvmGetArrayClass(char* className);
+extern Class* nvmGetArrayClass(char* className);
 
 
 /**
  * Creates a new instance of the specified class.
  */
-extern jobject* nvmNewInstance(jclass* clazz);
+extern Object* nvmNewInstance(Class* clazz);
 
-extern int nvmIsSubClass(jclass* superclass, jclass* clazz);
-extern int nvmIsSamePackage(jclass* c1, jclass* c2);
+extern int nvmIsSubClass(Class* superclass, Class* clazz);
+extern int nvmIsSamePackage(Class* c1, Class* c2);
 
-extern void nvmCheckcast(jobject* o, jclass* clazz);
-extern jboolean nvmInstanceof(jobject* o, jclass* clazz);
+extern void nvmCheckcast(Object* o, Class* clazz);
+extern jboolean nvmInstanceof(Object* o, Class* clazz);
 
-extern void* nvmGetCheckcastFunction(char* className, char* mangledClassName, jclass* caller, void** functionPtr);
-extern void* nvmGetInstanceofFunction(char* className, char* mangledClassName, jclass* caller, void** functionPtr);
+extern void* nvmGetCheckcastFunction(char* className, char* mangledClassName, Class* caller, void** functionPtr);
+extern void* nvmGetInstanceofFunction(char* className, char* mangledClassName, Class* caller, void** functionPtr);
+extern void* nvmGetNewInstanceFunction(char* className, char* mangledClassName, Class* caller, void** functionPtr);
 
 /*
  * field.c
@@ -222,7 +221,7 @@ extern void* nvmGetInstanceofFunction(char* className, char* mangledClassName, j
  * @throws NoSuchFieldError
  * @throws IllegalAccessError if the field isn't accessible to the caller class.
  */
-extern jfield* nvmGetField(jclass* clazz, char* name, char* desc, jclass* caller);
+extern Field* nvmGetField(Class* clazz, char* name, char* desc, Class* caller);
 
 /**
  * Returns the class field with the specified name and descriptor defined by the specified
@@ -232,7 +231,7 @@ extern jfield* nvmGetField(jclass* clazz, char* name, char* desc, jclass* caller
  * @throws IllegalAccessError if the field isn't accessible to the caller class.
  * @throws IncompatibleClassChangeError if the field hasn't got the ACC_STATIC modifier.
  */
-extern jfield* nvmGetClassField(jclass* clazz, char* name, char* desc, jclass* caller);
+extern Field* nvmGetClassField(Class* clazz, char* name, char* desc, Class* caller);
 
 /**
  * Returns the instance field with the specified name and descriptor defined by the specified
@@ -242,14 +241,14 @@ extern jfield* nvmGetClassField(jclass* clazz, char* name, char* desc, jclass* c
  * @throws IllegalAccessError if the field isn't accessible to the caller class.
  * @throws IncompatibleClassChangeError if the field has got the ACC_STATIC modifier.
  */
-extern jfield* nvmGetInstanceField(jclass* clazz, char* name, char* desc, jclass* caller);
+extern Field* nvmGetInstanceField(Class* clazz, char* name, char* desc, Class* caller);
 
 extern void* nvmGetClassFieldGetter(char* className, char* mangledClassName, char* fieldName, char* fieldDesc, void* caller, void** functionPtr);
 extern void* nvmGetClassFieldSetter(char* className, char* mangledClassName, char* fieldName, char* fieldDesc, void* caller, void** functionPtr);
 extern void* nvmGetInstanceFieldGetter(char* className, char* mangledClassName, char* fieldName, char* fieldDesc, void* caller, void** functionPtr);
 extern void* nvmGetInstanceFieldSetter(char* className, char* mangledClassName, char* fieldName, char* fieldDesc, void* caller, void** functionPtr);
-extern void* nvmCreateFieldGetter(jclass* clazz, jfield* field);
-extern void* nvmCreateFieldSetter(jclass* clazz, jfield* field);
+extern void* nvmCreateFieldGetter(Class* clazz, Field* field);
+extern void* nvmCreateFieldSetter(Class* clazz, Field* field);
 extern jbyte (*nvmCreateClassFieldGetter8(jbyte* ptr))(void);
 extern jshort (*nvmCreateClassFieldGetter16(jshort* ptr))(void);
 extern jint (*nvmCreateClassFieldGetter32(int* ptr))(void);
@@ -262,23 +261,23 @@ extern void (*nvmCreateClassFieldSetter32(jint* ptr))(jint);
 extern void (*nvmCreateClassFieldSetter64(jlong* ptr))(jlong);
 extern void (*nvmCreateClassFieldSetterFloat(jfloat* ptr))(jfloat);
 extern void (*nvmCreateClassFieldSetterDouble(jdouble* ptr))(jdouble);
-extern jbyte (*nvmCreateInstanceFieldGetter8(jint offset))(jobject*);
-extern jshort (*nvmCreateInstanceFieldGetter16(jint offset))(jobject*);
-extern jint (*nvmCreateInstanceFieldGetter32(jint offset))(jobject*);
-extern void (*nvmCreateInstanceFieldSetter8(jint offset))(jobject*, jbyte);
-extern void (*nvmCreateInstanceFieldSetter16(jint offset))(jobject*, jshort);
-extern void (*nvmCreateInstanceFieldSetter32(jint offset))(jobject*, jint);
+extern jbyte (*nvmCreateInstanceFieldGetter8(jint offset))(Object*);
+extern jshort (*nvmCreateInstanceFieldGetter16(jint offset))(Object*);
+extern jint (*nvmCreateInstanceFieldGetter32(jint offset))(Object*);
+extern void (*nvmCreateInstanceFieldSetter8(jint offset))(Object*, jbyte);
+extern void (*nvmCreateInstanceFieldSetter16(jint offset))(Object*, jshort);
+extern void (*nvmCreateInstanceFieldSetter32(jint offset))(Object*, jint);
 
 /*
  * method.c
  */
-extern jmethod* nvmGetMethod(jclass* clazz, char* name, char* desc, jclass* caller);
+extern Method* nvmGetMethod(Class* clazz, char* name, char* desc, Class* caller);
 extern void* nvmGetNativeMethodImpl(char* shortMangledName, char* longMangledName, void** functionPtr);
 extern void* nvmGetInvokeStaticFunction(char* className, char* mangledClassName, char* methodName, char* methodDesc, void* caller, void** functionPtr);
 extern void* nvmGetInvokeVirtualFunction(char* className, char* mangledClassName, char* methodName, char* methodDesc, void* caller, void** functionPtr);
 extern void* nvmGetInvokeInterfaceFunction(char* className, char* mangledClassName, char* methodName, char* methodDesc, void* caller, void** functionPtr);
 extern void* nvmGetInvokeSpecialFunction(char* className, char* mangledClassName, char* methodName, char* methodDesc, void* caller, void** functionPtr);
-extern void* nvmCreateMethodWrapper(jclass* clazz, jmethod* method);
+extern void* nvmCreateMethodWrapper(Class* clazz, Method* method);
 
 #endif
 

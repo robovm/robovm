@@ -4,7 +4,7 @@
 int main(int argc, char* argv[]) {
     nvmStartup();
 
-    jclass* FloatTests = nvmGetClass("org/nullvm/compiler/tests/opcode/FloatOpcodes", "org_nullvm_compiler_tests_opcode_FloatOpcodes", NULL);
+    Class* FloatTests = nvmGetClass("org/nullvm/compiler/tests/opcode/FloatOpcodes", "org_nullvm_compiler_tests_opcode_FloatOpcodes", NULL);
     jfloat (*freturn)(jfloat) = j_get_method_impl(FloatTests, "freturn", "(F)F", FloatTests);
     jfloat (*fstore)(jfloat) = j_get_method_impl(FloatTests, "fstore", "(F)F", FloatTests);
     jfloat (*fconst_0)(void) = j_get_method_impl(FloatTests, "fconst_0", "()F", FloatTests);

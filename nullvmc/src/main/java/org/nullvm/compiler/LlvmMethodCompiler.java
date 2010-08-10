@@ -144,7 +144,7 @@ public class LlvmMethodCompiler {
                             Type t = value.getType();
                             if (t == null) {
                                 if (value == BasicValue.UNINITIALIZED_VALUE) {
-                                    stackVars.add(new Var("s" + slot, "%jobject*"));
+                                    stackVars.add(new Var("s" + slot, "%Object*"));
                                 } else {
                                     // RETURNADDRESS
                                     stackVars.add(new Var("s" + slot, "i8*"));
@@ -159,7 +159,7 @@ public class LlvmMethodCompiler {
                             Type t = value.getType();
                             if (t == null) {
                                 if (value == BasicValue.UNINITIALIZED_VALUE) {
-                                    localVars.add(new Var("v" + i, "%jobject*"));
+                                    localVars.add(new Var("v" + i, "%Object*"));
                                 } else {
                                     // RETURNADDRESS
                                     localVars.add(new Var("v" + i, "i8*"));
@@ -183,8 +183,8 @@ public class LlvmMethodCompiler {
                 int slot = 0;
                 int first = 0;
                 if ((methodNode.access & Opcodes.ACC_STATIC) == 0) {
-                    Var src = new Var("arg0", "%jobject*");
-                    Var dest = new Var("v" + slot, "%jobject*");
+                    Var src = new Var("arg0", "%Object*");
+                    Var dest = new Var("v" + slot, "%Object*");
                     out.format("    store %s %s, %s* %s\n", dest.getType(), src, dest.getType(), dest);
                     slot++;
                     first++;
@@ -277,7 +277,7 @@ public class LlvmMethodCompiler {
             
             // Make a slot on the stack for a Throwable if there are try-catch blocks for this method
             if (!methodNode.tryCatchBlocks.isEmpty()) {
-                throwablePtr = new Var("throwable", "%jobject*");
+                throwablePtr = new Var("throwable", "%Object*");
                 out.format("    %s = alloca %s\n", throwablePtr, throwablePtr.getType());
             }
             
@@ -305,14 +305,14 @@ public class LlvmMethodCompiler {
                     } else if (n.getOpcode() == Opcodes.PUTFIELD) {
                         String setter = "PUTFIELD_" + fieldName;
                         if (!accessors.contains(setter)) {
-                            Var v = new Var(setter, String.format("void (%%jobject*,%s)*", llvmType));
+                            Var v = new Var(setter, String.format("void (%%Object*,%s)*", llvmType));
                             out.format("    %s = load %s* @%s\n", v, v.getType(), setter);
                             accessors.add(setter);
                         }
                     } else if (n.getOpcode() == Opcodes.GETFIELD) {
                         String getter = "GETFIELD_" + fieldName;
                         if (!accessors.contains(getter)) {
-                            Var v = new Var(getter, String.format("%s (%%jobject*)*", llvmType));
+                            Var v = new Var(getter, String.format("%s (%%Object*)*", llvmType));
                             out.format("    %s = load %s* @%s\n", v, v.getType(), getter);
                             accessors.add(getter);
                         }
@@ -372,7 +372,7 @@ public class LlvmMethodCompiler {
                 Var ehptr = tmp("ehptr", "i8*");
                 out.format("    %s = call i8* @llvm.eh.exception()\n", ehptr);
                 Var throwable = tmpr("throwable");
-                out.format("    %s = call %%jobject* @j_get_throwable(i8* %s)\n",
+                out.format("    %s = call %%Object* @j_get_throwable(i8* %s)\n",
                         throwable, ehptr);
 
                 Var sel = tmp("sel", "i64");
@@ -395,11 +395,11 @@ public class LlvmMethodCompiler {
                     } else {
                         Var condi32 = tmpi("cond");
                         Var cond = tmp("cond", "i1");
-                        Var clazz = tmp("clazz", "%jclass*");
-                        out.format("    %s = load %%jclass** @\"%s_%%jclass*\"\n", clazz, LlvmUtil.mangleString(type));
+                        Var clazz = tmp("clazz", "%Class*");
+                        out.format("    %s = load %%Class** @\"%s_%%Class*\"\n", clazz, LlvmUtil.mangleString(type));
                         throwable = tmpr("throwable");
                         out.format("    %s = load %s* %s\n", throwable, throwablePtr.getType(), throwablePtr);
-                        out.format("    %s = call i32 @j_eh_match_throwable(%%jobject* %s, %%jclass* %s)\n", condi32, throwable, clazz);
+                        out.format("    %s = call i32 @j_eh_match_throwable(%%Object* %s, %%Class* %s)\n", condi32, throwable, clazz);
                         out.format("    %s = trunc i32 %s to i1\n", cond, condi32);
                         out.format("    br i1 %s, label %%%s%s, label %%%sNot%s\n", cond, 
                                 lpad.getLabel(), LlvmUtil.mangleString(type), lpad.getLabel(), LlvmUtil.mangleString(type));
@@ -420,7 +420,7 @@ public class LlvmMethodCompiler {
                     // If we end up here none of the types match. Rethrow the exception.
                     throwable = tmpr("throwable");
                     out.format("    %s = load %s* %s\n", throwable, throwablePtr.getType(), throwablePtr);
-                    out.format("    call void @nvmThrow(%%jobject* %s)\n", throwable);
+                    out.format("    call void @nvmThrow(%%Object* %s)\n", throwable);
                     out.format("    unreachable\n");
                 }
             }
@@ -464,7 +464,7 @@ public class LlvmMethodCompiler {
         }
         
         private Var tmpr(String name) {
-            return tmp(name, "%jobject*");
+            return tmp(name, "%Object*");
         }
         
         private Var tmp(String name, String type) {
@@ -525,7 +525,7 @@ public class LlvmMethodCompiler {
         }
 
         private Var loadr(int slot) {
-            return load("%jobject*", slot);
+            return load("%Object*", slot);
         }
         
         private Var load(String type, int slot) {
@@ -539,7 +539,7 @@ public class LlvmMethodCompiler {
             String successLabel = String.format("CheckNullNotNull%d", pc);
             String failureLabel = String.format("CheckNullIsNull%d", pc);
             Var cond = tmp("cond", "i1");
-            out.format("    %s = icmp ne %%jobject* %s, inttoptr (i32 0 to %%jobject*)\n", cond, op);
+            out.format("    %s = icmp ne %%Object* %s, inttoptr (i32 0 to %%Object*)\n", cond, op);
             out.format("    br i1 %s, label %%%s, label %%%s\n", cond, successLabel, failureLabel);
             out.format("%s:\n", failureLabel);
             if (currentTryCatchBlocks.isEmpty()) {
@@ -606,12 +606,12 @@ public class LlvmMethodCompiler {
                 Var v = new Var("PUTSTATIC_" + fieldName, String.format("void (%s)*", llvmType));
                 out.format("    call void %s(%s %s)\n", v, llvmType, val);
             } else if (opcode == Opcodes.GETFIELD) {
-                Var v = new Var("GETFIELD_" + fieldName, String.format("%s (%%jobject*)*", llvmType));
+                Var v = new Var("GETFIELD_" + fieldName, String.format("%s (%%Object*)*", llvmType));
                 res = tmp("res", llvmType);
-                out.format("    %s = call %s %s(%%jobject* %s)\n", res, llvmType, v, obj);
+                out.format("    %s = call %s %s(%%Object* %s)\n", res, llvmType, v, obj);
             } else if (opcode == Opcodes.PUTFIELD) {
-                Var v = new Var("PUTFIELD_" + fieldName, String.format("void (%%jobject*,%s)*", llvmType));
-                out.format("    call void %s(%%jobject* %s, %s %s)\n", v, obj, llvmType, val);
+                Var v = new Var("PUTFIELD_" + fieldName, String.format("void (%%Object*,%s)*", llvmType));
+                out.format("    call void %s(%%Object* %s, %s %s)\n", v, obj, llvmType, val);
             }
             
             if (res != null) {
@@ -635,17 +635,17 @@ public class LlvmMethodCompiler {
 //            Var address = tmp("address", llvmType + "*");
 //            if (ztatic) {
 //                Var tmpAddress = tmp("address", "i8*");
-//                out.format("    %s = call i8* @j_get_class_field_address(%%jclass* %s, i8* %s, i8* %s, %%jclass* %s)\n",
+//                out.format("    %s = call i8* @j_get_class_field_address(%%Class* %s, i8* %s, i8* %s, %%Class* %s)\n",
 //                        tmpAddress, clazz, LlvmUtil.getStringReference(name), 
 //                        LlvmUtil.getStringReference(desc), clazz);
 //                out.format("    %s = bitcast i8* %s to %s\n", address, tmpAddress, address.getType());
 //            } else {
 //                Var offset = tmpi("offset");
-//                out.format("    %s = call i32 @j_get_instance_field_offset(%%jclass* %s, i8* %s, i8* %s, %%jclass* %s)\n",
+//                out.format("    %s = call i32 @j_get_instance_field_offset(%%Class* %s, i8* %s, i8* %s, %%Class* %s)\n",
 //                        offset, clazz, LlvmUtil.getStringReference(name), 
 //                        LlvmUtil.getStringReference(desc), clazz);
 //                Var tmpAddress1 = tmp("tmpaddress1", "i8**");
-//                out.format("    %s = getelementptr %%jobject* %s, i32 0, i32 1\n", 
+//                out.format("    %s = getelementptr %%Object* %s, i32 0, i32 1\n", 
 //                        tmpAddress1, obj);
 //                Var tmpAddress2 = tmp("tmpaddress2", "i8*");
 //                out.format("    %s = load i8** %s\n", tmpAddress2, tmpAddress1);
@@ -1296,12 +1296,12 @@ public class LlvmMethodCompiler {
                 break;
             case Opcodes.ARETURN: {
                 Var op = pop("op");
-                out.format("    ret %%jobject* %s\n", op);
+                out.format("    ret %%Object* %s\n", op);
                 break;
             }
             case Opcodes.ACONST_NULL: {
                 Var res = tmpr("res");
-                out.format("    %s = inttoptr i32 0 to %%jobject*\n", res);
+                out.format("    %s = inttoptr i32 0 to %%Object*\n", res);
                 push(res);
                 break;
             }
@@ -1309,7 +1309,7 @@ public class LlvmMethodCompiler {
                 Var o = pop("o");
                 Var res = tmpi("res");
                 checkNull(o);
-                out.format("    %s = call i32 @j_arraylength(%%jobject* %s)\n", res, o);
+                out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", res, o);
                 push(res);
                 break;
             }
@@ -1319,9 +1319,9 @@ public class LlvmMethodCompiler {
                 Var res = tmpi("res");
                 checkNull(o);
                 Var length = tmpi("length");
-                out.format("    %s = call i32 @j_arraylength(%%jobject* %s)\n", length, o);
+                out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
-                out.format("    %s = call i32 @j_iaload(%%jobject* %s, i32 %s)\n", res, o, index);
+                out.format("    %s = call i32 @j_iaload(%%Object* %s, i32 %s)\n", res, o, index);
                 push(res);
                 break;
             }
@@ -1331,9 +1331,9 @@ public class LlvmMethodCompiler {
                 Var o = pop("o");
                 checkNull(o);
                 Var length = tmpi("length");
-                out.format("    %s = call i32 @j_arraylength(%%jobject* %s)\n", length, o);
+                out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
-                out.format("    call void @j_iastore(%%jobject* %s, i32 %s, i32 %s)\n", o, index, value);
+                out.format("    call void @j_iastore(%%Object* %s, i32 %s, i32 %s)\n", o, index, value);
                 break;
             }
             case Opcodes.FALOAD: {
@@ -1342,9 +1342,9 @@ public class LlvmMethodCompiler {
                 Var res = tmpf("res");
                 checkNull(o);
                 Var length = tmpi("length");
-                out.format("    %s = call i32 @j_arraylength(%%jobject* %s)\n", length, o);
+                out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
-                out.format("    %s = call float @j_faload(%%jobject* %s, i32 %s)\n", res, o, index);
+                out.format("    %s = call float @j_faload(%%Object* %s, i32 %s)\n", res, o, index);
                 push(res);
                 break;
             }
@@ -1354,9 +1354,9 @@ public class LlvmMethodCompiler {
                 Var o = pop("o");
                 checkNull(o);
                 Var length = tmpi("length");
-                out.format("    %s = call i32 @j_arraylength(%%jobject* %s)\n", length, o);
+                out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
-                out.format("    call void @j_fastore(%%jobject* %s, i32 %s, float %s)\n", o, index, value);
+                out.format("    call void @j_fastore(%%Object* %s, i32 %s, float %s)\n", o, index, value);
                 break;
             }
             case Opcodes.BALOAD: {
@@ -1365,9 +1365,9 @@ public class LlvmMethodCompiler {
                 Var res = tmpi("res");
                 checkNull(o);
                 Var length = tmpi("length");
-                out.format("    %s = call i32 @j_arraylength(%%jobject* %s)\n", length, o);
+                out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
-                out.format("    %s = call i32 @j_baload(%%jobject* %s, i32 %s)\n", res, o, index);
+                out.format("    %s = call i32 @j_baload(%%Object* %s, i32 %s)\n", res, o, index);
                 push(res);
                 break;
             }
@@ -1377,9 +1377,9 @@ public class LlvmMethodCompiler {
                 Var o = pop("o");
                 checkNull(o);
                 Var length = tmpi("length");
-                out.format("    %s = call i32 @j_arraylength(%%jobject* %s)\n", length, o);
+                out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
-                out.format("    call void @j_bastore(%%jobject* %s, i32 %s, i32 %s)\n", o, index, value);
+                out.format("    call void @j_bastore(%%Object* %s, i32 %s, i32 %s)\n", o, index, value);
                 break;
             }
             case Opcodes.CALOAD: {
@@ -1388,9 +1388,9 @@ public class LlvmMethodCompiler {
                 Var res = tmpi("res");
                 checkNull(o);
                 Var length = tmpi("length");
-                out.format("    %s = call i32 @j_arraylength(%%jobject* %s)\n", length, o);
+                out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
-                out.format("    %s = call i32 @j_caload(%%jobject* %s, i32 %s)\n", res, o, index);
+                out.format("    %s = call i32 @j_caload(%%Object* %s, i32 %s)\n", res, o, index);
                 push(res);
                 break;
             }
@@ -1400,9 +1400,9 @@ public class LlvmMethodCompiler {
                 Var o = pop("o");
                 checkNull(o);
                 Var length = tmpi("length");
-                out.format("    %s = call i32 @j_arraylength(%%jobject* %s)\n", length, o);
+                out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
-                out.format("    call void @j_castore(%%jobject* %s, i32 %s, i32 %s)\n", o, index, value);
+                out.format("    call void @j_castore(%%Object* %s, i32 %s, i32 %s)\n", o, index, value);
                 break;
             }
             case Opcodes.SALOAD: {
@@ -1411,9 +1411,9 @@ public class LlvmMethodCompiler {
                 Var res = tmpi("res");
                 checkNull(o);
                 Var length = tmpi("length");
-                out.format("    %s = call i32 @j_arraylength(%%jobject* %s)\n", length, o);
+                out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
-                out.format("    %s = call i32 @j_saload(%%jobject* %s, i32 %s)\n", res, o, index);
+                out.format("    %s = call i32 @j_saload(%%Object* %s, i32 %s)\n", res, o, index);
                 push(res);
                 break;
             }
@@ -1423,9 +1423,9 @@ public class LlvmMethodCompiler {
                 Var o = pop("o");
                 checkNull(o);
                 Var length = tmpi("length");
-                out.format("    %s = call i32 @j_arraylength(%%jobject* %s)\n", length, o);
+                out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
-                out.format("    call void @j_sastore(%%jobject* %s, i32 %s, i32 %s)\n", o, index, value);
+                out.format("    call void @j_sastore(%%Object* %s, i32 %s, i32 %s)\n", o, index, value);
                 break;
             }
             case Opcodes.LALOAD: {
@@ -1434,9 +1434,9 @@ public class LlvmMethodCompiler {
                 Var res = tmpl("res");
                 checkNull(o);
                 Var length = tmpi("length");
-                out.format("    %s = call i32 @j_arraylength(%%jobject* %s)\n", length, o);
+                out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
-                out.format("    %s = call i64 @j_laload(%%jobject* %s, i32 %s)\n", res, o, index);
+                out.format("    %s = call i64 @j_laload(%%Object* %s, i32 %s)\n", res, o, index);
                 push2(res);
                 break;
             }
@@ -1446,9 +1446,9 @@ public class LlvmMethodCompiler {
                 Var o = pop("o");
                 checkNull(o);
                 Var length = tmpi("length");
-                out.format("    %s = call i32 @j_arraylength(%%jobject* %s)\n", length, o);
+                out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
-                out.format("    call void @j_lastore(%%jobject* %s, i32 %s, i64 %s)\n", o, index, value);
+                out.format("    call void @j_lastore(%%Object* %s, i32 %s, i64 %s)\n", o, index, value);
                 break;
             }
             case Opcodes.DALOAD: {
@@ -1457,9 +1457,9 @@ public class LlvmMethodCompiler {
                 Var res = tmpd("res");
                 checkNull(o);
                 Var length = tmpi("length");
-                out.format("    %s = call i32 @j_arraylength(%%jobject* %s)\n", length, o);
+                out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
-                out.format("    %s = call double @j_daload(%%jobject* %s, i32 %s)\n", res, o, index);
+                out.format("    %s = call double @j_daload(%%Object* %s, i32 %s)\n", res, o, index);
                 push2(res);
                 break;
             }
@@ -1469,9 +1469,9 @@ public class LlvmMethodCompiler {
                 Var o = pop("o");
                 checkNull(o);
                 Var length = tmpi("length");
-                out.format("    %s = call i32 @j_arraylength(%%jobject* %s)\n", length, o);
+                out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
-                out.format("    call void @j_dastore(%%jobject* %s, i32 %s, double %s)\n", o, index, value);
+                out.format("    call void @j_dastore(%%Object* %s, i32 %s, double %s)\n", o, index, value);
                 break;
             }
             case Opcodes.AALOAD: {
@@ -1480,9 +1480,9 @@ public class LlvmMethodCompiler {
                 Var res = tmpr("res");
                 checkNull(o);
                 Var length = tmpi("length");
-                out.format("    %s = call i32 @j_arraylength(%%jobject* %s)\n", length, o);
+                out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
-                out.format("    %s = call %%jobject* @j_aaload(%%jobject* %s, i32 %s)\n", res, o, index);
+                out.format("    %s = call %%Object* @j_aaload(%%Object* %s, i32 %s)\n", res, o, index);
                 push(res);
                 break;
             }
@@ -1493,9 +1493,9 @@ public class LlvmMethodCompiler {
                 Var o = pop("o");
                 checkNull(o);
                 Var length = tmpi("length");
-                out.format("    %s = call i32 @j_arraylength(%%jobject* %s)\n", length, o);
+                out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
-                out.format("    call void @j_aastore(%%jobject* %s, i32 %s, %%jobject* %s)\n", o, index, value);
+                out.format("    call void @j_aastore(%%Object* %s, i32 %s, %%Object* %s)\n", o, index, value);
                 break;
             }
             case Opcodes.POP:
@@ -1624,7 +1624,7 @@ public class LlvmMethodCompiler {
                 Var throwable = pop("throwable");
                 checkNull(throwable);
                 if (currentTryCatchBlocks.isEmpty()) {
-                    out.format("    call void @nvmThrow(%%jobject* %s)\n", throwable);
+                    out.format("    call void @nvmThrow(%%Object* %s)\n", throwable);
                     out.format("    unreachable\n");
                 } else {
                     out.format("    store %s %s, %s* %s\n", throwablePtr.getType(), throwable, throwablePtr.getType(), throwablePtr);
@@ -1635,13 +1635,13 @@ public class LlvmMethodCompiler {
             case Opcodes.MONITORENTER: {
                 Var o = pop("o");
                 checkNull(o);
-                out.format("    call void @j_monitorenter(%%jobject* %s)\n", o);
+                out.format("    call void @j_monitorenter(%%Object* %s)\n", o);
                 break;
             }
             case Opcodes.MONITOREXIT: {
                 Var o = pop("o");
                 checkNull(o);
-                out.format("    call void @j_monitorexit(%%jobject* %s)\n", o);
+                out.format("    call void @j_monitorexit(%%Object* %s)\n", o);
                 break;
             }
             default:
@@ -1663,11 +1663,11 @@ public class LlvmMethodCompiler {
                 Var length = pop("length");
                 Var res = tmpr("res");
                 if (currentTryCatchBlocks.isEmpty()) {
-                    out.format("    %s = call %%jobject* @nvmNewArray(i32 %d, i32 %s)\n", 
+                    out.format("    %s = call %%Object* @nvmNewArray(i32 %d, i32 %s)\n", 
                             res, operand, length);
                 } else {
                     String successLabel = String.format("NewArraySuccess%d", pc);
-                    out.format("    %s = invoke %%jobject* @nvmNewArray(i32 %d, i32 %s) to label %%%s unwind label %%%s\n", 
+                    out.format("    %s = invoke %%Object* @nvmNewArray(i32 %d, i32 %s) to label %%%s unwind label %%%s\n", 
                             res, operand, length, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
@@ -1703,7 +1703,7 @@ public class LlvmMethodCompiler {
                 Var op2 = pop("op2");
                 Var cond = tmp("cond", "i1");
                 String falseLabel = cond.getName() + "False";
-                out.format("    %s = icmp %s %%jobject* %s, %s\n", cond, operator, op2, op1);
+                out.format("    %s = icmp %s %%Object* %s, %s\n", cond, operator, op2, op1);
                 out.format("    br i1 %s, label %%%s, label %%%s\n", cond, label, falseLabel);
                 out.format("%s:\n", falseLabel);
             } else if (opcode >= Opcodes.IFNULL && opcode <= Opcodes.IFNONNULL) {
@@ -1711,7 +1711,7 @@ public class LlvmMethodCompiler {
                 Var op = pop("op");
                 Var cond = tmp("cond", "i1");
                 String falseLabel = cond.getName() + "False";
-                out.format("    %s = icmp %s %%jobject* %s, inttoptr (i32 0 to %%jobject*)\n", cond, operator, op);
+                out.format("    %s = icmp %s %%Object* %s, inttoptr (i32 0 to %%Object*)\n", cond, operator, op);
                 out.format("    br i1 %s, label %%%s, label %%%s\n", cond, label, falseLabel);
                 out.format("%s:\n", falseLabel);
             } else if (opcode == Opcodes.GOTO) {
@@ -1751,13 +1751,13 @@ public class LlvmMethodCompiler {
             } else if (cst instanceof Type) {
                 Type t = (Type) cst;
                 Var res = tmpr("res");
-                out.format("    %s = call %%jobject* @j_ldc_class(i8* %s)\n", res,
+                out.format("    %s = call %%Object* @j_ldc_class(i8* %s)\n", res,
                         LlvmUtil.getStringReference(t.getDescriptor()));
                 push(res);
             } else if (cst instanceof String) {
                 // TODO: Unicode
                 Var res = tmpr("res");
-                out.format("    %s = call %%jobject* @j_ldc_string_asciiz(i8* %s)\n", res,
+                out.format("    %s = call %%Object* @j_ldc_string_asciiz(i8* %s)\n", res,
                         LlvmUtil.getStringReference((String) cst));
                 push(res);
             } else {
@@ -1790,7 +1790,7 @@ public class LlvmMethodCompiler {
 //                    Var ehptr = tmp("ehptr", "i8*");
 //                    out.format("    %s = call i8* @llvm.eh.exception()\n", ehptr);
 //                    Var throwable = tmpr("throwable");
-//                    out.format("    %s = call %%jobject* @j_get_throwable(i8* %s)\n", throwable, ehptr);
+//                    out.format("    %s = call %%Object* @j_get_throwable(i8* %s)\n", throwable, ehptr);
 //                    
 //                    Var sel = tmp("sel", "i64");
 //                    out.format("    %s = call i64 (i8*, i8*, ...)* @llvm.eh.selector.i64(i8* %s, " 
@@ -1805,10 +1805,10 @@ public class LlvmMethodCompiler {
 //                        if (type != null) {
 //                            Var condi32 = tmpi("cond");
 //                            Var cond = tmp("cond", "i1");
-//                            Var clazz = tmp("clazz", "%jclass*");
-//                            out.format("    %s = load %%jclass** @\"%s_%%jclass*\"\n", clazz, LlvmUtil.mangleString(type));
+//                            Var clazz = tmp("clazz", "%Class*");
+//                            out.format("    %s = load %%Class** @\"%s_%%Class*\"\n", clazz, LlvmUtil.mangleString(type));
 //                            throwable = pop("throwable");
-//                            out.format("    %s = call i32 @j_eh_match_throwable(%%jobject* %s, %%jclass* %s)\n", condi32, throwable, clazz);
+//                            out.format("    %s = call i32 @j_eh_match_throwable(%%Object* %s, %%Class* %s)\n", condi32, throwable, clazz);
 //                            push(throwable);
 //                            out.format("    %s = trunc i32 %s to i1\n", cond, condi32);
 //                            out.format("    br i1 %s, label %%%s, label %%%sNot%s\n", cond, label, label, LlvmUtil.mangleString(type));
@@ -1826,7 +1826,7 @@ public class LlvmMethodCompiler {
 //                    } else {
 //                        // Otherwise we rethrow the exception
 //                        throwable = pop("throwable");
-//                        out.format("    call void @j_throw(%%jobject* %s)\n", throwable);
+//                        out.format("    call void @j_throw(%%Object* %s)\n", throwable);
 ////                        out.format("    call void @j_eh_resume_unwind(i8* %s)\n", ehptr);
 //                        out.format("    unreachable\n");
 //                    }
@@ -1867,7 +1867,7 @@ public class LlvmMethodCompiler {
 //////                        for (int i = handlers.size() - 1; i >= 0; i--) {
 //////                            TryCatchBlockNode n2 = handlers.get(i);
 //////                            if (n2.type != null) {
-//////                                classes.add(String.format("%%jclass** @\"%s_%%jclass*\"", LlvmUtil.mangleString(n2.type)));
+//////                                classes.add(String.format("%%Class** @\"%s_%%Class*\"", LlvmUtil.mangleString(n2.type)));
 //////                            } else {
 //////                                // Finally
 //////                                classes.add("i32 0");
@@ -1876,7 +1876,7 @@ public class LlvmMethodCompiler {
 ////                        Var ehptr = tmp("ehptr", "i8*");
 ////                        out.format("    %s = call i8* @llvm.eh.exception()\n", ehptr);
 ////                        Var throwable = tmpr("throwable");
-////                        out.format("    %s = call %%jobject* @j_get_throwable(i8* %s)\n", throwable, ehptr);
+////                        out.format("    %s = call %%Object* @j_get_throwable(i8* %s)\n", throwable, ehptr);
 ////                        
 ////                        Var sel = tmp("sel", "i64");
 ////                        out.format("    %s = call i64 (i8*, i8*, ...)* @llvm.eh.selector.i64(i8* %s, " 
@@ -1890,9 +1890,9 @@ public class LlvmMethodCompiler {
 ////                            if (n2.type != null) {
 ////                                Var condi32 = tmpi("cond");
 ////                                Var cond = tmp("cond", "i1");
-////                                Var clazz = tmp("clazz", "%jclass*");
-////                                out.format("    %s = load %%jclass** @\"%s_%%jclass*\"", clazz, LlvmUtil.mangleString(n2.type));
-////                                out.format("    %s = call i32 @j_eh_match_throwable(%%jobject* %s, %%jclass* %s)\n", condi32, throwable, clazz);
+////                                Var clazz = tmp("clazz", "%Class*");
+////                                out.format("    %s = load %%Class** @\"%s_%%Class*\"", clazz, LlvmUtil.mangleString(n2.type));
+////                                out.format("    %s = call i32 @j_eh_match_throwable(%%Object* %s, %%Class* %s)\n", condi32, throwable, clazz);
 ////                                out.format("    %s = trunc i32 %s to i1\n", cond, condi32);
 ////                                out.format("    br i1 %s, label %%%s, label %%%sFalse\n", cond, n2.handler.getLabel(), n2.handler.getLabel());
 ////                                //out.format("        i64 %d, label %%%s\n", i + 1, n2.handler.getLabel());
@@ -2009,11 +2009,11 @@ public class LlvmMethodCompiler {
             out.format("    %s = bitcast %s* %s to i32*\n", lengthsi32, multiANewArrayLengths.getType(), multiANewArrayLengths);
             Var res = tmpr("res");
             if (currentTryCatchBlocks.isEmpty()) {
-                out.format("    %s = call %%jobject* @nvmMultiANewArray(i8* %s, i32 %d, i32* %s)\n", 
+                out.format("    %s = call %%Object* @nvmMultiANewArray(i8* %s, i32 %d, i32* %s)\n", 
                         res, LlvmUtil.getStringReference(desc), dims, lengthsi32);
             } else {
                 String successLabel = String.format("NewArraySuccess%d", pc);
-                out.format("    %s = invoke %%jobject* @nvmMultiANewArray(i8* %s, i32 %d, i32* %s) to label %%%s unwind label %%%s\n", 
+                out.format("    %s = invoke %%Object* @nvmMultiANewArray(i8* %s, i32 %d, i32* %s) to label %%%s unwind label %%%s\n", 
                         res, LlvmUtil.getStringReference(desc), dims, lengthsi32, successLabel, currentLandingPad.getLabel());
                 out.format("%s:\n", successLabel);
             }
@@ -2042,24 +2042,38 @@ public class LlvmMethodCompiler {
         public void visitTypeInsn(int opcode, String type) {
             switch (opcode) {
             case Opcodes.NEW: {
-                Var clazz = tmp("clazz", "%jclass*");
-                out.format("    %s = call %%jclass* @nvmGetClass(i8* %s, i8* %s, %%jclass* null)\n", clazz, 
-                        LlvmUtil.getStringReference(type), 
-                        LlvmUtil.getStringReference(LlvmUtil.mangleString(type)));
+//                Var clazz = tmp("clazz", "%Class*");
+//                out.format("    %s = call %%Class* @nvmGetClass(i8* %s, i8* %s, %%Class* null)\n", clazz, 
+//                        LlvmUtil.getStringReference(type), 
+//                        LlvmUtil.getStringReference(LlvmUtil.mangleString(type)));
+//                Var res = tmpr("res");
+//                out.format("    %s = call %%Object* @nvmNewInstance(%%Class* %s)\n", res, clazz);
+//                push(res);
+                
+                String function = "NEW_" + LlvmUtil.mangleString(type);
+                Var v = tmp(function, "%Object* ()");
+                out.format("    %s = load %s** @%s\n", v, v.getType(), function);
                 Var res = tmpr("res");
-                out.format("    %s = call %%jobject* @nvmNewInstance(%%jclass* %s)\n", res, clazz);
+                if (currentTryCatchBlocks.isEmpty()) {
+                    out.format("    %s = call %%Object* %s()\n", res, v);
+                } else {
+                    String successLabel = String.format("NewInstanceSuccess%d", pc);
+                    out.format("    %s = invoke %%Object* %s() to label %%%s unwind label %%%s\n", res, v, successLabel, currentLandingPad.getLabel());
+                    out.format("%s:\n", successLabel);
+                }
                 push(res);
+                
                 break;
             }
             case Opcodes.ANEWARRAY: {
                 Var length = pop("length");
                 Var res = tmpr("res");
                 if (currentTryCatchBlocks.isEmpty()) {
-                    out.format("    %s = call %%jobject* @nvmANewArray(i8* %s, i32 %s)\n", 
+                    out.format("    %s = call %%Object* @nvmANewArray(i8* %s, i32 %s)\n", 
                             res, LlvmUtil.getStringReference(type), length);
                 } else {
                     String successLabel = String.format("ANewArraySuccess%d", pc);
-                    out.format("    %s = invoke %%jobject* @nvmANewArray(i8* %s, i32 %s) to label %%%s unwind label %%%s\n", 
+                    out.format("    %s = invoke %%Object* @nvmANewArray(i8* %s, i32 %s) to label %%%s unwind label %%%s\n", 
                             res, LlvmUtil.getStringReference(type), length, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
@@ -2069,13 +2083,13 @@ public class LlvmMethodCompiler {
             case Opcodes.CHECKCAST: {
                 Var obj = pop("obj");
                 String function = "CHECKCAST_" + LlvmUtil.mangleString(type);
-                Var v = tmp(function, "void (%jobject*)");
+                Var v = tmp(function, "void (%Object*)");
                 out.format("    %s = load %s** @%s\n", v, v.getType(), function);
                 if (currentTryCatchBlocks.isEmpty()) {
-                    out.format("    call void %s(%%jobject* %s)\n", v, obj);
+                    out.format("    call void %s(%%Object* %s)\n", v, obj);
                 } else {
                     String successLabel = String.format("CheckCastSuccess%d", pc);
-                    out.format("    invoke void %s(%%jobject* %s) to label %%%s unwind label %%%s\n", v, obj, successLabel, currentLandingPad.getLabel());
+                    out.format("    invoke void %s(%%Object* %s) to label %%%s unwind label %%%s\n", v, obj, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
                 push(obj);
@@ -2084,14 +2098,14 @@ public class LlvmMethodCompiler {
             case Opcodes.INSTANCEOF: {
                 Var obj = pop("obj");
                 String function = "INSTANCEOF_" + LlvmUtil.mangleString(type);
-                Var v = tmp(function, "i32 (%jobject*)");
+                Var v = tmp(function, "i32 (%Object*)");
                 out.format("    %s = load %s** @%s\n", v, v.getType(), function);
                 Var res = tmpi("res");
                 if (currentTryCatchBlocks.isEmpty()) {
-                    out.format("    %s = call i32 %s(%%jobject* %s)\n", res, v, obj);
+                    out.format("    %s = call i32 %s(%%Object* %s)\n", res, v, obj);
                 } else {
                     String successLabel = String.format("InstanceOfSuccess%d", pc);
-                    out.format("    %s = invoke i32 %s(%%jobject* %s) to label %%%s unwind label %%%s\n", res, v, obj, successLabel, currentLandingPad.getLabel());
+                    out.format("    %s = invoke i32 %s(%%Object* %s) to label %%%s unwind label %%%s\n", res, v, obj, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
                 push(res);

@@ -1,5 +1,5 @@
 # source files.
-SRC = init.c class.c string.c exception.c array.c field.c method.c
+SRC = init.c class.c string.c exception.c array.c field.c method.c native.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -40,4 +40,5 @@ string.o: include/nullvm.h
 array.o: include/nullvm.h
 field.o: include/nullvm.h
 method.o: include/nullvm.h
+native.o: include/nullvm.h
 

@@ -3,9 +3,18 @@
 #include <string.h>
 #include <dlfcn.h>
 
-static uint8_t checkcastTemplateX86_64[] = {
+static uint8_t checkcastInstanceofTemplateX86_64[] = {
     // mov    %rdi,%rsi
     0x48, 0x89, 0xfe,
+    // mov    $0x123456789abcdef,%rax
+    0x48, 0xb8, 0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01, 
+    // mov    $0x1123456789abcdef,%rdi
+    0x48, 0xbf, 0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x11, 
+    // jmpq   *%rax
+    0xff, 0xe0
+};
+
+static uint8_t newInstanceTemplateX86_64[] = {
     // mov    $0x123456789abcdef,%rax
     0x48, 0xb8, 0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01, 
     // mov    $0x1123456789abcdef,%rdi
@@ -18,12 +27,12 @@ struct _class_cache_entry;
 typedef struct _class_cache_entry class_cache_entry;
 struct _class_cache_entry {
   class_cache_entry* next;
-  jclass* clazz;
+  Class* clazz;
 };
 
 static class_cache_entry* class_cache = NULL;
 
-static jclass* class_cache_get(char* className) {
+static Class* class_cache_get(char* className) {
     class_cache_entry* entry;
     for (entry = class_cache; entry != NULL; entry = entry->next) {
         if (!strcmp(entry->clazz->name, className)) {
@@ -33,26 +42,26 @@ static jclass* class_cache_get(char* className) {
     return NULL;
 }
 
-static void class_cache_put(jclass* clazz) {
+static void class_cache_put(Class* clazz) {
     class_cache_entry* entry = nvmAllocateMemory(sizeof(class_cache_entry));
     entry->clazz = clazz;
     entry->next = class_cache;
     class_cache = entry;
 }
 
-void* j_get_method_impl(jclass* clazz, char* name, char* desc, jclass* caller) {
+void* j_get_method_impl(Class* clazz, char* name, char* desc, Class* caller) {
     int vtableIndex = j_get_vtable_index(clazz, name, desc, caller);
     return vtableIndex != -1 ? clazz->vtable[vtableIndex] : NULL;
 }
 
-int nvmIsSubClass(jclass* superclass, jclass* clazz) {
+int nvmIsSubClass(Class* superclass, Class* clazz) {
     while (clazz && clazz != superclass) {
         clazz = clazz->superclass;
     }
     return clazz == superclass;
 }
 
-int nvmIsSamePackage(jclass* c1, jclass* c2) {
+int nvmIsSamePackage(Class* c1, Class* c2) {
     char* s1 = strrchr(c1->name, '/');
     char* s2 = strrchr(c2->name, '/');
     if (!s1 || !s2) {
@@ -66,8 +75,8 @@ int nvmIsSamePackage(jclass* c1, jclass* c2) {
     return strncmp(c1->name, c2->name, l1);
 }
 
-jint j_get_vtable_index(jclass* clazz, char* name, char* desc, jclass* caller) {
-    jmethod* method;
+jint j_get_vtable_index(Class* clazz, char* name, char* desc, Class* caller) {
+    Method* method;
     int same_class;
     int sub_class;
     int same_package;
@@ -106,23 +115,23 @@ jint j_get_vtable_index(jclass* clazz, char* name, char* desc, jclass* caller) {
     return -1;
 }
 
-static void checkcastClass(jclass* clazz, jobject* o) {
+static void checkcastClass(Class* clazz, Object* o) {
     // TODO: Handle arrays
     if (o && o->clazz != clazz && !nvmIsSubClass(clazz, o->clazz)) {
         nvmThrowClassCastException(clazz, o->clazz);
     }
 }
 
-static void checkcastInterface(jclass* clazz, jobject* o) {
+static void checkcastInterface(Class* clazz, Object* o) {
     // TODO: Implement me
 }
 
-static jint instanceofClass(jclass* clazz, jobject* o) {
+static jint instanceofClass(Class* clazz, Object* o) {
     // TODO: Handle arrays
     return o && (o->clazz == clazz || nvmIsSubClass(clazz, o->clazz));
 }
 
-static jint instanceofInterface(jclass* clazz, jobject* o) {
+static jint instanceofInterface(Class* clazz, Object* o) {
     // TODO: Implement me
 }
 
@@ -132,42 +141,49 @@ static void* allocateMemoryForFunction(int size, uint8_t* templatePtr) {
   return m;
 }
 
-static void (*createCheckcastClassFunction(jclass* clazz))(jobject*) {
-  void* m = allocateMemoryForFunction(sizeof(checkcastTemplateX86_64), checkcastTemplateX86_64);
+static void (*createCheckcastClassFunction(Class* clazz))(Object*) {
+  void* m = allocateMemoryForFunction(sizeof(checkcastInstanceofTemplateX86_64), checkcastInstanceofTemplateX86_64);
   *((void**)(m + 5)) = (void*) checkcastClass;
-  *((jclass**)(m + 15)) = clazz;
+  *((Class**)(m + 15)) = clazz;
   return m;
 }
 
-static void (*createCheckcastInterfaceFunction(jclass* clazz))(jobject*) {
-  void* m = allocateMemoryForFunction(sizeof(checkcastTemplateX86_64), checkcastTemplateX86_64);
+static void (*createCheckcastInterfaceFunction(Class* clazz))(Object*) {
+  void* m = allocateMemoryForFunction(sizeof(checkcastInstanceofTemplateX86_64), checkcastInstanceofTemplateX86_64);
   *((void**)(m + 5)) = (void*) checkcastInterface;
-  *((jclass**)(m + 15)) = clazz;
+  *((Class**)(m + 15)) = clazz;
   return m;
 }
 
-static jint (*createInstanceofClassFunction(jclass* clazz))(jobject*) {
-  void* m = allocateMemoryForFunction(sizeof(checkcastTemplateX86_64), checkcastTemplateX86_64);
+static jint (*createInstanceofClassFunction(Class* clazz))(Object*) {
+  void* m = allocateMemoryForFunction(sizeof(checkcastInstanceofTemplateX86_64), checkcastInstanceofTemplateX86_64);
   *((void**)(m + 5)) = (void*) instanceofClass;
-  *((jclass**)(m + 15)) = clazz;
+  *((Class**)(m + 15)) = clazz;
   return m;
 }
 
-static jint (*createInstanceofInterfaceFunction(jclass* clazz))(jobject*) {
-  void* m = allocateMemoryForFunction(sizeof(checkcastTemplateX86_64), checkcastTemplateX86_64);
+static jint (*createInstanceofInterfaceFunction(Class* clazz))(Object*) {
+  void* m = allocateMemoryForFunction(sizeof(checkcastInstanceofTemplateX86_64), checkcastInstanceofTemplateX86_64);
   *((void**)(m + 5)) = (void*) instanceofInterface;
-  *((jclass**)(m + 15)) = clazz;
+  *((Class**)(m + 15)) = clazz;
   return m;
 }
 
-jclass* nvmGetClass(char* className, char* mangledClassName, jclass* caller) {
+static Object* (*createNewInstanceFunction(Class* clazz))(void) {
+  void* m = allocateMemoryForFunction(sizeof(newInstanceTemplateX86_64), newInstanceTemplateX86_64);
+  *((void**)(m + 2)) = (void*) nvmNewInstance;
+  *((Class**)(m + 12)) = clazz;
+  return m;
+}
+
+Class* nvmGetClass(char* className, char* mangledClassName, Class* caller) {
     // TODO: Implement me properly using ClassLoader
     // TODO: Access checks
 
     if (className[0] == '[') {
         return nvmGetArrayClass(className);
     }
-    jclass* clazz = class_cache_get(className);
+    Class* clazz = class_cache_get(className);
     if (clazz == NULL) {
         LOG("Class '%s' not loaded\n", className);
         char* funcName = nvmAllocateMemory(strlen(mangledClassName) + 4);
@@ -175,7 +191,7 @@ jclass* nvmGetClass(char* className, char* mangledClassName, jclass* caller) {
         strcat(funcName, mangledClassName);
         LOG("Searching for class loader function '%s()'\n", funcName);
         void* handle = dlopen(NULL, RTLD_LAZY);
-        jclass* (*loader)(void) = dlsym(handle, funcName);
+        Class* (*loader)(void) = dlsym(handle, funcName);
         dlclose(handle);
         if (loader) {
             LOG("Calling loader function '%s()'\n", funcName);
@@ -193,37 +209,43 @@ jclass* nvmGetClass(char* className, char* mangledClassName, jclass* caller) {
     return clazz;
 }
 
-jclass* nvmGetArrayClass(char* className) {
+Class* nvmGetArrayClass(char* className) {
     // TODO: Implement me properly using ClassLoader
     // TODO: Access checks
 
-    jclass* clazz = class_cache_get(className);
+    Class* clazz = class_cache_get(className);
     if (clazz == NULL) {
         // TODO: What access should an array class have?
-        clazz = nvmAllocateClass(className, nvmGetClass("java/lang/Object", "java_lang_Object", NULL), ACC_PUBLIC, 0, 0);
         // TODO: Add Cloneable interface and clone() method.
+        clazz = nvmAllocateClass(className, nvmGetClass("java/lang/Object", "java_lang_Object", NULL), NULL, ACC_PUBLIC, 0, 0);
         nvmRegisterClass(clazz);
     }
     // TODO: Throw ClassNotFoundException if base class not found
     return clazz;
 }
 
-jclass* nvmAllocateClass(char* className, jclass* superclass, jint access, jint classDataSize, jint instanceDataSize) {
-    jclass* clazz;
-    clazz = nvmAllocateMemory(sizeof(jclass) + classDataSize);
+Class* nvmAllocateClass(char* className, Class* superclass, Class** interfaces, jint access, jint classDataSize, jint instanceDataSize) {
+    Class* clazz;
+    clazz = nvmAllocateMemory(sizeof(Class) + classDataSize);
     clazz->name = className;
     clazz->superclass = superclass;
     clazz->access = access;
     clazz->classDataSize = classDataSize;
     clazz->instanceDataSize = instanceDataSize;
+    jint i = 0;
+    while (interfaces != NULL && interfaces[i] != NULL) {
+        i++;
+    }
+    if (i > 0) {
+        clazz->interfaceCount = i;
+        clazz->interfaces = nvmAllocateMemory(sizeof(Class*) * i);
+        memcpy(clazz->interfaces, interfaces, sizeof(Class*) * i);
+    }
     return clazz;
 }
 
-void nvmAddInterface(jclass* clazz, char* interfaceName) {
-}
-
-void nvmAddMethod(jclass* clazz, char* name, char* desc, jint access, void* impl) {
-    jmethod* method = nvmAllocateMemory(sizeof(jmethod));
+void nvmAddMethod(Class* clazz, char* name, char* desc, jint access, void* impl) {
+    Method* method = nvmAllocateMemory(sizeof(Method));
     method->name = name;
     method->desc = desc;
     method->access = access;
@@ -233,8 +255,8 @@ void nvmAddMethod(jclass* clazz, char* name, char* desc, jint access, void* impl
     clazz->methods = method;
 }
 
-void nvmAddField(jclass* clazz, char* name, char* desc, jint access, jint offset) {
-    jfield* field = nvmAllocateMemory(sizeof(jfield));
+void nvmAddField(Class* clazz, char* name, char* desc, jint access, jint offset) {
+    Field* field = nvmAllocateMemory(sizeof(Field));
     field->name = name;
     field->desc = desc;
     field->access = access;
@@ -243,15 +265,16 @@ void nvmAddField(jclass* clazz, char* name, char* desc, jint access, jint offset
     clazz->fields = field;
 }
 
-void nvmRegisterClass(jclass* clazz) {
+void nvmRegisterClass(Class* clazz) {
     int vtableSize;
-    jmethod* method;
-    jfield* field;
+    Method* method;
+    Field* field;
     int offset;
     int size;
 
     vtableSize = clazz->superclass != NULL ? clazz->superclass->vtableSize : 0;
 
+    // TODO: Check that the superclass and all interfaces are accessible to the new class
     // TODO: Verify the class hierarchy (class doesn't override final methods, changes public -> private, etc)
 
     for (method = clazz->methods; method != NULL; method = method->next) {
@@ -301,20 +324,21 @@ void nvmRegisterClass(jclass* clazz) {
     } else {
         clazz->checkcast = createCheckcastClassFunction(clazz);
         clazz->instanceof = createInstanceofClassFunction(clazz);
+        clazz->newInstance = createNewInstanceFunction(clazz);
     }
 
     // TODO: Call <clinit>()
     class_cache_put(clazz);
 }
 
-jobject* nvmNewInstance(jclass* clazz) {
+Object* nvmNewInstance(Class* clazz) {
     jint dataSize = clazz->instanceDataOffset + clazz->instanceDataSize;
-    jobject* obj = nvmAllocateMemory(sizeof(jobject) + dataSize);
+    Object* obj = nvmAllocateMemory(sizeof(Object) + dataSize);
     obj->clazz = clazz;
     return obj;
 }
 
-void nvmCheckcast(jobject* o, jclass* clazz) {
+void nvmCheckcast(Object* o, Class* clazz) {
     // TODO: Check interfaces
     // TODO: Handle arrays
     if (o && o->clazz != clazz && !nvmIsSubClass(clazz, o->clazz)) {
@@ -322,21 +346,27 @@ void nvmCheckcast(jobject* o, jclass* clazz) {
     }
 }
 
-jboolean nvmInstanceof(jobject* o, jclass* clazz) {
+jboolean nvmInstanceof(Object* o, Class* clazz) {
     // TODO: Check interfaces
     // TODO: Handle arrays
     return o && (o->clazz == clazz || nvmIsSubClass(clazz, o->clazz));
 }
 
-void* nvmGetCheckcastFunction(char* className, char* mangledClassName, jclass* caller, void** functionPtr) {
-    jclass* clazz = nvmGetClass(className, mangledClassName, caller);
+void* nvmGetCheckcastFunction(char* className, char* mangledClassName, Class* caller, void** functionPtr) {
+    Class* clazz = nvmGetClass(className, mangledClassName, caller);
     *functionPtr = clazz->checkcast;
     return clazz->checkcast;
 }
 
-void* nvmGetInstanceofFunction(char* className, char* mangledClassName, jclass* caller, void** functionPtr) {
-    jclass* clazz = nvmGetClass(className, mangledClassName, caller);
+void* nvmGetInstanceofFunction(char* className, char* mangledClassName, Class* caller, void** functionPtr) {
+    Class* clazz = nvmGetClass(className, mangledClassName, caller);
     *functionPtr = clazz->instanceof;
     return clazz->instanceof;
+}
+
+void* nvmGetNewInstanceFunction(char* className, char* mangledClassName, Class* caller, void** functionPtr) {
+    Class* clazz = nvmGetClass(className, mangledClassName, caller);
+    *functionPtr = clazz->newInstance;
+    return clazz->newInstance;
 }
 

@@ -4,7 +4,7 @@
 int main(int argc, char* argv[]) {
     nvmStartup();
 
-    jclass* DoubleTests = nvmGetClass("org/nullvm/compiler/tests/opcode/DoubleOpcodes", "org_nullvm_compiler_tests_opcode_DoubleOpcodes", NULL);
+    Class* DoubleTests = nvmGetClass("org/nullvm/compiler/tests/opcode/DoubleOpcodes", "org_nullvm_compiler_tests_opcode_DoubleOpcodes", NULL);
     jdouble (*dreturn)(jdouble) = j_get_method_impl(DoubleTests, "dreturn", "(D)D", DoubleTests);
     jdouble (*dstore)(jdouble) = j_get_method_impl(DoubleTests, "dstore", "(D)D", DoubleTests);
     jdouble (*dconst_0)(void) = j_get_method_impl(DoubleTests, "dconst_0", "()D", DoubleTests);

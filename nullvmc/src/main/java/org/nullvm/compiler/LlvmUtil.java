@@ -104,7 +104,7 @@ public class LlvmUtil {
     
     public static String javaTypeToLlvmType(Type t) {
         if (t.getSort() == Type.OBJECT || t.getSort() == Type.ARRAY) {
-            return "%jobject*";
+            return "%Object*";
         }
         // Native type
         switch (t.getSort()) {
@@ -130,7 +130,7 @@ public class LlvmUtil {
     
     public static String javaLocalVarTypeToLlvmType(Type t) {
         if (t.getSort() == Type.OBJECT || t.getSort() == Type.ARRAY) {
-            return "%jobject*";
+            return "%Object*";
         }
         // Native type
         switch (t.getSort()) {
@@ -152,7 +152,7 @@ public class LlvmUtil {
     
     public static String javaTypeToLlvmType(BasicValue value) {
         if (value == BasicValue.UNINITIALIZED_VALUE || value == BasicValue.REFERENCE_VALUE) {
-            return "%jobject*";
+            return "%Object*";
         }
         if (value == BasicValue.RETURNADDRESS_VALUE) {
             return "i8*";
@@ -315,7 +315,7 @@ public class LlvmUtil {
         ArrayList<String> args = new ArrayList<String>();
         args.add("i8*" + (omitArgNames ? "" : " %env"));
         if (ztatic) {
-            args.add("%jclass*" + (omitArgNames ? "" : " %clazz"));
+            args.add("%Class*" + (omitArgNames ? "" : " %clazz"));
         }
         args.addAll(descToCallArgs(desc, ztatic, omitArgNames));
         return args;
@@ -325,7 +325,7 @@ public class LlvmUtil {
         
         List<String> args = new ArrayList<String>();
         if (!ztatic) {
-            args.add("%jobject*" + (omitArgNames ? "" : " " + new Var("arg0", "%jobject*")));
+            args.add("%Object*" + (omitArgNames ? "" : " " + new Var("arg0", "%Object*")));
         }
         int i = ztatic ? 0 : 1;
         for (Type arg : Type.getArgumentTypes(desc)) {

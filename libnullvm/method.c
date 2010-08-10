@@ -7,8 +7,8 @@ static void* allocateMemoryForFunction(int size, char* templatePtr) {
   return m;
 }
 
-jmethod* nvmGetMethod(jclass* clazz, char* name, char* desc, jclass* caller) {
-    jmethod* method;
+Method* nvmGetMethod(Class* clazz, char* name, char* desc, Class* caller) {
+    Method* method;
     int sameClass = caller == NULL || clazz == caller;
     int subClass = caller == NULL || nvmIsSubClass(clazz, caller);
     int samePackage = caller == NULL || nvmIsSamePackage(clazz, caller);
@@ -41,9 +41,9 @@ jmethod* nvmGetMethod(jclass* clazz, char* name, char* desc, jclass* caller) {
 }
 
 void* nvmGetInvokeStaticFunction(char* className, char* mangledClassName, char* methodName, char* methodDesc, void* caller, void** functionPtr) {
-    jclass* clazz = nvmGetClass(className, mangledClassName, caller);
+    Class* clazz = nvmGetClass(className, mangledClassName, caller);
     // TODO: Throw something if methodName is <clinit>
-    jmethod* method = nvmGetMethod(clazz, methodName, methodDesc, caller);
+    Method* method = nvmGetMethod(clazz, methodName, methodDesc, caller);
     if (!(method->access & ACC_STATIC)) {
         nvmThrowIncompatibleClassChangeErrorMethod(clazz, methodName, methodDesc);
     }
@@ -52,9 +52,9 @@ void* nvmGetInvokeStaticFunction(char* className, char* mangledClassName, char* 
 }
 
 void* nvmGetInvokeVirtualFunction(char* className, char* mangledClassName, char* methodName, char* methodDesc, void* caller, void** functionPtr) {
-    jclass* clazz = nvmGetClass(className, mangledClassName, caller);
+    Class* clazz = nvmGetClass(className, mangledClassName, caller);
     // TODO: Throw something if methodName is <clinit>
-    jmethod* method = nvmGetMethod(clazz, methodName, methodDesc, caller);
+    Method* method = nvmGetMethod(clazz, methodName, methodDesc, caller);
     if (method->access & ACC_STATIC) {
         nvmThrowIncompatibleClassChangeErrorMethod(clazz, methodName, methodDesc);
     }
@@ -70,10 +70,10 @@ void* nvmGetInvokeInterfaceFunction(char* className, char* mangledClassName, cha
 }
 
 void* nvmGetInvokeSpecialFunction(char* className, char* mangledClassName, char* methodName, char* methodDesc, void* caller, void** functionPtr) {
-    jclass* clazz = nvmGetClass(className, mangledClassName, caller);
+    Class* clazz = nvmGetClass(className, mangledClassName, caller);
     // TODO: Throw something if methodName is <clinit>
     // TODO: Check caller has ACC_SUPER access?
-    jmethod* method = nvmGetMethod(clazz, methodName, methodDesc, caller);
+    Method* method = nvmGetMethod(clazz, methodName, methodDesc, caller);
     if (method->access & ACC_STATIC) {
         nvmThrowIncompatibleClassChangeErrorMethod(clazz, methodName, methodDesc);
     }
@@ -81,7 +81,7 @@ void* nvmGetInvokeSpecialFunction(char* className, char* mangledClassName, char*
     return method->wrapper;
 }
 
-void* nvmCreateMethodWrapper(jclass* clazz, jmethod* method) {
+void* nvmCreateMethodWrapper(Class* clazz, Method* method) {
     // TODO: Should we create wrappers for abstract methods and throw AbstractMethodError?
     // TODO: Handle synchronized methods
     if (IS_NATIVE(method->access)) {

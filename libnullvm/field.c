@@ -263,81 +263,81 @@ void (*nvmCreateClassFieldSetterDouble(jdouble* ptr))(jdouble) {
   return m;
 }
 
-jbyte (*nvmCreateInstanceFieldGetter8(jint offset))(jobject*) {
+jbyte (*nvmCreateInstanceFieldGetter8(jint offset))(Object*) {
   void* m = allocateMemoryForFunction(sizeof(instanceFieldGetter8TemplateX86_64), instanceFieldGetter8TemplateX86_64);
   *((jint*)(m + 3)) = offset;
   return m;
 }
 
-void (*nvmCreateInstanceFieldSetter8(jint offset))(jobject*, jbyte) {
+void (*nvmCreateInstanceFieldSetter8(jint offset))(Object*, jbyte) {
   void* m = allocateMemoryForFunction(sizeof(instanceFieldSetter8TemplateX86_64), instanceFieldSetter8TemplateX86_64);
   *((jint*)(m + 3)) = offset;
   return m;
 }
 
-jshort (*nvmCreateInstanceFieldGetter16(jint offset))(jobject*) {
+jshort (*nvmCreateInstanceFieldGetter16(jint offset))(Object*) {
   void* m = allocateMemoryForFunction(sizeof(instanceFieldGetter16TemplateX86_64), instanceFieldGetter16TemplateX86_64);
   *((jint*)(m + 3)) = offset;
   return m;
 }
 
-void (*nvmCreateInstanceFieldSetter16(jint offset))(jobject*, jshort) {
+void (*nvmCreateInstanceFieldSetter16(jint offset))(Object*, jshort) {
   void* m = allocateMemoryForFunction(sizeof(instanceFieldSetter16TemplateX86_64), instanceFieldSetter16TemplateX86_64);
   *((jint*)(m + 3)) = offset;
   return m;
 }
 
-jint (*nvmCreateInstanceFieldGetter32(jint offset))(jobject*) {
+jint (*nvmCreateInstanceFieldGetter32(jint offset))(Object*) {
   void* m = allocateMemoryForFunction(sizeof(instanceFieldGetter32TemplateX86_64), instanceFieldGetter32TemplateX86_64);
   *((jint*)(m + 2)) = offset;
   return m;
 }
 
-void (*nvmCreateInstanceFieldSetter32(jint offset))(jobject*, jint) {
+void (*nvmCreateInstanceFieldSetter32(jint offset))(Object*, jint) {
   void* m = allocateMemoryForFunction(sizeof(instanceFieldSetter32TemplateX86_64), instanceFieldSetter32TemplateX86_64);
   *((jint*)(m + 2)) = offset;
   return m;
 }
 
-jlong (*nvmCreateInstanceFieldGetter64(jint offset))(jobject*) {
+jlong (*nvmCreateInstanceFieldGetter64(jint offset))(Object*) {
   void* m = allocateMemoryForFunction(sizeof(instanceFieldGetter64TemplateX86_64), instanceFieldGetter64TemplateX86_64);
   *((jint*)(m + 3)) = offset;
   return m;
 }
 
-void (*nvmCreateInstanceFieldSetter64(jint offset))(jobject*, jlong) {
+void (*nvmCreateInstanceFieldSetter64(jint offset))(Object*, jlong) {
   void* m = allocateMemoryForFunction(sizeof(instanceFieldSetter64TemplateX86_64), instanceFieldSetter64TemplateX86_64);
   *((jint*)(m + 3)) = offset;
   return m;
 }
 
-jfloat (*nvmCreateInstanceFieldGetterFloat(jint offset))(jobject*) {
+jfloat (*nvmCreateInstanceFieldGetterFloat(jint offset))(Object*) {
   void* m = allocateMemoryForFunction(sizeof(instanceFieldGetterFloatTemplateX86_64), instanceFieldGetterFloatTemplateX86_64);
   *((jint*)(m + 4)) = offset;
   return m;
 }
 
-void (*nvmCreateInstanceFieldSetterFloat(jint offset))(jobject*, jlong) {
+void (*nvmCreateInstanceFieldSetterFloat(jint offset))(Object*, jlong) {
   void* m = allocateMemoryForFunction(sizeof(instanceFieldSetterFloatTemplateX86_64), instanceFieldSetterFloatTemplateX86_64);
   *((jint*)(m + 4)) = offset;
   return m;
 }
 
-jdouble (*nvmCreateInstanceFieldGetterDouble(jint offset))(jobject*) {
+jdouble (*nvmCreateInstanceFieldGetterDouble(jint offset))(Object*) {
   void* m = allocateMemoryForFunction(sizeof(instanceFieldGetterDoubleTemplateX86_64), instanceFieldGetterDoubleTemplateX86_64);
   *((jint*)(m + 4)) = offset;
   return m;
 }
 
-void (*nvmCreateInstanceFieldSetterDouble(jint offset))(jobject*, jdouble) {
+void (*nvmCreateInstanceFieldSetterDouble(jint offset))(Object*, jdouble) {
   void* m = allocateMemoryForFunction(sizeof(instanceFieldSetterDoubleTemplateX86_64), instanceFieldSetterDoubleTemplateX86_64);
   *((jint*)(m + 4)) = offset;
   return m;
 }
 
-void* nvmCreateFieldGetter(jclass* clazz, jfield* field) {
+void* nvmCreateFieldGetter(Class* clazz, Field* field) {
     void* ptr = clazz->data + field->offset;
-    jint offset = offsetof(jobject, data) + clazz->instanceDataOffset + field->offset;
+    jint offset = offsetof(Object, data) + clazz->instanceDataOffset + field->offset;
 
     switch (field->desc[0]) {
     case 'B':
@@ -360,9 +360,9 @@ void* nvmCreateFieldGetter(jclass* clazz, jfield* field) {
     return field->access & ACC_STATIC ? (void*) nvmCreateClassFieldGetter64(ptr) : (void*) nvmCreateInstanceFieldGetter64(offset);
 }
 
-void* nvmCreateFieldSetter(jclass* clazz, jfield* field) {
+void* nvmCreateFieldSetter(Class* clazz, Field* field) {
     void* ptr = clazz->data + field->offset;
-    jint offset = offsetof(jobject, data) + clazz->instanceDataOffset + field->offset;
+    jint offset = offsetof(Object, data) + clazz->instanceDataOffset + field->offset;
 
     switch (field->desc[0]) {
     case 'B':
@@ -385,8 +385,8 @@ void* nvmCreateFieldSetter(jclass* clazz, jfield* field) {
     return field->access & ACC_STATIC ? (void*) nvmCreateClassFieldSetter64(ptr) : (void*) nvmCreateInstanceFieldSetter64(offset);
 }
 
-jfield* nvmGetField(jclass* clazz, char* name, char* desc, jclass* caller) {
-    jfield* field;
+Field* nvmGetField(Class* clazz, char* name, char* desc, Class* caller) {
+    Field* field;
     int sameClass = caller == NULL || clazz == caller;
     int subClass = caller == NULL || nvmIsSubClass(clazz, caller);
     int samePackage = caller == NULL || nvmIsSamePackage(clazz, caller);
@@ -414,16 +414,16 @@ jfield* nvmGetField(jclass* clazz, char* name, char* desc, jclass* caller) {
     nvmThrowNoSuchFieldError(name);
 }
 
-jfield* nvmGetClassField(jclass* clazz, char* name, char* desc, jclass* caller) {
-    jfield* field = nvmGetField(clazz, name, desc, caller);
+Field* nvmGetClassField(Class* clazz, char* name, char* desc, Class* caller) {
+    Field* field = nvmGetField(clazz, name, desc, caller);
     if (!(field->access & ACC_STATIC)) {
         nvmThrowIncompatibleClassChangeErrorClassField(clazz, name, desc);
     }
     return field;
 }
 
-jfield* nvmGetInstanceField(jclass* clazz, char* name, char* desc, jclass* caller) {
-    jfield* field = nvmGetField(clazz, name, desc, caller);
+Field* nvmGetInstanceField(Class* clazz, char* name, char* desc, Class* caller) {
+    Field* field = nvmGetField(clazz, name, desc, caller);
     if (field->access & ACC_STATIC) {
         nvmThrowIncompatibleClassChangeErrorInstanceField(clazz, name, desc);
     }
@@ -431,14 +431,14 @@ jfield* nvmGetInstanceField(jclass* clazz, char* name, char* desc, jclass* calle
 }
 
 void *nvmGetClassFieldGetter(char* className, char* mangledClassName, char* fieldName, char* fieldDesc, void* caller, void** functionPtr) {
-    jfield* field = nvmGetClassField(nvmGetClass(className, mangledClassName, caller), fieldName, fieldDesc, caller);
+    Field* field = nvmGetClassField(nvmGetClass(className, mangledClassName, caller), fieldName, fieldDesc, caller);
     *functionPtr = field->getter;
     return field->getter;
 }
 
 void *nvmGetClassFieldSetter(char* className, char* mangledClassName, char* fieldName, char* fieldDesc, void* caller, void** functionPtr) {
-    jclass* clazz = nvmGetClass(className, mangledClassName, caller);
-    jfield* field = nvmGetClassField(clazz, fieldName, fieldDesc, caller);
+    Class* clazz = nvmGetClass(className, mangledClassName, caller);
+    Field* field = nvmGetClassField(clazz, fieldName, fieldDesc, caller);
     if (caller && field->access & ACC_FINAL && caller != clazz) {
         nvmThrowIllegalAccessError();
     }
@@ -447,14 +447,14 @@ void *nvmGetClassFieldSetter(char* className, char* mangledClassName, char* fiel
 }
 
 void *nvmGetInstanceFieldGetter(char* className, char* mangledClassName, char* fieldName, char* fieldDesc, void* caller, void** functionPtr) {
-    jfield* field = nvmGetInstanceField(nvmGetClass(className, mangledClassName, caller), fieldName, fieldDesc, caller);
+    Field* field = nvmGetInstanceField(nvmGetClass(className, mangledClassName, caller), fieldName, fieldDesc, caller);
     *functionPtr = field->getter;
     return field->getter;
 }
 
 void *nvmGetInstanceFieldSetter(char* className, char* mangledClassName, char* fieldName, char* fieldDesc, void* caller, void** functionPtr) {
-    jclass* clazz = nvmGetClass(className, mangledClassName, caller);
-    jfield* field = nvmGetInstanceField(clazz, fieldName, fieldDesc, caller);
+    Class* clazz = nvmGetClass(className, mangledClassName, caller);
+    Field* field = nvmGetInstanceField(clazz, fieldName, fieldDesc, caller);
     if (caller && field->access & ACC_FINAL && caller != clazz) {
         nvmThrowIllegalAccessError();
     }

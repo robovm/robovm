@@ -5,12 +5,12 @@
 #define EXCEPTION_CLASS 0x4A4A4A4A4A4A4A4A // "JJJJJJJJ"
 
 typedef struct _junwind_info {
-  jobject* throwable;
+  Object* throwable;
   _Unwind_Ptr landing_pad;
   struct _Unwind_Exception exception_info;
 } junwind_info;
 
-static is_instance_of_throwable(jobject* throwable, jclass* clazz) {
+static is_instance_of_throwable(Object* throwable, Class* clazz) {
     return clazz != NULL && (throwable->clazz == clazz || is_instance_of_throwable(throwable, clazz->superclass));
 }
 
@@ -43,7 +43,7 @@ void j_eh_resume_unwind(struct _Unwind_Exception* exception_info) {
     _Unwind_Resume(exception_info);
 }
 
-void nvmThrow(jobject* e) {
+void nvmThrow(Object* e) {
     junwind_info* u = nvmAllocateMemory(sizeof(junwind_info));
     u->exception_info.exception_class = EXCEPTION_CLASS;
     u->throwable = e;
@@ -54,13 +54,13 @@ void nvmThrow(jobject* e) {
     nvmAbort("Fatal error in exception handler: %d", urc);
 }
 
-jobject* j_get_throwable(struct _Unwind_Exception* exception_info) {
+Object* j_get_throwable(struct _Unwind_Exception* exception_info) {
     junwind_info* info = (junwind_info*) (((char*) exception_info) - offsetof(junwind_info, exception_info));
     return info->throwable;
 }
 
-jint j_eh_match_throwable(jobject* throwable, jclass* clazz) {
-    jclass* c = throwable->clazz;
+jint j_eh_match_throwable(Object* throwable, Class* clazz) {
+    Class* c = throwable->clazz;
     while (c && c != clazz) {
         c = c->superclass;
     }
@@ -78,13 +78,13 @@ void nvmThrowIllegalAccessError(void) {
     nvmThrow(nvmNewInstance(nvmGetClass("java/lang/IllegalAccessError", "java_lang_IllegalAccessError", NULL)));
 }
 
-void nvmThrowIllegalAccessErrorField(jclass* clazz, char* name, char* desc, jclass* caller) {
+void nvmThrowIllegalAccessErrorField(Class* clazz, char* name, char* desc, Class* caller) {
     // TODO: Message should look like "java.lang.IllegalAccessError: tried to access field a.A.x from class b.B"
     // TODO: Cache java.lang.IllegalAccessError at startup
     nvmThrow(nvmNewInstance(nvmGetClass("java/lang/IllegalAccessError", "java_lang_IllegalAccessError", NULL)));
 }
 
-void nvmThrowIllegalAccessErrorMethod(jclass* clazz, char* name, char* desc, jclass* caller) {
+void nvmThrowIllegalAccessErrorMethod(Class* clazz, char* name, char* desc, Class* caller) {
     // TODO: Message should look like ?
     // TODO: Cache java.lang.IllegalAccessError at startup
     nvmThrow(nvmNewInstance(nvmGetClass("java/lang/IllegalAccessError", "java_lang_IllegalAccessError", NULL)));
@@ -102,25 +102,25 @@ void nvmThrowNoSuchMethodError(char* name) {
     nvmThrow(nvmNewInstance(nvmGetClass("java/lang/NoSuchFieldError", "java_lang_NoSuchFieldError", NULL)));
 }
 
-void nvmThrowIncompatibleClassChangeErrorClassField(jclass* clazz, char* name, char* desc) {
+void nvmThrowIncompatibleClassChangeErrorClassField(Class* clazz, char* name, char* desc) {
     // TODO: Message should look like "java.lang.ThrowIncompatibleClassChangeError: Expected static field a.C.x"
     // TODO: Cache java.lang.IncompatibleClassChangeError at startup
     nvmThrow(nvmNewInstance(nvmGetClass("java/lang/IncompatibleClassChangeError", "java_lang_IncompatibleClassChangeError", NULL)));
 }
 
-void nvmThrowIncompatibleClassChangeErrorInstanceField(jclass* clazz, char* name, char* desc) {
+void nvmThrowIncompatibleClassChangeErrorInstanceField(Class* clazz, char* name, char* desc) {
     // TODO: Message should look like "java.lang.ThrowIncompatibleClassChangeError: Expected non-static field a.C.x"
     // TODO: Cache java.lang.IncompatibleClassChangeError at startup
     nvmThrow(nvmNewInstance(nvmGetClass("java/lang/IncompatibleClassChangeError", "java_lang_IncompatibleClassChangeError", NULL)));
 }
 
-void nvmThrowIncompatibleClassChangeErrorMethod(jclass* clazz, char* name, char* desc) {
+void nvmThrowIncompatibleClassChangeErrorMethod(Class* clazz, char* name, char* desc) {
     // TODO: Message should look like ?
     // TODO: Cache java.lang.IncompatibleClassChangeError at startup
     nvmThrow(nvmNewInstance(nvmGetClass("java/lang/IncompatibleClassChangeError", "java_lang_IncompatibleClassChangeError", NULL)));
 }
 
-void nvmThrowClassCastException(jclass* expectedClass, jclass* actualClass) {
+void nvmThrowClassCastException(Class* expectedClass, Class* actualClass) {
     // TODO: Message should look like "java.lang.ClassCastException: java.lang.Object cannot be cast to java.lang.String"
     // TODO: Cache java.lang.ClassCastException at startup
     nvmThrow(nvmNewInstance(nvmGetClass("java/lang/ClassCastException", "java_lang_ClassCastException", NULL)));

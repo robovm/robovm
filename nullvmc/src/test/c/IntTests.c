@@ -4,7 +4,7 @@
 int main(int argc, char* argv[]) {
     nvmStartup();
 
-    jclass* IntTests = nvmGetClass("org/nullvm/compiler/tests/opcode/IntOpcodes", "org_nullvm_compiler_tests_opcode_IntOpcodes", NULL);
+    Class* IntTests = nvmGetClass("org/nullvm/compiler/tests/opcode/IntOpcodes", "org_nullvm_compiler_tests_opcode_IntOpcodes", NULL);
     jint (*ireturn)(jint) = j_get_method_impl(IntTests, "ireturn", "(I)I", IntTests);
     jint (*istore)(jint) = j_get_method_impl(IntTests, "istore", "(I)I", IntTests);
     jint (*iconst_m1)(void) = j_get_method_impl(IntTests, "iconst_m1", "()I", IntTests);

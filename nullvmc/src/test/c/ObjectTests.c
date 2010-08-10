@@ -4,8 +4,8 @@
 int main(int argc, char* argv[]) {
     nvmStartup();
 
-    jclass* ObjectOpcodes = nvmGetClass("org/nullvm/compiler/tests/opcode/ObjectOpcodes", "org_nullvm_compiler_tests_opcode_ObjectOpcodes", NULL);
-    jobject* (*aconst_null)(void) = j_get_method_impl(ObjectOpcodes, "aconst_null", "()Ljava/lang/Object;", ObjectOpcodes);
+    Class* ObjectOpcodes = nvmGetClass("org/nullvm/compiler/tests/opcode/ObjectOpcodes", "org_nullvm_compiler_tests_opcode_ObjectOpcodes", NULL);
+    Object* (*aconst_null)(void) = j_get_method_impl(ObjectOpcodes, "aconst_null", "()Ljava/lang/Object;", ObjectOpcodes);
     void (*putstatic_boolean)(jboolean) = j_get_method_impl(ObjectOpcodes, "putstatic_boolean", "(Z)V", ObjectOpcodes);
     jboolean (*getstatic_boolean)(void) = j_get_method_impl(ObjectOpcodes, "getstatic_boolean", "()Z", ObjectOpcodes);
     void (*putstatic_byte)(jbyte) = j_get_method_impl(ObjectOpcodes, "putstatic_byte", "(B)V", ObjectOpcodes);
@@ -15,17 +15,17 @@ int main(int argc, char* argv[]) {
     void (*putstatic_long)(jlong) = j_get_method_impl(ObjectOpcodes, "putstatic_long", "(J)V", ObjectOpcodes);
     jlong (*getstatic_long)(void) = j_get_method_impl(ObjectOpcodes, "getstatic_long", "()J", ObjectOpcodes);
     jlong (*invokestatic)(jbyte, jshort, jint, jlong) = j_get_method_impl(ObjectOpcodes, "invokestatic", "(BSIJ)J", ObjectOpcodes);
-    jobject* (*new_object)(void) = j_get_method_impl(ObjectOpcodes, "new_object", "()Ljava/lang/Object;", ObjectOpcodes);
-    jobject* (*new_ObjectOpcodes)(jboolean, jbyte, jint, jlong) = j_get_method_impl(ObjectOpcodes, "new_ObjectOpcodes", "(ZBIJ)Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;", ObjectOpcodes);
-    void (*putfield_boolean)(jobject*, jboolean) = j_get_method_impl(ObjectOpcodes, "putfield_boolean", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;Z)V", ObjectOpcodes);
-    jboolean (*getfield_boolean)(jobject*) = j_get_method_impl(ObjectOpcodes, "getfield_boolean", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;)Z", ObjectOpcodes);
-    void (*putfield_byte)(jobject*, jbyte) = j_get_method_impl(ObjectOpcodes, "putfield_byte", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;B)V", ObjectOpcodes);
-    jbyte (*getfield_byte)(jobject*) = j_get_method_impl(ObjectOpcodes, "getfield_byte", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;)B", ObjectOpcodes);
-    void (*putfield_int)(jobject*, jint) = j_get_method_impl(ObjectOpcodes, "putfield_int", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;I)V", ObjectOpcodes);
-    jint (*getfield_int)(jobject*) = j_get_method_impl(ObjectOpcodes, "getfield_int", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;)I", ObjectOpcodes);
-    void (*putfield_long)(jobject*, jlong) = j_get_method_impl(ObjectOpcodes, "putfield_long", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;J)V", ObjectOpcodes);
-    jlong (*getfield_long)(jobject*) = j_get_method_impl(ObjectOpcodes, "getfield_long", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;)J", ObjectOpcodes);
-    jlong (*invokevirtual)(jobject*, jbyte, jshort, jint, jlong) = j_get_method_impl(ObjectOpcodes, "invokevirtual", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;BSIJ)J", ObjectOpcodes);
+    Object* (*new_object)(void) = j_get_method_impl(ObjectOpcodes, "new_object", "()Ljava/lang/Object;", ObjectOpcodes);
+    Object* (*new_ObjectOpcodes)(jboolean, jbyte, jint, jlong) = j_get_method_impl(ObjectOpcodes, "new_ObjectOpcodes", "(ZBIJ)Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;", ObjectOpcodes);
+    void (*putfield_boolean)(Object*, jboolean) = j_get_method_impl(ObjectOpcodes, "putfield_boolean", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;Z)V", ObjectOpcodes);
+    jboolean (*getfield_boolean)(Object*) = j_get_method_impl(ObjectOpcodes, "getfield_boolean", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;)Z", ObjectOpcodes);
+    void (*putfield_byte)(Object*, jbyte) = j_get_method_impl(ObjectOpcodes, "putfield_byte", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;B)V", ObjectOpcodes);
+    jbyte (*getfield_byte)(Object*) = j_get_method_impl(ObjectOpcodes, "getfield_byte", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;)B", ObjectOpcodes);
+    void (*putfield_int)(Object*, jint) = j_get_method_impl(ObjectOpcodes, "putfield_int", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;I)V", ObjectOpcodes);
+    jint (*getfield_int)(Object*) = j_get_method_impl(ObjectOpcodes, "getfield_int", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;)I", ObjectOpcodes);
+    void (*putfield_long)(Object*, jlong) = j_get_method_impl(ObjectOpcodes, "putfield_long", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;J)V", ObjectOpcodes);
+    jlong (*getfield_long)(Object*) = j_get_method_impl(ObjectOpcodes, "getfield_long", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;)J", ObjectOpcodes);
+    jlong (*invokevirtual)(Object*, jbyte, jshort, jint, jlong) = j_get_method_impl(ObjectOpcodes, "invokevirtual", "(Lorg/nullvm/compiler/tests/opcode/ObjectOpcodes;BSIJ)J", ObjectOpcodes);
 
     assertNull("aconst_null", aconst_null());
 
@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
 
     assertNotNull("new_object", new_object());
 
-    jobject* t = nvmNewInstance(ObjectOpcodes);
+    Object* t = nvmNewInstance(ObjectOpcodes);
     assertEqualsInt("getfield(boolean)", 0, getfield_boolean(t));
     putfield_boolean(t, 1);
     assertEqualsInt("getfield(boolean)", 1, getfield_boolean(t));
@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
     putfield_long(t, 0);
     assertEqualsLong("getfield(long)", 0, getfield_long(t));
 
-    jobject* u = new_ObjectOpcodes(1, 0x81, 0x80000001, 0x8000000000000001);
+    Object* u = new_ObjectOpcodes(1, 0x81, 0x80000001, 0x8000000000000001);
     assertEqualsInt("getfield(boolean)", 1, getfield_boolean(u));
     assertEqualsInt("getfield(byte)", (jbyte) 0x81, getfield_byte(u));
     assertEqualsInt("getfield(int)", 0x80000001, getfield_int(u));

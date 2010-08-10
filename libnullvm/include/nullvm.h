@@ -81,8 +81,8 @@ struct _jclass {
   char* packageName;         // The package name in UTF-8.
   jclass* superclass;  // Superclass pointer. Only java.lang.Object has NULL here.
   jint access;
-  void* (*checkcast)(jobject*);
-  jint* (*instanceof)(jobject*);
+  void (*checkcast)(jobject*);
+  jint (*instanceof)(jobject*);
 //  jclass* interfaces; // List of interfaces or NULL if there are no interfaces.
 //  int interfaces_count; // Number of interfaces in interface_count.
   jfield* fields; // Linked list of fields.
@@ -182,7 +182,8 @@ extern void nvmAddField(jclass* clazz, char* name, char* desc, jint access, jint
 extern void nvmAddInterface(jclass* clazz, char* interface_name);
 extern void nvmAddMethod(jclass* clazz, char* name, char* desc, jint access, void* impl);
 extern void nvmRegisterClass(jclass* clazz);
-
+extern void nvmCheckcastClass(jclass* clazz, jobject* o);
+extern void nvmCheckcastInterface(jclass* clazz, jobject* o);
 
 /**
  * Returns the class with the specified name. Locates and loads it if it hasn't

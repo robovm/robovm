@@ -3,6 +3,17 @@
 #include <string.h>
 #include <dlfcn.h>
 
+static uint8_t checkcastTemplateX86_64[] = {
+    // mov    %rdi,%rsi
+    0x48, 0x89, 0xfe,
+    // mov    $0x123456789abcdef,%rax
+    0x48, 0xb8, 0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01, 
+    // mov    $0x1123456789abcdef,%rdi
+    0x48, 0xbf, 0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x11, 
+    // jmpq   *%rax
+    0xff, 0xe0
+};
+
 struct _class_cache_entry;
 typedef struct _class_cache_entry class_cache_entry;
 struct _class_cache_entry {
@@ -93,6 +104,60 @@ jint j_get_vtable_index(jclass* clazz, char* name, char* desc, jclass* caller) {
         }
     }
     return -1;
+}
+
+static void checkcastClass(jclass* clazz, jobject* o) {
+    // TODO: Handle arrays
+    if (o && o->clazz != clazz && !nvmIsSubClass(clazz, o->clazz)) {
+        nvmThrowClassCastException(clazz, o->clazz);
+    }
+}
+
+static void checkcastInterface(jclass* clazz, jobject* o) {
+    // TODO: Implement me
+}
+
+static jint instanceofClass(jclass* clazz, jobject* o) {
+    // TODO: Handle arrays
+    return o && (o->clazz == clazz || nvmIsSubClass(clazz, o->clazz));
+}
+
+static jint instanceofInterface(jclass* clazz, jobject* o) {
+    // TODO: Implement me
+}
+
+static void* allocateMemoryForFunction(int size, uint8_t* templatePtr) {
+  void* m = nvmAllocateExecutableMemory(size);
+  memcpy(m, templatePtr, size);
+  return m;
+}
+
+static void (*createCheckcastClassFunction(jclass* clazz))(jobject*) {
+  void* m = allocateMemoryForFunction(sizeof(checkcastTemplateX86_64), checkcastTemplateX86_64);
+  *((void**)(m + 5)) = (void*) checkcastClass;
+  *((jclass**)(m + 15)) = clazz;
+  return m;
+}
+
+static void (*createCheckcastInterfaceFunction(jclass* clazz))(jobject*) {
+  void* m = allocateMemoryForFunction(sizeof(checkcastTemplateX86_64), checkcastTemplateX86_64);
+  *((void**)(m + 5)) = (void*) checkcastInterface;
+  *((jclass**)(m + 15)) = clazz;
+  return m;
+}
+
+static jint (*createInstanceofClassFunction(jclass* clazz))(jobject*) {
+  void* m = allocateMemoryForFunction(sizeof(checkcastTemplateX86_64), checkcastTemplateX86_64);
+  *((void**)(m + 5)) = (void*) instanceofClass;
+  *((jclass**)(m + 15)) = clazz;
+  return m;
+}
+
+static jint (*createInstanceofInterfaceFunction(jclass* clazz))(jobject*) {
+  void* m = allocateMemoryForFunction(sizeof(checkcastTemplateX86_64), checkcastTemplateX86_64);
+  *((void**)(m + 5)) = (void*) instanceofInterface;
+  *((jclass**)(m + 15)) = clazz;
+  return m;
 }
 
 jclass* nvmGetClass(char* className, char* mangledClassName, jclass* caller) {
@@ -230,7 +295,13 @@ void nvmRegisterClass(jclass* clazz) {
         field->setter = nvmCreateFieldSetter(clazz, field);
     }
 
-//(void*) (((char*) clazz->fields_data) + field->offset);
+    if (clazz->access & ACC_INTERFACE) {
+        clazz->checkcast = createCheckcastInterfaceFunction(clazz);
+        clazz->instanceof = createInstanceofInterfaceFunction(clazz);
+    } else {
+        clazz->checkcast = createCheckcastClassFunction(clazz);
+        clazz->instanceof = createInstanceofClassFunction(clazz);
+    }
 
     // TODO: Call <clinit>()
     class_cache_put(clazz);

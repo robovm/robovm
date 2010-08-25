@@ -2,6 +2,7 @@ A {
  global:
   jc_*;
   Java_*;
+  NullVM_*;
  local:
   *;
 };

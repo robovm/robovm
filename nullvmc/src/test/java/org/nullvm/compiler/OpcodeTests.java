@@ -34,8 +34,7 @@ import org.nullvm.compiler.tests.opcode.ObjectOpcodes;
 import org.nullvm.compiler.tests.opcode.ObjectTests;
 import org.nullvm.compiler.tests.opcode.StackOpcodes;
 import org.nullvm.compiler.tests.opcode.StackTests;
-
-import com.sun.xml.internal.ws.org.objectweb.asm.Type;
+import org.objectweb.asm.Type;
 
 
 /**
@@ -112,6 +111,7 @@ public class OpcodeTests {
         nullvmc.setClean(true);
         nullvmc.setWork(new File("target/" + testName + ".build"));
         nullvmc.setOutput(new File("target/" + testName));
+        nullvmc.setSkipMainStub(true);
         nullvmc.run();
         
         ByteArrayOutputStream out = new ByteArrayOutputStream();

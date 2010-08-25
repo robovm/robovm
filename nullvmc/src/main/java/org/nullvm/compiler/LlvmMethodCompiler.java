@@ -20,12 +20,10 @@ package org.nullvm.compiler;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
@@ -39,7 +37,6 @@ import org.objectweb.asm.commons.EmptyVisitor;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
-import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.LookupSwitchInsnNode;
@@ -53,8 +50,6 @@ import org.objectweb.asm.tree.analysis.BasicInterpreter;
 import org.objectweb.asm.tree.analysis.BasicValue;
 import org.objectweb.asm.tree.analysis.Frame;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
-
 /**
  *
  * @version $Id$
@@ -62,8 +57,6 @@ import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 public class LlvmMethodCompiler {
     private ClassNode classNode;
     private MethodNode methodNode;
-    
-    private static int jsrLabels = 0;
 
     static String[] opcodeNames = {
         "NOP", "ACONST_NULL", "ICONST_M1", "ICONST_0", "ICONST_1", "ICONST_2",
@@ -124,92 +117,86 @@ public class LlvmMethodCompiler {
         try {
         
             out.println(LlvmUtil.javaMethodToLlvmFunctionDefinition(classNode, methodNode) + " {");
-            if ((methodNode.access & Opcodes.ACC_ABSTRACT) != 0) {
-                // TODO: Pass method name?
-                out.println("    call void @nvmThrowAbstractMethodError()");
-                out.println("    unreachable");
-            } else {
-                
-                BasicInterpreter interpreter = new BasicInterpreter();
-                Analyzer analyzer = new Analyzer(interpreter);
-                analyzer.analyze(classNode.name, methodNode);
-                
-                Frame[] frames = analyzer.getFrames();
-                Set<Var> stackVars = new TreeSet<Var>();
-                Set<Var> localVars = new TreeSet<Var>();
-                for (Frame frame : frames) {
-                    if (frame != null) {
-                        for (int i = 0, slot = 0; i < frame.getStackSize(); i++) {
-                            BasicValue value = (BasicValue) frame.getStack(i);
-                            Type t = value.getType();
-                            if (t == null) {
-                                if (value == BasicValue.UNINITIALIZED_VALUE) {
-                                    stackVars.add(new Var("s" + slot, "%Object*"));
-                                } else {
-                                    // RETURNADDRESS
-                                    stackVars.add(new Var("s" + slot, "i8*"));
-                                }
-                            } else {
-                                stackVars.add(new Var("s" + slot, LlvmUtil.javaLocalVarTypeToLlvmType(t)));
-                            }
-                            slot += value.getSize();
-                        }
-                        for (int i = 0; i < frame.getLocals();) {
-                            BasicValue value = (BasicValue) frame.getLocal(i);
-                            Type t = value.getType();
-                            if (t == null) {
-                                if (value == BasicValue.UNINITIALIZED_VALUE) {
-                                    localVars.add(new Var("v" + i, "%Object*"));
-                                } else {
-                                    // RETURNADDRESS
-                                    localVars.add(new Var("v" + i, "i8*"));
-                                }
-                            } else {
-                                localVars.add(new Var("v" + i, LlvmUtil.javaLocalVarTypeToLlvmType(value.getType())));
-                            }
-                            i += value.getSize();
-                        }                        
-                    }
-                }
-                
-                for (Var v : stackVars) {
-                    out.format("    %s = alloca %s\n", v, v.getType());
-                }
-                for (Var v : localVars) {
-                    out.format("    %s = alloca %s\n", v, v.getType());
-                }
-                
-                Type[] args = Type.getArgumentTypes(methodNode.desc);
-                int slot = 0;
-                int first = 0;
-                if ((methodNode.access & Opcodes.ACC_STATIC) == 0) {
-                    Var src = new Var("arg0", "%Object*");
-                    Var dest = new Var("v" + slot, "%Object*");
-                    out.format("    store %s %s, %s* %s\n", dest.getType(), src, dest.getType(), dest);
-                    slot++;
-                    first++;
-                }
-                for (int i = 0; i < args.length; i++) {
-                    Type t = args[i];
-                    String argName = "arg" + (i + first);
-                    Var dest = new Var("v" + slot, LlvmUtil.javaLocalVarTypeToLlvmType(t));
-                    Var src = new Var(argName, LlvmUtil.javaTypeToLlvmType(t));
-                    if (t.getSort() == Type.CHAR || t.getSort() == Type.BOOLEAN) {
-                        Var tmp = new Var(argName, "i32");
-                        out.format("    %s = zext %s %s to i32\n", tmp, src.getType(), src);
-                        src = tmp;
-                    } else if (t.getSort() == Type.BYTE || t.getSort() == Type.SHORT) {
-                        Var tmp = new Var(argName, "i32");
-                        out.format("    %s = sext %s %s to i32\n", tmp, src.getType(), src);
-                        src = tmp;
-                    }
-                    out.format("    store %s %s, %s* %s\n", dest.getType(), src, dest.getType(), dest);
-                    slot += t.getSize();
-                }
             
-                MethodVisitor methodVisitor = new MethodVisitor(classNode, methodNode, frames, out);
-                methodVisitor.write();
+            BasicInterpreter interpreter = new BasicInterpreter();
+            Analyzer analyzer = new Analyzer(interpreter);
+            analyzer.analyze(classNode.name, methodNode);
+            
+            Frame[] frames = analyzer.getFrames();
+            Set<Var> stackVars = new TreeSet<Var>();
+            Set<Var> localVars = new TreeSet<Var>();
+            for (Frame frame : frames) {
+                if (frame != null) {
+                    for (int i = 0, slot = 0; i < frame.getStackSize(); i++) {
+                        BasicValue value = (BasicValue) frame.getStack(i);
+                        Type t = value.getType();
+                        if (t == null) {
+                            if (value == BasicValue.UNINITIALIZED_VALUE) {
+                                stackVars.add(new Var("s" + slot, "%Object*"));
+                            } else {
+                                // RETURNADDRESS
+                                stackVars.add(new Var("s" + slot, "i8*"));
+                            }
+                        } else {
+                            stackVars.add(new Var("s" + slot, LlvmUtil.javaLocalVarTypeToLlvmType(t)));
+                        }
+                        slot += value.getSize();
+                    }
+                    for (int i = 0; i < frame.getLocals();) {
+                        BasicValue value = (BasicValue) frame.getLocal(i);
+                        Type t = value.getType();
+                        if (t == null) {
+                            if (value == BasicValue.UNINITIALIZED_VALUE) {
+                                localVars.add(new Var("v" + i, "%Object*"));
+                            } else {
+                                // RETURNADDRESS
+                                localVars.add(new Var("v" + i, "i8*"));
+                            }
+                        } else {
+                            localVars.add(new Var("v" + i, LlvmUtil.javaLocalVarTypeToLlvmType(value.getType())));
+                        }
+                        i += value.getSize();
+                    }                        
+                }
             }
+            
+            for (Var v : stackVars) {
+                out.format("    %s = alloca %s\n", v, v.getType());
+            }
+            for (Var v : localVars) {
+                out.format("    %s = alloca %s\n", v, v.getType());
+            }
+            
+            Type[] args = Type.getArgumentTypes(methodNode.desc);
+            int slot = 0;
+            int first = 0;
+            if ((methodNode.access & Opcodes.ACC_STATIC) == 0) {
+                Var src = new Var("arg0", "%Object*");
+                Var dest = new Var("v" + slot, "%Object*");
+                out.format("    store %s %s, %s* %s\n", dest.getType(), src, dest.getType(), dest);
+                slot++;
+                first++;
+            }
+            for (int i = 0; i < args.length; i++) {
+                Type t = args[i];
+                String argName = "arg" + (i + first);
+                Var dest = new Var("v" + slot, LlvmUtil.javaLocalVarTypeToLlvmType(t));
+                Var src = new Var(argName, LlvmUtil.javaTypeToLlvmType(t));
+                if (t.getSort() == Type.CHAR || t.getSort() == Type.BOOLEAN) {
+                    Var tmp = new Var(argName, "i32");
+                    out.format("    %s = zext %s %s to i32\n", tmp, src.getType(), src);
+                    src = tmp;
+                } else if (t.getSort() == Type.BYTE || t.getSort() == Type.SHORT) {
+                    Var tmp = new Var(argName, "i32");
+                    out.format("    %s = sext %s %s to i32\n", tmp, src.getType(), src);
+                    src = tmp;
+                }
+                out.format("    store %s %s, %s* %s\n", dest.getType(), src, dest.getType(), dest);
+                slot += t.getSize();
+            }
+        
+            MethodVisitor methodVisitor = new MethodVisitor(classNode, methodNode, frames, out);
+            methodVisitor.write();
             
             out.println("}");
             
@@ -291,28 +278,28 @@ public class LlvmMethodCompiler {
                     if (n.getOpcode() == Opcodes.PUTSTATIC) {
                         String setter = "PUTSTATIC_" + fieldName;
                         if (!accessors.contains(setter)) {
-                            Var v = new Var(setter, String.format("void (%s)*", llvmType));
+                            Var v = new Var(setter, String.format("void (%%Env*, %s)*", llvmType));
                             out.format("    %s = load %s* @%s\n", v, v.getType(), setter);
                             accessors.add(setter);
                         }
                     } else if (n.getOpcode() == Opcodes.GETSTATIC) {
                         String getter = "GETSTATIC_" + fieldName;
                         if (!accessors.contains(getter)) {
-                            Var v = new Var(getter, String.format("%s ()*", llvmType));
+                            Var v = new Var(getter, String.format("%s (%%Env*)*", llvmType));
                             out.format("    %s = load %s* @%s\n", v, v.getType(), getter);
                             accessors.add(getter);
                         }
                     } else if (n.getOpcode() == Opcodes.PUTFIELD) {
                         String setter = "PUTFIELD_" + fieldName;
                         if (!accessors.contains(setter)) {
-                            Var v = new Var(setter, String.format("void (%%Object*,%s)*", llvmType));
+                            Var v = new Var(setter, String.format("void (%%Env*, %%Object*, %s)*", llvmType));
                             out.format("    %s = load %s* @%s\n", v, v.getType(), setter);
                             accessors.add(setter);
                         }
                     } else if (n.getOpcode() == Opcodes.GETFIELD) {
                         String getter = "GETFIELD_" + fieldName;
                         if (!accessors.contains(getter)) {
-                            Var v = new Var(getter, String.format("%s (%%Object*)*", llvmType));
+                            Var v = new Var(getter, String.format("%s (%%Env*, %%Object*)*", llvmType));
                             out.format("    %s = load %s* @%s\n", v, v.getType(), getter);
                             accessors.add(getter);
                         }
@@ -420,7 +407,7 @@ public class LlvmMethodCompiler {
                     // If we end up here none of the types match. Rethrow the exception.
                     throwable = tmpr("throwable");
                     out.format("    %s = load %s* %s\n", throwable, throwablePtr.getType(), throwablePtr);
-                    out.format("    call void @nvmThrow(%%Object* %s)\n", throwable);
+                    out.format("    call void @_nvmBcThrow(%%Env* %s, %%Object* %s)\n", new Var("env", "%Env*"), throwable);
                     out.format("    unreachable\n");
                 }
             }
@@ -543,10 +530,10 @@ public class LlvmMethodCompiler {
             out.format("    br i1 %s, label %%%s, label %%%s\n", cond, successLabel, failureLabel);
             out.format("%s:\n", failureLabel);
             if (currentTryCatchBlocks.isEmpty()) {
-                out.format("    call void @nvmThrowNullPointerException()\n");
+                out.format("    call void @_nvmBcThrowNullPointerException(%%Env* %s)\n", new Var("env", "%Env*"));
                 out.format("    unreachable\n", successLabel);
             } else {
-                out.format("    invoke void @nvmThrowNullPointerException() to label %%%s unwind label %%%s\n", successLabel, currentLandingPad.getLabel());
+                out.format("    invoke void @_nvmBcThrowNullPointerException(%%Env* %s) to label %%%s unwind label %%%s\n", new Var("env", "%Env*"), successLabel, currentLandingPad.getLabel());
             }
 
             out.format("%s:\n", successLabel);
@@ -560,10 +547,10 @@ public class LlvmMethodCompiler {
             out.format("    br i1 %s, label %%%s, label %%%s\n", cond, successLabel, failureLabel);
             out.format("%s:\n", failureLabel);
             if (currentTryCatchBlocks.isEmpty()) {
-                out.format("    call void @nvmThrowArrayIndexOutOfBoundsException(i32 %s)\n", index);
+                out.format("    call void @_nvmBcThrowArrayIndexOutOfBoundsException(%%Env* %s, i32 %s)\n", new Var("env", "%Env*"), index);
                 out.format("    unreachable\n");
             } else {
-                out.format("    invoke void @nvmThrowArrayIndexOutOfBoundsException(i32 %s) to label %%%s unwind label %%%s\n", index, successLabel, currentLandingPad.getLabel());
+                out.format("    invoke void @_nvmBcThrowArrayIndexOutOfBoundsException(%%Env* %s, i32 %s) to label %%%s unwind label %%%s\n", new Var("env", "%Env*"), index, successLabel, currentLandingPad.getLabel());
             }
             out.format("%s:\n", successLabel);
         }
@@ -595,23 +582,24 @@ public class LlvmMethodCompiler {
                 checkNull(obj);
             }
             
+            Var env = new Var("env", "%Env*");
             Var res = null;
             String fieldName = LlvmUtil.mangleString(owner) + "_" + LlvmUtil.mangleString(name) + "__" + LlvmUtil.mangleString(desc);
             
             if (opcode == Opcodes.GETSTATIC) {
-                Var v = new Var("GETSTATIC_" + fieldName, String.format("%s ()*", llvmType));
+                Var v = new Var("GETSTATIC_" + fieldName, String.format("%s (%%Env*)*", llvmType));
                 res = tmp("res", llvmType);
-                out.format("    %s = call %s %s()\n", res, llvmType, v);
+                out.format("    %s = call %s %s(%%Env* %s)\n", res, llvmType, v, env);
             } else if (opcode == Opcodes.PUTSTATIC) {
-                Var v = new Var("PUTSTATIC_" + fieldName, String.format("void (%s)*", llvmType));
-                out.format("    call void %s(%s %s)\n", v, llvmType, val);
+                Var v = new Var("PUTSTATIC_" + fieldName, String.format("void (%%Env*, %s)*", llvmType));
+                out.format("    call void %s(%%Env* %s, %s %s)\n", v, env, llvmType, val);
             } else if (opcode == Opcodes.GETFIELD) {
-                Var v = new Var("GETFIELD_" + fieldName, String.format("%s (%%Object*)*", llvmType));
+                Var v = new Var("GETFIELD_" + fieldName, String.format("%s (%%Env*, %%Object*)*", llvmType));
                 res = tmp("res", llvmType);
-                out.format("    %s = call %s %s(%%Object* %s)\n", res, llvmType, v, obj);
+                out.format("    %s = call %s %s(%%Env* %s, %%Object* %s)\n", res, llvmType, v, env, obj);
             } else if (opcode == Opcodes.PUTFIELD) {
-                Var v = new Var("PUTFIELD_" + fieldName, String.format("void (%%Object*,%s)*", llvmType));
-                out.format("    call void %s(%%Object* %s, %s %s)\n", v, obj, llvmType, val);
+                Var v = new Var("PUTFIELD_" + fieldName, String.format("void (%%Env*, %%Object*, %s)*", llvmType));
+                out.format("    call void %s(%%Env* %s, %%Object* %s, %s %s)\n", v, env, obj, llvmType, val);
             }
             
             if (res != null) {
@@ -1624,7 +1612,7 @@ public class LlvmMethodCompiler {
                 Var throwable = pop("throwable");
                 checkNull(throwable);
                 if (currentTryCatchBlocks.isEmpty()) {
-                    out.format("    call void @nvmThrow(%%Object* %s)\n", throwable);
+                    out.format("    call void @_nvmBcThrow(%%Env* %s, %%Object* %s)\n", new Var("env", "%Env*"), throwable);
                     out.format("    unreachable\n");
                 } else {
                     out.format("    store %s %s, %s* %s\n", throwablePtr.getType(), throwable, throwablePtr.getType(), throwablePtr);
@@ -1659,16 +1647,16 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.NEWARRAY: {
-                // TODO: Throw NegativeArraySizeException if count < 0
+                String[] types = {"Boolean", "Char", "Float", "Double", "Byte", "Short", "Int", "Long"};
                 Var length = pop("length");
                 Var res = tmpr("res");
                 if (currentTryCatchBlocks.isEmpty()) {
-                    out.format("    %s = call %%Object* @nvmNewArray(i32 %d, i32 %s)\n", 
-                            res, operand, length);
+                    out.format("    %s = call %%Object* @_nvmBcNew%sArray(%%Env* %s, i32 %s)\n", 
+                            res, types[operand - Opcodes.T_BOOLEAN], new Var("env", "%Env*"), length);
                 } else {
                     String successLabel = String.format("NewArraySuccess%d", pc);
-                    out.format("    %s = invoke %%Object* @nvmNewArray(i32 %d, i32 %s) to label %%%s unwind label %%%s\n", 
-                            res, operand, length, successLabel, currentLandingPad.getLabel());
+                    out.format("    %s = invoke %%Object* @_nvmBcNew%sArray(%%Env* %s, i32 %s) to label %%%s unwind label %%%s\n", 
+                            res, types[operand - Opcodes.T_BOOLEAN], new Var("env", "%Env*"), length, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
                 push(res);
@@ -1757,7 +1745,7 @@ public class LlvmMethodCompiler {
             } else if (cst instanceof String) {
                 // TODO: Unicode
                 Var res = tmpr("res");
-                out.format("    %s = call %%Object* @j_ldc_string_asciiz(i8* %s)\n", res,
+                out.format("    %s = call %%Object* @_nvmBcNewStringAscii(%%Env* %s, i8* %s)\n", res, new Var("env", "%Env*"),
                         LlvmUtil.getStringReference((String) cst));
                 push(res);
             } else {
@@ -1944,6 +1932,8 @@ public class LlvmMethodCompiler {
                 argVars.addFirst(obj);
             }
 
+            argVars.addFirst(new Var("env", "%Env*"));            
+            
             String method = null;
             if (owner.equals(classNode.name)) {
                 MethodNode mnode = LlvmUtil.findMethodNode(classNode, name, desc);
@@ -2005,16 +1995,18 @@ public class LlvmMethodCompiler {
                 out.format("    store i32 %s, i32* %s\n", length, ptr);
             }
             
+            Var caller = tmp("caller", "%Class*");
+            out.format("    %s = load %%Class** @clazz\n", caller);
             Var lengthsi32 = tmp("lengths", "i32*");
             out.format("    %s = bitcast %s* %s to i32*\n", lengthsi32, multiANewArrayLengths.getType(), multiANewArrayLengths);
             Var res = tmpr("res");
             if (currentTryCatchBlocks.isEmpty()) {
-                out.format("    %s = call %%Object* @nvmMultiANewArray(i8* %s, i32 %d, i32* %s)\n", 
-                        res, LlvmUtil.getStringReference(desc), dims, lengthsi32);
+                out.format("    %s = call %%Object* @_nvmBcNewMultiArray(%%Env* %s, i32 %d, i32* %s, i8* %s, %%Class* %s)\n", 
+                        res, new Var("env", "%Env*"), dims, lengthsi32, LlvmUtil.getStringReference(desc), caller);
             } else {
                 String successLabel = String.format("NewArraySuccess%d", pc);
-                out.format("    %s = invoke %%Object* @nvmMultiANewArray(i8* %s, i32 %d, i32* %s) to label %%%s unwind label %%%s\n", 
-                        res, LlvmUtil.getStringReference(desc), dims, lengthsi32, successLabel, currentLandingPad.getLabel());
+                out.format("    %s = invoke %%Object* @_nvmBcNewMultiArray(%%Env* %s, i32 %d, i32* %s, i8* %s, %%Class* %s) to label %%%s unwind label %%%s\n", 
+                        res, new Var("env", "%Env*"), dims, lengthsi32, LlvmUtil.getStringReference(desc), caller, successLabel, currentLandingPad.getLabel());
                 out.format("%s:\n", successLabel);
             }
             push(res);
@@ -2042,23 +2034,16 @@ public class LlvmMethodCompiler {
         public void visitTypeInsn(int opcode, String type) {
             switch (opcode) {
             case Opcodes.NEW: {
-//                Var clazz = tmp("clazz", "%Class*");
-//                out.format("    %s = call %%Class* @nvmGetClass(i8* %s, i8* %s, %%Class* null)\n", clazz, 
-//                        LlvmUtil.getStringReference(type), 
-//                        LlvmUtil.getStringReference(LlvmUtil.mangleString(type)));
-//                Var res = tmpr("res");
-//                out.format("    %s = call %%Object* @nvmNewInstance(%%Class* %s)\n", res, clazz);
-//                push(res);
-                
+                Var env = new Var("env", "%Env*");
                 String function = "NEW_" + LlvmUtil.mangleString(type);
-                Var v = tmp(function, "%Object* ()");
+                Var v = tmp(function, "%Object* (%Env*)");
                 out.format("    %s = load %s** @%s\n", v, v.getType(), function);
                 Var res = tmpr("res");
                 if (currentTryCatchBlocks.isEmpty()) {
-                    out.format("    %s = call %%Object* %s()\n", res, v);
+                    out.format("    %s = call %%Object* %s(%%Env* %s)\n", res, v, env);
                 } else {
                     String successLabel = String.format("NewInstanceSuccess%d", pc);
-                    out.format("    %s = invoke %%Object* %s() to label %%%s unwind label %%%s\n", res, v, successLabel, currentLandingPad.getLabel());
+                    out.format("    %s = invoke %%Object* %s(%%Env* %s) to label %%%s unwind label %%%s\n", res, v, env, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
                 push(res);
@@ -2068,44 +2053,48 @@ public class LlvmMethodCompiler {
             case Opcodes.ANEWARRAY: {
                 Var length = pop("length");
                 Var res = tmpr("res");
+                Var caller = tmp("caller", "%Class*");
+                out.format("    %s = load %%Class** @clazz\n", caller);
                 if (currentTryCatchBlocks.isEmpty()) {
-                    out.format("    %s = call %%Object* @nvmANewArray(i8* %s, i32 %s)\n", 
-                            res, LlvmUtil.getStringReference(type), length);
+                    out.format("    %s = call %%Object* @_nvmBcNewObjectArray(%%Env* %s, i32 %s, i8* %s, %s %s)\n", 
+                            res, new Var("env", "%Env*"), length, LlvmUtil.getStringReference("[" + type), caller.getType(), caller);
                 } else {
                     String successLabel = String.format("ANewArraySuccess%d", pc);
-                    out.format("    %s = invoke %%Object* @nvmANewArray(i8* %s, i32 %s) to label %%%s unwind label %%%s\n", 
-                            res, LlvmUtil.getStringReference(type), length, successLabel, currentLandingPad.getLabel());
+                    out.format("    %s = invoke %%Object* @_nvmBcNewObjectArray(%%Env* %s, i32 %s, i8* %s, %s %s) to label %%%s unwind label %%%s\n", 
+                            res, new Var("env", "%Env*"), length, LlvmUtil.getStringReference("[" + type), caller.getType(), caller, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
                 push(res);
                 break;
             }
             case Opcodes.CHECKCAST: {
+                Var env = new Var("env", "%Env*");
                 Var obj = pop("obj");
                 String function = "CHECKCAST_" + LlvmUtil.mangleString(type);
-                Var v = tmp(function, "void (%Object*)");
+                Var v = tmp(function, "void (%Env*, %Object*)");
                 out.format("    %s = load %s** @%s\n", v, v.getType(), function);
                 if (currentTryCatchBlocks.isEmpty()) {
-                    out.format("    call void %s(%%Object* %s)\n", v, obj);
+                    out.format("    call void %s(%%Env* %s, %%Object* %s)\n", v, env, obj);
                 } else {
                     String successLabel = String.format("CheckCastSuccess%d", pc);
-                    out.format("    invoke void %s(%%Object* %s) to label %%%s unwind label %%%s\n", v, obj, successLabel, currentLandingPad.getLabel());
+                    out.format("    invoke void %s(%%Env* %s, %%Object* %s) to label %%%s unwind label %%%s\n", v, env, obj, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
                 push(obj);
                 break;
             }
             case Opcodes.INSTANCEOF: {
+                Var env = new Var("env", "%Env*");
                 Var obj = pop("obj");
                 String function = "INSTANCEOF_" + LlvmUtil.mangleString(type);
-                Var v = tmp(function, "i32 (%Object*)");
+                Var v = tmp(function, "i32 (%Env*, %Object*)");
                 out.format("    %s = load %s** @%s\n", v, v.getType(), function);
                 Var res = tmpi("res");
                 if (currentTryCatchBlocks.isEmpty()) {
-                    out.format("    %s = call i32 %s(%%Object* %s)\n", res, v, obj);
+                    out.format("    %s = call i32 %s(%%Env* %s, %%Object* %s)\n", res, v, env, obj);
                 } else {
                     String successLabel = String.format("InstanceOfSuccess%d", pc);
-                    out.format("    %s = invoke i32 %s(%%Object* %s) to label %%%s unwind label %%%s\n", res, v, obj, successLabel, currentLandingPad.getLabel());
+                    out.format("    %s = invoke i32 %s(%%Env* %s, %%Object* %s) to label %%%s unwind label %%%s\n", res, v, env, obj, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
                 push(res);

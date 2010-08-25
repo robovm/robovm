@@ -16,6 +16,8 @@ import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.analysis.BasicValue;
 
 public class LlvmUtil {
+    
+    private static final char[] hexChars = "0123456789ABCDEF".toCharArray();
 
     public static String join(List<String> l) {
         return join(l, ", ");
@@ -215,6 +217,29 @@ public class LlvmUtil {
         return sb.toString();
     }
     
+    public static String mangleString(String name) {
+        byte[] s;
+        try {
+            s = name.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length; i++) {
+            byte c = s[i];
+            if (c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z') {
+                sb.append((char) c);
+            } else if (c == '/') {
+                sb.append('_');
+            } else {
+                sb.append('$');
+                sb.append(hexChars[(c >> 8) & 0xf]);
+                sb.append(hexChars[c & 0xf]);
+            }
+        }
+        return sb.toString();
+    }
+    
     public static String mangleNativeMethodShort(ClassNode classNode, MethodNode node) {
         return mangleNativeMethod(classNode.name, node.name, null);
     }
@@ -227,19 +252,19 @@ public class LlvmUtil {
         Type[] args = desc != null ? Type.getArgumentTypes(desc) : new Type[0];
         StringBuilder sb = new StringBuilder();
         sb.append("Java_");
-        sb.append(mangleString(owner));
+        sb.append(mangleNativeString(owner));
         sb.append("_");
-        sb.append(mangleString(name));
+        sb.append(mangleNativeString(name));
         if (args.length > 0) {
             sb.append("__");
             for (Type arg : args) {
-                sb.append(mangleString(arg.getDescriptor()));
+                sb.append(mangleNativeString(arg.getDescriptor()));
             }
         }
         return sb.toString();
     }
     
-    public static String mangleString(String name) {
+    public static String mangleNativeString(String name) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < name.length(); i++) {
             char c = name.charAt(i);
@@ -251,10 +276,6 @@ public class LlvmUtil {
                 sb.append("_3");
             } else if (c == '/') {
                 sb.append("_");
-            } else if (c == '<') {
-                sb.append("__");
-            } else if (c == '>') {
-                sb.append("__");
             } else if (c > 0x7f) {
                 sb.append(String.format("_0%04x", (int) c));
             } else {
@@ -312,25 +333,30 @@ public class LlvmUtil {
     public static List<String> nativeDescToCallArgs(String desc, boolean ztatic,
             boolean omitArgNames) {
         
-        ArrayList<String> args = new ArrayList<String>();
-        args.add("i8*" + (omitArgNames ? "" : " %env"));
+        List<String> args = descToCallArgs(desc, ztatic, omitArgNames);
         if (ztatic) {
-            args.add("%Class*" + (omitArgNames ? "" : " %clazz"));
+            args.add(1, "%Class*" + (omitArgNames ? "" : " %clazz"));
         }
-        args.addAll(descToCallArgs(desc, ztatic, omitArgNames));
+//        int i = ztatic ? 0 : 1;
+//        for (Type arg : Type.getArgumentTypes(desc)) {
+//            args.add(LlvmUtil.javaTypeToLlvmType(arg) + (omitArgNames ? "" : " " + new Var("arg" + i, LlvmUtil.javaTypeToLlvmType(arg))));
+//            i++;
+//        }
         return args;
     }
+    
     public static List<String> descToCallArgs(String desc, boolean ztatic,
             boolean omitArgNames) {
         
         List<String> args = new ArrayList<String>();
+        args.add("%Env*" + (omitArgNames ? "" : " " + new Var("env", "%Env*")));
         if (!ztatic) {
             args.add("%Object*" + (omitArgNames ? "" : " " + new Var("arg0", "%Object*")));
         }
         int i = ztatic ? 0 : 1;
         for (Type arg : Type.getArgumentTypes(desc)) {
             args.add(LlvmUtil.javaTypeToLlvmType(arg) + (omitArgNames ? "" : " " + new Var("arg" + i, LlvmUtil.javaTypeToLlvmType(arg))));
-            i++; // += arg.getSize();
+            i++;
         }
         return args;
     }

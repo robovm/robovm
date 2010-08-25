@@ -1,4 +1,4 @@
 #include <nullvm.h>
-#include <jni.h>
+#include <nullvm/jni.h>
 
 

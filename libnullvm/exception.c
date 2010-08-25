@@ -10,10 +10,6 @@ typedef struct _junwind_info {
   struct _Unwind_Exception exception_info;
 } junwind_info;
 
-static is_instance_of_throwable(Object* throwable, Class* clazz) {
-    return clazz != NULL && (throwable->clazz == clazz || is_instance_of_throwable(throwable, clazz->superclass));
-}
-
 extern _Unwind_Reason_Code __gcc_personality_v0(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context);
 
 _Unwind_Reason_Code j_eh_personality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context) {
@@ -43,8 +39,8 @@ void j_eh_resume_unwind(struct _Unwind_Exception* exception_info) {
     _Unwind_Resume(exception_info);
 }
 
-void nvmThrow(Object* e) {
-    junwind_info* u = nvmAllocateMemory(sizeof(junwind_info));
+void nvmRaiseException(Env* env, Object* e) {
+    junwind_info* u = nvmAllocateMemory(env, sizeof(junwind_info));
     u->exception_info.exception_class = EXCEPTION_CLASS;
     u->throwable = e;
     _Unwind_Reason_Code urc = _Unwind_RaiseException(&u->exception_info);
@@ -67,95 +63,112 @@ jint j_eh_match_throwable(Object* throwable, Class* clazz) {
     return c == clazz ? 1 : 0;
 }
 
-void nvmThrowNoClassDefFoundError(char* name) {
+jboolean nvmExceptionCheck(Env* env) {
+    return env->throwable ? TRUE : FALSE;
+}
+
+Object* nvmExceptionOccurred(Env* env) {
+    return env->throwable;
+}
+
+Object* nvmExceptionClear(Env* env) {
+    Object* e = env->throwable;
+    env->throwable = NULL;
+    return e;
+}
+
+void nvmThrow(Env* env, Object* e) {
+    // TODO: Check that e != NULL?
+    env->throwable = e;
+}
+
+void nvmThrowNew(Env* env, Class* clazz, char* message) {
+    // TODO: Check that clazz != NULL?
+    Object* e = nvmAllocateObject(env, clazz);
+    if (!e) return;
+    // TODO: Call constructor
+    nvmThrow(env, e);
+}
+
+void nvmThrowOutOfMemoryError(Env* env) {
+    nvmThrowNew(env, java_lang_OutOfMemoryError, "");
+}
+
+void nvmThrowNoClassDefFoundError(Env* env, char* name) {
     // TODO: Message should look like "java.lang.NoClassDefFoundError: a/C"
-    // TODO: Cache java.lang.NoClassDefFoundError at startup
-    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/NoClassDefFoundError", "java_lang_NoClassDefFoundError", NULL)));
+    nvmThrowNew(env, java_lang_NoClassDefFoundError, "");
 }
 
-void nvmThrowIllegalAccessError(void) {
-    // TODO: Cache java.lang.IllegalAccessError at startup
-    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/IllegalAccessError", "java_lang_IllegalAccessError", NULL)));
+void nvmThrowIllegalAccessError(Env* env) {
+    nvmThrowNew(env, java_lang_IllegalAccessError, "");
 }
 
-void nvmThrowIllegalAccessErrorField(Class* clazz, char* name, char* desc, Class* caller) {
+void nvmThrowIllegalAccessErrorField(Env* env, Class* clazz, char* name, char* desc, Class* caller) {
     // TODO: Message should look like "java.lang.IllegalAccessError: tried to access field a.A.x from class b.B"
-    // TODO: Cache java.lang.IllegalAccessError at startup
-    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/IllegalAccessError", "java_lang_IllegalAccessError", NULL)));
+    nvmThrowNew(env, java_lang_IllegalAccessError, "");
 }
 
-void nvmThrowIllegalAccessErrorMethod(Class* clazz, char* name, char* desc, Class* caller) {
+void nvmThrowIllegalAccessErrorMethod(Env* env, Class* clazz, char* name, char* desc, Class* caller) {
     // TODO: Message should look like ?
-    // TODO: Cache java.lang.IllegalAccessError at startup
-    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/IllegalAccessError", "java_lang_IllegalAccessError", NULL)));
+    nvmThrowNew(env, java_lang_IllegalAccessError, "");
 }
 
-void nvmThrowNoSuchFieldError(char* name) {
+void nvmThrowNoSuchFieldError(Env* env, char* name) {
     // TODO: Message should look like "java.lang.NoSuchFieldError: x"
     // TODO: Cache java.lang.NoSuchFieldError at startup
-    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/NoSuchFieldError", "java_lang_NoSuchFieldError", NULL)));
+    nvmThrowNew(env, java_lang_NoSuchFieldError, "");
 }
 
-void nvmThrowNoSuchMethodError(char* name) {
+void nvmThrowNoSuchMethodError(Env* env, char* name) {
     // TODO: Message should look like "java.lang.NoSuchFieldError: x"
-    // TODO: Cache java.lang.NoSuchFieldError at startup
-    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/NoSuchFieldError", "java_lang_NoSuchFieldError", NULL)));
+    nvmThrowNew(env, java_lang_NoSuchFieldError, "");
 }
 
-void nvmThrowIncompatibleClassChangeErrorClassField(Class* clazz, char* name, char* desc) {
+void nvmThrowIncompatibleClassChangeErrorClassField(Env* env, Class* clazz, char* name, char* desc) {
     // TODO: Message should look like "java.lang.ThrowIncompatibleClassChangeError: Expected static field a.C.x"
-    // TODO: Cache java.lang.IncompatibleClassChangeError at startup
-    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/IncompatibleClassChangeError", "java_lang_IncompatibleClassChangeError", NULL)));
+    nvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
 }
 
-void nvmThrowIncompatibleClassChangeErrorInstanceField(Class* clazz, char* name, char* desc) {
+void nvmThrowIncompatibleClassChangeErrorInstanceField(Env* env, Class* clazz, char* name, char* desc) {
     // TODO: Message should look like "java.lang.ThrowIncompatibleClassChangeError: Expected non-static field a.C.x"
-    // TODO: Cache java.lang.IncompatibleClassChangeError at startup
-    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/IncompatibleClassChangeError", "java_lang_IncompatibleClassChangeError", NULL)));
+    nvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
 }
 
-void nvmThrowIncompatibleClassChangeErrorMethod(Class* clazz, char* name, char* desc) {
+void nvmThrowIncompatibleClassChangeErrorMethod(Env* env, Class* clazz, char* name, char* desc) {
     // TODO: Message should look like ?
-    // TODO: Cache java.lang.IncompatibleClassChangeError at startup
-    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/IncompatibleClassChangeError", "java_lang_IncompatibleClassChangeError", NULL)));
+    nvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
 }
 
-void nvmThrowClassCastException(Class* expectedClass, Class* actualClass) {
+void nvmThrowClassCastException(Env* env, Class* expectedClass, Class* actualClass) {
     // TODO: Message should look like "java.lang.ClassCastException: java.lang.Object cannot be cast to java.lang.String"
     // TODO: Cache java.lang.ClassCastException at startup
-    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/ClassCastException", "java_lang_ClassCastException", NULL)));
+    nvmThrowNew(env, java_lang_ClassCastException, "");
 }
 
-void nvmThrowNullPointerException(void) {
-    // TODO: Cache java.lang.NullPointerException at startup
-    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/NullPointerException", "java_lang_NullPointerException", NULL)));
+void nvmThrowNullPointerException(Env* env) {
+    nvmThrowNew(env, java_lang_NullPointerException, "");
 }
 
-void nvmThrowAbstractMethodError(void) {
-    // TODO: Cache java.lang.AbstractMethodError at startup
-    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/AbstractMethodError", "java_lang_AbstractMethodError", NULL)));
+void nvmThrowAbstractMethodError(Env* env) {
+    nvmThrowNew(env, java_lang_AbstractMethodError, "");
 }
 
-void nvmThrowArrayIndexOutOfBoundsException(jint index) {
+void nvmThrowArrayIndexOutOfBoundsException(Env* env, jint index) {
     // TODO: Set index on exception
-    // TODO: Cache java.lang.ArrayIndexOutOfBoundsException at startup
-    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/ArrayIndexOutOfBoundsException", "java_lang_ArrayIndexOutOfBoundsException", NULL)));
+    nvmThrowNew(env, java_lang_ArrayIndexOutOfBoundsException, "");
 }
 
-void nvmThrowClassNotFoundException(char* className) {
+void nvmThrowClassNotFoundException(Env* env, char* className) {
     // TODO: Message should look like "java.lang.ClassNotFoundException: a.C"
-    // TODO: Cache java.lang.ClassNotFoundException at startup
-    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/ClassNotFoundException", "java_lang_ClassNotFoundException", NULL)));
+    nvmThrowNew(env, java_lang_ClassNotFoundException, "");
 }
 
-void nvmThrowNegativeArraySizeException(void) {
-    // TODO: Cache java.lang.NegativeArraySizeException at startup
-    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/NegativeArraySizeException", "java_lang_NegativeArraySizeException", NULL)));
+void nvmThrowNegativeArraySizeException(Env* env) {
+    nvmThrowNew(env, java_lang_NegativeArraySizeException, "");
 }
 
-void nvmThrowUnsatisfiedLinkError(void) {
+void nvmThrowUnsatisfiedLinkError(Env* env) {
     // TODO: Message should look like ?
-    // TODO: Cache java.lang.UnsatisfiedLinkError at startup
-    nvmThrow(nvmNewInstance(nvmGetClass("java/lang/UnsatisfiedLinkError", "java_lang_UnsatisfiedLinkError", NULL)));
+    nvmThrowNew(env, java_lang_UnsatisfiedLinkError, "");
 }
 

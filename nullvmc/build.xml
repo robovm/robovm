@@ -2,7 +2,7 @@
 <project basedir="." name="project" default="compile-jasmin-test-classes">
 
     <target name="compile-jasmin-test-classes" description="Compiles all Jasmin source files in src/test/jasmin">
-        <delete dir="target/jasmin-classes" />
+<!--        <delete dir="target/jasmin-classes" /> -->
         <mkdir dir="target/jasmin-classes" />
         <fileset dir="src/test/jasmin" id="files">
             <include name="*.j" />

@@ -7,7 +7,8 @@ int main(int argc, char* argv[]) {
         exit(1);
     }
 
-    nvmStartup();
+    Options options;
+    nvmStartup(&options);
 
     Class* c = nvmGetClass(argv[1], argv[2], NULL);
     if (c == NULL) {

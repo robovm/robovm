@@ -48,6 +48,13 @@ public class NullVMC {
     
     @Option(name = "-build-lib", usage = "If set a static library will be built instead of an executable")
     private boolean buildLib = false;
+
+    @Option(name = "-skip-main-stub", usage = "If set no default main() function will be generated but has to be provided")
+    private boolean skipMainStub = false;
+
+    @Option(name = "-main-class", metaVar = "<class>",
+            usage = "Use the main() method in the specified class as the program entry method")
+    private String mainClass = null;
     
     @Option(name = "-work", metaVar = "<directory>",
             usage = "Directory where temporary files will be placed")
@@ -325,6 +332,13 @@ public class NullVMC {
             gccPath = gccBin.getAbsolutePath();
         }
 
+        if (!skipMainStub) {
+            if (mainClass != null) {
+                args.add("-DNULLVM_MAIN_CLASS=" + mainClass);
+            }
+            files.add(new File(work, "main.c"));
+        }
+        
         exec(gccPath, "-o", output, "-g", "-Wl,--version-script", new File(work, "symbols.map"), 
                 gccOpts, "-rdynamic", args, files, "-lnullvm", "-lm", "-ldl", "-lpthread",
                 "-Wl,--whole-archive", libArgs, "-Wl,--no-whole-archive", "-Wl,-Bstatic", "-lgc", "-Wl,-Bdynamic");
@@ -336,6 +350,7 @@ public class NullVMC {
          */
         FileUtils.copyURLToFile(getClass().getResource("/opcodes.ll"), new File(work, "opcodes.ll"));
         FileUtils.copyURLToFile(getClass().getResource("/symbols.map"), new File(work, "symbols.map"));
+        FileUtils.copyURLToFile(getClass().getResource("/main.c"), new File(work, "main.c"));
         
 //            files = processJarFiles(files);
         files = processClassFiles(files);
@@ -503,6 +518,14 @@ public class NullVMC {
         this.buildLib = buildLib;
     }
 
+    public void setSkipMainStub(boolean skipMainStub) {
+        this.skipMainStub = skipMainStub;
+    }
+
+    public void setMainClass(String mainClass) {
+        this.mainClass = mainClass;
+    }
+    
     public void setGccBin(File gccBin) {
         this.gccBin = gccBin;
     }

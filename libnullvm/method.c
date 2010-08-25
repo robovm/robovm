@@ -1,13 +1,50 @@
 #include <nullvm.h>
 #include <string.h>
 
-static void* allocateMemoryForFunction(int size, char* templatePtr) {
-  void* m = nvmAllocateExecutableMemory(size);
-  memcpy(m, templatePtr, size);
-  return m;
+Method* nvmGetMethod(Env* env, Class* clazz, char* name, char* desc) {
+    Method* method;
+    for (method = clazz->methods; method != NULL; method = method->next) {
+        if (!strcmp(method->name, name) && !strcmp(method->desc, desc)) {
+            return method;
+        }
+    }
+
+    if (clazz->superclass && strcmp("<init>", name) && strcmp("<clinit>", name)) {
+        /* 
+         * Check with the superclass. Note that constructors and static 
+         * initializers are not inherited.
+         */
+        return nvmGetMethod(env, clazz->superclass, name, desc);
+    }
+
+    nvmThrowNoSuchMethodError(env, name);
+    return NULL;
 }
 
-Method* nvmGetMethod(Class* clazz, char* name, char* desc, Class* caller) {
+Method* nvmGetClassMethod(Env* env, Class* clazz, char* name, char* desc) {
+    Method* method = nvmGetMethod(env, clazz, name, desc);
+    if (!method) return NULL;
+    if (!(method->access & ACC_STATIC)) {
+        // TODO: JNI spec doesn't say anything about throwing this
+        nvmThrowIncompatibleClassChangeErrorMethod(env, clazz, name, desc);
+        return NULL;
+    }
+    return method;
+}
+
+Method* nvmGetInstanceMethod(Env* env, Class* clazz, char* name, char* desc) {
+    Method* method = nvmGetMethod(env, clazz, name, desc);
+    if (!method) return NULL;
+    if (method->access & ACC_STATIC) {
+        // TODO: JNI spec doesn't say anything about throwing this
+        nvmThrowIncompatibleClassChangeErrorMethod(env, clazz, name, desc);
+        return NULL;
+    }
+    return method;
+}
+
+/*
+Method* nvmGetMethod(Env* env, Class* clazz, char* name, char* desc) {
     Method* method;
     int sameClass = caller == NULL || clazz == caller;
     int subClass = caller == NULL || nvmIsSubClass(clazz, caller);
@@ -34,65 +71,13 @@ Method* nvmGetMethod(Class* clazz, char* name, char* desc, Class* caller) {
          * Check with the superclass. Note that constructors and static 
          * initializers are not inherited.
          */
-        return nvmGetMethod(clazz, name, desc, caller);
+       /* return nvmGetMethod(clazz, name, desc);
     }
 
     nvmThrowNoSuchMethodError(name);
-}
+}*/
 
-void* nvmGetInvokeStaticFunction(char* className, char* mangledClassName, char* methodName, char* methodDesc, void* caller, void** functionPtr) {
-    Class* clazz = nvmGetClass(className, mangledClassName, caller);
-    // TODO: Throw something if methodName is <clinit>
-    Method* method = nvmGetMethod(clazz, methodName, methodDesc, caller);
-    if (!(method->access & ACC_STATIC)) {
-        nvmThrowIncompatibleClassChangeErrorMethod(clazz, methodName, methodDesc);
-    }
-    *functionPtr = method->wrapper;
-    return method->wrapper;
-}
-
-void* nvmGetInvokeVirtualFunction(char* className, char* mangledClassName, char* methodName, char* methodDesc, void* caller, void** functionPtr) {
-    Class* clazz = nvmGetClass(className, mangledClassName, caller);
-    // TODO: Throw something if methodName is <clinit>
-    Method* method = nvmGetMethod(clazz, methodName, methodDesc, caller);
-    if (method->access & ACC_STATIC) {
-        nvmThrowIncompatibleClassChangeErrorMethod(clazz, methodName, methodDesc);
-    }
-    *functionPtr = method->wrapper;
-    return method->wrapper;
-}
-
-void* nvmGetInvokeInterfaceFunction(char* className, char* mangledClassName, char* methodName, char* methodDesc, void* caller, void** functionPtr) {
-    // TODO: Implement me properly!
-    LOG("nvmGetInvokeInterfaceFunction not implemented!");
-    nvmThrowNoSuchMethodError(methodName);
-    return NULL;
-}
-
-void* nvmGetInvokeSpecialFunction(char* className, char* mangledClassName, char* methodName, char* methodDesc, void* caller, void** functionPtr) {
-    Class* clazz = nvmGetClass(className, mangledClassName, caller);
-    // TODO: Throw something if methodName is <clinit>
-    // TODO: Check caller has ACC_SUPER access?
-    Method* method = nvmGetMethod(clazz, methodName, methodDesc, caller);
-    if (method->access & ACC_STATIC) {
-        nvmThrowIncompatibleClassChangeErrorMethod(clazz, methodName, methodDesc);
-    }
-    *functionPtr = method->wrapper;
-    return method->wrapper;
-}
-
-void* nvmCreateMethodWrapper(Class* clazz, Method* method) {
-    // TODO: Should we create wrappers for abstract methods and throw AbstractMethodError?
-    // TODO: Handle synchronized methods
-    if (IS_NATIVE(method->access)) {
-    }
-    if (!IS_NATIVE(method->access) && (IS_PRIVATE(method->access) || IS_FINAL(method->access))) {
-        return method->impl;
-    }
-    return method->impl;
-}
-
-void* nvmGetNativeMethod(char* shortMangledName, char* longMangledName, void** functionPtr) {
+void* nvmGetNativeMethod(Env* env, char* shortMangledName, char* longMangledName) {
     void* handle = dlopen(NULL, RTLD_LAZY);
     LOG("Searching for native method using short name: %s\n", shortMangledName);
     void* f = dlsym(handle, shortMangledName);
@@ -107,9 +92,9 @@ void* nvmGetNativeMethod(char* shortMangledName, char* longMangledName, void** f
     }
     dlclose(handle);
     if (!f) {
-        nvmThrowUnsatisfiedLinkError();
+        nvmThrowUnsatisfiedLinkError(env);
+        return NULL;
     }
-    *functionPtr = f;
     return f;
 }
 

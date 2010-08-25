@@ -19,8 +19,7 @@ import org.apache.commons.exec.PumpStreamHandler;
 import org.junit.Test;
 import org.nullvm.compiler.tests.exception.ExceptionTests;
 import org.nullvm.compiler.tests.opcode.AbstractOpcodeTests;
-
-import com.sun.xml.internal.ws.org.objectweb.asm.Type;
+import org.objectweb.asm.Type;
 
 /**
  *
@@ -37,7 +36,7 @@ public class FooTests {
         String testName = testClass.getName();
         
         NullVMC nullvmc = new NullVMC();
-        nullvmc.addInput(new File("src/test/c/launcher.c"));
+//        nullvmc.addInput(new File("src/test/c/launcher.c"));
         nullvmc.addInput(new File("src/test/c/native.c"));
         nullvmc.addInput(new File("target/rt-test-classes"));
         nullvmc.addInput(new File("target/test-classes/" + Type.getInternalName(testClass) + ".class"));
@@ -51,9 +50,10 @@ public class FooTests {
         nullvmc.setClean(true);
         nullvmc.setWork(new File("target/" + testName + ".build"));
         nullvmc.setOutput(new File("target/" + testName));
+        nullvmc.setMainClass(Type.getInternalName(testClass));
         nullvmc.run();
         
-        String actual = exec("target/" + testName, Type.getInternalName(testClass), LlvmUtil.mangleString(Type.getInternalName(testClass)));
+        String actual = exec("target/" + testName); //, Type.getInternalName(testClass), LlvmUtil.mangleString(Type.getInternalName(testClass)));
         String expected = exec("java", "-cp", "target/classes:target/test-classes", testClass.getName());
         
         assertEquals(expected, actual);

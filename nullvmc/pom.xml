@@ -57,8 +57,100 @@
         <configuration>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>org.nullvm.compiler.NullVMC</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.dstovall</groupId>
+        <artifactId>onejar-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>one-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <ant antfile="${basedir}/build.xml">
+                  <target name="compile-jasmin-test-classes"/>
+                  <target name="compile-rt-test"/>
+                </ant>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+<plugin>
+  <groupId>org.codehaus.mojo</groupId>
+  <artifactId>build-helper-maven-plugin</artifactId>
+  <executions>
+      <execution>
+          <phase>generate-test-resources</phase>
+          <goals>
+              <goal>add-test-resource</goal>
+          </goals>
+          <configuration>
+              <resources>
+                  <resource>
+                      <directory>${project.basedir}/target/jasmin-classes</directory>
+                  </resource>
+              </resources>
+          </configuration>
+      </execution>
+  </executions>
+</plugin>
+
     </plugins>
   </build>
   
+  <profiles>
+    <profile>
+      <id>tools.jar</id>
+      <activation>
+        <property>
+            <name>java.vendor</name>
+            <value>Sun Microsystems Inc.</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <dependencies>
+            <dependency>
+              <groupId>com.sun</groupId>
+              <artifactId>tools</artifactId>
+              <version>1.5.0</version>
+              <scope>system</scope>
+              <systemPath>${java.home}/../lib/tools.jar</systemPath>
+            </dependency>
+          </dependencies>
+        </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>
 

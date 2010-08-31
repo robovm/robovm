@@ -1940,14 +1940,34 @@ public class LlvmMethodCompiler {
                 if (mnode != null && ((classNode.access & Opcodes.ACC_STATIC) > 0 || "<init>".equals(mnode.name) || (mnode.access & Opcodes.ACC_PRIVATE) > 0 || (mnode.access & Opcodes.ACC_FINAL) > 0 || (opcode == Opcodes.INVOKESTATIC && (mnode.access & Opcodes.ACC_STATIC) > 0))) {
                     // Constructors as well as private, final and static methods of the current class will be called directly
                     method = "@" + LlvmUtil.mangleMethod(owner, name, desc);
+                    Var ignored = tmp("ignored", "i8*");
+                    out.format("    %s = inttoptr i32 0 to i8*\n", ignored);
+                    argVars.addFirst(ignored);            
                 }
             }
 
             if (method == null) {
-                String function = opcodeNames[opcode] + "_" + LlvmUtil.mangleMethod(owner, name, desc);
-                Var v = tmp(function, LlvmUtil.functionType(desc, opcode == Opcodes.INVOKESTATIC));
-                out.format("    %s = load %s** @%s\n", v, v.getType(), function);
-                method = v.toString();
+                String prefix = (new String[] {"InvokeVirtual", "InvokeSpecial", "InvokeStatic", "InvokeInterface"})[opcode - Opcodes.INVOKEVIRTUAL];
+                String mangledMethod = LlvmUtil.mangleMethod(owner, name, desc);
+                String varName = prefix + "_" + mangledMethod;
+                Var invokeInfoI8 = tmp("invokeInfoI8", "i8*");
+                out.format("    %s = bitcast %%%s* @%s to i8*\n", invokeInfoI8, prefix, varName);
+                Var fptr = tmp("fptr", LlvmUtil.functionType(desc, opcode == Opcodes.INVOKESTATIC) + "**");
+                out.format("    %s = bitcast %%%s* @%s to %s\n", fptr, prefix, varName, fptr.getType());
+                argVars.addFirst(invokeInfoI8);            
+                
+                String function = prefix + "_" + LlvmUtil.mangleMethod(owner, name, desc);
+                Var f = tmp(function, LlvmUtil.functionType(desc, opcode == Opcodes.INVOKESTATIC));
+                out.format("    %s = load %s %s\n", f, fptr.getType(), fptr);
+                method = f.toString();
+                
+//                Var v = tmp(function, LlvmUtil.functionType(desc, opcode == Opcodes.INVOKESTATIC));
+//                out.format("    %s = load %s** @%s\n", v, v.getType(), function);
+//                method = v.toString();
+//                
+//                Var ignored = tmp("ignored", "i8*");
+//                out.format("    %s = inttoptr i32 0 to i8*\n", ignored);
+//                argVars.addFirst(ignored);            
             }
             
             String successLabel = String.format("InvokeSuccess%d", pc);

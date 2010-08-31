@@ -334,6 +334,7 @@ public class LlvmUtil {
             boolean omitArgNames) {
         
         List<String> args = descToCallArgs(desc, ztatic, omitArgNames);
+        args.remove(0);
         if (ztatic) {
             args.add(1, "%Class*" + (omitArgNames ? "" : " %clazz"));
         }
@@ -349,6 +350,7 @@ public class LlvmUtil {
             boolean omitArgNames) {
         
         List<String> args = new ArrayList<String>();
+        args.add("i8*" + (omitArgNames ? "" : " " + new Var("desc", "i8*")));
         args.add("%Env*" + (omitArgNames ? "" : " " + new Var("env", "%Env*")));
         if (!ztatic) {
             args.add("%Object*" + (omitArgNames ? "" : " " + new Var("arg0", "%Object*")));

@@ -49,9 +49,9 @@ jboolean nvmRun(Env* env, Options* options) {
     Method* method = nvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
     if (!method) return FALSE;
     // TODO: Create args array
-    void (*f)(Env*, ObjectArray*) = method->impl;
+    void (*f)(void*, Env*, ObjectArray*) = method->impl;
     // TODO: Call through a trampoline which catches any exceptions and sets it on env.
-    f(env, NULL);
+    f(NULL, env, NULL);
     return nvmExceptionCheck(env);
 }
 

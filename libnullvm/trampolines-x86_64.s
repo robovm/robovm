@@ -2,7 +2,172 @@
 
 .text
 
-    .globl _nvmCallMethod
+    .globl _nvmEmptyFunction
+    .globl _nvmBcGetStatic8
+    .globl _nvmBcGetStatic16
+    .globl _nvmBcGetStatic32
+    .globl _nvmBcGetStatic64
+    .globl _nvmBcGetStaticFloat
+    .globl _nvmBcGetStaticDouble
+    .globl _nvmBcPutStatic8
+    .globl _nvmBcPutStatic16
+    .globl _nvmBcPutStatic32
+    .globl _nvmBcPutStatic64
+    .globl _nvmBcPutStaticFloat
+    .globl _nvmBcPutStaticDouble
+    .globl _nvmBcResolveMethodForInvokeStatic0
+    .globl _nvmBcResolveMethodForInvokeVirtual0
+    .globl _nvmBcResolveMethodForInvokeSpecial0
+    .globl _nvmBcResolveMethodForInvokeInterface0
+    .globl _nvmCallAndCatchAll
+
+    .align    16, 0x90
+    .type    _nvmEmptyFunction, @function
+_nvmEmptyFunction:
+.LnvmEmptyFunctionBegin:
+    ret
+
+    .size _nvmEmptyFunction, . - .LnvmEmptyFunctionBegin
+.LnvmEmptyFunctionEnd:
+    
+    .macro getStatic name, ins, reg
+    .align    16, 0x90
+    .type    \name, @function
+\name:
+.L\name\()Begin:
+    mov     24(%rdi), %rax # GetStatic->address is at offset 24
+    \ins    (%rax), \reg
+    ret
+.L\name\()End:
+    .endm
+
+    .macro putStatic name, ins, reg
+    .align    16, 0x90
+    .type    \name, @function
+\name:
+.L\name\()Begin:
+    mov     24(%rdi), %rax # PutStatic->address is at offset 24
+    \ins    \reg, (%rax)
+    ret
+.L\name\()End:
+    .endm
+
+    getStatic _nvmBcGetStatic8,  movb, %al
+    getStatic _nvmBcGetStatic16, movw, %ax
+    getStatic _nvmBcGetStatic32, movl, %eax
+    getStatic _nvmBcGetStatic64, movq, %rax
+    getStatic _nvmBcGetStaticFloat, movss, %xmm0
+    getStatic _nvmBcGetStaticDouble, movsd, %xmm0
+
+    putStatic _nvmBcPutStatic8,  movb, %dl
+    putStatic _nvmBcPutStatic16, movw, %dx
+    putStatic _nvmBcPutStatic32, movl, %edx
+    putStatic _nvmBcPutStatic64, movq, %rdx
+    putStatic _nvmBcPutStaticFloat, movss, %xmm0
+    putStatic _nvmBcPutStaticDouble, movsd, %xmm0
+
+/* ... _nvmBcResolveMethod0(Invoke(Static|Special|Virtual|Interface)* i, Env* env, ...) */
+
+    .align    16, 0x90
+    .type    _nvmBcResolveMethod0, @function
+_nvmBcResolveMethod0:
+.LnvmBcResolveMethod0Begin:
+    sub   $56, %rsp
+
+    /* Save the original integer register args */
+    mov   %rdi, (%rsp)
+    mov   %rsi, 8(%rsp)
+    mov   %rdx, 16(%rsp)
+    mov   %rcx, 24(%rsp)
+    mov   %r8, 32(%rsp)
+    mov   %r9, 40(%rsp)
+
+    /* %rax points to the local resolve method */
+    mov   %rax, 48(%rsp)
+
+    /* 
+      Resolve method 
+        i->common->resolve(i->common, env);
+     */
+    mov   8(%rdi), %rdi   # %rdi = i->common
+    call  *(%rdi)         # (%rdi) = i->common->resolve
+
+    /* Common resolution succeeded */
+
+    /* Now do the local resolution which also does access checks */
+    mov   (%rsp), %rdi    # %rdi = i
+    mov   8(%rsp), %rsi   # %rsi = env
+    call  *48(%rsp)
+
+    /* Restore the original integer register args */
+    mov   (%rsp), %rdi
+    mov   8(%rsp), %rsi
+    mov   16(%rsp), %rdx
+    mov   24(%rsp), %rcx
+    mov   32(%rsp), %r8
+    mov   40(%rsp), %r9
+
+    /* Restore the stack */
+    add   $56, %rsp
+
+    /* Call the function i->function */
+    jmp  *(%rdi)
+
+    .size _nvmBcResolveMethod0, . - .LnvmBcResolveMethod0Begin
+.LnvmBcResolveMethod0End:
+
+
+/* ... _nvmBcResolveMethodForInvokeStatic0(InvokeStatic* i, Env* env, ...) */
+
+    .align    16, 0x90
+    .type    _nvmBcResolveMethodForInvokeStatic0, @function
+_nvmBcResolveMethodForInvokeStatic0:
+.LnvmBcResolveMethodForInvokeStatic0Begin:
+    mov   $_nvmBcResolveMethodForInvokeStatic, %rax
+    jmp  _nvmBcResolveMethod0
+
+    .size _nvmBcResolveMethodForInvokeStatic0, . - .LnvmBcResolveMethodForInvokeStatic0Begin
+.LnvmBcResolveMethodForInvokeStatic0End:
+
+
+/* ... _nvmBcResolveMethodForInvokeVirtual0(InvokeVirtual* i, Env* env, ...) */
+
+    .align    16, 0x90
+    .type    _nvmBcResolveMethodForInvokeVirtual0, @function
+_nvmBcResolveMethodForInvokeVirtual0:
+.LnvmBcResolveMethodForInvokeVirtual0Begin:
+    mov   $_nvmBcResolveMethodForInvokeVirtual, %rax
+    jmp  _nvmBcResolveMethod0
+
+    .size _nvmBcResolveMethodForInvokeVirtual0, . - .LnvmBcResolveMethodForInvokeVirtual0Begin
+.LnvmBcResolveMethodForInvokeVirtual0End:
+
+
+/* ... _nvmBcResolveMethodForInvokeSpecial0(InvokeSpecial* i, Env* env, ...) */
+
+    .align    16, 0x90
+    .type    _nvmBcResolveMethodForInvokeSpecial0, @function
+_nvmBcResolveMethodForInvokeSpecial0:
+.LnvmBcResolveMethodForInvokeSpecial0Begin:
+    mov   $_nvmBcResolveMethodForInvokeSpecial, %rax
+    jmp  _nvmBcResolveMethod0
+
+    .size _nvmBcResolveMethodForInvokeSpecial0, . - .LnvmBcResolveMethodForInvokeSpecial0Begin
+.LnvmBcResolveMethodForInvokeSpecial0End:
+
+
+/* ... _nvmBcResolveMethodForInvokeInterface0(InvokeSpecial* i, Env* env, ...) */
+
+    .align    16, 0x90
+    .type    _nvmBcResolveMethodForInvokeInterface0, @function
+_nvmBcResolveMethodForInvokeInterface0:
+.LnvmBcResolveMethodForInvokeInterface0Begin:
+    mov   $_nvmBcResolveMethodForInvokeInterface, %rax
+    jmp  _nvmBcResolveMethod0
+
+    .size _nvmBcResolveMethodForInvokeInterface0, . - .LnvmBcResolveMethodForInvokeInterface0Begin
+.LnvmBcResolveMethodForInvokeInterface0End:
+
     
 /*
 
@@ -31,9 +196,9 @@
  */
 
     .align    16, 0x90
-    .type    _nvmCallMethod, @function
-_nvmCallMethod:
-.Lbegin:
+    .type    _nvmCallAndCatchAll, @function
+_nvmCallAndCatchAll:
+.LnvmCallAndCatchAllBegin:
     push  %rbp
     mov   %rsp, %rbp
     sub   $24, %rsp
@@ -59,16 +224,18 @@ _nvmCallMethod:
 
 .LcallStart:
     call  *(%rdi)
-.LcallEnd:
+.LcalLnvmCallAndCatchAllEnd:
 .Lcatch:
 
     leave
     ret
 
-    .size _nvmCallMethod, . - .Lbegin
-.Lend:
+    .size _nvmCallAndCatchAll, . - .LnvmCallAndCatchAllBegin
+.LnvmCallAndCatchAllEnd:
     .section    .gcc_except_table,"a",@progbits
     .align    4
+
+/* TODO: as in GCC 4.4 has support for unwind information using the .cfi directives. Maybe we should use those for exception handling? */
 GCC_except_table1:
 .Lexception1:
     .byte    255                     # @LPStart Encoding = omit
@@ -78,16 +245,16 @@ GCC_except_table1:
     .zero    1
     .byte    3                       # Call site Encoding = udata4
     .uleb128 26                      # Call site table length
-    .set     .Lset1eh, .LcallStart - .Lbegin
+    .set     .Lset1eh, .LcallStart - .LnvmCallAndCatchAllBegin
     .long    .Lset1eh                # Region start
-    .set     .Lset2eh, .LcallEnd - .LcallStart
+    .set     .Lset2eh, .LcalLnvmCallAndCatchAllEnd - .LcallStart
     .long    .Lset2eh                # Region length
-    .set     .Lset3eh,.Lcatch - .Lbegin
+    .set     .Lset3eh,.Lcatch - .LnvmCallAndCatchAllBegin
     .long    .Lset3eh                # Landing pad
     .uleb128 1                       # Action
-    .set     .Lset4eh, .LcallEnd - .Lbegin
+    .set     .Lset4eh, .LcalLnvmCallAndCatchAllEnd - .LnvmCallAndCatchAllBegin
     .long    .Lset4eh                # Region start
-    .set     .Lset5eh, .Lend - .LcallEnd
+    .set     .Lset5eh, .LnvmCallAndCatchAllEnd - .LcalLnvmCallAndCatchAllEnd
     .long    .Lset5eh                # Region length
     .long    0                       # Landing pad
     .uleb128 0                       # Action
@@ -132,13 +299,13 @@ GCC_except_table1:
     .long    .Lset7eh                # Length of Frame Information Entry
 .Leh_frame_begin1:
     .long    .Leh_frame_begin1-.Leh_frame_common # FDE CIE offset
-    .long    .Lbegin        # FDE initial location
-    .set     .Lset8eh,.Lend - .Lbegin
+    .long    .LnvmCallAndCatchAllBegin        # FDE initial location
+    .set     .Lset8eh,.LnvmCallAndCatchAllEnd - .LnvmCallAndCatchAllBegin
     .long    .Lset8eh                # FDE address range
     .uleb128 4               # Augmentation size
     .long    .Lexception1            # Language Specific Data Area
     .byte    4                       # CFA_advance_loc4
-    .set    .Lset9eh,.LcallStart - .Lbegin
+    .set    .Lset9eh,.LcallStart - .LnvmCallAndCatchAllBegin
     .long    .Lset9eh
     .byte    14                      # CFA_def_cfa_offset
     .uleb128 16              # Offset

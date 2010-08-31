@@ -106,6 +106,17 @@ public class Compiler {
         out.println("%Env = type opaque");
         out.println("%Class = type opaque");
         out.println("%Object = type opaque");
+        out.println("%GetPutStaticCommon = type {void ()*, i8*, i8*, i8*, i8*}");
+        out.println("%GetStatic = type {void ()*, %GetPutStaticCommon*, %Class**, i8*}");
+        out.println("%PutStatic = type {void ()*, %GetPutStaticCommon*, %Class**, i8*}");
+        out.println("%InvokeVirtualCommon = type {void ()*, i8*, i8*, i8*, i8*, i32}");
+        out.println("%InvokeVirtual = type {void ()*, %InvokeVirtualCommon*, %Class**, i32}");
+        out.println("%InvokeSpecialCommon = type {void ()*, i8*, i8*, i8*, i8*}");
+        out.println("%InvokeSpecial = type {void ()*, %InvokeSpecialCommon*, %Class**}");
+        out.println("%InvokeStaticCommon = type {void ()*, i8*, i8*, i8*, i8*}");
+        out.println("%InvokeStatic = type {void ()*, %InvokeStaticCommon*, %Class**}");
+        out.println("%InvokeInterfaceCommon = type {void ()*, i8*, i8*, i8*, i8*}");
+        out.println("%InvokeInterface = type {void ()*, %InvokeInterfaceCommon*, %Class**}");
         
         out.println("declare %Class* @_nvmBcAllocateClass(%Env*, i8*, i8*, i32, i32, i32)");
         out.println("declare void @_nvmBcAddInterface(%Env*, %Class*, i8*)");
@@ -131,6 +142,9 @@ public class Compiler {
         out.println("declare %Object* @_nvmBcNewStringAscii(%Env*, i8*)");
         out.println("declare %Object* @j_ldc_class(i8*)");
 
+        out.println("declare void @_nvmBcGetStatic()");
+        out.println("declare void @_nvmBcPutStatic()");
+        
         out.println("declare i8* @_nvmBcGetClassFieldGetter(%Env*, i8*, i8*, i8*, %Class*, i8*)");
         out.println("declare i8* @_nvmBcGetClassFieldSetter(%Env*, i8*, i8*, i8*, %Class*, i8*)");
         out.println("declare i8* @_nvmBcGetInstanceFieldGetter(%Env*, i8*, i8*, i8*, %Class*, i8*)");
@@ -141,11 +155,18 @@ public class Compiler {
         out.println("declare i8* @_nvmBcGetAllocateObjectFunction(%Env*, i8*, %Class*, i8*)");
         out.println("declare i8* @_nvmBcGetNativeMethod(%Env*, i8*, i8*, i8*)");
         
-        out.println("declare i8* @_nvmBcGetInvokeStaticFunction(%Env*, i8*, i8*, i8*, %Class*, i8*)");
-        out.println("declare i8* @_nvmBcGetInvokeVirtualFunction(%Env*, i8*, i8*, i8*, %Class*, i8*)");
-        out.println("declare i8* @_nvmBcGetInvokeInterfaceFunction(%Env*, i8*, i8*, i8*, %Class*, i8*)");
-        out.println("declare i8* @_nvmBcGetInvokeSpecialFunction(%Env*, i8*, i8*, i8*, %Class*, i8*)");
-
+        out.println("declare void @_nvmBcResolveGetPutStaticCommon()");
+        out.println("declare void @_nvmBcResolveGetStatic()");
+        out.println("declare void @_nvmBcResolvePutStatic()");
+        
+        out.println("declare void @_nvmBcResolveMethodForInvokeStaticCommon()");
+        out.println("declare void @_nvmBcResolveMethodForInvokeStatic0()");
+        out.println("declare void @_nvmBcResolveMethodForInvokeVirtualCommon()");
+        out.println("declare void @_nvmBcResolveMethodForInvokeVirtual0()");
+        out.println("declare void @_nvmBcResolveMethodForInvokeSpecialCommon()");
+        out.println("declare void @_nvmBcResolveMethodForInvokeSpecial0()");
+        out.println("declare void @_nvmBcResolveMethodForInvokeInterfaceCommon()");
+        out.println("declare void @_nvmBcResolveMethodForInvokeInterface0()");
         
         out.println("declare i32 @j_catch_match(%Object*, %Class*)");
         out.println("declare %Object* @j_get_throwable(i8*)");
@@ -374,45 +395,45 @@ public class Compiler {
                             }
                         }
                         
-                        String function = LlvmMethodCompiler.opcodeNames[n.getOpcode()] + "_" + LlvmUtil.mangleMethod(n.owner, n.name, n.desc);
-                        String lookupMethod = null;
-                        switch (n.getOpcode()) { 
-                        case Opcodes.INVOKESTATIC: 
-                            lookupMethod = "_nvmBcGetInvokeStaticFunction";
-                            break;
-                        case Opcodes.INVOKEVIRTUAL:
-                            lookupMethod = "_nvmBcGetInvokeVirtualFunction";
-                            break;
-                        case Opcodes.INVOKEINTERFACE:
-                            lookupMethod = "_nvmBcGetInvokeInterfaceFunction";
-                            break;
-                        case Opcodes.INVOKESPECIAL:
-                            lookupMethod = "_nvmBcGetInvokeSpecialFunction";
-                            break;
-                        default:
-                            throw new RuntimeException();
-                        }
-                        boolean ztatic = n.getOpcode() == Opcodes.INVOKESTATIC;
-                        String llvmReturnType = LlvmUtil.javaTypeToLlvmType(Type.getReturnType(n.desc));
-                        if (!functions.contains(function)) {
-                            Var env = new Var("env", "%Env*");
-                            out.format("define private %s {\n", LlvmUtil.functionDefinition("_" + function, n.desc, ztatic));
-                            out.format("    %%caller = load %%Class** @clazz\n");
-                            out.format("    %%functionPtr = bitcast %s** @%s to i8*\n", LlvmUtil.functionType(n.desc, ztatic), function);
-                            out.format("    %%tmp0 = call i8* @%s(%%Env* %s, i8* %s, i8* %s, i8* %s, %%Class* %%caller, i8* %%functionPtr)\n",
-                                    lookupMethod, env, LlvmUtil.getStringReference(n.owner),
-                                    LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
-                            out.format("    %%function = bitcast i8* %%tmp0 to %s*\n", LlvmUtil.functionType(n.desc, ztatic));
-                            if (Type.getReturnType(n.desc) == Type.VOID_TYPE) {
-                                out.format("    call void %%function(%s)\n", LlvmUtil.join(LlvmUtil.descToCallArgs(n.desc, ztatic, false)));
-                                out.format("    ret void\n");
-                            } else {
-                                out.format("    %%res = call %s %%function(%s)\n", llvmReturnType, LlvmUtil.join(LlvmUtil.descToCallArgs(n.desc, ztatic, false)));
-                                out.format("    ret %s %%res\n", llvmReturnType);
+                        String prefix = (new String[] {"InvokeVirtual", "InvokeSpecial", "InvokeStatic", "InvokeInterface"})[n.getOpcode() - Opcodes.INVOKEVIRTUAL];
+                        String mangledMethod = LlvmUtil.mangleMethod(n.owner, n.name, n.desc);
+                        String varName = prefix + "_" + mangledMethod;
+                        if (!functions.contains(varName)) {
+                        
+                            switch (n.getOpcode()) { 
+                            case Opcodes.INVOKESTATIC:
+                                out.format("@%s_Common = linker_private global %%InvokeStaticCommon {void ()* @_nvmBcResolveMethodForInvokeStaticCommon, i8* %s, i8* %s, i8* %s, i8* null}\n", 
+                                        varName, LlvmUtil.getStringReference(n.owner), 
+                                        LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
+                                out.format("@%s = private global %%InvokeStatic {void ()* @_nvmBcResolveMethodForInvokeStatic0, %%InvokeStaticCommon* @%s_Common, %%Class** @clazz}\n", 
+                                        varName, varName);
+                                break;
+                            case Opcodes.INVOKEVIRTUAL:
+                                out.format("@%s_Common = linker_private global %%InvokeVirtualCommon {void ()* @_nvmBcResolveMethodForInvokeVirtualCommon, i8* %s, i8* %s, i8* %s, i8* null, i32 0}\n", 
+                                        varName, LlvmUtil.getStringReference(n.owner), 
+                                        LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
+                                out.format("@%s = private global %%InvokeVirtual {void ()* @_nvmBcResolveMethodForInvokeVirtual0, %%InvokeVirtualCommon* @%s_Common, %%Class** @clazz, i32 0}\n", 
+                                        varName, varName);
+                                break;
+                            case Opcodes.INVOKEINTERFACE:
+                                out.format("@%s_Common = linker_private global %%InvokeInterfaceCommon {void ()* @_nvmBcResolveMethodForInvokeInterfaceCommon, i8* %s, i8* %s, i8* %s, i8* null}\n", 
+                                        varName, LlvmUtil.getStringReference(n.owner), 
+                                        LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
+                                out.format("@%s = private global %%InvokeInterface {void ()* @_nvmBcResolveMethodForInvokeInterface0, %%InvokeInterfaceCommon* @%s_Common, %%Class** @clazz}\n", 
+                                        varName, varName);
+                                break;
+                            case Opcodes.INVOKESPECIAL:
+                                out.format("@%s_Common = linker_private global %%InvokeSpecialCommon {void ()* @_nvmBcResolveMethodForInvokeSpecialCommon, i8* %s, i8* %s, i8* %s, i8* null}\n", 
+                                        varName, LlvmUtil.getStringReference(n.owner), 
+                                        LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
+                                out.format("@%s = private global %%InvokeSpecial {void ()* @_nvmBcResolveMethodForInvokeSpecial0, %%InvokeStaticCommon* @%s_Common, %%Class** @clazz}\n", 
+                                        varName, varName);
+                                break;
+                            default:
+                                throw new RuntimeException();
                             }
-                            out.format("}\n");
-                            out.format("@%s = private global %s* @_%s\n", function, LlvmUtil.functionType(n.desc, ztatic), function);
-                            functions.add(function);
+                            
+                            functions.add(varName);
                         }
                     }
                 }

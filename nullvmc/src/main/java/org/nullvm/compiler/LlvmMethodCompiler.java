@@ -270,41 +270,41 @@ public class LlvmMethodCompiler {
             
             Set<String> accessors = new HashSet<String>();
             for (AbstractInsnNode insn = methodNode.instructions.getFirst(); insn != null; insn = insn.getNext()) {
-                if (insn instanceof FieldInsnNode) {
-                    FieldInsnNode n = (FieldInsnNode) insn;
-                    String fieldName = LlvmUtil.mangleString(n.owner) + "_" + LlvmUtil.mangleString(n.name) + "__" + LlvmUtil.mangleString(n.desc);
-                    String llvmType = LlvmUtil.javaTypeToLlvmType(Type.getType(n.desc));
-
-                    if (n.getOpcode() == Opcodes.PUTSTATIC) {
-                        String setter = "PUTSTATIC_" + fieldName;
-                        if (!accessors.contains(setter)) {
-                            Var v = new Var(setter, String.format("void (%%Env*, %s)*", llvmType));
-                            out.format("    %s = load %s* @%s\n", v, v.getType(), setter);
-                            accessors.add(setter);
-                        }
-                    } else if (n.getOpcode() == Opcodes.GETSTATIC) {
-                        String getter = "GETSTATIC_" + fieldName;
-                        if (!accessors.contains(getter)) {
-                            Var v = new Var(getter, String.format("%s (%%Env*)*", llvmType));
-                            out.format("    %s = load %s* @%s\n", v, v.getType(), getter);
-                            accessors.add(getter);
-                        }
-                    } else if (n.getOpcode() == Opcodes.PUTFIELD) {
-                        String setter = "PUTFIELD_" + fieldName;
-                        if (!accessors.contains(setter)) {
-                            Var v = new Var(setter, String.format("void (%%Env*, %%Object*, %s)*", llvmType));
-                            out.format("    %s = load %s* @%s\n", v, v.getType(), setter);
-                            accessors.add(setter);
-                        }
-                    } else if (n.getOpcode() == Opcodes.GETFIELD) {
-                        String getter = "GETFIELD_" + fieldName;
-                        if (!accessors.contains(getter)) {
-                            Var v = new Var(getter, String.format("%s (%%Env*, %%Object*)*", llvmType));
-                            out.format("    %s = load %s* @%s\n", v, v.getType(), getter);
-                            accessors.add(getter);
-                        }
-                    }
-                }
+//                if (insn instanceof FieldInsnNode) {
+//                    FieldInsnNode n = (FieldInsnNode) insn;
+//                    String fieldName = LlvmUtil.mangleString(n.owner) + "_" + LlvmUtil.mangleString(n.name) + "__" + LlvmUtil.mangleString(n.desc);
+//                    String llvmType = LlvmUtil.javaTypeToLlvmType(Type.getType(n.desc));
+//
+//                    if (n.getOpcode() == Opcodes.PUTSTATIC) {
+//                        String setter = "PUTSTATIC_" + fieldName;
+//                        if (!accessors.contains(setter)) {
+//                            Var v = new Var(setter, String.format("void (%%Env*, %s)*", llvmType));
+//                            out.format("    %s = load %s* @%s\n", v, v.getType(), setter);
+//                            accessors.add(setter);
+//                        }
+//                    } else if (n.getOpcode() == Opcodes.GETSTATIC) {
+//                        String getter = "GETSTATIC_" + fieldName;
+//                        if (!accessors.contains(getter)) {
+//                            Var v = new Var(getter, String.format("%s (%%Env*)*", llvmType));
+//                            out.format("    %s = load %s* @%s\n", v, v.getType(), getter);
+//                            accessors.add(getter);
+//                        }
+//                    } else if (n.getOpcode() == Opcodes.PUTFIELD) {
+//                        String setter = "PUTFIELD_" + fieldName;
+//                        if (!accessors.contains(setter)) {
+//                            Var v = new Var(setter, String.format("void (%%Env*, %%Object*, %s)*", llvmType));
+//                            out.format("    %s = load %s* @%s\n", v, v.getType(), setter);
+//                            accessors.add(setter);
+//                        }
+//                    } else if (n.getOpcode() == Opcodes.GETFIELD) {
+//                        String getter = "GETFIELD_" + fieldName;
+//                        if (!accessors.contains(getter)) {
+//                            Var v = new Var(getter, String.format("%s (%%Env*, %%Object*)*", llvmType));
+//                            out.format("    %s = load %s* @%s\n", v, v.getType(), getter);
+//                            accessors.add(getter);
+//                        }
+//                    }
+//                }
             }
             
             // Allocate storage for the lengths array of any MULTIANEWARRAY instruction
@@ -396,7 +396,7 @@ public class LlvmMethodCompiler {
                         out.format("    %s = load %s* %s\n", throwable, throwablePtr.getType(), throwablePtr);
                         setFrame(handler.getFrame());
                         stack.pop(); // Remove top of stack to make room for the actual throwable
-                        push(throwable);
+                        push1(throwable);
                         out.format("    br label %%%s\n", handler.getLabel());
                         
                         out.format("%sNot%s:\n", lpad.getLabel(), LlvmUtil.mangleString(type));
@@ -458,7 +458,7 @@ public class LlvmMethodCompiler {
             return new Var(name + "_" + tmpCounter++, type);
         }
         
-        private Var pop(String tmpVarName) {
+        private Var pop1(String tmpVarName) {
             Var v = stack.pop();
             Var tmp = tmp(tmpVarName, v.getType());
             out.format("    %s = load %s* %s\n", tmp, v.getType(), v);
@@ -477,7 +477,7 @@ public class LlvmMethodCompiler {
             return stack.peek() != null;
         }
         
-        private void push(Var var) {
+        private void push1(Var var) {
             Var v = new Var("s" + stack.size(), var.getType());
             stack.push(v);
             out.format("    store %s %s, %s* %s\n", var.getType(), var, var.getType(), v);
@@ -564,7 +564,7 @@ public class LlvmMethodCompiler {
             
             Var val = null;
             if (opcode == Opcodes.PUTSTATIC || opcode == Opcodes.PUTFIELD) {
-                val = t.getSize() == 2 ? pop2("val") : pop("val");
+                val = t.getSize() == 2 ? pop2("val") : pop1("val");
                 if (t.getSort() == Type.BOOLEAN || t.getSort() == Type.BYTE) {
                     Var tmp = tmp(val.getName(), "i8");
                     out.format("    %s = trunc i32 %s to i8\n", tmp, val);
@@ -578,29 +578,65 @@ public class LlvmMethodCompiler {
             
             Var obj = null;
             if (!ztatic) {
-                obj = pop("obj");
+                obj = pop1("obj");
                 checkNull(obj);
             }
             
             Var env = new Var("env", "%Env*");
             Var res = null;
             String fieldName = LlvmUtil.mangleString(owner) + "_" + LlvmUtil.mangleString(name) + "__" + LlvmUtil.mangleString(desc);
+            String prefix = (new String[] {"GetStatic", "PutStatic", "GetField", "PutField"})[opcode - Opcodes.GETSTATIC];
+            String varName = prefix + "_" + fieldName;
+
+            String ftype = "";
+            switch (opcode) {
+            case Opcodes.GETSTATIC:
+                ftype = String.format("%s (i8*, %%Env*)*", llvmType);
+                break;
+            case Opcodes.PUTSTATIC:
+                ftype = String.format("void (i8*, %%Env*, %s)*", llvmType);
+                break;
+            case Opcodes.GETFIELD:
+                ftype = String.format("%s (i8*, %%Env*, %%Object*)*", llvmType);
+                break;
+            case Opcodes.PUTFIELD:
+                ftype = String.format("void (i8*, %%Env*, %%Object*, %s)*", llvmType);
+                break;
+            }
+            Var resolveInfoI8 = tmp("resolveInfoI8", "i8*");
+            out.format("    %s = bitcast %%%s* @%s to i8*\n", resolveInfoI8, prefix, varName);
+            Var fptr = tmp("fptr", ftype + "*");
+            out.format("    %s = bitcast %%%s* @%s to %s\n", fptr, prefix, varName, fptr.getType());
+            Var f = tmp("f", ftype);
+            out.format("    %s = load %s %s\n", f, fptr.getType(), fptr);
             
             if (opcode == Opcodes.GETSTATIC) {
-                Var v = new Var("GETSTATIC_" + fieldName, String.format("%s (%%Env*)*", llvmType));
                 res = tmp("res", llvmType);
-                out.format("    %s = call %s %s(%%Env* %s)\n", res, llvmType, v, env);
+                out.format("    %s = call %s %s(i8* %s, %%Env* %s)\n", res, llvmType, f, resolveInfoI8, env);
             } else if (opcode == Opcodes.PUTSTATIC) {
-                Var v = new Var("PUTSTATIC_" + fieldName, String.format("void (%%Env*, %s)*", llvmType));
-                out.format("    call void %s(%%Env* %s, %s %s)\n", v, env, llvmType, val);
+                out.format("    call void %s(i8* %s, %%Env* %s, %s %s)\n", f, resolveInfoI8, env, llvmType, val);
             } else if (opcode == Opcodes.GETFIELD) {
-                Var v = new Var("GETFIELD_" + fieldName, String.format("%s (%%Env*, %%Object*)*", llvmType));
                 res = tmp("res", llvmType);
-                out.format("    %s = call %s %s(%%Env* %s, %%Object* %s)\n", res, llvmType, v, env, obj);
+                out.format("    %s = call %s %s(i8* %s, %%Env* %s, %%Object* %s)\n", res, llvmType, f, resolveInfoI8, env, obj);
             } else if (opcode == Opcodes.PUTFIELD) {
-                Var v = new Var("PUTFIELD_" + fieldName, String.format("void (%%Env*, %%Object*, %s)*", llvmType));
-                out.format("    call void %s(%%Env* %s, %%Object* %s, %s %s)\n", v, env, obj, llvmType, val);
+                out.format("    call void %s(i8* %s, %%Env* %s, %%Object* %s, %s %s)\n", f, resolveInfoI8, env, obj, llvmType, val);
             }
+//            
+//            if (opcode == Opcodes.GETSTATIC) {
+//                Var v = new Var("GETSTATIC_" + fieldName, String.format("%s (%%Env*)*", llvmType));
+//                res = tmp("res", llvmType);
+//                out.format("    %s = call %s %s(%%Env* %s)\n", res, llvmType, v, env);
+//            } else if (opcode == Opcodes.PUTSTATIC) {
+//                Var v = new Var("PUTSTATIC_" + fieldName, String.format("void (%%Env*, %s)*", llvmType));
+//                out.format("    call void %s(%%Env* %s, %s %s)\n", v, env, llvmType, val);
+//            } else if (opcode == Opcodes.GETFIELD) {
+//                Var v = new Var("GETFIELD_" + fieldName, String.format("%s (%%Env*, %%Object*)*", llvmType));
+//                res = tmp("res", llvmType);
+//                out.format("    %s = call %s %s(%%Env* %s, %%Object* %s)\n", res, llvmType, v, env, obj);
+//            } else if (opcode == Opcodes.PUTFIELD) {
+//                Var v = new Var("PUTFIELD_" + fieldName, String.format("void (%%Env*, %%Object*, %s)*", llvmType));
+//                out.format("    call void %s(%%Env* %s, %%Object* %s, %s %s)\n", v, env, obj, llvmType, val);
+//            }
             
             if (res != null) {
                 if (t.getSort() == Type.BOOLEAN || t.getSort() == Type.CHAR) {
@@ -615,7 +651,7 @@ public class LlvmMethodCompiler {
                 if (t.getSize() == 2) {
                     push2(res);
                 } else {
-                    push(res);
+                    push1(res);
                 }
             }
 
@@ -674,7 +710,7 @@ public class LlvmMethodCompiler {
             case Opcodes.ICONST_5: {
                 Var res = tmpi("res");
                 out.format("    %s = bitcast i32 %d to i32\n", res, opcode - Opcodes.ICONST_0);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.LCONST_0:
@@ -689,7 +725,7 @@ public class LlvmMethodCompiler {
             case Opcodes.FCONST_2: {
                 Var res = tmpf("res");
                 out.format("    %s = bitcast float %f to float\n", res, (float)  (opcode - Opcodes.FCONST_0));
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.DCONST_0:
@@ -700,11 +736,11 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.IADD: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var res = tmpi("res");
                 out.format("    %s = add i32 %s, %s\n", res, op2, op1);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.LADD: {
@@ -716,11 +752,11 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.FADD: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var res = tmpf("res");
                 out.format("    %s = add float %s, %s\n", res, op2, op1);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.DADD: {
@@ -732,11 +768,11 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.ISUB: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var res = tmpi("res");
                 out.format("    %s = sub i32 %s, %s\n", res, op2, op1);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.LSUB: {
@@ -748,11 +784,11 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.FSUB: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var res = tmpf("res");
                 out.format("    %s = sub float %s, %s\n", res, op2, op1);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.DSUB: {
@@ -764,11 +800,11 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.IMUL: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var res = tmpi("res");
                 out.format("    %s = mul i32 %s, %s\n", res, op2, op1);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.LMUL: {
@@ -780,11 +816,11 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.FMUL: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var res = tmpf("res");
                 out.format("    %s = mul float %s, %s\n", res, op2, op1);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.DMUL: {
@@ -797,11 +833,11 @@ public class LlvmMethodCompiler {
             }
             case Opcodes.IDIV: {
                 // TODO: Throw java.lang.ArithmeticException on division by zero
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var res = tmpi("res");
                 out.format("    %s = sdiv i32 %s, %s\n", res, op2, op1);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.LDIV: {
@@ -814,11 +850,11 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.FDIV: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var res = tmpf("res");
                 out.format("    %s = fdiv float %s, %s\n", res, op2, op1);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.DDIV: {
@@ -831,11 +867,11 @@ public class LlvmMethodCompiler {
             }
             case Opcodes.IREM: {
                 // TODO: Throw java.lang.ArithmeticException on division by zero
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var res = tmpi("res");
                 out.format("    %s = srem i32 %s, %s\n", res, op2, op1);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.LREM: {
@@ -848,11 +884,11 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.FREM: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var res = tmpf("res");
                 out.format("    %s = frem float %s, %s\n", res, op2, op1);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.DREM: {
@@ -864,10 +900,10 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.INEG: {
-                Var op = pop("op");
+                Var op = pop1("op");
                 Var res = tmpi("res");
                 out.format("    %s = sub i32 0, %s\n", res, op);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.LNEG: {
@@ -878,14 +914,14 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.FNEG: {
-                Var op = pop("op");
+                Var op = pop1("op");
                 Var tmp1 = tmpf("tmp1");
                 Var tmp2 = tmpf("tmp2");
                 Var res = tmpf("res");
                 out.format("    %s = bitcast float %s to i32\n", tmp1, op);
                 out.format("    %s = xor i32 %s, %d\n", tmp2, tmp1, 0x80000000);
                 out.format("    %s = bitcast i32 %s to float\n", res, tmp2);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.DNEG: {
@@ -900,17 +936,17 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.ISHL: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var tmp = tmpi("tmp");
                 Var res = tmpi("res");
                 out.format("    %s = and i32 31, %s\n", tmp, op1);
                 out.format("    %s = shl i32 %s, %s\n", res, op2, tmp);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.LSHL: {
-                Var op1 = pop("op1");
+                Var op1 = pop1("op1");
                 Var op2 = pop2("op2");
                 Var tmp1 = tmpi("tmp1");
                 Var tmp2 = tmpl("tmp2");
@@ -922,17 +958,17 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.ISHR: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var tmp = tmpi("tmp");
                 Var res = tmpi("res");
                 out.format("    %s = and i32 31, %s\n", tmp, op1);
                 out.format("    %s = ashr i32 %s, %s\n", res, op2, tmp);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.LSHR: {
-                Var op1 = pop("op1");
+                Var op1 = pop1("op1");
                 Var op2 = pop2("op2");
                 Var tmp1 = tmpi("tmp1");
                 Var tmp2 = tmpl("tmp1");
@@ -944,17 +980,17 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.IUSHR: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var tmp = tmpi("tmp");
                 Var res = tmpi("res");
                 out.format("    %s = and i32 31, %s\n", tmp, op1);
                 out.format("    %s = lshr i32 %s, %s\n", res, op2, tmp);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.LUSHR: {
-                Var op1 = pop("op1");
+                Var op1 = pop1("op1");
                 Var op2 = pop2("op2");
                 Var tmp1 = tmpi("tmp1");
                 Var tmp2 = tmpl("tmp2");
@@ -966,11 +1002,11 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.IAND: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var res = tmpi("res");
                 out.format("    %s = and i32 %s, %s\n", res, op2, op1);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.LAND: {
@@ -982,11 +1018,11 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.IOR: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var res = tmpi("res");
                 out.format("    %s = or i32 %s, %s\n", res, op2, op1);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.LOR: {
@@ -998,11 +1034,11 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.IXOR: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var res = tmpi("res");
                 out.format("    %s = xor i32 %s, %s\n", res, op2, op1);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.LXOR: {
@@ -1015,7 +1051,7 @@ public class LlvmMethodCompiler {
             }
             case Opcodes.IRETURN: {
                 Type retType = Type.getReturnType(methodNode.desc);
-                Var op = pop("op");
+                Var op = pop1("op");
                 if (retType.getSort() != Type.INT) {
                     Var tmp = tmp("tmp", LlvmUtil.javaTypeToLlvmType(retType));;
                     out.format("    %s = trunc i32 %s to %s\n", tmp, op, LlvmUtil.javaTypeToLlvmType(retType));
@@ -1031,7 +1067,7 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.FRETURN: {
-                Var op = pop("op");
+                Var op = pop1("op");
                 out.format("    ret float %s\n", op);
                 break;
             }
@@ -1041,48 +1077,48 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.I2L: {
-                Var op = pop("op");
+                Var op = pop1("op");
                 Var res = tmpl("tmp");
                 out.format("    %s = sext i32 %s to i64\n", res, op);
                 push2(res);
                 break;
             }
             case Opcodes.I2B: {
-                Var op = pop("op");
+                Var op = pop1("op");
                 Var tmp = tmp("tmp", "i8");
                 Var res = tmpi("res");
                 out.format("    %s = trunc i32 %s to i8\n", tmp, op);
                 out.format("    %s = sext i8 %s to i32\n", res, tmp);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.I2C: {
-                Var op = pop("op");
+                Var op = pop1("op");
                 Var tmp = tmp("tmp", "i16");
                 Var res = tmpi("res");
                 out.format("    %s = trunc i32 %s to i16\n", tmp, op);
                 out.format("    %s = zext i16 %s to i32\n", res, tmp);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.I2S: {
-                Var op = pop("op");
+                Var op = pop1("op");
                 Var tmp = tmp("tmp", "i16");
                 Var res = tmpi("res");
                 out.format("    %s = trunc i32 %s to i16\n", tmp, op);
                 out.format("    %s = sext i16 %s to i32\n", res, tmp);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.I2F: {
-                Var op = pop("op");
+                Var op = pop1("op");
                 Var res = tmpf("res");
                 out.format("    %s = sitofp i32 %s to float\n", res, op);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.I2D: {
-                Var op = pop("op");
+                Var op = pop1("op");
                 Var res = tmpd("res");
                 out.format("    %s = sitofp i32 %s to double\n", res, op);
                 push2(res);
@@ -1092,14 +1128,14 @@ public class LlvmMethodCompiler {
                 Var op = pop2("op");
                 Var res = tmpi("res");
                 out.format("    %s = trunc i64 %s to i32\n", res, op);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.L2F: {
                 Var op = pop2("op");
                 Var res = tmpf("res");
                 out.format("    %s = sitofp i64 %s to float\n", res, op);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.L2D: {
@@ -1110,7 +1146,7 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.F2I: {
-                Var op = pop("op");
+                Var op = pop1("op");
                 Var eq = tmp("eq", "i1");
                 Var pinf = tmp("pinf", "i1");
                 Var ninf = tmp("ninf", "i1");
@@ -1125,11 +1161,11 @@ public class LlvmMethodCompiler {
                 out.format("    %s = select i1 %s, i32 %s, i32 %d\n", tmp1, eq, fptosi, 0);
                 out.format("    %s = select i1 %s, i32 %d, i32 %s\n", tmp2, pinf, Integer.MAX_VALUE, tmp1);
                 out.format("    %s = select i1 %s, i32 %d, i32 %s\n", res, ninf, Integer.MIN_VALUE, tmp2);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.F2L: {
-                Var op = pop("op");
+                Var op = pop1("op");
                 Var eq = tmp("eq", "i1");
                 Var pinf = tmp("pinf", "i1");
                 Var ninf = tmp("ninf", "i1");
@@ -1148,7 +1184,7 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.F2D: {
-                Var op = pop("op");
+                Var op = pop1("op");
                 Var res = tmpd("res");
                 out.format("    %s = fpext float %s to double\n", res, op);
                 push2(res);
@@ -1170,7 +1206,7 @@ public class LlvmMethodCompiler {
                 out.format("    %s = select i1 %s, i32 %s, i32 %d\n", tmp1, eq, fptosi, 0);
                 out.format("    %s = select i1 %s, i32 %d, i32 %s\n", tmp2, pinf, Integer.MAX_VALUE, tmp1);
                 out.format("    %s = select i1 %s, i32 %d, i32 %s\n", res, ninf, Integer.MIN_VALUE, tmp2);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.D2L: {
@@ -1196,7 +1232,7 @@ public class LlvmMethodCompiler {
                 Var op = pop2("op");
                 Var res = tmpf("res");
                 out.format("    %s = fptrunc double %s to float\n", res, op);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.LCMP: {
@@ -1212,12 +1248,12 @@ public class LlvmMethodCompiler {
                 out.format("    %s = zext i1 %s to i32\n", tmp3, tmp1);
                 out.format("    %s = zext i1 %s to i32\n", tmp4, tmp2);
                 out.format("    %s = sub i32 %s, %s\n", res, tmp4, tmp3);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.FCMPL: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var ugt = tmp("ugt", "i1"); // 1 if op1 > op2 or either is NaN
                 Var olt = tmp("olt", "i1"); // 1 if op1 < op2
                 Var ugt32 = tmpi("ugt32");
@@ -1228,12 +1264,12 @@ public class LlvmMethodCompiler {
                 out.format("    %s = zext i1 %s to i32\n", ugt32, ugt);
                 out.format("    %s = zext i1 %s to i32\n", olt32, olt);
                 out.format("    %s = sub i32 %s, %s\n", res, olt32, ugt32);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.FCMPG: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var ogt = tmp("ogt", "i1"); // 1 if op1 > op2
                 Var ult = tmp("ult", "i1"); // 1 if op1 < op2 or either is NaN
                 Var ogt32 = tmpi("ogt32");
@@ -1244,7 +1280,7 @@ public class LlvmMethodCompiler {
                 out.format("    %s = zext i1 %s to i32\n", ogt32, ogt);
                 out.format("    %s = zext i1 %s to i32\n", ult32, ult);
                 out.format("    %s = sub i32 %s, %s\n", res, ult32, ogt32);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.DCMPL: {
@@ -1260,7 +1296,7 @@ public class LlvmMethodCompiler {
                 out.format("    %s = zext i1 %s to i32\n", ugt32, ugt);
                 out.format("    %s = zext i1 %s to i32\n", olt32, olt);
                 out.format("    %s = sub i32 %s, %s\n", res, olt32, ugt32);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.DCMPG: {
@@ -1276,47 +1312,47 @@ public class LlvmMethodCompiler {
                 out.format("    %s = zext i1 %s to i32\n", ogt32, ogt);
                 out.format("    %s = zext i1 %s to i32\n", ult32, ult);
                 out.format("    %s = sub i32 %s, %s\n", res, ult32, ogt32);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.RETURN:
                 out.println("    ret void");
                 break;
             case Opcodes.ARETURN: {
-                Var op = pop("op");
+                Var op = pop1("op");
                 out.format("    ret %%Object* %s\n", op);
                 break;
             }
             case Opcodes.ACONST_NULL: {
                 Var res = tmpr("res");
                 out.format("    %s = inttoptr i32 0 to %%Object*\n", res);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.ARRAYLENGTH: {
-                Var o = pop("o");
+                Var o = pop1("o");
                 Var res = tmpi("res");
                 checkNull(o);
                 out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", res, o);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.IALOAD: {
-                Var index = pop("index");
-                Var o = pop("o");
+                Var index = pop1("index");
+                Var o = pop1("o");
                 Var res = tmpi("res");
                 checkNull(o);
                 Var length = tmpi("length");
                 out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
                 out.format("    %s = call i32 @j_iaload(%%Object* %s, i32 %s)\n", res, o, index);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.IASTORE: {
-                Var value = pop("value");
-                Var index = pop("index");
-                Var o = pop("o");
+                Var value = pop1("value");
+                Var index = pop1("index");
+                Var o = pop1("o");
                 checkNull(o);
                 Var length = tmpi("length");
                 out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
@@ -1325,21 +1361,21 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.FALOAD: {
-                Var index = pop("index");
-                Var o = pop("o");
+                Var index = pop1("index");
+                Var o = pop1("o");
                 Var res = tmpf("res");
                 checkNull(o);
                 Var length = tmpi("length");
                 out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
                 out.format("    %s = call float @j_faload(%%Object* %s, i32 %s)\n", res, o, index);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.FASTORE: {
-                Var value = pop("value");
-                Var index = pop("index");
-                Var o = pop("o");
+                Var value = pop1("value");
+                Var index = pop1("index");
+                Var o = pop1("o");
                 checkNull(o);
                 Var length = tmpi("length");
                 out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
@@ -1348,21 +1384,21 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.BALOAD: {
-                Var index = pop("index");
-                Var o = pop("o");
+                Var index = pop1("index");
+                Var o = pop1("o");
                 Var res = tmpi("res");
                 checkNull(o);
                 Var length = tmpi("length");
                 out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
                 out.format("    %s = call i32 @j_baload(%%Object* %s, i32 %s)\n", res, o, index);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.BASTORE: {
-                Var value = pop("value");
-                Var index = pop("index");
-                Var o = pop("o");
+                Var value = pop1("value");
+                Var index = pop1("index");
+                Var o = pop1("o");
                 checkNull(o);
                 Var length = tmpi("length");
                 out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
@@ -1371,21 +1407,21 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.CALOAD: {
-                Var index = pop("index");
-                Var o = pop("o");
+                Var index = pop1("index");
+                Var o = pop1("o");
                 Var res = tmpi("res");
                 checkNull(o);
                 Var length = tmpi("length");
                 out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
                 out.format("    %s = call i32 @j_caload(%%Object* %s, i32 %s)\n", res, o, index);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.CASTORE: {
-                Var value = pop("value");
-                Var index = pop("index");
-                Var o = pop("o");
+                Var value = pop1("value");
+                Var index = pop1("index");
+                Var o = pop1("o");
                 checkNull(o);
                 Var length = tmpi("length");
                 out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
@@ -1394,21 +1430,21 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.SALOAD: {
-                Var index = pop("index");
-                Var o = pop("o");
+                Var index = pop1("index");
+                Var o = pop1("o");
                 Var res = tmpi("res");
                 checkNull(o);
                 Var length = tmpi("length");
                 out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
                 out.format("    %s = call i32 @j_saload(%%Object* %s, i32 %s)\n", res, o, index);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.SASTORE: {
-                Var value = pop("value");
-                Var index = pop("index");
-                Var o = pop("o");
+                Var value = pop1("value");
+                Var index = pop1("index");
+                Var o = pop1("o");
                 checkNull(o);
                 Var length = tmpi("length");
                 out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
@@ -1417,8 +1453,8 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.LALOAD: {
-                Var index = pop("index");
-                Var o = pop("o");
+                Var index = pop1("index");
+                Var o = pop1("o");
                 Var res = tmpl("res");
                 checkNull(o);
                 Var length = tmpi("length");
@@ -1430,8 +1466,8 @@ public class LlvmMethodCompiler {
             }
             case Opcodes.LASTORE: {
                 Var value = pop2("value");
-                Var index = pop("index");
-                Var o = pop("o");
+                Var index = pop1("index");
+                Var o = pop1("o");
                 checkNull(o);
                 Var length = tmpi("length");
                 out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
@@ -1440,8 +1476,8 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.DALOAD: {
-                Var index = pop("index");
-                Var o = pop("o");
+                Var index = pop1("index");
+                Var o = pop1("o");
                 Var res = tmpd("res");
                 checkNull(o);
                 Var length = tmpi("length");
@@ -1453,8 +1489,8 @@ public class LlvmMethodCompiler {
             }
             case Opcodes.DASTORE: {
                 Var value = pop2("value");
-                Var index = pop("index");
-                Var o = pop("o");
+                Var index = pop1("index");
+                Var o = pop1("o");
                 checkNull(o);
                 Var length = tmpi("length");
                 out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
@@ -1463,22 +1499,22 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.AALOAD: {
-                Var index = pop("index");
-                Var o = pop("o");
+                Var index = pop1("index");
+                Var o = pop1("o");
                 Var res = tmpr("res");
                 checkNull(o);
                 Var length = tmpi("length");
                 out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
                 checkBounds(length, index);
                 out.format("    %s = call %%Object* @j_aaload(%%Object* %s, i32 %s)\n", res, o, index);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.AASTORE: {
                 // TODO: throw ArrayStoreException if value is not compatible with type of array
-                Var value = pop("value");
-                Var index = pop("index");
-                Var o = pop("o");
+                Var value = pop1("value");
+                Var index = pop1("index");
+                Var o = pop1("o");
                 checkNull(o);
                 Var length = tmpi("length");
                 out.format("    %s = call i32 @j_arraylength(%%Object* %s)\n", length, o);
@@ -1487,7 +1523,7 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.POP:
-                pop("op");
+                pop1("op");
                 out.println("    ; pop");
                 break;
             case Opcodes.POP2:
@@ -1495,52 +1531,52 @@ public class LlvmMethodCompiler {
                 out.println("    ; pop2");
                 break;
             case Opcodes.SWAP: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
-                push(op1);
-                push(op2);
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
+                push1(op1);
+                push1(op2);
                 break;
             }                
             case Opcodes.DUP: {
-                Var op = pop("op");
-                push(op);
-                push(op);
+                Var op = pop1("op");
+                push1(op);
+                push1(op);
                 break;
             }
             case Opcodes.DUP_X1: {
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
-                push(op1);
-                push(op2);
-                push(op1);
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
+                push1(op1);
+                push1(op2);
+                push1(op1);
                 break;
             }
             case Opcodes.DUP_X2: {
-                Var op1 = pop("op1");
+                Var op1 = pop1("op1");
                 if (isSingleWordOnTopOfStack()) {
-                    Var op2 = pop("op2");
-                    Var op3 = pop("op3");
-                    push(op1);
-                    push(op3);
-                    push(op2);
-                    push(op1);
+                    Var op2 = pop1("op2");
+                    Var op3 = pop1("op3");
+                    push1(op1);
+                    push1(op3);
+                    push1(op2);
+                    push1(op1);
                 } else {
                     Var op2 = pop2("op2");
-                    push(op1);
+                    push1(op1);
                     push2(op2);
-                    push(op1);
+                    push1(op1);
                 }
                 break;
             }
             case Opcodes.DUP2: {
                 if (isSingleWordOnTopOfStack()) {
                     // Single slot values on stack
-                    Var op1 = pop("op1");
-                    Var op2 = pop("op2");
-                    push(op2);
-                    push(op1);
-                    push(op2);
-                    push(op1);
+                    Var op1 = pop1("op1");
+                    Var op2 = pop1("op2");
+                    push1(op2);
+                    push1(op1);
+                    push1(op2);
+                    push1(op1);
                 } else {
                     Var op = pop2("op");
                     push2(op);
@@ -1551,19 +1587,19 @@ public class LlvmMethodCompiler {
             case Opcodes.DUP2_X1: {
                 if (isSingleWordOnTopOfStack()) {
                     // Single slot values on stack
-                    Var op1 = pop("op1");
-                    Var op2 = pop("op2");
-                    Var op3 = pop("op3");
-                    push(op2);
-                    push(op1);
-                    push(op3);
-                    push(op2);
-                    push(op1);
+                    Var op1 = pop1("op1");
+                    Var op2 = pop1("op2");
+                    Var op3 = pop1("op3");
+                    push1(op2);
+                    push1(op1);
+                    push1(op3);
+                    push1(op2);
+                    push1(op1);
                 } else {
                     Var op1 = pop2("op1");
-                    Var op2 = pop("op2");
+                    Var op2 = pop1("op2");
                     push2(op1);
-                    push(op2);
+                    push1(op2);
                     push2(op1);
                 }
                 break;
@@ -1571,33 +1607,33 @@ public class LlvmMethodCompiler {
             case Opcodes.DUP2_X2: {
                 if (isSingleWordOnTopOfStack()) {
                     // Single slot values on stack
-                    Var op1 = pop("op1");
-                    Var op2 = pop("op2");
+                    Var op1 = pop1("op1");
+                    Var op2 = pop1("op2");
                     if (isSingleWordOnTopOfStack()) {
-                        Var op3 = pop("op3");
-                        Var op4 = pop("op4");
-                        push(op2);
-                        push(op1);
-                        push(op4);
-                        push(op3);
-                        push(op2);
-                        push(op1);
+                        Var op3 = pop1("op3");
+                        Var op4 = pop1("op4");
+                        push1(op2);
+                        push1(op1);
+                        push1(op4);
+                        push1(op3);
+                        push1(op2);
+                        push1(op1);
                     } else {
                         Var op3 = pop2("op3");
-                        push(op2);
-                        push(op1);
+                        push1(op2);
+                        push1(op1);
                         push2(op3);
-                        push(op2);
-                        push(op1);
+                        push1(op2);
+                        push1(op1);
                     }
                 } else {
                     Var op1 = pop2("op1");
                     if (isSingleWordOnTopOfStack()) {
-                        Var op2 = pop("op2");
-                        Var op3 = pop("op3");
+                        Var op2 = pop1("op2");
+                        Var op3 = pop1("op3");
                         push2(op1);
-                        push(op3);
-                        push(op2);
+                        push1(op3);
+                        push1(op2);
                         push2(op1);
                     } else {
                         Var op2 = pop2("op2");
@@ -1609,7 +1645,7 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.ATHROW: {
-                Var throwable = pop("throwable");
+                Var throwable = pop1("throwable");
                 checkNull(throwable);
                 if (currentTryCatchBlocks.isEmpty()) {
                     out.format("    call void @_nvmBcThrow(%%Env* %s, %%Object* %s)\n", new Var("env", "%Env*"), throwable);
@@ -1621,13 +1657,13 @@ public class LlvmMethodCompiler {
                 break;
             }
             case Opcodes.MONITORENTER: {
-                Var o = pop("o");
+                Var o = pop1("o");
                 checkNull(o);
                 out.format("    call void @j_monitorenter(%%Object* %s)\n", o);
                 break;
             }
             case Opcodes.MONITOREXIT: {
-                Var o = pop("o");
+                Var o = pop1("o");
                 checkNull(o);
                 out.format("    call void @j_monitorexit(%%Object* %s)\n", o);
                 break;
@@ -1643,12 +1679,12 @@ public class LlvmMethodCompiler {
             case Opcodes.SIPUSH: {
                 Var res = tmpi("res");
                 out.format("    %s = bitcast i32 %d to i32\n", res, operand);
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.NEWARRAY: {
                 String[] types = {"Boolean", "Char", "Float", "Double", "Byte", "Short", "Int", "Long"};
-                Var length = pop("length");
+                Var length = pop1("length");
                 Var res = tmpr("res");
                 if (currentTryCatchBlocks.isEmpty()) {
                     out.format("    %s = call %%Object* @_nvmBcNew%sArray(%%Env* %s, i32 %s)\n", 
@@ -1659,7 +1695,7 @@ public class LlvmMethodCompiler {
                             res, types[operand - Opcodes.T_BOOLEAN], new Var("env", "%Env*"), length, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
-                push(res);
+                push1(res);
                 break;
             }
             default:
@@ -1670,7 +1706,7 @@ public class LlvmMethodCompiler {
         public void visitJumpInsn(int opcode, Label label) {
             if (opcode >= Opcodes.IFEQ && opcode <= Opcodes.IFLE) {
                 String operator = (new String[] {"eq", "ne", "slt", "sge", "sgt", "sle"})[opcode - Opcodes.IFEQ];
-                Var op = pop("op");
+                Var op = pop1("op");
                 Var cond = tmp("cond", "i1");
                 String falseLabel = cond.getName() + "False";
                 out.format("    %s = icmp %s i32 %s, 0\n", cond, operator, op);
@@ -1678,8 +1714,8 @@ public class LlvmMethodCompiler {
                 out.format("%s:\n", falseLabel);
             } else if (opcode >= Opcodes.IF_ICMPEQ && opcode <= Opcodes.IF_ICMPLE) {
                 String operator = (new String[] {"eq", "ne", "slt", "sge", "sgt", "sle"})[opcode - Opcodes.IF_ICMPEQ];
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var cond = tmp("cond", "i1");
                 String falseLabel = cond.getName() + "False";
                 out.format("    %s = icmp %s i32 %s, %s\n", cond, operator, op2, op1);
@@ -1687,8 +1723,8 @@ public class LlvmMethodCompiler {
                 out.format("%s:\n", falseLabel);
             } else if (opcode >= Opcodes.IF_ACMPEQ && opcode <= Opcodes.IF_ACMPNE) {
                 String operator = (new String[] {"eq", "ne"})[opcode - Opcodes.IF_ACMPEQ];
-                Var op1 = pop("op1");
-                Var op2 = pop("op2");
+                Var op1 = pop1("op1");
+                Var op2 = pop1("op2");
                 Var cond = tmp("cond", "i1");
                 String falseLabel = cond.getName() + "False";
                 out.format("    %s = icmp %s %%Object* %s, %s\n", cond, operator, op2, op1);
@@ -1696,7 +1732,7 @@ public class LlvmMethodCompiler {
                 out.format("%s:\n", falseLabel);
             } else if (opcode >= Opcodes.IFNULL && opcode <= Opcodes.IFNONNULL) {
                 String operator = (new String[] {"eq", "ne"})[opcode - Opcodes.IFNULL];
-                Var op = pop("op");
+                Var op = pop1("op");
                 Var cond = tmp("cond", "i1");
                 String falseLabel = cond.getName() + "False";
                 out.format("    %s = icmp %s %%Object* %s, inttoptr (i32 0 to %%Object*)\n", cond, operator, op);
@@ -1721,7 +1757,7 @@ public class LlvmMethodCompiler {
             if (cst instanceof Integer) {
                 Var res = tmpi("res");
                 out.format("    %s = bitcast i32 %d to i32\n", res, (Integer) cst);
-                push(res);
+                push1(res);
             } else if (cst instanceof Long) {
                 Var res = tmpl("res");
                 out.format("    %s = bitcast i64 %d to i64\n", res, (Long) cst);
@@ -1730,7 +1766,7 @@ public class LlvmMethodCompiler {
                 Var res = tmpf("res");
                 int bits = Float.floatToIntBits((Float) cst);
                 out.format("    %s = bitcast i32 %d to float\n", res, bits);
-                push(res);
+                push1(res);
             } else if (cst instanceof Double) {
                 Var res = tmpd("res");
                 long bits = Double.doubleToLongBits((Double) cst);
@@ -1741,13 +1777,13 @@ public class LlvmMethodCompiler {
                 Var res = tmpr("res");
                 out.format("    %s = call %%Object* @j_ldc_class(i8* %s)\n", res,
                         LlvmUtil.getStringReference(t.getDescriptor()));
-                push(res);
+                push1(res);
             } else if (cst instanceof String) {
                 // TODO: Unicode
                 Var res = tmpr("res");
                 out.format("    %s = call %%Object* @_nvmBcNewStringAscii(%%Env* %s, i8* %s)\n", res, new Var("env", "%Env*"),
                         LlvmUtil.getStringReference((String) cst));
-                push(res);
+                push1(res);
             } else {
                 throw new RuntimeException("Unsupported type for LDC: " + cst.getClass());
             }
@@ -1912,7 +1948,7 @@ public class LlvmMethodCompiler {
                 if (arg.getSize() == 2) {
                     p = pop2("p" + (--n));
                 } else {
-                    p = pop("p" + (--n));
+                    p = pop1("p" + (--n));
                 }
                 if (arg.getSort() == Type.BOOLEAN || arg.getSort() == Type.BYTE) {
                     Var tmp = tmp(p.getName(), "i8");
@@ -1927,7 +1963,7 @@ public class LlvmMethodCompiler {
             }
             
             if (opcode != Opcodes.INVOKESTATIC) {
-                Var obj = pop("obj");
+                Var obj = pop1("obj");
                 checkNull(obj);
                 argVars.addFirst(obj);
             }
@@ -2001,7 +2037,7 @@ public class LlvmMethodCompiler {
                 if (returnType.getSize() == 2) {
                     push2(res);
                 } else {
-                    push(res);
+                    push1(res);
                 }
             }
         }
@@ -2010,7 +2046,7 @@ public class LlvmMethodCompiler {
         public void visitMultiANewArrayInsn(String desc, int dims) {
             for (int i = 0; i < dims; i++) {
                 Var ptr = tmp("ptr", "i32*");
-                Var length = pop("length" + (dims - i - 1));
+                Var length = pop1("length" + (dims - i - 1));
                 out.format("    %s = getelementptr %s* %s, i32 0, i32 %d\n", ptr, multiANewArrayLengths.getType(), multiANewArrayLengths, dims - i - 1);
                 out.format("    store i32 %s, i32* %s\n", length, ptr);
             }
@@ -2029,12 +2065,12 @@ public class LlvmMethodCompiler {
                         res, new Var("env", "%Env*"), dims, lengthsi32, LlvmUtil.getStringReference(desc), caller, successLabel, currentLandingPad.getLabel());
                 out.format("%s:\n", successLabel);
             }
-            push(res);
+            push1(res);
           
         }
         @Override
         public void visitLookupSwitchInsn(Label dflt, int[] keys, Label[] labels) {
-            Var op = pop("op");
+            Var op = pop1("op");
             out.format("    switch i32 %s, label %%%s [\n", op, dflt);
             for (int i = 0; i < keys.length; i++) {
                 out.format("        i32 %d, label %%%s\n", keys[i], labels[i]);
@@ -2043,7 +2079,7 @@ public class LlvmMethodCompiler {
         }
         @Override
         public void visitTableSwitchInsn(int min, int max, Label dflt, Label[] labels) {
-            Var op = pop("op");
+            Var op = pop1("op");
             out.format("    switch i32 %s, label %%%s [\n", op, dflt);
             for (int i = min; i <= max; i++) {
                 out.format("        i32 %d, label %%%s\n", i, labels[i - min]);
@@ -2066,12 +2102,12 @@ public class LlvmMethodCompiler {
                     out.format("    %s = invoke %%Object* %s(%%Env* %s) to label %%%s unwind label %%%s\n", res, v, env, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
-                push(res);
+                push1(res);
                 
                 break;
             }
             case Opcodes.ANEWARRAY: {
-                Var length = pop("length");
+                Var length = pop1("length");
                 Var res = tmpr("res");
                 Var caller = tmp("caller", "%Class*");
                 out.format("    %s = load %%Class** @clazz\n", caller);
@@ -2084,12 +2120,12 @@ public class LlvmMethodCompiler {
                             res, new Var("env", "%Env*"), length, LlvmUtil.getStringReference("[" + type), caller.getType(), caller, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
-                push(res);
+                push1(res);
                 break;
             }
             case Opcodes.CHECKCAST: {
                 Var env = new Var("env", "%Env*");
-                Var obj = pop("obj");
+                Var obj = pop1("obj");
                 String function = "CHECKCAST_" + LlvmUtil.mangleString(type);
                 Var v = tmp(function, "void (%Env*, %Object*)");
                 out.format("    %s = load %s** @%s\n", v, v.getType(), function);
@@ -2100,12 +2136,12 @@ public class LlvmMethodCompiler {
                     out.format("    invoke void %s(%%Env* %s, %%Object* %s) to label %%%s unwind label %%%s\n", v, env, obj, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
-                push(obj);
+                push1(obj);
                 break;
             }
             case Opcodes.INSTANCEOF: {
                 Var env = new Var("env", "%Env*");
-                Var obj = pop("obj");
+                Var obj = pop1("obj");
                 String function = "INSTANCEOF_" + LlvmUtil.mangleString(type);
                 Var v = tmp(function, "i32 (%Env*, %Object*)");
                 out.format("    %s = load %s** @%s\n", v, v.getType(), function);
@@ -2117,7 +2153,7 @@ public class LlvmMethodCompiler {
                     out.format("    %s = invoke i32 %s(%%Env* %s, %%Object* %s) to label %%%s unwind label %%%s\n", res, v, env, obj, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
-                push(res);
+                push1(res);
                 break;
             }
             default:
@@ -2135,16 +2171,16 @@ public class LlvmMethodCompiler {
         public void visitVarInsn(int opcode, int var) {
             switch (opcode) {
             case Opcodes.ALOAD:
-                push(loadr(var));
+                push1(loadr(var));
                 break;
             case Opcodes.ASTORE:
-                store(pop("op"), var);
+                store(pop1("op"), var);
                 break;
             case Opcodes.ILOAD:
-                push(loadi(var));
+                push1(loadi(var));
                 break;
             case Opcodes.ISTORE:
-                store(pop("op"), var);
+                store(pop1("op"), var);
                 break;
             case Opcodes.LLOAD:
                 push2(loadl(var));
@@ -2153,10 +2189,10 @@ public class LlvmMethodCompiler {
                 store(pop2("op"), var);
                 break;
             case Opcodes.FLOAD:
-                push(loadf(var));
+                push1(loadf(var));
                 break;
             case Opcodes.FSTORE:
-                store(pop("op"), var);
+                store(pop1("op"), var);
                 break;
             case Opcodes.DLOAD:
                 push2(loadd(var));

@@ -22,6 +22,28 @@ typedef struct PutStatic {
     void* address;
 } PutStatic;
 
+typedef struct GetPutFieldCommon {
+    void* resolve;
+    jint offset;
+    char* owner;
+    char* name;
+    char* desc;
+} GetPutFieldCommon;
+
+typedef struct GetField {
+    void* function;
+    GetPutFieldCommon* common;
+    Class** caller;
+    jint offset;
+} GetField;
+
+typedef struct PutField {
+    void* function;
+    GetPutFieldCommon* common;
+    Class** caller;
+    jint offset;
+} PutField;
+
 // Shared by all call sites
 typedef struct InvokeStaticCommon {
     void* resolve;
@@ -89,18 +111,32 @@ typedef struct InvokeInterface {
 } InvokeInterface;
 
 
-extern jbyte _nvmBcGetStatic8(GetStatic* desc, Env* env);
-extern jshort _nvmBcGetStatic16(GetStatic* desc, Env* env);
-extern jint _nvmBcGetStatic32(GetStatic* desc, Env* env);
-extern jlong _nvmBcGetStatic64(GetStatic* desc, Env* env);
-extern jfloat _nvmBcGetStaticFloat(GetStatic* desc, Env* env);
-extern jdouble _nvmBcGetStaticDouble(GetStatic* desc, Env* env);
-extern void _nvmBcPutStatic8(PutStatic* desc, Env* env, jbyte value);
-extern void _nvmBcPutStatic16(PutStatic* desc, Env* env, jshort value);
-extern void _nvmBcPutStatic32(PutStatic* desc, Env* env, jint value);
-extern void _nvmBcPutStatic64(PutStatic* desc, Env* env, jlong value);
-extern void _nvmBcPutStaticFloat(PutStatic* desc, Env* env, jfloat value);
-extern void _nvmBcPutStaticDouble(PutStatic* desc, Env* env, jdouble value);
+extern jbyte _nvmBcGetStatic8(GetStatic* g, Env* env);
+extern jshort _nvmBcGetStatic16(GetStatic* g, Env* env);
+extern jint _nvmBcGetStatic32(GetStatic* g, Env* env);
+extern jlong _nvmBcGetStatic64(GetStatic* g, Env* env);
+extern jfloat _nvmBcGetStaticFloat(GetStatic* g, Env* env);
+extern jdouble _nvmBcGetStaticDouble(GetStatic* g, Env* env);
+extern void _nvmBcPutStatic8(PutStatic* p, Env* env, jbyte value);
+extern void _nvmBcPutStatic16(PutStatic* p, Env* env, jshort value);
+extern void _nvmBcPutStatic32(PutStatic* p, Env* env, jint value);
+extern void _nvmBcPutStatic64(PutStatic* p, Env* env, jlong value);
+extern void _nvmBcPutStaticFloat(PutStatic* p, Env* env, jfloat value);
+extern void _nvmBcPutStaticDouble(PutStatic* p, Env* env, jdouble value);
+
+extern jbyte _nvmBcGetField8(GetField* g, Env* env);
+extern jshort _nvmBcGetField16(GetField* g, Env* env);
+extern jint _nvmBcGetField32(GetField* g, Env* env);
+extern jlong _nvmBcGetField64(GetField* g, Env* env);
+extern jfloat _nvmBcGetFieldFloat(GetField* g, Env* env);
+extern jdouble _nvmBcGetFieldDouble(GetField* g, Env* env);
+extern void _nvmBcPutField8(PutField* p, Env* env, jbyte value);
+extern void _nvmBcPutField16(PutField* p, Env* env, jshort value);
+extern void _nvmBcPutField32(PutField* p, Env* env, jint value);
+extern void _nvmBcPutField64(PutField* p, Env* env, jlong value);
+extern void _nvmBcPutFieldFloat(PutField* p, Env* env, jfloat value);
+extern void _nvmBcPutFieldDouble(PutField* p, Env* env, jdouble value);
+
 
 extern void _nvmEmptyFunction(void);
 
@@ -284,7 +320,8 @@ void* _nvmBcGetAllocateObjectFunction(Env* env, char* className, Class* caller, 
     return clazz->newInstance;
 }
 
-void _nvmBcResolveGetPutStaticCommon(GetPutStaticCommon* common, Env* env) {
+void _nvmBcResolveFieldForGetPutStaticCommon(GetPutStaticCommon* common, Env* env) {
+    LOG("nvmBcResolveFieldForGetPutStaticCommon: %s/%s%s\n", common->owner, common->name, common->desc);
     Class* clazz = nvmFindClass(env, common->owner);
     if (!clazz) _nvmBcThrow(env, nvmExceptionOccurred(env));
     Field* field = nvmGetClassField(env, clazz, common->name, common->desc);
@@ -293,7 +330,8 @@ void _nvmBcResolveGetPutStaticCommon(GetPutStaticCommon* common, Env* env) {
     common->resolve = _nvmEmptyFunction;
 }
 
-void _nvmBcResolveGetStatic(GetStatic* g, Env* env) {
+void _nvmBcResolveFieldForGetStatic(GetStatic* g, Env* env) {
+    LOG("nvmBcResolveFieldForGetStatic: %s/%s%s\n", g->common->owner, g->common->name, g->common->desc);
     // TODO: Check that caller has access to the field
     void* getter = NULL;
     switch (g->common->desc[0]) {
@@ -329,7 +367,8 @@ void _nvmBcResolveGetStatic(GetStatic* g, Env* env) {
     g->function = getter;
 }
 
-void _nvmBcResolvePutStatic(PutStatic* p, Env* env) {
+void _nvmBcResolveFieldForPutStatic(PutStatic* p, Env* env) {
+    LOG("nvmBcResolveFieldForPutStatic: %s/%s%s\n", p->common->owner, p->common->name, p->common->desc);
     // TODO: Check that caller has access to the field
     void* setter = NULL;
     switch (p->common->desc[0]) {
@@ -362,6 +401,90 @@ void _nvmBcResolvePutStatic(PutStatic* p, Env* env) {
         break;
     }
     p->address = p->common->address;
+    p->function = setter;
+}
+
+void _nvmBcResolveFieldForGetPutFieldCommon(GetPutFieldCommon* common, Env* env) {
+    LOG("nvmBcResolveFieldForGetPutFieldCommon: %s/%s%s\n", common->owner, common->name, common->desc);
+    Class* clazz = nvmFindClass(env, common->owner);
+    if (!clazz) _nvmBcThrow(env, nvmExceptionOccurred(env));
+    Field* field = nvmGetInstanceField(env, clazz, common->name, common->desc);
+    if (!field) _nvmBcThrow(env, nvmExceptionOccurred(env));
+    common->offset = offsetof(Object, data) + clazz->instanceDataOffset +field->offset;
+    common->resolve = _nvmEmptyFunction;
+}
+
+void _nvmBcResolveFieldForGetField(GetField* g, Env* env) {
+    LOG("nvmBcResolveFieldForGetField: %s/%s%s\n", g->common->owner, g->common->name, g->common->desc);
+    // TODO: Check that caller has access to the field
+    void* getter = NULL;
+    switch (g->common->desc[0]) {
+    case 'Z':
+    case 'B':
+        getter = _nvmBcGetField8;
+        break;
+    case 'C':
+    case 'S':
+        getter = _nvmBcGetField16;
+        break;
+    case 'I':
+        getter = _nvmBcGetField32;
+        break;
+    case 'J':
+        getter = _nvmBcGetField64;
+        break;
+    case 'F':
+        getter = _nvmBcGetFieldFloat;
+        break;
+    case 'D':
+        getter = _nvmBcGetFieldDouble;
+        break;
+    default:
+#if __SIZEOF_POINTER__ == 64
+        getter = _nvmBcGetField64;
+#else
+        getter = _nvmBcGetField32;
+#endif
+        break;
+    }
+    g->offset = g->common->offset;
+    g->function = getter;
+}
+
+void _nvmBcResolveFieldForPutField(PutField* p, Env* env) {
+    LOG("nvmBcResolveFieldForPutField: %s/%s%s\n", p->common->owner, p->common->name, p->common->desc);
+    // TODO: Check that caller has access to the field
+    void* setter = NULL;
+    switch (p->common->desc[0]) {
+    case 'Z':
+    case 'B':
+        setter = _nvmBcPutField8;
+        break;
+    case 'C':
+    case 'S':
+        setter = _nvmBcPutField16;
+        break;
+    case 'I':
+        setter = _nvmBcPutField32;
+        break;
+    case 'J':
+        setter = _nvmBcPutField64;
+        break;
+    case 'F':
+        setter = _nvmBcPutFieldFloat;
+        break;
+    case 'D':
+        setter = _nvmBcPutFieldDouble;
+        break;
+    default:
+#if __SIZEOF_POINTER__ == 64
+        setter = _nvmBcPutField64;
+#else
+        setter = _nvmBcPutField32;
+#endif
+        break;
+    }
+    p->offset = p->common->offset;
     p->function = setter;
 }
 

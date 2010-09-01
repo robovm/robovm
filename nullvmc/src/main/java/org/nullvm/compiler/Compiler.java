@@ -109,6 +109,9 @@ public class Compiler {
         out.println("%GetPutStaticCommon = type {void ()*, i8*, i8*, i8*, i8*}");
         out.println("%GetStatic = type {void ()*, %GetPutStaticCommon*, %Class**, i8*}");
         out.println("%PutStatic = type {void ()*, %GetPutStaticCommon*, %Class**, i8*}");
+        out.println("%GetPutFieldCommon = type {void ()*, i32, i8*, i8*, i8*}");
+        out.println("%GetField = type {void ()*, %GetPutFieldCommon*, %Class**, i32}");
+        out.println("%PutField = type {void ()*, %GetPutFieldCommon*, %Class**, i32}");
         out.println("%InvokeVirtualCommon = type {void ()*, i8*, i8*, i8*, i8*, i32}");
         out.println("%InvokeVirtual = type {void ()*, %InvokeVirtualCommon*, %Class**, i32}");
         out.println("%InvokeSpecialCommon = type {void ()*, i8*, i8*, i8*, i8*}");
@@ -155,9 +158,12 @@ public class Compiler {
         out.println("declare i8* @_nvmBcGetAllocateObjectFunction(%Env*, i8*, %Class*, i8*)");
         out.println("declare i8* @_nvmBcGetNativeMethod(%Env*, i8*, i8*, i8*)");
         
-        out.println("declare void @_nvmBcResolveGetPutStaticCommon()");
-        out.println("declare void @_nvmBcResolveGetStatic()");
-        out.println("declare void @_nvmBcResolvePutStatic()");
+        out.println("declare void @_nvmBcResolveFieldForGetPutStaticCommon()");
+        out.println("declare void @_nvmBcResolveFieldForGetStatic0()");
+        out.println("declare void @_nvmBcResolveFieldForPutStatic0()");
+        out.println("declare void @_nvmBcResolveFieldForGetPutFieldCommon()");
+        out.println("declare void @_nvmBcResolveFieldForGetField0()");
+        out.println("declare void @_nvmBcResolveFieldForPutField0()");
         
         out.println("declare void @_nvmBcResolveMethodForInvokeStaticCommon()");
         out.println("declare void @_nvmBcResolveMethodForInvokeStatic0()");
@@ -301,14 +307,65 @@ public class Compiler {
         out.println();
         
         out.println("; Field accessors");
+        Set<String> accessorsCommon = new HashSet<String>();
         Set<String> accessors = new HashSet<String>();
         for (MethodNode node : (List<MethodNode>) classNode.methods) {
             if (!LlvmUtil.isNative(node)) {
                 for (AbstractInsnNode insnNode : node.instructions.toArray()) {
                     if (insnNode instanceof FieldInsnNode) {
                         FieldInsnNode n = (FieldInsnNode) insnNode;
+                        
                         String fieldName = LlvmUtil.mangleString(n.owner) + "_" + LlvmUtil.mangleString(n.name) + "__" + LlvmUtil.mangleString(n.desc);
-                        String llvmType = LlvmUtil.javaTypeToLlvmType(Type.getType(n.desc));
+                        String commonPrefix = (new String[] {"GetPutStatic", "GetPutStatic", "GetPutField", "GetPutField"})[n.getOpcode() - Opcodes.GETSTATIC];
+                        String prefix = (new String[] {"GetStatic", "PutStatic", "GetField", "PutField"})[n.getOpcode() - Opcodes.GETSTATIC];
+                        String commonVarName = commonPrefix + "_" + fieldName + "_Common";
+                        String varName = prefix + "_" + fieldName;
+                        if (!accessors.contains(varName)) {
+                            switch (n.getOpcode()) { 
+                            case Opcodes.GETSTATIC:
+                                if (!accessorsCommon.contains(commonVarName)) {
+                                    out.format("@%s = linker_private global %%GetPutStaticCommon {void ()* @_nvmBcResolveFieldForGetPutStaticCommon, i8* null, i8* %s, i8* %s, i8* %s}\n", 
+                                            commonVarName, LlvmUtil.getStringReference(n.owner), 
+                                            LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
+                                    accessorsCommon.add(commonVarName);
+                                }
+                                out.format("@%s = private global %%GetStatic {void ()* @_nvmBcResolveFieldForGetStatic0, %%GetPutStaticCommon* @%s, %%Class** @clazz, i8* null}\n", 
+                                        varName, commonVarName);
+                                break;
+                            case Opcodes.PUTSTATIC:
+                                if (!accessorsCommon.contains(commonVarName)) {
+                                    out.format("@%s = linker_private global %%GetPutStaticCommon {void ()* @_nvmBcResolveFieldForGetPutStaticCommon, i8* null, i8* %s, i8* %s, i8* %s}\n", 
+                                            commonVarName, LlvmUtil.getStringReference(n.owner), 
+                                            LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
+                                    accessorsCommon.add(commonVarName);
+                                }
+                                out.format("@%s = private global %%PutStatic {void ()* @_nvmBcResolveFieldForPutStatic0, %%GetPutStaticCommon* @%s, %%Class** @clazz, i8* null}\n", 
+                                        varName, commonVarName);
+                                break;
+                            case Opcodes.GETFIELD:
+                                if (!accessorsCommon.contains(commonVarName)) {
+                                    out.format("@%s = linker_private global %%GetPutFieldCommon {void ()* @_nvmBcResolveFieldForGetPutFieldCommon, i32 0, i8* %s, i8* %s, i8* %s}\n", 
+                                            commonVarName, LlvmUtil.getStringReference(n.owner), 
+                                            LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
+                                    accessorsCommon.add(commonVarName);
+                                }
+                                out.format("@%s = private global %%GetField {void ()* @_nvmBcResolveFieldForGetField0, %%GetPutFieldCommon* @%s, %%Class** @clazz, i32 0}\n", 
+                                        varName, commonVarName);
+                                break;
+                            case Opcodes.PUTFIELD:
+                                if (!accessorsCommon.contains(commonVarName)) {
+                                    out.format("@%s = linker_private global %%GetPutFieldCommon {void ()* @_nvmBcResolveFieldForGetPutFieldCommon, i32 0, i8* %s, i8* %s, i8* %s}\n", 
+                                            commonVarName, LlvmUtil.getStringReference(n.owner), 
+                                            LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
+                                    accessorsCommon.add(commonVarName);
+                                }
+                                out.format("@%s = private global %%PutField {void ()* @_nvmBcResolveFieldForPutField0, %%GetPutFieldCommon* @%s, %%Class** @clazz, i32 0}\n", 
+                                        varName, commonVarName);
+                                break;
+                            }
+                            accessors.add(varName);
+                        }
+                        /*
                         if (n.getOpcode() == Opcodes.PUTSTATIC) {
                             String setter = "PUTSTATIC_" + fieldName;
                             if (!accessors.contains(setter)) {
@@ -373,7 +430,7 @@ public class Compiler {
                                 out.format("@%s = private global %s (%%Env*, %%Object*)* @F_%s\n", getter, llvmType, getter);
                                 accessors.add(getter);
                             }
-                        }
+                        }*/
                     }
                 }
             }
@@ -426,7 +483,7 @@ public class Compiler {
                                 out.format("@%s_Common = linker_private global %%InvokeSpecialCommon {void ()* @_nvmBcResolveMethodForInvokeSpecialCommon, i8* %s, i8* %s, i8* %s, i8* null}\n", 
                                         varName, LlvmUtil.getStringReference(n.owner), 
                                         LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
-                                out.format("@%s = private global %%InvokeSpecial {void ()* @_nvmBcResolveMethodForInvokeSpecial0, %%InvokeStaticCommon* @%s_Common, %%Class** @clazz}\n", 
+                                out.format("@%s = private global %%InvokeSpecial {void ()* @_nvmBcResolveMethodForInvokeSpecial0, %%InvokeSpecialCommon* @%s_Common, %%Class** @clazz}\n", 
                                         varName, varName);
                                 break;
                             default:

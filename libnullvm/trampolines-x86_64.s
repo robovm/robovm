@@ -15,6 +15,22 @@
     .globl _nvmBcPutStatic64
     .globl _nvmBcPutStaticFloat
     .globl _nvmBcPutStaticDouble
+    .globl _nvmBcGetField8
+    .globl _nvmBcGetField16
+    .globl _nvmBcGetField32
+    .globl _nvmBcGetField64
+    .globl _nvmBcGetFieldFloat
+    .globl _nvmBcGetFieldDouble
+    .globl _nvmBcPutField8
+    .globl _nvmBcPutField16
+    .globl _nvmBcPutField32
+    .globl _nvmBcPutField64
+    .globl _nvmBcPutFieldFloat
+    .globl _nvmBcPutFieldDouble
+    .globl _nvmBcResolveFieldForGetStatic0
+    .globl _nvmBcResolveFieldForPutStatic0
+    .globl _nvmBcResolveFieldForGetField0
+    .globl _nvmBcResolveFieldForPutField0
     .globl _nvmBcResolveMethodForInvokeStatic0
     .globl _nvmBcResolveMethodForInvokeVirtual0
     .globl _nvmBcResolveMethodForInvokeSpecial0
@@ -49,8 +65,36 @@ _nvmEmptyFunction:
     mov     24(%rdi), %rax # PutStatic->address is at offset 24
     \ins    \reg, (%rax)
     ret
+    .size \name, . - .L\name\()Begin
 .L\name\()End:
     .endm
+
+    .macro getField name, ins, reg
+    .align    16, 0x90
+    .type    \name, @function
+\name:
+.L\name\()Begin:
+    xor     %rax, %rax
+    mov     24(%rdi), %eax # GetField->offset is at offset 24
+    add     %rax, %rdx     # %rdx points to Object. Add offset to pointer.
+    \ins    (%rdx), \reg
+    ret
+.L\name\()End:
+    .endm
+
+    .macro putField name, ins, reg
+    .align    16, 0x90
+    .type    \name, @function
+\name:
+.L\name\()Begin:
+    xor     %rax, %rax
+    mov     24(%rdi), %eax # PutField->offset is at offset 24
+    add     %rax, %rdx     # %rdx points to Object. Add offset to pointer.
+    \ins    \reg, (%rdx)
+    ret
+.L\name\()End:
+    .endm
+
 
     getStatic _nvmBcGetStatic8,  movb, %al
     getStatic _nvmBcGetStatic16, movw, %ax
@@ -66,12 +110,26 @@ _nvmEmptyFunction:
     putStatic _nvmBcPutStaticFloat, movss, %xmm0
     putStatic _nvmBcPutStaticDouble, movsd, %xmm0
 
-/* ... _nvmBcResolveMethod0(Invoke(Static|Special|Virtual|Interface)* i, Env* env, ...) */
+    getField _nvmBcGetField8,  movb, %al
+    getField _nvmBcGetField16, movw, %ax
+    getField _nvmBcGetField32, movl, %eax
+    getField _nvmBcGetField64, movq, %rax
+    getField _nvmBcGetFieldFloat, movss, %xmm0
+    getField _nvmBcGetFieldDouble, movsd, %xmm0
+
+    putField _nvmBcPutField8,  movb, %cl
+    putField _nvmBcPutField16, movw, %cx
+    putField _nvmBcPutField32, movl, %ecx
+    putField _nvmBcPutField64, movq, %rcx
+    putField _nvmBcPutFieldFloat, movss, %xmm0
+    putField _nvmBcPutFieldDouble, movsd, %xmm0
+
+/* ... _nvmBcResolve0(Invoke(Static|Special|Virtual|Interface)|(Get|Put)(Static|Field)* i, Env* env, ...) */
 
     .align    16, 0x90
-    .type    _nvmBcResolveMethod0, @function
-_nvmBcResolveMethod0:
-.LnvmBcResolveMethod0Begin:
+    .type    _nvmBcResolve0, @function
+_nvmBcResolve0:
+.LnvmBcResolve0Begin:
     sub   $56, %rsp
 
     /* Save the original integer register args */
@@ -82,11 +140,11 @@ _nvmBcResolveMethod0:
     mov   %r8, 32(%rsp)
     mov   %r9, 40(%rsp)
 
-    /* %rax points to the local resolve method */
+    /* %rax points to the local resolve function */
     mov   %rax, 48(%rsp)
 
     /* 
-      Resolve method 
+      Resolve method/field
         i->common->resolve(i->common, env);
      */
     mov   8(%rdi), %rdi   # %rdi = i->common
@@ -113,60 +171,29 @@ _nvmBcResolveMethod0:
     /* Call the function i->function */
     jmp  *(%rdi)
 
-    .size _nvmBcResolveMethod0, . - .LnvmBcResolveMethod0Begin
-.LnvmBcResolveMethod0End:
+    .size _nvmBcResolve0, . - .LnvmBcResolve0Begin
+.LnvmBcResolve0End:
 
 
-/* ... _nvmBcResolveMethodForInvokeStatic0(InvokeStatic* i, Env* env, ...) */
-
+    .macro resolve name, f
     .align    16, 0x90
-    .type    _nvmBcResolveMethodForInvokeStatic0, @function
-_nvmBcResolveMethodForInvokeStatic0:
-.LnvmBcResolveMethodForInvokeStatic0Begin:
-    mov   $_nvmBcResolveMethodForInvokeStatic, %rax
-    jmp  _nvmBcResolveMethod0
+    .type    \name, @function
+\name:
+.L\name\()Begin:
+    mov   $\f, %rax
+    jmp  _nvmBcResolve0
+    .size \name, . - .L\name\()Begin
+.L\name\()End:
+    .endm
 
-    .size _nvmBcResolveMethodForInvokeStatic0, . - .LnvmBcResolveMethodForInvokeStatic0Begin
-.LnvmBcResolveMethodForInvokeStatic0End:
-
-
-/* ... _nvmBcResolveMethodForInvokeVirtual0(InvokeVirtual* i, Env* env, ...) */
-
-    .align    16, 0x90
-    .type    _nvmBcResolveMethodForInvokeVirtual0, @function
-_nvmBcResolveMethodForInvokeVirtual0:
-.LnvmBcResolveMethodForInvokeVirtual0Begin:
-    mov   $_nvmBcResolveMethodForInvokeVirtual, %rax
-    jmp  _nvmBcResolveMethod0
-
-    .size _nvmBcResolveMethodForInvokeVirtual0, . - .LnvmBcResolveMethodForInvokeVirtual0Begin
-.LnvmBcResolveMethodForInvokeVirtual0End:
-
-
-/* ... _nvmBcResolveMethodForInvokeSpecial0(InvokeSpecial* i, Env* env, ...) */
-
-    .align    16, 0x90
-    .type    _nvmBcResolveMethodForInvokeSpecial0, @function
-_nvmBcResolveMethodForInvokeSpecial0:
-.LnvmBcResolveMethodForInvokeSpecial0Begin:
-    mov   $_nvmBcResolveMethodForInvokeSpecial, %rax
-    jmp  _nvmBcResolveMethod0
-
-    .size _nvmBcResolveMethodForInvokeSpecial0, . - .LnvmBcResolveMethodForInvokeSpecial0Begin
-.LnvmBcResolveMethodForInvokeSpecial0End:
-
-
-/* ... _nvmBcResolveMethodForInvokeInterface0(InvokeSpecial* i, Env* env, ...) */
-
-    .align    16, 0x90
-    .type    _nvmBcResolveMethodForInvokeInterface0, @function
-_nvmBcResolveMethodForInvokeInterface0:
-.LnvmBcResolveMethodForInvokeInterface0Begin:
-    mov   $_nvmBcResolveMethodForInvokeInterface, %rax
-    jmp  _nvmBcResolveMethod0
-
-    .size _nvmBcResolveMethodForInvokeInterface0, . - .LnvmBcResolveMethodForInvokeInterface0Begin
-.LnvmBcResolveMethodForInvokeInterface0End:
+    resolve _nvmBcResolveFieldForGetStatic0, _nvmBcResolveFieldForGetStatic
+    resolve _nvmBcResolveFieldForPutStatic0, _nvmBcResolveFieldForPutStatic
+    resolve _nvmBcResolveFieldForGetField0, _nvmBcResolveFieldForGetField
+    resolve _nvmBcResolveFieldForPutField0, _nvmBcResolveFieldForPutField
+    resolve _nvmBcResolveMethodForInvokeStatic0, _nvmBcResolveMethodForInvokeStatic
+    resolve _nvmBcResolveMethodForInvokeVirtual0, _nvmBcResolveMethodForInvokeVirtual
+    resolve _nvmBcResolveMethodForInvokeSpecial0, _nvmBcResolveMethodForInvokeSpecial
+    resolve _nvmBcResolveMethodForInvokeInterface0, _nvmBcResolveMethodForInvokeInterface
 
     
 /*

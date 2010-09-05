@@ -15,6 +15,7 @@ extern Class* java_lang_OutOfMemoryError;
 extern Class* java_lang_NoClassDefFoundError;
 extern Class* java_lang_IllegalAccessError;
 extern Class* java_lang_NoSuchFieldError;
+extern Class* java_lang_NoSuchMethodError;
 extern Class* java_lang_IncompatibleClassChangeError;
 extern Class* java_lang_ClassCastException;
 extern Class* java_lang_NullPointerException;
@@ -38,6 +39,10 @@ extern Class* nvmFindClass(Env* env, char* className);
  * Creates a new instance of the specified class.
  */
 extern Object* nvmAllocateObject(Env* env, Class* clazz);
+extern void nvmInitialize(Env* env, Class* clazz);
+extern Object* nvmNewObject(Env* env, Class* clazz, Method* method, ...);
+extern Object* nvmNewObjectA(Env* env, Class* clazz, Method* method, jvalue *args);
+extern Object* nvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args);
 
 extern int nvmIsSubClass(Class* superclass, Class* clazz);
 extern int nvmIsSamePackage(Class* c1, Class* c2);

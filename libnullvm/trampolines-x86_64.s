@@ -35,7 +35,8 @@
     .globl _nvmBcResolveMethodForInvokeVirtual0
     .globl _nvmBcResolveMethodForInvokeSpecial0
     .globl _nvmBcResolveMethodForInvokeInterface0
-    .globl _nvmCallAndCatchAll
+    .globl _nvmCall0
+
 
     .align    16, 0x90
     .type    _nvmEmptyFunction, @function
@@ -46,6 +47,56 @@ _nvmEmptyFunction:
     .size _nvmEmptyFunction, . - .LnvmEmptyFunctionBegin
 .LnvmEmptyFunctionEnd:
     
+
+/* ... _nvmCall0(CallInfo* callInfo) */
+    .align    16, 0x90
+    .type    _nvmCall0, @function
+_nvmCall0:
+.LnvmCall0Begin:
+    push  %rbp
+    mov   %rsp, %rbp
+
+    mov   %rdi, %rax
+
+    mov   8(%rax), %rdi         # %rdi = intArgs[0]
+    mov   16(%rax), %rsi        # %rsi = intArgs[1]
+    mov   24(%rax), %rdx        # %rdx = intArgs[2]
+    mov   32(%rax), %rcx        # %rcx = intArgs[3]
+    mov   40(%rax), %r8         # %r8 = intArgs[4]
+    mov   48(%rax), %r9         # %r9 = intArgs[5]
+
+    movsd 56(%rax), %xmm0       # %xmm0 = fpArgs[0]
+    movsd 64(%rax), %xmm1       # %xmm1 = fpArgs[1]
+    movsd 72(%rax), %xmm2       # %xmm2 = fpArgs[2]
+    movsd 80(%rax), %xmm3       # %xmm3 = fpArgs[3]
+    movsd 88(%rax), %xmm4       # %xmm4 = fpArgs[4]
+    movsd 96(%rax), %xmm5       # %xmm5 = fpArgs[5]
+    movsd 104(%rax), %xmm6      # %xmm6 = fpArgs[6]
+    movsd 112(%rax), %xmm7      # %xmm7 = fpArgs[7]
+
+    mov   120(%rax), %r12       # %r12 = stackArgsCount
+.LsetStackArgsNext:
+    cmp   $0, %r12
+    je    .LsetStackArgsDone
+    sub   $0x1, %r12
+    mov   128(%rax), %r11       # %r11 = stackArgs
+    lea   (%r11, %r12, 8), %r11 # %r11 = stackArgs + %r12 * 8
+    push  (%r11)
+    jmp   .LsetStackArgsNext
+.LsetStackArgsDone:
+
+.LnvmCall0TryCatchStart:
+    call  *(%rax)
+.LnvmCall0TryCatchEnd:
+.LnvmCall0TryCatchLandingPad:
+
+    leave
+    ret
+
+    .size _nvmCall0, . - .LnvmCall0Begin
+.LnvmCall0End:
+
+
     .macro getStatic name, ins, reg
     .align    16, 0x90
     .type    \name, @function
@@ -56,6 +107,7 @@ _nvmEmptyFunction:
     ret
 .L\name\()End:
     .endm
+
 
     .macro putStatic name, ins, reg
     .align    16, 0x90
@@ -69,6 +121,7 @@ _nvmEmptyFunction:
 .L\name\()End:
     .endm
 
+
     .macro getField name, ins, reg
     .align    16, 0x90
     .type    \name, @function
@@ -81,6 +134,7 @@ _nvmEmptyFunction:
     ret
 .L\name\()End:
     .endm
+
 
     .macro putField name, ins, reg
     .align    16, 0x90
@@ -123,6 +177,7 @@ _nvmEmptyFunction:
     putField _nvmBcPutField64, movq, %rcx
     putField _nvmBcPutFieldFloat, movss, %xmm0
     putField _nvmBcPutFieldDouble, movsd, %xmm0
+
 
 /* ... _nvmBcResolve0(Invoke(Static|Special|Virtual|Interface)|(Get|Put)(Static|Field)* i, Env* env, ...) */
 
@@ -222,6 +277,7 @@ _nvmBcResolve0:
 
  */
 
+/*
     .align    16, 0x90
     .type    _nvmCallAndCatchAll, @function
 _nvmCallAndCatchAll:
@@ -235,7 +291,7 @@ _nvmCallAndCatchAll:
 
     xor   %rcx, %rcx
     mov   8(%rdi), %ecx   # number of bytes of stack space the called function uses for its args
-/* TODO: branch if %ecx == 0? */
+#  TODO: branch if %ecx == 0?
     mov   %rbp, %rsi
     add   $16, %rsi        # %rsi now points to the left most of the function's arguments
     mov   %rsp, %rdi
@@ -261,6 +317,7 @@ _nvmCallAndCatchAll:
 .LnvmCallAndCatchAllEnd:
     .section    .gcc_except_table,"a",@progbits
     .align    4
+*/
 
 /* TODO: as in GCC 4.4 has support for unwind information using the .cfi directives. Maybe we should use those for exception handling? */
 GCC_except_table1:
@@ -272,16 +329,16 @@ GCC_except_table1:
     .zero    1
     .byte    3                       # Call site Encoding = udata4
     .uleb128 26                      # Call site table length
-    .set     .Lset1eh, .LcallStart - .LnvmCallAndCatchAllBegin
+    .set     .Lset1eh, .LnvmCall0TryCatchStart - .LnvmCall0Begin
     .long    .Lset1eh                # Region start
-    .set     .Lset2eh, .LcalLnvmCallAndCatchAllEnd - .LcallStart
+    .set     .Lset2eh, .LnvmCall0TryCatchEnd - .LnvmCall0TryCatchStart
     .long    .Lset2eh                # Region length
-    .set     .Lset3eh,.Lcatch - .LnvmCallAndCatchAllBegin
+    .set     .Lset3eh,.LnvmCall0TryCatchLandingPad - .LnvmCall0Begin
     .long    .Lset3eh                # Landing pad
     .uleb128 1                       # Action
-    .set     .Lset4eh, .LcalLnvmCallAndCatchAllEnd - .LnvmCallAndCatchAllBegin
+    .set     .Lset4eh, .LnvmCall0TryCatchEnd - .LnvmCall0Begin
     .long    .Lset4eh                # Region start
-    .set     .Lset5eh, .LnvmCallAndCatchAllEnd - .LcalLnvmCallAndCatchAllEnd
+    .set     .Lset5eh, .LnvmCall0End - .LnvmCall0TryCatchEnd
     .long    .Lset5eh                # Region length
     .long    0                       # Landing pad
     .uleb128 0                       # Action
@@ -321,18 +378,18 @@ GCC_except_table1:
     .align   8
 .Leh_frame_common_end:
 
-.LcatchAll.eh:
+.LnvmCall0.eh:
     .set     .Lset7eh,.Leh_frame_end1-.Leh_frame_begin1
     .long    .Lset7eh                # Length of Frame Information Entry
 .Leh_frame_begin1:
     .long    .Leh_frame_begin1-.Leh_frame_common # FDE CIE offset
-    .long    .LnvmCallAndCatchAllBegin        # FDE initial location
-    .set     .Lset8eh,.LnvmCallAndCatchAllEnd - .LnvmCallAndCatchAllBegin
+    .long    .LnvmCall0Begin        # FDE initial location
+    .set     .Lset8eh,.LnvmCall0End - .LnvmCall0Begin
     .long    .Lset8eh                # FDE address range
     .uleb128 4               # Augmentation size
     .long    .Lexception1            # Language Specific Data Area
     .byte    4                       # CFA_advance_loc4
-    .set    .Lset9eh,.LcallStart - .LnvmCallAndCatchAllBegin
+    .set    .Lset9eh,.LnvmCall0TryCatchStart - .LnvmCall0Begin
     .long    .Lset9eh
     .byte    14                      # CFA_def_cfa_offset
     .uleb128 16              # Offset

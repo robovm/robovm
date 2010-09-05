@@ -1,7 +1,7 @@
 # source files.
-SRC = init.c class.c string.c exception.c array.c field.c method.c native.c map.c bc.c trampolines-x86_64.s
+SRC = init.c class.c string.c exception.c array.c field.c method.c native.c map.c bc.c thread.c trampolines-x86_64.s
 
-OBJ = init.o class.o string.o exception.o array.o field.o method.o native.o map.o bc.o trampolines-x86_64.o
+OBJ = init.o class.o string.o exception.o array.o field.o method.o native.o map.o bc.o thread.o trampolines-x86_64.o
 
 
 OUT = libnullvm.a
@@ -52,5 +52,6 @@ field.o: include/nullvm.h
 method.o: include/nullvm.h
 native.o: include/nullvm.h
 map.o: include/nullvm.h
+thread.o: include/nullvm.h
 bc.o: include/nullvm.h
 

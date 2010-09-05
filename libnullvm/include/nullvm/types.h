@@ -6,6 +6,14 @@
 #define FALSE 0
 #define TRUE 1
 
+#define CLASS_ALLOCATED 0
+#define CLASS_LOADED 1
+#define CLASS_VERIFIED 2
+#define CLASS_PREPARED 3
+#define CLASS_INITIALIZING 4
+#define CLASS_INITIALIZED 5
+#define CLASS_ERROR 6
+
 union _MapKey;
 typedef union _MapKey MapKey;
 union _MapKey {
@@ -53,8 +61,8 @@ struct Method {
   char* desc;
   jint access;
   void* impl;
-  void* wrapper;
   int vtableIndex;
+  char* callInfo;
 };
 
 struct Class {
@@ -62,6 +70,8 @@ struct Class {
   char* name;         // The name in UTF-8.
   char* packageName;         // The package name in UTF-8.
   Class* superclass;  // Superclass pointer. Only java.lang.Object has NULL here.
+  Object* classObject; // The java.lang.Class returned by Object.getClass()
+  jint state;
   jint access;
   Object* (*newInstance)(void);
   void (*checkcast)(Object*);

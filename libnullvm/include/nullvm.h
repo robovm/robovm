@@ -17,6 +17,7 @@
 #include <nullvm/array.h>
 #include <nullvm/exception.h>
 #include <nullvm/string.h>
+#include <nullvm/thread.h>
 
 #define LOG(format, args...)  \
   fprintf(stderr, format , ## args)

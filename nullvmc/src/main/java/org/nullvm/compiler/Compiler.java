@@ -130,6 +130,8 @@ public class Compiler {
         out.println("declare void @_nvmBcThrow(%Env*, %Object*)");
         out.println("declare void @_nvmBcThrowNullPointerException(%Env*)");
         out.println("declare void @_nvmBcThrowArrayIndexOutOfBoundsException(%Env*, i32)");
+        out.println("declare %Object* @_nvmBcExceptionClear(%Env*)");
+        out.println("declare i32 @_nvmBcExceptionMatch(%Env*, %Object*, %Class*)");
         
         out.println("declare %Object* @_nvmBcNewBooleanArray(%Env*, i32)");
         out.println("declare %Object* @_nvmBcNewByteArray(%Env*, i32)");
@@ -143,7 +145,7 @@ public class Compiler {
         out.println("declare %Object* @_nvmBcNewMultiArray(%Env*, i32, i32*, i8*, %Class*)");
         
         out.println("declare %Object* @_nvmBcNewStringAscii(%Env*, i8*)");
-        out.println("declare %Object* @j_ldc_class(i8*)");
+        out.println("declare %Object* @_nvmBcGetClassObject(%Env*, i8*, %Class*)");
 
         out.println("declare void @_nvmBcGetStatic()");
         out.println("declare void @_nvmBcPutStatic()");
@@ -173,16 +175,13 @@ public class Compiler {
         out.println("declare void @_nvmBcResolveMethodForInvokeSpecial0()");
         out.println("declare void @_nvmBcResolveMethodForInvokeInterfaceCommon()");
         out.println("declare void @_nvmBcResolveMethodForInvokeInterface0()");
+
+        out.println("declare void @_nvmBcMonitorEnter(%Env*, %Object*)");
+        out.println("declare void @_nvmBcMonitorExit(%Env*, %Object*)");
         
-        out.println("declare i32 @j_catch_match(%Object*, %Class*)");
-        out.println("declare %Object* @j_get_throwable(i8*)");
         out.println("declare i8* @llvm.eh.exception() nounwind");
         out.println("declare i64 @llvm.eh.selector.i64(i8*, i8*, ...) nounwind");
         out.println("declare i32 @j_eh_personality(i32, i32, i64, i8*, i8*)");
-        out.println("declare i32 @j_eh_match_throwable(%Object*, %Class*)");
-        out.println("declare void @j_eh_resume_unwind(i8*)");
-        out.println("declare void @j_monitorenter(%Object*)");
-        out.println("declare void @j_monitorexit(%Object*)");
         out.println("declare i32 @j_arraylength(%Object*)");
         out.println("declare i32 @j_iaload(%Object* %o, i32 %index)");
         out.println("declare void @j_iastore(%Object* %o, i32 %index, i32 %value)");

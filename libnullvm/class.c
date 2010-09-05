@@ -17,6 +17,7 @@ Class* java_lang_OutOfMemoryError;
 Class* java_lang_NoClassDefFoundError;
 Class* java_lang_IllegalAccessError;
 Class* java_lang_NoSuchFieldError;
+Class* java_lang_NoSuchMethodError;
 Class* java_lang_IncompatibleClassChangeError;
 Class* java_lang_ClassCastException;
 Class* java_lang_NullPointerException;
@@ -98,6 +99,8 @@ jboolean nvmInitClasses(Env* env) {
     if (!java_lang_IllegalAccessError) return FALSE;
     java_lang_NoSuchFieldError = nvmFindClass(env, "java/lang/NoSuchFieldError");
     if (!java_lang_NoSuchFieldError) return FALSE;
+    java_lang_NoSuchMethodError = nvmFindClass(env, "java/lang/NoSuchMethodError");
+    if (!java_lang_NoSuchMethodError) return FALSE;
     java_lang_IncompatibleClassChangeError = nvmFindClass(env, "java/lang/IncompatibleClassChangeError");
     if (!java_lang_IncompatibleClassChangeError) return FALSE;
     java_lang_ClassCastException = nvmFindClass(env, "java/lang/ClassCastException");
@@ -430,10 +433,7 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
     LOG("instanceDataOffset for %s: %d\n", clazz->name, offset);
     clazz->instanceDataOffset = offset;
 
-    // Set up method wrappers
-    for (method = clazz->methods; method != NULL; method = method->next) {
-        method->wrapper = method->impl; //nvmCreateMethodWrapper(clazz, method);
-    }
+    clazz->state = CLASS_VERIFIED;
 
     // Set up setters and getters for fields
     for (field = clazz->fields; field != NULL; field = field->next) {
@@ -457,17 +457,59 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
         if (!clazz->newInstance) return FALSE;
     }
 
-    // TODO: Call <clinit>()
+    clazz->state = CLASS_PREPARED;
+
     addLoadedClass(env, clazz);
 
     return TRUE;
 }
 
+void nvmInitialize(Env* env, Class* clazz) {
+    if (clazz->state != CLASS_INITIALIZED && clazz->state != CLASS_INITIALIZING && clazz->state != CLASS_ERROR) {
+        clazz->state = CLASS_INITIALIZING;
+        Method* clinit = nvmGetClassMethod(env, clazz, "<clinit>", "()V");
+        if (!clinit) {
+            nvmExceptionClear(env);
+            return;
+        }
+        nvmCallVoidClassMethod(env, clazz, clinit);
+        if (nvmExceptionOccurred(env)) {
+            clazz->state = CLASS_ERROR;
+            return;
+        }
+        clazz->state = CLASS_INITIALIZED;
+    }
+}
+
 Object* nvmAllocateObject(Env* env, Class* clazz) {
+    nvmInitialize(env, clazz);
+    if (nvmExceptionOccurred(env)) return NULL;
     jint dataSize = clazz->instanceDataOffset + clazz->instanceDataSize;
     Object* obj = nvmAllocateMemory(env, sizeof(Object) + dataSize);
     if (!obj) return NULL;
     obj->clazz = clazz;
+    return obj;
+}
+
+Object* nvmNewObject(Env* env, Class* clazz, Method* method, ...) {
+    va_list args;
+    va_start(args, method);
+    return nvmNewObjectV(env, clazz, method, args);
+}
+
+Object* nvmNewObjectA(Env* env, Class* clazz, Method* method, jvalue *args) {
+    Object* obj = nvmAllocateObject(env, clazz);
+    if (!obj) return NULL;
+    nvmCallVoidInstanceMethodA(env, obj, method, args);
+    if (nvmExceptionOccurred(env)) return NULL;
+    return obj;
+}
+
+Object* nvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args) {
+    Object* obj = nvmAllocateObject(env, clazz);
+    if (!obj) return NULL;
+    nvmCallVoidInstanceMethodV(env, obj, method, args);
+    if (nvmExceptionOccurred(env)) return NULL;
     return obj;
 }
 

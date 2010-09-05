@@ -12,9 +12,15 @@ package java.lang;
 public final class String implements Comparable<String> {
     private char[] value;
 
+    String(int start, int length, char[] data) {
+        value = data;
+        //offset = start;
+        //count = length;
+    }
+    
     public int compareTo(String o) {
         return 0;
     }
     
-    private static native String ldcAscii(Object cptr, int length);
+//    private static native String ldcAscii(Object cptr, int length);
 }

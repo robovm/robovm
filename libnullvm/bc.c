@@ -185,6 +185,10 @@ void* _nvmBcGetInvokeSpecialFunction(Env* env, char* className, char* methodName
 
 void* _nvmBcGetNativeMethod(Env* env, char* shortMangledName, char* longMangledName, void** functionPtr);
 
+void _nvmBcMonitorEnter(Env* env, Object* obj);
+void _nvmBcMonitorExit(Env* env, Object* obj);
+
+Object* _nvmBcGetClassObject(Env* env, char* name, Class* caller);
 
 void _nvmBcAllocateClass(Env* env, char* className, char* superclassName, jint access, jint classDataSize, jint instanceDataSize) {
     Class* superclass = superclassName ? nvmFindClass(env, superclassName) : NULL;
@@ -216,8 +220,20 @@ Class* _nvmBcFindClass(Env* env, char* name, Class* caller) {
     return class;
 }
 
+Object* _nvmBcExceptionClear(Env* env) {
+    return nvmExceptionClear(env);
+}
+
+jint _nvmBcExceptionMatch(Env* env, Object* throwable, Class* clazz) {
+    Class* c = throwable->clazz;
+    while (c && c != clazz) {
+        c = c->superclass;
+    }
+    return c == clazz ? 1 : 0;
+}
+
+
 void _nvmBcThrow(Env* env, Object* throwable) {
-    nvmExceptionClear(env);
     nvmRaiseException(env, throwable);
 }
 
@@ -324,6 +340,8 @@ void _nvmBcResolveFieldForGetPutStaticCommon(GetPutStaticCommon* common, Env* en
     LOG("nvmBcResolveFieldForGetPutStaticCommon: %s/%s%s\n", common->owner, common->name, common->desc);
     Class* clazz = nvmFindClass(env, common->owner);
     if (!clazz) _nvmBcThrow(env, nvmExceptionOccurred(env));
+    nvmInitialize(env, clazz);
+    if (nvmExceptionOccurred(env)) _nvmBcThrow(env, nvmExceptionOccurred(env));
     Field* field = nvmGetClassField(env, clazz, common->name, common->desc);
     if (!field) _nvmBcThrow(env, nvmExceptionOccurred(env));
     common->address = (jbyte*) clazz->data + field->offset;
@@ -356,11 +374,11 @@ void _nvmBcResolveFieldForGetStatic(GetStatic* g, Env* env) {
         getter = _nvmBcGetStaticDouble;
         break;
     default:
-#if __SIZEOF_POINTER__ == 64
+//#if __SIZEOF_POINTER__ == 64
         getter = _nvmBcGetStatic64;
-#else
-        getter = _nvmBcGetStatic32;
-#endif
+//#else
+//        getter = _nvmBcGetStatic32;
+//#endif
         break;
     }
     g->address = g->common->address;
@@ -393,11 +411,11 @@ void _nvmBcResolveFieldForPutStatic(PutStatic* p, Env* env) {
         setter = _nvmBcPutStaticDouble;
         break;
     default:
-#if __SIZEOF_POINTER__ == 64
+//#if __SIZEOF_POINTER__ == 64
         setter = _nvmBcPutStatic64;
-#else
-        setter = _nvmBcPutStatic32;
-#endif
+//#else
+//        setter = _nvmBcPutStatic32;
+//#endif
         break;
     }
     p->address = p->common->address;
@@ -440,11 +458,11 @@ void _nvmBcResolveFieldForGetField(GetField* g, Env* env) {
         getter = _nvmBcGetFieldDouble;
         break;
     default:
-#if __SIZEOF_POINTER__ == 64
+//#if __SIZEOF_POINTER__ == 64
         getter = _nvmBcGetField64;
-#else
-        getter = _nvmBcGetField32;
-#endif
+//#else
+//        getter = _nvmBcGetField32;
+//#endif
         break;
     }
     g->offset = g->common->offset;
@@ -477,112 +495,15 @@ void _nvmBcResolveFieldForPutField(PutField* p, Env* env) {
         setter = _nvmBcPutFieldDouble;
         break;
     default:
-#if __SIZEOF_POINTER__ == 64
+//#if __SIZEOF_POINTER__ == 64
         setter = _nvmBcPutField64;
-#else
-        setter = _nvmBcPutField32;
-#endif
+//#else
+//        setter = _nvmBcPutField32;
+//#endif
         break;
     }
     p->offset = p->common->offset;
     p->function = setter;
-}
-
-void *_nvmBcGetClassFieldGetter(Env* env, char* className, char* fieldName, char* fieldDesc, void* caller, void** functionPtr) {
-    Class* clazz = _nvmBcFindClass(env, className, caller);
-    Field* field = nvmGetClassField(env, clazz, fieldName, fieldDesc);
-    if (!field) _nvmBcThrow(env, nvmExceptionOccurred(env));
-    // TODO: Check that caller has access to the field
-    *functionPtr = field->getter;
-    return field->getter;
-}
-
-void *_nvmBcGetClassFieldSetter(Env* env, char* className, char* fieldName, char* fieldDesc, void* caller, void** functionPtr) {
-    Class* clazz = _nvmBcFindClass(env, className, caller);
-    Field* field = nvmGetClassField(env, clazz, fieldName, fieldDesc);
-    if (!field) _nvmBcThrow(env, nvmExceptionOccurred(env));
-    // TODO: Check that caller has access to the field
-    if (field->access & ACC_FINAL && caller != clazz) {
-        nvmThrowIllegalAccessError(env);
-        _nvmBcThrow(env, nvmExceptionOccurred(env));
-    }
-    *functionPtr = field->setter;
-    return field->setter;
-}
-
-void *_nvmBcGetInstanceFieldGetter(Env* env, char* className, char* fieldName, char* fieldDesc, void* caller, void** functionPtr) {
-    Class* clazz = _nvmBcFindClass(env, className, caller);
-    Field* field = nvmGetInstanceField(env, clazz, fieldName, fieldDesc);
-    if (!field) _nvmBcThrow(env, nvmExceptionOccurred(env));
-    // TODO: Check that caller has access to the field
-    *functionPtr = field->getter;
-    return field->getter;
-}
-
-void *_nvmBcGetInstanceFieldSetter(Env* env, char* className, char* fieldName, char* fieldDesc, void* caller, void** functionPtr) {
-    Class* clazz = _nvmBcFindClass(env, className, caller);
-    Field* field = nvmGetInstanceField(env, clazz, fieldName, fieldDesc);
-    if (!field) _nvmBcThrow(env, nvmExceptionOccurred(env));
-    // TODO: Check that caller has access to the field
-    if (field->access & ACC_FINAL && caller != clazz) {
-        nvmThrowIllegalAccessError(env);
-        _nvmBcThrow(env, nvmExceptionOccurred(env));
-    }
-    *functionPtr = field->setter;
-    return field->setter;
-}
-
-
-
-void* _nvmBcGetInvokeStaticFunction(Env* env, char* className, char* methodName, char* methodDesc, void* caller, void** functionPtr) {
-    Class* clazz = _nvmBcFindClass(env, className, caller);
-    // TODO: Throw something if methodName is <clinit>
-    Method* method = nvmGetMethod(env, clazz, methodName, methodDesc);
-    if (!method) _nvmBcThrow(env, nvmExceptionOccurred(env));
-    // TODO: Check that caller has access to the method
-    if (!(method->access & ACC_STATIC)) {
-        nvmThrowIncompatibleClassChangeErrorMethod(env, clazz, methodName, methodDesc);
-        _nvmBcThrow(env, nvmExceptionOccurred(env));
-    }
-    *functionPtr = method->wrapper;
-    return method->wrapper;
-}
-
-void* _nvmBcGetInvokeVirtualFunction(Env* env, char* className, char* methodName, char* methodDesc, void* caller, void** functionPtr) {
-    Class* clazz = _nvmBcFindClass(env, className, caller);
-    // TODO: Throw something if methodName is <clinit>
-    Method* method = nvmGetMethod(env, clazz, methodName, methodDesc);
-    if (!method) _nvmBcThrow(env, nvmExceptionOccurred(env));
-    // TODO: Check that caller has access to the method
-    if (method->access & ACC_STATIC) {
-        nvmThrowIncompatibleClassChangeErrorMethod(env, clazz, methodName, methodDesc);
-        _nvmBcThrow(env, nvmExceptionOccurred(env));
-    }
-    *functionPtr = method->wrapper;
-    return method->wrapper;
-}
-
-void* _nvmBcGetInvokeInterfaceFunction(Env* env, char* className, char* methodName, char* methodDesc, void* caller, void** functionPtr) {
-    // TODO: Implement me properly!
-    LOG("nvmGetInvokeInterfaceFunction not implemented!");
-    nvmThrowNoSuchMethodError(env, methodName);
-    _nvmBcThrow(env, nvmExceptionOccurred(env));
-    return NULL;
-}
-
-void* _nvmBcGetInvokeSpecialFunction(Env* env, char* className, char* methodName, char* methodDesc, void* caller, void** functionPtr) {
-    Class* clazz = _nvmBcFindClass(env, className, caller);
-    // TODO: Throw something if methodName is <clinit>
-    // TODO: Check caller has ACC_SUPER access?
-    Method* method = nvmGetMethod(env, clazz, methodName, methodDesc);
-    if (!method) _nvmBcThrow(env, nvmExceptionOccurred(env));
-    // TODO: Check that caller has access to the method
-    if (method->access & ACC_STATIC) {
-        nvmThrowIncompatibleClassChangeErrorMethod(env, clazz, methodName, methodDesc);
-        _nvmBcThrow(env, nvmExceptionOccurred(env));
-    }
-    *functionPtr = method->wrapper;
-    return method->wrapper;
 }
 
 void* _nvmBcGetNativeMethod(Env* env, char* shortMangledName, char* longMangledName, void** functionPtr) {
@@ -659,5 +580,18 @@ void _nvmBcResolveMethodForInvokeInterfaceCommon(InvokeInterfaceCommon* common, 
 void _nvmBcResolveMethodForInvokeInterface(InvokeInterface* i, Env* env) {
     // TODO: Check that *i->caller has access to the class and method being called
     i->function = i->common->function;
+}
+
+void _nvmBcMonitorEnter(Env* env, Object* obj) {
+    if (nvmMonitorEnter(env, obj)) _nvmBcThrow(env, nvmExceptionOccurred(env));
+}
+
+void _nvmBcMonitorExit(Env* env, Object* obj) {
+    if (nvmMonitorExit(env, obj)) _nvmBcThrow(env, nvmExceptionOccurred(env));
+}
+
+Object* _nvmBcGetClassObject(Env* env, char* name, Class* caller) {
+    Class* clazz = _nvmBcFindClass(env, name, caller);
+    return clazz->classObject;
 }
 

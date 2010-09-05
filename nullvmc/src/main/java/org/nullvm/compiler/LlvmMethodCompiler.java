@@ -359,8 +359,8 @@ public class LlvmMethodCompiler {
                 Var ehptr = tmp("ehptr", "i8*");
                 out.format("    %s = call i8* @llvm.eh.exception()\n", ehptr);
                 Var throwable = tmpr("throwable");
-                out.format("    %s = call %%Object* @j_get_throwable(i8* %s)\n",
-                        throwable, ehptr);
+                out.format("    %s = call %%Object* @_nvmBcExceptionClear(%%Env* %s)\n",
+                        throwable, new Var("env", "%Env*"));
 
                 Var sel = tmp("sel", "i64");
                 out.format("    %s = call i64 (i8*, i8*, ...)* @llvm.eh.selector.i64(i8* %s, "
@@ -386,7 +386,7 @@ public class LlvmMethodCompiler {
                         out.format("    %s = load %%Class** @\"%s_%%Class*\"\n", clazz, LlvmUtil.mangleString(type));
                         throwable = tmpr("throwable");
                         out.format("    %s = load %s* %s\n", throwable, throwablePtr.getType(), throwablePtr);
-                        out.format("    %s = call i32 @j_eh_match_throwable(%%Object* %s, %%Class* %s)\n", condi32, throwable, clazz);
+                        out.format("    %s = call i32 @_nvmBcExceptionMatch(%%Env* %s, %%Object* %s, %%Class* %s)\n", condi32, new Var("env", "%Env*"), throwable, clazz);
                         out.format("    %s = trunc i32 %s to i1\n", cond, condi32);
                         out.format("    br i1 %s, label %%%s%s, label %%%sNot%s\n", cond, 
                                 lpad.getLabel(), LlvmUtil.mangleString(type), lpad.getLabel(), LlvmUtil.mangleString(type));
@@ -1659,13 +1659,27 @@ public class LlvmMethodCompiler {
             case Opcodes.MONITORENTER: {
                 Var o = pop1("o");
                 checkNull(o);
-                out.format("    call void @j_monitorenter(%%Object* %s)\n", o);
+                if (currentTryCatchBlocks.isEmpty()) {
+                    out.format("    call void @_nvmBcMonitorEnter(%%Env* %s, %%Object* %s)\n", new Var("env", "%Env*"), o);
+                } else {
+                    String successLabel = String.format("MonitorEnterSuccess%d", pc);
+                    out.format("    invoke void @_nvmBcMonitorEnter(%%Env* %s, %%Object* %s) to label %%%s unwind label %%%s\n", 
+                            new Var("env", "%Env*"), o, successLabel, currentLandingPad.getLabel());
+                    out.format("%s:\n", successLabel);
+                }
                 break;
             }
             case Opcodes.MONITOREXIT: {
                 Var o = pop1("o");
                 checkNull(o);
-                out.format("    call void @j_monitorexit(%%Object* %s)\n", o);
+                if (currentTryCatchBlocks.isEmpty()) {
+                    out.format("    call void @_nvmBcMonitorExit(%%Env* %s, %%Object* %s)\n", new Var("env", "%Env*"), o);
+                } else {
+                    String successLabel = String.format("MonitorExitSuccess%d", pc);
+                    out.format("    invoke void @_nvmBcMonitorExit(%%Env* %s, %%Object* %s) to label %%%s unwind label %%%s\n", 
+                            new Var("env", "%Env*"), o, successLabel, currentLandingPad.getLabel());
+                    out.format("%s:\n", successLabel);
+                }
                 break;
             }
             default:
@@ -1774,15 +1788,32 @@ public class LlvmMethodCompiler {
                 push2(res);
             } else if (cst instanceof Type) {
                 Type t = (Type) cst;
+                Var caller = tmp("caller", "%Class*");
+                out.format("    %s = load %%Class** @clazz\n", caller);
                 Var res = tmpr("res");
-                out.format("    %s = call %%Object* @j_ldc_class(i8* %s)\n", res,
-                        LlvmUtil.getStringReference(t.getDescriptor()));
+                if (currentTryCatchBlocks.isEmpty()) {
+                    out.format("    %s = call %%Object* @_nvmBcGetClassObject(%%Env* %s, i8* %s, %%Class* %s)\n", res, new Var("env", "%Env*"),
+                            LlvmUtil.getStringReference(t.getDescriptor()), caller);
+                } else {
+                    String successLabel = String.format("LdcClassSuccess%d", pc);
+                    out.format("    %s = invoke %%Object* @_nvmBcGetClassObject(%%Env* %s, i8* %s, %%Class* %s) to label %%%s unwind label %%%s\n", res, new Var("env", "%Env*"),
+                            LlvmUtil.getStringReference(t.getDescriptor()), caller, successLabel, currentLandingPad.getLabel());
+                    out.format("%s:\n", successLabel);
+                }
                 push1(res);
             } else if (cst instanceof String) {
                 // TODO: Unicode
                 Var res = tmpr("res");
-                out.format("    %s = call %%Object* @_nvmBcNewStringAscii(%%Env* %s, i8* %s)\n", res, new Var("env", "%Env*"),
-                        LlvmUtil.getStringReference((String) cst));
+                if (currentTryCatchBlocks.isEmpty()) {
+                    out.format("    %s = call %%Object* @_nvmBcNewStringAscii(%%Env* %s, i8* %s)\n", res, new Var("env", "%Env*"),
+                            LlvmUtil.getStringReference((String) cst));
+                } else {
+                    String successLabel = String.format("LdcStringSuccess%d", pc);
+                    out.format("    %s = invoke %%Object* @_nvmBcNewStringAscii(%%Env* %s, i8* %s) to label %%%s unwind label %%%s\n", 
+                            res, new Var("env", "%Env*"),
+                            LlvmUtil.getStringReference((String) cst), successLabel, currentLandingPad.getLabel());
+                    out.format("%s:\n", successLabel);
+                }
                 push1(res);
             } else {
                 throw new RuntimeException("Unsupported type for LDC: " + cst.getClass());

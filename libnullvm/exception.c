@@ -35,32 +35,16 @@ _Unwind_Reason_Code j_eh_personality(int version, _Unwind_Action actions, _Unwin
     return _URC_CONTINUE_UNWIND;
 }
 
-void j_eh_resume_unwind(struct _Unwind_Exception* exception_info) {
-    _Unwind_Resume(exception_info);
-}
-
 void nvmRaiseException(Env* env, Object* e) {
     junwind_info* u = nvmAllocateMemory(env, sizeof(junwind_info));
     u->exception_info.exception_class = EXCEPTION_CLASS;
     u->throwable = e;
+    nvmThrow(env, e);
     _Unwind_Reason_Code urc = _Unwind_RaiseException(&u->exception_info);
     if (urc == _URC_END_OF_STACK) {
         nvmAbort("Unhandled exception: %s", e->clazz->name);
     }
     nvmAbort("Fatal error in exception handler: %d", urc);
-}
-
-Object* j_get_throwable(struct _Unwind_Exception* exception_info) {
-    junwind_info* info = (junwind_info*) (((char*) exception_info) - offsetof(junwind_info, exception_info));
-    return info->throwable;
-}
-
-jint j_eh_match_throwable(Object* throwable, Class* clazz) {
-    Class* c = throwable->clazz;
-    while (c && c != clazz) {
-        c = c->superclass;
-    }
-    return c == clazz ? 1 : 0;
 }
 
 jboolean nvmExceptionCheck(Env* env) {
@@ -120,8 +104,8 @@ void nvmThrowNoSuchFieldError(Env* env, char* name) {
 }
 
 void nvmThrowNoSuchMethodError(Env* env, char* name) {
-    // TODO: Message should look like "java.lang.NoSuchFieldError: x"
-    nvmThrowNew(env, java_lang_NoSuchFieldError, "");
+    // TODO: Message should look like "java.lang.NoSuchMethodError: x"
+    nvmThrowNew(env, java_lang_NoSuchMethodError, "");
 }
 
 void nvmThrowIncompatibleClassChangeErrorClassField(Env* env, Class* clazz, char* name, char* desc) {

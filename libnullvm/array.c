@@ -37,7 +37,7 @@ static Array* newArray(Env* env, Class* arrayType, jint elementSize, jint dims, 
     Array* array = nvmAllocateMemory(env, sizeof(Array) + length * elementSize);
     if (!array) return NULL;
 
-    array->clazz = arrayType;
+    ((Object*) array)->clazz = arrayType;
     array->length = length;
 
     if (length > 0 && dims > 1) {

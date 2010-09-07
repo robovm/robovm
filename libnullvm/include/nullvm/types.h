@@ -2,6 +2,7 @@
 #define NULLVM_TYPES_H
 
 #include "jni_types.h"
+#include "jni.h"
 
 #define FALSE 0
 #define TRUE 1
@@ -40,9 +41,13 @@ struct _Map {
 typedef struct _Map Map;
 
 typedef struct Field Field;
+typedef struct ClassField ClassField;
+typedef struct InstanceField InstanceField;
 typedef struct Method Method;
+typedef struct ObjectHeader ObjectHeader;
 typedef struct Class Class;
 typedef struct Object Object;
+typedef struct DataObject DataObject;
 typedef struct Array Array;
 
 struct Field {
@@ -50,9 +55,16 @@ struct Field {
   char* name;
   char* desc;
   jint access;
+};
+
+struct ClassField {
+  Field field;
+  void* address;
+};
+
+struct InstanceField {
+  Field field;
   jint offset;
-  void* getter;
-  void* setter;
 };
 
 struct Method {
@@ -65,12 +77,21 @@ struct Method {
   char* callInfo;
 };
 
+struct Object {
+  Class* clazz;
+  /* void* lock */
+};
+
+/* 
+ * Represents a java.lang.Class instance
+ */
 struct Class {
+  Object object;
+  jint _data[1];       // TODO: Reserve the memory needed to store the instance fields for java.lang.Class
   jint id;
   char* name;         // The name in UTF-8.
   char* packageName;         // The package name in UTF-8.
   Class* superclass;  // Superclass pointer. Only java.lang.Object has NULL here.
-  Object* classObject; // The java.lang.Class returned by Object.getClass()
   jint state;
   jint access;
   Object* (*newInstance)(void);
@@ -87,22 +108,22 @@ struct Class {
                             // needed to store the instance data for instances of this class (and superclasses).
   int vtableSize;
   void** vtable;
-  void* data[0];
+  void* data[0];          // This is where static fields are stored for the class
 };
 
-struct Object {
-  Class* clazz;
+struct DataObject {
+  Object object;
   void* data[0];
 };
 
 struct Array {
-  Class* clazz;
+  Object object;
   jint length;
 };
 
 #define MAKE_ARRAY(T, N) \
 typedef struct _ ## N ## Array { \
-  Class* clazz; \
+  Object object; \
   jint length; \
   T values[0]; \
 } N ## Array;
@@ -122,6 +143,7 @@ typedef struct Options {
 } Options;
 
 typedef struct Env {
+    struct JNINativeInterface_ jni;
     Object* throwable;
 } Env;
 

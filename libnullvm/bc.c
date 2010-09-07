@@ -342,9 +342,9 @@ void _nvmBcResolveFieldForGetPutStaticCommon(GetPutStaticCommon* common, Env* en
     if (!clazz) _nvmBcThrow(env, nvmExceptionOccurred(env));
     nvmInitialize(env, clazz);
     if (nvmExceptionOccurred(env)) _nvmBcThrow(env, nvmExceptionOccurred(env));
-    Field* field = nvmGetClassField(env, clazz, common->name, common->desc);
+    ClassField* field = nvmGetClassField(env, clazz, common->name, common->desc);
     if (!field) _nvmBcThrow(env, nvmExceptionOccurred(env));
-    common->address = (jbyte*) clazz->data + field->offset;
+    common->address = field->address;
     common->resolve = _nvmEmptyFunction;
 }
 
@@ -426,9 +426,9 @@ void _nvmBcResolveFieldForGetPutFieldCommon(GetPutFieldCommon* common, Env* env)
     LOG("nvmBcResolveFieldForGetPutFieldCommon: %s/%s%s\n", common->owner, common->name, common->desc);
     Class* clazz = nvmFindClass(env, common->owner);
     if (!clazz) _nvmBcThrow(env, nvmExceptionOccurred(env));
-    Field* field = nvmGetInstanceField(env, clazz, common->name, common->desc);
+    InstanceField* field = nvmGetInstanceField(env, clazz, common->name, common->desc);
     if (!field) _nvmBcThrow(env, nvmExceptionOccurred(env));
-    common->offset = offsetof(Object, data) + clazz->instanceDataOffset +field->offset;
+    common->offset = field->offset;
     common->resolve = _nvmEmptyFunction;
 }
 
@@ -592,6 +592,6 @@ void _nvmBcMonitorExit(Env* env, Object* obj) {
 
 Object* _nvmBcGetClassObject(Env* env, char* name, Class* caller) {
     Class* clazz = _nvmBcFindClass(env, name, caller);
-    return clazz->classObject;
+    return (Object*) clazz;
 }
 

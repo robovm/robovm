@@ -61,98 +61,104 @@ Object* nvmExceptionClear(Env* env) {
     return e;
 }
 
-void nvmThrow(Env* env, Object* e) {
+jint nvmThrow(Env* env, Object* e) {
     // TODO: Check that e != NULL?
     env->throwable = e;
+    return 0;
 }
 
-void nvmThrowNew(Env* env, Class* clazz, char* message) {
+jint nvmThrowNew(Env* env, Class* clazz, char* message) {
     // TODO: Check that clazz != NULL?
-    Object* e = nvmAllocateObject(env, clazz);
-    if (!e) return;
+    Method* constructor = nvmGetInstanceMethod(env, clazz, "<init>", "(Ljava/lang/String;)V");
+    if (!constructor) return 1;
+    // TODO: Use UTF-8
+    Object* string = nvmNewStringAscii(env, message);
+    if (!string) return 2;
+    Object* e = nvmNewObject(env, clazz, constructor, string);
+    if (!e) return 3;
     // TODO: Call constructor
-    nvmThrow(env, e);
+    return nvmThrow(env, e);
 }
 
-void nvmThrowOutOfMemoryError(Env* env) {
-    nvmThrowNew(env, java_lang_OutOfMemoryError, "");
+jint nvmThrowOutOfMemoryError(Env* env) {
+    return nvmThrowNew(env, java_lang_OutOfMemoryError, "");
 }
 
-void nvmThrowNoClassDefFoundError(Env* env, char* name) {
+jint nvmThrowNoClassDefFoundError(Env* env, char* name) {
     // TODO: Message should look like "java.lang.NoClassDefFoundError: a/C"
-    nvmThrowNew(env, java_lang_NoClassDefFoundError, "");
+    return nvmThrowNew(env, java_lang_NoClassDefFoundError, "");
 }
 
-void nvmThrowIllegalAccessError(Env* env) {
-    nvmThrowNew(env, java_lang_IllegalAccessError, "");
+jint nvmThrowIllegalAccessError(Env* env) {
+    return nvmThrowNew(env, java_lang_IllegalAccessError, "");
 }
 
-void nvmThrowIllegalAccessErrorField(Env* env, Class* clazz, char* name, char* desc, Class* caller) {
+jint nvmThrowIllegalAccessErrorField(Env* env, Class* clazz, char* name, char* desc, Class* caller) {
     // TODO: Message should look like "java.lang.IllegalAccessError: tried to access field a.A.x from class b.B"
-    nvmThrowNew(env, java_lang_IllegalAccessError, "");
+    return nvmThrowNew(env, java_lang_IllegalAccessError, "");
 }
 
-void nvmThrowIllegalAccessErrorMethod(Env* env, Class* clazz, char* name, char* desc, Class* caller) {
+jint nvmThrowIllegalAccessErrorMethod(Env* env, Class* clazz, char* name, char* desc, Class* caller) {
     // TODO: Message should look like ?
-    nvmThrowNew(env, java_lang_IllegalAccessError, "");
+    return nvmThrowNew(env, java_lang_IllegalAccessError, "");
 }
 
-void nvmThrowNoSuchFieldError(Env* env, char* name) {
+jint nvmThrowNoSuchFieldError(Env* env, char* name) {
     // TODO: Message should look like "java.lang.NoSuchFieldError: x"
     // TODO: Cache java.lang.NoSuchFieldError at startup
-    nvmThrowNew(env, java_lang_NoSuchFieldError, "");
+    return nvmThrowNew(env, java_lang_NoSuchFieldError, "");
 }
 
-void nvmThrowNoSuchMethodError(Env* env, char* name) {
+jint nvmThrowNoSuchMethodError(Env* env, char* name) {
     // TODO: Message should look like "java.lang.NoSuchMethodError: x"
-    nvmThrowNew(env, java_lang_NoSuchMethodError, "");
+    return nvmThrowNew(env, java_lang_NoSuchMethodError, "");
 }
 
-void nvmThrowIncompatibleClassChangeErrorClassField(Env* env, Class* clazz, char* name, char* desc) {
+jint nvmThrowIncompatibleClassChangeErrorClassField(Env* env, Class* clazz, char* name, char* desc) {
     // TODO: Message should look like "java.lang.ThrowIncompatibleClassChangeError: Expected static field a.C.x"
-    nvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
+    return nvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
 }
 
-void nvmThrowIncompatibleClassChangeErrorInstanceField(Env* env, Class* clazz, char* name, char* desc) {
+jint nvmThrowIncompatibleClassChangeErrorInstanceField(Env* env, Class* clazz, char* name, char* desc) {
     // TODO: Message should look like "java.lang.ThrowIncompatibleClassChangeError: Expected non-static field a.C.x"
-    nvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
+    return nvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
 }
 
-void nvmThrowIncompatibleClassChangeErrorMethod(Env* env, Class* clazz, char* name, char* desc) {
+jint nvmThrowIncompatibleClassChangeErrorMethod(Env* env, Class* clazz, char* name, char* desc) {
     // TODO: Message should look like ?
-    nvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
+    return nvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
 }
 
-void nvmThrowClassCastException(Env* env, Class* expectedClass, Class* actualClass) {
+jint nvmThrowClassCastException(Env* env, Class* expectedClass, Class* actualClass) {
     // TODO: Message should look like "java.lang.ClassCastException: java.lang.Object cannot be cast to java.lang.String"
     // TODO: Cache java.lang.ClassCastException at startup
-    nvmThrowNew(env, java_lang_ClassCastException, "");
+    return nvmThrowNew(env, java_lang_ClassCastException, "");
 }
 
-void nvmThrowNullPointerException(Env* env) {
-    nvmThrowNew(env, java_lang_NullPointerException, "");
+jint nvmThrowNullPointerException(Env* env) {
+    return nvmThrowNew(env, java_lang_NullPointerException, "");
 }
 
-void nvmThrowAbstractMethodError(Env* env) {
-    nvmThrowNew(env, java_lang_AbstractMethodError, "");
+jint nvmThrowAbstractMethodError(Env* env) {
+    return nvmThrowNew(env, java_lang_AbstractMethodError, "");
 }
 
-void nvmThrowArrayIndexOutOfBoundsException(Env* env, jint index) {
+jint nvmThrowArrayIndexOutOfBoundsException(Env* env, jint index) {
     // TODO: Set index on exception
-    nvmThrowNew(env, java_lang_ArrayIndexOutOfBoundsException, "");
+    return nvmThrowNew(env, java_lang_ArrayIndexOutOfBoundsException, "");
 }
 
-void nvmThrowClassNotFoundException(Env* env, char* className) {
+jint nvmThrowClassNotFoundException(Env* env, char* className) {
     // TODO: Message should look like "java.lang.ClassNotFoundException: a.C"
-    nvmThrowNew(env, java_lang_ClassNotFoundException, "");
+    return nvmThrowNew(env, java_lang_ClassNotFoundException, "");
 }
 
-void nvmThrowNegativeArraySizeException(Env* env) {
-    nvmThrowNew(env, java_lang_NegativeArraySizeException, "");
+jint nvmThrowNegativeArraySizeException(Env* env) {
+    return nvmThrowNew(env, java_lang_NegativeArraySizeException, "");
 }
 
-void nvmThrowUnsatisfiedLinkError(Env* env) {
+jint nvmThrowUnsatisfiedLinkError(Env* env) {
     // TODO: Message should look like ?
-    nvmThrowNew(env, java_lang_UnsatisfiedLinkError, "");
+    return nvmThrowNew(env, java_lang_UnsatisfiedLinkError, "");
 }
 

@@ -32,10 +32,9 @@ Env* nvmStartup(Options* options) {
     GC_INIT();
     // TODO: Handle args like -Xmx?
 
-    Env* env = (Env*) GC_MALLOC(sizeof(Env));
+    Env* env = nvmCreateEnv();
     if (!env) return NULL;
     // TODO: What if we can't allocate Env?
-    // TODO: Init JNIEnv
 
     // Call init on modules
     nvmInitClasses(env);

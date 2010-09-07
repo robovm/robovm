@@ -18,6 +18,7 @@
 #include <nullvm/exception.h>
 #include <nullvm/string.h>
 #include <nullvm/thread.h>
+#include <nullvm/native.h>
 
 #define LOG(format, args...)  \
   fprintf(stderr, format , ## args)

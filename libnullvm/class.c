@@ -3,15 +3,8 @@
 #include <string.h>
 #include <dlfcn.h>
 
-Class* array_Z;
-Class* array_B;
-Class* array_C;
-Class* array_S;
-Class* array_I;
-Class* array_J;
-Class* array_F;
-Class* array_D;
 Class* java_lang_Object;
+Class* java_lang_Class;
 Class* java_lang_String;
 Class* java_lang_OutOfMemoryError;
 Class* java_lang_NoClassDefFoundError;
@@ -26,6 +19,14 @@ Class* java_lang_ArrayIndexOutOfBoundsException;
 Class* java_lang_ClassNotFoundException;
 Class* java_lang_NegativeArraySizeException;
 Class* java_lang_UnsatisfiedLinkError;
+Class* array_Z;
+Class* array_B;
+Class* array_C;
+Class* array_S;
+Class* array_I;
+Class* array_J;
+Class* array_F;
+Class* array_D;
 
 static uint8_t checkcastInstanceofTemplateX86_64[] = {
     // mov    %rsi,%rdx
@@ -91,6 +92,9 @@ jboolean nvmInitClasses(Env* env) {
     if (!java_lang_NoClassDefFoundError) return FALSE;
     java_lang_Object = nvmFindClass(env, "java/lang/Object");
     if (!java_lang_Object) return FALSE;
+    java_lang_Class = nvmFindClass(env, "java/lang/Class");
+    if (!java_lang_Class) return FALSE;
+    java_lang_Object->object.clazz = java_lang_Class; // Fix object.clazz pointer for java_lang_Object
     java_lang_String = nvmFindClass(env, "java/lang/String");
     if (!java_lang_String) return FALSE;
     java_lang_OutOfMemoryError = nvmFindClass(env, "java/lang/OutOfMemoryError");
@@ -345,6 +349,14 @@ Class* nvmFindClass(Env* env, char* className) {
 Class* nvmAllocateClass(Env* env, char* className, Class* superclass, jint access, jint classDataSize, jint instanceDataSize) {
     Class* clazz = nvmAllocateMemory(env, sizeof(Class) + classDataSize);
     if (!clazz) return NULL;
+    /*
+     * NOTE: All classes we load before we have cached java.lang.Class will have NULL here so it is 
+     * important that we cache java.lang.Class as soon as possible. However, we have to cache
+     * java.lang.Object first since it is the superclass of java.lang.Class. This means that
+     * the java_lang_Object global variable will actually have NULL as clazz until we fix this in
+     * nvmInitClasses().
+     */
+    clazz->object.clazz = java_lang_Class;
     clazz->name = className;
     clazz->superclass = superclass;
     clazz->access = access;
@@ -377,14 +389,18 @@ jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint acces
 }
 
 jboolean nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset) {
-    Field* field = nvmAllocateMemory(env, sizeof(Field));
+    Field* field = nvmAllocateMemory(env, (access & ACC_STATIC) ? sizeof(ClassField) : sizeof(InstanceField));
     if (!field) return FALSE;
     field->name = name;
     field->desc = desc;
     field->access = access;
-    field->offset = offset;
     field->next = clazz->fields;
     clazz->fields = field;
+    if (access & ACC_STATIC) {
+        ((ClassField*) field)->address = (jbyte*) clazz->data + offset;
+    } else {
+        ((InstanceField*) field)->offset = offsetof(DataObject, data) + clazz->instanceDataOffset + offset;
+    }
     return TRUE;
 }
 
@@ -435,14 +451,6 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
 
     clazz->state = CLASS_VERIFIED;
 
-    // Set up setters and getters for fields
-    for (field = clazz->fields; field != NULL; field = field->next) {
-        field->getter = nvmCreateFieldGetter(env, clazz, field);
-        if (!field->getter) return FALSE;
-        field->setter = nvmCreateFieldSetter(env, clazz, field);
-        if (!field->setter) return FALSE;
-    }
-
     if (clazz->access & ACC_INTERFACE) {
         clazz->checkcast = createCheckcastInterfaceFunction(env, clazz);
         if (!clazz->checkcast) return FALSE;
@@ -485,7 +493,7 @@ Object* nvmAllocateObject(Env* env, Class* clazz) {
     nvmInitialize(env, clazz);
     if (nvmExceptionOccurred(env)) return NULL;
     jint dataSize = clazz->instanceDataOffset + clazz->instanceDataSize;
-    Object* obj = nvmAllocateMemory(env, sizeof(Object) + dataSize);
+    Object* obj = nvmAllocateMemory(env, sizeof(DataObject) + dataSize);
     if (!obj) return NULL;
     obj->clazz = clazz;
     return obj;
@@ -500,7 +508,7 @@ Object* nvmNewObject(Env* env, Class* clazz, Method* method, ...) {
 Object* nvmNewObjectA(Env* env, Class* clazz, Method* method, jvalue *args) {
     Object* obj = nvmAllocateObject(env, clazz);
     if (!obj) return NULL;
-    nvmCallVoidInstanceMethodA(env, obj, method, args);
+    nvmCallNonvirtualVoidInstanceMethodA(env, obj, method, args);
     if (nvmExceptionOccurred(env)) return NULL;
     return obj;
 }

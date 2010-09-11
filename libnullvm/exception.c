@@ -72,7 +72,7 @@ jint nvmThrowNew(Env* env, Class* clazz, char* message) {
     Method* constructor = nvmGetInstanceMethod(env, clazz, "<init>", "(Ljava/lang/String;)V");
     if (!constructor) return 1;
     // TODO: Use UTF-8
-    Object* string = nvmNewStringAscii(env, message);
+    Object* string = nvmNewStringAscii(env, message, -1);
     if (!string) return 2;
     Object* e = nvmNewObject(env, clazz, constructor, string);
     if (!e) return 3;

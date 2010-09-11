@@ -39,5 +39,24 @@ extern void nvmSetLongInstanceFieldValue(Env* env, Object* obj, InstanceField* f
 extern void nvmSetFloatInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jfloat value);
 extern void nvmSetDoubleInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jdouble value);
 
+extern Object* nvmGetObjectClassFieldValue(Env* env, Class* clazz, ClassField* field);
+extern jboolean nvmGetBooleanClassFieldValue(Env* env, Class* clazz, ClassField* field);
+extern jbyte nvmGetByteClassFieldValue(Env* env, Class* clazz, ClassField* field);
+extern jchar nvmGetCharClassFieldValue(Env* env, Class* clazz, ClassField* field);
+extern jshort nvmGetShortClassFieldValue(Env* env, Class* clazz, ClassField* field);
+extern jint nvmGetIntClassFieldValue(Env* env, Class* clazz, ClassField* field);
+extern jlong nvmGetLongClassFieldValue(Env* env, Class* clazz, ClassField* field);
+extern jfloat nvmGetFloatClassFieldValue(Env* env, Class* clazz, ClassField* field);
+extern jdouble nvmGetDoubleClassFieldValue(Env* env, Class* clazz, ClassField* field);
+extern void nvmSetObjectClassFieldValue(Env* env, Class* clazz, ClassField* field, Object* value);
+extern void nvmSetBooleanClassFieldValue(Env* env, Class* clazz, ClassField* field, jboolean value);
+extern void nvmSetByteClassFieldValue(Env* env, Class* clazz, ClassField* field, jbyte value);
+extern void nvmSetCharClassFieldValue(Env* env, Class* clazz, ClassField* field, jchar value);
+extern void nvmSetShortClassFieldValue(Env* env, Class* clazz, ClassField* field, jshort value);
+extern void nvmSetIntClassFieldValue(Env* env, Class* clazz, ClassField* field, jint value);
+extern void nvmSetLongClassFieldValue(Env* env, Class* clazz, ClassField* field, jlong value);
+extern void nvmSetFloatClassFieldValue(Env* env, Class* clazz, ClassField* field, jfloat value);
+extern void nvmSetDoubleClassFieldValue(Env* env, Class* clazz, ClassField* field, jdouble value);
+
 #endif
 

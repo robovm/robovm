@@ -70,75 +70,151 @@ Field* nvmGetField(Class* clazz, char* name, char* desc, Class* caller) {
 }
 */
 
+static inline void* getFieldAddress(Object* obj, InstanceField* field) {
+    return (void*) ((jbyte*) obj + field->offset);
+}
+
 Object* nvmGetObjectInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
-    return *(Object**) ((jbyte*) obj + field->offset);
+    return *(Object**) getFieldAddress(obj, field);
 }
 
 jboolean nvmGetBooleanInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
-    return *(jboolean*) ((jbyte*) obj + field->offset);
+    return *(jboolean*) getFieldAddress(obj, field);
 }
 
 jbyte nvmGetByteInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
-    return *(jbyte*) ((jbyte*) obj + field->offset);
+    return *(jbyte*) getFieldAddress(obj, field);
 }
 
 jchar nvmGetCharInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
-    return *(jchar*) ((jbyte*) obj + field->offset);
+    return *(jchar*) getFieldAddress(obj, field);
 }
 
 jshort nvmGetShortInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
-    return *(jshort*) ((jbyte*) obj + field->offset);
+    return *(jshort*) getFieldAddress(obj, field);
 }
 
 jint nvmGetIntInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
-    return *(jint*) ((jbyte*) obj + field->offset);
+    return *(jint*) getFieldAddress(obj, field);
 }
 
 jlong nvmGetLongInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
-    return *(jlong*) ((jbyte*) obj + field->offset);
+    return *(jlong*) getFieldAddress(obj, field);
 }
 
 jfloat nvmGetFloatInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
-    return *(jfloat*) ((jbyte*) obj + field->offset);
+    return *(jfloat*) getFieldAddress(obj, field);
 }
 
 jdouble nvmGetDoubleInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
-    return *(jdouble*) ((jbyte*) obj + field->offset);
+    return *(jdouble*) getFieldAddress(obj, field);
 }
 
 void nvmSetObjectInstanceFieldValue(Env* env, Object* obj, InstanceField* field, Object* value) {
-    *(Object**) ((jbyte*) obj + field->offset) = value;
+    *(Object**) getFieldAddress(obj, field) = value;
 }
 
 void nvmSetBooleanInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jboolean value) {
-    *(jboolean*) ((jbyte*) obj + field->offset) = value;
+    *(jboolean*) getFieldAddress(obj, field) = value;
 }
 
 void nvmSetByteInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jbyte value) {
-    *(jbyte*) ((jbyte*) obj + field->offset) = value;
+    *(jbyte*) getFieldAddress(obj, field) = value;
 }
 
 void nvmSetCharInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jchar value) {
-    *(jchar*) ((jbyte*) obj + field->offset) = value;
+    *(jchar*) getFieldAddress(obj, field) = value;
 }
 
 void nvmSetShortInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jshort value) {
-    *(jshort*) ((jbyte*) obj + field->offset) = value;
+    *(jshort*) getFieldAddress(obj, field) = value;
 }
 
 void nvmSetIntInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jint value) {
-    *(jint*) ((jbyte*) obj + field->offset) = value;
+    *(jint*) getFieldAddress(obj, field) = value;
 }
 
 void nvmSetLongInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jlong value) {
-    *(jlong*) ((jbyte*) obj + field->offset) = value;
+    *(jlong*) getFieldAddress(obj, field) = value;
 }
 
 void nvmSetFloatInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jfloat value) {
-    *(jfloat*) ((jbyte*) obj + field->offset) = value;
+    *(jfloat*) getFieldAddress(obj, field) = value;
 }
 
 void nvmSetDoubleInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jdouble value) {
-    *(jdouble*) ((jbyte*) obj + field->offset) = value;
+    *(jdouble*) getFieldAddress(obj, field) = value;
+}
+
+Object* nvmGetObjectClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    return *(Object**) field->address;
+}
+
+jboolean nvmGetBooleanClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    return *(jboolean*) field->address;
+}
+
+jbyte nvmGetByteClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    return *(jbyte*) field->address;
+}
+
+jchar nvmGetCharClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    return *(jchar*) field->address;
+}
+
+jshort nvmGetShortClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    return *(jshort*) field->address;
+}
+
+jint nvmGetIntClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    return *(jint*) field->address;
+}
+
+jlong nvmGetLongClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    return *(jlong*) field->address;
+}
+
+jfloat nvmGetFloatClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    return *(jfloat*) field->address;
+}
+
+jdouble nvmGetDoubleClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    return *(jdouble*) field->address;
+}
+
+void nvmSetObjectClassFieldValue(Env* env, Class* clazz, ClassField* field, Object* value) {
+    *(Object**) field->address = value;
+}
+
+void nvmSetBooleanClassFieldValue(Env* env, Class* clazz, ClassField* field, jboolean value) {
+    *(jboolean*) field->address = value;
+}
+
+void nvmSetByteClassFieldValue(Env* env, Class* clazz, ClassField* field, jbyte value) {
+    *(jbyte*) field->address = value;
+}
+
+void nvmSetCharClassFieldValue(Env* env, Class* clazz, ClassField* field, jchar value) {
+    *(jchar*) field->address = value;
+}
+
+void nvmSetShortClassFieldValue(Env* env, Class* clazz, ClassField* field, jshort value) {
+    *(jshort*) field->address = value;
+}
+
+void nvmSetIntClassFieldValue(Env* env, Class* clazz, ClassField* field, jint value) {
+    *(jint*) field->address = value;
+}
+
+void nvmSetLongClassFieldValue(Env* env, Class* clazz, ClassField* field, jlong value) {
+    *(jlong*) field->address = value;
+}
+
+void nvmSetFloatClassFieldValue(Env* env, Class* clazz, ClassField* field, jfloat value) {
+    *(jfloat*) field->address = value;
+}
+
+void nvmSetDoubleClassFieldValue(Env* env, Class* clazz, ClassField* field, jdouble value) {
+    *(jdouble*) field->address = value;
 }
 

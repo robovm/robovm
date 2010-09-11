@@ -255,6 +255,25 @@ void nvmCallVoidInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     nvmCallVoidInstanceMethodV(env, obj, method, args);
 }
 
+Object* nvmCallObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+    CallInfo callInfo = {0};
+    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, TRUE, args)) return FALSE;
+    Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _nvmCall0;
+    return f(&callInfo);
+}
+
+Object* nvmCallObjectInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+    jvalue* jargs = va_list2jargs(env, method, args);
+    if (!jargs) return FALSE;
+    return nvmCallObjectInstanceMethodA(env, obj, method, jargs);
+}
+
+Object* nvmCallObjectInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+    va_list args;
+    va_start(args, method);
+    return nvmCallObjectInstanceMethodV(env, obj, method, args);
+}
+
 jboolean nvmCallBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
     if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, TRUE, args)) return FALSE;
@@ -426,6 +445,25 @@ void nvmCallNonvirtualVoidInstanceMethod(Env* env, Object* obj, Method* method, 
     nvmCallNonvirtualVoidInstanceMethodV(env, obj, method, args);
 }
 
+Object* nvmCallNonvirtualObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+    CallInfo callInfo = {0};
+    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, FALSE, args)) return FALSE;
+    Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _nvmCall0;
+    return f(&callInfo);
+}
+
+Object* nvmCallNonvirtualObjectInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+    jvalue* jargs = va_list2jargs(env, method, args);
+    if (!jargs) return FALSE;
+    return nvmCallNonvirtualObjectInstanceMethodA(env, obj, method, jargs);
+}
+
+Object* nvmCallNonvirtualObjectInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+    va_list args;
+    va_start(args, method);
+    return nvmCallNonvirtualObjectInstanceMethodV(env, obj, method, args);
+}
+
 jboolean nvmCallNonvirtualBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
     if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, FALSE, args)) return FALSE;
@@ -595,6 +633,25 @@ void nvmCallVoidClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
     nvmCallVoidClassMethodV(env, NULL, method, args);
+}
+
+Object* nvmCallObjectClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+    CallInfo callInfo = {0};
+    if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return FALSE;
+    Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _nvmCall0;
+    return f(&callInfo);
+}
+
+Object* nvmCallObjectClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+    jvalue* jargs = va_list2jargs(env, method, args);
+    if (!jargs) return FALSE;
+    return nvmCallObjectClassMethodA(env, NULL, method, jargs);
+}
+
+Object* nvmCallObjectClassMethod(Env* env, Class* clazz, Method* method, ...) {
+    va_list args;
+    va_start(args, method);
+    return nvmCallObjectClassMethodV(env, NULL, method, args);
 }
 
 jboolean nvmCallBooleanClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {

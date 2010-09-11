@@ -1,6 +1,10 @@
 #ifndef NULLVM_CLASS_H
 #define NULLVM_CLASS_H
 
+#define CLASS_IS_INTERFACE(c) (c->access & ACC_INTERFACE)
+#define CLASS_IS_ARRAY(c) (c->name[0] == '[')
+#define CLASS_IS_ARRAY_OF_PRIMITIVE(c) (c->name[0] == '[' && c->name[2] == '\0')
+
 extern Class* array_Z;
 extern Class* array_B;
 extern Class* array_C;
@@ -41,11 +45,14 @@ extern Class* nvmFindClass(Env* env, char* className);
 extern Object* nvmAllocateObject(Env* env, Class* clazz);
 extern void nvmInitialize(Env* env, Class* clazz);
 extern Object* nvmNewObject(Env* env, Class* clazz, Method* method, ...);
-extern Object* nvmNewObjectA(Env* env, Class* clazz, Method* method, jvalue *args);
+extern Object* nvmNewObjectA(Env* env, Class* clazz, Method* method, jvalue* args);
 extern Object* nvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args);
 
 extern int nvmIsSubClass(Class* superclass, Class* clazz);
 extern int nvmIsSamePackage(Class* c1, Class* c2);
+
+extern jboolean nvmIsAssignableFrom(Env* env, Class* sub, Class* sup);
+extern jboolean nvmIsInstanceOf(Env* env, Object* obj, Class* clazz);
 
 #endif
 

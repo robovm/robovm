@@ -1,12 +1,19 @@
 #include <nullvm.h>
 #include <nullvm/jni.h>
-/*
+#include <string.h>
+
+static void throwUnsupportedOperationException(Env* env, char* msg) {
+    Class* clazz = nvmFindClass(env, "java/lang/UnsupportedOperationException");
+    if (!clazz) return;
+    nvmThrowNew(env, clazz, msg);
+}
+
 static jint GetVersion(JNIEnv* env) {
     return JNI_VERSION_1_4;
 }
 
 static jclass DefineClass(JNIEnv* env, const char* name, jobject loader, const jbyte* buf, jsize len) {
-    nvmThrowUnsupportedOperationException((Env*) *env, "DefineClass");
+    throwUnsupportedOperationException((Env*) *env, "DefineClass");
     return NULL;
 }
 
@@ -15,18 +22,42 @@ static jclass FindClass(JNIEnv* env, const char* name) {
 }
 
 static jmethodID FromReflectedMethod(JNIEnv* env, jobject method) {
-    nvmThrowUnsupportedOperationException((Env*) *env, "FromReflectedMethod");
+    throwUnsupportedOperationException((Env*) *env, "FromReflectedMethod");
     return NULL;
 }
 
 static jfieldID FromReflectedField(JNIEnv* env, jobject field) {
-    nvmThrowUnsupportedOperationException((Env*) *env, "FromReflectedField");
+    throwUnsupportedOperationException((Env*) *env, "FromReflectedField");
     return NULL;
 }
 
 static jobject ToReflectedMethod(JNIEnv* env, jclass cls, jmethodID methodID, jboolean isStatic) {
-    nvmThrowUnsupportedOperationException((Env*) *env, "ToReflectedMethod");
+    throwUnsupportedOperationException((Env*) *env, "ToReflectedMethod");
     return NULL;
+}
+
+static jweak NewWeakGlobalRef(JNIEnv* env, jobject obj) {
+    throwUnsupportedOperationException((Env*) *env, "NewWeakGlobalRef");
+    return NULL;
+}
+
+static void DeleteWeakGlobalRef(JNIEnv* env, jweak obj) {
+    throwUnsupportedOperationException((Env*) *env, "DeleteWeakGlobalRef");
+}
+
+static jint GetJavaVM(JNIEnv* env, JavaVM** vm) {
+    throwUnsupportedOperationException((Env*) *env, "GetJavaVM");
+    return -1;
+}
+
+static jint RegisterNatives(JNIEnv* env, jclass clazz, const JNINativeMethod* methods, jint nMethods) {
+    throwUnsupportedOperationException((Env*) *env, "RegisterNatives");
+    return -1;
+}
+
+static jint UnregisterNatives(JNIEnv* env, jclass clazz) {
+    throwUnsupportedOperationException((Env*) *env, "UnregisterNatives");
+    return -1;
 }
 
 static jclass GetSuperclass(JNIEnv* env, jclass sub) {
@@ -38,7 +69,7 @@ static jboolean IsAssignableFrom(JNIEnv* env, jclass sub, jclass sup) {
 }
 
 static jobject ToReflectedField(JNIEnv* env, jclass cls, jfieldID fieldID, jboolean isStatic) {
-    nvmThrowUnsupportedOperationException((Env*) *env, "ToReflectedField");
+    throwUnsupportedOperationException((Env*) *env, "ToReflectedField");
     return NULL;
 }
 
@@ -408,27 +439,81 @@ static void CallNonvirtualVoidMethod(JNIEnv* env, jobject obj, jclass clazz, jme
     CallNonvirtualVoidMethodV(env, obj, clazz, methodID, args);
 }
 
-static jfieldID GetFieldID(JNIEnv* env, jclass clazz, const char* name, const char* sig);
+static jfieldID GetFieldID(JNIEnv* env, jclass clazz, const char* name, const char* sig) {
+    return (jfieldID) nvmGetInstanceField((Env*) *env, (Class*) clazz, (char*) name, (char*) sig);
+}
 
-static jobject GetObjectField(JNIEnv* env, jobject obj, jfieldID fieldID);
-static jboolean GetBooleanField(JNIEnv* env, jobject obj, jfieldID fieldID);
-static jbyte GetByteField(JNIEnv* env, jobject obj, jfieldID fieldID);
-static jchar GetCharField(JNIEnv* env, jobject obj, jfieldID fieldID);
-static jshort GetShortField(JNIEnv* env, jobject obj, jfieldID fieldID);
-static jint GetIntField(JNIEnv* env, jobject obj, jfieldID fieldID);
-static jlong GetLongField(JNIEnv* env, jobject obj, jfieldID fieldID);
-static jfloat GetFloatField(JNIEnv* env, jobject obj, jfieldID fieldID);
-static jdouble GetDoubleField(JNIEnv* env, jobject obj, jfieldID fieldID);
+static jobject GetObjectField(JNIEnv* env, jobject obj, jfieldID fieldID) {
+    return (jobject) nvmGetObjectInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID);
+}
 
-static void SetObjectField(JNIEnv* env, jobject obj, jfieldID fieldID, jobject val);
-static void SetBooleanField(JNIEnv* env, jobject obj, jfieldID fieldID, jboolean val);
-static void SetByteField(JNIEnv* env, jobject obj, jfieldID fieldID, jbyte val);
-static void SetCharField(JNIEnv* env, jobject obj, jfieldID fieldID, jchar val);
-static void SetShortField(JNIEnv* env, jobject obj, jfieldID fieldID, jshort val);
-static void SetIntField(JNIEnv* env, jobject obj, jfieldID fieldID, jint val);
-static void SetLongField(JNIEnv* env, jobject obj, jfieldID fieldID, jlong val);
-static void SetFloatField(JNIEnv* env, jobject obj, jfieldID fieldID, jfloat val);
-static void SetDoubleField(JNIEnv* env, jobject obj, jfieldID fieldID, jdouble val);
+static jboolean GetBooleanField(JNIEnv* env, jobject obj, jfieldID fieldID) {
+    return nvmGetBooleanInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID);
+}
+
+static jbyte GetByteField(JNIEnv* env, jobject obj, jfieldID fieldID) {
+    return nvmGetByteInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID);
+}
+
+static jchar GetCharField(JNIEnv* env, jobject obj, jfieldID fieldID) {
+    return nvmGetCharInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID);
+}
+
+static jshort GetShortField(JNIEnv* env, jobject obj, jfieldID fieldID) {
+    return nvmGetShortInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID);
+}
+
+static jint GetIntField(JNIEnv* env, jobject obj, jfieldID fieldID) {
+    return nvmGetIntInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID);
+}
+
+static jlong GetLongField(JNIEnv* env, jobject obj, jfieldID fieldID) {
+    return nvmGetLongInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID);
+}
+
+static jfloat GetFloatField(JNIEnv* env, jobject obj, jfieldID fieldID) {
+    return nvmGetFloatInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID);
+}
+
+static jdouble GetDoubleField(JNIEnv* env, jobject obj, jfieldID fieldID) {
+    return nvmGetDoubleInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID);
+}
+
+static void SetObjectField(JNIEnv* env, jobject obj, jfieldID fieldID, jobject val) {
+    nvmSetObjectInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID, (Object*) val);
+}
+
+static void SetBooleanField(JNIEnv* env, jobject obj, jfieldID fieldID, jboolean val) {
+    nvmSetBooleanInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID, val);
+}
+
+static void SetByteField(JNIEnv* env, jobject obj, jfieldID fieldID, jbyte val) {
+    nvmSetByteInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID, val);
+}
+
+static void SetCharField(JNIEnv* env, jobject obj, jfieldID fieldID, jchar val) {
+    nvmSetCharInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID, val);
+}
+
+static void SetShortField(JNIEnv* env, jobject obj, jfieldID fieldID, jshort val) {
+    nvmSetShortInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID, val);
+}
+
+static void SetIntField(JNIEnv* env, jobject obj, jfieldID fieldID, jint val) {
+    nvmSetIntInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID, val);
+}
+
+static void SetLongField(JNIEnv* env, jobject obj, jfieldID fieldID, jlong val) {
+    nvmSetLongInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID, val);
+}
+
+static void SetFloatField(JNIEnv* env, jobject obj, jfieldID fieldID, jfloat val) {
+    nvmSetFloatInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID, val);
+}
+
+static void SetDoubleField(JNIEnv* env, jobject obj, jfieldID fieldID, jdouble val) {
+    nvmSetDoubleInstanceFieldValue((Env*) *env, (Object*) obj, (InstanceField*) fieldID, val);
+}
 
 static jmethodID GetStaticMethodID(JNIEnv* env, jclass clazz, const char* name, const char* sig) {
     return (jmethodID) nvmGetClassMethod((Env*) *env, (Class*) clazz, (char*) name, (char*) sig);
@@ -574,121 +659,381 @@ static void CallStaticVoidMethod(JNIEnv* env, jclass clazz, jmethodID methodID, 
     CallStaticVoidMethodV(env, clazz, methodID, args);
 }
 
-static jfieldID GetStaticFieldID(JNIEnv* env, jclass clazz, const char* name, const char* sig);
-static jobject GetStaticObjectField(JNIEnv* env, jclass clazz, jfieldID fieldID);
-static jboolean GetStaticBooleanField(JNIEnv* env, jclass clazz, jfieldID fieldID);
-static jbyte GetStaticByteField(JNIEnv* env, jclass clazz, jfieldID fieldID);
-static jchar GetStaticCharField(JNIEnv* env, jclass clazz, jfieldID fieldID);
-static jshort GetStaticShortField(JNIEnv* env, jclass clazz, jfieldID fieldID);
-static jint GetStaticIntField(JNIEnv* env, jclass clazz, jfieldID fieldID);
-static jlong GetStaticLongField(JNIEnv* env, jclass clazz, jfieldID fieldID);
-static jfloat GetStaticFloatField(JNIEnv* env, jclass clazz, jfieldID fieldID);
-static jdouble GetStaticDoubleField(JNIEnv* env, jclass clazz, jfieldID fieldID);
+static jfieldID GetStaticFieldID(JNIEnv* env, jclass clazz, const char* name, const char* sig) {
+    return (jfieldID) nvmGetClassField((Env*) *env, (Class*) clazz, (char*) name, (char*) sig);
+}
 
-static void SetStaticObjectField(JNIEnv* env, jclass clazz, jfieldID fieldID, jobject value);
-static void SetStaticBooleanField(JNIEnv* env, jclass clazz, jfieldID fieldID, jboolean value);
-static void SetStaticByteField(JNIEnv* env, jclass clazz, jfieldID fieldID, jbyte value);
-static void SetStaticCharField(JNIEnv* env, jclass clazz, jfieldID fieldID, jchar value);
-static void SetStaticShortField(JNIEnv* env, jclass clazz, jfieldID fieldID, jshort value);
-static void SetStaticIntField(JNIEnv* env, jclass clazz, jfieldID fieldID, jint value);
-static void SetStaticLongField(JNIEnv* env, jclass clazz, jfieldID fieldID, jlong value);
-static void SetStaticFloatField(JNIEnv* env, jclass clazz, jfieldID fieldID, jfloat value);
-static void SetStaticDoubleField(JNIEnv* env, jclass clazz, jfieldID fieldID, jdouble value);
+static jobject GetStaticObjectField(JNIEnv* env, jclass clazz, jfieldID fieldID) {
+    return (jobject) nvmGetObjectClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID);
+}
 
-static jstring NewString(JNIEnv* env, const jchar* unicode, jsize len);
-static jsize GetStringLength(JNIEnv* env, jstring str);
-static const jchar* GetStringChars(JNIEnv* env, jstring str, jboolean* isCopy);
-static void ReleaseStringChars(JNIEnv* env, jstring str, const jchar* chars);
+static jboolean GetStaticBooleanField(JNIEnv* env, jclass clazz, jfieldID fieldID) {
+    return nvmGetBooleanClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID);
+}
+
+static jbyte GetStaticByteField(JNIEnv* env, jclass clazz, jfieldID fieldID) {
+    return nvmGetByteClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID);
+}
+
+static jchar GetStaticCharField(JNIEnv* env, jclass clazz, jfieldID fieldID) {
+    return nvmGetCharClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID);
+}
+
+static jshort GetStaticShortField(JNIEnv* env, jclass clazz, jfieldID fieldID) {
+    return nvmGetShortClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID);
+}
+
+static jint GetStaticIntField(JNIEnv* env, jclass clazz, jfieldID fieldID) {
+    return nvmGetIntClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID);
+}
+
+static jlong GetStaticLongField(JNIEnv* env, jclass clazz, jfieldID fieldID) {
+    return nvmGetLongClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID);
+}
+
+static jfloat GetStaticFloatField(JNIEnv* env, jclass clazz, jfieldID fieldID) {
+    return nvmGetFloatClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID);
+}
+
+static jdouble GetStaticDoubleField(JNIEnv* env, jclass clazz, jfieldID fieldID) {
+    return nvmGetDoubleClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID);
+}
+
+static void SetStaticObjectField(JNIEnv* env, jclass clazz, jfieldID fieldID, jobject val) {
+    nvmSetObjectClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID, (Object*) val);
+}
+
+static void SetStaticBooleanField(JNIEnv* env, jclass clazz, jfieldID fieldID, jboolean val) {
+    nvmSetBooleanClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID, val);
+}
+
+static void SetStaticByteField(JNIEnv* env, jclass clazz, jfieldID fieldID, jbyte val) {
+    nvmSetByteClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID, val);
+}
+
+static void SetStaticCharField(JNIEnv* env, jclass clazz, jfieldID fieldID, jchar val) {
+    nvmSetCharClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID, val);
+}
+
+static void SetStaticShortField(JNIEnv* env, jclass clazz, jfieldID fieldID, jshort val) {
+    nvmSetShortClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID, val);
+}
+
+static void SetStaticIntField(JNIEnv* env, jclass clazz, jfieldID fieldID, jint val) {
+    nvmSetIntClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID, val);
+}
+
+static void SetStaticLongField(JNIEnv* env, jclass clazz, jfieldID fieldID, jlong val) {
+    nvmSetLongClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID, val);
+}
+
+static void SetStaticFloatField(JNIEnv* env, jclass clazz, jfieldID fieldID, jfloat val) {
+    nvmSetFloatClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID, val);
+}
+
+static void SetStaticDoubleField(JNIEnv* env, jclass clazz, jfieldID fieldID, jdouble val) {
+    nvmSetDoubleClassFieldValue((Env*) *env, (Class*) clazz, (ClassField*) fieldID, val);
+}
+
+static jstring NewString(JNIEnv* env, const jchar* unicode, jsize len) {
+    return (jstring) nvmNewString((Env*) *env, (jchar*) unicode, len);
+}
+
+static jsize GetStringLength(JNIEnv* env, jstring str) {
+    return nvmGetStringLength((Env*) *env, (Object*) str);
+}
+
+static const jchar* GetStringChars(JNIEnv* env, jstring str, jboolean* isCopy) {
+    if (isCopy) *isCopy = JNI_TRUE;
+    return nvmGetStringChars((Env*) *env, (Object*) str);
+}
+
+static void ReleaseStringChars(JNIEnv* env, jstring str, const jchar* chars) {
+}
   
-static jstring NewStringUTF(JNIEnv* env, const char* utf);
-static jsize GetStringUTFLength(JNIEnv* env, jstring str);
-static const char* GetStringUTFChars(JNIEnv* env, jstring str, jboolean* isCopy);
-static void ReleaseStringUTFChars(JNIEnv* env, jstring str, const char* chars);
-  
+static jstring NewStringUTF(JNIEnv* env, const char* utf) {
+    return (jstring) nvmNewStringUTF((Env*) *env, (char*) utf, -1);
+}
 
-static jsize GetArrayLength(JNIEnv* env, jarray array);
+static jsize GetStringUTFLength(JNIEnv* env, jstring str) {
+    return nvmGetStringUTFLength((Env*) *env, (Object*) str);
+}
 
-static jobjectArray NewObjectArray(JNIEnv* env, jsize len, jclass clazz, jobject init);
-static jobject GetObjectArrayElement(JNIEnv* env, jobjectArray array, jsize index);
-static void SetObjectArrayElement(JNIEnv* env, jobjectArray array, jsize index, jobject val);
+static const char* GetStringUTFChars(JNIEnv* env, jstring str, jboolean* isCopy) {
+    if (isCopy) *isCopy = JNI_TRUE;
+    return nvmGetStringUTFChars((Env*) *env, (Object*) str);
+}
 
-static jbooleanArray NewBooleanArray(JNIEnv* env, jsize len);
-static jbyteArray NewByteArray(JNIEnv* env, jsize len);
-static jcharArray NewCharArray(JNIEnv* env, jsize len);
-static jshortArray NewShortArray(JNIEnv* env, jsize len);
-static jintArray NewIntArray(JNIEnv* env, jsize len);
-static jlongArray NewLongArray(JNIEnv* env, jsize len);
-static jfloatArray NewFloatArray(JNIEnv* env, jsize len);
-static jdoubleArray NewDoubleArray(JNIEnv* env, jsize len);
+static void ReleaseStringUTFChars(JNIEnv* env, jstring str, const char* chars) {
+} 
 
-static jboolean* GetBooleanArrayElements(JNIEnv* env, jbooleanArray array, jboolean* isCopy);
-static jbyte* GetByteArrayElements(JNIEnv* env, jbyteArray array, jboolean* isCopy);
-static jchar* GetCharArrayElements(JNIEnv* env, jcharArray array, jboolean* isCopy);
-static jshort* GetShortArrayElements(JNIEnv* env, jshortArray array, jboolean* isCopy);
-static jint* GetIntArrayElements(JNIEnv* env, jintArray array, jboolean* isCopy);
-static jlong* GetLongArrayElements(JNIEnv* env, jlongArray array, jboolean* isCopy);
-static jfloat* GetFloatArrayElements(JNIEnv* env, jfloatArray array, jboolean* isCopy);
-static jdouble* GetDoubleArrayElements(JNIEnv* env, jdoubleArray array, jboolean* isCopy);
+static jsize GetArrayLength(JNIEnv* env, jarray array) {
+    return ((Array*) array)->length;
+}
 
-static void ReleaseBooleanArrayElements(JNIEnv* env, jbooleanArray array, jboolean* elems, jint mode);
-static void ReleaseByteArrayElements(JNIEnv* env, jbyteArray array, jbyte* elems, jint mode);
-static void ReleaseCharArrayElements(JNIEnv* env, jcharArray array, jchar* elems, jint mode);
-static void ReleaseShortArrayElements(JNIEnv* env, jshortArray array, jshort* elems, jint mode);
-static void ReleaseIntArrayElements(JNIEnv* env, jintArray array, jint* elems, jint mode);
-static void ReleaseLongArrayElements(JNIEnv* env, jlongArray array, jlong* elems, jint mode);
-static void ReleaseFloatArrayElements(JNIEnv* env, jfloatArray array, jfloat* elems, jint mode);
-static void ReleaseDoubleArrayElements(JNIEnv* env, jdoubleArray array, jdouble* elems, jint mode);
+static jobjectArray NewObjectArray(JNIEnv* env, jsize len, jclass clazz, jobject init) {
+    ObjectArray* array = nvmNewObjectArray((Env*) *env, len, (Class*) clazz);
+    if (!array) return NULL;
+    if (init) {
+        jint i;
+        for (i = 0; i < len; i++) {
+            array->values[i] = (Object*) init;
+        }
+    }
+    return (jobjectArray) array;
+}
 
-static void GetBooleanArrayRegion(JNIEnv* env, jbooleanArray array, jsize start, jsize l, jboolean* buf);
-static void GetByteArrayRegion(JNIEnv* env, jbyteArray array, jsize start, jsize len, jbyte* buf);
-static void GetCharArrayRegion(JNIEnv* env, jcharArray array, jsize start, jsize len, jchar* buf);
-static void GetShortArrayRegion(JNIEnv* env, jshortArray array, jsize start, jsize len, jshort* buf);
-static void GetIntArrayRegion(JNIEnv* env, jintArray array, jsize start, jsize len, jint* buf);
-static void GetLongArrayRegion(JNIEnv* env, jlongArray array, jsize start, jsize len, jlong* buf);
-static void GetFloatArrayRegion(JNIEnv* env, jfloatArray array, jsize start, jsize len, jfloat* buf);
-static void GetDoubleArrayRegion(JNIEnv* env, jdoubleArray array, jsize start, jsize len, jdouble* buf);
+static jobject GetObjectArrayElement(JNIEnv* env, jobjectArray array, jsize index) {
+    return (jobject) ((ObjectArray*) array)->values[index];
+}
 
-static void SetBooleanArrayRegion(JNIEnv* env, jbooleanArray array, jsize start, jsize l, jboolean* buf);
-static void SetByteArrayRegion(JNIEnv* env, jbyteArray array, jsize start, jsize len, jbyte* buf);
-static void SetCharArrayRegion(JNIEnv* env, jcharArray array, jsize start, jsize len, jchar* buf);
-static void SetShortArrayRegion(JNIEnv* env, jshortArray array, jsize start, jsize len, jshort* buf);
-static void SetIntArrayRegion(JNIEnv* env, jintArray array, jsize start, jsize len, jint* buf);
-static void SetLongArrayRegion(JNIEnv* env, jlongArray array, jsize start, jsize len, jlong* buf);
-static void SetFloatArrayRegion(JNIEnv* env, jfloatArray array, jsize start, jsize len, jfloat* buf);
-static void SetDoubleArrayRegion(JNIEnv* env, jdoubleArray array, jsize start, jsize len, jdouble* buf);
+static void SetObjectArrayElement(JNIEnv* env, jobjectArray array, jsize index, jobject val) {
+    ((ObjectArray*) array)->values[index] = (Object*) val;
+}
 
-static jint RegisterNatives(JNIEnv* env, jclass clazz, const JNINativeMethod* methods, jint nMethods);
-static jint UnregisterNatives(JNIEnv* env, jclass clazz);
+static jbooleanArray NewBooleanArray(JNIEnv* env, jsize len) {
+    return (jbooleanArray) nvmNewBooleanArray((Env*) *env, len);
+}
 
-static jint MonitorEnter(JNIEnv* env, jobject obj);
-static jint MonitorExit(JNIEnv* env, jobject obj);
+static jbyteArray NewByteArray(JNIEnv* env, jsize len) {
+    return (jbyteArray) nvmNewByteArray((Env*) *env, len);
+}
+
+static jcharArray NewCharArray(JNIEnv* env, jsize len) {
+    return (jcharArray) nvmNewCharArray((Env*) *env, len);
+}
+
+static jshortArray NewShortArray(JNIEnv* env, jsize len) {
+    return (jshortArray) nvmNewShortArray((Env*) *env, len);
+}
+
+static jintArray NewIntArray(JNIEnv* env, jsize len) {
+    return (jintArray) nvmNewIntArray((Env*) *env, len);
+}
+
+static jlongArray NewLongArray(JNIEnv* env, jsize len) {
+    return (jlongArray) nvmNewLongArray((Env*) *env, len);
+}
+
+static jfloatArray NewFloatArray(JNIEnv* env, jsize len) {
+    return (jfloatArray) nvmNewFloatArray((Env*) *env, len);
+}
+
+static jdoubleArray NewDoubleArray(JNIEnv* env, jsize len) {
+    return (jdoubleArray) nvmNewDoubleArray((Env*) *env, len);
+}
+
+static jboolean* GetBooleanArrayElements(JNIEnv* env, jbooleanArray array, jboolean* isCopy) {
+    if (isCopy) *isCopy = JNI_FALSE;
+    return ((BooleanArray*) array)->values;
+}
+
+static jbyte* GetByteArrayElements(JNIEnv* env, jbyteArray array, jboolean* isCopy) {
+    if (isCopy) *isCopy = JNI_FALSE;
+    return ((ByteArray*) array)->values;
+}
+
+static jchar* GetCharArrayElements(JNIEnv* env, jcharArray array, jboolean* isCopy) {
+    if (isCopy) *isCopy = JNI_FALSE;
+    return ((CharArray*) array)->values;
+}
+
+static jshort* GetShortArrayElements(JNIEnv* env, jshortArray array, jboolean* isCopy) {
+    if (isCopy) *isCopy = JNI_FALSE;
+    return ((ShortArray*) array)->values;
+}
+
+static jint* GetIntArrayElements(JNIEnv* env, jintArray array, jboolean* isCopy) {
+    if (isCopy) *isCopy = JNI_FALSE;
+    return ((IntArray*) array)->values;
+}
+
+static jlong* GetLongArrayElements(JNIEnv* env, jlongArray array, jboolean* isCopy) {
+    if (isCopy) *isCopy = JNI_FALSE;
+    return ((LongArray*) array)->values;
+}
+
+static jfloat* GetFloatArrayElements(JNIEnv* env, jfloatArray array, jboolean* isCopy) {
+    if (isCopy) *isCopy = JNI_FALSE;
+    return ((FloatArray*) array)->values;
+}
+
+static jdouble* GetDoubleArrayElements(JNIEnv* env, jdoubleArray array, jboolean* isCopy) {
+    if (isCopy) *isCopy = JNI_FALSE;
+    return ((DoubleArray*) array)->values;
+}
+
+
+static void ReleaseBooleanArrayElements(JNIEnv* env, jbooleanArray array, jboolean* elems, jint mode) {
+}
+
+static void ReleaseByteArrayElements(JNIEnv* env, jbyteArray array, jbyte* elems, jint mode) {
+}
+
+static void ReleaseCharArrayElements(JNIEnv* env, jcharArray array, jchar* elems, jint mode) {
+}
+
+static void ReleaseShortArrayElements(JNIEnv* env, jshortArray array, jshort* elems, jint mode) {
+}
+
+static void ReleaseIntArrayElements(JNIEnv* env, jintArray array, jint* elems, jint mode) {
+}
+
+static void ReleaseLongArrayElements(JNIEnv* env, jlongArray array, jlong* elems, jint mode) {
+}
+
+static void ReleaseFloatArrayElements(JNIEnv* env, jfloatArray array, jfloat* elems, jint mode) {
+}
+
+static void ReleaseDoubleArrayElements(JNIEnv* env, jdoubleArray array, jdouble* elems, jint mode) {
+}
+
+static jboolean checkBounds(Env* env, Array* array, jint start, jint len) {
+    jsize length = array->length;
+    jsize end = start + len;
+    if (start < 0 || len < 0 || end > length) {
+        // TODO: Nicer message?
+        nvmThrowArrayIndexOutOfBoundsException(env, start);
+        return FALSE;
+    }
+    return TRUE;
+}
+
+static void GetBooleanArrayRegion(JNIEnv* env, jbooleanArray array, jsize start, jsize len, jboolean* buf) {
+    if (!checkBounds((Env*) *env, (Array*) array, start, len)) return;
+    memcpy(buf, ((BooleanArray*) array)->values + start, sizeof(jboolean) * len);
+}
+
+static void GetByteArrayRegion(JNIEnv* env, jbyteArray array, jsize start, jsize len, jbyte* buf) {
+    if (!checkBounds((Env*) *env, (Array*) array, start, len)) return;
+    memcpy(buf, ((ByteArray*) array)->values + start, sizeof(jbyte) * len);
+}
+
+static void GetCharArrayRegion(JNIEnv* env, jcharArray array, jsize start, jsize len, jchar* buf) {
+    if (!checkBounds((Env*) *env, (Array*) array, start, len)) return;
+    memcpy(buf, ((CharArray*) array)->values + start, sizeof(jchar) * len);
+}
+
+static void GetShortArrayRegion(JNIEnv* env, jshortArray array, jsize start, jsize len, jshort* buf) {
+    if (!checkBounds((Env*) *env, (Array*) array, start, len)) return;
+    memcpy(buf, ((ShortArray*) array)->values + start, sizeof(jshort) * len);
+}
+
+static void GetIntArrayRegion(JNIEnv* env, jintArray array, jsize start, jsize len, jint* buf) {
+    if (!checkBounds((Env*) *env, (Array*) array, start, len)) return;
+    memcpy(buf, ((IntArray*) array)->values + start, sizeof(jint) * len);
+}
+
+static void GetLongArrayRegion(JNIEnv* env, jlongArray array, jsize start, jsize len, jlong* buf) {
+    if (!checkBounds((Env*) *env, (Array*) array, start, len)) return;
+    memcpy(buf, ((LongArray*) array)->values + start, sizeof(jlong) * len);
+}
+
+static void GetFloatArrayRegion(JNIEnv* env, jfloatArray array, jsize start, jsize len, jfloat* buf) {
+    if (!checkBounds((Env*) *env, (Array*) array, start, len)) return;
+    memcpy(buf, ((FloatArray*) array)->values + start, sizeof(jfloat) * len);
+}
+
+static void GetDoubleArrayRegion(JNIEnv* env, jdoubleArray array, jsize start, jsize len, jdouble* buf) {
+    if (!checkBounds((Env*) *env, (Array*) array, start, len)) return;
+    memcpy(buf, ((DoubleArray*) array)->values + start, sizeof(jdouble) * len);
+}
+
+static void SetBooleanArrayRegion(JNIEnv* env, jbooleanArray array, jsize start, jsize len, jboolean* buf) {
+    if (!checkBounds((Env*) *env, (Array*) array, start, len)) return;
+    memcpy(((BooleanArray*) array)->values + start, buf, sizeof(jboolean) * len);
+}
+
+static void SetByteArrayRegion(JNIEnv* env, jbyteArray array, jsize start, jsize len, jbyte* buf) {
+    if (!checkBounds((Env*) *env, (Array*) array, start, len)) return;
+    memcpy(((ByteArray*) array)->values + start, buf, sizeof(jbyte) * len);
+}
+
+static void SetCharArrayRegion(JNIEnv* env, jcharArray array, jsize start, jsize len, jchar* buf) {
+    if (!checkBounds((Env*) *env, (Array*) array, start, len)) return;
+    memcpy(((CharArray*) array)->values + start, buf, sizeof(jchar) * len);
+}
+
+static void SetShortArrayRegion(JNIEnv* env, jshortArray array, jsize start, jsize len, jshort* buf) {
+    if (!checkBounds((Env*) *env, (Array*) array, start, len)) return;
+    memcpy(((ShortArray*) array)->values + start, buf, sizeof(jshort) * len);
+}
+
+static void SetIntArrayRegion(JNIEnv* env, jintArray array, jsize start, jsize len, jint* buf) {
+    if (!checkBounds((Env*) *env, (Array*) array, start, len)) return;
+    memcpy(((IntArray*) array)->values + start, buf, sizeof(jint) * len);
+}
+
+static void SetLongArrayRegion(JNIEnv* env, jlongArray array, jsize start, jsize len, jlong* buf) {
+    if (!checkBounds((Env*) *env, (Array*) array, start, len)) return;
+    memcpy(((LongArray*) array)->values + start, buf, sizeof(jlong) * len);
+}
+
+static void SetFloatArrayRegion(JNIEnv* env, jfloatArray array, jsize start, jsize len, jfloat* buf) {
+    if (!checkBounds((Env*) *env, (Array*) array, start, len)) return;
+    memcpy(((FloatArray*) array)->values + start, buf, sizeof(jfloat) * len);
+}
+
+static void SetDoubleArrayRegion(JNIEnv* env, jdoubleArray array, jsize start, jsize len, jdouble* buf) {
+    if (!checkBounds((Env*) *env, (Array*) array, start, len)) return;
+    memcpy(((DoubleArray*) array)->values + start, buf, sizeof(jdouble) * len);
+}
+
+static jint MonitorEnter(JNIEnv* env, jobject obj) {
+    return nvmMonitorEnter((Env*) *env, (Object*) obj);
+}
+
+static jint MonitorExit(JNIEnv* env, jobject obj) {
+    return nvmMonitorExit((Env*) *env, (Object*) obj);
+}
  
-static jint GetJavaVM(JNIEnv* env, JavaVM** vm);
+static void GetStringRegion(JNIEnv* env, jstring str, jsize start, jsize len, jchar* buf) {
+    nvmGetStringRegion((Env*) *env, (Object*) str, start, len, buf);
+}
 
-static void GetStringRegion(JNIEnv* env, jstring, jsize, jsize, jchar*);
-static void GetStringUTFRegion(JNIEnv* env, jstring, jsize, jsize, char*);
+static void GetStringUTFRegion(JNIEnv *env, jstring str, jsize start, jsize len, char* buf) {
+    nvmGetStringUTFRegion((Env*) *env, (Object*) str, start, len, buf);
+}
 
-static void* GetPrimitiveArrayCritical(JNIEnv* env, jarray array, jboolean* isCopy);
-static void ReleasePrimitiveArrayCritical(JNIEnv* env, jarray array, void* carray, jint mode);
+static void* GetPrimitiveArrayCritical(JNIEnv* env, jarray array, jboolean* isCopy) {
+    if (isCopy) *isCopy = JNI_FALSE;
+    return ((Array*) array)->values;
+}
 
-static const jchar* GetStringCritical(JNIEnv* env, jstring s, jboolean* isCopy);
-static void ReleaseStringCritical(JNIEnv* env, jstring s, const jchar* cstr);
+static void ReleasePrimitiveArrayCritical(JNIEnv* env, jarray array, void* carray, jint mode) {
+}
 
-static jweak NewWeakGlobalRef(JNIEnv* env, jobject obj);
-static void DeleteWeakGlobalRef(JNIEnv* env, jweak obj);
+static const jchar* GetStringCritical(JNIEnv* env, jstring str, jboolean* isCopy) {
+    return GetStringChars(env, str, isCopy);
+}
+
+static void ReleaseStringCritical(JNIEnv* env, jstring str, const jchar* chars) {
+    ReleaseStringChars(env, str, chars);
+}
 
 static jboolean ExceptionCheck(JNIEnv* env) {
     return nvmExceptionCheck((Env*) *env);
 }
 
-static jobject NewDirectByteBuffer(JNIEnv* env, void* address, jlong capacity);
-static void* GetDirectBufferAddress(JNIEnv* env, jobject buf);
-static jlong GetDirectBufferCapacity(JNIEnv* env, jobject buf);
-*/
+static jobject NewDirectByteBuffer(JNIEnv* env, void* address, jlong capacity) {
+    // TODO: Implement me
+    return NULL;
+}
+
+static void* GetDirectBufferAddress(JNIEnv* env, jobject buf) {
+    // TODO: Implement me
+    return NULL;
+}
+
+static jlong GetDirectBufferCapacity(JNIEnv* env, jobject buf) {
+    // TODO: Implement me
+    return -1;
+}
+
 Env* nvmCreateEnv(void) {
     Env* env = (Env*) GC_MALLOC(sizeof(Env));
     if (!env) return NULL;
-/*
+
     env->jni.GetVersion = GetVersion;
     env->jni.DefineClass = DefineClass;
     env->jni.FindClass = FindClass;
@@ -917,6 +1262,7 @@ Env* nvmCreateEnv(void) {
     env->jni.NewDirectByteBuffer = NewDirectByteBuffer;
     env->jni.GetDirectBufferAddress = GetDirectBufferAddress;
     env->jni.GetDirectBufferCapacity = GetDirectBufferCapacity;
-*/
+
+    return env;
 }
 

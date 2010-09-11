@@ -110,6 +110,12 @@ typedef struct InvokeInterface {
     Class** caller;
 } InvokeInterface;
 
+typedef struct InvokeNative {
+    void* resolve;
+    void* function;
+    char* shortMangledName;
+    char* longMangledName;
+} InvokeNative;
 
 extern jbyte _nvmBcGetStatic8(GetStatic* g, Env* env);
 extern jshort _nvmBcGetStatic16(GetStatic* g, Env* env);
@@ -183,8 +189,6 @@ void* _nvmBcGetInvokeVirtualFunction(Env* env, char* className, char* methodName
 void* _nvmBcGetInvokeInterfaceFunction(Env* env, char* className, char* methodName, char* methodDesc, void* caller, void** functionPtr);
 void* _nvmBcGetInvokeSpecialFunction(Env* env, char* className, char* methodName, char* methodDesc, void* caller, void** functionPtr);
 
-void* _nvmBcGetNativeMethod(Env* env, char* shortMangledName, char* longMangledName, void** functionPtr);
-
 void _nvmBcMonitorEnter(Env* env, Object* obj);
 void _nvmBcMonitorExit(Env* env, Object* obj);
 
@@ -242,13 +246,17 @@ void _nvmBcThrowNullPointerException(Env* env) {
     _nvmBcThrow(env, nvmExceptionOccurred(env));
 }
 
+void _nvmBcThrowIfExceptionOccurred(Env* env) {
+    if (nvmExceptionOccurred(env)) _nvmBcThrow(env, nvmExceptionOccurred(env));
+}
+
 void _nvmBcThrowArrayIndexOutOfBoundsException(Env* env, jint index) {
     nvmThrowArrayIndexOutOfBoundsException(env, index);
     _nvmBcThrow(env, nvmExceptionOccurred(env));
 }
 
 Object* _nvmBcNewStringAscii(Env* env, char* s) {
-    Object* o = nvmNewStringAscii(env, s);
+    Object* o = nvmNewStringAscii(env, s, -1);
     if (!o) _nvmBcThrow(env, nvmExceptionOccurred(env));
     return o;
 }
@@ -506,11 +514,11 @@ void _nvmBcResolveFieldForPutField(PutField* p, Env* env) {
     p->function = setter;
 }
 
-void* _nvmBcGetNativeMethod(Env* env, char* shortMangledName, char* longMangledName, void** functionPtr) {
-    void* f = nvmGetNativeMethod(env, shortMangledName, longMangledName);
+void _nvmBcResolveNativeMethod(InvokeNative* i, Env* env) {
+    void* f = nvmGetNativeMethod(env, i->shortMangledName, i->longMangledName);
     if (!f) _nvmBcThrow(env, nvmExceptionOccurred(env));
-    *functionPtr = f;
-    return f;
+    i->function = f;
+    i->resolve = _nvmEmptyFunction;
 }
 
 void _nvmBcResolveMethodForInvokeStaticCommon(InvokeStaticCommon* common, Env* env) {

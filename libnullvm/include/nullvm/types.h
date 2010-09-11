@@ -4,8 +4,8 @@
 #include "jni_types.h"
 #include "jni.h"
 
-#define FALSE 0
-#define TRUE 1
+#define FALSE JNI_FALSE
+#define TRUE JNI_TRUE
 
 #define CLASS_ALLOCATED 0
 #define CLASS_LOADED 1
@@ -45,6 +45,7 @@ typedef struct ClassField ClassField;
 typedef struct InstanceField InstanceField;
 typedef struct Method Method;
 typedef struct ObjectHeader ObjectHeader;
+typedef struct Interface Interface;
 typedef struct Class Class;
 typedef struct Object Object;
 typedef struct DataObject DataObject;
@@ -77,6 +78,11 @@ struct Method {
   char* callInfo;
 };
 
+struct Interface {
+  Interface* next;
+  Class* interface;
+};
+
 struct Object {
   Class* clazz;
   /* void* lock */
@@ -91,13 +97,13 @@ struct Class {
   jint id;
   char* name;         // The name in UTF-8.
   char* packageName;         // The package name in UTF-8.
-  Class* superclass;  // Superclass pointer. Only java.lang.Object has NULL here.
+  Class* superclass;  // Superclass pointer. Only java.lang.Object and interfaces have NULL here.
   jint state;
   jint access;
   Object* (*newInstance)(void);
   void (*checkcast)(Object*);
   jint (*instanceof)(Object*);
-  Map* interfaces; // Map of interfaces or NULL if there are no interfaces. Interface IDs are used as keys.
+  Interface* interfaces; // Linked list of interfaces or NULL if there are no interfaces.
   Field* fields; // Linked list of fields.
   Method* methods;       // Method pointers.
   jint classDataSize;
@@ -119,6 +125,7 @@ struct DataObject {
 struct Array {
   Object object;
   jint length;
+  void* values[0];
 };
 
 #define MAKE_ARRAY(T, N) \

@@ -35,6 +35,7 @@
     .globl _nvmBcResolveMethodForInvokeVirtual0
     .globl _nvmBcResolveMethodForInvokeSpecial0
     .globl _nvmBcResolveMethodForInvokeInterface0
+    .globl _nvmBcResolveNativeMethod0
     .globl _nvmCall0
 
 
@@ -249,7 +250,6 @@ _nvmBcResolve0:
     resolve _nvmBcResolveMethodForInvokeVirtual0, _nvmBcResolveMethodForInvokeVirtual
     resolve _nvmBcResolveMethodForInvokeSpecial0, _nvmBcResolveMethodForInvokeSpecial
     resolve _nvmBcResolveMethodForInvokeInterface0, _nvmBcResolveMethodForInvokeInterface
-
     
 /*
 

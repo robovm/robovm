@@ -37,7 +37,8 @@ Env* nvmStartup(Options* options) {
     // TODO: What if we can't allocate Env?
 
     // Call init on modules
-    nvmInitClasses(env);
+    if (!nvmInitClasses(env)) return NULL;
+    if (!nvmInitStrings(env)) return NULL;
 
     return env;
 }

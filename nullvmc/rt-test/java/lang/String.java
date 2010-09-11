@@ -11,11 +11,13 @@ package java.lang;
  */
 public final class String implements Comparable<String> {
     private char[] value;
+    private int offset;
+    private int count;
 
     String(int start, int length, char[] data) {
         value = data;
-        //offset = start;
-        //count = length;
+        offset = start;
+        count = length;
     }
     
     public int compareTo(String o) {

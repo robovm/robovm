@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <nullvm.h>
 
-void Java_org_nullvm_compiler_Echo_print__Ljava_lang_String_2(Env* env, Class* clazz, Object* s) {
+void Java_org_nullvm_compiler_Echo_print__Ljava_lang_String_2(JNIEnv* jniEnv, Class* clazz, Object* s) {
+    Env* env = *(Env**) jniEnv;
     InstanceField* field = nvmGetInstanceField(env, s->clazz, "value", "[C");
     if (!field) return;
     CharArray* value = (CharArray*) nvmGetObjectInstanceFieldValue(env, s, field);
@@ -11,7 +12,7 @@ void Java_org_nullvm_compiler_Echo_print__Ljava_lang_String_2(Env* env, Class* c
     }
 }
 
-void Java_org_nullvm_compiler_Echo_print__I(Env* env, Class* clazz, jint n) {
+void Java_org_nullvm_compiler_Echo_print__I(JNIEnv* jniEnv, Class* clazz, jint n) {
     printf("%d", n);
 }
 

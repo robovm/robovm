@@ -286,7 +286,7 @@ public class Compiler {
                             writeStringDefinition(out, (String) n.cst);
                         }
                         if (n.cst instanceof Type) {
-                            writeStringDefinition(out, ((Type) n.cst).getDescriptor());
+                            writeStringDefinition(out, ((Type) n.cst).getInternalName());
                         }
                     } else if (insnNode instanceof MultiANewArrayInsnNode) {
                         MultiANewArrayInsnNode n = (MultiANewArrayInsnNode) insnNode;
@@ -644,12 +644,12 @@ public class Compiler {
         }
         out.println();
         
-        for (int i = 0; i < classNode.methods.size(); i++) {
-            MethodNode node = (MethodNode) classNode.methods.get(classNode.methods.size() - i - 1);
-            if ((node.access & Opcodes.ACC_ABSTRACT) == 0) {
-                out.format("@.Leh_func_end%d = external global i8\n", i + 1);
-            }
-        }
+//        for (int i = 0; i < classNode.methods.size(); i++) {
+//            MethodNode node = (MethodNode) classNode.methods.get(classNode.methods.size() - i - 1);
+//            if ((node.access & Opcodes.ACC_ABSTRACT) == 0) {
+//                out.format("@.Leh_func_end%d = external global i8\n", i + 1);
+//            }
+//        }
 
         out.format( "define %%Class* @\"NullVM_%s\"(%%Env* %%env) {\n", LlvmUtil.mangleString(classNode.name));
         if (!classFields.isEmpty()) {
@@ -704,7 +704,8 @@ public class Compiler {
             } else {
                 out.format("    %%FuncPtr%d = bitcast %s @%s to i8*\n", i, 
                         LlvmUtil.javaMethodToLlvmFunctionType(node), LlvmUtil.mangleMethod(classNode, node));
-                out.format("    %%FuncEnd%d = bitcast i8* @.Leh_func_end%d to i8*\n", i, i + 1);
+                //out.format("    %%FuncEnd%d = bitcast i8* @.Leh_func_end%d to i8*\n", i, i + 1);
+                out.format("    %%FuncEnd%d = bitcast i8* null to i8*\n", i);
             }
             out.format("    call void @_nvmBcAddMethod(%%Env* %%env, %%Class* %%clazz, i8* %s, i8* %s, i32 %d, i8* %%FuncPtr%d, i8* %%FuncEnd%d)\n", 
                     LlvmUtil.getStringReference(node.name), LlvmUtil.getStringReference(node.desc), 

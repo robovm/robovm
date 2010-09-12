@@ -1,5 +1,4 @@
 #include <nullvm.h>
-#include <nullvm/jni.h>
 #include <string.h>
 
 static void throwUnsupportedOperationException(Env* env, char* msg) {

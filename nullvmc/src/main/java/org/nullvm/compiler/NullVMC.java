@@ -147,7 +147,7 @@ public class NullVMC {
             try {
                 in = new FileInputStream(f);
                 ClassReader cr = new ClassReader(in);
-                outFile = new File(work, cr.getClassName().replace('/', '_') + ".ll");
+                outFile = new File(work, cr.getClassName().replace('/', '_') + ".class.ll");
                 if (outFile.exists() && outFile.lastModified() >= f.lastModified()) {
                     if (verbose) {
                         stdout.println("Skipping unchanged class file: " + f);

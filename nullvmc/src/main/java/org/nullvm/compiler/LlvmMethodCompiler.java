@@ -1793,11 +1793,11 @@ public class LlvmMethodCompiler {
                 Var res = tmpr("res");
                 if (currentTryCatchBlocks.isEmpty()) {
                     out.format("    %s = call %%Object* @_nvmBcGetClassObject(%%Env* %s, i8* %s, %%Class* %s)\n", res, new Var("env", "%Env*"),
-                            LlvmUtil.getStringReference(t.getDescriptor()), caller);
+                            LlvmUtil.getStringReference(t.getInternalName()), caller);
                 } else {
                     String successLabel = String.format("LdcClassSuccess%d", pc);
                     out.format("    %s = invoke %%Object* @_nvmBcGetClassObject(%%Env* %s, i8* %s, %%Class* %s) to label %%%s unwind label %%%s\n", res, new Var("env", "%Env*"),
-                            LlvmUtil.getStringReference(t.getDescriptor()), caller, successLabel, currentLandingPad.getLabel());
+                            LlvmUtil.getStringReference(t.getInternalName()), caller, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
                 push1(res);

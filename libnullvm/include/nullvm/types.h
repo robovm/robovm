@@ -1,8 +1,8 @@
 #ifndef NULLVM_TYPES_H
 #define NULLVM_TYPES_H
 
-#include "jni_types.h"
-#include "jni.h"
+#include "../jni_types.h"
+#include "../jni.h"
 
 #define FALSE JNI_FALSE
 #define TRUE JNI_TRUE

@@ -32,26 +32,6 @@ Class* array_J;
 Class* array_F;
 Class* array_D;
 
-static uint8_t checkcastInstanceofTemplateX86_64[] = {
-    // mov    %rsi,%rdx
-    0x48,  0x89, 0xf2,
-    // mov    $0x123456789abcdef,%rax
-    0x48, 0xb8, 0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01, 
-    // mov    $0x1123456789abcdef,%rsi
-    0x48, 0xbe, 0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x11, 
-    // jmpq   *%rax
-    0xff, 0xe0
-};
-
-static uint8_t allocateObjectTemplateX86_64[] = {
-    // mov    $0x123456789abcdef,%rax
-    0x48, 0xb8, 0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01, 
-    // mov    $0x1123456789abcdef,%rsi
-    0x48, 0xbe, 0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x11, 
-    // jmpq   *%rax
-    0xff, 0xe0
-};
-
 // TODO: Protect these with locks
 static Map* nameToClassMap = NULL;
 static Map* idToClassMap = NULL;
@@ -217,6 +197,8 @@ jboolean nvmIsAssignableFrom(Env* env, Class* s, Class* t) {
 }
 
 jboolean nvmIsInstanceOf(Env* env, Object* obj, Class* clazz) {
+    if (!obj) return FALSE;
+    return nvmIsAssignableFrom(env, obj->clazz, clazz);
 }
 
 jint j_get_vtable_index(Class* clazz, char* name, char* desc, Class* caller) {
@@ -257,74 +239,6 @@ jint j_get_vtable_index(Class* clazz, char* name, char* desc, Class* caller) {
         }
     }
     return -1;
-}
-
-static void checkcastClass(Env* env, Class* clazz, Object* o) {
-    // TODO: Handle arrays
-    if (o && o->clazz != clazz && !nvmIsSubClass(clazz, o->clazz)) {
-        nvmThrowClassCastException(env, clazz, o->clazz);
-        nvmRaiseException(env, nvmExceptionOccurred(env));
-    }
-}
-
-static void checkcastInterface(Class* clazz, Object* o) {
-    // TODO: Implement me
-}
-
-static jint instanceofClass(Class* clazz, Object* o) {
-    // TODO: Handle arrays
-    return o && (o->clazz == clazz || nvmIsSubClass(clazz, o->clazz));
-}
-
-static jint instanceofInterface(Class* clazz, Object* o) {
-    // TODO: Implement me
-}
-
-static void* allocateMemoryForFunction(Env* env, int size, uint8_t* templatePtr) {
-    void* m = nvmAllocateExecutableMemory(env, size);
-    if (!m) return NULL;
-    memcpy(m, templatePtr, size);
-    return m;
-}
-
-static void (*createCheckcastClassFunction(Env* env, Class* clazz))(Object*) {
-  void* m = allocateMemoryForFunction(env, sizeof(checkcastInstanceofTemplateX86_64), checkcastInstanceofTemplateX86_64);
-  if (!m) return NULL;
-  *((void**)(m + 5)) = (void*) checkcastClass;
-  *((Class**)(m + 15)) = clazz;
-  return m;
-}
-
-static void (*createCheckcastInterfaceFunction(Env* env, Class* clazz))(Object*) {
-  void* m = allocateMemoryForFunction(env, sizeof(checkcastInstanceofTemplateX86_64), checkcastInstanceofTemplateX86_64);
-  if (!m) return NULL;
-  *((void**)(m + 5)) = (void*) checkcastInterface;
-  *((Class**)(m + 15)) = clazz;
-  return m;
-}
-
-static jint (*createInstanceofClassFunction(Env* env, Class* clazz))(Object*) {
-  void* m = allocateMemoryForFunction(env, sizeof(checkcastInstanceofTemplateX86_64), checkcastInstanceofTemplateX86_64);
-  if (!m) return NULL;
-  *((void**)(m + 5)) = (void*) instanceofClass;
-  *((Class**)(m + 15)) = clazz;
-  return m;
-}
-
-static jint (*createInstanceofInterfaceFunction(Env* env, Class* clazz))(Object*) {
-  void* m = allocateMemoryForFunction(env, sizeof(checkcastInstanceofTemplateX86_64), checkcastInstanceofTemplateX86_64);
-  if (!m) return NULL;
-  *((void**)(m + 5)) = (void*) instanceofInterface;
-  *((Class**)(m + 15)) = clazz;
-  return m;
-}
-
-static Object* (*createNewInstanceFunction(Env* env, Class* clazz))(void) {
-  void* m = allocateMemoryForFunction(env, sizeof(allocateObjectTemplateX86_64), allocateObjectTemplateX86_64);
-  if (!m) return NULL;
-  *((void**)(m + 2)) = (void*) nvmAllocateObject;
-  *((Class**)(m + 12)) = clazz;
-  return m;
 }
 
 static char* hexChars = "0123456789ABCDEF";
@@ -511,21 +425,6 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
     clazz->instanceDataOffset = offset;
 
     clazz->state = CLASS_VERIFIED;
-
-    if (clazz->access & ACC_INTERFACE) {
-        clazz->checkcast = createCheckcastInterfaceFunction(env, clazz);
-        if (!clazz->checkcast) return FALSE;
-        clazz->instanceof = createInstanceofInterfaceFunction(env, clazz);
-        if (!clazz->instanceof) return FALSE;
-    } else {
-        clazz->checkcast = createCheckcastClassFunction(env, clazz);
-        if (!clazz->checkcast) return FALSE;
-        clazz->instanceof = createInstanceofClassFunction(env, clazz);
-        if (!clazz->instanceof) return FALSE;
-        clazz->newInstance = createNewInstanceFunction(env, clazz);
-        if (!clazz->newInstance) return FALSE;
-    }
-
     clazz->state = CLASS_PREPARED;
 
     addLoadedClass(env, clazz);

@@ -106,6 +106,12 @@ public class Compiler {
         out.println("%Env = type opaque");
         out.println("%Class = type opaque");
         out.println("%Object = type opaque");
+        
+        out.println("%ClassResCommon = type {void ()*, i8*, %Class*}");
+        out.println("%NewRes = type {void ()*, %ClassResCommon*, %Class**}");
+        out.println("%CheckcastRes = type {void ()*, %ClassResCommon*, %Class**}");
+        out.println("%InstanceofRes = type {void ()*, %ClassResCommon*, %Class**}");
+        out.println("%LdcClassRes = type {void ()*, %ClassResCommon*, %Class**}");
         out.println("%GetPutStaticCommon = type {void ()*, i8*, i8*, i8*, i8*}");
         out.println("%GetStatic = type {void ()*, %GetPutStaticCommon*, %Class**, i8*}");
         out.println("%PutStatic = type {void ()*, %GetPutStaticCommon*, %Class**, i8*}");
@@ -147,19 +153,12 @@ public class Compiler {
         out.println("declare %Object* @_nvmBcNewMultiArray(%Env*, i32, i32*, i8*, %Class*)");
         
         out.println("declare %Object* @_nvmBcNewStringAscii(%Env*, i8*)");
-        out.println("declare %Object* @_nvmBcGetClassObject(%Env*, i8*, %Class*)");
-
-        out.println("declare void @_nvmBcGetStatic()");
-        out.println("declare void @_nvmBcPutStatic()");
+        out.println("declare %Object* @_nvmBcLdcClass(%Env*, i8*, %Class*)");
         
-        out.println("declare i8* @_nvmBcGetClassFieldGetter(%Env*, i8*, i8*, i8*, %Class*, i8*)");
-        out.println("declare i8* @_nvmBcGetClassFieldSetter(%Env*, i8*, i8*, i8*, %Class*, i8*)");
-        out.println("declare i8* @_nvmBcGetInstanceFieldGetter(%Env*, i8*, i8*, i8*, %Class*, i8*)");
-        out.println("declare i8* @_nvmBcGetInstanceFieldSetter(%Env*, i8*, i8*, i8*, %Class*, i8*)");
-        
-        out.println("declare i8* @_nvmBcGetCheckcastFunction(%Env*, i8*, %Class*, i8*)");
-        out.println("declare i8* @_nvmBcGetInstanceofFunction(%Env*, i8*, %Class*, i8*)");
-        out.println("declare i8* @_nvmBcGetAllocateObjectFunction(%Env*, i8*, %Class*, i8*)");
+        out.println("declare void @_nvmBcResolveClassResCommon()");
+        out.println("declare void @_nvmBcResolveClassForNew0()");
+        out.println("declare void @_nvmBcResolveClassForCheckcast0()");
+        out.println("declare void @_nvmBcResolveClassForInstanceof0()");
         
         out.println("declare void @_nvmBcResolveFieldForGetPutStaticCommon()");
         out.println("declare void @_nvmBcResolveFieldForGetStatic0()");
@@ -308,7 +307,7 @@ public class Compiler {
         out.println();
         
         out.println("; Field accessors");
-        Set<String> accessorsCommon = new HashSet<String>();
+        Set<String> resCommon = new HashSet<String>();
         Set<String> accessors = new HashSet<String>();
         for (MethodNode node : (List<MethodNode>) classNode.methods) {
             if (!LlvmUtil.isNative(node)) {
@@ -324,41 +323,41 @@ public class Compiler {
                         if (!accessors.contains(varName)) {
                             switch (n.getOpcode()) { 
                             case Opcodes.GETSTATIC:
-                                if (!accessorsCommon.contains(commonVarName)) {
+                                if (!resCommon.contains(commonVarName)) {
                                     out.format("@%s = linker_private global %%GetPutStaticCommon {void ()* @_nvmBcResolveFieldForGetPutStaticCommon, i8* null, i8* %s, i8* %s, i8* %s}\n", 
                                             commonVarName, LlvmUtil.getStringReference(n.owner), 
                                             LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
-                                    accessorsCommon.add(commonVarName);
+                                    resCommon.add(commonVarName);
                                 }
                                 out.format("@%s = private global %%GetStatic {void ()* @_nvmBcResolveFieldForGetStatic0, %%GetPutStaticCommon* @%s, %%Class** @clazz, i8* null}\n", 
                                         varName, commonVarName);
                                 break;
                             case Opcodes.PUTSTATIC:
-                                if (!accessorsCommon.contains(commonVarName)) {
+                                if (!resCommon.contains(commonVarName)) {
                                     out.format("@%s = linker_private global %%GetPutStaticCommon {void ()* @_nvmBcResolveFieldForGetPutStaticCommon, i8* null, i8* %s, i8* %s, i8* %s}\n", 
                                             commonVarName, LlvmUtil.getStringReference(n.owner), 
                                             LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
-                                    accessorsCommon.add(commonVarName);
+                                    resCommon.add(commonVarName);
                                 }
                                 out.format("@%s = private global %%PutStatic {void ()* @_nvmBcResolveFieldForPutStatic0, %%GetPutStaticCommon* @%s, %%Class** @clazz, i8* null}\n", 
                                         varName, commonVarName);
                                 break;
                             case Opcodes.GETFIELD:
-                                if (!accessorsCommon.contains(commonVarName)) {
+                                if (!resCommon.contains(commonVarName)) {
                                     out.format("@%s = linker_private global %%GetPutFieldCommon {void ()* @_nvmBcResolveFieldForGetPutFieldCommon, i32 0, i8* %s, i8* %s, i8* %s}\n", 
                                             commonVarName, LlvmUtil.getStringReference(n.owner), 
                                             LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
-                                    accessorsCommon.add(commonVarName);
+                                    resCommon.add(commonVarName);
                                 }
                                 out.format("@%s = private global %%GetField {void ()* @_nvmBcResolveFieldForGetField0, %%GetPutFieldCommon* @%s, %%Class** @clazz, i32 0}\n", 
                                         varName, commonVarName);
                                 break;
                             case Opcodes.PUTFIELD:
-                                if (!accessorsCommon.contains(commonVarName)) {
+                                if (!resCommon.contains(commonVarName)) {
                                     out.format("@%s = linker_private global %%GetPutFieldCommon {void ()* @_nvmBcResolveFieldForGetPutFieldCommon, i32 0, i8* %s, i8* %s, i8* %s}\n", 
                                             commonVarName, LlvmUtil.getStringReference(n.owner), 
                                             LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
-                                    accessorsCommon.add(commonVarName);
+                                    resCommon.add(commonVarName);
                                 }
                                 out.format("@%s = private global %%PutField {void ()* @_nvmBcResolveFieldForPutField0, %%GetPutFieldCommon* @%s, %%Class** @clazz, i32 0}\n", 
                                         varName, commonVarName);
@@ -504,66 +503,91 @@ public class Compiler {
                 for (AbstractInsnNode insnNode : node.instructions.toArray()) {
                     if (insnNode instanceof TypeInsnNode) {
                         TypeInsnNode n = (TypeInsnNode) insnNode;
-                        if (n.getOpcode() != Opcodes.CHECKCAST && n.getOpcode() != Opcodes.INSTANCEOF) {
+                        if (n.getOpcode() != Opcodes.CHECKCAST && n.getOpcode() != Opcodes.INSTANCEOF && n.getOpcode() != Opcodes.NEW) {
                             continue;
                         }
                         
-                        String function = LlvmMethodCompiler.opcodeNames[n.getOpcode()] + "_" + LlvmUtil.mangleString(n.desc);
-                        String lookupMethod = n.getOpcode() == Opcodes.CHECKCAST ? "_nvmBcGetCheckcastFunction" : "_nvmBcGetInstanceofFunction";
-                        String type = n.getOpcode() == Opcodes.CHECKCAST ? "void" : "i32";
-                        if (!functions.contains(function)) {
-                            out.format("define private %s @_%s(%%Env* %%env, %%Object* %%o) {\n", type, function);
-                            out.format("    %%caller = load %%Class** @clazz\n");
-                            out.format("    %%functionPtr = bitcast %s (%%Env*, %%Object*)** @%s to i8*\n", type, function);
-                            out.format("    %%tmp0 = call i8* @%s(%%Env* %%env, i8* %s, %%Class* %%caller, i8* %%functionPtr)\n",
-                                    lookupMethod, LlvmUtil.getStringReference(n.desc));
-                            out.format("    %%function = bitcast i8* %%tmp0 to %s (%%Env*, %%Object*)*\n", type);
-                            if (n.getOpcode() == Opcodes.CHECKCAST) {
-                                out.format("    call void %%function(%%Env* %%env, %%Object* %%o)\n");
-                                out.format("    ret void\n");
-                            } else {
-                                out.format("    %%res = call i32 %%function(%%Env* %%env, %%Object* %%o)\n");
-                                out.format("    ret i32 %%res\n");
-                            }
-                            out.format("}\n");
-                            out.format("@%s = private global %s (%%Env*, %%Object*)* @_%s\n", function, type, function);
-                            functions.add(function);
+                        String prefix = null;
+                        if (n.getOpcode() == Opcodes.CHECKCAST) {
+                            prefix = "Checkcast";
                         }
+                        if (n.getOpcode() == Opcodes.INSTANCEOF) {
+                            prefix = "Instanceof";
+                        }
+                        if (n.getOpcode() == Opcodes.NEW) {
+                            prefix = "New";
+                        }
+                        String mangledClass = LlvmUtil.mangleString(n.desc);
+                        String varName = prefix + "_" + mangledClass;
+                        if (!functions.contains(varName)) {
+                            String commonVarName = "ClassResCommon" + "_" + mangledClass;
+                            
+                            if (!resCommon.contains(commonVarName)) {
+                                out.format("@%s = linker_private global %%ClassResCommon {void ()* @_nvmBcResolveClassResCommon, i8* %s, %%Class* null}\n", 
+                                        commonVarName, LlvmUtil.getStringReference(n.desc));
+                                resCommon.add(commonVarName);
+                            }
+                            out.format("@%s = private global %%%sRes {void ()* @_nvmBcResolveClassFor%s0, %%ClassResCommon* @%s, %%Class** @clazz}\n", 
+                                    varName, prefix, prefix, commonVarName);
+                            functions.add(varName);
+                        }                        
+//                        
+//                        String function = LlvmMethodCompiler.opcodeNames[n.getOpcode()] + "_" + LlvmUtil.mangleString(n.desc);
+//                        String lookupMethod = n.getOpcode() == Opcodes.CHECKCAST ? "_nvmBcGetCheckcastFunction" : "_nvmBcGetInstanceofFunction";
+//                        String type = n.getOpcode() == Opcodes.CHECKCAST ? "void" : "i32";
+//                        if (!functions.contains(function)) {
+//                            out.format("define private %s @_%s(%%Env* %%env, %%Object* %%o) {\n", type, function);
+//                            out.format("    %%caller = load %%Class** @clazz\n");
+//                            out.format("    %%functionPtr = bitcast %s (%%Env*, %%Object*)** @%s to i8*\n", type, function);
+//                            out.format("    %%tmp0 = call i8* @%s(%%Env* %%env, i8* %s, %%Class* %%caller, i8* %%functionPtr)\n",
+//                                    lookupMethod, LlvmUtil.getStringReference(n.desc));
+//                            out.format("    %%function = bitcast i8* %%tmp0 to %s (%%Env*, %%Object*)*\n", type);
+//                            if (n.getOpcode() == Opcodes.CHECKCAST) {
+//                                out.format("    call void %%function(%%Env* %%env, %%Object* %%o)\n");
+//                                out.format("    ret void\n");
+//                            } else {
+//                                out.format("    %%res = call i32 %%function(%%Env* %%env, %%Object* %%o)\n");
+//                                out.format("    ret i32 %%res\n");
+//                            }
+//                            out.format("}\n");
+//                            out.format("@%s = private global %s (%%Env*, %%Object*)* @_%s\n", function, type, function);
+//                            functions.add(function);
+//                        }
                     }
                 }
             }
         }
         
-        out.println("; NEW functions");
-        for (MethodNode node : (List<MethodNode>) classNode.methods) {
-            if (!LlvmUtil.isNative(node)) {
-                for (AbstractInsnNode insnNode : node.instructions.toArray()) {
-                    if (insnNode instanceof TypeInsnNode) {
-                        TypeInsnNode n = (TypeInsnNode) insnNode;
-                        if (n.getOpcode() != Opcodes.NEW) {
-                            continue;
-                        }
-                        
-                        String function = "NEW_" + LlvmUtil.mangleString(n.desc);
-                        String lookupMethod = "_nvmBcGetAllocateObjectFunction";
-                        String type = "%Object*";
-                        if (!functions.contains(function)) {
-                            out.format("define private %s @_%s(%%Env* %%env) {\n", type, function);
-                            out.format("    %%caller = load %%Class** @clazz\n");
-                            out.format("    %%functionPtr = bitcast %s (%%Env*)** @%s to i8*\n", type, function);
-                            out.format("    %%tmp0 = call i8* @%s(%%Env* %%env, i8* %s, %%Class* %%caller, i8* %%functionPtr)\n",
-                                    lookupMethod, LlvmUtil.getStringReference(n.desc));
-                            out.format("    %%function = bitcast i8* %%tmp0 to %s (%%Env*)*\n", type);
-                            out.format("    %%res = call %%Object* %%function(%%Env* %%env)\n");
-                            out.format("    ret %%Object* %%res\n");
-                            out.format("}\n");
-                            out.format("@%s = private global %s (%%Env*)* @_%s\n", function, type, function);
-                            functions.add(function);
-                        }
-                    }
-                }
-            }
-        }
+//        out.println("; NEW functions");
+//        for (MethodNode node : (List<MethodNode>) classNode.methods) {
+//            if (!LlvmUtil.isNative(node)) {
+//                for (AbstractInsnNode insnNode : node.instructions.toArray()) {
+//                    if (insnNode instanceof TypeInsnNode) {
+//                        TypeInsnNode n = (TypeInsnNode) insnNode;
+//                        if (n.getOpcode() != Opcodes.NEW) {
+//                            continue;
+//                        }
+//                        
+//                        String function = "NEW_" + LlvmUtil.mangleString(n.desc);
+//                        String lookupMethod = "_nvmBcGetAllocateObjectFunction";
+//                        String type = "%Object*";
+//                        if (!functions.contains(function)) {
+//                            out.format("define private %s @_%s(%%Env* %%env) {\n", type, function);
+//                            out.format("    %%caller = load %%Class** @clazz\n");
+//                            out.format("    %%functionPtr = bitcast %s (%%Env*)** @%s to i8*\n", type, function);
+//                            out.format("    %%tmp0 = call i8* @%s(%%Env* %%env, i8* %s, %%Class* %%caller, i8* %%functionPtr)\n",
+//                                    lookupMethod, LlvmUtil.getStringReference(n.desc));
+//                            out.format("    %%function = bitcast i8* %%tmp0 to %s (%%Env*)*\n", type);
+//                            out.format("    %%res = call %%Object* %%function(%%Env* %%env)\n");
+//                            out.format("    ret %%Object* %%res\n");
+//                            out.format("}\n");
+//                            out.format("@%s = private global %s (%%Env*)* @_%s\n", function, type, function);
+//                            functions.add(function);
+//                        }
+//                    }
+//                }
+//            }
+//        }
         
         out.println("; Function declarations");
         

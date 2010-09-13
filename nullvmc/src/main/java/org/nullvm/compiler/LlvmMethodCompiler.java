@@ -1791,14 +1791,18 @@ public class LlvmMethodCompiler {
                 Var caller = tmp("caller", "%Class*");
                 out.format("    %s = load %%Class** @clazz\n", caller);
                 Var res = tmpr("res");
-                if (currentTryCatchBlocks.isEmpty()) {
-                    out.format("    %s = call %%Object* @_nvmBcGetClassObject(%%Env* %s, i8* %s, %%Class* %s)\n", res, new Var("env", "%Env*"),
-                            LlvmUtil.getStringReference(t.getInternalName()), caller);
+                if (t.getInternalName().equals(classNode.name)) {
+                    out.format("    %s = bitcast %%Class* %s to %%Object*\n", res, caller);
                 } else {
-                    String successLabel = String.format("LdcClassSuccess%d", pc);
-                    out.format("    %s = invoke %%Object* @_nvmBcGetClassObject(%%Env* %s, i8* %s, %%Class* %s) to label %%%s unwind label %%%s\n", res, new Var("env", "%Env*"),
-                            LlvmUtil.getStringReference(t.getInternalName()), caller, successLabel, currentLandingPad.getLabel());
-                    out.format("%s:\n", successLabel);
+                    if (currentTryCatchBlocks.isEmpty()) {
+                        out.format("    %s = call %%Object* @_nvmBcLdcClass(%%Env* %s, i8* %s, %%Class* %s)\n", res, new Var("env", "%Env*"),
+                                LlvmUtil.getStringReference(t.getInternalName()), caller);
+                    } else {
+                        String successLabel = String.format("LdcClassSuccess%d", pc);
+                        out.format("    %s = invoke %%Object* @_nvmBcLdcClass(%%Env* %s, i8* %s, %%Class* %s) to label %%%s unwind label %%%s\n", res, new Var("env", "%Env*"),
+                                LlvmUtil.getStringReference(t.getInternalName()), caller, successLabel, currentLandingPad.getLabel());
+                        out.format("%s:\n", successLabel);
+                    }
                 }
                 push1(res);
             } else if (cst instanceof String) {
@@ -2119,18 +2123,26 @@ public class LlvmMethodCompiler {
         }
         @Override
         public void visitTypeInsn(int opcode, String type) {
+            Var env = new Var("env", "%Env*");
+            
             switch (opcode) {
             case Opcodes.NEW: {
-                Var env = new Var("env", "%Env*");
-                String function = "NEW_" + LlvmUtil.mangleString(type);
-                Var v = tmp(function, "%Object* (%Env*)");
-                out.format("    %s = load %s** @%s\n", v, v.getType(), function);
+                String prefix = "New";
+                String mangledClass = LlvmUtil.mangleString(type);
+                String varName = prefix + "_" + mangledClass;
+                Var f = tmp("f", "%Object* (%NewRes*, %Env*)*");
+                out.format("    %s = load %s* bitcast (%%NewRes* @%s to %s*)\n", f, f.getType(), varName, f.getType());
+
+                
+//                String function = "NEW_" + LlvmUtil.mangleString(type);
+//                Var v = tmp(function, "%Object* (%Env*)");
+//                out.format("    %s = load %s** @%s\n", v, v.getType(), function);
                 Var res = tmpr("res");
                 if (currentTryCatchBlocks.isEmpty()) {
-                    out.format("    %s = call %%Object* %s(%%Env* %s)\n", res, v, env);
+                    out.format("    %s = call %%Object* %s(%%NewRes* @%s, %%Env* %s)\n", res, f, varName, env);
                 } else {
                     String successLabel = String.format("NewInstanceSuccess%d", pc);
-                    out.format("    %s = invoke %%Object* %s(%%Env* %s) to label %%%s unwind label %%%s\n", res, v, env, successLabel, currentLandingPad.getLabel());
+                    out.format("    %s = invoke %%Object* %s(%%NewRes* @%s, %%Env* %s) to label %%%s unwind label %%%s\n", res, f, varName, env, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
                 push1(res);
@@ -2144,44 +2156,54 @@ public class LlvmMethodCompiler {
                 out.format("    %s = load %%Class** @clazz\n", caller);
                 if (currentTryCatchBlocks.isEmpty()) {
                     out.format("    %s = call %%Object* @_nvmBcNewObjectArray(%%Env* %s, i32 %s, i8* %s, %s %s)\n", 
-                            res, new Var("env", "%Env*"), length, LlvmUtil.getStringReference("[" + type), caller.getType(), caller);
+                            res, env, length, LlvmUtil.getStringReference("[" + type), caller.getType(), caller);
                 } else {
                     String successLabel = String.format("ANewArraySuccess%d", pc);
                     out.format("    %s = invoke %%Object* @_nvmBcNewObjectArray(%%Env* %s, i32 %s, i8* %s, %s %s) to label %%%s unwind label %%%s\n", 
-                            res, new Var("env", "%Env*"), length, LlvmUtil.getStringReference("[" + type), caller.getType(), caller, successLabel, currentLandingPad.getLabel());
+                            res, env, length, LlvmUtil.getStringReference("[" + type), caller.getType(), caller, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
                 push1(res);
                 break;
             }
             case Opcodes.CHECKCAST: {
-                Var env = new Var("env", "%Env*");
+                String prefix = "Checkcast";
+                String mangledClass = LlvmUtil.mangleString(type);
+                String varName = prefix + "_" + mangledClass;
+                Var f = tmp("f", "void (%CheckcastRes*, %Env*, %Object*)*");
+                out.format("    %s = load %s* bitcast (%%CheckcastRes* @%s to %s*)\n", f, f.getType(), varName, f.getType());
+
                 Var obj = pop1("obj");
-                String function = "CHECKCAST_" + LlvmUtil.mangleString(type);
-                Var v = tmp(function, "void (%Env*, %Object*)");
-                out.format("    %s = load %s** @%s\n", v, v.getType(), function);
+//                String function = "CHECKCAST_" + LlvmUtil.mangleString(type);
+//                Var v = tmp(function, "void (%Env*, %Object*)");
+//                out.format("    %s = load %s** @%s\n", v, v.getType(), function);
                 if (currentTryCatchBlocks.isEmpty()) {
-                    out.format("    call void %s(%%Env* %s, %%Object* %s)\n", v, env, obj);
+                    out.format("    call void %s(%%CheckcastRes* @%s, %%Env* %s, %%Object* %s)\n", f, varName, env, obj);
                 } else {
                     String successLabel = String.format("CheckCastSuccess%d", pc);
-                    out.format("    invoke void %s(%%Env* %s, %%Object* %s) to label %%%s unwind label %%%s\n", v, env, obj, successLabel, currentLandingPad.getLabel());
+                    out.format("    invoke void %s(%%CheckcastRes* @%s, %%Env* %s, %%Object* %s) to label %%%s unwind label %%%s\n", f, varName, env, obj, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
                 push1(obj);
                 break;
             }
             case Opcodes.INSTANCEOF: {
-                Var env = new Var("env", "%Env*");
+                String prefix = "Instanceof";
+                String mangledClass = LlvmUtil.mangleString(type);
+                String varName = prefix + "_" + mangledClass;
+                Var f = tmp("f", "i32 (%InstanceofRes*, %Env*, %Object*)*");
+                out.format("    %s = load %s* bitcast (%%InstanceofRes* @%s to %s*)\n", f, f.getType(), varName, f.getType());
+                
                 Var obj = pop1("obj");
-                String function = "INSTANCEOF_" + LlvmUtil.mangleString(type);
-                Var v = tmp(function, "i32 (%Env*, %Object*)");
-                out.format("    %s = load %s** @%s\n", v, v.getType(), function);
+//                String function = "INSTANCEOF_" + LlvmUtil.mangleString(type);
+//                Var v = tmp(function, "i32 (%Env*, %Object*)");
+//                out.format("    %s = load %s** @%s\n", v, v.getType(), function);
                 Var res = tmpi("res");
                 if (currentTryCatchBlocks.isEmpty()) {
-                    out.format("    %s = call i32 %s(%%Env* %s, %%Object* %s)\n", res, v, env, obj);
+                    out.format("    %s = call i32 %s(%%InstanceofRes* @%s, %%Env* %s, %%Object* %s)\n", res, f, varName, env, obj);
                 } else {
-                    String successLabel = String.format("InstanceOfSuccess%d", pc);
-                    out.format("    %s = invoke i32 %s(%%Env* %s, %%Object* %s) to label %%%s unwind label %%%s\n", res, v, env, obj, successLabel, currentLandingPad.getLabel());
+                    String successLabel = String.format("InstanceofSuccess%d", pc);
+                    out.format("    %s = invoke i32 %s(%%InstanceofRes* @%s, %%Env* %s, %%Object* %s) to label %%%s unwind label %%%s\n", res, f, varName, env, obj, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
                 push1(res);

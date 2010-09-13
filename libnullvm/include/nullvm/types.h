@@ -100,9 +100,6 @@ struct Class {
   Class* superclass;  // Superclass pointer. Only java.lang.Object and interfaces have NULL here.
   jint state;
   jint access;
-  Object* (*newInstance)(void);
-  void (*checkcast)(Object*);
-  jint (*instanceof)(Object*);
   Interface* interfaces; // Linked list of interfaces or NULL if there are no interfaces.
   Field* fields; // Linked list of fields.
   Method* methods;       // Method pointers.

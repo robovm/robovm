@@ -27,6 +27,9 @@
     .globl _nvmBcPutField64
     .globl _nvmBcPutFieldFloat
     .globl _nvmBcPutFieldDouble
+    .globl _nvmBcResolveClassForNew0
+    .globl _nvmBcResolveClassForCheckcast0
+    .globl _nvmBcResolveClassForInstanceof0
     .globl _nvmBcResolveFieldForGetStatic0
     .globl _nvmBcResolveFieldForPutStatic0
     .globl _nvmBcResolveFieldForGetField0
@@ -75,13 +78,13 @@ _nvmCall0:
     movsd 104(%rax), %xmm6      # %xmm6 = fpArgs[6]
     movsd 112(%rax), %xmm7      # %xmm7 = fpArgs[7]
 
-    mov   120(%rax), %r12       # %r12 = stackArgsCount
+    mov   120(%rax), %r10       # %r10 = stackArgsCount
 .LsetStackArgsNext:
-    cmp   $0, %r12
+    cmp   $0, %r10
     je    .LsetStackArgsDone
-    sub   $0x1, %r12
+    sub   $0x1, %r10
     mov   128(%rax), %r11       # %r11 = stackArgs
-    lea   (%r11, %r12, 8), %r11 # %r11 = stackArgs + %r12 * 8
+    lea   (%r11, %r10, 8), %r11 # %r11 = stackArgs + %r10 * 8
     push  (%r11)
     jmp   .LsetStackArgsNext
 .LsetStackArgsDone:
@@ -186,6 +189,9 @@ _nvmCall0:
     .type    _nvmBcResolve0, @function
 _nvmBcResolve0:
 .LnvmBcResolve0Begin:
+    push  %rbp
+    mov   %rsp, %rbp
+
     sub   $56, %rsp
 
     /* Save the original integer register args */
@@ -222,7 +228,8 @@ _nvmBcResolve0:
     mov   40(%rsp), %r9
 
     /* Restore the stack */
-    add   $56, %rsp
+    mov  %rbp, %rsp
+    pop  %rbp
 
     /* Call the function i->function */
     jmp  *(%rdi)
@@ -242,6 +249,9 @@ _nvmBcResolve0:
 .L\name\()End:
     .endm
 
+    resolve _nvmBcResolveClassForNew0, _nvmBcResolveClassForNew
+    resolve _nvmBcResolveClassForCheckcast0, _nvmBcResolveClassForCheckcast
+    resolve _nvmBcResolveClassForInstanceof0, _nvmBcResolveClassForInstanceof
     resolve _nvmBcResolveFieldForGetStatic0, _nvmBcResolveFieldForGetStatic
     resolve _nvmBcResolveFieldForPutStatic0, _nvmBcResolveFieldForPutStatic
     resolve _nvmBcResolveFieldForGetField0, _nvmBcResolveFieldForGetField

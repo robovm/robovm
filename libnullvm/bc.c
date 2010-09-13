@@ -174,6 +174,9 @@ extern void _nvmBcPutFieldFloat(PutField* p, Env* env, jfloat value);
 extern void _nvmBcPutFieldDouble(PutField* p, Env* env, jdouble value);
 
 extern void _nvmEmptyFunction(void);
+extern void _nvmBcInvokeVirtual0(void);
+extern void _nvmBcInvokeInterface0(void);
+
 
 void _nvmBcThrow(Env* env, Object* throwable) {
     nvmRaiseException(env, throwable);
@@ -558,6 +561,16 @@ void _nvmBcResolveMethodForInvokeStatic(InvokeStatic* i, Env* env) {
     i->function = i->common->function;
 }
 
+void* _nvmBcGetMethodImplForInvokeVirtual(InvokeVirtual* i, Env* env, Object* obj) {
+    // TODO: Remove once we have fast virtual method dispatch in place
+    return nvmGetInstanceMethod(env, obj->clazz, i->common->name, i->common->desc)->impl;
+}
+
+void* _nvmBcGetMethodImplForInvokeInterface(InvokeInterface* i, Env* env, Object* obj) {
+    // TODO: Remove once we have fast interface method dispatch in place
+    return nvmGetInstanceMethod(env, obj->clazz, i->common->name, i->common->desc)->impl;
+}
+
 void _nvmBcResolveMethodForInvokeVirtualCommon(InvokeVirtualCommon* common, Env* env) {
     LOG("nvmBcResolveMethodForInvokeVirtualCommon: owner=%s, name=%s, desc=%s\n", common->owner, common->name, common->desc);
     Class* clazz = nvmFindClass(env, common->owner);
@@ -576,7 +589,7 @@ void _nvmBcResolveMethodForInvokeVirtual(InvokeVirtual* i, Env* env) {
     LOG("nvmBcResolveMethodForInvokeVirtual: owner=%s, name=%s, desc=%s, caller=%s\n", i->common->owner, i->common->name, i->common->desc, (*i->caller)->name);
     // TODO: Check that *i->caller has access to the class and method being called
     i->vtableIndex = i->common->vtableIndex;
-    i->function = i->common->function;
+    i->function = _nvmBcInvokeVirtual0;
 }
 
 void _nvmBcResolveMethodForInvokeSpecialCommon(InvokeSpecialCommon* common, Env* env) {
@@ -612,7 +625,7 @@ void _nvmBcResolveMethodForInvokeInterfaceCommon(InvokeInterfaceCommon* common, 
 void _nvmBcResolveMethodForInvokeInterface(InvokeInterface* i, Env* env) {
     LOG("nvmBcResolveMethodForInvokeInterface: owner=%s, name=%s, desc=%s, caller=%s\n", i->common->owner, i->common->name, i->common->desc, (*i->caller)->name);
     // TODO: Check that *i->caller has access to the class and method being called
-    i->function = i->common->function;
+    i->function = _nvmBcInvokeInterface0;
 }
 
 void _nvmBcMonitorEnter(Env* env, Object* obj) {

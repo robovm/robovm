@@ -40,6 +40,8 @@
     .globl _nvmBcResolveMethodForInvokeInterface0
     .globl _nvmBcResolveNativeMethod0
     .globl _nvmCall0
+    .globl _nvmBcInvokeVirtual0
+    .globl _nvmBcInvokeInterface0
 
 
     .align    16, 0x90
@@ -261,6 +263,91 @@ _nvmBcResolve0:
     resolve _nvmBcResolveMethodForInvokeSpecial0, _nvmBcResolveMethodForInvokeSpecial
     resolve _nvmBcResolveMethodForInvokeInterface0, _nvmBcResolveMethodForInvokeInterface
     
+
+/* ... _nvmBcInvokeVirtual0(InvokeVirtual* i, Env* env, Object* obj, ...) */
+
+# TODO: Optimize me using virtual method table
+
+    .align    16, 0x90
+    .type    _nvmBcInvokeVirtual0, @function
+_nvmBcInvokeVirtual0:
+.LnvmBcInvokeVirtual0Begin:
+    push  %rbp
+    mov   %rsp, %rbp
+
+    sub   $56, %rsp
+
+    /* Save the original integer register args */
+    mov   %rdi, (%rsp)
+    mov   %rsi, 8(%rsp)
+    mov   %rdx, 16(%rsp)
+    mov   %rcx, 24(%rsp)
+    mov   %r8, 32(%rsp)
+    mov   %r9, 40(%rsp)
+
+    call _nvmBcGetMethodImplForInvokeVirtual # %rax = method->impl
+
+    /* Restore the original integer register args */
+    mov   (%rsp), %rdi
+    mov   8(%rsp), %rsi
+    mov   16(%rsp), %rdx
+    mov   24(%rsp), %rcx
+    mov   32(%rsp), %r8
+    mov   40(%rsp), %r9
+
+    /* Restore the stack */
+    mov  %rbp, %rsp
+    pop  %rbp
+
+    /* Call the function method->impl */
+    jmp  *%rax
+
+    .size _nvmBcInvokeVirtual0, . - .LnvmBcInvokeVirtual0Begin
+.LnvmBcInvokeVirtual0End:
+
+
+/* ... _nvmBcInvokeInterface0(InvokeVirtual* i, Env* env, Object* obj, ...) */
+
+# TODO: Optimize me using interface method table
+
+    .align    16, 0x90
+    .type    _nvmBcInvokeInterface0, @function
+_nvmBcInvokeInterface0:
+.LnvmBcInvokeInterface0Begin:
+    push  %rbp
+    mov   %rsp, %rbp
+
+    sub   $56, %rsp
+
+    /* Save the original integer register args */
+    mov   %rdi, (%rsp)
+    mov   %rsi, 8(%rsp)
+    mov   %rdx, 16(%rsp)
+    mov   %rcx, 24(%rsp)
+    mov   %r8, 32(%rsp)
+    mov   %r9, 40(%rsp)
+
+    call _nvmBcGetMethodImplForInvokeInterface # %rax = method->impl
+
+    /* Restore the original integer register args */
+    mov   (%rsp), %rdi
+    mov   8(%rsp), %rsi
+    mov   16(%rsp), %rdx
+    mov   24(%rsp), %rcx
+    mov   32(%rsp), %r8
+    mov   40(%rsp), %r9
+
+    /* Restore the stack */
+    mov  %rbp, %rsp
+    pop  %rbp
+
+    /* Call the function method->impl */
+    jmp  *%rax
+
+    .size _nvmBcInvokeInterface0, . - .LnvmBcInvokeInterface0Begin
+.LnvmBcInvokeInterface0End:
+
+
 /*
 
     Template used generate the exception handling tables used by this function:

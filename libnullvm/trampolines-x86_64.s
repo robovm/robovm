@@ -62,6 +62,8 @@ _nvmCall0:
     push  %rbp
     mov   %rsp, %rbp
 
+    sub   $0, %rsp
+
     mov   %rdi, %rax
 
     mov   8(%rax), %rdi         # %rdi = intArgs[0]

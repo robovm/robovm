@@ -23,9 +23,6 @@
 #define LOG(format, args...)  \
   fprintf(stderr, format , ## args)
 
-extern void* j_get_method_impl(Class* clazz, char* name, char* desc, Class* caller);
-extern jint j_get_vtable_index(Class* clazz, char* name, char* desc, Class* caller);
-
 extern void* nvmAllocateMemory(Env* env, int size);
 extern void* nvmAllocateExecutableMemory(Env* env, int size);
 

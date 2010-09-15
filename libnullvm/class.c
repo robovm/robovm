@@ -23,6 +23,16 @@ Class* java_lang_ClassNotFoundException;
 Class* java_lang_NegativeArraySizeException;
 Class* java_lang_UnsatisfiedLinkError;
 
+Class* prim_Z;
+Class* prim_B;
+Class* prim_C;
+Class* prim_S;
+Class* prim_I;
+Class* prim_J;
+Class* prim_F;
+Class* prim_D;
+Class* prim_V;
+
 Class* array_Z;
 Class* array_B;
 Class* array_C;
@@ -58,150 +68,7 @@ static inline jboolean addLoadedClass(Env* env, Class* clazz) {
     return TRUE;
 }
 
-void* j_get_method_impl(Class* clazz, char* name, char* desc, Class* caller) {
-    int vtableIndex = j_get_vtable_index(clazz, name, desc, caller);
-    return vtableIndex != -1 ? clazz->vtable[vtableIndex] : NULL;
-}
-
-jboolean nvmInitClasses(Env* env) {
-    nameToClassMap = nvmNewMapWithStringKeys(env, 1024);
-    if (!nameToClassMap) return FALSE;
-    idToClassMap = nvmNewMapWithIntKeys(env, 1024);
-    if (!idToClassMap) return FALSE;
-
-    // Cache important classes in java.lang.
-    java_lang_ClassNotFoundException = nvmFindClass(env, "java/lang/ClassNotFoundException");
-    if (!java_lang_ClassNotFoundException) return FALSE;
-    java_lang_NoClassDefFoundError = nvmFindClass(env, "java/lang/NoClassDefFoundError");
-    if (!java_lang_NoClassDefFoundError) return FALSE;
-    java_lang_Object = nvmFindClass(env, "java/lang/Object");
-    if (!java_lang_Object) return FALSE;
-    java_lang_Class = nvmFindClass(env, "java/lang/Class");
-    if (!java_lang_Class) return FALSE;
-    java_lang_Object->object.clazz = java_lang_Class; // Fix object.clazz pointer for java_lang_Object
-    java_lang_String = nvmFindClass(env, "java/lang/String");
-    if (!java_lang_String) return FALSE;
-    java_lang_Cloneable = nvmFindClass(env, "java/lang/Cloneable");
-    if (!java_lang_Cloneable) return FALSE;
-    java_io_Serializable = nvmFindClass(env, "java/io/Serializable");
-    if (!java_io_Serializable) return FALSE;
-
-    java_lang_OutOfMemoryError = nvmFindClass(env, "java/lang/OutOfMemoryError");
-    if (!java_lang_OutOfMemoryError) return FALSE;
-    java_lang_IllegalAccessError = nvmFindClass(env, "java/lang/IllegalAccessError");
-    if (!java_lang_IllegalAccessError) return FALSE;
-    java_lang_NoSuchFieldError = nvmFindClass(env, "java/lang/NoSuchFieldError");
-    if (!java_lang_NoSuchFieldError) return FALSE;
-    java_lang_NoSuchMethodError = nvmFindClass(env, "java/lang/NoSuchMethodError");
-    if (!java_lang_NoSuchMethodError) return FALSE;
-    java_lang_IncompatibleClassChangeError = nvmFindClass(env, "java/lang/IncompatibleClassChangeError");
-    if (!java_lang_IncompatibleClassChangeError) return FALSE;
-    java_lang_ClassCastException = nvmFindClass(env, "java/lang/ClassCastException");
-    if (!java_lang_ClassCastException) return FALSE;
-    java_lang_NullPointerException = nvmFindClass(env, "java/lang/NullPointerException");
-    if (!java_lang_NullPointerException) return FALSE;
-    java_lang_AbstractMethodError = nvmFindClass(env, "java/lang/AbstractMethodError");
-    if (!java_lang_AbstractMethodError) return FALSE;
-    java_lang_ArrayIndexOutOfBoundsException = nvmFindClass(env, "java/lang/ArrayIndexOutOfBoundsException");
-    if (!java_lang_ArrayIndexOutOfBoundsException) return FALSE;
-    java_lang_NegativeArraySizeException = nvmFindClass(env, "java/lang/NegativeArraySizeException");
-    if (!java_lang_NegativeArraySizeException) return FALSE;
-    java_lang_UnsatisfiedLinkError = nvmFindClass(env, "java/lang/UnsatisfiedLinkError");
-    if (!java_lang_UnsatisfiedLinkError) return FALSE;
-
-    array_Z = nvmFindClass(env, "[Z");
-    if (!array_Z) return FALSE;
-    array_B = nvmFindClass(env, "[B");
-    if (!array_B) return FALSE;
-    array_C = nvmFindClass(env, "[C");
-    if (!array_C) return FALSE;
-    array_S = nvmFindClass(env, "[S");
-    if (!array_S) return FALSE;
-    array_I = nvmFindClass(env, "[I");
-    if (!array_I) return FALSE;
-    array_J = nvmFindClass(env, "[J");
-    if (!array_J) return FALSE;
-    array_F = nvmFindClass(env, "[F");
-    if (!array_F) return FALSE;
-    array_D = nvmFindClass(env, "[D");
-    if (!array_D) return FALSE;
-
-    return TRUE;
-}
-
-int nvmIsSubClass(Class* superclass, Class* clazz) {
-    while (clazz && clazz != superclass) {
-        clazz = clazz->superclass;
-    }
-    return clazz == superclass;
-}
-
-int nvmIsSamePackage(Class* c1, Class* c2) {
-    char* s1 = strrchr(c1->name, '/');
-    char* s2 = strrchr(c2->name, '/');
-    if (!s1 || !s2) {
-        return !s1 && !s2;
-    }
-    int l1 = c1->name - s1;
-    int l2 = c2->name - s2;
-    if (l1 != l2) {
-        return 0;
-    }
-    return strncmp(c1->name, c2->name, l1);
-}
-
-jboolean nvmIsAssignableFrom(Env* env, Class* s, Class* t) {
-    // TODO: What if s or t are NULL?
-    if (s == t || t == java_lang_Object) {
-        return TRUE;
-    }
-
-    if (CLASS_IS_ARRAY(s)) {
-        if (t == java_io_Serializable) {
-            return TRUE;
-        }
-        if (t == java_lang_Cloneable) {
-            return TRUE;
-        }
-        if (!CLASS_IS_ARRAY(t)) {
-            return FALSE;
-        }
-        if (CLASS_IS_ARRAY_OF_PRIMITIVE(s)) {
-            // s is a primitive array and can only be assigned to 
-            // class t if s == t or t == (Object|Serializable|Cloneable). But we 
-            // already know that s != t and t != (Object|Serializable|Cloneable)
-            return FALSE;
-        }
-        Class* s1 = nvmFindClass(env, &s->name[1]);
-        Class* t1 = nvmFindClass(env, &t->name[1]);
-        return nvmIsAssignableFrom(env, s1, t1);
-    }
-
-    if (CLASS_IS_INTERFACE(t)) {
-        // s or any of its parents must implement the interface t
-        for (; s; s = s->superclass) {
-            Interface* interface;
-            for (interface = s->interfaces; interface; interface = interface->next) {
-                if (nvmIsAssignableFrom(env, interface->interface, t)) {
-                    return TRUE;
-                }
-            }
-        }
-        return FALSE;
-    }
-
-    while (s && s != t) {
-        s = s->superclass;
-    }
-    return s ? TRUE : FALSE;
-}
-
-jboolean nvmIsInstanceOf(Env* env, Object* obj, Class* clazz) {
-    if (!obj) return FALSE;
-    return nvmIsAssignableFrom(env, obj->clazz, clazz);
-}
-
-jint j_get_vtable_index(Class* clazz, char* name, char* desc, Class* caller) {
+static jint j_get_vtable_index(Class* clazz, char* name, char* desc, Class* caller) {
     Method* method;
     int same_class;
     int sub_class;
@@ -276,16 +143,219 @@ static char* mangleClassName(Env* env, char* s) {
     return result;
 }
 
-static Class* createArrayClass(Env* env, char* className) {
-    // TODO: Throw ClassNotFoundException if base class not found
-    // TODO: What access should an array class have?
-    // TODO: Add clone() method.
-    Class* clazz = nvmAllocateClass(env, className, java_lang_Object, ACC_PUBLIC, 0, 0);
+static Class* createPrimitiveClass(Env* env, char* desc) {
+    Class* clazz = nvmAllocateMemory(env, sizeof(Class));
     if (!clazz) return NULL;
+    clazz->name = desc;
+    clazz->state = CLASS_INITIALIZED;
+    return clazz;
+}
+
+static Class* createArrayClass(Env* env, char* desc) {
+    jint i = 0;
+    for (i = 0; desc[i] == '['; i++)
+        ;
+    Class* elementClass = nvmFindClassByDescriptor(env, &desc[i]);
+    if (!elementClass) return NULL;
+    // TODO: Add clone() method.
+    Class* clazz = nvmAllocateClass(env, desc, java_lang_Object, ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, 0, 0);
+    if (!clazz) return NULL;
+    clazz->elementClass = elementClass;
     if (!nvmAddInterface(env, clazz, java_lang_Cloneable)) return NULL;
     if (!nvmAddInterface(env, clazz, java_io_Serializable)) return NULL;
     if (!nvmRegisterClass(env, clazz)) return NULL;
     return clazz;
+}
+
+Class* nvmFindClassByDescriptor(Env* env, char* desc) {
+    switch (desc[0]) {
+    case 'Z':
+        return prim_Z;
+    case 'B':
+        return prim_B;
+    case 'C':
+        return prim_C;
+    case 'S':
+        return prim_S;
+    case 'I':
+        return prim_I;
+    case 'J':
+        return prim_J;
+    case 'F':
+        return prim_F;
+    case 'D':
+        return prim_D;
+    case 'V':
+        return prim_V;
+    case '[':
+        return nvmFindClass(env, desc);
+    }
+    // desc[0] == 'L'
+    jint length = strlen(desc);
+    char* className = nvmAllocateMemory(env, length - 2 + 1);
+    if (!className) return NULL;
+    strncpy(className, &desc[1], length - 2);
+    return nvmFindClass(env, className);
+}
+
+Class* nvmGetComponentType(Env* env, Class* arrayClass) {
+    return nvmFindClassByDescriptor(env, &arrayClass->name[1]);
+}
+
+int nvmIsSubClass(Class* superclass, Class* clazz) {
+    while (clazz && clazz != superclass) {
+        clazz = clazz->superclass;
+    }
+    return clazz == superclass;
+}
+
+int nvmIsSamePackage(Class* c1, Class* c2) {
+    char* s1 = strrchr(c1->name, '/');
+    char* s2 = strrchr(c2->name, '/');
+    if (!s1 || !s2) {
+        return !s1 && !s2;
+    }
+    int l1 = c1->name - s1;
+    int l2 = c2->name - s2;
+    if (l1 != l2) {
+        return 0;
+    }
+    return strncmp(c1->name, c2->name, l1);
+}
+
+jboolean nvmIsAssignableFrom(Env* env, Class* s, Class* t) {
+    // TODO: What if s or t are NULL?
+    if (s == t || t == java_lang_Object) {
+        return TRUE;
+    }
+
+    if (CLASS_IS_ARRAY(s)) {
+        if (t == java_io_Serializable) {
+            return TRUE;
+        }
+        if (t == java_lang_Cloneable) {
+            return TRUE;
+        }
+        if (!CLASS_IS_ARRAY(t)) {
+            return FALSE;
+        }
+        if (CLASS_IS_ARRAY_OF_PRIMITIVE(s)) {
+            // s is a primitive array and can only be assigned to 
+            // class t if s == t or t == (Object|Serializable|Cloneable). But we 
+            // already know that s != t and t != (Object|Serializable|Cloneable)
+            return FALSE;
+        }
+        return nvmIsAssignableFrom(env, nvmGetComponentType(env, s), nvmGetComponentType(env, t));
+    }
+
+    if (CLASS_IS_INTERFACE(t)) {
+        // s or any of its parents must implement the interface t
+        for (; s; s = s->superclass) {
+            Interface* interface;
+            for (interface = s->interfaces; interface; interface = interface->next) {
+                if (nvmIsAssignableFrom(env, interface->interface, t)) {
+                    return TRUE;
+                }
+            }
+        }
+        return FALSE;
+    }
+
+    while (s && s != t) {
+        s = s->superclass;
+    }
+    return s ? TRUE : FALSE;
+}
+
+jboolean nvmIsInstanceOf(Env* env, Object* obj, Class* clazz) {
+    if (!obj) return FALSE;
+    return nvmIsAssignableFrom(env, obj->clazz, clazz);
+}
+
+jboolean nvmInitClasses(Env* env) {
+    nameToClassMap = nvmNewMapWithStringKeys(env, 1024);
+    if (!nameToClassMap) return FALSE;
+    idToClassMap = nvmNewMapWithIntKeys(env, 1024);
+    if (!idToClassMap) return FALSE;
+
+    // Cache important classes in java.lang.
+    java_lang_ClassNotFoundException = nvmFindClass(env, "java/lang/ClassNotFoundException");
+    if (!java_lang_ClassNotFoundException) return FALSE;
+    java_lang_NoClassDefFoundError = nvmFindClass(env, "java/lang/NoClassDefFoundError");
+    if (!java_lang_NoClassDefFoundError) return FALSE;
+    java_lang_Object = nvmFindClass(env, "java/lang/Object");
+    if (!java_lang_Object) return FALSE;
+    java_lang_Class = nvmFindClass(env, "java/lang/Class");
+    if (!java_lang_Class) return FALSE;
+    java_lang_Object->object.clazz = java_lang_Class; // Fix object.clazz pointer for java_lang_Object
+    java_lang_Class->object.clazz = java_lang_Class; // Fix object.clazz pointer for java_lang_Class
+    java_lang_String = nvmFindClass(env, "java/lang/String");
+    if (!java_lang_String) return FALSE;
+    java_lang_Cloneable = nvmFindClass(env, "java/lang/Cloneable");
+    if (!java_lang_Cloneable) return FALSE;
+    java_io_Serializable = nvmFindClass(env, "java/io/Serializable");
+    if (!java_io_Serializable) return FALSE;
+
+    java_lang_OutOfMemoryError = nvmFindClass(env, "java/lang/OutOfMemoryError");
+    if (!java_lang_OutOfMemoryError) return FALSE;
+    java_lang_IllegalAccessError = nvmFindClass(env, "java/lang/IllegalAccessError");
+    if (!java_lang_IllegalAccessError) return FALSE;
+    java_lang_NoSuchFieldError = nvmFindClass(env, "java/lang/NoSuchFieldError");
+    if (!java_lang_NoSuchFieldError) return FALSE;
+    java_lang_NoSuchMethodError = nvmFindClass(env, "java/lang/NoSuchMethodError");
+    if (!java_lang_NoSuchMethodError) return FALSE;
+    java_lang_IncompatibleClassChangeError = nvmFindClass(env, "java/lang/IncompatibleClassChangeError");
+    if (!java_lang_IncompatibleClassChangeError) return FALSE;
+    java_lang_ClassCastException = nvmFindClass(env, "java/lang/ClassCastException");
+    if (!java_lang_ClassCastException) return FALSE;
+    java_lang_NullPointerException = nvmFindClass(env, "java/lang/NullPointerException");
+    if (!java_lang_NullPointerException) return FALSE;
+    java_lang_AbstractMethodError = nvmFindClass(env, "java/lang/AbstractMethodError");
+    if (!java_lang_AbstractMethodError) return FALSE;
+    java_lang_ArrayIndexOutOfBoundsException = nvmFindClass(env, "java/lang/ArrayIndexOutOfBoundsException");
+    if (!java_lang_ArrayIndexOutOfBoundsException) return FALSE;
+    java_lang_NegativeArraySizeException = nvmFindClass(env, "java/lang/NegativeArraySizeException");
+    if (!java_lang_NegativeArraySizeException) return FALSE;
+    java_lang_UnsatisfiedLinkError = nvmFindClass(env, "java/lang/UnsatisfiedLinkError");
+    if (!java_lang_UnsatisfiedLinkError) return FALSE;
+
+    prim_Z = createPrimitiveClass(env, "Z");
+    if (!prim_Z) return FALSE;
+    prim_B = createPrimitiveClass(env, "B");
+    if (!prim_B) return FALSE;
+    prim_C = createPrimitiveClass(env, "C");
+    if (!prim_C) return FALSE;
+    prim_S = createPrimitiveClass(env, "S");
+    if (!prim_S) return FALSE;
+    prim_I = createPrimitiveClass(env, "I");
+    if (!prim_I) return FALSE;
+    prim_J = createPrimitiveClass(env, "J");
+    if (!prim_J) return FALSE;
+    prim_F = createPrimitiveClass(env, "F");
+    if (!prim_F) return FALSE;
+    prim_D = createPrimitiveClass(env, "D");
+    if (!prim_D) return FALSE;
+    prim_V = createPrimitiveClass(env, "V");
+    if (!prim_V) return FALSE;
+
+    array_Z = nvmFindClass(env, "[Z");
+    if (!array_Z) return FALSE;
+    array_B = nvmFindClass(env, "[B");
+    if (!array_B) return FALSE;
+    array_C = nvmFindClass(env, "[C");
+    if (!array_C) return FALSE;
+    array_S = nvmFindClass(env, "[S");
+    if (!array_S) return FALSE;
+    array_I = nvmFindClass(env, "[I");
+    if (!array_I) return FALSE;
+    array_J = nvmFindClass(env, "[J");
+    if (!array_J) return FALSE;
+    array_F = nvmFindClass(env, "[F");
+    if (!array_F) return FALSE;
+    array_D = nvmFindClass(env, "[D");
+    if (!array_D) return FALSE;
+
+    return TRUE;
 }
 
 Class* nvmFindClass(Env* env, char* className) {
@@ -435,11 +505,15 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
 void nvmInitialize(Env* env, Class* clazz) {
     if (clazz->state != CLASS_INITIALIZED && clazz->state != CLASS_INITIALIZING && clazz->state != CLASS_ERROR) {
         clazz->state = CLASS_INITIALIZING;
-        Method* clinit = nvmGetClassMethod(env, clazz, "<clinit>", "()V");
-        if (!clinit) {
-            nvmExceptionClear(env);
-            return;
+        if (clazz->superclass) {
+            nvmInitialize(env, clazz->superclass);
+            if (nvmExceptionOccurred(env)) {
+                clazz->state = CLASS_ERROR;
+                return;
+            }
         }
+        Method* clinit = nvmGetClassInitializer(env, clazz);
+        if (!clinit) return;
         nvmCallVoidClassMethod(env, clazz, clinit);
         if (nvmExceptionOccurred(env)) {
             clazz->state = CLASS_ERROR;

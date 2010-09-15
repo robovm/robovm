@@ -9,20 +9,20 @@ static jint getElementSize(char* typeName) {
     switch (typeName[0]) {
     case 'Z':
         return sizeof(jboolean);
-    case 'C':
-        return sizeof(jchar);
-    case 'F':
-        return sizeof(jfloat);
-    case 'D':
-        return sizeof(jdouble);
     case 'B':
         return sizeof(jbyte);
+    case 'C':
+        return sizeof(jchar);
     case 'S':
         return sizeof(jshort);
     case 'I':
         return sizeof(jint);
     case 'J':
         return sizeof(jlong);
+    case 'F':
+        return sizeof(jfloat);
+    case 'D':
+        return sizeof(jdouble);
     }
     return sizeof(Object*);
 }
@@ -42,10 +42,8 @@ static Array* newArray(Env* env, Class* arrayType, jint elementSize, jint dims, 
 
     if (length > 0 && dims > 1) {
         int i;
-        char* subName = &(arrayType->name[1]);
-        Class* subArrayType = nvmFindClass(env, subName);
-        if (!subArrayType) return NULL;
-        jint subElementSize = getElementSize(subName);
+        Class* subArrayType = nvmGetComponentType(env, arrayType);
+        jint subElementSize = getElementSize(subArrayType->name);
         Object** values = ((ObjectArray*) array)->values;
         for (i = 0; i < length; i++) {
             Object* o = (Object*) newArray(env, subArrayType, subElementSize, dims - 1, &lengths[1]);

@@ -183,7 +183,11 @@ void _nvmBcThrow(Env* env, Object* throwable) {
 }
 
 void _nvmBcAllocateClass(Env* env, char* className, char* superclassName, jint access, jint classDataSize, jint instanceDataSize) {
-    Class* superclass = superclassName ? nvmFindClass(env, superclassName) : NULL;
+    Class* superclass = NULL;
+    if (superclassName) {
+        superclass = nvmFindClass(env, superclassName);
+        if (!superclass) _nvmBcThrow(env, nvmExceptionOccurred(env));
+    }
     Class* c = nvmAllocateClass(env, className, superclass, access, classDataSize, instanceDataSize);
     if (!c) _nvmBcThrow(env, nvmExceptionOccurred(env));
 }
@@ -310,10 +314,7 @@ Array* _nvmBcNewMultiArray(Env* env, jint dims, jint* lengths, char* arrayClassN
 }
 
 Object* _nvmBcLdcClass(Env* env, char* name, Class* caller) {
-    Class* clazz = _nvmBcFindClass(env, name, caller);
-    if (!clazz) _nvmBcThrow(env, nvmExceptionOccurred(env));
-    // TODO: Check that caller has access to the class
-    return (Object*) clazz;
+    return (Object*) _nvmBcFindClass(env, name, caller);
 }
 
 Object* _nvmBcNew(NewRes* n, Env* env) {
@@ -547,6 +548,8 @@ void _nvmBcResolveMethodForInvokeStaticCommon(InvokeStaticCommon* common, Env* e
     LOG("nvmBcResolveMethodForInvokeStaticCommon: owner=%s, name=%s, desc=%s\n", common->owner, common->name, common->desc);
     Class* clazz = nvmFindClass(env, common->owner);
     if (!clazz) _nvmBcThrow(env, nvmExceptionOccurred(env));
+    nvmInitialize(env, clazz);
+    if (nvmExceptionOccurred(env)) _nvmBcThrow(env, nvmExceptionOccurred(env));
     // TODO: Throw something if methodName is <clinit>
     Method* method = nvmGetClassMethod(env, clazz, common->name, common->desc);
     if (!method) _nvmBcThrow(env, nvmExceptionOccurred(env));
@@ -634,10 +637,5 @@ void _nvmBcMonitorEnter(Env* env, Object* obj) {
 
 void _nvmBcMonitorExit(Env* env, Object* obj) {
     if (nvmMonitorExit(env, obj)) _nvmBcThrow(env, nvmExceptionOccurred(env));
-}
-
-Object* _nvmBcGetClassObject(Env* env, char* name, Class* caller) {
-    Class* clazz = _nvmBcFindClass(env, name, caller);
-    return (Object*) clazz;
 }
 

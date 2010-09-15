@@ -14,6 +14,7 @@ extern Class* array_J;
 extern Class* array_F;
 extern Class* array_D;
 extern Class* java_lang_Object;
+extern Class* java_lang_Class;
 extern Class* java_lang_String;
 extern Class* java_lang_OutOfMemoryError;
 extern Class* java_lang_NoClassDefFoundError;
@@ -38,6 +39,8 @@ extern jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jin
 extern jboolean nvmRegisterClass(Env* env, Class* clazz);
 
 extern Class* nvmFindClass(Env* env, char* className);
+extern Class* nvmFindClassByDescriptor(Env* env, char* desc);
+extern Class* nvmGetComponentType(Env* env, Class* arrayClass);
 
 /**
  * Creates a new instance of the specified class.

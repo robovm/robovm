@@ -277,7 +277,7 @@ public class Compiler {
                         writeStringDefinition(out, n.desc);
                         writeStringDefinition(out, LlvmUtil.mangleString(n.desc));
                         if (n.getOpcode() == Opcodes.ANEWARRAY) {
-                            writeStringDefinition(out, "[" + n.desc);
+                            writeStringDefinition(out, "[" + Type.getObjectType(n.desc).getDescriptor());
                         }
                     } else if (insnNode instanceof LdcInsnNode) {
                         LdcInsnNode n = (LdcInsnNode) insnNode;

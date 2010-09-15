@@ -1,8 +1,15 @@
 #ifndef NULLVM_METHOD_H
 #define NULLVM_METHOD_H
 
+#define METHOD_IS_PUBLIC(m) (m->access & ACC_PUBLIC)
+#define METHOD_IS_CONSTRUCTOR(m) (!strcmp("<init>", m->name))
+#define METHOD_IS_CLASS_INITIALIZER(m) (!strcmp("<clinit>", m->name))
+
+extern char* nvmGetReturnType(char* desc);
+extern char* nvmGetNextArgumentType(char** desc);
 extern Method* nvmGetMethod(Env* env, Class* clazz, char* name, char* desc);
 extern Method* nvmGetClassMethod(Env* env, Class* clazz, char* name, char* desc);
+extern Method* nvmGetClassInitializer(Env* env, Class* clazz);
 extern Method* nvmGetInstanceMethod(Env* env, Class* clazz, char* name, char* desc);
 extern void* nvmGetNativeMethod(Env* env, char* shortMangledName, char* longMangledName);
 extern void nvmCallVoidInstanceMethod(Env* env, Object* obj, Method* method, ...);

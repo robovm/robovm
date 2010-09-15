@@ -73,6 +73,8 @@ struct Method {
   char* name;
   char* desc;
   jint access;
+  jint argsCount;
+  char** exceptions;
   void* impl;
   int vtableIndex;
   char* callInfo;
@@ -93,11 +95,12 @@ struct Object {
  */
 struct Class {
   Object object;
-  jint _data[1];       // TODO: Reserve the memory needed to store the instance fields for java.lang.Class
+  jint _data[4];       // Reserve the memory needed to store the instance fields for java.lang.Class. 
+                       // java.lang.Class has two fields, both are references. 4 ints is enough for 32-bit and 64-bit systems.
   jint id;
-  char* name;         // The name in UTF-8.
-  char* packageName;         // The package name in UTF-8.
+  char* name;         // The name in modified UTF-8.
   Class* superclass;  // Superclass pointer. Only java.lang.Object and interfaces have NULL here.
+  Class* elementClass; // If class is an array class this points to the class of the array elements.
   jint state;
   jint access;
   Interface* interfaces; // Linked list of interfaces or NULL if there are no interfaces.

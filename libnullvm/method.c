@@ -32,7 +32,7 @@ typedef struct CallInfo {
 
 extern void _nvmCall0(CallInfo*);
 
-Method* nvmGetMethod(Env* env, Class* clazz, char* name, char* desc) {
+static Method* getMethod(Env* env, Class* clazz, char* name, char* desc) {
     Method* method;
     for (method = clazz->methods; method != NULL; method = method->next) {
         if (!strcmp(method->name, name) && !strcmp(method->desc, desc)) {
@@ -48,8 +48,16 @@ Method* nvmGetMethod(Env* env, Class* clazz, char* name, char* desc) {
         return nvmGetMethod(env, clazz->superclass, name, desc);
     }
 
-    nvmThrowNoSuchMethodError(env, name);
     return NULL;
+}
+
+Method* nvmGetMethod(Env* env, Class* clazz, char* name, char* desc) {
+    Method* method = getMethod(env, clazz, name, desc);
+    if (!method) {
+        nvmThrowNoSuchMethodError(env, name);
+        return NULL;
+    }
+    return method;
 }
 
 Method* nvmGetClassMethod(Env* env, Class* clazz, char* name, char* desc) {
@@ -63,6 +71,10 @@ Method* nvmGetClassMethod(Env* env, Class* clazz, char* name, char* desc) {
     return method;
 }
 
+Method* nvmGetClassInitializer(Env* env, Class* clazz) {
+    return getMethod(env, clazz, "<clinit>", "()V");
+}
+
 Method* nvmGetInstanceMethod(Env* env, Class* clazz, char* name, char* desc) {
     Method* method = nvmGetMethod(env, clazz, name, desc);
     if (!method) return NULL;
@@ -74,10 +86,16 @@ Method* nvmGetInstanceMethod(Env* env, Class* clazz, char* name, char* desc) {
     return method;
 }
 
-static char getNextType(char** desc) {
-    char c = **desc;
+char* nvmGetReturnType(char* desc) {
+    while (*desc != ')') desc++;
+    desc++;
+    return desc;
+}
+
+char* nvmGetNextArgumentType(char** desc) {
+    char* s = *desc;
     (*desc)++;
-    switch (c) {
+    switch (s[0]) {
     case 'B':
     case 'Z':
     case 'S':
@@ -86,22 +104,18 @@ static char getNextType(char** desc) {
     case 'J':
     case 'F':
     case 'D':
-        return c;
+        return s;
     case '[':
-        getNextType(desc);
-        return c;
+        nvmGetNextArgumentType(desc);
+        return s;
     case 'L':
         while (**desc != ';') (*desc)++;
         (*desc)++;
-        return c;
+        return s;
     case '(':
-        return getNextType(desc);
+        return nvmGetNextArgumentType(desc);
     }
     return 0;
-}
-
-static inline jboolean isIntType(char type) {
-    return type == 'B' || type == 'Z' || type == 'S' || type == 'C' || type == 'I' || type == 'J' || type == 'L' || type == '[';
 }
 
 static inline jboolean isFpType(char type) {
@@ -125,10 +139,10 @@ jboolean initCallInfo(CallInfo* callInfo, Env* env, Class* clazz, Object* obj, M
     }    
 
     char* desc = method->desc;
-    char c;
-    while (c = getNextType(&desc)) {
+    char* c;
+    while (c = nvmGetNextArgumentType(&desc)) {
         argsCount++;
-        if (isFpType(c) && fpArgsCount < 8) {
+        if (isFpType(c[0]) && fpArgsCount < 8) {
             fpArgsCount++;
         } else if (intArgsCount < 6) {
             intArgsCount++;
@@ -154,10 +168,10 @@ jboolean initCallInfo(CallInfo* callInfo, Env* env, Class* clazz, Object* obj, M
 
     desc = method->desc;
     jint i = 0;
-    while (c = getNextType(&desc)) {
-        if (isFpType(c)) {
+    while (c = nvmGetNextArgumentType(&desc)) {
+        if (isFpType(c[0])) {
             if (fpArgsIndex < fpArgsCount) {
-                switch (c) {
+                switch (c[0]) {
                 case 'F':
                     callInfo->fpArgs[fpArgsIndex++] = (double) args[i++].f;
                     break;
@@ -166,7 +180,7 @@ jboolean initCallInfo(CallInfo* callInfo, Env* env, Class* clazz, Object* obj, M
                     break;
                 }
             } else {
-                switch (c) {
+                switch (c[0]) {
                 case 'F':
                     callInfo->stackArgs[stackArgsIndex++].f = args[i++].f;
                     break;
@@ -190,8 +204,8 @@ jboolean initCallInfo(CallInfo* callInfo, Env* env, Class* clazz, Object* obj, M
 static jvalue* va_list2jargs(Env* env, Method* method, va_list args) {
     jint argsCount = 0;
     char* desc = method->desc;
-    char c;
-    while (c = getNextType(&desc)) {
+    char* c;
+    while (c = nvmGetNextArgumentType(&desc)) {
         argsCount++;
     }
 
@@ -200,8 +214,8 @@ static jvalue* va_list2jargs(Env* env, Method* method, va_list args) {
 
     desc = method->desc;
     jint i = 0;
-    while (c = getNextType(&desc)) {
-        switch (c) {
+    while (c = nvmGetNextArgumentType(&desc)) {
+        switch (c[0]) {
         case 'B':
             jvalueArgs[i++].b = (jbyte) va_arg(args, jint);
             break;
@@ -257,14 +271,14 @@ void nvmCallVoidInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 
 Object* nvmCallObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, TRUE, args)) return FALSE;
+    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, TRUE, args)) return NULL;
     Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
 
 Object* nvmCallObjectInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
-    if (!jargs) return FALSE;
+    if (!jargs) return NULL;
     return nvmCallObjectInstanceMethodA(env, obj, method, jargs);
 }
 
@@ -397,7 +411,7 @@ jfloat nvmCallFloatInstanceMethodA(Env* env, Object* obj, Method* method, jvalue
 
 jfloat nvmCallFloatInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
-    if (!jargs) return 0;
+    if (!jargs) return 0.0f;
     return nvmCallFloatInstanceMethodA(env, obj, method, jargs);
 }
 
@@ -416,7 +430,7 @@ jdouble nvmCallDoubleInstanceMethodA(Env* env, Object* obj, Method* method, jval
 
 jdouble nvmCallDoubleInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
-    if (!jargs) return 0;
+    if (!jargs) return 0.0;
     return nvmCallDoubleInstanceMethodA(env, obj, method, jargs);
 }
 
@@ -447,14 +461,14 @@ void nvmCallNonvirtualVoidInstanceMethod(Env* env, Object* obj, Method* method, 
 
 Object* nvmCallNonvirtualObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, FALSE, args)) return FALSE;
+    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, FALSE, args)) return NULL;
     Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
 
 Object* nvmCallNonvirtualObjectInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
-    if (!jargs) return FALSE;
+    if (!jargs) return NULL;
     return nvmCallNonvirtualObjectInstanceMethodA(env, obj, method, jargs);
 }
 
@@ -587,7 +601,7 @@ jfloat nvmCallNonvirtualFloatInstanceMethodA(Env* env, Object* obj, Method* meth
 
 jfloat nvmCallNonvirtualFloatInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
-    if (!jargs) return 0;
+    if (!jargs) return 0.0f;
     return nvmCallNonvirtualFloatInstanceMethodA(env, obj, method, jargs);
 }
 
@@ -606,7 +620,7 @@ jdouble nvmCallNonvirtualDoubleInstanceMethodA(Env* env, Object* obj, Method* me
 
 jdouble nvmCallNonvirtualDoubleInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
-    if (!jargs) return 0;
+    if (!jargs) return 0.0;
     return nvmCallNonvirtualDoubleInstanceMethodA(env, obj, method, jargs);
 }
 
@@ -619,6 +633,8 @@ jdouble nvmCallNonvirtualDoubleInstanceMethod(Env* env, Object* obj, Method* met
 void nvmCallVoidClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
     if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return;
+    nvmInitialize(env, clazz);
+    if (nvmExceptionOccurred(env)) return;
     void (*f)(CallInfo*) = _nvmCall0;
     f(&callInfo);
 }
@@ -626,37 +642,41 @@ void nvmCallVoidClassMethodA(Env* env, Class* clazz, Method* method, jvalue* arg
 void nvmCallVoidClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return;
-    nvmCallVoidClassMethodA(env, NULL, method, jargs);
+    nvmCallVoidClassMethodA(env, clazz, method, jargs);
 }
 
 void nvmCallVoidClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    nvmCallVoidClassMethodV(env, NULL, method, args);
+    nvmCallVoidClassMethodV(env, clazz, method, args);
 }
 
 Object* nvmCallObjectClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return FALSE;
+    if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return NULL;
+    nvmInitialize(env, clazz);
+    if (nvmExceptionOccurred(env)) return NULL;
     Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
 
 Object* nvmCallObjectClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
-    if (!jargs) return FALSE;
-    return nvmCallObjectClassMethodA(env, NULL, method, jargs);
+    if (!jargs) return NULL;
+    return nvmCallObjectClassMethodA(env, clazz, method, jargs);
 }
 
 Object* nvmCallObjectClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallObjectClassMethodV(env, NULL, method, args);
+    return nvmCallObjectClassMethodV(env, clazz, method, args);
 }
 
 jboolean nvmCallBooleanClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
     if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return FALSE;
+    nvmInitialize(env, clazz);
+    if (nvmExceptionOccurred(env)) return FALSE;
     jboolean (*f)(CallInfo*) = (jboolean (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -664,18 +684,20 @@ jboolean nvmCallBooleanClassMethodA(Env* env, Class* clazz, Method* method, jval
 jboolean nvmCallBooleanClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return FALSE;
-    return nvmCallBooleanClassMethodA(env, NULL, method, jargs);
+    return nvmCallBooleanClassMethodA(env, clazz, method, jargs);
 }
 
 jboolean nvmCallBooleanClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallBooleanClassMethodV(env, NULL, method, args);
+    return nvmCallBooleanClassMethodV(env, clazz, method, args);
 }
 
 jbyte nvmCallByteClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
     if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return 0;
+    nvmInitialize(env, clazz);
+    if (nvmExceptionOccurred(env)) return 0;
     jbyte (*f)(CallInfo*) = (jbyte (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -683,18 +705,20 @@ jbyte nvmCallByteClassMethodA(Env* env, Class* clazz, Method* method, jvalue* ar
 jbyte nvmCallByteClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallByteClassMethodA(env, NULL, method, jargs);
+    return nvmCallByteClassMethodA(env, clazz, method, jargs);
 }
 
 jbyte nvmCallByteClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallByteClassMethodV(env, NULL, method, args);
+    return nvmCallByteClassMethodV(env, clazz, method, args);
 }
 
 jchar nvmCallCharClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
     if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return 0;
+    nvmInitialize(env, clazz);
+    if (nvmExceptionOccurred(env)) return 0;
     jchar (*f)(CallInfo*) = (jchar (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -702,18 +726,20 @@ jchar nvmCallCharClassMethodA(Env* env, Class* clazz, Method* method, jvalue* ar
 jchar nvmCallCharClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallCharClassMethodA(env, NULL, method, jargs);
+    return nvmCallCharClassMethodA(env, clazz, method, jargs);
 }
 
 jchar nvmCallCharClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallCharClassMethodV(env, NULL, method, args);
+    return nvmCallCharClassMethodV(env, clazz, method, args);
 }
 
 jshort nvmCallShortClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
     if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return 0;
+    nvmInitialize(env, clazz);
+    if (nvmExceptionOccurred(env)) return 0;
     jshort (*f)(CallInfo*) = (jshort (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -721,18 +747,20 @@ jshort nvmCallShortClassMethodA(Env* env, Class* clazz, Method* method, jvalue* 
 jshort nvmCallShortClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallShortClassMethodA(env, NULL, method, jargs);
+    return nvmCallShortClassMethodA(env, clazz, method, jargs);
 }
 
 jshort nvmCallShortClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallShortClassMethodV(env, NULL, method, args);
+    return nvmCallShortClassMethodV(env, clazz, method, args);
 }
 
 jint nvmCallIntClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
     if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return 0;
+    nvmInitialize(env, clazz);
+    if (nvmExceptionOccurred(env)) return 0;
     jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -740,18 +768,20 @@ jint nvmCallIntClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args
 jint nvmCallIntClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallIntClassMethodA(env, NULL, method, jargs);
+    return nvmCallIntClassMethodA(env, clazz, method, jargs);
 }
 
 jint nvmCallIntClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallIntClassMethodV(env, NULL, method, args);
+    return nvmCallIntClassMethodV(env, clazz, method, args);
 }
 
 jlong nvmCallLongClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
     if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return 0;
+    nvmInitialize(env, clazz);
+    if (nvmExceptionOccurred(env)) return 0;
     jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -759,51 +789,55 @@ jlong nvmCallLongClassMethodA(Env* env, Class* clazz, Method* method, jvalue* ar
 jlong nvmCallLongClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallLongClassMethodA(env, NULL, method, jargs);
+    return nvmCallLongClassMethodA(env, clazz, method, jargs);
 }
 
 jlong nvmCallLongClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallLongClassMethodV(env, NULL, method, args);
+    return nvmCallLongClassMethodV(env, clazz, method, args);
 }
 
 jfloat nvmCallFloatClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
     if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return 0.0f;
+    nvmInitialize(env, clazz);
+    if (nvmExceptionOccurred(env)) return 0.0f;
     jfloat (*f)(CallInfo*) = (jfloat (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
 
 jfloat nvmCallFloatClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
-    if (!jargs) return 0;
-    return nvmCallFloatClassMethodA(env, NULL, method, jargs);
+    if (!jargs) return 0.0f;
+    return nvmCallFloatClassMethodA(env, clazz, method, jargs);
 }
 
 jfloat nvmCallFloatClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallFloatClassMethodV(env, NULL, method, args);
+    return nvmCallFloatClassMethodV(env, clazz, method, args);
 }
 
 jdouble nvmCallDoubleClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
     if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return 0.0;
+    nvmInitialize(env, clazz);
+    if (nvmExceptionOccurred(env)) return 0.0;
     jdouble (*f)(CallInfo*) = (jdouble (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
 
 jdouble nvmCallDoubleClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
-    if (!jargs) return 0;
-    return nvmCallDoubleClassMethodA(env, NULL, method, jargs);
+    if (!jargs) return 0.0;
+    return nvmCallDoubleClassMethodA(env, clazz, method, jargs);
 }
 
 jdouble nvmCallDoubleClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallDoubleClassMethodV(env, NULL, method, args);
+    return nvmCallDoubleClassMethodV(env, clazz, method, args);
 }
 
 

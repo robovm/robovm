@@ -2156,11 +2156,11 @@ public class LlvmMethodCompiler {
                 out.format("    %s = load %%Class** @clazz\n", caller);
                 if (currentTryCatchBlocks.isEmpty()) {
                     out.format("    %s = call %%Object* @_nvmBcNewObjectArray(%%Env* %s, i32 %s, i8* %s, %s %s)\n", 
-                            res, env, length, LlvmUtil.getStringReference("[" + type), caller.getType(), caller);
+                            res, env, length, LlvmUtil.getStringReference("[" + Type.getObjectType(type).getDescriptor()), caller.getType(), caller);
                 } else {
                     String successLabel = String.format("ANewArraySuccess%d", pc);
                     out.format("    %s = invoke %%Object* @_nvmBcNewObjectArray(%%Env* %s, i32 %s, i8* %s, %s %s) to label %%%s unwind label %%%s\n", 
-                            res, env, length, LlvmUtil.getStringReference("[" + type), caller.getType(), caller, successLabel, currentLandingPad.getLabel());
+                            res, env, length, LlvmUtil.getStringReference("[" + Type.getObjectType(type).getDescriptor()), caller.getType(), caller, successLabel, currentLandingPad.getLabel());
                     out.format("%s:\n", successLabel);
                 }
                 push1(res);

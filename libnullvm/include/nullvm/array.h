@@ -9,7 +9,7 @@ extern IntArray* nvmNewIntArray(Env* env, jint length);
 extern LongArray* nvmNewLongArray(Env* env, jint length);
 extern FloatArray* nvmNewFloatArray(Env* env, jint length);
 extern DoubleArray* nvmNewDoubleArray(Env* env, jint length);
-extern ObjectArray* nvmNewObjectArray(Env* env, jint length, Class* type);
+extern ObjectArray* nvmNewObjectArray(Env* env, jint length, Class* elementClass, Class* clazz);
 extern Array* nvmNewMultiArray(Env* env, jint dims, jint* lengths, Class* type);
 
 #endif

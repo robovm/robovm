@@ -771,7 +771,7 @@ static jsize GetArrayLength(JNIEnv* env, jarray array) {
 }
 
 static jobjectArray NewObjectArray(JNIEnv* env, jsize len, jclass clazz, jobject init) {
-    ObjectArray* array = nvmNewObjectArray((Env*) *env, len, (Class*) clazz);
+    ObjectArray* array = nvmNewObjectArray((Env*) *env, len, (Class*) clazz, NULL);
     if (!array) return NULL;
     if (init) {
         jint i;

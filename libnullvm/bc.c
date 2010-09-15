@@ -300,7 +300,7 @@ ObjectArray* _nvmBcNewObjectArray(Env* env, jint length, char* arrayClassName, C
     // TODO: Check that caller has access to the base class
     // arrayClassName must be the name of the array class to create an instance of (e.g. [Ljava/lang/Object;)
     Class* clazz = _nvmBcFindClass(env, arrayClassName, caller);
-    ObjectArray* array = nvmNewObjectArray(env, length, clazz);
+    ObjectArray* array = nvmNewObjectArray(env, length, NULL, clazz);
     if (!array) _nvmBcThrow(env, nvmExceptionOccurred(env));
     return array;
 }

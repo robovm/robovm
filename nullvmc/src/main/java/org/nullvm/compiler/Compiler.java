@@ -56,25 +56,26 @@ public class Compiler {
     private ClassNode classNode;
     private Set<String> strings = new HashSet<String>();
     private PrintWriter out;
+    private boolean system = false;
     
-    public void compile(File input, File output) throws IOException {
+    public void compile(File input, File output, boolean system) throws IOException {
         InputStream in = null;
         OutputStream out = null;
         try {
             in = new FileInputStream(input);
             out = new FileOutputStream(output);
-            compile(in, out);
+            compile(in, out, system);
         } finally {
             IOUtils.closeQuietly(in);
             IOUtils.closeQuietly(out);
         }
     }
     
-    public void compile(InputStream in, OutputStream out) throws IOException {
-        compile(new ClassReader(in), out);
+    public void compile(InputStream in, OutputStream out, boolean system) throws IOException {
+        compile(new ClassReader(in), out, system);
     }
     
-    public void compile(ClassReader cr, OutputStream out) throws IOException {
+    public void compile(ClassReader cr, OutputStream out, boolean system) throws IOException {
         ClassNode cn = new ClassNode() {
             @Override
             public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
@@ -83,14 +84,15 @@ public class Compiler {
             }
         };
         cr.accept(cn, 0);
-        compile(cn, new PrintWriter(new OutputStreamWriter(out, "UTF-8")));
+        compile(cn, new PrintWriter(new OutputStreamWriter(out, "UTF-8")), system);
     }
     
     @SuppressWarnings("unchecked")
-    private void compile(ClassNode cn, Writer w) {
+    private void compile(ClassNode cn, Writer w, boolean system) {
         this.strings = new HashSet<String>();
         this.classNode = cn;
         this.out = w instanceof PrintWriter ? (PrintWriter) w : new PrintWriter(w);
+        this.system = system;
         
         boolean hasNativeMethods = false;
         boolean hasCLInit = false;
@@ -129,6 +131,7 @@ public class Compiler {
         out.println("%InvokeNative = type {void (%InvokeNative*)*, void ()*, i8*, i8*}");
         
         out.println("declare %Class* @_nvmBcAllocateClass(%Env*, i8*, i8*, i32, i32, i32)");
+        out.println("declare %Class* @_nvmBcAllocateSystemClass(%Env*, i8*, i8*, i32, i32, i32)");
         out.println("declare void @_nvmBcAddInterface(%Env*, %Class*, i8*)");
         out.println("declare void @_nvmBcAddMethod(%Env*, %Class*, i8*, i8*, i32, i8*, i8*)");
         out.println("declare void @_nvmBcAddField(%Env*, %Class*, i8*, i8*, i32, i32)");
@@ -365,72 +368,7 @@ public class Compiler {
                             }
                             accessors.add(varName);
                         }
-                        /*
-                        if (n.getOpcode() == Opcodes.PUTSTATIC) {
-                            String setter = "PUTSTATIC_" + fieldName;
-                            if (!accessors.contains(setter)) {
-                                out.format("define private void @F_%s(%%Env* %%env, %s %%v) {\n", setter, llvmType);
-                                out.format("    %%caller = load %%Class** @clazz\n");
-                                out.format("    %%functionPtr = bitcast void (%%Env*, %s)** @%s to i8*\n", llvmType, setter);
-                                out.format("    %%tmp0 = call i8* @_nvmBcGetClassFieldSetter(%%Env* %%env, i8* %s, i8* %s, i8* %s, %%Class* %%caller, i8* %%functionPtr)\n", 
-                                        LlvmUtil.getStringReference(n.owner),
-                                        LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
-                                out.format("    %%setter = bitcast i8* %%tmp0 to void (%%Env*, %s)*\n", llvmType);
-                                out.format("    call void %%setter(%%Env* %%env, %s %%v)\n", llvmType);
-                                out.format("    ret void\n");
-                                out.format("}\n");
-                                out.format("@%s = private global void (%%Env*, %s)* @F_%s\n", setter, llvmType, setter);
-                                accessors.add(setter);
-                            }
-                        } else if (n.getOpcode() == Opcodes.GETSTATIC) {
-                            String getter = "GETSTATIC_" + fieldName;
-                            if (!accessors.contains(getter)) {
-                                out.format("define private %s @F_%s(%%Env* %%env) {\n", llvmType, getter);
-                                out.format("    %%caller = load %%Class** @clazz\n");
-                                out.format("    %%functionPtr = bitcast %s (%%Env*)** @%s to i8*\n", llvmType, getter);
-                                out.format("    %%tmp0 = call i8* @_nvmBcGetClassFieldGetter(%%Env* %%env, i8* %s, i8* %s, i8* %s, %%Class* %%caller, i8* %%functionPtr)\n", 
-                                        LlvmUtil.getStringReference(n.owner),
-                                        LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
-                                out.format("    %%getter = bitcast i8* %%tmp0 to %s (%%Env*)*\n", llvmType);
-                                out.format("    %%res = call %s %%getter(%%Env* %%env)\n", llvmType);
-                                out.format("    ret %s %%res\n", llvmType);
-                                out.format("}\n");
-                                out.format("@%s = private global %s (%%Env*)* @F_%s\n", getter, llvmType, getter);
-                                accessors.add(getter);
-                            }
-                        } else if (n.getOpcode() == Opcodes.PUTFIELD) {
-                            String setter = "PUTFIELD_" + fieldName;
-                            if (!accessors.contains(setter)) {
-                                out.format("define private void @F_%s(%%Env* %%env, %%Object* %%o, %s %%v) {\n", setter, llvmType);
-                                out.format("    %%caller = load %%Class** @clazz\n");
-                                out.format("    %%functionPtr = bitcast void (%%Env*, %%Object*, %s)** @%s to i8*\n", llvmType, setter);
-                                out.format("    %%tmp0 = call i8* @_nvmBcGetInstanceFieldSetter(%%Env* %%env, i8* %s, i8* %s, i8* %s, %%Class* %%caller, i8* %%functionPtr)\n", 
-                                        LlvmUtil.getStringReference(n.owner), 
-                                        LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
-                                out.format("    %%setter = bitcast i8* %%tmp0 to void (%%Env*, %%Object*, %s)*\n", llvmType);
-                                out.format("    call void %%setter(%%Env* %%env, %%Object* %%o, %s %%v)\n", llvmType);
-                                out.format("    ret void\n");
-                                out.format("}\n");
-                                out.format("@%s = private global void (%%Env*, %%Object*, %s)* @F_%s\n", setter, llvmType, setter);
-                                accessors.add(setter);
-                            }
-                        } else if (n.getOpcode() == Opcodes.GETFIELD) {
-                            String getter = "GETFIELD_" + fieldName;
-                            if (!accessors.contains(getter)) {
-                                out.format("define private %s @F_%s(%%Env* %%env, %%Object* %%o) {\n", llvmType, getter);
-                                out.format("    %%caller = load %%Class** @clazz\n");
-                                out.format("    %%functionPtr = bitcast %s (%%Env*, %%Object*)** @%s to i8*\n", llvmType, getter);
-                                out.format("    %%tmp0 = call i8* @_nvmBcGetInstanceFieldGetter(%%Env* %%env, i8* %s, i8* %s, i8* %s, %%Class* %%caller, i8* %%functionPtr)\n", 
-                                        LlvmUtil.getStringReference(n.owner),
-                                        LlvmUtil.getStringReference(n.name), LlvmUtil.getStringReference(n.desc));
-                                out.format("    %%getter = bitcast i8* %%tmp0 to %s (%%Env*, %%Object*)*\n", llvmType);
-                                out.format("    %%res = call %s %%getter(%%Env* %%env, %%Object* %%o)\n", llvmType);
-                                out.format("    ret %s %%res\n", llvmType);
-                                out.format("}\n");
-                                out.format("@%s = private global %s (%%Env*, %%Object*)* @F_%s\n", getter, llvmType, getter);
-                                accessors.add(getter);
-                            }
-                        }*/
+               
                     }
                 }
             }
@@ -531,63 +469,11 @@ public class Compiler {
                                     varName, prefix, prefix, commonVarName);
                             functions.add(varName);
                         }                        
-//                        
-//                        String function = LlvmMethodCompiler.opcodeNames[n.getOpcode()] + "_" + LlvmUtil.mangleString(n.desc);
-//                        String lookupMethod = n.getOpcode() == Opcodes.CHECKCAST ? "_nvmBcGetCheckcastFunction" : "_nvmBcGetInstanceofFunction";
-//                        String type = n.getOpcode() == Opcodes.CHECKCAST ? "void" : "i32";
-//                        if (!functions.contains(function)) {
-//                            out.format("define private %s @_%s(%%Env* %%env, %%Object* %%o) {\n", type, function);
-//                            out.format("    %%caller = load %%Class** @clazz\n");
-//                            out.format("    %%functionPtr = bitcast %s (%%Env*, %%Object*)** @%s to i8*\n", type, function);
-//                            out.format("    %%tmp0 = call i8* @%s(%%Env* %%env, i8* %s, %%Class* %%caller, i8* %%functionPtr)\n",
-//                                    lookupMethod, LlvmUtil.getStringReference(n.desc));
-//                            out.format("    %%function = bitcast i8* %%tmp0 to %s (%%Env*, %%Object*)*\n", type);
-//                            if (n.getOpcode() == Opcodes.CHECKCAST) {
-//                                out.format("    call void %%function(%%Env* %%env, %%Object* %%o)\n");
-//                                out.format("    ret void\n");
-//                            } else {
-//                                out.format("    %%res = call i32 %%function(%%Env* %%env, %%Object* %%o)\n");
-//                                out.format("    ret i32 %%res\n");
-//                            }
-//                            out.format("}\n");
-//                            out.format("@%s = private global %s (%%Env*, %%Object*)* @_%s\n", function, type, function);
-//                            functions.add(function);
-//                        }
+
                     }
                 }
             }
         }
-        
-//        out.println("; NEW functions");
-//        for (MethodNode node : (List<MethodNode>) classNode.methods) {
-//            if (!LlvmUtil.isNative(node)) {
-//                for (AbstractInsnNode insnNode : node.instructions.toArray()) {
-//                    if (insnNode instanceof TypeInsnNode) {
-//                        TypeInsnNode n = (TypeInsnNode) insnNode;
-//                        if (n.getOpcode() != Opcodes.NEW) {
-//                            continue;
-//                        }
-//                        
-//                        String function = "NEW_" + LlvmUtil.mangleString(n.desc);
-//                        String lookupMethod = "_nvmBcGetAllocateObjectFunction";
-//                        String type = "%Object*";
-//                        if (!functions.contains(function)) {
-//                            out.format("define private %s @_%s(%%Env* %%env) {\n", type, function);
-//                            out.format("    %%caller = load %%Class** @clazz\n");
-//                            out.format("    %%functionPtr = bitcast %s (%%Env*)** @%s to i8*\n", type, function);
-//                            out.format("    %%tmp0 = call i8* @%s(%%Env* %%env, i8* %s, %%Class* %%caller, i8* %%functionPtr)\n",
-//                                    lookupMethod, LlvmUtil.getStringReference(n.desc));
-//                            out.format("    %%function = bitcast i8* %%tmp0 to %s (%%Env*)*\n", type);
-//                            out.format("    %%res = call %%Object* %%function(%%Env* %%env)\n");
-//                            out.format("    ret %%Object* %%res\n");
-//                            out.format("}\n");
-//                            out.format("@%s = private global %s (%%Env*)* @_%s\n", function, type, function);
-//                            functions.add(function);
-//                        }
-//                    }
-//                }
-//            }
-//        }
         
         out.println("; Function declarations");
         
@@ -616,26 +502,9 @@ public class Compiler {
                     new LlvmMethodCompiler(classNode, node).write(out);
                 }
             } else {
-                Var env = new Var("env", "%Env*");
                 String function = LlvmUtil.mangleMethod(classNode, node);
                 boolean ztatic = (node.access & Opcodes.ACC_STATIC) > 0;
                 String llvmReturnType = LlvmUtil.javaTypeToLlvmType(Type.getReturnType(node.desc));
-//                out.format("define %s {\n", LlvmUtil.nativeFunctionDefinition("_" + function, node.desc, ztatic));
-//                out.format("    %%functionPtr = bitcast %s** @PTR_%s to i8*\n", LlvmUtil.nativeFunctionType(node.desc, ztatic), function);
-//                out.format("    %%tmp0 = call i8* @_nvmBcGetNativeMethod(%%Env* %s, i8* %s, i8* %s, i8* %%functionPtr)\n",
-//                        env,
-//                        LlvmUtil.getStringReference(LlvmUtil.mangleNativeMethodShort(classNode, node)), 
-//                        LlvmUtil.getStringReference(LlvmUtil.mangleNativeMethodLong(classNode, node)));
-//                out.format("    %%function = bitcast i8* %%tmp0 to %s*\n", LlvmUtil.nativeFunctionType(node.desc, ztatic));
-//                if (Type.getReturnType(node.desc) == Type.VOID_TYPE) {
-//                    out.format("    call void %%function(%s)\n", LlvmUtil.join(args));
-//                    out.format("    ret void\n");
-//                } else {
-//                    out.format("    %%res = call %s %%function(%s)\n", llvmReturnType, LlvmUtil.join(args));
-//                    out.format("    ret %s %%res\n", llvmReturnType);
-//                }
-//                out.format("}\n");
-//                out.format("@PTR_%s = private global %s* @_%s\n", function, LlvmUtil.nativeFunctionType(node.desc, ztatic), function);
                 
                 String varName = "InvokeNative_" + function;
                 out.format("@%s = private global %%InvokeNative {void (%%InvokeNative*)* @_nvmBcResolveNativeMethod, void ()* null, i8* %s, i8* %s}\n", 
@@ -668,12 +537,13 @@ public class Compiler {
         }
         out.println();
         
-//        for (int i = 0; i < classNode.methods.size(); i++) {
-//            MethodNode node = (MethodNode) classNode.methods.get(classNode.methods.size() - i - 1);
-//            if ((node.access & Opcodes.ACC_ABSTRACT) == 0) {
-//                out.format("@.Leh_func_end%d = external global i8\n", i + 1);
-//            }
-//        }
+        int funcCounter = 0;
+        for (int i = 0; i < classNode.methods.size(); i++) {
+            MethodNode node = (MethodNode) classNode.methods.get(classNode.methods.size() - i - 1);
+            if ((node.access & Opcodes.ACC_ABSTRACT) == 0) {
+                out.format("@.Leh_func_end%d = external global i8\n", ++funcCounter);
+            }
+        }
 
         out.format( "define %%Class* @\"NullVM_%s\"(%%Env* %%env) {\n", LlvmUtil.mangleString(classNode.name));
         if (!classFields.isEmpty()) {
@@ -688,30 +558,10 @@ public class Compiler {
         } else {
             out.format("    %%InstanceDataSizeI = bitcast i32 0 to i32\n"); 
         }
-//        if (classNode.superName != null) {
-//            // TODO: We need to check that the super class is accessible to the new class.
-//            out.format("    %%superclazz = call %%Class* @_nvmBcFindClass(%%Env* %%env, i8* %s)\n", 
-//                    LlvmUtil.getStringReference(classNode.superName));
-//        } else {
-//            out.format("    %%superclazz = inttoptr i32 0 to %%Class*\n");
-//        }
-//        if (!classNode.interfaces.isEmpty()) {
-//            out.format("    %%interfacesArray = alloca [%d x %%Class*]\n", classNode.interfaces.size() + 1);
-//            for (int i = 0; i < classNode.interfaces.size(); i++) {
-//                String interfaze = (String) classNode.interfaces.get(i);
-//                out.format("    %%interface%d = call %%Class* @_nvmBcFindClass(%%Env* %%env, i8* %s)\n", i, 
-//                        LlvmUtil.getStringReference(interfaze));
-//                out.format("    %%interfacePtr%d = getelementptr [%d x %%Class*]* %%interfacesArray, i32 0, i32 %d\n", i, classNode.interfaces.size() + 1, i);
-//                out.format("    store %%Class* %%interface%d, %%Class** %%interfacePtr%d\n", i, i);
-//            }
-//            out.format("    %%interfacePtrLast = getelementptr [%d x %%Class*]* %%interfacesArray, i32 0, i32 %d\n", classNode.interfaces.size() + 1, classNode.interfaces.size());
-//            out.format("    store %%Class* null, %%Class** %%interfacePtrLast\n");
-//            out.format("    %%interfaces = bitcast [%d x %%Class*]* %%interfacesArray to %%Class**\n", classNode.interfaces.size() + 1);
-//        } else {
-//            out.format("    %%interfaces = inttoptr i32 0 to %%Class**\n");
-//        }
-        out.format("    %%clazz = call %%Class* @_nvmBcAllocateClass(%%Env* %%env, i8* %s, i8* %s, i32 %d, i32 %%ClassDataSizeI, i32 %%InstanceDataSizeI)\n", 
-                LlvmUtil.getStringReference(classNode.name), 
+
+        String allocateClass = !system ? "_nvmBcAllocateClass" : "_nvmBcAllocateSystemClass";
+        out.format("    %%clazz = call %%Class* @%s(%%Env* %%env, i8* %s, i8* %s, i32 %d, i32 %%ClassDataSizeI, i32 %%InstanceDataSizeI)\n",
+                allocateClass, LlvmUtil.getStringReference(classNode.name), 
                 classNode.superName != null && (classNode.access & Opcodes.ACC_INTERFACE) == 0 ? LlvmUtil.getStringReference(classNode.superName) : "null", 
                         classNode.access);
         
@@ -721,15 +571,15 @@ public class Compiler {
         }
 
         for (int i = 0; i < classNode.methods.size(); i++) {
-            MethodNode node = (MethodNode) classNode.methods.get(classNode.methods.size() - i - 1);
+            int index = classNode.methods.size() - i - 1;
+            MethodNode node = (MethodNode) classNode.methods.get(index);
             if ((node.access & Opcodes.ACC_ABSTRACT) != 0) {
                 out.format("    %%FuncPtr%d = inttoptr i32 0 to i8*\n", i);
                 out.format("    %%FuncEnd%d = bitcast i8* null to i8*\n", i);
             } else {
                 out.format("    %%FuncPtr%d = bitcast %s @%s to i8*\n", i, 
                         LlvmUtil.javaMethodToLlvmFunctionType(node), LlvmUtil.mangleMethod(classNode, node));
-                //out.format("    %%FuncEnd%d = bitcast i8* @.Leh_func_end%d to i8*\n", i, i + 1);
-                out.format("    %%FuncEnd%d = bitcast i8* null to i8*\n", i);
+                out.format("    %%FuncEnd%d = bitcast i8* @.Leh_func_end%d to i8*\n", i, funcCounter--);
             }
             out.format("    call void @_nvmBcAddMethod(%%Env* %%env, %%Class* %%clazz, i8* %s, i8* %s, i32 %d, i8* %%FuncPtr%d, i8* %%FuncEnd%d)\n", 
                     LlvmUtil.getStringReference(node.name), LlvmUtil.getStringReference(node.desc), 

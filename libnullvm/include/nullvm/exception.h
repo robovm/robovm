@@ -4,6 +4,7 @@
 extern Object* nvmExceptionOccurred(Env* env);
 extern jboolean nvmExceptionCheck(Env* env);
 extern Object* nvmExceptionClear(Env* env);
+extern void nvmExceptionPrintStackTrace(Env* env, Object* e, FILE* f);
 extern jint nvmThrow(Env* env, Object* e);
 extern jint nvmThrowNew(Env* env, Class* clazz, char* message);
 extern jint nvmThrowOutOfMemoryError(Env* env);
@@ -20,9 +21,11 @@ extern jint nvmThrowClassCastException(Env* env, Class* expectedClass, Class* ac
 extern jint nvmThrowNullPointerException(Env* env);
 extern jint nvmThrowAbstractMethodError(Env* env);
 extern jint nvmThrowArrayIndexOutOfBoundsException(Env* env, jint index);
+extern jint nvmThrowArrayStoreException(Env* env);
 extern jint nvmThrowNegativeArraySizeException(Env* env);
 extern jint nvmThrowClassNotFoundException(Env* env, char* name);
 extern jint nvmThrowUnsatisfiedLinkError(Env* env);
+extern jint nvmThrowIllegalArgumentException(Env* env, char* message);
 extern void nvmRaiseException(Env* env, Object* e);
 
 #endif

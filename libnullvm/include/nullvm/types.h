@@ -53,9 +53,11 @@ typedef struct Array Array;
 
 struct Field {
   Field* next;
+  Class* clazz;
   char* name;
   char* desc;
   jint access;
+  jint slot;
 };
 
 struct ClassField {
@@ -70,14 +72,15 @@ struct InstanceField {
 
 struct Method {
   Method* next;
+  Class* clazz;
   char* name;
   char* desc;
   jint access;
-  jint argsCount;
+  jint slot;
   char** exceptions;
   void* impl;
-  int vtableIndex;
-  char* callInfo;
+  jint length;
+  jint vtableIndex;
 };
 
 struct Interface {
@@ -101,6 +104,8 @@ struct Class {
   char* name;         // The name in modified UTF-8.
   Class* superclass;  // Superclass pointer. Only java.lang.Object and interfaces have NULL here.
   Class* elementClass; // If class is an array class this points to the class of the array elements.
+  jboolean primitive; // If true this represents a primitive type class.
+  jboolean system; // If true this is a system class which is loaded by the bootstrap class loader.
   jint state;
   jint access;
   Interface* interfaces; // Linked list of interfaces or NULL if there are no interfaces.
@@ -147,11 +152,23 @@ MAKE_ARRAY(jdouble, Double)
 
 typedef struct Options {
     char* mainClass;
+    char** commandLineArgs;
+    jint commandLineArgsCount;
+    char* executablePath;
+    char* resourcesPath;
 } Options;
+
+typedef struct Thread {
+    pthread_t id;
+    Object* threadObj;
+    Object* vmThreadObj;
+} Thread;
 
 typedef struct Env {
     struct JNINativeInterface_ jni;
     Object* throwable;
+    Options* options;
+    Thread* currentThread;
 } Env;
 
 #endif

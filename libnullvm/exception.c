@@ -55,6 +55,11 @@ Object* nvmExceptionOccurred(Env* env) {
     return env->throwable;
 }
 
+void nvmExceptionPrintStackTrace(Env* env, Object* e, FILE* f) {
+    // TODO: Write the stack trace to the FILE*
+    fprintf(stderr, "Exception occurred: %s\n", e->clazz->name);
+}
+
 Object* nvmExceptionClear(Env* env) {
     Object* e = env->throwable;
     env->throwable = NULL;
@@ -148,6 +153,10 @@ jint nvmThrowArrayIndexOutOfBoundsException(Env* env, jint index) {
     return nvmThrowNew(env, java_lang_ArrayIndexOutOfBoundsException, "");
 }
 
+jint nvmThrowArrayStoreException(Env* env) {
+    return nvmThrowNew(env, java_lang_ArrayStoreException, "");
+}
+
 jint nvmThrowClassNotFoundException(Env* env, char* className) {
     // TODO: Message should look like "java.lang.ClassNotFoundException: a.C"
     return nvmThrowNew(env, java_lang_ClassNotFoundException, "");
@@ -160,5 +169,9 @@ jint nvmThrowNegativeArraySizeException(Env* env) {
 jint nvmThrowUnsatisfiedLinkError(Env* env) {
     // TODO: Message should look like ?
     return nvmThrowNew(env, java_lang_UnsatisfiedLinkError, "");
+}
+
+jint nvmThrowIllegalArgumentException(Env* env, char* message) {
+    return nvmThrowNew(env, java_lang_IllegalArgumentException, message);
 }
 

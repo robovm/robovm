@@ -32,6 +32,8 @@ typedef struct CallInfo {
 
 extern void _nvmCall0(CallInfo*);
 
+static jvalue emptyJValueArgs[1];
+
 static Method* getMethod(Env* env, Class* clazz, char* name, char* desc) {
     Method* method;
     for (method = clazz->methods; method != NULL; method = method->next) {
@@ -84,6 +86,14 @@ Method* nvmGetInstanceMethod(Env* env, Class* clazz, char* name, char* desc) {
         return NULL;
     }
     return method;
+}
+
+Method* nvmGetMethodBySlot(Env* env, Class* clazz, jint slot) {
+    Method* method;
+    for (method = clazz->methods; method != NULL; method = method->next) {
+        if (method->slot == slot) return method;
+    }
+    return NULL;
 }
 
 char* nvmGetReturnType(char* desc) {
@@ -207,6 +217,10 @@ static jvalue* va_list2jargs(Env* env, Method* method, va_list args) {
     char* c;
     while (c = nvmGetNextArgumentType(&desc)) {
         argsCount++;
+    }
+
+    if (argsCount == 0) {
+        return emptyJValueArgs;
     }
 
     jvalue *jvalueArgs = (jvalue*) nvmAllocateMemory(env, sizeof(jvalue) * argsCount);
@@ -840,6 +854,8 @@ jdouble nvmCallDoubleClassMethod(Env* env, Class* clazz, Method* method, ...) {
     return nvmCallDoubleClassMethodV(env, clazz, method, args);
 }
 
+Object* nvmCallReflectedMethod(Env* env, Object* obj, ObjectArray* args, Class* declaringClass, ObjectArray* parameterTypes, Class* returnType, jint slot, jboolean noAccessCheck) {
+}
 
 /*
 Method* nvmGetMethod(Env* env, Class* clazz, char* name, char* desc) {

@@ -141,3 +141,15 @@ void* nvmMapPut(Env* env, Map* m, MapKey key, void* value) {
     return NULL;
 }
 
+void nvmMapForEach(Env* env, Map* m, jboolean (*f)(MapEntry*, void*), void* data) {
+    jint i;
+    for (i = 0; i < m->capacity; i++) {
+        MapEntry* entry = m->buckets[i];
+        while (entry) {
+            MapEntry* next = entry->next;
+            if (!f(entry, data)) return;
+            entry = next;
+        }
+    }
+}
+

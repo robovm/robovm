@@ -11,6 +11,8 @@ extern FloatArray* nvmNewFloatArray(Env* env, jint length);
 extern DoubleArray* nvmNewDoubleArray(Env* env, jint length);
 extern ObjectArray* nvmNewObjectArray(Env* env, jint length, Class* elementClass, Class* clazz);
 extern Array* nvmNewMultiArray(Env* env, jint dims, jint* lengths, Class* type);
+extern Array* nvmCloneArray(Env* env, Array* array);
+extern jint nvmGetArrayDimensions(Env* env, Array* array);
 
 #endif
 

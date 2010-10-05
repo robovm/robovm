@@ -192,6 +192,16 @@ void _nvmBcAllocateClass(Env* env, char* className, char* superclassName, jint a
     if (!c) _nvmBcThrow(env, nvmExceptionOccurred(env));
 }
 
+void _nvmBcAllocateSystemClass(Env* env, char* className, char* superclassName, jint access, jint classDataSize, jint instanceDataSize) {
+    Class* superclass = NULL;
+    if (superclassName) {
+        superclass = nvmFindClass(env, superclassName);
+        if (!superclass) _nvmBcThrow(env, nvmExceptionOccurred(env));
+    }
+    Class* c = nvmAllocateSystemClass(env, className, superclass, access, classDataSize, instanceDataSize);
+    if (!c) _nvmBcThrow(env, nvmExceptionOccurred(env));
+}
+
 void _nvmBcAddInterface(Env* env, Class* clazz, char* interfaceName) {
     Class* interface = nvmFindClass(env, interfaceName);
     if (!nvmAddInterface(env, clazz, interface)) _nvmBcThrow(env, nvmExceptionOccurred(env));
@@ -201,8 +211,8 @@ void _nvmBcAddField(Env* env, Class* clazz, char* name, char* desc, jint access,
     if (!nvmAddField(env, clazz, name, desc, access, offset)) _nvmBcThrow(env, nvmExceptionOccurred(env));
 }
 
-void _nvmBcAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl) {
-    if (!nvmAddMethod(env, clazz, name, desc, access, impl)) _nvmBcThrow(env, nvmExceptionOccurred(env));
+void _nvmBcAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* end) {
+    if (!nvmAddMethod(env, clazz, name, desc, access, impl, end)) _nvmBcThrow(env, nvmExceptionOccurred(env));
 }
 
 void _nvmBcRegisterClass(Env* env, Class* clazz) {

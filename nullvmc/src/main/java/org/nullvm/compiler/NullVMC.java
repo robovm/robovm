@@ -86,7 +86,10 @@ public class NullVMC {
     
     @Option(name = "-verbose", usage = "Output messages about what the compiler is doing")
     private boolean verbose = false;
-    
+
+    @Option(name = "-system", usage = "Should only be set when compiling system classes (e.g. java.lang.*)")
+    private boolean system = false;
+
     @Option(name = "-skip-rt-lib", usage = "Skip linking with the nullvm-rt which provides the java.* packages")
     private boolean skipRtLib = false;
     
@@ -159,7 +162,7 @@ public class NullVMC {
                     stdout.format("Compiling class file '%s' to LLVM IR file '%s'\n", f, outFile);
                 }
                 out = new FileOutputStream(outFile);
-                new Compiler().compile(cr, out);
+                new Compiler().compile(cr, out, system);
                 result.add(outFile);
             } catch (Throwable t) {
                 FileUtils.deleteQuietly(outFile);

@@ -1,6 +1,9 @@
 #ifndef NULLVM_FIELD_H
 #define NULLVM_FIELD_H
 
+#define FIELD_IS_PUBLIC(f) (f->access & ACC_PUBLIC)
+#define FIELD_IS_STATIC(f) (f->access & ACC_STATIC)
+
 /**
  * Returns the class field with the specified name and descriptor defined by the specified
  * class or one of its super classes.
@@ -19,6 +22,8 @@ extern ClassField* nvmGetClassField(Env* env, Class* clazz, char* name, char* de
  * @throws IncompatibleClassChangeError if the field has got the ACC_STATIC modifier.
  */
 extern InstanceField* nvmGetInstanceField(Env* env, Class* clazz, char* name, char* desc);
+
+extern Field* nvmGetFieldBySlot(Env* env, Class* clazz, jint slot);
 
 extern Object* nvmGetObjectInstanceFieldValue(Env* env, Object* obj, InstanceField* field);
 extern jboolean nvmGetBooleanInstanceFieldValue(Env* env, Object* obj, InstanceField* field);

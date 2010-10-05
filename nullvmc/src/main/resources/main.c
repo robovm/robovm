@@ -3,15 +3,26 @@
 #define QUOTE_(x) #x
 #define QUOTE(x) QUOTE_(x)
 
+static Options options = {0};
+
 int main(int argc, char* argv[]) {
-    Options options;
 
 #ifdef NULLVM_MAIN_CLASS
     options.mainClass = QUOTE(NULLVM_MAIN_CLASS);
 #endif
-    nvmParseArgs(argc, argv, &options);
+    if (nvmInitOptions(argc, argv, &options, FALSE)) {
+        fprintf(stderr, "nvmInitOptions(...) failed!\n");
+        return 1;
+    }
     Env* env = nvmStartup(&options);
-    nvmRun(env, &options);
+    if (!env) {
+        fprintf(stderr, "nvmStartup(...) failed!\n");
+        return 2;
+    }
+    if (!nvmRun(env)) {
+        nvmExceptionPrintStackTrace(env, nvmExceptionOccurred(env), stderr);
+        return 3;
+    }
     nvmShutdown();
 
     return 0;

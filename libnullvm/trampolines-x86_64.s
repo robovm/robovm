@@ -193,8 +193,13 @@ _nvmCall0:
     .type    _nvmBcResolve0, @function
 _nvmBcResolve0:
 .LnvmBcResolve0Begin:
+    .cfi_startproc
+
     push  %rbp
+    .cfi_def_cfa_offset     16
+    .cfi_offset             rbp, -16
     mov   %rsp, %rbp
+    .cfi_def_cfa_register   rbp
 
     sub   $56, %rsp
 
@@ -235,8 +240,12 @@ _nvmBcResolve0:
     mov  %rbp, %rsp
     pop  %rbp
 
+    .cfi_def_cfa            rsp, 8
+
     /* Call the function i->function */
     jmp  *(%rdi)
+
+    .cfi_endproc
 
     .size _nvmBcResolve0, . - .LnvmBcResolve0Begin
 .LnvmBcResolve0End:
@@ -274,8 +283,13 @@ _nvmBcResolve0:
     .type    _nvmBcInvokeVirtual0, @function
 _nvmBcInvokeVirtual0:
 .LnvmBcInvokeVirtual0Begin:
+    .cfi_startproc
+
     push  %rbp
+    .cfi_def_cfa_offset     16
+    .cfi_offset             rbp, -16
     mov   %rsp, %rbp
+    .cfi_def_cfa_register   rbp
 
     sub   $56, %rsp
 
@@ -301,8 +315,12 @@ _nvmBcInvokeVirtual0:
     mov  %rbp, %rsp
     pop  %rbp
 
+    .cfi_def_cfa            rsp, 8
+
     /* Call the function method->impl */
     jmp  *%rax
+
+    .cfi_endproc
 
     .size _nvmBcInvokeVirtual0, . - .LnvmBcInvokeVirtual0Begin
 .LnvmBcInvokeVirtual0End:
@@ -316,8 +334,13 @@ _nvmBcInvokeVirtual0:
     .type    _nvmBcInvokeInterface0, @function
 _nvmBcInvokeInterface0:
 .LnvmBcInvokeInterface0Begin:
+    .cfi_startproc
+
     push  %rbp
+    .cfi_def_cfa_offset     16
+    .cfi_offset             rbp, -16
     mov   %rsp, %rbp
+    .cfi_def_cfa_register   rbp
 
     sub   $56, %rsp
 
@@ -343,8 +366,12 @@ _nvmBcInvokeInterface0:
     mov  %rbp, %rsp
     pop  %rbp
 
+    .cfi_def_cfa            rsp, 8
+
     /* Call the function method->impl */
     jmp  *%rax
+
+    .cfi_endproc
 
     .size _nvmBcInvokeInterface0, . - .LnvmBcInvokeInterface0Begin
 .LnvmBcInvokeInterface0End:

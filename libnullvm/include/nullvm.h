@@ -7,6 +7,11 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdarg.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <nullvm/types.h>
 #include <nullvm/map.h>
 #include <nullvm/access.h>
@@ -23,8 +28,9 @@
 #define LOG(format, args...)  \
   fprintf(stderr, format , ## args)
 
-extern void* nvmAllocateMemory(Env* env, int size);
-extern void* nvmAllocateExecutableMemory(Env* env, int size);
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

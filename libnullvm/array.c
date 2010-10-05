@@ -113,3 +113,22 @@ Array* nvmNewMultiArray(Env* env, jint dims, jint* lengths, Class* clazz) {
     return newArray(env, clazz, sizeof(Object*), dims, lengths);
 }
 
+Array* nvmCloneArray(Env* env, Array* array) {
+    jint elementSize = getElementSize(array->object.clazz->name);
+    jint size = sizeof(Array) + array->length * elementSize;
+    Array* copy = nvmAllocateMemory(env, size);
+    if (!copy) return NULL;
+    memcpy(copy, array, size);
+    // TODO: Once every Object has a lock we need to assign a new one to the copy
+    return copy;
+}
+
+jint nvmGetArrayDimensions(Env* env, Array* array) {
+    jint i = 1;
+    char* desc = array->object.clazz->name;
+    while (desc[i] == '[') {
+        i++;
+    }
+    return i;
+}
+

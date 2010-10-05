@@ -87,7 +87,7 @@ static jthrowable ExceptionOccurred(JNIEnv* env) {
 static void ExceptionDescribe(JNIEnv* env) {
     // TODO: Implement me properly
     Object* e = nvmExceptionOccurred((Env*) *env);
-    fprintf(stderr, "ExceptionDescribe: %s\n", e->clazz->name);
+    nvmExceptionPrintStackTrace((Env*) *env, e, stderr);
 }
 
 static void ExceptionClear(JNIEnv* env) {
@@ -1029,9 +1029,11 @@ static jlong GetDirectBufferCapacity(JNIEnv* env, jobject buf) {
     return -1;
 }
 
-Env* nvmCreateEnv(void) {
+Env* nvmCreateEnv(Options* options) {
     Env* env = (Env*) GC_MALLOC(sizeof(Env));
     if (!env) return NULL;
+  
+    env->options = options;
 
     env->jni.GetVersion = GetVersion;
     env->jni.DefineClass = DefineClass;

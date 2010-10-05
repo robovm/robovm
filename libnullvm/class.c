@@ -6,22 +6,40 @@
 Class* java_lang_Object;
 Class* java_lang_Class;
 Class* java_lang_String;
+Class* java_lang_Boolean;
+Class* java_lang_Byte;
+Class* java_lang_Character;
+Class* java_lang_Short;
+Class* java_lang_Integer;
+Class* java_lang_Long;
+Class* java_lang_Float;
+Class* java_lang_Double;
 Class* java_lang_Cloneable;
+Class* java_lang_Thread;
+Class* java_lang_VMThread;
+Class* java_lang_ThreadGroup;
 Class* java_io_Serializable;
 
+Class* java_lang_Error;
 Class* java_lang_OutOfMemoryError;
 Class* java_lang_NoClassDefFoundError;
 Class* java_lang_IllegalAccessError;
 Class* java_lang_NoSuchFieldError;
 Class* java_lang_NoSuchMethodError;
 Class* java_lang_IncompatibleClassChangeError;
+Class* java_lang_AbstractMethodError;
+Class* java_lang_UnsatisfiedLinkError;
+Class* java_lang_ExceptionInInitializerError;
+
+Class* java_lang_RuntimeException;
 Class* java_lang_ClassCastException;
 Class* java_lang_NullPointerException;
-Class* java_lang_AbstractMethodError;
 Class* java_lang_ArrayIndexOutOfBoundsException;
+Class* java_lang_ArrayStoreException;
 Class* java_lang_ClassNotFoundException;
 Class* java_lang_NegativeArraySizeException;
-Class* java_lang_UnsatisfiedLinkError;
+Class* java_lang_IllegalArgumentException;
+Class* java_lang_UnsupportedOperationException;
 
 Class* prim_Z;
 Class* prim_B;
@@ -148,6 +166,9 @@ static Class* createPrimitiveClass(Env* env, char* desc) {
     if (!clazz) return NULL;
     clazz->name = desc;
     clazz->state = CLASS_INITIALIZED;
+    clazz->object.clazz = java_lang_Class;
+    clazz->access = ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT;
+    clazz->primitive = TRUE;
     return clazz;
 }
 
@@ -164,6 +185,7 @@ static Class* createArrayClass(Env* env, char* desc) {
     if (!nvmAddInterface(env, clazz, java_lang_Cloneable)) return NULL;
     if (!nvmAddInterface(env, clazz, java_io_Serializable)) return NULL;
     if (!nvmRegisterClass(env, clazz)) return NULL;
+    clazz->state = CLASS_INITIALIZED;
     return clazz;
 }
 
@@ -291,11 +313,33 @@ jboolean nvmInitClasses(Env* env) {
     java_lang_Class->object.clazz = java_lang_Class; // Fix object.clazz pointer for java_lang_Class
     java_lang_String = nvmFindClass(env, "java/lang/String");
     if (!java_lang_String) return FALSE;
+    java_lang_Boolean = nvmFindClass(env, "java/lang/Boolean");
+    if (!java_lang_Boolean) return FALSE;
+    java_lang_Byte = nvmFindClass(env, "java/lang/Byte");
+    if (!java_lang_Byte) return FALSE;
+    java_lang_Character = nvmFindClass(env, "java/lang/Character");
+    if (!java_lang_Character) return FALSE;
+    java_lang_Short = nvmFindClass(env, "java/lang/Short");
+    if (!java_lang_Short) return FALSE;
+    java_lang_Long = nvmFindClass(env, "java/lang/Long");
+    if (!java_lang_Long) return FALSE;
+    java_lang_Float = nvmFindClass(env, "java/lang/Float");
+    if (!java_lang_Float) return FALSE;
+    java_lang_Double = nvmFindClass(env, "java/lang/Double");
+    if (!java_lang_Double) return FALSE;
     java_lang_Cloneable = nvmFindClass(env, "java/lang/Cloneable");
     if (!java_lang_Cloneable) return FALSE;
+    java_lang_Thread = nvmFindClass(env, "java/lang/Thread");
+    if (!java_lang_Thread) return FALSE;
+    java_lang_VMThread = nvmFindClass(env, "java/lang/VMThread");
+    if (!java_lang_VMThread) return FALSE;
+    java_lang_ThreadGroup = nvmFindClass(env, "java/lang/ThreadGroup");
+    if (!java_lang_ThreadGroup) return FALSE;
     java_io_Serializable = nvmFindClass(env, "java/io/Serializable");
     if (!java_io_Serializable) return FALSE;
 
+    java_lang_Error = nvmFindClass(env, "java/lang/Error");
+    if (!java_lang_Error) return FALSE;
     java_lang_OutOfMemoryError = nvmFindClass(env, "java/lang/OutOfMemoryError");
     if (!java_lang_OutOfMemoryError) return FALSE;
     java_lang_IllegalAccessError = nvmFindClass(env, "java/lang/IllegalAccessError");
@@ -306,18 +350,29 @@ jboolean nvmInitClasses(Env* env) {
     if (!java_lang_NoSuchMethodError) return FALSE;
     java_lang_IncompatibleClassChangeError = nvmFindClass(env, "java/lang/IncompatibleClassChangeError");
     if (!java_lang_IncompatibleClassChangeError) return FALSE;
+    java_lang_AbstractMethodError = nvmFindClass(env, "java/lang/AbstractMethodError");
+    if (!java_lang_AbstractMethodError) return FALSE;
+    java_lang_UnsatisfiedLinkError = nvmFindClass(env, "java/lang/UnsatisfiedLinkError");
+    if (!java_lang_UnsatisfiedLinkError) return FALSE;
+    java_lang_ExceptionInInitializerError = nvmFindClass(env, "java/lang/ExceptionInInitializerError");
+    if (!java_lang_ExceptionInInitializerError) return FALSE;
+
+    java_lang_RuntimeException = nvmFindClass(env, "java/lang/RuntimeException");
+    if (!java_lang_RuntimeException) return FALSE;
     java_lang_ClassCastException = nvmFindClass(env, "java/lang/ClassCastException");
     if (!java_lang_ClassCastException) return FALSE;
     java_lang_NullPointerException = nvmFindClass(env, "java/lang/NullPointerException");
     if (!java_lang_NullPointerException) return FALSE;
-    java_lang_AbstractMethodError = nvmFindClass(env, "java/lang/AbstractMethodError");
-    if (!java_lang_AbstractMethodError) return FALSE;
     java_lang_ArrayIndexOutOfBoundsException = nvmFindClass(env, "java/lang/ArrayIndexOutOfBoundsException");
     if (!java_lang_ArrayIndexOutOfBoundsException) return FALSE;
+    java_lang_ArrayStoreException = nvmFindClass(env, "java/lang/ArrayStoreException");
+    if (!java_lang_ArrayStoreException) return FALSE;
     java_lang_NegativeArraySizeException = nvmFindClass(env, "java/lang/NegativeArraySizeException");
     if (!java_lang_NegativeArraySizeException) return FALSE;
-    java_lang_UnsatisfiedLinkError = nvmFindClass(env, "java/lang/UnsatisfiedLinkError");
-    if (!java_lang_UnsatisfiedLinkError) return FALSE;
+    java_lang_IllegalArgumentException = nvmFindClass(env, "java/lang/IllegalArgumentException");
+    if (!java_lang_IllegalArgumentException) return FALSE;
+    java_lang_UnsupportedOperationException = nvmFindClass(env, "java/lang/UnsupportedOperationException");
+    if (!java_lang_UnsupportedOperationException) return FALSE;
 
     prim_Z = createPrimitiveClass(env, "Z");
     if (!prim_Z) return FALSE;
@@ -408,6 +463,16 @@ Class* nvmAllocateClass(Env* env, char* className, Class* superclass, jint acces
     clazz->access = access;
     clazz->classDataSize = classDataSize;
     clazz->instanceDataSize = instanceDataSize;
+    clazz->instanceDataOffset = clazz->superclass 
+               ? clazz->superclass->instanceDataOffset + clazz->superclass->instanceDataSize
+               : 0;
+    return clazz;
+}
+
+Class* nvmAllocateSystemClass(Env* env, char* className, Class* superclass, jint access, jint classDataSize, jint instanceDataSize) {
+    Class* clazz = nvmAllocateClass(env, className, superclass, access, classDataSize, instanceDataSize);
+    if (!clazz) return NULL;
+    clazz->system = TRUE;
     return clazz;
 }
 
@@ -420,13 +485,16 @@ jboolean nvmAddInterface(Env* env, Class* clazz, Class* interf) {
     return TRUE;
 }
 
-jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl) {
+jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* end) {
     Method* method = nvmAllocateMemory(env, sizeof(Method));
     if (!method) return FALSE;
+    method->clazz = clazz;
     method->name = name;
     method->desc = desc;
     method->access = access;
+    method->slot = clazz->methods ? clazz->methods->slot + 1 : 0;
     method->impl = impl;
+    method->length = (end && end > impl) ? end - impl : -1;
     method->next = clazz->methods;
     method->vtableIndex = -1;
     clazz->methods = method;
@@ -436,9 +504,11 @@ jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint acces
 jboolean nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset) {
     Field* field = nvmAllocateMemory(env, (access & ACC_STATIC) ? sizeof(ClassField) : sizeof(InstanceField));
     if (!field) return FALSE;
+    field->clazz = clazz;
     field->name = name;
     field->desc = desc;
     field->access = access;
+    field->slot = clazz->fields ? clazz->fields->slot + 1 : 0;
     field->next = clazz->fields;
     clazz->fields = field;
     if (access & ACC_STATIC) {
@@ -453,7 +523,6 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
     int vtableSize;
     Method* method;
     Field* field;
-    int offset;
     int size;
 
     clazz->id = getNextClassId();
@@ -472,7 +541,7 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
           vtableIndex = vtableSize++;
         }
         method->vtableIndex = vtableIndex;
-        LOG("vtable index for method %s%s in class %s: %d\n", method->name, method->desc, clazz->name, vtableIndex);
+//        LOG("vtable index for method %s%s in class %s: %d\n", method->name, method->desc, clazz->name, vtableIndex);
     }
     if (vtableSize > 0) {
         clazz->vtable = nvmAllocateMemory(env, vtableSize * sizeof(void*));
@@ -482,17 +551,11 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
             memcpy(clazz->vtable, clazz->superclass->vtable, clazz->superclass->vtableSize);
         }
     }
-    LOG("vtable size for %s: %d\n", clazz->name, vtableSize);
+//    LOG("vtable size for %s: %d\n", clazz->name, vtableSize);
 
     for (method = clazz->methods; method != NULL; method = method->next) {
         clazz->vtable[method->vtableIndex] = method->impl;
     }
-
-    offset = clazz->superclass 
-               ? clazz->superclass->instanceDataOffset + clazz->superclass->instanceDataSize
-               : 0;
-    LOG("instanceDataOffset for %s: %d\n", clazz->name, offset);
-    clazz->instanceDataOffset = offset;
 
     clazz->state = CLASS_VERIFIED;
     clazz->state = CLASS_PREPARED;
@@ -503,20 +566,38 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
 }
 
 void nvmInitialize(Env* env, Class* clazz) {
-    if (clazz->state != CLASS_INITIALIZED && clazz->state != CLASS_INITIALIZING && clazz->state != CLASS_ERROR) {
+    // TODO: Throw java.lang.NoClassDefFoundError if state == CLASS_ERROR?
+    if (clazz->state == CLASS_ERROR) {
+        // TODO: Add the class' binary name in the message
+        nvmThrowNew(env, java_lang_NoClassDefFoundError, "Could not initialize class ??");
+        return;
+    }
+    if (clazz->state != CLASS_INITIALIZED && clazz->state != CLASS_INITIALIZING) {
+        jint oldState = clazz->state;
         clazz->state = CLASS_INITIALIZING;
         if (clazz->superclass) {
             nvmInitialize(env, clazz->superclass);
             if (nvmExceptionOccurred(env)) {
-                clazz->state = CLASS_ERROR;
+                clazz->state = oldState;
                 return;
             }
         }
+        LOG("Initializing class %s\n", clazz->name);
         Method* clinit = nvmGetClassInitializer(env, clazz);
         if (!clinit) return;
         nvmCallVoidClassMethod(env, clazz, clinit);
-        if (nvmExceptionOccurred(env)) {
+        Object* exception = nvmExceptionOccurred(env);
+        if (exception) {
             clazz->state = CLASS_ERROR;
+            if (!nvmIsInstanceOf(env, exception, java_lang_Error)) {
+                // If exception isn't an instance of java.lang.Error 
+                // we must wrap it in a java.lang.ExceptionInInitializerError
+                Method* constructor = nvmGetInstanceMethod(env, java_lang_ExceptionInInitializerError, "<init>", "(Ljava/lang/Throwable;)V");
+                if (!constructor) return;
+                Object* wrappedException = nvmNewObject(env, java_lang_ExceptionInInitializerError, constructor, exception);
+                if (!wrappedException) return;
+                nvmThrow(env, wrappedException);
+            }
             return;
         }
         clazz->state = CLASS_INITIALIZED;
@@ -553,5 +634,48 @@ Object* nvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args) {
     nvmCallVoidInstanceMethodV(env, obj, method, args);
     if (nvmExceptionOccurred(env)) return NULL;
     return obj;
+}
+
+Object* nvmCloneObject(Env* env, Object* obj) {
+    if (CLASS_IS_ARRAY(obj->clazz)) {
+        return (Object*) nvmCloneArray(env, (Array*) obj);
+    }
+    // Class is not cloneable so we assume that obj is a DataObject
+    jint size = sizeof(DataObject) + obj->clazz->instanceDataOffset + obj->clazz->instanceDataSize;
+    Object* copy = nvmAllocateMemory(env, size);
+    if (!copy) return NULL;
+    memcpy(copy, obj, size);
+    // TODO: When every Object has a lock we need to assign a new one to the copy
+    return copy;
+}
+
+typedef struct FindMethodAtAddressData {
+    void* address;
+    Method* method;
+} FindMethodAtAddressData;
+
+static jboolean findMethodAtAddressIterator(MapEntry* entry, void* d) {
+    FindMethodAtAddressData* data = (FindMethodAtAddressData*) d;
+    Class* clazz = (Class*) entry->value;
+    void* address = data->address;
+    Method* method;
+    for (method = clazz->methods; method != NULL; method = method->next) {
+        if (method->impl && method->length > 0) {
+            void* start = method->impl;
+            void* end = start + method->length;
+            if (address >= start && address < end) {
+                data->method = method;
+                return FALSE;
+            }
+        }
+    }
+    return TRUE;
+}
+
+Method* nvmFindMethodAtAddress(Env* env, void* address) {
+    FindMethodAtAddressData data = {0};
+    data.address = address;
+    nvmMapForEach(env, nameToClassMap, findMethodAtAddressIterator, (void*) &data);
+    return data.method;
 }
 

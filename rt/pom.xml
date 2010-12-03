@@ -1,0 +1,80 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.nullvm</groupId>
+    <artifactId>build</artifactId>
+    <version>0.1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>nullvm-rt</artifactId>
+  <name>NullVM Runtime Library</name>
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.ibm.icu</groupId>
+      <artifactId>icu4j</artifactId>
+      <version>4.2.1</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/icu4j-4_2_1.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.ibm.icu</groupId>
+      <artifactId>icu4j-charsets</artifactId>
+      <version>4.2.1</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/icu4j-charsets-4_2_1.jar</systemPath>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <jar destfile="target/${project.build.finalName}-all.jar">
+                  <fileset dir="target/classes"/>
+                  <zipfileset includes="**/*" src="lib/icu4j-4_2_1.jar" excludes="META-INF/MANIFEST.MF, license.html, unicode-license.txt"/>
+                  <zipfileset includes="**/*" src="lib/icu4j-charsets-4_2_1.jar" excludes="META-INF/MANIFEST.MF, license.html, unicode-license.txt"/>
+                </jar>
+<!--                <exec dir="src/main/native" executable="make" searchpath="true"/>
+                <java jar="../nullvmc/target/nullvm-compiler-0.1-SNAPSHOT.one-jar.jar" fork="true">
+                  <arg line="-verbose -o target/nullvm -work target/nullvm.work target/${project.build.finalName}-all.jar"/>
+                </java>
+                <pathconvert pathsep=" " property="native.objs">
+                  <fileset dir="target/native">
+                    <include name="**/*.o"/>
+                  </fileset>
+                  <map from="${basedir}/" to=""/>
+                </pathconvert>
+                <echo message="${native.objs}"/>
+                <exec dir="." executable="ar" searchpath="true">
+                  <arg line="rs target/nullvm/libnullvm-rt-0.1-SNAPSHOT-all.jar.a ${native.objs}"/>
+                </exec> -->
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <classpathContainers>
+          </classpathContainers>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+</project>
+

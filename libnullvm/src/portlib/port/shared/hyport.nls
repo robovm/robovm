@@ -1,0 +1,68 @@
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Externalised messages for common elements of the port library
+#
+# Note to developers:
+#
+# New messages MUST be added at the end of this file.
+# DO NOT delete messages from this file, as it will change their indices.
+# If you wish to remove a message, delete its text, but leave the key in place
+#
+# Note to translators:
+#
+# This file uses printf style substitutions. Sequences such as %s, %.*s, %10d
+# etc. will be substituted at runtime. The special case of %% is not a substitution.
+# It indicates a single percent sign. Please do not modify the format specifiers, or 
+# change their order. For instance, in a message like "from %d to %s", %d
+# MUST appear before %s in any translated message, or a run-time crash
+# could occur. This is a known limitation of the product.
+#
+# NLS_MESSAGEFORMAT_NONE
+#
+
+HYNLS.MODULE=PORT
+HYNLS.HEADER=portnls.h
+
+# Do not translate
+# used for unique number only
+HYNLS_PORT_NLS_FAILURE=
+
+HYNLS_PORT_FILE_MEMORY_ALLOCATE_FAILURE=Failed to allocate memory.
+
+HYNLS_PORT_SL_UNKOWN_ERROR=Unkown error loading shared library
+# Note: argument is the name of dependant the DLL
+HYNLS_PORT_SL_ERROR_LOADING_DEPENDANT_MODULE=Dependent module %s could not be loaded
+HYNLS_PORT_SL_SYMBOL_RESOLUTION_FAILURE=Symbol resolution failure
+HYNLS_PORT_SL_COULD_NOT_LOAD_MODULE=Could not load module
+HYNLS_PORT_SL_MODULE_FORMAT_INCORRECT=Module format incorrect
+HYNLS_PORT_SL_NOT_A_MODULE=Not a module
+HYNLS_PORT_SL_MODULE_ARCHITECTURE_INCORRECT=Module architecture incorrect
+HYNLS_PORT_SL_FILE_NOT_FOUND=File not found
+HYNLS_PORT_SL_PERMISSION_DENIED=Permission denied
+HYNLS_PORT_SL_OUT_OF_MEMORY=Out of memory
+HYNLS_PORT_SL_ERROR_PACE_BIT_SET=Error: 68K function has PACE bit set.
+HYNLS_PORT_SL_DLL_TABLE_NOT_FOUND=DLL table not found
+HYNLS_PORT_SL_DLL_NOT_FOUND=DLL not found
+HYNLS_PORT_SL_UNABLE_TO_RESOLVE_REFERENCES=Unable to resolve DLL references - a prerequisite DLL may be missing
+HYNLS_PORT_SL_INTERNAL_ERROR=Internal Error %i
+
+#Note: argument is OS errorCode
+HYNLS_PORT_ERROR_OPERATION_FAILED=Operation Failed: %d
+#Note: argument is errorCodeBeingLookedUp, OS Function Call, errorCodeFromFunctionCall
+HYNLS_PORT_ERROR_MESSAGE_LOOKUP_FAILED=Operation Failed: %1$d (%2$s failed: %3$d)
+
+
+

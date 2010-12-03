@@ -162,7 +162,7 @@ public class NullVMC {
                     stdout.format("Compiling class file '%s' to LLVM IR file '%s'\n", f, outFile);
                 }
                 out = new FileOutputStream(outFile);
-                new Compiler().compile(cr, out, system);
+                new ClassCompiler().compile(cr, out, system);
                 result.add(outFile);
             } catch (Throwable t) {
                 FileUtils.deleteQuietly(outFile);

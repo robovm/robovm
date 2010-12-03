@@ -335,7 +335,7 @@ public class LlvmUtil {
         
         List<String> args = descToCallArgs(desc, ztatic, omitArgNames);
         args.remove(0);
-        args.set(0, "%Env**" + (omitArgNames ? "" : " %jniEnv"));
+        args.set(0, "%Env*" + (omitArgNames ? "" : " " + new Var("env", "%Env*")));
         if (ztatic) {
             args.add(1, "%Class*" + (omitArgNames ? "" : " %clazz"));
         }

@@ -62,6 +62,7 @@ Env* nvmStartup(Options* options) {
     if (!nvmInitClasses(env)) return NULL;
     if (!nvmInitStrings(env)) return NULL;
     if (!nvmInitThreads(env)) return NULL;
+    if (!nvmInitVMI(env)) return NULL;
 
     return env;
 }
@@ -75,7 +76,7 @@ jboolean nvmRun(Env* env) {
     jvalue args[1];
     args[0].l = (jobject) NULL;
     nvmCallVoidClassMethodA(env, clazz, method, args);
-    return nvmExceptionCheck(env);
+    return !nvmExceptionCheck(env);
 }
 
 void nvmShutdown(void) {

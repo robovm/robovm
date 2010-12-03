@@ -87,26 +87,34 @@ DoubleArray* nvmNewDoubleArray(Env* env, jint length) {
     return (DoubleArray*) newArray(env, array_D, sizeof(jdouble), 1, &length);
 }
 
-ObjectArray* nvmNewObjectArray(Env* env, jint length, Class* elementClass, Class* clazz) {
-    if (!clazz) {
+ObjectArray* nvmNewObjectArray(Env* env, jint length, Class* elementClass, Class* arrayClass, Object* init) {
+    if (!arrayClass) {
         if (CLASS_IS_ARRAY(elementClass)) {
             char* name = nvmAllocateMemory(env, strlen(elementClass->name) + 2);
             if (!name) return NULL;
             strcpy(name, "[");
             strcat(name, elementClass->name);
-            clazz = nvmFindClass(env, name);
-            if (!clazz) return NULL;
+            arrayClass = nvmFindClass(env, name);
+            if (!arrayClass) return NULL;
         } else {
             char* name = nvmAllocateMemory(env, strlen(elementClass->name) + 4);
             if (!name) return NULL;
             strcpy(name, "[L");
             strcat(name, elementClass->name);
             strcat(name, ";");
-            clazz = nvmFindClass(env, name);
-            if (!clazz) return NULL;
+            arrayClass = nvmFindClass(env, name);
+            if (!arrayClass) return NULL;
         }
     }
-    return (ObjectArray*) newArray(env, clazz, sizeof(Object*), 1, &length);
+
+    ObjectArray *array = (ObjectArray*) newArray(env, arrayClass, sizeof(Object*), 1, &length);
+    if (init) {
+        jint i;
+        for (i = 0; i < length; i++) {
+            array->values[i] = init;
+        }
+    }
+    return array;
 }
 
 Array* nvmNewMultiArray(Env* env, jint dims, jint* lengths, Class* clazz) {

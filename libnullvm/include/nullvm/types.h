@@ -3,7 +3,10 @@
 
 #include "../jni_types.h"
 #include "../jni.h"
+#include <hythread.h>
 
+#undef FALSE
+#undef TRUE
 #define FALSE JNI_FALSE
 #define TRUE JNI_TRUE
 
@@ -79,7 +82,6 @@ struct Method {
   jint slot;
   char** exceptions;
   void* impl;
-  jint length;
   jint vtableIndex;
 };
 
@@ -130,7 +132,6 @@ struct DataObject {
 struct Array {
   Object object;
   jint length;
-  void* values[0];
 };
 
 #define MAKE_ARRAY(T, N) \
@@ -159,17 +160,23 @@ typedef struct Options {
 } Options;
 
 typedef struct Thread {
-    pthread_t id;
+    hythread_t hyThread;
     Object* threadObj;
-    Object* vmThreadObj;
 } Thread;
 
 typedef struct Env {
-    struct JNINativeInterface_ jni;
+    JNIEnv jni;
     Object* throwable;
     Options* options;
     Thread* currentThread;
 } Env;
+
+typedef struct CallStackEntry CallStackEntry;
+struct CallStackEntry {
+    CallStackEntry* next;
+    Method* method;
+    jint offset;
+};
 
 #endif
 

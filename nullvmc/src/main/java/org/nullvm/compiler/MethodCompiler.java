@@ -54,7 +54,7 @@ import org.objectweb.asm.tree.analysis.Frame;
  *
  * @version $Id$
  */
-public class LlvmMethodCompiler {
+public class MethodCompiler {
     private ClassNode classNode;
     private MethodNode methodNode;
 
@@ -106,7 +106,7 @@ public class LlvmMethodCompiler {
         "UNKNOWN_0xFF"
     };
     
-    public LlvmMethodCompiler(ClassNode classNode, MethodNode methodNode) {
+    public MethodCompiler(ClassNode classNode, MethodNode methodNode) {
         this.classNode = classNode;
         this.methodNode = methodNode;
     }
@@ -755,7 +755,7 @@ public class LlvmMethodCompiler {
                 Var op1 = pop1("op1");
                 Var op2 = pop1("op2");
                 Var res = tmpf("res");
-                out.format("    %s = add float %s, %s\n", res, op2, op1);
+                out.format("    %s = fadd float %s, %s\n", res, op2, op1);
                 push1(res);
                 break;
             }
@@ -763,7 +763,7 @@ public class LlvmMethodCompiler {
                 Var op1 = pop2("op1");
                 Var op2 = pop2("op2");
                 Var res = tmpd("res");
-                out.format("    %s = add double %s, %s\n", res, op2, op1);
+                out.format("    %s = fadd double %s, %s\n", res, op2, op1);
                 push2(res);
                 break;
             }
@@ -787,7 +787,7 @@ public class LlvmMethodCompiler {
                 Var op1 = pop1("op1");
                 Var op2 = pop1("op2");
                 Var res = tmpf("res");
-                out.format("    %s = sub float %s, %s\n", res, op2, op1);
+                out.format("    %s = fsub float %s, %s\n", res, op2, op1);
                 push1(res);
                 break;
             }
@@ -795,7 +795,7 @@ public class LlvmMethodCompiler {
                 Var op1 = pop2("op1");
                 Var op2 = pop2("op2");
                 Var res = tmpd("res");
-                out.format("    %s = sub double %s, %s\n", res, op2, op1);
+                out.format("    %s = fsub double %s, %s\n", res, op2, op1);
                 push2(res);
                 break;
             }
@@ -819,7 +819,7 @@ public class LlvmMethodCompiler {
                 Var op1 = pop1("op1");
                 Var op2 = pop1("op2");
                 Var res = tmpf("res");
-                out.format("    %s = mul float %s, %s\n", res, op2, op1);
+                out.format("    %s = fmul float %s, %s\n", res, op2, op1);
                 push1(res);
                 break;
             }
@@ -827,7 +827,7 @@ public class LlvmMethodCompiler {
                 Var op1 = pop2("op1");
                 Var op2 = pop2("op2");
                 Var res = tmpd("res");
-                out.format("    %s = mul double %s, %s\n", res, op2, op1);
+                out.format("    %s = fmul double %s, %s\n", res, op2, op1);
                 push2(res);
                 break;
             }

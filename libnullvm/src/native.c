@@ -1,6 +1,18 @@
 #include <nullvm.h>
 #include <string.h>
 
+extern struct JNINativeInterface_ jni;
+extern struct JNIInvokeInterface_ javaVM;
+
+Env* nvmCreateEnv(Options* options) {
+    Env* env = (Env*) GC_MALLOC(sizeof(Env));
+    if (!env) return NULL;
+
+    env->options = options;
+    env->jni = &jni;
+    return env;
+}
+
 static void throwUnsupportedOperationException(Env* env, char* msg) {
     Class* clazz = nvmFindClass(env, "java/lang/UnsupportedOperationException");
     if (!clazz) return;
@@ -771,15 +783,7 @@ static jsize GetArrayLength(JNIEnv* env, jarray array) {
 }
 
 static jobjectArray NewObjectArray(JNIEnv* env, jsize len, jclass clazz, jobject init) {
-    ObjectArray* array = nvmNewObjectArray((Env*) *env, len, (Class*) clazz, NULL);
-    if (!array) return NULL;
-    if (init) {
-        jint i;
-        for (i = 0; i < len; i++) {
-            array->values[i] = (Object*) init;
-        }
-    }
-    return (jobjectArray) array;
+    return (jobjectArray) nvmNewObjectArray((Env*) *env, len, (Class*) clazz, NULL, (Object*) init);
 }
 
 static jobject GetObjectArrayElement(JNIEnv* env, jobjectArray array, jsize index) {
@@ -994,9 +998,28 @@ static void GetStringUTFRegion(JNIEnv *env, jstring str, jsize start, jsize len,
     nvmGetStringUTFRegion((Env*) *env, (Object*) str, start, len, buf);
 }
 
-static void* GetPrimitiveArrayCritical(JNIEnv* env, jarray array, jboolean* isCopy) {
+static void* GetPrimitiveArrayCritical(JNIEnv* env, jarray _array, jboolean* isCopy) {
     if (isCopy) *isCopy = JNI_FALSE;
-    return ((Array*) array)->values;
+    Array* array = (Array*) _array;
+    switch (array->object.clazz->name[1]) {
+    case 'Z':
+        return ((BooleanArray*) array)->values;
+    case 'B':
+        return ((ByteArray*) array)->values;
+    case 'C':
+        return ((CharArray*) array)->values;
+    case 'S':
+        return ((ShortArray*) array)->values;
+    case 'I':
+        return ((IntArray*) array)->values;
+    case 'J':
+        return ((LongArray*) array)->values;
+    case 'F':
+        return ((FloatArray*) array)->values;
+    case 'D':
+        return ((DoubleArray*) array)->values;
+    }
+    return NULL;
 }
 
 static void ReleasePrimitiveArrayCritical(JNIEnv* env, jarray array, void* carray, jint mode) {
@@ -1029,241 +1052,238 @@ static jlong GetDirectBufferCapacity(JNIEnv* env, jobject buf) {
     return -1;
 }
 
-Env* nvmCreateEnv(Options* options) {
-    Env* env = (Env*) GC_MALLOC(sizeof(Env));
-    if (!env) return NULL;
-  
-    env->options = options;
-
-    env->jni.GetVersion = GetVersion;
-    env->jni.DefineClass = DefineClass;
-    env->jni.FindClass = FindClass;
-    env->jni.FromReflectedMethod = FromReflectedMethod;
-    env->jni.FromReflectedField = FromReflectedField;
-    env->jni.ToReflectedMethod = ToReflectedMethod;
-    env->jni.GetSuperclass = GetSuperclass;
-    env->jni.IsAssignableFrom = IsAssignableFrom;
-    env->jni.ToReflectedField = ToReflectedField;
-    env->jni.Throw = Throw;
-    env->jni.ThrowNew = ThrowNew;
-    env->jni.ExceptionOccurred = ExceptionOccurred;
-    env->jni.ExceptionDescribe = ExceptionDescribe;
-    env->jni.ExceptionClear = ExceptionClear;
-    env->jni.FatalError = FatalError;
-    env->jni.PushLocalFrame = PushLocalFrame;
-    env->jni.PopLocalFrame = PopLocalFrame;
-    env->jni.NewGlobalRef = NewGlobalRef;
-    env->jni.DeleteGlobalRef = DeleteGlobalRef;
-    env->jni.DeleteLocalRef = DeleteLocalRef;
-    env->jni.IsSameObject = IsSameObject;
-    env->jni.NewLocalRef = NewLocalRef;
-    env->jni.EnsureLocalCapacity = EnsureLocalCapacity;
-    env->jni.AllocObject = AllocObject;
-    env->jni.NewObject = NewObject;
-    env->jni.NewObjectV = NewObjectV;
-    env->jni.NewObjectA = NewObjectA;
-    env->jni.GetObjectClass = GetObjectClass;
-    env->jni.IsInstanceOf = IsInstanceOf;
-    env->jni.GetMethodID = GetMethodID;
-    env->jni.CallObjectMethod = CallObjectMethod;
-    env->jni.CallObjectMethodV = CallObjectMethodV;
-    env->jni.CallObjectMethodA = CallObjectMethodA;
-    env->jni.CallBooleanMethod = CallBooleanMethod;
-    env->jni.CallBooleanMethodV = CallBooleanMethodV;
-    env->jni.CallBooleanMethodA = CallBooleanMethodA;
-    env->jni.CallByteMethod = CallByteMethod;
-    env->jni.CallByteMethodV = CallByteMethodV;
-    env->jni.CallByteMethodA = CallByteMethodA;
-    env->jni.CallCharMethod = CallCharMethod;
-    env->jni.CallCharMethodV = CallCharMethodV;
-    env->jni.CallCharMethodA = CallCharMethodA;
-    env->jni.CallShortMethod = CallShortMethod;
-    env->jni.CallShortMethodV = CallShortMethodV;
-    env->jni.CallShortMethodA = CallShortMethodA;
-    env->jni.CallIntMethod = CallIntMethod;
-    env->jni.CallIntMethodV = CallIntMethodV;
-    env->jni.CallIntMethodA = CallIntMethodA;
-    env->jni.CallLongMethod = CallLongMethod;
-    env->jni.CallLongMethodV = CallLongMethodV;
-    env->jni.CallLongMethodA = CallLongMethodA;
-    env->jni.CallFloatMethod = CallFloatMethod;
-    env->jni.CallFloatMethodV = CallFloatMethodV;
-    env->jni.CallFloatMethodA = CallFloatMethodA;
-    env->jni.CallDoubleMethod = CallDoubleMethod;
-    env->jni.CallDoubleMethodV = CallDoubleMethodV;
-    env->jni.CallDoubleMethodA = CallDoubleMethodA;
-    env->jni.CallVoidMethod = CallVoidMethod;
-    env->jni.CallVoidMethodV = CallVoidMethodV;
-    env->jni.CallVoidMethodA = CallVoidMethodA;
-    env->jni.CallNonvirtualObjectMethod = CallNonvirtualObjectMethod;
-    env->jni.CallNonvirtualObjectMethodV = CallNonvirtualObjectMethodV;
-    env->jni.CallNonvirtualObjectMethodA = CallNonvirtualObjectMethodA;
-    env->jni.CallNonvirtualBooleanMethod = CallNonvirtualBooleanMethod;
-    env->jni.CallNonvirtualBooleanMethodV = CallNonvirtualBooleanMethodV;
-    env->jni.CallNonvirtualBooleanMethodA = CallNonvirtualBooleanMethodA;
-    env->jni.CallNonvirtualByteMethod = CallNonvirtualByteMethod;
-    env->jni.CallNonvirtualByteMethodV = CallNonvirtualByteMethodV;
-    env->jni.CallNonvirtualByteMethodA = CallNonvirtualByteMethodA;
-    env->jni.CallNonvirtualCharMethod = CallNonvirtualCharMethod;
-    env->jni.CallNonvirtualCharMethodV = CallNonvirtualCharMethodV;
-    env->jni.CallNonvirtualCharMethodA = CallNonvirtualCharMethodA;
-    env->jni.CallNonvirtualShortMethod = CallNonvirtualShortMethod;
-    env->jni.CallNonvirtualShortMethodV = CallNonvirtualShortMethodV;
-    env->jni.CallNonvirtualShortMethodA = CallNonvirtualShortMethodA;
-    env->jni.CallNonvirtualIntMethod = CallNonvirtualIntMethod;
-    env->jni.CallNonvirtualIntMethodV = CallNonvirtualIntMethodV;
-    env->jni.CallNonvirtualIntMethodA = CallNonvirtualIntMethodA;
-    env->jni.CallNonvirtualLongMethod = CallNonvirtualLongMethod;
-    env->jni.CallNonvirtualLongMethodV = CallNonvirtualLongMethodV;
-    env->jni.CallNonvirtualLongMethodA = CallNonvirtualLongMethodA;
-    env->jni.CallNonvirtualFloatMethod = CallNonvirtualFloatMethod;
-    env->jni.CallNonvirtualFloatMethodV = CallNonvirtualFloatMethodV;
-    env->jni.CallNonvirtualFloatMethodA = CallNonvirtualFloatMethodA;
-    env->jni.CallNonvirtualDoubleMethod = CallNonvirtualDoubleMethod;
-    env->jni.CallNonvirtualDoubleMethodV = CallNonvirtualDoubleMethodV;
-    env->jni.CallNonvirtualDoubleMethodA = CallNonvirtualDoubleMethodA;
-    env->jni.CallNonvirtualVoidMethod = CallNonvirtualVoidMethod;
-    env->jni.CallNonvirtualVoidMethodV = CallNonvirtualVoidMethodV;
-    env->jni.CallNonvirtualVoidMethodA = CallNonvirtualVoidMethodA;
-    env->jni.GetFieldID = GetFieldID;
-    env->jni.GetObjectField = GetObjectField;
-    env->jni.GetBooleanField = GetBooleanField;
-    env->jni.GetByteField = GetByteField;
-    env->jni.GetCharField = GetCharField;
-    env->jni.GetShortField = GetShortField;
-    env->jni.GetIntField = GetIntField;
-    env->jni.GetLongField = GetLongField;
-    env->jni.GetFloatField = GetFloatField;
-    env->jni.GetDoubleField = GetDoubleField;
-    env->jni.SetObjectField = SetObjectField;
-    env->jni.SetBooleanField = SetBooleanField;
-    env->jni.SetByteField = SetByteField;
-    env->jni.SetCharField = SetCharField;
-    env->jni.SetShortField = SetShortField;
-    env->jni.SetIntField = SetIntField;
-    env->jni.SetLongField = SetLongField;
-    env->jni.SetFloatField = SetFloatField;
-    env->jni.SetDoubleField = SetDoubleField;
-    env->jni.GetStaticMethodID = GetStaticMethodID;
-    env->jni.CallStaticObjectMethod = CallStaticObjectMethod;
-    env->jni.CallStaticObjectMethodV = CallStaticObjectMethodV;
-    env->jni.CallStaticObjectMethodA = CallStaticObjectMethodA;
-    env->jni.CallStaticBooleanMethod = CallStaticBooleanMethod;
-    env->jni.CallStaticBooleanMethodV = CallStaticBooleanMethodV;
-    env->jni.CallStaticBooleanMethodA = CallStaticBooleanMethodA;
-    env->jni.CallStaticByteMethod = CallStaticByteMethod;
-    env->jni.CallStaticByteMethodV = CallStaticByteMethodV;
-    env->jni.CallStaticByteMethodA = CallStaticByteMethodA;
-    env->jni.CallStaticCharMethod = CallStaticCharMethod;
-    env->jni.CallStaticCharMethodV = CallStaticCharMethodV;
-    env->jni.CallStaticCharMethodA = CallStaticCharMethodA;
-    env->jni.CallStaticShortMethod = CallStaticShortMethod;
-    env->jni.CallStaticShortMethodV = CallStaticShortMethodV;
-    env->jni.CallStaticShortMethodA = CallStaticShortMethodA;
-    env->jni.CallStaticIntMethod = CallStaticIntMethod;
-    env->jni.CallStaticIntMethodV = CallStaticIntMethodV;
-    env->jni.CallStaticIntMethodA = CallStaticIntMethodA;
-    env->jni.CallStaticLongMethod = CallStaticLongMethod;
-    env->jni.CallStaticLongMethodV = CallStaticLongMethodV;
-    env->jni.CallStaticLongMethodA = CallStaticLongMethodA;
-    env->jni.CallStaticFloatMethod = CallStaticFloatMethod;
-    env->jni.CallStaticFloatMethodV = CallStaticFloatMethodV;
-    env->jni.CallStaticFloatMethodA = CallStaticFloatMethodA;
-    env->jni.CallStaticDoubleMethod = CallStaticDoubleMethod;
-    env->jni.CallStaticDoubleMethodV = CallStaticDoubleMethodV;
-    env->jni.CallStaticDoubleMethodA = CallStaticDoubleMethodA;
-    env->jni.CallStaticVoidMethod = CallStaticVoidMethod;
-    env->jni.CallStaticVoidMethodV = CallStaticVoidMethodV;
-    env->jni.CallStaticVoidMethodA = CallStaticVoidMethodA;
-    env->jni.GetStaticFieldID = GetStaticFieldID;
-    env->jni.GetStaticObjectField = GetStaticObjectField;
-    env->jni.GetStaticBooleanField = GetStaticBooleanField;
-    env->jni.GetStaticByteField = GetStaticByteField;
-    env->jni.GetStaticCharField = GetStaticCharField;
-    env->jni.GetStaticShortField = GetStaticShortField;
-    env->jni.GetStaticIntField = GetStaticIntField;
-    env->jni.GetStaticLongField = GetStaticLongField;
-    env->jni.GetStaticFloatField = GetStaticFloatField;
-    env->jni.GetStaticDoubleField = GetStaticDoubleField;
-    env->jni.SetStaticObjectField = SetStaticObjectField;
-    env->jni.SetStaticBooleanField = SetStaticBooleanField;
-    env->jni.SetStaticByteField = SetStaticByteField;
-    env->jni.SetStaticCharField = SetStaticCharField;
-    env->jni.SetStaticShortField = SetStaticShortField;
-    env->jni.SetStaticIntField = SetStaticIntField;
-    env->jni.SetStaticLongField = SetStaticLongField;
-    env->jni.SetStaticFloatField = SetStaticFloatField;
-    env->jni.SetStaticDoubleField = SetStaticDoubleField;
-    env->jni.NewString = NewString;
-    env->jni.GetStringLength = GetStringLength;
-    env->jni.GetStringChars = GetStringChars;
-    env->jni.ReleaseStringChars = ReleaseStringChars;
-    env->jni.NewStringUTF = NewStringUTF;
-    env->jni.GetStringUTFLength = GetStringUTFLength;
-    env->jni.GetStringUTFChars = GetStringUTFChars;
-    env->jni.ReleaseStringUTFChars = ReleaseStringUTFChars;
-    env->jni.GetArrayLength = GetArrayLength;
-    env->jni.NewObjectArray = NewObjectArray;
-    env->jni.GetObjectArrayElement = GetObjectArrayElement;
-    env->jni.SetObjectArrayElement = SetObjectArrayElement;
-    env->jni.NewBooleanArray = NewBooleanArray;
-    env->jni.NewByteArray = NewByteArray;
-    env->jni.NewCharArray = NewCharArray;
-    env->jni.NewShortArray = NewShortArray;
-    env->jni.NewIntArray = NewIntArray;
-    env->jni.NewLongArray = NewLongArray;
-    env->jni.NewFloatArray = NewFloatArray;
-    env->jni.NewDoubleArray = NewDoubleArray;
-    env->jni.GetBooleanArrayElements = GetBooleanArrayElements;
-    env->jni.GetByteArrayElements = GetByteArrayElements;
-    env->jni.GetCharArrayElements = GetCharArrayElements;
-    env->jni.GetShortArrayElements = GetShortArrayElements;
-    env->jni.GetIntArrayElements = GetIntArrayElements;
-    env->jni.GetLongArrayElements = GetLongArrayElements;
-    env->jni.GetFloatArrayElements = GetFloatArrayElements;
-    env->jni.GetDoubleArrayElements = GetDoubleArrayElements;
-    env->jni.ReleaseBooleanArrayElements = ReleaseBooleanArrayElements;
-    env->jni.ReleaseByteArrayElements = ReleaseByteArrayElements;
-    env->jni.ReleaseCharArrayElements = ReleaseCharArrayElements;
-    env->jni.ReleaseShortArrayElements = ReleaseShortArrayElements;
-    env->jni.ReleaseIntArrayElements = ReleaseIntArrayElements;
-    env->jni.ReleaseLongArrayElements = ReleaseLongArrayElements;
-    env->jni.ReleaseFloatArrayElements = ReleaseFloatArrayElements;
-    env->jni.ReleaseDoubleArrayElements = ReleaseDoubleArrayElements;
-    env->jni.GetBooleanArrayRegion = GetBooleanArrayRegion;
-    env->jni.GetByteArrayRegion = GetByteArrayRegion;
-    env->jni.GetCharArrayRegion = GetCharArrayRegion;
-    env->jni.GetShortArrayRegion = GetShortArrayRegion;
-    env->jni.GetIntArrayRegion = GetIntArrayRegion;
-    env->jni.GetLongArrayRegion = GetLongArrayRegion;
-    env->jni.GetFloatArrayRegion = GetFloatArrayRegion;
-    env->jni.GetDoubleArrayRegion = GetDoubleArrayRegion;
-    env->jni.SetBooleanArrayRegion = SetBooleanArrayRegion;
-    env->jni.SetByteArrayRegion = SetByteArrayRegion;
-    env->jni.SetCharArrayRegion = SetCharArrayRegion;
-    env->jni.SetShortArrayRegion = SetShortArrayRegion;
-    env->jni.SetIntArrayRegion = SetIntArrayRegion;
-    env->jni.SetLongArrayRegion = SetLongArrayRegion;
-    env->jni.SetFloatArrayRegion = SetFloatArrayRegion;
-    env->jni.SetDoubleArrayRegion = SetDoubleArrayRegion;
-    env->jni.RegisterNatives = RegisterNatives;
-    env->jni.UnregisterNatives = UnregisterNatives;
-    env->jni.MonitorEnter = MonitorEnter;
-    env->jni.MonitorExit = MonitorExit;
-    env->jni.GetJavaVM = GetJavaVM;
-    env->jni.GetStringRegion = GetStringRegion;
-    env->jni.GetStringUTFRegion = GetStringUTFRegion;
-    env->jni.GetPrimitiveArrayCritical = GetPrimitiveArrayCritical;
-    env->jni.ReleasePrimitiveArrayCritical = ReleasePrimitiveArrayCritical;
-    env->jni.GetStringCritical = GetStringCritical;
-    env->jni.ReleaseStringCritical = ReleaseStringCritical;
-    env->jni.NewWeakGlobalRef = NewWeakGlobalRef;
-    env->jni.DeleteWeakGlobalRef = DeleteWeakGlobalRef;
-    env->jni.ExceptionCheck = ExceptionCheck;
-    env->jni.NewDirectByteBuffer = NewDirectByteBuffer;
-    env->jni.GetDirectBufferAddress = GetDirectBufferAddress;
-    env->jni.GetDirectBufferCapacity = GetDirectBufferCapacity;
-
-    return env;
-}
+struct JNINativeInterface_ jni = {
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    &GetVersion,
+    &DefineClass,
+    &FindClass,
+    &FromReflectedMethod,
+    &FromReflectedField,
+    &ToReflectedMethod,
+    &GetSuperclass,
+    &IsAssignableFrom,
+    &ToReflectedField,
+    &Throw,
+    &ThrowNew,
+    &ExceptionOccurred,
+    &ExceptionDescribe,
+    &ExceptionClear,
+    &FatalError,
+    &PushLocalFrame,
+    &PopLocalFrame,
+    &NewGlobalRef,
+    &DeleteGlobalRef,
+    &DeleteLocalRef,
+    &IsSameObject,
+    &NewLocalRef,
+    &EnsureLocalCapacity,
+    &AllocObject,
+    &NewObject,
+    &NewObjectV,
+    &NewObjectA,
+    &GetObjectClass,
+    &IsInstanceOf,
+    &GetMethodID,
+    &CallObjectMethod,
+    &CallObjectMethodV,
+    &CallObjectMethodA,
+    &CallBooleanMethod,
+    &CallBooleanMethodV,
+    &CallBooleanMethodA,
+    &CallByteMethod,
+    &CallByteMethodV,
+    &CallByteMethodA,
+    &CallCharMethod,
+    &CallCharMethodV,
+    &CallCharMethodA,
+    &CallShortMethod,
+    &CallShortMethodV,
+    &CallShortMethodA,
+    &CallIntMethod,
+    &CallIntMethodV,
+    &CallIntMethodA,
+    &CallLongMethod,
+    &CallLongMethodV,
+    &CallLongMethodA,
+    &CallFloatMethod,
+    &CallFloatMethodV,
+    &CallFloatMethodA,
+    &CallDoubleMethod,
+    &CallDoubleMethodV,
+    &CallDoubleMethodA,
+    &CallVoidMethod,
+    &CallVoidMethodV,
+    &CallVoidMethodA,
+    &CallNonvirtualObjectMethod,
+    &CallNonvirtualObjectMethodV,
+    &CallNonvirtualObjectMethodA,
+    &CallNonvirtualBooleanMethod,
+    &CallNonvirtualBooleanMethodV,
+    &CallNonvirtualBooleanMethodA,
+    &CallNonvirtualByteMethod,
+    &CallNonvirtualByteMethodV,
+    &CallNonvirtualByteMethodA,
+    &CallNonvirtualCharMethod,
+    &CallNonvirtualCharMethodV,
+    &CallNonvirtualCharMethodA,
+    &CallNonvirtualShortMethod,
+    &CallNonvirtualShortMethodV,
+    &CallNonvirtualShortMethodA,
+    &CallNonvirtualIntMethod,
+    &CallNonvirtualIntMethodV,
+    &CallNonvirtualIntMethodA,
+    &CallNonvirtualLongMethod,
+    &CallNonvirtualLongMethodV,
+    &CallNonvirtualLongMethodA,
+    &CallNonvirtualFloatMethod,
+    &CallNonvirtualFloatMethodV,
+    &CallNonvirtualFloatMethodA,
+    &CallNonvirtualDoubleMethod,
+    &CallNonvirtualDoubleMethodV,
+    &CallNonvirtualDoubleMethodA,
+    &CallNonvirtualVoidMethod,
+    &CallNonvirtualVoidMethodV,
+    &CallNonvirtualVoidMethodA,
+    &GetFieldID,
+    &GetObjectField,
+    &GetBooleanField,
+    &GetByteField,
+    &GetCharField,
+    &GetShortField,
+    &GetIntField,
+    &GetLongField,
+    &GetFloatField,
+    &GetDoubleField,
+    &SetObjectField,
+    &SetBooleanField,
+    &SetByteField,
+    &SetCharField,
+    &SetShortField,
+    &SetIntField,
+    &SetLongField,
+    &SetFloatField,
+    &SetDoubleField,
+    &GetStaticMethodID,
+    &CallStaticObjectMethod,
+    &CallStaticObjectMethodV,
+    &CallStaticObjectMethodA,
+    &CallStaticBooleanMethod,
+    &CallStaticBooleanMethodV,
+    &CallStaticBooleanMethodA,
+    &CallStaticByteMethod,
+    &CallStaticByteMethodV,
+    &CallStaticByteMethodA,
+    &CallStaticCharMethod,
+    &CallStaticCharMethodV,
+    &CallStaticCharMethodA,
+    &CallStaticShortMethod,
+    &CallStaticShortMethodV,
+    &CallStaticShortMethodA,
+    &CallStaticIntMethod,
+    &CallStaticIntMethodV,
+    &CallStaticIntMethodA,
+    &CallStaticLongMethod,
+    &CallStaticLongMethodV,
+    &CallStaticLongMethodA,
+    &CallStaticFloatMethod,
+    &CallStaticFloatMethodV,
+    &CallStaticFloatMethodA,
+    &CallStaticDoubleMethod,
+    &CallStaticDoubleMethodV,
+    &CallStaticDoubleMethodA,
+    &CallStaticVoidMethod,
+    &CallStaticVoidMethodV,
+    &CallStaticVoidMethodA,
+    &GetStaticFieldID,
+    &GetStaticObjectField,
+    &GetStaticBooleanField,
+    &GetStaticByteField,
+    &GetStaticCharField,
+    &GetStaticShortField,
+    &GetStaticIntField,
+    &GetStaticLongField,
+    &GetStaticFloatField,
+    &GetStaticDoubleField,
+    &SetStaticObjectField,
+    &SetStaticBooleanField,
+    &SetStaticByteField,
+    &SetStaticCharField,
+    &SetStaticShortField,
+    &SetStaticIntField,
+    &SetStaticLongField,
+    &SetStaticFloatField,
+    &SetStaticDoubleField,
+    &NewString,
+    &GetStringLength,
+    &GetStringChars,
+    &ReleaseStringChars,
+    &NewStringUTF,
+    &GetStringUTFLength,
+    &GetStringUTFChars,
+    &ReleaseStringUTFChars,
+    &GetArrayLength,
+    &NewObjectArray,
+    &GetObjectArrayElement,
+    &SetObjectArrayElement,
+    &NewBooleanArray,
+    &NewByteArray,
+    &NewCharArray,
+    &NewShortArray,
+    &NewIntArray,
+    &NewLongArray,
+    &NewFloatArray,
+    &NewDoubleArray,
+    &GetBooleanArrayElements,
+    &GetByteArrayElements,
+    &GetCharArrayElements,
+    &GetShortArrayElements,
+    &GetIntArrayElements,
+    &GetLongArrayElements,
+    &GetFloatArrayElements,
+    &GetDoubleArrayElements,
+    &ReleaseBooleanArrayElements,
+    &ReleaseByteArrayElements,
+    &ReleaseCharArrayElements,
+    &ReleaseShortArrayElements,
+    &ReleaseIntArrayElements,
+    &ReleaseLongArrayElements,
+    &ReleaseFloatArrayElements,
+    &ReleaseDoubleArrayElements,
+    &GetBooleanArrayRegion,
+    &GetByteArrayRegion,
+    &GetCharArrayRegion,
+    &GetShortArrayRegion,
+    &GetIntArrayRegion,
+    &GetLongArrayRegion,
+    &GetFloatArrayRegion,
+    &GetDoubleArrayRegion,
+    &SetBooleanArrayRegion,
+    &SetByteArrayRegion,
+    &SetCharArrayRegion,
+    &SetShortArrayRegion,
+    &SetIntArrayRegion,
+    &SetLongArrayRegion,
+    &SetFloatArrayRegion,
+    &SetDoubleArrayRegion,
+    &RegisterNatives,
+    &UnregisterNatives,
+    &MonitorEnter,
+    &MonitorExit,
+    &GetJavaVM,
+    &GetStringRegion,
+    &GetStringUTFRegion,
+    &GetPrimitiveArrayCritical,
+    &ReleasePrimitiveArrayCritical,
+    &GetStringCritical,
+    &ReleaseStringCritical,
+    &NewWeakGlobalRef,
+    &DeleteWeakGlobalRef,
+    &ExceptionCheck,
+    &NewDirectByteBuffer,
+    &GetDirectBufferAddress,
+    &GetDirectBufferCapacity
+};
 

@@ -38,7 +38,6 @@
     .globl _nvmBcResolveMethodForInvokeVirtual0
     .globl _nvmBcResolveMethodForInvokeSpecial0
     .globl _nvmBcResolveMethodForInvokeInterface0
-    .globl _nvmBcResolveNativeMethod0
     .globl _nvmCall0
     .globl _nvmBcInvokeVirtual0
     .globl _nvmBcInvokeInterface0
@@ -201,18 +200,26 @@ _nvmBcResolve0:
     mov   %rsp, %rbp
     .cfi_def_cfa_register   rbp
 
-    sub   $56, %rsp
+    sub   $120, %rsp
 
-    /* Save the original integer register args */
+    /* Save the original register args */
     mov   %rdi, (%rsp)
     mov   %rsi, 8(%rsp)
     mov   %rdx, 16(%rsp)
     mov   %rcx, 24(%rsp)
     mov   %r8, 32(%rsp)
     mov   %r9, 40(%rsp)
+    movsd %xmm0, 48(%rsp)
+    movsd %xmm1, 56(%rsp)
+    movsd %xmm2, 64(%rsp)
+    movsd %xmm3, 72(%rsp)
+    movsd %xmm4, 80(%rsp)
+    movsd %xmm5, 88(%rsp)
+    movsd %xmm6, 96(%rsp)
+    movsd %xmm7, 104(%rsp)
 
     /* %rax points to the local resolve function */
-    mov   %rax, 48(%rsp)
+    mov   %rax, 112(%rsp)
 
     /* 
       Resolve method/field
@@ -226,15 +233,23 @@ _nvmBcResolve0:
     /* Now do the local resolution which also does access checks */
     mov   (%rsp), %rdi    # %rdi = i
     mov   8(%rsp), %rsi   # %rsi = env
-    call  *48(%rsp)
+    call  *112(%rsp)
 
-    /* Restore the original integer register args */
+    /* Restore the original register args */
     mov   (%rsp), %rdi
     mov   8(%rsp), %rsi
     mov   16(%rsp), %rdx
     mov   24(%rsp), %rcx
     mov   32(%rsp), %r8
     mov   40(%rsp), %r9
+    movsd 48(%rsp), %xmm0
+    movsd 56(%rsp), %xmm1
+    movsd 64(%rsp), %xmm2
+    movsd 72(%rsp), %xmm3
+    movsd 80(%rsp), %xmm4
+    movsd 88(%rsp), %xmm5
+    movsd 96(%rsp), %xmm6
+    movsd 104(%rsp), %xmm7
 
     /* Restore the stack */
     mov  %rbp, %rsp
@@ -250,13 +265,12 @@ _nvmBcResolve0:
     .size _nvmBcResolve0, . - .LnvmBcResolve0Begin
 .LnvmBcResolve0End:
 
-
     .macro resolve name, f
     .align    16, 0x90
     .type    \name, @function
 \name:
 .L\name\()Begin:
-    mov   $\f, %rax
+    mov   \f@GOTPCREL(%rip), %rax
     jmp  _nvmBcResolve0
     .size \name, . - .L\name\()Begin
 .L\name\()End:
@@ -291,25 +305,41 @@ _nvmBcInvokeVirtual0:
     mov   %rsp, %rbp
     .cfi_def_cfa_register   rbp
 
-    sub   $56, %rsp
+    sub   $112, %rsp
 
-    /* Save the original integer register args */
+    /* Save the original register args */
     mov   %rdi, (%rsp)
     mov   %rsi, 8(%rsp)
     mov   %rdx, 16(%rsp)
     mov   %rcx, 24(%rsp)
     mov   %r8, 32(%rsp)
     mov   %r9, 40(%rsp)
+    movsd %xmm0, 48(%rsp)
+    movsd %xmm1, 56(%rsp)
+    movsd %xmm2, 64(%rsp)
+    movsd %xmm3, 72(%rsp)
+    movsd %xmm4, 80(%rsp)
+    movsd %xmm5, 88(%rsp)
+    movsd %xmm6, 96(%rsp)
+    movsd %xmm7, 104(%rsp)
 
-    call _nvmBcGetMethodImplForInvokeVirtual # %rax = method->impl
+    call *_nvmBcGetMethodImplForInvokeVirtual@GOTPCREL(%rip) # %rax = method->impl
 
-    /* Restore the original integer register args */
+    /* Restore the original register args */
     mov   (%rsp), %rdi
     mov   8(%rsp), %rsi
     mov   16(%rsp), %rdx
     mov   24(%rsp), %rcx
     mov   32(%rsp), %r8
     mov   40(%rsp), %r9
+    movsd 48(%rsp), %xmm0
+    movsd 56(%rsp), %xmm1
+    movsd 64(%rsp), %xmm2
+    movsd 72(%rsp), %xmm3
+    movsd 80(%rsp), %xmm4
+    movsd 88(%rsp), %xmm5
+    movsd 96(%rsp), %xmm6
+    movsd 104(%rsp), %xmm7
 
     /* Restore the stack */
     mov  %rbp, %rsp
@@ -342,25 +372,41 @@ _nvmBcInvokeInterface0:
     mov   %rsp, %rbp
     .cfi_def_cfa_register   rbp
 
-    sub   $56, %rsp
+    sub   $112, %rsp
 
-    /* Save the original integer register args */
+    /* Save the original register args */
     mov   %rdi, (%rsp)
     mov   %rsi, 8(%rsp)
     mov   %rdx, 16(%rsp)
     mov   %rcx, 24(%rsp)
     mov   %r8, 32(%rsp)
     mov   %r9, 40(%rsp)
+    movsd %xmm0, 48(%rsp)
+    movsd %xmm1, 56(%rsp)
+    movsd %xmm2, 64(%rsp)
+    movsd %xmm3, 72(%rsp)
+    movsd %xmm4, 80(%rsp)
+    movsd %xmm5, 88(%rsp)
+    movsd %xmm6, 96(%rsp)
+    movsd %xmm7, 104(%rsp)
 
-    call _nvmBcGetMethodImplForInvokeInterface # %rax = method->impl
+    call *_nvmBcGetMethodImplForInvokeInterface@GOTPCREL(%rip) # %rax = method->impl
 
-    /* Restore the original integer register args */
+    /* Restore the original register args */
     mov   (%rsp), %rdi
     mov   8(%rsp), %rsi
     mov   16(%rsp), %rdx
     mov   24(%rsp), %rcx
     mov   32(%rsp), %r8
     mov   40(%rsp), %r9
+    movsd 48(%rsp), %xmm0
+    movsd 56(%rsp), %xmm1
+    movsd 64(%rsp), %xmm2
+    movsd 72(%rsp), %xmm3
+    movsd 80(%rsp), %xmm4
+    movsd 88(%rsp), %xmm5
+    movsd 96(%rsp), %xmm6
+    movsd 104(%rsp), %xmm7
 
     /* Restore the stack */
     mov  %rbp, %rsp

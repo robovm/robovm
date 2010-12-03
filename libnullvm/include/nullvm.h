@@ -24,6 +24,7 @@ extern "C" {
 #include <nullvm/string.h>
 #include <nullvm/thread.h>
 #include <nullvm/native.h>
+#include <nullvm/vminterface.h>
 
 #define LOG(format, args...)  \
   fprintf(stderr, format , ## args)

@@ -211,8 +211,8 @@ void _nvmBcAddField(Env* env, Class* clazz, char* name, char* desc, jint access,
     if (!nvmAddField(env, clazz, name, desc, access, offset)) _nvmBcThrow(env, nvmExceptionOccurred(env));
 }
 
-void _nvmBcAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* end) {
-    if (!nvmAddMethod(env, clazz, name, desc, access, impl, end)) _nvmBcThrow(env, nvmExceptionOccurred(env));
+void _nvmBcAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl) {
+    if (!nvmAddMethod(env, clazz, name, desc, access, impl)) _nvmBcThrow(env, nvmExceptionOccurred(env));
 }
 
 void _nvmBcRegisterClass(Env* env, Class* clazz) {
@@ -309,8 +309,8 @@ DoubleArray* _nvmBcNewDoubleArray(Env* env, jint length) {
 ObjectArray* _nvmBcNewObjectArray(Env* env, jint length, char* arrayClassName, Class* caller) {
     // TODO: Check that caller has access to the base class
     // arrayClassName must be the name of the array class to create an instance of (e.g. [Ljava/lang/Object;)
-    Class* clazz = _nvmBcFindClass(env, arrayClassName, caller);
-    ObjectArray* array = nvmNewObjectArray(env, length, NULL, clazz);
+    Class* arrayClass = _nvmBcFindClass(env, arrayClassName, caller);
+    ObjectArray* array = nvmNewObjectArray(env, length, NULL, arrayClass, NULL);
     if (!array) _nvmBcThrow(env, nvmExceptionOccurred(env));
     return array;
 }

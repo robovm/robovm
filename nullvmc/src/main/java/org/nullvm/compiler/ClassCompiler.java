@@ -52,7 +52,7 @@ import org.objectweb.asm.tree.TypeInsnNode;
  *
  * @version $Id$
  */
-public class Compiler {
+public class ClassCompiler {
     private ClassNode classNode;
     private Set<String> strings = new HashSet<String>();
     private PrintWriter out;
@@ -133,7 +133,7 @@ public class Compiler {
         out.println("declare %Class* @_nvmBcAllocateClass(%Env*, i8*, i8*, i32, i32, i32)");
         out.println("declare %Class* @_nvmBcAllocateSystemClass(%Env*, i8*, i8*, i32, i32, i32)");
         out.println("declare void @_nvmBcAddInterface(%Env*, %Class*, i8*)");
-        out.println("declare void @_nvmBcAddMethod(%Env*, %Class*, i8*, i8*, i32, i8*, i8*)");
+        out.println("declare void @_nvmBcAddMethod(%Env*, %Class*, i8*, i8*, i32, i8*)");
         out.println("declare void @_nvmBcAddField(%Env*, %Class*, i8*, i8*, i32, i32)");
         out.println("declare void @_nvmBcRegisterClass(%Env*, %Class*)");
         out.println("declare %Class* @_nvmBcFindClass(%Env*, i8*, %Class*)");
@@ -499,7 +499,7 @@ public class Compiler {
         for (MethodNode node : (List<MethodNode>) classNode.methods) {
             if (!LlvmUtil.isNative(node)) {
                 if ((node.access & Opcodes.ACC_ABSTRACT) == 0) {
-                    new LlvmMethodCompiler(classNode, node).write(out);
+                    new MethodCompiler(classNode, node).write(out);
                 }
             } else {
                 String function = LlvmUtil.mangleMethod(classNode, node);
@@ -513,8 +513,6 @@ public class Compiler {
                         LlvmUtil.getStringReference(LlvmUtil.mangleNativeMethodLong(classNode, node)));
 
                 out.format("define %s {\n", LlvmUtil.functionDefinition(LlvmUtil.mangleMethod(classNode, node), node.desc, ztatic));
-                out.format("    %%jniEnv = alloca %%Env*\n");
-                out.format("    store %%Env* %s, %%Env** %%jniEnv\n", new Var("env", "%Env*"));
                 if (ztatic) {
                     out.format("    %%clazz = load %%Class** @clazz\n");
                 }
@@ -537,14 +535,6 @@ public class Compiler {
         }
         out.println();
         
-        int funcCounter = 0;
-        for (int i = 0; i < classNode.methods.size(); i++) {
-            MethodNode node = (MethodNode) classNode.methods.get(classNode.methods.size() - i - 1);
-            if ((node.access & Opcodes.ACC_ABSTRACT) == 0) {
-                out.format("@.Leh_func_end%d = external global i8\n", ++funcCounter);
-            }
-        }
-
         out.format( "define %%Class* @\"NullVM_%s\"(%%Env* %%env) {\n", LlvmUtil.mangleString(classNode.name));
         if (!classFields.isEmpty()) {
             out.format("    %%ClassDataSize = getelementptr %%ClassFields* null, i32 1\n"); 
@@ -575,15 +565,13 @@ public class Compiler {
             MethodNode node = (MethodNode) classNode.methods.get(index);
             if ((node.access & Opcodes.ACC_ABSTRACT) != 0) {
                 out.format("    %%FuncPtr%d = inttoptr i32 0 to i8*\n", i);
-                out.format("    %%FuncEnd%d = bitcast i8* null to i8*\n", i);
             } else {
                 out.format("    %%FuncPtr%d = bitcast %s @%s to i8*\n", i, 
                         LlvmUtil.javaMethodToLlvmFunctionType(node), LlvmUtil.mangleMethod(classNode, node));
-                out.format("    %%FuncEnd%d = bitcast i8* @.Leh_func_end%d to i8*\n", i, funcCounter--);
             }
-            out.format("    call void @_nvmBcAddMethod(%%Env* %%env, %%Class* %%clazz, i8* %s, i8* %s, i32 %d, i8* %%FuncPtr%d, i8* %%FuncEnd%d)\n", 
+            out.format("    call void @_nvmBcAddMethod(%%Env* %%env, %%Class* %%clazz, i8* %s, i8* %s, i32 %d, i8* %%FuncPtr%d)\n", 
                     LlvmUtil.getStringReference(node.name), LlvmUtil.getStringReference(node.desc), 
-                    node.access, i, i);
+                    node.access, i);
         }
 
         int classFieldCounter = 0;

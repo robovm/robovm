@@ -18,7 +18,6 @@ extern Class* java_lang_Float;
 extern Class* java_lang_Double;
 extern Class* java_lang_Cloneable;
 extern Class* java_lang_Thread;
-extern Class* java_lang_VMThread;
 extern Class* java_lang_ThreadGroup;
 extern Class* java_io_Serializable;
 
@@ -66,12 +65,14 @@ extern Class* nvmAllocateClass(Env* env, char* className, Class* superclass, jin
 extern Class* nvmAllocateSystemClass(Env* env, char* className, Class* superclass, jint access, jint classDataSize, jint instanceDataSize);
 extern jboolean nvmAddInterface(Env* env, Class* clazz, Class* interface);
 extern jboolean nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset);
-extern jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* end);
+extern jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl);
 extern jboolean nvmRegisterClass(Env* env, Class* clazz);
 
 extern Class* nvmFindClass(Env* env, char* className);
 extern Class* nvmFindClassByDescriptor(Env* env, char* desc);
 extern Class* nvmGetComponentType(Env* env, Class* arrayClass);
+
+extern void nvmIterateLoadedClasses(Env* env, jboolean (*f)(Class*, void*), void* data);
 
 /**
  * Creates a new instance of the specified class.
@@ -89,8 +90,6 @@ extern int nvmIsSamePackage(Class* c1, Class* c2);
 
 extern jboolean nvmIsAssignableFrom(Env* env, Class* sub, Class* sup);
 extern jboolean nvmIsInstanceOf(Env* env, Object* obj, Class* clazz);
-
-extern Method* nvmFindMethodAtAddress(Env* env, void* address);
 
 #endif
 

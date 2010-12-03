@@ -1,57 +1,56 @@
-# source files.
-SRC = init.c class.c string.c exception.c array.c field.c method.c native.c map.c bc.c thread.c trampolines-x86_64.s
+SHELL := /bin/bash
+TOP := $(abspath $(dir $(lastword $(MAKEFILE_LIST))).)
+BASE := $(TOP)/src
+TARGET := $(TOP)/target
+ARCH := x86_64
+OS := linux
+INSTALL := $(HOME)/.nullvm
 
-OBJ = init.o class.o string.o exception.o array.o field.o method.o native.o map.o bc.o thread.o trampolines-x86_64.o
+include $(BASE)/files.mk
 
-
-OUT = libnullvm.a
-
-# include directories
-INCLUDES = -I. -Iinclude -I../gc/include
-
-# C compiler flags
-CCFLAGS = -g
-
+OBJ=$(patsubst %.s, $(TARGET)/%.o, $(patsubst %.c, $(TARGET)/%.o, $(SRC)))
+OUT = $(TARGET)/libnullvm.so
+INCLUDES = -I $(TOP)/include -I $(TOP)/include/harmony/shared -I $(TOP)/include/harmony/unix -I $(INSTALL)/gc/include -I $(dir $<)../shared -I $(dir $<)../unix -I $(dir $<)../../shared -I $(dir $<)../../unix
+CCFLAGS = -g -fPIC -DLINUX -DLINUX_X86_64 -DHYX86_64 -DIPv6_FUNCTION_SUPPORT -DHYPORT_LIBRARY_DEFINE
 ASFLAGS = -g
-
-# compiler
 CCC = gcc
-
 AS = as
 
 .SUFFIXES: .c .s
 
-default: $(OUT)
+default: fetch-depends $(OUT)
 
-.c.o:
+fetch-depends:
+	if [ ! -f $(INSTALL)/gc/lib/libgc.a ]; \
+	then \
+		rm -rf $(INSTALL)/gc; \
+		rm -rf $(TARGET)/gc*; \
+		$(SHELL) -c 'cd $(TARGET); wget http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc.tar.gz; tar xvfz gc.tar.gz'; \
+		$(SHELL) -c 'cd $(TARGET)/gc*; ./configure --prefix=$(INSTALL)/gc; make; make check; make install'; \
+	fi
+
+$(TARGET)/%.o: $(BASE)/%.c
+	mkdir -p $(dir $@)
 	$(CCC) $(INCLUDES) $(CCFLAGS) -c $< -o $@
 
-.s.o:
+$(TARGET)/%.o: $(BASE)/%.s
+	mkdir -p $(dir $@)
 	$(AS) $(ASFLAGS) -o $@ $<
 
 $(OUT): $(OBJ)
-	ar rcs $(OUT) $(OBJ)
-
-install: $(OUT)
-	mkdir -p ~/.nullvm/include
-	mkdir -p ~/.nullvm/include/nullvm
-	mkdir -p ~/.nullvm/lib
-	cp include/*.h ~/.nullvm/include
-	cp include/nullvm/*.h ~/.nullvm/include/nullvm
-	cp $(OUT) ~/.nullvm/lib/$(OUT)
+	gcc -shared -Wl,-soname,$(notdir $(OUT)) -Wl,--version-script $(TOP)/symbols.map -o $(OUT) $(OBJ) -L $(INSTALL)/gc/lib -lgc -lpthread -ldl
 
 clean:
-	rm -f $(OBJ) $(OUT)
+	rm -rf $(OBJ) $(OUT)
 
-init.o: include/nullvm.h
-class.o: include/nullvm.h
-exception.o: include/nullvm.h
-string.o: include/nullvm.h
-array.o: include/nullvm.h
-field.o: include/nullvm.h
-method.o: include/nullvm.h
-native.o: include/nullvm.h
-map.o: include/nullvm.h
-thread.o: include/nullvm.h
-bc.o: include/nullvm.h
+install: $(OUT)
+	mkdir -p $(INSTALL)/include
+	mkdir -p $(INSTALL)/include/nullvm
+	mkdir -p $(INSTALL)/include/harmony
+	mkdir -p $(INSTALL)/lib
+	cp $(TOP)/include/*.h $(INSTALL)/include
+	cp $(TOP)/include/nullvm/*.h $(INSTALL)/include/nullvm
+	cp $(TOP)/include/harmony/shared/*.h $(INSTALL)/include/harmony
+	cp $(TOP)/include/harmony/unix/*.h $(INSTALL)/include/harmony
+	cp $(OUT) $(INSTALL)/lib/
 

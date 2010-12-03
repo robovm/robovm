@@ -331,8 +331,8 @@ jboolean nvmInitClasses(Env* env) {
     if (!java_lang_Cloneable) return FALSE;
     java_lang_Thread = nvmFindClass(env, "java/lang/Thread");
     if (!java_lang_Thread) return FALSE;
-    java_lang_VMThread = nvmFindClass(env, "java/lang/VMThread");
-    if (!java_lang_VMThread) return FALSE;
+//    java_lang_VMThread = nvmFindClass(env, "java/lang/VMThread");
+//    if (!java_lang_VMThread) return FALSE;
     java_lang_ThreadGroup = nvmFindClass(env, "java/lang/ThreadGroup");
     if (!java_lang_ThreadGroup) return FALSE;
     java_io_Serializable = nvmFindClass(env, "java/io/Serializable");
@@ -485,16 +485,15 @@ jboolean nvmAddInterface(Env* env, Class* clazz, Class* interf) {
     return TRUE;
 }
 
-jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* end) {
+jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl) {
     Method* method = nvmAllocateMemory(env, sizeof(Method));
     if (!method) return FALSE;
     method->clazz = clazz;
     method->name = name;
     method->desc = desc;
     method->access = access;
-    method->slot = clazz->methods ? clazz->methods->slot + 1 : 0;
     method->impl = impl;
-    method->length = (end && end > impl) ? end - impl : -1;
+//    method->length = (end && end > impl) ? end - impl : -1;
     method->next = clazz->methods;
     method->vtableIndex = -1;
     clazz->methods = method;
@@ -649,33 +648,16 @@ Object* nvmCloneObject(Env* env, Object* obj) {
     return copy;
 }
 
-typedef struct FindMethodAtAddressData {
-    void* address;
-    Method* method;
-} FindMethodAtAddressData;
-
-static jboolean findMethodAtAddressIterator(MapEntry* entry, void* d) {
-    FindMethodAtAddressData* data = (FindMethodAtAddressData*) d;
-    Class* clazz = (Class*) entry->value;
-    void* address = data->address;
-    Method* method;
-    for (method = clazz->methods; method != NULL; method = method->next) {
-        if (method->impl && method->length > 0) {
-            void* start = method->impl;
-            void* end = start + method->length;
-            if (address >= start && address < end) {
-                data->method = method;
-                return FALSE;
-            }
-        }
-    }
-    return TRUE;
+static jboolean classIterator(MapEntry* entry, void* d) {
+    jboolean (*f)(Class*, void*) = ((void**)d)[0];
+    void* data = ((void**)d)[1];
+    return f((Class*) entry->value, data);
 }
 
-Method* nvmFindMethodAtAddress(Env* env, void* address) {
-    FindMethodAtAddressData data = {0};
-    data.address = address;
-    nvmMapForEach(env, nameToClassMap, findMethodAtAddressIterator, (void*) &data);
-    return data.method;
+void nvmIterateLoadedClasses(Env* env, jboolean (*f)(Class*, void*), void* data) {
+    void* d[2];
+    d[0] = f;
+    d[1] = data;
+    nvmMapForEach(env, nameToClassMap, classIterator, d);
 }
 

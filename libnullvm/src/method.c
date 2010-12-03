@@ -1,5 +1,7 @@
 #include <nullvm.h>
 #include <string.h>
+#include <dlfcn.h>
+#include <unwind.h>
 
 typedef union IntValue {
     jint i;
@@ -88,12 +90,60 @@ Method* nvmGetInstanceMethod(Env* env, Class* clazz, char* name, char* desc) {
     return method;
 }
 
-Method* nvmGetMethodBySlot(Env* env, Class* clazz, jint slot) {
+typedef struct FindMethodAtAddressData {
+    void* address;
+    Method* method;
+} FindMethodAtAddressData;
+
+static jboolean findMethodAtAddressIterator(Class* clazz, void* d) {
+    FindMethodAtAddressData* data = (FindMethodAtAddressData*) d;
+    void* address = data->address;
     Method* method;
     for (method = clazz->methods; method != NULL; method = method->next) {
-        if (method->slot == slot) return method;
+        if (method->impl && address == method->impl) {
+            data->method = method;
+            return FALSE;
+        }
     }
-    return NULL;
+    return TRUE;
+}
+
+Method* nvmFindMethodAtAddress(Env* env, void* address) {
+    FindMethodAtAddressData data = {0};
+    data.address = address;
+    nvmIterateLoadedClasses(env, findMethodAtAddressIterator, (void*) &data);
+    return data.method;
+}
+
+static _Unwind_Reason_Code unwindCallStack(struct _Unwind_Context* ctx, void* _d) {
+    void** d = (void**) _d;
+    Env* env = (Env*) d[0];
+    CallStackEntry* first = (CallStackEntry*) d[1];
+    CallStackEntry* last = (CallStackEntry*) d[2];
+    void* address = (void*) _Unwind_GetIP(ctx);
+    void* func = _Unwind_FindEnclosingFunction(address);
+    Method* method = nvmFindMethodAtAddress(env, func);
+    if (method) {
+        CallStackEntry* entry = nvmAllocateMemory(env, sizeof(CallStackEntry));
+        if (entry) {
+            entry->method = method;
+            entry->offset = (jint) (address - method->impl);
+            if (!first) d[1] = entry;
+            if (last) last->next = entry;
+            d[2] = entry;
+        }
+    }
+    return _URC_NO_REASON;
+}
+
+CallStackEntry* nvmGetCallStack(Env* env) {
+    void* d[3];
+    d[0] = env;
+    d[1] = NULL;
+    d[2] = NULL;
+    _Unwind_Backtrace(unwindCallStack, d);
+    if (nvmExceptionOccurred(env)) return NULL;
+    return (CallStackEntry*) d[1];
 }
 
 char* nvmGetReturnType(char* desc) {

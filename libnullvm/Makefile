@@ -53,4 +53,5 @@ install: $(OUT)
 	cp $(TOP)/include/harmony/shared/*.h $(INSTALL)/include/harmony
 	cp $(TOP)/include/harmony/unix/*.h $(INSTALL)/include/harmony
 	cp $(OUT) $(INSTALL)/lib/
+	cp $(INSTALL)/gc/lib/libgc.so.1 $(INSTALL)/lib/
 

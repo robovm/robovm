@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+jboolean _logLevel;
+
 static inline jint startsWith(char* s, char* prefix) {
     return s && strncmp(s, prefix, strlen(prefix)) == 0;
 }
@@ -19,14 +21,14 @@ jint nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreNvm
         if (startsWith(argv[i], "-nvm:")) {
             if (!ignoreNvmArgs) {
                 char* arg = &argv[i][5];
-                if (startsWith(arg, "MainClass=")) {
-                    if (!options->mainClass) {
-                        options->mainClass = &arg[strlen("MainClass=")];
-                    }
-                } else if (startsWith(arg, "ResourcesPath=")) {
-                    if (!options->resourcesPath) {
-                        options->resourcesPath = &arg[strlen("ResourcesPath=")];
-                    }
+                if (startsWith(arg, "Xlog:trace")) {
+                    if (options->logLevel == 0) options->logLevel = LOG_LEVEL_TRACE;
+                } else if (startsWith(arg, "Xlog:warn")) {
+                    if (options->logLevel == 0) options->logLevel = LOG_LEVEL_WARN;
+                } else if (startsWith(arg, "Xlog:error")) {
+                    if (options->logLevel == 0) options->logLevel = LOG_LEVEL_ERROR;
+                } else if (startsWith(arg, "Xlog:none")) {
+                    if (options->logLevel == 0) options->logLevel = LOG_LEVEL_NONE;
                 }
             }
             firstJavaArg++;
@@ -41,11 +43,7 @@ jint nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreNvm
         options->commandLineArgs = &argv[options->commandLineArgsCount];
     }
 
-    if (!options->resourcesPath) {
-        options->resourcesPath = malloc(strlen(options->executablePath) + strlen(".resources") + 1);
-        strcpy(options->resourcesPath, options->executablePath);
-        strcat(options->resourcesPath, ".resources");
-    }
+    _logLevel = options->logLevel == 0 ? LOG_LEVEL_ERROR : options->logLevel;
 
     return 0;
 }

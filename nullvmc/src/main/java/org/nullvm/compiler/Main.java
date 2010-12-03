@@ -20,14 +20,14 @@ import java.io.PrintStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -35,6 +35,7 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
+import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.IOUtils;
@@ -46,10 +47,6 @@ import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
-import org.kohsuke.args4j.OptionDef;
-import org.kohsuke.args4j.spi.OptionHandler;
-import org.kohsuke.args4j.spi.Parameters;
-import org.kohsuke.args4j.spi.Setter;
 import org.objectweb.asm.ClassReader;
 
 /**
@@ -98,14 +95,8 @@ public class Main {
     @Option(name = "-gcc-opt", usage = "Option to pass to gcc")
     private List<String> gccOpts = new ArrayList<String>();
     
-    @Option(name = "-ld-opt", usage = "Option to pass to ld")
-    private List<String> ldOpts = new ArrayList<String>();
-    
     @Option(name = "-gcc-bin", usage = "Path to the gcc binary")
     private File gccBin = null;    
-    
-    @Option(name = "-ld-bin", usage = "Path to the ld binary")
-    private File ldBin = null;    
     
     @Option(name = "-ar-bin", usage = "Path to the ar binary")
     private File arBin = null;
@@ -127,6 +118,15 @@ public class Main {
     
     @Option(name = "-L", metaVar = "<directory>", usage = "Extra lib directory passed to ld")
     private List<File> libDirs = new ArrayList<File>();
+    
+    @Option(name = "-D", metaVar = "<name=value>", usage = "Set system property")
+    private List<String> properties = new ArrayList<String>();
+    
+    @Option(name = "-X", metaVar = "<value>", usage = "Set a non-standard option")
+    private List<String> extraOptions = new ArrayList<String>();
+
+    @Option(name = "-run", usage = "Run the produced binary after a successful compilation")
+    private boolean run = false;
     
     @Argument
     private String mainClass;
@@ -432,8 +432,12 @@ public class Main {
             gccArgs.add(new File(home, "include").getAbsolutePath());
             gccArgs.add("-I");
             gccArgs.add(new File(new File(home, "gc"), "include").getAbsolutePath());
+            gccArgs.add("-I");
+            gccArgs.add(new File(new File(home, "include"), "harmony").getAbsolutePath());
             File mainObjectFile = new File(mainCFile.getParentFile(), "main.o");
-            exec(gccPath, "-c", "-o", mainObjectFile, "-DNULLVM_MAIN_CLASS=" + mainClass, "-g", gccOpts, gccArgs, mainCFile);
+            exec(gccPath, "-c", "-o", mainObjectFile, "-DNULLVM_MAIN_CLASS=" + mainClass.replace('.', '/'),
+                    "-DLINUX", "-DLINUX_X86_64", "-DHYX86_64", "-DIPv6_FUNCTION_SUPPORT", "-DHYPORT_LIBRARY_DEFINE",
+                    "-g", gccOpts, gccArgs, mainCFile);
             files.add(mainObjectFile);
         }
 
@@ -523,24 +527,16 @@ public class Main {
         FileUtils.copyDirectory(srcDir, destDir, filter);
     }
     
-//    private void processJarFile(JarFile jar) throws IOException {
-//
-//        List<File> files;
-//        files = processClassFiles(jar);
-//        files = processIrFiles(files);
-//        files = processBcFiles(files);
-//        files = processGccFiles(files);
-//        buildLibrary(files);
-//        stripJar(jar);
-//    }
-    
-    @SuppressWarnings("unchecked")
     private void exec(String cmd, Object ... args) throws IOException {
         exec(null, cmd, args);
     }
     
-    @SuppressWarnings("unchecked")
     private void exec(File wd, String cmd, Object ... args) throws IOException {
+        execWithEnv(wd, null, cmd, args);
+    }
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private void execWithEnv(File wd, Map env, String cmd, Object ... args) throws IOException {
         CommandLine commandLine = CommandLine.parse(cmd);
         for (Object a : args) {
             if (a instanceof Collection) {
@@ -561,7 +557,7 @@ public class Main {
             executor.setWorkingDirectory(wd);
         }
         executor.setExitValue(0);
-        executor.execute(commandLine);
+        executor.execute(commandLine, env);
     }
     
     private void run(String[] args) {
@@ -667,6 +663,10 @@ public class Main {
         File cpLib = new File(new File(output, "boot"), "lib");
         cpLib.mkdirs();
         
+        for (File f : new File(home, "lib").listFiles()) {
+            FileUtils.copyFileToDirectory(f, output);
+        }
+        
         for (File f : bootClassPathFiles) {
             if (isArchive(f)) {
                 stripArchive(f, new File(bootCpLib, f.getName()));
@@ -681,8 +681,20 @@ public class Main {
                 copyResources(f, cpClasses);
             }
         }
+        
+        if (run) {
+            runTarget();
+        }
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private void runTarget() throws IOException {
+        Map env = new HashMap<String, String>();
+        env.putAll(EnvironmentUtils.getProcEnvironment());
+        env.put("LD_LIBRARY_PATH", output.getAbsolutePath());
+        execWithEnv(output, env, new File(output, target).getAbsolutePath());
+    }
+    
     public void setOutput(File output) {
         this.output = output;
     }
@@ -724,24 +736,22 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        new Main().run(args);
+        new Main().run(massageArgs(args));
     }
-
-    public static class PatternOptionHandler extends OptionHandler<Pattern> {
-        public PatternOptionHandler(CmdLineParser parser, OptionDef option, Setter<? super Pattern> setter) {
-            super(parser, option, setter);
+    
+    private static String[] massageArgs(String[] args) {
+        ArrayList<String> newArgs = new ArrayList<String>(args.length);
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].startsWith("-X")) {
+                newArgs.add("-X");
+                newArgs.add(args[i].substring(2));
+            } else if (args[i].startsWith("-D")) {
+                newArgs.add("-D");
+                newArgs.add(args[i].substring(2));
+            } else {
+                newArgs.add(args[i]);
+            }
         }
-
-        @Override
-        public String getDefaultMetaVariable() {
-            return "VAL";
-        }
-
-        @Override
-        public int parseArguments(Parameters params) throws CmdLineException {
-            setter.addValue(Pattern.compile(params.getParameter(0)));
-            return 1;
-        }
-        
+        return newArgs.toArray(new String[newArgs.size()]);
     }
 }

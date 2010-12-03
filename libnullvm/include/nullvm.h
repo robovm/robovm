@@ -26,9 +26,6 @@ extern "C" {
 #include <nullvm/native.h>
 #include <nullvm/vminterface.h>
 
-#define LOG(format, args...)  \
-  fprintf(stderr, format , ## args)
-
 #ifdef __cplusplus
 }
 #endif

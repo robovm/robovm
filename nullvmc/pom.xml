@@ -63,7 +63,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>org.nullvm.compiler.JarCompiler</mainClass>
+              <mainClass>org.nullvm.compiler.Main</mainClass>
             </manifest>
           </archive>
         </configuration>

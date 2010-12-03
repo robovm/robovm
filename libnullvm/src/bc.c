@@ -1,4 +1,5 @@
 #include <nullvm.h>
+#include "log.h"
 
 typedef struct ClassResCommon {
     void* resolve;
@@ -350,7 +351,7 @@ jint _nvmBcInstanceof(InstanceofRes* n, Env* env, Object* o) {
 }
 
 void _nvmBcResolveClassResCommon(ClassResCommon* common, Env* env) {
-    LOG("nvmBcResolveClassResCommon: class=%s\n", common->name);
+    TRACE("nvmBcResolveClassResCommon: class=%s\n", common->name);
     Class* clazz = nvmFindClass(env, common->name);
     if (!clazz) _nvmBcThrow(env, nvmExceptionOccurred(env));
     common->clazz = clazz;
@@ -358,27 +359,27 @@ void _nvmBcResolveClassResCommon(ClassResCommon* common, Env* env) {
 }
 
 void _nvmBcResolveClassForNew(NewRes* r, Env* env) {
-    LOG("nvmBcResolveClassForNew: class=%s, caller=%s\n", r->common->name, (*r->caller)->name);
+    TRACE("nvmBcResolveClassForNew: class=%s, caller=%s\n", r->common->name, (*r->caller)->name);
     // TODO: Check that caller has access to the class
     r->function = _nvmBcNew;
 }
 
 void _nvmBcResolveClassForCheckcast(CheckcastRes* r, Env* env) {
-    LOG("nvmBcResolveClassForCheckcast: class=%s, caller=%s\n", r->common->name, (*r->caller)->name);
+    TRACE("nvmBcResolveClassForCheckcast: class=%s, caller=%s\n", r->common->name, (*r->caller)->name);
     // TODO: Check that caller has access to the class
     // TODO: Use different optimized functions if r->common->clazz is an interface or a class
     r->function = _nvmBcCheckcast;
 }
 
 void _nvmBcResolveClassForInstanceof(InstanceofRes* r, Env* env) {
-    LOG("nvmBcResolveClassForInstanceof: class=%s, caller=%s\n", r->common->name, (*r->caller)->name);
+    TRACE("nvmBcResolveClassForInstanceof: class=%s, caller=%s\n", r->common->name, (*r->caller)->name);
     // TODO: Check that caller has access to the class
     // TODO: Use different optimized functions if r->common->clazz is an interface or a class
     r->function = _nvmBcInstanceof;
 }
 
 void _nvmBcResolveFieldForGetPutStaticCommon(GetPutStaticCommon* common, Env* env) {
-    LOG("nvmBcResolveFieldForGetPutStaticCommon: owner=%s, name=%s, desc=%s\n", common->owner, common->name, common->desc);
+    TRACE("nvmBcResolveFieldForGetPutStaticCommon: owner=%s, name=%s, desc=%s\n", common->owner, common->name, common->desc);
     Class* clazz = nvmFindClass(env, common->owner);
     if (!clazz) _nvmBcThrow(env, nvmExceptionOccurred(env));
     nvmInitialize(env, clazz);
@@ -390,7 +391,7 @@ void _nvmBcResolveFieldForGetPutStaticCommon(GetPutStaticCommon* common, Env* en
 }
 
 void _nvmBcResolveFieldForGetStatic(GetStatic* g, Env* env) {
-    LOG("nvmBcResolveFieldForGetStatic: owner=%s, name=%s, desc=%s\n", g->common->owner, g->common->name, g->common->desc);
+    TRACE("nvmBcResolveFieldForGetStatic: owner=%s, name=%s, desc=%s\n", g->common->owner, g->common->name, g->common->desc);
     // TODO: Check that caller has access to the field
     void* getter = NULL;
     switch (g->common->desc[0]) {
@@ -427,7 +428,7 @@ void _nvmBcResolveFieldForGetStatic(GetStatic* g, Env* env) {
 }
 
 void _nvmBcResolveFieldForPutStatic(PutStatic* p, Env* env) {
-    LOG("nvmBcResolveFieldForPutStatic: owner=%s, name=%s, desc=%s\n", p->common->owner, p->common->name, p->common->desc);
+    TRACE("nvmBcResolveFieldForPutStatic: owner=%s, name=%s, desc=%s\n", p->common->owner, p->common->name, p->common->desc);
     // TODO: Check that caller has access to the field
     void* setter = NULL;
     switch (p->common->desc[0]) {
@@ -464,7 +465,7 @@ void _nvmBcResolveFieldForPutStatic(PutStatic* p, Env* env) {
 }
 
 void _nvmBcResolveFieldForGetPutFieldCommon(GetPutFieldCommon* common, Env* env) {
-    LOG("nvmBcResolveFieldForGetPutFieldCommon: owner=%s, name=%s, desc=%s\n", common->owner, common->name, common->desc);
+    TRACE("nvmBcResolveFieldForGetPutFieldCommon: owner=%s, name=%s, desc=%s\n", common->owner, common->name, common->desc);
     Class* clazz = nvmFindClass(env, common->owner);
     if (!clazz) _nvmBcThrow(env, nvmExceptionOccurred(env));
     InstanceField* field = nvmGetInstanceField(env, clazz, common->name, common->desc);
@@ -474,7 +475,7 @@ void _nvmBcResolveFieldForGetPutFieldCommon(GetPutFieldCommon* common, Env* env)
 }
 
 void _nvmBcResolveFieldForGetField(GetField* g, Env* env) {
-    LOG("nvmBcResolveFieldForGetField: owner=%s, name=%s, desc=%s\n", g->common->owner, g->common->name, g->common->desc);
+    TRACE("nvmBcResolveFieldForGetField: owner=%s, name=%s, desc=%s\n", g->common->owner, g->common->name, g->common->desc);
     // TODO: Check that caller has access to the field
     void* getter = NULL;
     switch (g->common->desc[0]) {
@@ -511,7 +512,7 @@ void _nvmBcResolveFieldForGetField(GetField* g, Env* env) {
 }
 
 void _nvmBcResolveFieldForPutField(PutField* p, Env* env) {
-    LOG("nvmBcResolveFieldForPutField: owner=%s, name=%s, desc=%s\n", p->common->owner, p->common->name, p->common->desc);
+    TRACE("nvmBcResolveFieldForPutField: owner=%s, name=%s, desc=%s\n", p->common->owner, p->common->name, p->common->desc);
     // TODO: Check that caller has access to the field
     void* setter = NULL;
     switch (p->common->desc[0]) {
@@ -555,7 +556,7 @@ void _nvmBcResolveNativeMethod(InvokeNative* i, Env* env) {
 }
 
 void _nvmBcResolveMethodForInvokeStaticCommon(InvokeStaticCommon* common, Env* env) {
-    LOG("nvmBcResolveMethodForInvokeStaticCommon: owner=%s, name=%s, desc=%s\n", common->owner, common->name, common->desc);
+    TRACE("nvmBcResolveMethodForInvokeStaticCommon: owner=%s, name=%s, desc=%s\n", common->owner, common->name, common->desc);
     Class* clazz = nvmFindClass(env, common->owner);
     if (!clazz) _nvmBcThrow(env, nvmExceptionOccurred(env));
     nvmInitialize(env, clazz);
@@ -569,7 +570,7 @@ void _nvmBcResolveMethodForInvokeStaticCommon(InvokeStaticCommon* common, Env* e
 }
 
 void _nvmBcResolveMethodForInvokeStatic(InvokeStatic* i, Env* env) {
-    LOG("nvmBcResolveMethodForInvokeStatic: owner=%s, name=%s, desc=%s, caller=%s\n", i->common->owner, i->common->name, i->common->desc, (*i->caller)->name);
+    TRACE("nvmBcResolveMethodForInvokeStatic: owner=%s, name=%s, desc=%s, caller=%s\n", i->common->owner, i->common->name, i->common->desc, (*i->caller)->name);
     // TODO: Check that *i->caller has access to the class and method being called
     i->function = i->common->function;
 }
@@ -585,7 +586,7 @@ void* _nvmBcGetMethodImplForInvokeInterface(InvokeInterface* i, Env* env, Object
 }
 
 void _nvmBcResolveMethodForInvokeVirtualCommon(InvokeVirtualCommon* common, Env* env) {
-    LOG("nvmBcResolveMethodForInvokeVirtualCommon: owner=%s, name=%s, desc=%s\n", common->owner, common->name, common->desc);
+    TRACE("nvmBcResolveMethodForInvokeVirtualCommon: owner=%s, name=%s, desc=%s\n", common->owner, common->name, common->desc);
     Class* clazz = nvmFindClass(env, common->owner);
     if (!clazz) _nvmBcThrow(env, nvmExceptionOccurred(env));
     // TODO: Throw something if methodName is <clinit>
@@ -599,14 +600,14 @@ void _nvmBcResolveMethodForInvokeVirtualCommon(InvokeVirtualCommon* common, Env*
 }
 
 void _nvmBcResolveMethodForInvokeVirtual(InvokeVirtual* i, Env* env) {
-    LOG("nvmBcResolveMethodForInvokeVirtual: owner=%s, name=%s, desc=%s, caller=%s\n", i->common->owner, i->common->name, i->common->desc, (*i->caller)->name);
+    TRACE("nvmBcResolveMethodForInvokeVirtual: owner=%s, name=%s, desc=%s, caller=%s\n", i->common->owner, i->common->name, i->common->desc, (*i->caller)->name);
     // TODO: Check that *i->caller has access to the class and method being called
     i->vtableIndex = i->common->vtableIndex;
     i->function = _nvmBcInvokeVirtual0;
 }
 
 void _nvmBcResolveMethodForInvokeSpecialCommon(InvokeSpecialCommon* common, Env* env) {
-    LOG("nvmBcResolveMethodForInvokeSpecialCommon: owner=%s, name=%s, desc=%s\n", common->owner, common->name, common->desc);
+    TRACE("nvmBcResolveMethodForInvokeSpecialCommon: owner=%s, name=%s, desc=%s\n", common->owner, common->name, common->desc);
     Class* clazz = nvmFindClass(env, common->owner);
     if (!clazz) _nvmBcThrow(env, nvmExceptionOccurred(env));
     // TODO: Throw something if methodName is <clinit>
@@ -618,13 +619,13 @@ void _nvmBcResolveMethodForInvokeSpecialCommon(InvokeSpecialCommon* common, Env*
 }
 
 void _nvmBcResolveMethodForInvokeSpecial(InvokeSpecial* i, Env* env) {
-    LOG("nvmBcResolveMethodForInvokeSpecial: owner=%s, name=%s, desc=%s, caller=%s\n", i->common->owner, i->common->name, i->common->desc, (*i->caller)->name);
+    TRACE("nvmBcResolveMethodForInvokeSpecial: owner=%s, name=%s, desc=%s, caller=%s\n", i->common->owner, i->common->name, i->common->desc, (*i->caller)->name);
     // TODO: Check that *i->caller has access to the class and method being called
     i->function = i->common->function;
 }
 
 void _nvmBcResolveMethodForInvokeInterfaceCommon(InvokeInterfaceCommon* common, Env* env) {
-    LOG("nvmBcResolveMethodForInvokeInterfaceCommon: owner=%s, name=%s, desc=%s\n", common->owner, common->name, common->desc);
+    TRACE("nvmBcResolveMethodForInvokeInterfaceCommon: owner=%s, name=%s, desc=%s\n", common->owner, common->name, common->desc);
     Class* clazz = nvmFindClass(env, common->owner);
     if (!clazz) _nvmBcThrow(env, nvmExceptionOccurred(env));
     // TODO: Throw something if methodName is <clinit>
@@ -636,7 +637,7 @@ void _nvmBcResolveMethodForInvokeInterfaceCommon(InvokeInterfaceCommon* common, 
 }
 
 void _nvmBcResolveMethodForInvokeInterface(InvokeInterface* i, Env* env) {
-    LOG("nvmBcResolveMethodForInvokeInterface: owner=%s, name=%s, desc=%s, caller=%s\n", i->common->owner, i->common->name, i->common->desc, (*i->caller)->name);
+    TRACE("nvmBcResolveMethodForInvokeInterface: owner=%s, name=%s, desc=%s, caller=%s\n", i->common->owner, i->common->name, i->common->desc, (*i->caller)->name);
     // TODO: Check that *i->caller has access to the class and method being called
     i->function = _nvmBcInvokeInterface0;
 }

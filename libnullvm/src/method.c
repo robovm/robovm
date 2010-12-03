@@ -2,6 +2,7 @@
 #include <string.h>
 #include <dlfcn.h>
 #include <unwind.h>
+#include "log.h"
 
 typedef union IntValue {
     jint i;
@@ -943,16 +944,16 @@ Method* nvmGetMethod(Env* env, Class* clazz, char* name, char* desc) {
 
 void* nvmGetNativeMethod(Env* env, char* shortMangledName, char* longMangledName) {
     void* handle = dlopen(NULL, RTLD_LAZY);
-    LOG("Searching for native method using short name: %s\n", shortMangledName);
+    TRACE("Searching for native method using short name: %s\n", shortMangledName);
     void* f = dlsym(handle, shortMangledName);
-    if (!f) {
-        LOG("Searching for native method using long name: %s\n", longMangledName);
+    if (f) {
+        TRACE("Found native method using short name: %s\n", shortMangledName);
+    } else if (!strcmp(shortMangledName, longMangledName)) {
+        TRACE("Searching for native method using long name: %s\n", longMangledName);
         f = dlsym(handle, longMangledName);
         if (f) {
-            LOG("Found native method using long name: %s\n", longMangledName);
+            TRACE("Found native method using long name: %s\n", longMangledName);
         }
-    } else {
-        LOG("Found native method using short name: %s\n", shortMangledName);
     }
     dlclose(handle);
     if (!f) {

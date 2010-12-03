@@ -1,0 +1,7 @@
+#!/bin/bash
+
+BASE=$(cd $(dirname $0)/..; pwd -P)
+NULLVMCJAR=$(ls $BASE/nullvmc/target/nullvm-compiler-*one-jar.jar 2> /dev/null)
+
+java -jar $NULLVMCJAR -run -d $(mktemp -d) $@
+

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dlfcn.h>
+#include "log.h"
 
 Class* java_lang_Object;
 Class* java_lang_Class;
@@ -425,16 +426,16 @@ Class* nvmFindClass(Env* env, char* className) {
         return createArrayClass(env, className);
     }
 
-    LOG("Class '%s' not loaded\n", className);
+    TRACE("Class '%s' not loaded\n", className);
     char* funcName = mangleClassName(env, className);
     if (!funcName) return NULL;
 
-    LOG("Searching for class loader function '%s()'\n", funcName);
+    TRACE("Searching for class loader function '%s()'\n", funcName);
     void* handle = dlopen(NULL, RTLD_LAZY);
     Class* (*loader)(Env*) = dlsym(handle, funcName);
     dlclose(handle);
     if (loader) {
-        LOG("Calling class loader function '%s()'\n", funcName);
+        TRACE("Calling class loader function '%s()'\n", funcName);
         clazz = loader(env);
         if (!clazz) return NULL;
     }
@@ -540,7 +541,7 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
           vtableIndex = vtableSize++;
         }
         method->vtableIndex = vtableIndex;
-//        LOG("vtable index for method %s%s in class %s: %d\n", method->name, method->desc, clazz->name, vtableIndex);
+//        TRACE("vtable index for method %s%s in class %s: %d\n", method->name, method->desc, clazz->name, vtableIndex);
     }
     if (vtableSize > 0) {
         clazz->vtable = nvmAllocateMemory(env, vtableSize * sizeof(void*));
@@ -550,7 +551,7 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
             memcpy(clazz->vtable, clazz->superclass->vtable, clazz->superclass->vtableSize);
         }
     }
-//    LOG("vtable size for %s: %d\n", clazz->name, vtableSize);
+//    TRACE("vtable size for %s: %d\n", clazz->name, vtableSize);
 
     for (method = clazz->methods; method != NULL; method = method->next) {
         clazz->vtable[method->vtableIndex] = method->impl;
@@ -581,7 +582,7 @@ void nvmInitialize(Env* env, Class* clazz) {
                 return;
             }
         }
-        LOG("Initializing class %s\n", clazz->name);
+        TRACE("Initializing class %s\n", clazz->name);
         Method* clinit = nvmGetClassInitializer(env, clazz);
         if (!clinit) return;
         nvmCallVoidClassMethod(env, clazz, clinit);

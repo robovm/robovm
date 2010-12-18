@@ -4,6 +4,7 @@
 #include "../jni_types.h"
 #include "../jni.h"
 #include <hythread.h>
+#include <limits.h>
 
 #undef FALSE
 #undef TRUE
@@ -156,12 +157,22 @@ MAKE_ARRAY(jdouble, Double)
 #define LOG_LEVEL_ERROR 3
 #define LOG_LEVEL_NONE 4
 
+typedef struct DynamicLib DynamicLib;
+struct DynamicLib {
+    DynamicLib* next;
+    void* handle;
+    char path[PATH_MAX];
+};
+
 typedef struct Options {
     char* mainClass;
     char** commandLineArgs;
     jint commandLineArgsCount;
-    char* executablePath;
     jint logLevel;
+    char basePath[PATH_MAX];
+    char executablePath[PATH_MAX];
+    char bootLibPath[PATH_MAX];
+    char mainLibPath[PATH_MAX];
 } Options;
 
 typedef struct Thread {

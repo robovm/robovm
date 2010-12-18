@@ -2,7 +2,10 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <dlfcn.h>
+#include "log.h"
 
+DynamicLib* nativeLibs = NULL;
 jboolean _logLevel;
 
 static inline jint startsWith(char* s, char* prefix) {
@@ -10,12 +13,27 @@ static inline jint startsWith(char* s, char* prefix) {
 }
 
 jint nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreNvmArgs) {
-    options->executablePath = realpath(argv[0], NULL);
-    if (!options->executablePath) {
+    char path[PATH_MAX];
+    if (!realpath(argv[0], path)) {
         return 1;
     }
 
-    jint i;
+    strcpy(options->executablePath, path);
+
+    jint i = strlen(path);
+    while (i >= 0 && path[i] != '/') {
+        path[i--] = '\0';
+    }
+    if (i >= 0 && path[i] == '/') {
+        path[i] = '\0';
+    }
+
+    strcpy(options->basePath, path);
+    strcpy(options->bootLibPath, path);
+    strcat(options->bootLibPath, "/lib/boot");
+    strcpy(options->mainLibPath, path);
+    strcat(options->mainLibPath, "/lib/main");
+
     jint firstJavaArg = 1;
     for (i = 1; i < argc; i++) {
         if (startsWith(argv[i], "-nvm:")) {
@@ -80,6 +98,7 @@ jboolean nvmRun(Env* env) {
 void nvmShutdown(void) {
 }
 
+// TODO: Move this to a more appropriate file
 void* nvmAllocateMemory(Env* env, int size) {
     void* m = GC_MALLOC(size);
     if (!m) {
@@ -98,4 +117,54 @@ void nvmAbort(char* format, ...) {
     abort();
 }
 
+DynamicLib** nvmGetNativeLibs(Env* env) {
+    return &nativeLibs;
+}
+
+DynamicLib* nvmInitDynamicLib(Env* env, char* basePath, char* baseName, DynamicLib** first) {
+    while (*first != NULL) first = &((*first)->next);
+
+    DynamicLib* dlib = nvmAllocateMemory(env, sizeof(DynamicLib));
+    if (!dlib) return NULL;
+
+    strcpy(dlib->path, basePath);
+    strcat(dlib->path, "/");
+    strcat(dlib->path, baseName);
+    strcat(dlib->path, ".so");
+
+    *first = dlib;
+
+    TRACE("Initialized dynamic library '%s'\n", dlib->path);
+
+    return dlib;
+}
+
+jboolean nvmLoadDynamicLib(Env* env, DynamicLib* dlib) {
+    TRACE("Loading dynamic library '%s'\n", dlib->path);
+
+    if (!dlib->handle) {
+        dlib->handle = dlopen(dlib->path, RTLD_LOCAL | RTLD_LAZY);
+        if (!dlib->handle) return FALSE;
+    }
+
+    return TRUE;
+}
+
+void* nvmFindDynamicLibSymbol(Env* env, DynamicLib* first, DynamicLib* last, char* symbol) {
+    TRACE("Searching for symbol '%s'", symbol);
+
+    DynamicLib* dlib = first;
+    while (dlib && dlib != last) {
+        if (!dlib->handle) {
+            nvmLoadDynamicLib(env, dlib);
+        }
+        if (dlib->handle) {
+            void* v = dlsym(dlib->handle, symbol);
+            if (v) return v;
+        }
+        dlib = dlib->next;
+    }
+
+    return NULL;
+}
 

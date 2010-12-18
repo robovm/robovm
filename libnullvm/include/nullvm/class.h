@@ -29,6 +29,7 @@ extern Class* java_lang_NoSuchMethodError;
 extern Class* java_lang_IncompatibleClassChangeError;
 extern Class* java_lang_AbstractMethodError;
 extern Class* java_lang_UnsatisfiedLinkError;
+extern Class* java_lang_VerifyError;
 
 extern Class* java_lang_RuntimeException;
 extern Class* java_lang_ClassCastException;

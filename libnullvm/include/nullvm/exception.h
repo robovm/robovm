@@ -26,6 +26,7 @@ extern jint nvmThrowNegativeArraySizeException(Env* env);
 extern jint nvmThrowClassNotFoundException(Env* env, char* name);
 extern jint nvmThrowUnsatisfiedLinkError(Env* env);
 extern jint nvmThrowIllegalArgumentException(Env* env, char* message);
+extern jint nvmThrowVerifyError(Env* env, char* message);
 extern void nvmRaiseException(Env* env, Object* e);
 
 #endif

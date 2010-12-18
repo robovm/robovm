@@ -253,6 +253,11 @@ void _nvmBcThrowArrayIndexOutOfBoundsException(Env* env, jint index) {
     _nvmBcThrow(env, nvmExceptionOccurred(env));
 }
 
+void _nvmBcThrowVerifyError(Env* env, char* msg) {
+    nvmThrowVerifyError(env, msg);
+    _nvmBcThrow(env, nvmExceptionOccurred(env));
+}
+
 Object* _nvmBcNewStringAscii(Env* env, char* s) {
     Object* o = nvmNewStringAscii(env, s, -1);
     if (!o) _nvmBcThrow(env, nvmExceptionOccurred(env));

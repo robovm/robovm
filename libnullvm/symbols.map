@@ -5,8 +5,8 @@ NULLVM_0.1 {
   java_io_*;
   prim_*;
   array_*;
-  j_eh_personality;
   nvm*;
+  _nvmPersonality;
   _nvmBc*;
   pool_*;
   ClearLibAttach;

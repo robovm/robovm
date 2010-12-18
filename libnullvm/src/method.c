@@ -1,8 +1,10 @@
 #include <nullvm.h>
 #include <string.h>
-#include <dlfcn.h>
 #include <unwind.h>
 #include "log.h"
+
+// Defined in init.c
+extern DynamicLib* nativeLibs;
 
 typedef union IntValue {
     jint i;
@@ -943,19 +945,17 @@ Method* nvmGetMethod(Env* env, Class* clazz, char* name, char* desc) {
 }*/
 
 void* nvmGetNativeMethod(Env* env, char* shortMangledName, char* longMangledName) {
-    void* handle = dlopen(NULL, RTLD_LAZY);
     TRACE("Searching for native method using short name: %s\n", shortMangledName);
-    void* f = dlsym(handle, shortMangledName);
+    void* f = nvmFindDynamicLibSymbol(env, nativeLibs, NULL, shortMangledName);
     if (f) {
         TRACE("Found native method using short name: %s\n", shortMangledName);
     } else if (!strcmp(shortMangledName, longMangledName)) {
         TRACE("Searching for native method using long name: %s\n", longMangledName);
-        f = dlsym(handle, longMangledName);
+        void* f = nvmFindDynamicLibSymbol(env, nativeLibs, NULL, longMangledName);
         if (f) {
             TRACE("Found native method using long name: %s\n", longMangledName);
         }
     }
-    dlclose(handle);
     if (!f) {
         nvmThrowUnsatisfiedLinkError(env);
         return NULL;

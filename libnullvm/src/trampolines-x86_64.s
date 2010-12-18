@@ -434,7 +434,7 @@ _nvmBcInvokeInterface0:
     declare %Object* @j_get_throwable(i8*)
     declare i8* @llvm.eh.exception() nounwind
     declare i64 @llvm.eh.selector.i64(i8*, i8*, ...) nounwind
-    declare i32 @j_eh_personality(i32, i32, i64, i8*, i8*)
+    declare i32 @_nvmPersonality(i32, i32, i64, i8*, i8*)
 
     define i8* @catchAll(%Env* %env) {
         %res = invoke i8* @f(%Env* %env) to label %success unwind label %failure
@@ -443,7 +443,7 @@ _nvmBcInvokeInterface0:
     failure:
         %ehptr = call i8* @llvm.eh.exception()
         %throwable = call %Object* @j_get_throwable(i8* %ehptr)
-        %sel = call i64 (i8*, i8*, ...)* @llvm.eh.selector.i64(i8* %ehptr, i8* bitcast (i32 (i32, i32, i64, i8*, i8*)* @j_eh_personality to i8*), i32 1)
+        %sel = call i64 (i8*, i8*, ...)* @llvm.eh.selector.i64(i8* %ehptr, i8* bitcast (i32 (i32, i32, i64, i8*, i8*)* @_nvmPersonality to i8*), i32 1)
         ret i8* null
     }
 
@@ -539,7 +539,7 @@ GCC_except_table1:
                                         # CIE Return Address Column
     .uleb128 7               # Augmentation Size
     .byte    3                       # Personality Encoding = udata4
-    .long    j_eh_personality        # Personality
+    .long    _nvmPersonality         # Personality
     .byte    3                       # LSDA Encoding = udata4
     .byte    3                       # FDE Encoding = udata4
     .byte    12                      # CFA_def_cfa

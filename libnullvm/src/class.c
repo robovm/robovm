@@ -1,7 +1,7 @@
 #include <nullvm.h>
 #include <stdlib.h>
 #include <string.h>
-#include <dlfcn.h>
+#include <hyport.h>
 #include "log.h"
 
 Class* java_lang_Object;
@@ -31,6 +31,7 @@ Class* java_lang_IncompatibleClassChangeError;
 Class* java_lang_AbstractMethodError;
 Class* java_lang_UnsatisfiedLinkError;
 Class* java_lang_ExceptionInInitializerError;
+Class* java_lang_VerifyError;
 
 Class* java_lang_RuntimeException;
 Class* java_lang_ClassCastException;
@@ -61,6 +62,9 @@ Class* array_J;
 Class* array_F;
 Class* array_D;
 
+static DynamicLib* bootSoHandles = NULL;
+static DynamicLib* mainSoHandles = NULL;
+
 // TODO: Protect these with locks
 static Map* nameToClassMap = NULL;
 static Map* idToClassMap = NULL;
@@ -85,6 +89,51 @@ static inline jboolean addLoadedClass(Env* env, Class* clazz) {
     nvmMapPut(env, idToClassMap, (MapKey) {.i = clazz->id}, clazz);
     if (nvmExceptionOccurred(env)) return FALSE;
     return TRUE;
+}
+
+static jboolean loadSoHandles(Env* env, char* libPath, DynamicLib** first) {
+    char path[PATH_MAX];
+    strcpy(path, libPath);
+    strcat(path, "/files");
+
+    FILE* f = fopen(path, "r");
+    if (!f) return FALSE;
+    fseek(f, 0, SEEK_END);
+    jint length = ftell(f);
+    fseek(f, 0, SEEK_SET);
+    char* files = nvmAllocateMemory(env, length + 1);
+    if (!files || fread(files, length, 1, f) == 0) {
+        fclose(f);
+        return FALSE;
+    }
+    fclose(f);
+    f = NULL;
+    files[length] = '\0';
+
+    TRACE("Contents of file '%s': %s", path, files);
+
+    jint start = 0;
+    jint end = 0;
+    while (end < length) {
+        while (end < length && files[end] != ':' && files[end] != '\0') end++;
+        if (start != end) {
+            memset(path, 0, sizeof(path));
+            strncpy(path, files + start, end - start);
+            DynamicLib* dlib = nvmInitDynamicLib(env, libPath, path, first);
+            if (!dlib) return FALSE;
+            if (!nvmLoadDynamicLib(env, dlib)) {
+                nvmAbort("Fatal error: Failed to load %s", dlib->path);
+            }
+        }
+        end++;
+        start = end;
+    }
+    return TRUE;
+}
+
+static jboolean initSoHandles(Env* env) {
+    loadSoHandles(env, env->options->bootLibPath, &bootSoHandles);
+    loadSoHandles(env, env->options->mainLibPath, &mainSoHandles);
 }
 
 static jint j_get_vtable_index(Class* clazz, char* name, char* desc, Class* caller) {
@@ -301,6 +350,8 @@ jboolean nvmInitClasses(Env* env) {
     idToClassMap = nvmNewMapWithIntKeys(env, 1024);
     if (!idToClassMap) return FALSE;
 
+    initSoHandles(env);
+
     // Cache important classes in java.lang.
     java_lang_ClassNotFoundException = nvmFindClass(env, "java/lang/ClassNotFoundException");
     if (!java_lang_ClassNotFoundException) return FALSE;
@@ -332,8 +383,6 @@ jboolean nvmInitClasses(Env* env) {
     if (!java_lang_Cloneable) return FALSE;
     java_lang_Thread = nvmFindClass(env, "java/lang/Thread");
     if (!java_lang_Thread) return FALSE;
-//    java_lang_VMThread = nvmFindClass(env, "java/lang/VMThread");
-//    if (!java_lang_VMThread) return FALSE;
     java_lang_ThreadGroup = nvmFindClass(env, "java/lang/ThreadGroup");
     if (!java_lang_ThreadGroup) return FALSE;
     java_io_Serializable = nvmFindClass(env, "java/io/Serializable");
@@ -357,6 +406,8 @@ jboolean nvmInitClasses(Env* env) {
     if (!java_lang_UnsatisfiedLinkError) return FALSE;
     java_lang_ExceptionInInitializerError = nvmFindClass(env, "java/lang/ExceptionInInitializerError");
     if (!java_lang_ExceptionInInitializerError) return FALSE;
+    java_lang_VerifyError = nvmFindClass(env, "java/lang/VerifyError");
+    if (!java_lang_VerifyError) return FALSE;
 
     java_lang_RuntimeException = nvmFindClass(env, "java/lang/RuntimeException");
     if (!java_lang_RuntimeException) return FALSE;
@@ -414,6 +465,15 @@ jboolean nvmInitClasses(Env* env) {
     return TRUE;
 }
 
+static Class* findClassLoaderFunction(Env* env, char* funcName, DynamicLib* dlib) {
+    Class* (*loader)(Env*) = nvmFindDynamicLibSymbol(env, dlib, dlib->next, funcName);
+    if (loader) {
+        TRACE("Calling class loader function '%s()'\n", funcName);
+        return loader(env);
+    }
+    return NULL;
+}
+
 Class* nvmFindClass(Env* env, char* className) {
     // TODO: Implement me properly using ClassLoader
 
@@ -430,21 +490,26 @@ Class* nvmFindClass(Env* env, char* className) {
     char* funcName = mangleClassName(env, className);
     if (!funcName) return NULL;
 
-    TRACE("Searching for class loader function '%s()'\n", funcName);
-    void* handle = dlopen(NULL, RTLD_LAZY);
-    Class* (*loader)(Env*) = dlsym(handle, funcName);
-    dlclose(handle);
-    if (loader) {
-        TRACE("Calling class loader function '%s()'\n", funcName);
-        clazz = loader(env);
-        if (!clazz) return NULL;
-    }
+    TRACE("Searching for class loader function '%s()' in boot classes\n", funcName);
+
+    clazz = findClassLoaderFunction(env, funcName, bootSoHandles);
+    if (clazz) return clazz;
+    if (nvmExceptionOccurred(env)) return NULL;
+
+    // TODO: Only search main classes if the calling class was loaded by the system class loader
+    TRACE("Searching for class loader function '%s()' in main classes\n", funcName);
+
+    clazz = findClassLoaderFunction(env, funcName, mainSoHandles);
+    if (clazz) return clazz;
+    if (nvmExceptionOccurred(env)) return NULL;
+
     if (clazz == NULL) {
         if (!strcmp(className, "java/lang/ClassNotFoundException")) {
             nvmAbort("Fatal error: java.lang.ClassNotFoundException not found!");
         }
         nvmThrowClassNotFoundException(env, className);
     }
+
     return clazz;
 }
 

@@ -364,7 +364,7 @@ public class MethodCompiler {
 
                 Var sel = tmp("sel", "i64");
                 out.format("    %s = call i64 (i8*, i8*, ...)* @llvm.eh.selector.i64(i8* %s, "
-                        + "i8* bitcast (i32 (i32, i32, i64, i8*, i8*)* @j_eh_personality to i8*), i32 1)\n",
+                        + "i8* bitcast (i32 (i32, i32, i64, i8*, i8*)* @_nvmPersonality to i8*), i32 1)\n",
                         sel, ehptr);
 
                 out.format("    store %s %s, %s* %s\n", throwablePtr.getType(), throwable, throwablePtr.getType(), throwablePtr);
@@ -1853,7 +1853,7 @@ public class MethodCompiler {
 //                    
 //                    Var sel = tmp("sel", "i64");
 //                    out.format("    %s = call i64 (i8*, i8*, ...)* @llvm.eh.selector.i64(i8* %s, " 
-//                            + "i8* bitcast (i32 (i32, i32, i64, i8*, i8*)* @j_eh_personality to i8*), i32 0)\n",
+//                            + "i8* bitcast (i32 (i32, i32, i64, i8*, i8*)* @_nvmPersonality to i8*), i32 0)\n",
 //                            sel, ehptr);
 //
 //                    push(throwable);
@@ -1939,7 +1939,7 @@ public class MethodCompiler {
 ////                        
 ////                        Var sel = tmp("sel", "i64");
 ////                        out.format("    %s = call i64 (i8*, i8*, ...)* @llvm.eh.selector.i64(i8* %s, " 
-////                                + "i8* bitcast (i32 (i32, i32, i64, i8*, i8*)* @j_eh_personality to i8*), i32 0)\n",
+////                                + "i8* bitcast (i32 (i32, i32, i64, i8*, i8*)* @_nvmPersonality to i8*), i32 0)\n",
 ////                                sel, ehptr);
 ////                        
 ////                        push(throwable);

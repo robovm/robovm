@@ -7,6 +7,10 @@ extern jboolean nvmRun(Env* env);
 extern void nvmShutdown(void);
 extern void nvmAbort(char* format, ...);
 extern void* nvmAllocateMemory(Env* env, int size);
+extern DynamicLib** nvmGetNativeLibs(Env* env);
+extern DynamicLib* nvmInitDynamicLib(Env* env, char* basePath, char* baseName, DynamicLib** first);
+extern jboolean nvmLoadDynamicLib(Env* env, DynamicLib* dlib);
+extern void* nvmFindDynamicLibSymbol(Env* env, DynamicLib* first, DynamicLib* last, char* symbol);
 
 #endif
 

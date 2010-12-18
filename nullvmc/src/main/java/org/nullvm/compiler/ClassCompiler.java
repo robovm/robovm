@@ -17,21 +17,16 @@
  */
 package org.nullvm.compiler;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.io.IOUtils;
+import org.nullvm.compiler.clazz.Clazz;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -53,29 +48,38 @@ import org.objectweb.asm.tree.TypeInsnNode;
  * @version $Id$
  */
 public class ClassCompiler {
+    
+    public enum VerifyWhen {
+        SKIP, NOW, DEFER
+    }
+    
     private ClassNode classNode;
     private Set<String> strings = new HashSet<String>();
     private PrintWriter out;
-    private boolean system = false;
+    private VerifyWhen verifyWhen = VerifyWhen.SKIP;
     
-    public void compile(File input, File output, boolean system) throws IOException {
-        InputStream in = null;
-        OutputStream out = null;
+    public ClassCompiler setVerifyWhen(VerifyWhen verifyWhen) {
+        this.verifyWhen = verifyWhen;
+        return this;
+    }
+    
+    public void compile(Clazz clazz, OutputStream out) throws IOException {
+        this.out = new PrintWriter(new OutputStreamWriter(out, "UTF-8"));
         try {
-            in = new FileInputStream(input);
-            out = new FileOutputStream(output);
-            compile(in, out, system);
-        } finally {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(out);
+            if (verifyWhen != VerifyWhen.SKIP) {
+                clazz.verify();
+            }
+            compile(new ClassReader(clazz.getBytes()));
+        } catch (VerifyError ve) {
+            if (verifyWhen == VerifyWhen.DEFER) {
+                compileWithVerifyError(clazz, ve);
+            } else {
+                throw ve;
+            }
         }
     }
     
-    public void compile(InputStream in, OutputStream out, boolean system) throws IOException {
-        compile(new ClassReader(in), out, system);
-    }
-    
-    public void compile(ClassReader cr, OutputStream out, boolean system) throws IOException {
+    private void compile(ClassReader cr) throws IOException {
         ClassNode cn = new ClassNode() {
             @Override
             public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
@@ -84,126 +88,34 @@ public class ClassCompiler {
             }
         };
         cr.accept(cn, 0);
-        compile(cn, new PrintWriter(new OutputStreamWriter(out, "UTF-8")), system);
+        compile(cn);
+    }
+    
+    private void compileWithVerifyError(Clazz clazz, VerifyError ve) {
+        String message = ve.getMessage() == null ? "" : ve.getMessage();
+        this.strings = new HashSet<String>();
+        writeHeader();
+        out.println("; Strings");
+        writeStringDefinition(out, message);
+        out.format("define %%Class* @\"NullVM_%s\"(%%Env* %%env) {\n", LlvmUtil.mangleString(clazz.getClassName().replace('.', '/')));
+        out.format("    invoke void @_nvmBcThrowVerifyError(%%Env* %%env, i8* %s) to label %%Success unwind label %%CatchAll\n", LlvmUtil.getStringReference(message));
+        out.format("Success:\n");
+        out.format("    ret %%Class* null\n");
+        out.format("CatchAll:\n");
+        out.format("    %%ehptr = call i8* @llvm.eh.exception()\n");
+        out.format("    %%sel = call i64 (i8*, i8*, ...)* @llvm.eh.selector.i64(i8* %%ehptr, "
+                + "i8* bitcast (i32 (i32, i32, i64, i8*, i8*)* @_nvmPersonality to i8*), i32 1)\n");
+        out.format("    ret %%Class* null\n");
+        out.println("}\n");
+        out.flush();
     }
     
     @SuppressWarnings("unchecked")
-    private void compile(ClassNode cn, Writer w, boolean system) {
+    private void compile(ClassNode cn) {
         this.strings = new HashSet<String>();
         this.classNode = cn;
-        this.out = w instanceof PrintWriter ? (PrintWriter) w : new PrintWriter(w);
-        this.system = system;
         
-        boolean hasNativeMethods = false;
-        boolean hasCLInit = false;
-        for (MethodNode node : (List<MethodNode>) classNode.methods) {
-            if (LlvmUtil.isNative(node)) {
-                hasNativeMethods = true;
-            }
-            if ((node.access & Opcodes.ACC_STATIC) != 0 && "<clinit>".equals(node.name)) {
-                hasCLInit = true;
-            }
-        }
-
-        out.println("%Env = type opaque");
-        out.println("%Class = type opaque");
-        out.println("%Object = type opaque");
-        
-        out.println("%ClassResCommon = type {void ()*, i8*, %Class*}");
-        out.println("%NewRes = type {void ()*, %ClassResCommon*, %Class**}");
-        out.println("%CheckcastRes = type {void ()*, %ClassResCommon*, %Class**}");
-        out.println("%InstanceofRes = type {void ()*, %ClassResCommon*, %Class**}");
-        out.println("%LdcClassRes = type {void ()*, %ClassResCommon*, %Class**}");
-        out.println("%GetPutStaticCommon = type {void ()*, i8*, i8*, i8*, i8*}");
-        out.println("%GetStatic = type {void ()*, %GetPutStaticCommon*, %Class**, i8*}");
-        out.println("%PutStatic = type {void ()*, %GetPutStaticCommon*, %Class**, i8*}");
-        out.println("%GetPutFieldCommon = type {void ()*, i32, i8*, i8*, i8*}");
-        out.println("%GetField = type {void ()*, %GetPutFieldCommon*, %Class**, i32}");
-        out.println("%PutField = type {void ()*, %GetPutFieldCommon*, %Class**, i32}");
-        out.println("%InvokeVirtualCommon = type {void ()*, i8*, i8*, i8*, i8*, i32}");
-        out.println("%InvokeVirtual = type {void ()*, %InvokeVirtualCommon*, %Class**, i32}");
-        out.println("%InvokeSpecialCommon = type {void ()*, i8*, i8*, i8*, i8*}");
-        out.println("%InvokeSpecial = type {void ()*, %InvokeSpecialCommon*, %Class**}");
-        out.println("%InvokeStaticCommon = type {void ()*, i8*, i8*, i8*, i8*}");
-        out.println("%InvokeStatic = type {void ()*, %InvokeStaticCommon*, %Class**}");
-        out.println("%InvokeInterfaceCommon = type {void ()*, i8*, i8*, i8*, i8*}");
-        out.println("%InvokeInterface = type {void ()*, %InvokeInterfaceCommon*, %Class**}");
-        out.println("%InvokeNative = type {void (%InvokeNative*)*, void ()*, i8*, i8*}");
-        
-        out.println("declare %Class* @_nvmBcAllocateClass(%Env*, i8*, i8*, i32, i32, i32)");
-        out.println("declare %Class* @_nvmBcAllocateSystemClass(%Env*, i8*, i8*, i32, i32, i32)");
-        out.println("declare void @_nvmBcAddInterface(%Env*, %Class*, i8*)");
-        out.println("declare void @_nvmBcAddMethod(%Env*, %Class*, i8*, i8*, i32, i8*)");
-        out.println("declare void @_nvmBcAddField(%Env*, %Class*, i8*, i8*, i32, i32)");
-        out.println("declare void @_nvmBcRegisterClass(%Env*, %Class*)");
-        out.println("declare %Class* @_nvmBcFindClass(%Env*, i8*, %Class*)");
-        out.println("declare void @_nvmBcThrow(%Env*, %Object*)");
-        out.println("declare void @_nvmBcThrowIfExceptionOccurred(%Env*)");
-        out.println("declare void @_nvmBcThrowNullPointerException(%Env*)");
-        out.println("declare void @_nvmBcThrowArrayIndexOutOfBoundsException(%Env*, i32)");
-        out.println("declare %Object* @_nvmBcExceptionClear(%Env*)");
-        out.println("declare i32 @_nvmBcExceptionMatch(%Env*, %Object*, %Class*)");
-        
-        out.println("declare %Object* @_nvmBcNewBooleanArray(%Env*, i32)");
-        out.println("declare %Object* @_nvmBcNewByteArray(%Env*, i32)");
-        out.println("declare %Object* @_nvmBcNewCharArray(%Env*, i32)");
-        out.println("declare %Object* @_nvmBcNewShortArray(%Env*, i32)");
-        out.println("declare %Object* @_nvmBcNewIntArray(%Env*, i32)");
-        out.println("declare %Object* @_nvmBcNewLongArray(%Env*, i32)");
-        out.println("declare %Object* @_nvmBcNewFloatArray(%Env*, i32)");
-        out.println("declare %Object* @_nvmBcNewDoubleArray(%Env*, i32)");
-        out.println("declare %Object* @_nvmBcNewObjectArray(%Env*, i32, i8*, %Class*)");
-        out.println("declare %Object* @_nvmBcNewMultiArray(%Env*, i32, i32*, i8*, %Class*)");
-        
-        out.println("declare %Object* @_nvmBcNewStringAscii(%Env*, i8*)");
-        out.println("declare %Object* @_nvmBcLdcClass(%Env*, i8*, %Class*)");
-        
-        out.println("declare void @_nvmBcResolveClassResCommon()");
-        out.println("declare void @_nvmBcResolveClassForNew0()");
-        out.println("declare void @_nvmBcResolveClassForCheckcast0()");
-        out.println("declare void @_nvmBcResolveClassForInstanceof0()");
-        
-        out.println("declare void @_nvmBcResolveFieldForGetPutStaticCommon()");
-        out.println("declare void @_nvmBcResolveFieldForGetStatic0()");
-        out.println("declare void @_nvmBcResolveFieldForPutStatic0()");
-        out.println("declare void @_nvmBcResolveFieldForGetPutFieldCommon()");
-        out.println("declare void @_nvmBcResolveFieldForGetField0()");
-        out.println("declare void @_nvmBcResolveFieldForPutField0()");
-        
-        out.println("declare void @_nvmBcResolveMethodForInvokeStaticCommon()");
-        out.println("declare void @_nvmBcResolveMethodForInvokeStatic0()");
-        out.println("declare void @_nvmBcResolveMethodForInvokeVirtualCommon()");
-        out.println("declare void @_nvmBcResolveMethodForInvokeVirtual0()");
-        out.println("declare void @_nvmBcResolveMethodForInvokeSpecialCommon()");
-        out.println("declare void @_nvmBcResolveMethodForInvokeSpecial0()");
-        out.println("declare void @_nvmBcResolveMethodForInvokeInterfaceCommon()");
-        out.println("declare void @_nvmBcResolveMethodForInvokeInterface0()");
-        out.println("declare void @_nvmBcResolveNativeMethod(%InvokeNative*)");
-
-        out.println("declare void @_nvmBcMonitorEnter(%Env*, %Object*)");
-        out.println("declare void @_nvmBcMonitorExit(%Env*, %Object*)");
-        
-        out.println("declare i8* @llvm.eh.exception() nounwind");
-        out.println("declare i64 @llvm.eh.selector.i64(i8*, i8*, ...) nounwind");
-        out.println("declare i32 @j_eh_personality(i32, i32, i64, i8*, i8*)");
-        out.println("declare i32 @j_arraylength(%Object*)");
-        out.println("declare i32 @j_iaload(%Object* %o, i32 %index)");
-        out.println("declare void @j_iastore(%Object* %o, i32 %index, i32 %value)");
-        out.println("declare i32 @j_baload(%Object* %o, i32 %index)");
-        out.println("declare void @j_bastore(%Object* %o, i32 %index, i32 %value)");
-        out.println("declare i32 @j_saload(%Object* %o, i32 %index)");
-        out.println("declare void @j_sastore(%Object* %o, i32 %index, i32 %value)");
-        out.println("declare i32 @j_caload(%Object* %o, i32 %index)");
-        out.println("declare void @j_castore(%Object* %o, i32 %index, i32 %value)");
-        out.println("declare float @j_faload(%Object* %o, i32 %index)");
-        out.println("declare void @j_fastore(%Object* %o, i32 %index, float %value)");
-        out.println("declare i64 @j_laload(%Object* %o, i32 %index)");
-        out.println("declare void @j_lastore(%Object* %o, i32 %index, i64 %value)");
-        out.println("declare double @j_daload(%Object* %o, i32 %index)");
-        out.println("declare void @j_dastore(%Object* %o, i32 %index, double %value)");
-        out.println("declare %Object* @j_aaload(%Object* %o, i32 %index)");
-        out.println("declare void @j_aastore(%Object* %o, i32 %index, %Object* %value)");
-        out.println();
+        writeHeader();
         
         List<FieldNode> classFields = new ArrayList<FieldNode>();
         List<FieldNode> instanceFields = new ArrayList<FieldNode>();
@@ -549,15 +461,18 @@ public class ClassCompiler {
             out.format("    %%InstanceDataSizeI = bitcast i32 0 to i32\n"); 
         }
 
-        String allocateClass = !system ? "_nvmBcAllocateClass" : "_nvmBcAllocateSystemClass";
-        out.format("    %%clazz = call %%Class* @%s(%%Env* %%env, i8* %s, i8* %s, i32 %d, i32 %%ClassDataSizeI, i32 %%InstanceDataSizeI)\n",
-                allocateClass, LlvmUtil.getStringReference(classNode.name), 
+        out.format("    %%clazz = invoke %%Class* @_nvmBcAllocateClass(%%Env* %%env, i8* %s, i8* %s, i32 %d, i32 %%ClassDataSizeI, i32 %%InstanceDataSizeI)" 
+                + " to label %%AllocateClassSuccess unwind label %%CatchAll\n",
+                LlvmUtil.getStringReference(classNode.name), 
                 classNode.superName != null && (classNode.access & Opcodes.ACC_INTERFACE) == 0 ? LlvmUtil.getStringReference(classNode.superName) : "null", 
                         classNode.access);
+        out.format("AllocateClassSuccess:\n");
         
         for (int i = 0; i < classNode.interfaces.size(); i++) {
             String interfaze = (String) classNode.interfaces.get(i);
-            out.format("    call void @_nvmBcAddInterface(%%Env* %%env, %%Class* %%clazz, i8* %s)\n", LlvmUtil.getStringReference(interfaze));
+            out.format("    invoke void @_nvmBcAddInterface(%%Env* %%env, %%Class* %%clazz, i8* %s) to label %%AddInterface%dSuccess unwind label %%CatchAll\n", 
+                    LlvmUtil.getStringReference(interfaze), i);
+            out.format("AddInterface%dSuccess:\n", i);
         }
 
         for (int i = 0; i < classNode.methods.size(); i++) {
@@ -569,9 +484,10 @@ public class ClassCompiler {
                 out.format("    %%FuncPtr%d = bitcast %s @%s to i8*\n", i, 
                         LlvmUtil.javaMethodToLlvmFunctionType(node), LlvmUtil.mangleMethod(classNode, node));
             }
-            out.format("    call void @_nvmBcAddMethod(%%Env* %%env, %%Class* %%clazz, i8* %s, i8* %s, i32 %d, i8* %%FuncPtr%d)\n", 
+            out.format("    invoke void @_nvmBcAddMethod(%%Env* %%env, %%Class* %%clazz, i8* %s, i8* %s, i32 %d, i8* %%FuncPtr%d) to label %%AddMethod%dSuccess unwind label %%CatchAll\n", 
                     LlvmUtil.getStringReference(node.name), LlvmUtil.getStringReference(node.desc), 
-                    node.access, i);
+                    node.access, i, i);
+            out.format("AddMethod%dSuccess:\n", i);
         }
 
         int classFieldCounter = 0;
@@ -583,31 +499,142 @@ public class ClassCompiler {
             if ((node.access & Opcodes.ACC_STATIC) != 0) {
                 out.format("    %%ClassFieldOffset%d = getelementptr %%ClassFields* null, i32 0, i32 %d\n", i, classFieldCounter++); 
                 out.format("    %%ClassFieldOffset%dI = ptrtoint %s* %%ClassFieldOffset%d to i32\n", i, llvmType, i); 
-                out.format("    call void @_nvmBcAddField(%%Env* %%env, %%Class* %%clazz, i8* %s, i8* %s, i32 %d, i32 %%ClassFieldOffset%dI)\n", 
+                out.format("    invoke void @_nvmBcAddField(%%Env* %%env, %%Class* %%clazz, i8* %s, i8* %s, i32 %d, i32 %%ClassFieldOffset%dI) to label %%AddField%dSuccess unwind label %%CatchAll\n", 
                         LlvmUtil.getStringReference(node.name), LlvmUtil.getStringReference(node.desc), 
-                        node.access, i);
+                        node.access, i, i);
             } else {
                 out.format("    %%InstanceFieldOffset%d = getelementptr %%InstanceFields* null, i32 0, i32 %d\n", i, instanceFieldCounter++); 
                 out.format("    %%InstanceFieldOffset%dI = ptrtoint %s* %%InstanceFieldOffset%d to i32\n", i, llvmType, i); 
-                out.format("    call void @_nvmBcAddField(%%Env* %%env, %%Class* %%clazz, i8* %s, i8* %s, i32 %d, i32 %%InstanceFieldOffset%dI)\n", 
+                out.format("    invoke void @_nvmBcAddField(%%Env* %%env, %%Class* %%clazz, i8* %s, i8* %s, i32 %d, i32 %%InstanceFieldOffset%dI) to label %%AddField%dSuccess unwind label %%CatchAll\n", 
                         LlvmUtil.getStringReference(node.name), LlvmUtil.getStringReference(node.desc), 
-                        node.access, i);
+                        node.access, i, i);
             }
+            out.format("AddField%dSuccess:\n", i);
         }
         
         int i = 0;
         for (String throwable : throwables) {
             Var tmp = new Var("throwable" + i++, "%Class*");
-            out.format("    %s = call %%Class* @_nvmBcFindClass(%%Env* %%env, i8* %s, %%Class* %%clazz)\n", tmp, LlvmUtil.getStringReference(throwable));
+            out.format("    %s = invoke %%Class* @_nvmBcFindClass(%%Env* %%env, i8* %s, %%Class* %%clazz) to label %%FindThrowable%dSuccess unwind label %%CatchAll\n", tmp, LlvmUtil.getStringReference(throwable), i);
+            out.format("FindThrowable%dSuccess:\n", i);
             out.format("    store %%Class* %s, %%Class** @\"%s_%%Class*\"\n", tmp, LlvmUtil.mangleString(throwable));
         }
         
-        out.println("    call void @_nvmBcRegisterClass(%Env* %env, %Class* %clazz)");
+        out.println("    invoke void @_nvmBcRegisterClass(%Env* %env, %Class* %clazz) to label %RegisterClassSuccess unwind label %CatchAll");
+        out.format("RegisterClassSuccess:\n");
         out.println("    store %Class* %clazz, %Class** @clazz");
         out.println("    ret %Class* %clazz");
+        out.format("CatchAll:\n");
+        out.format("    %%ehptr = call i8* @llvm.eh.exception()\n");
+        out.format("    %%sel = call i64 (i8*, i8*, ...)* @llvm.eh.selector.i64(i8* %%ehptr, "
+                + "i8* bitcast (i32 (i32, i32, i64, i8*, i8*)* @_nvmPersonality to i8*), i32 1)\n");        
+        out.println("    ret %Class* null");
         out.println("}\n");
         
         out.flush();
+    }
+
+    private void writeHeader() {
+        out.println("%Env = type opaque");
+        out.println("%Class = type opaque");
+        out.println("%Object = type opaque");
+        
+        out.println("%ClassResCommon = type {void ()*, i8*, %Class*}");
+        out.println("%NewRes = type {void ()*, %ClassResCommon*, %Class**}");
+        out.println("%CheckcastRes = type {void ()*, %ClassResCommon*, %Class**}");
+        out.println("%InstanceofRes = type {void ()*, %ClassResCommon*, %Class**}");
+        out.println("%LdcClassRes = type {void ()*, %ClassResCommon*, %Class**}");
+        out.println("%GetPutStaticCommon = type {void ()*, i8*, i8*, i8*, i8*}");
+        out.println("%GetStatic = type {void ()*, %GetPutStaticCommon*, %Class**, i8*}");
+        out.println("%PutStatic = type {void ()*, %GetPutStaticCommon*, %Class**, i8*}");
+        out.println("%GetPutFieldCommon = type {void ()*, i32, i8*, i8*, i8*}");
+        out.println("%GetField = type {void ()*, %GetPutFieldCommon*, %Class**, i32}");
+        out.println("%PutField = type {void ()*, %GetPutFieldCommon*, %Class**, i32}");
+        out.println("%InvokeVirtualCommon = type {void ()*, i8*, i8*, i8*, i8*, i32}");
+        out.println("%InvokeVirtual = type {void ()*, %InvokeVirtualCommon*, %Class**, i32}");
+        out.println("%InvokeSpecialCommon = type {void ()*, i8*, i8*, i8*, i8*}");
+        out.println("%InvokeSpecial = type {void ()*, %InvokeSpecialCommon*, %Class**}");
+        out.println("%InvokeStaticCommon = type {void ()*, i8*, i8*, i8*, i8*}");
+        out.println("%InvokeStatic = type {void ()*, %InvokeStaticCommon*, %Class**}");
+        out.println("%InvokeInterfaceCommon = type {void ()*, i8*, i8*, i8*, i8*}");
+        out.println("%InvokeInterface = type {void ()*, %InvokeInterfaceCommon*, %Class**}");
+        out.println("%InvokeNative = type {void (%InvokeNative*)*, void ()*, i8*, i8*}");
+        
+        out.println("declare %Class* @_nvmBcAllocateClass(%Env*, i8*, i8*, i32, i32, i32)");
+        out.println("declare %Class* @_nvmBcAllocateSystemClass(%Env*, i8*, i8*, i32, i32, i32)");
+        out.println("declare void @_nvmBcAddInterface(%Env*, %Class*, i8*)");
+        out.println("declare void @_nvmBcAddMethod(%Env*, %Class*, i8*, i8*, i32, i8*)");
+        out.println("declare void @_nvmBcAddField(%Env*, %Class*, i8*, i8*, i32, i32)");
+        out.println("declare void @_nvmBcRegisterClass(%Env*, %Class*)");
+        out.println("declare %Class* @_nvmBcFindClass(%Env*, i8*, %Class*)");
+        out.println("declare void @_nvmBcThrow(%Env*, %Object*)");
+        out.println("declare void @_nvmBcThrowIfExceptionOccurred(%Env*)");
+        out.println("declare void @_nvmBcThrowNullPointerException(%Env*)");
+        out.println("declare void @_nvmBcThrowArrayIndexOutOfBoundsException(%Env*, i32)");
+        out.println("declare void @_nvmBcThrowVerifyError(%Env*, i8*)");
+        out.println("declare %Object* @_nvmBcExceptionClear(%Env*)");
+        out.println("declare i32 @_nvmBcExceptionMatch(%Env*, %Object*, %Class*)");
+        
+        out.println("declare %Object* @_nvmBcNewBooleanArray(%Env*, i32)");
+        out.println("declare %Object* @_nvmBcNewByteArray(%Env*, i32)");
+        out.println("declare %Object* @_nvmBcNewCharArray(%Env*, i32)");
+        out.println("declare %Object* @_nvmBcNewShortArray(%Env*, i32)");
+        out.println("declare %Object* @_nvmBcNewIntArray(%Env*, i32)");
+        out.println("declare %Object* @_nvmBcNewLongArray(%Env*, i32)");
+        out.println("declare %Object* @_nvmBcNewFloatArray(%Env*, i32)");
+        out.println("declare %Object* @_nvmBcNewDoubleArray(%Env*, i32)");
+        out.println("declare %Object* @_nvmBcNewObjectArray(%Env*, i32, i8*, %Class*)");
+        out.println("declare %Object* @_nvmBcNewMultiArray(%Env*, i32, i32*, i8*, %Class*)");
+        
+        out.println("declare %Object* @_nvmBcNewStringAscii(%Env*, i8*)");
+        out.println("declare %Object* @_nvmBcLdcClass(%Env*, i8*, %Class*)");
+        
+        out.println("declare void @_nvmBcResolveClassResCommon()");
+        out.println("declare void @_nvmBcResolveClassForNew0()");
+        out.println("declare void @_nvmBcResolveClassForCheckcast0()");
+        out.println("declare void @_nvmBcResolveClassForInstanceof0()");
+        
+        out.println("declare void @_nvmBcResolveFieldForGetPutStaticCommon()");
+        out.println("declare void @_nvmBcResolveFieldForGetStatic0()");
+        out.println("declare void @_nvmBcResolveFieldForPutStatic0()");
+        out.println("declare void @_nvmBcResolveFieldForGetPutFieldCommon()");
+        out.println("declare void @_nvmBcResolveFieldForGetField0()");
+        out.println("declare void @_nvmBcResolveFieldForPutField0()");
+        
+        out.println("declare void @_nvmBcResolveMethodForInvokeStaticCommon()");
+        out.println("declare void @_nvmBcResolveMethodForInvokeStatic0()");
+        out.println("declare void @_nvmBcResolveMethodForInvokeVirtualCommon()");
+        out.println("declare void @_nvmBcResolveMethodForInvokeVirtual0()");
+        out.println("declare void @_nvmBcResolveMethodForInvokeSpecialCommon()");
+        out.println("declare void @_nvmBcResolveMethodForInvokeSpecial0()");
+        out.println("declare void @_nvmBcResolveMethodForInvokeInterfaceCommon()");
+        out.println("declare void @_nvmBcResolveMethodForInvokeInterface0()");
+        out.println("declare void @_nvmBcResolveNativeMethod(%InvokeNative*)");
+
+        out.println("declare void @_nvmBcMonitorEnter(%Env*, %Object*)");
+        out.println("declare void @_nvmBcMonitorExit(%Env*, %Object*)");
+        
+        out.println("declare i8* @llvm.eh.exception() nounwind");
+        out.println("declare i64 @llvm.eh.selector.i64(i8*, i8*, ...) nounwind");
+        out.println("declare i32 @_nvmPersonality(i32, i32, i64, i8*, i8*)");
+        out.println("declare i32 @j_arraylength(%Object*)");
+        out.println("declare i32 @j_iaload(%Object* %o, i32 %index)");
+        out.println("declare void @j_iastore(%Object* %o, i32 %index, i32 %value)");
+        out.println("declare i32 @j_baload(%Object* %o, i32 %index)");
+        out.println("declare void @j_bastore(%Object* %o, i32 %index, i32 %value)");
+        out.println("declare i32 @j_saload(%Object* %o, i32 %index)");
+        out.println("declare void @j_sastore(%Object* %o, i32 %index, i32 %value)");
+        out.println("declare i32 @j_caload(%Object* %o, i32 %index)");
+        out.println("declare void @j_castore(%Object* %o, i32 %index, i32 %value)");
+        out.println("declare float @j_faload(%Object* %o, i32 %index)");
+        out.println("declare void @j_fastore(%Object* %o, i32 %index, float %value)");
+        out.println("declare i64 @j_laload(%Object* %o, i32 %index)");
+        out.println("declare void @j_lastore(%Object* %o, i32 %index, i64 %value)");
+        out.println("declare double @j_daload(%Object* %o, i32 %index)");
+        out.println("declare void @j_dastore(%Object* %o, i32 %index, double %value)");
+        out.println("declare %Object* @j_aaload(%Object* %o, i32 %index)");
+        out.println("declare void @j_aastore(%Object* %o, i32 %index, %Object* %value)");
+        out.println();
     }
 
     private void writeStringDefinition(PrintWriter out, String s) {

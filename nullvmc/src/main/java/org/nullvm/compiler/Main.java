@@ -11,7 +11,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,10 +23,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -43,11 +40,13 @@ import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.NotFileFilter;
 import org.apache.commons.io.filefilter.OrFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
-import org.kohsuke.args4j.Argument;
-import org.kohsuke.args4j.CmdLineException;
-import org.kohsuke.args4j.CmdLineParser;
-import org.kohsuke.args4j.Option;
-import org.objectweb.asm.ClassReader;
+import org.apache.commons.lang.StringUtils;
+import org.nullvm.compiler.ClassCompiler.VerifyWhen;
+import org.nullvm.compiler.clazz.Clazz;
+import org.nullvm.compiler.clazz.Clazzes;
+import org.nullvm.compiler.clazz.DirectoryPath;
+import org.nullvm.compiler.clazz.Path;
+import org.nullvm.compiler.clazz.ZipFilePath;
 
 /**
  *
@@ -55,81 +54,28 @@ import org.objectweb.asm.ClassReader;
  */
 public class Main {
 
-    @Option(name = "-cp", aliases = "-classpath", metaVar = "<list>", required = true,
-            usage = ": separated list of directories, JAR archives, and ZIP archives to" 
-                + " search for class files.")
     private String classpath = null;
-
-    @Option(name = "-bootclasspath", metaVar = "<list>", required = false,
-            usage = "Classpath used to locate the java.* and javax.* classes. Default is ~/nullvm/lib/nullvm-rt.jar.")
     private String bootclasspath = null;
-    
-    @Option(name = "-d", metaVar = "<dir>", required = true,
-            usage = "Place the generated executable and other files in <dir>.")
     private File output = null;
-    
-    @Option(name = "-o", metaVar = "<name>", required = false,
-            usage = "The name of the target executable or library")
     private String target = null;
-    
-    @Option(name = "-home", metaVar = "<dir>",
-            usage = "Directory where NullVM runtime has been installed and where compiled class files will be cached. Default is ~/.nullvm")
     private File home = new File(System.getProperty("user.home"), ".nullvm");
-
-    @Option(name = "-cache", metaVar = "<dir>",
-            usage = "Directory where cached compiled class files will be placed. Default is ~/.nullvm/cache")
     private File cache = new File(home, "cache");
-    
-    @Option(name = "-clean", usage = "Compile class files even if a compiled version already exists in the cache.")
     private boolean clean = false;
-    
-    @Option(name = "-llvm-bin-dir", usage = "Path where the LLVM binaries can be found")
     private File llvmBinDir = null;    
-
-    @Option(name = "-llc-opt", usage = "Option to pass to llc")
     private List<String> llcOpts = new ArrayList<String>();
-    
-    @Option(name = "-opt-opt", usage = "Option to pass to opt")
     private List<String> optOpts = new ArrayList<String>();
-    
-    @Option(name = "-gcc-opt", usage = "Option to pass to gcc")
     private List<String> gccOpts = new ArrayList<String>();
-    
-    @Option(name = "-gcc-bin", usage = "Path to the gcc binary")
     private File gccBin = null;    
-    
-    @Option(name = "-ar-bin", usage = "Path to the ar binary")
     private File arBin = null;
-    
-    @Option(name = "-help", usage = "Display this information")
-    private boolean help = false;
-    
-    @Option(name = "-verbose", usage = "Output messages about what the compiler is doing")
+    private List<String> arOpts = new ArrayList<String>();
     private boolean verbose = false;
-
-    @Option(name = "-jar", usage = "Use main class as specified by the manifest in this JAR archive.")
     private File jarFile;
-
-    @Option(name = "-skip-rt-lib", usage = "Skip linking with the nullvm-rt library")
-    private boolean skipRtLib = false;
-
-    @Option(name = "-I", metaVar = "<directory>", usage = "Extra include directory passed to gcc")
     private List<File> includeDirs = new ArrayList<File>();
-    
-    @Option(name = "-L", metaVar = "<directory>", usage = "Extra lib directory passed to ld")
     private List<File> libDirs = new ArrayList<File>();
-    
-    @Option(name = "-D", metaVar = "<name=value>", usage = "Set system property")
-    private List<String> properties = new ArrayList<String>();
-    
-    @Option(name = "-X", metaVar = "<value>", usage = "Set a non-standard option")
-    private List<String> extraOptions = new ArrayList<String>();
-
-    @Option(name = "-run", usage = "Run the produced binary after a successful compilation")
     private boolean run = false;
-    
-    @Argument
+    private ClassCompiler.VerifyWhen verify = ClassCompiler.VerifyWhen.SKIP;
     private String mainClass;
+    private List<String> runArgs = new ArrayList<String>();
     
     private File classCache;
     private File libCache;
@@ -142,14 +88,37 @@ public class Main {
 
     private File tmpFile;
     
-    private void printUsageAndExit(CmdLineParser parser, String errorMessage) {
+    private void printUsageAndExit(String errorMessage) {
         if (errorMessage != null) {
             System.err.format("nullvm: %s\n", errorMessage);
         }
         System.err.println("Usage: nullvm [-options] class");
         System.err.println("   or  nullvm [-options] -jar jarfile");
         System.err.println("Options:");
-        parser.printUsage(System.err);
+        
+        System.err.println("  -ar-bin <path>       Path to the ar binary");
+        //System.err.println("-bootclasspath <list>   : Classpath used to locate the java.* and javax.* classes. Default is ~/nullvm/lib/nullvm-rt.jar.");
+        System.err.println("  -cache <dir>         Directory where cached compiled class files will be placed. Default is ~/.nullvm/cache");
+        System.err.println("  -clean               Compile class files even if a compiled version already exists in the cache.");
+        System.err.println("  -cp <list>           : separated list of directories, JAR archives, and ZIP archives to search for class files.");
+        System.err.println("  -classpath <list>    : separated list of directories, JAR archives, and ZIP archives to search for class files.");
+        System.err.println("  -d <dir>             Place the generated executable and other files in <dir>.");
+        System.err.println("  -verify:skip         Don't verify classes (the default)");
+        System.err.println("  -verify:now          Verify classes and abort compilation if verification fails");
+        System.err.println("  -verify:defer        Verify classes but don't abort compilation. java.lang.VerifyError will be thrown when the class is loaded at runtime.");
+        System.err.println("  -gcc-bin <path>      Path to the gcc binary");
+        System.err.println("  -gcc-opt <opt>       Option to pass to gcc");
+        System.err.println("  -help, -?            Display this information");
+        System.err.println("  -home <dir>          Directory where NullVM runtime has been installed and where compiled class files will be cached. Default is ~/.nullvm");
+        System.err.println("  -jar <path>          Use main class as specified by the manifest in this JAR archive.");
+        System.err.println("  -ld-bin <path>       Path to the ld binary");
+        System.err.println("  -ld-opt <opt>        Option to pass to ld");
+        System.err.println("  -llc-opt <opt        Option to pass to llc");
+        System.err.println("  -llvm-bin-dir <path> Path where the LLVM binaries can be found");
+        System.err.println("  -o <name>            The name of the target executable or library");
+        System.err.println("  -opt-opt <opt>       Option to pass to opt");
+        System.err.println("  -verbose             Output messages about what the compiler is doing");
+        
         System.exit(errorMessage != null ? 1 : 0);
     }
 
@@ -187,44 +156,39 @@ public class Main {
             throw new RuntimeException(e);
         }
     }
-    
-    private static <T> List<T> removeDuplicates(List<T> l) {
-        List<T> result = new ArrayList<T>();
-        Set<T> set = new HashSet<T>();
-        for (T t : l) {
-            if (!set.contains(t)) {
-                result.add(t);
-                set.add(t);
-            }
-        }
-        return result;
-    }
 
     private static boolean isArchive(File f) {
         return f.getName().matches("(?i)^.*(\\.zip|\\.jar)$");
     }
     
-    private File processClassFile(String classFile, InputStream in, long lastModified) throws IOException {
+    private String getSimpleClassName(String internalName) {
+        int index = internalName.lastIndexOf('/');
+        if (index == -1) {
+            return internalName;
+        }
+        return internalName.substring(index + 1);
+    }
+    
+    private File processClassFile(Clazz clazz) throws IOException {
         OutputStream out = null;
         File outFile = null;
         try {
-            byte[] classData = IOUtils.toByteArray(in);
-            ClassReader cr = new ClassReader(new ByteArrayInputStream(classData));
-            String className = cr.getClassName();
+            byte[] classData = clazz.getBytes();
+            String className = clazz.getInternalName();
             File classDir = new File(new File(classCache, className.replace('/', File.separatorChar)), hash(new ByteArrayInputStream(classData)));
-            outFile = new File(classDir, className.replace('/', '_') + "" + ".class.ll");
+            outFile = new File(classDir, getSimpleClassName(className) + "" + ".class.ll");
             outFile.getParentFile().mkdirs();
             if (!clean && outFile.exists()) { // && outFile.lastModified() >= lastModified) {
                 if (verbose) {
-                    stdout.println("Skipping unchanged class file: " + classFile);
+                    stdout.println("Skipping unchanged class file: " + clazz.getFileName());
                 }
                 return processIrFile(outFile);
             }
             if (verbose) {
-                stdout.format("Compiling class file '%s' to LLVM IR file '%s'\n", classFile, outFile);
+                stdout.format("Compiling class file '%s' to LLVM IR file '%s'\n", clazz.getFileName(), outFile);
             }
             out = new FileOutputStream(outFile);
-            new ClassCompiler().compile(cr, out, false);
+            new ClassCompiler().setVerifyWhen(verify).compile(clazz, out);
         } catch (Throwable t) {
             FileUtils.deleteQuietly(outFile);
             if (t instanceof IOException) {
@@ -240,37 +204,24 @@ public class Main {
         return processIrFile(outFile);
     }
 
-    private File processClassFile(File f) throws IOException {
-        InputStream in = null;
-        try {
-            in = new BufferedInputStream(new FileInputStream(f));
-            return processClassFile(f.getAbsolutePath(), in, f.lastModified());
-        } finally {
-            IOUtils.closeQuietly(in);
+    private List<File> processClassFilesInPath(Path path) throws IOException {
+        List<File> objectFiles = new ArrayList<File>();
+        for (Clazz clazz : path.list()) {
+            objectFiles.add(processClassFile(clazz));
         }
+        return objectFiles;
     }
     
-    private List<File> processClassFilesInDir(File dir) throws IOException {
-        List<File> result = new ArrayList<File>();        
-        for (File f : dir.listFiles()) {
-            if (f.getName().toLowerCase().endsWith(".class")) {
-                result.add(processClassFile(f));
-            } else if (f.isDirectory()) {
-                result.addAll(processClassFilesInDir(f));
-            }
-        }
-        return result;
-    }
-    
-    private List<File> processClassFiles(File input) throws IOException {
-        if (isArchive(input)) {
-            return Collections.singletonList(processArchivedClassFiles(input));
+    private List<File> processClassFiles(Path path) throws IOException {
+        if (path instanceof ZipFilePath) {
+            return Collections.singletonList(processArchivedClassFiles((ZipFilePath) path));
         } else {
-            return processClassFilesInDir(input);
+            return processClassFilesInPath((DirectoryPath) path);
         }
     }
     
-    private File processArchivedClassFiles(File input) throws IOException {
+    private File processArchivedClassFiles(ZipFilePath path) throws IOException {
+        File input = path.getFile();
         File libFile = new File(new File(new File(libCache, input.getName()), hash(input)), "lib" + input.getName() + ".a");
         libFile.getParentFile().mkdirs();
         if (!clean && libFile.exists() && libFile.lastModified() >= input.lastModified()) {
@@ -280,40 +231,7 @@ public class Main {
             return libFile;
         }
         
-        ZipFile archive = null;
-        try {
-            archive = new ZipFile(input);
-            List<File> objectFiles = new ArrayList<File>();
-            Enumeration<? extends ZipEntry> entries = archive.entries();
-            while (entries.hasMoreElements()) {
-                ZipEntry entry = entries.nextElement();
-                if (!entry.getName().toLowerCase().endsWith(".class")) {
-                    continue;
-                }
-                InputStream in = null;
-                OutputStream out = null;
-                try {
-                    in = archive.getInputStream(entry);
-                    objectFiles.add(processClassFile(entry.getName(), in, entry.getTime()));
-                } catch (Throwable t) {
-                    if (t instanceof IOException) {
-                        throw (IOException) t;
-                    }
-                    if (t instanceof RuntimeException) {
-                        throw (RuntimeException) t;
-                    }
-                    throw new RuntimeException(t);
-                } finally {
-                    IOUtils.closeQuietly(in);
-                    IOUtils.closeQuietly(out);
-                }
-            }
-            return buildLibrary(objectFiles, libFile);
-        } finally {
-            try {
-                archive.close();
-            } catch (Throwable t) {}
-        }
+        return buildLibrary(processClassFilesInPath(path), libFile);
     }
     
     private File processIrFile(File f) throws IOException {
@@ -364,13 +282,14 @@ public class Main {
         File outOptedFile = new File(f.getParentFile(), f.getName().substring(0, f.getName().length() - 3) + ".opted.bc");
         exec(optPath, optOpts, "-mem2reg", "-always-inline", "-o=" + outOptedFile.toString(), outLinkedFile);
         
-        exec(llcPath, llcOpts, "-o=" + outFile.toString(), outOptedFile);
+        exec(llcPath, llcOpts, "-relocation-model=pic", "-o=" + outFile.toString(), outOptedFile);
             
         return processGccFile(outFile);
     }
     
     private File processGccFile(File f) throws IOException {
-        File outFile = new File(f.getParentFile(), f.getName().substring(0, f.getName().lastIndexOf('.')) + ".o");
+        String hash = f.getParentFile().getName();
+        File outFile = new File(f.getParentFile().getParentFile().getParentFile(), f.getName().substring(0, f.getName().lastIndexOf('.')) + "." + hash + ".o");
         if (!clean && outFile.exists() && outFile.lastModified() >= f.lastModified()) {
             if (verbose) {
                 stdout.println("Skipping unchanged GCC input file: " + f);
@@ -410,7 +329,7 @@ public class Main {
         return libFile;
     }
     
-    private void buildExecutable(List<File> files) throws IOException {
+    private void buildExecutable() throws IOException {
         File outFile = new File(output, target);
         
         if (verbose) {
@@ -422,59 +341,62 @@ public class Main {
             gccPath = gccBin.getAbsolutePath();
         }
         
-        if (mainClass != null) {
-            List<String> gccArgs = new ArrayList<String>();
-            for (File f : includeDirs) {
-                gccArgs.add("-I");
-                gccArgs.add(f.getAbsolutePath());
-            }
+        List<String> gccArgs = new ArrayList<String>();
+        for (File f : includeDirs) {
             gccArgs.add("-I");
-            gccArgs.add(new File(home, "include").getAbsolutePath());
-            gccArgs.add("-I");
-            gccArgs.add(new File(new File(home, "gc"), "include").getAbsolutePath());
-            gccArgs.add("-I");
-            gccArgs.add(new File(new File(home, "include"), "harmony").getAbsolutePath());
-            File mainObjectFile = new File(mainCFile.getParentFile(), "main.o");
-            exec(gccPath, "-c", "-o", mainObjectFile, "-DNULLVM_MAIN_CLASS=" + mainClass.replace('.', '/'),
-                    "-DLINUX", "-DLINUX_X86_64", "-DHYX86_64", "-DIPv6_FUNCTION_SUPPORT", "-DHYPORT_LIBRARY_DEFINE",
-                    "-g", gccOpts, gccArgs, mainCFile);
-            files.add(mainObjectFile);
+            gccArgs.add(f.getAbsolutePath());
         }
-
-        List<String> ldArgs = new ArrayList<String>();
-        for (File f : libDirs) {
-            ldArgs.add("-L");
-            ldArgs.add(f.getAbsolutePath());
-        }
-        ldArgs.add("-L");
-        ldArgs.add(new File(home, "lib").getAbsolutePath());
-        ldArgs.add("-L");
-        ldArgs.add(new File(new File(home, "gc"), "lib").getAbsolutePath());
+        gccArgs.add("-I");
+        gccArgs.add(new File(home, "include").getAbsolutePath());
+        gccArgs.add("-I");
+        gccArgs.add(new File(new File(home, "gc"), "include").getAbsolutePath());
+        gccArgs.add("-I");
+        gccArgs.add(new File(new File(home, "include"), "harmony").getAbsolutePath());
+        gccArgs.add("-L");
+        gccArgs.add(new File(home, "lib").getAbsolutePath());
+        gccArgs.add("-L");
+        gccArgs.add(new File(new File(home, "gc"), "lib").getAbsolutePath());
         
-//        String ldPath = "ld";
-//        if (ldBin != null) {
-//            ldPath = ldBin.getAbsolutePath();
+//        File mainObjectFile = new File(mainCFile.getParentFile(), "main.o");
+        exec(gccPath, "-o", outFile, "-DNULLVM_MAIN_CLASS=" + mainClass.replace('.', '/'),
+                "-DLINUX", "-DLINUX_X86_64", "-DHYX86_64", "-DIPv6_FUNCTION_SUPPORT", "-DHYPORT_LIBRARY_DEFINE",
+                "-g", gccOpts, gccArgs, "-lnullvm", "-lm", "-ldl", "-lpthread", mainCFile);
+//        files.add(mainObjectFile);
+//
+//        List<String> ldArgs = new ArrayList<String>();
+//        for (File f : libDirs) {
+//            ldArgs.add("-L");
+//            ldArgs.add(f.getAbsolutePath());
 //        }
-        
-        List<File> objectFileArgs = new ArrayList<File>();
-        List<String> libArgs = new ArrayList<String>();
-        for (File f : files) {
-            if (f.getName().endsWith(".a")) {
-                ldArgs.add("-L");
-                ldArgs.add(f.getParentFile().getAbsolutePath());                
-                libArgs.add("-l:" + f.getName());
-            } else {
-                objectFileArgs.add(f);
-            }
-        }
-        
-        exec(gccPath, "-o", outFile, "-g", "-Wl,--version-script", symbolsMapFile, 
-                gccOpts, "-rdynamic", ldArgs, objectFileArgs, "-lnullvm", "-lnullvm-rt", "-lm", "-ldl", "-lpthread",
-                "-Wl,--whole-archive", libArgs, "-Wl,--no-whole-archive", "-Wl,-Bstatic", "-lgc", "-Wl,-Bdynamic");
-
-//        exec(ldPath, "-o", outFile, "--version-script", symbolsMapFile, 
-//                ldOpts, ldArgs, objectFileArgs, "-lnullvm", "-lm", "-ldl", "-lpthread",
-//                "--whole-archive", libArgs, "--no-whole-archive", "-Bstatic", "-lgc", "-Bdynamic");
+//        ldArgs.add("-L");
+//        ldArgs.add(new File(home, "lib").getAbsolutePath());
+//        ldArgs.add("-L");
+//        ldArgs.add(new File(new File(home, "gc"), "lib").getAbsolutePath());
+//        
+////        String ldPath = "ld";
+////        if (ldBin != null) {
+////            ldPath = ldBin.getAbsolutePath();
+////        }
+//        
+//        List<File> objectFileArgs = new ArrayList<File>();
+//        List<String> libArgs = new ArrayList<String>();
+//        for (File f : files) {
+//            if (f.getName().endsWith(".a")) {
+//                ldArgs.add("-L");
+//                ldArgs.add(f.getParentFile().getAbsolutePath());                
+//                libArgs.add("-l:" + f.getName());
+//            } else {
+//                objectFileArgs.add(f);
+//            }
+//        }
+//        
+//        exec(gccPath, "-o", outFile, "-g", "-Wl,--version-script", symbolsMapFile, 
+//                gccOpts, "-rdynamic", ldArgs, objectFileArgs, "-lnullvm", "-lm", "-ldl", "-lpthread",
+//                "-Wl,--whole-archive", libArgs, "-Wl,--no-whole-archive", "-Wl,-Bstatic", "-lgc", "-Wl,-Bdynamic");
+//
+////        exec(ldPath, "-o", outFile, "--version-script", symbolsMapFile, 
+////                ldOpts, ldArgs, objectFileArgs, "-lnullvm", "-lm", "-ldl", "-lpthread",
+////                "--whole-archive", libArgs, "--no-whole-archive", "-Bstatic", "-lgc", "-Bdynamic");
     }
     
     private void stripArchive(File input, File output) throws IOException {
@@ -520,6 +442,37 @@ public class Main {
         }
     }
     
+    private void createArchive(File dir, File output) throws IOException {
+        if (verbose) {
+            stdout.format("Creating archive file '%s' from files in directory '%s'\n", output, dir);
+        }
+        
+        ZipOutputStream out = null;
+        try {
+            out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(output)));
+            
+            for (File f : (Collection<File>) FileUtils.listFiles(dir, null, true)) {
+                ZipEntry newEntry = new ZipEntry(f.getAbsolutePath().substring(dir.getAbsolutePath().length() + 1).replace(File.separatorChar, '/'));
+                newEntry.setTime(f.lastModified());
+                out.putNextEntry(newEntry);
+                InputStream in = null;
+                try {
+                    if (!f.getName().toLowerCase().endsWith(".class")) {
+                        in = new BufferedInputStream(new FileInputStream(f));
+                    } else {
+                        in = new ByteArrayInputStream(new byte[0]);
+                    }
+                    IOUtils.copy(in, out);
+                    out.closeEntry();
+                } finally {
+                    IOUtils.closeQuietly(in);
+                }
+            }
+        } finally {
+            IOUtils.closeQuietly(out);
+        }
+    }
+    
     private void copyResources(File srcDir, File destDir) throws IOException {
         FileFilter filter = new OrFileFilter(
                 new NotFileFilter(new SuffixFileFilter(".class", IOCase.INSENSITIVE)), 
@@ -561,22 +514,170 @@ public class Main {
     }
     
     private void run(String[] args) {
-        CmdLineParser parser = new CmdLineParser(this);
+                
         try {
-            parser.parseArgument(args);
-            if (help) {
-                printUsageAndExit(parser, null);
+            int i = 0;
+            while (i < args.length) {
+                if ("-cp".equals(args[i]) || "-classpath".equals(args[i])) {
+                    classpath = args[++i];
+                } else if ("-jar".equals(args[i])) {
+                    jarFile = new File(args[++i]);
+                } else if ("-o".equals(args[i])) {
+                    target = args[++i];
+                } else if ("-d".equals(args[i])) {
+                    output = new File(args[++i]);
+                } else if ("-cache".equals(args[i])) {
+                    cache = new File(args[++i]);
+                } else if ("-home".equals(args[i])) {
+                    home = new File(args[++i]);
+                } else if ("-run".equals(args[i])) {
+                    run = true;
+                } else if ("-verbose".equals(args[i])) {
+                    verbose = true;
+                } else if ("-clean".equals(args[i])) {
+                    clean = true;
+                } else if ("-help".equals(args[i]) || "-?".equals(args[i])) {
+                    printUsageAndExit(null);
+                } else if ("-ar-bin".equals(args[i])) {
+                    arBin = new File(args[++i]);
+                } else if ("-ar-opt".equals(args[i])) {
+                    arOpts.add(args[++i]);
+                } else if ("-gcc-bin".equals(args[i])) {
+                    gccBin = new File(args[++i]);
+                } else if ("-gcc-opt".equals(args[i])) {
+                    gccOpts.add(args[++i]);
+                } else if ("-llvm-bin-dir".equals(args[i])) {
+                    llvmBinDir = new File(args[++i]);
+                } else if ("-llc-opt".equals(args[i])) {
+                    llcOpts.add(args[++i]);
+                } else if ("-opt-opt".equals(args[i])) {
+                    optOpts.add(args[++i]);
+                } else if (args[i].startsWith("-D")) {
+                } else if (args[i].startsWith("-X")) {
+                } else if (args[i].startsWith("-verify:")) {
+                    try {
+                        verify = VerifyWhen.valueOf(args[i].substring("-verify:".length()).toUpperCase());
+                    } catch (Throwable t) {
+                        throw new IllegalArgumentException("Unrecognized verify option: " + args[i]);
+                    }
+                } else if (args[i].startsWith("-")) {
+                    throw new IllegalArgumentException("Unrecognized option: " + args[i]);
+                } else {
+                    mainClass = args[i++];
+                    break;
+                }
+                i++;
             }
+            
+            while (i < args.length) {
+                runArgs.add(args[i++]);
+            }
+            
             run();
         } catch (Throwable t) {
-            if (verbose && !(t instanceof CmdLineException)) {
+            String message = t.getMessage();
+            if (t instanceof StringIndexOutOfBoundsException) {
+                message = "Missing argument";
+            }
+            if (verbose && !(t instanceof StringIndexOutOfBoundsException) && !(t instanceof IllegalArgumentException)) {
                 t.printStackTrace();
             }
-            printUsageAndExit(parser, t.getMessage());
+            printUsageAndExit(message);
         }
+        
+//        CmdLineParser parser = new CmdLineParser(this);
+//        try {
+//            parser.parseArgument(args);
+//            if (help) {
+//                printUsageAndExit(parser, null);
+//            }
+//            run();
+//        } catch (Throwable t) {
+//            if (verbose && !(t instanceof CmdLineException)) {
+//                t.printStackTrace();
+//            }
+//            printUsageAndExit(parser, t.getMessage());
+//        }
     }
 
-    public void run() throws CmdLineException, IOException {
+    private List<String> processPathObjectFiles(List<PathObjectFiles> pofs, File dir) throws IOException {
+        List<String> jarNames = new ArrayList<String>();
+        int count = 0;
+        for (PathObjectFiles pof : pofs) {
+            String jarName = null;
+            if (pof.getPath() instanceof ZipFilePath) {
+                ZipFilePath path = (ZipFilePath) pof.getPath();
+                jarName = path.getFile().getName();
+                stripArchive(path.getFile(), new File(dir, jarName));
+            } else {
+                DirectoryPath path = (DirectoryPath) pof.getPath();
+                jarName = "classes" + (count++) + ".jar";
+                createArchive(path.getDir(), new File(dir, jarName));
+            }
+            jarNames.add(jarName);
+            
+            File outFile = new File(dir, jarName + ".so");
+            
+            if (verbose) {
+                stdout.format("Building dynamic library '%s'\n", outFile);
+            }
+            
+            String gccPath = "gcc";
+            if (gccBin != null) {
+                gccPath = gccBin.getAbsolutePath();
+            }
+            
+            List<String> ldArgs = new ArrayList<String>();
+            for (File f : libDirs) {
+                ldArgs.add("-L");
+                ldArgs.add(f.getAbsolutePath());
+            }
+            ldArgs.add("-L");
+            ldArgs.add(new File(home, "lib").getAbsolutePath());
+
+            List<File> objectFileArgs = new ArrayList<File>();
+            List<String> libArgs = new ArrayList<String>();
+            for (File f : pof.getObjectFiles()) {
+                if (f.getName().endsWith(".a")) {
+                    ldArgs.add("-L");
+                    ldArgs.add(f.getParentFile().getAbsolutePath());
+                    libArgs.add("-l:" + f.getName());
+                } else {
+                    objectFileArgs.add(f);
+                }
+            }
+            
+            exec(gccPath, "-o", outFile, "-g", "-shared", "-Wl,-soname," + outFile.getName(), 
+                    "-Wl,--version-script", symbolsMapFile, 
+                    gccOpts, ldArgs, objectFileArgs, "-lnullvm", "-lm",
+                    "-Wl,--whole-archive", libArgs, "-Wl,--no-whole-archive");
+        }
+        
+        return jarNames;
+    }
+    
+    public void run() throws IOException {
+        
+        if (jarFile != null) {
+            //mainClass = readMainClassFromManifest(jarFile);
+            classPathFiles.add(jarFile);
+        }
+        
+        if (mainClass == null) {
+            throw new IllegalArgumentException("No main class specified on command line or in JAR manifest");
+        }
+        
+        if (output == null) {
+            throw new IllegalArgumentException("No output dir specified");
+        }
+        if (classpath == null) {
+            throw new IllegalArgumentException("No classpath specified");
+        }
+        
+        if (verbose) {
+            stdout.println("Using main class: " + mainClass);
+            stdout.println("Run arguments: " + runArgs);
+        }
         
         classCache = new File(cache, "classes");
         classCache.mkdirs();
@@ -584,22 +685,11 @@ public class Main {
         libCache.mkdirs();
 
         if (target == null) {
-            target = mainClass != null ? mainClass : "a.out";
+            target = mainClass;
         }
         
-        if (!skipRtLib) {
-            bootClassPathFiles.add(new File(home, "lib/nullvm-rt.jar"));
-        }
+        bootClassPathFiles.add(new File(home, "lib/nullvm-rt.jar"));
 
-        if (jarFile != null) {
-            //mainClass = readMainClassFromManifest(jarFile);
-            classPathFiles.add(jarFile);
-        }
-        
-        if (mainClass == null) {
-            throw new CmdLineException("No main class specified on command line or in JAR manifest");
-        }
-        
         if (bootclasspath != null) {
             for (String p : bootclasspath.split(File.pathSeparator)) {
                 bootClassPathFiles.add(new File(p));
@@ -608,29 +698,6 @@ public class Main {
         if (classpath != null) {
             for (String p : classpath.split(File.pathSeparator)) {
                 classPathFiles.add(new File(p));
-            }
-        }
-        
-        bootClassPathFiles = removeDuplicates(bootClassPathFiles);
-        classPathFiles = removeDuplicates(classPathFiles);
-        
-        // Make sure all inputs exists
-        List<File> inputs = new ArrayList<File>();
-        inputs.addAll(bootClassPathFiles);
-        inputs.addAll(classPathFiles);
-        inputs = removeDuplicates(inputs);
-        for (File f : inputs) {
-            if (!f.exists()) {
-                throw new FileNotFoundException(f.getAbsolutePath());
-            }
-            if (isArchive(f)) {
-                if (!f.isFile()) {
-                    throw new IOException("Path is not a file: " + f.getAbsolutePath());
-                }
-            } else {
-                if (!f.isDirectory()) {
-                    throw new IOException("Path is not a directory: " + f.getAbsolutePath());
-                }
             }
         }
         
@@ -647,40 +714,33 @@ public class Main {
         symbolsMapFile = new File(tmpFile, "symbols.map");
         FileUtils.copyURLToFile(getClass().getResource("/symbols.map"), symbolsMapFile);
 
-        List<File> files = new ArrayList<File>();
-        for (File input : inputs) {
-            files.addAll(processClassFiles(input));
+        Clazzes clazzes = new Clazzes(bootClassPathFiles, classPathFiles);
+        List<PathObjectFiles> bootclasspathObjects = new ArrayList<PathObjectFiles>();
+        for (Path path : clazzes.getBootclasspathPaths()) {
+            bootclasspathObjects.add(new PathObjectFiles(path, processClassFiles(path)));
+        }
+        List<PathObjectFiles> classpathObjects = new ArrayList<PathObjectFiles>();
+        for (Path path : clazzes.getClasspathPaths()) {
+            classpathObjects.add(new PathObjectFiles(path, processClassFiles(path)));
         }
         
         output.mkdirs();
-        buildExecutable(files);
-        File bootCpClasses = new File(new File(output, "boot"), "classes");
-        bootCpClasses.mkdirs();
-        File bootCpLib = new File(new File(output, "boot"), "lib");
-        bootCpLib.mkdirs();
-        File cpClasses = new File(new File(output, "boot"), "classes");
-        cpClasses.mkdirs();
-        File cpLib = new File(new File(output, "boot"), "lib");
-        cpLib.mkdirs();
         
-        for (File f : new File(home, "lib").listFiles()) {
-            FileUtils.copyFileToDirectory(f, output);
-        }
+        buildExecutable();
+        FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libnullvm.so"), output);
+        FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libnullvm-rt.so"), output);
+        FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libgc.so.1"), output);
         
-        for (File f : bootClassPathFiles) {
-            if (isArchive(f)) {
-                stripArchive(f, new File(bootCpLib, f.getName()));
-            } else {
-                copyResources(f, bootCpClasses);
-            }
-        }
-        for (File f : classPathFiles) {
-            if (isArchive(f)) {
-                stripArchive(f, new File(cpLib, f.getName()));
-            } else {
-                copyResources(f, cpClasses);
-            }
-        }
+        File libBoot = new File(new File(output, "lib"), "boot");
+        libBoot.mkdirs();
+        File libMain = new File(new File(output, "lib"), "main");
+        libMain.mkdirs();
+        
+        List<String> bootJars = processPathObjectFiles(bootclasspathObjects, libBoot);
+        List<String> mainJars = processPathObjectFiles(classpathObjects, libMain);
+        
+        FileUtils.writeStringToFile(new File(libBoot, "files"), StringUtils.join(bootJars, ':'), "UTF-8");
+        FileUtils.writeStringToFile(new File(libMain, "files"), StringUtils.join(mainJars, ':'), "UTF-8");
         
         if (run) {
             runTarget();
@@ -736,22 +796,21 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        new Main().run(massageArgs(args));
+        new Main().run(args);
     }
     
-    private static String[] massageArgs(String[] args) {
-        ArrayList<String> newArgs = new ArrayList<String>(args.length);
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].startsWith("-X")) {
-                newArgs.add("-X");
-                newArgs.add(args[i].substring(2));
-            } else if (args[i].startsWith("-D")) {
-                newArgs.add("-D");
-                newArgs.add(args[i].substring(2));
-            } else {
-                newArgs.add(args[i]);
-            }
+    public static class PathObjectFiles {
+        private final Path path;
+        private final List<File> objectFiles;
+        public PathObjectFiles(Path path, List<File> objectFiles) {
+            this.path = path;
+            this.objectFiles = objectFiles;
         }
-        return newArgs.toArray(new String[newArgs.size()]);
+        public Path getPath() {
+            return path;
+        }
+        public List<File> getObjectFiles() {
+            return objectFiles;
+        }
     }
 }

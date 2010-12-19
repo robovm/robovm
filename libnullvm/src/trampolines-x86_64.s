@@ -492,6 +492,40 @@ _nvmCallAndCatchAll:
 */
 
 /* TODO: as in GCC 4.4 has support for unwind information using the .cfi directives. Maybe we should use those for exception handling? */
+
+	.section	.gcc_except_table,"a",@progbits
+	.align	4
+GCC_except_table1:
+.Lexception1:
+	.byte	255                     # @LPStart Encoding = omit
+	.byte	155                     # @TType Encoding = indirect pcrel sdata4
+	.byte	158                     # @TType base offset
+	.zero	2,128
+	.zero	1
+	.byte	3                       # Call site Encoding = udata4
+	.uleb128	26                  # Call site table length
+.Lset0 = .LnvmCall0TryCatchStart - .LnvmCall0Begin       # Region start
+	.long	.Lset0
+.Lset1 = .LnvmCall0TryCatchEnd - .LnvmCall0TryCatchStart # Region length
+	.long	.Lset1
+.Lset2 = .LnvmCall0TryCatchLandingPad - .LnvmCall0Begin  # Landing pad
+	.long	.Lset2
+	.uleb128	1                                            # Action
+.Lset3 = .LnvmCall0TryCatchEnd - .LnvmCall0Begin         # Region start
+	.long	.Lset3
+.Lset4 = .LnvmCall0End - .LnvmCall0TryCatchEnd           # Region length
+	.long	.Lset4
+	.long	0                       # Landing pad
+	.uleb128	0                   # Action
+                                # -- Action Record Table --
+                                  # Action Record
+	.sleb128	-1                    #   TypeInfo index
+	.sleb128	0                     #   Next action
+                                # -- Filter IDs --
+	.uleb128	0
+	.align	4
+
+/*
 GCC_except_table1:
 .Lexception1:
     .byte    255                     # @LPStart Encoding = omit
@@ -521,7 +555,63 @@ GCC_except_table1:
                                      # -- Filter IDs --
     .uleb128 0
     .align   4
+*/
 
+
+	.section	.eh_frame,"aw",@progbits
+.LEH_frame0:
+.Lsection_eh_frame0:
+.Leh_frame_common0:
+.Lset5 = .Leh_frame_common_end0-.Leh_frame_common_begin0 # Length of Common Information Entry
+	.long	.Lset5
+.Leh_frame_common_begin0:
+	.long	0                       # CIE Identifier Tag
+	.byte	1                       # DW_CIE_VERSION
+	.asciz	 "zPLR"                 # CIE Augmentation
+	.uleb128	1               # CIE Code Alignment Factor
+	.sleb128	-8              # CIE Data Alignment Factor
+	.byte	16                      # CIE Return Address Column
+	.uleb128	7               # Augmentation Size
+	.byte	155                     # Personality Encoding = indirect pcrel sdata4
+.Ltmp5:                                 # Personality
+	.long	.L_nvmPersonality.DW.stub-.Ltmp5
+	.byte	27                      # LSDA Encoding = pcrel sdata4
+	.byte	27                      # FDE Encoding = pcrel sdata4
+	.byte	12                      # DW_CFA_def_cfa
+	.uleb128	7               # Register
+	.uleb128	8               # Offset
+	.byte	144                     # DW_CFA_offset + Reg (16)
+	.uleb128	1               # Offset
+	.align	8
+.Leh_frame_common_end0:
+
+.LnvmCall0.eh:
+.Lset6 = .Leh_frame_end0-.Leh_frame_begin0 # Length of Frame Information Entry
+	.long	.Lset6
+.Leh_frame_begin0:
+.Lset7 = .Leh_frame_begin0-.Leh_frame_common0 # FDE CIE offset
+	.long	.Lset7
+.Ltmp6:                                 # FDE initial location
+	.long	.LnvmCall0Begin-.Ltmp6
+.Lset8 = .LnvmCall0End - .LnvmCall0Begin # FDE address range
+	.long	.Lset8
+	.uleb128	4               # Augmentation size
+.Ltmp7:                                 # Language Specific Data Area
+	.long	.Lexception1-.Ltmp7
+	.byte	4                       # DW_CFA_advance_loc4
+.Lset9 = .LnvmCall0TryCatchStart - .LnvmCall0Begin
+	.long	.Lset9
+	.byte	14                      # DW_CFA_def_cfa_offset
+	.uleb128	16              # Offset
+	.align	8
+.Leh_frame_end0:
+
+
+	.section	.data.rel,"aw",@progbits
+.L_nvmPersonality.DW.stub:
+	.quad	_nvmPersonality
+
+/*
     .section    .eh_frame,"aw",@progbits
 .LEH_frame0:
 .Lsection_eh_frame:
@@ -567,4 +657,4 @@ GCC_except_table1:
     .uleb128 16              # Offset
     .align   8
 .Leh_frame_end1:
-
+*/

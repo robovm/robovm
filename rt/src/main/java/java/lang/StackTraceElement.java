@@ -70,6 +70,10 @@ public final class StackTraceElement implements Serializable {
         lineNumber = line;
     }
 
+    StackTraceElement(Class<?> cls, String method, String file, int line) {
+        this(cls.getName(), method, file, line);
+    }
+    
     /**
      * <p>
      * Private, nullary constructor for VM use only.

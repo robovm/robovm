@@ -19,12 +19,8 @@ int main(int argc, char* argv[]) {
         fprintf(stderr, "nvmStartup(...) failed!\n");
         return 2;
     }
-    if (!nvmRun(env)) {
-        nvmExceptionPrintStackTrace(env, nvmExceptionOccurred(env), stderr);
-        return 3;
-    }
-    nvmShutdown();
-
+    nvmRun(env);
+    nvmShutdown(env, 0);
     return 0;
 }
 

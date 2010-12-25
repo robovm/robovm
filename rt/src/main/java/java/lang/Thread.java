@@ -129,7 +129,7 @@ public class Thread implements Runnable {
     private Runnable action = null;
     private ClassLoader contextClassLoader = null;
     private UncaughtExceptionHandler uncaughtExceptionHandler = null;
-    private boolean started = false;
+    boolean started = false;
     
     ThreadLocal.Values localValues = null;
     ThreadLocal.Values inheritableValues = null;
@@ -406,6 +406,14 @@ public class Thread implements Runnable {
         // End (C) DRLVM
     }
 
+    final void printStackTrace(Throwable t) {
+        System.err.print("Exception in thread \"");
+        System.err.print(name);
+        System.err.print("\" ");
+        t.printStackTrace(System.err);
+        System.err.flush();
+    }
+    
     /**
      * Copies an array with all Threads which are in the same ThreadGroup as the
      * receiver - and subgroups - into the array <code>threads</code> passed as
@@ -951,7 +959,7 @@ public class Thread implements Runnable {
      * @throws IllegalThreadStateException if the Thread has been started before
      * @see Thread#run
      */
-    public void start() {
+    public synchronized void start() {
         if (started) {
             throw new IllegalThreadStateException("Thread already started.");
         }
@@ -991,7 +999,7 @@ public class Thread implements Runnable {
      * leave your application and the VM in an unpredictable state.
      */
     @Deprecated
-    public final void stop(Throwable throwable) {
+    public final synchronized void stop(Throwable throwable) {
         if (throwable == null) {
             throw new NullPointerException();
         }

@@ -33,6 +33,7 @@ Class* java_lang_UnsatisfiedLinkError;
 Class* java_lang_ExceptionInInitializerError;
 Class* java_lang_VerifyError;
 
+Class* java_lang_Throwable;
 Class* java_lang_RuntimeException;
 Class* java_lang_ClassCastException;
 Class* java_lang_NullPointerException;
@@ -409,6 +410,8 @@ jboolean nvmInitClasses(Env* env) {
     java_lang_VerifyError = nvmFindClass(env, "java/lang/VerifyError");
     if (!java_lang_VerifyError) return FALSE;
 
+    java_lang_Throwable = nvmFindClass(env, "java/lang/Throwable");
+    if (!java_lang_Throwable) return FALSE;
     java_lang_RuntimeException = nvmFindClass(env, "java/lang/RuntimeException");
     if (!java_lang_RuntimeException) return FALSE;
     java_lang_ClassCastException = nvmFindClass(env, "java/lang/ClassCastException");
@@ -573,7 +576,6 @@ jboolean nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access
     field->name = name;
     field->desc = desc;
     field->access = access;
-    field->slot = clazz->fields ? clazz->fields->slot + 1 : 0;
     field->next = clazz->fields;
     clazz->fields = field;
     if (access & ACC_STATIC) {

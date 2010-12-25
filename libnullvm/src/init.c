@@ -92,10 +92,23 @@ jboolean nvmRun(Env* env) {
     jvalue args[1];
     args[0].l = (jobject) NULL;
     nvmCallVoidClassMethodA(env, clazz, method, args);
+    Object* throwable = nvmExceptionOccurred(env);
+    if (throwable) {
+        // TODO: Handle when the call to printStackTrace fails with an exception
+        nvmExceptionClear(env);
+        Method* printStackTrace = nvmGetInstanceMethod(env, java_lang_Thread, "printStackTrace", "(Ljava/lang/Throwable;)V");
+        if (printStackTrace) {
+            args[0].l = (jobject) throwable;
+            nvmCallVoidInstanceMethodA(env, env->currentThread->threadObj, printStackTrace, args);
+        }
+        nvmThrow(env, throwable);
+    }
     return !nvmExceptionCheck(env);
 }
 
-void nvmShutdown(void) {
+void nvmShutdown(Env* env, jint code) {
+    // TODO: Cleanup, stop threads.
+    exit(code);
 }
 
 // TODO: Move this to a more appropriate file

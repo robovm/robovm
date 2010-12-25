@@ -20,6 +20,8 @@ package java.lang;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.harmony.luni.internal.process.SystemProcess;
@@ -42,6 +44,22 @@ public class Runtime {
     * The Runtime interface.
     */
 
+    /**
+     * Holds the list of threads to run when the VM terminates
+     */
+    private List<Thread> shutdownHooks = new ArrayList<Thread>();
+
+    /**
+     * Reflects whether finalization should be run for all objects
+     * when the VM terminates.
+     */
+    private static boolean finalizeOnExit;
+    
+    /**
+     * Reflects whether we are already shutting down the VM.
+     */ 
+    private boolean shuttingDown;
+    
     /**
      * Prevent this class from being instantiated
      */
@@ -238,8 +256,54 @@ public class Runtime {
      *             running thread to terminate the virtual machine.
      * @see SecurityManager#checkExit
      */
-    public native void exit(int code);
+    public void exit(int code) {
+        // Start (C) Android
+        // Security checks
+        SecurityManager smgr = System.getSecurityManager();
+        if (smgr != null) {
+            smgr.checkExit(code);
+        }
 
+        // Make sure we don't try this several times
+        synchronized(this) {
+            if (!shuttingDown) {
+                shuttingDown = true;
+
+                Thread[] hooks;
+                synchronized (shutdownHooks) {
+                    // create a copy of the hooks
+                    hooks = new Thread[shutdownHooks.size()];
+                    shutdownHooks.toArray(hooks);
+                }
+
+                // Start all shutdown hooks concurrently
+                for (int i = 0; i < hooks.length; i++) {
+                    hooks[i].start();
+                }
+
+                // Wait for all shutdown hooks to finish
+                for (Thread hook : hooks) {
+                    try {
+                        hook.join();
+                    } catch (InterruptedException ex) {
+                        // Ignore, since we are at VM shutdown.
+                    }
+                }
+
+                // Ensure finalization on exit, if requested
+                if (finalizeOnExit) {
+                    runFinalization(true);
+                }
+
+                // Get out of here finally...
+                nativeExit(code, true);
+            }
+        }
+        // End (C) Android
+    }
+
+    private static native void nativeExit(int code, boolean isExit);
+    
     /**
      * Returns the amount of free memory resources which are available to the
      * running program.
@@ -297,6 +361,8 @@ public class Runtime {
      */
     public native void loadLibrary(String libName);
 
+    private native void runFinalization(boolean forced);
+    
     /**
      * Provides a hint to the virtual machine that it would be useful to attempt
      * to perform any outstanding object finalizations.
@@ -315,7 +381,15 @@ public class Runtime {
      * @deprecated This method is unsafe.
      */
     @Deprecated
-    public native static void runFinalizersOnExit(boolean run);
+    public static void runFinalizersOnExit(boolean run) {
+        // Start (C) Android
+        SecurityManager smgr = System.getSecurityManager();
+        if (smgr != null) {
+            smgr.checkExit(0);
+        }
+        finalizeOnExit = run;
+        // End (C) Android
+    }
 
     /**
      * Returns the total amount of memory which is available to the running
@@ -412,13 +486,35 @@ public class Runtime {
      *             if a SecurityManager is registered and the calling code
      *             doesn't have the RuntimePermission("shutdownHooks").
      */
-    public native void addShutdownHook(Thread hook); /* {
-        // Check hook for null
-        if (hook == null)
-            throw new NullPointerException("null is not allowed here");
-                
-        return;
-    }*/
+    public void addShutdownHook(Thread hook) {
+        // Start (C) Android
+        // Sanity checks
+        if (hook == null) {
+            throw new NullPointerException("Hook may not be null.");
+        }
+
+        if (shuttingDown) {
+            throw new IllegalStateException("VM already shutting down");
+        }
+
+        if (hook.started) {
+            throw new IllegalArgumentException("Hook has already been started");
+        }
+
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            sm.checkPermission(new RuntimePermission("shutdownHooks"));
+        }
+        
+        synchronized (shutdownHooks) {
+            if (shutdownHooks.contains(hook)) {
+                throw new IllegalArgumentException("Hook already registered.");
+            }
+    
+            shutdownHooks.add(hook);
+        }
+        // End (C) Android
+    }
 
     /**
      * Unregisters a previously registered virtual machine shutdown hook.
@@ -433,13 +529,27 @@ public class Runtime {
      *             if a SecurityManager is registered and the calling code
      *             doesn't have the RuntimePermission("shutdownHooks").
      */
-    public native boolean removeShutdownHook(Thread hook);/* {
-        // Check hook for null
-        if (hook == null)
-            throw new NullPointerException("null is not allowed here");
-                
-        return false;
-    }*/
+    public boolean removeShutdownHook(Thread hook) {
+        // Start (C) Android
+        // Sanity checks
+        if (hook == null) {
+            throw new NullPointerException("Hook may not be null.");
+        }
+
+        if (shuttingDown) {
+            throw new IllegalStateException("VM already shutting down");
+        }
+
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            sm.checkPermission(new RuntimePermission("shutdownHooks"));
+        }
+
+        synchronized (shutdownHooks) {
+            return shutdownHooks.remove(hook);
+        }
+        // End (C) Android
+    }
 
     /**
      * Causes the virtual machine to stop running, and the program to exit.
@@ -456,7 +566,18 @@ public class Runtime {
      * @see #removeShutdownHook(Thread)
      * @see #runFinalizersOnExit(boolean)
      */
-    public native void halt(int code);
+    public void halt(int code) {
+        // Start (C) Android
+        // Security checks
+        SecurityManager smgr = System.getSecurityManager();
+        if (smgr != null) {
+            smgr.checkExit(code);
+        }
+
+        // Get out of here...
+        nativeExit(code, false);
+        // End (C) Android
+    }
 
     /**
      * Returns the number of processors available to the virtual machine.

@@ -61,7 +61,6 @@ struct Field {
   char* name;
   char* desc;
   jint access;
-  jint slot;
 };
 
 struct ClassField {
@@ -80,7 +79,6 @@ struct Method {
   char* name;
   char* desc;
   jint access;
-  jint slot;
   char** exceptions;
   void* impl;
   jint vtableIndex;

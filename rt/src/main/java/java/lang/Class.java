@@ -101,6 +101,8 @@ public final class Class<T> implements Serializable, AnnotatedElement,
 
     private static final long serialVersionUID = 3206093459760846163L;
     
+    private String name = null;
+    
     private Class() {
         // prevent this class to be instantiated, instance should be created by
         // JVM only
@@ -770,7 +772,46 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *
      * @return the name of the class represented by this {@code Class}.
      */
-    public native String getName();
+    public String getName() {
+        if (name == null) {
+            String n = getName0();
+            if (isPrimitive()) {
+                switch (n.charAt(0)) {
+                case 'Z':
+                    name = "boolean";
+                    break;
+                case 'B':
+                    name = "boolean";
+                    break;
+                case 'S':
+                    name = "short";
+                    break;
+                case 'C':
+                    name = "char";
+                    break;
+                case 'I':
+                    name = "int";
+                    break;
+                case 'J':
+                    name = "long";
+                    break;
+                case 'F':
+                    name = "float";
+                    break;
+                case 'D':
+                    name = "double";
+                    break;
+                case 'V':
+                    name = "void";
+                    break;
+                }
+            } else {
+                name = n.replace('/', '.');
+            }
+        }
+        return name;
+    }
+    private native String getName0();
 
     /**
      * Returns the simple name of the class represented by this {@code Class} as
@@ -786,9 +827,7 @@ public final class Class<T> implements Serializable, AnnotatedElement,
         if (isArray()) {
             return getComponentType().getSimpleName() + "[]";
         }
-        
-        String name = getName();
-        
+                
         if (isAnonymousClass()) {
             return "";
         }
@@ -797,6 +836,7 @@ public final class Class<T> implements Serializable, AnnotatedElement,
             return getInnerClassName();
         }
         
+        String name = getName();
         int dot = name.lastIndexOf('.');
         if (dot != -1) {
             return name.substring(dot + 1);

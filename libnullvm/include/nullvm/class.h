@@ -21,6 +21,7 @@ extern Class* java_lang_Thread;
 extern Class* java_lang_ThreadGroup;
 extern Class* java_io_Serializable;
 
+extern Class* java_lang_Throwable;
 extern Class* java_lang_OutOfMemoryError;
 extern Class* java_lang_NoClassDefFoundError;
 extern Class* java_lang_IllegalAccessError;

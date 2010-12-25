@@ -4,7 +4,7 @@
 extern jint nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreNvmArgs);
 extern Env* nvmStartup(Options* options);
 extern jboolean nvmRun(Env* env);
-extern void nvmShutdown(void);
+extern void nvmShutdown(Env* env, jint code);
 extern void nvmAbort(char* format, ...);
 extern void* nvmAllocateMemory(Env* env, int size);
 extern DynamicLib** nvmGetNativeLibs(Env* env);

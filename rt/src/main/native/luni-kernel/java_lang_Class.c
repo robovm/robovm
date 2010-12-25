@@ -12,6 +12,10 @@ jboolean Java_java_lang_Class_getModifiers(JNIEnv* env, Class* thiz) {
     return thiz->access;
 }
 
+Object* Java_java_lang_Class_getName0(JNIEnv* env, Class* thiz) {
+    return nvmNewStringUTF(env, thiz->name, -1);
+}
+
 Class* Java_java_lang_Class_getComponentType(JNIEnv* _env, Class* thiz) {
     Env* env = (Env*) _env;
     if (!CLASS_IS_ARRAY(thiz)) {

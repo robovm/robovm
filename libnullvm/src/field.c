@@ -39,14 +39,6 @@ InstanceField* nvmGetInstanceField(Env* env, Class* clazz, char* name, char* des
     return (InstanceField*) field;
 }
 
-Field* nvmGetFieldBySlot(Env* env, Class* clazz, jint slot) {
-    Field* field;
-    for (field = clazz->fields; field != NULL; field = field->next) {
-        if (field->slot == slot) return field;
-    }
-    return NULL;
-}
-
 /*
 Field* nvmGetField(Class* clazz, char* name, char* desc, Class* caller) {
     Field* field;

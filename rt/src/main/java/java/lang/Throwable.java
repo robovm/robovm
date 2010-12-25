@@ -66,6 +66,8 @@ public class Throwable implements java.io.Serializable {
      */
     private StackTraceElement[] stackTrace;
 
+    private long state = 0;
+    
     /**
      * Constructs a new {@code Throwable} that includes the current stack trace.
      */
@@ -114,10 +116,6 @@ public class Throwable implements java.io.Serializable {
         cause = throwable;
     }
 
-    /*
-     * This native must be implemented to use the reference implementation of
-     * this class.
-     */
     /**
      * Records the stack trace from the point where this method has been called
      * to this {@code Throwable}. The method is public so that code which
@@ -126,8 +124,14 @@ public class Throwable implements java.io.Serializable {
      *
      * @return this {@code Throwable} instance.
      */
-    public native Throwable fillInStackTrace();
+    public Throwable fillInStackTrace() {
+        state = fillInStackTrace0();
+        stackTrace = null;
+        return this;
+    }
 
+    private native long fillInStackTrace0();
+    
     /**
      * Returns the extra information message which was provided when this
      * {@code Throwable} was created. Returns {@code null} if no message was
@@ -162,7 +166,7 @@ public class Throwable implements java.io.Serializable {
      * 
      * @return an array of StackTraceElement representing the stack
      */
-    private native StackTraceElement[] getStackTraceImpl();
+    private native StackTraceElement[] getStackTraceImpl(long state);
 
     /**
      * Returns the array of stack trace elements of this {@code Throwable}. Each
@@ -245,7 +249,7 @@ public class Throwable implements java.io.Serializable {
      */
     private StackTraceElement[] getInternalStackTrace() {
         if (stackTrace == null) {
-            stackTrace = getStackTraceImpl();
+            stackTrace = getStackTraceImpl(state);
         }
         return stackTrace;
     }

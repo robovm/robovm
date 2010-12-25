@@ -31,6 +31,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.io.FileUtils;
@@ -584,20 +585,6 @@ public class Main {
             }
             printUsageAndExit(message);
         }
-        
-//        CmdLineParser parser = new CmdLineParser(this);
-//        try {
-//            parser.parseArgument(args);
-//            if (help) {
-//                printUsageAndExit(parser, null);
-//            }
-//            run();
-//        } catch (Throwable t) {
-//            if (verbose && !(t instanceof CmdLineException)) {
-//                t.printStackTrace();
-//            }
-//            printUsageAndExit(parser, t.getMessage());
-//        }
     }
 
     private List<String> processPathObjectFiles(List<PathObjectFiles> pofs, File dir) throws IOException {
@@ -752,7 +739,11 @@ public class Main {
         Map env = new HashMap<String, String>();
         env.putAll(EnvironmentUtils.getProcEnvironment());
         env.put("LD_LIBRARY_PATH", output.getAbsolutePath());
-        execWithEnv(output, env, new File(output, target).getAbsolutePath());
+        try {
+            execWithEnv(output, env, new File(output, target).getAbsolutePath());
+        } catch (ExecuteException e) {
+            System.exit(e.getExitValue());
+        }
     }
     
     public void setOutput(File output) {

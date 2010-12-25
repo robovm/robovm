@@ -3,6 +3,7 @@
 
 #define METHOD_IS_PUBLIC(m) (m->access & ACC_PUBLIC)
 #define METHOD_IS_STATIC(m) (m->access & ACC_STATIC)
+#define METHOD_IS_NATIVE(m) (m->access & ACC_NATIVE)
 #define METHOD_IS_CONSTRUCTOR(m) (!strcmp("<init>", m->name))
 #define METHOD_IS_CLASS_INITIALIZER(m) (!strcmp("<clinit>", m->name))
 

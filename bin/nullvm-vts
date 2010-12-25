@@ -3,5 +3,5 @@
 BASE=$(cd $(dirname $0)/..; pwd -P)
 NULLVMCJAR=$(ls $BASE/nullvmc/target/nullvm-compiler-*one-jar.jar 2> /dev/null)
 
-java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -jar $NULLVMCJAR -verbose -verify:defer -run -d $(mktemp -d) $@
+java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -jar $NULLVMCJAR -verify:defer -run -d $(mktemp -d) $@
 

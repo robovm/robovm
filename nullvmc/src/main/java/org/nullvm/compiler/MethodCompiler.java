@@ -376,6 +376,11 @@ public class MethodCompiler {
                 for (LandingPadHandler handler : lpad.getHandlers()) {
                     String type = handler.getType();
                     if (type == null || type.equals("java/lang/Throwable")) {
+                        throwable = tmpr("throwable");
+                        out.format("    %s = load %s* %s\n", throwable, throwablePtr.getType(), throwablePtr);
+                        setFrame(handler.getFrame());
+                        stack.pop(); // Remove top of stack to make room for the actual throwable
+                        push1(throwable);
                         out.format("    br label %%%s\n", handler.getLabel());
                         alwaysMatches = true;
                         break; // Skip the rest since this handler will match anything that can be thrown.

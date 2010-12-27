@@ -1,13 +1,28 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,33 +36,13 @@ package java.lang.reflect;
  * This class provides static methods to create and access arrays dynamically.
  */
 public final class Array {
-    
+
     /**
      * Prevent this class from being instantiated.
      */
     private Array(){
         //do nothing
     }
-    
-    /**
-     * <p>TODO Document this method. Is it actually used?</p>
-     * @param componentType
-     * @param dimensions
-     * @param dimensionsArray
-     * @return
-     */
-    @SuppressWarnings("unused")
-    private static native Object multiNewArrayImpl(Class<?> componentType,
-            int dimensions, int[] dimensionsArray);
-
-    /**
-     * <p>TODO Document this method. Is it actually used?</p>
-     * @param componentType
-     * @param dimension
-     * @return
-     */
-    @SuppressWarnings("unused")
-    private static native Object newArrayImpl(Class<?> componentType, int dimension);
 
     /**
      * Returns the element of the array at the specified index. This reproduces
@@ -58,7 +53,9 @@ public final class Array {
      *            the array
      * @param index
      *            the index
+     *
      * @return the requested element, possibly wrapped
+     *
      * @throws NullPointerException
      *             if the array is null
      * @throws IllegalArgumentException
@@ -66,8 +63,40 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code  index < 0 || index >= array.length}
      */
-	public static native Object get(Object array, int index)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static Object get(Object array, int index)
+            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof Object[])
+            return ((Object[]) array)[index];
+
+        if (array instanceof boolean[])
+            return ((boolean[]) array)[index] ? Boolean.TRUE : Boolean.FALSE;
+
+        if (array instanceof byte[])
+            return Byte.valueOf(((byte[]) array)[index]);
+
+        if (array instanceof char[])
+            return Character.valueOf(((char[]) array)[index]);
+
+        if (array instanceof short[])
+            return Short.valueOf(((short[]) array)[index]);
+
+        if (array instanceof int[])
+            return Integer.valueOf(((int[]) array)[index]);
+
+        if (array instanceof long[])
+            return Long.valueOf(((long[]) array)[index]);
+
+        if (array instanceof float[])
+            return new Float(((float[]) array)[index]);
+
+        if (array instanceof double[])
+            return new Double(((double[]) array)[index]);
+
+        if (array == null)
+            throw new NullPointerException();
+
+        throw new IllegalArgumentException("Not an array");
+    }
 
     /**
      * Returns the element of the array at the specified index, converted to a
@@ -78,7 +107,9 @@ public final class Array {
      *            the array
      * @param index
      *            the index
+     *
      * @return the requested element
+     *
      * @throws NullPointerException
      *             if the {@code array} is {@code null}
      * @throws IllegalArgumentException
@@ -87,8 +118,18 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code index < 0 || index >= array.length}
      */
-	public static native boolean getBoolean(Object array, int index)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static boolean getBoolean(Object array, int index)
+            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof boolean[]) {
+            return ((boolean[]) array)[index];
+        } else if (array == null) {
+            throw new NullPointerException();
+        } else if (array.getClass().isArray()) {
+            throw new IllegalArgumentException("Wrong array type");
+        } else {
+            throw new IllegalArgumentException("Not an array");
+        }
+    }
 
     /**
      * Returns the element of the array at the specified index, converted to a
@@ -99,7 +140,9 @@ public final class Array {
      *            the array
      * @param index
      *            the index
+     *
      * @return the requested element
+     *
      * @throws NullPointerException
      *             if the {@code array} is {@code null}
      * @throws IllegalArgumentException
@@ -108,8 +151,14 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code index < 0 || index >= array.length}
      */
-	public static native byte getByte(Object array, int index)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static byte getByte(Object array, int index)
+            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof byte[]) {
+            return ((byte[]) array)[index];
+        } else {
+            return getBoolean(array, index) ? (byte)1 : (byte)0;
+        }
+    }
 
     /**
      * Returns the element of the array at the specified index, converted to a
@@ -120,7 +169,9 @@ public final class Array {
      *            the array
      * @param index
      *            the index
+     *
      * @return the requested element
+     *
      * @throws NullPointerException
      *             if the {@code array} is {@code null}
      * @throws IllegalArgumentException
@@ -129,8 +180,18 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code index < 0 || index >= array.length}
      */
-	public static native char getChar(Object array, int index)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static char getChar(Object array, int index)
+            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof char[]) {
+            return ((char[]) array)[index];
+        } else if (array == null) {
+            throw new NullPointerException();
+        } else if (array.getClass().isArray()) {
+            throw new IllegalArgumentException("Wrong array type");
+        } else {
+            throw new IllegalArgumentException("Not an array");
+        }
+    }
 
     /**
      * Returns the element of the array at the specified index, converted to a
@@ -141,7 +202,9 @@ public final class Array {
      *            the array
      * @param index
      *            the index
+     *
      * @return the requested element
+     *
      * @throws NullPointerException
      *             if the {@code array} is {@code null}
      * @throws IllegalArgumentException
@@ -150,8 +213,14 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code index < 0 || index >= array.length}
      */
-	public static native double getDouble(Object array, int index)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static double getDouble(Object array, int index)
+            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof double[]) {
+            return ((double[]) array)[index];
+        } else {
+            return getFloat(array, index);
+        }
+    }
 
     /**
      * Returns the element of the array at the specified index, converted to a
@@ -162,7 +231,9 @@ public final class Array {
      *            the array
      * @param index
      *            the index
+     *
      * @return the requested element
+     *
      * @throws NullPointerException
      *             if the {@code array} is {@code null}
      * @throws IllegalArgumentException
@@ -171,8 +242,14 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code index < 0 || index >= array.length}
      */
-	public static native float getFloat(Object array, int index)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static float getFloat(Object array, int index)
+            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof float[]) {
+            return ((float[]) array)[index];
+        } else {
+            return getLong(array, index);
+        }
+    }
 
     /**
      * Returns the element of the array at the specified index, converted to an
@@ -183,7 +260,9 @@ public final class Array {
      *            the array
      * @param index
      *            the index
+     *
      * @return the requested element
+     *
      * @throws NullPointerException
      *             if the {@code array} is {@code null}
      * @throws IllegalArgumentException
@@ -192,8 +271,14 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code index < 0 || index >= array.length}
      */
-	public static native int getInt(Object array, int index)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static int getInt(Object array, int index)
+            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof int[]) {
+            return ((int[]) array)[index];
+        } else {
+            return getShort(array, index);
+        }
+    }
 
     /**
      * Returns the length of the array. This reproduces the effect of {@code
@@ -201,14 +286,47 @@ public final class Array {
      *
      * @param array
      *            the array
+     *
      * @return the length of the array
+     *
      * @throws NullPointerException
      *             if the {@code array} is {@code null}
      * @throws IllegalArgumentException
      *             if {@code array} is not an array
      */
-	public static native int getLength(Object array)
-			throws IllegalArgumentException;
+    public static int getLength(Object array) {
+        if (array instanceof Object[])
+            return ((Object[]) array).length;
+
+        if (array instanceof boolean[])
+            return ((boolean[]) array).length;
+
+        if (array instanceof byte[])
+            return ((byte[]) array).length;
+
+        if (array instanceof char[])
+            return ((char[]) array).length;
+
+        if (array instanceof short[])
+            return ((short[]) array).length;
+
+        if (array instanceof int[])
+            return ((int[]) array).length;
+
+        if (array instanceof long[])
+            return ((long[]) array).length;
+
+        if (array instanceof float[])
+            return ((float[]) array).length;
+
+        if (array instanceof double[])
+            return ((double[]) array).length;
+
+        if (array == null)
+            throw new NullPointerException();
+
+        throw new IllegalArgumentException("Not an array");
+    }
 
     /**
      * Returns the element of the array at the specified index, converted to a
@@ -219,7 +337,9 @@ public final class Array {
      *            the array
      * @param index
      *            the index
+     *
      * @return the requested element
+     *
      * @throws NullPointerException
      *             if the {@code array} is {@code null}
      * @throws IllegalArgumentException
@@ -228,8 +348,14 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code index < 0 || index >= array.length}
      */
-	public static native long getLong(Object array, int index)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static long getLong(Object array, int index)
+            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof long[]) {
+            return ((long[]) array)[index];
+        } else {
+            return getInt(array, index);
+        }
+    }
 
     /**
      * Returns the element of the array at the specified index, converted to a
@@ -240,7 +366,9 @@ public final class Array {
      *            the array
      * @param index
      *            the index
+     *
      * @return the requested element
+     *
      * @throws NullPointerException
      *             if the {@code array} is {@code null}
      * @throws IllegalArgumentException
@@ -249,8 +377,13 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code index < 0 || index >= array.length}
      */
-	public static native short getShort(Object array, int index)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static short getShort(Object array, int index)
+            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof short[])
+            return ((short[]) array)[index];
+
+        return getByte(array, index);
+    }
 
     /**
      * Returns a new multidimensional array of the specified component type and
@@ -262,7 +395,9 @@ public final class Array {
      *            the component type of the new array
      * @param dimensions
      *            the dimensions of the new array
+     *
      * @return the new array
+     *
      * @throws NullPointerException
      *             if the component type is {@code null}
      * @throws NegativeArraySizeException
@@ -271,10 +406,25 @@ public final class Array {
      *             if the array of dimensions is of size zero, or exceeds the
      *             limit of the number of dimension for an array (currently 255)
      */
-	public static Object newInstance(Class<?> componentType, int[] dimensions)
-			throws NegativeArraySizeException, IllegalArgumentException {
-		return null;
-	}
+    public static Object newInstance(Class<?> componentType, int... dimensions)
+            throws NegativeArraySizeException, IllegalArgumentException {
+        if (dimensions.length <= 0 || dimensions.length > 255)
+            throw new IllegalArgumentException("Bad number of dimensions");
+
+        if (componentType == Void.TYPE)
+            throw new IllegalArgumentException();
+
+        if (componentType == null)
+            throw new NullPointerException();
+
+        return createMultiArray(componentType, dimensions);
+    }
+
+    /*
+     * Create a multi-dimensional array of objects with the specified type.
+     */
+    native private static Object createMultiArray(Class<?> componentType,
+        int[] dimensions) throws NegativeArraySizeException;
 
     /**
      * Returns a new array of the specified component type and length. This
@@ -284,16 +434,54 @@ public final class Array {
      *            the component type of the new array
      * @param size
      *            the length of the new array
+     *
      * @return the new array
+     *
      * @throws NullPointerException
      *             if the component type is null
      * @throws NegativeArraySizeException
      *             if {@code size < 0}
      */
-	public static Object newInstance(Class<?> componentType, int size)
-			throws NegativeArraySizeException {
-		return null;
-	}
+    public static Object newInstance(Class<?> componentType, int size)
+            throws NegativeArraySizeException {
+        if (!componentType.isPrimitive())
+            return createObjectArray(componentType, size);
+
+        if (componentType == Boolean.TYPE)
+            return new boolean[size];
+
+        if (componentType == Byte.TYPE)
+            return new byte[size];
+
+        if (componentType == Character.TYPE)
+            return new char[size];
+
+        if (componentType == Short.TYPE)
+            return new short[size];
+
+        if (componentType == Integer.TYPE)
+            return new int[size];
+
+        if (componentType == Long.TYPE)
+            return new long[size];
+
+        if (componentType == Float.TYPE)
+            return new float[size];
+
+        if (componentType == Double.TYPE)
+            return new double[size];
+
+        if (componentType == Void.TYPE)
+            throw new IllegalArgumentException();
+
+        throw new RuntimeException(); // should be impossible
+    }
+
+    /*
+     * Create a one-dimensional array of objects with the specified type.
+     */
+    native private static Object createObjectArray(Class<?> componentType,
+        int length) throws NegativeArraySizeException;
 
     /**
      * Sets the element of the array at the specified index to the value. This
@@ -315,8 +503,43 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code  index < 0 || index >= array.length}
      */
-	public static native void set(Object array, int index, Object value)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static void set(Object array, int index, Object value)
+            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (!array.getClass().isArray()) {
+            throw new IllegalArgumentException("Not an array type");
+        }
+
+        if (array instanceof Object[]) {
+            if (value != null &&
+                !array.getClass().getComponentType().isInstance(value)) {
+                // incompatible object type for this array
+                throw new IllegalArgumentException("Wrong array type");
+            }
+
+            ((Object[]) array)[index] = value;
+        } else {
+            if (value == null) {
+                throw new IllegalArgumentException("Primitive array can't take null values.");
+            }
+
+            if (value instanceof Boolean)
+                setBoolean(array, index, ((Boolean) value).booleanValue());
+            else if (value instanceof Byte)
+                setByte(array, index, ((Byte) value).byteValue());
+            else if (value instanceof Character)
+                setChar(array, index, ((Character) value).charValue());
+            else if (value instanceof Short)
+                setShort(array, index, ((Short) value).shortValue());
+            else if (value instanceof Integer)
+                setInt(array, index, ((Integer) value).intValue());
+            else if (value instanceof Long)
+                setLong(array, index, ((Long) value).longValue());
+            else if (value instanceof Float)
+                setFloat(array, index, ((Float) value).floatValue());
+            else if (value instanceof Double)
+                setDouble(array, index, ((Double) value).doubleValue());
+        }
+    }
 
     /**
      * Sets the element of the array at the specified index to the {@code
@@ -338,8 +561,13 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code  index < 0 || index >= array.length}
      */
-	public static native void setBoolean(Object array, int index, boolean value)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static void setBoolean(Object array, int index, boolean value) {
+        if (array instanceof boolean[]) {
+            ((boolean[]) array)[index] = value;
+        } else {
+            setByte(array, index, value ? (byte)1 : (byte)0);
+        }
+    }
 
     /**
      * Sets the element of the array at the specified index to the {@code byte}
@@ -351,6 +579,7 @@ public final class Array {
      *            the index
      * @param value
      *            the new value
+     *
      * @throws NullPointerException
      *             if the {@code array} is {@code null}
      * @throws IllegalArgumentException
@@ -359,8 +588,14 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code  index < 0 || index >= array.length}
      */
-	public static native void setByte(Object array, int index, byte value)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static void setByte(Object array, int index, byte value)
+            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof byte[]) {
+            ((byte[]) array)[index] = value;
+        } else {
+            setShort(array, index, value);
+        }
+    }
 
     /**
      * Set the element of the array at the specified index to the {@code char}
@@ -372,6 +607,7 @@ public final class Array {
      *            the index
      * @param value
      *            the new value
+     *
      * @throws NullPointerException
      *             if the {@code array} is {@code null}
      * @throws IllegalArgumentException
@@ -380,8 +616,18 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code  index < 0 || index >= array.length}
      */
-	public static native void setChar(Object array, int index, char value)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static void setChar(Object array, int index, char value)
+            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof char[]) {
+            ((char[]) array)[index] = value;
+        } else if (array == null) {
+            throw new NullPointerException();
+        } else if (!array.getClass().isArray()) {
+            throw new IllegalArgumentException("Not an array");
+        } else {
+            throw new IllegalArgumentException("Wrong array type");
+        }
+    }
 
     /**
      * Set the element of the array at the specified index to the {@code double}
@@ -393,6 +639,7 @@ public final class Array {
      *            the index
      * @param value
      *            the new value
+     *
      * @throws NullPointerException
      *             if the {@code array} is {@code null}
      * @throws IllegalArgumentException
@@ -401,8 +648,18 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code  index < 0 || index >= array.length}
      */
-	public static native void setDouble(Object array, int index, double value)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static void setDouble(Object array, int index, double value)
+            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof double[]) {
+            ((double[]) array)[index] = value;
+        } else if (array == null) {
+            throw new NullPointerException();
+        } else if (!array.getClass().isArray()) {
+            throw new IllegalArgumentException("Not an array");
+        } else {
+            throw new IllegalArgumentException("Wrong array type");
+        }
+    }
 
     /**
      * Set the element of the array at the specified index to the {@code float}
@@ -414,6 +671,7 @@ public final class Array {
      *            the index
      * @param value
      *            the new value
+     *
      * @throws NullPointerException
      *             if the {@code array} is {@code null}
      * @throws IllegalArgumentException
@@ -422,8 +680,14 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code  index < 0 || index >= array.length}
      */
-	public static native void setFloat(Object array, int index, float value)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static void setFloat(Object array, int index, float value)
+            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof float[]) {
+            ((float[]) array)[index] = value;
+        } else {
+            setDouble(array, index, value);
+        }
+    }
 
     /**
      * Set the element of the array at the specified index to the {@code int}
@@ -435,6 +699,7 @@ public final class Array {
      *            the index
      * @param value
      *            the new value
+     *
      * @throws NullPointerException
      *             if the {@code array} is {@code null}
      * @throws IllegalArgumentException
@@ -443,8 +708,14 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code  index < 0 || index >= array.length}
      */
-	public static native void setInt(Object array, int index, int value)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static void setInt(Object array, int index, int value)
+            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof int[]) {
+            ((int[]) array)[index] = value;
+        } else {
+            setLong(array, index, value);
+        }
+    }
 
     /**
      * Set the element of the array at the specified index to the {@code long}
@@ -456,6 +727,7 @@ public final class Array {
      *            the index
      * @param value
      *            the new value
+     *
      * @throws NullPointerException
      *             if the {@code array} is {@code null}
      * @throws IllegalArgumentException
@@ -464,8 +736,14 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code  index < 0 || index >= array.length}
      */
-	public static native void setLong(Object array, int index, long value)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static void setLong(Object array, int index, long value)
+            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof long[]) {
+            ((long[]) array)[index] = value;
+        } else {
+            setFloat(array, index, value);
+        }
+    }
 
     /**
      * Set the element of the array at the specified index to the {@code short}
@@ -477,6 +755,7 @@ public final class Array {
      *            the index
      * @param value
      *            the new value
+     *
      * @throws NullPointerException
      *             if the {@code array} is {@code null}
      * @throws IllegalArgumentException
@@ -485,7 +764,13 @@ public final class Array {
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code  index < 0 || index >= array.length}
      */
-	public static native void setShort(Object array, int index, short value)
-			throws IllegalArgumentException, ArrayIndexOutOfBoundsException;
+    public static void setShort(Object array, int index, short value)
+            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof short[]) {
+            ((short[]) array)[index] = value;
+        } else {
+            setInt(array, index, value);
+        }
+    }
 
 }

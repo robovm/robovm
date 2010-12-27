@@ -17,10 +17,10 @@ int main(int argc, char* argv[]) {
     Env* env = nvmStartup(&options);
     if (!env) {
         fprintf(stderr, "nvmStartup(...) failed!\n");
-        return 2;
+        return 1;
     }
-    nvmRun(env);
-    nvmShutdown(env, 0);
-    return 0;
+    jint result = nvmRun(env) ? 0 : 1;
+    nvmShutdown(env, result);
+    return result;
 }
 

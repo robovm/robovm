@@ -17,7 +17,7 @@ Class* java_lang_Float;
 Class* java_lang_Double;
 Class* java_lang_Cloneable;
 Class* java_lang_Thread;
-Class* java_lang_VMThread;
+Class* java_lang_Runtime;
 Class* java_lang_ThreadGroup;
 Class* java_io_Serializable;
 
@@ -388,6 +388,8 @@ jboolean nvmInitClasses(Env* env) {
     if (!java_lang_ThreadGroup) return FALSE;
     java_io_Serializable = nvmFindClass(env, "java/io/Serializable");
     if (!java_io_Serializable) return FALSE;
+    java_lang_Runtime = nvmFindClass(env, "java/lang/Runtime");
+    if (!java_lang_Runtime) return FALSE;
 
     java_lang_Error = nvmFindClass(env, "java/lang/Error");
     if (!java_lang_Error) return FALSE;
@@ -535,13 +537,10 @@ Class* nvmAllocateClass(Env* env, char* className, Class* superclass, jint acces
     clazz->instanceDataOffset = clazz->superclass 
                ? clazz->superclass->instanceDataOffset + clazz->superclass->instanceDataSize
                : 0;
-    return clazz;
-}
+    // Make sure clazz->instanceDataOffset is aligned properly so that the GC will be able to find pointers
+    // TODO: For now we assume that the alignment equals the size of pointers
+    while (clazz->instanceDataOffset & (sizeof(void*) - 1)) clazz->instanceDataOffset++;
 
-Class* nvmAllocateSystemClass(Env* env, char* className, Class* superclass, jint access, jint classDataSize, jint instanceDataSize) {
-    Class* clazz = nvmAllocateClass(env, className, superclass, access, classDataSize, instanceDataSize);
-    if (!clazz) return NULL;
-    clazz->system = TRUE;
     return clazz;
 }
 
@@ -727,5 +726,14 @@ void nvmIterateLoadedClasses(Env* env, jboolean (*f)(Class*, void*), void* data)
     d[0] = f;
     d[1] = data;
     nvmMapForEach(env, nameToClassMap, classIterator, d);
+}
+
+static jboolean dumpClassesIterator(Class* clazz, void* d) {
+    fprintf(stderr, "%p: %s\n", clazz, clazz->name);
+    return TRUE;
+}
+
+void nvmDumpLoadedClasses(Env* env) {
+    nvmIterateLoadedClasses(env, dumpClassesIterator, NULL);
 }
 

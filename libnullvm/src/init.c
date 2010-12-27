@@ -114,6 +114,7 @@ void nvmShutdown(Env* env, jint code) {
 // TODO: Move this to a more appropriate file
 void* nvmAllocateMemory(Env* env, int size) {
     void* m = GC_MALLOC(size);
+//    void* m = calloc(1, size);
     if (!m) {
         nvmThrowOutOfMemoryError(env);
         return NULL;

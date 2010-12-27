@@ -166,7 +166,7 @@ jint nvmThrowNegativeArraySizeException(Env* env) {
 }
 
 jint nvmThrowUnsatisfiedLinkError(Env* env) {
-    // TODO: Message should look like ?
+    // TODO: Message should look like "java.lang.UnsatisfiedLinkError: Foo.nativeFunction()V"
     return nvmThrowNew(env, java_lang_UnsatisfiedLinkError, "");
 }
 

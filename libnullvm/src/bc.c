@@ -582,12 +582,16 @@ void _nvmBcResolveMethodForInvokeStatic(InvokeStatic* i, Env* env) {
 
 void* _nvmBcGetMethodImplForInvokeVirtual(InvokeVirtual* i, Env* env, Object* obj) {
     // TODO: Remove once we have fast virtual method dispatch in place
-    return nvmGetInstanceMethod(env, obj->clazz, i->common->name, i->common->desc)->impl;
+    Method* method = nvmGetInstanceMethod(env, obj->clazz, i->common->name, i->common->desc);
+    if (!method) _nvmBcThrow(env, nvmExceptionOccurred(env));
+    return method->impl;
 }
 
 void* _nvmBcGetMethodImplForInvokeInterface(InvokeInterface* i, Env* env, Object* obj) {
     // TODO: Remove once we have fast interface method dispatch in place
-    return nvmGetInstanceMethod(env, obj->clazz, i->common->name, i->common->desc)->impl;
+    Method* method = nvmGetInstanceMethod(env, obj->clazz, i->common->name, i->common->desc);
+    if (!method) _nvmBcThrow(env, nvmExceptionOccurred(env));
+    return method->impl;
 }
 
 void _nvmBcResolveMethodForInvokeVirtualCommon(InvokeVirtualCommon* common, Env* env) {

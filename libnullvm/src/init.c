@@ -102,6 +102,7 @@ jboolean nvmRun(Env* env) {
             nvmCallVoidInstanceMethodA(env, env->currentThread->threadObj, printStackTrace, args);
         }
         nvmThrow(env, throwable);
+        // TODO: Wait for other threads to finish?
     }
     return !nvmExceptionCheck(env);
 }

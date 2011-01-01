@@ -1,8 +1,11 @@
 #include <nullvm.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <sys/types.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <pwd.h>
+#include <sys/utsname.h>
 
 jint Java_java_lang_System_identityHashCode(JNIEnv* env, jclass clazz, jobject o) {
     return (jint) o;
@@ -46,8 +49,12 @@ static jboolean setProperty(Env* env, ObjectArray** props, jint index, char* nam
 }
 
 ObjectArray* Java_java_lang_System_getPropertyList(Env* env, Class* clazz) {
-    ObjectArray* props = NULL;
+    struct passwd* pwd = getpwuid(getuid());
+    if (!pwd) return NULL; // TODO: Throw exception?
+    struct utsname os;
+    if (uname(&os) == -1) return NULL; // TODO: Throw exception?
 
+    ObjectArray* props = NULL;
     jint i = 0;
     if (!setProperty(env, &props, i++, "java.boot.class.path", "")) return NULL;
     if (!setProperty(env, &props, i++, "java.class.path", "")) return NULL;
@@ -70,14 +77,15 @@ ObjectArray* Java_java_lang_System_getPropertyList(Env* env, Class* clazz) {
 
     // TODO: Set java.vm.* and java.specification.*
 
-    // TODO: Don't hard code these
-    if (!setProperty(env, &props, i++, "os.arch", "amd64")) return NULL;
-    if (!setProperty(env, &props, i++, "os.name", "Linux")) return NULL;
-    if (!setProperty(env, &props, i++, "os.version", "2.6.32-24-generic")) return NULL;
-    if (!setProperty(env, &props, i++, "user.home", getenv("HOME"))) return NULL;
-    if (!setProperty(env, &props, i++, "user.name", getenv("USER"))) return NULL;
+    if (!setProperty(env, &props, i++, "os.arch", os.machine)) return NULL;
+    if (!setProperty(env, &props, i++, "os.name", os.sysname)) return NULL;
+    if (!setProperty(env, &props, i++, "os.version", os.release)) return NULL;
+    if (!setProperty(env, &props, i++, "user.home", pwd->pw_dir)) return NULL;
+    if (!setProperty(env, &props, i++, "user.name", pwd->pw_name)) return NULL;
     char path[PATH_MAX];
     if (!setProperty(env, &props, i++, "user.dir", getcwd(path, sizeof(path)))) return NULL;
+
+    // TODO: Don't hard code these
     if (!setProperty(env, &props, i++, "file.separator", "/")) return NULL;
     if (!setProperty(env, &props, i++, "line.separator", "\n")) return NULL;
     if (!setProperty(env, &props, i++, "path.separator", ":")) return NULL;

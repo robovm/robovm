@@ -64,7 +64,6 @@ extern Class* array_D;
 extern jboolean nvmInitClasses(Env* env);
 
 extern Class* nvmAllocateClass(Env* env, char* className, Class* superclass, jint access, jint classDataSize, jint instanceDataSize);
-extern Class* nvmAllocateSystemClass(Env* env, char* className, Class* superclass, jint access, jint classDataSize, jint instanceDataSize);
 extern jboolean nvmAddInterface(Env* env, Class* clazz, Class* interface);
 extern jboolean nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset);
 extern jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl);

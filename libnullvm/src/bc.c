@@ -193,16 +193,6 @@ void _nvmBcAllocateClass(Env* env, char* className, char* superclassName, jint a
     if (!c) _nvmBcThrow(env, nvmExceptionOccurred(env));
 }
 
-void _nvmBcAllocateSystemClass(Env* env, char* className, char* superclassName, jint access, jint classDataSize, jint instanceDataSize) {
-    Class* superclass = NULL;
-    if (superclassName) {
-        superclass = nvmFindClass(env, superclassName);
-        if (!superclass) _nvmBcThrow(env, nvmExceptionOccurred(env));
-    }
-    Class* c = nvmAllocateSystemClass(env, className, superclass, access, classDataSize, instanceDataSize);
-    if (!c) _nvmBcThrow(env, nvmExceptionOccurred(env));
-}
-
 void _nvmBcAddInterface(Env* env, Class* clazz, char* interfaceName) {
     Class* interface = nvmFindClass(env, interfaceName);
     if (!nvmAddInterface(env, clazz, interface)) _nvmBcThrow(env, nvmExceptionOccurred(env));

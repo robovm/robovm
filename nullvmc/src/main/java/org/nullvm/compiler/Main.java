@@ -510,6 +510,9 @@ public class Main {
         if (wd != null) {
             executor.setWorkingDirectory(wd);
         }
+        if (env == null) {
+            env = EnvironmentUtils.getProcEnvironment();
+        }
         executor.setExitValue(0);
         executor.execute(commandLine, env);
     }

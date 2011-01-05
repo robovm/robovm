@@ -94,7 +94,7 @@ static inline jboolean addLoadedClass(Env* env, Class* clazz) {
 
 static jboolean loadSoHandles(Env* env, ClasspathEntry* entry, DynamicLib** first) {
     while (entry) {
-        DynamicLib* dlib = nvmInitDynamicLib(env, NULL, entry->soPath, first);
+        DynamicLib* dlib = nvmInitDynamicLib(env, entry->soPath, first);
         if (!dlib) return FALSE;
         if (!nvmLoadDynamicLib(env, dlib)) {
             nvmAbort("Fatal error: Failed to load %s", dlib->path);

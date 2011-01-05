@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -42,7 +43,6 @@ import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.NotFileFilter;
 import org.apache.commons.io.filefilter.OrFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
-import org.apache.commons.lang.StringUtils;
 import org.nullvm.compiler.ClassCompiler.VerifyWhen;
 import org.nullvm.compiler.clazz.Clazz;
 import org.nullvm.compiler.clazz.Clazzes;
@@ -811,26 +811,29 @@ public class Main {
             File libMain = new File(new File(output, "lib"), "main");
             libMain.mkdirs();
             
-            String bootDirString = libBoot.getAbsolutePath().substring(output.getAbsolutePath().length() + 1);
-            String mainDirString = libMain.getAbsolutePath().substring(output.getAbsolutePath().length() + 1);
+//            String bootDirString = libBoot.getAbsolutePath().substring(output.getAbsolutePath().length() + 1);
+//            String mainDirString = libMain.getAbsolutePath().substring(output.getAbsolutePath().length() + 1);
             
-            Properties bootEntriesProps = new Properties();
-            for (ClasspathEntry entry : bootclasspathObjects) {
-                bootEntriesProps.setProperty(bootDirString + File.separator + entry.getArchive().getName(), 
-                        bootDirString + File.separator + entry.getDynamicLibrary().getName());
-                stripArchive(entry.getArchive(), new File(libBoot, entry.getArchive().getName()));
-                FileUtils.copyFileToDirectory(entry.getDynamicLibrary(), libBoot);
-            }
-            Properties mainEntriesProps = new Properties();
-            for (ClasspathEntry entry : classpathObjects) {
-                mainEntriesProps.setProperty(mainDirString + File.separator + entry.getArchive().getName(), 
-                        mainDirString + File.separator + entry.getDynamicLibrary().getName());
-                stripArchive(entry.getArchive(), new File(libMain, entry.getArchive().getName()));
-                FileUtils.copyFileToDirectory(entry.getDynamicLibrary(), libMain);
-            }
+            writeClasspathEntries(bootclasspathObjects, output, libBoot, new File(output, "bootclasspath"));
+            writeClasspathEntries(classpathObjects, output, libMain, new File(output, "classpath"));
             
-            writeProperties(bootEntriesProps, new File(output, "bootclasspath"));
-            writeProperties(mainEntriesProps, new File(output, "classpath"));
+//            Properties bootEntriesProps = new Properties();
+//            for (ClasspathEntry entry : bootclasspathObjects) {
+//                bootEntriesProps.setProperty(bootDirString + File.separator + entry.getArchive().getName(), 
+//                        bootDirString + File.separator + entry.getDynamicLibrary().getName());
+//                stripArchive(entry.getArchive(), new File(libBoot, entry.getArchive().getName()));
+//                FileUtils.copyFileToDirectory(entry.getDynamicLibrary(), libBoot);
+//            }
+//            Properties mainEntriesProps = new Properties();
+//            for (ClasspathEntry entry : classpathObjects) {
+//                mainEntriesProps.setProperty(mainDirString + File.separator + entry.getArchive().getName(), 
+//                        mainDirString + File.separator + entry.getDynamicLibrary().getName());
+//                stripArchive(entry.getArchive(), new File(libMain, entry.getArchive().getName()));
+//                FileUtils.copyFileToDirectory(entry.getDynamicLibrary(), libMain);
+//            }
+//            
+//            writeProperties(bootEntriesProps, new File(output, "bootclasspath"));
+//            writeProperties(mainEntriesProps, new File(output, "classpath"));
             
 //            List<String> bootJars = processPathObjectFiles(bootclasspathObjects, libBoot);
 //            List<String> mainJars = processPathObjectFiles(classpathObjects, libMain);
@@ -840,11 +843,30 @@ public class Main {
         }        
     }
 
-    private static void writeProperties(Properties props, File file) throws IOException {
-        OutputStreamWriter writer = null;
+    private void writeClasspathEntries(List<ClasspathEntry> entries, File file) throws IOException {
+        writeClasspathEntries(entries, null, null, file);
+    }
+    private void writeClasspathEntries(List<ClasspathEntry> entries, File basePath, File installPath, File file) throws IOException {
+        // The result is similar to a properties file but the order of entries is important so we cannot use Properties.store()
+        // TODO: Escape = characters
+        PrintWriter writer = null;
         try {
-            writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
-            props.store(writer, null);
+            writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
+            for (ClasspathEntry entry: entries) {
+                String left = entry.getArchive().getCanonicalPath();
+                String right = entry.getDynamicLibrary().getCanonicalPath();
+                if (installPath != null) {
+                    String dir = installPath.getAbsolutePath().substring(basePath.getAbsolutePath().length() + 1);
+                    stripArchive(entry.getArchive(), new File(installPath, entry.getArchive().getName()));
+                    FileUtils.copyFileToDirectory(entry.getDynamicLibrary(), installPath);
+                    left = dir + File.separator + entry.getArchive().getName();
+                    right = dir + File.separator + entry.getDynamicLibrary().getName();
+                }
+                writer.write(left);
+                writer.write('=');
+                writer.write(right);
+                writer.write('\n');
+            }
         } finally {
             IOUtils.closeQuietly(writer);
         }
@@ -854,17 +876,17 @@ public class Main {
     private void runTarget(List<ClasspathEntry> bootEntries, List<ClasspathEntry> mainEntries) throws IOException {
         Properties bootEntriesProps = new Properties();
         for (ClasspathEntry entry : bootEntries) {
-            bootEntriesProps.setProperty(entry.getArchive().getAbsolutePath(), 
-                    entry.getDynamicLibrary().getAbsolutePath());
+            bootEntriesProps.setProperty(entry.getArchive().getCanonicalPath(), 
+                    entry.getDynamicLibrary().getCanonicalPath());
         }
         Properties mainEntriesProps = new Properties();
         for (ClasspathEntry entry : mainEntries) {
-            mainEntriesProps.setProperty(entry.getArchive().getAbsolutePath(), 
-                    entry.getDynamicLibrary().getAbsolutePath());
+            mainEntriesProps.setProperty(entry.getArchive().getCanonicalPath(), 
+                    entry.getDynamicLibrary().getCanonicalPath());
         }
         
-        writeProperties(bootEntriesProps, new File(output, "bootclasspath"));
-        writeProperties(mainEntriesProps, new File(output, "classpath"));
+        writeClasspathEntries(bootEntries, new File(output, "bootclasspath"));
+        writeClasspathEntries(mainEntries, new File(output, "classpath"));
         
         Map env = new HashMap<String, String>();
         env.putAll(EnvironmentUtils.getProcEnvironment());
@@ -975,7 +997,11 @@ public class Main {
         public DirectoryPathClasspathEntry(DirectoryPath path) {
             this.path = path;
             jarName = "classes" + path.getIndex() + ".jar";
-            cacheDir = new File(libCache, path.getDir().getAbsolutePath().replace(File.separatorChar, '_'));
+            try {
+                cacheDir = new File(libCache, path.getDir().getCanonicalPath().replace(File.separatorChar, '_'));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         public Path getPath() {
             return path;

@@ -24,6 +24,8 @@ static char* absolutize(char* basePath, char* rel, char* dest) {
 }
 
 static jboolean loadClasspathEntries(Env* env, char* basePath, char* entriesFile, ClasspathEntry** first) {
+    // TODO: Handle escaped = characters?
+    // TODO: Encoding
     FILE* f = fopen(entriesFile, "r");
     if (!f) return FALSE;
     fseek(f, 0, SEEK_END);
@@ -200,13 +202,13 @@ DynamicLib** nvmGetNativeLibs(Env* env) {
     return &nativeLibs;
 }
 
-DynamicLib* nvmInitDynamicLib(Env* env, char* basePath, char* file, DynamicLib** first) {
+DynamicLib* nvmInitDynamicLib(Env* env, char* file, DynamicLib** first) {
     while (*first != NULL) first = &((*first)->next);
 
     DynamicLib* dlib = nvmAllocateMemory(env, sizeof(DynamicLib));
     if (!dlib) return NULL;
 
-    absolutize(basePath, file, dlib->path);
+    strcpy(dlib->path, file);
 
     *first = dlib;
 

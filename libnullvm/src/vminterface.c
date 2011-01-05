@@ -88,7 +88,7 @@ jboolean nvmInitVMI(Env* env) {
     javaVM.GetEnv = _GetEnv;
     struct JavaVMProxy javaVMProxy = {&javaVM, env};
 
-    DynamicLib* dlib = nvmInitDynamicLib(env, env->options->basePath, "libnullvm-rt.so", &nativeLibs);
+    DynamicLib* dlib = nvmInitDynamicLib(env, "libnullvm-rt.so", &nativeLibs);
     if (!dlib) return FALSE;
     if (!nvmLoadDynamicLib(env, dlib)) {
         nvmAbort("Fatal error: Failed to load %s", dlib->path);

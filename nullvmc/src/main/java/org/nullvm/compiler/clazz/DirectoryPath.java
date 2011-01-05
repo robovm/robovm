@@ -22,11 +22,17 @@ import org.apache.commons.io.FileUtils;
 public class DirectoryPath implements Path {
     private final File dir;
     private final Clazzes clazzes;
+    private final int index;
     private List<Clazz> clazzList = null;
     
-    DirectoryPath(File dir, Clazzes clazzes) {
+    DirectoryPath(File dir, Clazzes clazzes, int index) {
         this.dir = dir;
         this.clazzes = clazzes;
+        this.index = index;
+    }
+
+    public int getIndex() {
+        return index;
     }
     
     public File getDir() {

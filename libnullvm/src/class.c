@@ -92,49 +92,22 @@ static inline jboolean addLoadedClass(Env* env, Class* clazz) {
     return TRUE;
 }
 
-static jboolean loadSoHandles(Env* env, char* libPath, DynamicLib** first) {
-    char path[PATH_MAX];
-    strcpy(path, libPath);
-    strcat(path, "/files");
-
-    FILE* f = fopen(path, "r");
-    if (!f) return FALSE;
-    fseek(f, 0, SEEK_END);
-    jint length = ftell(f);
-    fseek(f, 0, SEEK_SET);
-    char* files = nvmAllocateMemory(env, length + 1);
-    if (!files || fread(files, length, 1, f) == 0) {
-        fclose(f);
-        return FALSE;
-    }
-    fclose(f);
-    f = NULL;
-    files[length] = '\0';
-
-    TRACE("Contents of file '%s': %s", path, files);
-
-    jint start = 0;
-    jint end = 0;
-    while (end < length) {
-        while (end < length && files[end] != ':' && files[end] != '\0') end++;
-        if (start != end) {
-            memset(path, 0, sizeof(path));
-            strncpy(path, files + start, end - start);
-            DynamicLib* dlib = nvmInitDynamicLib(env, libPath, path, first);
-            if (!dlib) return FALSE;
-            if (!nvmLoadDynamicLib(env, dlib)) {
-                nvmAbort("Fatal error: Failed to load %s", dlib->path);
-            }
+static jboolean loadSoHandles(Env* env, ClasspathEntry* entry, DynamicLib** first) {
+    while (entry) {
+        DynamicLib* dlib = nvmInitDynamicLib(env, NULL, entry->soPath, first);
+        if (!dlib) return FALSE;
+        if (!nvmLoadDynamicLib(env, dlib)) {
+            nvmAbort("Fatal error: Failed to load %s", dlib->path);
         }
-        end++;
-        start = end;
+        entry = entry->next;
     }
+
     return TRUE;
 }
 
 static jboolean initSoHandles(Env* env) {
-    loadSoHandles(env, env->options->bootLibPath, &bootSoHandles);
-    loadSoHandles(env, env->options->mainLibPath, &mainSoHandles);
+    loadSoHandles(env, env->options->bootclasspath, &bootSoHandles);
+    loadSoHandles(env, env->options->classpath, &mainSoHandles);
 }
 
 static jint j_get_vtable_index(Class* clazz, char* name, char* desc, Class* caller) {

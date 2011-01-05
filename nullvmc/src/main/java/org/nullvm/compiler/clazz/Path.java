@@ -12,5 +12,6 @@ import java.util.List;
  * @version $Id$
  */
 public interface Path {
+    int getIndex();
     List<Clazz> list();
 }

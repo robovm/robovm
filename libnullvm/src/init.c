@@ -12,6 +12,62 @@ static inline jint startsWith(char* s, char* prefix) {
     return s && strncmp(s, prefix, strlen(prefix)) == 0;
 }
 
+static char* absolutize(char* basePath, char* rel, char* dest) {
+    if (rel[0] == '/') {
+        strcpy(dest, rel);
+    } else {
+        strcpy(dest, basePath);
+        strcat(dest, "/");
+        strcat(dest, rel);
+    }
+    return dest;
+}
+
+static jboolean loadClasspathEntries(Env* env, char* basePath, char* entriesFile, ClasspathEntry** first) {
+    FILE* f = fopen(entriesFile, "r");
+    if (!f) return FALSE;
+    fseek(f, 0, SEEK_END);
+    jint length = ftell(f);
+    fseek(f, 0, SEEK_SET);
+    char* files = nvmAllocateMemory(env, length + 1);
+    if (!files || fread(files, length, 1, f) == 0) {
+        fclose(f);
+        return FALSE;
+    }
+    fclose(f);
+    f = NULL;
+    files[length] = '\0';
+
+    TRACE("Contents of file '%s':\n %s\n", entriesFile, files);
+
+    char jarPath[PATH_MAX];
+    char soPath[PATH_MAX];
+
+    char* p = files;
+    char* line = NULL;
+    char* lasts = NULL;
+    while (1) {
+        line = strtok_r(p, "\r\n", &lasts);
+        p = NULL;
+        if (!line) break;
+        if (line[0] == '#') continue;
+
+        char* lasts2 = NULL;
+        char* left = strtok_r(line, "=", &lasts2);
+        if (!left) nvmAbort("Failed to parse line '%s' in classpath file '%s'", line, entriesFile);
+        char* right = strtok_r(NULL, "\r\n", &lasts2);
+        if (!right) nvmAbort("Failed to parse line '%s' in classpath file '%s'", line, entriesFile);
+        ClasspathEntry* entry = nvmAllocateMemory(env, sizeof(ClasspathEntry));
+        if (!entry) return FALSE;
+        absolutize(basePath, left, entry->jarPath);
+        absolutize(basePath, right, entry->soPath);
+        *first = entry;
+        first = &entry->next;
+    }
+
+    return TRUE;
+}
+
 jint nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreNvmArgs) {
     char path[PATH_MAX];
     if (!realpath(argv[0], path)) {
@@ -73,6 +129,14 @@ Env* nvmStartup(Options* options) {
     Env* env = nvmCreateEnv(options);
     if (!env) return NULL;
     // TODO: What if we can't allocate Env?
+
+    char cpFile[PATH_MAX];
+    strcpy(cpFile, options->basePath);
+    strcat(cpFile, "/bootclasspath");
+    if (!loadClasspathEntries(env, options->basePath, cpFile, &options->bootclasspath)) return NULL;
+    strcpy(cpFile, options->basePath);
+    strcat(cpFile, "/classpath");
+    if (!loadClasspathEntries(env, options->basePath, cpFile, &options->classpath)) return NULL;
 
     // Call init on modules
     if (!nvmInitClasses(env)) return NULL;
@@ -136,16 +200,13 @@ DynamicLib** nvmGetNativeLibs(Env* env) {
     return &nativeLibs;
 }
 
-DynamicLib* nvmInitDynamicLib(Env* env, char* basePath, char* baseName, DynamicLib** first) {
+DynamicLib* nvmInitDynamicLib(Env* env, char* basePath, char* file, DynamicLib** first) {
     while (*first != NULL) first = &((*first)->next);
 
     DynamicLib* dlib = nvmAllocateMemory(env, sizeof(DynamicLib));
     if (!dlib) return NULL;
 
-    strcpy(dlib->path, basePath);
-    strcat(dlib->path, "/");
-    strcat(dlib->path, baseName);
-    strcat(dlib->path, ".so");
+    absolutize(basePath, file, dlib->path);
 
     *first = dlib;
 

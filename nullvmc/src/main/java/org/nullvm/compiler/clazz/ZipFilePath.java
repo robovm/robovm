@@ -25,13 +25,20 @@ public class ZipFilePath implements Path {
     private final File file;
     private final Clazzes clazzes;
     private final ZipFile zipFile;
+    private final int index;
     private List<Clazz> clazzList = null;
     
-    ZipFilePath(File f, Clazzes clazzes) throws IOException {
+    ZipFilePath(File f, Clazzes clazzes, int index) throws IOException {
         this.file = f;
         this.clazzes = clazzes;
         this.zipFile = new ZipFile(f);
+        this.index = index;
     }
+    
+    public int getIndex() {
+        return index;
+    }
+    
     public File getFile() {
         return file;
     }

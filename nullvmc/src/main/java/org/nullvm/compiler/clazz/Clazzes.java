@@ -55,7 +55,7 @@ public class Clazzes {
                 throw new IOException("File is not an archive file: " + file.getAbsolutePath());
             }
             if (!seen.contains(file)) {
-                Path p = file.isDirectory() ? new DirectoryPath(file, this) : new ZipFilePath(file, this);
+                Path p = file.isDirectory() ? new DirectoryPath(file, this, cp.size()) : new ZipFilePath(file, this, cp.size());
                 cp.add(p);
                 seen.add(file);
             }

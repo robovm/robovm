@@ -162,6 +162,13 @@ struct DynamicLib {
     char path[PATH_MAX];
 };
 
+typedef struct ClasspathEntry ClasspathEntry;
+struct ClasspathEntry {
+    ClasspathEntry* next;
+    char jarPath[PATH_MAX];
+    char soPath[PATH_MAX];
+};
+
 typedef struct Options {
     char* mainClass;
     char** commandLineArgs;
@@ -171,6 +178,8 @@ typedef struct Options {
     char executablePath[PATH_MAX];
     char bootLibPath[PATH_MAX];
     char mainLibPath[PATH_MAX];
+    ClasspathEntry* bootclasspath;
+    ClasspathEntry* classpath;
 } Options;
 
 typedef struct Thread {

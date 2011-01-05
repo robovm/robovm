@@ -8,7 +8,7 @@ extern void nvmShutdown(Env* env, jint code);
 extern void nvmAbort(char* format, ...);
 extern void* nvmAllocateMemory(Env* env, int size);
 extern DynamicLib** nvmGetNativeLibs(Env* env);
-extern DynamicLib* nvmInitDynamicLib(Env* env, char* basePath, char* baseName, DynamicLib** first);
+extern DynamicLib* nvmInitDynamicLib(Env* env, char* basePath, char* file, DynamicLib** first);
 extern jboolean nvmLoadDynamicLib(Env* env, DynamicLib* dlib);
 extern void* nvmFindDynamicLibSymbol(Env* env, DynamicLib* first, DynamicLib* last, char* symbol);
 

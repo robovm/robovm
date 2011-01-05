@@ -15,16 +15,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -134,17 +135,19 @@ public class Main {
         return str.toString();
     }
     
-    private static String hash(File f) throws IOException {
+    private static String hash(File f) {
         InputStream in = null;
         try {
             in = new BufferedInputStream(new FileInputStream(f));
             return hash(in);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         } finally {
             IOUtils.closeQuietly(in);
         }
     }
     
-    private static String hash(InputStream in) throws IOException {
+    private static String hash(InputStream in) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA1");
             byte[] buffer = new byte[4096];
@@ -153,13 +156,11 @@ public class Main {
                 digest.update(buffer, 0, n);
             }
             return toHexString(digest.digest());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static boolean isArchive(File f) {
-        return f.getName().matches("(?i)^.*(\\.zip|\\.jar)$");
     }
     
     private String getSimpleClassName(String internalName) {
@@ -213,28 +214,32 @@ public class Main {
         return objectFiles;
     }
     
-    private List<File> processClassFiles(Path path) throws IOException {
-        if (path instanceof ZipFilePath) {
-            return Collections.singletonList(processArchivedClassFiles((ZipFilePath) path));
-        } else {
-            return processClassFilesInPath((DirectoryPath) path);
+    private File makeFileRelativeTo(File dir, File f) {
+        if (f.getAbsoluteFile().getParentFile() == null) {
+            return dir;
         }
+        return new File(makeFileRelativeTo(dir, f.getParentFile()), f.getName());
     }
     
-    private File processArchivedClassFiles(ZipFilePath path) throws IOException {
-        File input = path.getFile();
-        File libFile = new File(new File(new File(libCache, input.getName()), hash(input)), "lib" + input.getName() + ".a");
-        libFile.getParentFile().mkdirs();
-        if (!clean && libFile.exists() && libFile.lastModified() >= input.lastModified()) {
-            if (verbose) {
-                stdout.println("Skipping unchanged archive: " + input);
-            }
-            return libFile;
-        }
-        
-        return buildLibrary(processClassFilesInPath(path), libFile);
+    private File processClasspathEntry(ClasspathEntry entry) throws IOException {
+        buildStaticLibrary(entry);
+        return buildDynamicLibrary(entry);
+//            return Collections.singletonList(processArchivedClassFiles((ZipFilePath) entry));
+//        } else {
+//            return Collections.singletonList(processClassFiles((DirectoryPath) entry));
+//        }
     }
     
+//    private File processArchivedClassFiles(ZipFilePath path) throws IOException {
+//        File archiveFile = path.getFile();
+//        return buildDynamicLibrary(archiveFile.getName(), buildStaticLibrary(processClassFilesInPath(path), path));
+//    }
+//    
+//    private File processClassFiles(DirectoryPath path) throws IOException {
+//        String baseName = path.getDir().getAbsolutePath().replace(File.separatorChar, '_') + ".jar";
+//        return buildDynamicLibrary(baseName, buildStaticLibrary(processClassFilesInPath(path), path));
+//    }
+//    
     private File processIrFile(File f) throws IOException {
         File outFile = new File(f.getParentFile(), f.getName().substring(0, f.getName().length() - 3) + ".bc");
         if (!clean && outFile.exists() && outFile.lastModified() >= f.lastModified()) {
@@ -311,23 +316,86 @@ public class Main {
         return outFile;
     }
     
-    private File buildLibrary(List<File> files, File libFile) throws IOException {
-        if (verbose) {
-            stdout.format("Building library '%s'\n", libFile);
+    private File buildStaticLibrary(ClasspathEntry entry) throws IOException {
+        File outFile = entry.getStaticLibrary();
+//        if (path instanceof ZipFilePath) {
+//            File archiveFile = ((ZipFilePath) path).getFile();
+//            lastModified = archiveFile.lastModified();
+//            outFile = new File(new File(new File(libCache, archiveFile.getName()), hash(archiveFile)), "lib" + archiveFile.getName() + ".a");
+//        } else {
+//            File dir = ((DirectoryPath) path).getDir();
+//            lastModified = getDirLastModified(dir);
+//            outFile = new File(makeFileRelativeTo(libCache, dir), "lib" + dir.getAbsolutePath().replace(File.separatorChar, '_') + ".a");
+//        }
+        
+        if (!clean && outFile.exists() && !entry.hasChangedAfter(outFile.lastModified())) {
+            if (verbose) {
+                stdout.println("Skipping unchanged classpath entry: " + entry);
+            }
+            return outFile;
         }
+        
+        outFile.getParentFile().mkdirs();
+        
+        if (verbose) {
+            stdout.format("Building library '%s'\n", outFile);
+        }
+        
+        List<File> files = processClassFilesInPath(entry.getPath());
         
         String arPath = "ar";
         if (arBin != null) {
             arPath = arBin.getAbsolutePath();
         }
         
-        if (libFile.exists()) {
-            libFile.delete();
+        if (outFile.exists()) {
+            outFile.delete();
         }
         
-        exec(arPath, "rcs", libFile, files);
+        exec(arPath, "rcs", outFile, files);
         
-        return libFile;
+        return outFile;
+    }
+    
+    private File buildDynamicLibrary(ClasspathEntry entry) throws IOException {
+        File libFile = entry.getStaticLibrary();
+        File outFile = entry.getDynamicLibrary(); //new File(libFile.getParentFile(), baseName + ".so");
+        
+        if (!clean && outFile.exists() && outFile.lastModified() >= libFile.lastModified()) {
+            if (verbose) {
+                stdout.println("Skipping unchanged library: " + libFile);
+            }
+            return outFile;
+        }
+        
+        if (verbose) {
+            stdout.format("Building dynamic library '%s'\n", outFile);
+        }
+            
+        String gccPath = "gcc";
+        if (gccBin != null) {
+            gccPath = gccBin.getAbsolutePath();
+        }
+        
+        List<String> ldArgs = new ArrayList<String>();
+        for (File f : libDirs) {
+            ldArgs.add("-L");
+            ldArgs.add(f.getAbsolutePath());
+        }
+        ldArgs.add("-L");
+        ldArgs.add(new File(home, "lib").getAbsolutePath());
+
+        List<String> libArgs = new ArrayList<String>();
+        ldArgs.add("-L");
+        ldArgs.add(libFile.getParentFile().getAbsolutePath());
+        libArgs.add("-l:" + libFile.getName());
+            
+        exec(gccPath, "-o", outFile, "-g", "-shared", "-Wl,-soname," + outFile.getName(), 
+                "-Wl,--version-script", symbolsMapFile, 
+                gccOpts, ldArgs, "-lnullvm", "-lm",
+                "-Wl,--whole-archive", libArgs, "-Wl,--no-whole-archive");
+        
+        return outFile;
     }
     
     private void buildExecutable() throws IOException {
@@ -401,6 +469,14 @@ public class Main {
     }
     
     private void stripArchive(File input, File output) throws IOException {
+        
+        if (!clean && output.exists() && output.lastModified() >= input.lastModified()) {
+            if (verbose) {
+                stdout.format("Not stripping unchanged archive file '%s'\n", input);
+            }
+            return;
+        }
+        
         ZipFile archive = null;
         try {
             archive = new ZipFile(input);
@@ -443,7 +519,7 @@ public class Main {
         }
     }
     
-    private void createArchive(File dir, File output) throws IOException {
+    private void createArchive(File dir, File output, boolean skipClassFiles) throws IOException {
         if (verbose) {
             stdout.format("Creating archive file '%s' from files in directory '%s'\n", output, dir);
         }
@@ -458,7 +534,7 @@ public class Main {
                 out.putNextEntry(newEntry);
                 InputStream in = null;
                 try {
-                    if (!f.getName().toLowerCase().endsWith(".class")) {
+                    if (!skipClassFiles || !f.getName().toLowerCase().endsWith(".class")) {
                         in = new BufferedInputStream(new FileInputStream(f));
                     } else {
                         in = new ByteArrayInputStream(new byte[0]);
@@ -590,61 +666,61 @@ public class Main {
         }
     }
 
-    private List<String> processPathObjectFiles(List<PathObjectFiles> pofs, File dir) throws IOException {
-        List<String> jarNames = new ArrayList<String>();
-        int count = 0;
-        for (PathObjectFiles pof : pofs) {
-            String jarName = null;
-            if (pof.getPath() instanceof ZipFilePath) {
-                ZipFilePath path = (ZipFilePath) pof.getPath();
-                jarName = path.getFile().getName();
-                stripArchive(path.getFile(), new File(dir, jarName));
-            } else {
-                DirectoryPath path = (DirectoryPath) pof.getPath();
-                jarName = "classes" + (count++) + ".jar";
-                createArchive(path.getDir(), new File(dir, jarName));
-            }
-            jarNames.add(jarName);
-            
-            File outFile = new File(dir, jarName + ".so");
-            
-            if (verbose) {
-                stdout.format("Building dynamic library '%s'\n", outFile);
-            }
-            
-            String gccPath = "gcc";
-            if (gccBin != null) {
-                gccPath = gccBin.getAbsolutePath();
-            }
-            
-            List<String> ldArgs = new ArrayList<String>();
-            for (File f : libDirs) {
-                ldArgs.add("-L");
-                ldArgs.add(f.getAbsolutePath());
-            }
-            ldArgs.add("-L");
-            ldArgs.add(new File(home, "lib").getAbsolutePath());
-
-            List<File> objectFileArgs = new ArrayList<File>();
-            List<String> libArgs = new ArrayList<String>();
-            for (File f : pof.getObjectFiles()) {
-                if (f.getName().endsWith(".a")) {
-                    ldArgs.add("-L");
-                    ldArgs.add(f.getParentFile().getAbsolutePath());
-                    libArgs.add("-l:" + f.getName());
-                } else {
-                    objectFileArgs.add(f);
-                }
-            }
-            
-            exec(gccPath, "-o", outFile, "-g", "-shared", "-Wl,-soname," + outFile.getName(), 
-                    "-Wl,--version-script", symbolsMapFile, 
-                    gccOpts, ldArgs, objectFileArgs, "-lnullvm", "-lm",
-                    "-Wl,--whole-archive", libArgs, "-Wl,--no-whole-archive");
-        }
-        
-        return jarNames;
-    }
+//    private List<File> processPathObjectFiles(List<ClasspathEntry> pofs, File dir) throws IOException {
+//        List<File> jarNames = new ArrayList<String>();
+//        int count = 0;
+//        for (ClasspathEntry pof : pofs) {
+//            String jarName = null;
+//            if (pof.getPath() instanceof ZipFilePath) {
+//                ZipFilePath path = (ZipFilePath) pof.getPath();
+//                jarName = path.getFile().getName();
+//                stripArchive(path.getFile(), new File(dir, jarName));
+//            } else {
+//                DirectoryPath path = (DirectoryPath) pof.getPath();
+//                jarName = "classes" + (count++) + ".jar";
+//                createArchive(path.getDir(), new File(dir, jarName), true);
+//            }
+//            jarNames.add(jarName);
+//            
+//            File outFile = new File(dir, jarName + ".so");
+//            
+//            if (verbose) {
+//                stdout.format("Building dynamic library '%s'\n", outFile);
+//            }
+//            
+//            String gccPath = "gcc";
+//            if (gccBin != null) {
+//                gccPath = gccBin.getAbsolutePath();
+//            }
+//            
+//            List<String> ldArgs = new ArrayList<String>();
+//            for (File f : libDirs) {
+//                ldArgs.add("-L");
+//                ldArgs.add(f.getAbsolutePath());
+//            }
+//            ldArgs.add("-L");
+//            ldArgs.add(new File(home, "lib").getAbsolutePath());
+//
+//            List<File> objectFileArgs = new ArrayList<File>();
+//            List<String> libArgs = new ArrayList<String>();
+//            for (File f : pof.getObjectFiles()) {
+//                if (f.getName().endsWith(".a")) {
+//                    ldArgs.add("-L");
+//                    ldArgs.add(f.getParentFile().getAbsolutePath());
+//                    libArgs.add("-l:" + f.getName());
+//                } else {
+//                    objectFileArgs.add(f);
+//                }
+//            }
+//            
+//            exec(gccPath, "-o", outFile, "-g", "-shared", "-Wl,-soname," + outFile.getName(), 
+//                    "-Wl,--version-script", symbolsMapFile, 
+//                    gccOpts, ldArgs, objectFileArgs, "-lnullvm", "-lm",
+//                    "-Wl,--whole-archive", libArgs, "-Wl,--no-whole-archive");
+//        }
+//        
+//        return jarNames;
+//    }
     
     public void run() throws IOException {
         
@@ -705,48 +781,106 @@ public class Main {
         FileUtils.copyURLToFile(getClass().getResource("/symbols.map"), symbolsMapFile);
 
         Clazzes clazzes = new Clazzes(bootClassPathFiles, classPathFiles);
-        List<PathObjectFiles> bootclasspathObjects = new ArrayList<PathObjectFiles>();
+        List<ClasspathEntry> bootclasspathObjects = new ArrayList<ClasspathEntry>();
         for (Path path : clazzes.getBootclasspathPaths()) {
-            bootclasspathObjects.add(new PathObjectFiles(path, processClassFiles(path)));
+            ClasspathEntry entry = createClasspathEntry(path);
+            processClasspathEntry(entry);
+            bootclasspathObjects.add(entry);
         }
-        List<PathObjectFiles> classpathObjects = new ArrayList<PathObjectFiles>();
+        List<ClasspathEntry> classpathObjects = new ArrayList<ClasspathEntry>();
         for (Path path : clazzes.getClasspathPaths()) {
-            classpathObjects.add(new PathObjectFiles(path, processClassFiles(path)));
+            ClasspathEntry entry = createClasspathEntry(path);
+            processClasspathEntry(entry);
+            classpathObjects.add(entry);
         }
         
         output.mkdirs();
         
         buildExecutable();
-        FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libnullvm.so"), output);
-        FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libnullvm-rt.so"), output);
-        FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libgc.so.1"), output);
-        
-        File libBoot = new File(new File(output, "lib"), "boot");
-        libBoot.mkdirs();
-        File libMain = new File(new File(output, "lib"), "main");
-        libMain.mkdirs();
-        
-        List<String> bootJars = processPathObjectFiles(bootclasspathObjects, libBoot);
-        List<String> mainJars = processPathObjectFiles(classpathObjects, libMain);
-        
-        FileUtils.writeStringToFile(new File(libBoot, "files"), StringUtils.join(bootJars, ':'), "UTF-8");
-        FileUtils.writeStringToFile(new File(libMain, "files"), StringUtils.join(mainJars, ':'), "UTF-8");
         
         if (run) {
-            runTarget();
-        }
+            // Run in place
+            runTarget(bootclasspathObjects, classpathObjects);
+        } else {
+            FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libnullvm.so"), output);
+            FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libnullvm-rt.so"), output);
+            FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libgc.so.1"), output);
+            
+            File libBoot = new File(new File(output, "lib"), "boot");
+            libBoot.mkdirs();
+            File libMain = new File(new File(output, "lib"), "main");
+            libMain.mkdirs();
+            
+            String bootDirString = libBoot.getAbsolutePath().substring(output.getAbsolutePath().length() + 1);
+            String mainDirString = libMain.getAbsolutePath().substring(output.getAbsolutePath().length() + 1);
+            
+            Properties bootEntriesProps = new Properties();
+            for (ClasspathEntry entry : bootclasspathObjects) {
+                bootEntriesProps.setProperty(bootDirString + File.separator + entry.getArchive().getName(), 
+                        bootDirString + File.separator + entry.getDynamicLibrary().getName());
+                stripArchive(entry.getArchive(), new File(libBoot, entry.getArchive().getName()));
+                FileUtils.copyFileToDirectory(entry.getDynamicLibrary(), libBoot);
+            }
+            Properties mainEntriesProps = new Properties();
+            for (ClasspathEntry entry : classpathObjects) {
+                mainEntriesProps.setProperty(mainDirString + File.separator + entry.getArchive().getName(), 
+                        mainDirString + File.separator + entry.getDynamicLibrary().getName());
+                stripArchive(entry.getArchive(), new File(libMain, entry.getArchive().getName()));
+                FileUtils.copyFileToDirectory(entry.getDynamicLibrary(), libMain);
+            }
+            
+            writeProperties(bootEntriesProps, new File(output, "bootclasspath"));
+            writeProperties(mainEntriesProps, new File(output, "classpath"));
+            
+//            List<String> bootJars = processPathObjectFiles(bootclasspathObjects, libBoot);
+//            List<String> mainJars = processPathObjectFiles(classpathObjects, libMain);
+//            
+//            FileUtils.writeStringToFile(new File(libBoot, "files"), StringUtils.join(bootJars, ':'), "UTF-8");
+//            FileUtils.writeStringToFile(new File(libMain, "files"), StringUtils.join(mainJars, ':'), "UTF-8");
+        }        
     }
 
+    private static void writeProperties(Properties props, File file) throws IOException {
+        OutputStreamWriter writer = null;
+        try {
+            writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+            props.store(writer, null);
+        } finally {
+            IOUtils.closeQuietly(writer);
+        }
+    }
+    
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    private void runTarget() throws IOException {
+    private void runTarget(List<ClasspathEntry> bootEntries, List<ClasspathEntry> mainEntries) throws IOException {
+        Properties bootEntriesProps = new Properties();
+        for (ClasspathEntry entry : bootEntries) {
+            bootEntriesProps.setProperty(entry.getArchive().getAbsolutePath(), 
+                    entry.getDynamicLibrary().getAbsolutePath());
+        }
+        Properties mainEntriesProps = new Properties();
+        for (ClasspathEntry entry : mainEntries) {
+            mainEntriesProps.setProperty(entry.getArchive().getAbsolutePath(), 
+                    entry.getDynamicLibrary().getAbsolutePath());
+        }
+        
+        writeProperties(bootEntriesProps, new File(output, "bootclasspath"));
+        writeProperties(mainEntriesProps, new File(output, "classpath"));
+        
         Map env = new HashMap<String, String>();
         env.putAll(EnvironmentUtils.getProcEnvironment());
-        env.put("LD_LIBRARY_PATH", output.getAbsolutePath());
+        env.put("LD_LIBRARY_PATH", new File(home, "lib").getAbsolutePath());
         try {
             execWithEnv(output, env, new File(output, target).getAbsolutePath());
         } catch (ExecuteException e) {
             System.exit(e.getExitValue());
         }
+    }
+    
+    private ClasspathEntry createClasspathEntry(Path path) {
+        if (path instanceof ZipFilePath) {
+            return new ZipFilePathClasspathEntry((ZipFilePath) path);
+        }
+        return new DirectoryPathClasspathEntry((DirectoryPath) path);
     }
     
     public void setOutput(File output) {
@@ -792,19 +926,100 @@ public class Main {
     public static void main(String[] args) throws IOException {
         new Main().run(args);
     }
+
+    interface ClasspathEntry {
+        Path getPath();
+        File getStaticLibrary();
+        File getDynamicLibrary();
+        File getArchive();
+        boolean hasChangedAfter(long timestamp);
+    }
     
-    public static class PathObjectFiles {
-        private final Path path;
-        private final List<File> objectFiles;
-        public PathObjectFiles(Path path, List<File> objectFiles) {
+    class ZipFilePathClasspathEntry implements ClasspathEntry {
+        private final ZipFilePath path;
+        private File staticLibrary = null;
+        
+        public ZipFilePathClasspathEntry(ZipFilePath path) {
             this.path = path;
-            this.objectFiles = objectFiles;
         }
         public Path getPath() {
             return path;
         }
-        public List<File> getObjectFiles() {
-            return objectFiles;
+        public File getStaticLibrary() {
+            if (staticLibrary == null) {
+                staticLibrary = new File(new File(new File(libCache, path.getFile().getName()), hash(path.getFile())), "lib" + path.getFile().getName() + ".a");
+            }
+            return staticLibrary;
+        }
+        public File getDynamicLibrary() {
+            return new File(getStaticLibrary().getParentFile(), "lib" + path.getFile().getName() + ".so");
+        }
+        public File getArchive() {
+            return path.getFile();
+        }
+        public boolean hasChangedAfter(long timestamp) {
+            return path.getFile().lastModified() > timestamp;
+        }
+        @Override
+        public String toString() {
+            return path.getFile().getAbsolutePath();
+        }
+    }
+    
+    class DirectoryPathClasspathEntry implements ClasspathEntry {
+        private final DirectoryPath path;
+        private File archive = null;
+        private File cacheDir = null;
+        private final String jarName;
+        
+        public DirectoryPathClasspathEntry(DirectoryPath path) {
+            this.path = path;
+            jarName = "classes" + path.getIndex() + ".jar";
+            cacheDir = new File(libCache, path.getDir().getAbsolutePath().replace(File.separatorChar, '_'));
+        }
+        public Path getPath() {
+            return path;
+        }
+        public File getStaticLibrary() {
+            return new File(cacheDir, "lib" + jarName + ".a");
+        }
+        public File getDynamicLibrary() {
+            return new File(cacheDir, "lib" + jarName + ".so");
+        }
+        public File getArchive() {
+            if (archive == null) {
+                File a = new File(cacheDir, jarName);
+                if (!a.exists() || hasChangedAfter(a.lastModified())) {
+                    try {
+                        createArchive(path.getDir(), a, false);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                archive = a;
+            }
+            return archive;
+        }
+        private boolean hasChangedAfter(File dir, long timestamp) {
+            for (File f : dir.listFiles()) {
+                if (f.isFile()) {
+                    if (f.lastModified() > timestamp) {
+                        return true;
+                    }
+                } else {
+                    if (hasChangedAfter(f, timestamp)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        public boolean hasChangedAfter(long timestamp) {
+            return hasChangedAfter(path.getDir(), timestamp);
+        }
+        @Override
+        public String toString() {
+            return path.getDir().getAbsolutePath();
         }
     }
 }

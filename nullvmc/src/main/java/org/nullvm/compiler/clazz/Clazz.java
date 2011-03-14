@@ -52,4 +52,6 @@ public abstract class Clazz {
     }
     
     public abstract byte[] getBytes() throws IOException;
+    
+    public abstract long lastModified();
 }

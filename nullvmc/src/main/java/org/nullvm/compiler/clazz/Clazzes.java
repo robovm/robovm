@@ -54,6 +54,9 @@ public class Clazzes {
             if (file.isFile() && !isArchive(file)) {
                 throw new IOException("File is not an archive file: " + file.getAbsolutePath());
             }
+            if (file.isDirectory() && isEmpty(file)) {
+                continue;
+            }
             if (!seen.contains(file)) {
                 Path p = file.isDirectory() ? new DirectoryPath(file, this, cp.size()) : new ZipFilePath(file, this, cp.size());
                 cp.add(p);
@@ -61,6 +64,18 @@ public class Clazzes {
             }
         }
 
+    }
+    
+    private boolean isEmpty(File dir) {
+        for (File f : dir.listFiles()) {
+            if (f.isFile()) {
+                return false;
+            }
+            if (!isEmpty(f)) {
+                return false;
+            }
+        }
+        return true;
     }
     
     private void populateCache() {

@@ -58,6 +58,9 @@ public class ZipFilePath implements Path {
                 }
                 return bytes;
             }
+            public long lastModified() {
+                return entry.getTime() == -1 ? 0 : entry.getTime();
+            }
         };
     }
     

@@ -5,12 +5,12 @@ export HOME=$(cd ~; pwd)
 
 BASE=$(cd $(dirname $0)/..; pwd -P)
 NULLVMCJAR=$(ls $BASE/nullvmc/target/nullvm-compiler-*one-jar.jar 2> /dev/null)
-TARGET=$(mktemp -d)
+TARGET=/tmp/nullvm-vts #$(mktemp -d)
 
 #echo "" | gcc -c -E -v -
 
 java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -jar $NULLVMCJAR -verify:defer -run -d $TARGET $@
 CODE=$?
-rm -rf $TARGET
+#rm -rf $TARGET
 exit $CODE
 

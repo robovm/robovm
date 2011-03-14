@@ -48,6 +48,9 @@ public class DirectoryPath implements Path {
                 }
                 return bytes;
             }
+            public long lastModified() {
+                return f.lastModified();
+            }
         };
     }
     

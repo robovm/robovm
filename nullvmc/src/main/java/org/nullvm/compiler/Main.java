@@ -79,8 +79,6 @@ public class Main {
     private String mainClass;
     private List<String> runArgs = new ArrayList<String>();
     
-    private File classCache;
-    private File libCache;
     private File opcodesFile;
     private File mainCFile;
     private File symbolsMapFile;
@@ -135,17 +133,17 @@ public class Main {
         return str.toString();
     }
     
-    private static String hash(File f) {
-        InputStream in = null;
-        try {
-            in = new BufferedInputStream(new FileInputStream(f));
-            return hash(in);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            IOUtils.closeQuietly(in);
-        }
-    }
+//    private static String hash(File f) {
+//        InputStream in = null;
+//        try {
+//            in = new BufferedInputStream(new FileInputStream(f));
+//            return hash(in);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        } finally {
+//            IOUtils.closeQuietly(in);
+//        }
+//    }
     
     private static String hash(InputStream in) {
         try {
@@ -171,16 +169,16 @@ public class Main {
         return internalName.substring(index + 1);
     }
     
-    private File processClassFile(Clazz clazz) throws IOException {
+    private File processClassFile(ClasspathEntry entry, Clazz clazz) throws IOException {
         OutputStream out = null;
         File outFile = null;
         try {
-            byte[] classData = clazz.getBytes();
+            //byte[] classData = clazz.getBytes();
             String className = clazz.getInternalName();
-            File classDir = new File(new File(classCache, className.replace('/', File.separatorChar)), hash(new ByteArrayInputStream(classData)));
-            outFile = new File(classDir, getSimpleClassName(className) + "" + ".class.ll");
+            //File classDir = new File(new File(classCache, className.replace('/', File.separatorChar)), hash(new ByteArrayInputStream(classData)));
+            outFile = new File(entry.getCacheDir(), className.replace('/', File.separatorChar) + "" + ".class.ll");
             outFile.getParentFile().mkdirs();
-            if (!clean && outFile.exists()) { // && outFile.lastModified() >= lastModified) {
+            if (!clean && outFile.exists() && outFile.lastModified() >= clazz.lastModified()) {
                 if (verbose) {
                     stdout.println("Skipping unchanged class file: " + clazz.getFileName());
                 }
@@ -206,24 +204,18 @@ public class Main {
         return processIrFile(outFile);
     }
 
-    private List<File> processClassFilesInPath(Path path) throws IOException {
+    private List<File> processClassFiles(ClasspathEntry entry) throws IOException {
         List<File> objectFiles = new ArrayList<File>();
-        for (Clazz clazz : path.list()) {
-            objectFiles.add(processClassFile(clazz));
+        for (Clazz clazz : entry.getPath().list()) {
+            objectFiles.add(processClassFile(entry, clazz));
         }
         return objectFiles;
     }
     
-    private File makeFileRelativeTo(File dir, File f) {
-        if (f.getAbsoluteFile().getParentFile() == null) {
-            return dir;
+    private void processClasspathEntry(ClasspathEntry entry) throws IOException {
+        if (buildStaticLibrary(entry)) {
+            buildDynamicLibrary(entry);
         }
-        return new File(makeFileRelativeTo(dir, f.getParentFile()), f.getName());
-    }
-    
-    private File processClasspathEntry(ClasspathEntry entry) throws IOException {
-        buildStaticLibrary(entry);
-        return buildDynamicLibrary(entry);
 //            return Collections.singletonList(processArchivedClassFiles((ZipFilePath) entry));
 //        } else {
 //            return Collections.singletonList(processClassFiles((DirectoryPath) entry));
@@ -294,8 +286,9 @@ public class Main {
     }
     
     private File processGccFile(File f) throws IOException {
-        String hash = f.getParentFile().getName();
-        File outFile = new File(f.getParentFile().getParentFile().getParentFile(), f.getName().substring(0, f.getName().lastIndexOf('.')) + "." + hash + ".o");
+//        String hash = f.getParentFile().getName();
+//        File outFile = new File(f.getParentFile().getParentFile().getParentFile(), f.getName().substring(0, f.getName().lastIndexOf('.')) + "." + hash + ".o");
+        File outFile = new File(f.getParentFile(), f.getName().substring(0, f.getName().lastIndexOf('.')) + ".o");
         if (!clean && outFile.exists() && outFile.lastModified() >= f.lastModified()) {
             if (verbose) {
                 stdout.println("Skipping unchanged GCC input file: " + f);
@@ -316,7 +309,7 @@ public class Main {
         return outFile;
     }
     
-    private File buildStaticLibrary(ClasspathEntry entry) throws IOException {
+    private boolean buildStaticLibrary(ClasspathEntry entry) throws IOException {
         File outFile = entry.getStaticLibrary();
 //        if (path instanceof ZipFilePath) {
 //            File archiveFile = ((ZipFilePath) path).getFile();
@@ -332,7 +325,7 @@ public class Main {
             if (verbose) {
                 stdout.println("Skipping unchanged classpath entry: " + entry);
             }
-            return outFile;
+            return false;
         }
         
         outFile.getParentFile().mkdirs();
@@ -341,7 +334,7 @@ public class Main {
             stdout.format("Building library '%s'\n", outFile);
         }
         
-        List<File> files = processClassFilesInPath(entry.getPath());
+        List<File> files = processClassFiles(entry);
         
         String arPath = "ar";
         if (arBin != null) {
@@ -354,7 +347,7 @@ public class Main {
         
         exec(arPath, "rcs", outFile, files);
         
-        return outFile;
+        return true;
     }
     
     private File buildDynamicLibrary(ClasspathEntry entry) throws IOException {
@@ -745,10 +738,7 @@ public class Main {
             stdout.println("Run arguments: " + runArgs);
         }
         
-        classCache = new File(cache, "classes");
-        classCache.mkdirs();
-        libCache = new File(cache, "lib");
-        libCache.mkdirs();
+        cache.mkdirs();
 
         if (target == null) {
             target = mainClass;
@@ -949,17 +939,25 @@ public class Main {
         new Main().run(args);
     }
 
+    private static File makeFileRelativeTo(File dir, File f) {
+        if (f.getParentFile() == null) {
+            return dir;
+        }
+        return new File(makeFileRelativeTo(dir, f.getParentFile()), f.getName());
+    }
+    
     interface ClasspathEntry {
         Path getPath();
         File getStaticLibrary();
         File getDynamicLibrary();
+        File getCacheDir();
         File getArchive();
         boolean hasChangedAfter(long timestamp);
     }
     
     class ZipFilePathClasspathEntry implements ClasspathEntry {
         private final ZipFilePath path;
-        private File staticLibrary = null;
+        private File cacheDir = null;
         
         public ZipFilePathClasspathEntry(ZipFilePath path) {
             this.path = path;
@@ -968,13 +966,21 @@ public class Main {
             return path;
         }
         public File getStaticLibrary() {
-            if (staticLibrary == null) {
-                staticLibrary = new File(new File(new File(libCache, path.getFile().getName()), hash(path.getFile())), "lib" + path.getFile().getName() + ".a");
-            }
-            return staticLibrary;
+            return new File(getCacheDir().getParentFile(), "lib" + path.getFile().getName() + ".a");
         }
         public File getDynamicLibrary() {
-            return new File(getStaticLibrary().getParentFile(), "lib" + path.getFile().getName() + ".so");
+            return new File(getCacheDir().getParentFile(), "lib" + path.getFile().getName() + ".so");
+        }
+        public File getCacheDir() {
+            if (cacheDir == null) {
+                try {
+                    cacheDir = new File(makeFileRelativeTo(cache, path.getFile().getCanonicalFile().getParentFile()), 
+                            path.getFile().getName() + ".classes");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } 
+            return cacheDir;
         }
         public File getArchive() {
             return path.getFile();
@@ -997,24 +1003,29 @@ public class Main {
         public DirectoryPathClasspathEntry(DirectoryPath path) {
             this.path = path;
             jarName = "classes" + path.getIndex() + ".jar";
-            try {
-                cacheDir = new File(libCache, path.getDir().getCanonicalPath().replace(File.separatorChar, '_'));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         }
         public Path getPath() {
             return path;
         }
         public File getStaticLibrary() {
-            return new File(cacheDir, "lib" + jarName + ".a");
+            return new File(getCacheDir().getParentFile(), "lib" + jarName + ".a");
         }
         public File getDynamicLibrary() {
-            return new File(cacheDir, "lib" + jarName + ".so");
+            return new File(getCacheDir().getParentFile(), "lib" + jarName + ".so");
         }
+        public File getCacheDir() {
+            if (cacheDir == null) {
+                try {
+                    cacheDir = new File(makeFileRelativeTo(cache, path.getDir().getCanonicalFile()), jarName + ".classes");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } 
+            return cacheDir;
+        }        
         public File getArchive() {
             if (archive == null) {
-                File a = new File(cacheDir, jarName);
+                File a = new File(getCacheDir().getParentFile(), jarName);
                 if (!a.exists() || hasChangedAfter(a.lastModified())) {
                     try {
                         createArchive(path.getDir(), a, false);

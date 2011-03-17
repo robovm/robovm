@@ -28,6 +28,8 @@ import org.nullvm.compiler.llvm.Br;
 import org.nullvm.compiler.llvm.Call;
 import org.nullvm.compiler.llvm.ConstantBitcast;
 import org.nullvm.compiler.llvm.ConstantGetelementptr;
+import org.nullvm.compiler.llvm.ConstantPtrtoint;
+import org.nullvm.compiler.llvm.ConstantSub;
 import org.nullvm.compiler.llvm.Fdiv;
 import org.nullvm.compiler.llvm.FloatingPointConstant;
 import org.nullvm.compiler.llvm.FloatingPointType;
@@ -37,6 +39,7 @@ import org.nullvm.compiler.llvm.Frem;
 import org.nullvm.compiler.llvm.Function;
 import org.nullvm.compiler.llvm.FunctionRef;
 import org.nullvm.compiler.llvm.FunctionType;
+import org.nullvm.compiler.llvm.Getelementptr;
 import org.nullvm.compiler.llvm.Global;
 import org.nullvm.compiler.llvm.GlobalRef;
 import org.nullvm.compiler.llvm.Icmp;
@@ -124,6 +127,7 @@ import soot.jimple.EnterMonitorStmt;
 import soot.jimple.EqExpr;
 import soot.jimple.ExitMonitorStmt;
 import soot.jimple.Expr;
+import soot.jimple.FieldRef;
 import soot.jimple.GeExpr;
 import soot.jimple.GotoStmt;
 import soot.jimple.GtExpr;
@@ -174,6 +178,7 @@ public class SootClassCompiler {
     private static final Type OBJECT_PTR = new PointerType(new OpaqueType("Object"));
     
     private static final VariableRef ENV = new VariableRef("env", ENV_PTR);
+    private static final Global THE_CLASS = new Global("class", new NullConstant(CLASS_PTR));
     
     //_nvmBcExceptionClear
     private static final FunctionRef NVM_BC_PERSONALITY = new FunctionRef("_nvmPersonality", new FunctionType(I8_PTR));
@@ -268,6 +273,9 @@ public class SootClassCompiler {
      */
     private List<SootField> allInstanceFields;
     
+    private StructureType classFieldsType;
+    private StructureType instanceFieldsType;
+    
     public SootClassCompiler(SootClass sootClass) {
         this.sootClass = sootClass;
     }
@@ -284,21 +292,13 @@ public class SootClassCompiler {
         instanceFields = getInstanceFields(sootClass, false);
         allInstanceFields = getInstanceFields(sootClass, true);
         
-        List<Type> classFieldsTypes = new ArrayList<Type>();
-        List<Type> instanceFieldsTypes = new ArrayList<Type>();
-        for (SootField field : sootClass.getFields()) {
-            if (field.isStatic()) {
-                classFieldsTypes.add(getType(field.getType()));
-            } else {
-                instanceFieldsTypes.add(getType(field.getType()));
-            }
+        classFieldsType = getType("ClassFields", classFields);
+        if (classFieldsType != null) {
+            module.addType(classFieldsType);
         }
-        
-        if (!classFieldsTypes.isEmpty()) {
-            module.addType(new StructureType("ClassFields", classFieldsTypes.toArray(new Type[0])));
-        }
-        if (!instanceFieldsTypes.isEmpty()) {
-            module.addType(new StructureType("InstanceFields", instanceFieldsTypes.toArray(new Type[0])));
+        instanceFieldsType = getType("InstanceFields", allInstanceFields);
+        if (instanceFieldsType != null) {
+            module.addType(instanceFieldsType);
         }
         
         // TODO: Create class loader function
@@ -306,6 +306,10 @@ public class SootClassCompiler {
             if (isNative(method)) {
                 nativeMethod(method);
             } else if (!method.isAbstract()) {
+                Body body = method.retrieveActiveBody();
+                PackManager.v().getPack("jtp").apply(body);
+                PackManager.v().getPack("jop").apply(body);
+                PackManager.v().getPack("jap").apply(body);
                 method(method);
             }
         }
@@ -317,6 +321,7 @@ public class SootClassCompiler {
 //        createTrampolinesResolver();
         
 //        module.addGlobal(new Global("trampolines", new NullConstant(new PointerType(I8_PTR))));
+        module.addGlobal(THE_CLASS);
         
         for (Global global : throwables.values()) {
             module.addGlobal(global);
@@ -590,7 +595,7 @@ public class SootClassCompiler {
     
     private static List<SootField> getFields(SootClass clazz, boolean ztatic, boolean includeSuper) {
         List<SootField> l = new ArrayList<SootField>();
-        if (includeSuper && clazz.getSuperclass() != null) {
+        if (includeSuper && clazz.hasSuperclass()) {
             l.addAll(getFields(clazz.getSuperclass(), ztatic, true));
         }
         for (SootField f : clazz.getFields()) {
@@ -607,6 +612,17 @@ public class SootClassCompiler {
     
     private static List<SootField> getInstanceFields(SootClass clazz, boolean includeSuper) {
         return getFields(clazz, false, includeSuper);
+    }
+    
+    private StructureType getType(String alias, List<SootField> fields) {
+        List<Type> types = new ArrayList<Type>();
+        for (SootField field : fields) {
+            types.add(getType(field.getType()));
+        }
+        if (!types.isEmpty()) {
+            return new StructureType(alias, types.toArray(new Type[types.size()]));
+        }
+        return null;
     }
     
     private static Type getType(String desc) {
@@ -821,12 +837,39 @@ public class SootClassCompiler {
         throw new IllegalArgumentException("Unknown Immediate type: " + v.getClass());
     }
 
+    private boolean canAccessDirectly(Context context, FieldRef ref) {
+        if (ref.getFieldRef().declaringClass().equals(sootClass)) {
+            /* 
+             * The field ref refers to the current class. Resolve the field and
+             * check that it is actually declared in the current class.
+             */
+            SootField field;
+            try {
+                field = ref.getField();
+            } catch (ResolutionFailedException e) {
+                return false;
+            }
+            if (!field.getDeclaringClass().equals(sootClass) || field.isPhantom()) {
+                return false;
+            }
+            if (field.isStatic()) {
+                // Static fields have to be accessed using getstatic/putstatic.
+                // If not we want an exception to be thrown so we need a trampoline.
+                return ref instanceof StaticFieldRef;
+            }
+            // Instance fields have to be accessed using getfield/putfield.
+            // If not we want an exception to be thrown so we need a trampoline.
+            return ref instanceof InstanceFieldRef;
+        }
+        return false;
+    }
+    
     private boolean canCallDirectly(Context context, InvokeExpr expr) {
         SootMethodRef methodRef = expr.getMethodRef();
-        SootClass declaringClass = methodRef.declaringClass();
-        if (declaringClass.equals(context.getCurrentMethod().getDeclaringClass())) {
+        if (methodRef.declaringClass().equals(sootClass)) {
             /* 
-             * The method is declared in the current class. Make sure it actually exists.
+             * The method ref refers to the current class. Resolve the method and
+             * check that it is actually declared in the current class.
              */
             SootMethod method;
             try {
@@ -834,7 +877,7 @@ public class SootClassCompiler {
             } catch (ResolutionFailedException e) {
                 return false;
             }
-            if (method.isAbstract()) {
+            if (!method.getDeclaringClass().equals(sootClass) || method.isAbstract() || method.isPhantom()) {
                 return false;
             }
             /*
@@ -842,13 +885,16 @@ public class SootClassCompiler {
              * as well as static calls and calls to final methods can be done directly.
              */
             if (method.isStatic()) {
+                // Static methods must be called using invokestatic. If not we 
+                // want an exception to be thrown so we need a trampoline.
                 return expr instanceof StaticInvokeExpr;
             }
             if (expr instanceof SpecialInvokeExpr) {
                 return true;
             }
             if (expr instanceof VirtualInvokeExpr) {
-                return Modifier.isFinal(method.getModifiers());
+                // Either the class or the method have to be final
+                return Modifier.isFinal(sootClass.getModifiers()) || Modifier.isFinal(method.getModifiers());
             }
         }
         return false;
@@ -905,7 +951,6 @@ public class SootClassCompiler {
         for (soot.Value sootArg : (List<soot.Value>) expr.getArgs())  {
             Value arg = immediate(ctx, (Immediate) sootArg);
             soot.Type paramType = methodRef.parameterType(paramIndex++);
-            //arg = widen(ctx, arg, getType(paramType), sootArg.getType());
             arg = cast(ctx, arg, getType(paramType), sootArg.getType());
             args.add(arg);
         }
@@ -951,6 +996,36 @@ public class SootClassCompiler {
         }
     }
     
+    private Value getClassFieldPtr(Context ctx, StaticFieldRef ref) {
+        Variable base = ctx.f().newVariable(CLASS_PTR);
+        ctx.f().add(new Load(base, new GlobalRef(THE_CLASS)));
+        return getFieldPtr(ctx, new VariableRef(base), ref, classFields, classFieldsType);
+    }
+    
+    private Value getInstanceFieldPtr(Context ctx, Value base, InstanceFieldRef ref) {
+        return getFieldPtr(ctx, base, ref, allInstanceFields, instanceFieldsType);
+    }
+    
+    private Value getFieldPtr(Context ctx, Value base, FieldRef ref, List<SootField> fields, StructureType fieldsType) {
+        int index1 = 0;
+        int index2 = fields.indexOf(ref.getField());
+        if (index2 == fields.size() - 1) {
+            index1 = 1;
+            index2 = 0;
+        }
+        Variable baseI8Ptr = ctx.f().newVariable(I8_PTR);
+        ctx.f().add(new Bitcast(baseI8Ptr, base, I8_PTR));
+        Variable fieldI8Ptr = ctx.f().newVariable(I8_PTR);
+        Value offset = new ConstantSub(
+                new IntegerConstant(0), new ConstantPtrtoint(
+                        new ConstantGetelementptr(new NullConstant(
+                                new PointerType(fieldsType)), index1, index2), I32));
+        ctx.f().add(new Getelementptr(fieldI8Ptr, new VariableRef(baseI8Ptr), offset));
+        Variable fieldPtr = ctx.f().newVariable(new PointerType(getType(ref.getType())));
+        ctx.f().add(new Bitcast(fieldPtr, new VariableRef(fieldI8Ptr), fieldPtr.getType()));
+        return new VariableRef(fieldPtr);
+    }
+    
     private void assign(Context ctx, DefinitionStmt stmt) {
         /*
          * leftOp is either a Local, an ArrayRef or a FieldRef
@@ -990,16 +1065,24 @@ public class SootClassCompiler {
             InstanceFieldRef ref = (InstanceFieldRef) rightOp;
             Value base = immediate(ctx, (Immediate) ref.getBase());
             checkNull(ctx, base);
-            Trampoline trampoline = new GetField(getInternalName(ref.getFieldRef().declaringClass()), 
-                    ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
-            addTrampoline(trampoline, new FunctionType(rightType, ENV_PTR, OBJECT_PTR));
-            callOrInvokeTrampoline(ctx, trampoline, result, base);
+            if (canAccessDirectly(ctx, ref)) {
+                ctx.f().add(new Load(result, getInstanceFieldPtr(ctx, base, ref)));
+            } else {
+                Trampoline trampoline = new GetField(getInternalName(ref.getFieldRef().declaringClass()), 
+                        ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
+                addTrampoline(trampoline, new FunctionType(rightType, ENV_PTR, OBJECT_PTR));
+                callOrInvokeTrampoline(ctx, trampoline, result, base);
+            }
         } else if (rightOp instanceof StaticFieldRef) {
             StaticFieldRef ref = (StaticFieldRef) rightOp;
-            Trampoline trampoline = new GetStatic(getInternalName(ref.getFieldRef().declaringClass()), 
-                    ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
-            addTrampoline(trampoline, new FunctionType(rightType, ENV_PTR));
-            callOrInvokeTrampoline(ctx, trampoline, result);
+            if (canAccessDirectly(ctx, ref)) {
+                ctx.f().add(new Load(result, getClassFieldPtr(ctx, ref)));
+            } else {
+                Trampoline trampoline = new GetStatic(getInternalName(ref.getFieldRef().declaringClass()), 
+                        ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
+                addTrampoline(trampoline, new FunctionType(rightType, ENV_PTR));
+                callOrInvokeTrampoline(ctx, trampoline, result);
+            }
         } else if (rightOp instanceof Expr) {
             if (rightOp instanceof BinopExpr) {
                 BinopExpr expr = (BinopExpr) rightOp;
@@ -1183,16 +1266,24 @@ public class SootClassCompiler {
             InstanceFieldRef ref = (InstanceFieldRef) leftOp;
             Value base = immediate(ctx, (Immediate) ref.getBase());
             checkNull(ctx, base);
-            Trampoline trampoline = new PutField(getInternalName(ref.getFieldRef().declaringClass()), 
-                    ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
-            addTrampoline(trampoline, new FunctionType(VOID, ENV_PTR, OBJECT_PTR, leftType));
-            callOrInvokeTrampoline(ctx, trampoline, null, base, resultRef);
+            if (canAccessDirectly(ctx, ref)) {
+                ctx.f().add(new Store(resultRef, getInstanceFieldPtr(ctx, base, ref)));
+            } else {
+                Trampoline trampoline = new PutField(getInternalName(ref.getFieldRef().declaringClass()), 
+                        ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
+                addTrampoline(trampoline, new FunctionType(VOID, ENV_PTR, OBJECT_PTR, leftType));
+                callOrInvokeTrampoline(ctx, trampoline, null, base, resultRef);
+            }
         } else if (leftOp instanceof StaticFieldRef) {
             StaticFieldRef ref = (StaticFieldRef) leftOp;
-            Trampoline trampoline = new PutStatic(getInternalName(ref.getFieldRef().declaringClass()), 
-                    ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
-            addTrampoline(trampoline, new FunctionType(VOID, ENV_PTR, leftType));
-            callOrInvokeTrampoline(ctx, trampoline, null, resultRef);
+            if (canAccessDirectly(ctx, ref)) {
+                ctx.f().add(new Store(resultRef, getClassFieldPtr(ctx, ref)));
+            } else {
+                Trampoline trampoline = new PutStatic(getInternalName(ref.getFieldRef().declaringClass()), 
+                        ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
+                addTrampoline(trampoline, new FunctionType(VOID, ENV_PTR, leftType));
+                callOrInvokeTrampoline(ctx, trampoline, null, resultRef);
+            }
         } else {
             throw new IllegalArgumentException("Unknown type for leftOp: " + leftOp.getClass());
         }

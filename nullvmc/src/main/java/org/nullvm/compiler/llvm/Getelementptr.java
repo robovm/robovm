@@ -15,7 +15,7 @@ import java.util.Set;
 public class Getelementptr extends Instruction {
     private final Variable result;
     private final Value ptr;
-    private final int[] idx;
+    private final Value[] idx;
 
     public Getelementptr(Variable result, Value ptr, int ... idx) {
         if (!ptr.isPointer()) {
@@ -29,9 +29,27 @@ public class Getelementptr extends Instruction {
         }
         this.result = result;
         this.ptr = ptr;
-        this.idx = idx;
+        this.idx = new Value[idx.length];
+        for (int i = 0; i < idx.length; i++) {
+            this.idx[i] = new IntegerConstant(idx[i]);
+        }
     }
 
+    public Getelementptr(Variable result, Value ptr, Value ... idx) {
+        if (!ptr.isPointer()) {
+            throw new IllegalArgumentException("PointerType expected");
+        }
+        if (idx.length > 1 && !(((PointerType) ptr.getType()).getBase() instanceof AggregateType)) {
+            throw new IllegalArgumentException("PointerType should point to AggregateType");
+        }
+        if (idx == null || idx.length == 0) {
+            throw new IllegalArgumentException("No indexes");
+        }
+        this.result = result;
+        this.ptr = ptr;
+        this.idx = idx;
+    }
+    
     @Override
     public Set<Variable> getWritesTo() {
         return Collections.singleton(result);
@@ -54,7 +72,9 @@ public class Getelementptr extends Instruction {
         sb.append(' ');
         sb.append(ptr);
         for (int i = 0; i < idx.length; i++) {
-            sb.append(", i32 ");
+            sb.append(", ");
+            sb.append(idx[i].getType());
+            sb.append(" ");
             sb.append(idx[i]);
         }
         return sb.toString();

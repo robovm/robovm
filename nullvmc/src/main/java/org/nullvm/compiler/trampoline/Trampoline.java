@@ -59,4 +59,9 @@ public abstract class Trampoline implements Comparable<Trampoline> {
         }
         return targetClass.compareTo(o.targetClass);
     }
+    
+    @Override
+    public String toString() {
+        return targetClass;
+    }
 }

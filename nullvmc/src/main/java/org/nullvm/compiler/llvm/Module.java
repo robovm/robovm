@@ -21,6 +21,7 @@ public class Module {
     private final List<URL> includes = new ArrayList<URL>();
     private final List<Global> globals = new ArrayList<Global>();
     private final List<Function> functions = new ArrayList<Function>();
+    private final List<UserType> types = new ArrayList<UserType>();
 
     public void addInclude(URL resource) {
         includes.add(resource);
@@ -36,6 +37,10 @@ public class Module {
         globals.add(global);
     }
     
+    public void addType(UserType type) {
+        types.add(type);
+    }
+    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -49,6 +54,12 @@ public class Module {
             } finally {
                 IOUtils.closeQuietly(in);
             }
+            sb.append("\n");
+        }
+        for (UserType type : types) {
+            sb.append(type.getAlias());
+            sb.append(" = type ");
+            sb.append(type.getDefinition());
             sb.append("\n");
         }
         for (Global g : globals) {

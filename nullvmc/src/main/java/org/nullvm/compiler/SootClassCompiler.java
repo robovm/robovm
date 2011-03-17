@@ -37,7 +37,6 @@ import org.nullvm.compiler.llvm.Frem;
 import org.nullvm.compiler.llvm.Function;
 import org.nullvm.compiler.llvm.FunctionRef;
 import org.nullvm.compiler.llvm.FunctionType;
-import org.nullvm.compiler.llvm.Getelementptr;
 import org.nullvm.compiler.llvm.Global;
 import org.nullvm.compiler.llvm.GlobalRef;
 import org.nullvm.compiler.llvm.Icmp;
@@ -73,7 +72,6 @@ import org.nullvm.compiler.llvm.VariableRef;
 import org.nullvm.compiler.llvm.Xor;
 import org.nullvm.compiler.llvm.Zext;
 import org.nullvm.compiler.trampoline.Checkcast;
-import org.nullvm.compiler.trampoline.FieldAccessor;
 import org.nullvm.compiler.trampoline.GetField;
 import org.nullvm.compiler.trampoline.GetStatic;
 import org.nullvm.compiler.trampoline.Instanceof;
@@ -104,6 +102,7 @@ import soot.ResolutionFailedException;
 import soot.Scene;
 import soot.ShortType;
 import soot.SootClass;
+import soot.SootField;
 import soot.SootMethod;
 import soot.SootMethodRef;
 import soot.Trap;
@@ -249,12 +248,25 @@ public class SootClassCompiler {
         TRAMPOLINE_TYPES.put(Invokeinterface.class, 11);
     }
     
+    private final SootClass sootClass;
+    
     private Module module;
     private Map<String, Global> throwables;
-    private List<Trampoline> trampolines;
+    private Map<Trampoline, FunctionRef> trampolines;
     private Map<String, Global> strings;
-    
-    private final SootClass sootClass;
+    /**
+     * Contains the class fields of the class being compiled.
+     */
+    private List<SootField> classFields;
+    /**
+     * Contains the instance fields of the class being compiled.
+     */
+    private List<SootField> instanceFields;
+    /**
+     * Contains the instance fields of the class being compiled and of all of its
+     * ancestor classes.
+     */
+    private List<SootField> allInstanceFields;
     
     public SootClassCompiler(SootClass sootClass) {
         this.sootClass = sootClass;
@@ -263,24 +275,48 @@ public class SootClassCompiler {
     public Module compile() {
         module = new Module();
         throwables = new TreeMap<String, Global>();
-        trampolines = new ArrayList<Trampoline>();
+        trampolines = new HashMap<Trampoline, FunctionRef>();
         strings = new HashMap<String, Global>();
         
         module.addInclude(getClass().getClassLoader().getResource("header.ll"));
+
+        classFields = getClassFields(sootClass, false);
+        instanceFields = getInstanceFields(sootClass, false);
+        allInstanceFields = getInstanceFields(sootClass, true);
         
-        // TODO: Create types for fields
-        // TODO: Create class loader function
-        for (SootMethod sm : sootClass.getMethods()) {
-            if (isNative(sm)) {
-                nativeMethod(sm);
-            } else if (!sm.isAbstract()) {
-                method(sm);
+        List<Type> classFieldsTypes = new ArrayList<Type>();
+        List<Type> instanceFieldsTypes = new ArrayList<Type>();
+        for (SootField field : sootClass.getFields()) {
+            if (field.isStatic()) {
+                classFieldsTypes.add(getType(field.getType()));
+            } else {
+                instanceFieldsTypes.add(getType(field.getType()));
             }
         }
         
-        createTrampolinesResolver();
+        if (!classFieldsTypes.isEmpty()) {
+            module.addType(new StructureType("ClassFields", classFieldsTypes.toArray(new Type[0])));
+        }
+        if (!instanceFieldsTypes.isEmpty()) {
+            module.addType(new StructureType("InstanceFields", instanceFieldsTypes.toArray(new Type[0])));
+        }
         
-        module.addGlobal(new Global("trampolines", new NullConstant(new PointerType(I8_PTR))));
+        // TODO: Create class loader function
+        for (SootMethod method : sootClass.getMethods()) {
+            if (isNative(method)) {
+                nativeMethod(method);
+            } else if (!method.isAbstract()) {
+                method(method);
+            }
+        }
+        
+        for (FunctionRef ref : trampolines.values()) {
+            trampoline(ref);
+        }
+        
+//        createTrampolinesResolver();
+        
+//        module.addGlobal(new Global("trampolines", new NullConstant(new PointerType(I8_PTR))));
         
         for (Global global : throwables.values()) {
             module.addGlobal(global);
@@ -292,56 +328,56 @@ public class SootClassCompiler {
         return module;
     }
     
-    private void createTrampolinesResolver() {
-        Type descType = new PointerType(new StructureType(I32, I8_PTR, I8_PTR, I8_PTR));
-        VariableRef desc = new VariableRef("desc", descType);
-        Function f = module.newFunction("resolver", new FunctionType(VOID, ENV_PTR, I32, descType), "env", "index", "desc");
-        TreeMap<IntegerConstant, BasicBlockRef> alt = new TreeMap<IntegerConstant, BasicBlockRef>();
-        for (int index = 0; index < trampolines.size(); index++) {
-            alt.put(new IntegerConstant(index), f.newBasicBlockRef(index));
-        }
-        f.newBasicBlock(new Object());
-        f.add(new Switch(new VariableRef("index", I32), f.newBasicBlockRef(trampolines.size()), alt));
-        for (int index = 0; index < trampolines.size(); index++) {
-            Trampoline t = trampolines.get(index);
-            f.newBasicBlock(index);
-            
-            int type = TRAMPOLINE_TYPES.get(t.getClass());
-            Variable typePtr = f.newVariable(new PointerType(I32));
-            f.add(new Getelementptr(typePtr, desc, 0, 0));
-            f.add(new Store(new IntegerConstant(type), new VariableRef(typePtr)));
-            
-            String targetClass = t.getTargetClass();
-            Variable targetClassPtr = f.newVariable(new PointerType(I8_PTR));
-            f.add(new Getelementptr(targetClassPtr, desc, 0, 1));
-            f.add(new Store(new ConstantBitcast(new GlobalRef(addString(targetClass)), I8_PTR), new VariableRef(targetClassPtr)));
-
-            String methodOrFieldName = null;
-            String methodOrFieldDesc = null;
-            if (t instanceof org.nullvm.compiler.trampoline.Invoke) {
-                methodOrFieldName = ((org.nullvm.compiler.trampoline.Invoke) t).getMethodName();
-                methodOrFieldDesc = ((org.nullvm.compiler.trampoline.Invoke) t).getMethodDesc();
-            } else if (t instanceof FieldAccessor) {
-                methodOrFieldName = ((FieldAccessor) t).getFieldName();
-                methodOrFieldName = ((FieldAccessor) t).getFieldDesc();
-            }
-            
-            if (methodOrFieldName != null) {
-                Variable ptr = f.newVariable(new PointerType(I8_PTR));
-                f.add(new Getelementptr(ptr, desc, 0, 2));
-                f.add(new Store(new ConstantBitcast(new GlobalRef(addString(methodOrFieldName)), I8_PTR), new VariableRef(ptr)));
-            }
-            if (methodOrFieldDesc != null) {
-                Variable ptr = f.newVariable(new PointerType(I8_PTR));
-                f.add(new Getelementptr(ptr, desc, 0, 3));
-                f.add(new Store(new ConstantBitcast(new GlobalRef(addString(methodOrFieldDesc)), I8_PTR), new VariableRef(ptr)));
-            }
-            
-            f.add(new Ret());
-        }
-        f.newBasicBlock(trampolines.size());
-        f.add(new Ret());
-    }
+//    private void createTrampolinesResolver() {
+//        Type descType = new PointerType(new StructureType(I32, I8_PTR, I8_PTR, I8_PTR));
+//        VariableRef desc = new VariableRef("desc", descType);
+//        Function f = module.newFunction("resolver", new FunctionType(VOID, ENV_PTR, I32, descType), "env", "index", "desc");
+//        TreeMap<IntegerConstant, BasicBlockRef> alt = new TreeMap<IntegerConstant, BasicBlockRef>();
+//        for (int index = 0; index < trampolines.size(); index++) {
+//            alt.put(new IntegerConstant(index), f.newBasicBlockRef(index));
+//        }
+//        f.newBasicBlock(new Object());
+//        f.add(new Switch(new VariableRef("index", I32), f.newBasicBlockRef(trampolines.size()), alt));
+//        for (int index = 0; index < trampolines.size(); index++) {
+//            Trampoline t = trampolines.get(index);
+//            f.newBasicBlock(index);
+//            
+//            int type = TRAMPOLINE_TYPES.get(t.getClass());
+//            Variable typePtr = f.newVariable(new PointerType(I32));
+//            f.add(new Getelementptr(typePtr, desc, 0, 0));
+//            f.add(new Store(new IntegerConstant(type), new VariableRef(typePtr)));
+//            
+//            String targetClass = t.getTargetClass();
+//            Variable targetClassPtr = f.newVariable(new PointerType(I8_PTR));
+//            f.add(new Getelementptr(targetClassPtr, desc, 0, 1));
+//            f.add(new Store(new ConstantBitcast(new GlobalRef(addString(targetClass)), I8_PTR), new VariableRef(targetClassPtr)));
+//
+//            String methodOrFieldName = null;
+//            String methodOrFieldDesc = null;
+//            if (t instanceof org.nullvm.compiler.trampoline.Invoke) {
+//                methodOrFieldName = ((org.nullvm.compiler.trampoline.Invoke) t).getMethodName();
+//                methodOrFieldDesc = ((org.nullvm.compiler.trampoline.Invoke) t).getMethodDesc();
+//            } else if (t instanceof FieldAccessor) {
+//                methodOrFieldName = ((FieldAccessor) t).getFieldName();
+//                methodOrFieldName = ((FieldAccessor) t).getFieldDesc();
+//            }
+//            
+//            if (methodOrFieldName != null) {
+//                Variable ptr = f.newVariable(new PointerType(I8_PTR));
+//                f.add(new Getelementptr(ptr, desc, 0, 2));
+//                f.add(new Store(new ConstantBitcast(new GlobalRef(addString(methodOrFieldName)), I8_PTR), new VariableRef(ptr)));
+//            }
+//            if (methodOrFieldDesc != null) {
+//                Variable ptr = f.newVariable(new PointerType(I8_PTR));
+//                f.add(new Getelementptr(ptr, desc, 0, 3));
+//                f.add(new Store(new ConstantBitcast(new GlobalRef(addString(methodOrFieldDesc)), I8_PTR), new VariableRef(ptr)));
+//            }
+//            
+//            f.add(new Ret());
+//        }
+//        f.newBasicBlock(trampolines.size());
+//        f.add(new Ret());
+//    }
     
     private static boolean isTerminator(Instruction instr) {
         return instr instanceof Ret || instr instanceof Br 
@@ -349,31 +385,53 @@ public class SootClassCompiler {
             || instr instanceof Switch;
     }
     
-    private static FunctionType getNativeFunctionType(FunctionType ftype) {
-        Type[] pTypes = ftype.getParameterTypes();
-        return new FunctionType(ftype.getReturnType(), Arrays.copyOfRange(pTypes, 1, pTypes.length));
+    private void trampoline(FunctionRef functionRef) {
+        String[] parameterNames = new String[functionRef.getType().getParameterTypes().length];
+        for (int i = 0; i < parameterNames.length; i++) {
+            parameterNames[i] = "p" + i;
+        }
+        Function function = module.newFunction(functionRef.getName().substring(1), functionRef.getType(), parameterNames);
+        FunctionType functionType = function.getType();
+        function.newBasicBlock(new Object());
+        Global functionPtr = new Global(function.getName().substring(1) + "_ptr", new NullConstant(functionType));
+        module.addGlobal(functionPtr);
+        Variable f = function.newVariable(functionType);
+        function.add(new Load(f, new GlobalRef(functionPtr)));
+        Type[] parameterTypes = function.getType().getParameterTypes();
+        Value[] args = new Value[parameterNames.length];
+        for (int i = 0; i < args.length; i++) {
+            args[i] = new VariableRef(parameterNames[i], parameterTypes[i]);
+        }
+        if (function.getType().getReturnType() == VOID) {
+            function.add(new Call(new VariableRef(f), args));
+            function.add(new Ret());
+        } else {
+            Variable result = function.newVariable(functionType.getReturnType());
+            function.add(new Call(result, new VariableRef(f), args));
+            function.add(new Ret(new VariableRef(result)));
+        }
     }
     
     private void nativeMethod(SootMethod method) {
         Function function = createFunction(method);
-        FunctionType nativeFunctionType = getNativeFunctionType(function.getType());
+        FunctionType functionType = function.getType();
         function.newBasicBlock(new Object());
-        Global functionPtr = new Global(function.getName().substring(1) + "_ptr", new NullConstant(nativeFunctionType));
+        Global functionPtr = new Global(function.getName().substring(1) + "_ptr", new NullConstant(functionType));
         module.addGlobal(functionPtr);
-        Variable f = function.newVariable(nativeFunctionType);
+        Variable f = function.newVariable(functionType);
         function.add(new Load(f, new GlobalRef(functionPtr)));
         Type[] parameterTypes = function.getType().getParameterTypes();
         String[] parameterNames = function.getParameterNames();
-        Value[] args = new Value[parameterNames.length - 1];
+        Value[] args = new Value[parameterNames.length];
         for (int i = 0; i < args.length; i++) {
-            args[i] = new VariableRef(parameterNames[i + 1], parameterTypes[i + 1]);
+            args[i] = new VariableRef(parameterNames[i], parameterTypes[i]);
         }
         if (function.getType().getReturnType() == VOID) {
             function.add(new Call(new VariableRef(f), args));
             function.add(new Call(NVM_BC_THROW_IF_EXCEPTION_OCCURRED, ENV));
             function.add(new Ret());
         } else {
-            Variable result = function.newVariable(nativeFunctionType.getReturnType());
+            Variable result = function.newVariable(functionType.getReturnType());
             function.add(new Call(result, new VariableRef(f), args));
             function.add(new Call(NVM_BC_THROW_IF_EXCEPTION_OCCURRED, ENV));
             function.add(new Ret(new VariableRef(result)));
@@ -408,8 +466,8 @@ public class SootClassCompiler {
             }
         }
         
-        Variable localTrampolines = ctx.f().newVariable("trampolines", new PointerType(I8_PTR));
-        ctx.f().add(new Load(localTrampolines, new GlobalRef("trampolines", new PointerType(new PointerType(I8_PTR)))));
+//        Variable localTrampolines = ctx.f().newVariable("trampolines", new PointerType(I8_PTR));
+//        ctx.f().add(new Load(localTrampolines, new GlobalRef("trampolines", new PointerType(new PointerType(I8_PTR)))));
         
         PatchingChain<Unit> units = body.getUnits();
         for (Unit unit : units) {
@@ -487,7 +545,6 @@ public class SootClassCompiler {
         FunctionType functionType = getFunctionType(method.makeRef());
         String[] parameterNames = new String[functionType.getParameterTypes().length];
         int i = 0;
-        parameterNames[i++] = "desc";
         parameterNames[i++] = "env";
         if (!method.isStatic()) {
             parameterNames[i++] = "this";
@@ -529,6 +586,44 @@ public class SootClassCompiler {
             result[i] = s.get(i);
         }
         return result;
+    }
+    
+    private static List<SootField> getFields(SootClass clazz, boolean ztatic, boolean includeSuper) {
+        List<SootField> l = new ArrayList<SootField>();
+        if (includeSuper && clazz.getSuperclass() != null) {
+            l.addAll(getFields(clazz.getSuperclass(), ztatic, true));
+        }
+        for (SootField f : clazz.getFields()) {
+            if (ztatic == f.isStatic()) {
+                l.add(f);
+            }
+        }
+        return l;
+    }
+    
+    private static List<SootField> getClassFields(SootClass clazz, boolean includeSuper) {
+        return getFields(clazz, true, includeSuper);
+    }
+    
+    private static List<SootField> getInstanceFields(SootClass clazz, boolean includeSuper) {
+        return getFields(clazz, false, includeSuper);
+    }
+    
+    private static Type getType(String desc) {
+        switch (desc.charAt(0)) {
+        case 'Z': return I8;
+        case 'B': return I8;
+        case 'S': return I16;
+        case 'C': return I16;
+        case 'I': return I32;
+        case 'J': return I64;
+        case 'F': return FLOAT;
+        case 'D': return DOUBLE;
+        case 'V': return VOID;
+        case 'L': return OBJECT_PTR;
+        case '[': return OBJECT_PTR;
+        }
+        throw new IllegalArgumentException();
     }
     
     private static Type getType(soot.Type sootType) {
@@ -663,13 +758,13 @@ public class SootClassCompiler {
         return value;
     }
     
-    private int addTrampoline(Trampoline trampoline) {
-        int index = trampolines.indexOf(trampoline);
-        if (index == -1) {
-            index = trampolines.size();
-            trampolines.add(trampoline);
+    private void addTrampoline(Trampoline trampoline, FunctionType functionType) {
+        if (!trampolines.containsKey(trampoline)) {
+            String functionName = trampoline.getClass().getSimpleName() + "_" 
+                                + mangleString(trampoline.toString());
+            FunctionRef ref = new FunctionRef(functionName, functionType);
+            trampolines.put(trampoline, ref);
         }
-        return index;
     }
     
     private static String getStringVarName(byte[] bytes) {
@@ -744,7 +839,7 @@ public class SootClassCompiler {
             }
             /*
              * The method exists and isn't abstract. Non virtual (invokespecial) 
-             * calls as well as static and final calls can be done directly.
+             * as well as static calls and calls to final methods can be done directly.
              */
             if (method.isStatic()) {
                 return expr instanceof StaticInvokeExpr;
@@ -775,20 +870,27 @@ public class SootClassCompiler {
         }
     }
     
-    private void callOrInvokeTrampoline(Context ctx, int index, Variable result, Type functionType, Value ... args) {
-        Variable p2 = ctx.f().newVariable(new PointerType(I8_PTR));
-        ctx.f().add(new Getelementptr(p2, new VariableRef("trampolines", new PointerType(I8_PTR)), index));
-        Variable p3 = ctx.f().newVariable(I8_PTR);
-        ctx.f().add(new Load(p3, new VariableRef(p2)));
-        Variable p4 = ctx.f().newVariable(functionType);
-        ctx.f().add(new Bitcast(p4, new VariableRef(p3), p4.getType()));
-        Variable p5 = ctx.f().newVariable(I8_PTR);
-        ctx.f().add(new Bitcast(p5, new VariableRef(p2), p5.getType()));
-        List<Value> newArgs = new ArrayList<Value>(args.length + 2);
-        newArgs.add(new VariableRef(p5));
+    private void callOrInvokeTrampoline(Context ctx, Trampoline trampoline, Variable result, Value ... args) {
+        FunctionRef f = trampolines.get(trampoline);
+
+        List<Value> newArgs = new ArrayList<Value>(args.length + 1);
         newArgs.add(ENV);
         newArgs.addAll(Arrays.asList(args));
-        callOrInvoke(ctx, result, new VariableRef(p4), newArgs.toArray(new Value[newArgs.size()]));
+        callOrInvoke(ctx, result, f, newArgs.toArray(new Value[newArgs.size()]));
+        
+//        Variable p2 = ctx.f().newVariable(new PointerType(I8_PTR));
+//        ctx.f().add(new Getelementptr(p2, new VariableRef("trampolines", new PointerType(I8_PTR)), index));
+//        Variable p3 = ctx.f().newVariable(I8_PTR);
+//        ctx.f().add(new Load(p3, new VariableRef(p2)));
+//        Variable p4 = ctx.f().newVariable(functionType);
+//        ctx.f().add(new Bitcast(p4, new VariableRef(p3), p4.getType()));
+//        Variable p5 = ctx.f().newVariable(I8_PTR);
+//        ctx.f().add(new Bitcast(p5, new VariableRef(p2), p5.getType()));
+//        List<Value> newArgs = new ArrayList<Value>(args.length + 2);
+//        newArgs.add(new VariableRef(p5));
+//        newArgs.add(ENV);
+//        newArgs.addAll(Arrays.asList(args));
+//        callOrInvoke(ctx, result, new VariableRef(p4), newArgs.toArray(new Value[newArgs.size()]));
     }
     
     private void invokeExpr(Context ctx, Variable result, Stmt stmt, InvokeExpr expr) {
@@ -808,8 +910,7 @@ public class SootClassCompiler {
             args.add(arg);
         }
         if (canCallDirectly(ctx, expr)) {
-            args.add(0, new NullConstant(I8_PTR));
-            args.add(1, ENV);
+            args.add(0, ENV);
             Value function = new FunctionRef(mangleMethod(methodRef), getFunctionType(methodRef));
             callOrInvoke(ctx, result, function, args.toArray(new Value[0]));
         } else {
@@ -826,8 +927,8 @@ public class SootClassCompiler {
             } else if (expr instanceof InterfaceInvokeExpr) {
                 trampoline = new Invokeinterface(targetClassName, methodName, methodDesc);
             }
-            int index = addTrampoline(trampoline);
-            callOrInvokeTrampoline(ctx, index, result, getFunctionType(methodRef), args.toArray(new Value[0]));
+            addTrampoline(trampoline, getFunctionType(methodRef));
+            callOrInvokeTrampoline(ctx, trampoline, result, args.toArray(new Value[0]));
         }
     }
 
@@ -891,14 +992,14 @@ public class SootClassCompiler {
             checkNull(ctx, base);
             Trampoline trampoline = new GetField(getInternalName(ref.getFieldRef().declaringClass()), 
                     ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
-            int index = addTrampoline(trampoline);
-            callOrInvokeTrampoline(ctx, index, result, new FunctionType(rightType, I8_PTR, ENV_PTR, OBJECT_PTR), base);
+            addTrampoline(trampoline, new FunctionType(rightType, ENV_PTR, OBJECT_PTR));
+            callOrInvokeTrampoline(ctx, trampoline, result, base);
         } else if (rightOp instanceof StaticFieldRef) {
             StaticFieldRef ref = (StaticFieldRef) rightOp;
             Trampoline trampoline = new GetStatic(getInternalName(ref.getFieldRef().declaringClass()), 
                     ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
-            int index = addTrampoline(trampoline);
-            callOrInvokeTrampoline(ctx, index, result, new FunctionType(rightType, I8_PTR, ENV_PTR));
+            addTrampoline(trampoline, new FunctionType(rightType, ENV_PTR));
+            callOrInvokeTrampoline(ctx, trampoline, result);
         } else if (rightOp instanceof Expr) {
             if (rightOp instanceof BinopExpr) {
                 BinopExpr expr = (BinopExpr) rightOp;
@@ -1032,18 +1133,18 @@ public class SootClassCompiler {
                     }
                 } else {
                     Trampoline trampoline = new Checkcast(getInternalName(sootTargetType));
-                    int index = addTrampoline(trampoline);
-                    callOrInvokeTrampoline(ctx, index, result, new FunctionType(OBJECT_PTR, I8_PTR, ENV_PTR, OBJECT_PTR), op);
+                    addTrampoline(trampoline, new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR));
+                    callOrInvokeTrampoline(ctx, trampoline, result, op);
                 }
             } else if (rightOp instanceof InstanceOfExpr) {
                 Value op = immediate(ctx, (Immediate) ((InstanceOfExpr) rightOp).getOp());
                 Trampoline trampoline = new Instanceof(getInternalName(((InstanceOfExpr) rightOp).getCheckType()));
-                int index = addTrampoline(trampoline);
-                callOrInvokeTrampoline(ctx, index, result, new FunctionType(I8, I8_PTR, ENV_PTR, OBJECT_PTR), op);
+                addTrampoline(trampoline, new FunctionType(I8, ENV_PTR, OBJECT_PTR));
+                callOrInvokeTrampoline(ctx, trampoline, result, op);
             } else if (rightOp instanceof NewExpr) {
                 Trampoline trampoline = new New(getInternalName(((NewExpr) rightOp).getBaseType()));
-                int index = addTrampoline(trampoline);
-                callOrInvokeTrampoline(ctx, index, result, new FunctionType(OBJECT_PTR, I8_PTR, ENV_PTR));
+                addTrampoline(trampoline, new FunctionType(OBJECT_PTR, ENV_PTR));
+                callOrInvokeTrampoline(ctx, trampoline, result);
             } else if (rightOp instanceof NewArrayExpr) {
                 NewArrayExpr expr = (NewArrayExpr) rightOp;
                 Value size = immediate(ctx, (Immediate) expr.getSize());
@@ -1084,14 +1185,14 @@ public class SootClassCompiler {
             checkNull(ctx, base);
             Trampoline trampoline = new PutField(getInternalName(ref.getFieldRef().declaringClass()), 
                     ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
-            int index = addTrampoline(trampoline);
-            callOrInvokeTrampoline(ctx, index, null, new FunctionType(VOID, I8_PTR, ENV_PTR, OBJECT_PTR, leftType), base, resultRef);
+            addTrampoline(trampoline, new FunctionType(VOID, ENV_PTR, OBJECT_PTR, leftType));
+            callOrInvokeTrampoline(ctx, trampoline, null, base, resultRef);
         } else if (leftOp instanceof StaticFieldRef) {
             StaticFieldRef ref = (StaticFieldRef) leftOp;
             Trampoline trampoline = new PutStatic(getInternalName(ref.getFieldRef().declaringClass()), 
                     ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
-            int index = addTrampoline(trampoline);
-            callOrInvokeTrampoline(ctx, index, null, new FunctionType(VOID, I8_PTR, ENV_PTR, leftType), resultRef);
+            addTrampoline(trampoline, new FunctionType(VOID, ENV_PTR, leftType));
+            callOrInvokeTrampoline(ctx, trampoline, null, resultRef);
         } else {
             throw new IllegalArgumentException("Unknown type for leftOp: " + leftOp.getClass());
         }
@@ -1236,11 +1337,28 @@ public class SootClassCompiler {
         return false;
     }
     
+    private static FunctionType getFunctionType(String desc) {
+        List<Type> paramTypes = new ArrayList<Type>();
+        int i = 1;
+        while (true) {
+            char c = desc.charAt(i);
+            paramTypes.add(getType(desc.substring(i, 1)));
+            while (c == '[') {
+                c = desc.charAt(++i);
+            }
+            if (c == 'L') {
+                while (c != ';') {
+                    c = desc.charAt(++i);
+                }
+            }
+            i++;
+        }
+    }
+    
     private static FunctionType getFunctionType(SootMethodRef methodRef) {
         Type returnType = getType(methodRef.returnType());
-        Type[] paramTypes = new Type[(methodRef.isStatic() ? 2 : 3) + methodRef.parameterTypes().size()];
+        Type[] paramTypes = new Type[(methodRef.isStatic() ? 1 : 2) + methodRef.parameterTypes().size()];
         int i = 0;
-        paramTypes[i++] = I8_PTR;
         paramTypes[i++] = ENV_PTR;
         if (!methodRef.isStatic()) {
             paramTypes[i++] = OBJECT_PTR;

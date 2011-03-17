@@ -79,4 +79,9 @@ public abstract class FieldAccessor extends Trampoline {
         }
         return c;
     }
+    
+    @Override
+    public String toString() {
+        return super.toString() + "/" + fieldName + "/" + fieldDesc;
+    }
 }

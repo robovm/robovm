@@ -188,6 +188,8 @@ public class SootClassCompiler {
     private static final Global THE_CLASS = new Global("class", new NullConstant(CLASS_PTR));
     
     //_nvmBcExceptionClear
+    private static final FunctionRef NVM_BC_ALLOCATE_CLASS = new FunctionRef("_nvmBcAllocateClass", new FunctionType(CLASS_PTR, ENV_PTR, I8_PTR, I8_PTR, I32, I32, I32));
+    private static final FunctionRef NVM_BC_ADD_FIELD = new FunctionRef("_nvmBcAddField", new FunctionType(VOID, ENV_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_PERSONALITY = new FunctionRef("_nvmPersonality", new FunctionType(I8_PTR));
     private static final FunctionRef NVM_BC_EXCEPTION_MATCH = new FunctionRef("_nvmBcExceptionMatch", new FunctionType(I32, ENV_PTR, CLASS_PTR));
     private static final FunctionRef NVM_BC_EXCEPTION_CLEAR = new FunctionRef("_nvmBcExceptionClear", new FunctionType(OBJECT_PTR, ENV_PTR));
@@ -318,7 +320,6 @@ public class SootClassCompiler {
             fieldSetter(field);
         }
         
-        // TODO: Create class loader function
         for (SootMethod method : sootClass.getMethods()) {
             if (isNative(method)) {
                 nativeMethod(method);
@@ -341,9 +342,8 @@ public class SootClassCompiler {
             trampoline(ref);
         }
         
-//        createTrampolinesResolver();
+        classLoaderFunction();
         
-//        module.addGlobal(new Global("trampolines", new NullConstant(new PointerType(I8_PTR))));
         module.addGlobal(THE_CLASS);
         
         for (Global global : throwables.values()) {
@@ -597,6 +597,53 @@ public class SootClassCompiler {
         return module.newFunction(name, functionType, parameterNames);
     }
     
+    private void classLoaderFunction() {
+        String name = "NullVM_" + mangleString(sootClass.getName());
+        Function function = module.newFunction(name, new FunctionType(CLASS_PTR, ENV_PTR), "env");
+        function.newBasicBlock(new Object());
+        
+        Variable clazz = function.newVariable("clazz", CLASS_PTR);
+        Value superclassName = null;
+        if (sootClass.hasSuperclass()) {
+            superclassName = getString(sootClass.getSuperclass().getName());
+        } else {
+            superclassName = new NullConstant(I8_PTR);
+        }
+        function.add(new Call(clazz, NVM_BC_ALLOCATE_CLASS, 
+                ENV, 
+                getString(sootClass.getName()), 
+                superclassName, new IntegerConstant(sootClass.getModifiers()),
+                sizeof(classFieldsType), sizeof(instanceFieldsType)));
+        for (SootField field : classFields) {
+            FunctionRef getter = new FunctionRef(mangleField(field) + "_getter", 
+                    new FunctionType(getType(field.getType()), ENV_PTR));
+            FunctionRef setter = new FunctionRef(mangleField(field) + "_setter", 
+                    new FunctionType(VOID, ENV_PTR, getType(field.getType())));
+            function.add(new Call(NVM_BC_ADD_FIELD, ENV, clazz.ref(),
+                    getString(field.getName()),
+                    getString(getDescriptor(field.getType())),
+                    new IntegerConstant(field.getModifiers()),
+                    offsetof(classFieldsType, classFields.indexOf(field)),
+                    new ConstantBitcast(getter, I8_PTR), 
+                    new ConstantBitcast(setter, I8_PTR)));
+        }
+        for (SootField field : instanceFields) {
+            FunctionRef getter = new FunctionRef(mangleField(field) + "_getter", 
+                    new FunctionType(getType(field.getType()), ENV_PTR, OBJECT_PTR));
+            FunctionRef setter = new FunctionRef(mangleField(field) + "_setter", 
+                    new FunctionType(VOID, ENV_PTR, OBJECT_PTR, getType(field.getType())));
+            function.add(new Call(NVM_BC_ADD_FIELD, ENV, clazz.ref(),
+                    getString(field.getName()),
+                    getString(getDescriptor(field.getType())),
+                    new IntegerConstant(field.getModifiers()),
+                    offsetof(instanceFieldsType, instanceFields.indexOf(field)),
+                    new ConstantBitcast(getter, I8_PTR), 
+                    new ConstantBitcast(setter, I8_PTR)));
+        }
+        
+        function.add(new Ret(clazz.ref()));
+    }
+    
     private void fieldGetter(SootField field) {
         String name = mangleField(field) + "_getter";
         Function function = null;
@@ -638,11 +685,11 @@ public class SootClassCompiler {
         FunctionType functionType = function.getType();
         function.newBasicBlock(new Object());
         Variable fptr = function.newVariable(I8_PTR);
-        Value nameRef = new ConstantGetelementptr(new GlobalRef(addString(method.getName())), 0, 0);
-        Value descRef = new ConstantGetelementptr(new GlobalRef(addString(getDescriptor(method.makeRef()))), 0, 0);
+        Value nameRef = getString(method.getName());
+        Value descRef = getString(getDescriptor(method.makeRef()));
         function.add(new Call(fptr, NVM_BC_LOOKUP_VIRTUAL_METHOD, ENV, new VariableRef("this", OBJECT_PTR), nameRef, descRef));
         Variable f = function.newVariable(functionType);
-        function.add(new Bitcast(f, new VariableRef(fptr), function.getType()));
+        function.add(new Bitcast(f, fptr.ref(), function.getType()));
         String[] parameterNames = function.getParameterNames();
         Type[] parameterTypes = function.getType().getParameterTypes();
         Value[] args = new Value[parameterNames.length];
@@ -650,12 +697,12 @@ public class SootClassCompiler {
             args[i] = new VariableRef(parameterNames[i], parameterTypes[i]);
         }
         if (function.getType().getReturnType() == VOID) {
-            function.add(new Call(new VariableRef(f), args));
+            function.add(new Call(f.ref(), args));
             function.add(new Ret());
         } else {
             Variable result = function.newVariable(functionType.getReturnType());
-            function.add(new Call(result, new VariableRef(f), args));
-            function.add(new Ret(new VariableRef(result)));
+            function.add(new Call(result, f.ref(), args));
+            function.add(new Ret(result.ref()));
         }
     }
     
@@ -918,14 +965,14 @@ public class SootClassCompiler {
         return sb.toString();
     }
     
-    private Global addString(String string) {
+    private Constant getString(String string) {
         Global g = strings.get(string);
         if (g == null) {
             byte[] modUtf8 = stringToModifiedUtf8(string);
             g = new Global(getStringVarName(modUtf8), new StringConstant(modUtf8));
             strings.put(string, g);
         }
-        return g;
+        return new ConstantGetelementptr(new GlobalRef(g), 0, 0);
     }
     
     protected Value immediate(Context ctx, Immediate v) {
@@ -949,8 +996,7 @@ public class SootClassCompiler {
             return new NullConstant(OBJECT_PTR);
         } else if (v instanceof soot.jimple.StringConstant) {
             String s = ((soot.jimple.StringConstant) v).value;
-            Global global = addString(s);
-            Value string = new ConstantGetelementptr(new GlobalRef(global), 0, 0);
+            Value string = getString(s);
             Variable tmp = ctx.f().newVariable(OBJECT_PTR);
             callOrInvoke(ctx, new Object(), tmp, NVM_BC_LDC_STRING, ENV, string);
             return new VariableRef(tmp);

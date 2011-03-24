@@ -23,6 +23,10 @@ public class Variable {
         this.type = type;
     }
     
+    public VariableRef ref() {
+        return new VariableRef(this);
+    }
+    
     public String getName() {
         return name;
     }

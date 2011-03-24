@@ -34,6 +34,10 @@ public class Global {
         this.type = value.getType();
     }
     
+    public GlobalRef ref() {
+        return new GlobalRef(this);
+    }
+    
     public String getName() {
         return name;
     }

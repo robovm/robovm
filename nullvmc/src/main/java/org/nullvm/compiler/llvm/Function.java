@@ -30,6 +30,10 @@ public class Function {
         this.parameterNames = parameterNames;
     }
     
+    public FunctionRef ref() {
+        return new FunctionRef(this);
+    }
+    
     public String getName() {
         return name;
     }

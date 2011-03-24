@@ -21,7 +21,9 @@ public class Module {
     private final List<URL> includes = new ArrayList<URL>();
     private final List<Global> globals = new ArrayList<Global>();
     private final List<Function> functions = new ArrayList<Function>();
+    private final List<FunctionDeclaration> functionDeclarations = new ArrayList<FunctionDeclaration>();
     private final List<UserType> types = new ArrayList<UserType>();
+    private final List<String> asm = new ArrayList<String>();
 
     public void addInclude(URL resource) {
         includes.add(resource);
@@ -41,6 +43,14 @@ public class Module {
         types.add(type);
     }
     
+    public void addAsm(String s) {
+        asm.add(s);
+    }
+    
+    public void addFunctionDeclaration(FunctionDeclaration fd) {
+        functionDeclarations.add(fd);
+    }
+    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -56,19 +66,30 @@ public class Module {
             }
             sb.append("\n");
         }
+        sb.append("\n");
+        for (String s : asm) {
+            sb.append("module asm \"");
+            sb.append(s);
+            sb.append("\"\n");
+        }
+        sb.append("\n");
         for (UserType type : types) {
             sb.append(type.getAlias());
             sb.append(" = type ");
             sb.append(type.getDefinition());
             sb.append("\n");
         }
+        sb.append("\n");
         for (Global g : globals) {
             sb.append(g.getDefinition());
             sb.append("\n");
         }
-        if (!globals.isEmpty() && !functions.isEmpty()) {
+        sb.append("\n");
+        for (FunctionDeclaration fd : functionDeclarations) {
+            sb.append(fd.toString());
             sb.append("\n");
         }
+        sb.append("\n");
         for (Function f : functions) {
             sb.append(f.toString());
             sb.append("\n");

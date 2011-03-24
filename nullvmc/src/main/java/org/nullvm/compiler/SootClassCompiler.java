@@ -26,6 +26,8 @@ import org.nullvm.compiler.llvm.BasicBlockRef;
 import org.nullvm.compiler.llvm.Bitcast;
 import org.nullvm.compiler.llvm.Br;
 import org.nullvm.compiler.llvm.Call;
+import org.nullvm.compiler.llvm.Constant;
+import org.nullvm.compiler.llvm.ConstantAdd;
 import org.nullvm.compiler.llvm.ConstantBitcast;
 import org.nullvm.compiler.llvm.ConstantGetelementptr;
 import org.nullvm.compiler.llvm.ConstantPtrtoint;
@@ -37,6 +39,7 @@ import org.nullvm.compiler.llvm.Fpext;
 import org.nullvm.compiler.llvm.Fptrunc;
 import org.nullvm.compiler.llvm.Frem;
 import org.nullvm.compiler.llvm.Function;
+import org.nullvm.compiler.llvm.FunctionDeclaration;
 import org.nullvm.compiler.llvm.FunctionRef;
 import org.nullvm.compiler.llvm.FunctionType;
 import org.nullvm.compiler.llvm.Getelementptr;
@@ -174,8 +177,12 @@ public class SootClassCompiler {
     private static final char[] HEX_CHARS = "0123456789ABCDEF".toCharArray();
 
     private static final Type ENV_PTR = new PointerType(new OpaqueType("Env"));
-    private static final Type CLASS_PTR = new PointerType(new OpaqueType("Class"));
-    private static final Type OBJECT_PTR = new PointerType(new OpaqueType("Object"));
+    // Dummy Class type definition. The real one is in header.ll
+    private static final StructureType CLASS = new StructureType("Class", I8_PTR);
+    private static final Type CLASS_PTR = new PointerType(CLASS);
+    // Dummy Object type definition. The real one is in header.ll
+    private static final StructureType OBJECT = new StructureType("Object", CLASS_PTR);
+    private static final Type OBJECT_PTR = new PointerType(OBJECT);
     
     private static final VariableRef ENV = new VariableRef("env", ENV_PTR);
     private static final Global THE_CLASS = new Global("class", new NullConstant(CLASS_PTR));
@@ -199,6 +206,7 @@ public class SootClassCompiler {
     private static final FunctionRef NVM_BC_ENTER_MONITOR = new FunctionRef("_nvmBcEnterMonitor", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     private static final FunctionRef NVM_BC_EXIT_MONITOR = new FunctionRef("_nvmBcExitMonitor", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     private static final FunctionRef NVM_BC_LDC_STRING = new FunctionRef("_nvmBcLdcString", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_LOOKUP_VIRTUAL_METHOD = new FunctionRef("_nvmBcLookupVirtualMethod", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR, I8_PTR, I8_PTR));
     
     private static final FunctionRef LLVM_EH_EXCEPTION = new FunctionRef("llvm.eh.exception", new FunctionType(I8_PTR));
     private static final FunctionRef LLVM_EH_SELECTOR = new FunctionRef("llvm.eh.selector", new FunctionType(I32, true, I8_PTR, I8_PTR));
@@ -300,6 +308,15 @@ public class SootClassCompiler {
         if (instanceFieldsType != null) {
             module.addType(instanceFieldsType);
         }
+
+        List<SootField> allFields = new ArrayList<SootField>();
+        allFields.addAll(classFields);
+        allFields.addAll(instanceFields);
+        for (SootField field : allFields) {
+            // TODO: Don't create accessors for private fields?
+            fieldGetter(field);
+            fieldSetter(field);
+        }
         
         // TODO: Create class loader function
         for (SootMethod method : sootClass.getMethods()) {
@@ -311,6 +328,12 @@ public class SootClassCompiler {
                 PackManager.v().getPack("jop").apply(body);
                 PackManager.v().getPack("jap").apply(body);
                 method(method);
+            }
+            if (!method.isStatic() && !method.isPrivate() && !Modifier.isFinal(method.getModifiers())) {
+                // Virtual method. If not defined in a superclass we need to create a virtual lookup function now.
+                if (!ancestorDeclaresMethod(sootClass, method)) {
+                    virtualLookupFunction(method);
+                }
             }
         }
         
@@ -391,37 +414,46 @@ public class SootClassCompiler {
     }
     
     private void trampoline(FunctionRef functionRef) {
-        String[] parameterNames = new String[functionRef.getType().getParameterTypes().length];
-        for (int i = 0; i < parameterNames.length; i++) {
-            parameterNames[i] = "p" + i;
-        }
-        Function function = module.newFunction(functionRef.getName().substring(1), functionRef.getType(), parameterNames);
-        FunctionType functionType = function.getType();
-        function.newBasicBlock(new Object());
-        Global functionPtr = new Global(function.getName().substring(1) + "_ptr", new NullConstant(functionType));
-        module.addGlobal(functionPtr);
-        Variable f = function.newVariable(functionType);
-        function.add(new Load(f, new GlobalRef(functionPtr)));
-        Type[] parameterTypes = function.getType().getParameterTypes();
-        Value[] args = new Value[parameterNames.length];
-        for (int i = 0; i < args.length; i++) {
-            args[i] = new VariableRef(parameterNames[i], parameterTypes[i]);
-        }
-        if (function.getType().getReturnType() == VOID) {
-            function.add(new Call(new VariableRef(f), args));
-            function.add(new Ret());
-        } else {
-            Variable result = function.newVariable(functionType.getReturnType());
-            function.add(new Call(result, new VariableRef(f), args));
-            function.add(new Ret(new VariableRef(result)));
-        }
+        // TODO: X86-64 specific
+        String name = functionRef.getName().substring(1);
+        module.addFunctionDeclaration(new FunctionDeclaration(name, functionRef.getType()));
+//        module.addAsm(name + "_ptr:");
+//        module.addAsm("\t.quad 0");
+        module.addAsm(name + ":");
+        module.addAsm("\tmovq " + name + "_ptr@GOTPCREL(%rip), %rax");
+        module.addAsm("\tjmpq *(%rax)");
+        module.addGlobal(new Global(name + "_ptr", new NullConstant(I8_PTR)));
+//        String[] parameterNames = new String[functionRef.getType().getParameterTypes().length];
+//        for (int i = 0; i < parameterNames.length; i++) {
+//            parameterNames[i] = "p" + i;
+//        }
+//        Function function = module.newFunction(functionRef.getName().substring(1), functionRef.getType(), parameterNames);
+//        FunctionType functionType = function.getType();
+//        function.newBasicBlock(new Object());
+//        Global functionPtr = new Global(function.getName().substring(1) + "_ptr", new NullConstant(functionType));
+//        module.addGlobal(functionPtr);
+//        Variable f = function.newVariable(functionType);
+//        function.add(new Load(f, new GlobalRef(functionPtr)));
+//        Type[] parameterTypes = function.getType().getParameterTypes();
+//        Value[] args = new Value[parameterNames.length];
+//        for (int i = 0; i < args.length; i++) {
+//            args[i] = new VariableRef(parameterNames[i], parameterTypes[i]);
+//        }
+//        if (function.getType().getReturnType() == VOID) {
+//            function.add(new Call(new VariableRef(f), args));
+//            function.add(new Ret());
+//        } else {
+//            Variable result = function.newVariable(functionType.getReturnType());
+//            function.add(new Call(result, new VariableRef(f), args));
+//            function.add(new Ret(new VariableRef(result)));
+//        }
     }
     
     private void nativeMethod(SootMethod method) {
         Function function = createFunction(method);
         FunctionType functionType = function.getType();
         function.newBasicBlock(new Object());
-        Global functionPtr = new Global(function.getName().substring(1) + "_ptr", new NullConstant(functionType));
+        Global functionPtr = new Global(function.getName().substring(1) + "_native_ptr", new NullConstant(functionType));
         module.addGlobal(functionPtr);
         Variable f = function.newVariable(functionType);
         function.add(new Load(f, new GlobalRef(functionPtr)));
@@ -547,6 +579,10 @@ public class SootClassCompiler {
     }
 
     private Function createFunction(SootMethod method) {
+        return createFunction(mangleMethod(method.makeRef()), method);
+    }
+    
+    private Function createFunction(String name, SootMethod method) {
         FunctionType functionType = getFunctionType(method.makeRef());
         String[] parameterNames = new String[functionType.getParameterTypes().length];
         int i = 0;
@@ -558,8 +594,69 @@ public class SootClassCompiler {
             parameterNames[i++] = "p" + j;
         }
             
-        return module.newFunction(mangleMethod(method.makeRef()), 
-                functionType, parameterNames);
+        return module.newFunction(name, functionType, parameterNames);
+    }
+    
+    private void fieldGetter(SootField field) {
+        String name = mangleField(field) + "_getter";
+        Function function = null;
+        Value fieldPtr = null;
+        if (field.isStatic()) {
+            function = module.newFunction(name, new FunctionType(getType(field.getType()), ENV_PTR), "env");
+            function.newBasicBlock(new Object());
+            fieldPtr = getClassFieldPtr(function, field);
+        } else {
+            function = module.newFunction(name, new FunctionType(getType(field.getType()), ENV_PTR, OBJECT_PTR), "env", "this");
+            function.newBasicBlock(new Object());
+            fieldPtr = getInstanceFieldPtr(function, new VariableRef("this", OBJECT_PTR), field);
+        }
+        Variable result = function.newVariable(getType(field.getType()));
+        function.add(new Load(result, fieldPtr));
+        function.add(new Ret(new VariableRef(result)));
+    }
+    
+    private void fieldSetter(SootField field) {
+        String name = mangleField(field) + "_setter";
+        Function function = null;
+        Value fieldPtr = null;
+        if (field.isStatic()) {
+            function = module.newFunction(name, new FunctionType(VOID, ENV_PTR, getType(field.getType())), "env", "value");
+            function.newBasicBlock(new Object());
+            fieldPtr = getClassFieldPtr(function, field);
+        } else {
+            function = module.newFunction(name, new FunctionType(VOID, ENV_PTR, OBJECT_PTR, getType(field.getType())), "env", "this", "value");
+            function.newBasicBlock(new Object());
+            fieldPtr = getInstanceFieldPtr(function, new VariableRef("this", OBJECT_PTR), field);
+        }
+        function.add(new Store(new VariableRef("value", getType(field.getType())), fieldPtr));
+        function.add(new Ret());
+    }
+    
+    private void virtualLookupFunction(SootMethod method) {
+        String name = mangleMethod(method) + "_lookup";
+        Function function = createFunction(name, method);
+        FunctionType functionType = function.getType();
+        function.newBasicBlock(new Object());
+        Variable fptr = function.newVariable(I8_PTR);
+        Value nameRef = new ConstantGetelementptr(new GlobalRef(addString(method.getName())), 0, 0);
+        Value descRef = new ConstantGetelementptr(new GlobalRef(addString(getDescriptor(method.makeRef()))), 0, 0);
+        function.add(new Call(fptr, NVM_BC_LOOKUP_VIRTUAL_METHOD, ENV, new VariableRef("this", OBJECT_PTR), nameRef, descRef));
+        Variable f = function.newVariable(functionType);
+        function.add(new Bitcast(f, new VariableRef(fptr), function.getType()));
+        String[] parameterNames = function.getParameterNames();
+        Type[] parameterTypes = function.getType().getParameterTypes();
+        Value[] args = new Value[parameterNames.length];
+        for (int i = 0; i < args.length; i++) {
+            args[i] = new VariableRef(parameterNames[i], parameterTypes[i]);
+        }
+        if (function.getType().getReturnType() == VOID) {
+            function.add(new Call(new VariableRef(f), args));
+            function.add(new Ret());
+        } else {
+            Variable result = function.newVariable(functionType.getReturnType());
+            function.add(new Call(result, new VariableRef(f), args));
+            function.add(new Ret(new VariableRef(result)));
+        }
     }
     
     private static byte[] stringToModifiedUtf8(String unicode) {
@@ -614,7 +711,7 @@ public class SootClassCompiler {
         return getFields(clazz, false, includeSuper);
     }
     
-    private StructureType getType(String alias, List<SootField> fields) {
+    private static StructureType getType(String alias, List<SootField> fields) {
         List<Type> types = new ArrayList<Type>();
         for (SootField field : fields) {
             types.add(getType(field.getType()));
@@ -623,6 +720,30 @@ public class SootClassCompiler {
             return new StructureType(alias, types.toArray(new Type[types.size()]));
         }
         return null;
+    }
+    
+    private static StructureType getFieldsType(String alias, SootClass clazz, boolean ztatic, boolean includeSuper) {
+        List<Type> types = new ArrayList<Type>();
+        for (SootField field : getFields(clazz, ztatic, includeSuper)) {
+            types.add(getType(field.getType()));
+        }
+        if (!types.isEmpty()) {
+            return new StructureType(alias, types.toArray(new Type[types.size()]));
+        }
+        return null;
+    }
+    
+    private static boolean ancestorDeclaresMethod(SootClass c, SootMethod method) {
+        String name = method.getName();
+        List parameterTypes = method.getParameterTypes();
+        soot.Type returnType = method.getReturnType();
+        while (c.hasSuperclass()) {
+            if (c.getSuperclass().declaresMethod(name, parameterTypes, returnType)) {
+                return true;
+            }
+            c = c.getSuperclass();
+        }
+        return false;
     }
     
     private static Type getType(String desc) {
@@ -996,33 +1117,41 @@ public class SootClassCompiler {
         }
     }
     
-    private Value getClassFieldPtr(Context ctx, StaticFieldRef ref) {
-        Variable base = ctx.f().newVariable(CLASS_PTR);
-        ctx.f().add(new Load(base, new GlobalRef(THE_CLASS)));
-        return getFieldPtr(ctx, new VariableRef(base), ref, classFields, classFieldsType);
+    private static Constant sizeof(StructureType type) {
+        return new ConstantPtrtoint(
+                new ConstantGetelementptr(new NullConstant(
+                        new PointerType(type)), 1), I32);
     }
     
-    private Value getInstanceFieldPtr(Context ctx, Value base, InstanceFieldRef ref) {
-        return getFieldPtr(ctx, base, ref, allInstanceFields, instanceFieldsType);
+    private static Constant offsetof(StructureType type, int index) {
+        return new ConstantPtrtoint(
+                new ConstantGetelementptr(new NullConstant(
+                        new PointerType(type)), 0, index), I32);
     }
     
-    private Value getFieldPtr(Context ctx, Value base, FieldRef ref, List<SootField> fields, StructureType fieldsType) {
-        int index1 = 0;
-        int index2 = fields.indexOf(ref.getField());
-        if (index2 == fields.size() - 1) {
-            index1 = 1;
-            index2 = 0;
-        }
-        Variable baseI8Ptr = ctx.f().newVariable(I8_PTR);
-        ctx.f().add(new Bitcast(baseI8Ptr, base, I8_PTR));
-        Variable fieldI8Ptr = ctx.f().newVariable(I8_PTR);
-        Value offset = new ConstantSub(
-                new IntegerConstant(0), new ConstantPtrtoint(
-                        new ConstantGetelementptr(new NullConstant(
-                                new PointerType(fieldsType)), index1, index2), I32));
-        ctx.f().add(new Getelementptr(fieldI8Ptr, new VariableRef(baseI8Ptr), offset));
-        Variable fieldPtr = ctx.f().newVariable(new PointerType(getType(ref.getType())));
-        ctx.f().add(new Bitcast(fieldPtr, new VariableRef(fieldI8Ptr), fieldPtr.getType()));
+    private static Constant neg(Constant constant) {
+        return new ConstantSub(new IntegerConstant(0), constant);
+    }
+    
+    private Value getClassFieldPtr(Function f, SootField field) {
+        Variable base = f.newVariable(CLASS_PTR);
+        f.add(new Load(base, new GlobalRef(THE_CLASS)));
+        return getFieldPtr(f, new VariableRef(base), sizeof(CLASS), field, classFields, classFieldsType);
+    }
+    
+    private Value getInstanceFieldPtr(Function f, Value base, SootField field) {
+        return getFieldPtr(f, base, sizeof(OBJECT), field, allInstanceFields, instanceFieldsType);
+    }
+    
+    private Value getFieldPtr(Function f, Value base, Constant baseOffset, SootField field, List<SootField> fields, StructureType fieldsType) {
+        int index = fields.indexOf(field);
+        Value offset = new ConstantAdd(baseOffset, offsetof(fieldsType, index));
+        Variable baseI8Ptr = f.newVariable(I8_PTR);
+        f.add(new Bitcast(baseI8Ptr, base, I8_PTR));
+        Variable fieldI8Ptr = f.newVariable(I8_PTR);
+        f.add(new Getelementptr(fieldI8Ptr, new VariableRef(baseI8Ptr), offset));
+        Variable fieldPtr = f.newVariable(new PointerType(getType(field.getType())));
+        f.add(new Bitcast(fieldPtr, new VariableRef(fieldI8Ptr), fieldPtr.getType()));
         return new VariableRef(fieldPtr);
     }
     
@@ -1066,7 +1195,7 @@ public class SootClassCompiler {
             Value base = immediate(ctx, (Immediate) ref.getBase());
             checkNull(ctx, base);
             if (canAccessDirectly(ctx, ref)) {
-                ctx.f().add(new Load(result, getInstanceFieldPtr(ctx, base, ref)));
+                ctx.f().add(new Load(result, getInstanceFieldPtr(ctx.f(), base, ref.getField())));
             } else {
                 Trampoline trampoline = new GetField(getInternalName(ref.getFieldRef().declaringClass()), 
                         ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
@@ -1076,7 +1205,7 @@ public class SootClassCompiler {
         } else if (rightOp instanceof StaticFieldRef) {
             StaticFieldRef ref = (StaticFieldRef) rightOp;
             if (canAccessDirectly(ctx, ref)) {
-                ctx.f().add(new Load(result, getClassFieldPtr(ctx, ref)));
+                ctx.f().add(new Load(result, getClassFieldPtr(ctx.f(), ref.getField())));
             } else {
                 Trampoline trampoline = new GetStatic(getInternalName(ref.getFieldRef().declaringClass()), 
                         ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
@@ -1267,7 +1396,7 @@ public class SootClassCompiler {
             Value base = immediate(ctx, (Immediate) ref.getBase());
             checkNull(ctx, base);
             if (canAccessDirectly(ctx, ref)) {
-                ctx.f().add(new Store(resultRef, getInstanceFieldPtr(ctx, base, ref)));
+                ctx.f().add(new Store(resultRef, getInstanceFieldPtr(ctx.f(), base, ref.getField())));
             } else {
                 Trampoline trampoline = new PutField(getInternalName(ref.getFieldRef().declaringClass()), 
                         ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
@@ -1277,7 +1406,7 @@ public class SootClassCompiler {
         } else if (leftOp instanceof StaticFieldRef) {
             StaticFieldRef ref = (StaticFieldRef) leftOp;
             if (canAccessDirectly(ctx, ref)) {
-                ctx.f().add(new Store(resultRef, getClassFieldPtr(ctx, ref)));
+                ctx.f().add(new Store(resultRef, getClassFieldPtr(ctx.f(), ref.getField())));
             } else {
                 Trampoline trampoline = new PutStatic(getInternalName(ref.getFieldRef().declaringClass()), 
                         ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
@@ -1460,8 +1589,13 @@ public class SootClassCompiler {
         return new FunctionType(returnType, paramTypes);
     }
     
+    private static String mangleMethod(SootMethod method) {
+        return mangleMethod(method.makeRef());
+    }
+    
     private static String mangleMethod(SootMethodRef methodRef) {
-        return mangleMethod(methodRef.declaringClass().getName(), methodRef.name(), methodRef.parameterTypes(), methodRef.returnType());
+        return mangleMethod(methodRef.declaringClass().getName(), methodRef.name(), 
+                methodRef.parameterTypes(), methodRef.returnType());
     }
     
     private static String mangleMethod(String owner, String name, List<soot.Type> parameterTypes, soot.Type returnType) {
@@ -1477,6 +1611,20 @@ public class SootClassCompiler {
         }
         sb.append("__");
         sb.append(mangleString(getDescriptor(returnType)));
+        return sb.toString();
+    }
+    
+    private static String mangleField(SootField field) {
+        return mangleField(field.getDeclaringClass().getName(), field.getName(), field.getType());
+    }
+    
+    private static String mangleField(String owner, String name, soot.Type type) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(mangleString(owner));
+        sb.append("_");
+        sb.append(mangleString(name));
+        sb.append("__");
+        sb.append(mangleString(getDescriptor(type)));
         return sb.toString();
     }
     
@@ -1506,41 +1654,19 @@ public class SootClassCompiler {
     
     public static class HelloWorld {
         private static int foo = 10;
+        private long l = 0;
+        public static int getFoo() {
+            return foo;
+        }
         public static long f(byte x) {
-            return (x / 100);
+            return (100 / x);
         }
-        public static long g(long x) {
-            return x > 0 ? x : 0;
+        public void setL(long l) {
+            this.l = l;
         }
-        public static int h(char x, short y, byte z) {
-            return (int) z;
+        public long getL() {
+            return l;
         }
-        public static int h(int[] x, int i) {
-            try {
-                x[i] *= x[i];
-                return x[i];
-            } catch (ArrayIndexOutOfBoundsException t) {
-                return 1;
-            } catch (Exception e) {
-                return 0;
-            }
-        }
-        public static long invokeStatic(byte b) {
-            return f(b);
-        }
-        public static int invoke(Object o) {
-            return o instanceof String[] ? o.hashCode() : 0;
-        }
-        public static void k() {
-            double d = 3.14;
-            float f = 3.14f;
-            long l = (long) f;
-        }
-//        public static int h(int[] x) {
-//            HelloWorld o = new HelloWorld();
-//            System.out.println(o.foo);
-//            return x[10];
-//        }
     }
     
     public static void main(String[] args) throws Exception {
@@ -1555,13 +1681,13 @@ public class SootClassCompiler {
         Options.v().set_soot_classpath("../rt/target/classes:target/classes");
 //        Options.v().set_soot_classpath("target/classes");
 
-//        Scene.v().loadClassAndSupport("org.nullvm.compiler.SootClassToLlvm$HelloWorld").setApplicationClass();
-        Scene.v().loadClassAndSupport("java.lang.Double").setApplicationClass();
+        Scene.v().loadClassAndSupport("org.nullvm.compiler.SootClassCompiler$HelloWorld").setApplicationClass();
+//        Scene.v().loadClassAndSupport("java.lang.Double").setApplicationClass();
         Scene.v().loadNecessaryClasses();
         PackManager.v().runPacks();
         
-//        SootClass sootClass = Scene.v().getSootClass("org.nullvm.compiler.SootClassToLlvm$HelloWorld");
-        SootClass sootClass = Scene.v().getSootClass("java.lang.Double");
+        SootClass sootClass = Scene.v().getSootClass("org.nullvm.compiler.SootClassCompiler$HelloWorld");
+//        SootClass sootClass = Scene.v().getSootClass("java.lang.Double");
         SootClassCompiler compiler = new SootClassCompiler(sootClass);
         Module module = compiler.compile();
         System.out.println(module.toString());

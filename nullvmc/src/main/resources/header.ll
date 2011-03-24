@@ -1,6 +1,6 @@
 %Env = type opaque
-%Class = type opaque
-%Object = type opaque
+%Class = type {i8*, i8*}
+%Object = type {%Class*}
 %Array = type {%Class*, i32}
 %BooleanArray = type {%Class*, i32, i8}
 %ByteArray = type {%Class*, i32, i8}
@@ -18,6 +18,7 @@ declare void @_nvmBcAddMethod(%Env*, %Class*, i8*, i8*, i32, i8*)
 declare void @_nvmBcAddField(%Env*, %Class*, i8*, i8*, i32, i32)
 declare void @_nvmBcRegisterClass(%Env*, %Class*)
 declare %Class* @_nvmBcFindClass(%Env*, i8*, %Class*)
+declare i8* @_nvmBcLookupVirtualMethod(%Env*, %Object*, i8*, i8*)
 declare void @_nvmBcThrow(%Env*, %Object*)
 declare void @_nvmBcRethrow(%Env*)
 declare void @_nvmBcThrowIfExceptionOccurred(%Env*)

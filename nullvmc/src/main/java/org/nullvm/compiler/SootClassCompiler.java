@@ -189,7 +189,10 @@ public class SootClassCompiler {
     
     //_nvmBcExceptionClear
     private static final FunctionRef NVM_BC_ALLOCATE_CLASS = new FunctionRef("_nvmBcAllocateClass", new FunctionType(CLASS_PTR, ENV_PTR, I8_PTR, I8_PTR, I32, I32, I32));
-    private static final FunctionRef NVM_BC_ADD_FIELD = new FunctionRef("_nvmBcAddField", new FunctionType(VOID, ENV_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_ADD_INTERFACE = new FunctionRef("_nvmBcAddInterface", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_ADD_FIELD = new FunctionRef("_nvmBcAddField", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_ADD_METHOD = new FunctionRef("_nvmBcAddMethod", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_REGISTER_CLASS = new FunctionRef("_nvmBcRegisterClass", new FunctionType(VOID, ENV_PTR, CLASS_PTR));
     private static final FunctionRef NVM_BC_PERSONALITY = new FunctionRef("_nvmPersonality", new FunctionType(I8_PTR));
     private static final FunctionRef NVM_BC_EXCEPTION_MATCH = new FunctionRef("_nvmBcExceptionMatch", new FunctionType(I32, ENV_PTR, CLASS_PTR));
     private static final FunctionRef NVM_BC_EXCEPTION_CLEAR = new FunctionRef("_nvmBcExceptionClear", new FunctionType(OBJECT_PTR, ENV_PTR));
@@ -614,6 +617,11 @@ public class SootClassCompiler {
                 getString(sootClass.getName()), 
                 superclassName, new IntegerConstant(sootClass.getModifiers()),
                 sizeof(classFieldsType), sizeof(instanceFieldsType)));
+        
+        for (SootClass iface : sootClass.getInterfaces()) {
+            function.add(new Call(NVM_BC_ADD_INTERFACE, ENV, clazz.ref(), getString(iface.getName())));
+        }
+        
         for (SootField field : classFields) {
             FunctionRef getter = new FunctionRef(mangleField(field) + "_getter", 
                     new FunctionType(getType(field.getType()), ENV_PTR));
@@ -640,6 +648,26 @@ public class SootClassCompiler {
                     new ConstantBitcast(getter, I8_PTR), 
                     new ConstantBitcast(setter, I8_PTR)));
         }
+        
+        for (SootMethod method : sootClass.getMethods()) {
+            Value lookup = new NullConstant(I8_PTR);
+            if (!method.isStatic() && !method.isPrivate() && !Modifier.isFinal(method.getModifiers())) {
+                // Virtual method. If not defined in a superclass we need to create a virtual lookup function now.
+                if (!ancestorDeclaresMethod(sootClass, method)) {
+                    lookup = new ConstantBitcast(new FunctionRef(mangleMethod(method) + "_lookup", 
+                            getFunctionType(method)), I8_PTR);
+                }
+            }
+            function.add(new Call(NVM_BC_ADD_METHOD, ENV, clazz.ref(),
+                    getString(method.getName()),
+                    getString(getDescriptor(method)),
+                    new IntegerConstant(method.getModifiers()),
+                    new ConstantBitcast(new FunctionRef(mangleMethod(method), 
+                            getFunctionType(method)), I8_PTR),
+                    lookup));
+        }
+        
+        function.add(new Call(NVM_BC_REGISTER_CLASS, ENV, clazz.ref()));
         
         function.add(new Ret(clazz.ref()));
     }
@@ -1584,6 +1612,10 @@ public class SootClassCompiler {
         }
     }
     
+    private static String getDescriptor(SootMethod method) {
+        return getDescriptor(method.makeRef());
+    }
+     
     private static String getDescriptor(SootMethodRef methodRef) {
         StringBuilder sb = new StringBuilder();
         sb.append('(');
@@ -1619,6 +1651,10 @@ public class SootClassCompiler {
             }
             i++;
         }
+    }
+    
+    private static FunctionType getFunctionType(SootMethod method) {
+        return getFunctionType(method.makeRef());
     }
     
     private static FunctionType getFunctionType(SootMethodRef methodRef) {
@@ -1727,13 +1763,15 @@ public class SootClassCompiler {
         Options.v().set_soot_classpath("../rt/target/classes:target/classes");
 //        Options.v().set_soot_classpath("target/classes");
 
-        Scene.v().loadClassAndSupport("org.nullvm.compiler.SootClassCompiler$HelloWorld").setApplicationClass();
+//        Scene.v().loadClassAndSupport("org.nullvm.compiler.SootClassCompiler$HelloWorld").setApplicationClass();
 //        Scene.v().loadClassAndSupport("java.lang.Double").setApplicationClass();
+        Scene.v().loadClassAndSupport("java.lang.String").setApplicationClass();
         Scene.v().loadNecessaryClasses();
         PackManager.v().runPacks();
         
-        SootClass sootClass = Scene.v().getSootClass("org.nullvm.compiler.SootClassCompiler$HelloWorld");
+//        SootClass sootClass = Scene.v().getSootClass("org.nullvm.compiler.SootClassCompiler$HelloWorld");
 //        SootClass sootClass = Scene.v().getSootClass("java.lang.Double");
+        SootClass sootClass = Scene.v().getSootClass("java.lang.String");
         SootClassCompiler compiler = new SootClassCompiler(sootClass);
         Module module = compiler.compile();
         System.out.println(module.toString());

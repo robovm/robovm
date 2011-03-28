@@ -14,7 +14,7 @@
 
 declare %Class* @_nvmBcAllocateClass(%Env*, i8*, i8*, i32, i32, i32)
 declare void @_nvmBcAddInterface(%Env*, %Class*, i8*)
-declare void @_nvmBcAddMethod(%Env*, %Class*, i8*, i8*, i32, i8*)
+declare void @_nvmBcAddMethod(%Env*, %Class*, i8*, i8*, i32, i8*, i8*)
 declare void @_nvmBcAddField(%Env*, %Class*, i8*, i8*, i32, i32, i8*, i8*)
 declare void @_nvmBcRegisterClass(%Env*, %Class*)
 declare %Class* @_nvmBcFindClass(%Env*, i8*, %Class*)

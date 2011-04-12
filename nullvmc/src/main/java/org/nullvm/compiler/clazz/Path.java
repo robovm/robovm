@@ -5,6 +5,7 @@
  */
 package org.nullvm.compiler.clazz;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -13,5 +14,6 @@ import java.util.List;
  */
 public interface Path {
     int getIndex();
+    File getFile();
     List<Clazz> list();
 }

@@ -15,7 +15,7 @@ public class GlobalRef extends Constant {
     private final Type type;
 
     public GlobalRef(Global global) {
-        this(global.getName().substring(1), global.getType());
+        this(global.getName().substring(1), global.getType().getBase());
     }
     
     public GlobalRef(String name, Type type) {
@@ -27,8 +27,8 @@ public class GlobalRef extends Constant {
         return name;
     }
     
-    public Type getType() {
-        return type;
+    public PointerType getType() {
+        return new PointerType(type);
     }
 
     @Override

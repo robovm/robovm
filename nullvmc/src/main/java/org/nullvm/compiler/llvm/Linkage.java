@@ -12,7 +12,14 @@ package org.nullvm.compiler.llvm;
 public enum Linkage {
 
     _private,
+    linker_private,
     linkonce,
-    external
+    external;
     
+    public String toString() {
+        if (this == _private) {
+            return "private";
+        }
+        return super.toString();
+    }
 }

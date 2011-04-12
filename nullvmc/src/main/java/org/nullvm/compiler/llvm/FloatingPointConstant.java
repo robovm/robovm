@@ -14,13 +14,16 @@ public class FloatingPointConstant extends Constant {
     private final Object value;
 
     public FloatingPointConstant(float value) {
-        this.value = new Float(value);
-        this.type = Type.FLOAT;
+        this(new Float(value), Type.FLOAT);
     }
     
     public FloatingPointConstant(double value) {
+        this(new Double(value), Type.DOUBLE);
+    }
+    
+    public FloatingPointConstant(double value, FloatingPointType type) {
         this.value = new Double(value);
-        this.type = Type.DOUBLE;
+        this.type = type;
     }
     
     @Override
@@ -68,11 +71,11 @@ public class FloatingPointConstant extends Constant {
 
     @Override
     public String toString() {
-        if (value instanceof Float) {
-            Float f = (Float) value;
+        if (type == Type.FLOAT) {
+            float f = ((Number) value).floatValue();
             return "bitcast (i32 " + Float.floatToIntBits(f) + " to float)";
         } else {
-            Double d = (Double) value;
+            double d = ((Number) value).doubleValue();
             return "bitcast (i64 " + Double.doubleToLongBits(d) + " to double)";
         }
     }

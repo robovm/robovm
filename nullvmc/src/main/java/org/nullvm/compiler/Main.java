@@ -188,7 +188,8 @@ public class Main {
                 stdout.format("Compiling class file '%s' to LLVM IR file '%s'\n", clazz.getFileName(), outFile);
             }
             out = new FileOutputStream(outFile);
-            new ClassCompiler().setVerifyWhen(verify).compile(clazz, out);
+//            new SootClassCompiler().setVerifyWhen(verify).compile(clazz, out);
+            new SootClassCompiler().compile(clazz, out);
         } catch (Throwable t) {
             FileUtils.deleteQuietly(outFile);
             if (t instanceof IOException) {
@@ -512,6 +513,7 @@ public class Main {
         }
     }
     
+    @SuppressWarnings("unchecked")
     private void createArchive(File dir, File output, boolean skipClassFiles) throws IOException {
         if (verbose) {
             stdout.format("Creating archive file '%s' from files in directory '%s'\n", output, dir);
@@ -645,14 +647,22 @@ public class Main {
             while (i < args.length) {
                 runArgs.add(args[i++]);
             }
-            
-            run();
         } catch (Throwable t) {
             String message = t.getMessage();
             if (t instanceof StringIndexOutOfBoundsException) {
                 message = "Missing argument";
             }
             if (verbose && !(t instanceof StringIndexOutOfBoundsException) && !(t instanceof IllegalArgumentException)) {
+                t.printStackTrace();
+            }
+            printUsageAndExit(message);            
+        }
+        
+        try {
+            run();
+        } catch (Throwable t) {
+            String message = t.getMessage();
+            if (verbose) {
                 t.printStackTrace();
             }
             printUsageAndExit(message);
@@ -771,6 +781,7 @@ public class Main {
         FileUtils.copyURLToFile(getClass().getResource("/symbols.map"), symbolsMapFile);
 
         Clazzes clazzes = new Clazzes(bootClassPathFiles, classPathFiles);
+        SootClassCompiler.init(clazzes);
         List<ClasspathEntry> bootclasspathObjects = new ArrayList<ClasspathEntry>();
         for (Path path : clazzes.getBootclasspathPaths()) {
             ClasspathEntry entry = createClasspathEntry(path);
@@ -1016,7 +1027,7 @@ public class Main {
         public File getCacheDir() {
             if (cacheDir == null) {
                 try {
-                    cacheDir = new File(makeFileRelativeTo(cache, path.getDir().getCanonicalFile()), jarName + ".classes");
+                    cacheDir = new File(makeFileRelativeTo(cache, path.getFile().getCanonicalFile()), jarName + ".classes");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -1028,7 +1039,7 @@ public class Main {
                 File a = new File(getCacheDir().getParentFile(), jarName);
                 if (!a.exists() || hasChangedAfter(a.lastModified())) {
                     try {
-                        createArchive(path.getDir(), a, false);
+                        createArchive(path.getFile(), a, false);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -1052,11 +1063,11 @@ public class Main {
             return false;
         }
         public boolean hasChangedAfter(long timestamp) {
-            return hasChangedAfter(path.getDir(), timestamp);
+            return hasChangedAfter(path.getFile(), timestamp);
         }
         @Override
         public String toString() {
-            return path.getDir().getAbsolutePath();
+            return path.getFile().getAbsolutePath();
         }
     }
 }

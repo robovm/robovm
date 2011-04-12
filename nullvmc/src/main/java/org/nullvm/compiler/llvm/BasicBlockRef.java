@@ -11,19 +11,19 @@ package org.nullvm.compiler.llvm;
  */
 public class BasicBlockRef {
     private final Function function;
-    private final Object tag;
+    private final Label label;
 
-    BasicBlockRef(Function function, Object tag) {
+    BasicBlockRef(Function function, Label label) {
         this.function = function;
-        this.tag = tag;
+        this.label = label;
     }
     
     public String getName() {
         return function.getLabel(this);
     }
     
-    public Object getTag() {
-        return tag;
+    public Label getLabel() {
+        return label;
     }
     
     @Override

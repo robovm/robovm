@@ -15,7 +15,6 @@ import java.util.Set;
 
 import org.nullvm.compiler.llvm.BasicBlock;
 import org.nullvm.compiler.llvm.Function;
-import org.nullvm.compiler.trampoline.Trampoline;
 
 import soot.Body;
 import soot.PatchingChain;
@@ -29,6 +28,8 @@ import soot.jimple.GotoStmt;
 import soot.jimple.IfStmt;
 import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
+import soot.jimple.LookupSwitchStmt;
+import soot.jimple.TableSwitchStmt;
 import soot.util.Chain;
 
 
@@ -122,9 +123,24 @@ public class Context {
     public boolean isJumpTarget(Unit unit) {
         PatchingChain<Unit> units = currentBody.getUnits();
         for (Unit u : units) {
-            if (u instanceof GotoStmt || u instanceof IfStmt) {
-                Unit target = u instanceof GotoStmt ? ((GotoStmt) u).getTarget() : ((IfStmt) u).getTarget();
+            if (u instanceof GotoStmt) {
+                Unit target = ((GotoStmt) u).getTarget();
                 if (target == unit) {
+                    return true;
+                }
+            } else if (u instanceof IfStmt) {
+                Unit target = ((IfStmt) u).getTarget();
+                if (target == unit || unit == units.getSuccOf(u)) {
+                    return true;
+                }
+            } else if (u instanceof LookupSwitchStmt) {
+                LookupSwitchStmt stmt = (LookupSwitchStmt) u;
+                if (unit == stmt.getDefaultTarget() || stmt.getTargets().contains(unit)) {
+                    return true;
+                }
+            } else if (u instanceof TableSwitchStmt) {
+                TableSwitchStmt stmt = (TableSwitchStmt) u;
+                if (unit == stmt.getDefaultTarget() || stmt.getTargets().contains(unit)) {
                     return true;
                 }
             }
@@ -221,7 +237,7 @@ public class Context {
                 for (Trap trap : traps) {
                     Unit beginUnit = trap.getBeginUnit();
                     Unit endUnit = trap.getEndUnit();
-                    if (beginUnit != endUnit) {
+                    if (beginUnit != endUnit && u != endUnit) {
                         if (u == beginUnit || (units.follows(u, beginUnit) && units.follows(endUnit, u))) {
                             result.add(trap);
                         }

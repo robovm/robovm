@@ -194,10 +194,9 @@ jboolean initCallInfo(CallInfo* callInfo, Env* env, Class* clazz, Object* obj, M
 
     jint argsCount = 0, intArgsCount = 0, fpArgsCount = 0, stackArgsCount = 0;
 
-    intArgsCount = 2; // First arg is a Invoke(Static|Virtual|Special|Interface)* which we ignore
-                      // Second arg is always the Env*
+    intArgsCount = 1; // First arg is always the Env*
     if (!(method->access & ACC_STATIC)) {
-        // Non-static methods takes the receiver object (this) as arg 3
+        // Non-static methods takes the receiver object (this) as arg 2
         intArgsCount++;
     }    
 
@@ -223,7 +222,6 @@ jboolean initCallInfo(CallInfo* callInfo, Env* env, Class* clazz, Object* obj, M
 
     jint intArgsIndex = 0, fpArgsIndex = 0, stackArgsIndex = 0;
 
-    callInfo->intArgs[intArgsIndex++] = NULL;
     callInfo->intArgs[intArgsIndex++] = env;
     if (!(method->access & ACC_STATIC)) {
         callInfo->intArgs[intArgsIndex++] = obj;

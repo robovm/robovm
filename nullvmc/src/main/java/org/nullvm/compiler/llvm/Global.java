@@ -15,23 +15,34 @@ public class Global {
     private final Linkage linkage;
     private final Constant value;
     private final Type type;
+    private final boolean constant;
 
     public Global(String name, Type type) {
         this.name = "@" + name;
         this.linkage = Linkage.external;
         this.value = null;
         this.type = type;
+        constant = false;
     }
     
     public Global(String name, Constant value) {
-        this(name, null, value);
+        this(name, null, value, false);
+    }
+    
+    public Global(String name, Constant value, boolean constant) {
+        this(name, null, value, constant);
     }
     
     public Global(String name, Linkage linkage, Constant value) {
+        this(name, linkage, value, false);
+    }
+    
+    public Global(String name, Linkage linkage, Constant value, boolean constant) {
         this.name = "@" + name;
         this.linkage = linkage;
         this.value = value;
         this.type = value.getType();
+        this.constant = constant;        
     }
     
     public GlobalRef ref() {
@@ -42,7 +53,7 @@ public class Global {
         return name;
     }
     
-    public Type getType() {
+    public PointerType getType() {
         return new PointerType(type);
     }
     
@@ -54,7 +65,11 @@ public class Global {
             sb.append(linkage);
             sb.append(' ');
         }
-        sb.append("global ");
+        if (constant) {
+            sb.append("constant ");
+        } else {
+            sb.append("global ");
+        }
         sb.append(type);
         if (value != null) {
             sb.append(' ');

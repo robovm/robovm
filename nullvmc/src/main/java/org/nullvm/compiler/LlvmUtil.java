@@ -233,7 +233,7 @@ public class LlvmUtil {
                 sb.append('_');
             } else {
                 sb.append('$');
-                sb.append(hexChars[(c >> 8) & 0xf]);
+                sb.append(hexChars[(c >> 4) & 0xf]);
                 sb.append(hexChars[c & 0xf]);
             }
         }

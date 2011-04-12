@@ -16,8 +16,9 @@ import java.util.Map;
  */
 public class Function {
     private final String name;
+    private final Linkage linkage;
     private final FunctionType type;
-    private final Map<Object, BasicBlock> basicBlockMap = new HashMap<Object, BasicBlock>();
+    private final Map<Label, BasicBlock> basicBlockMap = new HashMap<Label, BasicBlock>();
     private final List<BasicBlock> basicBlockList = new ArrayList<BasicBlock>();
     private final Map<String, Variable> variablesMap = new HashMap<String, Variable>();
     
@@ -25,6 +26,11 @@ public class Function {
     private final String[] parameterNames;
 
     public Function(String name, FunctionType type, String ... parameterNames) {
+        this(null, name, type, parameterNames);
+    }
+    
+    public Function(Linkage linkage, String name, FunctionType type, String ... parameterNames) {
+        this.linkage = linkage;
         this.name = "@" + name;
         this.type = type;
         this.parameterNames = parameterNames;
@@ -51,27 +57,27 @@ public class Function {
     }
     
     String getLabel(BasicBlockRef ref) {
-        return getLabel(basicBlockMap.get(ref.getTag()));
+        return getLabel(basicBlockMap.get(ref.getLabel()));
     }
     
-    public BasicBlock newBasicBlock(Object tag) {
-        BasicBlock block = basicBlockMap.get(tag);
+    public BasicBlock newBasicBlock(Label label) {
+        BasicBlock block = basicBlockMap.get(label);
         if (block != null) {
-            throw new IllegalArgumentException("BasicBlock with tag " + tag + " already exists");
+            throw new IllegalArgumentException("BasicBlock with label " + label + " already exists");
         }
-        block = new BasicBlock(this, tag);
-        basicBlockMap.put(tag, block);
+        block = new BasicBlock(this, label);
+        basicBlockMap.put(label, block);
         basicBlockList.add(block);
         return block;
     }
 
-    public BasicBlockRef newBasicBlockRef(Object tag) {
-        return new BasicBlockRef(this, tag);
+    public BasicBlockRef newBasicBlockRef(Label label) {
+        return new BasicBlockRef(this, label);
     }
     
     public BasicBlock getCurrentBasicBlock() {
         if (basicBlockList.isEmpty()) {
-            return null;
+            return newBasicBlock(new Label());
         }
         return basicBlockList.get(basicBlockList.size() - 1);
     }
@@ -109,6 +115,10 @@ public class Function {
         Type[] parameterTypes = type.getParameterTypes();
         StringBuilder sb = new StringBuilder();
         sb.append("define ");
+        if (linkage != null) {
+            sb.append(linkage);
+            sb.append(' ');
+        }
         sb.append(returnType.toString());
         sb.append(' ');
         sb.append(name);

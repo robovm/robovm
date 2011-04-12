@@ -28,7 +28,9 @@ declare void @_nvmBcThrowArithmeticException(%Env*)
 declare void @_nvmBcThrowVerifyError(%Env*, i8*)
 declare %Object* @_nvmBcExceptionClear(%Env*)
 declare i32 @_nvmBcExceptionMatch(%Env*, %Class*)
+declare void @_nvmBcExceptionSet(%Env*, %Object*)
         
+declare %Object* @_nvmBcNew(%Env*, i8*)
 declare %Object* @_nvmBcNewArrayZ(%Env*, i32)
 declare %Object* @_nvmBcNewArrayB(%Env*, i32)
 declare %Object* @_nvmBcNewArrayC(%Env*, i32)
@@ -37,15 +39,26 @@ declare %Object* @_nvmBcNewArrayI(%Env*, i32)
 declare %Object* @_nvmBcNewArrayJ(%Env*, i32)
 declare %Object* @_nvmBcNewArrayF(%Env*, i32)
 declare %Object* @_nvmBcNewArrayD(%Env*, i32)
-declare %Object* @_nvmBcNewObjectArray(%Env*, i32, i8*, %Class*)
-declare %Object* @_nvmBcNewMultiArray(%Env*, i32, i32*, i8*, %Class*)
+declare %Object* @_nvmBcNewObjectArray(%Env*, i32, i8*)
+declare %Object* @_nvmBcNewMultiArray(%Env*, i32, i32*, i8*)
         
 declare %Object* @_nvmBcLdcString(%Env*, i8*)
-declare %Object* @_nvmBcLdcClass(%Env*, i8*, %Class*)
+declare %Object* @_nvmBcLdcClass(%Env*, i8*)
         
 declare void @_nvmBcEnterMonitor(%Env*, %Object*)
 declare void @_nvmBcExitMonitor(%Env*, %Object*)
-        
+declare %Object* @_nvmBcCheckcast(%Env*, %Object*, i8*)
+declare i32 @_nvmBcInstanceof(%Env*, %Object*, i8*)
+
+declare i8* @_nvmBcResolveInvokespecial(%Env*, i8*, i8*, i8*, i8*)
+declare i8* @_nvmBcResolveInvokestatic(%Env*, i8*, i8*, i8*, i8*)
+declare i8* @_nvmBcResolveInvokevirtual(%Env*, i8*, i8*, i8*, i8*)
+declare i8* @_nvmBcResolveInvokeinterface(%Env*, i8*, i8*, i8*, i8*)
+declare i8* @_nvmBcResolveGetstatic(%Env*, i8*, i8*, i8*, i8*)
+declare i8* @_nvmBcResolvePutstatic(%Env*, i8*, i8*, i8*, i8*)
+declare i8* @_nvmBcResolveGetfield(%Env*, i8*, i8*, i8*, i8*)
+declare i8* @_nvmBcResolvePutfield(%Env*, i8*, i8*, i8*, i8*)
+
 declare i8* @llvm.eh.exception() nounwind
 declare i32 @llvm.eh.selector(i8*, i8*, ...) nounwind
 declare i8* @_nvmPersonality()

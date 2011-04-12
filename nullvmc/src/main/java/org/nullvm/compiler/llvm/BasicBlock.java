@@ -16,20 +16,20 @@ import java.util.Set;
  */
 public class BasicBlock {
     private final Function function;
-    private final Object tag;
+    private final Label label;
     private final List<Instruction> instructions = new ArrayList<Instruction>();
 
-    BasicBlock(Function function, Object tag) {
+    BasicBlock(Function function, Label label) {
         this.function = function;
-        this.tag = tag;
+        this.label = label;
     }
     
     public String getName() {
         return function.getLabel(this);
     }
     
-    public Object getTag() {
-        return tag;
+    public Label getLabel() {
+        return label;
     }
     
     public Function getFunction() {

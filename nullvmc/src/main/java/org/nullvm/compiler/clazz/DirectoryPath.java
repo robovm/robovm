@@ -35,7 +35,7 @@ public class DirectoryPath implements Path {
         return index;
     }
     
-    public File getDir() {
+    public File getFile() {
         return dir;
     }
     

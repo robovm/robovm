@@ -177,7 +177,7 @@ static char* mangleClassName(Env* env, char* s) {
             result[j++] = '_';
         } else {
             result[j++] = '$';
-            result[j++] = hexChars[(c >> 8) & 0xf];
+            result[j++] = hexChars[(c >> 4) & 0xf];
             result[j++] = hexChars[c & 0xf];
         }
     }

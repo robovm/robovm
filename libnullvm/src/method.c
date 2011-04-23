@@ -942,7 +942,7 @@ Method* nvmGetMethod(Env* env, Class* clazz, char* name, char* desc) {
     nvmThrowNoSuchMethodError(name);
 }*/
 
-void* nvmGetNativeMethod(Env* env, char* shortMangledName, char* longMangledName) {
+void* nvmResolveNativeMethodImpl(Env* env, Method* method, char* shortMangledName, char* longMangledName, void** ptr) {
     TRACE("Searching for native method using short name: %s\n", shortMangledName);
     void* f = nvmFindDynamicLibSymbol(env, nativeLibs, NULL, shortMangledName);
     if (f) {
@@ -958,6 +958,8 @@ void* nvmGetNativeMethod(Env* env, char* shortMangledName, char* longMangledName
         nvmThrowUnsatisfiedLinkError(env);
         return NULL;
     }
+    // TODO: Remember ptr to allow it to be reset when the JNI RegisterNatives/UnregisterNatives functions are called
+    *ptr = f;
     return f;
 }
 

@@ -61,6 +61,8 @@ struct Field {
   char* name;
   char* desc;
   jint access;
+  void* getter;
+  void* setter;
 };
 
 struct ClassField {
@@ -81,6 +83,7 @@ struct Method {
   jint access;
   char** exceptions;
   void* impl;
+  void* lookup;
   jint vtableIndex;
 };
 
@@ -91,7 +94,7 @@ struct Interface {
 
 struct Object {
   Class* clazz;
-  /* void* lock */
+  void* lock;
 };
 
 /* 
@@ -99,28 +102,29 @@ struct Object {
  */
 struct Class {
   Object object;
-  jint _data[4];       // Reserve the memory needed to store the instance fields for java.lang.Class. 
-                       // java.lang.Class has two fields, both are references. 4 ints is enough for 32-bit and 64-bit systems.
+  void* _data;             // Reserve the memory needed to store the instance fields for java.lang.Class. 
+                           // java.lang.Class has a single field, name, which is of type String.
+                           // void* gives enough space to store that reference.
   jint id;
-  char* name;         // The name in modified UTF-8.
-  Class* superclass;  // Superclass pointer. Only java.lang.Object and interfaces have NULL here.
-  Class* elementClass; // If class is an array class this points to the class of the array elements.
-  jboolean primitive; // If true this represents a primitive type class.
-  jboolean system; // If true this is a system class which is loaded by the bootstrap class loader.
+  char* name;              // The name in modified UTF-8.
+  Object* classLoader;
+  Class* superclass;       // Superclass pointer. Only java.lang.Object and interfaces have NULL here.
+  Class* elementClass;     // If class is an array class this points to the class of the array elements.
+  jboolean primitive;      // If true this represents a primitive type class.
   jint state;
   jint access;
-  Interface* interfaces; // Linked list of interfaces or NULL if there are no interfaces.
-  Field* fields; // Linked list of fields.
-  Method* methods;       // Method pointers.
+  Interface* interfaces;   // Linked list of interfaces or NULL if there are no interfaces.
+  Field* fields;           // Linked list of fields.
+  Method* methods;         // Linked list of methods.
   jint classDataSize;
   jint instanceDataOffset; // The offset from the base of Object->data
-                            // where the instance fields of this class can be found.
-  jint instanceDataSize;   // The number of bytes needed to store the instance fields of this class.
-                            // instanceDataOffset + instanceDataSize gives the total number of bytes
-                            // needed to store the instance data for instances of this class (and superclasses).
-  int vtableSize;
+                           // where the instance fields of this class can be found.
+  jint instanceDataSize;   // The number of bytes needed to store the instance fields declared by this class.
+                           // instanceDataOffset + instanceDataSize gives the total number of bytes
+                           // needed to store the instance data for instances of this class including superclasses.
+  jint vtableSize;
   void** vtable;
-  void* data[0];          // This is where static fields are stored for the class
+  void* data[0];           // This is where static fields are stored for the class
 };
 
 struct DataObject {

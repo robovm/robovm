@@ -42,6 +42,7 @@ Class* java_lang_ArrayStoreException;
 Class* java_lang_ClassNotFoundException;
 Class* java_lang_NegativeArraySizeException;
 Class* java_lang_IllegalArgumentException;
+Class* java_lang_ArithmeticException;
 Class* java_lang_UnsupportedOperationException;
 
 Class* prim_Z;
@@ -401,6 +402,8 @@ jboolean nvmInitClasses(Env* env) {
     if (!java_lang_NegativeArraySizeException) return FALSE;
     java_lang_IllegalArgumentException = nvmFindClass(env, "java/lang/IllegalArgumentException");
     if (!java_lang_IllegalArgumentException) return FALSE;
+    java_lang_ArithmeticException = nvmFindClass(env, "java/lang/ArithmeticException");
+    if (!java_lang_ArithmeticException) return FALSE;
     java_lang_UnsupportedOperationException = nvmFindClass(env, "java/lang/UnsupportedOperationException");
     if (!java_lang_UnsupportedOperationException) return FALSE;
 
@@ -526,7 +529,7 @@ jboolean nvmAddInterface(Env* env, Class* clazz, Class* interf) {
     return TRUE;
 }
 
-jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl) {
+jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* lookup) {
     Method* method = nvmAllocateMemory(env, sizeof(Method));
     if (!method) return FALSE;
     method->clazz = clazz;
@@ -534,6 +537,7 @@ jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint acces
     method->desc = desc;
     method->access = access;
     method->impl = impl;
+    method->lookup = lookup;
 //    method->length = (end && end > impl) ? end - impl : -1;
     method->next = clazz->methods;
     method->vtableIndex = -1;
@@ -541,13 +545,15 @@ jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint acces
     return TRUE;
 }
 
-jboolean nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset) {
+jboolean nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset, void* getter, void* setter) {
     Field* field = nvmAllocateMemory(env, (access & ACC_STATIC) ? sizeof(ClassField) : sizeof(InstanceField));
     if (!field) return FALSE;
     field->clazz = clazz;
     field->name = name;
     field->desc = desc;
     field->access = access;
+    field->getter = getter;
+    field->setter = setter;
     field->next = clazz->fields;
     clazz->fields = field;
     if (access & ACC_STATIC) {
@@ -580,6 +586,16 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
           vtableIndex = vtableSize++;
         }
         method->vtableIndex = vtableIndex;
+        if (method->lookup == NULL) {
+            if (!METHOD_IS_STATIC(method) && !METHOD_IS_PRIVATE(method) && !METHOD_IS_FINAL(method) && !METHOD_IS_CONSTRUCTOR(method)) {
+                // Overridden non-final instance methods inherit the lookup function from the method it is overriding
+                Method* superMethod = nvmGetMethod(env, clazz->superclass, method->name, method->desc);
+                if (!superMethod) return FALSE;
+                method->lookup = superMethod->lookup;
+            } else {
+                method->lookup = method->impl;
+            }
+        }
 //        TRACE("vtable index for method %s%s in class %s: %d\n", method->name, method->desc, clazz->name, vtableIndex);
     }
     if (vtableSize > 0) {

@@ -22,12 +22,14 @@ jlong Java_java_lang_Throwable_fillInStackTrace0(Env* env, Object* thiz) {
             }
         }
         // We're now at the constructor of thiz->clazz which called super(). 
-        // Skip all constructors beloning to thiz->clazz to get to the method which created the throwable
+        // Skip all constructors belonging to thiz->clazz to get to the method which created the throwable
         while (first && METHOD_IS_CONSTRUCTOR(first->method) && clazz == thiz->clazz) {
             first = first->next;
             if (first) clazz = first->method->clazz;
         }
     }
+
+//    printf("************** %s.%s\n", first->method->clazz->name, first->method->name);
 
     return (jlong) first;
 }

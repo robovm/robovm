@@ -79,7 +79,6 @@ public class Main {
     private String mainClass;
     private List<String> runArgs = new ArrayList<String>();
     
-    private File opcodesFile;
     private File mainCFile;
     private File symbolsMapFile;
     private List<File> bootClassPathFiles = new ArrayList<File>();
@@ -268,18 +267,13 @@ public class Main {
             
         String llcPath = "llc";
         String optPath = "opt";
-        String llvmLinkPath = "llvm-link";
         if (llvmBinDir != null) {
             llcPath = new File(llvmBinDir, "llc").getAbsolutePath();
             optPath = new File(llvmBinDir, "opt").getAbsolutePath();
-            llvmLinkPath = new File(llvmBinDir, "llvm-link").getAbsolutePath();
         }
         
-        File outLinkedFile = new File(f.getParentFile(), f.getName().substring(0, f.getName().length() - 3) + ".linked.bc");
-        exec(llvmLinkPath, "-o=" + outLinkedFile.toString(), f, opcodesFile);
-            
         File outOptedFile = new File(f.getParentFile(), f.getName().substring(0, f.getName().length() - 3) + ".opted.bc");
-        exec(optPath, optOpts, "-mem2reg", "-always-inline", "-o=" + outOptedFile.toString(), outLinkedFile);
+        exec(optPath, optOpts, "-mem2reg", "-always-inline", "-o=" + outOptedFile.toString(), f);
         
         exec(llcPath, llcOpts, "-relocation-model=pic", "-o=" + outFile.toString(), outOptedFile);
             
@@ -773,8 +767,6 @@ public class Main {
         tmpFile = File.createTempFile("nullvm", ".tmp");
         tmpFile.delete();
         tmpFile.mkdirs();
-        opcodesFile = new File(tmpFile, "opcodes.ll");
-        FileUtils.copyURLToFile(getClass().getResource("/opcodes.ll"), opcodesFile);
         mainCFile = new File(tmpFile, "main.c");
         FileUtils.copyURLToFile(getClass().getResource("/main.c"), mainCFile);
         symbolsMapFile = new File(tmpFile, "symbols.map");

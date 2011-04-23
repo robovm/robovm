@@ -72,15 +72,16 @@ jint nvmThrow(Env* env, Object* e) {
 }
 
 jint nvmThrowNew(Env* env, Class* clazz, char* message) {
-    // TODO: Check that clazz != NULL?
     Method* constructor = nvmGetInstanceMethod(env, clazz, "<init>", "(Ljava/lang/String;)V");
     if (!constructor) return 1;
-    // TODO: Use UTF-8
-    Object* string = nvmNewStringAscii(env, message, -1);
-    if (!string) return 2;
+    Object* string = NULL;
+    // TODO: Check that clazz != NULL?
+    if (message) {
+        string = nvmNewStringUTF(env, message, -1);
+        if (!string) return 2;
+    }
     Object* e = nvmNewObject(env, clazz, constructor, string);
     if (!e) return 3;
-    // TODO: Call constructor
     return nvmThrow(env, e);
 }
 
@@ -176,5 +177,9 @@ jint nvmThrowIllegalArgumentException(Env* env, char* message) {
 
 jint nvmThrowVerifyError(Env* env, char* msg) {
     return nvmThrowNew(env, java_lang_VerifyError, msg);
+}
+
+jint nvmThrowArithmeticException(Env* env) {
+    return nvmThrowNew(env, java_lang_ArithmeticException, NULL);
 }
 

@@ -1,52 +1,50 @@
 %Env = type opaque
-%Class = type {i8*, i8*}
-%Object = type {%Class*}
-%Array = type {%Class*, i32}
-%BooleanArray = type {%Class*, i32, i8}
-%ByteArray = type {%Class*, i32, i8}
-%CharArray = type {%Class*, i32, i16}
-%ShortArray = type {%Class*, i32, i16}
-%IntegerArray = type {%Class*, i32, i32}
-%LongArray = type {%Class*, i32, i64}
-%FloatArray = type {%Class*, i32, float}
-%DoubleArray = type {%Class*, i32, double}
-%ObjectArray = type {%Class*, i32, %Object*}
+%Class = type {i8*, i8*, i8*, i32, i8*, i8*, i8*, i8*, i8, i32, i32, i8*, i8*, i8*, i32, i32, i32, i32, i8*}
+%Object = type {%Class*, i8*}
+%Array = type {%Object, i32}
+%BooleanArray = type {%Object, i32, i8}
+%ByteArray = type {%Object, i32, i8}
+%CharArray = type {%Object, i32, i16}
+%ShortArray = type {%Object, i32, i16}
+%IntegerArray = type {%Object, i32, i32}
+%LongArray = type {%Object, i32, i64}
+%FloatArray = type {%Object, i32, float}
+%DoubleArray = type {%Object, i32, double}
+%ObjectArray = type {%Object, i32, %Object*}
 
 declare %Class* @_nvmBcAllocateClass(%Env*, i8*, i8*, i32, i32, i32)
 declare void @_nvmBcAddInterface(%Env*, %Class*, i8*)
 declare void @_nvmBcAddMethod(%Env*, %Class*, i8*, i8*, i32, i8*, i8*)
 declare void @_nvmBcAddField(%Env*, %Class*, i8*, i8*, i32, i32, i8*, i8*)
 declare void @_nvmBcRegisterClass(%Env*, %Class*)
-declare %Class* @_nvmBcFindClass(%Env*, i8*, %Class*)
 declare i8* @_nvmBcLookupVirtualMethod(%Env*, %Object*, i8*, i8*)
 declare void @_nvmBcThrow(%Env*, %Object*)
 declare void @_nvmBcRethrow(%Env*)
 declare void @_nvmBcThrowIfExceptionOccurred(%Env*)
-declare void @_nvmBcThrowNullPointerException(%Env*)
-declare void @_nvmBcThrowArrayIndexOutOfBoundsException(%Env*, i32)
-declare void @_nvmBcThrowArithmeticException(%Env*)
-declare void @_nvmBcThrowVerifyError(%Env*, i8*)
 declare %Object* @_nvmBcExceptionClear(%Env*)
 declare i32 @_nvmBcExceptionMatch(%Env*, %Class*)
 declare void @_nvmBcExceptionSet(%Env*, %Object*)
-        
+declare void @_nvmBcThrowNullPointerException(%Env*)
+declare void @_nvmBcThrowArrayIndexOutOfBoundsException(%Env*, i32)
+declare void @_nvmBcThrowArithmeticException(%Env*)
+
 declare %Object* @_nvmBcNew(%Env*, i8*)
-declare %Object* @_nvmBcNewArrayZ(%Env*, i32)
-declare %Object* @_nvmBcNewArrayB(%Env*, i32)
-declare %Object* @_nvmBcNewArrayC(%Env*, i32)
-declare %Object* @_nvmBcNewArrayS(%Env*, i32)
-declare %Object* @_nvmBcNewArrayI(%Env*, i32)
-declare %Object* @_nvmBcNewArrayJ(%Env*, i32)
-declare %Object* @_nvmBcNewArrayF(%Env*, i32)
-declare %Object* @_nvmBcNewArrayD(%Env*, i32)
+declare %Object* @_nvmBcNewBooleanArray(%Env*, i32)
+declare %Object* @_nvmBcNewByteArray(%Env*, i32)
+declare %Object* @_nvmBcNewCharArray(%Env*, i32)
+declare %Object* @_nvmBcNewShortArray(%Env*, i32)
+declare %Object* @_nvmBcNewIntArray(%Env*, i32)
+declare %Object* @_nvmBcNewLongArray(%Env*, i32)
+declare %Object* @_nvmBcNewFloatArray(%Env*, i32)
+declare %Object* @_nvmBcNewDoubleArray(%Env*, i32)
 declare %Object* @_nvmBcNewObjectArray(%Env*, i32, i8*)
 declare %Object* @_nvmBcNewMultiArray(%Env*, i32, i32*, i8*)
         
 declare %Object* @_nvmBcLdcString(%Env*, i8*)
 declare %Object* @_nvmBcLdcClass(%Env*, i8*)
         
-declare void @_nvmBcEnterMonitor(%Env*, %Object*)
-declare void @_nvmBcExitMonitor(%Env*, %Object*)
+declare void @_nvmBcMonitorEnter(%Env*, %Object*)
+declare void @_nvmBcMonitorExit(%Env*, %Object*)
 declare %Object* @_nvmBcCheckcast(%Env*, %Object*, i8*)
 declare i32 @_nvmBcInstanceof(%Env*, %Object*, i8*)
 
@@ -54,6 +52,7 @@ declare i8* @_nvmBcResolveInvokespecial(%Env*, i8*, i8*, i8*, i8*)
 declare i8* @_nvmBcResolveInvokestatic(%Env*, i8*, i8*, i8*, i8*)
 declare i8* @_nvmBcResolveInvokevirtual(%Env*, i8*, i8*, i8*, i8*)
 declare i8* @_nvmBcResolveInvokeinterface(%Env*, i8*, i8*, i8*, i8*)
+declare i8* @_nvmBcResolveNative(%Env*, i8*, i8*, i8*, i8*, i8*, i8*)
 declare i8* @_nvmBcResolveGetstatic(%Env*, i8*, i8*, i8*, i8*)
 declare i8* @_nvmBcResolvePutstatic(%Env*, i8*, i8*, i8*, i8*)
 declare i8* @_nvmBcResolveGetfield(%Env*, i8*, i8*, i8*, i8*)
@@ -291,12 +290,18 @@ define linkonce_odr i64 @d2l(double %op) alwaysinline {
 }
 
 define linkonce_odr i32 @idiv(%Env* %env, i32 %op1, i32 %op2) alwaysinline {
-    %cond = icmp ne i32 %op2, 0
-    br i1 %cond, label %success, label %failure
-success:
-    %result = sdiv i32 %op2, %op1
-    ret i32 %result
-failure:
+    %condZero = icmp ne i32 %op2, 0
+    br i1 %condZero, label %notZero, label %zero
+notZero:
+    %condNotMinusOne = icmp ne i32 %op2, -1
+    br i1 %condNotMinusOne, label %notMinusOne, label %minusOne
+notMinusOne:
+    %result1 = sdiv i32 %op1, %op2
+    ret i32 %result1
+minusOne:
+    %result2 = mul i32 %op1, %op2
+    ret i32 %result2
+zero:
     call void @_nvmBcThrowArithmeticException(%Env* %env)
     unreachable
 }
@@ -305,7 +310,7 @@ define linkonce_odr i64 @ldiv(%Env* %env, i64 %op1, i64 %op2) alwaysinline {
     %cond = icmp ne i64 %op2, 0
     br i1 %cond, label %success, label %failure
 success:
-    %result = sdiv i64 %op2, %op1
+    %result = sdiv i64 %op1, %op2
     ret i64 %result
 failure:
     call void @_nvmBcThrowArithmeticException(%Env* %env)
@@ -316,7 +321,7 @@ define linkonce_odr i32 @irem(%Env* %env, i32 %op1, i32 %op2) alwaysinline {
     %cond = icmp ne i32 %op2, 0
     br i1 %cond, label %success, label %failure
 success:
-    %result = srem i32 %op2, %op1
+    %result = srem i32 %op1, %op2
     ret i32 %result
 failure:
     call void @_nvmBcThrowArithmeticException(%Env* %env)
@@ -327,7 +332,7 @@ define linkonce_odr i64 @lrem(%Env* %env, i64 %op1, i64 %op2) alwaysinline {
     %cond = icmp ne i64 %op2, 0
     br i1 %cond, label %success, label %failure
 success:
-    %result = srem i64 %op2, %op1
+    %result = srem i64 %op1, %op2
     ret i64 %result
 failure:
     call void @_nvmBcThrowArithmeticException(%Env* %env)
@@ -335,20 +340,20 @@ failure:
 }
 
 define linkonce_odr i32 @fcmpl(float %op1, float %op2) alwaysinline {
-    %1 = fcmp ugt float %op1, %op2 ; 1 if op1 > op2 or either is NaN
-    %2 = fcmp olt float %op1, %op2 ; 1 if op1 < op2
-    %3 = zext i1 %1 to i32
-    %4 = zext i1 %2 to i32
-    %5 = sub i32 %4, %3
-    ret i32 %5
-}
-
-define linkonce_odr i32 @fcmpg(float %op1, float %op2) alwaysinline {
     %1 = fcmp ogt float %op1, %op2 ; 1 if op1 > op2
     %2 = fcmp ult float %op1, %op2 ; 1 if op1 < op2 or either is NaN
     %3 = zext i1 %1 to i32
     %4 = zext i1 %2 to i32
-    %5 = sub i32 %4, %3
+    %5 = sub i32 %3, %4
+    ret i32 %5
+}
+
+define linkonce_odr i32 @fcmpg(float %op1, float %op2) alwaysinline {
+    %1 = fcmp ugt float %op1, %op2 ; 1 if op1 > op2 or either is NaN
+    %2 = fcmp olt float %op1, %op2 ; 1 if op1 < op2
+    %3 = zext i1 %1 to i32
+    %4 = zext i1 %2 to i32
+    %5 = sub i32 %3, %4
     ret i32 %5
 }
 
@@ -357,7 +362,7 @@ define linkonce_odr i32 @dcmpl(double %op1, double %op2) alwaysinline {
     %2 = fcmp olt double %op1, %op2 ; 1 if op1 < op2
     %3 = zext i1 %1 to i32
     %4 = zext i1 %2 to i32
-    %5 = sub i32 %4, %3
+    %5 = sub i32 %3, %4
     ret i32 %5
 }
 
@@ -366,6 +371,6 @@ define linkonce_odr i32 @dcmpg(double %op1, double %op2) alwaysinline {
     %2 = fcmp ult double %op1, %op2 ; 1 if op1 < op2 or either is NaN
     %3 = zext i1 %1 to i32
     %4 = zext i1 %2 to i32
-    %5 = sub i32 %4, %3
+    %5 = sub i32 %3, %4
     ret i32 %5
 }

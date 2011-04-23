@@ -50,7 +50,6 @@ import org.nullvm.compiler.llvm.Fptrunc;
 import org.nullvm.compiler.llvm.Frem;
 import org.nullvm.compiler.llvm.Fsub;
 import org.nullvm.compiler.llvm.Function;
-import org.nullvm.compiler.llvm.FunctionDeclaration;
 import org.nullvm.compiler.llvm.FunctionRef;
 import org.nullvm.compiler.llvm.FunctionType;
 import org.nullvm.compiler.llvm.Getelementptr;
@@ -99,8 +98,8 @@ import org.nullvm.compiler.trampoline.Invokeinterface;
 import org.nullvm.compiler.trampoline.Invokespecial;
 import org.nullvm.compiler.trampoline.Invokestatic;
 import org.nullvm.compiler.trampoline.Invokevirtual;
+import org.nullvm.compiler.trampoline.NativeCall;
 import org.nullvm.compiler.trampoline.New;
-import org.nullvm.compiler.trampoline.NewArray;
 import org.nullvm.compiler.trampoline.PutField;
 import org.nullvm.compiler.trampoline.PutStatic;
 import org.nullvm.compiler.trampoline.Trampoline;
@@ -186,6 +185,7 @@ import soot.jimple.VirtualInvokeExpr;
 import soot.jimple.XorExpr;
 import soot.jimple.toolkits.annotation.tags.ArrayCheckTag;
 import soot.jimple.toolkits.annotation.tags.NullCheckTag;
+import soot.jimple.toolkits.typing.fast.BottomType;
 import soot.options.Options;
 
 /**
@@ -219,16 +219,16 @@ public class SootClassCompiler {
     private static final FunctionRef NVM_BC_THROW = new FunctionRef("_nvmBcThrow", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     private static final FunctionRef NVM_BC_RETHROW = new FunctionRef("_nvmBcRethrow", new FunctionType(VOID, ENV_PTR));
     private static final FunctionRef NVM_BC_THROW_IF_EXCEPTION_OCCURRED = new FunctionRef("_nvmBcThrowIfExceptionOccurred", new FunctionType(VOID, ENV_PTR));
-    private static final FunctionRef NVM_BC_NEWARRAYZ = new FunctionRef("_nvmBcNewArrayZ", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
-    private static final FunctionRef NVM_BC_NEWARRAYB = new FunctionRef("_nvmBcNewArrayB", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
-    private static final FunctionRef NVM_BC_NEWARRAYC = new FunctionRef("_nvmBcNewArrayC", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
-    private static final FunctionRef NVM_BC_NEWARRAYS = new FunctionRef("_nvmBcNewArrayS", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
-    private static final FunctionRef NVM_BC_NEWARRAYI = new FunctionRef("_nvmBcNewArrayI", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
-    private static final FunctionRef NVM_BC_NEWARRAYJ = new FunctionRef("_nvmBcNewArrayJ", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
-    private static final FunctionRef NVM_BC_NEWARRAYF = new FunctionRef("_nvmBcNewArrayF", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
-    private static final FunctionRef NVM_BC_NEWARRAYD = new FunctionRef("_nvmBcNewArrayD", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
-    private static final FunctionRef NVM_BC_ENTER_MONITOR = new FunctionRef("_nvmBcEnterMonitor", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
-    private static final FunctionRef NVM_BC_EXIT_MONITOR = new FunctionRef("_nvmBcExitMonitor", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
+    private static final FunctionRef NVM_BC_NEW_BOOLEAN_ARRAY = new FunctionRef("_nvmBcNewBooleanArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
+    private static final FunctionRef NVM_BC_NEW_BYTE_ARRAY = new FunctionRef("_nvmBcNewByteArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
+    private static final FunctionRef NVM_BC_NEW_CHAR_ARRAY = new FunctionRef("_nvmBcNewCharArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
+    private static final FunctionRef NVM_BC_NEW_SHORT_ARRAY = new FunctionRef("_nvmBcNewShortArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
+    private static final FunctionRef NVM_BC_NEW_INT_ARRAY = new FunctionRef("_nvmBcNewIntArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
+    private static final FunctionRef NVM_BC_NEW_LONG_ARRAY = new FunctionRef("_nvmBcNewLongArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
+    private static final FunctionRef NVM_BC_NEW_FLOAT_ARRAY = new FunctionRef("_nvmBcNewFloatArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
+    private static final FunctionRef NVM_BC_NEW_DOUBLE_ARRAY = new FunctionRef("_nvmBcNewDoubleArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
+    private static final FunctionRef NVM_BC_MONITOR_ENTER = new FunctionRef("_nvmBcMonitorEnter", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
+    private static final FunctionRef NVM_BC_MONITOR_EXIT = new FunctionRef("_nvmBcMonitorExit", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     private static final FunctionRef NVM_BC_LDC_STRING = new FunctionRef("_nvmBcLdcString", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_LDC_CLASS = new FunctionRef("_nvmBcLdcClass", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_LOOKUP_VIRTUAL_METHOD = new FunctionRef("_nvmBcLookupVirtualMethod", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR, I8_PTR, I8_PTR));
@@ -245,6 +245,7 @@ public class SootClassCompiler {
     private static final FunctionRef NVM_BC_RESOLVE_PUTSTATIC = new FunctionRef("_nvmBcResolvePutstatic", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_RESOLVE_GETFIELD = new FunctionRef("_nvmBcResolveGetfield", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_RESOLVE_PUTFIELD = new FunctionRef("_nvmBcResolvePutfield", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_NATIVE = new FunctionRef("_nvmBcResolveNative", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
     
     private static final FunctionRef LLVM_EH_EXCEPTION = new FunctionRef("llvm.eh.exception", new FunctionType(I8_PTR));
     private static final FunctionRef LLVM_EH_SELECTOR = new FunctionRef("llvm.eh.selector", new FunctionType(I32, true, I8_PTR, I8_PTR));
@@ -483,6 +484,18 @@ public class SootClassCompiler {
                     getString(invoke.getMethodName()),
                     getString(invoke.getMethodDesc()),
                     new ConstantBitcast(ptr, I8_PTR)));
+        } else if (trampoline instanceof NativeCall) {
+            NativeCall nativeCall = (NativeCall) trampoline;
+            function.add(new Call(targetI8Ptr, NVM_BC_RESOLVE_NATIVE,
+                    ENV,
+                    getString(nativeCall.getTargetClass()), 
+                    getString(nativeCall.getMethodName()),
+                    getString(nativeCall.getMethodDesc()),
+                    getString(mangleNativeMethod(nativeCall.getTargetClass(), 
+                            nativeCall.getMethodName())),
+                    getString(mangleNativeMethod(nativeCall.getTargetClass(), 
+                            nativeCall.getMethodName(), nativeCall.getMethodDesc())),
+                    new ConstantBitcast(ptr, I8_PTR)));
         } else if (trampoline instanceof FieldAccessor) {
             FieldAccessor accessor = (FieldAccessor) trampoline;
             FunctionRef resolveFunc = null;
@@ -558,24 +571,41 @@ public class SootClassCompiler {
     
     private void nativeMethod(SootMethod method) {
         Function function = createFunction(method);
-        FunctionType functionType = function.getType();
-        Global functionPtr = new Global(function.getName().substring(1) + "_native_ptr", new NullConstant(functionType));
-        module.addGlobal(functionPtr);
-        Variable f = function.newVariable(functionType);
-        function.add(new Load(f, new GlobalRef(functionPtr)));
+
         Type[] parameterTypes = function.getType().getParameterTypes();
         String[] parameterNames = function.getParameterNames();
-        Value[] args = new Value[parameterNames.length];
-        for (int i = 0; i < args.length; i++) {
-            args[i] = new VariableRef(parameterNames[i], parameterTypes[i]);
+        ArrayList<Value> args = new ArrayList<Value>();
+        for (int i = 0; i < parameterTypes.length; i++) {
+            args.add(new VariableRef(parameterNames[i], parameterTypes[i]));
         }
+
+        FunctionType nativeFunctionType = function.getType();
+        if (method.isStatic()) {
+            // Add THE_CLASS as second parameter
+            Variable tmp = function.newVariable(CLASS_PTR);
+            function.add(new Load(tmp, THE_CLASS.ref()));
+            args.add(1, tmp.ref());
+            // Add %Class* as second parameter type
+            ArrayList<Type> ptypes = new ArrayList<Type>(Arrays.asList(parameterTypes));
+            ptypes.add(1, CLASS_PTR);
+            nativeFunctionType = new FunctionType(function.getType().getReturnType(), 
+                    ptypes.toArray(new Type[ptypes.size()]));
+        }        
+        
+        String targetClassName = getInternalName(method.getDeclaringClass());
+        String methodName = method.getName();
+        String methodDesc = getDescriptor(method);
+        // TODO: NativeCall should take THE_CLASS as first arg since method is 
+        // always declared by the class being compiled
+        Trampoline trampoline = new NativeCall(targetClassName, methodName, methodDesc);
+        addTrampoline(trampoline, nativeFunctionType);
         if (function.getType().getReturnType() == VOID) {
-            function.add(new Call(new VariableRef(f), args));
+            callTrampoline(function, trampoline, null, args.toArray(new Value[args.size()]));
             function.add(new Call(NVM_BC_THROW_IF_EXCEPTION_OCCURRED, ENV));
             function.add(new Ret());
         } else {
-            Variable result = function.newVariable(functionType.getReturnType());
-            function.add(new Call(result, new VariableRef(f), args));
+            Variable result = function.newVariable(function.getType().getReturnType());
+            callTrampoline(function, trampoline, result, args.toArray(new Value[args.size()]));
             function.add(new Call(NVM_BC_THROW_IF_EXCEPTION_OCCURRED, ENV));
             function.add(new Ret(new VariableRef(result)));
         }
@@ -776,7 +806,8 @@ public class SootClassCompiler {
         for (SootMethod method : sootClass.getMethods()) {
             Value functionRef = new NullConstant(I8_PTR);
             Value lookup = new NullConstant(I8_PTR);
-            if (!method.isStatic() && !method.isPrivate() && !Modifier.isFinal(method.getModifiers())) {
+            if (!method.isStatic() && !"<init>".equals(method.getName()) 
+                    && !method.isPrivate() && !Modifier.isFinal(method.getModifiers())) {
                 // Virtual method. If not defined in a superclass we need to create a virtual lookup function now.
                 if (!ancestorDeclaresMethod(sootClass, method)) {
                     lookup = new ConstantBitcast(new FunctionRef(mangleMethod(method) + "_lookup", 
@@ -834,6 +865,7 @@ public class SootClassCompiler {
     }
     
     private void virtualLookupFunction(SootMethod method) {
+        // TODO: This should use a virtual method table or interface method table.
         String name = mangleMethod(method) + "_lookup";
         Function function = createFunction(name, method);
         FunctionType functionType = function.getType();
@@ -933,7 +965,29 @@ public class SootClassCompiler {
         return null;
     }
     
+    /**
+     * Resolves the {@link SootMethod} corresponding to a {@link SootMethodRef}
+     * in the specified {@link SootClass}. We cannot use {@link SootMethodRef#resolve()} 
+     * since it will search super classes and it will create a method with a 
+     * body which throws java.lang.Error if the method doesn't exist.
+     */
+    private static SootMethod resolveMethod(SootClass c, SootMethodRef methodRef) {
+        if (!methodRef.declaringClass().equals(c)) {
+            return null;
+        }
+        String name = methodRef.name();
+        List<?> parameterTypes = methodRef.parameterTypes();
+        soot.Type returnType = methodRef.returnType();
+        if (!c.declaresMethod(name, parameterTypes, returnType)) {
+            return null;
+        }
+        return c.getMethod(name, parameterTypes, returnType);
+    }
+    
     private static boolean ancestorDeclaresMethod(SootClass c, SootMethod method) {
+        if (c.isInterface()) {
+            return false;
+        }
         String name = method.getName();
         List<?> parameterTypes = method.getParameterTypes();
         soot.Type returnType = method.getReturnType();
@@ -963,6 +1017,14 @@ public class SootClassCompiler {
         throw new IllegalArgumentException();
     }
     
+    private static Type getLocalType(soot.Type sootType) {
+        Type t = getType(sootType);
+        if (t instanceof IntegerType && ((IntegerType) t).getBits() < 32) {
+            return I32;
+        }
+        return t;
+    }
+    
     private static Type getType(soot.Type sootType) {
         if (sootType.equals(soot.BooleanType.v())) {
             return Type.I8;
@@ -982,7 +1044,7 @@ public class SootClassCompiler {
             return Type.DOUBLE;
         } else if (sootType.equals(soot.VoidType.v())) {
             return Type.VOID;
-        } else if (sootType instanceof soot.RefLikeType) {
+        } else if (sootType instanceof soot.RefLikeType || sootType.equals(BottomType.v())) {
             return OBJECT_PTR;
         } else {
             throw new IllegalArgumentException("Unknown Type: " + sootType);
@@ -1039,21 +1101,21 @@ public class SootClassCompiler {
     
     private static FunctionRef getNewArray(soot.Type sootType) {
         if (sootType.equals(soot.BooleanType.v())) {
-            return NVM_BC_NEWARRAYZ;
+            return NVM_BC_NEW_BOOLEAN_ARRAY;
         } else if (sootType.equals(soot.ByteType.v())) {
-            return NVM_BC_NEWARRAYB;
+            return NVM_BC_NEW_BYTE_ARRAY;
         } else if (sootType.equals(soot.ShortType.v())) {
-            return NVM_BC_NEWARRAYS;
+            return NVM_BC_NEW_SHORT_ARRAY;
         } else if (sootType.equals(soot.CharType.v())) {
-            return NVM_BC_NEWARRAYC;
+            return NVM_BC_NEW_CHAR_ARRAY;
         } else if (sootType.equals(soot.IntType.v())) {
-            return NVM_BC_NEWARRAYI;
+            return NVM_BC_NEW_INT_ARRAY;
         } else if (sootType.equals(soot.LongType.v())) {
-            return NVM_BC_NEWARRAYJ;
+            return NVM_BC_NEW_LONG_ARRAY;
         } else if (sootType.equals(soot.FloatType.v())) {
-            return NVM_BC_NEWARRAYF;
+            return NVM_BC_NEW_FLOAT_ARRAY;
         } else if (sootType.equals(soot.DoubleType.v())) {
-            return NVM_BC_NEWARRAYD;
+            return NVM_BC_NEW_DOUBLE_ARRAY;
         } else {
             throw new IllegalArgumentException("Unknown Type: " + sootType);
         }
@@ -1074,6 +1136,10 @@ public class SootClassCompiler {
     }
     
     private Value widen(Context ctx, Value value, Type targetType, soot.Type sootSourceType) {
+        return widen(ctx, value, targetType, sootSourceType.equals(CharType.v()));
+    }
+    
+    private Value widen(Context ctx, Value value, Type targetType, boolean unsigned) {
         /*
          * Soot only emits CastExpr for widening integer conversions when the 
          * target type is long or if the source type doesn't fit in the target
@@ -1084,7 +1150,7 @@ public class SootClassCompiler {
             IntegerType t2 = (IntegerType) value.getType();
             if (t1.getBits() > t2.getBits()) {
                 Variable result = ctx.f().newVariable(targetType);
-                if (sootSourceType.equals(CharType.v())) {
+                if (unsigned) {
                     ctx.f().add(new Zext(result, value, targetType));
                 } else {
                     ctx.f().add(new Sext(result, value, targetType));                    
@@ -1191,19 +1257,11 @@ public class SootClassCompiler {
     }
     
     private boolean canCallDirectly(Context context, InvokeExpr expr) {
+        // TODO: Synchronized methods can be called directly?
         SootMethodRef methodRef = expr.getMethodRef();
-        if (methodRef.declaringClass().equals(sootClass)) {
-            /* 
-             * The method ref refers to the current class. Resolve the method and
-             * check that it is actually declared in the current class.
-             */
-            SootMethod method;
-            try {
-                method = methodRef.resolve();
-            } catch (ResolutionFailedException e) {
-                return false;
-            }
-            if (!method.getDeclaringClass().equals(sootClass) || method.isAbstract() || method.isPhantom()) {
+        SootMethod method = resolveMethod(sootClass, methodRef);
+        if (method != null) {
+            if (method.isAbstract() || method.isPhantom()) {
                 return false;
             }
             /*
@@ -1244,35 +1302,25 @@ public class SootClassCompiler {
     
     private void callOrInvokeTrampoline(Context ctx, Trampoline trampoline, Variable result, Value ... args) {
         FunctionRef f = trampolines.get(trampoline);
-
         String name = f.getName().substring(1);
         Variable ptr = ctx.f().newVariable(f.getType());
         ctx.f().add(new Load(ptr, new GlobalRef(name + "_ptr", f.getType())));
-        
-        List<Value> newArgs = new ArrayList<Value>(args.length + 1);
-        newArgs.add(ENV);
-        newArgs.addAll(Arrays.asList(args));
-        callOrInvoke(ctx, result, ptr.ref(), newArgs.toArray(new Value[newArgs.size()]));
-        
-//        Variable p2 = ctx.f().newVariable(new PointerType(I8_PTR));
-//        ctx.f().add(new Getelementptr(p2, new VariableRef("trampolines", new PointerType(I8_PTR)), index));
-//        Variable p3 = ctx.f().newVariable(I8_PTR);
-//        ctx.f().add(new Load(p3, new VariableRef(p2)));
-//        Variable p4 = ctx.f().newVariable(functionType);
-//        ctx.f().add(new Bitcast(p4, new VariableRef(p3), p4.getType()));
-//        Variable p5 = ctx.f().newVariable(I8_PTR);
-//        ctx.f().add(new Bitcast(p5, new VariableRef(p2), p5.getType()));
-//        List<Value> newArgs = new ArrayList<Value>(args.length + 2);
-//        newArgs.add(new VariableRef(p5));
-//        newArgs.add(ENV);
-//        newArgs.addAll(Arrays.asList(args));
-//        callOrInvoke(ctx, result, new VariableRef(p4), newArgs.toArray(new Value[newArgs.size()]));
+        callOrInvoke(ctx, result, ptr.ref(), args);
+    }
+    
+    private void callTrampoline(Function function, Trampoline trampoline, Variable result, Value ... args) {
+        FunctionRef f = trampolines.get(trampoline);
+        String name = f.getName().substring(1);
+        Variable ptr = function.newVariable(f.getType());
+        function.add(new Load(ptr, new GlobalRef(name + "_ptr", f.getType())));
+        function.add(new Call(result, ptr.ref(), args));
     }
     
     @SuppressWarnings("unchecked")
     private void invokeExpr(Context ctx, Variable result, Stmt stmt, InvokeExpr expr) {
         SootMethodRef methodRef = expr.getMethodRef();
         ArrayList<Value> args = new ArrayList<Value>();
+        args.add(ENV);
         if (!(expr instanceof StaticInvokeExpr)) {
             Value base = immediate(ctx, (Immediate) ((InstanceInvokeExpr) expr).getBase());
             checkNull(ctx, base);
@@ -1286,7 +1334,6 @@ public class SootClassCompiler {
             args.add(arg);
         }
         if (canCallDirectly(ctx, expr)) {
-            args.add(0, ENV);
             Value function = new FunctionRef(mangleMethod(methodRef), getFunctionType(methodRef));
             callOrInvoke(ctx, result, function, args.toArray(new Value[0]));
         } else {
@@ -1413,7 +1460,7 @@ public class SootClassCompiler {
                 Trampoline trampoline = new GetField(getInternalName(ref.getFieldRef().declaringClass()), 
                         ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
                 addTrampoline(trampoline, new FunctionType(rightType, ENV_PTR, OBJECT_PTR));
-                callOrInvokeTrampoline(ctx, trampoline, result, base);
+                callOrInvokeTrampoline(ctx, trampoline, result, ENV, base);
             }
         } else if (rightOp instanceof StaticFieldRef) {
             StaticFieldRef ref = (StaticFieldRef) rightOp;
@@ -1423,10 +1470,25 @@ public class SootClassCompiler {
                 Trampoline trampoline = new GetStatic(getInternalName(ref.getFieldRef().declaringClass()), 
                         ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
                 addTrampoline(trampoline, new FunctionType(rightType, ENV_PTR));
-                callOrInvokeTrampoline(ctx, trampoline, result);
+                callOrInvokeTrampoline(ctx, trampoline, result, ENV);
             }
         } else if (rightOp instanceof Expr) {
-            if (rightOp instanceof BinopExpr) {
+            if (rightOp instanceof UshrExpr) {
+                // UshrExpr is a special kind of BinopExpr since op1 must be treated as unsigned always if widening is required
+                // leftOp is either int or long
+                UshrExpr expr = (UshrExpr) rightOp;
+                Value op1 = immediate(ctx, (Immediate) expr.getOp1());
+                Value op2 = immediate(ctx, (Immediate) expr.getOp2());
+                op1 = widen(ctx, op1, rightType, true);
+                op2 = widen(ctx, op2, rightType, expr.getOp2().getType());
+                op1 = widen(ctx, op1, leftType, true);
+                op2 = widen(ctx, op2, leftType, expr.getOp2().getType());
+                IntegerType type = (IntegerType) op2.getType();
+                int bits = type.getBits();
+                Variable t = ctx.f().newVariable(type);
+                ctx.f().add(new And(t, op2, new IntegerConstant(bits - 1, type)));
+                ctx.f().add(new Lshr(result, op1, new VariableRef(t)));
+            } else if (rightOp instanceof BinopExpr) {
                 BinopExpr expr = (BinopExpr) rightOp;
                 Value op1 = immediate(ctx, (Immediate) expr.getOp1());
                 Value op2 = immediate(ctx, (Immediate) expr.getOp2());
@@ -1447,8 +1509,8 @@ public class SootClassCompiler {
                     Variable t4 = ctx.f().newVariable(result.getType());
                     ctx.f().add(new Icmp(t1, Condition.slt, op1, op2));
                     ctx.f().add(new Icmp(t2, Condition.sgt, op1, op2));
-                    ctx.f().add(new Sext(t3, new VariableRef(t1), result.getType()));
-                    ctx.f().add(new Sext(t4, new VariableRef(t2), result.getType()));
+                    ctx.f().add(new Zext(t3, new VariableRef(t1), result.getType()));
+                    ctx.f().add(new Zext(t4, new VariableRef(t2), result.getType()));
                     ctx.f().add(new Sub(result, new VariableRef(t4), new VariableRef(t3)));
                 } else if (rightOp instanceof DivExpr) {
                     if (rightType instanceof IntegerType) {
@@ -1474,7 +1536,7 @@ public class SootClassCompiler {
                         // float or double
                         ctx.f().add(new Frem(result, op1, op2));
                     }
-                } else if (rightOp instanceof ShlExpr || rightOp instanceof ShrExpr  || rightOp instanceof UshrExpr) {
+                } else if (rightOp instanceof ShlExpr || rightOp instanceof ShrExpr) {
                     // leftOp is either int or long
                     op1 = widen(ctx, op1, leftType, expr.getOp1().getType());
                     op2 = widen(ctx, op2, leftType, expr.getOp2().getType());
@@ -1486,8 +1548,6 @@ public class SootClassCompiler {
                         ctx.f().add(new Shl(result, op1, new VariableRef(t)));
                     } else if (rightOp instanceof ShrExpr) {
                         ctx.f().add(new Ashr(result, op1, new VariableRef(t)));
-                    } else {
-                        ctx.f().add(new Lshr(result, op1, new VariableRef(t)));
                     }
                 } else if (rightOp instanceof SubExpr) {
                     if (rightType instanceof IntegerType) {
@@ -1585,7 +1645,7 @@ public class SootClassCompiler {
 //                        trampoline = new Checkcast(getInternalName(checkType));
 //                    }
 //                    addTrampoline(trampoline, new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR, I32));
-//                    callOrInvokeTrampoline(ctx, trampoline, result, op, new IntegerConstant(dimensions));
+//                    callOrInvokeTrampoline(ctx, trampoline, result, ENV, op, new IntegerConstant(dimensions));
                 }
             } else if (rightOp instanceof InstanceOfExpr) {
                 Value op = immediate(ctx, (Immediate) ((InstanceOfExpr) rightOp).getOp());
@@ -1603,7 +1663,7 @@ public class SootClassCompiler {
 //                    trampoline = new Instanceof(getInternalName(checkType));
 //                }
 //                addTrampoline(trampoline, new FunctionType(I8, ENV_PTR, OBJECT_PTR, I32));
-//                callOrInvokeTrampoline(ctx, trampoline, result, op, new IntegerConstant(dimensions));
+//                callOrInvokeTrampoline(ctx, trampoline, result, ENV, op, new IntegerConstant(dimensions));
             } else if (rightOp instanceof NewExpr) {
                 callOrInvoke(ctx, result, NVM_BC_NEW, ENV, getString(getInternalName(((NewExpr) rightOp).getBaseType())));
             } else if (rightOp instanceof NewArrayExpr) {
@@ -1612,7 +1672,7 @@ public class SootClassCompiler {
                 if (expr.getBaseType() instanceof PrimType) {
                     callOrInvoke(ctx, result, getNewArray(expr.getBaseType()), ENV, size);
                 } else {
-                    callOrInvoke(ctx, result, NVM_BC_NEW_OBJECT_ARRAY, ENV, size, getString(getInternalName(expr.getBaseType())));
+                    callOrInvoke(ctx, result, NVM_BC_NEW_OBJECT_ARRAY, ENV, size, getString(getInternalName(expr.getType())));
                 }
             } else if (rightOp instanceof NewMultiArrayExpr) {
                 NewMultiArrayExpr expr = (NewMultiArrayExpr) rightOp;
@@ -1625,7 +1685,7 @@ public class SootClassCompiler {
                 Variable dimsI32 = ctx.f().newVariable(new PointerType(I32));
                 ctx.f().add(new Bitcast(dimsI32, dims.ref(), dimsI32.getType()));
                 callOrInvoke(ctx, result, NVM_BC_NEW_MULTI_ARRAY, ENV, new IntegerConstant(expr.getSizeCount()), 
-                        dimsI32.ref(), getString(getInternalName(expr.getBaseType())));
+                        dimsI32.ref(), getString(getInternalName(expr.getType())));
             } else if (rightOp instanceof InvokeExpr) {
                 invokeExpr(ctx, result, stmt, (InvokeExpr) rightOp);
             } else if (rightOp instanceof LengthExpr) {
@@ -1675,7 +1735,7 @@ public class SootClassCompiler {
                 Trampoline trampoline = new PutField(getInternalName(ref.getFieldRef().declaringClass()), 
                         ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
                 addTrampoline(trampoline, new FunctionType(VOID, ENV_PTR, OBJECT_PTR, leftType));
-                callOrInvokeTrampoline(ctx, trampoline, null, base, resultRef);
+                callOrInvokeTrampoline(ctx, trampoline, null, ENV, base, resultRef);
             }
         } else if (leftOp instanceof StaticFieldRef) {
             StaticFieldRef ref = (StaticFieldRef) leftOp;
@@ -1685,7 +1745,7 @@ public class SootClassCompiler {
                 Trampoline trampoline = new PutStatic(getInternalName(ref.getFieldRef().declaringClass()), 
                         ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
                 addTrampoline(trampoline, new FunctionType(VOID, ENV_PTR, leftType));
-                callOrInvokeTrampoline(ctx, trampoline, null, resultRef);
+                callOrInvokeTrampoline(ctx, trampoline, null, ENV, resultRef);
             }
         } else {
             throw new IllegalArgumentException("Unknown type for leftOp: " + leftOp.getClass());
@@ -1709,8 +1769,8 @@ public class SootClassCompiler {
         ConditionExpr condition = (ConditionExpr) stmt.getCondition();
         Value op1 = immediate(ctx, (Immediate) condition.getOp1());
         Value op2 = immediate(ctx, (Immediate) condition.getOp2());
-        op1 = widen(ctx, op1, Type.I32, condition.getOp2().getType());
-        op2 = widen(ctx, op2, Type.I32, condition.getOp1().getType());
+        op1 = widen(ctx, op1, Type.I32, condition.getOp1().getType());
+        op2 = widen(ctx, op2, Type.I32, condition.getOp2().getType());
         Icmp.Condition c = null;
         if (condition instanceof EqExpr) {
             c = Icmp.Condition.eq;
@@ -1780,13 +1840,13 @@ public class SootClassCompiler {
     private void enterMonitor(Context ctx, EnterMonitorStmt stmt) {
         Value op = immediate(ctx, (Immediate) stmt.getOp());
         checkNull(ctx, op);
-        callOrInvoke(ctx, null, NVM_BC_ENTER_MONITOR, ENV, op);
+        callOrInvoke(ctx, null, NVM_BC_MONITOR_ENTER, ENV, op);
     }
     
     private void exitMonitor(Context ctx, ExitMonitorStmt stmt) {
         Value op = immediate(ctx, (Immediate) stmt.getOp());
         checkNull(ctx, op);
-        callOrInvoke(ctx, null, NVM_BC_EXIT_MONITOR, ENV, op);
+        callOrInvoke(ctx, null, NVM_BC_MONITOR_EXIT, ENV, op);
     }
     
     private static String getInternalName(soot.Type t) {
@@ -1923,6 +1983,45 @@ public class SootClassCompiler {
         return sb.toString();
     }
     
+    public static String mangleNativeMethod(String owner, String name) {
+        return mangleNativeMethod(owner, name, null);
+    }
+    
+    public static String mangleNativeMethod(String owner, String name, String desc) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Java_");
+        sb.append(mangleNativeString(owner));
+        sb.append("_");
+        sb.append(mangleNativeString(name));
+        if (desc != null && !desc.startsWith("()")) {
+            sb.append("__");
+            sb.append(mangleNativeString(desc.substring(1, desc.lastIndexOf(')'))));
+        }
+        return sb.toString();
+    }
+    
+    public static String mangleNativeString(String name) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < name.length(); i++) {
+            char c = name.charAt(i);
+            if (c == '_') {
+                sb.append("_1");
+            } else if (c == ';') {
+                sb.append("_2");
+            } else if (c == '[') {
+                sb.append("_3");
+            } else if (c == '/') {
+                sb.append("_");
+            } else if (c > 0x7f) {
+                sb.append(String.format("_0%04x", (int) c));
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    
     private static String mangleField(SootField field) {
         return mangleField(getInternalName(field.getDeclaringClass()), field.getName(), field.getType());
     }
@@ -1962,21 +2061,13 @@ public class SootClassCompiler {
 
     
     public static class HelloWorld {
-        private static int foo = 10;
-        private long l = 0;
-        public static int getFoo() {
-            String[][][] s = new String[10][20][30];
-            int[][][][] i = new int[10][20][][];
-            return foo;
+        private void a(long descriptor) throws Exception {
+            if (descriptor < 0) {
+                throw new IOException();
+            }
         }
-        public static long f(byte x) {
-            return (100 / x);
-        }
-        public void setL(long l) {
-            this.l = l;
-        }
-        public long getL() {
-            return l;
+        public void b(long descriptor) throws Exception {
+            a(descriptor);
         }
     }
 
@@ -2015,9 +2106,10 @@ public class SootClassCompiler {
 //      PackManager.v().runPacks();
     }
 
-    public static void mainn(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         List<File> bootClassPathFiles = new ArrayList<File>();
-        bootClassPathFiles.add(new File("../rt/target/classes"));
+        bootClassPathFiles.add(new File("../rt/target/nullvm-rt-0.1-SNAPSHOT-all.jar"));
+        bootClassPathFiles.add(new File("target/classes"));
         List<File> classPathFiles = new ArrayList<File>();
 //        classPathFiles.add(new File("target/classes"));
         Clazzes clazzes = new Clazzes(bootClassPathFiles, classPathFiles);
@@ -2025,45 +2117,14 @@ public class SootClassCompiler {
 
         for (Path path : clazzes.getPaths()) {
             for (Clazz clazz : path.list()) {
-                System.out.println("Compiling " + clazz.getClassName());
-                SootClass sootClass = Scene.v().getSootClass(clazz.getClassName());
-                SootClassCompiler compiler = new SootClassCompiler();
-                compiler.compile(clazz, System.out);
-//                System.out.println(module.toString());        
+                if ("org.nullvm.compiler.SootClassCompiler$HelloWorld".equals(clazz.getClassName())) {
+                    System.out.println("Compiling " + clazz.getClassName());
+                    SootClassCompiler compiler = new SootClassCompiler();
+                    compiler.compile(clazz, System.out);
+                    SootClass sootClass = Scene.v().getSootClass(clazz.getClassName());
+                }
             }
         }
     }
     
-    public static void main(String[] args) throws Exception {
-        List<File> bootClassPathFiles = new ArrayList<File>();
-        bootClassPathFiles.add(new File("../rt/target/classes"));
-        List<File> classPathFiles = new ArrayList<File>();
-        classPathFiles.add(new File("target/classes"));
-        Clazzes clazzes = new Clazzes(bootClassPathFiles, classPathFiles);
-        SootClassCompiler.init(clazzes);
-        
-////        Options.v().set_prepend_classpath(true);
-//        Options.v().set_output_format(Options.output_format_jimple);
-//        Options.v().setPhaseOption("jap.npc", "enabled:true");
-//        Options.v().setPhaseOption("wjap.ra", "enabled:true");
-//        Options.v().setPhaseOption("jap.abc", "enabled:true");
-//        Options.v().setPhaseOption("tag.an", "enabled:true");
-//        Options.v().set_print_tags_in_output(true);
-//        Options.v().set_allow_phantom_refs(true);
-//        Options.v().set_soot_classpath("../rt/target/classes:target/classes");
-//        Scene.v().loadNecessaryClasses();
-////        Options.v().set_soot_classpath("target/classes");
-//
-//        Scene.v().loadClassAndSupport("org.nullvm.compiler.SootClassCompiler$HelloWorld").setApplicationClass();
-////        Scene.v().loadClassAndSupport("java.lang.Double").setApplicationClass();
-////        Scene.v().loadClassAndSupport("java.lang.String").setApplicationClass();
-////        PackManager.v().runPacks();
-        
-        SootClass sootClass = Scene.v().getSootClass("org.nullvm.compiler.SootClassCompiler$HelloWorld");
-//        SootClass sootClass = Scene.v().getSootClass("java.lang.Double");
-//        SootClass sootClass = Scene.v().getSootClass("java.lang.String");
-//        SootClassCompiler compiler = new SootClassCompiler();
-//        Module module = compiler.compile();
-//        System.out.println(module.toString());
-    }
 }

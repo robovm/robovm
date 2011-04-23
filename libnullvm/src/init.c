@@ -143,8 +143,8 @@ Env* nvmStartup(Options* options) {
     // Call init on modules
     if (!nvmInitClasses(env)) return NULL;
     if (!nvmInitStrings(env)) return NULL;
-    if (!nvmInitThreads(env)) return NULL;
     if (!nvmInitVMI(env)) return NULL;
+    if (!nvmInitThreads(env)) return NULL;
 
     return env;
 }
@@ -229,7 +229,7 @@ jboolean nvmLoadDynamicLib(Env* env, DynamicLib* dlib) {
 }
 
 void* nvmFindDynamicLibSymbol(Env* env, DynamicLib* first, DynamicLib* last, char* symbol) {
-    TRACE("Searching for symbol '%s'", symbol);
+    TRACE("Searching for symbol '%s'\n", symbol);
 
     DynamicLib* dlib = first;
     while (dlib && dlib != last) {

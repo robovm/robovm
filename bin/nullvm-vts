@@ -9,7 +9,36 @@ TARGET=/tmp/nullvm-vts #$(mktemp -d)
 
 #echo "" | gcc -c -E -v -
 
-java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -jar $NULLVMCJAR -verify:defer -run -d $TARGET $@
+ARGS=
+n=0
+while [ "x$1" != 'x' ]; do
+  if [ "$1" = '-cp' ]; then
+    shift
+    parts=$(echo $1 | tr ':' '\n')
+    for p in $parts; do
+      if [ -d "$p" ]; then
+        JAR=/tmp/vts$n.jar
+        if [ ! -f "$JAR" ]; then
+          jar cf $JAR -C "$p" .
+        fi
+        CP=$(test "x$CP" = "x" && echo "$JAR" || echo "$CP:$JAR")
+        n=$((n + 1))
+      elif [ -f "$p" ]; then
+        CP=$(test "x$CP" = "x" && echo "$p" || echo "$CP:$p")
+      fi
+    done
+    ARGS="$ARGS -cp $CP"
+  else
+    ARGS="$ARGS $1"
+  fi
+  shift
+done
+
+#echo $ARGS
+
+#exit
+
+java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -jar $NULLVMCJAR -run -d $TARGET $ARGS
 CODE=$?
 #rm -rf $TARGET
 exit $CODE

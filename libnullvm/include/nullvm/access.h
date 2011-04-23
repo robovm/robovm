@@ -20,14 +20,25 @@
 #define ACC_ANNOTATION 0x2000
 #define ACC_ENUM 0x4000
 
+#define IS_PUBLIC(access) (access & ACC_PUBLIC)
 #define IS_PRIVATE(access) (access & ACC_PRIVATE)
 #define IS_PROTECTED(access) (access & ACC_PROTECTED)
-#define IS_PUBLIC(access) (access & ACC_PUBLIC)
-#define IS_PACKAGE_PRIVATE(access) (!IS_PRIVATE(access) && !IS_PROTECTED(access) && !IS_PUBLIC(access))
+#define IS_STATIC(access) (access & ACC_STATIC)
 #define IS_FINAL(access) (access & ACC_FINAL)
-#define IS_NATIVE(access) (access & ACC_NATIVE)
+#define IS_SUPER(access) (access & ACC_SUPER)
 #define IS_SYNCHRONIZED(access) (access & ACC_SYNCHRONIZED)
+#define IS_VOLATILE(access) (access & ACC_VOLATILE)
+#define IS_BRIDGE(access) (access & ACC_BRIDGE)
+#define IS_VARARGS(access) (access & ACC_VARARGS)
+#define IS_TRANSIENT(access) (access & ACC_TRANSIENT)
+#define IS_NATIVE(access) (access & ACC_NATIVE)
+#define IS_INTERFACE(access) (access & ACC_INTERFACE)
 #define IS_ABSTRACT(access) (access & ACC_ABSTRACT)
+#define IS_STRICT(access) (access & ACC_STRICT)
+#define IS_SYNTHETIC(access) (access & ACC_SYNTHETIC)
+#define IS_ANNOTATION(access) (access & ACC_ANNOTATION)
+#define IS_ENUM(access) (access & ACC_ENUM)
+#define IS_PACKAGE_PRIVATE(access) (!IS_PRIVATE(access) && !IS_PROTECTED(access) && !IS_PUBLIC(access))
 
 #endif
 

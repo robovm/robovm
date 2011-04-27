@@ -307,34 +307,50 @@ zero:
 }
 
 define linkonce_odr i64 @ldiv(%Env* %env, i64 %op1, i64 %op2) alwaysinline {
-    %cond = icmp ne i64 %op2, 0
-    br i1 %cond, label %success, label %failure
-success:
-    %result = sdiv i64 %op1, %op2
-    ret i64 %result
-failure:
+    %condZero = icmp ne i64 %op2, 0
+    br i1 %condZero, label %notZero, label %zero
+notZero:
+    %condNotMinusOne = icmp ne i64 %op2, -1
+    br i1 %condNotMinusOne, label %notMinusOne, label %minusOne
+notMinusOne:
+    %result1 = sdiv i64 %op1, %op2
+    ret i64 %result1
+minusOne:
+    %result2 = mul i64 %op1, %op2
+    ret i64 %result2
+zero:
     call void @_nvmBcThrowArithmeticException(%Env* %env)
     unreachable
 }
 
 define linkonce_odr i32 @irem(%Env* %env, i32 %op1, i32 %op2) alwaysinline {
-    %cond = icmp ne i32 %op2, 0
-    br i1 %cond, label %success, label %failure
-success:
-    %result = srem i32 %op1, %op2
-    ret i32 %result
-failure:
+    %condZero = icmp ne i32 %op2, 0
+    br i1 %condZero, label %notZero, label %zero
+notZero:
+    %condNotMinusOne = icmp ne i32 %op2, -1
+    br i1 %condNotMinusOne, label %notMinusOne, label %minusOne
+notMinusOne:
+    %result1 = srem i32 %op1, %op2
+    ret i32 %result1
+minusOne:
+    ret i32 0
+zero:
     call void @_nvmBcThrowArithmeticException(%Env* %env)
     unreachable
 }
 
 define linkonce_odr i64 @lrem(%Env* %env, i64 %op1, i64 %op2) alwaysinline {
-    %cond = icmp ne i64 %op2, 0
-    br i1 %cond, label %success, label %failure
-success:
-    %result = srem i64 %op1, %op2
-    ret i64 %result
-failure:
+    %condZero = icmp ne i64 %op2, 0
+    br i1 %condZero, label %notZero, label %zero
+notZero:
+    %condNotMinusOne = icmp ne i64 %op2, -1
+    br i1 %condNotMinusOne, label %notMinusOne, label %minusOne
+notMinusOne:
+    %result1 = srem i64 %op1, %op2
+    ret i64 %result1
+minusOne:
+    ret i64 0
+zero:
     call void @_nvmBcThrowArithmeticException(%Env* %env)
     unreachable
 }

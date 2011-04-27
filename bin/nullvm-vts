@@ -7,6 +7,8 @@ BASE=$(cd $(dirname $0)/..; pwd -P)
 NULLVMCJAR=$(ls $BASE/nullvmc/target/nullvm-compiler-*one-jar.jar 2> /dev/null)
 TARGET=/tmp/nullvm-vts #$(mktemp -d)
 
+mkdir -p $HOME/.nullvm/vts/
+
 #echo "" | gcc -c -E -v -
 
 ARGS=
@@ -17,7 +19,7 @@ while [ "x$1" != 'x' ]; do
     parts=$(echo $1 | tr ':' '\n')
     for p in $parts; do
       if [ -d "$p" ]; then
-        JAR=/tmp/vts$n.jar
+        JAR=$HOME/.nullvm/vts/vts$n.jar
         if [ ! -f "$JAR" ]; then
           jar cf $JAR -C "$p" .
         fi

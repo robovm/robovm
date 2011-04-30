@@ -374,8 +374,8 @@ define linkonce_odr i32 @fcmpg(float %op1, float %op2) alwaysinline {
 }
 
 define linkonce_odr i32 @dcmpl(double %op1, double %op2) alwaysinline {
-    %1 = fcmp ugt double %op1, %op2 ; 1 if op1 > op2 or either is NaN
-    %2 = fcmp olt double %op1, %op2 ; 1 if op1 < op2
+    %1 = fcmp ogt double %op1, %op2 ; 1 if op1 > op2
+    %2 = fcmp ult double %op1, %op2 ; 1 if op1 < op2 or either is NaN
     %3 = zext i1 %1 to i32
     %4 = zext i1 %2 to i32
     %5 = sub i32 %3, %4
@@ -383,8 +383,8 @@ define linkonce_odr i32 @dcmpl(double %op1, double %op2) alwaysinline {
 }
 
 define linkonce_odr i32 @dcmpg(double %op1, double %op2) alwaysinline {
-    %1 = fcmp ogt double %op1, %op2 ; 1 if op1 > op2
-    %2 = fcmp ult double %op1, %op2 ; 1 if op1 < op2 or either is NaN
+    %1 = fcmp ugt double %op1, %op2 ; 1 if op1 > op2 or either is NaN
+    %2 = fcmp olt double %op1, %op2 ; 1 if op1 < op2
     %3 = zext i1 %1 to i32
     %4 = zext i1 %2 to i32
     %5 = sub i32 %3, %4

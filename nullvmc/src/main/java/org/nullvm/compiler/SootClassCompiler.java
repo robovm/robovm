@@ -303,7 +303,7 @@ public class SootClassCompiler {
     private SootClass sootClass;
     
     private Module module;
-    private Map<String, Global> throwables;
+    private Map<SootClass, Global> throwables;
     private Map<Trampoline, FunctionRef> trampolines;
     private Map<String, Global> strings;
     /**
@@ -332,7 +332,7 @@ public class SootClassCompiler {
         this.sootClass = Scene.v().getSootClass(clazz.getClassName());
         
         module = new Module();
-        throwables = new TreeMap<String, Global>();
+        throwables = new TreeMap<SootClass, Global>();
         trampolines = new HashMap<Trampoline, FunctionRef>();
         strings = new HashMap<String, Global>();
         
@@ -718,7 +718,7 @@ public class SootClassCompiler {
                 Global throwable = throwables.get(exName);
                 if (throwable == null) {
                     throwable = new Global(exName, Linkage._private, new NullConstant(CLASS_PTR));
-                    throwables.put(exName, throwable);
+                    throwables.put(trap.getException(), throwable);
                 }
                 Variable t = function.newVariable(CLASS_PTR);
                 bb.add(new Load(t, throwable.ref()));
@@ -758,6 +758,14 @@ public class SootClassCompiler {
     private void classLoaderFunction() {
         String name = "NullVM_" + mangleString(getInternalName(sootClass));
         Function function = module.newFunction(name, new FunctionType(CLASS_PTR, ENV_PTR), "env");
+        
+        for (Entry<SootClass, Global> entry : throwables.entrySet()) {
+            Variable t1 = function.newVariable(OBJECT_PTR);
+            function.add(new Call(t1, NVM_BC_LDC_CLASS, ENV, getString(getInternalName(entry.getKey()))));
+            Variable t2 = function.newVariable(CLASS_PTR);            
+            function.add(new Bitcast(t2, t1.ref(), CLASS_PTR));
+            function.add(new Store(t2.ref(), entry.getValue().ref()));
+        }
         
         Variable clazz = function.newVariable("clazz", CLASS_PTR);
         Value superclassName = null;
@@ -2125,7 +2133,7 @@ public class SootClassCompiler {
         return sb.toString();
     }
     
-    public static void init(Clazzes clazzes) {
+    public static void init(Clazzes clazzes, List<Clazz> changed) {
         Options.v().set_output_format(Options.output_format_jimple);
         Options.v().setPhaseOption("jap.npc", "enabled:true");
         Options.v().setPhaseOption("wjap.ra", "enabled:true");
@@ -2135,35 +2143,33 @@ public class SootClassCompiler {
         Options.v().set_allow_phantom_refs(true);
         Options.v().set_soot_classpath(getSootClasspath(clazzes));
 
-        for (Path path : clazzes.getPaths()) {
-            for (Clazz clazz : path.list()) {
-                Scene.v().loadClassAndSupport(clazz.getClassName()).setApplicationClass();
-            }
+        for (Clazz clazz : changed) {
+            Scene.v().loadClassAndSupport(clazz.getClassName()).setApplicationClass();
         }
         
         Scene.v().loadNecessaryClasses();
 //      PackManager.v().runPacks();
     }
 
-    public static void main(String[] args) throws Exception {
-        List<File> bootClassPathFiles = new ArrayList<File>();
-        bootClassPathFiles.add(new File("../rt/target/nullvm-rt-0.1-SNAPSHOT-all.jar"));
-        bootClassPathFiles.add(new File("target/classes"));
-        List<File> classPathFiles = new ArrayList<File>();
-//        classPathFiles.add(new File("target/classes"));
-        Clazzes clazzes = new Clazzes(bootClassPathFiles, classPathFiles);
-        SootClassCompiler.init(clazzes);
-
-        for (Path path : clazzes.getPaths()) {
-            for (Clazz clazz : path.list()) {
-                if ("org.nullvm.compiler.SootClassCompiler$HelloWorld".equals(clazz.getClassName())) {
-                    System.out.println("Compiling " + clazz.getClassName());
-                    SootClassCompiler compiler = new SootClassCompiler();
-                    compiler.compile(clazz, System.out);
-                    SootClass sootClass = Scene.v().getSootClass(clazz.getClassName());
-                }
-            }
-        }
-    }
+//    public static void main(String[] args) throws Exception {
+//        List<File> bootClassPathFiles = new ArrayList<File>();
+//        bootClassPathFiles.add(new File("../rt/target/nullvm-rt-0.1-SNAPSHOT-all.jar"));
+//        bootClassPathFiles.add(new File("target/classes"));
+//        List<File> classPathFiles = new ArrayList<File>();
+////        classPathFiles.add(new File("target/classes"));
+//        Clazzes clazzes = new Clazzes(bootClassPathFiles, classPathFiles);
+//        SootClassCompiler.init(clazzes);
+//
+//        for (Path path : clazzes.getPaths()) {
+//            for (Clazz clazz : path.list()) {
+//                if ("org.nullvm.compiler.SootClassCompiler$HelloWorld".equals(clazz.getClassName())) {
+//                    System.out.println("Compiling " + clazz.getClassName());
+//                    SootClassCompiler compiler = new SootClassCompiler();
+//                    compiler.compile(clazz, System.out);
+//                    SootClass sootClass = Scene.v().getSootClass(clazz.getClassName());
+//                }
+//            }
+//        }
+//    }
     
 }

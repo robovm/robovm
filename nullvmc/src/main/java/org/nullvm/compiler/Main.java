@@ -168,6 +168,24 @@ public class Main {
         return internalName.substring(index + 1);
     }
     
+    private List<Clazz> getChangedClasses(List<ClasspathEntry> bootcp, List<ClasspathEntry> cp) {
+        List<ClasspathEntry> all = new ArrayList<ClasspathEntry>();
+        all.addAll(bootcp);
+        all.addAll(cp);
+        
+        List<Clazz> changed = new ArrayList<Clazz>();
+        for (ClasspathEntry entry : all) {
+            for (Clazz clazz : entry.getPath().list()) {
+                String className = clazz.getInternalName();
+                File outFile = new File(entry.getCacheDir(), className.replace('/', File.separatorChar) + "" + ".class.ll");
+                if (clean || !outFile.exists() || outFile.lastModified() < clazz.lastModified()) {
+                    changed.add(clazz);
+                }
+            }
+        }
+        return changed;
+    }
+    
     private File processClassFile(ClasspathEntry entry, Clazz clazz) throws IOException {
         OutputStream out = null;
         File outFile = null;
@@ -773,18 +791,22 @@ public class Main {
         FileUtils.copyURLToFile(getClass().getResource("/symbols.map"), symbolsMapFile);
 
         Clazzes clazzes = new Clazzes(bootClassPathFiles, classPathFiles);
-        SootClassCompiler.init(clazzes);
         List<ClasspathEntry> bootclasspathObjects = new ArrayList<ClasspathEntry>();
-        for (Path path : clazzes.getBootclasspathPaths()) {
-            ClasspathEntry entry = createClasspathEntry(path);
-            processClasspathEntry(entry);
-            bootclasspathObjects.add(entry);
-        }
         List<ClasspathEntry> classpathObjects = new ArrayList<ClasspathEntry>();
+        for (Path path : clazzes.getBootclasspathPaths()) {
+            bootclasspathObjects.add(createClasspathEntry(path));
+        }
         for (Path path : clazzes.getClasspathPaths()) {
-            ClasspathEntry entry = createClasspathEntry(path);
+            classpathObjects.add(createClasspathEntry(path));
+        }
+
+        SootClassCompiler.init(clazzes, getChangedClasses(bootclasspathObjects, classpathObjects));
+        
+        for (ClasspathEntry entry : bootclasspathObjects) {
             processClasspathEntry(entry);
-            classpathObjects.add(entry);
+        }
+        for (ClasspathEntry entry : classpathObjects) {
+            processClasspathEntry(entry);
         }
         
         output.mkdirs();
@@ -881,9 +903,11 @@ public class Main {
         writeClasspathEntries(bootEntries, new File(output, "bootclasspath"));
         writeClasspathEntries(mainEntries, new File(output, "classpath"));
         
-        Map env = new HashMap<String, String>();
+        Map<String, String> env = new HashMap<String, String>();
         env.putAll(EnvironmentUtils.getProcEnvironment());
-        env.put("LD_LIBRARY_PATH", new File(home, "lib").getAbsolutePath());
+        String ldLibraryPath = env.get("LD_LIBRARY_PATH");
+        ldLibraryPath = ldLibraryPath == null ? "" : ":" + ldLibraryPath;
+        env.put("LD_LIBRARY_PATH", new File(home, "lib").getAbsolutePath() + ldLibraryPath);
         try {
             execWithEnv(output, env, new File(output, target).getAbsolutePath());
         } catch (ExecuteException e) {

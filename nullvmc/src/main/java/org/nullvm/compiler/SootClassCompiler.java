@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeMap;
 
 import org.nullvm.compiler.clazz.Clazz;
 import org.nullvm.compiler.clazz.Clazzes;
@@ -82,7 +81,6 @@ import org.nullvm.compiler.llvm.Sub;
 import org.nullvm.compiler.llvm.Switch;
 import org.nullvm.compiler.llvm.Trunc;
 import org.nullvm.compiler.llvm.Type;
-import org.nullvm.compiler.llvm.Uitofp;
 import org.nullvm.compiler.llvm.Unreachable;
 import org.nullvm.compiler.llvm.Value;
 import org.nullvm.compiler.llvm.Variable;
@@ -206,12 +204,13 @@ public class SootClassCompiler {
     private static final VariableRef ENV = new VariableRef("env", ENV_PTR);
     private static final Global THE_CLASS = new Global("class", Linkage._private, new NullConstant(CLASS_PTR));
     
-    //_nvmBcExceptionClear
-    private static final FunctionRef NVM_BC_ALLOCATE_CLASS = new FunctionRef("_nvmBcAllocateClass", new FunctionType(CLASS_PTR, ENV_PTR, I8_PTR, I8_PTR, I32, I32, I32));
+    private static final FunctionRef NVM_BC_ALLOCATE_CLASS = new FunctionRef("_nvmBcAllocateClass", new FunctionType(CLASS_PTR, ENV_PTR, I8_PTR, I8_PTR, OBJECT_PTR, I32, I32, I32));
     private static final FunctionRef NVM_BC_ADD_INTERFACE = new FunctionRef("_nvmBcAddInterface", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_ADD_FIELD = new FunctionRef("_nvmBcAddField", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_ADD_METHOD = new FunctionRef("_nvmBcAddMethod", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_REGISTER_CLASS = new FunctionRef("_nvmBcRegisterClass", new FunctionType(VOID, ENV_PTR, CLASS_PTR));
+    private static final FunctionRef NVM_BC_FIND_CLASS_IN_LOADER = new FunctionRef("_nvmBcFindClassInLoader", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR, OBJECT_PTR));
+
     private static final FunctionRef NVM_BC_PERSONALITY = new FunctionRef("_nvmPersonality", new FunctionType(I8_PTR));
     private static final FunctionRef NVM_BC_EXCEPTION_MATCH = new FunctionRef("_nvmBcExceptionMatch", new FunctionType(I32, ENV_PTR, CLASS_PTR));
     private static final FunctionRef NVM_BC_EXCEPTION_CLEAR = new FunctionRef("_nvmBcExceptionClear", new FunctionType(OBJECT_PTR, ENV_PTR));
@@ -332,7 +331,7 @@ public class SootClassCompiler {
         this.sootClass = Scene.v().getSootClass(clazz.getClassName());
         
         module = new Module();
-        throwables = new TreeMap<SootClass, Global>();
+        throwables = new HashMap<SootClass, Global>();
         trampolines = new HashMap<Trampoline, FunctionRef>();
         strings = new HashMap<String, Global>();
         
@@ -715,7 +714,7 @@ public class SootClassCompiler {
                     bb.add(new Br(function.newBasicBlockRef(new Label(trap.getHandlerUnit()))));
                     continue next;
                 }
-                Global throwable = throwables.get(exName);
+                Global throwable = throwables.get(trap.getException());
                 if (throwable == null) {
                     throwable = new Global(exName, Linkage._private, new NullConstant(CLASS_PTR));
                     throwables.put(trap.getException(), throwable);
@@ -757,11 +756,14 @@ public class SootClassCompiler {
     
     private void classLoaderFunction() {
         String name = "NullVM_" + mangleString(getInternalName(sootClass));
-        Function function = module.newFunction(name, new FunctionType(CLASS_PTR, ENV_PTR), "env");
+        Function function = module.newFunction(name, new FunctionType(CLASS_PTR, ENV_PTR, OBJECT_PTR), 
+                "env", "classLoader");
         
         for (Entry<SootClass, Global> entry : throwables.entrySet()) {
             Variable t1 = function.newVariable(OBJECT_PTR);
-            function.add(new Call(t1, NVM_BC_LDC_CLASS, ENV, getString(getInternalName(entry.getKey()))));
+            function.add(new Call(t1, NVM_BC_FIND_CLASS_IN_LOADER, 
+                    ENV, getString(getInternalName(entry.getKey())),
+                    new VariableRef("classLoader", OBJECT_PTR)));
             Variable t2 = function.newVariable(CLASS_PTR);            
             function.add(new Bitcast(t2, t1.ref(), CLASS_PTR));
             function.add(new Store(t2.ref(), entry.getValue().ref()));
@@ -777,7 +779,9 @@ public class SootClassCompiler {
         function.add(new Call(clazz, NVM_BC_ALLOCATE_CLASS, 
                 ENV, 
                 getString(getInternalName(sootClass)), 
-                superclassName, new IntegerConstant(sootClass.getModifiers()),
+                superclassName,
+                new VariableRef("classLoader", OBJECT_PTR),
+                new IntegerConstant(sootClass.getModifiers()),
                 sizeof(classFieldsType), sizeof(instanceFieldsType)));
         
         for (SootClass iface : sootClass.getInterfaces()) {

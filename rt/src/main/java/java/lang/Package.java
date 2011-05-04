@@ -35,14 +35,25 @@ import java.net.URL;
 public class Package implements AnnotatedElement {
 
     /*
-     * This class must be implemented by the VM vendor.
+     * The code in this class has been copied from Android
      */
 
-    /**
-     * Prevent this class from being instantiated
-     */
-    private Package(){
-        //do nothing
+    // Start (C) Android
+
+    private final String name, specTitle, specVersion, specVendor, implTitle,
+            implVersion, implVendor;
+    private final URL sealBase;
+
+    Package(String name, String specTitle, String specVersion, String specVendor,
+            String implTitle, String implVersion, String implVendor, URL sealBase) {
+        this.name = name;
+        this.specTitle = specTitle;
+        this.specVersion = specVersion;
+        this.specVendor = specVendor;
+        this.implTitle = implTitle;
+        this.implVersion = implVersion;
+        this.implVendor = implVendor;
+        this.sealBase = sealBase;
     }
 
     /**
@@ -53,27 +64,51 @@ public class Package implements AnnotatedElement {
      *            the annotation type to look for.
      * @return an instance of {@link Annotation} or {@code null}.
      * @see java.lang.reflect.AnnotatedElement#getAnnotation(java.lang.Class)
-     * @since 1.5
      */
-    public native <T extends Annotation> T getAnnotation(Class<T> annotationType);
+    @SuppressWarnings("unchecked")
+    public <A extends Annotation> A getAnnotation(Class<A> annotationType) {
+        Annotation[] list = getAnnotations();
+        for (int i = 0; i < list.length; i++) {
+            if (annotationType.isInstance(list[i])) {
+                return (A) list[i];
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Gets all annotations associated with this package, if any.
      *
      * @return an array of {@link Annotation} instances, which may be empty.
      * @see java.lang.reflect.AnnotatedElement#getAnnotations()
-     * @since 1.5
      */
-    public native Annotation[] getAnnotations();
+    public Annotation[] getAnnotations() {
+        return getDeclaredAnnotations(this, true);
+    }
 
     /**
      * Gets all annotations directly declared on this package, if any.
      *
      * @return an array of {@link Annotation} instances, which may be empty.
      * @see java.lang.reflect.AnnotatedElement#getDeclaredAnnotations()
-     * @since 1.5
      */
-    public native Annotation[] getDeclaredAnnotations();
+    public Annotation[] getDeclaredAnnotations() {
+        return getDeclaredAnnotations(this, false);
+    }
+
+    /*
+     * Returns the list of declared annotations of the given package.
+     * If no annotations exist, an empty array is returned.
+     *
+     * @param pkg the package of interest
+     * @param publicOnly reflects whether we want only public annotation or all
+     * of them.
+     * @return the list of annotations
+     */
+    // TODO(Google) Provide proper (native) implementation.
+    private static native Annotation[] getDeclaredAnnotations(Package pkg,
+            boolean publicOnly);
 
     /**
      * Indicates whether the specified annotation is present.
@@ -83,9 +118,11 @@ public class Package implements AnnotatedElement {
      * @return {@code true} if the annotation is present; {@code false}
      *         otherwise.
      * @see java.lang.reflect.AnnotatedElement#isAnnotationPresent(java.lang.Class)
-     * @since 1.5
      */
-    public native boolean isAnnotationPresent(Class<? extends Annotation> annotationType);
+    public boolean isAnnotationPresent(
+            Class<? extends Annotation> annotationType) {
+        return getAnnotation(annotationType) != null;
+    }
 
     /**
      * Returns the title of the implementation of this package, or {@code null}
@@ -93,7 +130,9 @@ public class Package implements AnnotatedElement {
      *
      * @return the implementation title, may be {@code null}.
      */
-    public native String getImplementationTitle();
+    public String getImplementationTitle() {
+        return implTitle;
+    }
 
     /**
      * Returns the name of the vendor or organization that provides this
@@ -102,7 +141,9 @@ public class Package implements AnnotatedElement {
      *
      * @return the implementation vendor name, may be {@code null}.
      */
-    public native String getImplementationVendor();
+    public String getImplementationVendor() {
+        return implVendor;
+    }
 
     /**
      * Returns the version of the implementation of this package, or {@code
@@ -110,63 +151,81 @@ public class Package implements AnnotatedElement {
      *
      * @return the implementation version, may be {@code null}.
      */
-    public native String getImplementationVersion();
+    public String getImplementationVersion() {
+        return implVersion;
+    }
 
     /**
      * Returns the name of this package in the standard dot notation; for
      * example: "java.lang".
-     * 
+     *
      * @return the name of this package.
      */
-    public native String getName();
+    public String getName() {
+        return name;
+    }
 
     /**
      * Attempts to locate the requested package in the caller's class loader. If
      * no package information can be located, {@code null} is returned.
-     * 
+     *
      * @param packageName
      *            the name of the package to find.
      * @return the requested package, or {@code null}.
      * @see ClassLoader#getPackage(java.lang.String)
      */
-    public native static Package getPackage(String packageName);
+    public static Package getPackage(String packageName) {
+        ClassLoader classloader = ClassLoader.callerClassLoader();
+        return classloader.getPackage(packageName);
+    }
 
     /**
      * Returns all the packages known to the caller's class loader.
-     * 
+     *
      * @return all the packages known to the caller's class loader.
      * @see ClassLoader#getPackages
      */
-    public native static Package[] getPackages();
+    public static Package[] getPackages() {
+        ClassLoader classloader = ClassLoader.callerClassLoader();
+        return classloader.getPackages();
+    }
 
     /**
      * Returns the title of the specification this package implements, or
      * {@code null} if this is unknown.
-     * 
+     *
      * @return the specification title, may be {@code null}.
      */
-    public native String getSpecificationTitle();
+    public String getSpecificationTitle() {
+        return specTitle;
+    }
 
     /**
      * Returns the name of the vendor or organization that owns and maintains
      * the specification this package implements, or {@code null} if this is
      * unknown.
-     * 
+     *
      * @return the specification vendor name, may be {@code null}.
      */
-    public native String getSpecificationVendor();
+    public String getSpecificationVendor() {
+        return specVendor;
+    }
 
     /**
      * Returns the version of the specification this package implements, or
      * {@code null} if this is unknown. The version string is a sequence of
      * non-negative integers separated by dots; for example: "1.2.3".
-     * 
+     *
      * @return the specification version string, may be {@code null}.
      */
-    public native String getSpecificationVersion();
+    public String getSpecificationVersion() {
+        return specVersion;
+    }
 
     @Override
-    public native int hashCode();
+    public int hashCode() {
+        return name.hashCode();
+    }
 
     /**
      * Indicates whether this package's specification version is compatible with
@@ -181,14 +240,37 @@ public class Package implements AnnotatedElement {
      *             if this package's version string or the one provided are not
      *             in the correct format.
      */
-    public native boolean isCompatibleWith(String version) throws NumberFormatException;
+    public boolean isCompatibleWith(String version)
+            throws NumberFormatException {
+        String[] requested = version.split("\\.");
+        String[] provided = specVersion.split("\\.");
+
+        for (int i = 0; i < Math.min(requested.length, provided.length); i++) {
+            int reqNum = Integer.parseInt(requested[i]);
+            int provNum = Integer.parseInt(provided[i]);
+
+            if (reqNum > provNum) {
+                return false;
+            } else if (reqNum < provNum) {
+                return true;
+            }
+        }
+
+        if (requested.length > provided.length) {
+            return false;
+        }
+
+        return true;
+    }
 
     /**
      * Indicates whether this package is sealed.
      *
      * @return {@code true} if this package is sealed; {@code false} otherwise.
      */
-    public native boolean isSealed();
+    public boolean isSealed() {
+        return sealBase != null;
+    }
 
     /**
      * Indicates whether this package is sealed with respect to the specified
@@ -199,8 +281,14 @@ public class Package implements AnnotatedElement {
      * @return {@code true} if this package is sealed with {@code url}; {@code
      *         false} otherwise
      */
-    public native boolean isSealed(URL url);
+    public boolean isSealed(URL url) {
+        return sealBase != null && sealBase.sameFile(url);
+    }
 
     @Override
-    public native String toString();
+    public String toString() {
+        return "package " + name;
+    }
+    
+    // End (C) Android
 }

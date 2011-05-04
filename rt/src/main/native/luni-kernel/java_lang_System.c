@@ -6,6 +6,7 @@
 #include <limits.h>
 #include <pwd.h>
 #include <sys/utsname.h>
+#include <string.h>
 
 jint Java_java_lang_System_identityHashCode(JNIEnv* env, jclass clazz, jobject o) {
     return (jint) o;
@@ -48,16 +49,43 @@ static jboolean setProperty(Env* env, ObjectArray** props, jint index, char* nam
     return TRUE;
 }
 
+static char* createClasspathFromClasspathEntries(Env* env, ClasspathEntry* first) {
+    jint length = 0;
+    ClasspathEntry* entry = first;
+    while (entry) {
+        length += strlen(entry->jarPath);
+        entry = entry->next;
+        if (entry) length++; // Make room for the :
+    }
+
+    char* p = nvmAllocateMemory(env, length + 1);
+    if (!p) return NULL;
+
+    entry = first;
+    while (entry) {
+        strcat(p, entry->jarPath);
+        entry = entry->next;
+        if (entry) strcat(p, ":");
+    }
+
+    return p;
+}
+
 ObjectArray* Java_java_lang_System_getPropertyList(Env* env, Class* clazz) {
     struct passwd* pwd = getpwuid(getuid());
     if (!pwd) return NULL; // TODO: Throw exception?
     struct utsname os;
     if (uname(&os) == -1) return NULL; // TODO: Throw exception?
 
+    char* bootclasspath = createClasspathFromClasspathEntries(env, env->options->bootclasspath);
+    if (!bootclasspath) return NULL;
+    char* classpath = createClasspathFromClasspathEntries(env, env->options->classpath);
+    if (!classpath) return NULL;
+
     ObjectArray* props = NULL;
     jint i = 0;
-    if (!setProperty(env, &props, i++, "java.boot.class.path", "")) return NULL;
-    if (!setProperty(env, &props, i++, "java.class.path", "")) return NULL;
+    if (!setProperty(env, &props, i++, "java.boot.class.path", bootclasspath)) return NULL;
+    if (!setProperty(env, &props, i++, "java.class.path", classpath)) return NULL;
     if (!setProperty(env, &props, i++, "java.class.version", "46.0")) return NULL;
     if (!setProperty(env, &props, i++, "java.compiler", "")) return NULL;
     if (!setProperty(env, &props, i++, "java.ext.dirs", "")) return NULL;
@@ -95,5 +123,16 @@ ObjectArray* Java_java_lang_System_getPropertyList(Env* env, Class* clazz) {
     // TODO: user.timezone
 
     return props;
+}
+
+Object* Java_java_lang_System_mapLibraryName(Env* env, Class* c, Object* userLibName) {
+    if (!userLibName) return NULL;
+    char* libName = nvmGetStringUTFChars(env, userLibName);
+    char* result = nvmAllocateMemory(env, strlen(libName) + 6 + 1);
+    if (!result) return NULL;
+    strcpy(result, "lib");
+    strcat(result, libName);
+    strcat(result, ".so");
+    return nvmNewStringUTF(env, result, -1);
 }
 

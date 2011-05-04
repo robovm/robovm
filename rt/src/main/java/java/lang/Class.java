@@ -141,7 +141,7 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *            stop at privileged classes
      * @return the array of the most recent classes on the stack
      */
-    static native final Class[] getStackClasses(int maxDepth, boolean stopAtPrivileged);
+    static native final Class<?>[] getStackClasses(int maxDepth, boolean stopAtPrivileged);
 
     /**
      * Returns a {@code Class} object which represents the class with the
@@ -167,7 +167,7 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      */
     public static Class<?> forName(String className)
             throws ClassNotFoundException {
-        return forName(className, true, getStackClasses(1, false)[0].getClassLoader());
+        return forName(className, true, ClassLoader.callerClassLoader());
     }
 
     /**
@@ -213,18 +213,7 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *             if a security manager exists and it does not allow member
      *             access.
      */
-    @SuppressWarnings("unchecked") // According to spec
     public native Class<?>[] getClasses();
-
-    /**
-     * Verify the specified Class using the VM byte code verifier.
-     * 
-     * @throws VerifyError
-     *             if the Class cannot be verified
-     */
-    void verify() {
-        return;
-    }
 
     /**
      * Returns the annotation of the given type. If there is no such annotation
@@ -304,7 +293,27 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *             the class loader.
      * @see ClassLoader
      */
-    public native ClassLoader getClassLoader();
+    public ClassLoader getClassLoader() {
+        SecurityManager smgr = System.getSecurityManager();
+        ClassLoader loader = getClassLoaderImpl();
+        if (smgr != null && loader != null) {
+            ClassLoader calling = ClassLoader.callerClassLoader();
+
+            if (calling != null && !calling.isAncestorOf(loader)) {
+                smgr.checkPermission(new RuntimePermission("getClassLoader"));
+            }
+        }
+
+        if (this.isPrimitive()) {
+            return null;
+        }
+
+        
+        if (loader == ClassLoader.BootClassLoaderHolder.loader) {
+            return null;
+        }
+        return loader;
+    }
 
     /**
      * This must be provided by the VM vendor, as it is used by other provided
@@ -318,7 +327,12 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @return the ClassLoader
      * @see ClassLoader#isSystemClassLoader()
      */
-    native ClassLoader getClassLoaderImpl();
+    ClassLoader getClassLoaderImpl() {
+        ClassLoader loader = getClassLoader(this);
+        return loader == null ? ClassLoader.BootClassLoaderHolder.loader : loader;
+    }
+
+    private static native ClassLoader getClassLoader(Class<?> clazz);
 
     /**
      * Returns a {@code Class} object which represents the component type if
@@ -695,7 +709,6 @@ public final class Class<T> implements Serializable, AnnotatedElement,
         return findMethod(getMethods(), name, parameterTypes);
     }
 
-    @SuppressWarnings("unchecked")
     private Method findMethod(Method[] candidates, String name, Class<?>... parameterTypes)
             throws NoSuchMethodException, SecurityException {
         
@@ -894,7 +907,32 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *         the resource can not be found.
      * @see ClassLoader
      */
-    public native URL getResource(String resName);
+    public URL getResource(String resName) {
+        // Start (C) Android
+        // Get absolute resource name, but without the leading slash
+        if (resName.startsWith("/")) {
+            resName = resName.substring(1);
+        } else {
+            String pkg = getName();
+            int dot = pkg.lastIndexOf('.');
+            if (dot != -1) {
+                pkg = pkg.substring(0, dot).replace('.', '/');
+            } else {
+                pkg = "";
+            }
+
+            resName = pkg + "/" + resName;
+        }
+
+        // Delegate to proper class loader
+        ClassLoader loader = getClassLoaderImpl();
+        if (loader != null) {
+            return loader.getResource(resName);
+        } else {
+            return ClassLoader.getSystemResource(resName);
+        }
+        // End (C) Android
+    }
 
     /**
      * Returns a read-only stream for the contents of the resource specified by
@@ -907,7 +945,32 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *         resource with the specified name can be found.
      * @see ClassLoader
      */
-    public native InputStream getResourceAsStream(String resName);
+    public InputStream getResourceAsStream(String resName) {
+        // Start (C) Android
+        // Get absolute resource name, but without the leading slash
+        if (resName.startsWith("/")) {
+            resName = resName.substring(1);
+        } else {
+            String pkg = getName();
+            int dot = pkg.lastIndexOf('.');
+            if (dot != -1) {
+                pkg = pkg.substring(0, dot).replace('.', '/');
+            } else {
+                pkg = "";
+            }
+
+            resName = pkg + "/" + resName;
+        }
+
+        // Delegate to proper class loader
+        ClassLoader loader = getClassLoaderImpl();
+        if (loader != null) {
+            return loader.getResourceAsStream(resName);
+        } else {
+            return ClassLoader.getSystemResourceAsStream(resName);
+        }
+        // End (C) Android
+    }
 
     /**
      * Returns the signers for the class represented by this {@code Class} or
@@ -938,7 +1001,6 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *         class.
      * @since 1.5
      */
-    @SuppressWarnings("unchecked")
     public native TypeVariable<Class<T>>[] getTypeParameters();
 
     /**
@@ -1006,7 +1068,9 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @return {@code true} if the class represented by this {@code Class} is an
      *         {@code enum}; {@code false} otherwise.
      */
-    public native boolean isEnum();
+    public boolean isEnum() {
+        return ((getModifiers() & 0x4000) != 0) && (getSuperclass() == Enum.class);
+    }
 
     /**
      * Indicates whether the specified object can be cast to the class

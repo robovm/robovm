@@ -821,11 +821,10 @@ public final class System {
      *             if the library was not allowed to be loaded.
      */
     public static void load(String pathName) {
-        SecurityManager smngr = System.getSecurityManager();
-        if (smngr != null) {
-            smngr.checkLink(pathName);
-        }
-        ClassLoader.loadLibraryWithPath(pathName, ClassLoader.callerClassLoader(), null);
+        Runtime.getRuntime().load0(
+                pathName,
+                ClassLoader.callerClassLoader(), 
+                true);
     }
 
     /**
@@ -841,7 +840,10 @@ public final class System {
      *             if the library was not allowed to be loaded.
      */
     public static void loadLibrary(String libName) {
-        ClassLoader.loadLibraryWithClassLoader(libName, ClassLoader.callerClassLoader());
+        Runtime.getRuntime().loadLibrary0(
+                libName,
+                ClassLoader.callerClassLoader(), 
+                true);
     }
 
     /**

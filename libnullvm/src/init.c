@@ -149,21 +149,35 @@ Env* nvmStartup(Options* options) {
     return env;
 }
 
+static ClassLoader* getSystemClassLoader(Env* env) {
+    Class* holder = nvmFindClass(env, "java/lang/ClassLoader$SystemClassLoaderHolder");
+    if (!holder) return NULL;
+    ClassField* field = nvmGetClassField(env, holder, "loader", "Ljava/lang/ClassLoader;");
+    if (!field) return NULL;
+    return (ClassLoader*) nvmGetObjectClassFieldValue(env, holder, field);
+}
+
 jboolean nvmRun(Env* env) {
-    Class* clazz = nvmFindClass(env, env->options->mainClass);
-    if (!clazz) return FALSE;
-    Method* method = nvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
-    if (!method) return FALSE;
-    // TODO: Create args array
-    jvalue args[1];
-    args[0].l = (jobject) NULL;
-    nvmCallVoidClassMethodA(env, clazz, method, args);
+    ClassLoader* systemClassLoader = getSystemClassLoader(env);
+    if (systemClassLoader) {
+        Class* clazz = nvmFindClassInLoader(env, env->options->mainClass, systemClassLoader);
+        if (clazz) {
+            Method* method = nvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
+            if (method) {
+                // TODO: Create args array
+                jvalue args[1];
+                args[0].l = (jobject) NULL;
+                nvmCallVoidClassMethodA(env, clazz, method, args);
+            }
+        }
+    }
     Object* throwable = nvmExceptionOccurred(env);
     if (throwable) {
         // TODO: Handle when the call to printStackTrace fails with an exception
         nvmExceptionClear(env);
         Method* printStackTrace = nvmGetInstanceMethod(env, java_lang_Thread, "printStackTrace", "(Ljava/lang/Throwable;)V");
         if (printStackTrace) {
+            jvalue args[1];
             args[0].l = (jobject) throwable;
             nvmCallVoidInstanceMethodA(env, env->currentThread->threadObj, printStackTrace, args);
         }

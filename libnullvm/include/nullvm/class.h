@@ -64,14 +64,16 @@ extern Class* array_D;
 
 extern jboolean nvmInitClasses(Env* env);
 
-extern Class* nvmAllocateClass(Env* env, char* className, Class* superclass, jint access, jint classDataSize, jint instanceDataSize);
+extern Class* nvmAllocateClass(Env* env, char* className, Class* superclass, ClassLoader* classLoader, jint access, jint classDataSize, jint instanceDataSize);
 extern jboolean nvmAddInterface(Env* env, Class* clazz, Class* interface);
 extern jboolean nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset, void* getter, void* setter);
 extern jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* lookup);
 extern jboolean nvmRegisterClass(Env* env, Class* clazz);
 
 extern Class* nvmFindClass(Env* env, char* className);
-extern Class* nvmFindClassByDescriptor(Env* env, char* desc);
+extern Class* nvmFindClassInLoader(Env* env, char* className, ClassLoader* classLoader);
+extern Class* nvmFindClassByDescriptor(Env* env, char* desc, ClassLoader* classLoader);
+
 extern Class* nvmGetComponentType(Env* env, Class* arrayClass);
 
 extern void nvmIterateLoadedClasses(Env* env, jboolean (*f)(Class*, void*), void* data);

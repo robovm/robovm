@@ -41,7 +41,7 @@ static jvalue emptyJValueArgs[1];
 
 static Method* getMethod(Env* env, Class* clazz, char* name, char* desc) {
     Method* method;
-    for (method = clazz->methods; method != NULL; method = method->next) {
+    for (method = clazz->methods->first; method != NULL; method = method->next) {
         if (!strcmp(method->name, name) && !strcmp(method->desc, desc)) {
             return method;
         }
@@ -101,11 +101,13 @@ typedef struct FindMethodAtAddressData {
 static jboolean findMethodAtAddressIterator(Class* clazz, void* d) {
     FindMethodAtAddressData* data = (FindMethodAtAddressData*) d;
     void* address = data->address;
-    Method* method;
-    for (method = clazz->methods; method != NULL; method = method->next) {
-        if (method->impl && address == method->impl) {
-            data->method = method;
-            return FALSE;
+    if (clazz->methods->first && clazz->methods->lo <= address && clazz->methods->hi >= address) {
+        Method* method;
+        for (method = clazz->methods->first; method != NULL; method = method->next) {
+            if (method->impl && address == method->impl) {
+                data->method = method;
+                return FALSE;
+            }
         }
     }
     return TRUE;
@@ -118,35 +120,51 @@ Method* nvmFindMethodAtAddress(Env* env, void* address) {
     return data.method;
 }
 
+typedef struct CallStackEntries {
+    jint count;
+    jint maxDepth;
+    Env* env;
+    CallStackEntry* first;
+    CallStackEntry* last;
+} CallStackEntries;
+
 static _Unwind_Reason_Code unwindCallStack(struct _Unwind_Context* ctx, void* _d) {
-    void** d = (void**) _d;
-    Env* env = (Env*) d[0];
-    CallStackEntry* first = (CallStackEntry*) d[1];
-    CallStackEntry* last = (CallStackEntry*) d[2];
+    CallStackEntries* entries = (CallStackEntries*) _d;
     void* address = (void*) _Unwind_GetIP(ctx);
     void* func = _Unwind_FindEnclosingFunction(address);
-    Method* method = nvmFindMethodAtAddress(env, func);
-    if (method) {
-        CallStackEntry* entry = nvmAllocateMemory(env, sizeof(CallStackEntry));
-        if (entry) {
-            entry->method = method;
-            entry->offset = (jint) (address - method->impl);
-            if (!first) d[1] = entry;
-            if (last) last->next = entry;
-            d[2] = entry;
+    if (func != nvmGetCallingMethod && func != nvmGetCallStack && func != nvmFindClass) {
+        Method* method = nvmFindMethodAtAddress(entries->env, func);
+        if (method) {
+            CallStackEntry* entry = nvmAllocateMemory(entries->env, sizeof(CallStackEntry));
+            if (entry) {
+                entry->method = method;
+                entry->offset = (jint) (address - method->impl);
+                if (!entries->first) entries->first = entry;
+                if (entries->last) entries->last->next = entry;
+                entries->last = entry;
+                entries->count++;
+            }
         }
     }
-    return _URC_NO_REASON;
+    return entries->maxDepth == -1 || entries->count < entries->maxDepth ? _URC_NO_REASON : _URC_NORMAL_STOP;
+}
+
+Method* nvmGetCallingMethod(Env* env) {
+    CallStackEntries entries = {0};
+    entries.env = env;
+    entries.maxDepth = 1;
+    _Unwind_Backtrace(unwindCallStack, &entries);
+    if (nvmExceptionOccurred(env)) return NULL;
+    return entries.first ? entries.first->method : NULL;
 }
 
 CallStackEntry* nvmGetCallStack(Env* env) {
-    void* d[3];
-    d[0] = env;
-    d[1] = NULL;
-    d[2] = NULL;
-    _Unwind_Backtrace(unwindCallStack, d);
+    CallStackEntries entries = {0};
+    entries.env = env;
+    entries.maxDepth = -1;
+    _Unwind_Backtrace(unwindCallStack, &entries);
     if (nvmExceptionOccurred(env)) return NULL;
-    return (CallStackEntry*) d[1];
+    return entries.first;
 }
 
 char* nvmGetReturnType(char* desc) {

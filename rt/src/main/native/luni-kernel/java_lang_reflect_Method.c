@@ -39,7 +39,7 @@ ObjectArray* Java_java_lang_reflect_Method_getParameterTypes(JNIEnv* _env, Class
     while (s = nvmGetNextArgumentType(&desc)) {
         char* paramTypeName = nvmAllocateMemory(env, desc - s + 1);
         strncpy(paramTypeName, s, desc - s);
-        Class* paramType = nvmFindClassByDescriptor(env, paramTypeName);
+        Class* paramType = nvmFindClassByDescriptor(env, paramTypeName, method->clazz->classLoader);
         if (!paramType) return NULL;
         paramTypes->values[i++] = (Object*) paramType;
     }

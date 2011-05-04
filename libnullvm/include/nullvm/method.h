@@ -21,6 +21,7 @@ extern Method* nvmGetClassInitializer(Env* env, Class* clazz);
 extern Method* nvmGetInstanceMethod(Env* env, Class* clazz, char* name, char* desc);
 extern void* nvmResolveNativeMethodImpl(Env* env, Method* method, char* shortMangledName, char* longMangledName, void** ptr);
 extern Method* nvmFindMethodAtAddress(Env* env, void* address);
+extern Method* nvmGetCallingMethod(Env* env);
 extern CallStackEntry* nvmGetCallStack(Env* env);
 extern void nvmCallVoidInstanceMethod(Env* env, Object* obj, Method* method, ...);
 extern void nvmCallVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args);

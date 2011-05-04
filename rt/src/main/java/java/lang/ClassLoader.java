@@ -22,7 +22,11 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.security.ProtectionDomain;
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * Loads classes and resources from a repository. One or more class loaders are
@@ -42,25 +46,39 @@ import java.util.Enumeration;
 public abstract class ClassLoader {
 
     /*
-     * This class must be implemented by the VM. The documented methods and
-     * natives must be implemented to support other provided class
-     * implementations in this package.
+     * Most of the code in this class has been copied from Android
      */
 
-    /**
-     * The 'System' ClassLoader; also known as the bootstrap ClassLoader.
-     * 
-     * @see #getSystemClassLoader()
+    static class BootClassLoaderHolder {
+        public static ClassLoader loader = ClassLoader.createBootClassLoader();
+    }
+    static class SystemClassLoaderHolder {
+        public static ClassLoader loader = ClassLoader.createSystemClassLoader();
+    }
+
+    /*
+     * NOTE: If the order of fields is changed or if fields are added/removed 
+     * the ClassLoader struct in types.h must also be changed accordingly 
      */
-    static ClassLoader systemClassLoader;
+    
+    /**
+     * The parent ClassLoader.
+     */
+    private ClassLoader parent;
 
     /**
-     * <p>
-     * TODO Document this method.
-     * </p>
+     * The packages known to the class loader.
      */
-    static final void initializeClassLoaders() {
-        return;
+    private Map<String, Package> packages = new HashMap<String, Package>();
+
+    private static ClassLoader createBootClassLoader() {
+        String classPath = System.getProperty("java.boot.class.path", ".");
+        return new PathClassLoader(classPath, null, true);
+    }
+
+    private static ClassLoader createSystemClassLoader() {
+        String classPath = System.getProperty("java.class.path", ".");
+        return new PathClassLoader(classPath, BootClassLoaderHolder.loader, false);
     }
 
     /**
@@ -79,7 +97,17 @@ public abstract class ClassLoader {
      *             the system class loader.
      */
     public static ClassLoader getSystemClassLoader() {
-        return null;
+        // Start (C) Android
+        SecurityManager smgr = System.getSecurityManager();
+        if (smgr != null) {
+            ClassLoader caller = callerClassLoader();
+            if (caller != null && !caller.isAncestorOf(SystemClassLoaderHolder.loader)) {
+                smgr.checkPermission(new RuntimePermission("getClassLoader"));
+            }
+        }
+
+        return SystemClassLoaderHolder.loader;        
+        // End (C) Android
     }
 
     /**
@@ -93,7 +121,9 @@ public abstract class ClassLoader {
      * @see Class#getResource
      */
     public static URL getSystemResource(String resName) {
-        return null;
+        // Start (C) Android
+        return SystemClassLoaderHolder.loader.getResource(resName);
+        // End (C) Android
     }
 
     /**
@@ -110,7 +140,9 @@ public abstract class ClassLoader {
      */
     public static Enumeration<URL> getSystemResources(String resName)
             throws IOException {
-        return null;
+        // Start (C) Android
+        return SystemClassLoaderHolder.loader.getResources(resName);
+        // End (C) Android
     }
 
     /**
@@ -125,7 +157,9 @@ public abstract class ClassLoader {
      * @see Class#getResourceAsStream
      */
     public static InputStream getSystemResourceAsStream(String resName) {
-        return null;
+        // Start (C) Android
+        return SystemClassLoaderHolder.loader.getResourceAsStream(resName);
+        // End (C) Android
     }
 
     /**
@@ -137,7 +171,7 @@ public abstract class ClassLoader {
      *             creation of a new {@code ClassLoader}.
      */
     protected ClassLoader() {
-        super();
+        this(getSystemClassLoader(), false);
     }
 
     /**
@@ -152,9 +186,28 @@ public abstract class ClassLoader {
      *             creation of new a new {@code ClassLoader}.
      */
     protected ClassLoader(ClassLoader parentLoader) {
-        super();
+        this(parentLoader, false);
     }
 
+    /*
+     * constructor for the BootClassLoader which needs parent to be null.
+     */
+    ClassLoader(ClassLoader parentLoader, boolean nullAllowed) {
+        // Start (C) Android
+        SecurityManager smgr = System.getSecurityManager();
+        if (smgr != null) {
+            smgr.checkCreateClassLoader();
+        }
+
+        if (parentLoader == null && !nullAllowed) {
+            throw new NullPointerException(
+                    "Parent ClassLoader may not be null");
+        }
+
+        parent = parentLoader;
+        // End (C) Android
+    }
+    
     /**
      * Constructs a new class from an array of bytes containing a class
      * definition in class file format.
@@ -178,7 +231,7 @@ public abstract class ClassLoader {
     @Deprecated
     protected final Class<?> defineClass(byte[] classRep, int offset, int length)
             throws ClassFormatError {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -205,7 +258,7 @@ public abstract class ClassLoader {
      */
     protected final Class<?> defineClass(String className, byte[] classRep,
             int offset, int length) throws ClassFormatError {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -241,7 +294,7 @@ public abstract class ClassLoader {
     protected final Class<?> defineClass(String className, byte[] classRep,
             int offset, int length, ProtectionDomain protectionDomain)
             throws java.lang.ClassFormatError {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -286,7 +339,7 @@ public abstract class ClassLoader {
      */
     protected Class<?> findClass(String className)
             throws ClassNotFoundException {
-        return null;
+        throw new ClassNotFoundException(className);
     }
 
     /**
@@ -299,9 +352,18 @@ public abstract class ClassLoader {
      *         has not been loaded.
      */
     protected final Class<?> findLoadedClass(String className) {
-        return null;
+        // Start (C) Android
+        ClassLoader loader;
+        if (this == BootClassLoaderHolder.loader)
+            loader = null;
+        else
+            loader = this;
+        return nativeFindLoadedClass(loader, className);        
+        // End (C) Android
     }
 
+    private native final Class<?> nativeFindLoadedClass(ClassLoader classLoader, String className);
+    
     /**
      * Finds the class with the specified name, loading it using the system
      * class loader if necessary.
@@ -314,7 +376,9 @@ public abstract class ClassLoader {
      */
     protected final Class<?> findSystemClass(String className)
             throws ClassNotFoundException {
-        return null;
+        // Start (C) Android
+        return Class.forName(className, false, getSystemClassLoader());
+        // End (C) Android
     }
 
     /**
@@ -326,7 +390,14 @@ public abstract class ClassLoader {
      *             retrieve the parent class loader.
      */
     public final ClassLoader getParent() {
-        return null;
+        // Start (C) Android
+        SecurityManager smgr = System.getSecurityManager();
+        if (smgr != null) {
+            smgr.checkPermission(new RuntimePermission("getClassLoader"));
+        }
+        // End (C) Android
+
+        return parent == BootClassLoaderHolder.loader ? null : parent;
     }
 
     /**
@@ -342,7 +413,19 @@ public abstract class ClassLoader {
      * @see Class#getResource
      */
     public URL getResource(String resName) {
-        return null;
+        // Start (C) Android
+        URL resource = null;
+
+        if (parent != null) {
+            resource = parent.getResource(resName);
+        }
+
+        if (resource == null) {
+            resource = findResource(resName);
+        }
+
+        return resource;
+        // End (C) Android
     }
 
     /**
@@ -357,7 +440,15 @@ public abstract class ClassLoader {
      *             if an I/O error occurs.
      */
     public Enumeration<URL> getResources(String resName) throws IOException {
-        return null;
+        if (parent == null) {
+            return findResources(resName);
+        }
+        // Start (C) Android
+        Enumeration<URL> first = parent.getResources(resName);
+        Enumeration<URL> second = findResources(resName);
+
+        return new TwoEnumerationsInOne(first, second);
+        // End (C) Android
     }
 
     /**
@@ -373,7 +464,18 @@ public abstract class ClassLoader {
      * @see Class#getResourceAsStream
      */
     public InputStream getResourceAsStream(String resName) {
+        // Start (C) Android
+        try {
+            URL url = getResource(resName);
+            if (url != null) {
+                return url.openStream();
+            }
+        } catch (IOException ex) {
+            // Don't want to see the exception.
+        }
+
         return null;
+        // End (C) Android
     }
 
     /**
@@ -387,7 +489,7 @@ public abstract class ClassLoader {
      *             if the class can not be found.
      */
     public Class<?> loadClass(String className) throws ClassNotFoundException {
-        return null;
+        return loadClass(className, false);
     }
 
     /**
@@ -414,7 +516,24 @@ public abstract class ClassLoader {
      */
     protected Class<?> loadClass(String className, boolean resolve)
             throws ClassNotFoundException {
-        return null;
+
+        // Start (C) Android
+        Class<?> clazz = findLoadedClass(className);
+
+        if (clazz == null) {
+            try {
+                clazz = parent != null ? parent.loadClass(className, false) : null;
+            } catch (ClassNotFoundException e) {
+                // Don't want to see this.
+            }
+
+            if (clazz == null) {
+                clazz = findClass(className);
+            }
+        }
+
+        return clazz;
+        // End (C) Android
     }
 
     /**
@@ -425,6 +544,7 @@ public abstract class ClassLoader {
      *            the class to link.
      */
     protected final void resolveClass(Class<?> clazz) {
+        // Don't care
         return;
     }
 
@@ -464,7 +584,15 @@ public abstract class ClassLoader {
      *         the parameter
      */
     final boolean isAncestorOf(ClassLoader child) {
+        // Start (C) Android
+        for (ClassLoader current = child; current != null; 
+                current = current.parent) {
+            if (current == this) {
+                return true;
+            }
+        }
         return false;
+        // End (C) Android
     }
 
     /**
@@ -492,7 +620,7 @@ public abstract class ClassLoader {
      *             if an I/O error occurs.
      */
     protected Enumeration<URL> findResources(String resName) throws IOException {
-        return null;
+        return EmptyEnumeration.getInstance();
     }
 
     /**
@@ -519,7 +647,12 @@ public abstract class ClassLoader {
      *         can not be found.
      */
     protected Package getPackage(String name) {
-        return null;
+        // Start (C) Android
+        synchronized (packages) {
+            Package p = packages.get(name);
+            return p;
+        }
+        // End (C) Android
     }
 
     /**
@@ -528,7 +661,14 @@ public abstract class ClassLoader {
      * @return an array with all packages known to this class loader.
      */
     protected Package[] getPackages() {
-        return null;
+        // Start (C) Android
+        synchronized (packages) {
+            Collection<Package> col = packages.values();
+            Package[] result = new Package[col.size()];
+            col.toArray(result);
+            return result;
+        }
+        // End (C) Android
     }
 
     /**
@@ -561,7 +701,21 @@ public abstract class ClassLoader {
             String specVersion, String specVendor, String implTitle,
             String implVersion, String implVendor, URL sealBase)
             throws IllegalArgumentException {
-        return null;
+        
+        // Start (C) Android
+        synchronized (packages) {
+            if (packages.containsKey(name)) {
+                throw new IllegalArgumentException("Package " + name + " already defined");
+            }
+
+            Package newPackage = new Package(name, specTitle, specVersion, specVendor, implTitle,
+                    implVersion, implVendor, sealBase);
+
+            packages.put(name, newPackage);
+
+            return newPackage;
+        }        
+        // End (C) Android
     }
 
     /**
@@ -572,6 +726,7 @@ public abstract class ClassLoader {
      * @return signers the signers of {@code c}.
      */
     final Object[] getSigners(Class<?> c) {
+        // NullVM doesn't support code signing
         return null;
     }
 
@@ -584,6 +739,7 @@ public abstract class ClassLoader {
      *            the signers for {@code c}.
      */
     protected final void setSigners(Class<?> c, Object[] signers) {
+        // NullVM doesn't support code signing
         return;
     }
 
@@ -618,7 +774,11 @@ public abstract class ClassLoader {
      * @return the ClassLoader at the specified depth
      */
     static final ClassLoader getStackClassLoader(int depth) {
-        return null;
+        Class<?>[] stack = Class.getStackClasses(depth + 1, false);
+        if(stack.length < depth + 1) {
+            return null;
+        }
+        return stack[depth].getClassLoader();        
     }
 
     /**
@@ -632,48 +792,7 @@ public abstract class ClassLoader {
      * @return a ClassLoader or null for the bootstrap ClassLoader
      */
     static ClassLoader callerClassLoader() {
-        return null;
-    }
-
-    /**
-     * This method must be provided by the VM vendor, as it is called by
-     * java.lang.System.loadLibrary(). System.loadLibrary() cannot call
-     * Runtime.loadLibrary() because this method loads the library using the
-     * ClassLoader of the calling method. Loads and links the library specified
-     * by the argument.
-     * 
-     * @param libName
-     *            the name of the library to load
-     * @param loader
-     *            the classloader in which to load the library
-     * @throws UnsatisfiedLinkError
-     *             if the library could not be loaded
-     * @throws SecurityException
-     *             if the library was not allowed to be loaded
-     */
-    static void loadLibraryWithClassLoader(String libName, ClassLoader loader) {
-        return;
-    }
-
-    /**
-     * This method must be provided by the VM vendor, as it is called by
-     * java.lang.System.load(). System.load() cannot call Runtime.load() because
-     * the library is loaded using the ClassLoader of the calling method. Loads
-     * and links the library specified by the argument. No security check is
-     * done.
-     * 
-     * @param libName
-     *            the name of the library to load
-     * @param loader
-     *            the classloader in which to load the library
-     * @param libraryPath
-     *            the library path to search, or null
-     * @throws UnsatisfiedLinkError
-     *             if the library could not be loaded
-     */
-    static void loadLibraryWithPath(String libName, ClassLoader loader,
-            String libraryPath) {
-        return;
+        return getStackClassLoader(2);
     }
 
     /**
@@ -756,3 +875,65 @@ public abstract class ClassLoader {
         return false;
     }
 }
+
+// Start (C) Android
+/*
+ * Provides a helper class that combines two existing URL enumerations into one.
+ * It is required for the getResources() methods. Items are fetched from the
+ * first enumeration until it's empty, then from the second one.
+ */
+class TwoEnumerationsInOne implements Enumeration<URL> {
+
+    private Enumeration<URL> first;
+
+    private Enumeration<URL> second;
+
+    public TwoEnumerationsInOne(Enumeration<URL> first, Enumeration<URL> second) {
+        this.first = first;
+        this.second = second;
+    }
+
+    public boolean hasMoreElements() {
+        return first.hasMoreElements() || second.hasMoreElements();
+    }
+
+    public URL nextElement() {
+        if (first.hasMoreElements()) {
+            return first.nextElement();
+        } else {
+            return second.nextElement();
+        }
+    }
+
+}
+// End (C) Android
+
+// Start (C) Android
+class EmptyEnumeration implements Enumeration<URL> {
+
+    private static final EmptyEnumeration mInst = new EmptyEnumeration();
+
+    /**
+     * One instance per VM.
+     */
+    private EmptyEnumeration() {}
+
+    /**
+     * Return instance.
+     */
+    public static EmptyEnumeration getInstance() {
+        return mInst;
+    }
+
+    /**
+     * Enumeration implementation.
+     */
+    public boolean hasMoreElements() {
+        return false;
+    }
+
+    public URL nextElement() {
+        throw new NoSuchElementException();
+    }
+}
+// End (C) Android

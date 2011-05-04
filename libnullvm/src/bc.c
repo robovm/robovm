@@ -1,18 +1,24 @@
 #include <nullvm.h>
 #include "log.h"
 
-void _nvmBcAllocateClass(Env* env, char* className, char* superclassName, jint access, jint classDataSize, jint instanceDataSize) {
+Class* _nvmBcFindClassInLoader(Env* env, char* className, ClassLoader* classLoader) {
+    Class* clazz = nvmFindClassInLoader(env, className, classLoader);
+    if (!clazz) nvmRaiseException(env, nvmExceptionOccurred(env));
+    return clazz;
+}
+
+void _nvmBcAllocateClass(Env* env, char* className, char* superclassName, ClassLoader* classLoader, jint access, jint classDataSize, jint instanceDataSize) {
     Class* superclass = NULL;
     if (superclassName) {
-        superclass = nvmFindClass(env, superclassName);
+        superclass = nvmFindClassInLoader(env, superclassName, classLoader);
         if (!superclass) nvmRaiseException(env, nvmExceptionOccurred(env));
     }
-    Class* c = nvmAllocateClass(env, className, superclass, access, classDataSize, instanceDataSize);
+    Class* c = nvmAllocateClass(env, className, superclass, classLoader, access, classDataSize, instanceDataSize);
     if (!c) nvmRaiseException(env, nvmExceptionOccurred(env));
 }
 
 void _nvmBcAddInterface(Env* env, Class* clazz, char* interfaceName) {
-    Class* interface = nvmFindClass(env, interfaceName);
+    Class* interface = nvmFindClassInLoader(env, interfaceName, clazz->classLoader);
     if (!interface) nvmRaiseException(env, nvmExceptionOccurred(env));
     if (!nvmAddInterface(env, clazz, interface)) nvmRaiseException(env, nvmExceptionOccurred(env));
 }

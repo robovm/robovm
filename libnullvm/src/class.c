@@ -73,6 +73,10 @@ static Map* idToClassMap = NULL;
 
 static jint nextClassId = 0;
 
+static Class* findClassByDescriptor(Env* env, char* desc, ClassLoader* classLoader, DynamicLib* dlib);
+static Class* findClass(Env* env, char* className, ClassLoader* classLoader, DynamicLib* dlib);
+static Class* findBootClass(Env* env, char* className);
+
 static inline jint getNextClassId(void) {
     return __sync_fetch_and_add(&nextClassId, 1);
 }
@@ -132,7 +136,7 @@ static jint j_get_vtable_index(Class* clazz, char* name, char* desc, Class* call
     sub_class = nvmIsSubClass(clazz, caller);
     same_package = nvmIsSamePackage(clazz, caller);
 
-    for (method = clazz->methods; method != NULL; method = method->next) {
+    for (method = clazz->methods->first; method != NULL; method = method->next) {
         jint access = method->access;
         if (access & ACC_PRIVATE && !same_class) {
             continue;
@@ -197,24 +201,92 @@ static Class* createPrimitiveClass(Env* env, char* desc) {
     return clazz;
 }
 
-static Class* createArrayClass(Env* env, char* desc) {
-    jint i = 0;
-    for (i = 0; desc[i] == '['; i++)
-        ;
-    Class* elementClass = nvmFindClassByDescriptor(env, &desc[i]);
-    if (!elementClass) return NULL;
+static Class* createArrayClass(Env* env, Class* componentType, DynamicLib* dlib) {
+    jint length = strlen(componentType->name);
+    char* desc = NULL;
+
+    if (CLASS_IS_ARRAY(componentType) || componentType->primitive) {
+        desc = nvmAllocateMemory(env, length + 2);
+        if (!desc) return NULL;
+        desc[0] = '[';
+        strcat(desc, componentType->name);
+    } else {
+        desc = nvmAllocateMemory(env, length + 4);
+        if (!desc) return NULL;
+        desc[0] = '[';
+        desc[1] = 'L';
+        strcat(desc, componentType->name);
+        desc[length + 2] = ';';
+    }
+
     // TODO: Add clone() method.
-    Class* clazz = nvmAllocateClass(env, desc, java_lang_Object, ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, 0, 0);
+    Class* clazz = nvmAllocateClass(env, desc, java_lang_Object, componentType->classLoader, ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, 0, 0);
     if (!clazz) return NULL;
-    clazz->elementClass = elementClass;
     if (!nvmAddInterface(env, clazz, java_lang_Cloneable)) return NULL;
     if (!nvmAddInterface(env, clazz, java_io_Serializable)) return NULL;
     if (!nvmRegisterClass(env, clazz)) return NULL;
     clazz->state = CLASS_INITIALIZED;
+
     return clazz;
 }
 
-Class* nvmFindClassByDescriptor(Env* env, char* desc) {
+static Class* (*findClassLoaderFunction(Env* env, char* funcName, DynamicLib* dlib))(Env*, ClassLoader*) {
+    Class* (*loader)(Env*, ClassLoader*) = nvmFindDynamicLibSymbol(env, dlib, dlib->next, funcName);
+    return loader;
+}
+
+static Class* findClass(Env* env, char* className, ClassLoader* classLoader, DynamicLib* dlib) {
+    Class* clazz = getLoadedClassByName(env, className);
+    if (clazz != NULL) {
+        return clazz;
+    }
+
+    if (className[0] == '[') {
+        Class* componentType = findClassByDescriptor(env, &className[1], classLoader, dlib);
+        return createArrayClass(env, componentType, dlib);
+    }
+
+    TRACE("Class '%s' not loaded\n", className);
+    char* funcName = mangleClassName(env, className);
+    if (!funcName) return NULL;
+
+    TRACE("Searching for class loader function '%s()'\n", funcName);
+
+    Class* (*loader)(Env*, ClassLoader*) = findClassLoaderFunction(env, funcName, dlib);
+    if (loader) {
+        TRACE("Calling class loader function '%s()'\n", funcName);
+        // TODO: Catch exceptions thrown by the loader function
+        clazz = loader(env, classLoader);
+    }
+
+    if (clazz) return clazz;
+    if (nvmExceptionOccurred(env)) return NULL;
+
+    if (clazz == NULL) {
+        if (!strcmp(className, "java/lang/ClassNotFoundException")) {
+            nvmAbort("Fatal error: java.lang.ClassNotFoundException not found!");
+        }
+        nvmThrowClassNotFoundException(env, className);
+    }
+
+    return clazz;
+}
+
+static Class* findBootClass(Env* env, char* className) {
+    Class* clazz = findClass(env, className, NULL, bootSoHandles);
+    if (nvmExceptionOccurred(env)) return NULL;
+    if (clazz != NULL) {
+        if (clazz->classLoader != NULL) {
+            // Not a boot class
+            nvmThrowClassNotFoundException(env, className);
+            return NULL;
+        }
+    }
+    return clazz;
+}
+
+
+static Class* findClassByDescriptor(Env* env, char* desc, ClassLoader* classLoader, DynamicLib* dlib) {
     switch (desc[0]) {
     case 'Z':
         return prim_Z;
@@ -235,18 +307,50 @@ Class* nvmFindClassByDescriptor(Env* env, char* desc) {
     case 'V':
         return prim_V;
     case '[':
-        return nvmFindClass(env, desc);
+        return findClass(env, desc, classLoader, dlib);
     }
     // desc[0] == 'L'
     jint length = strlen(desc);
     char* className = nvmAllocateMemory(env, length - 2 + 1);
     if (!className) return NULL;
     strncpy(className, &desc[1], length - 2);
-    return nvmFindClass(env, className);
+    return findClass(env, className, classLoader, dlib);
 }
 
+Class* nvmFindClassByDescriptor(Env* env, char* desc, ClassLoader* classLoader) {
+    switch (desc[0]) {
+    case 'Z':
+        return prim_Z;
+    case 'B':
+        return prim_B;
+    case 'C':
+        return prim_C;
+    case 'S':
+        return prim_S;
+    case 'I':
+        return prim_I;
+    case 'J':
+        return prim_J;
+    case 'F':
+        return prim_F;
+    case 'D':
+        return prim_D;
+    case 'V':
+        return prim_V;
+    case '[':
+        return nvmFindClassInLoader(env, desc, classLoader);
+    }
+    // desc[0] == 'L'
+    jint length = strlen(desc);
+    char* className = nvmAllocateMemory(env, length - 2 + 1);
+    if (!className) return NULL;
+    strncpy(className, &desc[1], length - 2);
+    return nvmFindClassInLoader(env, className, classLoader);
+}
+
+
 Class* nvmGetComponentType(Env* env, Class* arrayClass) {
-    return nvmFindClassByDescriptor(env, &arrayClass->name[1]);
+    return nvmFindClassByDescriptor(env, &arrayClass->name[1], arrayClass->classLoader);
 }
 
 int nvmIsSubClass(Class* superclass, Class* clazz) {
@@ -328,83 +432,83 @@ jboolean nvmInitClasses(Env* env) {
     initSoHandles(env);
 
     // Cache important classes in java.lang.
-    java_lang_ClassNotFoundException = nvmFindClass(env, "java/lang/ClassNotFoundException");
+    java_lang_ClassNotFoundException = findBootClass(env, "java/lang/ClassNotFoundException");
     if (!java_lang_ClassNotFoundException) return FALSE;
-    java_lang_NoClassDefFoundError = nvmFindClass(env, "java/lang/NoClassDefFoundError");
+    java_lang_NoClassDefFoundError = findBootClass(env, "java/lang/NoClassDefFoundError");
     if (!java_lang_NoClassDefFoundError) return FALSE;
-    java_lang_Object = nvmFindClass(env, "java/lang/Object");
+    java_lang_Object = findBootClass(env, "java/lang/Object");
     if (!java_lang_Object) return FALSE;
-    java_lang_Class = nvmFindClass(env, "java/lang/Class");
+    java_lang_Class = findBootClass(env, "java/lang/Class");
     if (!java_lang_Class) return FALSE;
     java_lang_Object->object.clazz = java_lang_Class; // Fix object.clazz pointer for java_lang_Object
     java_lang_Class->object.clazz = java_lang_Class; // Fix object.clazz pointer for java_lang_Class
-    java_lang_String = nvmFindClass(env, "java/lang/String");
+    java_lang_String = findBootClass(env, "java/lang/String");
     if (!java_lang_String) return FALSE;
-    java_lang_Boolean = nvmFindClass(env, "java/lang/Boolean");
+    java_lang_Boolean = findBootClass(env, "java/lang/Boolean");
     if (!java_lang_Boolean) return FALSE;
-    java_lang_Byte = nvmFindClass(env, "java/lang/Byte");
+    java_lang_Byte = findBootClass(env, "java/lang/Byte");
     if (!java_lang_Byte) return FALSE;
-    java_lang_Character = nvmFindClass(env, "java/lang/Character");
+    java_lang_Character = findBootClass(env, "java/lang/Character");
     if (!java_lang_Character) return FALSE;
-    java_lang_Short = nvmFindClass(env, "java/lang/Short");
+    java_lang_Short = findBootClass(env, "java/lang/Short");
     if (!java_lang_Short) return FALSE;
-    java_lang_Long = nvmFindClass(env, "java/lang/Long");
+    java_lang_Long = findBootClass(env, "java/lang/Long");
     if (!java_lang_Long) return FALSE;
-    java_lang_Float = nvmFindClass(env, "java/lang/Float");
+    java_lang_Float = findBootClass(env, "java/lang/Float");
     if (!java_lang_Float) return FALSE;
-    java_lang_Double = nvmFindClass(env, "java/lang/Double");
+    java_lang_Double = findBootClass(env, "java/lang/Double");
     if (!java_lang_Double) return FALSE;
-    java_lang_Cloneable = nvmFindClass(env, "java/lang/Cloneable");
+    java_lang_Cloneable = findBootClass(env, "java/lang/Cloneable");
     if (!java_lang_Cloneable) return FALSE;
-    java_lang_Thread = nvmFindClass(env, "java/lang/Thread");
+    java_lang_Thread = findBootClass(env, "java/lang/Thread");
     if (!java_lang_Thread) return FALSE;
-    java_lang_ThreadGroup = nvmFindClass(env, "java/lang/ThreadGroup");
+    java_lang_ThreadGroup = findBootClass(env, "java/lang/ThreadGroup");
     if (!java_lang_ThreadGroup) return FALSE;
-    java_io_Serializable = nvmFindClass(env, "java/io/Serializable");
+    java_io_Serializable = findBootClass(env, "java/io/Serializable");
     if (!java_io_Serializable) return FALSE;
-    java_lang_Runtime = nvmFindClass(env, "java/lang/Runtime");
+    java_lang_Runtime = findBootClass(env, "java/lang/Runtime");
     if (!java_lang_Runtime) return FALSE;
 
-    java_lang_Error = nvmFindClass(env, "java/lang/Error");
+    java_lang_Error = findBootClass(env, "java/lang/Error");
     if (!java_lang_Error) return FALSE;
-    java_lang_OutOfMemoryError = nvmFindClass(env, "java/lang/OutOfMemoryError");
+    java_lang_OutOfMemoryError = findBootClass(env, "java/lang/OutOfMemoryError");
     if (!java_lang_OutOfMemoryError) return FALSE;
-    java_lang_IllegalAccessError = nvmFindClass(env, "java/lang/IllegalAccessError");
+    java_lang_IllegalAccessError = findBootClass(env, "java/lang/IllegalAccessError");
     if (!java_lang_IllegalAccessError) return FALSE;
-    java_lang_NoSuchFieldError = nvmFindClass(env, "java/lang/NoSuchFieldError");
+    java_lang_NoSuchFieldError = findBootClass(env, "java/lang/NoSuchFieldError");
     if (!java_lang_NoSuchFieldError) return FALSE;
-    java_lang_NoSuchMethodError = nvmFindClass(env, "java/lang/NoSuchMethodError");
+    java_lang_NoSuchMethodError = findBootClass(env, "java/lang/NoSuchMethodError");
     if (!java_lang_NoSuchMethodError) return FALSE;
-    java_lang_IncompatibleClassChangeError = nvmFindClass(env, "java/lang/IncompatibleClassChangeError");
+    java_lang_IncompatibleClassChangeError = findBootClass(env, "java/lang/IncompatibleClassChangeError");
     if (!java_lang_IncompatibleClassChangeError) return FALSE;
-    java_lang_AbstractMethodError = nvmFindClass(env, "java/lang/AbstractMethodError");
+    java_lang_AbstractMethodError = findBootClass(env, "java/lang/AbstractMethodError");
     if (!java_lang_AbstractMethodError) return FALSE;
-    java_lang_UnsatisfiedLinkError = nvmFindClass(env, "java/lang/UnsatisfiedLinkError");
+    java_lang_UnsatisfiedLinkError = findBootClass(env, "java/lang/UnsatisfiedLinkError");
     if (!java_lang_UnsatisfiedLinkError) return FALSE;
-    java_lang_ExceptionInInitializerError = nvmFindClass(env, "java/lang/ExceptionInInitializerError");
+    java_lang_ExceptionInInitializerError = findBootClass(env, "java/lang/ExceptionInInitializerError");
     if (!java_lang_ExceptionInInitializerError) return FALSE;
-    java_lang_VerifyError = nvmFindClass(env, "java/lang/VerifyError");
+    java_lang_VerifyError = findBootClass(env, "java/lang/VerifyError");
     if (!java_lang_VerifyError) return FALSE;
 
-    java_lang_Throwable = nvmFindClass(env, "java/lang/Throwable");
+    java_lang_Throwable = findBootClass(env, "java/lang/Throwable");
     if (!java_lang_Throwable) return FALSE;
-    java_lang_RuntimeException = nvmFindClass(env, "java/lang/RuntimeException");
+    java_lang_RuntimeException = findBootClass(env, "java/lang/RuntimeException");
     if (!java_lang_RuntimeException) return FALSE;
-    java_lang_ClassCastException = nvmFindClass(env, "java/lang/ClassCastException");
+    java_lang_ClassCastException = findBootClass(env, "java/lang/ClassCastException");
     if (!java_lang_ClassCastException) return FALSE;
-    java_lang_NullPointerException = nvmFindClass(env, "java/lang/NullPointerException");
+    java_lang_NullPointerException = findBootClass(env, "java/lang/NullPointerException");
     if (!java_lang_NullPointerException) return FALSE;
-    java_lang_ArrayIndexOutOfBoundsException = nvmFindClass(env, "java/lang/ArrayIndexOutOfBoundsException");
+    java_lang_ArrayIndexOutOfBoundsException = findBootClass(env, "java/lang/ArrayIndexOutOfBoundsException");
     if (!java_lang_ArrayIndexOutOfBoundsException) return FALSE;
-    java_lang_ArrayStoreException = nvmFindClass(env, "java/lang/ArrayStoreException");
+    java_lang_ArrayStoreException = findBootClass(env, "java/lang/ArrayStoreException");
     if (!java_lang_ArrayStoreException) return FALSE;
-    java_lang_NegativeArraySizeException = nvmFindClass(env, "java/lang/NegativeArraySizeException");
+    java_lang_NegativeArraySizeException = findBootClass(env, "java/lang/NegativeArraySizeException");
     if (!java_lang_NegativeArraySizeException) return FALSE;
-    java_lang_IllegalArgumentException = nvmFindClass(env, "java/lang/IllegalArgumentException");
+    java_lang_IllegalArgumentException = findBootClass(env, "java/lang/IllegalArgumentException");
     if (!java_lang_IllegalArgumentException) return FALSE;
-    java_lang_ArithmeticException = nvmFindClass(env, "java/lang/ArithmeticException");
+    java_lang_ArithmeticException = findBootClass(env, "java/lang/ArithmeticException");
     if (!java_lang_ArithmeticException) return FALSE;
-    java_lang_UnsupportedOperationException = nvmFindClass(env, "java/lang/UnsupportedOperationException");
+    java_lang_UnsupportedOperationException = findBootClass(env, "java/lang/UnsupportedOperationException");
     if (!java_lang_UnsupportedOperationException) return FALSE;
 
     prim_Z = createPrimitiveClass(env, "Z");
@@ -426,77 +530,53 @@ jboolean nvmInitClasses(Env* env) {
     prim_V = createPrimitiveClass(env, "V");
     if (!prim_V) return FALSE;
 
-    array_Z = nvmFindClass(env, "[Z");
+    array_Z = findBootClass(env, "[Z");
     if (!array_Z) return FALSE;
-    array_B = nvmFindClass(env, "[B");
+    array_B = findBootClass(env, "[B");
     if (!array_B) return FALSE;
-    array_C = nvmFindClass(env, "[C");
+    array_C = findBootClass(env, "[C");
     if (!array_C) return FALSE;
-    array_S = nvmFindClass(env, "[S");
+    array_S = findBootClass(env, "[S");
     if (!array_S) return FALSE;
-    array_I = nvmFindClass(env, "[I");
+    array_I = findBootClass(env, "[I");
     if (!array_I) return FALSE;
-    array_J = nvmFindClass(env, "[J");
+    array_J = findBootClass(env, "[J");
     if (!array_J) return FALSE;
-    array_F = nvmFindClass(env, "[F");
+    array_F = findBootClass(env, "[F");
     if (!array_F) return FALSE;
-    array_D = nvmFindClass(env, "[D");
+    array_D = findBootClass(env, "[D");
     if (!array_D) return FALSE;
 
     return TRUE;
 }
 
-static Class* findClassLoaderFunction(Env* env, char* funcName, DynamicLib* dlib) {
-    Class* (*loader)(Env*) = nvmFindDynamicLibSymbol(env, dlib, dlib->next, funcName);
-    if (loader) {
-        TRACE("Calling class loader function '%s()'\n", funcName);
-        return loader(env);
+Class* nvmFindClass(Env* env, char* className) {
+    Method* method = nvmGetCallingMethod(env);
+    if (nvmExceptionOccurred(env)) return NULL;
+    ClassLoader* classLoader = method ? method->clazz->classLoader : NULL;
+    return nvmFindClassInLoader(env, className, classLoader);
+}
+
+Class* nvmFindClassInLoader(Env* env, char* className, ClassLoader* classLoader) {
+    if (!classLoader || classLoader->parent == NULL) {
+        // This is the bootstrap classloader
+        return findBootClass(env, className);
     }
+    if (classLoader->parent->parent == NULL && classLoader->object.clazz->classLoader == NULL) {
+        // This is the system classloader
+        Class* clazz = findClass(env, className, classLoader, mainSoHandles);
+        if (nvmExceptionOccurred(env)) return NULL;
+        return clazz;
+    }
+    nvmThrowClassNotFoundException(env, className);
     return NULL;
 }
 
-Class* nvmFindClass(Env* env, char* className) {
-    // TODO: Implement me properly using ClassLoader
-
-    Class* clazz = getLoadedClassByName(env, className);
-    if (clazz != NULL) {
-        return clazz;
-    }
-
-    if (className[0] == '[') {
-        return createArrayClass(env, className);
-    }
-
-    TRACE("Class '%s' not loaded\n", className);
-    char* funcName = mangleClassName(env, className);
-    if (!funcName) return NULL;
-
-    TRACE("Searching for class loader function '%s()' in boot classes\n", funcName);
-
-    clazz = findClassLoaderFunction(env, funcName, bootSoHandles);
-    if (clazz) return clazz;
-    if (nvmExceptionOccurred(env)) return NULL;
-
-    // TODO: Only search main classes if the calling class was loaded by the system class loader
-    TRACE("Searching for class loader function '%s()' in main classes\n", funcName);
-
-    clazz = findClassLoaderFunction(env, funcName, mainSoHandles);
-    if (clazz) return clazz;
-    if (nvmExceptionOccurred(env)) return NULL;
-
-    if (clazz == NULL) {
-        if (!strcmp(className, "java/lang/ClassNotFoundException")) {
-            nvmAbort("Fatal error: java.lang.ClassNotFoundException not found!");
-        }
-        nvmThrowClassNotFoundException(env, className);
-    }
-
-    return clazz;
-}
-
-Class* nvmAllocateClass(Env* env, char* className, Class* superclass, jint access, jint classDataSize, jint instanceDataSize) {
+Class* nvmAllocateClass(Env* env, char* className, Class* superclass, ClassLoader* classLoader, jint access, jint classDataSize, jint instanceDataSize) {
     Class* clazz = nvmAllocateMemory(env, sizeof(Class) + classDataSize);
     if (!clazz) return NULL;
+    clazz->methods = nvmAllocateMemory(env, sizeof(Methods));
+    if (!clazz->methods) return NULL;
     /*
      * NOTE: All classes we load before we have cached java.lang.Class will have NULL here so it is 
      * important that we cache java.lang.Class as soon as possible. However, we have to cache
@@ -507,6 +587,7 @@ Class* nvmAllocateClass(Env* env, char* className, Class* superclass, jint acces
     clazz->object.clazz = java_lang_Class;
     clazz->name = className;
     clazz->superclass = superclass;
+    clazz->classLoader = classLoader;
     clazz->access = access;
     clazz->classDataSize = classDataSize;
     clazz->instanceDataSize = instanceDataSize;
@@ -538,10 +619,18 @@ jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint acces
     method->access = access;
     method->impl = impl;
     method->lookup = lookup;
-//    method->length = (end && end > impl) ? end - impl : -1;
-    method->next = clazz->methods;
     method->vtableIndex = -1;
-    clazz->methods = method;
+
+    method->next = clazz->methods->first;
+    clazz->methods->first  = method;
+
+    if (method->impl) {
+        if (clazz->methods->lo == NULL || method->impl < clazz->methods->lo) {
+            clazz->methods->lo = method->impl;
+        } else if (clazz->methods->hi == NULL || method->impl > clazz->methods->hi) {
+            clazz->methods->hi = method->impl;
+        }
+    }
     return TRUE;
 }
 
@@ -577,7 +666,7 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
     // TODO: Check that the superclass and all interfaces are accessible to the new class
     // TODO: Verify the class hierarchy (class doesn't override final methods, changes public -> private, etc)
 
-    for (method = clazz->methods; method != NULL; method = method->next) {
+    for (method = clazz->methods->first; method != NULL; method = method->next) {
         int vtableIndex = -1;
         if (clazz->superclass != NULL && strcmp("<init>", method->name) && strcmp("<clinit>", method->name)) {
             vtableIndex = j_get_vtable_index(clazz->superclass, method->name, method->desc, clazz);
@@ -608,7 +697,7 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
     }
 //    TRACE("vtable size for %s: %d\n", clazz->name, vtableSize);
 
-    for (method = clazz->methods; method != NULL; method = method->next) {
+    for (method = clazz->methods->first; method != NULL; method = method->next) {
         clazz->vtable[method->vtableIndex] = method->impl;
     }
 

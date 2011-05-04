@@ -1,5 +1,5 @@
 %Env = type opaque
-%Class = type {i8*, i8*, i8*, i32, i8*, i8*, i8*, i8*, i8, i32, i32, i8*, i8*, i8*, i32, i32, i32, i32, i8*}
+%Class = type {i8*, i8*, i8*, i32, i8*, i8*, i8*, i8, i32, i32, i8*, i8*, i8*, i32, i32, i32, i32, i8*}
 %Object = type {%Class*, i8*}
 %Array = type {%Object, i32}
 %BooleanArray = type {%Object, i32, i8}
@@ -12,11 +12,13 @@
 %DoubleArray = type {%Object, i32, double}
 %ObjectArray = type {%Object, i32, %Object*}
 
-declare %Class* @_nvmBcAllocateClass(%Env*, i8*, i8*, i32, i32, i32)
+declare %Class* @_nvmBcAllocateClass(%Env*, i8*, i8*, %Object*, i32, i32, i32)
 declare void @_nvmBcAddInterface(%Env*, %Class*, i8*)
 declare void @_nvmBcAddMethod(%Env*, %Class*, i8*, i8*, i32, i8*, i8*)
 declare void @_nvmBcAddField(%Env*, %Class*, i8*, i8*, i32, i32, i8*, i8*)
 declare void @_nvmBcRegisterClass(%Env*, %Class*)
+declare %Object* @_nvmBcFindClassInLoader(%Env*, i8*, %Object*)
+
 declare i8* @_nvmBcLookupVirtualMethod(%Env*, %Object*, i8*, i8*)
 declare void @_nvmBcThrow(%Env*, %Object*)
 declare void @_nvmBcRethrow(%Env*)

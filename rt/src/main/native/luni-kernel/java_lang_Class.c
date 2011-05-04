@@ -1,31 +1,29 @@
 #include <nullvm.h>
 
-jboolean Java_java_lang_Class_desiredAssertionStatus(JNIEnv* env, Object* thiz) {
+jboolean Java_java_lang_Class_desiredAssertionStatus(Env* env, Object* thiz) {
     return JNI_FALSE;
 }
 
-jboolean Java_java_lang_Class_isPrimitive(JNIEnv* env, Class* thiz) {
+jboolean Java_java_lang_Class_isPrimitive(Env* env, Class* thiz) {
     return thiz->primitive;
 }
 
-jboolean Java_java_lang_Class_getModifiers(JNIEnv* env, Class* thiz) {
+jboolean Java_java_lang_Class_getModifiers(Env* env, Class* thiz) {
     return thiz->access;
 }
 
-Object* Java_java_lang_Class_getName0(JNIEnv* env, Class* thiz) {
+Object* Java_java_lang_Class_getName0(Env* env, Class* thiz) {
     return nvmNewStringUTF(env, thiz->name, -1);
 }
 
-Class* Java_java_lang_Class_getComponentType(JNIEnv* _env, Class* thiz) {
-    Env* env = (Env*) _env;
+Class* Java_java_lang_Class_getComponentType(Env* env, Class* thiz) {
     if (!CLASS_IS_ARRAY(thiz)) {
         return NULL;
     }
     return nvmGetComponentType(env, thiz);
 }
 
-ObjectArray* Java_java_lang_Class_getStackClasses(JNIEnv* _env, Class* c, jint maxDepth, jboolean stopAtPrivileged) {
-    Env* env = (Env*) _env;
+ObjectArray* Java_java_lang_Class_getStackClasses(Env* env, Class* c, jint maxDepth, jboolean stopAtPrivileged) {
     CallStackEntry* first = nvmGetCallStack(env);
     if (!first) return NULL;
     first = first->next; // Skip Class.getStackClasses()
@@ -53,17 +51,14 @@ ObjectArray* Java_java_lang_Class_getStackClasses(JNIEnv* _env, Class* c, jint m
     return result;
 }
 
-Class* Java_java_lang_Class_forName(JNIEnv* _env, Class* c, Object* className, jboolean initializeBoolean, Object* classLoader) {
-    // TODO: Implement Class.forName().
-    // TODO: If classLoader == null search bootclasspath otherwise search bootclasspath and classpath
-    Env* env = (Env*) _env;
+Class* Java_java_lang_Class_forName(Env* env, Class* c, Object* className, jboolean initializeBoolean, ClassLoader* classLoader) {
     char* classNameUTF = nvmGetStringUTFChars(env, className);
     jint i;
     for (i = 0; classNameUTF[i] != '\0'; i++) {
         if (classNameUTF[i] == '.') classNameUTF[i] = '/';
     }
     if (!classNameUTF) return NULL;
-    Class* clazz = nvmFindClass(env, classNameUTF);
+    Class* clazz = nvmFindClassInLoader(env, classNameUTF, classLoader);
     if (!clazz) return NULL;
     if (initializeBoolean) {
         nvmInitialize(env, clazz);
@@ -74,16 +69,14 @@ Class* Java_java_lang_Class_forName(JNIEnv* _env, Class* c, Object* className, j
     return clazz;
 }
 
-Object* Java_java_lang_Class_getClassLoader(JNIEnv* _env, Class* thiz) {
-    // TODO: Implement Class.getClassLoader().
-    return NULL;
+ClassLoader* Java_java_lang_Class_getClassLoader(Env* env, Class* c, Class* clazz) {
+    return clazz->classLoader;
 }
 
-ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(JNIEnv* _env, Class* clazz, jboolean publicOnly) {
-    Env* env = (Env*) _env;
+ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(Env* env, Class* clazz, jboolean publicOnly) {
     Method* method;
     jint length = 0;
-    for (method = clazz->methods; method != NULL; method = method->next) {
+    for (method = clazz->methods->first; method != NULL; method = method->next) {
         if (METHOD_IS_CONSTRUCTOR(method)) {
             if (!publicOnly || METHOD_IS_PUBLIC(method)) {
                 length++;
@@ -99,7 +92,7 @@ ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(JNIEnv* _env, Class* 
     if (!constructor) return NULL;
 
     jint i = 0;
-    for (method = clazz->methods; method != NULL; method = method->next) {
+    for (method = clazz->methods->first; method != NULL; method = method->next) {
         if (METHOD_IS_CONSTRUCTOR(method)) {
             if (!publicOnly || METHOD_IS_PUBLIC(method)) {
                 jvalue constructorArgs[1];
@@ -114,11 +107,10 @@ ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(JNIEnv* _env, Class* 
     return result;
 }
 
-ObjectArray* Java_java_lang_Class_getDeclaredMethods0(JNIEnv* _env, Class* clazz, jboolean publicOnly) {
-    Env* env = (Env*) _env;
+ObjectArray* Java_java_lang_Class_getDeclaredMethods0(Env* env, Class* clazz, jboolean publicOnly) {
     Method* method;
     jint length = 0;
-    for (method = clazz->methods; method != NULL; method = method->next) {
+    for (method = clazz->methods->first; method != NULL; method = method->next) {
         if (!METHOD_IS_CONSTRUCTOR(method) && !METHOD_IS_CLASS_INITIALIZER(method)) {
             if (!publicOnly || METHOD_IS_PUBLIC(method)) {
                 length++;
@@ -134,7 +126,7 @@ ObjectArray* Java_java_lang_Class_getDeclaredMethods0(JNIEnv* _env, Class* clazz
     if (!constructor) return NULL;
 
     jint i = 0;
-    for (method = clazz->methods; method != NULL; method = method->next) {
+    for (method = clazz->methods->first; method != NULL; method = method->next) {
         if (!METHOD_IS_CONSTRUCTOR(method) && !METHOD_IS_CLASS_INITIALIZER(method)) {
             if (!publicOnly || METHOD_IS_PUBLIC(method)) {
                 jvalue constructorArgs[1];

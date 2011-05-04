@@ -17,9 +17,18 @@
 
 package java.lang;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -138,9 +147,42 @@ public class Runtime {
      */
     public Process exec(String[] progArray, String[] envp, File directory)
             throws java.io.IOException {
+        
+        // Start (C) DRLVM
+        SecurityManager currentSecurity = System.getSecurityManager();
+
+        if (currentSecurity != null) {
+            currentSecurity.checkExec(progArray[0]);
+        }
+
+        if (progArray == null) {
+            throw new NullPointerException("progArray shouldn't be null.");
+        }
+        if (progArray.length == 0) {
+            throw new IndexOutOfBoundsException();
+        }
+        for (int i = 0; i < progArray.length; i++) {
+            if (progArray[i] == null) {
+                throw new NullPointerException("An element of progArray shouldn't be empty.");
+            }
+        }
+                
+        if (envp != null) {
+            if (envp.length != 0) {
+                for (int i = 0; i < envp.length; i++) {
+                    if (envp[i] == null) {
+                        throw new NullPointerException("An element of envp shouldn't be empty.");
+                    }
+                }
+            } else {
+                envp = null;
+            }
+        }
+        // End (C) DRLVM
+        
         if (envp == null) {
             envp = new String[0];
-        }
+        }        
         return SystemProcess.create(progArray, envp, directory);
     }
 
@@ -161,7 +203,7 @@ public class Runtime {
      * @see SecurityManager#checkExec
      */
     public Process exec(String prog) throws java.io.IOException {
-        return null;
+        return exec(prog, null, null);
     }
 
     /**
@@ -184,7 +226,7 @@ public class Runtime {
      * @see SecurityManager#checkExec
      */
     public Process exec(String prog, String[] envp) throws java.io.IOException {
-        return null;
+        return exec(prog, envp, null);
     }
 
     /**
@@ -210,7 +252,7 @@ public class Runtime {
      * @see SecurityManager#checkExec
      */
     public Process exec(String prog, String[] envp, File directory) throws java.io.IOException {
-        // Start (C) Android
+        // Start (C) DRLVM
         if (prog == null) {
             throw new NullPointerException();
         }
@@ -235,11 +277,10 @@ public class Runtime {
 
         while (st.hasMoreTokens()) {
             cmdarray[i++] = st.nextToken();
-
         }
 
         return exec(cmdarray, envp, directory);
-        // End (C) Android
+        // End (C) DRLVM
     }
 
     /**
@@ -343,7 +384,28 @@ public class Runtime {
      *             the library.
      * @see SecurityManager#checkLink
      */
-    public native void load(String pathName);
+    public void load(String filename) throws SecurityException, UnsatisfiedLinkError {
+        load0(filename, ClassLoader.callerClassLoader(), true);
+    }
+
+    void load0(String filename, ClassLoader cL, boolean check) throws SecurityException, UnsatisfiedLinkError {
+        // Start (C) DRLVM
+        if (check) {
+            if (filename == null) {
+                throw new NullPointerException();
+            }
+
+            SecurityManager currentSecurity = System.getSecurityManager();
+
+            if (currentSecurity != null) {
+                currentSecurity.checkLink(filename);
+            }
+        }
+        nativeLoad(filename, cL); // Should throw UnsatisfiedLinkError if needs.
+        // End (C) DRLVM        
+    }
+    
+    private static native String nativeLoad(String filename, ClassLoader loader);
 
     /**
      * Loads and links the library with the specified name. The mapping of the
@@ -359,15 +421,101 @@ public class Runtime {
      *             the library.
      * @see SecurityManager#checkLink
      */
-    public native void loadLibrary(String libName);
+    public void loadLibrary(String libName) {
+        loadLibrary0(libName, ClassLoader.callerClassLoader(), true);        
+    }
 
+    void loadLibrary0(String libname, ClassLoader cL, boolean check) throws SecurityException, UnsatisfiedLinkError {
+        // Start (C) DRLVM
+        if (check) {
+            if (libname == null) {
+                throw new NullPointerException();
+            }
+
+            SecurityManager currentSecurity = System.getSecurityManager();
+
+            if (currentSecurity != null) {
+                currentSecurity.checkLink(libname);
+            }
+        }
+
+        String libFullName = null;
+
+        if (cL!=null) {
+            libFullName = cL.findLibrary(libname);
+        }
+        if (libFullName == null) {
+            String allPaths = null;
+
+            //XXX: should we think hard about security policy for this block?:
+            String jlp = System.getProperty("java.library.path");
+            String vblp = System.getProperty("vm.boot.library.path");
+            String udp = System.getProperty("user.dir");
+            String pathSeparator = System.getProperty("path.separator");
+            String fileSeparator = System.getProperty("file.separator");
+            allPaths = (jlp!=null?jlp:"")+(vblp!=null?pathSeparator+vblp:"")+(udp!=null?pathSeparator+udp:"");
+
+            if (allPaths.length()==0) {
+                throw new UnsatisfiedLinkError("Can not find the library: " +
+                        libname);
+            }
+
+            //String[] paths = allPaths.split(pathSeparator);
+            String[] paths;
+            {
+                ArrayList<String> res = new ArrayList<String>();
+                int curPos = 0;
+                int l = pathSeparator.length();
+                int i = allPaths.indexOf(pathSeparator);
+                int in = 0;
+                while (i != -1) {
+                    String s = allPaths.substring(curPos, i); 
+                    res.add(s);
+                    in++;
+                    curPos = i + l;
+                    i = allPaths.indexOf(pathSeparator, curPos);
+                }
+
+                if (curPos <= allPaths.length()) {
+                    String s = allPaths.substring(curPos, allPaths.length()); 
+                    in++;
+                    res.add(s);
+                }
+
+                paths = (String[]) res.toArray(new String[in]);
+            }
+
+            libname = System.mapLibraryName(libname);
+            for (int i=0; i<paths.length; i++) {
+                if (paths[i]==null) {
+                    continue;
+                }
+                libFullName = paths[i] + fileSeparator + libname;
+                try {
+                    this.load0(libFullName, cL, false);
+                    return;
+                } catch (UnsatisfiedLinkError e) {
+                }
+            }
+        } else {
+            this.load0(libFullName, cL, false);
+            return;
+        }
+        throw new UnsatisfiedLinkError("Can not find the library: " +
+                libname);
+        // End (C) DRLVM
+    }
+    
+    
     private native void runFinalization(boolean forced);
     
     /**
      * Provides a hint to the virtual machine that it would be useful to attempt
      * to perform any outstanding object finalizations.
      */
-    public native void runFinalization();
+    public void runFinalization() {
+        runFinalization(false);
+    }
 
     /**
      * Sets the flag that indicates whether all objects are finalized when the
@@ -433,8 +581,11 @@ public class Runtime {
      * @deprecated Use {@link java.io.InputStreamReader}.
      */
     @Deprecated
-    public native InputStream getLocalizedInputStream(InputStream stream);
-
+    public InputStream getLocalizedInputStream(InputStream stream) {
+        String encoding = System.getProperty("file.encoding", "UTF-8");
+        return encoding.equals("UTF-8") ? stream : new ReaderInputStream(stream, encoding);
+    }
+    
     /**
      * Returns the localized version of the specified output stream. The output
      * stream that is returned automatically converts all characters from
@@ -447,8 +598,11 @@ public class Runtime {
      * @deprecated Use {@link java.io.OutputStreamWriter}.
      */
     @Deprecated
-    public native OutputStream getLocalizedOutputStream(OutputStream stream);
-
+    public OutputStream getLocalizedOutputStream(OutputStream stream) {
+        String encoding = System.getProperty("file.encoding", "UTF-8");
+        return encoding.equals("UTF-8") ? stream : new WriterOutputStream(stream, encoding);
+    }
+    
     /**
      * Registers a virtual-machine shutdown hook. A shutdown hook is a
      * {@code Thread} that is ready to run, but has not yet been started. All
@@ -596,3 +750,125 @@ public class Runtime {
     public native long maxMemory();
 
 }
+
+// Start (C) Android
+/*
+ * Internal helper class for creating a localized InputStream. A reader
+ * wrapped in an InputStream.
+ */
+class ReaderInputStream extends InputStream {
+
+    private Reader reader;
+
+    private Writer writer;
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream(256);
+
+    private byte[] bytes;
+
+    private int nextByte;
+
+    private int numBytes;
+
+    public ReaderInputStream(InputStream stream, String encoding) {
+        try {
+            reader = new InputStreamReader(stream, "UTF-8");
+            writer = new OutputStreamWriter(out, encoding);
+        } catch (UnsupportedEncodingException e) {
+            // Should never happen, since UTF-8 and platform encoding must be
+            // supported.
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int read() throws IOException {
+        if (nextByte >= numBytes) {
+            readBuffer();
+        }
+
+        return (numBytes < 0) ? -1 : bytes[nextByte++];
+    }
+
+    private void readBuffer() throws IOException {
+        char[] chars = new char[128];
+        int read = reader.read(chars);
+        if (read < 0) {
+            numBytes = read;
+            return;
+        }
+
+        writer.write(chars, 0, read);
+        writer.flush();
+        bytes = out.toByteArray();
+        numBytes = bytes.length;
+        nextByte = 0;
+    }
+
+}
+
+/*
+ * Internal helper class for creating a localized OutputStream. A writer
+ * wrapped in an OutputStream. Bytes are written to characters in big-endian
+ * fashion.
+ */
+class WriterOutputStream extends OutputStream {
+
+    private Reader reader;
+
+    private Writer writer;
+
+    private PipedOutputStream out;
+
+    private PipedInputStream pipe;
+
+    private int numBytes;
+
+    public WriterOutputStream(OutputStream stream, String encoding) {
+        try {
+            // sink
+            this.writer = new OutputStreamWriter(stream, encoding);
+
+            // transcriber
+            out = new PipedOutputStream();
+            pipe = new PipedInputStream(out);
+            this.reader = new InputStreamReader(pipe, "UTF-8");
+
+        } catch (UnsupportedEncodingException e) {
+            // Should never happen, since platform encoding must be supported.
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void write(int b) throws IOException {
+        out.write(b);
+        if( ++numBytes > 256) {
+            flush();
+            numBytes = 0;
+        }
+    }
+
+    @Override
+    public void flush() throws IOException {
+        out.flush();
+        char[] chars = new char[128];
+        if (pipe.available() > 0) {
+            int read = reader.read(chars);
+            if (read > 0) {
+                writer.write(chars, 0, read);
+            }
+        }
+        writer.flush();
+    }
+
+    @Override
+    public void close() throws IOException {
+        out.close();
+        flush();
+        writer.close();
+    }
+}
+//End (C) Android

@@ -122,6 +122,7 @@ SRC = \
   luni-kernel/java_lang_Throwable.c \
   luni-kernel/java_lang_Runtime.c \
   luni-kernel/java_lang_System.c \
+  luni-kernel/java_lang_reflect_Array.c \
   luni-kernel/java_lang_reflect_Constructor.c \
   luni-kernel/java_lang_reflect_Method.c \
   luni-kernel/org_apache_harmony_kernel_vm_VM.c \

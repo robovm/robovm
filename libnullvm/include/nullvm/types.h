@@ -48,10 +48,12 @@ typedef struct Field Field;
 typedef struct ClassField ClassField;
 typedef struct InstanceField InstanceField;
 typedef struct Method Method;
+typedef struct Methods Methods;
 typedef struct ObjectHeader ObjectHeader;
 typedef struct Interface Interface;
 typedef struct Class Class;
 typedef struct Object Object;
+typedef struct ClassLoader ClassLoader;
 typedef struct DataObject DataObject;
 typedef struct Array Array;
 
@@ -87,6 +89,12 @@ struct Method {
   jint vtableIndex;
 };
 
+struct Methods {
+  Method* first;
+  void* lo;
+  void* hi;
+};
+
 struct Interface {
   Interface* next;
   Class* interface;
@@ -107,15 +115,14 @@ struct Class {
                            // void* gives enough space to store that reference.
   jint id;
   char* name;              // The name in modified UTF-8.
-  Object* classLoader;
+  ClassLoader* classLoader;
   Class* superclass;       // Superclass pointer. Only java.lang.Object and interfaces have NULL here.
-  Class* elementClass;     // If class is an array class this points to the class of the array elements.
   jboolean primitive;      // If true this represents a primitive type class.
   jint state;
   jint access;
   Interface* interfaces;   // Linked list of interfaces or NULL if there are no interfaces.
   Field* fields;           // Linked list of fields.
-  Method* methods;         // Linked list of methods.
+  Methods* methods;        // Linked list of methods.
   jint classDataSize;
   jint instanceDataOffset; // The offset from the base of Object->data
                            // where the instance fields of this class can be found.
@@ -125,6 +132,12 @@ struct Class {
   jint vtableSize;
   void** vtable;
   void* data[0];           // This is where static fields are stored for the class
+};
+
+struct ClassLoader {
+  Object object;
+  ClassLoader* parent;
+  Object* packages;
 };
 
 struct DataObject {

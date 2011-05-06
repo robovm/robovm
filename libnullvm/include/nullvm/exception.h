@@ -10,6 +10,7 @@ extern jint nvmThrowNew(Env* env, Class* clazz, char* message);
 extern jint nvmThrowOutOfMemoryError(Env* env);
 extern jint nvmThrowNoClassDefFoundError(Env* env, char* name);
 extern jint nvmThrowIllegalAccessError(Env* env);
+extern jint nvmThrowIllegalAccessErrorClass(Env* env, Class* clazz, Class* caller);
 extern jint nvmThrowIllegalAccessErrorField(Env* env, Class* clazz, char* name, char* desc, Class* caller);
 extern jint nvmThrowIllegalAccessErrorMethod(Env* env, Class* clazz, char* name, char* desc, Class* caller);
 extern jint nvmThrowNoSuchFieldError(Env* env, char* name);

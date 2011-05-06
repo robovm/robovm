@@ -15,3 +15,7 @@ Class* Java_org_apache_harmony_kernel_vm_VM_internalGetStackClass(JNIEnv* _env, 
     return !entry ? NULL : entry->method->clazz;
 }
 
+Object* Java_org_apache_harmony_kernel_vm_VM_intern(Env* env, Class* c, Object* string) {
+    return nvmInternString(env, string);
+}
+

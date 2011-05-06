@@ -1,10 +1,23 @@
 #include <nullvm.h>
 #include <string.h>
+#include "log.h"
+#include "uthash.h"
 
 static Method* stringConstructor = NULL;
 static InstanceField* stringValueField = NULL;
 static InstanceField* stringOffsetField = NULL;
 static InstanceField* stringCountField = NULL;
+
+// TODO: Restrict the number of bytes stored in the cache instead of the number of String objects.
+#define MAX_CACHE_SIZE 10000
+
+// TODO: Protect this with lock
+typedef struct CacheEntry {
+    char* key;      // The string in modified UTF-8
+    Object* string; // The java.lang.String object.
+    UT_hash_handle hh;
+} CacheEntry;
+static CacheEntry* internedStrings = NULL;
 
 
 // TODO: Return the same instance for strings of length == 0?
@@ -156,6 +169,83 @@ Object* nvmNewString(Env* env, jchar* chars, jint length) {
     if (!value) return NULL;
     memcpy(value->values, chars, sizeof(jchar) * length);
     return newString(env, value, length);
+}
+
+Object* nvmNewInternedStringUTF(Env* env, char* s, jint length) {
+    // Check the cache first.
+    TRACE("nvmNewInternedStringUTF: Searching for string '%s' in interned strings cache\n", s);
+    CacheEntry* cacheEntry;
+    HASH_FIND_STR(internedStrings, s, cacheEntry);
+    if (cacheEntry) {
+        TRACE("nvmNewInternedStringUTF: String '%s' found in interned strings cache\n", s);
+        // Touch the string
+        HASH_DELETE(hh, internedStrings, cacheEntry);
+        HASH_ADD_KEYPTR(hh, internedStrings, cacheEntry->key, strlen(cacheEntry->key), cacheEntry);
+        return cacheEntry->string;
+    }
+
+    TRACE("nvmNewInternedStringUTF: String '%s' not found in interned strings cache\n", s);
+
+    length = length = -1 ? getUnicodeLengthOfUtf8(s) : length;
+    CharArray* value = nvmNewCharArray(env, length);
+    if (!value) return NULL;
+    utf8ToUnicode(value->values, s);
+    Object* string = newString(env, value, length);
+    if (!string) return NULL;
+
+    cacheEntry = nvmAllocateMemory(env, sizeof(CacheEntry));
+    if (!cacheEntry) return NULL;
+    cacheEntry->key = s;
+    cacheEntry->string = string;
+    HASH_ADD_KEYPTR(hh, internedStrings, cacheEntry->key, strlen(cacheEntry->key), cacheEntry);
+    
+    // prune the cache to MAX_CACHE_SIZE
+    if (HASH_COUNT(internedStrings) >= MAX_CACHE_SIZE) {
+        CacheEntry* tmpEntry;
+        HASH_ITER(hh, internedStrings, cacheEntry, tmpEntry) {
+            TRACE("nvmNewInternedStringUTF: Removing oldest interned string '%s' from interned strings cache\n", cacheEntry->key);
+            // prune the first entry (loop is based on insertion order so this deletes the oldest item)
+            HASH_DELETE(hh, internedStrings, cacheEntry);
+            break;
+        }
+    } 
+
+    return string;
+}
+
+Object* nvmInternString(Env* env, Object* str) {
+    // Check the cache first.
+    char* s = nvmGetStringUTFChars(env, str);
+    if (!s) return NULL;
+    TRACE("nvmInternString: Searching for string '%s' in interned strings cache\n", s);
+    CacheEntry* cacheEntry;
+    HASH_FIND_STR(internedStrings, s, cacheEntry);
+    if (cacheEntry) {
+        TRACE("nvmInternString: String '%s' found in interned strings cache\n", s);
+        // Touch the string
+        HASH_DELETE(hh, internedStrings, cacheEntry);
+        HASH_ADD_KEYPTR(hh, internedStrings, cacheEntry->key, strlen(cacheEntry->key), cacheEntry);
+        return cacheEntry->string;
+    }
+
+    cacheEntry = nvmAllocateMemory(env, sizeof(CacheEntry));
+    if (!cacheEntry) return NULL;
+    cacheEntry->key = s;
+    cacheEntry->string = str;
+    HASH_ADD_KEYPTR(hh, internedStrings, cacheEntry->key, strlen(cacheEntry->key), cacheEntry);
+    
+    // prune the cache to MAX_CACHE_SIZE
+    if (HASH_COUNT(internedStrings) >= MAX_CACHE_SIZE) {
+        CacheEntry* tmpEntry;
+        HASH_ITER(hh, internedStrings, cacheEntry, tmpEntry) {
+            TRACE("nvmInternString: Removing oldest interned string '%s' from interned strings cache\n", cacheEntry->key);
+            // prune the first entry (loop is based on insertion order so this deletes the oldest item)
+            HASH_DELETE(hh, internedStrings, cacheEntry);
+            break;
+        }
+    } 
+
+    return str;
 }
 
 jint nvmGetStringLength(Env* env, Object* str) {

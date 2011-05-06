@@ -229,22 +229,23 @@ public class SootClassCompiler {
     private static final FunctionRef NVM_BC_MONITOR_ENTER = new FunctionRef("_nvmBcMonitorEnter", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     private static final FunctionRef NVM_BC_MONITOR_EXIT = new FunctionRef("_nvmBcMonitorExit", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     private static final FunctionRef NVM_BC_LDC_STRING = new FunctionRef("_nvmBcLdcString", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_LDC_CLASS = new FunctionRef("_nvmBcLdcClass", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_LOOKUP_VIRTUAL_METHOD = new FunctionRef("_nvmBcLookupVirtualMethod", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR, I8_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_CHECKCAST = new FunctionRef("_nvmBcCheckcast", new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_INSTANCEOF = new FunctionRef("_nvmBcInstanceof", new FunctionType(I32, ENV_PTR, OBJECT_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_NEW = new FunctionRef("_nvmBcNew", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_NEW_OBJECT_ARRAY = new FunctionRef("_nvmBcNewObjectArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, I8_PTR));
-    private static final FunctionRef NVM_BC_NEW_MULTI_ARRAY = new FunctionRef("_nvmBcNewMultiArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, new PointerType(I32), I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_INVOKESPECIAL = new FunctionRef("_nvmBcResolveInvokespecial", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_INVOKESTATIC = new FunctionRef("_nvmBcResolveInvokestatic", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_INVOKEVIRTUAL = new FunctionRef("_nvmBcResolveInvokevirtual", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_INVOKEINTERFACE = new FunctionRef("_nvmBcResolveInvokeinterface", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_GETSTATIC = new FunctionRef("_nvmBcResolveGetstatic", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_PUTSTATIC = new FunctionRef("_nvmBcResolvePutstatic", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_GETFIELD = new FunctionRef("_nvmBcResolveGetfield", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_PUTFIELD = new FunctionRef("_nvmBcResolvePutfield", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_NATIVE = new FunctionRef("_nvmBcResolveNative", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_LDC_CLASS = new FunctionRef("_nvmBcLdcClass", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR, CLASS_PTR));
+    private static final FunctionRef NVM_BC_LOOKUP_VIRTUAL_METHOD = new FunctionRef("_nvmBcLookupVirtualMethod", new FunctionType(I8_PTR, ENV_PTR, CLASS_PTR, OBJECT_PTR, I8_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_LOOKUP_INTERFACE_METHOD = new FunctionRef("_nvmBcLookupInterfaceMethod", new FunctionType(I8_PTR, ENV_PTR, CLASS_PTR, OBJECT_PTR, I8_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_CHECKCAST = new FunctionRef("_nvmBcCheckcast", new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR, I8_PTR, CLASS_PTR));
+    private static final FunctionRef NVM_BC_INSTANCEOF = new FunctionRef("_nvmBcInstanceof", new FunctionType(I32, ENV_PTR, OBJECT_PTR, I8_PTR, CLASS_PTR));
+    private static final FunctionRef NVM_BC_NEW = new FunctionRef("_nvmBcNew", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR, CLASS_PTR));
+    private static final FunctionRef NVM_BC_NEW_OBJECT_ARRAY = new FunctionRef("_nvmBcNewObjectArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, I8_PTR, CLASS_PTR));
+    private static final FunctionRef NVM_BC_NEW_MULTI_ARRAY = new FunctionRef("_nvmBcNewMultiArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, new PointerType(I32), I8_PTR, CLASS_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_INVOKESPECIAL = new FunctionRef("_nvmBcResolveInvokespecial", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_INVOKESTATIC = new FunctionRef("_nvmBcResolveInvokestatic", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_INVOKEVIRTUAL = new FunctionRef("_nvmBcResolveInvokevirtual", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_INVOKEINTERFACE = new FunctionRef("_nvmBcResolveInvokeinterface", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_GETSTATIC = new FunctionRef("_nvmBcResolveGetstatic", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_PUTSTATIC = new FunctionRef("_nvmBcResolvePutstatic", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_GETFIELD = new FunctionRef("_nvmBcResolveGetfield", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_PUTFIELD = new FunctionRef("_nvmBcResolvePutfield", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_NATIVE = new FunctionRef("_nvmBcResolveNative", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
     
     private static final FunctionRef LLVM_EH_EXCEPTION = new FunctionRef("llvm.eh.exception", new FunctionType(I8_PTR));
     private static final FunctionRef LLVM_EH_SELECTOR = new FunctionRef("llvm.eh.selector", new FunctionType(I32, true, I8_PTR, I8_PTR));
@@ -482,6 +483,7 @@ public class SootClassCompiler {
                     getString(invoke.getTargetClass()), 
                     getString(invoke.getMethodName()),
                     getString(invoke.getMethodDesc()),
+                    getCaller(function),
                     new ConstantBitcast(ptr, I8_PTR)));
         } else if (trampoline instanceof NativeCall) {
             NativeCall nativeCall = (NativeCall) trampoline;
@@ -494,6 +496,7 @@ public class SootClassCompiler {
                             nativeCall.getMethodName())),
                     getString(mangleNativeMethod(nativeCall.getTargetClass(), 
                             nativeCall.getMethodName(), nativeCall.getMethodDesc())),
+                    getCaller(function),
                     new ConstantBitcast(ptr, I8_PTR)));
         } else if (trampoline instanceof FieldAccessor) {
             FieldAccessor accessor = (FieldAccessor) trampoline;
@@ -512,6 +515,7 @@ public class SootClassCompiler {
                     getString(accessor.getTargetClass()), 
                     getString(accessor.getFieldName()),
                     getString(accessor.getFieldDesc()),
+                    getCaller(function),
                     new ConstantBitcast(ptr, I8_PTR)));
         }
 
@@ -884,7 +888,11 @@ public class SootClassCompiler {
         Variable fptr = function.newVariable(I8_PTR);
         Value nameRef = getString(method.getName());
         Value descRef = getString(getDescriptor(method.makeRef()));
-        function.add(new Call(fptr, NVM_BC_LOOKUP_VIRTUAL_METHOD, ENV, new VariableRef("this", OBJECT_PTR), nameRef, descRef));
+        if (sootClass.isInterface()) {
+            function.add(new Call(fptr, NVM_BC_LOOKUP_INTERFACE_METHOD, ENV, getCaller(function), new VariableRef("this", OBJECT_PTR), nameRef, descRef));
+        } else {
+            function.add(new Call(fptr, NVM_BC_LOOKUP_VIRTUAL_METHOD, ENV, getCaller(function), new VariableRef("this", OBJECT_PTR), nameRef, descRef));
+        }
         Variable f = function.newVariable(functionType);
         function.add(new Bitcast(f, fptr.ref(), function.getType()));
         String[] parameterNames = function.getParameterNames();
@@ -1232,7 +1240,7 @@ public class SootClassCompiler {
             return callOrInvoke(ctx, NVM_BC_LDC_STRING, ENV, string);
         } else if (v instanceof soot.jimple.ClassConstant) {
             Value clazz = getString(((soot.jimple.ClassConstant) v).getValue());
-            return callOrInvoke(ctx, NVM_BC_LDC_CLASS, ENV, clazz);
+            return callOrInvoke(ctx, NVM_BC_LDC_CLASS, ENV, clazz, getCaller(ctx));
         }
         throw new IllegalArgumentException("Unknown Immediate type: " + v.getClass());
     }
@@ -1451,6 +1459,16 @@ public class SootClassCompiler {
     
     private static Constant neg(Constant constant) {
         return new ConstantSub(new IntegerConstant(0), constant);
+    }
+    
+    private Value getCaller(Context ctx) {
+        return getCaller(ctx.f());
+    }
+    
+    private Value getCaller(Function f) {
+        Variable caller = f.newVariable(CLASS_PTR);
+        f.add(new Load(caller, THE_CLASS.ref()));            
+        return caller.ref();
     }
     
     private Value getClassFieldPtr(Function f, SootField field) {
@@ -1682,7 +1700,7 @@ public class SootClassCompiler {
 //                        
 //                    }
                 } else {
-                    result = callOrInvoke(ctx, NVM_BC_CHECKCAST, ENV, op, getString(getInternalName(sootTargetType)));
+                    result = callOrInvoke(ctx, NVM_BC_CHECKCAST, ENV, op, getString(getInternalName(sootTargetType)), getCaller(ctx));
 //                    int dimensions = 0;
 //                    Trampoline trampoline = null;
 //                    soot.Type checkType = sootTargetType;
@@ -1698,7 +1716,7 @@ public class SootClassCompiler {
             } else if (rightOp instanceof InstanceOfExpr) {
                 Value op = immediate(ctx, (Immediate) ((InstanceOfExpr) rightOp).getOp());
                 soot.Type checkType = ((InstanceOfExpr) rightOp).getCheckType();
-                result = callOrInvoke(ctx, NVM_BC_INSTANCEOF, ENV, op, getString(getInternalName(checkType)));
+                result = callOrInvoke(ctx, NVM_BC_INSTANCEOF, ENV, op, getString(getInternalName(checkType)), getCaller(ctx));
 //                int dimensions = 0;
 //                Trampoline trampoline = null;
 //                soot.Type checkType = ((InstanceOfExpr) rightOp).getCheckType();
@@ -1711,14 +1729,14 @@ public class SootClassCompiler {
 //                addTrampoline(trampoline, new FunctionType(I8, ENV_PTR, OBJECT_PTR, I32));
 //                callOrInvokeTrampoline(ctx, trampoline, result, ENV, op, new IntegerConstant(dimensions));
             } else if (rightOp instanceof NewExpr) {
-                result = callOrInvoke(ctx, NVM_BC_NEW, ENV, getString(getInternalName(((NewExpr) rightOp).getBaseType())));
+                result = callOrInvoke(ctx, NVM_BC_NEW, ENV, getString(getInternalName(((NewExpr) rightOp).getBaseType())), getCaller(ctx));
             } else if (rightOp instanceof NewArrayExpr) {
                 NewArrayExpr expr = (NewArrayExpr) rightOp;
                 Value size = immediate(ctx, (Immediate) expr.getSize());
                 if (expr.getBaseType() instanceof PrimType) {
                     result = callOrInvoke(ctx, getNewArray(expr.getBaseType()), ENV, size);
                 } else {
-                    result = callOrInvoke(ctx, NVM_BC_NEW_OBJECT_ARRAY, ENV, size, getString(getInternalName(expr.getType())));
+                    result = callOrInvoke(ctx, NVM_BC_NEW_OBJECT_ARRAY, ENV, size, getString(getInternalName(expr.getType())), getCaller(ctx));
                 }
             } else if (rightOp instanceof NewMultiArrayExpr) {
                 NewMultiArrayExpr expr = (NewMultiArrayExpr) rightOp;
@@ -1731,7 +1749,7 @@ public class SootClassCompiler {
                 Variable dimsI32 = ctx.f().newVariable(new PointerType(I32));
                 ctx.f().add(new Bitcast(dimsI32, dims.ref(), dimsI32.getType()));
                 result = callOrInvoke(ctx, NVM_BC_NEW_MULTI_ARRAY, ENV, new IntegerConstant(expr.getSizeCount()), 
-                        dimsI32.ref(), getString(getInternalName(expr.getType())));
+                        dimsI32.ref(), getString(getInternalName(expr.getType())), getCaller(ctx));
             } else if (rightOp instanceof InvokeExpr) {
                 result = invokeExpr(ctx, stmt, (InvokeExpr) rightOp);
             } else if (rightOp instanceof LengthExpr) {

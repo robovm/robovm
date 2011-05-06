@@ -5,6 +5,8 @@ extern jboolean nvmInitStrings(Env* env);
 extern Object* nvmNewString(Env* env, jchar* chars, jint length);
 extern Object* nvmNewStringUTF(Env* env, char* s, jint length);
 extern Object* nvmNewStringAscii(Env* env, char* s, jint length);
+extern Object* nvmNewInternedStringUTF(Env* env, char* s, jint length);
+extern Object* nvmInternString(Env* env, Object* str);
 extern jint nvmGetStringLength(Env* env, Object* str);
 extern jchar* nvmGetStringChars(Env* env, Object* str);
 extern jint nvmGetStringUTFLength(Env* env, Object* str);

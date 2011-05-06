@@ -2,8 +2,8 @@
 #include <vmi.h>
 #include "log.h"
 
-// Defined in init.c
-extern DynamicLib* nativeLibs;
+// Defined in method.c
+extern DynamicLib* bootNativeLibs;
 
 extern struct VMInterfaceFunctions_ vmiImpl;
 VMInterface vmi = &vmiImpl;
@@ -88,14 +88,13 @@ jboolean nvmInitVMI(Env* env) {
     javaVM.GetEnv = _GetEnv;
     struct JavaVMProxy javaVMProxy = {&javaVM, env};
 
-    DynamicLib* dlib = nvmInitDynamicLib(env, "libnullvm-rt.so", &nativeLibs);
-    if (!dlib) return FALSE;
-    if (!nvmLoadDynamicLib(env, dlib)) {
-        nvmAbort("Fatal error: Failed to load %s", dlib->path);
+    DynamicLib* dlib = nvmLoadDynamicLib(env, "libnullvm-rt.so", &bootNativeLibs);
+    if (!dlib) {
+        nvmAbort("Fatal error: Failed to load libnullvm-rt.so");
     }
 
-    jint (*JNI_OnLoad_LUNI)(JavaVM* vm, void* reserved) = nvmFindDynamicLibSymbol(env, dlib, NULL, "JNI_OnLoad_LUNI");
-    jint (*JNI_OnLoad_Archive)(JavaVM* vm, void* reserved) = nvmFindDynamicLibSymbol(env, dlib, NULL, "JNI_OnLoad_Archive");
+    jint (*JNI_OnLoad_LUNI)(JavaVM* vm, void* reserved) = nvmFindDynamicLibSymbol(env, dlib, "JNI_OnLoad_LUNI");
+    jint (*JNI_OnLoad_Archive)(JavaVM* vm, void* reserved) = nvmFindDynamicLibSymbol(env, dlib, "JNI_OnLoad_Archive");
 
     if (!JNI_OnLoad_LUNI || !JNI_OnLoad_Archive) return FALSE;
 

@@ -3,8 +3,8 @@
 #include <unwind.h>
 #include "log.h"
 
-// Defined in init.c
-extern DynamicLib* nativeLibs;
+DynamicLib* bootNativeLibs = NULL;
+DynamicLib* mainNativeLibs = NULL;
 
 typedef union IntValue {
     jint i;
@@ -203,7 +203,7 @@ static inline jboolean isFpType(char type) {
     return type == 'F' || type == 'D';
 }
 
-jboolean initCallInfo(CallInfo* callInfo, Env* env, Class* clazz, Object* obj, Method* method, jboolean virtual, jvalue* args) {
+jboolean initCallInfo(CallInfo* callInfo, Env* env, Object* obj, Method* method, jboolean virtual, jvalue* args) {
     if (virtual && !(method->access & ACC_PRIVATE)) {
         // Lookup the real method to be invoked
         method = nvmGetMethod(env, obj->clazz, method->name, method->desc);
@@ -335,7 +335,7 @@ static jvalue* va_list2jargs(Env* env, Method* method, va_list args) {
 
 void nvmCallVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, TRUE, args)) return;
+    if (!initCallInfo(&callInfo, env, obj, method, TRUE, args)) return;
     void (*f)(CallInfo*) = _nvmCall0;
     f(&callInfo);
 }
@@ -354,7 +354,7 @@ void nvmCallVoidInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 
 Object* nvmCallObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, TRUE, args)) return NULL;
+    if (!initCallInfo(&callInfo, env, obj, method, TRUE, args)) return NULL;
     Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -373,7 +373,7 @@ Object* nvmCallObjectInstanceMethod(Env* env, Object* obj, Method* method, ...) 
 
 jboolean nvmCallBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, TRUE, args)) return FALSE;
+    if (!initCallInfo(&callInfo, env, obj, method, TRUE, args)) return FALSE;
     jboolean (*f)(CallInfo*) = (jboolean (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -392,7 +392,7 @@ jboolean nvmCallBooleanInstanceMethod(Env* env, Object* obj, Method* method, ...
 
 jbyte nvmCallByteInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, TRUE, args)) return 0;
+    if (!initCallInfo(&callInfo, env, obj, method, TRUE, args)) return 0;
     jbyte (*f)(CallInfo*) = (jbyte (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -411,7 +411,7 @@ jbyte nvmCallByteInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 
 jchar nvmCallCharInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, TRUE, args)) return 0;
+    if (!initCallInfo(&callInfo, env, obj, method, TRUE, args)) return 0;
     jchar (*f)(CallInfo*) = (jchar (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -430,7 +430,7 @@ jchar nvmCallCharInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 
 jshort nvmCallShortInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, TRUE, args)) return 0;
+    if (!initCallInfo(&callInfo, env, obj, method, TRUE, args)) return 0;
     jshort (*f)(CallInfo*) = (jshort (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -449,7 +449,7 @@ jshort nvmCallShortInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 
 jint nvmCallIntInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, TRUE, args)) return 0;
+    if (!initCallInfo(&callInfo, env, obj, method, TRUE, args)) return 0;
     jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -468,7 +468,7 @@ jint nvmCallIntInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 
 jlong nvmCallLongInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, TRUE, args)) return 0;
+    if (!initCallInfo(&callInfo, env, obj, method, TRUE, args)) return 0;
     jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -487,7 +487,7 @@ jlong nvmCallLongInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 
 jfloat nvmCallFloatInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, TRUE, args)) return 0.0f;
+    if (!initCallInfo(&callInfo, env, obj, method, TRUE, args)) return 0.0f;
     jfloat (*f)(CallInfo*) = (jfloat (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -506,7 +506,7 @@ jfloat nvmCallFloatInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 
 jdouble nvmCallDoubleInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, TRUE, args)) return 0.0;
+    if (!initCallInfo(&callInfo, env, obj, method, TRUE, args)) return 0.0;
     jdouble (*f)(CallInfo*) = (jdouble (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -525,7 +525,7 @@ jdouble nvmCallDoubleInstanceMethod(Env* env, Object* obj, Method* method, ...) 
 
 void nvmCallNonvirtualVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, FALSE, args)) return;
+    if (!initCallInfo(&callInfo, env, obj, method, FALSE, args)) return;
     void (*f)(CallInfo*) = _nvmCall0;
     f(&callInfo);
 }
@@ -544,7 +544,7 @@ void nvmCallNonvirtualVoidInstanceMethod(Env* env, Object* obj, Method* method, 
 
 Object* nvmCallNonvirtualObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, FALSE, args)) return NULL;
+    if (!initCallInfo(&callInfo, env, obj, method, FALSE, args)) return NULL;
     Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -563,7 +563,7 @@ Object* nvmCallNonvirtualObjectInstanceMethod(Env* env, Object* obj, Method* met
 
 jboolean nvmCallNonvirtualBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, FALSE, args)) return FALSE;
+    if (!initCallInfo(&callInfo, env, obj, method, FALSE, args)) return FALSE;
     jboolean (*f)(CallInfo*) = (jboolean (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -582,7 +582,7 @@ jboolean nvmCallNonvirtualBooleanInstanceMethod(Env* env, Object* obj, Method* m
 
 jbyte nvmCallNonvirtualByteInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, FALSE, args)) return 0;
+    if (!initCallInfo(&callInfo, env, obj, method, FALSE, args)) return 0;
     jbyte (*f)(CallInfo*) = (jbyte (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -601,7 +601,7 @@ jbyte nvmCallNonvirtualByteInstanceMethod(Env* env, Object* obj, Method* method,
 
 jchar nvmCallNonvirtualCharInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, FALSE, args)) return 0;
+    if (!initCallInfo(&callInfo, env, obj, method, FALSE, args)) return 0;
     jchar (*f)(CallInfo*) = (jchar (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -620,7 +620,7 @@ jchar nvmCallNonvirtualCharInstanceMethod(Env* env, Object* obj, Method* method,
 
 jshort nvmCallNonvirtualShortInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, FALSE, args)) return 0;
+    if (!initCallInfo(&callInfo, env, obj, method, FALSE, args)) return 0;
     jshort (*f)(CallInfo*) = (jshort (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -639,7 +639,7 @@ jshort nvmCallNonvirtualShortInstanceMethod(Env* env, Object* obj, Method* metho
 
 jint nvmCallNonvirtualIntInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, FALSE, args)) return 0;
+    if (!initCallInfo(&callInfo, env, obj, method, FALSE, args)) return 0;
     jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -658,7 +658,7 @@ jint nvmCallNonvirtualIntInstanceMethod(Env* env, Object* obj, Method* method, .
 
 jlong nvmCallNonvirtualLongInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, FALSE, args)) return 0;
+    if (!initCallInfo(&callInfo, env, obj, method, FALSE, args)) return 0;
     jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -677,7 +677,7 @@ jlong nvmCallNonvirtualLongInstanceMethod(Env* env, Object* obj, Method* method,
 
 jfloat nvmCallNonvirtualFloatInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, FALSE, args)) return 0.0f;
+    if (!initCallInfo(&callInfo, env, obj, method, FALSE, args)) return 0.0f;
     jfloat (*f)(CallInfo*) = (jfloat (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -696,7 +696,7 @@ jfloat nvmCallNonvirtualFloatInstanceMethod(Env* env, Object* obj, Method* metho
 
 jdouble nvmCallNonvirtualDoubleInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, obj->clazz, obj, method, FALSE, args)) return 0.0;
+    if (!initCallInfo(&callInfo, env, obj, method, FALSE, args)) return 0.0;
     jdouble (*f)(CallInfo*) = (jdouble (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
 }
@@ -715,8 +715,8 @@ jdouble nvmCallNonvirtualDoubleInstanceMethod(Env* env, Object* obj, Method* met
 
 void nvmCallVoidClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return;
-    nvmInitialize(env, clazz);
+    if (!initCallInfo(&callInfo, env, NULL, method, FALSE, args)) return;
+    nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return;
     void (*f)(CallInfo*) = _nvmCall0;
     f(&callInfo);
@@ -736,8 +736,8 @@ void nvmCallVoidClassMethod(Env* env, Class* clazz, Method* method, ...) {
 
 Object* nvmCallObjectClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return NULL;
-    nvmInitialize(env, clazz);
+    if (!initCallInfo(&callInfo, env, NULL, method, FALSE, args)) return NULL;
+    nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return NULL;
     Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
@@ -757,8 +757,8 @@ Object* nvmCallObjectClassMethod(Env* env, Class* clazz, Method* method, ...) {
 
 jboolean nvmCallBooleanClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return FALSE;
-    nvmInitialize(env, clazz);
+    if (!initCallInfo(&callInfo, env, NULL, method, FALSE, args)) return FALSE;
+    nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return FALSE;
     jboolean (*f)(CallInfo*) = (jboolean (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
@@ -778,8 +778,8 @@ jboolean nvmCallBooleanClassMethod(Env* env, Class* clazz, Method* method, ...) 
 
 jbyte nvmCallByteClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return 0;
-    nvmInitialize(env, clazz);
+    if (!initCallInfo(&callInfo, env, NULL, method, FALSE, args)) return 0;
+    nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return 0;
     jbyte (*f)(CallInfo*) = (jbyte (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
@@ -799,8 +799,8 @@ jbyte nvmCallByteClassMethod(Env* env, Class* clazz, Method* method, ...) {
 
 jchar nvmCallCharClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return 0;
-    nvmInitialize(env, clazz);
+    if (!initCallInfo(&callInfo, env, NULL, method, FALSE, args)) return 0;
+    nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return 0;
     jchar (*f)(CallInfo*) = (jchar (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
@@ -820,8 +820,8 @@ jchar nvmCallCharClassMethod(Env* env, Class* clazz, Method* method, ...) {
 
 jshort nvmCallShortClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return 0;
-    nvmInitialize(env, clazz);
+    if (!initCallInfo(&callInfo, env, NULL, method, FALSE, args)) return 0;
+    nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return 0;
     jshort (*f)(CallInfo*) = (jshort (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
@@ -841,8 +841,8 @@ jshort nvmCallShortClassMethod(Env* env, Class* clazz, Method* method, ...) {
 
 jint nvmCallIntClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return 0;
-    nvmInitialize(env, clazz);
+    if (!initCallInfo(&callInfo, env, NULL, method, FALSE, args)) return 0;
+    nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return 0;
     jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
@@ -862,8 +862,8 @@ jint nvmCallIntClassMethod(Env* env, Class* clazz, Method* method, ...) {
 
 jlong nvmCallLongClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return 0;
-    nvmInitialize(env, clazz);
+    if (!initCallInfo(&callInfo, env, NULL, method, FALSE, args)) return 0;
+    nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return 0;
     jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
@@ -883,8 +883,8 @@ jlong nvmCallLongClassMethod(Env* env, Class* clazz, Method* method, ...) {
 
 jfloat nvmCallFloatClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return 0.0f;
-    nvmInitialize(env, clazz);
+    if (!initCallInfo(&callInfo, env, NULL, method, FALSE, args)) return 0.0f;
+    nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return 0.0f;
     jfloat (*f)(CallInfo*) = (jfloat (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
@@ -904,8 +904,8 @@ jfloat nvmCallFloatClassMethod(Env* env, Class* clazz, Method* method, ...) {
 
 jdouble nvmCallDoubleClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo callInfo = {0};
-    if (!initCallInfo(&callInfo, env, clazz, NULL, method, FALSE, args)) return 0.0;
-    nvmInitialize(env, clazz);
+    if (!initCallInfo(&callInfo, env, NULL, method, FALSE, args)) return 0.0;
+    nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return 0.0;
     jdouble (*f)(CallInfo*) = (jdouble (*)(CallInfo*)) _nvmCall0;
     return f(&callInfo);
@@ -923,51 +923,27 @@ jdouble nvmCallDoubleClassMethod(Env* env, Class* clazz, Method* method, ...) {
     return nvmCallDoubleClassMethodV(env, clazz, method, args);
 }
 
-Object* nvmCallReflectedMethod(Env* env, Object* obj, ObjectArray* args, Class* declaringClass, ObjectArray* parameterTypes, Class* returnType, jint slot, jboolean noAccessCheck) {
-}
-
-/*
-Method* nvmGetMethod(Env* env, Class* clazz, char* name, char* desc) {
-    Method* method;
-    int sameClass = caller == NULL || clazz == caller;
-    int subClass = caller == NULL || nvmIsSubClass(clazz, caller);
-    int samePackage = caller == NULL || nvmIsSamePackage(clazz, caller);
-
-    for (method = clazz->methods; method != NULL; method = method->next) {
-        if (!strcmp(method->name, name) && !strcmp(method->desc, desc)) {
-            jint access = method->access;
-            if (IS_PRIVATE(access) && !sameClass) {
-                nvmThrowIllegalAccessErrorMethod(clazz, name, desc, caller);
-            }
-            if (IS_PROTECTED(access) && !subClass) {
-                nvmThrowIllegalAccessErrorMethod(clazz, name, desc, caller);
-            }
-            if (IS_PACKAGE_PRIVATE(access) && !samePackage) {
-                nvmThrowIllegalAccessErrorMethod(clazz, name, desc, caller);
-            }
-            return method;
-        }
+void* nvmResolveNativeMethodImpl(Env* env, Method* method, char* shortMangledName, char* longMangledName, ClassLoader* classLoader, void** ptr) {
+    DynamicLib* nativeLibs = NULL;
+    if (!classLoader || classLoader->parent == NULL) {
+        // This is the bootstrap classloader
+        nativeLibs = bootNativeLibs;
+    } else if (classLoader->parent->parent == NULL && classLoader->object.clazz->classLoader == NULL) {
+        // This is the system classloader
+        nativeLibs = mainNativeLibs;
+    } else {
+        // Unknown classloader
+        nvmThrowUnsatisfiedLinkError(env);
+        return NULL;
     }
 
-    if (clazz->superclass && strcmp("<init>", name) && strcmp("<clinit>", name)) {
-        /* 
-         * Check with the superclass. Note that constructors and static 
-         * initializers are not inherited.
-         */
-       /* return nvmGetMethod(clazz, name, desc);
-    }
-
-    nvmThrowNoSuchMethodError(name);
-}*/
-
-void* nvmResolveNativeMethodImpl(Env* env, Method* method, char* shortMangledName, char* longMangledName, void** ptr) {
     TRACE("Searching for native method using short name: %s\n", shortMangledName);
-    void* f = nvmFindDynamicLibSymbol(env, nativeLibs, NULL, shortMangledName);
+    void* f = nvmFindDynamicLibSymbol(env, nativeLibs, shortMangledName);
     if (f) {
         TRACE("Found native method using short name: %s\n", shortMangledName);
     } else if (!strcmp(shortMangledName, longMangledName)) {
         TRACE("Searching for native method using long name: %s\n", longMangledName);
-        void* f = nvmFindDynamicLibSymbol(env, nativeLibs, NULL, longMangledName);
+        void* f = nvmFindDynamicLibSymbol(env, nativeLibs, longMangledName);
         if (f) {
             TRACE("Found native method using long name: %s\n", longMangledName);
         }
@@ -979,5 +955,44 @@ void* nvmResolveNativeMethodImpl(Env* env, Method* method, char* shortMangledNam
     // TODO: Remember ptr to allow it to be reset when the JNI RegisterNatives/UnregisterNatives functions are called
     *ptr = f;
     return f;
+}
+
+
+jboolean nvmLoadNativeLibrary(Env* env, char* path, ClassLoader* classLoader) {
+    DynamicLib** nativeLibs = NULL;
+    if (!classLoader || classLoader->parent == NULL) {
+        // This is the bootstrap classloader
+        nativeLibs = &bootNativeLibs;
+    } else if (classLoader->parent->parent == NULL && classLoader->object.clazz->classLoader == NULL) {
+        // This is the system classloader
+        nativeLibs = &mainNativeLibs;
+    } else {
+        // Unknown classloader
+        nvmThrowUnsatisfiedLinkError(env);
+        return FALSE;
+    }
+
+    char abspath[PATH_MAX];
+    if (!realpath(path, abspath)) {
+        nvmThrowUnsatisfiedLinkError(env);
+        return FALSE;
+    }
+
+    // See if it has already been loaded
+    DynamicLib* dlib = *nativeLibs;
+    while (dlib) {
+        if (!strcmp(dlib->path, abspath)) {
+            return TRUE;
+        }
+        dlib = dlib->next;
+    }
+
+    if (!nvmLoadDynamicLib(env, abspath, nativeLibs)) {
+        if (!nvmExceptionOccurred(env)) {
+            nvmThrowUnsatisfiedLinkError(env);
+        }
+        return FALSE;
+    }
+    return TRUE;
 }
 

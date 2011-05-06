@@ -98,6 +98,11 @@ jint nvmThrowIllegalAccessError(Env* env) {
     return nvmThrowNew(env, java_lang_IllegalAccessError, "");
 }
 
+jint nvmThrowIllegalAccessErrorClass(Env* env, Class* clazz, Class* caller) {
+    // TODO: Message should look like ?
+    return nvmThrowNew(env, java_lang_IllegalAccessError, "");
+}
+
 jint nvmThrowIllegalAccessErrorField(Env* env, Class* clazz, char* name, char* desc, Class* caller) {
     // TODO: Message should look like "java.lang.IllegalAccessError: tried to access field a.A.x from class b.B"
     return nvmThrowNew(env, java_lang_IllegalAccessError, "");

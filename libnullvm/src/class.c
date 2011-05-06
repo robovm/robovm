@@ -97,20 +97,17 @@ static inline jboolean addLoadedClass(Env* env, Class* clazz) {
     return TRUE;
 }
 
-static jboolean loadSoHandles(Env* env, ClasspathEntry* entry, DynamicLib** first) {
+static void loadSoHandles(Env* env, ClasspathEntry* entry, DynamicLib** first) {
     while (entry) {
-        DynamicLib* dlib = nvmInitDynamicLib(env, entry->soPath, first);
-        if (!dlib) return FALSE;
-        if (!nvmLoadDynamicLib(env, dlib)) {
-            nvmAbort("Fatal error: Failed to load %s", dlib->path);
+        DynamicLib* dlib = nvmLoadDynamicLib(env, entry->soPath, first);
+        if (!dlib) {
+            nvmAbort("Fatal error: Failed to load %s", entry->soPath);
         }
         entry = entry->next;
     }
-
-    return TRUE;
 }
 
-static jboolean initSoHandles(Env* env) {
+static void initSoHandles(Env* env) {
     loadSoHandles(env, env->options->bootclasspath, &bootSoHandles);
     loadSoHandles(env, env->options->classpath, &mainSoHandles);
 }
@@ -231,7 +228,7 @@ static Class* createArrayClass(Env* env, Class* componentType, DynamicLib* dlib)
 }
 
 static Class* (*findClassLoaderFunction(Env* env, char* funcName, DynamicLib* dlib))(Env*, ClassLoader*) {
-    Class* (*loader)(Env*, ClassLoader*) = nvmFindDynamicLibSymbol(env, dlib, dlib->next, funcName);
+    Class* (*loader)(Env*, ClassLoader*) = nvmFindDynamicLibSymbol(env, dlib, funcName);
     return loader;
 }
 

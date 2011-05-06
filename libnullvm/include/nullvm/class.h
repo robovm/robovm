@@ -1,7 +1,12 @@
 #ifndef NULLVM_CLASS_H
 #define NULLVM_CLASS_H
 
-#define CLASS_IS_INTERFACE(c) (c->access & ACC_INTERFACE)
+#define CLASS_IS_INTERFACE(c) (IS_INTERFACE(c->access))
+#define CLASS_IS_PUBLIC(c) (IS_PUBLIC(c->access))
+#define CLASS_IS_STATIC(c) (IS_STATIC(c->access))
+#define CLASS_IS_FINAL(c) (IS_FINAL(c->access))
+#define CLASS_IS_ABSTRACT(c) (IS_ABSTRACT(c->access))
+#define CLASS_IS_PACKAGE_PRIVATE(c) (IS_PACKAGE_PRIVATE(c->access))
 #define CLASS_IS_ARRAY(c) (c->name[0] == '[')
 #define CLASS_IS_ARRAY_OF_PRIMITIVE(c) (c->name[0] == '[' && c->name[2] == '\0')
 

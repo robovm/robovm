@@ -2,10 +2,10 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <link.h>
 #include <dlfcn.h>
 #include "log.h"
 
-DynamicLib* nativeLibs = NULL;
 jboolean _logLevel;
 
 static inline jint startsWith(char* s, char* prefix) {
@@ -212,48 +212,33 @@ void nvmAbort(char* format, ...) {
     abort();
 }
 
-DynamicLib** nvmGetNativeLibs(Env* env) {
-    return &nativeLibs;
-}
-
-DynamicLib* nvmInitDynamicLib(Env* env, char* file, DynamicLib** first) {
-    while (*first != NULL) first = &((*first)->next);
+DynamicLib* nvmLoadDynamicLib(Env* env, char* file, DynamicLib** first) {
+    TRACE("Loading dynamic library '%s'\n", file);
 
     DynamicLib* dlib = nvmAllocateMemory(env, sizeof(DynamicLib));
     if (!dlib) return NULL;
 
-    strcpy(dlib->path, file);
+    dlib->handle = dlopen(file, RTLD_LOCAL | RTLD_LAZY);
+    if (!dlib->handle) return NULL;
 
+    // Determine the absolute path of the lib
+    struct link_map* map;
+    if (dlinfo(dlib->handle, 2 /*RTLD_DI_LINKMAP*/, &map)) return NULL;
+    strcpy(dlib->path, map->l_name);
+
+    while (*first != NULL) first = &((*first)->next);
     *first = dlib;
-
-    TRACE("Initialized dynamic library '%s'\n", dlib->path);
 
     return dlib;
 }
 
-jboolean nvmLoadDynamicLib(Env* env, DynamicLib* dlib) {
-    TRACE("Loading dynamic library '%s'\n", dlib->path);
-
-    if (!dlib->handle) {
-        dlib->handle = dlopen(dlib->path, RTLD_LOCAL | RTLD_LAZY);
-        if (!dlib->handle) return FALSE;
-    }
-
-    return TRUE;
-}
-
-void* nvmFindDynamicLibSymbol(Env* env, DynamicLib* first, DynamicLib* last, char* symbol) {
+void* nvmFindDynamicLibSymbol(Env* env, DynamicLib* first, char* symbol) {
     TRACE("Searching for symbol '%s'\n", symbol);
 
     DynamicLib* dlib = first;
-    while (dlib && dlib != last) {
-        if (!dlib->handle) {
-            nvmLoadDynamicLib(env, dlib);
-        }
-        if (dlib->handle) {
-            void* v = dlsym(dlib->handle, symbol);
-            if (v) return v;
-        }
+    while (dlib) {
+        void* v = dlsym(dlib->handle, symbol);
+        if (v) return v;
         dlib = dlib->next;
     }
 

@@ -405,7 +405,7 @@ public class Runtime {
         // End (C) DRLVM        
     }
     
-    private static native String nativeLoad(String filename, ClassLoader loader);
+    private static native void nativeLoad(String filename, ClassLoader loader);
 
     /**
      * Loads and links the library with the specified name. The mapping of the
@@ -426,6 +426,12 @@ public class Runtime {
     }
 
     void loadLibrary0(String libname, ClassLoader cL, boolean check) throws SecurityException, UnsatisfiedLinkError {
+        if ("hyniochar".equals(libname)) {
+            // hyniochar is used by CharsetProviderImpl
+            // This lib is included in nullvm-rt which is always loaded by NullVM
+            return;
+        }
+        
         // Start (C) DRLVM
         if (check) {
             if (libname == null) {

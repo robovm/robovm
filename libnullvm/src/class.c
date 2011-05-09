@@ -32,6 +32,7 @@ Class* java_lang_AbstractMethodError;
 Class* java_lang_UnsatisfiedLinkError;
 Class* java_lang_ExceptionInInitializerError;
 Class* java_lang_VerifyError;
+Class* java_lang_LinkageError;
 
 Class* java_lang_Throwable;
 Class* java_lang_RuntimeException;
@@ -44,6 +45,7 @@ Class* java_lang_NegativeArraySizeException;
 Class* java_lang_IllegalArgumentException;
 Class* java_lang_ArithmeticException;
 Class* java_lang_UnsupportedOperationException;
+Class* java_lang_IllegalMonitorStateException;
 
 Class* prim_Z;
 Class* prim_B;
@@ -486,6 +488,8 @@ jboolean nvmInitClasses(Env* env) {
     if (!java_lang_ExceptionInInitializerError) return FALSE;
     java_lang_VerifyError = findBootClass(env, "java/lang/VerifyError");
     if (!java_lang_VerifyError) return FALSE;
+    java_lang_LinkageError = findBootClass(env, "java/lang/LinkageError");
+    if (!java_lang_LinkageError) return FALSE;
 
     java_lang_Throwable = findBootClass(env, "java/lang/Throwable");
     if (!java_lang_Throwable) return FALSE;
@@ -507,6 +511,8 @@ jboolean nvmInitClasses(Env* env) {
     if (!java_lang_ArithmeticException) return FALSE;
     java_lang_UnsupportedOperationException = findBootClass(env, "java/lang/UnsupportedOperationException");
     if (!java_lang_UnsupportedOperationException) return FALSE;
+    java_lang_IllegalMonitorStateException = findBootClass(env, "java/lang/IllegalMonitorStateException");
+    if (!java_lang_IllegalMonitorStateException) return FALSE;
 
     prim_Z = createPrimitiveClass(env, "Z");
     if (!prim_Z) return FALSE;

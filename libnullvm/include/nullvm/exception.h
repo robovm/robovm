@@ -29,6 +29,8 @@ extern jint nvmThrowUnsatisfiedLinkError(Env* env);
 extern jint nvmThrowIllegalArgumentException(Env* env, char* message);
 extern jint nvmThrowVerifyError(Env* env, char* message);
 extern jint nvmThrowArithmeticException(Env* env);
+extern jint nvmThrowLinkageError(Env* env);
+extern jint nvmThrowIllegalMonitorStateException(Env* env);
 extern void nvmRaiseException(Env* env, Object* e);
 
 #endif

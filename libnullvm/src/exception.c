@@ -94,6 +94,10 @@ jint nvmThrowNoClassDefFoundError(Env* env, char* name) {
     return nvmThrowNew(env, java_lang_NoClassDefFoundError, "");
 }
 
+jint nvmThrowLinkageError(Env* env) {
+    return nvmThrowNew(env, java_lang_LinkageError, "");
+}
+
 jint nvmThrowIllegalAccessError(Env* env) {
     return nvmThrowNew(env, java_lang_IllegalAccessError, "");
 }
@@ -186,5 +190,9 @@ jint nvmThrowVerifyError(Env* env, char* msg) {
 
 jint nvmThrowArithmeticException(Env* env) {
     return nvmThrowNew(env, java_lang_ArithmeticException, NULL);
+}
+
+jint nvmThrowIllegalMonitorStateException(Env* env) {
+    return nvmThrowNew(env, java_lang_IllegalMonitorStateException, NULL);
 }
 

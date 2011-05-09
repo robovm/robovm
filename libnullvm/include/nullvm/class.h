@@ -36,6 +36,7 @@ extern Class* java_lang_IncompatibleClassChangeError;
 extern Class* java_lang_AbstractMethodError;
 extern Class* java_lang_UnsatisfiedLinkError;
 extern Class* java_lang_VerifyError;
+extern Class* java_lang_LinkageError;
 
 extern Class* java_lang_RuntimeException;
 extern Class* java_lang_ClassCastException;
@@ -47,6 +48,7 @@ extern Class* java_lang_NegativeArraySizeException;
 extern Class* java_lang_IllegalArgumentException;
 extern Class* java_lang_ArithmeticException;
 extern Class* java_lang_UnsupportedOperationException;
+extern Class* java_lang_IllegalMonitorStateException;
 
 extern Class* prim_Z;
 extern Class* prim_B;

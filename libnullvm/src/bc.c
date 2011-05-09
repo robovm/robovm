@@ -3,6 +3,10 @@
 
 static jboolean checkClassAccessible(Env* env, Class* clazz, Class* caller) {
     // TODO: Check that the ClassLoader of clazz is the same as or an ancestor of caller's ClassLoader?
+    while (CLASS_IS_ARRAY(clazz)) {
+        clazz = nvmGetComponentType(env, clazz);
+    }
+    if (clazz->primitive) return TRUE;
     if (caller == clazz) return TRUE; 
     if (CLASS_IS_PUBLIC(clazz)) return TRUE; 
     if (nvmIsSamePackage(clazz, caller)) return TRUE;
@@ -68,14 +72,33 @@ void _nvmBcRegisterClass(Env* env, Class* clazz) {
 }
 
 void* _nvmBcLookupVirtualMethod(Env* env, Class* ownerClass, Object* thiz, char* name, char* desc) {
-    Method* method = nvmGetInstanceMethod(env, thiz->clazz, name, desc);
+    Method* method = nvmGetMethod(env, thiz->clazz, name, desc);
     if (!method) nvmRaiseException(env, nvmExceptionOccurred(env));
+    if (METHOD_IS_ABSTRACT(method)) {
+        nvmThrowIllegalAccessError(env);
+        nvmRaiseException(env, nvmExceptionOccurred(env));
+    }
     return method->impl;
 }
 
 void* _nvmBcLookupInterfaceMethod(Env* env, Class* ownerInterface, Object* thiz, char* name, char* desc) {
+    if (!nvmIsInstanceOf(env, thiz, ownerInterface)) {
+        nvmThrowLinkageError(env);
+        nvmRaiseException(env, nvmExceptionOccurred(env));
+    }
     Method* method = nvmGetInstanceMethod(env, thiz->clazz, name, desc);
-    if (!method) nvmRaiseException(env, nvmExceptionOccurred(env));
+    Object* throwable = nvmExceptionClear(env);
+    if (!method && throwable->clazz != java_lang_NoSuchMethodError) { 
+        nvmRaiseException(env, throwable);
+    }
+    if (!method || METHOD_IS_ABSTRACT(method)) {
+        nvmThrowAbstractMethodError(env);
+        nvmRaiseException(env, nvmExceptionOccurred(env));
+    }
+    if (!METHOD_IS_PUBLIC(method)) {
+        nvmThrowIllegalAccessError(env);
+        nvmRaiseException(env, nvmExceptionOccurred(env));
+    }
     return method->impl;
 }
 
@@ -364,7 +387,10 @@ void* _nvmBcResolveInvokeinterface(Env* env, char* owner, char* name, char* desc
     Class* clazz = nvmFindClassInLoader(env, owner, caller->classLoader);
     if (!clazz) nvmRaiseException(env, nvmExceptionOccurred(env));
     if (!checkClassAccessible(env, clazz, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
-    // TODO: Check that clazz is an interface
+    if (!CLASS_IS_INTERFACE(clazz)) {
+        nvmThrowLinkageError(env);
+        nvmRaiseException(env, nvmExceptionOccurred(env));
+    }
     Method* method = nvmGetInstanceMethod(env, clazz, name, desc);
     // TODO: Throw something if methodName is <init>
     if (!method) nvmRaiseException(env, nvmExceptionOccurred(env));

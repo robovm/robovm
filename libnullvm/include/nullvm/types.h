@@ -102,7 +102,7 @@ struct Interface {
 
 struct Object {
   Class* clazz;
-  void* lock;
+  hythread_monitor_t monitor;
 };
 
 /* 

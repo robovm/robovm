@@ -70,7 +70,7 @@ Method* nvmGetMethod(Env* env, Class* clazz, char* name, char* desc) {
 Method* nvmGetClassMethod(Env* env, Class* clazz, char* name, char* desc) {
     Method* method = nvmGetMethod(env, clazz, name, desc);
     if (!method) return NULL;
-    if (!(method->access & ACC_STATIC)) {
+    if (!METHOD_IS_STATIC(method)) {
         // TODO: JNI spec doesn't say anything about throwing this
         nvmThrowIncompatibleClassChangeErrorMethod(env, clazz, name, desc);
         return NULL;
@@ -85,7 +85,7 @@ Method* nvmGetClassInitializer(Env* env, Class* clazz) {
 Method* nvmGetInstanceMethod(Env* env, Class* clazz, char* name, char* desc) {
     Method* method = nvmGetMethod(env, clazz, name, desc);
     if (!method) return NULL;
-    if (method->access & ACC_STATIC) {
+    if (METHOD_IS_STATIC(method)) {
         // TODO: JNI spec doesn't say anything about throwing this
         nvmThrowIncompatibleClassChangeErrorMethod(env, clazz, name, desc);
         return NULL;

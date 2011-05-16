@@ -352,25 +352,29 @@ Class* nvmGetComponentType(Env* env, Class* arrayClass) {
     return nvmFindClassByDescriptor(env, &arrayClass->name[1], arrayClass->classLoader);
 }
 
-int nvmIsSubClass(Class* superclass, Class* clazz) {
+jboolean nvmIsSubClass(Class* superclass, Class* clazz) {
+    // TODO: Array types
     while (clazz && clazz != superclass) {
         clazz = clazz->superclass;
     }
     return clazz == superclass;
 }
 
-int nvmIsSamePackage(Class* c1, Class* c2) {
+jboolean nvmIsSamePackage(Class* c1, Class* c2) {
+    if (c1 == c2) return TRUE;
+    if (c1->classLoader != c2->classLoader) return FALSE;
+    // TODO: Array types
     char* s1 = strrchr(c1->name, '/');
     char* s2 = strrchr(c2->name, '/');
     if (!s1 || !s2) {
         return !s1 && !s2;
     }
-    int l1 = c1->name - s1;
-    int l2 = c2->name - s2;
+    int l1 = s1 - c1->name;
+    int l2 = s2 - c2->name;
     if (l1 != l2) {
-        return 0;
+        return FALSE;
     }
-    return strncmp(c1->name, c2->name, l1);
+    return strncmp(c1->name, c2->name, l1) == 0;
 }
 
 jboolean nvmIsAssignableFrom(Env* env, Class* s, Class* t) {
@@ -422,6 +426,11 @@ jboolean nvmIsInstanceOf(Env* env, Object* obj, Class* clazz) {
     return nvmIsAssignableFrom(env, obj->clazz, clazz);
 }
 
+static jboolean fixClassPointer(Class* c, void* data) {
+    c->object.clazz = java_lang_Class;
+    return TRUE;
+}
+
 jboolean nvmInitClasses(Env* env) {
     nameToClassMap = nvmNewMapWithStringKeys(env, 1024);
     if (!nameToClassMap) return FALSE;
@@ -431,16 +440,14 @@ jboolean nvmInitClasses(Env* env) {
     initSoHandles(env);
 
     // Cache important classes in java.lang.
-    java_lang_ClassNotFoundException = findBootClass(env, "java/lang/ClassNotFoundException");
-    if (!java_lang_ClassNotFoundException) return FALSE;
-    java_lang_NoClassDefFoundError = findBootClass(env, "java/lang/NoClassDefFoundError");
-    if (!java_lang_NoClassDefFoundError) return FALSE;
     java_lang_Object = findBootClass(env, "java/lang/Object");
     if (!java_lang_Object) return FALSE;
     java_lang_Class = findBootClass(env, "java/lang/Class");
     if (!java_lang_Class) return FALSE;
-    java_lang_Object->object.clazz = java_lang_Class; // Fix object.clazz pointer for java_lang_Object
-    java_lang_Class->object.clazz = java_lang_Class; // Fix object.clazz pointer for java_lang_Class
+
+    // Fix object.clazz pointers for the classes loaded so far
+    nvmIterateLoadedClasses(env, fixClassPointer, NULL);
+
     java_lang_String = findBootClass(env, "java/lang/String");
     if (!java_lang_String) return FALSE;
     java_lang_Boolean = findBootClass(env, "java/lang/Boolean");
@@ -468,6 +475,10 @@ jboolean nvmInitClasses(Env* env) {
     java_lang_Runtime = findBootClass(env, "java/lang/Runtime");
     if (!java_lang_Runtime) return FALSE;
 
+    java_lang_ClassNotFoundException = findBootClass(env, "java/lang/ClassNotFoundException");
+    if (!java_lang_ClassNotFoundException) return FALSE;
+    java_lang_NoClassDefFoundError = findBootClass(env, "java/lang/NoClassDefFoundError");
+    if (!java_lang_NoClassDefFoundError) return FALSE;
     java_lang_Error = findBootClass(env, "java/lang/Error");
     if (!java_lang_Error) return FALSE;
     java_lang_OutOfMemoryError = findBootClass(env, "java/lang/OutOfMemoryError");
@@ -613,7 +624,7 @@ jboolean nvmAddInterface(Env* env, Class* clazz, Class* interf) {
     return TRUE;
 }
 
-jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* lookup) {
+jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup) {
     Method* method = nvmAllocateMemory(env, sizeof(Method));
     if (!method) return FALSE;
     method->clazz = clazz;
@@ -621,6 +632,7 @@ jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint acces
     method->desc = desc;
     method->access = access;
     method->impl = impl;
+    method->synchronizedImpl = synchronizedImpl;
     method->lookup = lookup;
     method->vtableIndex = -1;
 
@@ -733,7 +745,7 @@ void nvmInitialize(Env* env, Class* clazz) {
         Method* clinit = nvmGetClassInitializer(env, clazz);
         if (!clinit) return;
         nvmCallVoidClassMethod(env, clazz, clinit);
-        Object* exception = nvmExceptionOccurred(env);
+        Object* exception = nvmExceptionClear(env);
         if (exception) {
             clazz->state = CLASS_ERROR;
             if (!nvmIsInstanceOf(env, exception, java_lang_Error)) {
@@ -743,8 +755,9 @@ void nvmInitialize(Env* env, Class* clazz) {
                 if (!constructor) return;
                 Object* wrappedException = nvmNewObject(env, java_lang_ExceptionInInitializerError, constructor, exception);
                 if (!wrappedException) return;
-                nvmThrow(env, wrappedException);
+                exception = wrappedException;
             }
+            nvmThrow(env, exception);
             return;
         }
         clazz->state = CLASS_INITIALIZED;

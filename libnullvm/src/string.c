@@ -173,18 +173,14 @@ Object* nvmNewString(Env* env, jchar* chars, jint length) {
 
 Object* nvmNewInternedStringUTF(Env* env, char* s, jint length) {
     // Check the cache first.
-    TRACE("nvmNewInternedStringUTF: Searching for string '%s' in interned strings cache\n", s);
     CacheEntry* cacheEntry;
     HASH_FIND_STR(internedStrings, s, cacheEntry);
     if (cacheEntry) {
-        TRACE("nvmNewInternedStringUTF: String '%s' found in interned strings cache\n", s);
         // Touch the string
         HASH_DELETE(hh, internedStrings, cacheEntry);
         HASH_ADD_KEYPTR(hh, internedStrings, cacheEntry->key, strlen(cacheEntry->key), cacheEntry);
         return cacheEntry->string;
     }
-
-    TRACE("nvmNewInternedStringUTF: String '%s' not found in interned strings cache\n", s);
 
     length = length = -1 ? getUnicodeLengthOfUtf8(s) : length;
     CharArray* value = nvmNewCharArray(env, length);
@@ -203,7 +199,6 @@ Object* nvmNewInternedStringUTF(Env* env, char* s, jint length) {
     if (HASH_COUNT(internedStrings) >= MAX_CACHE_SIZE) {
         CacheEntry* tmpEntry;
         HASH_ITER(hh, internedStrings, cacheEntry, tmpEntry) {
-            TRACE("nvmNewInternedStringUTF: Removing oldest interned string '%s' from interned strings cache\n", cacheEntry->key);
             // prune the first entry (loop is based on insertion order so this deletes the oldest item)
             HASH_DELETE(hh, internedStrings, cacheEntry);
             break;
@@ -217,11 +212,9 @@ Object* nvmInternString(Env* env, Object* str) {
     // Check the cache first.
     char* s = nvmGetStringUTFChars(env, str);
     if (!s) return NULL;
-    TRACE("nvmInternString: Searching for string '%s' in interned strings cache\n", s);
     CacheEntry* cacheEntry;
     HASH_FIND_STR(internedStrings, s, cacheEntry);
     if (cacheEntry) {
-        TRACE("nvmInternString: String '%s' found in interned strings cache\n", s);
         // Touch the string
         HASH_DELETE(hh, internedStrings, cacheEntry);
         HASH_ADD_KEYPTR(hh, internedStrings, cacheEntry->key, strlen(cacheEntry->key), cacheEntry);
@@ -238,7 +231,6 @@ Object* nvmInternString(Env* env, Object* str) {
     if (HASH_COUNT(internedStrings) >= MAX_CACHE_SIZE) {
         CacheEntry* tmpEntry;
         HASH_ITER(hh, internedStrings, cacheEntry, tmpEntry) {
-            TRACE("nvmInternString: Removing oldest interned string '%s' from interned strings cache\n", cacheEntry->key);
             // prune the first entry (loop is based on insertion order so this deletes the oldest item)
             HASH_DELETE(hh, internedStrings, cacheEntry);
             break;

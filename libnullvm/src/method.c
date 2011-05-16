@@ -30,7 +30,7 @@ typedef union StackValue {
 typedef struct CallInfo {
     void* function;
     void* intArgs[6];
-    double fpArgs[8];
+    FpValue fpArgs[8];
     jint stackArgsCount;
     StackValue* stackArgs;
 } CallInfo;
@@ -252,10 +252,10 @@ jboolean initCallInfo(CallInfo* callInfo, Env* env, Object* obj, Method* method,
             if (fpArgsIndex < fpArgsCount) {
                 switch (c[0]) {
                 case 'F':
-                    callInfo->fpArgs[fpArgsIndex++] = (double) args[i++].f;
+                    callInfo->fpArgs[fpArgsIndex++].f = args[i++].f;
                     break;
                 case 'D':
-                    callInfo->fpArgs[fpArgsIndex++] = args[i++].d;
+                    callInfo->fpArgs[fpArgsIndex++].d = args[i++].d;
                     break;
                 }
             } else {
@@ -318,7 +318,7 @@ static jvalue* va_list2jargs(Env* env, Method* method, va_list args) {
             jvalueArgs[i++].j = va_arg(args, jlong);
             break;
         case 'F':
-            jvalueArgs[i++].f = (jdouble) va_arg(args, jdouble);
+            jvalueArgs[i++].f = (jfloat) va_arg(args, jdouble);
             break;
         case 'D':
             jvalueArgs[i++].d = va_arg(args, jdouble);

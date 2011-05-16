@@ -39,6 +39,7 @@ import org.nullvm.compiler.llvm.ConstantBitcast;
 import org.nullvm.compiler.llvm.ConstantGetelementptr;
 import org.nullvm.compiler.llvm.ConstantPtrtoint;
 import org.nullvm.compiler.llvm.ConstantSub;
+import org.nullvm.compiler.llvm.ConstantTrunc;
 import org.nullvm.compiler.llvm.Fadd;
 import org.nullvm.compiler.llvm.Fdiv;
 import org.nullvm.compiler.llvm.FloatingPointConstant;
@@ -112,6 +113,7 @@ import soot.IntType;
 import soot.Local;
 import soot.LongType;
 import soot.Modifier;
+import soot.NullType;
 import soot.PackManager;
 import soot.PatchingChain;
 import soot.PrimType;
@@ -185,6 +187,13 @@ import soot.jimple.toolkits.annotation.tags.ArrayCheckTag;
 import soot.jimple.toolkits.annotation.tags.NullCheckTag;
 import soot.jimple.toolkits.typing.fast.BottomType;
 import soot.options.Options;
+import soot.tagkit.ConstantValueTag;
+import soot.tagkit.DoubleConstantValueTag;
+import soot.tagkit.FloatConstantValueTag;
+import soot.tagkit.IntegerConstantValueTag;
+import soot.tagkit.LongConstantValueTag;
+import soot.tagkit.StringConstantValueTag;
+import soot.tagkit.Tag;
 
 /**
  *
@@ -207,7 +216,7 @@ public class SootClassCompiler {
     private static final FunctionRef NVM_BC_ALLOCATE_CLASS = new FunctionRef("_nvmBcAllocateClass", new FunctionType(CLASS_PTR, ENV_PTR, I8_PTR, I8_PTR, OBJECT_PTR, I32, I32, I32));
     private static final FunctionRef NVM_BC_ADD_INTERFACE = new FunctionRef("_nvmBcAddInterface", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_ADD_FIELD = new FunctionRef("_nvmBcAddField", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_ADD_METHOD = new FunctionRef("_nvmBcAddMethod", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_ADD_METHOD = new FunctionRef("_nvmBcAddMethod", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_REGISTER_CLASS = new FunctionRef("_nvmBcRegisterClass", new FunctionType(VOID, ENV_PTR, CLASS_PTR));
     private static final FunctionRef NVM_BC_FIND_CLASS_IN_LOADER = new FunctionRef("_nvmBcFindClassInLoader", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR, OBJECT_PTR));
 
@@ -237,14 +246,14 @@ public class SootClassCompiler {
     private static final FunctionRef NVM_BC_NEW = new FunctionRef("_nvmBcNew", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR, CLASS_PTR));
     private static final FunctionRef NVM_BC_NEW_OBJECT_ARRAY = new FunctionRef("_nvmBcNewObjectArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, I8_PTR, CLASS_PTR));
     private static final FunctionRef NVM_BC_NEW_MULTI_ARRAY = new FunctionRef("_nvmBcNewMultiArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, new PointerType(I32), I8_PTR, CLASS_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_INVOKESPECIAL = new FunctionRef("_nvmBcResolveInvokespecial", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_INVOKESPECIAL = new FunctionRef("_nvmBcResolveInvokespecial", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_RESOLVE_INVOKESTATIC = new FunctionRef("_nvmBcResolveInvokestatic", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_INVOKEVIRTUAL = new FunctionRef("_nvmBcResolveInvokevirtual", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_INVOKEVIRTUAL = new FunctionRef("_nvmBcResolveInvokevirtual", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_RESOLVE_INVOKEINTERFACE = new FunctionRef("_nvmBcResolveInvokeinterface", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_RESOLVE_GETSTATIC = new FunctionRef("_nvmBcResolveGetstatic", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_RESOLVE_PUTSTATIC = new FunctionRef("_nvmBcResolvePutstatic", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_GETFIELD = new FunctionRef("_nvmBcResolveGetfield", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_PUTFIELD = new FunctionRef("_nvmBcResolvePutfield", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_GETFIELD = new FunctionRef("_nvmBcResolveGetfield", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_PUTFIELD = new FunctionRef("_nvmBcResolvePutfield", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_RESOLVE_NATIVE = new FunctionRef("_nvmBcResolveNative", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
     
     private static final FunctionRef LLVM_EH_EXCEPTION = new FunctionRef("llvm.eh.exception", new FunctionType(I8_PTR));
@@ -360,6 +369,15 @@ public class SootClassCompiler {
             fieldSetter(field);
         }
         
+        if (!sootClass.declaresMethodByName("<clinit>") && hasConstantValueTags(classFields)) {
+            Function clinit = module.newFunction(Linkage._private, 
+                    mangleMethod(getInternalName(sootClass), "<clinit>", 
+                                new ArrayList<soot.Type>(), soot.VoidType.v()), 
+                            new FunctionType(VOID, ENV_PTR), "env");
+            finalClassFieldsInitializers(clinit);
+            clinit.add(new Ret());
+        }
+        
         for (SootMethod method : sootClass.getMethods()) {
             if (isNative(method)) {
                 nativeMethod(method);
@@ -375,6 +393,10 @@ public class SootClassCompiler {
                 if (!ancestorDeclaresMethod(sootClass, method)) {
                     virtualLookupFunction(method);
                 }
+            }
+            if (!method.isAbstract() && method.isSynchronized()) {
+                // Create a wrapper function which synchronizes on the class or instance and then calls the actual function
+                synchronizedFunctionWrapper(method);
             }
         }
         
@@ -447,6 +469,52 @@ public class SootClassCompiler {
 //        f.add(new Ret());
 //    }
     
+    private void synchronizedFunctionWrapper(SootMethod method) {
+        String name = mangleMethod(method) + "_synchronized";
+        Function function = createFunction(name, method);
+        FunctionType functionType = function.getType();
+        FunctionRef target = new FunctionRef(mangleMethod(method), functionType);
+        Value monitor = null;
+        if (method.isStatic()) {
+            Value clazz = getCaller(function);
+            Variable tmp = function.newVariable(OBJECT_PTR);
+            function.add(new Bitcast(tmp, clazz, OBJECT_PTR));
+            monitor = tmp.ref();
+        } else {
+            monitor = new VariableRef("this", OBJECT_PTR);
+        }
+        function.add(new Call(NVM_BC_MONITOR_ENTER, ENV, monitor));
+        String[] parameterNames = function.getParameterNames();
+        Type[] parameterTypes = function.getType().getParameterTypes();
+        Value[] args = new Value[parameterNames.length];
+        for (int i = 0; i < args.length; i++) {
+            args[i] = new VariableRef(parameterNames[i], parameterTypes[i]);
+        }
+        BasicBlockRef bbSuccess = function.newBasicBlockRef(new Label("success"));
+        BasicBlockRef bbFailure = function.newBasicBlockRef(new Label("failure"));
+        if (function.getType().getReturnType() == VOID) {
+            function.add(new Invoke(target, bbSuccess, bbFailure, args));
+            function.newBasicBlock(new Label("success"));
+            function.add(new Call(NVM_BC_MONITOR_EXIT, ENV, monitor));
+            function.add(new Ret());
+        } else {
+            Variable result = function.newVariable(functionType.getReturnType());
+            function.add(new Invoke(result, target, bbSuccess, bbFailure, args));
+            function.newBasicBlock(new Label("success"));
+            function.add(new Call(NVM_BC_MONITOR_EXIT, ENV, monitor));
+            function.add(new Ret(result.ref()));
+        }
+        function.newBasicBlock(new Label("failure"));
+        Variable ehptr = function.newVariable(I8_PTR);
+        function.add(new Call(ehptr, LLVM_EH_EXCEPTION));
+        Variable sel = function.newVariable(I32);
+        function.add(new Call(sel, LLVM_EH_SELECTOR, new VariableRef(ehptr), 
+                new ConstantBitcast(NVM_BC_PERSONALITY, I8_PTR), new IntegerConstant(1)));
+        function.add(new Call(NVM_BC_MONITOR_EXIT, ENV, monitor));
+        function.add(new Call(NVM_BC_RETHROW, ENV));
+        function.add(new Unreachable());
+    }
+
     private static boolean isTerminator(Instruction instr) {
         return instr instanceof Ret || instr instanceof Br 
             || instr instanceof Invoke || instr instanceof Unreachable 
@@ -469,22 +537,25 @@ public class SootClassCompiler {
         if (trampoline instanceof org.nullvm.compiler.trampoline.Invoke) {
             org.nullvm.compiler.trampoline.Invoke invoke = (org.nullvm.compiler.trampoline.Invoke) trampoline;
             FunctionRef resolveFunc = null;
+            List<Value> args = new ArrayList<Value>();
+            args.add(ENV);
             if (invoke instanceof Invokespecial) {
                 resolveFunc = NVM_BC_RESOLVE_INVOKESPECIAL;
+                args.add(getString(((Invokespecial) invoke).getRuntimeClass()));
             } else if (invoke instanceof Invokestatic) {
                 resolveFunc = NVM_BC_RESOLVE_INVOKESTATIC;                
             } else if (invoke instanceof Invokevirtual) {
                 resolveFunc = NVM_BC_RESOLVE_INVOKEVIRTUAL;                
+                args.add(getString(((Invokevirtual) invoke).getRuntimeClass()));
             } else if (invoke instanceof Invokeinterface) {
                 resolveFunc = NVM_BC_RESOLVE_INVOKEINTERFACE;                
             }
-            function.add(new Call(targetI8Ptr, resolveFunc,
-                    ENV,
-                    getString(invoke.getTargetClass()), 
-                    getString(invoke.getMethodName()),
-                    getString(invoke.getMethodDesc()),
-                    getCaller(function),
-                    new ConstantBitcast(ptr, I8_PTR)));
+            args.add(getString(invoke.getTargetClass())); 
+            args.add(getString(invoke.getMethodName()));
+            args.add(getString(invoke.getMethodDesc()));
+            args.add(getCaller(function));
+            args.add(new ConstantBitcast(ptr, I8_PTR));
+            function.add(new Call(targetI8Ptr, resolveFunc, args.toArray(new Value[args.size()])));
         } else if (trampoline instanceof NativeCall) {
             NativeCall nativeCall = (NativeCall) trampoline;
             function.add(new Call(targetI8Ptr, NVM_BC_RESOLVE_NATIVE,
@@ -501,22 +572,25 @@ public class SootClassCompiler {
         } else if (trampoline instanceof FieldAccessor) {
             FieldAccessor accessor = (FieldAccessor) trampoline;
             FunctionRef resolveFunc = null;
+            List<Value> args = new ArrayList<Value>();
+            args.add(ENV);
             if (accessor instanceof GetStatic) {
                 resolveFunc = NVM_BC_RESOLVE_GETSTATIC;
             } else if (accessor instanceof PutStatic) {
                 resolveFunc = NVM_BC_RESOLVE_PUTSTATIC;                
             } else if (accessor instanceof GetField) {
                 resolveFunc = NVM_BC_RESOLVE_GETFIELD;                
+                args.add(getString(((GetField) accessor).getRuntimeClass()));
             } else if (accessor instanceof PutField) {
                 resolveFunc = NVM_BC_RESOLVE_PUTFIELD;                
+                args.add(getString(((PutField) accessor).getRuntimeClass()));
             }
-            function.add(new Call(targetI8Ptr, resolveFunc,
-                    ENV,
-                    getString(accessor.getTargetClass()), 
-                    getString(accessor.getFieldName()),
-                    getString(accessor.getFieldDesc()),
-                    getCaller(function),
-                    new ConstantBitcast(ptr, I8_PTR)));
+            args.add(getString(accessor.getTargetClass())); 
+            args.add(getString(accessor.getFieldName()));
+            args.add(getString(accessor.getFieldDesc()));
+            args.add(getCaller(function));
+            args.add(new ConstantBitcast(ptr, I8_PTR));
+            function.add(new Call(targetI8Ptr, resolveFunc, args.toArray(new Value[args.size()])));
         }
 
         Variable targetFuncPtr = function.newVariable(functionRef.getType());
@@ -644,6 +718,10 @@ public class SootClassCompiler {
 //        Variable localTrampolines = ctx.f().newVariable("trampolines", new PointerType(I8_PTR));
 //        ctx.f().add(new Load(localTrampolines, new GlobalRef("trampolines", new PointerType(new PointerType(I8_PTR)))));
         
+        if ("<clinit>".equals(method.getName())) {
+            finalClassFieldsInitializers(function);
+        }
+        
         PatchingChain<Unit> units = body.getUnits();
         
         int multiANewArrayMaxDims = 0;
@@ -739,6 +817,42 @@ public class SootClassCompiler {
         }
     }
 
+    /**
+     * @param function
+     */
+    private void finalClassFieldsInitializers(Function function) {
+        for (SootField field : classFields) {
+            if (field.isFinal()) {
+                for (Tag tag : field.getTags()) {
+                    if (tag instanceof DoubleConstantValueTag) {
+                        DoubleConstantValueTag dtag = (DoubleConstantValueTag) tag;
+                        function.add(new Store(new FloatingPointConstant(dtag.getDoubleValue()), getClassFieldPtr(function, field)));
+                    } else if (tag instanceof FloatConstantValueTag) {
+                        FloatConstantValueTag ftag = (FloatConstantValueTag) tag;
+                        function.add(new Store(new FloatingPointConstant(ftag.getFloatValue()), getClassFieldPtr(function, field)));
+                    } else if (tag instanceof IntegerConstantValueTag) {
+                        IntegerConstantValueTag itag = (IntegerConstantValueTag) tag;
+                        Constant c = new IntegerConstant(itag.getIntValue());
+                        IntegerType type = (IntegerType) getType(field.getType());
+                        if (type.getBits() < 32) {
+                            c = new ConstantTrunc(c, type);
+                        }
+                        function.add(new Store(c, getClassFieldPtr(function, field)));
+                    } else if (tag instanceof LongConstantValueTag) {
+                        LongConstantValueTag ltag = (LongConstantValueTag) tag;
+                        function.add(new Store(new IntegerConstant(ltag.getLongValue()), getClassFieldPtr(function, field)));
+                    } else if (tag instanceof StringConstantValueTag) {
+                        String s = ((StringConstantValueTag) tag).getStringValue();
+                        Value string = getString(s);
+                        Variable result = function.newVariable(OBJECT_PTR);
+                        function.add(new Call(result, NVM_BC_LDC_STRING, ENV, string));
+                        function.add(new Store(result.ref(), getClassFieldPtr(function, field)));
+                    }
+                }
+            }
+        }
+    }
+
     private Function createFunction(SootMethod method) {
         return createFunction(mangleMethod(method.makeRef()), method);
     }
@@ -819,9 +933,32 @@ public class SootClassCompiler {
                     new ConstantBitcast(setter, I8_PTR)));
         }
         
+        if (!sootClass.declaresMethodByName("<clinit>") && hasConstantValueTags(classFields)) {
+            Value functionRef = new ConstantBitcast(
+                    new FunctionRef(mangleMethod(getInternalName(sootClass), "<clinit>", 
+                                new ArrayList<soot.Type>(), soot.VoidType.v()), 
+                            new FunctionType(VOID, ENV_PTR)), I8_PTR);
+            function.add(new Call(NVM_BC_ADD_METHOD, ENV, clazz.ref(),
+                    getString("<clinit>"),
+                    getString("()V"),
+                    new IntegerConstant(Modifier.STATIC),
+                    functionRef,
+                    new NullConstant(I8_PTR),
+                    new NullConstant(I8_PTR)));
+        }
+
         for (SootMethod method : sootClass.getMethods()) {
             Value functionRef = new NullConstant(I8_PTR);
+            Value synchronizedRef = new NullConstant(I8_PTR);
             Value lookup = new NullConstant(I8_PTR);
+            if (!method.isAbstract()) {
+                functionRef = new ConstantBitcast(new FunctionRef(mangleMethod(method), 
+                        getFunctionType(method)), I8_PTR);
+            }
+            if (!method.isAbstract() && method.isSynchronized()) {
+                synchronizedRef = new ConstantBitcast(new FunctionRef(mangleMethod(method) + "_synchronized", 
+                        getFunctionType(method)), I8_PTR);
+            }            
             if (!method.isStatic() && !"<init>".equals(method.getName()) 
                     && !method.isPrivate() && !Modifier.isFinal(method.getModifiers())) {
                 // Virtual method. If not defined in a superclass we need to create a virtual lookup function now.
@@ -830,15 +967,12 @@ public class SootClassCompiler {
                             getFunctionType(method)), I8_PTR);
                 }
             }
-            if (!method.isAbstract()) {
-                functionRef = new ConstantBitcast(new FunctionRef(mangleMethod(method), 
-                        getFunctionType(method)), I8_PTR);
-            }
             function.add(new Call(NVM_BC_ADD_METHOD, ENV, clazz.ref(),
                     getString(method.getName()),
                     getString(getDescriptor(method)),
                     new IntegerConstant(method.getModifiers()),
                     functionRef,
+                    synchronizedRef,
                     lookup));
         }
         
@@ -961,6 +1095,19 @@ public class SootClassCompiler {
     
     private static List<SootField> getInstanceFields(SootClass clazz, boolean includeSuper) {
         return getFields(clazz, false, includeSuper);
+    }
+    
+    private static boolean hasConstantValueTags(List<SootField> classFields) {
+        for (SootField field : classFields) {
+            if (field.isFinal()) {
+                for (Tag tag : field.getTags()) {
+                    if (tag instanceof ConstantValueTag) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
     
     private static StructureType getType(String alias, List<SootField> fields) {
@@ -1273,7 +1420,6 @@ public class SootClassCompiler {
     }
     
     private boolean canCallDirectly(Context context, InvokeExpr expr) {
-        // TODO: Synchronized methods can be called directly?
         SootMethodRef methodRef = expr.getMethodRef();
         SootMethod method = resolveMethod(sootClass, methodRef);
         if (method != null) {
@@ -1397,7 +1543,12 @@ public class SootClassCompiler {
         }
         Value result = null;
         if (canCallDirectly(ctx, expr)) {
-            Value function = new FunctionRef(mangleMethod(methodRef), getFunctionType(methodRef));
+            Value function = null;
+            if (resolveMethod(sootClass, methodRef).isSynchronized()) {
+                function = new FunctionRef(mangleMethod(methodRef) + "_synchronized", getFunctionType(methodRef));
+            } else {
+                function = new FunctionRef(mangleMethod(methodRef), getFunctionType(methodRef));
+            }
             result = callOrInvoke(ctx, function, args.toArray(new Value[0]));
         } else {
             Trampoline trampoline = null;
@@ -1405,11 +1556,15 @@ public class SootClassCompiler {
             String methodName = methodRef.name();
             String methodDesc = getDescriptor(methodRef);
             if (expr instanceof SpecialInvokeExpr) {
-                trampoline = new Invokespecial(targetClassName, methodName, methodDesc);
+                soot.Type runtimeType = ((SpecialInvokeExpr) expr).getBase().getType();
+                String runtimeClassName = runtimeType == NullType.v() ? targetClassName : getInternalName(runtimeType);
+                trampoline = new Invokespecial(runtimeClassName, targetClassName, methodName, methodDesc);
             } else if (expr instanceof StaticInvokeExpr) {
                 trampoline = new Invokestatic(targetClassName, methodName, methodDesc);
             } else if (expr instanceof VirtualInvokeExpr) {
-                trampoline = new Invokevirtual(targetClassName, methodName, methodDesc);
+                soot.Type runtimeType = ((VirtualInvokeExpr) expr).getBase().getType();
+                String runtimeClassName = runtimeType == NullType.v() ? targetClassName : getInternalName(runtimeType);
+                trampoline = new Invokevirtual(runtimeClassName, targetClassName, methodName, methodDesc);
             } else if (expr instanceof InterfaceInvokeExpr) {
                 trampoline = new Invokeinterface(targetClassName, methodName, methodDesc);
             }
@@ -1531,7 +1686,10 @@ public class SootClassCompiler {
                 ctx.f().add(new Load(v, getInstanceFieldPtr(ctx.f(), base, ref.getField())));
                 result = widenToI32Value(ctx, v.ref(), isUnsigned(ref.getType()));
             } else {
-                Trampoline trampoline = new GetField(getInternalName(ref.getFieldRef().declaringClass()), 
+                soot.Type runtimeType = ref.getBase().getType();
+                String targetClassName = getInternalName(ref.getFieldRef().declaringClass());
+                String runtimeClassName = runtimeType == NullType.v() ? targetClassName : getInternalName(runtimeType);
+                Trampoline trampoline = new GetField(runtimeClassName, targetClassName, 
                         ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
                 addTrampoline(trampoline, new FunctionType(getType(ref.getType()), ENV_PTR, OBJECT_PTR));
                 result = callOrInvokeTrampoline(ctx, trampoline, ENV, base);
@@ -1799,7 +1957,10 @@ public class SootClassCompiler {
                 if (canAccessDirectly(ctx, ref)) {
                     ctx.f().add(new Store(narrowedResult, getInstanceFieldPtr(ctx.f(), base, ref.getField())));
                 } else {
-                    Trampoline trampoline = new PutField(getInternalName(ref.getFieldRef().declaringClass()), 
+                    soot.Type runtimeType = ref.getBase().getType();
+                    String targetClassName = getInternalName(ref.getFieldRef().declaringClass());
+                    String runtimeClassName = runtimeType == NullType.v() ? targetClassName : getInternalName(runtimeType);
+                    Trampoline trampoline = new PutField(runtimeClassName, targetClassName, 
                             ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
                     addTrampoline(trampoline, new FunctionType(VOID, ENV_PTR, OBJECT_PTR, leftType));
                     callOrInvokeTrampoline(ctx, trampoline, ENV, base, narrowedResult);

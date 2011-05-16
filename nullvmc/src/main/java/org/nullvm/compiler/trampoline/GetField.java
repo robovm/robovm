@@ -11,9 +11,14 @@ package org.nullvm.compiler.trampoline;
  * @version $Id$
  */
 public class GetField extends FieldAccessor {
+    private final String runtimeClass;
 
-    public GetField(String targetClass, String fieldName, String fieldDesc) {
+    public GetField(String runtimeClass, String targetClass, String fieldName, String fieldDesc) {
         super(targetClass, fieldName, fieldDesc);
+        this.runtimeClass = runtimeClass;
     }
 
+    public String getRuntimeClass() {
+        return runtimeClass;
+    }
 }

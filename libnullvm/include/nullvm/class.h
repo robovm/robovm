@@ -74,7 +74,7 @@ extern jboolean nvmInitClasses(Env* env);
 extern Class* nvmAllocateClass(Env* env, char* className, Class* superclass, ClassLoader* classLoader, jint access, jint classDataSize, jint instanceDataSize);
 extern jboolean nvmAddInterface(Env* env, Class* clazz, Class* interface);
 extern jboolean nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset, void* getter, void* setter);
-extern jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* lookup);
+extern jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup);
 extern jboolean nvmRegisterClass(Env* env, Class* clazz);
 
 extern Class* nvmFindClass(Env* env, char* className);
@@ -96,8 +96,8 @@ extern Object* nvmNewObjectV(Env* env, Class* clazz, Method* method, va_list arg
 
 extern Object* nvmCloneObject(Env* env, Object* obj);
 
-extern int nvmIsSubClass(Class* superclass, Class* clazz);
-extern int nvmIsSamePackage(Class* c1, Class* c2);
+extern jboolean nvmIsSubClass(Class* superclass, Class* clazz);
+extern jboolean nvmIsSamePackage(Class* c1, Class* c2);
 
 extern jboolean nvmIsAssignableFrom(Env* env, Class* sub, Class* sup);
 extern jboolean nvmIsInstanceOf(Env* env, Object* obj, Class* clazz);

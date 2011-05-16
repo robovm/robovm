@@ -1,15 +1,22 @@
 #include <nullvm.h>
 
-Class* Java_java_lang_Object_getClass(JNIEnv* _env, Object* thiz) {
+Class* Java_java_lang_Object_getClass(Env* env, Object* thiz) {
     return thiz->clazz;
 }
 
-Object* Java_java_lang_Object_nativeClone(JNIEnv* _env, Object* thiz) {
-    Env* env = (Env*) _env;
+Object* Java_java_lang_Object_nativeClone(Env* env, Object* thiz) {
     return nvmCloneObject(env, thiz);
 }
 
-jint Java_java_lang_Object_hashCode(JNIEnv* _env, Object* thiz) {
+jint Java_java_lang_Object_hashCode(Env* env, Object* thiz) {
     return (jint) thiz;
+}
+
+void Java_java_lang_Object_notify(Env* env, Object* thiz) {
+    nvmMonitorNotify(env, thiz);
+}
+
+void Java_java_lang_Object_notifyAll(Env* env, Object* thiz) {
+    nvmMonitorNotifyAll(env, thiz);
 }
 

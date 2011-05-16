@@ -983,11 +983,15 @@ static void SetDoubleArrayRegion(JNIEnv* env, jdoubleArray array, jsize start, j
 }
 
 static jint MonitorEnter(JNIEnv* env, jobject obj) {
-    return nvmMonitorEnter((Env*) env, (Object*) obj);
+    nvmMonitorEnter((Env*) env, (Object*) obj);
+    if (nvmExceptionOccurred((Env*) env)) return -1;
+    return 0;
 }
 
 static jint MonitorExit(JNIEnv* env, jobject obj) {
-    return nvmMonitorExit((Env*) env, (Object*) obj);
+    nvmMonitorExit((Env*) env, (Object*) obj);
+    if (nvmExceptionOccurred((Env*) env)) return -1;
+    return 0;
 }
  
 static void GetStringRegion(JNIEnv* env, jstring str, jsize start, jsize len, jchar* buf) {

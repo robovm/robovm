@@ -17,7 +17,7 @@ jboolean nvmInitThreads(Env* env) {
     return TRUE;
 }
 
-jint nvmMonitorEnter(Env* env, Object* obj) {
+void nvmMonitorEnter(Env* env, Object* obj) {
     // TODO: Protect initialization with global (spin?)lock
     if (!obj->monitor) {
         IDATA result = hythread_monitor_init_with_name(&obj->monitor, 0, NULL);
@@ -32,24 +32,53 @@ jint nvmMonitorEnter(Env* env, Object* obj) {
         }
         nvmAbort("Unexpected value returned by hythread_monitor_enter_using_threadId(): %d", result);
     }
-
-    return 0;
 }
 
-jint nvmMonitorExit(Env* env, Object* obj) {
+void nvmMonitorExit(Env* env, Object* obj) {
     // TODO: Protect access to monitor with global (spin?)lock
     if (!obj->monitor) {
         nvmThrowIllegalMonitorStateException(env);
-        return -1;
+        return;
     }
     IDATA result = hythread_monitor_exit_using_threadId(obj->monitor, env->currentThread->hyThread);
     if (result != 0) {
         if (result == HYTHREAD_ILLEGAL_MONITOR_STATE) {
             nvmThrowIllegalMonitorStateException(env);
-            return -1;
+            return;
         }
         nvmAbort("Unexpected value returned by hythread_monitor_exit_using_threadId(): %d", result);
     }
-    return 0;
+}
+
+void nvmMonitorNotify(Env* env, Object* obj) {
+    // TODO: Protect access to monitor with global (spin?)lock
+    if (!obj->monitor) {
+        nvmThrowIllegalMonitorStateException(env);
+        return;
+    }
+    IDATA result = hythread_monitor_notify(obj->monitor);
+    if (result != 0) {
+        if (result == HYTHREAD_ILLEGAL_MONITOR_STATE) {
+            nvmThrowIllegalMonitorStateException(env);
+            return;
+        }
+        nvmAbort("Unexpected value returned by hythread_monitor_notify(): %d", result);
+    }
+}
+
+void nvmMonitorNotifyAll(Env* env, Object* obj) {
+    // TODO: Protect access to monitor with global (spin?)lock
+    if (!obj->monitor) {
+        nvmThrowIllegalMonitorStateException(env);
+        return;
+    }
+    IDATA result = hythread_monitor_notify_all(obj->monitor);
+    if (result != 0) {
+        if (result == HYTHREAD_ILLEGAL_MONITOR_STATE) {
+            nvmThrowIllegalMonitorStateException(env);
+            return;
+        }
+        nvmAbort("Unexpected value returned by hythread_monitor_notify_all(): %d", result);
+    }
 }
 

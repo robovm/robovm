@@ -85,6 +85,7 @@ struct Method {
   jint access;
   char** exceptions;
   void* impl;
+  void* synchronizedImpl;
   void* lookup;
   jint vtableIndex;
 };

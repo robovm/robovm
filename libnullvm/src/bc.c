@@ -276,6 +276,7 @@ Object* _nvmBcLdcString(Env* env, char* s) {
 Object* _nvmBcLdcClass(Env* env, char* name, Class* caller) {
     // TODO: Check that caller has access to the class
     Class* clazz = findClassInLoader(env, name, caller->classLoader);
+    if (!clazz) nvmRaiseException(env, nvmExceptionOccurred(env));
     if (!checkClassAccessible(env, clazz, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
     return (Object*) clazz;
 }

@@ -97,14 +97,23 @@ jint nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreNvm
         if (startsWith(argv[i], "-nvm:")) {
             if (!ignoreNvmArgs) {
                 char* arg = &argv[i][5];
-                if (startsWith(arg, "Xlog:trace")) {
+                if (startsWith(arg, "log=trace")) {
                     if (options->logLevel == 0) options->logLevel = LOG_LEVEL_TRACE;
-                } else if (startsWith(arg, "Xlog:warn")) {
+                } else if (startsWith(arg, "log=warn")) {
                     if (options->logLevel == 0) options->logLevel = LOG_LEVEL_WARN;
-                } else if (startsWith(arg, "Xlog:error")) {
+                } else if (startsWith(arg, "log=error")) {
                     if (options->logLevel == 0) options->logLevel = LOG_LEVEL_ERROR;
-                } else if (startsWith(arg, "Xlog:none")) {
+                } else if (startsWith(arg, "log=none")) {
                     if (options->logLevel == 0) options->logLevel = LOG_LEVEL_NONE;
+                } else if (startsWith(arg, "MainClass=")) {
+                    if (!options->mainClass) {
+                        char* s = strdup(&arg[10]);
+                        jint j;
+                        for (j = 0; s[j] != 0; j++) {
+                            if (s[j] == '.') s[j] = '/';
+                        }
+                        options->mainClass = s;
+                    }
                 }
             }
             firstJavaArg++;

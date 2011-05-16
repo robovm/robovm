@@ -433,7 +433,8 @@ public class Main {
         gccArgs.add(new File(new File(home, "gc"), "lib").getAbsolutePath());
         
 //        File mainObjectFile = new File(mainCFile.getParentFile(), "main.o");
-        exec(gccPath, "-o", outFile, "-DNULLVM_MAIN_CLASS=" + mainClass.replace('.', '/'),
+        exec(gccPath, "-o", outFile, 
+                mainClass != null ? "-DNULLVM_MAIN_CLASS=" + mainClass.replace('.', '/') : "-DNULLVM_NO_MAIN_CLASS",
                 "-DLINUX", "-DLINUX_X86_64", "-DHYX86_64", "-DIPv6_FUNCTION_SUPPORT", "-DHYPORT_LIBRARY_DEFINE",
                 "-g", gccOpts, gccArgs, "-lnullvm", "-lm", "-ldl", "-lpthread", mainCFile);
 //        files.add(mainObjectFile);
@@ -744,10 +745,6 @@ public class Main {
             classPathFiles.add(jarFile);
         }
         
-        if (mainClass == null) {
-            throw new IllegalArgumentException("No main class specified on command line or in JAR manifest");
-        }
-        
         if (output == null) {
             throw new IllegalArgumentException("No output dir specified");
         }
@@ -755,8 +752,14 @@ public class Main {
             throw new IllegalArgumentException("No classpath specified");
         }
         
+        if (target == null && mainClass == null) {
+            throw new IllegalArgumentException("No target and no main class specified");
+        }
+        
         if (verbose) {
-            stdout.println("Using main class: " + mainClass);
+            if (mainClass != null) {
+                stdout.println("Using main class: " + mainClass);
+            }
             stdout.println("Run arguments: " + runArgs);
         }
         

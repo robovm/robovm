@@ -11,9 +11,8 @@ mkdir -p $HOME/.nullvm/vts/
 
 #echo "" | gcc -c -E -v -
 
-ARGS=
 n=0
-while [ "x$1" != 'x' ]; do
+while [ ${1:0:1} = '-' ]; do
   if [ "$1" = '-cp' ]; then
     shift
     parts=$(echo $1 | tr ':' '\n')
@@ -29,16 +28,31 @@ while [ "x$1" != 'x' ]; do
         CP=$(test "x$CP" = "x" && echo "$p" || echo "$CP:$p")
       fi
     done
-    ARGS="$ARGS -cp $CP"
-  else
-    ARGS="$ARGS $1"
   fi
   shift
 done
 
-#echo $ARGS
+MAINCLASS=$1
+shift
 
-#exit
+while [ "x$1" != 'x' ]; do
+  RUNARGS="$RUNARGS $1"
+  shift
+done
+
+#echo "ARGS=$ARGS"
+#echo "RUNARGS=$RUNARGS"
+#echo "MAINCLASS=$MAINCLASS"
+
+if [ ! -x $TARGET/vts ]; then
+  java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -jar $NULLVMCJAR -d $TARGET -o vts -cp $CP
+fi
+
+LD_LIBRARY_PATH=$TARGET $TARGET/vts -nvm:MainClass=$MAINCLASS $RUNARGS
+CODE=$?
+exit $CODE
+
+exit
 
 java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -jar $NULLVMCJAR -run -d $TARGET $ARGS
 CODE=$?

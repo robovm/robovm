@@ -1,7 +1,7 @@
 #ifndef NULLVM_INIT_H
 #define NULLVM_INIT_H
 
-extern jint nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreNvmArgs);
+extern jboolean nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreNvmArgs);
 extern Env* nvmStartup(Options* options);
 extern jboolean nvmRun(Env* env);
 extern void nvmShutdown(Env* env, jint code);

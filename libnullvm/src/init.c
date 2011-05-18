@@ -70,10 +70,10 @@ static jboolean loadClasspathEntries(Env* env, char* basePath, char* entriesFile
     return TRUE;
 }
 
-jint nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreNvmArgs) {
+jboolean nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreNvmArgs) {
     char path[PATH_MAX];
     if (!realpath(argv[0], path)) {
-        return 1;
+        return FALSE;
     }
 
     strcpy(options->executablePath, path);
@@ -130,7 +130,7 @@ jint nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreNvm
 
     _logLevel = options->logLevel == 0 ? LOG_LEVEL_ERROR : options->logLevel;
 
-    return 0;
+    return options->mainClass != NULL;
 }
 
 Env* nvmStartup(Options* options) {

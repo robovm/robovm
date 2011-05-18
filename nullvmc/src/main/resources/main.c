@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
 #ifdef NULLVM_MAIN_CLASS
     options.mainClass = QUOTE(NULLVM_MAIN_CLASS);
 #endif
-    if (nvmInitOptions(argc, argv, &options, FALSE)) {
+    if (!nvmInitOptions(argc, argv, &options, FALSE)) {
         fprintf(stderr, "nvmInitOptions(...) failed!\n");
         return 1;
     }

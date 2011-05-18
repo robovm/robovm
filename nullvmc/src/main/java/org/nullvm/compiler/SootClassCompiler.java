@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -104,6 +105,7 @@ import org.nullvm.compiler.trampoline.PutStatic;
 import org.nullvm.compiler.trampoline.Trampoline;
 
 import soot.Body;
+import soot.BodyTransformer;
 import soot.BooleanType;
 import soot.ByteType;
 import soot.CharType;
@@ -114,6 +116,7 @@ import soot.Local;
 import soot.LongType;
 import soot.Modifier;
 import soot.NullType;
+import soot.Pack;
 import soot.PackManager;
 import soot.PatchingChain;
 import soot.PrimType;
@@ -125,6 +128,7 @@ import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
 import soot.SootMethodRef;
+import soot.Transform;
 import soot.Trap;
 import soot.Unit;
 import soot.VoidType;
@@ -2331,6 +2335,25 @@ public class SootClassCompiler {
         }
         
         Scene.v().loadNecessaryClasses();
+        
+        /*
+         * Hack: Remove the DeadAssignmentEliminator since it removes LDC instructions
+         * which would have thrown a NoClassDefFoundError.
+         * TODO: Report this to soot as a bug?
+         */
+        Pack pack = PackManager.v().getPack("jb");
+        for (Iterator<?> it = pack.iterator(); it.hasNext();) {
+            Transform t = (Transform) it.next();
+            if ("jb.dae".equals(t.getPhaseName())) {
+                it.remove();
+            }
+        }
+        pack.insertAfter(new Transform("jb.dae", new BodyTransformer() {
+            @SuppressWarnings("rawtypes")
+            @Override
+            protected void internalTransform(Body b, String phaseName, Map options) {
+            }
+        }), "jb.cp");
 //      PackManager.v().runPacks();
     }
 

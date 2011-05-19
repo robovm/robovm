@@ -120,6 +120,7 @@ import soot.Pack;
 import soot.PackManager;
 import soot.PatchingChain;
 import soot.PrimType;
+import soot.RefLikeType;
 import soot.RefType;
 import soot.ResolutionFailedException;
 import soot.Scene;
@@ -250,6 +251,7 @@ public class SootClassCompiler {
     private static final FunctionRef NVM_BC_NEW = new FunctionRef("_nvmBcNew", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR, CLASS_PTR));
     private static final FunctionRef NVM_BC_NEW_OBJECT_ARRAY = new FunctionRef("_nvmBcNewObjectArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, I8_PTR, CLASS_PTR));
     private static final FunctionRef NVM_BC_NEW_MULTI_ARRAY = new FunctionRef("_nvmBcNewMultiArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, new PointerType(I32), I8_PTR, CLASS_PTR));
+    private static final FunctionRef NVM_BC_SET_OBJECT_ARRAY_ELEMENT = new FunctionRef("_nvmBcSetObjectArrayElement", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I32, OBJECT_PTR));
     private static final FunctionRef NVM_BC_RESOLVE_INVOKESPECIAL = new FunctionRef("_nvmBcResolveInvokespecial", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_RESOLVE_INVOKESTATIC = new FunctionRef("_nvmBcResolveInvokestatic", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_RESOLVE_INVOKEVIRTUAL = new FunctionRef("_nvmBcResolveInvokevirtual", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
@@ -378,7 +380,7 @@ public class SootClassCompiler {
                     mangleMethod(getInternalName(sootClass), "<clinit>", 
                                 new ArrayList<soot.Type>(), soot.VoidType.v()), 
                             new FunctionType(VOID, ENV_PTR), "env");
-            finalClassFieldsInitializers(clinit);
+            classFieldsInitializers(clinit);
             clinit.add(new Ret());
         }
         
@@ -723,7 +725,7 @@ public class SootClassCompiler {
 //        ctx.f().add(new Load(localTrampolines, new GlobalRef("trampolines", new PointerType(new PointerType(I8_PTR)))));
         
         if ("<clinit>".equals(method.getName())) {
-            finalClassFieldsInitializers(function);
+            classFieldsInitializers(function);
         }
         
         PatchingChain<Unit> units = body.getUnits();
@@ -824,34 +826,32 @@ public class SootClassCompiler {
     /**
      * @param function
      */
-    private void finalClassFieldsInitializers(Function function) {
+    private void classFieldsInitializers(Function function) {
         for (SootField field : classFields) {
-            if (field.isFinal()) {
-                for (Tag tag : field.getTags()) {
-                    if (tag instanceof DoubleConstantValueTag) {
-                        DoubleConstantValueTag dtag = (DoubleConstantValueTag) tag;
-                        function.add(new Store(new FloatingPointConstant(dtag.getDoubleValue()), getClassFieldPtr(function, field)));
-                    } else if (tag instanceof FloatConstantValueTag) {
-                        FloatConstantValueTag ftag = (FloatConstantValueTag) tag;
-                        function.add(new Store(new FloatingPointConstant(ftag.getFloatValue()), getClassFieldPtr(function, field)));
-                    } else if (tag instanceof IntegerConstantValueTag) {
-                        IntegerConstantValueTag itag = (IntegerConstantValueTag) tag;
-                        Constant c = new IntegerConstant(itag.getIntValue());
-                        IntegerType type = (IntegerType) getType(field.getType());
-                        if (type.getBits() < 32) {
-                            c = new ConstantTrunc(c, type);
-                        }
-                        function.add(new Store(c, getClassFieldPtr(function, field)));
-                    } else if (tag instanceof LongConstantValueTag) {
-                        LongConstantValueTag ltag = (LongConstantValueTag) tag;
-                        function.add(new Store(new IntegerConstant(ltag.getLongValue()), getClassFieldPtr(function, field)));
-                    } else if (tag instanceof StringConstantValueTag) {
-                        String s = ((StringConstantValueTag) tag).getStringValue();
-                        Value string = getString(s);
-                        Variable result = function.newVariable(OBJECT_PTR);
-                        function.add(new Call(result, NVM_BC_LDC_STRING, ENV, string));
-                        function.add(new Store(result.ref(), getClassFieldPtr(function, field)));
+            for (Tag tag : field.getTags()) {
+                if (tag instanceof DoubleConstantValueTag) {
+                    DoubleConstantValueTag dtag = (DoubleConstantValueTag) tag;
+                    function.add(new Store(new FloatingPointConstant(dtag.getDoubleValue()), getClassFieldPtr(function, field)));
+                } else if (tag instanceof FloatConstantValueTag) {
+                    FloatConstantValueTag ftag = (FloatConstantValueTag) tag;
+                    function.add(new Store(new FloatingPointConstant(ftag.getFloatValue()), getClassFieldPtr(function, field)));
+                } else if (tag instanceof IntegerConstantValueTag) {
+                    IntegerConstantValueTag itag = (IntegerConstantValueTag) tag;
+                    Constant c = new IntegerConstant(itag.getIntValue());
+                    IntegerType type = (IntegerType) getType(field.getType());
+                    if (type.getBits() < 32) {
+                        c = new ConstantTrunc(c, type);
                     }
+                    function.add(new Store(c, getClassFieldPtr(function, field)));
+                } else if (tag instanceof LongConstantValueTag) {
+                    LongConstantValueTag ltag = (LongConstantValueTag) tag;
+                    function.add(new Store(new IntegerConstant(ltag.getLongValue()), getClassFieldPtr(function, field)));
+                } else if (tag instanceof StringConstantValueTag) {
+                    String s = ((StringConstantValueTag) tag).getStringValue();
+                    Value string = getString(s);
+                    Variable result = function.newVariable(OBJECT_PTR);
+                    function.add(new Call(result, NVM_BC_LDC_STRING, ENV, string));
+                    function.add(new Store(result.ref(), getClassFieldPtr(function, field)));
                 }
             }
         }
@@ -1103,11 +1103,9 @@ public class SootClassCompiler {
     
     private static boolean hasConstantValueTags(List<SootField> classFields) {
         for (SootField field : classFields) {
-            if (field.isFinal()) {
-                for (Tag tag : field.getTags()) {
-                    if (tag instanceof ConstantValueTag) {
-                        return true;
-                    }
+            for (Tag tag : field.getTags()) {
+                if (tag instanceof ConstantValueTag) {
+                    return true;
                 }
             }
         }
@@ -1953,7 +1951,11 @@ public class SootClassCompiler {
                 Value index = immediate(ctx, (Immediate) ref.getIndex());
                 checkNull(ctx, base);
                 checkBounds(ctx, base, index);
-                callOrInvoke(ctx, getArrayStore(leftOp.getType()), base, index, narrowedResult);
+                if (leftOp.getType() instanceof RefLikeType) {
+                    callOrInvoke(ctx, NVM_BC_SET_OBJECT_ARRAY_ELEMENT, ENV, base, index, narrowedResult);
+                } else {
+                    callOrInvoke(ctx, getArrayStore(leftOp.getType()), base, index, narrowedResult);
+                }
             } else if (leftOp instanceof InstanceFieldRef) {
                 InstanceFieldRef ref = (InstanceFieldRef) leftOp;
                 Value base = immediate(ctx, (Immediate) ref.getBase());

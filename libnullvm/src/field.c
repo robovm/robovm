@@ -9,17 +9,25 @@ static Field* getField(Env* env, Class* clazz, char* name, char* desc) {
         }
     }
 
+    Interface* interface;
+    for (interface = clazz->interfaces; interface; interface = interface->next) {
+        field = getField(env, interface->interface, name, desc);
+        if (field) return field;
+    }
+
     if (clazz->superclass) {
         return getField(env, clazz->superclass, name, desc);
     }
 
-    nvmThrowNoSuchFieldError(env, name);
     return NULL;
 }
 
 ClassField* nvmGetClassField(Env* env, Class* clazz, char* name, char* desc) {
     Field* field = getField(env, clazz, name, desc);
-    if (!field) return NULL;
+    if (!field) {
+        nvmThrowNoSuchFieldError(env, name);
+        return NULL;
+    }
     if (!(field->access & ACC_STATIC)) {
         // TODO: JNI spec doesn't say anything about throwing this
         nvmThrowIncompatibleClassChangeErrorClassField(env, clazz, name, desc);
@@ -30,7 +38,10 @@ ClassField* nvmGetClassField(Env* env, Class* clazz, char* name, char* desc) {
 
 InstanceField* nvmGetInstanceField(Env* env, Class* clazz, char* name, char* desc) {
     Field* field = getField(env, clazz, name, desc);
-    if (!field) return NULL;
+    if (!field) {
+        nvmThrowNoSuchFieldError(env, name);
+        return NULL;
+    }
     if (field->access & ACC_STATIC) {
         // TODO: JNI spec doesn't say anything about throwing this
         nvmThrowIncompatibleClassChangeErrorInstanceField(env, clazz, name, desc);
@@ -38,37 +49,6 @@ InstanceField* nvmGetInstanceField(Env* env, Class* clazz, char* name, char* des
     }
     return (InstanceField*) field;
 }
-
-/*
-Field* nvmGetField(Class* clazz, char* name, char* desc, Class* caller) {
-    Field* field;
-    int sameClass = caller == NULL || clazz == caller;
-    int subClass = caller == NULL || nvmIsSubClass(clazz, caller);
-    int samePackage = caller == NULL || nvmIsSamePackage(clazz, caller);
-
-    for (field = clazz->fields; field != NULL; field = field->next) {
-        if (!strcmp(field->name, name) && !strcmp(field->desc, desc)) {
-            jint access = field->access;
-            if (IS_PRIVATE(access) && !sameClass) {
-                nvmThrowIllegalAccessErrorField(clazz, name, desc, caller);
-            }
-            if (IS_PROTECTED(access) && !subClass) {
-                nvmThrowIllegalAccessErrorField(clazz, name, desc, caller);
-            }
-            if (IS_PACKAGE_PRIVATE(access) && !samePackage) {
-                nvmThrowIllegalAccessErrorField(clazz, name, desc, caller);
-            }
-            return field;
-        }
-    }
-
-    if (clazz->superclass) {
-        return nvmGetField(clazz->superclass, name, desc, caller);
-    }
-
-    nvmThrowNoSuchFieldError(name);
-}
-*/
 
 static inline void* getFieldAddress(Object* obj, InstanceField* field) {
     return (void*) ((jbyte*) obj + field->offset);

@@ -194,6 +194,11 @@ void _nvmBcThrowArithmeticException(Env* env) {
 Object* _nvmBcNew(Env* env, char* className, Class* caller) {
     Class* clazz = findClassInLoader(env, className, caller->classLoader);
     if (!checkClassAccessible(env, clazz, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    if (CLASS_IS_ABSTRACT(clazz) || CLASS_IS_INTERFACE(clazz)) {
+        // TODO: Message
+        nvmThrowNew(env, java_lang_InstantiationError, "");
+        nvmRaiseException(env, nvmExceptionOccurred(env));
+    }
     Object* obj = nvmAllocateObject(env, clazz);
     if (!obj) nvmRaiseException(env, nvmExceptionOccurred(env));
     return obj;
@@ -265,6 +270,19 @@ Array* _nvmBcNewMultiArray(Env* env, jint dims, jint* lengths, char* arrayClassN
     return array;
 }
 
+void _nvmBcSetObjectArrayElement(Env* env, ObjectArray* array, jint index, Object* value) {
+    Class* componentType = nvmGetComponentType(env, array->object.clazz);
+    if (!componentType) nvmRaiseException(env, nvmExceptionOccurred(env));
+    jboolean assignable = nvmIsAssignableFrom(env, value->clazz, componentType);
+    if (nvmExceptionCheck(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    if (!assignable) {
+        nvmThrowArrayStoreException(env);
+        nvmRaiseException(env, nvmExceptionOccurred(env));
+    }
+    array->values[index] = value;
+}
+
+
 Object* _nvmBcLdcString(Env* env, char* s) {
     // TODO: The caller knows the length of the string in Java chars
     // TODO: Use nvmNewStringAscii if string only contains ASCII
@@ -318,11 +336,13 @@ void* _nvmBcResolveGetstatic(Env* env, char* owner, char* name, char* desc, Clas
     TRACE("nvmBcResolveGetstatic: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     // TODO: Check that caller has access to the field
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
-    if (!checkClassAccessible(env, clazz, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    checkClassAccessible(env, clazz, caller);
+    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
     ClassField* field = nvmGetClassField(env, clazz, name, desc);
     if (!field) nvmRaiseException(env, nvmExceptionOccurred(env));
-    if (!checkFieldAccessible(env, (Field*) field, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
-    nvmInitialize(env, clazz);
+    checkFieldAccessible(env, (Field*) field, caller);
+    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    nvmInitialize(env, field->field.clazz);
     if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
     *ptr = field->field.getter;
     return field->field.getter;
@@ -332,11 +352,17 @@ void* _nvmBcResolvePutstatic(Env* env, char* owner, char* name, char* desc, Clas
     TRACE("nvmBcResolvePutstatic: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     // TODO: Check that caller has access to the field
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
-    if (!checkClassAccessible(env, clazz, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    checkClassAccessible(env, clazz, caller);
+    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
     ClassField* field = nvmGetClassField(env, clazz, name, desc);
     if (!field) nvmRaiseException(env, nvmExceptionOccurred(env));
-    if (!checkFieldAccessible(env, (Field*) field, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
-    nvmInitialize(env, clazz);
+    checkFieldAccessible(env, (Field*) field, caller);
+    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    if (FIELD_IS_FINAL((Field*) field) && field->field.clazz != caller) {
+        nvmThrowIllegalAccessErrorField(env, field->field.clazz, name, desc, caller);
+        nvmRaiseException(env, nvmExceptionOccurred(env));
+    }
+    nvmInitialize(env, field->field.clazz);
     if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
     *ptr = field->field.setter;
     return field->field.setter;
@@ -346,11 +372,11 @@ void* _nvmBcResolveGetfield(Env* env, char* runtimeClassName, char* owner, char*
     TRACE("nvmBcResolveGetfield: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     // TODO: Check that caller has access to the field
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
-    if (!checkClassAccessible(env, clazz, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    checkClassAccessible(env, clazz, caller);
+    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
     InstanceField* field = nvmGetInstanceField(env, clazz, name, desc);
     if (!field) nvmRaiseException(env, nvmExceptionOccurred(env));
-    if (!checkFieldAccessible(env, (Field*) field, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
-    nvmInitialize(env, clazz);
+    checkFieldAccessible(env, (Field*) field, caller);
     if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
     *ptr = field->field.getter;
     return field->field.getter;
@@ -360,12 +386,16 @@ void* _nvmBcResolvePutfield(Env* env, char* runtimeClassName, char* owner, char*
     TRACE("nvmBcResolvePutfield: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     // TODO: Check that caller has access to the field
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
-    if (!checkClassAccessible(env, clazz, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    checkClassAccessible(env, clazz, caller);
+    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
     InstanceField* field = nvmGetInstanceField(env, clazz, name, desc);
     if (!field) nvmRaiseException(env, nvmExceptionOccurred(env));
-    if (!checkFieldAccessible(env, (Field*) field, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
-    nvmInitialize(env, clazz);
+    checkFieldAccessible(env, (Field*) field, caller);
     if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    if (FIELD_IS_FINAL((Field*) field) && field->field.clazz != caller) {
+        nvmThrowIllegalAccessErrorField(env, field->field.clazz, name, desc, caller);
+        nvmRaiseException(env, nvmExceptionOccurred(env));
+    }
     *ptr = field->field.setter;
     return field->field.setter;
 }
@@ -373,11 +403,11 @@ void* _nvmBcResolvePutfield(Env* env, char* runtimeClassName, char* owner, char*
 void* _nvmBcResolveInvokespecial(Env* env, char* runtimeClassName, char* owner, char* name, char* desc, Class* caller, void** ptr) {
     TRACE("nvmBcResolveInvokespecial: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
-    if (!checkClassAccessible(env, clazz, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    checkClassAccessible(env, clazz, caller);
+    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
     Method* method = nvmGetInstanceMethod(env, clazz, name, desc);
     if (!method) nvmRaiseException(env, nvmExceptionOccurred(env));
-    if (!checkMethodAccessible(env, runtimeClassName, method, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
-    nvmInitialize(env, clazz);
+    checkMethodAccessible(env, runtimeClassName, method, caller);
     if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
     void* impl = method->synchronizedImpl ? method->synchronizedImpl : method->impl;
     *ptr = impl;
@@ -387,12 +417,14 @@ void* _nvmBcResolveInvokespecial(Env* env, char* runtimeClassName, char* owner, 
 void* _nvmBcResolveInvokestatic(Env* env, char* owner, char* name, char* desc, Class* caller, void** ptr) {
     TRACE("nvmBcResolveInvokestatic: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
-    if (!checkClassAccessible(env, clazz, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    checkClassAccessible(env, clazz, caller);
+    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
     // TODO: Throw something if methodName is <clinit>
     Method* method = nvmGetClassMethod(env, clazz, name, desc);
     if (!method) nvmRaiseException(env, nvmExceptionOccurred(env));
-    if (!checkMethodAccessible(env, NULL, method, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
-    nvmInitialize(env, clazz);
+    checkMethodAccessible(env, NULL, method, caller);
+    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
     void* impl = method->synchronizedImpl ? method->synchronizedImpl : method->impl;
     *ptr = impl;
@@ -402,14 +434,14 @@ void* _nvmBcResolveInvokestatic(Env* env, char* owner, char* name, char* desc, C
 void* _nvmBcResolveInvokevirtual(Env* env, char* runtimeClassName, char* owner, char* name, char* desc, Class* caller, void** ptr) {
     TRACE("nvmBcResolveInvokevirtual: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
-    if (!checkClassAccessible(env, clazz, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    checkClassAccessible(env, clazz, caller);
+    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
     // TODO: Check that clazz isn't an interface
     // TODO: Throw something if methodName is <init>
     Method* method = nvmGetInstanceMethod(env, clazz, name, desc);
     // TODO: Throw something if method is abstract
     if (!method) nvmRaiseException(env, nvmExceptionOccurred(env));
-    if (!checkMethodAccessible(env, runtimeClassName, method, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
-    nvmInitialize(env, clazz);
+    checkMethodAccessible(env, runtimeClassName, method, caller);
     if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
     *ptr = method->lookup;
     return method->lookup;
@@ -418,7 +450,8 @@ void* _nvmBcResolveInvokevirtual(Env* env, char* runtimeClassName, char* owner, 
 void* _nvmBcResolveInvokeinterface(Env* env, char* owner, char* name, char* desc, Class* caller, void** ptr) {
     TRACE("nvmBcResolveInvokeinterface: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
-    if (!checkClassAccessible(env, clazz, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    checkClassAccessible(env, clazz, caller);
+    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
     if (!CLASS_IS_INTERFACE(clazz)) {
         nvmThrowLinkageError(env);
         nvmRaiseException(env, nvmExceptionOccurred(env));
@@ -427,7 +460,6 @@ void* _nvmBcResolveInvokeinterface(Env* env, char* owner, char* name, char* desc
     // TODO: Throw something if methodName is <init>
     if (!method) nvmRaiseException(env, nvmExceptionOccurred(env));
 //    if (!checkMethodAccessible(env, clazz, method, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
-    nvmInitialize(env, clazz);
     if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
     *ptr = method->lookup;
     return method->lookup;

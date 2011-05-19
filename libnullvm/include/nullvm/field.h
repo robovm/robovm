@@ -1,12 +1,12 @@
 #ifndef NULLVM_FIELD_H
 #define NULLVM_FIELD_H
 
-#define FIELD_IS_PUBLIC(f) (IS_PUBLIC(f->access))
-#define FIELD_IS_PRIVATE(f) (IS_PRIVATE(f->access))
-#define FIELD_IS_PROTECTED(f) (IS_PROTECTED(f->access))
-#define FIELD_IS_STATIC(f) (IS_STATIC(f->access))
-#define FIELD_IS_FINAL(f) (IS_FINAL(f->access))
-#define FIELD_IS_PACKAGE_PRIVATE(f) (IS_PACKAGE_PRIVATE(f->access))
+#define FIELD_IS_PUBLIC(f) (IS_PUBLIC((f)->access))
+#define FIELD_IS_PRIVATE(f) (IS_PRIVATE((f)->access))
+#define FIELD_IS_PROTECTED(f) (IS_PROTECTED((f)->access))
+#define FIELD_IS_STATIC(f) (IS_STATIC((f)->access))
+#define FIELD_IS_FINAL(f) (IS_FINAL((f)->access))
+#define FIELD_IS_PACKAGE_PRIVATE(f) (IS_PACKAGE_PRIVATE((f)->access))
 
 /**
  * Returns the class field with the specified name and descriptor defined by the specified

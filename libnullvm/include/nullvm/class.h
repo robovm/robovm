@@ -1,14 +1,14 @@
 #ifndef NULLVM_CLASS_H
 #define NULLVM_CLASS_H
 
-#define CLASS_IS_INTERFACE(c) (IS_INTERFACE(c->access))
-#define CLASS_IS_PUBLIC(c) (IS_PUBLIC(c->access))
-#define CLASS_IS_STATIC(c) (IS_STATIC(c->access))
-#define CLASS_IS_FINAL(c) (IS_FINAL(c->access))
-#define CLASS_IS_ABSTRACT(c) (IS_ABSTRACT(c->access))
-#define CLASS_IS_PACKAGE_PRIVATE(c) (IS_PACKAGE_PRIVATE(c->access))
-#define CLASS_IS_ARRAY(c) (c->name[0] == '[')
-#define CLASS_IS_ARRAY_OF_PRIMITIVE(c) (c->name[0] == '[' && c->name[2] == '\0')
+#define CLASS_IS_INTERFACE(c) (IS_INTERFACE((c)->access))
+#define CLASS_IS_PUBLIC(c) (IS_PUBLIC((c)->access))
+#define CLASS_IS_STATIC(c) (IS_STATIC((c)->access))
+#define CLASS_IS_FINAL(c) (IS_FINAL((c)->access))
+#define CLASS_IS_ABSTRACT(c) (IS_ABSTRACT((c)->access))
+#define CLASS_IS_PACKAGE_PRIVATE(c) (IS_PACKAGE_PRIVATE((c)->access))
+#define CLASS_IS_ARRAY(c) ((c)->name[0] == '[')
+#define CLASS_IS_ARRAY_OF_PRIMITIVE(c) ((c)->name[0] == '[' && (c)->name[2] == '\0')
 
 extern Class* java_lang_Object;
 extern Class* java_lang_Class;
@@ -37,6 +37,7 @@ extern Class* java_lang_AbstractMethodError;
 extern Class* java_lang_UnsatisfiedLinkError;
 extern Class* java_lang_VerifyError;
 extern Class* java_lang_LinkageError;
+extern Class* java_lang_InstantiationError;
 
 extern Class* java_lang_RuntimeException;
 extern Class* java_lang_ClassCastException;
@@ -49,6 +50,7 @@ extern Class* java_lang_IllegalArgumentException;
 extern Class* java_lang_ArithmeticException;
 extern Class* java_lang_UnsupportedOperationException;
 extern Class* java_lang_IllegalMonitorStateException;
+extern Class* java_lang_InstantiationException;
 
 extern Class* prim_Z;
 extern Class* prim_B;

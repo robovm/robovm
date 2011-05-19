@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <hyport.h>
+#include "utlist.h"
 #include "log.h"
 
 Class* java_lang_Object;
@@ -33,6 +34,7 @@ Class* java_lang_UnsatisfiedLinkError;
 Class* java_lang_ExceptionInInitializerError;
 Class* java_lang_VerifyError;
 Class* java_lang_LinkageError;
+Class* java_lang_InstantiationError;
 
 Class* java_lang_Throwable;
 Class* java_lang_RuntimeException;
@@ -46,6 +48,7 @@ Class* java_lang_IllegalArgumentException;
 Class* java_lang_ArithmeticException;
 Class* java_lang_UnsupportedOperationException;
 Class* java_lang_IllegalMonitorStateException;
+Class* java_lang_InstantiationException;
 
 Class* prim_Z;
 Class* prim_B;
@@ -501,6 +504,8 @@ jboolean nvmInitClasses(Env* env) {
     if (!java_lang_VerifyError) return FALSE;
     java_lang_LinkageError = findBootClass(env, "java/lang/LinkageError");
     if (!java_lang_LinkageError) return FALSE;
+    java_lang_InstantiationError = findBootClass(env, "java/lang/InstantiationError");
+    if (!java_lang_InstantiationError) return FALSE;
 
     java_lang_Throwable = findBootClass(env, "java/lang/Throwable");
     if (!java_lang_Throwable) return FALSE;
@@ -524,6 +529,8 @@ jboolean nvmInitClasses(Env* env) {
     if (!java_lang_UnsupportedOperationException) return FALSE;
     java_lang_IllegalMonitorStateException = findBootClass(env, "java/lang/IllegalMonitorStateException");
     if (!java_lang_IllegalMonitorStateException) return FALSE;
+    java_lang_InstantiationException = findBootClass(env, "java/lang/InstantiationException");
+    if (!java_lang_InstantiationException) return FALSE;
 
     prim_Z = createPrimitiveClass(env, "Z");
     if (!prim_Z) return FALSE;
@@ -618,9 +625,8 @@ Class* nvmAllocateClass(Env* env, char* className, Class* superclass, ClassLoade
 jboolean nvmAddInterface(Env* env, Class* clazz, Class* interf) {
     Interface* interface = nvmAllocateMemory(env, sizeof(Interface));
     if (!interface) return FALSE;
-    interface->next = clazz->interfaces;
     interface->interface = interf;
-    clazz->interfaces = interface;
+    LL_APPEND(clazz->interfaces, interface);
     return TRUE;
 }
 
@@ -765,6 +771,11 @@ void nvmInitialize(Env* env, Class* clazz) {
 }
 
 Object* nvmAllocateObject(Env* env, Class* clazz) {
+    if (CLASS_IS_ABSTRACT(clazz) || CLASS_IS_INTERFACE(clazz)) {
+        // TODO: Message
+        nvmThrowNew(env, java_lang_InstantiationException, "");
+        return NULL;
+    }
     nvmInitialize(env, clazz);
     if (nvmExceptionOccurred(env)) return NULL;
     jint dataSize = clazz->instanceDataOffset + clazz->instanceDataSize;

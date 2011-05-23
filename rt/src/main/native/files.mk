@@ -119,6 +119,7 @@ SRC = \
   luni-kernel/reflection_helpers.c \
   luni-kernel/java_lang_Class.c \
   luni-kernel/java_lang_Object.c \
+  luni-kernel/java_lang_Thread.c \
   luni-kernel/java_lang_Throwable.c \
   luni-kernel/java_lang_Runtime.c \
   luni-kernel/java_lang_System.c \

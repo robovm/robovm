@@ -49,6 +49,7 @@ Class* java_lang_ArithmeticException;
 Class* java_lang_UnsupportedOperationException;
 Class* java_lang_IllegalMonitorStateException;
 Class* java_lang_InstantiationException;
+Class* java_lang_InterruptedException;
 
 Class* prim_Z;
 Class* prim_B;
@@ -113,8 +114,8 @@ static void loadSoHandles(Env* env, ClasspathEntry* entry, DynamicLib** first) {
 }
 
 static void initSoHandles(Env* env) {
-    loadSoHandles(env, env->options->bootclasspath, &bootSoHandles);
-    loadSoHandles(env, env->options->classpath, &mainSoHandles);
+    loadSoHandles(env, env->vm->options->bootclasspath, &bootSoHandles);
+    loadSoHandles(env, env->vm->options->classpath, &mainSoHandles);
 }
 
 static jint j_get_vtable_index(Class* clazz, char* name, char* desc, Class* caller) {
@@ -531,6 +532,8 @@ jboolean nvmInitClasses(Env* env) {
     if (!java_lang_IllegalMonitorStateException) return FALSE;
     java_lang_InstantiationException = findBootClass(env, "java/lang/InstantiationException");
     if (!java_lang_InstantiationException) return FALSE;
+    java_lang_InterruptedException = findBootClass(env, "java/lang/InterruptedException");
+    if (!java_lang_InterruptedException) return FALSE;
 
     prim_Z = createPrimitiveClass(env, "Z");
     if (!prim_Z) return FALSE;

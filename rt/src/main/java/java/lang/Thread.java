@@ -134,19 +134,17 @@ public class Thread implements Runnable {
     ThreadLocal.Values localValues = null;
     ThreadLocal.Values inheritableValues = null;
     
-    
     /**
-     * Called by the VM to create the main thread.
+     * Called by the VM to create the main thread or attach a thread.
      */
-    Thread(long threadPtr) {
-        this.threadPtr = threadPtr;
-        this.threadGroup = ThreadGroup.mainGroup;
-        this.name = "main";
-        this.priority = NORM_PRIORITY;
+    Thread(long threadPtr, String name, ThreadGroup group) {
         synchronized (Thread.class) {
-            // Should be 1
             id = ++counter;
         }
+        this.threadPtr = threadPtr;
+        this.threadGroup = group == null ? ThreadGroup.mainGroup : group;
+        this.name = name == null ? "Thread-" + this.id : name;
+        this.priority = NORM_PRIORITY;        
         this.started = true;
         this.threadGroup.add(this);
     }
@@ -707,9 +705,7 @@ public class Thread implements Runnable {
      * @see java.lang.ThreadDeath
      */
     public final void join() throws InterruptedException {
-        while (isAlive()) {
-            wait();
-        }
+        join(0);
     }
 
     /**
@@ -723,10 +719,12 @@ public class Thread implements Runnable {
      * @see Object#notifyAll
      * @see java.lang.ThreadDeath
      */
-    public final void join(long millis) throws InterruptedException {
+    public final synchronized void join(long millis) throws InterruptedException {
         // Start (C) DRLVM
         if (millis == 0) {
-            join();
+            while (isAlive()) {
+                wait();
+            }
         } else {
             long end = System.currentTimeMillis() + millis;
             while(isAlive()) {
@@ -752,12 +750,14 @@ public class Thread implements Runnable {
      * @see Object#notifyAll
      * @see java.lang.ThreadDeath
      */
-    public final void join(long millis, int nanos) throws InterruptedException {
+    public final synchronized void join(long millis, int nanos) throws InterruptedException {
         // Start (C) DRLVM
         if (millis < 0 || nanos < 0 || nanos > 999999) {
             throw new IllegalArgumentException();
         } else if (millis == 0 && nanos == 0) {
-            join();
+            while (isAlive()) {
+                wait();
+            }
         } else {
             long end = System.nanoTime() + 1000000*millis + (long)nanos;
             long rest;
@@ -964,10 +964,10 @@ public class Thread implements Runnable {
             throw new IllegalThreadStateException("Thread already started.");
         }
 
+        threadPtr = internalStart(this, priority);
         started = true;
-        internalStart(this);
     }
-    private static native void internalStart(Thread t);
+    private static native long internalStart(Thread t, int priority);
 
     /**
      * Requests the receiver Thread to stop and throw ThreadDeath. The Thread is

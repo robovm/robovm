@@ -271,13 +271,15 @@ Array* _nvmBcNewMultiArray(Env* env, jint dims, jint* lengths, char* arrayClassN
 }
 
 void _nvmBcSetObjectArrayElement(Env* env, ObjectArray* array, jint index, Object* value) {
-    Class* componentType = nvmGetComponentType(env, array->object.clazz);
-    if (!componentType) nvmRaiseException(env, nvmExceptionOccurred(env));
-    jboolean assignable = nvmIsAssignableFrom(env, value->clazz, componentType);
-    if (nvmExceptionCheck(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
-    if (!assignable) {
-        nvmThrowArrayStoreException(env);
-        nvmRaiseException(env, nvmExceptionOccurred(env));
+    if (value) {
+        Class* componentType = nvmGetComponentType(env, array->object.clazz);
+        if (!componentType) nvmRaiseException(env, nvmExceptionOccurred(env));
+        jboolean assignable = nvmIsAssignableFrom(env, value->clazz, componentType);
+        if (nvmExceptionCheck(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
+        if (!assignable) {
+            nvmThrowArrayStoreException(env);
+            nvmRaiseException(env, nvmExceptionOccurred(env));
+        }
     }
     array->values[index] = value;
 }

@@ -168,11 +168,6 @@ MAKE_ARRAY(jboolean, Boolean)
 MAKE_ARRAY(jfloat, Float)
 MAKE_ARRAY(jdouble, Double)
 
-#define LOG_LEVEL_TRACE 1
-#define LOG_LEVEL_WARN 2
-#define LOG_LEVEL_ERROR 3
-#define LOG_LEVEL_NONE 4
-
 typedef struct DynamicLib DynamicLib;
 struct DynamicLib {
     DynamicLib* next;
@@ -205,10 +200,14 @@ typedef struct Thread {
     Object* threadObj;
 } Thread;
 
+typedef struct VM {
+    Options* options;
+} VM;
+
 typedef struct Env {
     JNIEnv jni;
+    VM* vm;
     Object* throwable;
-    Options* options;
     Thread* currentThread;
 } Env;
 

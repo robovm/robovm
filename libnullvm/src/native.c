@@ -4,13 +4,8 @@
 extern struct JNINativeInterface_ jni;
 extern struct JNIInvokeInterface_ javaVM;
 
-Env* nvmCreateEnv(Options* options) {
-    Env* env = (Env*) GC_MALLOC(sizeof(Env));
-    if (!env) return NULL;
-
-    env->options = options;
+void nvmInitJNIEnv(Env* env) {
     env->jni = &jni;
-    return env;
 }
 
 static void throwUnsupportedOperationException(Env* env, char* msg) {

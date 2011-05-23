@@ -282,6 +282,13 @@ extern "C"
 #define hythread_global_monitor() (*(hythread_monitor_t*)hythread_global("global_monitor"))
 #define hythread_monitor_init(pMon,flags)  hythread_monitor_init_with_name(pMon,flags, #pMon)
 #define hythread_monitor_set_name(pMon,pName) 
+
+/* Start NullVM changes */
+  extern HY_CFUNC hythread_t VMCALL
+    hythread_monitor_owner
+    PROTOTYPE ((hythread_monitor_t monitor));
+/* End NullVM changes */
+
 #if defined(__cplusplus)
 }
 #endif

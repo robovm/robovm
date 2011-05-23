@@ -3700,3 +3700,14 @@ hythread_current_stack_free(void)
   return 0;
 #endif
 }
+
+/* Start NullVM changes */
+#define CDEV_CURRENT_FUNCTION hythread_current_stack_free
+hythread_t VMCALL
+hythread_monitor_owner(hythread_monitor_t monitor)
+{
+  return monitor->owner;
+}
+#undef CDEV_CURRENT_FUNCTION
+/* End NullVM changes */
+

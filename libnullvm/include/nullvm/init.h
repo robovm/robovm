@@ -3,6 +3,8 @@
 
 extern jboolean nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreNvmArgs);
 extern Env* nvmStartup(Options* options);
+extern VM* nvmCreateVM(Options* options);
+extern Env* nvmCreateEnv(VM* vm);
 extern jboolean nvmRun(Env* env);
 extern void nvmShutdown(Env* env, jint code);
 extern void nvmAbort(char* format, ...);

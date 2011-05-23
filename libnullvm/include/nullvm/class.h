@@ -51,6 +51,7 @@ extern Class* java_lang_ArithmeticException;
 extern Class* java_lang_UnsupportedOperationException;
 extern Class* java_lang_IllegalMonitorStateException;
 extern Class* java_lang_InstantiationException;
+extern Class* java_lang_InterruptedException;
 
 extern Class* prim_Z;
 extern Class* prim_B;

@@ -77,9 +77,9 @@ ObjectArray* Java_java_lang_System_getPropertyList(Env* env, Class* clazz) {
     struct utsname os;
     if (uname(&os) == -1) return NULL; // TODO: Throw exception?
 
-    char* bootclasspath = createClasspathFromClasspathEntries(env, env->options->bootclasspath);
+    char* bootclasspath = createClasspathFromClasspathEntries(env, env->vm->options->bootclasspath);
     if (!bootclasspath) return NULL;
-    char* classpath = createClasspathFromClasspathEntries(env, env->options->classpath);
+    char* classpath = createClasspathFromClasspathEntries(env, env->vm->options->classpath);
     if (!classpath) return NULL;
 
     ObjectArray* props = NULL;

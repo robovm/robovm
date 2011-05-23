@@ -5,6 +5,7 @@ SRC = \
   exception.c \
   field.c \
   init.c \
+  log.c \
   map.c \
   method.c \
   native.c \

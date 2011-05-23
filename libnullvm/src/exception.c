@@ -196,3 +196,7 @@ jint nvmThrowIllegalMonitorStateException(Env* env) {
     return nvmThrowNew(env, java_lang_IllegalMonitorStateException, NULL);
 }
 
+jint nvmThrowInterruptedException(Env* env) {
+    return nvmThrowNew(env, java_lang_InterruptedException, NULL);
+}
+

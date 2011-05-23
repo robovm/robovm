@@ -6,8 +6,6 @@
 #include <dlfcn.h>
 #include "log.h"
 
-jboolean _logLevel;
-
 static inline jint startsWith(char* s, char* prefix) {
     return s && strncmp(s, prefix, strlen(prefix)) == 0;
 }
@@ -125,19 +123,35 @@ jboolean nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
     options->commandLineArgs = NULL;
     options->commandLineArgsCount = argc - firstJavaArg;
     if (options->commandLineArgsCount > 0) {
-        options->commandLineArgs = &argv[options->commandLineArgsCount];
+        options->commandLineArgs = &argv[firstJavaArg];
     }
 
-    _logLevel = options->logLevel == 0 ? LOG_LEVEL_ERROR : options->logLevel;
-
     return options->mainClass != NULL;
+}
+
+VM* nvmCreateVM(Options* options) {
+    VM* vm = GC_MALLOC(sizeof(VM));
+    if (!vm) return NULL;
+    vm->options = options;
+    return vm;
+}
+
+Env* nvmCreateEnv(VM* vm) {
+    Env* env = GC_MALLOC(sizeof(Env));
+    if (!env) return NULL;
+    env->vm = vm;
+    nvmInitJNIEnv(env);
+    return env;
 }
 
 Env* nvmStartup(Options* options) {
     GC_INIT();
     // TODO: Handle args like -Xmx?
 
-    Env* env = nvmCreateEnv(options);
+    VM* vm = nvmCreateVM(options);
+    if (!vm) return NULL;
+
+    Env* env = nvmCreateEnv(vm);
     if (!env) return NULL;
     // TODO: What if we can't allocate Env?
 
@@ -150,6 +164,7 @@ Env* nvmStartup(Options* options) {
     if (!loadClasspathEntries(env, options->basePath, cpFile, &options->classpath)) return NULL;
 
     // Call init on modules
+    if (!nvmInitLog(env)) return NULL;
     if (!nvmInitClasses(env)) return NULL;
     if (!nvmInitStrings(env)) return NULL;
     if (!nvmInitVMI(env)) return NULL;
@@ -167,16 +182,26 @@ static ClassLoader* getSystemClassLoader(Env* env) {
 }
 
 jboolean nvmRun(Env* env) {
+    Options* options = env->vm->options;
     ClassLoader* systemClassLoader = getSystemClassLoader(env);
     if (systemClassLoader) {
-        Class* clazz = nvmFindClassInLoader(env, env->options->mainClass, systemClassLoader);
+        Class* clazz = nvmFindClassInLoader(env, options->mainClass, systemClassLoader);
         if (clazz) {
             Method* method = nvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
             if (method) {
-                // TODO: Create args array
-                jvalue args[1];
-                args[0].l = (jobject) NULL;
-                nvmCallVoidClassMethodA(env, clazz, method, args);
+                ObjectArray* args = nvmNewObjectArray(env, options->commandLineArgsCount, java_lang_String, NULL, NULL);
+                if (args) {
+                    jint i = 0;
+                    for (i = 0; i < args->length; i++) {
+                        // TODO: Don't assume modified UTF-8
+                        args->values[i] = nvmNewStringUTF(env, options->commandLineArgs[i], -1);
+                        if (!args->values[i]) {
+                            args = NULL;
+                            break;
+                        }
+                    }
+                    if (args) nvmCallVoidClassMethod(env, clazz, method, args);
+                }
             }
         }
     }

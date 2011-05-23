@@ -25,6 +25,7 @@ extern "C" {
 #include <nullvm/thread.h>
 #include <nullvm/native.h>
 #include <nullvm/vminterface.h>
+#include <nullvm/log.h>
 
 #ifdef __cplusplus
 }

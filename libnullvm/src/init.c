@@ -213,7 +213,7 @@ jboolean nvmRun(Env* env) {
         if (printStackTrace) {
             jvalue args[1];
             args[0].l = (jobject) throwable;
-            nvmCallVoidInstanceMethodA(env, env->currentThread->threadObj, printStackTrace, args);
+            nvmCallVoidInstanceMethodA(env, (Object*) env->currentThread, printStackTrace, args);
         }
         nvmThrow(env, throwable);
         // TODO: Wait for other threads to finish?

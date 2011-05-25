@@ -849,7 +849,7 @@ Object* nvmNewObjectA(Env* env, Class* clazz, Method* method, jvalue *args) {
 Object* nvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args) {
     Object* obj = nvmAllocateObject(env, clazz);
     if (!obj) return NULL;
-    nvmCallVoidInstanceMethodV(env, obj, method, args);
+    nvmCallNonvirtualVoidInstanceMethodA(env, obj, method, args);
     if (nvmExceptionOccurred(env)) return NULL;
     return obj;
 }

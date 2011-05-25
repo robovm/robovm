@@ -14,34 +14,35 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group) {
 
     if (hythread_attach(&hyThread) < 0) goto error;
 
-    Thread* thread = nvmAllocateMemory(env, sizeof(Thread));
+    Thread* thread = (Thread*) nvmAllocateObject(env, java_lang_Thread);
     if (!thread) goto error;
 
-    thread->hyThread = hyThread;
+    thread->threadPtr = (jlong) hyThread;
     env->currentThread = thread;
 
-    Method* threadConstructor = nvmGetInstanceMethod(env, java_lang_Thread, "<init>", "(JLjava/lang/String;Ljava/lang/ThreadGroup;)V");
-    if (!threadConstructor) goto error;
     Object* threadName = NULL;
     if (name) {
         threadName = nvmNewStringUTF(env, name, -1);
         if (!threadName) goto error;
     }
-    Object* threadObj = nvmNewObject(env, java_lang_Thread, threadConstructor, (jlong) thread, threadName, group);
-    if (!threadObj) goto error;
 
-    thread->threadObj = threadObj;
+    Method* threadConstructor = nvmGetInstanceMethod(env, java_lang_Thread, "<init>", "(JLjava/lang/String;Ljava/lang/ThreadGroup;)V");
+    if (!threadConstructor) goto error;
+
+    nvmCallNonvirtualVoidInstanceMethod(env, (Object*) thread, threadConstructor, (jlong) hyThread, threadName, group);
+    if (nvmExceptionOccurred(env)) goto error;
 
     *envPtr = env;
     return JNI_OK;
 
 error:
     if (hyThread) hythread_detach(hyThread);
+    env->currentThread = NULL;
     return JNI_ERR;
 }
 
 static void monitorEnter(Env* env, hythread_monitor_t monitor) {
-    IDATA result = hythread_monitor_enter_using_threadId(monitor, env->currentThread->hyThread);
+    IDATA result = hythread_monitor_enter_using_threadId(monitor, (hythread_t) env->currentThread->threadPtr);
     if (result != 0) {
         if (result == HYTHREAD_PRIORITY_INTERRUPTED) {
             // TODO: What?
@@ -51,7 +52,7 @@ static void monitorEnter(Env* env, hythread_monitor_t monitor) {
 }
 
 static void monitorExit(Env* env, hythread_monitor_t monitor) {
-    IDATA result = hythread_monitor_exit_using_threadId(monitor, env->currentThread->hyThread);
+    IDATA result = hythread_monitor_exit_using_threadId(monitor, (hythread_t) env->currentThread->threadPtr);
     if (result != 0) {
         if (result == HYTHREAD_ILLEGAL_MONITOR_STATE) {
             nvmThrowIllegalMonitorStateException(env);
@@ -92,16 +93,12 @@ jint nvmAttachCurrentThread(VM* vm, Env** env, char* name, Object* group) {
 
 static int startThreadEntryPoint(void* entryArgs) {
     Env* env = (Env*) entryArgs;
-    Object* threadObj = env->currentThread->threadObj;
-
-    InstanceField* threadPtr = nvmGetInstanceField(env, java_lang_Thread, "threadPtr", "J");
-    if (!threadPtr) goto finish;
 
     Method* run = nvmGetInstanceMethod(env, java_lang_Thread, "run", "()V");
     if (!run) goto finish;
 
     jvalue emptyArgs[0];
-    nvmCallVoidInstanceMethodA(env, threadObj, run, emptyArgs);
+    nvmCallVoidInstanceMethodA(env, (Object*) env->currentThread, run, emptyArgs);
 
 finish:
 
@@ -111,41 +108,40 @@ finish:
         if (printStackTrace) {
             jvalue args[1];
             args[0].l = (jobject) throwable;
-            nvmCallVoidInstanceMethodA(env, threadObj, printStackTrace, args);
+            nvmCallVoidInstanceMethodA(env, (Object*) env->currentThread, printStackTrace, args);
         }
     }
 
-    if (threadPtr) nvmSetLongInstanceFieldValue(env, threadObj, threadPtr, 0);
+    env->currentThread->threadPtr = 0;
 
-    nvmMonitorEnter(env, threadObj);
-    nvmMonitorNotifyAll(env, threadObj);
-    nvmMonitorExit(env, threadObj);
+    nvmMonitorEnter(env, (Object*) env->currentThread);
+    nvmMonitorNotifyAll(env, (Object*) env->currentThread);
+    nvmMonitorExit(env, (Object*) env->currentThread);
 
     hythread_exit(NULL);
 
     return 0;
 }
 
-jlong nvmStartThread(Env* env, Object* threadObj, jint priority) {
+jlong nvmStartThread(Env* env, Thread* thread, jint priority) {
     Env* newEnv = nvmCreateEnv(env->vm);
     if (!newEnv) {
         nvmThrowOutOfMemoryError(env);
         return 0;
     }
 
-    Thread* thread = nvmAllocateMemory(env, sizeof(Thread));
-    if (!thread) return 0;
-
-    thread->threadObj = threadObj;
     newEnv->currentThread = thread;
 
-    IDATA result = hythread_create(&thread->hyThread, 0, priority, 0, startThreadEntryPoint, newEnv);
+    hythread_t hyThread;
+    IDATA result = hythread_create(&hyThread, 0, priority, 1, startThreadEntryPoint, newEnv);
     if (result < 0) {
         // TODO: What can we do here?
         nvmAbort("Failed to start thread");
     }
+    thread->threadPtr = (jlong) hyThread;
+    hythread_resume(hyThread);
 
-    return (jlong) thread->hyThread;
+    return thread->threadPtr;
 }
 
 void nvmMonitorEnter(Env* env, Object* obj) {
@@ -235,6 +231,6 @@ jboolean nvmThreadHoldsLock(Env* env, Object* obj) {
     if (!obj->monitor) {
         return FALSE;
     }
-    return hythread_monitor_owner(obj->monitor) == env->currentThread->hyThread;
+    return hythread_monitor_owner(obj->monitor) == (hythread_t) env->currentThread->threadPtr;
 }
 

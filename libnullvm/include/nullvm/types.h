@@ -55,6 +55,7 @@ typedef struct Class Class;
 typedef struct Object Object;
 typedef struct ClassLoader ClassLoader;
 typedef struct DataObject DataObject;
+typedef struct Thread Thread;
 typedef struct Array Array;
 
 struct Field {
@@ -146,6 +147,23 @@ struct DataObject {
   void* data[0];
 };
 
+struct Thread {
+  Object object;
+  jlong threadPtr;
+  Object* threadGroup;
+  jlong id;
+  Object* name;
+  jboolean daemon;
+  jint priority;
+  Object* target;
+  Object* action;
+  ClassLoader* contextClassLoader;
+  Object* uncaughtExceptionHandler;
+  jboolean started;
+  Object* localValues;
+  Object* inheritableValues;
+};
+
 struct Array {
   Object object;
   jint length;
@@ -194,11 +212,6 @@ typedef struct Options {
     ClasspathEntry* bootclasspath;
     ClasspathEntry* classpath;
 } Options;
-
-typedef struct Thread {
-    hythread_t hyThread;
-    Object* threadObj;
-} Thread;
 
 typedef struct VM {
     Options* options;

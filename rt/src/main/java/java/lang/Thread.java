@@ -138,11 +138,12 @@ public class Thread implements Runnable {
      * Called by the VM to create the main thread or attach a thread.
      */
     Thread(long threadPtr, String name, ThreadGroup group) {
+        // NOTE: Must set threadPtr before the synchronized block below
+        this.threadPtr = threadPtr;
+        this.threadGroup = group == null ? ThreadGroup.mainGroup : group;
         synchronized (Thread.class) {
             id = ++counter;
         }
-        this.threadPtr = threadPtr;
-        this.threadGroup = group == null ? ThreadGroup.mainGroup : group;
         this.name = name == null ? "Thread-" + this.id : name;
         this.priority = NORM_PRIORITY;        
         this.started = true;
@@ -544,9 +545,9 @@ public class Thread implements Runnable {
         if (threadPtr == 0) {
             return new StackTraceElement[0];
         }
-        return internalGetStackTrace(threadPtr);
+        return internalGetStackTrace(this);
     }
-    private static native StackTraceElement[] internalGetStackTrace(long threadPtr);
+    private static native StackTraceElement[] internalGetStackTrace(Thread thread);
 
     /**
      * Returns the current state of the Thread. This method is useful for
@@ -556,7 +557,7 @@ public class Thread implements Runnable {
      * @since 1.5
      */
     public State getState() {
-        int s = internalGetState(threadPtr);
+        int s = internalGetState(this);
         if (s == State.BLOCKED.ordinal()) {
             return State.BLOCKED;
         } else if (s == State.NEW.ordinal()) {
@@ -572,7 +573,7 @@ public class Thread implements Runnable {
         }
         throw new IllegalStateException();
     }
-    private static native int internalGetState(long threadPtr);
+    private static native int internalGetState(Thread thread);
 
     /**
      * Returns the ThreadGroup to which this Thread belongs.
@@ -630,10 +631,10 @@ public class Thread implements Runnable {
             action.run();
         }
         if (threadPtr != 0) {
-            internalInterrupt(threadPtr);
+            internalInterrupt(this);
         }
     }
-    private static native void internalInterrupt(long threadPtr);
+    private static native void internalInterrupt(Thread thread);
 
     /**
      * Returns a <code>boolean</code> indicating whether the current Thread (
@@ -689,11 +690,11 @@ public class Thread implements Runnable {
      */
     public boolean isInterrupted() {
         if (threadPtr != 0) {
-            return internalIsInterrupted(threadPtr);
+            return internalIsInterrupted(this);
         }
         return false;
     }
-    private static native boolean internalIsInterrupted(long threadPtr);
+    private static native boolean internalIsInterrupted(Thread thread);
 
     /**
      * Blocks the current Thread (<code>Thread.currentThread()</code>) until
@@ -787,10 +788,10 @@ public class Thread implements Runnable {
     @Deprecated
     public final void resume() {
         if (threadPtr != 0) {
-            internalResume(threadPtr);
+            internalResume(this);
         }
     }
-    private static native void internalResume(long threadPtr);
+    private static native void internalResume(Thread thread);
 
     /**
      * Calls the <code>run()</code> method of the Runnable object the receiver
@@ -894,12 +895,12 @@ public class Thread implements Runnable {
         // End (C) Android
 
         if (threadPtr != 0) {
-            internalSetPriority(threadPtr, priority);
+            internalSetPriority(this, priority);
         }
         
         this.priority = priority;
     }
-    private static native void internalSetPriority(long threadPtr, int priority);
+    private static native void internalSetPriority(Thread thread, int priority);
 
     /**
      * <p>
@@ -1004,10 +1005,10 @@ public class Thread implements Runnable {
             throw new NullPointerException();
         }
         if (threadPtr != 0) {
-            internalStop(threadPtr, throwable);
+            internalStop(this, throwable);
         }
     }
-    private static native void internalStop(long threadPtr, Throwable throwable);
+    private static native void internalStop(Thread thread, Throwable throwable);
 
     /**
      * Suspends this Thread. This is a no-op if the receiver is suspended. If
@@ -1024,10 +1025,10 @@ public class Thread implements Runnable {
     @Deprecated
     public final void suspend() {
         if (threadPtr != 0) {
-            internalSuspend(threadPtr);
+            internalSuspend(this);
         }
     }
-    private static native void internalSuspend(long threadPtr);
+    private static native void internalSuspend(Thread thread);
 
     /**
      * Returns a string containing a concise, human-readable description of the

@@ -7,7 +7,7 @@ extern void nvmMonitorExit(Env* env, Object* obj);
 extern void nvmMonitorNotify(Env* env, Object* obj);
 extern void nvmMonitorNotifyAll(Env* env, Object* obj);
 extern void nvmMonitorWait(Env* env, Object* obj, jlong millis, jint nanos);
-extern jlong nvmStartThread(Env* env, Object* threadObj, jint priority);
+extern jlong nvmStartThread(Env* env, Thread* thread, jint priority);
 extern void nvmThreadSleep(Env* env, jlong millis, jint nanos);
 extern jboolean nvmThreadHoldsLock(Env* env, Object* obj);
 

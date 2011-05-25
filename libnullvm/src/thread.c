@@ -112,11 +112,11 @@ finish:
         }
     }
 
-    env->currentThread->threadPtr = 0;
-
     nvmMonitorEnter(env, (Object*) env->currentThread);
     nvmMonitorNotifyAll(env, (Object*) env->currentThread);
     nvmMonitorExit(env, (Object*) env->currentThread);
+
+    env->currentThread->threadPtr = 0;
 
     hythread_exit(NULL);
 
@@ -232,5 +232,13 @@ jboolean nvmThreadHoldsLock(Env* env, Object* obj) {
         return FALSE;
     }
     return hythread_monitor_owner(obj->monitor) == (hythread_t) env->currentThread->threadPtr;
+}
+
+jboolean nvmThreadClearInterrupted(Env* env) {
+    return hythread_clear_interrupted() != 0;
+}
+
+jboolean nvmThreadIsInterrupted(Env* env, Thread* thread) {
+    return hythread_interrupted((hythread_t) thread->threadPtr) != 0;
 }
 

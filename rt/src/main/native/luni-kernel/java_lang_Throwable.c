@@ -29,14 +29,6 @@ jlong Java_java_lang_Throwable_fillInStackTrace0(Env* env, Object* thiz) {
         }
     }
 
-    printf("*** java.lang.Throwable.fillInStackTrace0() called\n");
-    printf("***   %s:\n", thiz->clazz->name);
-    CallStackEntry* e = first;
-    while (e) {
-        printf("***     %s.%s\n", e->method->clazz->name, e->method->name);
-        e = e->next;
-    }
-
     return (jlong) first;
 }
 

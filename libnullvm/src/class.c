@@ -7,6 +7,7 @@
 
 Class* java_lang_Object;
 Class* java_lang_Class;
+Class* java_lang_ClassLoader;
 Class* java_lang_String;
 Class* java_lang_Boolean;
 Class* java_lang_Byte;
@@ -341,16 +342,35 @@ Class* nvmFindClassByDescriptor(Env* env, char* desc, ClassLoader* classLoader) 
     case 'V':
         return prim_V;
     case '[':
-        return nvmFindClassInLoader(env, desc, classLoader);
+        return nvmFindClassUsingLoader(env, desc, classLoader);
     }
     // desc[0] == 'L'
     jint length = strlen(desc);
     char* className = nvmAllocateMemory(env, length - 2 + 1);
     if (!className) return NULL;
     strncpy(className, &desc[1], length - 2);
-    return nvmFindClassInLoader(env, className, classLoader);
+    return nvmFindClassUsingLoader(env, className, classLoader);
 }
 
+char* nvmToBinaryClassName(Env* env, char* className) {
+    char* binName = nvmCopyMemoryZ(env, className);
+    if (!binName) return NULL;
+    jint i = 0;
+    for (i = 0; binName[i] != '\0'; i++) {
+        if (binName[i] == '/') binName[i] = '.';
+    }
+    return binName;
+}
+
+char* nvmFromBinaryClassName(Env* env, char* binaryClassName) {
+    char* className = nvmCopyMemoryZ(env, binaryClassName);
+    if (!className) return NULL;
+    jint i = 0;
+    for (i = 0; className[i] != '\0'; i++) {
+        if (className[i] == '.') className[i] = '/';
+    }
+    return className;
+}
 
 Class* nvmGetComponentType(Env* env, Class* arrayClass) {
     return nvmFindClassByDescriptor(env, &arrayClass->name[1], arrayClass->classLoader);
@@ -452,6 +472,8 @@ jboolean nvmInitClasses(Env* env) {
     // Fix object.clazz pointers for the classes loaded so far
     nvmIterateLoadedClasses(env, fixClassPointer, NULL);
 
+    java_lang_ClassLoader = findBootClass(env, "java/lang/ClassLoader");
+    if (!java_lang_ClassLoader) return FALSE;
     java_lang_String = findBootClass(env, "java/lang/String");
     if (!java_lang_String) return FALSE;
     java_lang_Boolean = findBootClass(env, "java/lang/Boolean");
@@ -578,10 +600,10 @@ Class* nvmFindClass(Env* env, char* className) {
     Method* method = nvmGetCallingMethod(env);
     if (nvmExceptionOccurred(env)) return NULL;
     ClassLoader* classLoader = method ? method->clazz->classLoader : NULL;
-    return nvmFindClassInLoader(env, className, classLoader);
+    return nvmFindClassUsingLoader(env, className, classLoader);
 }
 
-Class* nvmFindClassInLoader(Env* env, char* className, ClassLoader* classLoader) {
+Class* nvmFindClassInClasspathForLoader(Env* env, char* className, ClassLoader* classLoader) {
     if (!classLoader || classLoader->parent == NULL) {
         // This is the bootstrap classloader
         return findBootClass(env, className);
@@ -594,6 +616,28 @@ Class* nvmFindClassInLoader(Env* env, char* className, ClassLoader* classLoader)
     }
     nvmThrowClassNotFoundException(env, className);
     return NULL;
+}
+
+Class* nvmFindClassUsingLoader(Env* env, char* className, ClassLoader* classLoader) {
+    if (!classLoader || classLoader->parent == NULL) {
+        // This is the bootstrap classloader. No need to call ClassLoader.loadClass()
+        return findBootClass(env, className);
+    }
+    char* binaryClassName = nvmToBinaryClassName(env, className);
+    if (!binaryClassName) return NULL;
+    Object* binaryClassNameString = nvmNewInternedStringUTF(env, binaryClassName, -1);
+    if (!binaryClassNameString) return NULL;
+    Method* loadClassMethod = nvmGetInstanceMethod(env, java_lang_ClassLoader, "loadClass", "(Ljava/lang/String;)Ljava/lang/Class;");
+    if (!loadClassMethod) return NULL;
+    Object* clazz = nvmCallObjectInstanceMethod(env, (Object*) classLoader, loadClassMethod, binaryClassNameString);
+    if (nvmExceptionOccurred(env)) return NULL;
+    return (Class*) clazz;
+}
+
+Class* nvmFindLoadedClass(Env* env, char* className, ClassLoader* classLoader) {
+    Class* clazz = getLoadedClassByName(env, className);
+    if (nvmExceptionOccurred(env)) return NULL;
+    return clazz;
 }
 
 Class* nvmAllocateClass(Env* env, char* className, Class* superclass, ClassLoader* classLoader, jint access, jint classDataSize, jint instanceDataSize) {

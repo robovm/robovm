@@ -185,7 +185,7 @@ jboolean nvmRun(Env* env) {
     Options* options = env->vm->options;
     ClassLoader* systemClassLoader = getSystemClassLoader(env);
     if (systemClassLoader) {
-        Class* clazz = nvmFindClassInLoader(env, options->mainClass, systemClassLoader);
+        Class* clazz = nvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
         if (clazz) {
             Method* method = nvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
             if (method) {
@@ -235,6 +235,17 @@ void* nvmAllocateMemory(Env* env, int size) {
         return NULL;
     }
     return m;
+}
+
+void* nvmCopyMemory(Env* env, void* src, int size) {
+    void* dest = nvmAllocateMemory(env, size);
+    if (!dest) return NULL;
+    memcpy(dest, src, size);
+    return dest;
+}
+
+void* nvmCopyMemoryZ(Env* env, char* src) {
+    return nvmCopyMemory(env, src, strlen(src));
 }
 
 void nvmAbort(char* format, ...) {

@@ -12,6 +12,7 @@
 
 extern Class* java_lang_Object;
 extern Class* java_lang_Class;
+extern Class* java_lang_ClassLoader;
 extern Class* java_lang_String;
 extern Class* java_lang_Boolean;
 extern Class* java_lang_Byte;
@@ -81,8 +82,10 @@ extern jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jin
 extern jboolean nvmRegisterClass(Env* env, Class* clazz);
 
 extern Class* nvmFindClass(Env* env, char* className);
-extern Class* nvmFindClassInLoader(Env* env, char* className, ClassLoader* classLoader);
+extern Class* nvmFindClassInClasspathForLoader(Env* env, char* className, ClassLoader* classLoader);
+extern Class* nvmFindClassUsingLoader(Env* env, char* className, ClassLoader* classLoader);
 extern Class* nvmFindClassByDescriptor(Env* env, char* desc, ClassLoader* classLoader);
+extern Class* nvmFindLoadedClass(Env* env, char* className, ClassLoader* classLoader);
 
 extern Class* nvmGetComponentType(Env* env, Class* arrayClass);
 
@@ -98,6 +101,9 @@ extern Object* nvmNewObjectA(Env* env, Class* clazz, Method* method, jvalue* arg
 extern Object* nvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args);
 
 extern Object* nvmCloneObject(Env* env, Object* obj);
+
+extern char* nvmToBinaryClassName(Env* env, char* className);
+extern char* nvmFromBinaryClassName(Env* env, char* binaryClassName);
 
 extern jboolean nvmIsSubClass(Class* superclass, Class* clazz);
 extern jboolean nvmIsSamePackage(Class* c1, Class* c2);

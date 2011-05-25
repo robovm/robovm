@@ -118,6 +118,7 @@ SRC = \
   luni/luni/unix/procimpl.c \
   luni-kernel/reflection_helpers.c \
   luni-kernel/java_lang_Class.c \
+  luni-kernel/java_lang_ClassLoader.c \
   luni-kernel/java_lang_Object.c \
   luni-kernel/java_lang_Thread.c \
   luni-kernel/java_lang_Throwable.c \

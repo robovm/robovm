@@ -8,6 +8,10 @@ jboolean Java_java_lang_Class_isPrimitive(Env* env, Class* thiz) {
     return thiz->primitive;
 }
 
+jboolean Java_java_lang_Class_isInterface(Env* env, Class* thiz) {
+    return CLASS_IS_INTERFACE(thiz) > 0;
+}
+
 jboolean Java_java_lang_Class_getModifiers(Env* env, Class* thiz) {
     return thiz->access;
 }
@@ -53,12 +57,12 @@ ObjectArray* Java_java_lang_Class_getStackClasses(Env* env, Class* c, jint maxDe
 
 Class* Java_java_lang_Class_forName(Env* env, Class* c, Object* className, jboolean initializeBoolean, ClassLoader* classLoader) {
     char* classNameUTF = nvmGetStringUTFChars(env, className);
+    if (!classNameUTF) return NULL;
     jint i;
     for (i = 0; classNameUTF[i] != '\0'; i++) {
         if (classNameUTF[i] == '.') classNameUTF[i] = '/';
     }
-    if (!classNameUTF) return NULL;
-    Class* clazz = nvmFindClassInLoader(env, classNameUTF, classLoader);
+    Class* clazz = nvmFindClassInClasspathForLoader(env, classNameUTF, classLoader);
     if (!clazz) return NULL;
     if (initializeBoolean) {
         nvmInitialize(env, clazz);

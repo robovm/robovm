@@ -2,14 +2,16 @@
 #include "log.h"
 
 static Class* findClassInLoader(Env* env, char* className, ClassLoader* classLoader) {
-    Class* clazz = nvmFindClassInLoader(env, className, classLoader);
+    Class* clazz = nvmFindClassUsingLoader(env, className, classLoader);
     if (!clazz) {
         if (nvmExceptionOccurred(env)->clazz == java_lang_ClassNotFoundException) {
             // If ClassNotFoundException is thrown we have to wrap it in a NoClassDefFoundError
             Object* exception = nvmExceptionClear(env);
-            Method* constructor = nvmGetInstanceMethod(env, java_lang_NoClassDefFoundError, "<init>", "()V");
+            Method* constructor = nvmGetInstanceMethod(env, java_lang_NoClassDefFoundError, "<init>", "(Ljava/lang/String;)V");
             if (constructor) {
-                Object* wrappedException = nvmNewObject(env, java_lang_NoClassDefFoundError, constructor, exception);
+                Object* message = nvmNewStringUTF(env, className, -1);
+                if (!message) nvmRaiseException(env, nvmExceptionOccurred(env));
+                Object* wrappedException = nvmNewObject(env, java_lang_NoClassDefFoundError, constructor, message);
                 if (wrappedException) {
                     Method* initCause = nvmGetInstanceMethod(env, java_lang_NoClassDefFoundError, "initCause", "(Ljava/lang/Throwable;)Ljava/lang/Throwable;");
                     if (initCause) {

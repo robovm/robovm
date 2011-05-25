@@ -231,7 +231,7 @@ jboolean initCallInfo(CallInfo* callInfo, Env* env, Object* obj, Method* method,
         }
     }
 
-    callInfo->function = method->impl;
+    callInfo->function = method->synchronizedImpl ? method->synchronizedImpl : method->impl;
     callInfo->stackArgsCount = stackArgsCount;
     if (stackArgsCount > 0) {
         callInfo->stackArgs = nvmAllocateMemory(env, sizeof(StackValue) * stackArgsCount);

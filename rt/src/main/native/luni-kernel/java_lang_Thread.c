@@ -21,6 +21,10 @@ jboolean Java_java_lang_Thread_internalIsInterrupted(Env* env, Class* cls, Threa
     return nvmThreadIsInterrupted(env, thread);
 }
 
+void Java_java_lang_Thread_internalInterrupt(Env* env, Class* cls, Thread* thread) {
+    nvmThreadInterrupt(env, thread);
+}
+
 void Java_java_lang_Thread_internalStop(Env* env, Class* cls, Thread* thread, Object* throwable) {
     CallStackEntry* callStack = nvmGetCallStack(env);
     while (callStack && callStack->method->clazz == java_lang_Thread) {
@@ -50,5 +54,9 @@ void Java_java_lang_Thread_internalResume(Env* env, Class* cls, Thread* thread) 
 
 jboolean Java_java_lang_Thread_internalHoldsLock(Env* env, Class* cls, Object* obj) {
     return nvmThreadHoldsLock(env, obj);
+}
+
+void Java_java_lang_Thread_internalYield(Env* env, Class* cls) {
+//    nvmThreadYield(env);
 }
 

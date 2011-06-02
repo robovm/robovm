@@ -1,7 +1,6 @@
 #include <nullvm.h>
 #include <stdlib.h>
 #include <string.h>
-#include <hyport.h>
 #include "utlist.h"
 #include "log.h"
 

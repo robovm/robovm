@@ -55,8 +55,8 @@ SRC = \
   portlib/thread/unix/rasthrsup.c \
   portlib/thread/unix/thrcreate.c \
   portlib/thread/unix/thrdsup.c \
-  portlib/thread/unix/$(ARCH)/thrhelp.s \
-  portlib/thread/unix/$(ARCH)/thrspinlock.s \
+  portlib/thread/unix/thrhelp.c \
+  portlib/thread/unix/thrspinlock.c \
   string.c \
   thread.c \
   trampolines-$(ARCH).s \

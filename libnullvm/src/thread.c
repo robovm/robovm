@@ -145,12 +145,17 @@ jlong nvmStartThread(Env* env, Thread* thread, jint priority) {
 }
 
 void nvmMonitorEnter(Env* env, Object* obj) {
-    // TODO: Protect initialization with global (spin?)lock
     if (!obj->monitor) {
-        IDATA result = hythread_monitor_init_with_name(&obj->monitor, 0, NULL);
-        if (result < 0) {
-            nvmAbort("Failed to initialize monitor: %d", result);
+        monitorEnter(env, monitorsLock);
+        if (!obj->monitor) {
+            // TODO: Double checked locking. Is this ok?
+            IDATA result = hythread_monitor_init_with_name(&obj->monitor, 0, NULL);
+            if (result < 0) {
+                monitorExit(env, monitorsLock);
+                nvmAbort("Failed to initialize monitor: %d", result);
+            }
         }
+        monitorExit(env, monitorsLock);
     }
     monitorEnter(env, obj->monitor);
 }
@@ -240,5 +245,13 @@ jboolean nvmThreadClearInterrupted(Env* env) {
 
 jboolean nvmThreadIsInterrupted(Env* env, Thread* thread) {
     return hythread_interrupted((hythread_t) thread->threadPtr) != 0;
+}
+
+void nvmThreadInterrupt(Env* env, Thread* thread) {
+    hythread_interrupt((hythread_t) thread->threadPtr);
+}
+
+void nvmThreadYield(Env* env) {
+    hythread_yield();
 }
 

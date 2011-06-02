@@ -12,6 +12,8 @@ extern void nvmThreadSleep(Env* env, jlong millis, jint nanos);
 extern jboolean nvmThreadHoldsLock(Env* env, Object* obj);
 extern jboolean nvmThreadClearInterrupted(Env* env);
 extern jboolean nvmThreadIsInterrupted(Env* env, Thread* thread);
+extern void nvmThreadInterrupt(Env* env, Thread* thread);
+extern void nvmThreadYield(Env* env);
 
 #endif
 

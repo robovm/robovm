@@ -15,6 +15,7 @@ extern jint nvmThrowIllegalAccessErrorField(Env* env, Class* clazz, char* name, 
 extern jint nvmThrowIllegalAccessErrorMethod(Env* env, Class* clazz, char* name, char* desc, Class* caller);
 extern jint nvmThrowNoSuchFieldError(Env* env, char* name);
 extern jint nvmThrowNoSuchMethodError(Env* env, char* name);
+extern jint nvmThrowIncompatibleClassChangeError(Env* env,char* message);
 extern jint nvmThrowIncompatibleClassChangeErrorClassField(Env* env, Class* clazz, char* name, char* desc);
 extern jint nvmThrowIncompatibleClassChangeErrorInstanceField(Env* env, Class* clazz, char* name, char* desc);
 extern jint nvmThrowIncompatibleClassChangeErrorMethod(Env* env, Class* clazz, char* name, char* desc);

@@ -128,6 +128,10 @@ jint nvmThrowNoSuchMethodError(Env* env, char* name) {
     return nvmThrowNew(env, java_lang_NoSuchMethodError, "");
 }
 
+jint nvmThrowIncompatibleClassChangeError(Env* env,char* message) {
+    return nvmThrowNew(env, java_lang_IncompatibleClassChangeError, message);
+}
+
 jint nvmThrowIncompatibleClassChangeErrorClassField(Env* env, Class* clazz, char* name, char* desc) {
     // TODO: Message should look like "java.lang.ThrowIncompatibleClassChangeError: Expected static field a.C.x"
     return nvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");

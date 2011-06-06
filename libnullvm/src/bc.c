@@ -457,7 +457,7 @@ void* _nvmBcResolveInvokeinterface(Env* env, char* owner, char* name, char* desc
     checkClassAccessible(env, clazz, caller);
     if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
     if (!CLASS_IS_INTERFACE(clazz)) {
-        nvmThrowLinkageError(env);
+        nvmIncompatibleClassChangeError(env);
         nvmRaiseException(env, nvmExceptionOccurred(env));
     }
     Method* method = nvmGetInstanceMethod(env, clazz, name, desc);

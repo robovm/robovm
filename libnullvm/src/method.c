@@ -1,41 +1,11 @@
 #include <nullvm.h>
 #include <string.h>
 #include <unwind.h>
+#include "trampolines.h"
 #include "log.h"
 
 DynamicLib* bootNativeLibs = NULL;
 DynamicLib* mainNativeLibs = NULL;
-
-typedef union IntValue {
-    jint i;
-    jlong j;
-    Env* env;
-    void* ptr;
-} IntValue;
-
-typedef union FpValue {
-    jdouble d;
-    jfloat f;
-} FpValue;
-
-typedef union StackValue {
-    jdouble d;
-    jfloat f;
-    jint i;
-    jlong j;
-    Env* env;
-    void* ptr;
-} StackValue;
-
-typedef struct CallInfo {
-    void* function;
-    void* intArgs[6];
-    FpValue fpArgs[8];
-    jint stackArgsCount;
-    StackValue* stackArgs;
-} CallInfo;
-
-extern void _nvmCall0(CallInfo*);
 
 static jvalue emptyJValueArgs[1];
 
@@ -47,12 +17,28 @@ static Method* getMethod(Env* env, Class* clazz, char* name, char* desc) {
         }
     }
 
-    if (clazz->superclass && strcmp("<init>", name) && strcmp("<clinit>", name)) {
-        /* 
-         * Check with the superclass. Note that constructors and static 
-         * initializers are not inherited.
+    if (CLASS_IS_INTERFACE(clazz)) {
+        /*
+         * Class is an interface so check with the inherited interfaces.
          */
-        return nvmGetMethod(env, clazz->superclass, name, desc);
+        Interface* interface;
+        for (interface = clazz->interfaces; interface; interface = interface->next) {
+            method = getMethod(env, interface->interface, name, desc);
+            if (method) return method;
+        }
+
+        /*
+         * Finally check with java.lang.Object.
+         */
+        return getMethod(env, java_lang_Object, name, desc);
+    } else {
+        if (clazz->superclass && strcmp("<init>", name) && strcmp("<clinit>", name)) {
+            /* 
+             * Check with the superclass. Note that constructors and static 
+             * initializers are not inherited.
+             */
+            return nvmGetMethod(env, clazz->superclass, name, desc);
+        }
     }
 
     return NULL;

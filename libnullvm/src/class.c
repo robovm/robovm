@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "utlist.h"
+#include "trampolines.h"
 #include "log.h"
 
 Class* java_lang_Object;
@@ -246,6 +247,7 @@ static Class* findClass(Env* env, char* className, ClassLoader* classLoader, Dyn
 
     if (className[0] == '[') {
         Class* componentType = findClassByDescriptor(env, &className[1], classLoader, dlib);
+        if (!componentType) return NULL;
         return createArrayClass(env, componentType, dlib);
     }
 
@@ -258,11 +260,15 @@ static Class* findClass(Env* env, char* className, ClassLoader* classLoader, Dyn
     Class* (*loader)(Env*, ClassLoader*) = findClassLoaderFunction(env, funcName, dlib);
     if (loader) {
         TRACE("Calling class loader function '%s()'\n", funcName);
-        // TODO: Catch exceptions thrown by the loader function
-        clazz = loader(env, classLoader);
+        // TODO: This is x86-64 specific
+        CallInfo callInfo = {0};
+        callInfo.function = loader;
+        callInfo.intArgs[0] = env;
+        callInfo.intArgs[1] = classLoader;
+        Class* (*f)(CallInfo*) = (Class* (*)(CallInfo*)) _nvmCall0;
+        clazz = f(&callInfo);
     }
 
-    if (clazz) return clazz;
     if (nvmExceptionOccurred(env)) return NULL;
 
     if (clazz == NULL) {
@@ -640,6 +646,12 @@ Class* nvmFindLoadedClass(Env* env, char* className, ClassLoader* classLoader) {
 }
 
 Class* nvmAllocateClass(Env* env, char* className, Class* superclass, ClassLoader* classLoader, jint access, jint classDataSize, jint instanceDataSize) {
+    if (superclass && CLASS_IS_INTERFACE(superclass)) {
+        // TODO: Message should look like ?
+        nvmThrowIncompatibleClassChangeError(env, "");
+        return NULL;
+    }
+
     Class* clazz = nvmAllocateMemory(env, sizeof(Class) + classDataSize);
     if (!clazz) return NULL;
     clazz->methods = nvmAllocateMemory(env, sizeof(Methods));
@@ -669,6 +681,11 @@ Class* nvmAllocateClass(Env* env, char* className, Class* superclass, ClassLoade
 }
 
 jboolean nvmAddInterface(Env* env, Class* clazz, Class* interf) {
+    if (!CLASS_IS_INTERFACE(interf)) {
+        // TODO: Message should look like ?
+        nvmThrowIncompatibleClassChangeError(env, "");
+        return FALSE;
+    }
     Interface* interface = nvmAllocateMemory(env, sizeof(Interface));
     if (!interface) return FALSE;
     interface->interface = interf;

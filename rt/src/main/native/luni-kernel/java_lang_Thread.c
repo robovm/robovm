@@ -57,6 +57,6 @@ jboolean Java_java_lang_Thread_internalHoldsLock(Env* env, Class* cls, Object* o
 }
 
 void Java_java_lang_Thread_internalYield(Env* env, Class* cls) {
-//    nvmThreadYield(env);
+    nvmThreadYield(env);
 }
 

@@ -48,7 +48,12 @@ if [ ! -x $TARGET/vts ]; then
   java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -jar $NULLVMCJAR -d $TARGET -o vts -cp $CP
 fi
 
-LD_LIBRARY_PATH=$TARGET $TARGET/vts -nvm:MainClass=$MAINCLASS $RUNARGS
+LIBPATH=$TARGET
+if [ "x$LD_LIBRARY_PATH" != 'x' ]; then
+  LIBPATH=$LIBPATH:$LD_LIBRARY_PATH
+fi
+
+LD_LIBRARY_PATH=$LIBPATH $TARGET/vts -nvm:MainClass=$MAINCLASS $RUNARGS
 CODE=$?
 exit $CODE
 

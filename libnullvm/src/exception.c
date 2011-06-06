@@ -171,8 +171,9 @@ jint nvmThrowArrayStoreException(Env* env) {
 }
 
 jint nvmThrowClassNotFoundException(Env* env, char* className) {
-    // TODO: Message should look like "java.lang.ClassNotFoundException: a.C"
-    return nvmThrowNew(env, java_lang_ClassNotFoundException, "");
+    char* msg = nvmToBinaryClassName(env, className);
+    if (!msg) return 1;
+    return nvmThrowNew(env, java_lang_ClassNotFoundException, msg);
 }
 
 jint nvmThrowNegativeArraySizeException(Env* env) {

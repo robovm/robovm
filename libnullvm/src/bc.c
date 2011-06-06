@@ -3,27 +3,32 @@
 
 static Class* findClassInLoader(Env* env, char* className, ClassLoader* classLoader) {
     Class* clazz = nvmFindClassUsingLoader(env, className, classLoader);
-    if (!clazz) {
-        if (nvmExceptionOccurred(env)->clazz == java_lang_ClassNotFoundException) {
-            // If ClassNotFoundException is thrown we have to wrap it in a NoClassDefFoundError
-            Object* exception = nvmExceptionClear(env);
-            Method* constructor = nvmGetInstanceMethod(env, java_lang_NoClassDefFoundError, "<init>", "(Ljava/lang/String;)V");
-            if (constructor) {
-                Object* message = nvmNewStringUTF(env, className, -1);
-                if (!message) nvmRaiseException(env, nvmExceptionOccurred(env));
-                Object* wrappedException = nvmNewObject(env, java_lang_NoClassDefFoundError, constructor, message);
-                if (wrappedException) {
-                    Method* initCause = nvmGetInstanceMethod(env, java_lang_NoClassDefFoundError, "initCause", "(Ljava/lang/Throwable;)Ljava/lang/Throwable;");
-                    if (initCause) {
-                        nvmCallObjectInstanceMethod(env, wrappedException, initCause, exception);
-                        if (!nvmExceptionCheck(env)) nvmRaiseException(env, wrappedException);
-                    }
-                }
-            }
-        }
-        nvmRaiseException(env, nvmExceptionOccurred(env));
+    if (clazz) return clazz;
+    if (nvmExceptionOccurred(env)->clazz == java_lang_ClassNotFoundException) {
+        // If ClassNotFoundException is thrown we have to wrap it in a NoClassDefFoundError
+        Object* exception = nvmExceptionClear(env);
+        Method* constructor = nvmGetInstanceMethod(env, java_lang_NoClassDefFoundError, "<init>", "(Ljava/lang/String;)V");
+        if (!constructor) goto error;
+        Object* message = nvmNewStringUTF(env, className, -1);
+        if (!message) goto error;
+        Object* wrappedException = nvmNewObject(env, java_lang_NoClassDefFoundError, constructor, message);
+        if (!wrappedException) goto error;
+        Class* java_lang_StackTraceElement = nvmFindClassUsingLoader(env, "java/lang/StackTraceElement", classLoader);
+        if (!java_lang_StackTraceElement) goto error;
+        ObjectArray* stackTrace = nvmNewObjectArray(env, 0, java_lang_StackTraceElement, NULL, NULL);
+        if (!stackTrace) goto error;
+        Method* setStackTrace = nvmGetInstanceMethod(env, java_lang_Throwable, "setStackTrace", "([Ljava/lang/StackTraceElement;)V");
+        if (!setStackTrace) goto error;
+        nvmCallVoidInstanceMethod(env, wrappedException, setStackTrace, stackTrace);
+        if (nvmExceptionCheck(env)) goto error;
+        Method* initCause = nvmGetInstanceMethod(env, java_lang_NoClassDefFoundError, "initCause", "(Ljava/lang/Throwable;)Ljava/lang/Throwable;");
+        if (!initCause) goto error;
+        nvmCallObjectInstanceMethod(env, wrappedException, initCause, exception);
+        if (!nvmExceptionCheck(env)) nvmRaiseException(env, wrappedException);
     }
-    return clazz;
+error:
+    nvmRaiseException(env, nvmExceptionOccurred(env));
+    return NULL;
 }
 
 static jboolean checkClassAccessible(Env* env, Class* clazz, Class* caller) {

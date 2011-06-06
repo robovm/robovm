@@ -184,8 +184,9 @@ static ClassLoader* getSystemClassLoader(Env* env) {
 jboolean nvmRun(Env* env) {
     Options* options = env->vm->options;
     ClassLoader* systemClassLoader = getSystemClassLoader(env);
+    Class* clazz = NULL;
     if (systemClassLoader) {
-        Class* clazz = nvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
+        clazz = nvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
         if (clazz) {
             Method* method = nvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
             if (method) {
@@ -217,6 +218,9 @@ jboolean nvmRun(Env* env) {
         }
         nvmThrow(env, throwable);
         // TODO: Wait for other threads to finish?
+    }
+    if (!clazz) {
+        fprintf(stderr, "Main class %s not found.", options->mainClass);
     }
     return !nvmExceptionCheck(env);
 }

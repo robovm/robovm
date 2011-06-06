@@ -2342,11 +2342,19 @@ public class SootClassCompiler {
          * Hack: Remove the DeadAssignmentEliminator since it removes LDC instructions
          * which would have thrown a NoClassDefFoundError.
          * TODO: Report this to soot as a bug?
+         * 
+         * Hack: Remove the UnreachableCodeEliminator since it seems to remove
+         * try-catch blocks which catches a non-existing Throwable class. This
+         * should generate a NoClassDefFoundError at runtime but with the UCE
+         * in place to exception is thrown.
          */
         Pack pack = PackManager.v().getPack("jb");
         for (Iterator<?> it = pack.iterator(); it.hasNext();) {
             Transform t = (Transform) it.next();
             if ("jb.dae".equals(t.getPhaseName())) {
+                it.remove();
+            }
+            if ("jb.uce".equals(t.getPhaseName())) {
                 it.remove();
             }
         }
@@ -2356,6 +2364,12 @@ public class SootClassCompiler {
             protected void internalTransform(Body b, String phaseName, Map options) {
             }
         }), "jb.cp");
+        pack.insertAfter(new Transform("jb.uce", new BodyTransformer() {
+            @SuppressWarnings("rawtypes")
+            @Override
+            protected void internalTransform(Body b, String phaseName, Map options) {
+            }
+        }), "jb.ne");
 //      PackManager.v().runPacks();
     }
 

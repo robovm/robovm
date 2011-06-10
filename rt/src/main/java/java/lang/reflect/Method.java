@@ -19,6 +19,10 @@ package java.lang.reflect;
 
 import java.lang.annotation.Annotation;
 
+import org.apache.harmony.luni.lang.reflect.GenericSignatureParser;
+import org.apache.harmony.luni.lang.reflect.ListOfTypes;
+import org.apache.harmony.luni.lang.reflect.Types;
+
 /**
  * This class represents a method. Information about the method can be accessed,
  * and the method can be invoked dynamically.
@@ -28,6 +32,8 @@ public final class Method extends AccessibleObject implements GenericDeclaration
      * The NullVM Method* object
      */
     private final long method;
+    
+    private static final Annotation[] NO_ANNOTATIONS = new Annotation[0];
     
     /*
      * Cached fields
@@ -39,15 +45,36 @@ public final class Method extends AccessibleObject implements GenericDeclaration
     private Class<?>[] parameterTypes;
     private Class<?>[] exceptionTypes;
 
-    /*
-     * This class must be implemented by the VM vendor.
-     */
-
+    private ListOfTypes genericExceptionTypes;
+    private ListOfTypes genericParameterTypes;
+    private Type genericReturnType;
+    private TypeVariable<Method>[] formalTypeParameters;
+    private volatile boolean genericTypesAreInitialized = false;
+    
+    private synchronized void initGenericTypes() {
+        // Start (C) Android
+        if (!genericTypesAreInitialized) {
+            String signatureAttribute = getSignatureAttribute();
+            GenericSignatureParser parser = new GenericSignatureParser(
+                    getDeclaringClass().getClassLoader());
+            parser.parseForMethod(this, signatureAttribute, getExceptionTypes(false));
+            formalTypeParameters = parser.formalTypeParameters;
+            genericParameterTypes = parser.parameterTypes;
+            genericExceptionTypes = parser.exceptionTypes;
+            genericReturnType = parser.returnType;
+            genericTypesAreInitialized = true;
+        }
+        // End (C) Android
+    }
+    
     Method(long method) {
         this.method = method;
     }
     
-    public native TypeVariable<Method>[] getTypeParameters();
+    public TypeVariable<Method>[] getTypeParameters() {
+        initGenericTypes();
+        return formalTypeParameters.clone();        
+    }
 
     /**
      * Returns the string representation of the method's declaration, including
@@ -56,7 +83,50 @@ public final class Method extends AccessibleObject implements GenericDeclaration
      * @return the string representation of this method
      * @since 1.5
      */
-    public native String toGenericString();
+    public String toGenericString() {
+        // Start (C) Android
+        StringBuilder sb = new StringBuilder(80);
+
+        initGenericTypes();
+
+        // append modifiers if any
+        int modifier = getModifiers();
+        if (modifier != 0) {
+            sb.append(Modifier.toString(modifier & ~(Modifier.BRIDGE +
+                    Modifier.VARARGS))).append(' ');
+        }
+        // append type parameters
+        if (formalTypeParameters != null && formalTypeParameters.length > 0) {
+            sb.append('<');
+            for (int i = 0; i < formalTypeParameters.length; i++) {
+                appendGenericType(sb, formalTypeParameters[i]);
+                if (i < formalTypeParameters.length - 1) {
+                    sb.append(", ");
+                }
+            }
+            sb.append("> ");
+        }
+        // append return type
+        appendGenericType(sb, Types.getType(genericReturnType));
+        sb.append(' ');
+        // append method name
+        appendArrayType(sb, getDeclaringClass());
+        sb.append("."+getName());
+        // append parameters
+        sb.append('(');
+        appendArrayGenericType(sb,
+                Types.getClonedTypeArray(genericParameterTypes));
+        sb.append(')');
+        // append exceptions if any
+        Type[] genericExceptionTypeArray = Types.getClonedTypeArray(
+                genericExceptionTypes);
+        if (genericExceptionTypeArray.length > 0) {
+            sb.append(" throws ");
+            appendArrayGenericType(sb, genericExceptionTypeArray);
+        }
+        return sb.toString();
+        // End (C) Android
+    }
 
     /**
      * Returns the parameter types as an array of {@code Type} instances, in
@@ -74,7 +144,10 @@ public final class Method extends AccessibleObject implements GenericDeclaration
      *             instantiated for some reason
      * @since 1.5
      */
-    public native Type[] getGenericParameterTypes();
+    public Type[] getGenericParameterTypes() {
+        initGenericTypes();
+        return Types.getClonedTypeArray(genericParameterTypes);        
+    }
 
     /**
      * Returns the exception types as an array of {@code Type} instances. If
@@ -91,7 +164,10 @@ public final class Method extends AccessibleObject implements GenericDeclaration
      *             instantiated for some reason
      * @since 1.5
      */
-    public native Type[] getGenericExceptionTypes();
+    public Type[] getGenericExceptionTypes() {
+        initGenericTypes();
+        return Types.getClonedTypeArray(genericExceptionTypes);
+    }
 
     /**
      * Returns the return type of this method as a {@code Type} instance.
@@ -107,8 +183,10 @@ public final class Method extends AccessibleObject implements GenericDeclaration
      *             instantiated for some reason
      * @since 1.5
      */
-    public native Type getGenericReturnType();
-
+    public Type getGenericReturnType() {
+        initGenericTypes();
+        return Types.getType(genericReturnType);
+    }
     /**
      * Returns an array of arrays that represent the annotations of the formal
      * parameters of this method. If there are no parameters on this method,
@@ -118,8 +196,29 @@ public final class Method extends AccessibleObject implements GenericDeclaration
      * @return an array of arrays of {@code Annotation} instances
      * @since 1.5
      */
-    public native Annotation[][] getParameterAnnotations();
-
+    public Annotation[][] getParameterAnnotations() {
+        Annotation[][] parameterAnnotations = getParameterAnnotations(method);
+        if (parameterAnnotations.length == 0) {
+            return noAnnotations(getParameterTypes(false).length);
+        }
+        return parameterAnnotations;
+    }
+    
+    /**
+     * Creates an array of empty Annotation arrays.
+     */
+    static Annotation[][] noAnnotations(int size) {
+        // Start (C) Android
+        Annotation[][] annotations = new Annotation[size][];
+        for (int i = 0; i < size; i++) {
+            annotations[i] = NO_ANNOTATIONS;
+        }
+        return annotations;
+        // End (C) Android
+    }
+    
+    private static native Annotation[][] getParameterAnnotations(long method);
+    
     /**
      * Indicates whether or not this method takes a variable number argument.
      *
@@ -190,7 +289,7 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         }
         return declaringClass;
     }
-    native static <T> Class<T> getDeclaringClass(long method);
+    final native static <T> Class<T> getDeclaringClass(long method);
 
     /**
      * Returns the exception types as an array of {@code Class} instances. If
@@ -207,7 +306,7 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         }
         return copy ? exceptionTypes.clone() : exceptionTypes;
     }
-    native static Class<?>[] getExceptionTypes(long method);
+    final native static Class<?>[] getExceptionTypes(long method);
 
     /**
      * Returns the modifiers for this method. The {@link Modifier} class should
@@ -223,7 +322,7 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         }
         return modifiers;
     }
-    native static int getModifiers(long method);
+    final native static int getModifiers(long method);
 
     /**
      * Returns the name of the method represented by this {@code Method}
@@ -255,7 +354,7 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         }
         return copy ? parameterTypes.clone() : parameterTypes;
     }
-    native static Class<?>[] getParameterTypes(long method);
+    final native static Class<?>[] getParameterTypes(long method);
 
     /**
      * Returns the {@code Class} associated with the return type of this
@@ -339,10 +438,21 @@ public final class Method extends AccessibleObject implements GenericDeclaration
      *
      * @see AccessibleObject
      */
-    public native Object invoke(Object receiver, Object... args)
+    public Object invoke(Object receiver, Object... args)
+            throws IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException {
+
+        if (args == null) {
+            args = new Object[0];
+        }
+        
+        return invoke(method, flag, receiver, args);
+    }
+    
+    private static native Object invoke(long method, boolean flag, Object receiver, Object... args)
             throws IllegalAccessException, IllegalArgumentException,
             InvocationTargetException;
-
+    
     /**
      * Returns a string containing a concise, human-readable description of this
      * method. The format of the string is:
@@ -384,7 +494,7 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         sb.append(name);
         sb.append('(');
         if (pTypes.length > 0) {
-            sb.append(pTypes[0]);
+            sb.append(pTypes[0].getCanonicalName());
             for (int i = 1; i < pTypes.length; i++) {
                 sb.append(',');
                 sb.append(pTypes[i].getCanonicalName());
@@ -393,7 +503,7 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         sb.append(')');
         if (eTypes.length > 0) {
             sb.append(" throws ");
-            sb.append(eTypes[0]);
+            sb.append(eTypes[0].getCanonicalName());
             for (int i = 1; i < eTypes.length; i++) {
                 sb.append(',');
                 sb.append(eTypes[i].getCanonicalName());

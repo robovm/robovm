@@ -20,10 +20,12 @@ package java.lang;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Inherited;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.GenericDeclaration;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
@@ -31,7 +33,12 @@ import java.lang.reflect.TypeVariable;
 import java.net.URL;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+
+import org.apache.harmony.luni.lang.reflect.GenericSignatureParser;
+import org.apache.harmony.luni.lang.reflect.Types;
 
 /**
  * The in-memory representation of a Java class. This representation serves as
@@ -143,6 +150,13 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      */
     static native final Class<?>[] getStackClasses(int maxDepth, boolean stopAtPrivileged);
 
+    // Start (C) Android
+    /**
+     * Get the Signature attribute for this class.  Returns null if not found.
+     */
+    private native String getSignatureAttribute();    
+    // End (C) Android
+    
     /**
      * Returns a {@code Class} object which represents the class with the
      * specified name. The name should be the name of a class as described in
@@ -198,9 +212,37 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *             if an exception occurs during static initialization of a
      *             class.
      */
-    public native static Class<?> forName(String className, boolean initializeBoolean,
+    public static Class<?> forName(String className, boolean initializeBoolean,
+            ClassLoader classLoader) throws ClassNotFoundException {
+
+        if (classLoader == null) {
+            SecurityManager smgr = System.getSecurityManager();
+            if (smgr != null) {
+                ClassLoader calling = ClassLoader.callerClassLoader();
+                if (calling != null) {
+                    smgr.checkPermission(new RuntimePermission("getClassLoader"));
+                }
+            }
+
+            classLoader = ClassLoader.getSystemClassLoader();
+        }
+        return classForName(className, initializeBoolean, classLoader);
+    }
+
+    /*
+     * Returns a class by name without any security checks.
+     *
+     * @param className The name of the non-primitive type class to find
+     * @param initializeBoolean A boolean indicating whether the class should be
+     *        initialized
+     * @param classLoader The class loader to use to load the class
+     * @return the named class.
+     * @throws ClassNotFoundException If the class could not be found
+     */
+    static native Class<?> classForName(String className, boolean initializeBoolean,
             ClassLoader classLoader) throws ClassNotFoundException;
 
+    
     /**
      * Returns an array containing {@code Class} objects for all public classes
      * and interfaces that are members of this class. This includes public
@@ -213,7 +255,10 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *             if a security manager exists and it does not allow member
      *             access.
      */
-    public native Class<?>[] getClasses();
+    public Class<?>[] getClasses() {
+        checkPublicMemberAccess();
+        return getFullListOfClasses(true);
+    }
 
     /**
      * Returns the annotation of the given type. If there is no such annotation
@@ -225,7 +270,19 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *         such annotation.
      * @since 1.5
      */
-    public native <A extends Annotation> A getAnnotation(Class<A> annotationClass);
+    @SuppressWarnings("unchecked")
+    public <A extends Annotation> A getAnnotation(Class<A> annotationClass) {
+        // Start (C) Android
+        Annotation[] list = getAnnotations();
+        for (int i = 0; i < list.length; i++) {
+            if (annotationClass.isInstance(list[i])) {
+                return (A)list[i];
+            }
+        }
+
+        return null;
+        // End (C) Android
+    }
 
     /**
      * Returns all the annotations of this class. If there are no annotations
@@ -234,7 +291,42 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @return a copy of the array containing this class' annotations.
      * @see #getDeclaredAnnotations()
      */
-    public native Annotation[] getAnnotations();
+    public Annotation[] getAnnotations() {
+        // Start (C) Android
+        /*
+         * We need to get the annotations declared on this class, plus the
+         * annotations from superclasses that have the "@Inherited" annotation
+         * set.  We create a temporary map to use while we accumulate the
+         * annotations and convert it to an array at the end.
+         *
+         * It's possible to have duplicates when annotations are inherited.
+         * We use a Map to filter those out.
+         *
+         * HashMap might be overkill here.
+         */
+        HashMap<Class<?>, Annotation> map = new HashMap<Class<?>, Annotation>();
+        Annotation[] annos = getDeclaredAnnotations();
+
+        for (int i = annos.length-1; i >= 0; --i)
+            map.put(annos[i].annotationType(), annos[i]);
+
+        for (Class<?> sup = getSuperclass(); sup != null;
+                sup = sup.getSuperclass()) {
+            annos = sup.getDeclaredAnnotations();
+            for (int i = annos.length-1; i >= 0; --i) {
+                Class<?> clazz = annos[i].annotationType();
+                if (!map.containsKey(clazz) &&
+                        clazz.isAnnotationPresent(Inherited.class)) {
+                    map.put(clazz, annos[i]);
+                }
+            }
+        }
+
+        /* convert annotation values from HashMap to array */
+        Collection<Annotation> coll = map.values();
+        return coll.toArray(new Annotation[coll.size()]);
+        // End (C) Android
+    }
 
     /**
      * Returns the canonical name of this class. If this class does not have a
@@ -307,7 +399,6 @@ public final class Class<T> implements Serializable, AnnotatedElement,
         if (this.isPrimitive()) {
             return null;
         }
-
         
         if (loader == ClassLoader.BootClassLoaderHolder.loader) {
             return null;
@@ -386,7 +477,7 @@ public final class Class<T> implements Serializable, AnnotatedElement,
     private String parameterTypesToString(Class<?>[] parameterTypes) {
         if (parameterTypes.length > 0) {
             StringBuilder sb = new StringBuilder();
-            sb.append(parameterTypes[0]);
+            sb.append(parameterTypes[0].getCanonicalName());
             for (int i = 1; i < parameterTypes.length; i++) {
                 sb.append(',');
                 sb.append(parameterTypes[i] == null ? "null" 
@@ -411,6 +502,7 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @see #getDeclaredConstructors()
      */
     public Constructor<?>[] getConstructors() throws SecurityException {
+        checkPublicMemberAccess();
         return getDeclaredConstructors(true);
     }
     
@@ -439,8 +531,53 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *             if a security manager exists and it does not allow member
      *             access.
      */
-    public native Class<?>[] getDeclaredClasses() throws SecurityException;
+    public Class<?>[] getDeclaredClasses() throws SecurityException {
+        // Start (C) Android
+        checkDeclaredMemberAccess();
+        return getDeclaredClasses(this, false);
+        // End (C) Android
+    }
 
+    // Start (C) Android
+    /*
+     * Returns the list of member classes without performing any security checks
+     * first. This includes the member classes inherited from superclasses. If no
+     * member classes exist at all, an empty array is returned.
+     *
+     * @param publicOnly reflects whether we want only public members or all of them
+     * @return the list of classes
+     */
+    private Class<?>[] getFullListOfClasses(boolean publicOnly) {
+        Class<?>[] result = getDeclaredClasses(this, publicOnly);
+
+        // Traverse all superclasses
+        Class<?> clazz = this.getSuperclass();
+        while (clazz != null) {
+            Class<?>[] temp = getDeclaredClasses(clazz, publicOnly);
+            if (temp.length != 0) {
+                result = arraycopy(new Class[result.length + temp.length], result, temp);
+            }
+
+            clazz = clazz.getSuperclass();
+        }
+
+        return result;
+    }
+    // End (C) Android
+    
+    // Start (C) Android
+    /*
+     * Returns the list of member classes of the given class. No security checks
+     * are performed. If no members exist, an empty array is returned.
+     *
+     * @param clazz the class the members of which we want
+     * @param publicOnly reflects whether we want only public member or all of them
+     * @return the class' class members
+     */
+    native private static Class<?>[] getDeclaredClasses(Class<?> clazz,
+        boolean publicOnly);
+    // End (C) Android
+    
     /**
      * Returns a {@code Constructor} object which represents the constructor
      * matching the specified parameter types that is declared by the class
@@ -661,7 +798,13 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @return an array of {@link Type} instances directly implemented by the
      *         class represented by this {@code class}.
      */
-    public native Type[] getGenericInterfaces();
+    public Type[] getGenericInterfaces() {
+        // Start (C) Android
+        GenericSignatureParser parser = new GenericSignatureParser(getClassLoader());
+        parser.parseForClass(this, getSignatureAttribute());
+        return Types.getClonedTypeArray(parser.interfaceTypes);
+        // End (C) Android
+    }
 
     /**
      * Gets the {@code Type} that represents the superclass of this {@code
@@ -670,7 +813,13 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @return an instance of {@code Type} representing the superclass.
      * @since 1.5
      */
-    public native Type getGenericSuperclass();
+    public Type getGenericSuperclass() {
+        // Start (C) Android
+        GenericSignatureParser parser = new GenericSignatureParser(getClassLoader());
+        parser.parseForClass(this, getSignatureAttribute());
+        return Types.getType(parser.superclassType);
+        // End (C) Android
+    }
 
     /**
      * Returns an array of {@code Class} objects that match the interfaces
@@ -769,6 +918,53 @@ public final class Class<T> implements Serializable, AnnotatedElement,
         return result;
     }
     
+    // Start (C) Android
+    /**
+     * Performs the security checks regarding the access of a public
+     * member of this {@code Class}.
+     *
+     * <p><b>Note:</b> Because of the {@code getCallingClassLoader2()}
+     * check, this method must be called exactly one level deep into a
+     * public method on this instance.</p>
+     */
+    /*package*/ void checkPublicMemberAccess() {
+        SecurityManager smgr = System.getSecurityManager();
+
+        if (smgr != null) {
+            smgr.checkMemberAccess(this, Member.PUBLIC);
+
+            ClassLoader calling = ClassLoader.callerClassLoader2();
+            ClassLoader current = getClassLoader();
+
+            if (calling != null && !calling.isAncestorOf(current)) {
+                smgr.checkPackageAccess(this.getPackage().getName());
+            }
+        }
+    }
+
+    /**
+     * Performs the security checks regarding the access of a declared
+     * member of this {@code Class}.
+     *
+     * <p><b>Note:</b> Because of the {@code getCallingClassLoader2()}
+     * check, this method must be called exactly one level deep into a
+     * public method on this instance.</p>
+     */
+    private void checkDeclaredMemberAccess() {
+        SecurityManager smgr = System.getSecurityManager();
+        if (smgr != null) {
+            smgr.checkMemberAccess(this, Member.DECLARED);
+
+            ClassLoader calling = ClassLoader.callerClassLoader2();
+            ClassLoader current = getClassLoader();
+
+            if (calling != null && !calling.isAncestorOf(current)) {
+                smgr.checkPackageAccess(this.getPackage().getName());
+            }
+        }
+    }
+    // End (C) Android
+    
     /**
      * Returns an integer that represents the modifiers of the class represented
      * by this {@code Class}. The returned value is a combination of bits
@@ -776,8 +972,21 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *
      * @return the modifiers of the class represented by this {@code Class}.
      */
-    public native int getModifiers();
+    public int getModifiers() {
+        return getModifiers(this, false);
+    }
 
+    // Start (C) Android
+    /*
+     * Return the modifiers for the given class.
+     *
+     * @param clazz the class of interest
+     * @ignoreInnerClassesAttrib determines whether we look for and use the
+     *     flags from an "inner class" attribute
+     */
+    private static native int getModifiers(Class<?> clazz, boolean ignoreInnerClassesAttrib);
+    // End (C) Android
+    
     /**
      * Returns the name of the class represented by this {@code Class}. For a
      * description of the format which is used, see the class definition of
@@ -824,6 +1033,11 @@ public final class Class<T> implements Serializable, AnnotatedElement,
         }
         return name;
     }
+    
+    /**
+     * Returns the NullVM class name. E.g. java/lang/String, I, [[I,
+     * [Ljava/lang/Object;.
+     */
     private native String getName0();
 
     /**
@@ -885,16 +1099,18 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *             if a security manager exists and it does not allow member
      *             access.
      */
-    public native ProtectionDomain getProtectionDomain();
+    public ProtectionDomain getProtectionDomain() {
+        // Start (C) Android
+        SecurityManager smgr = System.getSecurityManager();
+        if (smgr != null) {
+            // Security check is independent of calling class loader.
+            smgr.checkPermission(new RuntimePermission("getProtectionDomain"));
+        }
 
-    /**
-     * Answers the ProtectionDomain of the receiver.
-     * 
-     * This method is for internal use only.
-     * 
-     * @return ProtectionDomain the receiver's ProtectionDomain.
-     */
-    native ProtectionDomain getPDImpl();
+        //return pd;
+        // End (C) Android
+        return null;
+    }
 
     /**
      * Returns the URL of the resource specified by {@code resName}. The mapping
@@ -979,7 +1195,10 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *
      * @return the signers of the class represented by this {@code Class}.
      */
-    public native Object[] getSigners();
+    public Object[] getSigners() {
+        // Code signing not supported by NullVM
+        return null;
+    }
 
     /**
      * Returns the {@code Class} object which represents the superclass of the
@@ -1001,7 +1220,14 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *         class.
      * @since 1.5
      */
-    public native TypeVariable<Class<T>>[] getTypeParameters();
+    @SuppressWarnings("unchecked")
+    public synchronized TypeVariable<Class<T>>[] getTypeParameters() {
+        // Start (C) Android
+        GenericSignatureParser parser = new GenericSignatureParser(getClassLoader());
+        parser.parseForClass(this, getSignatureAttribute());
+        return parser.formalTypeParameters.clone();
+        // End (C) Android
+    }
 
     /**
      * Indicates whether this {@code Class} represents an annotation class.
@@ -1009,7 +1235,13 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @return {@code true} if this {@code Class} represents an annotation
      *         class; {@code false} otherwise.
      */
-    public native boolean isAnnotation();
+    public boolean isAnnotation() {
+        // Start (C) Android
+        final int ACC_ANNOTATION = 0x2000;  // not public in reflect.Modifiers
+        int mod = getModifiers(this, true);
+        return (mod & ACC_ANNOTATION) != 0;
+        // End (C) Android
+    }
 
     /**
      * Indicates whether the specified annotation is present for the class
@@ -1021,8 +1253,9 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *         annotated with {@code annotationClass}; {@code false} otherwise.
      * @since 1.5
      */
-    public native boolean isAnnotationPresent(
-            Class<? extends Annotation> annotationClass);
+    public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
+        return getAnnotation(annotationClass) != null;
+    }
 
     /**
      * Indicates whether the class represented by this {@code Class} is
@@ -1100,7 +1333,13 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @return {@code true} if the class represented by this {@code Class} is
      *         defined locally; {@code false} otherwise.
      */
-    public native boolean isLocalClass();
+    public boolean isLocalClass() {
+        // Start (C) Android
+        boolean enclosed = (getEnclosingMethod() != null ||
+                         getEnclosingConstructor() != null);
+        return enclosed && !isAnonymousClass();
+        // End (C) Android
+    }    
 
     /**
      * Indicates whether the class represented by this {@code Class} is a member
@@ -1109,7 +1348,9 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @return {@code true} if the class represented by this {@code Class} is a
      *         member class; {@code false} otherwise.
      */
-    public native boolean isMemberClass();
+    public boolean isMemberClass() {
+        return getDeclaringClass() != null;
+    }
 
     /**
      * Indicates whether this {@code Class} represents a primitive type.
@@ -1125,7 +1366,13 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @return {@code true} if this {@code Class} represents a synthetic type;
      *         {@code false} otherwise.
      */
-    public native boolean isSynthetic();
+    public boolean isSynthetic() {
+        // Start (C) Android
+        final int ACC_SYNTHETIC = 0x1000;   // not public in reflect.Modifiers
+        int mod = getModifiers(this, true);
+        return (mod & ACC_SYNTHETIC) != 0;
+        // End (C) Android
+    }
 
     /**
      * Returns a new instance of the class represented by this {@code Class},
@@ -1145,7 +1392,14 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *             if a security manager exists and it does not allow creating
      *             new instances.
      */
-    public native T newInstance() throws IllegalAccessException,
+    public T newInstance() throws InstantiationException, IllegalAccessException {
+        // Start (C) Android
+        checkPublicMemberAccess();
+        return newInstanceImpl();
+        // End (C) Android
+    }
+
+    private native T newInstanceImpl() throws IllegalAccessException,
             InstantiationException;
 
     @Override
@@ -1167,7 +1421,19 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @return Package the {@code Package} of which this {@code Class} is a
      *         member or {@code null}.
      */
-    public native Package getPackage();
+    public Package getPackage() {
+        // Start (C) Android
+        // TODO This might be a hack, but the VM doesn't have the necessary info.
+        ClassLoader loader = getClassLoader();
+        if (loader != null) {
+            String name = getName();
+            int dot = name.lastIndexOf('.');
+            return (dot != -1 ? ClassLoader.getPackage(loader, name.substring(0, dot)) : null);
+        }
+
+        return null;
+        // End (C) Android
+    }
 
     /**
      * Returns the assertion status for the class represented by this {@code
@@ -1221,4 +1487,21 @@ public final class Class<T> implements Serializable, AnnotatedElement,
         throw new ClassCastException();
         // End (C) Android
     }
+    
+    // Start (C) Android
+    /**
+     * Copies two arrays into one. Assumes that the destination array is large
+     * enough.
+     *
+     * @param result the destination array
+     * @param head the first source array
+     * @param tail the second source array
+     * @return the destination array, that is, result
+     */
+    private static <T extends Object> T[] arraycopy(T[] result, T[] head, T[] tail) {
+        System.arraycopy(head, 0, result, 0, head.length);
+        System.arraycopy(tail, 0, result, head.length, tail.length);
+        return result;
+    }    
+    // End (C) Android
 }

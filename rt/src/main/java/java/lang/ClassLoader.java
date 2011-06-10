@@ -656,6 +656,23 @@ public abstract class ClassLoader {
     }
 
     /**
+     * Gets the package with the specified name, searching it in the specified
+     * class loader.
+     *
+     * @param loader
+     *            the class loader to search the package in.
+     * @param name
+     *            the name of the package to find.
+     * @return the package with the requested name; {@code null} if the package
+     *         can not be found.
+     */
+    static Package getPackage(ClassLoader loader, String name) {
+        // Start (C) Android
+        return loader.getPackage(name);
+        // End (C) Android
+    }
+    
+    /**
      * Returns all the packages known to this class loader.
      *
      * @return an array with all packages known to this class loader.
@@ -795,6 +812,10 @@ public abstract class ClassLoader {
         return getStackClassLoader(2);
     }
 
+    static ClassLoader callerClassLoader2() {
+        return getStackClassLoader(3);
+    }
+    
     /**
      * Sets the assertion status of the class with the specified name.
      *

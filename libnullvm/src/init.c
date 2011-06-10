@@ -220,7 +220,7 @@ jboolean nvmRun(Env* env) {
         // TODO: Wait for other threads to finish?
     }
     if (!clazz) {
-        fprintf(stderr, "Main class %s not found.", options->mainClass);
+        fprintf(stderr, "Main class %s not found.\n", options->mainClass);
     }
     return !nvmExceptionCheck(env);
 }

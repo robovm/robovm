@@ -1,4 +1,19 @@
 #include <nullvm.h>
+#include "utlist.h"
+
+static Class* getEnclosingClass(Env* env, Class* thiz) {
+    if (thiz->enclosingMethod) {
+        return nvmFindClassUsingLoader(env, thiz->enclosingMethod->className, thiz->classLoader);
+    }
+    return NULL;
+}
+
+static Method* getEnclosingMethod(Env* env, Class* thiz) {
+    if (!thiz->enclosingMethod || !thiz->enclosingMethod->methodName) return NULL;
+    Class* clazz = getEnclosingClass(env, thiz);
+    if (!clazz) return NULL;
+    return nvmGetMethod(env, clazz, thiz->enclosingMethod->methodName, thiz->enclosingMethod->methodDesc);
+}
 
 jboolean Java_java_lang_Class_desiredAssertionStatus(Env* env, Object* thiz) {
     return JNI_FALSE;
@@ -8,16 +23,91 @@ jboolean Java_java_lang_Class_isPrimitive(Env* env, Class* thiz) {
     return thiz->primitive;
 }
 
+jboolean Java_java_lang_Class_isAnonymousClass(Env* env, Class* thiz) {
+    InnerClass* innerClass;
+    LL_FOREACH(thiz->innerClasses, innerClass) {
+        if (innerClass->innerClass && !strcmp(innerClass->innerClass, thiz->name)) {
+            return innerClass->innerName == NULL ? TRUE : FALSE;
+        }
+    }
+    return FALSE;
+}
+
 jboolean Java_java_lang_Class_isInterface(Env* env, Class* thiz) {
     return CLASS_IS_INTERFACE(thiz) > 0;
 }
 
-jboolean Java_java_lang_Class_getModifiers(Env* env, Class* thiz) {
+jboolean Java_java_lang_Class_getModifiers(Env* env, Class* thiz, jboolean ignoreInnerClassesAttrib) {
     return thiz->access;
+}
+
+Object* Java_java_lang_Class_getSignatureAttribute(Env* env, Class* thiz) {
+    return thiz->signature ? nvmNewStringUTF(env, thiz->signature, -1) : NULL;
 }
 
 Object* Java_java_lang_Class_getName0(Env* env, Class* thiz) {
     return nvmNewStringUTF(env, thiz->name, -1);
+}
+
+Class* Java_java_lang_Class_getDeclaringClass(Env* env, Class* thiz) {
+    InnerClass* innerClass;
+    LL_FOREACH(thiz->innerClasses, innerClass) {
+        if (innerClass->innerClass && innerClass->outerClass && !strcmp(innerClass->innerClass, thiz->name)) {
+            return nvmFindClassUsingLoader(env, innerClass->outerClass, thiz->classLoader);
+        }
+    }
+    return NULL;
+}
+
+Class* Java_java_lang_Class_getEnclosingClass(Env* env, Class* thiz) {
+    Class* enclosingClass = getEnclosingClass(env, thiz);
+    if (nvmExceptionCheck(env) && nvmExceptionOccurred(env)->clazz != java_lang_ClassNotFoundException) {
+        return NULL;
+    }
+    if (!enclosingClass) {
+        nvmExceptionClear(env);
+        return Java_java_lang_Class_getDeclaringClass(env, thiz);
+    }
+    return enclosingClass;
+}
+
+Object* Java_java_lang_Class_getEnclosingMethod(Env* env, Class* thiz) {
+    Method* method = getEnclosingMethod(env, thiz);
+    if (!method || METHOD_IS_CONSTRUCTOR(method)) return NULL;
+    Class* jlr_Method = nvmFindClass(env, "java/lang/reflect/Method");
+    if (!jlr_Method) return NULL;
+    Method* constructor = nvmGetInstanceMethod(env, jlr_Method, "<init>", "(J)V");
+    if (!constructor) return NULL;
+    jvalue args[1];
+    args[0].j = (jlong) method;
+    return nvmNewObjectA(env, jlr_Method, constructor, args);
+}
+
+Object* Java_java_lang_Class_getEnclosingConstructor(Env* env, Class* thiz) {
+    Method* method = getEnclosingMethod(env, thiz);
+    if (!method || !METHOD_IS_CONSTRUCTOR(method)) return NULL;
+    Class* jlr_Constructor = nvmFindClass(env, "java/lang/reflect/Constructor");
+    if (!jlr_Constructor) return NULL;
+    Method* constructor = nvmGetInstanceMethod(env, jlr_Constructor, "<init>", "(J)V");
+    if (!constructor) return NULL;
+    jvalue args[1];
+    args[0].j = (jlong) method;
+    return nvmNewObjectA(env, jlr_Constructor, constructor, args);
+}
+
+ObjectArray* Java_java_lang_Class_getInterfaces(Env* env, Class* thiz) {
+    Interface* interface;
+    jint length = 0;
+    LL_FOREACH(thiz->interfaces, interface) {
+        length++;
+    }
+    ObjectArray* result = nvmNewObjectArray(env, length, java_lang_Class, NULL, NULL);
+    if (!result) return NULL;
+    jint i = 0;
+    LL_FOREACH(thiz->interfaces, interface) {
+        result->values[i++] = (Object*) interface->interface;
+    }
+    return result;
 }
 
 Class* Java_java_lang_Class_getComponentType(Env* env, Class* thiz) {
@@ -25,6 +115,10 @@ Class* Java_java_lang_Class_getComponentType(Env* env, Class* thiz) {
         return NULL;
     }
     return nvmGetComponentType(env, thiz);
+}
+
+Class* Java_java_lang_Class_getSuperclass(Env* env, Class* thiz) {
+    return thiz->superclass;
 }
 
 ObjectArray* Java_java_lang_Class_getStackClasses(Env* env, Class* c, jint maxDepth, jboolean stopAtPrivileged) {
@@ -55,7 +149,7 @@ ObjectArray* Java_java_lang_Class_getStackClasses(Env* env, Class* c, jint maxDe
     return result;
 }
 
-Class* Java_java_lang_Class_forName(Env* env, Class* c, Object* className, jboolean initializeBoolean, ClassLoader* classLoader) {
+Class* Java_java_lang_Class_classForName(Env* env, Class* c, Object* className, jboolean initializeBoolean, ClassLoader* classLoader) {
     char* classNameUTF = nvmGetStringUTFChars(env, className);
     if (!classNameUTF) return NULL;
     jint i;

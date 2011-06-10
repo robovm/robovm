@@ -77,8 +77,9 @@ extern jboolean nvmInitClasses(Env* env);
 
 extern Class* nvmAllocateClass(Env* env, char* className, Class* superclass, ClassLoader* classLoader, jint access, jint classDataSize, jint instanceDataSize);
 extern jboolean nvmAddInterface(Env* env, Class* clazz, Class* interface);
-extern jboolean nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset, void* getter, void* setter);
-extern jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup);
+extern Field* nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset, void* getter, void* setter);
+extern Method* nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup);
+extern void nvmAddMethodException(Env* env, Method* method, char* className);
 extern jboolean nvmRegisterClass(Env* env, Class* clazz);
 
 extern Class* nvmFindClass(Env* env, char* className);

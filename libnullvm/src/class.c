@@ -693,9 +693,9 @@ jboolean nvmAddInterface(Env* env, Class* clazz, Class* interf) {
     return TRUE;
 }
 
-jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup) {
+Method* nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup) {
     Method* method = nvmAllocateMemory(env, sizeof(Method));
-    if (!method) return FALSE;
+    if (!method) return NULL;
     method->clazz = clazz;
     method->name = name;
     method->desc = desc;
@@ -715,12 +715,19 @@ jboolean nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint acces
             clazz->methods->hi = method->impl;
         }
     }
-    return TRUE;
+    return method;
 }
 
-jboolean nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset, void* getter, void* setter) {
+void nvmAddMethodException(Env* env, Method* method, char* className) {
+    Exception* exception = nvmAllocateMemory(env, sizeof(Exception));
+    if (!exception) return;
+    exception->name = className;
+    LL_APPEND(method->exceptions, exception);
+}
+
+Field* nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset, void* getter, void* setter) {
     Field* field = nvmAllocateMemory(env, (access & ACC_STATIC) ? sizeof(ClassField) : sizeof(InstanceField));
-    if (!field) return FALSE;
+    if (!field) return NULL;
     field->clazz = clazz;
     field->name = name;
     field->desc = desc;
@@ -734,7 +741,7 @@ jboolean nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access
     } else {
         ((InstanceField*) field)->offset = offsetof(DataObject, data) + clazz->instanceDataOffset + offset;
     }
-    return TRUE;
+    return field;
 }
 
 jboolean nvmRegisterClass(Env* env, Class* clazz) {

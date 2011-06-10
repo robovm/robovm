@@ -1,4 +1,5 @@
 #include <nullvm.h>
+#include "utlist.h"
 #include "log.h"
 
 static Class* findClassInLoader(Env* env, char* className, ClassLoader* classLoader) {
@@ -92,7 +93,7 @@ Class* _nvmBcFindClassInLoader(Env* env, char* className, ClassLoader* classLoad
     return clazz;
 }
 
-void _nvmBcAllocateClass(Env* env, char* className, char* superclassName, ClassLoader* classLoader, jint access, jint classDataSize, jint instanceDataSize) {
+Class* _nvmBcAllocateClass(Env* env, char* className, char* superclassName, ClassLoader* classLoader, jint access, jint classDataSize, jint instanceDataSize) {
     // TODO: Check superclass accessible
     Class* superclass = NULL;
     if (superclassName) {
@@ -101,6 +102,7 @@ void _nvmBcAllocateClass(Env* env, char* className, char* superclassName, ClassL
     }
     Class* c = nvmAllocateClass(env, className, superclass, classLoader, access, classDataSize, instanceDataSize);
     if (!c) nvmRaiseException(env, nvmExceptionOccurred(env));
+    return c;
 }
 
 void _nvmBcAddInterface(Env* env, Class* clazz, char* interfaceName) {
@@ -110,12 +112,68 @@ void _nvmBcAddInterface(Env* env, Class* clazz, char* interfaceName) {
     if (!nvmAddInterface(env, clazz, interface)) nvmRaiseException(env, nvmExceptionOccurred(env));
 }
 
-void _nvmBcAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup) {
-    if (!nvmAddMethod(env, clazz, name, desc, access, impl, synchronizedImpl, lookup)) nvmRaiseException(env, nvmExceptionOccurred(env));
+Method* _nvmBcAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup) {
+    Method* method = nvmAddMethod(env, clazz, name, desc, access, impl, synchronizedImpl, lookup);
+    if (!method) nvmRaiseException(env, nvmExceptionOccurred(env));
+    return method;
 }
 
-void _nvmBcAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset, void* getter, void* setter) {
-    if (!nvmAddField(env, clazz, name, desc, access, offset, getter, setter)) nvmRaiseException(env, nvmExceptionOccurred(env));
+void _nvmBcAddMethodException(Env* env, Method* method, char* className) {
+    nvmAddMethodException(env, method, className);
+    if (nvmExceptionCheck(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
+}
+
+Field* _nvmBcAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset, void* getter, void* setter) {
+    Field* field = nvmAddField(env, clazz, name, desc, access, offset, getter, setter);
+    if (!field) nvmRaiseException(env, nvmExceptionOccurred(env));
+    return field;
+}
+
+void _nvmBcSetSourceFile(Env* env, Class* clazz, char* sourceFile) {
+    clazz->sourceFile = sourceFile;
+}
+
+void _nvmBcAddInnerClass(Env* env, Class* clazz, char* innerClass, char* outerClass, char* innerName, jint innerClassAccess) {
+    InnerClass* ic = nvmAllocateMemory(env, sizeof(InnerClass));
+    if (!ic) nvmRaiseException(env, nvmExceptionOccurred(env));
+    ic->innerClass = innerClass;
+    ic->outerClass = outerClass;
+    ic->innerName = innerName;
+    ic->innerClassAccess = innerClassAccess;
+    LL_APPEND(clazz->innerClasses, ic);
+}
+
+void _nvmBcSetEnclosingMethod(Env* env, Class* clazz, char* className, char* methodName, char* methodDesc) {
+    EnclosingMethod* em = nvmAllocateMemory(env, sizeof(EnclosingMethod));
+    if (!em) nvmRaiseException(env, nvmExceptionOccurred(env));
+    em->className = className;
+    em->methodName = methodName;
+    em->methodDesc = methodDesc;
+    clazz->enclosingMethod = em;
+}
+
+void _nvmBcSetClassSignature(Env* env, Class* clazz, char* signature) {
+    clazz->signature = signature;
+}
+
+void _nvmBcSetMethodSignature(Env* env, Method* method, char* signature) {
+    method->signature = signature;
+}
+
+void _nvmBcSetFieldSignature(Env* env, Field* field, char* signature) {
+    field->signature = signature;
+}
+
+void _nvmBcSetAnnotationDefault(Env* env, Method* method, void* data) {
+}
+
+void _nvmBcAddClassAnnotation(Env* env, Class* clazz, void* data) {
+}
+
+void _nvmBcAddMethodAnnotation(Env* env, Method* method, void* data) {
+}
+
+void _nvmBcAddFieldAnnotation(Env* env, Field* field, void* data) {
 }
 
 void _nvmBcRegisterClass(Env* env, Class* clazz) {

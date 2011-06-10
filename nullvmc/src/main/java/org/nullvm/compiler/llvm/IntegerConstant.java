@@ -31,7 +31,7 @@ public class IntegerConstant extends Constant implements Comparable<IntegerConst
     }
     
     public IntegerConstant(char value) {
-        this(new Character(value), Type.I16);
+        this(new Integer(value), Type.I16);
     }
     
     public IntegerConstant(int value) {

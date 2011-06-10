@@ -51,18 +51,22 @@ typedef struct Method Method;
 typedef struct Methods Methods;
 typedef struct ObjectHeader ObjectHeader;
 typedef struct Interface Interface;
+typedef struct Exception Exception;
 typedef struct Class Class;
 typedef struct Object Object;
 typedef struct ClassLoader ClassLoader;
 typedef struct DataObject DataObject;
 typedef struct Thread Thread;
 typedef struct Array Array;
+typedef struct EnclosingMethod EnclosingMethod;
+typedef struct InnerClass InnerClass;
 
 struct Field {
   Field* next;
   Class* clazz;
   char* name;
   char* desc;
+  char* signature;
   jint access;
   void* getter;
   void* setter;
@@ -83,8 +87,9 @@ struct Method {
   Class* clazz;
   char* name;
   char* desc;
+  char* signature;
   jint access;
-  char** exceptions;
+  Exception* exceptions;
   void* impl;
   void* synchronizedImpl;
   void* lookup;
@@ -100,6 +105,11 @@ struct Methods {
 struct Interface {
   Interface* next;
   Class* interface;
+};
+
+struct Exception {
+  Exception* next;
+  char* name;
 };
 
 struct Object {
@@ -118,7 +128,12 @@ struct Class {
   jint id;
   char* name;              // The name in modified UTF-8.
   ClassLoader* classLoader;
-  Class* superclass;       // Superclass pointer. Only java.lang.Object and interfaces have NULL here.
+  Class* superclass;       // Superclass pointer. Only java.lang.Object, primitive classes and interfaces have NULL here.
+  char* sourceFile;
+  char* signature;
+  void* annotations;
+  InnerClass* innerClasses;
+  EnclosingMethod* enclosingMethod;
   jboolean primitive;      // If true this represents a primitive type class.
   jint state;
   jint access;
@@ -146,6 +161,71 @@ struct DataObject {
   Object object;
   void* data[0];
 };
+
+struct InnerClass {
+  InnerClass* next;
+  char* innerClass;
+  char* outerClass;
+  char* innerName;
+  jint innerClassAccess;
+};
+
+struct EnclosingMethod {
+  char* className;
+  char* methodName;
+  char* methodDesc;
+};
+
+typedef struct ElementValue {
+  char tag;
+} ElementValue;
+
+typedef struct IntElementValue {
+  char tag;
+  jint value;
+} IntElementValue;
+
+typedef struct LongElementValue {
+  char tag;
+  jlong value;
+} LongElementValue;
+
+typedef struct FloatElementValue {
+  char tag;
+  jfloat value;
+} FloatElementValue;
+
+typedef struct DoubleElementValue {
+  char tag;
+  jdouble value;
+} DoubleElementValue;
+
+typedef struct StringElementValue {
+  char tag;
+  char* value;
+} StringElementValue;
+
+typedef struct ClassElementValue {
+  char tag;
+  char* className;
+} ClassElementValue;
+
+typedef struct EnumElementValue {
+  char tag;
+  char* className;
+  char* constName;
+} EnumElementValue;
+
+typedef struct ArrayElementValue {
+  char tag;
+  jint numValues;
+  ElementValue* values;
+} ArrayElementValue;
+
+typedef struct AnnotationElementValue {
+  char tag;
+  ElementValue value;
+} AnnotationElementValue;
 
 struct Thread {
   Object object;

@@ -24,6 +24,7 @@ public class Module {
     private final List<FunctionDeclaration> functionDeclarations = new ArrayList<FunctionDeclaration>();
     private final List<UserType> types = new ArrayList<UserType>();
     private final List<String> asm = new ArrayList<String>();
+    private int counter = 0;
 
     public void addInclude(URL resource) {
         includes.add(resource);
@@ -43,6 +44,16 @@ public class Module {
     
     public void addGlobal(Global global) {
         globals.add(global);
+    }
+    
+    public Global newGlobal(Constant value) {
+        return newGlobal(value, false);
+    }
+    
+    public Global newGlobal(Constant value, boolean constant) {
+        Global global = new Global("g" + (counter++), Linkage._private, value, constant);
+        globals.add(global);
+        return global;
     }
     
     public void addType(UserType type) {

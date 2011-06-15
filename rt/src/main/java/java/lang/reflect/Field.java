@@ -722,9 +722,9 @@ public final class Field extends AccessibleObject implements Member {
         if (sb.length() > 0) {
             sb.append(' ');
         }
-        sb.append(type.getCanonicalName());
+        sb.append(type.getName());
         sb.append(' ');
-        sb.append(declaringClass.getCanonicalName());
+        sb.append(declaringClass.getName());
         sb.append('.');
         sb.append(name);
         

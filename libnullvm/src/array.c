@@ -127,7 +127,7 @@ Array* nvmCloneArray(Env* env, Array* array) {
     Array* copy = nvmAllocateMemory(env, size);
     if (!copy) return NULL;
     memcpy(copy, array, size);
-    // TODO: Once every Object has a lock we need to assign a new one to the copy
+    copy->object.monitor = NULL;
     return copy;
 }
 

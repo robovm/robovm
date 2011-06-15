@@ -17,6 +17,7 @@ Class* java_lang_Integer;
 Class* java_lang_Long;
 Class* java_lang_Float;
 Class* java_lang_Double;
+Class* java_lang_Enum;
 Class* java_lang_Cloneable;
 Class* java_lang_Thread;
 Class* java_lang_Runtime;
@@ -70,6 +71,21 @@ Class* array_I;
 Class* array_J;
 Class* array_F;
 Class* array_D;
+
+static Boolean* java_lang_Boolean_TRUE = NULL;
+static Boolean* java_lang_Boolean_FALSE = NULL;
+static Method* java_lang_Byte_valueOf = NULL;
+static ObjectArray* bytesCache = NULL;
+static Method* java_lang_Short_valueOf = NULL;
+static ObjectArray* shortsCache = NULL;
+static Method* java_lang_Character_valueOf = NULL;
+static ObjectArray* charactersCache = NULL;
+static Method* java_lang_Integer_valueOf = NULL;
+static ObjectArray* integersCache = NULL;
+static Method* java_lang_Long_valueOf = NULL;
+static ObjectArray* longsCache = NULL;
+static Method* java_lang_Float_valueOf = NULL;
+static Method* java_lang_Double_valueOf = NULL;
 
 static DynamicLib* bootSoHandles = NULL;
 static DynamicLib* mainSoHandles = NULL;
@@ -489,12 +505,16 @@ jboolean nvmInitClasses(Env* env) {
     if (!java_lang_Character) return FALSE;
     java_lang_Short = findBootClass(env, "java/lang/Short");
     if (!java_lang_Short) return FALSE;
+    java_lang_Integer = findBootClass(env, "java/lang/Integer");
+    if (!java_lang_Integer) return FALSE;
     java_lang_Long = findBootClass(env, "java/lang/Long");
     if (!java_lang_Long) return FALSE;
     java_lang_Float = findBootClass(env, "java/lang/Float");
     if (!java_lang_Float) return FALSE;
     java_lang_Double = findBootClass(env, "java/lang/Double");
     if (!java_lang_Double) return FALSE;
+    java_lang_Enum = findBootClass(env, "java/lang/Enum");
+    if (!java_lang_Enum) return FALSE;
     java_lang_Cloneable = findBootClass(env, "java/lang/Cloneable");
     if (!java_lang_Cloneable) return FALSE;
     java_lang_Thread = findBootClass(env, "java/lang/Thread");
@@ -597,6 +617,72 @@ jboolean nvmInitClasses(Env* env) {
     if (!array_F) return FALSE;
     array_D = findBootClass(env, "[D");
     if (!array_D) return FALSE;
+
+    return TRUE;
+}
+
+jboolean nvmInitPrimitiveWrapperClasses(Env* env) {
+    Class* c = NULL;
+    ClassField* f = NULL;
+
+    f = nvmGetClassField(env, java_lang_Boolean, "TRUE", "Ljava/lang/Boolean;");
+    if (!f) return FALSE;
+    java_lang_Boolean_TRUE = (Boolean*) nvmGetObjectClassFieldValue(env, java_lang_Boolean, f);
+    if (!java_lang_Boolean_TRUE) return FALSE;
+
+    f = nvmGetClassField(env, java_lang_Boolean, "FALSE", "Ljava/lang/Boolean;");
+    if (!f) return FALSE;
+    java_lang_Boolean_FALSE = (Boolean*) nvmGetObjectClassFieldValue(env, java_lang_Boolean, f);
+    if (!java_lang_Boolean_FALSE) return FALSE;
+
+    java_lang_Byte_valueOf = nvmGetClassMethod(env, java_lang_Byte, "valueOf", "(B)Ljava/lang/Byte;");
+    if (!java_lang_Byte_valueOf) return FALSE;
+    f = nvmGetClassField(env, java_lang_Byte, "CACHE", "[Ljava/lang/Byte;");
+    if (!f) return FALSE;
+    bytesCache = (ObjectArray*) nvmGetObjectClassFieldValue(env, java_lang_Byte, f);
+    if (!bytesCache) return FALSE;
+
+    java_lang_Short_valueOf = nvmGetClassMethod(env, java_lang_Short, "valueOf", "(S)Ljava/lang/Short;");
+    if (!java_lang_Short_valueOf) return FALSE;
+    c = findBootClass(env, "java/lang/Short$valueOfCache");
+    if (!c) return FALSE;
+    f = nvmGetClassField(env, c, "CACHE", "[Ljava/lang/Short;");
+    if (!f) return FALSE;
+    shortsCache = (ObjectArray*) nvmGetObjectClassFieldValue(env, c, f);
+    if (!shortsCache) return FALSE;
+
+    java_lang_Character_valueOf = nvmGetClassMethod(env, java_lang_Character, "valueOf", "(C)Ljava/lang/Character;");
+    if (!java_lang_Character_valueOf) return FALSE;
+    c = findBootClass(env, "java/lang/Character$valueOfCache");
+    if (!c) return FALSE;
+    f = nvmGetClassField(env, c, "CACHE", "[Ljava/lang/Character;");
+    if (!f) return FALSE;
+    charactersCache = (ObjectArray*) nvmGetObjectClassFieldValue(env, c, f);
+    if (!charactersCache) return FALSE;
+
+    java_lang_Integer_valueOf = nvmGetClassMethod(env, java_lang_Integer, "valueOf", "(I)Ljava/lang/Integer;");
+    if (!java_lang_Integer_valueOf) return FALSE;
+    c = findBootClass(env, "java/lang/Integer$valueOfCache");
+    if (!c) return FALSE;
+    f = nvmGetClassField(env, c, "CACHE", "[Ljava/lang/Integer;");
+    if (!f) return FALSE;
+    integersCache = (ObjectArray*) nvmGetObjectClassFieldValue(env, c, f);
+    if (!integersCache) return FALSE;
+
+    java_lang_Long_valueOf = nvmGetClassMethod(env, java_lang_Long, "valueOf", "(J)Ljava/lang/Long;");
+    if (!java_lang_Long_valueOf) return FALSE;
+    c = findBootClass(env, "java/lang/Long$valueOfCache");
+    if (!c) return FALSE;
+    f = nvmGetClassField(env, c, "CACHE", "[Ljava/lang/Long;");
+    if (!f) return FALSE;
+    longsCache = (ObjectArray*) nvmGetObjectClassFieldValue(env, c, f);
+    if (!longsCache) return FALSE;
+
+    java_lang_Float_valueOf = nvmGetClassMethod(env, java_lang_Float, "valueOf", "(F)Ljava/lang/Float;");
+    if (!java_lang_Float_valueOf) return FALSE;
+
+    java_lang_Double_valueOf = nvmGetClassMethod(env, java_lang_Double, "valueOf", "(D)Ljava/lang/Double;");
+    if (!java_lang_Double_valueOf) return FALSE;
 
     return TRUE;
 }
@@ -716,13 +802,6 @@ Method* nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access
         }
     }
     return method;
-}
-
-void nvmAddMethodException(Env* env, Method* method, char* className) {
-    Exception* exception = nvmAllocateMemory(env, sizeof(Exception));
-    if (!exception) return;
-    exception->name = className;
-    LL_APPEND(method->exceptions, exception);
 }
 
 Field* nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset, void* getter, void* setter) {
@@ -877,6 +956,96 @@ Object* nvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args) {
     return obj;
 }
 
+Boolean* nvmNewBoolean(Env* env, jboolean value) {
+    return value ? java_lang_Boolean_TRUE : java_lang_Boolean_FALSE;
+}
+
+Byte* nvmNewByte(Env* env, jbyte value) {
+    jint index = value + 128;
+    if (index >= 0 && index < bytesCache->length && bytesCache->values[index] != NULL) {
+        return (Byte*) bytesCache->values[index];
+    }
+    jvalue args[1];
+    args[0].b = value;
+    return (Byte*) nvmCallObjectClassMethodA(env, java_lang_Byte, java_lang_Byte_valueOf, args);
+}
+
+Short* nvmNewShort(Env* env, jshort value) {
+    jint index = value + 128;
+    if (index >= 0 && index < shortsCache->length && shortsCache->values[index] != NULL) {
+        return (Short*) shortsCache->values[index];
+    }
+    jvalue args[1];
+    args[0].s = value;
+    return (Short*) nvmCallObjectClassMethodA(env, java_lang_Short, java_lang_Short_valueOf, args);
+}
+
+Character* nvmNewCharacter(Env* env, jchar value) {
+    jint index = value;
+    if (index >= 0 && index < charactersCache->length && charactersCache->values[index] != NULL) {
+        return (Character*) charactersCache->values[index];
+    }
+    jvalue args[1];
+    args[0].c = value;
+    return (Character*) nvmCallObjectClassMethodA(env, java_lang_Character, java_lang_Character_valueOf, args);
+}
+
+Integer* nvmNewInteger(Env* env, jint value) {
+    jint index = value + 128;
+    if (index >= 0 && index < integersCache->length && integersCache->values[index] != NULL) {
+        return (Integer*) integersCache->values[index];
+    }
+    jvalue args[1];
+    args[0].i = value;
+    return (Integer*) nvmCallObjectClassMethodA(env, java_lang_Integer, java_lang_Integer_valueOf, args);
+}
+
+Long* nvmNewLong(Env* env, jlong value) {
+    jint index = value + 128;
+    if (index >= 0 && index < longsCache->length && longsCache->values[index] != NULL) {
+        return (Long*) longsCache->values[index];
+    }
+    jvalue args[1];
+    args[0].j = value;
+    return (Long*) nvmCallObjectClassMethodA(env, java_lang_Long, java_lang_Long_valueOf, args);
+}
+
+Float* nvmNewFloat(Env* env, jfloat value) {
+    jvalue args[1];
+    args[0].f = value;
+    return (Float*) nvmCallObjectClassMethodA(env, java_lang_Float, java_lang_Float_valueOf, args);
+}
+
+Double* nvmNewDouble(Env* env, jdouble value) {
+    jvalue args[1];
+    args[0].d = value;
+    return (Double*) nvmCallObjectClassMethodA(env, java_lang_Double, java_lang_Double_valueOf, args);
+}
+
+Object* nvmWrapPrimitive(Env* env, Class* type, jvalue* value) {
+    if (type->primitive) {
+        switch (type->name[0]) {
+        case 'Z':
+            return (Object*) nvmNewBoolean(env, value->z);
+        case 'B':
+            return (Object*) nvmNewByte(env, value->b);
+        case 'S':
+            return (Object*) nvmNewShort(env, value->s);
+        case 'C':
+            return (Object*) nvmNewCharacter(env, value->c);
+        case 'I':
+            return (Object*) nvmNewInteger(env, value->i);
+        case 'J':
+            return (Object*) nvmNewLong(env, value->j);
+        case 'F':
+            return (Object*) nvmNewFloat(env, value->f);
+        case 'D':
+            return (Object*) nvmNewDouble(env, value->d);
+        }
+    }
+    return (Object*) value->l;
+}
+
 Object* nvmCloneObject(Env* env, Object* obj) {
     if (CLASS_IS_ARRAY(obj->clazz)) {
         return (Object*) nvmCloneArray(env, (Array*) obj);
@@ -886,7 +1055,7 @@ Object* nvmCloneObject(Env* env, Object* obj) {
     Object* copy = nvmAllocateMemory(env, size);
     if (!copy) return NULL;
     memcpy(copy, obj, size);
-    // TODO: When every Object has a lock we need to assign a new one to the copy
+    copy->monitor = NULL;
     return copy;
 }
 

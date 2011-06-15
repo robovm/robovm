@@ -66,8 +66,8 @@ struct Field {
   Class* clazz;
   char* name;
   char* desc;
-  char* signature;
   jint access;
+  char* attributes;
   void* getter;
   void* setter;
 };
@@ -87,9 +87,8 @@ struct Method {
   Class* clazz;
   char* name;
   char* desc;
-  char* signature;
   jint access;
-  Exception* exceptions;
+  void* attributes;
   void* impl;
   void* synchronizedImpl;
   void* lookup;
@@ -129,17 +128,13 @@ struct Class {
   char* name;              // The name in modified UTF-8.
   ClassLoader* classLoader;
   Class* superclass;       // Superclass pointer. Only java.lang.Object, primitive classes and interfaces have NULL here.
-  char* sourceFile;
-  char* signature;
-  void* annotations;
-  InnerClass* innerClasses;
-  EnclosingMethod* enclosingMethod;
   jboolean primitive;      // If true this represents a primitive type class.
   jint state;
   jint access;
   Interface* interfaces;   // Linked list of interfaces or NULL if there are no interfaces.
   Field* fields;           // Linked list of fields.
   Methods* methods;        // Linked list of methods.
+  void* attributes;
   jint classDataSize;
   jint instanceDataOffset; // The offset from the base of Object->data
                            // where the instance fields of this class can be found.
@@ -175,57 +170,6 @@ struct EnclosingMethod {
   char* methodName;
   char* methodDesc;
 };
-
-typedef struct ElementValue {
-  char tag;
-} ElementValue;
-
-typedef struct IntElementValue {
-  char tag;
-  jint value;
-} IntElementValue;
-
-typedef struct LongElementValue {
-  char tag;
-  jlong value;
-} LongElementValue;
-
-typedef struct FloatElementValue {
-  char tag;
-  jfloat value;
-} FloatElementValue;
-
-typedef struct DoubleElementValue {
-  char tag;
-  jdouble value;
-} DoubleElementValue;
-
-typedef struct StringElementValue {
-  char tag;
-  char* value;
-} StringElementValue;
-
-typedef struct ClassElementValue {
-  char tag;
-  char* className;
-} ClassElementValue;
-
-typedef struct EnumElementValue {
-  char tag;
-  char* className;
-  char* constName;
-} EnumElementValue;
-
-typedef struct ArrayElementValue {
-  char tag;
-  jint numValues;
-  ElementValue* values;
-} ArrayElementValue;
-
-typedef struct AnnotationElementValue {
-  char tag;
-  ElementValue value;
-} AnnotationElementValue;
 
 struct Thread {
   Object object;
@@ -265,6 +209,46 @@ MAKE_ARRAY(jchar, Char)
 MAKE_ARRAY(jboolean, Boolean)
 MAKE_ARRAY(jfloat, Float)
 MAKE_ARRAY(jdouble, Double)
+
+typedef struct Boolean {
+  Object object;
+  jboolean value;
+} Boolean;
+
+typedef struct Byte {
+  Object object;
+  jbyte value;
+} Byte;
+
+typedef struct Short {
+  Object object;
+  jshort value;
+} Short;
+
+typedef struct Character {
+  Object object;
+  jchar value;
+} Character;
+
+typedef struct Integer {
+  Object object;
+  jint value;
+} Integer;
+
+typedef struct Long {
+  Object object;
+  jlong value;
+} Long;
+
+typedef struct Float {
+  Object object;
+  jfloat value;
+} Float;
+
+typedef struct Double {
+  Object object;
+  jdouble value;
+} Double;
 
 typedef struct DynamicLib DynamicLib;
 struct DynamicLib {

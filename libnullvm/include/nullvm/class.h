@@ -9,6 +9,8 @@
 #define CLASS_IS_PACKAGE_PRIVATE(c) (IS_PACKAGE_PRIVATE((c)->access))
 #define CLASS_IS_ARRAY(c) ((c)->name[0] == '[')
 #define CLASS_IS_ARRAY_OF_PRIMITIVE(c) ((c)->name[0] == '[' && (c)->name[2] == '\0')
+#define CLASS_IS_ENUM(c) (IS_ENUM((c)->access))
+#define CLASS_IS_ANNOTATION(c) (IS_ANNOTATION((c)->access))
 
 extern Class* java_lang_Object;
 extern Class* java_lang_Class;
@@ -22,6 +24,7 @@ extern Class* java_lang_Integer;
 extern Class* java_lang_Long;
 extern Class* java_lang_Float;
 extern Class* java_lang_Double;
+extern Class* java_lang_Enum;
 extern Class* java_lang_Cloneable;
 extern Class* java_lang_Thread;
 extern Class* java_lang_ThreadGroup;
@@ -74,6 +77,7 @@ extern Class* array_F;
 extern Class* array_D;
 
 extern jboolean nvmInitClasses(Env* env);
+extern jboolean nvmInitPrimitiveWrapperClasses(Env* env);
 
 extern Class* nvmAllocateClass(Env* env, char* className, Class* superclass, ClassLoader* classLoader, jint access, jint classDataSize, jint instanceDataSize);
 extern jboolean nvmAddInterface(Env* env, Class* clazz, Class* interface);
@@ -100,6 +104,16 @@ extern void nvmInitialize(Env* env, Class* clazz);
 extern Object* nvmNewObject(Env* env, Class* clazz, Method* method, ...);
 extern Object* nvmNewObjectA(Env* env, Class* clazz, Method* method, jvalue* args);
 extern Object* nvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args);
+
+extern Boolean* nvmNewBoolean(Env* env, jboolean value);
+extern Byte* nvmNewByte(Env* env, jbyte value);
+extern Short* nvmNewShort(Env* env, jshort value);
+extern Character* nvmNewCharacter(Env* env, jchar value);
+extern Integer* nvmNewInteger(Env* env, jint value);
+extern Long* nvmNewLong(Env* env, jlong value);
+extern Float* nvmNewFloat(Env* env, jfloat value);
+extern Double* nvmNewDouble(Env* env, jdouble value);
+extern Object* nvmWrapPrimitive(Env* env, Class* type, jvalue* value);
 
 extern Object* nvmCloneObject(Env* env, Object* obj);
 

@@ -44,6 +44,7 @@ public final class Method extends AccessibleObject implements GenericDeclaration
     private Class<?> returnType;
     private Class<?>[] parameterTypes;
     private Class<?>[] exceptionTypes;
+    private Object defaultValue;
 
     private ListOfTypes genericExceptionTypes;
     private ListOfTypes genericParameterTypes;
@@ -51,6 +52,7 @@ public final class Method extends AccessibleObject implements GenericDeclaration
     private TypeVariable<Method>[] formalTypeParameters;
     private volatile boolean genericTypesAreInitialized = false;
     
+    @SuppressWarnings("unchecked")
     private synchronized void initGenericTypes() {
         // Start (C) Android
         if (!genericTypesAreInitialized) {
@@ -259,7 +261,13 @@ public final class Method extends AccessibleObject implements GenericDeclaration
      *             definition can be found
      * @since 1.5
      */
-    public native Object getDefaultValue();
+    public Object getDefaultValue() {
+        if (defaultValue == null) {
+            defaultValue = getDefaultValue(method);
+        }
+        return defaultValue;
+    }
+    final native static Object getDefaultValue(long method);
 
     /**
      * Indicates whether or not the specified {@code object} is equal to this
@@ -487,9 +495,9 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         if (sb.length() > 0) {
             sb.append(' ');
         }
-        sb.append(returnType.getCanonicalName());
+        sb.append(returnType.getName());
         sb.append(' ');
-        sb.append(declaringClass.getCanonicalName());
+        sb.append(declaringClass.getName());
         sb.append('.');
         sb.append(name);
         sb.append('(');

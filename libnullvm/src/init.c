@@ -169,6 +169,8 @@ Env* nvmStartup(Options* options) {
     if (!nvmInitStrings(env)) return NULL;
     if (!nvmInitVMI(env)) return NULL;
     if (!nvmInitThreads(env)) return NULL;
+    if (!nvmInitPrimitiveWrapperClasses(env)) return NULL;
+    if (!nvmInitAttributes(env)) return NULL;
 
     return env;
 }

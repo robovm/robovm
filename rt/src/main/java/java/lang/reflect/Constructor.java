@@ -326,7 +326,7 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
         if (sb.length() > 0) {
             sb.append(' ');
         }
-        sb.append(declaringClass.getCanonicalName());
+        sb.append(declaringClass.getName());
         sb.append('(');
         if (pTypes.length > 0) {
             sb.append(pTypes[0]);

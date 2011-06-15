@@ -27,6 +27,7 @@ import org.nullvm.compiler.clazz.Path;
 import org.nullvm.compiler.llvm.Add;
 import org.nullvm.compiler.llvm.Alloca;
 import org.nullvm.compiler.llvm.And;
+import org.nullvm.compiler.llvm.ArrayConstant;
 import org.nullvm.compiler.llvm.ArrayType;
 import org.nullvm.compiler.llvm.Ashr;
 import org.nullvm.compiler.llvm.BasicBlock;
@@ -71,6 +72,8 @@ import org.nullvm.compiler.llvm.Mul;
 import org.nullvm.compiler.llvm.NullConstant;
 import org.nullvm.compiler.llvm.OpaqueType;
 import org.nullvm.compiler.llvm.Or;
+import org.nullvm.compiler.llvm.PackedStructureConstant;
+import org.nullvm.compiler.llvm.PackedStructureType;
 import org.nullvm.compiler.llvm.PointerType;
 import org.nullvm.compiler.llvm.Ret;
 import org.nullvm.compiler.llvm.Sext;
@@ -210,6 +213,7 @@ import soot.tagkit.ConstantValueTag;
 import soot.tagkit.DoubleConstantValueTag;
 import soot.tagkit.EnclosingMethodTag;
 import soot.tagkit.FloatConstantValueTag;
+import soot.tagkit.Host;
 import soot.tagkit.InnerClassTag;
 import soot.tagkit.IntegerConstantValueTag;
 import soot.tagkit.LongConstantValueTag;
@@ -226,6 +230,16 @@ import soot.tagkit.VisibilityAnnotationTag;
 public class SootClassCompiler {
     private static final char[] HEX_CHARS = "0123456789ABCDEF".toCharArray();
 
+    private static final byte SOURCE_FILE = 1;
+    private static final byte SIGNATURE = 2;
+    private static final byte INNER_CLASS = 3;
+    private static final byte ENCLOSING_METHOD = 4;
+    private static final byte EXCEPTIONS = 5;
+    private static final byte RUNTIME_VISIBLE_ANNOTATIONS = 6;
+    private static final byte RUNTIME_VISIBLE_PARAMETER_ANNOTATIONS = 7;
+    private static final byte ANNOTATION_DEFAULT = 8;
+
+    
     private static final Type ENV_PTR = new PointerType(new OpaqueType("Env"));
     // Dummy Class type definition. The real one is in header.ll
     private static final StructureType CLASS = new StructureType("Class", I8_PTR);
@@ -243,17 +257,9 @@ public class SootClassCompiler {
     private static final FunctionRef NVM_BC_ADD_INTERFACE = new FunctionRef("_nvmBcAddInterface", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_ADD_FIELD = new FunctionRef("_nvmBcAddField", new FunctionType(FIELD_PTR, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_ADD_METHOD = new FunctionRef("_nvmBcAddMethod", new FunctionType(METHOD_PTR, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_ADD_METHOD_EXCEPTION = new FunctionRef("_nvmBcAddMethodException", new FunctionType(VOID, ENV_PTR, METHOD_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_SET_SOURCE_FILE = new FunctionRef("_nvmBcSetSourceFile", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_ADD_INNER_CLASS = new FunctionRef("_nvmBcAddInnerClass", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I8_PTR, I32));
-    private static final FunctionRef NVM_BC_SET_ENCLOSING_METHOD = new FunctionRef("_nvmBcSetEnclosingMethod", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_SET_CLASS_SIGNATURE = new FunctionRef("_nvmBcSetClassSignature", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_SET_METHOD_SIGNATURE = new FunctionRef("_nvmBcSetMethodSignature", new FunctionType(VOID, ENV_PTR, METHOD_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_SET_FIELD_SIGNATURE = new FunctionRef("_nvmBcSetFieldSignature", new FunctionType(VOID, ENV_PTR, FIELD_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_SET_ANNOTATION_DEFAULT = new FunctionRef("_nvmBcSetAnnotationDefault", new FunctionType(VOID, ENV_PTR, METHOD_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_ADD_CLASS_ANNOTATION = new FunctionRef("_nvmBcAddClassAnnotation", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_ADD_METHOD_ANNOTATION = new FunctionRef("_nvmBcAddMethodAnnotation", new FunctionType(VOID, ENV_PTR, METHOD_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_ADD_FIELD_ANNOTATION = new FunctionRef("_nvmBcAddFieldAnnotation", new FunctionType(VOID, ENV_PTR, FIELD_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_SET_CLASS_ATTRIBUTES = new FunctionRef("_nvmBcSetClassAttributes", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_SET_METHOD_ATTRIBUTES = new FunctionRef("_nvmBcSetMethodAttributes", new FunctionType(VOID, ENV_PTR, METHOD_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_SET_FIELD_ATTRIBUTES = new FunctionRef("_nvmBcSetFieldAttributes", new FunctionType(VOID, ENV_PTR, FIELD_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_REGISTER_CLASS = new FunctionRef("_nvmBcRegisterClass", new FunctionType(VOID, ENV_PTR, CLASS_PTR));
     private static final FunctionRef NVM_BC_FIND_CLASS_IN_LOADER = new FunctionRef("_nvmBcFindClassInLoader", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR, OBJECT_PTR));
 
@@ -908,104 +914,180 @@ public class SootClassCompiler {
         return module.newFunction(Linkage._private, name, functionType, parameterNames);
     }
     
-    private StructureType getAnnotationElementType(AnnotationElem ae) {
+    private PackedStructureType getAnnotationElementType(AnnotationElem ae) {
         if (ae instanceof AnnotationIntElem) {
-            return new StructureType(I8_PTR, I8, I32);
+            return new PackedStructureType(I8, I32);
         } else if (ae instanceof AnnotationLongElem) {
-            return new StructureType(I8_PTR, I8, I64);            
+            return new PackedStructureType(I8, I64);            
         } else if (ae instanceof AnnotationFloatElem) {
-            return new StructureType(I8_PTR, I8, FLOAT);            
+            return new PackedStructureType(I8, FLOAT);            
         } else if (ae instanceof AnnotationDoubleElem) {
-            return new StructureType(I8_PTR, I8, DOUBLE);            
+            return new PackedStructureType(I8, DOUBLE);            
         } else if (ae instanceof AnnotationStringElem) {
-            return new StructureType(I8_PTR, I8, I8_PTR);            
+            return new PackedStructureType(I8, I8_PTR);            
         } else if (ae instanceof AnnotationClassElem) {
-            return new StructureType(I8_PTR, I8, I8_PTR);            
+            return new PackedStructureType(I8, I8_PTR);            
         } else if (ae instanceof AnnotationEnumElem) {
-            return new StructureType(I8_PTR, I8, I8_PTR, I8_PTR);            
+            return new PackedStructureType(I8, I8_PTR, I8_PTR);            
         } else if (ae instanceof AnnotationArrayElem) {
             AnnotationArrayElem aae = (AnnotationArrayElem) ae;
-            Type[] types = new Type[aae.getNumValues() + 3];
-            types[0] = I8_PTR;
-            types[1] = I8;
-            types[2] = I16;
+            Type[] types = new Type[aae.getNumValues() + 2];
+            types[0] = I8;
+            types[1] = I16;
             for (int i = 0; i < aae.getNumValues(); i++) {
-                types[i + 3] = getAnnotationElementType(aae.getValueAt(i));
+                types[i + 2] = getAnnotationElementType(aae.getValueAt(i));
             }
-            return new StructureType(types);            
+            return new PackedStructureType(types);            
         } else if (ae instanceof AnnotationAnnotationElem) {
             AnnotationAnnotationElem aae = (AnnotationAnnotationElem) ae;
-            return new StructureType(I8_PTR, I8, getAnnotationTagType(aae.getValue()));            
+            return new PackedStructureType(I8, getAnnotationTagType(aae.getValue()));            
         }
         throw new IllegalArgumentException("Unknown AnnotationElem type: " + ae.getClass());
     }
     
-    private Constant getAnnotationElementValue(AnnotationElem ae) {
-        StructureType type = getAnnotationElementType(ae);
-        Value name = getStringOrNull(ae.getName());
+    private PackedStructureConstant encodeAnnotationElementValue(AnnotationElem ae) {
+        PackedStructureType type = getAnnotationElementType(ae);
         Value kind = new IntegerConstant((byte) ae.getKind());
         if (ae instanceof AnnotationIntElem) {
             AnnotationIntElem aie = (AnnotationIntElem) ae;
-            return new StructureConstant(type, name, kind,
+            return new PackedStructureConstant(type, kind,
                     new IntegerConstant(aie.getValue()));
         } else if (ae instanceof AnnotationLongElem) {
             AnnotationLongElem ale = (AnnotationLongElem) ae;
-            return new StructureConstant(type, name, kind,
+            return new PackedStructureConstant(type, kind,
                     new IntegerConstant(ale.getValue()));            
         } else if (ae instanceof AnnotationFloatElem) {
             AnnotationFloatElem afe = (AnnotationFloatElem) ae;
-            return new StructureConstant(type, name, kind,
+            return new PackedStructureConstant(type, kind,
                     new FloatingPointConstant(afe.getValue()));            
         } else if (ae instanceof AnnotationDoubleElem) {
             AnnotationDoubleElem ade = (AnnotationDoubleElem) ae;
-            return new StructureConstant(type, name, kind,
+            return new PackedStructureConstant(type, kind,
                     new FloatingPointConstant(ade.getValue()));            
         } else if (ae instanceof AnnotationStringElem) {
             AnnotationStringElem ase = (AnnotationStringElem) ae;
-            return new StructureConstant(type, name, kind,
+            return new PackedStructureConstant(type, kind,
                     getStringOrNull(ase.getValue()));            
         } else if (ae instanceof AnnotationClassElem) {
             AnnotationClassElem ace = (AnnotationClassElem) ae;
-            return new StructureConstant(type, name, kind,
+            return new PackedStructureConstant(type, kind,
                     getStringOrNull(ace.getDesc()));            
         } else if (ae instanceof AnnotationEnumElem) {
             AnnotationEnumElem aee = (AnnotationEnumElem) ae;
-            return new StructureConstant(type, name, kind,
+            return new PackedStructureConstant(type, kind,
                     getStringOrNull(aee.getTypeName()),            
                     getStringOrNull(aee.getConstantName()));            
         } else if (ae instanceof AnnotationArrayElem) {
             AnnotationArrayElem aae = (AnnotationArrayElem) ae;
-            Value[] values = new Value[aae.getNumValues() + 3];
-            values[0] = name;
-            values[1] = kind;
-            values[2] = new IntegerConstant((char) aae.getNumValues());
+            Value[] values = new Value[aae.getNumValues() + 2];
+            values[0] = kind;
+            values[1] = new IntegerConstant((char) aae.getNumValues());
             for (int i = 0; i < aae.getNumValues(); i++) {
-                values[i + 3] = getAnnotationElementValue(aae.getValueAt(i));
+                values[i + 2] = encodeAnnotationElementValue(aae.getValueAt(i));
             }
-            return new StructureConstant(type, values);
+            return new PackedStructureConstant(type, values);
         } else if (ae instanceof AnnotationAnnotationElem) {
             AnnotationAnnotationElem aae = (AnnotationAnnotationElem) ae;
-            return new StructureConstant(type, name, kind, getAnnotationTagValue(aae.getValue()));            
+            return new PackedStructureConstant(type, kind, encodeAnnotationTagValue(aae.getValue()));            
         }
         throw new IllegalArgumentException("Unknown AnnotationElem type: " + ae.getClass());
     }
     
-    private StructureType getAnnotationTagType(AnnotationTag tag) {
-        Type[] types = new Type[tag.getNumElems() + 1];
+    private PackedStructureType getAnnotationTagType(AnnotationTag tag) {
+        Type[] types = new Type[tag.getNumElems() * 2 + 2];
         types[0] = I8_PTR;
+        types[1] = I32;
         for (int i = 0; i < tag.getNumElems(); i++) {
-            types[i + 1] = getAnnotationElementType(tag.getElemAt(i));
+            types[i * 2 + 2] = I8_PTR;
+            types[i * 2 + 2 + 1] = getAnnotationElementType(tag.getElemAt(i));
         }
-        return new StructureType(types);            
+        return new PackedStructureType(types);            
     }
     
-    private Constant getAnnotationTagValue(AnnotationTag tag) {
-        Value[] values = new Value[tag.getNumElems() + 1];
+    private PackedStructureConstant encodeAnnotationTagValue(AnnotationTag tag) {
+        Value[] values = new Value[tag.getNumElems() * 2 + 2];
         values[0] = getString(tag.getType());
+        values[1] = new IntegerConstant(tag.getNumElems());
         for (int i = 0; i < tag.getNumElems(); i++) {
-            values[i + 1] = getAnnotationElementValue(tag.getElemAt(i));
+            values[i * 2 + 2] = getString(tag.getElemAt(i).getName());
+            values[i * 2 + 2 + 1] = encodeAnnotationElementValue(tag.getElemAt(i));
         }
-        return new StructureConstant(getAnnotationTagType(tag), values);
+        return new PackedStructureConstant(getAnnotationTagType(tag), values);
+    }
+    
+    private Constant encodeAttributes(Host host) {
+        List<Value> attributes = new ArrayList<Value>();
+        for (Tag tag : host.getTags()) {
+            if (tag instanceof SourceFileTag) {
+                Value sourceFile = getString(((SourceFileTag) tag).getSourceFile());
+                attributes.add(new PackedStructureConstant(new PackedStructureType(I8, I8_PTR), 
+                        new IntegerConstant(SOURCE_FILE), sourceFile));
+            } else if (tag instanceof EnclosingMethodTag) {
+                EnclosingMethodTag emt = (EnclosingMethodTag) tag;
+                Value eClass = getString(emt.getEnclosingClass());
+                Value eMethod = getStringOrNull(emt.getEnclosingMethod());
+                Value eDesc = getStringOrNull(emt.getEnclosingMethodSig());
+                attributes.add(new PackedStructureConstant(new PackedStructureType(I8, I8_PTR, I8_PTR, I8_PTR), 
+                        new IntegerConstant(ENCLOSING_METHOD), eClass, eMethod, eDesc));
+            } else if (tag instanceof SignatureTag) {
+                Value signature = getString(((SignatureTag) tag).getSignature());
+                attributes.add(new PackedStructureConstant(new PackedStructureType(I8, I8_PTR), 
+                        new IntegerConstant(SIGNATURE), signature));
+            } else if (tag instanceof InnerClassTag) {
+                InnerClassTag ict = (InnerClassTag) tag;
+                Value innerClass = getStringOrNull(ict.getInnerClass());
+                Value outerClass = getStringOrNull(ict.getOuterClass());
+                Value innerName = getStringOrNull(ict.getShortName());
+                Value innerClassAccess = new IntegerConstant(ict.getAccessFlags());
+                attributes.add(new PackedStructureConstant(new PackedStructureType(I8, I8_PTR, I8_PTR, I8_PTR, I32), 
+                        new IntegerConstant(INNER_CLASS), innerClass, outerClass, innerName, innerClassAccess));
+            } else if (tag instanceof AnnotationDefaultTag) {
+                StructureConstant value = encodeAnnotationElementValue(((AnnotationDefaultTag) tag).getDefaultVal());
+                attributes.add(new PackedStructureConstant(new PackedStructureType(I8, value.getType()), 
+                        new IntegerConstant(ANNOTATION_DEFAULT), value));
+            } else if (tag instanceof VisibilityAnnotationTag) {
+                VisibilityAnnotationTag vat = (VisibilityAnnotationTag) tag;
+                if (vat.getVisibility() == AnnotationConstants.RUNTIME_VISIBLE) {
+                    Type[] types = new Type[vat.getAnnotations().size()];
+                    Value[] values = new Value[vat.getAnnotations().size()];
+                    int i = 0;
+                    for (AnnotationTag at : vat.getAnnotations()) {
+                        values[i] = encodeAnnotationTagValue(at);
+                        types[i] = values[i].getType();
+                        i++;
+                    }
+                    attributes.add(new PackedStructureConstant(new PackedStructureType(I8, I32, new PackedStructureType(types)),
+                            new IntegerConstant(RUNTIME_VISIBLE_ANNOTATIONS), new IntegerConstant(vat.getAnnotations().size()),
+                            new PackedStructureConstant(new PackedStructureType(types), values)));
+                }
+//            } else {
+//                System.err.println("Class (" + sootClass + ") tag: " + tag);
+            }
+        }
+        if (host instanceof SootMethod) {
+            List<SootClass> exceptions = ((SootMethod) host).getExceptions();
+            if (!exceptions.isEmpty()) {
+                Value[] values = new Value[exceptions.size()];
+                for (int i = 0; i < exceptions.size(); i++) {
+                    values[i] = getString(getInternalName(exceptions.get(i)));
+                }
+                attributes.add(new PackedStructureConstant(new PackedStructureType(I8, I32, new ArrayType(exceptions.size(), I8_PTR)), 
+                        new IntegerConstant(EXCEPTIONS), new IntegerConstant(exceptions.size()), 
+                        new ArrayConstant(new ArrayType(exceptions.size(), I8_PTR), values)));
+            }
+        }
+        
+        if (attributes.isEmpty()) {
+            return null;
+        }
+        
+        attributes.add(0, new IntegerConstant(attributes.size()));
+        
+        Type[] types = new Type[attributes.size()];
+        for (int i = 0; i < types.length; i++) {
+            types[i] = attributes.get(i).getType();
+        }
+        return new PackedStructureConstant(new PackedStructureType(types), attributes.toArray(new Value[0]));
     }
     
     private void classLoaderFunction() {
@@ -1039,38 +1121,11 @@ public class SootClassCompiler {
                 new IntegerConstant(sootClass.getModifiers()),
                 sizeof(classFieldsType), sizeof(instanceFieldsType)));
 
-        for (Tag tag : sootClass.getTags()) {
-            if (tag instanceof SourceFileTag) {
-                Value sourceFile = getString(((SourceFileTag) tag).getSourceFile());
-                function.add(new Call(NVM_BC_SET_SOURCE_FILE, ENV, clazz.ref(), sourceFile));
-            } else if (tag instanceof EnclosingMethodTag) {
-                EnclosingMethodTag emt = (EnclosingMethodTag) tag;
-                Value eClass = getString(emt.getEnclosingClass());
-                Value eMethod = getStringOrNull(emt.getEnclosingMethod());
-                Value eDesc = getStringOrNull(emt.getEnclosingMethodSig());
-                function.add(new Call(NVM_BC_SET_ENCLOSING_METHOD, ENV, clazz.ref(), eClass, eMethod, eDesc));
-            } else if (tag instanceof SignatureTag) {
-                Value signature = getString(((SignatureTag) tag).getSignature());
-                function.add(new Call(NVM_BC_SET_CLASS_SIGNATURE, ENV, clazz.ref(), signature));
-            } else if (tag instanceof InnerClassTag) {
-                InnerClassTag ict = (InnerClassTag) tag;
-                Value innerClass = getStringOrNull(ict.getInnerClass());
-                Value outerClass = getStringOrNull(ict.getOuterClass());
-                Value innerName = getStringOrNull(ict.getShortName());
-                Value innerClassAccess = new IntegerConstant(ict.getAccessFlags());
-                function.add(new Call(NVM_BC_ADD_INNER_CLASS, ENV, clazz.ref(), innerClass, outerClass, innerName, innerClassAccess));
-            } else if (tag instanceof VisibilityAnnotationTag) {
-                VisibilityAnnotationTag vat = (VisibilityAnnotationTag) tag;
-                if (vat.getVisibility() == AnnotationConstants.RUNTIME_VISIBLE) {
-                    for (AnnotationTag at : vat.getAnnotations()) {
-                        Global g = module.newGlobal(getAnnotationTagValue(at), true);
-                        function.add(new Call(NVM_BC_ADD_CLASS_ANNOTATION, ENV, clazz.ref(), new ConstantBitcast(g.ref(), I8_PTR)));
-                    }
-                }
-//            } else {
-//                System.err.println("Class (" + sootClass + ") tag: " + tag);
-            }
-        }        
+        Constant classAttributes = encodeAttributes(sootClass);
+        if (classAttributes != null) {
+            Global g = module.newGlobal(classAttributes, true);
+            function.add(new Call(NVM_BC_SET_CLASS_ATTRIBUTES, ENV, clazz.ref(), new ConstantBitcast(g.ref(), I8_PTR)));
+        }
         
         for (SootClass iface : sootClass.getInterfaces()) {
             function.add(new Call(NVM_BC_ADD_INTERFACE, ENV, clazz.ref(), getString(getInternalName(iface))));
@@ -1089,22 +1144,12 @@ public class SootClassCompiler {
                     offsetof(classFieldsType, classFields.indexOf(field)),
                     new ConstantBitcast(getter, I8_PTR), 
                     new ConstantBitcast(setter, I8_PTR)));
-            for (Tag tag : field.getTags()) {
-                if (tag instanceof SignatureTag) {
-                    Value signature = getString(((SignatureTag) tag).getSignature());
-                    function.add(new Call(NVM_BC_SET_FIELD_SIGNATURE, ENV, fieldPtr.ref(), signature));
-                } else if (tag instanceof VisibilityAnnotationTag) {
-                    VisibilityAnnotationTag vat = (VisibilityAnnotationTag) tag;
-                    if (vat.getVisibility() == AnnotationConstants.RUNTIME_VISIBLE) {
-                        for (AnnotationTag at : vat.getAnnotations()) {
-                            Global g = module.newGlobal(getAnnotationTagValue(at), true);
-                            function.add(new Call(NVM_BC_ADD_FIELD_ANNOTATION, ENV, fieldPtr.ref(), new ConstantBitcast(g.ref(), I8_PTR)));
-                        }
-                    }
-//                } else {
-//                    System.err.println("Field (" + field + ") tag: " + tag);
-                }
-            }        
+            
+            Constant fieldAttributes = encodeAttributes(field);
+            if (fieldAttributes != null) {
+                Global g = module.newGlobal(fieldAttributes, true);
+                function.add(new Call(NVM_BC_SET_FIELD_ATTRIBUTES, ENV, fieldPtr.ref(), new ConstantBitcast(g.ref(), I8_PTR)));
+            }
         }
         for (SootField field : instanceFields) {
             FunctionRef getter = new FunctionRef(mangleField(field) + "_getter", 
@@ -1119,22 +1164,12 @@ public class SootClassCompiler {
                     offsetof(instanceFieldsType, instanceFields.indexOf(field)),
                     new ConstantBitcast(getter, I8_PTR), 
                     new ConstantBitcast(setter, I8_PTR)));
-            for (Tag tag : field.getTags()) {
-                if (tag instanceof SignatureTag) {
-                    Value signature = getString(((SignatureTag) tag).getSignature());
-                    function.add(new Call(NVM_BC_SET_FIELD_SIGNATURE, ENV, fieldPtr.ref(), signature));
-                } else if (tag instanceof VisibilityAnnotationTag) {
-                    VisibilityAnnotationTag vat = (VisibilityAnnotationTag) tag;
-                    if (vat.getVisibility() == AnnotationConstants.RUNTIME_VISIBLE) {
-                        for (AnnotationTag at : vat.getAnnotations()) {
-                            Global g = module.newGlobal(getAnnotationTagValue(at), true);
-                            function.add(new Call(NVM_BC_ADD_FIELD_ANNOTATION, ENV, fieldPtr.ref(), new ConstantBitcast(g.ref(), I8_PTR)));
-                        }
-                    }
-//                } else {
-//                    System.err.println("Field (" + field + ") tag: " + tag);
-                }
-            }        
+            
+            Constant fieldAttributes = encodeAttributes(field);
+            if (fieldAttributes != null) {
+                Global g = module.newGlobal(fieldAttributes, true);
+                function.add(new Call(NVM_BC_SET_FIELD_ATTRIBUTES, ENV, fieldPtr.ref(), new ConstantBitcast(g.ref(), I8_PTR)));
+            }
         }
         
         if (!sootClass.declaresMethodByName("<clinit>") && hasConstantValueTags(classFields)) {
@@ -1180,29 +1215,12 @@ public class SootClassCompiler {
                     functionRef,
                     synchronizedRef,
                     lookup));
-            for (SootClass ex : method.getExceptions()) {
-                function.add(new Call(NVM_BC_ADD_METHOD_EXCEPTION, ENV, methodPtr.ref(), getString(getInternalName(ex))));
+            
+            Constant methodAttributes = encodeAttributes(method);
+            if (methodAttributes != null) {
+                Global g = module.newGlobal(methodAttributes, true);
+                function.add(new Call(NVM_BC_SET_METHOD_ATTRIBUTES, ENV, methodPtr.ref(), new ConstantBitcast(g.ref(), I8_PTR)));
             }
-            for (Tag tag : method.getTags()) {
-                if (tag instanceof SignatureTag) {
-                    Value signature = getString(((SignatureTag) tag).getSignature());
-                    function.add(new Call(NVM_BC_SET_METHOD_SIGNATURE, ENV, methodPtr.ref(), signature));
-                } else if (tag instanceof AnnotationDefaultTag) {
-                    Constant def = getAnnotationElementValue(((AnnotationDefaultTag) tag).getDefaultVal());
-                    Global global = module.newGlobal(def, true);
-                    function.add(new Call(NVM_BC_SET_ANNOTATION_DEFAULT, ENV, methodPtr.ref(), new ConstantBitcast(global.ref(), I8_PTR)));
-                } else if (tag instanceof VisibilityAnnotationTag) {
-                    VisibilityAnnotationTag vat = (VisibilityAnnotationTag) tag;
-                    if (vat.getVisibility() == AnnotationConstants.RUNTIME_VISIBLE) {
-                        for (AnnotationTag at : vat.getAnnotations()) {
-                            Global g = module.newGlobal(getAnnotationTagValue(at), true);
-                            function.add(new Call(NVM_BC_ADD_METHOD_ANNOTATION, ENV, methodPtr.ref(), new ConstantBitcast(g.ref(), I8_PTR)));
-                        }
-                    }
-//                } else {
-//                    System.err.println("Method (" + method + ") tag: " + tag);
-                }
-            }        
         }
         
         function.add(new Call(NVM_BC_REGISTER_CLASS, ENV, clazz.ref()));

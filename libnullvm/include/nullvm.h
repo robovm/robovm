@@ -23,6 +23,7 @@ extern "C" {
 #include <nullvm/exception.h>
 #include <nullvm/string.h>
 #include <nullvm/thread.h>
+#include <nullvm/attribute.h>
 #include <nullvm/native.h>
 #include <nullvm/vminterface.h>
 #include <nullvm/log.h>

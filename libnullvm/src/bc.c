@@ -118,62 +118,22 @@ Method* _nvmBcAddMethod(Env* env, Class* clazz, char* name, char* desc, jint acc
     return method;
 }
 
-void _nvmBcAddMethodException(Env* env, Method* method, char* className) {
-    nvmAddMethodException(env, method, className);
-    if (nvmExceptionCheck(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
-}
-
 Field* _nvmBcAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset, void* getter, void* setter) {
     Field* field = nvmAddField(env, clazz, name, desc, access, offset, getter, setter);
     if (!field) nvmRaiseException(env, nvmExceptionOccurred(env));
     return field;
 }
 
-void _nvmBcSetSourceFile(Env* env, Class* clazz, char* sourceFile) {
-    clazz->sourceFile = sourceFile;
+void _nvmBcSetClassAttributes(Env* env, Class* clazz, void* attributes) {
+    clazz->attributes = attributes;
 }
 
-void _nvmBcAddInnerClass(Env* env, Class* clazz, char* innerClass, char* outerClass, char* innerName, jint innerClassAccess) {
-    InnerClass* ic = nvmAllocateMemory(env, sizeof(InnerClass));
-    if (!ic) nvmRaiseException(env, nvmExceptionOccurred(env));
-    ic->innerClass = innerClass;
-    ic->outerClass = outerClass;
-    ic->innerName = innerName;
-    ic->innerClassAccess = innerClassAccess;
-    LL_APPEND(clazz->innerClasses, ic);
+void _nvmBcSetMethodAttributes(Env* env, Method* method, void* attributes) {
+    method->attributes = attributes;
 }
 
-void _nvmBcSetEnclosingMethod(Env* env, Class* clazz, char* className, char* methodName, char* methodDesc) {
-    EnclosingMethod* em = nvmAllocateMemory(env, sizeof(EnclosingMethod));
-    if (!em) nvmRaiseException(env, nvmExceptionOccurred(env));
-    em->className = className;
-    em->methodName = methodName;
-    em->methodDesc = methodDesc;
-    clazz->enclosingMethod = em;
-}
-
-void _nvmBcSetClassSignature(Env* env, Class* clazz, char* signature) {
-    clazz->signature = signature;
-}
-
-void _nvmBcSetMethodSignature(Env* env, Method* method, char* signature) {
-    method->signature = signature;
-}
-
-void _nvmBcSetFieldSignature(Env* env, Field* field, char* signature) {
-    field->signature = signature;
-}
-
-void _nvmBcSetAnnotationDefault(Env* env, Method* method, void* data) {
-}
-
-void _nvmBcAddClassAnnotation(Env* env, Class* clazz, void* data) {
-}
-
-void _nvmBcAddMethodAnnotation(Env* env, Method* method, void* data) {
-}
-
-void _nvmBcAddFieldAnnotation(Env* env, Field* field, void* data) {
+void _nvmBcSetFieldAttributes(Env* env, Field* field, void* attributes) {
+    field->attributes = attributes;
 }
 
 void _nvmBcRegisterClass(Env* env, Class* clazz) {

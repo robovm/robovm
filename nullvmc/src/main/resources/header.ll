@@ -1,5 +1,5 @@
 %Env = type opaque
-%Class = type {i8*, i8*, i8*, i32, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8, i32, i32, i8*, i8*, i8*, i32, i32, i32, i32, i8*}
+%Class = type {i8*, i8*, i8*, i32, i8*, i8*, i8*, i8, i32, i32, i8*, i8*, i8*, i8*, i32, i32, i32, i32, i8*}
 %Method = type opaque
 %Field = type opaque
 %Object = type {%Class*, i8*}
@@ -17,18 +17,10 @@
 declare %Class* @_nvmBcAllocateClass(%Env*, i8*, i8*, %Object*, i32, i32, i32)
 declare void @_nvmBcAddInterface(%Env*, %Class*, i8*)
 declare %Method* @_nvmBcAddMethod(%Env*, %Class*, i8*, i8*, i32, i8*, i8*, i8*)
-declare void @_nvmBcAddMethodException(%Env*, %Method*, i8*)
 declare %Field* @_nvmBcAddField(%Env*, %Class*, i8*, i8*, i32, i32, i8*, i8*)
-declare void @_nvmBcSetSourceFile(%Env*, %Class*, i8*)
-declare void @_nvmBcAddInnerClass(%Env*, %Class*, i8*, i8*, i8*, i32)
-declare void @_nvmBcSetEnclosingMethod(%Env*, %Class*, i8*, i8*, i8*)
-declare void @_nvmBcSetClassSignature(%Env*, %Class*, i8*)
-declare void @_nvmBcSetMethodSignature(%Env*, %Method*, i8*)
-declare void @_nvmBcSetFieldSignature(%Env*, %Field*, i8*)
-declare void @_nvmBcSetAnnotationDefault(%Env*, %Method*, i8*)
-declare void @_nvmBcAddClassAnnotation(%Env*, %Class*, i8*)
-declare void @_nvmBcAddMethodAnnotation(%Env*, %Method*, i8*)
-declare void @_nvmBcAddFieldAnnotation(%Env*, %Field*, i8*)
+declare void @_nvmBcSetClassAttributes(%Env*, %Class*, i8*)
+declare void @_nvmBcSetMethodAttributes(%Env*, %Method*, i8*)
+declare void @_nvmBcSetFieldAttributes(%Env*, %Field*, i8*)
 declare void @_nvmBcRegisterClass(%Env*, %Class*)
 declare %Object* @_nvmBcFindClassInLoader(%Env*, i8*, %Object*)
 

@@ -1,5 +1,6 @@
 SRC = \
   array.c \
+  attribute.c \
   bc.c \
   class.c \
   exception.c \

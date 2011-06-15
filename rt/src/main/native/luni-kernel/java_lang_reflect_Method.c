@@ -53,20 +53,11 @@ ObjectArray* Java_java_lang_reflect_Method_getParameterTypes(Env* env, Class* cl
 
 ObjectArray* Java_java_lang_reflect_Method_getExceptionTypes(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) methodPtr;
+    return nvmAttributeGetExceptions(env, method);
+}
 
-    jint i = 0;
-    jint length = 0;
-    Exception* ex;
-    LL_FOREACH(method->exceptions, ex) length++;
-    Class* array_java_lang_Class = nvmFindClass(env, "[Ljava/lang/Class;");
-    if (!array_java_lang_Class) return NULL;
-    ObjectArray* exceptionTypes = nvmNewObjectArray(env, length, NULL, array_java_lang_Class, NULL);
-    if (!exceptionTypes) return NULL;
-    LL_FOREACH(method->exceptions, ex) {
-        Class* exType = nvmFindClassUsingLoader(env, ex->name, method->clazz->classLoader);
-        if (!exType ) return NULL;
-        exceptionTypes->values[i++] = (Object*) exType;
-    }
-    return exceptionTypes;
+Object* Java_java_lang_reflect_Method_getDefaultValue(Env* env, Class* clazz, jlong methodPtr) {
+    Method* method = (Method*) methodPtr;
+    return nvmAttributeGetAnnotationDefault(env, method);
 }
 

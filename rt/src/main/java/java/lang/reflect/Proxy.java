@@ -23,8 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import org.apache.harmony.luni.internal.reflect.ProxyClassFile;
-
 import org.apache.harmony.luni.internal.nls.Messages;
 
 /**
@@ -162,10 +160,10 @@ public class Proxy implements Serializable {
                 if (commonPackageName != null && commonPackageName.length() > 0) {
                     nextClassName = commonPackageName + "." + nextClassName; //$NON-NLS-1$
                 }
-                byte[] classFileBytes = ProxyClassFile.generateBytes(
-                        nextClassName, interfaces);
-                newClass = defineClassImpl(loader, nextClassName.replace('.',
-                        '/'), classFileBytes);
+                // Start NullVM change
+                newClass = createProxyClass(loader, nextClassName.replace('.',
+                        '/'), interfaces);
+                // End NullVM change
                 // Need a weak reference to the class so it can
                 // be unloaded if the class loader is discarded
                 interfaceCache.put(interfaceKey, new WeakReference<Class<?>>(
@@ -272,7 +270,9 @@ public class Proxy implements Serializable {
         throw new IllegalArgumentException(Messages.getString("luni.54")); //$NON-NLS-1$
     }
 
-    private static native Class<?> defineClassImpl(ClassLoader classLoader,
-            String className, byte[] classFileBytes);
+    // Start NullVM change
+    private static native Class<?> createProxyClass(ClassLoader classLoader,
+            String className, Class<?>[] interfaces);
+    // End NullVM change
 
 }

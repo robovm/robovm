@@ -1,21 +1,7 @@
 #include <nullvm.h>
 #include "utlist.h"
 
-static Class* getEnclosingClass(Env* env, Class* thiz) {
-    if (thiz->enclosingMethod) {
-        return nvmFindClassUsingLoader(env, thiz->enclosingMethod->className, thiz->classLoader);
-    }
-    return NULL;
-}
-
-static Method* getEnclosingMethod(Env* env, Class* thiz) {
-    if (!thiz->enclosingMethod || !thiz->enclosingMethod->methodName) return NULL;
-    Class* clazz = getEnclosingClass(env, thiz);
-    if (!clazz) return NULL;
-    return nvmGetMethod(env, clazz, thiz->enclosingMethod->methodName, thiz->enclosingMethod->methodDesc);
-}
-
-jboolean Java_java_lang_Class_desiredAssertionStatus(Env* env, Object* thiz) {
+jboolean Java_java_lang_Class_desiredAssertionStatus(Env* env, Class* thiz) {
     return JNI_FALSE;
 }
 
@@ -24,25 +10,27 @@ jboolean Java_java_lang_Class_isPrimitive(Env* env, Class* thiz) {
 }
 
 jboolean Java_java_lang_Class_isAnonymousClass(Env* env, Class* thiz) {
-    InnerClass* innerClass;
-    LL_FOREACH(thiz->innerClasses, innerClass) {
-        if (innerClass->innerClass && !strcmp(innerClass->innerClass, thiz->name)) {
-            return innerClass->innerName == NULL ? TRUE : FALSE;
-        }
-    }
-    return FALSE;
+    return nvmAttributeIsAnonymousClass(env, thiz);
 }
 
 jboolean Java_java_lang_Class_isInterface(Env* env, Class* thiz) {
     return CLASS_IS_INTERFACE(thiz) > 0;
 }
 
-jboolean Java_java_lang_Class_getModifiers(Env* env, Class* thiz, jboolean ignoreInnerClassesAttrib) {
+jboolean Java_java_lang_Class_isAssignableFrom(Env* env, Class* thiz, Class* that) {
+    if (!that) {
+        nvmThrowNullPointerException(env);
+        return FALSE;
+    }
+    return nvmIsAssignableFrom(env, that, thiz);
+}
+
+jboolean Java_java_lang_Class_getModifiers(Env* env, Class* c, Class* thiz, jboolean ignoreInnerClassesAttrib) {
     return thiz->access;
 }
 
 Object* Java_java_lang_Class_getSignatureAttribute(Env* env, Class* thiz) {
-    return thiz->signature ? nvmNewStringUTF(env, thiz->signature, -1) : NULL;
+    return nvmAttributeGetClassSignature(env, thiz);
 }
 
 Object* Java_java_lang_Class_getName0(Env* env, Class* thiz) {
@@ -50,29 +38,23 @@ Object* Java_java_lang_Class_getName0(Env* env, Class* thiz) {
 }
 
 Class* Java_java_lang_Class_getDeclaringClass(Env* env, Class* thiz) {
-    InnerClass* innerClass;
-    LL_FOREACH(thiz->innerClasses, innerClass) {
-        if (innerClass->innerClass && innerClass->outerClass && !strcmp(innerClass->innerClass, thiz->name)) {
-            return nvmFindClassUsingLoader(env, innerClass->outerClass, thiz->classLoader);
-        }
-    }
-    return NULL;
+    return nvmAttributeGetDeclaringClass(env, thiz);
 }
 
 Class* Java_java_lang_Class_getEnclosingClass(Env* env, Class* thiz) {
-    Class* enclosingClass = getEnclosingClass(env, thiz);
+    Class* enclosingClass = nvmAttributeGetEnclosingClass(env, thiz);
     if (nvmExceptionCheck(env) && nvmExceptionOccurred(env)->clazz != java_lang_ClassNotFoundException) {
         return NULL;
     }
     if (!enclosingClass) {
         nvmExceptionClear(env);
-        return Java_java_lang_Class_getDeclaringClass(env, thiz);
+        return nvmAttributeGetDeclaringClass(env, thiz);
     }
     return enclosingClass;
 }
 
 Object* Java_java_lang_Class_getEnclosingMethod(Env* env, Class* thiz) {
-    Method* method = getEnclosingMethod(env, thiz);
+    Method* method = nvmAttributeGetEnclosingMethod(env, thiz);
     if (!method || METHOD_IS_CONSTRUCTOR(method)) return NULL;
     Class* jlr_Method = nvmFindClass(env, "java/lang/reflect/Method");
     if (!jlr_Method) return NULL;
@@ -84,7 +66,7 @@ Object* Java_java_lang_Class_getEnclosingMethod(Env* env, Class* thiz) {
 }
 
 Object* Java_java_lang_Class_getEnclosingConstructor(Env* env, Class* thiz) {
-    Method* method = getEnclosingMethod(env, thiz);
+    Method* method = nvmAttributeGetEnclosingMethod(env, thiz);
     if (!method || !METHOD_IS_CONSTRUCTOR(method)) return NULL;
     Class* jlr_Constructor = nvmFindClass(env, "java/lang/reflect/Constructor");
     if (!jlr_Constructor) return NULL;

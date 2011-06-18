@@ -3,6 +3,7 @@
 #include <unwind.h>
 #include "trampolines.h"
 #include "log.h"
+#include "utlist.h"
 
 DynamicLib* bootNativeLibs = NULL;
 DynamicLib* mainNativeLibs = NULL;
@@ -37,11 +38,16 @@ static Method* getMethod(Env* env, Class* clazz, char* name, char* desc) {
              * Check with the superclass. Note that constructors and static 
              * initializers are not inherited.
              */
-            return nvmGetMethod(env, clazz->superclass, name, desc);
+            return getMethod(env, clazz->superclass, name, desc);
         }
     }
 
     return NULL;
+}
+
+jboolean nvmHasMethod(Env* env, Class* clazz, char* name, char* desc) {
+    Method* method = getMethod(env, clazz, name, desc);
+    return method ? TRUE : FALSE;
 }
 
 Method* nvmGetMethod(Env* env, Class* clazz, char* name, char* desc) {
@@ -107,50 +113,50 @@ Method* nvmFindMethodAtAddress(Env* env, void* address) {
 }
 
 typedef struct CallStackEntries {
-    jint count;
-    jint maxDepth;
-    Env* env;
     CallStackEntry* first;
     CallStackEntry* last;
 } CallStackEntries;
 
-static _Unwind_Reason_Code unwindCallStack(struct _Unwind_Context* ctx, void* _d) {
-    CallStackEntries* entries = (CallStackEntries*) _d;
-    void* address = (void*) _Unwind_GetIP(ctx);
-    void* func = _Unwind_FindEnclosingFunction(address);
-    if (func != nvmGetCallingMethod && func != nvmGetCallStack && func != nvmFindClass) {
-        Method* method = nvmFindMethodAtAddress(entries->env, func);
+static jboolean getCallingMethodIterator(Env* env, void* function, jint offset, void* data) {
+    Method** result = data;
+
+    if (function != nvmGetCallingMethod && function != nvmFindClass) {
+        Method* method = nvmFindMethodAtAddress(env, function);
         if (method) {
-            CallStackEntry* entry = nvmAllocateMemory(entries->env, sizeof(CallStackEntry));
+            *result = method;
+            return FALSE; // Stop iterating
+        }
+    }
+    return TRUE;
+}
+
+static jboolean getCallStackIterator(Env* env, void* function, jint offset, void* data) {
+    CallStackEntry** head = data;
+    if (function != nvmGetCallStack) {
+        Method* method = nvmFindMethodAtAddress(env, function);
+        if (method) {
+            CallStackEntry* entry = nvmAllocateMemory(env, sizeof(CallStackEntry));
             if (entry) {
                 entry->method = method;
-                entry->offset = (jint) (address - method->impl);
-                if (!entries->first) entries->first = entry;
-                if (entries->last) entries->last->next = entry;
-                entries->last = entry;
-                entries->count++;
+                entry->offset = offset;
+                DL_APPEND(*head, entry);
             }
         }
     }
-    return entries->maxDepth == -1 || entries->count < entries->maxDepth ? _URC_NO_REASON : _URC_NORMAL_STOP;
+    return TRUE;
 }
 
 Method* nvmGetCallingMethod(Env* env) {
-    CallStackEntries entries = {0};
-    entries.env = env;
-    entries.maxDepth = 1;
-    _Unwind_Backtrace(unwindCallStack, &entries);
-    if (nvmExceptionOccurred(env)) return NULL;
-    return entries.first ? entries.first->method : NULL;
+    Method* result = NULL;
+    nvmUnwindIterateCallStack(env, getCallingMethodIterator, &result);
+    return result;
 }
 
 CallStackEntry* nvmGetCallStack(Env* env) {
-    CallStackEntries entries = {0};
-    entries.env = env;
-    entries.maxDepth = -1;
-    _Unwind_Backtrace(unwindCallStack, &entries);
+    CallStackEntry* head = NULL;
+    nvmUnwindIterateCallStack(env, getCallStackIterator, &head);
     if (nvmExceptionOccurred(env)) return NULL;
-    return entries.first;
+    return head;
 }
 
 char* nvmGetReturnType(char* desc) {
@@ -159,7 +165,7 @@ char* nvmGetReturnType(char* desc) {
     return desc;
 }
 
-char* nvmGetNextArgumentType(char** desc) {
+char* nvmGetNextParameterType(char** desc) {
     char* s = *desc;
     (*desc)++;
     switch (s[0]) {
@@ -173,16 +179,25 @@ char* nvmGetNextArgumentType(char** desc) {
     case 'D':
         return s;
     case '[':
-        nvmGetNextArgumentType(desc);
+        nvmGetNextParameterType(desc);
         return s;
     case 'L':
         while (**desc != ';') (*desc)++;
         (*desc)++;
         return s;
     case '(':
-        return nvmGetNextArgumentType(desc);
+        return nvmGetNextParameterType(desc);
     }
     return 0;
+}
+
+jint nvmGetParameterCount(Method* method) {
+    char* desc = method->desc;
+    jint count = 0;
+    while (nvmGetNextParameterType(&desc)) {
+        count++;
+    }
+    return count;
 }
 
 static inline jboolean isFpType(char type) {
@@ -206,7 +221,7 @@ jboolean initCallInfo(CallInfo* callInfo, Env* env, Object* obj, Method* method,
 
     char* desc = method->desc;
     char* c;
-    while (c = nvmGetNextArgumentType(&desc)) {
+    while (c = nvmGetNextParameterType(&desc)) {
         argsCount++;
         if (isFpType(c[0]) && fpArgsCount < 8) {
             fpArgsCount++;
@@ -233,7 +248,7 @@ jboolean initCallInfo(CallInfo* callInfo, Env* env, Object* obj, Method* method,
 
     desc = method->desc;
     jint i = 0;
-    while (c = nvmGetNextArgumentType(&desc)) {
+    while (c = nvmGetNextParameterType(&desc)) {
         if (isFpType(c[0])) {
             if (fpArgsIndex < fpArgsCount) {
                 switch (c[0]) {
@@ -267,12 +282,7 @@ jboolean initCallInfo(CallInfo* callInfo, Env* env, Object* obj, Method* method,
 }
 
 static jvalue* va_list2jargs(Env* env, Method* method, va_list args) {
-    jint argsCount = 0;
-    char* desc = method->desc;
-    char* c;
-    while (c = nvmGetNextArgumentType(&desc)) {
-        argsCount++;
-    }
+    jint argsCount = nvmGetParameterCount(method);
 
     if (argsCount == 0) {
         return emptyJValueArgs;
@@ -281,9 +291,10 @@ static jvalue* va_list2jargs(Env* env, Method* method, va_list args) {
     jvalue *jvalueArgs = (jvalue*) nvmAllocateMemory(env, sizeof(jvalue) * argsCount);
     if (!jvalueArgs) return NULL;
 
-    desc = method->desc;
+    char* desc = method->desc;
+    char* c;
     jint i = 0;
-    while (c = nvmGetNextArgumentType(&desc)) {
+    while (c = nvmGetNextParameterType(&desc)) {
         switch (c[0]) {
         case 'B':
             jvalueArgs[i++].b = (jbyte) va_arg(args, jint);

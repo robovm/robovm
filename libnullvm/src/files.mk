@@ -58,7 +58,9 @@ SRC = \
   portlib/thread/unix/thrdsup.c \
   portlib/thread/unix/thrhelp.c \
   portlib/thread/unix/thrspinlock.c \
+  proxy.c \
   string.c \
   thread.c \
   trampolines-$(ARCH).s \
+  unwind.c \
   vminterface.c

@@ -291,6 +291,7 @@ typedef struct Env {
 typedef struct CallStackEntry CallStackEntry;
 struct CallStackEntry {
     CallStackEntry* next;
+    CallStackEntry* prev;
     Method* method;
     jint offset;
 };

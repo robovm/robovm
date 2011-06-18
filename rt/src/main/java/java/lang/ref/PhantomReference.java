@@ -56,6 +56,6 @@ public class PhantomReference<T> extends Reference<T> {
      */
     @Override
     public T get() {
-        return super.get();
+        return null;
     }
 }

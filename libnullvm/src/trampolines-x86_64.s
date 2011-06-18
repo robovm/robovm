@@ -2,21 +2,58 @@
 
 .text
 
-    .globl _nvmEmptyFunction
-#    .globl _nvmBcResolveClassForNew0
-#    .globl _nvmBcResolveClassForCheckcast0
-#    .globl _nvmBcResolveClassForInstanceof0
+    .globl _nvmProxy0
     .globl _nvmCall0
 
 
     .align    16, 0x90
-    .type    _nvmEmptyFunction, @function
-_nvmEmptyFunction:
-.LnvmEmptyFunctionBegin:
+    .type    _nvmProxy0, @function
+_nvmProxy0:
+.LnvmProxy0Begin:
+    .cfi_startproc
+
+    push  %rbp
+    .cfi_def_cfa_offset	16
+    .cfi_offset		rbp,-16
+    mov   %rsp, %rbp
+    .cfi_def_cfa_register	rbp
+
+    sub   $120, %rsp            # Make room for a ProxyInfo struct on the stack
+
+    mov   %rdi, 0(%rsp)         # intArgs[0] = %rdi
+    mov   %rsi, 8(%rsp)         # intArgs[1] = %rsi
+    mov   %rdx, 16(%rsp)        # intArgs[2] = %rdx
+    mov   %rcx, 24(%rsp)        # intArgs[3] = %rcx
+    mov   %r8, 32(%rsp)         # intArgs[4] = %r8
+    mov   %r9, 40(%rsp)         # intArgs[5] = %r9
+
+    movsd %xmm0, 48(%rsp)       # fpArgs[0] = %xmm0
+    movsd %xmm1, 56(%rsp)       # fpArgs[1] = %xmm1
+    movsd %xmm2, 64(%rsp)       # fpArgs[2] = %xmm2
+    movsd %xmm3, 72(%rsp)       # fpArgs[3] = %xmm3
+    movsd %xmm4, 80(%rsp)       # fpArgs[4] = %xmm4
+    movsd %xmm5, 88(%rsp)       # fpArgs[5] = %xmm5
+    movsd %xmm6, 96(%rsp)       # fpArgs[6] = %xmm6
+    movsd %xmm7, 104(%rsp)      # fpArgs[7] = %xmm7
+
+    mov   %rbp, %rax
+    add   $16, %rax
+    mov   %rax,  112(%rsp)      # stackArgs = first stack arg
+
+    mov   %rsp, %rdi
+    call  _nvmProxyHandler@PLT
+
+    mov   0(%rsp), %rax         # _nvmProxyHandler writes the return value here
+    movsd 0(%rsp), %xmm0        # _nvmProxyHandler writes the return value here
+
+    leave
+    .cfi_def_cfa		rsp,8
     ret
 
-    .size _nvmEmptyFunction, . - .LnvmEmptyFunctionBegin
-.LnvmEmptyFunctionEnd:
+    .cfi_endproc
+
+    .size _nvmProxy0, . - .LnvmProxy0Begin
+.LnvmProxy0End:
     
 
 /* ... _nvmCall0(CallInfo* callInfo) */

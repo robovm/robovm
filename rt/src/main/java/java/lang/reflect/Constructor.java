@@ -329,7 +329,7 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
         sb.append(declaringClass.getName());
         sb.append('(');
         if (pTypes.length > 0) {
-            sb.append(pTypes[0]);
+            sb.append(pTypes[0].getCanonicalName());
             for (int i = 1; i < pTypes.length; i++) {
                 sb.append(',');
                 sb.append(pTypes[i].getCanonicalName());
@@ -338,7 +338,7 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
         sb.append(')');
         if (eTypes.length > 0) {
             sb.append(" throws ");
-            sb.append(eTypes[0]);
+            sb.append(eTypes[0].getCanonicalName());
             for (int i = 1; i < eTypes.length; i++) {
                 sb.append(',');
                 sb.append(eTypes[i].getCanonicalName());

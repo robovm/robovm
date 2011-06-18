@@ -794,7 +794,7 @@ Method* nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access
     method->next = clazz->methods->first;
     clazz->methods->first  = method;
 
-    if (method->impl) {
+    if (method->impl && method->impl != _nvmProxy0) {
         if (clazz->methods->lo == NULL || method->impl < clazz->methods->lo) {
             clazz->methods->lo = method->impl;
         } else if (clazz->methods->hi == NULL || method->impl > clazz->methods->hi) {

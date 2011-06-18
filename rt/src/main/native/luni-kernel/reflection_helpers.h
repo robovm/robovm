@@ -1,5 +1,6 @@
 #include <nullvm.h>
 
+Object* createMethodObject(Env* env, Method* method);
 jvalue* validateAndUnwrapArgs(Env* env, ObjectArray* parameterTypes, ObjectArray* args);
 jboolean unwrapBoolean(Env* env, Object* arg, jvalue* value);
 jboolean unwrapByte(Env* env, Object* arg, jvalue* value);

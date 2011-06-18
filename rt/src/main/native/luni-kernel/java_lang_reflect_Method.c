@@ -25,21 +25,17 @@ Class* Java_java_lang_reflect_Method_getReturnType(Env* env, Class* clazz, jlong
 ObjectArray* Java_java_lang_reflect_Method_getParameterTypes(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) methodPtr;
 
-    char* s;
-    char* desc = method->desc;
-    jint argsCount = 0;
-    while (s = nvmGetNextArgumentType(&desc)) {
-        argsCount++;
-    }
+    jint argsCount = nvmGetParameterCount(method);
 
     Class* array_java_lang_Class = nvmFindClass(env, "[Ljava/lang/Class;");
     if (!array_java_lang_Class) return NULL;
     ObjectArray* paramTypes = nvmNewObjectArray(env, argsCount, NULL, array_java_lang_Class, NULL);
     if (!paramTypes) return NULL;
 
-    desc = method->desc;
+    char* desc = method->desc;
+    char* s;
     jint i = 0;
-    while (s = nvmGetNextArgumentType(&desc)) {
+    while (s = nvmGetNextParameterType(&desc)) {
         char* paramTypeName = nvmAllocateMemory(env, desc - s + 1);
         if (!paramTypeName) return NULL;
         strncpy(paramTypeName, s, desc - s);

@@ -1,4 +1,5 @@
 #include <nullvm.h>
+#include "reflection_helpers.h"
 #include "utlist.h"
 
 jboolean Java_java_lang_Class_desiredAssertionStatus(Env* env, Class* thiz) {
@@ -197,22 +198,18 @@ ObjectArray* Java_java_lang_Class_getDeclaredMethods0(Env* env, Class* clazz, jb
             }
         }
     }
-    Class* jlr_Method = nvmFindClass(env, "java/lang/reflect/Method");
-    if (!jlr_Method) return NULL;
-    ObjectArray* result = nvmNewObjectArray(env, length, jlr_Method, NULL, NULL);
-    if (!result) return NULL;
 
-    Method* constructor = nvmGetInstanceMethod(env, jlr_Method, "<init>", "(J)V");
-    if (!constructor) return NULL;
-
+    ObjectArray* result = NULL;
     jint i = 0;
     for (method = clazz->methods->first; method != NULL; method = method->next) {
         if (!METHOD_IS_CONSTRUCTOR(method) && !METHOD_IS_CLASS_INITIALIZER(method)) {
             if (!publicOnly || METHOD_IS_PUBLIC(method)) {
-                jvalue constructorArgs[1];
-                constructorArgs[0].j = (jlong) method;
-                Object* c = nvmNewObjectA(env, jlr_Method, constructor, constructorArgs);
+                Object* c = createMethodObject(env, method);
                 if (!c) return NULL;
+                if (!result) {
+                    result = nvmNewObjectArray(env, length, c->clazz, NULL, NULL);
+                    if (!result) return NULL;
+                }
                 result->values[i++] = c;
             }
         }

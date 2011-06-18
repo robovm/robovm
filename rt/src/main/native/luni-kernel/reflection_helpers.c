@@ -1,6 +1,25 @@
 #include <nullvm.h>
 #include "reflection_helpers.h"
 
+static Class* java_lang_reflect_Method = NULL;
+static Method* java_lang_reflect_Method_init = NULL;
+
+
+Object* createMethodObject(Env* env, Method* method) {
+    if (!java_lang_reflect_Method) {
+        java_lang_reflect_Method = nvmFindClass(env, "java/lang/reflect/Method");
+        if (!java_lang_reflect_Method) return NULL;
+    }
+    if (!java_lang_reflect_Method_init) {
+        java_lang_reflect_Method_init = nvmGetInstanceMethod(env, java_lang_reflect_Method, "<init>", "(J)V");
+        if (!java_lang_reflect_Method_init) return NULL;
+    }
+    jvalue initArgs[1];
+    initArgs[0].j = (jlong) method;
+    return nvmNewObjectA(env, java_lang_reflect_Method, java_lang_reflect_Method_init, initArgs);
+}
+
+
 // TODO: Some of the code here may have been copied from Android.
 
 static jvalue emptyJValueArgs[1];

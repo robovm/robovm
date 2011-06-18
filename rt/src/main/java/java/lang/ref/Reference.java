@@ -38,6 +38,12 @@ public abstract class Reference<T> {
    * Abstract class which describes behavior common to all reference objects.
    */
 
+    // TODO: Proper implementation
+    
+    volatile T referent;
+    
+    volatile ReferenceQueue<? super T> queue;
+    
     /**
      * Constructs a new instance of this class.
      * 
@@ -51,7 +57,7 @@ public abstract class Reference<T> {
      * object to be enqueued.
      */
     public void clear() {
-        return;
+        referent = null;
     }
 
     /**
@@ -72,7 +78,7 @@ public abstract class Reference<T> {
    *         object has been cleared.
    */
     public T get() {
-        return null;
+        return referent;
     }
 
     /**
@@ -92,8 +98,8 @@ public abstract class Reference<T> {
      * 
      * @param r the referent
      */
-    void initReference(Object r) {
-        return;
+    void initReference(T r) {
+        this.referent = r;
     }
 
     /**
@@ -104,8 +110,9 @@ public abstract class Reference<T> {
      * @param r the referent
      * @param q the ReferenceQueue
      */
-    void initReference(Object r, ReferenceQueue<? super T> q) {
-        return;
+    void initReference(T r, ReferenceQueue<? super T> q) {
+        this.referent = r;
+        this.queue = q;
     }
 
     /**

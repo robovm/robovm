@@ -3,7 +3,10 @@
 
 static Class* java_lang_reflect_Method = NULL;
 static Method* java_lang_reflect_Method_init = NULL;
-
+static Class* java_lang_reflect_Constructor = NULL;
+static Method* java_lang_reflect_Constructor_init = NULL;
+static Class* java_lang_reflect_Field = NULL;
+static Method* java_lang_reflect_Field_init = NULL;
 
 Object* createMethodObject(Env* env, Method* method) {
     if (!java_lang_reflect_Method) {
@@ -17,6 +20,34 @@ Object* createMethodObject(Env* env, Method* method) {
     jvalue initArgs[1];
     initArgs[0].j = (jlong) method;
     return nvmNewObjectA(env, java_lang_reflect_Method, java_lang_reflect_Method_init, initArgs);
+}
+
+Object* createFieldObject(Env* env, Field* field) {
+    if (!java_lang_reflect_Field) {
+        java_lang_reflect_Field = nvmFindClass(env, "java/lang/reflect/Field");
+        if (!java_lang_reflect_Field) return NULL;
+    }
+    if (!java_lang_reflect_Field_init) {
+        java_lang_reflect_Field_init = nvmGetInstanceMethod(env, java_lang_reflect_Field, "<init>", "(J)V");
+        if (!java_lang_reflect_Field_init) return NULL;
+    }
+    jvalue initArgs[1];
+    initArgs[0].j = (jlong) field;
+    return nvmNewObjectA(env, java_lang_reflect_Field, java_lang_reflect_Field_init, initArgs);
+}
+
+Object* createConstructorObject(Env* env, Method* method) {
+    if (!java_lang_reflect_Constructor) {
+        java_lang_reflect_Constructor = nvmFindClass(env, "java/lang/reflect/Constructor");
+        if (!java_lang_reflect_Constructor) return NULL;
+    }
+    if (!java_lang_reflect_Constructor_init) {
+        java_lang_reflect_Constructor_init = nvmGetInstanceMethod(env, java_lang_reflect_Constructor, "<init>", "(J)V");
+        if (!java_lang_reflect_Constructor_init) return NULL;
+    }
+    jvalue initArgs[1];
+    initArgs[0].j = (jlong) method;
+    return nvmNewObjectA(env, java_lang_reflect_Constructor, java_lang_reflect_Constructor_init, initArgs);
 }
 
 

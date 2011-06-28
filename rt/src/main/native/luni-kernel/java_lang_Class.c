@@ -14,6 +14,10 @@ jboolean Java_java_lang_Class_isAnonymousClass(Env* env, Class* thiz) {
     return nvmAttributeIsAnonymousClass(env, thiz);
 }
 
+jboolean Java_java_lang_Class_isArray(Env* env, Class* thiz) {
+    return CLASS_IS_ARRAY(thiz);
+}
+
 jboolean Java_java_lang_Class_isInterface(Env* env, Class* thiz) {
     return CLASS_IS_INTERFACE(thiz) > 0;
 }
@@ -155,6 +159,8 @@ ClassLoader* Java_java_lang_Class_getClassLoader(Env* env, Class* c, Class* claz
 }
 
 ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(Env* env, Class* clazz, jboolean publicOnly) {
+    if (clazz->primitive || CLASS_IS_ARRAY(clazz)) return NULL;
+
     Method* method;
     jint length = 0;
     for (method = clazz->methods->first; method != NULL; method = method->next) {
@@ -164,22 +170,18 @@ ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(Env* env, Class* claz
             }
         }
     }
-    Class* jlr_Constructor = nvmFindClass(env, "java/lang/reflect/Constructor");
-    if (!jlr_Constructor) return NULL;
-    ObjectArray* result = nvmNewObjectArray(env, length, jlr_Constructor, NULL, NULL);
-    if (!result) return NULL;
 
-    Method* constructor = nvmGetInstanceMethod(env, jlr_Constructor, "<init>", "(J)V");
-    if (!constructor) return NULL;
-
+    ObjectArray* result = NULL;
     jint i = 0;
     for (method = clazz->methods->first; method != NULL; method = method->next) {
         if (METHOD_IS_CONSTRUCTOR(method)) {
             if (!publicOnly || METHOD_IS_PUBLIC(method)) {
-                jvalue constructorArgs[1];
-                constructorArgs[0].j = (jlong) method;
-                Object* c = nvmNewObjectA(env, jlr_Constructor, constructor, constructorArgs);
+                Object* c = createConstructorObject(env, method);
                 if (!c) return NULL;
+                if (!result) {
+                    result = nvmNewObjectArray(env, length, c->clazz, NULL, NULL);
+                    if (!result) return NULL;
+                }
                 result->values[i++] = c;
             }
         }
@@ -189,6 +191,8 @@ ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(Env* env, Class* claz
 }
 
 ObjectArray* Java_java_lang_Class_getDeclaredMethods0(Env* env, Class* clazz, jboolean publicOnly) {
+    if (clazz->primitive || CLASS_IS_ARRAY(clazz)) return NULL;
+
     Method* method;
     jint length = 0;
     for (method = clazz->methods->first; method != NULL; method = method->next) {
@@ -216,5 +220,37 @@ ObjectArray* Java_java_lang_Class_getDeclaredMethods0(Env* env, Class* clazz, jb
     }
 
     return result;
+}
+
+ObjectArray* Java_java_lang_Class_getDeclaredFields0(Env* env, Class* clazz, jboolean publicOnly) {
+    if (clazz->primitive || CLASS_IS_ARRAY(clazz)) return NULL;
+
+    Field* field;
+    jint length = 0;
+    for (field = clazz->fields; field != NULL; field = field->next) {
+        if (!publicOnly || FIELD_IS_PUBLIC(field)) {
+            length++;
+        }
+    }
+
+    ObjectArray* result = NULL;
+    jint i = 0;
+    for (field = clazz->fields; field != NULL; field = field->next) {
+        if (!publicOnly || FIELD_IS_PUBLIC(field)) {
+            Object* c = createFieldObject(env, field);
+            if (!c) return NULL;
+            if (!result) {
+                result = nvmNewObjectArray(env, length, c->clazz, NULL, NULL);
+                if (!result) return NULL;
+            }
+            result->values[i++] = c;
+        }
+    }
+
+    return result;
+}
+
+ObjectArray* Java_java_lang_Class_getDeclaredAnnotations(Env* env, Class* clazz) {
+    return nvmAttributeGetClassRuntimeVisibleAnnotations(env, clazz);
 }
 

@@ -17,6 +17,11 @@
 
 package java.lang.reflect;
 
+import java.lang.annotation.Annotation;
+
+import org.apache.harmony.luni.lang.reflect.GenericSignatureParser;
+import org.apache.harmony.luni.lang.reflect.Types;
+
 /**
  * This class represents a field. Information about the field can be accessed,
  * and the field's value can be accessed dynamically.
@@ -34,26 +39,44 @@ public final class Field extends AccessibleObject implements Member {
     private Class<?> declaringClass;
     private String name;
     private Class<?> type;
-    
-    /*
-     * This class must be implemented by the VM vendor.
-     */
 
+    private Type genericType;
+    private volatile boolean genericTypesAreInitialized = false;
+    
     /**
      * Prevent this class from being instantiated
      */
     Field(long field){
         this.field = field;
     }
+    
+    Field(Field f) {
+        this.field = f.field;
+    }
 
-    /**
-     * Returns the field's signature in non-printable form. This is called
-     * (only) from IO native code and needed for deriving the serialVersionUID
-     * of the class
-     *
-     * @return the field's signature.
-     */
-    native String getSignature();
+    private synchronized void initGenericType() {
+        // Start (C) Android
+        if (!genericTypesAreInitialized) {
+            String signatureAttribute = getSignatureAttribute();
+            GenericSignatureParser parser = new GenericSignatureParser(
+                    getDeclaringClass().getClassLoader());
+            parser.parseForField(this.getDeclaringClass(), signatureAttribute);
+            genericType = parser.fieldType;
+            if (genericType == null) {
+                genericType = getType();
+            }
+            genericTypesAreInitialized = true;
+        }
+        // End (C) Android
+    }
+    
+    @Override
+    protected String getSignatureAttribute() {
+        return getSignatureAttribute(field);
+    }
+    
+    private final native static String getSignatureAttribute(long field);
+
 
     /**
      * Indicates whether or not this field is synthetic.
@@ -71,7 +94,22 @@ public final class Field extends AccessibleObject implements Member {
      * @return the string representation of this field
      * @since 1.5
      */
-    public native String toGenericString();
+    public String toGenericString() {
+        // Start (C) Android
+        StringBuilder sb = new StringBuilder(80);
+        // append modifiers if any
+        int modifier = getModifiers();
+        if (modifier != 0) {
+            sb.append(Modifier.toString(modifier)).append(' ');
+        }
+        // append generic type
+        appendGenericType(sb, getGenericType());
+        sb.append(' ');
+        // append full field name
+        sb.append(getDeclaringClass().getName()).append('.').append(getName());
+        return sb.toString();
+        // End (C) Android
+    }
 
     /**
      * Indicates whether or not this field is an enumeration constant.
@@ -80,7 +118,9 @@ public final class Field extends AccessibleObject implements Member {
      *         false} otherwise
      * @since 1.5
      */
-    public native boolean isEnumConstant();
+    public boolean isEnumConstant() {
+        return (getModifiers() & Modifier.ENUM) != 0;
+    }
 
     /**
      * Returns the generic type of this field.
@@ -95,8 +135,17 @@ public final class Field extends AccessibleObject implements Member {
      *             instantiated for some reason
      * @since 1.5
      */
-    public native Type getGenericType();
+    public Type getGenericType() {
+        initGenericType();
+        return Types.getType(genericType);
+    }
 
+    @Override
+    public Annotation[] getDeclaredAnnotations() {
+        return getDeclaredAnnotations(field);
+    }
+    private static final native Annotation[] getDeclaredAnnotations(long field);
+    
     /**
      * Indicates whether or not the specified {@code object} is equal to this
      * field. To be equal, the specified object must be an instance of

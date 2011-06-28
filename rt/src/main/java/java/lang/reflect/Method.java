@@ -28,12 +28,19 @@ import org.apache.harmony.luni.lang.reflect.Types;
  * and the method can be invoked dynamically.
  */
 public final class Method extends AccessibleObject implements GenericDeclaration, Member {
+    private static final Annotation[] NO_ANNOTATIONS = new Annotation[0];
+
+    /*
+     * The modifiers that can be used on a method.
+     */
+    private static final int MODIFIERS_MASK = Modifier.ABSTRACT | Modifier.FINAL |
+        Modifier.NATIVE | Modifier.PRIVATE | Modifier.PROTECTED | Modifier.PUBLIC |
+        Modifier.STATIC | Modifier.SYNCHRONIZED;
+    
     /*
      * The NullVM Method* object
      */
     private final long method;
-    
-    private static final Annotation[] NO_ANNOTATIONS = new Annotation[0];
     
     /*
      * Cached fields
@@ -73,11 +80,22 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         this.method = method;
     }
     
+    Method(Method m) {
+        this.method = m.method;
+    }
+    
     public TypeVariable<Method>[] getTypeParameters() {
         initGenericTypes();
         return formalTypeParameters.clone();        
     }
 
+    @Override
+    protected String getSignatureAttribute() {
+        return getSignatureAttribute(method);
+    }
+    
+    final native static String getSignatureAttribute(long method);
+    
     /**
      * Returns the string representation of the method's declaration, including
      * the type parameters.
@@ -92,10 +110,9 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         initGenericTypes();
 
         // append modifiers if any
-        int modifier = getModifiers();
+        int modifier = getModifiers() & MODIFIERS_MASK;
         if (modifier != 0) {
-            sb.append(Modifier.toString(modifier & ~(Modifier.BRIDGE +
-                    Modifier.VARARGS))).append(' ');
+            sb.append(Modifier.toString(modifier)).append(' ');
         }
         // append type parameters
         if (formalTypeParameters != null && formalTypeParameters.length > 0) {
@@ -189,6 +206,13 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         initGenericTypes();
         return Types.getType(genericReturnType);
     }
+    
+    @Override
+    public Annotation[] getDeclaredAnnotations() {
+        return getDeclaredAnnotations(method);
+    }
+    static final native Annotation[] getDeclaredAnnotations(long method);
+    
     /**
      * Returns an array of arrays that represent the annotations of the formal
      * parameters of this method. If there are no parameters on this method,
@@ -199,11 +223,13 @@ public final class Method extends AccessibleObject implements GenericDeclaration
      * @since 1.5
      */
     public Annotation[][] getParameterAnnotations() {
+        // Start (C) Android
         Annotation[][] parameterAnnotations = getParameterAnnotations(method);
         if (parameterAnnotations.length == 0) {
             return noAnnotations(getParameterTypes(false).length);
         }
         return parameterAnnotations;
+        // End (C) Android
     }
     
     /**
@@ -219,7 +245,7 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         // End (C) Android
     }
     
-    private static native Annotation[][] getParameterAnnotations(long method);
+    final static native Annotation[][] getParameterAnnotations(long method);
     
     /**
      * Indicates whether or not this method takes a variable number argument.
@@ -283,7 +309,7 @@ public final class Method extends AccessibleObject implements GenericDeclaration
      */
     @Override
     public boolean equals(Object object) {
-        return object instanceof Method && toString().equals(object);
+        return object instanceof Method && toString().equals(object.toString());
     }
 
     /**
@@ -356,7 +382,7 @@ public final class Method extends AccessibleObject implements GenericDeclaration
     public Class<?>[] getParameterTypes() {
         return getParameterTypes(true);
     }
-    private Class<?>[] getParameterTypes(boolean copy) {
+    final Class<?>[] getParameterTypes(boolean copy) {
         if (parameterTypes == null) {
             parameterTypes = getParameterTypes(method);
         }
@@ -490,7 +516,7 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         Class<?>[] pTypes = getParameterTypes(false);
         Class<?>[] eTypes = getExceptionTypes(false);
         
-        StringBuilder sb = new StringBuilder(Modifier.toString(getModifiers()));
+        StringBuilder sb = new StringBuilder(Modifier.toString(getModifiers() & MODIFIERS_MASK));
 
         if (sb.length() > 0) {
             sb.append(' ');

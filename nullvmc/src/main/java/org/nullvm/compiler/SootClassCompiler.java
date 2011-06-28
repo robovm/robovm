@@ -222,6 +222,7 @@ import soot.tagkit.SourceFileTag;
 import soot.tagkit.StringConstantValueTag;
 import soot.tagkit.Tag;
 import soot.tagkit.VisibilityAnnotationTag;
+import soot.tagkit.VisibilityParameterAnnotationTag;
 
 /**
  *
@@ -1060,8 +1061,33 @@ public class SootClassCompiler {
                             new IntegerConstant(RUNTIME_VISIBLE_ANNOTATIONS), new IntegerConstant(vat.getAnnotations().size()),
                             new PackedStructureConstant(new PackedStructureType(types), values)));
                 }
-//            } else {
-//                System.err.println("Class (" + sootClass + ") tag: " + tag);
+            } else if (tag instanceof VisibilityParameterAnnotationTag) {
+                VisibilityParameterAnnotationTag vpat = (VisibilityParameterAnnotationTag) tag;
+                List<Type> typesList = new ArrayList<Type>();
+                List<Value> valuesList = new ArrayList<Value>();
+                boolean hasRuntimeVisible = false;
+                for (VisibilityAnnotationTag vat : vpat.getVisibilityAnnotations()) {
+                    typesList.add(I32);
+                    if (vat.getVisibility() == AnnotationConstants.RUNTIME_VISIBLE
+                            && vat.getAnnotations() != null && !vat.getAnnotations().isEmpty()) {
+                        
+                        hasRuntimeVisible = true;
+                        valuesList.add(new IntegerConstant(vat.getAnnotations().size()));
+                        for (AnnotationTag at : vat.getAnnotations()) {
+                            valuesList.add(encodeAnnotationTagValue(at));
+                            typesList.add(valuesList.get(valuesList.size() - 1).getType());
+                        }
+                    } else {
+                        valuesList.add(new IntegerConstant(0));                        
+                    }
+                }
+                if (hasRuntimeVisible) {
+                    Type[] types = typesList.toArray(new Type[typesList.size()]);
+                    Value[] values = valuesList.toArray(new Value[valuesList.size()]);
+                    attributes.add(new PackedStructureConstant(new PackedStructureType(I8, I32, new PackedStructureType(types)),
+                            new IntegerConstant(RUNTIME_VISIBLE_PARAMETER_ANNOTATIONS), new IntegerConstant(vpat.getVisibilityAnnotations().size()),
+                            new PackedStructureConstant(new PackedStructureType(types), values)));
+                }
             }
         }
         if (host instanceof SootMethod) {

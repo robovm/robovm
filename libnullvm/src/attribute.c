@@ -10,15 +10,18 @@
 #define RUNTIME_VISIBLE_PARAMETER_ANNOTATIONS 7
 #define ANNOTATION_DEFAULT 8
 
-static Class* java_lang_TypeNotPresentException;
-static Class* java_lang_annotation_AnnotationFormatError;
-static Class* java_lang_reflect_Method;
-static Method* java_lang_reflect_Method_init;
-static Class* org_apache_harmony_lang_annotation_AnnotationMember;
-static Method* org_apache_harmony_lang_annotation_AnnotationMember_init;
-static Class* org_apache_harmony_lang_annotation_AnnotationFactory;
-static Method* org_apache_harmony_lang_annotation_AnnotationFactory_createAnnotation;
-static ObjectArray* emptyExceptionTypes;
+static Class* java_lang_TypeNotPresentException = NULL;
+static Class* java_lang_annotation_AnnotationFormatError = NULL;
+static Class* java_lang_reflect_Method = NULL;
+static Method* java_lang_reflect_Method_init = NULL;
+static Class* org_apache_harmony_lang_annotation_AnnotationMember = NULL;
+static Method* org_apache_harmony_lang_annotation_AnnotationMember_init = NULL;
+static Class* org_apache_harmony_lang_annotation_AnnotationFactory = NULL;
+static Method* org_apache_harmony_lang_annotation_AnnotationFactory_createAnnotation = NULL;
+static Class* java_lang_annotation_Annotation = NULL;
+static Class* array_of_java_lang_annotation_Annotation = NULL;
+static ObjectArray* emptyExceptionTypes = NULL;
+static ObjectArray* emptyAnnotations = NULL;
 
 static Class* findType(Env* env, char* classDesc, ClassLoader* loader) {
     Class* c = nvmFindClassByDescriptor(env, classDesc, loader);
@@ -334,13 +337,16 @@ static Method* getAnnotationValueMethod(Env* env, Class* clazz, char* name) {
     return NULL;
 }
 
-static jboolean parseAnnotationElementValue(Env* env, void** attributes, Class* annotationClass, ClassLoader* classLoader, jvalue* result) {
-    jbyte tag = getByte(attributes);
-    if (tag != '@') return throwFormatError(env, "Annotation");
-
+static jboolean getAnnotationValue(Env* env, void** attributes, Class* expectedAnnotationClass, ClassLoader* classLoader, jvalue* result) {
     char* annotationTypeName = getString(attributes);
-    if (strncmp(&annotationTypeName[1], annotationClass->name, strlen(annotationClass->name))) {
-        return throwFormatError(env, nvmFromBinaryClassName(env, annotationClass->name));
+    if (expectedAnnotationClass && strncmp(&annotationTypeName[1], expectedAnnotationClass->name, strlen(expectedAnnotationClass->name))) {
+        return throwFormatError(env, nvmFromBinaryClassName(env, expectedAnnotationClass->name));
+    }
+
+    Class* annotationClass = expectedAnnotationClass;
+    if (!annotationClass) {
+        annotationClass = nvmFindClassByDescriptor(env, annotationTypeName, classLoader);
+        if (!annotationClass) return FALSE;
     }
 
     jint length = getInt(attributes);
@@ -378,7 +384,8 @@ static jboolean parseAnnotationElementValue(Env* env, void** attributes, Class* 
             args[1].l = (jobject) value;
             args[2].l = (jobject) type;;
             args[3].l = (jobject) jMethod;
-            Object* member = nvmNewObjectA(env, org_apache_harmony_lang_annotation_AnnotationMember, org_apache_harmony_lang_annotation_AnnotationMember_init, args);
+            Object* member = nvmNewObjectA(env, org_apache_harmony_lang_annotation_AnnotationMember, 
+                                           org_apache_harmony_lang_annotation_AnnotationMember_init, args);
             if (!member) return FALSE;
             members->values[i] = member;
         }
@@ -387,9 +394,18 @@ static jboolean parseAnnotationElementValue(Env* env, void** attributes, Class* 
     jvalue args[2];
     args[0].l = (jobject) annotationClass;
     args[1].l = (jobject) members;
-    Object* o = nvmCallObjectClassMethodA(env, org_apache_harmony_lang_annotation_AnnotationFactory, org_apache_harmony_lang_annotation_AnnotationFactory_createAnnotation, args);
+    Object* o = nvmCallObjectClassMethodA(env, org_apache_harmony_lang_annotation_AnnotationFactory, 
+                                          org_apache_harmony_lang_annotation_AnnotationFactory_createAnnotation, args);
     if (!nvmExceptionCheck(env)) result->l = (jobject) o;
     return result->l ? TRUE : FALSE;
+}
+
+
+static jboolean parseAnnotationElementValue(Env* env, void** attributes, Class* annotationClass, ClassLoader* classLoader, jvalue* result) {
+    jbyte tag = getByte(attributes);
+    if (tag != '@') return throwFormatError(env, "Annotation");
+
+    return getAnnotationValue(env, attributes, annotationClass, classLoader, result);
 }
 
 static jboolean parseElementValue(Env* env, void** attributes, Class* type, ClassLoader* classLoader, jvalue* result) {
@@ -548,6 +564,51 @@ static jboolean getAnnotationDefaultIterator(Env* env, jbyte type, void* attribu
     return TRUE; // Continue with next attribute
 }
 
+static jboolean getRuntimeVisibleAnnotationsIterator(Env* env, jbyte type, void* attributes, void* data) {
+    ObjectArray** result = (ObjectArray**) ((void**) data)[0];
+    ClassLoader* classLoader = (ClassLoader*) ((void**) data)[1];
+    if (type == RUNTIME_VISIBLE_ANNOTATIONS) {
+        jint length = getInt(&attributes);
+        ObjectArray* annotations = nvmNewObjectArray(env, length, java_lang_annotation_Annotation, NULL, NULL);
+        if (!annotations) return FALSE;
+        jint i = 0;
+        for (i = 0; i < length; i++) {
+            jvalue value = {0};
+            if (!getAnnotationValue(env, &attributes, NULL, classLoader, &value)) return FALSE;
+            annotations->values[i] = (Object*) value.l;
+        }
+        *result = annotations;
+        return FALSE; // Stop iterating
+    }
+    return TRUE; // Continue with next attribute
+}
+
+static jboolean getRuntimeVisibleParameterAnnotationsIterator(Env* env, jbyte type, void* attributes, void* data) {
+    ObjectArray** result = (ObjectArray**) ((void**) data)[0];
+    ClassLoader* classLoader = (ClassLoader*) ((void**) data)[1];
+    if (type == RUNTIME_VISIBLE_PARAMETER_ANNOTATIONS) {
+        jint numParams = getInt(&attributes);
+        ObjectArray* paramAnnotations = nvmNewObjectArray(env, numParams, array_of_java_lang_annotation_Annotation, NULL, NULL);
+        if (!paramAnnotations) return FALSE;
+        jint i = 0;
+        for (i = 0; i < numParams; i++) {
+            jint length = getInt(&attributes);
+            ObjectArray* annotations = nvmNewObjectArray(env, length, java_lang_annotation_Annotation, NULL, NULL);
+            if (!annotations) return FALSE;
+            jint j = 0;
+            for (j = 0; j < length; j++) {
+                jvalue value = {0};
+                if (!getAnnotationValue(env, &attributes, NULL, classLoader, &value)) return FALSE;
+                annotations->values[j] = (Object*) value.l;
+            }
+            paramAnnotations->values[i] = (Object*) annotations;
+        }
+        *result = paramAnnotations;
+        return FALSE; // Stop iterating
+    }
+    return TRUE; // Continue with next attribute
+}
+
 jboolean nvmInitAttributes(Env* env) {
     java_lang_TypeNotPresentException = nvmFindClassUsingLoader(env, "java/lang/TypeNotPresentException", NULL);
     if (!java_lang_TypeNotPresentException) return FALSE;
@@ -569,8 +630,16 @@ jboolean nvmInitAttributes(Env* env) {
         "createAnnotation", "(Ljava/lang/Class;[Lorg/apache/harmony/lang/annotation/AnnotationMember;)Ljava/lang/annotation/Annotation;");
     if (!org_apache_harmony_lang_annotation_AnnotationFactory_createAnnotation) return FALSE;
 
+    java_lang_annotation_Annotation = nvmFindClassUsingLoader(env, "java/lang/annotation/Annotation", NULL);
+    if (!java_lang_annotation_Annotation) return FALSE;
+    array_of_java_lang_annotation_Annotation = nvmFindClassUsingLoader(env, "[Ljava/lang/annotation/Annotation;", NULL);
+    if (!array_of_java_lang_annotation_Annotation) return FALSE;
+
     emptyExceptionTypes = nvmNewObjectArray(env, 0, java_lang_Class, NULL, NULL);
     if (!emptyExceptionTypes) return FALSE;
+
+    emptyAnnotations = nvmNewObjectArray(env, 0, java_lang_annotation_Annotation, NULL, NULL);
+    if (!emptyAnnotations) return FALSE;
 
     return TRUE;
 }
@@ -609,13 +678,13 @@ Object* nvmAttributeGetClassSignature(Env* env, Class* clazz) {
     return result;
 }
 
-Object* nvmAttributeGetMethodSignature(Env* env, Class* method) {
+Object* nvmAttributeGetMethodSignature(Env* env, Method* method) {
     Object* result = NULL;
     iterateAttributes(env, method->attributes, getSignatureIterator, &result);
     return result;
 }
 
-Object* nvmAttributeGetFieldSignature(Env* env, Class* field) {
+Object* nvmAttributeGetFieldSignature(Env* env, Field* field) {
     Object* result = NULL;
     iterateAttributes(env, field->attributes, getSignatureIterator, &result);
     return result;
@@ -636,5 +705,33 @@ Object* nvmAttributeGetAnnotationDefault(Env* env, Method* method) {
     void* data[2] = {&result, method};
     iterateAttributes(env, method->attributes, getAnnotationDefaultIterator, data);
     return result;
+}
+
+ObjectArray* nvmAttributeGetClassRuntimeVisibleAnnotations(Env* env, Class* clazz) {
+    ObjectArray* result = NULL;
+    void* data[2] = {&result, clazz->classLoader};
+    iterateAttributes(env, clazz->attributes, getRuntimeVisibleAnnotationsIterator, data);
+    return result ? result : emptyAnnotations;
+}
+
+ObjectArray* nvmAttributeGetMethodRuntimeVisibleAnnotations(Env* env, Method* method) {
+    ObjectArray* result = NULL;
+    void* data[2] = {&result, method->clazz->classLoader};
+    iterateAttributes(env, method->attributes, getRuntimeVisibleAnnotationsIterator, data);
+    return result ? result : emptyAnnotations;
+}
+
+ObjectArray* nvmAttributeGetFieldRuntimeVisibleAnnotations(Env* env, Field* field) {
+    ObjectArray* result = NULL;
+    void* data[2] = {&result, field->clazz->classLoader};
+    iterateAttributes(env, field->attributes, getRuntimeVisibleAnnotationsIterator, data);
+    return result ? result : emptyAnnotations;
+}
+
+ObjectArray* nvmAttributeGetMethodRuntimeVisibleParameterAnnotations(Env* env, Method* method) {
+    ObjectArray* result = NULL;
+    void* data[2] = {&result, method->clazz->classLoader};
+    iterateAttributes(env, method->attributes, getRuntimeVisibleParameterAnnotationsIterator, data);
+    return result ? result : emptyAnnotations;
 }
 

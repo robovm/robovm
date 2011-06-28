@@ -47,7 +47,6 @@ public interface Member {
      *
      * @return the declaring class
      */
-    @SuppressWarnings("unchecked")
     Class<?> getDeclaringClass();
 
     /**

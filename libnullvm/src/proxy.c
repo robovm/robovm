@@ -187,5 +187,9 @@ void _nvmProxyHandler(ProxyArgs* proxyArgs) {
 
     // _nvmProxy0 expects the return value to be written to the same location as proxyArgs points to
     proxyClassData->handler(env, receiver, method, jvalueArgs, (jvalue*) proxyArgs);
+
+    if (nvmExceptionCheck(env)) {
+        nvmRaiseException(env, nvmExceptionOccurred(env));
+    }
 }
 

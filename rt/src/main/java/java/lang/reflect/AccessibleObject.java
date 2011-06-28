@@ -19,6 +19,8 @@ package java.lang.reflect;
 
 import java.lang.annotation.Annotation;
 
+import org.nullvm.ReflectionAccess;
+
 /**
  * {@code AccessibleObject} is the superclass of all member reflection classes
  * (Field, Constructor, Method). AccessibleObject provides the ability to toggle
@@ -37,6 +39,100 @@ import java.lang.annotation.Annotation;
  * @see ReflectPermission
  */
 public class AccessibleObject implements AnnotatedElement {
+    static final ReflectionAccess REFLECTION_ACCESS = new ReflectionAccess() {
+        
+        public Method[] clone(Method[] m) {
+            if (m.length == 0) {
+                return m;
+            }
+            Method[] result = new Method[m.length];
+            for (int i = 0; i < result.length; i++) {
+                result[i] = new Method(m[i]);
+            }
+            return result;
+        }
+        
+        @SuppressWarnings({ "unchecked", "rawtypes" })
+        public Constructor<?>[] clone(Constructor<?>[] c) {
+            if (c.length == 0) {
+                return c;
+            }
+            Constructor[] result = new Constructor[c.length];
+            for (int i = 0; i < result.length; i++) {
+                result[i] = new Constructor(c[i]);
+            }
+            return result;
+        }
+        
+        public Field[] clone(Field[] f) {
+            if (f.length == 0) {
+                return f;
+            }
+            Field[] result = new Field[f.length];
+            for (int i = 0; i < result.length; i++) {
+                result[i] = new Field(f[i]);
+            }
+            return result;
+        }
+        
+        public Method clone(Method m) {
+            return new Method(m);
+        }
+        
+        @SuppressWarnings({ "rawtypes", "unchecked" })
+        public Constructor<?> clone(Constructor<?> c) {
+            return new Constructor(c);
+        }
+        
+        public Field clone(Field f) {
+            return new Field(f);
+        }
+        
+        public boolean equals(Method a, Method b) {
+            if (a.getReturnType() != b.getReturnType()) {
+                return false;
+            }
+            if (!a.getName().equals(b.getName())) {
+                return false;
+            }
+            return compareClassLists(a.getParameterTypes(false), b.getParameterTypes(false));
+        }
+        
+        public boolean matchParameterTypes(Constructor<?> c, Class<?>[] parameterTypes) {
+            return compareClassLists(c.getParameterTypes(false), parameterTypes);
+        }
+
+        public boolean matchParameterTypes(Method m, Class<?>[] parameterTypes) {
+            return compareClassLists(m.getParameterTypes(false), parameterTypes);
+        }
+        
+        private boolean compareClassLists(Class<?>[] a, Class<?>[] b) {
+            // Copied from Android's ClassCache.java
+            // Start (C) Android
+            if (a == null) {
+                return (b == null) || (b.length == 0);
+            }
+
+            int length = a.length;
+
+            if (b == null) {
+                return (length == 0);
+            }
+
+            if (length != b.length) {
+                return false;
+            }
+
+            for (int i = length - 1; i >= 0; i--) {
+                if (a[i] != b[i]) {
+                    return false;
+                }
+            }
+
+            return true;
+            // End (C) Android
+        }        
+    };
 
     boolean flag = false;
 

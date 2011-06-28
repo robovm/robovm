@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
+import java.lang.ref.SoftReference;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -32,10 +33,8 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.net.URL;
 import java.security.ProtectionDomain;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import org.apache.harmony.luni.lang.reflect.GenericSignatureParser;
 import org.apache.harmony.luni.lang.reflect.Types;
@@ -100,21 +99,28 @@ import org.apache.harmony.luni.lang.reflect.Types;
 public final class Class<T> implements Serializable, AnnotatedElement,
         GenericDeclaration, Type {
 
-    /*
-     * This class must be implemented by the VM vendor. The documented natives must
-     * be implemented to support other provided class implementations in this
-     * package.
-     */
-
     private static final long serialVersionUID = 3206093459760846163L;
     
-    private String name = null;
+    private static final Constructor<?>[] EMPTY_CONSTRUCTORS = new Constructor<?>[0];
+    private static final Method[] EMPTY_METHODS = new Method[0];
+    private static final Field[] EMPTY_FIELDS = new Field[0];
+    
+    private SoftReference<ClassCache<T>> cacheRef;
     
     private Class() {
         // prevent this class to be instantiated, instance should be created by
         // JVM only
     }
 
+    ClassCache<T> getClassCache() {
+        ClassCache<T> cache = cacheRef != null ? cacheRef.get() : null;
+        if (cache == null) {
+            cache = new ClassCache<T>(this);
+            cacheRef = new SoftReference<ClassCache<T>>(cache);
+        }
+        return cache;
+    }
+    
     /**
      * This must be provided by the VM vendor, as it is used by other provided
      * class implementations in this package. This method is used by
@@ -451,41 +457,9 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      */
     public Constructor<T> getConstructor(Class<?>... parameterTypes)
             throws NoSuchMethodException, SecurityException {
-        
-        return findConstructor(getDeclaredConstructors(true), parameterTypes);
-    }
-    
-    @SuppressWarnings("unchecked")
-    private Constructor<T> findConstructor(Constructor<?>[] candidates, Class<?>... parameterTypes)
-            throws NoSuchMethodException, SecurityException {
-        
-        next: for (Constructor<?> c : candidates) {
-            Class<?>[] pTypes = c.getParameterTypes();
-            if (pTypes.length == parameterTypes.length) {
-                for (int i = 0; i < pTypes.length; i++) {
-                    if (pTypes[i] != parameterTypes[i]) {
-                        break next;
-                    }
-                }
-                return (Constructor<T>) c;
-            }
-        }
-    
-        throw new NoSuchMethodException(getSimpleName() + '(' + parameterTypesToString(parameterTypes) + ')');
-    }
 
-    private String parameterTypesToString(Class<?>[] parameterTypes) {
-        if (parameterTypes.length > 0) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(parameterTypes[0].getCanonicalName());
-            for (int i = 1; i < parameterTypes.length; i++) {
-                sb.append(',');
-                sb.append(parameterTypes[i] == null ? "null" 
-                        : parameterTypes[i].getCanonicalName());
-            }
-            return sb.toString();
-        }
-        return "";
+        checkPublicMemberAccess();
+        return getClassCache().getConstructor(true, parameterTypes);
     }
     
     /**
@@ -503,7 +477,7 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      */
     public Constructor<?>[] getConstructors() throws SecurityException {
         checkPublicMemberAccess();
-        return getDeclaredConstructors(true);
+        return getClassCache().getDeclaredPublicConstructors(true);
     }
     
     /**
@@ -596,7 +570,8 @@ public final class Class<T> implements Serializable, AnnotatedElement,
     public Constructor<T> getDeclaredConstructor(Class<?>... parameterTypes)
             throws NoSuchMethodException, SecurityException {
         
-        return findConstructor(getDeclaredConstructors(false), parameterTypes);
+        checkDeclaredMemberAccess();
+        return getClassCache().getDeclaredConstructor(true, parameterTypes);
     }
 
     /**
@@ -614,17 +589,11 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @see #getConstructors()
      */
     public Constructor<?>[] getDeclaredConstructors() throws SecurityException {
-        return getDeclaredConstructors(false);
+        checkDeclaredMemberAccess();        
+        return getClassCache().getDeclaredConstructors(true);
     }
 
-    private Constructor<?>[] getDeclaredConstructors(boolean publicOnly) {
-        if (isArray() || isPrimitive()) {
-            return new Constructor<?>[0];
-        }
-        return getDeclaredConstructors0(publicOnly);
-    }
-    
-    private native Constructor<?>[] getDeclaredConstructors0(boolean publicOnly);
+    final native Constructor<?>[] getDeclaredConstructors0(boolean publicOnly);
 
     /**
      * Returns a {@code Field} object for the field with the specified name
@@ -640,8 +609,12 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *             access.
      * @see #getField(String)
      */
-    public native Field getDeclaredField(String name) throws NoSuchFieldException,
-            SecurityException;
+    public Field getDeclaredField(String name) throws NoSuchFieldException,
+            SecurityException {
+        
+        checkDeclaredMemberAccess();
+        return getClassCache().getDeclaredField(true, name);        
+    }
 
     /**
      * Returns an array containing {@code Field} objects for all fields declared
@@ -656,8 +629,13 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *             access.
      * @see #getFields()
      */
-    public native Field[] getDeclaredFields() throws SecurityException;
+    public Field[] getDeclaredFields() throws SecurityException {
+        checkDeclaredMemberAccess();
+        return getClassCache().getDeclaredFields(true);
+    }
 
+    final native Field[] getDeclaredFields0(boolean publicOnly);
+    
     /**
      * Returns a {@code Method} object which represents the method matching the
      * specified name and parameter types that is declared by the class
@@ -680,7 +658,8 @@ public final class Class<T> implements Serializable, AnnotatedElement,
     public Method getDeclaredMethod(String name, Class<?>... parameterTypes)
             throws NoSuchMethodException, SecurityException {
         
-        return findMethod(getDeclaredMethods(false), name, parameterTypes);
+        checkDeclaredMemberAccess();
+        return getClassCache().getDeclaredMethod(true, name, parameterTypes);
     }
 
     /**
@@ -697,18 +676,12 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @see #getMethods()
      */
     public Method[] getDeclaredMethods() throws SecurityException {
-        return getDeclaredMethods(false);
+        checkDeclaredMemberAccess();
+        return getClassCache().getDeclaredMethods(true);
     }
 
-    private Method[] getDeclaredMethods(boolean publicOnly) {
-        if (isArray() || isPrimitive()) {
-            return new Method[0];
-        }
-        return getDeclaredMethods0(publicOnly);
-    }
+    final native Method[] getDeclaredMethods0(boolean publicOnly);
     
-    private native Method[] getDeclaredMethods0(boolean publicOnly);
-
     /**
      * Returns the declaring {@code Class} of this {@code Class}. Returns
      * {@code null} if the class is not a member of another class or if this
@@ -768,8 +741,12 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *             access.
      * @see #getDeclaredField(String)
      */
-    public native Field getField(String name) throws NoSuchFieldException,
-            SecurityException;
+    public Field getField(String name) throws NoSuchFieldException,
+            SecurityException {
+        
+        checkPublicMemberAccess();
+        return getClassCache().getField(true, name);
+    }
 
     /**
      * Returns an array containing {@code Field} objects for all public fields
@@ -788,8 +765,11 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *             access.
      * @see #getDeclaredFields()
      */
-    public native Field[] getFields() throws SecurityException;
-
+    public Field[] getFields() throws SecurityException {
+        checkPublicMemberAccess();
+        return getClassCache().getFields(true);
+    }
+    
     /**
      * Gets the {@link Type}s of the interfaces that this {@code Class} directly
      * implements. If the {@code Class} represents a primitive type or {@code
@@ -855,25 +835,8 @@ public final class Class<T> implements Serializable, AnnotatedElement,
     public Method getMethod(String name, Class<?>... parameterTypes)
             throws NoSuchMethodException, SecurityException {
         
-        return findMethod(getMethods(), name, parameterTypes);
-    }
-
-    private Method findMethod(Method[] candidates, String name, Class<?>... parameterTypes)
-            throws NoSuchMethodException, SecurityException {
-        
-        next: for (Method m : candidates) {
-            Class<?>[] pTypes = m.getParameterTypes();
-            if (pTypes.length == parameterTypes.length && m.getName().equals(name)) {
-                for (int i = 0; i < pTypes.length; i++) {
-                    if (pTypes[i] != parameterTypes[i]) {
-                        break next;
-                    }
-                }
-                return m;
-            }
-        }
-    
-        throw new NoSuchMethodException(name + '(' + parameterTypesToString(parameterTypes) + ')');
+        checkPublicMemberAccess();
+        return getClassCache().getMethod(true, name, parameterTypes);
     }
     
     /**
@@ -894,28 +857,8 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @see #getDeclaredMethods()
      */
     public Method[] getMethods() throws SecurityException {
-        ArrayList<Method> result = getMethods(new ArrayList<Method>(), new HashSet<String>());
-        return result.toArray(new Method[result.size()]);
-    }
-
-    private ArrayList<Method> getMethods(ArrayList<Method> result, HashSet<String> seen) {
-        Class<?> c = this;
-        while (c != null) {
-            for (Method m : c.getDeclaredMethods(true)) {
-                String s = m.getName() + '(' + parameterTypesToString(m.getParameterTypes()) + ')';
-                if (!seen.contains(s)) {
-                    result.add(m);
-                    seen.add(s);
-                }
-            }
-            c = c.getSuperclass();
-        }
-        
-        for (Class<?> intf : this.getInterfaces()) {
-            intf.getMethods(result, seen);
-        }
-        
-        return result;
+        checkPublicMemberAccess();
+        return getClassCache().getMethods(true);
     }
     
     // Start (C) Android
@@ -995,50 +938,14 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @return the name of the class represented by this {@code Class}.
      */
     public String getName() {
-        if (name == null) {
-            String n = getName0();
-            if (isPrimitive()) {
-                switch (n.charAt(0)) {
-                case 'Z':
-                    name = "boolean";
-                    break;
-                case 'B':
-                    name = "boolean";
-                    break;
-                case 'S':
-                    name = "short";
-                    break;
-                case 'C':
-                    name = "char";
-                    break;
-                case 'I':
-                    name = "int";
-                    break;
-                case 'J':
-                    name = "long";
-                    break;
-                case 'F':
-                    name = "float";
-                    break;
-                case 'D':
-                    name = "double";
-                    break;
-                case 'V':
-                    name = "void";
-                    break;
-                }
-            } else {
-                name = n.replace('/', '.');
-            }
-        }
-        return name;
+        return getClassCache().getName();
     }
     
     /**
      * Returns the NullVM class name. E.g. java/lang/String, I, [[I,
      * [Ljava/lang/Object;.
      */
-    private native String getName0();
+    final native String getName0();
 
     /**
      * Returns the simple name of the class represented by this {@code Class} as
@@ -1274,9 +1181,7 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @return {@code true} if the class represented by this {@code Class} is an
      *         array class; {@code false} otherwise.
      */
-    public boolean isArray() {
-        return getComponentType() != null;
-    }
+    public native boolean isArray();
 
     /**
      * Indicates whether the specified class type can be converted to the class

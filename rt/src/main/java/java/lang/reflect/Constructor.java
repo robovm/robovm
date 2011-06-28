@@ -19,6 +19,10 @@ package java.lang.reflect;
 
 import java.lang.annotation.Annotation;
 
+import org.apache.harmony.luni.lang.reflect.GenericSignatureParser;
+import org.apache.harmony.luni.lang.reflect.ListOfTypes;
+import org.apache.harmony.luni.lang.reflect.Types;
+
 /**
  * This class represents a constructor. Information about the constructor can be
  * accessed, and the constructor can be invoked dynamically.
@@ -28,6 +32,11 @@ import java.lang.annotation.Annotation;
 public final class Constructor<T> extends AccessibleObject implements GenericDeclaration,
         Member {
 
+    /*
+     * The modifiers that can be used on a constructor.
+     */
+    private static final int MODIFIERS_MASK = Modifier.PRIVATE | Modifier.PROTECTED | Modifier.PUBLIC;
+    
     /*
      * The NullVM Method* object
      */
@@ -40,18 +49,48 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
     private Class<T> declaringClass;
     private Class<?>[] parameterTypes;
     private Class<?>[] exceptionTypes;    
-    /*
-     * This class must be implemented by the VM vendor.
-     */
 
+    ListOfTypes genericExceptionTypes;
+    ListOfTypes genericParameterTypes;
+    TypeVariable<Constructor<T>>[] formalTypeParameters;
+    private volatile boolean genericTypesAreInitialized = false;
+    
     /**
      * Prevent this class from being instantiated
      */
-    private Constructor(long method){
+    Constructor(long method){
         this.method = method;
     }
 
-    public native TypeVariable<Constructor<T>>[] getTypeParameters();
+    Constructor(Constructor<T> c){
+        this.method = c.method;
+    }    
+    
+    @SuppressWarnings("unchecked")
+    private synchronized void initGenericTypes() {
+        // Start (C) Android
+        if (!genericTypesAreInitialized) {
+            String signatureAttribute = getSignatureAttribute();
+            GenericSignatureParser parser = new GenericSignatureParser(
+                    declaringClass.getClassLoader());
+            parser.parseForConstructor(this, signatureAttribute, exceptionTypes);
+            formalTypeParameters = parser.formalTypeParameters;
+            genericParameterTypes = parser.parameterTypes;
+            genericExceptionTypes = parser.exceptionTypes;
+            genericTypesAreInitialized = true;
+        }
+        // End (C) Android
+    }
+    
+    @Override
+    protected String getSignatureAttribute() {
+        return Method.getSignatureAttribute(method);
+    }
+    
+    public TypeVariable<Constructor<T>>[] getTypeParameters() {
+        initGenericTypes();
+        return formalTypeParameters.clone();
+    }
 
     /**
      * Returns the string representation of the constructor's declaration,
@@ -60,7 +99,41 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
      * @return the string representation of the constructor's declaration
      * @since 1.5
      */
-    public native String toGenericString();
+    public String toGenericString() {
+        StringBuilder sb = new StringBuilder(80);
+        initGenericTypes();
+        // append modifiers if any
+        int modifier = getModifiers() & MODIFIERS_MASK;
+        if (modifier != 0) {
+            sb.append(Modifier.toString(modifier)).append(' ');
+        }
+        // append type parameters
+        if (formalTypeParameters != null && formalTypeParameters.length > 0) {
+            sb.append('<');
+            for (int i = 0; i < formalTypeParameters.length; i++) {
+                appendGenericType(sb, formalTypeParameters[i]);
+                if (i < formalTypeParameters.length - 1) {
+                    sb.append(", ");
+                }
+            }
+            sb.append("> ");
+        }
+        // append constructor name
+        appendArrayType(sb, getDeclaringClass());
+        // append parameters
+        sb.append('(');
+        appendArrayGenericType(sb,
+                Types.getClonedTypeArray(genericParameterTypes));
+        sb.append(')');
+        // append exceptions if any
+        Type[] genericExceptionTypeArray =
+                Types.getClonedTypeArray(genericExceptionTypes);
+        if (genericExceptionTypeArray.length > 0) {
+            sb.append(" throws ");
+            appendArrayGenericType(sb, genericExceptionTypeArray);
+        }
+        return sb.toString();
+    }
 
     /**
      * Returns the generic parameter types as an array of {@code Type}
@@ -77,7 +150,10 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
      *             instantiated for some reason
      * @since 1.5
      */
-    public native Type[] getGenericParameterTypes();
+    public Type[] getGenericParameterTypes() {
+        initGenericTypes();
+        return Types.getClonedTypeArray(genericParameterTypes);
+    }
 
     /**
      * Returns the exception types as an array of {@code Type} instances. If
@@ -94,8 +170,16 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
      *             instantiated for some reason
      * @since 1.5
      */
-    public native Type[] getGenericExceptionTypes();
+    public Type[] getGenericExceptionTypes() {
+        initGenericTypes();
+        return Types.getClonedTypeArray(genericExceptionTypes);
+    }
 
+    @Override
+    public Annotation[] getDeclaredAnnotations() {
+        return Method.getDeclaredAnnotations(method);
+    }
+    
     /**
      * Returns an array of arrays that represent the annotations of the formal
      * parameters of this constructor. If there are no parameters on this
@@ -105,7 +189,15 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
      * @return an array of arrays of {@code Annotation} instances
      * @since 1.5
      */
-    public native Annotation[][] getParameterAnnotations();
+    public Annotation[][] getParameterAnnotations() {
+        // Start (C) Android
+        Annotation[][] parameterAnnotations = Method.getParameterAnnotations(method);
+        if (parameterAnnotations.length == 0) {
+            return Method.noAnnotations(getParameterTypes(false).length);
+        }
+        return parameterAnnotations;
+        // End (C) Android
+    }
 
     /**
      * Indicates whether or not this constructor takes a variable number of
@@ -145,7 +237,7 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
      */
     @Override
     public boolean equals(Object object) {
-        return object instanceof Constructor && toString().equals(object);
+        return object instanceof Constructor && toString().equals(object.toString());
     }
 
     /**
@@ -170,7 +262,7 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
     public Class<?>[] getExceptionTypes() {
         return getExceptionTypes(true);
     }
-    public Class<?>[] getExceptionTypes(boolean copy) {
+    Class<?>[] getExceptionTypes(boolean copy) {
         if (exceptionTypes == null) {
             exceptionTypes = Method.getExceptionTypes(method);
         }
@@ -210,7 +302,7 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
     public Class<?>[] getParameterTypes() {
         return getParameterTypes(true);
     }
-    private Class<?>[] getParameterTypes(boolean copy) {
+    Class<?>[] getParameterTypes(boolean copy) {
         if (parameterTypes == null) {
             parameterTypes = Method.getParameterTypes(method);
         }
@@ -321,7 +413,7 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
         Class<?>[] pTypes = getParameterTypes(false);
         Class<?>[] eTypes = getExceptionTypes(false);
         
-        StringBuilder sb = new StringBuilder(Modifier.toString(getModifiers()));
+        StringBuilder sb = new StringBuilder(Modifier.toString(getModifiers() & MODIFIERS_MASK));
 
         if (sb.length() > 0) {
             sb.append(' ');

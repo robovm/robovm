@@ -22,6 +22,11 @@ Class* Java_java_lang_reflect_Method_getReturnType(Env* env, Class* clazz, jlong
     return nvmFindClassByDescriptor(env, nvmGetReturnType(method->desc), method->clazz->classLoader);
 }
 
+Object* Java_java_lang_reflect_Method_getSignatureAttribute(Env* env, Class* clazz, jlong methodPtr) {
+    Method* method = (Method*) methodPtr;
+    return nvmAttributeGetMethodSignature(env, method);
+}
+
 ObjectArray* Java_java_lang_reflect_Method_getParameterTypes(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) methodPtr;
 
@@ -55,5 +60,15 @@ ObjectArray* Java_java_lang_reflect_Method_getExceptionTypes(Env* env, Class* cl
 Object* Java_java_lang_reflect_Method_getDefaultValue(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) methodPtr;
     return nvmAttributeGetAnnotationDefault(env, method);
+}
+
+ObjectArray* Java_java_lang_reflect_Method_getDeclaredAnnotations(Env* env, Class* clazz, jlong methodPtr) {
+    Method* method = (Method*) methodPtr;
+    return nvmAttributeGetMethodRuntimeVisibleAnnotations(env, method);
+}
+
+ObjectArray* Java_java_lang_reflect_Method_getParameterAnnotations(Env* env, Class* clazz, jlong methodPtr) {
+    Method* method = (Method*) methodPtr;
+    return nvmAttributeGetMethodRuntimeVisibleParameterAnnotations(env, method);
 }
 

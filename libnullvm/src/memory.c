@@ -21,3 +21,15 @@ void* nvmCopyMemoryZ(Env* env, char* src) {
     return nvmCopyMemory(env, src, strlen(src));
 }
 
+jboolean nvmCompareAndSwapInt(jint* ptr, jint oldval, jint newval) {
+    return __sync_bool_compare_and_swap(ptr, oldval, newval) ? TRUE : FALSE;
+}
+
+jboolean nvmCompareAndSwapLong(jlong* ptr, jlong oldval, jlong newval) {
+    return __sync_bool_compare_and_swap(ptr, oldval, newval) ? TRUE : FALSE;
+}
+
+jboolean nvmCompareAndSwapPtr(void** ptr, void* oldval, void* newval) {
+    return __sync_bool_compare_and_swap(ptr, oldval, newval) ? TRUE : FALSE;
+}
+

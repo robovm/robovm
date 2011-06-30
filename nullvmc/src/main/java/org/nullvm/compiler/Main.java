@@ -240,30 +240,32 @@ public class Main {
         
         List<String> opts = null;
         
-        opts = new ArrayList<String>(optOpts);
-        opts.add("-mem2reg");
-        opts.add("-always-inline");
-        if (!debug) {
-            // -std-compile-opts minues -tailcallelim 
-            opts.addAll(Arrays.asList(
-                   ("-preverify -domtree -verify -lowersetjmp -globalopt -ipsccp " 
-                  + "-deadargelim -instcombine -simplifycfg -basiccg -prune-eh " 
-                  + "-inline -functionattrs -argpromotion -domtree -domfrontier " 
-                  + "-scalarrepl -simplify-libcalls -instcombine -lazy-value-info " 
-                  + "-jump-threading -simplifycfg -instcombine " 
-                  + "-simplifycfg -reassociate -domtree -loops -loopsimplify " 
-                  + "-lcssa -loop-rotate -licm -lcssa -loop-unswitch -instcombine " 
-                  + "-scalar-evolution -loopsimplify -lcssa -iv-users -indvars " 
-                  + "-loop-deletion -loop-unroll -instcombine -memdep -gvn -memdep " 
-                  + "-memcpyopt -sccp -instcombine -lazy-value-info -jump-threading " 
-                  + "-correlated-propagation -domtree -memdep -dse -adce -simplifycfg " 
-                  + "-strip-dead-prototypes -print-used-types -deadtypeelim " 
-                  + "-globaldce -constmerge -preverify -domtree -verify").split(" ")));
+        File outOptedFile = changeExt(f, (debug ? "debug" : "release") + ".opted.bc");
+        if (clean || !outOptedFile.exists() || outOptedFile.lastModified() < f.lastModified()) {
+            opts = new ArrayList<String>(optOpts);
+            opts.add("-mem2reg");
+            opts.add("-always-inline");
+            if (!debug) {
+                // -std-compile-opts minus -inline and -tailcallelim 
+                opts.addAll(Arrays.asList(
+                       ("-preverify -domtree -verify -lowersetjmp -globalopt -ipsccp " 
+                      + "-deadargelim -instcombine -simplifycfg -basiccg -prune-eh " 
+                      + "-functionattrs -argpromotion -domtree -domfrontier " 
+                      + "-scalarrepl -simplify-libcalls -instcombine -lazy-value-info " 
+                      + "-jump-threading -simplifycfg -instcombine " 
+                      + "-simplifycfg -reassociate -domtree -loops -loopsimplify " 
+                      + "-lcssa -loop-rotate -licm -lcssa -loop-unswitch -instcombine " 
+                      + "-scalar-evolution -loopsimplify -lcssa -iv-users -indvars " 
+                      + "-loop-deletion -loop-unroll -instcombine -memdep -gvn -memdep " 
+                      + "-memcpyopt -sccp -instcombine -lazy-value-info -jump-threading " 
+                      + "-correlated-propagation -domtree -memdep -dse -adce -simplifycfg " 
+                      + "-strip-dead-prototypes -print-used-types -deadtypeelim " 
+                      + "-globaldce -constmerge -preverify -domtree -verify").split(" ")));
+            }
+        
+            exec(optPath, opts, "-o=" + outOptedFile.toString(), f);
         }
         
-        File outOptedFile = changeExt(f, "opted.bc");
-        exec(optPath, opts, "-o=" + outOptedFile.toString(), f);
-
         opts = new ArrayList<String>(llcOpts);
         opts.add("-relocation-model=pic");
         opts.add("-march=" + arch);

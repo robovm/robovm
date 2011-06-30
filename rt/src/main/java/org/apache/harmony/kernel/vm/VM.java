@@ -76,20 +76,13 @@ public final class VM {
         if (depth < 0) {
             throw new IllegalArgumentException("depth < 0");
         }
-        return internalGetStackClass(depth + 1);
+        Class<?>[] classes = org.nullvm.rt.VM.getStackClasses(depth, 1);
+        if (classes == null || classes.length == 0) {
+            return null;
+        }
+        return classes[0];
     }
     
-    /**
-     * Returns the class of the method (including natives) at the specified 
-     * depth on the stack of the calling thread. The item at depth zero is the 
-     * caller of this method.
-     * 
-     * @param depth the stack depth of the requested Class
-     * @return the Class at the specified depth or null if depth is outside the
-     *         bounds of the stack
-     */
-    private native static Class<?> internalGetStackClass(int depth);
-
     /**
      * This method must be provided by the vm vendor, as it is used by other
      * provided class implementations. For example,
@@ -112,20 +105,6 @@ public final class VM {
      * @param bootLoader boolean true for the bootstrap class loader
      */
     public native final static void initializeClassLoader(ClassLoader loader, boolean bootLoader);
-
-    /**
-     * This method must be provided by the vm vendor.
-     * 
-     * Searches an internal table of strings for a string equal to the specified
-     * String. If the string is not in the table, it is added. Answers the
-     * string contained in the table which is equal to the specified String. The
-     * same string object is always answered for strings which are equal.
-     * 
-     * @param string the String to intern
-     * 
-     * @return the interned string equal to the specified String
-     */
-    public native static final String intern(String string);
 
     /**
      * Native used to find and load a class using the VM
@@ -167,7 +146,12 @@ public final class VM {
      * 
      * @throws SecurityException when called from a non-bootstrap Class
      */
-    public native static ClassLoader bootCallerClassLoader();
+    public static ClassLoader bootCallerClassLoader() {
+        // NOTE: In NullVM we just return the bootstrap ClassLoader here without 
+        // any security checks. This method is only called from the 
+        // org.apache.harmony.**.nls.Messages classes anyway.
+        return org.nullvm.rt.VM.getBootClassLoader();
+    }
 
     /**
      * Native used to dump a string to the system console for debugging.

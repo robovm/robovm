@@ -358,12 +358,18 @@ public abstract class ClassLoader {
             loader = null;
         else
             loader = this;
-        return nativeFindLoadedClass(loader, className);        
+        return nativeFindLoadedClass(className, loader);        
         // End (C) Android
     }
 
-    private native final Class<?> nativeFindLoadedClass(ClassLoader classLoader, String className);
+    static native final Class<?> nativeFindLoadedClass(String className, ClassLoader classLoader);
     
+    static native final Class<?> nativeFindClassInClasspathForLoader(String className, 
+            ClassLoader classLoader) throws ClassNotFoundException;
+
+    static native final Class<?> nativeFindClassUsingLoader(String className, 
+            ClassLoader classLoader) throws ClassNotFoundException;
+
     /**
      * Finds the class with the specified name, loading it using the system
      * class loader if necessary.
@@ -791,7 +797,7 @@ public abstract class ClassLoader {
      * @return the ClassLoader at the specified depth
      */
     static final ClassLoader getStackClassLoader(int depth) {
-        Class<?>[] stack = Class.getStackClasses(depth + 1, false);
+        Class<?>[] stack = Class.getStackClasses(depth + 1/*, false*/);
         if(stack.length < depth + 1) {
             return null;
         }

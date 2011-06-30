@@ -168,7 +168,7 @@ class PathClassLoader extends ClassLoader {
      */
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-        return Class.classForName(name, false, this);
+        return nativeFindClassInClasspathForLoader(name, this);
     }
 
     /**

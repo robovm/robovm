@@ -68,6 +68,14 @@ static jboolean loadClasspathEntries(Env* env, char* basePath, char* entriesFile
     return TRUE;
 }
 
+static ClassLoader* getSystemClassLoader(Env* env) {
+    Class* holder = nvmFindClass(env, "java/lang/ClassLoader$SystemClassLoaderHolder");
+    if (!holder) return NULL;
+    ClassField* field = nvmGetClassField(env, holder, "loader", "Ljava/lang/ClassLoader;");
+    if (!field) return NULL;
+    return (ClassLoader*) nvmGetObjectClassFieldValue(env, holder, field);
+}
+
 jboolean nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreNvmArgs) {
     char path[PATH_MAX];
     if (!realpath(argv[0], path)) {
@@ -172,15 +180,10 @@ Env* nvmStartup(Options* options) {
     if (!nvmInitPrimitiveWrapperClasses(env)) return NULL;
     if (!nvmInitAttributes(env)) return NULL;
 
-    return env;
-}
+    env->currentThread->contextClassLoader = getSystemClassLoader(env);
+    if (nvmExceptionOccurred(env)) return NULL;
 
-static ClassLoader* getSystemClassLoader(Env* env) {
-    Class* holder = nvmFindClass(env, "java/lang/ClassLoader$SystemClassLoaderHolder");
-    if (!holder) return NULL;
-    ClassField* field = nvmGetClassField(env, holder, "loader", "Ljava/lang/ClassLoader;");
-    if (!field) return NULL;
-    return (ClassLoader*) nvmGetObjectClassFieldValue(env, holder, field);
+    return env;
 }
 
 jboolean nvmRun(Env* env) {

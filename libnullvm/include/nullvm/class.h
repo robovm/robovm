@@ -7,6 +7,7 @@
 #define CLASS_IS_FINAL(c) (IS_FINAL((c)->access))
 #define CLASS_IS_ABSTRACT(c) (IS_ABSTRACT((c)->access))
 #define CLASS_IS_PACKAGE_PRIVATE(c) (IS_PACKAGE_PRIVATE((c)->access))
+#define CLASS_IS_PRIMITIVE(c) ((c)->primitive)
 #define CLASS_IS_ARRAY(c) ((c)->name[0] == '[')
 #define CLASS_IS_ARRAY_OF_PRIMITIVE(c) ((c)->name[0] == '[' && (c)->name[2] == '\0')
 #define CLASS_IS_ENUM(c) (IS_ENUM((c)->access))

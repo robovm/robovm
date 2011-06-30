@@ -108,54 +108,12 @@ Class* Java_java_lang_Class_getSuperclass(Env* env, Class* thiz) {
     return thiz->superclass;
 }
 
-ObjectArray* Java_java_lang_Class_getStackClasses(Env* env, Class* c, jint maxDepth, jboolean stopAtPrivileged) {
-    CallStackEntry* first = nvmGetCallStack(env);
-    if (!first) return NULL;
-    first = first->next; // Skip Class.getStackClasses()
-    if (!first) return NULL;
-    first = first->next; // Skip caller of Class.getStackClasses()
-    if (!first) return NULL;
-    jint depth = 0;
-    CallStackEntry* entry = first;
-    while (entry) {
-        depth++;
-        entry = entry->next;
-    }
-    if (maxDepth > -1 && maxDepth < depth) {
-        depth = maxDepth;
-    }
-    
-    ObjectArray* result = nvmNewObjectArray(env, depth, java_lang_Class, NULL, NULL);
-    if (!result) return NULL;
-    jint i;
-    entry = first;
-    for (i = 0; i < depth; i++) {
-        result->values[i] = (Object*) entry->method->clazz;
-        entry = entry->next;
-    }
-    return result;
-}
-
-Class* Java_java_lang_Class_classForName(Env* env, Class* c, Object* className, jboolean initializeBoolean, ClassLoader* classLoader) {
-    char* classNameUTF = nvmGetStringUTFChars(env, className);
-    if (!classNameUTF) return NULL;
-    jint i;
-    for (i = 0; classNameUTF[i] != '\0'; i++) {
-        if (classNameUTF[i] == '.') classNameUTF[i] = '/';
-    }
-    Class* clazz = nvmFindClassInClasspathForLoader(env, classNameUTF, classLoader);
-    if (!clazz) return NULL;
-    if (initializeBoolean) {
-        nvmInitialize(env, clazz);
-        if (nvmExceptionOccurred(env)) {
-            return NULL;
-        }
-    }
-    return clazz;
-}
-
 ClassLoader* Java_java_lang_Class_getClassLoader(Env* env, Class* c, Class* clazz) {
     return clazz->classLoader;
+}
+
+void Java_java_lang_Class_initializeClass0(Env* env, Class* c, Class* clazz) {
+    nvmInitialize(env, clazz);
 }
 
 ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(Env* env, Class* clazz, jboolean publicOnly) {
@@ -252,5 +210,22 @@ ObjectArray* Java_java_lang_Class_getDeclaredFields0(Env* env, Class* clazz, jbo
 
 ObjectArray* Java_java_lang_Class_getDeclaredAnnotations(Env* env, Class* clazz) {
     return nvmAttributeGetClassRuntimeVisibleAnnotations(env, clazz);
+}
+
+Object* Java_java_lang_Class_newInstanceImpl(Env* env, Class* clazz) {
+    if (CLASS_IS_PRIMITIVE(clazz) || CLASS_IS_INTERFACE(clazz) || CLASS_IS_ARRAY(clazz) || CLASS_IS_ABSTRACT(clazz)) {
+        nvmThrowNew(env, java_lang_InstantiationException, clazz->name);
+        return NULL;
+    }
+    Method* constructor = nvmGetInstanceMethod(env, clazz, "<init>", "()V");
+    if (!constructor) {
+        nvmThrowNew(env, java_lang_InstantiationException, clazz->name);
+        return NULL;
+    }
+
+    // TODO: Access checks
+
+    jvalue args[1];
+    return nvmNewObjectA(env, clazz, constructor, args);
 }
 

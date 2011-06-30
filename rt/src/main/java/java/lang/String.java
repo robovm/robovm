@@ -19,22 +19,20 @@ package java.lang;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.util.Comparator;
-import java.util.Formatter;
-import java.util.Locale;
-
-import java.util.regex.Pattern;
-
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
 import java.security.AccessController;
+import java.util.Comparator;
+import java.util.Formatter;
+import java.util.Locale;
+import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import org.apache.harmony.kernel.vm.VM;
 import org.apache.harmony.luni.util.PriviAction;
+import org.nullvm.rt.VM;
 
 /**
  * An immutable sequence of characters/code units ({@code char}s). A

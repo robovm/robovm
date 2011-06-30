@@ -664,7 +664,7 @@ public class SecurityManager {
      */
     @SuppressWarnings("unchecked")
     protected Class[] getClassContext() {
-        return Class.getStackClasses(-1, false);
+        return Class.getStackClasses(-1/*, false*/);
     }
 
     /**
@@ -729,7 +729,7 @@ public class SecurityManager {
      */
     @Deprecated
     protected int classDepth(String name) {
-        Class<?>[] classes = Class.getStackClasses(-1, false);
+        Class<?>[] classes = Class.getStackClasses(-1/*, false*/);
         for (int i = 0; i < classes.length; i++) {
             if (classes[i].getName().equals(name)) {
                 return i;

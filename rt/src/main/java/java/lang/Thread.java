@@ -481,6 +481,23 @@ public class Thread implements Runnable {
      *             if the aforementioned security check fails.
      */
     public ClassLoader getContextClassLoader() {
+        // Start (C) Android
+        // First, if the conditions
+        //    1) there is a security manager
+        //    2) the caller's class loader is not null
+        //    3) the caller's class loader is not the same as the context
+        //    class loader and not an ancestor thereof
+        // are satisfied we should perform a security check.
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            ClassLoader calling = ClassLoader.callerClassLoader();
+
+            if (calling != null && !calling.isAncestorOf(contextClassLoader)) {
+                sm.checkPermission(new RuntimePermission("getClassLoader"));
+            }
+        }
+        //End (C) Android
+        
         return contextClassLoader;
     }
 
@@ -818,6 +835,10 @@ public class Thread implements Runnable {
      * @see #getContextClassLoader()
      */
     public void setContextClassLoader(ClassLoader cl) {
+        SecurityManager securityManager = System.getSecurityManager();
+        if (securityManager != null) {
+            securityManager.checkPermission(new RuntimePermission("setContextClassLoader"));
+        }
         this.contextClassLoader = cl;
     }
 

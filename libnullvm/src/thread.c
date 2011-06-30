@@ -3,7 +3,7 @@
 static hythread_monitor_t monitorsLock;
 
 static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group) {
-    Env* env = *envPtr;
+    Env* env = *envPtr; // env is NULL if nvmAttachCurrentThread() was called. If non NULL nvmInitThreads() was called.
     hythread_t hyThread = hythread_self();
     if (!env && hyThread != NULL) return JNI_OK;
 
@@ -37,7 +37,7 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group) {
 
 error:
     if (hyThread) hythread_detach(hyThread);
-    env->currentThread = NULL;
+    if (env) env->currentThread = NULL;
     return JNI_ERR;
 }
 

@@ -38,6 +38,7 @@ import java.util.HashMap;
 
 import org.apache.harmony.luni.lang.reflect.GenericSignatureParser;
 import org.apache.harmony.luni.lang.reflect.Types;
+import org.nullvm.rt.VM;
 
 /**
  * The in-memory representation of a Java class. This representation serves as
@@ -154,7 +155,9 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *            stop at privileged classes
      * @return the array of the most recent classes on the stack
      */
-    static native final Class<?>[] getStackClasses(int maxDepth, boolean stopAtPrivileged);
+    static final Class<?>[] getStackClasses(int maxDepth) {
+        return VM.getStackClasses(2, maxDepth);
+    }
 
     // Start (C) Android
     /**
@@ -232,22 +235,15 @@ public final class Class<T> implements Serializable, AnnotatedElement,
 
             classLoader = ClassLoader.getSystemClassLoader();
         }
-        return classForName(className, initializeBoolean, classLoader);
+        
+        Class<?> clazz = ClassLoader.nativeFindClassUsingLoader(className, classLoader);
+        if (initializeBoolean) {
+            initializeClass0(clazz);
+        }
+        return clazz;
     }
 
-    /*
-     * Returns a class by name without any security checks.
-     *
-     * @param className The name of the non-primitive type class to find
-     * @param initializeBoolean A boolean indicating whether the class should be
-     *        initialized
-     * @param classLoader The class loader to use to load the class
-     * @return the named class.
-     * @throws ClassNotFoundException If the class could not be found
-     */
-    static native Class<?> classForName(String className, boolean initializeBoolean,
-            ClassLoader classLoader) throws ClassNotFoundException;
-
+    private native static final void initializeClass0(Class<?> clazz);
     
     /**
      * Returns an array containing {@code Class} objects for all public classes

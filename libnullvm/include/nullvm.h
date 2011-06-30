@@ -15,6 +15,7 @@ extern "C" {
 #include <nullvm/types.h>
 #include <nullvm/map.h>
 #include <nullvm/access.h>
+#include <nullvm/memory.h>
 #include <nullvm/init.h>
 #include <nullvm/method.h>
 #include <nullvm/field.h>

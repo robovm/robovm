@@ -235,28 +235,6 @@ void nvmShutdown(Env* env, jint code) {
     exit(code);
 }
 
-// TODO: Move this to a more appropriate file
-void* nvmAllocateMemory(Env* env, int size) {
-    void* m = GC_MALLOC(size);
-//    void* m = calloc(1, size);
-    if (!m) {
-        nvmThrowOutOfMemoryError(env);
-        return NULL;
-    }
-    return m;
-}
-
-void* nvmCopyMemory(Env* env, void* src, int size) {
-    void* dest = nvmAllocateMemory(env, size);
-    if (!dest) return NULL;
-    memcpy(dest, src, size);
-    return dest;
-}
-
-void* nvmCopyMemoryZ(Env* env, char* src) {
-    return nvmCopyMemory(env, src, strlen(src));
-}
-
 void nvmAbort(char* format, ...) {
     va_list args;
     va_start(args, format);

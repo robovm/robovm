@@ -8,6 +8,7 @@ SRC = \
   init.c \
   log.c \
   map.c \
+  memory.c \
   method.c \
   native.c \
   portlib/common/shared/exceptions.c \

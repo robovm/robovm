@@ -45,6 +45,7 @@
                   <fileset dir="target/classes"/>
                   <zipfileset includes="**/*" src="lib/icu4j-4_2_1.jar" excludes="META-INF/MANIFEST.MF, license.html, unicode-license.txt"/>
                   <zipfileset includes="**/*" src="lib/icu4j-charsets-4_2_1.jar" excludes="META-INF/MANIFEST.MF, license.html, unicode-license.txt"/>
+                  <zipfileset includes="**/*" src="lib/icudata.jar" excludes="META-INF/MANIFEST.MF"/>
                 </jar>
 <!--                <exec dir="src/main/native" executable="make" searchpath="true"/>
                 <java jar="../nullvmc/target/nullvm-compiler-0.1-SNAPSHOT.one-jar.jar" fork="true">

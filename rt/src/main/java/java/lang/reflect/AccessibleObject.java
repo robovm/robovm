@@ -19,7 +19,7 @@ package java.lang.reflect;
 
 import java.lang.annotation.Annotation;
 
-import org.nullvm.ReflectionAccess;
+import org.nullvm.rt.ReflectionAccess;
 
 /**
  * {@code AccessibleObject} is the superclass of all member reflection classes

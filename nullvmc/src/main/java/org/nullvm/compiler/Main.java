@@ -8,8 +8,8 @@ package org.nullvm.compiler;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -18,15 +18,16 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -34,16 +35,12 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteException;
+import org.apache.commons.exec.ExecuteStreamHandler;
 import org.apache.commons.exec.Executor;
+import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOCase;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.NotFileFilter;
-import org.apache.commons.io.filefilter.OrFileFilter;
-import org.apache.commons.io.filefilter.SuffixFileFilter;
-import org.nullvm.compiler.ClassCompiler.VerifyWhen;
 import org.nullvm.compiler.clazz.Clazz;
 import org.nullvm.compiler.clazz.Clazzes;
 import org.nullvm.compiler.clazz.DirectoryPath;
@@ -62,20 +59,23 @@ public class Main {
     private String target = null;
     private File home = new File(System.getProperty("user.home"), ".nullvm");
     private File cache = new File(home, "cache");
+    private File llvmCache = null;
+    private File objectCache = null;
     private boolean clean = false;
     private File llvmBinDir = null;    
     private List<String> llcOpts = new ArrayList<String>();
     private List<String> optOpts = new ArrayList<String>();
     private List<String> gccOpts = new ArrayList<String>();
     private File gccBin = null;    
-    private File arBin = null;
-    private List<String> arOpts = new ArrayList<String>();
+    private String arch = null;
+    private String cpu = null;
+    private boolean debug = false;
+    private boolean nort = false;
     private boolean verbose = false;
     private File jarFile;
     private List<File> includeDirs = new ArrayList<File>();
     private List<File> libDirs = new ArrayList<File>();
     private boolean run = false;
-    private ClassCompiler.VerifyWhen verify = ClassCompiler.VerifyWhen.SKIP;
     private String mainClass;
     private List<String> runArgs = new ArrayList<String>();
     
@@ -91,83 +91,47 @@ public class Main {
         if (errorMessage != null) {
             System.err.format("nullvm: %s\n", errorMessage);
         }
-        System.err.println("Usage: nullvm [-options] class");
-        System.err.println("   or  nullvm [-options] -jar jarfile");
+        System.err.println("Usage: nullvm [-options] class [run-args]");
+        System.err.println("   or  nullvm [-options] -jar jarfile [run-args]");
         System.err.println("Options:");
         
-        System.err.println("  -ar-bin <path>       Path to the ar binary");
-        //System.err.println("-bootclasspath <list>   : Classpath used to locate the java.* and javax.* classes. Default is ~/nullvm/lib/nullvm-rt.jar.");
-        System.err.println("  -cache <dir>         Directory where cached compiled class files will be placed. Default is ~/.nullvm/cache");
-        System.err.println("  -clean               Compile class files even if a compiled version already exists in the cache.");
-        System.err.println("  -cp <list>           : separated list of directories, JAR archives, and ZIP archives to search for class files.");
-        System.err.println("  -classpath <list>    : separated list of directories, JAR archives, and ZIP archives to search for class files.");
-        System.err.println("  -d <dir>             Place the generated executable and other files in <dir>.");
-        System.err.println("  -verify:skip         Don't verify classes (the default)");
-        System.err.println("  -verify:now          Verify classes and abort compilation if verification fails");
-        System.err.println("  -verify:defer        Verify classes but don't abort compilation. java.lang.VerifyError will be thrown when the class is loaded at runtime.");
-        System.err.println("  -gcc-bin <path>      Path to the gcc binary");
-        System.err.println("  -gcc-opt <opt>       Option to pass to gcc");
-        System.err.println("  -help, -?            Display this information");
-        System.err.println("  -home <dir>          Directory where NullVM runtime has been installed and where compiled class files will be cached. Default is ~/.nullvm");
-        System.err.println("  -jar <path>          Use main class as specified by the manifest in this JAR archive.");
-        System.err.println("  -ld-bin <path>       Path to the ld binary");
-        System.err.println("  -ld-opt <opt>        Option to pass to ld");
-        System.err.println("  -llc-opt <opt        Option to pass to llc");
-        System.err.println("  -llvm-bin-dir <path> Path where the LLVM binaries can be found");
-        System.err.println("  -o <name>            The name of the target executable or library");
-        System.err.println("  -opt-opt <opt>       Option to pass to opt");
-        System.err.println("  -verbose             Output messages about what the compiler is doing");
+        System.err.println("  -bootclasspath <list> ");
+        System.err.println("  -bootcp <list>        ");
+        System.err.println("  -bcp <list>           : separated list of directories, JAR archives, and ZIP \n" 
+                         + "                        archives to search for class files. Used to locate the \n" 
+                         + "                        java.* and javax.* classes. Default is \n"
+                         + "                        ~/nullvm/lib/nullvm-rt.jar.");
+        System.err.println("  -cache <dir>          Directory where cached compiled class files will be placed.\n" 
+                         + "                        Default is ~/.nullvm/cache");
+        System.err.println("  -clean                Compile class files even if a compiled version already \n" 
+                         + "                        exists in the cache.");
+        System.err.println("  -cp <list>            ");
+        System.err.println("  -classpath <list>     : separated list of directories, JAR archives, and ZIP \n" 
+                         + "                        archives to search for class files.");
+        System.err.println("  -d <dir>              Place the generated executable and other files in <dir>.");
+        System.err.println("  -gcc-bin <path>       Path to the gcc binary");
+        System.err.println("  -gcc-opt <opt>        Option to pass to gcc");
+        System.err.println("  -home <dir>           Directory where NullVM runtime has been installed and \n" 
+                         + "                        where compiled class files will be cached. Default is \n" 
+                         + "                        ~/.nullvm");
+        System.err.println("  -jar <path>           Use main class as specified by the manifest in this JAR \n" 
+                         + "                        archive.");
+        System.err.println("  -llc-opt <opt         Option to pass to llc");
+        System.err.println("  -llvm-bin-dir <path>  Path where the LLVM binaries can be found");
+        System.err.println("  -o <name>             The name of the target executable or library");
+        System.err.println("  -opt-opt <opt>        Option to pass to opt");
+        System.err.println("  -arch <name>          The name of the LLVM arch to compile for. Default is \n" 
+                         + "                        autodetected using llc.");
+        System.err.println("  -cpu <name>           The name of the LLVM cpu to compile for. The LLVM default\n" 
+                         + "                        is used by default.");
+        System.err.println("  -debug                Generates debug information");
+        System.err.println("  -nort                 Do not add default nullvm-rt.jar to bootclasspath");
+        System.err.println("  -verbose              Output messages about what the compiler is doing");
+        System.err.println("  -help, -?             Display this information");
         
         System.exit(errorMessage != null ? 1 : 0);
     }
 
-    private static String toHexString(byte[] b) {
-        char[] HEX_CHARS = "0123456789abcdef".toCharArray();
-        StringBuffer str = new StringBuffer(b.length * 2);
-        for (int i = 0; i <b.length; i++) {
-            int z = b[i] & 0xff;
-            str.append(HEX_CHARS[z >> 4]);
-            str.append(HEX_CHARS[z & 0xf]);
-        }
-        return str.toString();
-    }
-    
-//    private static String hash(File f) {
-//        InputStream in = null;
-//        try {
-//            in = new BufferedInputStream(new FileInputStream(f));
-//            return hash(in);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        } finally {
-//            IOUtils.closeQuietly(in);
-//        }
-//    }
-    
-    private static String hash(InputStream in) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA1");
-            byte[] buffer = new byte[4096];
-            int n = 0;
-            while (-1 != (n = in.read(buffer))) {
-                digest.update(buffer, 0, n);
-            }
-            return toHexString(digest.digest());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
-    private String getSimpleClassName(String internalName) {
-        int index = internalName.lastIndexOf('/');
-        if (index == -1) {
-            return internalName;
-        }
-        return internalName.substring(index + 1);
-    }
-    
     private List<Clazz> getChangedClasses(List<ClasspathEntry> bootcp, List<ClasspathEntry> cp) {
         List<ClasspathEntry> all = new ArrayList<ClasspathEntry>();
         all.addAll(bootcp);
@@ -177,7 +141,7 @@ public class Main {
         for (ClasspathEntry entry : all) {
             for (Clazz clazz : entry.getPath().list()) {
                 String className = clazz.getInternalName();
-                File outFile = new File(entry.getCacheDir(), className.replace('/', File.separatorChar) + "" + ".class.ll");
+                File outFile = new File(entry.getLlvmCacheDir(), className.replace('/', File.separatorChar) + "" + ".class.ll");
                 if (clean || !outFile.exists() || outFile.lastModified() < clazz.lastModified()) {
                     changed.add(clazz);
                 }
@@ -190,22 +154,19 @@ public class Main {
         OutputStream out = null;
         File outFile = null;
         try {
-            //byte[] classData = clazz.getBytes();
             String className = clazz.getInternalName();
-            //File classDir = new File(new File(classCache, className.replace('/', File.separatorChar)), hash(new ByteArrayInputStream(classData)));
-            outFile = new File(entry.getCacheDir(), className.replace('/', File.separatorChar) + "" + ".class.ll");
+            outFile = new File(entry.getLlvmCacheDir(), className.replace('/', File.separatorChar) + "" + ".class.ll");
             outFile.getParentFile().mkdirs();
             if (!clean && outFile.exists() && outFile.lastModified() >= clazz.lastModified()) {
                 if (verbose) {
                     stdout.println("Skipping unchanged class file: " + clazz.getFileName());
                 }
-                return processIrFile(outFile);
+                return processIrFile(entry, outFile);
             }
             if (verbose) {
                 stdout.format("Compiling class file '%s' to LLVM IR file '%s'\n", clazz.getFileName(), outFile);
             }
             out = new FileOutputStream(outFile);
-//            new SootClassCompiler().setVerifyWhen(verify).compile(clazz, out);
             new SootClassCompiler().compile(clazz, out);
         } catch (Throwable t) {
             FileUtils.deleteQuietly(outFile);
@@ -219,7 +180,7 @@ public class Main {
         } finally {
             IOUtils.closeQuietly(out);
         }
-        return processIrFile(outFile);
+        return processIrFile(entry, outFile);
     }
 
     private List<File> processClassFiles(ClasspathEntry entry) throws IOException {
@@ -231,32 +192,16 @@ public class Main {
     }
     
     private void processClasspathEntry(ClasspathEntry entry) throws IOException {
-        if (buildStaticLibrary(entry)) {
-            buildDynamicLibrary(entry);
-        }
-//            return Collections.singletonList(processArchivedClassFiles((ZipFilePath) entry));
-//        } else {
-//            return Collections.singletonList(processClassFiles((DirectoryPath) entry));
-//        }
+        buildDynamicLibrary(entry);
     }
     
-//    private File processArchivedClassFiles(ZipFilePath path) throws IOException {
-//        File archiveFile = path.getFile();
-//        return buildDynamicLibrary(archiveFile.getName(), buildStaticLibrary(processClassFilesInPath(path), path));
-//    }
-//    
-//    private File processClassFiles(DirectoryPath path) throws IOException {
-//        String baseName = path.getDir().getAbsolutePath().replace(File.separatorChar, '_') + ".jar";
-//        return buildDynamicLibrary(baseName, buildStaticLibrary(processClassFilesInPath(path), path));
-//    }
-//    
-    private File processIrFile(File f) throws IOException {
+    private File processIrFile(ClasspathEntry entry, File f) throws IOException {
         File outFile = new File(f.getParentFile(), f.getName().substring(0, f.getName().length() - 3) + ".bc");
         if (!clean && outFile.exists() && outFile.lastModified() >= f.lastModified()) {
             if (verbose) {
                 stdout.println("Skipping unchanged LLVM IR file: " + f);
             }
-            return processBcFile(outFile);
+            return processBcFile(entry, outFile);
         }
         if (verbose) {
             stdout.format("Compiling LLVM IR file '%s' to LLVM bitcode file '%s'\n", f, outFile);
@@ -268,21 +213,24 @@ public class Main {
         }
         
         exec(llvmAsPath, "-o=" + outFile.toString(), f);
-        return processBcFile(outFile);
+        return processBcFile(entry, outFile);
     }
     
-    private File processBcFile(File f) throws IOException {
-        File outFile = new File(f.getParentFile(), f.getName().substring(0, f.getName().length() - 3) + ".s");
+    private File processBcFile(ClasspathEntry entry, File f) throws IOException {
+        File outFile = changeExt(rebase(f, entry.getLlvmCacheDir(), entry.getObjectCacheDir()), "s");
+        
         if (!clean && outFile.exists() && outFile.lastModified() >= f.lastModified()) {
             if (verbose) {
                 stdout.println("Skipping unchanged LLVM bitcode file: " + f);
             }
-            return processGccFile(outFile);
+            return processGccFile(entry, outFile);
         }
         if (verbose) {
             stdout.format("Compiling LLVM bitcode file '%s' to assembler file '%s'\n", f, outFile);
         }
             
+        outFile.getParentFile().mkdirs();
+        
         String llcPath = "llc";
         String optPath = "opt";
         if (llvmBinDir != null) {
@@ -290,15 +238,45 @@ public class Main {
             optPath = new File(llvmBinDir, "opt").getAbsolutePath();
         }
         
-        File outOptedFile = new File(f.getParentFile(), f.getName().substring(0, f.getName().length() - 3) + ".opted.bc");
-        exec(optPath, optOpts, "-mem2reg", "-always-inline", "-o=" + outOptedFile.toString(), f);
+        List<String> opts = null;
         
-        exec(llcPath, llcOpts, "-relocation-model=pic", "-o=" + outFile.toString(), outOptedFile);
+        opts = new ArrayList<String>(optOpts);
+        opts.add("-mem2reg");
+        opts.add("-always-inline");
+        if (!debug) {
+            // -std-compile-opts minues -tailcallelim 
+            opts.addAll(Arrays.asList(
+                   ("-preverify -domtree -verify -lowersetjmp -globalopt -ipsccp " 
+                  + "-deadargelim -instcombine -simplifycfg -basiccg -prune-eh " 
+                  + "-inline -functionattrs -argpromotion -domtree -domfrontier " 
+                  + "-scalarrepl -simplify-libcalls -instcombine -lazy-value-info " 
+                  + "-jump-threading -simplifycfg -instcombine " 
+                  + "-simplifycfg -reassociate -domtree -loops -loopsimplify " 
+                  + "-lcssa -loop-rotate -licm -lcssa -loop-unswitch -instcombine " 
+                  + "-scalar-evolution -loopsimplify -lcssa -iv-users -indvars " 
+                  + "-loop-deletion -loop-unroll -instcombine -memdep -gvn -memdep " 
+                  + "-memcpyopt -sccp -instcombine -lazy-value-info -jump-threading " 
+                  + "-correlated-propagation -domtree -memdep -dse -adce -simplifycfg " 
+                  + "-strip-dead-prototypes -print-used-types -deadtypeelim " 
+                  + "-globaldce -constmerge -preverify -domtree -verify").split(" ")));
+        }
+        
+        File outOptedFile = changeExt(f, "opted.bc");
+        exec(optPath, opts, "-o=" + outOptedFile.toString(), f);
+
+        opts = new ArrayList<String>(llcOpts);
+        opts.add("-relocation-model=pic");
+        opts.add("-march=" + arch);
+        if (cpu != null) {
+            opts.add("-mcpu=" + cpu);
+        }
+
+        exec(llcPath, opts, "-o=" + outFile.toString(), outOptedFile);
             
-        return processGccFile(outFile);
+        return processGccFile(entry, outFile);
     }
     
-    private File processGccFile(File f) throws IOException {
+    private File processGccFile(ClasspathEntry entry, File f) throws IOException {
 //        String hash = f.getParentFile().getName();
 //        File outFile = new File(f.getParentFile().getParentFile().getParentFile(), f.getName().substring(0, f.getName().lastIndexOf('.')) + "." + hash + ".o");
         File outFile = new File(f.getParentFile(), f.getName().substring(0, f.getName().lastIndexOf('.')) + ".o");
@@ -317,59 +295,22 @@ public class Main {
             gccPath = gccBin.getAbsolutePath();
         }
         
-        exec(gccPath, "-c", "-o", outFile, "-g", gccOpts, f);
+        List<String> opts = new ArrayList<String>(gccOpts);
+        if (debug) {
+            opts.add("-g");
+        }
+        
+        exec(gccPath, "-c", "-o", outFile, gccOpts, f);
         
         return outFile;
     }
     
-    private boolean buildStaticLibrary(ClasspathEntry entry) throws IOException {
-        File outFile = entry.getStaticLibrary();
-//        if (path instanceof ZipFilePath) {
-//            File archiveFile = ((ZipFilePath) path).getFile();
-//            lastModified = archiveFile.lastModified();
-//            outFile = new File(new File(new File(libCache, archiveFile.getName()), hash(archiveFile)), "lib" + archiveFile.getName() + ".a");
-//        } else {
-//            File dir = ((DirectoryPath) path).getDir();
-//            lastModified = getDirLastModified(dir);
-//            outFile = new File(makeFileRelativeTo(libCache, dir), "lib" + dir.getAbsolutePath().replace(File.separatorChar, '_') + ".a");
-//        }
-        
+    private File buildDynamicLibrary(ClasspathEntry entry) throws IOException {
+        File outFile = entry.getDynamicLibrary();
+
         if (!clean && outFile.exists() && !entry.hasChangedAfter(outFile.lastModified())) {
             if (verbose) {
                 stdout.println("Skipping unchanged classpath entry: " + entry);
-            }
-            return false;
-        }
-        
-        outFile.getParentFile().mkdirs();
-        
-        if (verbose) {
-            stdout.format("Building library '%s'\n", outFile);
-        }
-        
-        List<File> files = processClassFiles(entry);
-        
-        String arPath = "ar";
-        if (arBin != null) {
-            arPath = arBin.getAbsolutePath();
-        }
-        
-        if (outFile.exists()) {
-            outFile.delete();
-        }
-        
-        exec(arPath, "rcs", outFile, files);
-        
-        return true;
-    }
-    
-    private File buildDynamicLibrary(ClasspathEntry entry) throws IOException {
-        File libFile = entry.getStaticLibrary();
-        File outFile = entry.getDynamicLibrary(); //new File(libFile.getParentFile(), baseName + ".so");
-        
-        if (!clean && outFile.exists() && outFile.lastModified() >= libFile.lastModified()) {
-            if (verbose) {
-                stdout.println("Skipping unchanged library: " + libFile);
             }
             return outFile;
         }
@@ -378,6 +319,10 @@ public class Main {
             stdout.format("Building dynamic library '%s'\n", outFile);
         }
             
+        List<File> files = processClassFiles(entry);
+
+        outFile.getParentFile().mkdirs();
+        
         String gccPath = "gcc";
         if (gccBin != null) {
             gccPath = gccBin.getAbsolutePath();
@@ -391,15 +336,9 @@ public class Main {
         ldArgs.add("-L");
         ldArgs.add(new File(home, "lib").getAbsolutePath());
 
-        List<String> libArgs = new ArrayList<String>();
-        ldArgs.add("-L");
-        ldArgs.add(libFile.getParentFile().getAbsolutePath());
-        libArgs.add("-l:" + libFile.getName());
-            
-        exec(gccPath, "-o", outFile, "-g", "-shared", "-Wl,-soname," + outFile.getName(), 
+        exec(gccPath, files, "-o", outFile, "-g", "-shared", "-Wl,-soname," + outFile.getName(), 
                 "-Wl,--version-script", symbolsMapFile, 
-                gccOpts, ldArgs, "-lnullvm", "-lm",
-                "-Wl,--whole-archive", libArgs, "-Wl,--no-whole-archive");
+                gccOpts, ldArgs, "-lnullvm", "-lm");
         
         return outFile;
     }
@@ -532,6 +471,8 @@ public class Main {
             stdout.format("Creating archive file '%s' from files in directory '%s'\n", output, dir);
         }
         
+        output.getParentFile().mkdirs();
+        
         ZipOutputStream out = null;
         try {
             out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(output)));
@@ -558,13 +499,6 @@ public class Main {
         }
     }
     
-    private void copyResources(File srcDir, File destDir) throws IOException {
-        FileFilter filter = new OrFileFilter(
-                new NotFileFilter(new SuffixFileFilter(".class", IOCase.INSENSITIVE)), 
-                DirectoryFileFilter.INSTANCE);
-        FileUtils.copyDirectory(srcDir, destDir, filter);
-    }
-    
     private void exec(String cmd, Object ... args) throws IOException {
         exec(null, cmd, args);
     }
@@ -572,9 +506,16 @@ public class Main {
     private void exec(File wd, String cmd, Object ... args) throws IOException {
         execWithEnv(wd, null, cmd, args);
     }
+
+    @SuppressWarnings("rawtypes")
+    private void execWithEnv(File wd, Map env, String cmd, Object ... args) throws IOException {
+        execWithEnv(wd, env, null, cmd, args);
+    }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private void execWithEnv(File wd, Map env, String cmd, Object ... args) throws IOException {
+    private void execWithEnv(File wd, Map env, ExecuteStreamHandler streamHandler, 
+            String cmd, Object ... args) throws IOException {
+        
         CommandLine commandLine = CommandLine.parse(cmd);
         for (Object a : args) {
             if (a instanceof Collection) {
@@ -594,6 +535,9 @@ public class Main {
         if (wd != null) {
             executor.setWorkingDirectory(wd);
         }
+        if (streamHandler != null) {
+            executor.setStreamHandler(streamHandler);
+        }
         if (env == null) {
             env = EnvironmentUtils.getProcEnvironment();
         }
@@ -608,6 +552,8 @@ public class Main {
             while (i < args.length) {
                 if ("-cp".equals(args[i]) || "-classpath".equals(args[i])) {
                     classpath = args[++i];
+                } else if ("-bcp".equals(args[i]) || "-bootcp".equals(args[i]) || "-bootclasspath".equals(args[i])) {
+                    bootclasspath = args[++i];
                 } else if ("-jar".equals(args[i])) {
                     jarFile = new File(args[++i]);
                 } else if ("-o".equals(args[i])) {
@@ -622,14 +568,14 @@ public class Main {
                     run = true;
                 } else if ("-verbose".equals(args[i])) {
                     verbose = true;
+                } else if ("-debug".equals(args[i])) {
+                    debug = true;
+                } else if ("-nort".equals(args[i])) {
+                    nort = true;
                 } else if ("-clean".equals(args[i])) {
                     clean = true;
                 } else if ("-help".equals(args[i]) || "-?".equals(args[i])) {
                     printUsageAndExit(null);
-                } else if ("-ar-bin".equals(args[i])) {
-                    arBin = new File(args[++i]);
-                } else if ("-ar-opt".equals(args[i])) {
-                    arOpts.add(args[++i]);
                 } else if ("-gcc-bin".equals(args[i])) {
                     gccBin = new File(args[++i]);
                 } else if ("-gcc-opt".equals(args[i])) {
@@ -640,14 +586,12 @@ public class Main {
                     llcOpts.add(args[++i]);
                 } else if ("-opt-opt".equals(args[i])) {
                     optOpts.add(args[++i]);
+                } else if ("-arch".equals(args[i])) {
+                    arch = args[++i];
+                } else if ("-cpu".equals(args[i])) {
+                    cpu = args[++i];
                 } else if (args[i].startsWith("-D")) {
                 } else if (args[i].startsWith("-X")) {
-                } else if (args[i].startsWith("-verify:")) {
-                    try {
-                        verify = VerifyWhen.valueOf(args[i].substring("-verify:".length()).toUpperCase());
-                    } catch (Throwable t) {
-                        throw new IllegalArgumentException("Unrecognized verify option: " + args[i]);
-                    }
                 } else if (args[i].startsWith("-")) {
                     throw new IllegalArgumentException("Unrecognized option: " + args[i]);
                 } else {
@@ -755,6 +699,13 @@ public class Main {
         if (target == null && mainClass == null) {
             throw new IllegalArgumentException("No target and no main class specified");
         }
+
+        if (arch == null) {
+            arch = detectArch();
+            if (verbose) {
+                System.out.println("Autodetected arch: " + arch);
+            }
+        }
         
         if (verbose) {
             if (mainClass != null) {
@@ -764,12 +715,18 @@ public class Main {
         }
         
         cache.mkdirs();
+        llvmCache = new File(cache, "llvm");
+        llvmCache.mkdirs();
+        objectCache = new File(cache, "object");
+        objectCache.mkdirs();
 
         if (target == null) {
             target = mainClass;
         }
         
-        bootClassPathFiles.add(new File(home, "lib/nullvm-rt.jar"));
+        if (!nort) {
+            bootClassPathFiles.add(new File(home, "lib/nullvm-rt.jar"));
+        }
 
         if (bootclasspath != null) {
             for (String p : bootclasspath.split(File.pathSeparator)) {
@@ -890,7 +847,39 @@ public class Main {
         }
     }
     
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings("rawtypes")
+    private String detectArch() throws IOException {
+        String llcPath = "llc";
+        if (llvmBinDir != null) {
+            llcPath = new File(llvmBinDir, "llc").getAbsolutePath();
+        }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ExecuteStreamHandler streamHandler = new PumpStreamHandler(baos);
+        Executor executor = new DefaultExecutor();
+        executor.setStreamHandler(streamHandler);
+        Map env = EnvironmentUtils.getProcEnvironment();
+        executor.setExitValues(new int[] {0, 1});
+        CommandLine command = CommandLine.parse(llcPath).addArgument("--version");
+        executor.execute(command, env);
+        String output = new String(baos.toByteArray());
+        Matcher m = Pattern.compile("(?m)Host:\\s*(.*)$").matcher(output);
+        if (m.find()) {
+            String s = m.group(1).trim();
+            if (s.matches("^(x86.64|amd64).*")) {
+                return "x86-64";
+            }
+            if (s.matches("^(x86|i\\d86).*")) {
+                return "x86";
+            }
+            if (s.matches("^arm.*")) {
+                return "arm";
+            }
+            throw new IllegalArgumentException("Unrecognized Host string: " + s);
+        }
+        throw new IllegalArgumentException("Failed to autodetect arch using command: " + command);
+    }
+    
+    @SuppressWarnings({ "unchecked" })
     private void runTarget(List<ClasspathEntry> bootEntries, List<ClasspathEntry> mainEntries) throws IOException {
         Properties bootEntriesProps = new Properties();
         for (ClasspathEntry entry : bootEntries) {
@@ -965,6 +954,22 @@ public class Main {
         this.stdout = stdout;
     }
 
+    void setTarget(String target) {
+        this.target = target;
+    }
+
+    void setArch(String arch) {
+        this.arch = arch;
+    }
+
+    void setCpu(String cpu) {
+        this.cpu = cpu;
+    }
+
+    void setRun(boolean run) {
+        this.run = run;
+    }
+
     public static void main(String[] args) throws IOException {
         new Main().run(args);
     }
@@ -975,19 +980,37 @@ public class Main {
         }
         return new File(makeFileRelativeTo(dir, f.getParentFile()), f.getName());
     }
+
+    private static File rebase(File f, File oldBase, File newBase) {
+        try {
+            return new File(newBase, f.getCanonicalPath().substring(oldBase.getCanonicalPath().length()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static File changeExt(File f, String newExt) {
+        String name = f.getName();
+        int index = name.lastIndexOf('.');
+        if (index == -1) {
+            return new File(f.getParent(), name + "." + newExt);
+        }
+        return new File(f.getParent(), name.substring(0, index) + "." + newExt);
+    }
     
     interface ClasspathEntry {
         Path getPath();
-        File getStaticLibrary();
         File getDynamicLibrary();
-        File getCacheDir();
+        File getLlvmCacheDir();
+        File getObjectCacheDir();
         File getArchive();
         boolean hasChangedAfter(long timestamp);
     }
     
     class ZipFilePathClasspathEntry implements ClasspathEntry {
         private final ZipFilePath path;
-        private File cacheDir = null;
+        private File llvmCacheDir = null;
+        private File objectCacheDir = null;
         
         public ZipFilePathClasspathEntry(ZipFilePath path) {
             this.path = path;
@@ -995,22 +1018,31 @@ public class Main {
         public Path getPath() {
             return path;
         }
-        public File getStaticLibrary() {
-            return new File(getCacheDir().getParentFile(), "lib" + path.getFile().getName() + ".a");
-        }
         public File getDynamicLibrary() {
-            return new File(getCacheDir().getParentFile(), "lib" + path.getFile().getName() + ".so");
+            return new File(getObjectCacheDir().getParentFile(), "lib" + path.getFile().getName() + ".so");
         }
-        public File getCacheDir() {
-            if (cacheDir == null) {
+        public File getLlvmCacheDir() {
+            if (llvmCacheDir == null) {
                 try {
-                    cacheDir = new File(makeFileRelativeTo(cache, path.getFile().getCanonicalFile().getParentFile()), 
+                    llvmCacheDir = new File(makeFileRelativeTo(llvmCache, path.getFile().getCanonicalFile().getParentFile()), 
                             path.getFile().getName() + ".classes");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             } 
-            return cacheDir;
+            return llvmCacheDir;
+        }
+        public File getObjectCacheDir() {
+            if (objectCacheDir == null) {
+                try {
+                    File base = new File(new File(new File(objectCache, debug ? "debug" : "release"), arch), cpu == null ? "default" : cpu);
+                    objectCacheDir = new File(makeFileRelativeTo(base, path.getFile().getCanonicalFile().getParentFile()), 
+                            path.getFile().getName() + ".classes");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } 
+            return objectCacheDir;
         }
         public File getArchive() {
             return path.getFile();
@@ -1027,7 +1059,8 @@ public class Main {
     class DirectoryPathClasspathEntry implements ClasspathEntry {
         private final DirectoryPath path;
         private File archive = null;
-        private File cacheDir = null;
+        private File llvmCacheDir = null;
+        private File objectCacheDir = null;
         private final String jarName;
         
         public DirectoryPathClasspathEntry(DirectoryPath path) {
@@ -1037,25 +1070,34 @@ public class Main {
         public Path getPath() {
             return path;
         }
-        public File getStaticLibrary() {
-            return new File(getCacheDir().getParentFile(), "lib" + jarName + ".a");
-        }
         public File getDynamicLibrary() {
-            return new File(getCacheDir().getParentFile(), "lib" + jarName + ".so");
+            return new File(getObjectCacheDir().getParentFile(), "lib" + jarName + ".so");
         }
-        public File getCacheDir() {
-            if (cacheDir == null) {
+        public File getLlvmCacheDir() {
+            if (llvmCacheDir == null) {
                 try {
-                    cacheDir = new File(makeFileRelativeTo(cache, path.getFile().getCanonicalFile()), jarName + ".classes");
+                    llvmCacheDir = new File(makeFileRelativeTo(llvmCache, path.getFile().getCanonicalFile()), jarName + ".classes");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             } 
-            return cacheDir;
+            return llvmCacheDir;
+        }        
+        public File getObjectCacheDir() {
+            if (objectCacheDir == null) {
+                try {
+                    File base = new File(new File(new File(objectCache, debug ? "debug" : "release"), arch), cpu == null ? "default" : cpu);
+                    objectCacheDir = new File(makeFileRelativeTo(base, 
+                            path.getFile().getCanonicalFile()), jarName + ".classes");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } 
+            return objectCacheDir;
         }        
         public File getArchive() {
             if (archive == null) {
-                File a = new File(getCacheDir().getParentFile(), jarName);
+                File a = new File(getLlvmCacheDir().getParentFile(), jarName);
                 if (!a.exists() || hasChangedAfter(a.lastModified())) {
                     try {
                         createArchive(path.getFile(), a, false);

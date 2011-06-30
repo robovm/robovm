@@ -409,9 +409,15 @@ public class SootClassCompiler {
         allFields.addAll(classFields);
         allFields.addAll(instanceFields);
         for (SootField field : allFields) {
-            // TODO: Don't create accessors for private fields?
-            fieldGetter(field);
-            fieldSetter(field);
+            if (!field.isPrivate()) {
+                // Only non private fields need getters
+                fieldGetter(field);
+                if (!field.isFinal()) {
+                    // Final fields can only be set from the class that declares it
+                    // and the declaring class can always access the field directly
+                    fieldSetter(field);
+                }
+            }
         }
         
         if (!sootClass.declaresMethodByName("<clinit>") && hasConstantValueTags(classFields)) {
@@ -1158,10 +1164,14 @@ public class SootClassCompiler {
         }
         
         for (SootField field : classFields) {
-            FunctionRef getter = new FunctionRef(mangleField(field) + "_getter", 
-                    new FunctionType(getType(field.getType()), ENV_PTR));
-            FunctionRef setter = new FunctionRef(mangleField(field) + "_setter", 
-                    new FunctionType(VOID, ENV_PTR, getType(field.getType())));
+            Constant getter = new NullConstant(new FunctionType(getType(field.getType()), ENV_PTR));
+            Constant setter = new NullConstant(new FunctionType(VOID, ENV_PTR, getType(field.getType())));
+            if (!field.isPrivate()) {
+                getter = new FunctionRef(mangleField(field) + "_getter", (FunctionType) getter.getType());
+                if (!field.isFinal()) {
+                    setter = new FunctionRef(mangleField(field) + "_setter", (FunctionType) setter.getType());
+                }
+            }
             Variable fieldPtr = function.newVariable(FIELD_PTR);
             function.add(new Call(fieldPtr, NVM_BC_ADD_FIELD, ENV, clazz.ref(),
                     getString(field.getName()),
@@ -1178,10 +1188,14 @@ public class SootClassCompiler {
             }
         }
         for (SootField field : instanceFields) {
-            FunctionRef getter = new FunctionRef(mangleField(field) + "_getter", 
-                    new FunctionType(getType(field.getType()), ENV_PTR, OBJECT_PTR));
-            FunctionRef setter = new FunctionRef(mangleField(field) + "_setter", 
-                    new FunctionType(VOID, ENV_PTR, OBJECT_PTR, getType(field.getType())));
+            Constant getter = new NullConstant(new FunctionType(getType(field.getType()), ENV_PTR, OBJECT_PTR));
+            Constant setter = new NullConstant(new FunctionType(VOID, ENV_PTR, OBJECT_PTR, getType(field.getType())));
+            if (!field.isPrivate()) {
+                getter = new FunctionRef(mangleField(field) + "_getter", (FunctionType) getter.getType());
+                if (!field.isFinal()) {
+                    setter = new FunctionRef(mangleField(field) + "_setter", (FunctionType) setter.getType());
+                }
+            }
             Variable fieldPtr = function.newVariable(FIELD_PTR);
             function.add(new Call(fieldPtr, NVM_BC_ADD_FIELD, ENV, clazz.ref(),
                     getString(field.getName()),

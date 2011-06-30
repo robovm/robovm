@@ -8,6 +8,8 @@
 #define FIELD_IS_FINAL(f) (IS_FINAL((f)->access))
 #define FIELD_IS_PACKAGE_PRIVATE(f) (IS_PACKAGE_PRIVATE((f)->access))
 
+extern Field* nvmGetField(Env* env, Class* clazz, char* name, char* desc);
+
 /**
  * Returns the class field with the specified name and descriptor defined by the specified
  * class or one of its super classes.

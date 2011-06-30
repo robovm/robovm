@@ -18,8 +18,6 @@
 package sun.misc;
 
 import java.lang.reflect.Field;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 
 import org.apache.harmony.kernel.vm.Objects;
 import org.apache.harmony.kernel.vm.Threads;
@@ -49,11 +47,13 @@ public class Unsafe {
             throw new SecurityException("Unsafe");
         }
 
-        return AccessController.doPrivileged(new PrivilegedAction<Unsafe>() {
-            public Unsafe run() {
-                return INSTANCE;
-            }
-        });
+        // NullVM change. Not calling AccessController.doPrivileged() anymore.
+        return INSTANCE;
+//        return AccessController.doPrivileged(new PrivilegedAction<Unsafe>() {
+//            public Unsafe run() {
+//                return INSTANCE;
+//            }
+//        });
     }
     
     private Objects objects;
@@ -74,9 +74,7 @@ public class Unsafe {
      * @param field The {@link Field} to retrieve the offset for.
      * @return The offset value.
      */
-    public long objectFieldOffset(Field field) {
-        return objects.getFieldOffset(field);
-    }
+    public native long objectFieldOffset(Field field);
 
     /**
      * <p>
@@ -90,9 +88,7 @@ public class Unsafe {
      * @return <code>true</code> if the field was updated, <code>false</code>
      *         otherwise.
      */
-    public boolean compareAndSwapInt(Object object, long fieldOffset, int expected, int update) {
-        return objects.compareAndSwapInt(object, fieldOffset, expected, update);
-    }
+    public native boolean compareAndSwapInt(Object object, long fieldOffset, int expected, int update);
 
     /**
      * <p>
@@ -106,10 +102,8 @@ public class Unsafe {
      * @return <code>true</code> if the field was updated, <code>false</code>
      *         otherwise.
      */
-    public boolean compareAndSwapLong(Object object, long fieldOffset, long expected,
-            long update) {
-        return objects.compareAndSwapLong(object, fieldOffset, expected, update);
-    }
+    public native boolean compareAndSwapLong(Object object, long fieldOffset, long expected,
+            long update);
 
     /**
      * <p>
@@ -124,10 +118,8 @@ public class Unsafe {
      * @return <code>true</code> if the field was updated, <code>false</code>
      *         otherwise.
      */
-    public boolean compareAndSwapObject(Object object, long fieldOffset, Object expected,
-            Object update) {
-        return objects.compareAndSwapObject(object, fieldOffset, expected, update);
-    }
+    public native boolean compareAndSwapObject(Object object, long fieldOffset, Object expected,
+            Object update);
 
     /**
      * <p>

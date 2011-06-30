@@ -22,12 +22,18 @@ static Field* getField(Env* env, Class* clazz, char* name, char* desc) {
     return NULL;
 }
 
-ClassField* nvmGetClassField(Env* env, Class* clazz, char* name, char* desc) {
+Field* nvmGetField(Env* env, Class* clazz, char* name, char* desc) {
     Field* field = getField(env, clazz, name, desc);
     if (!field) {
         nvmThrowNoSuchFieldError(env, name);
         return NULL;
     }
+    return field;
+}
+
+ClassField* nvmGetClassField(Env* env, Class* clazz, char* name, char* desc) {
+    Field* field = nvmGetField(env, clazz, name, desc);
+    if (!field) return NULL;
     if (!(field->access & ACC_STATIC)) {
         // TODO: JNI spec doesn't say anything about throwing this
         nvmThrowIncompatibleClassChangeErrorClassField(env, clazz, name, desc);
@@ -37,11 +43,8 @@ ClassField* nvmGetClassField(Env* env, Class* clazz, char* name, char* desc) {
 }
 
 InstanceField* nvmGetInstanceField(Env* env, Class* clazz, char* name, char* desc) {
-    Field* field = getField(env, clazz, name, desc);
-    if (!field) {
-        nvmThrowNoSuchFieldError(env, name);
-        return NULL;
-    }
+    Field* field = nvmGetField(env, clazz, name, desc);
+    if (!field) return NULL;
     if (field->access & ACC_STATIC) {
         // TODO: JNI spec doesn't say anything about throwing this
         nvmThrowIncompatibleClassChangeErrorInstanceField(env, clazz, name, desc);

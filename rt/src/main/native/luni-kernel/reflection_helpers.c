@@ -7,10 +7,11 @@ static Class* java_lang_reflect_Constructor = NULL;
 static Method* java_lang_reflect_Constructor_init = NULL;
 static Class* java_lang_reflect_Field = NULL;
 static Method* java_lang_reflect_Field_init = NULL;
+static InstanceField* java_lang_reflect_Field_field = NULL;
 
 Object* createMethodObject(Env* env, Method* method) {
     if (!java_lang_reflect_Method) {
-        java_lang_reflect_Method = nvmFindClass(env, "java/lang/reflect/Method");
+        java_lang_reflect_Method = nvmFindClassUsingLoader(env, "java/lang/reflect/Method", NULL);
         if (!java_lang_reflect_Method) return NULL;
     }
     if (!java_lang_reflect_Method_init) {
@@ -24,7 +25,7 @@ Object* createMethodObject(Env* env, Method* method) {
 
 Object* createFieldObject(Env* env, Field* field) {
     if (!java_lang_reflect_Field) {
-        java_lang_reflect_Field = nvmFindClass(env, "java/lang/reflect/Field");
+        java_lang_reflect_Field = nvmFindClassUsingLoader(env, "java/lang/reflect/Field", NULL);
         if (!java_lang_reflect_Field) return NULL;
     }
     if (!java_lang_reflect_Field_init) {
@@ -38,7 +39,7 @@ Object* createFieldObject(Env* env, Field* field) {
 
 Object* createConstructorObject(Env* env, Method* method) {
     if (!java_lang_reflect_Constructor) {
-        java_lang_reflect_Constructor = nvmFindClass(env, "java/lang/reflect/Constructor");
+        java_lang_reflect_Constructor = nvmFindClassUsingLoader(env, "java/lang/reflect/Constructor", NULL);
         if (!java_lang_reflect_Constructor) return NULL;
     }
     if (!java_lang_reflect_Constructor_init) {
@@ -50,6 +51,17 @@ Object* createConstructorObject(Env* env, Method* method) {
     return nvmNewObjectA(env, java_lang_reflect_Constructor, java_lang_reflect_Constructor_init, initArgs);
 }
 
+Field* getFieldFromFieldObject(Env* env, Object* fieldObject) {
+    if (!java_lang_reflect_Field) {
+        java_lang_reflect_Field = nvmFindClassUsingLoader(env, "java/lang/reflect/Field", NULL);
+        if (!java_lang_reflect_Field) return NULL;
+    }
+    if (!java_lang_reflect_Field_field) {
+        java_lang_reflect_Field_field = nvmGetInstanceField(env, java_lang_reflect_Field, "field", "J");
+        if (!java_lang_reflect_Field_field) return NULL;
+    }
+    return (Field*) nvmGetLongInstanceFieldValue(env, fieldObject, java_lang_reflect_Field_field);
+}
 
 // TODO: Some of the code here may have been copied from Android.
 

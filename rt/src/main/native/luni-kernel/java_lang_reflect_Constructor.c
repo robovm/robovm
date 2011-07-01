@@ -1,8 +1,7 @@
 #include <nullvm.h>
 #include "reflection_helpers.h"
 
-Object* Java_java_lang_reflect_Constructor_internalNewInstance(JNIEnv* _env, Class* clazz, long methodPtr, ObjectArray* parameterTypes, ObjectArray* args) {
-    Env* env = (Env*) _env;
+Object* Java_java_lang_reflect_Constructor_internalNewInstance(Env* env, Class* clazz, long methodPtr, ObjectArray* parameterTypes, ObjectArray* args) {
     Method* method = (Method*) methodPtr;
 
     /*
@@ -17,14 +16,7 @@ Object* Java_java_lang_reflect_Constructor_internalNewInstance(JNIEnv* _env, Cla
 
     Object* o = nvmNewObjectA(env, method->clazz, method, jvalueArgs);
     if (!o) {
-        // TODO: Cache InvocationTargetException in libnullvm?
-        Class* java_lang_ITE = nvmFindClass(env, "java/lang/InvocationTargetException");
-        if (!java_lang_ITE) return NULL;
-        Method* java_lang_ITE_constructor = nvmGetMethod(env, java_lang_ITE, "<init>", "(Ljava/lang/Throwable;)V");
-        if (!java_lang_ITE_constructor) return NULL;
-        Object* exception = nvmNewObject(env, java_lang_ITE, java_lang_ITE_constructor, nvmExceptionOccurred(env));
-        if (!exception) return NULL;
-        nvmThrow(env, exception);
+        throwInvocationTargetException(env, nvmExceptionOccurred(env));
         return NULL;
     }
     return o;

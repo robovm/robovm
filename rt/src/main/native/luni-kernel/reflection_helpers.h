@@ -4,6 +4,7 @@ Object* createMethodObject(Env* env, Method* method);
 Object* createFieldObject(Env* env, Field* field);
 Object* createConstructorObject(Env* env, Method* method);
 Field* getFieldFromFieldObject(Env* env, Object* fieldObject);
+void throwInvocationTargetException(Env* env, Object* throwable);
 jvalue* validateAndUnwrapArgs(Env* env, ObjectArray* parameterTypes, ObjectArray* args);
 jboolean unwrapBoolean(Env* env, Object* arg, jvalue* value);
 jboolean unwrapByte(Env* env, Object* arg, jvalue* value);

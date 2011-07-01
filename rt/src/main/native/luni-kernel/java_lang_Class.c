@@ -226,6 +226,11 @@ Object* Java_java_lang_Class_newInstanceImpl(Env* env, Class* clazz) {
     // TODO: Access checks
 
     jvalue args[1];
-    return nvmNewObjectA(env, clazz, constructor, args);
+    Object* o = nvmNewObjectA(env, clazz, constructor, args);
+    if (!o) {
+        throwInvocationTargetException(env, nvmExceptionOccurred(env));
+        return NULL;
+    }
+    return o;
 }
 

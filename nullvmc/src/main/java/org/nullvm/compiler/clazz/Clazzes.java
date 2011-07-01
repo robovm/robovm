@@ -16,13 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import verify.VerificationException;
-import verify.bytecode.BytecodeVerifier;
-import verify.classfile.ClassFile;
-import verify.type.ClassInfo;
-import verify.type.ClassInfoProvider;
-import verify.type.TypeContext;
-
 /**
  *
  * @version $Id$
@@ -85,57 +78,6 @@ public class Clazzes {
                     cache.put(clazz.getInternalName(), clazz);
                 }
             }
-        }
-    }
-    
-    void verify(Clazz clazz) throws IOException {
-        ClassInfoProvider provider = new ClassInfoProvider() {
-            public ClassInfo provide(String name) {
-                Clazz c = load(name);
-                if (c != null) {
-                    try {
-                        final ClassFile cf = new ClassFile(c.getBytes());
-                        return new ClassInfo() {
-                            public String[] getSuperInterfaceNames() {
-                                if (cf.interfaces_count == 0) {
-                                    return null;
-                                }
-                                    
-                                String[] result = new String[cf.interfaces_count];
-                                for (int i = 0; i < cf.interfaces_count; i++) {
-                                    result[i] = cf.pool.get_class (cf.interfaces[i]);
-                                }
-                                
-                                return result;
-                            }
-                            public String getSuperClassName() {
-                                return (cf.super_class != 0) ? cf.pool.get_class(cf.super_class) : null;
-                            }
-                            public String getClassName() {
-                                return cf.pool.get_class(cf.this_class);
-                            }
-                            public int getAccessFlags() {
-                                return cf.access_flags;
-                            }
-                        };
-                    } catch (IOException e) {
-                        return null;
-                    }
-                }
-                return null;
-            }
-        };
-
-        TypeContext context = new TypeContext(provider);
-        BytecodeVerifier verifier = new BytecodeVerifier(context);
-        try {
-            verifier.verify(new ClassFile(clazz.getBytes()));
-        } catch (VerificationException e) {
-            throw (VerifyError) new VerifyError(e.getMessage()).initCause(e);
-        } catch (ClassFormatError e) {
-            throw (VerifyError) new VerifyError(e.getMessage()).initCause(e);
-        } catch (Throwable t) {
-            throw (VerifyError) new VerifyError("Internal error occurred during verification: " + t.getMessage()).initCause(t);
         }
     }
     

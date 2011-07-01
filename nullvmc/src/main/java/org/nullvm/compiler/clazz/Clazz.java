@@ -25,10 +25,6 @@ public abstract class Clazz {
         this.clazzes = clazzes;
     }
     
-    public void verify() throws IOException {
-        clazzes.verify(this);
-    }
-    
     public String getFileName() {
         return fileName;
     }

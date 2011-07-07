@@ -1640,7 +1640,7 @@ public class SootClassCompiler {
         Global g = strings.get(string);
         if (g == null) {
             byte[] modUtf8 = stringToModifiedUtf8(string);
-            g = new Global(getStringVarName(modUtf8), Linkage.linker_private, 
+            g = new Global(getStringVarName(modUtf8), Linkage.linker_private_weak, 
                     new StringConstant(modUtf8), true);
             strings.put(string, g);
         }

@@ -5,6 +5,10 @@
 #include <link.h>
 #include <dlfcn.h>
 #include "log.h"
+#include "hyport.h"
+
+HyPortLibraryVersion portLibraryVersion;
+HyPortLibrary portLibrary;
 
 static inline jint startsWith(char* s, char* prefix) {
     return s && strncmp(s, prefix, strlen(prefix)) == 0;
@@ -170,6 +174,9 @@ Env* nvmStartup(Options* options) {
     strcpy(cpFile, options->basePath);
     strcat(cpFile, "/classpath");
     if (!loadClasspathEntries(env, options->basePath, cpFile, &options->classpath)) return NULL;
+
+    HYPORT_SET_VERSION(&portLibraryVersion, HYPORT_CAPABILITY_MASK);
+    if (hyport_init_library(&portLibrary, &portLibraryVersion, sizeof(HyPortLibrary))) return NULL;
 
     // Call init on modules
     if (!nvmInitLog(env)) return NULL;

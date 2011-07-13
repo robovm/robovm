@@ -4,11 +4,11 @@
 
 // Defined in method.c
 extern DynamicLib* bootNativeLibs;
+// Defined in init.c
+extern HyPortLibrary portLibrary;
 
 extern struct VMInterfaceFunctions_ vmiImpl;
 VMInterface vmi = &vmiImpl;
-HyPortLibraryVersion portLibraryVersion;
-HyPortLibrary portLibrary;
 
 static UDATA JNICALL _HyVMLSAllocKeys(JNIEnv* env, UDATA* pInitCount, ...) {
     return 0;
@@ -80,9 +80,6 @@ static jint _GetEnv(JavaVM *_vm, void **env, jint version) {
 }
 
 jboolean nvmInitVMI(Env* env) {
-    HYPORT_SET_VERSION(&portLibraryVersion, HYPORT_CAPABILITY_MASK);
-    if (hyport_init_library(&portLibrary, &portLibraryVersion, sizeof(HyPortLibrary))) return FALSE;
-
     // Setup a JavaVM struct which satisfies the JNI_OnLoad_* functions
     struct JNIInvokeInterface_ javaVM;
     javaVM.GetEnv = _GetEnv;

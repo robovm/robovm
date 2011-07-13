@@ -91,7 +91,8 @@ static Method* java_lang_Double_valueOf = NULL;
 static DynamicLib* bootSoHandles = NULL;
 static DynamicLib* mainSoHandles = NULL;
 
-// TODO: Protect these with locks
+static hythread_monitor_t classLock;
+
 typedef struct LoadedClassEntry {
     char* key;      // The class name
     Class* clazz;
@@ -109,19 +110,27 @@ static inline jint getNextClassId(void) {
     return __sync_fetch_and_add(&nextClassId, 1);
 }
 
-static inline Class* getLoadedClassByName(Env* env, char* className) {
+static Class* getLoadedClass(Env* env, char* className) {
     LoadedClassEntry* entry;
     HASH_FIND_STR(loadedClasses, className, entry);
     return entry ? entry->clazz : NULL;
 }
 
-static inline jboolean addLoadedClass(Env* env, Class* clazz) {
+static jboolean addLoadedClass(Env* env, Class* clazz) {
     LoadedClassEntry* entry = nvmAllocateMemory(env, sizeof(LoadedClassEntry));
     if (!entry) return FALSE;
     entry->key = clazz->name;
     entry->clazz = clazz;
     HASH_ADD_KEYPTR(hh, loadedClasses, entry->key, strlen(entry->key), entry);
     return TRUE;
+}
+
+static inline obtainClassLock() {
+    hythread_monitor_enter(classLock);
+}
+
+static inline releaseClassLock() {
+    hythread_monitor_exit(classLock);
 }
 
 static void loadSoHandles(Env* env, ClasspathEntry* entry, DynamicLib** first) {
@@ -260,20 +269,30 @@ static Class* (*findClassLoaderFunction(Env* env, char* funcName, DynamicLib* dl
 }
 
 static Class* findClass(Env* env, char* className, ClassLoader* classLoader, DynamicLib* dlib) {
-    Class* clazz = getLoadedClassByName(env, className);
+    obtainClassLock();
+    Class* clazz = getLoadedClass(env, className);
     if (clazz != NULL) {
+        releaseClassLock();
         return clazz;
     }
 
     if (className[0] == '[') {
         Class* componentType = findClassByDescriptor(env, &className[1], classLoader, dlib);
-        if (!componentType) return NULL;
-        return createArrayClass(env, componentType, dlib);
+        if (!componentType)  {
+            releaseClassLock();
+            return NULL;
+        }
+        clazz = createArrayClass(env, componentType, dlib);
+        releaseClassLock();
+        return clazz;
     }
 
     TRACE("Class '%s' not loaded\n", className);
     char* funcName = mangleClassName(env, className);
-    if (!funcName) return NULL;
+    if (!funcName) {
+        releaseClassLock();
+        return NULL;
+    }
 
     TRACE("Searching for class loader function '%s()'\n", funcName);
 
@@ -289,7 +308,10 @@ static Class* findClass(Env* env, char* className, ClassLoader* classLoader, Dyn
         clazz = f(&callInfo);
     }
 
-    if (nvmExceptionOccurred(env)) return NULL;
+    if (nvmExceptionOccurred(env)) {
+        releaseClassLock();
+        return NULL;
+    }
 
     if (clazz == NULL) {
         if (!strcmp(className, "java/lang/ClassNotFoundException")) {
@@ -298,6 +320,7 @@ static Class* findClass(Env* env, char* className, ClassLoader* classLoader, Dyn
         nvmThrowClassNotFoundException(env, className);
     }
 
+    releaseClassLock();
     return clazz;
 }
 
@@ -482,6 +505,10 @@ static jboolean fixClassPointer(Class* c, void* data) {
 
 jboolean nvmInitClasses(Env* env) {
     initSoHandles(env);
+
+    if (hythread_monitor_init_with_name(&classLock, 0, NULL) < 0) {
+        return FALSE;
+    }
 
     // Cache important classes in java.lang.
     java_lang_Object = findBootClass(env, "java/lang/Object");
@@ -725,7 +752,7 @@ Class* nvmFindClassUsingLoader(Env* env, char* className, ClassLoader* classLoad
 }
 
 Class* nvmFindLoadedClass(Env* env, char* className, ClassLoader* classLoader) {
-    Class* clazz = getLoadedClassByName(env, className);
+    Class* clazz = getLoadedClass(env, className);
     if (nvmExceptionOccurred(env)) return NULL;
     return clazz;
 }
@@ -873,7 +900,12 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
     clazz->state = CLASS_VERIFIED;
     clazz->state = CLASS_PREPARED;
 
-    addLoadedClass(env, clazz);
+    obtainClassLock();
+    if (!addLoadedClass(env, clazz)) {
+        releaseClassLock();
+        return FALSE;
+    }
+    releaseClassLock();
 
     return TRUE;
 }

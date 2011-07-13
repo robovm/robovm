@@ -4,6 +4,7 @@
 #include "utlist.h"
 #include "trampolines.h"
 #include "log.h"
+#include "uthash.h"
 
 Class* java_lang_Object;
 Class* java_lang_Class;
@@ -91,8 +92,12 @@ static DynamicLib* bootSoHandles = NULL;
 static DynamicLib* mainSoHandles = NULL;
 
 // TODO: Protect these with locks
-static Map* nameToClassMap = NULL;
-static Map* idToClassMap = NULL;
+typedef struct LoadedClassEntry {
+    char* key;      // The class name
+    Class* clazz;
+    UT_hash_handle hh;
+} LoadedClassEntry;
+static LoadedClassEntry* loadedClasses = NULL;
 
 static jint nextClassId = 0;
 
@@ -105,18 +110,17 @@ static inline jint getNextClassId(void) {
 }
 
 static inline Class* getLoadedClassByName(Env* env, char* className) {
-    return nvmMapGet(env, nameToClassMap, (MapKey) {.p = className});
-}
-
-static inline Class* getLoadedClassById(Env* env, jint id) {
-    return (Class*) nvmMapGet(env, idToClassMap, (MapKey) {.i = id});
+    LoadedClassEntry* entry;
+    HASH_FIND_STR(loadedClasses, className, entry);
+    return entry ? entry->clazz : NULL;
 }
 
 static inline jboolean addLoadedClass(Env* env, Class* clazz) {
-    nvmMapPut(env, nameToClassMap, (MapKey) {.p = clazz->name}, clazz);
-    if (nvmExceptionOccurred(env)) return FALSE;
-    nvmMapPut(env, idToClassMap, (MapKey) {.i = clazz->id}, clazz);
-    if (nvmExceptionOccurred(env)) return FALSE;
+    LoadedClassEntry* entry = nvmAllocateMemory(env, sizeof(LoadedClassEntry));
+    if (!entry) return FALSE;
+    entry->key = clazz->name;
+    entry->clazz = clazz;
+    HASH_ADD_KEYPTR(hh, loadedClasses, entry->key, strlen(entry->key), entry);
     return TRUE;
 }
 
@@ -477,11 +481,6 @@ static jboolean fixClassPointer(Class* c, void* data) {
 }
 
 jboolean nvmInitClasses(Env* env) {
-    nameToClassMap = nvmNewMapWithStringKeys(env, 1024);
-    if (!nameToClassMap) return FALSE;
-    idToClassMap = nvmNewMapWithIntKeys(env, 1024);
-    if (!idToClassMap) return FALSE;
-
     initSoHandles(env);
 
     // Cache important classes in java.lang.
@@ -1059,17 +1058,11 @@ Object* nvmCloneObject(Env* env, Object* obj) {
     return copy;
 }
 
-static jboolean classIterator(MapEntry* entry, void* d) {
-    jboolean (*f)(Class*, void*) = ((void**)d)[0];
-    void* data = ((void**)d)[1];
-    return f((Class*) entry->value, data);
-}
-
 void nvmIterateLoadedClasses(Env* env, jboolean (*f)(Class*, void*), void* data) {
-    void* d[2];
-    d[0] = f;
-    d[1] = data;
-    nvmMapForEach(env, nameToClassMap, classIterator, d);
+    LoadedClassEntry* entry;
+    for (entry = loadedClasses; entry != NULL; entry = entry->hh.next) {
+        if (!f(entry->clazz, data)) return;
+    }
 }
 
 static jboolean dumpClassesIterator(Class* clazz, void* d) {

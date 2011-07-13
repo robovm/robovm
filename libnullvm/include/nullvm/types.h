@@ -19,31 +19,6 @@
 #define CLASS_INITIALIZED 5
 #define CLASS_ERROR 6
 
-union _MapKey;
-typedef union _MapKey MapKey;
-union _MapKey {
-    void* p;
-    jint i;
-};
-
-struct _MapEntry;
-typedef struct _MapEntry MapEntry;
-struct _MapEntry {
-    MapEntry* next;
-    jint hash;
-    MapKey key;
-    void* value;
-};
-
-struct _Map {
-    jint (*hashFunction)(MapKey key);
-    jint (*equalsFunction)(MapKey a, MapKey b);
-    jint size;
-    jint capacity;
-    MapEntry** buckets;
-};
-typedef struct _Map Map;
-
 typedef struct Field Field;
 typedef struct ClassField ClassField;
 typedef struct InstanceField InstanceField;

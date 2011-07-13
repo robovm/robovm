@@ -13,7 +13,6 @@ extern "C" {
 #endif
 
 #include <nullvm/types.h>
-#include <nullvm/map.h>
 #include <nullvm/access.h>
 #include <nullvm/memory.h>
 #include <nullvm/init.h>

@@ -7,7 +7,6 @@ SRC = \
   field.c \
   init.c \
   log.c \
-  map.c \
   memory.c \
   method.c \
   native.c \

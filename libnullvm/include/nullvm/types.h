@@ -122,7 +122,7 @@ struct Object {
 struct Class {
   Object object;
   void* _data;             // Reserve the memory needed to store the instance fields for java.lang.Class. 
-                           // java.lang.Class has a single field, name, which is of type String.
+                           // java.lang.Class has a single field, (SoftReference<ClassCache<T>> cacheRef).
                            // void* gives enough space to store that reference.
   jint id;
   char* name;              // The name in modified UTF-8.

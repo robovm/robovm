@@ -42,6 +42,12 @@ public class Module {
         return f;
     }
     
+    public Function newFunction(Linkage linkage, FunctionAttribute[] attributes, String name, FunctionType type, String ... parameterNames) {
+        Function f = new Function(linkage, attributes, name, type, parameterNames);
+        functions.add(f);
+        return f;
+    }
+    
     public void addGlobal(Global global) {
         globals.add(global);
     }

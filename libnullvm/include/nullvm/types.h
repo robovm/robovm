@@ -286,6 +286,9 @@ typedef struct Env {
     VM* vm;
     Object* throwable;
     Thread* currentThread;
+    void* reserved0; // Used internally
+    void* reserved1; // Used internally
+    void* reserved2; // Used internally
 } Env;
 
 typedef struct CallStackEntry CallStackEntry;

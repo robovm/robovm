@@ -17,6 +17,7 @@ import java.util.Map;
 public class Function {
     private final String name;
     private final Linkage linkage;
+    private final FunctionAttribute[] attributes;
     private final FunctionType type;
     private final Map<Label, BasicBlock> basicBlockMap = new HashMap<Label, BasicBlock>();
     private final List<BasicBlock> basicBlockList = new ArrayList<BasicBlock>();
@@ -30,7 +31,12 @@ public class Function {
     }
     
     public Function(Linkage linkage, String name, FunctionType type, String ... parameterNames) {
+        this(linkage, null, name, type, parameterNames);
+    }
+    
+    public Function(Linkage linkage, FunctionAttribute[] attributes, String name, FunctionType type, String ... parameterNames) {
         this.linkage = linkage;
+        this.attributes = attributes;
         this.name = "@" + name;
         this.type = type;
         this.parameterNames = parameterNames;
@@ -134,7 +140,14 @@ public class Function {
         if (type.isVarargs()) {
             sb.append("...");
         }
-        sb.append(") {\n");
+        sb.append(")");
+        if (attributes != null && attributes.length > 0) {
+            for (FunctionAttribute attr : attributes) {
+                sb.append(' ');
+                sb.append(attr.toString());
+            }
+        }
+        sb.append(" {\n");
         for (BasicBlock bb : basicBlockList) {
             sb.append(bb.toString());
         }

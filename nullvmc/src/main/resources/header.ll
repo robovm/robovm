@@ -1,4 +1,4 @@
-%Env = type opaque
+%Env = type {i8*, i8*, i8*, i8*, i8*, i8*, i8*}
 %Class = type {i8*, i8*, i8*, i32, i8*, i8*, i8*, i8, i32, i32, i8*, i8*, i8*, i8*, i32, i32, i32, i32, i8*}
 %Method = type opaque
 %Field = type opaque
@@ -57,15 +57,15 @@ declare void @_nvmBcMonitorExit(%Env*, %Object*)
 declare %Object* @_nvmBcCheckcast(%Env*, %Object*, i8*, %Class*)
 declare i32 @_nvmBcInstanceof(%Env*, %Object*, i8*, %Class*)
 
-declare i8* @_nvmBcResolveInvokespecial(%Env*, i8*, i8*, i8*, i8*, %Class*, i8*)
-declare i8* @_nvmBcResolveInvokestatic(%Env*, i8*, i8*, i8*, %Class*, i8*)
-declare i8* @_nvmBcResolveInvokevirtual(%Env*, i8*, i8*, i8*, i8*, %Class*, i8*)
-declare i8* @_nvmBcResolveInvokeinterface(%Env*, i8*, i8*, i8*, %Class*, i8*)
+declare i8* @_nvmBcResolveInvokespecial(%Env*, i8*, i8*, i8*)
+declare i8* @_nvmBcResolveInvokestatic(%Env*, i8*, i8*, i8*)
+declare i8* @_nvmBcResolveInvokevirtual(%Env*, i8*, i8*, i8*)
+declare i8* @_nvmBcResolveInvokeinterface(%Env*, i8*, i8*, i8*)
 declare i8* @_nvmBcResolveNative(%Env*, i8*, i8*, i8*, i8*, i8*, %Class*, i8*)
-declare i8* @_nvmBcResolveGetstatic(%Env*, i8*, i8*, i8*, %Class*, i8*)
-declare i8* @_nvmBcResolvePutstatic(%Env*, i8*, i8*, i8*, %Class*, i8*)
-declare i8* @_nvmBcResolveGetfield(%Env*, i8*, i8*, i8*, i8*, %Class*, i8*)
-declare i8* @_nvmBcResolvePutfield(%Env*, i8*, i8*, i8*, i8*, %Class*, i8*)
+declare i8* @_nvmBcResolveGetstatic(%Env*, i8*, i8*, i8*)
+declare i8* @_nvmBcResolvePutstatic(%Env*, i8*, i8*, i8*)
+declare i8* @_nvmBcResolveGetfield(%Env*, i8*, i8*, i8*)
+declare i8* @_nvmBcResolvePutfield(%Env*, i8*, i8*, i8*)
 
 declare i8* @llvm.eh.exception() nounwind
 declare i32 @llvm.eh.selector(i8*, i8*, ...) nounwind

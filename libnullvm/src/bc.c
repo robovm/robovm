@@ -359,7 +359,9 @@ jint _nvmBcInstanceof(Env* env, Object* o, char* className, Class* caller) {
     return (jint) b;
 }
 
-void* _nvmBcResolveGetstatic(Env* env, char* owner, char* name, char* desc, Class* caller, void** ptr) {
+void* _nvmBcResolveGetstatic(Env* env, char* owner, char* name, char* desc) {
+    void** ptr = env->reserved0;
+    Class* caller = env->reserved1;
     TRACE("nvmBcResolveGetstatic: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     // TODO: Check that caller has access to the field
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
@@ -375,7 +377,9 @@ void* _nvmBcResolveGetstatic(Env* env, char* owner, char* name, char* desc, Clas
     return field->field.getter;
 }
 
-void* _nvmBcResolvePutstatic(Env* env, char* owner, char* name, char* desc, Class* caller, void** ptr) {
+void* _nvmBcResolvePutstatic(Env* env, char* owner, char* name, char* desc) {
+    void** ptr = env->reserved0;
+    Class* caller = env->reserved1;
     TRACE("nvmBcResolvePutstatic: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     // TODO: Check that caller has access to the field
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
@@ -395,7 +399,10 @@ void* _nvmBcResolvePutstatic(Env* env, char* owner, char* name, char* desc, Clas
     return field->field.setter;
 }
 
-void* _nvmBcResolveGetfield(Env* env, char* runtimeClassName, char* owner, char* name, char* desc, Class* caller, void** ptr) {
+void* _nvmBcResolveGetfield(Env* env, char* owner, char* name, char* desc) {
+    void** ptr = env->reserved0;
+    Class* caller = env->reserved1;
+    char* runtimeClassName = env->reserved2;
     TRACE("nvmBcResolveGetfield: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     // TODO: Check that caller has access to the field
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
@@ -409,7 +416,10 @@ void* _nvmBcResolveGetfield(Env* env, char* runtimeClassName, char* owner, char*
     return field->field.getter;
 }
 
-void* _nvmBcResolvePutfield(Env* env, char* runtimeClassName, char* owner, char* name, char* desc, Class* caller, void** ptr) {
+void* _nvmBcResolvePutfield(Env* env, char* owner, char* name, char* desc) {
+    void** ptr = env->reserved0;
+    Class* caller = env->reserved1;
+    char* runtimeClassName = env->reserved2;
     TRACE("nvmBcResolvePutfield: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     // TODO: Check that caller has access to the field
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
@@ -427,7 +437,10 @@ void* _nvmBcResolvePutfield(Env* env, char* runtimeClassName, char* owner, char*
     return field->field.setter;
 }
 
-void* _nvmBcResolveInvokespecial(Env* env, char* runtimeClassName, char* owner, char* name, char* desc, Class* caller, void** ptr) {
+void* _nvmBcResolveInvokespecial(Env* env, char* owner, char* name, char* desc) {
+    void** ptr = env->reserved0;
+    Class* caller = env->reserved1;
+    char* runtimeClassName = env->reserved2;
     TRACE("nvmBcResolveInvokespecial: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
     checkClassAccessible(env, clazz, caller);
@@ -441,7 +454,9 @@ void* _nvmBcResolveInvokespecial(Env* env, char* runtimeClassName, char* owner, 
     return impl;
 }
 
-void* _nvmBcResolveInvokestatic(Env* env, char* owner, char* name, char* desc, Class* caller, void** ptr) {
+void* _nvmBcResolveInvokestatic(Env* env, char* owner, char* name, char* desc) {
+    void** ptr = env->reserved0;
+    Class* caller = env->reserved1;
     TRACE("nvmBcResolveInvokestatic: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
     checkClassAccessible(env, clazz, caller);
@@ -458,7 +473,10 @@ void* _nvmBcResolveInvokestatic(Env* env, char* owner, char* name, char* desc, C
     return impl;
 }
 
-void* _nvmBcResolveInvokevirtual(Env* env, char* runtimeClassName, char* owner, char* name, char* desc, Class* caller, void** ptr) {
+void* _nvmBcResolveInvokevirtual(Env* env, char* owner, char* name, char* desc) {
+    void** ptr = env->reserved0;
+    Class* caller = env->reserved1;
+    char* runtimeClassName = env->reserved2;
     TRACE("nvmBcResolveInvokevirtual: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
     checkClassAccessible(env, clazz, caller);
@@ -474,7 +492,9 @@ void* _nvmBcResolveInvokevirtual(Env* env, char* runtimeClassName, char* owner, 
     return method->lookup;
 }
 
-void* _nvmBcResolveInvokeinterface(Env* env, char* owner, char* name, char* desc, Class* caller, void** ptr) {
+void* _nvmBcResolveInvokeinterface(Env* env, char* owner, char* name, char* desc) {
+    void** ptr = env->reserved0;
+    Class* caller = env->reserved1;
     TRACE("nvmBcResolveInvokeinterface: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
     checkClassAccessible(env, clazz, caller);

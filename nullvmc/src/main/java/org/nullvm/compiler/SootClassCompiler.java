@@ -5,6 +5,8 @@
  */
 package org.nullvm.compiler;
 
+import static org.nullvm.compiler.llvm.FunctionAttribute.*;
+import static org.nullvm.compiler.llvm.Linkage.*;
 import static org.nullvm.compiler.llvm.Type.*;
 
 import java.io.File;
@@ -52,6 +54,7 @@ import org.nullvm.compiler.llvm.Fptrunc;
 import org.nullvm.compiler.llvm.Frem;
 import org.nullvm.compiler.llvm.Fsub;
 import org.nullvm.compiler.llvm.Function;
+import org.nullvm.compiler.llvm.FunctionAttribute;
 import org.nullvm.compiler.llvm.FunctionRef;
 import org.nullvm.compiler.llvm.FunctionType;
 import org.nullvm.compiler.llvm.Getelementptr;
@@ -85,6 +88,7 @@ import org.nullvm.compiler.llvm.StructureConstant;
 import org.nullvm.compiler.llvm.StructureType;
 import org.nullvm.compiler.llvm.Sub;
 import org.nullvm.compiler.llvm.Switch;
+import org.nullvm.compiler.llvm.TailCall;
 import org.nullvm.compiler.llvm.Trunc;
 import org.nullvm.compiler.llvm.Type;
 import org.nullvm.compiler.llvm.Unreachable;
@@ -241,7 +245,7 @@ public class SootClassCompiler {
     private static final byte ANNOTATION_DEFAULT = 8;
 
     
-    private static final Type ENV_PTR = new PointerType(new OpaqueType("Env"));
+    private static final Type ENV_PTR = new PointerType(new StructureType("Env", I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
     // Dummy Class type definition. The real one is in header.ll
     private static final StructureType CLASS = new StructureType("Class", I8_PTR);
     private static final Type CLASS_PTR = new PointerType(CLASS);
@@ -291,14 +295,14 @@ public class SootClassCompiler {
     private static final FunctionRef NVM_BC_NEW_OBJECT_ARRAY = new FunctionRef("_nvmBcNewObjectArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, I8_PTR, CLASS_PTR));
     private static final FunctionRef NVM_BC_NEW_MULTI_ARRAY = new FunctionRef("_nvmBcNewMultiArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, new PointerType(I32), I8_PTR, CLASS_PTR));
     private static final FunctionRef NVM_BC_SET_OBJECT_ARRAY_ELEMENT = new FunctionRef("_nvmBcSetObjectArrayElement", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I32, OBJECT_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_INVOKESPECIAL = new FunctionRef("_nvmBcResolveInvokespecial", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_INVOKESTATIC = new FunctionRef("_nvmBcResolveInvokestatic", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_INVOKEVIRTUAL = new FunctionRef("_nvmBcResolveInvokevirtual", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_INVOKEINTERFACE = new FunctionRef("_nvmBcResolveInvokeinterface", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_GETSTATIC = new FunctionRef("_nvmBcResolveGetstatic", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_PUTSTATIC = new FunctionRef("_nvmBcResolvePutstatic", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_GETFIELD = new FunctionRef("_nvmBcResolveGetfield", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
-    private static final FunctionRef NVM_BC_RESOLVE_PUTFIELD = new FunctionRef("_nvmBcResolvePutfield", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_INVOKESPECIAL = new FunctionRef("_nvmBcResolveInvokespecial", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_INVOKESTATIC = new FunctionRef("_nvmBcResolveInvokestatic", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_INVOKEVIRTUAL = new FunctionRef("_nvmBcResolveInvokevirtual", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_INVOKEINTERFACE = new FunctionRef("_nvmBcResolveInvokeinterface", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_GETSTATIC = new FunctionRef("_nvmBcResolveGetstatic", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_PUTSTATIC = new FunctionRef("_nvmBcResolvePutstatic", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_GETFIELD = new FunctionRef("_nvmBcResolveGetfield", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_RESOLVE_PUTFIELD = new FunctionRef("_nvmBcResolvePutfield", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_RESOLVE_NATIVE = new FunctionRef("_nvmBcResolveNative", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
     
     private static final FunctionRef LLVM_EH_EXCEPTION = new FunctionRef("llvm.eh.exception", new FunctionType(I8_PTR));
@@ -422,6 +426,7 @@ public class SootClassCompiler {
         
         if (!sootClass.declaresMethodByName("<clinit>") && hasConstantValueTags(classFields)) {
             Function clinit = module.newFunction(Linkage._private, 
+                    new FunctionAttribute[] {noinline, optsize},
                     mangleMethod(getInternalName(sootClass), "<clinit>", 
                                 new ArrayList<soot.Type>(), soot.VoidType.v()), 
                             new FunctionType(VOID, ENV_PTR), "env");
@@ -574,16 +579,21 @@ public class SootClassCompiler {
     
     private void trampoline(Trampoline trampoline, FunctionRef functionRef) {
         String name = functionRef.getName().substring(1);
-        GlobalRef ptr = new GlobalRef(name + "_ptr", functionRef.getType());
 
+        GlobalRef ptrRef = new GlobalRef(name + "_ptr", functionRef.getType());
+        
         Type[] parameterTypes = functionRef.getType().getParameterTypes();
         String[] parameterNames = new String[parameterTypes.length];
         parameterNames[0] = ENV.getName().substring(1);
         for (int i = 1; i < parameterNames.length; i++) {
             parameterNames[i] = "p" + i;
         }
-        Function function = module.newFunction(Linkage._private, name, functionRef.getType(), parameterNames);
-        
+        Function function = module.newFunction(linkonce_odr, 
+                new FunctionAttribute[] {noinline, optsize},
+                name + (trampoline instanceof NativeCall ? "" : "_t"), 
+                functionRef.getType(), parameterNames);
+
+        String runtimeClass = null;
         Variable targetI8Ptr = function.newVariable(I8_PTR);
         if (trampoline instanceof org.nullvm.compiler.trampoline.Invoke) {
             org.nullvm.compiler.trampoline.Invoke invoke = (org.nullvm.compiler.trampoline.Invoke) trampoline;
@@ -592,20 +602,18 @@ public class SootClassCompiler {
             args.add(ENV);
             if (invoke instanceof Invokespecial) {
                 resolveFunc = NVM_BC_RESOLVE_INVOKESPECIAL;
-                args.add(getString(((Invokespecial) invoke).getRuntimeClass()));
+                runtimeClass = ((Invokespecial) invoke).getRuntimeClass();
             } else if (invoke instanceof Invokestatic) {
                 resolveFunc = NVM_BC_RESOLVE_INVOKESTATIC;                
             } else if (invoke instanceof Invokevirtual) {
                 resolveFunc = NVM_BC_RESOLVE_INVOKEVIRTUAL;                
-                args.add(getString(((Invokevirtual) invoke).getRuntimeClass()));
+                runtimeClass = ((Invokevirtual) invoke).getRuntimeClass();
             } else if (invoke instanceof Invokeinterface) {
                 resolveFunc = NVM_BC_RESOLVE_INVOKEINTERFACE;                
             }
             args.add(getString(invoke.getTargetClass())); 
             args.add(getString(invoke.getMethodName()));
             args.add(getString(invoke.getMethodDesc()));
-            args.add(getCaller(function));
-            args.add(new ConstantBitcast(ptr, I8_PTR));
             function.add(new Call(targetI8Ptr, resolveFunc, args.toArray(new Value[args.size()])));
         } else if (trampoline instanceof NativeCall) {
             NativeCall nativeCall = (NativeCall) trampoline;
@@ -619,7 +627,7 @@ public class SootClassCompiler {
                     getString(mangleNativeMethod(nativeCall.getTargetClass(), 
                             nativeCall.getMethodName(), nativeCall.getMethodDesc())),
                     getCaller(function),
-                    new ConstantBitcast(ptr, I8_PTR)));
+                    new ConstantBitcast(ptrRef, I8_PTR)));
         } else if (trampoline instanceof FieldAccessor) {
             FieldAccessor accessor = (FieldAccessor) trampoline;
             FunctionRef resolveFunc = null;
@@ -631,16 +639,14 @@ public class SootClassCompiler {
                 resolveFunc = NVM_BC_RESOLVE_PUTSTATIC;                
             } else if (accessor instanceof GetField) {
                 resolveFunc = NVM_BC_RESOLVE_GETFIELD;                
-                args.add(getString(((GetField) accessor).getRuntimeClass()));
+                runtimeClass = ((GetField) accessor).getRuntimeClass();
             } else if (accessor instanceof PutField) {
                 resolveFunc = NVM_BC_RESOLVE_PUTFIELD;                
-                args.add(getString(((PutField) accessor).getRuntimeClass()));
+                runtimeClass = ((PutField) accessor).getRuntimeClass();
             }
             args.add(getString(accessor.getTargetClass())); 
             args.add(getString(accessor.getFieldName()));
             args.add(getString(accessor.getFieldDesc()));
-            args.add(getCaller(function));
-            args.add(new ConstantBitcast(ptr, I8_PTR));
             function.add(new Call(targetI8Ptr, resolveFunc, args.toArray(new Value[args.size()])));
         }
 
@@ -661,40 +667,37 @@ public class SootClassCompiler {
             function.add(new Ret());            
         }
         
-//        // TODO: X86-64 specific
-//        module.addFunctionDeclaration(new FunctionDeclaration(name, functionRef.getType()));
-//        module.addAsm("\t.align 16, 0x90");
-//        module.addAsm(name + ":");
-//        module.addAsm("\tmovq .L" + name + "_ptr(%rip), %rax");
-//        module.addAsm("\tjmpq *(%rax)");
+        if (!(trampoline instanceof NativeCall)) {
+            FunctionRef trampolineFuncRef = function.ref();
+            function = module.newFunction(_private, 
+                    new FunctionAttribute[] {noinline, optsize}, 
+                    name, functionRef.getType(), parameterNames);
+            Variable reserved0Ptr = function.newVariable(I8_PTR_PTR);
+            function.add(new Getelementptr(reserved0Ptr, ENV, 0, 4));
+            function.add(new Store(new ConstantBitcast(ptrRef, I8_PTR), reserved0Ptr.ref()));
+            Value caller = getCaller(function);
+            Variable callerI8Ptr = function.newVariable(I8_PTR);
+            function.add(new Bitcast(callerI8Ptr, caller, I8_PTR));
+            Variable reserved1Ptr = function.newVariable(I8_PTR_PTR);
+            function.add(new Getelementptr(reserved1Ptr, ENV, 0, 5));
+            function.add(new Store(callerI8Ptr.ref(), reserved1Ptr.ref()));
+            if (runtimeClass != null) {
+                Variable reserved2Ptr = function.newVariable(I8_PTR_PTR);
+                function.add(new Getelementptr(reserved2Ptr, ENV, 0, 6));
+                function.add(new Store(getString(runtimeClass), reserved2Ptr.ref()));
+            }
+            if (functionRef.getType().getReturnType() != VOID) {
+                Variable result = function.newVariable(functionRef.getType().getReturnType());
+                function.add(new TailCall(result, trampolineFuncRef, args));
+                function.add(new Ret(result.ref()));
+            } else {
+                function.add(new TailCall(trampolineFuncRef, args));
+                function.add(new Ret());            
+            }
+        }
         
-        
-        
-        module.addGlobal(new Global(name + "_ptr", Linkage._private, functionRef));
-//        String[] parameterNames = new String[functionRef.getType().getParameterTypes().length];
-//        for (int i = 0; i < parameterNames.length; i++) {
-//            parameterNames[i] = "p" + i;
-//        }
-//        Function function = module.newFunction(functionRef.getName().substring(1), functionRef.getType(), parameterNames);
-//        FunctionType functionType = function.getType();
-//        function.newBasicBlock(new Object());
-//        Global functionPtr = new Global(function.getName().substring(1) + "_ptr", new NullConstant(functionType));
-//        module.addGlobal(functionPtr);
-//        Variable f = function.newVariable(functionType);
-//        function.add(new Load(f, new GlobalRef(functionPtr)));
-//        Type[] parameterTypes = function.getType().getParameterTypes();
-//        Value[] args = new Value[parameterNames.length];
-//        for (int i = 0; i < args.length; i++) {
-//            args[i] = new VariableRef(parameterNames[i], parameterTypes[i]);
-//        }
-//        if (function.getType().getReturnType() == VOID) {
-//            function.add(new Call(new VariableRef(f), args));
-//            function.add(new Ret());
-//        } else {
-//            Variable result = function.newVariable(functionType.getReturnType());
-//            function.add(new Call(result, new VariableRef(f), args));
-//            function.add(new Ret(new VariableRef(result)));
-//        }
+        Global ptr = new Global(name + "_ptr", Linkage._private, function.ref());
+        module.addGlobal(ptr);
     }
     
     private void nativeMethod(SootMethod method) {
@@ -918,7 +921,8 @@ public class SootClassCompiler {
             parameterNames[i++] = "p" + j;
         }
             
-        return module.newFunction(Linkage._private, name, functionType, parameterNames);
+        return module.newFunction(Linkage._private, new FunctionAttribute[] {noinline, optsize}, 
+                name, functionType, parameterNames);
     }
     
     private PackedStructureType getAnnotationElementType(AnnotationElem ae) {
@@ -1124,7 +1128,9 @@ public class SootClassCompiler {
     
     private void classLoaderFunction() {
         String name = "NullVM_" + mangleString(getInternalName(sootClass));
-        Function function = module.newFunction(name, new FunctionType(CLASS_PTR, ENV_PTR, OBJECT_PTR), 
+        Function function = module.newFunction(null, 
+                new FunctionAttribute[] {noinline, optsize}, 
+                name, new FunctionType(CLASS_PTR, ENV_PTR, OBJECT_PTR), 
                 "env", "classLoader");
         
         for (Entry<SootClass, Global> entry : throwables.entrySet()) {
@@ -1275,10 +1281,14 @@ public class SootClassCompiler {
         Function function = null;
         Value fieldPtr = null;
         if (field.isStatic()) {
-            function = module.newFunction(Linkage._private, name, new FunctionType(getType(field.getType()), ENV_PTR), "env");
+            function = module.newFunction(Linkage._private, 
+                    new FunctionAttribute[] {noinline, optsize}, 
+                    name, new FunctionType(getType(field.getType()), ENV_PTR), "env");
             fieldPtr = getClassFieldPtr(function, field);
         } else {
-            function = module.newFunction(Linkage._private, name, new FunctionType(getType(field.getType()), ENV_PTR, OBJECT_PTR), "env", "this");
+            function = module.newFunction(Linkage._private, 
+                    new FunctionAttribute[] {noinline, optsize}, 
+                    name, new FunctionType(getType(field.getType()), ENV_PTR, OBJECT_PTR), "env", "this");
             fieldPtr = getInstanceFieldPtr(function, new VariableRef("this", OBJECT_PTR), field);
         }
         Variable result = function.newVariable(getType(field.getType()));
@@ -1291,10 +1301,14 @@ public class SootClassCompiler {
         Function function = null;
         Value fieldPtr = null;
         if (field.isStatic()) {
-            function = module.newFunction(Linkage._private, name, new FunctionType(VOID, ENV_PTR, getType(field.getType())), "env", "value");
+            function = module.newFunction(Linkage._private, 
+                    new FunctionAttribute[] {noinline, optsize}, 
+                    name, new FunctionType(VOID, ENV_PTR, getType(field.getType())), "env", "value");
             fieldPtr = getClassFieldPtr(function, field);
         } else {
-            function = module.newFunction(Linkage._private, name, new FunctionType(VOID, ENV_PTR, OBJECT_PTR, getType(field.getType())), "env", "this", "value");
+            function = module.newFunction(Linkage._private, 
+                    new FunctionAttribute[] {noinline, optsize}, 
+                    name, new FunctionType(VOID, ENV_PTR, OBJECT_PTR, getType(field.getType())), "env", "this", "value");
             fieldPtr = getInstanceFieldPtr(function, new VariableRef("this", OBJECT_PTR), field);
         }
         function.add(new Store(new VariableRef("value", getType(field.getType())), fieldPtr));

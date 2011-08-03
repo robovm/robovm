@@ -52,6 +52,8 @@ import org.nullvm.compiler.clazz.ZipFilePath;
  * @version $Id$
  */
 public class Main {
+    public enum OS {linux, macosx}
+    public enum Arch {x86, x86_64, arm}
 
     private String classpath = null;
     private String bootclasspath = null;
@@ -67,7 +69,8 @@ public class Main {
     private List<String> optOpts = new ArrayList<String>();
     private List<String> gccOpts = new ArrayList<String>();
     private File gccBin = null;    
-    private String arch = null;
+    private OS os = null;
+    private Arch arch = null;
     private String cpu = null;
     private boolean debug = false;
     private boolean nort = false;
@@ -86,6 +89,7 @@ public class Main {
     private PrintStream stdout = System.out;
 
     private File tmpFile;
+    private String host;
     
     private void printUsageAndExit(String errorMessage) {
         if (errorMessage != null) {
@@ -120,6 +124,8 @@ public class Main {
         System.err.println("  -llvm-bin-dir <path>  Path where the LLVM binaries can be found");
         System.err.println("  -o <name>             The name of the target executable or library");
         System.err.println("  -opt-opt <opt>        Option to pass to opt");
+        System.err.println("  -os <name>            The name of the OS to build for. Allowed values are \n" 
+                         + "                        'linux' and 'macosx'. Default is autodetected using llc.");
         System.err.println("  -arch <name>          The name of the LLVM arch to compile for. Default is \n" 
                          + "                        autodetected using llc.");
         System.err.println("  -cpu <name>           The name of the LLVM cpu to compile for. The LLVM default\n" 
@@ -268,7 +274,7 @@ public class Main {
         
         opts = new ArrayList<String>(llcOpts);
         opts.add("-relocation-model=pic");
-        opts.add("-march=" + arch);
+        opts.add("-march=" + (arch == Arch.x86_64 ? "x86-64" : arch.toString()));
         if (cpu != null) {
             opts.add("-mcpu=" + cpu);
         }
@@ -291,7 +297,7 @@ public class Main {
         if (verbose) {
             stdout.format("Compiling '%s' to '%s'\n", f, outFile);
         }
-
+        
         String gccPath = "gcc";
         if (gccBin != null) {
             gccPath = gccBin.getAbsolutePath();
@@ -322,6 +328,18 @@ public class Main {
         }
             
         List<File> files = processClassFiles(entry);
+        // To avoid the "Argument list too long" error we write the file paths to a temp file
+        // and use the @file argument to gcc below.
+        File atFile = new File(tmpFile, "files");
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(atFile);
+            for (File f : files) {
+                pw.println(f.getAbsolutePath().substring(entry.getObjectCacheDir().getAbsolutePath().length() + 1));
+            }
+        } finally {
+            IOUtils.closeQuietly(pw);
+        }
 
         outFile.getParentFile().mkdirs();
         
@@ -338,9 +356,16 @@ public class Main {
         ldArgs.add("-L");
         ldArgs.add(new File(home, "lib").getAbsolutePath());
 
-        exec(gccPath, files, "-o", outFile, "-g", "-shared", "-Wl,-soname," + outFile.getName(), 
-                "-Wl,--version-script", symbolsMapFile, 
-                gccOpts, ldArgs, "-lnullvm", "-lm");
+        if (os == OS.linux) {
+            exec(entry.getObjectCacheDir(), gccPath, "@" + atFile.getAbsolutePath(), "-o", outFile, "-g", 
+                    "-shared", "-Wl,-soname," + outFile.getName(), 
+                    "-Wl,--version-script", symbolsMapFile, 
+                    gccOpts, ldArgs, "-lnullvm", "-lm");
+        } else if (os == OS.macosx) {
+            //gcc -dynamiclib -L $(HOME)/.nullvm/lib -lc -lz -lm -lpthread -lnullvm -exported_symbols_list $(BASE)/symbols.macosx
+            exec(entry.getObjectCacheDir(), gccPath, "@" + atFile.getAbsolutePath(), "-o", outFile, "-g", 
+                    "-dynamiclib", gccOpts, ldArgs, "-lnullvm", "-lm", "-exported_symbols_list", symbolsMapFile);
+        }
         
         return outFile;
     }
@@ -358,6 +383,11 @@ public class Main {
         }
         
         List<String> gccArgs = new ArrayList<String>();
+        
+        gccArgs.add("-D" + os.toString().toUpperCase());
+        gccArgs.add("-DHY" + arch.toString().toUpperCase());
+        gccArgs.add("-D" + os.toString().toUpperCase() + "_" + arch.toString().toUpperCase());
+        
         for (File f : includeDirs) {
             gccArgs.add("-I");
             gccArgs.add(f.getAbsolutePath());
@@ -376,8 +406,8 @@ public class Main {
 //        File mainObjectFile = new File(mainCFile.getParentFile(), "main.o");
         exec(gccPath, "-o", outFile, 
                 mainClass != null ? "-DNULLVM_MAIN_CLASS=" + mainClass.replace('.', '/') : "-DNULLVM_NO_MAIN_CLASS",
-                "-DLINUX", "-DLINUX_X86_64", "-DHYX86_64", "-DIPv6_FUNCTION_SUPPORT", "-DHYPORT_LIBRARY_DEFINE",
-                "-g", gccOpts, gccArgs, "-lnullvm", "-lm", "-ldl", "-lpthread", mainCFile);
+                "-DIPv6_FUNCTION_SUPPORT", "-DHYPORT_LIBRARY_DEFINE", "-g", gccOpts, gccArgs, "-lnullvm", "-lm", "-ldl", 
+                "-lpthread", mainCFile);
 //        files.add(mainObjectFile);
 //
 //        List<String> ldArgs = new ArrayList<String>();
@@ -588,8 +618,10 @@ public class Main {
                     llcOpts.add(args[++i]);
                 } else if ("-opt-opt".equals(args[i])) {
                     optOpts.add(args[++i]);
+                } else if ("-os".equals(args[i])) {
+                    os = OS.valueOf(args[++i]);
                 } else if ("-arch".equals(args[i])) {
-                    arch = args[++i];
+                    arch = Arch.valueOf(args[++i]);
                 } else if ("-cpu".equals(args[i])) {
                     cpu = args[++i];
                 } else if (args[i].startsWith("-D")) {
@@ -702,6 +734,13 @@ public class Main {
             throw new IllegalArgumentException("No target and no main class specified");
         }
 
+        if (os == null) {
+            os = detectOS();
+            if (verbose) {
+                System.out.println("Autodetected OS: " + os);
+            }
+        }
+        
         if (arch == null) {
             arch = detectArch();
             if (verbose) {
@@ -749,8 +788,12 @@ public class Main {
         tmpFile.mkdirs();
         mainCFile = new File(tmpFile, "main.c");
         FileUtils.copyURLToFile(getClass().getResource("/main.c"), mainCFile);
-        symbolsMapFile = new File(tmpFile, "symbols.map");
-        FileUtils.copyURLToFile(getClass().getResource("/symbols.map"), symbolsMapFile);
+        symbolsMapFile = new File(tmpFile, "symbols");
+        if (os == OS.linux) {
+            FileUtils.copyURLToFile(getClass().getResource("/symbols.map"), symbolsMapFile);
+        } else if (os == OS.macosx) {
+            FileUtils.copyURLToFile(getClass().getResource("/symbols.macosx"), symbolsMapFile);
+        }
 
         Clazzes clazzes = new Clazzes(bootClassPathFiles, classPathFiles);
         List<ClasspathEntry> bootclasspathObjects = new ArrayList<ClasspathEntry>();
@@ -779,9 +822,9 @@ public class Main {
             // Run in place
             runTarget(bootclasspathObjects, classpathObjects);
         } else {
-            FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libnullvm.so"), output);
-            FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libnullvm-rt.so"), output);
-            FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libgc.so.1"), output);
+            FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libnullvm" + (os == OS.linux ? ".so" : ".dylib")), output);
+            FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libnullvm-rt" + (os == OS.linux ? ".so" : ".dylib")), output);
+//            FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libgc.so.1"), output);
             
             File libBoot = new File(new File(output, "lib"), "boot");
             libBoot.mkdirs();
@@ -848,9 +891,12 @@ public class Main {
             IOUtils.closeQuietly(writer);
         }
     }
-    
+
     @SuppressWarnings("rawtypes")
-    private String detectArch() throws IOException {
+    private String getHost() throws IOException {
+        if (this.host != null) {
+            return this.host;
+        }
         String llcPath = "llc";
         if (llvmBinDir != null) {
             llcPath = new File(llvmBinDir, "llc").getAbsolutePath();
@@ -866,19 +912,35 @@ public class Main {
         String output = new String(baos.toByteArray());
         Matcher m = Pattern.compile("(?m)Host:\\s*(.*)$").matcher(output);
         if (m.find()) {
-            String s = m.group(1).trim();
-            if (s.matches("^(x86.64|amd64).*")) {
-                return "x86-64";
-            }
-            if (s.matches("^(x86|i\\d86).*")) {
-                return "x86";
-            }
-            if (s.matches("^arm.*")) {
-                return "arm";
-            }
-            throw new IllegalArgumentException("Unrecognized Host string: " + s);
+            this.host = m.group(1).trim();
+            return this.host;
         }
-        throw new IllegalArgumentException("Failed to autodetect arch using command: " + command);
+        throw new IllegalArgumentException("Failed to get Host string using command: " + command);
+    }
+
+    private OS detectOS() throws IOException {
+        String host = getHost();
+        if (host.contains("linux")) {
+            return OS.linux;
+        }
+        if (host.contains("apple-darwin10")) {
+            return OS.macosx;
+        }
+        throw new IllegalArgumentException("Unrecognized OS in Host string: " + host);
+    }
+    
+    private Arch detectArch() throws IOException {
+        String host = getHost();
+        if (host.matches("^(x86.64|amd64).*")) {
+            return Arch.x86_64;
+        }
+        if (host.matches("^(x86|i\\d86).*")) {
+            return Arch.x86;
+        }
+        if (host.matches("^arm.*")) {
+            return Arch.arm;
+        }
+        throw new IllegalArgumentException("Unrecognized arch in Host string: " + host);
     }
     
     @SuppressWarnings({ "unchecked" })
@@ -960,7 +1022,11 @@ public class Main {
         this.target = target;
     }
 
-    void setArch(String arch) {
+    public void setOS(OS os) {
+        this.os = os;
+    }
+    
+    void setArch(Arch arch) {
         this.arch = arch;
     }
 
@@ -1021,7 +1087,7 @@ public class Main {
             return path;
         }
         public File getDynamicLibrary() {
-            return new File(getObjectCacheDir().getParentFile(), "lib" + path.getFile().getName() + ".so");
+            return new File(getObjectCacheDir().getParentFile(), "lib" + path.getFile().getName() + (os == OS.macosx ? ".dylib" : ".so"));
         }
         public File getLlvmCacheDir() {
             if (llvmCacheDir == null) {
@@ -1037,7 +1103,7 @@ public class Main {
         public File getObjectCacheDir() {
             if (objectCacheDir == null) {
                 try {
-                    File base = new File(new File(new File(objectCache, debug ? "debug" : "release"), arch), cpu == null ? "default" : cpu);
+                    File base = new File(new File(new File(objectCache, debug ? "debug" : "release"), arch.toString()), cpu == null ? "default" : cpu);
                     objectCacheDir = new File(makeFileRelativeTo(base, path.getFile().getCanonicalFile().getParentFile()), 
                             path.getFile().getName() + ".classes");
                 } catch (IOException e) {
@@ -1073,7 +1139,7 @@ public class Main {
             return path;
         }
         public File getDynamicLibrary() {
-            return new File(getObjectCacheDir().getParentFile(), "lib" + jarName + ".so");
+            return new File(getObjectCacheDir().getParentFile(), "lib" + jarName + (os == OS.macosx ? ".dylib" : ".so"));
         }
         public File getLlvmCacheDir() {
             if (llvmCacheDir == null) {
@@ -1088,7 +1154,7 @@ public class Main {
         public File getObjectCacheDir() {
             if (objectCacheDir == null) {
                 try {
-                    File base = new File(new File(new File(objectCache, debug ? "debug" : "release"), arch), cpu == null ? "default" : cpu);
+                    File base = new File(new File(new File(objectCache, debug ? "debug" : "release"), arch.toString()), cpu == null ? "default" : cpu);
                     objectCacheDir = new File(makeFileRelativeTo(base, 
                             path.getFile().getCanonicalFile()), jarName + ".classes");
                 } catch (IOException e) {

@@ -25,7 +25,8 @@ fetch-depends:
 	then \
 		rm -rf $(INSTALL)/gc; \
 		rm -rf $(TARGET)/gc*; \
-		$(SHELL) -c 'cd $(TARGET); wget http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc.tar.gz; tar xvfz gc.tar.gz'; \
+		mkdir -p $(TARGET); \
+		$(SHELL) -c 'cd $(TARGET); curl http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc.tar.gz > gc.tar.gz; tar xvfz gc.tar.gz; rm -rf gc.tar.gz'; \
 		$(SHELL) -c 'cd $(TARGET)/gc*; ./configure --prefix=$(INSTALL)/gc; make; make check; make install'; \
 	fi
 

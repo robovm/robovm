@@ -1637,16 +1637,15 @@ public class SootClassCompiler {
     }
     
     private static String getStringVarName(byte[] bytes) {
-        StringBuilder sb = new StringBuilder("\"str_");
+        StringBuilder sb = new StringBuilder("str_");
         for (int i = 0; i < bytes.length; i++) {
             byte b = bytes[i];
-            if (b < ' ' || b > '~' || b == '"' || b == '\\' || b == '%' || b == '@') {
-                sb.append(String.format("%%%02X", b));
-            } else {
+            if (b >= 'a' && b <= 'z' || b >= 'A' && b <= 'Z' || b >= '0' && b <= '9') {
                 sb.append((char) b);
+            } else {
+                sb.append(String.format("_%02X", b));
             }
         }
-        sb.append("\"");
         return sb.toString();
     }
     

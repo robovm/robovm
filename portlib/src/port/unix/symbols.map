@@ -1,5 +1,12 @@
-HYTHR_0.1 {
-  global :
+HYPRT_0.1 {
+  global:
+    hyport_allocate_library;
+    hyport_create_library;
+    hyport_getSize;
+    hyport_getVersion;
+    hyport_init_library;
+    hyport_isCompatible;
+    hyport_startup_library;
     hythread_current_stack_free;
     hythread_attach;
     hythread_create;
@@ -77,5 +84,8 @@ HYTHR_0.1 {
     hysem_post;
     hysem_wait;
     hysem_destroy;
-  local : *;
+    hythread_monitor_owner;
+  local:
+    *;
 };
+

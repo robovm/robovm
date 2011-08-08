@@ -1,4 +1,5 @@
 #include <nullvm.h>
+#include <hythread.h>
 #include <stdlib.h>
 #include <string.h>
 #include "utlist.h"

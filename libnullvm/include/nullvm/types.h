@@ -1,9 +1,8 @@
 #ifndef NULLVM_TYPES_H
 #define NULLVM_TYPES_H
 
-#include "../jni_types.h"
-#include "../jni.h"
-#include <hythread.h>
+#include <jni_types.h>
+#include <jni.h>
 #include <limits.h>
 
 #undef FALSE
@@ -19,6 +18,8 @@
 #define CLASS_INITIALIZED 5
 #define CLASS_ERROR 6
 
+struct HyThreadMonitor;
+
 typedef struct Field Field;
 typedef struct ClassField ClassField;
 typedef struct InstanceField InstanceField;
@@ -31,6 +32,7 @@ typedef struct Class Class;
 typedef struct Object Object;
 typedef struct ClassLoader ClassLoader;
 typedef struct DataObject DataObject;
+typedef struct HyThreadMonitor Monitor;
 typedef struct Thread Thread;
 typedef struct Array Array;
 typedef struct EnclosingMethod EnclosingMethod;
@@ -88,7 +90,7 @@ struct Exception {
 
 struct Object {
   Class* clazz;
-  hythread_monitor_t monitor;
+  Monitor* monitor;
 };
 
 /* 

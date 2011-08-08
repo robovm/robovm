@@ -1,7 +1,0 @@
-hyport_allocate_library
-hyport_create_library
-hyport_getSize
-hyport_getVersion
-hyport_init_library
-hyport_isCompatible
-hyport_startup_library

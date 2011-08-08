@@ -19,7 +19,7 @@ endif()
 
 SET(ARCH x86_64)
 
-include_directories(portlib/include libnullvm/include ${ZLIB_H_PATH} ${GC_H_PATH})
+include_directories(hyprt/include core/include ${ZLIB_H_PATH} ${GC_H_PATH})
 
 if(LINUX AND CMAKE_SIZEOF_VOID_P MATCHES "8")
   CHECK_C_COMPILER_FLAG("-fPIC" WITH_FPIC)
@@ -28,7 +28,7 @@ endif()
 if(LINUX)
   SET(HY_OS linux)
   add_definitions(-DLINUX)
-  include_directories(portlib/include/unix)
+  include_directories(hyprt/include/unix)
 endif()
 
 if (ARCH STREQUAL "x86_64")
@@ -37,7 +37,7 @@ endif()
 
 add_definitions(-DIPv6_FUNCTION_SUPPORT)
 
-add_subdirectory(portlib/src)
-add_subdirectory(libnullvm/src)
-add_subdirectory(rt/src/main/native)
+add_subdirectory(core/src)
+add_subdirectory(hyprt/src)
+add_subdirectory(rt/src)
 

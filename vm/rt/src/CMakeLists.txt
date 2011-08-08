@@ -1,9 +1,9 @@
 project(rt)
 
-include_directories(include luni/luni/shared)
+include_directories(../include luni/luni/shared)
 
 if(LINUX)
-  include_directories(include luni/luni/unix)
+  include_directories(luni/luni/unix)
 endif()
 
 SET(SRC

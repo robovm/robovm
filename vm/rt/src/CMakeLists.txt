@@ -245,4 +245,5 @@ endif()
 add_library(nullvm-rt SHARED ${SRC})
 set_target_properties(nullvm-rt PROPERTIES LINK_FLAGS "-Wl,--version-script=${rt_SOURCE_DIR}/symbols.map")
 target_link_libraries(nullvm-rt nullvm-core nullvm-hyprt z)
+install(TARGETS nullvm-rt DESTINATION ${INSTALL_DIR}/lib)
 

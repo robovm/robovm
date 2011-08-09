@@ -1,8 +1,4 @@
-project(portlib)
-
-if (WITH_FPIC)
-  add_definitions(-fPIC)
-endif()
+project(hyprt)
 
 add_subdirectory(common)
 add_subdirectory(pool)

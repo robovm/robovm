@@ -17,4 +17,5 @@ add_library(nullvm-hyprt SHARED
 
 set_target_properties(nullvm-hyprt PROPERTIES LINK_FLAGS "-Wl,--version-script=${port_SOURCE_DIR}/symbols.map")
 target_link_libraries(nullvm-hyprt hythr hycommon hypool dl pthread)
+install(TARGETS nullvm-hyprt DESTINATION ${INSTALL_DIR}/lib)
 

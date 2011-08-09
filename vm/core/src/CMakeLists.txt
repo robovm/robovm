@@ -1,6 +1,6 @@
 project(core)
 
-enable_language(ASM)
+add_custom_command(OUTPUT trampolines-${ARCH}.s.o COMMAND ${CMAKE_ASM_COMPILER} -o trampolines-${ARCH}.s.o ${core_SOURCE_DIR}/trampolines-${ARCH}.s)
 
 add_library(nullvm-core SHARED 
   array.c 
@@ -17,11 +17,12 @@ add_library(nullvm-core SHARED
   proxy.c 
   string.c 
   thread.c 
-  trampolines-${ARCH}.s
+  trampolines-${ARCH}.s.o
   unwind.c 
   vminterface.c
 )
 
 set_target_properties(nullvm-core PROPERTIES LINK_FLAGS "-Wl,--version-script=${core_SOURCE_DIR}/symbols.map")
 target_link_libraries(nullvm-core nullvm-hyprt gc)
+install(TARGETS nullvm-core DESTINATION ${INSTALL_DIR}/lib)
 

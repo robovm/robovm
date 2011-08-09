@@ -23,10 +23,14 @@ include_directories(hyprt/include core/include ${ZLIB_H_PATH} ${GC_H_PATH})
 
 if(LINUX AND CMAKE_SIZEOF_VOID_P MATCHES "8")
   CHECK_C_COMPILER_FLAG("-fPIC" WITH_FPIC)
+  if (WITH_FPIC)
+    add_definitions(-fPIC)
+  endif()
 endif()
 
 if(LINUX)
   SET(HY_OS linux)
+  SET(OS linux)
   add_definitions(-DLINUX)
   include_directories(hyprt/include/unix)
 endif()
@@ -36,6 +40,8 @@ if (ARCH STREQUAL "x86_64")
 endif()
 
 add_definitions(-DIPv6_FUNCTION_SUPPORT)
+
+SET(INSTALL_DIR $ENV{HOME}/.nullvm/${OS}/${ARCH})
 
 add_subdirectory(core/src)
 add_subdirectory(hyprt/src)

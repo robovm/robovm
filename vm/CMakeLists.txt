@@ -44,6 +44,7 @@ add_definitions(-DIPv6_FUNCTION_SUPPORT)
 SET(INSTALL_DIR $ENV{HOME}/.nullvm/${OS}/${ARCH})
 
 add_subdirectory(core/src)
+add_subdirectory(bc/src)
 add_subdirectory(hyprt/src)
 add_subdirectory(rt/src)
 

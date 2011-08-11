@@ -1,6 +1,25 @@
 #include <nullvm.h>
 #include "utlist.h"
-#include "log.h"
+
+const char* __attribute__ ((weak)) _nvmBcMainClass = NULL;
+
+static Options options = {0};
+
+int main(int argc, char* argv[]) {
+    options.mainClass = (char*) _nvmBcMainClass;
+    if (!nvmInitOptions(argc, argv, &options, FALSE)) {
+        fprintf(stderr, "nvmInitOptions(...) failed!\n");
+        return 1;
+    }
+    Env* env = nvmStartup(&options);
+    if (!env) {
+        fprintf(stderr, "nvmStartup(...) failed!\n");
+        return 1;
+    }
+    jint result = nvmRun(env) ? 0 : 1;
+    nvmShutdown(env, result);
+    return result;
+}
 
 static Class* findClassInLoader(Env* env, char* className, ClassLoader* classLoader) {
     Class* clazz = nvmFindClassUsingLoader(env, className, classLoader);
@@ -362,7 +381,7 @@ jint _nvmBcInstanceof(Env* env, Object* o, char* className, Class* caller) {
 void* _nvmBcResolveGetstatic(Env* env, char* owner, char* name, char* desc) {
     void** ptr = env->reserved0;
     Class* caller = env->reserved1;
-    TRACE("nvmBcResolveGetstatic: owner=%s, name=%s, desc=%s\n", owner, name, desc);
+    nvmLogTrace(env, "nvmBcResolveGetstatic: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     // TODO: Check that caller has access to the field
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
     checkClassAccessible(env, clazz, caller);
@@ -380,7 +399,7 @@ void* _nvmBcResolveGetstatic(Env* env, char* owner, char* name, char* desc) {
 void* _nvmBcResolvePutstatic(Env* env, char* owner, char* name, char* desc) {
     void** ptr = env->reserved0;
     Class* caller = env->reserved1;
-    TRACE("nvmBcResolvePutstatic: owner=%s, name=%s, desc=%s\n", owner, name, desc);
+    nvmLogTrace(env, "nvmBcResolvePutstatic: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     // TODO: Check that caller has access to the field
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
     checkClassAccessible(env, clazz, caller);
@@ -403,7 +422,7 @@ void* _nvmBcResolveGetfield(Env* env, char* owner, char* name, char* desc) {
     void** ptr = env->reserved0;
     Class* caller = env->reserved1;
     char* runtimeClassName = env->reserved2;
-    TRACE("nvmBcResolveGetfield: owner=%s, name=%s, desc=%s\n", owner, name, desc);
+    nvmLogTrace(env, "nvmBcResolveGetfield: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     // TODO: Check that caller has access to the field
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
     checkClassAccessible(env, clazz, caller);
@@ -420,7 +439,7 @@ void* _nvmBcResolvePutfield(Env* env, char* owner, char* name, char* desc) {
     void** ptr = env->reserved0;
     Class* caller = env->reserved1;
     char* runtimeClassName = env->reserved2;
-    TRACE("nvmBcResolvePutfield: owner=%s, name=%s, desc=%s\n", owner, name, desc);
+    nvmLogTrace(env, "nvmBcResolvePutfield: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     // TODO: Check that caller has access to the field
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
     checkClassAccessible(env, clazz, caller);
@@ -441,7 +460,7 @@ void* _nvmBcResolveInvokespecial(Env* env, char* owner, char* name, char* desc) 
     void** ptr = env->reserved0;
     Class* caller = env->reserved1;
     char* runtimeClassName = env->reserved2;
-    TRACE("nvmBcResolveInvokespecial: owner=%s, name=%s, desc=%s\n", owner, name, desc);
+    nvmLogTrace(env, "nvmBcResolveInvokespecial: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
     checkClassAccessible(env, clazz, caller);
     if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
@@ -457,7 +476,7 @@ void* _nvmBcResolveInvokespecial(Env* env, char* owner, char* name, char* desc) 
 void* _nvmBcResolveInvokestatic(Env* env, char* owner, char* name, char* desc) {
     void** ptr = env->reserved0;
     Class* caller = env->reserved1;
-    TRACE("nvmBcResolveInvokestatic: owner=%s, name=%s, desc=%s\n", owner, name, desc);
+    nvmLogTrace(env, "nvmBcResolveInvokestatic: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
     checkClassAccessible(env, clazz, caller);
     if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
@@ -477,7 +496,7 @@ void* _nvmBcResolveInvokevirtual(Env* env, char* owner, char* name, char* desc) 
     void** ptr = env->reserved0;
     Class* caller = env->reserved1;
     char* runtimeClassName = env->reserved2;
-    TRACE("nvmBcResolveInvokevirtual: owner=%s, name=%s, desc=%s\n", owner, name, desc);
+    nvmLogTrace(env, "nvmBcResolveInvokevirtual: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
     checkClassAccessible(env, clazz, caller);
     if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
@@ -495,7 +514,7 @@ void* _nvmBcResolveInvokevirtual(Env* env, char* owner, char* name, char* desc) 
 void* _nvmBcResolveInvokeinterface(Env* env, char* owner, char* name, char* desc) {
     void** ptr = env->reserved0;
     Class* caller = env->reserved1;
-    TRACE("nvmBcResolveInvokeinterface: owner=%s, name=%s, desc=%s\n", owner, name, desc);
+    nvmLogTrace(env, "nvmBcResolveInvokeinterface: owner=%s, name=%s, desc=%s\n", owner, name, desc);
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
     checkClassAccessible(env, clazz, caller);
     if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
@@ -513,7 +532,7 @@ void* _nvmBcResolveInvokeinterface(Env* env, char* owner, char* name, char* desc
 }
 
 void* _nvmBcResolveNative(Env* env, char* owner, char* name, char* desc, char* shortMangledName, char* longMangledName, Class* caller, void** ptr) {
-    TRACE("nvmBcResolveNative: owner=%s, name=%s, desc=%s, shortMangledName=%s, longMangledName=%s\n", owner, name, desc, shortMangledName, longMangledName);
+    nvmLogTrace(env, "nvmBcResolveNative: owner=%s, name=%s, desc=%s, shortMangledName=%s, longMangledName=%s\n", owner, name, desc, shortMangledName, longMangledName);
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
     nvmInitialize(env, clazz);
     if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));

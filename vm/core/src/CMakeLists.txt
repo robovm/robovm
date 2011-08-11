@@ -5,7 +5,6 @@ add_custom_command(OUTPUT trampolines-${ARCH}.s.o COMMAND ${CMAKE_ASM_COMPILER} 
 add_library(nullvm-core SHARED 
   array.c 
   attribute.c 
-  bc.c 
   class.c 
   exception.c 
   field.c 
@@ -22,7 +21,7 @@ add_library(nullvm-core SHARED
   vminterface.c
 )
 
-set_target_properties(nullvm-core PROPERTIES LINK_FLAGS "-Wl,--version-script=${core_SOURCE_DIR}/symbols.map")
+set_target_properties(nullvm-core PROPERTIES LINK_FLAGS "-Wl,--version-script=${core_SOURCE_DIR}/symbols.map" INSTALL_RPATH "$ORIGIN")
 target_link_libraries(nullvm-core nullvm-hyprt gc)
 install(TARGETS nullvm-core DESTINATION ${INSTALL_DIR}/lib)
 

@@ -6,6 +6,7 @@
 #include <dlfcn.h>
 #include "log.h"
 #include "hyport.h"
+#include "utlist.h"
 
 HyPortLibraryVersion portLibraryVersion;
 HyPortLibrary portLibrary;
@@ -45,7 +46,6 @@ static jboolean loadClasspathEntries(Env* env, char* basePath, char* entriesFile
     TRACE("Contents of file '%s':\n %s\n", entriesFile, files);
 
     char jarPath[PATH_MAX];
-    char soPath[PATH_MAX];
 
     char* p = files;
     char* line = NULL;
@@ -56,17 +56,10 @@ static jboolean loadClasspathEntries(Env* env, char* basePath, char* entriesFile
         if (!line) break;
         if (line[0] == '#') continue;
 
-        char* lasts2 = NULL;
-        char* left = strtok_r(line, "=", &lasts2);
-        if (!left) nvmAbort("Failed to parse line '%s' in classpath file '%s'", line, entriesFile);
-        char* right = strtok_r(NULL, "\r\n", &lasts2);
-        if (!right) nvmAbort("Failed to parse line '%s' in classpath file '%s'", line, entriesFile);
         ClasspathEntry* entry = nvmAllocateMemory(env, sizeof(ClasspathEntry));
         if (!entry) return FALSE;
-        absolutize(basePath, left, entry->jarPath);
-        absolutize(basePath, right, entry->soPath);
-        *first = entry;
-        first = &entry->next;
+        absolutize(basePath, line, entry->jarPath);
+        LL_APPEND(*first, entry);
     }
 
     return TRUE;

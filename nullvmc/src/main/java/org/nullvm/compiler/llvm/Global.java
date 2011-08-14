@@ -18,11 +18,19 @@ public class Global {
     private final boolean constant;
 
     public Global(String name, Type type) {
+        this(name, null, type, false);
+    }
+    
+    public Global(String name, Type type, boolean constant) {
+        this(name, null, type, constant);
+    }
+    
+    public Global(String name, Linkage linkage, Type type, boolean constant) {
         this.name = "@" + name;
-        this.linkage = Linkage.external;
+        this.linkage = linkage;
         this.value = null;
         this.type = type;
-        constant = false;
+        this.constant = constant;
     }
     
     public Global(String name, Constant value) {

@@ -1,5 +1,6 @@
 project(core)
 
+enable_language(ASM)
 add_custom_command(OUTPUT trampolines-${ARCH}.s.o COMMAND ${CMAKE_ASM_COMPILER} -o trampolines-${ARCH}.s.o ${core_SOURCE_DIR}/trampolines-${ARCH}.s)
 
 add_library(nullvm-core SHARED 

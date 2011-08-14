@@ -1,12 +1,66 @@
 #include <nullvm.h>
+#include <unwind.h>
+#include "uthash.h"
 #include "utlist.h"
 
-const char* __attribute__ ((weak)) _nvmBcMainClass = NULL;
+typedef struct ClassFunc {
+    char* name;
+    Class* (*f)(Env*, ClassLoader*);
+} ClassFunc;
 
+typedef struct ClassFuncLookupEntry {
+    char* key;      // The class name
+    Class* (*f)(Env*, ClassLoader*);
+    UT_hash_handle hh;
+} ClassFuncLookupEntry;
+
+static ClassFuncLookupEntry* bootclasspathLookup = NULL;
+static ClassFuncLookupEntry* classpathLookup = NULL;
+
+extern _Unwind_Reason_Code _nvmPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context);
+
+const char* __attribute__ ((weak)) _nvmBcMainClass = NULL;
+extern ClassFunc* _nvmBcBootclasspathEntries;
+extern ClassFunc* _nvmBcClasspathEntries;
+static Class* loadBootclasspathClass(Env*, char*, ClassLoader*);
+static Class* loadClasspathClass(Env*, char*, ClassLoader*);
 static Options options = {0};
 
+static jboolean initClassLookup(ClassFunc* cf, ClassFuncLookupEntry** lookup) {
+    ClassFunc* first = cf;
+    jint length = 0;
+    while (cf->name != NULL) {
+        length++;
+        cf++;
+    }
+    ClassFuncLookupEntry* table = calloc(length, sizeof(ClassFuncLookupEntry));
+    if (!table) {
+        return FALSE;
+    }
+    cf = first;
+    while (cf->name != NULL) {
+        table->key = cf->name;
+        table->f = cf->f;
+        HASH_ADD_KEYPTR(hh, *lookup, table->key, strlen(table->key), table);
+        table++;
+        cf++;
+    }
+    return TRUE;
+}
+
 int main(int argc, char* argv[]) {
+    if (!initClassLookup(_nvmBcBootclasspathEntries, &bootclasspathLookup)) {
+        fprintf(stderr, "Failed to allocate class function table!\n");
+        return 1;
+    }
+    if (!initClassLookup(_nvmBcClasspathEntries, &classpathLookup)) {
+        fprintf(stderr, "Failed to allocate class function table!\n");
+        return 1;
+    }
+
     options.mainClass = (char*) _nvmBcMainClass;
+    options.bootclasspathFunc = loadBootclasspathClass;
+    options.classpathFunc = loadClasspathClass;
     if (!nvmInitOptions(argc, argv, &options, FALSE)) {
         fprintf(stderr, "nvmInitOptions(...) failed!\n");
         return 1;
@@ -19,6 +73,20 @@ int main(int argc, char* argv[]) {
     jint result = nvmRun(env) ? 0 : 1;
     nvmShutdown(env, result);
     return result;
+}
+
+static Class* loadBootclasspathClass(Env* env, char* className, ClassLoader* classLoader) {
+    ClassFuncLookupEntry* entry;
+    HASH_FIND_STR(bootclasspathLookup, className, entry);
+    if (!entry) return NULL;
+    return entry->f(env, classLoader);
+}
+
+static Class* loadClasspathClass(Env* env, char* className, ClassLoader* classLoader) {
+    ClassFuncLookupEntry* entry;
+    HASH_FIND_STR(classpathLookup, className, entry);
+    if (!entry) return NULL;
+    return entry->f(env, classLoader);
 }
 
 static Class* findClassInLoader(Env* env, char* className, ClassLoader* classLoader) {
@@ -103,6 +171,10 @@ static jboolean checkFieldAccessible(Env* env, Field* field, Class* caller) {
     if (FIELD_IS_PRIVATE(field) && field->clazz == caller) return TRUE;
     nvmThrowIllegalAccessErrorField(env, field->clazz, field->name, field->desc, caller);
     return FALSE;
+}
+
+_Unwind_Reason_Code _nvmBcPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context) {
+    _nvmPersonality(version, actions, exception_class, exception_info, context);
 }
 
 Class* _nvmBcFindClassInLoader(Env* env, char* className, ClassLoader* classLoader) {

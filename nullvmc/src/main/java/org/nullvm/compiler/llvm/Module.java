@@ -103,13 +103,13 @@ public class Module {
             sb.append("\n");
         }
         sb.append("\n");
-        for (Global g : globals) {
-            sb.append(g.getDefinition());
+        for (FunctionDeclaration fd : functionDeclarations) {
+            sb.append(fd.toString());
             sb.append("\n");
         }
         sb.append("\n");
-        for (FunctionDeclaration fd : functionDeclarations) {
-            sb.append(fd.toString());
+        for (Global g : globals) {
+            sb.append(g.getDefinition());
             sb.append("\n");
         }
         sb.append("\n");

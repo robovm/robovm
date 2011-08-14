@@ -27,6 +27,10 @@ public class FunctionDeclaration {
         return type;
     }
     
+    public FunctionRef ref() {
+        return new FunctionRef(name.substring(1), type);
+    }
+    
     @Override
     public String toString() {
         Type returnType = type.getReturnType();

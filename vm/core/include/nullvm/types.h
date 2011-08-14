@@ -238,8 +238,10 @@ typedef struct ClasspathEntry ClasspathEntry;
 struct ClasspathEntry {
     ClasspathEntry* next;
     char jarPath[PATH_MAX];
-    char soPath[PATH_MAX];
 };
+
+struct Env;
+typedef struct Env Env;
 
 typedef struct Options {
     char* mainClass;
@@ -252,13 +254,15 @@ typedef struct Options {
     char mainLibPath[PATH_MAX];
     ClasspathEntry* bootclasspath;
     ClasspathEntry* classpath;
+    Class* (*bootclasspathFunc)(Env*, char*, ClassLoader*);
+    Class* (*classpathFunc)(Env*, char*, ClassLoader*);
 } Options;
 
 typedef struct VM {
     Options* options;
 } VM;
 
-typedef struct Env {
+struct Env {
     JNIEnv jni;
     VM* vm;
     Object* throwable;
@@ -266,7 +270,7 @@ typedef struct Env {
     void* reserved0; // Used internally
     void* reserved1; // Used internally
     void* reserved2; // Used internally
-} Env;
+};
 
 typedef struct CallStackEntry CallStackEntry;
 struct CallStackEntry {

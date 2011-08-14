@@ -15,9 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,7 +23,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -46,6 +43,21 @@ import org.nullvm.compiler.clazz.Clazzes;
 import org.nullvm.compiler.clazz.DirectoryPath;
 import org.nullvm.compiler.clazz.Path;
 import org.nullvm.compiler.clazz.ZipFilePath;
+import org.nullvm.compiler.llvm.ArrayConstant;
+import org.nullvm.compiler.llvm.ArrayType;
+import org.nullvm.compiler.llvm.ConstantBitcast;
+import org.nullvm.compiler.llvm.ConstantGetelementptr;
+import org.nullvm.compiler.llvm.FunctionDeclaration;
+import org.nullvm.compiler.llvm.FunctionType;
+import org.nullvm.compiler.llvm.Global;
+import org.nullvm.compiler.llvm.Linkage;
+import org.nullvm.compiler.llvm.Module;
+import org.nullvm.compiler.llvm.NullConstant;
+import org.nullvm.compiler.llvm.StringConstant;
+import org.nullvm.compiler.llvm.StructureConstant;
+import org.nullvm.compiler.llvm.StructureType;
+import org.nullvm.compiler.llvm.Type;
+import org.nullvm.compiler.llvm.Value;
 
 /**
  *
@@ -69,6 +81,7 @@ public class Main {
     private List<String> optOpts = new ArrayList<String>();
     private List<String> gccOpts = new ArrayList<String>();
     private File gccBin = null;    
+    private File arBin = null;    
     private OS os = null;
     private Arch arch = null;
     private String cpu = null;
@@ -82,6 +95,7 @@ public class Main {
     private String mainClass;
     private List<String> runArgs = new ArrayList<String>();
     
+    private File homeOsArchLib;
     private File mainCFile;
     private File symbolsMapFile;
     private List<File> bootClassPathFiles = new ArrayList<File>();
@@ -138,11 +152,7 @@ public class Main {
         System.exit(errorMessage != null ? 1 : 0);
     }
 
-    private List<Clazz> getChangedClasses(List<ClasspathEntry> bootcp, List<ClasspathEntry> cp) {
-        List<ClasspathEntry> all = new ArrayList<ClasspathEntry>();
-        all.addAll(bootcp);
-        all.addAll(cp);
-        
+    private List<Clazz> getChangedClasses(List<ClasspathEntry> all) {
         List<Clazz> changed = new ArrayList<Clazz>();
         for (ClasspathEntry entry : all) {
             for (Clazz clazz : entry.getPath().list()) {
@@ -156,19 +166,16 @@ public class Main {
         return changed;
     }
     
-    private File processClassFile(ClasspathEntry entry, Clazz clazz) throws IOException {
+    private void classToIr(Clazz clazz, File outFile) throws IOException {
         OutputStream out = null;
-        File outFile = null;
         try {
-            String className = clazz.getInternalName();
-            outFile = new File(entry.getLlvmCacheDir(), className.replace('/', File.separatorChar) + "" + ".class.ll");
-            outFile.getParentFile().mkdirs();
             if (!clean && outFile.exists() && outFile.lastModified() >= clazz.lastModified()) {
                 if (verbose) {
                     stdout.println("Skipping unchanged class file: " + clazz.getFileName());
                 }
-                return processIrFile(entry, outFile);
+                return;
             }
+            outFile.getParentFile().mkdirs();
             if (verbose) {
                 stdout.format("Compiling class file '%s' to LLVM IR file '%s'\n", clazz.getFileName(), outFile);
             }
@@ -186,196 +193,311 @@ public class Main {
         } finally {
             IOUtils.closeQuietly(out);
         }
-        return processIrFile(entry, outFile);
     }
 
-    private List<File> processClassFiles(ClasspathEntry entry) throws IOException {
-        List<File> objectFiles = new ArrayList<File>();
-        for (Clazz clazz : entry.getPath().list()) {
-            objectFiles.add(processClassFile(entry, clazz));
-        }
-        return objectFiles;
-    }
-    
-    private void processClasspathEntry(ClasspathEntry entry) throws IOException {
-        buildDynamicLibrary(entry);
-    }
-    
-    private File processIrFile(ClasspathEntry entry, File f) throws IOException {
-        File outFile = new File(f.getParentFile(), f.getName().substring(0, f.getName().length() - 3) + ".bc");
-        if (!clean && outFile.exists() && outFile.lastModified() >= f.lastModified()) {
+    private void llvmAs(File inFile, File outFile) throws IOException {
+        if (!clean && outFile.exists() && outFile.lastModified() >= inFile.lastModified()) {
             if (verbose) {
-                stdout.println("Skipping unchanged LLVM IR file: " + f);
+                stdout.println("Skipping unchanged LLVM IR file: " + inFile);
             }
-            return processBcFile(entry, outFile);
+            return;
         }
         if (verbose) {
-            stdout.format("Compiling LLVM IR file '%s' to LLVM bitcode file '%s'\n", f, outFile);
+            stdout.format("Compiling LLVM IR file '%s' to LLVM bitcode file '%s'\n", inFile, outFile);
         }
-        
+
         String llvmAsPath = "llvm-as";
         if (llvmBinDir != null) {
             llvmAsPath = new File(llvmBinDir, "llvm-as").getAbsolutePath();
         }
         
-        exec(llvmAsPath, "-o=" + outFile.toString(), f);
-        return processBcFile(entry, outFile);
-    }
-    
-    private File processBcFile(ClasspathEntry entry, File f) throws IOException {
-        File outFile = changeExt(rebase(f, entry.getLlvmCacheDir(), entry.getObjectCacheDir()), "s");
-        
-        if (!clean && outFile.exists() && outFile.lastModified() >= f.lastModified()) {
-            if (verbose) {
-                stdout.println("Skipping unchanged LLVM bitcode file: " + f);
-            }
-            return processGccFile(entry, outFile);
-        }
-        if (verbose) {
-            stdout.format("Compiling LLVM bitcode file '%s' to assembler file '%s'\n", f, outFile);
-        }
-            
         outFile.getParentFile().mkdirs();
+        exec(llvmAsPath, "-o=" + outFile.toString(), inFile);
+    }    
+
+    private void opt(File inFile, File outFile, String ... options) throws IOException {
+        if (!clean && outFile.exists() && outFile.lastModified() >= inFile.lastModified()) {
+            if (verbose) {
+                stdout.println("Skipping unchanged LLVM bitcode file: " + inFile);
+            }
+            return;
+        }
         
-        String llcPath = "llc";
         String optPath = "opt";
         if (llvmBinDir != null) {
-            llcPath = new File(llvmBinDir, "llc").getAbsolutePath();
             optPath = new File(llvmBinDir, "opt").getAbsolutePath();
         }
-        
-        List<String> opts = null;
-        
-        File outOptedFile = changeExt(f, (debug ? "debug" : "release") + ".opted.bc");
-        if (clean || !outOptedFile.exists() || outOptedFile.lastModified() < f.lastModified()) {
-            opts = new ArrayList<String>(optOpts);
-            opts.add("-mem2reg");
-            opts.add("-always-inline");
-            if (!debug) {
-                // -std-compile-opts minus -inline and -tailcallelim 
-                opts.addAll(Arrays.asList(
-                       ("-preverify -domtree -verify -lowersetjmp -globalopt -ipsccp " 
-                      + "-deadargelim -instcombine -simplifycfg -basiccg -prune-eh " 
-                      + "-functionattrs -argpromotion -domtree -domfrontier " 
-                      + "-scalarrepl -simplify-libcalls -instcombine -lazy-value-info " 
-                      + "-jump-threading -simplifycfg -instcombine " 
-                      + "-simplifycfg -reassociate -domtree -loops -loop-simplify " 
-                      + "-lcssa -loop-rotate -licm -lcssa -loop-unswitch -instcombine " 
-                      + "-scalar-evolution -loop-simplify -lcssa -iv-users -indvars " 
-                      + "-loop-deletion -loop-unroll -instcombine -memdep -gvn -memdep " 
-                      + "-memcpyopt -sccp -instcombine -lazy-value-info -jump-threading " 
-                      + "-correlated-propagation -domtree -memdep -dse -adce -simplifycfg " 
-                      + "-strip-dead-prototypes -print-used-types -deadtypeelim " 
-                      + "-globaldce -constmerge -preverify -domtree -verify").split(" ")));
+
+        outFile.getParentFile().mkdirs();
+        exec(optPath, options, "-o=" + outFile.toString(), inFile);
+    }
+    
+    private void llc(File inFile, File outFile) throws IOException {
+        if (!clean && outFile.exists() && outFile.lastModified() >= inFile.lastModified()) {
+            if (verbose) {
+                stdout.println("Skipping unchanged LLVM bitcode file: " + inFile);
             }
-        
-            exec(optPath, opts, "-o=" + outOptedFile.toString(), f);
+            return;
         }
-        
-        opts = new ArrayList<String>(llcOpts);
-        opts.add("-relocation-model=pic");
+        if (verbose) {
+            stdout.format("Compiling LLVM bitcode file '%s' to assembler file '%s'\n", inFile, outFile);
+        }
+      
+        String llcPath = "llc";
+        if (llvmBinDir != null) {
+            llcPath = new File(llvmBinDir, "llc").getAbsolutePath();
+        }
+  
+        ArrayList<String> opts = new ArrayList<String>(llcOpts);
+//        opts.add("-relocation-model=pic");
         opts.add("-march=" + (arch == Arch.x86_64 ? "x86-64" : arch.toString()));
         if (cpu != null) {
             opts.add("-mcpu=" + cpu);
         }
-
-        exec(llcPath, opts, "-o=" + outFile.toString(), outOptedFile);
-            
-        return processGccFile(entry, outFile);
+    
+        outFile.getParentFile().mkdirs();
+        exec(llcPath, opts, "-o=" + outFile.toString(), inFile);
     }
     
-    private File processGccFile(ClasspathEntry entry, File f) throws IOException {
-//        String hash = f.getParentFile().getName();
-//        File outFile = new File(f.getParentFile().getParentFile().getParentFile(), f.getName().substring(0, f.getName().lastIndexOf('.')) + "." + hash + ".o");
-        File outFile = new File(f.getParentFile(), f.getName().substring(0, f.getName().lastIndexOf('.')) + ".o");
-        if (!clean && outFile.exists() && outFile.lastModified() >= f.lastModified()) {
+    private void gcc(File inFile, File outFile, String ... options) throws IOException {
+        if (!clean && outFile.exists() && outFile.lastModified() >= inFile.lastModified()) {
             if (verbose) {
-                stdout.println("Skipping unchanged GCC input file: " + f);
+                stdout.println("Skipping unchanged GCC input file: " + inFile);
             }
-            return outFile;
+            return;
         }
         if (verbose) {
-            stdout.format("Compiling '%s' to '%s'\n", f, outFile);
+            stdout.format("Compiling '%s' to '%s'\n", inFile, outFile);
         }
-        
+
         String gccPath = "gcc";
         if (gccBin != null) {
             gccPath = gccBin.getAbsolutePath();
         }
-        
+
         List<String> opts = new ArrayList<String>(gccOpts);
         if (debug) {
             opts.add("-g");
         }
-        
-        exec(gccPath, "-c", "-o", outFile, gccOpts, f);
-        
-        return outFile;
+        opts.addAll(Arrays.asList(options));
+
+        outFile.getParentFile().mkdirs();
+        exec(gccPath, "-c", "-o", outFile, opts, inFile);
+    }
+
+    private void linkStatic(List<File> files, File outFile) throws IOException {
+        String arPath = "ar";
+        if (arBin != null) {
+            arPath = arBin.getAbsolutePath();
+        }
+
+        outFile.getParentFile().mkdirs();
+        exec(arPath, "rcs", outFile, files);
     }
     
-    private File buildDynamicLibrary(ClasspathEntry entry) throws IOException {
-        File outFile = entry.getDynamicLibrary();
+    private File buildClassFileDebug(ClasspathEntry entry, Clazz clazz) throws IOException {
+        String className = clazz.getInternalName();
+        File llFile = new File(entry.getLlvmCacheDir(), className.replace('/', File.separatorChar) + "" + ".class.ll");
+        classToIr(clazz, llFile);
+        File tmpBcFile = changeExt(llFile, "tmp.bc");
+        llvmAs(llFile, tmpBcFile);
+        File bcFile = changeExt(tmpBcFile, "bc");
+        opt(tmpBcFile, bcFile, "-mem2reg", "-always-inline");
+        File sFile = changeExt(rebase(bcFile, entry.getLlvmCacheDir(), entry.getObjectCacheDir()), "s");
+        llc(bcFile, sFile);
+        File oFile = changeExt(sFile, "o");
+        gcc(sFile, oFile);
+        return oFile;
+    }    
 
+    private File buildClasspathEntry(ClasspathEntry entry) throws IOException {
+        File outFile = entry.getStaticLibrary();
+        
         if (!clean && outFile.exists() && !entry.hasChangedAfter(outFile.lastModified())) {
             if (verbose) {
                 stdout.println("Skipping unchanged classpath entry: " + entry);
             }
             return outFile;
         }
-        
         if (verbose) {
-            stdout.format("Building dynamic library '%s'\n", outFile);
-        }
-            
-        List<File> files = processClassFiles(entry);
-        // To avoid the "Argument list too long" error we write the file paths to a temp file
-        // and use the @file argument to gcc below.
-        File atFile = new File(tmpFile, "files");
-        PrintWriter pw = null;
-        try {
-            pw = new PrintWriter(atFile);
-            for (File f : files) {
-                pw.println(f.getAbsolutePath().substring(entry.getObjectCacheDir().getAbsolutePath().length() + 1));
-            }
-        } finally {
-            IOUtils.closeQuietly(pw);
+            stdout.format("Building static library '%s' for classpath entry\n", outFile, entry);
         }
 
-        outFile.getParentFile().mkdirs();
-        
-        String gccPath = "gcc";
-        if (gccBin != null) {
-            gccPath = gccBin.getAbsolutePath();
+        List<File> objectFiles = new ArrayList<File>();
+        for (Clazz clazz : entry.getPath().list()) {
+            objectFiles.add(buildClassFileDebug(entry, clazz));
         }
         
-        List<String> ldArgs = new ArrayList<String>();
-        for (File f : libDirs) {
-            ldArgs.add("-L");
-            ldArgs.add(f.getAbsolutePath());
-        }
-        ldArgs.add("-L");
-        ldArgs.add(new File(home, "lib").getAbsolutePath());
-
-        if (os == OS.linux) {
-            exec(entry.getObjectCacheDir(), gccPath, "@" + atFile.getAbsolutePath(), "-o", outFile, "-g", 
-                    "-shared", "-Wl,-soname," + outFile.getName(), 
-                    "-Wl,--version-script", symbolsMapFile, 
-                    gccOpts, ldArgs, "-lnullvm", "-lm");
-        } else if (os == OS.macosx) {
-            //gcc -dynamiclib -L $(HOME)/.nullvm/lib -lc -lz -lm -lpthread -lnullvm -exported_symbols_list $(BASE)/symbols.macosx
-            exec(entry.getObjectCacheDir(), gccPath, "@" + atFile.getAbsolutePath(), "-o", outFile, "-g", 
-                    "-dynamiclib", gccOpts, ldArgs, "-lnullvm", "-lm", "-exported_symbols_list", symbolsMapFile);
-        }
-        
+        linkStatic(objectFiles, outFile);
         return outFile;
     }
     
-    private void buildExecutable() throws IOException {
+//    private void processClasspathEntry(ClasspathEntry entry) throws IOException {
+//        buildBcLibrary(entry);
+//    }
+    
+    private void build(List<ClasspathEntry> entries) throws IOException {
+        if (debug) {
+            List<File> libFiles = new ArrayList<File>();
+            for (ClasspathEntry entry : entries) {
+                libFiles.add(buildClasspathEntry(entry));
+            }
+            buildExecutable(entries, libFiles);
+        } else {
+            throw new IllegalArgumentException("Release build not yet implemented");
+        }
+    }
+    
+//    private File processBcFile(ClasspathEntry entry, File f) throws IOException {
+//        File outFile = changeExt(rebase(f, entry.getLlvmCacheDir(), entry.getObjectCacheDir()), "s");
+//        
+//        if (!clean && outFile.exists() && outFile.lastModified() >= f.lastModified()) {
+//            if (verbose) {
+//                stdout.println("Skipping unchanged LLVM bitcode file: " + f);
+//            }
+//            return processGccFile(entry, outFile);
+//        }
+//        if (verbose) {
+//            stdout.format("Compiling LLVM bitcode file '%s' to assembler file '%s'\n", f, outFile);
+//        }
+//            
+//        outFile.getParentFile().mkdirs();
+//        
+//        String llcPath = "llc";
+//        String optPath = "opt";
+//        if (llvmBinDir != null) {
+//            llcPath = new File(llvmBinDir, "llc").getAbsolutePath();
+//            optPath = new File(llvmBinDir, "opt").getAbsolutePath();
+//        }
+//        
+//        List<String> opts = null;
+//        
+//        File outOptedFile = changeExt(f, (debug ? "debug" : "release") + ".opted.bc");
+//        if (clean || !outOptedFile.exists() || outOptedFile.lastModified() < f.lastModified()) {
+//            opts = new ArrayList<String>(optOpts);
+//            opts.add("-mem2reg");
+//            opts.add("-always-inline");
+//            if (!debug) {
+//                // -std-compile-opts minus -inline and -tailcallelim 
+//                opts.addAll(Arrays.asList(
+//                       ("-preverify -domtree -verify -lowersetjmp -globalopt -ipsccp " 
+//                      + "-deadargelim -instcombine -simplifycfg -basiccg -prune-eh " 
+//                      + "-functionattrs -argpromotion -domtree -domfrontier " 
+//                      + "-scalarrepl -simplify-libcalls -instcombine -lazy-value-info " 
+//                      + "-jump-threading -simplifycfg -instcombine " 
+//                      + "-simplifycfg -reassociate -domtree -loops -loop-simplify " 
+//                      + "-lcssa -loop-rotate -licm -lcssa -loop-unswitch -instcombine " 
+//                      + "-scalar-evolution -loop-simplify -lcssa -iv-users -indvars " 
+//                      + "-loop-deletion -loop-unroll -instcombine -memdep -gvn -memdep " 
+//                      + "-memcpyopt -sccp -instcombine -lazy-value-info -jump-threading " 
+//                      + "-correlated-propagation -domtree -memdep -dse -adce -simplifycfg " 
+//                      + "-strip-dead-prototypes -print-used-types -deadtypeelim " 
+//                      + "-globaldce -constmerge -preverify -domtree -verify").split(" ")));
+//            }
+//        
+//            exec(optPath, opts, "-o=" + outOptedFile.toString(), f);
+//        }
+//        
+//        opts = new ArrayList<String>(llcOpts);
+//        opts.add("-relocation-model=pic");
+//        opts.add("-march=" + (arch == Arch.x86_64 ? "x86-64" : arch.toString()));
+//        if (cpu != null) {
+//            opts.add("-mcpu=" + cpu);
+//        }
+//
+//        exec(llcPath, opts, "-o=" + outFile.toString(), outOptedFile);
+//            
+//        return processGccFile(entry, outFile);
+//    }
+    
+//    private File buildBcLibrary(ClasspathEntry entry) throws IOException {
+//        File outFile = entry.getBcLibrary();
+//
+//        if (!clean && outFile.exists() && !entry.hasChangedAfter(outFile.lastModified())) {
+//            if (verbose) {
+//                stdout.println("Skipping unchanged classpath entry: " + entry);
+//            }
+//            return outFile;
+//        }
+//        
+//        List<File> files = processClassFiles(entry);
+//        List<String> relFiles = new ArrayList<String>(files.size());
+//        for (File f: files) {
+//            relFiles.add(f.getAbsolutePath().substring(entry.getLlvmCacheDir().getAbsolutePath().length() + 1));
+//        }
+//
+//        if (verbose) {
+//            stdout.format("Building bitcode library '%s'\n", outFile);
+//        }
+//        
+//        String llvmLinkPath = "llvm-link";
+//        String optPath = "opt";
+//        if (llvmBinDir != null) {
+//            llvmLinkPath = new File(llvmBinDir, "llvm-link").getAbsolutePath();
+//            optPath = new File(llvmBinDir, "opt").getAbsolutePath();
+//        }
+//
+//        File tmpFile = changeExt(outFile, "tmp.bc");
+//        exec(entry.getLlvmCacheDir(), llvmLinkPath, "-o=" + tmpFile.toString(), relFiles);
+//        exec(optPath, "-mem2reg", "-always-inline", "-o=" + outFile.toString(), tmpFile);
+//        
+//        return outFile;
+//    }
+    
+    private void buildExecutable(List<ClasspathEntry> entries, List<File> libFiles) throws IOException {
         File outFile = new File(output, target);
         
         if (verbose) {
             stdout.format("Building executable '%s'\n", outFile);
         }
+        
+        Module module = new Module();
+        List<Value> bootcpValues = new ArrayList<Value>();
+        List<Value> cpValues = new ArrayList<Value>();
+        for (ClasspathEntry entry : entries) {
+            for (Clazz c : entry.getPath().list()) {
+                String varName = SootClassCompiler.getStringVarName(c.getInternalName());
+                String funcName = "NullVM_" + SootClassCompiler.mangleString(c.getInternalName());
+                Global var = new Global(varName, Linkage.external, new ArrayType(0, Type.I8), true);
+                module.addGlobal(var);
+                FunctionDeclaration func = new FunctionDeclaration(funcName, new FunctionType(Type.I8_PTR, Type.I8_PTR, Type.I8_PTR, Type.I8_PTR));
+                module.addFunctionDeclaration(func);
+                Value value = new StructureConstant(new StructureType(Type.I8_PTR, Type.I8_PTR), 
+                        new ConstantGetelementptr(var.ref(), 0, 0),
+                        new ConstantBitcast(func.ref(), Type.I8_PTR));
+                if (entry.isInBootClasspath()) {
+                    bootcpValues.add(value);
+                } else {
+                    cpValues.add(value);
+                }
+            }
+        }
+        bootcpValues.add(new StructureConstant(new StructureType(Type.I8_PTR, Type.I8_PTR), new NullConstant(Type.I8_PTR), new NullConstant(Type.I8_PTR)));
+        cpValues.add(new StructureConstant(new StructureType(Type.I8_PTR, Type.I8_PTR), new NullConstant(Type.I8_PTR), new NullConstant(Type.I8_PTR)));
+        Global gbcp = module.newGlobal(new ArrayConstant(
+                new ArrayType(bootcpValues.size(), new StructureType(Type.I8_PTR, Type.I8_PTR)), 
+                bootcpValues.toArray(new Value[0])), true);
+        module.addGlobal(new Global("_nvmBcBootclasspathEntries", new ConstantGetelementptr(gbcp.ref(), 0, 0)));
+        Global gcp = module.newGlobal(new ArrayConstant(
+                new ArrayType(cpValues.size(), new StructureType(Type.I8_PTR, Type.I8_PTR)), 
+                cpValues.toArray(new Value[0])), true);
+        module.addGlobal(new Global("_nvmBcClasspathEntries", new ConstantGetelementptr(gcp.ref(), 0, 0)));
+//        module.addGlobal(new Global("_nvmBcBootclasspathEntries", 
+//                new ArrayConstant(
+//                        new ArrayType(bootcpValues.size(), new StructureType(Type.I8_PTR, Type.I8_PTR)), 
+//                        bootcpValues.toArray(new Value[0])), true));
+//        module.addGlobal(new Global("_nvmBcClasspathEntries", 
+//                new ArrayConstant(new ArrayType(cpValues.size(), new StructureType(Type.I8_PTR, Type.I8_PTR)), 
+//                        cpValues.toArray(new Value[0])), true));
+        if (mainClass != null) {
+            Global g = module.newGlobal(new StringConstant(SootClassCompiler.stringToModifiedUtf8(mainClass)), true);
+            module.addGlobal(new Global("_nvmBcMainClass", new ConstantGetelementptr(g.ref(), 0, 0)));
+        }
+        
+        File configLl = new File(tmpFile, "config.ll");
+        FileUtils.writeStringToFile(configLl, module.toString(), "UTF-8");
+        File configS = new File(tmpFile, "config.s");
+        llc(configLl, configS);
         
         String gccPath = "gcc";
         if (gccBin != null) {
@@ -384,30 +506,12 @@ public class Main {
         
         List<String> gccArgs = new ArrayList<String>();
         
-        gccArgs.add("-D" + os.toString().toUpperCase());
-        gccArgs.add("-DHY" + arch.toString().toUpperCase());
-        gccArgs.add("-D" + os.toString().toUpperCase() + "_" + arch.toString().toUpperCase());
-        
-        for (File f : includeDirs) {
-            gccArgs.add("-I");
-            gccArgs.add(f.getAbsolutePath());
-        }
-        gccArgs.add("-I");
-        gccArgs.add(new File(home, "include").getAbsolutePath());
-        gccArgs.add("-I");
-        gccArgs.add(new File(new File(home, "gc"), "include").getAbsolutePath());
-        gccArgs.add("-I");
-        gccArgs.add(new File(new File(home, "include"), "harmony").getAbsolutePath());
         gccArgs.add("-L");
-        gccArgs.add(new File(home, "lib").getAbsolutePath());
-        gccArgs.add("-L");
-        gccArgs.add(new File(new File(home, "gc"), "lib").getAbsolutePath());
+        gccArgs.add(homeOsArchLib.getAbsolutePath());
+        gccArgs.add("-Xlinker");
+        gccArgs.add("-rpath=$ORIGIN");
         
-//        File mainObjectFile = new File(mainCFile.getParentFile(), "main.o");
-        exec(gccPath, "-o", outFile, 
-                mainClass != null ? "-DNULLVM_MAIN_CLASS=" + mainClass.replace('.', '/') : "-DNULLVM_NO_MAIN_CLASS",
-                "-DIPv6_FUNCTION_SUPPORT", "-DHYPORT_LIBRARY_DEFINE", "-g", gccOpts, gccArgs, "-lnullvm", "-lm", "-ldl", 
-                "-lpthread", mainCFile);
+        exec(gccPath, "-o", outFile, "-g", gccOpts, gccArgs, configS, libFiles, "-lm", "-lnullvm-core", "-lnullvm-bc", "-lnullvm-hyprt");
 //        files.add(mainObjectFile);
 //
 //        List<String> ldArgs = new ArrayList<String>();
@@ -554,6 +658,10 @@ public class Main {
                 for (Object o : (Collection<Object>) a) {
                     commandLine.addArgument(o instanceof File ? ((File) o).getAbsolutePath() : o.toString());
                 }
+            } else if (a instanceof Object[]) {
+                for (Object o : (Object[]) a) {
+                    commandLine.addArgument(o instanceof File ? ((File) o).getAbsolutePath() : o.toString());
+                }
             } else {
                 commandLine.addArgument(a instanceof File ? ((File) a).getAbsolutePath() : a.toString());
             }
@@ -612,6 +720,8 @@ public class Main {
                     gccBin = new File(args[++i]);
                 } else if ("-gcc-opt".equals(args[i])) {
                     gccOpts.add(args[++i]);
+                } else if ("-ar-bin".equals(args[i])) {
+                    arBin = new File(args[++i]);
                 } else if ("-llvm-bin-dir".equals(args[i])) {
                     llvmBinDir = new File(args[++i]);
                 } else if ("-llc-opt".equals(args[i])) {
@@ -755,6 +865,8 @@ public class Main {
             stdout.println("Run arguments: " + runArgs);
         }
         
+        homeOsArchLib = new File(new File(new File(home, os.toString()), arch.toString()), "lib");
+        
         cache.mkdirs();
         llvmCache = new File(cache, "llvm");
         llvmCache.mkdirs();
@@ -796,31 +908,35 @@ public class Main {
         }
 
         Clazzes clazzes = new Clazzes(bootClassPathFiles, classPathFiles);
-        List<ClasspathEntry> bootclasspathObjects = new ArrayList<ClasspathEntry>();
-        List<ClasspathEntry> classpathObjects = new ArrayList<ClasspathEntry>();
+        List<ClasspathEntry> classpathEntries = new ArrayList<ClasspathEntry>();
         for (Path path : clazzes.getBootclasspathPaths()) {
-            bootclasspathObjects.add(createClasspathEntry(path));
+            classpathEntries.add(createClasspathEntry(path, true));
         }
         for (Path path : clazzes.getClasspathPaths()) {
-            classpathObjects.add(createClasspathEntry(path));
+            classpathEntries.add(createClasspathEntry(path, false));
         }
 
-        SootClassCompiler.init(clazzes, getChangedClasses(bootclasspathObjects, classpathObjects));
+        SootClassCompiler.init(clazzes, getChangedClasses(classpathEntries));
         
-        for (ClasspathEntry entry : bootclasspathObjects) {
-            processClasspathEntry(entry);
-        }
-        for (ClasspathEntry entry : classpathObjects) {
-            processClasspathEntry(entry);
-        }
         
         output.mkdirs();
-        
-        buildExecutable();
+        build(classpathEntries);
         
         if (run) {
             // Run in place
-            runTarget(bootclasspathObjects, classpathObjects);
+            List<String> bootclasspathContents = new ArrayList<String>();
+            List<String> classpathContents = new ArrayList<String>();
+            for (ClasspathEntry entry : classpathEntries) {
+                if (entry.isInBootClasspath()) {
+                    bootclasspathContents.add(entry.getPath().getFile().getAbsolutePath());
+                } else {
+                    classpathContents.add(entry.getPath().getFile().getAbsolutePath());
+                }
+            }
+            FileUtils.writeStringToFile(new File(output, "bootclasspath"), join(bootclasspathContents, "\r\n"), "UTF-8");
+            FileUtils.writeStringToFile(new File(output, "classpath"), join(classpathContents, "\r\n"), "UTF-8");
+
+            runTarget();
         } else {
             FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libnullvm" + (os == OS.linux ? ".so" : ".dylib")), output);
             FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libnullvm-rt" + (os == OS.linux ? ".so" : ".dylib")), output);
@@ -834,8 +950,8 @@ public class Main {
 //            String bootDirString = libBoot.getAbsolutePath().substring(output.getAbsolutePath().length() + 1);
 //            String mainDirString = libMain.getAbsolutePath().substring(output.getAbsolutePath().length() + 1);
             
-            writeClasspathEntries(bootclasspathObjects, output, libBoot, new File(output, "bootclasspath"));
-            writeClasspathEntries(classpathObjects, output, libMain, new File(output, "classpath"));
+//            writeClasspathEntries(bootclasspathObjects, output, libBoot, new File(output, "bootclasspath"));
+//            writeClasspathEntries(classpathObjects, output, libMain, new File(output, "classpath"));
             
 //            Properties bootEntriesProps = new Properties();
 //            for (ClasspathEntry entry : bootclasspathObjects) {
@@ -863,34 +979,34 @@ public class Main {
         }        
     }
 
-    private void writeClasspathEntries(List<ClasspathEntry> entries, File file) throws IOException {
-        writeClasspathEntries(entries, null, null, file);
-    }
-    private void writeClasspathEntries(List<ClasspathEntry> entries, File basePath, File installPath, File file) throws IOException {
-        // The result is similar to a properties file but the order of entries is important so we cannot use Properties.store()
-        // TODO: Escape = characters
-        PrintWriter writer = null;
-        try {
-            writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
-            for (ClasspathEntry entry: entries) {
-                String left = entry.getArchive().getCanonicalPath();
-                String right = entry.getDynamicLibrary().getCanonicalPath();
-                if (installPath != null) {
-                    String dir = installPath.getAbsolutePath().substring(basePath.getAbsolutePath().length() + 1);
-                    stripArchive(entry.getArchive(), new File(installPath, entry.getArchive().getName()));
-                    FileUtils.copyFileToDirectory(entry.getDynamicLibrary(), installPath);
-                    left = dir + File.separator + entry.getArchive().getName();
-                    right = dir + File.separator + entry.getDynamicLibrary().getName();
-                }
-                writer.write(left);
-                writer.write('=');
-                writer.write(right);
-                writer.write('\n');
-            }
-        } finally {
-            IOUtils.closeQuietly(writer);
-        }
-    }
+//    private void writeClasspathEntries(List<ClasspathEntry> entries, File file) throws IOException {
+//        writeClasspathEntries(entries, null, null, file);
+//    }
+//    private void writeClasspathEntries(List<ClasspathEntry> entries, File basePath, File installPath, File file) throws IOException {
+//        // The result is similar to a properties file but the order of entries is important so we cannot use Properties.store()
+//        // TODO: Escape = characters
+//        PrintWriter writer = null;
+//        try {
+//            writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
+//            for (ClasspathEntry entry: entries) {
+//                String left = entry.getArchive().getCanonicalPath();
+//                String right = entry.getDynamicLibrary().getCanonicalPath();
+//                if (installPath != null) {
+//                    String dir = installPath.getAbsolutePath().substring(basePath.getAbsolutePath().length() + 1);
+//                    stripArchive(entry.getArchive(), new File(installPath, entry.getArchive().getName()));
+//                    FileUtils.copyFileToDirectory(entry.getDynamicLibrary(), installPath);
+//                    left = dir + File.separator + entry.getArchive().getName();
+//                    right = dir + File.separator + entry.getDynamicLibrary().getName();
+//                }
+//                writer.write(left);
+//                writer.write('=');
+//                writer.write(right);
+//                writer.write('\n');
+//            }
+//        } finally {
+//            IOUtils.closeQuietly(writer);
+//        }
+//    }
 
     @SuppressWarnings("rawtypes")
     private String getHost() throws IOException {
@@ -944,26 +1060,12 @@ public class Main {
     }
     
     @SuppressWarnings({ "unchecked" })
-    private void runTarget(List<ClasspathEntry> bootEntries, List<ClasspathEntry> mainEntries) throws IOException {
-        Properties bootEntriesProps = new Properties();
-        for (ClasspathEntry entry : bootEntries) {
-            bootEntriesProps.setProperty(entry.getArchive().getCanonicalPath(), 
-                    entry.getDynamicLibrary().getCanonicalPath());
-        }
-        Properties mainEntriesProps = new Properties();
-        for (ClasspathEntry entry : mainEntries) {
-            mainEntriesProps.setProperty(entry.getArchive().getCanonicalPath(), 
-                    entry.getDynamicLibrary().getCanonicalPath());
-        }
-        
-        writeClasspathEntries(bootEntries, new File(output, "bootclasspath"));
-        writeClasspathEntries(mainEntries, new File(output, "classpath"));
-        
+    private void runTarget() throws IOException {
         Map<String, String> env = new HashMap<String, String>();
         env.putAll(EnvironmentUtils.getProcEnvironment());
         String ldLibraryPath = env.get("LD_LIBRARY_PATH");
         ldLibraryPath = ldLibraryPath == null ? "" : ":" + ldLibraryPath;
-        env.put("LD_LIBRARY_PATH", new File(home, "lib").getAbsolutePath() + ldLibraryPath);
+        env.put("LD_LIBRARY_PATH", homeOsArchLib.getAbsolutePath() + ldLibraryPath);
         try {
             execWithEnv(output, env, new File(output, target).getAbsolutePath());
         } catch (ExecuteException e) {
@@ -971,11 +1073,11 @@ public class Main {
         }
     }
     
-    private ClasspathEntry createClasspathEntry(Path path) {
+    private ClasspathEntry createClasspathEntry(Path path, boolean inBootClasspath) {
         if (path instanceof ZipFilePath) {
-            return new ZipFilePathClasspathEntry((ZipFilePath) path);
+            return new ZipFilePathClasspathEntry((ZipFilePath) path, inBootClasspath);
         }
-        return new DirectoryPathClasspathEntry((DirectoryPath) path);
+        return new DirectoryPathClasspathEntry((DirectoryPath) path, inBootClasspath);
     }
     
     public void setOutput(File output) {
@@ -1059,35 +1161,53 @@ public class Main {
 
     private static File changeExt(File f, String newExt) {
         String name = f.getName();
-        int index = name.lastIndexOf('.');
+        int index = name.indexOf('.');
         if (index == -1) {
             return new File(f.getParent(), name + "." + newExt);
         }
         return new File(f.getParent(), name.substring(0, index) + "." + newExt);
     }
     
+    private static String join(Collection<String> coll, String sep) {
+        StringBuilder sb = new StringBuilder();
+        for (String s : coll) {
+            if (sb.length() > 0) {
+                sb.append(sep);
+            }
+            sb.append(s);
+        }
+        return sb.toString();
+    }
+    
     interface ClasspathEntry {
         Path getPath();
-        File getDynamicLibrary();
+        File getBcLibrary();
+        File getStaticLibrary();
         File getLlvmCacheDir();
         File getObjectCacheDir();
         File getArchive();
         boolean hasChangedAfter(long timestamp);
+        boolean isInBootClasspath();
     }
     
     class ZipFilePathClasspathEntry implements ClasspathEntry {
         private final ZipFilePath path;
+        private final boolean inBootClasspath;
         private File llvmCacheDir = null;
         private File objectCacheDir = null;
         
-        public ZipFilePathClasspathEntry(ZipFilePath path) {
+        public ZipFilePathClasspathEntry(ZipFilePath path, boolean inBootClasspath) {
             this.path = path;
+            this.inBootClasspath = inBootClasspath;
         }
         public Path getPath() {
             return path;
         }
-        public File getDynamicLibrary() {
-            return new File(getObjectCacheDir().getParentFile(), "lib" + path.getFile().getName() + (os == OS.macosx ? ".dylib" : ".so"));
+        public File getBcLibrary() {
+            return new File(getLlvmCacheDir().getParentFile(), path.getFile().getName() + ".bc");
+        }
+        public File getStaticLibrary() {
+            return new File(getObjectCacheDir().getParentFile(), "lib" + path.getFile().getName() + ".a");
         }
         public File getLlvmCacheDir() {
             if (llvmCacheDir == null) {
@@ -1118,6 +1238,9 @@ public class Main {
         public boolean hasChangedAfter(long timestamp) {
             return path.getFile().lastModified() > timestamp;
         }
+        public boolean isInBootClasspath() {
+            return inBootClasspath;
+        }
         @Override
         public String toString() {
             return path.getFile().getAbsolutePath();
@@ -1126,20 +1249,25 @@ public class Main {
     
     class DirectoryPathClasspathEntry implements ClasspathEntry {
         private final DirectoryPath path;
+        private final boolean inBootClasspath;
         private File archive = null;
         private File llvmCacheDir = null;
         private File objectCacheDir = null;
         private final String jarName;
         
-        public DirectoryPathClasspathEntry(DirectoryPath path) {
+        public DirectoryPathClasspathEntry(DirectoryPath path, boolean inBootClasspath) {
             this.path = path;
+            this.inBootClasspath = inBootClasspath;
             jarName = "classes" + path.getIndex() + ".jar";
         }
         public Path getPath() {
             return path;
         }
-        public File getDynamicLibrary() {
-            return new File(getObjectCacheDir().getParentFile(), "lib" + jarName + (os == OS.macosx ? ".dylib" : ".so"));
+        public File getBcLibrary() {
+            return new File(getLlvmCacheDir().getParentFile(), jarName + ".bc");
+        }
+        public File getStaticLibrary() {
+            return new File(getObjectCacheDir().getParentFile(), "lib" + jarName + ".a");
         }
         public File getLlvmCacheDir() {
             if (llvmCacheDir == null) {
@@ -1162,7 +1290,7 @@ public class Main {
                 }
             } 
             return objectCacheDir;
-        }        
+        }              
         public File getArchive() {
             if (archive == null) {
                 File a = new File(getLlvmCacheDir().getParentFile(), jarName);
@@ -1193,6 +1321,9 @@ public class Main {
         }
         public boolean hasChangedAfter(long timestamp) {
             return hasChangedAfter(path.getFile(), timestamp);
+        }
+        public boolean isInBootClasspath() {
+            return inBootClasspath;
         }
         @Override
         public String toString() {

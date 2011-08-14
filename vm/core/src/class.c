@@ -89,9 +89,6 @@ static ObjectArray* longsCache = NULL;
 static Method* java_lang_Float_valueOf = NULL;
 static Method* java_lang_Double_valueOf = NULL;
 
-static DynamicLib* bootSoHandles = NULL;
-static DynamicLib* mainSoHandles = NULL;
-
 static hythread_monitor_t classLock;
 
 typedef struct LoadedClassEntry {
@@ -103,8 +100,8 @@ static LoadedClassEntry* loadedClasses = NULL;
 
 static jint nextClassId = 0;
 
-static Class* findClassByDescriptor(Env* env, char* desc, ClassLoader* classLoader, DynamicLib* dlib);
-static Class* findClass(Env* env, char* className, ClassLoader* classLoader, DynamicLib* dlib);
+static Class* findClassByDescriptor(Env* env, char* desc, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, char*, ClassLoader*));
+static Class* findClass(Env* env, char* className, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, char*, ClassLoader*));
 static Class* findBootClass(Env* env, char* className);
 
 static inline jint getNextClassId(void) {
@@ -132,21 +129,6 @@ static inline obtainClassLock() {
 
 static inline releaseClassLock() {
     hythread_monitor_exit(classLock);
-}
-
-static void loadSoHandles(Env* env, ClasspathEntry* entry, DynamicLib** first) {
-    while (entry) {
-        DynamicLib* dlib = nvmLoadDynamicLib(env, entry->soPath, first);
-        if (!dlib) {
-            nvmAbort("Fatal error: Failed to load %s", entry->soPath);
-        }
-        entry = entry->next;
-    }
-}
-
-static void initSoHandles(Env* env) {
-    loadSoHandles(env, env->vm->options->bootclasspath, &bootSoHandles);
-    loadSoHandles(env, env->vm->options->classpath, &mainSoHandles);
 }
 
 static jint j_get_vtable_index(Class* clazz, char* name, char* desc, Class* caller) {
@@ -235,7 +217,7 @@ static Class* createPrimitiveClass(Env* env, char* desc) {
     return clazz;
 }
 
-static Class* createArrayClass(Env* env, Class* componentType, DynamicLib* dlib) {
+static Class* createArrayClass(Env* env, Class* componentType) {
     jint length = strlen(componentType->name);
     char* desc = NULL;
 
@@ -264,12 +246,7 @@ static Class* createArrayClass(Env* env, Class* componentType, DynamicLib* dlib)
     return clazz;
 }
 
-static Class* (*findClassLoaderFunction(Env* env, char* funcName, DynamicLib* dlib))(Env*, ClassLoader*) {
-    Class* (*loader)(Env*, ClassLoader*) = nvmFindDynamicLibSymbol(env, dlib, funcName);
-    return loader;
-}
-
-static Class* findClass(Env* env, char* className, ClassLoader* classLoader, DynamicLib* dlib) {
+static Class* findClass(Env* env, char* className, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, char*, ClassLoader*)) {
     obtainClassLock();
     Class* clazz = getLoadedClass(env, className);
     if (clazz != NULL) {
@@ -278,36 +255,27 @@ static Class* findClass(Env* env, char* className, ClassLoader* classLoader, Dyn
     }
 
     if (className[0] == '[') {
-        Class* componentType = findClassByDescriptor(env, &className[1], classLoader, dlib);
+        Class* componentType = findClassByDescriptor(env, &className[1], classLoader, loaderFunc);
         if (!componentType)  {
             releaseClassLock();
             return NULL;
         }
-        clazz = createArrayClass(env, componentType, dlib);
+        clazz = createArrayClass(env, componentType);
         releaseClassLock();
         return clazz;
     }
 
     TRACE("Class '%s' not loaded\n", className);
-    char* funcName = mangleClassName(env, className);
-    if (!funcName) {
-        releaseClassLock();
-        return NULL;
-    }
 
-    TRACE("Searching for class loader function '%s()'\n", funcName);
-
-    Class* (*loader)(Env*, ClassLoader*) = findClassLoaderFunction(env, funcName, dlib);
-    if (loader) {
-        TRACE("Calling class loader function '%s()'\n", funcName);
-        // TODO: This is x86-64 specific
-        CallInfo callInfo = {0};
-        callInfo.function = loader;
-        callInfo.intArgs[0] = env;
-        callInfo.intArgs[1] = classLoader;
-        Class* (*f)(CallInfo*) = (Class* (*)(CallInfo*)) _nvmCall0;
-        clazz = f(&callInfo);
-    }
+    // We use _nvmCall0 to call loaderFunc to stop unwinding if an exception is thrown
+    // TODO: This is x86-64 specific
+    CallInfo callInfo = {0};
+    callInfo.function = loaderFunc;
+    callInfo.intArgs[0] = env;
+    callInfo.intArgs[1] = className;
+    callInfo.intArgs[2] = classLoader;
+    Class* (*f)(CallInfo*) = (Class* (*)(CallInfo*)) _nvmCall0;
+    clazz = f(&callInfo);
 
     if (nvmExceptionOccurred(env)) {
         releaseClassLock();
@@ -326,7 +294,7 @@ static Class* findClass(Env* env, char* className, ClassLoader* classLoader, Dyn
 }
 
 static Class* findBootClass(Env* env, char* className) {
-    Class* clazz = findClass(env, className, NULL, bootSoHandles);
+    Class* clazz = findClass(env, className, NULL, env->vm->options->bootclasspathFunc);
     if (nvmExceptionOccurred(env)) return NULL;
     if (clazz != NULL) {
         if (clazz->classLoader != NULL) {
@@ -339,7 +307,7 @@ static Class* findBootClass(Env* env, char* className) {
 }
 
 
-static Class* findClassByDescriptor(Env* env, char* desc, ClassLoader* classLoader, DynamicLib* dlib) {
+static Class* findClassByDescriptor(Env* env, char* desc, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, char*, ClassLoader*)) {
     switch (desc[0]) {
     case 'Z':
         return prim_Z;
@@ -360,14 +328,14 @@ static Class* findClassByDescriptor(Env* env, char* desc, ClassLoader* classLoad
     case 'V':
         return prim_V;
     case '[':
-        return findClass(env, desc, classLoader, dlib);
+        return findClass(env, desc, classLoader, loaderFunc);
     }
     // desc[0] == 'L'
     jint length = strlen(desc);
     char* className = nvmAllocateMemory(env, length - 2 + 1);
     if (!className) return NULL;
     strncpy(className, &desc[1], length - 2);
-    return findClass(env, className, classLoader, dlib);
+    return findClass(env, className, classLoader, loaderFunc);
 }
 
 Class* nvmFindClassByDescriptor(Env* env, char* desc, ClassLoader* classLoader) {
@@ -505,7 +473,6 @@ static jboolean fixClassPointer(Class* c, void* data) {
 }
 
 jboolean nvmInitClasses(Env* env) {
-    initSoHandles(env);
 
     if (hythread_monitor_init_with_name(&classLock, 0, NULL) < 0) {
         return FALSE;
@@ -728,7 +695,7 @@ Class* nvmFindClassInClasspathForLoader(Env* env, char* className, ClassLoader* 
     }
     if (classLoader->parent->parent == NULL && classLoader->object.clazz->classLoader == NULL) {
         // This is the system classloader
-        Class* clazz = findClass(env, className, classLoader, mainSoHandles);
+        Class* clazz = findClass(env, className, classLoader, env->vm->options->classpathFunc);
         if (nvmExceptionOccurred(env)) return NULL;
         return clazz;
     }

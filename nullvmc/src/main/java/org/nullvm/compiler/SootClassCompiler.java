@@ -268,7 +268,7 @@ public class SootClassCompiler {
     private static final FunctionRef NVM_BC_REGISTER_CLASS = new FunctionRef("_nvmBcRegisterClass", new FunctionType(VOID, ENV_PTR, CLASS_PTR));
     private static final FunctionRef NVM_BC_FIND_CLASS_IN_LOADER = new FunctionRef("_nvmBcFindClassInLoader", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR, OBJECT_PTR));
 
-    private static final FunctionRef NVM_BC_PERSONALITY = new FunctionRef("_nvmPersonality", new FunctionType(I8_PTR));
+    private static final FunctionRef NVM_BC_PERSONALITY = new FunctionRef("_nvmBcPersonality", new FunctionType(I8_PTR));
     private static final FunctionRef NVM_BC_EXCEPTION_MATCH = new FunctionRef("_nvmBcExceptionMatch", new FunctionType(I32, ENV_PTR, CLASS_PTR));
     private static final FunctionRef NVM_BC_EXCEPTION_CLEAR = new FunctionRef("_nvmBcExceptionClear", new FunctionType(OBJECT_PTR, ENV_PTR));
     private static final FunctionRef NVM_BC_EXCEPTION_SET = new FunctionRef("_nvmBcExceptionSet", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
@@ -1346,7 +1346,7 @@ public class SootClassCompiler {
         }
     }
     
-    private static byte[] stringToModifiedUtf8(String unicode) {
+    static byte[] stringToModifiedUtf8(String unicode) {
         List<Byte> s = new ArrayList<Byte>();
         for (int i = 0; i < unicode.length(); i++) {
             int ch = unicode.charAt(i);
@@ -1636,7 +1636,11 @@ public class SootClassCompiler {
         }
     }
     
-    private static String getStringVarName(byte[] bytes) {
+    static String getStringVarName(String name) {
+        return getStringVarName(stringToModifiedUtf8(name));
+    }
+    
+    static String getStringVarName(byte[] bytes) {
         StringBuilder sb = new StringBuilder("str_");
         for (int i = 0; i < bytes.length; i++) {
             byte b = bytes[i];
@@ -2575,7 +2579,7 @@ public class SootClassCompiler {
         return sb.toString();
     }
     
-    private static String mangleString(String name) {
+    static String mangleString(String name) {
         byte[] s;
         try {
             s = name.getBytes("UTF-8");

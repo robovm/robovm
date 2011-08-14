@@ -69,7 +69,7 @@ declare i8* @_nvmBcResolvePutfield(%Env*, i8*, i8*, i8*)
 
 declare i8* @llvm.eh.exception() nounwind
 declare i32 @llvm.eh.selector(i8*, i8*, ...) nounwind
-declare i8* @_nvmPersonality()
+declare i8* @_nvmBcPersonality()
 
 
 define linkonce_odr i32 @arraylength(%Object* %o) alwaysinline {

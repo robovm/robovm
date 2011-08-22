@@ -8,6 +8,14 @@
 #include <sys/utsname.h>
 #include <string.h>
 
+#define DSO_PREFIX "lib"
+#define DSO_EXT ".so"
+#ifdef MACOSX
+  #undef DSO_EXT
+  #define DSO_EXT ".dylib"
+#endif
+
+
 jint Java_java_lang_System_identityHashCode(JNIEnv* env, jclass clazz, jobject o) {
     return (jint) o;
 }
@@ -128,11 +136,12 @@ ObjectArray* Java_java_lang_System_getPropertyList(Env* env, Class* clazz) {
 Object* Java_java_lang_System_mapLibraryName(Env* env, Class* c, Object* userLibName) {
     if (!userLibName) return NULL;
     char* libName = nvmGetStringUTFChars(env, userLibName);
-    char* result = nvmAllocateMemory(env, strlen(libName) + 6 + 1);
+    if (!libName) return NULL;
+    char* result = nvmAllocateMemory(env, strlen(libName) + strlen(DSO_PREFIX) + strlen(DSO_EXT) + 1);
     if (!result) return NULL;
-    strcpy(result, "lib");
+    strcpy(result, DSO_PREFIX);
     strcat(result, libName);
-    strcat(result, ".so");
+    strcat(result, DSO_EXT);
     return nvmNewStringUTF(env, result, -1);
 }
 

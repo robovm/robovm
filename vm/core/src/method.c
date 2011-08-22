@@ -969,22 +969,7 @@ jboolean nvmLoadNativeLibrary(Env* env, char* path, ClassLoader* classLoader) {
         return FALSE;
     }
 
-    char abspath[PATH_MAX];
-    if (!realpath(path, abspath)) {
-        nvmThrowUnsatisfiedLinkError(env);
-        return FALSE;
-    }
-
-    // See if it has already been loaded
-    DynamicLib* dlib = *nativeLibs;
-    while (dlib) {
-        if (!strcmp(dlib->path, abspath)) {
-            return TRUE;
-        }
-        dlib = dlib->next;
-    }
-
-    if (!nvmLoadDynamicLib(env, abspath, nativeLibs)) {
+    if (!nvmLoadDynamicLib(env, path, nativeLibs)) {
         if (!nvmExceptionOccurred(env)) {
             nvmThrowUnsatisfiedLinkError(env);
         }

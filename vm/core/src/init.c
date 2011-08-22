@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include <link.h>
 #include <dlfcn.h>
 #include "log.h"
 #include "hyport.h"
@@ -245,21 +244,32 @@ void nvmAbort(char* format, ...) {
 }
 
 DynamicLib* nvmLoadDynamicLib(Env* env, char* file, DynamicLib** first) {
+    DynamicLib* dlib = NULL;
+
+    void* handle = dlopen(file, RTLD_LOCAL | RTLD_LAZY);
+    if (!handle) {
+        TRACE("Failed to load dynamic library '%s': %s\n", file, dlerror());
+        return NULL;
+    }
+
+    // Make sure we haven't already loaded this lib
+    LL_FOREACH(*first, dlib) {
+        if (dlib->handle == handle) {
+            dlclose(handle); // Close to decrement ref count
+            return dlib;
+        }
+    }
+
     TRACE("Loading dynamic library '%s'\n", file);
 
-    DynamicLib* dlib = nvmAllocateMemory(env, sizeof(DynamicLib));
-    if (!dlib) return NULL;
+    dlib = nvmAllocateMemory(env, sizeof(DynamicLib));
+    if (!dlib) {
+        dlclose(handle);
+        return NULL;
+    }
 
-    dlib->handle = dlopen(file, RTLD_LOCAL | RTLD_LAZY);
-    if (!dlib->handle) return NULL;
-
-    // Determine the absolute path of the lib
-    struct link_map* map;
-    if (dlinfo(dlib->handle, 2 /*RTLD_DI_LINKMAP*/, &map)) return NULL;
-    strcpy(dlib->path, map->l_name);
-
-    while (*first != NULL) first = &((*first)->next);
-    *first = dlib;
+    dlib->handle = handle;
+    LL_APPEND(*first, dlib);
 
     return dlib;
 }

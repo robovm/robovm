@@ -15,7 +15,12 @@ add_library(nullvm-hyprt SHARED
   hycpu.c hyipcmutex.c hyshmem.c hyshsem.c ${HY_OS}/hyvmem.c
 )
 
-set_target_properties(nullvm-hyprt PROPERTIES LINK_FLAGS "-Wl,--version-script=${port_SOURCE_DIR}/symbols.map" INSTALL_RPATH "$ORIGIN")
-target_link_libraries(nullvm-hyprt hythr hycommon hypool dl pthread)
+if(LINUX)
+  set_target_properties(nullvm-hyprt PROPERTIES LINK_FLAGS "-Wl,--version-script=${port_SOURCE_DIR}/symbols.linux" INSTALL_RPATH "$ORIGIN")
+  target_link_libraries(nullvm-hyprt hythr hycommon hypool dl pthread)
+elseif(DARWIN)
+  set_target_properties(nullvm-hyprt PROPERTIES LINK_FLAGS "-exported_symbols_list ${port_SOURCE_DIR}/symbols.darwin" INSTALL_RPATH "$ORIGIN")
+  target_link_libraries(nullvm-hyprt hythr hycommon hypool dl pthread iconv)
+endif()
 install(TARGETS nullvm-hyprt DESTINATION ${INSTALL_DIR}/lib)
 

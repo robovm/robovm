@@ -1,5 +1,5 @@
 #include <nullvm.h>
-#include "trampolines.h"
+#include "private.h"
 #include "uthash.h"
 
 typedef struct LookupEntry {
@@ -43,7 +43,7 @@ static jboolean addProxyMethods(Env* env, Class* proxyClass, Class* clazz, Proxy
                 // TODO: For now we make all constructors public to satisfy java.lang.reflect.Proxy. 
                 access = ACC_PUBLIC;
             } else {
-                impl = _nvmProxy0;
+                impl = _proxy0;
             }
             if (METHOD_IS_CONSTRUCTOR(method) || !hasMethod(env, proxyClass, method->name, method->desc)) { 
                 if (nvmAddMethod(env, proxyClass, method->name, method->desc, access, impl, NULL, method->lookup) == NULL) {
@@ -76,7 +76,7 @@ static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, I
     for (method = interface->interface->methods->first; method != NULL; method = method->next) {
         if (!hasMethod(env, proxyClass, method->name, method->desc)) { 
             jint access = method->access & (~ACC_ABSTRACT);
-            if (nvmAddMethod(env, proxyClass, method->name, method->desc, access, _nvmProxy0, NULL, method->lookup) == NULL) {
+            if (nvmAddMethod(env, proxyClass, method->name, method->desc, access, _proxy0, NULL, method->lookup) == NULL) {
                 return FALSE;
             }
             // Record the lookup function in proxyClassData
@@ -122,12 +122,9 @@ Class* nvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classL
     return proxyClass;
 }
 
-void _nvmProxyHandler(ProxyArgs* proxyArgs) {
-    ProxyArgsIterator argsIt;
-    initProxyArgsIterator(&argsIt, proxyArgs);
-
-    Env* env = (Env*) getNextPtrProxyArg(&argsIt);
-    Object* receiver = (Object*) getNextPtrProxyArg(&argsIt);
+void _nvmProxyHandler(CallInfo* callInfo) {
+    Env* env = (Env*) proxy0NextPtr(callInfo);
+    Object* receiver = (Object*) proxy0NextPtr(callInfo);
     Class* proxyClass = receiver->clazz;
     ProxyClassData* proxyClassData = (ProxyClassData*) proxyClass->data;
 
@@ -154,39 +151,39 @@ void _nvmProxyHandler(ProxyArgs* proxyArgs) {
         while (c = nvmGetNextParameterType(&desc)) {
             switch (c[0]) {
             case 'B':
-                jvalueArgs[i++].b = getNextByteProxyArg(&argsIt);
+                jvalueArgs[i++].b = (jbyte) proxy0NextInt(callInfo);
                 break;
             case 'Z':
-                jvalueArgs[i++].z = getNextBooleanProxyArg(&argsIt);
+                jvalueArgs[i++].z = (jboolean) proxy0NextInt(callInfo);
                 break;
             case 'S':
-                jvalueArgs[i++].s = getNextShortProxyArg(&argsIt);
+                jvalueArgs[i++].s = (jshort) proxy0NextInt(callInfo);
                 break;
             case 'C':
-                jvalueArgs[i++].c = getNextCharProxyArg(&argsIt);
+                jvalueArgs[i++].c = (jchar) proxy0NextInt(callInfo);
                 break;
             case 'I':
-                jvalueArgs[i++].i = getNextIntProxyArg(&argsIt);
+                jvalueArgs[i++].i = proxy0NextInt(callInfo);
                 break;
             case 'J':
-                jvalueArgs[i++].j = getNextLongProxyArg(&argsIt);
+                jvalueArgs[i++].j = proxy0NextLong(callInfo);
                 break;
             case 'F':
-                jvalueArgs[i++].f = getNextFloatProxyArg(&argsIt);
+                jvalueArgs[i++].f = proxy0NextFloat(callInfo);
                 break;
             case 'D':
-                jvalueArgs[i++].d = getNextDoubleProxyArg(&argsIt);
+                jvalueArgs[i++].d = proxy0NextDouble(callInfo);
                 break;
             case '[':
             case 'L':
-                jvalueArgs[i++].l = (jobject) getNextPtrProxyArg(&argsIt);
+                jvalueArgs[i++].l = (jobject) proxy0NextPtr(callInfo);
                 break;
             }
         }
     }
 
     // _nvmProxy0 expects the return value to be written to the same location as proxyArgs points to
-    proxyClassData->handler(env, receiver, method, jvalueArgs, (jvalue*) proxyArgs);
+//    proxyClassData->handler(env, receiver, method, jvalueArgs, (jvalue*) proxyArgs);
 
     if (nvmExceptionCheck(env)) {
         nvmRaiseException(env, nvmExceptionOccurred(env));

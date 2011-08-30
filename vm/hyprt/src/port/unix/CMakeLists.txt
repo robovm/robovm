@@ -22,5 +22,5 @@ elseif(DARWIN)
   set_target_properties(nullvm-hyprt PROPERTIES LINK_FLAGS "-exported_symbols_list ${port_SOURCE_DIR}/symbols.darwin" INSTALL_RPATH "$ORIGIN")
   target_link_libraries(nullvm-hyprt hythr hycommon hypool dl pthread iconv)
 endif()
-install(TARGETS nullvm-hyprt DESTINATION ${INSTALL_DIR}/lib)
+install(TARGETS nullvm-hyprt DESTINATION ${INSTALL_DIR})
 

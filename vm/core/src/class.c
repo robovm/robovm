@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "utlist.h"
-#include "trampolines.h"
+#include "private.h"
 #include "log.h"
 #include "uthash.h"
 
@@ -267,15 +267,13 @@ static Class* findClass(Env* env, char* className, ClassLoader* classLoader, Cla
 
     TRACE("Class '%s' not loaded\n", className);
 
-    // We use _nvmCall0 to call loaderFunc to stop unwinding if an exception is thrown
-    // TODO: This is x86-64 specific
-    CallInfo callInfo = {0};
-    callInfo.function = loaderFunc;
-    callInfo.intArgs[0] = env;
-    callInfo.intArgs[1] = className;
-    callInfo.intArgs[2] = classLoader;
-    Class* (*f)(CallInfo*) = (Class* (*)(CallInfo*)) _nvmCall0;
-    clazz = f(&callInfo);
+    // We use _nvmCall0 to call loaderFunc to stop unwinding if an exception is thrown.
+    CallInfo* callInfo = call0AllocateCallInfo(env, loaderFunc, 3, 0, 0, 0, 0);
+    call0AddPtr(callInfo, env);
+    call0AddPtr(callInfo, className);
+    call0AddPtr(callInfo, classLoader);
+    Class* (*f)(CallInfo*) = (Class* (*)(CallInfo*)) _call0;
+    clazz = f(callInfo);
 
     if (nvmExceptionOccurred(env)) {
         releaseClassLock();
@@ -788,7 +786,7 @@ Method* nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access
     method->next = clazz->methods->first;
     clazz->methods->first  = method;
 
-    if (method->impl && method->impl != _nvmProxy0) {
+    if (method->impl && method->impl != _proxy0) {
         if (clazz->methods->lo == NULL || method->impl < clazz->methods->lo) {
             clazz->methods->lo = method->impl;
         } else if (clazz->methods->hi == NULL || method->impl > clazz->methods->hi) {

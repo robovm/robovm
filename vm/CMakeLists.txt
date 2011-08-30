@@ -38,6 +38,12 @@ endif()
 
 include_directories(hyprt/include core/include ${ZLIB_H_PATH} ${CMAKE_BINARY_DIR}/gc/include)
 link_directories(${CMAKE_BINARY_DIR}/gc/lib)
+if(LINUX)
+  add_definitions(-D_GNU_SOURCE)
+endif()
+add_definitions(-DGC_THREADS)
+add_definitions(-include ${CMAKE_BINARY_DIR}/gc/include/gc/gc.h)
+add_definitions(-DIPv6_FUNCTION_SUPPORT)
 
 if((LINUX OR DARWIN) AND CMAKE_SIZEOF_VOID_P MATCHES "8")
   CHECK_C_COMPILER_FLAG("-fPIC" WITH_FPIC)
@@ -62,13 +68,13 @@ if (ARCH STREQUAL "x86_64")
   add_definitions(-DHYX86_64)
   add_definitions(-DNVM_X86_64)
 elseif (ARCH STREQUAL "i386")
-  add_definitions(-DHYX86_64)
+  add_definitions(-DHYX86)
   add_definitions(-DNVM_I386)
 endif()
 
-add_definitions(-DIPv6_FUNCTION_SUPPORT)
-
 SET(INSTALL_DIR $ENV{HOME}/.nullvm/lib/${OS}/${ARCH})
+
+install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.so.1.0.3 DESTINATION ${INSTALL_DIR} RENAME libgc.so.1)
 
 add_subdirectory(core/src)
 add_subdirectory(bc/src)

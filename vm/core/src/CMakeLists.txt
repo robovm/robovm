@@ -41,8 +41,6 @@ endif()
 target_link_libraries(nullvm-core nullvm-hyprt gc)
 install(TARGETS nullvm-core DESTINATION ${INSTALL_DIR})
 
-add_definitions(-fexceptions)
-
 add_executable(test_call0 test/test_call0.c test/CuTest.c call0-${OS}-${ARCH}.s.o)
 add_test(testCall0ReturnByte test_call0 "testCall0ReturnByte")
 add_test(testCall0ReturnInt test_call0 "testCall0ReturnInt")

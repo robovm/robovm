@@ -44,6 +44,7 @@ endif()
 add_definitions(-DGC_THREADS)
 add_definitions(-include ${CMAKE_BINARY_DIR}/gc/include/gc/gc.h)
 add_definitions(-DIPv6_FUNCTION_SUPPORT)
+add_definitions(-fexceptions) # Generate eh frames for C code. Without it we cannot unwind.
 
 if((LINUX OR DARWIN) AND CMAKE_SIZEOF_VOID_P MATCHES "8")
   CHECK_C_COMPILER_FLAG("-fPIC" WITH_FPIC)

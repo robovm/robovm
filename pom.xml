@@ -145,8 +145,7 @@
   </pluginRepositories>
   
   <modules>
-<!--    <module>libnullvm</module> -->
-    <module>nullvmc</module>
+    <module>compiler</module>
     <module>rt</module>
   </modules>
 </project>

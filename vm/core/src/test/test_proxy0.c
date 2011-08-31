@@ -3,6 +3,9 @@
 #include "../private.h"
 #include "CuTest.h"
 
+#if defined(LINUX) && defined(NVM_X86_64)
+void __libc_start_main(void);
+#endif
 int main(int argc, char* argv[]);
 
 // Mock _nvmPersonality()
@@ -48,7 +51,7 @@ static void testProxy0ReturnPtr(CuTest* tc) {
     handler = testProxy0ReturnPtr_handler;
     void* (*f)(void*) = (void* (*)(void*)) _proxy0;
     void* result = f(testProxy0ReturnPtr_handler);
-    CuAssertPtrEquals(tc, testProxy0ReturnPtr_handler + 4, result);
+    CuAssertPtrEquals(tc, testProxy0ReturnPtr_handler + sizeof(void*), result);
 }
 
 
@@ -262,7 +265,12 @@ void testProxy0Unwind(CuTest* tc) {
     CuAssertPtrEquals(tc, CuTestRun, callers[4]);
     CuAssertPtrEquals(tc, CuSuiteRun, callers[5]);
     CuAssertPtrEquals(tc, main, callers[6]);
+#if defined(LINUX) && defined(NVM_X86_64)
+    CuAssertPtrEquals(tc, __libc_start_main, callers[7]);
+    CuAssertPtrEquals(tc, NULL, callers[8]);
+#else
     CuAssertPtrEquals(tc, NULL, callers[7]);
+#endif
 }
 
 

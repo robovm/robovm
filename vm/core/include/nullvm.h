@@ -1,7 +1,10 @@
 #ifndef NULLVM_H
 #define NULLVM_H
 
+#ifndef GC_THREADS
 #define GC_THREADS
+#endif
+
 #include <gc.h>
 #include <stdlib.h>
 #include <stdint.h>

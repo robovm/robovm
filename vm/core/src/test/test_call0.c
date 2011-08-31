@@ -10,6 +10,9 @@ typedef struct UnwindInfo {
     _Unwind_Ptr landing_pad;
 } UnwindInfo;
 
+#if defined(LINUX) && defined(NVM_X86_64)
+void __libc_start_main(void);
+#endif
 int main(int argc, char* argv[]);
 
 // Mock _nvmPersonality()
@@ -74,7 +77,7 @@ static void testCall0ReturnPtr(CuTest* tc) {
     call0AddPtr(ci, testCall0ReturnPtr_target);
     void* (*f)(CallInfo*) = (void* (*)(CallInfo*)) _call0;
     void* result = f(ci);
-    CuAssertPtrEquals(tc, testCall0ReturnPtr_target + 4, result);
+    CuAssertPtrEquals(tc, testCall0ReturnPtr_target + sizeof(void*), result);
 }
 
 
@@ -274,7 +277,12 @@ void testCall0Unwind(CuTest* tc) {
     CuAssertPtrEquals(tc, CuTestRun, callers[3]);
     CuAssertPtrEquals(tc, CuSuiteRun, callers[4]);
     CuAssertPtrEquals(tc, main, callers[5]);
+#if defined(LINUX) && defined(NVM_X86_64)
+    CuAssertPtrEquals(tc, __libc_start_main, callers[6]);
+    CuAssertPtrEquals(tc, NULL, callers[7]);
+#else
     CuAssertPtrEquals(tc, NULL, callers[6]);
+#endif
 }
 
 

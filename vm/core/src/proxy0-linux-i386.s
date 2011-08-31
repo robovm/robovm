@@ -1,8 +1,8 @@
-CallInfo_size = 28
 stackArgsIndex_offset = 8
 stackArgs_offset = 12
 returnValue_offset = 16
 returnType_offset = 24
+CallInfo_size = 28
 
 RETURN_TYPE_INT    = 0
 RETURN_TYPE_LONG   = 1

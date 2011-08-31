@@ -2,6 +2,12 @@
 #include <vmi.h>
 #include "log.h"
 
+#define RT_DSO "libnullvm-rt.so"
+#ifdef MACOSX
+  #undef RT_DSO
+  #define RT_DSO "libnullvm-rt.dylib"
+#endif
+
 // Defined in method.c
 extern DynamicLib* bootNativeLibs;
 // Defined in init.c
@@ -85,9 +91,9 @@ jboolean nvmInitVMI(Env* env) {
     javaVM.GetEnv = _GetEnv;
     struct JavaVMProxy javaVMProxy = {&javaVM, env};
 
-    DynamicLib* dlib = nvmLoadDynamicLib(env, "libnullvm-rt.so", &bootNativeLibs);
+    DynamicLib* dlib = nvmLoadDynamicLib(env, RT_DSO, &bootNativeLibs);
     if (!dlib) {
-        nvmAbort("Fatal error: Failed to load libnullvm-rt.so");
+        nvmAbort("Fatal error: Failed to load " RT_DSO);
     }
 
     jint (*JNI_OnLoad_LUNI)(JavaVM* vm, void* reserved) = nvmFindDynamicLibSymbol(env, dlib, "JNI_OnLoad_LUNI");

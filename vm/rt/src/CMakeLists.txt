@@ -2,7 +2,7 @@ project(rt)
 
 include_directories(../include luni/luni/shared)
 
-if(LINUX)
+if(LINUX OR DARWIN)
   include_directories(luni/luni/unix)
 endif()
 
@@ -229,7 +229,7 @@ SET(SRC
   nio/shared/DirectBufferUtil.c 
 )
 
-if(LINUX)
+if(LINUX OR DARWIN)
   SET(SRC ${SRC}
     luni/luni/unix/consoleimpl.c 
     luni/luni/unix/helpers.c 
@@ -243,7 +243,10 @@ if(LINUX)
 endif()
 
 add_library(nullvm-rt SHARED ${SRC})
-set_target_properties(nullvm-rt PROPERTIES LINK_FLAGS "-Wl,--version-script=${rt_SOURCE_DIR}/symbols.map" INSTALL_RPATH "$ORIGIN")
+if(LINUX)
+  set_target_properties(nullvm-rt PROPERTIES LINK_FLAGS "-Wl,--version-script=${rt_SOURCE_DIR}/symbols.linux" INSTALL_RPATH "$ORIGIN")
+elseif(DARWIN)
+  set_target_properties(nullvm-rt PROPERTIES LINK_FLAGS "-exported_symbols_list ${rt_SOURCE_DIR}/symbols.darwin" INSTALL_RPATH "$ORIGIN")
+endif()
 target_link_libraries(nullvm-rt nullvm-core nullvm-hyprt z)
-install(TARGETS nullvm-rt DESTINATION ${INSTALL_DIR}/lib)
-
+install(TARGETS nullvm-rt DESTINATION ${INSTALL_DIR})

@@ -1,0 +1,325 @@
+#include <nullvm.h>
+#include <unwind.h>
+#include "../private.h"
+#include "CuTest.h"
+
+#define EXCEPTION_CLASS 0xF00F00F00F00
+
+typedef struct UnwindInfo {
+    struct _Unwind_Exception exception_info;
+    _Unwind_Ptr landing_pad;
+} UnwindInfo;
+
+int main(int argc, char* argv[]);
+
+// Mock _nvmPersonality()
+_Unwind_Reason_Code _nvmPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context) {
+    UnwindInfo* info = (UnwindInfo*) exception_info;
+    if (actions & _UA_SEARCH_PHASE) {
+        _Unwind_Ptr saved_ip = _Unwind_GetIP(context);
+        _Unwind_Reason_Code urc = __gcc_personality_v0(version, _UA_CLEANUP_PHASE, exception_class, exception_info, context);
+        if (urc == _URC_INSTALL_CONTEXT) {
+            info->landing_pad = _Unwind_GetIP(context);
+            _Unwind_SetIP(context, saved_ip);
+            return _URC_HANDLER_FOUND;
+        }
+        return urc;
+    } else if (actions & _UA_HANDLER_FRAME) {
+        _Unwind_SetGR(context, __builtin_eh_return_data_regno (0), (_Unwind_Ptr) exception_info);
+        _Unwind_SetGR(context, __builtin_eh_return_data_regno (1), 0);
+        _Unwind_SetIP(context, info->landing_pad); 
+        return _URC_INSTALL_CONTEXT;
+    }
+
+    return _URC_CONTINUE_UNWIND;
+}
+
+void* nvmAllocateMemory(Env* env, int size) {
+    return calloc(1, size);
+}
+
+
+static jbyte testCall0ReturnByte_target(jbyte b) {
+    return b << 1;
+}
+static void testCall0ReturnByte(CuTest* tc) {
+    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0ReturnByte_target, 0, 1, 0, 0, 0);
+    CuAssertPtrNotNull(tc, ci);
+    call0AddInt(ci, 16);
+    jbyte (*f)(CallInfo*) = (jbyte (*)(CallInfo*)) _call0;
+    jbyte result = f(ci);
+    CuAssertIntEquals(tc, 32, result);
+}
+
+
+static jint testCall0ReturnInt_target(jint i) {
+    return i >> 8;
+}
+static void testCall0ReturnInt(CuTest* tc) {
+    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0ReturnInt_target, 0, 1, 0, 0, 0);
+    CuAssertPtrNotNull(tc, ci);
+    call0AddInt(ci, 0xdeadbeef);
+    jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _call0;
+    jint result = f(ci);
+    CuAssertIntEquals(tc, 0xffdeadbe, result);
+}
+
+
+static void* testCall0ReturnPtr_target(void* p) {
+    return p + sizeof(void*);
+}
+static void testCall0ReturnPtr(CuTest* tc) {
+    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0ReturnPtr_target, 1, 0, 0, 0, 0);
+    CuAssertPtrNotNull(tc, ci);
+    call0AddPtr(ci, testCall0ReturnPtr_target);
+    void* (*f)(CallInfo*) = (void* (*)(CallInfo*)) _call0;
+    void* result = f(ci);
+    CuAssertPtrEquals(tc, testCall0ReturnPtr_target + 4, result);
+}
+
+
+static jlong testCall0ReturnLong_target(jlong j) {
+    return j << 8;
+}
+static void testCall0ReturnLong(CuTest* tc) {
+    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0ReturnLong_target, 0, 0, 1, 0, 0);
+    CuAssertPtrNotNull(tc, ci);
+    call0AddLong(ci, 0xdeadbeef);
+    jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _call0;
+    jlong result = f(ci);
+    CuAssertTrue(tc, result == 0xdeadbeef00);
+}
+
+
+static jfloat testCall0ReturnFloat_target(jfloat f) {
+    return f * f;
+}
+static void testCall0ReturnFloat(CuTest* tc) {
+    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0ReturnFloat_target, 0, 0, 0, 1, 0);
+    CuAssertPtrNotNull(tc, ci);
+    call0AddFloat(ci, 3.14f);
+    jfloat (*f)(CallInfo*) = (jfloat (*)(CallInfo*)) _call0;
+    jfloat result = f(ci);
+    CuAssertTrue(tc, result == 3.14f * 3.14f);
+}
+
+
+static jdouble testCall0ReturnDouble_target(jdouble d) {
+    return d * d;
+}
+static void testCall0ReturnDouble(CuTest* tc) {
+    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0ReturnDouble_target, 0, 0, 0, 0, 1);
+    CuAssertPtrNotNull(tc, ci);
+    call0AddDouble(ci, -3.14);
+    jdouble (*f)(CallInfo*) = (jdouble (*)(CallInfo*)) _call0;
+    jdouble result = f(ci);
+    CuAssertTrue(tc, result == -3.14 * -3.14);
+}
+
+
+static jlong testCall0OneArgOfEach_target(void* p, jint i, jlong l, jfloat f, jdouble d) {
+    if (p != testCall0OneArgOfEach_target) return 0;
+    if (i != -100) return 0;
+    if (l != 0xfedcba9876543210) return 0;
+    if (f != 3.14f) return 0;
+    if (d != -3.14) return 0;
+    return 0x0123456789abcdef;
+}
+static void testCall0OneArgOfEach(CuTest* tc) {
+    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0OneArgOfEach_target, 1, 1, 1, 1, 1);
+    CuAssertPtrNotNull(tc, ci);
+    call0AddPtr(ci, testCall0OneArgOfEach_target);
+    call0AddInt(ci, -100);
+    call0AddLong(ci, 0xfedcba9876543210);
+    call0AddFloat(ci, 3.14f);
+    call0AddDouble(ci, -3.14);
+    jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _call0;
+    jlong result = f(ci);
+    CuAssertTrue(tc, result == 0x0123456789abcdef);
+}
+
+
+static jint testCall0ManyArgsOfEach_target(
+      void* p1, jint i1, jlong l1, jfloat f1, jdouble d1,
+      void* p2, jint i2, jlong l2, jfloat f2, jdouble d2,
+      void* p3, jint i3, jlong l3, jfloat f3, jdouble d3,
+      void* p4, jint i4, jlong l4, jfloat f4, jdouble d4,
+      void* p5, jint i5, jlong l5, jfloat f5, jdouble d5,
+      void* p6, jint i6, jlong l6, jfloat f6, jdouble d6,
+      void* p7, jint i7, jlong l7, jfloat f7, jdouble d7,
+      void* p8, jint i8, jlong l8, jfloat f8, jdouble d8) {
+
+    if (p1 != testCall0ManyArgsOfEach_target + 0xcab1) return 0;
+    if (i1 != -100) return 0;
+    if (l1 != 0xfedcba9876543211) return 0;
+    if (f1 != 3.11f) return 0;
+    if (d1 != -3.11) return 0;
+    if (p2 != testCall0ManyArgsOfEach_target + 0xcab2) return 0;
+    if (i2 != -200) return 0;
+    if (l2 != 0xfedcba9876543212) return 0;
+    if (f2 != 3.12f) return 0;
+    if (d2 != -3.12) return 0;
+    if (p3 != testCall0ManyArgsOfEach_target + 0xcab3) return 0;
+    if (i3 != -300) return 0;
+    if (l3 != 0xfedcba9876543213) return 0;
+    if (f3 != 3.13f) return 0;
+    if (d3 != -3.13) return 0;
+    if (p4 != testCall0ManyArgsOfEach_target + 0xcab4) return 0;
+    if (i4 != -400) return 0;
+    if (l4 != 0xfedcba9876543214) return 0;
+    if (f4 != 3.14f) return 0;
+    if (d4 != -3.14) return 0;
+    if (p5 != testCall0ManyArgsOfEach_target + 0xcab5) return 0;
+    if (i5 != -500) return 0;
+    if (l5 != 0xfedcba9876543215) return 0;
+    if (f5 != 3.15f) return 0;
+    if (d5 != -3.15) return 0;
+    if (p6 != testCall0ManyArgsOfEach_target + 0xcab6) return 0;
+    if (i6 != -600) return 0;
+    if (l6 != 0xfedcba9876543216) return 0;
+    if (f6 != 3.16f) return 0;
+    if (d6 != -3.16) return 0;
+    if (p7 != testCall0ManyArgsOfEach_target + 0xcab7) return 0;
+    if (i7 != -700) return 0;
+    if (l7 != 0xfedcba9876543217) return 0;
+    if (f7 != 3.17f) return 0;
+    if (d7 != -3.17) return 0;
+    if (p8 != testCall0ManyArgsOfEach_target + 0xcab8) return 0;
+    if (i8 != -800) return 0;
+    if (l8 != 0xfedcba9876543218) return 0;
+    if (f8 != 3.18f) return 0;
+    if (d8 != -3.18) return 0;
+
+    return 1;
+}
+static void testCall0ManyArgsOfEach(CuTest* tc) {
+    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0ManyArgsOfEach_target, 8, 8, 8, 8, 8);
+    CuAssertPtrNotNull(tc, ci);
+    call0AddPtr(ci, testCall0ManyArgsOfEach_target + 0xcab1);
+    call0AddInt(ci, -100);
+    call0AddLong(ci, 0xfedcba9876543211);
+    call0AddFloat(ci, 3.11f);
+    call0AddDouble(ci, -3.11);
+    call0AddPtr(ci, testCall0ManyArgsOfEach_target + 0xcab2);
+    call0AddInt(ci, -200);
+    call0AddLong(ci, 0xfedcba9876543212);
+    call0AddFloat(ci, 3.12f);
+    call0AddDouble(ci, -3.12);
+    call0AddPtr(ci, testCall0ManyArgsOfEach_target + 0xcab3);
+    call0AddInt(ci, -300);
+    call0AddLong(ci, 0xfedcba9876543213);
+    call0AddFloat(ci, 3.13f);
+    call0AddDouble(ci, -3.13);
+    call0AddPtr(ci, testCall0ManyArgsOfEach_target + 0xcab4);
+    call0AddInt(ci, -400);
+    call0AddLong(ci, 0xfedcba9876543214);
+    call0AddFloat(ci, 3.14f);
+    call0AddDouble(ci, -3.14);
+    call0AddPtr(ci, testCall0ManyArgsOfEach_target + 0xcab5);
+    call0AddInt(ci, -500);
+    call0AddLong(ci, 0xfedcba9876543215);
+    call0AddFloat(ci, 3.15f);
+    call0AddDouble(ci, -3.15);
+    call0AddPtr(ci, testCall0ManyArgsOfEach_target + 0xcab6);
+    call0AddInt(ci, -600);
+    call0AddLong(ci, 0xfedcba9876543216);
+    call0AddFloat(ci, 3.16f);
+    call0AddDouble(ci, -3.16);
+    call0AddPtr(ci, testCall0ManyArgsOfEach_target + 0xcab7);
+    call0AddInt(ci, -700);
+    call0AddLong(ci, 0xfedcba9876543217);
+    call0AddFloat(ci, 3.17f);
+    call0AddDouble(ci, -3.17);
+    call0AddPtr(ci, testCall0ManyArgsOfEach_target + 0xcab8);
+    call0AddInt(ci, -800);
+    call0AddLong(ci, 0xfedcba9876543218);
+    call0AddFloat(ci, 3.18f);
+    call0AddDouble(ci, -3.18);
+
+    jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _call0;
+    jint result = f(ci);
+    CuAssertIntEquals(tc, 1, result);
+}
+
+
+static _Unwind_Reason_Code unwindCallStack(struct _Unwind_Context* ctx, void* d) {
+    jint i;
+    void** callers = (void**) d;
+
+    void* address = (void*) _Unwind_GetIP(ctx);
+    void* function = _Unwind_FindEnclosingFunction(address);
+
+    for (i = 0; i < 10; i++) {
+        if (!callers[i]) {
+            callers[i] = function;
+            break;
+        }
+    }
+
+    return _URC_NO_REASON;
+}
+void testCall0Unwind_target(void** ptrs) {
+    _Unwind_Backtrace(unwindCallStack, ptrs);
+}
+void testCall0Unwind(CuTest* tc) {
+    void* callers[10] = {0};
+    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0Unwind_target, 1, 0, 0, 0, 0);
+    CuAssertPtrNotNull(tc, ci);
+    call0AddPtr(ci, callers);
+    void (*f)(CallInfo*) = (void (*)(CallInfo*)) _call0;
+    f(ci);
+    CuAssertPtrEquals(tc, testCall0Unwind_target, callers[0]);
+    CuAssertPtrEquals(tc, _call0, callers[1]);
+    CuAssertPtrEquals(tc, testCall0Unwind, callers[2]);
+    CuAssertPtrEquals(tc, CuTestRun, callers[3]);
+    CuAssertPtrEquals(tc, CuSuiteRun, callers[4]);
+    CuAssertPtrEquals(tc, main, callers[5]);
+    CuAssertPtrEquals(tc, NULL, callers[6]);
+}
+
+
+void testCall0Raise_target(jint* data) {
+    UnwindInfo* u = calloc(1, sizeof(struct _Unwind_Exception));
+    u->exception_info.exception_class = EXCEPTION_CLASS;
+    data[0] = 0xdeadcab0;
+    _Unwind_Reason_Code urc = _Unwind_RaiseException(&u->exception_info);
+    data[1] = 0xdeadcab1;
+}
+void testCall0Raise(CuTest* tc) {
+    jint data[2] = {0};
+    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0Raise_target, 1, 0, 0, 0, 0);
+    CuAssertPtrNotNull(tc, ci);
+    call0AddPtr(ci, data);
+    void (*f)(CallInfo*) = (void (*)(CallInfo*)) _call0;
+    f(ci);
+    CuAssertIntEquals(tc, 0xdeadcab0, data[0]);
+    CuAssertIntEquals(tc, 0, data[1]);
+}
+
+
+int main(int argc, char* argv[]) {
+    CuSuite* suite = CuSuiteNew();
+
+    if (argc < 2 || !strcmp(argv[1], "testCall0ReturnByte")) SUITE_ADD_TEST(suite, testCall0ReturnByte);
+    if (argc < 2 || !strcmp(argv[1], "testCall0ReturnInt")) SUITE_ADD_TEST(suite, testCall0ReturnInt);
+    if (argc < 2 || !strcmp(argv[1], "testCall0ReturnPtr")) SUITE_ADD_TEST(suite, testCall0ReturnPtr);
+    if (argc < 2 || !strcmp(argv[1], "testCall0ReturnLong")) SUITE_ADD_TEST(suite, testCall0ReturnLong);
+    if (argc < 2 || !strcmp(argv[1], "testCall0ReturnFloat")) SUITE_ADD_TEST(suite, testCall0ReturnFloat);
+    if (argc < 2 || !strcmp(argv[1], "testCall0ReturnDouble")) SUITE_ADD_TEST(suite, testCall0ReturnDouble);
+    if (argc < 2 || !strcmp(argv[1], "testCall0OneArgOfEach")) SUITE_ADD_TEST(suite, testCall0OneArgOfEach);
+    if (argc < 2 || !strcmp(argv[1], "testCall0ManyArgsOfEach")) SUITE_ADD_TEST(suite, testCall0ManyArgsOfEach);
+    if (argc < 2 || !strcmp(argv[1], "testCall0Unwind")) SUITE_ADD_TEST(suite, testCall0Unwind);
+    if (argc < 2 || !strcmp(argv[1], "testCall0Raise")) SUITE_ADD_TEST(suite, testCall0Raise);
+
+    CuSuiteRun(suite);
+
+    if (argc < 2) {
+        CuString *output = CuStringNew();
+        CuSuiteSummary(suite, output);
+        CuSuiteDetails(suite, output);
+        printf("%s\n", output->buffer);
+    }
+
+    return suite->failCount;
+}
+

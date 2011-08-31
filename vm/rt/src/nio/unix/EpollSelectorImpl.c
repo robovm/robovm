@@ -16,12 +16,18 @@
  */
 
 #include <jni.h>
-#include <linux/version.h>
 #include "hysock.h"
 #include "hyport.h"
 #include "EpollSelectorImpl.h"
 
+#ifdef LINUX
+#include <linux/version.h>
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 0))
+#define HAVE_EPOLL
+#endif
+#endif
+
+#ifdef HAVE_EPOLL
 
 // use kernel 2.6 epoll facility
 #include <sys/epoll.h>

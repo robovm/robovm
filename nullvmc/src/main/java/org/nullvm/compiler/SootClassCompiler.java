@@ -425,7 +425,7 @@ public class SootClassCompiler {
         }
         
         if (!sootClass.declaresMethodByName("<clinit>") && hasConstantValueTags(classFields)) {
-            Function clinit = module.newFunction(Linkage._private, 
+            Function clinit = module.newFunction(Linkage.internal, 
                     new FunctionAttribute[] {noinline, optsize},
                     mangleMethod(getInternalName(sootClass), "<clinit>", 
                                 new ArrayList<soot.Type>(), soot.VoidType.v()), 
@@ -669,7 +669,7 @@ public class SootClassCompiler {
         
         if (!(trampoline instanceof NativeCall)) {
             FunctionRef trampolineFuncRef = function.ref();
-            function = module.newFunction(_private, 
+            function = module.newFunction(internal, 
                     new FunctionAttribute[] {noinline, optsize}, 
                     name, functionRef.getType(), parameterNames);
             Variable reserved0Ptr = function.newVariable(I8_PTR_PTR);
@@ -921,7 +921,7 @@ public class SootClassCompiler {
             parameterNames[i++] = "p" + j;
         }
             
-        return module.newFunction(Linkage._private, new FunctionAttribute[] {noinline, optsize}, 
+        return module.newFunction(internal, new FunctionAttribute[] {noinline, optsize}, 
                 name, functionType, parameterNames);
     }
     
@@ -1281,12 +1281,12 @@ public class SootClassCompiler {
         Function function = null;
         Value fieldPtr = null;
         if (field.isStatic()) {
-            function = module.newFunction(Linkage._private, 
+            function = module.newFunction(internal, 
                     new FunctionAttribute[] {noinline, optsize}, 
                     name, new FunctionType(getType(field.getType()), ENV_PTR), "env");
             fieldPtr = getClassFieldPtr(function, field);
         } else {
-            function = module.newFunction(Linkage._private, 
+            function = module.newFunction(internal, 
                     new FunctionAttribute[] {noinline, optsize}, 
                     name, new FunctionType(getType(field.getType()), ENV_PTR, OBJECT_PTR), "env", "this");
             fieldPtr = getInstanceFieldPtr(function, new VariableRef("this", OBJECT_PTR), field);
@@ -1301,12 +1301,12 @@ public class SootClassCompiler {
         Function function = null;
         Value fieldPtr = null;
         if (field.isStatic()) {
-            function = module.newFunction(Linkage._private, 
+            function = module.newFunction(internal, 
                     new FunctionAttribute[] {noinline, optsize}, 
                     name, new FunctionType(VOID, ENV_PTR, getType(field.getType())), "env", "value");
             fieldPtr = getClassFieldPtr(function, field);
         } else {
-            function = module.newFunction(Linkage._private, 
+            function = module.newFunction(internal, 
                     new FunctionAttribute[] {noinline, optsize}, 
                     name, new FunctionType(VOID, ENV_PTR, OBJECT_PTR, getType(field.getType())), "env", "this", "value");
             fieldPtr = getInstanceFieldPtr(function, new VariableRef("this", OBJECT_PTR), field);

@@ -64,8 +64,8 @@ import org.nullvm.compiler.llvm.Value;
  * @version $Id$
  */
 public class Main {
-    public enum OS {linux, macosx}
-    public enum Arch {x86, x86_64, arm}
+    public enum OS {linux, darwin}
+    public enum Arch {i386, x86_64, arm}
 
     private String classpath = null;
     private String bootclasspath = null;
@@ -95,9 +95,8 @@ public class Main {
     private String mainClass;
     private List<String> runArgs = new ArrayList<String>();
     
-    private File homeOsArchLib;
-    private File mainCFile;
-    private File symbolsMapFile;
+    private File homeLib;
+    private File homeLibOsArch;
     private List<File> bootClassPathFiles = new ArrayList<File>();
     private List<File> classPathFiles = new ArrayList<File>();
     private PrintStream stdout = System.out;
@@ -250,7 +249,11 @@ public class Main {
   
         ArrayList<String> opts = new ArrayList<String>(llcOpts);
 //        opts.add("-relocation-model=pic");
-        opts.add("-march=" + (arch == Arch.x86_64 ? "x86-64" : arch.toString()));
+        if (arch == Arch.x86_64) {
+            opts.add("-march=x86-64");
+        } else if (arch == Arch.i386) {
+            opts.add("-march=x86");
+        }
         if (cpu != null) {
             opts.add("-mcpu=" + cpu);
         }
@@ -285,14 +288,23 @@ public class Main {
         exec(gccPath, "-c", "-o", outFile, opts, inFile);
     }
 
-    private void linkStatic(List<File> files, File outFile) throws IOException {
+    private void linkStatic(File wd, List<File> files, File outFile) throws IOException {
+        List<String> relFiles = new ArrayList<String>(files.size());
+        for (File f : files) {
+            relFiles.add(f.getAbsolutePath().substring(wd.getAbsolutePath().length() + 1));
+        }
+        
         String arPath = "ar";
         if (arBin != null) {
             arPath = arBin.getAbsolutePath();
         }
 
         outFile.getParentFile().mkdirs();
-        exec(arPath, "rcs", outFile, files);
+        outFile.delete();
+//        for (int i = 0; i < files.size(); i += 500) {
+//            exec(arPath, "rcs", outFile, files.subList(i, Math.min(files.size(), i + 500)));
+//        }
+        exec(wd, arPath, "rcs", outFile, relFiles);
     }
     
     private File buildClassFileDebug(ClasspathEntry entry, Clazz clazz) throws IOException {
@@ -328,7 +340,7 @@ public class Main {
             objectFiles.add(buildClassFileDebug(entry, clazz));
         }
         
-        linkStatic(objectFiles, outFile);
+        linkStatic(entry.getObjectCacheDir(), objectFiles, outFile);
         return outFile;
     }
     
@@ -456,10 +468,11 @@ public class Main {
         List<Value> cpValues = new ArrayList<Value>();
         for (ClasspathEntry entry : entries) {
             for (Clazz c : entry.getPath().list()) {
-                String varName = SootClassCompiler.getStringVarName(c.getInternalName());
-                String funcName = "NullVM_" + SootClassCompiler.mangleString(c.getInternalName());
-                Global var = new Global(varName, Linkage.external, new ArrayType(0, Type.I8), true);
+                byte[] modUtf8 = SootClassCompiler.stringToModifiedUtf8(c.getInternalName());
+                Global var = new Global(SootClassCompiler.getStringVarName(modUtf8), Linkage.linker_private_weak, 
+                        new StringConstant(modUtf8), true);
                 module.addGlobal(var);
+                String funcName = "NullVM_" + SootClassCompiler.mangleString(c.getInternalName());
                 FunctionDeclaration func = new FunctionDeclaration(funcName, new FunctionType(Type.I8_PTR, Type.I8_PTR, Type.I8_PTR, Type.I8_PTR));
                 module.addFunctionDeclaration(func);
                 Value value = new StructureConstant(new StructureType(Type.I8_PTR, Type.I8_PTR), 
@@ -482,13 +495,6 @@ public class Main {
                 new ArrayType(cpValues.size(), new StructureType(Type.I8_PTR, Type.I8_PTR)), 
                 cpValues.toArray(new Value[0])), true);
         module.addGlobal(new Global("_nvmBcClasspathEntries", new ConstantGetelementptr(gcp.ref(), 0, 0)));
-//        module.addGlobal(new Global("_nvmBcBootclasspathEntries", 
-//                new ArrayConstant(
-//                        new ArrayType(bootcpValues.size(), new StructureType(Type.I8_PTR, Type.I8_PTR)), 
-//                        bootcpValues.toArray(new Value[0])), true));
-//        module.addGlobal(new Global("_nvmBcClasspathEntries", 
-//                new ArrayConstant(new ArrayType(cpValues.size(), new StructureType(Type.I8_PTR, Type.I8_PTR)), 
-//                        cpValues.toArray(new Value[0])), true));
         if (mainClass != null) {
             Global g = module.newGlobal(new StringConstant(SootClassCompiler.stringToModifiedUtf8(mainClass)), true);
             module.addGlobal(new Global("_nvmBcMainClass", new ConstantGetelementptr(g.ref(), 0, 0)));
@@ -507,11 +513,19 @@ public class Main {
         List<String> gccArgs = new ArrayList<String>();
         
         gccArgs.add("-L");
-        gccArgs.add(homeOsArchLib.getAbsolutePath());
-        gccArgs.add("-Xlinker");
-        gccArgs.add("-rpath=$ORIGIN");
+        gccArgs.add(homeLibOsArch.getAbsolutePath());
+        if (os == OS.linux) {
+            gccArgs.add("-Xlinker");
+            gccArgs.add("-rpath=$ORIGIN");
+        }
+        if (os == OS.darwin) {
+            File unexportedSymbolsFile = new File(tmpFile, "unexported_symbols");
+            FileUtils.writeStringToFile(unexportedSymbolsFile, "*", "ASCII");
+            gccArgs.add("-unexported_symbols_list");
+            gccArgs.add(unexportedSymbolsFile.getAbsolutePath());
+        }
         
-        exec(gccPath, "-o", outFile, "-g", gccOpts, gccArgs, configS, libFiles, "-lm", "-lnullvm-core", "-lnullvm-bc", "-lnullvm-hyprt");
+        exec(gccPath, "-o", outFile, "-g", gccOpts, gccArgs, configS, libFiles, "-lm", "-l:libgc.so.1", "-lnullvm-core", "-lnullvm-bc", "-lnullvm-hyprt");
 //        files.add(mainObjectFile);
 //
 //        List<String> ldArgs = new ArrayList<String>();
@@ -865,7 +879,8 @@ public class Main {
             stdout.println("Run arguments: " + runArgs);
         }
         
-        homeOsArchLib = new File(new File(new File(home, os.toString()), arch.toString()), "lib");
+        homeLib = new File(home, "lib");
+        homeLibOsArch = new File(new File(homeLib, os.toString()), arch.toString());
         
         cache.mkdirs();
         llvmCache = new File(cache, "llvm");
@@ -878,7 +893,7 @@ public class Main {
         }
         
         if (!nort) {
-            bootClassPathFiles.add(new File(home, "lib/nullvm-rt.jar"));
+            bootClassPathFiles.add(new File(homeLib, "nullvm-rt.jar"));
         }
 
         if (bootclasspath != null) {
@@ -898,14 +913,6 @@ public class Main {
         tmpFile = File.createTempFile("nullvm", ".tmp");
         tmpFile.delete();
         tmpFile.mkdirs();
-        mainCFile = new File(tmpFile, "main.c");
-        FileUtils.copyURLToFile(getClass().getResource("/main.c"), mainCFile);
-        symbolsMapFile = new File(tmpFile, "symbols");
-        if (os == OS.linux) {
-            FileUtils.copyURLToFile(getClass().getResource("/symbols.map"), symbolsMapFile);
-        } else if (os == OS.macosx) {
-            FileUtils.copyURLToFile(getClass().getResource("/symbols.macosx"), symbolsMapFile);
-        }
 
         Clazzes clazzes = new Clazzes(bootClassPathFiles, classPathFiles);
         List<ClasspathEntry> classpathEntries = new ArrayList<ClasspathEntry>();
@@ -1039,8 +1046,8 @@ public class Main {
         if (host.contains("linux")) {
             return OS.linux;
         }
-        if (host.contains("apple-darwin10")) {
-            return OS.macosx;
+        if (host.contains("darwin")) {
+            return OS.darwin;
         }
         throw new IllegalArgumentException("Unrecognized OS in Host string: " + host);
     }
@@ -1051,7 +1058,7 @@ public class Main {
             return Arch.x86_64;
         }
         if (host.matches("^(x86|i\\d86).*")) {
-            return Arch.x86;
+            return Arch.i386;
         }
         if (host.matches("^arm.*")) {
             return Arch.arm;
@@ -1065,7 +1072,12 @@ public class Main {
         env.putAll(EnvironmentUtils.getProcEnvironment());
         String ldLibraryPath = env.get("LD_LIBRARY_PATH");
         ldLibraryPath = ldLibraryPath == null ? "" : ":" + ldLibraryPath;
-        env.put("LD_LIBRARY_PATH", homeOsArchLib.getAbsolutePath() + ldLibraryPath);
+        if (os == OS.linux) {
+            env.put("LD_LIBRARY_PATH", homeLibOsArch.getAbsolutePath() + ldLibraryPath);
+        }
+        if (os == OS.darwin) {
+            env.put("DYLD_LIBRARY_PATH", homeLibOsArch.getAbsolutePath() + ldLibraryPath);
+        }
         try {
             execWithEnv(output, env, new File(output, target).getAbsolutePath());
         } catch (ExecuteException e) {

@@ -182,11 +182,43 @@ void _nvmProxyHandler(CallInfo* callInfo) {
         }
     }
 
-    // _nvmProxy0 expects the return value to be written to the same location as proxyArgs points to
-//    proxyClassData->handler(env, receiver, method, jvalueArgs, (jvalue*) proxyArgs);
+    jvalue returnValue;
+    proxyClassData->handler(env, receiver, method, jvalueArgs, &returnValue);
 
     if (nvmExceptionCheck(env)) {
         nvmRaiseException(env, nvmExceptionOccurred(env));
+    }
+
+    proxy0ReturnInt(callInfo, 0);
+    switch (nvmGetReturnType(method->desc)[0]) {
+    case 'B':
+        proxy0ReturnInt(callInfo, (jint) returnValue.b);
+        break;
+    case 'Z':
+        proxy0ReturnInt(callInfo, (jint) returnValue.z);
+        break;
+    case 'S':
+        proxy0ReturnInt(callInfo, (jint) returnValue.s);
+        break;
+    case 'C':
+        proxy0ReturnInt(callInfo, (jint) returnValue.c);
+        break;
+    case 'I':
+        proxy0ReturnInt(callInfo, returnValue.i);
+        break;
+    case 'J':
+        proxy0ReturnLong(callInfo, returnValue.j);
+        break;
+    case 'F':
+        proxy0ReturnFloat(callInfo, returnValue.f);
+        break;
+    case 'D':
+        proxy0ReturnDouble(callInfo, returnValue.d);
+        break;
+    case '[':
+    case 'L':
+        proxy0ReturnPtr(callInfo, returnValue.l);
+        break;
     }
 }
 

@@ -102,19 +102,29 @@ static void handler(Env* env, Object* receiver, Method* method, jvalue* args, jv
         // void method. Just return.
         return;
     }
+
     if (returnTypeDesc[0] == 'L' || returnTypeDesc[0] == '[') {
-        // Return Object*.
-        returnValue->l = (jobject) result;
+        if (!result) {
+            returnValue->l = NULL;
+            return;
+        }
+        Class* type = nvmFindClassByDescriptor(env, returnTypeDesc, proxyClass->classLoader);
+        if (nvmIsInstanceOf(env, result, type)) {
+            returnValue->l = (jobject) result;
+            return;
+        }
+        nvmThrowClassCastException(env, type, result->clazz);
         return;
     }
+
+    // Must be primitive. Cannot be NULL.
     if (!result) {
         nvmThrowNullPointerException(env);
         return;
     }
 
-    Class* type = nvmFindClassByDescriptor(env, returnTypeDesc, NULL);
-
     // Unwrap primitive.
+    Class* type = nvmFindClassByDescriptor(env, returnTypeDesc, NULL);
     switch (type->name[0]) {
     case 'Z':
         if (result->clazz == java_lang_Boolean) {

@@ -5,4 +5,5 @@ a.out
 *.class
 .*
 target
+drlvm-vts-bundle.patched
 

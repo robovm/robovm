@@ -1,85 +1,66 @@
+function_offset       = 0   # void*
+intArgsIndex_offset   = 8   # jint
+intArgs_offset        = 16  # IntValue[MAX_INT_ARGS], MAX_INT_ARGS = 6
+fpArgsIndex_offset    = 64  # jint
+fpArgs_offset         = 72  # FpValue[MAX_FP_ARGS], MAX_FP_ARGS = 8
+stackArgsSize_offset  = 136 # jint
+stackArgsIndex_offset = 140 # jint
+stackArgs_offset      = 144 # void**
+returnValue_offset    = 152 # FpIntValue
+returnType_offset     = 160 # jint
+
+RETURN_TYPE_INT    = 0
+RETURN_TYPE_LONG   = 1
+RETURN_TYPE_FLOAT  = 2
+RETURN_TYPE_DOUBLE = 3
+
     .section    __TEXT,__text,regular,pure_instructions
-    .globl    __nvmProxy0
-    .align    4, 0x90
-__nvmProxy0:
-LnvmProxy0Begin:
-    sub   $120, %rsp            # Make room for a ProxyInfo struct on the stack
-LnvmProxy0CFI0:
-
-    mov   %rdi, 0(%rsp)         # intArgs[0] = %rdi
-    mov   %rsi, 8(%rsp)         # intArgs[1] = %rsi
-    mov   %rdx, 16(%rsp)        # intArgs[2] = %rdx
-    mov   %rcx, 24(%rsp)        # intArgs[3] = %rcx
-    mov   %r8, 32(%rsp)         # intArgs[4] = %r8
-    mov   %r9, 40(%rsp)         # intArgs[5] = %r9
-
-    movsd %xmm0, 48(%rsp)       # fpArgs[0] = %xmm0
-    movsd %xmm1, 56(%rsp)       # fpArgs[1] = %xmm1
-    movsd %xmm2, 64(%rsp)       # fpArgs[2] = %xmm2
-    movsd %xmm3, 72(%rsp)       # fpArgs[3] = %xmm3
-    movsd %xmm4, 80(%rsp)       # fpArgs[4] = %xmm4
-    movsd %xmm5, 88(%rsp)       # fpArgs[5] = %xmm5
-    movsd %xmm6, 96(%rsp)       # fpArgs[6] = %xmm6
-    movsd %xmm7, 104(%rsp)      # fpArgs[7] = %xmm7
-
-    leaq  120(%rsp), %rax 
-    mov   %rax, 112(%rsp)      # stackArgs = first stack arg
-
-    leaq  (%rsp), %rdi
-    callq  __nvmProxyHandler
-
-    mov   0(%rsp), %rax         # _nvmProxyHandler writes the return value here
-    movsd 0(%rsp), %xmm0        # _nvmProxyHandler writes the return value here
-
-    addq  $120, %rsp
-    ret
-LnvmProxy0End:
     
-    .globl    __nvmCall0
+    .globl    __call0
     .align    4, 0x90
-__nvmCall0:
-LnvmCall0Begin:
+__call0:
+Lcall0Begin:
     push  %rbp
-LnvmCall0CFI0:
+Lcall0CFI0:
     mov   %rsp, %rbp
-LnvmCall0CFI1:
+Lcall0CFI1:
     mov   %rdi, %rax
 
-    mov   8(%rax), %rdi         # %rdi = intArgs[0]
-    mov   16(%rax), %rsi        # %rsi = intArgs[1]
-    mov   24(%rax), %rdx        # %rdx = intArgs[2]
-    mov   32(%rax), %rcx        # %rcx = intArgs[3]
-    mov   40(%rax), %r8         # %r8 = intArgs[4]
-    mov   48(%rax), %r9         # %r9 = intArgs[5]
+    mov   intArgs_offset+0(%rax), %rdi         # %rdi = intArgs[0]
+    mov   intArgs_offset+8(%rax), %rsi         # %rsi = intArgs[1]
+    mov   intArgs_offset+16(%rax), %rdx        # %rdx = intArgs[2]
+    mov   intArgs_offset+24(%rax), %rcx        # %rcx = intArgs[3]
+    mov   intArgs_offset+32(%rax), %r8         # %r8 = intArgs[4]
+    mov   intArgs_offset+40(%rax), %r9         # %r9 = intArgs[5]
 
-    movsd 56(%rax), %xmm0       # %xmm0 = fpArgs[0]
-    movsd 64(%rax), %xmm1       # %xmm1 = fpArgs[1]
-    movsd 72(%rax), %xmm2       # %xmm2 = fpArgs[2]
-    movsd 80(%rax), %xmm3       # %xmm3 = fpArgs[3]
-    movsd 88(%rax), %xmm4       # %xmm4 = fpArgs[4]
-    movsd 96(%rax), %xmm5       # %xmm5 = fpArgs[5]
-    movsd 104(%rax), %xmm6      # %xmm6 = fpArgs[6]
-    movsd 112(%rax), %xmm7      # %xmm7 = fpArgs[7]
+    movsd fpArgs_offset+0(%rax), %xmm0         # %xmm0 = fpArgs[0]
+    movsd fpArgs_offset+8(%rax), %xmm1         # %xmm1 = fpArgs[1]
+    movsd fpArgs_offset+16(%rax), %xmm2        # %xmm2 = fpArgs[2]
+    movsd fpArgs_offset+24(%rax), %xmm3        # %xmm3 = fpArgs[3]
+    movsd fpArgs_offset+32(%rax), %xmm4        # %xmm4 = fpArgs[4]
+    movsd fpArgs_offset+40(%rax), %xmm5        # %xmm5 = fpArgs[5]
+    movsd fpArgs_offset+48(%rax), %xmm6        # %xmm6 = fpArgs[6]
+    movsd fpArgs_offset+56(%rax), %xmm7        # %xmm7 = fpArgs[7]
 
-    mov   120(%rax), %r10       # %r10 = stackArgsCount
+    movl  stackArgsSize_offset(%rax), %r10d    # %r10 = stackArgsSize
 LsetStackArgsNext:
-    cmp   $0, %r10
+    test  %r10, %r10
     je    LsetStackArgsDone
-    sub   $0x1, %r10
-    mov   128(%rax), %r11       # %r11 = stackArgs
-    lea   (%r11, %r10, 8), %r11 # %r11 = stackArgs + %r10 * 8
+    dec   %r10
+    mov   stackArgs_offset(%rax), %r11         # %r11 = stackArgs
+    lea   (%r11, %r10, 8), %r11                # %r11 = stackArgs + %r10 * 8
     push  (%r11)
     jmp   LsetStackArgsNext
 LsetStackArgsDone:
 
-LnvmCall0TryCatchStart:
-    call  *(%rax)
-LnvmCall0TryCatchEnd:
-LnvmCall0TryCatchLandingPad:
+Lcall0TryCatchStart:
+    call  *function_offset(%rax)
+Lcall0TryCatchEnd:
+Lcall0TryCatchLandingPad:
 
     leave
     ret
-LnvmCall0End:
+Lcall0End:
 
     .section    __TEXT,__gcc_except_tab
     .align    2
@@ -88,16 +69,16 @@ Lexception1:
     .byte    255                     ## @LPStart Encoding = omit
     .byte    155                     ## @TType Encoding = indirect pcrel sdata4
     .byte    158                     ## @TType base offset
-    .space    2,128
-    .space    1
+    .space   2,128
+    .space   1
     .byte    3                       ## Call site Encoding = udata4
     .byte    26                      ## Call site table length
-    .long    LnvmCall0TryCatchStart - LnvmCall0Begin         # Region start
-    .long    LnvmCall0TryCatchEnd - LnvmCall0TryCatchStart   # Region length
-    .long    LnvmCall0TryCatchLandingPad - LnvmCall0Begin    # Landing pad
+    .long    Lcall0TryCatchStart - Lcall0Begin         # Region start
+    .long    Lcall0TryCatchEnd - Lcall0TryCatchStart   # Region length
+    .long    Lcall0TryCatchLandingPad - Lcall0Begin    # Landing pad
     .byte    1                                               # Action
-    .long    LnvmCall0TryCatchEnd - LnvmCall0Begin           # Region start
-    .long    LnvmCall0End - LnvmCall0TryCatchEnd             # Region length
+    .long    Lcall0TryCatchEnd - Lcall0Begin           # Region start
+    .long    Lcall0End - Lcall0TryCatchEnd             # Region length
     .long    0                       ## Landing pad
     .byte    0                       ## Action
                                         ## -- Action Record Table --
@@ -106,7 +87,7 @@ Lexception1:
     .byte    0                       ##   Next action
                                         ## -- Filter IDs --
     .byte    0
-    .align    2
+    .align   2
 
     .section    __TEXT,__eh_frame,coalesced,no_toc+strip_static_syms+live_support
 EH_frame0:
@@ -135,52 +116,29 @@ Leh_frame_common_begin0:
     .align    3
 Leh_frame_common_end0:
 
-    .globl    __nvmProxy0.eh
-__nvmProxy0.eh:
-    .long    LnvmProxy0eh_frame_end0 - LnvmProxy0eh_frame_begin0 ## Length of Frame Information Entry
-LnvmProxy0eh_frame_begin0:
-    .long    LnvmProxy0eh_frame_begin0 - Leh_frame_common0 ## FDE CIE offset
-    .quad    LnvmProxy0Begin - .        ## FDE initial location
-    .quad    LnvmProxy0End - LnvmProxy0Begin   ## FDE address range
-    .uleb128 8                       ## Augmentation size
-    .quad    0                       ## Language Specific Data Area
-    # Advance to LnvmProxy0CFI0
-    .byte    4                       ## DW_CFA_advance_loc4
-    .long    LnvmProxy0CFI0 - LnvmProxy0Begin
-    # CFA is now in %rsp+128
-    .byte    14                      ## DW_CFA_def_cfa_offset
-    .uleb128 128                     ## Offset
-    .align   3
-LnvmProxy0eh_frame_end0:
-
-    .globl    __nvmCall0.eh
-__nvmCall0.eh:
-    .long    LnvmCall0eh_frame_end0 - LnvmCall0eh_frame_begin0 ## Length of Frame Information Entry
-LnvmCall0eh_frame_begin0:
-    .long    LnvmCall0eh_frame_begin0 - Leh_frame_common0 ## FDE CIE offset
-    .quad    LnvmCall0Begin - .        ## FDE initial location
-    .quad    LnvmCall0End - LnvmCall0Begin   ## FDE address range
+    .globl    __call0.eh
+__call0.eh:
+    .long    Lcall0eh_frame_end0 - Lcall0eh_frame_begin0 ## Length of Frame Information Entry
+Lcall0eh_frame_begin0:
+    .long    Lcall0eh_frame_begin0 - Leh_frame_common0 ## FDE CIE offset
+    .quad    Lcall0Begin - .        ## FDE initial location
+    .quad    Lcall0End - Lcall0Begin   ## FDE address range
     .uleb128 8                       ## Augmentation size
     .quad    Lexception1 - .         ## Language Specific Data Area
-    # Advance to LnvmCall0CFI0
+    # Advance to Lcall0CFI0
     .byte    4                       ## DW_CFA_advance_loc4
-    .long    LnvmCall0CFI0 - LnvmCall0Begin
+    .long    Lcall0CFI0 - Lcall0Begin
     # CFA is now in %rsp+16
     .byte    14                      ## DW_CFA_def_cfa_offset
     .uleb128 16                      ## Offset
     # Value of %rbp is now at CFA-16
     .byte    134                     ## DW_CFA_offset + Reg (6)
     .uleb128 2                       ## Offset
-    # Advance to LnvmCall0CFI1
+    # Advance to Lcall0CFI1
     .byte    4                       ## DW_CFA_advance_loc4
-    .long    LnvmCall0CFI1 - LnvmCall0CFI0
+    .long    Lcall0CFI1 - Lcall0CFI0
     # CFA is now in %rbp+16
     .byte    13                      ## DW_CFA_def_cfa_register
     .uleb128 6                       ## Register
     .align   3
-LnvmCall0eh_frame_end0:
-
-    .section    __TEXT,__eh_frame,coalesced,no_toc+strip_static_syms+live_support
-
-
-.subsections_via_symbols
+Lcall0eh_frame_end0:

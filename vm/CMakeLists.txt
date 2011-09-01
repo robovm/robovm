@@ -44,7 +44,7 @@ endif()
 add_definitions(-DGC_THREADS)
 add_definitions(-include ${CMAKE_BINARY_DIR}/gc/include/gc/gc.h)
 add_definitions(-DIPv6_FUNCTION_SUPPORT)
-add_definitions(-fexceptions) # Generate eh frames for C code. Without it we cannot unwind.
+add_definitions(-fasynchronous-unwind-tables) # Generate eh frames for C code. Without it we cannot unwind.
 
 if((LINUX OR DARWIN) AND CMAKE_SIZEOF_VOID_P MATCHES "8")
   CHECK_C_COMPILER_FLAG("-fPIC" WITH_FPIC)
@@ -62,7 +62,12 @@ elseif(DARWIN)
   SET(HY_OS macosx)
   SET(OS darwin)
   add_definitions(-DMACOSX)
+  add_definitions(-DDARWIN)
   include_directories(hyprt/include/unix)
+  # Prevent the linker on Mac OS X >= 10.6 from compacting FDEs since that breaks _Unwind_FindEnclosingFunction
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -no_compact_unwind")
+  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Xlinker -no_compact_unwind")
+  set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Xlinker -no_compact_unwind")
 endif()
 
 if (ARCH STREQUAL "x86_64")
@@ -75,7 +80,11 @@ endif()
 
 SET(INSTALL_DIR $ENV{HOME}/.nullvm/lib/${OS}/${ARCH})
 
-install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.so.1.0.3 DESTINATION ${INSTALL_DIR} RENAME libgc.so.1)
+if(LINUX)
+  install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.so.1.0.3 DESTINATION ${INSTALL_DIR} RENAME libgc.so.1)
+elseif(DARWIN)
+  install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.1.dylib DESTINATION ${INSTALL_DIR} RENAME libgc.1.dylib)
+endif()
 
 add_subdirectory(core/src)
 add_subdirectory(bc/src)

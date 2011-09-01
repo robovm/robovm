@@ -3,7 +3,7 @@
 #include "log.h"
 
 #define RT_DSO "libnullvm-rt.so"
-#ifdef MACOSX
+#ifdef DARWIN
   #undef RT_DSO
   #define RT_DSO "libnullvm-rt.dylib"
 #endif

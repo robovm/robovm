@@ -4,7 +4,7 @@ export PATH
 export HOME=$(cd ~; pwd)
 
 BASE=$(cd $(dirname $0)/..; pwd -P)
-NULLVMCJAR=$(ls $BASE/nullvmc/target/nullvm-compiler-*one-jar.jar 2> /dev/null)
+NULLVMCJAR=$(ls $BASE/compiler/target/nullvm-compiler-*jar-with-dependencies.jar 2> /dev/null)
 TARGET=/tmp/nullvm-vts #$(mktemp -d)
 
 mkdir -p $HOME/.nullvm/vts/
@@ -45,7 +45,7 @@ done
 #echo "MAINCLASS=$MAINCLASS"
 
 if [ ! -x $TARGET/vts ]; then
-  java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -jar $NULLVMCJAR -d $TARGET -o vts -cp $CP
+  java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -jar $NULLVMCJAR -d $TARGET -o vts -debug -verbose -cp $CP
 fi
 
 LIBPATH=$TARGET

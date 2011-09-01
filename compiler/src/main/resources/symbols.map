@@ -1,6 +1,0 @@
-A {
- global:
-  NullVM_*;
- local:
-  *;
-};

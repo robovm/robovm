@@ -21,8 +21,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -89,8 +91,6 @@ public class Main {
     private boolean nort = false;
     private boolean verbose = false;
     private File jarFile;
-    private List<File> includeDirs = new ArrayList<File>();
-    private List<File> libDirs = new ArrayList<File>();
     private boolean run = false;
     private String mainClass;
     private List<String> runArgs = new ArrayList<String>();
@@ -100,7 +100,6 @@ public class Main {
     private List<File> bootClassPathFiles = new ArrayList<File>();
     private List<File> classPathFiles = new ArrayList<File>();
     private PrintStream stdout = System.out;
-
     private File tmpFile;
     private String host;
     
@@ -331,13 +330,21 @@ public class Main {
             }
             return outFile;
         }
-        if (verbose) {
-            stdout.format("Building static library '%s' for classpath entry\n", outFile, entry);
-        }
 
         List<File> objectFiles = new ArrayList<File>();
         for (Clazz clazz : entry.getPath().list()) {
             objectFiles.add(buildClassFileDebug(entry, clazz));
+        }
+        
+        if (objectFiles.isEmpty()) {
+            if (verbose) {
+                stdout.format("Skipping empty classpath entry: " + entry);
+            }
+            return null;
+        }
+
+        if (verbose) {
+            stdout.format("Building static library '%s' for classpath entry\n", outFile, entry);
         }
         
         linkStatic(entry.getObjectCacheDir(), objectFiles, outFile);
@@ -352,7 +359,10 @@ public class Main {
         if (debug) {
             List<File> libFiles = new ArrayList<File>();
             for (ClasspathEntry entry : entries) {
-                libFiles.add(buildClasspathEntry(entry));
+                File libFile = buildClasspathEntry(entry);
+                if (libFile != null) {
+                    libFiles.add(libFile);
+                }
             }
             buildExecutable(entries, libFiles);
         } else {
@@ -466,8 +476,14 @@ public class Main {
         Module module = new Module();
         List<Value> bootcpValues = new ArrayList<Value>();
         List<Value> cpValues = new ArrayList<Value>();
+        Set<String> seenClasses = new HashSet<String>();
         for (ClasspathEntry entry : entries) {
             for (Clazz c : entry.getPath().list()) {
+                if (seenClasses.contains(c.getInternalName())) {
+                    continue;
+                }
+                seenClasses.add(c.getInternalName());
+                
                 byte[] modUtf8 = SootClassCompiler.stringToModifiedUtf8(c.getInternalName());
                 Global var = new Global(SootClassCompiler.getStringVarName(modUtf8), Linkage.linker_private_weak, 
                         new StringConstant(modUtf8), true);
@@ -526,42 +542,6 @@ public class Main {
         }
         
         exec(gccPath, "-o", outFile, "-g", gccOpts, gccArgs, configS, libFiles, "-lm", "-l:libgc.so.1", "-lnullvm-core", "-lnullvm-bc", "-lnullvm-hyprt");
-//        files.add(mainObjectFile);
-//
-//        List<String> ldArgs = new ArrayList<String>();
-//        for (File f : libDirs) {
-//            ldArgs.add("-L");
-//            ldArgs.add(f.getAbsolutePath());
-//        }
-//        ldArgs.add("-L");
-//        ldArgs.add(new File(home, "lib").getAbsolutePath());
-//        ldArgs.add("-L");
-//        ldArgs.add(new File(new File(home, "gc"), "lib").getAbsolutePath());
-//        
-////        String ldPath = "ld";
-////        if (ldBin != null) {
-////            ldPath = ldBin.getAbsolutePath();
-////        }
-//        
-//        List<File> objectFileArgs = new ArrayList<File>();
-//        List<String> libArgs = new ArrayList<String>();
-//        for (File f : files) {
-//            if (f.getName().endsWith(".a")) {
-//                ldArgs.add("-L");
-//                ldArgs.add(f.getParentFile().getAbsolutePath());                
-//                libArgs.add("-l:" + f.getName());
-//            } else {
-//                objectFileArgs.add(f);
-//            }
-//        }
-//        
-//        exec(gccPath, "-o", outFile, "-g", "-Wl,--version-script", symbolsMapFile, 
-//                gccOpts, "-rdynamic", ldArgs, objectFileArgs, "-lnullvm", "-lm", "-ldl", "-lpthread",
-//                "-Wl,--whole-archive", libArgs, "-Wl,--no-whole-archive", "-Wl,-Bstatic", "-lgc", "-Wl,-Bdynamic");
-//
-////        exec(ldPath, "-o", outFile, "--version-script", symbolsMapFile, 
-////                ldOpts, ldArgs, objectFileArgs, "-lnullvm", "-lm", "-ldl", "-lpthread",
-////                "--whole-archive", libArgs, "--no-whole-archive", "-Bstatic", "-lgc", "-Bdynamic");
     }
     
     private void stripArchive(File input, File output) throws IOException {
@@ -945,75 +925,36 @@ public class Main {
 
             runTarget();
         } else {
-            FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libnullvm" + (os == OS.linux ? ".so" : ".dylib")), output);
-            FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libnullvm-rt" + (os == OS.linux ? ".so" : ".dylib")), output);
-//            FileUtils.copyFileToDirectory(new File(new File(home, "lib"), "libgc.so.1"), output);
+            
+            for (File f : homeLibOsArch.listFiles()) {
+                if (f.getName().matches(".*\\.(so|dylib)(\\.1)?")) {
+                    FileUtils.copyFileToDirectory(f, output);
+                }
+            }
             
             File libBoot = new File(new File(output, "lib"), "boot");
             libBoot.mkdirs();
             File libMain = new File(new File(output, "lib"), "main");
             libMain.mkdirs();
+
+            List<String> bootclasspathContents = new ArrayList<String>();
+            List<String> classpathContents = new ArrayList<String>();
+            for (ClasspathEntry entry : classpathEntries) {
+                File dest = null;
+                if (entry.isInBootClasspath()) {
+                    dest = new File(libBoot, entry.getArchive().getName());
+                    bootclasspathContents.add("lib/boot/" + entry.getArchive().getName());
+                } else {
+                    dest = new File(libMain, entry.getArchive().getName());
+                    classpathContents.add("lib/main/" + entry.getArchive().getName());
+                }
+                stripArchive(entry.getArchive(), dest);
+            }
             
-//            String bootDirString = libBoot.getAbsolutePath().substring(output.getAbsolutePath().length() + 1);
-//            String mainDirString = libMain.getAbsolutePath().substring(output.getAbsolutePath().length() + 1);
-            
-//            writeClasspathEntries(bootclasspathObjects, output, libBoot, new File(output, "bootclasspath"));
-//            writeClasspathEntries(classpathObjects, output, libMain, new File(output, "classpath"));
-            
-//            Properties bootEntriesProps = new Properties();
-//            for (ClasspathEntry entry : bootclasspathObjects) {
-//                bootEntriesProps.setProperty(bootDirString + File.separator + entry.getArchive().getName(), 
-//                        bootDirString + File.separator + entry.getDynamicLibrary().getName());
-//                stripArchive(entry.getArchive(), new File(libBoot, entry.getArchive().getName()));
-//                FileUtils.copyFileToDirectory(entry.getDynamicLibrary(), libBoot);
-//            }
-//            Properties mainEntriesProps = new Properties();
-//            for (ClasspathEntry entry : classpathObjects) {
-//                mainEntriesProps.setProperty(mainDirString + File.separator + entry.getArchive().getName(), 
-//                        mainDirString + File.separator + entry.getDynamicLibrary().getName());
-//                stripArchive(entry.getArchive(), new File(libMain, entry.getArchive().getName()));
-//                FileUtils.copyFileToDirectory(entry.getDynamicLibrary(), libMain);
-//            }
-//            
-//            writeProperties(bootEntriesProps, new File(output, "bootclasspath"));
-//            writeProperties(mainEntriesProps, new File(output, "classpath"));
-            
-//            List<String> bootJars = processPathObjectFiles(bootclasspathObjects, libBoot);
-//            List<String> mainJars = processPathObjectFiles(classpathObjects, libMain);
-//            
-//            FileUtils.writeStringToFile(new File(libBoot, "files"), StringUtils.join(bootJars, ':'), "UTF-8");
-//            FileUtils.writeStringToFile(new File(libMain, "files"), StringUtils.join(mainJars, ':'), "UTF-8");
+            FileUtils.writeStringToFile(new File(output, "bootclasspath"), join(bootclasspathContents, "\r\n"), "UTF-8");
+            FileUtils.writeStringToFile(new File(output, "classpath"), join(classpathContents, "\r\n"), "UTF-8");
         }        
     }
-
-//    private void writeClasspathEntries(List<ClasspathEntry> entries, File file) throws IOException {
-//        writeClasspathEntries(entries, null, null, file);
-//    }
-//    private void writeClasspathEntries(List<ClasspathEntry> entries, File basePath, File installPath, File file) throws IOException {
-//        // The result is similar to a properties file but the order of entries is important so we cannot use Properties.store()
-//        // TODO: Escape = characters
-//        PrintWriter writer = null;
-//        try {
-//            writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
-//            for (ClasspathEntry entry: entries) {
-//                String left = entry.getArchive().getCanonicalPath();
-//                String right = entry.getDynamicLibrary().getCanonicalPath();
-//                if (installPath != null) {
-//                    String dir = installPath.getAbsolutePath().substring(basePath.getAbsolutePath().length() + 1);
-//                    stripArchive(entry.getArchive(), new File(installPath, entry.getArchive().getName()));
-//                    FileUtils.copyFileToDirectory(entry.getDynamicLibrary(), installPath);
-//                    left = dir + File.separator + entry.getArchive().getName();
-//                    right = dir + File.separator + entry.getDynamicLibrary().getName();
-//                }
-//                writer.write(left);
-//                writer.write('=');
-//                writer.write(right);
-//                writer.write('\n');
-//            }
-//        } finally {
-//            IOUtils.closeQuietly(writer);
-//        }
-//    }
 
     @SuppressWarnings("rawtypes")
     private String getHost() throws IOException {

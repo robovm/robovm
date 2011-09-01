@@ -1,5 +1,10 @@
-stackArgsSize_offset = 4
-stackArgs_offset = 12
+function_offset       = 0  # void*
+stackArgsSize_offset  = 4  # jint
+stackArgsIndex_offset = 8  # jint
+stackArgs_offset      = 12 # void**
+returnValue_offset    = 16 # FpIntValue
+returnType_offset     = 24 # jint
+CallInfo_size         = 28
 
     .text
 
@@ -17,9 +22,9 @@ _call0:
 
     mov   stackArgsSize_offset(%eax), %ecx # %ecx = stackArgsSize
 .LsetStackArgsNext:
-    cmp   $0, %ecx
+    test  %ecx, %ecx
     je    .LsetStackArgsDone
-    sub   $0x1, %ecx
+    dec   %ecx
     mov   stackArgs_offset(%eax), %edx     # %edx = stackArgs
     lea   (%edx, %ecx, 4), %edx  # %edx = stackArgs + %ecx * 4
     push  (%edx)
@@ -27,7 +32,7 @@ _call0:
 .LsetStackArgsDone:
 
 .Lcall0TryCatchStart:
-    call  *(%eax)
+    call  *function_offset(%eax)
 .Lcall0TryCatchEnd:
 .Lcall0TryCatchLandingPad:
 

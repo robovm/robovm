@@ -1,8 +1,10 @@
-stackArgsIndex_offset = 8
-stackArgs_offset = 12
-returnValue_offset = 16
-returnType_offset = 24
-CallInfo_size = 28
+function_offset       = 0  # void*
+stackArgsSize_offset  = 4  # jint
+stackArgsIndex_offset = 8  # jint
+stackArgs_offset      = 12 # void**
+returnValue_offset    = 16 # FpIntValue
+returnType_offset     = 24 # jint
+CallInfo_size         = 28
 
 RETURN_TYPE_INT    = 0
 RETURN_TYPE_LONG   = 1

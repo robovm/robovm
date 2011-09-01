@@ -168,6 +168,15 @@ static inline void proxy0ReturnDouble(CallInfo* ci, jdouble d) {
 
 #elif NVM_I386
 
+typedef struct CallInfo {
+    void* function;
+    jint stackArgsSize;
+    jint stackArgsIndex;
+    void** stackArgs;
+    FpIntValue returnValue;
+    jint returnType;
+} CallInfo;
+
 /*
  * Each slot on the stack occupies 32-bits. longs and doubles are split in two and each part is pushed separately.
  * sizeof(void*) == 4 bytes.
@@ -187,9 +196,7 @@ static inline CallInfo* call0AllocateCallInfo(Env* env, void* function, jint ptr
 }
 
 static inline void call0AddInt(CallInfo* ci, jint i) {
-    void* p = ci->stackArgs + sizeof(void*) * ci->stackArgsIndex;
-    ci->stackArgsIndex++;
-    *((jint*) p) = i;
+    *((jint*) &(ci->stackArgs[ci->stackArgsIndex++])) = i;
 }
 
 static inline void call0AddLong(CallInfo* ci, jlong j) {
@@ -214,9 +221,7 @@ static inline void call0AddDouble(CallInfo* ci, jdouble d) {
 }
 
 static inline jint proxy0NextInt(CallInfo* ci) {
-    void* p = ci->stackArgs + sizeof(void*) * ci->stackArgsIndex;
-    ci->stackArgsIndex++;
-    return *((jint*) p);
+    return *((jint*) &(ci->stackArgs[ci->stackArgsIndex++]));
 }
 
 static inline jlong proxy0NextLong(CallInfo* ci) {

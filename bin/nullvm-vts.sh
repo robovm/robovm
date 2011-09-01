@@ -1,15 +1,21 @@
 #!/bin/bash
 
-export PATH
 export HOME=$(cd ~; pwd)
 
 BASE=$(cd $(dirname $0)/..; pwd -P)
-NULLVMCJAR=$(ls $BASE/compiler/target/nullvm-compiler-*jar-with-dependencies.jar 2> /dev/null)
-TARGET=/tmp/nullvm-vts #$(mktemp -d)
+if [ -f "$BASE/bin/nullvm-vts.env" ]; then
+  . $BASE/bin/nullvm-vts.env
+fi
+[ "x$COMPILER_JAR" == 'x' ] && COMPILER_JAR=$(ls $BASE/compiler/target/nullvm-compiler-*jar-with-dependencies.jar 2> /dev/null)
+if [ "x$COMPILER_JAR" == 'x' ]; then
+  echo "nullvm-compiler JAR file not found in path $BASE/compiler/target/"
+  exit 1
+fi
+[ "x$TARGET" == 'x' ] && TARGET=/tmp/nullvm-vts
+
+export PATH
 
 mkdir -p $HOME/.nullvm/vts/
-
-#echo "" | gcc -c -E -v -
 
 n=0
 while [ ${1:0:1} = '-' ]; do
@@ -45,7 +51,7 @@ done
 #echo "MAINCLASS=$MAINCLASS"
 
 if [ ! -x $TARGET/vts ]; then
-  java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -jar $NULLVMCJAR -d $TARGET -o vts -debug -verbose -cp $CP
+  java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -Xss1024k -jar $COMPILER_JAR -d $TARGET -o vts -debug -verbose -cp $CP
 fi
 
 LIBPATH=$TARGET
@@ -55,12 +61,5 @@ fi
 
 LD_LIBRARY_PATH=$LIBPATH $TARGET/vts -nvm:MainClass=$MAINCLASS $RUNARGS
 CODE=$?
-exit $CODE
-
-exit
-
-java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -jar $NULLVMCJAR -run -d $TARGET $ARGS
-CODE=$?
-#rm -rf $TARGET
 exit $CODE
 

@@ -1,5 +1,6 @@
 #include <nullvm.h>
 #include <vmi.h>
+#include <string.h>
 #include "log.h"
 
 #define RT_DSO "libnullvm-rt.so"
@@ -91,9 +92,18 @@ jboolean nvmInitVMI(Env* env) {
     javaVM.GetEnv = _GetEnv;
     struct JavaVMProxy javaVMProxy = {&javaVM, env};
 
-    DynamicLib* dlib = nvmLoadDynamicLib(env, RT_DSO, &bootNativeLibs);
+    // Load nullvm-rt
+    // Try first in same dir as the executable
+    char path[PATH_MAX];
+    strcpy(path, env->vm->options->basePath);
+    strcat(path, "/" RT_DSO);
+    DynamicLib* dlib = nvmLoadDynamicLib(env, path, &bootNativeLibs);
     if (!dlib) {
-        nvmAbort("Fatal error: Failed to load " RT_DSO);
+      // Try with no path. Maybe (DY)LD_LIBRARY_PATH has been set?
+      dlib = nvmLoadDynamicLib(env, RT_DSO, &bootNativeLibs);
+      if (!dlib) {
+          nvmAbort("Fatal error: Failed to load " RT_DSO);
+      }
     }
 
     jint (*JNI_OnLoad_LUNI)(JavaVM* vm, void* reserved) = nvmFindDynamicLibSymbol(env, dlib, "JNI_OnLoad_LUNI");

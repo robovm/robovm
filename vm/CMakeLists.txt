@@ -38,9 +38,11 @@ ExternalProject_Add(extgc
 if(DARWIN)
   ExternalProject_Add_Step(
     extgc after_install 
-    COMMAND install_name_tool -id libgc.1.dylib "${CMAKE_BINARY_DIR}/gc/lib/libgc.1.dylib"
+    COMMAND rm -f "${CMAKE_BINARY_DIR}/gc/lib/libgc.dylib"
+    COMMAND cp "${CMAKE_BINARY_DIR}/gc/lib/libgc.1.dylib" "${CMAKE_BINARY_DIR}/gc/lib/libgc.dylib"
+    COMMAND install_name_tool -id @loader_path/libgc.dylib "${CMAKE_BINARY_DIR}/gc/lib/libgc.dylib"
     DEPENDEES install
-    COMMENT "Running install_name_tool on libgc1.dylib"
+    COMMENT "Running install_name_tool on libgc.dylib"
   )
 endif()
 
@@ -91,7 +93,7 @@ set(INSTALL_DIR $ENV{HOME}/.nullvm/lib/${OS}/${ARCH})
 if(LINUX)
   install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.so.1.0.3 DESTINATION ${INSTALL_DIR} RENAME libgc.so.1)
 elseif(DARWIN)
-  install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.1.dylib DESTINATION ${INSTALL_DIR} RENAME libgc.1.dylib)
+  install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.dylib DESTINATION ${INSTALL_DIR})
 endif()
 
 add_subdirectory(core/src)

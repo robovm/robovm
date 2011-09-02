@@ -299,11 +299,43 @@ public class Main {
         }
 
         outFile.getParentFile().mkdirs();
-        outFile.delete();
-//        for (int i = 0; i < files.size(); i += 500) {
-//            exec(arPath, "rcs", outFile, files.subList(i, Math.min(files.size(), i + 500)));
-//        }
-        exec(wd, arPath, "rcs", outFile, relFiles);
+        
+        List<List<String>> parts = new ArrayList<List<String>>();
+        parts.add(relFiles);
+        
+        while (true) {
+            outFile.delete();
+            try {
+                for (List<String> l : parts) {
+                    exec(wd, arPath, "rcs", outFile, l);
+                }
+                break;
+            } catch (IOException e) {
+                if (e.getMessage() != null && e.getMessage().contains("Argument list too long")) {
+                    if (verbose) {
+                        stdout.printf("Got 'Argument list too long' error when running ar. " 
+                                + "Will try again using %d calls to ar.\n", parts.size() * 2);
+                    }
+                    List<List<String>> oldParts = parts;
+                    parts = new ArrayList<List<String>>();
+                    for (List<String> l : oldParts) {
+                        int size = l.size();
+                        if (size > 1) {
+                            parts.add(l.subList(0, size / 2));
+                            parts.add(l.subList(size / 2, size));
+                        } else {
+                            parts.add(l);
+                        }
+                    }
+                    if (parts.size() == relFiles.size()) {
+                        // We have split as much as possible but the argument list is still too long.
+                        throw e;
+                    }
+                } else {
+                    throw e;
+                }
+            }
+        }
     }
     
     private File buildClassFileDebug(ClasspathEntry entry, Clazz clazz) throws IOException {
@@ -527,21 +559,31 @@ public class Main {
         }
         
         List<String> gccArgs = new ArrayList<String>();
+        List<String> libArgs = new ArrayList<String>();
+        
+        libArgs.addAll(Arrays.asList("-lm", "-lnullvm-core", "-lnullvm-bc", "-lnullvm-hyprt"));
         
         gccArgs.add("-L");
         gccArgs.add(homeLibOsArch.getAbsolutePath());
         if (os == OS.linux) {
+            libArgs.add("-l:libgc.so.1");
             gccArgs.add("-Xlinker");
+            gccArgs.add("-rpath=$ORIGIN");
             gccArgs.add("-rpath=$ORIGIN");
         }
         if (os == OS.darwin) {
+            libArgs.add("-lgc");
             File unexportedSymbolsFile = new File(tmpFile, "unexported_symbols");
-            FileUtils.writeStringToFile(unexportedSymbolsFile, "*", "ASCII");
+            FileUtils.writeStringToFile(unexportedSymbolsFile, "*\n", "ASCII");
             gccArgs.add("-unexported_symbols_list");
             gccArgs.add(unexportedSymbolsFile.getAbsolutePath());
+            
+            // Needed on Mac OS X >= 10.6 to prevent linker from compacting unwind info which breaks _Unwind_FindEnclosingFunction
+            gccArgs.add("-Xlinker");
+            gccArgs.add("-no_compact_unwind");
         }
         
-        exec(gccPath, "-o", outFile, "-g", gccOpts, gccArgs, configS, libFiles, "-lm", "-l:libgc.so.1", "-lnullvm-core", "-lnullvm-bc", "-lnullvm-hyprt");
+        exec(gccPath, "-o", outFile, "-g", gccOpts, gccArgs, configS, libFiles, libArgs);
     }
     
     private void stripArchive(File input, File output) throws IOException {

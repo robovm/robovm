@@ -11,7 +11,8 @@ if [ "x$COMPILER_JAR" == 'x' ]; then
   echo "nullvm-compiler JAR file not found in path $BASE/compiler/target/"
   exit 1
 fi
-[ "x$TARGET" == 'x' ] && TARGET=/tmp/nullvm-vts
+[ "x$ARCH" == 'x' ] && ARCH=auto
+[ "x$TARGET" == 'x' ] && TARGET=/tmp/nullvm-vts.$ARCH
 
 export PATH
 
@@ -51,7 +52,7 @@ done
 #echo "MAINCLASS=$MAINCLASS"
 
 if [ ! -x $TARGET/vts ]; then
-  java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -Xss1024k -jar $COMPILER_JAR -d $TARGET -o vts -debug -verbose -cp $CP
+  java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -Xss1024k -jar $COMPILER_JAR -d $TARGET -arch $ARCH -o vts -debug -verbose -cp $CP
 fi
 
 LIBPATH=$TARGET

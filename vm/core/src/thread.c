@@ -94,12 +94,13 @@ jint nvmAttachCurrentThread(VM* vm, Env** env, char* name, Object* group) {
 
 static int startThreadEntryPoint(void* entryArgs) {
     Env* env = (Env*) entryArgs;
+    Thread* thread = env->currentThread;
 
     Method* run = nvmGetInstanceMethod(env, java_lang_Thread, "run", "()V");
     if (!run) goto finish;
 
     jvalue emptyArgs[0];
-    nvmCallVoidInstanceMethodA(env, (Object*) env->currentThread, run, emptyArgs);
+    nvmCallVoidInstanceMethodA(env, (Object*) thread, run, emptyArgs);
 
 finish:
 
@@ -109,15 +110,19 @@ finish:
         if (printStackTrace) {
             jvalue args[1];
             args[0].l = (jobject) throwable;
-            nvmCallVoidInstanceMethodA(env, (Object*) env->currentThread, printStackTrace, args);
+            nvmCallVoidInstanceMethodA(env, (Object*) thread, printStackTrace, args);
         }
     }
 
-    nvmMonitorEnter(env, (Object*) env->currentThread);
-    nvmMonitorNotifyAll(env, (Object*) env->currentThread);
-    nvmMonitorExit(env, (Object*) env->currentThread);
-
-    env->currentThread->threadPtr = 0;
+    thread->threadPtr = 0; // Clear threadPtr. The thread is not alive anymore.
+    hythread_monitor_t monitor = thread->object.monitor;
+    if (monitor) {
+        // Notify all other threads waiting on this thread.
+        // We can't use nvmMonitor* functions here since threadPtr has been set to 0.
+        hythread_monitor_enter(monitor);
+        hythread_monitor_notify_all(monitor);
+        hythread_monitor_exit(monitor);
+    }
 
     hythread_exit(NULL);
 

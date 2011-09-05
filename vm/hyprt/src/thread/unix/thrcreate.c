@@ -40,12 +40,14 @@ create_pthread (pthread_t * handle, UDATA stacksize, UDATA priority,
   if (pthread_attr_init (&attr) != 0)
     return -1;
 
+#if ! defined(MACOSX)
   /* verify that there are no extra fields in sched_param! This should be optimized out by any half decent compiler */
   if (sizeof (sched_param) != sizeof (sched_param.sched_priority))
     {
       printf ("Assertion failed %s:%d\n", __FILE__, __LINE__);
       abort ();
     }
+#endif
 
   sched_param.sched_priority = priority;
   pthread_attr_setschedparam (&attr, &sched_param);

@@ -62,8 +62,8 @@ static void testProxy0ReturnLong_handler(CallInfo* ci) {
 static void testProxy0ReturnLong(CuTest* tc) {
     handler = testProxy0ReturnLong_handler;
     jlong (*f)(jlong) = (jlong (*)(jlong)) _proxy0;
-    jlong result = f(0xdeadbeef);
-    CuAssertTrue(tc, result == 0xdeadbeef00);
+    jlong result = f(0xdeadbeefLL);
+    CuAssertTrue(tc, result == 0xdeadbeef00LL);
 }
 
 
@@ -100,16 +100,16 @@ void testProxy0OneArgOfEach_handler(CallInfo* ci) {
     jdouble d = proxy0NextDouble(ci);
     if (p != testProxy0OneArgOfEach_handler) return;
     if (i != -100) return;
-    if (l != 0xfedcba9876543210) return;
+    if (l != 0xfedcba9876543210LL) return;
     if (f != 3.14f) return;
     if (d != -3.14) return;
-    proxy0ReturnLong(ci, 0x0123456789abcdef);
+    proxy0ReturnLong(ci, 0x0123456789abcdefLL);
 }
 void testProxy0OneArgOfEach(CuTest* tc) {
     handler = testProxy0OneArgOfEach_handler;
     jlong (*f)(void*, jint, jlong, jfloat, jdouble) = (jlong (*)(void*, jint, jlong, jfloat, jdouble)) _proxy0;
-    jlong result = f(testProxy0OneArgOfEach_handler, -100, 0xfedcba9876543210, 3.14f, -3.14);
-    CuAssertTrue(tc, result == 0x0123456789abcdef);
+    jlong result = f(testProxy0OneArgOfEach_handler, -100, 0xfedcba9876543210LL, 3.14f, -3.14);
+    CuAssertTrue(tc, result == 0x0123456789abcdefLL);
 }
 
 
@@ -159,42 +159,42 @@ void testProxy0ManyArgsOfEach_handler(CallInfo* ci) {
 
     if (p1 != testProxy0ManyArgsOfEach_handler + 0xcab1) return;
     if (i1 != -100) return;
-    if (l1 != 0xfedcba9876543211) return;
+    if (l1 != 0xfedcba9876543211LL) return;
     if (f1 != 3.11f) return;
     if (d1 != -3.11) return;
     if (p2 != testProxy0ManyArgsOfEach_handler + 0xcab2) return;
     if (i2 != -200) return;
-    if (l2 != 0xfedcba9876543212) return;
+    if (l2 != 0xfedcba9876543212LL) return;
     if (f2 != 3.12f) return;
     if (d2 != -3.12) return;
     if (p3 != testProxy0ManyArgsOfEach_handler + 0xcab3) return;
     if (i3 != -300) return;
-    if (l3 != 0xfedcba9876543213) return;
+    if (l3 != 0xfedcba9876543213LL) return;
     if (f3 != 3.13f) return;
     if (d3 != -3.13) return;
     if (p4 != testProxy0ManyArgsOfEach_handler + 0xcab4) return;
     if (i4 != -400) return;
-    if (l4 != 0xfedcba9876543214) return;
+    if (l4 != 0xfedcba9876543214LL) return;
     if (f4 != 3.14f) return;
     if (d4 != -3.14) return;
     if (p5 != testProxy0ManyArgsOfEach_handler + 0xcab5) return;
     if (i5 != -500) return;
-    if (l5 != 0xfedcba9876543215) return;
+    if (l5 != 0xfedcba9876543215LL) return;
     if (f5 != 3.15f) return;
     if (d5 != -3.15) return;
     if (p6 != testProxy0ManyArgsOfEach_handler + 0xcab6) return;
     if (i6 != -600) return;
-    if (l6 != 0xfedcba9876543216) return;
+    if (l6 != 0xfedcba9876543216LL) return;
     if (f6 != 3.16f) return;
     if (d6 != -3.16) return;
     if (p7 != testProxy0ManyArgsOfEach_handler + 0xcab7) return;
     if (i7 != -700) return;
-    if (l7 != 0xfedcba9876543217) return;
+    if (l7 != 0xfedcba9876543217LL) return;
     if (f7 != 3.17f) return;
     if (d7 != -3.17) return;
     if (p8 != testProxy0ManyArgsOfEach_handler + 0xcab8) return;
     if (i8 != -800) return;
-    if (l8 != 0xfedcba9876543218) return;
+    if (l8 != 0xfedcba9876543218LL) return;
     if (f8 != 3.18f) return;
     if (d8 != -3.18) return;
 
@@ -220,14 +220,14 @@ void testProxy0ManyArgsOfEach(CuTest* tc) {
               void*, jint, jlong, jfloat, jdouble)) _proxy0;
 
     jint result = f(
-        testProxy0ManyArgsOfEach_handler + 0xcab1, -100, 0xfedcba9876543211, 3.11f, -3.11,
-        testProxy0ManyArgsOfEach_handler + 0xcab2, -200, 0xfedcba9876543212, 3.12f, -3.12,
-        testProxy0ManyArgsOfEach_handler + 0xcab3, -300, 0xfedcba9876543213, 3.13f, -3.13,
-        testProxy0ManyArgsOfEach_handler + 0xcab4, -400, 0xfedcba9876543214, 3.14f, -3.14,
-        testProxy0ManyArgsOfEach_handler + 0xcab5, -500, 0xfedcba9876543215, 3.15f, -3.15,
-        testProxy0ManyArgsOfEach_handler + 0xcab6, -600, 0xfedcba9876543216, 3.16f, -3.16,
-        testProxy0ManyArgsOfEach_handler + 0xcab7, -700, 0xfedcba9876543217, 3.17f, -3.17,
-        testProxy0ManyArgsOfEach_handler + 0xcab8, -800, 0xfedcba9876543218, 3.18f, -3.18
+        testProxy0ManyArgsOfEach_handler + 0xcab1, -100, 0xfedcba9876543211LL, 3.11f, -3.11,
+        testProxy0ManyArgsOfEach_handler + 0xcab2, -200, 0xfedcba9876543212LL, 3.12f, -3.12,
+        testProxy0ManyArgsOfEach_handler + 0xcab3, -300, 0xfedcba9876543213LL, 3.13f, -3.13,
+        testProxy0ManyArgsOfEach_handler + 0xcab4, -400, 0xfedcba9876543214LL, 3.14f, -3.14,
+        testProxy0ManyArgsOfEach_handler + 0xcab5, -500, 0xfedcba9876543215LL, 3.15f, -3.15,
+        testProxy0ManyArgsOfEach_handler + 0xcab6, -600, 0xfedcba9876543216LL, 3.16f, -3.16,
+        testProxy0ManyArgsOfEach_handler + 0xcab7, -700, 0xfedcba9876543217LL, 3.17f, -3.17,
+        testProxy0ManyArgsOfEach_handler + 0xcab8, -800, 0xfedcba9876543218LL, 3.18f, -3.18
     );
     CuAssertIntEquals(tc, 1, result);
 }

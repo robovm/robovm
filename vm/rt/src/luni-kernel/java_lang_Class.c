@@ -30,7 +30,7 @@ jboolean Java_java_lang_Class_isAssignableFrom(Env* env, Class* thiz, Class* tha
     return nvmIsAssignableFrom(env, that, thiz);
 }
 
-jboolean Java_java_lang_Class_getModifiers(Env* env, Class* c, Class* thiz, jboolean ignoreInnerClassesAttrib) {
+jint Java_java_lang_Class_getModifiers(Env* env, Class* c, Class* thiz, jboolean ignoreInnerClassesAttrib) {
     return thiz->access;
 }
 

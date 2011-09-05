@@ -3,7 +3,7 @@
 #include "../private.h"
 #include "CuTest.h"
 
-#define EXCEPTION_CLASS 0xF00F00F00F00
+#define EXCEPTION_CLASS 0xF00F00F00F00LL
 
 typedef struct UnwindInfo {
     struct _Unwind_Exception exception_info;
@@ -90,7 +90,7 @@ static void testCall0ReturnLong(CuTest* tc) {
     call0AddLong(ci, 0xdeadbeef);
     jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _call0;
     jlong result = f(ci);
-    CuAssertTrue(tc, result == 0xdeadbeef00);
+    CuAssertTrue(tc, result == 0xdeadbeef00LL);
 }
 
 
@@ -123,22 +123,22 @@ static void testCall0ReturnDouble(CuTest* tc) {
 static jlong testCall0OneArgOfEach_target(void* p, jint i, jlong l, jfloat f, jdouble d) {
     if (p != testCall0OneArgOfEach_target) return 0;
     if (i != -100) return 0;
-    if (l != 0xfedcba9876543210) return 0;
+    if (l != 0xfedcba9876543210LL) return 0;
     if (f != 3.14f) return 0;
     if (d != -3.14) return 0;
-    return 0x0123456789abcdef;
+    return 0x0123456789abcdefLL;
 }
 static void testCall0OneArgOfEach(CuTest* tc) {
     CallInfo* ci = call0AllocateCallInfo(NULL, testCall0OneArgOfEach_target, 1, 1, 1, 1, 1);
     CuAssertPtrNotNull(tc, ci);
     call0AddPtr(ci, testCall0OneArgOfEach_target);
     call0AddInt(ci, -100);
-    call0AddLong(ci, 0xfedcba9876543210);
+    call0AddLong(ci, 0xfedcba9876543210LL);
     call0AddFloat(ci, 3.14f);
     call0AddDouble(ci, -3.14);
     jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _call0;
     jlong result = f(ci);
-    CuAssertTrue(tc, result == 0x0123456789abcdef);
+    CuAssertTrue(tc, result == 0x0123456789abcdefLL);
 }
 
 
@@ -154,42 +154,42 @@ static jint testCall0ManyArgsOfEach_target(
 
     if (p1 != testCall0ManyArgsOfEach_target + 0xcab1) return 0;
     if (i1 != -100) return 0;
-    if (l1 != 0xfedcba9876543211) return 0;
+    if (l1 != 0xfedcba9876543211LL) return 0;
     if (f1 != 3.11f) return 0;
     if (d1 != -3.11) return 0;
     if (p2 != testCall0ManyArgsOfEach_target + 0xcab2) return 0;
     if (i2 != -200) return 0;
-    if (l2 != 0xfedcba9876543212) return 0;
+    if (l2 != 0xfedcba9876543212LL) return 0;
     if (f2 != 3.12f) return 0;
     if (d2 != -3.12) return 0;
     if (p3 != testCall0ManyArgsOfEach_target + 0xcab3) return 0;
     if (i3 != -300) return 0;
-    if (l3 != 0xfedcba9876543213) return 0;
+    if (l3 != 0xfedcba9876543213LL) return 0;
     if (f3 != 3.13f) return 0;
     if (d3 != -3.13) return 0;
     if (p4 != testCall0ManyArgsOfEach_target + 0xcab4) return 0;
     if (i4 != -400) return 0;
-    if (l4 != 0xfedcba9876543214) return 0;
+    if (l4 != 0xfedcba9876543214LL) return 0;
     if (f4 != 3.14f) return 0;
     if (d4 != -3.14) return 0;
     if (p5 != testCall0ManyArgsOfEach_target + 0xcab5) return 0;
     if (i5 != -500) return 0;
-    if (l5 != 0xfedcba9876543215) return 0;
+    if (l5 != 0xfedcba9876543215LL) return 0;
     if (f5 != 3.15f) return 0;
     if (d5 != -3.15) return 0;
     if (p6 != testCall0ManyArgsOfEach_target + 0xcab6) return 0;
     if (i6 != -600) return 0;
-    if (l6 != 0xfedcba9876543216) return 0;
+    if (l6 != 0xfedcba9876543216LL) return 0;
     if (f6 != 3.16f) return 0;
     if (d6 != -3.16) return 0;
     if (p7 != testCall0ManyArgsOfEach_target + 0xcab7) return 0;
     if (i7 != -700) return 0;
-    if (l7 != 0xfedcba9876543217) return 0;
+    if (l7 != 0xfedcba9876543217LL) return 0;
     if (f7 != 3.17f) return 0;
     if (d7 != -3.17) return 0;
     if (p8 != testCall0ManyArgsOfEach_target + 0xcab8) return 0;
     if (i8 != -800) return 0;
-    if (l8 != 0xfedcba9876543218) return 0;
+    if (l8 != 0xfedcba9876543218LL) return 0;
     if (f8 != 3.18f) return 0;
     if (d8 != -3.18) return 0;
 
@@ -200,42 +200,42 @@ static void testCall0ManyArgsOfEach(CuTest* tc) {
     CuAssertPtrNotNull(tc, ci);
     call0AddPtr(ci, testCall0ManyArgsOfEach_target + 0xcab1);
     call0AddInt(ci, -100);
-    call0AddLong(ci, 0xfedcba9876543211);
+    call0AddLong(ci, 0xfedcba9876543211LL);
     call0AddFloat(ci, 3.11f);
     call0AddDouble(ci, -3.11);
     call0AddPtr(ci, testCall0ManyArgsOfEach_target + 0xcab2);
     call0AddInt(ci, -200);
-    call0AddLong(ci, 0xfedcba9876543212);
+    call0AddLong(ci, 0xfedcba9876543212LL);
     call0AddFloat(ci, 3.12f);
     call0AddDouble(ci, -3.12);
     call0AddPtr(ci, testCall0ManyArgsOfEach_target + 0xcab3);
     call0AddInt(ci, -300);
-    call0AddLong(ci, 0xfedcba9876543213);
+    call0AddLong(ci, 0xfedcba9876543213LL);
     call0AddFloat(ci, 3.13f);
     call0AddDouble(ci, -3.13);
     call0AddPtr(ci, testCall0ManyArgsOfEach_target + 0xcab4);
     call0AddInt(ci, -400);
-    call0AddLong(ci, 0xfedcba9876543214);
+    call0AddLong(ci, 0xfedcba9876543214LL);
     call0AddFloat(ci, 3.14f);
     call0AddDouble(ci, -3.14);
     call0AddPtr(ci, testCall0ManyArgsOfEach_target + 0xcab5);
     call0AddInt(ci, -500);
-    call0AddLong(ci, 0xfedcba9876543215);
+    call0AddLong(ci, 0xfedcba9876543215LL);
     call0AddFloat(ci, 3.15f);
     call0AddDouble(ci, -3.15);
     call0AddPtr(ci, testCall0ManyArgsOfEach_target + 0xcab6);
     call0AddInt(ci, -600);
-    call0AddLong(ci, 0xfedcba9876543216);
+    call0AddLong(ci, 0xfedcba9876543216LL);
     call0AddFloat(ci, 3.16f);
     call0AddDouble(ci, -3.16);
     call0AddPtr(ci, testCall0ManyArgsOfEach_target + 0xcab7);
     call0AddInt(ci, -700);
-    call0AddLong(ci, 0xfedcba9876543217);
+    call0AddLong(ci, 0xfedcba9876543217LL);
     call0AddFloat(ci, 3.17f);
     call0AddDouble(ci, -3.17);
     call0AddPtr(ci, testCall0ManyArgsOfEach_target + 0xcab8);
     call0AddInt(ci, -800);
-    call0AddLong(ci, 0xfedcba9876543218);
+    call0AddLong(ci, 0xfedcba9876543218LL);
     call0AddFloat(ci, 3.18f);
     call0AddDouble(ci, -3.18);
 

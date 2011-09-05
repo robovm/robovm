@@ -1,14 +1,18 @@
 project(core)
 
+if(DARWIN)
+  set(ASFLAGS -arch ${ARCH})
+endif()
+
 enable_language(ASM)
 add_custom_command(
   OUTPUT call0-${OS}-${ARCH}.s.o 
-  COMMAND as -g -o call0-${OS}-${ARCH}.s.o ${core_SOURCE_DIR}/call0-${OS}-${ARCH}.s 
+  COMMAND as ${ASFLAGS} -g -o call0-${OS}-${ARCH}.s.o ${core_SOURCE_DIR}/call0-${OS}-${ARCH}.s 
   MAIN_DEPENDENCY call0-${OS}-${ARCH}.s 
 )
 add_custom_command(
   OUTPUT proxy0-${OS}-${ARCH}.s.o 
-  COMMAND as -g -o proxy0-${OS}-${ARCH}.s.o ${core_SOURCE_DIR}/proxy0-${OS}-${ARCH}.s 
+  COMMAND as ${ASFLAGS} -g -o proxy0-${OS}-${ARCH}.s.o ${core_SOURCE_DIR}/proxy0-${OS}-${ARCH}.s 
   MAIN_DEPENDENCY proxy0-${OS}-${ARCH}.s 
 )
 

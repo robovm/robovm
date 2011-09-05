@@ -30,10 +30,13 @@ if(NOT ARCH MATCHES "^(i386|x86_64)$")
   message(FATAL_ERROR "Unsupported ARCH: ${ARCH}")
 endif()
 
+if(DARWIN)
+  set(EXTERNAL_PROJECT_CFLAGS "-arch ${ARCH}")
+endif()
 # TODO: Use CMake to build GC? There is a CMakeLists.txt but I cannot get the install to work.
 ExternalProject_Add(extgc 
   URL "http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.2alpha6.tar.gz"
-  CONFIGURE_COMMAND ../extgc/configure --prefix=${CMAKE_BINARY_DIR}/gc
+  CONFIGURE_COMMAND bash -c "CFLAGS='${EXTERNAL_PROJECT_CFLAGS}' ../extgc/configure --prefix=${CMAKE_BINARY_DIR}/gc"
 )
 if(DARWIN)
   ExternalProject_Add_Step(
@@ -83,9 +86,15 @@ endif()
 if (ARCH STREQUAL "x86_64")
   add_definitions(-DHYX86_64)
   add_definitions(-DNVM_X86_64)
+  if(DARWIN)
+    add_definitions(-arch x86_64)
+  endif()
 elseif (ARCH STREQUAL "i386")
   add_definitions(-DHYX86)
   add_definitions(-DNVM_I386)
+  if(DARWIN)
+    add_definitions(-arch i386)
+  endif()
 endif()
 
 set(INSTALL_DIR $ENV{HOME}/.nullvm/lib/${OS}/${ARCH})

@@ -126,22 +126,25 @@ public class Main {
                          + "                        archives to search for class files.");
         System.err.println("  -d <dir>              Place the generated executable and other files in <dir>.");
         System.err.println("  -gcc-bin <path>       Path to the gcc binary");
-        System.err.println("  -gcc-opt <opt>        Option to pass to gcc");
+        System.err.println("  -gcc-opt <opt>        Extra option to pass to gcc");
+        System.err.println("  -ar-bin <path>        Path to the ar binary");
         System.err.println("  -home <dir>           Directory where NullVM runtime has been installed and \n" 
                          + "                        where compiled class files will be cached. Default is \n" 
                          + "                        ~/.nullvm");
         System.err.println("  -jar <path>           Use main class as specified by the manifest in this JAR \n" 
                          + "                        archive.");
-        System.err.println("  -llc-opt <opt         Option to pass to llc");
+        System.err.println("  -llc-opt <opt         Extra option to pass to llc");
         System.err.println("  -llvm-bin-dir <path>  Path where the LLVM binaries can be found");
         System.err.println("  -o <name>             The name of the target executable or library");
-        System.err.println("  -opt-opt <opt>        Option to pass to opt");
+        System.err.println("  -opt-opt <opt>        Extra option to pass to opt");
         System.err.println("  -os <name>            The name of the OS to build for. Allowed values are \n" 
-                         + "                        'linux' and 'macosx'. Default is autodetected using llc.");
-        System.err.println("  -arch <name>          The name of the LLVM arch to compile for. Default is \n" 
-                         + "                        autodetected using llc.");
+                         + "                        'auto', 'linux' and 'darwin'. Default is 'auto' which\n" 
+                         + "                        means autodetect.");
+        System.err.println("  -arch <name>          The name of the LLVM arch to compile for. Allowed values\n" 
+                         + "                        are 'auto', 'i386' and 'x86_64' Default is 'auto' which \n" 
+                         + "                        means autodetect.");
         System.err.println("  -cpu <name>           The name of the LLVM cpu to compile for. The LLVM default\n" 
-                         + "                        is used by default.");
+                         + "                        is used by default. Use llc to determine allowed values.");
         System.err.println("  -debug                Generates debug information");
         System.err.println("  -nort                 Do not add default nullvm-rt.jar to bootclasspath");
         System.err.println("  -verbose              Output messages about what the compiler is doing");
@@ -280,6 +283,10 @@ public class Main {
         List<String> opts = new ArrayList<String>(gccOpts);
         if (debug) {
             opts.add("-g");
+        }
+        if (os == OS.darwin) {
+            opts.add("-arch");            
+            opts.add(arch.toString());            
         }
         opts.addAll(Arrays.asList(options));
 
@@ -569,7 +576,6 @@ public class Main {
             libArgs.add("-l:libgc.so.1");
             gccArgs.add("-Xlinker");
             gccArgs.add("-rpath=$ORIGIN");
-            gccArgs.add("-rpath=$ORIGIN");
         }
         if (os == OS.darwin) {
             libArgs.add("-lgc");
@@ -581,6 +587,9 @@ public class Main {
             // Needed on Mac OS X >= 10.6 to prevent linker from compacting unwind info which breaks _Unwind_FindEnclosingFunction
             gccArgs.add("-Xlinker");
             gccArgs.add("-no_compact_unwind");
+            
+            gccArgs.add("-arch");            
+            gccArgs.add(arch.toString());            
         }
         
         exec(gccPath, "-o", outFile, "-g", gccOpts, gccArgs, configS, libFiles, libArgs);
@@ -765,9 +774,15 @@ public class Main {
                 } else if ("-opt-opt".equals(args[i])) {
                     optOpts.add(args[++i]);
                 } else if ("-os".equals(args[i])) {
-                    os = OS.valueOf(args[++i]);
+                    String s = args[++i];
+                    if (!"auto".equals(s)) {
+                        os = OS.valueOf(s);
+                    }
                 } else if ("-arch".equals(args[i])) {
-                    arch = Arch.valueOf(args[++i]);
+                    String s = args[++i];
+                    if (!"auto".equals(s)) {
+                        arch = Arch.valueOf(s);
+                    }
                 } else if ("-cpu".equals(args[i])) {
                     cpu = args[++i];
                 } else if (args[i].startsWith("-D")) {

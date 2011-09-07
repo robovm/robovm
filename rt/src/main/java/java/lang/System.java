@@ -28,9 +28,13 @@ import java.io.PrintStream;
 import java.nio.channels.Channel;
 import java.nio.channels.spi.SelectorProvider;
 import java.security.Policy;
+import java.util.AbstractMap;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.PropertyPermission;
+import java.util.Set;
 
 /**
  * Provides access to system-related information and resources including
@@ -595,9 +599,18 @@ public final class System {
         if (secMgr != null) {
             secMgr.checkPermission(new RuntimePermission("getenv." + name));
         }
-        throw new Error();
+        return getEnvByName(name);
     }
 
+    // Start (C) Android
+    /*
+     * Returns an environment variable. No security checks are performed.
+     * @param var the name of the environment variable
+     * @return the value of the specified environment variable
+     */
+    private static native String getEnvByName(String name);
+    // End (C) Android
+    
     /**
      * Returns an unmodifiable map of all available environment variables.
      *
@@ -612,9 +625,37 @@ public final class System {
         if (secMgr != null) {
             secMgr.checkPermission(new RuntimePermission("getenv.*"));
         }
-        throw new Error();
+        
+        // Start (C) Android
+        Map<String, String> map = new HashMap<String, String>();
+
+        int index = 0;
+        String entry = getEnvByIndex(index++);
+        while (entry != null) {
+            int pos = entry.indexOf('=');
+            if (pos != -1) {
+                map.put(entry.substring(0, pos), entry.substring(pos + 1));
+            }
+
+            entry = getEnvByIndex(index++);
+        }
+
+        return new SystemEnvironment(map);
+        // End (C) Android
     }
 
+    // Start (C) Android
+    /*
+     * Returns an environment variable. No security checks are performed. The
+     * safe way of traversing the environment is to start at index zero and
+     * count upwards until a null pointer is encountered. This marks the end of
+     * the Unix environment.
+     * @param index the index of the environment variable
+     * @return the value of the specified environment variable
+     */
+    private static native String getEnvByIndex(int index);
+    // End (C) Android
+    
     /**
      * Returns the inherited channel from the creator of the current virtual
      * machine.
@@ -863,7 +904,6 @@ public final class System {
      *            the flag determines if finalization on exit is enabled.
      * @deprecated this method is unsafe.
      */
-    @SuppressWarnings("deprecation")
     @Deprecated
     public static void runFinalizersOnExit(boolean flag) {
         Runtime.runFinalizersOnExit(flag);
@@ -940,4 +980,40 @@ public final class System {
      */
     private static native void setFieldImpl(String fieldName, Object stream);
 
+    // Start (C) Android
+    /**
+     * The unmodifiable environment variables map. The System.getenv() specifies
+     * that this map must throw when queried with non-String keys values.
+     */
+    static class SystemEnvironment extends AbstractMap<String, String> {
+        private final Map<String, String> map;
+
+        public SystemEnvironment(Map<String, String> map) {
+            this.map = Collections.unmodifiableMap(map);
+        }
+
+        @Override public Set<Entry<String, String>> entrySet() {
+            return map.entrySet();
+        }
+
+        @Override public String get(Object key) {
+            return map.get(toNonNullString(key));
+        }
+
+        @Override public boolean containsKey(Object key) {
+            return map.containsKey(toNonNullString(key));
+        }
+
+        @Override public boolean containsValue(Object value) {
+            return map.containsValue(toNonNullString(value));
+        }
+
+        private String toNonNullString(Object o) {
+            if (o == null) {
+                throw new NullPointerException();
+            }
+            return (String) o;
+        }
+    }
+    // End (C) Android
 }

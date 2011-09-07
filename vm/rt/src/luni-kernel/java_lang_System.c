@@ -145,3 +145,18 @@ Object* Java_java_lang_System_mapLibraryName(Env* env, Class* c, Object* userLib
     return nvmNewStringUTF(env, result, -1);
 }
 
+Object* Java_java_lang_System_getEnvByName(Env* env, Class* c, Object* name) {
+    char* cName = nvmGetStringUTFChars(env, name);
+    if (!cName) return NULL;
+    char* value = getenv(cName);
+    if (!value) return NULL;
+    return nvmNewStringUTF(env, value, -1);
+}
+
+extern char** environ;
+Object* Java_java_lang_System_getEnvByIndex(Env* env, Class* c, jint index) {
+    char* value = environ[index];
+    if (!value) return NULL;
+    return nvmNewStringUTF(env, value, -1);
+}
+

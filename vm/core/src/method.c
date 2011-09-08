@@ -10,36 +10,46 @@ DynamicLib* mainNativeLibs = NULL;
 
 static jvalue emptyJValueArgs[1];
 
-static Method* getMethod(Env* env, Class* clazz, char* name, char* desc) {
+static Method* findMethod(Env* env, Class* clazz, char* name, char* desc) {
     Method* method;
     for (method = clazz->methods->first; method != NULL; method = method->next) {
         if (!strcmp(method->name, name) && !strcmp(method->desc, desc)) {
             return method;
         }
     }
+    return NULL;
+}
+
+static Method* getMethod(Env* env, Class* clazz, char* name, char* desc) {
+    if (!strcmp("<init>", name) || !strcmp("<clinit>", name)) {
+        // Constructors and static initializers are not inherited so we shouldn't check with the superclasses.
+        return findMethod(env, clazz, name, desc);
+    }
+
+    Class* c = clazz;
+    for (c = clazz; c != NULL; c = c->superclass) {
+        Method* method = findMethod(env, c, name, desc);
+        if (method) return method;
+    }
+
+    /*
+     * Check with interfaces.
+     * TODO: Should we really do this? Does the JNI GetMethodID() function do this?
+     */
+    for (c = clazz; c != NULL; c = c->superclass) {
+        Interface* interface;
+        for (interface = c->interfaces; interface; interface = interface->next) {
+            Method* method = getMethod(env, interface->interface, name, desc);
+            if (method) return method;
+        }
+    }
 
     if (CLASS_IS_INTERFACE(clazz)) {
         /*
-         * Class is an interface so check with the inherited interfaces.
-         */
-        Interface* interface;
-        for (interface = clazz->interfaces; interface; interface = interface->next) {
-            method = getMethod(env, interface->interface, name, desc);
-            if (method) return method;
-        }
-
-        /*
-         * Finally check with java.lang.Object.
+         * Class is an interface so check with java.lang.Object.
+         * TODO: Should we really do this? Does the JNI GetMethodID() function do this?
          */
         return getMethod(env, java_lang_Object, name, desc);
-    } else {
-        if (clazz->superclass && strcmp("<init>", name) && strcmp("<clinit>", name)) {
-            /* 
-             * Check with the superclass. Note that constructors and static 
-             * initializers are not inherited.
-             */
-            return getMethod(env, clazz->superclass, name, desc);
-        }
     }
 
     return NULL;

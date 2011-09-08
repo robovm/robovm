@@ -8,8 +8,8 @@ static Method* java_lang_reflect_Constructor_init = NULL;
 static Class* java_lang_reflect_Field = NULL;
 static Method* java_lang_reflect_Field_init = NULL;
 static InstanceField* java_lang_reflect_Field_field = NULL;
-static Class* java_lang_InvocationTargetException = NULL;
-static Method* java_lang_InvocationTargetException_init = NULL;
+static Class* java_lang_reflect_InvocationTargetException = NULL;
+static Method* java_lang_reflect_InvocationTargetException_init = NULL;
 
 Object* createMethodObject(Env* env, Method* method) {
     if (!java_lang_reflect_Method) {
@@ -67,17 +67,17 @@ Field* getFieldFromFieldObject(Env* env, Object* fieldObject) {
 
 void throwInvocationTargetException(Env* env, Object* throwable) {
     nvmExceptionClear(env);
-    if (!java_lang_InvocationTargetException) {
-        java_lang_InvocationTargetException = nvmFindClassUsingLoader(env, "java/lang/InvocationTargetException", NULL);
-        if (!java_lang_InvocationTargetException) return;
+    if (!java_lang_reflect_InvocationTargetException) {
+        java_lang_reflect_InvocationTargetException = nvmFindClassUsingLoader(env, "java/lang/reflect/InvocationTargetException", NULL);
+        if (!java_lang_reflect_InvocationTargetException) return;
     }
-    if (!java_lang_InvocationTargetException_init) {
-        java_lang_InvocationTargetException_init = nvmGetMethod(env, java_lang_InvocationTargetException, "<init>", "(Ljava/lang/Throwable;)V");
-        if (!java_lang_InvocationTargetException_init) return;
+    if (!java_lang_reflect_InvocationTargetException_init) {
+        java_lang_reflect_InvocationTargetException_init = nvmGetMethod(env, java_lang_reflect_InvocationTargetException, "<init>", "(Ljava/lang/Throwable;)V");
+        if (!java_lang_reflect_InvocationTargetException_init) return;
     }
     jvalue initArgs[1];
     initArgs[0].l = (jobject) throwable;
-    Object* exception = nvmNewObjectA(env, java_lang_InvocationTargetException, java_lang_InvocationTargetException_init, initArgs);
+    Object* exception = nvmNewObjectA(env, java_lang_reflect_InvocationTargetException, java_lang_reflect_InvocationTargetException_init, initArgs);
     if (!exception) return;
     nvmThrow(env, exception);
 }

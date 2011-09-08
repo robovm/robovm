@@ -8,11 +8,18 @@
 #include <sys/utsname.h>
 #include <string.h>
 
+#ifdef DARWIN
+    #include <crt_externs.h>
+    #define environ (*_NSGetEnviron())
+#else
+    extern char** environ;
+#endif
+
 #define DSO_PREFIX "lib"
 #define DSO_EXT ".so"
-#ifdef MACOSX
-  #undef DSO_EXT
-  #define DSO_EXT ".dylib"
+#ifdef DARWIN
+    #undef DSO_EXT
+    #define DSO_EXT ".dylib"
 #endif
 
 
@@ -153,7 +160,6 @@ Object* Java_java_lang_System_getEnvByName(Env* env, Class* c, Object* name) {
     return nvmNewStringUTF(env, value, -1);
 }
 
-extern char** environ;
 Object* Java_java_lang_System_getEnvByIndex(Env* env, Class* c, jint index) {
     char* value = environ[index];
     if (!value) return NULL;

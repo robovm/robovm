@@ -50,5 +50,30 @@ public final class VM {
      * 
      * @return the {@link ClassLoader}.
      */
-    public native static final ClassLoader getBootClassLoader();    
+    public native static final ClassLoader getBootClassLoader();
+    
+    public native static final long getObjectAddress(Object object);
+    
+    public native static final int getInstanceFieldOffset(long field);
+    
+    public native static final long getClassFieldAddress(long field);
+    
+    public native static final Object getObject(long address);
+    public native static final double getDouble(long address);
+    public native static final float getFloat(long address);
+    public native static final long getLong(long address);
+    public native static final int getInt(long address);
+    public native static final char getChar(long address);
+    public native static final short getShort(long address);
+    public native static final byte getByte(long address);
+    public native static final boolean getBoolean(long address);
+    public native static final void setObject(long address, Object value);
+    public native static final void setDouble(long address, double value);
+    public native static final void setFloat(long address, float value);
+    public native static final void setLong(long address, long value);
+    public native static final void setInt(long address, int value);
+    public native static final void setChar(long address, char value);
+    public native static final void setShort(long address, short value);
+    public native static final void setByte(long address, byte value);
+    public native static final void setBoolean(long address, boolean value);
 }

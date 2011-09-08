@@ -21,6 +21,7 @@ import java.lang.annotation.Annotation;
 
 import org.apache.harmony.luni.lang.reflect.GenericSignatureParser;
 import org.apache.harmony.luni.lang.reflect.Types;
+import org.nullvm.rt.VM;
 
 /**
  * This class represents a field. Information about the field can be accessed,
@@ -162,6 +163,176 @@ public final class Field extends AccessibleObject implements Member {
         return object instanceof Field && toString().equals(object.toString());
     }
 
+    private void checkAccess(boolean setter) throws IllegalAccessException {
+        if (!flag) {
+            int mod = getModifiers();
+            if (setter && (mod & Modifier.FINAL) > 0) {
+                throw new IllegalAccessException("Cannot set final field");
+            }
+            // TODO: Check that the caller class may access the field
+            //Class<?> caller = VM.getStackClasses(1, 1)[0];
+        }
+    }
+    
+    private void checkReceiver(Object object) {
+        int mod = getModifiers();
+        if ((mod & Modifier.STATIC) == 0) { 
+            if (object == null) {
+                throw new NullPointerException();
+            }
+            if (!getDeclaringClass().isInstance(object)) {
+                throw new IllegalArgumentException("Receiver is not compatible " 
+                        + "with declaring class");
+            }
+        }
+    }
+
+    private long getAddress(Object object) {
+        int mod = getModifiers();
+        if ((mod & Modifier.STATIC) > 0) {
+            return VM.getClassFieldAddress(field);
+        }
+        return VM.getObjectAddress(object) + VM.getInstanceFieldOffset(field);
+    }
+    
+    private void throwGetConversionException(Class<?> fieldType, Class<?> expectedType) {
+        throw new IllegalArgumentException("Cannot convert " + fieldType + " field " 
+                + getDeclaringClass().getName() + "." + getName() + " to " 
+                + expectedType);
+    }
+    
+    private void throwSetConversionException(Class<?> fieldType, Class<?> valueType) {
+        throw new IllegalArgumentException("Cannot set " + fieldType + " field " 
+                + getDeclaringClass().getName() + "." + getName() + " to " 
+                + valueType);
+    }
+    
+    private double getDouble(long address, Class<?> fieldType, Class<?> expectedType) {
+        if (fieldType == Double.TYPE) {
+            return VM.getDouble(address);
+        }
+        return getFloat(address, fieldType, expectedType); 
+    }
+    
+    private float getFloat(long address, Class<?> fieldType, Class<?> expectedType) {
+        if (fieldType == Float.TYPE) {
+            return VM.getFloat(address);
+        }
+        return getLong(address, fieldType, expectedType); 
+    }
+    
+    private long getLong(long address, Class<?> fieldType, Class<?> expectedType) {
+        if (fieldType == Long.TYPE) {
+            return VM.getLong(address);
+        }
+        return getInt(address, fieldType, expectedType);
+    }
+    
+    private int getInt(long address, Class<?> fieldType, Class<?> expectedType) {
+        if (fieldType == Integer.TYPE) {
+            return VM.getInt(address);
+        }
+        if (fieldType == Character.TYPE) {
+            return VM.getChar(address);
+        }
+        return getShort(address, fieldType, expectedType);
+    }
+    
+    private char getChar(long address, Class<?> fieldType, Class<?> expectedType) {
+        if (fieldType == Character.TYPE) {
+            return VM.getChar(address);
+        }
+        throwGetConversionException(fieldType, expectedType);
+        return 0;
+    }
+
+    private short getShort(long address, Class<?> fieldType, Class<?> expectedType) {
+        if (fieldType == Short.TYPE) {
+            return VM.getShort(address);
+        }
+        return getByte(address, fieldType, expectedType);
+    }
+
+    private byte getByte(long address, Class<?> fieldType, Class<?> expectedType) {
+        if (fieldType == Byte.TYPE) {
+            return VM.getByte(address);
+        }
+        throwGetConversionException(fieldType, expectedType);
+        return 0;
+    }
+    
+    private boolean getBoolean(long address, Class<?> fieldType, Class<?> expectedType) {
+        if (fieldType == Boolean.TYPE) {
+            return VM.getBoolean(address);
+        }
+        throwGetConversionException(fieldType, expectedType);
+        return false;
+    }
+    
+    private void setDouble(long address, double value, Class<?> fieldType, Class<?> valueType) {
+        if (fieldType == Double.TYPE) {
+            VM.setDouble(address, value);
+        } else {
+            throwSetConversionException(fieldType, valueType);
+        }
+    }
+
+    private void setFloat(long address, float value, Class<?> fieldType, Class<?> valueType) {
+        if (fieldType == Float.TYPE) {
+            VM.setFloat(address, value);
+        } else {
+            setDouble(address, value, fieldType, valueType);
+        }
+    }
+
+    private void setLong(long address, long value, Class<?> fieldType, Class<?> valueType) {
+        if (fieldType == Long.TYPE) {
+            VM.setLong(address, value);
+        } else {
+            setFloat(address, value, fieldType, valueType);
+        }
+    }
+    
+    private void setInt(long address, int value, Class<?> fieldType, Class<?> valueType) {
+        if (fieldType == Integer.TYPE) {
+            VM.setInt(address, value);
+        } else {
+            setLong(address, value, fieldType, valueType);
+        }
+    }
+    
+    private void setChar(long address, char value, Class<?> fieldType, Class<?> valueType) {
+        if (fieldType == Character.TYPE) {
+            VM.setChar(address, value);
+        } else {
+            setInt(address, value, fieldType, valueType);
+        }
+    }
+
+    private void setShort(long address, short value, Class<?> fieldType, Class<?> valueType) {
+        if (fieldType == Short.TYPE) {
+            VM.setShort(address, value);
+        } else {
+            setInt(address, value, fieldType, valueType);
+        }
+    }
+    
+    private void setByte(long address, byte value, Class<?> fieldType, Class<?> valueType) {
+        if (fieldType == Byte.TYPE) {
+            VM.setByte(address, value);
+        } else {
+            setShort(address, value, fieldType, valueType);
+        }
+    }
+    
+    private void setBoolean(long address, boolean value, Class<?> fieldType, Class<?> valueType) {
+        if (fieldType == Boolean.TYPE) {
+            VM.setBoolean(address, value);
+        } else {
+            throwSetConversionException(fieldType, valueType);
+        }
+    }
+    
     /**
      * Returns the value of the field in the specified object. This reproduces
      * the effect of {@code object.fieldName}
@@ -188,8 +359,41 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native Object get(Object object) throws IllegalAccessException,
-            IllegalArgumentException;
+    public Object get(Object object) throws IllegalAccessException,
+            IllegalArgumentException {
+
+        checkAccess(false);
+        checkReceiver(object);
+        Class<?> type = getType();
+        long address = getAddress(object);
+        if (type.isPrimitive()) {
+            if (type == Boolean.TYPE) {
+                return Boolean.valueOf(VM.getBoolean(address));
+            }
+            if (type == Byte.TYPE) {
+                return Byte.valueOf(VM.getByte(address));
+            }
+            if (type == Short.TYPE) {
+                return Short.valueOf(VM.getShort(address));
+            }
+            if (type == Character.TYPE) {
+                return Character.valueOf(VM.getChar(address));
+            }
+            if (type == Integer.TYPE) {
+                return Integer.valueOf(VM.getInt(address));
+            }
+            if (type == Long.TYPE) {
+                return Long.valueOf(VM.getLong(address));
+            }
+            if (type == Float.TYPE) {
+                return Float.valueOf(VM.getFloat(address));
+            }
+            if (type == Double.TYPE) {
+                return Double.valueOf(VM.getDouble(address));
+            }
+        }
+        return VM.getObject(address);
+    }
 
     /**
      * Returns the value of the field in the specified object as a {@code
@@ -214,8 +418,13 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native boolean getBoolean(Object object)
-            throws IllegalAccessException, IllegalArgumentException;
+    public boolean getBoolean(Object object)
+            throws IllegalAccessException, IllegalArgumentException {
+        
+        checkAccess(false);
+        checkReceiver(object);
+        return getBoolean(getAddress(object), getType(), Boolean.TYPE);
+    }
 
     /**
      * Returns the value of the field in the specified object as a {@code byte}.
@@ -240,8 +449,13 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native byte getByte(Object object) throws IllegalAccessException,
-            IllegalArgumentException;
+    public byte getByte(Object object) throws IllegalAccessException,
+            IllegalArgumentException {
+                
+        checkAccess(false);
+        checkReceiver(object);
+        return getByte(getAddress(object), getType(), Byte.TYPE);
+    }
 
     /**
      * Returns the value of the field in the specified object as a {@code char}.
@@ -266,8 +480,13 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native char getChar(Object object) throws IllegalAccessException,
-            IllegalArgumentException;
+    public char getChar(Object object) throws IllegalAccessException,
+            IllegalArgumentException {
+                
+        checkAccess(false);
+        checkReceiver(object);
+        return getChar(getAddress(object), getType(), Character.TYPE);
+    }
 
     /**
      * Returns the class that declares this field.
@@ -305,8 +524,13 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native double getDouble(Object object)
-            throws IllegalAccessException, IllegalArgumentException;
+    public double getDouble(Object object)
+            throws IllegalAccessException, IllegalArgumentException {
+                
+        checkAccess(false);
+        checkReceiver(object);
+        return getDouble(getAddress(object), getType(), Double.TYPE);
+    }
 
     /**
      * Returns the value of the field in the specified object as a {@code float}.
@@ -331,8 +555,13 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native float getFloat(Object object) throws IllegalAccessException,
-            IllegalArgumentException;
+    public float getFloat(Object object) throws IllegalAccessException,
+            IllegalArgumentException {
+                
+        checkAccess(false);
+        checkReceiver(object);
+        return getFloat(getAddress(object), getType(), Float.TYPE);
+    }
 
     /**
      * Returns the value of the field in the specified object as an {@code int}.
@@ -357,8 +586,13 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native int getInt(Object object) throws IllegalAccessException,
-            IllegalArgumentException;
+    public int getInt(Object object) throws IllegalAccessException,
+            IllegalArgumentException {
+                
+        checkAccess(false);
+        checkReceiver(object);
+        return getInt(getAddress(object), getType(), Integer.TYPE);
+    }
 
     /**
      * Returns the value of the field in the specified object as a {@code long}.
@@ -383,8 +617,13 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native long getLong(Object object) throws IllegalAccessException,
-            IllegalArgumentException;
+    public long getLong(Object object) throws IllegalAccessException,
+            IllegalArgumentException {
+                
+        checkAccess(false);
+        checkReceiver(object);
+        return getLong(getAddress(object), getType(), Long.TYPE);
+    }
 
     /**
      * Returns the modifiers for this field. The {@link Modifier} class should
@@ -437,8 +676,13 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native short getShort(Object object) throws IllegalAccessException,
-            IllegalArgumentException;
+    public short getShort(Object object) throws IllegalAccessException,
+            IllegalArgumentException {
+                
+        checkAccess(false);
+        checkReceiver(object);
+        return getShort(getAddress(object), getType(), Short.TYPE);
+    }
 
     /**
      * Return the {@link Class} associated with the type of this field.
@@ -498,8 +742,40 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native void set(Object object, Object value)
-            throws IllegalAccessException, IllegalArgumentException;
+    public void set(Object object, Object value)
+            throws IllegalAccessException, IllegalArgumentException {
+
+        checkAccess(true);
+        checkReceiver(object);
+        Class<?> type = getType();
+        long address = getAddress(object);
+        if (type.isPrimitive()) {
+            if (value == null) {
+                throwSetConversionException(type, null);
+            }
+            if (value instanceof Boolean) {
+                setBoolean(address, ((Boolean) value).booleanValue(), type, Boolean.TYPE);
+            } else if (value instanceof Byte) {
+                setByte(address, ((Byte) value).byteValue(), type, Byte.TYPE);
+            } else if (value instanceof Short) {
+                setShort(address, ((Short) value).shortValue(), type, Short.TYPE);
+            } else if (value instanceof Character) {
+                setChar(address, ((Character) value).charValue(), type, Character.TYPE);
+            } else if (value instanceof Integer) {
+                setInt(address, ((Integer) value).intValue(), type, Integer.TYPE);
+            } else if (value instanceof Long) {
+                setLong(address, ((Long) value).longValue(), type, Long.TYPE);
+            } else if (value instanceof Float) {
+                setFloat(address, ((Float) value).floatValue(), type, Float.TYPE);
+            } else if (value instanceof Double) {
+                setDouble(address, ((Double) value).doubleValue(), type, Double.TYPE);
+            } else {
+                throwSetConversionException(type, value.getClass());
+            }
+        } else {
+            VM.setObject(address, value);
+        }
+    }
 
     /**
      * Sets the value of the field in the specified object to the {@code
@@ -529,8 +805,13 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native void setBoolean(Object object, boolean value)
-            throws IllegalAccessException, IllegalArgumentException;
+    public void setBoolean(Object object, boolean value)
+            throws IllegalAccessException, IllegalArgumentException {
+                
+        checkAccess(true);
+        checkReceiver(object);
+        setBoolean(getAddress(object), value, getType(), Boolean.TYPE);
+    }
 
     /**
      * Sets the value of the field in the specified object to the {@code byte}
@@ -559,8 +840,13 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native void setByte(Object object, byte value)
-            throws IllegalAccessException, IllegalArgumentException;
+    public void setByte(Object object, byte value)
+            throws IllegalAccessException, IllegalArgumentException {
+        
+        checkAccess(true);
+        checkReceiver(object);
+        setByte(getAddress(object), value, getType(), Byte.TYPE);
+    }
 
     /**
      * Sets the value of the field in the specified object to the {@code char}
@@ -589,8 +875,13 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native void setChar(Object object, char value)
-            throws IllegalAccessException, IllegalArgumentException;
+    public void setChar(Object object, char value)
+            throws IllegalAccessException, IllegalArgumentException {
+        
+        checkAccess(true);
+        checkReceiver(object);
+        setChar(getAddress(object), value, getType(), Character.TYPE);
+    }
 
     /**
      * Sets the value of the field in the specified object to the {@code double}
@@ -619,8 +910,13 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native void setDouble(Object object, double value)
-            throws IllegalAccessException, IllegalArgumentException;
+    public void setDouble(Object object, double value)
+            throws IllegalAccessException, IllegalArgumentException {
+        
+        checkAccess(true);
+        checkReceiver(object);
+        setDouble(getAddress(object), value, getType(), Double.TYPE);
+    }
 
     /**
      * Sets the value of the field in the specified object to the {@code float}
@@ -649,8 +945,13 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native void setFloat(Object object, float value)
-            throws IllegalAccessException, IllegalArgumentException;
+    public void setFloat(Object object, float value)
+            throws IllegalAccessException, IllegalArgumentException {
+        
+        checkAccess(true);
+        checkReceiver(object);
+        setFloat(getAddress(object), value, getType(), Float.TYPE);
+    }
 
     /**
      * Set the value of the field in the specified object to the {@code int}
@@ -679,8 +980,13 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native void setInt(Object object, int value)
-            throws IllegalAccessException, IllegalArgumentException;
+    public void setInt(Object object, int value)
+            throws IllegalAccessException, IllegalArgumentException {
+                
+        checkAccess(true);
+        checkReceiver(object);
+        setInt(getAddress(object), value, getType(), Integer.TYPE);
+    }
 
     /**
      * Sets the value of the field in the specified object to the {@code long}
@@ -709,8 +1015,13 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native void setLong(Object object, long value)
-            throws IllegalAccessException, IllegalArgumentException;
+    public void setLong(Object object, long value)
+            throws IllegalAccessException, IllegalArgumentException {
+                
+        checkAccess(true);
+        checkReceiver(object);
+        setLong(getAddress(object), value, getType(), Long.TYPE);
+    }
 
     /**
      * Sets the value of the field in the specified object to the {@code short}
@@ -739,8 +1050,13 @@ public final class Field extends AccessibleObject implements Member {
      * @throws IllegalAccessException
      *             if this field is not accessible
      */
-    public native void setShort(Object object, short value)
-            throws IllegalAccessException, IllegalArgumentException;
+    public void setShort(Object object, short value)
+            throws IllegalAccessException, IllegalArgumentException {
+        
+        checkAccess(true);
+        checkReceiver(object);
+        setShort(getAddress(object), value, getType(), Short.TYPE);
+    }
 
     /**
      * Returns a string containing a concise, human-readable description of this

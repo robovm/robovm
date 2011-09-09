@@ -7,6 +7,12 @@
 #include "hyport.h"
 #include "utlist.h"
 
+#define RT_DSO "libnullvm-rt.so"
+#ifdef DARWIN
+  #undef RT_DSO
+  #define RT_DSO "libnullvm-rt.dylib"
+#endif
+
 HyPortLibraryVersion portLibraryVersion;
 HyPortLibrary portLibrary;
 
@@ -137,6 +143,7 @@ VM* nvmCreateVM(Options* options) {
     VM* vm = GC_MALLOC(sizeof(VM));
     if (!vm) return NULL;
     vm->options = options;
+    nvmInitJavaVM(vm);
     return vm;
 }
 
@@ -173,11 +180,26 @@ Env* nvmStartup(Options* options) {
     // Call init on modules
     if (!nvmInitLog(env)) return NULL;
     if (!nvmInitClasses(env)) return NULL;
+    if (!nvmInitMethods(env)) return NULL;
     if (!nvmInitStrings(env)) return NULL;
     if (!nvmInitVMI(env)) return NULL;
     if (!nvmInitThreads(env)) return NULL;
-    if (!nvmInitPrimitiveWrapperClasses(env)) return NULL;
     if (!nvmInitAttributes(env)) return NULL;
+
+    // Load nullvm-rt
+    // Try first in same dir as the executable
+    char path[PATH_MAX];
+    strcpy(path, options->basePath);
+    strcat(path, "/" RT_DSO);
+    if (!nvmLoadNativeLibrary(env, path, NULL)) {
+        // Try with no path. Maybe (DY)LD_LIBRARY_PATH has been set?
+        if (!nvmLoadNativeLibrary(env, RT_DSO, NULL)) {
+            nvmAbort("Fatal error: Failed to load " RT_DSO);
+        }
+    }
+
+    // This has to be called after nullvm-rt has been loaded
+    if (!nvmInitPrimitiveWrapperClasses(env)) return NULL;
 
     env->currentThread->contextClassLoader = getSystemClassLoader(env);
     if (nvmExceptionOccurred(env)) return NULL;
@@ -243,7 +265,7 @@ void nvmAbort(char* format, ...) {
     abort();
 }
 
-DynamicLib* nvmLoadDynamicLib(Env* env, char* file, DynamicLib** first) {
+DynamicLib* nvmOpenDynamicLib(Env* env, char* file) {
     DynamicLib* dlib = NULL;
 
     void* handle = dlopen(file, RTLD_LOCAL | RTLD_LAZY);
@@ -252,15 +274,7 @@ DynamicLib* nvmLoadDynamicLib(Env* env, char* file, DynamicLib** first) {
         return NULL;
     }
 
-    // Make sure we haven't already loaded this lib
-    LL_FOREACH(*first, dlib) {
-        if (dlib->handle == handle) {
-            dlclose(handle); // Close to decrement ref count
-            return dlib;
-        }
-    }
-
-    TRACE("Loading dynamic library '%s'\n", file);
+    TRACE("Opening dynamic library '%s'\n", file);
 
     dlib = nvmAllocateMemory(env, sizeof(DynamicLib));
     if (!dlib) {
@@ -269,21 +283,41 @@ DynamicLib* nvmLoadDynamicLib(Env* env, char* file, DynamicLib** first) {
     }
 
     dlib->handle = handle;
-    LL_APPEND(*first, dlib);
 
     return dlib;
 }
 
-void* nvmFindDynamicLibSymbol(Env* env, DynamicLib* first, char* symbol) {
+void nvmCloseDynamicLib(Env* env, DynamicLib* lib) {
+    dlclose(lib->handle);
+}
+
+jboolean nvmHasDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs) {
+    DynamicLib* dlib = NULL;
+    LL_FOREACH(libs, dlib) {
+        if (dlib->handle == lib->handle) {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+void nvmAddDynamicLib(Env* env, DynamicLib* lib, DynamicLib** libs) {
+    LL_APPEND(*libs, lib);
+}
+
+void nvmRemoveDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs) {
+    LL_DELETE(libs, lib);
+}
+
+void* nvmFindDynamicLibSymbol(Env* env, DynamicLib* libs, char* symbol, jboolean searchAll) {
     TRACE("Searching for symbol '%s'\n", symbol);
 
-    DynamicLib* dlib = first;
-    while (dlib) {
+    DynamicLib* dlib = NULL;
+    LL_FOREACH(libs, dlib) {
         void* v = dlsym(dlib->handle, symbol);
         if (v) return v;
-        dlib = dlib->next;
+        if (!searchAll) return NULL;
     }
-
     return NULL;
 }
 

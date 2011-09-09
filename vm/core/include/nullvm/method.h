@@ -1,18 +1,19 @@
 #ifndef NULLVM_METHOD_H
 #define NULLVM_METHOD_H
 
-#define METHOD_IS_PUBLIC(m) (IS_PUBLIC(m->access))
-#define METHOD_IS_PRIVATE(m) (IS_PRIVATE(m->access))
-#define METHOD_IS_PROTECTED(m) (IS_PROTECTED(m->access))
-#define METHOD_IS_STATIC(m) (IS_STATIC(m->access))
-#define METHOD_IS_FINAL(m) (IS_FINAL(m->access))
-#define METHOD_IS_SYNCHRONIZED(m) (IS_SYNCHRONIZED(m->access))
-#define METHOD_IS_NATIVE(m) (IS_NATIVE(m->access))
-#define METHOD_IS_ABSTRACT(m) (IS_ABSTRACT(m->access))
-#define METHOD_IS_PACKAGE_PRIVATE(m) (IS_PACKAGE_PRIVATE(m->access))
-#define METHOD_IS_CONSTRUCTOR(m) (!strcmp("<init>", m->name))
-#define METHOD_IS_CLASS_INITIALIZER(m) (!strcmp("<clinit>", m->name))
+#define METHOD_IS_PUBLIC(m) (IS_PUBLIC((m)->access))
+#define METHOD_IS_PRIVATE(m) (IS_PRIVATE((m)->access))
+#define METHOD_IS_PROTECTED(m) (IS_PROTECTED((m)->access))
+#define METHOD_IS_STATIC(m) (IS_STATIC((m)->access))
+#define METHOD_IS_FINAL(m) (IS_FINAL((m)->access))
+#define METHOD_IS_SYNCHRONIZED(m) (IS_SYNCHRONIZED((m)->access))
+#define METHOD_IS_NATIVE(m) (IS_NATIVE((m)->access))
+#define METHOD_IS_ABSTRACT(m) (IS_ABSTRACT((m)->access))
+#define METHOD_IS_PACKAGE_PRIVATE(m) (IS_PACKAGE_PRIVATE((m)->access))
+#define METHOD_IS_CONSTRUCTOR(m) (!strcmp("<init>", (m)->name))
+#define METHOD_IS_CLASS_INITIALIZER(m) (!strcmp("<clinit>", (m)->name))
 
+extern jboolean nvmInitMethods(Env* env);
 extern char* nvmGetReturnType(char* desc);
 extern char* nvmGetNextParameterType(char** desc);
 extern jint nvmGetParameterCount(Method* method);
@@ -21,7 +22,9 @@ extern jboolean nvmHasMethod(Env* env, Class* clazz, char* name, char* desc);
 extern Method* nvmGetClassMethod(Env* env, Class* clazz, char* name, char* desc);
 extern Method* nvmGetClassInitializer(Env* env, Class* clazz);
 extern Method* nvmGetInstanceMethod(Env* env, Class* clazz, char* name, char* desc);
-extern void* nvmResolveNativeMethodImpl(Env* env, Method* method, char* shortMangledName, char* longMangledName, ClassLoader* classLoader, void** ptr);
+extern jboolean nvmRegisterNative(Env* env, NativeMethod* method, void* impl);
+extern jboolean nvmUnregisterNative(Env* env, NativeMethod* method);
+extern void* nvmResolveNativeMethodImpl(Env* env, NativeMethod* method, char* shortMangledName, char* longMangledName, ClassLoader* classLoader, void** ptr);
 extern jboolean nvmLoadNativeLibrary(Env* env, char* path, ClassLoader* classLoader);
 extern Method* nvmFindMethodAtAddress(Env* env, void* address);
 extern Method* nvmGetCallingMethod(Env* env);

@@ -120,6 +120,37 @@ void Java_java_lang_Class_initializeClass0(Env* env, Class* c, Class* clazz) {
     nvmInitialize(env, clazz);
 }
 
+ObjectArray* Java_java_lang_Class_getDeclaredClasses0(Env* env, Class* clazz, jboolean publicOnly) {
+    if (clazz->primitive || CLASS_IS_ARRAY(clazz)) return NULL;
+    ObjectArray* result = nvmAttributeGetDeclaredClasses(env, clazz);
+    if (!result || result->length == 0 || !publicOnly) {
+        return result;
+    }
+
+    jint length = 0;
+    jint i;
+    for (i = 0; i < result->length; i++) {
+        Class* c = (Class*) result->values[i];
+        if (CLASS_IS_PUBLIC(c)) {
+            length++;
+        }
+    }
+
+    if (length == 0) return NULL;
+
+    ObjectArray* publicResult = nvmNewObjectArray(env, length, java_lang_Class, NULL, NULL);
+    if (!publicResult) return NULL;
+    jint index = 0;
+    for (i = 0; i < result->length; i++) {
+        Class* c = (Class*) result->values[i];
+        if (CLASS_IS_PUBLIC(c)) {
+            publicResult->values[index++] = (Object*) c;
+        }
+    }
+
+    return publicResult;
+}
+
 ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(Env* env, Class* clazz, jboolean publicOnly) {
     if (clazz->primitive || CLASS_IS_ARRAY(clazz)) return NULL;
 

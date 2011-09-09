@@ -32,6 +32,7 @@ import org.nullvm.rt.ReflectionAccess;
 class ClassCache<T> {
     static final ReflectionAccess R = loadReflectionAccess();
     
+    private static final Class<?>[] EMPTY_CLASSES = new Class<?>[0];
     private static final Constructor<?>[] EMPTY_CONSTRUCTORS = new Constructor<?>[0];
     private static final Method[] EMPTY_METHODS = new Method[0];
     private static final Field[] EMPTY_FIELDS = new Field[0];    
@@ -39,6 +40,9 @@ class ClassCache<T> {
     private final Class<T> clazz;
     
     private String name;
+    private Class<?>[] declaredClasses;
+    private Class<?>[] declaredPublicClasses;
+    private Class<?>[] allPublicClasses;
     private Field[] declaredFields;
     private Field[] declaredPublicFields;
     private Field[] allPublicFields;
@@ -90,6 +94,33 @@ class ClassCache<T> {
             }
         }
         return name;
+    }
+    
+    Class<?>[] getDeclaredClasses(boolean copy) {
+        if (declaredClasses == null) {
+            declaredClasses = clazz.getDeclaredClasses0(false);
+            if (declaredClasses == null) {
+                declaredClasses = EMPTY_CLASSES;
+            }
+        }
+        return copy ? declaredClasses.clone() : declaredClasses;
+    }
+    
+    Class<?>[] getDeclaredPublicClasses(boolean copy) {
+        if (declaredPublicClasses == null) {
+            declaredPublicClasses = clazz.getDeclaredClasses0(true);
+            if (declaredPublicClasses == null) {
+                declaredPublicClasses = EMPTY_CLASSES;
+            }
+        }
+        return copy ? declaredPublicClasses.clone() : declaredPublicClasses;
+    }
+    
+    Class<?>[] getDeclaredClasses(boolean copy, boolean publicOnly) {
+        if (publicOnly) {
+            return getDeclaredPublicClasses(copy);
+        }
+        return getDeclaredClasses(copy);
     }
     
     Field[] getDeclaredFields(boolean copy) {
@@ -166,6 +197,14 @@ class ClassCache<T> {
         return getDeclaredMethods(copy);
     }
     
+    Class<?>[] getClasses(boolean copy) {
+        if (this.allPublicClasses == null) {
+            List<Class<?>> l = buildClassesList(new ArrayList<Class<?>>(), new HashSet<String>(), true);
+            this.allPublicClasses = l.toArray(new Class<?>[l.size()]);
+        }
+        return copy ? this.allPublicClasses.clone() : this.allPublicClasses;
+    }
+    
     Field[] getFields(boolean copy) {
         if (this.allPublicFields == null) {
             List<Field> l = buildFieldsList(new ArrayList<Field>(), new HashSet<String>(), true);
@@ -212,6 +251,22 @@ class ClassCache<T> {
     Method getMethod(boolean copy, String name, Class<?>... parameterTypes) throws NoSuchMethodException {
         Method m = findMethod(getMethods(false), name, parameterTypes);
         return copy ? R.clone(m) : m;
+    }
+
+    private List<Class<?>> buildClassesList(List<Class<?>> result, Set<String> seen, boolean publicOnly) {
+        for (Class<?> c = clazz; c != null; c = c.getSuperclass()) {
+            for (Class<?> f : c.getClassCache().getDeclaredClasses(false, publicOnly)) {
+                String s = f.toString();
+                if (!seen.contains(s)) {
+                    result.add(f);
+                    seen.add(s);
+                }
+            }
+            for (Class<?> intf : c.getInterfaces()) {
+                intf.getClassCache().buildClassesList(result, seen, publicOnly);
+            }
+        }
+        return result;
     }
     
     private List<Field> buildFieldsList(List<Field> result, Set<String> seen, boolean publicOnly) {

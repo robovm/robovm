@@ -3,14 +3,6 @@
 #include <string.h>
 #include "log.h"
 
-#define RT_DSO "libnullvm-rt.so"
-#ifdef DARWIN
-  #undef RT_DSO
-  #define RT_DSO "libnullvm-rt.dylib"
-#endif
-
-// Defined in method.c
-extern DynamicLib* bootNativeLibs;
 // Defined in init.c
 extern HyPortLibrary portLibrary;
 
@@ -75,47 +67,7 @@ struct VMInterfaceFunctions_ vmiImpl = {
     &_IterateSystemProperties
 };
 
-struct JavaVMProxy {
-    JavaVM javaVM;
-    Env* env;
-};
-
-static jint _GetEnv(JavaVM *_vm, void **env, jint version) {
-    struct JavaVMProxy* vm = (struct JavaVMProxy*) _vm;
-    *env = vm->env;
-    return JNI_OK;
-}
-
 jboolean nvmInitVMI(Env* env) {
-    // Setup a JavaVM struct which satisfies the JNI_OnLoad_* functions
-    struct JNIInvokeInterface_ javaVM;
-    javaVM.GetEnv = _GetEnv;
-    struct JavaVMProxy javaVMProxy = {&javaVM, env};
-
-    // Load nullvm-rt
-    // Try first in same dir as the executable
-    char path[PATH_MAX];
-    strcpy(path, env->vm->options->basePath);
-    strcat(path, "/" RT_DSO);
-    DynamicLib* dlib = nvmLoadDynamicLib(env, path, &bootNativeLibs);
-    if (!dlib) {
-      // Try with no path. Maybe (DY)LD_LIBRARY_PATH has been set?
-      dlib = nvmLoadDynamicLib(env, RT_DSO, &bootNativeLibs);
-      if (!dlib) {
-          nvmAbort("Fatal error: Failed to load " RT_DSO);
-      }
-    }
-
-    jint (*JNI_OnLoad_LUNI)(JavaVM* vm, void* reserved) = nvmFindDynamicLibSymbol(env, dlib, "JNI_OnLoad_LUNI");
-    jint (*JNI_OnLoad_Archive)(JavaVM* vm, void* reserved) = nvmFindDynamicLibSymbol(env, dlib, "JNI_OnLoad_Archive");
-
-    if (!JNI_OnLoad_LUNI || !JNI_OnLoad_Archive) return FALSE;
-
-    if (!JNI_OnLoad_LUNI((JavaVM*) &javaVMProxy, NULL)) return FALSE;
-    if (!JNI_OnLoad_Archive((JavaVM*) &javaVMProxy, NULL)) return FALSE;
-
-    // TODO: Call onUnload when shutting down
-
     return TRUE;
 }
 

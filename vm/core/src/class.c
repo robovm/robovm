@@ -772,7 +772,7 @@ jboolean nvmAddInterface(Env* env, Class* clazz, Class* interf) {
 }
 
 Method* nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup) {
-    Method* method = nvmAllocateMemory(env, sizeof(Method));
+    Method* method = nvmAllocateMemory(env, IS_NATIVE(access) ? sizeof(NativeMethod) : sizeof(Method));
     if (!method) return NULL;
     method->clazz = clazz;
     method->name = name;
@@ -797,7 +797,7 @@ Method* nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access
 }
 
 Field* nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset, void* getter, void* setter) {
-    Field* field = nvmAllocateMemory(env, (access & ACC_STATIC) ? sizeof(ClassField) : sizeof(InstanceField));
+    Field* field = nvmAllocateMemory(env, IS_STATIC(access) ? sizeof(ClassField) : sizeof(InstanceField));
     if (!field) return NULL;
     field->clazz = clazz;
     field->name = name;

@@ -8,8 +8,13 @@ extern Env* nvmCreateEnv(VM* vm);
 extern jboolean nvmRun(Env* env);
 extern void nvmShutdown(Env* env, jint code);
 extern void nvmAbort(char* format, ...);
-extern DynamicLib* nvmLoadDynamicLib(Env* env, char* file, DynamicLib** first);
-extern void* nvmFindDynamicLibSymbol(Env* env, DynamicLib* first, char* symbol);
+
+extern DynamicLib* nvmOpenDynamicLib(Env* env, char* file);
+extern void nvmCloseDynamicLib(Env* env, DynamicLib* lib);
+extern jboolean nvmHasDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs);
+extern void nvmAddDynamicLib(Env* env, DynamicLib* lib, DynamicLib** libs);
+extern void nvmRemoveDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs);
+extern void* nvmFindDynamicLibSymbol(Env* env, DynamicLib* first, char* symbol, jboolean searchAll);
 
 #endif
 

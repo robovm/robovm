@@ -2,23 +2,35 @@
 #include <hythread.h>
 
 static hythread_monitor_t monitorsLock;
+static hythread_tls_key_t tlsEnvKey;
 
-static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group) {
+static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboolean daemon) {
     Env* env = *envPtr; // env is NULL if nvmAttachCurrentThread() was called. If non NULL nvmInitThreads() was called.
-    hythread_t hyThread = hythread_self();
-    if (!env && hyThread != NULL) return JNI_OK;
-
+    hythread_t hyThread = NULL;
+    // Try to attach. If already attached this will simply set hyThread.
+    if (hythread_attach(&hyThread) < 0) goto error;
+    if (!env) {
+        // If the thread was already attached there's an Env* associated with the thread.
+        env = (Env*) hythread_tls_get(hyThread, tlsEnvKey);
+        if (env) {
+            *envPtr = env;
+            return JNI_OK;
+        }
+    }
+    
     if (!env) {
         env = nvmCreateEnv(vm);
         if (!env) goto error;
     }
 
-    if (hythread_attach(&hyThread) < 0) goto error;
+    // Associate the current Env* with the thread
+    hythread_tls_set(hyThread, tlsEnvKey, env);
 
     Thread* thread = (Thread*) nvmAllocateObject(env, java_lang_Thread);
     if (!thread) goto error;
 
     thread->threadPtr = (jlong) hyThread;
+    thread->daemon = daemon;
     env->currentThread = thread;
 
     Object* threadName = NULL;
@@ -27,10 +39,10 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group) {
         if (!threadName) goto error;
     }
 
-    Method* threadConstructor = nvmGetInstanceMethod(env, java_lang_Thread, "<init>", "(JLjava/lang/String;Ljava/lang/ThreadGroup;)V");
+    Method* threadConstructor = nvmGetInstanceMethod(env, java_lang_Thread, "<init>", "(JLjava/lang/String;Ljava/lang/ThreadGroup;Z)V");
     if (!threadConstructor) goto error;
 
-    nvmCallNonvirtualVoidInstanceMethod(env, (Object*) thread, threadConstructor, (jlong) hyThread, threadName, group);
+    nvmCallNonvirtualVoidInstanceMethod(env, (Object*) thread, threadConstructor, (jlong) hyThread, threadName, group, daemon);
     if (nvmExceptionOccurred(env)) goto error;
 
     *envPtr = env;
@@ -81,15 +93,29 @@ static void monitorWait(Env* env, hythread_monitor_t monitor, jlong millis, jint
 }
 
 jboolean nvmInitThreads(Env* env) {
-    if (hythread_monitor_init_with_name(&monitorsLock, 0, NULL) < 0) {
-        return FALSE;
-    }
-    return attachThread(env->vm, &env, "main", NULL) == JNI_OK;
+    if (hythread_monitor_init_with_name(&monitorsLock, 0, NULL) < 0) return FALSE;
+    if (hythread_tls_alloc(&tlsEnvKey) < 0) return FALSE;
+    return attachThread(env->vm, &env, "main", NULL, FALSE) == JNI_OK;
 }
 
 jint nvmAttachCurrentThread(VM* vm, Env** env, char* name, Object* group) {
     *env = NULL;
-    return attachThread(vm, env, name, group);
+    return attachThread(vm, env, name, group, FALSE);
+}
+
+jint nvmAttachCurrentThreadAsDaemon(VM* vm, Env** env, char* name, Object* group) {
+    *env = NULL;
+    return attachThread(vm, env, name, group, TRUE);
+}
+
+jint nvmGetEnv(VM* vm, Env** env) {
+    *env = NULL;
+    hythread_t hyThread = hythread_self();
+    if (!hyThread) return JNI_EDETACHED;
+    // If the thread is attached there's an Env* associated with the thread.
+    *env = (Env*) hythread_tls_get(hyThread, tlsEnvKey);
+    if (*env) return JNI_OK;
+    return JNI_EDETACHED; // TODO: What should we do here?
 }
 
 static int startThreadEntryPoint(void* entryArgs) {

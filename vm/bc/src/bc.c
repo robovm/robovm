@@ -608,7 +608,7 @@ void* _nvmBcResolveNative(Env* env, char* owner, char* name, char* desc, char* s
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
     nvmInitialize(env, clazz);
     if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
-    Method* method = nvmGetMethod(env, clazz, name, desc);
+    NativeMethod* method = (NativeMethod*) nvmGetMethod(env, clazz, name, desc);
     if (!method) nvmRaiseException(env, nvmExceptionOccurred(env));
     void* impl = nvmResolveNativeMethodImpl(env, method, shortMangledName, longMangledName, caller->classLoader, ptr);
     if (!impl) nvmRaiseException(env, nvmExceptionOccurred(env));

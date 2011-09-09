@@ -259,7 +259,7 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      */
     public Class<?>[] getClasses() {
         checkPublicMemberAccess();
-        return getFullListOfClasses(true);
+        return getClassCache().getClasses(true);
     }
 
     /**
@@ -502,51 +502,11 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *             access.
      */
     public Class<?>[] getDeclaredClasses() throws SecurityException {
-        // Start (C) Android
         checkDeclaredMemberAccess();
-        return getDeclaredClasses(this, false);
-        // End (C) Android
+        return getClassCache().getDeclaredClasses(true);
     }
 
-    // Start (C) Android
-    /*
-     * Returns the list of member classes without performing any security checks
-     * first. This includes the member classes inherited from superclasses. If no
-     * member classes exist at all, an empty array is returned.
-     *
-     * @param publicOnly reflects whether we want only public members or all of them
-     * @return the list of classes
-     */
-    private Class<?>[] getFullListOfClasses(boolean publicOnly) {
-        Class<?>[] result = getDeclaredClasses(this, publicOnly);
-
-        // Traverse all superclasses
-        Class<?> clazz = this.getSuperclass();
-        while (clazz != null) {
-            Class<?>[] temp = getDeclaredClasses(clazz, publicOnly);
-            if (temp.length != 0) {
-                result = arraycopy(new Class[result.length + temp.length], result, temp);
-            }
-
-            clazz = clazz.getSuperclass();
-        }
-
-        return result;
-    }
-    // End (C) Android
-    
-    // Start (C) Android
-    /*
-     * Returns the list of member classes of the given class. No security checks
-     * are performed. If no members exist, an empty array is returned.
-     *
-     * @param clazz the class the members of which we want
-     * @param publicOnly reflects whether we want only public member or all of them
-     * @return the class' class members
-     */
-    native private static Class<?>[] getDeclaredClasses(Class<?> clazz,
-        boolean publicOnly);
-    // End (C) Android
+    final native Class<?>[] getDeclaredClasses0(boolean publicOnly);    
     
     /**
      * Returns a {@code Constructor} object which represents the constructor

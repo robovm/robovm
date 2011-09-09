@@ -137,9 +137,10 @@ public class Thread implements Runnable {
     /**
      * Called by the VM to create the main thread or attach a thread.
      */
-    Thread(long threadPtr, String name, ThreadGroup group) {
+    Thread(long threadPtr, String name, ThreadGroup group, boolean daemon) {
         // NOTE: Must set threadPtr before the synchronized block below
         this.threadPtr = threadPtr;
+        this.daemon = daemon;
         this.threadGroup = group == null ? ThreadGroup.mainGroup : group;
         synchronized (Thread.class) {
             id = ++counter;

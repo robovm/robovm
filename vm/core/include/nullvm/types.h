@@ -24,6 +24,7 @@ typedef struct Field Field;
 typedef struct ClassField ClassField;
 typedef struct InstanceField InstanceField;
 typedef struct Method Method;
+typedef struct NativeMethod NativeMethod;
 typedef struct Methods Methods;
 typedef struct ObjectHeader ObjectHeader;
 typedef struct Interface Interface;
@@ -70,6 +71,11 @@ struct Method {
   void* synchronizedImpl;
   void* lookup;
   jint vtableIndex;
+};
+
+struct NativeMethod {
+  Method method;
+  void* nativeImpl;
 };
 
 struct Methods {
@@ -259,6 +265,7 @@ typedef struct Options {
 } Options;
 
 typedef struct VM {
+    JavaVM javaVM;
     Options* options;
 } VM;
 

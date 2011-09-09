@@ -1,6 +1,7 @@
 #include <nullvm.h>
 #include <string.h>
 #include <unwind.h>
+#include <hythread.h>
 #include "private.h"
 #include "log.h"
 #include "utlist.h"
@@ -8,7 +9,16 @@
 DynamicLib* bootNativeLibs = NULL;
 DynamicLib* mainNativeLibs = NULL;
 
+static hythread_monitor_t nativeLibsLock;
 static jvalue emptyJValueArgs[1];
+
+static inline obtainNativeLibsLock() {
+    hythread_monitor_enter(nativeLibsLock);
+}
+
+static inline releaseNativeLibsLock() {
+    hythread_monitor_exit(nativeLibsLock);
+}
 
 static Method* findMethod(Env* env, Class* clazz, char* name, char* desc) {
     Method* method;
@@ -53,6 +63,13 @@ static Method* getMethod(Env* env, Class* clazz, char* name, char* desc) {
     }
 
     return NULL;
+}
+
+jboolean nvmInitMethods(Env* env) {
+    if (hythread_monitor_init_with_name(&nativeLibsLock, 0, NULL) < 0) {
+        return FALSE;
+    }
+    return TRUE;
 }
 
 jboolean nvmHasMethod(Env* env, Class* clazz, char* name, char* desc) {
@@ -943,31 +960,51 @@ jdouble nvmCallDoubleClassMethod(Env* env, Class* clazz, Method* method, ...) {
     return nvmCallDoubleClassMethodV(env, clazz, method, args);
 }
 
-void* nvmResolveNativeMethodImpl(Env* env, Method* method, char* shortMangledName, char* longMangledName, ClassLoader* classLoader, void** ptr) {
-    DynamicLib* nativeLibs = NULL;
-    if (!classLoader || classLoader->parent == NULL) {
-        // This is the bootstrap classloader
-        nativeLibs = bootNativeLibs;
-    } else if (classLoader->parent->parent == NULL && classLoader->object.clazz->classLoader == NULL) {
-        // This is the system classloader
-        nativeLibs = mainNativeLibs;
-    } else {
-        // Unknown classloader
-        nvmThrowUnsatisfiedLinkError(env);
-        return NULL;
+jboolean nvmRegisterNative(Env* env, NativeMethod* method, void* impl) {
+    method->nativeImpl = impl;
+    return TRUE;
+}
+
+jboolean nvmUnregisterNative(Env* env, NativeMethod* method) {
+    method->nativeImpl = NULL;
+    return TRUE;
+}
+
+void* nvmResolveNativeMethodImpl(Env* env, NativeMethod* method, char* shortMangledName, char* longMangledName, ClassLoader* classLoader, void** ptr) {
+    void* f = method->nativeImpl;
+    if (!f) {
+        DynamicLib* nativeLibs = NULL;
+        if (!classLoader || classLoader->parent == NULL) {
+            // This is the bootstrap classloader
+            nativeLibs = bootNativeLibs;
+        } else if (classLoader->parent->parent == NULL && classLoader->object.clazz->classLoader == NULL) {
+            // This is the system classloader
+            nativeLibs = mainNativeLibs;
+        } else {
+            // Unknown classloader
+            nvmThrowUnsatisfiedLinkError(env);
+            return NULL;
+        }
+
+        obtainNativeLibsLock();
+
+        TRACE("Searching for native method using short name: %s\n", shortMangledName);
+        f = nvmFindDynamicLibSymbol(env, nativeLibs, shortMangledName, TRUE);
+        if (f) {
+            TRACE("Found native method using short name: %s\n", shortMangledName);
+        } else if (!strcmp(shortMangledName, longMangledName)) {
+            TRACE("Searching for native method using long name: %s\n", longMangledName);
+            void* f = nvmFindDynamicLibSymbol(env, nativeLibs, longMangledName, TRUE);
+            if (f) {
+                TRACE("Found native method using long name: %s\n", longMangledName);
+            }
+        }
+
+        method->nativeImpl = f;
+
+        releaseNativeLibsLock();
     }
 
-    TRACE("Searching for native method using short name: %s\n", shortMangledName);
-    void* f = nvmFindDynamicLibSymbol(env, nativeLibs, shortMangledName);
-    if (f) {
-        TRACE("Found native method using short name: %s\n", shortMangledName);
-    } else if (!strcmp(shortMangledName, longMangledName)) {
-        TRACE("Searching for native method using long name: %s\n", longMangledName);
-        void* f = nvmFindDynamicLibSymbol(env, nativeLibs, longMangledName);
-        if (f) {
-            TRACE("Found native method using long name: %s\n", longMangledName);
-        }
-    }
     if (!f) {
         nvmThrowUnsatisfiedLinkError(env);
         return NULL;
@@ -988,16 +1025,47 @@ jboolean nvmLoadNativeLibrary(Env* env, char* path, ClassLoader* classLoader) {
         nativeLibs = &mainNativeLibs;
     } else {
         // Unknown classloader
-        nvmThrowUnsatisfiedLinkError(env);
-        return FALSE;
-    }
-
-    if (!nvmLoadDynamicLib(env, path, nativeLibs)) {
-        if (!nvmExceptionOccurred(env)) {
+        if (bootNativeLibs) {
+            // if bootNativeLibs is NULL we're being called from nvmStartup() and we cannot throw exceptions.
             nvmThrowUnsatisfiedLinkError(env);
         }
         return FALSE;
     }
+
+    DynamicLib* lib = nvmOpenDynamicLib(env, path);
+    if (!lib) {
+        if (!nvmExceptionOccurred(env)) {
+            if (bootNativeLibs) {
+                // if bootNativeLibs is NULL we're being called from nvmStartup() and we cannot throw exceptions.
+                nvmThrowUnsatisfiedLinkError(env);
+            }
+        }
+        return FALSE;
+    }
+
+    obtainNativeLibsLock();
+
+    if (nvmHasDynamicLib(env, lib, *nativeLibs)) {
+        // The lib is already in nativeLibs
+        nvmCloseDynamicLib(env, lib);
+        releaseNativeLibsLock();
+        return TRUE;
+    }
+
+    jint (*JNI_OnLoad)(JavaVM*, void*) = nvmFindDynamicLibSymbol(env, lib, "JNI_OnLoad", FALSE);
+    if (JNI_OnLoad) {
+        // TODO: Check that JNI_OnLoad returns a supported JNI version?
+        JNI_OnLoad(&env->vm->javaVM, NULL);
+        if (nvmExceptionOccurred(env)) {
+            releaseNativeLibsLock();
+            return FALSE;
+        }
+    }
+
+    nvmAddDynamicLib(env, lib, nativeLibs);
+
+    releaseNativeLibsLock();
+
     return TRUE;
 }
 

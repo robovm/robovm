@@ -609,6 +609,30 @@ static jboolean getRuntimeVisibleParameterAnnotationsIterator(Env* env, jbyte ty
     return TRUE; // Continue with next attribute
 }
 
+static jboolean getDeclaredClassesCountIterator(Env* env, char* innerClass, char* outerClass, char* innerName, jint access, void* data) {
+    jint* result = (jint*) ((void**) data)[0];
+    Class* clazz = (Class*) ((void**) data)[1];
+    if (!outerClass || strcmp(outerClass, clazz->name)) {
+        return TRUE; // Continue with next attribute
+    }
+    *result = *result + 1;
+    return TRUE; // Continue with next attribute
+}
+
+static jboolean getDeclaredClassesIterator(Env* env, char* innerClass, char* outerClass, char* innerName, jint access, void* data) {
+    ObjectArray* result = (ObjectArray*) ((void**) data)[0];
+    jint* index = (jint*) ((void**) data)[1];
+    Class* clazz = (Class*) ((void**) data)[2];
+    if (!outerClass || strcmp(outerClass, clazz->name)) {
+        return TRUE; // Continue with next attribute
+    }
+    Class* c = nvmFindClassUsingLoader(env, innerClass, clazz->classLoader);
+    if (!c) return FALSE; // Stop iterating
+    result->values[*index] = (Object*) c;
+    *index = *index + 1;
+    return TRUE; // Continue with next attribute
+}
+
 jboolean nvmInitAttributes(Env* env) {
     java_lang_TypeNotPresentException = nvmFindClassUsingLoader(env, "java/lang/TypeNotPresentException", NULL);
     if (!java_lang_TypeNotPresentException) return FALSE;
@@ -691,9 +715,7 @@ Object* nvmAttributeGetFieldSignature(Env* env, Field* field) {
 }
 
 ObjectArray* nvmAttributeGetExceptions(Env* env, Method* method) {
-    if (!method->attributes) {
-        return nvmNewObjectArray(env, 0, java_lang_Class, NULL, NULL);
-    }
+    if (!method->attributes) return emptyExceptionTypes;
     ObjectArray* result = NULL;
     void* data[2] = {&result, method};
     iterateAttributes(env, method->attributes, getExceptionsIterator, data);
@@ -733,5 +755,18 @@ ObjectArray* nvmAttributeGetMethodRuntimeVisibleParameterAnnotations(Env* env, M
     void* data[2] = {&result, method->clazz->classLoader};
     iterateAttributes(env, method->attributes, getRuntimeVisibleParameterAnnotationsIterator, data);
     return result ? result : emptyAnnotations;
+}
+
+ObjectArray* nvmAttributeGetDeclaredClasses(Env* env, Class* clazz) {
+    if (!clazz->attributes) return NULL;
+    jint count = 0;
+    void* countData[2] = {&count, clazz};
+    iterateInnerClasses(env, clazz->attributes, getDeclaredClassesCountIterator, countData);
+    if (count == 0) return NULL;
+    ObjectArray* result = nvmNewObjectArray(env, count, java_lang_Class, NULL, NULL);
+    jint index = 0;
+    void* data[3] = {result, &index, clazz};
+    iterateInnerClasses(env, clazz->attributes, getDeclaredClassesIterator, data);
+    return result;
 }
 

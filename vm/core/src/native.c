@@ -4,6 +4,10 @@
 extern struct JNINativeInterface_ jni;
 extern struct JNIInvokeInterface_ javaVM;
 
+void nvmInitJavaVM(VM* vm) {
+    vm->javaVM = &javaVM;
+}
+
 void nvmInitJNIEnv(Env* env) {
     env->jni = &jni;
 }
@@ -12,6 +16,39 @@ static void throwUnsupportedOperationException(Env* env, char* msg) {
     Class* clazz = nvmFindClass(env, "java/lang/UnsupportedOperationException");
     if (!clazz) return;
     nvmThrowNew(env, clazz, msg);
+}
+
+static jint DestroyJavaVM(JavaVM* vm) {
+    return JNI_ERR;
+}
+
+static jint AttachCurrentThread(JavaVM* vm, void** penv, void* args) {
+    char* name = NULL;
+    Object* group = NULL;
+    if (args) {
+        name = ((JavaVMAttachArgs*) args)->name;
+        group = (Object*) ((JavaVMAttachArgs*) group)->name;
+    }
+    return nvmAttachCurrentThread((VM*) vm, (Env**) penv, name, group);
+}
+
+static jint DetachCurrentThread(JavaVM* vm) {
+    return JNI_ERR;
+}
+
+static jint GetEnv(JavaVM* vm, void** penv, jint ver) {
+    // TODO: Check version?
+    return nvmGetEnv((VM*) vm, (Env**) penv);
+}
+
+static jint AttachCurrentThreadAsDaemon(JavaVM* vm, void** penv, void* args) {
+    char* name = NULL;
+    Object* group = NULL;
+    if (args) {
+        name = ((JavaVMAttachArgs*) args)->name;
+        group = (Object*) ((JavaVMAttachArgs*) group)->name;
+    }
+    return nvmAttachCurrentThreadAsDaemon((VM*) vm, (Env**) penv, name, group);
 }
 
 static jint GetVersion(JNIEnv* env) {
@@ -57,8 +94,21 @@ static jint GetJavaVM(JNIEnv* env, JavaVM** vm) {
 }
 
 static jint RegisterNatives(JNIEnv* env, jclass clazz, const JNINativeMethod* methods, jint nMethods) {
-    throwUnsupportedOperationException((Env*) env, "RegisterNatives");
-    return -1;
+    NativeMethod* nativeMethods[nMethods];
+    jint i;
+    for (i = 0; i < nMethods; i++) {
+        nativeMethods[i] = (NativeMethod*) nvmGetMethod((Env*) env, (Class*) clazz, methods[i].name, methods[i].signature);
+        if (nativeMethods[i] == NULL || !METHOD_IS_NATIVE(&nativeMethods[i]->method)) {
+            nvmThrowNoSuchMethodError((Env*) env, methods[i].name);
+            return JNI_ERR;
+        }
+    }
+    for (i = 0; i < nMethods; i++) {
+        if (!nvmRegisterNative((Env*) env, nativeMethods[i], methods[i].fnPtr)) {
+            return JNI_ERR;
+        }
+    }
+    return 0;
 }
 
 static jint UnregisterNatives(JNIEnv* env, jclass clazz) {
@@ -1050,6 +1100,17 @@ static jlong GetDirectBufferCapacity(JNIEnv* env, jobject buf) {
     // TODO: Implement me
     return -1;
 }
+
+struct JNIInvokeInterface_ javaVM = {
+    NULL,
+    NULL,
+    NULL,
+    &DestroyJavaVM,
+    &AttachCurrentThread,
+    &DetachCurrentThread,
+    &GetEnv,
+    &AttachCurrentThreadAsDaemon
+};
 
 struct JNINativeInterface_ jni = {
     NULL,

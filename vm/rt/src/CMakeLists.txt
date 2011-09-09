@@ -117,6 +117,7 @@ SET(SRC
   luni/luni/shared/proxy.c 
   luni/luni/shared/socket.c 
   luni/luni/shared/timezone.c
+  luni-kernel/luni-kernel-init.c 
   luni-kernel/reflection_helpers.c 
   luni-kernel/java_lang_Class.c 
   luni-kernel/java_lang_ClassCache.c 

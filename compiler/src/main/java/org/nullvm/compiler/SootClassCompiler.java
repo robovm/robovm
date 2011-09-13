@@ -304,9 +304,12 @@ public class SootClassCompiler {
     private static final FunctionRef NVM_BC_RESOLVE_GETFIELD = new FunctionRef("_nvmBcResolveGetfield", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_RESOLVE_PUTFIELD = new FunctionRef("_nvmBcResolvePutfield", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_RESOLVE_NATIVE = new FunctionRef("_nvmBcResolveNative", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_PUSH_NATIVE_FRAME = new FunctionRef("_nvmBcPushNativeFrame", new FunctionType(VOID, ENV_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_POP_NATIVE_FRAME = new FunctionRef("_nvmBcPopNativeFrame", new FunctionType(VOID, ENV_PTR));
     
     private static final FunctionRef LLVM_EH_EXCEPTION = new FunctionRef("llvm.eh.exception", new FunctionType(I8_PTR));
     private static final FunctionRef LLVM_EH_SELECTOR = new FunctionRef("llvm.eh.selector", new FunctionType(I32, true, I8_PTR, I8_PTR));
+    private static final FunctionRef LLVM_FRAMEADDRESS = new FunctionRef("llvm.frameaddress", new FunctionType(I8_PTR, I32));
     
     private static final FunctionRef CHECK_NULL = new FunctionRef("checknull", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     private static final FunctionRef CHECK_LOWER = new FunctionRef("checklower", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I32));
@@ -701,25 +704,35 @@ public class SootClassCompiler {
     }
     
     private void nativeMethod(SootMethod method) {
-        Function function = createFunction(method);
-
-        Type[] parameterTypes = function.getType().getParameterTypes();
-        String[] parameterNames = function.getParameterNames();
+        Function outerFunction = createFunction(method);
+        Function innerFunction = createFunction(mangleMethod(method.makeRef()) + "_inner", method);
+        
+        Type[] parameterTypes = innerFunction.getType().getParameterTypes();
+        String[] parameterNames = innerFunction.getParameterNames();
         ArrayList<Value> args = new ArrayList<Value>();
         for (int i = 0; i < parameterTypes.length; i++) {
             args.add(new VariableRef(parameterNames[i], parameterTypes[i]));
         }
+        
+        if (outerFunction.getType().getReturnType() == VOID) {
+            outerFunction.add(new Call(innerFunction.ref(), args.toArray(new Value[args.size()])));
+            outerFunction.add(new Ret());
+        } else {
+            Variable result = outerFunction.newVariable(outerFunction.getType().getReturnType());
+            outerFunction.add(new Call(result, innerFunction.ref(), args.toArray(new Value[args.size()])));
+            outerFunction.add(new Ret(new VariableRef(result)));
+        }
 
-        FunctionType nativeFunctionType = function.getType();
+        FunctionType nativeFunctionType = innerFunction.getType();
         if (method.isStatic()) {
             // Add THE_CLASS as second parameter
-            Variable tmp = function.newVariable(CLASS_PTR);
-            function.add(new Load(tmp, THE_CLASS.ref()));
+            Variable tmp = innerFunction.newVariable(CLASS_PTR);
+            innerFunction.add(new Load(tmp, THE_CLASS.ref()));
             args.add(1, tmp.ref());
             // Add %Class* as second parameter type
             ArrayList<Type> ptypes = new ArrayList<Type>(Arrays.asList(parameterTypes));
             ptypes.add(1, CLASS_PTR);
-            nativeFunctionType = new FunctionType(function.getType().getReturnType(), 
+            nativeFunctionType = new FunctionType(innerFunction.getType().getReturnType(), 
                     ptypes.toArray(new Type[ptypes.size()]));
         }        
         
@@ -730,15 +743,20 @@ public class SootClassCompiler {
         // always declared by the class being compiled
         Trampoline trampoline = new NativeCall(targetClassName, methodName, methodDesc);
         addTrampoline(trampoline, nativeFunctionType);
-        if (function.getType().getReturnType() == VOID) {
-            callTrampoline(function, trampoline, null, args.toArray(new Value[args.size()]));
-            function.add(new Call(NVM_BC_THROW_IF_EXCEPTION_OCCURRED, ENV));
-            function.add(new Ret());
+        Variable frameAddress = innerFunction.newVariable(I8_PTR);
+        innerFunction.add(new Call(frameAddress, LLVM_FRAMEADDRESS, new IntegerConstant(0)));
+        innerFunction.add(new Call(NVM_BC_PUSH_NATIVE_FRAME, ENV, frameAddress.ref()));
+        if (innerFunction.getType().getReturnType() == VOID) {
+            callTrampoline(innerFunction, trampoline, null, args.toArray(new Value[args.size()]));
+            innerFunction.add(new Call(NVM_BC_POP_NATIVE_FRAME, ENV));
+            innerFunction.add(new Call(NVM_BC_THROW_IF_EXCEPTION_OCCURRED, ENV));
+            innerFunction.add(new Ret());
         } else {
-            Variable result = function.newVariable(function.getType().getReturnType());
-            callTrampoline(function, trampoline, result, args.toArray(new Value[args.size()]));
-            function.add(new Call(NVM_BC_THROW_IF_EXCEPTION_OCCURRED, ENV));
-            function.add(new Ret(new VariableRef(result)));
+            Variable result = innerFunction.newVariable(innerFunction.getType().getReturnType());
+            callTrampoline(innerFunction, trampoline, result, args.toArray(new Value[args.size()]));
+            innerFunction.add(new Call(NVM_BC_POP_NATIVE_FRAME, ENV));
+            innerFunction.add(new Call(NVM_BC_THROW_IF_EXCEPTION_OCCURRED, ENV));
+            innerFunction.add(new Ret(new VariableRef(result)));
         }
     }
     

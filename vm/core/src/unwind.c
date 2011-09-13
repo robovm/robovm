@@ -1,7 +1,12 @@
 #include <nullvm.h>
 #include <unwind.h>
+#include "private.h"
 
 #define EXCEPTION_CLASS 0x4A4A4A4A4A4A4A4A // "JJJJJJJJ"
+#if defined(NVM_X86_64) && defined(LINUX)
+    // Assume that unwindBacktrace() and _call0() save the CFA in %rbp
+    #define CFA_REG 6
+#endif
 
 typedef struct UnwindInfo {
     struct _Unwind_Exception exception_info;
@@ -9,6 +14,7 @@ typedef struct UnwindInfo {
     _Unwind_Ptr landing_pad;
 } UnwindInfo;
 
+extern _Unwind_Reason_Code unwindBacktrace(_Unwind_Trace_Fn fn, void* data);
 extern _Unwind_Reason_Code __gcc_personality_v0(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context);
 
 _Unwind_Reason_Code _nvmPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context) {
@@ -33,7 +39,7 @@ _Unwind_Reason_Code _nvmPersonality(int version, _Unwind_Action actions, _Unwind
     return _URC_CONTINUE_UNWIND;
 }
 
-jint nvmUnwindRaiseException(Env* env) {
+jint unwindRaiseException(Env* env) {
     UnwindInfo* u = nvmAllocateMemory(env, sizeof(UnwindInfo));
     u->exception_info.exception_class = EXCEPTION_CLASS;
     u->throwable = env->throwable;
@@ -41,48 +47,46 @@ jint nvmUnwindRaiseException(Env* env) {
     return urc == _URC_END_OF_STACK ? UNWIND_UNHANDLED_EXCEPTION : UNWIND_FATAL_ERROR;
 }
 
-static _Unwind_Reason_Code unwindCallStack(struct _Unwind_Context* ctx, void* _d) {
-    jboolean (*iterator)(Env*, void*, jint, void*) = ((void**) _d)[0];
-    Env* env = ((void**) _d)[1];
-    void* data = ((void**) _d)[2];
+typedef struct UnwindCallStackData {
+    jboolean (*iterator)(Env*, void*, jint, void*);
+    Env* env;
+    void** nativeFramesTop;
+    void* data;
+    void** restoreFrameAddressPtr;
+    void* restoreFrameAddress;
+} UnwindCallStackData;
 
+static _Unwind_Reason_Code unwindCallStack(struct _Unwind_Context* ctx, UnwindCallStackData* d) {
+    if (d->restoreFrameAddressPtr) {
+        // Restore the frame we altered in the previous call to this callback.
+        *d->restoreFrameAddressPtr = d->restoreFrameAddress;
+        d->restoreFrameAddressPtr = NULL;
+        d->restoreFrameAddress = NULL;
+    }
     void* address = (void*) _Unwind_GetIP(ctx);
     void* function = _Unwind_FindEnclosingFunction(address);
-    if (function == nvmUnwindIterateCallStack) return _URC_NO_REASON;
-    jint offset = address - function;
-    return iterator(env, function, offset, data) ? _URC_NO_REASON : _URC_NORMAL_STOP;
-}
-
-typedef struct GetCallerAtDepthData {
-    jint depth;
-    void* function;
-    jint offset;
-} GetCallerAtDepthData;
-
-static jboolean getCallerAtDepthIterator(Env* env, void* function, jint offset, void* _data) {
-    GetCallerAtDepthData* data = _data;
-    if (data->depth <= 0) {
-        data->function = function;
-        data->offset = offset;
-        return FALSE; // Stop iterating
+    if (d->nativeFramesTop > d->env->nativeFrames.base) {
+        if (function == unwindBacktrace || function == _call0) {
+            // Temporarily alter the frame to skip all frames until the last native trampoline frame.
+            // We need to do this since we cannot assume native code to have proper unwind info.
+            // Note that unwindBacktrace and _call0 must save the CFA in a well defined register 
+            // (%rbp on x86_64, %ebp on i386) for this to work. We also make some assumptions
+            // on the layout of _Unwind_Context (DWARF register 0 is saved at ctx+0, register 1 at
+            // ctx+1, etc).
+            d->nativeFramesTop--;
+            void* cfa = *d->nativeFramesTop;
+            d->restoreFrameAddressPtr = *(((void***) ctx) + CFA_REG);
+            d->restoreFrameAddress = (void*) _Unwind_GetGR(ctx, CFA_REG);
+            _Unwind_SetGR(ctx, CFA_REG, (_Unwind_Word) cfa);
+            return _URC_NO_REASON;
+        }
     }
-    data->depth--;
-    return TRUE;
+    jint offset = address - function;
+    return d->iterator(d->env, function, offset, d->data) ? _URC_NO_REASON : _URC_NORMAL_STOP;
 }
 
-void nvmUnwindIterateCallStack(Env* env, jboolean (*iterator)(Env*, void*, jint, void*), void* data) {
-    void* d[3] = {iterator, env, data};
-    _Unwind_Backtrace(unwindCallStack, d);
-}
-
-void* nvmUnwindGetCallerAtDepth(Env* env, jint depth, jint* offset) {
-    GetCallerAtDepthData data = {depth + 2, NULL, 0};
-    nvmUnwindIterateCallStack(env, getCallerAtDepthIterator, &data);
-    if (offset) *offset = data.offset;
-    return data.function;
-}
-
-void* nvmUnwindGetCaller(Env* env, jint* offset) {
-    return nvmUnwindGetCallerAtDepth(env, 1, offset);
+void unwindIterateCallStack(Env* env, jboolean (*iterator)(Env*, void*, jint, void*), void* data) {
+    UnwindCallStackData d = {iterator, env, env->nativeFrames.top, data, NULL, NULL};
+    unwindBacktrace((_Unwind_Trace_Fn) unwindCallStack, &d);
 }
 

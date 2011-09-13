@@ -3,6 +3,8 @@
 #include "uthash.h"
 #include "utlist.h"
 
+#define ALLOC_NATIVE_FRAMES_SIZE 4
+
 typedef struct ClassFunc {
     char* name;
     Class* (*f)(Env*, ClassLoader*);
@@ -603,15 +605,44 @@ void* _nvmBcResolveInvokeinterface(Env* env, char* owner, char* name, char* desc
     return method->lookup;
 }
 
+void _nvmBcPushNativeFrame(Env* env, void* cfa) {
+    // We don't need to check if NativeFrames.base is NULL since it is always setup with a few slots when an Env is created.
+    NativeFrames* f = &env->nativeFrames;
+    if (f->top == (f->base + f->size)) {
+        // Make room for more frames.
+        void* oldBase = f->base;
+        jint oldSize = f->size;
+        jint newSize = oldSize + ALLOC_NATIVE_FRAMES_SIZE;
+        f->base = nvmAllocateMemory(env, sizeof(void*) * newSize);
+        if (!f->base) nvmRaiseException(env, nvmExceptionOccurred(env));
+        memcpy(f->base, oldBase, sizeof(void*) * oldSize);
+        f->top = f->base + oldSize;
+        f->size = newSize;
+    }
+    *env->nativeFrames.top = cfa;
+    env->nativeFrames.top++;
+}
+
+void _nvmBcPopNativeFrame(Env* env) {
+    env->nativeFrames.top--;
+}
+
 void* _nvmBcResolveNative(Env* env, char* owner, char* name, char* desc, char* shortMangledName, char* longMangledName, Class* caller, void** ptr) {
     nvmLogTrace(env, "nvmBcResolveNative: owner=%s, name=%s, desc=%s, shortMangledName=%s, longMangledName=%s\n", owner, name, desc, shortMangledName, longMangledName);
     Class* clazz = findClassInLoader(env, owner, caller->classLoader);
+    if (nvmExceptionOccurred(env)) goto error;
     nvmInitialize(env, clazz);
-    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    if (nvmExceptionOccurred(env)) goto error;
     NativeMethod* method = (NativeMethod*) nvmGetMethod(env, clazz, name, desc);
-    if (!method) nvmRaiseException(env, nvmExceptionOccurred(env));
+    if (!method) goto error;
     void* impl = nvmResolveNativeMethodImpl(env, method, shortMangledName, longMangledName, caller->classLoader, ptr);
-    if (!impl) nvmRaiseException(env, nvmExceptionOccurred(env));
+    if (!impl) goto error;
     return impl;
+error:
+    // The native function trampoline has pushed the native frame. Pop it before we raise the 
+    // exception since the trampoline doesn't pop if an exception is raised during resolution.
+    _nvmBcPopNativeFrame(env);
+    nvmRaiseException(env, nvmExceptionOccurred(env));
+    return NULL;
 }
 

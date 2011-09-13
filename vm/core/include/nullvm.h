@@ -29,7 +29,6 @@ extern "C" {
 #include <nullvm/attribute.h>
 #include <nullvm/native.h>
 #include <nullvm/proxy.h>
-#include <nullvm/unwind.h>
 #include <nullvm/vminterface.h>
 #include <nullvm/log.h>
 

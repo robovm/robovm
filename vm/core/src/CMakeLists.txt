@@ -33,9 +33,12 @@ add_library(nullvm-core SHARED
   call0-${OS}-${ARCH}.s.o
   proxy0-${OS}-${ARCH}.s.o
   unwind.c 
+  unwind_backtrace.c
   vminterface.c
 )
 add_dependencies(nullvm-core extgc)
+
+set_source_files_properties(unwind_backtrace.c PROPERTIES COMPILE_FLAGS "-O0 -fno-omit-frame-pointer")
 
 if(LINUX)
   set_target_properties(nullvm-core PROPERTIES LINK_FLAGS "-Wl,--version-script=${core_SOURCE_DIR}/symbols.linux" INSTALL_RPATH "$ORIGIN")
@@ -67,4 +70,5 @@ add_test(testProxy0ReturnDouble test_proxy0 "testProxy0ReturnDouble")
 add_test(testProxy0OneArgOfEach test_proxy0 "testProxy0OneArgOfEach")
 add_test(testProxy0ManyArgsOfEach test_proxy0 "testProxy0ManyArgsOfEach")
 add_test(testProxy0Unwind test_proxy0 "testProxy0Unwind")
+add_test(testProxy0ReturnAddress test_proxy0 "testProxy0ReturnAddress")
 

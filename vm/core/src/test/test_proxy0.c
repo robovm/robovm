@@ -274,6 +274,17 @@ void testProxy0Unwind(CuTest* tc) {
 }
 
 
+static void testProxy0ReturnAddress_handler(CallInfo* ci) {
+    proxy0ReturnPtr(ci, ci->returnAddress);
+}
+static void testProxy0ReturnAddress(CuTest* tc) {
+    handler = testProxy0ReturnAddress_handler;
+    void* (*f)(void) = (void* (*)(void)) _proxy0;
+    void* result = f();
+    CuAssertTrue(tc, result >= (void*) testProxy0ReturnAddress && result <= (void*) testProxy0ReturnAddress + 100);
+}
+
+
 int main(int argc, char* argv[]) {
     CuSuite* suite = CuSuiteNew();
 
@@ -286,6 +297,7 @@ int main(int argc, char* argv[]) {
     if (argc < 2 || !strcmp(argv[1], "testProxy0OneArgOfEach")) SUITE_ADD_TEST(suite, testProxy0OneArgOfEach);
     if (argc < 2 || !strcmp(argv[1], "testProxy0ManyArgsOfEach")) SUITE_ADD_TEST(suite, testProxy0ManyArgsOfEach);
     if (argc < 2 || !strcmp(argv[1], "testProxy0Unwind")) SUITE_ADD_TEST(suite, testProxy0Unwind);
+    if (argc < 2 || !strcmp(argv[1], "testProxy0ReturnAddress")) SUITE_ADD_TEST(suite, testProxy0ReturnAddress);
 
     CuSuiteRun(suite);
 

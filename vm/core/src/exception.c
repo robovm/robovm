@@ -1,10 +1,10 @@
 #include <nullvm.h>
 #include <stddef.h>
-#include "unwind.h"
+#include "private.h"
 
 void nvmRaiseException(Env* env, Object* e) {
     nvmThrow(env, e);
-    jint result = nvmUnwindRaiseException(env);
+    jint result = unwindRaiseException(env);
     if (result == UNWIND_UNHANDLED_EXCEPTION) {
         nvmAbort("Unhandled exception: %s", e->clazz->name);
     }

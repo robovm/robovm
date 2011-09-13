@@ -269,6 +269,16 @@ typedef struct VM {
     Options* options;
 } VM;
 
+typedef struct NativeFrames {
+    /* 
+     * Whenever we call into native code we push the CFA of the native function trampoline.
+     * We need this to be able to unwind through native code in unwind.c.
+     */
+    void** top;
+    void** base;
+    int size;
+} NativeFrames;
+
 struct Env {
     JNIEnv jni;
     VM* vm;
@@ -277,6 +287,7 @@ struct Env {
     void* reserved0; // Used internally
     void* reserved1; // Used internally
     void* reserved2; // Used internally
+    NativeFrames nativeFrames;
 };
 
 typedef struct CallStackEntry CallStackEntry;

@@ -170,16 +170,6 @@ public class Main {
     private void classToIr(Clazz clazz, File outFile) throws IOException {
         OutputStream out = null;
         try {
-            if (!clean && outFile.exists() && outFile.lastModified() >= clazz.lastModified()) {
-                if (verbose) {
-                    stdout.println("Skipping unchanged class file: " + clazz.getFileName());
-                }
-                return;
-            }
-            outFile.getParentFile().mkdirs();
-            if (verbose) {
-                stdout.format("Compiling class file '%s' to LLVM IR file '%s'\n", clazz.getFileName(), outFile);
-            }
             out = new FileOutputStream(outFile);
             new SootClassCompiler().compile(clazz, out);
         } catch (Throwable t) {
@@ -197,16 +187,6 @@ public class Main {
     }
 
     private void llvmAs(File inFile, File outFile) throws IOException {
-        if (!clean && outFile.exists() && outFile.lastModified() >= inFile.lastModified()) {
-            if (verbose) {
-                stdout.println("Skipping unchanged LLVM IR file: " + inFile);
-            }
-            return;
-        }
-        if (verbose) {
-            stdout.format("Compiling LLVM IR file '%s' to LLVM bitcode file '%s'\n", inFile, outFile);
-        }
-
         String llvmAsPath = "llvm-as";
         if (llvmBinDir != null) {
             llvmAsPath = new File(llvmBinDir, "llvm-as").getAbsolutePath();
@@ -217,13 +197,6 @@ public class Main {
     }    
 
     private void opt(File inFile, File outFile, String ... options) throws IOException {
-        if (!clean && outFile.exists() && outFile.lastModified() >= inFile.lastModified()) {
-            if (verbose) {
-                stdout.println("Skipping unchanged LLVM bitcode file: " + inFile);
-            }
-            return;
-        }
-        
         String optPath = "opt";
         if (llvmBinDir != null) {
             optPath = new File(llvmBinDir, "opt").getAbsolutePath();
@@ -234,16 +207,6 @@ public class Main {
     }
     
     private void llc(File inFile, File outFile) throws IOException {
-        if (!clean && outFile.exists() && outFile.lastModified() >= inFile.lastModified()) {
-            if (verbose) {
-                stdout.println("Skipping unchanged LLVM bitcode file: " + inFile);
-            }
-            return;
-        }
-        if (verbose) {
-            stdout.format("Compiling LLVM bitcode file '%s' to assembler file '%s'\n", inFile, outFile);
-        }
-      
         String llcPath = "llc";
         if (llvmBinDir != null) {
             llcPath = new File(llvmBinDir, "llc").getAbsolutePath();
@@ -265,16 +228,6 @@ public class Main {
     }
     
     private void gcc(File inFile, File outFile, String ... options) throws IOException {
-        if (!clean && outFile.exists() && outFile.lastModified() >= inFile.lastModified()) {
-            if (verbose) {
-                stdout.println("Skipping unchanged GCC input file: " + inFile);
-            }
-            return;
-        }
-        if (verbose) {
-            stdout.format("Compiling '%s' to '%s'\n", inFile, outFile);
-        }
-
         String gccPath = "gcc";
         if (gccBin != null) {
             gccPath = gccBin.getAbsolutePath();
@@ -347,17 +300,31 @@ public class Main {
     
     private File buildClassFileDebug(ClasspathEntry entry, Clazz clazz) throws IOException {
         String className = clazz.getInternalName();
-        File llFile = new File(entry.getLlvmCacheDir(), className.replace('/', File.separatorChar) + "" + ".class.ll");
+        File outFile = new File(entry.getObjectCacheDir(), className.replace('/', File.separatorChar) + ".class.o");
+        File llFile = new File(entry.getLlvmCacheDir(), className.replace('/', File.separatorChar) + ".class.ll");
+        
+        if (!clean && outFile.exists() && outFile.lastModified() >= clazz.lastModified()) {
+            if (verbose) {
+                stdout.println("Skipping unchanged class file: " + clazz.getFileName());
+            }
+            return outFile;
+        }
+        
+        llFile.getParentFile().mkdirs();
+        outFile.getParentFile().mkdirs();
+        if (verbose) {
+            stdout.format("Compiling class file '%s' to object file '%s'\n", clazz.getFileName(), outFile);
+        }
+        
         classToIr(clazz, llFile);
         File tmpBcFile = changeExt(llFile, "tmp.bc");
         llvmAs(llFile, tmpBcFile);
-        File bcFile = changeExt(tmpBcFile, "bc");
+        File bcFile = changeExt(llFile, "bc");
         opt(tmpBcFile, bcFile, "-mem2reg", "-always-inline");
-        File sFile = changeExt(rebase(bcFile, entry.getLlvmCacheDir(), entry.getObjectCacheDir()), "s");
+        File sFile = changeExt(outFile, "s");
         llc(bcFile, sFile);
-        File oFile = changeExt(sFile, "o");
-        gcc(sFile, oFile);
-        return oFile;
+        gcc(sFile, outFile);
+        return outFile;
     }    
 
     private File buildClasspathEntry(ClasspathEntry entry) throws IOException {
@@ -713,7 +680,7 @@ public class Main {
         }
         
         if (verbose) {
-            stdout.println(commandLine.toString());
+            stdout.println("  " + commandLine.toString());
         }
         
         Executor executor = new DefaultExecutor();
@@ -1169,9 +1136,18 @@ public class Main {
         }
     }
 
+    private static File stripExt(File f) {
+        String name = f.getName();
+        int index = name.lastIndexOf('.');
+        if (index == -1) {
+            return f;
+        }
+        return new File(f.getParent(), name.substring(0, index));
+    }
+    
     private static File changeExt(File f, String newExt) {
         String name = f.getName();
-        int index = name.indexOf('.');
+        int index = name.lastIndexOf('.');
         if (index == -1) {
             return new File(f.getParent(), name + "." + newExt);
         }

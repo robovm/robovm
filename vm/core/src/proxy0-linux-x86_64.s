@@ -8,7 +8,8 @@ stackArgsIndex_offset = 140 # jint
 stackArgs_offset      = 144 # void**
 returnValue_offset    = 152 # FpIntValue
 returnType_offset     = 160 # jint
-CallInfo_size         = 168
+returnAddress_offset  = 168 # void*
+CallInfo_size         = 176
 
 RETURN_TYPE_INT    = 0
 RETURN_TYPE_LONG   = 1
@@ -45,6 +46,9 @@ _proxy0:
     movl  $0, intArgsIndex_offset(%rsp)        # intArgsIndex = 0
     movl  $0, fpArgsIndex_offset(%rsp)         # fpArgsIndex = 0
     movl  $0, stackArgsIndex_offset(%rsp)      # stackArgsIndex = 0
+
+    mov   CallInfo_size(%rsp), %rax            # $rax = return address
+    mov   %rax, returnAddress_offset(%rsp)
 
     leaq  CallInfo_size+8(%rsp), %rax          # $rax = first stack arg (+8 to skip return address)
     mov   %rax, stackArgs_offset(%rsp)         # stackArgs = first stack arg

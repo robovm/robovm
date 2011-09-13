@@ -1,4 +1,5 @@
 #include <nullvm.h>
+#include <unwind.h>
 #include "private.h"
 #include "uthash.h"
 
@@ -128,7 +129,7 @@ void _nvmProxyHandler(CallInfo* callInfo) {
     Class* proxyClass = receiver->clazz;
     ProxyClassData* proxyClassData = (ProxyClassData*) proxyClass->data;
 
-    void* lookup = nvmUnwindGetCallerAtDepth(env, 1, NULL);
+    void* lookup = _Unwind_FindEnclosingFunction(callInfo->returnAddress);
     LookupEntry* entry;
 
     HASH_FIND_PTR(proxyClassData->lookupsHash, &lookup, entry);

@@ -3,6 +3,12 @@
 
 #include <nullvm.h>
 
+#define UNWIND_UNHANDLED_EXCEPTION 1
+#define UNWIND_FATAL_ERROR 2
+
+extern jint unwindRaiseException(Env* env);
+extern void unwindIterateCallStack(Env* env, jboolean (*iterator)(Env*, void*, jint, void*), void* data);
+
 #define RETURN_TYPE_INT    0
 #define RETURN_TYPE_LONG   1
 #define RETURN_TYPE_FLOAT  2
@@ -49,6 +55,7 @@ typedef struct CallInfo {
     void** stackArgs;
     FpIntValue returnValue;
     jint returnType;
+    void* returnAddress;
 } CallInfo;
 
 static inline CallInfo* call0AllocateCallInfo(Env* env, void* function, jint ptrArgsCount, jint intArgsCount, jint longArgsCount, jint floatArgsCount, jint doubleArgsCount) {
@@ -175,6 +182,7 @@ typedef struct CallInfo {
     void** stackArgs;
     FpIntValue returnValue;
     jint returnType;
+    void* returnAddress;
 } CallInfo;
 
 /*

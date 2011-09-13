@@ -163,11 +163,12 @@ static jboolean getCallStackIterator(Env* env, void* function, jint offset, void
         Method* method = nvmFindMethodAtAddress(env, function);
         if (method) {
             CallStackEntry* entry = nvmAllocateMemory(env, sizeof(CallStackEntry));
-            if (entry) {
-                entry->method = method;
-                entry->offset = offset;
-                DL_APPEND(*head, entry);
+            if (!entry) {
+                return FALSE; // Stop iterating
             }
+            entry->method = method;
+            entry->offset = offset;
+            DL_APPEND(*head, entry);
         }
     }
     return TRUE;
@@ -175,13 +176,13 @@ static jboolean getCallStackIterator(Env* env, void* function, jint offset, void
 
 Method* nvmGetCallingMethod(Env* env) {
     Method* result = NULL;
-    nvmUnwindIterateCallStack(env, getCallingMethodIterator, &result);
+    unwindIterateCallStack(env, getCallingMethodIterator, &result);
     return result;
 }
 
 CallStackEntry* nvmGetCallStack(Env* env) {
     CallStackEntry* head = NULL;
-    nvmUnwindIterateCallStack(env, getCallStackIterator, &head);
+    unwindIterateCallStack(env, getCallStackIterator, &head);
     if (nvmExceptionOccurred(env)) return NULL;
     return head;
 }

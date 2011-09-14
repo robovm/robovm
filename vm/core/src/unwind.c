@@ -6,6 +6,9 @@
 #if defined(NVM_X86_64) && defined(LINUX)
     // Assume that unwindBacktrace() and _call0() save the CFA in %rbp
     #define CFA_REG 6
+#elif defined(NVM_I386) && defined(LINUX)
+    // Assume that unwindBacktrace() and _call0() save the CFA in %rbp
+    #define CFA_REG 5
 #endif
 
 typedef struct UnwindInfo {

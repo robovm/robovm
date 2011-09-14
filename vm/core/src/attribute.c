@@ -251,12 +251,42 @@ static jboolean parseArrayElementValue(Env* env, void** attributes, Class* array
     jbyte tag = getByte(attributes);
     if (tag != '[') return throwFormatError(env, "Array");
 
-    // HACK: Possibly using nvmNewObjectArray() to create arrays of primitive types. It's ok as long as init (last) parameter is NULL.
+    Class* componentType = nvmGetComponentType(env, arrayClass);
+
     jint length = getChar(attributes);
-    Array* array = (Array*) nvmNewObjectArray(env, length, NULL, arrayClass, NULL);
+    Array* array = NULL;
+    if (componentType->primitive) {
+        switch (componentType->name[0]) {
+        case 'Z':
+            array = (Array*) nvmNewBooleanArray(env, length);
+            break;
+        case 'B':
+            array = (Array*) nvmNewByteArray(env, length);
+            break;
+        case 'S':
+            array = (Array*) nvmNewShortArray(env, length);
+            break;
+        case 'C':
+            array = (Array*) nvmNewCharArray(env, length);
+            break;
+        case 'I':
+            array = (Array*) nvmNewIntArray(env, length);
+            break;
+        case 'J':
+            array = (Array*) nvmNewLongArray(env, length);
+            break;
+        case 'F':
+            array = (Array*) nvmNewFloatArray(env, length);
+            break;
+        case 'D':
+            array = (Array*) nvmNewDoubleArray(env, length);
+            break;
+        }
+    } else {
+        array = (Array*) nvmNewObjectArray(env, length, NULL, arrayClass, NULL);
+    }
     if (!array) return FALSE;
 
-    Class* componentType = nvmGetComponentType(env, arrayClass);
     jint i = 0;
     for (i = 0; i < length; i++) {
         jvalue v;

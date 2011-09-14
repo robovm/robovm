@@ -2,10 +2,11 @@
 #include <unwind.h>
 #include "private.h"
 #include "uthash.h"
+#include "utlist.h"
 
 typedef struct LookupEntry {
     void* lookup;
-    Method* method;
+    ProxyMethod* method;
     UT_hash_handle hh;
 } LookupEntry;
 
@@ -13,6 +14,13 @@ typedef struct ProxyClassData {
     ProxyHandler handler;
     LookupEntry* lookupsHash;
 } ProxyClassData;
+
+typedef struct ProxyClassList {
+    struct ProxyClassList* next;
+    Class* clazz;
+} ProxyClassList;
+
+ProxyClassList* proxyClasses = NULL;
 
 static jboolean hasMethod(Env* env, Class* clazz, char* name, char* desc) {
     Method* method;
@@ -47,15 +55,14 @@ static jboolean addProxyMethods(Env* env, Class* proxyClass, Class* clazz, Proxy
                 impl = _proxy0;
             }
             if (METHOD_IS_CONSTRUCTOR(method) || !hasMethod(env, proxyClass, method->name, method->desc)) { 
-                if (nvmAddMethod(env, proxyClass, method->name, method->desc, access, impl, NULL, method->lookup) == NULL) {
-                    return FALSE;
-                }
+                ProxyMethod* proxyMethod = addProxyMethod(env, proxyClass, method, access, impl);
+                if (!proxyMethod) return FALSE;
                 if (!METHOD_IS_CONSTRUCTOR(method)) {
                     // Record the lookup function in proxyClassData
                     LookupEntry* entry = nvmAllocateMemory(env, sizeof(LookupEntry));
                     if (!entry) return FALSE;
-                    entry->lookup = method->lookup;
-                    entry->method = method;
+                    entry->lookup = proxyMethod->method.lookup;
+                    entry->method = proxyMethod;
                     HASH_ADD_PTR(proxyClassData->lookupsHash, lookup, entry);
                 }
             }
@@ -77,14 +84,13 @@ static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, I
     for (method = interface->interface->methods->first; method != NULL; method = method->next) {
         if (!hasMethod(env, proxyClass, method->name, method->desc)) { 
             jint access = method->access & (~ACC_ABSTRACT);
-            if (nvmAddMethod(env, proxyClass, method->name, method->desc, access, _proxy0, NULL, method->lookup) == NULL) {
-                return FALSE;
-            }
+            ProxyMethod* proxyMethod = addProxyMethod(env, proxyClass, method, access, _proxy0);
+            if (!proxyMethod) return FALSE;
             // Record the lookup function in proxyClassData
             LookupEntry* entry = nvmAllocateMemory(env, sizeof(LookupEntry));
             if (!entry) return FALSE;
-            entry->lookup = method->lookup;
-            entry->method = method;
+            entry->lookup = proxyMethod->method.lookup;
+            entry->method = proxyMethod;
             HASH_ADD_PTR(proxyClassData->lookupsHash, lookup, entry);
         }
     }
@@ -93,6 +99,19 @@ static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, I
     if (!implementAbstractInterfaceMethods(env, proxyClass, interface->interface->interfaces, proxyClassData)) return FALSE;
 
     return TRUE;
+}
+
+Method* lookupProxiedMethod(void* lookup) {
+    ProxyClassList* listEntry;
+    LL_FOREACH(proxyClasses, listEntry) {
+        Class* proxyClass = listEntry->clazz;
+        ProxyClassData* proxyClassData = (ProxyClassData*) proxyClass->data;
+        LookupEntry* entry;
+        HASH_FIND_PTR(proxyClassData->lookupsHash, &lookup, entry);
+        if (entry) return (Method*) entry->method;
+    }
+
+    return NULL;
 }
 
 Class* nvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classLoader, char* className, jint interfacesCount, Class** interfaces, jint instanceDataSize, ProxyHandler handler) {
@@ -118,7 +137,13 @@ Class* nvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classL
         c = c->superclass;
     }
 
+    ProxyClassList* listEntry = nvmAllocateMemory(env, sizeof(ProxyClassList));
+    if (!listEntry) return NULL;
+
     if (!nvmRegisterClass(env, proxyClass)) return NULL;
+
+    listEntry->clazz = proxyClass;
+    LL_APPEND(proxyClasses, listEntry);
 
     return proxyClass;
 }
@@ -138,15 +163,15 @@ void _nvmProxyHandler(CallInfo* callInfo) {
         nvmAbort("Failed to determine which method was called on proxy class. proxyClass=%s, lookup=%p\n", proxyClass->name, lookup);
     }
 
-    Method*  method = entry->method;
+    ProxyMethod* method = entry->method;
 
-    jint argsCount = nvmGetParameterCount(method);
+    jint argsCount = nvmGetParameterCount((Method*) method);
     jvalue *jvalueArgs = NULL;
     if (argsCount > 0) {
         jvalueArgs = (jvalue*) nvmAllocateMemory(env, sizeof(jvalue) * argsCount);
         if (!jvalueArgs) return;
 
-        char* desc = method->desc;
+        char* desc = method->method.desc;
         char* c;
         jint i = 0;
         while (c = nvmGetNextParameterType(&desc)) {
@@ -191,7 +216,7 @@ void _nvmProxyHandler(CallInfo* callInfo) {
     }
 
     proxy0ReturnInt(callInfo, 0);
-    switch (nvmGetReturnType(method->desc)[0]) {
+    switch (nvmGetReturnType(method->method.desc)[0]) {
     case 'B':
         proxy0ReturnInt(callInfo, (jint) returnValue.b);
         break;

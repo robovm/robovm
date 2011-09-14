@@ -25,6 +25,7 @@ typedef struct ClassField ClassField;
 typedef struct InstanceField InstanceField;
 typedef struct Method Method;
 typedef struct NativeMethod NativeMethod;
+typedef struct ProxyMethod ProxyMethod;
 typedef struct Methods Methods;
 typedef struct ObjectHeader ObjectHeader;
 typedef struct Interface Interface;
@@ -76,6 +77,11 @@ struct Method {
 struct NativeMethod {
   Method method;
   void* nativeImpl;
+};
+
+struct ProxyMethod {
+    Method method;
+    Method* proxiedMethod;
 };
 
 struct Methods {

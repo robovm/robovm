@@ -24,6 +24,10 @@ Class* Java_java_lang_reflect_Method_getReturnType(Env* env, Class* clazz, jlong
 
 Object* Java_java_lang_reflect_Method_getSignatureAttribute(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) methodPtr;
+    Class* java_lang_reflect_Proxy = nvmFindClass(env, "java/lang/reflect/Proxy");
+    if (method->clazz->superclass == java_lang_reflect_Proxy) {
+        return nvmAttributeGetMethodSignature(env, ((ProxyMethod*) method)->proxiedMethod);
+    }
     return nvmAttributeGetMethodSignature(env, method);
 }
 
@@ -54,6 +58,10 @@ ObjectArray* Java_java_lang_reflect_Method_getParameterTypes(Env* env, Class* cl
 
 ObjectArray* Java_java_lang_reflect_Method_getExceptionTypes(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) methodPtr;
+    Class* java_lang_reflect_Proxy = nvmFindClass(env, "java/lang/reflect/Proxy");
+    if (method->clazz->superclass == java_lang_reflect_Proxy) {
+        return nvmAttributeGetExceptions(env, ((ProxyMethod*) method)->proxiedMethod);
+    }
     return nvmAttributeGetExceptions(env, method);
 }
 

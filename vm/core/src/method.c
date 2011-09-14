@@ -139,11 +139,6 @@ Method* nvmFindMethodAtAddress(Env* env, void* address) {
     return data.method;
 }
 
-typedef struct CallStackEntries {
-    CallStackEntry* first;
-    CallStackEntry* last;
-} CallStackEntries;
-
 static jboolean getCallingMethodIterator(Env* env, void* function, jint offset, void* data) {
     Method** result = data;
 
@@ -157,19 +152,36 @@ static jboolean getCallingMethodIterator(Env* env, void* function, jint offset, 
     return TRUE;
 }
 
-static jboolean getCallStackIterator(Env* env, void* function, jint offset, void* data) {
-    CallStackEntry** head = data;
-    if (function != nvmGetCallStack) {
-        Method* method = nvmFindMethodAtAddress(env, function);
-        if (method) {
-            CallStackEntry* entry = nvmAllocateMemory(env, sizeof(CallStackEntry));
-            if (!entry) {
-                return FALSE; // Stop iterating
-            }
-            entry->method = method;
-            entry->offset = offset;
-            DL_APPEND(*head, entry);
+typedef struct GetCallStackIteratorData {
+    CallStackEntry* head;
+    jboolean lookupProxyMethod;
+} GetCallStackIteratorData;
+
+static jboolean getCallStackIterator(Env* env, void* function, jint offset, void* _data) {
+    if (function == nvmGetCallStack) return TRUE;
+
+    GetCallStackIteratorData* data = (GetCallStackIteratorData*) _data;
+    if (function == _proxy0) {
+        // The next function in the call stack will be the lookup function of the proxied class.
+        data->lookupProxyMethod = TRUE;
+        return TRUE;
+    }
+
+    Method* method = NULL;
+    if (data->lookupProxyMethod) {
+        method = lookupProxiedMethod(function);
+        data->lookupProxyMethod = FALSE;
+    } else {
+        method = nvmFindMethodAtAddress(env, function);
+    }
+    if (method) {
+        CallStackEntry* entry = nvmAllocateMemory(env, sizeof(CallStackEntry));
+        if (!entry) {
+            return FALSE; // Stop iterating
         }
+        entry->method = method;
+        entry->offset = offset;
+        DL_APPEND(data->head, entry);
     }
     return TRUE;
 }
@@ -181,10 +193,10 @@ Method* nvmGetCallingMethod(Env* env) {
 }
 
 CallStackEntry* nvmGetCallStack(Env* env) {
-    CallStackEntry* head = NULL;
-    unwindIterateCallStack(env, getCallStackIterator, &head);
+    GetCallStackIteratorData data = {NULL, FALSE};
+    unwindIterateCallStack(env, getCallStackIterator, &data);
     if (nvmExceptionOccurred(env)) return NULL;
-    return head;
+    return data.head;
 }
 
 char* nvmGetReturnType(char* desc) {

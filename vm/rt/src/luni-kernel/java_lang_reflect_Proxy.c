@@ -7,7 +7,7 @@ static InstanceField* java_lang_reflect_Proxy_h = NULL;
 static Class* java_lang_reflect_UndeclaredThrowableException = NULL;
 static Method* java_lang_reflect_UndeclaredThrowableException_init = NULL;
 
-static void handler(Env* env, Object* receiver, Method* method, jvalue* args, jvalue* returnValue) {
+static void handler(Env* env, Object* receiver, ProxyMethod* method, jvalue* args, jvalue* returnValue) {
     Class* proxyClass = receiver->clazz;
     Class* java_lang_reflect_Proxy = proxyClass->superclass;
     if (!java_lang_reflect_InvocationHandler) {
@@ -31,10 +31,10 @@ static void handler(Env* env, Object* receiver, Method* method, jvalue* args, jv
     }
 
     // TODO: Reuse java.lang.reflect.Method objects?    
-    Object* methodObject = createMethodObject(env, method);
+    Object* methodObject = createMethodObject(env, (Method*) method);
     if (!methodObject) return;
 
-    char* desc = method->desc;
+    char* desc = method->method.desc;
     char* c;
     jint i = 0;
     while (c = nvmGetNextParameterType(&desc)) {
@@ -70,7 +70,7 @@ static void handler(Env* env, Object* receiver, Method* method, jvalue* args, jv
             return;
         }
         nvmExceptionClear(env);
-        ObjectArray* exceptionTypes = nvmAttributeGetExceptions(env, method);
+        ObjectArray* exceptionTypes = nvmAttributeGetExceptions(env, method->proxiedMethod);
         if (!exceptionTypes) return;
         for (i = 0; i < exceptionTypes->length; i++) {
             Class* exceptionType = (Class*) exceptionTypes->values[i];
@@ -97,7 +97,7 @@ static void handler(Env* env, Object* receiver, Method* method, jvalue* args, jv
         return;
     }
 
-    char* returnTypeDesc = nvmGetReturnType(method->desc);
+    char* returnTypeDesc = nvmGetReturnType(method->method.desc);
     if (returnTypeDesc[0] == 'V') {
         // void method. Just return.
         return;

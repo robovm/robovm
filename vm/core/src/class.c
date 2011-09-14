@@ -55,6 +55,8 @@ Class* java_lang_IllegalMonitorStateException;
 Class* java_lang_InstantiationException;
 Class* java_lang_InterruptedException;
 
+Class* java_lang_InterruptedException;
+
 Class* prim_Z;
 Class* prim_B;
 Class* prim_C;
@@ -784,7 +786,7 @@ Method* nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access
     method->vtableIndex = -1;
 
     method->next = clazz->methods->first;
-    clazz->methods->first  = method;
+    clazz->methods->first = method;
 
     if (method->impl && method->impl != _proxy0) {
         if (clazz->methods->lo == NULL || method->impl < clazz->methods->lo) {
@@ -793,6 +795,25 @@ Method* nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access
             clazz->methods->hi = method->impl;
         }
     }
+    return method;
+}
+
+ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint access, void* impl) {
+    ProxyMethod* method = nvmAllocateMemory(env, sizeof(ProxyMethod));
+    if (!method) return NULL;
+    method->method.clazz = clazz;
+    method->method.name = proxiedMethod->name;
+    method->method.desc = proxiedMethod->desc;
+    method->method.access = access;
+    method->method.impl = impl;
+    method->method.synchronizedImpl = NULL;
+    method->method.lookup = proxiedMethod->lookup;
+    method->proxiedMethod = proxiedMethod;
+    method->method.vtableIndex = -1;
+
+    method->method.next = clazz->methods->first;
+    clazz->methods->first = (Method*) method;
+
     return method;
 }
 

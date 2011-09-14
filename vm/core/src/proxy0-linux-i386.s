@@ -4,7 +4,8 @@ stackArgsIndex_offset = 8  # jint
 stackArgs_offset      = 12 # void**
 returnValue_offset    = 16 # FpIntValue
 returnType_offset     = 24 # jint
-CallInfo_size         = 28
+returnAddress_offset  = 28 # void*
+CallInfo_size         = 32
 
 RETURN_TYPE_INT    = 0
 RETURN_TYPE_LONG   = 1
@@ -23,6 +24,10 @@ _proxy0:
 .Lproxy0CFI0:
 
     movl  $0, stackArgsIndex_offset(%esp)      # stackArgsIndex = 0
+
+    movl  CallInfo_size(%esp), %eax            # %eax = return address
+    movl  %eax, returnAddress_offset(%esp)
+
     leal  CallInfo_size(%esp), %eax 
     addl  $4, %eax                             # Skip return address
     movl  %eax, stackArgs_offset(%esp)         # stackArgs = first stack arg

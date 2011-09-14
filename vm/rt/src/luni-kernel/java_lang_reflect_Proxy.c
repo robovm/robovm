@@ -31,7 +31,7 @@ static void handler(Env* env, Object* receiver, ProxyMethod* method, jvalue* arg
     }
 
     // TODO: Reuse java.lang.reflect.Method objects?    
-    Object* methodObject = createMethodObject(env, (Method*) method);
+    Object* methodObject = createMethodObject(env, method->proxiedMethod);
     if (!methodObject) return;
 
     char* desc = method->method.desc;

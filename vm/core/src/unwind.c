@@ -3,12 +3,15 @@
 #include "private.h"
 
 #define EXCEPTION_CLASS 0x4A4A4A4A4A4A4A4A // "JJJJJJJJ"
-#if defined(NVM_X86_64) && defined(LINUX)
+#if defined(NVM_X86_64)
     // Assume that unwindBacktrace() and _call0() save the CFA in %rbp
     #define CFA_REG 6
 #elif defined(NVM_I386) && defined(LINUX)
-    // Assume that unwindBacktrace() and _call0() save the CFA in %rbp
+    // Assume that unwindBacktrace() and _call0() save the CFA in %ebp
     #define CFA_REG 5
+#elif defined(NVM_I386) && defined(DARWIN)
+    // Assume that unwindBacktrace() and _call0() save the CFA in %ebp
+    #define CFA_REG 4
 #endif
 
 typedef struct UnwindInfo {

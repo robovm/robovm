@@ -4,8 +4,9 @@ stackArgsIndex_offset = 8  # jint
 stackArgs_offset      = 12 # void**
 returnValue_offset    = 16 # FpIntValue
 returnType_offset     = 24 # jint
-CallInfo_size         = 28
-proxy0_stack_size     = (CallInfo_size+12) # Stack has to be 16 byte aligned on Darwin x86
+returnAddress_offset  = 28 # void*
+CallInfo_size         = 32
+proxy0_stack_size     = (CallInfo_size+8) # Stack has to be 16 byte aligned on Darwin i386
 
 RETURN_TYPE_INT    = 0
 RETURN_TYPE_LONG   = 1
@@ -22,6 +23,10 @@ Lproxy0Begin:
 Lproxy0CFI0:
 
     movl  $0, stackArgsIndex_offset(%esp)      # stackArgsIndex = 0
+
+    movl  proxy0_stack_size(%esp), %eax        # %eax = return address
+    movl  %eax, returnAddress_offset(%esp)
+
     leal  proxy0_stack_size(%esp), %eax 
     addl  $4, %eax                             # Skip return address
     movl  %eax, stackArgs_offset(%esp)         # stackArgs = first stack arg    
@@ -68,9 +73,11 @@ Leh_frame_common_begin0:
     .byte    8                       ## CIE Return Address Column
     .byte    1                       ## Augmentation Size
     .byte    16                      ## FDE Encoding = pcrel
+    # CFA is in %esp+4 when entering a function
     .byte    12                      ## DW_CFA_def_cfa
     .byte    5                       ## Register
     .byte    4                       ## Offset
+    # Return address is at CFA-4
     .byte    136                     ## DW_CFA_offset + Reg (8)
     .byte    1                       ## Offset
     .align   2
@@ -104,3 +111,4 @@ Lproxy0eh_frame_begin0:
     .uleb128 proxy0_stack_size + 4   ## Offset
     .align   2
 Lproxy0eh_frame_end0:
+

@@ -4,6 +4,8 @@
 #include "uthash.h"
 #include "utlist.h"
 
+#define ALLOC_PROXY_FRAMES_SIZE 2
+
 typedef struct LookupEntry {
     void* lookup;
     ProxyMethod* method;
@@ -15,21 +17,14 @@ typedef struct ProxyClassData {
     LookupEntry* lookupsHash;
 } ProxyClassData;
 
-typedef struct ProxyClassList {
-    struct ProxyClassList* next;
-    Class* clazz;
-} ProxyClassList;
-
-ProxyClassList* proxyClasses = NULL;
-
-static jboolean hasMethod(Env* env, Class* clazz, char* name, char* desc) {
+static ProxyMethod* hasMethod(Env* env, Class* clazz, char* name, char* desc) {
     Method* method;
     for (method = clazz->methods->first; method != NULL; method = method->next) {
         if (!strcmp(method->name, name) && !strcmp(method->desc, desc)) {
-            return TRUE;
+            return (ProxyMethod*) method;
         }
     }
-    return FALSE;
+    return NULL;
 }
 
 static jboolean addProxyMethods(Env* env, Class* proxyClass, Class* clazz, ProxyClassData* proxyClassData) {
@@ -42,26 +37,28 @@ static jboolean addProxyMethods(Env* env, Class* proxyClass, Class* clazz, Proxy
 
     Method* method;
     for (method = clazz->methods->first; method != NULL; method = method->next) {
-        if (!METHOD_IS_STATIC(method) && !METHOD_IS_PRIVATE(method) && !METHOD_IS_FINAL(method) 
+        if (!METHOD_IS_STATIC(method) && !METHOD_IS_PRIVATE(method) && !METHOD_IS_FINAL(method)
                 && (!METHOD_IS_CONSTRUCTOR(method) || clazz == proxyClass->superclass)) {
 
             void* impl = NULL;
-            jint access = method->access & (~ACC_ABSTRACT);
+            jint access = method->access & (~ACC_ABSTRACT & ~ACC_NATIVE) | ACC_FINAL;
             if (METHOD_IS_CONSTRUCTOR(method)) {
                 impl = method->impl;
                 // TODO: For now we make all constructors public to satisfy java.lang.reflect.Proxy. 
                 access = ACC_PUBLIC;
+                if (!addProxyMethod(env, proxyClass, method, access, impl)) return FALSE;
             } else {
                 impl = _proxy0;
-            }
-            if (METHOD_IS_CONSTRUCTOR(method) || !hasMethod(env, proxyClass, method->name, method->desc)) { 
-                ProxyMethod* proxyMethod = addProxyMethod(env, proxyClass, method, access, impl);
-                if (!proxyMethod) return FALSE;
-                if (!METHOD_IS_CONSTRUCTOR(method)) {
+                if (METHOD_IS_PUBLIC(method)) { 
+                    ProxyMethod* proxyMethod = hasMethod(env, proxyClass, method->name, method->desc);
+                    if (!proxyMethod) {
+                        proxyMethod = addProxyMethod(env, proxyClass, method, access, impl);
+                        if (!proxyMethod) return FALSE;
+                    }
                     // Record the lookup function in proxyClassData
                     LookupEntry* entry = nvmAllocateMemory(env, sizeof(LookupEntry));
                     if (!entry) return FALSE;
-                    entry->lookup = proxyMethod->method.lookup;
+                    entry->lookup = method->lookup;
                     entry->method = proxyMethod;
                     HASH_ADD_PTR(proxyClassData->lookupsHash, lookup, entry);
                 }
@@ -82,14 +79,17 @@ static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, I
 
     Method* method;
     for (method = interface->interface->methods->first; method != NULL; method = method->next) {
-        if (!hasMethod(env, proxyClass, method->name, method->desc)) { 
-            jint access = method->access & (~ACC_ABSTRACT);
-            ProxyMethod* proxyMethod = addProxyMethod(env, proxyClass, method, access, _proxy0);
-            if (!proxyMethod) return FALSE;
+        if (!METHOD_IS_CLASS_INITIALIZER(method)) {
+            ProxyMethod* proxyMethod = hasMethod(env, proxyClass, method->name, method->desc);
+            if (!proxyMethod) { 
+                jint access = method->access & (~ACC_ABSTRACT) | ACC_FINAL;
+                proxyMethod = addProxyMethod(env, proxyClass, method, access, _proxy0);
+                if (!proxyMethod) return FALSE;
+            }
             // Record the lookup function in proxyClassData
             LookupEntry* entry = nvmAllocateMemory(env, sizeof(LookupEntry));
             if (!entry) return FALSE;
-            entry->lookup = proxyMethod->method.lookup;
+            entry->lookup = method->lookup;
             entry->method = proxyMethod;
             HASH_ADD_PTR(proxyClassData->lookupsHash, lookup, entry);
         }
@@ -99,19 +99,6 @@ static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, I
     if (!implementAbstractInterfaceMethods(env, proxyClass, interface->interface->interfaces, proxyClassData)) return FALSE;
 
     return TRUE;
-}
-
-Method* lookupProxiedMethod(void* lookup) {
-    ProxyClassList* listEntry;
-    LL_FOREACH(proxyClasses, listEntry) {
-        Class* proxyClass = listEntry->clazz;
-        ProxyClassData* proxyClassData = (ProxyClassData*) proxyClass->data;
-        LookupEntry* entry;
-        HASH_FIND_PTR(proxyClassData->lookupsHash, &lookup, entry);
-        if (entry) return (Method*) entry->method;
-    }
-
-    return NULL;
 }
 
 Class* nvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classLoader, char* className, jint interfacesCount, Class** interfaces, jint instanceDataSize, ProxyHandler handler) {
@@ -129,23 +116,39 @@ Class* nvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classL
         if (!nvmAddInterface(env, proxyClass, (Class*) interfaces[i])) return NULL;
     }
 
-    if (!addProxyMethods(env, proxyClass, superclass, proxyClassData)) return NULL;
-
     Class* c = proxyClass;
     while (c) {
         if (!implementAbstractInterfaceMethods(env, proxyClass, c->interfaces, proxyClassData)) return NULL;
         c = c->superclass;
     }
 
-    ProxyClassList* listEntry = nvmAllocateMemory(env, sizeof(ProxyClassList));
-    if (!listEntry) return NULL;
+    if (!addProxyMethods(env, proxyClass, superclass, proxyClassData)) return NULL;
 
     if (!nvmRegisterClass(env, proxyClass)) return NULL;
 
-    listEntry->clazz = proxyClass;
-    LL_APPEND(proxyClasses, listEntry);
-
     return proxyClass;
+}
+
+static void pushProxyFrame(Env* env, ProxyMethod* method) {
+    // We don't need to check if NativeFrames.base is NULL since it is always setup with a few slots when an Env is created.
+    ProxyFrames* f = &env->proxyFrames;
+    if (f->top == (f->base + f->size)) {
+        // Make room for more frames.
+        ProxyMethod** oldBase = f->base;
+        jint oldSize = f->size;
+        jint newSize = oldSize + ALLOC_PROXY_FRAMES_SIZE;
+        f->base = nvmAllocateMemory(env, sizeof(ProxyFrames*) * newSize);
+        if (!f->base) nvmRaiseException(env, nvmExceptionOccurred(env));
+        memcpy(f->base, oldBase, sizeof(ProxyFrames*) * oldSize);
+        f->top = f->base + oldSize;
+        f->size = newSize;
+    }
+    *f->top = method;
+    f->top++;
+}
+
+static void popProxyFrame(Env* env) {
+    env->proxyFrames.top--;
 }
 
 void _nvmProxyHandler(CallInfo* callInfo) {
@@ -160,16 +163,19 @@ void _nvmProxyHandler(CallInfo* callInfo) {
     HASH_FIND_PTR(proxyClassData->lookupsHash, &lookup, entry);
 
     if (!entry) {
-        nvmAbort("Failed to determine which method was called on proxy class. proxyClass=%s, lookup=%p\n", proxyClass->name, lookup);
+        nvmThrowNoSuchMethodError(env, "Failed to determine which method was called on proxy class");
+        goto error;
     }
 
     ProxyMethod* method = entry->method;
+
+    pushProxyFrame(env, method);
 
     jint argsCount = nvmGetParameterCount((Method*) method);
     jvalue *jvalueArgs = NULL;
     if (argsCount > 0) {
         jvalueArgs = (jvalue*) nvmAllocateMemory(env, sizeof(jvalue) * argsCount);
-        if (!jvalueArgs) return;
+        if (!jvalueArgs) goto errorPop;
 
         char* desc = method->method.desc;
         char* c;
@@ -211,9 +217,9 @@ void _nvmProxyHandler(CallInfo* callInfo) {
     jvalue returnValue;
     proxyClassData->handler(env, receiver, method, jvalueArgs, &returnValue);
 
-    if (nvmExceptionCheck(env)) {
-        nvmRaiseException(env, nvmExceptionOccurred(env));
-    }
+    popProxyFrame(env);
+
+    if (nvmExceptionCheck(env)) goto error;
 
     proxy0ReturnInt(callInfo, 0);
     switch (nvmGetReturnType(method->method.desc)[0]) {
@@ -246,5 +252,12 @@ void _nvmProxyHandler(CallInfo* callInfo) {
         proxy0ReturnPtr(callInfo, returnValue.l);
         break;
     }
+
+    return;
+
+errorPop:
+    popProxyFrame(env);
+error:
+    nvmRaiseException(env, nvmExceptionOccurred(env));
 }
 

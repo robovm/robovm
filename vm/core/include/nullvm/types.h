@@ -285,6 +285,16 @@ typedef struct NativeFrames {
     int size;
 } NativeFrames;
 
+typedef struct ProxyFrames {
+    /* 
+     * Whenever we call a dynamic proxy we push the ProxyMethod* here.
+     * We need this to be able to included proxy methods in stack traces.
+     */
+    ProxyMethod** top;
+    ProxyMethod** base;
+    int size;
+} ProxyFrames;
+
 struct Env {
     JNIEnv jni;
     VM* vm;
@@ -294,6 +304,7 @@ struct Env {
     void* reserved1; // Used internally
     void* reserved2; // Used internally
     NativeFrames nativeFrames;
+    ProxyFrames proxyFrames;
 };
 
 typedef struct CallStackEntry CallStackEntry;

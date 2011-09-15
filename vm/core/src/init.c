@@ -13,7 +13,8 @@
   #define RT_DSO "libnullvm-rt.dylib"
 #endif
 
-#define INITIAL_NATIVE_FRAMES_SIZE 4
+#define INITIAL_NATIVE_FRAMES_SIZE 8
+#define INITIAL_PROXY_FRAMES_SIZE 2
 
 HyPortLibraryVersion portLibraryVersion;
 HyPortLibrary portLibrary;
@@ -150,12 +151,15 @@ VM* nvmCreateVM(Options* options) {
 }
 
 Env* nvmCreateEnv(VM* vm) {
-    Env* env = GC_MALLOC(sizeof(Env) + sizeof(void*) * INITIAL_NATIVE_FRAMES_SIZE);
+    Env* env = GC_MALLOC(sizeof(Env) + sizeof(void*) * INITIAL_NATIVE_FRAMES_SIZE + sizeof(ProxyMethod*) * INITIAL_PROXY_FRAMES_SIZE);
     if (!env) return NULL;
     env->vm = vm;
     env->nativeFrames.size = INITIAL_NATIVE_FRAMES_SIZE;
     env->nativeFrames.base = (void**) ((void*) env + sizeof(Env));
     env->nativeFrames.top = env->nativeFrames.base;
+    env->proxyFrames.size = INITIAL_PROXY_FRAMES_SIZE;
+    env->proxyFrames.base = (ProxyMethod**) ((void*) env + sizeof(Env) + sizeof(void*) * INITIAL_NATIVE_FRAMES_SIZE);
+    env->proxyFrames.top = env->proxyFrames.base;
     nvmInitJNIEnv(env);
     return env;
 }

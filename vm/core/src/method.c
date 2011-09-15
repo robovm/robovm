@@ -155,6 +155,7 @@ static jboolean getCallingMethodIterator(Env* env, void* function, jint offset, 
 typedef struct GetCallStackIteratorData {
     CallStackEntry* head;
     jboolean lookupProxyMethod;
+    ProxyMethod** proxyFramesTop;
 } GetCallStackIteratorData;
 
 static jboolean getCallStackIterator(Env* env, void* function, jint offset, void* _data) {
@@ -169,7 +170,8 @@ static jboolean getCallStackIterator(Env* env, void* function, jint offset, void
 
     Method* method = NULL;
     if (data->lookupProxyMethod) {
-        method = lookupProxiedMethod(function);
+        data->proxyFramesTop--;
+        method = (Method*) *data->proxyFramesTop;
         data->lookupProxyMethod = FALSE;
     } else {
         method = nvmFindMethodAtAddress(env, function);
@@ -193,7 +195,7 @@ Method* nvmGetCallingMethod(Env* env) {
 }
 
 CallStackEntry* nvmGetCallStack(Env* env) {
-    GetCallStackIteratorData data = {NULL, FALSE};
+    GetCallStackIteratorData data = {NULL, FALSE, env->proxyFrames.top};
     unwindIterateCallStack(env, getCallStackIterator, &data);
     if (nvmExceptionOccurred(env)) return NULL;
     return data.head;

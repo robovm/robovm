@@ -13,9 +13,6 @@ extern void unwindIterateCallStack(Env* env, jboolean (*iterator)(Env*, void*, j
 /* class.c */
 extern ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint access, void* impl);
 
-/* proxy.c */
-extern Method* lookupProxiedMethod(void* lookup);
-
 /* call0-<os>-<arch>.s and proxy0-<os>-<arch>.s */
 #define RETURN_TYPE_INT    0
 #define RETURN_TYPE_LONG   1

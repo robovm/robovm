@@ -3,7 +3,7 @@
 #include "uthash.h"
 #include "utlist.h"
 
-#define ALLOC_NATIVE_FRAMES_SIZE 4
+#define ALLOC_NATIVE_FRAMES_SIZE 8
 
 typedef struct ClassFunc {
     char* name;
@@ -619,8 +619,8 @@ void _nvmBcPushNativeFrame(Env* env, void* cfa) {
         f->top = f->base + oldSize;
         f->size = newSize;
     }
-    *env->nativeFrames.top = cfa;
-    env->nativeFrames.top++;
+    *f->top = cfa;
+    f->top++;
 }
 
 void _nvmBcPopNativeFrame(Env* env) {

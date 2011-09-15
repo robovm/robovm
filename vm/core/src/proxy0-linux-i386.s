@@ -70,14 +70,11 @@ _proxy0:
 .Leh_frame_common_begin0:
     .long    0                       # CIE Identifier Tag
     .byte    1                       # DW_CIE_VERSION
-    .asciz   "zPL"                   # CIE Augmentation
+    .asciz   "z"                     # CIE Augmentation
     .uleb128 1                       # CIE Code Alignment Factor
     .sleb128 -4                      # CIE Data Alignment Factor
     .byte    8                       # CIE Return Address Column
-    .uleb128 6                       # Augmentation Size
-    .byte    0                       # Personality Encoding = absptr
-    .long    _nvmPersonality         # Personality
-    .byte    0                       # LSDA Encoding = absptr
+    .uleb128 0                       # Augmentation Size
     # CFA is in %esp+4 when entering a function
     .byte    12                      # DW_CFA_def_cfa
     .byte    4                       # Register
@@ -94,8 +91,7 @@ _proxy0:
     .long    .Lproxy0eh_frame_begin0 - .Leh_frame_common0 ## FDE CIE offset
     .long    .Lproxy0Begin            ## FDE initial location
     .long    .Lproxy0End - .Lproxy0Begin   ## FDE address range
-    .uleb128 4                       ## Augmentation size
-    .quad    0                       ## Language Specific Data Area
+    .uleb128 0                       ## Augmentation size
     # Advance to Lproxy0CFI0
     .byte    4                       ## DW_CFA_advance_loc4
     .long    .Lproxy0CFI0 - .Lproxy0Begin

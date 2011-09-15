@@ -74,14 +74,11 @@ _proxy0:
 .Leh_frame_common_begin0:
     .long    0                       # CIE Identifier Tag
     .byte    1                       # DW_CIE_VERSION
-    .asciz   "zPLR"                  # CIE Augmentation
+    .asciz   "zR"                    # CIE Augmentation
     .uleb128 1                       # CIE Code Alignment Factor
     .sleb128 -8                      # CIE Data Alignment Factor
     .byte    16                      # CIE Return Address Column
-    .uleb128 7                       # Augmentation Size
-    .byte    155                     # Personality Encoding = indirect pcrel sdata4
-    .long    .L_nvmPersonality.DW.stub - . # Personality
-    .byte    27                      # LSDA Encoding = pcrel sdata4
+    .uleb128 1                       # Augmentation Size
     .byte    27                      # FDE Encoding = pcrel sdata4
     # CFA is in %rsp+8 when entering a function
     .byte    12                      # DW_CFA_def_cfa
@@ -99,8 +96,7 @@ _proxy0:
     .long    .Lproxy0eh_frame_begin0 - .Leh_frame_common0 ## FDE CIE offset
     .long    .Lproxy0Begin - .        ## FDE initial location
     .long    .Lproxy0End - .Lproxy0Begin   ## FDE address range
-    .uleb128 4                       ## Augmentation size
-    .long    0                       ## Language Specific Data Area
+    .uleb128 0                       ## Augmentation size
     # Advance to Lproxy0CFI0
     .byte    4                       ## DW_CFA_advance_loc4
     .long    .Lproxy0CFI0 - .Lproxy0Begin
@@ -109,12 +105,4 @@ _proxy0:
     .uleb128 CallInfo_size + 8       ## Offset
     .align   8
 .Lproxy0eh_frame_end0:
-
-
-    .section    .data.rel,"aw",@progbits
-.L_nvmPersonality.DW.stub:
-    .quad    _nvmPersonality
-
-
-
 

@@ -26,6 +26,13 @@ import org.nullvm.rt.VM;
  * @version $Id$
  */
 public class Bro {
+    public static final boolean IS_DARWIN = System.getProperty("os.name", "").matches("(?i).*(mac|darwin).*");
+    public static final boolean IS_LINUX = System.getProperty("os.name", "").toLowerCase().contains("linux");
+    public static final boolean IS_I386 = System.getProperty("os.arch", "").toLowerCase().contains("i386");
+    public static final boolean IS_X86_64 = System.getProperty("os.arch", "").matches("(?i).*(amd64|x86.64).*");
+    public static final boolean IS_ARM = System.getProperty("os.arch", "").toLowerCase().contains("arm");
+    public static final boolean IS_64_BIT = IS_X86_64;
+    public static final boolean IS_32_BIT = !IS_X86_64;
 
     private static final Map<Class<? extends Runtime>, Runtime> runtimes = 
         new HashMap<Class<? extends Runtime>, Runtime>();
@@ -51,6 +58,10 @@ public class Bro {
     }
     
     private static native void bind(Method method, long function);
+    
+    public static void addSearchPath(String path) {
+        Runtime.addSearchPath(path);
+    }
     
     private static Runtime getRuntime(Class<? extends Runtime> runtimeClass) {
         synchronized (runtimes) {

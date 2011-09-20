@@ -98,4 +98,7 @@ public final class VM {
     public native static final long[] newLongArray(long address, int size);
     public native static final float[] newFloatArray(long address, int size);
     public native static final double[] newDoubleArray(long address, int size);
+    
+    public native static final long getPointerArrayElements(long[] array);
+    public native static final long[] newPointerArray(long address, int size);
 }

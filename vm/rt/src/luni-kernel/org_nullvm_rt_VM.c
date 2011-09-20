@@ -251,3 +251,33 @@ DoubleArray* Java_org_nullvm_rt_VM_newDoubleArray(Env* env, Class* c, jlong addr
     return array;
 }
 
+jlong Java_org_nullvm_rt_VM_getPointerArrayElements(Env* env, Class* c, LongArray* array) {
+#ifdef NVM_X86_64
+    return (jlong) array->values;
+#else
+    void** data = nvmAllocateMemory(env, array->length * sizeof(void*));
+    if (!data) return 0;
+    jint i = 0;
+    for (i = 0; i < array->length; i++) {
+        data[i] = (void*) array->values[i];
+    }
+    return (jlong) data;
+#endif
+}
+
+LongArray* Java_org_nullvm_rt_VM_newPointerArray(Env* env, Class* c, jlong address, jint size) {
+#ifdef NVM_X86_64
+    return Java_org_nullvm_rt_VM_newLongArray(env, c, address, size);
+#else
+    LongArray* array = nvmNewLongArray(env, size);
+    if (array) {
+        void** data = (void**) address;
+        jint i = 0;
+        for (i = 0; i < size; i++) {
+            array->values[i] = (jlong) data[i];
+        }
+    }
+    return array;
+#endif
+}
+

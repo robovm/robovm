@@ -7,6 +7,7 @@ static Class* java_lang_reflect_Constructor = NULL;
 static Method* java_lang_reflect_Constructor_init = NULL;
 static Class* java_lang_reflect_Field = NULL;
 static Method* java_lang_reflect_Field_init = NULL;
+static InstanceField* java_lang_reflect_Method_method = NULL;
 static InstanceField* java_lang_reflect_Field_field = NULL;
 static Class* java_lang_reflect_InvocationTargetException = NULL;
 static Method* java_lang_reflect_InvocationTargetException_init = NULL;
@@ -51,6 +52,18 @@ Object* createConstructorObject(Env* env, Method* method) {
     jvalue initArgs[1];
     initArgs[0].j = (jlong) method;
     return nvmNewObjectA(env, java_lang_reflect_Constructor, java_lang_reflect_Constructor_init, initArgs);
+}
+
+Method* getMethodFromMethodObject(Env* env, Object* methodObject) {
+    if (!java_lang_reflect_Method) {
+        java_lang_reflect_Method = nvmFindClassUsingLoader(env, "java/lang/reflect/Method", NULL);
+        if (!java_lang_reflect_Method) return NULL;
+    }
+    if (!java_lang_reflect_Method_method) {
+        java_lang_reflect_Method_method = nvmGetInstanceField(env, java_lang_reflect_Method, "method", "J");
+        if (!java_lang_reflect_Method_method) return NULL;
+    }
+    return (Method*) nvmGetLongInstanceFieldValue(env, methodObject, java_lang_reflect_Method_method);
 }
 
 Field* getFieldFromFieldObject(Env* env, Object* fieldObject) {

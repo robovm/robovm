@@ -85,6 +85,7 @@ extern Class* nvmAllocateClass(Env* env, char* className, Class* superclass, Cla
 extern jboolean nvmAddInterface(Env* env, Class* clazz, Class* interface);
 extern Field* nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset, void* getter, void* setter);
 extern Method* nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup);
+extern BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup, void** targetImpl);
 extern void nvmAddMethodException(Env* env, Method* method, char* className);
 extern jboolean nvmRegisterClass(Env* env, Class* clazz);
 

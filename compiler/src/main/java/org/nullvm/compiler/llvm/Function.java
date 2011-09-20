@@ -18,6 +18,7 @@ public class Function {
     private final String name;
     private final Linkage linkage;
     private final FunctionAttribute[] attributes;
+    private final String section;
     private final FunctionType type;
     private final Map<Label, BasicBlock> basicBlockMap = new HashMap<Label, BasicBlock>();
     private final List<BasicBlock> basicBlockList = new ArrayList<BasicBlock>();
@@ -31,12 +32,21 @@ public class Function {
     }
     
     public Function(Linkage linkage, String name, FunctionType type, String ... parameterNames) {
-        this(linkage, null, name, type, parameterNames);
+        this(linkage, null, null, name, type, parameterNames);
+    }
+    
+    public Function(Linkage linkage, String section, String name, FunctionType type, String ... parameterNames) {
+        this(linkage, null, section, name, type, parameterNames);
     }
     
     public Function(Linkage linkage, FunctionAttribute[] attributes, String name, FunctionType type, String ... parameterNames) {
+        this(linkage, attributes, null, name, type, parameterNames);
+    }
+    
+    public Function(Linkage linkage, FunctionAttribute[] attributes, String section, String name, FunctionType type, String ... parameterNames) {
         this.linkage = linkage;
         this.attributes = attributes;
+        this.section = section;
         this.name = "@" + name;
         this.type = type;
         this.parameterNames = parameterNames;
@@ -146,6 +156,11 @@ public class Function {
                 sb.append(' ');
                 sb.append(attr.toString());
             }
+        }
+        if (section != null) {
+            sb.append(" section \"");
+            sb.append(section);
+            sb.append('"');
         }
         sb.append(" {\n");
         for (BasicBlock bb : basicBlockList) {

@@ -817,6 +817,30 @@ ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint 
     return method;
 }
 
+BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup, void** targetImpl) {
+    BridgeMethod* method = nvmAllocateMemory(env, sizeof(BridgeMethod));
+    if (!method) return NULL;
+    method->method.clazz = clazz;
+    method->method.name = name;
+    method->method.desc = desc;
+    method->method.access = access;
+    method->method.impl = impl;
+    method->method.synchronizedImpl = synchronizedImpl;
+    method->method.lookup = lookup;
+    method->method.vtableIndex = -1;
+    method->targetImpl = targetImpl;
+
+    method->method.next = clazz->methods->first;
+    clazz->methods->first = (Method*) method;
+
+    if (clazz->methods->lo == NULL || method->method.impl < clazz->methods->lo) {
+        clazz->methods->lo = method->method.impl;
+    } else if (clazz->methods->hi == NULL || method->method.impl > clazz->methods->hi) {
+        clazz->methods->hi = method->method.impl;
+    }
+    return method;
+}
+
 Field* nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset, void* getter, void* setter) {
     Field* field = nvmAllocateMemory(env, IS_STATIC(access) ? sizeof(ClassField) : sizeof(InstanceField));
     if (!field) return NULL;

@@ -1,3 +1,4 @@
+#include <string.h>
 #include <nullvm.h>
 
 ObjectArray* Java_org_nullvm_rt_VM_getStackClasses(Env* env, Class* c, jint skipNum, jint maxDepth) {
@@ -131,5 +132,122 @@ void Java_org_nullvm_rt_VM_setByte(Env* env, Class* c, jlong address, jbyte valu
 
 void Java_org_nullvm_rt_VM_setBoolean(Env* env, Class* c, jlong address, jboolean value) {
     *((jboolean*) address) = value;
+}
+
+jlong Java_org_nullvm_rt_VM_getPointer(Env* env, Class* c, jlong address) {
+    return (jlong) *((void**) address);
+}
+
+void Java_org_nullvm_rt_VM_setPointer(Env* env, Class* c, jlong address, jlong value) {
+    *((void**) address) = (void*) value;
+}
+
+jlong Java_org_nullvm_rt_VM_getStringUTFChars(Env* env, Class* c, Object* s) {
+    return (jlong) nvmGetStringUTFChars(env, s);
+}
+
+Object* Java_org_nullvm_rt_VM_newStringUTF(Env* env, Class* c, jlong address) {
+    return nvmNewStringUTF(env, (char*) address, -1);
+}
+
+jlong Java_org_nullvm_rt_VM_getBooleanArrayElements(Env* env, Class* c, BooleanArray* array) {
+    return (jlong) array->values;
+}
+
+jlong Java_org_nullvm_rt_VM_getByteArrayElements(Env* env, Class* c, ByteArray* array) {
+    return (jlong) array->values;
+}
+
+jlong Java_org_nullvm_rt_VM_getCharArrayElements(Env* env, Class* c, CharArray* array) {
+    return (jlong) array->values;
+}
+
+jlong Java_org_nullvm_rt_VM_getShortArrayElements(Env* env, Class* c, ShortArray* array) {
+    return (jlong) array->values;
+}
+
+jlong Java_org_nullvm_rt_VM_getIntArrayElements(Env* env, Class* c, IntArray* array) {
+    return (jlong) array->values;
+}
+
+jlong Java_org_nullvm_rt_VM_getLongArrayElements(Env* env, Class* c, LongArray* array) {
+    return (jlong) array->values;
+}
+
+jlong Java_org_nullvm_rt_VM_getFloatArrayElements(Env* env, Class* c, FloatArray* array) {
+    return (jlong) array->values;
+}
+
+jlong Java_org_nullvm_rt_VM_getDoubleArrayElements(Env* env, Class* c, DoubleArray* array) {
+    return (jlong) array->values;
+}
+
+BooleanArray* Java_org_nullvm_rt_VM_newBooleanArray(Env* env, Class* c, jlong address, jint size) {
+    BooleanArray* array = nvmNewBooleanArray(env, size);
+    if (array) {
+        jbyte* data = (jbyte*) address;
+        jint i = 0;
+        for (i = 0; i < size; i++) {
+            array->values[i] = *data ? TRUE : FALSE;
+            data++;
+        }
+    }
+    return array;
+}
+
+ByteArray* Java_org_nullvm_rt_VM_newByteArray(Env* env, Class* c, jlong address, jint size) {
+    ByteArray* array = nvmNewByteArray(env, size);
+    if (array) {
+        memcpy(array->values, (void*) address, size * sizeof(jbyte));
+    }
+    return array;
+}
+
+CharArray* Java_org_nullvm_rt_VM_newCharArray(Env* env, Class* c, jlong address, jint size) {
+    CharArray* array = nvmNewCharArray(env, size);
+    if (array) {
+        memcpy(array->values, (void*) address, size * sizeof(jchar));
+    }
+    return array;
+}
+
+ShortArray* Java_org_nullvm_rt_VM_newShortArray(Env* env, Class* c, jlong address, jint size) {
+    ShortArray* array = nvmNewShortArray(env, size);
+    if (array) {
+        memcpy(array->values, (void*) address, size * sizeof(jshort));
+    }
+    return array;
+}
+
+IntArray* Java_org_nullvm_rt_VM_newIntArray(Env* env, Class* c, jlong address, jint size) {
+    IntArray* array = nvmNewIntArray(env, size);
+    if (array) {
+        memcpy(array->values, (void*) address, size * sizeof(jint));
+    }
+    return array;
+}
+
+LongArray* Java_org_nullvm_rt_VM_newLongArray(Env* env, Class* c, jlong address, jint size) {
+    LongArray* array = nvmNewLongArray(env, size);
+    if (array) {
+        memcpy(array->values, (void*) address, size * sizeof(jlong));
+    }
+    return array;
+}
+
+FloatArray* Java_org_nullvm_rt_VM_newFloatArray(Env* env, Class* c, jlong address, jint size) {
+    FloatArray* array = nvmNewFloatArray(env, size);
+    if (array) {
+        memcpy(array->values, (void*) address, size * sizeof(jfloat));
+    }
+    return array;
+}
+
+DoubleArray* Java_org_nullvm_rt_VM_newDoubleArray(Env* env, Class* c, jlong address, jint size) {
+    DoubleArray* array = nvmNewDoubleArray(env, size);
+    if (array) {
+        memcpy(array->values, (void*) address, size * sizeof(jdouble));
+    }
+    return array;
 }
 

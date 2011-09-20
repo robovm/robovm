@@ -12,7 +12,7 @@ import java.util.Arrays;
  *
  * @version $Id$
  */
-public class FunctionType extends UserType {
+public class FunctionType extends PointerType {
     private final Type returnType;
     private final Type[] parameterTypes;
     private final boolean varargs;
@@ -22,6 +22,7 @@ public class FunctionType extends UserType {
     }
     
     public FunctionType(Type returnType, boolean varargs, Type ... parameterTypes) {
+        super(null);
         this.returnType = returnType;
         this.varargs = varargs;
         this.parameterTypes = parameterTypes.clone();
@@ -32,12 +33,17 @@ public class FunctionType extends UserType {
     }
     
     public FunctionType(String alias, Type returnType, boolean varargs, Type ... parameterTypes) {
-        super(alias);
+        super(alias, null);
         this.returnType = returnType;
         this.varargs = varargs;
         this.parameterTypes = parameterTypes.clone();
     }
 
+    @Override
+    public Type getBase() {
+        throw new UnsupportedOperationException("Function pointers cannot be dereferenced");
+    }
+    
     public Type getReturnType() {
         return returnType;
     }

@@ -76,4 +76,26 @@ public final class VM {
     public native static final void setShort(long address, short value);
     public native static final void setByte(long address, byte value);
     public native static final void setBoolean(long address, boolean value);
+
+    public native static final long getPointer(long address);
+    public native static final void setPointer(long address, long value);
+    
+    public native static final long getStringUTFChars(String s);
+    public native static final String newStringUTF(long address);
+    public native static final long getBooleanArrayElements(boolean[] array);
+    public native static final long getByteArrayElements(byte[] array);
+    public native static final long getCharArrayElements(char[] array);
+    public native static final long getShortArrayElements(short[] array);
+    public native static final long getIntArrayElements(int[] array);
+    public native static final long getLongArrayElements(long[] array);
+    public native static final long getFloatArrayElements(float[] array);
+    public native static final long getDoubleArrayElements(double[] array);
+    public native static final boolean[] newBooleanArray(long address, int size);
+    public native static final byte[] newByteArray(long address, int size);
+    public native static final char[] newCharArray(long address, int size);
+    public native static final short[] newShortArray(long address, int size);
+    public native static final int[] newIntArray(long address, int size);
+    public native static final long[] newLongArray(long address, int size);
+    public native static final float[] newFloatArray(long address, int size);
+    public native static final double[] newDoubleArray(long address, int size);
 }

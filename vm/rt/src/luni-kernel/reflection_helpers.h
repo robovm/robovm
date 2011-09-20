@@ -3,6 +3,7 @@
 Object* createMethodObject(Env* env, Method* method);
 Object* createFieldObject(Env* env, Field* field);
 Object* createConstructorObject(Env* env, Method* method);
+Method* getMethodFromMethodObject(Env* env, Object* methodObject);
 Field* getFieldFromFieldObject(Env* env, Object* fieldObject);
 void throwInvocationTargetException(Env* env, Object* throwable);
 jvalue* validateAndUnwrapArgs(Env* env, ObjectArray* parameterTypes, ObjectArray* args);

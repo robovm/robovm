@@ -133,6 +133,8 @@ SET(SRC
   luni-kernel/java_lang_reflect_Method.c 
   luni-kernel/java_lang_reflect_Proxy.c 
   luni-kernel/org_nullvm_rt_VM.c 
+  luni-kernel/org_nullvm_rt_bro_Dl.c 
+  luni-kernel/org_nullvm_rt_bro_Bro.c 
   luni-kernel/org_apache_harmony_kernel_vm_VM.c 
   luni-kernel/sun_misc_Unsafe.c 
   nio_char/shared/additional/Big5.c 

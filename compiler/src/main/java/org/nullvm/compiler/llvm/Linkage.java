@@ -17,7 +17,8 @@ public enum Linkage {
     linkonce,
     linkonce_odr,
     external, 
-    internal;
+    internal,
+    weak;
     
     public String toString() {
         if (this == _private) {

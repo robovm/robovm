@@ -9,6 +9,8 @@ import static org.nullvm.compiler.llvm.FunctionAttribute.*;
 import static org.nullvm.compiler.llvm.Linkage.*;
 import static org.nullvm.compiler.llvm.Type.*;
 
+import jas.ParameterVisibilityAnnotationAttr;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -65,6 +67,7 @@ import org.nullvm.compiler.llvm.Icmp.Condition;
 import org.nullvm.compiler.llvm.Instruction;
 import org.nullvm.compiler.llvm.IntegerConstant;
 import org.nullvm.compiler.llvm.IntegerType;
+import org.nullvm.compiler.llvm.Inttoptr;
 import org.nullvm.compiler.llvm.Invoke;
 import org.nullvm.compiler.llvm.Label;
 import org.nullvm.compiler.llvm.Linkage;
@@ -78,6 +81,7 @@ import org.nullvm.compiler.llvm.Or;
 import org.nullvm.compiler.llvm.PackedStructureConstant;
 import org.nullvm.compiler.llvm.PackedStructureType;
 import org.nullvm.compiler.llvm.PointerType;
+import org.nullvm.compiler.llvm.Ptrtoint;
 import org.nullvm.compiler.llvm.Ret;
 import org.nullvm.compiler.llvm.Sext;
 import org.nullvm.compiler.llvm.Shl;
@@ -262,6 +266,7 @@ public class SootClassCompiler {
     private static final FunctionRef NVM_BC_ADD_INTERFACE = new FunctionRef("_nvmBcAddInterface", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_ADD_FIELD = new FunctionRef("_nvmBcAddField", new FunctionType(FIELD_PTR, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_ADD_METHOD = new FunctionRef("_nvmBcAddMethod", new FunctionType(METHOD_PTR, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_ADD_BRIDGE_METHOD = new FunctionRef("_nvmBcAddBridgeMethod", new FunctionType(METHOD_PTR, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_SET_CLASS_ATTRIBUTES = new FunctionRef("_nvmBcSetClassAttributes", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_SET_METHOD_ATTRIBUTES = new FunctionRef("_nvmBcSetMethodAttributes", new FunctionType(VOID, ENV_PTR, METHOD_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_SET_FIELD_ATTRIBUTES = new FunctionRef("_nvmBcSetFieldAttributes", new FunctionType(VOID, ENV_PTR, FIELD_PTR, I8_PTR));
@@ -275,6 +280,7 @@ public class SootClassCompiler {
     private static final FunctionRef NVM_BC_THROW = new FunctionRef("_nvmBcThrow", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     private static final FunctionRef NVM_BC_RETHROW = new FunctionRef("_nvmBcRethrow", new FunctionType(VOID, ENV_PTR));
     private static final FunctionRef NVM_BC_THROW_IF_EXCEPTION_OCCURRED = new FunctionRef("_nvmBcThrowIfExceptionOccurred", new FunctionType(VOID, ENV_PTR));
+    private static final FunctionRef NVM_BC_THROW_UNSATISIFED_LINK_ERROR = new FunctionRef("_nvmBcThrowUnsatisfiedLinkError", new FunctionType(VOID, ENV_PTR));
     private static final FunctionRef NVM_BC_NEW_BOOLEAN_ARRAY = new FunctionRef("_nvmBcNewBooleanArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
     private static final FunctionRef NVM_BC_NEW_BYTE_ARRAY = new FunctionRef("_nvmBcNewByteArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
     private static final FunctionRef NVM_BC_NEW_CHAR_ARRAY = new FunctionRef("_nvmBcNewCharArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
@@ -362,6 +368,7 @@ public class SootClassCompiler {
     }
     
     private SootClass sootClass;
+    private int sectionCounter = 1;
     
     private Module module;
     private Map<SootClass, Global> throwables;
@@ -438,7 +445,9 @@ public class SootClassCompiler {
         }
         
         for (SootMethod method : sootClass.getMethods()) {
-            if (isNative(method)) {
+            if (isBridge(method)) {
+                nativeBridgeMethod(method);
+            } else if (isNative(method)) {
                 nativeMethod(method);
             } else if (!method.isAbstract()) {
                 Body body = method.retrieveActiveBody();
@@ -593,6 +602,7 @@ public class SootClassCompiler {
         }
         Function function = module.newFunction(linkonce_odr, 
                 new FunctionAttribute[] {noinline, optsize},
+//                sootClass.getName().replace('.', '_') + "_" + (sectionCounter++),
                 name + (trampoline instanceof NativeCall ? "" : "_t"), 
                 functionRef.getType(), parameterNames);
 
@@ -757,6 +767,85 @@ public class SootClassCompiler {
             innerFunction.add(new Call(NVM_BC_POP_NATIVE_FRAME, ENV));
             innerFunction.add(new Call(NVM_BC_THROW_IF_EXCEPTION_OCCURRED, ENV));
             innerFunction.add(new Ret(new VariableRef(result)));
+        }
+    }
+    
+    private void nativeBridgeMethod(SootMethod method) {
+        if (!method.getReturnType().equals(VoidType.v()) && !(method.getReturnType() instanceof PrimType)) {
+            throw new IllegalArgumentException("@Bridge annotated method must return void or primitive type");
+        }
+        for (int i = 0; i < method.getParameterCount(); i++) {
+            if (!(method.getParameterType(i) instanceof PrimType)) {
+                throw new IllegalArgumentException("@Bridge annotated method must take only primitive type arguments");
+            }            
+        }
+
+        Function outerFunction = createFunction(method);
+        Function innerFunction = createFunction(mangleMethod(method.makeRef()) + "_inner", method);
+        
+        Type[] parameterTypes = innerFunction.getType().getParameterTypes();
+        String[] parameterNames = innerFunction.getParameterNames();
+        ArrayList<Value> args = new ArrayList<Value>();
+        for (int i = 0; i < parameterTypes.length; i++) {
+            args.add(new VariableRef(parameterNames[i], parameterTypes[i]));
+        }
+        
+        if (outerFunction.getType().getReturnType() == VOID) {
+            outerFunction.add(new Call(innerFunction.ref(), args.toArray(new Value[args.size()])));
+            outerFunction.add(new Ret());
+        } else {
+            Variable result = outerFunction.newVariable(outerFunction.getType().getReturnType());
+            outerFunction.add(new Call(result, innerFunction.ref(), args.toArray(new Value[args.size()])));
+            outerFunction.add(new Ret(result.ref()));
+        }
+
+        FunctionType targetFunctionType = getBridgeFunctionType(method);
+
+        // Remove Env* from args
+        args.remove(0);
+        Type[] targetParameterTypes = targetFunctionType.getParameterTypes();
+        for (int i = 0; i < targetParameterTypes.length; i++) {
+            if (targetParameterTypes[i] == I8_PTR) {
+                // Convert arg at index i from i64 to i8*
+                Variable argI8Ptr = innerFunction.newVariable(I8_PTR);
+                innerFunction.add(new Inttoptr(argI8Ptr, args.get(i), I8_PTR));
+                args.set(i, argI8Ptr.ref());
+            }
+        }
+        
+        Variable targetFunction = innerFunction.newVariable(targetFunctionType);
+        Global targetFunctionPtr = new Global(outerFunction.getName().substring(1) + "_ptr", Linkage._private, new NullConstant(targetFunctionType));
+        module.addGlobal(targetFunctionPtr);
+        innerFunction.add(new Load(targetFunction, targetFunctionPtr.ref()));
+
+        Label nullLabel = new Label();
+        Label notNullLabel = new Label();
+        Variable nullCheck = innerFunction.newVariable(I1);
+        innerFunction.add(new Icmp(nullCheck, Condition.eq, targetFunction.ref(), new NullConstant(targetFunctionType)));
+        innerFunction.add(new Br(nullCheck.ref(), innerFunction.newBasicBlockRef(nullLabel), innerFunction.newBasicBlockRef(notNullLabel)));
+        innerFunction.newBasicBlock(nullLabel);
+        innerFunction.add(new Call(NVM_BC_THROW_UNSATISIFED_LINK_ERROR, ENV));
+        innerFunction.add(new Unreachable());
+        innerFunction.newBasicBlock(notNullLabel);
+        
+        Variable frameAddress = innerFunction.newVariable(I8_PTR);
+        innerFunction.add(new Call(frameAddress, LLVM_FRAMEADDRESS, new IntegerConstant(0)));
+        innerFunction.add(new Call(NVM_BC_PUSH_NATIVE_FRAME, ENV, frameAddress.ref()));
+        if (innerFunction.getType().getReturnType() == VOID) {
+            innerFunction.add(new Call(targetFunction.ref(), args.toArray(new Value[args.size()])));
+            innerFunction.add(new Call(NVM_BC_POP_NATIVE_FRAME, ENV));
+            innerFunction.add(new Ret());
+        } else {
+            Variable result = innerFunction.newVariable(targetFunctionType.getReturnType());
+            innerFunction.add(new Call(result, targetFunction.ref(), args.toArray(new Value[args.size()])));
+            innerFunction.add(new Call(NVM_BC_POP_NATIVE_FRAME, ENV));
+            if (targetFunctionType.getReturnType() == I8_PTR) {
+                Variable resultI64 = innerFunction.newVariable(I64);
+                innerFunction.add(new Ptrtoint(resultI64, result.ref(), I64));
+                innerFunction.add(new Ret(resultI64.ref()));
+            } else {
+                innerFunction.add(new Ret(result.ref()));
+            }
         }
     }
     
@@ -1272,13 +1361,25 @@ public class SootClassCompiler {
                 }
             }
             Variable methodPtr = function.newVariable(METHOD_PTR);
-            function.add(new Call(methodPtr, NVM_BC_ADD_METHOD, ENV, clazz.ref(),
-                    getString(method.getName()),
-                    getString(getDescriptor(method)),
-                    new IntegerConstant(method.getModifiers()),
-                    functionRef,
-                    synchronizedRef,
-                    lookup));
+            if (isBridge(method)) {
+                GlobalRef targetFunction = new GlobalRef(mangleMethod(method) + "_ptr", getBridgeFunctionType(method));
+                function.add(new Call(methodPtr, NVM_BC_ADD_BRIDGE_METHOD, ENV, clazz.ref(),
+                        getString(method.getName()),
+                        getString(getDescriptor(method)),
+                        new IntegerConstant(method.getModifiers() | Modifier.NATIVE),
+                        functionRef,
+                        synchronizedRef,
+                        lookup,
+                        new ConstantBitcast(targetFunction, I8_PTR)));
+            } else {
+                function.add(new Call(methodPtr, NVM_BC_ADD_METHOD, ENV, clazz.ref(),
+                        getString(method.getName()),
+                        getString(getDescriptor(method)),
+                        new IntegerConstant(method.getModifiers()),
+                        functionRef,
+                        synchronizedRef,
+                        lookup));
+            }
             
             Constant methodAttributes = encodeAttributes(method);
             if (methodAttributes != null) {
@@ -2480,6 +2581,21 @@ public class SootClassCompiler {
         // TODO: Check for @Native annotation
         return false;
     }
+
+    private static boolean isBridge(SootMethod sm) {
+        VisibilityAnnotationTag vatag = (VisibilityAnnotationTag) sm.getTag("VisibilityAnnotationTag");
+        if (vatag != null) {
+            for (AnnotationTag tag : vatag.getAnnotations()) {
+                if ("Lorg/nullvm/rt/bro/Bridge;".equals(tag.getType())) {
+                    if (!sm.isStatic()) {
+                        throw new IllegalArgumentException("@Bridge annotated methods must be static.");
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     
     private static FunctionType getFunctionType(String desc) {
         List<Type> paramTypes = new ArrayList<Type>();
@@ -2515,6 +2631,53 @@ public class SootClassCompiler {
         for (soot.Type t : (List<soot.Type>) methodRef.parameterTypes()) {
             paramTypes[i++] = getType(t);
         }
+        return new FunctionType(returnType, paramTypes);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static FunctionType getBridgeFunctionType(SootMethod method) {
+        Type returnType = getType(method.getReturnType());
+        VisibilityAnnotationTag vatag = (VisibilityAnnotationTag) method.getTag("VisibilityAnnotationTag");
+        for (AnnotationTag tag : vatag.getAnnotations()) {
+            if ("Lorg/nullvm/rt/bro/Pointer;".equals(tag.getType())) {
+                if (!method.getReturnType().equals(LongType.v())) {
+                    throw new IllegalArgumentException("@Bridge annotated method " 
+                            + method.getName() + " must return long when annotated with @Pointer");
+                }
+                returnType = I8_PTR;
+                break;
+            }
+        }
+
+        Type[] paramTypes = new Type[method.getParameterTypes().size()];
+        int i = 0;
+        for (soot.Type t : (List<soot.Type>) method.getParameterTypes()) {
+            paramTypes[i++] = getType(t);
+        }
+        
+        VisibilityParameterAnnotationTag vpatag = (VisibilityParameterAnnotationTag) method.getTag("VisibilityParameterAnnotationTag");
+        if (vpatag != null) {
+            List<VisibilityAnnotationTag> tags = vpatag.getVisibilityAnnotations();
+            for (i = 0; i < paramTypes.length; i++) {
+                List<AnnotationTag> annotations = tags.get(i).getAnnotations();
+                if (annotations != null) {
+                    for (AnnotationTag tag : annotations) {
+                        if ("Lorg/nullvm/rt/bro/Pointer;".equals(tag.getType())) {
+                            if (!method.getParameterType(i).equals(LongType.v())) {
+                                throw new IllegalArgumentException("Parameter " + (i + 1) 
+                                        + " of @Bridge annotated method " 
+                                        + method.getName() 
+                                        + " must be of type long when annotated with @Pointer");
+                            }
+                            paramTypes[i] = I8_PTR;
+                            break;
+                        }                    
+                    }
+                }
+            }
+        }
+        
+        
         return new FunctionType(returnType, paramTypes);
     }
     

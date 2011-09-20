@@ -211,6 +211,12 @@ Method* _nvmBcAddMethod(Env* env, Class* clazz, char* name, char* desc, jint acc
     return method;
 }
 
+BridgeMethod* _nvmBcAddBridgeMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup, void* targetImpl) {
+    BridgeMethod* method = nvmAddBridgeMethod(env, clazz, name, desc, access, impl, synchronizedImpl, lookup, targetImpl);
+    if (!method) nvmRaiseException(env, nvmExceptionOccurred(env));
+    return method;
+}
+
 Field* _nvmBcAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset, void* getter, void* setter) {
     Field* field = nvmAddField(env, clazz, name, desc, access, offset, getter, setter);
     if (!field) nvmRaiseException(env, nvmExceptionOccurred(env));
@@ -306,6 +312,11 @@ void _nvmBcThrowArrayIndexOutOfBoundsException(Env* env, jint index) {
 
 void _nvmBcThrowArithmeticException(Env* env) {
     nvmThrowArithmeticException(env);
+    _nvmBcThrow(env, nvmExceptionOccurred(env));
+}
+
+void _nvmBcThrowUnsatisfiedLinkError(Env* env) {
+    nvmThrowUnsatisfiedLinkError(env);
     _nvmBcThrow(env, nvmExceptionOccurred(env));
 }
 

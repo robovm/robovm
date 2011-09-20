@@ -158,7 +158,7 @@ public class Main {
         for (ClasspathEntry entry : all) {
             for (Clazz clazz : entry.getPath().list()) {
                 String className = clazz.getInternalName();
-                File outFile = new File(entry.getLlvmCacheDir(), className.replace('/', File.separatorChar) + "" + ".class.ll");
+                File outFile = new File(entry.getObjectCacheDir(), className.replace('/', File.separatorChar) + "" + ".class.o");
                 if (clean || !outFile.exists() || outFile.lastModified() < clazz.lastModified()) {
                     changed.add(clazz);
                 }
@@ -350,7 +350,7 @@ public class Main {
         }
 
         if (verbose) {
-            stdout.format("Building static library '%s' for classpath entry\n", outFile, entry);
+            stdout.format("Building static library '%s' for classpath entry: %s\n", outFile, entry);
         }
         
         linkStatic(entry.getObjectCacheDir(), objectFiles, outFile);
@@ -539,6 +539,8 @@ public class Main {
         
         gccArgs.add("-L");
         gccArgs.add(homeLibOsArch.getAbsolutePath());
+        gccArgs.add("-Xlinker");
+        gccArgs.add("--gc-sections");
         if (os == OS.linux) {
             libArgs.add("-l:libgc.so.1");
             gccArgs.add("-Xlinker");

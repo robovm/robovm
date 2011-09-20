@@ -539,8 +539,8 @@ public class Main {
         
         gccArgs.add("-L");
         gccArgs.add(homeLibOsArch.getAbsolutePath());
-        gccArgs.add("-Xlinker");
-        gccArgs.add("--gc-sections");
+//        gccArgs.add("-Xlinker");
+//        gccArgs.add("--gc-sections");
         if (os == OS.linux) {
             libArgs.add("-l:libgc.so.1");
             gccArgs.add("-Xlinker");

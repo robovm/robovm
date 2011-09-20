@@ -120,7 +120,13 @@ ObjectArray* Java_java_lang_System_getPropertyList(Env* env, Class* clazz) {
 
     // TODO: Set java.vm.* and java.specification.*
 
-    if (!setProperty(env, &props, i++, "os.arch", os.machine)) return NULL;
+#ifdef NVM_X86_64
+    if (!setProperty(env, &props, i++, "os.arch", "x86_64")) return NULL;
+#elif NVM_I386
+    if (!setProperty(env, &props, i++, "os.arch", "i386")) return NULL;
+#else
+#error "Unknown ARCH"
+#endif
     if (!setProperty(env, &props, i++, "os.name", os.sysname)) return NULL;
     if (!setProperty(env, &props, i++, "os.version", os.release)) return NULL;
     if (!setProperty(env, &props, i++, "user.home", pwd->pw_dir)) return NULL;
@@ -136,6 +142,12 @@ ObjectArray* Java_java_lang_System_getPropertyList(Env* env, Class* clazz) {
     if (!setProperty(env, &props, i++, "user.language", "en")) return NULL;
     if (!setProperty(env, &props, i++, "user.region", "US")) return NULL;
     // TODO: user.timezone
+
+    if (!setProperty(env, &props, i++, "org.nullvm.main.class", env->vm->options->mainClass)) return NULL;
+    if (!setProperty(env, &props, i++, "org.nullvm.base.path", env->vm->options->basePath)) return NULL;
+    if (!setProperty(env, &props, i++, "org.nullvm.executable.path", env->vm->options->executablePath)) return NULL;
+    if (!setProperty(env, &props, i++, "org.nullvm.boot.lib.path", env->vm->options->bootLibPath)) return NULL;
+    if (!setProperty(env, &props, i++, "org.nullvm.main.lib.path", env->vm->options->mainLibPath)) return NULL;
 
     return props;
 }

@@ -17,13 +17,26 @@ package org.nullvm.rt.bro;
 
 import java.lang.reflect.Method;
 
+import org.nullvm.rt.bro.annotation.Bridge;
+import org.nullvm.rt.bro.annotation.Library;
+
 /**
  *
  * @version $Id$
  */
 public class CRuntime extends Runtime {
     
+    @Override
+    public void loadLibrary(Library library) {
+        getHandle(library);
+    }
+    
     public long resolveBridge(Library library, Bridge bridge, Method method) {
+        if (library == null) {
+            throw new IllegalArgumentException("No @" + Library.class.getName() 
+                    + " annotation found on class " + method.getDeclaringClass().getName());
+        }
+        
         long handle = getHandle(library);
         String symbol = bridge.symbol();
         if (symbol == null || "".equals(symbol)) {
@@ -32,7 +45,8 @@ public class CRuntime extends Runtime {
         long f = Dl.resolve(handle, symbol);
         if (f == 0L) {
             throw new UnsatisfiedLinkError("Failed to resolve native function " 
-                    + "for method " + method + " with bridge annotation " + bridge);
+                    + "for method " + method + " with bridge annotation " + bridge 
+                    + " in library " + library);
         }
         return f;
     }

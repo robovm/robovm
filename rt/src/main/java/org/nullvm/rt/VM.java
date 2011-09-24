@@ -54,6 +54,8 @@ public final class VM {
     
     public native static final long getObjectAddress(Object object);
     
+    public native static final Object castAddressToObject(long address);
+
     public native static final int getInstanceFieldOffset(long field);
     
     public native static final long getClassFieldAddress(long field);

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nullvm.rt.bro;
+package org.nullvm.rt.bro.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -28,5 +28,4 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 public @interface Library {
     public String value();
-    public Class<? extends Runtime> runtime() default CRuntime.class;
 }

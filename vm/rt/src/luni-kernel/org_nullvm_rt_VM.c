@@ -52,6 +52,10 @@ jlong Java_org_nullvm_rt_VM_getObjectAddress(Env* env, Class* c, Object* object)
     return (jlong) object;
 }
     
+Object* Java_org_nullvm_rt_VM_castAddressToObject(Env* env, Class* c, jlong address) {
+    return (Object*) address;
+}
+
 jint Java_org_nullvm_rt_VM_getInstanceFieldOffset(Env* env, Class* c, jlong fieldPtr) {
     InstanceField* field = (InstanceField*) fieldPtr;
     return field->offset;

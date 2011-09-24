@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.nullvm.rt.bro.annotation.Bridge;
+import org.nullvm.rt.bro.annotation.Library;
+
 /**
  *
  * @version $Id$
@@ -76,6 +79,8 @@ public abstract class Runtime {
     public static void addSearchPath(String path) {
         searchPaths.add(path);
     }
+    
+    public abstract void loadLibrary(Library library);
     
     public abstract long resolveBridge(Library library, Bridge bridge, Method method);
     

@@ -803,6 +803,10 @@ public class SootClassCompiler {
 
         // Remove Env* from args
         args.remove(0);
+        if (!method.isStatic()) {
+            // Remove receiver from args
+            args.remove(0);
+        }
         Type[] targetParameterTypes = targetFunctionType.getParameterTypes();
         for (int i = 0; i < targetParameterTypes.length; i++) {
             if (targetParameterTypes[i] == I8_PTR) {
@@ -2586,10 +2590,7 @@ public class SootClassCompiler {
         VisibilityAnnotationTag vatag = (VisibilityAnnotationTag) sm.getTag("VisibilityAnnotationTag");
         if (vatag != null) {
             for (AnnotationTag tag : vatag.getAnnotations()) {
-                if ("Lorg/nullvm/rt/bro/Bridge;".equals(tag.getType())) {
-                    if (!sm.isStatic()) {
-                        throw new IllegalArgumentException("@Bridge annotated methods must be static.");
-                    }
+                if ("Lorg/nullvm/rt/bro/annotation/Bridge;".equals(tag.getType())) {
                     return true;
                 }
             }
@@ -2639,7 +2640,7 @@ public class SootClassCompiler {
         Type returnType = getType(method.getReturnType());
         VisibilityAnnotationTag vatag = (VisibilityAnnotationTag) method.getTag("VisibilityAnnotationTag");
         for (AnnotationTag tag : vatag.getAnnotations()) {
-            if ("Lorg/nullvm/rt/bro/Pointer;".equals(tag.getType())) {
+            if ("Lorg/nullvm/rt/bro/annotation/Pointer;".equals(tag.getType())) {
                 if (!method.getReturnType().equals(LongType.v())) {
                     throw new IllegalArgumentException("@Bridge annotated method " 
                             + method.getName() + " must return long when annotated with @Pointer");
@@ -2662,7 +2663,7 @@ public class SootClassCompiler {
                 List<AnnotationTag> annotations = tags.get(i).getAnnotations();
                 if (annotations != null) {
                     for (AnnotationTag tag : annotations) {
-                        if ("Lorg/nullvm/rt/bro/Pointer;".equals(tag.getType())) {
+                        if ("Lorg/nullvm/rt/bro/annotation/Pointer;".equals(tag.getType())) {
                             if (!method.getParameterType(i).equals(LongType.v())) {
                                 throw new IllegalArgumentException("Parameter " + (i + 1) 
                                         + " of @Bridge annotated method " 

@@ -18,6 +18,7 @@ declare %Class* @_nvmBcAllocateClass(%Env*, i8*, i8*, %Object*, i32, i32, i32)
 declare void @_nvmBcAddInterface(%Env*, %Class*, i8*)
 declare %Method* @_nvmBcAddMethod(%Env*, %Class*, i8*, i8*, i32, i8*, i8*, i8*)
 declare %Method* @_nvmBcAddBridgeMethod(%Env*, %Class*, i8*, i8*, i32, i8*, i8*, i8*, i8*)
+declare %Method* @_nvmBcAddCallbackMethod(%Env*, %Class*, i8*, i8*, i32, i8*, i8*, i8*, i8*)
 declare %Field* @_nvmBcAddField(%Env*, %Class*, i8*, i8*, i32, i32, i8*, i8*)
 declare void @_nvmBcSetClassAttributes(%Env*, %Class*, i8*)
 declare void @_nvmBcSetMethodAttributes(%Env*, %Method*, i8*)
@@ -71,6 +72,9 @@ declare i8* @_nvmBcResolvePutfield(%Env*, i8*, i8*, i8*)
 
 declare void @_nvmBcPushNativeFrame(%Env*, i8*)
 declare void @_nvmBcPopNativeFrame(%Env*)
+
+declare %Env* @_nvmBcAttachThreadFromCallback()
+declare void @_nvmBcDetachThreadFromCallback(%Env*)
 
 declare i8* @llvm.eh.exception() nounwind
 declare i32 @llvm.eh.selector(i8*, i8*, ...) nounwind

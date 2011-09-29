@@ -15,6 +15,8 @@
  */
 package org.nullvm.rt;
 
+import java.lang.reflect.Method;
+
 
 /**
  *
@@ -51,6 +53,10 @@ public final class VM {
      * @return the {@link ClassLoader}.
      */
     public native static final ClassLoader getBootClassLoader();
+    
+    public native static final long allocateMemory(int size);
+    
+    public native static final long getCallbackMethodImpl(Method method);
     
     public native static final long getObjectAddress(Object object);
     

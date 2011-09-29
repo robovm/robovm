@@ -25,3 +25,9 @@ void Java_org_nullvm_rt_bro_Dl_close(Env* env, Class* c, jlong handle) {
     dlclose((void*) handle);
 }
 
+void Java_org_nullvm_rt_bro_Dl_lastError(Env* env, Class* c) {
+    char* error = dlerror();
+    if (!error) return NULL;
+    return nvmNewStringUTF(env, error, -1);
+}
+

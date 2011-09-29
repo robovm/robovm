@@ -9,6 +9,7 @@
 
 extern jint unwindRaiseException(Env* env);
 extern void unwindIterateCallStack(Env* env, jboolean (*iterator)(Env*, void*, jint, void*), void* data);
+extern void unwindRegisterCallback(Env* env, void* callbackImpl);
 
 /* class.c */
 extern ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint access, void* impl);

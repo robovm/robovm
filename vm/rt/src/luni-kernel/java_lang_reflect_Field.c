@@ -12,7 +12,7 @@ Object* Java_java_lang_reflect_Field_getName(Env* env, Class* clazz, jlong field
 
 jint Java_java_lang_reflect_Field_getModifiers(Env* env, Class* clazz, jlong fieldPtr) {
     Field* field = (Field*) fieldPtr;
-    return field->access;
+    return field->access & 0xffff; // Hide NullVM special flags
 }
 
 Class* Java_java_lang_reflect_Field_getType(Env* env, Class* clazz, jlong fieldPtr) {

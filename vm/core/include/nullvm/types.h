@@ -18,6 +18,10 @@
 #define CLASS_INITIALIZED 5
 #define CLASS_ERROR 6
 
+#define METHOD_TYPE_BRIDGE   0x20000000
+#define METHOD_TYPE_CALLBACK 0x40000000
+#define METHOD_TYPE_PROXY    0x80000000
+
 struct HyThreadMonitor;
 
 typedef struct Field Field;
@@ -26,6 +30,7 @@ typedef struct InstanceField InstanceField;
 typedef struct Method Method;
 typedef struct NativeMethod NativeMethod;
 typedef struct BridgeMethod BridgeMethod;
+typedef struct CallbackMethod CallbackMethod;
 typedef struct ProxyMethod ProxyMethod;
 typedef struct Methods Methods;
 typedef struct ObjectHeader ObjectHeader;
@@ -83,6 +88,11 @@ struct NativeMethod {
 struct BridgeMethod {
   Method method;
   void** targetImpl;
+};
+
+struct CallbackMethod {
+  Method method;
+  void* callbackImpl;
 };
 
 struct ProxyMethod {
@@ -311,6 +321,7 @@ struct Env {
     void* reserved2; // Used internally
     NativeFrames nativeFrames;
     ProxyFrames proxyFrames;
+    jint attachCount;
 };
 
 typedef struct CallStackEntry CallStackEntry;

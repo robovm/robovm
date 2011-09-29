@@ -35,7 +35,7 @@ jboolean Java_java_lang_Class_isInstance(Env* env, Class* thiz, Object* object) 
 }
 
 jint Java_java_lang_Class_getModifiers(Env* env, Class* c, Class* thiz, jboolean ignoreInnerClassesAttrib) {
-    return thiz->access;
+    return thiz->access & 0xffff; // Hide NullVM special flags
 }
 
 Object* Java_java_lang_Class_getSignatureAttribute(Env* env, Class* thiz) {

@@ -1,5 +1,6 @@
 #include <string.h>
 #include <nullvm.h>
+#include "reflection_helpers.h"
 
 ObjectArray* Java_org_nullvm_rt_VM_getStackClasses(Env* env, Class* c, jint skipNum, jint maxDepth) {
     CallStackEntry* first = nvmGetCallStack(env);
@@ -46,6 +47,15 @@ ClassLoader* Java_org_nullvm_rt_VM_getBootClassLoader(Env* env, Class* c) {
     ClassField* field = nvmGetClassField(env, holder, "loader", "Ljava/lang/ClassLoader;");
     if (!field) return NULL;
     return (ClassLoader*) nvmGetObjectClassFieldValue(env, holder, field);
+}
+
+jlong Java_org_nullvm_rt_VM_allocateMemory(Env* env, Class* c, jint size) {
+    return nvmAllocateMemory(env, size);
+}
+
+jlong Java_org_nullvm_rt_VM_getCallbackMethodImpl(Env* env, Class* c, Object* methodObject) {
+    Method* method = getMethodFromMethodObject(env, methodObject);
+    return ((CallbackMethod*) method)->callbackImpl;
 }
 
 jlong Java_org_nullvm_rt_VM_getObjectAddress(Env* env, Class* c, Object* object) {

@@ -3,6 +3,7 @@
 
 static hythread_monitor_t monitorsLock;
 static hythread_tls_key_t tlsEnvKey;
+static VM* vm = NULL;
 
 static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboolean daemon) {
     Env* env = *envPtr; // env is NULL if nvmAttachCurrentThread() was called. If non NULL nvmInitThreads() was called.
@@ -13,6 +14,7 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
         // If the thread was already attached there's an Env* associated with the thread.
         env = (Env*) hythread_tls_get(hyThread, tlsEnvKey);
         if (env) {
+            env->attachCount++;
             *envPtr = env;
             return JNI_OK;
         }
@@ -46,12 +48,30 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
     if (nvmExceptionOccurred(env)) goto error;
 
     *envPtr = env;
+    env->attachCount = 1;
     return JNI_OK;
 
 error:
     if (hyThread) hythread_detach(hyThread);
     if (env) env->currentThread = NULL;
     return JNI_ERR;
+}
+
+static jint detachThread(VM* vm, jboolean ignoreAttachCount) {
+    hythread_t hyThread = hythread_self();
+    if (!hyThread) return JNI_EDETACHED;
+    // If the thread is attached there's an Env* associated with the thread.
+    Env* env = (Env*) hythread_tls_get(hyThread, tlsEnvKey);
+    if (!env) return JNI_EDETACHED;
+    env->attachCount--;
+    if (!ignoreAttachCount && env->attachCount > 0) {
+        return JNI_OK;
+    }
+    hythread_tls_set(hyThread, tlsEnvKey, NULL);
+    hythread_detach(hyThread); // TODO: Will this release all monitors and notify waiting threads?
+    // What if this was called from JNI code which was called from Java and that JNI code returns to Java and doesn't kill the thread? 
+    // Should we prevent that from happening some how?
+    return JNI_OK;
 }
 
 static void monitorEnter(Env* env, hythread_monitor_t monitor) {
@@ -116,6 +136,10 @@ jint nvmGetEnv(VM* vm, Env** env) {
     *env = (Env*) hythread_tls_get(hyThread, tlsEnvKey);
     if (*env) return JNI_OK;
     return JNI_EDETACHED; // TODO: What should we do here?
+}
+
+jint nvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount) {
+    return detachThread(vm, ignoreAttachCount);
 }
 
 static int startThreadEntryPoint(void* entryArgs) {

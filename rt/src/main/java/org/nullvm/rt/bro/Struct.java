@@ -15,15 +15,33 @@
  */
 package org.nullvm.rt.bro;
 
+import org.nullvm.rt.VM;
+
 /**
  *
  * @version $Id$
  */
-class Dl {
+public abstract class Struct {
 
-    native static long open(String name);
-    native static long resolve(long handle, String name);
-    native static void close(long handle);
-    native static String lastError();
+    private final long handle;
+
+    protected Struct() {
+        this.handle = VM.allocateMemory(_sizeOf());
+    }
     
+    protected Struct(long handle) {
+        this.handle = handle;
+    }
+    
+    public final long getHandle() {
+        return handle;
+    }
+    
+    protected int _sizeOf() {
+        return 0;
+    }
+    
+    public static int sizeOf() {
+        return 0;
+    }
 }

@@ -1,5 +1,6 @@
 #include <nullvm.h>
 #include <unwind.h>
+#include "uthash.h"
 #include "private.h"
 
 #define EXCEPTION_CLASS 0x4A4A4A4A4A4A4A4A // "JJJJJJJJ"
@@ -19,6 +20,13 @@ typedef struct UnwindInfo {
     void* throwable;
     _Unwind_Ptr landing_pad;
 } UnwindInfo;
+
+typedef struct CallbackEntry {
+    void* key;
+    void* value;
+    UT_hash_handle hh;
+} CallbackEntry;
+static CallbackEntry* callbacks = NULL;
 
 extern _Unwind_Reason_Code unwindBacktrace(_Unwind_Trace_Fn fn, void* data);
 extern _Unwind_Reason_Code __gcc_personality_v0(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context);
@@ -62,6 +70,13 @@ typedef struct UnwindCallStackData {
     void* restoreFrameAddress;
 } UnwindCallStackData;
 
+static jboolean isCallback(void* function) {
+    // TODO: Lock?
+    CallbackEntry* entry;
+    HASH_FIND_PTR(callbacks, &function, entry);
+    return entry != NULL ? TRUE : FALSE;
+}
+
 static _Unwind_Reason_Code unwindCallStack(struct _Unwind_Context* ctx, UnwindCallStackData* d) {
     if (d->restoreFrameAddressPtr) {
         // Restore the frame we altered in the previous call to this callback.
@@ -72,7 +87,7 @@ static _Unwind_Reason_Code unwindCallStack(struct _Unwind_Context* ctx, UnwindCa
     void* address = (void*) _Unwind_GetIP(ctx);
     void* function = _Unwind_FindEnclosingFunction(address);
     if (d->nativeFramesTop > d->env->nativeFrames.base) {
-        if (function == unwindBacktrace || function == _call0) {
+        if (function == unwindBacktrace || function == _call0 || isCallback(function)) {
             // Temporarily alter the frame to skip all frames until the last native trampoline frame.
             // We need to do this since we cannot assume native code to have proper unwind info.
             // Note that unwindBacktrace and _call0 must save the CFA in a well defined register 
@@ -94,5 +109,13 @@ static _Unwind_Reason_Code unwindCallStack(struct _Unwind_Context* ctx, UnwindCa
 void unwindIterateCallStack(Env* env, jboolean (*iterator)(Env*, void*, jint, void*), void* data) {
     UnwindCallStackData d = {iterator, env, env->nativeFrames.top, data, NULL, NULL};
     unwindBacktrace((_Unwind_Trace_Fn) unwindCallStack, &d);
+}
+
+void unwindRegisterCallback(Env* env, void* callbackImpl) {
+    CallbackEntry* entry = nvmAllocateMemory(env, sizeof(CallbackEntry));
+    if (!entry) return;
+    entry->key = callbackImpl;
+    entry->value = callbackImpl;
+    HASH_ADD_PTR(callbacks, key, entry);
 }
 

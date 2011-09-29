@@ -9,7 +9,7 @@ Class* Java_java_lang_reflect_Method_getDeclaringClass(Env* env, Class* clazz, j
 
 jint Java_java_lang_reflect_Method_getModifiers(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) methodPtr;
-    return method->access;
+    return method->access & 0xffff; // Hide NullVM special flags
 }
 
 Object* Java_java_lang_reflect_Method_getName(Env* env, Class* clazz, jlong methodPtr) {

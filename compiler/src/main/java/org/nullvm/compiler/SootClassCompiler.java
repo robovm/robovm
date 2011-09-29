@@ -17,6 +17,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -172,6 +173,8 @@ import soot.jimple.InstanceOfExpr;
 import soot.jimple.InterfaceInvokeExpr;
 import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
 import soot.jimple.LeExpr;
 import soot.jimple.LengthExpr;
 import soot.jimple.LookupSwitchStmt;
@@ -267,6 +270,7 @@ public class SootClassCompiler {
     private static final FunctionRef NVM_BC_ADD_FIELD = new FunctionRef("_nvmBcAddField", new FunctionType(FIELD_PTR, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_ADD_METHOD = new FunctionRef("_nvmBcAddMethod", new FunctionType(METHOD_PTR, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_ADD_BRIDGE_METHOD = new FunctionRef("_nvmBcAddBridgeMethod", new FunctionType(METHOD_PTR, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_ADD_CALLBACK_METHOD = new FunctionRef("_nvmBcAddCallbackMethod", new FunctionType(METHOD_PTR, ENV_PTR, CLASS_PTR, I8_PTR, I8_PTR, I32, I32, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_SET_CLASS_ATTRIBUTES = new FunctionRef("_nvmBcSetClassAttributes", new FunctionType(VOID, ENV_PTR, CLASS_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_SET_METHOD_ATTRIBUTES = new FunctionRef("_nvmBcSetMethodAttributes", new FunctionType(VOID, ENV_PTR, METHOD_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_SET_FIELD_ATTRIBUTES = new FunctionRef("_nvmBcSetFieldAttributes", new FunctionType(VOID, ENV_PTR, FIELD_PTR, I8_PTR));
@@ -312,7 +316,9 @@ public class SootClassCompiler {
     private static final FunctionRef NVM_BC_RESOLVE_NATIVE = new FunctionRef("_nvmBcResolveNative", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_PUSH_NATIVE_FRAME = new FunctionRef("_nvmBcPushNativeFrame", new FunctionType(VOID, ENV_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_POP_NATIVE_FRAME = new FunctionRef("_nvmBcPopNativeFrame", new FunctionType(VOID, ENV_PTR));
-    
+    private static final FunctionRef NVM_BC_ATTACH_THREAD_FROM_CALLBACK = new FunctionRef("_nvmBcAttachThreadFromCallback", new FunctionType(ENV_PTR));
+    private static final FunctionRef NVM_BC_DETACH_THREAD_FROM_CALLBACK = new FunctionRef("_nvmBcDetachThreadFromCallback", new FunctionType(VOID, ENV_PTR));
+
     private static final FunctionRef LLVM_EH_EXCEPTION = new FunctionRef("llvm.eh.exception", new FunctionType(I8_PTR));
     private static final FunctionRef LLVM_EH_SELECTOR = new FunctionRef("llvm.eh.selector", new FunctionType(I32, true, I8_PTR, I8_PTR));
     private static final FunctionRef LLVM_FRAMEADDRESS = new FunctionRef("llvm.frameaddress", new FunctionType(I8_PTR, I32));
@@ -399,6 +405,10 @@ public class SootClassCompiler {
     public void compile(Clazz clazz, OutputStream out) throws IOException {
         this.sootClass = Scene.v().getSootClass(clazz.getClassName());
         
+        if (isStruct(this.sootClass)) {
+            enhanceStructClass(this.sootClass);
+        }
+        
         module = new Module();
         throwables = new HashMap<SootClass, Global>();
         trampolines = new HashMap<Trampoline, FunctionRef>();
@@ -448,13 +458,26 @@ public class SootClassCompiler {
             if (isBridge(method)) {
                 nativeBridgeMethod(method);
             } else if (isNative(method)) {
-                nativeMethod(method);
+                if (isStruct(this.sootClass)) {
+                    if ("_sizeOf".equals(method.getName()) || "sizeOf".equals(method.getName())) {
+                        structSizeOf(method);
+                    } else if (isStructMember(method)) {
+                        structMember(method);
+                    } else {
+                        nativeMethod(method);
+                    }
+                } else {
+                    nativeMethod(method);
+                }
             } else if (!method.isAbstract()) {
                 Body body = method.retrieveActiveBody();
                 PackManager.v().getPack("jtp").apply(body);
                 PackManager.v().getPack("jop").apply(body);
                 PackManager.v().getPack("jap").apply(body);
                 method(method);
+                if (isCallback(method)) {
+                    nativeCallbackMethod(method);
+                }
             }
             if (!method.isStatic() && !method.isPrivate() && !Modifier.isFinal(method.getModifiers())) {
                 // Virtual method. If not defined in a superclass we need to create a virtual lookup function now.
@@ -536,6 +559,66 @@ public class SootClassCompiler {
 //        f.newBasicBlock(trampolines.size());
 //        f.add(new Ret());
 //    }
+    
+    private void enhanceStructClass(SootClass clazz) {
+        if (!Modifier.isFinal(clazz.getModifiers())) {
+            throw new IllegalArgumentException("Struct class must be final");
+        }
+        SootMethod _sizeOf = new SootMethod("_sizeOf", Collections.EMPTY_LIST, IntType.v(), Modifier.PROTECTED | Modifier.NATIVE);
+        clazz.addMethod(_sizeOf);
+        SootMethod sizeOf = new SootMethod("sizeOf", Collections.EMPTY_LIST, IntType.v(), Modifier.PUBLIC | Modifier.NATIVE | Modifier.STATIC);
+        clazz.addMethod(sizeOf);
+    }
+    
+    private void structSizeOf(SootMethod method) {
+        StructureType type = getStructType(sootClass);
+        if (type == null) {
+            throw new IllegalArgumentException("Struct class " + sootClass + " has no @StructMember annotated methods");
+        }
+        Function function = createFunction(method);
+        function.add(new Ret(sizeof(type)));
+    }
+    
+    private void structMember(SootMethod method) {
+        Map<String, Integer> indexes = new HashMap<String, Integer>();
+        StructureType structType = getStructType(sootClass, indexes);
+        if (structType == null) {
+            throw new IllegalArgumentException("Struct class " + sootClass + " has not @StructMember annotated methods");
+        }
+        Function function = createFunction(method);
+        
+        // Get the value of the handle field in the Struct base class and cast it to a <structType>*
+        SootField handleField = sootClass.getSuperclass().getFieldByName("handle");
+        Variable handleI64 = function.newVariable(I64);
+        function.add(new Load(handleI64, getInstanceFieldPtr(function, new VariableRef("this", OBJECT_PTR), handleField)));
+        Variable handlePtr = function.newVariable(new PointerType(structType));
+        function.add(new Inttoptr(handlePtr, handleI64.ref(), handlePtr.getType()));
+        
+        String name = method.getName().substring(3, 4).toLowerCase() + method.getName().substring(4);
+        int index = indexes.get(name);        
+        Variable memberPtr = function.newVariable(new PointerType(structType.getTypeAt(index)));
+        function.add(new Getelementptr(memberPtr, handlePtr.ref(), 0, index));
+        
+        if (method.getName().startsWith("get")) {
+            Variable result = function.newVariable(structType.getTypeAt(index));
+            function.add(new Load(result, memberPtr.ref()));
+            if (result.getType() == I8_PTR) {
+                Variable tmp = function.newVariable(I64);
+                function.add(new Ptrtoint(tmp, result.ref(), I64));
+                result = tmp;
+            }
+            function.add(new Ret(result.ref()));
+        } else {
+            VariableRef p = function.getParameterRef(2); // 'env' is parameter 0, 'this' is at 1, the value we're interested in is at index 2
+            if (structType.getTypeAt(index) == I8_PTR) {
+                Variable tmp = function.newVariable(I8_PTR);
+                function.add(new Inttoptr(tmp, p, I8_PTR));
+                p = tmp.ref();
+            }
+            function.add(new Store(p, memberPtr.ref()));
+            function.add(new Ret());
+        }
+    }
     
     private void synchronizedFunctionWrapper(SootMethod method) {
         String name = mangleMethod(method) + "_synchronized";
@@ -799,7 +882,7 @@ public class SootClassCompiler {
             outerFunction.add(new Ret(result.ref()));
         }
 
-        FunctionType targetFunctionType = getBridgeFunctionType(method);
+        FunctionType targetFunctionType = getBridgeOrCallbackFunctionType(method);
 
         // Remove Env* from args
         args.remove(0);
@@ -849,6 +932,72 @@ public class SootClassCompiler {
                 innerFunction.add(new Ret(resultI64.ref()));
             } else {
                 innerFunction.add(new Ret(result.ref()));
+            }
+        }
+    }
+    
+    private void nativeCallbackMethod(SootMethod method) {
+        if (!method.isStatic()) {
+            throw new IllegalArgumentException("@Callback annotated method must be static: " + method);
+        }
+        if (!method.getReturnType().equals(VoidType.v()) && !(method.getReturnType() instanceof PrimType)) {
+            throw new IllegalArgumentException("@Callback annotated method must return void or primitive type");
+        }
+        for (int i = 0; i < method.getParameterCount(); i++) {
+            if (!(method.getParameterType(i) instanceof PrimType)) {
+                throw new IllegalArgumentException("@Callback annotated method must take only primitive type arguments");
+            }            
+        }
+        
+        FunctionType targetFunctionType = getFunctionType(method);
+        FunctionRef targetFunctionRef = new FunctionRef(mangleMethod(method.makeRef()), targetFunctionType);
+        
+        FunctionType callbackFunctionType = getBridgeOrCallbackFunctionType(method);
+        Type[] parameterTypes = callbackFunctionType.getParameterTypes();
+        String[] parameterNames = new String[callbackFunctionType.getParameterTypes().length];
+        for (int i = 0; i < parameterNames.length; i++) {
+            parameterNames[i] = "p" + i;
+        }
+
+        Function callbackFunction = module.newFunction(internal, new FunctionAttribute[] {noinline, optsize}, 
+                mangleMethod(method.makeRef()) + "_callback", callbackFunctionType, parameterNames);
+
+        // Increase the attach count for the current thread (attaches the thread if not attached)
+        Variable env = callbackFunction.newVariable(ENV.getName().substring(1), ENV_PTR);
+        callbackFunction.add(new Call(env, NVM_BC_ATTACH_THREAD_FROM_CALLBACK));
+        
+        ArrayList<Value> args = new ArrayList<Value>();
+        args.add(env.ref());
+        for (int i = 0; i < parameterTypes.length; i++) {
+            VariableRef ref = new VariableRef(parameterNames[i], parameterTypes[i]);
+            if (ref.getType() == I8_PTR) {
+                Variable tmp = callbackFunction.newVariable(I64);
+                callbackFunction.add(new Ptrtoint(tmp, ref, I64));
+                ref = tmp.ref();
+            }
+            args.add(ref);
+        }
+        
+        // TODO: What if an uncaught exception is thrown? We need to detach the thread in such circumstances too.
+        
+        if (callbackFunction.getType().getReturnType() == VOID) {
+            callbackFunction.add(new Call(targetFunctionRef, args.toArray(new Value[args.size()])));
+            // Decrease the attach count for the current thread (detaches the thread if the count reaches 0)
+            callbackFunction.add(new Call(NVM_BC_DETACH_THREAD_FROM_CALLBACK, env.ref()));
+            callbackFunction.add(new Ret());
+        } else {
+            Variable result = callbackFunction.newVariable(targetFunctionType.getReturnType());
+            callbackFunction.add(new Call(result, targetFunctionRef, args.toArray(new Value[args.size()])));
+            if (callbackFunctionType.getReturnType() == I8_PTR) {
+                Variable resultI8Ptr = callbackFunction.newVariable(I8_PTR);
+                callbackFunction.add(new Inttoptr(resultI8Ptr, result.ref(), I8_PTR));
+                // Decrease the attach count for the current thread (detaches the thread if the count reaches 0)
+                callbackFunction.add(new Call(NVM_BC_DETACH_THREAD_FROM_CALLBACK, env.ref()));
+                callbackFunction.add(new Ret(resultI8Ptr.ref()));
+            } else {
+                // Decrease the attach count for the current thread (detaches the thread if the count reaches 0)
+                callbackFunction.add(new Call(NVM_BC_DETACH_THREAD_FROM_CALLBACK, env.ref()));
+                callbackFunction.add(new Ret(result.ref()));
             }
         }
     }
@@ -1017,14 +1166,20 @@ public class SootClassCompiler {
     }
 
     private Function createFunction(SootMethod method) {
-        return createFunction(mangleMethod(method.makeRef()), method);
+        return createFunction(mangleMethod(method.makeRef()), method, false);
     }
     
     private Function createFunction(String name, SootMethod method) {
+        return createFunction(name, method, false);
+    }
+        
+    private Function createFunction(String name, SootMethod method, boolean skipEnv) {
         FunctionType functionType = getFunctionType(method.makeRef());
         String[] parameterNames = new String[functionType.getParameterTypes().length];
         int i = 0;
-        parameterNames[i++] = "env";
+        if (!skipEnv) {
+            parameterNames[i++] = "env";
+        }
         if (!method.isStatic()) {
             parameterNames[i++] = "this";
         }
@@ -1366,7 +1521,7 @@ public class SootClassCompiler {
             }
             Variable methodPtr = function.newVariable(METHOD_PTR);
             if (isBridge(method)) {
-                GlobalRef targetFunction = new GlobalRef(mangleMethod(method) + "_ptr", getBridgeFunctionType(method));
+                GlobalRef targetFunction = new GlobalRef(mangleMethod(method) + "_ptr", getBridgeOrCallbackFunctionType(method));
                 function.add(new Call(methodPtr, NVM_BC_ADD_BRIDGE_METHOD, ENV, clazz.ref(),
                         getString(method.getName()),
                         getString(getDescriptor(method)),
@@ -1375,6 +1530,17 @@ public class SootClassCompiler {
                         synchronizedRef,
                         lookup,
                         new ConstantBitcast(targetFunction, I8_PTR)));
+            } else if (isCallback(method)) {
+                Value callbackRef = new ConstantBitcast(new FunctionRef(mangleMethod(method) + "_callback", 
+                        getBridgeOrCallbackFunctionType(method)), I8_PTR);
+                function.add(new Call(methodPtr, NVM_BC_ADD_CALLBACK_METHOD, ENV, clazz.ref(),
+                        getString(method.getName()),
+                        getString(getDescriptor(method)),
+                        new IntegerConstant(method.getModifiers() | Modifier.NATIVE),
+                        functionRef,
+                        synchronizedRef,
+                        lookup,
+                        callbackRef));
             } else {
                 function.add(new Call(methodPtr, NVM_BC_ADD_METHOD, ENV, clazz.ref(),
                         getString(method.getName()),
@@ -1530,6 +1696,74 @@ public class SootClassCompiler {
             }
         }
         return false;
+    }
+    
+    private static void validateStructMember(SootMethod method) {
+        if (!method.isNative() && !method.isStatic()) {
+            throw new IllegalArgumentException("@StructMember annotated method must be native and not static");
+        }
+        if (!method.getName().startsWith("get") && !method.getName().startsWith("set") || method.getName().length() == 3) {
+            throw new IllegalArgumentException("@StructMember annotated method has invalid name");
+        }
+        if (method.getName().startsWith("get") && method.getParameterCount() != 0) {
+            throw new IllegalArgumentException("@StructMember annotated getter method must have no arguments");
+        }
+        if (method.getName().startsWith("set") && method.getParameterCount() != 1) {
+            throw new IllegalArgumentException("@StructMember annotated setter method must take a single argument");
+        }
+        if (method.getName().startsWith("get") && !(method.getReturnType() instanceof PrimType)) {
+            throw new IllegalArgumentException("@StructMember annotated getter method must return primitive type");
+        }
+        if (method.getName().startsWith("set") && !(method.getParameterType(0) instanceof PrimType)) {
+            throw new IllegalArgumentException("@StructMember annotated setter method must take a single primitive type argument");
+        }
+    }
+    
+    private static StructureType getStructType(SootClass clazz) {
+        return getStructType(clazz, null);                
+    }
+    
+    private static StructureType getStructType(SootClass clazz, Map<String, Integer> indexes) {
+        List<Type> types = new ArrayList<Type>();
+        Map<String, Type> members = new HashMap<String, Type>();
+        int index = 0;
+        for (SootMethod method : clazz.getMethods()) {
+            if (isStructMember(method)) {
+                validateStructMember(method);
+                String name = method.getName().substring(3, 4).toLowerCase() + method.getName().substring(4);
+                Type type = getType(method.getName().startsWith("get") ? method.getReturnType() : method.getParameterType(0));
+                if (method.getName().startsWith("get") && hasAnnotation(method, "Lorg/nullvm/rt/bro/annotation/Pointer;")) {
+                    if (!method.getReturnType().equals(LongType.v())) {
+                        throw new IllegalArgumentException("@StructMember annotated getter method " 
+                                + method.getName() + " must return long when annotated with @Pointer");
+                    }
+                    type = I8_PTR;
+                } else if (hasParameterAnnotation(method, 0, "Lorg/nullvm/rt/bro/annotation/Pointer;")) {
+                    if (!method.getParameterType(0).equals(LongType.v())) {
+                        throw new IllegalArgumentException("First parameter of @StructMember annotated setter method " 
+                                + method.getName() 
+                                + " must be of type long when annotated with @Pointer");
+                    }
+                    type = I8_PTR;
+                }
+                if (members.containsKey(name)) { 
+                    if (members.get(name) != type) {
+                        throw new IllegalArgumentException("@StructMember annotated getter and setter methods for property " + name + " have different types");
+                    }
+                } else {
+                    members.put(name, type);
+                    types.add(type);
+                    if (indexes != null) {
+                        indexes.put(name, index);
+                    }
+                    index++;
+                }
+            }
+        }
+        if (!types.isEmpty()) {
+            return new StructureType(types.toArray(new Type[types.size()]));
+        }
+        return null;
     }
     
     private static StructureType getType(String alias, List<SootField> fields) {
@@ -2061,23 +2295,22 @@ public class SootClassCompiler {
     private Value getClassFieldPtr(Function f, SootField field) {
         Variable base = f.newVariable(CLASS_PTR);
         f.add(new Load(base, new GlobalRef(THE_CLASS)));
-        return getFieldPtr(f, new VariableRef(base), sizeof(CLASS), field, classFields, classFieldsType);
+        return getFieldPtr(f, new VariableRef(base), sizeof(CLASS), field, classFields.indexOf(field), classFieldsType);
     }
     
     private Value getInstanceFieldPtr(Function f, Value base, SootField field) {
-        return getFieldPtr(f, base, sizeof(OBJECT), field, allInstanceFields, instanceFieldsType);
+        return getFieldPtr(f, base, sizeof(OBJECT), field, allInstanceFields.indexOf(field), instanceFieldsType);
     }
     
-    private Value getFieldPtr(Function f, Value base, Constant baseOffset, SootField field, List<SootField> fields, StructureType fieldsType) {
-        int index = fields.indexOf(field);
+    private Value getFieldPtr(Function f, Value base, Constant baseOffset, SootField field, int index, StructureType fieldsType) {
         Value offset = new ConstantAdd(baseOffset, offsetof(fieldsType, index));
         Variable baseI8Ptr = f.newVariable(I8_PTR);
         f.add(new Bitcast(baseI8Ptr, base, I8_PTR));
         Variable fieldI8Ptr = f.newVariable(I8_PTR);
-        f.add(new Getelementptr(fieldI8Ptr, new VariableRef(baseI8Ptr), offset));
+        f.add(new Getelementptr(fieldI8Ptr, baseI8Ptr.ref(), offset));
         Variable fieldPtr = f.newVariable(new PointerType(getType(field.getType())));
-        f.add(new Bitcast(fieldPtr, new VariableRef(fieldI8Ptr), fieldPtr.getType()));
-        return new VariableRef(fieldPtr);
+        f.add(new Bitcast(fieldPtr, fieldI8Ptr.ref(), fieldPtr.getType()));
+        return fieldPtr.ref();
     }
     
     private void assign(Context ctx, DefinitionStmt stmt) {
@@ -2586,13 +2819,52 @@ public class SootClassCompiler {
         return false;
     }
 
-    private static boolean isBridge(SootMethod sm) {
-        VisibilityAnnotationTag vatag = (VisibilityAnnotationTag) sm.getTag("VisibilityAnnotationTag");
+    private static boolean hasAnnotation(Host host, String annotationType) {
+        VisibilityAnnotationTag vatag = (VisibilityAnnotationTag) host.getTag("VisibilityAnnotationTag");
         if (vatag != null) {
             for (AnnotationTag tag : vatag.getAnnotations()) {
-                if ("Lorg/nullvm/rt/bro/annotation/Bridge;".equals(tag.getType())) {
+                if (annotationType.equals(tag.getType())) {
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+    
+    private static boolean hasParameterAnnotation(SootMethod method, int paramIndex, String annotationType) {
+        VisibilityParameterAnnotationTag vpatag = (VisibilityParameterAnnotationTag) method.getTag("VisibilityParameterAnnotationTag");
+        if (vpatag != null) {
+            List<VisibilityAnnotationTag> tags = vpatag.getVisibilityAnnotations();
+            List<AnnotationTag> annotations = tags.get(paramIndex).getAnnotations();
+            if (annotations != null) {
+                for (AnnotationTag tag : annotations) {
+                    if (annotationType.equals(tag.getType())) {
+                        return true;
+                    }                    
+                }
+            }
+        }
+        return false;
+    }
+    
+    private static boolean isBridge(SootMethod sm) {
+        return hasAnnotation(sm, "Lorg/nullvm/rt/bro/annotation/Bridge;");
+    }
+    
+    private static boolean isCallback(SootMethod sm) {
+        return hasAnnotation(sm, "Lorg/nullvm/rt/bro/annotation/Callback;");
+    }
+    
+    private static boolean isStructMember(SootMethod sm) {
+        return hasAnnotation(sm, "Lorg/nullvm/rt/bro/annotation/StructMember;");
+    }
+    
+    private static boolean isStruct(SootClass sc) {
+        SootClass clazz = sc;
+        while (clazz.hasSuperclass()) {
+            clazz = clazz.getSuperclass();
+            if ("org.nullvm.rt.bro.Struct".equals(clazz.getName())) {
+                return true;
             }
         }
         return false;
@@ -2636,18 +2908,15 @@ public class SootClassCompiler {
     }
 
     @SuppressWarnings("unchecked")
-    private static FunctionType getBridgeFunctionType(SootMethod method) {
+    private static FunctionType getBridgeOrCallbackFunctionType(SootMethod method) {
+        String anno = isBridge(method) ? "@Bridge" : "@Callback";
         Type returnType = getType(method.getReturnType());
-        VisibilityAnnotationTag vatag = (VisibilityAnnotationTag) method.getTag("VisibilityAnnotationTag");
-        for (AnnotationTag tag : vatag.getAnnotations()) {
-            if ("Lorg/nullvm/rt/bro/annotation/Pointer;".equals(tag.getType())) {
-                if (!method.getReturnType().equals(LongType.v())) {
-                    throw new IllegalArgumentException("@Bridge annotated method " 
-                            + method.getName() + " must return long when annotated with @Pointer");
-                }
-                returnType = I8_PTR;
-                break;
+        if (hasAnnotation(method, "Lorg/nullvm/rt/bro/annotation/Pointer;")) {
+            if (!method.getReturnType().equals(LongType.v())) {
+                throw new IllegalArgumentException(anno + " annotated method " 
+                        + method.getName() + " must return long when annotated with @Pointer");
             }
+            returnType = I8_PTR;
         }
 
         Type[] paramTypes = new Type[method.getParameterTypes().size()];
@@ -2656,28 +2925,17 @@ public class SootClassCompiler {
             paramTypes[i++] = getType(t);
         }
         
-        VisibilityParameterAnnotationTag vpatag = (VisibilityParameterAnnotationTag) method.getTag("VisibilityParameterAnnotationTag");
-        if (vpatag != null) {
-            List<VisibilityAnnotationTag> tags = vpatag.getVisibilityAnnotations();
-            for (i = 0; i < paramTypes.length; i++) {
-                List<AnnotationTag> annotations = tags.get(i).getAnnotations();
-                if (annotations != null) {
-                    for (AnnotationTag tag : annotations) {
-                        if ("Lorg/nullvm/rt/bro/annotation/Pointer;".equals(tag.getType())) {
-                            if (!method.getParameterType(i).equals(LongType.v())) {
-                                throw new IllegalArgumentException("Parameter " + (i + 1) 
-                                        + " of @Bridge annotated method " 
-                                        + method.getName() 
-                                        + " must be of type long when annotated with @Pointer");
-                            }
-                            paramTypes[i] = I8_PTR;
-                            break;
-                        }                    
-                    }
+        for (i = 0; i < paramTypes.length; i++) {
+            if (hasParameterAnnotation(method, i, "Lorg/nullvm/rt/bro/annotation/Pointer;")) {
+                if (!method.getParameterType(i).equals(LongType.v())) {
+                    throw new IllegalArgumentException("Parameter " + (i + 1) 
+                            + " of " + anno + " annotated method " 
+                            + method.getName() 
+                            + " must be of type long when annotated with @Pointer");
                 }
+                paramTypes[i] = I8_PTR;
             }
         }
-        
         
         return new FunctionType(returnType, paramTypes);
     }

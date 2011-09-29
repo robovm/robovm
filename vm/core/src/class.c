@@ -804,7 +804,7 @@ ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint 
     method->method.clazz = clazz;
     method->method.name = proxiedMethod->name;
     method->method.desc = proxiedMethod->desc;
-    method->method.access = access;
+    method->method.access = access | METHOD_TYPE_PROXY;
     method->method.impl = impl;
     method->method.synchronizedImpl = NULL;
     method->method.lookup = proxiedMethod->lookup;
@@ -823,12 +823,36 @@ BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, char* name, char* desc,
     method->method.clazz = clazz;
     method->method.name = name;
     method->method.desc = desc;
-    method->method.access = access;
+    method->method.access = access | METHOD_TYPE_BRIDGE;
     method->method.impl = impl;
     method->method.synchronizedImpl = synchronizedImpl;
     method->method.lookup = lookup;
     method->method.vtableIndex = -1;
     method->targetImpl = targetImpl;
+
+    method->method.next = clazz->methods->first;
+    clazz->methods->first = (Method*) method;
+
+    if (clazz->methods->lo == NULL || method->method.impl < clazz->methods->lo) {
+        clazz->methods->lo = method->method.impl;
+    } else if (clazz->methods->hi == NULL || method->method.impl > clazz->methods->hi) {
+        clazz->methods->hi = method->method.impl;
+    }
+    return method;
+}
+
+CallbackMethod* nvmAddCallbackMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup, void* callbackImpl) {
+    CallbackMethod* method = nvmAllocateMemory(env, sizeof(CallbackMethod));
+    if (!method) return NULL;
+    method->method.clazz = clazz;
+    method->method.name = name;
+    method->method.desc = desc;
+    method->method.access = access | METHOD_TYPE_CALLBACK;
+    method->method.impl = impl;
+    method->method.synchronizedImpl = synchronizedImpl;
+    method->method.lookup = lookup;
+    method->method.vtableIndex = -1;
+    method->callbackImpl = callbackImpl;
 
     method->method.next = clazz->methods->first;
     clazz->methods->first = (Method*) method;
@@ -893,6 +917,10 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
             }
         }
 //        TRACE("vtable index for method %s%s in class %s: %d\n", method->name, method->desc, clazz->name, vtableIndex);
+
+        if (method->access & METHOD_TYPE_CALLBACK) {
+            unwindRegisterCallback(env, ((CallbackMethod*) method)->callbackImpl);
+        }
     }
     if (vtableSize > 0) {
         clazz->vtable = nvmAllocateMemory(env, vtableSize * sizeof(void*));

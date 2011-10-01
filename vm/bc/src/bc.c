@@ -677,3 +677,35 @@ void _nvmBcDetachThreadFromCallback(Env* env) {
     nvmDetachCurrentThread(env->vm, FALSE);
 }
 
+Object* _nvmBcNewStruct(Env* env, char* className, Class* caller, void* handle) {
+    // TODO: Check access
+    if (!handle) return NULL;
+    Class* clazz = findClassInLoader(env, className, caller->classLoader);
+    if (!clazz) goto error;
+    Method* constructor = (Method*) nvmGetInstanceMethod(env, clazz, "<init>", "(J)V");
+    if (!constructor) goto error;
+    jvalue args[1];
+    args[0].j = (jlong) handle;
+    Object* o = nvmNewObjectA(env, clazz, constructor, args);
+    if (!o) goto error;
+    return o;
+error:
+    nvmRaiseException(env, nvmExceptionOccurred(env));
+    return NULL;
+}
+
+void* _nvmBcGetStructHandle(Env* env, Object* object) {
+    if (!object) return NULL;
+    return *((void**) (((void*) object) + sizeof(Object)));
+}
+
+void _nvmBcCopyStruct(Env* env, Object* object, void* dest, jint length) {
+    if (!object) {
+        nvmThrowNullPointerException(env);
+        nvmRaiseException(env, nvmExceptionOccurred(env));
+        return;
+    }
+    void* src = *((void**) (((void*) object) + sizeof(Object)));
+    memcpy(dest, src, length);
+}
+

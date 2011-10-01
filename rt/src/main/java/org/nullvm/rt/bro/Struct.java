@@ -44,4 +44,8 @@ public abstract class Struct {
     public static int sizeOf() {
         return 0;
     }
+    
+    public static int offsetOf(int index) {
+        return 0;
+    }
 }

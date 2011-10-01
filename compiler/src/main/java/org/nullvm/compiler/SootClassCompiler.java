@@ -122,6 +122,7 @@ import soot.BodyTransformer;
 import soot.BooleanType;
 import soot.ByteType;
 import soot.CharType;
+import soot.DoubleType;
 import soot.FloatType;
 import soot.Immediate;
 import soot.IntType;
@@ -261,6 +262,8 @@ public class SootClassCompiler {
     private static final Type OBJECT_PTR = new PointerType(OBJECT);
     private static final Type METHOD_PTR = new PointerType(new OpaqueType("Method"));
     private static final Type FIELD_PTR = new PointerType(new OpaqueType("Field"));
+    private static final Type MACHINE_FP = new PointerType(FLOAT);
+    private static final Type MACHINE_INT = new PointerType(I32);
     
     private static final VariableRef ENV = new VariableRef("env", ENV_PTR);
     private static final Global THE_CLASS = new Global("class", Linkage._private, new NullConstant(CLASS_PTR));
@@ -318,6 +321,9 @@ public class SootClassCompiler {
     private static final FunctionRef NVM_BC_POP_NATIVE_FRAME = new FunctionRef("_nvmBcPopNativeFrame", new FunctionType(VOID, ENV_PTR));
     private static final FunctionRef NVM_BC_ATTACH_THREAD_FROM_CALLBACK = new FunctionRef("_nvmBcAttachThreadFromCallback", new FunctionType(ENV_PTR));
     private static final FunctionRef NVM_BC_DETACH_THREAD_FROM_CALLBACK = new FunctionRef("_nvmBcDetachThreadFromCallback", new FunctionType(VOID, ENV_PTR));
+    private static final FunctionRef NVM_BC_NEW_STRUCT = new FunctionRef("_nvmBcNewStruct", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR, CLASS_PTR, I8_PTR));
+    private static final FunctionRef NVM_BC_GET_STRUCT_HANDLE = new FunctionRef("_nvmBcGetStructHandle", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR));
+    private static final FunctionRef NVM_BC_COPY_STRUCT = new FunctionRef("_nvmBcCopyStruct", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I8_PTR, I32));
 
     private static final FunctionRef LLVM_EH_EXCEPTION = new FunctionRef("llvm.eh.exception", new FunctionType(I8_PTR));
     private static final FunctionRef LLVM_EH_SELECTOR = new FunctionRef("llvm.eh.selector", new FunctionType(I32, true, I8_PTR, I8_PTR));
@@ -355,6 +361,9 @@ public class SootClassCompiler {
     private static final FunctionRef FCMPG = new FunctionRef("fcmpg", new FunctionType(I32, FLOAT, FLOAT));
     private static final FunctionRef DCMPL = new FunctionRef("dcmpl", new FunctionType(I32, DOUBLE, DOUBLE));
     private static final FunctionRef DCMPG = new FunctionRef("dcmpg", new FunctionType(I32, DOUBLE, DOUBLE));
+
+    private static final FunctionRef MACHINE_FP_TO_DOUBLE = new FunctionRef("machineFpToDouble", new FunctionType(DOUBLE, MACHINE_FP));
+    private static final FunctionRef DOUBLE_TO_MACHINE_FP = new FunctionRef("doubleToMachineFp", new FunctionType(MACHINE_FP, DOUBLE));
 
     private static final Map<Class<? extends Trampoline>, Integer> TRAMPOLINE_TYPES;
     
@@ -596,26 +605,78 @@ public class SootClassCompiler {
         
         String name = method.getName().substring(3, 4).toLowerCase() + method.getName().substring(4);
         int index = indexes.get(name);        
-        Variable memberPtr = function.newVariable(new PointerType(structType.getTypeAt(index)));
+        Type memberType = structType.getTypeAt(index);
+        Variable memberPtr = function.newVariable(new PointerType(memberType));
         function.add(new Getelementptr(memberPtr, handlePtr.ref(), 0, index));
         
         if (method.getName().startsWith("get")) {
-            Variable result = function.newVariable(structType.getTypeAt(index));
-            function.add(new Load(result, memberPtr.ref()));
-            if (result.getType() == I8_PTR) {
-                Variable tmp = function.newVariable(I64);
-                function.add(new Ptrtoint(tmp, result.ref(), I64));
-                result = tmp;
+            Variable result = null;
+            if (memberType instanceof StructureType) {
+                result = function.newVariable(OBJECT_PTR);
+                Constant structClassName = getString(getInternalName(method.getReturnType()));
+                Value caller = getCaller(function);
+                Variable memberI8Ptr = function.newVariable(I8_PTR);
+                function.add(new Bitcast(memberI8Ptr, memberPtr.ref(), I8_PTR));
+                function.add(new Call(result, NVM_BC_NEW_STRUCT, ENV, structClassName, caller, memberI8Ptr.ref()));
+            } else {
+                result = function.newVariable(memberType);
+                function.add(new Load(result, memberPtr.ref()));
+                if (result.getType() == I8_PTR) {
+                    if (method.getReturnType().equals(LongType.v())) {
+                        Variable tmp = function.newVariable(I64);
+                        function.add(new Ptrtoint(tmp, result.ref(), I64));
+                        result = tmp;
+                    } else {
+                        // Must be pointer to struct type
+                        Variable tmp = function.newVariable(OBJECT_PTR);
+                        Constant structClassName = getString(getInternalName(method.getReturnType()));
+                        Value caller = getCaller(function);
+                        function.add(new Call(tmp, NVM_BC_NEW_STRUCT, ENV, structClassName, caller, result.ref()));
+                        result = tmp;
+                    }
+                } else if (result.getType() == MACHINE_INT) {
+                    Variable tmp = function.newVariable(I64);
+                    function.add(new Ptrtoint(tmp, result.ref(), I64));
+                    result = tmp;
+                } else if (result.getType() == MACHINE_FP) {
+                    Variable tmp = function.newVariable(DOUBLE);
+                    function.add(new Call(tmp, MACHINE_FP_TO_DOUBLE, result.ref()));
+                    result = tmp;            
+                }
             }
             function.add(new Ret(result.ref()));
         } else {
             VariableRef p = function.getParameterRef(2); // 'env' is parameter 0, 'this' is at 1, the value we're interested in is at index 2
-            if (structType.getTypeAt(index) == I8_PTR) {
-                Variable tmp = function.newVariable(I8_PTR);
-                function.add(new Inttoptr(tmp, p, I8_PTR));
-                p = tmp.ref();
+            if (memberType instanceof StructureType) {
+                Variable objectPtr = function.newVariable(OBJECT_PTR);
+                function.add(new Bitcast(objectPtr, p, OBJECT_PTR));
+                Variable memberI8Ptr = function.newVariable(I8_PTR);
+                function.add(new Bitcast(memberI8Ptr, memberPtr.ref(), I8_PTR));
+                function.add(new Call(NVM_BC_COPY_STRUCT, ENV, objectPtr.ref(), memberI8Ptr.ref(), sizeof((StructureType) memberType)));
+            } else {
+                if (memberType == I8_PTR) {
+                    Variable tmp = function.newVariable(I8_PTR);
+                    if (method.getParameterType(0).equals(LongType.v())) {
+                        function.add(new Inttoptr(tmp, p, I8_PTR));
+                        p = tmp.ref();
+                    } else {
+                        // Must be pointer to struct type
+                        Variable objectPtr = function.newVariable(OBJECT_PTR);
+                        function.add(new Bitcast(objectPtr, p, OBJECT_PTR));
+                        function.add(new Call(tmp, NVM_BC_GET_STRUCT_HANDLE, ENV, objectPtr.ref()));
+                        p = tmp.ref();
+                    }
+                } else if (memberType == MACHINE_INT) {
+                    Variable tmp = function.newVariable(MACHINE_INT);
+                    function.add(new Inttoptr(tmp, p, MACHINE_INT));
+                    p = tmp.ref();
+                } else if (memberType == MACHINE_FP) {
+                    Variable tmp = function.newVariable(MACHINE_FP);
+                    function.add(new Call(tmp, DOUBLE_TO_MACHINE_FP, p));
+                    p = tmp.ref();
+                }
+                function.add(new Store(p, memberPtr.ref()));
             }
-            function.add(new Store(p, memberPtr.ref()));
             function.add(new Ret());
         }
     }
@@ -894,9 +955,17 @@ public class SootClassCompiler {
         for (int i = 0; i < targetParameterTypes.length; i++) {
             if (targetParameterTypes[i] == I8_PTR) {
                 // Convert arg at index i from i64 to i8*
-                Variable argI8Ptr = innerFunction.newVariable(I8_PTR);
-                innerFunction.add(new Inttoptr(argI8Ptr, args.get(i), I8_PTR));
-                args.set(i, argI8Ptr.ref());
+                Variable arg = innerFunction.newVariable(I8_PTR);
+                innerFunction.add(new Inttoptr(arg, args.get(i), I8_PTR));
+                args.set(i, arg.ref());
+            } else if (targetParameterTypes[i] == MACHINE_INT) {
+                Variable arg = innerFunction.newVariable(MACHINE_INT);
+                innerFunction.add(new Inttoptr(arg, args.get(i), MACHINE_INT));
+                args.set(i, arg.ref());
+            } else if (targetParameterTypes[i] == MACHINE_FP) {
+                Variable arg = innerFunction.newVariable(MACHINE_FP);
+                innerFunction.add(new Call(arg, DOUBLE_TO_MACHINE_FP, args.get(i)));
+                args.set(i, arg.ref());
             }
         }
         
@@ -930,6 +999,14 @@ public class SootClassCompiler {
                 Variable resultI64 = innerFunction.newVariable(I64);
                 innerFunction.add(new Ptrtoint(resultI64, result.ref(), I64));
                 innerFunction.add(new Ret(resultI64.ref()));
+            } else if (targetFunctionType.getReturnType() == MACHINE_INT) {
+                Variable resultI64 = innerFunction.newVariable(I64);
+                innerFunction.add(new Ptrtoint(resultI64, result.ref(), I64));
+                innerFunction.add(new Ret(resultI64.ref()));
+            } else if (targetFunctionType.getReturnType() == MACHINE_FP) {
+                Variable resultDouble = innerFunction.newVariable(DOUBLE);
+                innerFunction.add(new Call(resultDouble, MACHINE_FP_TO_DOUBLE, result.ref()));
+                innerFunction.add(new Ret(resultDouble.ref()));
             } else {
                 innerFunction.add(new Ret(result.ref()));
             }
@@ -974,6 +1051,14 @@ public class SootClassCompiler {
                 Variable tmp = callbackFunction.newVariable(I64);
                 callbackFunction.add(new Ptrtoint(tmp, ref, I64));
                 ref = tmp.ref();
+            } else if (ref.getType() == MACHINE_INT) {
+                Variable tmp = callbackFunction.newVariable(I64);
+                callbackFunction.add(new Ptrtoint(tmp, ref, I64));
+                ref = tmp.ref();
+            } else if (ref.getType() == MACHINE_FP) {
+                Variable tmp = callbackFunction.newVariable(DOUBLE);
+                callbackFunction.add(new Call(tmp, MACHINE_FP_TO_DOUBLE, ref));
+                ref = tmp.ref();
             }
             args.add(ref);
         }
@@ -994,6 +1079,18 @@ public class SootClassCompiler {
                 // Decrease the attach count for the current thread (detaches the thread if the count reaches 0)
                 callbackFunction.add(new Call(NVM_BC_DETACH_THREAD_FROM_CALLBACK, env.ref()));
                 callbackFunction.add(new Ret(resultI8Ptr.ref()));
+            } else if (callbackFunctionType.getReturnType() == MACHINE_INT) {
+                Variable resultMachineInt = callbackFunction.newVariable(MACHINE_INT);
+                callbackFunction.add(new Inttoptr(resultMachineInt, result.ref(), MACHINE_INT));
+                // Decrease the attach count for the current thread (detaches the thread if the count reaches 0)
+                callbackFunction.add(new Call(NVM_BC_DETACH_THREAD_FROM_CALLBACK, env.ref()));
+                callbackFunction.add(new Ret(resultMachineInt.ref()));
+            } else if (callbackFunctionType.getReturnType() == MACHINE_FP) {
+                Variable resultMachineFp = callbackFunction.newVariable(MACHINE_FP);
+                callbackFunction.add(new Call(resultMachineFp, DOUBLE_TO_MACHINE_FP, result.ref()));
+                // Decrease the attach count for the current thread (detaches the thread if the count reaches 0)
+                callbackFunction.add(new Call(NVM_BC_DETACH_THREAD_FROM_CALLBACK, env.ref()));
+                callbackFunction.add(new Ret(resultMachineFp.ref()));
             } else {
                 // Decrease the attach count for the current thread (detaches the thread if the count reaches 0)
                 callbackFunction.add(new Call(NVM_BC_DETACH_THREAD_FROM_CALLBACK, env.ref()));
@@ -1711,11 +1808,14 @@ public class SootClassCompiler {
         if (method.getName().startsWith("set") && method.getParameterCount() != 1) {
             throw new IllegalArgumentException("@StructMember annotated setter method must take a single argument");
         }
-        if (method.getName().startsWith("get") && !(method.getReturnType() instanceof PrimType)) {
-            throw new IllegalArgumentException("@StructMember annotated getter method must return primitive type");
-        }
-        if (method.getName().startsWith("set") && !(method.getParameterType(0) instanceof PrimType)) {
-            throw new IllegalArgumentException("@StructMember annotated setter method must take a single primitive type argument");
+        boolean getter = method.getName().startsWith("get");
+        soot.Type t = getter ? method.getReturnType() : method.getParameterType(0);
+        if (!(t instanceof PrimType || t instanceof RefType && isStruct(((RefType) t).getSootClass()))) {
+            if (getter) {
+                throw new IllegalArgumentException("@StructMember annotated getter method must return primitive or Struct type");
+            } else {
+                throw new IllegalArgumentException("@StructMember annotated setter method must take a single primitive or Struct type argument");
+            }
         }
     }
     
@@ -1731,23 +1831,56 @@ public class SootClassCompiler {
             if (isStructMember(method)) {
                 validateStructMember(method);
                 String name = method.getName().substring(3, 4).toLowerCase() + method.getName().substring(4);
-                Type type = getType(method.getName().startsWith("get") ? method.getReturnType() : method.getParameterType(0));
-                if (method.getName().startsWith("get") && hasAnnotation(method, "Lorg/nullvm/rt/bro/annotation/Pointer;")) {
-                    if (!method.getReturnType().equals(LongType.v())) {
-                        throw new IllegalArgumentException("@StructMember annotated getter method " 
-                                + method.getName() + " must return long when annotated with @Pointer");
+                boolean getter = method.getName().startsWith("get");
+                soot.Type sootType = getter ? method.getReturnType() : method.getParameterType(0);
+                Type type = sootType instanceof PrimType ? getType(sootType) : I8_PTR;
+                if (getter) {
+                    if (hasAnnotation(method, "Lorg/nullvm/rt/bro/annotation/Pointer;")) {
+                        if (!sootType.equals(LongType.v()) && !(sootType instanceof RefType)) {
+                            throw new IllegalArgumentException("@StructMember annotated getter method " 
+                                    + method.getName() + " must return long or Struct when annotated with @Pointer");
+                        }
+                        type = I8_PTR;
+                    } else if (hasAnnotation(method, "Lorg/nullvm/rt/bro/annotation/MachineWord;")) {
+                        if (!sootType.equals(LongType.v()) && !sootType.equals(DoubleType.v())) {
+                            throw new IllegalArgumentException("@StructMember annotated getter method " 
+                                    + method.getName() + " must return long or double when annotated with @MachineWord");
+                        }
+                        type = method.getReturnType().equals(LongType.v()) ? MACHINE_INT : MACHINE_FP;
+                    } else if (sootType instanceof RefType) {
+                        // Struct type
+                        try {
+                            type = getStructType(((RefType) sootType).getSootClass());
+                        } catch (StackOverflowError e) {
+                            throw new IllegalArgumentException("Struct type " + sootType + " refers to itself");
+                        }
                     }
-                    type = I8_PTR;
-                } else if (hasParameterAnnotation(method, 0, "Lorg/nullvm/rt/bro/annotation/Pointer;")) {
-                    if (!method.getParameterType(0).equals(LongType.v())) {
-                        throw new IllegalArgumentException("First parameter of @StructMember annotated setter method " 
-                                + method.getName() 
-                                + " must be of type long when annotated with @Pointer");
+                } else {
+                    if (hasParameterAnnotation(method, 0, "Lorg/nullvm/rt/bro/annotation/Pointer;")) {
+                        if (!sootType.equals(LongType.v()) && !(sootType instanceof RefType)) {
+                            throw new IllegalArgumentException("First parameter of @StructMember annotated setter method " 
+                                    + method.getName() 
+                                    + " must be of type long or Struct when annotated with @Pointer");
+                        }
+                        type = I8_PTR;
+                    } else if (hasParameterAnnotation(method, 0, "Lorg/nullvm/rt/bro/annotation/MachineWord;")) {
+                        if (!sootType.equals(LongType.v()) && !sootType.equals(DoubleType.v())) {
+                            throw new IllegalArgumentException("First parameter of @StructMember annotated setter method " 
+                                    + method.getName() 
+                                    + " must be of type long or double when annotated with @MachineWord");
+                        }
+                        type = method.getReturnType().equals(LongType.v()) ? MACHINE_INT : MACHINE_FP;
+                    } else if (sootType instanceof RefType) {
+                        // Struct type
+                        try {
+                            type = getStructType(((RefType) sootType).getSootClass());
+                        } catch (StackOverflowError e) {
+                            throw new IllegalArgumentException("Struct type " + sootType + " refers to itself");
+                        }
                     }
-                    type = I8_PTR;
                 }
                 if (members.containsKey(name)) { 
-                    if (members.get(name) != type) {
+                    if (!members.get(name).equals(type)) {
                         throw new IllegalArgumentException("@StructMember annotated getter and setter methods for property " + name + " have different types");
                     }
                 } else {
@@ -2917,8 +3050,14 @@ public class SootClassCompiler {
                         + method.getName() + " must return long when annotated with @Pointer");
             }
             returnType = I8_PTR;
+        } else if (hasAnnotation(method, "Lorg/nullvm/rt/bro/annotation/MachineWord;")) {
+            if (!method.getReturnType().equals(LongType.v()) && !method.getReturnType().equals(DoubleType.v())) {
+                throw new IllegalArgumentException(anno + " annotated method " 
+                        + method.getName() + " must return long or double when annotated with @MachineWord");
+            }
+            returnType = method.getReturnType().equals(LongType.v()) ? MACHINE_INT : MACHINE_FP;
         }
-
+        
         Type[] paramTypes = new Type[method.getParameterTypes().size()];
         int i = 0;
         for (soot.Type t : (List<soot.Type>) method.getParameterTypes()) {
@@ -2934,6 +3073,14 @@ public class SootClassCompiler {
                             + " must be of type long when annotated with @Pointer");
                 }
                 paramTypes[i] = I8_PTR;
+            } else if (hasParameterAnnotation(method, i, "Lorg/nullvm/rt/bro/annotation/MachineWord;")) {
+                if (!method.getParameterType(i).equals(LongType.v()) && !method.getParameterType(i).equals(DoubleType.v())) {
+                    throw new IllegalArgumentException("Parameter " + (i + 1) 
+                            + " of " + anno + " annotated method " 
+                            + method.getName() 
+                            + " must be of type long or double when annotated with @MachineWord");
+                }
+                paramTypes[i] = method.getParameterType(i).equals(LongType.v()) ? MACHINE_INT : MACHINE_FP;
             }
         }
         

@@ -78,6 +78,7 @@ declare void @_nvmBcDetachThreadFromCallback(%Env*)
 
 declare %Object* @_nvmBcNewStruct(%Env*, i8*, %Class*, i8*)
 declare i8* @_nvmBcGetStructHandle(%Env*, %Object*)
+declare i8* @_nvmBcByValueGetStructHandle(%Env*, %Object*)
 declare void @_nvmBcCopyStruct(%Env*, %Object*, i8*, i32)
 
 declare i8* @llvm.eh.exception() nounwind

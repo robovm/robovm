@@ -32,6 +32,7 @@ import org.nullvm.compiler.clazz.Path;
 import org.nullvm.compiler.llvm.Add;
 import org.nullvm.compiler.llvm.Alloca;
 import org.nullvm.compiler.llvm.And;
+import org.nullvm.compiler.llvm.Argument;
 import org.nullvm.compiler.llvm.ArrayConstant;
 import org.nullvm.compiler.llvm.ArrayType;
 import org.nullvm.compiler.llvm.Ashr;
@@ -81,6 +82,7 @@ import org.nullvm.compiler.llvm.OpaqueType;
 import org.nullvm.compiler.llvm.Or;
 import org.nullvm.compiler.llvm.PackedStructureConstant;
 import org.nullvm.compiler.llvm.PackedStructureType;
+import org.nullvm.compiler.llvm.ParameterAttribute;
 import org.nullvm.compiler.llvm.PointerType;
 import org.nullvm.compiler.llvm.Ptrtoint;
 import org.nullvm.compiler.llvm.Ret;
@@ -323,6 +325,7 @@ public class SootClassCompiler {
     private static final FunctionRef NVM_BC_DETACH_THREAD_FROM_CALLBACK = new FunctionRef("_nvmBcDetachThreadFromCallback", new FunctionType(VOID, ENV_PTR));
     private static final FunctionRef NVM_BC_NEW_STRUCT = new FunctionRef("_nvmBcNewStruct", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR, CLASS_PTR, I8_PTR));
     private static final FunctionRef NVM_BC_GET_STRUCT_HANDLE = new FunctionRef("_nvmBcGetStructHandle", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR));
+    private static final FunctionRef NVM_BC_BY_VALUE_GET_STRUCT_HANDLE = new FunctionRef("_nvmBcByValueGetStructHandle", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR));
     private static final FunctionRef NVM_BC_COPY_STRUCT = new FunctionRef("_nvmBcCopyStruct", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I8_PTR, I32));
 
     private static final FunctionRef LLVM_EH_EXCEPTION = new FunctionRef("llvm.eh.exception", new FunctionType(I8_PTR));
@@ -718,7 +721,7 @@ public class SootClassCompiler {
         }
         function.newBasicBlock(new Label("failure"));
         Variable ehptr = function.newVariable(I8_PTR);
-        function.add(new Call(ehptr, LLVM_EH_EXCEPTION));
+        function.add(new Call(ehptr, LLVM_EH_EXCEPTION, new Value[0]));
         Variable sel = function.newVariable(I32);
         function.add(new Call(sel, LLVM_EH_SELECTOR, new VariableRef(ehptr), 
                 new ConstantBitcast(NVM_BC_PERSONALITY, I8_PTR), new IntegerConstant(1)));
@@ -915,12 +918,14 @@ public class SootClassCompiler {
     }
     
     private void nativeBridgeMethod(SootMethod method) {
-        if (!method.getReturnType().equals(VoidType.v()) && !(method.getReturnType() instanceof PrimType)) {
-            throw new IllegalArgumentException("@Bridge annotated method must return void or primitive type");
+        soot.Type sootRetType = method.getReturnType();
+        if (!sootRetType.equals(VoidType.v()) && !(sootRetType instanceof PrimType) && !isStruct(sootRetType)) {
+            throw new IllegalArgumentException("@Bridge annotated method must return void or a primitive or Struct type");
         }
         for (int i = 0; i < method.getParameterCount(); i++) {
-            if (!(method.getParameterType(i) instanceof PrimType)) {
-                throw new IllegalArgumentException("@Bridge annotated method must take only primitive type arguments");
+            soot.Type t = method.getParameterType(i);
+            if (!(t instanceof PrimType) && !isStruct(t)) {
+                throw new IllegalArgumentException("@Bridge annotated method must take only primitive or Struct type arguments");
             }            
         }
 
@@ -929,17 +934,17 @@ public class SootClassCompiler {
         
         Type[] parameterTypes = innerFunction.getType().getParameterTypes();
         String[] parameterNames = innerFunction.getParameterNames();
-        ArrayList<Value> args = new ArrayList<Value>();
+        ArrayList<Argument> args = new ArrayList<Argument>();
         for (int i = 0; i < parameterTypes.length; i++) {
-            args.add(new VariableRef(parameterNames[i], parameterTypes[i]));
+            args.add(new Argument(new VariableRef(parameterNames[i], parameterTypes[i])));
         }
         
         if (outerFunction.getType().getReturnType() == VOID) {
-            outerFunction.add(new Call(innerFunction.ref(), args.toArray(new Value[args.size()])));
+            outerFunction.add(new Call(innerFunction.ref(), args.toArray(new Argument[args.size()])));
             outerFunction.add(new Ret());
         } else {
             Variable result = outerFunction.newVariable(outerFunction.getType().getReturnType());
-            outerFunction.add(new Call(result, innerFunction.ref(), args.toArray(new Value[args.size()])));
+            outerFunction.add(new Call(result, innerFunction.ref(), args.toArray(new Argument[args.size()])));
             outerFunction.add(new Ret(result.ref()));
         }
 
@@ -953,19 +958,29 @@ public class SootClassCompiler {
         }
         Type[] targetParameterTypes = targetFunctionType.getParameterTypes();
         for (int i = 0; i < targetParameterTypes.length; i++) {
-            if (targetParameterTypes[i] == I8_PTR) {
+            if (targetParameterTypes[i] instanceof PointerType && ((PointerType) targetParameterTypes[i]).getBase() instanceof StructureType) {
+                Variable tmp = innerFunction.newVariable(I8_PTR);
+                innerFunction.add(new Call(tmp, NVM_BC_BY_VALUE_GET_STRUCT_HANDLE, ENV, args.get(i).getValue()));
+                Variable arg = innerFunction.newVariable(targetParameterTypes[i]);
+                innerFunction.add(new Bitcast(arg, tmp.ref(), arg.getType()));
+                args.set(i, new Argument(arg.ref(), ParameterAttribute.byval));
+            } else if (targetParameterTypes[i] == I8_PTR) {
                 // Convert arg at index i from i64 to i8*
                 Variable arg = innerFunction.newVariable(I8_PTR);
-                innerFunction.add(new Inttoptr(arg, args.get(i), I8_PTR));
-                args.set(i, arg.ref());
+                innerFunction.add(new Inttoptr(arg, args.get(i).getValue(), I8_PTR));
+                if (hasParameterAnnotation(method, i, "Lorg/nullvm/rt/bro/annotation/StructRet;")) {
+                    args.set(i, new Argument(arg.ref(), ParameterAttribute.sret));
+                } else {
+                    args.set(i, new Argument(arg.ref()));                    
+                }
             } else if (targetParameterTypes[i] == MACHINE_INT) {
                 Variable arg = innerFunction.newVariable(MACHINE_INT);
-                innerFunction.add(new Inttoptr(arg, args.get(i), MACHINE_INT));
-                args.set(i, arg.ref());
+                innerFunction.add(new Inttoptr(arg, args.get(i).getValue(), MACHINE_INT));
+                args.set(i, new Argument(arg.ref()));
             } else if (targetParameterTypes[i] == MACHINE_FP) {
                 Variable arg = innerFunction.newVariable(MACHINE_FP);
                 innerFunction.add(new Call(arg, DOUBLE_TO_MACHINE_FP, args.get(i)));
-                args.set(i, arg.ref());
+                args.set(i, new Argument(arg.ref()));
             }
         }
         
@@ -988,12 +1003,12 @@ public class SootClassCompiler {
         innerFunction.add(new Call(frameAddress, LLVM_FRAMEADDRESS, new IntegerConstant(0)));
         innerFunction.add(new Call(NVM_BC_PUSH_NATIVE_FRAME, ENV, frameAddress.ref()));
         if (innerFunction.getType().getReturnType() == VOID) {
-            innerFunction.add(new Call(targetFunction.ref(), args.toArray(new Value[args.size()])));
+            innerFunction.add(new Call(targetFunction.ref(), args.toArray(new Argument[args.size()])));
             innerFunction.add(new Call(NVM_BC_POP_NATIVE_FRAME, ENV));
             innerFunction.add(new Ret());
         } else {
             Variable result = innerFunction.newVariable(targetFunctionType.getReturnType());
-            innerFunction.add(new Call(result, targetFunction.ref(), args.toArray(new Value[args.size()])));
+            innerFunction.add(new Call(result, targetFunction.ref(), args.toArray(new Argument[args.size()])));
             innerFunction.add(new Call(NVM_BC_POP_NATIVE_FRAME, ENV));
             if (targetFunctionType.getReturnType() == I8_PTR) {
                 Variable resultI64 = innerFunction.newVariable(I64);
@@ -1041,7 +1056,7 @@ public class SootClassCompiler {
 
         // Increase the attach count for the current thread (attaches the thread if not attached)
         Variable env = callbackFunction.newVariable(ENV.getName().substring(1), ENV_PTR);
-        callbackFunction.add(new Call(env, NVM_BC_ATTACH_THREAD_FROM_CALLBACK));
+        callbackFunction.add(new Call(env, NVM_BC_ATTACH_THREAD_FROM_CALLBACK, new Value[0]));
         
         ArrayList<Value> args = new ArrayList<Value>();
         args.add(env.ref());
@@ -1197,7 +1212,7 @@ public class SootClassCompiler {
         next: for (List<Trap> traps : ctx.getRecordedTraps()) {
             BasicBlock bb = function.newBasicBlock(new Label(traps));
             Variable ehptr = function.newVariable(I8_PTR);
-            bb.add(new Call(ehptr, LLVM_EH_EXCEPTION));
+            bb.add(new Call(ehptr, LLVM_EH_EXCEPTION, new Value[0]));
             Variable sel = function.newVariable(I32);
             bb.add(new Call(sel, LLVM_EH_SELECTOR, new VariableRef(ehptr), 
                     new ConstantBitcast(NVM_BC_PERSONALITY, I8_PTR), new IntegerConstant(1)));
@@ -1810,13 +1825,17 @@ public class SootClassCompiler {
         }
         boolean getter = method.getName().startsWith("get");
         soot.Type t = getter ? method.getReturnType() : method.getParameterType(0);
-        if (!(t instanceof PrimType || t instanceof RefType && isStruct(((RefType) t).getSootClass()))) {
+        if (!(t instanceof PrimType || t instanceof RefType && isStruct(t))) {
             if (getter) {
                 throw new IllegalArgumentException("@StructMember annotated getter method must return primitive or Struct type");
             } else {
                 throw new IllegalArgumentException("@StructMember annotated setter method must take a single primitive or Struct type argument");
             }
         }
+    }
+    
+    private static StructureType getStructType(soot.Type t) {
+        return getStructType(((RefType) t).getSootClass(), null);                
     }
     
     private static StructureType getStructType(SootClass clazz) {
@@ -1836,28 +1855,27 @@ public class SootClassCompiler {
                 Type type = sootType instanceof PrimType ? getType(sootType) : I8_PTR;
                 if (getter) {
                     if (hasAnnotation(method, "Lorg/nullvm/rt/bro/annotation/Pointer;")) {
-                        if (!sootType.equals(LongType.v()) && !(sootType instanceof RefType)) {
+                        if (!sootType.equals(LongType.v()) && !isStruct(sootType)) {
                             throw new IllegalArgumentException("@StructMember annotated getter method " 
                                     + method.getName() + " must return long or Struct when annotated with @Pointer");
                         }
-                        type = I8_PTR;
+                        type = I8_PTR; // NOTE: We use i8* instead of <StructType>* to support pointers to recursive structs 
                     } else if (hasAnnotation(method, "Lorg/nullvm/rt/bro/annotation/MachineWord;")) {
                         if (!sootType.equals(LongType.v()) && !sootType.equals(DoubleType.v())) {
                             throw new IllegalArgumentException("@StructMember annotated getter method " 
                                     + method.getName() + " must return long or double when annotated with @MachineWord");
                         }
                         type = method.getReturnType().equals(LongType.v()) ? MACHINE_INT : MACHINE_FP;
-                    } else if (sootType instanceof RefType) {
-                        // Struct type
+                    } else if (isStruct(sootType)) {
                         try {
-                            type = getStructType(((RefType) sootType).getSootClass());
+                            type = getStructType(sootType);
                         } catch (StackOverflowError e) {
                             throw new IllegalArgumentException("Struct type " + sootType + " refers to itself");
                         }
                     }
                 } else {
                     if (hasParameterAnnotation(method, 0, "Lorg/nullvm/rt/bro/annotation/Pointer;")) {
-                        if (!sootType.equals(LongType.v()) && !(sootType instanceof RefType)) {
+                        if (!sootType.equals(LongType.v()) && !isStruct(sootType)) {
                             throw new IllegalArgumentException("First parameter of @StructMember annotated setter method " 
                                     + method.getName() 
                                     + " must be of type long or Struct when annotated with @Pointer");
@@ -1870,10 +1888,9 @@ public class SootClassCompiler {
                                     + " must be of type long or double when annotated with @MachineWord");
                         }
                         type = method.getReturnType().equals(LongType.v()) ? MACHINE_INT : MACHINE_FP;
-                    } else if (sootType instanceof RefType) {
-                        // Struct type
+                    } else if (isStruct(sootType)) {
                         try {
-                            type = getStructType(((RefType) sootType).getSootClass());
+                            type = getStructType(sootType);
                         } catch (StackOverflowError e) {
                             throw new IllegalArgumentException("Struct type " + sootType + " refers to itself");
                         }
@@ -2992,6 +3009,13 @@ public class SootClassCompiler {
         return hasAnnotation(sm, "Lorg/nullvm/rt/bro/annotation/StructMember;");
     }
     
+    private static boolean isStruct(soot.Type t) {
+        if (t instanceof RefType) {
+            return isStruct(((RefType) t).getSootClass());
+        }
+        return false;
+    }
+    
     private static boolean isStruct(SootClass sc) {
         SootClass clazz = sc;
         while (clazz.hasSuperclass()) {
@@ -3043,11 +3067,12 @@ public class SootClassCompiler {
     @SuppressWarnings("unchecked")
     private static FunctionType getBridgeOrCallbackFunctionType(SootMethod method) {
         String anno = isBridge(method) ? "@Bridge" : "@Callback";
-        Type returnType = getType(method.getReturnType());
+        soot.Type sootRetType = method.getReturnType();
+        Type returnType = isStruct(sootRetType) ? getStructType(sootRetType) : getType(sootRetType);
         if (hasAnnotation(method, "Lorg/nullvm/rt/bro/annotation/Pointer;")) {
-            if (!method.getReturnType().equals(LongType.v())) {
+            if (!sootRetType.equals(LongType.v()) && !isStruct(sootRetType)) {
                 throw new IllegalArgumentException(anno + " annotated method " 
-                        + method.getName() + " must return long when annotated with @Pointer");
+                        + method.getName() + " must return long or Struct when annotated with @Pointer");
             }
             returnType = I8_PTR;
         } else if (hasAnnotation(method, "Lorg/nullvm/rt/bro/annotation/MachineWord;")) {
@@ -3061,26 +3086,41 @@ public class SootClassCompiler {
         Type[] paramTypes = new Type[method.getParameterTypes().size()];
         int i = 0;
         for (soot.Type t : (List<soot.Type>) method.getParameterTypes()) {
-            paramTypes[i++] = getType(t);
+            paramTypes[i++] = isStruct(t) ? new PointerType(getStructType(t)) : getType(t);
         }
         
         for (i = 0; i < paramTypes.length; i++) {
-            if (hasParameterAnnotation(method, i, "Lorg/nullvm/rt/bro/annotation/Pointer;")) {
-                if (!method.getParameterType(i).equals(LongType.v())) {
+            if (hasParameterAnnotation(method, i, "Lorg/nullvm/rt/bro/annotation/StructRet;")) {
+                if (i > 0) {
                     throw new IllegalArgumentException("Parameter " + (i + 1) 
                             + " of " + anno + " annotated method " 
                             + method.getName() 
-                            + " must be of type long when annotated with @Pointer");
+                            + " cannot be annotated with @StructRet. Only first parameter can have this annotation.");
+                }
+                if (!hasParameterAnnotation(method, i, "Lorg/nullvm/rt/bro/annotation/Pointer;")) {
+                    throw new IllegalArgumentException("Parameter " + (i + 1) 
+                            + " of " + anno + " annotated method " 
+                            + method.getName() 
+                            + " must be annotated with @Pointer when annotated with @StructRet.");
+                }
+            }
+            soot.Type t = method.getParameterType(i);
+            if (hasParameterAnnotation(method, i, "Lorg/nullvm/rt/bro/annotation/Pointer;")) {
+                if (!t.equals(LongType.v()) && !isStruct(t)) {
+                    throw new IllegalArgumentException("Parameter " + (i + 1) 
+                            + " of " + anno + " annotated method " 
+                            + method.getName() 
+                            + " must be of type long or Struct when annotated with @Pointer");
                 }
                 paramTypes[i] = I8_PTR;
             } else if (hasParameterAnnotation(method, i, "Lorg/nullvm/rt/bro/annotation/MachineWord;")) {
-                if (!method.getParameterType(i).equals(LongType.v()) && !method.getParameterType(i).equals(DoubleType.v())) {
+                if (!t.equals(LongType.v()) && !t.equals(DoubleType.v())) {
                     throw new IllegalArgumentException("Parameter " + (i + 1) 
                             + " of " + anno + " annotated method " 
                             + method.getName() 
                             + " must be of type long or double when annotated with @MachineWord");
                 }
-                paramTypes[i] = method.getParameterType(i).equals(LongType.v()) ? MACHINE_INT : MACHINE_FP;
+                paramTypes[i] = t.equals(LongType.v()) ? MACHINE_INT : MACHINE_FP;
             }
         }
         

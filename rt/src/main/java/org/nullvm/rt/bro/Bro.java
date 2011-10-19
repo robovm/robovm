@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.nullvm.rt.VM;
+import org.nullvm.rt.bro.annotation.Bridge;
+import org.nullvm.rt.bro.annotation.Library;
 
 /**
  *
@@ -42,16 +44,16 @@ public class Bro {
     }
     
     public static void bind(Class<?> c) {
+        org.nullvm.rt.bro.annotation.Runtime runtime = c.getAnnotation(org.nullvm.rt.bro.annotation.Runtime.class);
+        Runtime runtimeImpl = getRuntime(runtime == null ? CRuntime.class : runtime.value());
         Library library = c.getAnnotation(Library.class);
-        if (library == null) {
-            throw new IllegalArgumentException("No @" + Library.class.getName() 
-                    + " annotation found on class " + c.getName());
+        if (library != null) {
+            runtimeImpl.loadLibrary(library);
         }
-        Runtime runtime = getRuntime(library.runtime());
         for (Method method : c.getDeclaredMethods()) {
             Bridge bridge = method.getAnnotation(Bridge.class);
             if (bridge != null) {
-                long f = runtime.resolveBridge(library, bridge, method);
+                long f = runtimeImpl.resolveBridge(library, bridge, method);
                 bind(method, f);
             }
         }

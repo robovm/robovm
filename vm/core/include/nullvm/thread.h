@@ -16,6 +16,7 @@ extern void nvmThreadInterrupt(Env* env, Thread* thread);
 extern void nvmThreadYield(Env* env);
 extern jint nvmAttachCurrentThread(VM* vm, Env** env, char* name, Object* group);
 extern jint nvmAttachCurrentThreadAsDaemon(VM* vm, Env** env, char* name, Object* group);
+extern jint nvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount);
 extern jint nvmGetEnv(VM* vm, Env** env);
 
 #endif

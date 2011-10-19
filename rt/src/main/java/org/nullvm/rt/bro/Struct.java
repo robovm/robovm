@@ -15,18 +15,37 @@
  */
 package org.nullvm.rt.bro;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.nullvm.rt.VM;
 
 /**
  *
  * @version $Id$
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
-public @interface Library {
-    public String value();
-    public Class<? extends Runtime> runtime() default CRuntime.class;
+public abstract class Struct {
+
+    private final long handle;
+
+    protected Struct() {
+        this.handle = VM.allocateMemory(_sizeOf());
+    }
+    
+    protected Struct(long handle) {
+        this.handle = handle;
+    }
+    
+    public final long getHandle() {
+        return handle;
+    }
+    
+    protected int _sizeOf() {
+        return 0;
+    }
+    
+    public static int sizeOf() {
+        return 0;
+    }
+    
+    public static int offsetOf(int index) {
+        return 0;
+    }
 }

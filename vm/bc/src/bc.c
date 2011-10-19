@@ -27,6 +27,7 @@ extern ClassFunc* _nvmBcClasspathEntries;
 static Class* loadBootclasspathClass(Env*, char*, ClassLoader*);
 static Class* loadClasspathClass(Env*, char*, ClassLoader*);
 static Options options = {0};
+static VM* vm = NULL;
 
 static jboolean initClassLookup(ClassFunc* cf, ClassFuncLookupEntry** lookup) {
     ClassFunc* first = cf;
@@ -72,6 +73,7 @@ int main(int argc, char* argv[]) {
         fprintf(stderr, "nvmStartup(...) failed!\n");
         return 1;
     }
+    vm = env->vm;
     jint result = nvmRun(env) ? 0 : 1;
     nvmShutdown(env, result);
     return result;
@@ -211,8 +213,14 @@ Method* _nvmBcAddMethod(Env* env, Class* clazz, char* name, char* desc, jint acc
     return method;
 }
 
-BridgeMethod* _nvmBcAddBridgeMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup, void* targetImpl) {
+BridgeMethod* _nvmBcAddBridgeMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup, void** targetImpl) {
     BridgeMethod* method = nvmAddBridgeMethod(env, clazz, name, desc, access, impl, synchronizedImpl, lookup, targetImpl);
+    if (!method) nvmRaiseException(env, nvmExceptionOccurred(env));
+    return method;
+}
+
+CallbackMethod* _nvmBcAddCallbackMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup, void* callbackImpl) {
+    CallbackMethod* method = nvmAddCallbackMethod(env, clazz, name, desc, access, impl, synchronizedImpl, lookup, callbackImpl);
     if (!method) nvmRaiseException(env, nvmExceptionOccurred(env));
     return method;
 }
@@ -655,5 +663,49 @@ error:
     _nvmBcPopNativeFrame(env);
     nvmRaiseException(env, nvmExceptionOccurred(env));
     return NULL;
+}
+
+Env* _nvmBcAttachThreadFromCallback(void) {
+    Env* env = NULL;
+    if (nvmAttachCurrentThread(vm, &env, NULL, NULL) != JNI_OK) {
+        nvmAbort("Failed to attach thread in callback");
+    }
+    return env;
+}
+
+void _nvmBcDetachThreadFromCallback(Env* env) {
+    nvmDetachCurrentThread(env->vm, FALSE);
+}
+
+Object* _nvmBcNewStruct(Env* env, char* className, Class* caller, void* handle) {
+    // TODO: Check access
+    if (!handle) return NULL;
+    Class* clazz = findClassInLoader(env, className, caller->classLoader);
+    if (!clazz) goto error;
+    Method* constructor = (Method*) nvmGetInstanceMethod(env, clazz, "<init>", "(J)V");
+    if (!constructor) goto error;
+    jvalue args[1];
+    args[0].j = (jlong) handle;
+    Object* o = nvmNewObjectA(env, clazz, constructor, args);
+    if (!o) goto error;
+    return o;
+error:
+    nvmRaiseException(env, nvmExceptionOccurred(env));
+    return NULL;
+}
+
+void* _nvmBcGetStructHandle(Env* env, Object* object) {
+    if (!object) return NULL;
+    return *((void**) (((void*) object) + sizeof(Object)));
+}
+
+void _nvmBcCopyStruct(Env* env, Object* object, void* dest, jint length) {
+    if (!object) {
+        nvmThrowNullPointerException(env);
+        nvmRaiseException(env, nvmExceptionOccurred(env));
+        return;
+    }
+    void* src = *((void**) (((void*) object) + sizeof(Object)));
+    memcpy(dest, src, length);
 }
 

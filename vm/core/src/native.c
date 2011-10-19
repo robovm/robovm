@@ -33,7 +33,7 @@ static jint AttachCurrentThread(JavaVM* vm, void** penv, void* args) {
 }
 
 static jint DetachCurrentThread(JavaVM* vm) {
-    return JNI_ERR;
+    return nvmDetachCurrentThread((VM*) vm, TRUE);
 }
 
 static jint GetEnv(JavaVM* vm, void** penv, jint ver) {

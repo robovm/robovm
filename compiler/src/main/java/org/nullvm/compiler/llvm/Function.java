@@ -64,6 +64,10 @@ public class Function {
         return type;
     }
     
+    public VariableRef getParameterRef(int index) {
+        return new VariableRef(parameterNames[index], type.getParameterTypes()[index]);
+    }
+    
     public String[] getParameterNames() {
         return parameterNames.clone();
     }

@@ -663,6 +663,16 @@ static jboolean getDeclaredClassesIterator(Env* env, char* innerClass, char* out
     return TRUE; // Continue with next attribute
 }
 
+static jboolean getInnerClassNameIterator(Env* env, char* innerClass, char* outerClass, char* innerName, jint access, void* data) {
+    Object** result = (Object**) ((void**) data)[0];
+    Class* clazz = (Class*) ((void**) data)[1];
+    if (innerName && innerClass && !strcmp(innerClass, clazz->name)) {
+        *result = nvmNewStringUTF(env, innerName, -1);
+        return FALSE; // Stop iterating
+    }
+    return TRUE; // Continue with next attribute
+}
+
 jboolean nvmInitAttributes(Env* env) {
     java_lang_TypeNotPresentException = nvmFindClassUsingLoader(env, "java/lang/TypeNotPresentException", NULL);
     if (!java_lang_TypeNotPresentException) return FALSE;
@@ -797,6 +807,13 @@ ObjectArray* nvmAttributeGetDeclaredClasses(Env* env, Class* clazz) {
     jint index = 0;
     void* data[3] = {result, &index, clazz};
     iterateInnerClasses(env, clazz->attributes, getDeclaredClassesIterator, data);
+    return result;
+}
+
+Object* nvmAttributeGetInnerClassName(Env* env, Class* clazz) {
+    Object* result = NULL;
+    void* data[2] = {&result, clazz};
+    iterateInnerClasses(env, clazz->attributes, getInnerClassNameIterator, data);
     return result;
 }
 

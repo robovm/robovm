@@ -535,7 +535,7 @@ public class Main {
         List<String> gccArgs = new ArrayList<String>();
         List<String> libArgs = new ArrayList<String>();
         
-        libArgs.addAll(Arrays.asList("-lm", "-lnullvm-core", "-lnullvm-bc", "-lnullvm-hyprt"));
+        libArgs.addAll(Arrays.asList("-lnullvm-bc", "-lm", "-lnullvm-core", "-lnullvm-hyprt"));
         
         gccArgs.add("-L");
         gccArgs.add(homeLibOsArch.getAbsolutePath());

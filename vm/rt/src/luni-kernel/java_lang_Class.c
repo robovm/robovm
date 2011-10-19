@@ -42,6 +42,10 @@ Object* Java_java_lang_Class_getSignatureAttribute(Env* env, Class* thiz) {
     return nvmAttributeGetClassSignature(env, thiz);
 }
 
+Object* Java_java_lang_Class_getInnerClassName(Env* env, Class* thiz) {
+    return nvmAttributeGetInnerClassName(env, thiz);
+}
+
 Object* Java_java_lang_Class_getName0(Env* env, Class* thiz) {
     return nvmNewStringUTF(env, thiz->name, -1);
 }

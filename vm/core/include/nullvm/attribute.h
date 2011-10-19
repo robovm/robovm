@@ -16,6 +16,7 @@ extern ObjectArray* nvmAttributeGetMethodRuntimeVisibleAnnotations(Env* env, Met
 extern ObjectArray* nvmAttributeGetFieldRuntimeVisibleAnnotations(Env* env, Field* field);
 extern ObjectArray* nvmAttributeGetMethodRuntimeVisibleParameterAnnotations(Env* env, Method* method);
 extern ObjectArray* nvmAttributeGetDeclaredClasses(Env* env, Class* clazz);
+extern Object* nvmAttributeGetInnerClassName(Env* env, Class* clazz);
 
 #endif
 

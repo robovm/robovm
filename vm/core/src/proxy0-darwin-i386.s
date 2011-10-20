@@ -51,8 +51,8 @@ Lproxy0CFI2:
     jmp   LreturnTypeNotDouble
 LreturnTypeNotFloat:
     cmp   $RETURN_TYPE_DOUBLE, %ecx
-    fldl  returnValue_offset(%esp)
     jne   LreturnTypeNotDouble
+    fldl  returnValue_offset(%esp)
 LreturnTypeNotDouble:
 
     addl  $proxy0_stack_size, %esp

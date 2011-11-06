@@ -69,8 +69,6 @@ public class Main {
     public enum OS {linux, darwin}
     public enum Arch {i386, x86_64, arm}
 
-    private String classpath = null;
-    private String bootclasspath = null;
     private File output = null;
     private String target = null;
     private File home = new File(System.getProperty("user.home"), ".nullvm");
@@ -89,6 +87,7 @@ public class Main {
     private String cpu = null;
     private boolean debug = false;
     private boolean nort = false;
+    private boolean nolink = false;
     private boolean verbose = false;
     private File jarFile;
     private boolean run = false;
@@ -97,8 +96,9 @@ public class Main {
     
     private File homeLib;
     private File homeLibOsArch;
-    private List<File> bootClassPathFiles = new ArrayList<File>();
-    private List<File> classPathFiles = new ArrayList<File>();
+    private List<File> bootclasspath = new ArrayList<File>();
+    private List<File> classpath = new ArrayList<File>();
+    private Set<String> classes = new HashSet<String>();
     private PrintStream stdout = System.out;
     private File tmpFile;
     private String host;
@@ -109,6 +109,7 @@ public class Main {
         }
         System.err.println("Usage: nullvm [-options] class [run-args]");
         System.err.println("   or  nullvm [-options] -jar jarfile [run-args]");
+        System.err.println("   or  nullvm [-options] -nolink");
         System.err.println("Options:");
         
         System.err.println("  -bootclasspath <list> ");
@@ -124,6 +125,9 @@ public class Main {
         System.err.println("  -cp <list>            ");
         System.err.println("  -classpath <list>     : separated list of directories, JAR archives, and ZIP \n" 
                          + "                        archives to search for class files.");
+        System.err.println("  -classes <list>       : separated list of classes to compile. If specified only\n"
+                         + "                        these classes will be compiled and the compiler will not\n"
+                         + "                        search for changed classes.");
         System.err.println("  -d <dir>              Place the generated executable and other files in <dir>.");
         System.err.println("  -gcc-bin <path>       Path to the gcc binary");
         System.err.println("  -gcc-opt <opt>        Extra option to pass to gcc");
@@ -147,6 +151,7 @@ public class Main {
                          + "                        is used by default. Use llc to determine allowed values.");
         System.err.println("  -debug                Generates debug information");
         System.err.println("  -nort                 Do not add default nullvm-rt.jar to bootclasspath");
+        System.err.println("  -nolink               Do not link the final executable");
         System.err.println("  -verbose              Output messages about what the compiler is doing");
         System.err.println("  -help, -?             Display this information");
         
@@ -370,7 +375,9 @@ public class Main {
                     libFiles.add(libFile);
                 }
             }
-            buildExecutable(entries, libFiles);
+            if (!nolink) {
+                buildExecutable(entries, libFiles);
+            }
         } else {
             throw new IllegalArgumentException("Release build not yet implemented");
         }
@@ -705,9 +712,15 @@ public class Main {
             int i = 0;
             while (i < args.length) {
                 if ("-cp".equals(args[i]) || "-classpath".equals(args[i])) {
-                    classpath = args[++i];
+                    for (String p : args[++i].split(File.pathSeparator)) {
+                        classpath.add(new File(p));
+                    }
                 } else if ("-bcp".equals(args[i]) || "-bootcp".equals(args[i]) || "-bootclasspath".equals(args[i])) {
-                    bootclasspath = args[++i];
+                    for (String p : args[++i].split(File.pathSeparator)) {
+                        bootclasspath.add(new File(p));
+                    }
+                } else if ("-classes".equals(args[i])) {
+                    classes.addAll(Arrays.asList(args[++i].split(File.pathSeparator)));
                 } else if ("-jar".equals(args[i])) {
                     jarFile = new File(args[++i]);
                 } else if ("-o".equals(args[i])) {
@@ -726,6 +739,8 @@ public class Main {
                     debug = true;
                 } else if ("-nort".equals(args[i])) {
                     nort = true;
+                } else if ("-nolink".equals(args[i])) {
+                    nolink = true;
                 } else if ("-clean".equals(args[i])) {
                     clean = true;
                 } else if ("-help".equals(args[i]) || "-?".equals(args[i])) {
@@ -850,17 +865,17 @@ public class Main {
         
         if (jarFile != null) {
             //mainClass = readMainClassFromManifest(jarFile);
-            classPathFiles.add(jarFile);
+            classpath.add(jarFile);
         }
         
-        if (output == null) {
+        if (!nolink && output == null) {
             throw new IllegalArgumentException("No output dir specified");
         }
-        if (classpath == null) {
+        if (classpath.isEmpty()) {
             throw new IllegalArgumentException("No classpath specified");
         }
         
-        if (target == null && mainClass == null) {
+        if (!nolink && target == null && mainClass == null) {
             throw new IllegalArgumentException("No target and no main class specified");
         }
 
@@ -899,28 +914,17 @@ public class Main {
         }
         
         if (!nort) {
-            bootClassPathFiles.add(new File(homeLib, "nullvm-rt.jar"));
+            bootclasspath.add(0, new File(homeLib, "nullvm-rt.jar"));
         }
 
-        if (bootclasspath != null) {
-            for (String p : bootclasspath.split(File.pathSeparator)) {
-                bootClassPathFiles.add(new File(p));
-            }
-        }
-        if (classpath != null) {
-            for (String p : classpath.split(File.pathSeparator)) {
-                classPathFiles.add(new File(p));
-            }
-        }
-        
         /*
-         * Copy files to tmp directory
+         * Create tmp directory
          */
         tmpFile = File.createTempFile("nullvm", ".tmp");
         tmpFile.delete();
         tmpFile.mkdirs();
 
-        Clazzes clazzes = new Clazzes(bootClassPathFiles, classPathFiles);
+        Clazzes clazzes = new Clazzes(bootclasspath, classpath);
         List<ClasspathEntry> classpathEntries = new ArrayList<ClasspathEntry>();
         for (Path path : clazzes.getBootclasspathPaths()) {
             classpathEntries.add(createClasspathEntry(path, true));
@@ -935,51 +939,53 @@ public class Main {
         output.mkdirs();
         build(classpathEntries);
         
-        if (run) {
-            // Run in place
-            List<String> bootclasspathContents = new ArrayList<String>();
-            List<String> classpathContents = new ArrayList<String>();
-            for (ClasspathEntry entry : classpathEntries) {
-                if (entry.isInBootClasspath()) {
-                    bootclasspathContents.add(entry.getPath().getFile().getAbsolutePath());
-                } else {
-                    classpathContents.add(entry.getPath().getFile().getAbsolutePath());
+        if (!nolink) {
+            if (run) {
+                // Run in place
+                List<String> bootclasspathContents = new ArrayList<String>();
+                List<String> classpathContents = new ArrayList<String>();
+                for (ClasspathEntry entry : classpathEntries) {
+                    if (entry.isInBootClasspath()) {
+                        bootclasspathContents.add(entry.getPath().getFile().getAbsolutePath());
+                    } else {
+                        classpathContents.add(entry.getPath().getFile().getAbsolutePath());
+                    }
                 }
-            }
-            FileUtils.writeStringToFile(new File(output, "bootclasspath"), join(bootclasspathContents, "\r\n"), "UTF-8");
-            FileUtils.writeStringToFile(new File(output, "classpath"), join(classpathContents, "\r\n"), "UTF-8");
-
-            runTarget();
-        } else {
-            
-            for (File f : homeLibOsArch.listFiles()) {
-                if (f.getName().matches(".*\\.(so|dylib)(\\.1)?")) {
-                    FileUtils.copyFileToDirectory(f, output);
+                FileUtils.writeStringToFile(new File(output, "bootclasspath"), join(bootclasspathContents, "\r\n"), "UTF-8");
+                FileUtils.writeStringToFile(new File(output, "classpath"), join(classpathContents, "\r\n"), "UTF-8");
+    
+                runTarget();
+            } else {
+                
+                for (File f : homeLibOsArch.listFiles()) {
+                    if (f.getName().matches(".*\\.(so|dylib)(\\.1)?")) {
+                        FileUtils.copyFileToDirectory(f, output);
+                    }
                 }
-            }
-            
-            File libBoot = new File(new File(output, "lib"), "boot");
-            libBoot.mkdirs();
-            File libMain = new File(new File(output, "lib"), "main");
-            libMain.mkdirs();
-
-            List<String> bootclasspathContents = new ArrayList<String>();
-            List<String> classpathContents = new ArrayList<String>();
-            for (ClasspathEntry entry : classpathEntries) {
-                File dest = null;
-                if (entry.isInBootClasspath()) {
-                    dest = new File(libBoot, entry.getArchive().getName());
-                    bootclasspathContents.add("lib/boot/" + entry.getArchive().getName());
-                } else {
-                    dest = new File(libMain, entry.getArchive().getName());
-                    classpathContents.add("lib/main/" + entry.getArchive().getName());
+                
+                File libBoot = new File(new File(output, "lib"), "boot");
+                libBoot.mkdirs();
+                File libMain = new File(new File(output, "lib"), "main");
+                libMain.mkdirs();
+    
+                List<String> bootclasspathContents = new ArrayList<String>();
+                List<String> classpathContents = new ArrayList<String>();
+                for (ClasspathEntry entry : classpathEntries) {
+                    File dest = null;
+                    if (entry.isInBootClasspath()) {
+                        dest = new File(libBoot, entry.getArchive().getName());
+                        bootclasspathContents.add("lib/boot/" + entry.getArchive().getName());
+                    } else {
+                        dest = new File(libMain, entry.getArchive().getName());
+                        classpathContents.add("lib/main/" + entry.getArchive().getName());
+                    }
+                    stripArchive(entry.getArchive(), dest);
                 }
-                stripArchive(entry.getArchive(), dest);
+                
+                FileUtils.writeStringToFile(new File(output, "bootclasspath"), join(bootclasspathContents, "\r\n"), "UTF-8");
+                FileUtils.writeStringToFile(new File(output, "classpath"), join(classpathContents, "\r\n"), "UTF-8");
             }
-            
-            FileUtils.writeStringToFile(new File(output, "bootclasspath"), join(bootclasspathContents, "\r\n"), "UTF-8");
-            FileUtils.writeStringToFile(new File(output, "classpath"), join(classpathContents, "\r\n"), "UTF-8");
-        }        
+        }
     }
 
     @SuppressWarnings("rawtypes")

@@ -699,6 +699,15 @@ void* _nvmBcGetStructHandle(Env* env, Object* object) {
     return *((void**) (((void*) object) + sizeof(Object)));
 }
 
+void* _nvmBcByValueGetStructHandle(Env* env, Object* object) {
+    if (!object) {
+        nvmThrowNullPointerException(env);
+        nvmRaiseException(env, nvmExceptionOccurred(env));
+        return;
+    }
+    return *((void**) (((void*) object) + sizeof(Object)));
+}
+
 void _nvmBcCopyStruct(Env* env, Object* object, void* dest, jint length) {
     if (!object) {
         nvmThrowNullPointerException(env);

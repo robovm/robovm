@@ -26,6 +26,19 @@ public class Invoke extends FunctionCallInstruction {
         this.unwind = unwind;
     }
 
+    public Invoke(Value function, BasicBlockRef to, BasicBlockRef unwind, Argument... args) {
+        super("invoke", function, args);
+        this.to = to;
+        this.unwind = unwind;
+    }
+
+    public Invoke(Variable result, Value function, BasicBlockRef to, BasicBlockRef unwind, Argument... args) {
+        super("invoke", result, function, args);
+        this.to = to;
+        this.unwind = unwind;
+    }
+
+    
     @Override
     public int hashCode() {
         final int prime = 31;

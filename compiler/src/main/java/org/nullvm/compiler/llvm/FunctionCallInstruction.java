@@ -19,13 +19,21 @@ public abstract class FunctionCallInstruction extends Instruction {
     private final String name;
     private final Variable result;
     private final Value function;
-    private final Value[] args;
+    private final Argument[] args;
     
     protected FunctionCallInstruction(String name, Value function, Value ... args) {
         this(name, null, function, args);
     }
     
+    protected FunctionCallInstruction(String name, Value function, Argument ... args) {
+        this(name, null, function, args);
+    }
+    
     protected FunctionCallInstruction(String name, Variable result, Value function, Value ... args) {
+        this(name, result, function, valuesToArgs(args));
+    }
+    
+    protected FunctionCallInstruction(String name, Variable result, Value function, Argument ... args) {
         if (!function.isFunction()) {
             throw new IllegalArgumentException("Function type expected");
         }
@@ -33,6 +41,14 @@ public abstract class FunctionCallInstruction extends Instruction {
         this.result = result;
         this.function = function;
         this.args = args;
+    }
+    
+    private static Argument[] valuesToArgs(Value[] values) {
+        Argument[] arguments = new Argument[values.length];
+        for (int i = 0; i < values.length; i++) {
+            arguments[i] = new Argument(values[i]);
+        }
+        return arguments;
     }
     
     @Override
@@ -46,9 +62,9 @@ public abstract class FunctionCallInstruction extends Instruction {
     @Override
     public Set<VariableRef> getReadsFrom() {
         Set<VariableRef> s = new HashSet<VariableRef>();
-        for (Value v : args) {
-            if (v instanceof VariableRef) {
-                s.add((VariableRef) v);
+        for (Argument a : args) {
+            if (a.getValue() instanceof VariableRef) {
+                s.add((VariableRef) a.getValue());
             }
         }
         return s;

@@ -163,10 +163,10 @@ public class Main {
         for (ClasspathEntry entry : all) {
             for (Clazz clazz : entry.getPath().list()) {
                 String className = clazz.getInternalName();
-                File outFile = new File(entry.getObjectCacheDir(), className.replace('/', File.separatorChar) + "" + ".class.o");
-                if (clean || !outFile.exists() || outFile.lastModified() < clazz.lastModified()) {
+//                File outFile = new File(entry.getObjectCacheDir(), className.replace('/', File.separatorChar) + "" + ".class.o");
+//                if (clean || !outFile.exists() || outFile.lastModified() < clazz.lastModified()) {
                     changed.add(clazz);
-                }
+//                }
             }
         }
         return changed;

@@ -52,8 +52,8 @@ _proxy0:
     jmp   .LreturnTypeNotDouble
 .LreturnTypeNotFloat:
     cmp   $RETURN_TYPE_DOUBLE, %ecx
-    fldl  returnValue_offset(%esp)
     jne   .LreturnTypeNotDouble
+    fldl  returnValue_offset(%esp)
 .LreturnTypeNotDouble:
 
     addl  $CallInfo_size, %esp

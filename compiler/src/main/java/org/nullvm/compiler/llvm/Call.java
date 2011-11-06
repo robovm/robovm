@@ -19,4 +19,12 @@ public class Call extends FunctionCallInstruction {
     public Call(Variable result, Value function, Value ... args) {
         super("call", result, function, args);
     }
+
+    public Call(Value function, Argument... args) {
+        super("call", function, args);
+    }
+
+    public Call(Variable result, Value function, Argument... args) {
+        super("call", result, function, args);
+    }
 }

@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.nullvm</groupId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1.0-SNAPSHOT</version>
   <artifactId>build</artifactId>
   <name>NullVM</name>
   <packaging>pom</packaging>
@@ -147,6 +147,7 @@
   <modules>
     <module>compiler</module>
     <module>rt</module>
+    <module>ide</module>
   </modules>
 </project>
 

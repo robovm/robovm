@@ -16,4 +16,6 @@ public interface Path {
     int getIndex();
     File getFile();
     List<Clazz> list();
+    boolean hasChangedSince(long timestamp);
+    boolean isInBootClasspath();
 }

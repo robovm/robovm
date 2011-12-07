@@ -16,13 +16,17 @@ public abstract class Clazz {
     private final String fileName;
     private final String className;
     private final String internalName;
-    private final Clazzes clazzes;
+    private final Path path;
     
-    Clazz(String fileName, Clazzes clazzes) {
+    Clazz(String fileName, Path path) {
         this.fileName = fileName;
         this.className = fileName.replace(File.separatorChar, '.').substring(0, fileName.lastIndexOf(".class"));
         this.internalName = className.replace('.', '/');
-        this.clazzes = clazzes;
+        this.path = path;
+    }
+    
+    public Path getPath() {
+        return path;
     }
     
     public String getFileName() {

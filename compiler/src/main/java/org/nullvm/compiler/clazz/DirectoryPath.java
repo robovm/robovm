@@ -31,6 +31,10 @@ public class DirectoryPath implements Path {
         this.index = index;
     }
 
+    public boolean isInBootClasspath() {
+        return clazzes.isInBootClasspath(this);
+    }
+    
     public int getIndex() {
         return index;
     }
@@ -40,7 +44,7 @@ public class DirectoryPath implements Path {
     }
     
     private Clazz createClazz(final File f) {
-        return new Clazz(f.getAbsolutePath().substring(dir.getAbsolutePath().length() + 1), clazzes) {
+        return new Clazz(f.getAbsolutePath().substring(dir.getAbsolutePath().length() + 1), this) {
             byte[] bytes = null;
             public byte[] getBytes() throws IOException {
                 if (bytes == null) {
@@ -70,4 +74,29 @@ public class DirectoryPath implements Path {
         Collections.sort(files);
         return files;
     }
+    
+    private boolean hasChangedSince(File dir, long timestamp) {
+        for (File f : dir.listFiles()) {
+            if (f.isFile()) {
+                if (f.lastModified() > timestamp) {
+                    return true;
+                }
+            } else {
+                if (hasChangedSince(f, timestamp)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public boolean hasChangedSince(long timestamp) {
+        return hasChangedSince(dir, timestamp);
+    }
+    
+    @Override
+    public String toString() {
+        return dir.toString();
+    }
+    
 }

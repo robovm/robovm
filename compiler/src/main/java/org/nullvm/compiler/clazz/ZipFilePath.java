@@ -35,6 +35,10 @@ public class ZipFilePath implements Path {
         this.index = index;
     }
     
+    public boolean isInBootClasspath() {
+        return clazzes.isInBootClasspath(this);
+    }
+    
     public int getIndex() {
         return index;
     }
@@ -44,7 +48,7 @@ public class ZipFilePath implements Path {
     }
     
     private Clazz createClazz(final ZipEntry entry) {
-        return new Clazz(entry.getName(), clazzes) {
+        return new Clazz(entry.getName(), this) {
             byte[] bytes = null;
             public byte[] getBytes() throws IOException {
                 if (bytes == null) {
@@ -76,5 +80,14 @@ public class ZipFilePath implements Path {
             }
         }                
         return Collections.unmodifiableList(clazzList);
+    }
+    
+    public boolean hasChangedSince(long timestamp) {
+        return file.lastModified() > timestamp;
+    }    
+    
+    @Override
+    public String toString() {
+        return file.toString();
     }
 }

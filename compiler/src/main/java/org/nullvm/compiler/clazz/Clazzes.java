@@ -25,6 +25,7 @@ public class Clazzes {
     private final List<Path> classpathPaths = new ArrayList<Path>();
     private final List<Path> paths = new ArrayList<Path>();
     private final Map<String, Clazz> cache = new HashMap<String, Clazz>();
+    private final List<Clazz> allClasses = new ArrayList<Clazz>();
 
     public Clazzes(List<File> bootclasspath, List<File> classpath) throws IOException {
         Set<File> seen = new HashSet<File>();
@@ -33,6 +34,10 @@ public class Clazzes {
         paths.addAll(bootclasspathPaths);
         paths.addAll(classpathPaths);
         populateCache();
+    }
+    
+    boolean isInBootClasspath(Path path) {
+        return bootclasspathPaths.contains(path);
     }
     
     private static boolean isArchive(File f) {
@@ -76,6 +81,7 @@ public class Clazzes {
             for (Clazz clazz : p.list()) {
                 if (!cache.containsKey(clazz.getInternalName())) {
                     cache.put(clazz.getInternalName(), clazz);
+                    allClasses.add(clazz);
                 }
             }
         }
@@ -101,4 +107,7 @@ public class Clazzes {
         return Collections.unmodifiableList(paths);
     }
     
+    public List<Clazz> list() {
+        return Collections.unmodifiableList(allClasses);
+    }
 }

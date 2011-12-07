@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ActivationPolicy: lazy
+Bundle-Name: NullVM Eclipse IDE Plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.jdt.ui,
+ org.eclipse.jdt.core,
+ org.eclipse.core.resources
+Bundle-Version: 0.1.0.qualifier
+Bundle-ManifestVersion: 2
+Bundle-Activator: org.nullvm.ide.NullVMPlugin
+Bundle-SymbolicName: org.nullvm.ide;singleton:=true
+Bundle-ClassPath: .,
+ lib/nullvm-compiler.jar

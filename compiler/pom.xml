@@ -4,7 +4,7 @@
 
   <parent>
     <groupId>org.nullvm</groupId>
-    <artifactId>build</artifactId>
+    <artifactId>nullvm-parent</artifactId>
     <version>0.1.0-SNAPSHOT</version>
   </parent>
 
@@ -33,15 +33,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <version>2.8</version>
-        <extensions>false</extensions>
-        <inherited>true</inherited>
-        <configuration>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>

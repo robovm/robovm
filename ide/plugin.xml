@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+  <extension point="org.eclipse.ui.newWizards">
+    <category id="org.nullvm.ide.wizards.category" name="NullVM"/>
+    <wizard
+      canFinishEarly="false"
+      category="org.nullvm.ide.wizards.category"
+      class="org.nullvm.ide.internal.NewProjectWizard"
+      finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
+      hasPages="true"
+      icon="icons/new_nullvm_project.png"
+      id="org.nullvm.ide.NewProjectWizard"
+      name="NullVM Project"
+      preferredPerspectives="org.eclipse.jdt.ui.JavaPerspective"
+      project="true"/>
+  </extension>
+  <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
+    <classpathContainerInitializer
+      class="org.nullvm.ide.internal.NullVMClasspathContainerInitializer"
+      id="org.nullvm.ide.NULLVM_CONTAINER">
+    </classpathContainerInitializer>
+  </extension>
+  <extension
+    id="org.nullvm.ide.NullVMClassBuilder"
+    name="NullVM Class Builder"
+    point="org.eclipse.core.resources.builders">
+    <builder hasNature="true">
+      <run class="org.nullvm.ide.internal.NullVMClassBuilder" />
+    </builder>
+  </extension>
+  <extension
+    id="org.nullvm.ide.NullVMNature"
+    name="NullVM Project Nature"
+    point="org.eclipse.core.resources.natures">
+    <runtime>
+      <run class="org.nullvm.ide.internal.NullVMNature" />
+    </runtime>
+    <builder id="org.nullvm.ide.NullVMClassBuilder" />
+    <requires-nature id="org.eclipse.jdt.core.javanature"/>
+  </extension>
+</plugin>

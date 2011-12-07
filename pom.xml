@@ -5,7 +5,7 @@
 
   <groupId>org.nullvm</groupId>
   <version>0.1.0-SNAPSHOT</version>
-  <artifactId>build</artifactId>
+  <artifactId>nullvm-parent</artifactId>
   <name>NullVM</name>
   <packaging>pom</packaging>
   <url>http://www.nullvm.org</url>
@@ -47,34 +47,6 @@
           <includes>
             <include>**/*Test.java</include>
           </includes>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <version>2.8</version>
-        <extensions>false</extensions>
-        <inherited>true</inherited>
-        <configuration>
-          <additionalConfig>
-            <file>
-              <name>.settings/org.eclipse.jdt.core.prefs</name>
-              <location>../org.eclipse.jdt.core.prefs</location>
-            </file>
-            <file>
-              <name>.settings/org.eclipse.jdt.ui.prefs</name>
-              <location>../org.eclipse.jdt.ui.prefs</location>
-            </file>
-            <file>
-              <name>.settings/org.eclipse.core.resources.prefs</name>
-              <content>
-              <![CDATA[
-                eclipse.preferences.version=1
-                encoding/<project>=UTF-8
-              ]]>
-              </content>
-            </file>
-          </additionalConfig>
         </configuration>
       </plugin>
     </plugins>

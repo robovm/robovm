@@ -4,7 +4,7 @@
 
   <parent>
     <groupId>org.nullvm</groupId>
-    <artifactId>build</artifactId>
+    <artifactId>nullvm-parent</artifactId>
     <version>0.1.0-SNAPSHOT</version>
   </parent>
 
@@ -65,14 +65,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <configuration>
-          <classpathContainers>
-          </classpathContainers>
-        </configuration>
       </plugin>
     </plugins>
   </build>

@@ -55,10 +55,10 @@ import org.nullvm.compiler.llvm.Value;
  *
  * @version $Id$
  */
-public class Main {
+public class AppCompiler {
     private final Config config;
     
-    public Main(Config config) {
+    public AppCompiler(Config config) {
         this.config = config;
     }
     
@@ -108,7 +108,7 @@ public class Main {
         }
   
         ArrayList<String> opts = new ArrayList<String>();
-        opts.add(config.getArch().getLlvmName());
+        opts.add("-march=" + config.getArch().getLlvmName());
         if (config.getCpu() != null) {
             opts.add("-mcpu=" + config.getCpu());
         }
@@ -198,13 +198,11 @@ public class Main {
         
         llFile.getParentFile().mkdirs();
         outFile.getParentFile().mkdirs();
-        config.getLogger().debug("Compiling class file '%s' to object file '%s'\n", clazz.getFileName(), outFile);
+        config.getLogger().debug("Compiling class file '%s' to object file '%s'", clazz.getFileName(), outFile);
         
         classToIr(clazz, llFile);
-        File tmpBcFile = changeExt(llFile, "tmp.bc");
-        llvmAs(llFile, tmpBcFile);
         File bcFile = changeExt(llFile, "bc");
-        opt(tmpBcFile, bcFile, "-mem2reg", "-always-inline");
+        opt(llFile, bcFile, "-mem2reg", "-always-inline");
         File sFile = changeExt(outFile, "s");
         llc(bcFile, sFile);
         gcc(sFile, outFile);
@@ -229,7 +227,7 @@ public class Main {
             return null;
         }
 
-        config.getLogger().debug("Building static library '%s' for classpath entry: %s\n", outFile, path);
+        config.getLogger().debug("Building static library '%s' for classpath entry: %s", outFile, path);
         
         linkStatic(config.getObjectCacheDir(path), objectFiles, outFile);
         return outFile;
@@ -255,7 +253,7 @@ public class Main {
     private void buildExecutable(List<Path> paths, List<File> libFiles) throws IOException {
         File outFile = new File(config.getTargetDir(), config.getTarget());
         
-        config.getLogger().debug("Building executable '%s'\n", outFile);
+        config.getLogger().debug("Building executable '%s'", outFile);
         
         Module module = new Module();
         List<Value> bootcpValues = new ArrayList<Value>();
@@ -344,7 +342,7 @@ public class Main {
     private void stripArchive(File input, File output) throws IOException {
         
         if (!config.isClean() && output.exists() && output.lastModified() >= input.lastModified()) {
-            config.getLogger().debug("Not stripping unchanged archive file '%s'\n", input);
+            config.getLogger().debug("Not stripping unchanged archive file '%s'", input);
             return;
         }
         
@@ -353,7 +351,7 @@ public class Main {
             archive = new ZipFile(input);
         
             File strippedFile = output;
-            config.getLogger().debug("Creating stripped archive file '%s'\n", strippedFile);
+            config.getLogger().debug("Creating stripped archive file '%s'", strippedFile);
             
             ZipOutputStream out = null;
             try {
@@ -513,7 +511,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         
-        Main main = null;
+        AppCompiler main = null;
         
         boolean verbose = false;
         try {
@@ -557,7 +555,7 @@ public class Main {
                     builder.gccBinPath(new File(args[++i]));
                 } else if ("-ar-bin".equals(args[i])) {
                     builder.arBinPath(new File(args[++i]));
-                } else if ("-llvm-bin-dir".equals(args[i])) {
+                } else if ("-llvm-home".equals(args[i])) {
                     builder.llvmHomeDir(new File(args[++i]));
                 } else if ("-os".equals(args[i])) {
                     String s = args[++i];
@@ -607,7 +605,7 @@ public class Main {
                 });
             }
             
-            main = new Main(builder.build());
+            main = new AppCompiler(builder.build());
         } catch (Throwable t) {
             String message = t.getMessage();
             if (t instanceof StringIndexOutOfBoundsException) {
@@ -623,7 +621,7 @@ public class Main {
             main.run();
         } catch (Throwable t) {
             String message = t.getMessage();
-            if (verbose) {
+            if (verbose && !(t instanceof ExecuteException)) {
                 t.printStackTrace();
             }
             printUsageAndExit(message);
@@ -644,7 +642,7 @@ public class Main {
         System.err.println("  -bcp <list>           : separated list of directories, JAR archives, and ZIP \n" 
                          + "                        archives to search for class files. Used to locate the \n" 
                          + "                        java.* and javax.* classes. Default is \n"
-                         + "                        ~/nullvm/lib/nullvm-rt.jar.");
+                         + "                        $NULLVM_HOME/lib/nullvm-rt.jar.");
         System.err.println("  -cp <list>            ");
         System.err.println("  -classpath <list>     : separated list of directories, JAR archives, and ZIP \n" 
                          + "                        archives to search for class files.");
@@ -654,17 +652,13 @@ public class Main {
                          + "                        exists in the cache.");
         System.err.println("  -d <dir>              Place the generated executable and other files in <dir>.");
         System.err.println("  -gcc-bin <path>       Path to the gcc binary");
-        System.err.println("  -gcc-opt <opt>        Extra option to pass to gcc");
         System.err.println("  -ar-bin <path>        Path to the ar binary");
-        System.err.println("  -home <dir>           Directory where NullVM runtime has been installed and \n" 
-                         + "                        where compiled class files will be cached. Default is \n" 
-                         + "                        ~/.nullvm");
+        System.err.println("  -home <dir>           Directory where NullVM runtime has been installed.\n"
+        		         + "                        Default is $NULLVM_HOME");
         System.err.println("  -jar <path>           Use main class as specified by the manifest in this JAR \n" 
                          + "                        archive.");
-        System.err.println("  -llc-opt <opt         Extra option to pass to llc");
-        System.err.println("  -llvm-bin-dir <path>  Path where the LLVM binaries can be found");
+        System.err.println("  -llvm-home <path>     Path where LLVM has been installed");
         System.err.println("  -o <name>             The name of the target executable or library");
-        System.err.println("  -opt-opt <opt>        Extra option to pass to opt");
         System.err.println("  -os <name>            The name of the OS to build for. Allowed values are \n" 
                          + "                        'auto', 'linux' and 'darwin'. Default is 'auto' which\n" 
                          + "                        means autodetect.");
@@ -674,8 +668,8 @@ public class Main {
         System.err.println("  -cpu <name>           The name of the LLVM cpu to compile for. The LLVM default\n" 
                          + "                        is used by default. Use llc to determine allowed values.");
         System.err.println("  -debug                Generates debug information");
-        System.err.println("  -nort                 Do not add default nullvm-rt.jar to bootclasspath");
-        System.err.println("  -nolink               Do not link the final executable");
+        System.err.println("  -skiprt               Do not add default nullvm-rt.jar to bootclasspath");
+        System.err.println("  -skiplink             Do not link the final executable");
         System.err.println("  -verbose              Output messages about what the compiler is doing");
         System.err.println("  -help, -?             Display this information");
         

@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.nullvm.compiler.Main;
+import org.nullvm.compiler.AppCompiler;
 
 /**
  *
@@ -93,7 +93,7 @@ public class NullVMClassBuilder extends IncrementalProjectBuilder {
         System.out.println(classpath);
         
         try {
-            Main.main(new String[0]);
+            AppCompiler.main(new String[0]);
         } catch (IOException e) {
             e.printStackTrace();
         }

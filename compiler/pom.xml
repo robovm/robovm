@@ -46,7 +46,7 @@
             <configuration>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>org.nullvm.compiler.Main</mainClass>
+                  <mainClass>org.nullvm.compiler.AppCompiler</mainClass>
                 </transformer>
               </transformers>
             </configuration>

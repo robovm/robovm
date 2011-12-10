@@ -281,7 +281,7 @@ public class Config {
         }
         String llcPath = "llc";
         if (llvmHomeDir != null) {
-            llcPath = new File(llvmHomeDir, "llc").getAbsolutePath();
+            llcPath = new File(getLlvmBinDir(), "llc").getAbsolutePath();
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ExecuteStreamHandler streamHandler = new PumpStreamHandler(baos);

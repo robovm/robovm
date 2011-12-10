@@ -2658,6 +2658,8 @@ public class ClassCompiler {
                             f = D2I;
                         } else if (targetType == I64 && sourceType == DOUBLE) {
                             f = D2L;
+                        } else {
+                            throw new IllegalArgumentException();
                         }
                         Variable v = ctx.f().newVariable(targetType);
                         ctx.f().add(new Call(v, f, op));
@@ -3244,15 +3246,15 @@ public class ClassCompiler {
         Options.v().set_output_format(Options.output_format_jimple);
         Options.v().set_include_all(true);
         Options.v().setPhaseOption("jap.npc", "enabled:true");
-        Options.v().setPhaseOption("wjap.ra", "enabled:true");
         Options.v().setPhaseOption("jap.abc", "enabled:true");
-        Options.v().setPhaseOption("tag.an", "enabled:true");
         Options.v().set_print_tags_in_output(true);
         Options.v().set_allow_phantom_refs(true);
         Options.v().set_soot_classpath(getSootClasspath(clazzes));
 
         for (Clazz clazz : clazzes.list()) {
-            SootClass c = Scene.v().loadClass(clazz.getClassName(), SootClass.DANGLING);
+//            SootClass c = Scene.v().loadClass(clazz.getClassName(), SootClass.DANGLING);
+//            c.setApplicationClass();
+            SootClass c = Scene.v().loadClassAndSupport(clazz.getClassName());
             c.setApplicationClass();
         }
         Scene.v().loadNecessaryClasses();

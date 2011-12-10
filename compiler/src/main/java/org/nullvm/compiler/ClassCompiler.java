@@ -10,6 +10,7 @@ import static org.nullvm.compiler.llvm.Linkage.*;
 import static org.nullvm.compiler.llvm.Type.*;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -24,6 +25,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.nullvm.compiler.clazz.Clazz;
 import org.nullvm.compiler.clazz.Clazzes;
 import org.nullvm.compiler.clazz.Path;
@@ -382,7 +385,6 @@ public class ClassCompiler {
     }
     
     private SootClass sootClass;
-    private int sectionCounter = 1;
     
     private Module module;
     private Map<SootClass, Global> throwables;
@@ -407,32 +409,98 @@ public class ClassCompiler {
     
     private Variable dims;
     
-    public ClassCompiler() {
+    private final Config config;
+    
+    public ClassCompiler(Config config) {
+        init(config.getClazzes());
+        this.config = config;
     }
     
-    public void compile(Clazz clazz, OutputStream out) throws IOException {
-        this.sootClass = Scene.v().getSootClass(clazz.getClassName());
+    public File compile(Clazz clazz) throws IOException {
+        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
+        File llFile = new File(config.getLlvmCacheDir(clazz.getPath()), baseName + ".class.ll");
+        File bcFile = new File(config.getLlvmCacheDir(clazz.getPath()), baseName + ".class.bc");
+        File sFile = new File(config.getObjectCacheDir(clazz.getPath()), baseName + ".class.s");
+        File oFile = new File(config.getObjectCacheDir(clazz.getPath()), baseName + ".class.o");
+        llFile.getParentFile().mkdirs();
+        bcFile.getParentFile().mkdirs();
+        sFile.getParentFile().mkdirs();
+        oFile.getParentFile().mkdirs();
+        
+        if (config.isClean() || !llFile.exists() || llFile.lastModified() < clazz.lastModified()) {
+            OutputStream out = null;
+            try {
+                out = new FileOutputStream(llFile);
+                compile(clazz, out);
+            } catch (Throwable t) {
+                FileUtils.deleteQuietly(llFile);
+                if (t instanceof IOException) {
+                    throw (IOException) t;
+                }
+                if (t instanceof RuntimeException) {
+                    throw (RuntimeException) t;
+                }
+                throw new RuntimeException(t);
+            } finally {
+                IOUtils.closeQuietly(out);
+            }
+        }
+        
+        if (config.isClean() || !bcFile.exists() || bcFile.lastModified() < llFile.lastModified()) {
+            CompilerUtil.opt(config, llFile, bcFile, "-mem2reg", "-always-inline");
+        }
+        
+        if (config.isDebug()) {
+            if (config.isClean() || !sFile.exists() || sFile.lastModified() < bcFile.lastModified()) {
+                CompilerUtil.llc(config, bcFile, sFile);
+            }
+            
+            if (config.isClean() || !oFile.exists() || oFile.lastModified() < sFile.lastModified()) {
+                CompilerUtil.assemble(config, sFile, oFile);
+            }
+            return oFile;
+        } else {
+            return bcFile;
+        }
+    }
+    
+    private void reset() {
+        sootClass = null;
+        module = null;
+        throwables = null;
+        trampolines = null;
+        strings = null;
+        classFields = null;
+        instanceFields = null;
+        allInstanceFields = null;
+        classFieldsType = null;
+        instanceFieldsType = null;
+        dims = null;        
+    }
+    
+    private void compile(Clazz clazz, OutputStream out) throws IOException {
+        reset();
+        
+        sootClass = Scene.v().getSootClass(clazz.getClassName());
+        module = new Module();
+        throwables = new HashMap<SootClass, Global>();
+        trampolines = new HashMap<Trampoline, FunctionRef>();
+        strings = new HashMap<String, Global>();
+        classFields = getClassFields(sootClass, false);
+        instanceFields = getInstanceFields(sootClass, false);
+        allInstanceFields = getInstanceFields(sootClass, true);
+        classFieldsType = getType("ClassFields", classFields);
+        instanceFieldsType = getType("InstanceFields", allInstanceFields);
         
         if (isStruct(this.sootClass)) {
             enhanceStructClass(this.sootClass);
         }
         
-        module = new Module();
-        throwables = new HashMap<SootClass, Global>();
-        trampolines = new HashMap<Trampoline, FunctionRef>();
-        strings = new HashMap<String, Global>();
-        
         module.addInclude(getClass().getClassLoader().getResource("header.ll"));
-
-        classFields = getClassFields(sootClass, false);
-        instanceFields = getInstanceFields(sootClass, false);
-        allInstanceFields = getInstanceFields(sootClass, true);
         
-        classFieldsType = getType("ClassFields", classFields);
         if (classFieldsType != null) {
             module.addType(classFieldsType);
         }
-        instanceFieldsType = getType("InstanceFields", allInstanceFields);
         if (instanceFieldsType != null) {
             module.addType(instanceFieldsType);
         }
@@ -3242,7 +3310,8 @@ public class ClassCompiler {
         return sb.toString();
     }
     
-    public static void init(Clazzes clazzes) {
+    private static void init(Clazzes clazzes) {
+        soot.G.reset();
         Options.v().set_output_format(Options.output_format_jimple);
         Options.v().set_include_all(true);
         Options.v().setPhaseOption("jap.npc", "enabled:true");

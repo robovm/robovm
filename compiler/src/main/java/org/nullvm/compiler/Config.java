@@ -14,10 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -57,7 +55,6 @@ public class Config {
     private boolean debug = false;
     private boolean skipRuntimeLib = false;
     private boolean skipLinking = false;
-    private boolean verbose = false;
     private File mainJar;
     private boolean run = false;
     private String mainClass;
@@ -66,7 +63,6 @@ public class Config {
     private File osArchDepLibDir;
     private List<File> bootclasspath = new ArrayList<File>();
     private List<File> classpath = new ArrayList<File>();
-    private Set<String> classes = new HashSet<String>();
     private File tmpDir;
     private String host;
     private Clazzes clazzes;
@@ -141,10 +137,6 @@ public class Config {
 
     public List<String> getRunArgs() {
         return runArgs;
-    }
-
-    public Set<String> getClasses() {
-        return classes;
     }
 
     public File getTmpDir() {
@@ -368,15 +360,6 @@ public class Config {
             logger.debug("Autodetected arch: %s", arch);
         }
         
-        if (verbose) {
-            if (mainClass != null) {
-                logger.debug("Using main class: %s", mainClass);
-            }
-            if (run) {
-                logger.debug("Run arguments: %s", runArgs);
-            }
-        }
-        
         File homeLib = new File(nullVMHomeDir, "lib");
         osArchDepLibDir = new File(new File(homeLib, os.toString()), arch.toString());
         
@@ -405,7 +388,9 @@ public class Config {
 
         this.clazzes = new Clazzes(bootclasspath, classpath);
         
-        targetDir.mkdirs();
+        if (!skipLinking) {
+            targetDir.mkdirs();
+        }
 
         return this;
     }
@@ -453,11 +438,6 @@ public class Config {
 
         public Builder cacheDir(File cacheDir) {
             config.cacheDir = cacheDir;
-            return this;
-        }
-
-        public Builder llvmCacheDir(File llvmCacheDir) {
-            config.llvmCacheDir = llvmCacheDir;
             return this;
         }
 

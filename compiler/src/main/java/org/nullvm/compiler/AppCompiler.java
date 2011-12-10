@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,11 +24,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteException;
-import org.apache.commons.exec.ExecuteStreamHandler;
-import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -57,84 +52,11 @@ import org.nullvm.compiler.llvm.Value;
  */
 public class AppCompiler {
     private final Config config;
+    private final ClassCompiler classCompiler;
     
     public AppCompiler(Config config) {
         this.config = config;
-    }
-    
-    private void classToIr(Clazz clazz, File outFile) throws IOException {
-        OutputStream out = null;
-        try {
-            out = new FileOutputStream(outFile);
-            new ClassCompiler().compile(clazz, out);
-        } catch (Throwable t) {
-            FileUtils.deleteQuietly(outFile);
-            if (t instanceof IOException) {
-                throw (IOException) t;
-            }
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            }
-            throw new RuntimeException(t);
-        } finally {
-            IOUtils.closeQuietly(out);
-        }
-    }
-
-    private void llvmAs(File inFile, File outFile) throws IOException {
-        String llvmAsPath = "llvm-as";
-        if (config.getLlvmBinDir() != null) {
-            llvmAsPath = new File(config.getLlvmBinDir(), "llvm-as").getAbsolutePath();
-        }
-        
-        outFile.getParentFile().mkdirs();
-        exec(llvmAsPath, "-o=" + outFile.toString(), inFile);
-    }    
-
-    private void opt(File inFile, File outFile, String ... options) throws IOException {
-        String optPath = "opt";
-        if (config.getLlvmBinDir() != null) {
-            optPath = new File(config.getLlvmBinDir(), "opt").getAbsolutePath();
-        }
-
-        outFile.getParentFile().mkdirs();
-        exec(optPath, options, "-o=" + outFile.toString(), inFile);
-    }
-    
-    private void llc(File inFile, File outFile) throws IOException {
-        String llcPath = "llc";
-        if (config.getLlvmBinDir() != null) {
-            llcPath = new File(config.getLlvmBinDir(), "llc").getAbsolutePath();
-        }
-  
-        ArrayList<String> opts = new ArrayList<String>();
-        opts.add("-march=" + config.getArch().getLlvmName());
-        if (config.getCpu() != null) {
-            opts.add("-mcpu=" + config.getCpu());
-        }
-    
-        outFile.getParentFile().mkdirs();
-        exec(llcPath, opts, "-o=" + outFile.toString(), inFile);
-    }
-    
-    private void gcc(File inFile, File outFile, String ... options) throws IOException {
-        String gccPath = "gcc";
-        if (config.getGccBinPath() != null) {
-            gccPath = config.getGccBinPath().getAbsolutePath();
-        }
-
-        List<String> opts = new ArrayList<String>();
-        if (config.isDebug()) {
-            opts.add("-g");
-        }
-        if (config.getOs() == OS.darwin) {
-            opts.add("-arch");            
-            opts.add(config.getArch().toString());            
-        }
-        opts.addAll(Arrays.asList(options));
-
-        outFile.getParentFile().mkdirs();
-        exec(gccPath, "-c", "-o", outFile, opts, inFile);
+        this.classCompiler = new ClassCompiler(config);
     }
 
     private void linkStatic(File wd, List<File> files, File outFile) throws IOException {
@@ -157,7 +79,7 @@ public class AppCompiler {
             outFile.delete();
             try {
                 for (List<String> l : parts) {
-                    exec(wd, arPath, "rcs", outFile, l);
+                    CompilerUtil.exec(config, wd, arPath, "rcs", outFile, l);
                 }
                 break;
             } catch (IOException e) {
@@ -185,29 +107,6 @@ public class AppCompiler {
             }
         }
     }
-    
-    private File buildClassFileDebug(Path path, Clazz clazz) throws IOException {
-        String className = clazz.getInternalName();
-        File outFile = new File(config.getObjectCacheDir(path), className.replace('/', File.separatorChar) + ".class.o");
-        File llFile = new File(config.getLlvmCacheDir(path), className.replace('/', File.separatorChar) + ".class.ll");
-        
-        if (!config.isClean() && outFile.exists() && outFile.lastModified() >= clazz.lastModified()) {
-            config.getLogger().debug("Skipping unchanged class file: " + clazz.getFileName());
-            return outFile;
-        }
-        
-        llFile.getParentFile().mkdirs();
-        outFile.getParentFile().mkdirs();
-        config.getLogger().debug("Compiling class file '%s' to object file '%s'", clazz.getFileName(), outFile);
-        
-        classToIr(clazz, llFile);
-        File bcFile = changeExt(llFile, "bc");
-        opt(llFile, bcFile, "-mem2reg", "-always-inline");
-        File sFile = changeExt(outFile, "s");
-        llc(bcFile, sFile);
-        gcc(sFile, outFile);
-        return outFile;
-    }    
 
     private File buildClasspathEntry(Path path) throws IOException {
         File outFile = config.getStaticLibrary(path);
@@ -219,7 +118,7 @@ public class AppCompiler {
 
         List<File> objectFiles = new ArrayList<File>();
         for (Clazz clazz : path.list()) {
-            objectFiles.add(buildClassFileDebug(path, clazz));
+            objectFiles.add(classCompiler.compile(clazz));
         }
         
         if (objectFiles.isEmpty()) {
@@ -301,7 +200,7 @@ public class AppCompiler {
         File configLl = new File(config.getTmpDir(), "config.ll");
         FileUtils.writeStringToFile(configLl, module.toString(), "UTF-8");
         File configS = new File(config.getTmpDir(), "config.s");
-        llc(configLl, configS);
+        CompilerUtil.llc(config, configLl, configS);
         
         String gccPath = "gcc";
         if (config.getGccBinPath() != null) {
@@ -336,7 +235,7 @@ public class AppCompiler {
             gccArgs.add(config.getArch().toString());            
         }
         
-        exec(gccPath, "-o", outFile, "-g", gccArgs, configS, libFiles, libArgs);
+        CompilerUtil.exec(config, gccPath, "-o", outFile, "-g", gccArgs, configS, libFiles, libArgs);
     }
     
     private void stripArchive(File input, File output) throws IOException {
@@ -386,56 +285,7 @@ public class AppCompiler {
         }
     }
         
-    private void exec(String cmd, Object ... args) throws IOException {
-        exec(null, cmd, args);
-    }
-    
-    private void exec(File wd, String cmd, Object ... args) throws IOException {
-        execWithEnv(wd, null, cmd, args);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private void execWithEnv(File wd, Map env, String cmd, Object ... args) throws IOException {
-        execWithEnv(wd, env, null, cmd, args);
-    }
-    
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    private void execWithEnv(File wd, Map env, ExecuteStreamHandler streamHandler, 
-            String cmd, Object ... args) throws IOException {
-        
-        CommandLine commandLine = CommandLine.parse(cmd);
-        for (Object a : args) {
-            if (a instanceof Collection) {
-                for (Object o : (Collection<Object>) a) {
-                    commandLine.addArgument(o instanceof File ? ((File) o).getAbsolutePath() : o.toString());
-                }
-            } else if (a instanceof Object[]) {
-                for (Object o : (Object[]) a) {
-                    commandLine.addArgument(o instanceof File ? ((File) o).getAbsolutePath() : o.toString());
-                }
-            } else {
-                commandLine.addArgument(a instanceof File ? ((File) a).getAbsolutePath() : a.toString());
-            }
-        }
-        
-        config.getLogger().debug("  %s", commandLine);
-        
-        Executor executor = new DefaultExecutor();
-        if (wd != null) {
-            executor.setWorkingDirectory(wd);
-        }
-        if (streamHandler != null) {
-            executor.setStreamHandler(streamHandler);
-        }
-        if (env == null) {
-            env = EnvironmentUtils.getProcEnvironment();
-        }
-        executor.setExitValue(0);
-        executor.execute(commandLine, env);
-    }
-    
     public void compile() throws IOException {
-        ClassCompiler.init(config.getClazzes());
         build(config.getClazzes().getPaths());
     }
     
@@ -503,7 +353,8 @@ public class AppCompiler {
         ldLibraryPath = ldLibraryPath == null ? "" : ":" + ldLibraryPath;
         env.put(ldLibraryPathVar, config.getOsArchDepLibDir().getAbsolutePath() + ldLibraryPath);
         try {
-            execWithEnv(config.getTargetDir(), env, new File(config.getTargetDir(), config.getTarget()).getAbsolutePath());
+            CompilerUtil.execWithEnv(config, config.getTargetDir(), env, 
+                    new File(config.getTargetDir(), config.getTarget()).getAbsolutePath());
         } catch (ExecuteException e) {
             System.exit(e.getExitValue());
         }
@@ -674,15 +525,6 @@ public class AppCompiler {
         System.err.println("  -help, -?             Display this information");
         
         System.exit(errorMessage != null ? 1 : 0);
-    }
-    
-    private static File changeExt(File f, String newExt) {
-        String name = f.getName();
-        int index = name.lastIndexOf('.');
-        if (index == -1) {
-            return new File(f.getParent(), name + "." + newExt);
-        }
-        return new File(f.getParent(), name.substring(0, index) + "." + newExt);
     }
     
     private static String join(Collection<String> coll, String sep) {

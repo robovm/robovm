@@ -24,7 +24,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.nullvm.compiler.AppCompiler;
+import org.nullvm.compiler.ClassCompiler;
+import org.nullvm.compiler.Config;
+import org.nullvm.compiler.clazz.Clazz;
 
 /**
  *
@@ -70,44 +72,40 @@ public class NullVMClassBuilder extends IncrementalProjectBuilder {
             }
         }
         
-        List<File> bootclasspath = new ArrayList<File>();
-        List<File> classpath = new ArrayList<File>();
+        Config.Builder builder = new Config.Builder();
+        builder.skipLinking();
+        builder.skipRuntimeLib();
+        builder.nullVMHomeDir(new File(System.getProperty("user.home"), ".nullvm"));
+        builder.llvmHomeDir(new File("/home/niklas/Applications/clang+llvm-2.9-x86_64-linux"));
+        
         for (IClasspathEntry entry : javaProject.getResolvedClasspath(false)) {
             if (entry.getEntryKind() != IClasspathEntry.CPE_SOURCE) {
                 IResource member = root.findMember(entry.getPath());
                 if (member != null) {
-                    classpath.add(member.getLocation().toFile());
+                    builder.addClasspathEntry(member.getLocation().toFile());
                 } else {
                     if (entry.getPath().toString().contains("/nullvm-rt.jar")) {
-                        bootclasspath.add(entry.getPath().toFile());
+                        builder.addBootClasspathEntry(entry.getPath().toFile());
                     } else {
-                        classpath.add(entry.getPath().toFile());
+                        builder.addClasspathEntry(entry.getPath().toFile());
                     }
                 }
             }
         }
         for (IPath outputPath : outputPaths) {
-            classpath.add(outputPath.toFile());
+            builder.addClasspathEntry(outputPath.toFile());
         }
         
-        System.out.println(classpath);
-        
         try {
-            AppCompiler.main(new String[0]);
+            Config config = builder.build();
+            ClassCompiler compiler = new ClassCompiler(config);
+            for (String c : changedClasses) {
+                Clazz clazz = config.getClazzes().load(c.replace('.', '/'));
+                compiler.compile(clazz);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-//        Main compiler = new Main();
-//        compiler.setBootclasspath(bootclasspath);
-//        compiler.setClasspath(classpath);
-//        compiler.setNort(true);
-//        compiler.setNolink(true);
-//        try {
-//            compiler.run();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
         
         return null;
     }

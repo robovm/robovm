@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.annotation.processing.ProcessingEnvironment;
-
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.eclipse.core.runtime.CoreException;
@@ -40,6 +38,8 @@ import org.nullvm.ide.NullVMPlugin;
  */
 public class NullVMLaunchConfigurationDelegate extends AbstractJavaLaunchConfigurationDelegate {
 
+    public static final String TYPE_ID = "org.nullvm.ide.NullVMLaunchConfigurationType";
+    
     @Override
     public void launch(ILaunchConfiguration configuration, String mode,
             ILaunch launch, IProgressMonitor monitor) throws CoreException {

@@ -146,8 +146,6 @@ ObjectArray* Java_java_lang_System_getPropertyList(Env* env, Class* clazz) {
     if (!setProperty(env, &props, i++, "org.nullvm.main.class", env->vm->options->mainClass)) return NULL;
     if (!setProperty(env, &props, i++, "org.nullvm.base.path", env->vm->options->basePath)) return NULL;
     if (!setProperty(env, &props, i++, "org.nullvm.executable.path", env->vm->options->executablePath)) return NULL;
-    if (!setProperty(env, &props, i++, "org.nullvm.boot.lib.path", env->vm->options->bootLibPath)) return NULL;
-    if (!setProperty(env, &props, i++, "org.nullvm.main.lib.path", env->vm->options->mainLibPath)) return NULL;
 
     return props;
 }

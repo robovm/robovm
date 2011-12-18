@@ -430,6 +430,7 @@ public class ClassCompiler {
         if (config.isClean() || !llFile.exists() || llFile.lastModified() < clazz.lastModified()) {
             OutputStream out = null;
             try {
+                config.getLogger().debug("Compiling %s", clazz.getClassName());
                 out = new FileOutputStream(llFile);
                 compile(clazz, out);
             } catch (Throwable t) {
@@ -447,15 +448,18 @@ public class ClassCompiler {
         }
         
         if (config.isClean() || !bcFile.exists() || bcFile.lastModified() < llFile.lastModified()) {
+            config.getLogger().debug("Optimizing %s", clazz.getClassName());
             CompilerUtil.opt(config, llFile, bcFile, "-mem2reg", "-always-inline");
         }
         
         if (config.isDebug()) {
             if (config.isClean() || !sFile.exists() || sFile.lastModified() < bcFile.lastModified()) {
+                config.getLogger().debug("Generating %s assembly for %s", config.getArch(), clazz.getClassName());
                 CompilerUtil.llc(config, bcFile, sFile);
             }
             
             if (config.isClean() || !oFile.exists() || oFile.lastModified() < sFile.lastModified()) {
+                config.getLogger().debug("Assembling %s", clazz.getClassName());
                 CompilerUtil.assemble(config, sFile, oFile);
             }
             return oFile;

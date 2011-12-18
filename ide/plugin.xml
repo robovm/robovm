@@ -39,4 +39,53 @@
     <builder id="org.nullvm.ide.NullVMClassBuilder" />
     <requires-nature id="org.eclipse.jdt.core.javanature"/>
   </extension>
+  <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+    <launchConfigurationType
+      id="org.nullvm.ide.NullVMLaunchConfigurationType"
+      delegate="org.nullvm.ide.internal.NullVMLaunchConfigurationDelegate"
+      delegateName="NullVM Launcher"
+      modes="debug, run"
+      name="NullVM Application"
+      public="true"
+      sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+      sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
+    </launchConfigurationType>
+  </extension>
+  <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+    <launchConfigurationTabGroup
+        class="org.nullvm.ide.internal.NullVMLaunchConfigurationTabGroup"
+        description="NullVM Application"
+        id="org.nullvm.ide.NullVMLaunchConfigurationTabGroup"
+        type="org.nullvm.ide.NullVMLaunchConfigurationType" />
+  </extension>
+  <extension point="org.eclipse.debug.ui.launchShortcuts">
+    <shortcut
+        class="org.nullvm.ide.internal.ConsoleLaunchShortcut"
+        id="org.nullvm.ide.ConsoleLaunchShortcut"
+        label="NullVM Console Application"
+        modes="run, debug">
+      <contextualLaunch>
+        <enablement>
+          <with variable="selection">
+            <count value="1"/>
+            <iterate>
+              <and>
+                <adapt type="org.eclipse.jdt.core.IJavaElement">
+                  <test property="org.eclipse.jdt.core.isInJavaProject"/>
+                </adapt>
+                <or>
+                  <test property="org.eclipse.jdt.launching.hasMain"/>
+                  <test property="org.eclipse.jdt.launching.isContainer"/>
+                  <test property="org.eclipse.jdt.launching.isPackageFragment"/>
+                  <test property="org.eclipse.jdt.launching.isPackageFragmentRoot"/>
+                </or>
+              </and>
+            </iterate>
+          </with>
+        </enablement>
+      </contextualLaunch>
+      <configurationType id="org.eclipse.jdt.launching.localJavaApplication">
+      </configurationType>
+    </shortcut>
+  </extension>
 </plugin>

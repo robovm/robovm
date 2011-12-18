@@ -22,8 +22,10 @@ static ClassFuncLookupEntry* classpathLookup = NULL;
 extern _Unwind_Reason_Code _nvmPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context);
 
 const char* __attribute__ ((weak)) _nvmBcMainClass = NULL;
-extern ClassFunc* _nvmBcBootclasspathEntries;
-extern ClassFunc* _nvmBcClasspathEntries;
+extern char** _nvmBcBootclasspath;
+extern char** _nvmBcClasspath;
+extern ClassFunc* _nvmBcBootClasses;
+extern ClassFunc* _nvmBcClasses;
 static Class* loadBootclasspathClass(Env*, char*, ClassLoader*);
 static Class* loadClasspathClass(Env*, char*, ClassLoader*);
 static Options options = {0};
@@ -52,16 +54,18 @@ static jboolean initClassLookup(ClassFunc* cf, ClassFuncLookupEntry** lookup) {
 }
 
 int main(int argc, char* argv[]) {
-    if (!initClassLookup(_nvmBcBootclasspathEntries, &bootclasspathLookup)) {
+    if (!initClassLookup(_nvmBcBootClasses, &bootclasspathLookup)) {
         fprintf(stderr, "Failed to allocate class function table!\n");
         return 1;
     }
-    if (!initClassLookup(_nvmBcClasspathEntries, &classpathLookup)) {
+    if (!initClassLookup(_nvmBcClasses, &classpathLookup)) {
         fprintf(stderr, "Failed to allocate class function table!\n");
         return 1;
     }
 
     options.mainClass = (char*) _nvmBcMainClass;
+    options.rawBootclasspath = _nvmBcBootclasspath;
+    options.rawClasspath = _nvmBcClasspath;
     options.bootclasspathFunc = loadBootclasspathClass;
     options.classpathFunc = loadClasspathClass;
     if (!nvmInitOptions(argc, argv, &options, FALSE)) {

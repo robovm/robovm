@@ -6,7 +6,6 @@ package org.nullvm.compiler;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,18 +14,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.ExecuteStreamHandler;
-import org.apache.commons.exec.Executor;
-import org.apache.commons.exec.PumpStreamHandler;
-import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.nullvm.compiler.clazz.Clazzes;
@@ -37,7 +27,7 @@ import org.nullvm.compiler.clazz.Path;
  *
  */
 public class Config {
-    private File targetDir = null;
+    private File installDir = null;
     private String target = null;
     private File nullVMHomeDir = null;
     private File cacheDir = new File(System.getProperty("user.home"), ".nullvm/cache");
@@ -52,27 +42,27 @@ public class Config {
     private String cpu = null;
     
     private boolean clean = false;
-    private boolean debug = false;
+    private boolean debug = true;
     private boolean skipRuntimeLib = false;
     private boolean skipLinking = false;
+    private boolean skipInstall = false;
     private File mainJar;
-    private boolean run = false;
     private String mainClass;
-    private List<String> runArgs = new ArrayList<String>();
     
     private File osArchDepLibDir;
     private List<File> bootclasspath = new ArrayList<File>();
     private List<File> classpath = new ArrayList<File>();
     private File tmpDir;
-    private String host;
     private Clazzes clazzes;
     private Logger logger = Logger.NULL_LOGGER;
+    private App.Builder appBuilder = new ConsoleApp.Builder();
+    private App app = null;
 
     Config() {
     }
     
-    public File getTargetDir() {
-        return targetDir;
+    public File getInstallDir() {
+        return installDir;
     }
 
     public String getTarget() {
@@ -123,20 +113,16 @@ public class Config {
         return skipLinking;
     }
 
+    public boolean isSkipInstall() {
+        return skipInstall;
+    }
+    
     public File getMainJar() {
         return mainJar;
     }
 
-    public boolean isRun() {
-        return run;
-    }
-
     public String getMainClass() {
         return mainClass;
-    }
-
-    public List<String> getRunArgs() {
-        return runArgs;
     }
 
     public File getTmpDir() {
@@ -161,6 +147,10 @@ public class Config {
 
     public Logger getLogger() {
         return logger;
+    }
+    
+    public App getApp() {
+        return app;
     }
     
     private static File makeFileRelativeTo(File dir, File f) {
@@ -266,57 +256,6 @@ public class Config {
         }
     }
     
-    @SuppressWarnings("rawtypes")
-    private String getHost() throws IOException {
-        if (this.host != null) {
-            return this.host;
-        }
-        String llcPath = "llc";
-        if (llvmHomeDir != null) {
-            llcPath = new File(getLlvmBinDir(), "llc").getAbsolutePath();
-        }
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ExecuteStreamHandler streamHandler = new PumpStreamHandler(baos);
-        Executor executor = new DefaultExecutor();
-        executor.setStreamHandler(streamHandler);
-        Map env = EnvironmentUtils.getProcEnvironment();
-        executor.setExitValues(new int[] {0, 1});
-        CommandLine command = CommandLine.parse(llcPath).addArgument("--version");
-        executor.execute(command, env);
-        String output = new String(baos.toByteArray());
-        Matcher m = Pattern.compile("(?m)Host:\\s*(.*)$").matcher(output);
-        if (m.find()) {
-            this.host = m.group(1).trim();
-            return this.host;
-        }
-        throw new IllegalArgumentException("Failed to get Host string using command: " + command);
-    }
-
-    private OS detectOS() throws IOException {
-        String host = getHost();
-        if (host.contains("linux")) {
-            return OS.linux;
-        }
-        if (host.contains("darwin")) {
-            return OS.darwin;
-        }
-        throw new IllegalArgumentException("Unrecognized OS in Host string: " + host);
-    }
-    
-    private Arch detectArch() throws IOException {
-        String host = getHost();
-        if (host.matches("^(x86.64|amd64).*")) {
-            return Arch.x86_64;
-        }
-        if (host.matches("^(x86|i\\d86).*")) {
-            return Arch.i386;
-        }
-        if (host.matches("^arm.*")) {
-            return Arch.arm;
-        }
-        throw new IllegalArgumentException("Unrecognized arch in Host string: " + host);
-    }
-    
     private Config build() throws IOException {
         
         if (nullVMHomeDir == null) {
@@ -339,9 +278,6 @@ public class Config {
             classpath.add(mainJar);
         }
         
-        if (!skipLinking && targetDir == null) {
-            throw new IllegalArgumentException("No target directory specified");
-        }
         if (classpath.isEmpty()) {
             throw new IllegalArgumentException("No classpath specified");
         }
@@ -351,13 +287,15 @@ public class Config {
         }
 
         if (os == null) {
-            os = detectOS();
-            logger.debug("Autodetected OS: %s", os);
+            os = OS.getDefaultOS(llvmHomeDir);
         }
         
         if (arch == null) {
-            arch = detectArch();
-            logger.debug("Autodetected arch: %s", arch);
+            arch = Arch.getDefaultArch(llvmHomeDir);
+        }
+        
+        if (skipLinking) {
+            skipInstall = true;
         }
         
         File homeLib = new File(nullVMHomeDir, "lib");
@@ -388,10 +326,15 @@ public class Config {
 
         this.clazzes = new Clazzes(bootclasspath, classpath);
         
-        if (!skipLinking) {
-            targetDir.mkdirs();
+        if (!skipInstall) {
+            if (installDir == null) {
+                installDir = new File(".", target);
+            }
+            installDir.mkdirs();
         }
 
+        app = appBuilder.build(this);
+        
         return this;
     }
     
@@ -411,18 +354,13 @@ public class Config {
             return this;
         }
         
-        public Builder addRunArg(String s) {
-            config.runArgs.add(s);
-            return this;
-        }
-        
         public Builder mainJar(File f) {
             config.mainJar = f;
             return this;
         }
 
-        public Builder targetDir(File targetDir) {
-            config.targetDir = targetDir;
+        public Builder installDir(File installDir) {
+            config.installDir = installDir;
             return this;
         }
 
@@ -441,8 +379,8 @@ public class Config {
             return this;
         }
 
-        public Builder clean() {
-            config.clean = true;
+        public Builder clean(boolean b) {
+            config.clean = b;
             return this;
         }
 
@@ -476,26 +414,26 @@ public class Config {
             return this;
         }
 
-        public Builder debug() {
-            config.debug = true;
+        public Builder debug(boolean b) {
+            config.debug = b;
             return this;
         }
 
-        public Builder skipRuntimeLib() {
-            config.skipRuntimeLib = true;
+        public Builder skipRuntimeLib(boolean b) {
+            config.skipRuntimeLib = b;
             return this;
         }
 
-        public Builder skipLinking() {
-            config.skipLinking = true;
+        public Builder skipLinking(boolean b) {
+            config.skipLinking = b;
             return this;
         }
 
-        public Builder run() {
-            config.run = true;
+        public Builder skipInstall(boolean b) {
+            config.skipInstall = b;
             return this;
         }
-
+        
         public Builder mainClass(String mainClass) {
             config.mainClass = mainClass;
             return this;
@@ -510,8 +448,14 @@ public class Config {
             config.logger = logger;
             return this;
         }
+
+        public Builder appBuilder(App.Builder appBuilder) {
+            config.appBuilder = appBuilder;
+            return this;
+        }
         
         public Config build() throws IOException {
+            config.appBuilder.setup(this);
             return config.build();
         }
     }

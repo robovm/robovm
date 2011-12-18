@@ -5,29 +5,16 @@
  */
 package org.nullvm.compiler;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.exec.ExecuteException;
-import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.nullvm.compiler.clazz.Clazz;
 import org.nullvm.compiler.clazz.Path;
 import org.nullvm.compiler.llvm.ArrayConstant;
@@ -85,7 +72,7 @@ public class AppCompiler {
             } catch (IOException e) {
                 if (e.getMessage() != null && e.getMessage().contains("Argument list too long")) {
                     config.getLogger().debug("Got 'Argument list too long' error when running ar. " 
-                                + "Will try again using %d calls to ar.\n", parts.size() * 2);
+                                + "Will try again using %d calls to ar.", parts.size() * 2);
                     List<List<String>> oldParts = parts;
                     parts = new ArrayList<List<String>>();
                     for (List<String> l : oldParts) {
@@ -112,7 +99,7 @@ public class AppCompiler {
         File outFile = config.getStaticLibrary(path);
         
         if (!config.isClean() && outFile.exists() && !path.hasChangedSince(outFile.lastModified())) {
-            config.getLogger().debug("Skipping unchanged classpath entry: " + path);
+            config.getLogger().debug("Skipping unchanged classpath entry %s", path);
             return outFile;
         }
 
@@ -122,11 +109,11 @@ public class AppCompiler {
         }
         
         if (objectFiles.isEmpty()) {
-            config.getLogger().debug("Skipping empty classpath entry: " + path);
+            config.getLogger().debug("Skipping empty classpath entry %s", path);
             return null;
         }
 
-        config.getLogger().debug("Building static library '%s' for classpath entry: %s", outFile, path);
+        config.getLogger().debug("Building static library for classpath entry %s", path);
         
         linkStatic(config.getObjectCacheDir(path), objectFiles, outFile);
         return outFile;
@@ -150,13 +137,44 @@ public class AppCompiler {
     }
         
     private void buildExecutable(List<Path> paths, List<File> libFiles) throws IOException {
-        File outFile = new File(config.getTargetDir(), config.getTarget());
+        File outFile = new File(config.getTmpDir(), config.getTarget());
         
-        config.getLogger().debug("Building executable '%s'", outFile);
+        config.getLogger().debug("Building executable %s", outFile);
         
         Module module = new Module();
-        List<Value> bootcpValues = new ArrayList<Value>();
-        List<Value> cpValues = new ArrayList<Value>();
+        
+        List<Value> bootClasspathValues = new ArrayList<Value>();
+        List<Value> classpathValues = new ArrayList<Value>();
+        for (Path path : paths) {
+            String entryName = null;
+            if (config.isSkipInstall() && config.getApp().canLaunchInPlace()) {
+                entryName = path.getFile().getAbsolutePath();
+            } else {
+                entryName = config.getApp().getInstallRelativeArchivePath(path);
+            }
+            byte[] modUtf8 = ClassCompiler.stringToModifiedUtf8(entryName);
+            Global var = new Global(ClassCompiler.getStringVarName(modUtf8), Linkage.linker_private_weak, 
+                    new StringConstant(modUtf8), true);
+            module.addGlobal(var);
+            if (path.isInBootClasspath()) {
+                bootClasspathValues.add(new ConstantGetelementptr(var.ref(), 0, 0));
+            } else {
+                classpathValues.add(new ConstantGetelementptr(var.ref(), 0, 0));
+            }
+        }
+        bootClasspathValues.add(new NullConstant(Type.I8_PTR));
+        classpathValues.add(new NullConstant(Type.I8_PTR));
+        Global gBootClasspathValues = module.newGlobal(new ArrayConstant(
+                new ArrayType(bootClasspathValues.size(), Type.I8_PTR), 
+                bootClasspathValues.toArray(new Value[0])), true);
+        module.addGlobal(new Global("_nvmBcBootclasspath", new ConstantGetelementptr(gBootClasspathValues.ref(), 0, 0)));
+        Global gClasspathValues = module.newGlobal(new ArrayConstant(
+                new ArrayType(classpathValues.size(), Type.I8_PTR), 
+                classpathValues.toArray(new Value[0])), true);
+        module.addGlobal(new Global("_nvmBcClasspath", new ConstantGetelementptr(gClasspathValues.ref(), 0, 0)));
+            
+        List<Value> bootClassesValues = new ArrayList<Value>();
+        List<Value> classesValues = new ArrayList<Value>();
         Set<String> seenClasses = new HashSet<String>();
         for (Path path : paths) {
             for (Clazz c : path.list()) {
@@ -176,22 +194,23 @@ public class AppCompiler {
                         new ConstantGetelementptr(var.ref(), 0, 0),
                         new ConstantBitcast(func.ref(), Type.I8_PTR));
                 if (path.isInBootClasspath()) {
-                    bootcpValues.add(value);
+                    bootClassesValues.add(value);
                 } else {
-                    cpValues.add(value);
+                    classesValues.add(value);
                 }
             }
         }
-        bootcpValues.add(new StructureConstant(new StructureType(Type.I8_PTR, Type.I8_PTR), new NullConstant(Type.I8_PTR), new NullConstant(Type.I8_PTR)));
-        cpValues.add(new StructureConstant(new StructureType(Type.I8_PTR, Type.I8_PTR), new NullConstant(Type.I8_PTR), new NullConstant(Type.I8_PTR)));
-        Global gbcp = module.newGlobal(new ArrayConstant(
-                new ArrayType(bootcpValues.size(), new StructureType(Type.I8_PTR, Type.I8_PTR)), 
-                bootcpValues.toArray(new Value[0])), true);
-        module.addGlobal(new Global("_nvmBcBootclasspathEntries", new ConstantGetelementptr(gbcp.ref(), 0, 0)));
-        Global gcp = module.newGlobal(new ArrayConstant(
-                new ArrayType(cpValues.size(), new StructureType(Type.I8_PTR, Type.I8_PTR)), 
-                cpValues.toArray(new Value[0])), true);
-        module.addGlobal(new Global("_nvmBcClasspathEntries", new ConstantGetelementptr(gcp.ref(), 0, 0)));
+        bootClassesValues.add(new StructureConstant(new StructureType(Type.I8_PTR, Type.I8_PTR), new NullConstant(Type.I8_PTR), new NullConstant(Type.I8_PTR)));
+        classesValues.add(new StructureConstant(new StructureType(Type.I8_PTR, Type.I8_PTR), new NullConstant(Type.I8_PTR), new NullConstant(Type.I8_PTR)));
+        Global gBootClassesValues = module.newGlobal(new ArrayConstant(
+                new ArrayType(bootClassesValues.size(), new StructureType(Type.I8_PTR, Type.I8_PTR)), 
+                bootClassesValues.toArray(new Value[0])), true);
+        module.addGlobal(new Global("_nvmBcBootClasses", new ConstantGetelementptr(gBootClassesValues.ref(), 0, 0)));
+        Global gClassesValues = module.newGlobal(new ArrayConstant(
+                new ArrayType(classesValues.size(), new StructureType(Type.I8_PTR, Type.I8_PTR)), 
+                classesValues.toArray(new Value[0])), true);
+        module.addGlobal(new Global("_nvmBcClasses", new ConstantGetelementptr(gClassesValues.ref(), 0, 0)));
+        
         if (config.getMainClass() != null) {
             Global g = module.newGlobal(new StringConstant(ClassCompiler.stringToModifiedUtf8(config.getMainClass())), true);
             module.addGlobal(new Global("_nvmBcMainClass", new ConstantGetelementptr(g.ref(), 0, 0)));
@@ -238,133 +257,17 @@ public class AppCompiler {
         CompilerUtil.exec(config, gccPath, "-o", outFile, "-g", gccArgs, configS, libFiles, libArgs);
     }
     
-    private void stripArchive(File input, File output) throws IOException {
-        
-        if (!config.isClean() && output.exists() && output.lastModified() >= input.lastModified()) {
-            config.getLogger().debug("Not stripping unchanged archive file '%s'", input);
-            return;
-        }
-        
-        ZipFile archive = null;
-        try {
-            archive = new ZipFile(input);
-        
-            File strippedFile = output;
-            config.getLogger().debug("Creating stripped archive file '%s'", strippedFile);
-            
-            ZipOutputStream out = null;
-            try {
-                out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(strippedFile)));
-                
-                Enumeration<? extends ZipEntry> entries = archive.entries();
-                while (entries.hasMoreElements()) {
-                    ZipEntry entry = entries.nextElement();
-                    ZipEntry newEntry = new ZipEntry(entry.getName());
-                    newEntry.setTime(entry.getTime());
-                    out.putNextEntry(newEntry);
-                    InputStream in = null;
-                    try {
-                        if (!entry.getName().toLowerCase().endsWith(".class")) {
-                            in = archive.getInputStream(entry);
-                        } else {
-                            in = new ByteArrayInputStream(new byte[0]);
-                        }
-                        IOUtils.copy(in, out);
-                        out.closeEntry();
-                    } finally {
-                        IOUtils.closeQuietly(in);
-                    }
-                }
-            } finally {
-                IOUtils.closeQuietly(out);
-            }
-        } finally {
-            try {
-                archive.close();
-            } catch (Throwable t) {}
-        }
-    }
-        
     public void compile() throws IOException {
         build(config.getClazzes().getPaths());
-    }
-    
-    public void run() throws IOException {
-        compile();
-        
-        if (!config.isSkipLinking()) {
-            if (config.isRun()) {
-                // Run in place
-                List<String> bootclasspathContents = new ArrayList<String>();
-                List<String> classpathContents = new ArrayList<String>();
-                for (Path path : config.getClazzes().getPaths()) {
-                    if (path.isInBootClasspath()) {
-                        bootclasspathContents.add(path.getFile().getAbsolutePath());
-                    } else {
-                        classpathContents.add(path.getFile().getAbsolutePath());
-                    }
-                }
-                FileUtils.writeStringToFile(new File(config.getTargetDir(), "bootclasspath"), join(bootclasspathContents, "\r\n"), "UTF-8");
-                FileUtils.writeStringToFile(new File(config.getTargetDir(), "classpath"), join(classpathContents, "\r\n"), "UTF-8");
-    
-                runTarget();
-            } else {
-                
-                for (File f : config.getOsArchDepLibDir().listFiles()) {
-                    if (f.getName().matches(".*\\.(so|dylib)(\\.1)?")) {
-                        FileUtils.copyFileToDirectory(f, config.getTargetDir());
-                    }
-                }
-                
-                File libBoot = new File(new File(config.getTargetDir(), "lib"), "boot");
-                libBoot.mkdirs();
-                File libMain = new File(new File(config.getTargetDir(), "lib"), "main");
-                libMain.mkdirs();
-    
-                List<String> bootclasspathContents = new ArrayList<String>();
-                List<String> classpathContents = new ArrayList<String>();
-                for (Path path : config.getClazzes().getPaths()) {
-                    File dest = null;
-                    if (path.isInBootClasspath()) {
-                        dest = new File(libBoot, config.getArchiveName(path));
-                        bootclasspathContents.add("lib/boot/" + dest.getName());
-                    } else {
-                        dest = new File(libMain, config.getArchiveName(path));
-                        classpathContents.add("lib/main/" + dest.getName());
-                    }
-                    stripArchive(config.getArchivePath(path), dest);
-                }
-                
-                FileUtils.writeStringToFile(new File(config.getTargetDir(), "bootclasspath"), join(bootclasspathContents, "\r\n"), "UTF-8");
-                FileUtils.writeStringToFile(new File(config.getTargetDir(), "classpath"), join(classpathContents, "\r\n"), "UTF-8");
-            }
-        }
-    }
-
-    @SuppressWarnings({ "unchecked" })
-    private void runTarget() throws IOException {
-        Map<String, String> env = new HashMap<String, String>();
-        env.putAll(EnvironmentUtils.getProcEnvironment());
-        String ldLibraryPathVar = "LD_LIBRARY_PATH";
-        if (config.getOs() == OS.darwin) {
-            ldLibraryPathVar = "DY" + ldLibraryPathVar;
-        }
-        String ldLibraryPath = env.get(ldLibraryPathVar);
-        ldLibraryPath = ldLibraryPath == null ? "" : ":" + ldLibraryPath;
-        env.put(ldLibraryPathVar, config.getOsArchDepLibDir().getAbsolutePath() + ldLibraryPath);
-        try {
-            CompilerUtil.execWithEnv(config, config.getTargetDir(), env, 
-                    new File(config.getTargetDir(), config.getTarget()).getAbsolutePath());
-        } catch (ExecuteException e) {
-            System.exit(e.getExitValue());
-        }
     }
 
     public static void main(String[] args) throws IOException {
         
-        AppCompiler main = null;
+        AppCompiler compiler = null;
         
         boolean verbose = false;
+        boolean run = false;
+        List<String> runArgs = new ArrayList<String>();
         try {
             Config.Builder builder = new Config.Builder();
             
@@ -383,23 +286,23 @@ public class AppCompiler {
                 } else if ("-o".equals(args[i])) {
                     builder.target(args[++i]);
                 } else if ("-d".equals(args[i])) {
-                    builder.targetDir(new File(args[++i]));
+                    builder.installDir(new File(args[++i]));
                 } else if ("-cache".equals(args[i])) {
                     builder.cacheDir(new File(args[++i]));
                 } else if ("-home".equals(args[i])) {
                     builder.nullVMHomeDir(new File(args[++i]));
                 } else if ("-run".equals(args[i])) {
-                    builder.run();
+                    run = true;
                 } else if ("-verbose".equals(args[i])) {
                     verbose = true;
                 } else if ("-debug".equals(args[i])) {
-                    builder.debug();
+                    builder.debug(true);
                 } else if ("-skiprt".equals(args[i])) {
-                    builder.skipRuntimeLib();
+                    builder.skipRuntimeLib(true);
                 } else if ("-skiplink".equals(args[i])) {
-                    builder.skipLinking();
+                    builder.skipLinking(true);
                 } else if ("-clean".equals(args[i])) {
-                    builder.clean();
+                    builder.clean(true);
                 } else if ("-help".equals(args[i]) || "-?".equals(args[i])) {
                     printUsageAndExit(null);
                 } else if ("-gcc-bin".equals(args[i])) {
@@ -432,15 +335,11 @@ public class AppCompiler {
             }
             
             while (i < args.length) {
-                builder.addRunArg(args[i++]);
+                runArgs.add(args[i++]);
             }
             
             if (verbose) {
                 builder.logger(new Logger() {
-                    public void warn(String format, Object... args) {
-                        System.err.format(format, args);
-                        System.err.println();
-                    }
                     public void info(String format, Object... args) {
                         System.out.format(format, args);
                         System.out.println();
@@ -456,7 +355,9 @@ public class AppCompiler {
                 });
             }
             
-            main = new AppCompiler(builder.build());
+            builder.skipInstall(run);
+            
+            compiler = new AppCompiler(builder.build());
         } catch (Throwable t) {
             String message = t.getMessage();
             if (t instanceof StringIndexOutOfBoundsException) {
@@ -469,7 +370,13 @@ public class AppCompiler {
         }
         
         try {
-            main.run();
+            compiler.compile();
+            if (run) {
+                compiler.config.getApp().launch(runArgs);
+            } else {
+                compiler.compile();
+                compiler.config.getApp().install();
+            }
         } catch (Throwable t) {
             String message = t.getMessage();
             if (verbose && !(t instanceof ExecuteException)) {
@@ -485,7 +392,7 @@ public class AppCompiler {
         }
         System.err.println("Usage: nullvm [-options] class [run-args]");
         System.err.println("   or  nullvm [-options] -jar jarfile [run-args]");
-        System.err.println("   or  nullvm [-options] -nolink");
+        System.err.println("   or  nullvm [-options] -skiplink");
         System.err.println("Options:");
         
         System.err.println("  -bootclasspath <list> ");
@@ -501,7 +408,8 @@ public class AppCompiler {
                          + "                        Default is ~/.nullvm/cache");
         System.err.println("  -clean                Compile class files even if a compiled version already \n" 
                          + "                        exists in the cache.");
-        System.err.println("  -d <dir>              Place the generated executable and other files in <dir>.");
+        System.err.println("  -d <dir>              Install the generated executable and other files in <dir>.\n" 
+                         + "                        Default is <wd>/<class>");
         System.err.println("  -gcc-bin <path>       Path to the gcc binary");
         System.err.println("  -ar-bin <path>        Path to the ar binary");
         System.err.println("  -home <dir>           Directory where NullVM runtime has been installed.\n"
@@ -525,17 +433,6 @@ public class AppCompiler {
         System.err.println("  -help, -?             Display this information");
         
         System.exit(errorMessage != null ? 1 : 0);
-    }
-    
-    private static String join(Collection<String> coll, String sep) {
-        StringBuilder sb = new StringBuilder();
-        for (String s : coll) {
-            if (sb.length() > 0) {
-                sb.append(sep);
-            }
-            sb.append(s);
-        }
-        return sb.toString();
     }
     
 }

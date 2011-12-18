@@ -21,12 +21,15 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.nullvm.compiler.ClassCompiler;
 import org.nullvm.compiler.Config;
 import org.nullvm.compiler.clazz.Clazz;
+import org.nullvm.ide.NullVMPlugin;
 
 /**
  *
@@ -72,39 +75,46 @@ public class NullVMClassBuilder extends IncrementalProjectBuilder {
             }
         }
         
-        Config.Builder builder = new Config.Builder();
-        builder.skipLinking();
-        builder.skipRuntimeLib();
-        builder.nullVMHomeDir(new File(System.getProperty("user.home"), ".nullvm"));
-        builder.llvmHomeDir(new File("/home/niklas/Applications/clang+llvm-2.9-x86_64-linux"));
+        Config.Builder configBuilder = new Config.Builder();
+        configBuilder.skipLinking(true);
+        configBuilder.skipRuntimeLib(true);
+        configBuilder.debug(true);
+        configBuilder.nullVMHomeDir(new File(System.getProperty("user.home"), ".nullvm"));
+        configBuilder.llvmHomeDir(new File("/home/niklas/Applications/clang+llvm-2.9-x86_64-linux"));
+        configBuilder.logger(NullVMPlugin.getConsoleLogger());
         
         for (IClasspathEntry entry : javaProject.getResolvedClasspath(false)) {
             if (entry.getEntryKind() != IClasspathEntry.CPE_SOURCE) {
                 IResource member = root.findMember(entry.getPath());
                 if (member != null) {
-                    builder.addClasspathEntry(member.getLocation().toFile());
+                    configBuilder.addClasspathEntry(member.getLocation().toFile());
                 } else {
                     if (entry.getPath().toString().contains("/nullvm-rt.jar")) {
-                        builder.addBootClasspathEntry(entry.getPath().toFile());
+                        configBuilder.addBootClasspathEntry(entry.getPath().toFile());
                     } else {
-                        builder.addClasspathEntry(entry.getPath().toFile());
+                        configBuilder.addClasspathEntry(entry.getPath().toFile());
                     }
                 }
             }
         }
         for (IPath outputPath : outputPaths) {
-            builder.addClasspathEntry(outputPath.toFile());
+            configBuilder.addClasspathEntry(outputPath.toFile());
         }
         
         try {
-            Config config = builder.build();
+            Config config = configBuilder.build();
+            NullVMPlugin.consoleInfo("Building %d changed classes for target %s (%s)", 
+                    changedClasses.size(), config.getOs(), config.getArch());
             ClassCompiler compiler = new ClassCompiler(config);
             for (String c : changedClasses) {
                 Clazz clazz = config.getClazzes().load(c.replace('.', '/'));
                 compiler.compile(clazz);
             }
+            NullVMPlugin.consoleInfo("Build done");
         } catch (IOException e) {
-            e.printStackTrace();
+            NullVMPlugin.consoleError("Build failed");
+            throw new CoreException(new Status(IStatus.ERROR, NullVMPlugin.PLUGIN_ID,
+                    "Build failed", e));
         }
         
         return null;

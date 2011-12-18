@@ -34,40 +34,14 @@ static char* absolutize(char* basePath, char* rel, char* dest) {
     return dest;
 }
 
-static jboolean loadClasspathEntries(Env* env, char* basePath, char* entriesFile, ClasspathEntry** first) {
-    // TODO: Handle escaped = characters?
-    // TODO: Encoding
-    FILE* f = fopen(entriesFile, "r");
-    if (!f) return FALSE;
-    fseek(f, 0, SEEK_END);
-    jint length = ftell(f);
-    fseek(f, 0, SEEK_SET);
-    char* files = nvmAllocateMemory(env, length + 1);
-    if (!files || fread(files, length, 1, f) == 0) {
-        fclose(f);
-        return FALSE;
-    }
-    fclose(f);
-    f = NULL;
-    files[length] = '\0';
-
-    TRACE("Contents of file '%s':\n %s\n", entriesFile, files);
-
-    char jarPath[PATH_MAX];
-
-    char* p = files;
-    char* line = NULL;
-    char* lasts = NULL;
-    while (1) {
-        line = strtok_r(p, "\r\n", &lasts);
-        p = NULL;
-        if (!line) break;
-        if (line[0] == '#') continue;
-
+static jboolean initClasspathEntries(Env* env, char* basePath, char** raw, ClasspathEntry** first) {
+    jint i = 0;
+    while (raw[i]) {
         ClasspathEntry* entry = nvmAllocateMemory(env, sizeof(ClasspathEntry));
         if (!entry) return FALSE;
-        absolutize(basePath, line, entry->jarPath);
+        absolutize(basePath, raw[i], entry->jarPath);
         LL_APPEND(*first, entry);
+        i++;
     }
 
     return TRUE;
@@ -98,10 +72,6 @@ jboolean nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
     }
 
     strcpy(options->basePath, path);
-    strcpy(options->bootLibPath, path);
-    strcat(options->bootLibPath, "/lib/boot");
-    strcpy(options->mainLibPath, path);
-    strcat(options->mainLibPath, "/lib/main");
 
     jint firstJavaArg = 1;
     for (i = 1; i < argc; i++) {
@@ -175,13 +145,8 @@ Env* nvmStartup(Options* options) {
     if (!env) return NULL;
     // TODO: What if we can't allocate Env?
 
-    char cpFile[PATH_MAX];
-    strcpy(cpFile, options->basePath);
-    strcat(cpFile, "/bootclasspath");
-    if (!loadClasspathEntries(env, options->basePath, cpFile, &options->bootclasspath)) return NULL;
-    strcpy(cpFile, options->basePath);
-    strcat(cpFile, "/classpath");
-    if (!loadClasspathEntries(env, options->basePath, cpFile, &options->classpath)) return NULL;
+    if (!initClasspathEntries(env, options->basePath, options->rawBootclasspath, &options->bootclasspath)) return NULL;
+    if (!initClasspathEntries(env, options->basePath, options->rawClasspath, &options->classpath)) return NULL;
 
     HYPORT_SET_VERSION(&portLibraryVersion, HYPORT_CAPABILITY_MASK);
     if (hyport_init_library(&portLibrary, &portLibraryVersion, sizeof(HyPortLibrary))) return NULL;

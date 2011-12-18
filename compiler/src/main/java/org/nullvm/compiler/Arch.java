@@ -3,6 +3,8 @@
  */
 package org.nullvm.compiler;
 
+import java.io.File;
+
 /**
  * @author niklas
  *
@@ -21,4 +23,18 @@ public enum Arch {
     public String getLlvmName() {
         return llvmName;
     }
+    
+    public static Arch getDefaultArch(File llvmHomeDir) {
+        String host = OS.getHost(llvmHomeDir);
+        if (host.matches("^(x86.64|amd64).*")) {
+            return Arch.x86_64;
+        }
+        if (host.matches("^(x86|i\\d86).*")) {
+            return Arch.i386;
+        }
+        if (host.matches("^arm.*")) {
+            return Arch.arm;
+        }
+        throw new CompilerException("Unrecognized arch in Host string: " + host);
+    }    
 }

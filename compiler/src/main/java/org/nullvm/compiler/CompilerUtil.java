@@ -67,23 +67,52 @@ public class CompilerUtil {
         exec(config, gccPath, "-c", "-o", outFile, opts, inFile);
     }
     
-    public static void exec(Config config, String cmd, Object ... args) throws IOException {
-        exec(config, null, cmd, args);
+    public static int exec(Config config, String cmd, Object ... args) throws IOException {
+        return exec(config, null, cmd, args);
     }
     
-    public static void exec(Config config, File wd, String cmd, Object ... args) throws IOException {
-        execWithEnv(config, wd, null, cmd, args);
+    public static int exec(Config config, File wd, String cmd, Object ... args) throws IOException {
+        return execWithEnv(config, wd, null, cmd, args);
     }
 
     @SuppressWarnings("rawtypes")
-    public static void execWithEnv(Config config, File wd, Map env, String cmd, Object ... args) throws IOException {
-        execWithEnv(config, wd, env, null, cmd, args);
+    public static int execWithEnv(Config config, File wd, Map env, String cmd, Object ... args) throws IOException {
+        return execWithEnv(config, wd, env, null, cmd, args);
     }
     
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static void execWithEnv(Config config, File wd, Map env, ExecuteStreamHandler streamHandler, 
+    @SuppressWarnings("rawtypes")
+    public static int execWithEnv(Config config, File wd, Map env, CommandLine commandLine) throws IOException {
+        return execWithEnv(config, wd, env, null, commandLine);
+    }
+    
+    @SuppressWarnings("rawtypes")
+    public static int execWithEnv(Config config, File wd, Map env, ExecuteStreamHandler streamHandler, 
             String cmd, Object ... args) throws IOException {
+        return execWithEnv(config, wd, env, streamHandler, createCommandLine(cmd, args));
+    }
+    
+    @SuppressWarnings("rawtypes")
+    public static int execWithEnv(Config config, File wd, Map env, ExecuteStreamHandler streamHandler, 
+            CommandLine commandLine) throws IOException {
         
+        config.getLogger().debug("  " + commandLine.toString());
+        
+        Executor executor = new DefaultExecutor();
+        if (wd != null) {
+            executor.setWorkingDirectory(wd);
+        }
+        if (streamHandler != null) {
+            executor.setStreamHandler(streamHandler);
+        }
+        if (env == null) {
+            env = EnvironmentUtils.getProcEnvironment();
+        }
+        executor.setExitValue(0);
+        return executor.execute(commandLine, env);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static CommandLine createCommandLine(String cmd, Object... args) {
         CommandLine commandLine = CommandLine.parse(cmd);
         for (Object a : args) {
             if (a instanceof Collection) {
@@ -98,20 +127,6 @@ public class CompilerUtil {
                 commandLine.addArgument(a instanceof File ? ((File) a).getAbsolutePath() : a.toString());
             }
         }
-        
-        config.getLogger().debug("  %s", commandLine);
-        
-        Executor executor = new DefaultExecutor();
-        if (wd != null) {
-            executor.setWorkingDirectory(wd);
-        }
-        if (streamHandler != null) {
-            executor.setStreamHandler(streamHandler);
-        }
-        if (env == null) {
-            env = EnvironmentUtils.getProcEnvironment();
-        }
-        executor.setExitValue(0);
-        executor.execute(commandLine, env);
+        return commandLine;
     }
 }

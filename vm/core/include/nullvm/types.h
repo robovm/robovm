@@ -278,8 +278,8 @@ typedef struct Options {
     jint logLevel;
     char basePath[PATH_MAX];
     char executablePath[PATH_MAX];
-    char bootLibPath[PATH_MAX];
-    char mainLibPath[PATH_MAX];
+    char** rawBootclasspath; 
+    char** rawClasspath; 
     ClasspathEntry* bootclasspath;
     ClasspathEntry* classpath;
     Class* (*bootclasspathFunc)(Env*, char*, ClassLoader*);

@@ -90,12 +90,6 @@ public class SootResolver
         return resolvedClass;
     }
 
-    public SootClass resolveClass(SootClass resolvedClass, int desiredLevel) {
-        addToResolveWorklist(resolvedClass, desiredLevel);
-        processResolveWorklist();
-        return resolvedClass;
-    }
-    
     /** Resolve all classes on toResolveWorklist. */
     private void processResolveWorklist() {
         for( int i = SootClass.BODIES; i >= SootClass.HIERARCHY; i-- ) {

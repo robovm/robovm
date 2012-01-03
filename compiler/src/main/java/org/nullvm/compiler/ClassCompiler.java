@@ -146,6 +146,7 @@ import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
 import soot.SootMethodRef;
+import soot.SootResolver;
 import soot.Transform;
 import soot.Trap;
 import soot.Unit;
@@ -485,7 +486,7 @@ public class ClassCompiler {
     private void compile(Clazz clazz, OutputStream out) throws IOException {
         reset();
         
-        sootClass = Scene.v().getSootClass(clazz.getClassName());
+        sootClass = Scene.v().loadClassAndSupport(clazz.getClassName());
         module = new Module();
         throwables = new HashMap<SootClass, Global>();
         trampolines = new HashMap<Trampoline, FunctionRef>();
@@ -3324,12 +3325,6 @@ public class ClassCompiler {
         Options.v().set_allow_phantom_refs(true);
         Options.v().set_soot_classpath(getSootClasspath(clazzes));
 
-        for (Clazz clazz : clazzes.list()) {
-//            SootClass c = Scene.v().loadClass(clazz.getClassName(), SootClass.DANGLING);
-//            c.setApplicationClass();
-            SootClass c = Scene.v().loadClassAndSupport(clazz.getClassName());
-            c.setApplicationClass();
-        }
         Scene.v().loadNecessaryClasses();
 
         /*

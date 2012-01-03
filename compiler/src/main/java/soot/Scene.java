@@ -265,19 +265,18 @@ public class Scene  //extends AbstractHost
         if(containsClass(c.getName()))
             throw new RuntimeException("duplicate class: "+c.getName());
 
-        c.setScene(this);
-        
         classes.add(c);
         c.setLibraryClass();
 
         nameToClass.put(c.getName(), c.getType());
         c.getType().setSootClass(c);
+        c.setInScene(true);
         modifyHierarchy();
     }
 
     public void removeClass(SootClass c)
     {
-        if(c.scene() != this)
+        if(!c.isInScene())
             throw new RuntimeException();
 
         classes.remove(c);
@@ -291,7 +290,7 @@ public class Scene  //extends AbstractHost
         }
         
         c.getType().setSootClass(null);
-        c.setScene(null);
+        c.setInScene(false);
         modifyHierarchy();
     }
 
@@ -478,8 +477,8 @@ public class Scene  //extends AbstractHost
 			return toReturn;
 		} else if (allowsPhantomRefs()) {
 			SootClass c = new SootClass(className);
-            addClass(c);
 			c.setPhantom(true);
+			addClass(c);
 			return c;
 		} else {
 			throw new RuntimeException(System.getProperty("line.separator")
@@ -953,7 +952,7 @@ public class Scene  //extends AbstractHost
     public void loadBasicClasses() {
 		for(int i=SootClass.BODIES;i>=SootClass.HIERARCHY;i--) {
 		    for(String name: basicclasses[i]) {
-		    	tryLoadClass(name, SootClass.DANGLING);
+		    	tryLoadClass(name,i);
 		    }
 		}
     }
@@ -996,6 +995,7 @@ public class Scene  //extends AbstractHost
         }
 
         prepareClasses();
+        //setDoneResolving();
     }
 
     public void loadDynamicClasses() {
@@ -1083,10 +1083,10 @@ public class Scene  //extends AbstractHost
                     if ((s.getPackageName()+".").startsWith(pkg))
                         s.setApplicationClass();
                 }
-//                if(s.isApplicationClass()) {
-//                    // make sure we have the support
-//                    loadClassAndSupport(s.getName());
-//                }
+                if(s.isApplicationClass()) {
+                    // make sure we have the support
+                    loadClassAndSupport(s.getName());
+                }
             }
         }
     }
@@ -1140,6 +1140,10 @@ public class Scene  //extends AbstractHost
         }
         return ret;
     }
+    private boolean doneResolving = false;
+	private boolean incrementalBuild;
+    public boolean doneResolving() { return doneResolving; }
+    public void setDoneResolving() { doneResolving = true; }
     public void setMainClassFromOptions() {
         if(mainClass != null) return;
         if( Options.v().main_class() != null
@@ -1170,6 +1174,21 @@ public class Scene  //extends AbstractHost
         }
     }
     
+    /**
+     * This method returns true when in incremental build mode.
+     * Other classes can query this flag and change the way in which they use the Scene,
+     * depending on the flag's value.
+     */
+    public boolean isIncrementalBuild() {
+    	return incrementalBuild;
+    }
+    
+    public void initiateIncrementalBuild() {
+    	this.incrementalBuild = true;
+    }
 
+    public void incrementalBuildFinished() {
+    	this.incrementalBuild = false;
+    }
 }
 

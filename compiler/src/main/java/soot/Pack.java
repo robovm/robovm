@@ -109,13 +109,21 @@ public abstract class Pack implements HasPhaseOptions
     public final void apply() {
         Map options = PhaseOptions.v().getPhaseOptions( this );
         if( !PhaseOptions.getBoolean( options, "enabled" ) ) return;
+//	if (DEBUG)
+//	    PhaseDumper.v().dumpBefore(getPhaseName());
         internalApply();
+//	if (DEBUG)
+//	    PhaseDumper.v().dumpAfter(getPhaseName());
     }
 
     public final void apply(Body b) {
         Map options = PhaseOptions.v().getPhaseOptions( this );
         if( !PhaseOptions.getBoolean( options, "enabled" ) ) return;
+//	if (DEBUG)
+//	    PhaseDumper.v().dumpBefore(b, getPhaseName());
         internalApply(b);
+//	if (DEBUG)
+//	    PhaseDumper.v().dumpAfter(b, getPhaseName());
     }
 
     public String getDeclaredOptions() { return soot.options.Options.getDeclaredOptionsForPhase( getPhaseName() ); }

@@ -91,7 +91,7 @@ class AbstractSootFieldRef implements SootFieldRef {
                 return checkStatic(cl.getField(name, type));
             }
 
-            if(declaringClass.scene().allowsPhantomRefs() && cl.isPhantom())
+            if(Scene.v().allowsPhantomRefs() && cl.isPhantom())
             {
                 SootField f = new SootField(name, type, isStatic()?Modifier.STATIC:0);
                 f.setPhantom(true);

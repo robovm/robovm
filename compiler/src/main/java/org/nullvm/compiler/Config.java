@@ -162,7 +162,7 @@ public class Config {
     
     @SuppressWarnings("unchecked")
     private void createArchive(File dir, File output, boolean skipClassFiles) throws IOException {
-        logger.debug("Creating archive file '%s' from files in directory '%s'\n", output, dir);
+        logger.debug("Creating archive file '%s' from files in directory '%s'", output, dir);
         
         output.getParentFile().mkdirs();
         

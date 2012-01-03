@@ -64,9 +64,15 @@ public enum OS {
                 llvmHostStrings.put(llvmHomeDir, llvmHostString);
                 return llvmHostString;
             }
-            throw new CompilerException("Failed to get Host string using command: " + command);
         } catch (IOException e) {
-            throw new CompilerException("Failed to get Host string using command: " + command);
         }
+        String msg = "Failed to determine OS and CPU architecture of current host system using ";
+        if (llvmHomeDir != null) {
+            msg += "LLVM in dir " + llvmHomeDir + ".";
+        } else {
+            msg += "system provided LLVM. Make sure the path of the LLVM binaries "
+                 + "has been added to the $PATH environment variable.";
+        }
+        throw new CompilerException(msg);
     }
 }

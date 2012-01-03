@@ -352,6 +352,15 @@ public class AppCompiler {
                         System.out.format(format, args);
                         System.out.println();
                     }
+                    public void debug(byte[] message, int off, int length) {
+                        debug(new String(message, off, length));
+                    }
+                    public void info(byte[] message, int off, int length) {
+                        info(new String(message, off, length));
+                    }
+                    public void error(byte[] message, int off, int length) {
+                        error(new String(message, off, length));
+                    }
                 });
             }
             

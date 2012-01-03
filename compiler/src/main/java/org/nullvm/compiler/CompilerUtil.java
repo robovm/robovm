@@ -5,6 +5,7 @@ package org.nullvm.compiler;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,8 +13,9 @@ import java.util.Map;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.ExecuteStreamHandler;
+import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.exec.Executor;
+import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.exec.environment.EnvironmentUtils;
 
 /**
@@ -68,47 +70,41 @@ public class CompilerUtil {
     }
     
     public static int exec(Config config, String cmd, Object ... args) throws IOException {
-        return exec(config, null, cmd, args);
+        return execWithEnv(config, null, null, createCommandLine(cmd, args));
     }
     
     public static int exec(Config config, File wd, String cmd, Object ... args) throws IOException {
-        return execWithEnv(config, wd, null, cmd, args);
+        return execWithEnv(config, wd, null, createCommandLine(cmd, args));
     }
 
     @SuppressWarnings("rawtypes")
     public static int execWithEnv(Config config, File wd, Map env, String cmd, Object ... args) throws IOException {
-        return execWithEnv(config, wd, env, null, cmd, args);
+        return execWithEnv(config, wd, env, createCommandLine(cmd, args));
     }
     
     @SuppressWarnings("rawtypes")
     public static int execWithEnv(Config config, File wd, Map env, CommandLine commandLine) throws IOException {
-        return execWithEnv(config, wd, env, null, commandLine);
-    }
-    
-    @SuppressWarnings("rawtypes")
-    public static int execWithEnv(Config config, File wd, Map env, ExecuteStreamHandler streamHandler, 
-            String cmd, Object ... args) throws IOException {
-        return execWithEnv(config, wd, env, streamHandler, createCommandLine(cmd, args));
-    }
-    
-    @SuppressWarnings("rawtypes")
-    public static int execWithEnv(Config config, File wd, Map env, ExecuteStreamHandler streamHandler, 
-            CommandLine commandLine) throws IOException {
         
-        config.getLogger().debug("  " + commandLine.toString());
+        config.getLogger().debug(commandLine.toString());
         
         Executor executor = new DefaultExecutor();
         if (wd != null) {
             executor.setWorkingDirectory(wd);
         }
-        if (streamHandler != null) {
-            executor.setStreamHandler(streamHandler);
-        }
+        executor.setStreamHandler(new PumpStreamHandler(new DebugOutputStream(config.getLogger()), 
+                new ErrorOutputStream(config.getLogger())));
         if (env == null) {
             env = EnvironmentUtils.getProcEnvironment();
         }
         executor.setExitValue(0);
-        return executor.execute(commandLine, env);
+        try {
+            return executor.execute(commandLine, env);
+        } catch (ExecuteException e) {
+            ExecuteException ex = new ExecuteException("Command '" + commandLine + "' failed ", 
+                    e.getExitValue());
+            ex.setStackTrace(e.getStackTrace());
+            throw ex;
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -128,5 +124,66 @@ public class CompilerUtil {
             }
         }
         return commandLine;
+    }
+    
+    private static class DebugOutputStream extends LoggerOutputStream {
+        DebugOutputStream(Logger logger) {
+            super(logger);
+        }
+        @Override
+        protected void log(byte[] message, int off, int length) {
+            logger.debug(new String(message, off, length));
+        }
+    }
+    
+    private static class ErrorOutputStream extends LoggerOutputStream {
+        ErrorOutputStream(Logger logger) {
+            super(logger);
+        }
+        @Override
+        protected void log(byte[] message, int off, int length) {
+            logger.error(new String(message, off, length));
+        }
+    }
+    
+    private static abstract class LoggerOutputStream extends OutputStream {
+        protected final Logger logger;
+        private byte[] buffer = new byte[1024];
+        private int start = 0;
+        private int end = 0;
+
+        LoggerOutputStream(Logger logger) {
+            this.logger = logger;
+        }
+        
+        protected abstract void log(byte[] message, int off, int length);
+        
+        @Override
+        public void write(int b) throws IOException {
+            if (b == '\r') {
+                // Skip
+                return;
+            }
+            if (b == '\n') {
+                log(buffer, start, end - start);
+                start = end = 0;
+                return;
+            }
+            if (end == buffer.length) {
+                if (start > 0) {
+                    // Compact
+                    System.arraycopy(buffer, start, buffer, 0, end - start);
+                    end -= start;
+                    start = 0;
+                } else {
+                    // Need a bigger buffer
+                    byte[] newBuffer = new byte[buffer.length * 2];
+                    System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
+                    buffer = newBuffer;
+                }
+            }
+            buffer[end++] = (byte) b;
+        }
+        
     }
 }

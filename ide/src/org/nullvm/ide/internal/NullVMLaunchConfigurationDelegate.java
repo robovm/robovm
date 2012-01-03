@@ -68,11 +68,8 @@ public class NullVMLaunchConfigurationDelegate extends AbstractJavaLaunchConfigu
                 return;
             }
             
-            File nullVMHomeDir = new File(System.getProperty("user.home"), ".nullvm");
-            File llvmHomeDir = new File("/home/niklas/Applications/clang+llvm-2.9-x86_64-linux");
-            
-            Arch arch = Arch.getDefaultArch(llvmHomeDir);
-            OS os = OS.getDefaultOS(llvmHomeDir);
+            Arch arch = NullVMPlugin.getArch(configuration.getAttribute(NullVMPlugin.LAUNCH_ARCH, (String) null));
+            OS os = NullVMPlugin.getOS(configuration.getAttribute(NullVMPlugin.LAUNCH_OS, (String) null));
             
             File installDir = new File(NullVMPlugin.getMetadataDir(), getJavaProjectName(configuration));
             installDir = new File(new File(installDir, os.toString()), arch.toString());
@@ -93,8 +90,14 @@ public class NullVMLaunchConfigurationDelegate extends AbstractJavaLaunchConfigu
             configBuilder.os(os);
             configBuilder.debug(true);
             configBuilder.skipInstall(false);
-            configBuilder.nullVMHomeDir(nullVMHomeDir);
-            configBuilder.llvmHomeDir(llvmHomeDir);
+            if (NullVMPlugin.useBundledNullVM()) {
+                configBuilder.nullVMHomeDir(NullVMPlugin.getBundledNullVMDir());
+            } else {
+                configBuilder.nullVMHomeDir(NullVMPlugin.getNullVMHomeDir());
+            }
+            if (!NullVMPlugin.useSystemLlvm()) {
+                configBuilder.llvmHomeDir(NullVMPlugin.getLlvmHomeDir());
+            }            
             configBuilder.logger(NullVMPlugin.getConsoleLogger());
             if (bootclasspath != null) {
                 configBuilder.skipRuntimeLib(true);
@@ -130,7 +133,7 @@ public class NullVMLaunchConfigurationDelegate extends AbstractJavaLaunchConfigu
             } catch (IOException e) {
                 NullVMPlugin.consoleError("Build failed");
                 throw new CoreException(new Status(IStatus.ERROR, NullVMPlugin.PLUGIN_ID,
-                        "Build failed", e));
+                        "Build failed. Check the NullVM console for more information.", e));
             }
 
             try {
@@ -171,7 +174,7 @@ public class NullVMLaunchConfigurationDelegate extends AbstractJavaLaunchConfigu
             } catch (IOException e) {
                 NullVMPlugin.consoleError("Launch failed");
                 throw new CoreException(new Status(IStatus.ERROR, NullVMPlugin.PLUGIN_ID,
-                        "Launch failed", e));
+                        "Launch failed. Check the NullVM console for more information.", e));
             }
             
         } finally {
@@ -179,6 +182,7 @@ public class NullVMLaunchConfigurationDelegate extends AbstractJavaLaunchConfigu
         }
     }
 
+    @SuppressWarnings("unchecked")
     private Map<String, String> envToMap(String[] envp) throws IOException {
         if (envp == null) {
             return EnvironmentUtils.getProcEnvironment();

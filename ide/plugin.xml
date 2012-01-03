@@ -15,6 +15,11 @@
       preferredPerspectives="org.eclipse.jdt.ui.JavaPerspective"
       project="true"/>
   </extension>
+  <extension point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
+      <newWizardShortcut id="org.nullvm.ide.NewProjectWizard" />
+    </perspectiveExtension>
+  </extension>  
   <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
     <classpathContainerInitializer
       class="org.nullvm.ide.internal.NullVMClasspathContainerInitializer"
@@ -87,5 +92,29 @@
       <configurationType id="org.eclipse.jdt.launching.localJavaApplication">
       </configurationType>
     </shortcut>
+  </extension>
+  <extension point="org.eclipse.core.runtime.preferences">
+    <initializer class="org.nullvm.ide.internal.NullVMPreferenceInitializer"/>
+  </extension>
+  <extension point="org.eclipse.ui.preferencePages">
+    <page
+      class="org.nullvm.ide.internal.NullVMPreferencePage"
+      id="org.nullvm.ide.preferences.main"
+      name="NullVM" />
+  </extension>
+  <extension point="org.eclipse.ui.propertyPages">
+    <page
+      class="org.nullvm.ide.internal.NullVMPropertyPage"
+      id="org.nullvm.ide.NullVMPropertyPage"
+      name="NullVM"
+      nameFilter="*">
+      <enabledWhen>
+        <and>
+          <adapt type="org.eclipse.core.resources.IProject"/>
+          <test property="org.eclipse.jdt.launching.hasProjectNature" 
+                args="org.nullvm.ide.NullVMNature" />
+        </and>
+      </enabledWhen>
+    </page>
   </extension>
 </plugin>

@@ -5,7 +5,6 @@
  */
 package org.nullvm.ide.internal;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,8 +78,16 @@ public class NullVMClassBuilder extends IncrementalProjectBuilder {
         configBuilder.skipLinking(true);
         configBuilder.skipRuntimeLib(true);
         configBuilder.debug(true);
-        configBuilder.nullVMHomeDir(new File(System.getProperty("user.home"), ".nullvm"));
-        configBuilder.llvmHomeDir(new File("/home/niklas/Applications/clang+llvm-2.9-x86_64-linux"));
+        configBuilder.arch(NullVMPlugin.getArch(getProject()));
+        configBuilder.os(NullVMPlugin.getOS(getProject()));
+        if (NullVMPlugin.useBundledNullVM()) {
+            configBuilder.nullVMHomeDir(NullVMPlugin.getBundledNullVMDir());
+        } else {
+            configBuilder.nullVMHomeDir(NullVMPlugin.getNullVMHomeDir());
+        }
+        if (!NullVMPlugin.useSystemLlvm()) {
+            configBuilder.llvmHomeDir(NullVMPlugin.getLlvmHomeDir());
+        }
         configBuilder.logger(NullVMPlugin.getConsoleLogger());
         
         for (IClasspathEntry entry : javaProject.getResolvedClasspath(false)) {
@@ -114,7 +121,7 @@ public class NullVMClassBuilder extends IncrementalProjectBuilder {
         } catch (IOException e) {
             NullVMPlugin.consoleError("Build failed");
             throw new CoreException(new Status(IStatus.ERROR, NullVMPlugin.PLUGIN_ID,
-                    "Build failed", e));
+                    "Build failed. Check the NullVM console for more information.", e));
         }
         
         return null;

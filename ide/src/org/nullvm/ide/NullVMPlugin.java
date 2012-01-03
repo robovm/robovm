@@ -9,8 +9,17 @@ import java.io.File;
 import java.text.DateFormat;
 import java.util.Date;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ProjectScope;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.IPreferencesService;
+import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -21,7 +30,9 @@ import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.nullvm.compiler.Arch;
 import org.nullvm.compiler.Logger;
+import org.nullvm.compiler.OS;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -30,7 +41,22 @@ import org.osgi.framework.BundleContext;
  */
 public class NullVMPlugin extends AbstractUIPlugin {
 
-    public static final String PLUGIN_ID = "nullvm-ide";
+    public static final String PLUGIN_ID = "org.nullvm.ide";
+    public static final String PREFERENCE_USE_SYSTEM_LLVM = PLUGIN_ID + ".prefs.useSystemLlvm";
+    public static final String PREFERENCE_LLVM_HOME_DIR = PLUGIN_ID + ".prefs.llvmHomeDir";
+    public static final String PREFERENCE_USE_BUNDLED_NULLVM = PLUGIN_ID + ".prefs.useBundledNullVM";
+    public static final String PREFERENCE_NULLVM_HOME_DIR = PLUGIN_ID + ".prefs.nullVMHomeDir";
+    public static final String PREFERENCE_USE_SYSTEM_GCC = PLUGIN_ID + ".prefs.useSystemGcc";
+    public static final String PREFERENCE_GCC_BIN_DIR = PLUGIN_ID + ".prefs.gccBinDir";
+    public static final String PREFERENCE_USE_SYSTEM_BINUTILS = PLUGIN_ID + ".prefs.useSystemBinutils";
+    public static final String PREFERENCE_BINUTILS_BIN_DIR = PLUGIN_ID + ".prefs.binutilsBinDir";
+    public static final String PREFERENCE_INCREMENTAL_BUILD_ARCH = PLUGIN_ID + ".prefs.incrementalBuildArch";
+    public static final String PREFERENCE_INCREMENTAL_BUILD_OS = PLUGIN_ID + ".prefs.incrementalBuildOs";
+    public static final String LAUNCH_APP_CLASS = PLUGIN_ID + ".launch.appClass";
+    public static final String LAUNCH_ARCH = PLUGIN_ID + ".launch.arch";
+    public static final String LAUNCH_OS = PLUGIN_ID + ".launch.arch";
+    public static final String ARCH_AUTO = "auto";
+    public static final String OS_AUTO = "auto";
 
     private static NullVMPlugin plugin;
     
@@ -62,7 +88,7 @@ public class NullVMPlugin extends AbstractUIPlugin {
         // Set up the console
         console = new MessageConsole("NullVM Console", null);
         ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[] {console});
-        Display display = plugin.getWorkbench().getDisplay();
+        Display display = getDisplay();
         debugStream = console.newMessageStream();
         final Color debugColor = new Color(display, 0x99, 0x99, 0x99);
         infoStream = console.newMessageStream();
@@ -97,8 +123,100 @@ public class NullVMPlugin extends AbstractUIPlugin {
         return plugin;
     }
     
+    public static synchronized Display getDisplay() {
+        if (plugin != null) {
+            IWorkbench workbench = plugin.getWorkbench();
+            if (workbench != null) {
+                return workbench.getDisplay();
+            }
+        }
+        return null;
+    }
+    
+    public static synchronized Shell getShell() {
+        Display display = getDisplay();
+        if (display != null) {
+            return display.getActiveShell();
+        }
+        return null;
+    }
+    
     public static File getMetadataDir() {
         return plugin.getStateLocation().toFile();
+    }
+
+    public static File getBundledNullVMDir() {
+        throw new UnsupportedOperationException();
+    }
+    
+    public static boolean useBundledNullVM() {
+        IPreferencesService prefs = Platform.getPreferencesService();
+        return prefs.getBoolean(PLUGIN_ID, PREFERENCE_USE_BUNDLED_NULLVM, true, null);
+    }
+
+    public static File getNullVMHomeDir() {
+        if (!useBundledNullVM()) {
+            IPreferencesService prefs = Platform.getPreferencesService();
+            return new File(prefs.getString(PLUGIN_ID, PREFERENCE_NULLVM_HOME_DIR, null, null));
+        }
+        return null;
+    }
+
+    public static boolean useSystemLlvm() {
+        IPreferencesService prefs = Platform.getPreferencesService();
+        return prefs.getBoolean(PLUGIN_ID, PREFERENCE_USE_SYSTEM_LLVM, true, null);
+    }
+    
+    public static File getLlvmHomeDir() {
+        if (!useSystemLlvm()) {
+            IPreferencesService prefs = Platform.getPreferencesService();
+            return new File(prefs.getString(PLUGIN_ID, PREFERENCE_LLVM_HOME_DIR, null, null));
+        }
+        return null;
+    }
+    
+    public static String getIncrementalBuildArch(IProject project) {
+        IPreferencesService prefs = Platform.getPreferencesService();
+        IScopeContext[] contexts = new IScopeContext[] {new ProjectScope(project), 
+                InstanceScope.INSTANCE, DefaultScope.INSTANCE}; 
+        return prefs.getString(PLUGIN_ID, PREFERENCE_INCREMENTAL_BUILD_ARCH, ARCH_AUTO, contexts);
+    }
+    
+    public static String getIncrementalBuildOS(IProject project) {
+        IPreferencesService prefs = Platform.getPreferencesService();
+        IScopeContext[] contexts = new IScopeContext[] {new ProjectScope(project), 
+                InstanceScope.INSTANCE, DefaultScope.INSTANCE}; 
+        return prefs.getString(PLUGIN_ID, PREFERENCE_INCREMENTAL_BUILD_OS, OS_AUTO, contexts);
+    }
+    
+    public static Arch getDefaultArch() {
+        return Arch.getDefaultArch(getLlvmHomeDir());
+    }
+    
+    public static Arch getArch(IProject project) {
+        return getArch(getIncrementalBuildArch(project));
+    }
+    
+    public static Arch getArch(String s) {
+        if (ARCH_AUTO.equals(s)) {
+            return getDefaultArch();
+        }
+        return Arch.valueOf(s);
+    }
+    
+    public static OS getDefaultOS() {
+        return OS.getDefaultOS(getLlvmHomeDir());
+    }
+    
+    public static OS getOS(IProject project) {
+        return getOS(getIncrementalBuildOS(project));
+    }
+    
+    public static OS getOS(String s) {
+        if (OS_AUTO.equals(s)) {
+            return getDefaultOS();
+        }
+        return OS.valueOf(s);
     }
     
     private static String now() {

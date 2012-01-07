@@ -182,7 +182,7 @@ static jboolean checkFieldAccessible(Env* env, Field* field, Class* caller) {
 }
 
 _Unwind_Reason_Code _nvmBcPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context) {
-    _nvmPersonality(version, actions, exception_class, exception_info, context);
+    return _nvmPersonality(version, actions, exception_class, exception_info, context);
 }
 
 Class* _nvmBcFindClassInLoader(Env* env, char* className, ClassLoader* classLoader) {

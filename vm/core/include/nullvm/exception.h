@@ -1,6 +1,14 @@
 #ifndef NULLVM_EXCEPTION_H
 #define NULLVM_EXCEPTION_H
 
+#include <unwind.h>
+
+#if defined(DARWIN)
+#define _Unwind_Ptr uintptr_t
+#define _Unwind_Word uintptr_t
+#define _Unwind_Exception_Class uint64_t
+#endif
+
 extern Object* nvmExceptionOccurred(Env* env);
 extern jboolean nvmExceptionCheck(Env* env);
 extern Object* nvmExceptionClear(Env* env);

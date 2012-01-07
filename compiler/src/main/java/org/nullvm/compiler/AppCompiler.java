@@ -221,9 +221,9 @@ public class AppCompiler {
         File configS = new File(config.getTmpDir(), "config.s");
         CompilerUtil.llc(config, configLl, configS);
         
-        String gccPath = "gcc";
-        if (config.getGccBinPath() != null) {
-            gccPath = config.getGccBinPath().getAbsolutePath();
+        String ccPath = config.getOs() == OS.darwin ? "clang" : "gcc";
+        if (config.getCcBinPath() != null) {
+            ccPath = config.getCcBinPath().getAbsolutePath();
         }
         
         List<String> gccArgs = new ArrayList<String>();
@@ -254,7 +254,7 @@ public class AppCompiler {
             gccArgs.add(config.getArch().toString());            
         }
         
-        CompilerUtil.exec(config, gccPath, "-o", outFile, "-g", gccArgs, configS, libFiles, libArgs);
+        CompilerUtil.exec(config, ccPath, "-o", outFile, "-g", gccArgs, configS, libFiles, libArgs);
     }
     
     public void compile() throws IOException {
@@ -305,8 +305,8 @@ public class AppCompiler {
                     builder.clean(true);
                 } else if ("-help".equals(args[i]) || "-?".equals(args[i])) {
                     printUsageAndExit(null);
-                } else if ("-gcc-bin".equals(args[i])) {
-                    builder.gccBinPath(new File(args[++i]));
+                } else if ("-cc-bin".equals(args[i])) {
+                    builder.ccBinPath(new File(args[++i]));
                 } else if ("-ar-bin".equals(args[i])) {
                     builder.arBinPath(new File(args[++i]));
                 } else if ("-llvm-home".equals(args[i])) {
@@ -419,7 +419,7 @@ public class AppCompiler {
                          + "                        exists in the cache.");
         System.err.println("  -d <dir>              Install the generated executable and other files in <dir>.\n" 
                          + "                        Default is <wd>/<class>");
-        System.err.println("  -gcc-bin <path>       Path to the gcc binary");
+        System.err.println("  -cc-bin <path>        Path to the c compiler binary. gcc and clang are supported.");
         System.err.println("  -ar-bin <path>        Path to the ar binary");
         System.err.println("  -home <dir>           Directory where NullVM runtime has been installed.\n"
         		         + "                        Default is $NULLVM_HOME");

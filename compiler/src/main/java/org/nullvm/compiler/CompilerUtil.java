@@ -51,9 +51,9 @@ public class CompilerUtil {
     }
     
     public static void assemble(Config config, File inFile, File outFile) throws IOException {
-        String gccPath = "gcc";
-        if (config.getGccBinPath() != null) {
-            gccPath = config.getGccBinPath().getAbsolutePath();
+        String ccPath = config.getOs() == OS.darwin ? "clang" : "gcc";
+        if (config.getCcBinPath() != null) {
+            ccPath = config.getCcBinPath().getAbsolutePath();
         }
 
         List<String> opts = new ArrayList<String>();
@@ -66,7 +66,7 @@ public class CompilerUtil {
         }
 
         outFile.getParentFile().mkdirs();
-        exec(config, gccPath, "-c", "-o", outFile, opts, inFile);
+        exec(config, ccPath, "-c", "-o", outFile, opts, inFile);
     }
     
     public static int exec(Config config, String cmd, Object ... args) throws IOException {

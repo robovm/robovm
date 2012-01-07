@@ -34,7 +34,7 @@ public class Config {
     private File llvmCacheDir = null;
     private File objectCacheDir = null;
     private File llvmHomeDir = null;
-    private File gccBinPath = null;
+    private File ccBinPath = null;
     private File arBinPath = null;
     
     private OS os = null;
@@ -77,8 +77,8 @@ public class Config {
         return cacheDir;
     }
 
-    public File getGccBinPath() {
-        return gccBinPath;
+    public File getCcBinPath() {
+        return ccBinPath;
     }
 
     public File getArBinPath() {
@@ -389,8 +389,8 @@ public class Config {
             return this;
         }
 
-        public Builder gccBinPath(File gccBinPath) {
-            config.gccBinPath = gccBinPath;
+        public Builder ccBinPath(File ccBinPath) {
+            config.ccBinPath = ccBinPath;
             return this;
         }
 

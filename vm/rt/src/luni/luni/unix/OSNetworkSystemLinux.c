@@ -15,7 +15,7 @@
  *  limitations under the License.
  */
 
-#if defined(FREEBSD) || defined(AIX) || defined(MACOSX) || defined(ZOS)
+#if defined(FREEBSD) || defined(AIX) || defined(DARWIN) || defined(ZOS)
 #include <sys/types.h>
 #include <netinet/in.h>
 

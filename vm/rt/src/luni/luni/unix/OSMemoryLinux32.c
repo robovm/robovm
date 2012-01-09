@@ -20,7 +20,7 @@
  */
 
 #include <string.h>
-#if defined(MACOSX)
+#if defined(DARWIN)
 #include <sys/types.h>
 #endif
 #include <sys/mman.h>
@@ -104,7 +104,7 @@ JNIEXPORT jboolean JNICALL Java_org_apache_harmony_luni_platform_OSMemory_isLoad
   	  jboolean result = 0;
   	  IDATA m_addr = (IDATA)addr;
 	  int page_size = getPageSize();
-#if defined(FREEBSD) || defined(MACOSX)
+#if defined(FREEBSD) || defined(DARWIN)
 #define HY_VEC_T char
 #else
 #define HY_VEC_T unsigned char

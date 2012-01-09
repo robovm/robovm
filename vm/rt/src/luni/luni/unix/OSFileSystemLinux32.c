@@ -24,7 +24,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sys/stat.h>
-#if defined(FREEBSD) || defined(AIX) || defined(ZOS) || defined(MACOSX)
+#if defined(FREEBSD) || defined(AIX) || defined(ZOS) || defined(DARWIN)
 #include <sys/types.h>
 #include <sys/socket.h>
 #else
@@ -332,7 +332,7 @@ JNIEXPORT jlong JNICALL Java_org_apache_harmony_luni_platform_OSFileSystem_trans
   off_t off = offset;
 #if defined(FREEBSD)
   return sendfile(fd-FD_BIAS, socket, off, (size_t)count, NULL, NULL, 0);
-#elif defined(MACOSX)
+#elif defined(DARWIN)
   return sendfile((int)fd-FD_BIAS, (int)socket, off, (off_t *)&count, NULL, 0);
 #else
   return sendfile(socket,(int)fd-FD_BIAS,(off_t *)&off,(size_t)count);

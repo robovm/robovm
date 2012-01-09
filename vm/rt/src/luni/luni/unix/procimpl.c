@@ -26,7 +26,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <fcntl.h>
-#if defined(MACOSX)
+#if defined(DARWIN)
 #include <crt_externs.h>
 #define environ (*_NSGetEnviron())
 #else

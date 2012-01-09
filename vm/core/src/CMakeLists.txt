@@ -6,14 +6,14 @@ endif()
 
 enable_language(ASM)
 add_custom_command(
-  OUTPUT call0-${OS}-${ARCH}.s.o 
-  COMMAND as ${ASFLAGS} -g -o call0-${OS}-${ARCH}.s.o ${core_SOURCE_DIR}/call0-${OS}-${ARCH}.s 
-  MAIN_DEPENDENCY call0-${OS}-${ARCH}.s 
+  OUTPUT call0-${OS_FAMILY}-${ARCH}.s.o 
+  COMMAND as ${ASFLAGS} -g -o call0-${OS_FAMILY}-${ARCH}.s.o ${core_SOURCE_DIR}/call0-${OS_FAMILY}-${ARCH}.s 
+  MAIN_DEPENDENCY call0-${OS_FAMILY}-${ARCH}.s 
 )
 add_custom_command(
-  OUTPUT proxy0-${OS}-${ARCH}.s.o 
-  COMMAND as ${ASFLAGS} -g -o proxy0-${OS}-${ARCH}.s.o ${core_SOURCE_DIR}/proxy0-${OS}-${ARCH}.s 
-  MAIN_DEPENDENCY proxy0-${OS}-${ARCH}.s 
+  OUTPUT proxy0-${OS_FAMILY}-${ARCH}.s.o 
+  COMMAND as ${ASFLAGS} -g -o proxy0-${OS_FAMILY}-${ARCH}.s.o ${core_SOURCE_DIR}/proxy0-${OS_FAMILY}-${ARCH}.s 
+  MAIN_DEPENDENCY proxy0-${OS_FAMILY}-${ARCH}.s 
 )
 
 add_library(nullvm-core SHARED 
@@ -30,8 +30,8 @@ add_library(nullvm-core SHARED
   proxy.c 
   string.c 
   thread.c 
-  call0-${OS}-${ARCH}.s.o
-  proxy0-${OS}-${ARCH}.s.o
+  call0-${OS_FAMILY}-${ARCH}.s.o
+  proxy0-${OS_FAMILY}-${ARCH}.s.o
   unwind.c 
   unwind_backtrace.c
   vminterface.c
@@ -43,12 +43,12 @@ set_source_files_properties(unwind_backtrace.c PROPERTIES COMPILE_FLAGS "-O0 -fn
 if(LINUX)
   set_target_properties(nullvm-core PROPERTIES LINK_FLAGS "-Wl,--version-script=${core_SOURCE_DIR}/symbols.linux" INSTALL_RPATH "$ORIGIN")
 elseif(DARWIN)
-  set_target_properties(nullvm-core PROPERTIES LINK_FLAGS "-arch ${ARCH} -exported_symbols_list ${core_SOURCE_DIR}/symbols.darwin" INSTALL_NAME_DIR "@loader_path")
+  set_target_properties(nullvm-core PROPERTIES LINK_FLAGS "-exported_symbols_list ${core_SOURCE_DIR}/symbols.darwin" INSTALL_NAME_DIR "@loader_path")
 endif()
 target_link_libraries(nullvm-core nullvm-hyprt gc)
 install(TARGETS nullvm-core DESTINATION ${INSTALL_DIR})
 
-add_executable(test_call0 test/test_call0.c test/CuTest.c call0-${OS}-${ARCH}.s.o)
+add_executable(test_call0 test/test_call0.c test/CuTest.c call0-${OS_FAMILY}-${ARCH}.s.o)
 if(DARWIN)
   set_target_properties(test_call0 PROPERTIES LINK_FLAGS "-arch ${ARCH}")
 endif()
@@ -63,7 +63,7 @@ add_test(testCall0ManyArgsOfEach test_call0 "testCall0ManyArgsOfEach")
 add_test(testCall0Unwind test_call0 "testCall0Unwind")
 add_test(testCall0Raise test_call0 "testCall0Raise")
 
-add_executable(test_proxy0 test/test_proxy0.c test/CuTest.c proxy0-${OS}-${ARCH}.s.o)
+add_executable(test_proxy0 test/test_proxy0.c test/CuTest.c proxy0-${OS_FAMILY}-${ARCH}.s.o)
 if(DARWIN)
   set_target_properties(test_proxy0 PROPERTIES LINK_FLAGS "-arch ${ARCH}")
 endif()

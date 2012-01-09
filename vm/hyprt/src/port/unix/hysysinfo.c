@@ -38,7 +38,7 @@
 #if defined(LINUX)
 #include <sys/sysinfo.h>
 #endif
-#if defined(FREEBSD) || defined(MACOSX)
+#if defined(FREEBSD) || defined(DARWIN)
 #include <sys/types.h>
 #include <sys/sysctl.h>
 #include <dlfcn.h>
@@ -741,7 +741,7 @@ hysysinfo_get_number_CPUs (struct HyPortLibrary * portLibrary)
 #if defined(LINUX) || defined(FREEBSD)
   /* returns number of online(_SC_NPROCESSORS_ONLN) processors, number configured(_SC_NPROCESSORS_CONF) may  be more than online */
   return sysconf (_SC_NPROCESSORS_ONLN);
-#elif defined(MACOSX)
+#elif defined(DARWIN)
   /* derived from examples in the sysctl(3) man page from FreeBSD */
   int mib[2], ncpu;
   size_t len;
@@ -771,7 +771,7 @@ U_64 VMCALL
 hysysinfo_get_physical_memory (struct HyPortLibrary * portLibrary)
 {
 
-#if defined(FREEBSD) || defined(MACOSX)
+#if defined(FREEBSD) || defined(DARWIN)
   /* derived from examples in the sysctl(3) man page from FreeBSD */
   int mib[2], mem;
   size_t len;

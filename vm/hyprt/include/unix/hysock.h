@@ -70,7 +70,7 @@
  *   the getaddrinfo(3) family of functions, instead.
  */
 /* NO_R: gethostby*_r calls do not exist and the normal gethostby* calls are not threadsafe */
-#define NO_R (defined(MACOSX))
+#define NO_R (defined(DARWIN))
 /* OTHER_R: everything else */
 #define OTHER_R ((!HOSTENT_DATA_R)&&(!GLIBC_R)&&(!ORIGINAL_R)&&(!NO_R))
 /* Converts (seconds, microseconds) to milliseconds */
@@ -127,7 +127,7 @@ typedef struct ip_mreq OSIPMREQ;
 #define OS_MCAST_LOOP IP_MULTICAST_LOOP
 #if defined(IPv6_FUNCTION_SUPPORT)
 #define OS_MCAST_INTERFACE_2 IPV6_MULTICAST_IF
-#if defined(FREEBSD) || defined(MACOSX) || defined(ZOS)
+#if defined(FREEBSD) || defined(DARWIN) || defined(ZOS)
 #define OS_IPV6_ADD_MEMBERSHIP IPV6_JOIN_GROUP
 #define OS_IPV6_DROP_MEMBERSHIP IPV6_LEAVE_GROUP
 #else

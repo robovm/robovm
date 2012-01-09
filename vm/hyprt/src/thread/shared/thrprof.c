@@ -159,7 +159,7 @@ hythread_get_stack_usage (hythread_t thread)
 void
 paint_stack (hythread_t thread)
 {
-#if defined(LINUX) || defined(MACOSX)
+#if defined(LINUX) || defined(DARWIN)
   /* z/OS and Linux don't let us set the stack size, so we can't paint the stack safely */
 #elif defined(WIN32)
   MEMORY_BASIC_INFORMATION memInfo;

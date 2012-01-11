@@ -135,7 +135,7 @@ elseif (ARCH STREQUAL "arm")
   add_definitions(-DNVM_ARM)
 endif()
 
-set(INSTALL_DIR ${CMAKE_SOURCE_DIR}/../target/${OS}/${ARCH}/${CMAKE_BUILD_TYPE})
+set(INSTALL_DIR ${CMAKE_SOURCE_DIR}/binaries/${OS}/${ARCH}/${CMAKE_BUILD_TYPE})
 
 if(LINUX)
   install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.so.1.0.3 DESTINATION ${INSTALL_DIR} RENAME libgc.so.1)

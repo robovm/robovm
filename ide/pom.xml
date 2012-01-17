@@ -28,6 +28,11 @@
         <artifactId>nullvm-compiler</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.nullvm</groupId>
+        <artifactId>nullvm-rt</artifactId>
+        <version>${project.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -50,6 +55,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.4</version>
         <configuration>
           <outputDirectory>lib</outputDirectory>
           <stripVersion>true</stripVersion>
@@ -57,6 +63,10 @@
             <artifactItem>
               <groupId>org.nullvm</groupId>
               <artifactId>nullvm-compiler</artifactId>
+            </artifactItem>
+            <artifactItem>
+              <groupId>org.nullvm</groupId>
+              <artifactId>nullvm-rt</artifactId>
             </artifactItem>
           </artifactItems>
         </configuration>
@@ -67,6 +77,26 @@
             <goals>
               <goal>copy</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.7</version>
+        <executions>
+          <execution>
+            <phase>initialize</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <zip destfile="lib/binaries.zip">
+                  <fileset dir="../vm/binaries/"/>
+                </zip>
+              </tasks>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -87,6 +117,19 @@
                     <versionRange>[2.0,)</versionRange>
                     <goals>
                       <goal>copy</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <versionRange>[1.0,)</versionRange>
+                    <goals>
+                      <goal>run</goal>
                     </goals>
                   </pluginExecutionFilter>
                   <action>

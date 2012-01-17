@@ -28,7 +28,7 @@ import org.nullvm.compiler.clazz.Path;
  */
 public class Config {
     private File installDir = null;
-    private String target = null;
+    private String executable = null;
     private File nullVMHomeDir = null;
     private File cacheDir = new File(System.getProperty("user.home"), ".nullvm/cache");
     private File llvmCacheDir = null;
@@ -55,8 +55,8 @@ public class Config {
     private File tmpDir;
     private Clazzes clazzes;
     private Logger logger = Logger.NULL_LOGGER;
-    private App.Builder appBuilder = new ConsoleApp.Builder();
-    private App app = null;
+    private AbstractTarget.Builder targetBuilder = new ConsoleTarget.Builder();
+    private Target target = null;
 
     Config() {
     }
@@ -65,8 +65,8 @@ public class Config {
         return installDir;
     }
 
-    public String getTarget() {
-        return target;
+    public String getExecutable() {
+        return executable;
     }
 
     public File getNullVMHomeDir() {
@@ -149,8 +149,8 @@ public class Config {
         return logger;
     }
     
-    public App getApp() {
-        return app;
+    public Target getTarget() {
+        return target;
     }
     
     private static File makeFileRelativeTo(File dir, File f) {
@@ -282,7 +282,7 @@ public class Config {
             throw new IllegalArgumentException("No classpath specified");
         }
         
-        if (!skipLinking && target == null && mainClass == null) {
+        if (!skipLinking && executable == null && mainClass == null) {
             throw new IllegalArgumentException("No target and no main class specified");
         }
 
@@ -299,7 +299,7 @@ public class Config {
         }
         
         File homeLib = new File(nullVMHomeDir, "lib");
-        osArchDepLibDir = new File(new File(homeLib, os.toString()), arch.toString());
+        osArchDepLibDir = new File(new File(new File(homeLib, os.toString()), arch.toString()), debug ? "Debug" : "Release");
         
         cacheDir.mkdirs();
         llvmCacheDir = new File(cacheDir, "llvm");
@@ -307,8 +307,8 @@ public class Config {
         objectCacheDir = new File(cacheDir, "object");
         objectCacheDir.mkdirs();
 
-        if (target == null) {
-            target = mainClass;
+        if (executable == null) {
+            executable = mainClass;
         }
         
         if (!skipRuntimeLib) {
@@ -328,12 +328,12 @@ public class Config {
         
         if (!skipInstall) {
             if (installDir == null) {
-                installDir = new File(".", target);
+                installDir = new File(".", executable);
             }
             installDir.mkdirs();
         }
 
-        app = appBuilder.build(this);
+        target = targetBuilder.build(this);
         
         return this;
     }
@@ -364,8 +364,8 @@ public class Config {
             return this;
         }
 
-        public Builder target(String target) {
-            config.target = target;
+        public Builder executable(String executable) {
+            config.executable = executable;
             return this;
         }
 
@@ -449,13 +449,13 @@ public class Config {
             return this;
         }
 
-        public Builder appBuilder(App.Builder appBuilder) {
-            config.appBuilder = appBuilder;
+        public Builder targetBuilder(AbstractTarget.Builder targetBuilder) {
+            config.targetBuilder = targetBuilder;
             return this;
         }
         
         public Config build() throws IOException {
-            config.appBuilder.setup(this);
+            config.targetBuilder.setup(this);
             return config.build();
         }
     }

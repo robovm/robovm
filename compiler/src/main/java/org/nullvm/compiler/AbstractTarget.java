@@ -8,8 +8,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -27,10 +29,10 @@ import org.nullvm.compiler.clazz.Path;
  * @author niklas
  *
  */
-public class ConsoleApp implements App {
-    private Config config;
+public abstract class AbstractTarget implements Target {
+    protected Config config;
 
-    ConsoleApp() {
+    protected AbstractTarget() {
     }
     
     public String getInstallRelativeArchivePath(Path path) {
@@ -45,15 +47,62 @@ public class ConsoleApp implements App {
         return true;
     }
     
-    public void install() throws IOException {
-        config.getLogger().debug("Installing executable to %s", config.getInstallDir());
-        install(config.getInstallDir());
+    public void build(List<File> objectFiles, List<File> libFiles) throws IOException {
+        File outFile = new File(config.getTmpDir(), config.getExecutable());
+        
+        config.getLogger().debug("Building executable %s", outFile);
+
+        String ccPath = (config.getOs().getFamily() == OS.Family.darwin) ? "clang" : "gcc";
+        if (config.getCcBinPath() != null) {
+            ccPath = config.getCcBinPath().getAbsolutePath();
+        }
+        
+        LinkedList<String> ccArgs = new LinkedList<String>();
+        LinkedList<String> libArgs = new LinkedList<String>();
+        
+        libArgs.addAll(Arrays.asList("-lnullvm-bc", "-lm", "-lnullvm-core", "-lnullvm-hyprt"));
+        
+        ccArgs.add("-L");
+        ccArgs.add(config.getOsArchDepLibDir().getAbsolutePath());
+        if (config.getOs().getFamily() == OS.Family.linux) {
+            libArgs.add("-l:libgc.so.1");
+            ccArgs.add("-Xlinker");
+            ccArgs.add("-rpath=$ORIGIN");
+        } else if (config.getOs().getFamily() == OS.Family.darwin) {
+            ccArgs.add("-Xlinker");
+            ccArgs.add("-no_implicit_dylibs");
+            libArgs.add("-lgc");
+            File unexportedSymbolsFile = new File(config.getTmpDir(), "unexported_symbols");
+            FileUtils.writeStringToFile(unexportedSymbolsFile, "*\n", "ASCII");
+            ccArgs.add("-unexported_symbols_list");
+            ccArgs.add(unexportedSymbolsFile.getAbsolutePath());
+            
+            // Needed on Mac OS X >= 10.6 to prevent linker from compacting unwind info which breaks _Unwind_FindEnclosingFunction
+            ccArgs.add("-Xlinker");
+            ccArgs.add("-no_compact_unwind");
+            
+            ccArgs.add("-arch");            
+            ccArgs.add(config.getArch().toString());            
+        }
+     
+        doBuild(ccPath, outFile, ccArgs, objectFiles, libFiles, libArgs);
     }
     
-    protected void install(File installDir) throws IOException {
+    protected void doBuild(String ccPath, File outFile, List<String> ccArgs, List<File> objectFiles, 
+            List<File> libFiles, List<String> libArgs) throws IOException {
+        
+        CompilerUtil.exec(config, ccPath, "-o", outFile, "-g", ccArgs, objectFiles, libFiles, libArgs);        
+    }
+    
+    public void install() throws IOException {
+        config.getLogger().debug("Installing executable to %s", config.getInstallDir());
+        doInstall(config.getInstallDir());
+    }
+    
+    protected void doInstall(File installDir) throws IOException {
         if (!config.getTmpDir().equals(installDir)) {
-            FileUtils.copyFileToDirectory(new File(config.getTmpDir(), config.getTarget()), installDir);
-            new File(installDir, config.getTarget()).setExecutable(true, false);
+            FileUtils.copyFileToDirectory(new File(config.getTmpDir(), config.getExecutable()), installDir);
+            new File(installDir, config.getExecutable()).setExecutable(true, false);
         }
         for (File f : config.getOsArchDepLibDir().listFiles()) {
             if (f.getName().matches(".*\\.(so|dylib)(\\.1)?")) {
@@ -68,14 +117,14 @@ public class ConsoleApp implements App {
             throw new IllegalStateException("Cannot skip linking if target should be run");
         }
         
-        return runTarget(runArgs);
+        return doLaunch(runArgs);
     }
 
     public Map<String, String> modifyEnv(Map<String, String> defaults) {
         Map<String, String> env = new HashMap<String, String>();
         env.putAll(defaults);
         String ldLibraryPathVar = "LD_LIBRARY_PATH";
-        if (config.getOs() == OS.darwin) {
+        if (config.getOs().getFamily() == OS.Family.darwin) {
             ldLibraryPathVar = "DY" + ldLibraryPathVar;
         }
         String ldLibraryPath = env.get(ldLibraryPathVar);
@@ -90,7 +139,7 @@ public class ConsoleApp implements App {
             dir = config.getInstallDir();
         }
         return CompilerUtil.createCommandLine(
-                new File(dir, config.getTarget()).getAbsolutePath(), 
+                new File(dir, config.getExecutable()).getAbsolutePath(), 
                 runArgs.toArray(new Object[runArgs.size()]));
     }
     
@@ -99,7 +148,7 @@ public class ConsoleApp implements App {
     }
     
     @SuppressWarnings({ "unchecked" })
-    private int runTarget(List<String> runArgs) throws IOException {
+    protected int doLaunch(List<String> runArgs) throws IOException {
         Map<String, String> env = modifyEnv(EnvironmentUtils.getProcEnvironment());
         try {
             return CompilerUtil.execWithEnv(config, new File("."), env, doGenerateCommandLine(runArgs));
@@ -118,7 +167,7 @@ public class ConsoleApp implements App {
         }
     }
     
-    protected App build(Config config) {
+    protected Target build(Config config) {
         return this;
     }
     
@@ -170,18 +219,5 @@ public class ConsoleApp implements App {
                 archive.close();
             } catch (Throwable t) {}
         }
-    }
-    
-    public static class Builder implements App.Builder {
-        private ConsoleApp app = new ConsoleApp();
-
-        public void setup(Config.Builder configBuilder) {
-        }
-        
-        public App build(Config config) {
-            app.config = config;
-            return app.build(config);
-        }
-        
     }
 }

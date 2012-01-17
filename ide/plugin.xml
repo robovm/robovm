@@ -46,11 +46,21 @@
   </extension>
   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
     <launchConfigurationType
-      id="org.nullvm.ide.NullVMLaunchConfigurationType"
-      delegate="org.nullvm.ide.internal.NullVMLaunchConfigurationDelegate"
-      delegateName="NullVM Launcher"
+      id="org.nullvm.ide.ConsoleLaunchConfigurationType"
+      delegate="org.nullvm.ide.internal.ConsoleLaunchConfigurationDelegate"
+      delegateName="NullVM Console Launcher"
       modes="debug, run"
-      name="NullVM Application"
+      name="NullVM Console Application"
+      public="true"
+      sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+      sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
+    </launchConfigurationType>
+    <launchConfigurationType
+      id="org.nullvm.ide.IOSSimLaunchConfigurationType"
+      delegate="org.nullvm.ide.internal.IOSSimLaunchConfigurationDelegate"
+      delegateName="NullVM iOS-sim Launcher"
+      modes="debug, run"
+      name="NullVM iOS-sim Application"
       public="true"
       sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
       sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
@@ -59,9 +69,14 @@
   <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
     <launchConfigurationTabGroup
         class="org.nullvm.ide.internal.NullVMLaunchConfigurationTabGroup"
-        description="NullVM Application"
-        id="org.nullvm.ide.NullVMLaunchConfigurationTabGroup"
-        type="org.nullvm.ide.NullVMLaunchConfigurationType" />
+        description="NullVM Console Application"
+        id="org.nullvm.ide.ConsoleLaunchConfigurationTabGroup"
+        type="org.nullvm.ide.ConsoleLaunchConfigurationType" />
+    <launchConfigurationTabGroup
+        class="org.nullvm.ide.internal.NullVMLaunchConfigurationTabGroup"
+        description="NullVM iOS-sim Application"
+        id="org.nullvm.ide.IOSSimLaunchConfigurationTabGroup"
+        type="org.nullvm.ide.IOSSimLaunchConfigurationType" />
   </extension>
   <extension point="org.eclipse.debug.ui.launchShortcuts">
     <shortcut
@@ -89,8 +104,32 @@
           </with>
         </enablement>
       </contextualLaunch>
-      <configurationType id="org.eclipse.jdt.launching.localJavaApplication">
-      </configurationType>
+    </shortcut>
+    <shortcut
+        class="org.nullvm.ide.internal.IOSSimLaunchShortcut"
+        id="org.nullvm.ide.IOSSimLaunchShortcut"
+        label="NullVM iOS-sim Application"
+        modes="run, debug">
+      <contextualLaunch>
+        <enablement>
+          <with variable="selection">
+            <count value="1"/>
+            <iterate>
+              <and>
+                <adapt type="org.eclipse.jdt.core.IJavaElement">
+                  <test property="org.eclipse.jdt.core.isInJavaProject"/>
+                </adapt>
+                <or>
+                  <test property="org.eclipse.jdt.launching.hasMain"/>
+                  <test property="org.eclipse.jdt.launching.isContainer"/>
+                  <test property="org.eclipse.jdt.launching.isPackageFragment"/>
+                  <test property="org.eclipse.jdt.launching.isPackageFragmentRoot"/>
+                </or>
+              </and>
+            </iterate>
+          </with>
+        </enablement>
+      </contextualLaunch>
     </shortcut>
   </extension>
   <extension point="org.eclipse.core.runtime.preferences">

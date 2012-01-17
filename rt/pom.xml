@@ -16,53 +16,22 @@
     <dependency>
       <groupId>com.ibm.icu</groupId>
       <artifactId>icu4j</artifactId>
-      <version>4.2.1.1</version>
-      <scope>system</scope>
-      <systemPath>${basedir}/lib/icu4j-4_2_1_1.jar</systemPath>
+      <version>4.8.1.1</version>
     </dependency>
-<!--     <dependency>
-      <groupId>com.ibm.icu</groupId>
-      <artifactId>icu4j-charsets</artifactId>
-      <version>4.2.1</version>
-      <scope>system</scope>
-      <systemPath>${basedir}/lib/icu4j-charsets-4_2_1.jar</systemPath>
-    </dependency>  -->
   </dependencies>
 
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>1.5</version>
         <executions>
           <execution>
             <phase>package</phase>
             <goals>
-              <goal>run</goal>
+              <goal>shade</goal>
             </goals>
-            <configuration>
-              <tasks>
-                <jar destfile="target/${project.build.finalName}-all.jar">
-                  <fileset dir="target/classes"/>
-                  <zipfileset includes="**/*" src="lib/icu4j-4_2_1_1.jar" excludes="META-INF/MANIFEST.MF, license.html, unicode-license.txt"/>
-<!--                   <zipfileset includes="**/*" src="lib/icu4j-charsets-4_2_1.jar" excludes="META-INF/MANIFEST.MF, license.html, unicode-license.txt"/>
-                  <zipfileset includes="**/*" src="lib/icudata.jar" excludes="META-INF/MANIFEST.MF"/>  -->
-                </jar>
-<!--                <exec dir="src/main/native" executable="make" searchpath="true"/>
-                <java jar="../nullvmc/target/nullvm-compiler-0.1-SNAPSHOT.one-jar.jar" fork="true">
-                  <arg line="-verbose -o target/nullvm -work target/nullvm.work target/${project.build.finalName}-all.jar"/>
-                </java>
-                <pathconvert pathsep=" " property="native.objs">
-                  <fileset dir="target/native">
-                    <include name="**/*.o"/>
-                  </fileset>
-                  <map from="${basedir}/" to=""/>
-                </pathconvert>
-                <echo message="${native.objs}"/>
-                <exec dir="." executable="ar" searchpath="true">
-                  <arg line="rs target/nullvm/libnullvm-rt-0.1-SNAPSHOT-all.jar.a ${native.objs}"/>
-                </exec> -->
-              </tasks>
-            </configuration>
           </execution>
         </executions>
       </plugin>

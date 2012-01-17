@@ -32,9 +32,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
         <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
+          <source>1.6</source>
+          <target>1.6</target>
           <debug>true</debug>
           <optimize>true</optimize>
           <showDeprecations>true</showDeprecations>
@@ -43,6 +44,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.11</version>
         <configuration>
           <includes>
             <include>**/*Test.java</include>
@@ -52,55 +54,6 @@
     </plugins>
   </build>
   
-  <reporting>
-    <plugins>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <inherited>false</inherited>
-        <configuration>
-          <aggregate>true</aggregate>
-          <breakiterator>true</breakiterator>
-          <charset>UTF-8</charset>
-          <docencoding>UTF-8</docencoding>
-          <windowtitle>${project.name} ${project.version} API Documentation</windowtitle>
-          <doctitle>${project.name} ${project.version} API Documentation</doctitle>
-          <encoding>UTF-8</encoding>
-          <locale>en_US</locale>
-          <additionalparam>
-            -link http://java.sun.com/j2se/1.5.0/docs/api/
-          </additionalparam>
-          <links>
-            <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
-          </links>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <configuration>
-          <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jxr-plugin</artifactId>
-        <inherited>false</inherited>
-        <configuration>
-          <aggregate>true</aggregate>
-          <inputEncoding>UTF-8</inputEncoding>
-          <outputEncoding>UTF-8</outputEncoding>
-          <windowTitle>${project.name} ${project.version} Cross Reference</windowTitle>
-          <docTitle>${project.name} ${project.version} Cross Reference</docTitle>
-        </configuration>
-      </plugin>
-
-    </plugins>
-  </reporting>
-
   <repositories>
   </repositories>
 

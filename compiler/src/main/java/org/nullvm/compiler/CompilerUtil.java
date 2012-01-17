@@ -51,7 +51,7 @@ public class CompilerUtil {
     }
     
     public static void assemble(Config config, File inFile, File outFile) throws IOException {
-        String ccPath = config.getOs() == OS.darwin ? "clang" : "gcc";
+        String ccPath = config.getOs().getFamily() == OS.Family.darwin ? "clang" : "gcc";
         if (config.getCcBinPath() != null) {
             ccPath = config.getCcBinPath().getAbsolutePath();
         }
@@ -60,7 +60,7 @@ public class CompilerUtil {
         if (config.isDebug()) {
             opts.add("-g");
         }
-        if (config.getOs() == OS.darwin) {
+        if (config.getOs().getFamily() == OS.Family.darwin) {
             opts.add("-arch");            
             opts.add(config.getArch().toString());            
         }
@@ -109,7 +109,7 @@ public class CompilerUtil {
 
     @SuppressWarnings("unchecked")
     public static CommandLine createCommandLine(String cmd, Object... args) {
-        CommandLine commandLine = CommandLine.parse(cmd);
+        CommandLine commandLine = new CommandLine(cmd);
         for (Object a : args) {
             if (a instanceof Collection) {
                 for (Object o : (Collection<Object>) a) {

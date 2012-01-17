@@ -5,10 +5,18 @@
  */
 package org.nullvm.ide;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.Platform;
@@ -52,9 +60,8 @@ public class NullVMPlugin extends AbstractUIPlugin {
     public static final String PREFERENCE_BINUTILS_BIN_DIR = PLUGIN_ID + ".prefs.binutilsBinDir";
     public static final String PREFERENCE_INCREMENTAL_BUILD_ARCH = PLUGIN_ID + ".prefs.incrementalBuildArch";
     public static final String PREFERENCE_INCREMENTAL_BUILD_OS = PLUGIN_ID + ".prefs.incrementalBuildOs";
-    public static final String LAUNCH_APP_CLASS = PLUGIN_ID + ".launch.appClass";
     public static final String LAUNCH_ARCH = PLUGIN_ID + ".launch.arch";
-    public static final String LAUNCH_OS = PLUGIN_ID + ".launch.arch";
+    public static final String LAUNCH_OS = PLUGIN_ID + ".launch.os";
     public static final String ARCH_AUTO = "auto";
     public static final String OS_AUTO = "auto";
 
@@ -87,6 +94,7 @@ public class NullVMPlugin extends AbstractUIPlugin {
 
         // Set up the console
         console = new MessageConsole("NullVM Console", null);
+        console.setWaterMarks(40000, 80000);
         ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[] {console});
         Display display = getDisplay();
         debugStream = console.newMessageStream();
@@ -100,8 +108,48 @@ public class NullVMPlugin extends AbstractUIPlugin {
                 errorStream.setColor(errorColor);
             }
         });
+        
+        // Extract bundled nullvm
+        String version = getBundle().getHeaders().get("Bundle-Version");
+        File versionFile = new File(getMetadataDir(), "version");
+        if (!versionFile.exists() || !FileUtils.readFileToString(versionFile, "UTF8").equals(version)) {
+            File lib = new File(getBundledNullVMDir(), "lib");
+            try {
+                FileUtils.deleteDirectory(lib);
+            } catch (IOException ignored) {
+            }
+            lib.mkdirs();
+            FileUtils.copyURLToFile(getBundle().getResource("/lib/nullvm-rt.jar"), new File(lib, "nullvm-rt.jar"));
+            unzip(getBundle().getResource("/lib/binaries.zip"), lib);
+            FileUtils.writeStringToFile(versionFile, version, "UTF8");
+        }
     }
 
+    private static void unzip(URL zipResource, File targetDir) throws IOException {
+        ZipInputStream in = null;
+        try {
+            in = new ZipInputStream(zipResource.openStream());
+            ZipEntry entry = null;
+            while ((entry = in.getNextEntry()) != null) {
+                File f = new File(targetDir, entry.getName());
+                if (entry.isDirectory()) {
+                    f.mkdirs();
+                } else {
+                    f.getParentFile().mkdirs();
+                    BufferedOutputStream out = null;
+                    try {
+                        out = new BufferedOutputStream(new FileOutputStream(f));
+                        IOUtils.copy(in, out);
+                    } finally {
+                        IOUtils.closeQuietly(out);
+                    }
+                }
+            }
+        } finally {
+            IOUtils.closeQuietly(in);
+        }
+    }
+    
     public void stop(BundleContext context) throws Exception {
         super.stop(context);
         
@@ -146,7 +194,7 @@ public class NullVMPlugin extends AbstractUIPlugin {
     }
 
     public static File getBundledNullVMDir() {
-        throw new UnsupportedOperationException();
+        return new File(getMetadataDir(), "nullvm-home");
     }
     
     public static boolean useBundledNullVM() {

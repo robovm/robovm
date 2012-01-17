@@ -8,7 +8,7 @@ package org.nullvm.compiler;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -137,20 +137,16 @@ public class AppCompiler {
     }
         
     private void buildExecutable(List<Path> paths, List<File> libFiles) throws IOException {
-        File outFile = new File(config.getTmpDir(), config.getTarget());
-        
-        config.getLogger().debug("Building executable %s", outFile);
-        
         Module module = new Module();
         
         List<Value> bootClasspathValues = new ArrayList<Value>();
         List<Value> classpathValues = new ArrayList<Value>();
         for (Path path : paths) {
             String entryName = null;
-            if (config.isSkipInstall() && config.getApp().canLaunchInPlace()) {
+            if (config.isSkipInstall() && config.getTarget().canLaunchInPlace()) {
                 entryName = path.getFile().getAbsolutePath();
             } else {
-                entryName = config.getApp().getInstallRelativeArchivePath(path);
+                entryName = config.getTarget().getInstallRelativeArchivePath(path);
             }
             byte[] modUtf8 = ClassCompiler.stringToModifiedUtf8(entryName);
             Global var = new Global(ClassCompiler.getStringVarName(modUtf8), Linkage.linker_private_weak, 
@@ -221,40 +217,7 @@ public class AppCompiler {
         File configS = new File(config.getTmpDir(), "config.s");
         CompilerUtil.llc(config, configLl, configS);
         
-        String ccPath = config.getOs() == OS.darwin ? "clang" : "gcc";
-        if (config.getCcBinPath() != null) {
-            ccPath = config.getCcBinPath().getAbsolutePath();
-        }
-        
-        List<String> gccArgs = new ArrayList<String>();
-        List<String> libArgs = new ArrayList<String>();
-        
-        libArgs.addAll(Arrays.asList("-lnullvm-bc", "-lm", "-lnullvm-core", "-lnullvm-hyprt"));
-        
-        gccArgs.add("-L");
-        gccArgs.add(config.getOsArchDepLibDir().getAbsolutePath());
-//        gccArgs.add("-Xlinker");
-//        gccArgs.add("--gc-sections");
-        if (config.getOs() == OS.linux) {
-            libArgs.add("-l:libgc.so.1");
-            gccArgs.add("-Xlinker");
-            gccArgs.add("-rpath=$ORIGIN");
-        } else if (config.getOs() == OS.darwin) {
-            libArgs.add("-lgc");
-            File unexportedSymbolsFile = new File(config.getTmpDir(), "unexported_symbols");
-            FileUtils.writeStringToFile(unexportedSymbolsFile, "*\n", "ASCII");
-            gccArgs.add("-unexported_symbols_list");
-            gccArgs.add(unexportedSymbolsFile.getAbsolutePath());
-            
-            // Needed on Mac OS X >= 10.6 to prevent linker from compacting unwind info which breaks _Unwind_FindEnclosingFunction
-            gccArgs.add("-Xlinker");
-            gccArgs.add("-no_compact_unwind");
-            
-            gccArgs.add("-arch");            
-            gccArgs.add(config.getArch().toString());            
-        }
-        
-        CompilerUtil.exec(config, ccPath, "-o", outFile, "-g", gccArgs, configS, libFiles, libArgs);
+        config.getTarget().build(Collections.singletonList(configS), libFiles);
     }
     
     public void compile() throws IOException {
@@ -284,7 +247,7 @@ public class AppCompiler {
                 } else if ("-jar".equals(args[i])) {
                     builder.mainJar(new File(args[++i]));
                 } else if ("-o".equals(args[i])) {
-                    builder.target(args[++i]);
+                    builder.executable(args[++i]);
                 } else if ("-d".equals(args[i])) {
                     builder.installDir(new File(args[++i]));
                 } else if ("-cache".equals(args[i])) {
@@ -381,10 +344,10 @@ public class AppCompiler {
         try {
             compiler.compile();
             if (run) {
-                compiler.config.getApp().launch(runArgs);
+                compiler.config.getTarget().launch(runArgs);
             } else {
                 compiler.compile();
-                compiler.config.getApp().install();
+                compiler.config.getTarget().install();
             }
         } catch (Throwable t) {
             String message = t.getMessage();

@@ -23,9 +23,15 @@ import org.apache.commons.exec.environment.EnvironmentUtils;
  *
  */
 public enum OS {
-    linux, darwin;
+    linux, macosx, ios;
+    
+    public enum Family {linux, darwin}
     
     private static Map<File, String> llvmHostStrings = new HashMap<File, String>();
+    
+    public Family getFamily() {
+        return this == linux ? Family.linux : Family.darwin;
+    }
     
     public static OS getDefaultOS(File llvmHomeDir) {
         String host = getHost(llvmHomeDir);
@@ -33,7 +39,7 @@ public enum OS {
             return OS.linux;
         }
         if (host.contains("darwin")) {
-            return OS.darwin;
+            return OS.macosx;
         }
         throw new IllegalArgumentException("Unrecognized OS in Host string: " + host);
     }
@@ -52,7 +58,7 @@ public enum OS {
         ExecuteStreamHandler streamHandler = new PumpStreamHandler(baos);
         Executor executor = new DefaultExecutor();
         executor.setStreamHandler(streamHandler);
-        CommandLine command = CommandLine.parse(llcPath).addArgument("--version");
+        CommandLine command = new CommandLine(llcPath).addArgument("--version");
         try {
             Map env = EnvironmentUtils.getProcEnvironment();
             executor.setExitValues(new int[] {0, 1});

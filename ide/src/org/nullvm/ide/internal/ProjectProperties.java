@@ -137,7 +137,8 @@ public class ProjectProperties {
         osCombo.setItems(new String[] {
                 "Use workspace default", 
                 "Auto (build for current host)",
-                OS.darwin.toString(),
+                OS.macosx.toString(),
+                OS.ios.toString(),
                 OS.linux.toString()
         });
         osCombo.select(0);

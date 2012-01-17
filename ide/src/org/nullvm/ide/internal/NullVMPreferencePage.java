@@ -57,7 +57,8 @@ public class NullVMPreferencePage extends FieldEditorPreferencePage implements
         ComboFieldEditor osFieldEditor = new ComboFieldEditor(PREFERENCE_INCREMENTAL_BUILD_OS, 
                 "Default OS:", new String[][] {
                 {"Auto (build for current host)", OS_AUTO},
-                {OS.darwin.toString(), OS.darwin.toString()},
+                {OS.macosx.toString(), OS.macosx.toString()},
+                {OS.ios.toString(), OS.ios.toString()},
                 {OS.linux.toString(), OS.linux.toString()}
         }, parent);
         addField(osFieldEditor);

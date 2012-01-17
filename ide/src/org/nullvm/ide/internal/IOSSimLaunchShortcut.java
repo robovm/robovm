@@ -9,16 +9,16 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
  * @author niklas
  *
  */
-public class ConsoleLaunchShortcut extends AbstractLaunchShortcut {
+public class IOSSimLaunchShortcut extends AbstractLaunchShortcut {
 
     @Override
     protected String getConfigurationTypeId() {
-        return ConsoleLaunchConfigurationDelegate.TYPE_ID;
+        return IOSSimLaunchConfigurationDelegate.TYPE_ID;
     }
 
     @Override
     protected String getConfigurationTypeName() {
-        return ConsoleLaunchConfigurationDelegate.TYPE_NAME;
+        return IOSSimLaunchConfigurationDelegate.TYPE_NAME;
     }
 
     @Override

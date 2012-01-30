@@ -69,11 +69,11 @@ public class Argument {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(value);
         for (ParameterAttribute attribute : attributes) {
-            sb.append(' ');
             sb.append(attribute);
+            sb.append(' ');
         }
+        sb.append(value);
         return sb.toString();
     }
 }

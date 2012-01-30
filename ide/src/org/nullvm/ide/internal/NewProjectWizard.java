@@ -5,6 +5,9 @@
  */
 package org.nullvm.ide.internal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -60,6 +63,20 @@ public class NewProjectWizard extends Wizard implements INewWizard {
             IJavaProject javaProject = page2.getJavaProject();
             IProject project = javaProject.getProject();
             page1.storePreferences(project);
+            IClasspathEntry[] oldClasspath = javaProject.getRawClasspath();
+            List<IClasspathEntry> newClasspath = new ArrayList<IClasspathEntry>();
+            for (IClasspathEntry entry : oldClasspath) {
+                if (entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER
+                        && entry.getPath().toString().equals("org.eclipse.jdt.launching.JRE_CONTAINER")) {
+                    
+                    newClasspath.add(JavaCore.newContainerEntry(new Path(NullVMClasspathContainer.ID)));
+                } else {
+                    newClasspath.add(entry);
+                }
+            }
+            javaProject.setRawClasspath(newClasspath.toArray(
+                    new IClasspathEntry[newClasspath.size()]), 
+                    new NullProgressMonitor());
             NullVMNature.configureNatures(project, new NullProgressMonitor());
         } catch (Exception e) {
             return false;

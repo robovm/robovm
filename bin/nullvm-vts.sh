@@ -6,7 +6,7 @@ BASE=$(cd $(dirname $0)/..; pwd -P)
 if [ -f "$BASE/bin/nullvm-vts.env" ]; then
   . $BASE/bin/nullvm-vts.env
 fi
-[ "x$COMPILER_JAR" == 'x' ] && COMPILER_JAR=$(ls $BASE/compiler/target/nullvm-compiler-*jar-with-dependencies.jar 2> /dev/null)
+[ "x$COMPILER_JAR" == 'x' ] && COMPILER_JAR=$(ls $BASE/compiler/target/nullvm-compiler-*.jar 2> /dev/null)
 if [ "x$COMPILER_JAR" == 'x' ]; then
   echo "nullvm-compiler JAR file not found in path $BASE/compiler/target/"
   exit 1
@@ -17,6 +17,9 @@ fi
 export PATH
 
 mkdir -p $HOME/.nullvm/vts/
+mkdir -p $HOME/.nullvm/vts/nullvm-home/lib/
+rsync -a $BASE/vm/binaries/ $HOME/.nullvm/vts/nullvm-home/lib/
+cp -p $BASE/rt/target/nullvm-rt-*.jar $HOME/.nullvm/vts/nullvm-home/lib/nullvm-rt.jar
 
 n=0
 while [ ${1:0:1} = '-' ]; do
@@ -52,15 +55,18 @@ done
 #echo "MAINCLASS=$MAINCLASS"
 
 if [ ! -x $TARGET/vts ]; then
-  java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -Xss1024k -jar $COMPILER_JAR -d $TARGET -arch $ARCH -o vts -debug -verbose -cp $CP
+  java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -Xss1024k -jar $COMPILER_JAR -home $HOME/.nullvm/vts/nullvm-home -d $TARGET -arch $ARCH -o vts -debug -verbose -cp $CP
 fi
 
 LIBPATH=$TARGET
 if [ "x$LD_LIBRARY_PATH" != 'x' ]; then
   LIBPATH=$LIBPATH:$LD_LIBRARY_PATH
 fi
+if [ "x$DYLD_LIBRARY_PATH" != 'x' ]; then
+  LIBPATH=$LIBPATH:$DYLD_LIBRARY_PATH
+fi
 
-LD_LIBRARY_PATH=$LIBPATH $TARGET/vts -nvm:MainClass=$MAINCLASS $RUNARGS
+LD_LIBRARY_PATH=$LIBPATH DYLD_LIBRARY_PATH=$LIBPATH $TARGET/vts -nvm:MainClass=$MAINCLASS $RUNARGS
 CODE=$?
 exit $CODE
 

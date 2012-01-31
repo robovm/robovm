@@ -12,11 +12,11 @@ DynamicLib* mainNativeLibs = NULL;
 static hythread_monitor_t nativeLibsLock;
 static jvalue emptyJValueArgs[1];
 
-static inline obtainNativeLibsLock() {
+static inline void obtainNativeLibsLock() {
     hythread_monitor_enter(nativeLibsLock);
 }
 
-static inline releaseNativeLibsLock() {
+static inline void releaseNativeLibsLock() {
     hythread_monitor_exit(nativeLibsLock);
 }
 
@@ -263,7 +263,7 @@ CallInfo* initCallInfo(Env* env, Object* obj, Method* method, jboolean virtual, 
 
     char* desc = method->desc;
     char* c;
-    while (c = nvmGetNextParameterType(&desc)) {
+    while ((c = nvmGetNextParameterType(&desc))) {
         switch (c[0]) {
         case 'Z':
         case 'B':
@@ -300,7 +300,7 @@ CallInfo* initCallInfo(Env* env, Object* obj, Method* method, jboolean virtual, 
 
     desc = method->desc;
     jint i = 0;
-    while (c = nvmGetNextParameterType(&desc)) {
+    while ((c = nvmGetNextParameterType(&desc))) {
         switch (c[0]) {
         case 'Z':
             call0AddInt(callInfo, (jint) args[i++].z);
@@ -349,7 +349,7 @@ static jvalue* va_list2jargs(Env* env, Method* method, va_list args) {
     char* desc = method->desc;
     char* c;
     jint i = 0;
-    while (c = nvmGetNextParameterType(&desc)) {
+    while ((c = nvmGetNextParameterType(&desc))) {
         switch (c[0]) {
         case 'B':
             jvalueArgs[i++].b = (jbyte) va_arg(args, jint);

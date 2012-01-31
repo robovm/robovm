@@ -707,7 +707,7 @@ void* _nvmBcByValueGetStructHandle(Env* env, Object* object) {
     if (!object) {
         nvmThrowNullPointerException(env);
         nvmRaiseException(env, nvmExceptionOccurred(env));
-        return;
+        return NULL;
     }
     return *((void**) (((void*) object) + sizeof(Object)));
 }

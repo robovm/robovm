@@ -32,8 +32,8 @@ static Class* findType(Env* env, char* classDesc, ClassLoader* loader) {
             className[strlen(className)] = 0;
             nvmThrowNew(env, java_lang_TypeNotPresentException, nvmFromBinaryClassName(env, &className[1]));
         }
-        return NULL;
     }
+    return c;
 }
 
 static jboolean throwFormatError(Env* env, char* expectedType) {
@@ -582,11 +582,11 @@ static jboolean getAnnotationDefaultIterator(Env* env, jbyte type, void* attribu
     Object** result = (Object**) ((void**) data)[0];
     Method* method = (Method*) ((void**) data)[1];
     if (type == ANNOTATION_DEFAULT) {
-        Class* type = findType(env, nvmGetReturnType(method->desc), method->clazz->classLoader);
-        if (type) {
+        Class* c = findType(env, nvmGetReturnType(method->desc), method->clazz->classLoader);
+        if (c) {
             jvalue value = {0};
-            if (parseElementValue(env, &attributes, type, method->clazz->classLoader, &value)) {
-                *result = nvmWrapPrimitive(env, type, &value);
+            if (parseElementValue(env, &attributes, c, method->clazz->classLoader, &value)) {
+                *result = nvmWrapPrimitive(env, c, &value);
             }
         }
         return FALSE; // Stop iterating

@@ -125,11 +125,11 @@ static jboolean addLoadedClass(Env* env, Class* clazz) {
     return TRUE;
 }
 
-static inline obtainClassLock() {
+static inline void obtainClassLock() {
     hythread_monitor_enter(classLock);
 }
 
-static inline releaseClassLock() {
+static inline void releaseClassLock() {
     hythread_monitor_exit(classLock);
 }
 
@@ -183,7 +183,7 @@ static char* mangleClassName(Env* env, char* s) {
     // Determine the length of the mangled string
     for (i = 0; i < k; i++) {
         char c = s[i];
-        if (!(c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '/')) {
+        if (!((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '/')) {
             l += 2;
         }
     }
@@ -194,7 +194,7 @@ static char* mangleClassName(Env* env, char* s) {
     strcpy(result, "NullVM_");
     for (i = 0, j = strlen("NullVM_"); i < k; i++) {
         char c = s[i];
-        if (c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z') {
+        if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {
             result[j++] = c;
         } else if (c == '/') {
             result[j++] = '_';

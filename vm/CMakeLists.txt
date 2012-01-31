@@ -86,6 +86,7 @@ endif()
 
 include_directories(hyprt/include core/include ${ZLIB_H_PATH} ${CMAKE_BINARY_DIR}/gc/include)
 link_directories(${CMAKE_BINARY_DIR}/gc/lib)
+add_definitions(-Wall)
 if(LINUX)
   add_definitions(-D_GNU_SOURCE)
 endif()

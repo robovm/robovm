@@ -146,7 +146,7 @@ jboolean nvmInitStrings(Env* env) {
 }
 
 Object* nvmNewStringAscii(Env* env, char* s, jint length) {
-    length = length = -1 ? strlen(s) : length;
+    length = (length == -1) ? strlen(s) : length;
     CharArray* value = nvmNewCharArray(env, length);
     if (!value) return NULL;
     jint i;
@@ -157,7 +157,7 @@ Object* nvmNewStringAscii(Env* env, char* s, jint length) {
 }
 
 Object* nvmNewStringUTF(Env* env, char* s, jint length) {
-    length = length = -1 ? getUnicodeLengthOfUtf8(s) : length;
+    length = (length == -1) ? getUnicodeLengthOfUtf8(s) : length;
     CharArray* value = nvmNewCharArray(env, length);
     if (!value) return NULL;
     utf8ToUnicode(value->values, s);
@@ -182,7 +182,7 @@ Object* nvmNewInternedStringUTF(Env* env, char* s, jint length) {
         return cacheEntry->string;
     }
 
-    length = length = -1 ? getUnicodeLengthOfUtf8(s) : length;
+    length = (length == -1) ? getUnicodeLengthOfUtf8(s) : length;
     CharArray* value = nvmNewCharArray(env, length);
     if (!value) return NULL;
     utf8ToUnicode(value->values, s);

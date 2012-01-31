@@ -13,6 +13,7 @@ jint _logLevel = LOG_LEVEL_ERROR;
 
 jboolean nvmInitLog(Env* env) {
     _logLevel = env->vm->options->logLevel == 0 ? LOG_LEVEL_ERROR : env->vm->options->logLevel;
+    return TRUE;
 }
 
 void nvmLogTrace(Env* env, char* format, ...) {

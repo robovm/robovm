@@ -7,6 +7,5 @@ a.out
 target
 drlvm-vts-bundle.patched
 bin/nullvm-vts.env
-vm/build*
 ide/lib
 

@@ -21,6 +21,7 @@ import org.nullvm.ide.NullVMPlugin;
 public class NullVMClasspathContainer implements IClasspathContainer {
 
     public static final String ID = "org.nullvm.ide.NULLVM_CONTAINER";
+    public static final IPath PATH = new Path(ID);
     
     public IClasspathEntry[] getClasspathEntries() {
         File nullVMHomeDir = NullVMPlugin.useBundledNullVM() 
@@ -41,7 +42,7 @@ public class NullVMClasspathContainer implements IClasspathContainer {
     }
 
     public IPath getPath() {
-        return new Path(ID);
+        return PATH;
     }
 
 }

@@ -26,6 +26,13 @@
       id="org.nullvm.ide.NULLVM_CONTAINER">
     </classpathContainerInitializer>
   </extension>
+  <extension point="org.eclipse.jdt.ui.classpathContainerPage">
+    <classpathContainerPage
+      id="org.nullvm.ide.NULLVM_CONTAINER"
+      name="NullVM Runtime Library"
+      class="org.nullvm.ide.internal.NullVMClasspathContainerPage">
+    </classpathContainerPage>
+  </extension>
   <extension
     id="org.nullvm.ide.NullVMClassBuilder"
     name="NullVM Class Builder"

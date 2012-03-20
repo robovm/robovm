@@ -15,11 +15,11 @@ public class FunctionRef extends Constant {
     private final FunctionType type;
 
     public FunctionRef(Function f) {
-        this(f.getName().substring(1), f.getType());
+        this(f.getName(), f.getType());
     }
     
     public FunctionRef(String name, FunctionType type) {
-        this.name = "@" + name;
+        this.name = name;
         this.type = type;
     }
     
@@ -33,6 +33,6 @@ public class FunctionRef extends Constant {
     
     @Override
     public String toString() {
-        return name;
+        return "@" + name;
     }
 }

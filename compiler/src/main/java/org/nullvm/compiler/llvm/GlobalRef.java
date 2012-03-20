@@ -15,11 +15,11 @@ public class GlobalRef extends Constant {
     private final Type type;
 
     public GlobalRef(Global global) {
-        this(global.getName().substring(1), global.getType().getBase());
+        this(global.getName(), global.getType().getBase());
     }
     
     public GlobalRef(String name, Type type) {
-        this.name = "@" + name;
+        this.name = name;
         this.type = type;
     }
     
@@ -71,6 +71,6 @@ public class GlobalRef extends Constant {
 
     @Override
     public String toString() {
-        return name;
+        return "@" + name;
     }
 }

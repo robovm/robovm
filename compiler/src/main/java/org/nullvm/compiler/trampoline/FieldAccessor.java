@@ -5,17 +5,19 @@
  */
 package org.nullvm.compiler.trampoline;
 
+import static org.nullvm.compiler.Mangler.*;
+
 
 /**
  *
  * @version $Id$
  */
 public abstract class FieldAccessor extends Trampoline {
-    private final String fieldName;
-    private final String fieldDesc;
+    protected final String fieldName;
+    protected final String fieldDesc;
 
-    protected FieldAccessor(String targetClass, String fieldName, String fieldDesc) {
-        super(targetClass);
+    protected FieldAccessor(String callingClass, String targetClass, String fieldName, String fieldDesc) {
+        super(callingClass, targetClass);
         this.fieldName = fieldName;
         this.fieldDesc = fieldDesc;
     }
@@ -27,6 +29,10 @@ public abstract class FieldAccessor extends Trampoline {
     public String getFieldDesc() {
         return fieldDesc;
     }
+    
+    public abstract boolean isGetter();
+    
+    public abstract boolean isStatic();
     
     @Override
     public int hashCode() {
@@ -82,6 +88,6 @@ public abstract class FieldAccessor extends Trampoline {
     
     @Override
     public String toString() {
-        return super.toString() + "/" + fieldName + "/" + fieldDesc;
+        return super.toString() + "_" + mangleString(fieldName) + "_" + mangleString(fieldDesc);
     }
 }

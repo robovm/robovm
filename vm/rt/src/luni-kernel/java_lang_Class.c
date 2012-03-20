@@ -1,3 +1,4 @@
+#include <string.h>
 #include <nullvm.h>
 #include "reflection_helpers.h"
 #include "utlist.h"
@@ -7,7 +8,7 @@ jboolean Java_java_lang_Class_desiredAssertionStatus(Env* env, Class* thiz) {
 }
 
 jboolean Java_java_lang_Class_isPrimitive(Env* env, Class* thiz) {
-    return thiz->primitive;
+    return CLASS_IS_PRIMITIVE(thiz) ? TRUE : FALSE;
 }
 
 jboolean Java_java_lang_Class_isAnonymousClass(Env* env, Class* thiz) {
@@ -15,11 +16,11 @@ jboolean Java_java_lang_Class_isAnonymousClass(Env* env, Class* thiz) {
 }
 
 jboolean Java_java_lang_Class_isArray(Env* env, Class* thiz) {
-    return CLASS_IS_ARRAY(thiz);
+    return CLASS_IS_ARRAY(thiz) ? TRUE : FALSE;
 }
 
 jboolean Java_java_lang_Class_isInterface(Env* env, Class* thiz) {
-    return CLASS_IS_INTERFACE(thiz) > 0;
+    return CLASS_IS_INTERFACE(thiz) ? TRUE : FALSE;
 }
 
 jboolean Java_java_lang_Class_isAssignableFrom(Env* env, Class* thiz, Class* that) {
@@ -35,7 +36,7 @@ jboolean Java_java_lang_Class_isInstance(Env* env, Class* thiz, Object* object) 
 }
 
 jint Java_java_lang_Class_getModifiers(Env* env, Class* c, Class* thiz, jboolean ignoreInnerClassesAttrib) {
-    return thiz->access & 0xffff; // Hide NullVM special flags
+    return thiz->flags & CLASS_ACCESS_MASK;
 }
 
 Object* Java_java_lang_Class_getSignatureAttribute(Env* env, Class* thiz) {
@@ -91,15 +92,17 @@ Object* Java_java_lang_Class_getEnclosingConstructor(Env* env, Class* thiz) {
 }
 
 ObjectArray* Java_java_lang_Class_getInterfaces(Env* env, Class* thiz) {
+    Interface* interfaces = nvmGetInterfaces(env, thiz);
+    if (nvmExceptionCheck(env)) return NULL;
     Interface* interface;
     jint length = 0;
-    LL_FOREACH(thiz->interfaces, interface) {
+    LL_FOREACH(interfaces, interface) {
         length++;
     }
     ObjectArray* result = nvmNewObjectArray(env, length, java_lang_Class, NULL, NULL);
     if (!result) return NULL;
     jint i = 0;
-    LL_FOREACH(thiz->interfaces, interface) {
+    LL_FOREACH(interfaces, interface) {
         result->values[i++] = (Object*) interface->interface;
     }
     return result;
@@ -109,7 +112,7 @@ Class* Java_java_lang_Class_getComponentType(Env* env, Class* thiz) {
     if (!CLASS_IS_ARRAY(thiz)) {
         return NULL;
     }
-    return nvmGetComponentType(env, thiz);
+    return thiz->componentType;
 }
 
 Class* Java_java_lang_Class_getSuperclass(Env* env, Class* thiz) {
@@ -125,7 +128,7 @@ void Java_java_lang_Class_initializeClass0(Env* env, Class* c, Class* clazz) {
 }
 
 ObjectArray* Java_java_lang_Class_getDeclaredClasses0(Env* env, Class* clazz, jboolean publicOnly) {
-    if (clazz->primitive || CLASS_IS_ARRAY(clazz)) return NULL;
+    if (CLASS_IS_PRIMITIVE(clazz) || CLASS_IS_ARRAY(clazz)) return NULL;
     ObjectArray* result = nvmAttributeGetDeclaredClasses(env, clazz);
     if (!result || result->length == 0 || !publicOnly) {
         return result;
@@ -156,11 +159,14 @@ ObjectArray* Java_java_lang_Class_getDeclaredClasses0(Env* env, Class* clazz, jb
 }
 
 ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(Env* env, Class* clazz, jboolean publicOnly) {
-    if (clazz->primitive || CLASS_IS_ARRAY(clazz)) return NULL;
+    if (CLASS_IS_PRIMITIVE(clazz) || CLASS_IS_ARRAY(clazz)) return NULL;
+
+    Method* methods = nvmGetMethods(env, clazz);
+    if (nvmExceptionCheck(env)) return NULL;
 
     Method* method;
     jint length = 0;
-    for (method = clazz->methods->first; method != NULL; method = method->next) {
+    for (method = methods; method != NULL; method = method->next) {
         if (METHOD_IS_CONSTRUCTOR(method)) {
             if (!publicOnly || METHOD_IS_PUBLIC(method)) {
                 length++;
@@ -170,7 +176,7 @@ ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(Env* env, Class* claz
 
     ObjectArray* result = NULL;
     jint i = 0;
-    for (method = clazz->methods->first; method != NULL; method = method->next) {
+    for (method = methods; method != NULL; method = method->next) {
         if (METHOD_IS_CONSTRUCTOR(method)) {
             if (!publicOnly || METHOD_IS_PUBLIC(method)) {
                 Object* c = createConstructorObject(env, method);
@@ -188,11 +194,14 @@ ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(Env* env, Class* claz
 }
 
 ObjectArray* Java_java_lang_Class_getDeclaredMethods0(Env* env, Class* clazz, jboolean publicOnly) {
-    if (clazz->primitive || CLASS_IS_ARRAY(clazz)) return NULL;
+    if (CLASS_IS_PRIMITIVE(clazz) || CLASS_IS_ARRAY(clazz)) return NULL;
+
+    Method* methods = nvmGetMethods(env, clazz);
+    if (nvmExceptionCheck(env)) return NULL;
 
     Method* method;
     jint length = 0;
-    for (method = clazz->methods->first; method != NULL; method = method->next) {
+    for (method = methods; method != NULL; method = method->next) {
         if (!METHOD_IS_CONSTRUCTOR(method) && !METHOD_IS_CLASS_INITIALIZER(method)) {
             if (!publicOnly || METHOD_IS_PUBLIC(method)) {
                 length++;
@@ -202,7 +211,7 @@ ObjectArray* Java_java_lang_Class_getDeclaredMethods0(Env* env, Class* clazz, jb
 
     ObjectArray* result = NULL;
     jint i = 0;
-    for (method = clazz->methods->first; method != NULL; method = method->next) {
+    for (method = methods; method != NULL; method = method->next) {
         if (!METHOD_IS_CONSTRUCTOR(method) && !METHOD_IS_CLASS_INITIALIZER(method)) {
             if (!publicOnly || METHOD_IS_PUBLIC(method)) {
                 Object* c = createMethodObject(env, method);
@@ -220,11 +229,14 @@ ObjectArray* Java_java_lang_Class_getDeclaredMethods0(Env* env, Class* clazz, jb
 }
 
 ObjectArray* Java_java_lang_Class_getDeclaredFields0(Env* env, Class* clazz, jboolean publicOnly) {
-    if (clazz->primitive || CLASS_IS_ARRAY(clazz)) return NULL;
+    if (CLASS_IS_PRIMITIVE(clazz) || CLASS_IS_ARRAY(clazz)) return NULL;
+
+    Field* fields = nvmGetFields(env, clazz);
+    if (nvmExceptionCheck(env)) return NULL;
 
     Field* field;
     jint length = 0;
-    for (field = clazz->fields; field != NULL; field = field->next) {
+    for (field = fields; field != NULL; field = field->next) {
         if (!publicOnly || FIELD_IS_PUBLIC(field)) {
             length++;
         }
@@ -232,7 +244,7 @@ ObjectArray* Java_java_lang_Class_getDeclaredFields0(Env* env, Class* clazz, jbo
 
     ObjectArray* result = NULL;
     jint i = 0;
-    for (field = clazz->fields; field != NULL; field = field->next) {
+    for (field = fields; field != NULL; field = field->next) {
         if (!publicOnly || FIELD_IS_PUBLIC(field)) {
             Object* c = createFieldObject(env, field);
             if (!c) return NULL;

@@ -148,7 +148,7 @@ static void ExceptionDescribe(JNIEnv* env) {
 }
 
 static void ExceptionClear(JNIEnv* env) {
-    (jthrowable) nvmExceptionClear((Env*) env);
+    nvmExceptionClear((Env*) env);
 }
 
 static void FatalError(JNIEnv* env, const char* msg) {

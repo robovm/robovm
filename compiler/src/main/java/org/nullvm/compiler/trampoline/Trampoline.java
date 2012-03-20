@@ -5,28 +5,53 @@
  */
 package org.nullvm.compiler.trampoline;
 
+import static org.nullvm.compiler.Mangler.*;
+
+import java.io.Serializable;
+
+import org.nullvm.compiler.llvm.FunctionRef;
+import org.nullvm.compiler.llvm.FunctionType;
+
 
 /**
  *
  * @version $Id$
  */
-public abstract class Trampoline implements Comparable<Trampoline> {
-    protected final String targetClass;
+public abstract class Trampoline implements Comparable<Trampoline>, Serializable {
+    protected final String callingClass;
+    protected final String target;
 
-    protected Trampoline(String targetClass) {
-        this.targetClass = targetClass;
+    protected Trampoline(String callingClass, String target) {
+        this.callingClass = callingClass;
+        this.target = target;
     }
 
-    public String getTargetClass() {
-        return targetClass;
+    public String getCallingClass() {
+        return callingClass;
     }
+    
+    public String getTarget() {
+        return target;
+    }
+    
+    public FunctionRef getFunctionRef() {
+        return new FunctionRef(getFunctionName(), getFunctionType());
+    }
+    
+    public String getFunctionName() {
+        return toString();
+    }
+    
+    public abstract FunctionType getFunctionType();
     
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result
-                + ((targetClass == null) ? 0 : targetClass.hashCode());
+                + ((callingClass == null) ? 0 : callingClass.hashCode());
+        result = prime * result
+                + ((target == null) ? 0 : target.hashCode());
         return result;
     }
 
@@ -42,11 +67,18 @@ public abstract class Trampoline implements Comparable<Trampoline> {
             return false;
         }
         Trampoline other = (Trampoline) obj;
-        if (targetClass == null) {
-            if (other.targetClass != null) {
+        if (callingClass == null) {
+            if (other.callingClass != null) {
                 return false;
             }
-        } else if (!targetClass.equals(other.targetClass)) {
+        } else if (!callingClass.equals(other.callingClass)) {
+            return false;
+        }
+        if (target == null) {
+            if (other.target != null) {
+                return false;
+            }
+        } else if (!target.equals(other.target)) {
             return false;
         }
         return true;
@@ -54,14 +86,18 @@ public abstract class Trampoline implements Comparable<Trampoline> {
 
     public int compareTo(Trampoline o) {
         int c = this.getClass().getSimpleName().compareTo(o.getClass().getSimpleName());
-        if (c != 0) {
-            return c;
+        if (c == 0) {
+            c = callingClass.compareTo(o.callingClass);
+            if (c == 0) {
+                c = target.compareTo(o.target);
+            }
         }
-        return targetClass.compareTo(o.targetClass);
+        return c;
     }
     
     @Override
     public String toString() {
-        return targetClass;
+        return getClass().getSimpleName() + "_" + mangleString(callingClass) 
+                + "_" + mangleString(target);
     }
 }

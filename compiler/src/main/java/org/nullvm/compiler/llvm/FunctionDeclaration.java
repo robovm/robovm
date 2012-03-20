@@ -15,8 +15,12 @@ public class FunctionDeclaration {
     private final FunctionType type;
 
     public FunctionDeclaration(String name, FunctionType type) {
-        this.name = "@" + name;
+        this.name = name;
         this.type = type;
+    }
+
+    public FunctionDeclaration(FunctionRef ref) {
+        this(ref.getName(), ref.getType());
     }
     
     public String getName() {
@@ -28,7 +32,7 @@ public class FunctionDeclaration {
     }
     
     public FunctionRef ref() {
-        return new FunctionRef(name.substring(1), type);
+        return new FunctionRef(name, type);
     }
     
     @Override
@@ -38,7 +42,7 @@ public class FunctionDeclaration {
         StringBuilder sb = new StringBuilder();
         sb.append("declare ");
         sb.append(returnType.toString());
-        sb.append(' ');
+        sb.append(" @");
         sb.append(name);
         sb.append('(');
         for (int i = 0; i < parameterTypes.length; i++) {

@@ -1,9 +1,6 @@
 #include <nullvm.h>
 #include "reflection_helpers.h"
 
-static Class* java_lang_reflect_Field = NULL;
-static InstanceField* java_lang_reflect_Field_field = NULL;
-
 jlong Java_sun_misc_Unsafe_objectFieldOffset(Env* env, Object* unsafe, Object* fieldObject) {
     InstanceField* field = (InstanceField*) getFieldFromFieldObject(env, fieldObject);
     if (!field) return 0;

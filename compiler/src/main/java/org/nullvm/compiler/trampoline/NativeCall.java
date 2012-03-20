@@ -5,6 +5,11 @@
  */
 package org.nullvm.compiler.trampoline;
 
+import static org.nullvm.compiler.Mangler.*;
+
+import org.nullvm.compiler.Types;
+import org.nullvm.compiler.llvm.FunctionType;
+
 
 /**
  *
@@ -13,11 +18,13 @@ package org.nullvm.compiler.trampoline;
 public class NativeCall extends Trampoline {
     private final String methodName;
     private final String methodDesc;
+    private final boolean ztatic;
 
-    public NativeCall(String targetClass, String methodName, String methodDesc) {
-        super(targetClass);
+    public NativeCall(String callingClass, String targetClass, String methodName, String methodDesc, boolean ztatic) {
+        super(callingClass, targetClass);
         this.methodName = methodName;
         this.methodDesc = methodDesc;
+        this.ztatic = ztatic;
     }
 
     public String getMethodName() {
@@ -28,6 +35,15 @@ public class NativeCall extends Trampoline {
         return methodDesc;
     }
 
+    public boolean isStatic() {
+        return ztatic;
+    }
+    
+    @Override
+    public FunctionType getFunctionType() {
+        return Types.getNativeFunctionType(methodDesc, ztatic);
+    }
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -69,7 +85,19 @@ public class NativeCall extends Trampoline {
     }
     
     @Override
+    public int compareTo(Trampoline o) {
+        int c = super.compareTo(o);
+        if (c == 0) {
+            c = methodName.compareTo(((NativeCall) o).methodName);
+            if (c == 0) {
+                c = methodDesc.compareTo(((NativeCall) o).methodDesc);
+            }
+        }
+        return c;
+    }
+    
+    @Override
     public String toString() {
-        return super.toString() + "/" + methodName + "/" + methodDesc;
+        return super.toString() + "_" + mangleString(methodName) + "_" + mangleString(methodDesc);
     }
 }

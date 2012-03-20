@@ -12,8 +12,12 @@ package org.nullvm.compiler.trampoline;
  */
 public class Invokeinterface extends Invoke {
 
-    public Invokeinterface(String targetClass, String methodName, String methodDesc) {
-        super(targetClass, methodName, methodDesc);
+    public Invokeinterface(String callingClass, String targetClass, String methodName, String methodDesc) {
+        super(callingClass, targetClass, methodName, methodDesc);
     }
 
+    @Override
+    public boolean isStatic() {
+        return false;
+    }
 }

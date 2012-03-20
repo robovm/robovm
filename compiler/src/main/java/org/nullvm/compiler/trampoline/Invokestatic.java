@@ -12,8 +12,12 @@ package org.nullvm.compiler.trampoline;
  */
 public class Invokestatic extends Invoke {
 
-    public Invokestatic(String targetClass, String methodName, String methodDesc) {
-        super(targetClass, methodName, methodDesc);
+    public Invokestatic(String callingClass, String targetClass, String methodName, String methodDesc) {
+        super(callingClass, targetClass, methodName, methodDesc);
     }
 
+    @Override
+    public boolean isStatic() {
+        return true;
+    }
 }

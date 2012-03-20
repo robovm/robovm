@@ -16,6 +16,7 @@ public class Global {
     private final Constant value;
     private final Type type;
     private final boolean constant;
+    private final String section;
 
     public Global(String name, Type type) {
         this(name, null, type, false);
@@ -26,31 +27,41 @@ public class Global {
     }
     
     public Global(String name, Linkage linkage, Type type, boolean constant) {
-        this.name = "@" + name;
+        this.name = name;
         this.linkage = linkage;
         this.value = null;
         this.type = type;
         this.constant = constant;
+        this.section = null;
     }
     
     public Global(String name, Constant value) {
-        this(name, null, value, false);
+        this(name, null, value, false, null);
     }
     
     public Global(String name, Constant value, boolean constant) {
-        this(name, null, value, constant);
+        this(name, null, value, constant, null);
     }
     
     public Global(String name, Linkage linkage, Constant value) {
-        this(name, linkage, value, false);
+        this(name, linkage, value, false, null);
     }
     
     public Global(String name, Linkage linkage, Constant value, boolean constant) {
-        this.name = "@" + name;
+        this(name, linkage, value, constant, null);        
+    }
+    
+    public Global(String name, Constant value, boolean constant, String section) {
+        this(name, null, value, constant, section);        
+    }
+    
+    public Global(String name, Linkage linkage, Constant value, boolean constant, String section) {
+        this.name = name;
         this.linkage = linkage;
         this.value = value;
         this.type = value.getType();
-        this.constant = constant;        
+        this.constant = constant;
+        this.section = section;
     }
     
     public GlobalRef ref() {
@@ -67,6 +78,7 @@ public class Global {
     
     public String getDefinition() {
         StringBuilder sb = new StringBuilder();
+        sb.append('@');
         sb.append(name);
         sb.append(" = ");
         if (linkage != null) {
@@ -83,11 +95,16 @@ public class Global {
             sb.append(' ');
             sb.append(value);
         }
+        if (section != null) {
+            sb.append(", section \"");
+            sb.append(section);
+            sb.append('"');
+        }
         return sb.toString();
     }
     
     @Override
     public String toString() {
-        return name;
+        return "@" + name;
     }
 }

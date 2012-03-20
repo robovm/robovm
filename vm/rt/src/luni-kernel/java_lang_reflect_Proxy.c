@@ -34,10 +34,10 @@ static void handler(Env* env, Object* receiver, ProxyMethod* method, jvalue* arg
     Object* methodObject = createMethodObject(env, method->proxiedMethod);
     if (!methodObject) return;
 
-    char* desc = method->method.desc;
-    char* c;
+    const char* desc = method->method.desc;
+    const char* c;
     jint i = 0;
-    while (c = nvmGetNextParameterType(&desc)) {
+    while ((c = nvmGetNextParameterType(&desc))) {
         if (c[0] != 'L' && c[0] != '[') {
             // Primitive. Needs wrapping.
             char typeName[2] = {c[0], 0};
@@ -97,7 +97,7 @@ static void handler(Env* env, Object* receiver, ProxyMethod* method, jvalue* arg
         return;
     }
 
-    char* returnTypeDesc = nvmGetReturnType(method->method.desc);
+    const char* returnTypeDesc = nvmGetReturnType(method->method.desc);
     if (returnTypeDesc[0] == 'V') {
         // void method. Just return.
         return;

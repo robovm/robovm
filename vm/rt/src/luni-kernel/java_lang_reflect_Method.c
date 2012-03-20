@@ -9,7 +9,7 @@ Class* Java_java_lang_reflect_Method_getDeclaringClass(Env* env, Class* clazz, j
 
 jint Java_java_lang_reflect_Method_getModifiers(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) methodPtr;
-    return method->access & 0xffff; // Hide NullVM special flags
+    return method->access & METHOD_ACCESS_MASK;
 }
 
 Object* Java_java_lang_reflect_Method_getName(Env* env, Class* clazz, jlong methodPtr) {
@@ -41,10 +41,10 @@ ObjectArray* Java_java_lang_reflect_Method_getParameterTypes(Env* env, Class* cl
     ObjectArray* paramTypes = nvmNewObjectArray(env, argsCount, NULL, array_java_lang_Class, NULL);
     if (!paramTypes) return NULL;
 
-    char* desc = method->desc;
-    char* s;
+    const char* desc = method->desc;
+    const char* s;
     jint i = 0;
-    while (s = nvmGetNextParameterType(&desc)) {
+    while ((s = nvmGetNextParameterType(&desc))) {
         char* paramTypeName = nvmAllocateMemory(env, desc - s + 1);
         if (!paramTypeName) return NULL;
         strncpy(paramTypeName, s, desc - s);

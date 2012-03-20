@@ -36,7 +36,7 @@ jint nvmThrow(Env* env, Object* e) {
     return 0;
 }
 
-jint nvmThrowNew(Env* env, Class* clazz, char* message) {
+jint nvmThrowNew(Env* env, Class* clazz, const char* message) {
     Method* constructor = nvmGetInstanceMethod(env, clazz, "<init>", "(Ljava/lang/String;)V");
     if (!constructor) return 1;
     Object* string = NULL;
@@ -54,7 +54,7 @@ jint nvmThrowOutOfMemoryError(Env* env) {
     return nvmThrowNew(env, java_lang_OutOfMemoryError, "");
 }
 
-jint nvmThrowNoClassDefFoundError(Env* env, char* name) {
+jint nvmThrowNoClassDefFoundError(Env* env, const char* name) {
     // TODO: Message should look like "java.lang.NoClassDefFoundError: a/C"
     return nvmThrowNew(env, java_lang_NoClassDefFoundError, "");
 }
@@ -72,42 +72,42 @@ jint nvmThrowIllegalAccessErrorClass(Env* env, Class* clazz, Class* caller) {
     return nvmThrowNew(env, java_lang_IllegalAccessError, "");
 }
 
-jint nvmThrowIllegalAccessErrorField(Env* env, Class* clazz, char* name, char* desc, Class* caller) {
+jint nvmThrowIllegalAccessErrorField(Env* env, Class* clazz, const char* name, const char* desc, Class* caller) {
     // TODO: Message should look like "java.lang.IllegalAccessError: tried to access field a.A.x from class b.B"
     return nvmThrowNew(env, java_lang_IllegalAccessError, "");
 }
 
-jint nvmThrowIllegalAccessErrorMethod(Env* env, Class* clazz, char* name, char* desc, Class* caller) {
+jint nvmThrowIllegalAccessErrorMethod(Env* env, Class* clazz, const char* name, const char* desc, Class* caller) {
     // TODO: Message should look like ?
     return nvmThrowNew(env, java_lang_IllegalAccessError, "");
 }
 
-jint nvmThrowNoSuchFieldError(Env* env, char* name) {
+jint nvmThrowNoSuchFieldError(Env* env, const char* name) {
     // TODO: Message should look like "java.lang.NoSuchFieldError: x"
     // TODO: Cache java.lang.NoSuchFieldError at startup
     return nvmThrowNew(env, java_lang_NoSuchFieldError, "");
 }
 
-jint nvmThrowNoSuchMethodError(Env* env, char* name) {
+jint nvmThrowNoSuchMethodError(Env* env, const char* name) {
     // TODO: Message should look like "java.lang.NoSuchMethodError: x"
     return nvmThrowNew(env, java_lang_NoSuchMethodError, "");
 }
 
-jint nvmThrowIncompatibleClassChangeError(Env* env,char* message) {
+jint nvmThrowIncompatibleClassChangeError(Env* env, const char* message) {
     return nvmThrowNew(env, java_lang_IncompatibleClassChangeError, message);
 }
 
-jint nvmThrowIncompatibleClassChangeErrorClassField(Env* env, Class* clazz, char* name, char* desc) {
+jint nvmThrowIncompatibleClassChangeErrorClassField(Env* env, Class* clazz, const char* name, const char* desc) {
     // TODO: Message should look like "java.lang.ThrowIncompatibleClassChangeError: Expected static field a.C.x"
     return nvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
 }
 
-jint nvmThrowIncompatibleClassChangeErrorInstanceField(Env* env, Class* clazz, char* name, char* desc) {
+jint nvmThrowIncompatibleClassChangeErrorInstanceField(Env* env, Class* clazz, const char* name, const char* desc) {
     // TODO: Message should look like "java.lang.ThrowIncompatibleClassChangeError: Expected non-static field a.C.x"
     return nvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
 }
 
-jint nvmThrowIncompatibleClassChangeErrorMethod(Env* env, Class* clazz, char* name, char* desc) {
+jint nvmThrowIncompatibleClassChangeErrorMethod(Env* env, Class* clazz, const char* name, const char* desc) {
     // TODO: Message should look like ?
     return nvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
 }
@@ -135,7 +135,7 @@ jint nvmThrowArrayStoreException(Env* env) {
     return nvmThrowNew(env, java_lang_ArrayStoreException, "");
 }
 
-jint nvmThrowClassNotFoundException(Env* env, char* className) {
+jint nvmThrowClassNotFoundException(Env* env, const char* className) {
     char* msg = nvmToBinaryClassName(env, className);
     if (!msg) return 1;
     return nvmThrowNew(env, java_lang_ClassNotFoundException, msg);
@@ -150,11 +150,11 @@ jint nvmThrowUnsatisfiedLinkError(Env* env) {
     return nvmThrowNew(env, java_lang_UnsatisfiedLinkError, "");
 }
 
-jint nvmThrowIllegalArgumentException(Env* env, char* message) {
+jint nvmThrowIllegalArgumentException(Env* env, const char* message) {
     return nvmThrowNew(env, java_lang_IllegalArgumentException, message);
 }
 
-jint nvmThrowVerifyError(Env* env, char* msg) {
+jint nvmThrowVerifyError(Env* env, const char* msg) {
     return nvmThrowNew(env, java_lang_VerifyError, msg);
 }
 

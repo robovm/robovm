@@ -8,12 +8,17 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -47,7 +52,7 @@ public abstract class AbstractTarget implements Target {
         return true;
     }
     
-    public void build(List<File> objectFiles, List<File> libFiles) throws IOException {
+    public void build(List<File> objectFiles, List<File> libFiles, Map<String, String> aliases) throws IOException {
         File outFile = new File(config.getTmpDir(), config.getExecutable());
         
         config.getLogger().debug("Building executable %s", outFile);
@@ -68,6 +73,23 @@ public abstract class AbstractTarget implements Target {
             libArgs.add("-l:libgc.so.1");
             ccArgs.add("-Xlinker");
             ccArgs.add("-rpath=$ORIGIN");
+            File aliasFile = new File(config.getTmpDir(), "aliases");
+            PrintWriter w = null;
+            try {
+                w = new PrintWriter(aliasFile, "ASCII");
+                for (Entry<String, String> alias : aliases.entrySet()) {
+                    w.print(alias.getKey());
+                    w.print(" = ");
+                    w.print(alias.getValue());
+                    w.print(";\n");
+                }
+            } finally {
+                IOUtils.closeQuietly(w);
+            }
+            ccArgs.add("-Xlinker");
+            ccArgs.add("--script=" + aliasFile.getAbsolutePath());
+            ccArgs.add("-Xlinker");
+            ccArgs.add("--gc-sections");
         } else if (config.getOs().getFamily() == OS.Family.darwin) {
             ccArgs.add("-Xlinker");
             ccArgs.add("-no_implicit_dylibs");

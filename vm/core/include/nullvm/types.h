@@ -10,18 +10,6 @@
 #define FALSE JNI_FALSE
 #define TRUE JNI_TRUE
 
-#define CLASS_ALLOCATED 0
-#define CLASS_LOADED 1
-#define CLASS_VERIFIED 2
-#define CLASS_PREPARED 3
-#define CLASS_INITIALIZING 4
-#define CLASS_INITIALIZED 5
-#define CLASS_ERROR 6
-
-#define METHOD_TYPE_BRIDGE   0x20000000
-#define METHOD_TYPE_CALLBACK 0x40000000
-#define METHOD_TYPE_PROXY    0x80000000
-
 struct HyThreadMonitor;
 
 typedef struct Field Field;
@@ -49,12 +37,10 @@ typedef struct InnerClass InnerClass;
 struct Field {
   Field* next;
   Class* clazz;
-  char* name;
-  char* desc;
+  const char* name;
+  const char* desc;
   jint access;
   char* attributes;
-  void* getter;
-  void* setter;
 };
 
 struct ClassField {
@@ -70,14 +56,12 @@ struct InstanceField {
 struct Method {
   Method* next;
   Class* clazz;
-  char* name;
-  char* desc;
+  const char* name;
+  const char* desc;
   jint access;
   void* attributes;
   void* impl;
   void* synchronizedImpl;
-  void* lookup;
-  jint vtableIndex;
 };
 
 struct NativeMethod {
@@ -129,16 +113,15 @@ struct Class {
   void* _data;             // Reserve the memory needed to store the instance fields for java.lang.Class. 
                            // java.lang.Class has a single field, (SoftReference<ClassCache<T>> cacheRef).
                            // void* gives enough space to store that reference.
-  jint id;
-  char* name;              // The name in modified UTF-8.
+  const char* name;        // The name in modified UTF-8.
   ClassLoader* classLoader;
   Class* superclass;       // Superclass pointer. Only java.lang.Object, primitive classes and interfaces have NULL here.
-  jboolean primitive;      // If true this represents a primitive type class.
-  jint state;
-  jint access;
-  Interface* interfaces;   // Linked list of interfaces or NULL if there are no interfaces.
-  Field* fields;           // Linked list of fields.
-  Methods* methods;        // Linked list of methods.
+  Class* componentType;
+  void* initializer;       // Points to the <clinit> method implementation of the class. NULL if there is no <clinit>.
+  jint flags;
+  Interface* _interfaces;  // Lazily loaded linked list of interfaces. Use nvmGetInterfaces() to get this value.
+  Field* _fields;          // Lazily loaded linked list of fields. Use nvmGetFields() to get this value.
+  Methods _methods;        // Lazily loaded linked list of methods. Use nvmGetMethods() to get this value.
   void* attributes;
   jint classDataSize;
   jint instanceDataOffset; // The offset from the base of Object->data
@@ -146,8 +129,6 @@ struct Class {
   jint instanceDataSize;   // The number of bytes needed to store the instance fields declared by this class.
                            // instanceDataOffset + instanceDataSize gives the total number of bytes
                            // needed to store the instance data for instances of this class including superclasses.
-  jint vtableSize;
-  void** vtable;
   void* data[0];           // This is where static fields are stored for the class
 };
 
@@ -282,8 +263,12 @@ typedef struct Options {
     char** rawClasspath; 
     ClasspathEntry* bootclasspath;
     ClasspathEntry* classpath;
-    Class* (*bootclasspathFunc)(Env*, char*, ClassLoader*);
-    Class* (*classpathFunc)(Env*, char*, ClassLoader*);
+    Class* (*loadBootClass)(Env*, const char*, ClassLoader*);
+    Class* (*loadUserClass)(Env*, const char*, ClassLoader*);
+    void (*classInitialized)(Env*, Class*);
+    void (*loadInterfaces)(Env*, Class*);
+    void (*loadFields)(Env*, Class*);
+    void (*loadMethods)(Env*, Class*);
 } Options;
 
 typedef struct VM {
@@ -318,7 +303,6 @@ struct Env {
     Thread* currentThread;
     void* reserved0; // Used internally
     void* reserved1; // Used internally
-    void* reserved2; // Used internally
     NativeFrames nativeFrames;
     ProxyFrames proxyFrames;
     jint attachCount;

@@ -10,14 +10,14 @@ void* nvmAllocateMemory(Env* env, int size) {
     return m;
 }
 
-void* nvmCopyMemory(Env* env, void* src, int size) {
+void* nvmCopyMemory(Env* env, const void* src, int size) {
     void* dest = nvmAllocateMemory(env, size);
     if (!dest) return NULL;
     memcpy(dest, src, size);
     return dest;
 }
 
-void* nvmCopyMemoryZ(Env* env, char* src) {
+void* nvmCopyMemoryZ(Env* env, const char* src) {
     return nvmCopyMemory(env, src, strlen(src));
 }
 

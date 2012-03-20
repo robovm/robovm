@@ -1,3 +1,4 @@
+#include <string.h>
 #include <nullvm.h>
 #include <unwind.h>
 

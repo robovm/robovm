@@ -239,7 +239,7 @@ void nvmAbort(char* format, ...) {
     abort();
 }
 
-DynamicLib* nvmOpenDynamicLib(Env* env, char* file) {
+DynamicLib* nvmOpenDynamicLib(Env* env, const char* file) {
     DynamicLib* dlib = NULL;
 
     void* handle = dlopen(file, RTLD_LOCAL | RTLD_LAZY);
@@ -283,7 +283,7 @@ void nvmRemoveDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs) {
     LL_DELETE(libs, lib);
 }
 
-void* nvmFindDynamicLibSymbol(Env* env, DynamicLib* libs, char* symbol, jboolean searchAll) {
+void* nvmFindDynamicLibSymbol(Env* env, DynamicLib* libs, const char* symbol, jboolean searchAll) {
     TRACE("Searching for symbol '%s'\n", symbol);
 
     DynamicLib* dlib = NULL;

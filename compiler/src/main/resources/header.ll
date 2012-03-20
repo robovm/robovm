@@ -1,5 +1,5 @@
-%Env = type {i8*, i8*, i8*, i8*, i8*, i8*, i8*}
-%Class = type {i8*, i8*, i8*, i32, i8*, i8*, i8*, i8, i32, i32, i8*, i8*, i8*, i8*, i32, i32, i32, i32, i8*}
+%Env = type {i8*, i8*, i8*, i8*, i8*, i8*}
+%Class = type {i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i32, i8*, i8*, i8*, i8*, i8*, i8*, i32, i32, i32}
 %Method = type opaque
 %Field = type opaque
 %Object = type {%Class*, i8*}
@@ -14,32 +14,40 @@
 %DoubleArray = type {%Object, i32, double}
 %ObjectArray = type {%Object, i32, %Object*}
 
-declare %Class* @_nvmBcAllocateClass(%Env*, i8*, i8*, %Object*, i32, i32, i32)
-declare void @_nvmBcAddInterface(%Env*, %Class*, i8*)
-declare %Method* @_nvmBcAddMethod(%Env*, %Class*, i8*, i8*, i32, i8*, i8*, i8*)
-declare %Method* @_nvmBcAddBridgeMethod(%Env*, %Class*, i8*, i8*, i32, i8*, i8*, i8*, i8*)
-declare %Method* @_nvmBcAddCallbackMethod(%Env*, %Class*, i8*, i8*, i32, i8*, i8*, i8*, i8*)
-declare %Field* @_nvmBcAddField(%Env*, %Class*, i8*, i8*, i32, i32, i8*, i8*)
-declare void @_nvmBcSetClassAttributes(%Env*, %Class*, i8*)
-declare void @_nvmBcSetMethodAttributes(%Env*, %Method*, i8*)
-declare void @_nvmBcSetFieldAttributes(%Env*, %Field*, i8*)
-declare void @_nvmBcRegisterClass(%Env*, %Class*)
-declare %Object* @_nvmBcFindClassInLoader(%Env*, i8*, %Object*)
+@array_Z = external global %Object*
+@array_B = external global %Object*
+@array_C = external global %Object*
+@array_S = external global %Object*
+@array_I = external global %Object*
+@array_J = external global %Object*
+@array_F = external global %Object*
+@array_D = external global %Object*
 
-declare i8* @_nvmBcLookupVirtualMethod(%Env*, %Class*, %Object*, i8*, i8*)
-declare i8* @_nvmBcLookupInterfaceMethod(%Env*, %Class*, %Object*, i8*, i8*)
+declare void @_nvmBcInitializeClass(%Env*, i8**)
+declare %Object* @_nvmBcAllocate(%Env*, i8**)
+declare %Object* @_nvmBcLdcArrayBootClass(%Env*, %Object**, i8*)
+declare %Object* @_nvmBcLdcArrayClass(%Env*, %Object**, i8*)
+declare %Object* @_nvmBcNewObjectArray(%Env*, i32, %Object*)
+declare %Object* @_nvmBcCheckcast(%Env*, i8**, %Object*)
+declare %Object* @_nvmBcCheckcastArray(%Env*, %Object*, %Object*)
+declare i32 @_nvmBcInstanceof(%Env*, i8**, %Object*)
+declare i32 @_nvmBcInstanceofArray(%Env*, %Object*, %Object*)
+
+declare i8* @_nvmBcLookupVirtualMethod(%Env*, %Object*, i8*, i8*)
+declare i8* @_nvmBcLookupInterfaceMethod(%Env*, i8**, %Object*, i8*, i8*)
 declare void @_nvmBcThrow(%Env*, %Object*)
 declare void @_nvmBcRethrow(%Env*)
 declare void @_nvmBcThrowIfExceptionOccurred(%Env*)
 declare %Object* @_nvmBcExceptionClear(%Env*)
-declare i32 @_nvmBcExceptionMatch(%Env*, %Class*)
+declare i32 @_nvmBcExceptionMatch(%Env*, i8**)
 declare void @_nvmBcExceptionSet(%Env*, %Object*)
 declare void @_nvmBcThrowNullPointerException(%Env*)
 declare void @_nvmBcThrowArrayIndexOutOfBoundsException(%Env*, i32)
 declare void @_nvmBcThrowArithmeticException(%Env*)
 declare void @_nvmBcThrowUnsatisfiedLinkError(%Env*)
+declare void @_nvmBcThrowIllegalAccessError(%Env*, i8*)
 
-declare %Object* @_nvmBcNew(%Env*, i8*, %Class*)
+declare %Object* @_nvmBcNew(%Env*, i8*)
 declare %Object* @_nvmBcNewBooleanArray(%Env*, i32)
 declare %Object* @_nvmBcNewByteArray(%Env*, i32)
 declare %Object* @_nvmBcNewCharArray(%Env*, i32)
@@ -48,23 +56,19 @@ declare %Object* @_nvmBcNewIntArray(%Env*, i32)
 declare %Object* @_nvmBcNewLongArray(%Env*, i32)
 declare %Object* @_nvmBcNewFloatArray(%Env*, i32)
 declare %Object* @_nvmBcNewDoubleArray(%Env*, i32)
-declare %Object* @_nvmBcNewObjectArray(%Env*, i32, i8*, %Class*)
-declare %Object* @_nvmBcNewMultiArray(%Env*, i32, i32*, i8*, %Class*)
+declare %Object* @_nvmBcNewMultiArray(%Env*, i32, i32*, i8*)
 declare void @_nvmBcSetObjectArrayElement(%Env*, %Object*, i32, %Object*)
 
 declare %Object* @_nvmBcLdcString(%Env*, i8*)
-declare %Object* @_nvmBcLdcClass(%Env*, i8*, %Class*)
         
 declare void @_nvmBcMonitorEnter(%Env*, %Object*)
 declare void @_nvmBcMonitorExit(%Env*, %Object*)
-declare %Object* @_nvmBcCheckcast(%Env*, %Object*, i8*, %Class*)
-declare i32 @_nvmBcInstanceof(%Env*, %Object*, i8*, %Class*)
 
 declare i8* @_nvmBcResolveInvokespecial(%Env*, i8*, i8*, i8*)
 declare i8* @_nvmBcResolveInvokestatic(%Env*, i8*, i8*, i8*)
 declare i8* @_nvmBcResolveInvokevirtual(%Env*, i8*, i8*, i8*)
 declare i8* @_nvmBcResolveInvokeinterface(%Env*, i8*, i8*, i8*)
-declare i8* @_nvmBcResolveNative(%Env*, i8*, i8*, i8*, i8*, i8*, %Class*, i8*)
+declare i8* @_nvmBcResolveNative(%Env*, i8**, i8*, i8*, i8*, i8*, i8**)
 declare i8* @_nvmBcResolveGetstatic(%Env*, i8*, i8*, i8*)
 declare i8* @_nvmBcResolvePutstatic(%Env*, i8*, i8*, i8*)
 declare i8* @_nvmBcResolveGetfield(%Env*, i8*, i8*, i8*)

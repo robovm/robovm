@@ -19,7 +19,9 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.nullvm.compiler.clazz.Clazz;
 import org.nullvm.compiler.clazz.Clazzes;
+import org.nullvm.compiler.clazz.Package;
 import org.nullvm.compiler.clazz.Path;
 
 /**
@@ -48,6 +50,7 @@ public class Config {
     private boolean skipInstall = false;
     private File mainJar;
     private String mainClass;
+    private List<String> roots = new ArrayList<String>();
     
     private File osArchDepLibDir;
     private List<File> bootclasspath = new ArrayList<File>();
@@ -129,6 +132,10 @@ public class Config {
         return tmpDir;
     }
 
+    public List<String> getRoots() {
+        return roots;
+    }
+    
     public File getLlvmHomeDir() {
         return llvmHomeDir;
     }
@@ -216,12 +223,58 @@ public class Config {
         return archive;
     }
     
-    public File getBcLibrary(Path path) {
-        return new File(getLlvmCacheDir(path).getParentFile(), "lib" + getArchiveName(path) + ".a");
+    public File getBcLibrary(Package packag) {
+        Path path = packag.getPath();
+        return new File(getLlvmCacheDir(path).getParentFile(), 
+                "lib" + getArchiveName(path) + "." + packag.getName() + ".a");
     }
 
-    public File getStaticLibrary(Path path) {
-        return new File(getObjectCacheDir(path).getParentFile(), "lib" + getArchiveName(path) + ".a");
+    public File getStaticLibrary(Package packag) {
+        Path path = packag.getPath();
+        return new File(getObjectCacheDir(path).getParentFile(), 
+                "lib" + getArchiveName(path) + "." + packag.getName() + ".a");
+    }
+    
+    public File getLlFile(Clazz clazz) {
+        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
+        return new File(getCacheDir(clazz.getPath()), baseName + ".class.ll");
+    }
+    
+    public File getBcFile(Clazz clazz) {
+        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
+        return new File(getCacheDir(clazz.getPath()), baseName + ".class.bc");
+    }
+    
+    public File getSFile(Clazz clazz) {
+        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
+        return new File(getCacheDir(clazz.getPath()), baseName + ".class.s");
+    }
+    
+    public File getOFile(Clazz clazz) {
+        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
+        return new File(getCacheDir(clazz.getPath()), baseName + ".class.o");
+    }
+    
+    public File getInfoFile(Clazz clazz) {
+        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
+        return new File(getCacheDir(clazz.getPath()), baseName + ".class.info");
+    }
+    
+    public File getCacheDir(Path path) {
+        File srcRoot = path.getFile();
+        if (path.getFile().isFile()) {
+            srcRoot = srcRoot.getParentFile();
+        }
+        File osDir = new File(cacheDir, os.toString());
+        File archDir = new File(osDir, arch.toString());
+        File cpuDir = new File(archDir, cpu == null ? "default" : cpu);
+        try {
+            return new File(makeFileRelativeTo(cpuDir, 
+                    srcRoot.getCanonicalFile()), 
+                    getArchiveName(path) + ".classes");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     
     public File getLlvmCacheDir(Path path) {
@@ -324,7 +377,7 @@ public class Config {
             tmpDir.mkdirs();
         }
 
-        this.clazzes = new Clazzes(bootclasspath, classpath);
+        this.clazzes = new Clazzes(this, bootclasspath, classpath);
         
         if (!skipInstall) {
             if (installDir == null) {
@@ -446,6 +499,11 @@ public class Config {
         
         public Builder logger(Logger logger) {
             config.logger = logger;
+            return this;
+        }
+
+        public Builder addRoot(String pattern) {
+            config.roots.add(pattern);
             return this;
         }
 

@@ -50,12 +50,12 @@ ClassLoader* Java_org_nullvm_rt_VM_getBootClassLoader(Env* env, Class* c) {
 }
 
 jlong Java_org_nullvm_rt_VM_allocateMemory(Env* env, Class* c, jint size) {
-    return nvmAllocateMemory(env, size);
+    return (jlong) nvmAllocateMemory(env, size);
 }
 
 jlong Java_org_nullvm_rt_VM_getCallbackMethodImpl(Env* env, Class* c, Object* methodObject) {
     Method* method = getMethodFromMethodObject(env, methodObject);
-    return ((CallbackMethod*) method)->callbackImpl;
+    return (jlong) ((CallbackMethod*) method)->callbackImpl;
 }
 
 jlong Java_org_nullvm_rt_VM_getObjectAddress(Env* env, Class* c, Object* object) {

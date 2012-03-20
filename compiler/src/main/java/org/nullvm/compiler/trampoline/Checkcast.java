@@ -5,6 +5,10 @@
  */
 package org.nullvm.compiler.trampoline;
 
+import static org.nullvm.compiler.Types.*;
+
+import org.nullvm.compiler.llvm.FunctionType;
+
 
 /**
  *
@@ -12,8 +16,12 @@ package org.nullvm.compiler.trampoline;
  */
 public class Checkcast extends Trampoline {
 
-    public Checkcast(String targetClass) {
-        super(targetClass);
+    public Checkcast(String callingClass, String targetClass) {
+        super(callingClass, targetClass);
     }
 
+    @Override
+    public FunctionType getFunctionType() {
+        return new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR);
+    }
 }

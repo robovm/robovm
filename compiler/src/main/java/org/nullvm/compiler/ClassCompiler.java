@@ -216,13 +216,12 @@ public class ClassCompiler {
         
         boolean recompiled = false;
         
-        if (force || config.isClean() || !llFile.exists() || llFile.lastModified() < clazz.lastModified()) {
+        if (force || config.isClean() || !oFile.exists() || oFile.lastModified() < clazz.lastModified()) {
             OutputStream out = null;
             try {
                 config.getLogger().debug("Compiling %s", clazz);
                 out = new FileOutputStream(llFile);
                 compile(clazz, out);
-                recompiled = true;
             } catch (Throwable t) {
                 FileUtils.deleteQuietly(llFile);
                 if (t instanceof IOException) {
@@ -235,21 +234,17 @@ public class ClassCompiler {
             } finally {
                 IOUtils.closeQuietly(out);
             }
-        }
-        
-        if (force || config.isClean() || !bcFile.exists() || bcFile.lastModified() < llFile.lastModified()) {
+
             config.getLogger().debug("Optimizing %s", clazz);
             CompilerUtil.opt(config, llFile, bcFile, "-mem2reg", "-always-inline");
-        }
-        
-        if (force || config.isClean() || !sFile.exists() || sFile.lastModified() < bcFile.lastModified()) {
+
             config.getLogger().debug("Generating %s assembly for %s", config.getArch(), clazz);
             CompilerUtil.llc(config, bcFile, sFile);
-        }
-            
-        if (force || config.isClean() || !oFile.exists() || oFile.lastModified() < sFile.lastModified()) {
+
             config.getLogger().debug("Assembling %s", clazz);
             CompilerUtil.assemble(config, sFile, oFile);
+
+            recompiled = true;
         }
         
         return recompiled;
@@ -445,7 +440,7 @@ public class ClassCompiler {
     private void createLookupFunction(SootMethod m) {
         // TODO: This should use a virtual method table or interface method table.
         String name = mangleMethod(m) + "_lookup";
-        Function function = new Function(Linkage.external, ".text." + name, name, getFunctionType(m));
+        Function function = new Function(Linkage.external, name, getFunctionType(m));
         module.addFunction(function);
 
         Variable reserved0 = function.newVariable(I8_PTR_PTR);
@@ -1266,7 +1261,7 @@ public class ClassCompiler {
     
     private Function createClassInitWrapperFunction(FunctionRef targetFn) {
         String fnName = targetFn.getName() + "_clinit";
-        Function fn = new Function(external, new FunctionAttribute[] {noinline, optsize}, ".text." + fnName,
+        Function fn = new Function(external, new FunctionAttribute[] {noinline, optsize},
                 fnName, targetFn.getType());
         Variable flags = fn.newVariable(I32);
         fn.add(new Load(flags, new ConstantGetelementptr(classInfoStruct.ref(), 0, 0, 1)));

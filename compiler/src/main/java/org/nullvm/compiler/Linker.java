@@ -412,23 +412,45 @@ public class Linker {
             }
             aliases.put(t.getFunctionName(), fnName);
         } else if (t instanceof NativeCall) {
+            Clazz target = config.getClazzes().load(t.getTarget());
             NativeCall nc = (NativeCall) t;
-            Global g = new Global("native_" + mangleMethod(nc.getTarget(), 
-                    nc.getMethodName(), nc.getMethodDesc()) + "_ptr", 
-                    new NullConstant(I8_PTR));
-            module.addGlobal(g);
-            Function fn = new Function(Linkage.external, nc.getFunctionRef());
-            Value implI8Ptr = call(fn, NVM_BC_RESOLVE_NATIVE, fn.getParameterRef(0), 
-                  new GlobalRef(mangleClass(nc.getTarget()) + "_info", I8_PTR),
-                  getString(nc.getMethodName()), getString(nc.getMethodDesc()),
-                  getString(mangleNativeMethod(nc.getTarget(), nc.getMethodName())),
-                  getString(mangleNativeMethod(nc.getTarget(), nc.getMethodName(), nc.getMethodDesc())),
-                  g.ref());
-            Variable impl = fn.newVariable(nc.getFunctionType());
-            fn.add(new Bitcast(impl, implI8Ptr, impl.getType()));
-            Value result = call(fn, impl.ref(), fn.getParameterRefs());
-            fn.add(new Ret(result));
-            module.addFunction(fn);
+            String shortName = mangleNativeMethod(target.getInternalName(), nc.getMethodName());
+            String longName = mangleNativeMethod(target.getInternalName(), nc.getMethodName(), nc.getMethodDesc());
+            if (target.isInBootClasspath()) {
+                Function fnLong = new Function(Linkage.weak, longName, nc.getFunctionType());
+                call(fnLong, NVM_BC_THROW_UNSATISIFED_LINK_ERROR, fnLong.getParameterRef(0));
+                fnLong.add(new Unreachable());
+                module.addFunction(fnLong);
+                FunctionRef targetFn = fnLong.ref();
+                if (!isLongNativeFunctionNameRequired(nc)) {
+                    Function fnShort = new Function(Linkage.weak, shortName, nc.getFunctionType());
+                    Value resultInner = call(fnShort, fnLong.ref(), fnShort.getParameterRefs());
+                    fnShort.add(new Ret(resultInner));
+                    module.addFunction(fnShort);
+                    targetFn = fnShort.ref();
+                }
+                Function fn = new Function(Linkage.external, nc.getFunctionRef());
+                Value result = call(fn, targetFn, fn.getParameterRefs());
+                fn.add(new Ret(result));
+                module.addFunction(fn);
+            } else {
+                Global g = new Global("native_" + mangleMethod(nc.getTarget(), 
+                        nc.getMethodName(), nc.getMethodDesc()) + "_ptr", 
+                        new NullConstant(I8_PTR));
+                module.addGlobal(g);
+                Function fn = new Function(Linkage.external, nc.getFunctionRef());
+                Value implI8Ptr = call(fn, NVM_BC_RESOLVE_NATIVE, fn.getParameterRef(0), 
+                      new GlobalRef(mangleClass(nc.getTarget()) + "_info", I8_PTR),
+                      getString(nc.getMethodName()), getString(nc.getMethodDesc()),
+                      getString(mangleNativeMethod(nc.getTarget(), nc.getMethodName())),
+                      getString(mangleNativeMethod(nc.getTarget(), nc.getMethodName(), nc.getMethodDesc())),
+                      g.ref());
+                Variable impl = fn.newVariable(nc.getFunctionType());
+                fn.add(new Bitcast(impl, implI8Ptr, impl.getType()));
+                Value result = call(fn, impl.ref(), fn.getParameterRefs());
+                fn.add(new Ret(result));
+                module.addFunction(fn);
+            }
         } else if (t instanceof FieldAccessor) {
             ResolvedField rf = resolveField(f, (FieldAccessor) t);
             if (rf == null || !checkAccessible(f, t, rf)) {
@@ -462,6 +484,22 @@ public class Linker {
             }
             createTrampolineAliasForMethod(module, (Invoke) t, rm);
         }
+    }
+    
+    private boolean isLongNativeFunctionNameRequired(NativeCall nc) {
+        if (nc.getMethodDesc().startsWith("()")) {
+            // If the method takes no parameters the long and short names are the same
+            return true;
+        }
+        Clazz target = config.getClazzes().load(nc.getTarget());
+        List<MethodInfo> methods = target.getClazzInfo().getMethods(nc.getMethodName());
+        int nativeCount = 0;
+        for (MethodInfo mi : methods) {
+            if (mi.isNative()) {
+                nativeCount++;
+            }
+        }
+        return nativeCount > 1;
     }
     
     private void createTrampolineAliasForField(Module module, FieldAccessor t, ResolvedField rf) {

@@ -23,9 +23,11 @@ RETURN_TYPE_DOUBLE = 3
     .align    16, 0x90
     .type    _proxy0, @function
 _proxy0:
+    .cfi_startproc
+    .cfi_def_cfa %rsp, 8
 .Lproxy0Begin:
     sub   $CallInfo_size, %rsp                 # Make room for a CallInfo struct on the stack
-.Lproxy0CFI0:
+    .cfi_def_cfa_offset CallInfo_size + 8
 
     mov   %rdi, intArgs_offset+0(%rsp)         # intArgs[0] = %rdi
     mov   %rsi, intArgs_offset+8(%rsp)         # intArgs[1] = %rsi
@@ -63,46 +65,6 @@ _proxy0:
     ret
 
     .size _proxy0, . - .Lproxy0Begin
+    .cfi_endproc
 .Lproxy0End:
-    
-
-    .section    .eh_frame,"aw",@progbits
-.LEH_frame0:
-.Lsection_eh_frame0:
-.Leh_frame_common0:
-    .long    .Leh_frame_common_end0 - .Leh_frame_common_begin0 # Length of Common Information Entry
-.Leh_frame_common_begin0:
-    .long    0                       # CIE Identifier Tag
-    .byte    1                       # DW_CIE_VERSION
-    .asciz   "zR"                    # CIE Augmentation
-    .uleb128 1                       # CIE Code Alignment Factor
-    .sleb128 -8                      # CIE Data Alignment Factor
-    .byte    16                      # CIE Return Address Column
-    .uleb128 1                       # Augmentation Size
-    .byte    27                      # FDE Encoding = pcrel sdata4
-    # CFA is in %rsp+8 when entering a function
-    .byte    12                      # DW_CFA_def_cfa
-    .uleb128 7                       # Register
-    .uleb128 8                       # Offset
-    # Return address is at CFA-8
-    .byte    144                     # DW_CFA_offset + Reg (16)
-    .uleb128 1                       # Offset
-    .align    8
-.Leh_frame_common_end0:
-
-.Lproxy0.eh:
-    .long    .Lproxy0eh_frame_end0 - .Lproxy0eh_frame_begin0 ## Length of Frame Information Entry
-.Lproxy0eh_frame_begin0:
-    .long    .Lproxy0eh_frame_begin0 - .Leh_frame_common0 ## FDE CIE offset
-    .long    .Lproxy0Begin - .        ## FDE initial location
-    .long    .Lproxy0End - .Lproxy0Begin   ## FDE address range
-    .uleb128 0                       ## Augmentation size
-    # Advance to Lproxy0CFI0
-    .byte    4                       ## DW_CFA_advance_loc4
-    .long    .Lproxy0CFI0 - .Lproxy0Begin
-    # CFA is now in %rsp + CallInfo_size + 8
-    .byte    14                      ## DW_CFA_def_cfa_offset
-    .uleb128 CallInfo_size + 8       ## Offset
-    .align   8
-.Lproxy0eh_frame_end0:
 

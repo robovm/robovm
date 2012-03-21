@@ -7,17 +7,13 @@
 #include "hyport.h"
 #include "utlist.h"
 
-#define RT_DSO "libnullvm-rt.so"
-#ifdef DARWIN
-  #undef RT_DSO
-  #define RT_DSO "libnullvm-rt.dylib"
-#endif
-
 #define INITIAL_NATIVE_FRAMES_SIZE 8
 #define INITIAL_PROXY_FRAMES_SIZE 2
 
 HyPortLibraryVersion portLibraryVersion;
 HyPortLibrary portLibrary;
+
+extern jint RT_JNI_OnLoad(JavaVM* vm, void *reserved);
 
 static inline jint startsWith(char* s, char* prefix) {
     return s && strncmp(s, prefix, strlen(prefix)) == 0;
@@ -159,21 +155,9 @@ Env* nvmStartup(Options* options) {
     if (!nvmInitVMI(env)) return NULL;
     if (!nvmInitThreads(env)) return NULL;
     if (!nvmInitAttributes(env)) return NULL;
-
-    // Load nullvm-rt
-    // Try first in same dir as the executable
-    char path[PATH_MAX];
-    strcpy(path, options->basePath);
-    strcat(path, "/" RT_DSO);
-    if (!nvmLoadNativeLibrary(env, path, NULL)) {
-        // Try with no path. Maybe (DY)LD_LIBRARY_PATH has been set?
-        if (!nvmLoadNativeLibrary(env, RT_DSO, NULL)) {
-            nvmAbort("Fatal error: Failed to load " RT_DSO);
-        }
-    }
-
-    // This has to be called after nullvm-rt has been loaded
     if (!nvmInitPrimitiveWrapperClasses(env)) return NULL;
+
+    RT_JNI_OnLoad(&vm->javaVM, NULL);
 
     env->currentThread->contextClassLoader = getSystemClassLoader(env);
     if (nvmExceptionOccurred(env)) return NULL;

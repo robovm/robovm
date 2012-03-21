@@ -351,11 +351,11 @@ public class AppCompiler {
                         System.out.println();
                     }
                     public void error(String format, Object... args) {
-                        System.err.format("ERROR: " + format, args);
+                        System.err.format(format, args);
                         System.err.println();
                     }
                     public void warn(String format, Object... args) {
-                        System.out.format("WARN: " + format, args);
+                        System.out.format(format, args);
                         System.out.println();
                     }
                     public void debug(String format, Object... args) {

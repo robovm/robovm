@@ -59,30 +59,19 @@ else()
   set(OS linux)
 endif()
 
+set(EXTGC_CFLAGS "-fdata-sections -ffunction-sections")
 if(DARWIN)
-  set(EXTGC_CFLAGS "-DNO_DYLD_BIND_FULLY_IMAGE -arch ${ARCH}")
-  set(EXTGC_LDFLAGS "-no_implicit_dylibs")
+  set(EXTGC_CFLAGS "${EXTGC_CFLAGS} -DNO_DYLD_BIND_FULLY_IMAGE -arch ${ARCH}")
   if(IOS)
     set(EXTGC_CFLAGS "${EXTGC_CFLAGS} -isysroot ${SYSROOT}")
-    set(EXTGC_LDFLAGS "${EXTGC_LDFLAGS} -isysroot ${SYSROOT}")
   endif()
 endif()
 # TODO: Use CMake to build GC? There is a CMakeLists.txt but I cannot get the install to work.
 ExternalProject_Add(extgc 
   URL "http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.2alpha6.tar.gz"
   PATCH_COMMAND bash -c "patch -d ../extgc -p1 -i '${CMAKE_SOURCE_DIR}/gc-1.patch' && patch -d ../extgc -p1 -i '${CMAKE_SOURCE_DIR}/gc-2.patch'"
-  CONFIGURE_COMMAND bash -c "CFLAGS='${EXTGC_CFLAGS}' LDFLAGS='${EXTGC_LDFLAGS}' ../extgc/configure --prefix=${CMAKE_BINARY_DIR}/gc"
+  CONFIGURE_COMMAND bash -c "CFLAGS='${EXTGC_CFLAGS}' LDFLAGS='${EXTGC_LDFLAGS}' ../extgc/configure --enable-shared=no --prefix=${CMAKE_BINARY_DIR}/gc"
 )
-if(DARWIN)
-  ExternalProject_Add_Step(
-    extgc after_install 
-    COMMAND rm -f "${CMAKE_BINARY_DIR}/gc/lib/libgc.dylib"
-    COMMAND cp "${CMAKE_BINARY_DIR}/gc/lib/libgc.1.dylib" "${CMAKE_BINARY_DIR}/gc/lib/libgc.dylib"
-    COMMAND install_name_tool -id @loader_path/libgc.dylib "${CMAKE_BINARY_DIR}/gc/lib/libgc.dylib"
-    DEPENDEES install
-    COMMENT "Running install_name_tool on libgc.dylib"
-  )
-endif()
 
 include_directories(hyprt/include core/include ${ZLIB_H_PATH} ${CMAKE_BINARY_DIR}/gc/include)
 link_directories(${CMAKE_BINARY_DIR}/gc/lib)
@@ -105,6 +94,7 @@ endif()
 if(LINUX)
   SET(HY_OS linux)
   add_definitions(-DLINUX)
+  add_definitions(-fdata-sections -ffunction-sections)
   include_directories(hyprt/include/unix)
 elseif(DARWIN)
   # -no_compact_unwind prevents the linker on Mac OS X >= 10.6 from compacting FDEs since that breaks _Unwind_FindEnclosingFunction
@@ -138,11 +128,7 @@ endif()
 
 set(INSTALL_DIR ${CMAKE_SOURCE_DIR}/binaries/${OS}/${ARCH}/${CMAKE_BUILD_TYPE})
 
-if(LINUX)
-  install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.so.1.0.3 DESTINATION ${INSTALL_DIR} RENAME libgc.so.1)
-elseif(DARWIN)
-  install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.dylib DESTINATION ${INSTALL_DIR})
-endif()
+install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.a DESTINATION ${INSTALL_DIR})
 
 add_subdirectory(core/src)
 add_subdirectory(bc/src)

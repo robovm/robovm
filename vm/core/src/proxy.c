@@ -47,7 +47,7 @@ static jboolean addProxyMethods(Env* env, Class* proxyClass, Class* clazz, Proxy
                 && (!METHOD_IS_CONSTRUCTOR(method) || clazz == proxyClass->superclass)) {
 
             void* impl = NULL;
-            jint access = method->access & ((~ACC_ABSTRACT & ~ACC_NATIVE) | ACC_FINAL);
+            jint access = (method->access & (~ACC_ABSTRACT & ~ACC_NATIVE)) | ACC_FINAL;
             if (METHOD_IS_CONSTRUCTOR(method)) {
                 impl = method->impl;
                 // TODO: For now we make all constructors public to satisfy java.lang.reflect.Proxy. 
@@ -92,7 +92,7 @@ static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, I
             ProxyMethod* proxyMethod = hasMethod(env, proxyClass, method->name, method->desc);
             if (nvmExceptionOccurred(env)) return FALSE;
             if (!proxyMethod) { 
-                jint access = method->access & ((~ACC_ABSTRACT) | ACC_FINAL);
+                jint access = (method->access & (~ACC_ABSTRACT)) | ACC_FINAL;
                 proxyMethod = addProxyMethod(env, proxyClass, method, access, _proxy0);
                 if (!proxyMethod) return FALSE;
             }

@@ -166,7 +166,17 @@ public class ClazzInfo implements Serializable {
         }
         return null;
     }
-    
+
+    public List<MethodInfo> getMethods(String name) {
+        List<MethodInfo> result = new ArrayList<MethodInfo>();
+        for (MethodInfo m : methods) {
+            if (m.getName().equals(name)) {
+                result.add(m);
+            }
+        }
+        return result;
+    }
+
     public List<MethodInfo> getMethods() {
         return Collections.unmodifiableList(methods);
     }

@@ -544,7 +544,7 @@ getPlatformHardwareAddress(JNIEnv * env, jstring ifname, jint index)
 }
 
 #if defined(HAS_RTNETLINK)
-void 
+static void 
 initNetlinkContext (I_32 netlinkSocketHandle,
                     struct netlinkContext_struct * netlinkContext)
 {
@@ -555,7 +555,7 @@ initNetlinkContext (I_32 netlinkSocketHandle,
 }
 
 
-void cleanupNetlinkContext(JNIEnv * env, struct netlinkContext_struct *nlc) 
+static void cleanupNetlinkContext(JNIEnv * env, struct netlinkContext_struct *nlc) 
 {
     if (nlc && nlc->buffer) {
         PORT_ACCESS_FROM_ENV (env);
@@ -565,7 +565,7 @@ void cleanupNetlinkContext(JNIEnv * env, struct netlinkContext_struct *nlc)
     }
 }
 
-jint getNextNetlinkMsg (JNIEnv * env, 
+static jint getNextNetlinkMsg (JNIEnv * env, 
                    struct netlinkContext_struct * netlinkContext,
                    struct nlmsghdr ** nextMessage)
 {

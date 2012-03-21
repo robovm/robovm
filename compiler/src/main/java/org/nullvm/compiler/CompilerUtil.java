@@ -45,6 +45,8 @@ public class CompilerUtil {
         if (config.getCpu() != null) {
             opts.add("-mcpu=" + config.getCpu());
         }
+        opts.add("-ffunction-sections");
+        opts.add("-fdata-sections");
     
         outFile.getParentFile().mkdirs();
         exec(config, llcPath, opts, "-o=" + outFile.toString(), inFile);

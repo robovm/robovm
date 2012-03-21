@@ -9,8 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -30,7 +30,7 @@ public class ZipFilePath extends AbstractPath {
     
     @Override
     protected Set<Clazz> doListClasses() {
-        Set<Clazz> s = new HashSet<Clazz>();
+        Set<Clazz> s = new TreeSet<Clazz>();
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
         while (entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();

@@ -75,7 +75,7 @@ public class IOSSimTarget extends AbstractTarget {
 
     @Override
     protected void doBuild(String ccPath, File outFile, List<String> ccArgs,
-            List<File> objectFiles, List<File> libFiles, List<String> libArgs)
+            List<File> objectFiles, List<String> libArgs)
             throws IOException {
 
         ccArgs.add("-isysroot");
@@ -84,7 +84,7 @@ public class IOSSimTarget extends AbstractTarget {
         } else {
             ccArgs.add(listSDKs(iosSimBinPath).get(0).root.getAbsolutePath());
         }
-        super.doBuild(ccPath, outFile, ccArgs, objectFiles, libFiles, libArgs);
+        super.doBuild(ccPath, outFile, ccArgs, objectFiles, libArgs);
     }
     
     @Override

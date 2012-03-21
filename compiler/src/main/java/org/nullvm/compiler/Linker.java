@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,7 +32,6 @@ import org.nullvm.compiler.clazz.ClazzInfo;
 import org.nullvm.compiler.clazz.ClazzInfo.FieldInfo;
 import org.nullvm.compiler.clazz.ClazzInfo.MethodInfo;
 import org.nullvm.compiler.clazz.Clazzes;
-import org.nullvm.compiler.clazz.Package;
 import org.nullvm.compiler.clazz.Path;
 import org.nullvm.compiler.hash.HashTableGenerator;
 import org.nullvm.compiler.hash.ModifiedUtf8HashFunction;
@@ -113,15 +113,19 @@ public class Linker {
         return Pattern.compile(sb.toString());
     }
     
-    private Set<Clazz> getMatchingClasses(String pattern) {
+    private Collection<Clazz> getMatchingClasses(String pattern) {
         Pattern regexp = antPatternToRegexp(pattern);
-        Set<Clazz> matches = new HashSet<Clazz>();
-        for (Clazz clazz : config.getClazzes().listClasses()) {
-            if (regexp.matcher(clazz.getClassName()).matches()) {
-                matches.add(clazz);
+        Map<String, Clazz> matches = new HashMap<String, Clazz>();
+        for (Path path : config.getClazzes().getPaths()) {
+            for (Clazz clazz : path.listClasses()) {
+                if (!matches.containsKey(clazz.getClassName()) 
+                        && regexp.matcher(clazz.getClassName()).matches()) {
+                    
+                    matches.put(clazz.getClassName(), clazz);
+                }
             }
         }
-        return matches;
+        return matches.values();
     }
     
     private Set<Clazz> getRootClasses() {
@@ -151,7 +155,7 @@ public class Linker {
                     }
                     classes.add(clazz);
                 } else {
-                    Set<Clazz> matches = getMatchingClasses(root);
+                    Collection<Clazz> matches = getMatchingClasses(root);
                     if (matches.isEmpty()) {
                         config.getLogger().warn("Root pattern %s matches no classes", root);
                     } else {
@@ -313,17 +317,10 @@ public class Linker {
         List<File> objectFiles = new ArrayList<File>();
         objectFiles.add(linkerS);
         
-        Set<Package> packages = new TreeSet<Package>();
         for (Clazz clazz : required) {
-            packages.add(clazz.getPackage());
             objectFiles.add(config.getOFile(clazz));
         }
-        List<File> libFiles = new ArrayList<File>();
-//        libFiles.add(linkerS);
-//        for (Package pack : packages) {
-//            libFiles.add(config.getStaticLibrary(pack));
-//        }
-        config.getTarget().build(objectFiles, libFiles, aliases);
+        config.getTarget().build(objectFiles, aliases);
     }
     
     private void createTrampoline(Module module, Trampoline t) {

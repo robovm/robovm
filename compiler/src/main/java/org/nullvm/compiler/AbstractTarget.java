@@ -49,7 +49,7 @@ public abstract class AbstractTarget implements Target {
         return true;
     }
     
-    public void build(List<File> objectFiles, List<File> libFiles, Map<String, String> aliases) throws IOException {
+    public void build(List<File> objectFiles, Map<String, String> aliases) throws IOException {
         File outFile = new File(config.getTmpDir(), config.getExecutable());
         
         config.getLogger().debug("Building executable %s", outFile);
@@ -111,13 +111,13 @@ public abstract class AbstractTarget implements Target {
             ccArgs.add("-Wl,-no_compact_unwind");
         }
      
-        doBuild(ccPath, outFile, ccArgs, objectFiles, libFiles, libArgs);
+        doBuild(ccPath, outFile, ccArgs, objectFiles, libArgs);
     }
     
     protected void doBuild(String ccPath, File outFile, List<String> ccArgs, List<File> objectFiles, 
-            List<File> libFiles, List<String> libArgs) throws IOException {
+            List<String> libArgs) throws IOException {
         
-        CompilerUtil.exec(config, ccPath, "-o", outFile, "-g", ccArgs, objectFiles, libFiles, libArgs);        
+        CompilerUtil.exec(config, ccPath, "-o", outFile, "-g", ccArgs, objectFiles, libArgs);        
     }
     
     public void install() throws IOException {

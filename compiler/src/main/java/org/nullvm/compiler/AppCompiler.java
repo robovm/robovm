@@ -15,7 +15,6 @@ import java.util.Set;
 
 import org.apache.commons.exec.ExecuteException;
 import org.nullvm.compiler.clazz.Clazz;
-import org.nullvm.compiler.clazz.Package;
 import org.nullvm.compiler.clazz.Path;
 
 /**
@@ -31,55 +30,6 @@ public class AppCompiler {
         this.config = config;
         this.classCompiler = new ClassCompiler(config);
         this.linker = new Linker(config);
-    }
-
-    private void linkStatic(File wd, List<File> files, File outFile) throws IOException {
-        List<String> relFiles = new ArrayList<String>(files.size());
-        for (File f : files) {
-            relFiles.add(f.getAbsolutePath().substring(wd.getAbsolutePath().length() + 1));
-        }
-        
-        String arPath = "ar";
-        if (config.getArBinPath() != null) {
-            arPath = config.getArBinPath().getAbsolutePath();
-        }
-
-        outFile.getParentFile().mkdirs();
-        
-        List<List<String>> parts = new ArrayList<List<String>>();
-        parts.add(relFiles);
-        
-        while (true) {
-            outFile.delete();
-            try {
-                for (List<String> l : parts) {
-                    CompilerUtil.exec(config, wd, arPath, "rcs", outFile, l);
-                }
-                break;
-            } catch (IOException e) {
-                if (e.getMessage() != null && e.getMessage().contains("Argument list too long")) {
-                    config.getLogger().debug("Got 'Argument list too long' error when running ar. " 
-                                + "Will try again using %d calls to ar.", parts.size() * 2);
-                    List<List<String>> oldParts = parts;
-                    parts = new ArrayList<List<String>>();
-                    for (List<String> l : oldParts) {
-                        int size = l.size();
-                        if (size > 1) {
-                            parts.add(l.subList(0, size / 2));
-                            parts.add(l.subList(size / 2, size));
-                        } else {
-                            parts.add(l);
-                        }
-                    }
-                    if (parts.size() == relFiles.size()) {
-                        // We have split as much as possible but the argument list is still too long.
-                        throw e;
-                    }
-                } else {
-                    throw e;
-                }
-            }
-        }
     }
 
     private boolean rebuildStructDependents(Collection<String> dirtyStructs, 
@@ -142,125 +92,10 @@ public class AppCompiler {
         }
         
         if (!config.isSkipLinking()) {
-            
-//            Set<Path> paths = new HashSet<Path>();
-//            for (Clazz clazz : compiled) {
-//                paths.add(clazz.getPath());
-//            }
-//            
-//            for (Path path : paths) {
-//                for (Package pack : path.listPackages()) {
-//                    File libFile = config.getStaticLibrary(pack);
-//                    List<File> objectFiles = new ArrayList<File>();
-//                    for (Clazz clazz : pack.listClasses()) {
-//                        objectFiles.add(config.getOFile(clazz));
-//                    }
-//                    linkStatic(config.getCacheDir(path), objectFiles, libFile);
-//                }
-//            }
-            
             linker.link();
         }
-//        if (config.isDebug()) {
-//            List<File> libFiles = new ArrayList<File>();
-//            for (Path path : paths) {
-//                buildClasspathEntry(path);
-////                if (libFile != null) {
-////                    libFiles.add(libFile);
-////                }
-//            }
-////            if (!config.isSkipLinking()) {
-////                buildExecutable(paths, libFiles);
-////            }
-//        } else {
-//            throw new IllegalArgumentException("Release build not yet implemented");
-//        }
     }
         
-//    private void buildExecutable(List<Path> paths, List<File> libFiles) throws IOException {
-//        Module module = new Module();
-//        
-//        List<Value> bootClasspathValues = new ArrayList<Value>();
-//        List<Value> classpathValues = new ArrayList<Value>();
-//        for (Path path : paths) {
-//            String entryName = null;
-//            if (config.isSkipInstall() && config.getTarget().canLaunchInPlace()) {
-//                entryName = path.getFile().getAbsolutePath();
-//            } else {
-//                entryName = config.getTarget().getInstallRelativeArchivePath(path);
-//            }
-//            byte[] modUtf8 = Strings.stringToModifiedUtf8(entryName);
-//            Global var = new Global(Strings.getStringVarName(modUtf8), Linkage.linker_private_weak, 
-//                    new StringConstant(modUtf8), true);
-//            module.addGlobal(var);
-//            if (path.isInBootClasspath()) {
-//                bootClasspathValues.add(new ConstantGetelementptr(var.ref(), 0, 0));
-//            } else {
-//                classpathValues.add(new ConstantGetelementptr(var.ref(), 0, 0));
-//            }
-//        }
-//        bootClasspathValues.add(new NullConstant(Type.I8_PTR));
-//        classpathValues.add(new NullConstant(Type.I8_PTR));
-//        Global gBootClasspathValues = module.newGlobal(new ArrayConstant(
-//                new ArrayType(bootClasspathValues.size(), Type.I8_PTR), 
-//                bootClasspathValues.toArray(new Value[0])), true);
-//        module.addGlobal(new Global("_nvmBcBootclasspath", new ConstantGetelementptr(gBootClasspathValues.ref(), 0, 0)));
-//        Global gClasspathValues = module.newGlobal(new ArrayConstant(
-//                new ArrayType(classpathValues.size(), Type.I8_PTR), 
-//                classpathValues.toArray(new Value[0])), true);
-//        module.addGlobal(new Global("_nvmBcClasspath", new ConstantGetelementptr(gClasspathValues.ref(), 0, 0)));
-//            
-//        List<Value> bootClassesValues = new ArrayList<Value>();
-//        List<Value> classesValues = new ArrayList<Value>();
-//        Set<String> seenClasses = new HashSet<String>();
-//        for (Path path : paths) {
-//            for (Clazz c : path.list()) {
-//                if (seenClasses.contains(c.getInternalName())) {
-//                    continue;
-//                }
-//                seenClasses.add(c.getInternalName());
-//                
-//                byte[] modUtf8 = Strings.stringToModifiedUtf8(c.getInternalName());
-//                Global var = new Global(Strings.getStringVarName(modUtf8), Linkage.linker_private_weak, 
-//                        new StringConstant(modUtf8), true);
-//                module.addGlobal(var);
-//                String funcName = "NullVM_" + Mangler.mangleString(c.getInternalName());
-//                FunctionDeclaration func = new FunctionDeclaration(funcName, new FunctionType(Type.I8_PTR, Type.I8_PTR, Type.I8_PTR, Type.I8_PTR));
-//                module.addFunctionDeclaration(func);
-//                Value value = new StructureConstant(new StructureType(Type.I8_PTR, Type.I8_PTR), 
-//                        new ConstantGetelementptr(var.ref(), 0, 0),
-//                        new ConstantBitcast(func.ref(), Type.I8_PTR));
-//                if (path.isInBootClasspath()) {
-//                    bootClassesValues.add(value);
-//                } else {
-//                    classesValues.add(value);
-//                }
-//            }
-//        }
-//        bootClassesValues.add(new StructureConstant(new StructureType(Type.I8_PTR, Type.I8_PTR), new NullConstant(Type.I8_PTR), new NullConstant(Type.I8_PTR)));
-//        classesValues.add(new StructureConstant(new StructureType(Type.I8_PTR, Type.I8_PTR), new NullConstant(Type.I8_PTR), new NullConstant(Type.I8_PTR)));
-//        Global gBootClassesValues = module.newGlobal(new ArrayConstant(
-//                new ArrayType(bootClassesValues.size(), new StructureType(Type.I8_PTR, Type.I8_PTR)), 
-//                bootClassesValues.toArray(new Value[0])), true);
-//        module.addGlobal(new Global("_nvmBcBootClasses", new ConstantGetelementptr(gBootClassesValues.ref(), 0, 0)));
-//        Global gClassesValues = module.newGlobal(new ArrayConstant(
-//                new ArrayType(classesValues.size(), new StructureType(Type.I8_PTR, Type.I8_PTR)), 
-//                classesValues.toArray(new Value[0])), true);
-//        module.addGlobal(new Global("_nvmBcClasses", new ConstantGetelementptr(gClassesValues.ref(), 0, 0)));
-//        
-//        if (config.getMainClass() != null) {
-//            Global g = module.newGlobal(new StringConstant(Strings.stringToModifiedUtf8(config.getMainClass())), true);
-//            module.addGlobal(new Global("_nvmBcMainClass", new ConstantGetelementptr(g.ref(), 0, 0)));
-//        }
-//        
-//        File configLl = new File(config.getTmpDir(), "config.ll");
-//        FileUtils.writeStringToFile(configLl, module.toString(), "UTF-8");
-//        File configS = new File(config.getTmpDir(), "config.s");
-//        CompilerUtil.llc(config, configLl, configS);
-//        
-//        config.getTarget().build(Collections.singletonList(configS), libFiles);
-//    }
-
     public static void main(String[] args) throws IOException {
         
         AppCompiler compiler = null;

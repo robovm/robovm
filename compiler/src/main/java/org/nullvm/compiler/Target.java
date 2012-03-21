@@ -13,7 +13,7 @@ public interface Target {
 
     boolean canLaunchInPlace();
 
-    void build(List<File> objectFiles, List<File> libFiles, Map<String, String> aliases) throws IOException;
+    void build(List<File> objectFiles, Map<String, String> aliases) throws IOException;
 
     void install() throws IOException;
 

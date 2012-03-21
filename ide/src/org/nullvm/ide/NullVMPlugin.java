@@ -71,6 +71,7 @@ public class NullVMPlugin extends AbstractUIPlugin {
     private MessageConsole console;
     private MessageConsoleStream debugStream;
     private MessageConsoleStream infoStream;
+    private MessageConsoleStream warnStream;
     private MessageConsoleStream errorStream;
     
     private static Logger consoleLogger = new Logger() {
@@ -81,6 +82,10 @@ public class NullVMPlugin extends AbstractUIPlugin {
         @Override
         public void error(String format, Object... args) {
             NullVMPlugin.consoleError(format, args);
+        }
+        @Override
+        public void warn(String format, Object... args) {
+            NullVMPlugin.consoleWarn(format, args);
         }
         @Override
         public void debug(String format, Object... args) {
@@ -100,11 +105,16 @@ public class NullVMPlugin extends AbstractUIPlugin {
         debugStream = console.newMessageStream();
         final Color debugColor = new Color(display, 0x99, 0x99, 0x99);
         infoStream = console.newMessageStream();
+        final Color infoColor = new Color(display, 0x00, 0xB0, 0x00);
+        warnStream = console.newMessageStream();
+        final Color warnColor = new Color(display, 0xFF, 0x00, 0xFF);
         errorStream = console.newMessageStream();
         final Color errorColor = new Color(display, 0xFF, 0x00, 0x00);
         display.asyncExec(new Runnable() {
             public void run() {
                 debugStream.setColor(debugColor);
+                infoStream.setColor(infoColor);
+                warnStream.setColor(warnColor);
                 errorStream.setColor(errorColor);
             }
         });
@@ -285,6 +295,14 @@ public class NullVMPlugin extends AbstractUIPlugin {
             String msg = String.format(format, args);
             plugin.infoStream.println(now() + ": [ INFO] " + msg);
             showConsoleIfFirstWrite();
+        }
+    }
+
+    public static synchronized void consoleWarn(String format, Object ... args) {
+        if (plugin != null) {
+            String msg = String.format(format, args);
+            plugin.warnStream.println(now() + ": [ WARN] " + msg);
+            showConsole();
         }
     }
     

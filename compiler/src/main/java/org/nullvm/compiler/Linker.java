@@ -129,7 +129,7 @@ public class Linker {
     }
     
     private Set<Clazz> getRootClasses() {
-        Set<Clazz> classes = new HashSet<Clazz>();
+        Set<Clazz> classes = new TreeSet<Clazz>();
         classes.addAll(getMatchingClasses("java.lang.**.*"));
         classes.addAll(getMatchingClasses("org.apache.harmony.lang.annotation.*"));
         classes.addAll(getMatchingClasses("org.apache.harmony.niochar.*"));
@@ -220,7 +220,7 @@ public class Linker {
             }
         }
         
-        return required;
+        return new TreeSet<Clazz>(required);
     }
     
     public void link() throws IOException {

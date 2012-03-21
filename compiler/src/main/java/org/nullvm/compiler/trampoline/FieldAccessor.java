@@ -13,6 +13,8 @@ import static org.nullvm.compiler.Mangler.*;
  * @version $Id$
  */
 public abstract class FieldAccessor extends Trampoline {
+    private static final long serialVersionUID = 1L;
+    
     protected final String fieldName;
     protected final String fieldDesc;
 

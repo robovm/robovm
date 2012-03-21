@@ -16,7 +16,8 @@ import org.nullvm.compiler.llvm.Type;
  * @version $Id$
  */
 public class ExceptionMatch extends Trampoline {
-
+    private static final long serialVersionUID = 1L;
+    
     public ExceptionMatch(String callingClass, String targetClass) {
         super(callingClass, targetClass);
     }

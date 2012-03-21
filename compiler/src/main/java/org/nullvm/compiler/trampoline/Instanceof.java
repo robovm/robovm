@@ -16,7 +16,8 @@ import org.nullvm.compiler.llvm.Type;
  * @version $Id$
  */
 public class Instanceof extends Trampoline {
-
+    private static final long serialVersionUID = 1L;
+    
     public Instanceof(String callingClass, String targetClass) {
         super(callingClass, targetClass);
     }

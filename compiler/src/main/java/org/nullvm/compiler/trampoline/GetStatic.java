@@ -15,7 +15,8 @@ import org.nullvm.compiler.llvm.FunctionType;
  * @version $Id$
  */
 public class GetStatic extends FieldAccessor {
-
+    private static final long serialVersionUID = 1L;
+    
     public GetStatic(String callingClass, String targetClass, String fieldName, String fieldDesc) {
         super(callingClass, targetClass, fieldName, fieldDesc);
     }

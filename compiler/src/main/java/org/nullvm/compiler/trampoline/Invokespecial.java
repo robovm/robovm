@@ -13,6 +13,8 @@ import static org.nullvm.compiler.Mangler.*;
  * @version $Id$
  */
 public class Invokespecial extends Invoke {
+    private static final long serialVersionUID = 1L;
+    
     private final String runtimeClass;
 
     public Invokespecial(String callingClass, String targetClass, String methodName, String methodDesc, String runtimeClass) {

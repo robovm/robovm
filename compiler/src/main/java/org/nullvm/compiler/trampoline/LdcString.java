@@ -16,7 +16,8 @@ import org.nullvm.compiler.llvm.FunctionType;
  * @version $Id$
  */
 public class LdcString extends Trampoline {
-
+    private static final long serialVersionUID = 1L;
+    
     public LdcString(String callingClass, String string) {
         super(callingClass, string);
     }

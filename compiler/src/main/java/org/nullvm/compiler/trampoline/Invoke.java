@@ -17,6 +17,8 @@ import org.nullvm.compiler.llvm.FunctionType;
  * @version $Id$
  */
 public abstract class Invoke extends Trampoline {
+    private static final long serialVersionUID = 1L;
+    
     private final String methodName;
     private final String methodDesc;
 

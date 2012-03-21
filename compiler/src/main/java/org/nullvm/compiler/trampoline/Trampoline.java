@@ -18,6 +18,8 @@ import org.nullvm.compiler.llvm.FunctionType;
  * @version $Id$
  */
 public abstract class Trampoline implements Comparable<Trampoline>, Serializable {
+    private static final long serialVersionUID = 1L;
+    
     protected final String callingClass;
     protected final String target;
 

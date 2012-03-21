@@ -16,6 +16,8 @@ import org.nullvm.compiler.llvm.FunctionType;
  * @version $Id$
  */
 public class NativeCall extends Trampoline {
+    private static final long serialVersionUID = 1L;
+    
     private final String methodName;
     private final String methodDesc;
     private final boolean ztatic;

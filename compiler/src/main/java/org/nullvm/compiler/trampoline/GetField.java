@@ -16,6 +16,8 @@ import org.nullvm.compiler.llvm.FunctionType;
  * @version $Id$
  */
 public class GetField extends FieldAccessor {
+    private static final long serialVersionUID = 1L;
+    
     private final String runtimeClass;
 
     public GetField(String callingClass, String targetClass, String fieldName, String fieldDesc, String runtimeClass) {

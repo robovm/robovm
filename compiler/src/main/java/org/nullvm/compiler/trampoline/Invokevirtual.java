@@ -13,6 +13,8 @@ import static org.nullvm.compiler.Mangler.*;
  * @version $Id$
  */
 public class Invokevirtual extends Invoke {
+    private static final long serialVersionUID = 1L;
+    
     private final String runtimeClass;
 
     public Invokevirtual(String callingClass, String targetClass, String methodName, String methodDesc, String runtimeClass) {

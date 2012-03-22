@@ -21,7 +21,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.nullvm.compiler.clazz.Clazz;
 import org.nullvm.compiler.clazz.Clazzes;
-import org.nullvm.compiler.clazz.Package;
 import org.nullvm.compiler.clazz.Path;
 
 /**
@@ -33,8 +32,6 @@ public class Config {
     private String executable = null;
     private File nullVMHomeDir = null;
     private File cacheDir = new File(System.getProperty("user.home"), ".nullvm/cache");
-    private File llvmCacheDir = null;
-    private File objectCacheDir = null;
     private File llvmHomeDir = null;
     private File ccBinPath = null;
     private File arBinPath = null;
@@ -212,7 +209,7 @@ public class Config {
         if (path.getFile().isFile()) {
             return path.getFile();
         }
-        File archive = new File(getLlvmCacheDir(path).getParentFile(), getArchiveName(path));
+        File archive = new File(getCacheDir(path).getParentFile(), getArchiveName(path));
         if (!archive.exists() || path.hasChangedSince(archive.lastModified())) {
             try {
                 createArchive(path.getFile(), archive, false);
@@ -221,18 +218,6 @@ public class Config {
             }
         }
         return archive;
-    }
-    
-    public File getBcLibrary(Package packag) {
-        Path path = packag.getPath();
-        return new File(getLlvmCacheDir(path).getParentFile(), 
-                "lib" + getArchiveName(path) + "." + packag.getName() + ".a");
-    }
-
-    public File getStaticLibrary(Package packag) {
-        Path path = packag.getPath();
-        return new File(getObjectCacheDir(path).getParentFile(), 
-                "lib" + getArchiveName(path) + "." + packag.getName() + ".a");
     }
     
     public File getLlFile(Clazz clazz) {
@@ -266,38 +251,6 @@ public class Config {
             srcRoot = srcRoot.getParentFile();
         }
         File osDir = new File(cacheDir, os.toString());
-        File archDir = new File(osDir, arch.toString());
-        File cpuDir = new File(archDir, cpu == null ? "default" : cpu);
-        try {
-            return new File(makeFileRelativeTo(cpuDir, 
-                    srcRoot.getCanonicalFile()), 
-                    getArchiveName(path) + ".classes");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
-    public File getLlvmCacheDir(Path path) {
-        try {
-            File srcRoot = path.getFile();
-            if (path.getFile().isFile()) {
-                srcRoot = srcRoot.getParentFile();
-            }
-            return new File(makeFileRelativeTo(llvmCacheDir, 
-                    srcRoot.getCanonicalFile()), 
-                    getArchiveName(path) + ".classes");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
-    public File getObjectCacheDir(Path path) {
-        File srcRoot = path.getFile();
-        if (path.getFile().isFile()) {
-            srcRoot = srcRoot.getParentFile();
-        }
-        File rootDir = new File(objectCacheDir, debug ? "debug" : "release");
-        File osDir = new File(rootDir, os.toString());
         File archDir = new File(osDir, arch.toString());
         File cpuDir = new File(archDir, cpu == null ? "default" : cpu);
         try {
@@ -355,10 +308,6 @@ public class Config {
         osArchDepLibDir = new File(new File(new File(homeLib, os.toString()), arch.toString()), debug ? "Debug" : "Release");
         
         cacheDir.mkdirs();
-        llvmCacheDir = new File(cacheDir, "llvm");
-        llvmCacheDir.mkdirs();
-        objectCacheDir = new File(cacheDir, "object");
-        objectCacheDir.mkdirs();
 
         if (executable == null) {
             executable = mainClass;

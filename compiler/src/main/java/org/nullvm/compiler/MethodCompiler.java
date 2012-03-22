@@ -546,9 +546,11 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 return true;
             }
             if (expr instanceof VirtualInvokeExpr) {
-                // Either the class or the method must be final
+                // Either the class or the method must be final or 
+                // the method must be private
                 return Modifier.isFinal(sootClass.getModifiers()) 
-                        || Modifier.isFinal(method.getModifiers());
+                        || Modifier.isFinal(method.getModifiers()) 
+                        || method.isPrivate();
             }
             return false;
         } catch (RuntimeException e) {

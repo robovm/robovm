@@ -18,7 +18,7 @@ export PATH
 
 mkdir -p $HOME/.nullvm/vts/
 mkdir -p $HOME/.nullvm/vts/nullvm-home/lib/
-rsync -a $BASE/vm/binaries/ $HOME/.nullvm/vts/nullvm-home/lib/
+rsync -a --delete $BASE/vm/binaries/ $HOME/.nullvm/vts/nullvm-home/lib/
 cp -p $BASE/rt/target/nullvm-rt-*.jar $HOME/.nullvm/vts/nullvm-home/lib/nullvm-rt.jar
 
 n=0
@@ -55,7 +55,7 @@ done
 #echo "MAINCLASS=$MAINCLASS"
 
 if [ ! -x $TARGET/vts ]; then
-  java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -Xss1024k -jar $COMPILER_JAR -home $HOME/.nullvm/vts/nullvm-home -d $TARGET -arch $ARCH -o vts -debug -verbose -cp $CP
+  java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -Xss1024k -jar $COMPILER_JAR -home $HOME/.nullvm/vts/nullvm-home -tmp /tmp/nullvm-vts.tmp -d $TARGET -arch $ARCH -o vts -debug -verbose -cp $CP
 fi
 
 LIBPATH=$TARGET

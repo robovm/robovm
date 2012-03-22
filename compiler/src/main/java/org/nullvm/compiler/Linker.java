@@ -336,7 +336,7 @@ public class Linker {
          * ClassCompiler will be overridden with a function which throws an
          * appropriate exception.
          */
-        Function f = new Function(Linkage.linker_private, t.getFunctionRef());
+        Function f = new Function(Linkage.external, t.getFunctionRef());
         if (!checkClassExists(f, t) || !checkClassAccessible(f, t)) {
             module.addFunction(f);
             return;
@@ -476,6 +476,15 @@ public class Linker {
         } else if (t instanceof Invoke) {
             ResolvedMethod rm = resolveMethod(f, (Invoke) t);
             if (rm == null || !checkAccessible(f, t, rm)) {
+                module.addFunction(f);
+                return;
+            }
+            if (t instanceof Invokespecial && rm.method.isAbstract()) {
+                call(f, NVM_BC_THROW_ABSTRACT_METHOD_ERROR, f.getParameterRef(0), 
+                        getString(String.format("%s.%s%s", 
+                                rm.clazz.getClassName(), rm.method.getName(), 
+                                rm.method.getDesc())));
+                f.add(new Unreachable());
                 module.addFunction(f);
                 return;
             }

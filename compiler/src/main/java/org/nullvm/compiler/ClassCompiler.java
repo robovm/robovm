@@ -110,63 +110,68 @@ public class ClassCompiler {
     private static final VariableRef ENV = new VariableRef("env", ENV_PTR);
     private static final Global THE_CLASS = new Global("class", Linkage._private, new NullConstant(CLASS_PTR));
     
-    private static final int CI_FLAGS_BITS = 10;
-    private static final int CI_INTERFACE_COUNT_BITS = 6;
-    private static final int CI_INTERFACE_COUNT_MASK = (1 << CI_INTERFACE_COUNT_BITS) - 1;
-    private static final int CI_FIELD_COUNT_BITS = 8;
-    private static final int CI_FIELD_COUNT_MASK = (1 << CI_FIELD_COUNT_BITS) - 1;
-    private static final int CI_METHOD_COUNT_BITS = 8;
-    private static final int CI_METHOD_COUNT_MASK = (1 << CI_METHOD_COUNT_BITS) - 1;
-    private static final int CI_PUBLIC = 0x1;
-    private static final int CI_FINAL = 0x2;
-    private static final int CI_INTERFACE = 0x4;
-    private static final int CI_ABSTRACT = 0x8;
-    private static final int CI_SYNTHETIC = 0x10;
-    private static final int CI_ANNOTATION = 0x20;
-    private static final int CI_ENUM = 0x40;
-    private static final int CI_ATTRIBUTES = 0x80;
-    private static final int CI_ERROR = 0x100;
-    private static final int CI_INITIALIZED = 0x200;
+    public static final int CI_FLAGS_BITS = 10;
+    public static final int CI_INTERFACE_COUNT_BITS = 6;
+    public static final int CI_INTERFACE_COUNT_MASK = (1 << CI_INTERFACE_COUNT_BITS) - 1;
+    public static final int CI_FIELD_COUNT_BITS = 8;
+    public static final int CI_FIELD_COUNT_MASK = (1 << CI_FIELD_COUNT_BITS) - 1;
+    public static final int CI_METHOD_COUNT_BITS = 8;
+    public static final int CI_METHOD_COUNT_MASK = (1 << CI_METHOD_COUNT_BITS) - 1;
+    public static final int CI_PUBLIC = 0x1;
+    public static final int CI_FINAL = 0x2;
+    public static final int CI_INTERFACE = 0x4;
+    public static final int CI_ABSTRACT = 0x8;
+    public static final int CI_SYNTHETIC = 0x10;
+    public static final int CI_ANNOTATION = 0x20;
+    public static final int CI_ENUM = 0x40;
+    public static final int CI_ATTRIBUTES = 0x80;
+    public static final int CI_ERROR = 0x100;
+    public static final int CI_INITIALIZED = 0x200;
 
-//    private static final int FI_ACCESS_MASK = 0x3;
-    private static final int FI_PUBLIC = 0x1;
-    private static final int FI_PRIVATE = 0x2;
-    private static final int FI_PROTECTED = 0x3;
-    private static final int FI_STATIC = 0x4;
-    private static final int FI_FINAL = 0x8;
-    private static final int FI_VOLATILE = 0x10;
-    private static final int FI_TRANSIENT = 0x20;
-    private static final int FI_SYNTHETIC = 0x40;
-    private static final int FI_ENUM = 0x80;
-    private static final int FI_ATTRIBUTES = 0x100;
+    public static final int CI_ERROR_TYPE_NONE = 0x0;
+    public static final int CI_ERROR_TYPE_NO_CLASS_DEF_FOUND = 0x1;
+    public static final int CI_ERROR_TYPE_ILLEGAL_ACCESS = 0x2;
+    public static final int CI_ERROR_TYPE_INCOMPATIBLE_CLASS_CHANGE = 0x3;
     
-    private static final int MI_ACCESS_MASK = 0x3;
-    private static final int MI_PUBLIC = 0x1;
-    private static final int MI_PRIVATE = 0x2;
-    private static final int MI_PROTECTED = 0x3;
-    private static final int MI_STATIC = 0x4;
-    private static final int MI_FINAL = 0x8;
-    private static final int MI_SYNCHRONIZED = 0x10;
-    private static final int MI_BRIDGE = 0x20;
-    private static final int MI_VARARGS = 0x40;
-    private static final int MI_NATIVE = 0x80;
-    private static final int MI_ABSTRACT = 0x100;
-    private static final int MI_STRICT = 0x200;
-    private static final int MI_SYNTHETIC = 0x400;
-    private static final int MI_ATTRIBUTES = 0x800;
-    private static final int MI_BRO_BRIDGE = 0x1000;
-    private static final int MI_BRO_CALLBACK = 0x2000;
-    private static final int MI_COMPACT_DESC = 0x4000;
+    public static final int FI_ACCESS_MASK = 0x3;
+    public static final int FI_PUBLIC = 0x1;
+    public static final int FI_PRIVATE = 0x2;
+    public static final int FI_PROTECTED = 0x3;
+    public static final int FI_STATIC = 0x4;
+    public static final int FI_FINAL = 0x8;
+    public static final int FI_VOLATILE = 0x10;
+    public static final int FI_TRANSIENT = 0x20;
+    public static final int FI_SYNTHETIC = 0x40;
+    public static final int FI_ENUM = 0x80;
+    public static final int FI_ATTRIBUTES = 0x100;
     
-    private static final int DESC_B = 1;
-    private static final int DESC_C = 2;
-    private static final int DESC_D = 3;
-    private static final int DESC_F = 4;
-    private static final int DESC_I = 5;
-    private static final int DESC_J = 6;
-    private static final int DESC_S = 7;
-    private static final int DESC_Z = 8;
-    private static final int DESC_V = 9;
+    public static final int MI_ACCESS_MASK = 0x3;
+    public static final int MI_PUBLIC = 0x1;
+    public static final int MI_PRIVATE = 0x2;
+    public static final int MI_PROTECTED = 0x3;
+    public static final int MI_STATIC = 0x4;
+    public static final int MI_FINAL = 0x8;
+    public static final int MI_SYNCHRONIZED = 0x10;
+    public static final int MI_BRIDGE = 0x20;
+    public static final int MI_VARARGS = 0x40;
+    public static final int MI_NATIVE = 0x80;
+    public static final int MI_ABSTRACT = 0x100;
+    public static final int MI_STRICT = 0x200;
+    public static final int MI_SYNTHETIC = 0x400;
+    public static final int MI_ATTRIBUTES = 0x800;
+    public static final int MI_BRO_BRIDGE = 0x1000;
+    public static final int MI_BRO_CALLBACK = 0x2000;
+    public static final int MI_COMPACT_DESC = 0x4000;
+    
+    public static final int DESC_B = 1;
+    public static final int DESC_C = 2;
+    public static final int DESC_D = 3;
+    public static final int DESC_F = 4;
+    public static final int DESC_I = 5;
+    public static final int DESC_J = 6;
+    public static final int DESC_S = 7;
+    public static final int DESC_Z = 8;
+    public static final int DESC_V = 9;
     
     private SootClass sootClass;
     
@@ -288,7 +293,7 @@ public class ClassCompiler {
         }
 
         classInfoStruct = new Global(mangleClass(sootClass) + "_info", 
-                linker_private_weak, createInfoStruct());
+                linker_private_weak, createClassInfoStruct());
         
         if (isStruct(this.sootClass)) {
             enhanceStructClass(this.sootClass);
@@ -506,7 +511,7 @@ public class ClassCompiler {
         }
     }
     
-    private StructureConstant createInfoStruct() {
+    private StructureConstant createClassInfoStruct() {
         int flags = 0;
         
         flags <<= CI_INTERFACE_COUNT_BITS;

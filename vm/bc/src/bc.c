@@ -84,6 +84,21 @@ static ClassInfoHeader* lookupClassInfo(Env* env, const char* className, void* h
 static Class* loadClass(Env* env, const char* className, ClassLoader* classLoader, void* hash) {
     ClassInfoHeader* header = lookupClassInfo(env, className, hash);
     if (!header) return NULL;
+    if (header->flags & CI_ERROR) {
+        ClassInfoError* error = (ClassInfoError*) header;
+        switch (error->errorType) {
+        case CI_ERROR_TYPE_NO_CLASS_DEF_FOUND:
+            nvmThrowNoClassDefFoundError(env, error->errorMessage);
+            break;
+        case CI_ERROR_TYPE_ILLEGAL_ACCESS:
+            nvmThrowIllegalAccessError(env, error->errorMessage);
+            break;
+        case CI_ERROR_TYPE_INCOMPATIBLE_CLASS_CHANGE:
+            nvmThrowIncompatibleClassChangeError(env, error->errorMessage);
+            break;
+        }
+        return NULL;
+    }
     if (header->clazz) return header->clazz;
     return createClass(env, header, classLoader);
 }
@@ -96,9 +111,7 @@ static Class* loadUserClass(Env* env, const char* className, ClassLoader* classL
     return loadClass(env, className, classLoader, _nvmBcClassesHash);
 }
 
-static Class* findClassInLoader(Env* env, const char* className, ClassLoader* classLoader) {
-    Class* clazz = nvmFindClassUsingLoader(env, className, classLoader);
-    if (clazz) return clazz;
+static Object* wrapClassNotFoundException(Env* env, const char* className) {
     if (nvmExceptionOccurred(env)->clazz == java_lang_ClassNotFoundException) {
         // If ClassNotFoundException is thrown we have to wrap it in a NoClassDefFoundError
         Object* exception = nvmExceptionClear(env);
@@ -108,7 +121,7 @@ static Class* findClassInLoader(Env* env, const char* className, ClassLoader* cl
         if (!message) goto error;
         Object* wrappedException = nvmNewObject(env, java_lang_NoClassDefFoundError, constructor, message);
         if (!wrappedException) goto error;
-        Class* java_lang_StackTraceElement = nvmFindClassUsingLoader(env, "java/lang/StackTraceElement", classLoader);
+        Class* java_lang_StackTraceElement = nvmFindClassUsingLoader(env, "java/lang/StackTraceElement", NULL);
         if (!java_lang_StackTraceElement) goto error;
         ObjectArray* stackTrace = nvmNewObjectArray(env, 0, java_lang_StackTraceElement, NULL, NULL);
         if (!stackTrace) goto error;
@@ -119,10 +132,16 @@ static Class* findClassInLoader(Env* env, const char* className, ClassLoader* cl
         Method* initCause = nvmGetInstanceMethod(env, java_lang_NoClassDefFoundError, "initCause", "(Ljava/lang/Throwable;)Ljava/lang/Throwable;");
         if (!initCause) goto error;
         nvmCallObjectInstanceMethod(env, wrappedException, initCause, exception);
-        if (!nvmExceptionCheck(env)) nvmRaiseException(env, wrappedException);
+        if (!nvmExceptionCheck(env)) nvmThrow(env, wrappedException);
     }
 error:
-    nvmRaiseException(env, nvmExceptionOccurred(env));
+    return nvmExceptionOccurred(env);
+}
+
+static Class* findClassInLoader(Env* env, const char* className, ClassLoader* classLoader) {
+    Class* clazz = nvmFindClassUsingLoader(env, className, classLoader);
+    if (clazz) return clazz;
+    nvmRaiseException(env, wrapClassNotFoundException(env, className));
     return NULL;
 }
 
@@ -131,7 +150,7 @@ typedef struct {
     ClassLoader* classLoader;
 } CreateClassData;
 
-static jboolean createClassCallback(Env* env, const char* className, const char* superclassName, jint access, jint classDataSize, jint instanceDataSize, void* attributes, void* initializer, void* d) {
+static jboolean createClassCallback(Env* env, const char* className, const char* superclassName, jint flags, jint classDataSize, jint instanceDataSize, void* attributes, void* initializer, void* d) {
     CreateClassData* data = (CreateClassData*) d;
 
     Class* superclass = NULL;
@@ -140,7 +159,7 @@ static jboolean createClassCallback(Env* env, const char* className, const char*
         if (!superclass) return FALSE;
     }
 
-    Class* clazz = nvmAllocateClass(env, className, superclass, data->classLoader, access, classDataSize, instanceDataSize, attributes, initializer);
+    Class* clazz = nvmAllocateClass(env, className, superclass, data->classLoader, flags, classDataSize, instanceDataSize, attributes, initializer);
     if (!clazz) return FALSE;
     data->clazz = clazz;
     return TRUE;
@@ -240,7 +259,7 @@ void _nvmBcInitializeClass(Env* env, ClassInfoHeader* header) {
             if (!loader) nvmRaiseException(env, nvmExceptionOccurred(env));
         }
         clazz = nvmFindClassUsingLoader(env, header->className, loader);
-        if (!clazz) nvmRaiseException(env, nvmExceptionOccurred(env));
+        if (!clazz) nvmRaiseException(env, wrapClassNotFoundException(env, header->className));
     }
     nvmInitialize(env, clazz);
     if (nvmExceptionCheck(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
@@ -441,7 +460,6 @@ Array* _nvmBcNewMultiArray(Env* env, jint dims, jint* lengths, char* arrayClassN
 void _nvmBcSetObjectArrayElement(Env* env, ObjectArray* array, jint index, Object* value) {
     if (value) {
         Class* componentType = array->object.clazz->componentType;
-        if (!componentType) nvmRaiseException(env, nvmExceptionOccurred(env));
         jboolean assignable = nvmIsAssignableFrom(env, value->clazz, componentType);
         if (nvmExceptionCheck(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
         if (!assignable) {
@@ -465,7 +483,7 @@ Object* _nvmBcLdcArrayBootClass(Env* env, Class** arrayClassPtr, char* name) {
     Class* arrayClass = *arrayClassPtr;
     if (!arrayClass) {
         arrayClass = nvmFindClassUsingLoader(env, name, NULL);
-        if (nvmExceptionCheck(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
+        if (nvmExceptionCheck(env)) nvmRaiseException(env, wrapClassNotFoundException(env, name));
         *arrayClassPtr = arrayClass;
     }
     return (Object*) arrayClass;
@@ -477,7 +495,7 @@ Object* _nvmBcLdcArrayClass(Env* env, Class** arrayClassPtr, char* name) {
         ClassLoader* loader = getSystemClassLoader(env);
         if (!loader) nvmRaiseException(env, nvmExceptionOccurred(env));
         arrayClass = nvmFindClassUsingLoader(env, name, loader);
-        if (nvmExceptionCheck(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
+        if (nvmExceptionCheck(env)) nvmRaiseException(env, wrapClassNotFoundException(env, name));
         *arrayClassPtr = arrayClass;
     }
     return (Object*) arrayClass;
@@ -594,7 +612,7 @@ Object* _nvmBcNewStruct(Env* env, char* className, Class* caller, void* handle) 
     if (!o) goto error;
     return o;
 error:
-    nvmRaiseException(env, nvmExceptionOccurred(env));
+    nvmRaiseException(env, wrapClassNotFoundException(env, className));
     return NULL;
 }
 

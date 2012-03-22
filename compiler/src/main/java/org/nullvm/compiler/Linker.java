@@ -7,6 +7,7 @@ import static org.nullvm.compiler.Functions.*;
 import static org.nullvm.compiler.Mangler.*;
 import static org.nullvm.compiler.Strings.*;
 import static org.nullvm.compiler.Types.*;
+import static org.nullvm.compiler.llvm.Linkage.*;
 import static org.nullvm.compiler.llvm.Type.*;
 
 import java.io.File;
@@ -39,6 +40,7 @@ import org.nullvm.compiler.llvm.ArrayConstantBuilder;
 import org.nullvm.compiler.llvm.Bitcast;
 import org.nullvm.compiler.llvm.Constant;
 import org.nullvm.compiler.llvm.ConstantAdd;
+import org.nullvm.compiler.llvm.ConstantBitcast;
 import org.nullvm.compiler.llvm.ConstantGetelementptr;
 import org.nullvm.compiler.llvm.Function;
 import org.nullvm.compiler.llvm.FunctionDeclaration;
@@ -53,6 +55,7 @@ import org.nullvm.compiler.llvm.Module;
 import org.nullvm.compiler.llvm.NullConstant;
 import org.nullvm.compiler.llvm.Ret;
 import org.nullvm.compiler.llvm.StringConstant;
+import org.nullvm.compiler.llvm.StructureConstantBuilder;
 import org.nullvm.compiler.llvm.StructureType;
 import org.nullvm.compiler.llvm.Type;
 import org.nullvm.compiler.llvm.Unreachable;
@@ -80,6 +83,8 @@ import org.nullvm.compiler.trampoline.Trampoline;
  *
  */
 public class Linker {
+    private static final String ILLEGAL_ACCESS_ERROR_CLASS = "Attempt to access class %s from class %s";
+
     private static final Pattern ANT_WILDCARDS = Pattern.compile("\\*\\*\\.?|\\*|\\?");
     
     private final Config config;
@@ -238,23 +243,12 @@ public class Linker {
         HashTableGenerator<String, Constant> cpHashGen = new HashTableGenerator<String, Constant>(new ModifiedUtf8HashFunction());
         Set<Trampoline> trampolines = new HashSet<Trampoline>();
         for (Clazz clazz : required) {
-            /*
-             * TODO: Check that clazz can be loaded, i.e. that the superclass 
-             * and interfaces of the class exist and are accessible to the
-             * class. Also check that any exception the class uses in catch
-             * statements exist and is accessible to the class. If the class
-             * cannot be loaded we should override the ClassInfo structure
-             * produced by the ClassCompiler for the class with one which
-             * tells the code in bc.c to throw an appropriate exception
-             * whenever clazz is accessed.
-             */
-
-            Global info = new Global(mangleClass(clazz.getInternalName()) + "_info", Linkage.external, I8_PTR, false);
+            Global info = getClassInfoStruct(clazz);
             module.addGlobal(info);
             if (clazz.isInBootClasspath()) {
-                bcpHashGen.put(clazz.getInternalName(), info.ref());
+                bcpHashGen.put(clazz.getInternalName(), new ConstantBitcast(info.ref(), I8_PTR));
             } else {
-                cpHashGen.put(clazz.getInternalName(), info.ref());
+                cpHashGen.put(clazz.getInternalName(), new ConstantBitcast(info.ref(), I8_PTR));
             }
             trampolines.addAll(clazz.getClazzInfo().getTrampolines());
             
@@ -568,6 +562,92 @@ public class Linker {
         return fnRef;
     }
     
+    private Global getClassInfoStruct(Clazz clazz) {
+        /*
+         * Check that clazz can be loaded, i.e. that the superclass 
+         * and interfaces of the class exist and are accessible to the
+         * class. Also check that any exception the class uses in catch
+         * clauses exist and is accessible to the class. If the class
+         * cannot be loaded we override the ClassInfoHeader struct
+         * produced by the ClassCompiler for the class with one which
+         * tells the code in bc.c to throw an appropriate exception
+         * whenever clazz is accessed.
+         */
+        
+        int errorType = ClassCompiler.CI_ERROR_TYPE_NONE;
+        String errorMessage = null;
+        if (clazz.getClazzInfo().getSuperclass() != null) {
+            // Check superclass
+            Clazz superclazz = config.getClazzes().load(clazz.getClazzInfo().getSuperclass());
+            if (superclazz == null) {
+                errorType = ClassCompiler.CI_ERROR_TYPE_NO_CLASS_DEF_FOUND;
+                errorMessage = clazz.getClazzInfo().getSuperclass();
+            } else if (!checkClassAccessible(superclazz, clazz)) {
+                errorType = ClassCompiler.CI_ERROR_TYPE_ILLEGAL_ACCESS;
+                errorMessage = String.format(ILLEGAL_ACCESS_ERROR_CLASS, superclazz, clazz);
+            } else if (superclazz.getClazzInfo().isInterface()) {
+                errorType = ClassCompiler.CI_ERROR_TYPE_INCOMPATIBLE_CLASS_CHANGE;
+                errorMessage = String.format("class %s has interface %s as super class", clazz, superclazz);
+            }
+            // No need to check for ClassCircularityError. Soot doesn't handle 
+            // such problems so the compilation will fail earlier.
+        }
+        
+        if (errorType == ClassCompiler.CI_ERROR_TYPE_NONE) {
+            // Check interfaces
+            for (String interfaceName : clazz.getClazzInfo().getInterfaces()) {
+                Clazz interfaze = config.getClazzes().load(interfaceName);
+                if (interfaze == null) {
+                    errorType = ClassCompiler.CI_ERROR_TYPE_NO_CLASS_DEF_FOUND;
+                    errorMessage = interfaceName;
+                    break;
+                } else if (!checkClassAccessible(interfaze, clazz)) {
+                    errorType = ClassCompiler.CI_ERROR_TYPE_ILLEGAL_ACCESS;
+                    errorMessage = String.format(ILLEGAL_ACCESS_ERROR_CLASS, interfaze, clazz);
+                    break;
+                } else if (!interfaze.getClazzInfo().isInterface()) {
+                    errorType = ClassCompiler.CI_ERROR_TYPE_INCOMPATIBLE_CLASS_CHANGE;
+                    errorMessage = String.format("class %s tries to implement class %s as interface", 
+                            clazz, interfaze);
+                    break;
+                }
+            }
+        }
+        
+        if (errorType == ClassCompiler.CI_ERROR_TYPE_NONE) {
+            // Check exceptions used in catch clauses. I cannot find any info in
+            // the VM spec specifying that this has to be done when the class is loaded.
+            // However, this is how it's done in other VMs so we do it too.
+            for (Trampoline t : clazz.getClazzInfo().getTrampolines()) {
+                if (t instanceof ExceptionMatch) {
+                    Clazz ex = config.getClazzes().load(t.getTarget());
+                    if (ex == null) {
+                        errorType = ClassCompiler.CI_ERROR_TYPE_NO_CLASS_DEF_FOUND;
+                        errorMessage = t.getTarget();
+                        break;
+                    } else if (!checkClassAccessible(ex, clazz)) {
+                        errorType = ClassCompiler.CI_ERROR_TYPE_ILLEGAL_ACCESS;
+                        errorMessage = String.format(ILLEGAL_ACCESS_ERROR_CLASS, ex, clazz);
+                        break;
+                    }
+                }
+            }
+        }
+        
+        String name = mangleClass(clazz.getInternalName()) + "_info";
+        if (errorType != ClassCompiler.CI_ERROR_TYPE_NONE) {
+            // Create a ClassInfoError struct and replace the _info symbol
+            StructureConstantBuilder error = new StructureConstantBuilder();
+            error.add(new NullConstant(I8_PTR)); // Points to the runtime Class struct
+            error.add(new IntegerConstant(ClassCompiler.CI_ERROR));
+            error.add(getString(clazz.getInternalName()));
+            error.add(new IntegerConstant(errorType));
+            error.add(getString(errorMessage));
+            return new Global(name, error.build());
+        }
+        return new Global(name, external, I8_PTR, false);
+    }
+    
     private boolean checkClassExists(Function f, Trampoline t) {
         String targetClassName = t.getTarget();
         if (isArray(targetClassName)) {
@@ -592,6 +672,19 @@ public class Linker {
         return false;
     }
     
+    private boolean checkClassAccessible(Clazz target, Clazz caller) {
+        if (caller == target) {
+            return true; 
+        }
+        if (target.getClazzInfo().isPublic()) {
+            return true; 
+        }
+        if (target.getPackageName().equals(caller.getPackageName())) {
+            return true;
+        }
+        return false;
+    }
+    
     private boolean checkClassAccessible(Function f, Trampoline t) {
         Clazz caller = config.getClazzes().load(t.getCallingClass());
         
@@ -603,19 +696,11 @@ public class Linker {
             targetClassName = getBaseType(targetClassName);
         }
         Clazz target = config.getClazzes().load(targetClassName);
-        
-        if (caller == target) {
-            return true; 
-        }
-        if (target.getClazzInfo().isPublic()) {
-            return true; 
-        }
-        if (target.getPackageName().equals(caller.getPackageName())) {
+        if (checkClassAccessible(target, caller)) {
             return true;
         }
-        
-        throwIllegalAccessError(f, "Attempt to access class %s from class %s", 
-                target.getClassName(), caller.getClassName());
+        throwIllegalAccessError(f, ILLEGAL_ACCESS_ERROR_CLASS, 
+                target, caller);
         f.add(new Unreachable());
         return false;
 

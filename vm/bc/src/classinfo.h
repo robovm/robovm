@@ -21,6 +21,10 @@
 #define CI_ERROR 0x100
 #define CI_INITIALIZED 0x200
 
+#define CI_ERROR_TYPE_NONE 0x0
+#define CI_ERROR_TYPE_NO_CLASS_DEF_FOUND 0x1
+#define CI_ERROR_TYPE_ILLEGAL_ACCESS 0x2
+#define CI_ERROR_TYPE_INCOMPATIBLE_CLASS_CHANGE 0x3
 
 typedef struct {
     Class* clazz;
@@ -30,6 +34,14 @@ typedef struct {
     jint classDataSize;
     jint instanceDataSize;
 } ClassInfoHeader;
+
+typedef struct {
+    Class* clazz;
+    jint flags;
+    const char* className;
+    jint errorType;
+    const char* errorMessage;
+} ClassInfoError;
 
 typedef struct {
     jboolean (*classCallback)(Env*, const char*, const char*, jint, jint, jint, void*, void*, void*);

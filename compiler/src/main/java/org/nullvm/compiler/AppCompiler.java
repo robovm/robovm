@@ -219,7 +219,6 @@ public class AppCompiler {
             if (run) {
                 compiler.config.getTarget().launch(runArgs);
             } else {
-                compiler.compile();
                 compiler.config.getTarget().install();
             }
         } catch (Throwable t) {

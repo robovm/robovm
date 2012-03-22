@@ -62,7 +62,7 @@ declare %Object* @_nvmBcNewIntArray(%Env*, i32)
 declare %Object* @_nvmBcNewLongArray(%Env*, i32)
 declare %Object* @_nvmBcNewFloatArray(%Env*, i32)
 declare %Object* @_nvmBcNewDoubleArray(%Env*, i32)
-declare %Object* @_nvmBcNewMultiArray(%Env*, i32, i32*, i8*)
+declare %Object* @_nvmBcNewMultiArray(%Env*, i32, i32*, %Object*)
 declare void @_nvmBcSetObjectArrayElement(%Env*, %Object*, i32, %Object*)
 
 declare %Object* @_nvmBcLdcString(%Env*, i8*)

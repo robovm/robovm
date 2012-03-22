@@ -68,17 +68,7 @@ import org.nullvm.compiler.llvm.Type;
 import org.nullvm.compiler.llvm.Value;
 import org.nullvm.compiler.llvm.Variable;
 import org.nullvm.compiler.llvm.VariableRef;
-import org.nullvm.compiler.trampoline.Anewarray;
-import org.nullvm.compiler.trampoline.Checkcast;
-import org.nullvm.compiler.trampoline.ExceptionMatch;
-import org.nullvm.compiler.trampoline.FieldAccessor;
-import org.nullvm.compiler.trampoline.Instanceof;
-import org.nullvm.compiler.trampoline.Invoke;
-import org.nullvm.compiler.trampoline.LdcClass;
 import org.nullvm.compiler.trampoline.LdcString;
-import org.nullvm.compiler.trampoline.Multianewarray;
-import org.nullvm.compiler.trampoline.NativeCall;
-import org.nullvm.compiler.trampoline.New;
 import org.nullvm.compiler.trampoline.Trampoline;
 
 import soot.BooleanType;
@@ -483,30 +473,7 @@ public class ClassCompiler {
             Value result = call(f, NVM_BC_LDC_STRING, f.getParameterRef(0), 
                     getString(t.getTarget()));
             f.add(new Ret(result));
-        } else if (t instanceof Anewarray) {
-            module.addFunctionDeclaration(new FunctionDeclaration(t.getFunctionRef()));
-        } else if (t instanceof Checkcast) {
-            module.addFunctionDeclaration(new FunctionDeclaration(t.getFunctionRef()));
-        } else if (t instanceof Instanceof) {
-            module.addFunctionDeclaration(new FunctionDeclaration(t.getFunctionRef()));
-        } else if (t instanceof ExceptionMatch) {
-            module.addFunctionDeclaration(new FunctionDeclaration(t.getFunctionRef()));
-        } else if (t instanceof LdcClass) {
-            module.addFunctionDeclaration(new FunctionDeclaration(t.getFunctionRef()));
-        } else if (t instanceof Multianewarray) {
-            Function f = new Function(Linkage.linker_private_weak, t.getFunctionRef());
-            module.addFunction(f);
-            Value result = call(f, NVM_BC_NEW_MULTI_ARRAY, f.getParameterRef(0), 
-                    f.getParameterRef(1), f.getParameterRef(2),
-                    getString(t.getTarget()));
-            f.add(new Ret(result));
-        } else if (t instanceof New) {
-            module.addFunctionDeclaration(new FunctionDeclaration(t.getFunctionRef()));
-        } else if (t instanceof FieldAccessor) {
-            module.addFunctionDeclaration(new FunctionDeclaration(t.getFunctionRef()));
-        } else if (t instanceof Invoke) {
-            module.addFunctionDeclaration(new FunctionDeclaration(t.getFunctionRef()));
-        } else if (t instanceof NativeCall) {
+        } else {
             module.addFunctionDeclaration(new FunctionDeclaration(t.getFunctionRef()));
         }
     }

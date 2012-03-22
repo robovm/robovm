@@ -448,11 +448,8 @@ ObjectArray* _nvmBcNewObjectArray(Env* env, jint length, Class* arrayClass) {
     return array;
 }
 
-Array* _nvmBcNewMultiArray(Env* env, jint dims, jint* lengths, char* arrayClassName, Class* caller) {
-    // TODO: Check that caller has access to the base class
-    Class* clazz = findClassInLoader(env, arrayClassName, caller->classLoader);
-    if (!checkClassAccessible(env, clazz, caller)) nvmRaiseException(env, nvmExceptionOccurred(env));
-    Array* array = nvmNewMultiArray(env, dims, lengths, clazz);
+Array* _nvmBcNewMultiArray(Env* env, jint dims, jint* lengths, Class* arrayClass) {
+    Array* array = nvmNewMultiArray(env, dims, lengths, arrayClass);
     if (!array) nvmRaiseException(env, nvmExceptionOccurred(env));
     return array;
 }

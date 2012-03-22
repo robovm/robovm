@@ -73,6 +73,7 @@ import org.nullvm.compiler.trampoline.Invokespecial;
 import org.nullvm.compiler.trampoline.Invokevirtual;
 import org.nullvm.compiler.trampoline.LdcClass;
 import org.nullvm.compiler.trampoline.LdcString;
+import org.nullvm.compiler.trampoline.Multianewarray;
 import org.nullvm.compiler.trampoline.NativeCall;
 import org.nullvm.compiler.trampoline.New;
 import org.nullvm.compiler.trampoline.PutField;
@@ -402,6 +403,17 @@ public class Linker {
                 module.addFunction(fn);
             }
             aliases.put(t.getFunctionName(), fnName);
+        } else if (t instanceof Multianewarray) {
+            String fnName = "array_" + mangleClass(t.getTarget()) + "_multi";
+            if (!module.hasFunctionDefined(fnName)) {
+                Function fn = new Function(Linkage.external, t.getFunctionRef(), fnName);
+                Value arrayClass = callLdcArray(module, fn, t.getTarget());
+                Value result = call(fn, NVM_BC_NEW_MULTI_ARRAY, fn.getParameterRef(0), 
+                      fn.getParameterRef(1), fn.getParameterRef(2), arrayClass);
+                fn.add(new Ret(result));
+                module.addFunction(fn);
+            }
+            aliases.put(t.getFunctionName(), fnName);
         } else if (t instanceof NativeCall) {
             Clazz target = config.getClazzes().load(t.getTarget());
             NativeCall nc = (NativeCall) t;
@@ -721,10 +733,10 @@ public class Linker {
             }
             if (rao.isProtected()) {
                 if (rao.isStatic()) {
-                    if (isSubClass(target, caller)) {
+                    if (isSubClassOrSame(target, caller)) {
                         return true;
                     }
-                } else {
+                } else if (isSubClassOrSame(target, caller)) {
                     // Need to check that runtime class is a subclass of caller
                     String runtimeClassName = null;
                     runtimeClassName = t instanceof Invokevirtual 
@@ -754,7 +766,7 @@ public class Linker {
                         // trampoline. Just return true.
                         return true;
                     }
-                    if (isSubClass(caller, runtimeClass)) {
+                    if (isSubClassOrSame(caller, runtimeClass)) {
                         return true;
                     }
                 }
@@ -842,7 +854,7 @@ public class Linker {
         return result != null ? result : Collections.<String>emptySet();
     }
     
-    private boolean isSubClass(Clazz superclass, Clazz clazz) {
+    private boolean isSubClassOrSame(Clazz superclass, Clazz clazz) {
         while (clazz != null && clazz != superclass) {
             clazz = config.getClazzes().load(clazz.getClazzInfo().getSuperclass());
         }

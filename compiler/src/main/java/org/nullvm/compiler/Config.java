@@ -250,11 +250,8 @@ public class Config {
         if (path.getFile().isFile()) {
             srcRoot = srcRoot.getParentFile();
         }
-        File osDir = new File(cacheDir, os.toString());
-        File archDir = new File(osDir, arch.toString());
-        File cpuDir = new File(archDir, cpu == null ? "default" : cpu);
         try {
-            return new File(makeFileRelativeTo(cpuDir, 
+            return new File(makeFileRelativeTo(cacheDir, 
                     srcRoot.getCanonicalFile()), 
                     getArchiveName(path) + ".classes");
         } catch (IOException e) {
@@ -307,6 +304,9 @@ public class Config {
         File homeLib = new File(nullVMHomeDir, "lib");
         osArchDepLibDir = new File(new File(new File(homeLib, os.toString()), arch.toString()), debug ? "Debug" : "Release");
         
+        File osDir = new File(cacheDir, os.toString());
+        File archDir = new File(osDir, arch.toString());
+        cacheDir = new File(archDir, cpu == null ? "default" : cpu);
         cacheDir.mkdirs();
 
         if (executable == null) {

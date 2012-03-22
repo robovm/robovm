@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -117,7 +118,18 @@ public abstract class AbstractTarget implements Target {
     protected void doBuild(String ccPath, File outFile, List<String> ccArgs, List<File> objectFiles, 
             List<String> libArgs) throws IOException {
         
-        CompilerUtil.exec(config, ccPath, "-o", outFile, "-g", ccArgs, objectFiles, libArgs);        
+        File wd = config.getCacheDir();
+        String wdAbsPath = wd.getCanonicalPath();
+        List<String> relFiles = new ArrayList<String>();
+        for (File f : objectFiles) {
+            if (f.getCanonicalPath().startsWith(wdAbsPath)) {
+                relFiles.add(f.getCanonicalPath().substring(wdAbsPath.length() + 1));
+            } else {
+                relFiles.add(f.getCanonicalPath());
+            }
+        }
+        
+        CompilerUtil.exec(config, wd, ccPath, "-o", outFile, "-g", ccArgs, relFiles, libArgs);        
     }
     
     public void install() throws IOException {

@@ -17,6 +17,7 @@ import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.exec.environment.EnvironmentUtils;
+import org.apache.commons.exec.util.StringUtils;
 
 /**
  * @author niklas
@@ -87,7 +88,7 @@ public class CompilerUtil {
     @SuppressWarnings("rawtypes")
     public static int execWithEnv(Config config, File wd, Map env, CommandLine commandLine) throws IOException {
         
-        config.getLogger().debug(commandLine.toString());
+        debug(config.getLogger(), commandLine);
         
         Executor executor = new DefaultExecutor();
         if (wd != null) {
@@ -109,6 +110,39 @@ public class CompilerUtil {
         }
     }
 
+    private static void debug(Logger logger, CommandLine commandLine) {
+        String[] args = commandLine.getArguments();
+        if (args.length == 0) {
+            logger.debug(commandLine.toString());
+            return;
+        }
+        
+        StringBuilder result = new StringBuilder();
+
+        result.append(StringUtils.quoteArgument(commandLine.getExecutable()));
+        result.append(' ');
+
+        boolean first = true;
+        for (int i = 0; i < args.length; i++) {
+            String currArgument = args[i];
+            if( StringUtils.isQuoted(currArgument)) {
+                result.append(currArgument);
+            }
+            else {
+                result.append(StringUtils.quoteArgument(currArgument));
+            }
+            if(i<args.length-1) {
+                result.append(' ');
+            }
+            
+            if (i == args.length - 1 || result.length() > 2048) {
+                logger.debug((first ? "" : "    ") + result.toString());
+                result.delete(0, result.length());
+                first = false;
+            }
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     public static CommandLine createCommandLine(String cmd, Object... args) {
         CommandLine commandLine = new CommandLine(cmd);

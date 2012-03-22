@@ -250,7 +250,7 @@ void* _nvmBcLookupVirtualMethod(Env* env, Object* thiz, char* name, char* desc) 
     Method* method = nvmGetMethod(env, thiz->clazz, name, desc);
     if (!method) nvmRaiseException(env, nvmExceptionOccurred(env));
     if (METHOD_IS_ABSTRACT(method)) {
-        nvmThrowIllegalAccessError(env);
+        nvmThrowAbstractMethodError(env, ""); // TODO: Message
         nvmRaiseException(env, nvmExceptionOccurred(env));
     }
     return method->synchronizedImpl ? method->synchronizedImpl : method->impl;
@@ -269,11 +269,11 @@ void* _nvmBcLookupInterfaceMethod(Env* env, ClassInfoHeader* header, Object* thi
         nvmRaiseException(env, throwable);
     }
     if (!method || METHOD_IS_ABSTRACT(method)) {
-        nvmThrowAbstractMethodError(env);
+        nvmThrowAbstractMethodError(env, ""); // TODO: Message
         nvmRaiseException(env, nvmExceptionOccurred(env));
     }
     if (!METHOD_IS_PUBLIC(method)) {
-        nvmThrowIllegalAccessError(env);
+        nvmThrowIllegalAccessError(env, ""); // TODO: Message
         nvmRaiseException(env, nvmExceptionOccurred(env));
     }
     return method->synchronizedImpl ? method->synchronizedImpl : method->impl;
@@ -331,6 +331,41 @@ void _nvmBcThrowArithmeticException(Env* env) {
 
 void _nvmBcThrowUnsatisfiedLinkError(Env* env) {
     nvmThrowUnsatisfiedLinkError(env);
+    _nvmBcThrow(env, nvmExceptionOccurred(env));
+}
+
+void _nvmBcThrowNoClassDefFoundError(Env* env, char* msg) {
+    nvmThrowNoClassDefFoundError(env, msg);
+    _nvmBcThrow(env, nvmExceptionOccurred(env));
+}
+
+void _nvmBcThrowNoSuchFieldError(Env* env, char* msg) {
+    nvmThrowNoSuchFieldError(env, msg);
+    _nvmBcThrow(env, nvmExceptionOccurred(env));
+}
+
+void _nvmBcThrowNoSuchMethodError(Env* env, char* msg) {
+    nvmThrowNoSuchMethodError(env, msg);
+    _nvmBcThrow(env, nvmExceptionOccurred(env));
+}
+
+void _nvmBcThrowIllegalAccessError(Env* env, char* msg) {
+    nvmThrowIllegalAccessError(env, msg);
+    _nvmBcThrow(env, nvmExceptionOccurred(env));
+}
+
+void _nvmBcThrowInstantiationError(Env* env, char* msg) {
+    nvmThrowInstantiationError(env, msg);
+    _nvmBcThrow(env, nvmExceptionOccurred(env));
+}
+
+void _nvmBcThrowAbstractMethodError(Env* env, char* msg) {
+    nvmThrowAbstractMethodError(env, msg);
+    _nvmBcThrow(env, nvmExceptionOccurred(env));
+}
+
+void _nvmBcThrowIncompatibleClassChangeError(Env* env, char* msg) {
+    nvmThrowIncompatibleClassChangeError(env, msg);
     _nvmBcThrow(env, nvmExceptionOccurred(env));
 }
 

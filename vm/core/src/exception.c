@@ -63,8 +63,8 @@ jint nvmThrowLinkageError(Env* env) {
     return nvmThrowNew(env, java_lang_LinkageError, "");
 }
 
-jint nvmThrowIllegalAccessError(Env* env) {
-    return nvmThrowNew(env, java_lang_IllegalAccessError, "");
+jint nvmThrowIllegalAccessError(Env* env, const char* message) {
+    return nvmThrowNew(env, java_lang_IllegalAccessError, message);
 }
 
 jint nvmThrowIllegalAccessErrorClass(Env* env, Class* clazz, Class* caller) {
@@ -122,8 +122,8 @@ jint nvmThrowNullPointerException(Env* env) {
     return nvmThrowNew(env, java_lang_NullPointerException, "");
 }
 
-jint nvmThrowAbstractMethodError(Env* env) {
-    return nvmThrowNew(env, java_lang_AbstractMethodError, "");
+jint nvmThrowAbstractMethodError(Env* env, const char* message) {
+    return nvmThrowNew(env, java_lang_AbstractMethodError, message);
 }
 
 jint nvmThrowArrayIndexOutOfBoundsException(Env* env, jint index) {
@@ -168,5 +168,9 @@ jint nvmThrowIllegalMonitorStateException(Env* env) {
 
 jint nvmThrowInterruptedException(Env* env) {
     return nvmThrowNew(env, java_lang_InterruptedException, NULL);
+}
+
+jint nvmThrowInstantiationError(Env* env, const char* message) {
+    return nvmThrowNew(env, java_lang_InstantiationError, message);
 }
 

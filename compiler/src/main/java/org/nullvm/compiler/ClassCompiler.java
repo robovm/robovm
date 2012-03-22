@@ -275,6 +275,18 @@ public class ClassCompiler {
         attributesEncoder.encode(module, sootClass);
         strings.putAll(attributesEncoder.getStrings());
         
+        // Add a <clinit> method if the class has ConstantValueTags but no <clinit>.
+        // This has to be done before createInfoStruct() is called otherwise the
+        // ClassInfoHeader->initializer value will become NULL and constant static fields
+        // will never be initialized.
+        if (!sootClass.declaresMethodByName("<clinit>") && hasConstantValueTags(classFields)) {
+            SootMethod clinit = new SootMethod("<clinit>", Collections.EMPTY_LIST, VoidType.v(), Modifier.STATIC);
+            JimpleBody body = Jimple.v().newBody(clinit);
+            clinit.setActiveBody(body);
+            body.getUnits().add(new JReturnVoidStmt());
+            this.sootClass.addMethod(clinit);
+        }
+
         classInfoStruct = new Global(mangleClass(sootClass) + "_info", 
                 linker_private_weak, createInfoStruct());
         
@@ -331,14 +343,6 @@ public class ClassCompiler {
                     module.addFunction(createClassInitWrapperFunction(setter.ref()));
                 }
             }
-        }
-        
-        if (!sootClass.declaresMethodByName("<clinit>") && hasConstantValueTags(classFields)) {
-            SootMethod clinit = new SootMethod("<clinit>", Collections.EMPTY_LIST, VoidType.v(), Modifier.STATIC);
-            JimpleBody body = Jimple.v().newBody(clinit);
-            clinit.setActiveBody(body);
-            body.getUnits().add(new JReturnVoidStmt());
-            this.sootClass.addMethod(clinit);
         }
         
         for (SootMethod method : sootClass.getMethods()) {

@@ -372,7 +372,7 @@ public class AppCompiler {
         System.err.println("  -bcp <list>           : separated list of directories, JAR archives, and ZIP \n" 
                          + "                        archives to search for class files. Used to locate the \n" 
                          + "                        java.* and javax.* classes. Default is \n"
-                         + "                        $NULLVM_HOME/lib/nullvm-rt.jar.");
+                         + "                        <nullvm-home>/lib/nullvm-rt.jar.");
         System.err.println("  -cp <list>            ");
         System.err.println("  -classpath <list>     : separated list of directories, JAR archives, and ZIP \n" 
                          + "                        archives to search for class files.");
@@ -385,13 +385,13 @@ public class AppCompiler {
         System.err.println("  -cc-bin <path>        Path to the c compiler binary. gcc and clang are supported.");
         System.err.println("  -ar-bin <path>        Path to the ar binary");
         System.err.println("  -home <dir>           Directory where NullVM runtime has been installed.\n"
-        		         + "                        Default is $NULLVM_HOME");
+                         + "                        Default is $NULLVM_HOME");
         System.err.println("  -jar <path>           Use main class as specified by the manifest in this JAR \n" 
                          + "                        archive.");
         System.err.println("  -llvm-home <path>     Path where LLVM has been installed");
         System.err.println("  -o <name>             The name of the target executable or library");
         System.err.println("  -os <name>            The name of the OS to build for. Allowed values are \n" 
-                         + "                        'auto', 'linux' and 'darwin'. Default is 'auto' which\n" 
+                         + "                        'auto', 'linux', 'macosx' and 'ios'. Default is 'auto' which\n" 
                          + "                        means autodetect.");
         System.err.println("  -arch <name>          The name of the LLVM arch to compile for. Allowed values\n" 
                          + "                        are 'auto', 'i386' and 'x86_64' Default is 'auto' which \n" 

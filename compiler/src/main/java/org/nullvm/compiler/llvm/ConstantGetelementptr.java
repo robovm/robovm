@@ -43,7 +43,6 @@ public class ConstantGetelementptr extends Constant {
         sb.append(cst.getType());
         sb.append(' ');
         sb.append(cst);
-        sb.append(' ');
         for (int i = 0; i < idx.length; i++) {
             sb.append(", i32 ");
             sb.append(idx[i]);

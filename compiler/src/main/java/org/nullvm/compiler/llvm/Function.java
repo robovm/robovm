@@ -47,9 +47,27 @@ public class Function {
         this.linkage = linkage;
         this.attributes = attributes;
         this.section = section;
-        this.name = "@" + name;
+        this.name = name;
         this.type = type;
+        if (parameterNames == null || parameterNames.length == 0 && type.getParameterTypes().length > 0) {
+            parameterNames = new String[type.getParameterTypes().length];
+            for (int i = 0; i < parameterNames.length; i++) {
+                parameterNames[i] = "p" + i;
+            }
+        }
         this.parameterNames = parameterNames;
+    }
+
+    public Function(FunctionRef ref) {
+        this(null, ref);
+    }
+
+    public Function(Linkage linkage, FunctionRef ref) {
+        this(linkage, ref.getName(), ref.getType(), (String[]) null);
+    }
+    
+    public Function(Linkage linkage, FunctionRef ref, String name) {
+        this(linkage, name, ref.getType(), (String[]) null);
     }
     
     public FunctionRef ref() {
@@ -66,6 +84,14 @@ public class Function {
     
     public VariableRef getParameterRef(int index) {
         return new VariableRef(parameterNames[index], type.getParameterTypes()[index]);
+    }
+    
+    public VariableRef[] getParameterRefs() {
+        VariableRef[] result = new VariableRef[parameterNames.length];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = getParameterRef(i);
+        }
+        return result;
     }
     
     public String[] getParameterNames() {
@@ -140,7 +166,7 @@ public class Function {
             sb.append(' ');
         }
         sb.append(returnType.toString());
-        sb.append(' ');
+        sb.append(" @");
         sb.append(name);
         sb.append('(');
         for (int i = 0; i < parameterTypes.length; i++) {

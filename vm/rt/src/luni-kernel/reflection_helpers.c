@@ -107,7 +107,7 @@ jvalue* validateAndUnwrapArgs(Env* env, ObjectArray* parameterTypes, ObjectArray
     for (i = 0; i < length; i++) {
         Object* arg = args->values[i];
         Class* type = (Class*) parameterTypes->values[i];
-        if (type->primitive) {
+        if (CLASS_IS_PRIMITIVE(type)) {
             if (!unwrapPrimitive(env, arg, type, &jvalueArgs[i])) return NULL;
         } else {
             if (arg && !nvmIsInstanceOf(env, arg, type)) {

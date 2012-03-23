@@ -5,17 +5,25 @@
  */
 package org.nullvm.compiler.trampoline;
 
+import static org.nullvm.compiler.Mangler.*;
+
+import org.nullvm.compiler.Types;
+import org.nullvm.compiler.llvm.FunctionType;
+
+
 
 /**
  *
  * @version $Id$
  */
 public abstract class Invoke extends Trampoline {
+    private static final long serialVersionUID = 1L;
+    
     private final String methodName;
     private final String methodDesc;
 
-    protected Invoke(String targetClass, String methodName, String methodDesc) {
-        super(targetClass);
+    protected Invoke(String callingClass, String targetClass, String methodName, String methodDesc) {
+        super(callingClass, targetClass);
         this.methodName = methodName;
         this.methodDesc = methodDesc;
     }
@@ -26,6 +34,13 @@ public abstract class Invoke extends Trampoline {
 
     public String getMethodDesc() {
         return methodDesc;
+    }
+    
+    public abstract boolean isStatic();
+    
+    @Override
+    public FunctionType getFunctionType() {
+        return Types.getFunctionType(methodDesc, isStatic());
     }
     
     @Override
@@ -72,7 +87,7 @@ public abstract class Invoke extends Trampoline {
     @Override
     public int compareTo(Trampoline o) {
         int c = super.compareTo(o);
-        if (c == 0 && o instanceof Invoke) {
+        if (c == 0) {
             c = methodName.compareTo(((Invoke) o).methodName);
             if (c == 0) {
                 c = methodDesc.compareTo(((Invoke) o).methodDesc);
@@ -83,6 +98,6 @@ public abstract class Invoke extends Trampoline {
     
     @Override
     public String toString() {
-        return super.toString() + "/" + methodName + "/" + methodDesc;
+        return super.toString() + "_" + mangleString(methodName) + "_" + mangleString(methodDesc);
     }
 }

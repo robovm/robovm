@@ -1,7 +1,7 @@
 #include <nullvm.h>
 #include <string.h>
 
-static jint getElementSize(char* typeName) {
+static jint getElementSize(const char* typeName) {
     // TODO: Use lookup table instead?
     if (typeName[1] != '\0') {
         return sizeof(Object*);
@@ -42,7 +42,7 @@ static Array* newArray(Env* env, Class* arrayType, jint elementSize, jint dims, 
 
     if (length > 0 && dims > 1) {
         int i;
-        Class* subArrayType = nvmGetComponentType(env, arrayType);
+        Class* subArrayType = arrayType->componentType;
         jint subElementSize = getElementSize(subArrayType->name);
         Object** values = ((ObjectArray*) array)->values;
         for (i = 0; i < length; i++) {
@@ -133,7 +133,7 @@ Array* nvmCloneArray(Env* env, Array* array) {
 
 jint nvmGetArrayDimensions(Env* env, Array* array) {
     jint i = 1;
-    char* desc = array->object.clazz->name;
+    const char* desc = array->object.clazz->name;
     while (desc[i] == '[') {
         i++;
     }

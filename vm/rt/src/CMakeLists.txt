@@ -245,11 +245,6 @@ if(LINUX OR DARWIN)
   )
 endif()
 
-add_library(nullvm-rt SHARED ${SRC})
-if(LINUX)
-  set_target_properties(nullvm-rt PROPERTIES LINK_FLAGS "-Wl,--version-script=${rt_SOURCE_DIR}/symbols.linux" INSTALL_RPATH "$ORIGIN")
-elseif(DARWIN)
-  set_target_properties(nullvm-rt PROPERTIES LINK_FLAGS "-arch ${ARCH} -exported_symbols_list ${rt_SOURCE_DIR}/symbols.darwin" INSTALL_NAME_DIR "@loader_path")
-endif()
-target_link_libraries(nullvm-rt nullvm-core nullvm-hyprt z)
+add_library(nullvm-rt STATIC ${SRC})
 install(TARGETS nullvm-rt DESTINATION ${INSTALL_DIR})
+

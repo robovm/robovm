@@ -20,9 +20,10 @@ static inline void releaseNativeLibsLock() {
     hythread_monitor_exit(nativeLibsLock);
 }
 
-static Method* findMethod(Env* env, Class* clazz, char* name, char* desc) {
-    Method* method;
-    for (method = clazz->methods->first; method != NULL; method = method->next) {
+static Method* findMethod(Env* env, Class* clazz, const char* name, const char* desc) {
+    Method* method = nvmGetMethods(env, clazz);
+    if (nvmExceptionCheck(env)) return NULL;
+    for (; method != NULL; method = method->next) {
         if (!strcmp(method->name, name) && !strcmp(method->desc, desc)) {
             return method;
         }
@@ -30,7 +31,7 @@ static Method* findMethod(Env* env, Class* clazz, char* name, char* desc) {
     return NULL;
 }
 
-static Method* getMethod(Env* env, Class* clazz, char* name, char* desc) {
+static Method* getMethod(Env* env, Class* clazz, const char* name, const char* desc) {
     if (!strcmp("<init>", name) || !strcmp("<clinit>", name)) {
         // Constructors and static initializers are not inherited so we shouldn't check with the superclasses.
         return findMethod(env, clazz, name, desc);
@@ -39,6 +40,7 @@ static Method* getMethod(Env* env, Class* clazz, char* name, char* desc) {
     Class* c = clazz;
     for (c = clazz; c != NULL; c = c->superclass) {
         Method* method = findMethod(env, c, name, desc);
+        if (nvmExceptionCheck(env)) return NULL;
         if (method) return method;
     }
 
@@ -47,9 +49,11 @@ static Method* getMethod(Env* env, Class* clazz, char* name, char* desc) {
      * TODO: Should we really do this? Does the JNI GetMethodID() function do this?
      */
     for (c = clazz; c != NULL; c = c->superclass) {
-        Interface* interface;
-        for (interface = c->interfaces; interface; interface = interface->next) {
+        Interface* interface = nvmGetInterfaces(env, c);
+        if (nvmExceptionCheck(env)) return NULL;
+        for (; interface != NULL; interface = interface->next) {
             Method* method = getMethod(env, interface->interface, name, desc);
+            if (nvmExceptionCheck(env)) return NULL;
             if (method) return method;
         }
     }
@@ -72,13 +76,15 @@ jboolean nvmInitMethods(Env* env) {
     return TRUE;
 }
 
-jboolean nvmHasMethod(Env* env, Class* clazz, char* name, char* desc) {
+jboolean nvmHasMethod(Env* env, Class* clazz, const char* name, const char* desc) {
     Method* method = getMethod(env, clazz, name, desc);
+    if (nvmExceptionCheck(env)) return FALSE;
     return method ? TRUE : FALSE;
 }
 
-Method* nvmGetMethod(Env* env, Class* clazz, char* name, char* desc) {
+Method* nvmGetMethod(Env* env, Class* clazz, const char* name, const char* desc) {
     Method* method = getMethod(env, clazz, name, desc);
+    if (nvmExceptionCheck(env)) return NULL;
     if (!method) {
         nvmThrowNoSuchMethodError(env, name);
         return NULL;
@@ -86,7 +92,7 @@ Method* nvmGetMethod(Env* env, Class* clazz, char* name, char* desc) {
     return method;
 }
 
-Method* nvmGetClassMethod(Env* env, Class* clazz, char* name, char* desc) {
+Method* nvmGetClassMethod(Env* env, Class* clazz, const char* name, const char* desc) {
     Method* method = nvmGetMethod(env, clazz, name, desc);
     if (!method) return NULL;
     if (!METHOD_IS_STATIC(method)) {
@@ -101,7 +107,7 @@ Method* nvmGetClassInitializer(Env* env, Class* clazz) {
     return getMethod(env, clazz, "<clinit>", "()V");
 }
 
-Method* nvmGetInstanceMethod(Env* env, Class* clazz, char* name, char* desc) {
+Method* nvmGetInstanceMethod(Env* env, Class* clazz, const char* name, const char* desc) {
     Method* method = nvmGetMethod(env, clazz, name, desc);
     if (!method) return NULL;
     if (METHOD_IS_STATIC(method)) {
@@ -117,12 +123,14 @@ typedef struct FindMethodAtAddressData {
     Method* method;
 } FindMethodAtAddressData;
 
-static jboolean findMethodAtAddressIterator(Class* clazz, void* d) {
+static jboolean findMethodAtAddressIterator(Env* env, Class* clazz, void* d) {
     FindMethodAtAddressData* data = (FindMethodAtAddressData*) d;
     void* address = data->address;
-    if (clazz->methods->first && clazz->methods->lo <= address && clazz->methods->hi >= address) {
+    nvmGetMethods(env, clazz);
+    if (nvmExceptionCheck(env)) return FALSE;
+    if (clazz->_methods.first && clazz->_methods.lo <= address && clazz->_methods.hi >= address) {
         Method* method;
-        for (method = clazz->methods->first; method != NULL; method = method->next) {
+        for (method = clazz->_methods.first; method != NULL; method = method->next) {
             if (method->impl && address == method->impl) {
                 data->method = method;
                 return FALSE;
@@ -163,7 +171,7 @@ static jboolean getCallStackIterator(Env* env, void* function, jint offset, void
 
     GetCallStackIteratorData* data = (GetCallStackIteratorData*) _data;
     if (function == _proxy0) {
-        // The next function in the call stack will be the lookup function of the proxied class.
+        // The next function in the call stack will be the lookup function of the proxied method.
         data->lookupProxyMethod = TRUE;
         return TRUE;
     }
@@ -201,14 +209,14 @@ CallStackEntry* nvmGetCallStack(Env* env) {
     return data.head;
 }
 
-char* nvmGetReturnType(char* desc) {
+const char* nvmGetReturnType(const char* desc) {
     while (*desc != ')') desc++;
     desc++;
     return desc;
 }
 
-char* nvmGetNextParameterType(char** desc) {
-    char* s = *desc;
+const char* nvmGetNextParameterType(const char** desc) {
+    const char* s = *desc;
     (*desc)++;
     switch (s[0]) {
     case 'B':
@@ -234,7 +242,7 @@ char* nvmGetNextParameterType(char** desc) {
 }
 
 jint nvmGetParameterCount(Method* method) {
-    char* desc = method->desc;
+    const char* desc = method->desc;
     jint count = 0;
     while (nvmGetNextParameterType(&desc)) {
         count++;
@@ -261,8 +269,8 @@ CallInfo* initCallInfo(Env* env, Object* obj, Method* method, jboolean virtual, 
         ptrArgsCount++;
     }    
 
-    char* desc = method->desc;
-    char* c;
+    const char* desc = method->desc;
+    const char* c;
     while ((c = nvmGetNextParameterType(&desc))) {
         switch (c[0]) {
         case 'Z':
@@ -346,8 +354,8 @@ static jvalue* va_list2jargs(Env* env, Method* method, va_list args) {
     jvalue *jvalueArgs = (jvalue*) nvmAllocateMemory(env, sizeof(jvalue) * argsCount);
     if (!jvalueArgs) return NULL;
 
-    char* desc = method->desc;
-    char* c;
+    const char* desc = method->desc;
+    const char* c;
     jint i = 0;
     while ((c = nvmGetNextParameterType(&desc))) {
         switch (c[0]) {
@@ -985,7 +993,7 @@ jboolean nvmUnregisterNative(Env* env, NativeMethod* method) {
     return TRUE;
 }
 
-void* nvmResolveNativeMethodImpl(Env* env, NativeMethod* method, char* shortMangledName, char* longMangledName, ClassLoader* classLoader, void** ptr) {
+void* nvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const char* shortMangledName, const char* longMangledName, ClassLoader* classLoader, void** ptr) {
     void* f = method->nativeImpl;
     if (!f) {
         DynamicLib* nativeLibs = NULL;
@@ -1030,7 +1038,7 @@ void* nvmResolveNativeMethodImpl(Env* env, NativeMethod* method, char* shortMang
 }
 
 
-jboolean nvmLoadNativeLibrary(Env* env, char* path, ClassLoader* classLoader) {
+jboolean nvmLoadNativeLibrary(Env* env, const char* path, ClassLoader* classLoader) {
     DynamicLib** nativeLibs = NULL;
     if (!classLoader || classLoader->parent == NULL) {
         // This is the bootstrap classloader

@@ -11,6 +11,6 @@ package org.nullvm.compiler.llvm;
  */
 public enum FunctionAttribute {
 
-    noinline, optsize;
+    noinline, optsize, alwaysinline, nounwind;
     
 }

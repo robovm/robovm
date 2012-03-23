@@ -15,11 +15,11 @@ public class Variable {
     private final Type type;
 
     public Variable(VariableRef ref) {
-        this(ref.getName().substring(1), ref.getType());
+        this(ref.getName(), ref.getType());
     }
     
     public Variable(String name, Type type) {
-        this.name = "%" + name;
+        this.name = name;
         this.type = type;
     }
     
@@ -87,6 +87,6 @@ public class Variable {
 
     @Override
     public String toString() {
-        return name;
+        return "%" + name;
     }
 }

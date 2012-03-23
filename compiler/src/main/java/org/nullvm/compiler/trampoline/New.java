@@ -5,15 +5,24 @@
  */
 package org.nullvm.compiler.trampoline;
 
+import static org.nullvm.compiler.Types.*;
+
+import org.nullvm.compiler.llvm.FunctionType;
+
 
 /**
  *
  * @version $Id$
  */
 public class New extends Trampoline {
-
-    public New(String targetClass) {
-        super(targetClass);
+    private static final long serialVersionUID = 1L;
+    
+    public New(String callingClass, String targetClass) {
+        super(callingClass, targetClass);
     }
 
+    @Override
+    public FunctionType getFunctionType() {
+        return new FunctionType(OBJECT_PTR, ENV_PTR);
+    }
 }

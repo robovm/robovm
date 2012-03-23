@@ -20,6 +20,7 @@ import org.apache.commons.io.IOUtils;
 public class Module {
     private final List<URL> includes = new ArrayList<URL>();
     private final List<Global> globals = new ArrayList<Global>();
+    private final List<Alias> aliases = new ArrayList<Alias>();    
     private final List<Function> functions = new ArrayList<Function>();
     private final List<FunctionDeclaration> functionDeclarations = new ArrayList<FunctionDeclaration>();
     private final List<UserType> types = new ArrayList<UserType>();
@@ -28,6 +29,10 @@ public class Module {
 
     public void addInclude(URL resource) {
         includes.add(resource);
+    }
+    
+    public void addFunction(Function f) {
+        functions.add(f);
     }
     
     public Function newFunction(String name, FunctionType type, String ... parameterNames) {
@@ -60,6 +65,29 @@ public class Module {
         return f;
     }
     
+    public boolean hasFunctionDefined(String name) {
+        for (Function f : functions) {
+            if (f.getName().equals(name)) {
+                return true;
+            }
+        }
+        for (FunctionDeclaration f : functionDeclarations) {
+            if (f.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean hasGlobalDefined(String name) {
+        for (Global g : globals) {
+            if (g.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public void addGlobal(Global global) {
         globals.add(global);
     }
@@ -72,6 +100,10 @@ public class Module {
         Global global = new Global("g" + (counter++), Linkage._private, value, constant);
         globals.add(global);
         return global;
+    }
+    
+    public void addAlias(Alias alias) {
+        aliases.add(alias);
     }
     
     public void addType(UserType type) {
@@ -122,6 +154,11 @@ public class Module {
         sb.append("\n");
         for (Global g : globals) {
             sb.append(g.getDefinition());
+            sb.append("\n");
+        }
+        sb.append("\n");
+        for (Alias a : aliases) {
+            sb.append(a.getDefinition());
             sb.append("\n");
         }
         sb.append("\n");

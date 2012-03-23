@@ -13,8 +13,8 @@ static InstanceField* stringCountField = NULL;
 
 // TODO: Protect this with lock
 typedef struct CacheEntry {
-    char* key;      // The string in modified UTF-8
-    Object* string; // The java.lang.String object.
+    const char* key; // The string in modified UTF-8
+    Object* string;  // The java.lang.String object.
     UT_hash_handle hh;
 } CacheEntry;
 static CacheEntry* internedStrings = NULL;
@@ -27,7 +27,7 @@ static CacheEntry* internedStrings = NULL;
  * specified modified UTF-8 string.
  * Copied from Harmony (vm_strings.cpp).
  */
-static jint getUnicodeLengthOfUtf8(char* utf8) {
+static jint getUnicodeLengthOfUtf8(const char* utf8) {
     jint len = 0;
     unsigned char ch;
     unsigned char ch2;
@@ -53,7 +53,7 @@ static jint getUnicodeLengthOfUtf8(char* utf8) {
     return len;
 }
 
-static jint getUtf8LengthOfUnicode(jchar* unicode, jint unicodeLength) {
+static jint getUtf8LengthOfUnicode(const jchar* unicode, jint unicodeLength) {
     jint length = 0;
     jint i;
     for (i = 0; i < unicodeLength; i++) {
@@ -76,7 +76,7 @@ static jint getUtf8LengthOfUnicode(jchar* unicode, jint unicodeLength) {
  * characters into a string of UTF-16 Java chars.
  * Copied from Harmony (vm_strings.cpp).
  */
-static void utf8ToUnicode(jchar* unicode, char* utf8String) {
+static void utf8ToUnicode(jchar* unicode, const char* utf8String) {
     const unsigned char* utf8 = (const unsigned char*) utf8String;
     jchar ch;
     while ((ch = (jchar) *utf8++)) {
@@ -98,7 +98,7 @@ static void utf8ToUnicode(jchar* unicode, char* utf8String) {
     }
 }
 
-static void unicodeToUtf8(char* utf8String, jchar* unicode, jint unicodeLength) {
+static void unicodeToUtf8(char* utf8String, const jchar* unicode, jint unicodeLength) {
     char *s = utf8String;
     jint i;
     for (i = 0; i < unicodeLength; i++) {
@@ -145,7 +145,7 @@ jboolean nvmInitStrings(Env* env) {
     return TRUE;
 }
 
-Object* nvmNewStringAscii(Env* env, char* s, jint length) {
+Object* nvmNewStringAscii(Env* env, const char* s, jint length) {
     length = (length == -1) ? strlen(s) : length;
     CharArray* value = nvmNewCharArray(env, length);
     if (!value) return NULL;
@@ -156,7 +156,7 @@ Object* nvmNewStringAscii(Env* env, char* s, jint length) {
     return newString(env, value, length);
 }
 
-Object* nvmNewStringUTF(Env* env, char* s, jint length) {
+Object* nvmNewStringUTF(Env* env, const char* s, jint length) {
     length = (length == -1) ? getUnicodeLengthOfUtf8(s) : length;
     CharArray* value = nvmNewCharArray(env, length);
     if (!value) return NULL;
@@ -164,14 +164,14 @@ Object* nvmNewStringUTF(Env* env, char* s, jint length) {
     return newString(env, value, length);
 }
 
-Object* nvmNewString(Env* env, jchar* chars, jint length) {
+Object* nvmNewString(Env* env, const jchar* chars, jint length) {
     CharArray* value = nvmNewCharArray(env, length);
     if (!value) return NULL;
     memcpy(value->values, chars, sizeof(jchar) * length);
     return newString(env, value, length);
 }
 
-Object* nvmNewInternedStringUTF(Env* env, char* s, jint length) {
+Object* nvmNewInternedStringUTF(Env* env, const char* s, jint length) {
     // Check the cache first.
     CacheEntry* cacheEntry;
     HASH_FIND_STR(internedStrings, s, cacheEntry);
@@ -281,7 +281,7 @@ void nvmGetStringRegion(Env* env, Object* str, jint start, jint len, jchar* buf)
     // TODO: Check bounds
     CharArray* value = (CharArray*) nvmGetObjectInstanceFieldValue(env, str, stringValueField);
     jint offset = nvmGetIntInstanceFieldValue(env, str, stringOffsetField);
-    jint count = nvmGetIntInstanceFieldValue(env, str, stringCountField);
+    //jint count = nvmGetIntInstanceFieldValue(env, str, stringCountField);
     memcpy(buf, value->values + offset + start, len);
 }
 
@@ -289,7 +289,7 @@ void nvmGetStringUTFRegion(Env *env, Object* str, jint start, jint len, char* bu
     // TODO: Check bounds
     CharArray* value = (CharArray*) nvmGetObjectInstanceFieldValue(env, str, stringValueField);
     jint offset = nvmGetIntInstanceFieldValue(env, str, stringOffsetField);
-    jint count = nvmGetIntInstanceFieldValue(env, str, stringCountField);
+    //jint count = nvmGetIntInstanceFieldValue(env, str, stringCountField);
     unicodeToUtf8(buf, value->values + offset + start, len);
 }
 

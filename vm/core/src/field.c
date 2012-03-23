@@ -2,16 +2,19 @@
 #include <string.h>
 
 static Field* getField(Env* env, Class* clazz, char* name, char* desc) {
-    Field* field;
-    for (field = clazz->fields; field != NULL; field = field->next) {
+    Field* field = nvmGetFields(env, clazz);
+    if (nvmExceptionCheck(env)) return NULL;
+    for (; field != NULL; field = field->next) {
         if (!strcmp(field->name, name) && !strcmp(field->desc, desc)) {
             return field;
         }
     }
 
-    Interface* interface;
-    for (interface = clazz->interfaces; interface; interface = interface->next) {
+    Interface* interface = nvmGetInterfaces(env, clazz);
+    if (nvmExceptionCheck(env)) return NULL;
+    for (; interface != NULL; interface = interface->next) {
         field = getField(env, interface->interface, name, desc);
+        if (nvmExceptionCheck(env)) return NULL;
         if (field) return field;
     }
 
@@ -24,6 +27,7 @@ static Field* getField(Env* env, Class* clazz, char* name, char* desc) {
 
 Field* nvmGetField(Env* env, Class* clazz, char* name, char* desc) {
     Field* field = getField(env, clazz, name, desc);
+    if (nvmExceptionCheck(env)) return NULL;
     if (!field) {
         nvmThrowNoSuchFieldError(env, name);
         return NULL;

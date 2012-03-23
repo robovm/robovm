@@ -76,6 +76,9 @@ Class* array_J;
 Class* array_F;
 Class* array_D;
 
+static Field FIELDS_NOT_LOADED = {0};
+static Method METHODS_NOT_LOADED = {0};
+static Interface INTERFACES_NOT_LOADED = {0};
 static Boolean* java_lang_Boolean_TRUE = NULL;
 static Boolean* java_lang_Boolean_FALSE = NULL;
 static Method* java_lang_Byte_valueOf = NULL;
@@ -94,7 +97,7 @@ static Method* java_lang_Double_valueOf = NULL;
 static hythread_monitor_t classLock;
 
 typedef struct LoadedClassEntry {
-    char* key;      // The class name
+    const char* key;      // The class name
     Class* clazz;
     UT_hash_handle hh;
 } LoadedClassEntry;
@@ -102,15 +105,15 @@ static LoadedClassEntry* loadedClasses = NULL;
 
 static jint nextClassId = 0;
 
-static Class* findClassByDescriptor(Env* env, char* desc, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, char*, ClassLoader*));
-static Class* findClass(Env* env, char* className, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, char*, ClassLoader*));
-static Class* findBootClass(Env* env, char* className);
+static Class* findClassByDescriptor(Env* env, const char* desc, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, const char*, ClassLoader*));
+static Class* findClass(Env* env, const char* className, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, const char*, ClassLoader*));
+static Class* findBootClass(Env* env, const char* className);
 
 static inline jint getNextClassId(void) {
     return __sync_fetch_and_add(&nextClassId, 1);
 }
 
-static Class* getLoadedClass(Env* env, char* className) {
+static Class* getLoadedClass(Env* env, const char* className) {
     LoadedClassEntry* entry;
     HASH_FIND_STR(loadedClasses, className, entry);
     return entry ? entry->clazz : NULL;
@@ -133,89 +136,12 @@ static inline void releaseClassLock() {
     hythread_monitor_exit(classLock);
 }
 
-static jint j_get_vtable_index(Class* clazz, char* name, char* desc, Class* caller) {
-    Method* method;
-    int same_class;
-    int sub_class;
-    int same_package;
-
-    if (clazz->superclass && strcmp("<init>", name) && strcmp("<clinit>", name)) {
-        /* 
-         * Check with the superclass first. Note that constructors and static 
-         * initializers are not inherited.
-         */
-        jint index = j_get_vtable_index(clazz->superclass, name, desc, caller);
-        if (index != -1) {
-            return index;
-        }
-    }
-
-    same_class = clazz == caller;
-    sub_class = nvmIsSubClass(clazz, caller);
-    same_package = nvmIsSamePackage(clazz, caller);
-
-    for (method = clazz->methods->first; method != NULL; method = method->next) {
-        jint access = method->access;
-        if (access & ACC_PRIVATE && !same_class) {
-            continue;
-        }
-        if (access & ACC_PROTECTED && !sub_class) {
-            continue;
-        }
-        if (!(access & ACC_PRIVATE) && !(access & ACC_PROTECTED) && !(access & ACC_PUBLIC) && !same_package) {
-            // Package private
-            continue;
-        }
-        if (!strcmp(method->name, name) && !strcmp(method->desc, desc)) {
-            return method->vtableIndex;
-        }
-    }
-    return -1;
-}
-
-static char* hexChars = "0123456789ABCDEF";
-
-static char* mangleClassName(Env* env, char* s) {
-    jint i, j;
-    jint k = strlen(s);
-    jint l = k + strlen("NullVM_");
-
-    // Determine the length of the mangled string
-    for (i = 0; i < k; i++) {
-        char c = s[i];
-        if (!((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '/')) {
-            l += 2;
-        }
-    }
-
-    char* result = nvmAllocateMemory(env, l + 1);
-    if (!result) return NULL;
-
-    strcpy(result, "NullVM_");
-    for (i = 0, j = strlen("NullVM_"); i < k; i++) {
-        char c = s[i];
-        if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {
-            result[j++] = c;
-        } else if (c == '/') {
-            result[j++] = '_';
-        } else {
-            result[j++] = '$';
-            result[j++] = hexChars[(c >> 4) & 0xf];
-            result[j++] = hexChars[c & 0xf];
-        }
-    }
-
-    return result;
-}
-
-static Class* createPrimitiveClass(Env* env, char* desc) {
+static Class* createPrimitiveClass(Env* env, const char* desc) {
     Class* clazz = nvmAllocateMemory(env, sizeof(Class));
     if (!clazz) return NULL;
     clazz->name = desc;
-    clazz->state = CLASS_INITIALIZED;
     clazz->object.clazz = java_lang_Class;
-    clazz->access = ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT;
-    clazz->primitive = TRUE;
+    clazz->flags = CLASS_FLAG_PRIMITIVE | CLASS_STATE_INITIALIZED | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT;
     return clazz;
 }
 
@@ -223,7 +149,7 @@ static Class* createArrayClass(Env* env, Class* componentType) {
     jint length = strlen(componentType->name);
     char* desc = NULL;
 
-    if (CLASS_IS_ARRAY(componentType) || componentType->primitive) {
+    if (CLASS_IS_ARRAY(componentType) || CLASS_IS_PRIMITIVE(componentType)) {
         desc = nvmAllocateMemory(env, length + 2);
         if (!desc) return NULL;
         desc[0] = '[';
@@ -238,17 +164,20 @@ static Class* createArrayClass(Env* env, Class* componentType) {
     }
 
     // TODO: Add clone() method.
-    Class* clazz = nvmAllocateClass(env, desc, java_lang_Object, componentType->classLoader, ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, 0, 0);
+    Class* clazz = nvmAllocateClass(env, desc, java_lang_Object, componentType->classLoader, 
+        CLASS_FLAG_ARRAY | CLASS_STATE_INITIALIZED | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, 0, 0, NULL, NULL);
     if (!clazz) return NULL;
+    clazz->componentType = componentType;
+    // Initialize methods to NULL to prevent nvmGetMethods() from trying to load the methods if called with this array class
+    clazz->_methods.first = NULL;
     if (!nvmAddInterface(env, clazz, java_lang_Cloneable)) return NULL;
     if (!nvmAddInterface(env, clazz, java_io_Serializable)) return NULL;
     if (!nvmRegisterClass(env, clazz)) return NULL;
-    clazz->state = CLASS_INITIALIZED;
 
     return clazz;
 }
 
-static Class* findClass(Env* env, char* className, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, char*, ClassLoader*)) {
+static Class* findClass(Env* env, const char* className, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, const char*, ClassLoader*)) {
     obtainClassLock();
     Class* clazz = getLoadedClass(env, className);
     if (clazz != NULL) {
@@ -269,14 +198,7 @@ static Class* findClass(Env* env, char* className, ClassLoader* classLoader, Cla
 
     TRACE("Class '%s' not loaded\n", className);
 
-    // We use _nvmCall0 to call loaderFunc to stop unwinding if an exception is thrown.
-    CallInfo* callInfo = call0AllocateCallInfo(env, loaderFunc, 3, 0, 0, 0, 0);
-    call0AddPtr(callInfo, env);
-    call0AddPtr(callInfo, className);
-    call0AddPtr(callInfo, classLoader);
-    Class* (*f)(CallInfo*) = (Class* (*)(CallInfo*)) _call0;
-    clazz = f(callInfo);
-
+    clazz = loaderFunc(env, className, classLoader);
     if (nvmExceptionOccurred(env)) {
         releaseClassLock();
         return NULL;
@@ -293,8 +215,8 @@ static Class* findClass(Env* env, char* className, ClassLoader* classLoader, Cla
     return clazz;
 }
 
-static Class* findBootClass(Env* env, char* className) {
-    Class* clazz = findClass(env, className, NULL, env->vm->options->bootclasspathFunc);
+static Class* findBootClass(Env* env, const char* className) {
+    Class* clazz = findClass(env, className, NULL, env->vm->options->loadBootClass);
     if (nvmExceptionOccurred(env)) return NULL;
     if (clazz != NULL) {
         if (clazz->classLoader != NULL) {
@@ -307,7 +229,7 @@ static Class* findBootClass(Env* env, char* className) {
 }
 
 
-static Class* findClassByDescriptor(Env* env, char* desc, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, char*, ClassLoader*)) {
+static Class* findClassByDescriptor(Env* env, const char* desc, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, const char*, ClassLoader*)) {
     switch (desc[0]) {
     case 'Z':
         return prim_Z;
@@ -338,7 +260,7 @@ static Class* findClassByDescriptor(Env* env, char* desc, ClassLoader* classLoad
     return findClass(env, className, classLoader, loaderFunc);
 }
 
-Class* nvmFindClassByDescriptor(Env* env, char* desc, ClassLoader* classLoader) {
+Class* nvmFindClassByDescriptor(Env* env, const char* desc, ClassLoader* classLoader) {
     switch (desc[0]) {
     case 'Z':
         return prim_Z;
@@ -369,7 +291,7 @@ Class* nvmFindClassByDescriptor(Env* env, char* desc, ClassLoader* classLoader) 
     return nvmFindClassUsingLoader(env, className, classLoader);
 }
 
-char* nvmToBinaryClassName(Env* env, char* className) {
+char* nvmToBinaryClassName(Env* env, const char* className) {
     char* binName = nvmCopyMemoryZ(env, className);
     if (!binName) return NULL;
     jint i = 0;
@@ -379,7 +301,7 @@ char* nvmToBinaryClassName(Env* env, char* className) {
     return binName;
 }
 
-char* nvmFromBinaryClassName(Env* env, char* binaryClassName) {
+char* nvmFromBinaryClassName(Env* env, const char* binaryClassName) {
     char* className = nvmCopyMemoryZ(env, binaryClassName);
     if (!className) return NULL;
     jint i = 0;
@@ -387,10 +309,6 @@ char* nvmFromBinaryClassName(Env* env, char* binaryClassName) {
         if (className[i] == '.') className[i] = '/';
     }
     return className;
-}
-
-Class* nvmGetComponentType(Env* env, Class* arrayClass) {
-    return nvmFindClassByDescriptor(env, &arrayClass->name[1], arrayClass->classLoader);
 }
 
 jboolean nvmIsSubClass(Class* superclass, Class* clazz) {
@@ -434,20 +352,22 @@ jboolean nvmIsAssignableFrom(Env* env, Class* s, Class* t) {
         if (!CLASS_IS_ARRAY(t)) {
             return FALSE;
         }
-        if (CLASS_IS_ARRAY_OF_PRIMITIVE(s)) {
+        Class* componentType = s->componentType;
+        if (CLASS_IS_PRIMITIVE(componentType)) {
             // s is a primitive array and can only be assigned to 
             // class t if s == t or t == (Object|Serializable|Cloneable). But we 
             // already know that s != t and t != (Object|Serializable|Cloneable)
             return FALSE;
         }
-        return nvmIsAssignableFrom(env, nvmGetComponentType(env, s), nvmGetComponentType(env, t));
+        return nvmIsAssignableFrom(env, componentType, t->componentType);
     }
 
     if (CLASS_IS_INTERFACE(t)) {
         // s or any of its parents must implement the interface t
         for (; s; s = s->superclass) {
-            Interface* interface;
-            for (interface = s->interfaces; interface; interface = interface->next) {
+            Interface* interface = nvmGetInterfaces(env, s);
+            if (nvmExceptionCheck(env)) return FALSE;
+            for (; interface != NULL; interface = interface->next) {
                 if (nvmIsAssignableFrom(env, interface->interface, t)) {
                     return TRUE;
                 }
@@ -467,7 +387,7 @@ jboolean nvmIsInstanceOf(Env* env, Object* obj, Class* clazz) {
     return nvmIsAssignableFrom(env, obj->clazz, clazz);
 }
 
-static jboolean fixClassPointer(Class* c, void* data) {
+static jboolean fixClassPointer(Env* env, Class* c, void* data) {
     c->object.clazz = java_lang_Class;
     return TRUE;
 }
@@ -681,21 +601,21 @@ jboolean nvmInitPrimitiveWrapperClasses(Env* env) {
     return TRUE;
 }
 
-Class* nvmFindClass(Env* env, char* className) {
+Class* nvmFindClass(Env* env, const char* className) {
     Method* method = nvmGetCallingMethod(env);
     if (nvmExceptionOccurred(env)) return NULL;
     ClassLoader* classLoader = method ? method->clazz->classLoader : NULL;
     return nvmFindClassUsingLoader(env, className, classLoader);
 }
 
-Class* nvmFindClassInClasspathForLoader(Env* env, char* className, ClassLoader* classLoader) {
+Class* nvmFindClassInClasspathForLoader(Env* env, const char* className, ClassLoader* classLoader) {
     if (!classLoader || classLoader->parent == NULL) {
         // This is the bootstrap classloader
         return findBootClass(env, className);
     }
     if (classLoader->parent->parent == NULL && classLoader->object.clazz->classLoader == NULL) {
         // This is the system classloader
-        Class* clazz = findClass(env, className, classLoader, env->vm->options->classpathFunc);
+        Class* clazz = findClass(env, className, classLoader, env->vm->options->loadUserClass);
         if (nvmExceptionOccurred(env)) return NULL;
         return clazz;
     }
@@ -703,7 +623,7 @@ Class* nvmFindClassInClasspathForLoader(Env* env, char* className, ClassLoader* 
     return NULL;
 }
 
-Class* nvmFindClassUsingLoader(Env* env, char* className, ClassLoader* classLoader) {
+Class* nvmFindClassUsingLoader(Env* env, const char* className, ClassLoader* classLoader) {
     if (!classLoader || classLoader->parent == NULL) {
         // This is the bootstrap classloader. No need to call ClassLoader.loadClass()
         return findBootClass(env, className);
@@ -719,13 +639,13 @@ Class* nvmFindClassUsingLoader(Env* env, char* className, ClassLoader* classLoad
     return (Class*) clazz;
 }
 
-Class* nvmFindLoadedClass(Env* env, char* className, ClassLoader* classLoader) {
+Class* nvmFindLoadedClass(Env* env, const char* className, ClassLoader* classLoader) {
     Class* clazz = getLoadedClass(env, className);
     if (nvmExceptionOccurred(env)) return NULL;
     return clazz;
 }
 
-Class* nvmAllocateClass(Env* env, char* className, Class* superclass, ClassLoader* classLoader, jint access, jint classDataSize, jint instanceDataSize) {
+Class* nvmAllocateClass(Env* env, const char* className, Class* superclass, ClassLoader* classLoader, jint flags, jint classDataSize, jint instanceDataSize, void* attributes, void* initializer) {
     if (superclass && CLASS_IS_INTERFACE(superclass)) {
         // TODO: Message should look like ?
         nvmThrowIncompatibleClassChangeError(env, "");
@@ -734,8 +654,12 @@ Class* nvmAllocateClass(Env* env, char* className, Class* superclass, ClassLoade
 
     Class* clazz = nvmAllocateMemory(env, sizeof(Class) + classDataSize);
     if (!clazz) return NULL;
-    clazz->methods = nvmAllocateMemory(env, sizeof(Methods));
-    if (!clazz->methods) return NULL;
+
+    // Make sure classDataSize and instanceDataSize are aligned properly so that the GC will be able
+    // to find pointers within class and instance data. We assume that the alignment equals the size of pointers.
+    classDataSize = (classDataSize + sizeof(void*) - 1) & ~(sizeof(void*) - 1);
+    instanceDataSize = (instanceDataSize + sizeof(void*) - 1) & ~(sizeof(void*) - 1);
+
     /*
      * NOTE: All classes we load before we have cached java.lang.Class will have NULL here so it is 
      * important that we cache java.lang.Class as soon as possible. However, we have to cache
@@ -747,15 +671,17 @@ Class* nvmAllocateClass(Env* env, char* className, Class* superclass, ClassLoade
     clazz->name = className;
     clazz->superclass = superclass;
     clazz->classLoader = classLoader;
-    clazz->access = access;
+    clazz->flags = flags;
     clazz->classDataSize = classDataSize;
     clazz->instanceDataSize = instanceDataSize;
     clazz->instanceDataOffset = clazz->superclass 
                ? clazz->superclass->instanceDataOffset + clazz->superclass->instanceDataSize
                : 0;
-    // Make sure clazz->instanceDataOffset is aligned properly so that the GC will be able to find pointers
-    // TODO: For now we assume that the alignment equals the size of pointers
-    while (clazz->instanceDataOffset & (sizeof(void*) - 1)) clazz->instanceDataOffset++;
+    clazz->_interfaces = &INTERFACES_NOT_LOADED;
+    clazz->_fields = &FIELDS_NOT_LOADED;
+    clazz->_methods.first = &METHODS_NOT_LOADED;
+    clazz->attributes = attributes;
+    clazz->initializer = initializer;
 
     return clazz;
 }
@@ -769,11 +695,14 @@ jboolean nvmAddInterface(Env* env, Class* clazz, Class* interf) {
     Interface* interface = nvmAllocateMemory(env, sizeof(Interface));
     if (!interface) return FALSE;
     interface->interface = interf;
-    LL_APPEND(clazz->interfaces, interface);
+    if (clazz->_interfaces == &INTERFACES_NOT_LOADED) {
+        clazz->_interfaces = NULL;
+    }
+    LL_APPEND(clazz->_interfaces, interface);
     return TRUE;
 }
 
-Method* nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup) {
+Method* nvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, void* impl, void* synchronizedImpl, void* attributes) {
     Method* method = nvmAllocateMemory(env, IS_NATIVE(access) ? sizeof(NativeMethod) : sizeof(Method));
     if (!method) return NULL;
     method->clazz = clazz;
@@ -782,17 +711,20 @@ Method* nvmAddMethod(Env* env, Class* clazz, char* name, char* desc, jint access
     method->access = access;
     method->impl = impl;
     method->synchronizedImpl = synchronizedImpl;
-    method->lookup = lookup;
-    method->vtableIndex = -1;
+    method->attributes = attributes;
 
-    method->next = clazz->methods->first;
-    clazz->methods->first = method;
+    if (clazz->_methods.first == &METHODS_NOT_LOADED) {
+        clazz->_methods.first = NULL;
+    }
+
+    method->next = clazz->_methods.first;
+    clazz->_methods.first = method;
 
     if (method->impl && method->impl != _proxy0) {
-        if (clazz->methods->lo == NULL || method->impl < clazz->methods->lo) {
-            clazz->methods->lo = method->impl;
-        } else if (clazz->methods->hi == NULL || method->impl > clazz->methods->hi) {
-            clazz->methods->hi = method->impl;
+        if (clazz->_methods.lo == NULL || method->impl < clazz->_methods.lo) {
+            clazz->_methods.lo = method->impl;
+        } else if (clazz->_methods.hi == NULL || method->impl > clazz->_methods.hi) {
+            clazz->_methods.hi = method->impl;
         }
     }
     return method;
@@ -807,17 +739,19 @@ ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint 
     method->method.access = access | METHOD_TYPE_PROXY;
     method->method.impl = impl;
     method->method.synchronizedImpl = NULL;
-    method->method.lookup = proxiedMethod->lookup;
     method->proxiedMethod = proxiedMethod;
-    method->method.vtableIndex = -1;
 
-    method->method.next = clazz->methods->first;
-    clazz->methods->first = (Method*) method;
+    if (clazz->_methods.first == &METHODS_NOT_LOADED) {
+        clazz->_methods.first = NULL;
+    }
+
+    method->method.next = clazz->_methods.first;
+    clazz->_methods.first = (Method*) method;
 
     return method;
 }
 
-BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup, void** targetImpl) {
+BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, void* impl, void* synchronizedImpl, void** targetImpl, void* attributes) {
     BridgeMethod* method = nvmAllocateMemory(env, sizeof(BridgeMethod));
     if (!method) return NULL;
     method->method.clazz = clazz;
@@ -826,22 +760,25 @@ BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, char* name, char* desc,
     method->method.access = access | METHOD_TYPE_BRIDGE;
     method->method.impl = impl;
     method->method.synchronizedImpl = synchronizedImpl;
-    method->method.lookup = lookup;
-    method->method.vtableIndex = -1;
+    method->method.attributes = attributes;
     method->targetImpl = targetImpl;
 
-    method->method.next = clazz->methods->first;
-    clazz->methods->first = (Method*) method;
+    if (clazz->_methods.first == &METHODS_NOT_LOADED) {
+        clazz->_methods.first = NULL;
+    }
 
-    if (clazz->methods->lo == NULL || method->method.impl < clazz->methods->lo) {
-        clazz->methods->lo = method->method.impl;
-    } else if (clazz->methods->hi == NULL || method->method.impl > clazz->methods->hi) {
-        clazz->methods->hi = method->method.impl;
+    method->method.next = clazz->_methods.first;
+    clazz->_methods.first = (Method*) method;
+
+    if (clazz->_methods.lo == NULL || method->method.impl < clazz->_methods.lo) {
+        clazz->_methods.lo = method->method.impl;
+    } else if (clazz->_methods.hi == NULL || method->method.impl > clazz->_methods.hi) {
+        clazz->_methods.hi = method->method.impl;
     }
     return method;
 }
 
-CallbackMethod* nvmAddCallbackMethod(Env* env, Class* clazz, char* name, char* desc, jint access, void* impl, void* synchronizedImpl, void* lookup, void* callbackImpl) {
+CallbackMethod* nvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, void* impl, void* synchronizedImpl, void* callbackImpl, void* attributes) {
     CallbackMethod* method = nvmAllocateMemory(env, sizeof(CallbackMethod));
     if (!method) return NULL;
     method->method.clazz = clazz;
@@ -850,32 +787,43 @@ CallbackMethod* nvmAddCallbackMethod(Env* env, Class* clazz, char* name, char* d
     method->method.access = access | METHOD_TYPE_CALLBACK;
     method->method.impl = impl;
     method->method.synchronizedImpl = synchronizedImpl;
-    method->method.lookup = lookup;
-    method->method.vtableIndex = -1;
+    method->method.attributes = attributes;
     method->callbackImpl = callbackImpl;
 
-    method->method.next = clazz->methods->first;
-    clazz->methods->first = (Method*) method;
-
-    if (clazz->methods->lo == NULL || method->method.impl < clazz->methods->lo) {
-        clazz->methods->lo = method->method.impl;
-    } else if (clazz->methods->hi == NULL || method->method.impl > clazz->methods->hi) {
-        clazz->methods->hi = method->method.impl;
+    if (clazz->_methods.first == &METHODS_NOT_LOADED) {
+        clazz->_methods.first = NULL;
     }
+
+    method->method.next = clazz->_methods.first;
+    clazz->_methods.first = (Method*) method;
+
+    if (clazz->_methods.lo == NULL || method->method.impl < clazz->_methods.lo) {
+        clazz->_methods.lo = method->method.impl;
+    } else if (clazz->_methods.hi == NULL || method->method.impl > clazz->_methods.hi) {
+        clazz->_methods.hi = method->method.impl;
+    }
+
+    unwindRegisterCallback(env, method->callbackImpl);
+
     return method;
 }
 
-Field* nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, jint offset, void* getter, void* setter) {
+Field* nvmAddField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes) {
     Field* field = nvmAllocateMemory(env, IS_STATIC(access) ? sizeof(ClassField) : sizeof(InstanceField));
     if (!field) return NULL;
     field->clazz = clazz;
     field->name = name;
     field->desc = desc;
     field->access = access;
-    field->getter = getter;
-    field->setter = setter;
-    field->next = clazz->fields;
-    clazz->fields = field;
+    field->attributes = attributes;
+
+    if (clazz->_fields == &FIELDS_NOT_LOADED) {
+        clazz->_fields = NULL;
+    }
+
+    field->next = clazz->_fields;
+    clazz->_fields = field;
+
     if (access & ACC_STATIC) {
         ((ClassField*) field)->address = (jbyte*) clazz->data + offset;
     } else {
@@ -884,60 +832,63 @@ Field* nvmAddField(Env* env, Class* clazz, char* name, char* desc, jint access, 
     return field;
 }
 
+Interface* nvmGetInterfaces(Env* env, Class* clazz) {
+    if (clazz->_interfaces != &INTERFACES_NOT_LOADED) return clazz->_interfaces;
+
+    // TODO: Double checked locking
+    obtainClassLock();
+    if (clazz->_interfaces == &INTERFACES_NOT_LOADED) {
+        env->vm->options->loadInterfaces(env, clazz);
+        if (clazz->_interfaces == &INTERFACES_NOT_LOADED) {
+            // The class has no interfaces
+            clazz->_interfaces = NULL;
+        }
+    }
+    if (nvmExceptionCheck(env)) clazz->_interfaces = &INTERFACES_NOT_LOADED;
+    releaseClassLock();
+    if (nvmExceptionCheck(env)) return NULL;
+    return clazz->_interfaces;
+}
+
+Field* nvmGetFields(Env* env, Class* clazz) {
+    if (clazz->_fields != &FIELDS_NOT_LOADED) return clazz->_fields;
+
+    // TODO: Double checked locking
+    obtainClassLock();
+    if (clazz->_fields == &FIELDS_NOT_LOADED) {
+        env->vm->options->loadFields(env, clazz);
+        if (clazz->_fields == &FIELDS_NOT_LOADED) {
+            // The class has no fields
+            clazz->_fields = NULL;
+        }
+    }
+    if (nvmExceptionCheck(env)) clazz->_fields = &FIELDS_NOT_LOADED;
+    releaseClassLock();
+    if (nvmExceptionCheck(env)) return NULL;
+    return clazz->_fields;
+}
+
+Method* nvmGetMethods(Env* env, Class* clazz) {
+    if (clazz->_methods.first != &METHODS_NOT_LOADED) return clazz->_methods.first;
+
+    // TODO: Double checked locking
+    obtainClassLock();
+    if (clazz->_methods.first == &METHODS_NOT_LOADED) {
+        env->vm->options->loadMethods(env, clazz);
+        if (clazz->_methods.first == &METHODS_NOT_LOADED) {
+            // The class has no methods
+            clazz->_methods.first = NULL;
+        }
+    }
+    if (nvmExceptionCheck(env)) clazz->_methods.first = &METHODS_NOT_LOADED;
+    releaseClassLock();
+    if (nvmExceptionCheck(env)) return NULL;
+    return clazz->_methods.first;
+}
+
 jboolean nvmRegisterClass(Env* env, Class* clazz) {
-    int vtableSize;
-    Method* method;
-    Field* field;
-    int size;
-
-    clazz->id = getNextClassId();
-
-    vtableSize = clazz->superclass != NULL ? clazz->superclass->vtableSize : 0;
-
     // TODO: Check that the superclass and all interfaces are accessible to the new class
     // TODO: Verify the class hierarchy (class doesn't override final methods, changes public -> private, etc)
-
-    for (method = clazz->methods->first; method != NULL; method = method->next) {
-        int vtableIndex = -1;
-        if (clazz->superclass != NULL && strcmp("<init>", method->name) && strcmp("<clinit>", method->name)) {
-            vtableIndex = j_get_vtable_index(clazz->superclass, method->name, method->desc, clazz);
-        }
-        if (vtableIndex == -1) {
-          vtableIndex = vtableSize++;
-        }
-        method->vtableIndex = vtableIndex;
-        if (method->lookup == NULL) {
-            if (!METHOD_IS_STATIC(method) && !METHOD_IS_PRIVATE(method) && !METHOD_IS_FINAL(method) && !METHOD_IS_CONSTRUCTOR(method)) {
-                // Overridden non-final instance methods inherit the lookup function from the method it is overriding
-                Method* superMethod = nvmGetMethod(env, clazz->superclass, method->name, method->desc);
-                if (!superMethod) return FALSE;
-                method->lookup = superMethod->lookup;
-            } else {
-                method->lookup = method->impl;
-            }
-        }
-//        TRACE("vtable index for method %s%s in class %s: %d\n", method->name, method->desc, clazz->name, vtableIndex);
-
-        if (method->access & METHOD_TYPE_CALLBACK) {
-            unwindRegisterCallback(env, ((CallbackMethod*) method)->callbackImpl);
-        }
-    }
-    if (vtableSize > 0) {
-        clazz->vtable = nvmAllocateMemory(env, vtableSize * sizeof(void*));
-        if (!clazz->vtable) return FALSE;
-        clazz->vtableSize = vtableSize;
-        if (clazz->superclass != NULL && clazz->superclass->vtableSize > 0) {
-            memcpy(clazz->vtable, clazz->superclass->vtable, clazz->superclass->vtableSize);
-        }
-    }
-//    TRACE("vtable size for %s: %d\n", clazz->name, vtableSize);
-
-    for (method = clazz->methods->first; method != NULL; method = method->next) {
-        clazz->vtable[method->vtableIndex] = method->impl;
-    }
-
-    clazz->state = CLASS_VERIFIED;
-    clazz->state = CLASS_PREPARED;
 
     obtainClassLock();
     if (!addLoadedClass(env, clazz)) {
@@ -946,33 +897,46 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
     }
     releaseClassLock();
 
+    clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_LOADED;
+
     return TRUE;
 }
 
 void nvmInitialize(Env* env, Class* clazz) {
     // TODO: Throw java.lang.NoClassDefFoundError if state == CLASS_ERROR?
-    if (clazz->state == CLASS_ERROR) {
+    if (CLASS_IS_STATE_ERROR(clazz)) {
         // TODO: Add the class' binary name in the message
         nvmThrowNew(env, java_lang_NoClassDefFoundError, "Could not initialize class ??");
         return;
     }
-    if (clazz->state != CLASS_INITIALIZED && clazz->state != CLASS_INITIALIZING) {
-        jint oldState = clazz->state;
-        clazz->state = CLASS_INITIALIZING;
+    if (!CLASS_IS_STATE_INITIALIZED(clazz) && !CLASS_IS_STATE_INITIALIZING(clazz)) {
+        jint oldState = clazz->flags & CLASS_STATE_MASK;
+        clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZING;
         if (clazz->superclass) {
             nvmInitialize(env, clazz->superclass);
             if (nvmExceptionOccurred(env)) {
-                clazz->state = oldState;
+                clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | oldState;
                 return;
             }
         }
         TRACE("Initializing class %s\n", clazz->name);
-        Method* clinit = nvmGetClassInitializer(env, clazz);
-        if (!clinit) return;
-        nvmCallVoidClassMethod(env, clazz, clinit);
+        void* initializer = clazz->initializer;
+        if (!initializer) {
+            if (!CLASS_IS_ARRAY(clazz) && !CLASS_IS_PROXY(clazz) && !CLASS_IS_PRIMITIVE(clazz)) {
+                env->vm->options->classInitialized(env, clazz);
+            }
+            clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZED;
+            return;
+        }
+
+        CallInfo* callInfo = call0AllocateCallInfo(env, initializer, 1, 0, 0, 0, 0);
+        call0AddPtr(callInfo, env);
+        void (*f)(CallInfo*) = (void (*)(CallInfo*)) _call0;
+        f(callInfo);
+
         Object* exception = nvmExceptionClear(env);
         if (exception) {
-            clazz->state = CLASS_ERROR;
+            clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_ERROR;
             if (!nvmIsInstanceOf(env, exception, java_lang_Error)) {
                 // If exception isn't an instance of java.lang.Error 
                 // we must wrap it in a java.lang.ExceptionInInitializerError
@@ -985,7 +949,10 @@ void nvmInitialize(Env* env, Class* clazz) {
             nvmThrow(env, exception);
             return;
         }
-        clazz->state = CLASS_INITIALIZED;
+        if (!CLASS_IS_ARRAY(clazz) && !CLASS_IS_PROXY(clazz) && !CLASS_IS_PRIMITIVE(clazz)) {
+            env->vm->options->classInitialized(env, clazz);
+        }
+        clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZED;
     }
 }
 
@@ -1093,7 +1060,7 @@ Double* nvmNewDouble(Env* env, jdouble value) {
 }
 
 Object* nvmWrapPrimitive(Env* env, Class* type, jvalue* value) {
-    if (type->primitive) {
+    if (CLASS_IS_PRIMITIVE(type)) {
         switch (type->name[0]) {
         case 'Z':
             return (Object*) nvmNewBoolean(env, value->z);
@@ -1129,14 +1096,14 @@ Object* nvmCloneObject(Env* env, Object* obj) {
     return copy;
 }
 
-void nvmIterateLoadedClasses(Env* env, jboolean (*f)(Class*, void*), void* data) {
+void nvmIterateLoadedClasses(Env* env, jboolean (*f)(Env*, Class*, void*), void* data) {
     LoadedClassEntry* entry;
     for (entry = loadedClasses; entry != NULL; entry = entry->hh.next) {
-        if (!f(entry->clazz, data)) return;
+        if (!f(env, entry->clazz, data)) return;
     }
 }
 
-static jboolean dumpClassesIterator(Class* clazz, void* d) {
+static jboolean dumpClassesIterator(Env* env, Class* clazz, void* d) {
     fprintf(stderr, "%p: %s\n", clazz, clazz->name);
     return TRUE;
 }

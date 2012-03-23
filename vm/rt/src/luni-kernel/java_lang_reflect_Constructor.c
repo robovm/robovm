@@ -10,7 +10,6 @@ Object* Java_java_lang_reflect_Constructor_internalNewInstance(Env* env, Class* 
      * of arguments are correct.
      */
 
-    jint length = args->length;
     jvalue* jvalueArgs = validateAndUnwrapArgs(env, parameterTypes, args);
     if (!jvalueArgs) return NULL;
 

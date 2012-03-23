@@ -23,7 +23,7 @@ static Class* array_of_java_lang_annotation_Annotation = NULL;
 static ObjectArray* emptyExceptionTypes = NULL;
 static ObjectArray* emptyAnnotations = NULL;
 
-static Class* findType(Env* env, char* classDesc, ClassLoader* loader) {
+static Class* findType(Env* env, const char* classDesc, ClassLoader* loader) {
     Class* c = nvmFindClassByDescriptor(env, classDesc, loader);
     if (!c) {
         if (nvmExceptionOccurred(env)->clazz == java_lang_ClassNotFoundException) {
@@ -251,11 +251,11 @@ static jboolean parseArrayElementValue(Env* env, void** attributes, Class* array
     jbyte tag = getByte(attributes);
     if (tag != '[') return throwFormatError(env, "Array");
 
-    Class* componentType = nvmGetComponentType(env, arrayClass);
+    Class* componentType = arrayClass->componentType;
 
     jint length = getChar(attributes);
     Array* array = NULL;
-    if (componentType->primitive) {
+    if (CLASS_IS_PRIMITIVE(componentType)) {
         switch (componentType->name[0]) {
         case 'Z':
             array = (Array*) nvmNewBooleanArray(env, length);
@@ -291,7 +291,7 @@ static jboolean parseArrayElementValue(Env* env, void** attributes, Class* array
     for (i = 0; i < length; i++) {
         jvalue v;
         if (!parseElementValue(env, attributes, componentType, classLoader, &v)) return FALSE;
-        if (componentType->primitive) {
+        if (CLASS_IS_PRIMITIVE(componentType)) {
             switch (componentType->name[0]) {
             case 'Z':
                 ((BooleanArray*) array)->values[i] = v.z;
@@ -358,8 +358,8 @@ static jboolean parseEnumElementValue(Env* env, void** attributes, ClassLoader* 
 }
 
 static Method* getAnnotationValueMethod(Env* env, Class* clazz, char* name) {
-    Method* method;
-    for (method = clazz->methods->first; method != NULL; method = method->next) {
+    Method* method = nvmGetMethods(env, clazz);
+    for (; method != NULL; method = method->next) {
         if (!strcmp(method->name, name)) {
             return method;
         }
@@ -388,6 +388,7 @@ static jboolean getAnnotationValue(Env* env, void** attributes, Class* expectedA
     for (i = 0; i < length; i++) {
         char* name = getString(attributes);
         Method* method = getAnnotationValueMethod(env, annotationClass, name);
+        if (nvmExceptionCheck(env)) return FALSE;
         if (!method) {
             skipElementValue(attributes);
         } else {
@@ -439,7 +440,7 @@ static jboolean parseAnnotationElementValue(Env* env, void** attributes, Class* 
 }
 
 static jboolean parseElementValue(Env* env, void** attributes, Class* type, ClassLoader* classLoader, jvalue* result) {
-    if (type->primitive) {
+    if (CLASS_IS_PRIMITIVE(type)) {
         switch (type->name[0]) {
         case 'Z':
             return parseBooleanElementValue(env, attributes, result);

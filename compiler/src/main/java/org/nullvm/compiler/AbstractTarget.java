@@ -8,12 +8,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -47,7 +50,7 @@ public abstract class AbstractTarget implements Target {
         return true;
     }
     
-    public void build(List<File> objectFiles, List<File> libFiles) throws IOException {
+    public void build(List<File> objectFiles, Map<String, String> aliases) throws IOException {
         File outFile = new File(config.getTmpDir(), config.getExecutable());
         
         config.getLogger().debug("Building executable %s", outFile);
@@ -60,38 +63,73 @@ public abstract class AbstractTarget implements Target {
         LinkedList<String> ccArgs = new LinkedList<String>();
         LinkedList<String> libArgs = new LinkedList<String>();
         
-        libArgs.addAll(Arrays.asList("-lnullvm-bc", "-lm", "-lnullvm-core", "-lnullvm-hyprt"));
+        libArgs.addAll(Arrays.asList(
+                "-lnullvm-bc", 
+                "-Wl,--whole-archive", "-lnullvm-rt", "-Wl,--no-whole-archive", 
+                "-lnullvm-core", 
+                "-lnullvm-hyprt", 
+                "-lnullvm-hythr", 
+                "-lnullvm-hypool", 
+                "-lnullvm-hycommon", 
+                "-lgc",
+                "-lpthread", "-ldl", "-lm", "-lz"));
         
         ccArgs.add("-L");
         ccArgs.add(config.getOsArchDepLibDir().getAbsolutePath());
         if (config.getOs().getFamily() == OS.Family.linux) {
-            libArgs.add("-l:libgc.so.1");
-            ccArgs.add("-Xlinker");
-            ccArgs.add("-rpath=$ORIGIN");
+            // Create a linker script with all aliases
+            File aliasFile = new File(config.getTmpDir(), "aliases");
+            PrintWriter w = null;
+            try {
+                w = new PrintWriter(aliasFile, "ASCII");
+                for (Entry<String, String> alias : aliases.entrySet()) {
+                    w.print(alias.getKey());
+                    w.print(" = ");
+                    w.print(alias.getValue());
+                    w.print(";\n");
+                }
+            } finally {
+                IOUtils.closeQuietly(w);
+            }
+            ccArgs.add("-Wl,-rpath=$ORIGIN");
+            ccArgs.add("-Wl,--script=" + aliasFile.getAbsolutePath());
+            ccArgs.add("-Wl,--gc-sections");
+//            ccArgs.add("-Wl,--print-gc-sections");
+            // This prevents _nvmBcPersonality and _nvmPersonality from being removed by the linker
+            // when garbage collecting unreferenced sections.
+            ccArgs.add("-Wl,-u,_nvmPersonality");
+            ccArgs.add("-Wl,-u,_nvmBcPersonality");
         } else if (config.getOs().getFamily() == OS.Family.darwin) {
-            ccArgs.add("-Xlinker");
-            ccArgs.add("-no_implicit_dylibs");
-            libArgs.add("-lgc");
             File unexportedSymbolsFile = new File(config.getTmpDir(), "unexported_symbols");
             FileUtils.writeStringToFile(unexportedSymbolsFile, "*\n", "ASCII");
             ccArgs.add("-unexported_symbols_list");
             ccArgs.add(unexportedSymbolsFile.getAbsolutePath());
             
-            // Needed on Mac OS X >= 10.6 to prevent linker from compacting unwind info which breaks _Unwind_FindEnclosingFunction
-            ccArgs.add("-Xlinker");
-            ccArgs.add("-no_compact_unwind");
-            
             ccArgs.add("-arch");            
-            ccArgs.add(config.getArch().toString());            
+            ccArgs.add(config.getArch().toString());
+            ccArgs.add("-Wl,-no_implicit_dylibs");
+            // Needed on Mac OS X >= 10.6 to prevent linker from compacting unwind info which breaks _Unwind_FindEnclosingFunction
+            ccArgs.add("-Wl,-no_compact_unwind");
         }
      
-        doBuild(ccPath, outFile, ccArgs, objectFiles, libFiles, libArgs);
+        doBuild(ccPath, outFile, ccArgs, objectFiles, libArgs);
     }
     
     protected void doBuild(String ccPath, File outFile, List<String> ccArgs, List<File> objectFiles, 
-            List<File> libFiles, List<String> libArgs) throws IOException {
+            List<String> libArgs) throws IOException {
         
-        CompilerUtil.exec(config, ccPath, "-o", outFile, "-g", ccArgs, objectFiles, libFiles, libArgs);        
+        File wd = config.getCacheDir();
+        String wdAbsPath = wd.getCanonicalPath();
+        List<String> relFiles = new ArrayList<String>();
+        for (File f : objectFiles) {
+            if (f.getCanonicalPath().startsWith(wdAbsPath)) {
+                relFiles.add(f.getCanonicalPath().substring(wdAbsPath.length() + 1));
+            } else {
+                relFiles.add(f.getCanonicalPath());
+            }
+        }
+        
+        CompilerUtil.exec(config, wd, ccPath, "-o", outFile, "-g", ccArgs, relFiles, libArgs);        
     }
     
     public void install() throws IOException {

@@ -16,7 +16,7 @@ add_custom_command(
   MAIN_DEPENDENCY proxy0-${OS_FAMILY}-${ARCH}.s 
 )
 
-add_library(nullvm-core SHARED 
+add_library(nullvm-core STATIC 
   array.c 
   attribute.c 
   class.c 
@@ -40,12 +40,6 @@ add_dependencies(nullvm-core extgc)
 
 set_source_files_properties(unwind_backtrace.c PROPERTIES COMPILE_FLAGS "-O0 -fno-omit-frame-pointer")
 
-if(LINUX)
-  set_target_properties(nullvm-core PROPERTIES LINK_FLAGS "-Wl,--version-script=${core_SOURCE_DIR}/symbols.linux" INSTALL_RPATH "$ORIGIN")
-elseif(DARWIN)
-  set_target_properties(nullvm-core PROPERTIES LINK_FLAGS "-exported_symbols_list ${core_SOURCE_DIR}/symbols.darwin" INSTALL_NAME_DIR "@loader_path")
-endif()
-target_link_libraries(nullvm-core nullvm-hyprt gc)
 install(TARGETS nullvm-core DESTINATION ${INSTALL_DIR})
 
 add_executable(test_call0 test/test_call0.c test/CuTest.c call0-${OS_FAMILY}-${ARCH}.s.o)

@@ -5,9 +5,9 @@
  */
 package org.nullvm.compiler;
 
+import static org.nullvm.compiler.Access.*;
 import static org.nullvm.compiler.Functions.*;
 import static org.nullvm.compiler.Mangler.*;
-import static org.nullvm.compiler.Strings.*;
 import static org.nullvm.compiler.Types.*;
 import static org.nullvm.compiler.llvm.FunctionAttribute.*;
 import static org.nullvm.compiler.llvm.Linkage.*;
@@ -41,7 +41,6 @@ import org.nullvm.compiler.llvm.ConstantBitcast;
 import org.nullvm.compiler.llvm.ConstantGetelementptr;
 import org.nullvm.compiler.llvm.Function;
 import org.nullvm.compiler.llvm.FunctionAttribute;
-import org.nullvm.compiler.llvm.FunctionDeclaration;
 import org.nullvm.compiler.llvm.FunctionRef;
 import org.nullvm.compiler.llvm.FunctionType;
 import org.nullvm.compiler.llvm.Getelementptr;
@@ -53,14 +52,12 @@ import org.nullvm.compiler.llvm.Inttoptr;
 import org.nullvm.compiler.llvm.Label;
 import org.nullvm.compiler.llvm.Linkage;
 import org.nullvm.compiler.llvm.Load;
-import org.nullvm.compiler.llvm.Module;
 import org.nullvm.compiler.llvm.NullConstant;
 import org.nullvm.compiler.llvm.PackedStructureConstantBuilder;
 import org.nullvm.compiler.llvm.PointerType;
 import org.nullvm.compiler.llvm.Ptrtoint;
 import org.nullvm.compiler.llvm.Ret;
 import org.nullvm.compiler.llvm.Store;
-import org.nullvm.compiler.llvm.StringConstant;
 import org.nullvm.compiler.llvm.StructureConstant;
 import org.nullvm.compiler.llvm.StructureConstantBuilder;
 import org.nullvm.compiler.llvm.StructureType;
@@ -68,7 +65,7 @@ import org.nullvm.compiler.llvm.Type;
 import org.nullvm.compiler.llvm.Value;
 import org.nullvm.compiler.llvm.Variable;
 import org.nullvm.compiler.llvm.VariableRef;
-import org.nullvm.compiler.trampoline.LdcString;
+import org.nullvm.compiler.trampoline.ExceptionMatch;
 import org.nullvm.compiler.trampoline.Trampoline;
 
 import soot.BooleanType;
@@ -165,9 +162,8 @@ public class ClassCompiler {
     
     private SootClass sootClass;
     
-    private Module module;
+    private ModuleBuilder mb;
     private Set<Trampoline> trampolines;
-    private Map<String, Global> strings;
     private Global classInfoStruct;
     /**
      * Contains the class fields of the class being compiled.
@@ -185,12 +181,14 @@ public class ClassCompiler {
     private final MethodCompiler methodCompiler;
     private final NativeMethodCompiler nativeMethodCompiler;
     private final AttributesEncoder attributesEncoder;
+    private final TrampolineResolver trampolineResolver;
     
     public ClassCompiler(Config config) {
         this.config = config;
         this.methodCompiler = new MethodCompiler(config);
         this.nativeMethodCompiler = new NativeMethodCompiler(config);
         this.attributesEncoder = new AttributesEncoder();
+        this.trampolineResolver = new TrampolineResolver(config);
     }
     
     public boolean compile(Clazz clazz) throws IOException {
@@ -247,9 +245,8 @@ public class ClassCompiler {
     
     private void reset() {
         sootClass = null;
-        module = null;
+        mb = null;
         trampolines = null;
-        strings = null;
         classInfoStruct = null;
         classFields = null;
         instanceFields = null;
@@ -259,16 +256,14 @@ public class ClassCompiler {
     
     private void compile(Clazz clazz, OutputStream out) throws IOException {
         sootClass = clazz.getSootClass();
-        module = new Module();
+        mb = new ModuleBuilder();
         trampolines = new HashSet<Trampoline>();
-        strings = new HashMap<String, Global>();
         classFields = getClassFields(sootClass);
         instanceFields = getInstanceFields(sootClass);
         classFieldsType = getStructureType(classFields);
         instanceFieldsType = getStructureType(instanceFields);
         
-        attributesEncoder.encode(module, sootClass);
-        strings.putAll(attributesEncoder.getStrings());
+        attributesEncoder.encode(mb, sootClass);
         
         // Add a <clinit> method if the class has ConstantValueTags but no <clinit>.
         // This has to be done before createInfoStruct() is called otherwise the
@@ -289,7 +284,7 @@ public class ClassCompiler {
             enhanceStructClass(this.sootClass);
         }
         
-        module.addInclude(getClass().getClassLoader().getResource("header.ll"));
+        mb.addInclude(getClass().getClassLoader().getResource("header.ll"));
         
 //        if (classFieldsType != null) {
 //            module.addType(classFieldsType);
@@ -315,27 +310,27 @@ public class ClassCompiler {
 //        
 
         Function allocator = createAllocator();
-        module.addFunction(allocator);
-        module.addFunction(createClassInitWrapperFunction(allocator.ref()));
+        mb.addFunction(allocator);
+        mb.addFunction(createClassInitWrapperFunction(allocator.ref()));
         Function instanceof_ = createInstanceof();
-        module.addFunction(instanceof_);
-        module.addFunction(createClassInitWrapperFunction(instanceof_.ref()));
+        mb.addFunction(instanceof_);
+        mb.addFunction(createClassInitWrapperFunction(instanceof_.ref()));
         Function checkcast = createCheckcast();
-        module.addFunction(checkcast);
-        module.addFunction(createClassInitWrapperFunction(checkcast.ref()));
+        mb.addFunction(checkcast);
+        mb.addFunction(createClassInitWrapperFunction(checkcast.ref()));
         Function ldcClass = createLdcClass();
-        module.addFunction(ldcClass);
-        module.addFunction(createClassInitWrapperFunction(ldcClass.ref()));
+        mb.addFunction(ldcClass);
+        mb.addFunction(createClassInitWrapperFunction(ldcClass.ref()));
         
         for (SootField f : sootClass.getFields()) {
             Function getter = createFieldGetter(f);
             Function setter = createFieldSetter(f);
-            module.addFunction(getter);
-            module.addFunction(setter);
+            mb.addFunction(getter);
+            mb.addFunction(setter);
             if (f.isStatic() && !f.isPrivate()) {
-                module.addFunction(createClassInitWrapperFunction(getter.ref()));
+                mb.addFunction(createClassInitWrapperFunction(getter.ref()));
                 if (!f.isFinal()) {
-                    module.addFunction(createClassInitWrapperFunction(setter.ref()));
+                    mb.addFunction(createClassInitWrapperFunction(setter.ref()));
                 }
             }
         }
@@ -380,22 +375,29 @@ public class ClassCompiler {
                     fnName += "_synchronized";
                 }
                 FunctionRef fn = new FunctionRef(fnName, getFunctionType(method));
-                module.addFunction(createClassInitWrapperFunction(fn));
+                mb.addFunction(createClassInitWrapperFunction(fn));
             }
         }
         
         for (Trampoline trampoline : trampolines) {
-            createTrampoline(module, trampoline);
+            trampolineResolver.resolve(mb, trampoline);
         }
 
-        module.addGlobal(new Global(mangleClass(sootClass) + "_offset", Linkage.external, I32, false));
-        module.addGlobal(classInfoStruct);
-
-        for (Global global : strings.values()) {
-            module.addGlobal(global);
+        StructureConstant classInfoErrorStruct = createClassInfoErrorStruct();
+        if (classInfoErrorStruct != null) {
+            // The class cannot be loaded at runtime. Replace the ClassInfo struct
+            // with a ClassInfoError struct with details of why.
+            classInfoStruct = new Global(mangleClass(sootClass) + "_info", 
+                    linker_private_weak, classInfoErrorStruct);
         }
+        if (sootClass.hasSuperclass() && !"java.lang.Object".equals(sootClass.getSuperclass().getName())) {
+            // Assume that java.lang.Object has no instance fields
+            mb.addGlobal(new Global(mangleClass(sootClass) + "_offset", 
+                    _private, alignedOffset(sootClass), true));
+        }
+        mb.addGlobal(classInfoStruct);
         
-        out.write(module.toString().getBytes("UTF-8"));
+        out.write(mb.build().toString().getBytes("UTF-8"));
         
         ClazzInfo clazzInfo = clazz.resetClazzInfo();
         clazzInfo.setModifiers(sootClass.getModifiers());
@@ -440,7 +442,7 @@ public class ClassCompiler {
         // TODO: This should use a virtual method table or interface method table.
         String name = mangleMethod(m) + "_lookup";
         Function function = new Function(Linkage.external, name, getFunctionType(m));
-        module.addFunction(function);
+        mb.addFunction(function);
 
         Variable reserved0 = function.newVariable(I8_PTR_PTR);
         function.add(new Getelementptr(reserved0, function.getParameterRef(0), 0, 4));
@@ -466,16 +468,89 @@ public class ClassCompiler {
         function.add(new Ret(result));
     }
     
-    private void createTrampoline(Module module, Trampoline t) {
-        if (t instanceof LdcString) {
-            Function f = new Function(Linkage.linker_private_weak, t.getFunctionRef());
-            module.addFunction(f);
-            Value result = call(f, NVM_BC_LDC_STRING, f.getParameterRef(0), 
-                    getString(t.getTarget()));
-            f.add(new Ret(result));
-        } else {
-            module.addFunctionDeclaration(new FunctionDeclaration(t.getFunctionRef()));
+    private StructureConstant createClassInfoErrorStruct() {
+        /*
+         * Check that clazz can be loaded, i.e. that the superclass 
+         * and interfaces of the class exist and are accessible to the
+         * class. Also check that any exception the class uses in catch
+         * clauses exist and is accessible to the class. If the class
+         * cannot be loaded we override the ClassInfoHeader struct
+         * produced by the ClassCompiler for the class with one which
+         * tells the code in bc.c to throw an appropriate exception
+         * whenever clazz is accessed.
+         */
+        
+        int errorType = ClassCompiler.CI_ERROR_TYPE_NONE;
+        String errorMessage = null;
+        if (!sootClass.isInterface() && sootClass.hasSuperclass()) {
+            // Check superclass
+            SootClass superclazz = sootClass.getSuperclass();
+            if (superclazz.isPhantom()) {
+                errorType = ClassCompiler.CI_ERROR_TYPE_NO_CLASS_DEF_FOUND;
+                errorMessage = superclazz.getName();
+            } else if (!checkClassAccessible(superclazz, sootClass)) {
+                errorType = ClassCompiler.CI_ERROR_TYPE_ILLEGAL_ACCESS;
+                errorMessage = String.format(ILLEGAL_ACCESS_ERROR_CLASS, superclazz, sootClass);
+            } else if (superclazz.isInterface()) {
+                errorType = ClassCompiler.CI_ERROR_TYPE_INCOMPATIBLE_CLASS_CHANGE;
+                errorMessage = String.format("class %s has interface %s as super class", sootClass, superclazz);
+            }
+            // No need to check for ClassCircularityError. Soot doesn't handle 
+            // such problems so the compilation will fail earlier.
         }
+        
+        if (errorType == ClassCompiler.CI_ERROR_TYPE_NONE) {
+            // Check interfaces
+            for (SootClass interfaze :  sootClass.getInterfaces()) {
+                if (interfaze.isPhantom()) {
+                    errorType = ClassCompiler.CI_ERROR_TYPE_NO_CLASS_DEF_FOUND;
+                    errorMessage = interfaze.getName();
+                    break;
+                } else if (!checkClassAccessible(interfaze, sootClass)) {
+                    errorType = ClassCompiler.CI_ERROR_TYPE_ILLEGAL_ACCESS;
+                    errorMessage = String.format(ILLEGAL_ACCESS_ERROR_CLASS, interfaze, sootClass);
+                    break;
+                } else if (!interfaze.isInterface()) {
+                    errorType = ClassCompiler.CI_ERROR_TYPE_INCOMPATIBLE_CLASS_CHANGE;
+                    errorMessage = String.format("class %s tries to implement class %s as interface", 
+                            sootClass, interfaze);
+                    break;
+                }
+            }
+        }
+        
+        if (errorType == ClassCompiler.CI_ERROR_TYPE_NONE) {
+            // Check exceptions used in catch clauses. I cannot find any info in
+            // the VM spec specifying that this has to be done when the class is loaded.
+            // However, this is how it's done in other VMs so we do it too.
+            for (Trampoline t : trampolines) {
+                if (t instanceof ExceptionMatch) {
+                    Clazz ex = config.getClazzes().load(t.getTarget());
+                    if (ex == null || ex.getSootClass().isPhantom()) {
+                        errorType = ClassCompiler.CI_ERROR_TYPE_NO_CLASS_DEF_FOUND;
+                        errorMessage = t.getTarget();
+                        break;
+                    } else if (!checkClassAccessible(ex.getSootClass(), sootClass)) {
+                        errorType = ClassCompiler.CI_ERROR_TYPE_ILLEGAL_ACCESS;
+                        errorMessage = String.format(ILLEGAL_ACCESS_ERROR_CLASS, ex, sootClass);
+                        break;
+                    }
+                }
+            }
+        }
+        
+        if (errorType == ClassCompiler.CI_ERROR_TYPE_NONE) {
+            return null;
+        }
+        
+        // Create a ClassInfoError struct
+        StructureConstantBuilder error = new StructureConstantBuilder();
+        error.add(new NullConstant(I8_PTR)); // Points to the runtime Class struct
+        error.add(new IntegerConstant(ClassCompiler.CI_ERROR));
+        error.add(getString(getInternalName(sootClass)));
+        error.add(new IntegerConstant(errorType));
+        error.add(getString(errorMessage));
+        return error.build();
     }
     
     private StructureConstant createClassInfoStruct() {
@@ -733,6 +808,7 @@ public class ClassCompiler {
         return new StructureConstantBuilder().add(header.build()).add(body.build()).build();
     }
     
+    
 //    private void createTrampolinesResolver() {
 //        Type descType = new PointerType(new StructureType(I32, I8_PTR, I8_PTR, I8_PTR));
 //        VariableRef desc = new VariableRef("desc", descType);
@@ -881,7 +957,7 @@ public class ClassCompiler {
     }
     
     private void nativeMethod(SootMethod method) {
-        nativeMethodCompiler.compile(module, method);
+        nativeMethodCompiler.compile(mb, method);
         trampolines.addAll(nativeMethodCompiler.getTrampolines());
     }
     
@@ -956,7 +1032,7 @@ public class ClassCompiler {
     }
     
     private void method(SootMethod method) {
-        methodCompiler.compile(module, method);
+        methodCompiler.compile(mb, method);
         trampolines.addAll(methodCompiler.getTrampolines());
     }
 
@@ -982,7 +1058,7 @@ public class ClassCompiler {
             parameterNames[i++] = "p" + j;
         }
             
-        return module.newFunction(internal, new FunctionAttribute[] {noinline, optsize}, 
+        return new Function(internal, new FunctionAttribute[] {noinline, optsize}, 
                 name, functionType, parameterNames);
     }
     
@@ -1322,21 +1398,11 @@ public class ClassCompiler {
     }
     
     private Constant getString(String string) {
-        Global g = strings.get(string);
-        if (g == null) {
-            byte[] modUtf8 = stringToModifiedUtf8(string);
-            g = new Global(getStringVarName(modUtf8), Linkage.linker_private_weak, 
-                    new StringConstant(modUtf8), true);
-            strings.put(string, g);
-        }
-        return new ConstantGetelementptr(new GlobalRef(g), 0, 0);
+        return mb.getString(string);
     }
     
     private Constant getStringOrNull(String string) {
-        if (string == null) {
-            return new NullConstant(I8_PTR);
-        }
-        return getString(string);
+        return mb.getStringOrNull(string);
     }
     
     private Value getCaller(Function f) {

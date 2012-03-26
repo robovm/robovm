@@ -25,7 +25,6 @@ import org.nullvm.compiler.llvm.Inttoptr;
 import org.nullvm.compiler.llvm.Label;
 import org.nullvm.compiler.llvm.Linkage;
 import org.nullvm.compiler.llvm.Load;
-import org.nullvm.compiler.llvm.Module;
 import org.nullvm.compiler.llvm.NullConstant;
 import org.nullvm.compiler.llvm.ParameterAttribute;
 import org.nullvm.compiler.llvm.PointerType;
@@ -54,7 +53,7 @@ public class BridgeMethodCompiler extends AbstractMethodCompiler {
         super(config);
     }
 
-    protected void doCompile(Module module, SootMethod method) {
+    protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
         soot.Type sootRetType = method.getReturnType();
         if (!sootRetType.equals(VoidType.v()) && !(sootRetType instanceof PrimType) && !isStruct(sootRetType)) {
             throw new IllegalArgumentException("@Bridge annotated method must return void or a primitive or Struct type");
@@ -68,10 +67,10 @@ public class BridgeMethodCompiler extends AbstractMethodCompiler {
 
         Function outerFunction = createFunction(method, Linkage.external, 
                 FunctionAttribute.noinline);
-        module.addFunction(outerFunction);
+        moduleBuilder.addFunction(outerFunction);
         Function innerFunction = createFunction(mangleMethod(method.makeRef()) + "_inner", 
                 method, Linkage.internal, FunctionAttribute.noinline);
-        module.addFunction(innerFunction);
+        moduleBuilder.addFunction(innerFunction);
         
         String targetClassName = getInternalName(method.getDeclaringClass());
         String methodName = method.getName();
@@ -118,7 +117,7 @@ public class BridgeMethodCompiler extends AbstractMethodCompiler {
         
         Variable targetFunction = innerFunction.newVariable(targetFunctionType);
         Global targetFunctionPtr = new Global(outerFunction.getName().substring(1) + "_ptr", Linkage._private, new NullConstant(targetFunctionType));
-        module.addGlobal(targetFunctionPtr);
+        moduleBuilder.addGlobal(targetFunctionPtr);
         innerFunction.add(new Load(targetFunction, targetFunctionPtr.ref()));
 
         Label nullLabel = new Label();

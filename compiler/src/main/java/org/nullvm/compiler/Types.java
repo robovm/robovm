@@ -487,4 +487,24 @@ public class Types {
                         new ConstantSub(sizeof(new ArrayType(1, I8_PTR)), new IntegerConstant(1)), 
                         new IntegerConstant(-1)));
     }
+    
+    public static Constant alignedOffset(SootClass clazz) {
+        Constant offset = new IntegerConstant(0);
+        if (!clazz.isInterface() && clazz.hasSuperclass()) {
+            SootClass zuper = clazz.getSuperclass();
+            if (!zuper.isPhantom()) {
+                List<Type> types = new ArrayList<Type>();
+                for (SootField f : zuper.getFields()) {
+                    if (!f.isStatic()) {
+                        types.add(getType(f.getType()));
+                    }
+                }
+                if (types.size() > 0) {
+                    offset = alignedSizeof(new StructureType(types.toArray(new Type[types.size()])));
+                }
+                offset = new ConstantAdd(alignedOffset(zuper), offset);
+            }
+        }
+        return offset;
+    }
 }

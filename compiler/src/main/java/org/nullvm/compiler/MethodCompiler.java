@@ -56,7 +56,6 @@ import org.nullvm.compiler.llvm.Label;
 import org.nullvm.compiler.llvm.Linkage;
 import org.nullvm.compiler.llvm.Load;
 import org.nullvm.compiler.llvm.Lshr;
-import org.nullvm.compiler.llvm.Module;
 import org.nullvm.compiler.llvm.Mul;
 import org.nullvm.compiler.llvm.NullConstant;
 import org.nullvm.compiler.llvm.Or;
@@ -194,14 +193,14 @@ public class MethodCompiler extends AbstractMethodCompiler {
         super(config);
     }
     
-    protected void doCompile(Module module, SootMethod method) {
+    protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
         jumpTargets = new HashSet<Unit>();
         trapHandlers = new HashSet<Unit>();
         trapsAt = new HashMap<Unit, List<Trap>>();
         recordedTraps = new HashSet<List<Trap>>();
         
         function = createFunction(method, Linkage.external, FunctionAttribute.noinline);
-        module.addFunction(function);
+        moduleBuilder.addFunction(function);
         
         Body body = method.retrieveActiveBody();
         PackManager.v().getPack("jtp").apply(body);

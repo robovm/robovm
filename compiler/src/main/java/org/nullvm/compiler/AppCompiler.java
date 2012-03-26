@@ -258,7 +258,7 @@ public class AppCompiler {
         System.err.println("  -ar-bin <path>        Path to the ar binary");
         System.err.println("  -home <dir>           Directory where NullVM runtime has been installed.\n"
         		         + "                        Default is $NULLVM_HOME");
-        System.err.println("  -tmp <dir>            Directory where temporary files will be placed during "
+        System.err.println("  -tmp <dir>            Directory where temporary files will be placed during\n"
         		         + "                        compilation. By default a new dir will be created under\n" 
         		         + "                        ${java.io.tmpdir}.");
         System.err.println("  -jar <path>           Use main class as specified by the manifest in this JAR \n" 

@@ -19,11 +19,11 @@ public class Global {
     private final String section;
 
     public Global(String name, Type type) {
-        this(name, null, type, false);
+        this(name, Linkage.external, type, false);
     }
     
     public Global(String name, Type type, boolean constant) {
-        this(name, null, type, constant);
+        this(name, Linkage.external, type, constant);
     }
     
     public Global(String name, Linkage linkage, Type type, boolean constant) {

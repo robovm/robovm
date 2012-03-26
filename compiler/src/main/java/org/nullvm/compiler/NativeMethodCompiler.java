@@ -13,7 +13,6 @@ import org.nullvm.compiler.llvm.Function;
 import org.nullvm.compiler.llvm.FunctionAttribute;
 import org.nullvm.compiler.llvm.IntegerConstant;
 import org.nullvm.compiler.llvm.Linkage;
-import org.nullvm.compiler.llvm.Module;
 import org.nullvm.compiler.llvm.Ret;
 import org.nullvm.compiler.llvm.Type;
 import org.nullvm.compiler.llvm.Value;
@@ -34,13 +33,13 @@ public class NativeMethodCompiler extends AbstractMethodCompiler {
         super(config);
     }
 
-    protected void doCompile(Module module, SootMethod method) {
+    protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
         Function outerFunction = createFunction(method, Linkage.external, 
                 FunctionAttribute.noinline);
-        module.addFunction(outerFunction);
+        moduleBuilder.addFunction(outerFunction);
         Function innerFunction = createFunction(mangleMethod(method.makeRef()) + "_inner", 
                 method, Linkage.internal, FunctionAttribute.noinline);
-        module.addFunction(innerFunction);
+        moduleBuilder.addFunction(innerFunction);
 
         String targetClassName = getInternalName(method.getDeclaringClass());
         String methodName = method.getName();

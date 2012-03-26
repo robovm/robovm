@@ -4,7 +4,6 @@
 package org.nullvm.compiler;
 
 import static org.nullvm.compiler.Mangler.*;
-import static org.nullvm.compiler.Strings.*;
 import static org.nullvm.compiler.Types.*;
 import static org.nullvm.compiler.llvm.Type.*;
 
@@ -18,17 +17,11 @@ import java.util.Set;
 import org.nullvm.compiler.llvm.ArrayConstant;
 import org.nullvm.compiler.llvm.ArrayType;
 import org.nullvm.compiler.llvm.Constant;
-import org.nullvm.compiler.llvm.ConstantGetelementptr;
 import org.nullvm.compiler.llvm.FloatingPointConstant;
 import org.nullvm.compiler.llvm.Global;
-import org.nullvm.compiler.llvm.GlobalRef;
 import org.nullvm.compiler.llvm.IntegerConstant;
-import org.nullvm.compiler.llvm.Linkage;
-import org.nullvm.compiler.llvm.Module;
-import org.nullvm.compiler.llvm.NullConstant;
 import org.nullvm.compiler.llvm.PackedStructureConstant;
 import org.nullvm.compiler.llvm.PackedStructureType;
-import org.nullvm.compiler.llvm.StringConstant;
 import org.nullvm.compiler.llvm.StructureConstant;
 import org.nullvm.compiler.llvm.Type;
 import org.nullvm.compiler.llvm.Value;
@@ -78,14 +71,14 @@ public class AttributesEncoder {
      * TODO: Generic signatures may contain class names which should be added to dependencies.
      */
     
-    private Map<String, Global> strings;
+    private ModuleBuilder mb;
     private Set<String> dependencies;
     private Global classAttributes;
     private Map<SootField, Global> fieldAttributes;
     private Map<SootMethod, Global> methodAttributes;
     
-    public void encode(Module module, SootClass sootClass) {
-        strings = new HashMap<String, Global>();
+    public void encode(ModuleBuilder mb, SootClass sootClass) {
+        this.mb = mb;
         dependencies = new HashSet<String>();
         classAttributes = null;
         fieldAttributes = new HashMap<SootField, Global>();
@@ -95,7 +88,7 @@ public class AttributesEncoder {
         Constant classAttributes = encodeAttributes(sootClass);
         if (classAttributes != null) {
             Global g = new Global("ClassAttributes_" + mangleClass(sootClass), classAttributes, true);
-            module.addGlobal(g);
+            mb.addGlobal(g);
             this.classAttributes = g;
         }
         
@@ -103,7 +96,7 @@ public class AttributesEncoder {
             Constant fieldAttributes = encodeAttributes(field);
             if (fieldAttributes != null) {
                 Global g = new Global("FieldAttributes_" + mangleField(field), fieldAttributes, true);
-                module.addGlobal(g);
+                mb.addGlobal(g);
                 this.fieldAttributes.put(field, g);
             }
         }
@@ -112,14 +105,10 @@ public class AttributesEncoder {
             Constant methodAttributes = encodeAttributes(method);
             if (methodAttributes != null) {
                 Global g = new Global("MethodAttributes_" + mangleMethod(method), methodAttributes, true);
-                module.addGlobal(g);
+                mb.addGlobal(g);
                 this.methodAttributes.put(method, g);
             }
         }
-    }
-    
-    public Map<String, Global> getStrings() {
-        return strings;
     }
     
     public Set<String> getDependencies() {
@@ -361,21 +350,11 @@ public class AttributesEncoder {
     }
     
     private Constant getString(String string) {
-        Global g = strings.get(string);
-        if (g == null) {
-            byte[] modUtf8 = stringToModifiedUtf8(string);
-            g = new Global(getStringVarName(modUtf8), Linkage.linker_private_weak, 
-                    new StringConstant(modUtf8), true);
-            strings.put(string, g);
-        }
-        return new ConstantGetelementptr(new GlobalRef(g), 0, 0);
+        return mb.getString(string);
     }
     
     private Constant getStringOrNull(String string) {
-        if (string == null) {
-            return new NullConstant(I8_PTR);
-        }
-        return getString(string);
+        return mb.getStringOrNull(string);
     }
     
     private void addDependency(String s) {

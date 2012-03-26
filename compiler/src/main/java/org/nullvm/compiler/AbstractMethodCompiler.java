@@ -23,7 +23,6 @@ import org.nullvm.compiler.llvm.FunctionType;
 import org.nullvm.compiler.llvm.IntegerConstant;
 import org.nullvm.compiler.llvm.Label;
 import org.nullvm.compiler.llvm.Linkage;
-import org.nullvm.compiler.llvm.Module;
 import org.nullvm.compiler.llvm.Ret;
 import org.nullvm.compiler.llvm.Type;
 import org.nullvm.compiler.llvm.Unreachable;
@@ -53,23 +52,23 @@ public abstract class AbstractMethodCompiler {
         return trampolines;
     }
     
-    public void compile(Module module, SootMethod method) {
+    public void compile(ModuleBuilder moduleBuilder, SootMethod method) {
         className = getInternalName(method.getDeclaringClass());
         sootMethod = method;
         trampolines = new HashSet<Trampoline>();
-        doCompile(module, method);
+        doCompile(moduleBuilder, method);
         if (method.isSynchronized()) {
-            compileSynchronizedWrapper(module, method);
+            compileSynchronizedWrapper(moduleBuilder, method);
         }
     }
         
-    protected abstract void doCompile(Module module, SootMethod method);
+    protected abstract void doCompile(ModuleBuilder moduleBuilder, SootMethod method);
 
-    private void compileSynchronizedWrapper(Module module, SootMethod method) {
+    private void compileSynchronizedWrapper(ModuleBuilder moduleBuilder, SootMethod method) {
         String targetName = mangleMethod(method);
         Function function = createFunction(targetName + "_synchronized", method, 
                 Linkage.external, FunctionAttribute.noinline);
-        module.addFunction(function);
+        moduleBuilder.addFunction(function);
         FunctionType functionType = function.getType();
         FunctionRef target = new FunctionRef(targetName, functionType);
         

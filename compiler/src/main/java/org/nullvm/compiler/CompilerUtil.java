@@ -18,6 +18,7 @@ import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.exec.util.StringUtils;
+import org.apache.commons.io.FileUtils;
 
 /**
  * @author niklas
@@ -70,6 +71,29 @@ public class CompilerUtil {
 
         outFile.getParentFile().mkdirs();
         exec(config, ccPath, "-c", "-o", outFile, opts, inFile);
+    }
+    
+    public static void link(Config config, List<String> args, List<File> objectFiles, List<String> libs, File outFile) throws IOException {
+        String ccPath = config.getOs().getFamily() == OS.Family.darwin ? "clang" : "gcc";
+        if (config.getCcBinPath() != null) {
+            ccPath = config.getCcBinPath().getAbsolutePath();
+        }
+        
+        List<String> opts = new ArrayList<String>();
+        if (config.isDebug()) {
+            opts.add("-g");
+        }
+        if (config.getOs().getFamily() == OS.Family.darwin) {
+            opts.add("-arch");            
+            opts.add(config.getArch().toString());            
+        }
+        opts.addAll(args);
+
+        File objectsFile = new File(config.getTmpDir(), "objects");
+        FileUtils.writeLines(objectsFile, "UTF-8", objectFiles, "\n");
+        opts.add("-Wl,-filelist," + objectsFile.getAbsolutePath());
+        
+        CompilerUtil.exec(config, ccPath, "-o", outFile, opts, libs);
     }
     
     public static int exec(Config config, String cmd, Object ... args) throws IOException {

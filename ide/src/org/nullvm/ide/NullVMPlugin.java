@@ -105,7 +105,7 @@ public class NullVMPlugin extends AbstractUIPlugin {
         debugStream = console.newMessageStream();
         final Color debugColor = new Color(display, 0x99, 0x99, 0x99);
         infoStream = console.newMessageStream();
-        final Color infoColor = new Color(display, 0x00, 0xB0, 0x00);
+        final Color infoColor = new Color(display, 0x00, 0x99, 0x00);
         warnStream = console.newMessageStream();
         final Color warnColor = new Color(display, 0xFF, 0x00, 0xFF);
         errorStream = console.newMessageStream();

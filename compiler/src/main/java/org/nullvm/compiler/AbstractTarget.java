@@ -5,10 +5,12 @@ package org.nullvm.compiler;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -54,18 +56,17 @@ public abstract class AbstractTarget implements Target {
         File outFile = new File(config.getTmpDir(), config.getExecutable());
         
         config.getLogger().debug("Building executable %s", outFile);
-
-        String ccPath = (config.getOs().getFamily() == OS.Family.darwin) ? "clang" : "gcc";
-        if (config.getCcBinPath() != null) {
-            ccPath = config.getCcBinPath().getAbsolutePath();
-        }
         
         LinkedList<String> ccArgs = new LinkedList<String>();
-        LinkedList<String> libArgs = new LinkedList<String>();
+        LinkedList<String> libs = new LinkedList<String>();
         
-        libArgs.addAll(Arrays.asList(
-                "-lnullvm-bc", 
-                "-Wl,--whole-archive", "-lnullvm-rt", "-Wl,--no-whole-archive", 
+        libs.add("-lnullvm-bc"); 
+        if (config.getOs().getFamily() == OS.Family.darwin) {
+            libs.add("-lnullvm-rt");
+        } else {
+            libs.addAll(Arrays.asList("-Wl,--whole-archive", "-lnullvm-rt", "-Wl,--no-whole-archive"));            
+        }
+        libs.addAll(Arrays.asList(
                 "-lnullvm-core", 
                 "-lnullvm-hyprt", 
                 "-lnullvm-hythr", 
@@ -73,26 +74,18 @@ public abstract class AbstractTarget implements Target {
                 "-lnullvm-hycommon", 
                 "-lgc",
                 "-lpthread", "-ldl", "-lm", "-lz"));
+        if (config.getOs().getFamily() == OS.Family.darwin) {
+            libs.add("-liconv");
+        }
         
         ccArgs.add("-L");
         ccArgs.add(config.getOsArchDepLibDir().getAbsolutePath());
+        File aliasFile = new File(config.getTmpDir(), "aliases");
         if (config.getOs().getFamily() == OS.Family.linux) {
             // Create a linker script with all aliases
-            File aliasFile = new File(config.getTmpDir(), "aliases");
-            PrintWriter w = null;
-            try {
-                w = new PrintWriter(aliasFile, "ASCII");
-                for (Entry<String, String> alias : aliases.entrySet()) {
-                    w.print(alias.getKey());
-                    w.print(" = ");
-                    w.print(alias.getValue());
-                    w.print(";\n");
-                }
-            } finally {
-                IOUtils.closeQuietly(w);
-            }
-            ccArgs.add("-Wl,-rpath=$ORIGIN");
+            createGnuLdAliasFile(aliasFile, aliases);
             ccArgs.add("-Wl,--script=" + aliasFile.getAbsolutePath());
+            ccArgs.add("-Wl,-rpath=$ORIGIN");
             ccArgs.add("-Wl,--gc-sections");
 //            ccArgs.add("-Wl,--print-gc-sections");
             // This prevents _nvmBcPersonality and _nvmPersonality from being removed by the linker
@@ -100,36 +93,58 @@ public abstract class AbstractTarget implements Target {
             ccArgs.add("-Wl,-u,_nvmPersonality");
             ccArgs.add("-Wl,-u,_nvmBcPersonality");
         } else if (config.getOs().getFamily() == OS.Family.darwin) {
+            ccArgs.add("-arch");            
+            ccArgs.add(config.getArch().toString());
             File unexportedSymbolsFile = new File(config.getTmpDir(), "unexported_symbols");
             FileUtils.writeStringToFile(unexportedSymbolsFile, "*\n", "ASCII");
             ccArgs.add("-unexported_symbols_list");
             ccArgs.add(unexportedSymbolsFile.getAbsolutePath());
-            
-            ccArgs.add("-arch");            
-            ccArgs.add(config.getArch().toString());
+            createMacLdAliasFile(aliasFile, aliases);
+            //ccArgs.add("-Wl,-alias_list," + aliasFile.getAbsolutePath());
             ccArgs.add("-Wl,-no_implicit_dylibs");
             // Needed on Mac OS X >= 10.6 to prevent linker from compacting unwind info which breaks _Unwind_FindEnclosingFunction
             ccArgs.add("-Wl,-no_compact_unwind");
+            ccArgs.add("-Wl,-dead_strip");
         }
      
-        doBuild(ccPath, outFile, ccArgs, objectFiles, libArgs);
+        doBuild(outFile, ccArgs, objectFiles, libs);
     }
     
-    protected void doBuild(String ccPath, File outFile, List<String> ccArgs, List<File> objectFiles, 
-            List<String> libArgs) throws IOException {
-        
-        File wd = config.getCacheDir();
-        String wdAbsPath = wd.getCanonicalPath();
-        List<String> relFiles = new ArrayList<String>();
-        for (File f : objectFiles) {
-            if (f.getCanonicalPath().startsWith(wdAbsPath)) {
-                relFiles.add(f.getCanonicalPath().substring(wdAbsPath.length() + 1));
-            } else {
-                relFiles.add(f.getCanonicalPath());
+    private void createGnuLdAliasFile(File aliasFile, Map<String, String> aliases) throws IOException {
+        PrintWriter w = null;
+        try {
+            w = new PrintWriter(aliasFile, "ASCII");
+            for (Entry<String, String> alias : aliases.entrySet()) {
+                w.print(alias.getKey());
+                w.print(" = ");
+                w.print(alias.getValue());
+                w.print(";\n");
             }
+        } finally {
+            IOUtils.closeQuietly(w);
         }
+    }
+    
+    private void createMacLdAliasFile(File aliasFile, Map<String, String> aliases) throws IOException {
+        PrintWriter w = null;
+        try {
+            w = new PrintWriter(aliasFile, "ASCII");
+            for (Entry<String, String> alias : aliases.entrySet()) {
+                w.print("_");
+                w.print(alias.getValue());
+                w.print(" _");
+                w.print(alias.getKey());
+                w.print("\n");
+            }
+        } finally {
+            IOUtils.closeQuietly(w);
+        }
+    }
+    
+    protected void doBuild(File outFile, List<String> ccArgs, List<File> objectFiles, 
+            List<String> libs) throws IOException {
         
-        CompilerUtil.exec(config, wd, ccPath, "-o", outFile, "-g", ccArgs, relFiles, libArgs);        
+        CompilerUtil.link(config, ccArgs, objectFiles, libs, outFile);        
     }
     
     public void install() throws IOException {

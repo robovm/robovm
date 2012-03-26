@@ -11,13 +11,14 @@ import java.util.ArrayList;
 
 import org.nullvm.compiler.llvm.Function;
 import org.nullvm.compiler.llvm.FunctionAttribute;
+import org.nullvm.compiler.llvm.FunctionRef;
+import org.nullvm.compiler.llvm.FunctionType;
 import org.nullvm.compiler.llvm.IntegerConstant;
 import org.nullvm.compiler.llvm.Linkage;
 import org.nullvm.compiler.llvm.Ret;
 import org.nullvm.compiler.llvm.Type;
 import org.nullvm.compiler.llvm.Value;
 import org.nullvm.compiler.llvm.VariableRef;
-import org.nullvm.compiler.trampoline.LdcClass;
 import org.nullvm.compiler.trampoline.NativeCall;
 import org.nullvm.compiler.trampoline.Trampoline;
 
@@ -59,9 +60,9 @@ public class NativeMethodCompiler extends AbstractMethodCompiler {
 
         if (method.isStatic()) {
             // Add the current class as second parameter
-            Trampoline ldc = new LdcClass(className, className);
-            trampolines.add(ldc);
-            Value clazz = call(innerFunction, ldc.getFunctionRef(), ENV);
+            FunctionRef ldcFn = new FunctionRef(mangleClass(sootMethod.getDeclaringClass()) + "_ldc", 
+                    new FunctionType(OBJECT_PTR, ENV_PTR));
+            Value clazz = call(innerFunction, ldcFn, ENV);
             args.add(1, clazz);
         }        
         

@@ -20,7 +20,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,7 +37,6 @@ import org.nullvm.compiler.llvm.ArrayConstantBuilder;
 import org.nullvm.compiler.llvm.Constant;
 import org.nullvm.compiler.llvm.ConstantBitcast;
 import org.nullvm.compiler.llvm.ConstantGetelementptr;
-import org.nullvm.compiler.llvm.FunctionDeclaration;
 import org.nullvm.compiler.llvm.Global;
 import org.nullvm.compiler.llvm.NullConstant;
 import org.nullvm.compiler.llvm.Type;
@@ -55,10 +53,6 @@ public class Linker {
     private static final Pattern ANT_WILDCARDS = Pattern.compile("\\*\\*\\.?|\\*|\\?");
     
     private final Config config;
-    
-    private Map<String, Global> strings;
-    private Map<String, FunctionDeclaration> functionDeclarations;
-    private Map<String, String> aliases;
 
     public Linker(Config config) {
         this.config = config;
@@ -196,10 +190,6 @@ public class Linker {
     }
     
     public void link() throws IOException {
-        strings = new HashMap<String, Global>();
-        functionDeclarations = new HashMap<String, FunctionDeclaration>();
-        aliases = new TreeMap<String, String>();
-        
         Set<Clazz> required = new TreeSet<Clazz>(findRequiredClasses());
         config.getLogger().info("Linking %d classes", required.size());
 
@@ -210,7 +200,7 @@ public class Linker {
         HashTableGenerator<String, Constant> cpHashGen = new HashTableGenerator<String, Constant>(new ModifiedUtf8HashFunction());
         Set<Trampoline> trampolines = new HashSet<Trampoline>();
         for (Clazz clazz : required) {
-            Global info = new Global(mangleClass(clazz.getInternalName()) + "_info", external, I8_PTR, false);
+            Global info = new Global(mangleClass(clazz.getInternalName()) + "_info_struct", external, I8_PTR, false);
             mb.addGlobal(info);
             if (clazz.isInBootClasspath()) {
                 bcpHashGen.put(clazz.getInternalName(), new ConstantBitcast(info.ref(), I8_PTR));
@@ -246,14 +236,6 @@ public class Linker {
             mb.addGlobal(new Global("_nvmBcMainClass", mb.getString(config.getMainClass())));
         }        
         
-        for (Global g : strings.values()) {
-            mb.addGlobal(g);
-        }
-        
-        for (FunctionDeclaration fd : functionDeclarations.values()) {
-            mb.addFunctionDeclaration(fd);
-        }
-        
         File linkerLl = new File(config.getTmpDir(), "linker.ll");
         FileUtils.writeStringToFile(linkerLl, mb.build().toString(), "UTF-8");
         File linkerBc = new File(config.getTmpDir(), "linker.bc");
@@ -267,7 +249,7 @@ public class Linker {
         for (Clazz clazz : required) {
             objectFiles.add(config.getOFile(clazz));
         }
-        config.getTarget().build(objectFiles, aliases);
+        config.getTarget().build(objectFiles);
     }
     
     private Set<String> getDependencies(String desc) {

@@ -566,11 +566,10 @@ void _nvmBcPopNativeFrame(Env* env) {
     env->nativeFrames.top--;
 }
 
-void* _nvmBcResolveNative(Env* env, ClassInfoHeader* header, char* name, char* desc, char* shortMangledName, char* longMangledName, void** ptr) {
+void* _nvmBcResolveNative(Env* env, Class* clazz, char* name, char* desc, char* shortMangledName, char* longMangledName, void** ptr) {
     if (*ptr != NULL) return *ptr;
     nvmLogTrace(env, "nvmBcResolveNative: owner=%s, name=%s, desc=%s, shortMangledName=%s, longMangledName=%s\n", 
-        header->className, name, desc, shortMangledName, longMangledName);
-    Class* clazz = header->clazz;
+        clazz->name, name, desc, shortMangledName, longMangledName);
     NativeMethod* method = (NativeMethod*) nvmGetMethod(env, clazz, name, desc);
     if (!method) goto error;
     void* impl = nvmResolveNativeMethodImpl(env, method, shortMangledName, longMangledName, clazz->classLoader, ptr);

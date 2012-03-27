@@ -70,7 +70,7 @@ declare %Object* @_nvmBcLdcString(%Env*, i8*)
 declare void @_nvmBcMonitorEnter(%Env*, %Object*)
 declare void @_nvmBcMonitorExit(%Env*, %Object*)
 
-declare i8* @_nvmBcResolveNative(%Env*, i8**, i8*, i8*, i8*, i8*, i8**)
+declare i8* @_nvmBcResolveNative(%Env*, %Object*, i8*, i8*, i8*, i8*, i8**)
 
 declare void @_nvmBcPushNativeFrame(%Env*, i8*)
 declare void @_nvmBcPopNativeFrame(%Env*)

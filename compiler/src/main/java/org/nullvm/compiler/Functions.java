@@ -23,6 +23,7 @@ import org.nullvm.compiler.llvm.Type;
 import org.nullvm.compiler.llvm.Value;
 import org.nullvm.compiler.llvm.Variable;
 
+import soot.SootClass;
 import soot.SootMethod;
 
 /**
@@ -72,7 +73,7 @@ public class Functions {
     public static final FunctionRef NVM_BC_INSTANCEOF_ARRAY = new FunctionRef("_nvmBcInstanceofArray", new FunctionType(I32, ENV_PTR, OBJECT_PTR, OBJECT_PTR));
     public static final FunctionRef NVM_BC_NEW_MULTI_ARRAY = new FunctionRef("_nvmBcNewMultiArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, new PointerType(I32), OBJECT_PTR));
     public static final FunctionRef NVM_BC_SET_OBJECT_ARRAY_ELEMENT = new FunctionRef("_nvmBcSetObjectArrayElement", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I32, OBJECT_PTR));
-    public static final FunctionRef NVM_BC_RESOLVE_NATIVE = new FunctionRef("_nvmBcResolveNative", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, CLASS_PTR, I8_PTR));
+    public static final FunctionRef NVM_BC_RESOLVE_NATIVE = new FunctionRef("_nvmBcResolveNative", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
     public static final FunctionRef NVM_BC_PUSH_NATIVE_FRAME = new FunctionRef("_nvmBcPushNativeFrame", new FunctionType(VOID, ENV_PTR, I8_PTR));
     public static final FunctionRef NVM_BC_POP_NATIVE_FRAME = new FunctionRef("_nvmBcPopNativeFrame", new FunctionType(VOID, ENV_PTR));
     public static final FunctionRef NVM_BC_ATTACH_THREAD_FROM_CALLBACK = new FunctionRef("_nvmBcAttachThreadFromCallback", new FunctionType(ENV_PTR));
@@ -255,5 +256,13 @@ public class Functions {
         }
         currentFunction.add(new Invoke(result, fn, success, failure, args));
         return result == null ? null : result.ref();
+    }
+    
+    public static Value getInfoStruct(Function f, SootClass sootClass) {
+        return call(f, getInfoStructFn(getInternalName(sootClass)));
+    }
+    
+    public static FunctionRef getInfoStructFn(String internalName) {
+        return new FunctionRef(mangleClass(internalName) + "_info", new FunctionType(I8_PTR_PTR));
     }
 }

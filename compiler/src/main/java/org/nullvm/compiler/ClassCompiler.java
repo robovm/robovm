@@ -38,7 +38,6 @@ import org.nullvm.compiler.llvm.Call;
 import org.nullvm.compiler.llvm.Constant;
 import org.nullvm.compiler.llvm.ConstantAdd;
 import org.nullvm.compiler.llvm.ConstantBitcast;
-import org.nullvm.compiler.llvm.ConstantGetelementptr;
 import org.nullvm.compiler.llvm.Function;
 import org.nullvm.compiler.llvm.FunctionAttribute;
 import org.nullvm.compiler.llvm.FunctionRef;
@@ -164,7 +163,6 @@ public class ClassCompiler {
     
     private ModuleBuilder mb;
     private Set<Trampoline> trampolines;
-    private Global classInfoStruct;
     /**
      * Contains the class fields of the class being compiled.
      */
@@ -247,7 +245,6 @@ public class ClassCompiler {
         sootClass = null;
         mb = null;
         trampolines = null;
-        classInfoStruct = null;
         classFields = null;
         instanceFields = null;
         classFieldsType = null;
@@ -277,7 +274,7 @@ public class ClassCompiler {
             this.sootClass.addMethod(clinit);
         }
 
-        classInfoStruct = new Global(mangleClass(sootClass) + "_info", 
+        Global classInfoStruct = new Global(mangleClass(sootClass) + "_info_struct", 
                 linker_private_weak, createClassInfoStruct());
         
         if (isStruct(this.sootClass)) {
@@ -387,7 +384,7 @@ public class ClassCompiler {
         if (classInfoErrorStruct != null) {
             // The class cannot be loaded at runtime. Replace the ClassInfo struct
             // with a ClassInfoError struct with details of why.
-            classInfoStruct = new Global(mangleClass(sootClass) + "_info", 
+            classInfoStruct = new Global(mangleClass(sootClass) + "_info_struct", 
                     linker_private_weak, classInfoErrorStruct);
         }
         if (sootClass.hasSuperclass() && !"java.lang.Object".equals(sootClass.getSuperclass().getName())) {
@@ -396,6 +393,11 @@ public class ClassCompiler {
                     _private, alignedOffset(sootClass), true));
         }
         mb.addGlobal(classInfoStruct);
+        
+        Function infoFn = new Function(external, new FunctionAttribute[] {alwaysinline, optsize}, 
+                getInfoStructFn(getInternalName(sootClass)));
+        infoFn.add(new Ret(new ConstantBitcast(classInfoStruct.ref(), I8_PTR_PTR)));
+        mb.addFunction(infoFn);
         
         out.write(mb.build().toString().getBytes("UTF-8"));
         
@@ -456,7 +458,8 @@ public class ClassCompiler {
         List<Value> args = new ArrayList<Value>();
         args.add(function.getParameterRef(0));
         if (sootClass.isInterface()) {
-            args.add(new ConstantGetelementptr(classInfoStruct.ref(), 0, 0, 0));
+            Value info = getInfoStruct(function);
+            args.add(info);
         }
         args.add(function.getParameterRef(1));
         args.add(getString(m.getName()));
@@ -1239,7 +1242,8 @@ public class ClassCompiler {
     private Function createAllocator() {
         Function fn = new Function(_private, new FunctionAttribute[] {alwaysinline, optsize}, 
                 mangleClass(sootClass) + "_allocator", new FunctionType(OBJECT_PTR, ENV_PTR));
-        Value result = call(fn, NVM_BC_ALLOCATE, fn.getParameterRef(0), new ConstantGetelementptr(classInfoStruct.ref(), 0, 0, 0));
+        Value info = getInfoStruct(fn);        
+        Value result = call(fn, NVM_BC_ALLOCATE, fn.getParameterRef(0), info);
         fn.add(new Ret(result));
         return fn;
     }
@@ -1247,8 +1251,8 @@ public class ClassCompiler {
     private Function createInstanceof() {
         Function fn = new Function(_private, new FunctionAttribute[] {alwaysinline, optsize}, 
                 mangleClass(sootClass) + "_instanceof", new FunctionType(I32, ENV_PTR, OBJECT_PTR));
-        Value result = call(fn, NVM_BC_INSTANCEOF, fn.getParameterRef(0), 
-                new ConstantGetelementptr(classInfoStruct.ref(), 0, 0, 0), fn.getParameterRef(1));
+        Value info = getInfoStruct(fn);        
+        Value result = call(fn, NVM_BC_INSTANCEOF, fn.getParameterRef(0), info, fn.getParameterRef(1));
         fn.add(new Ret(result));
         return fn;
     }
@@ -1256,8 +1260,8 @@ public class ClassCompiler {
     private Function createCheckcast() {
         Function fn = new Function(_private, new FunctionAttribute[] {alwaysinline, optsize}, 
                 mangleClass(sootClass) + "_checkcast", new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR));
-        Value result = call(fn, NVM_BC_CHECKCAST, fn.getParameterRef(0), 
-                new ConstantGetelementptr(classInfoStruct.ref(), 0, 0, 0), fn.getParameterRef(1));
+        Value info = getInfoStruct(fn);        
+        Value result = call(fn, NVM_BC_CHECKCAST, fn.getParameterRef(0), info, fn.getParameterRef(1));
         fn.add(new Ret(result));
         return fn;
     }
@@ -1265,9 +1269,11 @@ public class ClassCompiler {
     private Function createLdcClass() {
         Function fn = new Function(_private, new FunctionAttribute[] {alwaysinline, optsize}, 
                 mangleClass(sootClass) + "_ldc", new FunctionType(OBJECT_PTR, ENV_PTR));
+        Value info = getInfoStruct(fn);
+        Variable infoObjectPtr = fn.newVariable(new PointerType(OBJECT_PTR));
+        fn.add(new Bitcast(infoObjectPtr, info, infoObjectPtr.getType()));
         Variable result = fn.newVariable(OBJECT_PTR);
-        fn.add(new Load(result, new ConstantBitcast(
-                new ConstantGetelementptr(classInfoStruct.ref(), 0, 0, 0), new PointerType(OBJECT_PTR))));
+        fn.add(new Load(result, infoObjectPtr.ref()));
         fn.add(new Ret(result.ref()));
         return fn;
     }
@@ -1315,8 +1321,13 @@ public class ClassCompiler {
         String fnName = targetFn.getName() + "_clinit";
         Function fn = new Function(external, new FunctionAttribute[] {noinline, optsize},
                 fnName, targetFn.getType());
+        Value info = getInfoStruct(fn);
+        Variable infoHeader = fn.newVariable(new PointerType(new StructureType(I8_PTR, I32)));
+        fn.add(new Bitcast(infoHeader, info, infoHeader.getType()));
+        Variable infoHeaderFlags = fn.newVariable(new PointerType(I32));
+        fn.add(new Getelementptr(infoHeaderFlags, infoHeader.ref(), 0, 1));
         Variable flags = fn.newVariable(I32);
-        fn.add(new Load(flags, new ConstantGetelementptr(classInfoStruct.ref(), 0, 0, 1)));
+        fn.add(new Load(flags, infoHeaderFlags.ref()));
         Variable initializedFlag = fn.newVariable(I32);
         fn.add(new And(initializedFlag, flags.ref(), new IntegerConstant(CI_INITIALIZED)));
         Variable initialized = fn.newVariable(I1);
@@ -1328,7 +1339,7 @@ public class ClassCompiler {
         Value result = call(fn, targetFn, fn.getParameterRefs());
         fn.add(new Ret(result));
         fn.newBasicBlock(falseLabel);
-        call(fn, NVM_BC_INITIALIZE_CLASS, fn.getParameterRef(0), new ConstantGetelementptr(classInfoStruct.ref(), 0, 0, 0));
+        call(fn, NVM_BC_INITIALIZE_CLASS, fn.getParameterRef(0), info);
         fn.add(new Br(fn.newBasicBlockRef(trueLabel)));
         return fn;
     }
@@ -1412,9 +1423,14 @@ public class ClassCompiler {
     }
     
     private Value getClassFieldPtr(Function f, SootField field) {
+        Value info = getInfoStruct(f);        
         Variable base = f.newVariable(I8_PTR);
-        f.add(new Load(base, new ConstantGetelementptr(classInfoStruct.ref(), 0, 0, 0)));
+        f.add(new Load(base, info));
         return getFieldPtr(f, new VariableRef(base), alignedSizeof(CLASS), field, classFields.indexOf(field), classFieldsType);
+    }
+
+    private Value getInfoStruct(Function f) {
+        return Functions.getInfoStruct(f, sootClass);
     }
     
     private Value getInstanceFieldPtr(Function f, Value base, SootField field) {

@@ -113,12 +113,12 @@ public class TrampolineResolver {
             String fnName = mangleClass(t.getTarget()) + "_exmatch";
             if (!mb.hasSymbol(fnName)) {
                 Function fn = new Function(weak, t.getFunctionRef(), fnName);
-                Global exHeader = new Global(mangleClass(t.getTarget()) + "_info", I8_PTR);
-                if (!mb.hasSymbol(exHeader.getName())) {
-                    mb.addGlobal(exHeader);
+                FunctionRef exInfoFn = getInfoStructFn(t.getTarget());
+                Value exInfo = call(fn, exInfoFn);
+                if (!mb.hasSymbol(exInfoFn.getName())) {
+                    mb.addFunctionDeclaration(new FunctionDeclaration(exInfoFn));
                 }
-                Value result = call(fn, NVM_BC_EXCEPTION_MATCH, f.getParameterRef(0), 
-                        exHeader.ref());
+                Value result = call(fn, NVM_BC_EXCEPTION_MATCH, f.getParameterRef(0), exInfo);
                 fn.add(new Ret(result));
                 mb.addFunction(fn);
             }
@@ -211,8 +211,11 @@ public class TrampolineResolver {
                         new NullConstant(I8_PTR));
                 mb.addGlobal(g);
                 Function fn = new Function(Linkage.external, nc.getFunctionRef());
+                FunctionRef ldcFn = new FunctionRef(mangleClass(nc.getTarget()) + "_ldc", 
+                        new FunctionType(OBJECT_PTR, ENV_PTR));
+                Value theClass = call(fn, ldcFn, fn.getParameterRef(0));
                 Value implI8Ptr = call(fn, NVM_BC_RESOLVE_NATIVE, fn.getParameterRef(0), 
-                      new GlobalRef(mangleClass(nc.getTarget()) + "_info", I8_PTR),
+                      theClass,
                       mb.getString(nc.getMethodName()), 
                       mb.getString(nc.getMethodDesc()),
                       mb.getString(mangleNativeMethod(nc.getTarget(), nc.getMethodName())),

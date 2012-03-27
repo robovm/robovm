@@ -5,20 +5,15 @@ package org.nullvm.compiler;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -52,7 +47,7 @@ public abstract class AbstractTarget implements Target {
         return true;
     }
     
-    public void build(List<File> objectFiles, Map<String, String> aliases) throws IOException {
+    public void build(List<File> objectFiles) throws IOException {
         File outFile = new File(config.getTmpDir(), config.getExecutable());
         
         config.getLogger().debug("Building executable %s", outFile);
@@ -80,11 +75,8 @@ public abstract class AbstractTarget implements Target {
         
         ccArgs.add("-L");
         ccArgs.add(config.getOsArchDepLibDir().getAbsolutePath());
-        File aliasFile = new File(config.getTmpDir(), "aliases");
         if (config.getOs().getFamily() == OS.Family.linux) {
             // Create a linker script with all aliases
-            createGnuLdAliasFile(aliasFile, aliases);
-            ccArgs.add("-Wl,--script=" + aliasFile.getAbsolutePath());
             ccArgs.add("-Wl,-rpath=$ORIGIN");
             ccArgs.add("-Wl,--gc-sections");
 //            ccArgs.add("-Wl,--print-gc-sections");
@@ -99,8 +91,6 @@ public abstract class AbstractTarget implements Target {
             FileUtils.writeStringToFile(unexportedSymbolsFile, "*\n", "ASCII");
             ccArgs.add("-unexported_symbols_list");
             ccArgs.add(unexportedSymbolsFile.getAbsolutePath());
-            createMacLdAliasFile(aliasFile, aliases);
-            //ccArgs.add("-Wl,-alias_list," + aliasFile.getAbsolutePath());
             ccArgs.add("-Wl,-no_implicit_dylibs");
             // Needed on Mac OS X >= 10.6 to prevent linker from compacting unwind info which breaks _Unwind_FindEnclosingFunction
             ccArgs.add("-Wl,-no_compact_unwind");
@@ -108,37 +98,6 @@ public abstract class AbstractTarget implements Target {
         }
      
         doBuild(outFile, ccArgs, objectFiles, libs);
-    }
-    
-    private void createGnuLdAliasFile(File aliasFile, Map<String, String> aliases) throws IOException {
-        PrintWriter w = null;
-        try {
-            w = new PrintWriter(aliasFile, "ASCII");
-            for (Entry<String, String> alias : aliases.entrySet()) {
-                w.print(alias.getKey());
-                w.print(" = ");
-                w.print(alias.getValue());
-                w.print(";\n");
-            }
-        } finally {
-            IOUtils.closeQuietly(w);
-        }
-    }
-    
-    private void createMacLdAliasFile(File aliasFile, Map<String, String> aliases) throws IOException {
-        PrintWriter w = null;
-        try {
-            w = new PrintWriter(aliasFile, "ASCII");
-            for (Entry<String, String> alias : aliases.entrySet()) {
-                w.print("_");
-                w.print(alias.getValue());
-                w.print(" _");
-                w.print(alias.getKey());
-                w.print("\n");
-            }
-        } finally {
-            IOUtils.closeQuietly(w);
-        }
     }
     
     protected void doBuild(File outFile, List<String> ccArgs, List<File> objectFiles, 

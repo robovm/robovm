@@ -78,6 +78,9 @@ public class CompilerUtil {
         if (config.getCcBinPath() != null) {
             ccPath = config.getCcBinPath().getAbsolutePath();
         }
+
+        File objectsFile = new File(config.getTmpDir(), "objects");
+        FileUtils.writeLines(objectsFile, "UTF-8", objectFiles, "\n");
         
         List<String> opts = new ArrayList<String>();
         if (config.isDebug()) {
@@ -86,13 +89,12 @@ public class CompilerUtil {
         if (config.getOs().getFamily() == OS.Family.darwin) {
             opts.add("-arch");            
             opts.add(config.getArch().toString());            
+            opts.add("-Wl,-filelist," + objectsFile.getAbsolutePath());
+        } else {
+            opts.add("@" + objectsFile.getAbsolutePath());
         }
         opts.addAll(args);
 
-        File objectsFile = new File(config.getTmpDir(), "objects");
-        FileUtils.writeLines(objectsFile, "UTF-8", objectFiles, "\n");
-        opts.add("-Wl,-filelist," + objectsFile.getAbsolutePath());
-        
         CompilerUtil.exec(config, ccPath, "-o", outFile, opts, libs);
     }
     

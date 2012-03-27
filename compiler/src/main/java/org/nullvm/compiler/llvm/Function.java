@@ -43,6 +43,10 @@ public class Function {
         this(linkage, attributes, null, name, type, parameterNames);
     }
     
+    public Function(Linkage linkage, FunctionAttribute[] attributes, FunctionRef ref, String ... parameterNames) {
+        this(linkage, attributes, null, ref.getName(), ref.getType(), parameterNames);
+    }
+    
     public Function(Linkage linkage, FunctionAttribute[] attributes, String section, String name, FunctionType type, String ... parameterNames) {
         this.linkage = linkage;
         this.attributes = attributes;

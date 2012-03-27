@@ -179,14 +179,14 @@ public class ClassCompiler {
     private final MethodCompiler methodCompiler;
     private final NativeMethodCompiler nativeMethodCompiler;
     private final AttributesEncoder attributesEncoder;
-    private final TrampolineResolver trampolineResolver;
+    private final TrampolineCompiler trampolineResolver;
     
     public ClassCompiler(Config config) {
         this.config = config;
         this.methodCompiler = new MethodCompiler(config);
         this.nativeMethodCompiler = new NativeMethodCompiler(config);
         this.attributesEncoder = new AttributesEncoder();
-        this.trampolineResolver = new TrampolineResolver(config);
+        this.trampolineResolver = new TrampolineCompiler(config);
     }
     
     public boolean compile(Clazz clazz) throws IOException {
@@ -377,7 +377,7 @@ public class ClassCompiler {
         }
         
         for (Trampoline trampoline : trampolines) {
-            trampolineResolver.resolve(mb, trampoline);
+            trampolineResolver.compile(mb, trampoline);
         }
 
         StructureConstant classInfoErrorStruct = createClassInfoErrorStruct();

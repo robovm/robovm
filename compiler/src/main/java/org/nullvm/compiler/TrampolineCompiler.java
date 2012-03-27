@@ -55,7 +55,7 @@ import soot.SootMethod;
  * @author niklas
  *
  */
-public class TrampolineResolver {
+public class TrampolineCompiler {
     public static final String ATTEMPT_TO_WRITE_TO_FINAL_FIELD = "Attempt to write to final field %s.%s from class %s";
     public static final String EXPECTED_INTERFACE_BUT_FOUND_CLASS = "Expected interface but found class %s";
     public static final String EXPECTED_NON_STATIC_METHOD = "Expected non-static method %s.%s%s";
@@ -69,11 +69,11 @@ public class TrampolineResolver {
     private final Config config;
     private ModuleBuilder mb;
 
-    public TrampolineResolver(Config config) {
+    public TrampolineCompiler(Config config) {
         this.config = config;
     }
     
-    public void resolve(ModuleBuilder mb, Trampoline t) {
+    public void compile(ModuleBuilder mb, Trampoline t) {
         this.mb = mb;
         
         if (t instanceof LdcString) {

@@ -72,7 +72,7 @@ static ClassInfoHeader* lookupClassInfo(Env* env, const char* className, void* h
     void** base  = hash + (size << 1) + 4;
 #endif
     jint i;
-    for (i = start; i <= end; i++) {
+    for (i = start; i < end; i++) {
         ClassInfoHeader* header = base[i];
         if (header && !strcmp(header->className, className)) {
             return header;

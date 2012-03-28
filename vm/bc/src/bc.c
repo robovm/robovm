@@ -233,19 +233,6 @@ static void loadMethods(Env* env, Class* clazz) {
     parseClassInfo(env, header, &callbacks, clazz);
 }
 
-static jboolean checkClassAccessible(Env* env, Class* clazz, Class* caller) {
-    // TODO: Check that the ClassLoader of clazz is the same as or an ancestor of caller's ClassLoader?
-    while (CLASS_IS_ARRAY(clazz)) {
-        clazz = clazz->componentType;
-    }
-    if (CLASS_IS_PRIMITIVE(clazz)) return TRUE;
-    if (caller == clazz) return TRUE; 
-    if (CLASS_IS_PUBLIC(clazz)) return TRUE; 
-    if (nvmIsSamePackage(clazz, caller)) return TRUE;
-    nvmThrowIllegalAccessErrorClass(env, clazz, caller);
-    return FALSE;
-}
-
 _Unwind_Reason_Code _nvmBcPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context) {
     return _nvmPersonality(version, actions, exception_class, exception_info, context);
 }

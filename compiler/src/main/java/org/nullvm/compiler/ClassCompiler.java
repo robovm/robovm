@@ -13,10 +13,15 @@ import static org.nullvm.compiler.llvm.FunctionAttribute.*;
 import static org.nullvm.compiler.llvm.Linkage.*;
 import static org.nullvm.compiler.llvm.Type.*;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,6 +29,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -231,6 +238,8 @@ public class ClassCompiler {
             config.getLogger().debug("Generating %s assembly for %s", config.getArch(), clazz);
             CompilerUtil.llc(config, bcFile, sFile);
 
+            patchAsmWithFunctionSizes(clazz, sFile);
+            
             config.getLogger().debug("Assembling %s", clazz);
             CompilerUtil.assemble(config, sFile, oFile);
 
@@ -238,6 +247,82 @@ public class ClassCompiler {
         }
         
         return recompiled;
+    }
+    
+    private void patchAsmWithFunctionSizes(Clazz clazz, File sFile) throws IOException {
+        Set<String> functionNames = new HashSet<String>();
+        for (SootMethod method : clazz.getSootClass().getMethods()) {
+            if (!method.isAbstract()) {
+                String name = mangleMethod(method);
+                if (config.getOs().getFamily() == OS.Family.darwin) {
+                    name = "_" + name;
+                }                
+                functionNames.add(mangleMethod(method));
+            }
+        }
+        
+        String prefix = mangleClass(clazz.getInternalName());
+        if (config.getOs().getFamily() == OS.Family.darwin) {
+            prefix = "_" + prefix;
+        }
+        String infoStructLabel = prefix + "_info_struct";
+        Pattern methodImplPattern = Pattern.compile("\\s*\\.(?:quad|long)\\s+(" + Pattern.quote(prefix) + "[^\\s]+).*");
+        
+        File outFile = new File(sFile.getParentFile(), sFile.getName() + ".tmp");
+        
+        BufferedReader in = null;
+        BufferedWriter out = null;
+        try {
+            in = new BufferedReader(new InputStreamReader(new FileInputStream(sFile), "UTF-8"));
+            out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), "UTF-8"));
+            String line = null;
+            String currentFunction = null;
+            while ((line = in.readLine()) != null) {
+                out.write(line);
+                out.write('\n');
+                if (currentFunction == null) {
+                    if (line.startsWith(prefix)) {
+                        int colon = line.indexOf(':');
+                        if (colon == -1) {
+                            continue;
+                        }
+                        String label = line.substring(0, colon);
+                        if (functionNames.contains(label)) {
+                            currentFunction = label;
+                        } else if (label.equals(infoStructLabel)) {
+                            break;
+                        }
+                    }
+                } else if (line.trim().equals(".cfi_endproc")) {
+                    out.write(currentFunction);
+                    out.write("_end:\n");
+                    currentFunction = null;
+                }
+            }
+            
+            while ((line = in.readLine()) != null) {
+                out.write(line);
+                out.write('\n');
+                if (line.contains(prefix)) {
+                    Matcher matcher = methodImplPattern.matcher(line);
+                    if (matcher.matches()) {
+                        String functionName = matcher.group(1);
+                        if (functionNames.contains(functionName)) {
+                            in.readLine(); // Skip dummy size
+                            out.write("\t.long\t");
+                            out.write(functionName + "_end - " + functionName);
+                            out.write('\n');
+                        }
+                    }
+                }
+            }
+        } finally {
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(out);
+        }
+        
+        sFile.renameTo(new File(sFile.getParentFile(), sFile.getName() + ".orig"));
+        outFile.renameTo(sFile);
     }
     
     private void reset() {
@@ -792,6 +877,7 @@ public class ClassCompiler {
             }
             if (!sootClass.isInterface() && !m.isAbstract()) {
                 body.add(new ConstantBitcast(new FunctionRef(mangleMethod(m), getFunctionType(m)), I8_PTR));
+                body.add(new IntegerConstant(0)); // Size of function. This value will be modified later by patching the .s file.
                 if (m.isSynchronized()) {
                     body.add(new ConstantBitcast(new FunctionRef(mangleMethod(m) + "_synchronized", getFunctionType(m)), I8_PTR));
                 }

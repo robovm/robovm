@@ -141,14 +141,16 @@ static void parseMethodInfo(Env* env, void** p, ParseClassInfoCallbacks* callbac
     if (flags & MI_ATTRIBUTES) attributes = readPtr(p);
 
     void* impl = NULL;
+    jint size = 0;
     void* synchronizedImpl = NULL;
     if (!IS_ABSTRACT(access)) {
         impl = readPtr(p);
+        size = readInt(p);
         if (IS_SYNCHRONIZED(access)) synchronizedImpl = readPtr(p);
     }
 
     if (callbacks->methodCallback) {
-        if (!callbacks->methodCallback(env, name, desc, access, impl, synchronizedImpl, attributes, data)) return;
+        if (!callbacks->methodCallback(env, name, desc, access, size, impl, synchronizedImpl, attributes, data)) return;
     }
 }
 

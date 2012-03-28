@@ -59,6 +59,7 @@ struct Method {
   const char* name;
   const char* desc;
   jint access;
+  jint size;
   void* attributes;
   void* impl;
   void* synchronizedImpl;

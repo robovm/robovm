@@ -19,11 +19,16 @@ RETURN_TYPE_DOUBLE = 3
     .globl    __call0
     .align    4, 0x90
 __call0:
+    .cfi_startproc
+    .cfi_personality 155, __nvmPersonality
+    .cfi_lsda 16, Lexception1
+    .cfi_def_cfa %rsp, 8
 Lcall0Begin:
     push  %rbp
-Lcall0CFI0:
+    .cfi_def_cfa %rsp, 16
+    .cfi_offset %rbp, -16
     mov   %rsp, %rbp
-Lcall0CFI1:
+    .cfi_def_cfa %rbp, 16
     mov   %rdi, %rax
 
     mov   intArgs_offset+0(%rax), %rdi         # %rdi = intArgs[0]
@@ -60,6 +65,7 @@ Lcall0TryCatchLandingPad:
 
     leave
     ret
+    .cfi_endproc
 Lcall0End:
 
     .section    __TEXT,__gcc_except_tab
@@ -88,57 +94,3 @@ Lexception1:
                                         ## -- Filter IDs --
     .byte    0
     .align   2
-
-    .section    __TEXT,__eh_frame,coalesced,no_toc+strip_static_syms+live_support
-EH_frame0:
-Lsection_eh_frame0:
-Leh_frame_common0:
-    .long    Leh_frame_common_end0 - Leh_frame_common_begin0 ## Length of Common Information Entry
-Leh_frame_common_begin0:
-    .long    0                       ## CIE Identifier Tag
-    .byte    1                       ## DW_CIE_VERSION
-    .asciz   "zPLR"                  ## CIE Augmentation
-    .uleb128 1                       ## CIE Code Alignment Factor
-    .sleb128 -8                      ## CIE Data Alignment Factor
-    .byte    16                      ## CIE Return Address Column
-    .uleb128 7                       ## Augmentation Size
-    .byte    155                     ## Personality Encoding = indirect pcrel sdata4
-    .long    __nvmPersonality@GOTPCREL+4 ## Personality
-    .byte    16                      ## LSDA Encoding = pcrel
-    .byte    16                      ## FDE Encoding = pcrel
-    # CFA is in %rsp+8 when entering a function
-    .byte    12                      ## DW_CFA_def_cfa
-    .byte    7                       ## Register
-    .byte    8                       ## Offset
-    # Return address is at CFA-8
-    .byte    144                     ## DW_CFA_offset + Reg (16)
-    .uleb128 1                       ## Offset
-    .align    3
-Leh_frame_common_end0:
-
-    .globl    __call0.eh
-__call0.eh:
-    .long    Lcall0eh_frame_end0 - Lcall0eh_frame_begin0 ## Length of Frame Information Entry
-Lcall0eh_frame_begin0:
-    .long    Lcall0eh_frame_begin0 - Leh_frame_common0 ## FDE CIE offset
-    .quad    Lcall0Begin - .        ## FDE initial location
-    .quad    Lcall0End - Lcall0Begin   ## FDE address range
-    .uleb128 8                       ## Augmentation size
-    .quad    Lexception1 - .         ## Language Specific Data Area
-    # Advance to Lcall0CFI0
-    .byte    4                       ## DW_CFA_advance_loc4
-    .long    Lcall0CFI0 - Lcall0Begin
-    # CFA is now in %rsp+16
-    .byte    14                      ## DW_CFA_def_cfa_offset
-    .uleb128 16                      ## Offset
-    # Value of %rbp is now at CFA-16
-    .byte    134                     ## DW_CFA_offset + Reg (6)
-    .uleb128 2                       ## Offset
-    # Advance to Lcall0CFI1
-    .byte    4                       ## DW_CFA_advance_loc4
-    .long    Lcall0CFI1 - Lcall0CFI0
-    # CFA is now in %rbp+16
-    .byte    13                      ## DW_CFA_def_cfa_register
-    .uleb128 6                       ## Register
-    .align   3
-Lcall0eh_frame_end0:

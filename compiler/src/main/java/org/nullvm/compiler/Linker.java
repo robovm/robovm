@@ -242,9 +242,11 @@ public class Linker {
         CompilerUtil.opt(config, linkerLl, linkerBc, "-mem2reg", "-always-inline");
         File linkerS = new File(config.getTmpDir(), "linker.s");
         CompilerUtil.llc(config, linkerBc, linkerS);
+        File linkerO = new File(config.getTmpDir(), "linker.o");
+        CompilerUtil.assemble(config, linkerS, linkerO);
 
         List<File> objectFiles = new ArrayList<File>();
-        objectFiles.add(linkerS);
+        objectFiles.add(linkerO);
         
         for (Clazz clazz : required) {
             objectFiles.add(config.getOFile(clazz));

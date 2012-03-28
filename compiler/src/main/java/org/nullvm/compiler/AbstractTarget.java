@@ -57,7 +57,8 @@ public abstract class AbstractTarget implements Target {
         
         libs.add("-lnullvm-bc"); 
         if (config.getOs().getFamily() == OS.Family.darwin) {
-            libs.add("-lnullvm-rt");
+            libs.add("-force_load");
+            libs.add(new File(config.getOsArchDepLibDir(), "libnullvm-rt.a").getAbsolutePath());
         } else {
             libs.addAll(Arrays.asList("-Wl,--whole-archive", "-lnullvm-rt", "-Wl,--no-whole-archive"));            
         }

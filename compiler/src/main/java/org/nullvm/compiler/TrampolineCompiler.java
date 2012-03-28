@@ -20,7 +20,6 @@ import org.nullvm.compiler.llvm.FunctionRef;
 import org.nullvm.compiler.llvm.FunctionType;
 import org.nullvm.compiler.llvm.Global;
 import org.nullvm.compiler.llvm.GlobalRef;
-import org.nullvm.compiler.llvm.Linkage;
 import org.nullvm.compiler.llvm.Load;
 import org.nullvm.compiler.llvm.NullConstant;
 import org.nullvm.compiler.llvm.Ret;
@@ -77,7 +76,7 @@ public class TrampolineCompiler {
         this.mb = mb;
         
         if (t instanceof LdcString) {
-            Function f = new Function(Linkage.linker_private_weak, t.getFunctionRef());
+            Function f = new Function(weak, t.getFunctionRef());
             mb.addFunction(f);
             Value result = call(f, NVM_BC_LDC_STRING, f.getParameterRef(0), 
                     mb.getString(t.getTarget()));
@@ -93,7 +92,7 @@ public class TrampolineCompiler {
          * ClassCompiler will be overridden with a function which throws an
          * appropriate exception.
          */
-        Function f = new Function(Linkage.external, t.getFunctionRef());
+        Function f = new Function(external, t.getFunctionRef());
         if (!checkClassExists(f, t) || !checkClassAccessible(f, t)) {
             mb.addFunction(f);
             return;
@@ -195,13 +194,13 @@ public class TrampolineCompiler {
                 mb.addFunction(fnLong);
                 FunctionRef targetFn = fnLong.ref();
                 if (!isLongNativeFunctionNameRequired(nc)) {
-                    Function fnShort = new Function(Linkage.weak, shortName, nc.getFunctionType());
+                    Function fnShort = new Function(weak, shortName, nc.getFunctionType());
                     Value resultInner = call(fnShort, fnLong.ref(), fnShort.getParameterRefs());
                     fnShort.add(new Ret(resultInner));
                     mb.addFunction(fnShort);
                     targetFn = fnShort.ref();
                 }
-                Function fn = new Function(Linkage.external, nc.getFunctionRef());
+                Function fn = new Function(external, nc.getFunctionRef());
                 Value result = call(fn, targetFn, fn.getParameterRefs());
                 fn.add(new Ret(result));
                 mb.addFunction(fn);
@@ -210,7 +209,7 @@ public class TrampolineCompiler {
                         nc.getMethodName(), nc.getMethodDesc()) + "_ptr", 
                         new NullConstant(I8_PTR));
                 mb.addGlobal(g);
-                Function fn = new Function(Linkage.external, nc.getFunctionRef());
+                Function fn = new Function(external, nc.getFunctionRef());
                 FunctionRef ldcFn = new FunctionRef(mangleClass(nc.getTarget()) + "_ldc", 
                         new FunctionType(OBJECT_PTR, ENV_PTR));
                 Value theClass = call(fn, ldcFn, fn.getParameterRef(0));
@@ -336,7 +335,7 @@ public class TrampolineCompiler {
         String fnName = "array_" + mangleClass(targetClass) + "_ldc";
         FunctionRef fnRef = new FunctionRef(fnName, new FunctionType(OBJECT_PTR, ENV_PTR));
         if (!mb.hasSymbol(fnName)) {
-            Function fn = new Function(Linkage.weak, fnRef, fnName);
+            Function fn = new Function(weak, fnRef, fnName);
             Value arrayClass = null;
             if (isPrimitiveComponentType(targetClass)) {
                 String primitiveDesc = targetClass.substring(1);

@@ -49,7 +49,6 @@ import org.nullvm.compiler.llvm.Icmp;
 import org.nullvm.compiler.llvm.IntegerConstant;
 import org.nullvm.compiler.llvm.Inttoptr;
 import org.nullvm.compiler.llvm.Label;
-import org.nullvm.compiler.llvm.Linkage;
 import org.nullvm.compiler.llvm.Load;
 import org.nullvm.compiler.llvm.NullConstant;
 import org.nullvm.compiler.llvm.PackedStructureConstantBuilder;
@@ -94,7 +93,7 @@ import soot.tagkit.Tag;
  */
 public class ClassCompiler {
     private static final VariableRef ENV = new VariableRef("env", ENV_PTR);
-    private static final Global THE_CLASS = new Global("class", Linkage._private, new NullConstant(CLASS_PTR));
+    private static final Global THE_CLASS = new Global("class", _private, new NullConstant(CLASS_PTR));
     
     public static final int CI_FLAGS_BITS = 10;
     public static final int CI_INTERFACE_COUNT_BITS = 6;
@@ -274,9 +273,6 @@ public class ClassCompiler {
             this.sootClass.addMethod(clinit);
         }
 
-        Global classInfoStruct = new Global(mangleClass(sootClass) + "_info_struct", 
-                linker_private_weak, createClassInfoStruct());
-        
         if (isStruct(this.sootClass)) {
             enhanceStructClass(this.sootClass);
         }
@@ -380,12 +376,14 @@ public class ClassCompiler {
             trampolineResolver.compile(mb, trampoline);
         }
 
+        Global classInfoStruct = null;
         StructureConstant classInfoErrorStruct = createClassInfoErrorStruct();
         if (classInfoErrorStruct != null) {
             // The class cannot be loaded at runtime. Replace the ClassInfo struct
             // with a ClassInfoError struct with details of why.
-            classInfoStruct = new Global(mangleClass(sootClass) + "_info_struct", 
-                    linker_private_weak, classInfoErrorStruct);
+            classInfoStruct = new Global(mangleClass(sootClass) + "_info_struct", classInfoErrorStruct);
+        } else {
+            classInfoStruct = new Global(mangleClass(sootClass) + "_info_struct", createClassInfoStruct());
         }
         if (sootClass.hasSuperclass() && !"java.lang.Object".equals(sootClass.getSuperclass().getName())) {
             // Assume that java.lang.Object has no instance fields
@@ -443,7 +441,7 @@ public class ClassCompiler {
     private void createLookupFunction(SootMethod m) {
         // TODO: This should use a virtual method table or interface method table.
         String name = mangleMethod(m) + "_lookup";
-        Function function = new Function(Linkage.external, name, getFunctionType(m));
+        Function function = new Function(external, name, getFunctionType(m));
         mb.addFunction(function);
 
         Variable reserved0 = function.newVariable(I8_PTR_PTR);

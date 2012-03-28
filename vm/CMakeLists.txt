@@ -68,9 +68,8 @@ if(DARWIN)
 endif()
 # TODO: Use CMake to build GC? There is a CMakeLists.txt but I cannot get the install to work.
 ExternalProject_Add(extgc 
-  URL "http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.2alpha6.tar.gz"
-  PATCH_COMMAND bash -c "patch -d ../extgc -p1 -i '${CMAKE_SOURCE_DIR}/gc-1.patch' && patch -d ../extgc -p1 -i '${CMAKE_SOURCE_DIR}/gc-2.patch'"
-  CONFIGURE_COMMAND bash -c "CFLAGS='${EXTGC_CFLAGS}' LDFLAGS='${EXTGC_LDFLAGS}' ../extgc/configure --enable-shared=no --prefix=${CMAKE_BINARY_DIR}/gc"
+  URL ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/bdwgc-20120327.tar.gz
+  CONFIGURE_COMMAND bash -c "CFLAGS='${EXTGC_CFLAGS}' ../extgc/configure --enable-shared=no --prefix=${CMAKE_BINARY_DIR}/gc"
 )
 
 include_directories(hyprt/include core/include ${ZLIB_H_PATH} ${CMAKE_BINARY_DIR}/gc/include)

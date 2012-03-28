@@ -83,8 +83,6 @@ public class Functions {
     public static final FunctionRef NVM_BC_BY_VALUE_GET_STRUCT_HANDLE = new FunctionRef("_nvmBcByValueGetStructHandle", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef NVM_BC_COPY_STRUCT = new FunctionRef("_nvmBcCopyStruct", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I8_PTR, I32));
 
-    public static final FunctionRef LLVM_EH_EXCEPTION = new FunctionRef("llvm.eh.exception", new FunctionType(I8_PTR));
-    public static final FunctionRef LLVM_EH_SELECTOR = new FunctionRef("llvm.eh.selector", new FunctionType(I32, true, I8_PTR, I8_PTR));
     public static final FunctionRef LLVM_FRAMEADDRESS = new FunctionRef("llvm.frameaddress", new FunctionType(I8_PTR, I32));
 
     public static final FunctionRef CHECK_NULL = new FunctionRef("checknull", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));

@@ -14,16 +14,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.nullvm.compiler.llvm.BasicBlockRef;
-import org.nullvm.compiler.llvm.Call;
-import org.nullvm.compiler.llvm.ConstantBitcast;
 import org.nullvm.compiler.llvm.Function;
 import org.nullvm.compiler.llvm.FunctionAttribute;
 import org.nullvm.compiler.llvm.FunctionRef;
 import org.nullvm.compiler.llvm.FunctionType;
-import org.nullvm.compiler.llvm.IntegerConstant;
 import org.nullvm.compiler.llvm.Label;
+import org.nullvm.compiler.llvm.Landingpad;
+import org.nullvm.compiler.llvm.Landingpad.Catch;
 import org.nullvm.compiler.llvm.Linkage;
+import org.nullvm.compiler.llvm.NullConstant;
 import org.nullvm.compiler.llvm.Ret;
+import org.nullvm.compiler.llvm.StructureType;
 import org.nullvm.compiler.llvm.Type;
 import org.nullvm.compiler.llvm.Unreachable;
 import org.nullvm.compiler.llvm.Value;
@@ -98,11 +99,9 @@ public abstract class AbstractMethodCompiler {
         function.add(new Ret(result));
 
         function.newBasicBlock(new Label("failure"));
+        Variable lpResult = function.newVariable(new StructureType(I8_PTR, I32));
+        function.add(new Landingpad(lpResult, NVM_BC_PERSONALITY, new Catch(new NullConstant(I8_PTR))));
         call(function, NVM_BC_MONITOR_EXIT, ENV, monitor);
-        Variable ehptr = function.newVariable(I8_PTR);
-        function.add(new Call(ehptr, LLVM_EH_EXCEPTION, new Value[0]));
-        call(function, LLVM_EH_SELECTOR, ehptr.ref(), 
-                new ConstantBitcast(NVM_BC_PERSONALITY, I8_PTR), new IntegerConstant(1));
         call(function, NVM_BC_RETHROW, ENV);
         function.add(new Unreachable());
     }

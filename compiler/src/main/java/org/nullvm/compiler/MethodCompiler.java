@@ -29,7 +29,6 @@ import org.nullvm.compiler.llvm.Bitcast;
 import org.nullvm.compiler.llvm.Br;
 import org.nullvm.compiler.llvm.Call;
 import org.nullvm.compiler.llvm.Constant;
-import org.nullvm.compiler.llvm.ConstantBitcast;
 import org.nullvm.compiler.llvm.ConstantTrunc;
 import org.nullvm.compiler.llvm.Fadd;
 import org.nullvm.compiler.llvm.Fdiv;
@@ -53,6 +52,8 @@ import org.nullvm.compiler.llvm.IntegerConstant;
 import org.nullvm.compiler.llvm.IntegerType;
 import org.nullvm.compiler.llvm.Invoke;
 import org.nullvm.compiler.llvm.Label;
+import org.nullvm.compiler.llvm.Landingpad;
+import org.nullvm.compiler.llvm.Landingpad.Catch;
 import org.nullvm.compiler.llvm.Linkage;
 import org.nullvm.compiler.llvm.Load;
 import org.nullvm.compiler.llvm.Lshr;
@@ -65,6 +66,7 @@ import org.nullvm.compiler.llvm.Sext;
 import org.nullvm.compiler.llvm.Shl;
 import org.nullvm.compiler.llvm.Sitofp;
 import org.nullvm.compiler.llvm.Store;
+import org.nullvm.compiler.llvm.StructureType;
 import org.nullvm.compiler.llvm.Sub;
 import org.nullvm.compiler.llvm.Switch;
 import org.nullvm.compiler.llvm.Trunc;
@@ -318,11 +320,11 @@ public class MethodCompiler extends AbstractMethodCompiler {
 
         next: for (List<Trap> traps : recordedTraps) {
             BasicBlock bb = function.newBasicBlock(new Label(traps));
-            Variable ehptr = function.newVariable(I8_PTR);
-            bb.add(new Call(ehptr, LLVM_EH_EXCEPTION, new Value[0]));
-            Variable sel = function.newVariable(I32);
-            bb.add(new Call(sel, LLVM_EH_SELECTOR, new VariableRef(ehptr), 
-                    new ConstantBitcast(NVM_BC_PERSONALITY, I8_PTR), new IntegerConstant(1)));
+            Variable result = function.newVariable(new StructureType(I8_PTR, I32));
+            bb.add(new Landingpad(result, NVM_BC_PERSONALITY, new Catch(new NullConstant(I8_PTR))));
+            Label directCatchLabel = new Label(bb.getLabel()); // The label throw statements within try-catch blocks jump to
+            bb.add(new Br(function.newBasicBlockRef(directCatchLabel)));
+            bb = function.newBasicBlock(directCatchLabel);
             for (Trap trap : traps) {
                 String exName = trap.getException().getName();
                 if ("java.lang.Throwable".equals(exName)) {
@@ -1090,7 +1092,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
         List<Trap> traps = getTrapsAt(stmt);
         if (!traps.isEmpty()) {
             function.add(new Call(NVM_BC_EXCEPTION_SET, ENV, obj));
-            function.add(new Br(function.newBasicBlockRef(new Label(traps))));
+            function.add(new Br(function.newBasicBlockRef(new Label(new Label(traps)))));
             recordedTraps.add(traps);
         } else {
             function.add(new Call(NVM_BC_THROW, ENV, obj));

@@ -365,29 +365,6 @@ public class ClassCompiler {
         }
         
         mb.addInclude(getClass().getClassLoader().getResource("header.ll"));
-        
-//        if (classFieldsType != null) {
-//            module.addType(classFieldsType);
-//        }
-//        if (instanceFieldsType != null) {
-//            module.addType(instanceFieldsType);
-//        }
-
-//        List<SootField> allFields = new ArrayList<SootField>();
-//        allFields.addAll(classFields);
-//        allFields.addAll(instanceFields);
-//        for (SootField field : allFields) {
-//            if (!field.isPrivate()) {
-//                // Only non private fields need getters
-//                fieldGetter(field);
-//                if (!field.isFinal()) {
-//                    // Final fields can only be set from the class that declares it
-//                    // and the declaring class can always access the field directly
-//                    fieldSetter(field);
-//                }
-//            }
-//        }
-//        
 
         Function allocator = createAllocator();
         mb.addFunction(allocator);
@@ -433,12 +410,6 @@ public class ClassCompiler {
             } else if (!method.isAbstract()) {
                 method(method);
             }
-//            if (!method.isStatic() && !method.isPrivate() && !Modifier.isFinal(method.getModifiers())) {
-//                // Virtual method. If not defined in a superclass we need to create a virtual lookup function now.
-//                if (!ancestorDeclaresMethod(sootClass, method)) {
-//                    virtualLookupFunction(method);
-//                }
-//            }
             if (!method.getName().equals("<clinit>") && !method.getName().equals("<init>") 
                     && !method.isPrivate() && !method.isStatic() 
                     && !Modifier.isFinal(method.getModifiers()) 
@@ -510,16 +481,6 @@ public class ClassCompiler {
         clazzInfo.setAttributeDependencies(attributesEncoder.getDependencies());
         clazzInfo.setTrampolines(trampolines);
         clazz.commitClazzInfo();
-        
-//        for (Entry<Trampoline, FunctionRef> entry : trampolines.entrySet()) {
-//            trampoline(entry.getKey(), entry.getValue());
-//        }
-        
-//        classLoaderFunction();
-        
-//        for (Global global : throwables.values()) {
-//            module.addGlobal(global);
-//        }
     }
     
     private void createLookupFunction(SootMethod m) {
@@ -887,11 +848,6 @@ public class ClassCompiler {
             if (isCallback(m)) {
                 body.add(new ConstantBitcast(new FunctionRef(mangleMethod(m) + "_callback", getCallbackFunctionType(m)), I8_PTR));
             }
-//            if (!m.getName().equals("<clinit>") && !m.getName().equals("<init>") && !m.isPrivate() && !m.isStatic()) {
-//                FunctionRef lookupFn = new FunctionRef(mangleMethod(m) + "_lookup", getFunctionType(m));
-//                body.add(new ConstantBitcast(lookupFn, I8_PTR));
-//            }
-
         }
         
         // Return the struct {header, body}. To be compatible with the C code in classinfo.c 
@@ -899,58 +855,6 @@ public class ClassCompiler {
         // after sizeof(ClassInfoHeader) bytes.
         return new StructureConstantBuilder().add(header.build()).add(body.build()).build();
     }
-    
-    
-//    private void createTrampolinesResolver() {
-//        Type descType = new PointerType(new StructureType(I32, I8_PTR, I8_PTR, I8_PTR));
-//        VariableRef desc = new VariableRef("desc", descType);
-//        Function f = module.newFunction("resolver", new FunctionType(VOID, ENV_PTR, I32, descType), "env", "index", "desc");
-//        TreeMap<IntegerConstant, BasicBlockRef> alt = new TreeMap<IntegerConstant, BasicBlockRef>();
-//        for (int index = 0; index < trampolines.size(); index++) {
-//            alt.put(new IntegerConstant(index), f.newBasicBlockRef(index));
-//        }
-//        f.newBasicBlock(new Object());
-//        f.add(new Switch(new VariableRef("index", I32), f.newBasicBlockRef(trampolines.size()), alt));
-//        for (int index = 0; index < trampolines.size(); index++) {
-//            Trampoline t = trampolines.get(index);
-//            f.newBasicBlock(index);
-//            
-//            int type = TRAMPOLINE_TYPES.get(t.getClass());
-//            Variable typePtr = f.newVariable(new PointerType(I32));
-//            f.add(new Getelementptr(typePtr, desc, 0, 0));
-//            f.add(new Store(new IntegerConstant(type), new VariableRef(typePtr)));
-//            
-//            String targetClass = t.getTargetClass();
-//            Variable targetClassPtr = f.newVariable(new PointerType(I8_PTR));
-//            f.add(new Getelementptr(targetClassPtr, desc, 0, 1));
-//            f.add(new Store(new ConstantBitcast(new GlobalRef(addString(targetClass)), I8_PTR), new VariableRef(targetClassPtr)));
-//
-//            String methodOrFieldName = null;
-//            String methodOrFieldDesc = null;
-//            if (t instanceof org.nullvm.compiler.trampoline.Invoke) {
-//                methodOrFieldName = ((org.nullvm.compiler.trampoline.Invoke) t).getMethodName();
-//                methodOrFieldDesc = ((org.nullvm.compiler.trampoline.Invoke) t).getMethodDesc();
-//            } else if (t instanceof FieldAccessor) {
-//                methodOrFieldName = ((FieldAccessor) t).getFieldName();
-//                methodOrFieldName = ((FieldAccessor) t).getFieldDesc();
-//            }
-//            
-//            if (methodOrFieldName != null) {
-//                Variable ptr = f.newVariable(new PointerType(I8_PTR));
-//                f.add(new Getelementptr(ptr, desc, 0, 2));
-//                f.add(new Store(new ConstantBitcast(new GlobalRef(addString(methodOrFieldName)), I8_PTR), new VariableRef(ptr)));
-//            }
-//            if (methodOrFieldDesc != null) {
-//                Variable ptr = f.newVariable(new PointerType(I8_PTR));
-//                f.add(new Getelementptr(ptr, desc, 0, 3));
-//                f.add(new Store(new ConstantBitcast(new GlobalRef(addString(methodOrFieldDesc)), I8_PTR), new VariableRef(ptr)));
-//            }
-//            
-//            f.add(new Ret());
-//        }
-//        f.newBasicBlock(trampolines.size());
-//        f.add(new Ret());
-//    }
     
     private void enhanceStructClass(SootClass clazz) {
         if (!Modifier.isFinal(clazz.getModifiers())) {
@@ -1087,180 +991,6 @@ public class ClassCompiler {
         return new Function(internal, new FunctionAttribute[] {noinline, optsize}, 
                 name, functionType, parameterNames);
     }
-    
-
-//    private void classLoaderFunction() {
-//        String name = "NullVM_" + mangleString(getInternalName(sootClass));
-//        Function function = module.newFunction(null, 
-//                new FunctionAttribute[] {noinline, optsize}, 
-//                name, new FunctionType(CLASS_PTR, ENV_PTR, OBJECT_PTR), 
-//                "env", "classLoader");
-//        
-//        for (Entry<SootClass, Global> entry : throwables.entrySet()) {
-//            Variable t1 = function.newVariable(OBJECT_PTR);
-//            function.add(new Call(t1, NVM_BC_FIND_CLASS_IN_LOADER, 
-//                    ENV, getString(getInternalName(entry.getKey())),
-//                    new VariableRef("classLoader", OBJECT_PTR)));
-//            Variable t2 = function.newVariable(CLASS_PTR);            
-//            function.add(new Bitcast(t2, t1.ref(), CLASS_PTR));
-//            function.add(new Store(t2.ref(), entry.getValue().ref()));
-//        }
-//        
-//        Variable clazz = function.newVariable("clazz", CLASS_PTR);
-//        Value superclassName = null;
-//        if (sootClass.hasSuperclass() && !sootClass.isInterface()) {
-//            superclassName = getString(getInternalName(sootClass.getSuperclass()));
-//        } else {
-//            superclassName = new NullConstant(I8_PTR);
-//        }
-//        
-//        function.add(new Call(clazz, NVM_BC_ALLOCATE_CLASS, 
-//                ENV, 
-//                getString(getInternalName(sootClass)), 
-//                superclassName,
-//                new VariableRef("classLoader", OBJECT_PTR),
-//                new IntegerConstant(sootClass.getModifiers()),
-//                sizeof(classFieldsType), sizeof(instanceFieldsType)));
-//
-//        Constant classAttributes = encodeAttributes(sootClass);
-//        if (classAttributes != null) {
-//            Global g = module.newGlobal(classAttributes, true);
-//            function.add(new Call(NVM_BC_SET_CLASS_ATTRIBUTES, ENV, clazz.ref(), new ConstantBitcast(g.ref(), I8_PTR)));
-//        }
-//        
-//        for (SootClass iface : sootClass.getInterfaces()) {
-//            function.add(new Call(NVM_BC_ADD_INTERFACE, ENV, clazz.ref(), getString(getInternalName(iface))));
-//        }
-//        
-//        for (SootField field : classFields) {
-//            Constant getter = new NullConstant(new FunctionType(getType(field.getType()), ENV_PTR));
-//            Constant setter = new NullConstant(new FunctionType(VOID, ENV_PTR, getType(field.getType())));
-//            if (!field.isPrivate()) {
-//                getter = new FunctionRef(mangleField(field) + "_getter", (FunctionType) getter.getType());
-//                if (!field.isFinal()) {
-//                    setter = new FunctionRef(mangleField(field) + "_setter", (FunctionType) setter.getType());
-//                }
-//            }
-//            Variable fieldPtr = function.newVariable(FIELD_PTR);
-//            function.add(new Call(fieldPtr, NVM_BC_ADD_FIELD, ENV, clazz.ref(),
-//                    getString(field.getName()),
-//                    getString(getDescriptor(field.getType())),
-//                    new IntegerConstant(field.getModifiers()),
-//                    offsetof(classFieldsType, classFields.indexOf(field)),
-//                    new ConstantBitcast(getter, I8_PTR), 
-//                    new ConstantBitcast(setter, I8_PTR)));
-//            
-//            Constant fieldAttributes = encodeAttributes(field);
-//            if (fieldAttributes != null) {
-//                Global g = module.newGlobal(fieldAttributes, true);
-//                function.add(new Call(NVM_BC_SET_FIELD_ATTRIBUTES, ENV, fieldPtr.ref(), new ConstantBitcast(g.ref(), I8_PTR)));
-//            }
-//        }
-//        for (SootField field : instanceFields) {
-//            Constant getter = new NullConstant(new FunctionType(getType(field.getType()), ENV_PTR, OBJECT_PTR));
-//            Constant setter = new NullConstant(new FunctionType(VOID, ENV_PTR, OBJECT_PTR, getType(field.getType())));
-//            if (!field.isPrivate()) {
-//                getter = new FunctionRef(mangleField(field) + "_getter", (FunctionType) getter.getType());
-//                if (!field.isFinal()) {
-//                    setter = new FunctionRef(mangleField(field) + "_setter", (FunctionType) setter.getType());
-//                }
-//            }
-//            Variable fieldPtr = function.newVariable(FIELD_PTR);
-//            function.add(new Call(fieldPtr, NVM_BC_ADD_FIELD, ENV, clazz.ref(),
-//                    getString(field.getName()),
-//                    getString(getDescriptor(field.getType())),
-//                    new IntegerConstant(field.getModifiers()),
-//                    offsetof(instanceFieldsType, instanceFields.indexOf(field)),
-//                    new ConstantBitcast(getter, I8_PTR), 
-//                    new ConstantBitcast(setter, I8_PTR)));
-//            
-//            Constant fieldAttributes = encodeAttributes(field);
-//            if (fieldAttributes != null) {
-//                Global g = module.newGlobal(fieldAttributes, true);
-//                function.add(new Call(NVM_BC_SET_FIELD_ATTRIBUTES, ENV, fieldPtr.ref(), new ConstantBitcast(g.ref(), I8_PTR)));
-//            }
-//        }
-//        
-//        if (!sootClass.declaresMethodByName("<clinit>") && hasConstantValueTags(classFields)) {
-//            Value functionRef = new ConstantBitcast(
-//                    new FunctionRef(mangleMethod(getInternalName(sootClass), "<clinit>", 
-//                                new ArrayList<soot.Type>(), soot.VoidType.v()), 
-//                            new FunctionType(VOID, ENV_PTR)), I8_PTR);
-//            Variable methodPtr = function.newVariable(METHOD_PTR);
-//            function.add(new Call(methodPtr, NVM_BC_ADD_METHOD, ENV, clazz.ref(),
-//                    getString("<clinit>"),
-//                    getString("()V"),
-//                    new IntegerConstant(Modifier.STATIC),
-//                    functionRef,
-//                    new NullConstant(I8_PTR),
-//                    new NullConstant(I8_PTR)));
-//        }
-//
-//        for (SootMethod method : sootClass.getMethods()) {
-//            Value functionRef = new NullConstant(I8_PTR);
-//            Value synchronizedRef = new NullConstant(I8_PTR);
-//            Value lookup = new NullConstant(I8_PTR);
-//            if (!method.isAbstract()) {
-//                functionRef = new ConstantBitcast(new FunctionRef(mangleMethod(method), 
-//                        getFunctionType(method)), I8_PTR);
-//            }
-//            if (!method.isAbstract() && method.isSynchronized()) {
-//                synchronizedRef = new ConstantBitcast(new FunctionRef(mangleMethod(method) + "_synchronized", 
-//                        getFunctionType(method)), I8_PTR);
-//            }            
-//            if (!method.isStatic() && !"<init>".equals(method.getName()) 
-//                    && !method.isPrivate() && !Modifier.isFinal(method.getModifiers())) {
-//                // Virtual method. If not defined in a superclass we need to create a virtual lookup function now.
-//                if (!ancestorDeclaresMethod(sootClass, method)) {
-//                    lookup = new ConstantBitcast(new FunctionRef(mangleMethod(method) + "_lookup", 
-//                            getFunctionType(method)), I8_PTR);
-//                }
-//            }
-//            Variable methodPtr = function.newVariable(METHOD_PTR);
-//            if (isBridge(method)) {
-//                GlobalRef targetFunction = new GlobalRef(mangleMethod(method) + "_ptr", getBridgeOrCallbackFunctionType(method));
-//                function.add(new Call(methodPtr, NVM_BC_ADD_BRIDGE_METHOD, ENV, clazz.ref(),
-//                        getString(method.getName()),
-//                        getString(getDescriptor(method)),
-//                        new IntegerConstant(method.getModifiers() | Modifier.NATIVE),
-//                        functionRef,
-//                        synchronizedRef,
-//                        lookup,
-//                        new ConstantBitcast(targetFunction, I8_PTR)));
-//            } else if (isCallback(method)) {
-//                Value callbackRef = new ConstantBitcast(new FunctionRef(mangleMethod(method) + "_callback", 
-//                        getBridgeOrCallbackFunctionType(method)), I8_PTR);
-//                function.add(new Call(methodPtr, NVM_BC_ADD_CALLBACK_METHOD, ENV, clazz.ref(),
-//                        getString(method.getName()),
-//                        getString(getDescriptor(method)),
-//                        new IntegerConstant(method.getModifiers() | Modifier.NATIVE),
-//                        functionRef,
-//                        synchronizedRef,
-//                        lookup,
-//                        callbackRef));
-//            } else {
-//                function.add(new Call(methodPtr, NVM_BC_ADD_METHOD, ENV, clazz.ref(),
-//                        getString(method.getName()),
-//                        getString(getDescriptor(method)),
-//                        new IntegerConstant(method.getModifiers()),
-//                        functionRef,
-//                        synchronizedRef,
-//                        lookup));
-//            }
-//            
-//            Constant methodAttributes = encodeAttributes(method);
-//            if (methodAttributes != null) {
-//                Global g = module.newGlobal(methodAttributes, true);
-//                function.add(new Call(NVM_BC_SET_METHOD_ATTRIBUTES, ENV, methodPtr.ref(), new ConstantBitcast(g.ref(), I8_PTR)));
-//            }
-//        }
-//        
-//        function.add(new Call(NVM_BC_REGISTER_CLASS, ENV, clazz.ref()));
-//        
-//        function.add(new Store(clazz.ref(), THE_CLASS.ref()));
-//        
-//        function.add(new Ret(clazz.ref()));
-//    }
     
     private Function createAllocator() {
         Function fn = new Function(_private, new FunctionAttribute[] {alwaysinline, optsize}, 

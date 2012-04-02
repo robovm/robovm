@@ -752,7 +752,9 @@ ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint 
     return method;
 }
 
-BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, void* impl, void* synchronizedImpl, void** targetImpl, void* attributes) {
+BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
+        void* synchronizedImpl, void** targetFnPtr, void* attributes) {
+    
     BridgeMethod* method = nvmAllocateMemory(env, sizeof(BridgeMethod));
     if (!method) return NULL;
     method->method.clazz = clazz;
@@ -762,7 +764,7 @@ BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const
     method->method.impl = impl;
     method->method.synchronizedImpl = synchronizedImpl;
     method->method.attributes = attributes;
-    method->targetImpl = targetImpl;
+    method->targetFnPtr = targetFnPtr;
 
     if (clazz->_methods.first == &METHODS_NOT_LOADED) {
         clazz->_methods.first = NULL;

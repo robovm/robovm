@@ -72,7 +72,7 @@ struct NativeMethod {
 
 struct BridgeMethod {
   Method method;
-  void** targetImpl;
+  void** targetFnPtr;
 };
 
 struct CallbackMethod {

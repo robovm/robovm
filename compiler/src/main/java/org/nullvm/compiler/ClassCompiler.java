@@ -183,6 +183,7 @@ public class ClassCompiler {
     
     private final Config config;
     private final MethodCompiler methodCompiler;
+    private final BridgeMethodCompiler bridgeMethodCompiler;
     private final NativeMethodCompiler nativeMethodCompiler;
     private final AttributesEncoder attributesEncoder;
     private final TrampolineCompiler trampolineResolver;
@@ -190,6 +191,7 @@ public class ClassCompiler {
     public ClassCompiler(Config config) {
         this.config = config;
         this.methodCompiler = new MethodCompiler(config);
+        this.bridgeMethodCompiler = new BridgeMethodCompiler(config);
         this.nativeMethodCompiler = new NativeMethodCompiler(config);
         this.attributesEncoder = new AttributesEncoder();
         this.trampolineResolver = new TrampolineCompiler(config);
@@ -882,6 +884,9 @@ public class ClassCompiler {
                     body.add(new ConstantBitcast(new FunctionRef(mangleMethod(m) + "_synchronized", getFunctionType(m)), I8_PTR));
                 }
             }
+            if (isBridge(m)) {
+                body.add(new GlobalRef(BridgeMethodCompiler.getTargetFnPtrName(m), I8_PTR));
+            }
 //            if (!m.getName().equals("<clinit>") && !m.getName().equals("<init>") && !m.isPrivate() && !m.isStatic()) {
 //                FunctionRef lookupFn = new FunctionRef(mangleMethod(m) + "_lookup", getFunctionType(m));
 //                body.add(new ConstantBitcast(lookupFn, I8_PTR));
@@ -1049,7 +1054,7 @@ public class ClassCompiler {
     }
     
     private void nativeBridgeMethod(SootMethod method) {
-
+        bridgeMethodCompiler.compile(mb, method);
     }
     
     private void nativeCallbackMethod(SootMethod method) {

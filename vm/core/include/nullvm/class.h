@@ -102,7 +102,8 @@ extern Class* nvmAllocateClass(Env* env, const char* className, Class* superclas
 extern jboolean nvmAddInterface(Env* env, Class* clazz, Class* interface);
 extern Field* nvmAddField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes);
 extern Method* nvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes);
-extern BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, void* impl, void* synchronizedImpl, void** targetImpl, void* attributes);
+extern BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
+        void* synchronizedImpl, void** targetFnPtr, void* attributes);
 extern CallbackMethod* nvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, void* impl, void* synchronizedImpl, void* callbackImpl, void* attributes);
 extern jboolean nvmRegisterClass(Env* env, Class* clazz);
 

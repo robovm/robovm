@@ -148,9 +148,11 @@ static void parseMethodInfo(Env* env, void** p, ParseClassInfoCallbacks* callbac
         size = readInt(p);
         if (IS_SYNCHRONIZED(access)) synchronizedImpl = readPtr(p);
     }
+    void** targetFnPtr = NULL;
+    if (flags & MI_BRO_BRIDGE) targetFnPtr = readPtr(p);
 
     if (callbacks->methodCallback) {
-        if (!callbacks->methodCallback(env, name, desc, access, size, impl, synchronizedImpl, attributes, data)) return;
+        if (!callbacks->methodCallback(env, name, desc, access, size, impl, synchronizedImpl, targetFnPtr, attributes, data)) return;
     }
 }
 

@@ -432,9 +432,6 @@ public class ClassCompiler {
                 }
             } else if (!method.isAbstract()) {
                 method(method);
-                if (isCallback(method)) {
-                    nativeCallbackMethod(method);
-                }
             }
 //            if (!method.isStatic() && !method.isPrivate() && !Modifier.isFinal(method.getModifiers())) {
 //                // Virtual method. If not defined in a superclass we need to create a virtual lookup function now.
@@ -887,6 +884,9 @@ public class ClassCompiler {
             if (isBridge(m)) {
                 body.add(new GlobalRef(BridgeMethodCompiler.getTargetFnPtrName(m), I8_PTR));
             }
+            if (isCallback(m)) {
+                body.add(new ConstantBitcast(new FunctionRef(mangleMethod(m) + "_callback", getCallbackFunctionType(m)), I8_PTR));
+            }
 //            if (!m.getName().equals("<clinit>") && !m.getName().equals("<init>") && !m.isPrivate() && !m.isStatic()) {
 //                FunctionRef lookupFn = new FunctionRef(mangleMethod(m) + "_lookup", getFunctionType(m));
 //                body.add(new ConstantBitcast(lookupFn, I8_PTR));
@@ -1055,72 +1055,6 @@ public class ClassCompiler {
     
     private void nativeBridgeMethod(SootMethod method) {
         bridgeMethodCompiler.compile(mb, method);
-    }
-    
-    private void nativeCallbackMethod(SootMethod method) {
-//        if (!method.isStatic()) {
-//            throw new IllegalArgumentException("@Callback annotated method must be static: " + method);
-//        }
-//        if (!method.getReturnType().equals(VoidType.v()) && !(method.getReturnType() instanceof PrimType)) {
-//            throw new IllegalArgumentException("@Callback annotated method must return void or primitive type");
-//        }
-//        for (int i = 0; i < method.getParameterCount(); i++) {
-//            if (!(method.getParameterType(i) instanceof PrimType)) {
-//                throw new IllegalArgumentException("@Callback annotated method must take only primitive type arguments");
-//            }            
-//        }
-//        
-//        FunctionType targetFunctionType = getFunctionType(method);
-//        FunctionRef targetFunctionRef = new FunctionRef(mangleMethod(method.makeRef()), targetFunctionType);
-//        
-//        FunctionType callbackFunctionType = getBridgeOrCallbackFunctionType(method);
-//        Type[] parameterTypes = callbackFunctionType.getParameterTypes();
-//        String[] parameterNames = new String[callbackFunctionType.getParameterTypes().length];
-//        for (int i = 0; i < parameterNames.length; i++) {
-//            parameterNames[i] = "p" + i;
-//        }
-//
-//        Function callbackFunction = module.newFunction(internal, new FunctionAttribute[] {noinline, optsize}, 
-//                mangleMethod(method.makeRef()) + "_callback", callbackFunctionType, parameterNames);
-//
-//        // Increase the attach count for the current thread (attaches the thread if not attached)
-//        Variable env = callbackFunction.newVariable(ENV.getName().substring(1), ENV_PTR);
-//        callbackFunction.add(new Call(env, NVM_BC_ATTACH_THREAD_FROM_CALLBACK, new Value[0]));
-//        
-//        ArrayList<Value> args = new ArrayList<Value>();
-//        args.add(env.ref());
-//        for (int i = 0; i < parameterTypes.length; i++) {
-//            VariableRef ref = new VariableRef(parameterNames[i], parameterTypes[i]);
-//            if (ref.getType() == I8_PTR) {
-//                Variable tmp = callbackFunction.newVariable(I64);
-//                callbackFunction.add(new Ptrtoint(tmp, ref, I64));
-//                ref = tmp.ref();
-//            }
-//            args.add(ref);
-//        }
-//        
-//        // TODO: What if an uncaught exception is thrown? We need to detach the thread in such circumstances too.
-//        
-//        if (callbackFunction.getType().getReturnType() == VOID) {
-//            callbackFunction.add(new Call(targetFunctionRef, args.toArray(new Value[args.size()])));
-//            // Decrease the attach count for the current thread (detaches the thread if the count reaches 0)
-//            callbackFunction.add(new Call(NVM_BC_DETACH_THREAD_FROM_CALLBACK, env.ref()));
-//            callbackFunction.add(new Ret());
-//        } else {
-//            Variable result = callbackFunction.newVariable(targetFunctionType.getReturnType());
-//            callbackFunction.add(new Call(result, targetFunctionRef, args.toArray(new Value[args.size()])));
-//            if (callbackFunctionType.getReturnType() == I8_PTR) {
-//                Variable resultI8Ptr = callbackFunction.newVariable(I8_PTR);
-//                callbackFunction.add(new Inttoptr(resultI8Ptr, result.ref(), I8_PTR));
-//                // Decrease the attach count for the current thread (detaches the thread if the count reaches 0)
-//                callbackFunction.add(new Call(NVM_BC_DETACH_THREAD_FROM_CALLBACK, env.ref()));
-//                callbackFunction.add(new Ret(resultI8Ptr.ref()));
-//            } else {
-//                // Decrease the attach count for the current thread (detaches the thread if the count reaches 0)
-//                callbackFunction.add(new Call(NVM_BC_DETACH_THREAD_FROM_CALLBACK, env.ref()));
-//                callbackFunction.add(new Ret(result.ref()));
-//            }
-//        }
     }
     
     private void method(SootMethod method) {

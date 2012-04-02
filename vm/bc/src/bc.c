@@ -218,10 +218,14 @@ static void loadFields(Env* env, Class* clazz) {
     parseClassInfo(env, header, &callbacks, clazz);
 }
 
-static jboolean loadMethodsCallback(Env* env, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void** targetFnPtr, void* attributes, void* d) {
+static jboolean loadMethodsCallback(Env* env, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void** targetFnPtr, 
+        void* callbackImpl, void* attributes, void* d) {
+
     Class* clazz = (Class*) d;
     if (targetFnPtr) {
         if (!nvmAddBridgeMethod(env, clazz, name, desc, access, size, impl, synchronizedImpl, targetFnPtr, attributes)) return FALSE;
+    } else if (callbackImpl) {
+        if (!nvmAddCallbackMethod(env, clazz, name, desc, access, size, impl, synchronizedImpl, callbackImpl, attributes)) return FALSE;
     } else {
         if (!nvmAddMethod(env, clazz, name, desc, access, size, impl, synchronizedImpl, attributes)) return FALSE;
     }

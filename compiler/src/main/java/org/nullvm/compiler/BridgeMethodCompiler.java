@@ -97,7 +97,8 @@ public class BridgeMethodCompiler extends AbstractMethodCompiler {
             if (targetParameterTypes[i] instanceof PointerType) {
                 PointerType type = (PointerType) targetParameterTypes[i];
                 if (type.getBase() instanceof StructureType) {
-                    Value tmp = call(innerFn, NVM_BC_BY_VALUE_GET_STRUCT_HANDLE, ENV, args.get(i).getValue());
+                    Value tmp = call(innerFn, NVM_BC_BY_VALUE_GET_STRUCT_HANDLE, 
+                            innerFn.getParameterRef(0), args.get(i).getValue());
                     Variable arg = innerFn.newVariable(type);
                     innerFn.add(new Bitcast(arg, tmp, arg.getType()));
                     args.set(i, new Argument(arg.ref(), ParameterAttribute.byval));
@@ -126,14 +127,14 @@ public class BridgeMethodCompiler extends AbstractMethodCompiler {
         innerFn.add(new Icmp(nullCheck, Condition.eq, targetFn.ref(), new NullConstant(targetFnType)));
         innerFn.add(new Br(nullCheck.ref(), innerFn.newBasicBlockRef(nullLabel), innerFn.newBasicBlockRef(notNullLabel)));
         innerFn.newBasicBlock(nullLabel);
-        call(innerFn, NVM_BC_THROW_UNSATISIFED_LINK_ERROR, ENV);
+        call(innerFn, NVM_BC_THROW_UNSATISIFED_LINK_ERROR, innerFn.getParameterRef(0));
         innerFn.add(new Unreachable());
         innerFn.newBasicBlock(notNullLabel);
         
         Value frameAddress = call(innerFn, LLVM_FRAMEADDRESS, new IntegerConstant(0));
-        call(innerFn, NVM_BC_PUSH_NATIVE_FRAME, ENV, frameAddress);
+        call(innerFn, NVM_BC_PUSH_NATIVE_FRAME, innerFn.getParameterRef(0), frameAddress);
         Value resultInner = callWithArguments(innerFn, targetFn.ref(), args);
-        call(innerFn, NVM_BC_POP_NATIVE_FRAME, ENV);
+        call(innerFn, NVM_BC_POP_NATIVE_FRAME, innerFn.getParameterRef(0));
 
         if (targetFnType.getReturnType() == I8_PTR) {
             Variable resultI64 = innerFn.newVariable(I64);

@@ -781,7 +781,9 @@ BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const
     return method;
 }
 
-CallbackMethod* nvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, void* impl, void* synchronizedImpl, void* callbackImpl, void* attributes) {
+CallbackMethod* nvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
+        void* synchronizedImpl, void* callbackImpl, void* attributes) {
+    
     CallbackMethod* method = nvmAllocateMemory(env, sizeof(CallbackMethod));
     if (!method) return NULL;
     method->method.clazz = clazz;

@@ -8,6 +8,8 @@ package org.nullvm.compiler;
 import static org.nullvm.compiler.Functions.*;
 import static org.nullvm.compiler.Mangler.*;
 import static org.nullvm.compiler.Types.*;
+import static org.nullvm.compiler.llvm.FunctionAttribute.*;
+import static org.nullvm.compiler.llvm.Linkage.*;
 import static org.nullvm.compiler.llvm.Type.*;
 
 import java.util.ArrayList;
@@ -40,7 +42,6 @@ import org.nullvm.compiler.llvm.Fptrunc;
 import org.nullvm.compiler.llvm.Frem;
 import org.nullvm.compiler.llvm.Fsub;
 import org.nullvm.compiler.llvm.Function;
-import org.nullvm.compiler.llvm.FunctionAttribute;
 import org.nullvm.compiler.llvm.FunctionRef;
 import org.nullvm.compiler.llvm.FunctionType;
 import org.nullvm.compiler.llvm.Getelementptr;
@@ -54,7 +55,6 @@ import org.nullvm.compiler.llvm.Invoke;
 import org.nullvm.compiler.llvm.Label;
 import org.nullvm.compiler.llvm.Landingpad;
 import org.nullvm.compiler.llvm.Landingpad.Catch;
-import org.nullvm.compiler.llvm.Linkage;
 import org.nullvm.compiler.llvm.Load;
 import org.nullvm.compiler.llvm.Lshr;
 import org.nullvm.compiler.llvm.Mul;
@@ -188,6 +188,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
     private Set<Unit> trapHandlers;
     private Map<Unit, List<Trap>> trapsAt;
     private Set<List<Trap>> recordedTraps;
+    private Value env;
     
     private Variable dims;
     
@@ -201,8 +202,10 @@ public class MethodCompiler extends AbstractMethodCompiler {
         trapsAt = new HashMap<Unit, List<Trap>>();
         recordedTraps = new HashSet<List<Trap>>();
         
-        function = createFunction(method, Linkage.external, FunctionAttribute.noinline);
+        function = createFunction(method, external, noinline);
         moduleBuilder.addFunction(function);
+        
+        env = function.getParameterRef(0);
         
         Body body = method.retrieveActiveBody();
         PackManager.v().getPack("jtp").apply(body);
@@ -334,7 +337,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 Trampoline trampoline = new ExceptionMatch(this.className, getInternalName(trap.getException()));
                 trampolines.add(trampoline);
                 Variable v = function.newVariable(I32);
-                bb.add(new Call(v, trampoline.getFunctionRef(), ENV));
+                bb.add(new Call(v, trampoline.getFunctionRef(), env));
                 Variable cond = function.newVariable(I1);
                 bb.add(new Trunc(cond, new VariableRef(v), I1));
                 BasicBlockRef falseBlock = function.newBasicBlockRef(new Label());
@@ -342,7 +345,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 bb = function.newBasicBlock(falseBlock.getLabel());
             }
             
-            bb.add(new Call(NVM_BC_RETHROW, ENV));
+            bb.add(new Call(NVM_BC_RETHROW, env));
             bb.add(new Unreachable());
         }
     }
@@ -376,13 +379,13 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     String s = ((StringConstantValueTag) tag).getStringValue();
                     Trampoline trampoline = new LdcString(className, s);
                     trampolines.add(trampoline);
-                    value = call(trampoline.getFunctionRef(), ENV);
+                    value = call(trampoline.getFunctionRef(), env);
                 }
                 
                 if (value != null) {
                     FunctionRef fn = new FunctionRef(mangleField(this.className, fieldName, fieldDesc) + "_setter", 
                             new FunctionType(VOID, ENV_PTR, getType(fieldDesc)));
-                    call(fn, ENV, value);
+                    call(fn, env, value);
                 }
             }
         }
@@ -418,7 +421,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             String s = ((soot.jimple.StringConstant) v).value;
             Trampoline trampoline = new LdcString(className, s);
             trampolines.add(trampoline);
-            return callOrInvoke(unit, trampoline.getFunctionRef(), ENV);
+            return callOrInvoke(unit, trampoline.getFunctionRef(), env);
         } else if (v instanceof soot.jimple.ClassConstant) {
             // ClassConstant is either the internal name of a class or the descriptor of an array
             String targetClassName = ((soot.jimple.ClassConstant) v).getValue();
@@ -437,7 +440,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     trampolines.add(trampoline);
                     fn = trampoline.getFunctionRef();
                 }
-                return callOrInvoke(unit, fn, ENV);
+                return callOrInvoke(unit, fn, env);
             }
         }
         throw new IllegalArgumentException("Unknown Immediate type: " + v.getClass());
@@ -565,7 +568,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
     private Value invokeExpr(Stmt stmt, InvokeExpr expr) {
         SootMethodRef methodRef = expr.getMethodRef();
         ArrayList<Value> args = new ArrayList<Value>();
-        args.add(ENV);
+        args.add(env);
         if (!(expr instanceof StaticInvokeExpr)) {
             Value base = immediate(stmt, (Immediate) ((InstanceInvokeExpr) expr).getBase());
             checkNull(stmt, base);
@@ -619,17 +622,17 @@ public class MethodCompiler extends AbstractMethodCompiler {
     private void checkNull(Stmt stmt, Value base) {
         NullCheckTag nullCheckTag = (NullCheckTag) stmt.getTag("NullCheckTag");
         if (nullCheckTag == null || nullCheckTag.needCheck()) {
-            callOrInvoke(stmt, CHECK_NULL, ENV, base);
+            callOrInvoke(stmt, CHECK_NULL, env, base);
         }
     }
     
     private void checkBounds(Stmt stmt, Value base, Value index) {
         ArrayCheckTag arrayCheckTag = (ArrayCheckTag) stmt.getTag("ArrayCheckTag");
         if (arrayCheckTag == null || arrayCheckTag.isCheckLower()) {
-            callOrInvoke(stmt, CHECK_LOWER, ENV, base, index);
+            callOrInvoke(stmt, CHECK_LOWER, env, base, index);
         }
         if (arrayCheckTag == null || arrayCheckTag.isCheckUpper()) {
-            callOrInvoke(stmt, CHECK_UPPER, ENV, base, index);
+            callOrInvoke(stmt, CHECK_UPPER, env, base, index);
         }
     }
     
@@ -678,7 +681,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             Value p = new VariableRef("p" + ref.getIndex(), getType(ref.getType()));
             result = widenToI32Value(p, isUnsigned(ref.getType()));
         } else if (rightOp instanceof CaughtExceptionRef) {
-            result = call(NVM_BC_EXCEPTION_CLEAR, ENV);
+            result = call(NVM_BC_EXCEPTION_CLEAR, env);
         } else if (rightOp instanceof ArrayRef) {
             ArrayRef ref = (ArrayRef) rightOp;
             VariableRef base = (VariableRef) immediate(stmt, (Immediate) ref.getBase());
@@ -704,7 +707,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 trampolines.add(trampoline);
                 fn = trampoline.getFunctionRef();
             }
-            result = callOrInvoke(stmt, fn, ENV, base);
+            result = callOrInvoke(stmt, fn, env, base);
             result = widenToI32Value(result, isUnsigned(ref.getType()));
         } else if (rightOp instanceof StaticFieldRef) {
             StaticFieldRef ref = (StaticFieldRef) rightOp;
@@ -719,7 +722,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 trampolines.add(trampoline);
                 fn = trampoline.getFunctionRef();
             }
-            result = callOrInvoke(stmt, fn, ENV);
+            result = callOrInvoke(stmt, fn, env);
             result = widenToI32Value(result, isUnsigned(ref.getType()));
         } else if (rightOp instanceof Expr) {
             if (rightOp instanceof BinopExpr) {
@@ -750,7 +753,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 } else if (rightOp instanceof DivExpr) {
                     if (rightType instanceof IntegerType) {
                         FunctionRef f = rightType == I64 ? LDIV : IDIV;
-                        result = callOrInvoke(stmt, f, ENV, op1, op2);
+                        result = callOrInvoke(stmt, f, env, op1, op2);
                     } else {
                         // float or double
                         function.add(new Fdiv(resultVar, op1, op2));
@@ -766,7 +769,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 } else if (rightOp instanceof RemExpr) {
                     if (rightType instanceof IntegerType) {
                         FunctionRef f = rightType == I64 ? LREM : IREM;
-                        result = callOrInvoke(stmt, f, ENV, op1, op2);
+                        result = callOrInvoke(stmt, f, env, op1, op2);
                     } else {
                         // float or double
                         function.add(new Frem(resultVar, op1, op2));
@@ -883,7 +886,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                         trampolines.add(trampoline);
                         fn = trampoline.getFunctionRef();                        
                     }
-                    result = callOrInvoke(stmt, fn, ENV, op);
+                    result = callOrInvoke(stmt, fn, env, op);
                 }
             } else if (rightOp instanceof InstanceOfExpr) {
                 Value op = immediate(stmt, (Immediate) ((InstanceOfExpr) rightOp).getOp());
@@ -898,7 +901,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     trampolines.add(trampoline);
                     fn = trampoline.getFunctionRef();
                 }
-                result = callOrInvoke(stmt, fn, ENV, op);
+                result = callOrInvoke(stmt, fn, env, op);
             } else if (rightOp instanceof NewExpr) {
                 String targetClassName = getInternalName(((NewExpr) rightOp).getBaseType());
                 FunctionRef fn = null;
@@ -910,17 +913,17 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     trampolines.add(trampoline);
                     fn = trampoline.getFunctionRef();
                 }
-                result = callOrInvoke(stmt, fn, ENV);
+                result = callOrInvoke(stmt, fn, env);
             } else if (rightOp instanceof NewArrayExpr) {
                 NewArrayExpr expr = (NewArrayExpr) rightOp;
                 Value size = immediate(stmt, (Immediate) expr.getSize());
                 if (expr.getBaseType() instanceof PrimType) {
-                    result = callOrInvoke(stmt, getNewArray(expr.getBaseType()), ENV, size);
+                    result = callOrInvoke(stmt, getNewArray(expr.getBaseType()), env, size);
                 } else {
                     String targetClassName = getInternalName(expr.getType());
                     Trampoline trampoline = new Anewarray(this.className, targetClassName);
                     trampolines.add(trampoline);
-                    result = callOrInvoke(stmt, trampoline.getFunctionRef(), ENV, size);
+                    result = callOrInvoke(stmt, trampoline.getFunctionRef(), env, size);
                 }
             } else if (rightOp instanceof NewMultiArrayExpr) {
                 NewMultiArrayExpr expr = (NewMultiArrayExpr) rightOp;
@@ -935,7 +938,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 String targetClassName = getInternalName(expr.getType());
                 Trampoline trampoline = new Multianewarray(this.className, targetClassName);
                 trampolines.add(trampoline);
-                result = callOrInvoke(stmt, trampoline.getFunctionRef(), ENV, new IntegerConstant(expr.getSizeCount()), dimsI32.ref());
+                result = callOrInvoke(stmt, trampoline.getFunctionRef(), env, new IntegerConstant(expr.getSizeCount()), dimsI32.ref());
             } else if (rightOp instanceof InvokeExpr) {
                 result = invokeExpr(stmt, (InvokeExpr) rightOp);
             } else if (rightOp instanceof LengthExpr) {
@@ -978,7 +981,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 checkNull(stmt, base);
                 checkBounds(stmt, base, index);
                 if (leftOp.getType() instanceof RefLikeType) {
-                    callOrInvoke(stmt, NVM_BC_SET_OBJECT_ARRAY_ELEMENT, ENV, base, index, narrowedResult);
+                    callOrInvoke(stmt, NVM_BC_SET_OBJECT_ARRAY_ELEMENT, env, base, index, narrowedResult);
                 } else {
                     callOrInvoke(stmt, getArrayStore(leftOp.getType()), base, index, narrowedResult);
                 }
@@ -999,7 +1002,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     trampolines.add(trampoline);
                     fn = trampoline.getFunctionRef();
                 }
-                callOrInvoke(stmt, fn, ENV, base, narrowedResult);
+                callOrInvoke(stmt, fn, env, base, narrowedResult);
             } else if (leftOp instanceof StaticFieldRef) {
                 StaticFieldRef ref = (StaticFieldRef) leftOp;
                 FunctionRef fn = null;
@@ -1013,7 +1016,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     trampolines.add(trampoline);
                     fn = trampoline.getFunctionRef();
                 }
-                callOrInvoke(stmt, fn, ENV, narrowedResult);
+                callOrInvoke(stmt, fn, env, narrowedResult);
             } else {
                 throw new IllegalArgumentException("Unknown type for leftOp: " + leftOp.getClass());
             }
@@ -1091,11 +1094,11 @@ public class MethodCompiler extends AbstractMethodCompiler {
         checkNull(stmt, obj);
         List<Trap> traps = getTrapsAt(stmt);
         if (!traps.isEmpty()) {
-            function.add(new Call(NVM_BC_EXCEPTION_SET, ENV, obj));
+            function.add(new Call(NVM_BC_EXCEPTION_SET, env, obj));
             function.add(new Br(function.newBasicBlockRef(new Label(new Label(traps)))));
             recordedTraps.add(traps);
         } else {
-            function.add(new Call(NVM_BC_THROW, ENV, obj));
+            function.add(new Call(NVM_BC_THROW, env, obj));
             function.add(new Unreachable());
         }
     }
@@ -1107,13 +1110,13 @@ public class MethodCompiler extends AbstractMethodCompiler {
     private void enterMonitor(EnterMonitorStmt stmt) {
         Value op = immediate(stmt, (Immediate) stmt.getOp());
         checkNull(stmt, op);
-        callOrInvoke(stmt, NVM_BC_MONITOR_ENTER, ENV, op);
+        callOrInvoke(stmt, NVM_BC_MONITOR_ENTER, env, op);
     }
     
     private void exitMonitor(ExitMonitorStmt stmt) {
         Value op = immediate(stmt, (Immediate) stmt.getOp());
         checkNull(stmt, op);
-        callOrInvoke(stmt, NVM_BC_MONITOR_EXIT, ENV, op);
+        callOrInvoke(stmt, NVM_BC_MONITOR_EXIT, env, op);
     }
     
 }

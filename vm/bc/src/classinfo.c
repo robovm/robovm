@@ -150,9 +150,11 @@ static void parseMethodInfo(Env* env, void** p, ParseClassInfoCallbacks* callbac
     }
     void** targetFnPtr = NULL;
     if (flags & MI_BRO_BRIDGE) targetFnPtr = readPtr(p);
+    void* callbackImpl = NULL;
+    if (flags & MI_BRO_CALLBACK) callbackImpl = readPtr(p);
 
     if (callbacks->methodCallback) {
-        if (!callbacks->methodCallback(env, name, desc, access, size, impl, synchronizedImpl, targetFnPtr, attributes, data)) return;
+        if (!callbacks->methodCallback(env, name, desc, access, size, impl, synchronizedImpl, targetFnPtr, callbackImpl, attributes, data)) return;
     }
 }
 

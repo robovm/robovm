@@ -104,7 +104,8 @@ extern Field* nvmAddField(Env* env, Class* clazz, const char* name, const char* 
 extern Method* nvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes);
 extern BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
         void* synchronizedImpl, void** targetFnPtr, void* attributes);
-extern CallbackMethod* nvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, void* impl, void* synchronizedImpl, void* callbackImpl, void* attributes);
+extern CallbackMethod* nvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
+		void* synchronizedImpl, void* callbackImpl, void* attributes);
 extern jboolean nvmRegisterClass(Env* env, Class* clazz);
 
 extern Class* nvmFindClass(Env* env, const char* className);

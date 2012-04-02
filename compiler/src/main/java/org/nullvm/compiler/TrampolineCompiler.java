@@ -11,6 +11,8 @@ import static org.nullvm.compiler.llvm.FunctionAttribute.*;
 import static org.nullvm.compiler.llvm.Linkage.*;
 import static org.nullvm.compiler.llvm.Type.*;
 
+import java.util.Collections;
+
 import org.nullvm.compiler.clazz.Clazz;
 import org.nullvm.compiler.llvm.Bitcast;
 import org.nullvm.compiler.llvm.Function;
@@ -45,6 +47,7 @@ import org.nullvm.compiler.trampoline.PutField;
 import org.nullvm.compiler.trampoline.Trampoline;
 
 import soot.ClassMember;
+import soot.IntType;
 import soot.Modifier;
 import soot.SootClass;
 import soot.SootField;
@@ -554,6 +557,13 @@ public class TrampolineCompiler {
         if (clazz != null && !clazz.isPhantom()) {
             SootMethod method = getMethod(clazz, name, desc);
             if (method != null) {
+                return method;
+            }
+            if (name.equals("sizeOf") && isStruct(clazz)) {
+                method = new SootMethod("sizeOf", Collections.EMPTY_LIST, IntType.v(), 
+                        Modifier.PUBLIC | Modifier.STATIC);
+                method.setDeclaringClass(clazz);
+                method.setDeclared(true);
                 return method;
             }
 

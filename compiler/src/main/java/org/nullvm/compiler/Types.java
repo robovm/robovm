@@ -4,6 +4,7 @@
 package org.nullvm.compiler;
 
 import static org.nullvm.compiler.Annotations.*;
+import static org.nullvm.compiler.Types.*;
 import static org.nullvm.compiler.llvm.Type.*;
 
 import java.nio.CharBuffer;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 import org.nullvm.compiler.llvm.AggregateType;
 import org.nullvm.compiler.llvm.ArrayType;
+import org.nullvm.compiler.llvm.Bitcast;
 import org.nullvm.compiler.llvm.Constant;
 import org.nullvm.compiler.llvm.ConstantAdd;
 import org.nullvm.compiler.llvm.ConstantAnd;
@@ -21,7 +23,9 @@ import org.nullvm.compiler.llvm.ConstantGetelementptr;
 import org.nullvm.compiler.llvm.ConstantPtrtoint;
 import org.nullvm.compiler.llvm.ConstantSub;
 import org.nullvm.compiler.llvm.ConstantXor;
+import org.nullvm.compiler.llvm.Function;
 import org.nullvm.compiler.llvm.FunctionType;
+import org.nullvm.compiler.llvm.Getelementptr;
 import org.nullvm.compiler.llvm.IntegerConstant;
 import org.nullvm.compiler.llvm.IntegerType;
 import org.nullvm.compiler.llvm.NullConstant;
@@ -29,6 +33,8 @@ import org.nullvm.compiler.llvm.OpaqueType;
 import org.nullvm.compiler.llvm.PointerType;
 import org.nullvm.compiler.llvm.StructureType;
 import org.nullvm.compiler.llvm.Type;
+import org.nullvm.compiler.llvm.Value;
+import org.nullvm.compiler.llvm.Variable;
 
 import soot.BooleanType;
 import soot.ByteType;
@@ -506,5 +512,16 @@ public class Types {
             }
         }
         return offset;
+    }
+    
+    public static Value getFieldPtr(Function f, Value base, Constant baseOffset, StructureType fieldsType, int index) {
+        Value offset = new ConstantAdd(baseOffset, offsetof(fieldsType, index));
+        Variable baseI8Ptr = f.newVariable(I8_PTR);
+        f.add(new Bitcast(baseI8Ptr, base, I8_PTR));
+        Variable fieldI8Ptr = f.newVariable(I8_PTR);
+        f.add(new Getelementptr(fieldI8Ptr, baseI8Ptr.ref(), offset));
+        Variable fieldPtr = f.newVariable(new PointerType(fieldsType.getTypeAt(index)));
+        f.add(new Bitcast(fieldPtr, fieldI8Ptr.ref(), fieldPtr.getType()));
+        return fieldPtr.ref();
     }
 }

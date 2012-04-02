@@ -24,10 +24,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,9 +39,7 @@ import org.nullvm.compiler.clazz.ClazzInfo.MethodInfo;
 import org.nullvm.compiler.llvm.And;
 import org.nullvm.compiler.llvm.Bitcast;
 import org.nullvm.compiler.llvm.Br;
-import org.nullvm.compiler.llvm.Call;
 import org.nullvm.compiler.llvm.Constant;
-import org.nullvm.compiler.llvm.ConstantAdd;
 import org.nullvm.compiler.llvm.ConstantBitcast;
 import org.nullvm.compiler.llvm.Function;
 import org.nullvm.compiler.llvm.FunctionAttribute;
@@ -54,13 +50,11 @@ import org.nullvm.compiler.llvm.Global;
 import org.nullvm.compiler.llvm.GlobalRef;
 import org.nullvm.compiler.llvm.Icmp;
 import org.nullvm.compiler.llvm.IntegerConstant;
-import org.nullvm.compiler.llvm.Inttoptr;
 import org.nullvm.compiler.llvm.Label;
 import org.nullvm.compiler.llvm.Load;
 import org.nullvm.compiler.llvm.NullConstant;
 import org.nullvm.compiler.llvm.PackedStructureConstantBuilder;
 import org.nullvm.compiler.llvm.PointerType;
-import org.nullvm.compiler.llvm.Ptrtoint;
 import org.nullvm.compiler.llvm.Ret;
 import org.nullvm.compiler.llvm.Store;
 import org.nullvm.compiler.llvm.StructureConstant;
@@ -82,7 +76,6 @@ import soot.IntType;
 import soot.LongType;
 import soot.Modifier;
 import soot.PrimType;
-import soot.RefType;
 import soot.ShortType;
 import soot.SootClass;
 import soot.SootField;
@@ -99,9 +92,6 @@ import soot.tagkit.Tag;
  * @version $Id$
  */
 public class ClassCompiler {
-    private static final VariableRef ENV = new VariableRef("env", ENV_PTR);
-    private static final Global THE_CLASS = new Global("class", _private, new NullConstant(CLASS_PTR));
-    
     public static final int CI_FLAGS_BITS = 10;
     public static final int CI_INTERFACE_COUNT_BITS = 6;
     public static final int CI_INTERFACE_COUNT_MASK = (1 << CI_INTERFACE_COUNT_BITS) - 1;
@@ -185,6 +175,7 @@ public class ClassCompiler {
     private final MethodCompiler methodCompiler;
     private final BridgeMethodCompiler bridgeMethodCompiler;
     private final NativeMethodCompiler nativeMethodCompiler;
+    private final StructMemberMethodCompiler structMemberMethodCompiler;
     private final AttributesEncoder attributesEncoder;
     private final TrampolineCompiler trampolineResolver;
     
@@ -193,6 +184,7 @@ public class ClassCompiler {
         this.methodCompiler = new MethodCompiler(config);
         this.bridgeMethodCompiler = new BridgeMethodCompiler(config);
         this.nativeMethodCompiler = new NativeMethodCompiler(config);
+        this.structMemberMethodCompiler = new StructMemberMethodCompiler(config);
         this.attributesEncoder = new AttributesEncoder();
         this.trampolineResolver = new TrampolineCompiler(config);
     }
@@ -360,8 +352,14 @@ public class ClassCompiler {
             this.sootClass.addMethod(clinit);
         }
 
-        if (isStruct(this.sootClass)) {
-            enhanceStructClass(this.sootClass);
+        if (isStruct(sootClass)) {
+            if (!Modifier.isFinal(sootClass.getModifiers())) {
+                throw new IllegalArgumentException("Struct class must be final");
+            }
+            SootMethod _sizeOf = new SootMethod("_sizeOf", Collections.EMPTY_LIST, IntType.v(), Modifier.PROTECTED);
+            sootClass.addMethod(_sizeOf);
+            SootMethod sizeOf = new SootMethod("sizeOf", Collections.EMPTY_LIST, IntType.v(), Modifier.PUBLIC | Modifier.STATIC);
+            sootClass.addMethod(sizeOf);
         }
         
         mb.addInclude(getClass().getClassLoader().getResource("header.ll"));
@@ -393,24 +391,18 @@ public class ClassCompiler {
         }
         
         for (SootMethod method : sootClass.getMethods()) {
+            String name = method.getName();
             if (isBridge(method)) {
-                nativeBridgeMethod(method);
+                bridgeMethod(method);
+            } else if (isStruct(sootClass) && ("_sizeOf".equals(name) 
+                        || "sizeOf".equals(name) || isStructMember(method))) {
+                structMember(method);
             } else if (method.isNative()) {
-                if (isStruct(this.sootClass)) {
-                    if ("_sizeOf".equals(method.getName()) || "sizeOf".equals(method.getName())) {
-                        structSizeOf(method);
-                    } else if (isStructMember(method)) {
-                        structMember(method);
-                    } else {
-                        nativeMethod(method);
-                    }
-                } else {
-                    nativeMethod(method);
-                }
+                nativeMethod(method);
             } else if (!method.isAbstract()) {
                 method(method);
             }
-            if (!method.getName().equals("<clinit>") && !method.getName().equals("<init>") 
+            if (!name.equals("<clinit>") && !name.equals("<init>") 
                     && !method.isPrivate() && !method.isStatic() 
                     && !Modifier.isFinal(method.getModifiers()) 
                     && !Modifier.isFinal(sootClass.getModifiers())) {
@@ -780,7 +772,9 @@ public class ClassCompiler {
                 flags |= MI_VARARGS;
             }
             if (Modifier.isNative(m.getModifiers())) {
-                flags |= MI_NATIVE;
+                if (!isStruct(sootClass) && !isStructMember(m)) {
+                    flags |= MI_NATIVE;
+                }
             }
             if (Modifier.isAbstract(m.getModifiers())) {
                 flags |= MI_ABSTRACT;
@@ -856,140 +850,24 @@ public class ClassCompiler {
         return new StructureConstantBuilder().add(header.build()).add(body.build()).build();
     }
     
-    private void enhanceStructClass(SootClass clazz) {
-        if (!Modifier.isFinal(clazz.getModifiers())) {
-            throw new IllegalArgumentException("Struct class must be final");
-        }
-        SootMethod _sizeOf = new SootMethod("_sizeOf", Collections.EMPTY_LIST, IntType.v(), Modifier.PROTECTED | Modifier.NATIVE);
-        clazz.addMethod(_sizeOf);
-        SootMethod sizeOf = new SootMethod("sizeOf", Collections.EMPTY_LIST, IntType.v(), Modifier.PUBLIC | Modifier.NATIVE | Modifier.STATIC);
-        clazz.addMethod(sizeOf);
-    }
-    
-    private void structSizeOf(SootMethod method) {
-        StructureType type = getStructType(sootClass);
-        if (type == null) {
-            throw new IllegalArgumentException("Struct class " + sootClass + " has no @StructMember annotated methods");
-        }
-        Function function = createFunction(method);
-        function.add(new Ret(sizeof(type)));
-    }
-    
-    private void structMember(SootMethod method) {
-        Map<String, Integer> indexes = new HashMap<String, Integer>();
-        StructureType structType = getStructType(sootClass, indexes);
-        if (structType == null) {
-            throw new IllegalArgumentException("Struct class " + sootClass + " has not @StructMember annotated methods");
-        }
-        Function function = createFunction(method);
-        
-        // Get the value of the handle field in the Struct base class and cast it to a <structType>*
-        SootField handleField = sootClass.getSuperclass().getFieldByName("handle");
-        Variable handleI64 = function.newVariable(I64);
-        function.add(new Load(handleI64, getInstanceFieldPtr(function, new VariableRef("this", OBJECT_PTR), handleField)));
-        Variable handlePtr = function.newVariable(new PointerType(structType));
-        function.add(new Inttoptr(handlePtr, handleI64.ref(), handlePtr.getType()));
-        
-        String name = method.getName().substring(3, 4).toLowerCase() + method.getName().substring(4);
-        int index = indexes.get(name);        
-        Type memberType = structType.getTypeAt(index);
-        Variable memberPtr = function.newVariable(new PointerType(memberType));
-        function.add(new Getelementptr(memberPtr, handlePtr.ref(), 0, index));
-        
-        if (method.getName().startsWith("get")) {
-            Variable result = null;
-            if (memberType instanceof StructureType) {
-                result = function.newVariable(OBJECT_PTR);
-                Constant structClassName = getString(getInternalName(method.getReturnType()));
-                Value caller = getCaller(function);
-                Variable memberI8Ptr = function.newVariable(I8_PTR);
-                function.add(new Bitcast(memberI8Ptr, memberPtr.ref(), I8_PTR));
-                function.add(new Call(result, NVM_BC_NEW_STRUCT, ENV, structClassName, caller, memberI8Ptr.ref()));
-            } else {
-                result = function.newVariable(memberType);
-                function.add(new Load(result, memberPtr.ref()));
-                if (result.getType() == I8_PTR) {
-                    if (method.getReturnType().equals(LongType.v())) {
-                        Variable tmp = function.newVariable(I64);
-                        function.add(new Ptrtoint(tmp, result.ref(), I64));
-                        result = tmp;
-                    } else {
-                        // Must be pointer to struct type
-                        Variable tmp = function.newVariable(OBJECT_PTR);
-                        Constant structClassName = getString(getInternalName(method.getReturnType()));
-                        Value caller = getCaller(function);
-                        function.add(new Call(tmp, NVM_BC_NEW_STRUCT, ENV, structClassName, caller, result.ref()));
-                        result = tmp;
-                    }
-                }
-            }
-            function.add(new Ret(result.ref()));
-        } else {
-            VariableRef p = function.getParameterRef(2); // 'env' is parameter 0, 'this' is at 1, the value we're interested in is at index 2
-            if (memberType instanceof StructureType) {
-                Variable objectPtr = function.newVariable(OBJECT_PTR);
-                function.add(new Bitcast(objectPtr, p, OBJECT_PTR));
-                Variable memberI8Ptr = function.newVariable(I8_PTR);
-                function.add(new Bitcast(memberI8Ptr, memberPtr.ref(), I8_PTR));
-                function.add(new Call(NVM_BC_COPY_STRUCT, ENV, objectPtr.ref(), memberI8Ptr.ref(), sizeof((StructureType) memberType)));
-            } else {
-                if (memberType == I8_PTR) {
-                    Variable tmp = function.newVariable(I8_PTR);
-                    if (method.getParameterType(0).equals(LongType.v())) {
-                        function.add(new Inttoptr(tmp, p, I8_PTR));
-                        p = tmp.ref();
-                    } else {
-                        // Must be pointer to struct type
-                        Variable objectPtr = function.newVariable(OBJECT_PTR);
-                        function.add(new Bitcast(objectPtr, p, OBJECT_PTR));
-                        function.add(new Call(tmp, NVM_BC_GET_STRUCT_HANDLE, ENV, objectPtr.ref()));
-                        p = tmp.ref();
-                    }
-                }
-                function.add(new Store(p, memberPtr.ref()));
-            }
-            function.add(new Ret());
-        }
-    }
-    
     private void nativeMethod(SootMethod method) {
         nativeMethodCompiler.compile(mb, method);
         trampolines.addAll(nativeMethodCompiler.getTrampolines());
     }
     
-    private void nativeBridgeMethod(SootMethod method) {
+    private void bridgeMethod(SootMethod method) {
         bridgeMethodCompiler.compile(mb, method);
+        trampolines.addAll(bridgeMethodCompiler.getTrampolines());
+    }
+    
+    private void structMember(SootMethod method) {
+        structMemberMethodCompiler.compile(mb, method);
+        trampolines.addAll(structMemberMethodCompiler.getTrampolines());
     }
     
     private void method(SootMethod method) {
         methodCompiler.compile(mb, method);
         trampolines.addAll(methodCompiler.getTrampolines());
-    }
-
-    private Function createFunction(SootMethod method) {
-        return createFunction(mangleMethod(method.makeRef()), method, false);
-    }
-    
-    private Function createFunction(String name, SootMethod method) {
-        return createFunction(name, method, false);
-    }
-        
-    private Function createFunction(String name, SootMethod method, boolean skipEnv) {
-        FunctionType functionType = getFunctionType(method.makeRef());
-        String[] parameterNames = new String[functionType.getParameterTypes().length];
-        int i = 0;
-        if (!skipEnv) {
-            parameterNames[i++] = "env";
-        }
-        if (!method.isStatic()) {
-            parameterNames[i++] = "this";
-        }
-        for (int j = 0; j < method.getParameterCount(); j++) {
-            parameterNames[i++] = "p" + j;
-        }
-            
-        return new Function(internal, new FunctionAttribute[] {noinline, optsize}, 
-                name, functionType, parameterNames);
     }
     
     private Function createAllocator() {
@@ -1126,30 +1004,6 @@ public class ClassCompiler {
         return false;
     }
     
-    private static void validateStructMember(SootMethod method) {
-        if (!method.isNative() && !method.isStatic()) {
-            throw new IllegalArgumentException("@StructMember annotated method must be native and not static");
-        }
-        if (!method.getName().startsWith("get") && !method.getName().startsWith("set") || method.getName().length() == 3) {
-            throw new IllegalArgumentException("@StructMember annotated method has invalid name");
-        }
-        if (method.getName().startsWith("get") && method.getParameterCount() != 0) {
-            throw new IllegalArgumentException("@StructMember annotated getter method must have no arguments");
-        }
-        if (method.getName().startsWith("set") && method.getParameterCount() != 1) {
-            throw new IllegalArgumentException("@StructMember annotated setter method must take a single argument");
-        }
-        boolean getter = method.getName().startsWith("get");
-        soot.Type t = getter ? method.getReturnType() : method.getParameterType(0);
-        if (!(t instanceof PrimType || t instanceof RefType && isStruct(t))) {
-            if (getter) {
-                throw new IllegalArgumentException("@StructMember annotated getter method must return primitive or Struct type");
-            } else {
-                throw new IllegalArgumentException("@StructMember annotated setter method must take a single primitive or Struct type argument");
-            }
-        }
-    }
-    
     private static StructureType getStructureType(List<SootField> fields) {
         List<Type> types = new ArrayList<Type>();
         for (SootField field : fields) {
@@ -1169,17 +1023,11 @@ public class ClassCompiler {
         return mb.getStringOrNull(string);
     }
     
-    private Value getCaller(Function f) {
-        Variable caller = f.newVariable(CLASS_PTR);
-        f.add(new Load(caller, THE_CLASS.ref()));            
-        return caller.ref();
-    }
-    
     private Value getClassFieldPtr(Function f, SootField field) {
         Value info = getInfoStruct(f);        
         Variable base = f.newVariable(I8_PTR);
         f.add(new Load(base, info));
-        return getFieldPtr(f, new VariableRef(base), alignedSizeof(CLASS), field, classFields.indexOf(field), classFieldsType);
+        return getFieldPtr(f, new VariableRef(base), alignedSizeof(CLASS), classFieldsType, classFields.indexOf(field));
     }
 
     private Value getInfoStruct(Function f) {
@@ -1198,17 +1046,6 @@ public class ClassCompiler {
         f.add(new Bitcast(baseI8Ptr, base, I8_PTR));
         Variable newBase = f.newVariable(I8_PTR);
         f.add(new Getelementptr(newBase, baseI8Ptr.ref(), offset));        
-        return getFieldPtr(f, newBase.ref(), sizeof(OBJECT), field, instanceFields.indexOf(field), instanceFieldsType);
-    }
-    
-    private Value getFieldPtr(Function f, Value base, Constant baseOffset, SootField field, int index, StructureType fieldsType) {
-        Value offset = new ConstantAdd(baseOffset, offsetof(fieldsType, index));
-        Variable baseI8Ptr = f.newVariable(I8_PTR);
-        f.add(new Bitcast(baseI8Ptr, base, I8_PTR));
-        Variable fieldI8Ptr = f.newVariable(I8_PTR);
-        f.add(new Getelementptr(fieldI8Ptr, baseI8Ptr.ref(), offset));
-        Variable fieldPtr = f.newVariable(new PointerType(getType(field.getType())));
-        f.add(new Bitcast(fieldPtr, fieldI8Ptr.ref(), fieldPtr.getType()));
-        return fieldPtr.ref();
+        return getFieldPtr(f, newBase.ref(), sizeof(OBJECT), instanceFieldsType, instanceFields.indexOf(field));
     }
 }

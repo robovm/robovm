@@ -11,11 +11,17 @@ CallInfo_size         = 28
     .globl    __call0
     .align    4, 0x90
 __call0:
+    .cfi_startproc
+    .cfi_personality 155, L__nvmPersonality$non_lazy_ptr
+    .cfi_lsda 16, Lexception1
+    .cfi_def_cfa %esp, 4
 Lcall0Begin:
     pushl %ebp
-Lcall0CFI0:
+    .cfi_def_cfa_offset 8
+    .cfi_offset %ebp, -8
     mov   %esp, %ebp
-Lcall0CFI1:
+    .cfi_def_cfa_offset 8
+    .cfi_def_cfa %ebp, 8
     mov   8(%ebp), %eax         # %eax = First arg (CallInfo*)
 
     mov   stackArgsSize_offset(%eax), %ecx # %ecx = stackArgsSize
@@ -46,7 +52,10 @@ Lcall0TryCatchLandingPad:
 
     leave
     ret
+    .cfi_endproc
 Lcall0End:
+    # Extra ret here avoids "sectionForAddress(0x2F) address not in any section for architecture i386" linker error
+    ret
 
     .section    __TEXT,__gcc_except_tab
     .align    2
@@ -75,61 +84,7 @@ Lexception1:
     .uleb128 0
     .align   2
 
-    .section    __TEXT,__eh_frame,coalesced,no_toc+strip_static_syms+live_support
-EH_frame0:
-Lsection_eh_frame0:
-Leh_frame_common0:
-    .long    Leh_frame_common_end0 - Leh_frame_common_begin0 # Length of Common Information Entry
-Leh_frame_common_begin0:
-    .long    0                       # CIE Identifier Tag
-    .byte    1                       # DW_CIE_VERSION
-    .asciz   "zPLR"                  # CIE Augmentation
-    .uleb128 1                       # CIE Code Alignment Factor
-    .sleb128 -4                      # CIE Data Alignment Factor
-    .byte    8                       # CIE Return Address Column
-    .uleb128 7                       # Augmentation Size
-    .byte   155                      # Personality Encoding = indirect pcrel sdata4
-    .long   L__nvmPersonality$non_lazy_ptr - . # Personality
-    .byte    16                      # LSDA Encoding = pcrel
-    .byte   16                       # FDE Encoding = pcrel
-    # CFA is in %esp+4 when entering a function
-    .byte    12                      # DW_CFA_def_cfa
-    .byte    5                       # Register
-    .byte    4                       # Offset
-    # Return address is at CFA-4
-    .byte    136                     # DW_CFA_offset + Reg (8)
-    .uleb128 1                       # Offset
-    .align   2
-Leh_frame_common_end0:
-
-    .globl    __call0.eh
-__call0.eh:
-    .long    Lcall0eh_frame_end0 - Lcall0eh_frame_begin0 ## Length of Frame Information Entry
-Lcall0eh_frame_begin0:
-    .long    Lcall0eh_frame_begin0 - Leh_frame_common0 ## FDE CIE offset
-    .long    Lcall0Begin - .         ## FDE initial location
-    .long    Lcall0End - Lcall0Begin ## FDE address range
-    .uleb128 4                       ## Augmentation size
-    .long    Lexception1 - .         ## Language Specific Data Area
-    # Advance to Lcall0CFI0
-    .byte    4                       ## DW_CFA_advance_loc4
-    .long    Lcall0CFI0 - Lcall0Begin
-    # CFA is now in %esp+8
-    .byte    14                      ## DW_CFA_def_cfa_offset
-    .uleb128 8                       ## Offset
-    # Value of %ebp is now at CFA-8
-    .byte    132                     ## DW_CFA_offset + Reg (4)
-    .uleb128 2                       ## Offset
-    # Advance to Lcall0CFI1
-    .byte    4                       ## DW_CFA_advance_loc4
-    .long    Lcall0CFI1 - Lcall0CFI0
-    # CFA is now in %ebp+8
-    .byte    13                      ## DW_CFA_def_cfa_register
-    .uleb128 4                       ## Register
-    .align   2
-Lcall0eh_frame_end0:
-
-        .section        __IMPORT,__pointers,non_lazy_symbol_pointers
+    .section    __IMPORT,__pointers,non_lazy_symbol_pointers
 L__nvmPersonality$non_lazy_ptr:
-        .indirect_symbol        __nvmPersonality
-        .long   0
+    .indirect_symbol __nvmPersonality
+    .long   0

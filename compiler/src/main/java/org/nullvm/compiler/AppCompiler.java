@@ -266,11 +266,11 @@ public class AppCompiler {
         System.err.println("  -llvm-home <path>     Path where LLVM has been installed");
         System.err.println("  -o <name>             The name of the target executable or library");
         System.err.println("  -os <name>            The name of the OS to build for. Allowed values are \n" 
-                         + "                        'auto', 'linux' and 'darwin'. Default is 'auto' which\n" 
+                         + "                        'auto', 'linux', 'macosx' and 'ios'. Default is 'auto' which\n" 
                          + "                        means autodetect.");
         System.err.println("  -arch <name>          The name of the LLVM arch to compile for. Allowed values\n" 
-                         + "                        are 'auto', 'i386' and 'x86_64' Default is 'auto' which \n" 
-                         + "                        means autodetect.");
+                         + "                        are 'auto', 'x86', 'x86_64', 'armv6', 'armv7', 'thumbv6',\n" 
+                         + "                        'thumbv7' Default is 'auto' which means autodetect.");
         System.err.println("  -cpu <name>           The name of the LLVM cpu to compile for. The LLVM default\n" 
                          + "                        is used by default. Use llc to determine allowed values.");
         System.err.println("  -roots <list>         : separated list of class patterns matching\n" 

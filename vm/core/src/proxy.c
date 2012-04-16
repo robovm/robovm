@@ -23,7 +23,7 @@ typedef struct {
 } ProxyClassData;
 
 static ProxyMethod* hasMethod(Env* env, Class* clazz, const char* name, const char* desc) {
-    Method* method = clazz->_methods.first;
+    Method* method = clazz->_methods;
     for (; method != NULL; method = method->next) {
         if (!strcmp(method->name, name) && !strcmp(method->desc, desc)) {
             return (ProxyMethod*) method;
@@ -130,7 +130,7 @@ Class* nvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classL
     }
 
     // Initialize methods to NULL to prevent nvmGetMethods() from trying to load the methods if called with this proxy class
-    proxyClass->_methods.first = NULL;
+    proxyClass->_methods = NULL;
 
     Class* c = proxyClass;
     while (c) {
@@ -145,28 +145,6 @@ Class* nvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classL
     if (!nvmRegisterClass(env, proxyClass)) return NULL;
 
     return proxyClass;
-}
-
-static void pushProxyFrame(Env* env, ProxyMethod* method) {
-    // We don't need to check if NativeFrames.base is NULL since it is always setup with a few slots when an Env is created.
-    ProxyFrames* f = &env->proxyFrames;
-    if (f->top == (f->base + f->size)) {
-        // Make room for more frames.
-        ProxyMethod** oldBase = f->base;
-        jint oldSize = f->size;
-        jint newSize = oldSize + ALLOC_PROXY_FRAMES_SIZE;
-        f->base = nvmAllocateMemory(env, sizeof(ProxyFrames*) * newSize);
-        if (!f->base) nvmRaiseException(env, nvmExceptionOccurred(env));
-        memcpy(f->base, oldBase, sizeof(ProxyFrames*) * oldSize);
-        f->top = f->base + oldSize;
-        f->size = newSize;
-    }
-    *f->top = method;
-    f->top++;
-}
-
-static void popProxyFrame(Env* env) {
-    env->proxyFrames.top--;
 }
 
 void _nvmProxyHandler(CallInfo* callInfo) {
@@ -188,7 +166,7 @@ void _nvmProxyHandler(CallInfo* callInfo) {
 
     ProxyMethod* method = entry->method;
 
-    pushProxyFrame(env, method);
+    nvmPushGatewayFrameProxy(env, method);
 
     jint argsCount = nvmGetParameterCount((Method*) method);
     jvalue *jvalueArgs = NULL;
@@ -236,7 +214,7 @@ void _nvmProxyHandler(CallInfo* callInfo) {
     jvalue returnValue;
     proxyClassData->handler(env, receiver, method, jvalueArgs, &returnValue);
 
-    popProxyFrame(env);
+    nvmPopGatewayFrame(env);
 
     if (nvmExceptionCheck(env)) goto error;
 
@@ -275,7 +253,7 @@ void _nvmProxyHandler(CallInfo* callInfo) {
     return;
 
 errorPop:
-    popProxyFrame(env);
+    nvmPopGatewayFrame(env);
 error:
     nvmRaiseException(env, nvmExceptionOccurred(env));
 }

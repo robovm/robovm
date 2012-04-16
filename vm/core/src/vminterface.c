@@ -42,16 +42,22 @@ static HyVMLSFunctionTable* JNICALL _GetVMLSFunctions(VMInterface* vmi) {
     return &vmls;
 }
 static HyZipCachePool* JNICALL _GetZipCachePool(VMInterface* vmi) {
+    return NULL;
 }
 static JavaVMInitArgs* JNICALL _GetInitArgs(VMInterface* vmi) {
+    return NULL;
 }
 static vmiError JNICALL _GetSystemProperty(VMInterface* vmi, char* key, char** valuePtr) {
+    return VMI_ERROR_UNIMPLEMENTED;
 }
 static vmiError JNICALL _SetSystemProperty(VMInterface* vmi, char* key, char* value) {
+    return VMI_ERROR_UNIMPLEMENTED;
 }
 static vmiError JNICALL _CountSystemProperties(VMInterface* vmi, int* countPtr) {
+    return VMI_ERROR_UNIMPLEMENTED;
 }
 static vmiError JNICALL _IterateSystemProperties(VMInterface* vmi, vmiSystemPropertyIterator iterator, void* userData) {
+    return VMI_ERROR_UNIMPLEMENTED;
 }
 
 struct VMInterfaceFunctions_ vmiImpl = {

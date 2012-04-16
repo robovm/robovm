@@ -44,10 +44,10 @@ typedef struct {
 } ClassInfoError;
 
 typedef struct {
-    jboolean (*classCallback)(Env*, const char*, const char*, jint, jint, jint, void*, void*, void*);
-    jboolean (*interfaceCallback)(Env*, const char*, void*);
-    jboolean (*fieldCallback)(Env*, const char*, const char*, jint, jint, void*, void*);
-    jboolean (*methodCallback)(Env*, const char*, const char*, jint, jint, void*, void*, void**, void*, void*, void*);
+    jboolean (*classCallback)(Env*, ClassInfoHeader*, const char*, const char*, jint, jint, jint, void*, void*, void*);
+    jboolean (*interfaceCallback)(Env*, ClassInfoHeader*, const char*, void*);
+    jboolean (*fieldCallback)(Env*, ClassInfoHeader*, const char*, const char*, jint, jint, void*, void*);
+    jboolean (*methodCallback)(Env*, ClassInfoHeader*, const char*, const char*, jint, jint, void*, void*, void**, void*, void*, void*);
 } ParseClassInfoCallbacks;
 
 void parseClassInfo(Env* env, ClassInfoHeader* header, ParseClassInfoCallbacks* callbacks, void* data);

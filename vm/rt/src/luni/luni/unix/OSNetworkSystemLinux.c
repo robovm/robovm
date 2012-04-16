@@ -40,8 +40,10 @@
   definitions for these structures defined in OSNetworkSystem.h */
 #if !defined(ZOS)
 #include <netinet/in_systm.h>
-#include<netinet/ip.h>
-#include<netinet/ip_icmp.h>
+#include <netinet/ip.h>
+#if !defined(IOS)
+#include <netinet/ip_icmp.h>
+#endif
 #endif /* !ZOS */
 
 #include <string.h>
@@ -61,7 +63,7 @@
 #define SOCKET_ERROR -1
 
 unsigned short ip_checksum(unsigned short * buffer, int size);
-#if !defined(ZOS)
+#if !defined(ZOS) && !defined(IOS)
 void set_icmp_packet(struct icmp * icmp_hdr, int packet_size);
 #else
 void set_icmp_packet(struct ICMPHeader * icmp_hdr, int packet_size);
@@ -127,7 +129,7 @@ Java_org_apache_harmony_luni_platform_OSNetworkSystem_isReachableByICMPImpl
 {
   PORT_ACCESS_FROM_ENV (env);
   struct sockaddr_in dest,source,local;
-#if !defined(ZOS)
+#if !defined(ZOS) && !defined(IOS)
   struct icmp * send_buf = 0;
   struct ip * recv_buf = 0;
   struct icmp* icmphdr = 0;
@@ -207,7 +209,7 @@ Java_org_apache_harmony_luni_platform_OSNetworkSystem_isReachableByICMPImpl
   	goto cleanup;
   }  
 			    
-#if !defined(ZOS)
+#if !defined(ZOS) && !defined(IOS)
   header_len = recv_buf->ip_hl << 2;
   icmphdr = (struct icmp*)((char*)recv_buf + header_len);
   if ((result < header_len + ICMP_SIZE)||
@@ -260,7 +262,7 @@ unsigned short ip_checksum(unsigned short* buffer, int size)
     return (unsigned short )(~sum);
 }
 
-#if !defined(ZOS)
+#if !defined(ZOS) && !defined(IOS)
 void set_icmp_packet(struct icmp* icmp_hdr, int packet_size)
 {
 

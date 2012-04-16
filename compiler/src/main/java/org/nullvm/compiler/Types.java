@@ -4,7 +4,6 @@
 package org.nullvm.compiler;
 
 import static org.nullvm.compiler.Annotations.*;
-import static org.nullvm.compiler.Types.*;
 import static org.nullvm.compiler.llvm.Type.*;
 
 import java.nio.CharBuffer;
@@ -58,7 +57,10 @@ import soot.jimple.toolkits.typing.fast.BottomType;
  */
 public class Types {
 
-    public static final Type ENV_PTR = new PointerType(new StructureType("Env", I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
+    public static final StructureType GATEWAY_FRAME = new StructureType("GatewayFrame", I8_PTR, I8_PTR, I8_PTR);
+    public static final Type GATEWAY_FRAME_PTR = new PointerType(GATEWAY_FRAME);
+    public static final Type ENV_PTR = new PointerType(new StructureType("Env", I8_PTR, I8_PTR, I8_PTR, 
+            I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I32));
     // Dummy Class type definition. The real one is in header.ll
     public static final StructureType CLASS = new StructureType("Class", I8_PTR);
     public static final Type CLASS_PTR = new PointerType(CLASS);

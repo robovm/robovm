@@ -9,6 +9,7 @@ CallInfo_size         = 28
     .section    __TEXT,__text,regular,pure_instructions
     
     .globl    __call0
+    .globl    __call0_end
     .align    4, 0x90
 __call0:
     .cfi_startproc

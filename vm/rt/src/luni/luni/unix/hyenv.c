@@ -17,7 +17,7 @@
 #include <vmi.h>
 #include "hyenv.h"
 #include <stdlib.h>
-#if defined(DARWIN)
+#if defined(MACOSX)
 #include <crt_externs.h>
 #define environ (*_NSGetEnviron())
 #else

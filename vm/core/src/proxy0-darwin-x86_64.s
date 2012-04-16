@@ -8,9 +8,15 @@ stackArgsIndex_offset = 140 # jint
 stackArgs_offset      = 144 # void**
 returnValue_offset    = 152 # FpIntValue
 returnType_offset     = 160 # jint
-returnAddress_offset  = 168 # void*
-CallInfo_size         = 176
-proxy0_stack_size     = (CallInfo_size+8) # Stack has to be 16 byte aligned on Darwin x86_64
+CallInfo_size         = 168
+
+# Local storage used by proxy0.
+proxy0_stack_size     = (CallInfo_size)
+
+# On Darwin x86_64 the stack should always be 16 byte aligned when calling a function.
+# On function entry the return address has been pushed and we push %rbp so the stack is
+# already 16 byte aligned after we've pushed %rbp.
+proxy0_stack_size_aligned = ((((proxy0_stack_size) + 16 - 1) & ~(16 - 1)))
 
 RETURN_TYPE_INT    = 0
 RETURN_TYPE_LONG   = 1
@@ -25,8 +31,13 @@ __proxy0:
     .cfi_startproc
     .cfi_def_cfa %rsp, 8
 Lproxy0Begin:
+    push  %rbp
+    .cfi_def_cfa %rsp, 16
+    .cfi_offset %rbp, -16
+    mov   %rsp, %rbp
+    .cfi_def_cfa %rbp, 16
+
     sub   $proxy0_stack_size, %rsp             # Make room for a CallInfo struct on the stack
-    .cfi_def_cfa_offset proxy0_stack_size + 8
 
     mov   %rdi, intArgs_offset+0(%rsp)         # intArgs[0] = %rdi
     mov   %rsi, intArgs_offset+8(%rsp)         # intArgs[1] = %rsi
@@ -48,10 +59,7 @@ Lproxy0Begin:
     movl  $0, fpArgsIndex_offset(%rsp)         # fpArgsIndex = 0
     movl  $0, stackArgsIndex_offset(%rsp)      # stackArgsIndex = 0
 
-    mov   proxy0_stack_size(%rsp), %rax        # $rax = return address
-    mov   %rax, returnAddress_offset(%rsp)
-
-    leaq  proxy0_stack_size+8(%rsp), %rax      # $rax = first stack arg (+8 to skip return address)
+    leaq  16(%rbp), %rax                       # $rax = first stack arg
     mov   %rax, stackArgs_offset(%rsp)         # stackArgs = first stack arg
 
     leaq  (%rsp), %rdi
@@ -60,7 +68,7 @@ Lproxy0Begin:
     mov   returnValue_offset(%rsp), %rax       # if return value is int or long
     movsd returnValue_offset(%rsp), %xmm0      # if return value is float or double
 
-    addq  $proxy0_stack_size, %rsp
+    leave
     ret
     .cfi_endproc
 Lproxy0End:

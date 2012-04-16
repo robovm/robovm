@@ -113,6 +113,7 @@ extern Class* nvmFindClassInClasspathForLoader(Env* env, const char* className, 
 extern Class* nvmFindClassUsingLoader(Env* env, const char* className, ClassLoader* classLoader);
 extern Class* nvmFindClassByDescriptor(Env* env, const char* desc, ClassLoader* classLoader);
 extern Class* nvmFindLoadedClass(Env* env, const char* className, ClassLoader* classLoader);
+extern ClassLoader* nvmGetSystemClassLoader(Env* env);
 
 extern Interface* nvmGetInterfaces(Env* env, Class* clazz);
 extern Field* nvmGetFields(Env* env, Class* clazz);

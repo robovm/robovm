@@ -700,10 +700,12 @@ jboolean nvmInitAttributes(Env* env) {
     array_of_java_lang_annotation_Annotation = nvmFindClassUsingLoader(env, "[Ljava/lang/annotation/Annotation;", NULL);
     if (!array_of_java_lang_annotation_Annotation) return FALSE;
 
-    emptyExceptionTypes = nvmNewObjectArray(env, 0, java_lang_Class, NULL, NULL);
+    Class* array_java_lang_Class = nvmFindClassUsingLoader(env, "[Ljava/lang/Class;", NULL);
+    if (!array_java_lang_Class) return FALSE;
+    emptyExceptionTypes = nvmNewObjectArray(env, 0, NULL, array_java_lang_Class, NULL);
     if (!emptyExceptionTypes) return FALSE;
 
-    emptyAnnotations = nvmNewObjectArray(env, 0, java_lang_annotation_Annotation, NULL, NULL);
+    emptyAnnotations = nvmNewObjectArray(env, 0, NULL, array_of_java_lang_annotation_Annotation, NULL);
     if (!emptyAnnotations) return FALSE;
 
     return TRUE;

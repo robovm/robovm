@@ -20,7 +20,6 @@ typedef struct NativeMethod NativeMethod;
 typedef struct BridgeMethod BridgeMethod;
 typedef struct CallbackMethod CallbackMethod;
 typedef struct ProxyMethod ProxyMethod;
-typedef struct Methods Methods;
 typedef struct ObjectHeader ObjectHeader;
 typedef struct Interface Interface;
 typedef struct Exception Exception;
@@ -85,12 +84,6 @@ struct ProxyMethod {
     Method* proxiedMethod;
 };
 
-struct Methods {
-  Method* first;
-  void* lo;
-  void* hi;
-};
-
 struct Interface {
   Interface* next;
   Class* interface;
@@ -122,7 +115,7 @@ struct Class {
   jint flags;
   Interface* _interfaces;  // Lazily loaded linked list of interfaces. Use nvmGetInterfaces() to get this value.
   Field* _fields;          // Lazily loaded linked list of fields. Use nvmGetFields() to get this value.
-  Methods _methods;        // Lazily loaded linked list of methods. Use nvmGetMethods() to get this value.
+  Method* _methods;        // Lazily loaded linked list of methods. Use nvmGetMethods() to get this value.
   void* attributes;
   jint classDataSize;
   jint instanceDataOffset; // The offset from the base of Object->data
@@ -270,6 +263,7 @@ typedef struct Options {
     void (*loadInterfaces)(Env*, Class*);
     void (*loadFields)(Env*, Class*);
     void (*loadMethods)(Env*, Class*);
+    Class* (*findClassAt)(Env*, void*);
 } Options;
 
 typedef struct VM {
@@ -277,25 +271,30 @@ typedef struct VM {
     Options* options;
 } VM;
 
-typedef struct NativeFrames {
+typedef struct GatewayFrame {
     /* 
-     * Whenever we call into native code we push the CFA of the native function trampoline.
-     * We need this to be able to unwind through native code in unwind.c.
+     * Whenever we enter (through a call to a native, bridge or proxy method) or leave (through a call to  _call0 or
+     * a callback method) native code we push the address of the stack frame of the function making the call. This 
+     * information is used in unwind.c to avoid native frames when unwinding.
      */
-    void** top;
-    void** base;
-    int size;
-} NativeFrames;
+    struct GatewayFrame* prev;
+    void* frameAddress;
+    ProxyMethod* proxyMethod; // Whenever we call a dynamic proxy we push the ProxyMethod* here. This is used when generating stack traces.
+} GatewayFrame;
 
-typedef struct ProxyFrames {
-    /* 
-     * Whenever we call a dynamic proxy we push the ProxyMethod* here.
-     * We need this to be able to included proxy methods in stack traces.
-     */
-    ProxyMethod** top;
-    ProxyMethod** base;
-    int size;
-} ProxyFrames;
+#define nvmPushGatewayFrame0(env, f, address, pm)  \
+    (f)->prev = env->gatewayFrames;                    \
+    (f)->frameAddress = address;                       \
+    (f)->proxyMethod = pm;                             \
+    env->gatewayFrames = (f)
+#define nvmPushGatewayFrame1(env, f, address, pm)  \
+    GatewayFrame f;                                       \
+    nvmPushGatewayFrame0(env, &f, address, pm)
+
+#define nvmPushGatewayFrameAddress(env, address) nvmPushGatewayFrame1(env, __gwFrame##__COUNTER__, address, NULL)
+#define nvmPushGatewayFrameProxy(env, pm) nvmPushGatewayFrame1(env, __gwFrame##__COUNTER__, __builtin_frame_address(0), pm)
+#define nvmPushGatewayFrame(env) nvmPushGatewayFrame1(env, __gwFrame##__COUNTER__, __builtin_frame_address(0), NULL)
+#define nvmPopGatewayFrame(env) env->gatewayFrames = env->gatewayFrames->prev
 
 struct Env {
     JNIEnv jni;
@@ -304,8 +303,7 @@ struct Env {
     Thread* currentThread;
     void* reserved0; // Used internally
     void* reserved1; // Used internally
-    NativeFrames nativeFrames;
-    ProxyFrames proxyFrames;
+    GatewayFrame* gatewayFrames;
     jint attachCount;
 };
 

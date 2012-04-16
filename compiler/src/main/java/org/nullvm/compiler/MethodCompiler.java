@@ -31,6 +31,7 @@ import org.nullvm.compiler.llvm.Bitcast;
 import org.nullvm.compiler.llvm.Br;
 import org.nullvm.compiler.llvm.Call;
 import org.nullvm.compiler.llvm.Constant;
+import org.nullvm.compiler.llvm.ConstantBitcast;
 import org.nullvm.compiler.llvm.ConstantTrunc;
 import org.nullvm.compiler.llvm.Fadd;
 import org.nullvm.compiler.llvm.Fdiv;
@@ -324,10 +325,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
         next: for (List<Trap> traps : recordedTraps) {
             BasicBlock bb = function.newBasicBlock(new Label(traps));
             Variable result = function.newVariable(new StructureType(I8_PTR, I32));
-            bb.add(new Landingpad(result, NVM_BC_PERSONALITY, new Catch(new NullConstant(I8_PTR))));
-            Label directCatchLabel = new Label(bb.getLabel()); // The label throw statements within try-catch blocks jump to
-            bb.add(new Br(function.newBasicBlockRef(directCatchLabel)));
-            bb = function.newBasicBlock(directCatchLabel);
+            bb.add(new Landingpad(result, new ConstantBitcast(NVM_BC_PERSONALITY, I8_PTR), new Catch(new NullConstant(I8_PTR))));
             for (Trap trap : traps) {
                 String exName = trap.getException().getName();
                 if ("java.lang.Throwable".equals(exName)) {
@@ -345,7 +343,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 bb = function.newBasicBlock(falseBlock.getLabel());
             }
             
-            bb.add(new Call(NVM_BC_RETHROW, env));
+            bb.add(new Call(NVM_BC_RETHROW, env, result.ref()));
             bb.add(new Unreachable());
         }
     }
@@ -1092,15 +1090,8 @@ public class MethodCompiler extends AbstractMethodCompiler {
     private void throw_(ThrowStmt stmt) {
         Value obj = immediate(stmt, (Immediate) stmt.getOp());
         checkNull(stmt, obj);
-        List<Trap> traps = getTrapsAt(stmt);
-        if (!traps.isEmpty()) {
-            function.add(new Call(NVM_BC_EXCEPTION_SET, env, obj));
-            function.add(new Br(function.newBasicBlockRef(new Label(new Label(traps)))));
-            recordedTraps.add(traps);
-        } else {
-            function.add(new Call(NVM_BC_THROW, env, obj));
-            function.add(new Unreachable());
-        }
+        callOrInvoke(stmt, NVM_BC_THROW, env, obj);
+        function.add(new Unreachable());
     }
     
     private void invoke(InvokeStmt stmt) {

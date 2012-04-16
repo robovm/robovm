@@ -11,6 +11,14 @@ void nvmRaiseException(Env* env, Object* e) {
     nvmAbort("Fatal error in exception handler: %d", result);
 }
 
+void nvmReraiseException(Env* env, void* exInfo) {
+    jint result = unwindReraiseException(env, exInfo);
+    if (result == UNWIND_UNHANDLED_EXCEPTION) {
+        nvmAbort("Unhandled exception: %s", env->throwable->clazz->name);
+    }
+    nvmAbort("Fatal error in exception handler: %d", result);
+}
+
 jboolean nvmExceptionCheck(Env* env) {
     return env->throwable ? TRUE : FALSE;
 }

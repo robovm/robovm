@@ -10,18 +10,38 @@ import java.io.File;
  *
  */
 public enum Arch {
-    i386("x86"), 
-    x86_64("x86-64"), 
-    arm("arm");
+    x86("i386", "i386"), 
+    x86_64("x86_64", "x86_64"), 
+    armv6("armv6", "armv6"),
+    armv7("armv7", "armv7"),
+    thumbv6("thumbv6", "armv6"),
+    thumbv7("thumbv7", "armv7");
     
     private final String llvmName;
+    private final String clangName;
     
-    private Arch(String llvmName) {
+    private Arch(String llvmName, String clangName) {
         this.llvmName = llvmName;
+        this.clangName = clangName;
     }
     
     public String getLlvmName() {
         return llvmName;
+    }
+    
+    public String getClangName() {
+        return clangName;
+    }
+    
+    public boolean isArm() {
+        switch (this) {
+        case armv6:
+        case armv7:
+        case thumbv6:
+        case thumbv7:
+            return true;
+        }
+        return false;
     }
     
     public static Arch getDefaultArch(File llvmHomeDir) {
@@ -30,10 +50,13 @@ public enum Arch {
             return Arch.x86_64;
         }
         if (host.matches("^(x86|i\\d86).*")) {
-            return Arch.i386;
+            return Arch.x86;
+        }
+        if (host.matches("^armv7.*")) {
+            return Arch.armv7;
         }
         if (host.matches("^arm.*")) {
-            return Arch.arm;
+            return Arch.armv6;
         }
         throw new CompilerException("Unrecognized arch in Host string: " + host);
     }    

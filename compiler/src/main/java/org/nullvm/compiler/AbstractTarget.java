@@ -86,8 +86,6 @@ public abstract class AbstractTarget implements Target {
             ccArgs.add("-Wl,-u,_nvmPersonality");
             ccArgs.add("-Wl,-u,_nvmBcPersonality");
         } else if (config.getOs().getFamily() == OS.Family.darwin) {
-            ccArgs.add("-arch");            
-            ccArgs.add(config.getArch().toString());
             File unexportedSymbolsFile = new File(config.getTmpDir(), "unexported_symbols");
             FileUtils.writeStringToFile(unexportedSymbolsFile, "*\n", "ASCII");
             ccArgs.add("-unexported_symbols_list");

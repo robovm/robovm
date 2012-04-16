@@ -15,9 +15,11 @@ IDATA hythread_spinlock_acquire(hythread_t self, hythread_monitor_t monitor)
                 return 0;
             }
 
+#if defined(HYX86) || defined(HYX86_64)
             // PAUSE
             asm volatile ("pause");
-
+#endif
+            
             UDATA volatile spinCount1 = monitor->spinCount1;
             do {
                 spinCount1--;

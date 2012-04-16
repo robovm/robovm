@@ -18,7 +18,7 @@ void* nvmCopyMemory(Env* env, const void* src, int size) {
 }
 
 void* nvmCopyMemoryZ(Env* env, const char* src) {
-    return nvmCopyMemory(env, src, strlen(src));
+    return nvmCopyMemory(env, src, strlen(src) + 1);
 }
 
 jboolean nvmCompareAndSwapInt(jint* ptr, jint oldval, jint newval) {

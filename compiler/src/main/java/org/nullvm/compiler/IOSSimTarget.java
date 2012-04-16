@@ -28,6 +28,7 @@ import org.apache.commons.exec.ExecuteStreamHandler;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.exec.environment.EnvironmentUtils;
+import org.apache.commons.io.FileUtils;
 
 
 /**
@@ -100,11 +101,6 @@ public class IOSSimTarget extends AbstractTarget {
     }
     
     private void createInfoPList() throws IOException {
-        File dir = config.getTmpDir();
-        if (!config.isSkipInstall()) {
-            dir = config.getInstallDir();
-        }
-
         Map<String, NSObject> dict = new HashMap<String, NSObject>();
         dict.put("CFBundleExecutable", new NSString(config.getExecutable()));
         dict.put("CFBundleDisplayName", new NSString(config.getExecutable()));
@@ -117,16 +113,23 @@ public class IOSSimTarget extends AbstractTarget {
         dict.put("DTPlatformName", new NSString("iphonesimulator"));
 
         // plist library doesn't support writing binary plist files yet. Write xml and convert using plutil.
-        File infoPlistXml = new File(dir, "Info.plist.xml");
+        File tmpInfoPlistXml = new File(config.getTmpDir(), "Info.plist.xml");
+        File tmpInfoPlist = new File(config.getTmpDir(), "Info.plist");
         try {
-            PropertyListWriter.write(new NSDictionary(dict), infoPlistXml, Format.XML);
+            PropertyListWriter.write(new NSDictionary(dict), tmpInfoPlistXml, Format.XML);
         } catch (PropertyListException e) {
             throw new CompilerException(e);
         } catch (ParserConfigurationException e) {
             throw new CompilerException(e);
         }
         
-        CompilerUtil.exec(config, "plutil", "-convert", "binary1", "-o", new File(dir, "Info.plist"), infoPlistXml);
+        CompilerUtil.exec(config, "plutil", "-convert", "binary1", "-o", tmpInfoPlist, tmpInfoPlistXml);
+        
+        if (!config.isSkipInstall()) {
+            File dir = config.getInstallDir();
+            config.getLogger().debug("Installing Info.plist to %s", dir);
+            FileUtils.copyFile(tmpInfoPlist, new File(dir, tmpInfoPlist.getName()));
+        }
     }
     
     public static List<SDK> listSDKs(File iosSimBinPath) {
@@ -212,7 +215,7 @@ public class IOSSimTarget extends AbstractTarget {
         }
         
         public void setup(Config.Builder configBuilder) {
-            configBuilder.arch(Arch.i386);
+            configBuilder.arch(Arch.x86);
             configBuilder.os(OS.ios);
         }
         

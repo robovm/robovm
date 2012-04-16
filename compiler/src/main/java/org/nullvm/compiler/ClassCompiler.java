@@ -251,12 +251,14 @@ public class ClassCompiler {
                 if (config.getOs().getFamily() == OS.Family.darwin) {
                     name = "_" + name;
                 }                
-                functionNames.add(mangleMethod(method));
+                functionNames.add(name);
             }
         }
         
+        String localLabelPrefix = ".L";
         String prefix = mangleClass(clazz.getInternalName());
         if (config.getOs().getFamily() == OS.Family.darwin) {
+            localLabelPrefix = "L";
             prefix = "_" + prefix;
         }
         String infoStructLabel = prefix + "_info_struct";
@@ -272,9 +274,9 @@ public class ClassCompiler {
             String line = null;
             String currentFunction = null;
             while ((line = in.readLine()) != null) {
-                out.write(line);
-                out.write('\n');
                 if (currentFunction == null) {
+                    out.write(line);
+                    out.write('\n');
                     if (line.startsWith(prefix)) {
                         int colon = line.indexOf(':');
                         if (colon == -1) {
@@ -287,10 +289,16 @@ public class ClassCompiler {
                             break;
                         }
                     }
-                } else if (line.trim().equals(".cfi_endproc")) {
+                } else if (line.trim().equals(".cfi_endproc") || line.trim().startsWith(".section") || line.trim().startsWith(".globl")) {
+                    out.write(localLabelPrefix);
                     out.write(currentFunction);
-                    out.write("_end:\n");
+                    out.write("_end:\n\n");
                     currentFunction = null;
+                    out.write(line);
+                    out.write('\n');
+                } else {
+                    out.write(line);
+                    out.write('\n');
                 }
             }
             
@@ -304,7 +312,7 @@ public class ClassCompiler {
                         if (functionNames.contains(functionName)) {
                             in.readLine(); // Skip dummy size
                             out.write("\t.long\t");
-                            out.write(functionName + "_end - " + functionName);
+                            out.write(localLabelPrefix + functionName + "_end - " + functionName);
                             out.write('\n');
                         }
                     }
@@ -829,7 +837,7 @@ public class ClassCompiler {
             if (attributesEncoder.methodHasAttributes(m)) {
                 body.add(new ConstantBitcast(attributesEncoder.getMethodAttributes(m).ref(), I8_PTR));
             }
-            if (!sootClass.isInterface() && !m.isAbstract()) {
+            if (!m.isAbstract()) {
                 body.add(new ConstantBitcast(new FunctionRef(mangleMethod(m), getFunctionType(m)), I8_PTR));
                 body.add(new IntegerConstant(0)); // Size of function. This value will be modified later by patching the .s file.
                 if (m.isSynchronized()) {

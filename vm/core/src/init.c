@@ -7,11 +7,9 @@
 #include "hyport.h"
 #include "utlist.h"
 
-#define INITIAL_NATIVE_FRAMES_SIZE 8
-#define INITIAL_PROXY_FRAMES_SIZE 2
-
 HyPortLibraryVersion portLibraryVersion;
 HyPortLibrary portLibrary;
+ClassLoader* systemClassLoader = NULL;
 
 extern jint RT_JNI_OnLoad(JavaVM* vm, void *reserved);
 
@@ -41,14 +39,6 @@ static jboolean initClasspathEntries(Env* env, char* basePath, char** raw, Class
     }
 
     return TRUE;
-}
-
-static ClassLoader* getSystemClassLoader(Env* env) {
-    Class* holder = nvmFindClass(env, "java/lang/ClassLoader$SystemClassLoaderHolder");
-    if (!holder) return NULL;
-    ClassField* field = nvmGetClassField(env, holder, "loader", "Ljava/lang/ClassLoader;");
-    if (!field) return NULL;
-    return (ClassLoader*) nvmGetObjectClassFieldValue(env, holder, field);
 }
 
 jboolean nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreNvmArgs) {
@@ -117,15 +107,9 @@ VM* nvmCreateVM(Options* options) {
 }
 
 Env* nvmCreateEnv(VM* vm) {
-    Env* env = GC_MALLOC(sizeof(Env) + sizeof(void*) * INITIAL_NATIVE_FRAMES_SIZE + sizeof(ProxyMethod*) * INITIAL_PROXY_FRAMES_SIZE);
+    Env* env = GC_MALLOC(sizeof(Env));
     if (!env) return NULL;
     env->vm = vm;
-    env->nativeFrames.size = INITIAL_NATIVE_FRAMES_SIZE;
-    env->nativeFrames.base = (void**) ((void*) env + sizeof(Env));
-    env->nativeFrames.top = env->nativeFrames.base;
-    env->proxyFrames.size = INITIAL_PROXY_FRAMES_SIZE;
-    env->proxyFrames.base = (ProxyMethod**) ((void*) env + sizeof(Env) + sizeof(void*) * INITIAL_NATIVE_FRAMES_SIZE);
-    env->proxyFrames.top = env->proxyFrames.base;
     nvmInitJNIEnv(env);
     return env;
 }
@@ -159,34 +143,32 @@ Env* nvmStartup(Options* options) {
 
     RT_JNI_OnLoad(&vm->javaVM, NULL);
 
-    env->currentThread->contextClassLoader = getSystemClassLoader(env);
+    systemClassLoader = nvmGetSystemClassLoader(env);
     if (nvmExceptionOccurred(env)) return NULL;
+    env->currentThread->contextClassLoader = systemClassLoader;
 
     return env;
 }
 
 jboolean nvmRun(Env* env) {
     Options* options = env->vm->options;
-    ClassLoader* systemClassLoader = getSystemClassLoader(env);
     Class* clazz = NULL;
-    if (systemClassLoader) {
-        clazz = nvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
-        if (clazz) {
-            Method* method = nvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
-            if (method) {
-                ObjectArray* args = nvmNewObjectArray(env, options->commandLineArgsCount, java_lang_String, NULL, NULL);
-                if (args) {
-                    jint i = 0;
-                    for (i = 0; i < args->length; i++) {
-                        // TODO: Don't assume modified UTF-8
-                        args->values[i] = nvmNewStringUTF(env, options->commandLineArgs[i], -1);
-                        if (!args->values[i]) {
-                            args = NULL;
-                            break;
-                        }
+    clazz = nvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
+    if (clazz) {
+        Method* method = nvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
+        if (method) {
+            ObjectArray* args = nvmNewObjectArray(env, options->commandLineArgsCount, java_lang_String, NULL, NULL);
+            if (args) {
+                jint i = 0;
+                for (i = 0; i < args->length; i++) {
+                    // TODO: Don't assume modified UTF-8
+                    args->values[i] = nvmNewStringUTF(env, options->commandLineArgs[i], -1);
+                    if (!args->values[i]) {
+                        args = NULL;
+                        break;
                     }
-                    if (args) nvmCallVoidClassMethod(env, clazz, method, args);
                 }
+                if (args) nvmCallVoidClassMethod(env, clazz, method, args);
             }
         }
     }

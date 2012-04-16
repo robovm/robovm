@@ -42,13 +42,21 @@ public class CompilerUtil {
             llcPath = new File(config.getLlvmBinDir(), "llc").getAbsolutePath();
         }
   
+        Arch arch = config.getArch();
+        OS os = config.getOs();
+        
         ArrayList<String> opts = new ArrayList<String>();
-        opts.add("-march=" + config.getArch().getLlvmName());
+        opts.add("-mtriple=" + arch.getLlvmName() + "-unknown-" + os);
         if (config.getCpu() != null) {
             opts.add("-mcpu=" + config.getCpu());
         }
+        if (os.getFamily() == OS.Family.darwin && arch.isArm()) {
+            // clang uses gas to assemble files on macosx and the XCode gas doesn't handle cfi directives
+            opts.add("-disable-cfi");
+        }
         opts.add("-ffunction-sections");
         opts.add("-fdata-sections");
+        opts.add("--disable-fp-elim");
     
         outFile.getParentFile().mkdirs();
         exec(config, llcPath, opts, "-o=" + outFile.toString(), inFile);
@@ -66,7 +74,7 @@ public class CompilerUtil {
         }
         if (config.getOs().getFamily() == OS.Family.darwin) {
             opts.add("-arch");            
-            opts.add(config.getArch().toString());            
+            opts.add(config.getArch().getClangName());
         }
 
         outFile.getParentFile().mkdirs();
@@ -88,7 +96,7 @@ public class CompilerUtil {
         }
         if (config.getOs().getFamily() == OS.Family.darwin) {
             opts.add("-arch");            
-            opts.add(config.getArch().toString());            
+            opts.add(config.getArch().getClangName());            
             opts.add("-Wl,-filelist," + objectsFile.getAbsolutePath());
         } else {
             opts.add("@" + objectsFile.getAbsolutePath());

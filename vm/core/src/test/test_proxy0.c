@@ -1,23 +1,18 @@
 #include <nullvm.h>
-#include <unwind.h>
+#include <string.h>
 #include "../private.h"
 #include "CuTest.h"
 
-#if defined(LINUX) && defined(NVM_X86_64)
-void __libc_start_main(void);
-#endif
 int main(int argc, char* argv[]);
-
-// Mock _nvmPersonality()
-_Unwind_Reason_Code _nvmPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context) {
-    return 0;
-}
 
 void (*handler)(CallInfo*);
 void _nvmProxyHandler(CallInfo* ci) {
     handler(ci);
 }
 
+void* nvmAllocateMemory(Env* env, int size) {
+    return calloc(1, size);
+}
 
 static void testProxy0ReturnByte_handler(CallInfo* ci) {
     jbyte b = proxy0NextInt(ci);
@@ -233,25 +228,25 @@ void testProxy0ManyArgsOfEach(CuTest* tc) {
 }
 
 
-static _Unwind_Reason_Code unwindCallStack(struct _Unwind_Context* ctx, void* d) {
+int main(int argc, char* argv[]);
+void* findFunctionAt(void* pc);
+static jboolean unwindCallStack(UnwindContext* ctx, void* d) {
     jint i;
     void** callers = (void**) d;
 
-    void* address = (void*) _Unwind_GetIP(ctx);
-    void* function = _Unwind_FindEnclosingFunction(address);
-
+    void* address = findFunctionAt(unwindGetIP(ctx));
     for (i = 0; i < 10; i++) {
         if (!callers[i]) {
-            callers[i] = function;
+            callers[i] = address;
             break;
         }
     }
 
-    return _URC_NO_REASON;
+    return (i < 9 && address != main) ? TRUE : FALSE;
 }
 void testProxy0Unwind_handler(CallInfo* ci) {
     void** ptrs = proxy0NextPtr(ci);
-    _Unwind_Backtrace(unwindCallStack, ptrs);
+    unwindBacktrace(unwindCallStack, ptrs);
 }
 void testProxy0Unwind(CuTest* tc) {
     handler = testProxy0Unwind_handler;
@@ -265,23 +260,28 @@ void testProxy0Unwind(CuTest* tc) {
     CuAssertPtrEquals(tc, CuTestRun, callers[4]);
     CuAssertPtrEquals(tc, CuSuiteRun, callers[5]);
     CuAssertPtrEquals(tc, main, callers[6]);
-#if defined(LINUX) && defined(NVM_X86_64)
-    CuAssertPtrEquals(tc, __libc_start_main, callers[7]);
-    CuAssertPtrEquals(tc, NULL, callers[8]);
-#else
     CuAssertPtrEquals(tc, NULL, callers[7]);
-#endif
 }
+void* findFunctionAt(void* pc) {
+    void* candidates[7] = {0};
+    candidates[0] = testProxy0Unwind_handler;
+    candidates[1] = _nvmProxyHandler;
+    candidates[2] = _proxy0;
+    candidates[3] = testProxy0Unwind;
+    candidates[4] = CuTestRun;
+    candidates[5] = CuSuiteRun;
+    candidates[6] = main;
 
-
-static void testProxy0ReturnAddress_handler(CallInfo* ci) {
-    proxy0ReturnPtr(ci, ci->returnAddress);
-}
-static void testProxy0ReturnAddress(CuTest* tc) {
-    handler = testProxy0ReturnAddress_handler;
-    void* (*f)(void) = (void* (*)(void)) _proxy0;
-    void* result = f();
-    CuAssertTrue(tc, result >= (void*) testProxy0ReturnAddress && result <= (void*) testProxy0ReturnAddress + 100);
+    void* match = NULL;
+    jint delta = 0x7fffffff;
+    jint i;
+    for (i = 0; i < 7; i++) {
+        if (candidates[i] < pc && pc - candidates[i] < delta) {
+            match = candidates[i];
+            delta = pc - candidates[i];
+        }
+    }
+    return (match && delta < 1000) ? match : pc;
 }
 
 
@@ -297,7 +297,6 @@ int main(int argc, char* argv[]) {
     if (argc < 2 || !strcmp(argv[1], "testProxy0OneArgOfEach")) SUITE_ADD_TEST(suite, testProxy0OneArgOfEach);
     if (argc < 2 || !strcmp(argv[1], "testProxy0ManyArgsOfEach")) SUITE_ADD_TEST(suite, testProxy0ManyArgsOfEach);
     if (argc < 2 || !strcmp(argv[1], "testProxy0Unwind")) SUITE_ADD_TEST(suite, testProxy0Unwind);
-    if (argc < 2 || !strcmp(argv[1], "testProxy0ReturnAddress")) SUITE_ADD_TEST(suite, testProxy0ReturnAddress);
 
     CuSuiteRun(suite);
 

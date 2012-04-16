@@ -22,7 +22,6 @@ import org.nullvm.compiler.llvm.FunctionType;
 import org.nullvm.compiler.llvm.Global;
 import org.nullvm.compiler.llvm.Icmp;
 import org.nullvm.compiler.llvm.Icmp.Condition;
-import org.nullvm.compiler.llvm.IntegerConstant;
 import org.nullvm.compiler.llvm.Inttoptr;
 import org.nullvm.compiler.llvm.Label;
 import org.nullvm.compiler.llvm.Load;
@@ -131,10 +130,9 @@ public class BridgeMethodCompiler extends AbstractMethodCompiler {
         innerFn.add(new Unreachable());
         innerFn.newBasicBlock(notNullLabel);
         
-        Value frameAddress = call(innerFn, LLVM_FRAMEADDRESS, new IntegerConstant(0));
-        call(innerFn, NVM_BC_PUSH_NATIVE_FRAME, innerFn.getParameterRef(0), frameAddress);
+        pushNativeFrame(innerFn);
         Value resultInner = callWithArguments(innerFn, targetFn.ref(), args);
-        call(innerFn, NVM_BC_POP_NATIVE_FRAME, innerFn.getParameterRef(0));
+        popNativeFrame(innerFn);
 
         if (targetFnType.getReturnType() == I8_PTR) {
             Variable resultI64 = innerFn.newVariable(I64);

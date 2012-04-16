@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.nullvm.compiler.llvm.BasicBlockRef;
+import org.nullvm.compiler.llvm.ConstantBitcast;
 import org.nullvm.compiler.llvm.Function;
 import org.nullvm.compiler.llvm.FunctionAttribute;
 import org.nullvm.compiler.llvm.FunctionRef;
@@ -98,9 +99,9 @@ public abstract class AbstractMethodCompiler {
 
         syncFn.newBasicBlock(new Label("failure"));
         Variable lpResult = syncFn.newVariable(new StructureType(I8_PTR, I32));
-        syncFn.add(new Landingpad(lpResult, NVM_BC_PERSONALITY, new Catch(new NullConstant(I8_PTR))));
+        syncFn.add(new Landingpad(lpResult, new ConstantBitcast(NVM_BC_PERSONALITY, I8_PTR), new Catch(new NullConstant(I8_PTR))));
         call(syncFn, NVM_BC_MONITOR_EXIT, syncFn.getParameterRef(0), monitor);
-        call(syncFn, NVM_BC_RETHROW, syncFn.getParameterRef(0));
+        call(syncFn, NVM_BC_RETHROW, syncFn.getParameterRef(0), lpResult.ref());
         syncFn.add(new Unreachable());
     }
     
@@ -132,6 +133,8 @@ public abstract class AbstractMethodCompiler {
         // if not attached)
         Value env = call(callbackFn, NVM_BC_ATTACH_THREAD_FROM_CALLBACK);
 
+        pushCallbackFrame(callbackFn);
+
         ArrayList<Value> args = new ArrayList<Value>();
         args.add(env);
         for (VariableRef ref : callbackFn.getParameterRefs()) {
@@ -159,14 +162,16 @@ public abstract class AbstractMethodCompiler {
             callbackFn.add(new Inttoptr(resultI8Ptr, result, I8_PTR));
             result = resultI8Ptr.ref();
         }
+        popCallbackFrame(callbackFn);
         call(callbackFn, NVM_BC_DETACH_THREAD_FROM_CALLBACK, env);
         callbackFn.add(new Ret(result));
 
         callbackFn.newBasicBlock(new Label("failure"));
         Variable lpResult = callbackFn.newVariable(new StructureType(I8_PTR, I32));
-        callbackFn.add(new Landingpad(lpResult, NVM_BC_PERSONALITY, new Catch(new NullConstant(I8_PTR))));
+        callbackFn.add(new Landingpad(lpResult, new ConstantBitcast(NVM_BC_PERSONALITY, I8_PTR), new Catch(new NullConstant(I8_PTR))));
+        popCallbackFrame(callbackFn);
         call(callbackFn, NVM_BC_DETACH_THREAD_FROM_CALLBACK, env);
-        call(callbackFn, NVM_BC_RETHROW, env);
+        call(callbackFn, NVM_BC_RETHROW, env, lpResult.ref());
         callbackFn.add(new Unreachable());
     }
 }

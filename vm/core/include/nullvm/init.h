@@ -1,6 +1,8 @@
 #ifndef NULLVM_INIT_H
 #define NULLVM_INIT_H
 
+extern ClassLoader* systemClassLoader;
+
 extern jboolean nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreNvmArgs);
 extern Env* nvmStartup(Options* options);
 extern VM* nvmCreateVM(Options* options);

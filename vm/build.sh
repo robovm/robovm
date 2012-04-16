@@ -7,8 +7,9 @@ while [ "${1:0:2}" = '--' ]; do
   NAME=${1%%=*}
   VALUE=${1#*=}
   case $NAME in
-    '--targets') TARGETS=$VALUE ;;
+    '--target') TARGETS="$TARGETS $VALUE" ;;
     '--clean') CLEAN=1 ;;
+    '--build') BUILDS="$BUILDS $VALUE" ;;
     *)
       echo "Unrecognized option or syntax error in option '$1'"
       exit 1
@@ -21,7 +22,7 @@ if [ "x$TARGETS" = 'x' ]; then
   OS=$(uname)
   case $OS in
   Darwin)
-    TARGETS="macosx-i386 macosx-x86_64 ios-i386"
+    TARGETS="macosx-x86 macosx-x86_64 ios-x86 ios-thumbv7"
     ;;
   Linux)
     TARGETS="linux-$(uname -m)"
@@ -32,19 +33,28 @@ if [ "x$TARGETS" = 'x' ]; then
     ;;
   esac
 fi
+if [ "x$BUILDS" = 'x' ]; then
+  BUILDS="Debug Release"
+fi
 
 mkdir -p "$BASE/target/build"
 if [ "$CLEAN" = '1' ]; then
-  rm -rf "$BASE/target/build/*"
+  for T in $TARGETS; do
+    rm -rf "$BASE/target/build/$T"
+  done
+fi
+
+CC=$(which gcc)
+if [ $(uname) = 'Darwin' ]; then
+  CC=$(which clang)
 fi
 
 for T in $TARGETS; do
   OS=${T%%-*}
   ARCH=${T#*-}
-  mkdir -p "$BASE/target/build/$T-Debug"
-  rm -rf "$BASE/binaries/$OS/$ARCH/Debug"
-  bash -c "cd '$BASE/target/build/$T-Debug'; cmake -D CMAKE_BUILD_TYPE=Debug -D OS=$OS -D ARCH=$ARCH '$BASE'; make install"
-  mkdir -p "$BASE/target/build/$T-Release"
-  rm -rf "$BASE/binaries/$OS/$ARCH/Release"
-  bash -c "cd '$BASE/target/build/$T-Release'; cmake -D CMAKE_BUILD_TYPE=Release -D OS=$OS -D ARCH=$ARCH '$BASE'; make install"
+  for B in $BUILDS; do
+    mkdir -p "$BASE/target/build/$T-$B"
+    rm -rf "$BASE/binaries/$OS/$ARCH/$B"
+    bash -c "cd '$BASE/target/build/$T-$B'; cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_BUILD_TYPE=$B -DOS=$OS -DARCH=$ARCH '$BASE'; make install"
+  done
 done

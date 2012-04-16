@@ -118,71 +118,40 @@ Method* nvmGetInstanceMethod(Env* env, Class* clazz, const char* name, const cha
     return method;
 }
 
-typedef struct FindMethodAtAddressData {
-    void* address;
-    Method* method;
-} FindMethodAtAddressData;
-
-static jboolean findMethodAtAddressIterator(Env* env, Class* clazz, void* d) {
-    FindMethodAtAddressData* data = (FindMethodAtAddressData*) d;
-    void* address = data->address;
-    nvmGetMethods(env, clazz);
-    if (nvmExceptionCheck(env)) return FALSE;
-    if (clazz->_methods.first && clazz->_methods.lo <= address && clazz->_methods.hi >= address) {
-        Method* method;
-        for (method = clazz->_methods.first; method != NULL; method = method->next) {
-            if (method->impl && address == method->impl) {
-                data->method = method;
-                return FALSE;
-            }
+Method* nvmFindMethodAtAddress(Env* env, void* address) {
+    Class* clazz = env->vm->options->findClassAt(env, address);
+    if (!clazz) return NULL;
+    Method* method = nvmGetMethods(env, clazz);
+    if (nvmExceptionCheck(env)) return NULL;
+    for (; method != NULL; method = method->next) {
+        void* start = method->impl;
+        void* end = start + method->size;
+        if (start && address >= start && address < end) {
+            return method;
         }
     }
-    return TRUE;
+    // TODO: We should never end up here
+    return NULL;
 }
 
-Method* nvmFindMethodAtAddress(Env* env, void* address) {
-    FindMethodAtAddressData data = {0};
-    data.address = address;
-    nvmIterateLoadedClasses(env, findMethodAtAddressIterator, (void*) &data);
-    return data.method;
-}
-
-static jboolean getCallingMethodIterator(Env* env, void* function, jint offset, void* data) {
+static jboolean getCallingMethodIterator(Env* env, void* pc, ProxyMethod* proxyMethod, void* data) {
     Method** result = data;
 
-    if (function != nvmGetCallingMethod && function != nvmFindClass) {
-        Method* method = nvmFindMethodAtAddress(env, function);
-        if (method) {
-            *result = method;
-            return FALSE; // Stop iterating
-        }
+    Method* method = nvmFindMethodAtAddress(env, pc);
+    if (method) {
+        *result = method;
+        return FALSE; // Stop iterating
     }
     return TRUE;
 }
 
-typedef struct GetCallStackIteratorData {
-    CallStackEntry* head;
-    jboolean lookupProxyMethod;
-    ProxyMethod** proxyFramesTop;
-} GetCallStackIteratorData;
-
-static jboolean getCallStackIterator(Env* env, void* function, jint offset, void* _data) {
-    if (function == nvmGetCallStack) return TRUE;
-
-    GetCallStackIteratorData* data = (GetCallStackIteratorData*) _data;
-    if (function == _proxy0) {
-        // The next function in the call stack will be the lookup function of the proxied method.
-        data->lookupProxyMethod = TRUE;
-        return TRUE;
-    }
-
+static jboolean getCallStackIterator(Env* env, void* pc, ProxyMethod* proxyMethod, void* data) {
+    CallStackEntry** head = (CallStackEntry**) data;
     Method* method = NULL;
-    if (data->lookupProxyMethod) {
-        data->proxyFramesTop--;
-        method = (Method*) *data->proxyFramesTop;
-        data->lookupProxyMethod = FALSE;
+    if (proxyMethod) {
+        method = (Method*) proxyMethod;
     } else {
-        method = nvmFindMethodAtAddress(env, function);
+        method = nvmFindMethodAtAddress(env, pc);
     }
     if (method) {
         CallStackEntry* entry = nvmAllocateMemory(env, sizeof(CallStackEntry));
@@ -190,8 +159,8 @@ static jboolean getCallStackIterator(Env* env, void* function, jint offset, void
             return FALSE; // Stop iterating
         }
         entry->method = method;
-        entry->offset = offset;
-        DL_APPEND(data->head, entry);
+        entry->offset = proxyMethod ? 0 : pc - method->impl;
+        DL_APPEND(*head, entry);
     }
     return TRUE;
 }
@@ -203,10 +172,10 @@ Method* nvmGetCallingMethod(Env* env) {
 }
 
 CallStackEntry* nvmGetCallStack(Env* env) {
-    GetCallStackIteratorData data = {NULL, FALSE, env->proxyFrames.top};
+    CallStackEntry* data = NULL;
     unwindIterateCallStack(env, getCallStackIterator, &data);
     if (nvmExceptionOccurred(env)) return NULL;
-    return data.head;
+    return data;
 }
 
 const char* nvmGetReturnType(const char* desc) {
@@ -397,7 +366,9 @@ void nvmCallVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* a
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return;
     void (*f)(CallInfo*) = _call0;
+    nvmPushGatewayFrame(env);
     f(callInfo);
+    nvmPopGatewayFrame(env);
 }
 
 void nvmCallVoidInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -416,7 +387,10 @@ Object* nvmCallObjectInstanceMethodA(Env* env, Object* obj, Method* method, jval
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return NULL;
     Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    Object* result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 Object* nvmCallObjectInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -435,7 +409,10 @@ jboolean nvmCallBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jv
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return FALSE;
     jboolean (*f)(CallInfo*) = (jboolean (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jboolean result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jboolean nvmCallBooleanInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -454,7 +431,10 @@ jbyte nvmCallByteInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* 
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
     jbyte (*f)(CallInfo*) = (jbyte (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jbyte result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jbyte nvmCallByteInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -473,7 +453,10 @@ jchar nvmCallCharInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* 
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
     jchar (*f)(CallInfo*) = (jchar (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jchar result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jchar nvmCallCharInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -492,7 +475,10 @@ jshort nvmCallShortInstanceMethodA(Env* env, Object* obj, Method* method, jvalue
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
     jshort (*f)(CallInfo*) = (jshort (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jshort result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jshort nvmCallShortInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -511,7 +497,10 @@ jint nvmCallIntInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* ar
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
     jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jint result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jint nvmCallIntInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -530,7 +519,10 @@ jlong nvmCallLongInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* 
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
     jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jlong result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jlong nvmCallLongInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -549,7 +541,10 @@ jfloat nvmCallFloatInstanceMethodA(Env* env, Object* obj, Method* method, jvalue
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0.0f;
     jfloat (*f)(CallInfo*) = (jfloat (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jfloat result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jfloat nvmCallFloatInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -568,7 +563,10 @@ jdouble nvmCallDoubleInstanceMethodA(Env* env, Object* obj, Method* method, jval
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0.0;
     jdouble (*f)(CallInfo*) = (jdouble (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jdouble result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jdouble nvmCallDoubleInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -587,7 +585,9 @@ void nvmCallNonvirtualVoidInstanceMethodA(Env* env, Object* obj, Method* method,
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return;
     void (*f)(CallInfo*) = _call0;
+    nvmPushGatewayFrame(env);
     f(callInfo);
+    nvmPopGatewayFrame(env);
 }
 
 void nvmCallNonvirtualVoidInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -606,7 +606,10 @@ Object* nvmCallNonvirtualObjectInstanceMethodA(Env* env, Object* obj, Method* me
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return NULL;
     Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    Object* result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 Object* nvmCallNonvirtualObjectInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -625,7 +628,10 @@ jboolean nvmCallNonvirtualBooleanInstanceMethodA(Env* env, Object* obj, Method* 
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return FALSE;
     jboolean (*f)(CallInfo*) = (jboolean (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jboolean result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jboolean nvmCallNonvirtualBooleanInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -644,7 +650,10 @@ jbyte nvmCallNonvirtualByteInstanceMethodA(Env* env, Object* obj, Method* method
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
     jbyte (*f)(CallInfo*) = (jbyte (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jbyte result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jbyte nvmCallNonvirtualByteInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -663,7 +672,10 @@ jchar nvmCallNonvirtualCharInstanceMethodA(Env* env, Object* obj, Method* method
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
     jchar (*f)(CallInfo*) = (jchar (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jchar result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jchar nvmCallNonvirtualCharInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -682,7 +694,10 @@ jshort nvmCallNonvirtualShortInstanceMethodA(Env* env, Object* obj, Method* meth
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
     jshort (*f)(CallInfo*) = (jshort (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jshort result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jshort nvmCallNonvirtualShortInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -701,7 +716,10 @@ jint nvmCallNonvirtualIntInstanceMethodA(Env* env, Object* obj, Method* method, 
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
     jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jint result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jint nvmCallNonvirtualIntInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -720,7 +738,10 @@ jlong nvmCallNonvirtualLongInstanceMethodA(Env* env, Object* obj, Method* method
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
     jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jlong result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jlong nvmCallNonvirtualLongInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -739,7 +760,10 @@ jfloat nvmCallNonvirtualFloatInstanceMethodA(Env* env, Object* obj, Method* meth
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0.0f;
     jfloat (*f)(CallInfo*) = (jfloat (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jfloat result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jfloat nvmCallNonvirtualFloatInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -758,7 +782,10 @@ jdouble nvmCallNonvirtualDoubleInstanceMethodA(Env* env, Object* obj, Method* me
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0.0;
     jdouble (*f)(CallInfo*) = (jdouble (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jdouble result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jdouble nvmCallNonvirtualDoubleInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -779,7 +806,9 @@ void nvmCallVoidClassMethodA(Env* env, Class* clazz, Method* method, jvalue* arg
     nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return;
     void (*f)(CallInfo*) = _call0;
+    nvmPushGatewayFrame(env);
     f(callInfo);
+    nvmPopGatewayFrame(env);
 }
 
 void nvmCallVoidClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -800,7 +829,10 @@ Object* nvmCallObjectClassMethodA(Env* env, Class* clazz, Method* method, jvalue
     nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return NULL;
     Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    Object* result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 Object* nvmCallObjectClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -821,7 +853,10 @@ jboolean nvmCallBooleanClassMethodA(Env* env, Class* clazz, Method* method, jval
     nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return FALSE;
     jboolean (*f)(CallInfo*) = (jboolean (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jboolean result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jboolean nvmCallBooleanClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -842,7 +877,10 @@ jbyte nvmCallByteClassMethodA(Env* env, Class* clazz, Method* method, jvalue* ar
     nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return 0;
     jbyte (*f)(CallInfo*) = (jbyte (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jbyte result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jbyte nvmCallByteClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -863,7 +901,10 @@ jchar nvmCallCharClassMethodA(Env* env, Class* clazz, Method* method, jvalue* ar
     nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return 0;
     jchar (*f)(CallInfo*) = (jchar (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jchar result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jchar nvmCallCharClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -884,7 +925,10 @@ jshort nvmCallShortClassMethodA(Env* env, Class* clazz, Method* method, jvalue* 
     nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return 0;
     jshort (*f)(CallInfo*) = (jshort (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jshort result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jshort nvmCallShortClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -905,7 +949,10 @@ jint nvmCallIntClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args
     nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return 0;
     jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jint result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jint nvmCallIntClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -926,7 +973,10 @@ jlong nvmCallLongClassMethodA(Env* env, Class* clazz, Method* method, jvalue* ar
     nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return 0;
     jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jlong result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jlong nvmCallLongClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -947,7 +997,10 @@ jfloat nvmCallFloatClassMethodA(Env* env, Class* clazz, Method* method, jvalue* 
     nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return 0.0f;
     jfloat (*f)(CallInfo*) = (jfloat (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jfloat result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jfloat nvmCallFloatClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -968,7 +1021,10 @@ jdouble nvmCallDoubleClassMethodA(Env* env, Class* clazz, Method* method, jvalue
     nvmInitialize(env, method->clazz);
     if (nvmExceptionOccurred(env)) return 0.0;
     jdouble (*f)(CallInfo*) = (jdouble (*)(CallInfo*)) _call0;
-    return f(callInfo);
+    nvmPushGatewayFrame(env);
+    jdouble result = f(callInfo);
+    nvmPopGatewayFrame(env);
+    return result;
 }
 
 jdouble nvmCallDoubleClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {

@@ -3,13 +3,18 @@
 
 #include <nullvm.h>
 
-/* unwind.c */
+/* unwind.c / unwind-zero.c / unwind-sjlj.c */
+#define UNWIND_EXCEPTION_CLASS 0x4A4A4A4A4A4A4A4A // "JJJJJJJJ"
 #define UNWIND_UNHANDLED_EXCEPTION 1
 #define UNWIND_FATAL_ERROR 2
 
+typedef struct UnwindContext UnwindContext;
+
+extern void unwindBacktrace(jboolean (*it)(UnwindContext*, void*), void* data);
+extern void* unwindGetIP(UnwindContext* context);
 extern jint unwindRaiseException(Env* env);
-extern void unwindIterateCallStack(Env* env, jboolean (*iterator)(Env*, void*, jint, void*), void* data);
-extern void unwindRegisterCallback(Env* env, void* callbackImpl);
+extern jint unwindReraiseException(Env* env, void* exInfo);
+extern void unwindIterateCallStack(Env* env, jboolean (*iterator)(Env*, void*, ProxyMethod*, void*), void* data);
 
 /* class.c */
 extern ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint access, void* impl);
@@ -61,7 +66,6 @@ typedef struct CallInfo {
     void** stackArgs;
     FpIntValue returnValue;
     jint returnType;
-    void* returnAddress;
 } CallInfo;
 
 static inline CallInfo* call0AllocateCallInfo(Env* env, void* function, jint ptrArgsCount, jint intArgsCount, jint longArgsCount, jint floatArgsCount, jint doubleArgsCount) {
@@ -179,7 +183,7 @@ static inline void proxy0ReturnDouble(CallInfo* ci, jdouble d) {
 }
 
 
-#elif NVM_I386
+#elif NVM_X86
 
 typedef struct CallInfo {
     void* function;
@@ -188,7 +192,6 @@ typedef struct CallInfo {
     void** stackArgs;
     FpIntValue returnValue;
     jint returnType;
-    void* returnAddress;
 } CallInfo;
 
 /*
@@ -235,6 +238,122 @@ static inline void call0AddDouble(CallInfo* ci, jdouble d) {
 }
 
 static inline jint proxy0NextInt(CallInfo* ci) {
+    return *((jint*) &(ci->stackArgs[ci->stackArgsIndex++]));
+}
+
+static inline jlong proxy0NextLong(CallInfo* ci) {
+    jlong l = (jlong) proxy0NextInt(ci) & 0xffffffff;
+    l |= (jlong) proxy0NextInt(ci) << 32;
+    return l;
+}
+
+static inline void* proxy0NextPtr(CallInfo* ci) {
+    return (void*) proxy0NextInt(ci);
+}
+
+static inline jfloat proxy0NextFloat(CallInfo* ci) {
+    FpIntValue fi;
+    fi.i = proxy0NextInt(ci);
+    return fi.f;
+}
+
+static inline jdouble proxy0NextDouble(CallInfo* ci) {
+    FpIntValue fi;
+    fi.j = proxy0NextLong(ci);
+    return fi.d;
+}
+
+static inline void proxy0ReturnInt(CallInfo* ci, jint i) {
+    ci->returnValue.i = i;
+    ci->returnType = RETURN_TYPE_INT;
+}
+
+static inline void proxy0ReturnPtr(CallInfo* ci, void* p) {
+    proxy0ReturnInt(ci, (jint) p);
+}
+
+static inline void proxy0ReturnLong(CallInfo* ci, jlong j) {
+    ci->returnValue.j = j;
+    ci->returnType = RETURN_TYPE_LONG;
+}
+
+static inline void proxy0ReturnFloat(CallInfo* ci, jfloat f) {
+    ci->returnValue.f = f;
+    ci->returnType = RETURN_TYPE_FLOAT;
+}
+
+static inline void proxy0ReturnDouble(CallInfo* ci, jdouble d) {
+    ci->returnValue.d = d;
+    ci->returnType = RETURN_TYPE_DOUBLE;
+}
+
+#elif IOS && (NVM_THUMBV6 || NVM_THUMBV7)
+
+#define MAX_REG_ARGS 4
+
+typedef struct CallInfo {
+    void* function;
+    jint regArgsIndex;
+    jint regArgs[MAX_REG_ARGS];
+    jint stackArgsSize;
+    jint stackArgsIndex;
+    void** stackArgs;
+    FpIntValue returnValue;
+    jint returnType;
+} CallInfo;
+
+/*
+ * Each slot on the stack occupies 32-bits. longs and doubles are split in two and each part is pushed separately.
+ * sizeof(void*) == 4 bytes.
+ */
+
+static inline CallInfo* call0AllocateCallInfo(Env* env, void* function, jint ptrArgsCount, jint intArgsCount, jint longArgsCount, jint floatArgsCount, jint doubleArgsCount) {
+    CallInfo* ci = nvmAllocateMemory(env, sizeof(CallInfo));
+    if (!ci) return NULL;
+    ci->function = function;
+    jint stackArgsSize = ptrArgsCount + intArgsCount + (longArgsCount << 1) + floatArgsCount + (doubleArgsCount << 1);
+    stackArgsSize -= MIN(stackArgsSize, MAX_REG_ARGS);
+    if (stackArgsSize > 0) {
+        ci->stackArgsSize = stackArgsSize;
+        ci->stackArgs = nvmAllocateMemory(env, stackArgsSize * sizeof(void*));
+        if (!ci->stackArgs) return NULL;
+    }
+    return ci;
+}
+
+static inline void call0AddInt(CallInfo* ci, jint i) {
+    if (ci->regArgsIndex < MAX_REG_ARGS) {
+        ci->regArgs[ci->regArgsIndex++] = i;
+        return;
+    }
+    *((jint*) &(ci->stackArgs[ci->stackArgsIndex++])) = i;
+}
+
+static inline void call0AddLong(CallInfo* ci, jlong j) {
+    call0AddInt(ci, (jint) j);
+    call0AddInt(ci, (jint) (j >> 32));
+}
+
+static inline void call0AddPtr(CallInfo* ci, void* p) {
+    call0AddInt(ci, (jint) p);
+}
+
+static inline void call0AddFloat(CallInfo* ci, jfloat f) {
+    FpIntValue fi;
+    fi.f = f;
+    call0AddInt(ci, fi.i);
+}
+
+static inline void call0AddDouble(CallInfo* ci, jdouble d) {
+    FpIntValue fi;
+    fi.d = d;
+    call0AddLong(ci, fi.j);
+}
+
+static inline jint proxy0NextInt(CallInfo* ci) {
+    if (ci->regArgsIndex < MAX_REG_ARGS) {
+        return ci->regArgs[ci->regArgsIndex++];
+    }
     return *((jint*) &(ci->stackArgs[ci->stackArgsIndex++]));
 }
 

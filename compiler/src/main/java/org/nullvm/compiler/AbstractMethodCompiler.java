@@ -133,7 +133,7 @@ public abstract class AbstractMethodCompiler {
         // if not attached)
         Value env = call(callbackFn, NVM_BC_ATTACH_THREAD_FROM_CALLBACK);
 
-        pushCallbackFrame(callbackFn);
+        pushCallbackFrame(callbackFn, env);
 
         ArrayList<Value> args = new ArrayList<Value>();
         args.add(env);
@@ -162,14 +162,14 @@ public abstract class AbstractMethodCompiler {
             callbackFn.add(new Inttoptr(resultI8Ptr, result, I8_PTR));
             result = resultI8Ptr.ref();
         }
-        popCallbackFrame(callbackFn);
+        popCallbackFrame(callbackFn, env);
         call(callbackFn, NVM_BC_DETACH_THREAD_FROM_CALLBACK, env);
         callbackFn.add(new Ret(result));
 
         callbackFn.newBasicBlock(new Label("failure"));
         Variable lpResult = callbackFn.newVariable(new StructureType(I8_PTR, I32));
         callbackFn.add(new Landingpad(lpResult, new ConstantBitcast(NVM_BC_PERSONALITY, I8_PTR), new Catch(new NullConstant(I8_PTR))));
-        popCallbackFrame(callbackFn);
+        popCallbackFrame(callbackFn, env);
         call(callbackFn, NVM_BC_DETACH_THREAD_FROM_CALLBACK, env);
         call(callbackFn, NVM_BC_RETHROW, env, lpResult.ref());
         callbackFn.add(new Unreachable());

@@ -280,14 +280,14 @@ public class Functions {
         call(fn, NVM_BC_POP_NATIVE_FRAME, fn.getParameterRef(0));
     }
     
-    public static void pushCallbackFrame(Function fn) {
+    public static void pushCallbackFrame(Function fn, Value env) {
         Variable gwFrame = fn.newVariable(GATEWAY_FRAME_PTR);
         fn.add(new Alloca(gwFrame, GATEWAY_FRAME));
         Value frameAddress = call(fn, LLVM_FRAMEADDRESS, new IntegerConstant(0));
-        call(fn, NVM_BC_PUSH_CALLBACK_FRAME, fn.getParameterRef(0), gwFrame.ref(), frameAddress);
+        call(fn, NVM_BC_PUSH_CALLBACK_FRAME, env, gwFrame.ref(), frameAddress);
     }
 
-    public static void popCallbackFrame(Function fn) {
-        call(fn, NVM_BC_POP_CALLBACK_FRAME, fn.getParameterRef(0));
+    public static void popCallbackFrame(Function fn, Value env) {
+        call(fn, NVM_BC_POP_CALLBACK_FRAME, env);
     }
 }

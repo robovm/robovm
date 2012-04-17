@@ -1,6 +1,5 @@
 #include <nullvm.h>
 #include <unwind.h>
-#include <mach/i386/thread_status.h>
 #include "uthash.h"
 #include "private.h"
 

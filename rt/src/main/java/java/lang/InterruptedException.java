@@ -30,7 +30,6 @@ public class InterruptedException extends Exception {
      * stack trace.
      */
     public InterruptedException() {
-        super();
     }
 
     /**

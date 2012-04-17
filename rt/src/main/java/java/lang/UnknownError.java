@@ -18,7 +18,7 @@
 package java.lang;
 
 /**
- * Thrown when the virtual machine must throw an error which does not match any
+ * Thrown when the VM must throw an error which does not match any
  * known exceptional condition.
  */
 public class UnknownError extends VirtualMachineError {
@@ -30,7 +30,6 @@ public class UnknownError extends VirtualMachineError {
      * trace.
      */
     public UnknownError() {
-        super();
     }
 
     /**

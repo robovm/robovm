@@ -24,20 +24,21 @@ import java.io.Serializable;
 
 /**
  * A modifiable {@link CharSequence sequence of characters} for use in creating
- * and modifying Strings. This class is intended as a direct replacement of
+ * strings. This class is intended as a direct replacement of
  * {@link StringBuffer} for non-concurrent use; unlike {@code StringBuffer} this
- * class is not synchronized for thread safety.
- * <p>
- * The majority of the modification methods on this class return {@code
- * StringBuilder}, so that, like {@code StringBuffer}s, they can be used in
- * chaining method calls together. For example, {@code new StringBuilder("One
- * should ").append("always strive ").append("to achieve Harmony")}.
+ * class is not synchronized.
+ *
+ * <p>For particularly complex string-building needs, consider {@link java.util.Formatter}.
+ *
+ * <p>The majority of the modification methods on this class return {@code
+ * this} so that method calls can be chained together. For example:
+ * {@code new StringBuilder("a").append("b").append("c").toString()}.
  * 
  * @see CharSequence
  * @see Appendable
  * @see StringBuffer
  * @see String
- * 
+ * @see String#format
  * @since 1.5
  */
 public final class StringBuilder extends AbstractStringBuilder implements
@@ -51,7 +52,6 @@ public final class StringBuilder extends AbstractStringBuilder implements
      * @see #capacity()
      */
     public StringBuilder() {
-        super();
     }
 
     /**
@@ -106,7 +106,7 @@ public final class StringBuilder extends AbstractStringBuilder implements
      * @see String#valueOf(boolean)
      */
     public StringBuilder append(boolean b) {
-        append0(b ? "true" : "false"); //$NON-NLS-1$ //$NON-NLS-2$
+        append0(b ? "true" : "false");
         return this;
     }
 
@@ -136,7 +136,7 @@ public final class StringBuilder extends AbstractStringBuilder implements
      * @see String#valueOf(int)
      */
     public StringBuilder append(int i) {
-        append0(Integer.toString(i));
+        IntegralToString.appendInt(this, i);
         return this;
     }
 
@@ -145,13 +145,13 @@ public final class StringBuilder extends AbstractStringBuilder implements
      * The {@code long} value is converted to a string according to the rule
      * defined by {@link String#valueOf(long)}.
      *
-     * @param lng
+     * @param l
      *            the {@code long} value.
      * @return this builder.
      * @see String#valueOf(long)
      */
-    public StringBuilder append(long lng) {
-        append0(Long.toString(lng));
+    public StringBuilder append(long l) {
+        IntegralToString.appendLong(this, l);
         return this;
     }
 
@@ -166,7 +166,7 @@ public final class StringBuilder extends AbstractStringBuilder implements
      * @see String#valueOf(float)
      */
     public StringBuilder append(float f) {
-        append0(Float.toString(f));
+        RealToString.getInstance().appendFloat(this, f);
         return this;
     }
 
@@ -181,7 +181,7 @@ public final class StringBuilder extends AbstractStringBuilder implements
      * @see String#valueOf(double)
      */
     public StringBuilder append(double d) {
-        append0(Double.toString(d));
+        RealToString.getInstance().appendDouble(this, d);
         return this;
     }
 
@@ -240,13 +240,13 @@ public final class StringBuilder extends AbstractStringBuilder implements
      * The {@code char[]} is converted to a string according to the rule
      * defined by {@link String#valueOf(char[])}.
      *
-     * @param ch
+     * @param chars
      *            the {@code char[]} to append..
      * @return this builder.
      * @see String#valueOf(char[])
      */
-    public StringBuilder append(char[] ch) {
-        append0(ch);
+    public StringBuilder append(char[] chars) {
+        append0(chars);
         return this;
     }
 
@@ -285,7 +285,7 @@ public final class StringBuilder extends AbstractStringBuilder implements
         if (csq == null) {
             appendNull();
         } else {
-            append0(csq.toString());
+            append0(csq, 0, csq.length());
         }
         return this;
     }
@@ -377,7 +377,7 @@ public final class StringBuilder extends AbstractStringBuilder implements
      * @see String#valueOf(boolean)
      */
     public StringBuilder insert(int offset, boolean b) {
-        insert0(offset, b ? "true" : "false"); //$NON-NLS-1$ //$NON-NLS-2$
+        insert0(offset, b ? "true" : "false");
         return this;
     }
 
@@ -498,7 +498,7 @@ public final class StringBuilder extends AbstractStringBuilder implements
      * @see String#valueOf(Object)
      */
     public StringBuilder insert(int offset, Object obj) {
-        insert0(offset, obj == null ? "null" : obj.toString()); //$NON-NLS-1$
+        insert0(offset, obj == null ? "null" : obj.toString());
         return this;
     }
 
@@ -584,7 +584,7 @@ public final class StringBuilder extends AbstractStringBuilder implements
      * @see CharSequence#toString()
      */
     public StringBuilder insert(int offset, CharSequence s) {
-        insert0(offset, s == null ? "null" : s.toString()); //$NON-NLS-1$
+        insert0(offset, s == null ? "null" : s.toString());
         return this;
     }
 

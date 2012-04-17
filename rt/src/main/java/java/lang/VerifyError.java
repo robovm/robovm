@@ -18,7 +18,7 @@
 package java.lang;
 
 /**
- * Thrown when the virtual machine notices that an attempt is made to load a
+ * Thrown when the VM notices that an attempt is made to load a
  * class which does not pass the class verification phase.
  */
 public class VerifyError extends LinkageError {
@@ -30,7 +30,6 @@ public class VerifyError extends LinkageError {
      * trace.
      */
     public VerifyError() {
-        super();
     }
 
     /**

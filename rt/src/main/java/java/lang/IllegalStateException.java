@@ -18,7 +18,7 @@
 package java.lang;
 
 /**
- * Thrown when an action is attempted at a time when the virtual machine is not
+ * Thrown when an action is attempted at a time when the VM is not
  * in the correct state.
  */
 public class IllegalStateException extends RuntimeException {
@@ -30,7 +30,6 @@ public class IllegalStateException extends RuntimeException {
      * stack trace.
      */
     public IllegalStateException() {
-        super();
     }
 
     /**

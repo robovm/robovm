@@ -17,7 +17,7 @@
 
 package java.io;
 
-import org.apache.harmony.luni.internal.nls.Messages;
+import java.util.Arrays;
 
 /**
  * Wraps an existing {@link InputStream} and <em>buffers</em> the input.
@@ -63,56 +63,59 @@ public class BufferedInputStream extends FilterInputStream {
     protected int pos;
 
     /**
-     * Constructs a new {@code BufferedInputStream} on the {@link InputStream}
-     * {@code in}. The default buffer size (8 KB) is allocated and all reads
-     * can now be filtered through this stream.
+     * Constructs a new {@code BufferedInputStream}, providing {@code in} with a buffer
+     * of 8192 bytes.
      * 
-     * @param in
-     *            the InputStream the buffer reads from.
+     * <p><strong>Warning:</strong> passing a null source creates a closed
+     * {@code BufferedInputStream}. All read operations on such a stream will
+     * fail with an IOException.
+     *
+     * @param in the {@code InputStream} the buffer reads from.
      */
     public BufferedInputStream(InputStream in) {
-        super(in);
-        buf = new byte[8192];
+        this(in, 8192);
     }
 
     /**
-     * Constructs a new {@code BufferedInputStream} on the {@link InputStream}
-     * {@code in}. The buffer size is specified by the parameter {@code size}
-     * and all reads are now filtered through this stream.
+     * Constructs a new {@code BufferedInputStream}, providing {@code in} with {@code size} bytes
+     * of buffer.
      * 
-     * @param in
-     *            the input stream the buffer reads from.
-     * @param size
-     *            the size of buffer to allocate.
-     * @throws IllegalArgumentException
-     *             if {@code size < 0}.
+     * <p><strong>Warning:</strong> passing a null source creates a closed
+     * {@code BufferedInputStream}. All read operations on such a stream will
+     * fail with an IOException.
+     *
+     * @param in the {@code InputStream} the buffer reads from.
+     * @param size the size of buffer in bytes.
+     * @throws IllegalArgumentException if {@code size <= 0}.
      */
     public BufferedInputStream(InputStream in, int size) {
         super(in);
         if (size <= 0) {
-            // luni.A3=size must be > 0
-            throw new IllegalArgumentException(Messages.getString("luni.A3")); //$NON-NLS-1$
+            throw new IllegalArgumentException("size <= 0");
         }
         buf = new byte[size];
     }
 
     /**
-     * Returns the number of bytes that are available before this stream will
-     * block. This method returns the number of bytes available in the buffer
-     * plus those available in the source stream.
+     * Returns an estimated number of bytes that can be read or skipped without blocking for more
+     * input. This method returns the number of bytes available in the buffer
+     * plus those available in the source stream, but see {@link InputStream#available} for
+     * important caveats.
      * 
-     * @return the number of bytes available before blocking.
-     * @throws IOException
-     *             if this stream is closed.
+     * @return the estimated number of bytes available
+     * @throws IOException if this stream is closed or an error occurs
      */
     @Override
     public synchronized int available() throws IOException {
         InputStream localIn = in; // 'in' could be invalidated by close()
         if (buf == null || localIn == null) {
-            // luni.24=Stream is closed
-            throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
+            throw streamClosed();
         }
         return count - pos + localIn.available();
+    }
+
+    private IOException streamClosed() throws IOException {
+        throw new IOException("BufferedInputStream is closed");
     }
 
     /**
@@ -217,8 +220,7 @@ public class BufferedInputStream extends FilterInputStream {
         byte[] localBuf = buf;
         InputStream localIn = in;
         if (localBuf == null || localIn == null) {
-            // luni.24=Stream is closed
-            throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
+            throw streamClosed();
         }
 
         /* Are there buffered bytes available? */
@@ -229,8 +231,7 @@ public class BufferedInputStream extends FilterInputStream {
         if (localBuf != buf) {
             localBuf = buf;
             if (localBuf == null) {
-                // luni.24=Stream is closed
-                throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
+                throw streamClosed();
             }
         }
 
@@ -242,7 +243,7 @@ public class BufferedInputStream extends FilterInputStream {
     }
 
     /**
-     * Reads at most {@code length} bytes from this stream and stores them in
+     * Reads at most {@code byteCount} bytes from this stream and stores them in
      * byte array {@code buffer} starting at offset {@code offset}. Returns the
      * number of bytes actually read or -1 if no bytes were read and the end of
      * the stream was encountered. If all the buffered bytes have been used, a
@@ -252,56 +253,45 @@ public class BufferedInputStream extends FilterInputStream {
      * 
      * @param buffer
      *            the byte array in which to store the bytes read.
-     * @param offset
-     *            the initial position in {@code buffer} to store the bytes read
-     *            from this stream.
-     * @param length
-     *            the maximum number of bytes to store in {@code buffer}.
      * @return the number of bytes actually read or -1 if end of stream.
      * @throws IndexOutOfBoundsException
-     *             if {@code offset < 0} or {@code length < 0}, or if
-     *             {@code offset + length} is greater than the size of
+     *             if {@code offset < 0} or {@code byteCount < 0}, or if
+     *             {@code offset + byteCount} is greater than the size of
      *             {@code buffer}.
      * @throws IOException
      *             if the stream is already closed or another IOException
      *             occurs.
      */
     @Override
-    public synchronized int read(byte[] buffer, int offset, int length)
-            throws IOException {
+    public synchronized int read(byte[] buffer, int offset, int byteCount) throws IOException {
         // Use local ref since buf may be invalidated by an unsynchronized
         // close()
         byte[] localBuf = buf;
         if (localBuf == null) {
-            // luni.24=Stream is closed
-            throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
+            throw streamClosed();
         }
-        // avoid int overflow
-        if (offset > buffer.length - length || offset < 0 || length < 0) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (length == 0) {
+        Arrays.checkOffsetAndCount(buffer.length, offset, byteCount);
+        if (byteCount == 0) {
             return 0;
         }
         InputStream localIn = in;
         if (localIn == null) {
-            // luni.24=Stream is closed
-            throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
+            throw streamClosed();
         }
 
         int required;
         if (pos < count) {
             /* There are bytes available in the buffer. */
-            int copylength = count - pos >= length ? length : count - pos;
+            int copylength = count - pos >= byteCount ? byteCount : count - pos;
             System.arraycopy(localBuf, pos, buffer, offset, copylength);
             pos += copylength;
-            if (copylength == length || localIn.available() == 0) {
+            if (copylength == byteCount || localIn.available() == 0) {
                 return copylength;
             }
             offset += copylength;
-            required = length - copylength;
+            required = byteCount - copylength;
         } else {
-            required = length;
+            required = byteCount;
         }
 
         while (true) {
@@ -313,18 +303,17 @@ public class BufferedInputStream extends FilterInputStream {
             if (markpos == -1 && required >= localBuf.length) {
                 read = localIn.read(buffer, offset, required);
                 if (read == -1) {
-                    return required == length ? -1 : length - required;
+                    return required == byteCount ? -1 : byteCount - required;
                 }
             } else {
                 if (fillbuf(localIn, localBuf) == -1) {
-                    return required == length ? -1 : length - required;
+                    return required == byteCount ? -1 : byteCount - required;
                 }
                 // localBuf may have been invalidated by fillbuf
                 if (localBuf != buf) {
                     localBuf = buf;
                     if (localBuf == null) {
-                        // luni.24=Stream is closed
-                        throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
+                        throw streamClosed();
                     }
                 }
 
@@ -334,10 +323,10 @@ public class BufferedInputStream extends FilterInputStream {
             }
             required -= read;
             if (required == 0) {
-                return length;
+                return byteCount;
             }
             if (localIn.available() == 0) {
-                return length - required;
+                return byteCount - required;
             }
             offset += read;
         }
@@ -355,61 +344,57 @@ public class BufferedInputStream extends FilterInputStream {
     @Override
     public synchronized void reset() throws IOException {
         if (buf == null) {
-            // luni.24=Stream is closed
-            throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$	
+            throw new IOException("Stream is closed");
         }
         if (-1 == markpos) {
-            // luni.A4=Mark has been invalidated.
-            throw new IOException(Messages.getString("luni.A4")); //$NON-NLS-1$
+            throw new IOException("Mark has been invalidated.");
         }
         pos = markpos;
     }
 
     /**
-     * Skips {@code amount} number of bytes in this stream. Subsequent
-     * {@code read()}'s will not return these bytes unless {@code reset()} is
+     * Skips {@code byteCount} bytes in this stream. Subsequent calls to
+     * {@code read} will not return these bytes unless {@code reset} is
      * used.
      * 
-     * @param amount
+     * @param byteCount
      *            the number of bytes to skip. {@code skip} does nothing and
-     *            returns 0 if {@code amount} is less than zero.
+     *            returns 0 if {@code byteCount} is less than zero.
      * @return the number of bytes actually skipped.
      * @throws IOException
      *             if this stream is closed or another IOException occurs.
      */
     @Override
-    public synchronized long skip(long amount) throws IOException {
+    public synchronized long skip(long byteCount) throws IOException {
         // Use local refs since buf and in may be invalidated by an
         // unsynchronized close()
         byte[] localBuf = buf;
         InputStream localIn = in;
         if (localBuf == null) {
-            // luni.24=Stream is closed
-            throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
+            throw streamClosed();
         }
-        if (amount < 1) {
+        if (byteCount < 1) {
             return 0;
         }
         if (localIn == null) {
-            // luni.24=Stream is closed
-            throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
+            throw streamClosed();
         }
 
-        if (count - pos >= amount) {
-            pos += amount;
-            return amount;
+        if (count - pos >= byteCount) {
+            pos += byteCount;
+            return byteCount;
         }
         long read = count - pos;
         pos = count;
 
         if (markpos != -1) {
-            if (amount <= marklimit) {
+            if (byteCount <= marklimit) {
                 if (fillbuf(localIn, localBuf) == -1) {
                     return read;
                 }
-                if (count - pos >= amount - read) {
-                    pos += amount - read;
-                    return amount;
+                if (count - pos >= byteCount - read) {
+                    pos += byteCount - read;
+                    return byteCount;
                 }
                 // Couldn't get all the bytes, skip what we read
                 read += (count - pos);
@@ -417,6 +402,6 @@ public class BufferedInputStream extends FilterInputStream {
                 return read;
             }
         }
-        return read + localIn.skip(amount - read);
+        return read + localIn.skip(byteCount - read);
     }
 }

@@ -20,25 +20,32 @@ package java.net;
 /**
  * A {@code BindException} is thrown when a process cannot bind a local
  * address/port, either because it is already bound or reserved by the OS.
+ *
+ * <p>Most applications <strong>should not</strong> catch this exception; it is
+ * more robust to catch the superclass {@code SocketException}.
  */
 public class BindException extends SocketException {
 
     private static final long serialVersionUID = -5945005768251722951L;
 
     /**
-     * Constructs a new instance with its walkback filled in.
+     * Constructs a new instance.
      */
     public BindException() {
-        super();
     }
 
     /**
-     * Constructs a new instance with its walkback and message filled in.
-     * 
-     * @param detailMessage
-     *            detail message of the exception.
+     * Constructs a new instance with the given detail message.
      */
     public BindException(String detailMessage) {
         super(detailMessage);
+    }
+
+    /**
+     * Constructs a new instance with the given detail message and cause.
+     * @hide
+     */
+    public BindException(String detailMessage, Throwable cause) {
+        super(detailMessage, cause);
     }
 }

@@ -30,7 +30,6 @@ public class IllegalThreadStateException extends IllegalArgumentException {
      * current stack trace.
      */
     public IllegalThreadStateException() {
-        super();
     }
 
     /**

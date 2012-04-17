@@ -14,9 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package java.lang;
 
+import dalvik.system.VMStack;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.net.URL;
@@ -28,20 +44,20 @@ import java.net.URL;
  * <p>
  * Packages are managed by class loaders. All classes loaded by the same loader
  * from the same package share a {@code Package} instance.
+ * </p>
  *
- * @see ClassLoader
- * @since 1.0
+ * @see java.lang.ClassLoader
  */
 public class Package implements AnnotatedElement {
+    private static final Annotation[] NO_ANNOTATIONS = new Annotation[0];
 
-    /*
-     * The code in this class has been copied from Android
-     */
-
-    // Start (C) Android
-
-    private final String name, specTitle, specVersion, specVendor, implTitle,
-            implVersion, implVendor;
+    private final String name;
+    private final String specTitle;
+    private final String specVersion;
+    private final String specVendor;
+    private final String implTitle;
+    private final String implVersion;
+    private final String implVendor;
     private final URL sealBase;
 
     Package(String name, String specTitle, String specVersion, String specVendor,
@@ -67,48 +83,27 @@ public class Package implements AnnotatedElement {
      */
     @SuppressWarnings("unchecked")
     public <A extends Annotation> A getAnnotation(Class<A> annotationType) {
-        Annotation[] list = getAnnotations();
-        for (int i = 0; i < list.length; i++) {
-            if (annotationType.isInstance(list[i])) {
-                return (A) list[i];
+        for (Annotation annotation : getAnnotations()) {
+            if (annotationType.isInstance(annotation)) {
+                return (A) annotation;
             }
         }
-
         return null;
     }
 
     /**
-     * Gets all annotations associated with this package, if any.
-     *
-     * @return an array of {@link Annotation} instances, which may be empty.
-     * @see java.lang.reflect.AnnotatedElement#getAnnotations()
+     * Returns an empty array. Package annotations are not supported on Android.
      */
     public Annotation[] getAnnotations() {
-        return getDeclaredAnnotations(this, true);
+        return NO_ANNOTATIONS;
     }
 
     /**
-     * Gets all annotations directly declared on this package, if any.
-     *
-     * @return an array of {@link Annotation} instances, which may be empty.
-     * @see java.lang.reflect.AnnotatedElement#getDeclaredAnnotations()
+     * Returns an empty array. Package annotations are not supported on Android.
      */
     public Annotation[] getDeclaredAnnotations() {
-        return getDeclaredAnnotations(this, false);
+        return NO_ANNOTATIONS;
     }
-
-    /*
-     * Returns the list of declared annotations of the given package.
-     * If no annotations exist, an empty array is returned.
-     *
-     * @param pkg the package of interest
-     * @param publicOnly reflects whether we want only public annotation or all
-     * of them.
-     * @return the list of annotations
-     */
-    // TODO(Google) Provide proper (native) implementation.
-    private static native Annotation[] getDeclaredAnnotations(Package pkg,
-            boolean publicOnly);
 
     /**
      * Indicates whether the specified annotation is present.
@@ -119,8 +114,7 @@ public class Package implements AnnotatedElement {
      *         otherwise.
      * @see java.lang.reflect.AnnotatedElement#isAnnotationPresent(java.lang.Class)
      */
-    public boolean isAnnotationPresent(
-            Class<? extends Annotation> annotationType) {
+    public boolean isAnnotationPresent(Class<? extends Annotation> annotationType) {
         return getAnnotation(annotationType) != null;
     }
 
@@ -175,7 +169,10 @@ public class Package implements AnnotatedElement {
      * @see ClassLoader#getPackage(java.lang.String)
      */
     public static Package getPackage(String packageName) {
-        ClassLoader classloader = ClassLoader.callerClassLoader();
+        ClassLoader classloader = VMStack.getCallingClassLoader();
+        if (classloader == null) {
+            classloader = ClassLoader.getSystemClassLoader();
+        }
         return classloader.getPackage(packageName);
     }
 
@@ -186,7 +183,10 @@ public class Package implements AnnotatedElement {
      * @see ClassLoader#getPackages
      */
     public static Package[] getPackages() {
-        ClassLoader classloader = ClassLoader.callerClassLoader();
+        ClassLoader classloader = VMStack.getCallingClassLoader();
+        if (classloader == null) {
+            classloader = ClassLoader.getSystemClassLoader();
+        }
         return classloader.getPackages();
     }
 
@@ -240,8 +240,7 @@ public class Package implements AnnotatedElement {
      *             if this package's version string or the one provided are not
      *             in the correct format.
      */
-    public boolean isCompatibleWith(String version)
-            throws NumberFormatException {
+    public boolean isCompatibleWith(String version) throws NumberFormatException {
         String[] requested = version.split("\\.");
         String[] provided = specVersion.split("\\.");
 
@@ -289,6 +288,4 @@ public class Package implements AnnotatedElement {
     public String toString() {
         return "package " + name;
     }
-    
-    // End (C) Android
 }

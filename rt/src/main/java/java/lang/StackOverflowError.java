@@ -18,12 +18,12 @@
 package java.lang;
 
 /**
- * Thrown when the depth of the callstack of the running program excedes some
- * platform or virtual machine specific limit. Typically, this will occur only
+ * Thrown when the depth of the stack of the running program exceeds some
+ * platform or VM specific limit. Typically, this will occur only
  * when a program becomes infinitely recursive, but it can also occur in
  * correctly written (but deeply recursive) programs.
  */
-public class StackOverflowError extends java.lang.VirtualMachineError {
+public class StackOverflowError extends VirtualMachineError {
 
     private static final long serialVersionUID = 8609175038441759607L;
 
@@ -32,7 +32,6 @@ public class StackOverflowError extends java.lang.VirtualMachineError {
      * stack trace.
      */
     public StackOverflowError() {
-        super();
     }
 
     /**

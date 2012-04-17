@@ -18,7 +18,7 @@
 package java.lang;
 
 /**
- * Thrown when the virtual machine notices that a program tries to create a new
+ * Thrown when the VM notices that a program tries to create a new
  * instance of a class which has no visible constructors from the location where
  * {@code new} is invoked.
  * <p>
@@ -32,7 +32,6 @@ public class InstantiationError extends IncompatibleClassChangeError {
      * stack trace.
      */
     public InstantiationError() {
-        super();
     }
 
     /**

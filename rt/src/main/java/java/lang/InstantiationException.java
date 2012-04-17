@@ -29,7 +29,6 @@ public class InstantiationException extends Exception {
      * stack trace.
      */
     public InstantiationException() {
-        super();
     }
 
     /**

@@ -30,7 +30,6 @@ public class IndexOutOfBoundsException extends RuntimeException {
      * current stack trace.
      */
     public IndexOutOfBoundsException() {
-        super();
     }
 
     /**

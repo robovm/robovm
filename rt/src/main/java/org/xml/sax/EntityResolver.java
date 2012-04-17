@@ -1,7 +1,7 @@
 // SAX entity resolver.
 // http://www.saxproject.org
 // No warranty; no copyright -- use this as you will.
-// $Id: EntityResolver.java 226184 2005-04-08 10:53:24Z neeraj $
+// $Id: EntityResolver.java,v 1.10 2002/01/30 21:13:44 dbrownell Exp $
 
 package org.xml.sax;
 
@@ -67,8 +67,8 @@ import java.io.IOException;
  * @see org.xml.sax.InputSource
  */
 public interface EntityResolver {
-    
-    
+
+
     /**
      * Allow the application to resolve external entities.
      *
@@ -111,9 +111,9 @@ public interface EntityResolver {
      * @see org.xml.sax.InputSource
      */
     public abstract InputSource resolveEntity (String publicId,
-					       String systemId)
-	throws SAXException, IOException;
-    
+                           String systemId)
+    throws SAXException, IOException;
+
 }
 
 // end of EntityResolver.java

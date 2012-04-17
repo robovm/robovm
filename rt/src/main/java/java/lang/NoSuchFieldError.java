@@ -18,7 +18,7 @@
 package java.lang;
 
 /**
- * Thrown when the virtual machine notices that a program tries to reference,
+ * Thrown when the VM notices that a program tries to reference,
  * on a class or object, a field that does not exist.
  * <p>
  * Note that this can only occur when inconsistent class files are being loaded.
@@ -32,7 +32,6 @@ public class NoSuchFieldError extends IncompatibleClassChangeError {
      * trace.
      */
     public NoSuchFieldError() {
-        super();
     }
 
     /**

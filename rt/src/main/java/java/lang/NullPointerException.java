@@ -33,7 +33,6 @@ public class NullPointerException extends RuntimeException {
      * stack trace.
      */
     public NullPointerException() {
-        super();
     }
 
     /**

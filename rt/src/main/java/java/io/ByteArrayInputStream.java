@@ -17,6 +17,8 @@
 
 package java.io;
 
+import java.util.Arrays;
+
 /**
  * A specialized {@link InputStream } for reading the contents of a byte array.
  * 
@@ -52,7 +54,7 @@ public class ByteArrayInputStream extends InputStream {
      * @param buf
      *            the byte array to stream over.
      */
-    public ByteArrayInputStream(byte buf[]) {
+    public ByteArrayInputStream(byte[] buf) {
         this.mark = 0;
         this.buf = buf;
         this.count = buf.length;
@@ -70,7 +72,7 @@ public class ByteArrayInputStream extends InputStream {
      * @param length
      *            the number of bytes available for streaming.
      */
-    public ByteArrayInputStream(byte buf[], int offset, int length) {
+    public ByteArrayInputStream(byte[] buf, int offset, int length) {
         this.buf = buf;
         pos = offset;
         mark = offset;
@@ -78,11 +80,9 @@ public class ByteArrayInputStream extends InputStream {
     }
 
     /**
-     * Returns the number of bytes that are available before this stream will
-     * block. This method returns the number of bytes yet to be read from the
-     * source byte array.
+     * Returns the number of remaining bytes.
      * 
-     * @return the number of bytes available before blocking.
+     * @return {@code count - pos}
      */
     @Override
     public synchronized int available() {
@@ -97,7 +97,7 @@ public class ByteArrayInputStream extends InputStream {
      */
     @Override
     public void close() throws IOException {
-        // Do nothing on close, this matches JDK behaviour.
+        // Do nothing on close, this matches JDK behavior.
     }
 
     /**
@@ -146,7 +146,7 @@ public class ByteArrayInputStream extends InputStream {
      * them in byte array {@code b} starting at {@code offset}. This
      * implementation reads bytes from the source byte array.
      * 
-     * @param b
+     * @param buffer
      *            the byte array in which to store the bytes read.
      * @param offset
      *            the initial position in {@code b} to store the bytes read from
@@ -163,15 +163,9 @@ public class ByteArrayInputStream extends InputStream {
      *             if {@code b} is {@code null}.
      */
     @Override
-    public synchronized int read(byte b[], int offset, int length) {
-        if (b == null) {
-            throw new NullPointerException();
-        }
-        // avoid int overflow
-        if (offset < 0 || offset > b.length || length < 0
-                || length > b.length - offset) {
-            throw new IndexOutOfBoundsException();
-        }
+    public synchronized int read(byte[] buffer, int offset, int length) {
+        Arrays.checkOffsetAndCount(buffer.length, offset, length);
+
         // Are there any bytes available?
         if (this.pos >= this.count) {
             return -1;
@@ -181,7 +175,7 @@ public class ByteArrayInputStream extends InputStream {
         }
 
         int copylen = this.count - pos < length ? this.count - pos : length;
-        System.arraycopy(buf, pos, b, offset, copylen);
+        System.arraycopy(this.buf, pos, buffer, offset, copylen);
         pos += copylen;
         return copylen;
     }
@@ -199,22 +193,20 @@ public class ByteArrayInputStream extends InputStream {
     }
 
     /**
-     * Skips {@code count} number of bytes in this InputStream. Subsequent
-     * {@code read()}s will not return these bytes unless {@code reset()} is
-     * used. This implementation skips {@code count} number of bytes in the
-     * target stream. It does nothing and returns 0 if {@code n} is negative.
+     * Skips {@code byteCount} bytes in this InputStream. Subsequent
+     * calls to {@code read} will not return these bytes unless {@code reset} is
+     * used. This implementation skips {@code byteCount} number of bytes in the
+     * target stream. It does nothing and returns 0 if {@code byteCount} is negative.
      * 
-     * @param n
-     *            the number of bytes to skip.
      * @return the number of bytes actually skipped.
      */
     @Override
-    public synchronized long skip(long n) {
-        if (n <= 0) {
+    public synchronized long skip(long byteCount) {
+        if (byteCount <= 0) {
             return 0;
         }
         int temp = pos;
-        pos = this.count - pos < n ? this.count : (int) (pos + n);
+        pos = this.count - pos < byteCount ? this.count : (int) (pos + byteCount);
         return pos - temp;
     }
 }

@@ -20,7 +20,7 @@ package java.lang;
 /**
  * {@code RuntimeException} is the superclass of all classes that represent
  * exceptional conditions which occur as a result of executing an application in
- * the virtual machine. Unlike checked exceptions (exceptions where the type
+ * the VM. Unlike checked exceptions (exceptions where the type
  * doesn't extend {@code RuntimeException} or {@link Error}), the compiler does
  * not require code to handle runtime exceptions.
  */
@@ -33,7 +33,6 @@ public class RuntimeException extends Exception {
      * trace.
      */
     public RuntimeException() {
-        super();
     }
 
     /**

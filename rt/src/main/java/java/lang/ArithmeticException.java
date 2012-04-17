@@ -29,7 +29,6 @@ public class ArithmeticException extends RuntimeException {
      * stack trace.
      */
     public ArithmeticException() {
-        super();
     }
 
     /**

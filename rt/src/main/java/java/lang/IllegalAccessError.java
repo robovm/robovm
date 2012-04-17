@@ -18,7 +18,7 @@
 package java.lang;
 
 /**
- * Thrown when the virtual machine notices that a program tries access a field
+ * Thrown when the VM notices that a program tries access a field
  * which is not accessible from where it is referenced.
  * <p>
  * Note that this can only occur when inconsistent class files have been loaded.
@@ -32,7 +32,6 @@ public class IllegalAccessError extends IncompatibleClassChangeError {
      * stack trace.
      */
     public IllegalAccessError() {
-        super();
     }
 
     /**

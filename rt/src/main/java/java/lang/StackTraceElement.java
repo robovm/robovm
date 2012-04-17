@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-/*[INCLUDE-IF mJava14]*/
-
 package java.lang;
 
 import java.io.Serializable;
@@ -27,11 +25,12 @@ import java.io.Serializable;
  * call stack at the time a {@code Throwable} gets thrown.
  *
  * @see Throwable#getStackTrace()
- * @since 1.4
  */
 public final class StackTraceElement implements Serializable {
 
     private static final long serialVersionUID = 6992337162326171013L;
+
+    private static final int NATIVE_LINE_NUMBER = -2;
 
     String declaringClass;
 
@@ -57,10 +56,8 @@ public final class StackTraceElement implements Serializable {
      *            method.
      * @throws NullPointerException
      *             if {@code cls} or {@code method} is {@code null}.
-     * @since 1.5
      */
     public StackTraceElement(String cls, String method, String file, int line) {
-        super();
         if (cls == null || method == null) {
             throw new NullPointerException();
         }
@@ -70,17 +67,12 @@ public final class StackTraceElement implements Serializable {
         lineNumber = line;
     }
 
-    StackTraceElement(Class<?> cls, String method, String file, int line) {
-        this(cls.getName(), method, file, line);
-    }
-    
     /**
      * <p>
      * Private, nullary constructor for VM use only.
      * </p>
      */
     private StackTraceElement() {
-        super();
     }
 
     /**
@@ -204,7 +196,7 @@ public final class StackTraceElement implements Serializable {
      *         executing is a native method; {@code false} otherwise.
      */
     public boolean isNativeMethod() {
-        return lineNumber == -2;
+        return lineNumber == NATIVE_LINE_NUMBER;
     }
 
     @Override

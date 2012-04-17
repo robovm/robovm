@@ -17,8 +17,6 @@
 
 package java.lang;
 
-import org.apache.harmony.luni.internal.nls.Messages;
-
 /**
  * Thrown when the an array is indexed with a value less than zero, or greater
  * than or equal to the size of the array.
@@ -32,7 +30,6 @@ public class ArrayIndexOutOfBoundsException extends IndexOutOfBoundsException {
      * current stack trace.
      */
     public ArrayIndexOutOfBoundsException() {
-        super();
     }
 
     /**
@@ -44,8 +41,7 @@ public class ArrayIndexOutOfBoundsException extends IndexOutOfBoundsException {
      *            the invalid index.
      */
     public ArrayIndexOutOfBoundsException(int index) {
-        // luni.36=Array index out of range\: {0}
-        super(Messages.getString("luni.36", index)); //$NON-NLS-1$
+        super("index=" + index);
     }
 
     /**
@@ -57,5 +53,23 @@ public class ArrayIndexOutOfBoundsException extends IndexOutOfBoundsException {
      */
     public ArrayIndexOutOfBoundsException(String detailMessage) {
         super(detailMessage);
+    }
+
+    /**
+     * Used internally for consistent high-quality error reporting.
+     * @hide
+     */
+    public ArrayIndexOutOfBoundsException(int sourceLength, int index) {
+        super("length=" + sourceLength + "; index=" + index);
+    }
+
+    /**
+     * Used internally for consistent high-quality error reporting.
+     * @hide
+     */
+    public ArrayIndexOutOfBoundsException(int sourceLength, int offset,
+            int count) {
+        super("length=" + sourceLength + "; regionStart=" + offset
+                + "; regionLength=" + count);
     }
 }

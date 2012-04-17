@@ -97,7 +97,7 @@ public interface CookieStore {
     /**
      * Clear this cookie store.
      * 
-     * @return true if all the stored cookies have been removed
+     * @return true if any cookies were removed as a result of this call.
      */
     boolean removeAll();
 }

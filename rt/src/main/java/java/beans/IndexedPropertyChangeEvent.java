@@ -20,8 +20,6 @@ package java.beans;
 /**
  * A type of {@link PropertyChangeEvent} that indicates that an indexed property
  * has changed.
- * 
- * @since 1.5
  */
 public class IndexedPropertyChangeEvent extends PropertyChangeEvent {
 
@@ -37,7 +35,7 @@ public class IndexedPropertyChangeEvent extends PropertyChangeEvent {
      *            the changed bean.
      * @param propertyName
      *            the changed property, or <code>null</code> to indicate an
-     *            unspecified set of the properties have changed.
+     *            unspecified set of the properties has changed.
      * @param oldValue
      *            the previous value of the property, or <code>null</code> if
      *            the <code>propertyName</code> is <code>null</code> or the
@@ -56,9 +54,7 @@ public class IndexedPropertyChangeEvent extends PropertyChangeEvent {
     }
 
     /**
-     * Answer the index of the property that was changed in this event.
-     * 
-     * @return The property element index.
+     * Returns the index of the property that was changed in this event.
      */
     public int getIndex() {
         return index;

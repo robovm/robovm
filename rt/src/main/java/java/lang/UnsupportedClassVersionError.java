@@ -19,7 +19,7 @@ package java.lang;
 
 /**
  * Thrown when an attempt is made to load a class with a format version that is
- * not supported by the virtual machine.
+ * not supported by the VM.
  */
 public class UnsupportedClassVersionError extends ClassFormatError {
 
@@ -30,7 +30,6 @@ public class UnsupportedClassVersionError extends ClassFormatError {
      * current stack trace.
      */
     public UnsupportedClassVersionError() {
-        super();
     }
 
     /**

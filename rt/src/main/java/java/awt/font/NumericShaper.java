@@ -16,56 +16,98 @@
  */
 /**
  * @author Ilya S. Okomin
+ * @version $Revision$
  */
 package java.awt.font;
 
 import java.io.IOException;
 import java.io.Serializable;
 
-import org.apache.harmony.misc.HashCode;
-
-
+/**
+ * The Class NumericShaper provides methods to convert latin character codes
+ * to unicode character codes.
+ * For tables of the character codes used,
+ * see <a href="http://www.unicode.org/Public/UNIDATA/">unicode.org</a>.
+ */
 public final class NumericShaper implements Serializable {
+
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -8022764705923730308L;
 
+    /**
+     * The Constant EUROPEAN indicates the latin and extended range,
+     * and latin decimal base.
+     */
     public static final int EUROPEAN = 1;
 
+    /** The Constant ARABIC indicates the ARABIC range and decimal base. */
     public static final int ARABIC = 2;
 
+    /**
+     * The Constant EASTERN_ARABIC indicates the ARABIC range and
+     * ARABIC_EXTENDED decimal base.
+     */
     public static final int EASTERN_ARABIC = 4;
 
+    /**
+     * The Constant DEVANAGARI indicates the DEVANAGARI range and
+     * decimal base.
+     */
     public static final int DEVANAGARI = 8;
 
+    /** The Constant BENGALI indicates the BENGALI range and decimal base. */
     public static final int BENGALI = 16;
 
+    /** The Constant GURMUKHI indicates the GURMUKHI range and decimal base. */
     public static final int GURMUKHI = 32;
 
+    /** The Constant GUJARATI indicates the GUJARATI range and decimal base. */
     public static final int GUJARATI = 64;
 
+    /** The Constant ORIYA indicates the ORIYA range and decimal base. */
     public static final int ORIYA = 128;
 
+    /** The Constant TAMIL indicates the TAMIL range and decimal base. */
     public static final int TAMIL = 256;
 
+    /** The Constant TELUGU indicates the TELUGU range and decimal base. */
     public static final int TELUGU = 512;
 
+    /** The Constant KANNADA indicates the KANNADA range and decimal base. */
     public static final int KANNADA = 1024;
 
+    /**
+     * The Constant MALAYALAM indicates the MALAYALAM range and decimal base.
+     */
     public static final int MALAYALAM = 2048;
 
+    /** The Constant THAI indicates the THAI range and decimal base. */
     public static final int THAI = 4096;
 
+    /** The Constant LAO indicates the LAO range and decimal base. */
     public static final int LAO = 8192;
 
+    /** The Constant TIBETAN indicates the TIBETAN range and decimal base. */
     public static final int TIBETAN = 16384;
 
+    /** The Constant MYANMAR indicates the MYANMAR range and decimal base. */
     public static final int MYANMAR = 32768;
 
+    /**
+     * The Constant ETHIOPIC indicates the ETHIOPIC range and decimal base.
+     */
     public static final int ETHIOPIC = 65536;
 
+    /** The Constant KHMER indicates the KHMER range and decimal base. */
     public static final int KHMER = 131072;
 
+    /**
+     * The Constant MONGOLIAN indicates the MONGOLIAN range and
+     * decimal base.
+     */
     public static final int MONGOLIAN = 262144;
 
+    /** The Constant ALL_RANGES indicates all ranges. */
     public static final int ALL_RANGES = 524287;
 
     /* Further one can find the set of script indices.
@@ -75,63 +117,83 @@ public final class NumericShaper implements Serializable {
      */
 
     // Index of the EUROPEAN range 
+    /** The Constant INDEX_EUROPEAN. */
     private static final int INDEX_EUROPEAN = 0;
 
     // Index of the ARABIC range 
+    /** The Constant INDEX_ARABIC. */
     private static final int INDEX_ARABIC = 1;
 
     // Index of the EASTERN_ARABIC range    
+    /** The Constant INDEX_EASTERN_ARABIC. */
     private static final int INDEX_EASTERN_ARABIC = 2;
 
     // Index of the DEVANAGARI range 
+    /** The Constant INDEX_DEVANAGARI. */
     private static final int INDEX_DEVANAGARI = 3;
 
     // Index of the BENGALI range 
+    /** The Constant INDEX_BENGALI. */
     private static final int INDEX_BENGALI = 4;
 
     // Index of the GURMUKHI range 
+    /** The Constant INDEX_GURMUKHI. */
     private static final int INDEX_GURMUKHI = 5;
 
     // Index of the GUJARTI range 
+    /** The Constant INDEX_GUJARATI. */
     private static final int INDEX_GUJARATI = 6;
 
     // Index of the ORIYA range 
+    /** The Constant INDEX_ORIYA. */
     private static final int INDEX_ORIYA = 7;
 
     // Index of the TAMIL range 
+    /** The Constant INDEX_TAMIL. */
     private static final int INDEX_TAMIL = 8;
 
     // Index of the TELUGU range 
+    /** The Constant INDEX_TELUGU. */
     private static final int INDEX_TELUGU = 9;
 
     // Index of the KANNADA range 
+    /** The Constant INDEX_KANNADA. */
     private static final int INDEX_KANNADA = 10;
 
     // Index of the MALAYALAM range 
+    /** The Constant INDEX_MALAYALAM. */
     private static final int INDEX_MALAYALAM = 11;
 
     // Index of the THAI range 
+    /** The Constant INDEX_THAI. */
     private static final int INDEX_THAI = 12;
 
     // Index of the LAO range 
+    /** The Constant INDEX_LAO. */
     private static final int INDEX_LAO = 13;
 
     // Index of the TIBETAN range 
+    /** The Constant INDEX_TIBETAN. */
     private static final int INDEX_TIBETAN = 14;
 
     // Index of the MYANMAR range 
+    /** The Constant INDEX_MYANMAR. */
     private static final int INDEX_MYANMAR = 15;
 
     // Index of the ETHIOPIC range 
+    /** The Constant INDEX_ETHIOPIC. */
     private static final int INDEX_ETHIOPIC = 16;
 
     // Index of the KHMER range 
+    /** The Constant INDEX_KHMER. */
     private static final int INDEX_KHMER = 17;
 
     // Index of the MONGOLIAN range 
+    /** The Constant INDEX_MONGOLIAN. */
     private static final int INDEX_MONGOLIAN = 18;
 
     // Maximum index that range can't exceed
+    /** The Constant MAX_INDEX. */
     private static final int MAX_INDEX = 19;
 
     /*
@@ -140,6 +202,7 @@ public final class NumericShaper implements Serializable {
      * Data is taken from the UnicodeData.txt file from  
      * http://www.unicode.org/Public/UNIDATA/ 
      */
+    /** The scripts ranges. */
     private final int[] scriptsRanges = {
             0x0000, 0x024F,     // EUROPEAN (basic latin + latin-1 + extended)
             0x0600, 0x06FF,     // ARABIC
@@ -172,6 +235,7 @@ public final class NumericShaper implements Serializable {
      * Data is taken from the UnicodeData.txt file from  
      * http://www.unicode.org/Public/UNIDATA/ 
      */
+    /** The digits low ranges. */
     private final int[] digitsLowRanges = {
             0x0000,             // EUROPEAN
             0x0630,             // ARABIC
@@ -195,26 +259,27 @@ public final class NumericShaper implements Serializable {
     };
 
     // Set of context names used in toString method
+    /** The contexts. */
     private final String[] contexts = {
-            "EUROPEAN", //$NON-NLS-1$
-            "ARABIC", //$NON-NLS-1$
-            "EASTERN_ARABIC", //$NON-NLS-1$
-            "DEVANAGARI", //$NON-NLS-1$
-            "BENGALI", //$NON-NLS-1$
-            "GURMUKHI", //$NON-NLS-1$
-            "GUJARATI", //$NON-NLS-1$
-            "ORIYA", //$NON-NLS-1$
-            "TAMIL", //$NON-NLS-1$
-            "TELUGU", //$NON-NLS-1$
-            "KANNADA", //$NON-NLS-1$
-            "MALAYALAM", //$NON-NLS-1$
-            "THAI", //$NON-NLS-1$
-            "LAO", //$NON-NLS-1$
-            "TIBETAN", //$NON-NLS-1$
-            "MYANMAR", //$NON-NLS-1$
-            "ETHIOPIC", //$NON-NLS-1$
-            "KHMER", //$NON-NLS-1$
-            "MONGOLIAN" //$NON-NLS-1$
+            "EUROPEAN",
+            "ARABIC",
+            "EASTERN_ARABIC",
+            "DEVANAGARI",
+            "BENGALI",
+            "GURMUKHI",
+            "GUJARATI",
+            "ORIYA",
+            "TAMIL",
+            "TELUGU",
+            "KANNADA",
+            "MALAYALAM",
+            "THAI",
+            "LAO",
+            "TIBETAN",
+            "MYANMAR",
+            "ETHIOPIC",
+            "KHMER",
+            "MONGOLIAN"
     };
 
     /*
@@ -226,6 +291,7 @@ public final class NumericShaper implements Serializable {
      * http://www.unicode.org/Public/UNIDATA/ 
      */
 
+    /** The Constant STRONG_TEXT_FLAGS. */
     private static final int[] STRONG_TEXT_FLAGS = { 0, 0, 134217726, 134217726,
             0, 69207040, -8388609, -8388609, -1, -1, -1, -1, -1, -1, -1, -1,
             -1, -1, -65533, -1, -1, -100663297, 196611, 16415, 0, 0, 0,
@@ -347,21 +413,27 @@ public final class NumericShaper implements Serializable {
     };
 
     // index of context range (Serialization support)
+    /** The key. */
     private int key;
     
     // flag, true if shaping contextual (Serialization support)
+    /** The mask. */
     private int mask;
 
     // ranges to be shaped
+    /** The ranges. */
     private int fRanges;
 
     // index of the default context
+    /** The default context index. */
     private int fDefaultContextIndex;
 
     // flag if NumericShaper shapes contextually
+    /** The contextual. */
     private boolean fContextual;
 
     // uses for non-context dependent case only
+    /** The single range index. */
     private int fSingleRangeIndex;
 
     /**
@@ -385,12 +457,12 @@ public final class NumericShaper implements Serializable {
      * Returns script index of the specified context range.
      * 
      * @param range specified range 
+     *
      * @return one of the script indices according to the specified range.
      */
     private int getIndexFromRange(int range){
         if (range == 0){
-            // awt.199=Illegal range argument value: {0}
-            throw new IllegalArgumentException("Illegal range argument value: " + range);
+            throw rangeException(range);
         }
 
         int index = 0;
@@ -401,37 +473,35 @@ public final class NumericShaper implements Serializable {
             index++;
         }
 
-        // awt.199=Illegal range argument value: {0}
-        throw new IllegalArgumentException("Illegal range argument value: " + range);
-
+        throw rangeException(range);
     }
 
     /**
      * Returns range corresponding to the specified script index.
      * 
      * @param index specified script index 
+     *
      * @return one of the range constants according to the specified script index.
      */
     private int getRangeFromIndex(int index){
         if (index < 0 || index >= MAX_INDEX){
-            // awt.199=Illegal range argument value: {0}
-            throw new IllegalArgumentException("Illegal range argument value: " + index);
+            throw rangeException(index);
         }
 
         return 1 << index;
     }
 
+    private static IllegalArgumentException rangeException(int value) {
+        throw new IllegalArgumentException("Illegal range argument value: " + value);
+    }
 
     @Override
     public int hashCode() {
-        HashCode hash = new HashCode();
-
-        hash.append(fRanges);
-        hash.append(fDefaultContextIndex);
-        hash.append(fContextual);
-
-        return hash.hashCode();
-
+        int result = 17;
+        result = 31 * result + fRanges;
+        result = 31 * result + fDefaultContextIndex;
+        result = 31 * result + (fContextual ? 1 : 0);
+        return result;
     }
 
     @Override
@@ -475,15 +545,15 @@ public final class NumericShaper implements Serializable {
          */
         StringBuilder sb = new StringBuilder(super.toString());
 
-        sb.append("[contextual:"); //$NON-NLS-1$
+        sb.append("[contextual:");
         sb.append(fContextual);
 
         if (fContextual){
-            sb.append(", context:"); //$NON-NLS-1$
+            sb.append(", context:");
             sb.append(contexts[fDefaultContextIndex]);
         }
 
-        sb.append(", range(s): "); //$NON-NLS-1$
+        sb.append(", range(s): ");
         if (fContextual) {
             int index = 0;
             boolean isFirst = true;
@@ -492,7 +562,7 @@ public final class NumericShaper implements Serializable {
                     if (isFirst){
                         isFirst = false;
                     } else {
-                        sb.append(", "); //$NON-NLS-1$
+                        sb.append(", ");
                     }
                     sb.append(contexts[index]);
                 }
@@ -501,11 +571,27 @@ public final class NumericShaper implements Serializable {
         } else {
             sb.append(contexts[fSingleRangeIndex]);
         }
-        sb.append("]"); //$NON-NLS-1$
+        sb.append("]");
 
         return sb.toString();
     }
 
+    /**
+     * Gets the NumericShaper for the specified unicode ranges
+     * and default unicode range. The defaultContext parameter
+     * is used as the starting context (which indicates the
+     * language/script being used). The OR logical operation
+     * should be used for multiple ranges:
+     * NumericShaper.DEVANAGARI | NumericShaper.BENGALI.
+     * The NumericShaper returned by this method is contextual
+     * in that it supports multiple character ranges, depending
+     * on the context.
+     *
+     * @param ranges the unicode ranges.
+     * @param defaultContext the default, starting context.
+     *
+     * @return the NumericShaper for the specified ranges.
+     */
     public static NumericShaper getContextualShaper(int ranges, 
             int defaultContext) {
         ranges &= ALL_RANGES;
@@ -513,24 +599,69 @@ public final class NumericShaper implements Serializable {
         return new NumericShaper(ranges, defaultContext, true);
     }
 
+    /**
+     * Gets the NumericShaper for the specified unicode ranges.
+     * The OR logical operation should be used for multiple ranges:
+     * NumericShaper.DEVANAGARI | NumericShaper.BENGALI.
+     * The NumericShaper returned by this method is contextual
+     * in that it supports multiple character ranges, depending
+     * on the context.
+     *
+     * @param ranges the unicode ranges.
+     *
+     * @return the NumericShaper for the specified ranges.
+     */
     public static NumericShaper getContextualShaper(int ranges) {
         ranges &= ALL_RANGES;
         return new NumericShaper(ranges, EUROPEAN, true);
     }
 
+    /**
+     * Gets the masks for all of the ranges supported by this NumericShaper,
+     * packed into an int value using the logical OR logical operation
+     * for multiple ranges:
+     * NumericShaper.DEVANAGARI | NumericShaper.BENGALI.
+     *
+     * @return all ranges of this NumericShaper.
+     */
     public int getRanges() {
         return fRanges;
     }
 
+    /**
+     * Gets a NumericShaper for the specified unicode range.
+     * The NumericShaper supports only a single range and
+     * hence is not contextual.
+     *
+     * @param singleRange the specified unicode single range.
+     *
+     * @return the NumericShaper for the specified unicode range.
+     */
     public static NumericShaper getShaper(int singleRange) {
         singleRange &= ALL_RANGES;
         return new NumericShaper(singleRange, EUROPEAN, false);
     }
 
+    /**
+     * Checks if this NumericShaper is contextual (supporting
+     * multiple script ranges) or not.
+     *
+     * @return true, if this NumericShaper is contextual, false otherwise.
+     */
     public boolean isContextual() {
         return fContextual;
     }
 
+    /**
+     * Transforms the encoding of the text, starting from the character
+     * at index start and transforming count characters,
+     * using the specified context.
+     *
+     * @param text the text to be shaped.
+     * @param start the start offset of the text.
+     * @param count the number of characters to be shaped.
+     * @param context the context to be used for shaping.
+     */
     public void shape(char[] text, int start, int count, int context) {
         if (isContextual()){
             contextualShape(text, start, count, getIndexFromRange(context));
@@ -539,6 +670,14 @@ public final class NumericShaper implements Serializable {
         }
     }
 
+    /**
+     * Transforms the encoding of the text, starting from the character
+     * at index start and transforming count characters.
+     *
+     * @param text the text to be shaped.
+     * @param start the start offset of the text.
+     * @param count the number of characters to be shaped.
+     */
     public void shape(char[] text, int start, int count) {
         if (isContextual()){
             contextualShape(text, start, count, fDefaultContextIndex);
@@ -614,6 +753,7 @@ public final class NumericShaper implements Serializable {
      * Returns the index of the script of the specified char.
      * 
      * @param ch specified unicode character
+     *
      * @return script index corresponding to the given char
      */ 
     private int getCharIndex(char ch){
@@ -632,7 +772,8 @@ public final class NumericShaper implements Serializable {
      * Returns true if the bidirectional category of the character 
      * is strong.
      * 
-     * @param ch specified unicode character
+     * @param chr the chr
+     *
      * @return true, if the character is strong, false otherwise
      */ 
     private boolean isCharStrong(int chr) {
@@ -671,12 +812,27 @@ public final class NumericShaper implements Serializable {
         }
     }
     
+    /**
+     * Write object.
+     *
+     * @param out the out
+     *
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     private void writeObject(java.io.ObjectOutputStream out)
                                 throws IOException{
         updateKeyMaskFields();
         out.defaultWriteObject();
     }
 
+    /**
+     * Read object.
+     *
+     * @param in the in
+     *
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws ClassNotFoundException the class not found exception
+     */
     private void readObject(java.io.ObjectInputStream in)
                                 throws IOException, ClassNotFoundException{
         in.defaultReadObject();
@@ -684,4 +840,3 @@ public final class NumericShaper implements Serializable {
     }
 
 }
-

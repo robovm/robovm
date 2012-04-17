@@ -29,7 +29,6 @@ public class CharConversionException extends IOException {
      * filled in.
      */
     public CharConversionException() {
-        super();
     }
 
     /**

@@ -35,7 +35,6 @@ public class Error extends Throwable {
      * Constructs a new {@code Error} that includes the current stack trace.
      */
     public Error() {
-        super();
     }
 
     /**

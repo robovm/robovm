@@ -33,6 +33,5 @@ public class EmptyStackException extends RuntimeException {
      * in.
      */
     public EmptyStackException() {
-        super();
     }
 }

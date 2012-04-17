@@ -19,7 +19,7 @@
 package java.lang;
 
 /**
- * Thrown when the virtual machine notices that an attempt is made to load a
+ * Thrown when the VM notices that an attempt is made to load a
  * class which would directly or indirectly inherit from one of its subclasses.
  * <p>
  * Note that this error can only occur when inconsistent class files are loaded,
@@ -34,7 +34,6 @@ public class ClassCircularityError extends LinkageError {
      * stack trace.
      */
     public ClassCircularityError() {
-        super();
     }
 
     /**

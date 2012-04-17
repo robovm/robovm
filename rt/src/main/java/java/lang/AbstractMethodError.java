@@ -18,7 +18,7 @@
 package java.lang;
 
 /**
- * Thrown by the virtual machine when an abstract method is called.
+ * Thrown by the VM when an abstract method is called.
  * <p>
  * Note that this can only occur when inconsistent class files have been loaded,
  * since invoking an abstract method is a compile time error.
@@ -32,7 +32,6 @@ public class AbstractMethodError extends IncompatibleClassChangeError {
      * stack trace.
      */
     public AbstractMethodError() {
-        super();
     }
 
     /**

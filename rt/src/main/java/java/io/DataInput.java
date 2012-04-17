@@ -18,7 +18,7 @@
 package java.io;
 
 /**
- * Defines an interface for classes that are able to read typed data from some
+ * Defines an interface for classes that are able to read big-endian typed data from some
  * source. Typically, this data has been written by a class which implements
  * {@link DataOutput}. Types that can be read include byte, 16-bit short, 32-bit
  * int, 32-bit float, 64-bit long, 64-bit double, byte strings, and MUTF-8
@@ -71,7 +71,7 @@ public interface DataInput {
     public abstract byte readByte() throws IOException;
 
     /**
-     * Reads a 16-bit character value.
+     * Reads a big-endian 16-bit character value.
      * 
      * @return the next char value.
      * @throws EOFException if the end of the input is reached before the read
@@ -83,7 +83,7 @@ public interface DataInput {
     public abstract char readChar() throws IOException;
 
     /**
-     * Reads a 64-bit double value.
+     * Reads a big-endian 64-bit double value.
      * 
      * @return the next double value.
      * @throws EOFException if the end of the input is reached before the read
@@ -95,7 +95,7 @@ public interface DataInput {
     public abstract double readDouble() throws IOException;
 
     /**
-     * Reads a 32-bit float value.
+     * Reads a big-endian 32-bit float value.
      * 
      * @return the next float value.
      * @throws EOFException if the end of the input is reached before the read
@@ -107,44 +107,40 @@ public interface DataInput {
     public abstract float readFloat() throws IOException;
 
     /**
-     * Reads bytes into the byte array {@code buffer}. This method will block
-     * until {@code buffer.length} number of bytes have been read.
-     * 
-     * @param buffer
-     *            the buffer to read bytes into.
-     * @throws EOFException if the end of the input is reached before the read
-     *         request can be satisfied.
-     * @throws IOException
-     *             if an I/O error occurs while reading.
-     * @see DataOutput#write(byte[])
-     * @see DataOutput#write(byte[], int, int)
+     * Equivalent to {@code readFully(dst, 0, dst.length);}.
      */
-    public abstract void readFully(byte[] buffer) throws IOException;
+    public abstract void readFully(byte[] dst) throws IOException;
 
     /**
-     * Reads bytes and stores them in the byte array {@code buffer} starting at
-     * offset {@code offset}. This method blocks until {@code count} number of
-     * bytes have been read.
+     * Reads {@code byteCount} bytes from this stream and stores them in the byte
+     * array {@code dst} starting at {@code offset}. If {@code byteCount} is zero, then this
+     * method returns without reading any bytes. Otherwise, this method blocks until
+     * {@code byteCount} bytes have been read. If insufficient bytes are available,
+     * {@code EOFException} is thrown. If an I/O error occurs, {@code IOException} is
+     * thrown. When an exception is thrown, some bytes may have been consumed from the stream
+     * and written into the array.
      * 
-     * @param buffer
-     *            the byte array in which to store the bytes read.
+     * @param dst
+     *            the byte array into which the data is read.
      * @param offset
-     *            the initial position in {@code buffer} to store the bytes
-     *            read.
-     * @param count
-     *            the maximum number of bytes to store in {@code buffer}.
-     * @throws EOFException if the end of the input is reached before the read
-     *         request can be satisfied.
+     *            the offset in {@code dst} at which to store the bytes.
+     * @param byteCount
+     *            the number of bytes to read.
+     * @throws EOFException
+     *             if the end of the source stream is reached before enough
+     *             bytes have been read.
+     * @throws IndexOutOfBoundsException
+     *             if {@code offset < 0} or {@code byteCount < 0}, or
+     *             {@code offset + byteCount > dst.length}.
      * @throws IOException
-     *             if an I/O error occurs while reading.
-     * @see DataOutput#write(byte[])
-     * @see DataOutput#write(byte[], int, int)
+     *             if a problem occurs while reading from this stream.
+     * @throws NullPointerException
+     *             if {@code dst} is null.
      */
-    public abstract void readFully(byte[] buffer, int offset, int count)
-            throws IOException;
+    public abstract void readFully(byte[] dst, int offset, int byteCount) throws IOException;
 
     /**
-     * Reads a 32-bit integer value.
+     * Reads a big-endian 32-bit integer value.
      * 
      * @return the next int value.
      * @throws EOFException if the end of the input is reached before the read
@@ -171,7 +167,7 @@ public interface DataInput {
     public abstract String readLine() throws IOException;
 
     /**
-     * Reads a 64-bit long value.
+     * Reads a big-endian 64-bit long value.
      * 
      * @return the next long value.
      * @throws EOFException if the end of the input is reached before the read
@@ -183,7 +179,7 @@ public interface DataInput {
     public abstract long readLong() throws IOException;
 
     /**
-     * Reads a 16-bit short value.
+     * Reads a big-endian 16-bit short value.
      * 
      * @return the next short value.
      * @throws EOFException if the end of the input is reached before the read
@@ -207,7 +203,7 @@ public interface DataInput {
     public abstract int readUnsignedByte() throws IOException;
 
     /**
-     * Reads a 16-bit unsigned short value and returns it as an int.
+     * Reads a big-endian 16-bit unsigned short value and returns it as an int.
      * 
      * @return the next unsigned short value.
      * @throws EOFException if the end of the input is reached before the read

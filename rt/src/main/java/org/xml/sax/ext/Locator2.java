@@ -1,7 +1,7 @@
 // Locator2.java - extended Locator
 // http://www.saxproject.org
 // Public Domain: no warranty.
-// $Id: Locator2.java 226236 2005-06-17 03:10:33Z mrglavas $
+// $Id: Locator2.java,v 1.5 2004/03/17 14:30:10 dmegginson Exp $
 
 package org.xml.sax.ext;
 
@@ -9,7 +9,7 @@ import org.xml.sax.Locator;
 
 
 /**
- * SAX2 extension to augment the entity information provided 
+ * SAX2 extension to augment the entity information provided
  * though a {@link Locator}.
  * If an implementation supports this extension, the Locator
  * provided in {@link org.xml.sax.ContentHandler#setDocumentLocator
@@ -67,7 +67,7 @@ public interface Locator2 extends Locator
      * and comparisons should be case-insensitive.
      *
      * @return Name of the character encoding being used to interpret
-     * the entity's text, or null if this was not provided for a
+     * * the entity's text, or null if this was not provided for a *
      * character stream passed through an InputSource or is otherwise
      * not yet available in the current parsing state.
      */

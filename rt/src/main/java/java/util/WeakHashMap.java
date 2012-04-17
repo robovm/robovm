@@ -26,7 +26,7 @@ import java.lang.ref.WeakReference;
  * optional operations (adding and removing) are supported. Keys and values can
  * be any objects. Note that the garbage collector acts similar to a second
  * thread on this collection, possibly removing keys.
- * 
+ *
  * @since 1.2
  * @see HashMap
  * @see WeakReference
@@ -108,7 +108,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
 
         @Override
         public String toString() {
-            return super.get() + "=" + value; //$NON-NLS-1$
+            return super.get() + "=" + value;
         }
     }
 
@@ -191,7 +191,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
     /**
      * Constructs a new {@code WeakHashMap} instance with the specified
      * capacity.
-     * 
+     *
      * @param capacity
      *            the initial capacity of this map.
      * @throws IllegalArgumentException
@@ -212,7 +212,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
     /**
      * Constructs a new {@code WeakHashMap} instance with the specified capacity
      * and load factor.
-     * 
+     *
      * @param capacity
      *            the initial capacity of this map.
      * @param loadFactor
@@ -236,7 +236,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
     /**
      * Constructs a new {@code WeakHashMap} instance containing the mappings
      * from the specified map.
-     * 
+     *
      * @param map
      *            the mappings to add.
      */
@@ -247,7 +247,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
 
     /**
      * Removes all mappings from this map, leaving it empty.
-     * 
+     *
      * @see #isEmpty()
      * @see #size()
      */
@@ -269,7 +269,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
 
     /**
      * Returns whether this map contains the specified key.
-     * 
+     *
      * @param key
      *            the key to search for.
      * @return {@code true} if this map contains the specified key,
@@ -343,7 +343,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
      * Returns a set of the keys contained in this map. The set is backed by
      * this map so changes to one are reflected by the other. The set does not
      * support adding.
-     * 
+     *
      * @return a set of the keys.
      */
     @Override
@@ -424,7 +424,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
      * returned in response to all subsequent calls. This method may return
      * different Collection when multiple calls to this method, since it has no
      * synchronization performed.
-     * 
+     *
      * @return a collection of the values contained in this map.
      */
     @Override
@@ -462,7 +462,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
 
     /**
      * Returns the value of the mapping with the specified key.
-     * 
+     *
      * @param key
      *            the key.
      * @return the value of the mapping with the specified key, or {@code null}
@@ -517,7 +517,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
 
     /**
      * Returns whether this map contains the specified value.
-     * 
+     *
      * @param value
      *            the value to search for.
      * @return {@code true} if this map contains the specified value,
@@ -555,7 +555,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
 
     /**
      * Returns the number of elements in this map.
-     * 
+     *
      * @return the number of elements in this map.
      */
     @Override
@@ -595,7 +595,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
 
     /**
      * Maps the specified key to the specified value.
-     * 
+     *
      * @param key
      *            the key.
      * @param value
@@ -638,7 +638,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
     }
 
     private void rehash() {
-        int length = elementData.length << 1;
+        int length = elementData.length * 2;
         if (length == 0) {
             length = 1;
         }
@@ -662,7 +662,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
      * Copies all the mappings in the given map to this map. These mappings will
      * replace all mappings that this map had for any of the keys currently in
      * the given map.
-     * 
+     *
      * @param map
      *            the map to copy mappings from.
      * @throws NullPointerException
@@ -675,7 +675,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
 
     /**
      * Removes the mapping with the specified key from this map.
-     * 
+     *
      * @param key
      *            the key of the mapping to remove.
      * @return the value of the removed mapping or {@code null} if no mapping
@@ -715,7 +715,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
 
     /**
      * Returns the number of elements in this map.
-     * 
+     *
      * @return the number of elements in this map.
      */
     @Override

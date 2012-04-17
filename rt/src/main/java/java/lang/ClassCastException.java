@@ -17,8 +17,6 @@
 
 package java.lang;
 
-import org.apache.harmony.luni.internal.nls.Messages;
-
 /**
  * Thrown when a program attempts to cast a an object to a type with which it is
  * not compatible.
@@ -31,7 +29,6 @@ public class ClassCastException extends RuntimeException {
      * stack trace.
      */
     public ClassCastException() {
-        super();
     }
 
     /**
@@ -43,19 +40,5 @@ public class ClassCastException extends RuntimeException {
      */
     public ClassCastException(String detailMessage) {
         super(detailMessage);
-    }
-
-    /**
-     * Constructs a new {@code ClassCastException} with the current stack trace
-     * and a detail message based on the source and target class.
-     * 
-     * @param instanceClass
-     *            the class being cast from.
-     * @param castClass
-     *            the class being cast to.
-     */
-    ClassCastException(Class<?> instanceClass, Class<?> castClass) {
-        super(Messages.getString("luni.4B", instanceClass.getName(), castClass //$NON-NLS-1$
-                .getName()));
     }
 }

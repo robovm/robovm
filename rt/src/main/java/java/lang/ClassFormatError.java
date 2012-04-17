@@ -30,7 +30,6 @@ public class ClassFormatError extends LinkageError {
      * trace.
      */
     public ClassFormatError() {
-        super();
     }
 
     /**

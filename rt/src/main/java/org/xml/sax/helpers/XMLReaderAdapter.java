@@ -2,27 +2,25 @@
 // http://www.saxproject.org
 // Written by David Megginson
 // NO WARRANTY!  This class is in the public domain.
-// $Id: XMLReaderAdapter.java 226184 2005-04-08 10:53:24Z neeraj $
+// $Id: XMLReaderAdapter.java,v 1.9 2004/04/26 17:34:35 dmegginson Exp $
 
 package org.xml.sax.helpers;
 
 import java.io.IOException;
 import java.util.Locale;
-
-import org.xml.sax.Parser;	// deprecated
-import org.xml.sax.Locator;
-import org.xml.sax.InputSource;
-import org.xml.sax.AttributeList; // deprecated
-import org.xml.sax.EntityResolver;
-import org.xml.sax.DTDHandler;
-import org.xml.sax.DocumentHandler; // deprecated
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXException;
-
-import org.xml.sax.XMLReader;
+import org.xml.sax.AttributeList;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
+import org.xml.sax.DTDHandler;
+import org.xml.sax.DocumentHandler;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.Locator;
+import org.xml.sax.Parser;
+import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotSupportedException;
+import org.xml.sax.XMLReader;
 
 
 /**
@@ -36,11 +34,11 @@ import org.xml.sax.SAXNotSupportedException;
  * </blockquote>
  *
  * <p>This class wraps a SAX2 {@link org.xml.sax.XMLReader XMLReader}
- * and makes it act as a SAX1 {@link org.xml.sax.Parser Parser}.  The XMLReader 
- * must support a true value for the 
+ * and makes it act as a SAX1 {@link org.xml.sax.Parser Parser}.  The XMLReader
+ * must support a true value for the
  * http://xml.org/sax/features/namespace-prefixes property or parsing will fail
- * with a {@link org.xml.sax.SAXException SAXException}; if the XMLReader 
- * supports a false value for the http://xml.org/sax/features/namespaces 
+ * with a {@link org.xml.sax.SAXException SAXException}; if the XMLReader
+ * supports a false value for the http://xml.org/sax/features/namespaces
  * property, that will also be used to improve efficiency.</p>
  *
  * @since SAX 2.0
@@ -71,7 +69,7 @@ public class XMLReaderAdapter implements Parser, ContentHandler
     public XMLReaderAdapter ()
       throws SAXException
     {
-	setup(XMLReaderFactory.createXMLReader());
+    setup(XMLReaderFactory.createXMLReader());
     }
 
 
@@ -87,7 +85,7 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      */
     public XMLReaderAdapter (XMLReader xmlReader)
     {
-	setup(xmlReader);
+    setup(xmlReader);
     }
 
 
@@ -99,11 +97,11 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      */
     private void setup (XMLReader xmlReader)
     {
-	if (xmlReader == null) {
-	    throw new NullPointerException("XMLReader must not be null");
-	}
-	this.xmlReader = xmlReader;
-	qAtts = new AttributesAdapter();
+    if (xmlReader == null) {
+        throw new NullPointerException("XMLReader must not be null");
+    }
+    this.xmlReader = xmlReader;
+    qAtts = new AttributesAdapter();
     }
 
 
@@ -124,9 +122,9 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @exception org.xml.sax.SAXException Thrown unless overridden.
      */
     public void setLocale (Locale locale)
-	throws SAXException
+    throws SAXException
     {
-	throw new SAXNotSupportedException("setLocale not supported");
+    throw new SAXNotSupportedException("setLocale not supported");
     }
 
 
@@ -138,7 +136,7 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      */
     public void setEntityResolver (EntityResolver resolver)
     {
-	xmlReader.setEntityResolver(resolver);
+    xmlReader.setEntityResolver(resolver);
     }
 
 
@@ -150,7 +148,7 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      */
     public void setDTDHandler (DTDHandler handler)
     {
-	xmlReader.setDTDHandler(handler);
+    xmlReader.setDTDHandler(handler);
     }
 
 
@@ -165,7 +163,7 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      */
     public void setDocumentHandler (DocumentHandler handler)
     {
-	documentHandler = handler;
+    documentHandler = handler;
     }
 
 
@@ -177,7 +175,7 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      */
     public void setErrorHandler (ErrorHandler handler)
     {
-	xmlReader.setErrorHandler(handler);
+    xmlReader.setErrorHandler(handler);
     }
 
 
@@ -185,7 +183,7 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * Parse the document.
      *
      * <p>This method will throw an exception if the embedded
-     * XMLReader does not support the 
+     * XMLReader does not support the
      * http://xml.org/sax/features/namespace-prefixes property.</p>
      *
      * @param systemId The absolute URL of the document.
@@ -197,9 +195,9 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @see org.xml.sax.Parser#parse(java.lang.String)
      */
     public void parse (String systemId)
-	throws IOException, SAXException
+    throws IOException, SAXException
     {
-	parse(new InputSource(systemId));
+    parse(new InputSource(systemId));
     }
 
 
@@ -207,7 +205,7 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * Parse the document.
      *
      * <p>This method will throw an exception if the embedded
-     * XMLReader does not support the 
+     * XMLReader does not support the
      * http://xml.org/sax/features/namespace-prefixes property.</p>
      *
      * @param input An input source for the document.
@@ -219,10 +217,10 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @see org.xml.sax.Parser#parse(org.xml.sax.InputSource)
      */
     public void parse (InputSource input)
-	throws IOException, SAXException
+    throws IOException, SAXException
     {
-	setupXMLReader();
-	xmlReader.parse(input);
+    setupXMLReader();
+    xmlReader.parse(input);
     }
 
 
@@ -230,16 +228,16 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * Set up the XML reader.
      */
     private void setupXMLReader ()
-	throws SAXException
+    throws SAXException
     {
-	xmlReader.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
-	try {
-	    xmlReader.setFeature("http://xml.org/sax/features/namespaces",
-	                         false);
-	} catch (SAXException e) {
-	    // NO OP: it's just extra information, and we can ignore it
-	}
-	xmlReader.setContentHandler(this);
+    xmlReader.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
+    try {
+        xmlReader.setFeature("http://xml.org/sax/features/namespaces",
+                             false);
+    } catch (SAXException e) {
+        // NO OP: it's just extra information, and we can ignore it
+    }
+    xmlReader.setContentHandler(this);
     }
 
 
@@ -257,8 +255,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      */
     public void setDocumentLocator (Locator locator)
     {
-	if (documentHandler != null)
-	    documentHandler.setDocumentLocator(locator);
+    if (documentHandler != null)
+        documentHandler.setDocumentLocator(locator);
     }
 
 
@@ -270,10 +268,10 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @see org.xml.sax.ContentHandler#startDocument
      */
     public void startDocument ()
-	throws SAXException
+    throws SAXException
     {
-	if (documentHandler != null)
-	    documentHandler.startDocument();
+    if (documentHandler != null)
+        documentHandler.startDocument();
     }
 
 
@@ -285,10 +283,10 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @see org.xml.sax.ContentHandler#endDocument
      */
     public void endDocument ()
-	throws SAXException
+    throws SAXException
     {
-	if (documentHandler != null)
-	    documentHandler.endDocument();
+    if (documentHandler != null)
+        documentHandler.endDocument();
     }
 
 
@@ -327,13 +325,13 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @see org.xml.sax.ContentHandler#endDocument
      */
     public void startElement (String uri, String localName,
-			      String qName, Attributes atts)
-	throws SAXException
+                  String qName, Attributes atts)
+    throws SAXException
     {
-	if (documentHandler != null) {
-	    qAtts.setAttributes(atts);
-	    documentHandler.startElement(qName, qAtts);
-	}
+    if (documentHandler != null) {
+        qAtts.setAttributes(atts);
+        documentHandler.startElement(qName, qAtts);
+    }
     }
 
 
@@ -348,11 +346,11 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @see org.xml.sax.ContentHandler#endElement
      */
     public void endElement (String uri, String localName,
-			    String qName)
-	throws SAXException
+                String qName)
+    throws SAXException
     {
-	if (documentHandler != null)
-	    documentHandler.endElement(qName);
+    if (documentHandler != null)
+        documentHandler.endElement(qName);
     }
 
 
@@ -367,10 +365,10 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @see org.xml.sax.ContentHandler#characters
      */
     public void characters (char ch[], int start, int length)
-	throws SAXException
+    throws SAXException
     {
-	if (documentHandler != null)
-	    documentHandler.characters(ch, start, length);
+    if (documentHandler != null)
+        documentHandler.characters(ch, start, length);
     }
 
 
@@ -385,10 +383,10 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @see org.xml.sax.ContentHandler#ignorableWhitespace
      */
     public void ignorableWhitespace (char ch[], int start, int length)
-	throws SAXException
+    throws SAXException
     {
-	if (documentHandler != null)
-	    documentHandler.ignorableWhitespace(ch, start, length);
+    if (documentHandler != null)
+        documentHandler.ignorableWhitespace(ch, start, length);
     }
 
 
@@ -402,10 +400,10 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @see org.xml.sax.ContentHandler#processingInstruction
      */
     public void processingInstruction (String target, String data)
-	throws SAXException
+    throws SAXException
     {
-	if (documentHandler != null)
-	    documentHandler.processingInstruction(target, data);
+    if (documentHandler != null)
+        documentHandler.processingInstruction(target, data);
     }
 
 
@@ -417,7 +415,7 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @exception org.xml.sax.SAXException Throwable by subclasses.
      */
     public void skippedEntity (String name)
-	throws SAXException
+    throws SAXException
     {
     }
 
@@ -441,96 +439,96 @@ public class XMLReaderAdapter implements Parser, ContentHandler
     /**
      * Internal class to wrap a SAX2 Attributes object for SAX1.
      */
-    final class AttributesAdapter implements AttributeList
+    static final class AttributesAdapter implements AttributeList
     {
-	AttributesAdapter ()
-	{
-	}
+    AttributesAdapter ()
+    {
+    }
 
 
-	/**
-	 * Set the embedded Attributes object.
-	 *
-	 * @param The embedded SAX2 Attributes.
-	 */ 
-	void setAttributes (Attributes attributes)
-	{
-	    this.attributes = attributes;
-	}
+    /**
+     * Set the embedded Attributes object.
+     *
+     * @param The embedded SAX2 Attributes.
+     */
+    void setAttributes (Attributes attributes)
+    {
+        this.attributes = attributes;
+    }
 
 
-	/**
-	 * Return the number of attributes.
-	 *
-	 * @return The length of the attribute list.
-	 * @see org.xml.sax.AttributeList#getLength
-	 */
-	public int getLength ()
-	{
-	    return attributes.getLength();
-	}
+    /**
+     * Return the number of attributes.
+     *
+     * @return The length of the attribute list.
+     * @see org.xml.sax.AttributeList#getLength
+     */
+    public int getLength ()
+    {
+        return attributes.getLength();
+    }
 
 
-	/**
-	 * Return the qualified (prefixed) name of an attribute by position.
-	 *
-	 * @return The qualified name.
-	 * @see org.xml.sax.AttributeList#getName
-	 */
-	public String getName (int i)
-	{
-	    return attributes.getQName(i);
-	}
+    /**
+     * Return the qualified (prefixed) name of an attribute by position.
+     *
+     * @return The qualified name.
+     * @see org.xml.sax.AttributeList#getName
+     */
+    public String getName (int i)
+    {
+        return attributes.getQName(i);
+    }
 
 
-	/**
-	 * Return the type of an attribute by position.
-	 *
-	 * @return The type.
-	 * @see org.xml.sax.AttributeList#getType(int)
-	 */
-	public String getType (int i)
-	{
-	    return attributes.getType(i);
-	}
+    /**
+     * Return the type of an attribute by position.
+     *
+     * @return The type.
+     * @see org.xml.sax.AttributeList#getType(int)
+     */
+    public String getType (int i)
+    {
+        return attributes.getType(i);
+    }
 
 
-	/**
-	 * Return the value of an attribute by position.
-	 *
-	 * @return The value.
-	 * @see org.xml.sax.AttributeList#getValue(int)
-	 */
-	public String getValue (int i)
-	{
-	    return attributes.getValue(i);
-	}
+    /**
+     * Return the value of an attribute by position.
+     *
+     * @return The value.
+     * @see org.xml.sax.AttributeList#getValue(int)
+     */
+    public String getValue (int i)
+    {
+        return attributes.getValue(i);
+    }
 
 
-	/**
-	 * Return the type of an attribute by qualified (prefixed) name.
-	 *
-	 * @return The type.
-	 * @see org.xml.sax.AttributeList#getType(java.lang.String)
-	 */
-	public String getType (String qName)
-	{
-	    return attributes.getType(qName);
-	}
+    /**
+     * Return the type of an attribute by qualified (prefixed) name.
+     *
+     * @return The type.
+     * @see org.xml.sax.AttributeList#getType(java.lang.String)
+     */
+    public String getType (String qName)
+    {
+        return attributes.getType(qName);
+    }
 
 
-	/**
-	 * Return the value of an attribute by qualified (prefixed) name.
-	 *
-	 * @return The value.
-	 * @see org.xml.sax.AttributeList#getValue(java.lang.String)
-	 */
-	public String getValue (String qName)
-	{
-	    return attributes.getValue(qName);
-	}
+    /**
+     * Return the value of an attribute by qualified (prefixed) name.
+     *
+     * @return The value.
+     * @see org.xml.sax.AttributeList#getValue(java.lang.String)
+     */
+    public String getValue (String qName)
+    {
+        return attributes.getValue(qName);
+    }
 
-	private Attributes attributes;
+    private Attributes attributes;
     }
 
 }

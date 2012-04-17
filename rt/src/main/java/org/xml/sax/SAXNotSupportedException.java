@@ -2,7 +2,7 @@
 // http://www.saxproject.org
 // Written by David Megginson
 // NO WARRANTY!  This class is in the Public Domain.
-// $Id: SAXNotSupportedException.java 226184 2005-04-08 10:53:24Z neeraj $
+// $Id: SAXNotSupportedException.java,v 1.7 2002/01/30 21:13:48 dbrownell Exp $
 
 package org.xml.sax;
 
@@ -24,7 +24,7 @@ package org.xml.sax;
  * @since SAX 2.0
  * @author David Megginson
  * @version 2.0.1 (sax2r2)
- * @see org.xml.sax.SAXNotRecognizedException 
+ * @see org.xml.sax.SAXNotRecognizedException
  */
 public class SAXNotSupportedException extends SAXException
 {
@@ -34,7 +34,6 @@ public class SAXNotSupportedException extends SAXException
      */
     public SAXNotSupportedException ()
     {
-	super();
     }
 
 
@@ -45,11 +44,9 @@ public class SAXNotSupportedException extends SAXException
      */
     public SAXNotSupportedException (String message)
     {
-	super(message);
+    super(message);
     }
 
-    // Added serialVersionUID to preserve binary compatibility 
-    static final long serialVersionUID = -1422818934641823846L;
 }
 
 // end of SAXNotSupportedException.java

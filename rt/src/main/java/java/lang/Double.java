@@ -24,6 +24,15 @@ package java.lang;
  * @since 1.0
  */
 public final class Double extends Number implements Comparable<Double> {
+    static final int EXPONENT_BIAS = 1023;
+
+    static final int EXPONENT_BITS = 12;
+    static final int MANTISSA_BITS = 52;
+    static final int NON_MANTISSA_BITS = 12;
+
+    static final long SIGN_MASK     = 0x8000000000000000L;
+    static final long EXPONENT_MASK = 0x7ff0000000000000L;
+    static final long MANTISSA_MASK = 0x000fffffffffffffL;
 
     private static final long serialVersionUID = -9172774392245257468L;
 
@@ -46,44 +55,42 @@ public final class Double extends Number implements Comparable<Double> {
     /* 4.94065645841246544e-324 gets rounded to 9.88131e-324 */
     
     /**
-	 * <p>
-	 * Constant for the smallest positive normal value of <code>double</code>.
-	 * </p>
-	 * 
-	 * @since 1.6
-	 */
-	public static final double MIN_NORMAL = 2.2250738585072014E-308;
-
-    /**
      * Constant for the Not-a-Number (NaN) value of the {@code double} type.
      */
     public static final double NaN = 0.0 / 0.0;
 
     /**
-     * Constant for the Positive Infinity value of the {@code double} type.
+     * Constant for the positive infinity value of the {@code double} type.
      */
     public static final double POSITIVE_INFINITY = 1.0 / 0.0;
     
     /**
-     * <p>
-     * Maximum exponent that a finite double variable may have.
-     * </p>
+     * Constant for the negative infinity value of the {@code double} type.
+     */
+    public static final double NEGATIVE_INFINITY = -1.0 / 0.0;
+
+    /**
+     * Constant for the smallest positive normal value of the {@code double} type.
+     *
+     * @since 1.6
+     */
+    public static final double MIN_NORMAL = 2.2250738585072014E-308;
+    
+        /**
+     * Maximum base-2 exponent that a finite value of the {@code double} type may have.
+     * Equal to {@code Math.getExponent(Double.MAX_VALUE)}.
+     *
      * @since 1.6
      */
     public static final int MAX_EXPONENT = 1023;
-    
-        /**
-     * <p>
-     * Minimum exponent that a finite double variable may have.
-     * </p>
+
+    /**
+     * Minimum base-2 exponent that a normal value of the {@code double} type may have.
+     * Equal to {@code Math.getExponent(Double.MIN_NORMAL)}.
+     *
      * @since 1.6
      */
     public static final int MIN_EXPONENT = -1022;
-
-    /**
-     * Constant for the Negative Infinity value of the {@code double} type.
-     */
-    public static final double NEGATIVE_INFINITY = -1.0 / 0.0;
 
     /**
      * The {@link Class} object that represents the primitive type {@code
@@ -92,10 +99,9 @@ public final class Double extends Number implements Comparable<Double> {
      * @since 1.1
      */
     @SuppressWarnings("unchecked")
-    public static final Class<Double> TYPE = (Class<Double>) new double[0]
-            .getClass().getComponentType();
-
-    // Note: This can't be set to "double.class", since *that* is
+    public static final Class<Double> TYPE
+            = (Class<Double>) double[].class.getComponentType();
+    // Note: Double.TYPE can't be set to "double.class", since *that* is
     // defined to be "java.lang.Double.TYPE";
 
     /**
@@ -123,7 +129,7 @@ public final class Double extends Number implements Comparable<Double> {
      * @param string
      *            the string representation of a double value.
      * @throws NumberFormatException
-     *             if {@code string} can not be decoded into a double value.
+     *             if {@code string} cannot be parsed as a double value.
      * @see #parseDouble(String)
      */
     public Double(String string) throws NumberFormatException {
@@ -160,31 +166,18 @@ public final class Double extends Number implements Comparable<Double> {
     }
 
     /**
-     * Converts the specified double value to a binary representation conforming
-     * to the IEEE 754 floating-point double precision bit layout. All
-     * <em>Not-a-Number (NaN)</em> values are converted to a single NaN
-     * representation ({@code 0x7ff8000000000000L}).
-     * 
-     * @param value
-     *            the double value to convert.
-     * @return the IEEE 754 floating-point double precision representation of
-     *         {@code value}.
-     * @see #doubleToRawLongBits(double)
-     * @see #longBitsToDouble(long)
+     * Returns an integer corresponding to the bits of the given
+     * <a href="http://en.wikipedia.org/wiki/IEEE_754-1985">IEEE 754</a> double precision
+     * {@code value}. All <em>Not-a-Number (NaN)</em> values are converted to a single NaN
+     * representation ({@code 0x7ff8000000000000L}) (compare to {@link #doubleToRawLongBits}).
      */
     public static native long doubleToLongBits(double value);
 
     /**
-     * Converts the specified double value to a binary representation conforming
-     * to the IEEE 754 floating-point double precision bit layout.
-     * <em>Not-a-Number (NaN)</em> values are preserved.
-     * 
-     * @param value
-     *            the double value to convert.
-     * @return the IEEE 754 floating-point double precision representation of
-     *         {@code value}.
-     * @see #doubleToLongBits(double)
-     * @see #longBitsToDouble(long)
+     * Returns an integer corresponding to the bits of the given
+     * <a href="http://en.wikipedia.org/wiki/IEEE_754-1985">IEEE 754</a> double precision
+     * {@code value}. <em>Not-a-Number (NaN)</em> values are preserved (compare
+     * to {@link #doubleToLongBits}).
      */
     public static native long doubleToRawLongBits(double value);
 
@@ -199,10 +192,12 @@ public final class Double extends Number implements Comparable<Double> {
     }
 
     /**
-     * Compares this object with the specified object and indicates if they are
-     * equal. In order to be equal, {@code object} must be an instance of
-     * {@code Double} and the bit pattern of its double value is the same as
-     * this object's.
+     * Tests this double for equality with {@code object}.
+     * To be equal, {@code object} must be an instance of {@code Double} and
+     * {@code doubleToLongBits} must give the same value for both objects.
+     *
+     * <p>Note that, unlike {@code ==}, {@code -0.0} and {@code +0.0} compare
+     * unequal, and {@code NaN}s compare equal by this method.
      * 
      * @param object
      *            the object to compare this double with.
@@ -211,9 +206,8 @@ public final class Double extends Number implements Comparable<Double> {
      */
     @Override
     public boolean equals(Object object) {
-        return (object == this)
-                || (object instanceof Double)
-                && (doubleToLongBits(this.value) == doubleToLongBits(((Double) object).value));
+        return (object instanceof Double) &&
+                (doubleToLongBits(this.value) == doubleToLongBits(((Double) object).value));
     }
 
     @Override
@@ -278,15 +272,8 @@ public final class Double extends Number implements Comparable<Double> {
     }
 
     /**
-     * Converts the specified IEEE 754 floating-point double precision bit
-     * pattern to a Java double value.
-     * 
-     * @param bits
-     *            the IEEE 754 floating-point double precision representation of
-     *            a double value.
-     * @return the double value converted from {@code bits}.
-     * @see #doubleToLongBits(double)
-     * @see #doubleToRawLongBits(double)
+     * Returns the <a href="http://en.wikipedia.org/wiki/IEEE_754-1985">IEEE 754</a>
+     * double precision float corresponding to the given {@code bits}.
      */
     public static native double longBitsToDouble(long bits);
 
@@ -302,13 +289,10 @@ public final class Double extends Number implements Comparable<Double> {
      *            the string representation of a double value.
      * @return the primitive double value represented by {@code string}.
      * @throws NumberFormatException
-     *             if {@code string} is {@code null}, has a length of zero or
-     *             can not be parsed as a double value.
+     *             if {@code string} cannot be parsed as a double value.
      */
-    public static double parseDouble(String string)
-            throws NumberFormatException {
-        return org.apache.harmony.luni.util.FloatingPointParser
-                .parseDouble(string);
+    public static double parseDouble(String string) throws NumberFormatException {
+        return StringToReal.parseDouble(string);
     }
 
     @Override
@@ -330,7 +314,7 @@ public final class Double extends Number implements Comparable<Double> {
      * @return a printable representation of {@code d}.
      */
     public static String toString(double d) {
-        return org.apache.harmony.luni.util.NumberConverter.convert(d);
+        return RealToString.getInstance().doubleToString(d);
     }
 
     /**
@@ -341,12 +325,11 @@ public final class Double extends Number implements Comparable<Double> {
      * @return a {@code Double} instance containing the double value represented
      *         by {@code string}.
      * @throws NumberFormatException
-     *             if {@code string} is {@code null}, has a length of zero or
-     *             can not be parsed as a double value.
+     *             if {@code string} cannot be parsed as a double value.
      * @see #parseDouble(String)
      */
     public static Double valueOf(String string) throws NumberFormatException {
-        return new Double(parseDouble(string));
+        return parseDouble(string);
     }
 
     /**
@@ -417,16 +400,16 @@ public final class Double extends Number implements Comparable<Double> {
      */
     public static String toHexString(double d) {
         /*
-         * Reference: http://en.wikipedia.org/wiki/IEEE_754
+         * Reference: http://en.wikipedia.org/wiki/IEEE_754-1985
          */
         if (d != d) {
-            return "NaN"; //$NON-NLS-1$
+            return "NaN";
         }
         if (d == POSITIVE_INFINITY) {
-            return "Infinity"; //$NON-NLS-1$
+            return "Infinity";
         }
         if (d == NEGATIVE_INFINITY) {
-            return "-Infinity"; //$NON-NLS-1$
+            return "-Infinity";
         }
 
         long bitValue = doubleToLongBits(d);
@@ -438,18 +421,18 @@ public final class Double extends Number implements Comparable<Double> {
         long significand = bitValue & 0x000FFFFFFFFFFFFFL;
 
         if (exponent == 0 && significand == 0) {
-            return (negative ? "-0x0.0p0" : "0x0.0p0"); //$NON-NLS-1$ //$NON-NLS-2$
+            return (negative ? "-0x0.0p0" : "0x0.0p0");
         }
 
         StringBuilder hexString = new StringBuilder(10);
         if (negative) {
-            hexString.append("-0x"); //$NON-NLS-1$
+            hexString.append("-0x");
         } else {
-            hexString.append("0x"); //$NON-NLS-1$
+            hexString.append("0x");
         }
 
         if (exponent == 0) { // denormal (subnormal) value
-            hexString.append("0."); //$NON-NLS-1$
+            hexString.append("0.");
             // significand is 52-bits, so there can be 13 hex digits
             int fractionDigits = 13;
             // remove trailing hex zeros, so Integer.toHexString() won't print
@@ -469,9 +452,9 @@ public final class Double extends Number implements Comparable<Double> {
                 }
             }
             hexString.append(hexSignificand);
-            hexString.append("p-1022"); //$NON-NLS-1$
+            hexString.append("p-1022");
         } else { // normal value
-            hexString.append("1."); //$NON-NLS-1$
+            hexString.append("1.");
             // significand is 52-bits, so there can be 13 hex digits
             int fractionDigits = 13;
             // remove trailing hex zeros, so Integer.toHexString() won't print

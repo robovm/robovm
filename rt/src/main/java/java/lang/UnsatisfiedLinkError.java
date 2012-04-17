@@ -30,7 +30,6 @@ public class UnsatisfiedLinkError extends LinkageError {
      * stack trace.
      */
     public UnsatisfiedLinkError() {
-        super();
     }
 
     /**

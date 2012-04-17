@@ -31,7 +31,6 @@ public class IllegalMonitorStateException extends RuntimeException {
      * current stack trace.
      */
     public IllegalMonitorStateException() {
-        super();
     }
 
     /**

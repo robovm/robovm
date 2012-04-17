@@ -32,7 +32,6 @@ public class CloneNotSupportedException extends Exception {
      * current stack trace.
      */
     public CloneNotSupportedException() {
-        super();
     }
 
     /**

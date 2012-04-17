@@ -18,32 +18,26 @@
 package java.util;
 
 /**
- * An Error that can be thrown when something wrong occurs in loading a service
- * provider.
+ * Thrown when a service provider can't be loaded by {@link ServiceLoader}.
+ * @since 1.6
  */
 public class ServiceConfigurationError extends Error {
-    
     private static final long serialVersionUID = 74132770414881L;
 
     /**
-     * The constructor
-     * 
-     * @param msg
-     *            the message of this error
+     * Constructs a new error with the given detail message.
+     * @param message the detail message, or null
      */
-    public ServiceConfigurationError(String msg) {
-        super(msg);
+    public ServiceConfigurationError(String message) {
+        super(message);
     }
 
     /**
-     * The constructor
-     * 
-     * @param msg
-     *            the message of this error
-     * @param cause 
-     *            the cause of this error
+     * Constructs a new error with the given detail message and cause.
+     * @param message the detail message, or null
+     * @param cause the cause, null
      */
-    public ServiceConfigurationError(String msg, Throwable cause) {
-        super(msg, cause);
+    public ServiceConfigurationError(String message, Throwable cause) {
+        super(message, cause);
     }
 }

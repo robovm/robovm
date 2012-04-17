@@ -30,7 +30,6 @@ public class NegativeArraySizeException extends RuntimeException {
      * current stack trace.
      */
     public NegativeArraySizeException() {
-        super();
     }
 
     /**

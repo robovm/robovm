@@ -42,7 +42,7 @@ public class HashSet<E> extends AbstractSet<E> implements Set<E>, Cloneable,
 
     /**
      * Constructs a new instance of {@code HashSet} with the specified capacity.
-     * 
+     *
      * @param capacity
      *            the initial capacity of this {@code HashSet}.
      */
@@ -53,7 +53,7 @@ public class HashSet<E> extends AbstractSet<E> implements Set<E>, Cloneable,
     /**
      * Constructs a new instance of {@code HashSet} with the specified capacity
      * and load factor.
-     * 
+     *
      * @param capacity
      *            the initial capacity.
      * @param loadFactor
@@ -66,7 +66,7 @@ public class HashSet<E> extends AbstractSet<E> implements Set<E>, Cloneable,
     /**
      * Constructs a new instance of {@code HashSet} containing the unique
      * elements in the specified collection.
-     * 
+     *
      * @param collection
      *            the collection of elements to add.
      */
@@ -84,7 +84,7 @@ public class HashSet<E> extends AbstractSet<E> implements Set<E>, Cloneable,
 
     /**
      * Adds the specified object to this {@code HashSet} if not already present.
-     * 
+     *
      * @param object
      *            the object to add.
      * @return {@code true} when this {@code HashSet} did not already contain
@@ -97,7 +97,7 @@ public class HashSet<E> extends AbstractSet<E> implements Set<E>, Cloneable,
 
     /**
      * Removes all elements from this {@code HashSet}, leaving it empty.
-     * 
+     *
      * @see #isEmpty
      * @see #size
      */
@@ -109,7 +109,7 @@ public class HashSet<E> extends AbstractSet<E> implements Set<E>, Cloneable,
     /**
      * Returns a new {@code HashSet} with the same elements and size as this
      * {@code HashSet}.
-     * 
+     *
      * @return a shallow copy of this {@code HashSet}.
      * @see java.lang.Cloneable
      */
@@ -121,13 +121,13 @@ public class HashSet<E> extends AbstractSet<E> implements Set<E>, Cloneable,
             clone.backingMap = (HashMap<E, HashSet<E>>) backingMap.clone();
             return clone;
         } catch (CloneNotSupportedException e) {
-            return null;
+            throw new AssertionError(e);
         }
     }
 
     /**
      * Searches this {@code HashSet} for the specified object.
-     * 
+     *
      * @param object
      *            the object to search for.
      * @return {@code true} if {@code object} is an element of this
@@ -140,7 +140,7 @@ public class HashSet<E> extends AbstractSet<E> implements Set<E>, Cloneable,
 
     /**
      * Returns true if this {@code HashSet} has no elements, false otherwise.
-     * 
+     *
      * @return {@code true} if this {@code HashSet} has no elements,
      *         {@code false} otherwise.
      * @see #size
@@ -152,7 +152,7 @@ public class HashSet<E> extends AbstractSet<E> implements Set<E>, Cloneable,
 
     /**
      * Returns an Iterator on the elements of this {@code HashSet}.
-     * 
+     *
      * @return an Iterator on the elements of this {@code HashSet}.
      * @see Iterator
      */
@@ -163,7 +163,7 @@ public class HashSet<E> extends AbstractSet<E> implements Set<E>, Cloneable,
 
     /**
      * Removes the specified object from this {@code HashSet}.
-     * 
+     *
      * @param object
      *            the object to remove.
      * @return {@code true} if the object was removed, {@code false} otherwise.
@@ -175,7 +175,7 @@ public class HashSet<E> extends AbstractSet<E> implements Set<E>, Cloneable,
 
     /**
      * Returns the number of elements in this {@code HashSet}.
-     * 
+     *
      * @return the number of elements in this {@code HashSet}.
      */
     @Override
@@ -185,15 +185,11 @@ public class HashSet<E> extends AbstractSet<E> implements Set<E>, Cloneable,
 
     private void writeObject(ObjectOutputStream stream) throws IOException {
         stream.defaultWriteObject();
-        stream.writeInt(backingMap.elementData.length);
-        stream.writeFloat(backingMap.loadFactor);
-        stream.writeInt(backingMap.elementCount);
-        for (int i = backingMap.elementData.length; --i >= 0;) {
-            HashMap.Entry<E, HashSet<E>> entry = backingMap.elementData[i];
-            while (entry != null) {
-                stream.writeObject(entry.key);
-                entry = entry.next;
-            }
+        stream.writeInt(backingMap.table.length);
+        stream.writeFloat(HashMap.DEFAULT_LOAD_FACTOR);
+        stream.writeInt(size());
+        for (E e : this) {
+            stream.writeObject(e);
         }
     }
 

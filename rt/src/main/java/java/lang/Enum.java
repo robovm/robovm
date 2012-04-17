@@ -17,21 +17,34 @@
 package java.lang;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedExceptionAction;
-
-import org.apache.harmony.luni.internal.nls.Messages;
+import libcore.util.BasicLruCache;
+import libcore.util.EmptyArray;
 
 /**
  * The superclass of all enumerated types. Actual enumeration types inherit from
  * this class, but extending this class does not make a class an enumeration
  * type, since the compiler needs to generate special information for it.
  */
-public abstract class Enum<E extends Enum<E>> implements Serializable,
-        Comparable<E> {
+public abstract class Enum<E extends Enum<E>> implements Serializable, Comparable<E> {
 
     private static final long serialVersionUID = -4300926546619394005L;
+
+    private static final BasicLruCache<Class<? extends Enum>, Object[]> sharedConstantsCache
+            = new BasicLruCache<Class<? extends Enum>, Object[]>(64) {
+        @Override protected Object[] create(Class<? extends Enum> enumType) {
+            Method method = (Method) Class.getDeclaredConstructorOrMethod(
+                    enumType, "values", EmptyArray.CLASS);
+            try {
+                return (Object[]) method.invoke((Object[]) null);
+            } catch (IllegalAccessException impossible) {
+                throw new AssertionError();
+            } catch (InvocationTargetException impossible) {
+                throw new AssertionError();
+            }
+        }
+    };
 
     private final String name;
 
@@ -113,8 +126,7 @@ public abstract class Enum<E extends Enum<E>> implements Serializable,
      */
     @Override
     protected final Object clone() throws CloneNotSupportedException {
-        // luni.4C=Enums may not be cloned
-        throw new CloneNotSupportedException(Messages.getString("luni.4C")); //$NON-NLS-1$
+        throw new CloneNotSupportedException("Enums may not be cloned");
     }
 
     /**
@@ -166,55 +178,38 @@ public abstract class Enum<E extends Enum<E>> implements Serializable,
      *             have a constant value called {@code name}.
      */
     public static <T extends Enum<T>> T valueOf(Class<T> enumType, String name) {
-        if ((enumType == null) || (name == null)) {
-            // luni.4D=Argument must not be null
-            throw new NullPointerException(Messages.getString("luni.4D")); //$NON-NLS-1$
+        if (enumType == null || name == null) {
+            throw new NullPointerException("enumType == null || name == null");
         }
-        T[] values = getValues(enumType);
-        if (values == null) {
-            // luni.4E={0} is not an enum type
-            throw new IllegalArgumentException(Messages.getString("luni.4E", enumType)); //$NON-NLS-1$
+        if (!enumType.isEnum()) {
+            throw new IllegalArgumentException(enumType + " is not an enum type");
         }
-        for (T enumConst : values) {
-            if (enumConst.name.equals(name)) {
-                return enumConst;
+        for (T value : getSharedConstants(enumType)) {
+            if (name.equals(value.name())) {
+                return value;
             }
         }
-        // luni.4F={0} is not a constant in the enum type {1}
-        throw new IllegalArgumentException(Messages.getString("luni.4F", name, //$NON-NLS-1$
-                enumType));
+        throw new IllegalArgumentException(name + " is not a constant in " + enumType.getName());
     }
-
-    /*
-     * Helper to invoke the values() static method on T and answer the result.
-     * Returns null if there is a problem.
-     */
-    @SuppressWarnings("unchecked")
-    static <T extends Enum<T>> T[] getValues(final Class<T> enumType) {
-        try {
-            Method values = AccessController
-                    .doPrivileged(new PrivilegedExceptionAction<Method>() {
-                        public Method run() throws Exception {
-                            Method valsMethod = enumType.getMethod("values", //$NON-NLS-1$
-                                    (Class[]) null);
-                            valsMethod.setAccessible(true);
-                            return valsMethod;
-                        }
-                    });
-            return (T[]) values.invoke(enumType, (Object[])null);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-    
 
     /**
-     * All enum classes should not have <code>finalize</code> methods.
+     * Returns a shared, mutable array containing the constants of this enum. It
+     * is an error to modify the returned array.
+     *
+     * @hide
+     */
+    @SuppressWarnings("unchecked") // the cache always returns the type matching enumType
+    public static <T extends Enum<T>> T[] getSharedConstants(Class<T> enumType) {
+        return (T[]) sharedConstantsCache.get(enumType);
+                        }
+
+    /**
+     * Enum types may not have finalizers.
      * 
      * @since 1.6
      */
     @Override
+    @SuppressWarnings("FinalizeDoesntCallSuperFinalize")
     protected final void finalize() {
-        // should not have this method
     }
 }

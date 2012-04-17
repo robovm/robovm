@@ -38,13 +38,12 @@ public class Observable {
      * Constructs a new {@code Observable} object.
      */
     public Observable() {
-        super();
     }
 
     /**
      * Adds the specified observer to the list of observers. If it is already
      * registered, it is not added a second time.
-     * 
+     *
      * @param observer
      *            the Observer to add.
      */
@@ -68,7 +67,7 @@ public class Observable {
 
     /**
      * Returns the number of observers registered to this {@code Observable}.
-     * 
+     *
      * @return the number of observers.
      */
     public int countObservers() {
@@ -78,7 +77,7 @@ public class Observable {
     /**
      * Removes the specified observer from the list of observers. Passing null
      * won't do anything.
-     * 
+     *
      * @param observer
      *            the observer to remove.
      */
@@ -95,7 +94,7 @@ public class Observable {
 
     /**
      * Returns the changed flag for this {@code Observable}.
-     * 
+     *
      * @return {@code true} when the changed flag for this {@code Observable} is
      *         set, {@code false} otherwise.
      */
@@ -118,7 +117,7 @@ public class Observable {
      * If {@code hasChanged()} returns {@code true}, calls the {@code update()}
      * method for every Observer in the list of observers using the specified
      * argument. Afterwards calls {@code clearChanged()}.
-     * 
+     *
      * @param data
      *            the argument passed to {@code update()}.
      */

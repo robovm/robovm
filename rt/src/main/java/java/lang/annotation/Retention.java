@@ -22,18 +22,11 @@ package java.lang.annotation;
  * annotation. If the retention annotation is not set {@code
  * RetentionPolicy.CLASS} is used as default retention.
  *
- * @see RetentionPolicy
  * @since 1.5
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)
 public @interface Retention {
-    
-    /**
-     * Returns the retention policy for the annotation.
-     * 
-     * @return a retention policy as defined in {@code RetentionPolicy}
-     */
     RetentionPolicy value();
 }

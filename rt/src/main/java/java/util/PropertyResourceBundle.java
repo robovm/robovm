@@ -25,7 +25,7 @@ import java.io.Reader;
  * {@code PropertyResourceBundle} loads resources from an {@code InputStream}. All resources are
  * Strings. The resources must be of the form {@code key=value}, one
  * resource per line (see Properties).
- * 
+ *
  * @see ResourceBundle
  * @see Properties
  * @since 1.1
@@ -37,7 +37,7 @@ public class PropertyResourceBundle extends ResourceBundle {
     /**
      * Constructs a new instance of {@code PropertyResourceBundle} and loads the
      * properties file from the specified {@code InputStream}.
-     * 
+     *
      * @param stream
      *            the {@code InputStream}.
      * @throws IOException
@@ -45,19 +45,17 @@ public class PropertyResourceBundle extends ResourceBundle {
      *             {@code InputStream}.
      */
     public PropertyResourceBundle(InputStream stream) throws IOException {
-		if( null == stream ) {
-			throw new NullPointerException();
-		}
+        if (stream == null) {
+            throw new NullPointerException();
+        }
         resources = new Properties();
         resources.load(stream);
-	}
-    
+    }
+
     /**
-     * Constructs a new instance of PropertyResourceBundle and loads the
-     * properties from the reader.
-     * 
-     * @param reader
-     *            the input reader
+     * Constructs a new resource bundle with properties read from {@code reader}.
+     *
+     * @param reader the {@code Reader}
      * @throws IOException
      * @since 1.6
      */
@@ -65,28 +63,16 @@ public class PropertyResourceBundle extends ResourceBundle {
         resources = new Properties();
         resources.load(reader);
     }
-    
-    /**
-     * Answers a set of the keys in this ResourceBundle but not in its parents.
-     * 
-     * @return a set of the keys in this ResourceBundle but not in its parents.
-     * @since 1.6
-     */
-    protected Set<String> handleKeySet(){                
+
+    protected Set<String> handleKeySet(){
         return resources.stringPropertyNames();
     }
-    
+
     @SuppressWarnings("unchecked")
     private Enumeration<String> getLocalKeys() {
         return (Enumeration<String>) resources.propertyNames();
     }
 
-    /**
-     * Answers the names of the resources contained in this
-     * PropertyResourceBundle.
-     * 
-     * @return an Enumeration of the resource names
-     */
     @Override
     public Enumeration<String> getKeys() {
         if (parent == null) {
@@ -135,14 +121,6 @@ public class PropertyResourceBundle extends ResourceBundle {
         };
     }
 
-    /**
-     * Answers the named resource from this PropertyResourceBundle, or null if
-     * the resource is not found.
-     * 
-     * @param key
-     *            the name of the resource
-     * @return the resource object
-     */
     @Override
     public Object handleGetObject(String key) {
         return resources.get(key);

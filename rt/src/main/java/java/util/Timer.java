@@ -17,42 +17,37 @@
 
 package java.util;
 
-import org.apache.harmony.luni.internal.nls.Messages;
-
 /**
- * {@code Timer}s are used to schedule jobs for execution in a background process. A
- * single thread is used for the scheduling and this thread has the option of
- * being a daemon thread. By calling {@code cancel} you can terminate a
- * {@code Timer} and its associated thread. All tasks which are scheduled to run after
- * this point are cancelled. Tasks are executed sequentially but are subject to
- * the delays from other tasks run methods. If a specific task takes an
- * excessive amount of time to run it may impact the time at which subsequent
- * tasks may run.
- * <p>
+ * Timers schedule one-shot or recurring {@link TimerTask tasks} for execution.
+ * Prefer {@link java.util.concurrent.ScheduledThreadPoolExecutor
+ * ScheduledThreadPoolExecutor} for new code.
  *
- * The {@code TimerTask} does not offer any guarantees about the real-time nature of
- * scheduling tasks as its underlying implementation relies on the
- * {@code Object.wait(long)} method.
- * <p>
- * Multiple threads can share a single {@code Timer} without the need for their own
+ * <p>Each timer has one thread on which tasks are executed sequentially. When
+ * this thread is busy running a task, runnable tasks may be subject to delays.
+ *
+ * <p>One-shot are scheduled to run at an absolute time or after a relative
+ * delay.
+ *
+ * <p>Recurring tasks are scheduled with either a fixed period or a fixed rate:
+ * <ul>
+ *   <li>With the default <strong>fixed-period execution</strong>, each
+ *       successive run of a task is scheduled relative to the start time of
+ *       the previous run, so two runs are never fired closer together in time
+ *       than the specified {@code period}.
+ *   <li>With <strong>fixed-rate execution</strong>, the start time of each
+ *       successive run of a task is scheduled without regard for when the
+ *       previous run took place. This may result in a series of bunched-up runs
+ *       (one launched immediately after another) if delays prevent the timer
+ *       from starting tasks on time.
+ * </ul>
+ *
+ * <p>When a timer is no longer needed, users should call {@link #cancel}, which
+ * releases the timer's thread and other resources. Timers not explicitly
+ * cancelled may hold resources indefinitely.
+ *
+ * <p>This class does not offer guarantees about the real-time nature of task
+ * scheduling. Multiple threads can share a single timer without
  * synchronization.
- * <p>
- * A {@code Timer} can be set to schedule tasks either at a fixed rate or
- * with a fixed period. Fixed-period execution is the default.
- * <p>
- * The difference between fixed-rate and fixed-period execution
- * is the following:  With fixed-rate execution, the start time of each
- * successive run of the task is scheduled in absolute terms without regard for when the previous
- * task run actually took place. This can result in a series of bunched-up runs
- * (one launched immediately after another) if busy resources or other
- * system delays prevent the {@code Timer} from firing for an extended time.
- * With fixed-period execution, each successive run of the
- * task is scheduled relative to the start time of the previous run of the
- * task, so two runs of the task are never fired closer together in time than
- * the specified {@code period}.
- *
- * @see TimerTask
- * @see java.lang.Object#wait(long)
  */
 public class Timer {
 
@@ -180,14 +175,14 @@ public class Timer {
         private boolean finished;
 
         /**
-         * Vector consists of scheduled events, sorted according to
+         * Contains scheduled events, sorted according to
          * {@code when} field of TaskScheduled object.
          */
         private TimerHeap tasks = new TimerHeap();
 
         /**
          * Starts a new timer.
-         * 
+         *
          * @param name thread's name
          * @param isDaemon daemon thread or not
          */
@@ -324,29 +319,31 @@ public class Timer {
         }
 
     }
-    
-	private static final class FinalizerHelper {
-		private final TimerImpl impl;
-		
-		FinalizerHelper(TimerImpl impl) {
-			super();
-			this.impl = impl;
-		}
-		
-		@Override
-		protected void finalize() {
-			synchronized (impl) {
-				impl.finished = true;
-				impl.notify();
-			}
-		}
-	}
-	
-	private static long timerId;
-	
-	private synchronized static long nextId() {
-		return timerId++;
-	}
+
+    private static final class FinalizerHelper {
+        private final TimerImpl impl;
+
+        FinalizerHelper(TimerImpl impl) {
+            this.impl = impl;
+        }
+
+        @Override protected void finalize() throws Throwable {
+            try {
+                synchronized (impl) {
+                    impl.finished = true;
+                    impl.notify();
+                }
+            } finally {
+                super.finalize();
+            }
+        }
+    }
+
+    private static long timerId;
+
+    private synchronized static long nextId() {
+        return timerId++;
+    }
 
     /* This object will be used in synchronization purposes */
     private final TimerImpl impl;
@@ -364,14 +361,13 @@ public class Timer {
      * @throws NullPointerException is {@code name} is {@code null}
      */
     public Timer(String name, boolean isDaemon) {
-    	super();
-    	if (name == null){
-    		throw new NullPointerException("name is null");
-    	}
+        if (name == null) {
+            throw new NullPointerException("name is null");
+        }
         this.impl = new TimerImpl(name, isDaemon);
         this.finalizer = new FinalizerHelper(impl);
     }
-    
+
     /**
      * Creates a new named {@code Timer} which does not run as a daemon thread.
      *
@@ -381,7 +377,7 @@ public class Timer {
     public Timer(String name) {
         this(name, false);
     }
-    
+
     /**
      * Creates a new {@code Timer} which may be specified to be run as a daemon thread.
      *
@@ -399,7 +395,7 @@ public class Timer {
     }
 
     /**
-     * Cancels the {@code Timer} and removes any scheduled tasks. If there is a
+     * Cancels the {@code Timer} and all scheduled tasks. If there is a
      * currently running task it is not affected. No more tasks may be scheduled
      * on this {@code Timer}. Subsequent calls do nothing.
      */
@@ -473,7 +469,7 @@ public class Timer {
      * @param period
      *            amount of time in milliseconds between subsequent executions.
      * @throws IllegalArgumentException
-     *                if {@code delay < 0} or {@code period < 0}.
+     *                if {@code delay < 0} or {@code period <= 0}.
      * @throws IllegalStateException
      *                if the {@code Timer} has been canceled, or if the task has been
      *                scheduled or canceled.
@@ -496,7 +492,7 @@ public class Timer {
      * @param period
      *            amount of time in milliseconds between subsequent executions.
      * @throws IllegalArgumentException
-     *                if {@code when.getTime() < 0} or {@code period < 0}.
+     *                if {@code when.getTime() < 0} or {@code period <= 0}.
      * @throws IllegalStateException
      *                if the {@code Timer} has been canceled, or if the task has been
      *                scheduled or canceled.
@@ -520,7 +516,7 @@ public class Timer {
      * @param period
      *            amount of time in milliseconds between subsequent executions.
      * @throws IllegalArgumentException
-     *                if {@code delay < 0} or {@code period < 0}.
+     *                if {@code delay < 0} or {@code period <= 0}.
      * @throws IllegalStateException
      *                if the {@code Timer} has been canceled, or if the task has been
      *                scheduled or canceled.
@@ -543,7 +539,7 @@ public class Timer {
      * @param period
      *            amount of time in milliseconds between subsequent executions.
      * @throws IllegalArgumentException
-     *                if {@code when.getTime() < 0} or {@code period < 0}.
+     *                if {@code when.getTime() < 0} or {@code period <= 0}.
      * @throws IllegalStateException
      *                if the {@code Timer} has been canceled, or if the task has been
      *                scheduled or canceled.
@@ -559,26 +555,25 @@ public class Timer {
     /*
      * Schedule a task.
      */
-    private void scheduleImpl(TimerTask task, long delay, long period,
-            boolean fixed) {
+    private void scheduleImpl(TimerTask task, long delay, long period, boolean fixed) {
         synchronized (impl) {
             if (impl.cancelled) {
-                throw new IllegalStateException(Messages.getString("luni.41")); //$NON-NLS-1$
+                throw new IllegalStateException("Timer was canceled");
             }
 
             long when = delay + System.currentTimeMillis();
 
             if (when < 0) {
-                throw new IllegalArgumentException(Messages.getString("luni.42")); //$NON-NLS-1$
+                throw new IllegalArgumentException("Illegal delay to start the TimerTask: " + when);
             }
 
             synchronized (task.lock) {
                 if (task.isScheduled()) {
-                    throw new IllegalStateException(Messages.getString("luni.43")); //$NON-NLS-1$
+                    throw new IllegalStateException("TimerTask is scheduled already");
                 }
 
                 if (task.cancelled) {
-                    throw new IllegalStateException(Messages.getString("luni.44")); //$NON-NLS-1$
+                    throw new IllegalStateException("TimerTask is canceled");
                 }
 
                 task.when = when;

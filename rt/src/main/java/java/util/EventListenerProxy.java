@@ -27,18 +27,17 @@ public abstract class EventListenerProxy implements EventListener {
 
     /**
      * Creates a new {@code EventListener} proxy instance.
-     * 
+     *
      * @param listener
      *            the listener wrapped by this proxy.
      */
     public EventListenerProxy(EventListener listener) {
-        super();
         this.listener = listener;
     }
 
     /**
      * Returns the wrapped {@code EventListener}.
-     * 
+     *
      * @return the wrapped {@code EventListener}.
      */
     public EventListener getListener() {

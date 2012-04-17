@@ -34,7 +34,6 @@ public class IncompatibleClassChangeError extends LinkageError {
      * current stack trace.
      */
     public IncompatibleClassChangeError() {
-        super();
     }
 
     /**

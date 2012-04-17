@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,17 +26,17 @@ public class DuplicateFormatFlagsException extends IllegalFormatException {
 
     private static final long serialVersionUID = 18890531L;
 
-    private String flags;
+    private final String flags;
 
     /**
      * Constructs a new {@code DuplicateFormatFlagsException} with the flags
      * containing duplicates.
-     * 
+     *
      * @param f
      *           the format flags that contain a duplicate flag.
      */
     public DuplicateFormatFlagsException(String f) {
-        if (null == f) {
+        if (f == null) {
             throw new NullPointerException();
         }
         flags = f;
@@ -44,25 +44,15 @@ public class DuplicateFormatFlagsException extends IllegalFormatException {
 
     /**
      * Returns the format flags that contain a duplicate flag.
-     * 
+     *
      * @return the format flags that contain a duplicate flag.
      */
     public String getFlags() {
         return flags;
     }
 
-    /**
-     * Returns the message string of the DuplicateFormatFlagsException.
-     * 
-     * @return the message string of the DuplicateFormatFlagsException.
-     */
     @Override
     public String getMessage() {
-        StringBuilder buffer = new StringBuilder();
-        buffer.append("Flags of the DuplicateFormatFlagsException is'");
-        buffer.append(flags);
-        buffer.append("'");
-        return buffer.toString();
+        return flags;
     }
-
 }

@@ -1,11 +1,12 @@
-//SAX parser factory.
-//http://www.saxproject.org
-//No warranty; no copyright -- use this as you will.
-//$Id: ParserFactory.java 670295 2008-06-22 01:46:43Z mrglavas $
+// SAX parser factory.
+// http://www.saxproject.org
+// No warranty; no copyright -- use this as you will.
+// $Id: ParserFactory.java,v 1.7 2002/01/30 20:52:36 dbrownell Exp $
 
 package org.xml.sax.helpers;
 
 import org.xml.sax.Parser;
+
 
 /**
  * Java-specific class for dynamically loading SAX parsers.
@@ -39,22 +40,25 @@ import org.xml.sax.Parser;
  * @author David Megginson
  * @version 2.0.1 (sax2r2)
  */
+@Deprecated
 public class ParserFactory {
-    
-    
+
+
     /**
      * Private null constructor.
      */
     private ParserFactory ()
     {
     }
-    
-    
+
+
     /**
      * Create a new SAX parser using the `org.xml.sax.parser' system property.
      *
      * <p>The named class must exist and must implement the
      * {@link org.xml.sax.Parser Parser} interface.</p>
+     *
+     * @return the newly created parser.
      *
      * @exception java.lang.NullPointerException There is no value
      *            for the `org.xml.sax.parser' system property.
@@ -73,25 +77,27 @@ public class ParserFactory {
      */
     public static Parser makeParser ()
     throws ClassNotFoundException,
-    IllegalAccessException, 
+    IllegalAccessException,
     InstantiationException,
     NullPointerException,
     ClassCastException
     {
-        String className = SecuritySupport.getSystemProperty("org.xml.sax.parser");
-        if (className == null) {
-            throw new NullPointerException("No value for sax.parser property");
-        } else {
-            return makeParser(className);
-        }
+    String className = System.getProperty("org.xml.sax.parser");
+    if (className == null) {
+        throw new NullPointerException("No value for sax.parser property");
+    } else {
+        return makeParser(className);
     }
-    
-    
+    }
+
+
     /**
      * Create a new SAX parser object using the class name provided.
      *
      * <p>The named class must exist and must implement the
      * {@link org.xml.sax.Parser Parser} interface.</p>
+     *
+     * @return the newly created parser.
      *
      * @param className A string containing the name of the
      *                  SAX parser class.
@@ -110,13 +116,13 @@ public class ParserFactory {
      */
     public static Parser makeParser (String className)
     throws ClassNotFoundException,
-    IllegalAccessException, 
+    IllegalAccessException,
     InstantiationException,
     ClassCastException
     {
-        return (Parser) NewInstance.newInstance (
-                NewInstance.getClassLoader (), className);
+    return (Parser) NewInstance.newInstance (
+        NewInstance.getClassLoader (), className);
     }
-    
+
 }
 

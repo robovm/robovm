@@ -18,12 +18,9 @@
 package java.lang;
 
 /**
- * Placeholder class for environments which explicitly manage the action of a
- * <em>Just In Time (JIT)</em> compiler. This class is usually implemented by
- * the virtual machine vendor.
+ * Does nothing on Android.
  */
 public final class Compiler {
-
     /**
      * Prevent this class from being instantiated.
      */
@@ -34,7 +31,8 @@ public final class Compiler {
     /**
      * Executes an operation according to the specified command object. This
      * method is the low-level interface to the JIT compiler. It may return any
-     * object or {@code null} if no JIT compiler is available.
+     * object or {@code null} if no JIT compiler is available. Returns null
+     * on Android, whether or not the system has a JIT.
      *
      * @param cmd
      *            the command object for the JIT compiler.
@@ -46,7 +44,8 @@ public final class Compiler {
 
     /**
      * Compiles the specified class using the JIT compiler and indicates if
-     * compilation has been successful.
+     * compilation has been successful. Does nothing and returns false on
+     * Android.
      *
      * @param classToCompile
      *            java.lang.Class the class to JIT compile
@@ -60,7 +59,8 @@ public final class Compiler {
 
     /**
      * Compiles all classes whose name matches the specified name using the JIT
-     * compiler and indicates if compilation has been successful.
+     * compiler and indicates if compilation has been successful. Does nothing
+     * and returns false on Android.
      *
      * @param nameRoot
      *            the string to match class names with.
@@ -73,17 +73,14 @@ public final class Compiler {
     }
 
     /**
-     * Disables the JIT compiler.
+     * Disables the JIT compiler. Does nothing on Android.
      */
     public static void disable() {
-        return;
     }
 
     /**
-     * Enables the JIT compiler.
+     * Enables the JIT compiler. Does nothing on Android.
      */
     public static void enable() {
-        return;
     }
-
 }

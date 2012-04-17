@@ -17,7 +17,7 @@
 
 package java.io;
 
-import org.apache.harmony.luni.internal.nls.Messages;
+import java.util.Arrays;
 
 /**
  * Wraps an existing {@link OutputStream} and <em>buffers</em> the output.
@@ -47,34 +47,27 @@ public class BufferedOutputStream extends FilterOutputStream {
     protected int count;
 
     /**
-     * Constructs a new {@code BufferedOutputStream} on the {@link OutputStream}
-     * {@code out}. The buffer size is set to the default value of 8 KB.
+     * Constructs a new {@code BufferedOutputStream}, providing {@code out} with a buffer
+     * of 8192 bytes.
      * 
-     * @param out
-     *            the {@code OutputStream} for which write operations are
-     *            buffered.
+     * @param out the {@code OutputStream} the buffer writes to.
      */
     public BufferedOutputStream(OutputStream out) {
-        super(out);
-        buf = new byte[8192];
+        this(out, 8192);
     }
 
     /**
-     * Constructs a new {@code BufferedOutputStream} on the {@link OutputStream}
-     * {@code out}. The buffer size is set to {@code size}.
+     * Constructs a new {@code BufferedOutputStream}, providing {@code out} with {@code size} bytes
+     * of buffer.
      * 
-     * @param out
-     *            the output stream for which write operations are buffered.
-     * @param size
-     *            the size of the buffer in bytes.
-     * @throws IllegalArgumentException
-     *             if {@code size <= 0}.
+     * @param out the {@code OutputStream} the buffer writes to.
+     * @param size the size of buffer in bytes.
+     * @throws IllegalArgumentException if {@code size <= 0}.
      */
     public BufferedOutputStream(OutputStream out, int size) {
         super(out);
         if (size <= 0) {
-            // luni.A3=size must be > 0
-            throw new IllegalArgumentException(Messages.getString("luni.A3")); //$NON-NLS-1$
+            throw new IllegalArgumentException("size <= 0");
         }
         buf = new byte[size];
     }
@@ -88,8 +81,15 @@ public class BufferedOutputStream extends FilterOutputStream {
      */
     @Override
     public synchronized void flush() throws IOException {
+        checkNotClosed();
         flushInternal();
         out.flush();
+    }
+
+    private void checkNotClosed() throws IOException {
+        if (buf == null) {
+            throw new IOException("BufferedOutputStream is closed");
+        }
     }
 
     /**
@@ -118,41 +118,27 @@ public class BufferedOutputStream extends FilterOutputStream {
      *             If offset or count is outside of bounds.
      */
     @Override
-    public synchronized void write(byte[] buffer, int offset, int length)
-            throws IOException {
-        byte[] internalBuffer = buf;
+    public synchronized void write(byte[] buffer, int offset, int length) throws IOException {
+        checkNotClosed();
 
-        if (internalBuffer != null && length >= internalBuffer.length) {
+        if (buffer == null) {
+            throw new NullPointerException("buffer == null");
+        }
+
+        byte[] internalBuffer = buf;
+        if (length >= internalBuffer.length) {
             flushInternal();
             out.write(buffer, offset, length);
             return;
         }
 
-        if (buffer == null) {
-            // luni.11=buffer is null
-            throw new NullPointerException(Messages.getString("luni.11")); //$NON-NLS-1$
-        }
-        
-        if (offset < 0 || offset > buffer.length - length) {
-            // luni.12=Offset out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.12", offset)); //$NON-NLS-1$
-        
-        }
-        if (length < 0) {
-            // luni.18=Length out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.18", length)); //$NON-NLS-1$
-        }
-
-        if (internalBuffer == null) {
-            throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
-        }
+        Arrays.checkOffsetAndCount(buffer.length, offset, length);
 
         // flush the internal buffer first if we have not enough space left
-        if (length >= (internalBuffer.length - count)) {
+        if (length > (internalBuffer.length - count)) {
             flushInternal();
         }
 
-        // the length is always less than (internalBuffer.length - count) here so arraycopy is safe
         System.arraycopy(buffer, offset, internalBuffer, count, length);
         count += length;
     }
@@ -183,16 +169,12 @@ public class BufferedOutputStream extends FilterOutputStream {
      */
     @Override
     public synchronized void write(int oneByte) throws IOException {
-        byte[] internalBuffer = buf;
-        if (internalBuffer == null) {
-            throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
-        }
-
-        if (count == internalBuffer.length) {
-            out.write(internalBuffer, 0, count);
+        checkNotClosed();
+        if (count == buf.length) {
+            out.write(buf, 0, count);
             count = 0;
         }
-        internalBuffer[count++] = (byte) oneByte;
+        buf[count++] = (byte) oneByte;
     }
 
     /**

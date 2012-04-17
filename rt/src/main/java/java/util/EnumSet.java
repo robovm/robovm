@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,7 +22,6 @@ import java.io.Serializable;
  */
 public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E>
         implements Cloneable, Serializable {
-
     private static final long serialVersionUID = 1009687484059888093L;
 
     final Class<E> elementClass;
@@ -34,7 +33,7 @@ public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E>
     /**
      * Creates an empty enum set. The permitted elements are of type
      * Class&lt;E&gt;.
-     * 
+     *
      * @param elementType
      *            the class object for the elements contained.
      * @return an empty enum set, with permitted elements of type {@code
@@ -44,18 +43,19 @@ public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E>
      */
     public static <E extends Enum<E>> EnumSet<E> noneOf(Class<E> elementType) {
         if (!elementType.isEnum()) {
-            throw new ClassCastException();
+            throw new ClassCastException(elementType.getClass().getName() + " is not an Enum");
         }
-        if (elementType.getEnumConstants().length <= 64) {
-            return new MiniEnumSet<E>(elementType);
+        E[] enums = Enum.getSharedConstants(elementType);
+        if (enums.length <= 64) {
+            return new MiniEnumSet<E>(elementType, enums);
         }
-        return new HugeEnumSet<E>(elementType);
+        return new HugeEnumSet<E>(elementType, enums);
     }
 
     /**
      * Creates an enum set filled with all the enum elements of the specified
      * {@code elementType}.
-     * 
+     *
      * @param elementType
      *            the class object for the elements contained.
      * @return an enum set with elements solely from the specified element type.
@@ -72,7 +72,7 @@ public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E>
      * Creates an enum set. All the contained elements are of type
      * Class&lt;E&gt;, and the contained elements are the same as those
      * contained in {@code s}.
-     * 
+     *
      * @param s
      *            the enum set from which to copy.
      * @return an enum set with all the elements from the specified enum set.
@@ -89,7 +89,7 @@ public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E>
      * Creates an enum set. The contained elements are the same as those
      * contained in collection {@code c}. If c is an enum set, invoking this
      * method is the same as invoking {@link #copyOf(EnumSet)}.
-     * 
+     *
      * @param c
      *            the collection from which to copy. if it is not an enum set,
      *            it must not be empty.
@@ -119,7 +119,7 @@ public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E>
     /**
      * Creates an enum set. All the contained elements complement those from the
      * specified enum set.
-     * 
+     *
      * @param s
      *            the specified enum set.
      * @return an enum set with all the elements complementary to those from the
@@ -141,7 +141,7 @@ public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E>
      * six overloadings of the method. They accept from one to five elements
      * respectively. The sixth one receives an arbitrary number of elements, and
      * runs slower than those that only receive a fixed number of elements.
-     * 
+     *
      * @param e
      *            the element to be initially contained.
      * @return an enum set containing the specified element.
@@ -159,7 +159,7 @@ public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E>
      * six overloadings of the method. They accept from one to five elements
      * respectively. The sixth one receives an arbitrary number of elements, and
      * runs slower than those that only receive a fixed number of elements.
-     * 
+     *
      * @param e1
      *            the initially contained element.
      * @param e2
@@ -179,7 +179,7 @@ public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E>
      * six overloadings of the method. They accept from one to five elements
      * respectively. The sixth one receives an arbitrary number of elements, and
      * runs slower than those that only receive a fixed number of elements.
-     * 
+     *
      * @param e1
      *            the initially contained element.
      * @param e2
@@ -201,7 +201,7 @@ public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E>
      * six overloadings of the method. They accept from one to five elements
      * respectively. The sixth one receives an arbitrary number of elements, and
      * runs slower than those that only receive a fixed number of elements.
-     * 
+     *
      * @param e1
      *            the initially contained element.
      * @param e2
@@ -225,7 +225,7 @@ public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E>
      * six overloadings of the method. They accept from one to five elements
      * respectively. The sixth one receives an arbitrary number of elements, and
      * runs slower than those that only receive a fixed number of elements.
-     * 
+     *
      * @param e1
      *            the initially contained element.
      * @param e2
@@ -250,7 +250,7 @@ public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E>
      * Creates a new enum set, containing only the specified elements. It can
      * receive an arbitrary number of elements, and runs slower than those only
      * receiving a fixed number of elements.
-     * 
+     *
      * @param start
      *            the first initially contained element.
      * @param others
@@ -271,7 +271,7 @@ public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E>
      * Creates an enum set containing all the elements within the range defined
      * by {@code start} and {@code end} (inclusive). All the elements must be in
      * order.
-     * 
+     *
      * @param start
      *            the element used to define the beginning of the range.
      * @param end
@@ -296,7 +296,7 @@ public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E>
     /**
      * Creates a new enum set with the same elements as those contained in this
      * enum set.
-     * 
+     *
      * @return a new enum set with the same elements as those contained in this
      *         enum set.
      */

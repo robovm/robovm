@@ -30,7 +30,6 @@ public class IllegalArgumentException extends RuntimeException {
      * current stack trace.
      */
     public IllegalArgumentException() {
-        super();
     }
 
     /**

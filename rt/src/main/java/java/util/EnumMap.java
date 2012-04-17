@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,7 +26,11 @@ import java.lang.reflect.Array;
  * An {@code Map} specialized for use with {@code Enum} types as keys.
  */
 public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
-        Serializable, Cloneable {
+        Serializable, Cloneable, Map<K, V> {
+
+    // BEGIN android-changed
+    // added implements Map<K, V> for apicheck
+    // END android-changed
 
     private static final long serialVersionUID = 458661240069192865L;
 
@@ -68,8 +72,11 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
                 Object enumKey = entry.getKey();
                 if (key.equals(enumKey)) {
                     Object theValue = entry.getValue();
-                    isEqual = enumMap.values[ordinal] == null ? null == theValue
-                            : enumMap.values[ordinal].equals(theValue);
+                    if (enumMap.values[ordinal] == null) {
+                        isEqual = (theValue == null);
+                    } else {
+                        isEqual = enumMap.values[ordinal].equals(theValue);
+                    }
                 }
             }
             return isEqual;
@@ -108,8 +115,9 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
         public String toString() {
             StringBuilder result = new StringBuilder(enumMap.keys[ordinal]
                     .toString());
-            result.append("="); //$NON-NLS-1$
-            result.append(enumMap.values[ordinal].toString());
+            result.append("=");
+            result.append(enumMap.values[ordinal] == null
+                    ? "null" : enumMap.values[ordinal].toString());
             return result.toString();
         }
 
@@ -257,9 +265,9 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
 
         @Override
         public boolean remove(Object object) {
-            if (null == object) {
+            if (object == null) {
                 for (int i = 0; i < enumMap.enumSize; i++) {
-                    if (enumMap.hasMapping[i] && null == enumMap.values[i]) {
+                    if (enumMap.hasMapping[i] && enumMap.values[i] == null) {
                         enumMap.remove(enumMap.keys[i]);
                         return true;
                     }
@@ -321,8 +329,11 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
                 Object enumValue = ((Map.Entry) object).getValue();
                 if (enumMap.containsKey(enumKey)) {
                     VT value = enumMap.get(enumKey);
-                    isEqual = (value == null ? null == enumValue : value
-                            .equals(enumValue));
+                    if (value == null) {
+                        isEqual = enumValue == null;
+                    } else {
+                        isEqual = value.equals(enumValue);
+                    }
                 }
             }
             return isEqual;
@@ -411,7 +422,7 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
      * is an {@code EnumMap} instance, this constructor behaves in the exactly the same
      * way as {@link EnumMap#EnumMap(EnumMap)}}. Otherwise, the given map
      * should contain at least one mapping.
-     * 
+     *
      * @param map
      *            the map from which this {@code EnumMap} is initialized.
      * @throws IllegalArgumentException
@@ -425,7 +436,7 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
         if (map instanceof EnumMap) {
             initialization((EnumMap<K, V>) map);
         } else {
-            if (0 == map.size()) {
+            if (map.size() == 0) {
                 throw new IllegalArgumentException();
             }
             Iterator<K> iter = map.keySet().iterator();
@@ -455,7 +466,7 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
 
     /**
      * Returns a shallow copy of this {@code EnumMap}.
-     * 
+     *
      * @return a shallow copy of this {@code EnumMap}.
      */
     @SuppressWarnings("unchecked")
@@ -466,13 +477,13 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
             enumMap.initialization(this);
             return enumMap;
         } catch (CloneNotSupportedException e) {
-            return null;
+            throw new AssertionError(e);
         }
     }
 
     /**
      * Returns whether this {@code EnumMap} contains the specified key.
-     * 
+     *
      * @param key
      *            the key to search for.
      * @return {@code true} if this {@code EnumMap} contains the specified key,
@@ -489,7 +500,7 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
 
     /**
      * Returns whether this {@code EnumMap} contains the specified value.
-     * 
+     *
      * @param value
      *            the value to search for.
      * @return {@code true} if this {@code EnumMap} contains the specified value,
@@ -497,9 +508,9 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
      */
     @Override
     public boolean containsValue(Object value) {
-        if (null == value) {
+        if (value == null) {
             for (int i = 0; i < enumSize; i++) {
-                if (hasMapping[i] && null == values[i]) {
+                if (hasMapping[i] && values[i] == null) {
                     return true;
                 }
             }
@@ -525,7 +536,7 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
      */
     @Override
     public Set<Map.Entry<K, V>> entrySet() {
-        if (null == entrySet) {
+        if (entrySet == null) {
             entrySet = new EnumMapEntrySet<K, V>(this);
         }
         return entrySet;
@@ -534,7 +545,7 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
     /**
      * Compares the argument to the receiver, and returns {@code true} if the
      * specified {@code Object} is an {@code EnumMap} and both {@code EnumMap}s contain the same mappings.
-     * 
+     *
      * @param object
      *            the {@code Object} to compare with this {@code EnumMap}.
      * @return boolean {@code true} if {@code object} is the same as this {@code EnumMap},
@@ -561,7 +572,7 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
 
     /**
      * Returns the value of the mapping with the specified key.
-     * 
+     *
      * @param key
      *            the key.
      * @return the value of the mapping with the specified key, or {@code null}
@@ -584,12 +595,12 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
      * <p>
      * The order of the set will be the order that the enum keys were declared
      * in.
-     * 
+     *
      * @return a {@code Set} of the keys.
      */
     @Override
     public Set<K> keySet() {
-        if (null == keySet) {
+        if (keySet == null) {
             keySet = new EnumMapKeySet<K, V>(this);
         }
         return keySet;
@@ -597,7 +608,7 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
 
     /**
      * Maps the specified key to the specified value.
-     * 
+     *
      * @param key
      *            the key.
      * @param value
@@ -623,7 +634,7 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
 
     /**
      * Copies every mapping in the specified {@code Map} to this {@code EnumMap}.
-     * 
+     *
      * @param map
      *            the {@code Map} to copy mappings from.
      * @throws UnsupportedOperationException
@@ -645,7 +656,7 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
 
     /**
      * Removes a mapping with the specified key from this {@code EnumMap}.
-     * 
+     *
      * @param key
      *            the key of the mapping to remove.
      * @return the value of the removed mapping or {@code null} if no mapping
@@ -671,7 +682,7 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
 
     /**
      * Returns the number of elements in this {@code EnumMap}.
-     * 
+     *
      * @return the number of elements in this {@code EnumMap}.
      */
     @Override
@@ -688,12 +699,12 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
      * <p>
      * The order of the values in the collection will be the order that their
      * corresponding enum keys were declared in.
-     * 
+     *
      * @return a collection of the values contained in this {@code EnumMap}.
      */
     @Override
     public Collection<V> values() {
-        if (null == valuesCollection) {
+        if (valuesCollection == null) {
             valuesCollection = new EnumMapValueCollection<K, V>(this);
         }
         return valuesCollection;
@@ -726,7 +737,7 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
     }
 
     private boolean isValidKeyType(Object key) {
-        if (null != key && keyType.isInstance(key)) {
+        if (key != null && keyType.isInstance(key)) {
             return true;
         }
         return false;
@@ -744,7 +755,7 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
 
     private void initialization(Class<K> type) {
         keyType = type;
-        keys = keyType.getEnumConstants();
+        keys = Enum.getSharedConstants(keyType);
         enumSize = keys.length;
         values = new Object[enumSize];
         hasMapping = new boolean[enumSize];
@@ -761,12 +772,10 @@ public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements
 
     @SuppressWarnings("unchecked")
     private V putImpl(K key, V value) {
-        if (null == key) {
+        if (key == null) {
             throw new NullPointerException();
         }
-        if (!isValidKeyType(key)) {
-            throw new ClassCastException();
-        }
+        keyType.cast(key); // Called to throw ClassCastException.
         int keyOrdinal = key.ordinal();
         if (!hasMapping[keyOrdinal]) {
             hasMapping[keyOrdinal] = true;

@@ -14,31 +14,121 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package java.lang;
 
 /**
  * The root class of the Java class hierarchy. All non-primitive types
  * (including arrays) inherit either directly or indirectly from this class.
- * <p>
- * {@code Object} provides some fundamental methods for accessing the
- * {@link Class} of an object, getting its {@link #hashCode()}, or checking
- * whether one object {@link #equals(Object)} another. The {@link #toString()}
- * method can be used to convert an object reference into a printable string and
- * is often overridden in subclasses.
- * <p>
- * The {@link #wait()} and {@link #notify()} methods provide a foundation for
- * synchronization, acquiring and releasing an internal monitor associated with
- * each {@code Object}.
+ *
+ * <a name="writing_equals"><h4>Writing a correct {@code equals} method</h4></a>
+ * <p>Follow this style to write a canonical {@code equals} method:
+ * <pre>
+ *   // Use @Override to avoid accidental overloading.
+ *   &#x0040;Override public boolean equals(Object o) {
+ *     // Return true if the objects are identical.
+ *     // (This is just an optimization, not required for correctness.)
+ *     if (this == o) {
+ *       return true;
+ *     }
+ *
+ *     // Return false if the other object has the wrong type.
+ *     // This type may be an interface depending on the interface's specification.
+ *     if (!(o instanceof MyType)) {
+ *       return false;
+ *     }
+ *
+ *     // Cast to the appropriate type.
+ *     // This will succeed because of the instanceof, and lets us access private fields.
+ *     MyType lhs = (MyType) o;
+ *
+ *     // Check each field. Primitive fields, reference fields, and nullable reference
+ *     // fields are all treated differently.
+ *     return primitiveField == lhs.primitiveField &amp;&amp;
+ *             referenceField.equals(lhs.referenceField) &amp;&amp;
+ *             (nullableField == null ? lhs.nullableField == null
+ *                                    : nullableField.equals(lhs.nullableField));
+ *   }
+ * </pre>
+ * <p>If you override {@code equals}, you should also override {@code hashCode}: equal
+ * instances must have equal hash codes.
+ *
+ * <p>See <i>Effective Java</i> item 8 for much more detail and clarification.
+ *
+ * <a name="writing_hashCode"><h4>Writing a correct {@code hashCode} method</h4></a>
+ * <p>Follow this style to write a canonical {@code hashCode} method:
+ * <pre>
+ *   &#x0040;Override public int hashCode() {
+ *     // Start with a non-zero constant.
+ *     int result = 17;
+ *
+ *     // Include a hash for each field.
+ *     result = 31 * result + (booleanField ? 1 : 0);
+ *
+ *     result = 31 * result + byteField;
+ *     result = 31 * result + charField;
+ *     result = 31 * result + shortField;
+ *     result = 31 * result + intField;
+ *
+ *     result = 31 * result + (int) (longField ^ (longField >>> 32));
+ *
+ *     result = 31 * result + Float.floatToIntBits(floatField);
+ *
+ *     long doubleFieldBits = Double.doubleToLongBits(doubleField);
+ *     result = 31 * result + (int) (doubleFieldBits ^ (doubleFieldBits >>> 32));
+ *
+ *     result = 31 * result + Arrays.hashCode(arrayField);
+ *
+ *     result = 31 * result + referenceField.hashCode();
+ *     result = 31 * result +
+ *         (nullableReferenceField == null ? 0
+ *                                         : nullableReferenceField.hashCode());
+ *
+ *     return result;
+ *   }
+ * </pre>
+ *
+ * <p>If you don't intend your type to be used as a hash key, don't simply rely on the default
+ * {@code hashCode} implementation, because that silently and non-obviously breaks any future
+ * code that does use your type as a hash key. You should throw instead:
+ * <pre>
+ *   &#x0040;Override public int hashCode() {
+ *     throw new UnsupportedOperationException();
+ *   }
+ * </pre>
+ *
+ * <p>See <i>Effective Java</i> item 9 for much more detail and clarification.
+ *
+ * <a name="writing_toString"><h4>Writing a useful {@code toString} method</h4></a>
+ * <p>For debugging convenience, it's common to override {@code toString} in this style:
+ * <pre>
+ *   &#x0040;Override public String toString() {
+ *     return getClass().getName() + "[" +
+ *         "primitiveField=" + primitiveField + ", " +
+ *         "referenceField=" + referenceField + ", " +
+ *         "arrayField=" + Arrays.toString(arrayField) + "]";
+ *   }
+ * </pre>
+ * <p>The set of fields to include is generally the same as those that would be tested
+ * in your {@code equals} implementation.
+ * <p>See <i>Effective Java</i> item 10 for much more detail and clarification.
  */
 public class Object {
-
-    /*
-     * This class must be implemented by the vm vendor. Object is the root of
-     * the java class hierarchy. All non-base types respond to the messages
-     * defined in this class.
-     */
-
     /**
      * Constructs a new instance of {@code Object}.
      */
@@ -62,29 +152,34 @@ public class Object {
      */
     protected Object clone() throws CloneNotSupportedException {
         if (!(this instanceof Cloneable)) {
-            throw new CloneNotSupportedException("Class does not implement Cloneable interface");
+            throw new CloneNotSupportedException("Class doesn't implement Cloneable");
         }
-        return nativeClone();
+
+        return internalClone((Cloneable) this);
     }
 
-    private native Object nativeClone();
+    /*
+     * Native helper method for cloning.
+     */
+    private native Object internalClone(Cloneable o);
     
     /**
      * Compares this instance with the specified object and indicates if they
      * are equal. In order to be equal, {@code o} must represent the same object
      * as this instance using a class-specific comparison. The general contract
-     * is that this comparison should be both transitive and reflexive.
-     * <p>
-     * The implementation in {@code Object} returns {@code true} only if {@code
-     * o} is the exact same object as the receiver (using the == operator for
-     * comparison). Subclasses often implement {@code equals(Object)} so that
-     * it takes into account the two object's types and states.
-     * <p>
-     * The general contract for the {@code equals(Object)} and {@link
+     * is that this comparison should be reflexive, symmetric, and transitive.
+     * Also, no object reference other than null is equal to null.
+     *
+     * <p>The default implementation returns {@code true} only if {@code this ==
+     * o}. See <a href="{@docRoot}reference/java/lang/Object.html#writing_equals">Writing a correct
+     * {@code equals} method</a>
+     * if you intend implementing your own {@code equals} method.
+     *
+     * <p>The general contract for the {@code equals} and {@link
      * #hashCode()} methods is that if {@code equals} returns {@code true} for
      * any two objects, then {@code hashCode()} must return the same value for
      * these objects. This means that subclasses of {@code Object} usually
-     * override either both methods or none of them.
+     * override either both methods or neither of them.
      *
      * @param o
      *            the object to compare this instance with.
@@ -97,56 +192,66 @@ public class Object {
     }
 
     /**
-     * Is called before the object's memory is being reclaimed by the VM. This
-     * can only happen once the VM has detected, during a run of the garbage
-     * collector, that the object is no longer reachable by any thread of the
-     * running application.
-     * <p>
-     * The method can be used to free system resources or perform other cleanup
-     * before the object is garbage collected. The default implementation of the
-     * method is empty, which is also expected by the VM, but subclasses can
-     * override {@code finalize()} as required. Uncaught exceptions which are
-     * thrown during the execution of this method cause it to terminate
-     * immediately but are otherwise ignored.
-     * <p>
-     * Note that the VM does guarantee that {@code finalize()} is called at most
-     * once for any object, but it doesn't guarantee when (if at all) {@code
-     * finalize()} will be called. For example, object B's {@code finalize()}
-     * can delay the execution of object A's {@code finalize()} method and
-     * therefore it can delay the reclamation of A's memory. To be safe, use a
-     * {@link java.lang.ref.ReferenceQueue}, because it provides more control
-     * over the way the VM deals with references during garbage collection.
+     * Invoked when the garbage collector has detected that this instance is no longer reachable.
+     * The default implementation does nothing, but this method can be overridden to free resources.
      *
-     * @throws Throwable
-     *             any exception which is raised during finalization; these are
-     *             ignored by the virtual machine.
+     * <p>Note that objects that override {@code finalize} are significantly more expensive than
+     * objects that don't. Finalizers may be run a long time after the object is no longer
+     * reachable, depending on memory pressure, so it's a bad idea to rely on them for cleanup.
+     * Note also that finalizers are run on a single VM-wide finalizer thread,
+     * so doing blocking work in a finalizer is a bad idea. A finalizer is usually only necessary
+     * for a class that has a native peer and needs to call a native method to destroy that peer.
+     * Even then, it's better to provide an explicit {@code close} method (and implement
+     * {@link java.io.Closeable}), and insist that callers manually dispose of instances. This
+     * works well for something like files, but less well for something like a {@code BigInteger}
+     * where typical calling code would have to deal with lots of temporaries. Unfortunately,
+     * code that creates lots of temporaries is the worst kind of code from the point of view of
+     * the single finalizer thread.
+     *
+     * <p>If you <i>must</i> use finalizers, consider at least providing your own
+     * {@link java.lang.ref.ReferenceQueue} and having your own thread process that queue.
+     *
+     * <p>Unlike constructors, finalizers are not automatically chained. You are responsible for
+     * calling {@code super.finalize()} yourself.
+     *
+     * <p>Uncaught exceptions thrown by finalizers are ignored and do not terminate the finalizer
+     * thread.
+     *
+     * See <i>Effective Java</i> Item 7, "Avoid finalizers" for more.
      */
+    @FindBugsSuppressWarnings("FI_EMPTY")
     protected void finalize() throws Throwable {
     }
 
     /**
-     * Returns the unique instance of {@link Class} which represents this
+     * Returns the unique instance of {@link Class} that represents this
      * object's class. Note that {@code getClass()} is a special case in that it
      * actually returns {@code Class<? extends Foo>} where {@code Foo} is the
-     * erasure of the type of expression {@code getClass()} was called upon.
+     * erasure of the type of the expression {@code getClass()} was called upon.
      * <p>
      * As an example, the following code actually compiles, although one might
      * think it shouldn't:
      * <p>
-     * <pre>
+     * <pre>{@code
      * List<Integer> l = new ArrayList<Integer>();
-     * Class<? extends List> c = l.getClass();
-     * </pre>
+     *   Class<? extends List> c = l.getClass();}</pre>
      *
      * @return this object's {@code Class} instance.
      */
-    public final native Class<? extends Object> getClass();
+    public final native Class<?> getClass();
 
     /**
      * Returns an integer hash code for this object. By contract, any two
-     * objects for which {@code equals(Object)} returns {@code true} must return
+     * objects for which {@link #equals} returns {@code true} must return
      * the same hash code value. This means that subclasses of {@code Object}
      * usually override both methods or neither method.
+     *
+     * <p>Note that hash values must not change over time unless information used in equals
+     * comparisons also changes.
+     *
+     * <p>See <a href="{@docRoot}reference/java/lang/Object.html#writing_hashCode">Writing a correct
+     * {@code hashCode} method</a>
+     * if you intend implementing your own {@code hashCode} method.
      *
      * @return this object's hash code.
      * @see #equals
@@ -157,7 +262,7 @@ public class Object {
      * Causes a thread which is waiting on this object's monitor (by means of
      * calling one of the {@code wait()} methods) to be woken up. If more than
      * one thread is waiting, one of them is chosen at the discretion of the
-     * virtual machine. The chosen thread will not run immediately. The thread
+     * VM. The chosen thread will not run immediately. The thread
      * that called {@code notify()} has to release the object's monitor first.
      * Also, the chosen thread still has to compete against other threads that
      * try to synchronize on the same object.
@@ -214,13 +319,12 @@ public class Object {
      * Returns a string containing a concise, human-readable description of this
      * object. Subclasses are encouraged to override this method and provide an
      * implementation that takes into account the object's type and data. The
-     * default implementation simply concatenates the class name, the '@' sign
-     * and a hexadecimal representation of the object's {@link #hashCode()},
-     * that is, it is equivalent to the following expression:
-     *
+     * default implementation is equivalent to the following expression:
      * <pre>
-     * getClass().getName() + '@' + Integer.toHexString(hashCode())
-     * </pre>
+     *   getClass().getName() + '@' + Integer.toHexString(hashCode())</pre>
+     * <p>See <a href="{@docRoot}reference/java/lang/Object.html#writing_toString">Writing a useful
+     * {@code toString} method</a>
+     * if you intend implementing your own {@code toString} method.
      *
      * @return a printable representation of this object.
      */

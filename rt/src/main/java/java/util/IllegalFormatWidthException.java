@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,19 +20,19 @@ package java.util;
  * An {@code IllegalFormatWidthException} will be thrown if the width is a
  * negative value other than -1 or in other cases where a width is not
  * supported.
- * 
+ *
  * @see java.lang.RuntimeException
  */
 public class IllegalFormatWidthException extends IllegalFormatException {
 
     private static final long serialVersionUID = 16660902L;
 
-    private int w;
+    private final int w;
 
     /**
      * Constructs a new {@code IllegalFormatWidthException} with specified
      * width.
-     * 
+     *
      * @param w
      *           the width.
      */
@@ -42,20 +42,15 @@ public class IllegalFormatWidthException extends IllegalFormatException {
 
     /**
      * Returns the width associated with the exception.
-     * 
+     *
      * @return the width.
      */
     public int getWidth() {
         return w;
     }
 
-    /**
-     * Returns the message of the exception.
-     * 
-     * @return the message of the exception.
-     */
     @Override
     public String getMessage() {
-        return String.valueOf(w);
+        return Integer.toString(w);
     }
 }

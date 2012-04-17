@@ -1,7 +1,7 @@
 // SAX default handler base class.
 // http://www.saxproject.org
 // No warranty; no copyright -- use this as you will.
-// $Id: HandlerBase.java 226184 2005-04-08 10:53:24Z neeraj $
+// $Id: HandlerBase.java,v 1.7 2004/04/26 17:34:34 dmegginson Exp $
 
 package org.xml.sax;
 
@@ -42,15 +42,16 @@ package org.xml.sax;
  * @see org.xml.sax.DocumentHandler
  * @see org.xml.sax.ErrorHandler
  */
+@Deprecated
 public class HandlerBase
     implements EntityResolver, DTDHandler, DocumentHandler, ErrorHandler
 {
-    
+
 
     ////////////////////////////////////////////////////////////////////
     // Default implementation of the EntityResolver interface.
     ////////////////////////////////////////////////////////////////////
-    
+
     /**
      * Resolve an external entity.
      *
@@ -62,7 +63,7 @@ public class HandlerBase
      *
      * @param publicId The public identifer, or null if none is
      *                 available.
-     * @param systemId The system identifier provided in the XML 
+     * @param systemId The system identifier provided in the XML
      *                 document.
      * @return The new input source, or null to require the
      *         default behaviour.
@@ -71,18 +72,18 @@ public class HandlerBase
      * @see org.xml.sax.EntityResolver#resolveEntity
      */
     public InputSource resolveEntity (String publicId, String systemId)
-	throws SAXException
+    throws SAXException
     {
-	return null;
+    return null;
     }
-    
-    
+
+
 
     ////////////////////////////////////////////////////////////////////
     // Default implementation of DTDHandler interface.
     ////////////////////////////////////////////////////////////////////
-    
-    
+
+
     /**
      * Receive notification of a notation declaration.
      *
@@ -98,10 +99,10 @@ public class HandlerBase
      */
     public void notationDecl (String name, String publicId, String systemId)
     {
-	// no op
+    // no op
     }
-    
-    
+
+
     /**
      * Receive notification of an unparsed entity declaration.
      *
@@ -117,18 +118,18 @@ public class HandlerBase
      * @see org.xml.sax.DTDHandler#unparsedEntityDecl
      */
     public void unparsedEntityDecl (String name, String publicId,
-				    String systemId, String notationName)
+                    String systemId, String notationName)
     {
-	// no op
+    // no op
     }
-    
-    
+
+
 
     ////////////////////////////////////////////////////////////////////
     // Default implementation of DocumentHandler interface.
     ////////////////////////////////////////////////////////////////////
-    
-    
+
+
     /**
      * Receive a Locator object for document events.
      *
@@ -142,10 +143,10 @@ public class HandlerBase
      */
     public void setDocumentLocator (Locator locator)
     {
-	// no op
+    // no op
     }
-    
-    
+
+
     /**
      * Receive notification of the beginning of the document.
      *
@@ -159,12 +160,12 @@ public class HandlerBase
      * @see org.xml.sax.DocumentHandler#startDocument
      */
     public void startDocument ()
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
-    
-    
+
+
     /**
      * Receive notification of the end of the document.
      *
@@ -178,12 +179,12 @@ public class HandlerBase
      * @see org.xml.sax.DocumentHandler#endDocument
      */
     public void endDocument ()
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
-    
-    
+
+
     /**
      * Receive notification of the start of an element.
      *
@@ -199,12 +200,12 @@ public class HandlerBase
      * @see org.xml.sax.DocumentHandler#startElement
      */
     public void startElement (String name, AttributeList attributes)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
-    
-    
+
+
     /**
      * Receive notification of the end of an element.
      *
@@ -219,12 +220,12 @@ public class HandlerBase
      * @see org.xml.sax.DocumentHandler#endElement
      */
     public void endElement (String name)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
-    
-    
+
+
     /**
      * Receive notification of character data inside an element.
      *
@@ -242,12 +243,12 @@ public class HandlerBase
      * @see org.xml.sax.DocumentHandler#characters
      */
     public void characters (char ch[], int start, int length)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
-    
-    
+
+
     /**
      * Receive notification of ignorable whitespace in element content.
      *
@@ -265,12 +266,12 @@ public class HandlerBase
      * @see org.xml.sax.DocumentHandler#ignorableWhitespace
      */
     public void ignorableWhitespace (char ch[], int start, int length)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
-    
-    
+
+
     /**
      * Receive notification of a processing instruction.
      *
@@ -287,18 +288,18 @@ public class HandlerBase
      * @see org.xml.sax.DocumentHandler#processingInstruction
      */
     public void processingInstruction (String target, String data)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
-    
-    
+
+
 
     ////////////////////////////////////////////////////////////////////
     // Default implementation of the ErrorHandler interface.
     ////////////////////////////////////////////////////////////////////
-    
-    
+
+
     /**
      * Receive notification of a parser warning.
      *
@@ -314,12 +315,12 @@ public class HandlerBase
      * @see org.xml.sax.SAXParseException
      */
     public void warning (SAXParseException e)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
-    
-    
+
+
     /**
      * Receive notification of a recoverable parser error.
      *
@@ -335,12 +336,12 @@ public class HandlerBase
      * @see org.xml.sax.SAXParseException
      */
     public void error (SAXParseException e)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
-    
-    
+
+
     /**
      * Report a fatal XML parsing error.
      *
@@ -359,11 +360,11 @@ public class HandlerBase
      * @see org.xml.sax.SAXParseException
      */
     public void fatalError (SAXParseException e)
-	throws SAXException
+    throws SAXException
     {
-	throw e;
+    throw e;
     }
-    
+
 }
 
 // end of HandlerBase.java

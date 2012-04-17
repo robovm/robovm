@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 
 /**
  * A PriorityQueue holds elements on a priority heap, which orders the elements
@@ -60,7 +59,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
     /**
      * Constructs a priority queue with the specified capacity and natural
      * ordering.
-     * 
+     *
      * @param initialCapacity
      *            the specified capacity.
      * @throws IllegalArgumentException
@@ -72,7 +71,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
 
     /**
      * Constructs a priority queue with the specified capacity and comparator.
-     * 
+     *
      * @param initialCapacity
      *            the specified capacity.
      * @param comparator
@@ -94,7 +93,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
      * The constructed priority queue has the initial capacity of 110% of the
      * size of the collection. The queue uses natural ordering to order its
      * elements.
-     * 
+     *
      * @param c
      *            the collection whose elements will be added to the priority
      *            queue to be constructed.
@@ -119,7 +118,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
      * priority queue. The constructed priority queue has the initial capacity
      * of 110% of the specified one. Both priority queues have the same
      * comparator.
-     * 
+     *
      * @param c
      *            the priority queue whose elements will be added to the
      *            priority queue to be constructed.
@@ -133,7 +132,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
      * The constructed priority queue has the initial capacity of 110% of the
      * size of the sorted set. The priority queue will have the same comparator
      * as the sorted set.
-     * 
+     *
      * @param c
      *            the sorted set whose elements will be added to the priority
      *            queue to be constructed.
@@ -145,7 +144,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
     /**
      * Gets the iterator of the priority queue, which will not return elements
      * in any specified ordering.
-     * 
+     *
      * @return the iterator of the priority queue.
      */
     @Override
@@ -156,7 +155,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
     /**
      * Gets the size of the priority queue. If the size of the queue is greater
      * than the Integer.MAX, then it returns Integer.MAX.
-     * 
+     *
      * @return the size of the priority queue.
      */
     @Override
@@ -175,7 +174,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
 
     /**
      * Inserts the element to the priority queue.
-     * 
+     *
      * @param o
      *            the element to add to the priority queue.
      * @return always true
@@ -186,7 +185,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
      *             if {@code o} is {@code null}.
      */
     public boolean offer(E o) {
-        if (null == o) {
+        if (o == null) {
             throw new NullPointerException();
         }
         growToSize(size + 1);
@@ -197,7 +196,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
 
     /**
      * Gets and removes the head of the queue.
-     * 
+     *
      * @return the head of the queue or null if the queue is empty.
      */
     public E poll() {
@@ -211,7 +210,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
 
     /**
      * Gets but does not remove the head of the queue.
-     * 
+     *
      * @return the head of the queue or null if the queue is empty.
      */
     public E peek() {
@@ -223,7 +222,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
 
     /**
      * Gets the comparator of the priority queue.
-     * 
+     *
      * @return the comparator of the priority queue or null if the natural
      *         ordering is used.
      */
@@ -233,20 +232,21 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
 
     /**
      * Removes the specified object from the priority queue.
-     * 
+     *
      * @param o
      *            the object to be removed.
      * @return true if the object was in the priority queue, false if the object
      *         was not in the priority queue.
      */
     @Override
+    @SuppressWarnings("unchecked")
     public boolean remove(Object o) {
-        if (o == null || size == 0) {
+        if (o == null) {
             return false;
         }
-        for (int i = 0; i < size; i++) {
-            if (o.equals(elements[i])) {
-                removeAt(i);
+        for (int targetIndex = 0; targetIndex < size; targetIndex++) {
+            if (o.equals(elements[targetIndex])) {
+                removeAt(targetIndex);
                 return true;
             }
         }
@@ -255,7 +255,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
 
     /**
      * Adds the specified object to the priority queue.
-     * 
+     *
      * @param o
      *            the object to be added.
      * @return always true.
@@ -268,76 +268,6 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
     @Override
     public boolean add(E o) {
         return offer(o);
-    }
-    
-    /**
-     * Answers if there is an element in this queue equals to the object.
-     * 
-     * @see java.util.AbstractCollection#contains(java.lang.Object)
-     */
-    @Override
-    public boolean contains(Object object) {
-        if (object == null) {
-            return false;
-        }
-        for (int i = 0; i < size; i++) {
-            if (object.equals(elements[i])) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Returns all the elements in an array. The result is a copy of all the
-     * elements.
-     * 
-     * @return the Array of all the elements
-     * @see java.util.AbstractCollection#toArray()
-     */
-    @Override
-    public Object[] toArray() {
-        return newArray(new Object[size()]);
-    }
-
-    /**
-     * Returns all the elements in an array, and the type of the result array is
-     * the type of the argument array. If the argument array is big enough, the
-     * elements from the queue will be stored in it(element immediately
-     * following the end of the queue is set to null, if any); otherwise, it
-     * will return a new array with the size of the argument array and size of
-     * the queue.
-     * 
-     * @param <T>
-     *            the type of elements in the array
-     * @param array
-     *            the array stores all the elements from the queue, if it has
-     *            enough space; otherwise, a new array of the same type and the
-     *            size of the queue will be used
-     * @return the Array of all the elements
-     * @throws ArrayStoreException
-     *             if the type of the argument array is not compatible with
-     *             every element in the queue
-     * @throws NullPointerException
-     *             if the argument array is null
-     * @see java.util.AbstractCollection#toArray(T[])
-     */
-    @Override
-    public <T> T[] toArray(T[] array) {
-        return newArray(array);
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> T[] newArray(T[] array) {
-        if (size > array.length) {
-            Class<?> clazz = array.getClass().getComponentType();
-            array = (T[]) Array.newInstance(clazz, size);
-        }
-        System.arraycopy(elements, 0, array, 0, size);
-        if (size < array.length) {
-            array[size] = null;
-        }
-        return array;
     }
 
     private class PriorityIterator implements Iterator<E> {
@@ -417,7 +347,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
     }
 
     private int compare(E o1, E o2) {
-        if (null != comparator) {
+        if (comparator != null) {
             return comparator.compare(o1, o2);
         }
         return ((Comparable<? super E>) o1).compareTo(o2);
@@ -456,7 +386,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
     }
 
     private void initSize(Collection<? extends E> c) {
-        if (null == c) {
+        if (c == null) {
             throw new NullPointerException();
         }
         if (c.isEmpty()) {

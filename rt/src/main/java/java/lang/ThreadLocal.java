@@ -1,10 +1,9 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -17,13 +16,16 @@
 
 package java.lang;
 
-import java.lang.ref.WeakReference;
 import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * A variable for which each thread has its own value. Supports {@code null}
- * values.
+ * Implements a thread-local storage, that is, a variable for which each thread
+ * has its own value. All threads share the same {@code ThreadLocal} object,
+ * but each sees a different value when accessing it, and changes made by one
+ * thread do not affect the other threads. The implementation supports
+ * {@code null} values.
  * 
  * @see java.lang.Thread
  * @author Bob Lee
@@ -33,7 +35,7 @@ public class ThreadLocal<T> {
     /* Thanks to Josh Bloch and Doug Lea for code reviews and impl advice. */
 
     /**
-     * Creates a new thread local variable.
+     * Creates a new thread-local variable.
      */
     public ThreadLocal() {}
 
@@ -42,6 +44,8 @@ public class ThreadLocal<T> {
      * doesn't yet exist for this variable on this thread, this method will
      * create an entry, populating the value with the result of
      * {@link #initialValue()}.
+     *
+     * @return the current value of the variable for the calling thread.
      */
     @SuppressWarnings("unchecked")
     public T get() {
@@ -64,6 +68,8 @@ public class ThreadLocal<T> {
     /**
      * Provides the initial value of this variable for the current thread.
      * The default implementation returns {@code null}.
+     *
+     * @return the initial value of the variable.
      */
     protected T initialValue() {
         return null;
@@ -71,8 +77,10 @@ public class ThreadLocal<T> {
 
     /**
      * Sets the value of this variable for the current thread. If set to
-     * null, the value will be set to null and the underlying entry will still
-     * be present.
+     * {@code null}, the value will be set to null and the underlying entry will
+     * still be present.
+     *
+     * @param value the new value of the variable for the caller thread.
      */
     public void set(T value) {
         Thread currentThread = Thread.currentThread();
@@ -85,9 +93,11 @@ public class ThreadLocal<T> {
 
     /**
      * Removes the entry for this variable in the current thread. If this call
-     * is followed by a {@link #get()} before a {@link #set(Object)},
+     * is followed by a {@link #get()} before a {@link #set},
      * {@code #get()} will call {@link #initialValue()} and create a new
      * entry with the resulting value.
+     *
+     * @since 1.5
      */
     public void remove() {
         Thread currentThread = Thread.currentThread();
@@ -126,7 +136,7 @@ public class ThreadLocal<T> {
      * We increment by Doug Lea's Magic Number(TM) (*2 since keys are in
      * every other bucket) to help prevent clustering.
      */
-    private final int hash = hashCounter.getAndAdd(0x61c88647 << 1);
+    private final int hash = hashCounter.getAndAdd(0x61c88647 * 2);
 
     /**
      * Per-thread map of ThreadLocal instances to values.
@@ -231,7 +241,7 @@ public class ThreadLocal<T> {
          * Creates a new, empty table with the given capacity.
          */
         private void initializeTable(int capacity) {
-            this.table = new Object[capacity << 1];
+            this.table = new Object[capacity * 2];
             this.mask = table.length - 1;
             this.clean = 0;
             this.maximumLoad = capacity * 2 / 3; // 2/3
@@ -306,7 +316,7 @@ public class ThreadLocal<T> {
             if (size > (capacity >> 1)) {
                 // More than 1/2 filled w/ live entries.
                 // Double size.
-                newCapacity = capacity << 1;
+                newCapacity = capacity * 2;
             }
 
             Object[] oldTable = this.table;

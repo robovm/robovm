@@ -20,23 +20,23 @@ package java.net;
 import java.io.IOException;
 
 /**
- * Is thrown when a hostname can not be resolved.
+ * Thrown when a hostname can not be resolved.
  */
 public class UnknownHostException extends IOException {
 
     private static final long serialVersionUID = -4639126076052875403L;
 
     /**
-     * Constructs a new {@code UnknownHostException} instance with its walkback
-     * filled in.
+     * Constructs a new {@code UnknownHostException} instance with no detail message.
+     * Callers should usually supply a detail message.
      */
     public UnknownHostException() {
-        super();
     }
 
     /**
-     * Constructs a new {@code UnknownHostException} instance with its walkback
-     * and message filled in.
+     * Constructs a new {@code UnknownHostException} instance with the given detail message.
+     * The detail message should generally contain the hostname and a reason for the failure,
+     * if known.
      * 
      * @param detailMessage
      *            the detail message for this exception.

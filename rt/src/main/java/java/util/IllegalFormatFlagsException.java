@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,50 +21,39 @@ import java.io.Serializable;
 /**
  * An {@code IllegalFormatFlagsException} will be thrown if the combination of
  * the format flags is illegal.
- * 
+ *
  * @see java.lang.RuntimeException
  */
-public class IllegalFormatFlagsException extends IllegalFormatException
-        implements Serializable {
+public class IllegalFormatFlagsException extends IllegalFormatException implements Serializable {
     private static final long serialVersionUID = 790824L;
 
-    private String flags;
+    private final String flags;
 
     /**
      * Constructs a new {@code IllegalFormatFlagsException} with the specified
      * flags.
-     * 
-     * @param f
+     *
+     * @param flags
      *           the specified flags.
      */
-    public IllegalFormatFlagsException(String f) {
-        if (null == f) {
+    public IllegalFormatFlagsException(String flags) {
+        if (flags == null) {
             throw new NullPointerException();
         }
-        flags = f;
+        this.flags = flags;
     }
 
     /**
      * Returns the flags that are illegal.
-     * 
+     *
      * @return the flags that are illegal.
      */
     public String getFlags() {
         return flags;
     }
 
-    /**
-     * Returns the message string of the IllegalFormatFlagsException.
-     * 
-     * @return the message string of the IllegalFormatFlagsException.
-     */
     @Override
     public String getMessage() {
-        StringBuilder buffer = new StringBuilder();
-        buffer.append("Flags = '");
-        buffer.append(flags);
-        buffer.append("'");
-        return buffer.toString();
+        return flags;
     }
-
 }

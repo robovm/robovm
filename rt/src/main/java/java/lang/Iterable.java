@@ -19,8 +19,8 @@ package java.lang;
 import java.util.Iterator;
 
 /**
- * Objects of classes that implement this interface can be used within a
- * {@code foreach} statement.
+ * Instances of classes that implement this interface can be used with
+ * the enhanced for loop.
  *
  * @since 1.5
  */

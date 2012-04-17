@@ -34,7 +34,6 @@ public class Exception extends Throwable {
      * Constructs a new {@code Exception} that includes the current stack trace.
      */
     public Exception() {
-        super();
     }
 
     /**

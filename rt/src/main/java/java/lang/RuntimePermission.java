@@ -18,84 +18,17 @@
 package java.lang;
 
 import java.security.BasicPermission;
+import java.security.Permission;
 
 /**
- * Represents the permission to execute a runtime-related function. There is no
- * action list associated with a {@code RuntimePermission}; the user either has
- * the permission or he doesn't.
+ * Legacy security code; do not use.
  */
 public final class RuntimePermission extends BasicPermission {
+    public RuntimePermission(String permissionName) { super(""); }
 
-    private static final long serialVersionUID = 7399184964622342223L;
+    public RuntimePermission(String name, String actions) { super("", ""); }
 
-    /**
-     * Constants for runtime permissions used in this package.
-     */
-    static final RuntimePermission permissionToSetSecurityManager = new RuntimePermission(
-            "setSecurityManager"); //$NON-NLS-1$
+    @Override public String getActions() { return null; }
 
-    static final RuntimePermission permissionToCreateSecurityManager = new RuntimePermission(
-            "createSecurityManager"); //$NON-NLS-1$
-
-    static final RuntimePermission permissionToGetProtectionDomain = new RuntimePermission(
-            "getProtectionDomain"); //$NON-NLS-1$
-
-    static final RuntimePermission permissionToGetClassLoader = new RuntimePermission(
-            "getClassLoader"); //$NON-NLS-1$
-
-    static final RuntimePermission permissionToCreateClassLoader = new RuntimePermission(
-            "createClassLoader"); //$NON-NLS-1$
-
-    static final RuntimePermission permissionToModifyThread = new RuntimePermission(
-            "modifyThread"); //$NON-NLS-1$
-
-    static final RuntimePermission permissionToModifyThreadGroup = new RuntimePermission(
-            "modifyThreadGroup"); //$NON-NLS-1$
-
-    static final RuntimePermission permissionToExitVM = new RuntimePermission(
-            "exitVM"); //$NON-NLS-1$
-
-    static final RuntimePermission permissionToReadFileDescriptor = new RuntimePermission(
-            "readFileDescriptor"); //$NON-NLS-1$
-
-    static final RuntimePermission permissionToWriteFileDescriptor = new RuntimePermission(
-            "writeFileDescriptor"); //$NON-NLS-1$
-
-    static final RuntimePermission permissionToQueuePrintJob = new RuntimePermission(
-            "queuePrintJob"); //$NON-NLS-1$
-
-    static final RuntimePermission permissionToSetFactory = new RuntimePermission(
-            "setFactory"); //$NON-NLS-1$
-
-    static final RuntimePermission permissionToSetIO = new RuntimePermission(
-            "setIO"); //$NON-NLS-1$
-
-    static final RuntimePermission permissionToStopThread = new RuntimePermission(
-            "stopThread"); //$NON-NLS-1$
-
-    static final RuntimePermission permissionToSetContextClassLoader = new RuntimePermission(
-            "setContextClassLoader"); //$NON-NLS-1$
-
-    /**
-     * Creates an instance of {@code RuntimePermission} with the specified name.
-     * 
-     * @param permissionName
-     *            the name of the new permission.
-     */
-    public RuntimePermission(String permissionName) {
-        super(permissionName);
-    }
-
-    /**
-     * Creates an instance of {@code RuntimePermission} with the specified name
-     * and action list. The action list is ignored.
-     * 
-     * @param name
-     *            the name of the new permission.
-     * @param actions
-     *            ignored.
-     */
-    public RuntimePermission(String name, String actions) {
-        super(name, actions);
-    }
+    @Override public boolean implies(Permission permission) { return true; }
 }

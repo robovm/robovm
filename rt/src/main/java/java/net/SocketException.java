@@ -28,21 +28,30 @@ public class SocketException extends IOException {
     private static final long serialVersionUID = -5935874303556886934L;
 
     /**
-     * Constructs a new {@code SocketException} instance with its walkback
-     * filled in.
+     * Constructs a new instance.
      */
     public SocketException() {
-        super();
     }
 
     /**
-     * Constructs a new {@code SocketException} instance with its walkback and
-     * message filled in.
-     * 
-     * @param detailMessage
-     *            the detail message of this exception.
+     * Constructs a new instance with the given detail message.
      */
     public SocketException(String detailMessage) {
         super(detailMessage);
+    }
+    /**
+     * Constructs a new instance with the given cause.
+     * @hide internal use only
+     */
+    public SocketException(Throwable cause) {
+        super(cause);
+    }
+
+    /**
+     * Constructs a new instance with given detail message and cause.
+     * @hide internal use only
+     */
+    public SocketException(String detailMessage, Throwable cause) {
+        super(detailMessage, cause);
     }
 }

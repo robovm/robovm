@@ -19,7 +19,18 @@ package java.beans;
 
 import java.util.EventListener;
 
+/**
+ * A PropertyChangeListener can subscribe with a event source. Whenever that
+ * source raises a PropertyChangeEvent this listener will get notified.
+ */
 public interface PropertyChangeListener extends EventListener {
 
+    /**
+     * The source bean calls this method when an event is raised.
+     *
+     * @param event
+     *            the {@link PropertyChangeEvent} object which contains the name
+     *            and the old and new value of the property that has changed.
+     */
     public void propertyChange(PropertyChangeEvent event);
 }

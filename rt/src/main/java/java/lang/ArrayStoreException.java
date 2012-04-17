@@ -30,7 +30,6 @@ public class ArrayStoreException extends RuntimeException {
      * stack trace.
      */
     public ArrayStoreException() {
-        super();
     }
 
     /**

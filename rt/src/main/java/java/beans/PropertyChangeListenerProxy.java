@@ -19,17 +19,35 @@ package java.beans;
 
 import java.util.EventListenerProxy;
 
+/**
+ * The implementation of this listener proxy just delegates the received events
+ * to its listener.
+ */
 public class PropertyChangeListenerProxy extends EventListenerProxy implements
         PropertyChangeListener {
 
     String propertyName;
 
+    /**
+     * Creates a new listener proxy that associates a listener with a property
+     * name.
+     *
+     * @param propertyName
+     *            the name of the associated property.
+     * @param listener
+     *            the listener to delegate incoming events to.
+     */
     public PropertyChangeListenerProxy(String propertyName,
             PropertyChangeListener listener) {
         super(listener);
         this.propertyName = propertyName;
     }
 
+    /**
+     * Returns the name of the property associated with this listener proxy.
+     *
+     * @return the name of the associated property.
+     */
     public String getPropertyName() {
         return propertyName;
     }

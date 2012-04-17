@@ -20,7 +20,7 @@ package java.lang;
 /**
  * Thrown when a security manager check fails.
  */
-public class SecurityException extends java.lang.RuntimeException {
+public class SecurityException extends RuntimeException {
 
     private static final long serialVersionUID = 6878364983674394167L;
 
@@ -29,7 +29,6 @@ public class SecurityException extends java.lang.RuntimeException {
      * stack trace.
      */
     public SecurityException() {
-        super();
     }
 
     /**

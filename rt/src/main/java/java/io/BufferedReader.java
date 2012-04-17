@@ -17,7 +17,7 @@
 
 package java.io;
 
-import org.apache.harmony.luni.internal.nls.Messages;
+import java.util.Arrays;
 
 /**
  * Wraps an existing {@link Reader} and <em>buffers</em> the input. Expensive
@@ -71,33 +71,27 @@ public class BufferedReader extends Reader {
     private int markLimit = -1;
 
     /**
-     * Constructs a new BufferedReader on the Reader {@code in}. The
-     * buffer gets the default size (8 KB).
+     * Constructs a new {@code BufferedReader}, providing {@code in} with a buffer
+     * of 8192 characters.
      * 
-     * @param in
-     *            the Reader that is buffered.
+     * @param in the {@code Reader} the buffer reads from.
      */
     public BufferedReader(Reader in) {
-        super(in);
-        this.in = in;
-        buf = new char[8192];
+        this(in, 8192);
     }
 
     /**
-     * Constructs a new BufferedReader on the Reader {@code in}. The buffer
-     * size is specified by the parameter {@code size}.
+     * Constructs a new {@code BufferedReader}, providing {@code in} with {@code size} characters
+     * of buffer.
      * 
-     * @param in
-     *            the Reader that is buffered.
-     * @param size
-     *            the size of the buffer to allocate.
-     * @throws IllegalArgumentException
-     *             if {@code size <= 0}.
+     * @param in the {@code InputStream} the buffer reads from.
+     * @param size the size of buffer in characters.
+     * @throws IllegalArgumentException if {@code size <= 0}.
      */
     public BufferedReader(Reader in, int size) {
         super(in);
         if (size <= 0) {
-            throw new IllegalArgumentException(Messages.getString("luni.A3")); //$NON-NLS-1$
+            throw new IllegalArgumentException("size <= 0");
         }
         this.in = in;
         buf = new char[size];
@@ -199,11 +193,15 @@ public class BufferedReader extends Reader {
             throw new IllegalArgumentException();
         }
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.A5")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             this.markLimit = markLimit;
             mark = pos;
+        }
+    }
+
+    private void checkNotClosed() throws IOException {
+        if (isClosed()) {
+            throw new IOException("BufferedReader is closed");
         }
     }
 
@@ -235,9 +233,7 @@ public class BufferedReader extends Reader {
     @Override
     public int read() throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.A5")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             /* Are there buffered characters available? */
             if (pos < end || fillBuf() != -1) {
                 return buf[pos++];
@@ -275,12 +271,8 @@ public class BufferedReader extends Reader {
     @Override
     public int read(char[] buffer, int offset, int length) throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.A5")); //$NON-NLS-1$
-            }
-            if (offset < 0 || offset > buffer.length - length || length < 0) {
-                throw new IndexOutOfBoundsException();
-            }
+            checkNotClosed();
+            Arrays.checkOffsetAndCount(buffer.length, offset, length);
             int outstanding = length;
             while (outstanding > 0) {
 
@@ -314,15 +306,12 @@ public class BufferedReader extends Reader {
                  * don't read into smaller buffers because that could result in
                  * a many reads.
                  */
-                if ((mark == -1 || (pos - mark >= markLimit))
-                        && outstanding >= buf.length) {
+                if ((mark == -1 || (pos - mark >= markLimit)) && outstanding >= buf.length) {
                     int count = in.read(buffer, offset, outstanding);
                     if (count > 0) {
-                        offset += count;
                         outstanding -= count;
                         mark = -1;
                     }
-
                     break; // assume the source stream gave us all that it could
                 }
 
@@ -360,9 +349,7 @@ public class BufferedReader extends Reader {
      */
     public String readLine() throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.A5")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             /* has the underlying stream been exhausted? */
             if (pos == end && fillBuf() == -1) {
                 return null;
@@ -450,9 +437,7 @@ public class BufferedReader extends Reader {
     @Override
     public boolean ready() throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.A5")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             return ((end - pos) > 0) || in.ready();
         }
     }
@@ -470,27 +455,26 @@ public class BufferedReader extends Reader {
     @Override
     public void reset() throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.A5")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             if (mark == -1) {
-                throw new IOException(Messages.getString("luni.A6")); //$NON-NLS-1$
+                throw new IOException("Invalid mark");
             }
             pos = mark;
         }
     }
 
     /**
-     * Skips {@code amount} characters in this reader. Subsequent
-     * {@code read()}s will not return these characters unless {@code reset()}
-     * is used. Skipping characters may invalidate a mark if {@code markLimit}
+     * Skips {@code byteCount} bytes in this stream. Subsequent calls to
+     * {@code read} will not return these bytes unless {@code reset} is
+     * used.
+     * Skipping characters may invalidate a mark if {@code markLimit}
      * is surpassed.
      * 
-     * @param amount
+     * @param byteCount
      *            the maximum number of characters to skip.
      * @return the number of characters actually skipped.
      * @throws IllegalArgumentException
-     *             if {@code amount < 0}.
+     *             if {@code byteCount < 0}.
      * @throws IOException
      *             if this reader is closed or some other I/O error occurs.
      * @see #mark(int)
@@ -498,37 +482,35 @@ public class BufferedReader extends Reader {
      * @see #reset()
      */
     @Override
-    public long skip(long amount) throws IOException {
-        if (amount < 0) {
-            throw new IllegalArgumentException();
+    public long skip(long byteCount) throws IOException {
+        if (byteCount < 0) {
+            throw new IllegalArgumentException("byteCount < 0: " + byteCount);
         }
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.A5")); //$NON-NLS-1$
-            }
-            if (amount < 1) {
+            checkNotClosed();
+            if (byteCount < 1) {
                 return 0;
             }
-            if (end - pos >= amount) {
-                pos += amount;
-                return amount;
+            if (end - pos >= byteCount) {
+                pos += byteCount;
+                return byteCount;
             }
 
             long read = end - pos;
             pos = end;
-            while (read < amount) {
+            while (read < byteCount) {
                 if (fillBuf() == -1) {
                     return read;
                 }
-                if (end - pos >= amount - read) {
-                    pos += amount - read;
-                    return amount;
+                if (end - pos >= byteCount - read) {
+                    pos += byteCount - read;
+                    return byteCount;
                 }
                 // Couldn't get all the characters, skip what we read
                 read += (end - pos);
                 pos = end;
             }
-            return amount;
+            return byteCount;
         }
     }
 }

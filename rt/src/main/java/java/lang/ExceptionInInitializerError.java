@@ -31,7 +31,6 @@ public class ExceptionInInitializerError extends LinkageError {
      * current stack trace.
      */
     public ExceptionInInitializerError() {
-        super();
         initCause(null);
     }
 
@@ -56,7 +55,6 @@ public class ExceptionInInitializerError extends LinkageError {
      *            the exception that caused this error.
      */
     public ExceptionInInitializerError(Throwable exception) {
-        super();
         this.exception = exception;
         initCause(exception);
     }

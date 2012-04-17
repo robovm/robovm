@@ -32,13 +32,12 @@ public class TooManyListenersException extends Exception {
      * trace filled in.
      */
     public TooManyListenersException() {
-        super();
     }
 
     /**
      * Constructs a new {@code TooManyListenersException} with the stack trace
      * and message filled in.
-     * 
+     *
      * @param detailMessage
      *            the detail message for the exception.
      */

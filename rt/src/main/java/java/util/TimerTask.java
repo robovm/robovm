@@ -20,7 +20,7 @@ package java.util;
 /**
  * The {@code TimerTask} class represents a task to run at a specified time. The task
  * may be run once or repeatedly.
- * 
+ *
  * @see Timer
  * @see java.lang.Object#wait(long)
  */
@@ -64,7 +64,7 @@ public abstract class TimerTask implements Runnable {
 
     /*
      * Is TimerTask scheduled into any timer?
-     * 
+     *
      * @return {@code true} if the timer task is scheduled, {@code false}
      * otherwise.
      */
@@ -78,14 +78,13 @@ public abstract class TimerTask implements Runnable {
      * Creates a new {@code TimerTask}.
      */
     protected TimerTask() {
-        super();
     }
 
     /**
      * Cancels the {@code TimerTask} and removes it from the {@code Timer}'s queue. Generally, it
      * returns {@code false} if the call did not prevent a {@code TimerTask} from running at
      * least once. Subsequent calls have no effect.
-     * 
+     *
      * @return {@code true} if the call prevented a scheduled execution
      *         from taking place, {@code false} otherwise.
      */
@@ -101,7 +100,7 @@ public abstract class TimerTask implements Runnable {
      * Returns the scheduled execution time. If the task execution is in
      * progress it returns the execution time of the ongoing task. Tasks which
      * have not yet run return an undefined value.
-     * 
+     *
      * @return the most recent execution time.
      */
     public long scheduledExecutionTime() {

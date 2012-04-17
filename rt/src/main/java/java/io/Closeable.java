@@ -17,19 +17,17 @@
 package java.io;
 
 /**
- * Defines an interface for classes that can (or need to) be closed once they
- * are not used any longer. This usually includes all sorts of
- * {@link InputStream}s and {@link OutputStream}s. Calling the {@code close}
- * method releases resources that the object holds.
+ * An {@code AutoCloseable} whose close method may throw an {@link IOException}.
  */
-public interface Closeable {
+public interface Closeable extends AutoCloseable {
 
     /**
-     * Closes the object and release any system resources it holds. If the
-     * object has already been closed, then invoking this method has no effect.
+     * Closes the object and release any system resources it holds.
      * 
-     * @throws IOException
-     *             if any error occurs when closing the object.
+     * <p>Although only the first call has any effect, it is safe to call close
+     * multiple times on the same object. This is more lenient than the
+     * overridden {@code AutoCloseable.close()}, which may be called at most
+     * once.
      */
-    public void close() throws IOException;
+    void close() throws IOException;
 }

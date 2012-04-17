@@ -24,21 +24,22 @@ import java.io.ObjectStreamField;
 import java.io.Serializable;
 
 /**
- * StringBuffer is a variable size contiguous indexable array of characters. The
- * length of the StringBuffer is the number of characters it contains. The
- * capacity of the StringBuffer is the number of characters it can hold.
- * <p>
- * Characters may be inserted at any position up to the length of the
- * StringBuffer, increasing the length of the StringBuffer. Characters at any
- * position in the StringBuffer may be replaced, which does not affect the
- * StringBuffer length.
- * <p>
- * The capacity of a StringBuffer may be specified when the StringBuffer is
- * created. If the capacity of the StringBuffer is exceeded, the capacity is
- * increased.
+ * A modifiable {@link CharSequence sequence of characters} for use in creating
+ * strings, where all accesses are synchronized. This class has mostly been replaced
+ * by {@link StringBuilder} because this synchronization is rarely useful. This
+ * class is mainly used to interact with legacy APIs that expose it.
  * 
- * @see String
+ * <p>For particularly complex string-building needs, consider {@link java.util.Formatter}.
+ *
+ * <p>The majority of the modification methods on this class return {@code
+ * this} so that method calls can be chained together. For example:
+ * {@code new StringBuffer("a").append("b").append("c").toString()}.
+ *
+ * @see CharSequence
+ * @see Appendable
  * @see StringBuilder
+ * @see String
+ * @see String#format
  * @since 1.0
  */
 public final class StringBuffer extends AbstractStringBuilder implements
@@ -46,16 +47,16 @@ public final class StringBuffer extends AbstractStringBuilder implements
 
     private static final long serialVersionUID = 3388685877147921107L;
 
-    private static final ObjectStreamField serialPersistentFields[] = {
-            new ObjectStreamField("count", int.class), //$NON-NLS-1$
-            new ObjectStreamField("shared", boolean.class), //$NON-NLS-1$
-            new ObjectStreamField("value", char[].class), }; //$NON-NLS-1$
+    private static final ObjectStreamField[] serialPersistentFields = {
+        new ObjectStreamField("count", int.class),
+        new ObjectStreamField("shared", boolean.class),
+        new ObjectStreamField("value", char[].class),
+    };
 
     /**
      * Constructs a new StringBuffer using the default capacity which is 16.
      */
     public StringBuffer() {
-        super();
     }
 
     /**
@@ -110,7 +111,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
      * @see String#valueOf(boolean)
      */
     public StringBuffer append(boolean b) {
-        return append(b ? "true" : "false"); //$NON-NLS-1$//$NON-NLS-2$
+        return append(b ? "true" : "false");
     }
 
     /**
@@ -136,7 +137,8 @@ public final class StringBuffer extends AbstractStringBuilder implements
      * @see String#valueOf(double)
      */
     public StringBuffer append(double d) {
-        return append(Double.toString(d));
+        RealToString.getInstance().appendDouble(this, d);
+        return this;
     }
 
     /**
@@ -149,7 +151,8 @@ public final class StringBuffer extends AbstractStringBuilder implements
      * @see String#valueOf(float)
      */
     public StringBuffer append(float f) {
-        return append(Float.toString(f));
+        RealToString.getInstance().appendFloat(this, f);
+        return this;
     }
 
     /**
@@ -162,7 +165,8 @@ public final class StringBuffer extends AbstractStringBuilder implements
      * @see String#valueOf(int)
      */
     public StringBuffer append(int i) {
-        return append(Integer.toString(i));
+        IntegralToString.appendInt(this, i);
+        return this;
     }
 
     /**
@@ -175,7 +179,8 @@ public final class StringBuffer extends AbstractStringBuilder implements
      * @see String#valueOf(long)
      */
     public StringBuffer append(long l) {
-        return append(Long.toString(l));
+        IntegralToString.appendLong(this, l);
+        return this;
     }
 
     /**
@@ -248,7 +253,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
      * @throws NullPointerException
      *            if {@code chars} is {@code null}.
      */
-    public synchronized StringBuffer append(char chars[]) {
+    public synchronized StringBuffer append(char[] chars) {
         append0(chars);
         return this;
     }
@@ -269,7 +274,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
      * @throws NullPointerException
      *            if {@code chars} is {@code null}.
      */
-    public synchronized StringBuffer append(char chars[], int start, int length) {
+    public synchronized StringBuffer append(char[] chars, int start, int length) {
         append0(chars, start, length);
         return this;
     }
@@ -290,7 +295,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
         if (s == null) {
             appendNull();
         } else {
-            append0(s.toString());
+            append0(s, 0, s.length());
         }
         return this;
     }
@@ -448,7 +453,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
      *             if {@code index < 0} or {@code index > length()}.
      */
     public StringBuffer insert(int index, boolean b) {
-        return insert(index, b ? "true" : "false"); //$NON-NLS-1$ //$NON-NLS-2$
+        return insert(index, b ? "true" : "false");
     }
 
     /**
@@ -532,7 +537,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
      *             if {@code index < 0} or {@code index > length()}.
      */
     public StringBuffer insert(int index, Object obj) {
-        return insert(index, obj == null ? "null" : obj.toString()); //$NON-NLS-1$
+        return insert(index, obj == null ? "null" : obj.toString());
     }
 
     /**
@@ -592,8 +597,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
      *             length > chars.length}, {@code index < 0} or {@code index >
      *             length()}
      */
-    public synchronized StringBuffer insert(int index, char chars[], int start,
-            int length) {
+    public synchronized StringBuffer insert(int index, char[] chars, int start, int length) {
         insert0(index, chars, start, length);
         return this;
     }
@@ -615,7 +619,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
      * @since 1.5
      */
     public synchronized StringBuffer insert(int index, CharSequence s) {
-        insert0(index, s == null ? "null" : s.toString()); //$NON-NLS-1$
+        insert0(index, s == null ? "null" : s.toString());
         return this;
     }
 
@@ -727,17 +731,17 @@ public final class StringBuffer extends AbstractStringBuilder implements
     private synchronized void writeObject(ObjectOutputStream out)
             throws IOException {
         ObjectOutputStream.PutField fields = out.putFields();
-        fields.put("count", length()); //$NON-NLS-1$
-        fields.put("shared", false); //$NON-NLS-1$
-        fields.put("value", getValue()); //$NON-NLS-1$
+        fields.put("count", length());
+        fields.put("shared", false);
+        fields.put("value", getValue());
         out.writeFields();
     }
 
     private void readObject(ObjectInputStream in) throws IOException,
             ClassNotFoundException {
         ObjectInputStream.GetField fields = in.readFields();
-        int count = fields.get("count", 0); //$NON-NLS-1$
-        char[] value = (char[]) fields.get("value", null); //$NON-NLS-1$
+        int count = fields.get("count", 0);
+        char[] value = (char[]) fields.get("value", null);
         set(value, count);
     }
 }

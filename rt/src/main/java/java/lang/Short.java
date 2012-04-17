@@ -23,6 +23,7 @@ package java.lang;
  * @see java.lang.Number
  * @since 1.1
  */
+@FindBugsSuppressWarnings("DM_NUMBER_CTOR")
 public final class Short extends Number implements Comparable<Short> {
 
 	private static final long serialVersionUID = 7515723908773894738L;
@@ -55,20 +56,18 @@ public final class Short extends Number implements Comparable<Short> {
      * short}.
      */
     @SuppressWarnings("unchecked")
-    public static final Class<Short> TYPE = (Class<Short>) new short[0]
-            .getClass().getComponentType();
-
-	// Note: This can't be set to "short.class", since *that* is
+    public static final Class<Short> TYPE
+            = (Class<Short>) short[].class.getComponentType();
+    // Note: Short.TYPE can't be set to "short.class", since *that* is
 	// defined to be "java.lang.Short.TYPE";
 
-    
     /**
      * Constructs a new {@code Short} from the specified string.
      *
      * @param string
      *            the string representation of a short value.
      * @throws NumberFormatException
-     *             if {@code string} can not be decoded into a short value.
+     *             if {@code string} cannot be parsed as a short value.
      * @see #parseShort(String)
      */
 	public Short(String string) throws NumberFormatException {
@@ -106,7 +105,17 @@ public final class Short extends Number implements Comparable<Short> {
      * @since 1.2
      */
 	public int compareTo(Short object) {
-		return value > object.value ? 1 : (value < object.value ? -1 : 0);
+        return compare(value, object.value);
+    }
+
+    /**
+     * Compares two {@code short} values.
+     * @return 0 if lhs = rhs, less than 0 if lhs &lt; rhs, and greater than 0 if lhs &gt; rhs.
+     * @since 1.7
+     * @hide 1.7
+     */
+    public static int compare(long lhs, long rhs) {
+        return lhs > rhs ? 1 : (lhs < rhs ? -1 : 0);
 	}
 
     /**
@@ -128,7 +137,7 @@ public final class Short extends Number implements Comparable<Short> {
 		if (result == intValue) {
             return valueOf(result);
         }
-		throw new NumberFormatException();
+        throw new NumberFormatException("Value out of range for short: \"" + string + "\"");
 	}
 
 	@Override
@@ -148,8 +157,7 @@ public final class Short extends Number implements Comparable<Short> {
      */
 	@Override
     public boolean equals(Object object) {
-		return (object instanceof Short)
-				&& (value == ((Short) object).value);
+        return (object instanceof Short) && (((Short) object).value == value);
 	}
 
 	@Override
@@ -180,8 +188,7 @@ public final class Short extends Number implements Comparable<Short> {
      *            the string representation of a short value.
      * @return the primitive short value represented by {@code string}.
      * @throws NumberFormatException
-     *             if {@code string} is {@code null}, has a length of zero or
-     *             can not be parsed as a short value.
+     *             if {@code string} cannot be parsed as a short value.
      */
 	public static short parseShort(String string) throws NumberFormatException {
 		return parseShort(string, 10);
@@ -198,19 +205,17 @@ public final class Short extends Number implements Comparable<Short> {
      * @return the primitive short value represented by {@code string} using
      *         {@code radix}.
      * @throws NumberFormatException
-     *             if {@code string} is {@code null} or has a length of zero,
-     *             {@code radix < Character.MIN_RADIX},
-     *             {@code radix > Character.MAX_RADIX}, or if {@code string}
-     *             can not be parsed as a short value.
+     *             if {@code string} cannot be parsed as a short value, or
+     *             {@code radix < Character.MIN_RADIX ||
+     *             radix > Character.MAX_RADIX}.
      */
-	public static short parseShort(String string, int radix)
-			throws NumberFormatException {
+    public static short parseShort(String string, int radix) throws NumberFormatException {
 		int intValue = Integer.parseInt(string, radix);
 		short result = (short) intValue;
 		if (result == intValue) {
             return result;
         }
-		throw new NumberFormatException();
+        throw new NumberFormatException("Value out of range for short: \"" + string + "\"");
 	}
 
     /**
@@ -248,8 +253,7 @@ public final class Short extends Number implements Comparable<Short> {
      * @return a {@code Short} instance containing the short value represented
      *         by {@code string}.
      * @throws NumberFormatException
-     *             if {@code string} is {@code null}, has a length of zero or
-     *             can not be parsed as a short value.
+     *             if {@code string} cannot be parsed as a short value.
      * @see #parseShort(String)
      */
 	public static Short valueOf(String string) throws NumberFormatException {
@@ -267,14 +271,12 @@ public final class Short extends Number implements Comparable<Short> {
      * @return a {@code Short} instance containing the short value represented
      *         by {@code string} using {@code radix}.
      * @throws NumberFormatException
-     *             if {@code string} is {@code null} or has a length of zero,
-     *             {@code radix < Character.MIN_RADIX},
-     *             {@code radix > Character.MAX_RADIX}, or if {@code string}
-     *             can not be parsed as a short value.
+     *             if {@code string} cannot be parsed as a short value, or
+     *             {@code radix < Character.MIN_RADIX ||
+     *             radix > Character.MAX_RADIX}.
      * @see #parseShort(String, int)
      */
-	public static Short valueOf(String string, int radix)
-			throws NumberFormatException {
+    public static Short valueOf(String string, int radix) throws NumberFormatException {
 		return valueOf(parseShort(string, radix));
 	}
     
@@ -287,9 +289,7 @@ public final class Short extends Number implements Comparable<Short> {
      * @since 1.5
      */
     public static short reverseBytes(short s) {
-        int high = (s >> 8) & 0xFF;
-        int low = (s & 0xFF) << 8;
-        return (short) (low | high);
+        return (short) ((s << 8) | ((s >>> 8) & 0xFF));
     }
 
     /**
@@ -305,22 +305,17 @@ public final class Short extends Number implements Comparable<Short> {
      * @since 1.5
      */
     public static Short valueOf(short s) {
-        if (s < -128 || s > 127) {
-            return new Short(s);
-        }
-        return valueOfCache.CACHE[s+128];
+        return s < -128 || s >= 128 ? new Short(s) : SMALL_VALUES[s + 128];
     }
 
-    static class valueOfCache {
         /**
          * A cache of instances used by {@link Short#valueOf(short)} and auto-boxing.
          */
-        private static final Short[] CACHE = new Short[256];
+    private static final Short[] SMALL_VALUES = new Short[256];
 
         static {
-            for(int i=-128; i<=127; i++) {
-                CACHE[i+128] = new Short((short)i);
-            }
+        for (int i = -128; i < 128; i++) {
+            SMALL_VALUES[i + 128] = new Short((short) i);
         }
     }
 }

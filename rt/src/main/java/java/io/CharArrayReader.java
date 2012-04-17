@@ -17,7 +17,7 @@
 
 package java.io;
 
-import org.apache.harmony.luni.internal.nls.Messages;
+import java.util.Arrays;
 
 /**
  * A specialized {@link Reader} for reading the contents of a char array.
@@ -28,7 +28,7 @@ public class CharArrayReader extends Reader {
     /**
      * The buffer for characters.
      */
-    protected char buf[];
+    protected char[] buf;
 
     /**
      * The current buffer position.
@@ -47,7 +47,7 @@ public class CharArrayReader extends Reader {
 
     /**
      * Constructs a CharArrayReader on the char array {@code buf}. The size of
-     * the reader is set to the length of the buffer and the object to read
+     * the reader is set to the length of the buffer and the object to to read
      * from is set to {@code buf}.
      * 
      * @param buf
@@ -138,10 +138,14 @@ public class CharArrayReader extends Reader {
     @Override
     public void mark(int readLimit) throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.A9")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             markedPos = pos;
+        }
+    }
+
+    private void checkNotClosed() throws IOException {
+        if (isClosed()) {
+            throw new IOException("CharArrayReader is closed");
         }
     }
 
@@ -171,9 +175,7 @@ public class CharArrayReader extends Reader {
     @Override
     public int read() throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.A9")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             if (pos == count) {
                 return -1;
             }
@@ -204,21 +206,10 @@ public class CharArrayReader extends Reader {
      *             if this reader is closed.
      */
     @Override
-    public int read(char buffer[], int offset, int len) throws IOException {
-        if (offset < 0 || offset > buffer.length) {
-            // luni.12=Offset out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(
-                    Messages.getString("luni.12", offset)); //$NON-NLS-1$
-        }
-        if (len < 0 || len > buffer.length - offset) {
-            // luni.18=Length out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(
-                    Messages.getString("luni.18", len)); //$NON-NLS-1$
-        }
+    public int read(char[] buffer, int offset, int len) throws IOException {
+        Arrays.checkOffsetAndCount(buffer.length, offset, len);
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.A9")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             if (pos < this.count) {
                 int bytesRead = pos + len > this.count ? this.count - pos : len;
                 System.arraycopy(this.buf, pos, buffer, offset, bytesRead);
@@ -244,9 +235,7 @@ public class CharArrayReader extends Reader {
     @Override
     public boolean ready() throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.A9")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             return pos != count;
         }
     }
@@ -263,37 +252,31 @@ public class CharArrayReader extends Reader {
     @Override
     public void reset() throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.A9")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             pos = markedPos != -1 ? markedPos : 0;
         }
     }
 
     /**
-     * Skips {@code count} number of characters in this reader. Subsequent
-     * {@code read()}s will not return these characters unless {@code reset()}
-     * is used. This method does nothing and returns 0 if {@code n} is negative.
+     * Skips {@code charCount} characters in this reader. Subsequent calls to
+     * {@code read} will not return these characters unless {@code reset}
+     * is used. This method does nothing and returns 0 if {@code charCount <= 0}.
      * 
-     * @param n
-     *            the number of characters to skip.
      * @return the number of characters actually skipped.
      * @throws IOException
      *             if this reader is closed.
      */
     @Override
-    public long skip(long n) throws IOException {
+    public long skip(long charCount) throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.A9")); //$NON-NLS-1$
-            }
-            if (n <= 0) {
+            checkNotClosed();
+            if (charCount <= 0) {
                 return 0;
             }
             long skipped = 0;
-            if (n < this.count - pos) {
-                pos = pos + (int) n;
-                skipped = n;
+            if (charCount < this.count - pos) {
+                pos = pos + (int) charCount;
+                skipped = charCount;
             } else {
                 skipped = this.count - pos;
                 pos = this.count;

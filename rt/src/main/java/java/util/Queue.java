@@ -1,91 +1,188 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Written by Doug Lea with assistance from members of JCP JSR-166
+ * Expert Group and released to the public domain, as explained at
+ * http://creativecommons.org/licenses/publicdomain
  */
+
 package java.util;
 
+// BEGIN android-note
+// removed link to collections framework docs
+// END android-note
+
 /**
- * This kind of collection provides advanced operations compared to basic
- * collections, such as insertion, extraction, and inspection.
+ * A collection designed for holding elements prior to processing.
+ * Besides basic {@link java.util.Collection Collection} operations,
+ * queues provide additional insertion, extraction, and inspection
+ * operations.  Each of these methods exists in two forms: one throws
+ * an exception if the operation fails, the other returns a special
+ * value (either <tt>null</tt> or <tt>false</tt>, depending on the
+ * operation).  The latter form of the insert operation is designed
+ * specifically for use with capacity-restricted <tt>Queue</tt>
+ * implementations; in most implementations, insert operations cannot
+ * fail.
+ *
  * <p>
- * Generally, a queue orders its elements by means of first-in-first-out.
- * However, a priority queue orders its elements according to a comparator
- * specified or the elements' natural order. Furthermore, a stack orders its
- * elements last-in-first out.
- * <p>
- * A typical queue does not allow {@code null} to be inserted as its element,
- * while some implementations such as {@code LinkedList} allow it. But {@code
- * null} should not be inserted even in these implementations, since the method
- * {@code poll} returns {@code null} to indicate that there is no element left
- * in the queue.
- * <p>
- * {@code Queue} does not provide blocking queue methods, which would block
- * until the operation of the method is allowed. See the
- * {@link java.util.concurrent.BlockingQueue} interface for information about
- * blocking queue methods.
+ * <table BORDER CELLPADDING=3 CELLSPACING=1>
+ *  <tr>
+ *    <td></td>
+ *    <td ALIGN=CENTER><em>Throws exception</em></td>
+ *    <td ALIGN=CENTER><em>Returns special value</em></td>
+ *  </tr>
+ *  <tr>
+ *    <td><b>Insert</b></td>
+ *    <td>{@link #add add(e)}</td>
+ *    <td>{@link #offer offer(e)}</td>
+ *  </tr>
+ *  <tr>
+ *    <td><b>Remove</b></td>
+ *    <td>{@link #remove remove()}</td>
+ *    <td>{@link #poll poll()}</td>
+ *  </tr>
+ *  <tr>
+ *    <td><b>Examine</b></td>
+ *    <td>{@link #element element()}</td>
+ *    <td>{@link #peek peek()}</td>
+ *  </tr>
+ * </table>
+ *
+ * <p>Queues typically, but do not necessarily, order elements in a
+ * FIFO (first-in-first-out) manner.  Among the exceptions are
+ * priority queues, which order elements according to a supplied
+ * comparator, or the elements' natural ordering, and LIFO queues (or
+ * stacks) which order the elements LIFO (last-in-first-out).
+ * Whatever the ordering used, the <em>head</em> of the queue is that
+ * element which would be removed by a call to {@link #remove() } or
+ * {@link #poll()}.  In a FIFO queue, all new elements are inserted at
+ * the <em> tail</em> of the queue. Other kinds of queues may use
+ * different placement rules.  Every <tt>Queue</tt> implementation
+ * must specify its ordering properties.
+ *
+ * <p>The {@link #offer offer} method inserts an element if possible,
+ * otherwise returning <tt>false</tt>.  This differs from the {@link
+ * java.util.Collection#add Collection.add} method, which can fail to
+ * add an element only by throwing an unchecked exception.  The
+ * <tt>offer</tt> method is designed for use when failure is a normal,
+ * rather than exceptional occurrence, for example, in fixed-capacity
+ * (or &quot;bounded&quot;) queues.
+ *
+ * <p>The {@link #remove()} and {@link #poll()} methods remove and
+ * return the head of the queue.
+ * Exactly which element is removed from the queue is a
+ * function of the queue's ordering policy, which differs from
+ * implementation to implementation. The <tt>remove()</tt> and
+ * <tt>poll()</tt> methods differ only in their behavior when the
+ * queue is empty: the <tt>remove()</tt> method throws an exception,
+ * while the <tt>poll()</tt> method returns <tt>null</tt>.
+ *
+ * <p>The {@link #element()} and {@link #peek()} methods return, but do
+ * not remove, the head of the queue.
+ *
+ * <p>The <tt>Queue</tt> interface does not define the <i>blocking queue
+ * methods</i>, which are common in concurrent programming.  These methods,
+ * which wait for elements to appear or for space to become available, are
+ * defined in the {@link java.util.concurrent.BlockingQueue} interface, which
+ * extends this interface.
+ *
+ * <p><tt>Queue</tt> implementations generally do not allow insertion
+ * of <tt>null</tt> elements, although some implementations, such as
+ * {@link LinkedList}, do not prohibit insertion of <tt>null</tt>.
+ * Even in the implementations that permit it, <tt>null</tt> should
+ * not be inserted into a <tt>Queue</tt>, as <tt>null</tt> is also
+ * used as a special return value by the <tt>poll</tt> method to
+ * indicate that the queue contains no elements.
+ *
+ * <p><tt>Queue</tt> implementations generally do not define
+ * element-based versions of methods <tt>equals</tt> and
+ * <tt>hashCode</tt> but instead inherit the identity based versions
+ * from class <tt>Object</tt>, because element-based equality is not
+ * always well-defined for queues with the same elements but different
+ * ordering properties.
+ *
+ * @see java.util.Collection
+ * @see LinkedList
+ * @see PriorityQueue
+ * @see java.util.concurrent.LinkedBlockingQueue
+ * @see java.util.concurrent.BlockingQueue
+ * @see java.util.concurrent.ArrayBlockingQueue
+ * @see java.util.concurrent.LinkedBlockingQueue
+ * @see java.util.concurrent.PriorityBlockingQueue
+ * @since 1.5
+ * @author Doug Lea
+ * @param <E> the type of elements held in this collection
  */
 public interface Queue<E> extends Collection<E> {
+    /**
+     * Inserts the specified element into this queue if it is possible to do so
+     * immediately without violating capacity restrictions, returning
+     * <tt>true</tt> upon success and throwing an <tt>IllegalStateException</tt>
+     * if no space is currently available.
+     *
+     * @param e the element to add
+     * @return <tt>true</tt> (as specified by {@link Collection#add})
+     * @throws IllegalStateException if the element cannot be added at this
+     *         time due to capacity restrictions
+     * @throws ClassCastException if the class of the specified element
+     *         prevents it from being added to this queue
+     * @throws NullPointerException if the specified element is null and
+     *         this queue does not permit null elements
+     * @throws IllegalArgumentException if some property of this element
+     *         prevents it from being added to this queue
+     */
+    boolean add(E e);
 
     /**
-     * Inserts the specified element into the queue provided that the condition
-     * allows such an operation. The method is generally preferable to
-     * {@link Collection#add}, since the latter might throw an exception if the
-     * operation fails.
-     * 
-     * @param o
-     *            the specified element to insert into the queue.
-     * @return {@code true} if the operation succeeds and {@code false} if it
-     *         fails.
+     * Inserts the specified element into this queue if it is possible to do
+     * so immediately without violating capacity restrictions.
+     * When using a capacity-restricted queue, this method is generally
+     * preferable to {@link #add}, which can fail to insert an element only
+     * by throwing an exception.
+     *
+     * @param e the element to add
+     * @return <tt>true</tt> if the element was added to this queue, else
+     *         <tt>false</tt>
+     * @throws ClassCastException if the class of the specified element
+     *         prevents it from being added to this queue
+     * @throws NullPointerException if the specified element is null and
+     *         this queue does not permit null elements
+     * @throws IllegalArgumentException if some property of this element
+     *         prevents it from being added to this queue
      */
-    public boolean offer(E o);
+    boolean offer(E e);
 
     /**
-     * Gets and removes the element at the head of the queue, or returns {@code
-     * null} if there is no element in the queue.
-     * 
-     * @return the element at the head of the queue or {@code null} if there is
-     *         no element in the queue.
+     * Retrieves and removes the head of this queue.  This method differs
+     * from {@link #poll poll} only in that it throws an exception if this
+     * queue is empty.
+     *
+     * @return the head of this queue
+     * @throws NoSuchElementException if this queue is empty
      */
-    public E poll();
+    E remove();
 
     /**
-     * Gets and removes the element at the head of the queue. Throws a
-     * NoSuchElementException if there is no element in the queue.
-     * 
-     * @return the element at the head of the queue.
-     * @throws NoSuchElementException
-     *             if there is no element in the queue.
+     * Retrieves and removes the head of this queue,
+     * or returns <tt>null</tt> if this queue is empty.
+     *
+     * @return the head of this queue, or <tt>null</tt> if this queue is empty
      */
-    public E remove();
+    E poll();
 
     /**
-     * Gets but does not remove the element at the head of the queue.
-     * 
-     * @return the element at the head of the queue or {@code null} if there is
-     *         no element in the queue.
+     * Retrieves, but does not remove, the head of this queue.  This method
+     * differs from {@link #peek peek} only in that it throws an exception
+     * if this queue is empty.
+     *
+     * @return the head of this queue
+     * @throws NoSuchElementException if this queue is empty
      */
-    public E peek();
+    E element();
 
     /**
-     * Gets but does not remove the element at the head of the queue. Throws a
-     * {@code NoSuchElementException} if there is no element in the queue.
-     * 
-     * @return the element at the head of the queue.
-     * @throws NoSuchElementException
-     *             if there is no element in the queue.
+     * Retrieves, but does not remove, the head of this queue,
+     * or returns <tt>null</tt> if this queue is empty.
+     *
+     * @return the head of this queue, or <tt>null</tt> if this queue is empty
      */
-    public E element();
-
+    E peek();
 }

@@ -21,7 +21,7 @@ package java.net;
  * and ACCEPT_ORIGINAL_SERVER respectively. They are used to decide which
  * cookies should be accepted and which should not be.
  * 
- * See RFC 2965 sec. 3.3 & 7 for more detail.
+ * See <a href="http://www.ietf.org/rfc/rfc2965.txt">RFC 2965</a> sections 3.3 and 7 for more detail.
  * 
  * @since 1.6
  */

@@ -17,36 +17,13 @@
 
 package java.lang;
 
+import java.util.Random;
+
 /**
  * Class Math provides basic math constants and operations such as trigonometric
  * functions, hyperbolic functions, exponential, logarithms, etc.
  */
 public final class Math {
-	
-	private static final int FLOAT_EXPONENT_BIAS = 127;
-
-    private static final int FLOAT_EXPONENT_MASK = 0x7F800000;
-
-    private static final int DOUBLE_NON_MANTISSA_BITS = 12;
-
-    private static final int DOUBLE_MANTISSA_BITS = 52;
-
-    private static final int FLOAT_NON_MANTISSA_BITS = 9;
-
-    private static final int FLOAT_MANTISSA_BITS = 23;
-
-    private static final int DOUBLE_EXPONENT_BIAS = 1023;
-
-    private static final long DOUBLE_EXPONENT_MASK = 0x7ff0000000000000L;
-
-    private static final int FLOAT_MANTISSA_MASK = 0x007fffff;
-
-    private static final int FLOAT_SIGN_MASK = 0x80000000;
-
-    private static final long DOUBLE_MANTISSA_MASK = 0x000fffffffffffffL;
-
-    private static final long DOUBLE_SIGN_MASK = 0x8000000000000000L;
-    
     /**
      * The double value closest to e, the base of the natural logarithm.
      */
@@ -58,7 +35,7 @@ public final class Math {
      */
     public static final double PI = 3.141592653589793;
 
-    private static java.util.Random random;
+    private static Random random;
 
     /**
      * Prevents this class from being instantiated.
@@ -81,11 +58,7 @@ public final class Math {
      *            the value whose absolute value has to be computed.
      * @return the absolute value of the argument.
      */
-    public static double abs(double d) {
-        long bits = Double.doubleToLongBits(d);
-        bits &= 0x7fffffffffffffffL;
-        return Double.longBitsToDouble(bits);
-    }
+    public static native double abs(double d);
 
     /**
      * Returns the absolute value of the argument.
@@ -103,11 +76,7 @@ public final class Math {
      * @return the argument if it is positive, otherwise the negation of the
      *         argument.
      */
-    public static float abs(float f) {
-        int bits = Float.floatToIntBits(f);
-        bits &= 0x7fffffff;
-        return Float.intBitsToFloat(bits);
-    }
+    public static native float abs(float f);
 
     /**
      * Returns the absolute value of the argument.
@@ -120,9 +89,7 @@ public final class Math {
      * @return the argument if it is positive, otherwise the negation of the
      *         argument.
      */
-    public static int abs(int i) {
-        return i >= 0 ? i : -i;
-    }
+    public static native int abs(int i);
 
     /**
      * Returns the absolute value of the argument. If the argument is {@code
@@ -133,9 +100,7 @@ public final class Math {
      * @return the argument if it is positive, otherwise the negation of the
      *         argument.
      */
-    public static long abs(long l) {
-        return l >= 0 ? l : -l;
-    }
+    public static native long abs(long l);
 
     /**
      * Returns the closest double approximation of the arc cosine of the
@@ -231,7 +196,7 @@ public final class Math {
      *            the denominator of the value whose atan has to be computed.
      * @return the arc tangent of {@code y/x}.
      */
-    public static native double atan2(double x, double y);
+    public static native double atan2(double y, double x);
 
     /**
      * Returns the closest double approximation of the cube root of the
@@ -421,7 +386,7 @@ public final class Math {
      *            the numerator of the operation.
      * @param y
      *            the denominator of the operation.
-     * @return the IEEE754 floating point reminder of {@code x/y}.
+     * @return the IEEE754 floating point reminder of of {@code x/y}.
      */
     public static native double IEEEremainder(double x, double y);
 
@@ -521,7 +486,7 @@ public final class Math {
             return Double.NaN;
         }
         /* max(+0.0,-0.0) == +0.0 */
-        /* 0 == Double.doubleToRawLongBits(0.0d) */
+        /* Double.doubleToRawLongBits(0.0d) == 0 */
         if (Double.doubleToRawLongBits(d1) != 0) {
             return d2;
         }
@@ -558,7 +523,7 @@ public final class Math {
             return Float.NaN;
         }
         /* max(+0.0,-0.0) == +0.0 */
-        /* 0 == Float.floatToRawIntBits(0.0f) */
+        /* Float.floatToRawIntBits(0.0f) == 0*/
         if (Float.floatToRawIntBits(f1) != 0) {
             return f2;
         }
@@ -575,9 +540,7 @@ public final class Math {
      *            the second argument.
      * @return the larger of {@code i1} and {@code i2}.
      */
-    public static int max(int i1, int i2) {
-        return i1 > i2 ? i1 : i2;
-    }
+    public static native int max(int i1, int i2);
 
     /**
      * Returns the most positive (closest to positive infinity) of the two
@@ -677,9 +640,7 @@ public final class Math {
      *            the second argument.
      * @return the smaller of {@code i1} and {@code i2}.
      */
-    public static int min(int i1, int i2) {
-        return i1 < i2 ? i1 : i2;
-    }
+    public static native int min(int i1, int i2);
 
     /**
      * Returns the most negative (closest to negative infinity) of the two
@@ -763,8 +724,8 @@ public final class Math {
      * <li>{@code round(-0.0) = +0.0}</li>
      * <li>{@code round((anything > Long.MAX_VALUE) = Long.MAX_VALUE}</li>
      * <li>{@code round((anything < Long.MIN_VALUE) = Long.MIN_VALUE}</li>
-     * <li>{@code round(+infintiy) = Long.MAX_VALUE}</li>
-     * <li>{@code round(-infintiy) = Long.MIN_VALUE}</li>
+     * <li>{@code round(+infinity) = Long.MAX_VALUE}</li>
+     * <li>{@code round(-infinity) = Long.MIN_VALUE}</li>
      * <li>{@code round(NaN) = +0.0}</li>
      * </ul>
      * 
@@ -790,8 +751,8 @@ public final class Math {
      * <li>{@code round(-0.0) = +0.0}</li>
      * <li>{@code round((anything > Integer.MAX_VALUE) = Integer.MAX_VALUE}</li>
      * <li>{@code round((anything < Integer.MIN_VALUE) = Integer.MIN_VALUE}</li>
-     * <li>{@code round(+infintiy) = Integer.MAX_VALUE}</li>
-     * <li>{@code round(-infintiy) = Integer.MIN_VALUE}</li>
+     * <li>{@code round(+infinity) = Integer.MAX_VALUE}</li>
+     * <li>{@code round(-infinity) = Integer.MIN_VALUE}</li>
      * <li>{@code round(NaN) = +0.0}</li>
      * </ul>
      * 
@@ -827,7 +788,16 @@ public final class Math {
      * @return the value of the signum function.
      */
     public static double signum(double d) {
-        return StrictMath.signum(d);
+        if (Double.isNaN(d)) {
+            return Double.NaN;
+        }
+        double sig = d;
+        if (d > 0) {
+            sig = 1.0;
+        } else if (d < 0) {
+            sig = -1.0;
+        }
+        return sig;
     }
 
     /**
@@ -850,7 +820,16 @@ public final class Math {
      * @return the value of the signum function.
      */
     public static float signum(float f) {
-        return StrictMath.signum(f);
+        if (Float.isNaN(f)) {
+            return Float.NaN;
+        }
+        float sig = f;
+        if (f > 0) {
+            sig = 1.0f;
+        } else if (f < 0) {
+            sig = -1.0f;
+        }
+        return sig;
     }
 
     /**
@@ -927,7 +906,7 @@ public final class Math {
      * </ul>
      * 
      * @param d
-     *            the angle whose tangens has to be computed, in radians.
+     *            the angle whose tangent has to be computed, in radians.
      * @return the tangent of the argument.
      */
     public static native double tan(double d);
@@ -955,14 +934,17 @@ public final class Math {
     public static native double tanh(double d);
 
     /**
-     * Returns a pseudo-random number between 0.0 (inclusive) and 1.0
-     * (exclusive).
+     * Returns a pseudo-random double {@code n}, where {@code n >= 0.0 && n < 1.0}.
+     * This method reuses a single instance of {@link java.util.Random}.
+     * This method is thread-safe because access to the {@code Random} is synchronized,
+     * but this harms scalability. Applications may find a performance benefit from
+     * allocating a {@code Random} for each of their threads.
      * 
      * @return a pseudo-random number.
      */
-    public static double random() {
+    public static synchronized double random() {
         if (random == null) {
-            random = new java.util.Random();
+            random = new Random();
         }
         return random.nextDouble();
     }
@@ -1019,8 +1001,8 @@ public final class Math {
      * <ul>
      * <li>{@code ulp(+0.0) = Double.MIN_VALUE}</li>
      * <li>{@code ulp(-0.0) = Double.MIN_VALUE}</li>
-     * <li>{@code ulp(+infintiy) = infinity}</li>
-     * <li>{@code ulp(-infintiy) = infinity}</li>
+     * <li>{@code ulp(+infinity) = infinity}</li>
+     * <li>{@code ulp(-infinity) = infinity}</li>
      * <li>{@code ulp(NaN) = NaN}</li>
      * </ul>
      * 
@@ -1039,6 +1021,8 @@ public final class Math {
         return nextafter(d, Double.MAX_VALUE) - d;
     }
 
+    private static native double nextafter(double x, double y);
+
     /**
      * Returns the argument's ulp (unit in the last place). The size of a ulp of
      * a float value is the positive distance between this value and the float
@@ -1049,8 +1033,8 @@ public final class Math {
      * <ul>
      * <li>{@code ulp(+0.0) = Float.MIN_VALUE}</li>
      * <li>{@code ulp(-0.0) = Float.MIN_VALUE}</li>
-     * <li>{@code ulp(+infintiy) = infinity}</li>
-     * <li>{@code ulp(-infintiy) = infinity}</li>
+     * <li>{@code ulp(+infinity) = infinity}</li>
+     * <li>{@code ulp(-infinity) = infinity}</li>
      * <li>{@code ulp(NaN) = NaN}</li>
      * </ul>
      * 
@@ -1067,124 +1051,88 @@ public final class Math {
         } else if (f == Float.MAX_VALUE || f == -Float.MAX_VALUE) {
             return (float) pow(2, 104);
         }
-        f = abs(f);
-        return nextafterf(f, Float.MAX_VALUE) - f;
+
+        f = Math.abs(f);
+        int hx = Float.floatToRawIntBits(f);
+        int hy = Float.floatToRawIntBits(Float.MAX_VALUE);
+        if ((hx & 0x7fffffff) == 0) { /* f == 0 */
+            return Float.intBitsToFloat((hy & 0x80000000) | 0x1);
     }
-
-    private native static double nextafter(double x, double y);
-
-    private native static float nextafterf(float x, float y);
+        if ((hx > 0) ^ (hx > hy)) { /* |f| < |Float.MAX_VALUE| */
+            hx += 1;
+        } else {
+            hx -= 1;
+        }
+        return Float.intBitsToFloat(hx) - f;
+    }
     
     /**
-     * Answers a result of the magnitude of the first given double value and the
-     * sign of the second given double value.
-     * 
-     * @param magnitude
-     *            the double value whose magnitude should be used
-     * @param sign
-     *            the double value whose sign should be used
-     * @return a result of the magnitude of the first given double value and the
-     *         sign of the second given double value .
-     * 
+     * Returns a double with the given magnitude and the sign of {@code sign}.
+     * If {@code sign} is NaN, the sign of the result is arbitrary.
+     * If you need a determinate sign in such cases, use {@code StrictMath.copySign}.
      * @since 1.6
      */
     public static double copySign(double magnitude, double sign) {
-        long mbits = Double.doubleToRawLongBits(magnitude);
-        long sbits = Double.doubleToRawLongBits(sign);
-        return Double.longBitsToDouble((mbits & ~DOUBLE_SIGN_MASK)
-                | (sbits & DOUBLE_SIGN_MASK));
+        long magnitudeBits = Double.doubleToRawLongBits(magnitude);
+        long signBits = Double.doubleToRawLongBits(sign);
+        magnitudeBits = (magnitudeBits & ~Double.SIGN_MASK) | (signBits & Double.SIGN_MASK);
+        return Double.longBitsToDouble(magnitudeBits);
     }
 
     /**
-     * Answers a result of the magnitude of the first given float value and the
-     * sign of the second given float value .
-     * 
-     * @param magnitude
-     *            the float value whose magnitude should be used
-     * @param sign
-     *            the float value whose sign should be used
-     * @return a result with the magnitude of the first given float value and
-     *         the sign of the second given float value .
-     * 
+     * Returns a float with the given magnitude and the sign of {@code sign}.
+     * If {@code sign} is NaN, the sign of the result is arbitrary.
+     * If you need a determinate sign in such cases, use {@code StrictMath.copySign}.
      * @since 1.6
      */
     public static float copySign(float magnitude, float sign) {
-        int mbits = Float.floatToRawIntBits(magnitude);
-        int sbits = Float.floatToRawIntBits(sign);
-        return Float.intBitsToFloat((mbits & ~FLOAT_SIGN_MASK)
-                | (sbits & FLOAT_SIGN_MASK));
+        int magnitudeBits = Float.floatToRawIntBits(magnitude);
+        int signBits = Float.floatToRawIntBits(sign);
+        magnitudeBits = (magnitudeBits & ~Float.SIGN_MASK) | (signBits & Float.SIGN_MASK);
+        return Float.intBitsToFloat(magnitudeBits);
     }
     
     /**
-     * Answers the exponent of a float.
-     * 
-     * @param f
-     *            the given float
-     * @return the exponent of the float.
-     * 
+     * Returns the unbiased base-2 exponent of float {@code f}.
      * @since 1.6
      */
     public static int getExponent(float f) {
         int bits = Float.floatToRawIntBits(f);
-        bits = (bits & FLOAT_EXPONENT_MASK) >> FLOAT_MANTISSA_BITS;
-        return bits - FLOAT_EXPONENT_BIAS;
+        bits = (bits & Float.EXPONENT_MASK) >> Float.MANTISSA_BITS;
+        return bits - Float.EXPONENT_BIAS;
     }
 
     /**
-     * Answers the exponent of a double.
-     * 
-     * @param d
-     *            the given double
-     * @return the exponent of the double.
-     * 
+     * Returns the unbiased base-2 exponent of double {@code d}.
      * @since 1.6
      */
     public static int getExponent(double d) {
         long bits = Double.doubleToRawLongBits(d);
-        bits = (bits & DOUBLE_EXPONENT_MASK) >> DOUBLE_MANTISSA_BITS;
-        return (int) bits - DOUBLE_EXPONENT_BIAS;
+        bits = (bits & Double.EXPONENT_MASK) >> Double.MANTISSA_BITS;
+        return (int) bits - Double.EXPONENT_BIAS;
     }    
     
     /**
-     * Answers a double next to the first given double value in the direction of
-     * the second given double.
-     * 
-     * @param start
-     *            the double value to start
-     * @param direction
-     *            the double indicating the direction
-     * @return a double next to the first given double value in the direction of
-     *         the second given double.
-     * 
+     * Returns the next double after {@code start} in the given {@code direction}.
      * @since 1.6
      */
     public static double nextAfter(double start, double direction) {
-        if (0 == start && 0 == direction) {
+        if (start == 0 && direction == 0) {
             return direction;
         }
         return nextafter(start, direction);
     }
 
     /**
-     * Answers a float next to the first given float value in the direction of
-     * the second given double value.
-     * 
-     * @param start
-     *            the float value to start
-     * @param direction
-     *            the double indicating the direction
-     * @return a float next to the first given float value in the direction of
-     *         the second given double.
-     * 
+     * Returns the next float after {@code start} in the given {@code direction}.
      * @since 1.6
      */
-    @SuppressWarnings("boxing")
     public static float nextAfter(float start, double direction) {
         if (Float.isNaN(start) || Double.isNaN(direction)) {
             return Float.NaN;
         }
-        if (0 == start && 0 == direction) {       	
-            return new Float(direction);
+        if (start == 0 && direction == 0) {
+            return (float) direction;
         }
         if ((start == Float.MIN_VALUE && direction < start)
                 || (start == -Float.MIN_VALUE && direction > start)) {
@@ -1216,28 +1164,23 @@ public final class Math {
             }
             return -Float.MIN_VALUE;
         }
-        return new Float(direction);
+        return (float) direction;
     }
     
     /**
-     * Answers the next larger double value to d.
-     * 
-     * @param d
-     *            the double value to start
-     * @return the next larger double value of d.
-     * 
+     * Returns the next double larger than {@code d}.
      * @since 1.6
      */
     public static double nextUp(double d) {
         if (Double.isNaN(d)) {
             return Double.NaN;
         }
-        if ((d == Double.POSITIVE_INFINITY)) {
+        if (d == Double.POSITIVE_INFINITY) {
             return Double.POSITIVE_INFINITY;
         }
-        if (0 == d) {
+        if (d == 0) {
             return Double.MIN_VALUE;
-        } else if (0 < d) {
+        } else if (d > 0) {
             return Double.longBitsToDouble(Double.doubleToLongBits(d) + 1);
         } else {
             return Double.longBitsToDouble(Double.doubleToLongBits(d) - 1);
@@ -1245,24 +1188,19 @@ public final class Math {
     }
 
     /**
-     * Answers the next larger float value to d.
-     * 
-     * @param f
-     *            the float value to start
-     * @return the next larger float value of d.
-     * 
+     * Returns the next float larger than {@code f}.
      * @since 1.6
      */
     public static float nextUp(float f) {
         if (Float.isNaN(f)) {
             return Float.NaN;
         }
-        if ((f == Float.POSITIVE_INFINITY)) {
+        if (f == Float.POSITIVE_INFINITY) {
             return Float.POSITIVE_INFINITY;
         }
-        if (0 == f) {
+        if (f == 0) {
             return Float.MIN_VALUE;
-        } else if (0 < f) {
+        } else if (f > 0) {
             return Float.intBitsToFloat(Float.floatToIntBits(f) + 1);
         } else {
             return Float.intBitsToFloat(Float.floatToIntBits(f) - 1);
@@ -1270,33 +1208,24 @@ public final class Math {
     }
     
     /**
-     * Answers a double value of d * 2^scaleFactor, the result may be rounded.
-     * 
-     * @param d
-     *            the base number
-     * @param scaleFactor
-     *            the power number
-     * @return d * 2^scaleFactor
-     * 
+     * Returns {@code d} * 2^{@code scaleFactor}. The result may be rounded.
      * @since 1.6
      */
-    @SuppressWarnings("boxing")
     public static double scalb(double d, int scaleFactor) {
-        if (Double.isNaN(d) || Double.isInfinite(d) || 0 == d) {
+        if (Double.isNaN(d) || Double.isInfinite(d) || d == 0) {
             return d;
         }
         // change double to long for calculation
         long bits = Double.doubleToLongBits(d);
         // the sign of the results must be the same of given d
-        long sign = bits & DOUBLE_SIGN_MASK;
+        long sign = bits & Double.SIGN_MASK;
         // calculates the factor of the result
-        long factor = ((bits & DOUBLE_EXPONENT_MASK) >> DOUBLE_MANTISSA_BITS)
-                - DOUBLE_EXPONENT_BIAS + scaleFactor;
+        long factor = ((bits & Double.EXPONENT_MASK) >> Double.MANTISSA_BITS)
+                - Double.EXPONENT_BIAS + scaleFactor;
 
-        // calcutes the factor of sub-normal values
-        int subNormalFactor = Long.numberOfLeadingZeros(bits
-                & ~DOUBLE_SIGN_MASK)
-                - DOUBLE_NON_MANTISSA_BITS;
+        // calculates the factor of sub-normal values
+        int subNormalFactor = Long.numberOfLeadingZeros(bits & ~Double.SIGN_MASK)
+                - Double.NON_MANTISSA_BITS;
         if (subNormalFactor < 0) {
             // not sub-normal values
             subNormalFactor = 0;
@@ -1309,54 +1238,45 @@ public final class Math {
 
         long result;
         // if result is a sub-normal
-        if (factor <= -DOUBLE_EXPONENT_BIAS) {
+        if (factor <= -Double.EXPONENT_BIAS) {
             // the number of digits that shifts
-            long digits = factor + DOUBLE_EXPONENT_BIAS + subNormalFactor;
+            long digits = factor + Double.EXPONENT_BIAS + subNormalFactor;
             if (Math.abs(d) < Double.MIN_NORMAL) {
                 // origin d is already sub-normal
-                result = shiftLongBits(bits & DOUBLE_MANTISSA_MASK, digits);
+                result = shiftLongBits(bits & Double.MANTISSA_MASK, digits);
             } else {
                 // origin d is not sub-normal, change mantissa to sub-normal
-                result = shiftLongBits(bits & DOUBLE_MANTISSA_MASK
-                        | 0x0010000000000000L, digits - 1);
+                result = shiftLongBits(bits & Double.MANTISSA_MASK | 0x0010000000000000L, digits - 1);
             }
         } else {
             if (Math.abs(d) >= Double.MIN_NORMAL) {
                 // common situation
-                result = ((factor + DOUBLE_EXPONENT_BIAS) << DOUBLE_MANTISSA_BITS)
-                        | (bits & DOUBLE_MANTISSA_MASK);
+                result = ((factor + Double.EXPONENT_BIAS) << Double.MANTISSA_BITS)
+                        | (bits & Double.MANTISSA_MASK);
             } else {
                 // origin d is sub-normal, change mantissa to normal style
-                result = ((factor + DOUBLE_EXPONENT_BIAS) << DOUBLE_MANTISSA_BITS)
-                        | ((bits << (subNormalFactor + 1)) & DOUBLE_MANTISSA_MASK);
+                result = ((factor + Double.EXPONENT_BIAS) << Double.MANTISSA_BITS)
+                        | ((bits << (subNormalFactor + 1)) & Double.MANTISSA_MASK);
             }
         }
         return Double.longBitsToDouble(result | sign);
     }
 
     /**
-     * Answers a float value of d * 2^scaleFactor, the result may be rounded.
-     * 
-     * @param d
-     *            the base number
-     * @param scaleFactor
-     *            the power number
-     * @return d * 2^scaleFactor
-     * 
+     * Returns {@code d} * 2^{@code scaleFactor}. The result may be rounded.
      * @since 1.6
      */
     public static float scalb(float d, int scaleFactor) {
-        if (Float.isNaN(d) || Float.isInfinite(d) || 0 == d) {
+        if (Float.isNaN(d) || Float.isInfinite(d) || d == 0) {
             return d;
         }
         int bits = Float.floatToIntBits(d);
-        int sign = bits & FLOAT_SIGN_MASK;
-        int factor = ((bits & FLOAT_EXPONENT_MASK) >> FLOAT_MANTISSA_BITS)
-                - FLOAT_EXPONENT_BIAS + scaleFactor;
-        // calcutes the factor of sub-normal values
-        int subNormalFactor = Integer.numberOfLeadingZeros(bits
-                & ~FLOAT_SIGN_MASK)
-                - FLOAT_NON_MANTISSA_BITS;
+        int sign = bits & Float.SIGN_MASK;
+        int factor = ((bits & Float.EXPONENT_MASK) >> Float.MANTISSA_BITS)
+                - Float.EXPONENT_BIAS + scaleFactor;
+        // calculates the factor of sub-normal values
+        int subNormalFactor = Integer.numberOfLeadingZeros(bits & ~Float.SIGN_MASK)
+                - Float.NON_MANTISSA_BITS;
         if (subNormalFactor < 0) {
             // not sub-normal values
             subNormalFactor = 0;
@@ -1369,26 +1289,25 @@ public final class Math {
 
         int result;
         // if result is a sub-normal
-        if (factor <= -FLOAT_EXPONENT_BIAS) {
+        if (factor <= -Float.EXPONENT_BIAS) {
             // the number of digits that shifts
-            int digits = factor + FLOAT_EXPONENT_BIAS + subNormalFactor;
+            int digits = factor + Float.EXPONENT_BIAS + subNormalFactor;
             if (Math.abs(d) < Float.MIN_NORMAL) {
                 // origin d is already sub-normal
-                result = shiftIntBits(bits & FLOAT_MANTISSA_MASK, digits);
+                result = shiftIntBits(bits & Float.MANTISSA_MASK, digits);
             } else {
                 // origin d is not sub-normal, change mantissa to sub-normal
-                result = shiftIntBits(bits & FLOAT_MANTISSA_MASK | 0x00800000,
-                        digits - 1);
+                result = shiftIntBits(bits & Float.MANTISSA_MASK | 0x00800000, digits - 1);
             }
         } else {
             if (Math.abs(d) >= Float.MIN_NORMAL) {
                 // common situation
-                result = ((factor + FLOAT_EXPONENT_BIAS) << FLOAT_MANTISSA_BITS)
-                        | (bits & FLOAT_MANTISSA_MASK);
+                result = ((factor + Float.EXPONENT_BIAS) << Float.MANTISSA_BITS)
+                        | (bits & Float.MANTISSA_MASK);
             } else {
                 // origin d is sub-normal, change mantissa to normal style
-                result = ((factor + FLOAT_EXPONENT_BIAS) << FLOAT_MANTISSA_BITS)
-                        | ((bits << (subNormalFactor + 1)) & FLOAT_MANTISSA_MASK);
+                result = ((factor + Float.EXPONENT_BIAS) << Float.MANTISSA_BITS)
+                        | ((bits << (subNormalFactor + 1)) & Float.MANTISSA_MASK);
             }
         }
         return Float.intBitsToFloat(result | sign);
@@ -1401,17 +1320,17 @@ public final class Math {
             return bits << digits;
         }
         // change it to positive
-        int absdigits = -digits;
-        if (!(Integer.numberOfLeadingZeros(bits & ~FLOAT_SIGN_MASK) <= (32 - absdigits))) {
+        int absDigits = -digits;
+        if (!(Integer.numberOfLeadingZeros(bits & ~Float.SIGN_MASK) <= (32 - absDigits))) {
             return 0;
         }
-        int ret = bits >> absdigits;
-        boolean halfbit = ((bits >> (absdigits - 1)) & 0x1) == 1;
-        if (halfbit) {
-            if (Integer.numberOfTrailingZeros(bits) < (absdigits - 1)) {
+        int ret = bits >> absDigits;
+        boolean halfBit = ((bits >> (absDigits - 1)) & 0x1) == 1;
+        if (halfBit) {
+            if (Integer.numberOfTrailingZeros(bits) < (absDigits - 1)) {
                 ret = ret + 1;
             }
-            if (Integer.numberOfTrailingZeros(bits) == (absdigits - 1)) {
+            if (Integer.numberOfTrailingZeros(bits) == (absDigits - 1)) {
                 if ((ret & 0x1) == 1) {
                     ret = ret + 1;
                 }
@@ -1427,19 +1346,19 @@ public final class Math {
             return bits << digits;
         }
         // change it to positive
-        long absdigits = -digits;
-        if (!(Long.numberOfLeadingZeros(bits & ~DOUBLE_SIGN_MASK) <= (64 - absdigits))) {
+        long absDigits = -digits;
+        if (!(Long.numberOfLeadingZeros(bits & ~Double.SIGN_MASK) <= (64 - absDigits))) {
             return 0;
         }
-        long ret = bits >> absdigits;
-        boolean halfbit = ((bits >> (absdigits - 1)) & 0x1) == 1;
-        if (halfbit) {
+        long ret = bits >> absDigits;
+        boolean halfBit = ((bits >> (absDigits - 1)) & 0x1) == 1;
+        if (halfBit) {
             // some bits will remain after shifting, calculates its carry
             // subnormal
-            if (Long.numberOfTrailingZeros(bits) < (absdigits - 1)) {
+            if (Long.numberOfTrailingZeros(bits) < (absDigits - 1)) {
                 ret = ret + 1;
             }
-            if (Long.numberOfTrailingZeros(bits) == (absdigits - 1)) {
+            if (Long.numberOfTrailingZeros(bits) == (absDigits - 1)) {
                 if ((ret & 0x1) == 1) {
                     ret = ret + 1;
                 }

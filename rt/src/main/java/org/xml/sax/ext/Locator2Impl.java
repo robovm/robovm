@@ -1,7 +1,7 @@
 // Locator2Impl.java - extended LocatorImpl
 // http://www.saxproject.org
 // Public Domain: no warranty.
-// $Id: Locator2Impl.java 226184 2005-04-08 10:53:24Z neeraj $
+// $Id: Locator2Impl.java,v 1.3 2004/04/26 17:34:35 dmegginson Exp $
 
 package org.xml.sax.ext;
 
@@ -26,8 +26,8 @@ import org.xml.sax.helpers.LocatorImpl;
  */
 public class Locator2Impl extends LocatorImpl implements Locator2
 {
-    private String	encoding;
-    private String	version;
+    private String    encoding;
+    private String    version;
 
 
     /**
@@ -41,46 +41,50 @@ public class Locator2Impl extends LocatorImpl implements Locator2
      * Copy an existing Locator or Locator2 object.
      * If the object implements Locator2, values of the
      * <em>encoding</em> and <em>version</em>strings are copied,
-     * otherwise they set to <em>null</em>. 
+     * otherwise they set to <em>null</em>.
      *
      * @param locator The existing Locator object.
      */
     public Locator2Impl (Locator locator)
     {
-	super (locator);
-	if (locator instanceof Locator2) {
-	    Locator2	l2 = (Locator2) locator;
+    super (locator);
+    if (locator instanceof Locator2) {
+        Locator2    l2 = (Locator2) locator;
 
-	    version = l2.getXMLVersion ();
-	    encoding = l2.getEncoding ();
-	}
+        version = l2.getXMLVersion ();
+        encoding = l2.getEncoding ();
+    }
     }
 
     ////////////////////////////////////////////////////////////////////
     // Locator2 method implementations
     ////////////////////////////////////////////////////////////////////
-    
+
     /**
      * Returns the current value of the version property.
+     *
+     * @return the current value of the version property.
      *
      * @see #setXMLVersion
      */
     public String getXMLVersion ()
-	{ return version; }
+    { return version; }
 
     /**
      * Returns the current value of the encoding property.
      *
+     * @return the current value of the encoding property.
+     *
      * @see #setEncoding
      */
     public String getEncoding ()
-	{ return encoding; }
+    { return encoding; }
 
 
     ////////////////////////////////////////////////////////////////////
-    // Setters 
+    // Setters
     ////////////////////////////////////////////////////////////////////
-    
+
     /**
      * Assigns the current value of the version property.
      *
@@ -88,7 +92,7 @@ public class Locator2Impl extends LocatorImpl implements Locator2
      * @see #getXMLVersion
      */
     public void setXMLVersion (String version)
-	{ this.version = version; }
+    { this.version = version; }
 
     /**
      * Assigns the current value of the encoding property.
@@ -97,5 +101,5 @@ public class Locator2Impl extends LocatorImpl implements Locator2
      * @see #getEncoding
      */
     public void setEncoding (String encoding)
-	{ this.encoding = encoding; }
+    { this.encoding = encoding; }
 }

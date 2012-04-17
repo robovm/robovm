@@ -17,7 +17,7 @@
 
 package java.io;
 
-import org.apache.harmony.luni.internal.nls.Messages;
+import java.util.Arrays;
 
 /**
  * A specialized {@link OutputStream} for class for writing content to an
@@ -44,7 +44,6 @@ public class ByteArrayOutputStream extends OutputStream {
      * array will expand.
      */
     public ByteArrayOutputStream() {
-        super();
         buf = new byte[32];
     }
 
@@ -60,11 +59,10 @@ public class ByteArrayOutputStream extends OutputStream {
      *             if {@code size} < 0.
      */
     public ByteArrayOutputStream(int size) {
-        super();
         if (size >= 0) {
             buf = new byte[size];
         } else {
-            throw new IllegalArgumentException(Messages.getString("luni.A8")); //$NON-NLS-1$
+            throw new IllegalArgumentException("size < 0");
         }
     }
 
@@ -196,16 +194,10 @@ public class ByteArrayOutputStream extends OutputStream {
      */
     @Override
     public synchronized void write(byte[] buffer, int offset, int len) {
-        // avoid int overflow
-        if (offset < 0 || offset > buffer.length || len < 0
-                || len > buffer.length - offset) {
-            throw new IndexOutOfBoundsException(Messages.getString("luni.13")); //$NON-NLS-1$
-        }
+        Arrays.checkOffsetAndCount(buffer.length, offset, len);
         if (len == 0) {
             return;
         }
-
-        /* Expand if necessary */
         expand(len);
         System.arraycopy(buffer, offset, buf, this.count, len);
         this.count += len;

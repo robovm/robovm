@@ -27,7 +27,7 @@ import java.io.Serializable;
  * and removing) are supported. The elements can be any objects which are
  * comparable to each other either using their natural order or a specified
  * Comparator.
- * 
+ *
  * @since 1.2
  */
 public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
@@ -55,7 +55,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
     /**
      * Constructs a new instance of {@code TreeSet} which uses natural ordering
      * and containing the unique elements in the specified collection.
-     * 
+     *
      * @param collection
      *            the collection of elements to add.
      * @throws ClassCastException
@@ -71,7 +71,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
     /**
      * Constructs a new empty instance of {@code TreeSet} which uses the
      * specified comparator.
-     * 
+     *
      * @param comparator
      *            the comparator to use.
      */
@@ -82,7 +82,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
     /**
      * Constructs a new instance of {@code TreeSet} containing the elements of
      * the specified SortedSet and using the same Comparator.
-     * 
+     *
      * @param set
      *            the SortedSet of elements to add.
      */
@@ -96,7 +96,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
 
     /**
      * Adds the specified object to this {@code TreeSet}.
-     * 
+     *
      * @param object
      *            the object to add.
      * @return {@code true} when this {@code TreeSet} did not already contain
@@ -115,7 +115,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
 
     /**
      * Adds the objects in the specified collection to this {@code TreeSet}.
-     * 
+     *
      * @param collection
      *            the collection of objects to add.
      * @return {@code true} if this {@code TreeSet} was modified, {@code false}
@@ -134,7 +134,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
 
     /**
      * Removes all elements from this {@code TreeSet}, leaving it empty.
-     * 
+     *
      * @see #isEmpty
      * @see #size
      */
@@ -146,7 +146,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
     /**
      * Returns a new {@code TreeSet} with the same elements, size and comparator
      * as this {@code TreeSet}.
-     * 
+     *
      * @return a shallow copy of this {@code TreeSet}.
      * @see java.lang.Cloneable
      */
@@ -163,13 +163,13 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
             }
             return clone;
         } catch (CloneNotSupportedException e) {
-            return null;
+            throw new AssertionError(e);
         }
     }
 
     /**
      * Returns the comparator used to compare elements in this {@code TreeSet}.
-     * 
+     *
      * @return a Comparator or null if the natural ordering is used
      */
     public Comparator<? super E> comparator() {
@@ -178,7 +178,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
 
     /**
      * Searches this {@code TreeSet} for the specified object.
-     * 
+     *
      * @param object
      *            the object to search for.
      * @return {@code true} if {@code object} is an element of this
@@ -197,7 +197,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
 
     /**
      * Returns true if this {@code TreeSet} has no element, otherwise false.
-     * 
+     *
      * @return true if this {@code TreeSet} has no element.
      * @see #size
      */
@@ -208,7 +208,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
 
     /**
      * Returns an Iterator on the elements of this {@code TreeSet}.
-     * 
+     *
      * @return an Iterator on the elements of this {@code TreeSet}.
      * @see Iterator
      */
@@ -219,7 +219,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see java.util.NavigableSet#descendingIterator()
      * @since 1.6
      */
@@ -229,7 +229,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
 
     /**
      * Removes an occurrence of the specified object from this {@code TreeSet}.
-     * 
+     *
      * @param object
      *            the object to remove.
      * @return {@code true} if this {@code TreeSet} was modified, {@code false}
@@ -248,7 +248,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
 
     /**
      * Returns the number of elements in this {@code TreeSet}.
-     * 
+     *
      * @return the number of elements in this {@code TreeSet}.
      */
     @Override
@@ -257,24 +257,16 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
     }
 
     /**
-     * Answers the first element in this TreeSet.
-     * 
-     * @return the first element
-     * 
-     * @exception NoSuchElementException
-     *                when this TreeSet is empty
+     * Returns the first element in this set.
+     * @exception NoSuchElementException when this TreeSet is empty
      */
     public E first() {
         return backingMap.firstKey();
     }
 
     /**
-     * Answers the last element in this TreeSet.
-     * 
-     * @return the last element
-     * 
-     * @exception NoSuchElementException
-     *                when this TreeSet is empty
+     * Returns the last element in this set.
+     * @exception NoSuchElementException when this TreeSet is empty
      */
     public E last() {
         return backingMap.lastKey();
@@ -282,29 +274,29 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see java.util.NavigableSet#pollFirst()
      * @since 1.6
      */
     public E pollFirst() {
         Map.Entry<E, Object> entry = backingMap.pollFirstEntry();
-        return (null == entry) ? null : entry.getKey();
+        return (entry == null) ? null : entry.getKey();
     }
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see java.util.NavigableSet#pollLast()
      * @since 1.6
      */
     public E pollLast() {
         Map.Entry<E, Object> entry = backingMap.pollLastEntry();
-        return (null == entry) ? null : entry.getKey();
+        return (entry == null) ? null : entry.getKey();
     }
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see java.util.NavigableSet#higher(java.lang.Object)
      * @since 1.6
      */
@@ -314,7 +306,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see java.util.NavigableSet#lower(java.lang.Object)
      * @since 1.6
      */
@@ -324,7 +316,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see java.util.NavigableSet#ceiling(java.lang.Object)
      * @since 1.6
      */
@@ -334,7 +326,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see java.util.NavigableSet#floor(java.lang.Object)
      * @since 1.6
      */
@@ -344,18 +336,18 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see java.util.NavigableSet#descendingSet()
      * @since 1.6
      */
     public NavigableSet<E> descendingSet() {
-        return (null != descendingSet) ? descendingSet
+        return (descendingSet != null) ? descendingSet
                 : (descendingSet = new TreeSet<E>(backingMap.descendingMap()));
     }
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see java.util.NavigableSet#subSet(Object, boolean, Object, boolean)
      * @since 1.6
      */
@@ -374,7 +366,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see java.util.NavigableSet#headSet(Object, boolean)
      * @since 1.6
      */
@@ -392,7 +384,7 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see java.util.NavigableSet#tailSet(Object, boolean)
      * @since 1.6
      */
@@ -409,18 +401,18 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
     }
 
     /**
-     * Answers a SortedSet of the specified portion of this TreeSet which
+     * Returns a {@code SortedSet} of the specified portion of this {@code TreeSet} which
      * contains elements greater or equal to the start element but less than the
      * end element. The returned SortedSet is backed by this TreeSet so changes
      * to one are reflected by the other.
-     * 
+     *
      * @param start
      *            the start element
      * @param end
      *            the end element
      * @return a subset where the elements are greater or equal to
      *         <code>start</code> and less than <code>end</code>
-     * 
+     *
      * @exception ClassCastException
      *                when the start or end object cannot be compared with the
      *                elements in this TreeSet
@@ -434,14 +426,14 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
     }
 
     /**
-     * Answers a SortedSet of the specified portion of this TreeSet which
+     * Returns a {@code SortedSet} of the specified portion of this {@code TreeSet} which
      * contains elements less than the end element. The returned SortedSet is
      * backed by this TreeSet so changes to one are reflected by the other.
-     * 
+     *
      * @param end
      *            the end element
      * @return a subset where the elements are less than <code>end</code>
-     * 
+     *
      * @exception ClassCastException
      *                when the end object cannot be compared with the elements
      *                in this TreeSet
@@ -455,16 +447,16 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
     }
 
     /**
-     * Answers a SortedSet of the specified portion of this TreeSet which
+     * Returns a {@code SortedSet} of the specified portion of this {@code TreeSet} which
      * contains elements greater or equal to the start element. The returned
      * SortedSet is backed by this TreeSet so changes to one are reflected by
      * the other.
-     * 
+     *
      * @param start
      *            the start element
      * @return a subset where the elements are greater or equal to
      *         <code>start</code>
-     * 
+     *
      * @exception ClassCastException
      *                when the start object cannot be compared with the elements
      *                in this TreeSet
@@ -498,10 +490,9 @@ public class TreeSet<E> extends AbstractSet<E> implements NavigableSet<E>,
                 (Comparator<? super E>) stream.readObject());
         int size = stream.readInt();
         if (size > 0) {
-            TreeMap.Node<E, Object> lastNode = null;
-            for(int i=0; i<size; i++) {
+            for (int i=0; i<size; i++) {
                 E elem = (E)stream.readObject();
-                lastNode = map.addToLast(lastNode,elem, Boolean.TRUE);
+                map.put(elem, Boolean.TRUE);
             }
         }
         backingMap = map;

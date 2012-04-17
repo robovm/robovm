@@ -21,18 +21,11 @@ package java.lang.annotation;
  * Defines a meta-annotation for determining what {@link ElementType}s an
  * annotation can be applied to.
  * 
- * @see ElementType
  * @since 1.5
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)
 public @interface Target {
-
-    /**
-     * Returns the program element types for which this annotation is applied.
-     * 
-     * @return the types of element as defined by {@code ElementType}
-     */
     ElementType[] value();
 }

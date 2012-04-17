@@ -49,12 +49,25 @@ static jboolean unwindCallStack(UnwindContext* context, void* _data) {
     void* pc = context->pc;
 
     if (data->gatewayFrames->frameAddress == frameAddress) {
-        // Skip to the most recent GatewayFrame
+        // GatewayFrames are pushed when entering and leaving native code. We've hit a frame 
+        // matching the top most GatewayFrame. This is always a frame from a call leaving
+        // native code (or a call to unwindIterateCallStack()). The GatewayFrame below the
+        // top one is the frame at which we entered native code. Skip all frames down to this
+        // frame and then iterate through all frames until we hit the third GatewayFrame from
+        // the top. 
+
+        data->gatewayFrames = data->gatewayFrames->prev;
+        if (!data->gatewayFrames) return FALSE;
+
+        // data->gatewayFrames now points to the frame which called into native code.
+        context->newFrame = data->gatewayFrames->frameAddress;
+
         if (data->gatewayFrames->proxyMethod) {
             if (!data->it(env, NULL, data->gatewayFrames->proxyMethod, data->data)) return FALSE;
         }
-        context->newFrame = data->gatewayFrames->frameAddress;
+
         data->gatewayFrames = data->gatewayFrames->prev;
+        // data->gatewayFrames now points to the frame which called into non-native code.
         return data->gatewayFrames ? TRUE : FALSE;
     }
 

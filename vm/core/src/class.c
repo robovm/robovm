@@ -762,6 +762,7 @@ BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const
     method->method.name = name;
     method->method.desc = desc;
     method->method.access = access | METHOD_TYPE_BRIDGE;
+    method->method.size = size;
     method->method.impl = impl;
     method->method.synchronizedImpl = synchronizedImpl;
     method->method.attributes = attributes;
@@ -786,6 +787,7 @@ CallbackMethod* nvmAddCallbackMethod(Env* env, Class* clazz, const char* name, c
     method->method.name = name;
     method->method.desc = desc;
     method->method.access = access | METHOD_TYPE_CALLBACK;
+    method->method.size = size;
     method->method.impl = impl;
     method->method.synchronizedImpl = synchronizedImpl;
     method->method.attributes = attributes;

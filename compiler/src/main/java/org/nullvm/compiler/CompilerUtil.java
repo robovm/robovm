@@ -183,14 +183,14 @@ public class CompilerUtil {
         for (Object a : args) {
             if (a instanceof Collection) {
                 for (Object o : (Collection<Object>) a) {
-                    commandLine.addArgument(o instanceof File ? ((File) o).getAbsolutePath() : o.toString());
+                    commandLine.addArgument(o instanceof File ? ((File) o).getAbsolutePath() : o.toString(), false);
                 }
             } else if (a instanceof Object[]) {
                 for (Object o : (Object[]) a) {
-                    commandLine.addArgument(o instanceof File ? ((File) o).getAbsolutePath() : o.toString());
+                    commandLine.addArgument(o instanceof File ? ((File) o).getAbsolutePath() : o.toString(), false);
                 }
             } else {
-                commandLine.addArgument(a instanceof File ? ((File) a).getAbsolutePath() : a.toString());
+                commandLine.addArgument(a instanceof File ? ((File) a).getAbsolutePath() : a.toString(), false);
             }
         }
         return commandLine;
@@ -202,7 +202,7 @@ public class CompilerUtil {
         }
         @Override
         protected void log(byte[] message, int off, int length) {
-            logger.debug(new String(message, off, length));
+            logger.debug(new String(message, off, length).replace("%", "%%"));
         }
     }
     
@@ -212,7 +212,7 @@ public class CompilerUtil {
         }
         @Override
         protected void log(byte[] message, int off, int length) {
-            logger.error(new String(message, off, length));
+            logger.error(new String(message, off, length).replace("%", "%%"));
         }
     }
     
@@ -227,6 +227,14 @@ public class CompilerUtil {
         }
         
         protected abstract void log(byte[] message, int off, int length);
+        
+        @Override
+        public void close() throws IOException {
+            if (start < end) {
+                log(buffer, start, end - start);
+            }
+            super.close();
+        }
         
         @Override
         public void write(int b) throws IOException {

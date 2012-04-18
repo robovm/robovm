@@ -55,7 +55,7 @@ public class Config {
     private File tmpDir;
     private Clazzes clazzes;
     private Logger logger = Logger.NULL_LOGGER;
-    private AbstractTarget.Builder targetBuilder = new ConsoleTarget.Builder();
+    private Target.Builder targetBuilder = new ConsoleTarget.Builder();
     private Target target = null;
 
     Config() {
@@ -456,7 +456,7 @@ public class Config {
             return this;
         }
 
-        public Builder targetBuilder(AbstractTarget.Builder targetBuilder) {
+        public Builder targetBuilder(Target.Builder targetBuilder) {
             config.targetBuilder = targetBuilder;
             return this;
         }

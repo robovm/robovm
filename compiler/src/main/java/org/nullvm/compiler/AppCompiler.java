@@ -105,6 +105,8 @@ public class AppCompiler {
         List<String> runArgs = new ArrayList<String>();
         try {
             Config.Builder builder = new Config.Builder();
+            OS os = null;
+            Arch arch = null;
             
             int i = 0;
             while (i < args.length) {
@@ -151,12 +153,14 @@ public class AppCompiler {
                 } else if ("-os".equals(args[i])) {
                     String s = args[++i];
                     if (!"auto".equals(s)) {
-                        builder.os(OS.valueOf(s));
+                        os = OS.valueOf(s);
+                        builder.os(os);
                     }
                 } else if ("-arch".equals(args[i])) {
                     String s = args[++i];
                     if (!"auto".equals(s)) {
-                        builder.arch(Arch.valueOf(s));
+                        arch = Arch.valueOf(s);
+                        builder.arch(arch);
                     }
                 } else if ("-cpu".equals(args[i])) {
                     builder.cpu(args[++i]);
@@ -201,6 +205,14 @@ public class AppCompiler {
             }
             
             builder.skipInstall(run);
+
+            if (os == OS.ios) {
+                if (arch != null && arch.isArm()) {
+                    builder.targetBuilder(new IOSDeviceTarget.Builder());
+                } else {
+                    builder.targetBuilder(new IOSSimTarget.Builder());
+                }
+            }
             
             compiler = new AppCompiler(builder.build());
         } catch (Throwable t) {

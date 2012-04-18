@@ -107,20 +107,22 @@ public abstract class AbstractTarget implements Target {
     
     public void install() throws IOException {
         config.getLogger().debug("Installing executable to %s", config.getInstallDir());
-        doInstall(config.getInstallDir());
+        config.getInstallDir().mkdirs();
+        doInstall(config.getInstallDir(), config.getExecutable());
     }
     
-    protected void doInstall(File installDir) throws IOException {
-        if (!config.getTmpDir().equals(installDir)) {
-            FileUtils.copyFileToDirectory(new File(config.getTmpDir(), config.getExecutable()), installDir);
-            new File(installDir, config.getExecutable()).setExecutable(true, false);
+    protected void doInstall(File installDir, String executable) throws IOException {
+        if (!config.getTmpDir().equals(installDir) || !executable.equals(config.getExecutable())) {
+            File destFile = new File(installDir, executable);
+            FileUtils.copyFile(new File(config.getTmpDir(), config.getExecutable()), destFile);
+            destFile.setExecutable(true, false);
         }
         for (File f : config.getOsArchDepLibDir().listFiles()) {
             if (f.getName().matches(".*\\.(so|dylib)(\\.1)?")) {
                 FileUtils.copyFileToDirectory(f, installDir);
             }
         }
-        stripArchives();
+        stripArchives(installDir);
     }
 
     public int launch(List<String> runArgs) throws IOException {
@@ -168,9 +170,9 @@ public abstract class AbstractTarget implements Target {
         }
     }
     
-    protected void stripArchives() throws IOException {
+    protected void stripArchives(File installDir) throws IOException {
         for (Path path : config.getClazzes().getPaths()) {
-            File destJar = new File(config.getInstallDir(), getInstallRelativeArchivePath(path));
+            File destJar = new File(installDir, getInstallRelativeArchivePath(path));
             if (!destJar.getParentFile().exists()) {
                 destJar.getParentFile().mkdirs();
             }

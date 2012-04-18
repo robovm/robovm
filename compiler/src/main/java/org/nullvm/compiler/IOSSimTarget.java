@@ -5,22 +5,14 @@ package org.nullvm.compiler;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import net.sf.plist.NSArray;
-import net.sf.plist.NSDictionary;
 import net.sf.plist.NSObject;
 import net.sf.plist.NSString;
-import net.sf.plist.io.PropertyListException;
-import net.sf.plist.io.PropertyListWriter;
-import net.sf.plist.io.PropertyListWriter.Format;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
@@ -28,28 +20,35 @@ import org.apache.commons.exec.ExecuteStreamHandler;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.exec.environment.EnvironmentUtils;
-import org.apache.commons.io.FileUtils;
 
 
 /**
  * @author niklas
  *
  */
-public class IOSSimTarget extends AbstractTarget {
+public class IOSSimTarget extends AbstractIOSTarget {
 
     private File iosSimBinPath;
-    private SDK sdk;
     private Family family = Family.iPhone;
     
     IOSSimTarget() {
     }
+ 
+    @Override
+    protected List<SDK> getSDKs() {
+        return listSDKs(iosSimBinPath);
+    }
+    
+    @Override
+    protected void customizeInfoPList(Map<String, NSObject> dict) {
+        dict.put("CFBundlePackageType", new NSString("APPL"));
+        dict.put("CFBundleSupportedPlatforms", new NSArray(Arrays.asList((NSObject) new NSString("iPhoneSimulator"))));
+        dict.put("DTPlatformName", new NSString("iphonesimulator"));
+    }
     
     @Override
     protected CommandLine doGenerateCommandLine(List<String> runArgs) {
-        File dir = config.getTmpDir();
-        if (!config.isSkipInstall()) {
-            dir = config.getInstallDir();
-        }
+        File dir = getAppDir();
         
         String iosSimPath = "ios-sim";
         if (iosSimBinPath != null) {
@@ -72,64 +71,6 @@ public class IOSSimTarget extends AbstractTarget {
         
         return CompilerUtil.createCommandLine(iosSimPath,
                 args.toArray(new Object[args.size()]));
-    }
-
-    @Override
-    protected void doBuild(File outFile, List<String> ccArgs,
-            List<File> objectFiles, List<String> libArgs)
-            throws IOException {
-
-        ccArgs.add("-isysroot");
-        if (sdk != null) {
-            ccArgs.add(sdk.root.getAbsolutePath());
-        } else {
-            ccArgs.add(listSDKs(iosSimBinPath).get(0).root.getAbsolutePath());
-        }
-        super.doBuild(outFile, ccArgs, objectFiles, libArgs);
-    }
-    
-    @Override
-    protected void doInstall(File installDir) throws IOException {
-        createInfoPList();
-        super.doInstall(installDir);
-    }
-    
-    @Override
-    protected int doLaunch(List<String> runArgs) throws IOException {
-        createInfoPList();
-        return super.doLaunch(runArgs);
-    }
-    
-    private void createInfoPList() throws IOException {
-        Map<String, NSObject> dict = new HashMap<String, NSObject>();
-        dict.put("CFBundleExecutable", new NSString(config.getExecutable()));
-        dict.put("CFBundleDisplayName", new NSString(config.getExecutable()));
-        dict.put("CFBundleName", new NSString(config.getExecutable()));
-        dict.put("CFBundleIdentifier", new NSString(config.getMainClass()));
-        dict.put("CFBundlePackageType", new NSString("APPL"));
-        dict.put("CFBundleSupportedPlatforms", new NSArray(Arrays.asList((NSObject) new NSString("iPhoneSimulator"))));
-        dict.put("CFBundleShortVersionString", new NSString("1.0"));
-        dict.put("CFBundleVersion", new NSString("1.0"));
-        dict.put("DTPlatformName", new NSString("iphonesimulator"));
-
-        // plist library doesn't support writing binary plist files yet. Write xml and convert using plutil.
-        File tmpInfoPlistXml = new File(config.getTmpDir(), "Info.plist.xml");
-        File tmpInfoPlist = new File(config.getTmpDir(), "Info.plist");
-        try {
-            PropertyListWriter.write(new NSDictionary(dict), tmpInfoPlistXml, Format.XML);
-        } catch (PropertyListException e) {
-            throw new CompilerException(e);
-        } catch (ParserConfigurationException e) {
-            throw new CompilerException(e);
-        }
-        
-        CompilerUtil.exec(config, "plutil", "-convert", "binary1", "-o", tmpInfoPlist, tmpInfoPlistXml);
-        
-        if (!config.isSkipInstall()) {
-            File dir = config.getInstallDir();
-            config.getLogger().debug("Installing Info.plist to %s", dir);
-            FileUtils.copyFile(tmpInfoPlist, new File(dir, tmpInfoPlist.getName()));
-        }
     }
     
     public static List<SDK> listSDKs(File iosSimBinPath) {
@@ -163,7 +104,7 @@ public class IOSSimTarget extends AbstractTarget {
                 sdks.add(new SDK(name, version , new File(root)));
             }
         } catch (Throwable t) {
-            t.printStackTrace();
+            throw new RuntimeException(t);
         }
         
         return sdks;
@@ -171,34 +112,14 @@ public class IOSSimTarget extends AbstractTarget {
     
     public static enum Family {iPhone, iPad}
     
-    public static class SDK {
-        private final String name;
-        private final String version;
-        private final File root;
+    public static class Builder extends AbstractIOSTarget.Builder {
+        private final IOSSimTarget target;
+
+        public Builder() {
+            super(new IOSSimTarget());
+            this.target = (IOSSimTarget) super.target;
+        }
         
-        SDK(String name, String version, File root) {
-            super();
-            this.name = name;
-            this.version = version;
-            this.root = root;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getVersion() {
-            return version;
-        }
-
-        public File getRoot() {
-            return root;
-        }
-    }
-    
-    public static class Builder implements Target.Builder {
-        private IOSSimTarget target = new IOSSimTarget();
-
         public Builder iosSimBinPath(File iosSimBinPath) {
             target.iosSimBinPath = iosSimBinPath;
             return this;
@@ -216,12 +137,7 @@ public class IOSSimTarget extends AbstractTarget {
         
         public void setup(Config.Builder configBuilder) {
             configBuilder.arch(Arch.x86);
-            configBuilder.os(OS.ios);
-        }
-        
-        public Target build(Config config) {
-            target.config = config;
-            return target.build(config);
+            super.setup(configBuilder);
         }
         
     }

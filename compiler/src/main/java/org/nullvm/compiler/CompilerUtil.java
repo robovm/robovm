@@ -5,7 +5,6 @@ package org.nullvm.compiler;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -114,13 +113,12 @@ public class CompilerUtil {
         return execWithEnv(config, wd, null, createCommandLine(cmd, args));
     }
 
-    @SuppressWarnings("rawtypes")
-    public static int execWithEnv(Config config, File wd, Map env, String cmd, Object ... args) throws IOException {
+    public static int execWithEnv(Config config, File wd, Map<String, String> env, String cmd, Object ... args) throws IOException {
         return execWithEnv(config, wd, env, createCommandLine(cmd, args));
     }
     
-    @SuppressWarnings("rawtypes")
-    public static int execWithEnv(Config config, File wd, Map env, CommandLine commandLine) throws IOException {
+    @SuppressWarnings("unchecked")
+    public static int execWithEnv(Config config, File wd, Map<String, String> env, CommandLine commandLine) throws IOException {
         
         debug(config.getLogger(), commandLine);
         
@@ -144,7 +142,7 @@ public class CompilerUtil {
         }
     }
 
-    private static void debug(Logger logger, CommandLine commandLine) {
+    static void debug(Logger logger, CommandLine commandLine) {
         String[] args = commandLine.getArguments();
         if (args.length == 0) {
             logger.debug(commandLine.toString());
@@ -177,6 +175,10 @@ public class CompilerUtil {
         }
     }
     
+    public static CommandLine createCommandLine(String cmd, List<Object> args) {
+        return createCommandLine(cmd, args.toArray(new Object[args.size()]));
+    }
+    
     @SuppressWarnings("unchecked")
     public static CommandLine createCommandLine(String cmd, Object... args) {
         CommandLine commandLine = new CommandLine(cmd);
@@ -194,74 +196,5 @@ public class CompilerUtil {
             }
         }
         return commandLine;
-    }
-    
-    private static class DebugOutputStream extends LoggerOutputStream {
-        DebugOutputStream(Logger logger) {
-            super(logger);
-        }
-        @Override
-        protected void log(byte[] message, int off, int length) {
-            logger.debug(new String(message, off, length).replace("%", "%%"));
-        }
-    }
-    
-    private static class ErrorOutputStream extends LoggerOutputStream {
-        ErrorOutputStream(Logger logger) {
-            super(logger);
-        }
-        @Override
-        protected void log(byte[] message, int off, int length) {
-            logger.error(new String(message, off, length).replace("%", "%%"));
-        }
-    }
-    
-    private static abstract class LoggerOutputStream extends OutputStream {
-        protected final Logger logger;
-        private byte[] buffer = new byte[1024];
-        private int start = 0;
-        private int end = 0;
-
-        LoggerOutputStream(Logger logger) {
-            this.logger = logger;
-        }
-        
-        protected abstract void log(byte[] message, int off, int length);
-        
-        @Override
-        public void close() throws IOException {
-            if (start < end) {
-                log(buffer, start, end - start);
-            }
-            super.close();
-        }
-        
-        @Override
-        public void write(int b) throws IOException {
-            if (b == '\r') {
-                // Skip
-                return;
-            }
-            if (b == '\n') {
-                log(buffer, start, end - start);
-                start = end = 0;
-                return;
-            }
-            if (end == buffer.length) {
-                if (start > 0) {
-                    // Compact
-                    System.arraycopy(buffer, start, buffer, 0, end - start);
-                    end -= start;
-                    start = 0;
-                } else {
-                    // Need a bigger buffer
-                    byte[] newBuffer = new byte[buffer.length * 2];
-                    System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
-                    buffer = newBuffer;
-                }
-            }
-            buffer[end++] = (byte) b;
-        }
-        
     }
 }

@@ -47,7 +47,7 @@ public class IOSSimTarget extends AbstractIOSTarget {
     }
     
     @Override
-    protected CommandLine doGenerateCommandLine(List<String> runArgs) {
+    protected CommandLine doGenerateCommandLine(LaunchParameters launchParameters) {
         File dir = getAppDir();
         
         String iosSimPath = "ios-sim";
@@ -58,19 +58,27 @@ public class IOSSimTarget extends AbstractIOSTarget {
         List<Object> args = new ArrayList<Object>();
         args.add("launch");
         args.add(dir.getAbsolutePath());
+        args.add("--unbuffered");
         if (sdk != null) {
             args.add("--sdk");
             args.add(sdk.getVersion());
         }
-        if (!runArgs.isEmpty()) {
-            args.add("--args");
-            args.addAll(runArgs);
-        }
         args.add("--family");
         args.add(family.toString().toLowerCase());
+        if (launchParameters.getStdoutFifo() != null) {
+            args.add("--stdout");
+            args.add(launchParameters.getStdoutFifo());
+        }
+        if (launchParameters.getStderrFifo() != null) {
+            args.add("--stderr");
+            args.add(launchParameters.getStderrFifo());
+        }
+        if (!launchParameters.getArguments().isEmpty()) {
+            args.add("--args");
+            args.addAll(launchParameters.getArguments());
+        }
         
-        return CompilerUtil.createCommandLine(iosSimPath,
-                args.toArray(new Object[args.size()]));
+        return CompilerUtil.createCommandLine(iosSimPath, args);
     }
     
     public static List<SDK> listSDKs(File iosSimBinPath) {

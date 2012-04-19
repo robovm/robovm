@@ -72,9 +72,9 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
     }
     
     @Override
-    protected int doLaunch(List<String> runArgs) throws IOException {
+    protected Process doLaunch(LaunchParameters launchParameters) throws IOException {
         prepareLaunch(getAppDir());
-        return super.doLaunch(runArgs);
+        return super.doLaunch(launchParameters);
     }
 
     protected File getAppDir() {

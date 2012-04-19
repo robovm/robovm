@@ -229,7 +229,10 @@ public class AppCompiler {
         try {
             compiler.compile();
             if (run) {
-                compiler.config.getTarget().launch(runArgs);
+                LaunchParameters launchParameters = new LaunchParameters();
+                launchParameters.setArguments(runArgs);
+                Process process = compiler.config.getTarget().launch(launchParameters);
+                process.waitFor();
             } else {
                 compiler.config.getTarget().install();
             }

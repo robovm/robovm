@@ -108,8 +108,11 @@ public class ProjectProperties {
         archCombo.setItems(new String[] {
                 "Use workspace default", 
                 "Auto (build for current host)",
-                Arch.arm.toString(),
-                Arch.i386.toString(),
+                Arch.armv6.toString(),
+                Arch.armv7.toString(),
+                Arch.thumbv6.toString(),
+                Arch.thumbv7.toString(),
+                Arch.x86.toString(),
                 Arch.x86_64.toString()
         });
         archCombo.select(0);

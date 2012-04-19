@@ -10,17 +10,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.ExecuteException;
-import org.apache.commons.exec.environment.EnvironmentUtils;
+import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.nullvm.compiler.clazz.Path;
@@ -125,49 +122,37 @@ public abstract class AbstractTarget implements Target {
         stripArchives(installDir);
     }
 
-    public int launch(List<String> runArgs) throws IOException {
+    public Process launch(LaunchParameters launchParameters) throws IOException {
         if (config.isSkipLinking()) {
             throw new IllegalStateException("Cannot skip linking if target should be run");
         }
         
-        return doLaunch(runArgs);
-    }
-
-    public Map<String, String> modifyEnv(Map<String, String> defaults) {
-        Map<String, String> env = new HashMap<String, String>();
-        env.putAll(defaults);
-        String ldLibraryPathVar = "LD_LIBRARY_PATH";
-        if (config.getOs().getFamily() == OS.Family.darwin) {
-            ldLibraryPathVar = "DY" + ldLibraryPathVar;
-        }
-        String ldLibraryPath = env.get(ldLibraryPathVar);
-        ldLibraryPath = ldLibraryPath == null ? "" : ":" + ldLibraryPath;
-        env.put(ldLibraryPathVar, config.getOsArchDepLibDir().getAbsolutePath() + ldLibraryPath);
-        return env;
+        return doLaunch(launchParameters);
     }
     
-    protected CommandLine doGenerateCommandLine(List<String> runArgs) {
+    protected CommandLine doGenerateCommandLine(LaunchParameters launchParameters) {
         File dir = config.getTmpDir();
         if (!config.isSkipInstall()) {
             dir = config.getInstallDir();
         }
         return CompilerUtil.createCommandLine(
                 new File(dir, config.getExecutable()).getAbsolutePath(), 
-                runArgs.toArray(new Object[runArgs.size()]));
+                launchParameters.getArguments());
     }
     
-    public String[] generateCommandLine(List<String> runArgs) {
-        return doGenerateCommandLine(runArgs).toStrings();
-    }
-    
-    @SuppressWarnings({ "unchecked" })
-    protected int doLaunch(List<String> runArgs) throws IOException {
-        Map<String, String> env = modifyEnv(EnvironmentUtils.getProcEnvironment());
-        try {
-            return CompilerUtil.execWithEnv(config, new File("."), env, doGenerateCommandLine(runArgs));
-        } catch (ExecuteException e) {
-            return e.getExitValue();
+    protected Process doLaunch(LaunchParameters launchParameters) throws IOException {
+        CommandLine commandLine = doGenerateCommandLine(launchParameters);
+        
+        CompilerUtil.debug(config.getLogger(), commandLine);
+            
+        AsyncExecutor executor = new AsyncExecutor();
+        executor.setWorkingDirectory(launchParameters.getWorkingDirectory());
+        if (launchParameters.isRedirectStreamsToLogger()) {
+            executor.setStreamHandler(new PumpStreamHandler(new DebugOutputStream(config.getLogger()), 
+                    new ErrorOutputStream(config.getLogger())));
         }
+        executor.setExitValue(0);
+        return executor.execute(commandLine, launchParameters.getEnvironment());
     }
     
     protected void stripArchives(File installDir) throws IOException {

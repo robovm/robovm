@@ -10,6 +10,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.nullvm.compiler.Arch;
 import org.nullvm.compiler.Config;
 import org.nullvm.compiler.IOSSimTarget;
+import org.nullvm.compiler.LaunchParameters;
 import org.nullvm.compiler.OS;
 
 /**
@@ -23,19 +24,12 @@ public class IOSSimLaunchConfigurationDelegate extends AbstractLaunchConfigurati
 
     @Override
     protected Arch getArch(ILaunchConfiguration configuration, String mode) {
-        return Arch.i386;
+        return Arch.x86;
     }
 
     @Override
     protected OS getOS(ILaunchConfiguration configuration, String mode) {
         return OS.ios;
-    }
-
-    @Override
-    protected File getInstallDir(ILaunchConfiguration configuration,
-            String mode, File base) {
-
-        return new File(base.getParentFile(), base.getName() + ".app");
     }
     
     @Override
@@ -49,4 +43,10 @@ public class IOSSimLaunchConfigurationDelegate extends AbstractLaunchConfigurati
         return configBuilder.build();
     }
     
+    @Override
+    protected void customizeLaunchParameters(LaunchParameters launchParameters) throws IOException {
+        launchParameters.setRedirectStreamsToLogger(true);
+        launchParameters.setStdoutFifo(mkfifo("stdout"));
+        launchParameters.setStderrFifo(mkfifo("stderr"));
+    }
 }

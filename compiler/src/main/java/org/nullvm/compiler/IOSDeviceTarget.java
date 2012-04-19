@@ -52,7 +52,7 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
     }
 
     @Override
-    protected CommandLine doGenerateCommandLine(List<String> runArgs) {
+    protected CommandLine doGenerateCommandLine(LaunchParameters launchParameters) {
         File dir = getAppDir();
         
         String fruitstrapPath = "fruitstrap";
@@ -66,8 +66,7 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
         args.add("-b");
         args.add(dir.getAbsolutePath());
         
-        return CompilerUtil.createCommandLine(fruitstrapPath,
-                args.toArray(new Object[args.size()]));
+        return CompilerUtil.createCommandLine(fruitstrapPath, args);
     }
     
     @Override

@@ -147,12 +147,18 @@ public abstract class AbstractTarget implements Target {
             
         AsyncExecutor executor = new AsyncExecutor();
         executor.setWorkingDirectory(launchParameters.getWorkingDirectory());
-        if (launchParameters.isRedirectStreamsToLogger()) {
-            executor.setStreamHandler(new PumpStreamHandler(new DebugOutputStream(config.getLogger()), 
-                    new ErrorOutputStream(config.getLogger())));
-        }
         executor.setExitValue(0);
+        initStreams(executor, launchParameters);
         return executor.execute(commandLine, launchParameters.getEnvironment());
+    }
+    
+    protected void initStreams(AsyncExecutor executor, LaunchParameters launchParameters) {
+        if (launchParameters.isRedirectStreamsToLogger()) {
+            executor.setStreamHandler(
+                new PumpStreamHandler(
+                    new DebugOutputStream(config.getLogger()), 
+                    new ErrorOutputStream(config.getLogger())));
+        }        
     }
     
     protected void stripArchives(File installDir) throws IOException {

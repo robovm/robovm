@@ -12,12 +12,14 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.PumpStreamHandler;
+import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.nullvm.compiler.clazz.Path;
@@ -130,7 +132,7 @@ public abstract class AbstractTarget implements Target {
         return doLaunch(launchParameters);
     }
     
-    protected CommandLine doGenerateCommandLine(LaunchParameters launchParameters) {
+    protected CommandLine doGenerateCommandLine(LaunchParameters launchParameters) throws IOException {
         File dir = config.getTmpDir();
         if (!config.isSkipInstall()) {
             dir = config.getInstallDir();
@@ -140,6 +142,7 @@ public abstract class AbstractTarget implements Target {
                 launchParameters.getArguments());
     }
     
+    @SuppressWarnings("unchecked")
     protected Process doLaunch(LaunchParameters launchParameters) throws IOException {
         CommandLine commandLine = doGenerateCommandLine(launchParameters);
         
@@ -149,10 +152,14 @@ public abstract class AbstractTarget implements Target {
         executor.setWorkingDirectory(launchParameters.getWorkingDirectory());
         executor.setExitValue(0);
         initStreams(executor, launchParameters);
-        return executor.execute(commandLine, launchParameters.getEnvironment());
+        Map<String, String> env = launchParameters.getEnvironment();
+        if (env == null) {
+            env = EnvironmentUtils.getProcEnvironment();
+        }
+        return executor.execute(commandLine, env);
     }
     
-    protected void initStreams(AsyncExecutor executor, LaunchParameters launchParameters) {
+    protected void initStreams(AsyncExecutor executor, LaunchParameters launchParameters) throws IOException {
         if (launchParameters.isRedirectStreamsToLogger()) {
             executor.setStreamHandler(
                 new PumpStreamHandler(

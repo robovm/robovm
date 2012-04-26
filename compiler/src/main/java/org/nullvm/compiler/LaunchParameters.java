@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class LaunchParameters {
     private List<String> arguments = Collections.emptyList();
-    private Map<String, String> environment = Collections.emptyMap();
+    private Map<String, String> environment = null;
     private File workingDirectory = new File(".");
     private boolean redirectStreamsToLogger = false;
     private File stdoutFifo = null;

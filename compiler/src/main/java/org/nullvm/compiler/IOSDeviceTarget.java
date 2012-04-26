@@ -94,20 +94,26 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
     protected void initStreams(AsyncExecutor executor,
             LaunchParameters launchParameters) throws IOException {
         
+        OutputStream fruitstrapOut = new DebugOutputStream(config.getLogger());
+        OutputStream fruitstrapErr = new ErrorOutputStream(config.getLogger());
         OutputStream out = null;
         OutputStream err = null;
         if (launchParameters.getStdoutFifo() != null) {
             out = new FileOutputStream(launchParameters.getStdoutFifo());
+        } else if (launchParameters.isRedirectStreamsToLogger()) {
+            out = fruitstrapOut;
         } else {
-            out = new DebugOutputStream(config.getLogger());
+            out = System.out;
         }
         if (launchParameters.getStderrFifo() != null) {
             err = new FileOutputStream(launchParameters.getStderrFifo());
+        } else if (launchParameters.isRedirectStreamsToLogger()) {
+            err = fruitstrapErr;
         } else {
-            err = new ErrorOutputStream(config.getLogger());
+            err = System.err;
         }
         
-        executor.setStreamHandler(new FruitstrapStreamHandler(out, err));
+        executor.setStreamHandler(new FruitstrapStreamHandler(out, err, fruitstrapOut, fruitstrapErr));
     }
     
     private String joinArgs(List<String> args) {
@@ -236,10 +242,14 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
         private Thread outThread;
         private final OutputStream out;
         private final OutputStream err;
+        private final OutputStream fruitstrapOut;
+        private final OutputStream fruitstrapErr;
 
-        FruitstrapStreamHandler(OutputStream out, OutputStream err) {
+        FruitstrapStreamHandler(OutputStream out, OutputStream err, OutputStream fruitstrapOut, OutputStream fruitstrapErr) {
             this.out = out;
             this.err = err;
+            this.fruitstrapOut = fruitstrapOut;
+            this.fruitstrapErr = fruitstrapErr;
         }
         
         @Override
@@ -354,7 +364,7 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
                             byte[] buf = new byte[4096];
                             int n;
                             while ((n = processErr.read(buf)) > 0) {
-                                err.write(buf, 0, n);
+                                fruitstrapErr.write(buf, 0, n);
                             }
                         } catch (IOException e) {
                         }
@@ -377,7 +387,7 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
                                         dashes++;
                                     } else if (dashes == 25 && buf[i] == '\n') {
                                         // gdb started
-                                        out.write(buf, 0, i + 1);
+                                        fruitstrapOut.write(buf, 0, i + 1);
                                         n -= i + 1;
                                         if (n > 0) {
                                             System.arraycopy(buf, i + 1, buf, 0, n);
@@ -388,7 +398,7 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
                                        dashes = 0;
                                     }
                                 }
-                                out.write(buf, 0, n);
+                                fruitstrapOut.write(buf, 0, n);
                             }
 
                             if (gdb) {

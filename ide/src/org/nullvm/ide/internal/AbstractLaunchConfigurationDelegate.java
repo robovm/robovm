@@ -4,7 +4,6 @@
 package org.nullvm.ide.internal;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -32,6 +31,7 @@ import org.nullvm.compiler.Config;
 import org.nullvm.compiler.LaunchParameters;
 import org.nullvm.compiler.OS;
 import org.nullvm.compiler.Target;
+import org.nullvm.compiler.io.OpenOnReadFileInputStream;
 import org.nullvm.ide.NullVMPlugin;
 
 /**
@@ -165,10 +165,10 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
                     InputStream stdoutStream = null;
                     InputStream stderrStream = null;
                     if (launchParameters.getStdoutFifo() != null) {
-                        stdoutStream = new FileInputStream(launchParameters.getStdoutFifo());
+                        stdoutStream = new OpenOnReadFileInputStream(launchParameters.getStdoutFifo());
                     }
                     if (launchParameters.getStderrFifo() != null) {
-                        stderrStream = new FileInputStream(launchParameters.getStderrFifo());
+                        stderrStream = new OpenOnReadFileInputStream(launchParameters.getStderrFifo());
                     }
                     process = new ProcessProxy(process, stdoutStream, stderrStream);
                 }

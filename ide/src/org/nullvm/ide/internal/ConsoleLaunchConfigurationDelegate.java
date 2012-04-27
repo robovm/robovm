@@ -19,7 +19,7 @@ import org.nullvm.ide.NullVMPlugin;
 public class ConsoleLaunchConfigurationDelegate extends AbstractLaunchConfigurationDelegate {
 
     public static final String TYPE_ID = "org.nullvm.ide.ConsoleLaunchConfigurationType";
-    public static final String TYPE_NAME = "NullVM Console Application";
+    public static final String TYPE_NAME = "Console Application";
 
     @Override
     protected Arch getArch(ILaunchConfiguration configuration, String mode) {

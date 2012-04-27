@@ -26,12 +26,12 @@ import org.apache.commons.exec.environment.EnvironmentUtils;
  * @author niklas
  *
  */
-public class IOSSimTarget extends AbstractIOSTarget {
+public class IOSSimulatorTarget extends AbstractIOSTarget {
 
     private File iosSimBinPath;
     private Family family = Family.iPhone;
     
-    IOSSimTarget() {
+    IOSSimulatorTarget() {
     }
  
     @Override
@@ -121,11 +121,11 @@ public class IOSSimTarget extends AbstractIOSTarget {
     public static enum Family {iPhone, iPad}
     
     public static class Builder extends AbstractIOSTarget.Builder {
-        private final IOSSimTarget target;
+        private final IOSSimulatorTarget target;
 
         public Builder() {
-            super(new IOSSimTarget());
-            this.target = (IOSSimTarget) super.target;
+            super(new IOSSimulatorTarget());
+            this.target = (IOSSimulatorTarget) super.target;
         }
         
         public Builder iosSimBinPath(File iosSimBinPath) {

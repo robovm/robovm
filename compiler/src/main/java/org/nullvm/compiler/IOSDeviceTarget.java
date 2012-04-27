@@ -6,7 +6,6 @@ package org.nullvm.compiler;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,11 +32,13 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.ExecuteStreamHandler;
 import org.apache.commons.exec.util.StringUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.netbeans.modules.cnd.debugger.gdb2.mi.MICommand;
 import org.netbeans.modules.cnd.debugger.gdb2.mi.MICommandInjector;
 import org.netbeans.modules.cnd.debugger.gdb2.mi.MIProxy;
 import org.netbeans.modules.cnd.debugger.gdb2.mi.MIRecord;
 import org.netbeans.modules.cnd.debugger.gdb2.mi.MIUserInteraction;
+import org.nullvm.compiler.io.OpenOnWriteFileOutputStream;
 
 
 /**
@@ -99,14 +100,14 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
         OutputStream out = null;
         OutputStream err = null;
         if (launchParameters.getStdoutFifo() != null) {
-            out = new FileOutputStream(launchParameters.getStdoutFifo());
+            out = new OpenOnWriteFileOutputStream(launchParameters.getStdoutFifo());
         } else if (launchParameters.isRedirectStreamsToLogger()) {
             out = fruitstrapOut;
         } else {
             out = System.out;
         }
         if (launchParameters.getStderrFifo() != null) {
-            err = new FileOutputStream(launchParameters.getStderrFifo());
+            err = new OpenOnWriteFileOutputStream(launchParameters.getStderrFifo());
         } else if (launchParameters.isRedirectStreamsToLogger()) {
             err = fruitstrapErr;
         } else {
@@ -368,6 +369,10 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
                             }
                         } catch (IOException e) {
                         }
+                        
+                        IOUtils.closeQuietly(processErr);
+                        IOUtils.closeQuietly(fruitstrapErr);
+                        IOUtils.closeQuietly(err);
                     }
                 };
                 errThread.start();
@@ -408,6 +413,9 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
                         } catch (IOException e) {
                         }
                         
+                        IOUtils.closeQuietly(processOut);
+                        IOUtils.closeQuietly(fruitstrapOut);
+                        IOUtils.closeQuietly(out);
                     }
                 };
                 outThread.start();

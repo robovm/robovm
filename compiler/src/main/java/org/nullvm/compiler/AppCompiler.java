@@ -210,7 +210,7 @@ public class AppCompiler {
                 if (arch != null && arch.isArm()) {
                     builder.targetBuilder(new IOSDeviceTarget.Builder());
                 } else {
-                    builder.targetBuilder(new IOSSimTarget.Builder());
+                    builder.targetBuilder(new IOSSimulatorTarget.Builder());
                 }
             }
             

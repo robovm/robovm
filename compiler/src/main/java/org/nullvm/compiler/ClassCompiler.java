@@ -41,6 +41,7 @@ import org.nullvm.compiler.llvm.Bitcast;
 import org.nullvm.compiler.llvm.Br;
 import org.nullvm.compiler.llvm.Constant;
 import org.nullvm.compiler.llvm.ConstantBitcast;
+import org.nullvm.compiler.llvm.Fence;
 import org.nullvm.compiler.llvm.Function;
 import org.nullvm.compiler.llvm.FunctionAttribute;
 import org.nullvm.compiler.llvm.FunctionRef;
@@ -53,6 +54,7 @@ import org.nullvm.compiler.llvm.IntegerConstant;
 import org.nullvm.compiler.llvm.Label;
 import org.nullvm.compiler.llvm.Load;
 import org.nullvm.compiler.llvm.NullConstant;
+import org.nullvm.compiler.llvm.Ordering;
 import org.nullvm.compiler.llvm.PackedStructureConstantBuilder;
 import org.nullvm.compiler.llvm.PointerType;
 import org.nullvm.compiler.llvm.Ret;
@@ -931,6 +933,9 @@ public class ClassCompiler {
                     name, new FunctionType(getType(field.getType()), ENV_PTR, OBJECT_PTR), "env", "this");
             fieldPtr = getInstanceFieldPtr(fn, new VariableRef("this", OBJECT_PTR), field);
         }
+        if (Modifier.isVolatile(field.getModifiers())) {
+            fn.add(new Fence(Ordering.seq_cst));
+        }
         Variable result = fn.newVariable(getType(field.getType()));
         fn.add(new Load(result, fieldPtr));
         fn.add(new Ret(new VariableRef(result)));
@@ -941,17 +946,23 @@ public class ClassCompiler {
         String name = mangleField(field) + "_setter";
         Function fn = null;
         Value fieldPtr = null;
+        Value value = null;
         if (field.isStatic()) {
             fn = new Function(_private, new FunctionAttribute[] {alwaysinline, optsize}, 
                     name, new FunctionType(VOID, ENV_PTR, getType(field.getType())), "env", "value");
             fieldPtr = getClassFieldPtr(fn, field);
+            value = fn.getParameterRef(1);
         } else {
             fn = new Function(field.isPrivate() || field.isFinal() ? _private : external, 
                     new FunctionAttribute[] {alwaysinline, optsize}, 
                     name, new FunctionType(VOID, ENV_PTR, OBJECT_PTR, getType(field.getType())), "env", "this", "value");
             fieldPtr = getInstanceFieldPtr(fn, new VariableRef("this", OBJECT_PTR), field);
+            value = fn.getParameterRef(2);
         }
-        fn.add(new Store(new VariableRef("value", getType(field.getType())), fieldPtr));
+        fn.add(new Store(value, fieldPtr));
+        if (Modifier.isVolatile(field.getModifiers()) || Modifier.isFinal(field.getModifiers())) {
+            fn.add(new Fence(Ordering.seq_cst));
+        }
         fn.add(new Ret());
         return fn;
     }

@@ -185,12 +185,19 @@ static void handler(Env* env, Object* receiver, ProxyMethod* method, jvalue* arg
     }
 }
 
+struct ProxyInstance {
+    Object object;
+    Object* h;
+    void* data[0];
+};
+
 Class* Java_java_lang_reflect_Proxy_createProxyClass(Env* env, Class* java_lang_reflect_Proxy, 
       ClassLoader* classLoader, Object* className, ObjectArray* interfaces) {
 
     char* name = nvmGetStringUTFChars(env, className);
     if (!name) return NULL;
 
-    return nvmProxyCreateProxyClass(env, java_lang_reflect_Proxy, classLoader, name, interfaces->length, (Class**) interfaces->values, sizeof(Object*), handler);
+    return nvmProxyCreateProxyClass(env, java_lang_reflect_Proxy, classLoader, name, interfaces->length, (Class**) interfaces->values, 
+                sizeof(struct ProxyInstance), offsetof(struct ProxyInstance, data), handler);
 }
 

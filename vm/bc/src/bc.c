@@ -163,7 +163,9 @@ typedef struct {
     ClassLoader* classLoader;
 } CreateClassData;
 
-static jboolean createClassCallback(Env* env, ClassInfoHeader* header, const char* className, const char* superclassName, jint flags, jint classDataSize, jint instanceDataSize, void* attributes, void* initializer, void* d) {
+static jboolean createClassCallback(Env* env, ClassInfoHeader* header, const char* className, const char* superclassName, jint flags, 
+        jint classDataSize, jint instanceDataSize, jint instanceDataOffset, void* attributes, void* initializer, void* d) {
+
     CreateClassData* data = (CreateClassData*) d;
 
     Class* superclass = NULL;
@@ -172,7 +174,7 @@ static jboolean createClassCallback(Env* env, ClassInfoHeader* header, const cha
         if (!superclass) return FALSE;
     }
 
-    Class* clazz = nvmAllocateClass(env, className, superclass, data->classLoader, flags, classDataSize, instanceDataSize, attributes, initializer);
+    Class* clazz = nvmAllocateClass(env, className, superclass, data->classLoader, flags, classDataSize, instanceDataSize, instanceDataOffset, attributes, initializer);
     if (!clazz) return FALSE;
     data->clazz = clazz;
     return TRUE;

@@ -500,7 +500,7 @@ public class Types {
         Constant offset = new IntegerConstant(0);
         if (!clazz.isInterface() && clazz.hasSuperclass()) {
             SootClass zuper = clazz.getSuperclass();
-            if (!zuper.isPhantom()) {
+            if (!zuper.isPhantom() && !"java.lang.Object".equals(clazz.getSuperclass().getName())) {
                 List<Type> types = new ArrayList<Type>();
                 for (SootField f : zuper.getFields()) {
                     if (!f.isStatic()) {
@@ -516,13 +516,12 @@ public class Types {
         return offset;
     }
     
-    public static Value getFieldPtr(Function f, Value base, Constant baseOffset, StructureType fieldsType, int index) {
-        Value offset = new ConstantAdd(baseOffset, offsetof(fieldsType, index));
+    public static Value getFieldPtr(Function f, Value base, Constant offset, Type fieldType) {
         Variable baseI8Ptr = f.newVariable(I8_PTR);
         f.add(new Bitcast(baseI8Ptr, base, I8_PTR));
         Variable fieldI8Ptr = f.newVariable(I8_PTR);
         f.add(new Getelementptr(fieldI8Ptr, baseI8Ptr.ref(), offset));
-        Variable fieldPtr = f.newVariable(new PointerType(fieldsType.getTypeAt(index)));
+        Variable fieldPtr = f.newVariable(new PointerType(fieldType));
         f.add(new Bitcast(fieldPtr, fieldI8Ptr.ref(), fieldPtr.getType()));
         return fieldPtr.ref();
     }

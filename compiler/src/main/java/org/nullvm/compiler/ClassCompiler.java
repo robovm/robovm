@@ -94,6 +94,7 @@ import soot.tagkit.Tag;
  * @version $Id$
  */
 public class ClassCompiler {
+    private static final int DUMMY_METHOD_SIZE = 0x01abcdef;
     public static final int CI_FLAGS_BITS = 10;
     public static final int CI_INTERFACE_COUNT_BITS = 6;
     public static final int CI_INTERFACE_COUNT_MASK = (1 << CI_INTERFACE_COUNT_BITS) - 1;
@@ -170,8 +171,8 @@ public class ClassCompiler {
      */
     private List<SootField> instanceFields;
     
-    private StructureType classFieldsType;
-    private StructureType instanceFieldsType;
+    private StructureType classType;
+    private StructureType instanceType;
     
     private final Config config;
     private final MethodCompiler methodCompiler;
@@ -312,10 +313,15 @@ public class ClassCompiler {
                     if (matcher.matches()) {
                         String functionName = matcher.group(1);
                         if (functionNames.contains(functionName)) {
-                            in.readLine(); // Skip dummy size
-                            out.write("\t.long\t");
-                            out.write(localLabelPrefix + functionName + "_end - " + functionName);
-                            out.write('\n');
+                            line = in.readLine();
+                            if (line.contains(String.valueOf(DUMMY_METHOD_SIZE))) {
+                                out.write("\t.long\t");
+                                out.write(localLabelPrefix + functionName + "_end - " + functionName);
+                                out.write('\n');
+                            } else {
+                                out.write(line);
+                                out.write('\n');                                
+                            }
                         }
                     }
                 }
@@ -335,8 +341,8 @@ public class ClassCompiler {
         trampolines = null;
         classFields = null;
         instanceFields = null;
-        classFieldsType = null;
-        instanceFieldsType = null;
+        classType = null;
+        instanceType = null;
     }
     
     private void compile(Clazz clazz, OutputStream out) throws IOException {
@@ -345,8 +351,8 @@ public class ClassCompiler {
         trampolines = new HashSet<Trampoline>();
         classFields = getClassFields(sootClass);
         instanceFields = getInstanceFields(sootClass);
-        classFieldsType = getStructureType(classFields);
-        instanceFieldsType = getStructureType(instanceFields);
+        classType = getClassType(sootClass);
+        instanceType = getInstanceType(sootClass);
         
         attributesEncoder.encode(mb, sootClass);
         
@@ -441,11 +447,6 @@ public class ClassCompiler {
             classInfoStruct = new Global(mangleClass(sootClass) + "_info_struct", classInfoErrorStruct);
         } else {
             classInfoStruct = new Global(mangleClass(sootClass) + "_info_struct", createClassInfoStruct());
-        }
-        if (sootClass.hasSuperclass() && !"java.lang.Object".equals(sootClass.getSuperclass().getName())) {
-            // Assume that java.lang.Object has no instance fields
-            mb.addGlobal(new Global(mangleClass(sootClass) + "_offset", 
-                    _private, alignedOffset(sootClass), true));
         }
         mb.addGlobal(classInfoStruct);
         
@@ -662,8 +663,13 @@ public class ClassCompiler {
         } else {
             header.add(new NullConstant(I8_PTR));
         }
-        header.add(classFieldsType == null ? new IntegerConstant(0) : alignedSizeof(classFieldsType));
-        header.add(instanceFieldsType == null ? new IntegerConstant(0) : alignedSizeof(instanceFieldsType));
+        header.add(sizeof(classType));
+        header.add(sizeof(instanceType));
+        if (!instanceFields.isEmpty()) {
+            header.add(offsetof(instanceType, 1, 1));
+        } else {
+            header.add(sizeof(instanceType));
+        }
 
         PackedStructureConstantBuilder body = new PackedStructureConstantBuilder();
         if (sootClass.getInterfaceCount() >= CI_INTERFACE_COUNT_MASK) {
@@ -747,9 +753,9 @@ public class ClassCompiler {
                 body.add(getString(getDescriptor(f)));
             }
             if (f.isStatic()) {
-                body.add(offsetof(classFieldsType, classFieldCounter++));
+                body.add(offsetof(classType, 1, classFieldCounter++));
             } else {
-                body.add(offsetof(instanceFieldsType, instanceFieldCounter++));
+                body.add(offsetof(instanceType, 1, 1 + instanceFieldCounter++));
             }
             if (attributesEncoder.fieldHasAttributes(f)) {
                 body.add(new ConstantBitcast(attributesEncoder.getFieldAttributes(f).ref(), I8_PTR));
@@ -841,7 +847,7 @@ public class ClassCompiler {
             }
             if (!m.isAbstract()) {
                 body.add(new ConstantBitcast(new FunctionRef(mangleMethod(m), getFunctionType(m)), I8_PTR));
-                body.add(new IntegerConstant(0)); // Size of function. This value will be modified later by patching the .s file.
+                body.add(new IntegerConstant(DUMMY_METHOD_SIZE)); // Size of function. This value will be modified later by patching the .s file.
                 if (m.isSynchronized()) {
                     body.add(new ConstantBitcast(new FunctionRef(mangleMethod(m) + "_synchronized", getFunctionType(m)), I8_PTR));
                 }
@@ -933,11 +939,17 @@ public class ClassCompiler {
                     name, new FunctionType(getType(field.getType()), ENV_PTR, OBJECT_PTR), "env", "this");
             fieldPtr = getInstanceFieldPtr(fn, new VariableRef("this", OBJECT_PTR), field);
         }
+        Variable result = fn.newVariable(getType(field.getType()));
         if (Modifier.isVolatile(field.getModifiers())) {
             fn.add(new Fence(Ordering.seq_cst));
+            if (LongType.v().equals(field.getType())) {
+                fn.add(new Load(result, fieldPtr, Ordering.unordered, 8));
+            } else {
+                fn.add(new Load(result, fieldPtr));
+            }
+        } else {
+            fn.add(new Load(result, fieldPtr));
         }
-        Variable result = fn.newVariable(getType(field.getType()));
-        fn.add(new Load(result, fieldPtr));
         fn.add(new Ret(new VariableRef(result)));
         return fn;
     }
@@ -959,9 +971,15 @@ public class ClassCompiler {
             fieldPtr = getInstanceFieldPtr(fn, new VariableRef("this", OBJECT_PTR), field);
             value = fn.getParameterRef(2);
         }
-        fn.add(new Store(value, fieldPtr));
         if (Modifier.isVolatile(field.getModifiers()) || Modifier.isFinal(field.getModifiers())) {
+            if (LongType.v().equals(field.getType())) {
+                fn.add(new Store(value, fieldPtr, Ordering.unordered, 8));
+            } else {
+                fn.add(new Store(value, fieldPtr));
+            }
             fn.add(new Fence(Ordering.seq_cst));
+        } else {
+            fn.add(new Store(value, fieldPtr));
         }
         fn.add(new Ret());
         return fn;
@@ -1023,15 +1041,31 @@ public class ClassCompiler {
         return false;
     }
     
-    private static StructureType getStructureType(List<SootField> fields) {
+    private static StructureType getClassType(SootClass clazz) {
         List<Type> types = new ArrayList<Type>();
-        for (SootField field : fields) {
-            types.add(getType(field.getType()));
+        for (SootField field : clazz.getFields()) {
+            if (field.isStatic()) {
+                types.add(getType(field.getType()));
+            }
         }
-        if (!types.isEmpty()) {
-            return new StructureType(types.toArray(new Type[types.size()]));
+        return new StructureType(CLASS, new StructureType(types.toArray(new Type[types.size()])));
+    }
+    
+    private static StructureType getInstanceType0(SootClass clazz) {
+        List<Type> types = new ArrayList<Type>();
+        if (clazz.hasSuperclass()) {
+            types.add(getInstanceType0(clazz.getSuperclass()));
         }
-        return null;
+        for (SootField field : clazz.getFields()) {
+            if (!field.isStatic()) {
+                types.add(getType(field.getType()));
+            }
+        }
+        return new StructureType(types.toArray(new Type[types.size()]));
+    }
+    
+    private static StructureType getInstanceType(SootClass clazz) {
+        return new StructureType(OBJECT, getInstanceType0(clazz));
     }
     
     private Constant getString(String string) {
@@ -1046,7 +1080,7 @@ public class ClassCompiler {
         Value info = getInfoStruct(f);        
         Variable base = f.newVariable(I8_PTR);
         f.add(new Load(base, info));
-        return getFieldPtr(f, new VariableRef(base), alignedSizeof(CLASS), classFieldsType, classFields.indexOf(field));
+        return getFieldPtr(f, new VariableRef(base), offsetof(classType, 1, classFields.indexOf(field)), getType(field.getType()));
     }
 
     private Value getInfoStruct(Function f) {
@@ -1054,17 +1088,6 @@ public class ClassCompiler {
     }
     
     private Value getInstanceFieldPtr(Function f, Value base, SootField field) {
-        Value offset = new IntegerConstant(0);
-        if (sootClass.hasSuperclass() && !"java.lang.Object".equals(sootClass.getSuperclass().getName())) {
-            // Assume that java.lang.Object has no instance fields
-            Variable v = f.newVariable(I32);
-            f.add(new Load(v, new GlobalRef(mangleClass(sootClass) + "_offset", I32)));
-            offset = v.ref();
-        }
-        Variable baseI8Ptr = f.newVariable(I8_PTR);
-        f.add(new Bitcast(baseI8Ptr, base, I8_PTR));
-        Variable newBase = f.newVariable(I8_PTR);
-        f.add(new Getelementptr(newBase, baseI8Ptr.ref(), offset));        
-        return getFieldPtr(f, newBase.ref(), sizeof(OBJECT), instanceFieldsType, instanceFields.indexOf(field));
+        return getFieldPtr(f, base, offsetof(instanceType, 1, 1 + instanceFields.indexOf(field)), getType(field.getType()));
     }
 }

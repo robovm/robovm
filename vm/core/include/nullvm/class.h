@@ -98,7 +98,8 @@ extern Class* array_D;
 extern jboolean nvmInitClasses(Env* env);
 extern jboolean nvmInitPrimitiveWrapperClasses(Env* env);
 
-extern Class* nvmAllocateClass(Env* env, const char* className, Class* superclass, ClassLoader* classLoader, jint flags, jint classDataSize, jint instanceDataSize, void* attributes, void* initializer);
+extern Class* nvmAllocateClass(Env* env, const char* className, Class* superclass, ClassLoader* classLoader, jint flags, 
+		jint classDataSize, jint instanceDataSize, jint instanceDataOffset, void* attributes, void* initializer);
 extern jboolean nvmAddInterface(Env* env, Class* clazz, Class* interface);
 extern Field* nvmAddField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes);
 extern Method* nvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes);

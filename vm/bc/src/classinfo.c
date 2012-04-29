@@ -199,7 +199,7 @@ void parseClassInfo(Env* env, ClassInfoHeader* header, ParseClassInfoCallbacks* 
 
     if (callbacks->classCallback) {
         if (!callbacks->classCallback(env, header, header->className, superclassName, 
-                access, header->classDataSize, header->instanceDataSize, 
+                access, header->classDataSize, header->instanceDataSize, header->instanceDataOffset,
                 attributes, header->initializer, data)) {
             return;
         }

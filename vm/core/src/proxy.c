@@ -114,10 +114,12 @@ static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, I
     return TRUE;
 }
 
-Class* nvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classLoader, char* className, jint interfacesCount, Class** interfaces, jint instanceDataSize, ProxyHandler handler) {
+Class* nvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classLoader, char* className, jint interfacesCount, Class** interfaces, 
+        jint instanceDataSize, jint instanceDataOffset, ProxyHandler handler) {
 
     // Allocate the proxy class.
-    Class* proxyClass = nvmAllocateClass(env, className, superclass, classLoader, CLASS_FLAG_PROXY | ACC_PUBLIC | ACC_FINAL, sizeof(ProxyClassData), instanceDataSize, NULL, NULL);
+    Class* proxyClass = nvmAllocateClass(env, className, superclass, classLoader, CLASS_FLAG_PROXY | ACC_PUBLIC | ACC_FINAL, 
+        offsetof(Class, data) + sizeof(ProxyClassData), instanceDataSize, instanceDataOffset, NULL, NULL);
     if (!proxyClass) return NULL;
 
     ProxyClassData* proxyClassData = (ProxyClassData*) proxyClass->data;

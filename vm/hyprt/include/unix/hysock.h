@@ -40,7 +40,7 @@
 #include <stdlib.h>
 
 #if !defined(ZOS)
-#include <sys/socketvar.h>
+//#include <sys/socketvar.h>
 #else /* !defined(ZOS) */
 #include <arpa/inet.h>
 #include <xti.h>

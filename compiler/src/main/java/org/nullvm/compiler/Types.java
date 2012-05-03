@@ -4,7 +4,6 @@
 package org.nullvm.compiler;
 
 import static org.nullvm.compiler.Annotations.*;
-import static org.nullvm.compiler.Types.*;
 import static org.nullvm.compiler.llvm.Type.*;
 
 import java.nio.CharBuffer;
@@ -58,7 +57,10 @@ import soot.jimple.toolkits.typing.fast.BottomType;
  */
 public class Types {
 
-    public static final Type ENV_PTR = new PointerType(new StructureType("Env", I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
+    public static final StructureType GATEWAY_FRAME = new StructureType("GatewayFrame", I8_PTR, I8_PTR, I8_PTR);
+    public static final Type GATEWAY_FRAME_PTR = new PointerType(GATEWAY_FRAME);
+    public static final Type ENV_PTR = new PointerType(new StructureType("Env", I8_PTR, I8_PTR, I8_PTR, 
+            I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I32));
     // Dummy Class type definition. The real one is in header.ll
     public static final StructureType CLASS = new StructureType("Class", I8_PTR);
     public static final Type CLASS_PTR = new PointerType(CLASS);
@@ -498,7 +500,7 @@ public class Types {
         Constant offset = new IntegerConstant(0);
         if (!clazz.isInterface() && clazz.hasSuperclass()) {
             SootClass zuper = clazz.getSuperclass();
-            if (!zuper.isPhantom()) {
+            if (!zuper.isPhantom() && !"java.lang.Object".equals(clazz.getSuperclass().getName())) {
                 List<Type> types = new ArrayList<Type>();
                 for (SootField f : zuper.getFields()) {
                     if (!f.isStatic()) {
@@ -514,13 +516,12 @@ public class Types {
         return offset;
     }
     
-    public static Value getFieldPtr(Function f, Value base, Constant baseOffset, StructureType fieldsType, int index) {
-        Value offset = new ConstantAdd(baseOffset, offsetof(fieldsType, index));
+    public static Value getFieldPtr(Function f, Value base, Constant offset, Type fieldType) {
         Variable baseI8Ptr = f.newVariable(I8_PTR);
         f.add(new Bitcast(baseI8Ptr, base, I8_PTR));
         Variable fieldI8Ptr = f.newVariable(I8_PTR);
         f.add(new Getelementptr(fieldI8Ptr, baseI8Ptr.ref(), offset));
-        Variable fieldPtr = f.newVariable(new PointerType(fieldsType.getTypeAt(index)));
+        Variable fieldPtr = f.newVariable(new PointerType(fieldType));
         f.add(new Bitcast(fieldPtr, fieldI8Ptr.ref(), fieldPtr.getType()));
         return fieldPtr.ref();
     }

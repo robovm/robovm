@@ -1,46 +1,11 @@
 #include <nullvm.h>
-#include <unwind.h>
+#include <string.h>
 #include "../private.h"
 #include "CuTest.h"
-
-#define EXCEPTION_CLASS 0xF00F00F00F00LL
-
-typedef struct UnwindInfo {
-    struct _Unwind_Exception exception_info;
-    _Unwind_Ptr landing_pad;
-} UnwindInfo;
-
-#if defined(LINUX) && defined(NVM_X86_64)
-void __libc_start_main(void);
-#endif
-int main(int argc, char* argv[]);
-
-// Mock _nvmPersonality()
-_Unwind_Reason_Code _nvmPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context) {
-    UnwindInfo* info = (UnwindInfo*) exception_info;
-    if (actions & _UA_SEARCH_PHASE) {
-        _Unwind_Ptr saved_ip = _Unwind_GetIP(context);
-        _Unwind_Reason_Code urc = __gcc_personality_v0(version, _UA_CLEANUP_PHASE, exception_class, exception_info, context);
-        if (urc == _URC_INSTALL_CONTEXT) {
-            info->landing_pad = _Unwind_GetIP(context);
-            _Unwind_SetIP(context, saved_ip);
-            return _URC_HANDLER_FOUND;
-        }
-        return urc;
-    } else if (actions & _UA_HANDLER_FRAME) {
-        _Unwind_SetGR(context, __builtin_eh_return_data_regno (0), (_Unwind_Ptr) exception_info);
-        _Unwind_SetGR(context, __builtin_eh_return_data_regno (1), 0);
-        _Unwind_SetIP(context, info->landing_pad); 
-        return _URC_INSTALL_CONTEXT;
-    }
-
-    return _URC_CONTINUE_UNWIND;
-}
 
 void* nvmAllocateMemory(Env* env, int size) {
     return calloc(1, size);
 }
-
 
 static jbyte testCall0ReturnByte_target(jbyte b) {
     return b << 1;
@@ -121,11 +86,11 @@ static void testCall0ReturnDouble(CuTest* tc) {
 
 
 static jlong testCall0OneArgOfEach_target(void* p, jint i, jlong l, jfloat f, jdouble d) {
-    if (p != testCall0OneArgOfEach_target) return 0;
-    if (i != -100) return 0;
-    if (l != 0xfedcba9876543210LL) return 0;
-    if (f != 3.14f) return 0;
-    if (d != -3.14) return 0;
+    if (p != testCall0OneArgOfEach_target) return 1;
+    if (i != -100) return 2;
+    if (l != 0xfedcba9876543210LL) return 3;
+    if (f != 3.14f) return 4;
+    if (d != -3.14) return 5;
     return 0x0123456789abcdefLL;
 }
 static void testCall0OneArgOfEach(CuTest* tc) {
@@ -245,24 +210,24 @@ static void testCall0ManyArgsOfEach(CuTest* tc) {
 }
 
 
-static _Unwind_Reason_Code unwindCallStack(struct _Unwind_Context* ctx, void* d) {
+int main(int argc, char* argv[]);
+void* findFunctionAt(void* pc);
+static jboolean unwindCallStack(UnwindContext* ctx, void* d) {
     jint i;
     void** callers = (void**) d;
 
-    void* address = (void*) _Unwind_GetIP(ctx);
-    void* function = _Unwind_FindEnclosingFunction(address);
-
+    void* address = findFunctionAt(unwindGetIP(ctx));
     for (i = 0; i < 10; i++) {
         if (!callers[i]) {
-            callers[i] = function;
+            callers[i] = address;
             break;
         }
     }
 
-    return _URC_NO_REASON;
+    return (i < 9 && address != main) ? TRUE : FALSE;
 }
 void testCall0Unwind_target(void** ptrs) {
-    _Unwind_Backtrace(unwindCallStack, ptrs);
+    unwindBacktrace(unwindCallStack, ptrs);
 }
 void testCall0Unwind(CuTest* tc) {
     void* callers[10] = {0};
@@ -277,20 +242,34 @@ void testCall0Unwind(CuTest* tc) {
     CuAssertPtrEquals(tc, CuTestRun, callers[3]);
     CuAssertPtrEquals(tc, CuSuiteRun, callers[4]);
     CuAssertPtrEquals(tc, main, callers[5]);
-#if defined(LINUX) && defined(NVM_X86_64)
-    CuAssertPtrEquals(tc, __libc_start_main, callers[6]);
-    CuAssertPtrEquals(tc, NULL, callers[7]);
-#else
     CuAssertPtrEquals(tc, NULL, callers[6]);
-#endif
+}
+void* findFunctionAt(void* pc) {
+    void* candidates[6] = {0};
+    candidates[0] = testCall0Unwind_target;
+    candidates[1] = _call0;
+    candidates[2] = testCall0Unwind;
+    candidates[3] = CuTestRun;
+    candidates[4] = CuSuiteRun;
+    candidates[5] = main;
+
+    void* match = NULL;
+    jint delta = 0x7fffffff;
+    jint i;
+    for (i = 0; i < 6; i++) {
+        if (candidates[i] < pc && pc - candidates[i] < delta) {
+            match = candidates[i];
+            delta = pc - candidates[i];
+        }
+    }
+    return (match && delta < 2000) ? match : pc;
 }
 
 
 void testCall0Raise_target(jint* data) {
-    UnwindInfo* u = calloc(1, sizeof(struct _Unwind_Exception));
-    u->exception_info.exception_class = EXCEPTION_CLASS;
+    Env env = {0};
     data[0] = 0xdeadcab0;
-    _Unwind_Reason_Code urc = _Unwind_RaiseException(&u->exception_info);
+    unwindRaiseException(&env);
     data[1] = 0xdeadcab1;
 }
 void testCall0Raise(CuTest* tc) {

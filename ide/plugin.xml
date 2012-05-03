@@ -57,17 +57,27 @@
       delegate="org.nullvm.ide.internal.ConsoleLaunchConfigurationDelegate"
       delegateName="NullVM Console Launcher"
       modes="debug, run"
-      name="NullVM Console Application"
+      name="Console Application"
       public="true"
       sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
       sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
     </launchConfigurationType>
     <launchConfigurationType
-      id="org.nullvm.ide.IOSSimLaunchConfigurationType"
-      delegate="org.nullvm.ide.internal.IOSSimLaunchConfigurationDelegate"
-      delegateName="NullVM iOS-sim Launcher"
+      id="org.nullvm.ide.IOSSimulatorLaunchConfigurationType"
+      delegate="org.nullvm.ide.internal.IOSSimulatorLaunchConfigurationDelegate"
+      delegateName="iOS Simulator Launcher"
       modes="debug, run"
-      name="NullVM iOS-sim Application"
+      name="iOS Simulator App"
+      public="true"
+      sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+      sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
+    </launchConfigurationType>
+    <launchConfigurationType
+      id="org.nullvm.ide.IOSDeviceLaunchConfigurationType"
+      delegate="org.nullvm.ide.internal.IOSDeviceLaunchConfigurationDelegate"
+      delegateName="iOS Device Launcher"
+      modes="debug, run"
+      name="iOS Device App"
       public="true"
       sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
       sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
@@ -76,20 +86,25 @@
   <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
     <launchConfigurationTabGroup
         class="org.nullvm.ide.internal.NullVMLaunchConfigurationTabGroup"
-        description="NullVM Console Application"
+        description="Console Application"
         id="org.nullvm.ide.ConsoleLaunchConfigurationTabGroup"
         type="org.nullvm.ide.ConsoleLaunchConfigurationType" />
     <launchConfigurationTabGroup
         class="org.nullvm.ide.internal.NullVMLaunchConfigurationTabGroup"
-        description="NullVM iOS-sim Application"
-        id="org.nullvm.ide.IOSSimLaunchConfigurationTabGroup"
-        type="org.nullvm.ide.IOSSimLaunchConfigurationType" />
+        description="iOS Simulator App"
+        id="org.nullvm.ide.IOSSimulatorLaunchConfigurationTabGroup"
+        type="org.nullvm.ide.IOSSimulatorLaunchConfigurationType" />
+    <launchConfigurationTabGroup
+        class="org.nullvm.ide.internal.NullVMLaunchConfigurationTabGroup"
+        description="iOS Device App"
+        id="org.nullvm.ide.IOSDeviceLaunchConfigurationTabGroup"
+        type="org.nullvm.ide.IOSDeviceLaunchConfigurationType" />
   </extension>
   <extension point="org.eclipse.debug.ui.launchShortcuts">
     <shortcut
         class="org.nullvm.ide.internal.ConsoleLaunchShortcut"
         id="org.nullvm.ide.ConsoleLaunchShortcut"
-        label="NullVM Console Application"
+        label="Console Application"
         modes="run, debug">
       <contextualLaunch>
         <enablement>
@@ -113,9 +128,35 @@
       </contextualLaunch>
     </shortcut>
     <shortcut
-        class="org.nullvm.ide.internal.IOSSimLaunchShortcut"
-        id="org.nullvm.ide.IOSSimLaunchShortcut"
-        label="NullVM iOS-sim Application"
+        class="org.nullvm.ide.internal.IOSSimulatorLaunchShortcut"
+        id="org.nullvm.ide.IOSSimulatorLaunchShortcut"
+        label="iOS Simulator App"
+        modes="run, debug">
+      <contextualLaunch>
+        <enablement>
+          <with variable="selection">
+            <count value="1"/>
+            <iterate>
+              <and>
+                <adapt type="org.eclipse.jdt.core.IJavaElement">
+                  <test property="org.eclipse.jdt.core.isInJavaProject"/>
+                </adapt>
+                <or>
+                  <test property="org.eclipse.jdt.launching.hasMain"/>
+                  <test property="org.eclipse.jdt.launching.isContainer"/>
+                  <test property="org.eclipse.jdt.launching.isPackageFragment"/>
+                  <test property="org.eclipse.jdt.launching.isPackageFragmentRoot"/>
+                </or>
+              </and>
+            </iterate>
+          </with>
+        </enablement>
+      </contextualLaunch>
+    </shortcut>
+    <shortcut
+        class="org.nullvm.ide.internal.IOSDeviceLaunchShortcut"
+        id="org.nullvm.ide.IOSDeviceLaunchShortcut"
+        label="iOS Device App"
         modes="run, debug">
       <contextualLaunch>
         <enablement>

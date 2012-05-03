@@ -165,11 +165,11 @@ static Class* createArrayClass(Env* env, Class* componentType) {
 
     // TODO: Add clone() method.
     Class* clazz = nvmAllocateClass(env, desc, java_lang_Object, componentType->classLoader, 
-        CLASS_FLAG_ARRAY | CLASS_STATE_INITIALIZED | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, 0, 0, NULL, NULL);
+        CLASS_FLAG_ARRAY | CLASS_STATE_INITIALIZED | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, sizeof(Class), sizeof(Object), sizeof(Object), NULL, NULL);
     if (!clazz) return NULL;
     clazz->componentType = componentType;
     // Initialize methods to NULL to prevent nvmGetMethods() from trying to load the methods if called with this array class
-    clazz->_methods.first = NULL;
+    clazz->_methods = NULL;
     if (!nvmAddInterface(env, clazz, java_lang_Cloneable)) return NULL;
     if (!nvmAddInterface(env, clazz, java_io_Serializable)) return NULL;
     if (!nvmRegisterClass(env, clazz)) return NULL;
@@ -645,20 +645,25 @@ Class* nvmFindLoadedClass(Env* env, const char* className, ClassLoader* classLoa
     return clazz;
 }
 
-Class* nvmAllocateClass(Env* env, const char* className, Class* superclass, ClassLoader* classLoader, jint flags, jint classDataSize, jint instanceDataSize, void* attributes, void* initializer) {
+ClassLoader* nvmGetSystemClassLoader(Env* env) {
+    Class* holder = nvmFindClass(env, "java/lang/ClassLoader$SystemClassLoaderHolder");
+    if (!holder) return NULL;
+    ClassField* field = nvmGetClassField(env, holder, "loader", "Ljava/lang/ClassLoader;");
+    if (!field) return NULL;
+    return (ClassLoader*) nvmGetObjectClassFieldValue(env, holder, field);
+}
+
+Class* nvmAllocateClass(Env* env, const char* className, Class* superclass, ClassLoader* classLoader, jint flags, 
+        jint classDataSize, jint instanceDataSize, jint instanceDataOffset, void* attributes, void* initializer) {
+
     if (superclass && CLASS_IS_INTERFACE(superclass)) {
         // TODO: Message should look like ?
         nvmThrowIncompatibleClassChangeError(env, "");
         return NULL;
     }
 
-    Class* clazz = nvmAllocateMemory(env, sizeof(Class) + classDataSize);
+    Class* clazz = nvmAllocateMemory(env, classDataSize);
     if (!clazz) return NULL;
-
-    // Make sure classDataSize and instanceDataSize are aligned properly so that the GC will be able
-    // to find pointers within class and instance data. We assume that the alignment equals the size of pointers.
-    classDataSize = (classDataSize + sizeof(void*) - 1) & ~(sizeof(void*) - 1);
-    instanceDataSize = (instanceDataSize + sizeof(void*) - 1) & ~(sizeof(void*) - 1);
 
     /*
      * NOTE: All classes we load before we have cached java.lang.Class will have NULL here so it is 
@@ -674,12 +679,10 @@ Class* nvmAllocateClass(Env* env, const char* className, Class* superclass, Clas
     clazz->flags = flags;
     clazz->classDataSize = classDataSize;
     clazz->instanceDataSize = instanceDataSize;
-    clazz->instanceDataOffset = clazz->superclass 
-               ? clazz->superclass->instanceDataOffset + clazz->superclass->instanceDataSize
-               : 0;
+    clazz->instanceDataOffset = instanceDataOffset;
     clazz->_interfaces = &INTERFACES_NOT_LOADED;
     clazz->_fields = &FIELDS_NOT_LOADED;
-    clazz->_methods.first = &METHODS_NOT_LOADED;
+    clazz->_methods = &METHODS_NOT_LOADED;
     clazz->attributes = attributes;
     clazz->initializer = initializer;
 
@@ -714,20 +717,13 @@ Method* nvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc,
     method->synchronizedImpl = synchronizedImpl;
     method->attributes = attributes;
 
-    if (clazz->_methods.first == &METHODS_NOT_LOADED) {
-        clazz->_methods.first = NULL;
+    if (clazz->_methods == &METHODS_NOT_LOADED) {
+        clazz->_methods = NULL;
     }
 
-    method->next = clazz->_methods.first;
-    clazz->_methods.first = method;
+    method->next = clazz->_methods;
+    clazz->_methods = method;
 
-    if (method->impl && method->impl != _proxy0) {
-        if (clazz->_methods.lo == NULL || method->impl < clazz->_methods.lo) {
-            clazz->_methods.lo = method->impl;
-        } else if (clazz->_methods.hi == NULL || method->impl > clazz->_methods.hi) {
-            clazz->_methods.hi = method->impl;
-        }
-    }
     return method;
 }
 
@@ -742,12 +738,12 @@ ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint 
     method->method.synchronizedImpl = NULL;
     method->proxiedMethod = proxiedMethod;
 
-    if (clazz->_methods.first == &METHODS_NOT_LOADED) {
-        clazz->_methods.first = NULL;
+    if (clazz->_methods == &METHODS_NOT_LOADED) {
+        clazz->_methods = NULL;
     }
 
-    method->method.next = clazz->_methods.first;
-    clazz->_methods.first = (Method*) method;
+    method->method.next = clazz->_methods;
+    clazz->_methods = (Method*) method;
 
     return method;
 }
@@ -761,23 +757,19 @@ BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const
     method->method.name = name;
     method->method.desc = desc;
     method->method.access = access | METHOD_TYPE_BRIDGE;
+    method->method.size = size;
     method->method.impl = impl;
     method->method.synchronizedImpl = synchronizedImpl;
     method->method.attributes = attributes;
     method->targetFnPtr = targetFnPtr;
 
-    if (clazz->_methods.first == &METHODS_NOT_LOADED) {
-        clazz->_methods.first = NULL;
+    if (clazz->_methods == &METHODS_NOT_LOADED) {
+        clazz->_methods = NULL;
     }
 
-    method->method.next = clazz->_methods.first;
-    clazz->_methods.first = (Method*) method;
+    method->method.next = clazz->_methods;
+    clazz->_methods = (Method*) method;
 
-    if (clazz->_methods.lo == NULL || method->method.impl < clazz->_methods.lo) {
-        clazz->_methods.lo = method->method.impl;
-    } else if (clazz->_methods.hi == NULL || method->method.impl > clazz->_methods.hi) {
-        clazz->_methods.hi = method->method.impl;
-    }
     return method;
 }
 
@@ -790,25 +782,18 @@ CallbackMethod* nvmAddCallbackMethod(Env* env, Class* clazz, const char* name, c
     method->method.name = name;
     method->method.desc = desc;
     method->method.access = access | METHOD_TYPE_CALLBACK;
+    method->method.size = size;
     method->method.impl = impl;
     method->method.synchronizedImpl = synchronizedImpl;
     method->method.attributes = attributes;
     method->callbackImpl = callbackImpl;
 
-    if (clazz->_methods.first == &METHODS_NOT_LOADED) {
-        clazz->_methods.first = NULL;
+    if (clazz->_methods == &METHODS_NOT_LOADED) {
+        clazz->_methods = NULL;
     }
 
-    method->method.next = clazz->_methods.first;
-    clazz->_methods.first = (Method*) method;
-
-    if (clazz->_methods.lo == NULL || method->method.impl < clazz->_methods.lo) {
-        clazz->_methods.lo = method->method.impl;
-    } else if (clazz->_methods.hi == NULL || method->method.impl > clazz->_methods.hi) {
-        clazz->_methods.hi = method->method.impl;
-    }
-
-    unwindRegisterCallback(env, method->callbackImpl);
+    method->method.next = clazz->_methods;
+    clazz->_methods = (Method*) method;
 
     return method;
 }
@@ -830,9 +815,9 @@ Field* nvmAddField(Env* env, Class* clazz, const char* name, const char* desc, j
     clazz->_fields = field;
 
     if (access & ACC_STATIC) {
-        ((ClassField*) field)->address = (jbyte*) clazz->data + offset;
+        ((ClassField*) field)->address = ((jbyte*) clazz) + offset;
     } else {
-        ((InstanceField*) field)->offset = offsetof(DataObject, data) + clazz->instanceDataOffset + offset;
+        ((InstanceField*) field)->offset = offset;
     }
     return field;
 }
@@ -874,21 +859,21 @@ Field* nvmGetFields(Env* env, Class* clazz) {
 }
 
 Method* nvmGetMethods(Env* env, Class* clazz) {
-    if (clazz->_methods.first != &METHODS_NOT_LOADED) return clazz->_methods.first;
+    if (clazz->_methods != &METHODS_NOT_LOADED) return clazz->_methods;
 
     // TODO: Double checked locking
     obtainClassLock();
-    if (clazz->_methods.first == &METHODS_NOT_LOADED) {
+    if (clazz->_methods == &METHODS_NOT_LOADED) {
         env->vm->options->loadMethods(env, clazz);
-        if (clazz->_methods.first == &METHODS_NOT_LOADED) {
+        if (clazz->_methods == &METHODS_NOT_LOADED) {
             // The class has no methods
-            clazz->_methods.first = NULL;
+            clazz->_methods = NULL;
         }
     }
-    if (nvmExceptionCheck(env)) clazz->_methods.first = &METHODS_NOT_LOADED;
+    if (nvmExceptionCheck(env)) clazz->_methods = &METHODS_NOT_LOADED;
     releaseClassLock();
     if (nvmExceptionCheck(env)) return NULL;
-    return clazz->_methods.first;
+    return clazz->_methods;
 }
 
 jboolean nvmRegisterClass(Env* env, Class* clazz) {
@@ -937,7 +922,9 @@ void nvmInitialize(Env* env, Class* clazz) {
         CallInfo* callInfo = call0AllocateCallInfo(env, initializer, 1, 0, 0, 0, 0);
         call0AddPtr(callInfo, env);
         void (*f)(CallInfo*) = (void (*)(CallInfo*)) _call0;
+        nvmPushGatewayFrame(env);
         f(callInfo);
+        nvmPopGatewayFrame(env);
 
         Object* exception = nvmExceptionClear(env);
         if (exception) {
@@ -969,8 +956,7 @@ Object* nvmAllocateObject(Env* env, Class* clazz) {
     }
     nvmInitialize(env, clazz);
     if (nvmExceptionOccurred(env)) return NULL;
-    jint dataSize = clazz->instanceDataOffset + clazz->instanceDataSize;
-    Object* obj = nvmAllocateMemory(env, sizeof(DataObject) + dataSize);
+    Object* obj = nvmAllocateMemory(env, clazz->instanceDataSize);
     if (!obj) return NULL;
     obj->clazz = clazz;
     return obj;
@@ -1092,8 +1078,7 @@ Object* nvmCloneObject(Env* env, Object* obj) {
     if (CLASS_IS_ARRAY(obj->clazz)) {
         return (Object*) nvmCloneArray(env, (Array*) obj);
     }
-    // Class is not cloneable so we assume that obj is a DataObject
-    jint size = sizeof(DataObject) + obj->clazz->instanceDataOffset + obj->clazz->instanceDataSize;
+    jint size = obj->clazz->instanceDataSize;
     Object* copy = nvmAllocateMemory(env, size);
     if (!copy) return NULL;
     memcpy(copy, obj, size);

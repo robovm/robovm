@@ -43,6 +43,7 @@ extern jint nvmThrowLinkageError(Env* env);
 extern jint nvmThrowIllegalMonitorStateException(Env* env);
 extern jint nvmThrowInterruptedException(Env* env);
 extern void nvmRaiseException(Env* env, Object* e);
+extern void nvmReraiseException(Env* env, void* exInfo);
 
 #endif
 

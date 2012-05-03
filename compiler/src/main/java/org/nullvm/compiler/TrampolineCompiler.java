@@ -15,6 +15,9 @@ import java.util.Collections;
 
 import org.nullvm.compiler.clazz.Clazz;
 import org.nullvm.compiler.llvm.Bitcast;
+import org.nullvm.compiler.llvm.Br;
+import org.nullvm.compiler.llvm.FloatingPointConstant;
+import org.nullvm.compiler.llvm.FloatingPointType;
 import org.nullvm.compiler.llvm.Function;
 import org.nullvm.compiler.llvm.FunctionAttribute;
 import org.nullvm.compiler.llvm.FunctionDeclaration;
@@ -22,8 +25,14 @@ import org.nullvm.compiler.llvm.FunctionRef;
 import org.nullvm.compiler.llvm.FunctionType;
 import org.nullvm.compiler.llvm.Global;
 import org.nullvm.compiler.llvm.GlobalRef;
+import org.nullvm.compiler.llvm.Icmp;
+import org.nullvm.compiler.llvm.Icmp.Condition;
+import org.nullvm.compiler.llvm.IntegerConstant;
+import org.nullvm.compiler.llvm.IntegerType;
+import org.nullvm.compiler.llvm.Label;
 import org.nullvm.compiler.llvm.Load;
 import org.nullvm.compiler.llvm.NullConstant;
+import org.nullvm.compiler.llvm.PointerType;
 import org.nullvm.compiler.llvm.Ret;
 import org.nullvm.compiler.llvm.Unreachable;
 import org.nullvm.compiler.llvm.Value;
@@ -223,6 +232,22 @@ public class TrampolineCompiler {
                       mb.getString(mangleNativeMethod(nc.getTarget(), nc.getMethodName())),
                       mb.getString(mangleNativeMethod(nc.getTarget(), nc.getMethodName(), nc.getMethodDesc())),
                       g.ref());
+                Variable nullTest = fn.newVariable(I1);
+                fn.add(new Icmp(nullTest, Condition.ne, implI8Ptr, new NullConstant(I8_PTR)));
+                Label trueLabel = new Label();
+                Label falseLabel = new Label();
+                fn.add(new Br(nullTest.ref(), fn.newBasicBlockRef(trueLabel), fn.newBasicBlockRef(falseLabel)));
+                fn.newBasicBlock(falseLabel);
+                if (fn.getType().getReturnType() instanceof IntegerType) {
+                    fn.add(new Ret(new IntegerConstant(0, (IntegerType) fn.getType().getReturnType())));
+                } else if (fn.getType().getReturnType() instanceof FloatingPointType) {
+                    fn.add(new Ret(new FloatingPointConstant(0.0, (FloatingPointType) fn.getType().getReturnType())));
+                } else if (fn.getType().getReturnType() instanceof PointerType) {
+                    fn.add(new Ret(new NullConstant((PointerType) fn.getType().getReturnType())));
+                } else {
+                    fn.add(new Ret());
+                }
+                fn.newBasicBlock(trueLabel);
                 Variable impl = fn.newVariable(nc.getFunctionType());
                 fn.add(new Bitcast(impl, implI8Ptr, impl.getType()));
                 Value result = call(fn, impl.ref(), fn.getParameterRefs());

@@ -5,7 +5,6 @@ package org.nullvm.compiler;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -42,13 +41,21 @@ public class CompilerUtil {
             llcPath = new File(config.getLlvmBinDir(), "llc").getAbsolutePath();
         }
   
+        Arch arch = config.getArch();
+        OS os = config.getOs();
+        
         ArrayList<String> opts = new ArrayList<String>();
-        opts.add("-march=" + config.getArch().getLlvmName());
+        opts.add("-mtriple=" + arch.getLlvmName() + "-unknown-" + os);
         if (config.getCpu() != null) {
             opts.add("-mcpu=" + config.getCpu());
         }
+        if (os.getFamily() == OS.Family.darwin && arch.isArm()) {
+            // clang uses gas to assemble files on macosx and the XCode gas doesn't handle cfi directives
+            opts.add("-disable-cfi");
+        }
         opts.add("-ffunction-sections");
         opts.add("-fdata-sections");
+        opts.add("--disable-fp-elim");
     
         outFile.getParentFile().mkdirs();
         exec(config, llcPath, opts, "-o=" + outFile.toString(), inFile);
@@ -66,7 +73,7 @@ public class CompilerUtil {
         }
         if (config.getOs().getFamily() == OS.Family.darwin) {
             opts.add("-arch");            
-            opts.add(config.getArch().toString());            
+            opts.add(config.getArch().getClangName());
         }
 
         outFile.getParentFile().mkdirs();
@@ -88,7 +95,7 @@ public class CompilerUtil {
         }
         if (config.getOs().getFamily() == OS.Family.darwin) {
             opts.add("-arch");            
-            opts.add(config.getArch().toString());            
+            opts.add(config.getArch().getClangName());            
             opts.add("-Wl,-filelist," + objectsFile.getAbsolutePath());
         } else {
             opts.add("@" + objectsFile.getAbsolutePath());
@@ -106,13 +113,12 @@ public class CompilerUtil {
         return execWithEnv(config, wd, null, createCommandLine(cmd, args));
     }
 
-    @SuppressWarnings("rawtypes")
-    public static int execWithEnv(Config config, File wd, Map env, String cmd, Object ... args) throws IOException {
+    public static int execWithEnv(Config config, File wd, Map<String, String> env, String cmd, Object ... args) throws IOException {
         return execWithEnv(config, wd, env, createCommandLine(cmd, args));
     }
     
-    @SuppressWarnings("rawtypes")
-    public static int execWithEnv(Config config, File wd, Map env, CommandLine commandLine) throws IOException {
+    @SuppressWarnings("unchecked")
+    public static int execWithEnv(Config config, File wd, Map<String, String> env, CommandLine commandLine) throws IOException {
         
         debug(config.getLogger(), commandLine);
         
@@ -136,7 +142,7 @@ public class CompilerUtil {
         }
     }
 
-    private static void debug(Logger logger, CommandLine commandLine) {
+    static void debug(Logger logger, CommandLine commandLine) {
         String[] args = commandLine.getArguments();
         if (args.length == 0) {
             logger.debug(commandLine.toString());
@@ -169,83 +175,26 @@ public class CompilerUtil {
         }
     }
     
+    public static CommandLine createCommandLine(String cmd, List<Object> args) {
+        return createCommandLine(cmd, args.toArray(new Object[args.size()]));
+    }
+    
     @SuppressWarnings("unchecked")
     public static CommandLine createCommandLine(String cmd, Object... args) {
         CommandLine commandLine = new CommandLine(cmd);
         for (Object a : args) {
             if (a instanceof Collection) {
                 for (Object o : (Collection<Object>) a) {
-                    commandLine.addArgument(o instanceof File ? ((File) o).getAbsolutePath() : o.toString());
+                    commandLine.addArgument(o instanceof File ? ((File) o).getAbsolutePath() : o.toString(), false);
                 }
             } else if (a instanceof Object[]) {
                 for (Object o : (Object[]) a) {
-                    commandLine.addArgument(o instanceof File ? ((File) o).getAbsolutePath() : o.toString());
+                    commandLine.addArgument(o instanceof File ? ((File) o).getAbsolutePath() : o.toString(), false);
                 }
             } else {
-                commandLine.addArgument(a instanceof File ? ((File) a).getAbsolutePath() : a.toString());
+                commandLine.addArgument(a instanceof File ? ((File) a).getAbsolutePath() : a.toString(), false);
             }
         }
         return commandLine;
-    }
-    
-    private static class DebugOutputStream extends LoggerOutputStream {
-        DebugOutputStream(Logger logger) {
-            super(logger);
-        }
-        @Override
-        protected void log(byte[] message, int off, int length) {
-            logger.debug(new String(message, off, length));
-        }
-    }
-    
-    private static class ErrorOutputStream extends LoggerOutputStream {
-        ErrorOutputStream(Logger logger) {
-            super(logger);
-        }
-        @Override
-        protected void log(byte[] message, int off, int length) {
-            logger.error(new String(message, off, length));
-        }
-    }
-    
-    private static abstract class LoggerOutputStream extends OutputStream {
-        protected final Logger logger;
-        private byte[] buffer = new byte[1024];
-        private int start = 0;
-        private int end = 0;
-
-        LoggerOutputStream(Logger logger) {
-            this.logger = logger;
-        }
-        
-        protected abstract void log(byte[] message, int off, int length);
-        
-        @Override
-        public void write(int b) throws IOException {
-            if (b == '\r') {
-                // Skip
-                return;
-            }
-            if (b == '\n') {
-                log(buffer, start, end - start);
-                start = end = 0;
-                return;
-            }
-            if (end == buffer.length) {
-                if (start > 0) {
-                    // Compact
-                    System.arraycopy(buffer, start, buffer, 0, end - start);
-                    end -= start;
-                    start = 0;
-                } else {
-                    // Need a bigger buffer
-                    byte[] newBuffer = new byte[buffer.length * 2];
-                    System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
-                    buffer = newBuffer;
-                }
-            }
-            buffer[end++] = (byte) b;
-        }
-        
     }
 }

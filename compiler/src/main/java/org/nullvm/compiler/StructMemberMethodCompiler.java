@@ -113,7 +113,7 @@ public class StructMemberMethodCompiler extends AbstractMethodCompiler {
         
         // Get the value of the handle field in the Struct base class and cast it to a <structType>*
         Variable handleI64 = function.newVariable(I64);
-        function.add(new Load(handleI64, getFieldPtr(function, function.getParameterRef(1), sizeof(OBJECT), new StructureType(I64), 0)));
+        function.add(new Load(handleI64, getFieldPtr(function, function.getParameterRef(1), offsetof(new StructureType(OBJECT, new StructureType(I64)), 1, 0), I64)));
         Variable handlePtr = function.newVariable(new PointerType(structType));
         function.add(new Inttoptr(handlePtr, handleI64.ref(), handlePtr.getType()));
         

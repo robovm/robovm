@@ -7,6 +7,12 @@
 
 #define ALLOC_NATIVE_FRAMES_SIZE 8
 
+typedef struct {
+    ClassInfoHeader* classInfoHeader;
+    void* start;
+    void* end;
+} AddressClassLookup;
+
 extern _Unwind_Reason_Code _nvmPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context);
 
 const char* __attribute__ ((weak)) _nvmBcMainClass = NULL;
@@ -20,10 +26,12 @@ static void classInitialized(Env*, Class*);
 static void loadInterfaces(Env*, Class*);
 static void loadFields(Env*, Class*);
 static void loadMethods(Env*, Class*);
+static Class* findClassAt(Env*, void*);
 static Class* createClass(Env*, ClassInfoHeader*, ClassLoader*);
 static Options options = {0};
 static VM* vm = NULL;
-static ClassLoader* systemClassLoader = NULL;
+static jint addressClassLookupsCount = 0;
+static AddressClassLookup* addressClassLookups = NULL;
 
 int main(int argc, char* argv[]) {
     options.mainClass = (char*) _nvmBcMainClass;
@@ -35,6 +43,7 @@ int main(int argc, char* argv[]) {
     options.loadInterfaces = loadInterfaces;
     options.loadFields = loadFields;
     options.loadMethods = loadMethods;
+    options.findClassAt = findClassAt;
     if (!nvmInitOptions(argc, argv, &options, FALSE)) {
         fprintf(stderr, "nvmInitOptions(...) failed!\n");
         return 1;
@@ -50,27 +59,30 @@ int main(int argc, char* argv[]) {
     return result;
 }
 
-static ClassLoader* getSystemClassLoader(Env* env) {
-    if (systemClassLoader) return systemClassLoader;
-    Class* holder = nvmFindClass(env, "java/lang/ClassLoader$SystemClassLoaderHolder");
-    if (!holder) return NULL;
-    ClassField* field = nvmGetClassField(env, holder, "loader", "Ljava/lang/ClassLoader;");
-    if (!field) return NULL;
-    return (ClassLoader*) nvmGetObjectClassFieldValue(env, holder, field);
+static ClassInfoHeader** getClassInfosBase(void* hash) {
+    hash += sizeof(jint); // Skip count
+    jint size = ((jshort*) hash)[0];
+#ifdef _LP64
+    ClassInfoHeader** base  = hash + (size << 1) + 4;
+#else
+    ClassInfoHeader** base  = hash + (size << 1) + 4;
+#endif
+    return base;
+}
+
+static jint getClassInfosCount(void* hash) {
+    return ((jint*) hash)[0];
 }
 
 static ClassInfoHeader* lookupClassInfo(Env* env, const char* className, void* hash) {
+    ClassInfoHeader** base = getClassInfosBase(hash);
     jint h = 0;
     MurmurHash3_x86_32(className, strlen(className) + 1, 0x1ce79e5c, &h);
+    hash += sizeof(jint); // Skip count
     jint size = ((jshort*) hash)[0];
     h &= size - 1;
     jint start = ((jshort*) hash)[h + 1];
     jint end = ((jshort*) hash)[h + 1 + 1];
-#ifdef _LP64
-    void** base  = hash + (size << 1) + 4 + 4;
-#else
-    void** base  = hash + (size << 1) + 4;
-#endif
     jint i;
     for (i = start; i < end; i++) {
         ClassInfoHeader* header = base[i];
@@ -79,6 +91,15 @@ static ClassInfoHeader* lookupClassInfo(Env* env, const char* className, void* h
         }
     }
     return NULL;
+}
+
+static void iterateClassInfos(Env* env, ParseClassInfoCallbacks* callbacks, void* hash, void* data) {
+    ClassInfoHeader** base = getClassInfosBase(hash);
+    jint count = getClassInfosCount(hash);
+    jint i = 0;
+    for (i = 0; i < count; i++) {
+        parseClassInfo(env, base[i], callbacks, data);        
+    }
 }
 
 static Class* loadClass(Env* env, const char* className, ClassLoader* classLoader, void* hash) {
@@ -111,31 +132,30 @@ static Class* loadUserClass(Env* env, const char* className, ClassLoader* classL
     return loadClass(env, className, classLoader, _nvmBcClassesHash);
 }
 
-static Object* wrapClassNotFoundException(Env* env, const char* className) {
-    if (nvmExceptionOccurred(env)->clazz == java_lang_ClassNotFoundException) {
+static void wrapClassNotFoundException(Env* env, const char* className) {
+    Object* exception = nvmExceptionOccurred(env);
+    if (exception && exception->clazz == java_lang_ClassNotFoundException) {
         // If ClassNotFoundException is thrown we have to wrap it in a NoClassDefFoundError
-        Object* exception = nvmExceptionClear(env);
+        exception = nvmExceptionClear(env);
         Method* constructor = nvmGetInstanceMethod(env, java_lang_NoClassDefFoundError, "<init>", "(Ljava/lang/String;)V");
-        if (!constructor) goto error;
+        if (!constructor) return;
         Object* message = nvmNewStringUTF(env, className, -1);
-        if (!message) goto error;
+        if (!message) return;
         Object* wrappedException = nvmNewObject(env, java_lang_NoClassDefFoundError, constructor, message);
-        if (!wrappedException) goto error;
+        if (!wrappedException) return;
         Class* java_lang_StackTraceElement = nvmFindClassUsingLoader(env, "java/lang/StackTraceElement", NULL);
-        if (!java_lang_StackTraceElement) goto error;
+        if (!java_lang_StackTraceElement) return;
         ObjectArray* stackTrace = nvmNewObjectArray(env, 0, java_lang_StackTraceElement, NULL, NULL);
-        if (!stackTrace) goto error;
+        if (!stackTrace) return;
         Method* setStackTrace = nvmGetInstanceMethod(env, java_lang_Throwable, "setStackTrace", "([Ljava/lang/StackTraceElement;)V");
-        if (!setStackTrace) goto error;
+        if (!setStackTrace) return;
         nvmCallVoidInstanceMethod(env, wrappedException, setStackTrace, stackTrace);
-        if (nvmExceptionCheck(env)) goto error;
+        if (nvmExceptionCheck(env)) return;
         Method* initCause = nvmGetInstanceMethod(env, java_lang_NoClassDefFoundError, "initCause", "(Ljava/lang/Throwable;)Ljava/lang/Throwable;");
-        if (!initCause) goto error;
+        if (!initCause) return;
         nvmCallObjectInstanceMethod(env, wrappedException, initCause, exception);
         if (!nvmExceptionCheck(env)) nvmThrow(env, wrappedException);
     }
-error:
-    return nvmExceptionOccurred(env);
 }
 
 typedef struct {
@@ -143,7 +163,9 @@ typedef struct {
     ClassLoader* classLoader;
 } CreateClassData;
 
-static jboolean createClassCallback(Env* env, const char* className, const char* superclassName, jint flags, jint classDataSize, jint instanceDataSize, void* attributes, void* initializer, void* d) {
+static jboolean createClassCallback(Env* env, ClassInfoHeader* header, const char* className, const char* superclassName, jint flags, 
+        jint classDataSize, jint instanceDataSize, jint instanceDataOffset, void* attributes, void* initializer, void* d) {
+
     CreateClassData* data = (CreateClassData*) d;
 
     Class* superclass = NULL;
@@ -152,7 +174,7 @@ static jboolean createClassCallback(Env* env, const char* className, const char*
         if (!superclass) return FALSE;
     }
 
-    Class* clazz = nvmAllocateClass(env, className, superclass, data->classLoader, flags, classDataSize, instanceDataSize, attributes, initializer);
+    Class* clazz = nvmAllocateClass(env, className, superclass, data->classLoader, flags, classDataSize, instanceDataSize, instanceDataOffset, attributes, initializer);
     if (!clazz) return FALSE;
     data->clazz = clazz;
     return TRUE;
@@ -178,7 +200,7 @@ static void classInitialized(Env* env, Class* clazz) {
     header->flags |= CI_INITIALIZED;
 }
 
-static jboolean loadInterfacesCallback(Env* env, const char* interfaceName, void* d) {
+static jboolean loadInterfacesCallback(Env* env, ClassInfoHeader* header, const char* interfaceName, void* d) {
     Class* clazz = (Class*) d;
     Class* interface = nvmFindClassUsingLoader(env, interfaceName, clazz->classLoader);
     if (nvmExceptionCheck(env)) return FALSE;
@@ -196,7 +218,7 @@ static void loadInterfaces(Env* env, Class* clazz) {
     parseClassInfo(env, header, &callbacks, clazz);
 }
 
-static jboolean loadFieldsCallback(Env* env, const char* name, const char* desc, jint access, jint offset, void* attributes, void* d) {
+static jboolean loadFieldsCallback(Env* env, ClassInfoHeader* header, const char* name, const char* desc, jint access, jint offset, void* attributes, void* d) {
     Class* clazz = (Class*) d;
     if (!nvmAddField(env, clazz, name, desc, access, offset, attributes)) return FALSE;
     return TRUE;
@@ -211,7 +233,7 @@ static void loadFields(Env* env, Class* clazz) {
     parseClassInfo(env, header, &callbacks, clazz);
 }
 
-static jboolean loadMethodsCallback(Env* env, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void** targetFnPtr, 
+static jboolean loadMethodsCallback(Env* env, ClassInfoHeader* header, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void** targetFnPtr, 
         void* callbackImpl, void* attributes, void* d) {
 
     Class* clazz = (Class*) d;
@@ -234,64 +256,174 @@ static void loadMethods(Env* env, Class* clazz) {
     parseClassInfo(env, header, &callbacks, clazz);
 }
 
-_Unwind_Reason_Code _nvmBcPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context) {
-    return _nvmPersonality(version, actions, exception_class, exception_info, context);
+static jboolean countClassesWithConcreteMethodsCallback(Env* env, ClassInfoHeader* header, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void** targetFnPtr, 
+        void* callbackImpl, void* attributes, void* d) {
+
+    if (impl) {
+        jint* count = (jint*) d;
+        *count = *count + 1;
+        return FALSE;
+    }
+    return TRUE;
 }
 
-void _nvmBcInitializeClass(Env* env, ClassInfoHeader* header) {
+static jboolean initAddressClassLookupsCallback(Env* env, ClassInfoHeader* header, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void** targetFnPtr, 
+        void* callbackImpl, void* attributes, void* d) {
+
+    if (impl) {
+        AddressClassLookup** lookupPtr = (AddressClassLookup**) d;
+        AddressClassLookup* lookup = *lookupPtr;
+        if (lookup->classInfoHeader != header) {
+            if (lookup->classInfoHeader) {
+                *lookupPtr += 1;
+                lookup = *lookupPtr;
+            }
+            lookup->classInfoHeader = header;
+            lookup->start = impl;
+            lookup->end = impl + size;
+        } else if (lookup->start > impl) {
+            lookup->start = impl;
+        } else if (lookup->end <= impl) {
+            lookup->end = impl + size;
+        }
+    }
+    return TRUE;
+}
+
+static int addressClassLookupCompare(const void* _a, const void* _b) {
+    AddressClassLookup* a = (AddressClassLookup*) _a;
+    AddressClassLookup* b = (AddressClassLookup*) _b;
+    if (a->start == a->end) {
+        void* pc = a->start;
+        return (pc >= b->start && pc < b->end) ? 0 : ((pc < b->start) ? -1 : 1);
+    }
+    if (b->start == b->end) {
+        void* pc = b->start;
+        return (pc >= a->start && pc < a->end) ? 0 : ((pc >= a->end) ? -1 : 1);
+    }
+    return (a->end < b->start) ? -1 : 1;
+}
+
+static AddressClassLookup* getAddressClassLookups(Env* env) {
+    if (!addressClassLookups) {
+        ParseClassInfoCallbacks callbacks = {0};
+        callbacks.methodCallback = countClassesWithConcreteMethodsCallback;
+        jint count = 0;
+        iterateClassInfos(env, &callbacks, _nvmBcBootClassesHash, &count);
+        iterateClassInfos(env, &callbacks, _nvmBcClassesHash, &count);
+        AddressClassLookup* lookups = nvmAllocateMemory(env, sizeof(AddressClassLookup) * count);
+        if (!lookups) return NULL;
+        AddressClassLookup* _lookups = lookups;
+        callbacks.methodCallback = initAddressClassLookupsCallback;
+        iterateClassInfos(env, &callbacks, _nvmBcBootClassesHash, &_lookups);
+        iterateClassInfos(env, &callbacks, _nvmBcClassesHash, &_lookups);
+        qsort(lookups, count, sizeof(AddressClassLookup), addressClassLookupCompare);
+        addressClassLookupsCount = count;
+        addressClassLookups = lookups;
+    }
+    return addressClassLookups;
+}
+
+Class* findClassAt(Env* env, void* pc) {
+    AddressClassLookup* lookups = getAddressClassLookups(env);
+    if (!lookups) return NULL;
+    AddressClassLookup needle = {NULL, pc, pc};
+    AddressClassLookup* result = bsearch(&needle, lookups, addressClassLookupsCount, sizeof(AddressClassLookup), addressClassLookupCompare);
+    if (!result) return NULL;
+    ClassInfoHeader* header = result->classInfoHeader;
     Class* clazz = header->clazz;
     if (!clazz) {
         ClassLoader* loader = NULL;
         if (lookupClassInfo(env, header->className, _nvmBcClassesHash) == header) {
-            loader = getSystemClassLoader(env);
-            if (!loader) nvmRaiseException(env, nvmExceptionOccurred(env));
+            loader = systemClassLoader;
         }
         clazz = nvmFindClassUsingLoader(env, header->className, loader);
-        if (!clazz) nvmRaiseException(env, wrapClassNotFoundException(env, header->className));
     }
-    nvmInitialize(env, clazz);
-    if (nvmExceptionCheck(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    return clazz;
 }
 
-void* _nvmBcLookupVirtualMethod(Env* env, Object* thiz, char* name, char* desc) {
+_Unwind_Reason_Code _nvmBcPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context) {
+    return _nvmPersonality(version, actions, exception_class, exception_info, context);
+}
+
+#define ENTER nvmPushGatewayFrame(env)
+#define LEAVEV \
+    nvmPopGatewayFrame(env); \
+    if (nvmExceptionCheck(env)) nvmRaiseException(env, nvmExceptionOccurred(env))
+#define LEAVE(result) \
+    nvmPopGatewayFrame(env); \
+    if (nvmExceptionCheck(env)) nvmRaiseException(env, nvmExceptionOccurred(env)); \
+    return result
+
+static void initializeClass(Env* env, ClassInfoHeader* header) {
+    Class* clazz = header->clazz;
+    if (!clazz) {
+        ClassLoader* loader = NULL;
+        if (lookupClassInfo(env, header->className, _nvmBcClassesHash) == header) {
+            loader = systemClassLoader;
+        }
+        clazz = nvmFindClassUsingLoader(env, header->className, loader);
+        if (!clazz) wrapClassNotFoundException(env, header->className);
+    }
+    if (clazz) nvmInitialize(env, clazz);
+}
+void _nvmBcInitializeClass(Env* env, ClassInfoHeader* header) {
+    ENTER;
+    initializeClass(env, header);
+    LEAVEV;
+}
+
+static void* lookupVirtualMethod(Env* env, Object* thiz, char* name, char* desc) {
     Method* method = nvmGetMethod(env, thiz->clazz, name, desc);
-    if (!method) nvmRaiseException(env, nvmExceptionOccurred(env));
+    if (!method) return NULL;
     if (METHOD_IS_ABSTRACT(method)) {
         nvmThrowAbstractMethodError(env, ""); // TODO: Message
-        nvmRaiseException(env, nvmExceptionOccurred(env));
+        return NULL;
     }
     return method->synchronizedImpl ? method->synchronizedImpl : method->impl;
 }
+void* _nvmBcLookupVirtualMethod(Env* env, Object* thiz, char* name, char* desc) {
+    ENTER;
+    void* result = lookupVirtualMethod(env, thiz, name, desc);
+    LEAVE(result);
+}
 
-void* _nvmBcLookupInterfaceMethod(Env* env, ClassInfoHeader* header, Object* thiz, char* name, char* desc) {
-    _nvmBcInitializeClass(env, header);
+void* lookupInterfaceMethod(Env* env, ClassInfoHeader* header, Object* thiz, char* name, char* desc) {
+    initializeClass(env, header);
+    if (nvmExceptionCheck(env)) return NULL;
     Class* ownerInterface = header->clazz;
     if (!nvmIsInstanceOf(env, thiz, ownerInterface)) {
         nvmThrowLinkageError(env);
-        nvmRaiseException(env, nvmExceptionOccurred(env));
+        return NULL;
     }
     Method* method = nvmGetInstanceMethod(env, thiz->clazz, name, desc);
     Object* throwable = nvmExceptionClear(env);
     if (!method && throwable->clazz != java_lang_NoSuchMethodError) { 
-        nvmRaiseException(env, throwable);
+        nvmThrow(env, throwable);
+        return NULL;
     }
     if (!method || METHOD_IS_ABSTRACT(method)) {
         nvmThrowAbstractMethodError(env, ""); // TODO: Message
-        nvmRaiseException(env, nvmExceptionOccurred(env));
+        return NULL;
     }
     if (!METHOD_IS_PUBLIC(method)) {
         nvmThrowIllegalAccessError(env, ""); // TODO: Message
-        nvmRaiseException(env, nvmExceptionOccurred(env));
+        return NULL;
     }
     return method->synchronizedImpl ? method->synchronizedImpl : method->impl;
+}
+void* _nvmBcLookupInterfaceMethod(Env* env, ClassInfoHeader* header, Object* thiz, char* name, char* desc) {
+    ENTER;
+    void* result = lookupInterfaceMethod(env, header, thiz, name, desc);
+    LEAVE(result);
 }
 
 void _nvmBcThrow(Env* env, Object* throwable) {
     nvmRaiseException(env, throwable);
 }
 
-void _nvmBcRethrow(Env* env) {
-    nvmRaiseException(env, nvmExceptionOccurred(env));
+void _nvmBcRethrow(Env* env, void* exInfo) {
+    nvmReraiseException(env, exInfo);
 }
 
 void _nvmBcThrowIfExceptionOccurred(Env* env) {
@@ -322,253 +454,260 @@ void _nvmBcExceptionSet(Env* env, Object* throwable) {
 }
 
 void _nvmBcThrowNullPointerException(Env* env) {
+    ENTER;
     nvmThrowNullPointerException(env);
-    _nvmBcThrow(env, nvmExceptionOccurred(env));
+    LEAVEV;
 }
 
 void _nvmBcThrowArrayIndexOutOfBoundsException(Env* env, jint index) {
+    ENTER;
     nvmThrowArrayIndexOutOfBoundsException(env, index);
-    _nvmBcThrow(env, nvmExceptionOccurred(env));
+    LEAVEV;
 }
 
 void _nvmBcThrowArithmeticException(Env* env) {
+    ENTER;
     nvmThrowArithmeticException(env);
-    _nvmBcThrow(env, nvmExceptionOccurred(env));
+    LEAVEV;
 }
 
 void _nvmBcThrowUnsatisfiedLinkError(Env* env) {
+    ENTER;
     nvmThrowUnsatisfiedLinkError(env);
-    _nvmBcThrow(env, nvmExceptionOccurred(env));
+    LEAVEV;
 }
 
 void _nvmBcThrowNoClassDefFoundError(Env* env, char* msg) {
+    ENTER;
     nvmThrowNoClassDefFoundError(env, msg);
-    _nvmBcThrow(env, nvmExceptionOccurred(env));
+    LEAVEV;
 }
 
 void _nvmBcThrowNoSuchFieldError(Env* env, char* msg) {
+    ENTER;
     nvmThrowNoSuchFieldError(env, msg);
-    _nvmBcThrow(env, nvmExceptionOccurred(env));
+    LEAVEV;
 }
 
 void _nvmBcThrowNoSuchMethodError(Env* env, char* msg) {
+    ENTER;
     nvmThrowNoSuchMethodError(env, msg);
-    _nvmBcThrow(env, nvmExceptionOccurred(env));
+    LEAVEV;
 }
 
 void _nvmBcThrowIllegalAccessError(Env* env, char* msg) {
+    ENTER;
     nvmThrowIllegalAccessError(env, msg);
-    _nvmBcThrow(env, nvmExceptionOccurred(env));
+    LEAVEV;
 }
 
 void _nvmBcThrowInstantiationError(Env* env, char* msg) {
+    ENTER;
     nvmThrowInstantiationError(env, msg);
-    _nvmBcThrow(env, nvmExceptionOccurred(env));
+    LEAVEV;
 }
 
 void _nvmBcThrowAbstractMethodError(Env* env, char* msg) {
+    ENTER;
     nvmThrowAbstractMethodError(env, msg);
-    _nvmBcThrow(env, nvmExceptionOccurred(env));
+    LEAVEV;
 }
 
 void _nvmBcThrowIncompatibleClassChangeError(Env* env, char* msg) {
+    ENTER;
     nvmThrowIncompatibleClassChangeError(env, msg);
-    _nvmBcThrow(env, nvmExceptionOccurred(env));
+    LEAVEV;
 }
 
 Object* _nvmBcAllocate(Env* env, ClassInfoHeader* header) {
+    ENTER;
     Object* obj = nvmAllocateObject(env, header->clazz);
-    if (!obj) nvmRaiseException(env, nvmExceptionOccurred(env));
-    return obj;
+    LEAVE(obj);
 }
 
 BooleanArray* _nvmBcNewBooleanArray(Env* env, jint length) {
+    ENTER;
     BooleanArray* array = nvmNewBooleanArray(env, length);
-    if (!array) nvmRaiseException(env, nvmExceptionOccurred(env));
-    return array;
+    LEAVE(array);
 }
 
 ByteArray* _nvmBcNewByteArray(Env* env, jint length) {
+    ENTER;
     ByteArray* array = nvmNewByteArray(env, length);
-    if (!array) nvmRaiseException(env, nvmExceptionOccurred(env));
-    return array;
+    LEAVE(array);
 }
 
 CharArray* _nvmBcNewCharArray(Env* env, jint length) {
+    ENTER;
     CharArray* array = nvmNewCharArray(env, length);
-    if (!array) nvmRaiseException(env, nvmExceptionOccurred(env));
-    return array;
+    LEAVE(array);
 }
 
 ShortArray* _nvmBcNewShortArray(Env* env, jint length) {
+    ENTER;
     ShortArray* array = nvmNewShortArray(env, length);
-    if (!array) nvmRaiseException(env, nvmExceptionOccurred(env));
-    return array;
+    LEAVE(array);
 }
 
 IntArray* _nvmBcNewIntArray(Env* env, jint length) {
+    ENTER;
     IntArray* array = nvmNewIntArray(env, length);
-    if (!array) nvmRaiseException(env, nvmExceptionOccurred(env));
-    return array;
+    LEAVE(array);
 }
 
 LongArray* _nvmBcNewLongArray(Env* env, jint length) {
+    ENTER;
     LongArray* array = nvmNewLongArray(env, length);
-    if (!array) nvmRaiseException(env, nvmExceptionOccurred(env));
-    return array;
+    LEAVE(array);
 }
 
 FloatArray* _nvmBcNewFloatArray(Env* env, jint length) {
+    ENTER;
     FloatArray* array = nvmNewFloatArray(env, length);
-    if (!array) nvmRaiseException(env, nvmExceptionOccurred(env));
-    return array;
+    LEAVE(array);
 }
 
 DoubleArray* _nvmBcNewDoubleArray(Env* env, jint length) {
+    ENTER;
     DoubleArray* array = nvmNewDoubleArray(env, length);
-    if (!array) nvmRaiseException(env, nvmExceptionOccurred(env));
-    return array;
+    LEAVE(array);
 }
 
 ObjectArray* _nvmBcNewObjectArray(Env* env, jint length, Class* arrayClass) {
+    ENTER;
     ObjectArray* array = nvmNewObjectArray(env, length, NULL, arrayClass, NULL);
-    if (!array) nvmRaiseException(env, nvmExceptionOccurred(env));
-    return array;
+    LEAVE(array);
 }
 
 Array* _nvmBcNewMultiArray(Env* env, jint dims, jint* lengths, Class* arrayClass) {
+    ENTER;
     Array* array = nvmNewMultiArray(env, dims, lengths, arrayClass);
-    if (!array) nvmRaiseException(env, nvmExceptionOccurred(env));
-    return array;
+    LEAVE(array);
 }
 
 void _nvmBcSetObjectArrayElement(Env* env, ObjectArray* array, jint index, Object* value) {
-    if (value) {
-        Class* componentType = array->object.clazz->componentType;
-        jboolean assignable = nvmIsAssignableFrom(env, value->clazz, componentType);
-        if (nvmExceptionCheck(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
-        if (!assignable) {
-            nvmThrowArrayStoreException(env);
-            nvmRaiseException(env, nvmExceptionOccurred(env));
-        }
+    if (!value) {
+        array->values[index] = value;
+        return;        
     }
-    array->values[index] = value;
+    ENTER;
+    Class* componentType = array->object.clazz->componentType;
+    jboolean assignable = nvmIsAssignableFrom(env, value->clazz, componentType);
+    if (!nvmExceptionCheck(env) && !assignable) {
+        nvmThrowArrayStoreException(env);
+    }
+    if (!nvmExceptionCheck(env)) array->values[index] = value;
+    LEAVEV;
 }
 
 
 Object* _nvmBcLdcString(Env* env, char* s) {
+    ENTER;
     // TODO: The caller knows the length of the string in Java chars
     // TODO: Use nvmNewStringAscii if string only contains ASCII
     Object* o = nvmNewInternedStringUTF(env, s, -1);
-    if (!o) nvmRaiseException(env, nvmExceptionOccurred(env));
-    return o;
+    LEAVE(o);
 }
 
 Object* _nvmBcLdcArrayBootClass(Env* env, Class** arrayClassPtr, char* name) {
     Class* arrayClass = *arrayClassPtr;
-    if (!arrayClass) {
-        arrayClass = nvmFindClassUsingLoader(env, name, NULL);
-        if (nvmExceptionCheck(env)) nvmRaiseException(env, wrapClassNotFoundException(env, name));
+    if (arrayClass) return (Object*) arrayClass;
+    ENTER;    
+    arrayClass = nvmFindClassUsingLoader(env, name, NULL);
+    wrapClassNotFoundException(env, name);
+    if (!nvmExceptionCheck(env)) {
         *arrayClassPtr = arrayClass;
     }
-    return (Object*) arrayClass;
+    LEAVE((Object*) arrayClass);
 }
 
 Object* _nvmBcLdcArrayClass(Env* env, Class** arrayClassPtr, char* name) {
     Class* arrayClass = *arrayClassPtr;
-    if (!arrayClass) {
-        ClassLoader* loader = getSystemClassLoader(env);
-        if (!loader) nvmRaiseException(env, nvmExceptionOccurred(env));
-        arrayClass = nvmFindClassUsingLoader(env, name, loader);
-        if (nvmExceptionCheck(env)) nvmRaiseException(env, wrapClassNotFoundException(env, name));
+    if (arrayClass) return (Object*) arrayClass;
+    ENTER;
+    arrayClass = nvmFindClassUsingLoader(env, name, systemClassLoader);
+    wrapClassNotFoundException(env, name);
+    if (!nvmExceptionCheck(env)) {
         *arrayClassPtr = arrayClass;
     }
-    return (Object*) arrayClass;
+    LEAVE((Object*) arrayClass);
 }
 
 void _nvmBcMonitorEnter(Env* env, Object* obj) {
+    ENTER;
     nvmMonitorEnter(env, obj);
-    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    LEAVEV;
 }
 
 void _nvmBcMonitorExit(Env* env, Object* obj) {
+    ENTER;
     nvmMonitorExit(env, obj);
-    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
+    LEAVEV;
 }
 
 Object* _nvmBcCheckcast(Env* env, ClassInfoHeader* header, Object* o) {
     if (!o) return o;
+    ENTER;
     Class* clazz = header->clazz;
     jboolean b = nvmIsAssignableFrom(env, o->clazz, clazz);
-    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
-    if (!b) {
+    if (!nvmExceptionCheck(env) && !b) {
         nvmThrowClassCastException(env, clazz, o->clazz);
-        nvmRaiseException(env, nvmExceptionOccurred(env));
     }
-    return o;
+    LEAVE(o);
 }
 
 Object* _nvmBcCheckcastArray(Env* env, Class* arrayClass, Object* o) {
     if (!o) return o;
+    ENTER;
     jboolean b = nvmIsAssignableFrom(env, o->clazz, arrayClass);
-    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
-    if (!b) {
+    if (!nvmExceptionCheck(env) && !b) {
         nvmThrowClassCastException(env, arrayClass, o->clazz);
-        nvmRaiseException(env, nvmExceptionOccurred(env));
     }
-    return o;
+    LEAVE(o);
 }
 
 jint _nvmBcInstanceof(Env* env, ClassInfoHeader* header, Object* o) {
+    if (!o) return (jint) FALSE;
+    ENTER;
     Class* clazz = header->clazz;
     jboolean b = nvmIsInstanceOf(env, o, clazz);
-    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
-    return (jint) b;
+    LEAVE((jint) b);
 }
 
 jint _nvmBcInstanceofArray(Env* env, Class* arrayClass, Object* o) {
+    if (!o) return (jint) FALSE;
+    ENTER;
     jboolean b = nvmIsInstanceOf(env, o, arrayClass);
-    if (nvmExceptionOccurred(env)) nvmRaiseException(env, nvmExceptionOccurred(env));
-    return (jint) b;
+    LEAVE((jint) b);
 }
 
-void _nvmBcPushNativeFrame(Env* env, void* cfa) {
-    // We don't need to check if NativeFrames.base is NULL since it is always setup with a few slots when an Env is created.
-    NativeFrames* f = &env->nativeFrames;
-    if (f->top == (f->base + f->size)) {
-        // Make room for more frames.
-        void* oldBase = f->base;
-        jint oldSize = f->size;
-        jint newSize = oldSize + ALLOC_NATIVE_FRAMES_SIZE;
-        f->base = nvmAllocateMemory(env, sizeof(void*) * newSize);
-        if (!f->base) nvmRaiseException(env, nvmExceptionOccurred(env));
-        memcpy(f->base, oldBase, sizeof(void*) * oldSize);
-        f->top = f->base + oldSize;
-        f->size = newSize;
-    }
-    *f->top = cfa;
-    f->top++;
+void _nvmBcPushNativeFrame(Env* env, GatewayFrame* gwFrame, void* frameAddress) {
+    nvmPushGatewayFrame0(env, gwFrame, frameAddress, NULL);
 }
 
 void _nvmBcPopNativeFrame(Env* env) {
-    env->nativeFrames.top--;
+    nvmPopGatewayFrame(env);
+}
+
+void _nvmBcPushCallbackFrame(Env* env, GatewayFrame* gwFrame, void* frameAddress) {
+    nvmPushGatewayFrame0(env, gwFrame, frameAddress, NULL);
+}
+
+void _nvmBcPopCallbackFrame(Env* env) {
+    nvmPopGatewayFrame(env);
 }
 
 void* _nvmBcResolveNative(Env* env, Class* clazz, char* name, char* desc, char* shortMangledName, char* longMangledName, void** ptr) {
     if (*ptr != NULL) return *ptr;
+    ENTER;
     nvmLogTrace(env, "nvmBcResolveNative: owner=%s, name=%s, desc=%s, shortMangledName=%s, longMangledName=%s\n", 
         clazz->name, name, desc, shortMangledName, longMangledName);
     NativeMethod* method = (NativeMethod*) nvmGetMethod(env, clazz, name, desc);
-    if (!method) goto error;
-    void* impl = nvmResolveNativeMethodImpl(env, method, shortMangledName, longMangledName, clazz->classLoader, ptr);
-    if (!impl) goto error;
-    return impl;
-error:
-    // The native function trampoline has pushed the native frame. Pop it before we raise the 
-    // exception since the trampoline doesn't pop if an exception is raised during resolution.
-    _nvmBcPopNativeFrame(env);
-    nvmRaiseException(env, nvmExceptionOccurred(env));
-    return NULL;
+    void* impl = NULL;
+    if (method) {
+        impl = nvmResolveNativeMethodImpl(env, method, shortMangledName, longMangledName, clazz->classLoader, ptr);
+    }
+    LEAVE(impl);
 }
 
 Env* _nvmBcAttachThreadFromCallback(void) {
@@ -589,20 +728,23 @@ void* _nvmBcGetStructHandle(Env* env, Object* object) {
 }
 
 void* _nvmBcByValueGetStructHandle(Env* env, Object* object) {
+    ENTER;
+    void* result = NULL;
     if (!object) {
         nvmThrowNullPointerException(env);
-        nvmRaiseException(env, nvmExceptionOccurred(env));
-        return NULL;
+    } else {
+        result = *((void**) (((void*) object) + sizeof(Object)));
     }
-    return *((void**) (((void*) object) + sizeof(Object)));
+    LEAVE(result);
 }
 
 void _nvmBcCopyStruct(Env* env, Object* object, void* dest, jint length) {
+    ENTER;
     if (!object) {
         nvmThrowNullPointerException(env);
-        nvmRaiseException(env, nvmExceptionOccurred(env));
-        return;
+    } else {
+        void* src = *((void**) (((void*) object) + sizeof(Object)));
+        memcpy(dest, src, length);
     }
-    void* src = *((void**) (((void*) object) + sizeof(Object)));
-    memcpy(dest, src, length);
+    LEAVEV;
 }

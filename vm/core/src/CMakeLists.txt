@@ -3,7 +3,7 @@ project(core)
 set(AS as)
 if(DARWIN)
   set(AS clang)
-  set(ASFLAGS -c -arch ${ARCH})
+  set(ASFLAGS -c -arch ${CARCH})
 endif()
 
 enable_language(ASM)
@@ -18,7 +18,17 @@ add_custom_command(
   MAIN_DEPENDENCY proxy0-${OS_FAMILY}-${ARCH}.s 
 )
 
-add_library(nullvm-core STATIC 
+if(IOS AND ARM)
+  set(UNWIND_SRC
+    unwind-sjlj.c 
+  )
+else()
+  set(UNWIND_SRC
+    unwind-zero.c 
+  )
+endif()
+
+set(SRC
   array.c 
   attribute.c 
   class.c 
@@ -34,19 +44,19 @@ add_library(nullvm-core STATIC
   thread.c 
   call0-${OS_FAMILY}-${ARCH}.s.o
   proxy0-${OS_FAMILY}-${ARCH}.s.o
-  unwind.c 
-  unwind_backtrace.c
   vminterface.c
+  ${UNWIND_SRC}
+  unwind.c
 )
-add_dependencies(nullvm-core extgc)
 
-set_source_files_properties(unwind_backtrace.c PROPERTIES COMPILE_FLAGS "-O0 -fno-omit-frame-pointer")
+add_library(nullvm-core STATIC ${SRC})
+add_dependencies(nullvm-core extgc)
 
 install(TARGETS nullvm-core DESTINATION ${INSTALL_DIR})
 
-add_executable(test_call0 test/test_call0.c test/CuTest.c call0-${OS_FAMILY}-${ARCH}.s.o)
+add_executable(test_call0 test/test_call0.c test/CuTest.c call0-${OS_FAMILY}-${ARCH}.s.o ${UNWIND_SRC} unwind.c)
 if(DARWIN)
-  set_target_properties(test_call0 PROPERTIES LINK_FLAGS "-arch ${ARCH}")
+  set_target_properties(test_call0 PROPERTIES LINK_FLAGS "-arch ${CARCH}")
 endif()
 add_test(testCall0ReturnByte test_call0 "testCall0ReturnByte")
 add_test(testCall0ReturnInt test_call0 "testCall0ReturnInt")
@@ -59,9 +69,9 @@ add_test(testCall0ManyArgsOfEach test_call0 "testCall0ManyArgsOfEach")
 add_test(testCall0Unwind test_call0 "testCall0Unwind")
 add_test(testCall0Raise test_call0 "testCall0Raise")
 
-add_executable(test_proxy0 test/test_proxy0.c test/CuTest.c proxy0-${OS_FAMILY}-${ARCH}.s.o)
+add_executable(test_proxy0 test/test_proxy0.c test/CuTest.c call0-${OS_FAMILY}-${ARCH}.s.o proxy0-${OS_FAMILY}-${ARCH}.s.o ${UNWIND_SRC} unwind.c)
 if(DARWIN)
-  set_target_properties(test_proxy0 PROPERTIES LINK_FLAGS "-arch ${ARCH}")
+  set_target_properties(test_proxy0 PROPERTIES LINK_FLAGS "-arch ${CARCH}")
 endif()
 add_test(testProxy0ReturnByte test_proxy0 "testProxy0ReturnByte")
 add_test(testProxy0ReturnInt test_proxy0 "testProxy0ReturnInt")

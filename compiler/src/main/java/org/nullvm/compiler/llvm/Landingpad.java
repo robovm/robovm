@@ -9,15 +9,15 @@ package org.nullvm.compiler.llvm;
  */
 public class Landingpad extends Instruction {
     private final Variable result;
-    private final FunctionRef personalityFn;
+    private final Constant personalityFn;
     private final boolean cleanup;
     private final Clause[] clauses;
     
-    public Landingpad(Variable result, FunctionRef personalityFn, Clause ... clauses) {
+    public Landingpad(Variable result, Constant personalityFn, Clause ... clauses) {
         this(result, personalityFn, false, clauses);
     }
     
-    public Landingpad(Variable result, FunctionRef personalityFn,
+    public Landingpad(Variable result, Constant personalityFn,
             boolean cleanup, Clause ... clauses) {
         
         this.result = result;

@@ -9,6 +9,7 @@ import static org.nullvm.compiler.llvm.Type.*;
 
 import java.util.List;
 
+import org.nullvm.compiler.llvm.Alloca;
 import org.nullvm.compiler.llvm.Argument;
 import org.nullvm.compiler.llvm.BasicBlockRef;
 import org.nullvm.compiler.llvm.Call;
@@ -16,9 +17,11 @@ import org.nullvm.compiler.llvm.Function;
 import org.nullvm.compiler.llvm.FunctionAttribute;
 import org.nullvm.compiler.llvm.FunctionRef;
 import org.nullvm.compiler.llvm.FunctionType;
+import org.nullvm.compiler.llvm.IntegerConstant;
 import org.nullvm.compiler.llvm.Invoke;
 import org.nullvm.compiler.llvm.Linkage;
 import org.nullvm.compiler.llvm.PointerType;
+import org.nullvm.compiler.llvm.StructureType;
 import org.nullvm.compiler.llvm.Type;
 import org.nullvm.compiler.llvm.Value;
 import org.nullvm.compiler.llvm.Variable;
@@ -43,7 +46,7 @@ public class Functions {
     public static final FunctionRef NVM_BC_EXCEPTION_CLEAR = new FunctionRef("_nvmBcExceptionClear", new FunctionType(OBJECT_PTR, ENV_PTR));
     public static final FunctionRef NVM_BC_EXCEPTION_SET = new FunctionRef("_nvmBcExceptionSet", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef NVM_BC_THROW = new FunctionRef("_nvmBcThrow", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
-    public static final FunctionRef NVM_BC_RETHROW = new FunctionRef("_nvmBcRethrow", new FunctionType(VOID, ENV_PTR));
+    public static final FunctionRef NVM_BC_RETHROW = new FunctionRef("_nvmBcRethrow", new FunctionType(VOID, ENV_PTR, new StructureType(I8_PTR, I32)));
     public static final FunctionRef NVM_BC_THROW_IF_EXCEPTION_OCCURRED = new FunctionRef("_nvmBcThrowIfExceptionOccurred", new FunctionType(VOID, ENV_PTR));
     public static final FunctionRef NVM_BC_THROW_UNSATISIFED_LINK_ERROR = new FunctionRef("_nvmBcThrowUnsatisfiedLinkError", new FunctionType(VOID, ENV_PTR));
     public static final FunctionRef NVM_BC_THROW_NO_CLASS_DEF_FOUND_ERROR = new FunctionRef("_nvmBcThrowNoClassDefFoundError", new FunctionType(VOID, ENV_PTR, I8_PTR));
@@ -74,8 +77,10 @@ public class Functions {
     public static final FunctionRef NVM_BC_NEW_MULTI_ARRAY = new FunctionRef("_nvmBcNewMultiArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, new PointerType(I32), OBJECT_PTR));
     public static final FunctionRef NVM_BC_SET_OBJECT_ARRAY_ELEMENT = new FunctionRef("_nvmBcSetObjectArrayElement", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I32, OBJECT_PTR));
     public static final FunctionRef NVM_BC_RESOLVE_NATIVE = new FunctionRef("_nvmBcResolveNative", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
-    public static final FunctionRef NVM_BC_PUSH_NATIVE_FRAME = new FunctionRef("_nvmBcPushNativeFrame", new FunctionType(VOID, ENV_PTR, I8_PTR));
+    public static final FunctionRef NVM_BC_PUSH_NATIVE_FRAME = new FunctionRef("_nvmBcPushNativeFrame", new FunctionType(VOID, ENV_PTR, GATEWAY_FRAME_PTR, I8_PTR));
     public static final FunctionRef NVM_BC_POP_NATIVE_FRAME = new FunctionRef("_nvmBcPopNativeFrame", new FunctionType(VOID, ENV_PTR));
+    public static final FunctionRef NVM_BC_PUSH_CALLBACK_FRAME = new FunctionRef("_nvmBcPushCallbackFrame", new FunctionType(VOID, ENV_PTR, GATEWAY_FRAME_PTR, I8_PTR));
+    public static final FunctionRef NVM_BC_POP_CALLBACK_FRAME = new FunctionRef("_nvmBcPopCallbackFrame", new FunctionType(VOID, ENV_PTR));
     public static final FunctionRef NVM_BC_ATTACH_THREAD_FROM_CALLBACK = new FunctionRef("_nvmBcAttachThreadFromCallback", new FunctionType(ENV_PTR));
     public static final FunctionRef NVM_BC_DETACH_THREAD_FROM_CALLBACK = new FunctionRef("_nvmBcDetachThreadFromCallback", new FunctionType(VOID, ENV_PTR));
     public static final FunctionRef NVM_BC_NEW_STRUCT = new FunctionRef("_nvmBcNewStruct", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR, CLASS_PTR, I8_PTR));
@@ -262,5 +267,27 @@ public class Functions {
     
     public static FunctionRef getInfoStructFn(String internalName) {
         return new FunctionRef(mangleClass(internalName) + "_info", new FunctionType(I8_PTR_PTR));
+    }
+    
+    public static void pushNativeFrame(Function fn) {
+        Variable gwFrame = fn.newVariable(GATEWAY_FRAME_PTR);
+        fn.add(new Alloca(gwFrame, GATEWAY_FRAME));
+        Value frameAddress = call(fn, LLVM_FRAMEADDRESS, new IntegerConstant(0));
+        call(fn, NVM_BC_PUSH_NATIVE_FRAME, fn.getParameterRef(0), gwFrame.ref(), frameAddress);
+    }
+
+    public static void popNativeFrame(Function fn) {
+        call(fn, NVM_BC_POP_NATIVE_FRAME, fn.getParameterRef(0));
+    }
+    
+    public static void pushCallbackFrame(Function fn, Value env) {
+        Variable gwFrame = fn.newVariable(GATEWAY_FRAME_PTR);
+        fn.add(new Alloca(gwFrame, GATEWAY_FRAME));
+        Value frameAddress = call(fn, LLVM_FRAMEADDRESS, new IntegerConstant(0));
+        call(fn, NVM_BC_PUSH_CALLBACK_FRAME, env, gwFrame.ref(), frameAddress);
+    }
+
+    public static void popCallbackFrame(Function fn, Value env) {
+        call(fn, NVM_BC_POP_CALLBACK_FRAME, env);
     }
 }

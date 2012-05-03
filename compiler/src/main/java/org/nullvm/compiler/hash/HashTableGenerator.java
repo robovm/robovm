@@ -85,6 +85,7 @@ public class HashTableGenerator<K, V extends Constant> {
     public StructureConstant generate() {
         StructureConstantBuilder builder = new StructureConstantBuilder();
         int start = 0;
+        builder.add(new IntegerConstant(count));
         builder.add(new IntegerConstant(table.length, indexType));
         builder.add(new IntegerConstant(start, indexType));
         for (int i = 1; i <= table.length; i++) {

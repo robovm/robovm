@@ -3,7 +3,8 @@
 
 typedef void (*ProxyHandler)(Env*, Object*, ProxyMethod*, jvalue*, jvalue*);
 
-extern Class* nvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classLoader, char* className, jint interfacesCount, Class** interfaces, jint instanceDataSize, ProxyHandler handler);
+extern Class* nvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classLoader, char* className, jint interfacesCount, Class** interfaces, 
+	jint instanceDataSize, jint instanceDataOffset, ProxyHandler handler);
 
 #endif
 

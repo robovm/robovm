@@ -8,7 +8,7 @@
 #include <sys/utsname.h>
 #include <string.h>
 
-#ifdef DARWIN
+#ifdef MACOSX
     #include <crt_externs.h>
     #define environ (*_NSGetEnviron())
 #else
@@ -22,6 +22,7 @@
     #define DSO_EXT ".dylib"
 #endif
 
+static Class* array_java_lang_String = NULL;
 
 jint Java_java_lang_System_identityHashCode(JNIEnv* env, jclass clazz, jobject o) {
     return (jint) o;
@@ -44,7 +45,11 @@ jstring Java_java_lang_System_getEncoding(JNIEnv* env, jclass clazz, jint type) 
 static jboolean setProperty(Env* env, ObjectArray** props, jint index, char* name, char* value) {
     if (*props == NULL || index >= (*props)->length / 2) {
         jint length = *props == NULL ? 10 : (*props)->length * 2;
-        ObjectArray* newProps = nvmNewObjectArray(env, length, java_lang_String, NULL, NULL);
+        if (!array_java_lang_String) {
+            array_java_lang_String = nvmFindClassUsingLoader(env, "[Ljava/lang/String;", NULL);
+                if (!array_java_lang_String) return FALSE;
+        }
+        ObjectArray* newProps = nvmNewObjectArray(env, length, NULL, array_java_lang_String, NULL);
         if (!newProps) return FALSE;
         if (*props) {
             jint i;
@@ -122,8 +127,10 @@ ObjectArray* Java_java_lang_System_getPropertyList(Env* env, Class* clazz) {
 
 #ifdef NVM_X86_64
     if (!setProperty(env, &props, i++, "os.arch", "x86_64")) return NULL;
-#elif NVM_I386
+#elif NVM_X86
     if (!setProperty(env, &props, i++, "os.arch", "i386")) return NULL;
+#elif __arm__
+    if (!setProperty(env, &props, i++, "os.arch", "arm")) return NULL;
 #else
 #error "Unknown ARCH"
 #endif
@@ -171,8 +178,12 @@ Object* Java_java_lang_System_getEnvByName(Env* env, Class* c, Object* name) {
 }
 
 Object* Java_java_lang_System_getEnvByIndex(Env* env, Class* c, jint index) {
+#if defined(IOS) && defined(__arm__)
+    return NULL;
+#else
     char* value = environ[index];
     if (!value) return NULL;
     return nvmNewStringUTF(env, value, -1);
+#endif
 }
 

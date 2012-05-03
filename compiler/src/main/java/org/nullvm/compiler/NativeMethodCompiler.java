@@ -15,7 +15,6 @@ import java.util.Arrays;
 import org.nullvm.compiler.llvm.Function;
 import org.nullvm.compiler.llvm.FunctionRef;
 import org.nullvm.compiler.llvm.FunctionType;
-import org.nullvm.compiler.llvm.IntegerConstant;
 import org.nullvm.compiler.llvm.Ret;
 import org.nullvm.compiler.llvm.Value;
 import org.nullvm.compiler.trampoline.NativeCall;
@@ -60,10 +59,9 @@ public class NativeMethodCompiler extends AbstractMethodCompiler {
             args.add(1, clazz);
         }
         
-        Value frameAddress = call(innerFn, LLVM_FRAMEADDRESS, new IntegerConstant(0));
-        call(innerFn, NVM_BC_PUSH_NATIVE_FRAME, env, frameAddress);
+        pushNativeFrame(innerFn);
         Value resultInner = call(innerFn, trampoline.getFunctionRef(), args);
-        call(innerFn, NVM_BC_POP_NATIVE_FRAME, env);
+        popNativeFrame(innerFn);
         call(innerFn, NVM_BC_THROW_IF_EXCEPTION_OCCURRED, env);
         innerFn.add(new Ret(resultInner));
     }

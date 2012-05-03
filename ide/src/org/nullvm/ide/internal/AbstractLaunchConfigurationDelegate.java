@@ -5,6 +5,8 @@ package org.nullvm.ide.internal;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,10 +14,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -28,8 +28,10 @@ import org.eclipse.jdt.launching.AbstractJavaLaunchConfigurationDelegate;
 import org.nullvm.compiler.AppCompiler;
 import org.nullvm.compiler.Arch;
 import org.nullvm.compiler.Config;
+import org.nullvm.compiler.LaunchParameters;
 import org.nullvm.compiler.OS;
 import org.nullvm.compiler.Target;
+import org.nullvm.compiler.io.OpenOnReadFileInputStream;
 import org.nullvm.ide.NullVMPlugin;
 
 /**
@@ -40,10 +42,9 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
 
     protected abstract Arch getArch(ILaunchConfiguration configuration, String mode);
     protected abstract OS getOS(ILaunchConfiguration configuration, String mode);
-    protected File getInstallDir(ILaunchConfiguration configuration, String mode, File base) {
-        return base;
-    }
     protected abstract Config configure(Config.Builder configBuilder, ILaunchConfiguration configuration, String mode) throws IOException;
+    protected void customizeLaunchParameters(LaunchParameters launchParameters) throws IOException {
+    }
     
     @Override
     public void launch(ILaunchConfiguration configuration, String mode,
@@ -88,11 +89,10 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
             Arch arch = getArch(configuration, mode);
             OS os = getOS(configuration, mode);
             
-            File installDir = new File(NullVMPlugin.getMetadataDir(), getJavaProjectName(configuration));
-            installDir = new File(installDir, configuration.getName());
-            installDir = new File(new File(installDir, os.toString()), arch.toString());
-            installDir = new File(installDir, mainTypeName);
-            installDir = getInstallDir(configuration, mode, installDir);
+            File tmpDir = new File(NullVMPlugin.getMetadataDir(), getJavaProjectName(configuration));
+            tmpDir = new File(tmpDir, configuration.getName());
+            tmpDir = new File(new File(tmpDir, os.toString()), arch.toString());
+            tmpDir = new File(tmpDir, mainTypeName);
             
             configBuilder.arch(arch);
             configBuilder.os(os);
@@ -117,7 +117,8 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
                 configBuilder.addClasspathEntry(new File(p));
             }
             configBuilder.mainClass(mainTypeName);
-            configBuilder.installDir(installDir);
+            configBuilder.tmpDir(tmpDir);
+            configBuilder.skipInstall(true);
             
             Config config = null;
             AppCompiler compiler = null;
@@ -145,32 +146,33 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
             }
 
             try {
-                NullVMPlugin.consoleInfo("Installing executable to %s", installDir);
-                monitor.subTask("Installing executable");
-                target.install();
-                if (monitor.isCanceled()) {
-                    return;
-                }
-                monitor.worked(1);
-                NullVMPlugin.consoleInfo("Install done");
-            } catch (IOException e) {
-                NullVMPlugin.consoleError("Install failed");
-                throw new CoreException(new Status(IStatus.ERROR, NullVMPlugin.PLUGIN_ID,
-                        "Install failed", e));
-            }
-            
-            try {
                 NullVMPlugin.consoleInfo("Launching executable");
                 monitor.subTask("Launching executable");
                 
                 List<String> runArgs = new ArrayList<String>();
                 runArgs.addAll(splitArgs(vmArgs));
                 runArgs.addAll(splitArgs(pgmArgs));
-                String[] cmdLine = target.generateCommandLine(runArgs);
-                String label = String.format("%s (%s)", cmdLine[0], 
+                LaunchParameters launchParameters = new LaunchParameters();
+                launchParameters.setArguments(runArgs);
+                launchParameters.setWorkingDirectory(workingDir);
+                launchParameters.setEnvironment(envToMap(envp));
+                customizeLaunchParameters(launchParameters);
+                String label = String.format("%s (%s)", mainTypeName, 
                         DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(new Date()));
-                Process process = DebugPlugin.exec(cmdLine, workingDir, 
-                        envFromMap(target.modifyEnv(envToMap(envp))));
+                
+                Process process = target.launch(launchParameters);
+                if (launchParameters.getStdoutFifo() != null || launchParameters.getStderrFifo() != null) {
+                    InputStream stdoutStream = null;
+                    InputStream stderrStream = null;
+                    if (launchParameters.getStdoutFifo() != null) {
+                        stdoutStream = new OpenOnReadFileInputStream(launchParameters.getStdoutFifo());
+                    }
+                    if (launchParameters.getStderrFifo() != null) {
+                        stderrStream = new OpenOnReadFileInputStream(launchParameters.getStderrFifo());
+                    }
+                    process = new ProcessProxy(process, stdoutStream, stderrStream);
+                }
+                
                 DebugPlugin.newProcess(launch, process, label);
                 NullVMPlugin.consoleInfo("Launch done");
                 
@@ -190,10 +192,9 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
         }
     }
 
-    @SuppressWarnings("unchecked")
     private Map<String, String> envToMap(String[] envp) throws IOException {
         if (envp == null) {
-            return EnvironmentUtils.getProcEnvironment();
+            return Collections.emptyMap();
         }
         Map<String, String> result = new HashMap<String, String>();
         for (int i = 0; i < envp.length; i++) {
@@ -201,15 +202,6 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
             if (index != -1) {
                 result.put(envp[i].substring(0, index), envp[i].substring(index + 1));
             }
-        }
-        return result;
-    }
-    
-    private String[] envFromMap(Map<String, String> env) {
-        String[] result = new String[env.size()];
-        int i = 0;
-        for (Entry<String, String> entry : env.entrySet()) {
-            result[i++] = entry.getKey() + "=" + entry.getValue();
         }
         return result;
     }
@@ -227,5 +219,64 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
             result.add(parts[i]);
         }
         return result;
+    }
+    
+    protected File mkfifo(String type) throws IOException {
+        File f = File.createTempFile("nullvm-" + type + "-", ".fifo");
+        f.delete();
+        ProcessBuilder pb = new ProcessBuilder("mkfifo", "-m", "600", f.getAbsolutePath());
+        try {
+            int exitValue = pb.start().waitFor();
+            if (exitValue != 0) {
+                throw new IOException("Failed to create " + type + " fifo");
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return f;
+    }
+    
+    private static class ProcessProxy extends Process {
+        private final Process target;
+        private final InputStream inputStream;
+        private final InputStream errorStream;
+        ProcessProxy(Process target, InputStream inputStream, InputStream errorStream) {
+            this.target = target;
+            this.inputStream = inputStream;
+            this.errorStream = errorStream;            
+        }
+        public void destroy() {
+            target.destroy();
+        }
+        public boolean equals(Object obj) {
+            return target.equals(obj);
+        }
+        public int exitValue() {
+            return target.exitValue();
+        }
+        public InputStream getErrorStream() {
+            if (errorStream != null) {
+                return errorStream;
+            }
+            return target.getErrorStream();
+        }
+        public InputStream getInputStream() {
+            if (inputStream != null) {
+                return inputStream;
+            }
+            return target.getInputStream();
+        }
+        public OutputStream getOutputStream() {
+            return target.getOutputStream();
+        }
+        public int hashCode() {
+            return target.hashCode();
+        }
+        public String toString() {
+            return target.toString();
+        }
+        public int waitFor() throws InterruptedException {
+            return target.waitFor();
+        }
     }
 }

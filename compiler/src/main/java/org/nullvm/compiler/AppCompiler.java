@@ -105,6 +105,8 @@ public class AppCompiler {
         List<String> runArgs = new ArrayList<String>();
         try {
             Config.Builder builder = new Config.Builder();
+            OS os = null;
+            Arch arch = null;
             
             int i = 0;
             while (i < args.length) {
@@ -151,12 +153,14 @@ public class AppCompiler {
                 } else if ("-os".equals(args[i])) {
                     String s = args[++i];
                     if (!"auto".equals(s)) {
-                        builder.os(OS.valueOf(s));
+                        os = OS.valueOf(s);
+                        builder.os(os);
                     }
                 } else if ("-arch".equals(args[i])) {
                     String s = args[++i];
                     if (!"auto".equals(s)) {
-                        builder.arch(Arch.valueOf(s));
+                        arch = Arch.valueOf(s);
+                        builder.arch(arch);
                     }
                 } else if ("-cpu".equals(args[i])) {
                     builder.cpu(args[++i]);
@@ -201,6 +205,14 @@ public class AppCompiler {
             }
             
             builder.skipInstall(run);
+
+            if (os == OS.ios) {
+                if (arch != null && arch.isArm()) {
+                    builder.targetBuilder(new IOSDeviceTarget.Builder());
+                } else {
+                    builder.targetBuilder(new IOSSimulatorTarget.Builder());
+                }
+            }
             
             compiler = new AppCompiler(builder.build());
         } catch (Throwable t) {
@@ -217,7 +229,10 @@ public class AppCompiler {
         try {
             compiler.compile();
             if (run) {
-                compiler.config.getTarget().launch(runArgs);
+                LaunchParameters launchParameters = new LaunchParameters();
+                launchParameters.setArguments(runArgs);
+                Process process = compiler.config.getTarget().launch(launchParameters);
+                process.waitFor();
             } else {
                 compiler.config.getTarget().install();
             }
@@ -266,11 +281,11 @@ public class AppCompiler {
         System.err.println("  -llvm-home <path>     Path where LLVM has been installed");
         System.err.println("  -o <name>             The name of the target executable or library");
         System.err.println("  -os <name>            The name of the OS to build for. Allowed values are \n" 
-                         + "                        'auto', 'linux' and 'darwin'. Default is 'auto' which\n" 
+                         + "                        'auto', 'linux', 'macosx' and 'ios'. Default is 'auto' which\n" 
                          + "                        means autodetect.");
         System.err.println("  -arch <name>          The name of the LLVM arch to compile for. Allowed values\n" 
-                         + "                        are 'auto', 'i386' and 'x86_64' Default is 'auto' which \n" 
-                         + "                        means autodetect.");
+                         + "                        are 'auto', 'x86', 'x86_64', 'armv6', 'armv7', 'thumbv6',\n" 
+                         + "                        'thumbv7' Default is 'auto' which means autodetect.");
         System.err.println("  -cpu <name>           The name of the LLVM cpu to compile for. The LLVM default\n" 
                          + "                        is used by default. Use llc to determine allowed values.");
         System.err.println("  -roots <list>         : separated list of class patterns matching\n" 

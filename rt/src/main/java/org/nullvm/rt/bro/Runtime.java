@@ -214,11 +214,9 @@ public abstract class Runtime {
                         File fwDir = new File(searchPath, library.value() + ".framework");
                         if (fwDir.exists()) {
                             f = new File(fwDir, library.value());
-                            if (f.exists()) {
-                                handle = Dl.open(f.getAbsolutePath());
-                                if (handle != 0L) {
-                                    break;
-                                }
+                            handle = Dl.open(f.getAbsolutePath());
+                            if (handle != 0L) {
+                                break;
                             }
                         }
                     }

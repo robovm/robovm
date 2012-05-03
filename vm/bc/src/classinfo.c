@@ -64,7 +64,7 @@ static const char* S = &str__28_29S_00;
 static const char* Z = &str__28_29Z_00;
 static const char* V = &str__28_29V_00;
 
-static void parseFieldInfo(Env* env, void** p, ParseClassInfoCallbacks* callbacks, void* data) {
+static jboolean parseFieldInfo(Env* env, ClassInfoHeader* header, void** p, ParseClassInfoCallbacks* callbacks, void* data) {
     jint flags = readShort(p);
     char* name = readString(p);
     jint access = 0;
@@ -99,12 +99,11 @@ static void parseFieldInfo(Env* env, void** p, ParseClassInfoCallbacks* callback
     void* attributes = NULL;
     if (flags & FI_ATTRIBUTES) attributes = readPtr(p);
 
-    if (callbacks->fieldCallback) {
-        if (!callbacks->fieldCallback(env, name, desc, access, offset, attributes, data)) return;
-    }
+    if (!callbacks->fieldCallback) return TRUE;
+    return callbacks->fieldCallback(env, header, name, desc, access, offset, attributes, data);
 }
 
-static void parseMethodInfo(Env* env, void** p, ParseClassInfoCallbacks* callbacks, void* data) {
+static jboolean parseMethodInfo(Env* env, ClassInfoHeader* header, void** p, ParseClassInfoCallbacks* callbacks, void* data) {
     jint flags = readShort(p);
     char* name = readString(p);
     jint access = 0;
@@ -153,9 +152,8 @@ static void parseMethodInfo(Env* env, void** p, ParseClassInfoCallbacks* callbac
     void* callbackImpl = NULL;
     if (flags & MI_BRO_CALLBACK) callbackImpl = readPtr(p);
 
-    if (callbacks->methodCallback) {
-        if (!callbacks->methodCallback(env, name, desc, access, size, impl, synchronizedImpl, targetFnPtr, callbackImpl, attributes, data)) return;
-    }
+    if (!callbacks->methodCallback) return TRUE;
+    return callbacks->methodCallback(env, header, name, desc, access, size, impl, synchronizedImpl, targetFnPtr, callbackImpl, attributes, data);
 }
 
 void parseClassInfo(Env* env, ClassInfoHeader* header, ParseClassInfoCallbacks* callbacks, void* data) {
@@ -200,8 +198,8 @@ void parseClassInfo(Env* env, ClassInfoHeader* header, ParseClassInfoCallbacks* 
     }
 
     if (callbacks->classCallback) {
-        if (!callbacks->classCallback(env, header->className, superclassName, 
-                access, header->classDataSize, header->instanceDataSize, 
+        if (!callbacks->classCallback(env, header, header->className, superclassName, 
+                access, header->classDataSize, header->instanceDataSize, header->instanceDataOffset,
                 attributes, header->initializer, data)) {
             return;
         }
@@ -213,20 +211,20 @@ void parseClassInfo(Env* env, ClassInfoHeader* header, ParseClassInfoCallbacks* 
     for (i = 0; i < interfaceCount; i++) {
         char* interfaceName = readString(&p);
         if (callbacks->interfaceCallback) {
-            if (!callbacks->interfaceCallback(env, interfaceName, data)) return;
+            if (!callbacks->interfaceCallback(env, header, interfaceName, data)) return;
         }
     }
 
     if (!callbacks->fieldCallback && !callbacks->methodCallback) return;
 
     for (i = 0; i < fieldCount; i++) {
-        parseFieldInfo(env, &p, callbacks, data);
+        if (!parseFieldInfo(env, header, &p, callbacks, data)) return;
     }
 
     if (!callbacks->methodCallback) return;
 
     for (i = 0; i < methodCount; i++) {
-        parseMethodInfo(env, &p, callbacks, data);
+        if (!parseMethodInfo(env, header, &p, callbacks, data)) return;
     }
 }
 

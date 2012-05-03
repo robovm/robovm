@@ -17,6 +17,7 @@
 
 /**
 * @author Vladimir N. Molotkov
+* @version $Revision$
 */
 
 package org.apache.harmony.security.utils;
@@ -24,7 +25,7 @@ package org.apache.harmony.security.utils;
 
 /**
  * Utility class for arrays
- * 
+ *
  */
 public class Array {
 
@@ -32,23 +33,32 @@ public class Array {
     private Array() {
     }
 
+    public static String getBytesAsString(byte[] data) {
+        StringBuilder result = new StringBuilder(data.length * 3);
+        for (int i = 0; i < data.length; ++i) {
+            result.append(Byte.toHexString(data[i], false));
+            result.append(' ');
+        }
+        return result.toString();
+    }
+
     /**
      * Represents <code>array</code> as <code>String</code>
      * for printing. Array length can be up to 32767
      *
      * @param array to be represented as <code>String</code>
-     * 
+     *
      * @return <code>String</code> representation of the <code>array</code>
      */
     public static String toString(byte[] array, String prefix) {
         // Prefixes to be added to the offset values
         // in <code>String toString(byte[], String)</code> method
         final String[] offsetPrefix = {
-                "", //$NON-NLS-1$
-                "000", //$NON-NLS-1$
-                "00", //$NON-NLS-1$
-                "0", //$NON-NLS-1$
-                "" //$NON-NLS-1$
+                "",
+                "000",
+                "00",
+                "0",
+                ""
         };
         StringBuilder sb = new StringBuilder();
         StringBuilder charForm = new StringBuilder();
@@ -66,13 +76,9 @@ public class Array {
             // put delimiter
             sb.append(' ');
             // put current byte
-            int currentByte = (0xff & array[i]);
-            String hexTail = Integer.toHexString(currentByte);
-            if (hexTail.length() == 1) {
-                sb.append('0');
-            }
-            sb.append(hexTail);
+            sb.append(Byte.toHexString(array[i], false));
             // form character representation part
+            int currentByte = (0xff & array[i]);
             char currentChar = (char)(currentByte & 0xffff);
             // FIXME if needed (how to distinguish PRINTABLE chars?)
             charForm.append(
@@ -92,12 +98,12 @@ public class Array {
         if (i%16 != 0) {
             int ws2add = 16 - i%16;
             for (int j=0; j<ws2add; j++) {
-                sb.append("   "); //$NON-NLS-1$
+                sb.append("   ");
             }
             if (ws2add > 8) {
                 sb.append(' ');
             }
-            sb.append("  "); //$NON-NLS-1$
+            sb.append("  ");
             sb.append(charForm.toString());
             sb.append('\n');
         }

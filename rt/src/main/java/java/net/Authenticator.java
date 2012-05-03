@@ -24,7 +24,7 @@ package java.net;
  * setDefault(Authenticator a)}. Then it should override {@code
  * getPasswordAuthentication()} which dictates how the authentication info is
  * obtained. Usually, it prompts the user for the required input.
- * 
+ *
  * @see #setDefault
  * @see #getPasswordAuthentication
  */
@@ -34,10 +34,10 @@ public abstract class Authenticator {
     private static Authenticator thisAuthenticator;
 
     private static final NetPermission requestPasswordAuthenticationPermission = new NetPermission(
-            "requestPasswordAuthentication"); //$NON-NLS-1$
+            "requestPasswordAuthentication");
 
     private static final NetPermission setDefaultAuthenticatorPermission = new NetPermission(
-            "setDefaultAuthenticator"); //$NON-NLS-1$
+            "setDefaultAuthenticator");
 
     // the requester connection info
     private String host;
@@ -71,7 +71,7 @@ public abstract class Authenticator {
 
     /**
      * Returns the port of the connection that requests authorization.
-     * 
+     *
      * @return port of the connection.
      */
     protected final int getRequestingPort() {
@@ -81,7 +81,7 @@ public abstract class Authenticator {
     /**
      * Returns the address of the connection that requests authorization or
      * {@code null} if unknown.
-     * 
+     *
      * @return address of the connection.
      */
     protected final InetAddress getRequestingSite() {
@@ -91,7 +91,7 @@ public abstract class Authenticator {
     /**
      * Returns the realm (prompt string) of the connection that requests
      * authorization.
-     * 
+     *
      * @return prompt string of the connection.
      */
     protected final String getRequestingPrompt() {
@@ -100,7 +100,7 @@ public abstract class Authenticator {
 
     /**
      * Returns the protocol of the connection that requests authorization.
-     * 
+     *
      * @return protocol of the connection.
      */
     protected final String getRequestingProtocol() {
@@ -110,7 +110,7 @@ public abstract class Authenticator {
     /**
      * Returns the scheme of the connection that requests authorization, for
      * example HTTP Basic Authentication.
-     * 
+     *
      * @return scheme of the connection.
      */
     protected final String getRequestingScheme() {
@@ -118,10 +118,9 @@ public abstract class Authenticator {
     }
 
     /**
-     * If the permission check of the security manager does not result in a
-     * security exception, this method invokes the methods of the registered
+     * Invokes the methods of the registered
      * authenticator to get the authentication info.
-     * 
+     *
      * @return password authentication info or {@code null} if no authenticator
      *         exists.
      * @param rAddr
@@ -134,17 +133,10 @@ public abstract class Authenticator {
      *            realm of the connection that requests authentication.
      * @param rScheme
      *            scheme of the connection that requests authentication.
-     * @throws SecurityException
-     *             if a security manager denies the password authentication
-     *             permission.
      */
     public static synchronized PasswordAuthentication requestPasswordAuthentication(
             InetAddress rAddr, int rPort, String rProtocol, String rPrompt,
             String rScheme) {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(requestPasswordAuthenticationPermission);
-        }
         if (thisAuthenticator == null) {
             return null;
         }
@@ -164,29 +156,19 @@ public abstract class Authenticator {
 
     /**
      * Sets {@code a} as the default authenticator. It will be called whenever
-     * the realm that the URL is pointing to requires authorization. If there is
-     * a security manager set then the caller must have the appropriate {@code
-     * NetPermission}.
-     * 
+     * the realm that the URL is pointing to requires authorization.
+     *
      * @param a
      *            authenticator which has to be set as default.
-     * @throws SecurityException
-     *             if a security manager denies the password authentication
-     *             permission.
      */
     public static void setDefault(Authenticator a) {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(setDefaultAuthenticatorPermission);
-        }
         thisAuthenticator = a;
     }
 
     /**
-     * If the permission check of the security manager does not result in a
-     * security exception, this method invokes the methods of the registered
+     * Invokes the methods of the registered
      * authenticator to get the authentication info.
-     * 
+     *
      * @return password authentication info or {@code null} if no authenticator
      *         exists.
      * @param rHost
@@ -201,17 +183,10 @@ public abstract class Authenticator {
      *            realm of the connection that requests authentication.
      * @param rScheme
      *            scheme of the connection that requests authentication.
-     * @throws SecurityException
-     *             if a security manager denies the password authentication
-     *             permission.
      */
     public static synchronized PasswordAuthentication requestPasswordAuthentication(
             String rHost, InetAddress rAddr, int rPort, String rProtocol,
             String rPrompt, String rScheme) {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(requestPasswordAuthenticationPermission);
-        }
         if (thisAuthenticator == null) {
             return null;
         }
@@ -241,10 +216,9 @@ public abstract class Authenticator {
     }
 
     /**
-     * If the permission check of the security manager does not result in a
-     * security exception, this method invokes the methods of the registered
+     * Invokes the methods of the registered
      * authenticator to get the authentication info.
-     * 
+     *
      * @return password authentication info or {@code null} if no authenticator
      *         exists.
      * @param rHost
@@ -263,19 +237,12 @@ public abstract class Authenticator {
      *            url of the connection that requests authentication.
      * @param reqType
      *            requestor type of the connection that requests authentication.
-     * @throws SecurityException
-     *             if a security manager denies the password authentication
-     *             permission.
      */
     public static PasswordAuthentication requestPasswordAuthentication(
             String rHost, InetAddress rAddr, int rPort, String rProtocol,
             String rPrompt, String rScheme, URL rURL,
             Authenticator.RequestorType reqType) {
-        SecurityManager sm = System.getSecurityManager();
-        if (null != sm) {
-            sm.checkPermission(requestPasswordAuthenticationPermission);
-        }
-        if (null == thisAuthenticator) {
+        if (thisAuthenticator == null) {
             return null;
         }
         // sets the requester info so it knows what it is requesting
@@ -297,7 +264,7 @@ public abstract class Authenticator {
 
     /**
      * Returns the URL of the authentication request.
-     * 
+     *
      * @return authentication request url.
      */
     protected URL getRequestingURL() {
@@ -306,7 +273,7 @@ public abstract class Authenticator {
 
     /**
      * Returns the type of this request, it can be {@code PROXY} or {@code SERVER}.
-     * 
+     *
      * @return RequestorType of the authentication request.
      */
     protected Authenticator.RequestorType getRequestorType() {

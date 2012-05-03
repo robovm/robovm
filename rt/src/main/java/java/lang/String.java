@@ -144,7 +144,7 @@ public final class String implements Serializable, Comparable<String>, CharSeque
     /**
      * Converts the byte array to a string, setting the high byte of every
      * character to the specified value.
-     * 
+     *
      * @param data
      *            the byte array to convert to a string.
      * @param high
@@ -161,7 +161,7 @@ public final class String implements Serializable, Comparable<String>, CharSeque
     /**
      * Converts a subsequence of the byte array to a string using the system's
      * {@link java.nio.charset.Charset#defaultCharset default charset}.
-     * 
+     *
      * @throws NullPointerException
      *             if {@code data == null}.
      * @throws IndexOutOfBoundsException
@@ -175,8 +175,8 @@ public final class String implements Serializable, Comparable<String>, CharSeque
         this.count = cb.length();
         this.offset = 0;
         if (count > 0) {
-                value = cb.array();
-            } else {
+            value = cb.array();
+        } else {
             value = EmptyArray.CHAR;
         }
     }
@@ -200,15 +200,15 @@ public final class String implements Serializable, Comparable<String>, CharSeque
         this.offset = 0;
         this.value = new char[byteCount];
         this.count = byteCount;
-                high <<= 8;
-                for (int i = 0; i < count; i++) {
+        high <<= 8;
+        for (int i = 0; i < count; i++) {
             value[i] = (char) (high + (data[offset++] & 0xff));
         }
     }
 
     /**
      * Converts the byte array to a string using the named charset.
-     * 
+     *
      * <p>The behavior when the bytes cannot be decoded by the named charset
      * is unspecified. Use {@link java.nio.charset.CharsetDecoder} for more control.
      *
@@ -225,7 +225,7 @@ public final class String implements Serializable, Comparable<String>, CharSeque
 
     /**
      * Converts the byte array to a string using the named charset.
-     * 
+     *
      * <p>The behavior when the bytes cannot be decoded by the named charset
      * is unspecified. Use {@link java.nio.charset.CharsetDecoder} for more control.
      *
@@ -237,26 +237,26 @@ public final class String implements Serializable, Comparable<String>, CharSeque
     public String(byte[] data, String charsetName) throws UnsupportedEncodingException {
         this(data, 0, data.length, Charset.forNameUEE(charsetName));
     }
-    
+
     /**
      * Converts the byte array to a string using the given charset.
-     * 
+     *
      * <p>The behavior when the bytes cannot be decoded by the given charset
      * is to replace malformed input and unmappable characters with the charset's default
      * replacement string. Use {@link java.nio.charset.CharsetDecoder} for more control.
-     * 
+     *
      * @throws IndexOutOfBoundsException
      *             if {@code byteCount < 0 || offset < 0 || offset + byteCount > data.length}
      * @throws NullPointerException
      *             if {@code data == null}
-     * 
+     *
      * @since 1.6
      */
     public String(byte[] data, int offset, int byteCount, Charset charset) {
         if ((offset | byteCount) < 0 || byteCount > data.length - offset) {
             throw failedBoundsCheck(data.length, offset, byteCount);
         }
-            
+
         // We inline UTF-8, ISO-8859-1, and US-ASCII decoders for speed and because 'count' and
         // 'value' are final.
         String canonicalCharsetName = charset.name();
@@ -338,7 +338,7 @@ outer:
                     // Encode chars from U+10000 up as surrogate pairs
                     if (val < 0x10000) {
                         v[s++] = (char) val;
-        } else {
+                    } else {
                         int x = val & 0xffff;
                         int u = (val >> 16) & 0x1f;
                         int w = (u - 1) & 0xffff;
@@ -392,10 +392,10 @@ outer:
             }
         }
     }
-    
+
     /**
      * Converts the byte array to a String using the given charset.
-     * 
+     *
      * @throws NullPointerException if {@code data == null}
      * @since 1.6
      */
@@ -407,7 +407,7 @@ outer:
      * Initializes this string to contain the characters in the specified
      * character array. Modifying the character array after creating the string
      * has no effect on the string.
-     * 
+     *
      * @throws NullPointerException if {@code data == null}
      */
     public String(char[] data) {
@@ -418,7 +418,7 @@ outer:
      * Initializes this string to contain the specified characters in the
      * character array. Modifying the character array after creating the string
      * has no effect on the string.
-     * 
+     *
      * @throws NullPointerException
      *             if {@code data == null}.
      * @throws IndexOutOfBoundsException
@@ -542,7 +542,7 @@ outer:
     /**
      * Creates a {@code String} from the contents of the specified {@code
      * StringBuilder}.
-     * 
+     *
      * @throws NullPointerException
      *             if {@code stringBuilder == null}.
      * @since 1.5
@@ -576,7 +576,7 @@ outer:
 
     /**
      * Returns the character at the specified offset in this string.
-     * 
+     *
      * @param index
      *            the zero-based index in this string.
      * @return the character at the index.
@@ -587,7 +587,7 @@ outer:
 
     private StringIndexOutOfBoundsException indexAndLength(int index) {
         throw new StringIndexOutOfBoundsException(this, index);
-        }
+    }
 
     private StringIndexOutOfBoundsException startEndAndLength(int start, int end) {
         throw new StringIndexOutOfBoundsException(this, start, end - start);
@@ -622,7 +622,7 @@ outer:
      * Unicode value which is greater than the Unicode value of the character at
      * the same position in the specified string, or if the specified string is
      * a prefix of this string.
-     * 
+     *
      * @param string
      *            the string to compare.
      * @return 0 if the strings are equal, a negative integer if this string is
@@ -644,7 +644,7 @@ outer:
      * this string has a Unicode value which is greater than the Unicode value
      * of the character at the same position in the specified string, or if the
      * specified string is a prefix of this string.
-     * 
+     *
      * @param string
      *            the string to compare.
      * @return 0 if the strings are equal, a negative integer if this string is
@@ -673,7 +673,7 @@ outer:
 
     /**
      * Concatenates this string and the specified string.
-     * 
+     *
      * @param string
      *            the string to concatenate
      * @return a new string which is the concatenation of this string and the
@@ -693,7 +693,7 @@ outer:
      * Creates a new string containing the characters in the specified character
      * array. Modifying the character array after creating the string has no
      * effect on the string.
-     * 
+     *
      * @param data
      *            the array of characters.
      * @return the new string.
@@ -708,7 +708,7 @@ outer:
      * Creates a new string containing the specified characters in the character
      * array. Modifying the character array after creating the string has no
      * effect on the string.
-     * 
+     *
      * @param data
      *            the array of characters.
      * @param start
@@ -729,7 +729,7 @@ outer:
     /**
      * Compares the specified string to this string to determine if the
      * specified string is a suffix.
-     * 
+     *
      * @param suffix
      *            the suffix to look for.
      * @return {@code true} if the specified string is a suffix of this string,
@@ -745,7 +745,7 @@ outer:
      * Compares the specified object to this string and returns true if they are
      * equal. The object must be an instance of string with the same characters
      * in the same order.
-     * 
+     *
      * @param object
      *            the object to compare.
      * @return {@code true} if the specified object is equal to this string,
@@ -757,7 +757,7 @@ outer:
     /**
      * Compares the specified string to this string ignoring the case of the
      * characters and returns true if they are equal.
-     * 
+     *
      * @param string
      *            the string to compare.
      * @return {@code true} if the specified string is equal to this string,
@@ -787,7 +787,7 @@ outer:
     /**
      * Mangles this string into a byte array by stripping the high order bits from
      * each character. Use {@link #getBytes()} or {@link #getBytes(String)} instead.
-     * 
+     *
      * @param start
      *            the starting offset of characters to copy.
      * @param end
@@ -823,7 +823,7 @@ outer:
     /**
      * Returns a new byte array containing the characters of this string encoded using the
      * system's {@link java.nio.charset.Charset#defaultCharset default charset}.
-     * 
+     *
      * <p>The behavior when this string cannot be represented in the system's default charset
      * is unspecified. In practice, when the default charset is UTF-8 (as it is on Android),
      * all strings can be encoded.
@@ -844,15 +844,15 @@ outer:
     public byte[] getBytes(String charsetName) throws UnsupportedEncodingException {
         return getBytes(Charset.forNameUEE(charsetName));
     }
-    
+
     /**
      * Returns a new byte array containing the characters of this string encoded using the
      * given charset.
-     * 
+     *
      * <p>The behavior when this string cannot be represented in the given charset
      * is to replace malformed input and unmappable characters with the charset's default
      * replacement byte array. Use {@link java.nio.charset.CharsetEncoder} for more control.
-     * 
+     *
      * @since 1.6
      */
     public byte[] getBytes(Charset charset) {
@@ -868,16 +868,16 @@ outer:
         } else {
             CharBuffer chars = CharBuffer.wrap(this.value, this.offset, this.count);
             ByteBuffer buffer = charset.encode(chars.asReadOnlyBuffer());
-        byte[] bytes = new byte[buffer.limit()];
-        buffer.get(bytes);
-        return bytes;
-    }
+            byte[] bytes = new byte[buffer.limit()];
+            buffer.get(bytes);
+            return bytes;
+        }
     }
 
     /**
      * Copies the specified characters in this string to the character array
      * starting at the specified offset in the character array.
-     * 
+     *
      * @param start
      *            the starting offset of characters to copy.
      * @param end
@@ -933,7 +933,7 @@ outer:
      * Searches in this string for the first index of the specified character.
      * The search for the character starts at the beginning and moves towards
      * the end of this string.
-     * 
+     *
      * @param c
      *            the character to find.
      * @return the index in this string of the specified character, -1 if the
@@ -951,7 +951,7 @@ outer:
      * Searches in this string for the index of the specified character. The
      * search for the character starts at the specified offset and moves towards
      * the end of this string.
-     * 
+     *
      * @param c
      *            the character to find.
      * @param start
@@ -962,16 +962,16 @@ outer:
     public int indexOf(int c, int start) {
         if (c > 0xffff) {
             return indexOfSupplementary(c, start);
-            }
+        }
         return fastIndexOf(c, start);
-                    }
+    }
 
     private native int fastIndexOf(int c, int start);
 
     private int indexOfSupplementary(int c, int start) {
         if (!Character.isSupplementaryCodePoint(c)) {
-        return -1;
-    }
+            return -1;
+        }
         char[] chars = Character.toChars(c);
         String needle = new String(0, chars.length, chars);
         return indexOf(needle, start);
@@ -981,7 +981,7 @@ outer:
      * Searches in this string for the first index of the specified string. The
      * search for the string starts at the beginning and moves towards the end
      * of this string.
-     * 
+     *
      * @param string
      *            the string to find.
      * @return the index of the first character of the specified string in this
@@ -1024,7 +1024,7 @@ outer:
      * Searches in this string for the index of the specified string. The search
      * for the string starts at the specified offset and moves towards the end
      * of this string.
-     * 
+     *
      * @param subString
      *            the string to find.
      * @param start
@@ -1072,7 +1072,7 @@ outer:
      * unique strings. All string literals found in loaded classes'
      * constant pools are automatically interned. Manually-interned strings are only weakly
      * referenced, so calling {@code intern} won't lead to unwanted retention.
-     * 
+     *
      * <p>Interning is typically used because it guarantees that for interned strings
      * {@code a} and {@code b}, {@code a.equals(b)} can be simplified to
      * {@code a == b}. (This is not true of non-interned strings.)
@@ -1128,16 +1128,16 @@ outer:
             for (int i = _offset + start; i >= _offset; --i) {
                 if (_value[i] == c) {
                     return i - _offset;
-                    }
                 }
-                    }
+            }
+        }
         return -1;
-                }
+    }
 
     private int lastIndexOfSupplementary(int c, int start) {
         if (!Character.isSupplementaryCodePoint(c)) {
-        return -1;
-    }
+            return -1;
+        }
         char[] chars = Character.toChars(c);
         String needle = new String(0, chars.length, chars);
         return lastIndexOf(needle, start);
@@ -1147,7 +1147,7 @@ outer:
      * Searches in this string for the last index of the specified string. The
      * search for the string starts at the end and moves towards the beginning
      * of this string.
-     * 
+     *
      * @param string
      *            the string to find.
      * @return the index of the first character of the specified string in this
@@ -1164,7 +1164,7 @@ outer:
      * Searches in this string for the index of the specified string. The search
      * for the string starts at the specified offset and moves towards the
      * beginning of this string.
-     * 
+     *
      * @param subString
      *            the string to find.
      * @param start
@@ -1208,7 +1208,7 @@ outer:
 
     /**
      * Returns the size of this string.
-     * 
+     *
      * @return the number of characters in this string.
      */
     public native int length();
@@ -1216,7 +1216,7 @@ outer:
     /**
      * Compares the specified string to this string and compares the specified
      * range of characters to determine if they are the same.
-     * 
+     *
      * @param thisStart
      *            the starting offset in this string.
      * @param string
@@ -1258,7 +1258,7 @@ outer:
      * Compares the specified string to this string and compares the specified
      * range of characters to determine if they are the same. When ignoreCase is
      * true, the case of the characters is ignored during the comparison.
-     * 
+     *
      * @param ignoreCase
      *            specifies if case should be ignored.
      * @param thisStart
@@ -1281,30 +1281,30 @@ outer:
         if (string == null) {
             throw new NullPointerException("string == null");
         }
-            if (thisStart < 0 || length > count - thisStart) {
-                return false;
-            }
-            if (start < 0 || length > string.count - start) {
-                return false;
-            }
-            thisStart += offset;
-            start += string.offset;
-            int end = thisStart + length;
-            char[] target = string.value;
-            while (thisStart < end) {
+        if (thisStart < 0 || length > count - thisStart) {
+            return false;
+        }
+        if (start < 0 || length > string.count - start) {
+            return false;
+        }
+        thisStart += offset;
+        start += string.offset;
+        int end = thisStart + length;
+        char[] target = string.value;
+        while (thisStart < end) {
             char c1 = value[thisStart++];
             char c2 = target[start++];
             if (c1 != c2 && foldCase(c1) != foldCase(c2)) {
-                    return false;
-                }
+                return false;
             }
-            return true;
         }
+        return true;
+    }
 
     /**
      * Copies this string replacing occurrences of the specified character with
      * another character.
-     * 
+     *
      * @param oldChar
      *            the character to replace.
      * @param newChar
@@ -1336,12 +1336,12 @@ outer:
 
         return copied ? new String(0, count, buffer) : this;
     }
-    
+
     /**
      * Copies this string replacing occurrences of the specified target sequence
      * with another sequence. The string is processed from the beginning to the
      * end.
-     * 
+     *
      * @param target
      *            the sequence to replace.
      * @param replacement
@@ -1398,7 +1398,7 @@ outer:
     /**
      * Compares the specified string to this string to determine if the
      * specified string is a prefix.
-     * 
+     *
      * @param prefix
      *            the string to look for.
      * @return {@code true} if the specified string is a prefix of this string,
@@ -1413,7 +1413,7 @@ outer:
     /**
      * Compares the specified string to this string, starting at the specified
      * offset, to determine if the specified string is a prefix.
-     * 
+     *
      * @param prefix
      *            the string to look for.
      * @param start
@@ -1430,7 +1430,7 @@ outer:
     /**
      * Returns a string containing a suffix of this string. The returned string
      * shares this string's <a href="#backing_array">backing array</a>.
-     * 
+     *
      * @param start
      *            the offset of the first character.
      * @return a new string containing the characters from start to the end of
@@ -1452,7 +1452,7 @@ outer:
      * Returns a string containing a subsequence of characters from this string.
      * The returned string shares this string's <a href="#backing_array">backing
      * array</a>.
-     * 
+     *
      * @param start
      *            the offset of the first character.
      * @param end
@@ -1469,14 +1469,14 @@ outer:
         // NOTE last character not copied!
         // Fast range check.
         if (start >= 0 && start <= end && end <= count) {
-        return new String(offset + start, end - start, value);
-    }
+            return new String(offset + start, end - start, value);
+        }
         throw startEndAndLength(start, end);
     }
 
     /**
      * Copies the characters in this string to a character array.
-     * 
+     *
      * @return a character array containing the characters of this string.
      */
     public char[] toCharArray() {
@@ -1488,7 +1488,7 @@ outer:
     /**
      * Converts this string to lower case, using the rules of the user's default locale.
      * See "<a href="../util/Locale.html#default_locale">Be wary of the default locale</a>".
-     * 
+     *
      * @return a new lower case string, or {@code this} if it's already all lower case.
      */
     public String toLowerCase() {
@@ -1497,7 +1497,7 @@ outer:
 
     /**
      * Converts this string to lower case, using the rules of {@code locale}.
-     * 
+     *
      * <p>Most case mappings are unaffected by the language of a {@code Locale}. Exceptions include
      * dotted and dotless I in Azeri and Turkish locales, and dotted and dotless I and J in
      * Lithuanian locales. On the other hand, it isn't necessary to provide a Greek locale to get
@@ -1523,7 +1523,7 @@ outer:
     /**
      * Converts this this string to upper case, using the rules of the user's default locale.
      * See "<a href="../util/Locale.html#default_locale">Be wary of the default locale</a>".
-     * 
+     *
      * @return a new upper case string, or {@code this} if it's already all upper case.
      */
     public String toUpperCase() {
@@ -1540,7 +1540,7 @@ outer:
      *
      * <p>See <a href="http://www.unicode.org/Public/UNIDATA/SpecialCasing.txt">http://www.unicode.org/Public/UNIDATA/SpecialCasing.txt</a>
      * for full details of context- and language-specific special cases.
-     * 
+     *
      * @return a new upper case string, or {@code this} if it's already all upper case.
      */
     public String toUpperCase(Locale locale) {
@@ -1550,7 +1550,7 @@ outer:
     /**
      * Copies this string removing white space characters from the beginning and
      * end of the string.
-     * 
+     *
      * @return a new string with characters <code><= \\u0020</code> removed from
      *         the beginning and the end.
      */
@@ -1573,7 +1573,7 @@ outer:
      * Creates a new string containing the characters in the specified character
      * array. Modifying the character array after creating the string has no
      * effect on the string.
-     * 
+     *
      * @param data
      *            the array of characters.
      * @return the new string.
@@ -1588,7 +1588,7 @@ outer:
      * Creates a new string containing the specified characters in the character
      * array. Modifying the character array after creating the string has no
      * effect on the string.
-     * 
+     *
      * @param data
      *            the array of characters.
      * @param start
@@ -1608,7 +1608,7 @@ outer:
 
     /**
      * Converts the specified character to its string representation.
-     * 
+     *
      * @param value
      *            the character.
      * @return the character converted to a string.
@@ -1626,7 +1626,7 @@ outer:
 
     /**
      * Converts the specified double to its string representation.
-     * 
+     *
      * @param value
      *            the double.
      * @return the double converted to a string.
@@ -1637,7 +1637,7 @@ outer:
 
     /**
      * Converts the specified float to its string representation.
-     * 
+     *
      * @param value
      *            the float.
      * @return the float converted to a string.
@@ -1648,7 +1648,7 @@ outer:
 
     /**
      * Converts the specified integer to its string representation.
-     * 
+     *
      * @param value
      *            the integer.
      * @return the integer converted to a string.
@@ -1659,7 +1659,7 @@ outer:
 
     /**
      * Converts the specified long to its string representation.
-     * 
+     *
      * @param value
      *            the long.
      * @return the long converted to a string.
@@ -1672,7 +1672,7 @@ outer:
      * Converts the specified object to its string representation. If the object
      * is null return the string {@code "null"}, otherwise use {@code
      * toString()} to get the string representation.
-     * 
+     *
      * @param value
      *            the object.
      * @return the object converted to a string, or the string {@code "null"}.
@@ -1685,7 +1685,7 @@ outer:
      * Converts the specified boolean to its string representation. When the
      * boolean is {@code true} return {@code "true"}, otherwise return {@code
      * "false"}.
-     * 
+     *
      * @param value
      *            the boolean.
      * @return the boolean converted to a string.
@@ -1697,7 +1697,7 @@ outer:
     /**
      * Returns whether the characters in the StringBuffer {@code strbuf} are the
      * same as those in this string.
-     * 
+     *
      * @param strbuf
      *            the StringBuffer to compare this string to.
      * @return {@code true} if the characters in {@code strbuf} are identical to
@@ -1751,7 +1751,7 @@ outer:
      * to assume that this method behaves like {@link #contains}; if you want to match anywhere
      * within the input string, you need to add {@code .*} to the beginning and end of your
      * regular expression. See {@link Pattern#matches}.
-     * 
+     *
      * <p>If the same regular expression is to be used for multiple operations, it may be more
      * efficient to reuse a compiled {@code Pattern}.
      *
@@ -1769,7 +1769,7 @@ outer:
      * Replaces all matches for {@code regularExpression} within this string with the given
      * {@code replacement}.
      * See {@link Pattern} for regular expression syntax.
-     * 
+     *
      * <p>If the same regular expression is to be used for multiple operations, it may be more
      * efficient to reuse a compiled {@code Pattern}.
      *
@@ -1788,7 +1788,7 @@ outer:
      * Replaces the first match for {@code regularExpression} within this string with the given
      * {@code replacement}.
      * See {@link Pattern} for regular expression syntax.
-     * 
+     *
      * <p>If the same regular expression is to be used for multiple operations, it may be more
      * efficient to reuse a compiled {@code Pattern}.
      *
@@ -1808,7 +1808,7 @@ outer:
      * Equivalent to {@code split(regularExpression, 0)}.
      * See {@link Pattern#split(CharSequence, int)} for an explanation of {@code limit}.
      * See {@link Pattern} for regular expression syntax.
-     * 
+     *
      * <p>If the same regular expression is to be used for multiple operations, it may be more
      * efficient to reuse a compiled {@code Pattern}.
      *
@@ -1827,7 +1827,7 @@ outer:
      * Splits this string using the supplied {@code regularExpression}.
      * See {@link Pattern#split(CharSequence, int)} for an explanation of {@code limit}.
      * See {@link Pattern} for regular expression syntax.
-     * 
+     *
      * <p>If the same regular expression is to be used for multiple operations, it may be more
      * efficient to reuse a compiled {@code Pattern}.
      *
@@ -1845,7 +1845,7 @@ outer:
     /**
      * Has the same result as the substring function, but is present so that
      * string may implement the CharSequence interface.
-     * 
+     *
      * @param start
      *            the offset the first character.
      * @param end
@@ -1863,7 +1863,7 @@ outer:
 
     /**
      * Returns the Unicode code point at the given {@code index}.
-     * 
+     *
      * @throws IndexOutOfBoundsException if {@code index < 0 || index >= length()}
      * @see Character#codePointAt(char[], int, int)
      * @since 1.5
@@ -1877,7 +1877,7 @@ outer:
 
     /**
      * Returns the Unicode code point that precedes the given {@code index}.
-     * 
+     *
      * @throws IndexOutOfBoundsException if {@code index < 1 || index > length()}
      * @see Character#codePointBefore(char[], int, int)
      * @since 1.5
@@ -1892,7 +1892,7 @@ outer:
     /**
      * Calculates the number of Unicode code points between {@code start}
      * and {@code end}.
-     * 
+     *
      * @param start
      *            the inclusive beginning index of the subsequence.
      * @param end
@@ -1951,7 +1951,7 @@ outer:
     /**
      * Returns a localized formatted string, using the supplied format and arguments,
      * using the user's default locale.
-     * 
+     *
      * <p>If you're formatting a string other than for human
      * consumption, you should use the {@code format(Locale, String, Object...)}
      * overload and supply {@code Locale.US}. See

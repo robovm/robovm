@@ -19,8 +19,6 @@ package java.security.spec;
 
 import java.math.BigInteger;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
  * The parameters specifying a <i>prime finite field</i> of an
  * elliptic curve.
@@ -32,7 +30,7 @@ public class ECFieldFp implements ECField {
     /**
      * Creates a new prime finite field of an elliptic curve with the specified
      * prime {@code p}.
-     * 
+     *
      * @param p
      *            the prime value {@code p}.
      * @throws IllegalArgumentException
@@ -42,16 +40,16 @@ public class ECFieldFp implements ECField {
         this.p = p;
 
         if (this.p == null) {
-            throw new NullPointerException(Messages.getString("security.83", "p")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("p == null");
         }
         if (this.p.signum() != 1) {
-            throw new IllegalArgumentException(Messages.getString("security.86", "p")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new IllegalArgumentException("p <= 0");
         }
     }
 
     /**
      * Returns the size of the finite field (in bits).
-     * 
+     *
      * @return the size of the finite field (in bits).
      */
     public int getFieldSize() {
@@ -60,7 +58,7 @@ public class ECFieldFp implements ECField {
 
     /**
      * Returns the prime value {@code p} for this finite field.
-     * 
+     *
      * @return the prime value {@code p} for this finite field.
      */
     public BigInteger getP() {
@@ -69,7 +67,7 @@ public class ECFieldFp implements ECField {
 
     /**
      * Returns whether the specified object is equal to this finite field.
-     * 
+     *
      * @param obj
      *            the object to compare to this finite field.
      * @return {@code true} if the specified object is equal to this finite field,
@@ -88,7 +86,7 @@ public class ECFieldFp implements ECField {
 
     /**
      * Returns the hashcode value for this finite field.
-     * 
+     *
      * @return the hashcode value for this finite field.
      */
     public int hashCode() {

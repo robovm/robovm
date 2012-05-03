@@ -20,12 +20,10 @@ package java.security;
 import java.nio.ByteBuffer;
 import java.security.spec.AlgorithmParameterSpec;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
  * {@code SignatureSpi} is the <i>Service Provider Interface</i> (<b>SPI</b>)
  * definition for {@link Signature}.
- * 
+ *
  * @see Signature
  */
 public abstract class SignatureSpi {
@@ -110,7 +108,7 @@ public abstract class SignatureSpi {
     /**
      * Updates the data to be verified or to be signed, using the specified
      * {@code ByteBuffer}.
-     * 
+     *
      * @param input
      *            the {@code ByteBuffer} to update with.
      * @throws RuntimeException
@@ -131,7 +129,7 @@ public abstract class SignatureSpi {
             int limit = input.limit();
             try {
                 engineUpdate(tmp, offset + position, limit - position);
-            } catch (SignatureException e) { 
+            } catch (SignatureException e) {
                 throw new RuntimeException(e); //Wrap SignatureException
             }
             input.position(limit);
@@ -182,20 +180,19 @@ public abstract class SignatureSpi {
      *             if {@code offset} or {@code len} are not valid in respect to
      *             {@code outbuf}.
      */
-    protected int engineSign(byte[] outbuf, int offset, int len)
-            throws SignatureException {
-        byte tmp[] = engineSign();
+    protected int engineSign(byte[] outbuf, int offset, int len) throws SignatureException {
+        byte[] tmp = engineSign();
         if (tmp == null) {
             return 0;
         }
         if (len < tmp.length) {
-            throw new SignatureException(Messages.getString("security.2D")); //$NON-NLS-1$
+            throw new SignatureException("The value of len parameter is less than the actual signature length");
         }
         if (offset < 0) {
-            throw new SignatureException(Messages.getString("security.1C")); //$NON-NLS-1$
+            throw new SignatureException("offset < 0");
         }
         if (offset + len > outbuf.length) {
-            throw new SignatureException(Messages.getString("security.05")); //$NON-NLS-1$
+            throw new SignatureException("offset + len > outbuf.length");
         }
         System.arraycopy(tmp, 0, outbuf, offset, tmp.length);
         return tmp.length;
@@ -246,7 +243,7 @@ public abstract class SignatureSpi {
      */
     protected boolean engineVerify(byte[] sigBytes, int offset, int length)
             throws SignatureException {
-        byte tmp[] = new byte[length];
+        byte[] tmp = new byte[length];
         System.arraycopy(sigBytes, offset, tmp, 0, length);
         return engineVerify(tmp);
     }

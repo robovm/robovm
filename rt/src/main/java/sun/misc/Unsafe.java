@@ -1,380 +1,342 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
+ * Copyright (C) 2007 The Android Open Source Project
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package sun.misc;
 
+import dalvik.system.VMStack;
 import java.lang.reflect.Field;
-
-import org.apache.harmony.kernel.vm.Objects;
-import org.apache.harmony.kernel.vm.Threads;
-import org.apache.harmony.kernel.vm.VM;
+import java.lang.reflect.Modifier;
 
 /**
- * <p>The Unsafe service.</p>
- *
+ * The package name notwithstanding, this class is the quasi-standard
+ * way for Java code to gain access to and use functionality which,
+ * when unsupervised, would allow one to break the pointer/type safety
+ * of Java.
  */
-public class Unsafe {
+public final class Unsafe {
+    /** non-null; unique instance of this class */
+    private static final Unsafe THE_ONE = new Unsafe();
 
-    private static final Unsafe INSTANCE = new Unsafe();
-    
     /**
-     * <p>
-     * Retrieves an instance of this service.
-     * </p>
-     * 
-     * @return An instance of Unsafe.
+     * This class is only privately instantiable.
+     */
+    private Unsafe() {}
+
+    /**
+     * Gets the unique instance of this class. This is only allowed in
+     * very limited situations.
      */
     public static Unsafe getUnsafe() {
-        /* Check that the caller of this method is in system code (i.e. on the
-         * bootclasspath).  Unsafe methods are not designed to be called directly
-         * by applications.  We assume that system code will not reveal the instance.
+        /*
+         * Only code on the bootclasspath is allowed to get at the
+         * Unsafe instance.
          */
-        if (VM.callerClassLoader() != null) {
-            throw new SecurityException("Unsafe");
+        ClassLoader calling = VMStack.getCallingClassLoader();
+        if ((calling != null) && (calling != Unsafe.class.getClassLoader())) {
+            throw new SecurityException("Unsafe access denied");
         }
 
-        // NullVM change. Not calling AccessController.doPrivileged() anymore.
-        return INSTANCE;
-//        return AccessController.doPrivileged(new PrivilegedAction<Unsafe>() {
-//            public Unsafe run() {
-//                return INSTANCE;
-//            }
-//        });
-    }
-    
-    private Objects objects;
-    private Threads threads;
-    
-    private Unsafe() {
-        super();
-        this.objects = Objects.getInstance();
-        this.threads = Threads.getInstance();
+        return THE_ONE;
     }
 
     /**
-     * <p>
-     * Retrieves the offset value of the {@link Field} for use by other methods
-     * in this class.
-     * </p>
-     * 
-     * @param field The {@link Field} to retrieve the offset for.
-     * @return The offset value.
+     * Gets the raw byte offset from the start of an object's memory to
+     * the memory used to store the indicated instance field.
+     *
+     * @param field non-null; the field in question, which must be an
+     * instance field
+     * @return the offset to the field
      */
-    public native long objectFieldOffset(Field field);
+    public long objectFieldOffset(Field field) {
+        if (Modifier.isStatic(field.getModifiers())) {
+            throw new IllegalArgumentException(
+                    "valid for instance fields only");
+        }
 
-    /**
-     * <p>
-     * Compares and swaps the value of an int-typed field on an Object instance.
-     * </p>
-     * 
-     * @param object The instance containing the field.
-     * @param fieldOffset The offset value of the field.
-     * @param expected The expected value of the field.
-     * @param update The new value to write to the field.
-     * @return <code>true</code> if the field was updated, <code>false</code>
-     *         otherwise.
-     */
-    public native boolean compareAndSwapInt(Object object, long fieldOffset, int expected, int update);
-
-    /**
-     * <p>
-     * Compares and swaps the value of a long-typed field on an Object instance.
-     * </p>
-     * 
-     * @param object The instance containing the field.
-     * @param fieldOffset The offset value of the field.
-     * @param expected The expected value of the field.
-     * @param update The new value to write to the field.
-     * @return <code>true</code> if the field was updated, <code>false</code>
-     *         otherwise.
-     */
-    public native boolean compareAndSwapLong(Object object, long fieldOffset, long expected,
-            long update);
-
-    /**
-     * <p>
-     * Compares and swaps the value of an Object-typed field on an Object
-     * instance.
-     * </p>
-     * 
-     * @param object The instance containing the field.
-     * @param fieldOffset The offset value of the field.
-     * @param expected The expected value of the field.
-     * @param update The new value to write to the field.
-     * @return <code>true</code> if the field was updated, <code>false</code>
-     *         otherwise.
-     */
-    public native boolean compareAndSwapObject(Object object, long fieldOffset, Object expected,
-            Object update);
-
-    /**
-     * <p>
-     * Retrieves the base offset for the array Class given. The Class passed
-     * MUST me any array type, such that the method {@link Class#isArray()}
-     * returns <code>true</code>. For example, <code>int[].class</code>.
-     * </p>
-     * 
-     * @param clazz The array Class object.
-     * @return The base offset value.
-     */
-    public int arrayBaseOffset(Class<?> clazz) {
-        return objects.getArrayBaseOffset(clazz);
+        return objectFieldOffset0(field);
     }
 
     /**
-     * <p>
-     * Retrieves the array index scale for the array Class given. The index
-     * scale is the value used to determine the offset of a particular element
-     * in the array given the array's base offset and an index. The following
-     * code snippet illustrates the usage.
-     * </p>
-     * 
-     * <pre>
-     * int base = unsafe.arrayBaseOffset(int[].class);
-     * 
-     * int scale = unsafe.arrayIndexScale(int[].class);
-     * 
-     * int elementIdx = 1;
-     * 
-     * int[] array = { 0, 1, 2 };
-     * 
-     * long offsetForIdx = base + (elementIdx * scale);
-     * </pre>
-     * 
-     * <p>
-     * The Class passed MUST me any array type, such that the method
-     * {@link Class#isArray()} returns <code>true</code>. For example,
-     * <code>int[].class</code>.
-     * </p>
-     * 
-     * @param clazz The array Class object.
-     * @return The index scale value.
+     * Helper for {@link #objectFieldOffset}, which does all the work,
+     * assuming the parameter is deemed valid.
+     *
+     * @param field non-null; the instance field
+     * @return the offset to the field
      */
-    public int arrayIndexScale(Class<?> clazz) {
-        return objects.getArrayIndexScale(clazz);
+    private static native long objectFieldOffset0(Field field);
+
+    /**
+     * Gets the offset from the start of an array object's memory to
+     * the memory used to store its initial (zeroeth) element.
+     *
+     * @param clazz non-null; class in question; must be an array class
+     * @return the offset to the initial element
+     */
+    public int arrayBaseOffset(Class clazz) {
+        if (! clazz.isArray()) {
+            throw new IllegalArgumentException(
+                    "valid for array classes only");
+        }
+
+        return arrayBaseOffset0(clazz);
     }
 
     /**
-     * Writes an int value to an Object's field using ordered
-     * setting. Ordered setting of a field is equivalent to the
-     * volatile setting of that field except that it does not ensure
-     * that the change is immediately available to other threads.
-     * 
-     * @param object The instance containing the field to write to.
-     * @param fieldOffset The offset of the int field in the object.
-     * @param newValue The value to write.
+     * Helper for {@link #arrayBaseOffset}, which does all the work,
+     * assuming the parameter is deemed valid.
+     *
+     * @return the offset to the field
      */
-    public void putOrderedInt(Object object, long fieldOffset,
-                              int newValue) {
-        // should probably implement less strict implementation
-        putIntVolatile(object, fieldOffset, newValue);
+    private static native int arrayBaseOffset0(Class clazz);
+
+    /**
+     * Gets the size of each element of the given array class.
+     *
+     * @param clazz non-null; class in question; must be an array class
+     * @return &gt; 0; the size of each element of the array
+     */
+    public int arrayIndexScale(Class clazz) {
+        if (! clazz.isArray()) {
+            throw new IllegalArgumentException(
+                    "valid for array classes only");
+        }
+
+        return arrayIndexScale0(clazz);
     }
 
     /**
-     * <p>
-     * Writes an int value to an Object's field as though it were declared
-     * <code>volatile</code>.
-     * </p>
-     * 
-     * @param object The instance containing the field to write to.
-     * @param fieldOffset The offset of the field to write to.
-     * @param newValue The value to write.
+     * Helper for {@link #arrayIndexScale}, which does all the work,
+     * assuming the parameter is deemed valid.
+     *
+     * @return the offset to the field
      */
-    public void putIntVolatile(Object object, long fieldOffset, int newValue) {
-        objects.putIntVolatile(object, fieldOffset, newValue);
-    }
+    private static native int arrayIndexScale0(Class clazz);
 
     /**
-     * <p>
-     * Reads an int value from an Object's field as though it were declared
-     * <code>volatile</code>.
-     * </p>
-     * 
-     * @param object The instance containing the field to read from.
-     * @param fieldOffset The offset of the field to read from.
-     * @return The value that was read.
+     * Performs a compare-and-set operation on an <code>int</code>
+     * field within the given object.
+     *
+     * @param obj non-null; object containing the field
+     * @param offset offset to the field within <code>obj</code>
+     * @param expectedValue expected value of the field
+     * @param newValue new value to store in the field if the contents are
+     * as expected
+     * @return <code>true</code> if the new value was in fact stored, and
+     * <code>false</code> if not
      */
-    public int getIntVolatile(Object object, long fieldOffset) {
-        return objects.getIntVolatile(object, fieldOffset);
-    }
+    public native boolean compareAndSwapInt(Object obj, long offset,
+            int expectedValue, int newValue);
 
     /**
-     * Writes a long value to an Object's field using ordered
-     * setting. Ordered setting of a field is equivalent to the
-     * volatile setting of that field except that it does not ensure
-     * that the change is immediately available to other threads.
-     * 
-     * @param object The instance containing the field to write to.
-     * @param fieldOffset The offset of the field to write to.
-     * @param newValue The value to write.
+     * Performs a compare-and-set operation on a <code>long</code>
+     * field within the given object.
+     *
+     * @param obj non-null; object containing the field
+     * @param offset offset to the field within <code>obj</code>
+     * @param expectedValue expected value of the field
+     * @param newValue new value to store in the field if the contents are
+     * as expected
+     * @return <code>true</code> if the new value was in fact stored, and
+     * <code>false</code> if not
      */
-    public void putOrderedLong(Object object, long fieldOffset,
-                               long newValue) {
-        // should probably implement less strict implementation
-        putLongVolatile(object, fieldOffset, newValue);
-    }
+    public native boolean compareAndSwapLong(Object obj, long offset,
+            long expectedValue, long newValue);
 
     /**
-     * <p>
-     * Writes a long value to an Object's field as though it were declared
-     * <code>volatile</code>.
-     * </p>
-     * 
-     * @param object The instance containing the field to write to.
-     * @param fieldOffset The offset of the field to write to.
-     * @param newValue The value to write.
+     * Performs a compare-and-set operation on an <code>Object</code>
+     * field (that is, a reference field) within the given object.
+     *
+     * @param obj non-null; object containing the field
+     * @param offset offset to the field within <code>obj</code>
+     * @param expectedValue expected value of the field
+     * @param newValue new value to store in the field if the contents are
+     * as expected
+     * @return <code>true</code> if the new value was in fact stored, and
+     * <code>false</code> if not
      */
-    public void putLongVolatile(Object object, long fieldOffset, long newValue) {
-        objects.putLongVolatile(object, fieldOffset, newValue);
-    }
+    public native boolean compareAndSwapObject(Object obj, long offset,
+            Object expectedValue, Object newValue);
 
     /**
-     * <p>
-     * Reads a long value from an Object's field as though it were declared
-     * <code>volatile</code>.
-     * </p>
-     * 
-     * @param object The instance containing the field to read from.
-     * @param fieldOffset The offset of the field to read from.
-     * @return The value that was read.
+     * Gets an <code>int</code> field from the given object,
+     * using <code>volatile</code> semantics.
+     *
+     * @param obj non-null; object containing the field
+     * @param offset offset to the field within <code>obj</code>
+     * @return the retrieved value
      */
-    public long getLongVolatile(Object object, long fieldOffset) {
-        return objects.getLongVolatile(object, fieldOffset);
-    }
+    public native int getIntVolatile(Object obj, long offset);
 
     /**
-     * <p>
-     * Writes an Object reference value to an Object's field.
-     * </p>
-     * 
-     * @param object The instance containing the field to write to.
-     * @param fieldOffset The offset of the field to write to.
-     * @param newValue The value to write.
+     * Stores an <code>int</code> field into the given object,
+     * using <code>volatile</code> semantics.
+     *
+     * @param obj non-null; object containing the field
+     * @param offset offset to the field within <code>obj</code>
+     * @param newValue the value to store
      */
-    public void putObject(Object object, long fieldOffset,
-                          Object newValue) {
-        // should probably implement less strict implementation
-        putOrderedObject(object, fieldOffset, newValue);
-    }
+    public native void putIntVolatile(Object obj, long offset, int newValue);
 
     /**
-     * Writes an Object reference value to an Object's field using
-     * ordered setting. Ordered setting of a field is equivalent to
-     * the volatile setting of that field except that it does not
-     * ensure that the change is immediately available to other
-     * threads.
-     * 
-     * @param object The instance containing the field to write to.
-     * @param fieldOffset The offset of the field to write to.
-     * @param newValue The value to write.
+     * Gets a <code>long</code> field from the given object,
+     * using <code>volatile</code> semantics.
+     *
+     * @param obj non-null; object containing the field
+     * @param offset offset to the field within <code>obj</code>
+     * @return the retrieved value
      */
-    public void putOrderedObject(Object object, long fieldOffset,
-                                 Object newValue) {
-        // should probably implement less strict implementation
-        putObjectVolatile(object, fieldOffset, newValue);
-    }
+    public native long getLongVolatile(Object obj, long offset);
 
     /**
-     * <p>
-     * Writes an Object reference value to an Object's field as though it were
-     * declared <code>volatile</code>.
-     * </p>
-     * 
-     * @param object The instance containing the field to write to.
-     * @param fieldOffset The offset of the field to write to.
-     * @param newValue The value to write.
+     * Stores a <code>long</code> field into the given object,
+     * using <code>volatile</code> semantics.
+     *
+     * @param obj non-null; object containing the field
+     * @param offset offset to the field within <code>obj</code>
+     * @param newValue the value to store
      */
-    public void putObjectVolatile(Object object, long fieldOffset, Object newValue) {
-        objects.putObjectVolatile(object, fieldOffset, newValue);
-    }
+    public native void putLongVolatile(Object obj, long offset, long newValue);
 
     /**
-     * <p>
-     * Writes an int value to an Object's field as though it were declared
-     * <code>volatile</code>.
-     * </p>
-     * 
-     * @param object The instance containing the field to write to.
-     * @param fieldOffset The offset of the field to write to.
-     * @param newValue The value to write.
+     * Gets an <code>Object</code> field from the given object,
+     * using <code>volatile</code> semantics.
+     *
+     * @param obj non-null; object containing the field
+     * @param offset offset to the field within <code>obj</code>
+     * @return the retrieved value
      */
-    public Object getObjectVolatile(Object object, long fieldOffset) {
-        return objects.getObjectVolatile(object, fieldOffset);
-    }
+    public native Object getObjectVolatile(Object obj, long offset);
 
     /**
-     * <p>
-     * Writes a long value to an Object's field.
-     * </p>
-     * 
-     * @param object The instance containing the field to write to.
-     * @param fieldOffset The offset of the field to write to.
-     * @param newValue The value to write.
+     * Stores an <code>Object</code> field into the given object,
+     * using <code>volatile</code> semantics.
+     *
+     * @param obj non-null; object containing the field
+     * @param offset offset to the field within <code>obj</code>
+     * @param newValue the value to store
      */
-    public void putLong(Object object, long fieldOffset, long newValue) {
-        objects.putLong(object, fieldOffset, newValue);
-    }
+    public native void putObjectVolatile(Object obj, long offset,
+            Object newValue);
 
     /**
-     * <p>
-     * Reads a long value from an Object's field.
-     * </p>
-     * 
-     * @param object The instance containing the field to read from.
-     * @param fieldOffset The offset of the field to read from.
-     * @return The value that was read.
+     * Gets an <code>int</code> field from the given object.
+     *
+     * @param obj non-null; object containing the field
+     * @param offset offset to the field within <code>obj</code>
+     * @return the retrieved value
      */
-    public long getLong(Object object, long fieldOffset) {
-        return objects.getLong(object, fieldOffset);
-    }
+    public native int getInt(Object obj, long offset);
 
     /**
-     * <p>
-     * Unparks the {@link Thread} that's passed.
-     * </p>
-     * 
-     * @param thread The {@link Thread} to unpark.
+     * Stores an <code>int</code> field into the given object.
+     *
+     * @param obj non-null; object containing the field
+     * @param offset offset to the field within <code>obj</code>
+     * @param newValue the value to store
      */
-    public void unpark(Thread thread) {
-        threads.unpark(thread);
-    }
+    public native void putInt(Object obj, long offset, int newValue);
 
     /**
-     * <p>
-     * Parks the {@link Thread#currentThread() current thread} either for a set
-     * number of nanoseconds or until a future point in time.
-     * </p>
-     * 
-     * @param timestamp If <code>true</code> <code>nanosOrTimestamp</code>
-     *        should be consider as a timestamp based on
-     *        {@link System#currentTimeMillis()}. If <code>false</code>,
-     *        then <code>nanosOrTimestamp</code> should be considered as a
-     *        relative number of nanoseconds from when this method was called;
-     *        the value <code>0L</code> can be used in conjunction with this
-     *        to indicate that time is not a factor when parking the thread.
-     * @param nanosOrTimestamp Either a relative number of nanoseconds or a
-     *        timestamp in milliseconds as defined by
-     *        {@link System#currentTimeMillis()}.
+     * Lazy set an int field.
      */
-    public void park(boolean timestamp, long nanosOrTimestamp) {
-        if (timestamp) {
-            threads.parkFor(nanosOrTimestamp);
+    public native void putOrderedInt(Object obj, long offset, int newValue);
+
+    /**
+     * Gets a <code>long</code> field from the given object.
+     *
+     * @param obj non-null; object containing the field
+     * @param offset offset to the field within <code>obj</code>
+     * @return the retrieved value
+     */
+    public native long getLong(Object obj, long offset);
+
+    /**
+     * Stores a <code>long</code> field into the given object.
+     *
+     * @param obj non-null; object containing the field
+     * @param offset offset to the field within <code>obj</code>
+     * @param newValue the value to store
+     */
+    public native void putLong(Object obj, long offset, long newValue);
+
+    /**
+     * Lazy set a long field.
+     */
+    public native void putOrderedLong(Object obj, long offset, long newValue);
+
+    /**
+     * Gets an <code>Object</code> field from the given object.
+     *
+     * @param obj non-null; object containing the field
+     * @param offset offset to the field within <code>obj</code>
+     * @return the retrieved value
+     */
+    public native Object getObject(Object obj, long offset);
+
+    /**
+     * Stores an <code>Object</code> field into the given object.
+     *
+     * @param obj non-null; object containing the field
+     * @param offset offset to the field within <code>obj</code>
+     * @param newValue the value to store
+     */
+    public native void putObject(Object obj, long offset, Object newValue);
+
+    /**
+     * Lazy set an object field.
+     */
+    public native void putOrderedObject(Object obj, long offset,
+            Object newValue);
+
+    /**
+     * Parks the calling thread for the specified amount of time,
+     * unless the "permit" for the thread is already available (due to
+     * a previous call to {@link #unpark}. This method may also return
+     * spuriously (that is, without the thread being told to unpark
+     * and without the indicated amount of time elapsing).
+     *
+     * <p>See {@link java.util.concurrent.locks.LockSupport} for more
+     * in-depth information of the behavior of this method.</p>
+     *
+     * @param absolute whether the given time value is absolute
+     * milliseconds-since-the-epoch (<code>true</code>) or relative
+     * nanoseconds-from-now (<code>false</code>)
+     * @param time the (absolute millis or relative nanos) time value
+     */
+    public void park(boolean absolute, long time) {
+        if (absolute) {
+            Thread.currentThread().parkUntil(time);
         } else {
-            threads.parkUntil(nanosOrTimestamp);
+            Thread.currentThread().parkFor(time);
+        }
+    }
+
+    /**
+     * Unparks the given object, which must be a {@link Thread}.
+     *
+     * <p>See {@link java.util.concurrent.locks.LockSupport} for more
+     * in-depth information of the behavior of this method.</p>
+     *
+     * @param obj non-null; the object to unpark
+     */
+    public void unpark(Object obj) {
+        if (obj instanceof Thread) {
+            ((Thread) obj).unpark();
+        } else {
+            throw new IllegalArgumentException("valid for Threads only");
         }
     }
 }

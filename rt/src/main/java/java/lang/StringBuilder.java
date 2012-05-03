@@ -33,7 +33,7 @@ import java.io.Serializable;
  * <p>The majority of the modification methods on this class return {@code
  * this} so that method calls can be chained together. For example:
  * {@code new StringBuilder("a").append("b").append("c").toString()}.
- * 
+ *
  * @see CharSequence
  * @see Appendable
  * @see StringBuffer
@@ -48,7 +48,7 @@ public final class StringBuilder extends AbstractStringBuilder implements
 
     /**
      * Constructs an instance with an initial capacity of {@code 16}.
-     * 
+     *
      * @see #capacity()
      */
     public StringBuilder() {
@@ -329,7 +329,7 @@ public final class StringBuilder extends AbstractStringBuilder implements
     /**
      * Deletes a sequence of characters specified by {@code start} and {@code
      * end}. Shifts any remaining characters to the left.
-     * 
+     *
      * @param start
      *            the inclusive start index.
      * @param end
@@ -347,7 +347,7 @@ public final class StringBuilder extends AbstractStringBuilder implements
     /**
      * Deletes the character at the specified index. shifts any remaining
      * characters to the left.
-     * 
+     *
      * @param index
      *            the index of the character to delete.
      * @return this builder.
@@ -619,7 +619,7 @@ public final class StringBuilder extends AbstractStringBuilder implements
     /**
      * Replaces the specified subsequence in this builder with the specified
      * string.
-     * 
+     *
      * @param start
      *            the inclusive begin index.
      * @param end
@@ -640,7 +640,7 @@ public final class StringBuilder extends AbstractStringBuilder implements
 
     /**
      * Reverses the order of characters in this builder.
-     * 
+     *
      * @return this buffer.
      */
     public StringBuilder reverse() {
@@ -650,7 +650,7 @@ public final class StringBuilder extends AbstractStringBuilder implements
 
     /**
      * Returns the contents of this builder.
-     * 
+     *
      * @return the string representation of the data in this builder.
      */
     @Override

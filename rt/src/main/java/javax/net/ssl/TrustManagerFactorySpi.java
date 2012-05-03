@@ -31,7 +31,6 @@ public abstract class TrustManagerFactorySpi {
      * Creates a new {@code TrustManagerFactorySpi} instance.
      */
     public TrustManagerFactorySpi() {
-        super();
     }
 
     /**

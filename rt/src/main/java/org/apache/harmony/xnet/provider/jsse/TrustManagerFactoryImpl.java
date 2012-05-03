@@ -17,25 +17,20 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.security.AccessController;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
-
 import javax.net.ssl.ManagerFactoryParameters;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactorySpi;
 
 /**
- * 
+ *
  * TrustManagerFactory service provider interface implementation.
- * 
+ *
  * @see javax.net.ssl.TrustManagerFactorySpi
  */
 public class TrustManagerFactoryImpl extends TrustManagerFactorySpi {
@@ -50,58 +45,21 @@ public class TrustManagerFactoryImpl extends TrustManagerFactorySpi {
         if (ks != null) {
             keyStore = ks;
         } else {
-            keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-            String keyStoreName = AccessController
-                    .doPrivileged(new java.security.PrivilegedAction<String>() {
-                        public String run() {
-                            return System
-                                    .getProperty("javax.net.ssl.trustStore");
-                        }
-                    });
-            String keyStorePwd = null;
-            if (keyStoreName == null || keyStoreName.equalsIgnoreCase("NONE")
-                    || keyStoreName.length() == 0) {
-                try {
-                    keyStore.load(null, null);
-                } catch (IOException e) {
-                    throw new KeyStoreException(e);
-                } catch (CertificateException e) {
-                    throw new KeyStoreException(e);
-                } catch (NoSuchAlgorithmException e) {
-                    throw new KeyStoreException(e);
-                }
-            } else {
-                keyStorePwd = AccessController
-                        .doPrivileged(new java.security.PrivilegedAction<String>() {
-                            public String run() {
-                                return System
-                                        .getProperty("javax.net.ssl.trustStorePassword");
-                            }
-                        });
-                char[] pwd;
-                if (keyStorePwd == null) {
-                    pwd = new char[0];
-                } else {
-                    pwd = keyStorePwd.toCharArray();
-                }
-                try {
-                    keyStore.load(new FileInputStream(new File(keyStoreName)), pwd);
-                } catch (FileNotFoundException e) {
-                    throw new KeyStoreException(e);
-                } catch (IOException e) {
-                    throw new KeyStoreException(e);
-                } catch (CertificateException e) {
-                    throw new KeyStoreException(e);
-                } catch (NoSuchAlgorithmException e) {
-                    throw new KeyStoreException(e);
-                }
+            keyStore = KeyStore.getInstance("AndroidCAStore");
+            try {
+                keyStore.load(null, null);
+            } catch (IOException e) {
+                throw new KeyStoreException(e);
+            } catch (CertificateException e) {
+                throw new KeyStoreException(e);
+            } catch (NoSuchAlgorithmException e) {
+                throw new KeyStoreException(e);
             }
         }
-
     }
 
     /**
-     * @see javax.net.ssl.engineInit(ManagerFactoryParameters)
+     * @see javax.net.ssl#engineInit(ManagerFactoryParameters)
      */
     @Override
     public void engineInit(ManagerFactoryParameters spec)
@@ -111,7 +69,7 @@ public class TrustManagerFactoryImpl extends TrustManagerFactorySpi {
     }
 
     /**
-     * @see javax.net.ssl.engineGetTrustManagers()
+     * @see javax.net.ssl#engineGetTrustManagers()
      */
     @Override
     public TrustManager[] engineGetTrustManagers() {

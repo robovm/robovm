@@ -22,89 +22,14 @@ import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.login.LoginException;
 
 /**
- * {@code AuthProvider} is an abstract superclass for Java Security {@code
- * Provider} which provide login and logout.
+ * Legacy security code; do not use.
  */
 public abstract class AuthProvider extends Provider {
+    protected AuthProvider(String name, double version, String info) { super(name, version, info); }
 
-    /**
-     * @serial
-     */
-    private static final long serialVersionUID = 4197859053084546461L;
-
-    /**
-     * Constructs a new instance of {@code AuthProvider} with its name, version
-     * and description.
-     * 
-     * @param name
-     *            the name of the provider.
-     * @param version
-     *            the version of the provider.
-     * @param info
-     *            a description of the provider.
-     */
-    protected AuthProvider(String name, double version, String info) {
-        super(name, version, info); 
-    }
-    
-    /**
-     * Performs a login into this {@code AuthProvider}. The specified {@code
-     * CallbackHandler} is used to obtain information from the caller.
-     * <p>
-     * If a {@code SecurityManager} is installed, code calling this method needs
-     * the {@code SecurityPermission} {@code authProvider.NAME} (where NAME is
-     * the provider name) to be granted, otherwise a {@code SecurityException}
-     * will be thrown.
-     * 
-     * @param subject
-     *            the subject that is used to login.
-     * @param handler
-     *            the handler to obtain authentication information from the
-     *            caller.
-     * @throws LoginException
-     *             if the login fails.
-     * @throws SecurityException
-     *             if a {@code SecurityManager} is installed and the caller does
-     *             not have permission to invoke this method.
-     */
     public abstract void login(Subject subject, CallbackHandler handler) throws LoginException;
-    
-    /**
-     * Performs a logout from this {@code AuthProvider}.
-     * <p>
-     * If a {@code SecurityManager} is installed, code calling this method needs
-     * the {@code SecurityPermission} {@code authProvider.NAME} (where NAME is
-     * the provider name) to be granted, otherwise a {@code SecurityException}
-     * will be thrown.
-     *
-     * @throws LoginException
-     *             if the logout fails.
-     * @throws SecurityException
-     *             if a {@code SecurityManager} is installed and the caller does
-     *             not have permission to invoke this method.
-     */
+
     public abstract void logout() throws LoginException;
-    
-    /**
-     * Sets the {@code CallbackHandler} to this {@code AuthProvider}. If no
-     * handler is passed to the {@link #login(Subject, CallbackHandler)} method,
-     * this {@code AuthProvider} is using the specified {@code CallbackHandler}.
-     * <p>
-     * If no handler is set, this {@code AuthProvider} uses the {@code
-     * CallbackHandler} specified by the {@code
-     * auth.login.defaultCallbackHandler} security property.
-     * <p>
-     * If a {@code SecurityManager} is installed, code calling this method needs
-     * the {@code SecurityPermission} {@code authProvider.NAME} (where NAME is
-     * the provider name) to be granted, otherwise a {@code SecurityException}
-     * will be thrown.
-     *
-     * @param handler
-     *            the handler to obtain authentication information from the
-     *            caller.
-     * @throws SecurityException
-     *             if a {@code SecurityManager} is installed and the caller does
-     *             not have permission to invoke this method.
-     */
+
     public abstract void setCallbackHandler(CallbackHandler handler);
 }

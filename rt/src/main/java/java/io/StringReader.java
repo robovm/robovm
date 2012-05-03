@@ -17,12 +17,12 @@
 
 package java.io;
 
-import org.apache.harmony.luni.internal.nls.Messages;
+import java.util.Arrays;
 
 /**
  * A specialized {@link Reader} that reads characters from a {@code String} in
  * a sequential manner.
- * 
+ *
  * @see StringWriter
  */
 public class StringReader extends Reader {
@@ -38,12 +38,11 @@ public class StringReader extends Reader {
      * Construct a new {@code StringReader} with {@code str} as source. The size
      * of the reader is set to the {@code length()} of the string and the Object
      * to synchronize access through is set to {@code str}.
-     * 
+     *
      * @param str
      *            the source string for this reader.
      */
     public StringReader(String str) {
-        super();
         this.str = str;
         this.count = str.length();
     }
@@ -60,7 +59,7 @@ public class StringReader extends Reader {
 
     /**
      * Returns a boolean indicating whether this reader is closed.
-     * 
+     *
      * @return {@code true} if closed, otherwise {@code false}.
      */
     private boolean isClosed() {
@@ -71,7 +70,7 @@ public class StringReader extends Reader {
      * Sets a mark position in this reader. The parameter {@code readLimit} is
      * ignored for this class. Calling {@code reset()} will reposition the
      * reader back to the marked position.
-     * 
+     *
      * @param readLimit
      *            ignored for {@code StringReader} instances.
      * @throws IllegalArgumentException
@@ -88,17 +87,21 @@ public class StringReader extends Reader {
         }
 
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.D6")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             markpos = pos;
+        }
+    }
+
+    private void checkNotClosed() throws IOException {
+        if (isClosed()) {
+            throw new IOException("StringReader is closed");
         }
     }
 
     /**
      * Indicates whether this reader supports the {@code mark()} and {@code
      * reset()} methods. This implementation returns {@code true}.
-     * 
+     *
      * @return always {@code true}.
      */
     @Override
@@ -110,7 +113,7 @@ public class StringReader extends Reader {
      * Reads a single character from the source string and returns it as an
      * integer with the two higher-order bytes set to 0. Returns -1 if the end
      * of the source string has been reached.
-     * 
+     *
      * @return the character read or -1 if the end of the source string has been
      *         reached.
      * @throws IOException
@@ -119,9 +122,7 @@ public class StringReader extends Reader {
     @Override
     public int read() throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.D6")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             if (pos != count) {
                 return str.charAt(pos++);
             }
@@ -134,7 +135,7 @@ public class StringReader extends Reader {
      * them at {@code offset} in the character array {@code buf}. Returns the
      * number of characters actually read or -1 if the end of the source string
      * has been reached.
-     * 
+     *
      * @param buf
      *            the character array to store the characters read.
      * @param offset
@@ -151,20 +152,10 @@ public class StringReader extends Reader {
      *             if this reader is closed.
      */
     @Override
-    public int read(char buf[], int offset, int len) throws IOException {
+    public int read(char[] buf, int offset, int len) throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                // luni.D6=StringReader is closed.
-                throw new IOException(Messages.getString("luni.D6")); //$NON-NLS-1$
-            }
-            if (offset < 0 || offset > buf.length) {
-                // luni.12=Offset out of bounds \: {0}
-                throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.12", offset)); //$NON-NLS-1$
-            }
-            if (len < 0 || len > buf.length - offset) {
-                // luni.18=Length out of bounds \: {0}
-                throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.18", len)); //$NON-NLS-1$
-            }
+            checkNotClosed();
+            Arrays.checkOffsetAndCount(buf.length, offset, len);
             if (len == 0) {
                 return 0;
             }
@@ -182,7 +173,7 @@ public class StringReader extends Reader {
     /**
      * Indicates whether this reader is ready to be read without blocking. This
      * implementation always returns {@code true}.
-     * 
+     *
      * @return always {@code true}.
      * @throws IOException
      *             if this reader is closed.
@@ -192,9 +183,7 @@ public class StringReader extends Reader {
     @Override
     public boolean ready() throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.D6")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             return true;
         }
     }
@@ -204,7 +193,7 @@ public class StringReader extends Reader {
      * Invocations of {@code read()} and {@code skip()} will occur from this new
      * location. If this reader has not been marked, it is reset to the
      * beginning of the source string.
-     * 
+     *
      * @throws IOException
      *             if this reader is closed.
      * @see #mark(int)
@@ -213,21 +202,19 @@ public class StringReader extends Reader {
     @Override
     public void reset() throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.D6")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             pos = markpos != -1 ? markpos : 0;
         }
     }
 
     /**
-     * Moves {@code ns} characters in the source string. Unlike the {@link
+     * Moves {@code charCount} characters in the source string. Unlike the {@link
      * Reader#skip(long) overridden method}, this method may skip negative skip
      * distances: this rewinds the input so that characters may be read again.
      * When the end of the source string has been reached, the input cannot be
      * rewound.
      *
-     * @param ns
+     * @param charCount
      *            the maximum number of characters to skip. Positive values skip
      *            forward; negative values skip backward.
      * @return the number of characters actually skipped. This is bounded below
@@ -241,23 +228,21 @@ public class StringReader extends Reader {
      * @see #reset()
      */
     @Override
-    public long skip(long ns) throws IOException {
+    public long skip(long charCount) throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.D6")); //$NON-NLS-1$
-            }
+            checkNotClosed();
 
             int minSkip = -pos;
             int maxSkip = count - pos;
 
-            if (maxSkip == 0 || ns > maxSkip) {
-                ns = maxSkip; // no rewinding if we're at the end
-            } else if (ns < minSkip) {
-                ns = minSkip;
+            if (maxSkip == 0 || charCount > maxSkip) {
+                charCount = maxSkip; // no rewinding if we're at the end
+            } else if (charCount < minSkip) {
+                charCount = minSkip;
             }
 
-            pos += ns;
-            return ns;
+            pos += charCount;
+            return charCount;
         }
     }
 }

@@ -21,7 +21,7 @@ package java.io;
  * Signals some sort of problem during either serialization or deserialization
  * of objects. This is actually the superclass of several other, more specific
  * exception classes.
- * 
+ *
  * @see InvalidObjectException
  * @see NotActiveException
  * @see NotSerializableException
@@ -38,13 +38,12 @@ public abstract class ObjectStreamException extends IOException {
      * filled in.
      */
     protected ObjectStreamException() {
-        super();
     }
 
     /**
      * Constructs a new {@code ObjectStreamException} with its stack trace and
      * detail message filled in.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

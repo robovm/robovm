@@ -18,12 +18,7 @@
 package java.security;
 
 /**
- * {@code DomainCombiner} is used to update and optimize {@code
- * ProtectionDomain}s from an {@code AccessControlContext}.
- * 
- * @see AccessControlContext
- * @see AccessControlContext#AccessControlContext(AccessControlContext,
- *      DomainCombiner)
+ * Legacy security code; do not use.
  */
 public interface DomainCombiner {
 
@@ -33,15 +28,11 @@ public interface DomainCombiner {
      * duplicates and perform other optimizations.
      *
      * @param current
-     *            the protection domains of the current execution thread (since
-     *            the most recent call to {@link AccessController#doPrivileged}
-     *            ).
+     *            the protection domains of the current execution thread
      * @param assigned
-     *            the protection domains of the parent thread, maybe {@code
-     *            null}.
+     *            the protection domains of the parent thread, may be {@code null}.
      * @return a single {@code ProtectionDomain} array computed from the two
      *         provided arrays.
      */
-    ProtectionDomain[] combine(ProtectionDomain[] current,
-            ProtectionDomain[] assigned);
+    ProtectionDomain[] combine(ProtectionDomain[] current, ProtectionDomain[] assigned);
 }

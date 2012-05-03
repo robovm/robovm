@@ -27,7 +27,7 @@ public class CertificateExpiredException extends CertificateException {
     /**
      * Creates a new {@code CertificateExpiredException} with the specified
      * message.
-     * 
+     *
      * @param msg
      *            the detail message for this exception
      */

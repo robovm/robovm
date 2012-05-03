@@ -35,7 +35,7 @@ public class DSAPrivateKeySpec implements KeySpec {
     /**
      * Creates a new {@code DSAPrivateKeySpec} with the specified private key,
      * prime, sub-prime and base.
-     * 
+     *
      * @param x
      *            the private key {@code x}.
      * @param p
@@ -55,7 +55,7 @@ public class DSAPrivateKeySpec implements KeySpec {
 
     /**
      * Returns the base {@code g}.
-     * 
+     *
      * @return the base {@code g}.
      */
     public BigInteger getG() {
@@ -64,7 +64,7 @@ public class DSAPrivateKeySpec implements KeySpec {
 
     /**
      * Returns the prime {@code p}.
-     * 
+     *
      * @return the prime {@code p}.
      */
     public BigInteger getP() {
@@ -73,7 +73,7 @@ public class DSAPrivateKeySpec implements KeySpec {
 
     /**
      * Returns the sub-prime {@code q}.
-     * 
+     *
      * @return the sub-prime {@code q}.
      */
     public BigInteger getQ() {
@@ -82,7 +82,7 @@ public class DSAPrivateKeySpec implements KeySpec {
 
     /**
      * Returns the private key {@code x}.
-     * 
+     *
      * @return the private key {@code x}.
      */
     public BigInteger getX() {

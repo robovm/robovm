@@ -26,7 +26,7 @@ import java.io.OutputStream;
  * Note: A {@code Certificate} instances does not make any statement about the
  * validity of itself. It's in the responsibility of the application to verify
  * the validity of its certificates.
- * 
+ *
  * @deprecated Replaced by behavior in {@link java.security.cert}
  * @see java.security.cert.Certificate
  */

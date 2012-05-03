@@ -25,31 +25,14 @@ package java.lang.ref;
  * @since 1.2
  */
 public class ReferenceQueue<T> {
-    
-    private static final int DEFAULT_QUEUE_SIZE = 128;
-    
-    private Reference<? extends T>[] references;
+    private static final int NANOS_PER_MILLI = 1000000;
 
-    private int head;
-    
-    private int tail;
+    private Reference<? extends T> head;
 
-    private boolean empty;
-    
     /**
      * Constructs a new instance of this class.
      */
     public ReferenceQueue() {
-        super();
-        references = newArray(DEFAULT_QUEUE_SIZE);
-        head = 0;
-        tail = 0;
-        empty = true;
-    }
-    
-    @SuppressWarnings("unchecked")
-    private Reference<? extends T>[] newArray(int size) {
-        return new Reference[size];
     }
 
     /**
@@ -59,33 +42,32 @@ public class ReferenceQueue<T> {
      * @return the next available reference, or {@code null} if no reference is
      *         immediately available
      */
-    public Reference<? extends T> poll() {
-        Reference<? extends T> ref;
-
-        synchronized (this) {
-            if (empty) {
-                return null;
-            }
-            ref = references[head++];
-            ref.dequeue();
-            if (head == references.length) {
-                head = 0;
-            }
-            if (head == tail) {
-                empty = true;
-            }
+    @SuppressWarnings("unchecked")
+    public synchronized Reference<? extends T> poll() {
+        if (head == null) {
+            return null;
         }
-        return ref;
+
+        Reference<? extends T> ret;
+
+        ret = head;
+
+        if (head == head.queueNext) {
+            head = null;
+        } else {
+            head = head.queueNext;
+        }
+
+        ret.queueNext = null;
+
+        return ret;
     }
 
     /**
      * Returns the next available reference from the queue, removing it in the
      * process. Waits indefinitely for a reference to become available.
      *
-     * @return the next available reference
-     *
-     * @throws InterruptedException
-     *             if the blocking call was interrupted for some reason
+     * @throws InterruptedException if the blocking call was interrupted
      */
     public Reference<? extends T> remove() throws InterruptedException {
         return remove(0L);
@@ -96,43 +78,52 @@ public class ReferenceQueue<T> {
      * process. Waits for a reference to become available or the given timeout
      * period to elapse, whichever happens first.
      *
-     * @param timeout
-     *            maximum time (in ms) to spend waiting for a reference object
-     *            to become available. A value of zero results in the method
-     *            waiting indefinitely.
+     * @param timeoutMillis maximum time to spend waiting for a reference object
+     *     to become available. A value of {@code 0} results in the method
+     *     waiting indefinitely.
      * @return the next available reference, or {@code null} if no reference
-     *         becomes available within the timeout period
-     * @throws IllegalArgumentException
-     *             if the wait period is negative.
-     * @throws InterruptedException
-     *             if the blocking call was interrupted for some reason
+     *     becomes available within the timeout period
+     * @throws IllegalArgumentException if {@code timeoutMillis < 0}.
+     * @throws InterruptedException if the blocking call was interrupted
      */
-    public Reference<? extends T> remove(long timeout) throws IllegalArgumentException,
-            InterruptedException {
-        if (timeout < 0) {
-            throw new IllegalArgumentException();
+    public synchronized Reference<? extends T> remove(long timeoutMillis)
+            throws InterruptedException {
+        if (timeoutMillis < 0) {
+            throw new IllegalArgumentException("timeout < 0: " + timeoutMillis);
         }
 
-        Reference<? extends T> ref;
-        synchronized (this) {
-            if (empty) {
-                wait(timeout);
-                if (empty) {
-                    return null;
-                }
-            }
-            ref = references[head++];
-            ref.dequeue();
-            if (head == references.length) {
-                head = 0;
-            }
-            if (head == tail) {
-                empty = true;
-            } else {
-                notifyAll();
-            }
+        if (head != null) {
+            return poll();
         }
-        return ref;
+
+        // avoid overflow: if total > 292 years, just wait forever
+        if (timeoutMillis == 0 || (timeoutMillis > Long.MAX_VALUE / NANOS_PER_MILLI)) {
+            do {
+                wait(0);
+            } while (head == null);
+            return poll();
+        }
+
+        // guaranteed to not overflow
+        long nanosToWait = timeoutMillis * NANOS_PER_MILLI;
+        int timeoutNanos = 0;
+
+        // wait until notified or the timeout has elapsed
+        long startTime = System.nanoTime();
+        while (true) {
+            wait(timeoutMillis, timeoutNanos);
+            if (head != null) {
+                break;
+            }
+            long nanosElapsed = System.nanoTime() - startTime;
+            long nanosRemaining = nanosToWait - nanosElapsed;
+            if (nanosRemaining <= 0) {
+                break;
+            }
+            timeoutMillis = nanosRemaining / NANOS_PER_MILLI;
+            timeoutNanos = (int) (nanosRemaining - timeoutMillis * NANOS_PER_MILLI);
+        }
+        return poll();
     }
 
     /**
@@ -143,27 +134,29 @@ public class ReferenceQueue<T> {
      * @return boolean true if reference is enqueued. false if reference failed
      *         to enqueue.
      */
-    boolean enqueue(Reference<? extends T> reference) {
-        synchronized (this) {
-            if (!empty && head == tail) {
-                /* Queue is full - grow */
-                int newQueueSize = (int) (references.length * 1.10);
-                Reference<? extends T> newQueue[] = newArray(newQueueSize);
-                System.arraycopy(references, head, newQueue, 0, references.length - head);
-                if (tail > 0) {
-                    System.arraycopy(references, 0, newQueue, references.length - head, tail);
-                }
-                head = 0;
-                tail = references.length;
-                references = newQueue;
-            }
-            references[tail++] = reference;
-            if (tail == references.length) {
-                tail = 0;
-            }
-            empty = false;
-            notifyAll();
+    synchronized void enqueue(Reference<? extends T> reference) {
+        if (head == null) {
+            reference.queueNext = reference;
+        } else {
+            reference.queueNext = head;
         }
-        return true;
+        head = reference;
+        notify();
+    }
+
+    /** @hide */
+    public static Reference unenqueued = null;
+
+    static void add(Reference<?> list) {
+        synchronized (ReferenceQueue.class) {
+            if (unenqueued == null) {
+                unenqueued = list;
+            } else {
+                Reference<?> next = unenqueued.pendingNext;
+                unenqueued.pendingNext = list.pendingNext;
+                list.pendingNext = next;
+            }
+            ReferenceQueue.class.notifyAll();
+        }
     }
 }

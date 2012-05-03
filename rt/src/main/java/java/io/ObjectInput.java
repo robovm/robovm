@@ -19,15 +19,15 @@ package java.io;
 
 /**
  * Defines an interface for classes that allow reading serialized objects.
- * 
+ *
  * @see ObjectInputStream
  * @see ObjectOutput
  */
-public interface ObjectInput extends DataInput {
+public interface ObjectInput extends DataInput, AutoCloseable {
     /**
      * Indicates the number of bytes of primitive data that can be read without
      * blocking.
-     * 
+     *
      * @return the number of bytes available.
      * @throws IOException
      *             if an I/O error occurs.
@@ -37,7 +37,7 @@ public interface ObjectInput extends DataInput {
     /**
      * Closes this stream. Implementations of this method should free any
      * resources used by the stream.
-     * 
+     *
      * @throws IOException
      *             if an I/O error occurs while closing the input stream.
      */
@@ -47,7 +47,7 @@ public interface ObjectInput extends DataInput {
      * Reads a single byte from this stream and returns it as an integer in the
      * range from 0 to 255. Returns -1 if the end of this stream has been
      * reached. Blocks if no input is available.
-     * 
+     *
      * @return the byte read or -1 if the end of this stream has been reached.
      * @throws IOException
      *             if this stream is closed or another I/O error occurs.
@@ -57,7 +57,7 @@ public interface ObjectInput extends DataInput {
     /**
      * Reads bytes from this stream into the byte array {@code buffer}. Blocks
      * while waiting for input.
-     * 
+     *
      * @param buffer
      *            the array in which to store the bytes read.
      * @return the number of bytes read or -1 if the end of this stream has been
@@ -71,7 +71,7 @@ public interface ObjectInput extends DataInput {
      * Reads at most {@code count} bytes from this stream and stores them in
      * byte array {@code buffer} starting at offset {@code count}. Blocks while
      * waiting for input.
-     * 
+     *
      * @param buffer
      *            the array in which to store the bytes read.
      * @param offset
@@ -88,9 +88,9 @@ public interface ObjectInput extends DataInput {
 
     /**
      * Reads the next object from this stream.
-     * 
+     *
      * @return the object read.
-     * 
+     *
      * @throws ClassNotFoundException
      *             if the object's class cannot be found.
      * @throws IOException
@@ -99,16 +99,13 @@ public interface ObjectInput extends DataInput {
     public Object readObject() throws ClassNotFoundException, IOException;
 
     /**
-     * Skips {@code toSkip} bytes on this stream. Less than {@code toSkip} byte are
+     * Skips {@code byteCount} bytes on this stream. Less than {@code byteCount} byte are
      * skipped if the end of this stream is reached before the operation
      * completes.
-     * 
-     * @param toSkip
-     *            the number of bytes to skip.
+     *
      * @return the number of bytes actually skipped.
-     * 
      * @throws IOException
      *             if this stream is closed or another I/O error occurs.
      */
-    public long skip(long toSkip) throws IOException;
+    public long skip(long byteCount) throws IOException;
 }

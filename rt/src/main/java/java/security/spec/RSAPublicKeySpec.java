@@ -35,7 +35,7 @@ public class RSAPublicKeySpec implements KeySpec {
     /**
      * Creates a new {@code RSAPublicKeySpec} with the specified modulus and
      * public exponent.
-     * 
+     *
      * @param modulus
      *            the modulus {@code n}.
      * @param publicExponent
@@ -48,7 +48,7 @@ public class RSAPublicKeySpec implements KeySpec {
 
     /**
      * Returns the modulus {@code n}.
-     * 
+     *
      * @return the modulus {@code n}.
      */
     public BigInteger getModulus() {
@@ -57,7 +57,7 @@ public class RSAPublicKeySpec implements KeySpec {
 
     /**
      * Returns the public exponent {@code d}.
-     * 
+     *
      * @return the public exponent {@code d}.
      */
     public BigInteger getPublicExponent() {

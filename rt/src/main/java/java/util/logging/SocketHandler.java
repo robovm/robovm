@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,8 +20,6 @@ package java.util.logging;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-
-import org.apache.harmony.logging.internal.nls.Messages;
 
 /**
  * A handler that writes log messages to a socket connection.
@@ -56,10 +54,10 @@ import org.apache.harmony.logging.internal.nls.Messages;
 public class SocketHandler extends StreamHandler {
 
     // default level
-    private static final String DEFAULT_LEVEL = "ALL"; //$NON-NLS-1$
+    private static final String DEFAULT_LEVEL = "ALL";
 
     // default formatter
-    private static final String DEFAULT_FORMATTER = "java.util.logging.XMLFormatter"; //$NON-NLS-1$
+    private static final String DEFAULT_FORMATTER = "java.util.logging.XMLFormatter";
 
     // the socket connection
     private Socket socket;
@@ -68,21 +66,18 @@ public class SocketHandler extends StreamHandler {
      * Constructs a {@code SocketHandler} object using the properties read by
      * the log manager, including the host name and port number. Default
      * formatting uses the XMLFormatter class and level is set to ALL.
-     * 
+     *
      * @throws IOException
      *             if failed to connect to the specified host and port.
      * @throws IllegalArgumentException
      *             if the host name or port number is illegal.
-     * @throws SecurityException
-     *             if a security manager determines that the caller does not
-     *             have the required permission to control this handler.
      */
     public SocketHandler() throws IOException {
         super(DEFAULT_LEVEL, null, DEFAULT_FORMATTER, null);
         initSocket(LogManager.getLogManager().getProperty(
-                "java.util.logging.SocketHandler.host"), LogManager //$NON-NLS-1$
+                "java.util.logging.SocketHandler.host"), LogManager
                 .getLogManager().getProperty(
-                        "java.util.logging.SocketHandler.port")); //$NON-NLS-1$
+                        "java.util.logging.SocketHandler.port"));
     }
 
     /**
@@ -98,9 +93,6 @@ public class SocketHandler extends StreamHandler {
      *             if failed to connect to the specified host and port.
      * @throws IllegalArgumentException
      *             if the host name or port number is illegal.
-     * @throws SecurityException
-     *             if a security manager determines that the caller does not
-     *             have the required permission to control this handler.
      */
     public SocketHandler(String host, int port) throws IOException {
         super(DEFAULT_LEVEL, null, DEFAULT_FORMATTER, null);
@@ -110,60 +102,50 @@ public class SocketHandler extends StreamHandler {
     // Initialize the socket connection and prepare the output stream
     private void initSocket(String host, String port) throws IOException {
         // check the validity of the host name
-        if (null == host || "".equals(host)) { //$NON-NLS-1$
-            // logging.C=Illegal host argument.
-            throw new IllegalArgumentException(Messages.getString("logging.C")); //$NON-NLS-1$
+        if (host == null || host.isEmpty()) {
+            throw new IllegalArgumentException("host == null || host.isEmpty()");
         }
         // check the validity of the port number
         int p = 0;
         try {
             p = Integer.parseInt(port);
         } catch (NumberFormatException e) {
-            // logging.D=Illegal port argument.
-            throw new IllegalArgumentException(Messages.getString("logging.D")); //$NON-NLS-1$
+            throw new IllegalArgumentException("Illegal port argument");
         }
         if (p <= 0) {
-            // logging.D=Illegal port argument.
-            throw new IllegalArgumentException(Messages.getString("logging.D")); //$NON-NLS-1$
+            throw new IllegalArgumentException("Illegal port argument");
         }
         // establish the network connection
         try {
             this.socket = new Socket(host, p);
         } catch (IOException e) {
-            // logging.E=Failed to establish the network connection.
-            getErrorManager().error(Messages.getString("logging.E"), e, //$NON-NLS-1$
+            getErrorManager().error("Failed to establish the network connection", e,
                     ErrorManager.OPEN_FAILURE);
             throw e;
         }
-        super.internalSetOutputStream(new BufferedOutputStream(this.socket
-                .getOutputStream()));
+        super.internalSetOutputStream(new BufferedOutputStream(this.socket.getOutputStream()));
     }
 
     /**
      * Closes this handler. The network connection to the host is also closed.
-     * 
-     * @throws SecurityException
-     *             If a security manager determines that the caller does not
-     *             have the required permission to control this handler.
      */
     @Override
     public void close() {
         try {
             super.close();
-            if (null != this.socket) {
+            if (this.socket != null) {
                 this.socket.close();
                 this.socket = null;
             }
         } catch (Exception e) {
-            // logging.F=Exception occurred when closing the socket handler.
-            getErrorManager().error(Messages.getString("logging.F"), e, //$NON-NLS-1$
+            getErrorManager().error("Exception occurred when closing the socket handler", e,
                     ErrorManager.CLOSE_FAILURE);
         }
     }
 
     /**
      * Logs a record if necessary. A flush operation will be done afterwards.
-     * 
+     *
      * @param record
      *            the log record to be logged.
      */

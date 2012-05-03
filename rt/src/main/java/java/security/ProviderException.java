@@ -20,7 +20,7 @@ package java.security;
 /**
  * {@code ProviderException} is a general exception, thrown by security {@code
  * Providers}.
- * 
+ *
  * @see Provider
  */
 public class ProviderException extends RuntimeException {

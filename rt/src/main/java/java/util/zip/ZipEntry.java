@@ -17,15 +17,16 @@
 
 package java.util.zip;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.RandomAccessFile;
-import java.io.UnsupportedEncodingException;
+import java.nio.ByteOrder;
+import java.nio.charset.Charsets;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import org.apache.harmony.archive.internal.nls.Messages;
+import libcore.io.Streams;
+import libcore.io.BufferIterator;
+import libcore.io.HeapBufferIterator;
 
 /**
  * An instance of {@code ZipEntry} represents an entry within a <i>ZIP-archive</i>.
@@ -47,7 +48,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
 
     byte[] extra;
 
-    int nameLen = -1;
+    int nameLength = -1;
     long mLocalHeaderRelOffset = -1;
 
     /**
@@ -73,7 +74,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
             throw new NullPointerException();
         }
         if (name.length() > 0xFFFF) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Name too long: " + name.length());
         }
         this.name = name;
     }
@@ -178,12 +179,12 @@ public class ZipEntry implements ZipConstants, Cloneable {
     /**
      * Sets the comment for this {@code ZipEntry}.
      *
-     * @param string
+     * @param comment
      *            the comment for this entry.
      */
-    public void setComment(String string) {
-        if (string == null || string.length() <= 0xFFFF) {
-            comment = string;
+    public void setComment(String comment) {
+        if (comment == null || comment.length() <= 0xFFFF) {
+            this.comment = comment;
         } else {
             throw new IllegalArgumentException();
         }
@@ -211,7 +212,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
         if (value >= 0 && value <= 0xFFFFFFFFL) {
             crc = value;
         } else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Bad CRC32: " + value);
         }
     }
 
@@ -242,7 +243,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
      */
     public void setMethod(int value) {
         if (value != STORED && value != DEFLATED) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Bad method: " + value);
         }
         compressionMethod = value;
     }
@@ -259,7 +260,7 @@ public class ZipEntry implements ZipConstants, Cloneable {
         if (value >= 0 && value <= 0xFFFFFFFFL) {
             size = value;
         } else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Bad size: " + value);
         }
     }
 
@@ -314,18 +315,21 @@ public class ZipEntry implements ZipConstants, Cloneable {
         compressionMethod = ze.compressionMethod;
         modDate = ze.modDate;
         extra = ze.extra;
-        nameLen = ze.nameLen;
+        nameLength = ze.nameLength;
         mLocalHeaderRelOffset = ze.mLocalHeaderRelOffset;
     }
 
     /**
-     * Returns a shallow copy of this entry.
-     *
-     * @return a copy of this entry.
+     * Returns a deep copy of this zip entry.
      */
-    @Override
-    public Object clone() {
-        return new ZipEntry(this);
+    @Override public Object clone() {
+        try {
+            ZipEntry result = (ZipEntry) super.clone();
+            result.extra = extra != null ? extra.clone() : null;
+            return result;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
     }
 
     /**
@@ -345,138 +349,49 @@ public class ZipEntry implements ZipConstants, Cloneable {
      *
      * On exit, "in" will be positioned at the start of the next entry.
      */
-    ZipEntry(LittleEndianReader ler, InputStream in) throws IOException {
+    ZipEntry(byte[] hdrBuf, InputStream in) throws IOException {
+        Streams.readFully(in, hdrBuf, 0, hdrBuf.length);
 
-        /*
-         * We're seeing performance issues when we call readShortLE and
-         * readIntLE, so we're going to read the entire header at once
-         * and then parse the results out without using any function calls.
-         * Uglier, but should be much faster.
-         *
-         * Note that some lines look a bit different, because the corresponding
-         * fields or locals are long and so we need to do & 0xffffffffl to avoid
-         * problems induced by sign extension.
-         */
+        BufferIterator it = HeapBufferIterator.iterator(hdrBuf, 0, hdrBuf.length, ByteOrder.LITTLE_ENDIAN);
 
-        byte[] hdrBuf = ler.hdrBuf;
-        myReadFully(in, hdrBuf);
-
-        long sig = (hdrBuf[0] & 0xff) | ((hdrBuf[1] & 0xff) << 8) |
-            ((hdrBuf[2] & 0xff) << 16) | ((hdrBuf[3] << 24) & 0xffffffffL);
+        int sig = it.readInt();
         if (sig != CENSIG) {
-             throw new ZipException(Messages.getString("archive.3A"));
+             throw new ZipException("Central Directory Entry not found");
         }
 
-        compressionMethod = (hdrBuf[10] & 0xff) | ((hdrBuf[11] & 0xff) << 8);
-        time = (hdrBuf[12] & 0xff) | ((hdrBuf[13] & 0xff) << 8);
-        modDate = (hdrBuf[14] & 0xff) | ((hdrBuf[15] & 0xff) << 8);
-        crc = (hdrBuf[16] & 0xff) | ((hdrBuf[17] & 0xff) << 8)
-                | ((hdrBuf[18] & 0xff) << 16)
-                | ((hdrBuf[19] << 24) & 0xffffffffL);
-        compressedSize = (hdrBuf[20] & 0xff) | ((hdrBuf[21] & 0xff) << 8)
-                | ((hdrBuf[22] & 0xff) << 16)
-                | ((hdrBuf[23] << 24) & 0xffffffffL);
-        size = (hdrBuf[24] & 0xff) | ((hdrBuf[25] & 0xff) << 8)
-                | ((hdrBuf[26] & 0xff) << 16)
-                | ((hdrBuf[27] << 24) & 0xffffffffL);
-        nameLen = (hdrBuf[28] & 0xff) | ((hdrBuf[29] & 0xff) << 8);
-        int extraLen = (hdrBuf[30] & 0xff) | ((hdrBuf[31] & 0xff) << 8);
-        int commentLen = (hdrBuf[32] & 0xff) | ((hdrBuf[33] & 0xff) << 8);
-        mLocalHeaderRelOffset = (hdrBuf[42] & 0xff) | ((hdrBuf[43] & 0xff) << 8)
-                | ((hdrBuf[44] & 0xff) << 16)
-                | ((hdrBuf[45] << 24) & 0xffffffffL);
+        it.seek(10);
+        compressionMethod = it.readShort();
+        time = it.readShort();
+        modDate = it.readShort();
 
-        byte[] nameBytes = new byte[nameLen];
-        myReadFully(in, nameBytes);
+        // These are 32-bit values in the file, but 64-bit fields in this object.
+        crc = ((long) it.readInt()) & 0xffffffffL;
+        compressedSize = ((long) it.readInt()) & 0xffffffffL;
+        size = ((long) it.readInt()) & 0xffffffffL;
 
-        byte[] commentBytes = null;
-        if (commentLen > 0) {
-            commentBytes = new byte[commentLen];
-            myReadFully(in, commentBytes);
+        nameLength = it.readShort();
+        int extraLength = it.readShort();
+        int commentLength = it.readShort();
+
+        // This is a 32-bit value in the file, but a 64-bit field in this object.
+        it.seek(42);
+        mLocalHeaderRelOffset = ((long) it.readInt()) & 0xffffffffL;
+
+        byte[] nameBytes = new byte[nameLength];
+        Streams.readFully(in, nameBytes, 0, nameBytes.length);
+        name = new String(nameBytes, 0, nameBytes.length, Charsets.UTF_8);
+
+        // The RI has always assumed UTF-8. (If GPBF_UTF8_FLAG isn't set, the encoding is
+        // actually IBM-437.)
+        if (commentLength > 0) {
+            byte[] commentBytes = new byte[commentLength];
+            Streams.readFully(in, commentBytes, 0, commentLength);
+            comment = new String(commentBytes, 0, commentBytes.length, Charsets.UTF_8);
         }
 
-        if (extraLen > 0) {
-            extra = new byte[extraLen];
-            myReadFully(in, extra);
-        }
-
-        try {
-            /*
-             * The actual character set is "IBM Code Page 437".  As of
-             * Sep 2006, the Zip spec (APPNOTE.TXT) supports UTF-8.  When
-             * bit 11 of the GP flags field is set, the file name and
-             * comment fields are UTF-8.
-             *
-             * TODO: add correct UTF-8 support.
-             */
-            name = new String(nameBytes, "ISO-8859-1");
-            if (commentBytes != null) {
-                comment = new String(commentBytes, "ISO-8859-1");
-            } else {
-                comment = null;
-            }
-        } catch (UnsupportedEncodingException uee) {
-            throw new InternalError(uee.getMessage());
-        }
-    }
-
-    private void myReadFully(InputStream in, byte[] b) throws IOException {
-        int len = b.length;
-        int off = 0;
-
-        while (len > 0) {
-            int count = in.read(b, off, len);
-            if (count <= 0) {
-                throw new EOFException();
-            }
-            off += count;
-            len -= count;
-        }
-    }
-
-    /*
-     * Read a four-byte int in little-endian order.
-     */
-    static long readIntLE(RandomAccessFile raf) throws IOException {
-        int b0 = raf.read();
-        int b1 = raf.read();
-        int b2 = raf.read();
-        int b3 = raf.read();
-
-        if (b3 < 0) {
-            throw new EOFException(Messages.getString("archive.3B"));
-        }
-        return b0 | (b1 << 8) | (b2 << 16) | (b3 << 24); // ATTENTION: DOES SIGN EXTENSION: IS THIS WANTED?
-    }
-
-    static class LittleEndianReader {
-        private byte[] b = new byte[4];
-        byte[] hdrBuf = new byte[CENHDR];
-
-        /*
-         * Read a two-byte short in little-endian order.
-         */
-        int readShortLE(InputStream in) throws IOException {
-            if (in.read(b, 0, 2) == 2) {
-                return (b[0] & 0XFF) | ((b[1] & 0XFF) << 8);
-            } else {
-                throw new EOFException(Messages.getString("archive.3C"));
-            }
-        }
-
-        /*
-         * Read a four-byte int in little-endian order.
-         */
-        long readIntLE(InputStream in) throws IOException {
-            if (in.read(b, 0, 4) == 4) {
-                return (   ((b[0] & 0XFF))
-                         | ((b[1] & 0XFF) << 8)
-                         | ((b[2] & 0XFF) << 16)
-                         | ((b[3] & 0XFF) << 24))
-                       & 0XFFFFFFFFL; // Here for sure NO sign extension is wanted.
-            } else {
-                throw new EOFException(Messages.getString("archive.3D"));
-            }
+        if (extraLength > 0) {
+            extra = new byte[extraLength];
+            Streams.readFully(in, extra, 0, extraLength);
         }
     }
 }

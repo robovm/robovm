@@ -17,22 +17,19 @@
 
 package java.io;
 
-import org.apache.harmony.luni.internal.nls.Messages;
+import java.util.Arrays;
 
 /**
  * Places information on a communications pipe. When two threads want to pass
  * data back and forth, one creates a piped writer and the other creates a piped
  * reader.
- * 
+ *
  * @see PipedReader
  */
 public class PipedWriter extends Writer {
-    /**
-     * The destination PipedReader
-     */
-    private PipedReader dest;
 
-    private boolean closed;
+    private PipedReader destination;
+    private boolean isClosed;
 
     /**
      * Constructs a new unconnected {@code PipedWriter}. The resulting writer
@@ -42,84 +39,83 @@ public class PipedWriter extends Writer {
      * @see PipedReader
      */
     public PipedWriter() {
-        super();
     }
 
     /**
-     * Constructs a new {@code PipedWriter} connected to the {@link PipedReader}
-     * {@code dest}. Any data written to this writer can be read from {@code
-     * dest}.
-     * 
-     * @param dest
+     * Constructs a new {@code PipedWriter} connected to {@code destination}.
+     * Any data written to this writer can be read from {@code destination}.
+     *
+     * @param destination
      *            the {@code PipedReader} to connect to.
      * @throws IOException
-     *             if {@code dest} is already connected.
+     *             if {@code destination} is already connected.
      */
-    public PipedWriter(PipedReader dest) throws IOException {
-        super(dest);
-        connect(dest);
+    public PipedWriter(PipedReader destination) throws IOException {
+        super(destination);
+        connect(destination);
     }
 
     /**
      * Closes this writer. If a {@link PipedReader} is connected to this writer,
      * it is closed as well and the pipe is disconnected. Any data buffered in
      * the reader can still be read.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing this writer.
      */
     @Override
     public void close() throws IOException {
-        synchronized (lock) {
-            /* Is the pipe connected? */
-            if (dest != null) {
-                dest.done();
-                dest = null;
-            }
-            closed = true;
+        PipedReader reader = destination;
+        if (reader != null) {
+            reader.done();
+            isClosed = true;
+            destination = null;
         }
     }
 
     /**
      * Connects this {@code PipedWriter} to a {@link PipedReader}. Any data
      * written to this writer becomes readable in the reader.
-     * 
-     * @param stream
+     *
+     * @param reader
      *            the reader to connect to.
      * @throws IOException
      *             if this writer is closed or already connected, or if {@code
-     *             stream} is already connected.
+     *             reader} is already connected.
      */
-    public void connect(PipedReader stream) throws IOException {
-        synchronized (lock) {
-            if (this.dest != null) {
-                throw new IOException(Messages.getString("luni.5F")); //$NON-NLS-1$
+    public void connect(PipedReader reader) throws IOException {
+        if (reader == null) {
+            throw new NullPointerException();
+        }
+        synchronized (reader) {
+            if (this.destination != null) {
+                throw new IOException("Pipe already connected");
             }
-            if (closed) {
-                throw new IOException(Messages.getString("luni.CF")); //$NON-NLS-1$
-            }
-            stream.establishConnection();
-            this.dest = stream;
+            reader.establishConnection();
+            this.lock = reader;
+            this.destination = reader;
         }
     }
 
     /**
      * Notifies the readers of this {@code PipedReader} that characters can be read. This
      * method does nothing if this Writer is not connected.
-     * 
+     *
      * @throws IOException
      *             if an I/O error occurs while flushing this writer.
      */
     @Override
     public void flush() throws IOException {
-        synchronized(lock) {
-            if (closed) {
-                throw new IOException(Messages.getString("luni.CF")); //$NON-NLS-1$
-            }
+        PipedReader reader = destination;
+        if (isClosed) {
+            throw new IOException("Pipe is closed");
         }
-    	
-        if (dest != null) {
-            dest.flush();
+        if (reader == null) {
+            return;
+        }
+
+        synchronized (reader) {
+            reader.notifyAll();
         }
     }
 
@@ -155,25 +151,12 @@ public class PipedWriter extends Writer {
      *             if {@code buffer} is {@code null}.
      */
     @Override
-    public void write(char buffer[], int offset, int count) throws IOException {
-        synchronized (lock) {
-            if (closed) {
-                throw new IOException(Messages.getString("luni.CF")); //$NON-NLS-1$
-            }
-            if (dest == null) {
-                throw new IOException(Messages.getString("luni.D1")); //$NON-NLS-1$
-            }
-            if (buffer == null) {
-                throw new NullPointerException(Messages.getString("luni.11")); //$NON-NLS-1$
-            }
-
-            // avoid int overflow
-            if (offset < 0 || offset > buffer.length || count < 0
-                    || count > buffer.length - offset) {
-                throw new IndexOutOfBoundsException();
-            }
-            dest.receive(buffer, offset, count);
+    public void write(char[] buffer, int offset, int count) throws IOException {
+        PipedReader reader = destination;
+        if (reader == null) {
+            throw new IOException("Pipe not connected");
         }
+        reader.receive(buffer, offset, count);
     }
 
     /**
@@ -183,7 +166,7 @@ public class PipedWriter extends Writer {
      * Separate threads should be used to write to a {@code PipedWriter} and to
      * read from the connected {@code PipedReader}. If the same thread is used,
      * a deadlock may occur.
-     * 
+     *
      * @param c
      *            the character to write.
      * @throws InterruptedIOException
@@ -198,14 +181,10 @@ public class PipedWriter extends Writer {
      */
     @Override
     public void write(int c) throws IOException {
-        synchronized (lock) {
-            if (closed) {
-                throw new IOException(Messages.getString("luni.CF")); //$NON-NLS-1$
-            }
-            if (dest == null) {
-                throw new IOException(Messages.getString("luni.D1")); //$NON-NLS-1$
-            }
-            dest.receive((char) c);
+        PipedReader reader = destination;
+        if (reader == null) {
+            throw new IOException("Pipe not connected");
         }
+        reader.receive((char) c);
     }
 }

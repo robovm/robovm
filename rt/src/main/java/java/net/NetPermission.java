@@ -17,48 +17,18 @@
 
 package java.net;
 
+import java.security.BasicPermission;
+import java.security.Permission;
+
 /**
- * This class represents permissions to configure the access to network
- * resources.
- * <p>
- * There are three valid target names:
- * <dl>
- * <dt>setDefaultAuthenticator</dt>
- * <dd>Allows the default authenticator to be set.</dd>
- * <dt>requestPasswordAuthentication</dt>
- * <dd>Allows the default authenticator to be retrieved.</dd>
- * <dt>specifyStreamHandler</dt>
- * <dd>Allows a stream (protocol) handler to be set when constructing an URL
- * object</dd>
- * </dl>
- * 
- * @see java.security.BasicPermission
- * @see SecurityManager
+ * Legacy security code; do not use.
  */
-public final class NetPermission extends java.security.BasicPermission {
+public final class NetPermission extends BasicPermission {
+    public NetPermission(String name) { super(""); }
 
-    private static final long serialVersionUID = -8343910153355041693L;
+    public NetPermission(String name, String actions) { super("", ""); }
 
-    /**
-     * Creates an instance of this class with the given name.
-     * 
-     * @param name
-     *            the name of the new NetPermission instance.
-     */
-    public NetPermission(String name) {
-        super(name);
-    }
+    @Override public String getActions() { return null; }
 
-    /**
-     * Creates an instance of this class with the given name and an action list.
-     * The action list is ignored and should be {@code null}.
-     * 
-     * @param name
-     *            the name of the new {@code NetPermission} instance.
-     * @param actions
-     *            the ignored action string.
-     */
-    public NetPermission(String name, String actions) {
-        super(name, actions);
-    }
+    @Override public boolean implies(Permission permission) { return true; }
 }

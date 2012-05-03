@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,8 +16,7 @@
 
 package java.nio;
 
-import org.apache.harmony.nio.internal.DirectBuffer;
-import org.apache.harmony.luni.platform.PlatformAddress;
+import libcore.io.SizeOf;
 
 /**
  * This class wraps a byte buffer to be a long buffer.
@@ -32,75 +31,30 @@ import org.apache.harmony.luni.platform.PlatformAddress;
  * </p>
  *
  */
-final class LongToByteBufferAdapter extends LongBuffer implements DirectBuffer {
-
-    static LongBuffer wrap(ByteBuffer byteBuffer) {
-        return new LongToByteBufferAdapter(byteBuffer.slice());
-    }
+final class LongToByteBufferAdapter extends LongBuffer {
 
     private final ByteBuffer byteBuffer;
 
-    LongToByteBufferAdapter(ByteBuffer byteBuffer) {
-        super((byteBuffer.capacity() >> 3));
+    static LongBuffer asLongBuffer(ByteBuffer byteBuffer) {
+        ByteBuffer slice = byteBuffer.slice();
+        slice.order(byteBuffer.order());
+        return new LongToByteBufferAdapter(slice);
+    }
+
+    private LongToByteBufferAdapter(ByteBuffer byteBuffer) {
+        super(byteBuffer.capacity() / SizeOf.LONG);
         this.byteBuffer = byteBuffer;
         this.byteBuffer.clear();
-    }
-
-    public int getByteCapacity() {
-        if (byteBuffer instanceof DirectBuffer) {
-            return ((DirectBuffer) byteBuffer).getByteCapacity();
-        }
-        assert false : byteBuffer;
-        return -1;
-    }
-
-    public PlatformAddress getEffectiveAddress() {
-        if (byteBuffer instanceof DirectBuffer) {
-            return ((DirectBuffer) byteBuffer).getEffectiveAddress();
-        }
-        assert false : byteBuffer;
-        return null;
-    }
-
-    public PlatformAddress getBaseAddress() {
-        if (byteBuffer instanceof DirectBuffer) {
-            return ((DirectBuffer) byteBuffer).getBaseAddress();
-        }
-        assert false : byteBuffer;
-        return null;
-    }
-
-    public boolean isAddressValid() {
-        if (byteBuffer instanceof DirectBuffer) {
-            return ((DirectBuffer) byteBuffer).isAddressValid();
-        }
-        assert false : byteBuffer;
-        return false;
-    }
-
-    public void addressValidityCheck() {
-        if (byteBuffer instanceof DirectBuffer) {
-            ((DirectBuffer) byteBuffer).addressValidityCheck();
-        } else {
-            assert false : byteBuffer;
-        }
-    }
-
-    public void free() {
-        if (byteBuffer instanceof DirectBuffer) {
-            ((DirectBuffer) byteBuffer).free();
-        } else {
-            assert false : byteBuffer;
-        }
+        this.effectiveDirectAddress = byteBuffer.effectiveDirectAddress;
     }
 
     @Override
     public LongBuffer asReadOnlyBuffer() {
-        LongToByteBufferAdapter buf = new LongToByteBufferAdapter(byteBuffer
-                .asReadOnlyBuffer());
+        LongToByteBufferAdapter buf = new LongToByteBufferAdapter(byteBuffer.asReadOnlyBuffer());
         buf.limit = limit;
         buf.position = position;
         buf.mark = mark;
+        buf.byteBuffer.order = byteBuffer.order;
         return buf;
     }
 
@@ -109,8 +63,8 @@ final class LongToByteBufferAdapter extends LongBuffer implements DirectBuffer {
         if (byteBuffer.isReadOnly()) {
             throw new ReadOnlyBufferException();
         }
-        byteBuffer.limit(limit << 3);
-        byteBuffer.position(position << 3);
+        byteBuffer.limit(limit * SizeOf.LONG);
+        byteBuffer.position(position * SizeOf.LONG);
         byteBuffer.compact();
         byteBuffer.clear();
         position = limit - position;
@@ -121,8 +75,8 @@ final class LongToByteBufferAdapter extends LongBuffer implements DirectBuffer {
 
     @Override
     public LongBuffer duplicate() {
-        LongToByteBufferAdapter buf = new LongToByteBufferAdapter(byteBuffer
-                .duplicate());
+        ByteBuffer bb = byteBuffer.duplicate().order(byteBuffer.order());
+        LongToByteBufferAdapter buf = new LongToByteBufferAdapter(bb);
         buf.limit = limit;
         buf.position = position;
         buf.mark = mark;
@@ -134,15 +88,26 @@ final class LongToByteBufferAdapter extends LongBuffer implements DirectBuffer {
         if (position == limit) {
             throw new BufferUnderflowException();
         }
-        return byteBuffer.getLong(position++ << 3);
+        return byteBuffer.getLong(position++ * SizeOf.LONG);
     }
 
     @Override
     public long get(int index) {
-        if (index < 0 || index >= limit) {
-            throw new IndexOutOfBoundsException();
+        checkIndex(index);
+        return byteBuffer.getLong(index * SizeOf.LONG);
+    }
+
+    @Override
+    public LongBuffer get(long[] dst, int dstOffset, int longCount) {
+        byteBuffer.limit(limit * SizeOf.LONG);
+        byteBuffer.position(position * SizeOf.LONG);
+        if (byteBuffer instanceof DirectByteBuffer) {
+            ((DirectByteBuffer) byteBuffer).get(dst, dstOffset, longCount);
+        } else {
+            ((HeapByteBuffer) byteBuffer).get(dst, dstOffset, longCount);
         }
-        return byteBuffer.getLong(index << 3);
+        this.position += longCount;
+        return this;
     }
 
     @Override
@@ -180,24 +145,36 @@ final class LongToByteBufferAdapter extends LongBuffer implements DirectBuffer {
         if (position == limit) {
             throw new BufferOverflowException();
         }
-        byteBuffer.putLong(position++ << 3, c);
+        byteBuffer.putLong(position++ * SizeOf.LONG, c);
         return this;
     }
 
     @Override
     public LongBuffer put(int index, long c) {
-        if (index < 0 || index >= limit) {
-            throw new IndexOutOfBoundsException();
+        checkIndex(index);
+        byteBuffer.putLong(index * SizeOf.LONG, c);
+        return this;
+    }
+
+    @Override
+    public LongBuffer put(long[] src, int srcOffset, int longCount) {
+        byteBuffer.limit(limit * SizeOf.LONG);
+        byteBuffer.position(position * SizeOf.LONG);
+        if (byteBuffer instanceof ReadWriteDirectByteBuffer) {
+            ((ReadWriteDirectByteBuffer) byteBuffer).put(src, srcOffset, longCount);
+        } else {
+            ((ReadWriteHeapByteBuffer) byteBuffer).put(src, srcOffset, longCount);
         }
-        byteBuffer.putLong(index << 3, c);
+        this.position += longCount;
         return this;
     }
 
     @Override
     public LongBuffer slice() {
-        byteBuffer.limit(limit << 3);
-        byteBuffer.position(position << 3);
-        LongBuffer result = new LongToByteBufferAdapter(byteBuffer.slice());
+        byteBuffer.limit(limit * SizeOf.LONG);
+        byteBuffer.position(position * SizeOf.LONG);
+        ByteBuffer bb = byteBuffer.slice().order(byteBuffer.order());
+        LongBuffer result = new LongToByteBufferAdapter(bb);
         byteBuffer.clear();
         return result;
     }

@@ -56,7 +56,7 @@ public abstract class JarURLConnection extends URLConnection {
     /**
      * Constructs an instance of {@code JarURLConnection} that refers to the
      * specified URL.
-     * 
+     *
      * @param url
      *            the URL that contains the location to connect to.
      * @throws MalformedURLException
@@ -66,7 +66,7 @@ public abstract class JarURLConnection extends URLConnection {
         super(url);
         file = url.getFile();
         int sepIdx;
-        if ((sepIdx = file.indexOf("!/")) < 0) { //$NON-NLS-1$
+        if ((sepIdx = file.indexOf("!/")) < 0) {
             throw new MalformedURLException();
         }
         fileURL = new URL(url.getFile().substring(0,sepIdx));
@@ -75,15 +75,15 @@ public abstract class JarURLConnection extends URLConnection {
             return;
         }
         entryName = file.substring(sepIdx, file.length());
-        if (null != url.getRef()) {
-            entryName += "#" + url.getRef(); //$NON-NLS-1$
+        if (url.getRef() != null) {
+            entryName += "#" + url.getRef();
         }
     }
 
     /**
      * Returns all attributes of the {@code JarEntry} referenced by this {@code
      * JarURLConnection}.
-     * 
+     *
      * @return the attributes of the referenced {@code JarEntry}.
      * @throws IOException
      *                if an I/O exception occurs while retrieving the
@@ -98,7 +98,7 @@ public abstract class JarURLConnection extends URLConnection {
      * Returns all certificates of the {@code JarEntry} referenced by this
      * {@code JarURLConnection} instance. This method will return {@code null}
      * until the {@code InputStream} has been completely verified.
-     * 
+     *
      * @return the certificates of the {@code JarEntry} as an array.
      * @throws IOException
      *                if there is an I/O exception occurs while getting the
@@ -117,7 +117,7 @@ public abstract class JarURLConnection extends URLConnection {
      * Gets the name of the entry referenced by this {@code JarURLConnection}.
      * The return value will be {@code null} if this instance refers to a JAR
      * file rather than an JAR file entry.
-     * 
+     *
      * @return the {@code JarEntry} name this instance refers to.
      */
     public String getEntryName() {
@@ -146,7 +146,7 @@ public abstract class JarURLConnection extends URLConnection {
 
     /**
      * Gets the manifest file associated with this JAR-URL.
-     * 
+     *
      * @return the manifest of the referenced JAR-file.
      * @throws IOException
      *             if an error occurs while getting the manifest file.
@@ -158,7 +158,7 @@ public abstract class JarURLConnection extends URLConnection {
     /**
      * Gets the {@code JarFile} object referenced by this {@code
      * JarURLConnection}.
-     * 
+     *
      * @return the referenced JarFile object.
      * @throws IOException
      *                if an I/O exception occurs while retrieving the JAR-file.
@@ -167,7 +167,7 @@ public abstract class JarURLConnection extends URLConnection {
 
     /**
      * Gets the URL to the JAR-file referenced by this {@code JarURLConnection}.
-     * 
+     *
      * @return the URL to the JAR-file or {@code null} if there was an error
      *         retrieving the URL.
      */
@@ -179,7 +179,7 @@ public abstract class JarURLConnection extends URLConnection {
      * Gets all attributes of the manifest file referenced by this {@code
      * JarURLConnection}. If this instance refers to a JAR-file rather than a
      * JAR-file entry, {@code null} will be returned.
-     * 
+     *
      * @return the attributes of the manifest file or {@code null}.
      * @throws IOException
      *                if an I/O exception occurs while retrieving the {@code

@@ -17,44 +17,39 @@
 
 package java.io;
 
-import org.apache.harmony.luni.internal.nls.Messages;
-
 /**
  * An EmulatedFieldsForDumping is an object that represents a set of emulated
  * fields for an object being dumped. It is a concrete implementation for
  * ObjectOutputStream.PutField
- * 
- * 
+ *
+ *
  * @see ObjectOutputStream.PutField
  * @see EmulatedFieldsForLoading
  */
 class EmulatedFieldsForDumping extends ObjectOutputStream.PutField {
+    // Record the ObjectOutputStream that created this PutField for checking in 'write'.
+    private final ObjectOutputStream oos;
 
     // The actual representation, with a more powerful API (set&get)
     private EmulatedFields emulatedFields;
 
-    // Record the ObjectOutputStream that created this PutField for checking in the write method
-    private final ObjectOutputStream oos;
-
     /**
      * Constructs a new instance of EmulatedFieldsForDumping.
-     * 
+     *
      * @param streamClass
      *            a ObjectStreamClass, which describe the fields to be emulated
      *            (names, types, etc).
      */
     EmulatedFieldsForDumping(ObjectOutputStream oos, ObjectStreamClass streamClass) {
-        super();
-        emulatedFields = new EmulatedFields(streamClass.fields(),
-                (ObjectStreamField[]) null);
         this.oos = oos;
+        this.emulatedFields = new EmulatedFields(streamClass.fields(), (ObjectStreamField[]) null);
     }
 
     /**
      * Return the actual EmulatedFields instance used by the receiver. We have
      * the actual work in a separate class so that the code can be shared. The
      * receiver has to be of a subclass of PutField.
-     * 
+     *
      * @return array of ObjectSlot the receiver represents.
      */
     EmulatedFields emulatedFields() {
@@ -64,7 +59,7 @@ class EmulatedFieldsForDumping extends ObjectOutputStream.PutField {
     /**
      * Find and set the byte value of a given field named <code>name</code> in
      * the receiver.
-     * 
+     *
      * @param name
      *            A String, the name of the field to set
      * @param value
@@ -78,7 +73,7 @@ class EmulatedFieldsForDumping extends ObjectOutputStream.PutField {
     /**
      * Find and set the char value of a given field named <code>name</code> in
      * the receiver.
-     * 
+     *
      * @param name
      *            A String, the name of the field to set
      * @param value
@@ -92,7 +87,7 @@ class EmulatedFieldsForDumping extends ObjectOutputStream.PutField {
     /**
      * Find and set the double value of a given field named <code>name</code>
      * in the receiver.
-     * 
+     *
      * @param name
      *            A String, the name of the field to set
      * @param value
@@ -106,7 +101,7 @@ class EmulatedFieldsForDumping extends ObjectOutputStream.PutField {
     /**
      * Find and set the float value of a given field named <code>name</code>
      * in the receiver.
-     * 
+     *
      * @param name
      *            A String, the name of the field to set
      * @param value
@@ -120,7 +115,7 @@ class EmulatedFieldsForDumping extends ObjectOutputStream.PutField {
     /**
      * Find and set the int value of a given field named <code>name</code> in
      * the receiver.
-     * 
+     *
      * @param name
      *            A String, the name of the field to set
      * @param value
@@ -134,7 +129,7 @@ class EmulatedFieldsForDumping extends ObjectOutputStream.PutField {
     /**
      * Find and set the long value of a given field named <code>name</code> in
      * the receiver.
-     * 
+     *
      * @param name
      *            A String, the name of the field to set
      * @param value
@@ -148,7 +143,7 @@ class EmulatedFieldsForDumping extends ObjectOutputStream.PutField {
     /**
      * Find and set the Object value of a given field named <code>name</code>
      * in the receiver.
-     * 
+     *
      * @param name
      *            A String, the name of the field to set
      * @param value
@@ -162,7 +157,7 @@ class EmulatedFieldsForDumping extends ObjectOutputStream.PutField {
     /**
      * Find and set the short value of a given field named <code>name</code>
      * in the receiver.
-     * 
+     *
      * @param name
      *            A String, the name of the field to set
      * @param value
@@ -176,7 +171,7 @@ class EmulatedFieldsForDumping extends ObjectOutputStream.PutField {
     /**
      * Find and set the boolean value of a given field named <code>name</code>
      * in the receiver.
-     * 
+     *
      * @param name
      *            A String, the name of the field to set
      * @param value
@@ -189,10 +184,10 @@ class EmulatedFieldsForDumping extends ObjectOutputStream.PutField {
 
     /**
      * Write the field values to the specified ObjectOutput.
-     * 
+     *
      * @param output
      *            the ObjectOutput
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when writing the field values.
      */
@@ -200,40 +195,27 @@ class EmulatedFieldsForDumping extends ObjectOutputStream.PutField {
     @Deprecated
     public void write(ObjectOutput output) throws IOException {
         if (!output.equals(oos)) {
-            // luni.E0=Attempting to write to a stream that did not create this PutField
-            throw new IllegalArgumentException(Messages.getString("luni.E0")); //$NON-NLS-1$
+            throw new IllegalArgumentException("Attempting to write to a different stream than the one that created this PutField");
         }
-
-        EmulatedFields.ObjectSlot[] slots = emulatedFields.slots();
-        for (int i = 0; i < slots.length; i++) {
-            EmulatedFields.ObjectSlot slot = slots[i];
+        for (EmulatedFields.ObjectSlot slot : emulatedFields.slots()) {
             Object fieldValue = slot.getFieldValue();
             Class<?> type = slot.getField().getType();
-            // WARNING - default values exist for each primitive type
-            if (type == Integer.TYPE) {
-                output.writeInt(fieldValue != null ? ((Integer) fieldValue)
-                        .intValue() : 0);
-            } else if (type == Byte.TYPE) {
-                output.writeByte(fieldValue != null ? ((Byte) fieldValue)
-                        .byteValue() : (byte) 0);
-            } else if (type == Character.TYPE) {
-                output.writeChar(fieldValue != null ? ((Character) fieldValue)
-                        .charValue() : (char) 0);
-            } else if (type == Short.TYPE) {
-                output.writeShort(fieldValue != null ? ((Short) fieldValue)
-                        .shortValue() : (short) 0);
-            } else if (type == Boolean.TYPE) {
-                output.writeBoolean(fieldValue != null ? ((Boolean) fieldValue)
-                        .booleanValue() : false);
-            } else if (type == Long.TYPE) {
-                output.writeLong(fieldValue != null ? ((Long) fieldValue)
-                        .longValue() : (long) 0);
-            } else if (type == Float.TYPE) {
-                output.writeFloat(fieldValue != null ? ((Float) fieldValue)
-                        .floatValue() : (float) 0);
-            } else if (type == Double.TYPE) {
-                output.writeDouble(fieldValue != null ? ((Double) fieldValue)
-                        .doubleValue() : (double) 0);
+            if (type == int.class) {
+                output.writeInt(fieldValue != null ? ((Integer) fieldValue).intValue() : 0);
+            } else if (type == byte.class) {
+                output.writeByte(fieldValue != null ? ((Byte) fieldValue).byteValue() : 0);
+            } else if (type == char.class) {
+                output.writeChar(fieldValue != null ? ((Character) fieldValue).charValue() : 0);
+            } else if (type == short.class) {
+                output.writeShort(fieldValue != null ? ((Short) fieldValue).shortValue() : 0);
+            } else if (type == boolean.class) {
+                output.writeBoolean(fieldValue != null ? ((Boolean) fieldValue).booleanValue() : false);
+            } else if (type == long.class) {
+                output.writeLong(fieldValue != null ? ((Long) fieldValue).longValue() : 0);
+            } else if (type == float.class) {
+                output.writeFloat(fieldValue != null ? ((Float) fieldValue).floatValue() : 0);
+            } else if (type == double.class) {
+                output.writeDouble(fieldValue != null ? ((Double) fieldValue).doubleValue() : 0);
             } else {
                 // Either array or Object
                 output.writeObject(fieldValue);

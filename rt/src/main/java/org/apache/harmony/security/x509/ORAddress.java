@@ -17,6 +17,7 @@
 
 /**
 * @author Alexander Y. Kleymenov
+* @version $Revision$
 */
 
 package org.apache.harmony.security.x509;
@@ -26,7 +27,7 @@ import org.apache.harmony.security.asn1.ASN1Type;
 import org.apache.harmony.security.asn1.BerInputStream;
 
 /**
- * The class encapsulates the ASN.1 DER encoding/decoding work 
+ * The class encapsulates the ASN.1 DER encoding/decoding work
  * with the ORAddress structure which is a part of X.509 certificate:
  * (as specified in RFC 3280 -
  *  Internet X.509 Public Key Infrastructure.
@@ -38,25 +39,19 @@ import org.apache.harmony.security.asn1.BerInputStream;
  *   built-in-standard-attributes BuiltInStandardAttributes,
  *   built-in-domain-defined-attributes
  *                   BuiltInDomainDefinedAttributes OPTIONAL,
- *   extension-attributes ExtensionAttributes OPTIONAL 
+ *   extension-attributes ExtensionAttributes OPTIONAL
  * }
  * </pre>
  *
  * TODO: this class needs to be finished.
  */
-public class ORAddress {
+public final class ORAddress {
 
-    // the ASN.1 encoded form of ORAddress
+    /** the ASN.1 encoded form of ORAddress */
     private byte[] encoding;
 
     /**
-     * TODO
-     */
-    public ORAddress() {}
-    
-    /**
      * Returns ASN.1 encoded form of this X.509 ORAddress value.
-     * @return a byte array containing ASN.1 encode form.
      */
     public byte[] getEncoded() {
         if (encoding == null) {
@@ -70,21 +65,16 @@ public class ORAddress {
      */
     public static final ASN1Sequence ASN1 = new ASN1Sequence(new ASN1Type[] {
             new ASN1Sequence(new ASN1Type[] {}) {
-                protected Object getDecodedObject(Object[] values) {
-                    return null;
-                }
-
-                protected void getValues(Object object, Object[] values) {
-                }
+                @Override protected void getValues(Object object, Object[] values) {}
             }}) {
 
-        protected Object getDecodedObject(BerInputStream in) {
+        @Override protected Object getDecodedObject(BerInputStream in) {
             return new ORAddress();
         }
 
-        private final Object foo = new Object();  //$NON-LOCK-1$
+        private final Object foo = new Object();
 
-        protected void getValues(Object object, Object[] values) {
+        @Override protected void getValues(Object object, Object[] values) {
             values[0] = foo;
         }
     };

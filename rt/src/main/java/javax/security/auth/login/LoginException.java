@@ -30,7 +30,6 @@ public class LoginException extends GeneralSecurityException {
      * Creates a new exception instance and initializes it with default values.
      */
     public LoginException() {
-        super();
     }
 
     /**

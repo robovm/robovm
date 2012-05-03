@@ -137,14 +137,14 @@ public abstract interface ObjectStreamConstants {
      * ObjectOutputStream.
      */
     public static final SerializablePermission SUBCLASS_IMPLEMENTATION_PERMISSION = new SerializablePermission(
-            "enableSubclassImplementation"); //$NON-NLS-1$
+            "enableSubclassImplementation");
 
     /**
      * Permission constant to enable object substitution during serialization
      * and deserialization.
      */
     public static final SerializablePermission SUBSTITUTION_PERMISSION = new SerializablePermission(
-            "enableSubstitution"); //$NON-NLS-1$
+            "enableSubstitution");
 
     // Flags that indicate if the object was serializable, externalizable
     // and had a writeObject method when dumped.

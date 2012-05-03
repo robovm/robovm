@@ -14,6 +14,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+// BEGIN android-note
+// removed link to collections framework docs
+// END android-note
+
 /**
  * An optionally-bounded {@linkplain BlockingQueue blocking queue} based on
  * linked nodes.
@@ -36,10 +40,6 @@ import java.util.NoSuchElementException;
  * <p>This class and its iterator implement all of the
  * <em>optional</em> methods of the {@link Collection} and {@link
  * Iterator} interfaces.
- *
- * <p>This class is a member of the
- * <a href="{@docRoot}/../technotes/guides/collections/index.html">
- * Java Collections Framework</a>.
  *
  * @since 1.5
  * @author Doug Lea
@@ -160,14 +160,14 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
     }
 
     /**
-     * Creates a node and links it at end of queue.
+     * Links node at end of queue.
      *
-     * @param x the item
+     * @param node the node
      */
-    private void enqueue(E x) {
+    private void enqueue(Node<E> node) {
         // assert putLock.isHeldByCurrentThread();
         // assert last.next == null;
-        last = last.next = new Node<E>(x);
+        last = last.next = node;
     }
 
     /**
@@ -253,7 +253,7 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
                     throw new NullPointerException();
                 if (n == capacity)
                     throw new IllegalStateException("Queue full");
-                enqueue(e);
+                enqueue(new Node<E>(e));
                 ++n;
             }
             count.set(n);
@@ -303,6 +303,7 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
         // Note: convention in all put/take/etc is to preset local var
         // holding count negative to indicate failure unless set.
         int c = -1;
+        Node<E> node = new Node(e);
         final ReentrantLock putLock = this.putLock;
         final AtomicInteger count = this.count;
         putLock.lockInterruptibly();
@@ -316,9 +317,9 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
              * for all other uses of count in other wait guards.
              */
             while (count.get() == capacity) {
-                    notFull.await();
+                notFull.await();
             }
-            enqueue(e);
+            enqueue(node);
             c = count.getAndIncrement();
             if (c + 1 < capacity)
                 notFull.signal();
@@ -351,9 +352,9 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
             while (count.get() == capacity) {
                 if (nanos <= 0)
                     return false;
-                    nanos = notFull.awaitNanos(nanos);
+                nanos = notFull.awaitNanos(nanos);
             }
-            enqueue(e);
+            enqueue(new Node<E>(e));
             c = count.getAndIncrement();
             if (c + 1 < capacity)
                 notFull.signal();
@@ -382,11 +383,12 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
         if (count.get() == capacity)
             return false;
         int c = -1;
+        Node<E> node = new Node(e);
         final ReentrantLock putLock = this.putLock;
         putLock.lock();
         try {
             if (count.get() < capacity) {
-                enqueue(e);
+                enqueue(node);
                 c = count.getAndIncrement();
                 if (c + 1 < capacity)
                     notFull.signal();
@@ -408,7 +410,7 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
         takeLock.lockInterruptibly();
         try {
             while (count.get() == 0) {
-                    notEmpty.await();
+                notEmpty.await();
             }
             x = dequeue();
             c = count.getAndDecrement();
@@ -433,7 +435,7 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
             while (count.get() == 0) {
                 if (nanos <= 0)
                     return null;
-                    nanos = notEmpty.awaitNanos(nanos);
+                nanos = notEmpty.awaitNanos(nanos);
             }
             x = dequeue();
             c = count.getAndDecrement();
@@ -469,7 +471,6 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
             signalNotFull();
         return x;
     }
-
 
     public E peek() {
         if (count.get() == 0)
@@ -525,6 +526,27 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
                     return true;
                 }
             }
+            return false;
+        } finally {
+            fullyUnlock();
+        }
+    }
+
+    /**
+     * Returns {@code true} if this queue contains the specified element.
+     * More formally, returns {@code true} if and only if this queue contains
+     * at least one element {@code e} such that {@code o.equals(e)}.
+     *
+     * @param o object to be checked for containment in this queue
+     * @return {@code true} if this queue contains the specified element
+     */
+    public boolean contains(Object o) {
+        if (o == null) return false;
+        fullyLock();
+        try {
+            for (Node<E> p = head.next; p != null; p = p.next)
+                if (o.equals(p.item))
+                    return true;
             return false;
         } finally {
             fullyUnlock();
@@ -617,7 +639,20 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
     public String toString() {
         fullyLock();
         try {
-            return super.toString();
+            Node<E> p = head.next;
+            if (p == null)
+                return "[]";
+
+            StringBuilder sb = new StringBuilder();
+            sb.append('[');
+            for (;;) {
+                E e = p.item;
+                sb.append(e == this ? "(this Collection)" : e);
+                p = p.next;
+                if (p == null)
+                    return sb.append(']').toString();
+                sb.append(',').append(' ');
+            }
         } finally {
             fullyUnlock();
         }
@@ -675,14 +710,14 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
             try {
                 while (i < n) {
                     Node<E> p = h.next;
-                c.add(p.item);
-                p.item = null;
+                    c.add(p.item);
+                    p.item = null;
                     h.next = h;
                     h = p;
                     ++i;
-            }
-            return n;
-        } finally {
+                }
+                return n;
+            } finally {
                 // Restore invariants even if c.add() threw
                 if (i > 0) {
                     // assert h.item == null;
@@ -699,12 +734,14 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
 
     /**
      * Returns an iterator over the elements in this queue in proper sequence.
-     * The returned {@code Iterator} is a "weakly consistent" iterator that
+     * The elements will be returned in order from first (head) to last (tail).
+     *
+     * <p>The returned iterator is a "weakly consistent" iterator that
      * will never throw {@link java.util.ConcurrentModificationException
-     * ConcurrentModificationException},
-     * and guarantees to traverse elements as they existed upon
-     * construction of the iterator, and may (but is not guaranteed to)
-     * reflect any modifications subsequent to construction.
+     * ConcurrentModificationException}, and guarantees to traverse
+     * elements as they existed upon construction of the iterator, and
+     * may (but is not guaranteed to) reflect any modifications
+     * subsequent to construction.
      *
      * @return an iterator over the elements in this queue in proper sequence
      */
@@ -738,19 +775,21 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
         }
 
         /**
-         * Unlike other traversal methods, iterators need to handle:
+         * Returns the next live successor of p, or null if no such.
+         *
+         * Unlike other traversal methods, iterators need to handle both:
          * - dequeued nodes (p.next == p)
-         * - interior removed nodes (p.item == null)
+         * - (possibly multiple) interior removed nodes (p.item == null)
          */
         private Node<E> nextNode(Node<E> p) {
-            Node<E> s = p.next;
-            if (p == s)
-                return head.next;
-            // Skip over removed nodes.
-            // May be necessary if multiple interior Nodes are removed.
-            while (s != null && s.item == null)
-                s = s.next;
-            return s;
+            for (;;) {
+                Node<E> s = p.next;
+                if (s == p)
+                    return head.next;
+                if (s == null || s.item != null)
+                    return s;
+                p = s;
+            }
         }
 
         public E next() {
@@ -778,7 +817,7 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
                 for (Node<E> trail = head, p = trail.next;
                      p != null;
                      trail = p, p = p.next) {
-                if (p == node) {
+                    if (p == node) {
                         unlink(p, trail);
                         break;
                     }

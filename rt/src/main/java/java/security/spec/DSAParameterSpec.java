@@ -21,7 +21,7 @@ import java.math.BigInteger;
 import java.security.interfaces.DSAParams;
 
 /**
- * The parameter specification used with the Digital Signature Algorithm (DSA). 
+ * The parameter specification used with the Digital Signature Algorithm (DSA).
  */
 public class DSAParameterSpec implements AlgorithmParameterSpec, DSAParams {
     // Prime
@@ -34,7 +34,7 @@ public class DSAParameterSpec implements AlgorithmParameterSpec, DSAParams {
     /**
      * Creates a new {@code DSAParameterSpec} with the specified prime {@code p},
      * sub-prime {@code q} and the base {@code g}.
-     * 
+     *
      * @param p
      *            the prime {@code p}.
      * @param q
@@ -50,7 +50,7 @@ public class DSAParameterSpec implements AlgorithmParameterSpec, DSAParams {
 
     /**
      * Returns the base {@code g}.
-     * 
+     *
      * @return the base {@code g}.
      */
     public BigInteger getG() {
@@ -59,7 +59,7 @@ public class DSAParameterSpec implements AlgorithmParameterSpec, DSAParams {
 
     /**
      * Returns the prime {@code p}.
-     * 
+     *
      * @return the prime {@code p}.
      */
     public BigInteger getP() {
@@ -68,7 +68,7 @@ public class DSAParameterSpec implements AlgorithmParameterSpec, DSAParams {
 
     /**
      * Returns the sub-prime {@code q}.
-     * 
+     *
      * @return the sub-prime {@code q}.
      */
     public BigInteger getQ() {

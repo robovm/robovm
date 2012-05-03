@@ -22,7 +22,7 @@ import java.security.spec.AlgorithmParameterSpec;
 /**
  * {@code AlgorithmParameterGeneratorSpi} is the Service Provider Interface
  * (SPI) definition for {@code AlgorithmParameterGenerator}.
- * 
+ *
  * @see AlgorithmParameterGenerator
  */
 public abstract class AlgorithmParameterGeneratorSpi {

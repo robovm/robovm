@@ -17,8 +17,6 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import java.security.AccessControlContext;
-import java.security.AccessController;
 import java.security.Principal;
 import java.security.SecureRandom;
 import java.security.cert.Certificate;
@@ -26,159 +24,48 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
-
 import javax.net.ssl.SSLPeerUnverifiedException;
-import javax.net.ssl.SSLPermission;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSessionBindingEvent;
 import javax.net.ssl.SSLSessionBindingListener;
 import javax.net.ssl.SSLSessionContext;
+import libcore.util.EmptyArray;
 
-/**
- * 
- * SSLSession implementation
- * 
- * @see javax.net.ssl.SSLSession
- */
-public class SSLSessionImpl implements SSLSession, Cloneable  {
+public final class SSLSessionImpl implements SSLSession, Cloneable  {
 
-    /**
-     * Session object reporting an invalid cipher suite of "SSL_NULL_WITH_NULL_NULL"
-     */
+    /** Session object reporting an invalid cipher suite of "SSL_NULL_WITH_NULL_NULL" */
     public static final SSLSessionImpl NULL_SESSION = new SSLSessionImpl(null);
-
-    /**
-     * Container class for the 'value' map's keys.
-     */
-    private static final class ValueKey {
-        final String name;
-        final AccessControlContext acc;
-
-        ValueKey(String name) {
-            super();
-            this.name = name;
-            this.acc = AccessController.getContext();
-        }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + ((acc == null) ? 0 : acc.hashCode());
-            result = prime * result + ((name == null) ? 0 : name.hashCode());
-            return result;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (!(obj instanceof ValueKey))
-                return false;
-            ValueKey other = (ValueKey) obj;
-            if (acc == null) {
-                if (other.acc != null)
-                    return false;
-            } else if (!acc.equals(other.acc))
-                return false;
-            if (name == null) {
-                if (other.name != null)
-                    return false;
-            } else if (!name.equals(other.name))
-                return false;
-            return true;
-        }
-    }
 
     private long creationTime;
     private boolean isValid = true;
-    private Map<ValueKey, Object> values = new HashMap<ValueKey, Object>();
+    private final Map<String, Object> values = new HashMap<String, Object>();
 
-    /**
-     * ID of the session
-     */
     byte[] id;
-
-    /**
-     * Last time the session was accessed
-     */
     long lastAccessedTime;
-
-    /**
-     * Protocol used in the session
-     */
     ProtocolVersion protocol;
-
-    /**
-     * CipherSuite used in the session
-     */
     CipherSuite cipherSuite;
-
-    /**
-     * Context of the session
-     */
-    SSLSessionContextImpl context;
-
-    /**
-     * certificates were sent to the peer
-     */
+    SSLSessionContext context;
     X509Certificate[] localCertificates;
-
-    /**
-     * Peer certificates
-     */
     X509Certificate[] peerCertificates;
-
-    /**
-     * Peer host name
-     */
     private String peerHost;
-
-    /**
-     * Peer port number
-     */
     private int peerPort = -1;
-
-    /**
-     * Master secret
-     */
     byte[] master_secret;
-
-    /**
-     * clientRandom
-     */
     byte[] clientRandom;
-
-    /**
-     * serverRandom
-     */
     byte[] serverRandom;
-
-    /**
-     * True if this entity is considered the server
-     */
     final boolean isServer;
 
-    /**
-     * Creates SSLSession implementation
-     * 
-     * @param cipher_suite
-     * @param sr
-     */
-    public SSLSessionImpl(CipherSuite cipher_suite, SecureRandom sr) {
+    public SSLSessionImpl(CipherSuite cipher_suite, SecureRandom secureRandom) {
         creationTime = System.currentTimeMillis();
         lastAccessedTime = creationTime;
         if (cipher_suite == null) {
-            this.cipherSuite = CipherSuite.TLS_NULL_WITH_NULL_NULL;
-            id = new byte[0];
+            this.cipherSuite = CipherSuite.SSL_NULL_WITH_NULL_NULL;
+            id = EmptyArray.BYTE;
             isServer = false;
+            isValid = false;
         } else {
             this.cipherSuite = cipher_suite;
             id = new byte[32];
-            sr.nextBytes(id);
+            secureRandom.nextBytes(id);
             long time = creationTime / 1000;
             id[28] = (byte) ((time & 0xFF000000) >>> 24);
             id[29] = (byte) ((time & 0x00FF0000) >>> 16);
@@ -189,13 +76,8 @@ public class SSLSessionImpl implements SSLSession, Cloneable  {
 
     }
 
-    /**
-     * Creates SSLSession implementation
-     * 
-     * @param sr
-     */
-    public SSLSessionImpl(SecureRandom sr) {
-        this(null, sr);
+    public SSLSessionImpl(SecureRandom secureRandom) {
+        this(null, secureRandom);
     }
 
     public int getApplicationBufferSize() {
@@ -243,8 +125,8 @@ public class SSLSessionImpl implements SSLSession, Cloneable  {
             try {
                 certs[i] = javax.security.cert.X509Certificate.getInstance(peerCertificates[i]
                         .getEncoded());
-            } catch (javax.security.cert.CertificateException e) {
-            } catch (CertificateEncodingException e) {
+            } catch (javax.security.cert.CertificateException ignored) {
+            } catch (CertificateEncodingException ignored) {
             }
         }
         return certs;
@@ -273,38 +155,27 @@ public class SSLSessionImpl implements SSLSession, Cloneable  {
     }
 
     public String getProtocol() {
-        return protocol.name;
+        return (protocol == null) ? "NONE" : protocol.name;
     }
 
     public SSLSessionContext getSessionContext() {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new SSLPermission("getSSLSessionContext"));
-        }
         return context;
     }
 
     public Object getValue(String name) {
         if (name == null) {
-            throw new IllegalArgumentException("Parameter is null");
+            throw new IllegalArgumentException("name == null");
         }
-        return values.get(new ValueKey(name));
+        return values.get(name);
     }
 
     public String[] getValueNames() {
-        final Vector<String> v = new Vector<String>();
-        final AccessControlContext currAcc = AccessController.getContext();
-        for (ValueKey key : values.keySet()) {
-            if ((currAcc == null && key.acc == null)
-                    || (currAcc != null && currAcc.equals(key.acc))) {
-                v.add(key.name);
-            }
-        }
-        return v.toArray(new String[v.size()]);
+        return values.keySet().toArray(new String[values.size()]);
     }
 
     public void invalidate() {
         isValid = false;
+        context = null;
     }
 
     public boolean isValid() {
@@ -317,13 +188,13 @@ public class SSLSessionImpl implements SSLSession, Cloneable  {
 
     public void putValue(String name, Object value) {
         if (name == null || value == null) {
-            throw new IllegalArgumentException("Parameter is null");
+            throw new IllegalArgumentException("name == null || value == null");
         }
-        Object old = values.put(new ValueKey(name), value);
+        Object old = values.put(name, value);
         if (value instanceof SSLSessionBindingListener) {
             ((SSLSessionBindingListener) value).valueBound(new SSLSessionBindingEvent(this, name));
         }
-        if (old != null && old instanceof SSLSessionBindingListener) {
+        if (old instanceof SSLSessionBindingListener) {
             ((SSLSessionBindingListener) old).valueUnbound(new SSLSessionBindingEvent(this, name));
         }
 
@@ -331,10 +202,13 @@ public class SSLSessionImpl implements SSLSession, Cloneable  {
 
     public void removeValue(String name) {
         if (name == null) {
-            throw new IllegalArgumentException("Parameter is null");
+            throw new IllegalArgumentException("name == null");
         }
-        values.remove(new ValueKey(name));
-
+        Object old = values.remove(name);
+        if (old instanceof SSLSessionBindingListener) {
+            SSLSessionBindingListener listener = (SSLSessionBindingListener) old;
+            listener.valueUnbound(new SSLSessionBindingEvent(this, name));
+        }
     }
 
     @Override
@@ -346,12 +220,6 @@ public class SSLSessionImpl implements SSLSession, Cloneable  {
         }
     }
 
-    /**
-     * Sets the address of the peer
-     * 
-     * @param peerHost
-     * @param peerPort
-     */
     void setPeer(String peerHost, int peerPort) {
         this.peerHost = peerHost;
         this.peerPort = peerPort;

@@ -17,6 +17,7 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -31,7 +32,7 @@ public class SSLSocketWrapper extends SSLSocketImpl {
     private final Socket socket;
     private final boolean autoClose;
 
-    protected SSLSocketWrapper(Socket socket, boolean autoClose, SSLParameters sslParameters) throws IOException {
+    protected SSLSocketWrapper(Socket socket, boolean autoClose, SSLParametersImpl sslParameters) throws IOException {
         super(sslParameters);
         if (!socket.isConnected()) {
             throw new SocketException("Socket is not connected.");
@@ -217,6 +218,11 @@ public class SSLSocketWrapper extends SSLSocketImpl {
     @Override
     public int getLocalPort() {
         return socket.getLocalPort();
+    }
+
+    @Override
+    public FileDescriptor getFileDescriptor$() {
+        return socket.getFileDescriptor$();
     }
 
     // -------------------------------------------------------------------

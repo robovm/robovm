@@ -9,6 +9,10 @@ package java.util.concurrent;
 import java.util.Collection;
 import java.util.Queue;
 
+// BEGIN android-note
+// removed link to collections framework docs
+// END android-note
+
 /**
  * A {@link java.util.Queue} that additionally supports operations
  * that wait for the queue to become non-empty when retrieving an
@@ -38,7 +42,7 @@ import java.util.Queue;
  *    <td>{@link #add add(e)}</td>
  *    <td>{@link #offer offer(e)}</td>
  *    <td>{@link #put put(e)}</td>
- *    <td>{@link #offer(Object, long, TimeUnit) offer(e, time, unit)}</td>
+ *    <td>{@link #offer offer(e, time, unit)}</td>
  *  </tr>
  *  <tr>
  *    <td><b>Remove</b></td>
@@ -141,10 +145,6 @@ import java.util.Queue;
  * actions subsequent to the access or removal of that element from
  * the {@code BlockingQueue} in another thread.
  *
- * <p>This interface is a member of the
- * <a href="{@docRoot}/../technotes/guides/collections/index.html">
- * Java Collections Framework</a>.
- *
  * @since 1.5
  * @author Doug Lea
  * @param <E> the type of elements held in this collection
@@ -156,7 +156,7 @@ public interface BlockingQueue<E> extends Queue<E> {
      * <tt>true</tt> upon success and throwing an
      * <tt>IllegalStateException</tt> if no space is currently available.
      * When using a capacity-restricted queue, it is generally preferable to
-     * use {@link #offer(Object) offer}.
+     * use {@link #offer offer}.
      *
      * @param e the element to add
      * @return <tt>true</tt> (as specified by {@link Collection#add})

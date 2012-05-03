@@ -18,16 +18,13 @@
 package java.security.cert;
 
 import java.math.BigInteger;
-import java.security.cert.CRLException;
-import java.security.cert.X509CRLEntry;
-import java.security.cert.X509Extension;
 import java.util.Arrays;
 import java.util.Date;
 import javax.security.auth.x500.X500Principal;
 
 /**
  * Abstract base class for entries in a certificate revocation list (CRL).
- * 
+ *
  * @see X509CRL
  */
 public abstract class X509CRLEntry implements X509Extension {
@@ -39,7 +36,7 @@ public abstract class X509CRLEntry implements X509Extension {
 
     /**
      * Returns whether the specified object equals to this instance.
-     * 
+     *
      * @param other
      *            the object to compare.
      * @return {@code true} if the specified object equals to this instance,
@@ -62,7 +59,7 @@ public abstract class X509CRLEntry implements X509Extension {
 
     /**
      * Returns the hashcode of this instance.
-     * 
+     *
      * @return the hashcode of this instance.
      */
     public int hashCode() {
@@ -79,7 +76,7 @@ public abstract class X509CRLEntry implements X509Extension {
 
     /**
      * Returns this entry in ASN.1 DER encoded form.
-     * 
+     *
      * @return the encoded form of this entry.
      * @throws CRLException
      *             if encoding fails.
@@ -88,14 +85,14 @@ public abstract class X509CRLEntry implements X509Extension {
 
     /**
      * Returns the serial number of the revoked certificate.
-     * 
+     *
      * @return the serial number of the revoked certificate.
      */
     public abstract BigInteger getSerialNumber();
 
     /**
      * Returns the issuer of the revoked certificate.
-     * 
+     *
      * @return the issuer of the revoked certificate, or {@code null} if the
      *         issuer is equal to the CRL issuer.
      */
@@ -105,14 +102,14 @@ public abstract class X509CRLEntry implements X509Extension {
 
     /**
      * Returns the date when the certificate is revoked.
-     * 
+     *
      * @return the date when the certificate is revoked.
      */
     public abstract Date getRevocationDate();
 
     /**
      * Returns whether this CRL entry has extensions.
-     * 
+     *
      * @return {@code true} is this CRL entry has extensions, otherwise {@code
      *         false}.
      */
@@ -120,7 +117,7 @@ public abstract class X509CRLEntry implements X509Extension {
 
     /**
      * Returns a string representation of this instance.
-     * 
+     *
      * @return a string representation of this instance.
      */
     public abstract String toString();

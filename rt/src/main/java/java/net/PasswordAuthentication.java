@@ -32,7 +32,7 @@ public final class PasswordAuthentication {
     /**
      * Creates an instance of a password authentication with a specified
      * username and password.
-     * 
+     *
      * @param userName
      *            the username to store.
      * @param password
@@ -47,7 +47,7 @@ public final class PasswordAuthentication {
      * Gets a clone of the password stored by this instance. The user is
      * responsible to finalize the returned array if the password clone is no
      * longer needed.
-     * 
+     *
      * @return the copied password.
      */
     public char[] getPassword() {
@@ -56,7 +56,7 @@ public final class PasswordAuthentication {
 
     /**
      * Gets the username stored by this instance.
-     * 
+     *
      * @return the stored username.
      */
     public String getUserName() {

@@ -17,6 +17,7 @@
 
 /**
 * @author Vladimir N. Molotkov, Stepan M. Mishura
+* @version $Revision$
 */
 
 package org.apache.harmony.security.asn1;
@@ -26,25 +27,11 @@ import java.io.IOException;
 /**
  * Thrown by decoder/encoder stream to indicate violation of encoding rules.
  */
+public final class ASN1Exception extends IOException {
 
-public class ASN1Exception extends IOException {
-
-    /**
-     * @serial
-     */
+    /** @serial */
     private static final long serialVersionUID = -3561981263989123987L;
 
-    /**
-     * Constructs an ASN1Exception without a message. 
-     */
-    public ASN1Exception(){
-    }
-
-    /**
-     * Constructs an ASN1Exception with a message. 
-     * 
-     * @param message - a string that describes encoding violation 
-     */
     public ASN1Exception(String message){
         super(message);
     }

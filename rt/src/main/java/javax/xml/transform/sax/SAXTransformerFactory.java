@@ -19,8 +19,10 @@
 
 package javax.xml.transform.sax;
 
-import javax.xml.transform.*;
-
+import javax.xml.transform.Source;
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
 import org.xml.sax.XMLFilter;
 
 /**

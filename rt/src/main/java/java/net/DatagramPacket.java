@@ -17,13 +17,11 @@
 
 package java.net;
 
-import org.apache.harmony.luni.internal.nls.Messages;
-
 /**
  * This class represents a datagram packet which contains data either to be sent
  * or received through a {@code DatagramSocket}. It holds additional information
  * such as its source or destination host.
- * 
+ *
  * @see DatagramSocket
  */
 public final class DatagramPacket {
@@ -32,7 +30,7 @@ public final class DatagramPacket {
 
     /**
      * Length of the data to be sent or size of data that was received via
-     * DatagramSocket#receive() method call. 
+     * DatagramSocket#receive() method call.
      */
     int length;
 
@@ -52,7 +50,7 @@ public final class DatagramPacket {
     /**
      * Constructs a new {@code DatagramPacket} object to receive data up to
      * {@code length} bytes.
-     * 
+     *
      * @param data
      *            a byte array to store the read characters.
      * @param length
@@ -65,7 +63,7 @@ public final class DatagramPacket {
     /**
      * Constructs a new {@code DatagramPacket} object to receive data up to
      * {@code length} bytes with a specified buffer offset.
-     * 
+     *
      * @param data
      *            a byte array to store the read characters.
      * @param offset
@@ -74,7 +72,6 @@ public final class DatagramPacket {
      *            the length of the data.
      */
     public DatagramPacket(byte[] data, int offset, int length) {
-        super();
         setData(data, offset, length);
     }
 
@@ -123,7 +120,7 @@ public final class DatagramPacket {
 
     /**
      * Gets the sender or destination IP address of this datagram packet.
-     * 
+     *
      * @return the address from where the datagram was received or to which it
      *         is sent.
      */
@@ -133,7 +130,7 @@ public final class DatagramPacket {
 
     /**
      * Gets the data of this datagram packet.
-     * 
+     *
      * @return the received data or the data to be sent.
      */
     public synchronized byte[] getData() {
@@ -142,7 +139,7 @@ public final class DatagramPacket {
 
     /**
      * Gets the length of the data stored in this datagram packet.
-     * 
+     *
      * @return the length of the received data or the data to be sent.
      */
     public synchronized int getLength() {
@@ -151,7 +148,7 @@ public final class DatagramPacket {
 
     /**
      * Gets the offset of the data stored in this datagram packet.
-     * 
+     *
      * @return the position of the received data or the data to be sent.
      */
     public synchronized int getOffset() {
@@ -170,7 +167,7 @@ public final class DatagramPacket {
 
     /**
      * Sets the IP address of the target host.
-     * 
+     *
      * @param addr
      *            the target host address.
      */
@@ -180,30 +177,21 @@ public final class DatagramPacket {
 
     /**
      * Sets the data buffer for this datagram packet.
-     * 
-     * @param buf
-     *            the buffer to store the data.
-     * @param anOffset
-     *            the buffer offset where the data is stored.
-     * @param aLength
-     *            the length of the data to be sent or the length of buffer to
-     *            store the received data.
      */
-    public synchronized void setData(byte[] buf, int anOffset, int aLength) {
-        if (0 > anOffset || anOffset > buf.length || 0 > aLength
-                || aLength > buf.length - anOffset) {
-            throw new IllegalArgumentException(Messages.getString("luni.13")); //$NON-NLS-1$
+    public synchronized void setData(byte[] data, int offset, int byteCount) {
+        if ((offset | byteCount) < 0 || offset > data.length || byteCount > data.length - offset) {
+            throw new IllegalArgumentException();
         }
-        data = buf;
-        offset = anOffset;
-        length = aLength;
-        capacity = aLength;
+        this.data = data;
+        this.offset = offset;
+        this.length = byteCount;
+        this.capacity = byteCount;
     }
 
     /**
      * Sets the data buffer for this datagram packet. The length of the datagram
      * packet is set to the buffer length.
-     * 
+     *
      * @param buf
      *            the buffer to store the data.
      */
@@ -216,7 +204,7 @@ public final class DatagramPacket {
 
     /**
      * Gets the current capacity value.
-     * 
+     *
      * @return the current capacity value
      */
     synchronized int getCapacity() {
@@ -226,40 +214,38 @@ public final class DatagramPacket {
     /**
      * Sets the length of the datagram packet. This length plus the offset must
      * be lesser than or equal to the buffer size.
-     * 
-     * @param len
+     *
+     * @param length
      *            the length of this datagram packet.
      */
-    public synchronized void setLength(int len) {
-        if (0 > len || offset + len > data.length) {
-            throw new IllegalArgumentException(Messages.getString("luni.13")); //$NON-NLS-1$
-        }
-        length = len;
-        capacity = len;
+    public synchronized void setLength(int length) {
+        setLengthOnly(length);
+        this.capacity = length;
     }
 
     /**
      * An alternative to {@link #setLength(int)}, that doesn't reset the {@link #capacity}
      * field.
-     * 
+     *
      * @param len the length of this datagram packet
      */
-    synchronized void setLengthOnly(int len) {
-        if (0 > len || offset + len > data.length) {
-            throw new IllegalArgumentException(Messages.getString("luni.13")); //$NON-NLS-1$
+    synchronized void setLengthOnly(int length) {
+        if (length < 0 || offset + length > data.length) {
+            throw new IndexOutOfBoundsException("length=" + length + ", offset=" + offset +
+                    ", buffer size=" + data.length);
         }
-        length = len;
+        this.length = length;
     }
 
     /**
      * Sets the port number of the target host of this datagram packet.
-     * 
+     *
      * @param aPort
      *            the target host port number.
      */
     public synchronized void setPort(int aPort) {
         if (aPort < 0 || aPort > 65535) {
-            throw new IllegalArgumentException(Messages.getString("luni.56", aPort)); //$NON-NLS-1$
+            throw new IllegalArgumentException("Port out of range: " + aPort);
         }
         port = aPort;
     }
@@ -269,7 +255,7 @@ public final class DatagramPacket {
      * address {@code sockAddr}. The {@code length} must be lesser than or equal
      * to the size of {@code data}. The first {@code length} bytes of the data
      * are sent.
-     * 
+     *
      * @param data
      *            the byte array to store the data.
      * @param length
@@ -279,8 +265,7 @@ public final class DatagramPacket {
      * @throws SocketException
      *             if an error in the underlying protocol occurs.
      */
-    public DatagramPacket(byte[] data, int length, SocketAddress sockAddr)
-            throws SocketException {
+    public DatagramPacket(byte[] data, int length, SocketAddress sockAddr) throws SocketException {
         this(data, 0, length);
         setSocketAddress(sockAddr);
     }
@@ -290,7 +275,7 @@ public final class DatagramPacket {
      * address {@code sockAddr}. The {@code length} must be lesser than or equal
      * to the size of {@code data}. The first {@code length} bytes of the data
      * are sent.
-     * 
+     *
      * @param data
      *            the byte array to store the data.
      * @param offset
@@ -320,18 +305,18 @@ public final class DatagramPacket {
 
     /**
      * Sets the {@code SocketAddress} for this datagram packet.
-     * 
+     *
      * @param sockAddr
      *            the SocketAddress of the target host.
      */
     public synchronized void setSocketAddress(SocketAddress sockAddr) {
         if (!(sockAddr instanceof InetSocketAddress)) {
-            throw new IllegalArgumentException(Messages.getString(
-                    "luni.49", sockAddr == null ? null : sockAddr.getClass())); //$NON-NLS-1$
+            throw new IllegalArgumentException("Socket address not an InetSocketAddress: " +
+                    (sockAddr == null ? null : sockAddr.getClass()));
         }
         InetSocketAddress inetAddr = (InetSocketAddress) sockAddr;
-        if(inetAddr.isUnresolved()){
-            throw new IllegalArgumentException(Messages.getString("luni.57"));
+        if (inetAddr.isUnresolved()) {
+            throw new IllegalArgumentException("Socket address unresolved: " + sockAddr);
         }
         port = inetAddr.getPort();
         address = inetAddr.getAddress();

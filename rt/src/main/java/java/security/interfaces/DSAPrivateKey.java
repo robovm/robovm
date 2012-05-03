@@ -32,7 +32,7 @@ public interface DSAPrivateKey extends DSAKey, PrivateKey {
 
     /**
      * Returns the private key value {@code x}.
-     * 
+     *
      * @return the private key value {@code x}.
      */
     public BigInteger getX();

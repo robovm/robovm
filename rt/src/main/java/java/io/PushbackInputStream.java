@@ -17,7 +17,7 @@
 
 package java.io;
 
-import org.apache.harmony.luni.internal.nls.Messages;
+import java.util.Arrays;
 
 /**
  * Wraps an existing {@link InputStream} and adds functionality to "push back"
@@ -43,7 +43,11 @@ public class PushbackInputStream extends FilterInputStream {
      * Constructs a new {@code PushbackInputStream} with the specified input
      * stream as source. The size of the pushback buffer is set to the default
      * value of 1 byte.
-     * 
+     *
+     * <p><strong>Warning:</strong> passing a null source creates an invalid
+     * {@code PushbackInputStream}. All read operations on such a stream will
+     * fail.
+     *
      * @param in
      *            the source input stream.
      */
@@ -56,7 +60,11 @@ public class PushbackInputStream extends FilterInputStream {
     /**
      * Constructs a new {@code PushbackInputStream} with {@code in} as source
      * input stream. The size of the pushback buffer is set to {@code size}.
-     * 
+     *
+     * <p><strong>Warning:</strong> passing a null source creates an invalid
+     * {@code PushbackInputStream}. All read operations on such a stream will
+     * fail.
+     *
      * @param in
      *            the source input stream.
      * @param size
@@ -67,22 +75,12 @@ public class PushbackInputStream extends FilterInputStream {
     public PushbackInputStream(InputStream in, int size) {
         super(in);
         if (size <= 0) {
-            throw new IllegalArgumentException(Messages.getString("luni.A3")); //$NON-NLS-1$
+            throw new IllegalArgumentException("size <= 0");
         }
         buf = (in == null) ? null : new byte[size];
         pos = size;
     }
 
-    /**
-     * Returns the number of bytes that are available before this stream will
-     * block. This is the sum of the bytes available in the pushback buffer and
-     * those available from the source stream.
-     *
-     * @return the number of bytes available before blocking.
-     * @throws IOException
-     *             if this stream is closed or an I/O error occurs in the source
-     *             stream.
-     */
     @Override
     public int available() throws IOException {
         if (buf == null) {
@@ -111,7 +109,7 @@ public class PushbackInputStream extends FilterInputStream {
      * Indicates whether this stream supports the {@code mark(int)} and
      * {@code reset()} methods. {@code PushbackInputStream} does not support
      * them, so it returns {@code false}.
-     * 
+     *
      * @return always {@code false}.
      * @see #mark(int)
      * @see #reset()
@@ -154,7 +152,7 @@ public class PushbackInputStream extends FilterInputStream {
      * from the pushback buffer first, then from the source stream if more bytes
      * are required. Blocks until {@code count} bytes have been read, the end of
      * the source stream is detected or an exception is thrown.
-     * 
+     *
      * @param buffer
      *            the array in which to store the bytes read from this stream.
      * @param offset
@@ -177,19 +175,9 @@ public class PushbackInputStream extends FilterInputStream {
     @Override
     public int read(byte[] buffer, int offset, int length) throws IOException {
         if (buf == null) {
-            // luni.24=Stream is closed
-            throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
+            throw streamClosed();
         }
-        // Force buffer null check first!
-        if (offset > buffer.length || offset < 0) {
-            // luni.12=Offset out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.12", offset)); //$NON-NLS-1$
-        }
-        if (length < 0 || length > buffer.length - offset) {
-            // luni.18=Length out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.18", length)); //$NON-NLS-1$
-        }
-
+        Arrays.checkOffsetAndCount(buffer.length, offset, length);
         int copiedBytes = 0, copyLength = 0, newOffset = offset;
         // Are there pushback bytes available?
         if (pos < buf.length) {
@@ -215,31 +203,33 @@ public class PushbackInputStream extends FilterInputStream {
         return copiedBytes;
     }
 
+    private IOException streamClosed() throws IOException  {
+        throw new IOException("PushbackInputStream is closed");
+    }
+
     /**
-     * Skips {@code count} bytes in this stream. This implementation skips bytes
+     * Skips {@code byteCount} bytes in this stream. This implementation skips bytes
      * in the pushback buffer first and then in the source stream if necessary.
-     * 
-     * @param count
-     *            the number of bytes to skip.
+     *
      * @return the number of bytes actually skipped.
      * @throws IOException
      *             if this stream is closed or another I/O error occurs.
      */
     @Override
-    public long skip(long count) throws IOException {
+    public long skip(long byteCount) throws IOException {
         if (in == null) {
-            throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
+            throw streamClosed();
         }
-        if (count <= 0) {
+        if (byteCount <= 0) {
             return 0;
         }
         int numSkipped = 0;
         if (pos < buf.length) {
-            numSkipped += (count < buf.length - pos) ? count : buf.length - pos;
+            numSkipped += (byteCount < buf.length - pos) ? byteCount : buf.length - pos;
             pos += numSkipped;
         }
-        if (numSkipped < count) {
-            numSkipped += in.skip(count - numSkipped);
+        if (numSkipped < byteCount) {
+            numSkipped += in.skip(byteCount - numSkipped);
         }
         return numSkipped;
     }
@@ -275,7 +265,7 @@ public class PushbackInputStream extends FilterInputStream {
      * subset of {@code buffer}, an {@code IOException} is thrown. Parts of
      * {@code buffer} may have already been copied to the pushback buffer when
      * the exception is thrown.
-     * 
+     *
      * @param buffer
      *            the buffer containing the bytes to push back to this stream.
      * @param offset
@@ -290,23 +280,13 @@ public class PushbackInputStream extends FilterInputStream {
      *             if the free space in the internal pushback buffer is not
      *             sufficient to store the selected contents of {@code buffer}.
      */
-    public void unread(byte[] buffer, int offset, int length)
-            throws IOException {
+    public void unread(byte[] buffer, int offset, int length) throws IOException {
         if (length > pos) {
-            // luni.D3=Pushback buffer full
-            throw new IOException(Messages.getString("luni.D3")); //$NON-NLS-1$
+            throw new IOException("Pushback buffer full");
         }
-        if (offset > buffer.length || offset < 0) {
-            // luni.12=Offset out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.12", offset)); //$NON-NLS-1$
-        }
-        if (length < 0 || length > buffer.length - offset) {
-            // luni.18=Length out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.18", length)); //$NON-NLS-1$
-        }
+        Arrays.checkOffsetAndCount(buffer.length, offset, length);
         if (buf == null) {
-            // luni.24=Stream is closed
-            throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
+            throw streamClosed();
         }
 
         System.arraycopy(buffer, offset, buf, pos - length, length);
@@ -333,7 +313,7 @@ public class PushbackInputStream extends FilterInputStream {
             throw new IOException();
         }
         if (pos == 0) {
-            throw new IOException(Messages.getString("luni.D3")); //$NON-NLS-1$
+            throw new IOException("Pushback buffer full");
         }
         buf[--pos] = (byte) oneByte;
     }
@@ -341,21 +321,19 @@ public class PushbackInputStream extends FilterInputStream {
     /**
      * Marks the current position in this stream. Setting a mark is not
      * supported in this class; this implementation does nothing.
-     * 
+     *
      * @param readlimit
      *            the number of bytes that can be read from this stream before
      *            the mark is invalidated; this parameter is ignored.
      */
-    @Override
-    public void mark(int readlimit) {
-        return;
+    @Override public void mark(int readlimit) {
     }
 
     /**
      * Resets this stream to the last marked position. Resetting the stream is
      * not supported in this class; this implementation always throws an
      * {@code IOException}.
-     * 
+     *
      * @throws IOException
      *             if this method is called.
      */

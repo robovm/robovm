@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,161 +16,91 @@
 
 package java.net;
 
-import com.ibm.icu.text.IDNA;
-import com.ibm.icu.text.StringPrepParseException;
+import libcore.icu.NativeIDN;
 
 /**
- * Internationalized domain names uses all characters from Unicode set, while
- * traditional domain names uses only ASCII code. This class provides
- * transformation between Unicode representation and ASCII Compatible Encoding
- * (ACE) representation. Refer to RFC 3490 for detailed information.
- * 
- * There are two flags used to adjust the transformation.
- * 
- * 1. ALLOW_UNASSIGNED, if this flag is used, the domain name string to be
- * converted can contain unassigned code points in Unicode 3.2. If the flag is
- * not used, then no unassigned code points is not permitted.
- * 
- * 2. USE_STD3_ASCII_RULES, if this flag is used, ASCII strings must compile
- * with RFC 1122 and RFC 1123. It is an error if they don't compile.
- * 
- * These flags can be logically OR'ed together.
- * 
+ * Converts internationalized domain names between Unicode and the ASCII Compatible Encoding
+ * (ACE) representation.
+ *
+ * <p>See <a href="http://www.ietf.org/rfc/rfc3490.txt">RFC 3490</a> for full details.
+ *
  * @since 1.6
  */
 public final class IDN {
+    /**
+     * When set, allows IDN to process unassigned unicode points.
+     */
+    public static final int ALLOW_UNASSIGNED = 1;
 
-	/**
-	 * When set, allows IDN to process unassigned unicode points.
-	 */
-	public static final int ALLOW_UNASSIGNED = 1;
+    /**
+     * When set, ASCII strings are checked against
+     * <a href="http://www.ietf.org/rfc/rfc1122.txt">RFC 1122</a> and
+     * <a href="http://www.ietf.org/rfc/rfc1123.txt">RFC 1123</a>.
+     */
+    public static final int USE_STD3_ASCII_RULES = 2;
 
-	/**
-	 * When set, ASCII strings are checked against RFC 1122 & RFC 1123.
-	 */
-	public static final int USE_STD3_ASCII_RULES = 2;
-	
-	private IDN() {
-		// Do nothing
-	}
-
-	/**
-	 * Transform a Unicode String to ASCII Compatible Encoding String according
-	 * to the algorithm defined in RFC 3490.
-	 * 
-	 * Invoking this method is the same as invoking:
-	 * 
-	 * toASCII(input, 0);
-	 * 
-	 * @param input
-	 *            the string to be transformed
-	 * @return the transformed String
-	 * @throws IllegalArgumentException -
-	 *             if input is not compatible with RFC 3490 specification
-	 */
-	public static String toASCII(String input) {
-		return toASCII(input, 0);
-	}
-
-	/**
-	 * Transform a Unicode String to ASCII Compatible Encoding String according
-	 * to the algorithm defined in RFC 3490.
-	 * 
-	 * If the tramsformation fails, an IllegalArgumentException will be thrown.
-	 * Then the input string is also not a valid IDN.
-	 * 
-	 * The toASCII operation can handle both label and entire domain name. The
-	 * entire domain name are always separated by dots. The dots are: \u002E
-	 * (full stop), \u3002 (ideographic full stop), \uFF0E (fullwidth full
-	 * stop), and \uFF61 (halfwidth ideographic full stop). If dots are also
-	 * transformed, all of them will become \u002E (full stop).
-	 * 
-	 * @param input
-	 *            the string to be transformed
-	 * @param flag
-	 *            0 or any logical OR of possible flags: ALLOW_UNASSIGNED,
-	 *            USE_STD3_ASCII_RULES
-	 * @return the transformed String
-	 * @throws IllegalArgumentException
-	 *             if the input string doesn't conform to RFC 3490 specification
-	 */
-	public static String toASCII(String input, int flag) {
-		String result;
-		int ICUFlag = convertFlags(flag);
-		try {
-			result = IDNA.convertIDNToASCII(input, ICUFlag).toString();
-		} catch (StringPrepParseException e) {
-			throw new IllegalArgumentException(e.getMessage());
-		}
-		return result;
-	}
-
-	/**
-	 * Translates a string from ASCII Compatible Encoding (ACE) to Unicode
-	 * according to the algorithm defined in RFC 3490.
-	 * 
-	 * ToUnicode never fails. In case of any error, the input string is returned
-	 * unmodified.
-	 * 
-	 * The toUnicode operation can handle both label and entire domain name. The
-	 * entire domain name are always separated by dots. The dots are: \u002E
-	 * (full stop), \u3002 (ideographic full stop), \uFF0E (fullwidth full
-	 * stop), and \uFF61 (halfwidth ideographic full stop).
-	 * 
-	 * @param input
-	 *            the string to be transformed
-	 * @param flag
-	 *            0 or any logical OR of possible flags: ALLOW_UNASSIGNED,
-	 *            USE_STD3_ASCII_RULES
-	 * @return the transformed String
-	 */
-	public static String toUnicode(String input, int flag) {
-		String result;
-		int ICUFlag = convertFlags(flag);
-		try {
-			result = IDNA.convertIDNToUnicode(input, ICUFlag).toString();
-		} catch (StringPrepParseException e) {
-			throw new IllegalArgumentException(e.getMessage());
-		}
-        return convertDots(result);
-	}
-
-	private static String convertDots(String input) {
-	    String result = input;
-        if (result.indexOf("\u3002") != -1) {
-            result = result.replace("\u3002", "\u002E");
-        }
-
-        if (result.indexOf("\uFF0E") != -1) {
-            result = result.replace("\uFF0E", "\u002E");
-        }
-
-        if (result.indexOf("\uFF61") != -1) {
-            result = result.replace("\uFF61", "\u002E");
-        }
-
-        return result;
+    private IDN() {
     }
 
-    private static int convertFlags(int flag) {
-		int ICUFlag = ((flag & IDN.ALLOW_UNASSIGNED) == 0)? 0:IDNA.ALLOW_UNASSIGNED;
-		ICUFlag |= ((flag & IDN.USE_STD3_ASCII_RULES) == 0)? 0:IDNA.USE_STD3_RULES;
-		return ICUFlag;
-	}
+    /**
+     * Transform a Unicode String to ASCII Compatible Encoding String according
+     * to the algorithm defined in <a href="http://www.ietf.org/rfc/rfc3490.txt">RFC 3490</a>.
+     *
+     * <p>If the transformation fails (because the input is not a valid IDN), an
+     * exception will be thrown.
+     *
+     * <p>This method can handle either an individual label or an entire domain name.
+     * In the latter case, the separators are: U+002E (full stop), U+3002 (ideographic full stop),
+     * U+FF0E (fullwidth full stop), and U+FF61 (halfwidth ideographic full stop).
+     * All of these will become U+002E (full stop) in the result.
+     *
+     * @param input the Unicode name
+     * @param flags 0, {@code ALLOW_UNASSIGNED}, {@code USE_STD3_ASCII_RULES},
+     *         or {@code ALLOW_UNASSIGNED | USE_STD3_ASCII_RULES}
+     * @return the ACE name
+     * @throws IllegalArgumentException if {@code input} does not conform to <a href="http://www.ietf.org/rfc/rfc3490.txt">RFC 3490</a>
+     */
+    public static String toASCII(String input, int flags) {
+        return NativeIDN.toASCII(input, flags);
+    }
 
-	/**
-	 * Translates a string from ASCII Compatible Encoding (ACE) to Unicode
-	 * according to the algorithm defined in RFC 3490.
-	 * 
-	 * Invoking this method is the same as invoking:
-	 * 
-	 * toUnicode(input, 0);
-	 * 
-	 * @param input
-	 *            the string to be transformed
-	 * @return the transformed String
-	 */
-	public static String toUnicode(String input) {
-		return toUnicode(input, 0);
-	}
+    /**
+     * Equivalent to {@code toASCII(input, 0)}.
+     *
+     * @param input the Unicode name
+     * @return the ACE name
+     * @throws IllegalArgumentException if {@code input} does not conform to <a href="http://www.ietf.org/rfc/rfc3490.txt">RFC 3490</a>
+     */
+    public static String toASCII(String input) {
+        return toASCII(input, 0);
+    }
+
+    /**
+     * Translates a string from ASCII Compatible Encoding (ACE) to Unicode
+     * according to the algorithm defined in <a href="http://www.ietf.org/rfc/rfc3490.txt">RFC 3490</a>.
+     *
+     * <p>Unlike {@code toASCII}, this transformation cannot fail.
+     *
+     * <p>This method can handle either an individual label or an entire domain name.
+     * In the latter case, the separators are: U+002E (full stop), U+3002 (ideographic full stop),
+     * U+FF0E (fullwidth full stop), and U+FF61 (halfwidth ideographic full stop).
+     *
+     * @param input the ACE name
+     * @return the Unicode name
+     * @param flags 0, {@code ALLOW_UNASSIGNED}, {@code USE_STD3_ASCII_RULES},
+     *         or {@code ALLOW_UNASSIGNED | USE_STD3_ASCII_RULES}
+     */
+    public static String toUnicode(String input, int flags) {
+        return NativeIDN.toUnicode(input, flags);
+    }
+
+    /**
+     * Equivalent to {@code toUnicode(input, 0)}.
+     *
+     * @param input the ACE name
+     * @return the Unicode name
+     */
+    public static String toUnicode(String input) {
+        return NativeIDN.toUnicode(input, 0);
+    }
 }

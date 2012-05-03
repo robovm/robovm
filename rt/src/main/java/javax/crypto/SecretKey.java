@@ -15,10 +15,6 @@
  *  limitations under the License.
  */
 
-/**
-* @author Vera Y. Petrashkova
-*/
-
 package javax.crypto;
 
 import java.security.Key;

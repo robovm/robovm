@@ -20,7 +20,7 @@ package java.lang.reflect;
 /**
  * Indicates that a malformed parameterized type has been encountered by a
  * reflective method.
- * 
+ *
  * @since 1.5
  */
 public class MalformedParameterizedTypeException extends RuntimeException {
@@ -31,6 +31,5 @@ public class MalformedParameterizedTypeException extends RuntimeException {
      * Constructs a new {@code MalformedParameterizedTypeException} instance.
      */
     public MalformedParameterizedTypeException() {
-        super();
     }
 }

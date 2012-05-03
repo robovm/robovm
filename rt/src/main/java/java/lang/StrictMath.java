@@ -212,7 +212,7 @@ public final class StrictMath {
      * @return the arc tangent of {@code y/x}.
      */
     public static native double atan2(double y, double x);
-    
+
     /**
      * Returns the closest double approximation of the cube root of the
      * argument.
@@ -251,8 +251,8 @@ public final class StrictMath {
      * @return the ceiling of the argument.
      */
     public static native double ceil(double d);
-    
-    
+
+
     /**
      * Returns the closest double approximation of the hyperbolic cosine of the
      * argument.
@@ -302,7 +302,7 @@ public final class StrictMath {
      * @return the exponential of the argument.
      */
     public static native double exp(double d);
-    
+
     /**
      * Returns the closest double approximation of <i>{@code e}</i><sup>
      * {@code d}</sup>{@code - 1}. If the argument is very close to 0, it is
@@ -343,7 +343,7 @@ public final class StrictMath {
      * @return the floor of the argument.
      */
     public static native double floor(double d);
-    
+
     /**
      * Returns {@code sqrt(}<i>{@code x}</i><sup>{@code 2}</sup>{@code +}
      * <i> {@code y}</i><sup>{@code 2}</sup>{@code )}. The final result is
@@ -414,7 +414,7 @@ public final class StrictMath {
      * @return the natural logarithm of the argument.
      */
     public static native double log(double d);
-    
+
     /**
      * Returns the closest double approximation of the base 10 logarithm of the
      * argument.
@@ -434,7 +434,7 @@ public final class StrictMath {
      * @return the natural logarithm of the argument.
      */
     public static native double log10(double d);
-    
+
     /**
      * Returns the closest double approximation of the natural logarithm of the
      * sum of the argument and 1. If the argument is very close to 0, it is much
@@ -760,7 +760,7 @@ public final class StrictMath {
     public static int round(float f) {
         return Math.round(f);
     }
-    
+
     /**
      * Returns the signum function of the argument. If the argument is less than
      * zero, it returns -1.0. If the argument is greater than zero, 1.0 is
@@ -783,7 +783,7 @@ public final class StrictMath {
     public static double signum(double d){
         return Math.signum(d);
     }
-    
+
     /**
      * Returns the signum function of the argument. If the argument is less than
      * zero, it returns -1.0. If the argument is greater than zero, 1.0 is
@@ -825,7 +825,7 @@ public final class StrictMath {
      * @return the hyperbolic sine of the argument.
      */
     public static native double sinh(double d);
-    
+
     /**
      * Returns the closest double approximation of the sine of the argument.
      * <p>
@@ -899,7 +899,7 @@ public final class StrictMath {
      * @return the hyperbolic tangent of the argument
      */
     public static native double tanh(double d);
-    
+
     /**
      * Returns the measure in degrees of the supplied radian angle. The result
      * is {@code angrad * 180 / pi}.
@@ -941,7 +941,7 @@ public final class StrictMath {
     public static double toRadians(double angdeg) {
         return Math.toRadians(angdeg);
     }
-    
+
     /**
      * Returns the argument's ulp (unit in the last place). The size of a ulp of
      * a double value is the positive distance between this value and the double
@@ -996,7 +996,7 @@ public final class StrictMath {
     }
 
     private static native double nextafter(double x, double y);
-    
+
     /**
      * Returns a double with the given magnitude and the sign of {@code sign}.
      * If {@code sign} is NaN, the sign of the result is positive.
@@ -1030,15 +1030,15 @@ public final class StrictMath {
         magnitudeBits = (magnitudeBits & ~Float.SIGN_MASK) | (signBits & Float.SIGN_MASK);
         return Float.intBitsToFloat(magnitudeBits);
     }
-    
+
     /**
      * Returns the exponent of float {@code f}.
      * @since 1.6
      */
-    public static int getExponent(float f){
+    public static int getExponent(float f) {
         return Math.getExponent(f);
     }
-    
+
     /**
      * Returns the exponent of double {@code d}.
      * @since 1.6
@@ -1046,7 +1046,7 @@ public final class StrictMath {
     public static int getExponent(double d){
         return Math.getExponent(d);
     }
-    
+
     /**
      * Returns the next double after {@code start} in the given {@code direction}.
      * @since 1.6
@@ -1073,7 +1073,7 @@ public final class StrictMath {
     public static double nextUp(double d) {
         return Math.nextUp(d);
     }
-    
+
     /**
      * Returns the next float larger than {@code f}.
      * @since 1.6
@@ -1081,7 +1081,7 @@ public final class StrictMath {
     public static float nextUp(float f) {
         return Math.nextUp(f);
     }
-    
+
     /**
      * Returns {@code d} * 2^{@code scaleFactor}. The result may be rounded.
      * @since 1.6

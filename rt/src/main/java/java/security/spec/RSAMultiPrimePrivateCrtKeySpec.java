@@ -19,8 +19,6 @@ package java.security.spec;
 
 import java.math.BigInteger;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
  * The key specification of a RSA multi-prime private key with the Chinese
  * Remainder Theorem (CRT) information values used.
@@ -49,7 +47,7 @@ public class RSAMultiPrimePrivateCrtKeySpec extends RSAPrivateKeySpec {
      * Creates a new {@code RSAMultiPrimePrivateCrtKeySpec} with the specified
      * modulus, public exponent, private exponent, prime factors, prime
      * exponents, crt coefficient, and additional primes.
-     * 
+     *
      * @param modulus
      *            the modulus {@code n}.
      * @param publicExponent
@@ -87,34 +85,33 @@ public class RSAMultiPrimePrivateCrtKeySpec extends RSAPrivateKeySpec {
 
         // Perform checks specified
         if (modulus == null) {
-            throw new NullPointerException(Messages.getString("security.83", "modulus")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("modulus == null");
         }
         if (privateExponent == null) {
-            throw new NullPointerException(Messages.getString("security.83", "privateExponent")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("privateExponent == null");
         }
         if (publicExponent == null) {
-            throw new NullPointerException(Messages.getString("security.83", "publicExponent")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("publicExponent == null");
         }
         if (primeP == null) {
-            throw new NullPointerException(Messages.getString("security.83", "primeP")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("primeP == null");
         }
         if (primeQ == null) {
-            throw new NullPointerException(Messages.getString("security.83", "primeQ")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("primeQ == null");
         }
         if (primeExponentP == null) {
-            throw new NullPointerException(Messages.getString("security.83", "primeExponentP")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("primeExponentP == null");
         }
         if (primeExponentQ == null) {
-            throw new NullPointerException(Messages.getString("security.83", "primeExponentQ")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("primeExponentQ == null");
         }
         if (crtCoefficient == null) {
-            throw new NullPointerException(Messages.getString("security.83", "crtCoefficient")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("crtCoefficient == null");
         }
 
         if (otherPrimeInfo != null) {
             if (otherPrimeInfo.length == 0) {
-                throw new IllegalArgumentException(
-                Messages.getString("security.85")); //$NON-NLS-1$
+                throw new IllegalArgumentException("otherPrimeInfo.length == 0");
             }
             // Clone array to prevent subsequent modification
             this.otherPrimeInfo = new RSAOtherPrimeInfo[otherPrimeInfo.length];
@@ -133,7 +130,7 @@ public class RSAMultiPrimePrivateCrtKeySpec extends RSAPrivateKeySpec {
 
     /**
      * Returns the CRT coefficient, {@code q^-1 mod p}.
-     * 
+     *
      * @return the CRT coefficient, {@code q^-1 mod p}.
      */
     public BigInteger getCrtCoefficient() {
@@ -142,7 +139,7 @@ public class RSAMultiPrimePrivateCrtKeySpec extends RSAPrivateKeySpec {
 
     /**
      * Returns the information for the additional primes.
-     * 
+     *
      * @return the information for the additional primes, or {@code null} if
      *         there are only the two primes ({@code p, q}).
      */
@@ -160,7 +157,7 @@ public class RSAMultiPrimePrivateCrtKeySpec extends RSAPrivateKeySpec {
 
     /**
      * Returns the exponent of the prime {@code p}.
-     * 
+     *
      * @return the exponent of the prime {@code p}.
      */
     public BigInteger getPrimeExponentP() {
@@ -169,7 +166,7 @@ public class RSAMultiPrimePrivateCrtKeySpec extends RSAPrivateKeySpec {
 
     /**
      * Returns the exponent of the prime {@code q}.
-     * 
+     *
      * @return the exponent of the prime {@code q}.
      */
     public BigInteger getPrimeExponentQ() {
@@ -178,7 +175,7 @@ public class RSAMultiPrimePrivateCrtKeySpec extends RSAPrivateKeySpec {
 
     /**
      * Returns the prime factor {@code p}.
-     * 
+     *
      * @return the prime factor {@code p}.
      */
     public BigInteger getPrimeP() {
@@ -187,7 +184,7 @@ public class RSAMultiPrimePrivateCrtKeySpec extends RSAPrivateKeySpec {
 
     /**
      * Returns the prime factor {@code q}.
-     * 
+     *
      * @return the prime factor {@code q}.
      */
     public BigInteger getPrimeQ() {
@@ -196,7 +193,7 @@ public class RSAMultiPrimePrivateCrtKeySpec extends RSAPrivateKeySpec {
 
     /**
      * Returns the public exponent {@code e}.
-     * 
+     *
      * @return the public exponent {@code e}.
      */
     public BigInteger getPublicExponent() {

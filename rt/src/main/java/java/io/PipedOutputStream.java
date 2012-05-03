@@ -17,13 +17,11 @@
 
 package java.io;
 
-import org.apache.harmony.luni.internal.nls.Messages;
-
 /**
  * Places information on a communications pipe. When two threads want to pass
  * data back and forth, one creates a piped output stream and the other one
  * creates a piped input stream.
- * 
+ *
  * @see PipedInputStream
  */
 public class PipedOutputStream extends OutputStream {
@@ -31,7 +29,7 @@ public class PipedOutputStream extends OutputStream {
     /**
      * The destination PipedInputStream
      */
-    private PipedInputStream dest;
+    private PipedInputStream target;
 
     /**
      * Constructs a new unconnected {@code PipedOutputStream}. The resulting
@@ -39,81 +37,80 @@ public class PipedOutputStream extends OutputStream {
      * written to it.
      */
     public PipedOutputStream() {
-        super();
     }
 
     /**
      * Constructs a new {@code PipedOutputStream} connected to the
-     * {@link PipedInputStream} {@code dest}. Any data written to this stream
+     * {@link PipedInputStream} {@code target}. Any data written to this stream
      * can be read from the target stream.
-     * 
-     * @param dest
+     *
+     * @param target
      *            the piped input stream to connect to.
      * @throws IOException
-     *             if this stream or {@code dest} are already connected.
+     *             if this stream or {@code target} are already connected.
      */
-    public PipedOutputStream(PipedInputStream dest) throws IOException {
-        super();
-        connect(dest);
+    public PipedOutputStream(PipedInputStream target) throws IOException {
+        connect(target);
     }
 
     /**
      * Closes this stream. If this stream is connected to an input stream, the
      * input stream is closed and the pipe is disconnected.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing this stream.
      */
     @Override
     public void close() throws IOException {
         // Is the pipe connected?
-        if (dest != null) {
-            dest.done();
-            dest = null;
+        PipedInputStream stream = target;
+        if (stream != null) {
+            stream.done();
+            target = null;
         }
     }
 
     /**
      * Connects this stream to a {@link PipedInputStream}. Any data written to
      * this output stream becomes readable in the input stream.
-     * 
+     *
      * @param stream
-     *            the destination input stream.
+     *            the piped input stream to connect to.
      * @throws IOException
      *             if either stream is already connected.
      */
     public void connect(PipedInputStream stream) throws IOException {
-        if (null == stream) {
+        if (stream == null) {
             throw new NullPointerException();
         }
-        if (this.dest != null) {
-            throw new IOException(Messages.getString("luni.5F")); //$NON-NLS-1$
-        }
         synchronized (stream) {
+            if (this.target != null) {
+                throw new IOException("Already connected");
+            }
             if (stream.isConnected) {
-                throw new IOException(Messages.getString("luni.D0")); //$NON-NLS-1$
+                throw new IOException("Pipe already connected");
             }
-            if (stream.buffer == null) {
-                stream.buffer = new byte[PipedInputStream.PIPE_SIZE];
-            }
-            stream.isConnected = true;
-            this.dest = stream;
+            stream.establishConnection();
+            this.target = stream;
         }
     }
 
     /**
      * Notifies the readers of this {@link PipedInputStream} that bytes can be
      * read. This method does nothing if this stream is not connected.
-     * 
+     *
      * @throws IOException
      *             if an I/O error occurs while flushing this stream.
      */
     @Override
     public void flush() throws IOException {
-        if (dest != null) {
-            synchronized (dest) {
-                dest.notifyAll();
-            }
+        PipedInputStream stream = target;
+        if (stream == null) {
+            return;
+        }
+
+        synchronized (stream) {
+            stream.notifyAll();
         }
     }
 
@@ -146,7 +143,7 @@ public class PipedOutputStream extends OutputStream {
      *             longer alive. This case is currently not handled correctly.
      */
     @Override
-    public void write(byte buffer[], int offset, int count) throws IOException {
+    public void write(byte[] buffer, int offset, int count) throws IOException {
         super.write(buffer, offset, count);
     }
 
@@ -158,7 +155,7 @@ public class PipedOutputStream extends OutputStream {
      * Separate threads should be used to write to a {@code PipedOutputStream}
      * and to read from the connected {@link PipedInputStream}. If the same
      * thread is used, a deadlock may occur.
-     * 
+     *
      * @param oneByte
      *            the byte to write.
      * @throws InterruptedIOException
@@ -172,9 +169,10 @@ public class PipedOutputStream extends OutputStream {
      */
     @Override
     public void write(int oneByte) throws IOException {
-        if (dest == null) {
-            throw new IOException(Messages.getString("luni.D1")); //$NON-NLS-1$
+        PipedInputStream stream = target;
+        if (stream == null) {
+            throw new IOException("Pipe not connected");
         }
-        dest.receive(oneByte);
+        stream.receive(oneByte);
     }
 }

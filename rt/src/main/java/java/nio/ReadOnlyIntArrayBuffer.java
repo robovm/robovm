@@ -27,14 +27,14 @@ package java.nio;
  * <p>
  * This class is marked final for runtime performance.
  * </p>
- * 
+ *
  */
 final class ReadOnlyIntArrayBuffer extends IntArrayBuffer {
 
     static ReadOnlyIntArrayBuffer copy(IntArrayBuffer other, int markOfOther) {
-        ReadOnlyIntArrayBuffer buf = new ReadOnlyIntArrayBuffer(other
-                .capacity(), other.backingArray, other.offset);
-        buf.limit = other.limit();
+        ReadOnlyIntArrayBuffer buf =
+                new ReadOnlyIntArrayBuffer(other.capacity(), other.backingArray, other.offset);
+        buf.limit = other.limit;
         buf.position = other.position();
         buf.mark = markOfOther;
         return buf;
@@ -95,14 +95,13 @@ final class ReadOnlyIntArrayBuffer extends IntArrayBuffer {
     }
 
     @Override
-    public final IntBuffer put(int[] src, int off, int len) {
+    public final IntBuffer put(int[] src, int srcOffset, int intCount) {
         throw new ReadOnlyBufferException();
     }
 
     @Override
     public IntBuffer slice() {
-        return new ReadOnlyIntArrayBuffer(remaining(), backingArray, offset
-                + position);
+        return new ReadOnlyIntArrayBuffer(remaining(), backingArray, offset + position);
     }
 
 }

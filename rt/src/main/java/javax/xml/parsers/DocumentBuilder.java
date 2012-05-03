@@ -22,12 +22,9 @@ package javax.xml.parsers;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.xml.validation.Schema;
-
-import org.w3c.dom.Document;
 import org.w3c.dom.DOMImplementation;
-
+import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
@@ -51,40 +48,40 @@ import org.xml.sax.SAXException;
  * communicate with the application using these existing APIs.
  *
  * @author <a href="mailto:Jeff.Suttor@Sun.com">Jeff Suttor</a>
- * @version $Revision: 584483 $, $Date: 2007-10-13 22:54:48 -0400 (Sat, 13 Oct 2007) $
+ * @version $Revision: 584483 $, $Date: 2007-10-13 19:54:48 -0700 (Sat, 13 Oct 2007) $
  */
 
 public abstract class DocumentBuilder {
-    
+
     private static final boolean DEBUG = false;
-    
+
     /** Protected constructor */
     protected DocumentBuilder () {
     }
 
-	/**
-	  * <p>Reset this <code>DocumentBuilder</code> to its original configuration.</p>
-	  * 
-	  * <p><code>DocumentBuilder</code> is reset to the same state as when it was created with
-	  * {@link DocumentBuilderFactory#newDocumentBuilder()}.
-	  * <code>reset()</code> is designed to allow the reuse of existing <code>DocumentBuilder</code>s
-	  * thus saving resources associated with the creation of new <code>DocumentBuilder</code>s.</p>
-	  * 
-	  * <p>The reset <code>DocumentBuilder</code> is not guaranteed to have the same {@link EntityResolver} or {@link ErrorHandler}
-	  * <code>Object</code>s, e.g. {@link Object#equals(Object obj)}.  It is guaranteed to have a functionally equal
-	  * <code>EntityResolver</code> and <code>ErrorHandler</code>.</p>
-	  * 
-	  * @since 1.5
-	  */
-	public void reset() {
-	
-		// implementors should override this method
-		throw new UnsupportedOperationException(
-			"This DocumentBuilder, \"" + this.getClass().getName() + "\", does not support the reset functionality."
-			+ "  Specification \"" + this.getClass().getPackage().getSpecificationTitle() + "\""
-			+ " version \"" + this.getClass().getPackage().getSpecificationVersion() + "\""
-			);
-	}
+    /**
+      * <p>Reset this <code>DocumentBuilder</code> to its original configuration.</p>
+      *
+      * <p><code>DocumentBuilder</code> is reset to the same state as when it was created with
+      * {@link DocumentBuilderFactory#newDocumentBuilder()}.
+      * <code>reset()</code> is designed to allow the reuse of existing <code>DocumentBuilder</code>s
+      * thus saving resources associated with the creation of new <code>DocumentBuilder</code>s.</p>
+      *
+      * <p>The reset <code>DocumentBuilder</code> is not guaranteed to have the same {@link EntityResolver} or {@link ErrorHandler}
+      * <code>Object</code>s, e.g. {@link Object#equals(Object obj)}.  It is guaranteed to have a functionally equal
+      * <code>EntityResolver</code> and <code>ErrorHandler</code>.</p>
+      *
+      * @since 1.5
+      */
+    public void reset() {
+
+        // implementors should override this method
+        throw new UnsupportedOperationException(
+            "This DocumentBuilder, \"" + this.getClass().getName() + "\", does not support the reset functionality."
+            + "  Specification \"" + this.getClass().getPackage().getSpecificationTitle() + "\""
+            + " version \"" + this.getClass().getPackage().getSpecificationVersion() + "\""
+            );
+    }
 
     /**
      * Parse the content of the given <code>InputStream</code> as an XML
@@ -99,13 +96,13 @@ public abstract class DocumentBuilder {
      * @exception SAXException If any parse errors occur.
      * @see org.xml.sax.DocumentHandler
      */
-    
+
     public Document parse(InputStream is)
         throws SAXException, IOException {
         if (is == null) {
             throw new IllegalArgumentException("InputStream cannot be null");
         }
-        
+
         InputSource in = new InputSource(is);
         return parse(in);
     }
@@ -123,13 +120,13 @@ public abstract class DocumentBuilder {
      * @exception SAXException If any parse errors occur.
      * @see org.xml.sax.DocumentHandler
      */
-    
+
     public Document parse(InputStream is, String systemId)
         throws SAXException, IOException {
         if (is == null) {
             throw new IllegalArgumentException("InputStream cannot be null");
         }
-        
+
         InputSource in = new InputSource(is);
         in.setSystemId(systemId);
         return parse(in);
@@ -147,13 +144,13 @@ public abstract class DocumentBuilder {
      * @exception SAXException If any parse errors occur.
      * @see org.xml.sax.DocumentHandler
      */
-    
+
     public Document parse(String uri)
         throws SAXException, IOException {
         if (uri == null) {
             throw new IllegalArgumentException("URI cannot be null");
         }
-        
+
         InputSource in = new InputSource(uri);
         return parse(in);
     }
@@ -170,14 +167,14 @@ public abstract class DocumentBuilder {
      * @see org.xml.sax.DocumentHandler
      * @return A new DOM Document object.
      */
-    
+
     public Document parse(File f) throws SAXException, IOException {
         if (f == null) {
             throw new IllegalArgumentException("File cannot be null");
         }
-        
+
         String escapedURI = FilePathToURI.filepath2URI(f.getAbsolutePath());
-        
+
         if (DEBUG) {
             System.out.println("Escaped URI = " + escapedURI);
         }
@@ -198,11 +195,11 @@ public abstract class DocumentBuilder {
      * @see org.xml.sax.DocumentHandler
      * @return A new DOM Document object.
      */
-    
+
     public abstract Document parse(InputSource is)
         throws  SAXException, IOException;
 
-    
+
     /**
      * Indicates whether or not this parser is configured to
      * understand namespaces.
@@ -220,7 +217,7 @@ public abstract class DocumentBuilder {
      * @return true if this parser is configured to validate
      *         XML documents; false otherwise.
      */
-    
+
     public abstract boolean isValidating();
 
     /**
@@ -253,7 +250,7 @@ public abstract class DocumentBuilder {
      *
      * @return A new instance of a DOM Document object.
      */
-    
+
     public abstract Document newDocument();
 
     /**
@@ -263,7 +260,7 @@ public abstract class DocumentBuilder {
      */
 
     public abstract DOMImplementation getDOMImplementation();
-    
+
     /** <p>Get a reference to the the {@link Schema} being used by
      * the XML processor.</p>
      *
@@ -271,12 +268,12 @@ public abstract class DocumentBuilder {
      *
      * @return {@link Schema} being used or <code>null</code>
      *  if none in use
-     * 
+     *
      * @throws UnsupportedOperationException
      *      For backward compatibility, when implementations for
      *      earlier versions of JAXP is used, this exception will be
      *      thrown.
-     * 
+     *
      * @since 1.5
      */
     public Schema getSchema() {
@@ -288,23 +285,23 @@ public abstract class DocumentBuilder {
             + "\""
             );
     }
-    
-    
+
+
     /**
      * <p>Get the XInclude processing mode for this parser.</p>
-     * 
+     *
      * @return
      *      the return value of
      *      the {@link DocumentBuilderFactory#isXIncludeAware()}
      *      when this parser was created from factory.
-     * 
+     *
      * @throws UnsupportedOperationException
      *      For backward compatibility, when implementations for
      *      earlier versions of JAXP is used, this exception will be
      *      thrown.
-     * 
+     *
      * @since 1.5
-     * 
+     *
      * @see DocumentBuilderFactory#setXIncludeAware(boolean)
      */
     public boolean isXIncludeAware() {

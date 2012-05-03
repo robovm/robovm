@@ -28,7 +28,7 @@ import libcore.util.EmptyArray;
 /**
  * ArrayList is an implementation of {@link List}, backed by an array.
  * All optional operations including adding, removing, and replacing elements are supported.
- * 
+ *
  * <p>All elements are permitted, including null.
  *
  * <p>This class is a good choice as your default {@code List} implementation.
@@ -64,7 +64,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
     /**
      * Constructs a new instance of {@code ArrayList} with the specified
      * initial capacity.
-     * 
+     *
      * @param capacity
      *            the initial capacity of this {@code ArrayList}.
      */
@@ -85,7 +85,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
     /**
      * Constructs a new instance of {@code ArrayList} containing the elements of
      * the specified collection.
-     * 
+     *
      * @param collection
      *            the collection of elements to add.
      */
@@ -128,7 +128,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
      * location. The object is inserted before any previous element at the
      * specified location. If the location is equal to the size of this
      * {@code ArrayList}, the object is added at the end.
-     * 
+     *
      * @param index
      *            the index at which to insert the object.
      * @param object
@@ -145,17 +145,17 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
 
         if (s < a.length) {
             System.arraycopy(a, index, a, index + 1, s - index);
-            } else {
+        } else {
             // assert s == a.length;
             Object[] newArray = new Object[newCapacity(s)];
             System.arraycopy(a, 0, newArray, 0, index);
             System.arraycopy(a, index, newArray, index + 1, s - index);
             array = a = newArray;
-            }
+        }
         a[index] = object;
         size = s + 1;
         modCount++;
-        }
+    }
 
     /**
      * This method controls the growth of ArrayList capacities.  It represents
@@ -174,7 +174,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
 
     /**
      * Adds the objects in the specified collection to this {@code ArrayList}.
-     * 
+     *
      * @param collection
      *            the collection of objects.
      * @return {@code true} if this {@code ArrayList} is modified, {@code false}
@@ -205,7 +205,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
      * Inserts the objects in the specified collection at the specified location
      * in this List. The objects are added in the order they are returned from
      * the collection's iterator.
-     * 
+     *
      * @param index
      *            the index at which to insert.
      * @param collection
@@ -230,13 +230,13 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
         int newSize = s + newPartSize; // If add overflows, arraycopy will fail
         if (newSize <= a.length) {
              System.arraycopy(a, index, a, index + newPartSize, s - index);
-            } else {
+        } else {
             int newCapacity = newCapacity(newSize - 1);  // ~33% growth room
             Object[] newArray = new Object[newCapacity];
             System.arraycopy(a, 0, newArray, 0, index);
             System.arraycopy(a, index, newArray, index + newPartSize, s-index);
             array = a = newArray;
-            }
+        }
         System.arraycopy(newPart, 0, a, index, newPartSize);
         size = newSize;
         modCount++;
@@ -253,7 +253,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
 
     /**
      * Removes all elements from this {@code ArrayList}, leaving it empty.
-     * 
+     *
      * @see #isEmpty
      * @see #size
      */
@@ -268,7 +268,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
     /**
      * Returns a new {@code ArrayList} with the same elements, the same size and
      * the same capacity as this {@code ArrayList}.
-     * 
+     *
      * @return a shallow copy of this {@code ArrayList}
      * @see java.lang.Cloneable
      */
@@ -285,7 +285,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
     /**
      * Ensures that after this operation the {@code ArrayList} can hold the
      * specified number of elements without further growing.
-     * 
+     *
      * @param minimumCapacity
      *            the minimum capacity asked for.
      */
@@ -313,7 +313,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
      */
     @Override public int size() {
         return size;
-            }
+    }
 
     @Override public boolean isEmpty() {
         return size == 0;
@@ -334,15 +334,15 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
             for (int i = 0; i < s; i++) {
                 if (object.equals(a[i])) {
                     return true;
-            }
+                }
             }
         } else {
             for (int i = 0; i < s; i++) {
                 if (a[i] == null) {
                     return true;
+                }
             }
-            }
-            }
+        }
         return false;
     }
 
@@ -385,7 +385,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
 
     /**
      * Removes the object at the specified location from this list.
-     * 
+     *
      * @param index
      *            the index of the object to remove.
      * @return the removed object.
@@ -416,8 +416,8 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
                     a[s] = null;  // Prevent memory leak
                     size = s;
                     modCount++;
-            return true;
-        }
+                    return true;
+                }
             }
         } else {
             for (int i = 0; i < s; i++) {
@@ -462,7 +462,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
     /**
      * Replaces the element at the specified location in this {@code ArrayList}
      * with the specified object.
-     * 
+     *
      * @param index
      *            the index at which to put the specified object.
      * @param object
@@ -484,7 +484,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
     /**
      * Returns a new array containing all elements contained in this
      * {@code ArrayList}.
-     * 
+     *
      * @return an array of the elements from this {@code ArrayList}
      */
     @Override public Object[] toArray() {
@@ -501,7 +501,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
      * type is created. If the specified array is used and is larger than this
      * {@code ArrayList}, the array element following the collection elements
      * is set to null.
-     * 
+     *
      * @param contents
      *            the array.
      * @return an array of the elements from this {@code ArrayList}.
@@ -526,7 +526,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
     /**
      * Sets the capacity of this {@code ArrayList} to be the same as the current
      * size.
-     * 
+     *
      * @see #size
      */
     public void trimToSize() {
@@ -539,7 +539,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
         } else {
             Object[] newArray = new Object[s];
             System.arraycopy(array, 0, newArray, 0, s);
-        array = newArray;
+            array = newArray;
         }
         modCount++;
     }
@@ -657,4 +657,4 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
             array[i] = stream.readObject();
         }
     }
-}
+ }

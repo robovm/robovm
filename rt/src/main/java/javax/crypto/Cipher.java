@@ -15,10 +15,6 @@
  *  limitations under the License.
  */
 
-/**
-* @author Boris V. Kuznetsov
-*/
-
 package javax.crypto;
 
 import java.nio.ByteBuffer;
@@ -36,10 +32,7 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Set;
-import java.util.StringTokenizer;
-
 import org.apache.harmony.crypto.internal.NullCipherSpi;
-import org.apache.harmony.crypto.internal.nls.Messages;
 import org.apache.harmony.security.fortress.Engine;
 
 /**
@@ -61,7 +54,7 @@ import org.apache.harmony.security.fortress.Engine;
  * <ul>
  * {@code Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");}
  * </ul>
- * When a block cipher is requested in stream cipher mode, the number of bits
+ * When a block cipher is requested in in stream cipher mode, the number of bits
  * to be processed at a time can be optionally specified by appending it to the
  * mode name. e.g. <i>"AES/CFB8/NoPadding"</i>. If no number is specified, a
  * provider specific default value is used.
@@ -108,12 +101,12 @@ public class Cipher {
     /**
      * The service name.
      */
-    private static final String SERVICE = "Cipher"; //$NON-NLS-1$
+    private static final String SERVICE = "Cipher";
 
     /**
      * Used to access common engine functionality.
      */
-    private static final Engine engine = new Engine(SERVICE);
+    private static final Engine ENGINE = new Engine(SERVICE);
 
     /**
      * The provider.
@@ -130,7 +123,7 @@ public class Cipher {
      */
     private String transformation;
 
-    private static SecureRandom sec_rand;
+    private static SecureRandom secureRandom;
 
     /**
      * Creates a new Cipher instance.
@@ -207,12 +200,12 @@ public class Cipher {
             NoSuchProviderException, NoSuchPaddingException {
 
         if (provider == null) {
-            throw new IllegalArgumentException(Messages.getString("crypto.04")); //$NON-NLS-1$
+            throw new IllegalArgumentException("provider == null");
         }
 
         Provider p = Security.getProvider(provider);
         if (p == null) {
-            throw new NoSuchProviderException(Messages.getString("crypto.16", provider)); //$NON-NLS-1$
+            throw new NoSuchProviderException("Provider not available: " + provider);
         }
         return getInstance(transformation, p);
     }
@@ -239,15 +232,20 @@ public class Cipher {
             Provider provider) throws NoSuchAlgorithmException,
             NoSuchPaddingException {
         if (provider == null) {
-            throw new IllegalArgumentException(Messages.getString("crypto.04")); //$NON-NLS-1$
+            throw new IllegalArgumentException("provider == null");
         }
         Cipher c = getCipher(transformation, provider);
         return c;
     }
 
+    private static NoSuchAlgorithmException invalidTransformation(String transformation)
+            throws NoSuchAlgorithmException {
+        throw new NoSuchAlgorithmException("Invalid transformation: " + transformation);
+    }
+
     /**
      * Find appropriate Cipher according the specification rules
-     * 
+     *
      * @param transformation
      * @param provider
      * @return
@@ -257,62 +255,68 @@ public class Cipher {
     private static synchronized Cipher getCipher(String transformation, Provider provider)
             throws NoSuchAlgorithmException, NoSuchPaddingException {
 
-        if (transformation == null || "".equals(transformation)) { //$NON-NLS-1$
-            throw new NoSuchAlgorithmException(Messages.getString("crypto.17", //$NON-NLS-1$
-                    transformation));
+        if (transformation == null || transformation.isEmpty()) {
+            throw invalidTransformation(transformation);
         }
 
         String[] transf = checkTransformation(transformation);
 
         boolean needSetPadding = false;
         boolean needSetMode = false;
+        Object engineSpi = null;
+        Provider engineProvider = provider;
         if (transf[1] == null && transf[2] == null) { // "algorithm"
             if (provider == null) {
-                engine.getInstance(transf[0], null);
+                Engine.SpiAndProvider sap = ENGINE.getInstance(transf[0], null);
+                engineSpi = sap.spi;
+                engineProvider = sap.provider;
             } else {
-                engine.getInstance(transf[0], provider, null);
+                engineSpi = ENGINE.getInstance(transf[0], provider, null);
             }
         } else {
-            String[] searhOrder = {
-                    transf[0] + "/" + transf[1] + "/" + transf[2], // "algorithm/mode/padding" //$NON-NLS-1$ //$NON-NLS-2$
-                    transf[0] + "/" + transf[1], // "algorithm/mode" //$NON-NLS-1$
-                    transf[0] + "//" + transf[2], // "algorithm//padding" //$NON-NLS-1$
-                    transf[0] // "algorithm"
+            String[] searchOrder = {
+                transf[0] + "/" + transf[1] + "/" + transf[2], // "algorithm/mode/padding"
+                transf[0] + "/" + transf[1], // "algorithm/mode"
+                transf[0] + "//" + transf[2], // "algorithm//padding"
+                transf[0] // "algorithm"
             };
             int i;
-            for (i = 0; i < searhOrder.length; i++) {
+            for (i = 0; i < searchOrder.length; i++) {
                 try {
                     if (provider == null) {
-                        engine.getInstance(searhOrder[i], null);
+                        Engine.SpiAndProvider sap = ENGINE.getInstance(searchOrder[i], null);
+                        engineSpi = sap.spi;
+                        engineProvider = sap.provider;
                     } else {
-                        engine.getInstance(searhOrder[i], provider, null);
+                        engineSpi = ENGINE.getInstance(searchOrder[i], provider, null);
                     }
                     break;
                 } catch (NoSuchAlgorithmException e) {
-                    if ( i == searhOrder.length-1) {
-                        throw new NoSuchAlgorithmException(transformation);
+                    if (i == searchOrder.length-1) {
+                        throw new NoSuchAlgorithmException(transformation, e);
                     }
                 }
             }
             switch (i) {
-            case 1: // "algorithm/mode"
-                needSetPadding = true;
-                break;
-            case 2: // "algorithm//padding"
-                needSetMode = true;
-                break;
-            case 3: // "algorithm"
-                needSetPadding = true;
-                needSetMode = true;
+                case 1: // "algorithm/mode"
+                    needSetPadding = true;
+                    break;
+                case 2: // "algorithm//padding"
+                    needSetMode = true;
+                    break;
+                case 3: // "algorithm"
+                    needSetPadding = true;
+                    needSetMode = true;
             }
         }
-        CipherSpi cspi;
-        try {
-            cspi = (CipherSpi) engine.spi;
-        } catch (ClassCastException e) {
-            throw new NoSuchAlgorithmException(e);
+        if (engineSpi == null || engineProvider == null) {
+            throw new NoSuchAlgorithmException(transformation);
         }
-        Cipher c = new Cipher(cspi, engine.provider, transformation);
+        if (!(engineSpi instanceof CipherSpi)) {
+            throw new NoSuchAlgorithmException(engineSpi.getClass().getName());
+        }
+        CipherSpi cspi = (CipherSpi) engineSpi;
+        Cipher c = new Cipher(cspi, engineProvider, transformation);
         if (needSetMode) {
             c.spiImpl.engineSetMode(transf[1]);
         }
@@ -322,36 +326,33 @@ public class Cipher {
         return c;
     }
 
-    private static String[] checkTransformation(String transformation)
-            throws NoSuchAlgorithmException {
-        String[] transf = { null, null, null };
-        StringTokenizer st;
-        int i = 0;
-        for (st = new StringTokenizer(transformation, "/"); st //$NON-NLS-1$
-                .hasMoreElements();) {
-            if (i > 2) {
-                throw new NoSuchAlgorithmException(Messages.getString("crypto.17", //$NON-NLS-1$
-                        transformation));
+    private static String[] checkTransformation(String transformation) throws NoSuchAlgorithmException {
+        // ignore an extra prefix / characters such as in
+        // "/DES/CBC/PKCS5Paddin" http://b/3387688
+        if (transformation.startsWith("/")) {
+            transformation = transformation.substring(1);
+        }
+        // 'transformation' should be of the form "algorithm/mode/padding".
+        String[] pieces = transformation.split("/");
+        if (pieces.length > 3) {
+            throw invalidTransformation(transformation);
+        }
+        // Empty or missing pieces are represented by null.
+        String[] result = new String[3];
+        for (int i = 0; i < pieces.length; ++i) {
+            String piece = pieces[i].trim();
+            if (!piece.isEmpty()) {
+                result[i] = piece;
             }
-            transf[i] = st.nextToken();
-            if (transf[i] != null) {
-                transf[i] = transf[i].trim();
-                if ("".equals(transf[i])) { //$NON-NLS-1$
-                    transf[i] = null;
-                }
-                i++;
-            }
         }
-        if (transf[0] == null) {
-            throw new NoSuchAlgorithmException(Messages.getString("crypto.17", //$NON-NLS-1$
-                    transformation));
+        // You MUST specify an algorithm.
+        if (result[0] == null) {
+            throw invalidTransformation(transformation);
         }
-        if (!(transf[1] == null && transf[2] == null)
-                && (transf[1] == null || transf[2] == null)) {
-            throw new NoSuchAlgorithmException(Messages.getString("crypto.17", //$NON-NLS-1$
-                    transformation));
+        if (!(result[1] == null && result[2] == null) && (result[1] == null || result[2] == null)) {
+            throw invalidTransformation(transformation);
         }
-        return transf;
+        return result;
     }
 
     /**
@@ -396,8 +397,7 @@ public class Cipher {
      */
     public final int getOutputSize(int inputLen) {
         if (mode == 0) {
-            throw new IllegalStateException(
-                    Messages.getString("crypto.18")); //$NON-NLS-1$
+            throw new IllegalStateException("Cipher has not yet been initialized");
         }
         return spiImpl.engineGetOutputSize(inputLen);
     }
@@ -470,13 +470,13 @@ public class Cipher {
      *             cipher instance.
      */
     public final void init(int opmode, Key key) throws InvalidKeyException {
-        if (sec_rand == null) {
+        if (secureRandom == null) {
             // In theory it might be thread-unsafe but in the given case it's OK
             // since it does not matter which SecureRandom instance is passed
             // to the init()
-            sec_rand = new SecureRandom();
+            secureRandom = new SecureRandom();
         }
-        init(opmode, key, sec_rand);
+        init(opmode, key, secureRandom);
     }
 
     /**
@@ -511,17 +511,20 @@ public class Cipher {
      * @throws InvalidParameterException
      *             if the specified opmode is invalid.
      */
-    public final void init(int opmode, Key key, SecureRandom random)
-            throws InvalidKeyException {
-        if (opmode != ENCRYPT_MODE && opmode != DECRYPT_MODE
-                && opmode != UNWRAP_MODE && opmode != WRAP_MODE) {
-            throw new InvalidParameterException(Messages.getString("crypto.19")); //$NON-NLS-1$
-        }
+    public final void init(int opmode, Key key, SecureRandom random) throws InvalidKeyException {
+        checkMode(opmode);
         //        FIXME InvalidKeyException
         //        if keysize exceeds the maximum allowable keysize
         //        (jurisdiction policy files)
         spiImpl.engineInit(opmode, key, random);
         mode = opmode;
+    }
+
+    private void checkMode(int mode) {
+        if (mode != ENCRYPT_MODE && mode != DECRYPT_MODE
+            && mode != UNWRAP_MODE && mode != WRAP_MODE) {
+            throw new InvalidParameterException("Invalid mode: " + mode);
+        }
     }
 
     /**
@@ -557,10 +560,10 @@ public class Cipher {
      */
     public final void init(int opmode, Key key, AlgorithmParameterSpec params)
             throws InvalidKeyException, InvalidAlgorithmParameterException {
-        if (sec_rand == null) {
-            sec_rand = new SecureRandom();
+        if (secureRandom == null) {
+            secureRandom = new SecureRandom();
         }
-        init(opmode, key, params, sec_rand);
+        init(opmode, key, params, secureRandom);
     }
 
     /**
@@ -603,10 +606,7 @@ public class Cipher {
     public final void init(int opmode, Key key, AlgorithmParameterSpec params,
             SecureRandom random) throws InvalidKeyException,
             InvalidAlgorithmParameterException {
-        if (opmode != ENCRYPT_MODE && opmode != DECRYPT_MODE
-                && opmode != UNWRAP_MODE && opmode != WRAP_MODE) {
-            throw new InvalidParameterException(Messages.getString("crypto.19")); //$NON-NLS-1$
-        }
+        checkMode(opmode);
         //        FIXME InvalidKeyException
         //        if keysize exceeds the maximum allowable keysize
         //        (jurisdiction policy files)
@@ -652,10 +652,10 @@ public class Cipher {
      */
     public final void init(int opmode, Key key, AlgorithmParameters params)
             throws InvalidKeyException, InvalidAlgorithmParameterException {
-        if (sec_rand == null) {
-            sec_rand = new SecureRandom();
+        if (secureRandom == null) {
+            secureRandom = new SecureRandom();
         }
-        init(opmode, key, params, sec_rand);
+        init(opmode, key, params, secureRandom);
     }
 
     /**
@@ -697,10 +697,7 @@ public class Cipher {
     public final void init(int opmode, Key key, AlgorithmParameters params,
             SecureRandom random) throws InvalidKeyException,
             InvalidAlgorithmParameterException {
-        if (opmode != ENCRYPT_MODE && opmode != DECRYPT_MODE
-                && opmode != UNWRAP_MODE && opmode != WRAP_MODE) {
-            throw new InvalidParameterException(Messages.getString("crypto.19")); //$NON-NLS-1$
-        }
+        checkMode(opmode);
         //        FIXME InvalidKeyException
         //        if keysize exceeds the maximum allowable keysize
         //        (jurisdiction policy files)
@@ -745,10 +742,10 @@ public class Cipher {
      */
     public final void init(int opmode, Certificate certificate)
             throws InvalidKeyException {
-        if (sec_rand == null) {
-            sec_rand = new SecureRandom();
+        if (secureRandom == null) {
+            secureRandom = new SecureRandom();
         }
-        init(opmode, certificate, sec_rand);
+        init(opmode, certificate, secureRandom);
     }
 
     /**
@@ -788,39 +785,41 @@ public class Cipher {
      */
     public final void init(int opmode, Certificate certificate,
             SecureRandom random) throws InvalidKeyException {
-        if (opmode != ENCRYPT_MODE && opmode != DECRYPT_MODE
-                && opmode != UNWRAP_MODE && opmode != WRAP_MODE) {
-            throw new InvalidParameterException(Messages.getString("crypto.19")); //$NON-NLS-1$
-        }
+        checkMode(opmode);
         if (certificate instanceof X509Certificate) {
             Set<String> ce = ((X509Certificate) certificate).getCriticalExtensionOIDs();
             boolean critical = false;
             if (ce != null && !ce.isEmpty()) {
                 for (String oid : ce) {
-                    if (oid.equals("2.5.29.15")) { //KeyUsage OID = 2.5.29.15 //$NON-NLS-1$
+                    if (oid.equals("2.5.29.15")) { // KeyUsage OID = 2.5.29.15
                         critical = true;
                         break;
                     }
                 }
                 if (critical) {
-                    boolean[] keyUsage = ((X509Certificate) certificate)
-                            .getKeyUsage();
-                    // As specified in RFC 3280 -
-                    // Internet X.509 Public Key Infrastructure
-                    // Certificate and Certificate Revocation List (CRL) Profile.
-                    // (http://www.ietf.org/rfc/rfc3280.txt)
+                    boolean[] keyUsage = ((X509Certificate) certificate).getKeyUsage();
+                    // As specified in RFC 3280:
+                    //   Internet X.509 Public Key Infrastructure
+                    //   Certificate and Certificate Revocation List (CRL) Profile.
+                    // Section 4.2.1.3  Key Usage
+                    // http://www.ietf.org/rfc/rfc3280.txt
                     //
                     // KeyUsage ::= BIT STRING {digitalSignature (0),
-                    //                          ...
-                    //                          encipherOnly (7),
-                    //                          decipherOnly (8) }
+                    //                          nonRepudiation   (1),
+                    //                          keyEncipherment  (2),
+                    //                          dataEncipherment (3),
+                    //                          keyAgreement     (4),
+                    //                          keyCertSign      (5),
+                    //                          cRLSign          (6),
+                    //                          encipherOnly     (7),
+                    //                          decipherOnly     (8) }
                     if (keyUsage != null) {
-                        if (opmode == ENCRYPT_MODE && (!keyUsage[7])) {
-                            throw new InvalidKeyException(
-                                    Messages.getString("crypto.1A")); //$NON-NLS-1$
-                        } else if (opmode == DECRYPT_MODE && (!keyUsage[8])) {
-                            throw new InvalidKeyException(
-                                    Messages.getString("crypto.1B")); //$NON-NLS-1$
+                        if (opmode == ENCRYPT_MODE && !keyUsage[3]) {
+                            throw new InvalidKeyException("The public key in the certificate "
+                                                          + "cannot be used for ENCRYPT_MODE");
+                        } else if (opmode == WRAP_MODE && !keyUsage[2]) {
+                            throw new InvalidKeyException("The public key in the certificate "
+                                                          + "cannot be used for WRAP_MODE");
                         }
                     }
                 }
@@ -849,11 +848,10 @@ public class Cipher {
      */
     public final byte[] update(byte[] input) {
         if (mode != ENCRYPT_MODE && mode != DECRYPT_MODE) {
-            throw new IllegalStateException(
-                    Messages.getString("crypto.1C")); //$NON-NLS-1$
+            throw new IllegalStateException();
         }
         if (input == null) {
-            throw new IllegalArgumentException(Messages.getString("crypto.1D")); //$NON-NLS-1$
+            throw new IllegalArgumentException("input == null");
         }
         if (input.length == 0) {
             return null;
@@ -883,17 +881,15 @@ public class Cipher {
      */
     public final byte[] update(byte[] input, int inputOffset, int inputLen) {
         if (mode != ENCRYPT_MODE && mode != DECRYPT_MODE) {
-            throw new IllegalStateException(
-                    Messages.getString("crypto.1C")); //$NON-NLS-1$
+            throw new IllegalStateException();
         }
         if (input == null) {
-            throw new IllegalArgumentException(Messages.getString("crypto.1D")); //$NON-NLS-1$
+            throw new IllegalArgumentException("input == null");
         }
         if (inputOffset < 0 || inputLen < 0
-                || inputLen > input.length 
+                || inputLen > input.length
                 || inputOffset > input.length - inputLen) {
-            throw new IllegalArgumentException(
-                    Messages.getString("crypto.1E")); //$NON-NLS-1$
+            throw new IllegalArgumentException("Incorrect inputOffset/inputLen parameters");
         }
         if (input.length == 0) {
             return null;
@@ -967,24 +963,20 @@ public class Cipher {
     public final int update(byte[] input, int inputOffset, int inputLen,
             byte[] output, int outputOffset) throws ShortBufferException {
         if (mode != ENCRYPT_MODE && mode != DECRYPT_MODE) {
-            throw new IllegalStateException(
-                    Messages.getString("crypto.1C")); //$NON-NLS-1$
+            throw new IllegalStateException();
         }
         if (input == null) {
-            throw new IllegalArgumentException(Messages.getString("crypto.1D")); //$NON-NLS-1$
+            throw new IllegalArgumentException("input == null");
         }
         if (output == null) {
-            throw new IllegalArgumentException(Messages.getString("crypto.1F")); //$NON-NLS-1$
+            throw new IllegalArgumentException("output == null");
         }
         if (outputOffset < 0) {
-            throw new IllegalArgumentException(
-                    Messages.getString("crypto.20")); //$NON-NLS-1$
+            throw new IllegalArgumentException("outputOffset < 0");
         }
-        if (inputOffset < 0 || inputLen < 0
-                || inputLen > input.length
+        if (inputOffset < 0 || inputLen < 0 || inputLen > input.length
                 || inputOffset > input.length - inputLen) {
-            throw new IllegalArgumentException(
-                    Messages.getString("crypto.21")); //$NON-NLS-1$
+            throw new IllegalArgumentException("Incorrect inputOffset/inputLen parameters");
         }
         if (input.length == 0) {
             return 0;
@@ -1020,12 +1012,10 @@ public class Cipher {
     public final int update(ByteBuffer input, ByteBuffer output)
             throws ShortBufferException {
         if (mode != ENCRYPT_MODE && mode != DECRYPT_MODE) {
-            throw new IllegalStateException(
-                    Messages.getString("crypto.1C")); //$NON-NLS-1$
+            throw new IllegalStateException();
         }
         if (input == output) {
-            throw new IllegalArgumentException(
-                    Messages.getString("crypto.22")); //$NON-NLS-1$
+            throw new IllegalArgumentException("input == output");
         }
         return spiImpl.engineUpdate(input, output);
     }
@@ -1049,8 +1039,7 @@ public class Cipher {
     public final byte[] doFinal() throws IllegalBlockSizeException,
             BadPaddingException {
         if (mode != ENCRYPT_MODE && mode != DECRYPT_MODE) {
-            throw new IllegalStateException(
-                    Messages.getString("crypto.1C")); //$NON-NLS-1$
+            throw new IllegalStateException();
         }
         return spiImpl.engineDoFinal(null, 0, 0);
     }
@@ -1083,12 +1072,10 @@ public class Cipher {
             throws IllegalBlockSizeException, ShortBufferException,
             BadPaddingException {
         if (mode != ENCRYPT_MODE && mode != DECRYPT_MODE) {
-            throw new IllegalStateException(
-                    Messages.getString("crypto.1C")); //$NON-NLS-1$
+            throw new IllegalStateException();
         }
         if (outputOffset < 0) {
-            throw new IllegalArgumentException(
-                    Messages.getString("crypto.20")); //$NON-NLS-1$
+            throw new IllegalArgumentException("outputOffset < 0");
         }
         return spiImpl.engineDoFinal(null, 0, 0, output, outputOffset);
     }
@@ -1114,8 +1101,7 @@ public class Cipher {
     public final byte[] doFinal(byte[] input) throws IllegalBlockSizeException,
             BadPaddingException {
         if (mode != ENCRYPT_MODE && mode != DECRYPT_MODE) {
-            throw new IllegalStateException(
-                    Messages.getString("crypto.1C")); //$NON-NLS-1$
+            throw new IllegalStateException();
         }
         return spiImpl.engineDoFinal(input, 0, input.length);
     }
@@ -1149,13 +1135,10 @@ public class Cipher {
     public final byte[] doFinal(byte[] input, int inputOffset, int inputLen)
             throws IllegalBlockSizeException, BadPaddingException {
         if (mode != ENCRYPT_MODE && mode != DECRYPT_MODE) {
-            throw new IllegalStateException(
-                    Messages.getString("crypto.1C")); //$NON-NLS-1$
+            throw new IllegalStateException();
         }
-        if (inputOffset < 0 || inputLen < 0
-                || inputOffset + inputLen > input.length) {
-            throw new IllegalArgumentException(
-                    Messages.getString("crypto.1E")); //$NON-NLS-1$
+        if (inputOffset < 0 || inputLen < 0 || inputOffset + inputLen > input.length) {
+            throw new IllegalArgumentException("Incorrect inputOffset/inputLen parameters");
         }
         return spiImpl.engineDoFinal(input, inputOffset, inputLen);
     }
@@ -1232,13 +1215,10 @@ public class Cipher {
             byte[] output, int outputOffset) throws ShortBufferException,
             IllegalBlockSizeException, BadPaddingException {
         if (mode != ENCRYPT_MODE && mode != DECRYPT_MODE) {
-            throw new IllegalStateException(
-                    Messages.getString("crypto.1C")); //$NON-NLS-1$
+            throw new IllegalStateException();
         }
-        if (inputOffset < 0 || inputLen < 0
-                || inputOffset + inputLen > input.length) {
-            throw new IllegalArgumentException(
-                    Messages.getString("crypto.1E")); //$NON-NLS-1$
+        if (inputOffset < 0 || inputLen < 0 || inputOffset + inputLen > input.length) {
+            throw new IllegalArgumentException("Incorrect inputOffset/inputLen parameters");
         }
         return spiImpl.engineDoFinal(input, inputOffset, inputLen, output,
                 outputOffset);
@@ -1275,12 +1255,10 @@ public class Cipher {
             throws ShortBufferException, IllegalBlockSizeException,
             BadPaddingException {
         if (mode != ENCRYPT_MODE && mode != DECRYPT_MODE) {
-            throw new IllegalStateException(
-                    Messages.getString("crypto.1C")); //$NON-NLS-1$
+            throw new IllegalStateException();
         }
         if (input == output) {
-            throw new IllegalArgumentException(
-                    Messages.getString("crypto.2E")); //$NON-NLS-1$
+            throw new IllegalArgumentException("input == output");
         }
         return spiImpl.engineDoFinal(input, output);
     }
@@ -1302,8 +1280,7 @@ public class Cipher {
     public final byte[] wrap(Key key) throws IllegalBlockSizeException,
             InvalidKeyException {
         if (mode != WRAP_MODE) {
-            throw new IllegalStateException(
-                    Messages.getString("crypto.1C")); //$NON-NLS-1$
+            throw new IllegalStateException();
         }
         return spiImpl.engineWrap(key);
     }
@@ -1333,8 +1310,7 @@ public class Cipher {
             int wrappedKeyType) throws InvalidKeyException,
             NoSuchAlgorithmException {
         if (mode != UNWRAP_MODE) {
-            throw new IllegalStateException(
-                    Messages.getString("crypto.1C")); //$NON-NLS-1$
+            throw new IllegalStateException();
         }
         return spiImpl.engineUnwrap(wrappedKey, wrappedKeyAlgorithm,
                 wrappedKeyType);

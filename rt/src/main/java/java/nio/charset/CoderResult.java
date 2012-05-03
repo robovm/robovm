@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,8 +19,6 @@ package java.nio.charset;
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
 import java.util.WeakHashMap;
-
-import org.apache.harmony.niochar.internal.nls.Messages;
 
 /**
  * Used to indicate the result of encoding/decoding. There are four types of
@@ -88,14 +86,13 @@ public class CoderResult {
 
     /**
      * Constructs a <code>CoderResult</code> object with its text description.
-     * 
+     *
      * @param type
      *            the type of this result
      * @param length
      *            the length of the erroneous input
      */
     private CoderResult(int type, int length) {
-        super();
         this.type = type;
         this.length = length;
     }
@@ -103,7 +100,7 @@ public class CoderResult {
     /**
      * Gets a <code>CoderResult</code> object indicating a malformed-input
      * error.
-     * 
+     *
      * @param length
      *            the length of the malformed-input.
      * @return a <code>CoderResult</code> object indicating a malformed-input
@@ -111,27 +108,26 @@ public class CoderResult {
      * @throws IllegalArgumentException
      *             if <code>length</code> is non-positive.
      */
-    public static synchronized CoderResult malformedForLength(int length) {
+    public static synchronized CoderResult malformedForLength(int length)
+            throws IllegalArgumentException {
         if (length > 0) {
             Integer key = Integer.valueOf(length);
             synchronized (_malformedErrors) {
                 CoderResult r = _malformedErrors.get(key);
-                if (null == r) {
+                if (r == null) {
                     r = new CoderResult(TYPE_MALFORMED_INPUT, length);
                     _malformedErrors.put(key, r);
                 }
                 return r;
             }
         }
-        // niochar.08=The length must be positive: {0}.
-        throw new IllegalArgumentException(Messages.getString(
-                "niochar.08", length)); //$NON-NLS-1$
+        throw new IllegalArgumentException("Length must be greater than 0; was " + length);
     }
 
     /**
      * Gets a <code>CoderResult</code> object indicating an unmappable
      * character error.
-     * 
+     *
      * @param length
      *            the length of the input unit sequence denoting the unmappable
      *            character.
@@ -140,26 +136,25 @@ public class CoderResult {
      * @throws IllegalArgumentException
      *             if <code>length</code> is non-positive.
      */
-    public static synchronized CoderResult unmappableForLength(int length) {
+    public static synchronized CoderResult unmappableForLength(int length)
+            throws IllegalArgumentException {
         if (length > 0) {
             Integer key = Integer.valueOf(length);
             synchronized (_unmappableErrors) {
                 CoderResult r = _unmappableErrors.get(key);
-                if (null == r) {
+                if (r == null) {
                     r = new CoderResult(TYPE_UNMAPPABLE_CHAR, length);
                     _unmappableErrors.put(key, r);
                 }
                 return r;
             }
         }
-        // niochar.08=The length must be positive: {0}.
-        throw new IllegalArgumentException(Messages.getString(
-                "niochar.08", length)); //$NON-NLS-1$
+        throw new IllegalArgumentException("Length must be greater than 0; was " + length);
     }
 
     /**
      * Returns true if this result is an underflow condition.
-     * 
+     *
      * @return true if an underflow, otherwise false.
      */
     public boolean isUnderflow() {
@@ -169,7 +164,7 @@ public class CoderResult {
     /**
      * Returns true if this result represents a malformed-input error or an
      * unmappable-character error.
-     * 
+     *
      * @return true if this is a malformed-input error or an
      *         unmappable-character error, otherwise false.
      */
@@ -180,7 +175,7 @@ public class CoderResult {
 
     /**
      * Returns true if this result represents a malformed-input error.
-     * 
+     *
      * @return true if this is a malformed-input error, otherwise false.
      */
     public boolean isMalformed() {
@@ -189,7 +184,7 @@ public class CoderResult {
 
     /**
      * Returns true if this result is an overflow condition.
-     * 
+     *
      * @return true if this is an overflow, otherwise false.
      */
     public boolean isOverflow() {
@@ -198,7 +193,7 @@ public class CoderResult {
 
     /**
      * Returns true if this result represents an unmappable-character error.
-     * 
+     *
      * @return true if this is an unmappable-character error, otherwise false.
      */
     public boolean isUnmappable() {
@@ -207,26 +202,22 @@ public class CoderResult {
 
     /**
      * Gets the length of the erroneous input. The length is only meaningful to
-     * a malformed-input error or an unmappble character error.
-     * 
+     * a malformed-input error or an unmappable character error.
+     *
      * @return the length, as an integer, of this object's erroneous input.
      * @throws UnsupportedOperationException
      *             if this result is an overflow or underflow.
      */
-    public int length() {
-        if (this.type == TYPE_MALFORMED_INPUT
-                || this.type == TYPE_UNMAPPABLE_CHAR) {
+    public int length() throws UnsupportedOperationException {
+        if (this.type == TYPE_MALFORMED_INPUT || this.type == TYPE_UNMAPPABLE_CHAR) {
             return this.length;
         }
-        // niochar.09=The length of the erroneous input is only meaningful to
-        // a malformed-input error or an unmappble character error
-        throw new UnsupportedOperationException(Messages
-                .getString("niochar.09")); //$NON-NLS-1$
+        throw new UnsupportedOperationException("length meaningless for " + toString());
     }
 
     /**
      * Throws an exception corresponding to this coder result.
-     * 
+     *
      * @throws BufferUnderflowException
      *             in case this is an underflow.
      * @throws BufferOverflowException
@@ -238,7 +229,9 @@ public class CoderResult {
      * @throws CharacterCodingException
      *             the default exception.
      */
-    public void throwException() throws CharacterCodingException {
+    public void throwException() throws BufferUnderflowException,
+            BufferOverflowException, UnmappableCharacterException,
+            MalformedInputException, CharacterCodingException {
         switch (this.type) {
             case TYPE_UNDERFLOW:
                 throw new BufferUnderflowException();
@@ -255,7 +248,7 @@ public class CoderResult {
 
     /**
      * Returns a text description of this result.
-     * 
+     *
      * @return a text description of this result.
      */
     @Override
@@ -263,25 +256,23 @@ public class CoderResult {
         String dsc = null;
         switch (this.type) {
             case TYPE_UNDERFLOW:
-                dsc = "UNDERFLOW error"; //$NON-NLS-1$
+                dsc = "UNDERFLOW error";
                 break;
             case TYPE_OVERFLOW:
-                dsc = "OVERFLOW error"; //$NON-NLS-1$
+                dsc = "OVERFLOW error";
                 break;
             case TYPE_UNMAPPABLE_CHAR:
-                dsc = "Unmappable-character error with erroneous input length " //$NON-NLS-1$
+                dsc = "Unmappable-character error with erroneous input length "
                         + this.length;
                 break;
             case TYPE_MALFORMED_INPUT:
-                dsc = "Malformed-input error with erroneous input length " //$NON-NLS-1$
+                dsc = "Malformed-input error with erroneous input length "
                         + this.length;
                 break;
             default:
-                dsc = ""; //$NON-NLS-1$
+                dsc = "";
                 break;
         }
-        return "CoderResult[" + dsc + "]"; //$NON-NLS-1$ //$NON-NLS-2$
-
+        return getClass().getName() + "[" + dsc + "]";
     }
-
 }

@@ -17,129 +17,88 @@
 
 /**
 * @author Alexander Y. Kleymenov
+* @version $Revision$
 */
 
 package org.apache.harmony.security.x509;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-
 import org.apache.harmony.security.asn1.ASN1SequenceOf;
 import org.apache.harmony.security.asn1.ASN1Type;
 import org.apache.harmony.security.asn1.BerInputStream;
 
 
 /**
- * The class encapsulates the ASN.1 DER encoding/decoding work 
+ * The class encapsulates the ASN.1 DER encoding/decoding work
  * with the GeneralNames structure which is a part of X.509 certificate
  * (as specified in RFC 3280 -
  *  Internet X.509 Public Key Infrastructure.
  *  Certificate and Certificate Revocation List (CRL) Profile.
  *  http://www.ietf.org/rfc/rfc3280.txt):
  *
- * 
+ *
  * <pre>
  *   GeneralNames ::= SEQUENCE SIZE (1..MAX) OF GeneralName
  * </pre>
- * 
+ *
  * @see org.apache.harmony.security.x509.NameConstraints
  * @see org.apache.harmony.security.x509.GeneralSubtree
  */
-public class GeneralNames {
-
-    // the values of GeneralName
-    private List generalNames;
-    // the ASN.1 encoded form of GeneralNames
+public final class GeneralNames {
+    /** the values of GeneralName */
+    private List<GeneralName> generalNames;
+    /** the ASN.1 encoded form of GeneralNames */
     private byte[] encoding;
-    
-    /**
-     * Constructs an object representing the value of GeneralNames.
-     */
+
     public GeneralNames() {
-        generalNames = new ArrayList();
+        generalNames = new ArrayList<GeneralName>();
     }
-    
-    /**
-     * TODO
-     * @param   generalNames:   List
-     */
-    public GeneralNames(List generalNames) {
+
+    public GeneralNames(List<GeneralName> generalNames) {
         this.generalNames = generalNames;
     }
-    
-    // 
-    // TODO
-    // @param   generalNames:   List
-    // @param   encoding:   byte[]
-    // 
-    private GeneralNames(List generalNames, byte[] encoding) {
+
+    private GeneralNames(List<GeneralName> generalNames, byte[] encoding) {
         this.generalNames = generalNames;
         this.encoding = encoding;
     }
 
     /**
      * Returns the list of values.
-     * @return  names
      */
-    public List getNames() {
+    public List<GeneralName> getNames() {
         if ((generalNames == null) || (generalNames.size() == 0)) {
             return null;
         }
-        return new ArrayList(generalNames);
+        return new ArrayList<GeneralName>(generalNames);
     }
 
     /**
      * Returns the collection of pairs: (Integer (tag), Object (name value))*
-     * @return the collection of pairs: (Integer (tag), Object (name value))*
      */
-    public List getPairsList() {
-        ArrayList result = new ArrayList();
+    public Collection<List<?>> getPairsList() {
+        Collection<List<?>> result = new ArrayList<List<?>>();
         if (generalNames == null) {
             return result;
         }
-        Iterator it = generalNames.iterator();
-        while (it.hasNext()) {
-            result.add(((GeneralName) it.next()).getAsList());
+        for (GeneralName generalName : generalNames) {
+            result.add(generalName.getAsList());
         }
         return result;
     }
 
-    /**
-     * TODO
-     * @param   name:   GeneralName
-     * @return
-     */
     public void addName(GeneralName name) {
         encoding = null;
         if (generalNames == null) {
-            generalNames = new ArrayList();
+            generalNames = new ArrayList<GeneralName>();
         }
         generalNames.add(name);
     }
-
-    /* *
-     * TODO
-     * @param   name:   GeneralName
-     * @return
-     * 
-    public GeneralName getNameByTag(int tag) {
-        encoding = null;
-        if ((generalNames == null) || (generalNames.size() == 0)) {
-            return null;
-        }
-        for (int i=0; i<generalNames.size(); i++) {
-            if (((GeneralName) generalName.get(i)).getTag() == tag) {
-            }
-        }
-        generalNames.add(name);
-    }
-     */
 
     /**
      * Returns ASN.1 encoded form of this X.509 GeneralNames value.
-     * @return a byte array containing ASN.1 encode form.
      */
     public byte[] getEncoded() {
         if (encoding == null) {
@@ -148,18 +107,14 @@ public class GeneralNames {
         return encoding;
     }
 
-    /**
-     * Places the string representation of extension value
-     * into the StringBuffer object.
-     */
-    public void dumpValue(StringBuffer buffer, String prefix) {
+    public void dumpValue(StringBuilder sb, String prefix) {
         if (generalNames == null) {
             return;
         }
-        for (Iterator it=generalNames.iterator(); it.hasNext();) {
-            buffer.append(prefix);
-            buffer.append(it.next());
-            buffer.append('\n');
+        for (GeneralName generalName : generalNames) {
+            sb.append(prefix);
+            sb.append(generalName);
+            sb.append('\n');
         }
     }
 
@@ -167,12 +122,11 @@ public class GeneralNames {
      * ASN.1 DER X.509 GeneralNames encoder/decoder class.
      */
     public static final ASN1Type ASN1 = new ASN1SequenceOf(GeneralName.ASN1) {
-
-        public Object getDecodedObject(BerInputStream in) {
-            return new GeneralNames((List)in.content, in.getEncoded());
+        @Override public Object getDecodedObject(BerInputStream in) {
+            return new GeneralNames((List<GeneralName>) in.content, in.getEncoded());
         }
 
-        public Collection getValues(Object object) {
+        @Override public Collection getValues(Object object) {
             GeneralNames gns = (GeneralNames) object;
             return gns.generalNames;
         }

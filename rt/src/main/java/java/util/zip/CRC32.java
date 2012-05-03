@@ -17,11 +17,13 @@
 
 package java.util.zip;
 
+import java.util.Arrays;
+
 /**
  * The CRC32 class is used to compute a CRC32 checksum from data provided as
- * input value.
+ * input value. See also {@link Adler32} which is almost as good, but cheaper.
  */
-public class CRC32 implements java.util.zip.Checksum {
+public class CRC32 implements Checksum {
 
     private long crc = 0L;
 
@@ -65,28 +67,16 @@ public class CRC32 implements java.util.zip.Checksum {
     }
 
     /**
-     * Updates this checksum with n bytes of data obtained from buffer {@code
-     * buf}, starting at offset {@code off}.
-     *
-     * @param buf
-     *            the buffer to update the checksum.
-     * @param off
-     *            the offset in {@code buf} to obtain data from.
-     * @param nbytes
-     *            the number of bytes to read from {@code buf}.
+     * Update this {@code CRC32} checksum with the contents of {@code buf},
+     * starting from {@code offset} and reading {@code byteCount} bytes of data.
      */
-    public void update(byte[] buf, int off, int nbytes) {
-        // avoid int overflow, check null buf
-        if (off <= buf.length && nbytes >= 0 && off >= 0
-                && buf.length - off >= nbytes) {
-            tbytes += nbytes;
-            crc = updateImpl(buf, off, nbytes, crc);
-        } else {
-            throw new ArrayIndexOutOfBoundsException();
-        }
+    public void update(byte[] buf, int offset, int byteCount) {
+        Arrays.checkOffsetAndCount(buf.length, offset, byteCount);
+        tbytes += byteCount;
+        crc = updateImpl(buf, offset, byteCount, crc);
     }
 
-    private native long updateImpl(byte[] buf, int off, int nbytes, long crc1);
+    private native long updateImpl(byte[] buf, int offset, int byteCount, long crc1);
 
     private native long updateByteImpl(byte val, long crc1);
 }

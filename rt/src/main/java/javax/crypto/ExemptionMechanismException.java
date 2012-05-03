@@ -15,10 +15,6 @@
  *  limitations under the License.
  */
 
-/**
-* @author Vera Y. Petrashkova
-*/
-
 package javax.crypto;
 
 import java.security.GeneralSecurityException;
@@ -36,7 +32,7 @@ public class ExemptionMechanismException extends GeneralSecurityException {
     /**
      * Creates a new {@code ExemptionMechanismException} with the specified
      * message.
-     * 
+     *
      * @param msg
      *            the exception message.
      */

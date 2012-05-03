@@ -194,7 +194,7 @@ public class GregorianCalendar extends Calendar {
      * Value for the AD era.
      */
     public static final int AD = 1;
-    
+
     private static final long defaultGregorianCutover = -12219292800000l;
 
     private long gregorianCutover = defaultGregorianCutover;
@@ -221,7 +221,7 @@ public class GregorianCalendar extends Calendar {
 
     private boolean isCached;
 
-    private int cachedFields[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    private int[] cachedFields = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     private long nextMidnightMillis = 0L;
 
@@ -242,7 +242,7 @@ public class GregorianCalendar extends Calendar {
     /**
      * Constructs a new {@code GregorianCalendar} initialized to midnight in the default
      * {@code TimeZone} and {@code Locale} on the specified date.
-     * 
+     *
      * @param year
      *            the year.
      * @param month
@@ -278,7 +278,7 @@ public class GregorianCalendar extends Calendar {
     /**
      * Constructs a new {@code GregorianCalendar} initialized to the specified date and
      * time in the default {@code TimeZone} and {@code Locale}.
-     * 
+     *
      * @param year
      *            the year.
      * @param month
@@ -306,7 +306,7 @@ public class GregorianCalendar extends Calendar {
     /**
      * Constructs a new {@code GregorianCalendar} initialized to the current date and
      * time and using the specified {@code Locale} and the default {@code TimeZone}.
-     * 
+     *
      * @param locale
      *            the {@code Locale}.
      */
@@ -317,7 +317,7 @@ public class GregorianCalendar extends Calendar {
     /**
      * Constructs a new {@code GregorianCalendar} initialized to the current date and
      * time and using the specified {@code TimeZone} and the default {@code Locale}.
-     * 
+     *
      * @param timezone
      *            the {@code TimeZone}.
      */
@@ -328,7 +328,7 @@ public class GregorianCalendar extends Calendar {
     /**
      * Constructs a new {@code GregorianCalendar} initialized to the current date and
      * time and using the specified {@code TimeZone} and {@code Locale}.
-     * 
+     *
      * @param timezone
      *            the {@code TimeZone}.
      * @param locale
@@ -347,12 +347,12 @@ public class GregorianCalendar extends Calendar {
 
     /**
      * Adds the specified amount to a {@code Calendar} field.
-     * 
+     *
      * @param field
      *            the {@code Calendar} field to modify.
      * @param value
      *            the amount to add to the field.
-     * 
+     *
      * @throws IllegalArgumentException
      *                if the specified field is DST_OFFSET or ZONE_OFFSET.
      */
@@ -435,23 +435,42 @@ public class GregorianCalendar extends Calendar {
                 multiplier = 604800000L;
                 break;
         }
-        if (multiplier > 0) {
-            int zoneOffset = getTimeZone().getRawOffset();
-            int offset = getOffset(time + zoneOffset);
-            time += value * multiplier;
-            int newOffset = getOffset(time + zoneOffset);
-            // Adjust for moving over a DST boundary
-            if (newOffset != offset) {
-                time += offset - newOffset;
-            }
+
+        if (multiplier == 0) {
+            areFieldsSet = false;
+            complete();
+            return;
         }
+
+        long delta = value * multiplier;
+
+        /*
+         * Attempt to keep the hour and minute constant when we've crossed a DST
+         * boundary and the user's units are AM_PM or larger. The typical
+         * consequence is that calls to add(DATE, 1) will add 23, 24 or 25 hours
+         * depending on whether the DST goes forward, constant, or backward.
+         *
+         * We know we've crossed a DST boundary if the new time will have a
+         * different timezone offset. Adjust by adding the difference of the two
+         * offsets. We don't adjust when doing so prevents the change from
+         * crossing the boundary.
+         */
+        int zoneOffset = getTimeZone().getRawOffset();
+        int offsetBefore = getOffset(time + zoneOffset);
+        int offsetAfter = getOffset(time + zoneOffset + delta);
+        int dstDelta = offsetBefore - offsetAfter;
+        if (getOffset(time + zoneOffset + delta + dstDelta) == offsetAfter) {
+            delta += dstDelta;
+        }
+
+        time += delta;
         areFieldsSet = false;
         complete();
     }
 
     /**
      * Creates new instance of {@code GregorianCalendar} with the same properties.
-     * 
+     *
      * @return a shallow copy of this {@code GregorianCalendar}.
      */
     @Override
@@ -591,15 +610,14 @@ public class GregorianCalendar extends Calendar {
 
     @Override
     protected void computeFields() {
-        int zoneOffset = getTimeZone().getRawOffset();
-
-        if(!isSet[ZONE_OFFSET]) {
-            fields[ZONE_OFFSET] = zoneOffset;
-        }
+        TimeZone timeZone = getTimeZone();
+        int dstOffset = timeZone.inDaylightTime(new Date(time)) ? timeZone.getDSTSavings() : 0;
+        int zoneOffset = timeZone.getRawOffset();
+        fields[DST_OFFSET] = dstOffset;
+        fields[ZONE_OFFSET] = zoneOffset;
 
         int millis = (int) (time % 86400000);
         int savedMillis = millis;
-        int dstOffset = fields[DST_OFFSET];
         // compute without a change in daylight saving time
         int offset = zoneOffset + dstOffset;
         long newTime = time + offset;
@@ -610,6 +628,8 @@ public class GregorianCalendar extends Calendar {
             newTime = 0x8000000000000000L;
         }
 
+        // FIXME: I don't think this caching ever really gets used, because it requires that the
+        // time zone doesn't use daylight savings (ever). So unless you're somewhere like Taiwan...
         if (isCached) {
             if (millis < 0) {
                 millis += 86400000;
@@ -636,10 +656,10 @@ public class GregorianCalendar extends Calendar {
             fields[AM_PM] = fields[HOUR_OF_DAY] > 11 ? 1 : 0;
             fields[HOUR] = fields[HOUR_OF_DAY] % 12;
 
+            // FIXME: this has to be wrong; useDaylightTime doesn't mean what they think it means!
             long newTimeAdjusted = newTime;
-            if (getTimeZone().useDaylightTime()) {
-                int dstSavings = ((SimpleTimeZone) getTimeZone())
-                        .getDSTSavings();
+            if (timeZone.useDaylightTime()) {
+                int dstSavings = timeZone.getDSTSavings();
                 newTimeAdjusted += (dstOffset == 0) ? dstSavings : -dstSavings;
             }
 
@@ -663,7 +683,7 @@ public class GregorianCalendar extends Calendar {
         if (!isCached
                 && newTime != 0x7fffffffffffffffL
                 && newTime != 0x8000000000000000L
-                && (!getTimeZone().useDaylightTime() || getTimeZone() instanceof SimpleTimeZone)) {
+                && (!timeZone.useDaylightTime() || timeZone instanceof SimpleTimeZone)) {
             int cacheMillis = 0;
 
             cachedFields[0] = fields[YEAR];
@@ -942,7 +962,7 @@ public class GregorianCalendar extends Calendar {
         return (year - 1970) * 365 + ((year - 1972) / 4)
                 - ((year - 2000) / 100) + ((year - 2000) / 400);
     }
-    
+
     private int daysInMonth() {
         return daysInMonth(isLeapYear(fields[YEAR]), fields[MONTH]);
     }
@@ -978,7 +998,7 @@ public class GregorianCalendar extends Calendar {
      * Compares the specified {@code Object} to this {@code GregorianCalendar} and returns whether
      * they are equal. To be equal, the {@code Object} must be an instance of {@code GregorianCalendar} and
      * have the same properties.
-     * 
+     *
      * @param object
      *            the {@code Object} to compare with this {@code GregorianCalendar}.
      * @return {@code true} if {@code object} is equal to this
@@ -990,6 +1010,12 @@ public class GregorianCalendar extends Calendar {
      */
     @Override
     public boolean equals(Object object) {
+        if (!(object instanceof GregorianCalendar)) {
+            return false;
+        }
+        if (object == this) {
+            return true;
+        }
         return super.equals(object)
                 && gregorianCutover == ((GregorianCalendar) object).gregorianCutover;
     }
@@ -997,7 +1023,7 @@ public class GregorianCalendar extends Calendar {
     /**
      * Gets the maximum value of the specified field for the current date. For
      * example, the maximum number of days in the current month.
-     * 
+     *
      * @param field
      *            the field.
      * @return the maximum value of the specified field.
@@ -1068,7 +1094,7 @@ public class GregorianCalendar extends Calendar {
      * Gets the minimum value of the specified field for the current date. For
      * the gregorian calendar, this value is the same as
      * {@code getMinimum()}.
-     * 
+     *
      * @param field
      *            the field.
      * @return the minimum value of the specified field.
@@ -1081,7 +1107,7 @@ public class GregorianCalendar extends Calendar {
     /**
      * Gets the greatest minimum value of the specified field. For the gregorian
      * calendar, this value is the same as {@code getMinimum()}.
-     * 
+     *
      * @param field
      *            the field.
      * @return the greatest minimum value of the specified field.
@@ -1094,7 +1120,7 @@ public class GregorianCalendar extends Calendar {
     /**
      * Returns the gregorian change date of this calendar. This is the date on
      * which the gregorian calendar came into effect.
-     * 
+     *
      * @return a {@code Date} which represents the gregorian change date.
      */
     public final Date getGregorianChange() {
@@ -1104,7 +1130,7 @@ public class GregorianCalendar extends Calendar {
     /**
      * Gets the smallest maximum value of the specified field. For example, 28
      * for the day of month field.
-     * 
+     *
      * @param field
      *            the field.
      * @return the smallest maximum value of the specified field.
@@ -1127,7 +1153,7 @@ public class GregorianCalendar extends Calendar {
     /**
      * Gets the greatest maximum value of the specified field. For example, 31
      * for the day of month field.
-     * 
+     *
      * @param field
      *            the field.
      * @return the greatest maximum value of the specified field.
@@ -1139,7 +1165,7 @@ public class GregorianCalendar extends Calendar {
 
     /**
      * Gets the smallest minimum value of the specified field.
-     * 
+     *
      * @param field
      *            the field.
      * @return the smallest minimum value of the specified field.
@@ -1149,11 +1175,8 @@ public class GregorianCalendar extends Calendar {
         return minimums[field];
     }
 
-    int getOffset(long localTime) {
+    private int getOffset(long localTime) {
         TimeZone timeZone = getTimeZone();
-        if (!timeZone.useDaylightTime()) {
-            return timeZone.getRawOffset();
-        }
 
         long dayCount = localTime / 86400000;
         int millis = (int) (localTime % 86400000);
@@ -1201,9 +1224,9 @@ public class GregorianCalendar extends Calendar {
     /**
      * Returns an integer hash code for the receiver. Objects which are equal
      * return the same value for this method.
-     * 
+     *
      * @return the receiver's hash.
-     * 
+     *
      * @see #equals
      */
     @Override
@@ -1214,7 +1237,7 @@ public class GregorianCalendar extends Calendar {
 
     /**
      * Returns whether the specified year is a leap year.
-     * 
+     *
      * @param year
      *            the year.
      * @return {@code true} if the specified year is a leap year, {@code false}
@@ -1253,12 +1276,12 @@ public class GregorianCalendar extends Calendar {
      * field when it goes beyond the maximum or minimum value for the current
      * date. Other fields will be adjusted as required to maintain a consistent
      * date.
-     * 
+     *
      * @param field
      *            the field to roll.
      * @param value
      *            the amount to add.
-     * 
+     *
      * @throws IllegalArgumentException
      *                if an invalid field is specified.
      */
@@ -1371,7 +1394,7 @@ public class GregorianCalendar extends Calendar {
      * date. Other fields will be adjusted as required to maintain a consistent
      * date. For example, March 31 will roll to April 30 when rolling the month
      * field.
-     * 
+     *
      * @param field
      *            the field to roll.
      * @param increment
@@ -1387,7 +1410,7 @@ public class GregorianCalendar extends Calendar {
 
     /**
      * Sets the gregorian change date of this calendar.
-     * 
+     *
      * @param date
      *            a {@code Date} which represents the gregorian change date.
      */

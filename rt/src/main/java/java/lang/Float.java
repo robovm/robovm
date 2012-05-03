@@ -19,7 +19,7 @@ package java.lang;
 
 /**
  * The wrapper for the primitive type {@code float}.
- * 
+ *
  * @see java.lang.Number
  * @since 1.0
  */
@@ -50,7 +50,7 @@ public final class Float extends Number implements Comparable<Float> {
      * Constant for the minimum {@code float} value, 2<sup>-149</sup>.
      */
     public static final float MIN_VALUE = 1.40129846432481707e-45f;
-    
+
     /**
      * Constant for the Not-a-Number (NaN) value of the {@code float} type.
      */
@@ -72,7 +72,7 @@ public final class Float extends Number implements Comparable<Float> {
      * @since 1.6
      */
     public static final float MIN_NORMAL = 1.1754943508222875E-38f;
-    
+
     /**
      * Maximum base-2 exponent that a finite value of the {@code float} type may have.
      * Equal to {@code Math.getExponent(Float.MAX_VALUE)}.
@@ -80,7 +80,7 @@ public final class Float extends Number implements Comparable<Float> {
      * @since 1.6
      */
     public static final int MAX_EXPONENT = 127;
-    
+
     /**
      * Minimum base-2 exponent that a normal value of the {@code float} type may have.
      * Equal to {@code Math.getExponent(Float.MIN_NORMAL)}.
@@ -111,7 +111,7 @@ public final class Float extends Number implements Comparable<Float> {
 
     /**
      * Constructs a new {@code Float} with the specified primitive float value.
-     * 
+     *
      * @param value
      *            the primitive float value to store in the new instance.
      */
@@ -121,7 +121,7 @@ public final class Float extends Number implements Comparable<Float> {
 
     /**
      * Constructs a new {@code Float} with the specified primitive double value.
-     * 
+     *
      * @param value
      *            the primitive double value to store in the new instance.
      */
@@ -131,7 +131,7 @@ public final class Float extends Number implements Comparable<Float> {
 
     /**
      * Constructs a new {@code Float} from the specified string.
-     * 
+     *
      * @param string
      *            the string representation of a float value.
      * @throws NumberFormatException
@@ -150,7 +150,7 @@ public final class Float extends Number implements Comparable<Float> {
      * than any other float value, including {@code Float.POSITIVE_INFINITY};</li>
      * <li>+0.0f is greater than -0.0f</li>
      * </ul>
-     * 
+     *
      * @param object
      *            the float object to compare this object to.
      * @return a negative value if the value of this float is less than the
@@ -161,7 +161,7 @@ public final class Float extends Number implements Comparable<Float> {
      * @since 1.2
      */
     public int compareTo(Float object) {
-        return compare(value, object.value); 
+        return compare(value, object.value);
     }
 
     @Override
@@ -181,7 +181,7 @@ public final class Float extends Number implements Comparable<Float> {
      *
      * <p>Note that, unlike {@code ==}, {@code -0.0} and {@code +0.0} compare
      * unequal, and {@code NaN}s compare equal by this method.
-     * 
+     *
      * @param object
      *            the object to compare this float with.
      * @return {@code true} if the specified object is equal to this
@@ -211,7 +211,7 @@ public final class Float extends Number implements Comparable<Float> {
 
     /**
      * Gets the primitive value of this float.
-     * 
+     *
      * @return this object's primitive value.
      */
     @Override
@@ -237,7 +237,7 @@ public final class Float extends Number implements Comparable<Float> {
 
     /**
      * Indicates whether this object represents an infinite value.
-     * 
+     *
      * @return {@code true} if the value of this float is positive or negative
      *         infinity; {@code false} otherwise.
      */
@@ -247,7 +247,7 @@ public final class Float extends Number implements Comparable<Float> {
 
     /**
      * Indicates whether the specified float represents an infinite value.
-     * 
+     *
      * @param f
      *            the float to check.
      * @return {@code true} if the value of {@code f} is positive or negative
@@ -259,7 +259,7 @@ public final class Float extends Number implements Comparable<Float> {
 
     /**
      * Indicates whether this object is a <em>Not-a-Number (NaN)</em> value.
-     * 
+     *
      * @return {@code true} if this float is <em>Not-a-Number</em>;
      *         {@code false} if it is a (potentially infinite) float number.
      */
@@ -270,7 +270,7 @@ public final class Float extends Number implements Comparable<Float> {
     /**
      * Indicates whether the specified float is a <em>Not-a-Number (NaN)</em>
      * value.
-     * 
+     *
      * @param f
      *            the float value to check.
      * @return {@code true} if {@code f} is <em>Not-a-Number</em>;
@@ -287,7 +287,7 @@ public final class Float extends Number implements Comparable<Float> {
 
     /**
      * Parses the specified string as a float value.
-     * 
+     *
      * @param string
      *            the string representation of a float value.
      * @return the primitive float value represented by {@code string}.
@@ -313,7 +313,7 @@ public final class Float extends Number implements Comparable<Float> {
     /**
      * Returns a string containing a concise, human-readable description of the
      * specified float value.
-     * 
+     *
      * @param f
      *             the float to convert to a string.
      * @return a printable representation of {@code f}.
@@ -324,7 +324,7 @@ public final class Float extends Number implements Comparable<Float> {
 
     /**
      * Parses the specified string as a float value.
-     * 
+     *
      * @param string
      *            the string representation of a float value.
      * @return a {@code Float} instance containing the float value represented
@@ -344,7 +344,7 @@ public final class Float extends Number implements Comparable<Float> {
      * than any other float value, including {@code Float.POSITIVE_INFINITY};</li>
      * <li>+0.0f is greater than -0.0f</li>
      * </ul>
-     * 
+     *
      * @param float1
      *            the first value to compare.
      * @param float2
@@ -387,7 +387,7 @@ public final class Float extends Number implements Comparable<Float> {
 
     /**
      * Returns a {@code Float} instance for the specified float value.
-     * 
+     *
      * @param f
      *            the float value to store in the instance.
      * @return a {@code Float} instance containing {@code f}.

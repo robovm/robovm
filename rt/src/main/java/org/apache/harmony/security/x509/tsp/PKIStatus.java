@@ -14,7 +14,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
- * under the License.    
+ * under the License.
  */
 
 package org.apache.harmony.security.x509.tsp;
@@ -27,7 +27,7 @@ import java.security.InvalidParameterException;
    Internet X.509 Public Key Infrastructure
    Time-Stamp Protocol (TSP)
    http://www.ietf.org/rfc/rfc3161.txt)
-    
+
    PKIStatus ::= INTEGER {
       granted                (0),
       -- when the PKIStatus contains the value zero a TimeStampToken, as
@@ -44,11 +44,11 @@ import java.security.InvalidParameterException;
        -- notification that a revocation has occurred  }
  */
 public enum PKIStatus {
-    /** 
+    /**
      * TimeStampToken is present as requested
      */
     GRANTED(0),
-    /** 
+    /**
      * TimeStampToken is present with modifications
      */
     GRANTED_WITH_MODS(1),
@@ -60,7 +60,7 @@ public enum PKIStatus {
      * waiting
      */
     WAITING(3),
-    /** 
+    /**
      * revocation time comes soon
      */
     REVOCATION_WARNING(4),
@@ -73,14 +73,14 @@ public enum PKIStatus {
     PKIStatus(int status) {
         this.status = status;
     }
-    
+
     /**
      * @return int value of the status
      */
     public int getStatus(){
         return status;
     }
-    
+
     public static PKIStatus getInstance(int status) {
         for (PKIStatus curStatus : values()) {
             if (status == curStatus.status) {

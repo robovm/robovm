@@ -37,7 +37,7 @@ public class NoSuchFieldError extends IncompatibleClassChangeError {
     /**
      * Constructs a new {@code NoSuchFieldError} with the current stack trace
      * and the specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this error.
      */

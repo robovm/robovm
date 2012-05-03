@@ -4,6 +4,10 @@
  * http://creativecommons.org/licenses/publicdomain
  */
 
+// BEGIN android-note
+// Dropped references to unreleased APIs (ForkJoinPool, Phaser, etc.)
+// END android-note
+
 /**
  * Utility classes commonly useful in concurrent programming.  This
  * package includes a few small standardized extensible frameworks, as
@@ -107,7 +111,7 @@
  *
  * <h2>Synchronizers</h2>
  *
- * Four classes aid common special-purpose synchronization idioms.
+ * Five classes aid common special-purpose synchronization idioms.
  * <ul>
  *
  * <li>{@link java.util.concurrent.Semaphore} is a classic concurrency tool.

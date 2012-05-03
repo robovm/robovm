@@ -28,42 +28,41 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.Arrays;
 import java.util.Vector;
-
 import javax.net.ssl.SSLEngineResult;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
 
 /**
  * Base class for ClientHandshakeImpl and ServerHandshakeImpl classes.
- * @see TLS 1.0 spec., 7.4. Handshake protocol
- * (http://www.ietf.org/rfc/rfc2246.txt)
- * 
+ * @see <a href="http://www.ietf.org/rfc/rfc2246.txt">TLS 1.0 spec., 7.4.
+ * Handshake protocol</a>
+ *
  */
 public abstract class HandshakeProtocol {
 
     /**
-     * Handshake status NEED_UNWRAP - HandshakeProtocol needs to receive data 
+     * Handshake status NEED_UNWRAP - HandshakeProtocol needs to receive data
      */
-    public final static int NEED_UNWRAP = 1;
-    
+    public static final int NEED_UNWRAP = 1;
+
     /**
      * Handshake status NOT_HANDSHAKING - is not currently handshaking
      */
-    public final static int NOT_HANDSHAKING = 2;
-    
+    public static final int NOT_HANDSHAKING = 2;
+
     /**
-     * Handshake status FINISHED - HandshakeProtocol has just finished 
+     * Handshake status FINISHED - HandshakeProtocol has just finished
      */
-    public final static int FINISHED = 3;
-    
+    public static final int FINISHED = 3;
+
     /**
      * Handshake status NEED_TASK - HandshakeProtocol needs the results of delegated task
      */
-    public final static int NEED_TASK = 4;
+    public static final int NEED_TASK = 4;
 
     /**
      * Current handshake status
-     */ 
+     */
     protected int status = NOT_HANDSHAKING;
 
     /**
@@ -77,15 +76,15 @@ public abstract class HandshakeProtocol {
     protected SSLRecordProtocol recordProtocol;
 
     /**
-     * SSLParameters suplied by SSLSocket or SSLEngine
+     * SSLParametersImpl suplied by SSLSocket or SSLEngine
      */
-    protected SSLParameters parameters;
-    
+    protected SSLParametersImpl parameters;
+
     /**
      * Delegated tasks for this handshake implementation
      */
     protected Vector<DelegatedTask> delegatedTasks = new Vector<DelegatedTask>();
-    
+
     /**
      * Indicates non-blocking handshake
      */
@@ -93,12 +92,12 @@ public abstract class HandshakeProtocol {
 
     /**
      * Pending session
-     */ 
+     */
     protected SSLSessionImpl session;
 
     /**
-     * Sended and received handshake messages
-     */ 
+     * Sent and received handshake messages
+     */
     protected ClientHello clientHello;
     protected ServerHello serverHello;
     protected CertificateMessage serverCert;
@@ -110,7 +109,7 @@ public abstract class HandshakeProtocol {
     protected CertificateVerify certificateVerify;
     protected Finished clientFinished;
     protected Finished serverFinished;
-    
+
     /**
      * Indicates that change cipher spec message has been received
      */
@@ -125,7 +124,7 @@ public abstract class HandshakeProtocol {
      *  Premaster secret
      */
     protected byte[] preMasterSecret;
-    
+
     /**
      * Exception occured in delegated task
      */
@@ -135,7 +134,7 @@ public abstract class HandshakeProtocol {
     private byte[] verify_data = new byte[12];
 
     // Encoding of "master secret" string: "master secret".getBytes()
-    private byte[] master_secret_bytes = 
+    private byte[] master_secret_bytes =
             {109, 97, 115, 116, 101, 114, 32, 115, 101, 99, 114, 101, 116 };
 
     // indicates whether protocol needs to send change cipher spec message
@@ -146,14 +145,14 @@ public abstract class HandshakeProtocol {
 
     /**
      * SSLEngine owning this HandshakeProtocol
-     */ 
+     */
     public SSLEngineImpl engineOwner;
-    
+
     /**
      * SSLSocket owning this HandshakeProtocol
      */
     public SSLSocketImpl socketOwner;
-    
+
     /**
      * Creates HandshakeProtocol instance
      * @param owner
@@ -163,7 +162,8 @@ public abstract class HandshakeProtocol {
             engineOwner = (SSLEngineImpl) owner;
             nonBlocking = true;
             this.parameters = engineOwner.sslParameters;
-        } else if (owner instanceof SSLSocketImpl) {
+        }
+        else if (owner instanceof SSLSocketImpl) {
             socketOwner = (SSLSocketImpl) owner;
             nonBlocking = false;
             this.parameters = socketOwner.sslParameters;
@@ -177,7 +177,7 @@ public abstract class HandshakeProtocol {
     public void setRecordProtocol(SSLRecordProtocol recordProtocol) {
         this.recordProtocol = recordProtocol;
     }
-    
+
     /**
      * Start session negotiation
      * @param session
@@ -185,8 +185,8 @@ public abstract class HandshakeProtocol {
     public abstract void start();
 
     /**
-     * Stops the current session renegotiation process. 
-     * Such functionality is needed when it is session renegotiation 
+     * Stops the current session renegotiation process.
+     * Such functionality is needed when it is session renegotiation
      * process and no_renegotiation alert message is received
      * from another peer.
      * @param session
@@ -201,7 +201,7 @@ public abstract class HandshakeProtocol {
      * @return
      */
     public SSLEngineResult.HandshakeStatus getStatus() {
-        if (io_stream.hasData() || needSendCCSpec || 
+        if (io_stream.hasData() || needSendCCSpec ||
                 needSendHelloRequest || delegatedTaskErr != null) {
             return SSLEngineResult.HandshakeStatus.NEED_WRAP;
         }
@@ -279,9 +279,9 @@ public abstract class HandshakeProtocol {
             return recordProtocol.getChangeCipherSpecMesage(getSession());
         } else if (needSendHelloRequest) {
             needSendHelloRequest = false;
-            return recordProtocol.wrap(ContentType.HANDSHAKE, 
-                    // hello request message 
-                    // (see TLS v 1 specification: 
+            return recordProtocol.wrap(ContentType.HANDSHAKE,
+                    // hello request message
+                    // (see TLS v 1 specification:
                     // http://www.ietf.org/rfc/rfc2246.txt)
                     new byte[] {0, 0, 0, 0}, 0, 4);
         } else {
@@ -291,7 +291,7 @@ public abstract class HandshakeProtocol {
 
     /**
      * Sends fatal alert, breaks execution
-     * 
+     *
      * @param description
      */
     protected void sendWarningAlert(byte description) {
@@ -300,7 +300,7 @@ public abstract class HandshakeProtocol {
 
     /**
      * Sends fatal alert, breaks execution
-     * 
+     *
      * @param description
      * @param reason
      */
@@ -310,7 +310,7 @@ public abstract class HandshakeProtocol {
 
     /**
      * Sends fatal alert, breaks execution
-     * 
+     *
      * @param description
      * @param reason
      * @param cause
@@ -321,7 +321,7 @@ public abstract class HandshakeProtocol {
 
     /**
      * Sends fatal alert, breaks execution
-     * 
+     *
      * @param description
      * @param cause
      */
@@ -331,7 +331,7 @@ public abstract class HandshakeProtocol {
 
     /**
      * Computers reference TLS verify_data that is used to verify finished message
-     * @see TLS spec. 7.4.9. Finished
+     * @see <a href="http://www.ietf.org/rfc/rfc2246.txt">TLS spec. 7.4.9. Finished</a>
      * @param label
      */
     protected void computerReferenceVerifyDataTLS(String label) {
@@ -340,7 +340,7 @@ public abstract class HandshakeProtocol {
 
     /**
      * Computer TLS verify_data
-     * @see TLS spec. 7.4.9. Finished
+     * @see <a href="http://www.ietf.org/rfc/rfc2246.txt">TLS spec. 7.4.9. Finished</a>
      * @param label
      * @param buf
      */
@@ -353,7 +353,7 @@ public abstract class HandshakeProtocol {
         System.arraycopy(sha_digest, 0, digest, md5_digest.length,
                 sha_digest.length);
         try {
-            PRF.computePRF(buf, session.master_secret, 
+            PRF.computePRF(buf, session.master_secret,
                     label.getBytes(), digest);
         } catch (GeneralSecurityException e) {
             fatalAlert(AlertProtocol.INTERNAL_ERROR, "PRF error", e);
@@ -362,7 +362,7 @@ public abstract class HandshakeProtocol {
 
     /**
      * Computer reference SSLv3 verify_data that is used to verify finished message
-     * @see SSLv3 spec. 7.6.9. Finished
+     * @see "SSLv3 spec. 7.6.9. Finished"
      * @param label
      */
     protected void computerReferenceVerifyDataSSLv3(byte[] sender) {
@@ -372,7 +372,7 @@ public abstract class HandshakeProtocol {
 
     /**
      * Computer SSLv3 verify_data
-     * @see SSLv3 spec. 7.6.9. Finished
+     * @see "SSLv3 spec. 7.6.9. Finished"
      * @param label
      * @param buf
      */
@@ -383,12 +383,14 @@ public abstract class HandshakeProtocol {
             md5 = MessageDigest.getInstance("MD5");
             sha = MessageDigest.getInstance("SHA-1");
         } catch (Exception e) {
-            fatalAlert(AlertProtocol.INTERNAL_ERROR, "Could not initialize the Digest Algorithms.", e);
+            fatalAlert(AlertProtocol.INTERNAL_ERROR,
+                       "Could not initialize the Digest Algorithms.",
+                       e);
             return;
         }
         try {
-            byte[] hanshake_messages = io_stream.getMessages();
-            md5.update(hanshake_messages);
+            byte[] handshake_messages = io_stream.getMessages();
+            md5.update(handshake_messages);
             md5.update(sender);
             md5.update(session.master_secret);
             byte[] b = md5.digest(SSLv3Constants.MD5pad1);
@@ -396,7 +398,7 @@ public abstract class HandshakeProtocol {
             md5.update(SSLv3Constants.MD5pad2);
             System.arraycopy(md5.digest(b), 0, buf, 0, 16);
 
-            sha.update(hanshake_messages);
+            sha.update(handshake_messages);
             sha.update(sender);
             sha.update(session.master_secret);
             b = sha.digest(SSLv3Constants.SHApad1);
@@ -411,7 +413,7 @@ public abstract class HandshakeProtocol {
 
     /**
      * Verifies finished data
-     * 
+     *
      * @param data
      * @param isServer
      */
@@ -423,7 +425,7 @@ public abstract class HandshakeProtocol {
 
     /**
      * Sends fatal alert "UNEXPECTED MESSAGE"
-     *  
+     *
      */
     protected void unexpectedMessage() {
         fatalAlert(AlertProtocol.UNEXPECTED_MESSAGE, "UNEXPECTED MESSAGE");
@@ -431,7 +433,7 @@ public abstract class HandshakeProtocol {
 
     /**
      * Writes message to HandshakeIODataStream
-     * 
+     *
      * @param message
      */
     public void send(Message message) {
@@ -442,7 +444,7 @@ public abstract class HandshakeProtocol {
 
     /**
      * Computers master secret
-     *  
+     *
      */
     public void computerMasterSecret() {
         byte[] seed = new byte[64];
@@ -459,12 +461,12 @@ public abstract class HandshakeProtocol {
         } else { // SSL3.0
             PRF.computePRF_SSLv3(session.master_secret, preMasterSecret, seed);
         }
-        
+
         //delete preMasterSecret from memory
         Arrays.fill(preMasterSecret, (byte)0);
-        preMasterSecret = null;        
+        preMasterSecret = null;
     }
-    
+
     /**
      * Returns a delegated task.
      * @return Delegated task or null
@@ -475,10 +477,9 @@ public abstract class HandshakeProtocol {
         }
         return delegatedTasks.remove(0);
     }
-    
+
     /**
-     * 
-     * Clears previously sended and received handshake messages
+     * Clears previously sent and received handshake messages
      */
     protected void clearMessages() {
         io_stream.clearBuffer();
@@ -494,7 +495,7 @@ public abstract class HandshakeProtocol {
         clientFinished = null;
         serverFinished = null;
     }
-    
+
     /**
      * Returns RSA key length
      * @param pk
@@ -515,10 +516,10 @@ public abstract class HandshakeProtocol {
         }
         return mod.bitLength();
     }
-    
+
     /**
-     * Shutdownes the protocol. It will be impossiblke to use the instance
-     * after the calling of this method.
+     * Shuts down the protocol. It will be impossible to use the instance
+     * after calling this method.
      */
     protected void shutdown() {
         clearMessages();

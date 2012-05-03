@@ -17,6 +17,8 @@
 
 package java.nio;
 
+import java.util.Arrays;
+
 /**
  * A buffer of ints.
  * <p>
@@ -33,7 +35,7 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
 
     /**
      * Creates an int buffer based on a newly allocated int array.
-     * 
+     *
      * @param capacity
      *            the capacity of the new buffer.
      * @return the created int buffer.
@@ -44,7 +46,7 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
         if (capacity < 0) {
             throw new IllegalArgumentException();
         }
-        return BufferFactory.newIntBuffer(capacity);
+        return new ReadWriteIntArrayBuffer(capacity);
     }
 
     /**
@@ -65,71 +67,36 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
      * Creates a new int buffer by wrapping the given int array.
      * <p>
      * The new buffer's position will be {@code start}, limit will be
-     * {@code start + len}, capacity will be the length of the array.
+     * {@code start + intCount}, capacity will be the length of the array.
      *
      * @param array
      *            the int array which the new buffer will be based on.
      * @param start
      *            the start index, must not be negative and not greater than
      *            {@code array.length}
-     * @param len
+     * @param intCount
      *            the length, must not be negative and not greater than
      *            {@code array.length - start}.
      * @return the created int buffer.
      * @exception IndexOutOfBoundsException
-     *                if either {@code start} or {@code len} is invalid.
+     *                if either {@code start} or {@code intCount} is invalid.
      */
-    public static IntBuffer wrap(int[] array, int start, int len) {
-        if (array == null) {
-            throw new NullPointerException();
-        }
-        if (start < 0 || len < 0 || (long) len + (long) start > array.length) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        IntBuffer buf = BufferFactory.newIntBuffer(array);
+    public static IntBuffer wrap(int[] array, int start, int intCount) {
+        Arrays.checkOffsetAndCount(array.length, start, intCount);
+        IntBuffer buf = new ReadWriteIntArrayBuffer(array);
         buf.position = start;
-        buf.limit = start + len;
-
+        buf.limit = start + intCount;
         return buf;
     }
 
-    /**
-     * Constructs a {@code IntBuffer} with given capacity.
-     *
-     * @param capacity
-     *            the capacity of the buffer.
-     */
     IntBuffer(int capacity) {
-        super(capacity);
+        super(2, capacity, null);
     }
 
-    /**
-     * Returns the int array which this buffer is based on, if there is one.
-     * 
-     * @return the int array which this buffer is based on.
-     * @exception ReadOnlyBufferException
-     *                if this buffer is based on an array, but it is read-only.
-     * @exception UnsupportedOperationException
-     *                if this buffer is not based on an array.
-     */
     public final int[] array() {
         return protectedArray();
     }
 
-    /**
-     * Returns the offset of the int array which this buffer is based on, if
-     * there is one.
-     * <p>
-     * The offset is the index of the array corresponds to the zero position of
-     * the buffer.
-     *
-     * @return the offset of the int array which this buffer is based on.
-     * @exception ReadOnlyBufferException
-     *                if this buffer is based on an array, but it is read-only.
-     * @exception UnsupportedOperationException
-     *                if this buffer is not based on an array.
-     */
     public final int arrayOffset() {
         return protectedArrayOffset();
     }
@@ -165,7 +132,7 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
     /**
      * Compares the remaining ints of this buffer to another int buffer's
      * remaining ints.
-     * 
+     *
      * @param otherBuffer
      *            another int buffer.
      * @return a negative value if this is less than {@code other}; 0 if this
@@ -179,12 +146,12 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
                 : otherBuffer.remaining();
         int thisPos = position;
         int otherPos = otherBuffer.position;
-        int thisByte, otherByte;
+        int thisInt, otherInt;
         while (compareRemaining > 0) {
-            thisByte = get(thisPos);
-            otherByte = otherBuffer.get(otherPos);
-            if (thisByte != otherByte) {
-                return thisByte < otherByte ? -1 : 1;
+            thisInt = get(thisPos);
+            otherInt = otherBuffer.get(otherPos);
+            if (thisInt != otherInt) {
+                return thisInt < otherInt ? -1 : 1;
             }
             thisPos++;
             otherPos++;
@@ -243,7 +210,7 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
 
     /**
      * Returns the int at the current position and increases the position by 1.
-     * 
+     *
      * @return the int at the current position.
      * @exception BufferUnderflowException
      *                if the position is equal or greater than limit.
@@ -255,54 +222,51 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
      * increases the position by the number of ints read.
      * <p>
      * Calling this method has the same effect as
-     * {@code get(dest, 0, dest.length)}.
+     * {@code get(dst, 0, dst.length)}.
      *
-     * @param dest
+     * @param dst
      *            the destination int array.
      * @return this buffer.
      * @exception BufferUnderflowException
-     *                if {@code dest.length} is greater than {@code remaining()}.
+     *                if {@code dst.length} is greater than {@code remaining()}.
      */
-    public IntBuffer get(int[] dest) {
-        return get(dest, 0, dest.length);
+    public IntBuffer get(int[] dst) {
+        return get(dst, 0, dst.length);
     }
 
     /**
      * Reads ints from the current position into the specified int array,
      * starting from the specified offset, and increases the position by the
      * number of ints read.
-     * 
-     * @param dest
+     *
+     * @param dst
      *            the target int array.
-     * @param off
+     * @param dstOffset
      *            the offset of the int array, must not be negative and not
-     *            greater than {@code dest.length}.
-     * @param len
+     *            greater than {@code dst.length}.
+     * @param intCount
      *            the number of ints to read, must be no less than zero and not
-     *            greater than {@code dest.length - off}.
+     *            greater than {@code dst.length - dstOffset}.
      * @return this buffer.
      * @exception IndexOutOfBoundsException
-     *                if either {@code off} or {@code len} is invalid.
+     *                if either {@code dstOffset} or {@code intCount} is invalid.
      * @exception BufferUnderflowException
-     *                if {@code len} is greater than {@code remaining()}.
+     *                if {@code intCount} is greater than {@code remaining()}.
      */
-    public IntBuffer get(int[] dest, int off, int len) {
-        int length = dest.length;
-        if (off < 0 || len < 0 || (long) len + (long) off > length) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (len > remaining()) {
+    public IntBuffer get(int[] dst, int dstOffset, int intCount) {
+        Arrays.checkOffsetAndCount(dst.length, dstOffset, intCount);
+        if (intCount > remaining()) {
             throw new BufferUnderflowException();
         }
-        for (int i = off; i < off + len; i++) {
-            dest[i] = get();
+        for (int i = dstOffset; i < dstOffset + intCount; ++i) {
+            dst[i] = get();
         }
         return this;
     }
 
     /**
      * Returns an int at the specified index; the position is not changed.
-     * 
+     *
      * @param index
      *            the index, must not be negative and less than limit.
      * @return an int at the specified index.
@@ -311,12 +275,6 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
      */
     public abstract int get(int index);
 
-    /**
-     * Indicates whether this buffer is based on a int array and is read/write.
-     *
-     * @return {@code true} if this buffer is based on a int array and provides
-     *         read/write access, {@code false} otherwise.
-     */
     public final boolean hasArray() {
         return protectedHasArray();
     }
@@ -385,7 +343,7 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
     /**
      * Writes the given int to the current position and increases the position
      * by 1.
-     * 
+     *
      * @param i
      *            the int to write.
      * @return this buffer.
@@ -419,33 +377,29 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
      * Writes ints from the given int array, starting from the specified offset,
      * to the current position and increases the position by the number of ints
      * written.
-     * 
+     *
      * @param src
      *            the source int array.
-     * @param off
+     * @param srcOffset
      *            the offset of int array, must not be negative and not greater
      *            than {@code src.length}.
-     * @param len
+     * @param intCount
      *            the number of ints to write, must be no less than zero and not
-     *            greater than {@code src.length - off}.
+     *            greater than {@code src.length - srcOffset}.
      * @return this buffer.
      * @exception BufferOverflowException
-     *                if {@code remaining()} is less than {@code len}.
+     *                if {@code remaining()} is less than {@code intCount}.
      * @exception IndexOutOfBoundsException
-     *                if either {@code off} or {@code len} is invalid.
+     *                if either {@code srcOffset} or {@code intCount} is invalid.
      * @exception ReadOnlyBufferException
      *                if no changes may be made to the contents of this buffer.
      */
-    public IntBuffer put(int[] src, int off, int len) {
-        int length = src.length;
-        if (off < 0 || len < 0 || (long) len + (long) off > length) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        if (len > remaining()) {
+    public IntBuffer put(int[] src, int srcOffset, int intCount) {
+        Arrays.checkOffsetAndCount(src.length, srcOffset, intCount);
+        if (intCount > remaining()) {
             throw new BufferOverflowException();
         }
-        for (int i = off; i < off + len; i++) {
+        for (int i = srcOffset; i < srcOffset + intCount; ++i) {
             put(src[i]);
         }
         return this;
@@ -455,7 +409,7 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
      * Writes all the remaining ints of the {@code src} int buffer to this
      * buffer's current position, and increases both buffers' position by the
      * number of ints copied.
-     * 
+     *
      * @param src
      *            the source int buffer.
      * @return this buffer.
@@ -483,7 +437,7 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
     /**
      * Write a int to the specified index of this buffer; the position is not
      * changed.
-     * 
+     *
      * @param index
      *            the index, must not be negative and less than the limit.
      * @param i
@@ -508,26 +462,8 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
      * The new buffer shares its content with this buffer, which means either
      * buffer's change of content will be visible to the other. The two buffer's
      * position, limit and mark are independent.
-     * 
+     *
      * @return a sliced buffer that shares its content with this buffer.
      */
     public abstract IntBuffer slice();
-
-    /**
-     * Returns a string represents of the state of this int buffer.
-     * 
-     * @return a string represents of the state of this int buffer.
-     */
-    @Override
-    public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append(getClass().getName());
-        buf.append(", status: capacity="); //$NON-NLS-1$
-        buf.append(capacity());
-        buf.append(" position="); //$NON-NLS-1$
-        buf.append(position());
-        buf.append(" limit="); //$NON-NLS-1$
-        buf.append(limit());
-        return buf.toString();
-    }
 }

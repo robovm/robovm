@@ -24,7 +24,7 @@ public class AtomicLong extends Number implements java.io.Serializable {
     private static final long serialVersionUID = 1927816293512124184L;
 
     // setup to use Unsafe.compareAndSwapLong for updates
-    private static final Unsafe unsafe = Unsafe.getUnsafe();
+    private static final Unsafe unsafe = UnsafeAccess.THE_ONE; // android-changed
     private static final long valueOffset;
 
     /**
@@ -32,10 +32,8 @@ public class AtomicLong extends Number implements java.io.Serializable {
      * compareAndSwap for longs. While the Unsafe.compareAndSwapLong
      * method works in either case, some constructions should be
      * handled at Java level to avoid locking user-visible locks.
-     *
-     * Initialised in the static block.
      */
-    static final boolean VM_SUPPORTS_LONG_CAS;
+    static final boolean VM_SUPPORTS_LONG_CAS = VMSupportsCS8();
 
     /**
      * Returns whether underlying JVM supports lockless CompareAndSet
@@ -48,15 +46,6 @@ public class AtomicLong extends Number implements java.io.Serializable {
         valueOffset = unsafe.objectFieldOffset
             (AtomicLong.class.getDeclaredField("value"));
       } catch (Exception ex) { throw new Error(ex); }
-      
-      boolean longCASSupport;
-      try {
-         longCASSupport = VMSupportsCS8();
-      } catch (UnsatisfiedLinkError e) {
-         // assume there's support if the native isn't provided by the VM
-         longCASSupport = true;
-      }
-      VM_SUPPORTS_LONG_CAS = longCASSupport;
     }
 
     private volatile long value;

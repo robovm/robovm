@@ -22,9 +22,9 @@ class FilePathToURI {
     // which ASCII characters need to be escaped
     private static boolean gNeedEscaping[] = new boolean[128];
     // the first hex character if a character needs to be escaped
-    private static char gAfterEscaping1[] = new char[128];
+    private static char[] gAfterEscaping1 = new char[128];
     // the second hex character if a character needs to be escaped
-    private static char gAfterEscaping2[] = new char[128];
+    private static char[] gAfterEscaping2 = new char[128];
     private static char[] gHexChs = {'0', '1', '2', '3', '4', '5', '6', '7',
                                      '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
     // initialize the above 3 arrays
@@ -61,7 +61,7 @@ class FilePathToURI {
         path = path.replace(separator, '/');
 
         int len = path.length(), ch;
-        StringBuffer buffer = new StringBuffer(len*3);
+        StringBuilder buffer = new StringBuilder(len*3);
         buffer.append("file://");
         // change C:/blah to /C:/blah
         if (len >= 2 && path.charAt(1) == ':') {
@@ -88,7 +88,7 @@ class FilePathToURI {
                 buffer.append((char)ch);
             }
         }
-        
+
         // we saw some non-ascii character
         if (i < len) {
             // get UTF-8 bytes for the remaining sub-string

@@ -22,7 +22,7 @@ package java.io;
  * read an object due to missing information (for example, a cyclic reference
  * that doesn't match a previous instance, or a missing class descriptor for the
  * object to be loaded).
- * 
+ *
  * @see ObjectInputStream
  * @see OptionalDataException
  */
@@ -35,13 +35,12 @@ public class StreamCorruptedException extends ObjectStreamException {
      * filled in.
      */
     public StreamCorruptedException() {
-        super();
     }
 
     /**
      * Constructs a new {@code StreamCorruptedException} with its stack trace
      * and detail message filled in.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

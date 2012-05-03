@@ -25,14 +25,14 @@ public interface CertPathBuilderResult extends Cloneable {
 
     /**
      * Clones this {@code CertPathBuilderResult} instance.
-     * 
+     *
      * @return the copy of this instance.
      */
     public Object clone();
 
     /**
      * Returns the built {@code CertPath} instance. Never returns {@code null}.
-     * 
+     *
      * @return the built certificate path instance.
      */
     public CertPath getCertPath();

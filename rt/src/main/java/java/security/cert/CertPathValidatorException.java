@@ -19,8 +19,6 @@ package java.security.cert;
 
 import java.security.GeneralSecurityException;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
  * The exception that is thrown when a certification path (or certificate chain)
  * cannot be validated.
@@ -47,7 +45,7 @@ public class CertPathValidatorException extends GeneralSecurityException {
      * Creates a new {@code CertPathValidatorException} with the specified
      * message , cause, certification path and certificate index in the
      * certification path.
-     * 
+     *
      * @param msg
      *            the detail message for this exception.
      * @param cause
@@ -68,12 +66,10 @@ public class CertPathValidatorException extends GeneralSecurityException {
         super(msg, cause);
         // check certPath and index parameters
         if ((certPath == null) && (index != -1)) {
-            throw new IllegalArgumentException(
-                    Messages.getString("security.53")); //$NON-NLS-1$
+            throw new IllegalArgumentException("Index should be -1 when CertPath is null");
         }
-        if ((certPath != null)
-                && ((index < -1) || (index >= certPath.getCertificates().size()))) {
-            throw new IndexOutOfBoundsException(Messages.getString("security.54")); //$NON-NLS-1$
+        if ((certPath != null) && ((index < -1) || (index >= certPath.getCertificates().size()))) {
+            throw new IndexOutOfBoundsException();
         }
         this.certPath = certPath;
         this.index = index;
@@ -82,7 +78,7 @@ public class CertPathValidatorException extends GeneralSecurityException {
     /**
      * Creates a new {@code CertPathValidatorException} with the specified
      * message and cause.
-     * 
+     *
      * @param msg
      *            the detail message for this exception.
      * @param cause
@@ -95,7 +91,7 @@ public class CertPathValidatorException extends GeneralSecurityException {
     /**
      * Creates a new {@code CertPathValidatorException} with the specified
      * cause.
-     * 
+     *
      * @param cause
      *            the cause why the path could not be validated.
      */
@@ -106,7 +102,7 @@ public class CertPathValidatorException extends GeneralSecurityException {
     /**
      * Creates a new {@code CertPathValidatorException} with the specified
      * message.
-     * 
+     *
      * @param msg
      *            the detail message for this exception.
      */
@@ -122,7 +118,7 @@ public class CertPathValidatorException extends GeneralSecurityException {
 
     /**
      * Returns the certification path that failed validation.
-     * 
+     *
      * @return the certification path that failed validation, or {@code null} if
      *         none was specified.
      */
@@ -132,7 +128,7 @@ public class CertPathValidatorException extends GeneralSecurityException {
 
     /**
      * Returns the index of the failed certificate in the certification path.
-     * 
+     *
      * @return the index of the failed certificate in the certification path, or
      *         {@code -1} if none was specified.
      */

@@ -90,14 +90,14 @@ public class DHParameters {
             (byte) 0x81, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
             (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF
     };
-    
+
     private static byte[] prime;
-    
+
     static {
-//TODO set prime depand on some system or security property        
+//TODO set prime depand on some system or security property
         prime = prime512;
     }
-    
+
     /**
      * Returns prime bytes
      * @return

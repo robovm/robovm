@@ -20,10 +20,10 @@ package java.security;
 /**
  * {@code UnrecoverableKeyException} indicates, that a key cannot be recovered
  * from a {@code KeyStore}.
- * 
+ *
  * @see KeyStore
  */
-public class UnrecoverableKeyException extends GeneralSecurityException {
+public class UnrecoverableKeyException extends UnrecoverableEntryException {
 
     private static final long serialVersionUID = 7275063078190151277L;
 

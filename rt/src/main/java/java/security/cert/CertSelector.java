@@ -23,7 +23,7 @@ package java.security.cert;
  * <p>
  * The implementations of this interface are typically used to define the
  * criteria for selecting {@code Certificate}s from a {@code CertStore}.
- * 
+ *
  * @see CertStore
  * @see Certificate
  */
@@ -31,7 +31,7 @@ public interface CertSelector extends Cloneable {
 
     /**
      * Clones this {@code CertSelector} instance.
-     * 
+     *
      * @return the cloned instance.
      */
     public Object clone();
@@ -39,7 +39,7 @@ public interface CertSelector extends Cloneable {
     /**
      * Checks whether the defined criteria of this instance match the specified
      * certificate.
-     * 
+     *
      * @param cert
      *            the certificate to be evaluated.
      * @return {@code true} if the certificate matches the criteria, {@code

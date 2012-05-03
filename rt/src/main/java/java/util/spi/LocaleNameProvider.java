@@ -20,67 +20,56 @@ package java.util.spi;
 import java.util.Locale;
 
 /**
- * LocaleNameProvider is an abstract class to get localized names from service
- * providers.
- * 
+ * This abstract class should be extended by service providers that provide
+ * localized locale names.
+ * <p>Note that Android does not support user-supplied locale service providers.
  * @since 1.6
- * 
+ * @hide
  */
 public abstract class LocaleNameProvider extends LocaleServiceProvider {
+    /**
+     * Default constructor, for use by subclasses.
+     */
+    protected LocaleNameProvider() {
+        // do nothing
+    }
 
-	/**
-	 * The constructor
-	 * 
-	 */
-	protected LocaleNameProvider() {
-		// do nothing
-	}
+    /**
+     * Returns the localized name for the given ISO 639 language code.
+     *
+     * @param languageCode an ISO 639 language code
+     * @param locale a locale
+     * @return the name or null if unavailable
+     * @throws NullPointerException
+     *             if {@code code == null || locale == null}
+     * @throws IllegalArgumentException
+     *             if code or locale is not in a legal format or not available
+     */
+    public abstract String getDisplayLanguage(String languageCode, Locale locale);
 
-	/**
-	 * Gets the localized name for the specified language code in "ISO 639" and
-	 * the specified locale to display.
-	 * 
-	 * @param code
-	 *            the code of language in "ISO 639"
-	 * @param locale
-	 *            the locale
-	 * @return the name or null if unavailable
-	 * @throws NullPointerException
-	 *             if code or locale is null
-	 * @throws IllegalArgumentException
-	 *             if code or locale is not in a legal format or not available
-	 */
-	public abstract String getDisplayLanguage(String code, Locale locale);
+    /**
+     * Returns the localized name for the given ISO 3166 country code.
+     *
+     * @param countryCode an ISO 3166 language code
+     * @param locale a locale
+     * @return the name or null if unavailable
+     * @throws NullPointerException
+     *             if {@code code == null || locale == null}
+     * @throws IllegalArgumentException
+     *             if code or locale is not in a legal format or not available
+     */
+    public abstract String getDisplayCountry(String countryCode, Locale locale);
 
-	/**
-	 * Gets the localized name for the specified country code in "ISO 3166" and
-	 * the specified locale to display.
-	 * 
-	 * @param code
-	 *            the code of country in "ISO 3166"
-	 * @param locale
-	 *            the locale
-	 * @return the name or null if unavailable
-	 * @throws NullPointerException
-	 *             if code or locale is null
-	 * @throws IllegalArgumentException
-	 *             if code or locale is not in a legal format or not available
-	 */
-	public abstract String getDisplayCountry(String code, Locale locale);
-
-	/**
-	 * Gets the localized name for the specified variant code and the specified
-	 * locale to display.
-	 * 
-	 * @param variant
-	 *            the variant code
-	 * @param locale
-	 *            the locale
-	 * @return the name or null if unavailable
-	 * @throws NullPointerException
-	 *             if variant code or locale is null
-	 * @throws IllegalArgumentException
-	 *             if locale is not available
-	 */
-	public abstract String getDisplayVariant(String variant, Locale locale);
+    /**
+     * Returns the localized name for the given variant code.
+     *
+     * @param variantCode a variant code
+     * @param locale a locale
+     * @return the name or null if unavailable
+     * @throws NullPointerException
+     *             if {@code code == null || locale == null}
+     * @throws IllegalArgumentException
+     *             if code or locale is not in a legal format or not available
+     */
+    public abstract String getDisplayVariant(String variantCode, Locale locale);
 }

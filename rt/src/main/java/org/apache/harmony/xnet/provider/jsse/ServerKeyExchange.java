@@ -17,8 +17,6 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import org.apache.harmony.xnet.provider.jsse.Message;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.KeyFactory;
@@ -26,11 +24,11 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.RSAPublicKeySpec;
 
 /**
- * 
+ *
  * Represents server key exchange message.
- * @see TLS 1.0 spec., 7.4.3. Server key exchange message.
- * (http://www.ietf.org/rfc/rfc2246.txt)
- * 
+ * @see <a href="http://www.ietf.org/rfc/rfc2246.txt">TLS 1.0 spec., 7.4.3.
+ * Server key exchange message.</a>
+ *
  */
 public class ServerKeyExchange extends Message {
 
@@ -65,22 +63,9 @@ public class ServerKeyExchange extends Message {
         this.par3 = par3;
         this.hash = hash;
 
-        byte[] bb = this.par1.toByteArray();
-        if (bb[0] == 0) {
-// XXX check for par1 == 0 or bb.length > 1
-            bytes1 = new byte[bb.length - 1];
-            System.arraycopy(bb, 1, bytes1, 0, bytes1.length);
-        } else {
-            bytes1 = bb;
-        }
+        bytes1 = toUnsignedByteArray(this.par1);
 
-        bb = this.par2.toByteArray();
-        if (bb[0] == 0) {
-            bytes2 = new byte[bb.length - 1];
-            System.arraycopy(bb, 1, bytes2, 0, bytes2.length);
-        } else {
-            bytes2 = bb;
-        }
+        bytes2 = toUnsignedByteArray(this.par2);
 
         length = 4 + bytes1.length + bytes2.length;
         if (hash != null) {
@@ -90,14 +75,27 @@ public class ServerKeyExchange extends Message {
             bytes3 = null;
             return;
         }
-        bb = this.par3.toByteArray();
-        if (bb[0] == 0) {
-            bytes3 = new byte[bb.length - 1];
-            System.arraycopy(bb, 1, bytes3, 0, bytes3.length);
-        } else {
-            bytes3 = bb;
-        }
+        bytes3 = toUnsignedByteArray(this.par3);
         length += 2 + bytes3.length;
+    }
+
+    /**
+     * Remove first byte if 0. Needed because BigInteger.toByteArray() sometimes
+     * returns a zero prefix.
+     */
+    public static byte[] toUnsignedByteArray(BigInteger bi) {
+        if (bi == null) {
+            return null;
+        }
+        byte[] bb = bi.toByteArray();
+        // bb is not null, and has at least 1 byte - ZERO is represented as [0]
+        if (bb[0] == 0) {
+            byte[] noZero = new byte[bb.length - 1];
+            System.arraycopy(bb, 1, noZero, 0, noZero.length);
+            return noZero;
+        } else {
+            return bb;
+        }
     }
 
     /**
@@ -118,7 +116,7 @@ public class ServerKeyExchange extends Message {
         bytes2 = in.read(size);
         par2 = new BigInteger(1, bytes2);
         this.length += 2 + bytes2.length;
-        if (keyExchange != CipherSuite.KeyExchange_RSA_EXPORT) {
+        if (keyExchange != CipherSuite.KEY_EXCHANGE_RSA_EXPORT) {
             size = in.readUint16();
             bytes3 = in.read(size);
             par3 = new BigInteger(1, bytes3);
@@ -127,8 +125,8 @@ public class ServerKeyExchange extends Message {
             par3 = null;
             bytes3 = null;
         }
-        if (keyExchange != CipherSuite.KeyExchange_DH_anon_EXPORT
-                && keyExchange != CipherSuite.KeyExchange_DH_anon) {
+        if (keyExchange != CipherSuite.KEY_EXCHANGE_DH_anon_EXPORT
+                && keyExchange != CipherSuite.KEY_EXCHANGE_DH_anon) {
             size = in.readUint16();
             hash = in.read(size);
             this.length += 2 + hash.length;
@@ -162,9 +160,9 @@ public class ServerKeyExchange extends Message {
     }
 
     /**
-     * Returns RSAPublicKey generated using ServerRSAParams 
+     * Returns RSAPublicKey generated using ServerRSAParams
      * (rsa_modulus and rsa_exponent).
-     * 
+     *
      * @return
      */
     public RSAPublicKey getRSAPublicKey() {
@@ -182,7 +180,7 @@ public class ServerKeyExchange extends Message {
     }
 
     /**
-     * Returns message type 
+     * Returns message type
      * @return
      */
     @Override

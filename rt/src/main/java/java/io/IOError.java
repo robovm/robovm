@@ -19,7 +19,7 @@ package java.io;
 
 /**
  * This error is thrown when a severe I/O error has happened.
- * 
+ *
  * @since 1.6
  */
 public class IOError extends Error {
@@ -27,7 +27,7 @@ public class IOError extends Error {
 
     /**
      * Constructs a new instance with its cause filled in.
-     * 
+     *
      * @param cause
      *            The detail cause for the error.
      */

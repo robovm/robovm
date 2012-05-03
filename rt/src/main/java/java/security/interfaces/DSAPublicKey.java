@@ -21,7 +21,7 @@ import java.math.BigInteger;
 import java.security.PublicKey;
 
 /**
- * The interface for a Digital Signature Algorithm (DSA) public key. 
+ * The interface for a Digital Signature Algorithm (DSA) public key.
  */
 public interface DSAPublicKey extends DSAKey, PublicKey {
 
@@ -32,7 +32,7 @@ public interface DSAPublicKey extends DSAKey, PublicKey {
 
     /**
      * Returns the public key value {@code y}.
-     * 
+     *
      * @return the public key value {@code y}.
      */
     public BigInteger getY();

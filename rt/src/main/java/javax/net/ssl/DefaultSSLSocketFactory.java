@@ -22,10 +22,11 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import libcore.util.EmptyArray;
 
 /**
  * Default inoperative implementation of javax.net.ssl.SSLSocketFactory
- * 
+ *
  */
 class DefaultSSLSocketFactory extends SSLSocketFactory {
 
@@ -37,12 +38,12 @@ class DefaultSSLSocketFactory extends SSLSocketFactory {
 
     @Override
     public String[] getDefaultCipherSuites() {
-        return new String[0];
+        return EmptyArray.STRING;
     }
 
     @Override
     public String[] getSupportedCipherSuites() {
-        return new String[0];
+        return EmptyArray.STRING;
     }
 
     @Override

@@ -33,7 +33,7 @@ public class AlertException extends RuntimeException {
 
     /**
      * Constructs the instance.
-     * 
+     *
      * @param description The alert description code from {@link AlertProtocol}
      * @param reason The SSLException to be thrown to application side after alert processing
      *            (sending the record with alert, shutdown work, etc).
@@ -47,7 +47,7 @@ public class AlertException extends RuntimeException {
 
     /**
      * Returns the reason of alert. This reason should be rethrown after alert processing.
-     * 
+     *
      * @return the reason of alert.
      */
     protected SSLException getReason() {
@@ -56,7 +56,7 @@ public class AlertException extends RuntimeException {
 
     /**
      * Returns alert's description code.
-     * 
+     *
      * @return alert description code from {@link AlertProtocol}
      * @see AlertProtocol for more information about possible reason codes.
      */

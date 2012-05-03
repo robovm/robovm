@@ -15,10 +15,6 @@
  *  limitations under the License.
  */
 
-/**
-* @author Vera Y. Petrashkova
-*/
-
 package javax.crypto;
 
 import java.security.GeneralSecurityException;
@@ -36,7 +32,7 @@ public class BadPaddingException extends GeneralSecurityException {
 
     /**
      * Creates a new instance of {@code BadPaddingException} with a message.
-     * 
+     *
      * @param msg
      *            the message
      */

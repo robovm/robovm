@@ -17,28 +17,26 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import org.apache.harmony.xnet.provider.jsse.AlertException;
-
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
 
 /**
- * 
+ *
  * Base class for handshake messages
  */
 public abstract class Message {
-    
+
     /*
      * Message length
      */
     protected int length;
-    
+
     /**
-     * Returns message type 
+     * Returns message type
      * @return
      */
     abstract int getType();
-    
+
     /**
      * Returns message length
      * @return
@@ -46,13 +44,13 @@ public abstract class Message {
     public int length() {
         return length;
     }
-    
+
     /**
      * Sends message
      * @param out
      */
     abstract void send(HandshakeIODataStream out);
-    
+
     /**
      * Sends fatal alert
      * @param description
@@ -61,7 +59,7 @@ public abstract class Message {
     protected void fatalAlert(byte description, String reason) {
         throw new AlertException(description, new SSLHandshakeException(reason));
     }
-    
+
     /**
      * Sends fatal alert
      * @param description

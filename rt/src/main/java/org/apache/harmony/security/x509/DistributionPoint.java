@@ -17,21 +17,20 @@
 
 /**
 * @author Alexander Y. Kleymenov
+* @version $Revision$
 */
 
 package org.apache.harmony.security.x509;
 
 import java.io.IOException;
-
 import org.apache.harmony.security.asn1.ASN1Explicit;
 import org.apache.harmony.security.asn1.ASN1Implicit;
 import org.apache.harmony.security.asn1.ASN1Sequence;
 import org.apache.harmony.security.asn1.ASN1Type;
 import org.apache.harmony.security.asn1.BerInputStream;
-import org.apache.harmony.security.internal.nls.Messages;
 
 /**
- * The class encapsulates the ASN.1 DER encoding/decoding work 
+ * The class encapsulates the ASN.1 DER encoding/decoding work
  * with the DistributionPoint structure which is the part of X.509 CRL
  * (as specified in RFC 3280 -
  *  Internet X.509 Public Key Infrastructure.
@@ -44,12 +43,12 @@ import org.apache.harmony.security.internal.nls.Messages;
  *  DistributionPoint ::= SEQUENCE {
  *        distributionPoint       [0]     DistributionPointName OPTIONAL,
  *        reasons                 [1]     ReasonFlags OPTIONAL,
- *        cRLIssuer               [2]     GeneralNames OPTIONAL 
+ *        cRLIssuer               [2]     GeneralNames OPTIONAL
  *  }
  *
  *  DistributionPointName ::= CHOICE {
  *        fullName                [0]     GeneralNames,
- *        nameRelativeToCRLIssuer [1]     RelativeDistinguishedName 
+ *        nameRelativeToCRLIssuer [1]     RelativeDistinguishedName
  *  }
  *
  *  ReasonFlags ::= BIT STRING {
@@ -61,56 +60,43 @@ import org.apache.harmony.security.internal.nls.Messages;
  *        cessationOfOperation    (5),
  *        certificateHold         (6),
  *        privilegeWithdrawn      (7),
- *        aACompromise            (8) 
+ *        aACompromise            (8)
  *  }
  * </pre>
  */
-public class DistributionPoint {
-   
+public final class DistributionPoint {
     private final DistributionPointName distributionPoint;
     private final ReasonFlags reasons;
     private final GeneralNames cRLIssuer;
-    
-    public DistributionPoint() {
-        distributionPoint = null;
-        reasons = null;
-        cRLIssuer = null;
-    }
 
     public DistributionPoint(DistributionPointName distributionPoint,
             ReasonFlags reasons, GeneralNames cRLIssuer) {
-        if ((reasons != null) && (distributionPoint == null) 
-                && (cRLIssuer == null)) {
-            throw new IllegalArgumentException(
-                    Messages.getString("security.17F")); //$NON-NLS-1$
+        if ((reasons != null) && (distributionPoint == null) && (cRLIssuer == null)) {
+            throw new IllegalArgumentException("DistributionPoint MUST NOT consist of only the reasons field");
         }
         this.distributionPoint = distributionPoint;
         this.reasons = reasons;
         this.cRLIssuer = cRLIssuer;
     }
 
-    /**
-     * Places the string representation of extension value
-     * into the StringBuffer object.
-     */
-    public void dumpValue(StringBuffer buffer, String prefix) {
-        buffer.append(prefix);
-        buffer.append("Distribution Point: [\n"); //$NON-NLS-1$
+    public void dumpValue(StringBuilder sb, String prefix) {
+        sb.append(prefix);
+        sb.append("Distribution Point: [\n");
         if (distributionPoint != null) {
-            distributionPoint.dumpValue(buffer, prefix + "  "); //$NON-NLS-1$
+            distributionPoint.dumpValue(sb, prefix + "  ");
         }
         if (reasons != null) {
-            reasons.dumpValue(buffer, prefix + "  "); //$NON-NLS-1$
+            reasons.dumpValue(sb, prefix + "  ");
         }
         if (cRLIssuer != null) {
-            buffer.append(prefix);
-            buffer.append("  CRL Issuer: [\n"); //$NON-NLS-1$
-            cRLIssuer.dumpValue(buffer, prefix + "    "); //$NON-NLS-1$
-            buffer.append(prefix);
-            buffer.append("  ]\n"); //$NON-NLS-1$
+            sb.append(prefix);
+            sb.append("  CRL Issuer: [\n");
+            cRLIssuer.dumpValue(sb, prefix + "    ");
+            sb.append(prefix);
+            sb.append("  ]\n");
         }
-        buffer.append(prefix);
-        buffer.append("]\n"); //$NON-NLS-1$
+        sb.append(prefix);
+        sb.append("]\n");
     }
 
     /**
@@ -127,13 +113,13 @@ public class DistributionPoint {
             setOptional(2);
         }
 
-        protected Object getDecodedObject(BerInputStream in) throws IOException {
+        @Override protected Object getDecodedObject(BerInputStream in) throws IOException {
             Object[] values = (Object[]) in.content;
-            return new DistributionPoint((DistributionPointName) values[0], 
+            return new DistributionPoint((DistributionPointName) values[0],
                     (ReasonFlags) values[1], (GeneralNames) values[2]);
         }
 
-        protected void getValues(Object object, Object[] values) {
+        @Override protected void getValues(Object object, Object[] values) {
             DistributionPoint dp = (DistributionPoint) object;
             values[0] = dp.distributionPoint;
             values[1] = dp.reasons;
@@ -141,4 +127,3 @@ public class DistributionPoint {
         }
     };
 }
-

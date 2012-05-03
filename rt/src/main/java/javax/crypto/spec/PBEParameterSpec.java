@@ -15,15 +15,9 @@
  *  limitations under the License.
  */
 
-/**
-* @author Alexander Y. Kleymenov
-*/
-
 package javax.crypto.spec;
 
 import java.security.spec.AlgorithmParameterSpec;
-
-import org.apache.harmony.crypto.internal.nls.Messages;
 
 /**
  * The algorithm parameter specification for a <i>password based encryption</i>
@@ -51,7 +45,7 @@ public class PBEParameterSpec implements AlgorithmParameterSpec {
      */
     public PBEParameterSpec(byte[] salt, int iterationCount) {
         if (salt == null) {
-            throw new NullPointerException(Messages.getString("crypto.3B")); //$NON-NLS-1$
+            throw new NullPointerException("salt == null");
         }
         this.salt = new byte[salt.length];
         System.arraycopy(salt, 0, this.salt, 0, salt.length);
@@ -78,4 +72,3 @@ public class PBEParameterSpec implements AlgorithmParameterSpec {
         return iterationCount;
     }
 }
-

@@ -40,7 +40,7 @@ class Conversion {
      * 2 ^ 31, bigRadices[8] = 10 ^ 9, etc.
      */
 
-    static final int bigRadices[] = { -2147483648, 1162261467,
+    static final int[] bigRadices = { -2147483648, 1162261467,
             1073741824, 1220703125, 362797056, 1977326743, 1073741824,
             387420489, 1000000000, 214358881, 429981696, 815730721, 1475789056,
             170859375, 268435456, 410338673, 612220032, 893871739, 1280000000,
@@ -48,15 +48,16 @@ class Conversion {
             387420489, 481890304, 594823321, 729000000, 887503681, 1073741824,
             1291467969, 1544804416, 1838265625, 60466176 };
 
-    
+
     /** @see BigInteger#toString(int) */
     static String bigInteger2String(BigInteger val, int radix) {
+        val.prepareJavaRepresentation();
         int sign = val.sign;
         int numberLength = val.numberLength;
-        int digits[] = val.digits;
+        int[] digits = val.digits;
 
         if (sign == 0) {
-            return "0"; //$NON-NLS-1$
+            return "0";
         }
         if (numberLength == 1) {
             int highDigit = digits[numberLength - 1];
@@ -75,11 +76,11 @@ class Conversion {
         int resLengthInChars = (int) (val.abs().bitLength() / bitsForRadixDigit + ((sign < 0) ? 1
                 : 0)) + 1;
 
-        char result[] = new char[resLengthInChars];
+        char[] result = new char[resLengthInChars];
         int currentChar = resLengthInChars;
         int resDigit;
         if (radix != 16) {
-            int temp[] = new int[numberLength];
+            int[] temp = new int[numberLength];
             System.arraycopy(digits, 0, temp, 0, numberLength);
             int tempLen = numberLength;
             int charsPerInt = digitFitInInt[radix];
@@ -129,40 +130,41 @@ class Conversion {
     /**
      * Builds the correspondent {@code String} representation of {@code val}
      * being scaled by {@code scale}.
-     * 
+     *
      * @see BigInteger#toString()
      * @see BigDecimal#toString()
      */
     static String toDecimalScaledString(BigInteger val, int scale) {
+        val.prepareJavaRepresentation();
         int sign = val.sign;
         int numberLength = val.numberLength;
-        int digits[] = val.digits;
+        int[] digits = val.digits;
         int resLengthInChars;
         int currentChar;
-        char result[];
+        char[] result;
 
         if (sign == 0) {
             switch (scale) {
                 case 0:
-                    return "0"; //$NON-NLS-1$
+                    return "0";
                 case 1:
-                    return "0.0"; //$NON-NLS-1$
+                    return "0.0";
                 case 2:
-                    return "0.00"; //$NON-NLS-1$
+                    return "0.00";
                 case 3:
-                    return "0.000"; //$NON-NLS-1$
+                    return "0.000";
                 case 4:
-                    return "0.0000"; //$NON-NLS-1$
+                    return "0.0000";
                 case 5:
-                    return "0.00000"; //$NON-NLS-1$
+                    return "0.00000";
                 case 6:
-                    return "0.000000"; //$NON-NLS-1$
+                    return "0.000000";
                 default:
                     StringBuilder result1 = new StringBuilder();
                     if (scale < 0) {
-                        result1.append("0E+"); //$NON-NLS-1$
+                        result1.append("0E+");
                     } else {
-                        result1.append("0E"); //$NON-NLS-1$
+                        result1.append("0E");
                     }
                     result1.append(-scale);
                     return result1.toString();
@@ -197,7 +199,7 @@ class Conversion {
                 } while (v != 0);
             }
         } else {
-            int temp[] = new int[numberLength];
+            int[] temp = new int[numberLength];
             int tempLen = numberLength;
             System.arraycopy(digits, 0, temp, 0, tempLen);
             BIG_LOOP: while (true) {
@@ -295,28 +297,28 @@ class Conversion {
     static String toDecimalScaledString(long value, int scale) {
         int resLengthInChars;
         int currentChar;
-        char result[];
+        char[] result;
         boolean negNumber = value < 0;
         if(negNumber) {
             value = -value;
         }
         if (value == 0) {
             switch (scale) {
-                case 0: return "0"; //$NON-NLS-1$
-                case 1: return "0.0"; //$NON-NLS-1$
-                case 2: return "0.00"; //$NON-NLS-1$
-                case 3: return "0.000"; //$NON-NLS-1$
-                case 4: return "0.0000"; //$NON-NLS-1$
-                case 5: return "0.00000"; //$NON-NLS-1$
-                case 6: return "0.000000"; //$NON-NLS-1$
+                case 0: return "0";
+                case 1: return "0.0";
+                case 2: return "0.00";
+                case 3: return "0.000";
+                case 4: return "0.0000";
+                case 5: return "0.00000";
+                case 6: return "0.000000";
                 default:
                     StringBuilder result1 = new StringBuilder();
                     if (scale  < 0) {
-                        result1.append("0E+"); //$NON-NLS-1$
+                        result1.append("0E+");
                     } else {
-                        result1.append("0E"); //$NON-NLS-1$
+                        result1.append("0E");
                     }
-                    result1.append( (scale == Integer.MIN_VALUE) ? "2147483648" : Integer.toString(-scale)); //$NON-NLS-1$
+                    result1.append( (scale == Integer.MIN_VALUE) ? "2147483648" : Integer.toString(-scale));
                     return result1.toString();
             }
         }
@@ -336,7 +338,7 @@ class Conversion {
             v /= 10;
             result[--currentChar] = (char) (0x0030 + (prev - v * 10));
         } while (v != 0);
-        
+
         long exponent = (long)resLengthInChars - (long)currentChar - scale - 1L;
         if (scale == 0) {
             if (negNumber) {
@@ -348,7 +350,7 @@ class Conversion {
             if (exponent >= 0) {
                 // special case 1
                 int insertPoint = currentChar + (int) exponent ;
-                for(int j=resLengthInChars-1; j>=insertPoint; j--) {
+                for (int j=resLengthInChars-1; j>=insertPoint; j--) {
                     result[j+1] = result[j];
                 }
                 result[++insertPoint]='.';
@@ -370,7 +372,7 @@ class Conversion {
         }
         int startPoint = currentChar + 1;
         int endPoint = resLengthInChars;
-        StringBuilder result1 = new StringBuilder(16+endPoint-startPoint);
+        StringBuilder result1 = new StringBuilder(16 + endPoint - startPoint);
         if (negNumber) {
             result1.append('-');
         }
@@ -388,7 +390,7 @@ class Conversion {
         result1.append(Long.toString(exponent));
         return result1.toString();
     }
-    
+
     static long divideLongByBillion(long a) {
         long quot;
         long rem;
@@ -414,6 +416,7 @@ class Conversion {
 
     /** @see BigInteger#doubleValue() */
     static double bigInteger2Double(BigInteger val) {
+        val.prepareJavaRepresentation();
         // val.bitLength() < 64
         if ((val.numberLength < 2)
                 || ((val.numberLength == 2) && (val.digits[1] > 0))) {

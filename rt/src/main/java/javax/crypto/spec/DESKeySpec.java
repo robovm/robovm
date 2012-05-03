@@ -20,8 +20,6 @@ package javax.crypto.spec;
 import java.security.InvalidKeyException;
 import java.security.spec.KeySpec;
 
-import org.apache.harmony.crypto.internal.nls.Messages;
-
 /**
  * The key specification for a DES key.
  */
@@ -38,7 +36,7 @@ public class DESKeySpec implements KeySpec {
     // Got from:
     // FIP PUB 74
     // FEDERAL INFORMATION PROCESSING STANDARDS PUBLICATION 1981
-    // GUIDELINES FOR IMPLEMENTING AND USING THE NBS DATA ENCRYPTION STANDARD 
+    // GUIDELINES FOR IMPLEMENTING AND USING THE NBS DATA ENCRYPTION STANDARD
     // http://www.dice.ucl.ac.be/crypto/standards/fips/fip74/fip74-1.pdf
     private static final byte[][] SEMIWEAKS = {
                 {(byte) 0xE0, (byte) 0x01, (byte) 0xE0, (byte) 0x01,
@@ -77,7 +75,7 @@ public class DESKeySpec implements KeySpec {
                 {(byte) 0xFE, (byte) 0xE0, (byte) 0xFE, (byte) 0xE0,
                  (byte) 0xFE, (byte) 0xF1, (byte) 0xFE, (byte) 0xF1},
 
-                {(byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x01, 
+                {(byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x01,
                  (byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x01},
 
                 {(byte) 0xFE, (byte) 0xFE, (byte) 0xFE, (byte) 0xFE,
@@ -116,14 +114,12 @@ public class DESKeySpec implements KeySpec {
      *             if the length of the specified key data starting at offset is
      *             less than 8.
      */
-    public DESKeySpec(byte[] key, int offset)
-                throws InvalidKeyException {
+    public DESKeySpec(byte[] key, int offset) throws InvalidKeyException {
         if (key == null) {
-            throw new NullPointerException(Messages.getString("crypto.2F")); //$NON-NLS-1$
+            throw new NullPointerException("key == null");
         }
         if (key.length - offset < DES_KEY_LEN) {
-            throw new InvalidKeyException(
-                    Messages.getString("crypto.40")); //$NON-NLS-1$
+            throw new InvalidKeyException("key too short");
         }
         this.key = new byte[DES_KEY_LEN];
         System.arraycopy(key, offset, this.key, 0, DES_KEY_LEN);
@@ -154,14 +150,12 @@ public class DESKeySpec implements KeySpec {
      *             if the length of the key data starting at offset is less than
      *             8, or the key is null.
      */
-    public static boolean isParityAdjusted(byte[] key, int offset)
-            throws InvalidKeyException {
+    public static boolean isParityAdjusted(byte[] key, int offset) throws InvalidKeyException {
         if (key == null) {
-            throw new InvalidKeyException(Messages.getString("crypto.2F")); //$NON-NLS-1$
+            throw new InvalidKeyException("key == null");
         }
         if (key.length - offset < DES_KEY_LEN) {
-            throw new InvalidKeyException(
-                    Messages.getString("crypto.40")); //$NON-NLS-1$
+            throw new InvalidKeyException("key too short");
         }
 
         int byteKey = 0;
@@ -193,14 +187,12 @@ public class DESKeySpec implements KeySpec {
      *             if the length of the key data starting at offset is less than
      *             8, or it is null.
      */
-    public static boolean isWeak(byte[] key, int offset)
-              throws InvalidKeyException {
+    public static boolean isWeak(byte[] key, int offset) throws InvalidKeyException {
         if (key == null) {
-            throw new InvalidKeyException(Messages.getString("crypto.2F")); //$NON-NLS-1$
+            throw new InvalidKeyException("key == null");
         }
         if (key.length - offset < DES_KEY_LEN) {
-            throw new InvalidKeyException(
-                    Messages.getString("crypto.40")); //$NON-NLS-1$
+            throw new InvalidKeyException("key too short");
         }
         I:
         for (int i=0; i<SEMIWEAKS.length; i++) {
@@ -214,4 +206,3 @@ public class DESKeySpec implements KeySpec {
         return false;
     }
 }
-

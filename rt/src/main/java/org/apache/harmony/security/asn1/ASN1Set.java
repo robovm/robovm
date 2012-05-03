@@ -17,6 +17,7 @@
 
 /**
 * @author Vladimir N. Molotkov, Stepan M. Mishura
+* @version $Revision$
 */
 
 package org.apache.harmony.security.asn1;
@@ -26,41 +27,24 @@ import java.io.IOException;
 
 /**
  * This class represents ASN.1 Set type.
- * 
- * @see http://asn1.elibel.tm.fr/en/standards/index.htm
+ *
+ * @see <a href="http://asn1.elibel.tm.fr/en/standards/index.htm">ASN.1</a>
  */
-
-public class ASN1Set extends ASN1TypeCollection {
+public final class ASN1Set extends ASN1TypeCollection {
 
     public ASN1Set(ASN1Type[] type) {
         super(TAG_SET, type);
-
-        //FIXME implement check for distinct tags
-        //if (!hasDistinctTags(type)) {
-        //    throw new RuntimeException("ASN1 set type: " + getClass().getName()
-        //            + " MUST have alternatives with distinct tags");
-        //}
     }
-
-    //
-    //
-    // Decode
-    //
 
     public Object decode(BerInputStream in) throws IOException {
         in.readSet(this);
-        
+
         if(in.isVerify){
             return null;
         }
         return getDecodedObject(in);
     }
 
-    //
-    //
-    // Encode
-    //
-    //
     public final void encodeContent(BerOutputStream out) {
         out.encodeSet(this);
     }

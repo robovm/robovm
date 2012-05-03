@@ -17,6 +17,8 @@
 
 package java.io;
 
+import java.util.Locale;
+
 /**
  * Parses a stream into a set of defined tokens, one at a time. The different
  * types of tokens that can be found are numbers, identifiers, quoted strings,
@@ -81,7 +83,7 @@ public class StreamTokenizer {
     /**
      * Internal character meanings, 0 implies TOKEN_ORDINARY
      */
-    private byte tokenTypes[] = new byte[256];
+    private byte[] tokenTypes = new byte[256];
 
     private static final byte TOKEN_COMMENT = 1;
 
@@ -154,7 +156,7 @@ public class StreamTokenizer {
      * Constructs a new {@code StreamTokenizer} with {@code is} as source input
      * stream. This constructor is deprecated; instead, the constructor that
      * takes a {@code Reader} as an arugment should be used.
-     * 
+     *
      * @param is
      *            the source stream from which to parse tokens.
      * @throws NullPointerException
@@ -185,7 +187,7 @@ public class StreamTokenizer {
      * tokens.</li>
      * <li>C-style and C++-style comments are not recognized.</LI>
      * </ul>
-     * 
+     *
      * @param r
      *            the source reader from which to parse tokens.
      */
@@ -200,12 +202,12 @@ public class StreamTokenizer {
     /**
      * Specifies that the character {@code ch} shall be treated as a comment
      * character.
-     * 
+     *
      * @param ch
      *            the character to be considered a comment character.
      */
     public void commentChar(int ch) {
-        if (0 <= ch && ch < tokenTypes.length) {
+        if (ch >= 0 && ch < tokenTypes.length) {
             tokenTypes[ch] = TOKEN_COMMENT;
         }
     }
@@ -213,7 +215,7 @@ public class StreamTokenizer {
     /**
      * Specifies whether the end of a line is significant and should be returned
      * as {@code TT_EOF} in {@code ttype} by this tokenizer.
-     * 
+     *
      * @param flag
      *            {@code true} if EOL is significant, {@code false} otherwise.
      */
@@ -223,7 +225,7 @@ public class StreamTokenizer {
 
     /**
      * Returns the current line number.
-     * 
+     *
      * @return this tokenizer's current line number.
      */
     public int lineno() {
@@ -233,7 +235,7 @@ public class StreamTokenizer {
     /**
      * Specifies whether word tokens should be converted to lower case when they
      * are stored in {@code sval}.
-     * 
+     *
      * @param flag
      *            {@code true} if {@code sval} should be converted to lower
      *            case, {@code false} otherwise.
@@ -246,7 +248,7 @@ public class StreamTokenizer {
      * Parses the next token from this tokenizer's source stream or reader. The
      * type of the token is stored in the {@code ttype} field, additional
      * information may be stored in the {@code nval} or {@code sval} fields.
-     * 
+     *
      * @return the value of {@code ttype}.
      * @throws IOException
      *             if an I/O error occurs while parsing the next token.
@@ -346,8 +348,10 @@ public class StreamTokenizer {
                 }
             }
             peekChar = currentChar;
-            sval = forceLowercase ? word.toString().toLowerCase() : word
-                    .toString();
+            sval = word.toString();
+            if (forceLowercase) {
+                sval = sval.toLowerCase(Locale.getDefault());
+            }
             return (ttype = TT_WORD);
         }
         // Check for quoted character
@@ -481,12 +485,12 @@ public class StreamTokenizer {
      * character by this tokenizer. That is, it has no special meaning as a
      * comment character, word component, white space, string delimiter or
      * number.
-     * 
+     *
      * @param ch
      *            the character to be considered an ordinary character.
      */
     public void ordinaryChar(int ch) {
-        if (0 <= ch && ch < tokenTypes.length) {
+        if (ch >= 0 && ch < tokenTypes.length) {
             tokenTypes[ch] = 0;
         }
     }
@@ -496,7 +500,7 @@ public class StreamTokenizer {
      * shall be treated as an ordinary character by this tokenizer. That is,
      * they have no special meaning as a comment character, word component,
      * white space, string delimiter or number.
-     * 
+     *
      * @param low
      *            the first character in the range of ordinary characters.
      * @param hi
@@ -536,12 +540,12 @@ public class StreamTokenizer {
     /**
      * Specifies that the character {@code ch} shall be treated as a quote
      * character.
-     * 
+     *
      * @param ch
      *            the character to be considered a quote character.
      */
     public void quoteChar(int ch) {
-        if (0 <= ch && ch < tokenTypes.length) {
+        if (ch >= 0 && ch < tokenTypes.length) {
             tokenTypes[ch] = TOKEN_QUOTE;
         }
     }
@@ -566,7 +570,7 @@ public class StreamTokenizer {
     /**
      * Specifies whether "slash-slash" (C++-style) comments shall be recognized.
      * This kind of comment ends at the end of the line.
-     * 
+     *
      * @param flag
      *            {@code true} if {@code //} should be recognized as the start
      *            of a comment, {@code false} otherwise.
@@ -579,7 +583,7 @@ public class StreamTokenizer {
      * Specifies whether "slash-star" (C-style) comments shall be recognized.
      * Slash-star comments cannot be nested and end when a star-slash
      * combination is found.
-     * 
+     *
      * @param flag
      *            {@code true} if {@code /*} should be recognized as the start
      *            of a comment, {@code false} otherwise.
@@ -590,23 +594,23 @@ public class StreamTokenizer {
 
     /**
      * Returns the state of this tokenizer in a readable format.
-     * 
+     *
      * @return the current state of this tokenizer.
      */
     @Override
     public String toString() {
         // Values determined through experimentation
         StringBuilder result = new StringBuilder();
-        result.append("Token["); //$NON-NLS-1$
+        result.append("Token[");
         switch (ttype) {
             case TT_EOF:
-                result.append("EOF"); //$NON-NLS-1$
+                result.append("EOF");
                 break;
             case TT_EOL:
-                result.append("EOL"); //$NON-NLS-1$
+                result.append("EOL");
                 break;
             case TT_NUMBER:
-                result.append("n="); //$NON-NLS-1$
+                result.append("n=");
                 result.append(nval);
                 break;
             case TT_WORD:
@@ -621,7 +625,7 @@ public class StreamTokenizer {
                     result.append('\'');
                 }
         }
-        result.append("], line "); //$NON-NLS-1$
+        result.append("], line ");
         result.append(lineNumber);
         return result.toString();
     }
@@ -629,7 +633,7 @@ public class StreamTokenizer {
     /**
      * Specifies that the characters in the range from {@code low} to {@code hi}
      * shall be treated as whitespace characters by this tokenizer.
-     * 
+     *
      * @param low
      *            the first character in the range of whitespace characters.
      * @param hi
@@ -651,7 +655,7 @@ public class StreamTokenizer {
      * Specifies that the characters in the range from {@code low} to {@code hi}
      * shall be treated as word characters by this tokenizer. A word consists of
      * a word character followed by zero or more word or number characters.
-     * 
+     *
      * @param low
      *            the first character in the range of word characters.
      * @param hi

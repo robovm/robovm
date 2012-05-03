@@ -37,7 +37,7 @@ public class StackOverflowError extends VirtualMachineError {
     /**
      * Constructs a new {@code StackOverflowError} with the current stack trace
      * and the specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

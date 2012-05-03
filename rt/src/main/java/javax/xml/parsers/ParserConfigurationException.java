@@ -24,7 +24,7 @@ package javax.xml.parsers;
  * Indicates a serious configuration error.
  *
  * @author <a href="mailto:Jeff.Suttor@Sun.com">Jeff Suttor</a>
- * @version $Revision: 569981 $, $Date: 2007-08-26 23:59:07 -0400 (Sun, 26 Aug 2007) $
+ * @version $Revision: 569981 $, $Date: 2007-08-26 20:59:07 -0700 (Sun, 26 Aug 2007) $
  */
 
 public class ParserConfigurationException extends Exception {
@@ -35,7 +35,6 @@ public class ParserConfigurationException extends Exception {
      */
 
     public ParserConfigurationException() {
-        super();
     }
 
     /**
@@ -44,10 +43,9 @@ public class ParserConfigurationException extends Exception {
      *
      * @param msg The error message for the exception.
      */
-    
+
     public ParserConfigurationException(String msg) {
         super(msg);
     }
 
 }
-

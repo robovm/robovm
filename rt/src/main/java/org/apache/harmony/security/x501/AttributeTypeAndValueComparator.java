@@ -17,26 +17,26 @@
 
 /**
 * @author Alexander V. Esin
+* @version $Revision$
 */
 
 package org.apache.harmony.security.x501;
 
 import java.io.Serializable;
 import java.util.Comparator;
-
 import org.apache.harmony.security.utils.ObjectIdentifier;
 
 /**
  * AttributeTypeAndValue comparator
- * 
+ *
  */
 public class AttributeTypeAndValueComparator implements Comparator, Serializable {
 
-	private static final long serialVersionUID = -1286471842007103132L;
+    private static final long serialVersionUID = -1286471842007103132L;
 
-	/**
+    /**
      * compares two AttributeTypeAndValues
-     * 
+     *
      * @param obj1
      *            first AttributeTypeAndValue
      * @param obj2
@@ -65,10 +65,10 @@ public class AttributeTypeAndValueComparator implements Comparator, Serializable
 
         return compateOids(atav1.getType(), atav2.getType());
     }
-    
+
     /**
      * compares two Object identifiers
-     * 
+     *
      * @param oid1
      *            first OID
      * @param oid2

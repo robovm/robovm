@@ -18,13 +18,13 @@
 package java.security.spec;
 
 /**
- * The base interface for a Finite Field of an Elliptic Curve. 
+ * The base interface for a Finite Field of an Elliptic Curve.
  */
 public interface ECField {
 
     /**
      * Returns the size of the field (in bits).
-     * 
+     *
      * @return the size of the field (in bits).
      */
     int getFieldSize();

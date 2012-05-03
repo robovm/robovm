@@ -15,16 +15,10 @@
  *  limitations under the License.
  */
 
-/**
-* @author Alexander Y. Kleymenov
-*/
-
 package javax.crypto.spec;
 
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Arrays;
-
-import org.apache.harmony.crypto.internal.nls.Messages;
 
 /**
  * The algorithm parameter specification for the <a
@@ -78,11 +72,10 @@ public class RC5ParameterSpec implements AlgorithmParameterSpec {
      */
     public RC5ParameterSpec(int version, int rounds, int wordSize, byte[] iv) {
         if (iv == null) {
-            throw new IllegalArgumentException(Messages.getString("crypto.31")); //$NON-NLS-1$
+            throw new IllegalArgumentException("iv == null");
         }
         if (iv.length < 2 * (wordSize / 8)) {
-            throw new IllegalArgumentException(
-                    Messages.getString("crypto.32")); //$NON-NLS-1$
+            throw new IllegalArgumentException("iv.length < 2 * (wordSize / 8)");
         }
         this.version = version;
         this.rounds = rounds;
@@ -116,17 +109,15 @@ public class RC5ParameterSpec implements AlgorithmParameterSpec {
      * @throws ArrayIndexOutOfBoundsException
      *             if <code>offset</code> is negative.
      */
-    public RC5ParameterSpec(int version, int rounds,
-                                int wordSize, byte[] iv, int offset) {
+    public RC5ParameterSpec(int version, int rounds, int wordSize, byte[] iv, int offset) {
         if (iv == null) {
-            throw new IllegalArgumentException(Messages.getString("crypto.31")); //$NON-NLS-1$
+            throw new IllegalArgumentException("iv == null");
         }
         if (offset < 0) {
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("crypto.33")); //$NON-NLS-1$
+            throw new ArrayIndexOutOfBoundsException("offset < 0: " + offset);
         }
         if (iv.length - offset < 2 * (wordSize / 8)) {
-            throw new IllegalArgumentException(
-                    Messages.getString("crypto.34")); //$NON-NLS-1$
+            throw new IllegalArgumentException("iv.length - offset < 2 * (wordSize / 8)");
         }
         this.version = version;
         this.rounds = rounds;
@@ -217,4 +208,3 @@ public class RC5ParameterSpec implements AlgorithmParameterSpec {
         return result;
     }
 }
-

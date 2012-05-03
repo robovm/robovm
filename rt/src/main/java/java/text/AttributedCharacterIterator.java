@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,10 +19,10 @@ package java.text;
 
 import java.io.InvalidObjectException;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.harmony.text.internal.nls.Messages;
 
 /**
  * Extends the
@@ -48,14 +48,13 @@ public interface AttributedCharacterIterator extends CharacterIterator {
          * The value objects are of the type {@code Annotation} which contain
          * {@code null}.
          */
-        public static final Attribute INPUT_METHOD_SEGMENT = new Attribute(
-                "input_method_segment"); //$NON-NLS-1$
+        public static final Attribute INPUT_METHOD_SEGMENT = new Attribute("input_method_segment");
 
         /**
          * The attribute describing the language of a character. The value
          * objects are of type {@code Locale} or a subtype of it.
          */
-        public static final Attribute LANGUAGE = new Attribute("language"); //$NON-NLS-1$
+        public static final Attribute LANGUAGE = new Attribute("language");
 
         /**
          * For languages that have different reading directions of text (like
@@ -63,7 +62,7 @@ public interface AttributedCharacterIterator extends CharacterIterator {
          * used. The value objects are of type {@code Annotation} which
          * contain a {@code String}.
          */
-        public static final Attribute READING = new Attribute("reading"); //$NON-NLS-1$
+        public static final Attribute READING = new Attribute("reading");
 
         private String name;
 
@@ -122,21 +121,23 @@ public interface AttributedCharacterIterator extends CharacterIterator {
          *             or if it is not a known {@code Attribute}.
          */
         protected Object readResolve() throws InvalidObjectException {
-            if (this.getClass() != Attribute.class) {
-                // text.0C=cannot resolve subclasses
-                throw new InvalidObjectException(Messages.getString("text.0C")); //$NON-NLS-1$
+            /*
+             * This class is used like Java enums, where all instances are
+             * defined as fields of their own class. To preserve identity
+             * equality, resolve to the canonical instance when deserialized.
+             */
+            try {
+                for (Field field : getClass().getFields()) {
+                    if (field.getType() == getClass() && Modifier.isStatic(field.getModifiers())) {
+                        Attribute candidate = (Attribute) field.get(null);
+                        if (name.equals(candidate.name)) {
+                            return candidate;
+                        }
+                    }
+                }
+            } catch (IllegalAccessException e) {
             }
-            if (this.getName().equals(INPUT_METHOD_SEGMENT.getName())) {
-                return INPUT_METHOD_SEGMENT;
-            }
-            if (this.getName().equals(LANGUAGE.getName())) {
-                return LANGUAGE;
-            }
-            if (this.getName().equals(READING.getName())) {
-                return READING;
-            }
-            // text.02=Unknown attribute
-            throw new InvalidObjectException(Messages.getString("text.02")); //$NON-NLS-1$
+            throw new InvalidObjectException("Failed to resolve " + this);
         }
 
         /**

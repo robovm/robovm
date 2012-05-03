@@ -17,6 +17,7 @@
 
 /**
 * @author Alexander Y. Kleymenov
+* @version $Revision$
 */
 
 package org.apache.harmony.security.provider.cert;
@@ -26,9 +27,7 @@ import java.security.cert.CRLException;
 import java.security.cert.X509CRLEntry;
 import java.util.Date;
 import java.util.Set;
-
 import javax.security.auth.x500.X500Principal;
-
 import org.apache.harmony.security.x509.Extension;
 import org.apache.harmony.security.x509.Extensions;
 import org.apache.harmony.security.x509.TBSCertList;
@@ -125,7 +124,7 @@ public class X509CRLEntryImpl extends X509CRLEntry {
      * method documentation for more info
      */
     public String toString() {
-        return "X509CRLEntryImpl: "+rcert.toString(); //$NON-NLS-1$
+        return "X509CRLEntryImpl: "+rcert.toString();
     }
 
     // ---------------------------------------------------------------------

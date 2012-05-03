@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -71,7 +71,7 @@ import java.nio.channels.spi.AbstractInterruptibleChannel;
  * will also block when there are any other operations in-flight.
  * <p>
  * The logical view of the underlying file is consistent across all FileChannels
- * and I/O streams opened on the same file by the same virtual machine process.
+ * and I/O streams opened on the same file by the same VM.
  * Therefore, modifications performed via a channel will be visible to the
  * stream and vice versa; this includes modifications to the file position,
  * content, size, etc.
@@ -86,17 +86,17 @@ public abstract class FileChannel extends AbstractInterruptibleChannel
         /**
          * Private mapping mode (equivalent to copy on write).
          */
-        public static final MapMode PRIVATE = new MapMode("PRIVATE"); //$NON-NLS-1$
+        public static final MapMode PRIVATE = new MapMode("PRIVATE");
 
         /**
          * Read-only mapping mode.
          */
-        public static final MapMode READ_ONLY = new MapMode("READ_ONLY"); //$NON-NLS-1$
+        public static final MapMode READ_ONLY = new MapMode("READ_ONLY");
 
         /**
          * Read-write mapping mode.
          */
-        public static final MapMode READ_WRITE = new MapMode("READ_WRITE"); //$NON-NLS-1$
+        public static final MapMode READ_WRITE = new MapMode("READ_WRITE");
 
         // The string used to display the mapping mode.
         private final String displayName;
@@ -105,13 +105,12 @@ public abstract class FileChannel extends AbstractInterruptibleChannel
          * Private constructor prevents others creating new modes.
          */
         private MapMode(String displayName) {
-            super();
             this.displayName = displayName;
         }
 
         /**
          * Returns a string version of the mapping mode.
-         * 
+         *
          * @return this map mode as string.
          */
         @Override
@@ -124,7 +123,6 @@ public abstract class FileChannel extends AbstractInterruptibleChannel
      * Protected default constructor.
      */
     protected FileChannel() {
-        super();
     }
 
     /**
@@ -146,7 +144,7 @@ public abstract class FileChannel extends AbstractInterruptibleChannel
      * time, etc. Note that passing <code>true</code> may invoke an underlying
      * write to the operating system (if the platform is maintaining metadata
      * such as last access time), even if the channel is opened read-only.
-     * 
+     *
      * @param metadata
      *            {@code true} if the file metadata should be flushed in
      *            addition to the file content, {@code false} otherwise.
@@ -284,7 +282,7 @@ public abstract class FileChannel extends AbstractInterruptibleChannel
 
     /**
      * Returns the current value of the file position pointer.
-     * 
+     *
      * @return the current position as a positive integer number of bytes from
      *         the start of the file.
      * @throws ClosedChannelException
@@ -303,7 +301,7 @@ public abstract class FileChannel extends AbstractInterruptibleChannel
      * size, attempts to read will return end of file. Write operations will
      * succeed but they will fill the bytes between the current end of file and
      * the new position with the required number of (unspecified) byte values.
-     * 
+     *
      * @param offset
      *            the new file position, in bytes.
      * @return the receiver.
@@ -459,7 +457,7 @@ public abstract class FileChannel extends AbstractInterruptibleChannel
 
     /**
      * Returns the size of the file underlying this channel in bytes.
-     * 
+     *
      * @return the size of the file in bytes.
      * @throws ClosedChannelException
      *             if this channel is closed.
@@ -628,7 +626,7 @@ public abstract class FileChannel extends AbstractInterruptibleChannel
      * some number of bytes are written (up to the remaining number of bytes in
      * the buffer) the file position is increased by the number of bytes
      * actually written.
-     * 
+     *
      * @param src
      *            the byte buffer containing the bytes to be written.
      * @return the number of bytes actually written.
@@ -719,7 +717,7 @@ public abstract class FileChannel extends AbstractInterruptibleChannel
     }
 
     /**
-     * Attempts to writes a subset of the given bytes from the buffers to this
+     * Attempts to write a subset of the given bytes from the buffers to this
      * file channel. This method attempts to write all {@code remaining()}
      * bytes from {@code length} byte buffers, in order, starting at {@code
      * sources[offset]}. The number of bytes actually written is returned.

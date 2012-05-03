@@ -119,14 +119,6 @@ public interface ExecutorService extends Executor {
      * <p>This method does not wait for previously submitted tasks to
      * complete execution.  Use {@link #awaitTermination awaitTermination}
      * to do that.
-     *
-     * @throws SecurityException if a security manager exists and
-     *         shutting down this ExecutorService may manipulate
-     *         threads that the caller is not permitted to modify
-     *         because it does not hold {@link
-     *         java.lang.RuntimePermission}<tt>("modifyThread")</tt>,
-     *         or the security manager's <tt>checkAccess</tt> method
-     *         denies access.
      */
     void shutdown();
 
@@ -145,13 +137,6 @@ public interface ExecutorService extends Executor {
      * task that fails to respond to interrupts may never terminate.
      *
      * @return list of tasks that never commenced execution
-     * @throws SecurityException if a security manager exists and
-     *         shutting down this ExecutorService may manipulate
-     *         threads that the caller is not permitted to modify
-     *         because it does not hold {@link
-     *         java.lang.RuntimePermission}<tt>("modifyThread")</tt>,
-     *         or the security manager's <tt>checkAccess</tt> method
-     *         denies access.
      */
     List<Runnable> shutdownNow();
 
@@ -303,8 +288,8 @@ public interface ExecutorService extends Executor {
      * @param tasks the collection of tasks
      * @return the result returned by one of the tasks
      * @throws InterruptedException if interrupted while waiting
-     * @throws NullPointerException if tasks or any of its elements
-     *         are <tt>null</tt>
+     * @throws NullPointerException if tasks or any element task
+     *         subject to execution is <tt>null</tt>
      * @throws IllegalArgumentException if tasks is empty
      * @throws ExecutionException if no task successfully completes
      * @throws RejectedExecutionException if tasks cannot be scheduled
@@ -327,8 +312,8 @@ public interface ExecutorService extends Executor {
      * @param unit the time unit of the timeout argument
      * @return the result returned by one of the tasks.
      * @throws InterruptedException if interrupted while waiting
-     * @throws NullPointerException if tasks, any of its elements, or
-     *         unit are <tt>null</tt>
+     * @throws NullPointerException if tasks, or unit, or any element
+     *         task subject to execution is <tt>null</tt>
      * @throws TimeoutException if the given timeout elapses before
      *         any task successfully completes
      * @throws ExecutionException if no task successfully completes

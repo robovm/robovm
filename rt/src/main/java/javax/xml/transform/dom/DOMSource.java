@@ -20,20 +20,19 @@
 package javax.xml.transform.dom;
 
 import javax.xml.transform.Source;
-
 import org.w3c.dom.Node;
 
 /**
  * <p>Acts as a holder for a transformation Source tree in the
  * form of a Document Object Model (DOM) tree.</p>
- * 
+ *
  * <p>Note that XSLT requires namespace support. Attempting to transform a DOM
  * that was not contructed with a namespace-aware parser may result in errors.
  * Parsers can be made namespace aware by calling
  * {@link javax.xml.parsers.DocumentBuilderFactory#setNamespaceAware(boolean awareness)}.</p>
- * 
+ *
  * @author <a href="Jeff.Suttor@Sun.com">Jeff Suttor</a>
- * @version $Revision: 446598 $, $Date: 2006-09-15 08:55:40 -0400 (Fri, 15 Sep 2006) $
+ * @version $Revision: 446598 $, $Date: 2006-09-15 05:55:40 -0700 (Fri, 15 Sep 2006) $
  * @see <a href="http://www.w3.org/TR/DOM-Level-2">Document Object Model (DOM) Level 2 Specification</a>
  */
 public class DOMSource implements Source {

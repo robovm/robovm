@@ -31,7 +31,7 @@ public interface PolicyNode {
 
     /**
      * Returns the list of children of this node as an {@code Iterator}.
-     * 
+     *
      * @return the list of children of this node as an {@code Iterator}.
      */
     public Iterator<? extends PolicyNode> getChildren();
@@ -40,35 +40,35 @@ public interface PolicyNode {
      * Returns the depth of this node in the policy tree.
      * <p>
      * the depth is zero based.
-     * 
+     *
      * @return the depth of this node in the policy tree.
      */
     public int getDepth();
 
     /**
      * Returns the expected policies for the next certificate to be valid.
-     * 
+     *
      * @return the expected policies.
      */
     public Set<String> getExpectedPolicies();
 
     /**
      * Returns the parent policy node.
-     * 
+     *
      * @return the parent policy node.
      */
     public PolicyNode getParent();
 
     /**
      * Returns the policy qualifiers associated with the policy of this node.
-     * 
+     *
      * @return the policy qualifiers associated with the policy of this node.
      */
     public Set<? extends PolicyQualifierInfo> getPolicyQualifiers();
 
     /**
      * Returns the valid policy of this node.
-     * 
+     *
      * @return the valid policy of this node.
      */
     public String getValidPolicy();
@@ -76,7 +76,7 @@ public interface PolicyNode {
     /**
      * Returns whether the certificate policy extension of the most recently
      * processed certificate is marked as critical.
-     * 
+     *
      * @return {@code true} if the extension is marked as critical, otherwise
      *         {@code false}.
      */

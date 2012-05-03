@@ -17,27 +17,41 @@
 
 package java.io;
 
-import org.apache.harmony.luni.internal.nls.Messages;
+import java.util.Arrays;
+import libcore.io.Streams;
 
 /**
- * The base class for all input streams. An input stream is a means of reading
- * data from a source in a byte-wise manner.
- * <p>
- * Some input streams also support marking a position in the input stream and
- * returning to this position later. This abstract class does not provide a
- * fully working implementation, so it needs to be subclassed, and at least the
- * {@link #read()} method needs to be overridden. Overriding some of the
- * non-abstract methods is also often advised, since it might result in higher
- * efficiency.
- * <p>
- * Many specialized input streams for purposes like reading from a file already
- * exist in this package.
- * 
+ * A readable source of bytes.
+ *
+ * <p>Most clients will use input streams that read data from the file system
+ * ({@link FileInputStream}), the network ({@link java.net.Socket#getInputStream()}/{@link
+ * java.net.HttpURLConnection#getInputStream()}), or from an in-memory byte
+ * array ({@link ByteArrayInputStream}).
+ *
+ * <p>Use {@link InputStreamReader} to adapt a byte stream like this one into a
+ * character stream.
+ *
+ * <p>Most clients should wrap their input stream with {@link
+ * BufferedInputStream}. Callers that do only bulk reads may omit buffering.
+ *
+ * <p>Some implementations support marking a position in the input stream and
+ * resetting back to this position later. Implementations that don't return
+ * false from {@link #markSupported()} and throw an {@link IOException} when
+ * {@link #reset()} is called.
+ *
+ * <h3>Subclassing InputStream</h3>
+ * Subclasses that decorate another input stream should consider subclassing
+ * {@link FilterInputStream}, which delegates all calls to the source input
+ * stream.
+ *
+ * <p>All input stream subclasses should override <strong>both</strong> {@link
+ * #read() read()} and {@link #read(byte[],int,int) read(byte[],int,int)}. The
+ * three argument overload is necessary for bulk access to the data. This is
+ * much more efficient than byte-by-byte access.
+ *
  * @see OutputStream
  */
 public abstract class InputStream extends Object implements Closeable {
-
-    private static byte[] skipBuf;
 
     /**
      * This constructor does nothing. It is provided for signature
@@ -48,13 +62,41 @@ public abstract class InputStream extends Object implements Closeable {
     }
 
     /**
-     * Returns the number of bytes that are available before this stream will
-     * block. This implementation always returns 0. Subclasses should override
-     * and indicate the correct number of bytes available.
-     * 
-     * @return the number of bytes available before blocking.
-     * @throws IOException
-     *             if an error occurs in this stream.
+     * Returns an estimated number of bytes that can be read or skipped without blocking for more
+     * input.
+     *
+     * <p>Note that this method provides such a weak guarantee that it is not very useful in
+     * practice.
+     *
+     * <p>Firstly, the guarantee is "without blocking for more input" rather than "without
+     * blocking": a read may still block waiting for I/O to complete&nbsp;&mdash; the guarantee is
+     * merely that it won't have to wait indefinitely for data to be written. The result of this
+     * method should not be used as a license to do I/O on a thread that shouldn't be blocked.
+     *
+     * <p>Secondly, the result is a
+     * conservative estimate and may be significantly smaller than the actual number of bytes
+     * available. In particular, an implementation that always returns 0 would be correct.
+     * In general, callers should only use this method if they'd be satisfied with
+     * treating the result as a boolean yes or no answer to the question "is there definitely
+     * data ready?".
+     *
+     * <p>Thirdly, the fact that a given number of bytes is "available" does not guarantee that a
+     * read or skip will actually read or skip that many bytes: they may read or skip fewer.
+     *
+     * <p>It is particularly important to realize that you <i>must not</i> use this method to
+     * size a container and assume that you can read the entirety of the stream without needing
+     * to resize the container. Such callers should probably write everything they read to a
+     * {@link ByteArrayOutputStream} and convert that to a byte array. Alternatively, if you're
+     * reading from a file, {@link File#length} returns the current length of the file (though
+     * assuming the file's length can't change may be incorrect, reading a file is inherently
+     * racy).
+     *
+     * <p>The default implementation of this method in {@code InputStream} always returns 0.
+     * Subclasses should override this method if they are able to indicate the number of bytes
+     * available.
+     *
+     * @return the estimated number of bytes available
+     * @throws IOException if this stream is closed or an error occurs
      */
     public int available() throws IOException {
         return 0;
@@ -63,7 +105,7 @@ public abstract class InputStream extends Object implements Closeable {
     /**
      * Closes this stream. Concrete implementations of this class should free
      * any resources during close. This implementation does nothing.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing this stream.
      */
@@ -93,7 +135,7 @@ public abstract class InputStream extends Object implements Closeable {
     /**
      * Indicates whether this stream supports the {@code mark()} and
      * {@code reset()} methods. The default implementation returns {@code false}.
-     * 
+     *
      * @return always {@code false}.
      * @see #mark(int)
      * @see #reset()
@@ -107,7 +149,7 @@ public abstract class InputStream extends Object implements Closeable {
      * range from 0 to 255. Returns -1 if the end of the stream has been
      * reached. Blocks until one byte has been read, the end of the source
      * stream is detected or an exception is thrown.
-     * 
+     *
      * @return the byte read or -1 if the end of stream has been reached.
      * @throws IOException
      *             if the stream is closed or another IOException occurs.
@@ -115,24 +157,17 @@ public abstract class InputStream extends Object implements Closeable {
     public abstract int read() throws IOException;
 
     /**
-     * Reads bytes from this stream and stores them in the byte array {@code b}.
-     * 
-     * @param b
-     *            the byte array in which to store the bytes read.
-     * @return the number of bytes actually read or -1 if the end of the stream
-     *         has been reached.
-     * @throws IOException
-     *             if this stream is closed or another IOException occurs.
+     * Equivalent to {@code read(buffer, 0, buffer.length)}.
      */
-    public int read(byte b[]) throws IOException {
-        return read(b, 0, b.length);
+    public int read(byte[] buffer) throws IOException {
+        return read(buffer, 0, buffer.length);
     }
 
     /**
      * Reads at most {@code length} bytes from this stream and stores them in
      * the byte array {@code b} starting at {@code offset}.
-     * 
-     * @param b
+     *
+     * @param buffer
      *            the byte array in which to store the bytes read.
      * @param offset
      *            the initial position in {@code buffer} to store the bytes read
@@ -148,16 +183,8 @@ public abstract class InputStream extends Object implements Closeable {
      * @throws IOException
      *             if the stream is closed or another IOException occurs.
      */
-    public int read(byte b[], int offset, int length) throws IOException {
-        // Force null check for b first!
-        if (offset > b.length || offset < 0) {
-            // luni.12=Offset out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.12", offset)); //$NON-NLS-1$
-        } 
-        if (length < 0 || length > b.length - offset) {
-            // luni.18=Length out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.18", length)); //$NON-NLS-1$
-        }
+    public int read(byte[] buffer, int offset, int length) throws IOException {
+        Arrays.checkOffsetAndCount(buffer.length, offset, length);
         for (int i = 0; i < length; i++) {
             int c;
             try {
@@ -170,7 +197,7 @@ public abstract class InputStream extends Object implements Closeable {
                 }
                 throw e;
             }
-            b[offset + i] = (byte) c;
+            buffer[offset + i] = (byte) c;
         }
         return length;
     }
@@ -192,46 +219,21 @@ public abstract class InputStream extends Object implements Closeable {
     }
 
     /**
-     * Skips at most {@code n} bytes in this stream. It does nothing and returns
-     * 0 if {@code n} is negative. Less than {@code n} characters are skipped if
-     * the end of this stream is reached before the operation completes.
-     * <p>
-     * This default implementation reads {@code n} bytes into a temporary
+     * Skips at most {@code n} bytes in this stream. This method does nothing and returns
+     * 0 if {@code n} is negative, but some subclasses may throw.
+     *
+     * <p>Note the "at most" in the description of this method: this method may choose to skip
+     * fewer bytes than requested. Callers should <i>always</i> check the return value.
+     *
+     * <p>This default implementation reads bytes into a temporary
      * buffer. Concrete subclasses should provide their own implementation.
      *
-     * @param n
-     *            the number of bytes to skip.
+     * @param byteCount the number of bytes to skip.
      * @return the number of bytes actually skipped.
      * @throws IOException
      *             if this stream is closed or another IOException occurs.
      */
-    public long skip(long n) throws IOException {
-        if (n <= 0) {
-            return 0;
-        }
-        long skipped = 0;
-        int toRead = n < 4096 ? (int) n : 4096;
-        // We are unsynchronized, so take a local copy of the skipBuf at some
-        // point in time.
-        byte[] localBuf = skipBuf;
-        if (localBuf == null || localBuf.length < toRead) {
-            // May be lazily written back to the static. No matter if it
-            // overwrites somebody else's store.
-            skipBuf = localBuf = new byte[toRead];
-        }
-        while (skipped < n) {
-            int read = read(localBuf, 0, toRead);
-            if (read == -1) {
-                return skipped;
-            }
-            skipped += read;
-            if (read < toRead) {
-                return skipped;
-            }
-            if (n - skipped < toRead) {
-                toRead = (int) (n - skipped);
-            }
-        }
-        return skipped;
+    public long skip(long byteCount) throws IOException {
+        return Streams.skipByReading(this, byteCount);
     }
 }

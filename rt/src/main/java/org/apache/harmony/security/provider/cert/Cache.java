@@ -17,6 +17,7 @@
 
 /**
 * @author Alexander Y. Kleymenov
+* @version $Revision$
 */
 
 package org.apache.harmony.security.provider.cert;
@@ -138,19 +139,19 @@ public class Cache {
     }
 
     /**
-     * Creates the Cache object of size of 900.
+     * Creates the Cache object of size of 9.
      * @param pref_size specifies how many leading/trailing bytes of object's
      * encoded form will be used for hash computation
      */
     public Cache(int pref_size) {
-        this(pref_size, 900);
+        this(pref_size, 9);
     }
 
     /**
-     * Creates the Cache object of size of 900.
+     * Creates the Cache object of size of 9.
      */
     public Cache() {
-        this(28, 900);
+        this(28, 9);
     }
 
     /**
@@ -187,6 +188,9 @@ public class Cache {
      * otherwise.
      */
     public boolean contains(long prefix_hash) {
+        if (prefix_hash == 0) {
+            return false;
+        }
         int idx = -1*Arrays.binarySearch(hashes_idx, prefix_hash)-1;
         if (idx == cache_size) {
             return false;
@@ -208,6 +212,9 @@ public class Cache {
      */
     public Object get(long hash, byte[] encoding) {
         hash |= getSuffHash(encoding);
+        if (hash == 0) {
+            return null;
+        }
         int idx = -1*Arrays.binarySearch(hashes_idx, hash)-1;
         if (idx == cache_size) {
             return null;
@@ -253,7 +260,7 @@ public class Cache {
             if (idx < 0) {
                 // it will never happen because we use saved hash value
                 // (hashes[index])
-                System.out.println("WARNING! "+idx); //$NON-NLS-1$
+                System.out.println("WARNING! "+idx);
                 idx = -(idx + 1);
             }
             long new_hash_idx = (hash | (index + 1));
@@ -263,8 +270,8 @@ public class Cache {
                 if (idx != new_idx) {
                     // it will never happen because we use the same
                     // hash and the same index in hash table
-                    System.out.println("WARNING: "); //$NON-NLS-1$
-                    System.out.println(">> idx: "+idx+" new_idx: "+new_idx); //$NON-NLS-1$ //$NON-NLS-2$
+                    System.out.println("WARNING: ");
+                    System.out.println(">> idx: "+idx+" new_idx: "+new_idx);
                 }
             } else {
                 new_idx = -(new_idx + 1);
@@ -315,4 +322,3 @@ public class Cache {
     }
 
 }
-

@@ -18,28 +18,257 @@
 package java.net;
 
 import java.io.IOException;
-
-import org.apache.harmony.luni.internal.nls.Messages;
+import java.io.InputStream;
+import java.util.Arrays;
+import libcore.net.http.HttpEngine;
 
 /**
- * This abstract subclass of {@code URLConnection} defines methods for managing
- * HTTP connection according to the description given by RFC 2068.
- * 
- * @see ContentHandler
- * @see URL
- * @see URLConnection
- * @see URLStreamHandler
+ * An {@link URLConnection} for HTTP (<a
+ * href="http://tools.ietf.org/html/rfc2616">RFC 2616</a>) used to send and
+ * receive data over the web. Data may be of any type and length. This class may
+ * be used to send and receive streaming data whose length is not known in
+ * advance.
+ *
+ * <p>Uses of this class follow a pattern:
+ * <ol>
+ *   <li>Obtain a new {@code HttpURLConnection} by calling {@link
+ *       URL#openConnection() URL.openConnection()} and casting the result to
+ *       {@code HttpURLConnection}.
+ *   <li>Prepare the request. The primary property of a request is its URI.
+ *       Request headers may also include metadata such as credentials, preferred
+ *       content types, and session cookies.
+ *   <li>Optionally upload a request body. Instances must be configured with
+ *       {@link #setDoOutput(boolean) setDoOutput(true)} if they include a
+ *       request body. Transmit data by writing to the stream returned by {@link
+ *       #getOutputStream()}.
+ *   <li>Read the response. Response headers typically include metadata such as
+ *       the response body's content type and length, modified dates and session
+ *       cookies. The response body may be read from the stream returned by {@link
+ *       #getInputStream()}. If the response has no body, that method returns an
+ *       empty stream.
+ *   <li>Disconnect. Once the response body has been read, the {@code
+ *       HttpURLConnection} should be closed by calling {@link #disconnect()}.
+ *       Disconnecting releases the resources held by a connection so they may
+ *       be closed or reused.
+ * </ol>
+ *
+ * <p>For example, to retrieve the webpage at {@code http://www.android.com/}:
+ * <pre>   {@code
+ *   URL url = new URL("http://www.android.com/");
+ *   HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+ *   try {
+ *     InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+ *     readStream(in);
+ *   } finally {
+ *     urlConnection.disconnect();
+ *   }
+ * }</pre>
+ *
+ * <h3>Secure Communication with HTTPS</h3>
+
+ * Calling {@link URL#openConnection()} on a URL with the "https"
+ * scheme will return an {@code HttpsURLConnection}, which allows for
+ * overriding the default {@link javax.net.ssl.HostnameVerifier
+ * HostnameVerifier} and {@link javax.net.ssl.SSLSocketFactory
+ * SSLSocketFactory}. An application-supplied {@code SSLSocketFactory}
+ * created from an {@link javax.net.ssl.SSLContext SSLContext} can
+ * provide a custom {@link javax.net.ssl.X509TrustManager
+ * X509TrustManager} for verifying certificate chains and a custom
+ * {@link javax.net.ssl.X509KeyManager X509KeyManager} for supplying
+ * client certificates. See {@link javax.net.ssl.HttpsURLConnection
+ * HttpsURLConnection} for more details.
+ *
+ * <h3>Response Handling</h3>
+ * {@code HttpURLConnection} will follow up to five HTTP redirects. It will
+ * follow redirects from one origin server to another. This implementation
+ * doesn't follow redirects from HTTPS to HTTP or vice versa.
+ *
+ * <p>If the HTTP response indicates that an error occurred, {@link
+ * #getInputStream()} will throw an {@link IOException}. Use {@link
+ * #getErrorStream()} to read the error response. The headers can be read in
+ * the normal way using {@link #getHeaderFields()},
+ *
+ * <h3>Posting Content</h3>
+ * To upload data to a web server, configure the connection for output using
+ * {@link #setDoOutput(boolean) setDoOutput(true)}.
+ *
+ * <p>For best performance, you should call either {@link
+ * #setFixedLengthStreamingMode(int)} when the body length is known in advance,
+ * or {@link #setChunkedStreamingMode(int)} when it is not. Otherwise {@code
+ * HttpURLConnection} will be forced to buffer the complete request body in
+ * memory before it is transmitted, wasting (and possibly exhausting) heap and
+ * increasing latency.
+ *
+ * <p>For example, to perform an upload: <pre>   {@code
+ *   HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+ *   try {
+ *     urlConnection.setDoOutput(true);
+ *     urlConnection.setChunkedStreamingMode(0);
+ *
+ *     OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
+ *     writeStream(out);
+ *
+ *     InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+ *     readStream(in);
+ *   } finally {
+ *     urlConnection.disconnect();
+ *   }
+ * }</pre>
+ *
+ * <h3>Performance</h3>
+ * The input and output streams returned by this class are <strong>not
+ * buffered</strong>. Most callers should wrap the returned streams with {@link
+ * java.io.BufferedInputStream BufferedInputStream} or {@link
+ * java.io.BufferedOutputStream BufferedOutputStream}. Callers that do only bulk
+ * reads or writes may omit buffering.
+ *
+ * <p>When transferring large amounts of data to or from a server, use streams
+ * to limit how much data is in memory at once. Unless you need the entire
+ * body to be in memory at once, process it as a stream (rather than storing
+ * the complete body as a single byte array or string).
+ *
+ * <p>To reduce latency, this class may reuse the same underlying {@code Socket}
+ * for multiple request/response pairs. As a result, HTTP connections may be
+ * held open longer than necessary. Calls to {@link #disconnect()} may return
+ * the socket to a pool of connected sockets. This behavior can be disabled by
+ * setting the "http.keepAlive" system property to "false" before issuing any
+ * HTTP requests. The "http.maxConnections" property may be used to control how
+ * many idle connections to each server will be held.
+ *
+ * <p>By default, this implementation of {@code HttpURLConnection} requests that
+ * servers use gzip compression. Since {@link #getContentLength()} returns the
+ * number of bytes transmitted, you cannot use that method to predict how many
+ * bytes can be read from {@link #getInputStream()}. Instead, read that stream
+ * until it is exhausted: when {@link InputStream#read} returns -1. Gzip
+ * compression can be disabled by setting the acceptable encodings in the
+ * request header: <pre>   {@code
+ *   urlConnection.setRequestProperty("Accept-Encoding", "identity");
+ * }</pre>
+ *
+ * <h3>Handling Network Sign-On</h3>
+ * Some Wi-Fi networks block Internet access until the user clicks through a
+ * sign-on page. Such sign-on pages are typically presented by using HTTP
+ * redirects. You can use {@link #getURL()} to test if your connection has been
+ * unexpectedly redirected. This check is not valid until <strong>after</strong>
+ * the response headers have been received, which you can trigger by calling
+ * {@link #getHeaderFields()} or {@link #getInputStream()}. For example, to
+ * check that a response was not redirected to an unexpected host:
+ * <pre>   {@code
+ *   HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+ *   try {
+ *     InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+ *     if (!url.getHost().equals(urlConnection.getURL().getHost())) {
+ *       // we were redirected! Kick the user out to the browser to sign on?
+ *     }
+ *     ...
+ *   } finally {
+ *     urlConnection.disconnect();
+ *   }
+ * }</pre>
+ *
+ * <h3>HTTP Authentication</h3>
+ * {@code HttpURLConnection} supports <a
+ * href="http://www.ietf.org/rfc/rfc2617">HTTP basic authentication</a>. Use
+ * {@link Authenticator} to set the VM-wide authentication handler:
+ * <pre>   {@code
+ *   Authenticator.setDefault(new Authenticator() {
+ *     protected PasswordAuthentication getPasswordAuthentication() {
+ *       return new PasswordAuthentication(username, password.toCharArray());
+ *     }
+ *   });
+ * }</pre>
+ * Unless paired with HTTPS, this is <strong>not</strong> a secure mechanism for
+ * user authentication. In particular, the username, password, request and
+ * response are all transmitted over the network without encryption.
+ *
+ * <h3>Sessions with Cookies</h3>
+ * To establish and maintain a potentially long-lived session between client
+ * and server, {@code HttpURLConnection} includes an extensible cookie manager.
+ * Enable VM-wide cookie management using {@link CookieHandler} and {@link
+ * CookieManager}: <pre>   {@code
+ *   CookieManager cookieManager = new CookieManager();
+ *   CookieHandler.setDefault(cookieManager);
+ * }</pre>
+ * By default, {@code CookieManager} accepts cookies from the <a
+ * href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec1.html">origin
+ * server</a> only. Two other policies are included: {@link
+ * CookiePolicy#ACCEPT_ALL} and {@link CookiePolicy#ACCEPT_NONE}. Implement
+ * {@link CookiePolicy} to define a custom policy.
+ *
+ * <p>The default {@code CookieManager} keeps all accepted cookies in memory. It
+ * will forget these cookies when the VM exits. Implement {@link CookieStore} to
+ * define a custom cookie store.
+ *
+ * <p>In addition to the cookies set by HTTP responses, you may set cookies
+ * programmatically. To be included in HTTP request headers, cookies must have
+ * the domain and path properties set.
+ *
+ * <p>By default, new instances of {@code HttpCookie} work only with servers
+ * that support <a href="http://www.ietf.org/rfc/rfc2965.txt">RFC 2965</a>
+ * cookies. Many web servers support only the older specification, <a
+ * href="http://www.ietf.org/rfc/rfc2109.txt">RFC 2109</a>. For compatibility
+ * with the most web servers, set the cookie version to 0.
+ *
+ * <p>For example, to receive {@code www.twitter.com} in French: <pre>   {@code
+ *   HttpCookie cookie = new HttpCookie("lang", "fr");
+ *   cookie.setDomain("twitter.com");
+ *   cookie.setPath("/");
+ *   cookie.setVersion(0);
+ *   cookieManager.getCookieStore().add(new URI("http://twitter.com/"), cookie);
+ * }</pre>
+ *
+ * <h3>HTTP Methods</h3>
+ * <p>{@code HttpURLConnection} uses the {@code GET} method by default. It will
+ * use {@code POST} if {@link #setDoOutput setDoOutput(true)} has been called.
+ * Other HTTP methods ({@code OPTIONS}, {@code HEAD}, {@code PUT}, {@code
+ * DELETE} and {@code TRACE}) can be used with {@link #setRequestMethod}.
+ *
+ * <h3>Proxies</h3>
+ * By default, this class will connect directly to the <a
+ * href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec1.html">origin
+ * server</a>. It can also connect via an {@link Proxy.Type#HTTP HTTP} or {@link
+ * Proxy.Type#SOCKS SOCKS} proxy. To use a proxy, use {@link
+ * URL#openConnection(Proxy) URL.openConnection(Proxy)} when creating the
+ * connection.
+ *
+ * <h3>IPv6 Support</h3>
+ * <p>This class includes transparent support for IPv6. For hosts with both IPv4
+ * and IPv6 addresses, it will attempt to connect to each of a host's addresses
+ * until a connection is established.
+ *
+ * <h3>Response Caching</h3>
+ * <p>{@code HttpURLConnection} supports a VM-wide HTTP response cache.
+ * Implement {@link ResponseCache} and use {@link ResponseCache#setDefault} to
+ * install a custom cache. Implementing this API is onerous: correct
+ * implementations should follow all caching rules defined by <a
+ * href="http://tools.ietf.org/html/rfc2616#section-13">Section 13 of RFC
+ * 2616</a>.
+ *
+ * <p>Each instance of {@code HttpURLConnection} may be used for one
+ * request/response pair. Instances of this class are not thread safe.
  */
 public abstract class HttpURLConnection extends URLConnection {
-    @SuppressWarnings("nls")
-    private String methodTokens[] = { "GET", "DELETE", "HEAD", "OPTIONS",
-            "POST", "PUT", "TRACE" };
 
-   /**
+    /**
+     * The subset of HTTP methods that the user may select via {@link
+     * #setRequestMethod(String)}.
+     */
+    private static final String[] PERMITTED_USER_METHODS = {
+            HttpEngine.OPTIONS,
+            HttpEngine.GET,
+            HttpEngine.HEAD,
+            HttpEngine.POST,
+            HttpEngine.PUT,
+            HttpEngine.DELETE,
+            HttpEngine.TRACE
+            // Note: we don't allow users to specify "CONNECT"
+    };
+
+    /**
      * The HTTP request method of this {@code HttpURLConnection}. The default
      * value is {@code "GET"}.
      */
-    protected String method = "GET"; //$NON-NLS-1$
+    protected String method = HttpEngine.GET;
 
     /**
      * The status code of the response obtained from the HTTP request. The
@@ -80,8 +309,6 @@ public abstract class HttpURLConnection extends URLConnection {
      */
     protected int fixedContentLength = -1;
 
-    private final static int DEFAULT_CHUNK_LENGTH = 1024;
-
     // 2XX: generally "OK"
     // 3XX: relocation/redirect
     // 4XX: client error
@@ -89,152 +316,152 @@ public abstract class HttpURLConnection extends URLConnection {
     /**
      * Numeric status code, 202: Accepted
      */
-    public final static int HTTP_ACCEPTED = 202;
+    public static final int HTTP_ACCEPTED = 202;
 
     /**
      * Numeric status code, 502: Bad Gateway
      */
-    public final static int HTTP_BAD_GATEWAY = 502;
+    public static final int HTTP_BAD_GATEWAY = 502;
 
     /**
      * Numeric status code, 405: Bad Method
      */
-    public final static int HTTP_BAD_METHOD = 405;
+    public static final int HTTP_BAD_METHOD = 405;
 
     /**
      * Numeric status code, 400: Bad Request
      */
-    public final static int HTTP_BAD_REQUEST = 400;
+    public static final int HTTP_BAD_REQUEST = 400;
 
     /**
      * Numeric status code, 408: Client Timeout
      */
-    public final static int HTTP_CLIENT_TIMEOUT = 408;
+    public static final int HTTP_CLIENT_TIMEOUT = 408;
 
     /**
      * Numeric status code, 409: Conflict
      */
-    public final static int HTTP_CONFLICT = 409;
+    public static final int HTTP_CONFLICT = 409;
 
     /**
      * Numeric status code, 201: Created
      */
-    public final static int HTTP_CREATED = 201;
+    public static final int HTTP_CREATED = 201;
 
     /**
      * Numeric status code, 413: Entity too large
      */
-    public final static int HTTP_ENTITY_TOO_LARGE = 413;
+    public static final int HTTP_ENTITY_TOO_LARGE = 413;
 
     /**
      * Numeric status code, 403: Forbidden
      */
-    public final static int HTTP_FORBIDDEN = 403;
+    public static final int HTTP_FORBIDDEN = 403;
 
     /**
      * Numeric status code, 504: Gateway timeout
      */
-    public final static int HTTP_GATEWAY_TIMEOUT = 504;
+    public static final int HTTP_GATEWAY_TIMEOUT = 504;
 
     /**
      * Numeric status code, 410: Gone
      */
-    public final static int HTTP_GONE = 410;
+    public static final int HTTP_GONE = 410;
 
     /**
      * Numeric status code, 500: Internal error
      */
-    public final static int HTTP_INTERNAL_ERROR = 500;
+    public static final int HTTP_INTERNAL_ERROR = 500;
 
     /**
      * Numeric status code, 411: Length required
      */
-    public final static int HTTP_LENGTH_REQUIRED = 411;
+    public static final int HTTP_LENGTH_REQUIRED = 411;
 
     /**
      * Numeric status code, 301 Moved permanently
      */
-    public final static int HTTP_MOVED_PERM = 301;
+    public static final int HTTP_MOVED_PERM = 301;
 
     /**
      * Numeric status code, 302: Moved temporarily
      */
-    public final static int HTTP_MOVED_TEMP = 302;
+    public static final int HTTP_MOVED_TEMP = 302;
 
     /**
      * Numeric status code, 300: Multiple choices
      */
-    public final static int HTTP_MULT_CHOICE = 300;
+    public static final int HTTP_MULT_CHOICE = 300;
 
     /**
      * Numeric status code, 204: No content
      */
-    public final static int HTTP_NO_CONTENT = 204;
+    public static final int HTTP_NO_CONTENT = 204;
 
     /**
      * Numeric status code, 406: Not acceptable
      */
-    public final static int HTTP_NOT_ACCEPTABLE = 406;
+    public static final int HTTP_NOT_ACCEPTABLE = 406;
 
     /**
      * Numeric status code, 203: Not authoritative
      */
-    public final static int HTTP_NOT_AUTHORITATIVE = 203;
+    public static final int HTTP_NOT_AUTHORITATIVE = 203;
 
     /**
      * Numeric status code, 404: Not found
      */
-    public final static int HTTP_NOT_FOUND = 404;
+    public static final int HTTP_NOT_FOUND = 404;
 
     /**
      * Numeric status code, 501: Not implemented
      */
-    public final static int HTTP_NOT_IMPLEMENTED = 501;
+    public static final int HTTP_NOT_IMPLEMENTED = 501;
 
     /**
      * Numeric status code, 304: Not modified
      */
-    public final static int HTTP_NOT_MODIFIED = 304;
+    public static final int HTTP_NOT_MODIFIED = 304;
 
     /**
      * Numeric status code, 200: OK
      */
-    public final static int HTTP_OK = 200;
+    public static final int HTTP_OK = 200;
 
     /**
      * Numeric status code, 206: Partial
      */
-    public final static int HTTP_PARTIAL = 206;
+    public static final int HTTP_PARTIAL = 206;
 
     /**
      * Numeric status code, 402: Payment required
      */
-    public final static int HTTP_PAYMENT_REQUIRED = 402;
+    public static final int HTTP_PAYMENT_REQUIRED = 402;
 
     /**
      * Numeric status code, 412: Precondition failed
      */
-    public final static int HTTP_PRECON_FAILED = 412;
+    public static final int HTTP_PRECON_FAILED = 412;
 
     /**
      * Numeric status code, 407: Proxy authentication required
      */
-    public final static int HTTP_PROXY_AUTH = 407;
+    public static final int HTTP_PROXY_AUTH = 407;
 
     /**
      * Numeric status code, 414: Request too long
      */
-    public final static int HTTP_REQ_TOO_LONG = 414;
+    public static final int HTTP_REQ_TOO_LONG = 414;
 
     /**
      * Numeric status code, 205: Reset
      */
-    public final static int HTTP_RESET = 205;
+    public static final int HTTP_RESET = 205;
 
     /**
      * Numeric status code, 303: See other
      */
-    public final static int HTTP_SEE_OTHER = 303;
+    public static final int HTTP_SEE_OTHER = 303;
 
     /**
      * Numeric status code, 500: Internal error
@@ -242,37 +469,41 @@ public abstract class HttpURLConnection extends URLConnection {
      * @deprecated Use {@link #HTTP_INTERNAL_ERROR}
      */
     @Deprecated
-    public final static int HTTP_SERVER_ERROR = 500;
+    public static final int HTTP_SERVER_ERROR = 500;
 
     /**
-     * Numeric status code, 305: Use proxy
+     * Numeric status code, 305: Use proxy.
+     *
+     * <p>Like Firefox and Chrome, this class doesn't honor this response code.
+     * Other implementations respond to this status code by retrying the request
+     * using the HTTP proxy named by the response's Location header field.
      */
-    public final static int HTTP_USE_PROXY = 305;
+    public static final int HTTP_USE_PROXY = 305;
 
     /**
      * Numeric status code, 401: Unauthorized
      */
-    public final static int HTTP_UNAUTHORIZED = 401;
+    public static final int HTTP_UNAUTHORIZED = 401;
 
     /**
      * Numeric status code, 415: Unsupported type
      */
-    public final static int HTTP_UNSUPPORTED_TYPE = 415;
+    public static final int HTTP_UNSUPPORTED_TYPE = 415;
 
     /**
      * Numeric status code, 503: Unavailable
      */
-    public final static int HTTP_UNAVAILABLE = 503;
+    public static final int HTTP_UNAVAILABLE = 503;
 
     /**
      * Numeric status code, 505: Version not supported
      */
-    public final static int HTTP_VERSION = 505;
+    public static final int HTTP_VERSION = 505;
 
     /**
      * Constructs a new {@code HttpURLConnection} instance pointing to the
      * resource specified by the {@code url}.
-     * 
+     *
      * @param url
      *            the URL of this connection.
      * @see URL
@@ -284,7 +515,7 @@ public abstract class HttpURLConnection extends URLConnection {
 
     /**
      * Closes the connection to the HTTP server.
-     * 
+     *
      * @see URLConnection#connect()
      * @see URLConnection#connected
      */
@@ -294,10 +525,10 @@ public abstract class HttpURLConnection extends URLConnection {
      * Returns an input stream from the server in the case of an error such as
      * the requested file has not been found on the remote server. This stream
      * can be used to read the data the server will send back.
-     * 
+     *
      * @return the error input stream returned by the server.
      */
-    public java.io.InputStream getErrorStream() {
+    public InputStream getErrorStream() {
         return null;
     }
 
@@ -305,7 +536,7 @@ public abstract class HttpURLConnection extends URLConnection {
      * Returns the value of {@code followRedirects} which indicates if this
      * connection follows a different URL redirected by the server. It is
      * enabled by default.
-     * 
+     *
      * @return the value of the flag.
      * @see #setFollowRedirects
      */
@@ -318,7 +549,7 @@ public abstract class HttpURLConnection extends URLConnection {
      * with the host and the port number as the target name and {@code
      * "resolve, connect"} as the action list. If the port number of this URL
      * instance is lower than {@code 0} the port will be set to {@code 80}.
-     * 
+     *
      * @return the permission object required for this connection.
      * @throws IOException
      *             if an IO exception occurs during the creation of the
@@ -330,15 +561,15 @@ public abstract class HttpURLConnection extends URLConnection {
         if (port < 0) {
             port = 80;
         }
-        return new SocketPermission(url.getHost() + ":" + port, //$NON-NLS-1$
-                "connect, resolve"); //$NON-NLS-1$
+        return new SocketPermission(url.getHost() + ":" + port,
+                "connect, resolve");
     }
 
     /**
      * Returns the request method which will be used to make the request to the
      * remote HTTP server. All possible methods of this HTTP implementation is
      * listed in the class definition.
-     * 
+     *
      * @return the request method string.
      * @see #method
      * @see #setRequestMethod
@@ -349,7 +580,7 @@ public abstract class HttpURLConnection extends URLConnection {
 
     /**
      * Returns the response code returned by the remote HTTP server.
-     * 
+     *
      * @return the response code, -1 if no valid response code.
      * @throws IOException
      *             if there is an IO error during the retrieval.
@@ -364,7 +595,7 @@ public abstract class HttpURLConnection extends URLConnection {
             return -1;
         }
         response = response.trim();
-        int mark = response.indexOf(" ") + 1; //$NON-NLS-1$
+        int mark = response.indexOf(" ") + 1;
         if (mark == 0) {
             return -1;
         }
@@ -381,7 +612,7 @@ public abstract class HttpURLConnection extends URLConnection {
 
     /**
      * Returns the response message returned by the remote HTTP server.
-     * 
+     *
      * @return the response message. {@code null} if no such response exists.
      * @throws IOException
      *             if there is an error during the retrieval.
@@ -397,25 +628,19 @@ public abstract class HttpURLConnection extends URLConnection {
 
     /**
      * Sets the flag of whether this connection will follow redirects returned
-     * by the remote server. This method can only be called with the permission
-     * from the security manager.
-     * 
+     * by the remote server.
+     *
      * @param auto
      *            the value to enable or disable this option.
-     * @see SecurityManager#checkSetFactory()
      */
     public static void setFollowRedirects(boolean auto) {
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            security.checkSetFactory();
-        }
         followRedirects = auto;
     }
 
     /**
      * Sets the request command which will be sent to the remote HTTP server.
      * This method can only be called before the connection is made.
-     * 
+     *
      * @param method
      *            the string representing the method to be used.
      * @throws ProtocolException
@@ -426,31 +651,43 @@ public abstract class HttpURLConnection extends URLConnection {
      */
     public void setRequestMethod(String method) throws ProtocolException {
         if (connected) {
-            throw new ProtocolException(Messages.getString("luni.5E")); //$NON-NLS-1$
+            throw new ProtocolException("Connection already established");
         }
-        for (int i = 0; i < methodTokens.length; i++) {
-            if (methodTokens[i].equals(method)) {
+        for (String permittedUserMethod : PERMITTED_USER_METHODS) {
+            if (permittedUserMethod.equals(method)) {
                 // if there is a supported method that matches the desired
                 // method, then set the current method and return
-                this.method = methodTokens[i];
+                this.method = permittedUserMethod;
                 return;
             }
         }
         // if none matches, then throw ProtocolException
-        throw new ProtocolException();
+        throw new ProtocolException("Unknown method '" + method + "'; must be one of " +
+                Arrays.toString(PERMITTED_USER_METHODS));
     }
 
     /**
      * Returns whether this connection uses a proxy server or not.
-     * 
+     *
      * @return {@code true} if this connection passes a proxy server, false
      *         otherwise.
      */
     public abstract boolean usingProxy();
 
     /**
+     * Returns the encoding used to transmit the response body over the network.
+     * This is null or "identity" if the content was not encoded, or "gzip" if
+     * the body was gzip compressed. Most callers will be more interested in the
+     * {@link #getContentType() content type}, which may also include the
+     * content's character encoding.
+     */
+    @Override public String getContentEncoding() {
+        return super.getContentEncoding(); // overridden for Javadoc only
+    }
+
+    /**
      * Returns whether this connection follows redirects.
-     * 
+     *
      * @return {@code true} if this connection follows redirects, false
      *         otherwise.
      */
@@ -460,7 +697,7 @@ public abstract class HttpURLConnection extends URLConnection {
 
     /**
      * Sets whether this connection follows redirects.
-     * 
+     *
      * @param followRedirects
      *            {@code true} if this connection will follows redirects, false
      *            otherwise.
@@ -473,7 +710,7 @@ public abstract class HttpURLConnection extends URLConnection {
      * Returns the date value in milliseconds since {@code 01.01.1970, 00:00h}
      * corresponding to the header field {@code field}. The {@code defaultValue}
      * will be returned if no such field can be found in the response header.
-     * 
+     *
      * @param field
      *            the header field name.
      * @param defaultValue
@@ -491,51 +728,56 @@ public abstract class HttpURLConnection extends URLConnection {
      * If the length of a HTTP request body is known ahead, sets fixed length to
      * enable streaming without buffering. Sets after connection will cause an
      * exception.
-     * 
+     *
      * @see #setChunkedStreamingMode
      * @param contentLength
      *            the fixed length of the HTTP request body.
      * @throws IllegalStateException
-     *             if already connected or an other mode already set.
+     *             if already connected or another mode already set.
      * @throws IllegalArgumentException
      *             if {@code contentLength} is less than zero.
      */
     public void setFixedLengthStreamingMode(int contentLength) {
         if (super.connected) {
-            throw new IllegalStateException(Messages.getString("luni.5F")); //$NON-NLS-1$
+            throw new IllegalStateException("Already connected");
         }
-        if (0 < chunkLength) {
-            throw new IllegalStateException(Messages.getString("luni.60")); //$NON-NLS-1$
+        if (chunkLength > 0) {
+            throw new IllegalStateException("Already in chunked mode");
         }
-        if (0 > contentLength) {
-            throw new IllegalArgumentException(Messages.getString("luni.61")); //$NON-NLS-1$
+        if (contentLength < 0) {
+            throw new IllegalArgumentException("contentLength < 0");
         }
         this.fixedContentLength = contentLength;
     }
 
     /**
-     * If the length of a HTTP request body is NOT known ahead, enable chunked
-     * transfer encoding to enable streaming with buffering. Notice that not all
-     * http servers support this mode. Sets after connection will cause an
-     * exception.
-     * 
+     * Stream a request body whose length is not known in advance. Old HTTP/1.0
+     * only servers may not support this mode.
+     *
+     * <p>When HTTP chunked encoding is used, the stream is divided into
+     * chunks, each prefixed with a header containing the chunk's size. Setting
+     * a large chunk length requires a large internal buffer, potentially
+     * wasting memory. Setting a small chunk length increases the number of
+     * bytes that must be transmitted because of the header on every chunk.
+     * Most caller should use {@code 0} to get the system default.
+     *
      * @see #setFixedLengthStreamingMode
-     * @param chunklen
-     *            the length of a chunk.
-     * @throws IllegalStateException
-     *             if already connected or an other mode already set.
+     * @param chunkLength the length to use, or {@code 0} for the default chunk
+     *     length.
+     * @throws IllegalStateException if already connected or another mode
+     *     already set.
      */
-    public void setChunkedStreamingMode(int chunklen) {
+    public void setChunkedStreamingMode(int chunkLength) {
         if (super.connected) {
-            throw new IllegalStateException(Messages.getString("luni.5F")); //$NON-NLS-1$
+            throw new IllegalStateException("Already connected");
         }
-        if (0 <= fixedContentLength) {
-            throw new IllegalStateException(Messages.getString("luni.60")); //$NON-NLS-1$
+        if (fixedContentLength >= 0) {
+            throw new IllegalStateException("Already in fixed-length mode");
         }
-        if (0 >= chunklen) {
-            chunkLength = DEFAULT_CHUNK_LENGTH;
+        if (chunkLength <= 0) {
+            this.chunkLength = HttpEngine.DEFAULT_CHUNK_LENGTH;
         } else {
-            chunkLength = chunklen;
+            this.chunkLength = chunkLength;
         }
     }
 }

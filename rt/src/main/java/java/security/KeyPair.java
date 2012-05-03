@@ -22,7 +22,7 @@ import java.io.Serializable;
 /**
  * {@code KeyPair} is a container for a public key and a private key. Since the
  * private key can be accessed, instances must be treated like a private key.
- * 
+ *
  * @see PrivateKey
  * @see PublicKey
  */

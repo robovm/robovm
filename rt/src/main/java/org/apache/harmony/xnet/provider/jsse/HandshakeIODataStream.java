@@ -17,13 +17,11 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import org.apache.harmony.xnet.provider.jsse.AlertException;
-import org.apache.harmony.xnet.provider.jsse.SSLInputStream;
-
 import java.io.IOException;
 import java.io.PrintStream;
 import java.security.MessageDigest;
 import java.util.Arrays;
+import java.util.Locale;
 import javax.net.ssl.SSLHandshakeException;
 
 /**
@@ -126,7 +124,7 @@ public class HandshakeIODataStream
      * to delete one message from the internal buffer.
      */
     protected void removeFromMarkedPosition() {
-        System.arraycopy(buffer, read_pos, 
+        System.arraycopy(buffer, read_pos,
                 buffer, marked_pos, read_pos_end - read_pos);
         read_pos_end -= (read_pos - marked_pos);
         read_pos = marked_pos;
@@ -163,11 +161,11 @@ public class HandshakeIODataStream
     }
 
     @Override
-    public int read(byte[] dest, int offset, int length) throws IOException {
+    public int read(byte[] dst, int offset, int length) throws IOException {
         if (length > available()) {
             throw new EndOfBufferException();
         }
-        System.arraycopy(buffer, read_pos, dest, offset, length);
+        System.arraycopy(buffer, read_pos, dst, offset, length);
         read_pos = read_pos + length;
         return length;
     }
@@ -179,7 +177,7 @@ public class HandshakeIODataStream
      * The attempts to overflow the buffer by means of this methods
      * seem to be futile because of:
      * 1. The SSL protocol specifies the maximum size of the record
-     * and record protocol does not pass huge messages. 
+     * and record protocol does not pass huge messages.
      * (see TLS v1 specification http://www.ietf.org/rfc/rfc2246.txt ,
      * p 6.2)
      * 2. After each call of this method, handshake protocol should
@@ -223,7 +221,7 @@ public class HandshakeIODataStream
         System.arraycopy(buffer, 0, new_buff, 0, buffer.length);
         buffer = new_buff;
     }
-    
+
     protected void clearBuffer() {
         read_pos = 0;
         marked_pos = 0;
@@ -370,32 +368,6 @@ public class HandshakeIODataStream
         return res;
     }
 
-    // ---------------------- Debud functionality -------------------------
-
-    protected void printContent(PrintStream outstream) {
-        int perLine = 20;
-        String prefix = " ";
-        String delimiter = "";
-
-        for (int i=write_pos_beg; i<write_pos; i++) {
-            String tail = Integer.toHexString(
-                    0x00ff & buffer[i]).toUpperCase();
-            if (tail.length() == 1) {
-                tail = "0" + tail;
-            }
-            outstream.print(prefix + tail + delimiter);
-
-            if (((i-write_pos_beg+1)%10) == 0) {
-                outstream.print(" ");
-            }
-
-            if (((i-write_pos_beg+1)%perLine) == 0) {
-                outstream.println();
-            }
-        }
-        outstream.println();
-    }
-
     // ---------------------- Message Digest Functionality ----------------
 
     /**
@@ -461,4 +433,3 @@ public class HandshakeIODataStream
         return res;
     }
 }
-

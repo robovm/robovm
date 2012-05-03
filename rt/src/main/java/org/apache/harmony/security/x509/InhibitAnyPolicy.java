@@ -33,17 +33,10 @@ import org.apache.harmony.security.asn1.ASN1Integer;
  * </pre>
  * (as specified in RFC 3280 http://www.ietf.org/rfc/rfc3280.txt).
  */
-public class InhibitAnyPolicy extends ExtensionValue {
+public final class InhibitAnyPolicy extends ExtensionValue {
 
-    // the value of the extension
-    private int skipCerts;
-
-    /**
-     * Create the object on the base of SkipCerts value.
-     */
-    public InhibitAnyPolicy(int skipCerts) {
-        this.skipCerts = skipCerts;
-    }
+    /** the value of the extension */
+    private final int skipCerts;
 
     /**
      * Creates an object on the base of its encoded form.
@@ -55,17 +48,9 @@ public class InhibitAnyPolicy extends ExtensionValue {
     }
 
     /**
-     * Return the value of the extension.
-     */
-    public int getSkipCerts() {
-        return skipCerts;
-    }
-
-    /**
      * Returns ASN.1 encoded form of the object.
-     * @return a byte array containing ASN.1 encoded form.
      */
-    public byte[] getEncoded() {
+    @Override public byte[] getEncoded() {
         if (encoding == null) {
             encoding = ASN1Integer.getInstance()
                 .encode(ASN1Integer.fromIntValue(skipCerts));
@@ -73,13 +58,7 @@ public class InhibitAnyPolicy extends ExtensionValue {
         return encoding;
     }
 
-    /**
-     * Places the string representation of extension value
-     * into the StringBuffer object.
-     */
-    public void dumpValue(StringBuffer buffer, String prefix) {
-        buffer.append(prefix).append("Inhibit Any-Policy: ") //$NON-NLS-1$
-            .append(skipCerts).append('\n');
+    @Override public void dumpValue(StringBuilder sb, String prefix) {
+        sb.append(prefix).append("Inhibit Any-Policy: ").append(skipCerts).append('\n');
     }
 }
-

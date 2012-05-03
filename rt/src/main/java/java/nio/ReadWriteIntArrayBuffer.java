@@ -26,14 +26,14 @@ package java.nio;
  * <p>
  * This class is marked final for runtime performance.
  * </p>
- * 
+ *
  */
 final class ReadWriteIntArrayBuffer extends IntArrayBuffer {
 
     static ReadWriteIntArrayBuffer copy(IntArrayBuffer other, int markOfOther) {
-        ReadWriteIntArrayBuffer buf = new ReadWriteIntArrayBuffer(other
-                .capacity(), other.backingArray, other.offset);
-        buf.limit = other.limit();
+        ReadWriteIntArrayBuffer buf =
+                new ReadWriteIntArrayBuffer(other.capacity(), other.backingArray, other.offset);
+        buf.limit = other.limit;
         buf.position = other.position();
         buf.mark = markOfOther;
         return buf;
@@ -58,8 +58,7 @@ final class ReadWriteIntArrayBuffer extends IntArrayBuffer {
 
     @Override
     public IntBuffer compact() {
-        System.arraycopy(backingArray, position + offset, backingArray, offset,
-                remaining());
+        System.arraycopy(backingArray, position + offset, backingArray, offset, remaining());
         position = limit - position;
         limit = capacity;
         mark = UNSET_MARK;
@@ -102,31 +101,24 @@ final class ReadWriteIntArrayBuffer extends IntArrayBuffer {
 
     @Override
     public IntBuffer put(int index, int c) {
-        if (index < 0 || index >= limit) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkIndex(index);
         backingArray[offset + index] = c;
         return this;
     }
 
     @Override
-    public IntBuffer put(int[] src, int off, int len) {
-        int length = src.length;
-        if (off < 0 || len < 0 || (long) off + (long) len > length) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (len > remaining()) {
+    public IntBuffer put(int[] src, int srcOffset, int intCount) {
+        if (intCount > remaining()) {
             throw new BufferOverflowException();
         }
-        System.arraycopy(src, off, backingArray, offset + position, len);
-        position += len;
+        System.arraycopy(src, srcOffset, backingArray, offset + position, intCount);
+        position += intCount;
         return this;
     }
 
     @Override
     public IntBuffer slice() {
-        return new ReadWriteIntArrayBuffer(remaining(), backingArray, offset
-                + position);
+        return new ReadWriteIntArrayBuffer(remaining(), backingArray, offset + position);
     }
 
 }

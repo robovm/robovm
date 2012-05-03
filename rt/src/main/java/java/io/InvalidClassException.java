@@ -18,7 +18,7 @@
 package java.io;
 
 /**
- * Signals a problem during the serialization or deserialization of an
+ * Signals a problem during the serialization or or deserialization of an
  * object. Possible reasons include:
  * <ul>
  * <li>The SUIDs of the class loaded by the VM and the serialized class info do
@@ -27,7 +27,7 @@ package java.io;
  * deserializing) because the no-arg constructor that needs to be run is not
  * visible or fails.</li>
  * </ul>
- * 
+ *
  * @see ObjectInputStream #readObject()
  * @see ObjectInputValidation#validateObject()
  */
@@ -43,7 +43,7 @@ public class InvalidClassException extends ObjectStreamException {
     /**
      * Constructs a new {@code InvalidClassException} with its stack trace and
      * detailed message filled in.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */
@@ -55,7 +55,7 @@ public class InvalidClassException extends ObjectStreamException {
      * Constructs a new {@code InvalidClassException} with its stack trace,
      * detail message and the fully qualified name of the class which caused the
      * exception filled in.
-     * 
+     *
      * @param className
      *            the name of the class that caused the exception.
      * @param detailMessage
@@ -71,7 +71,7 @@ public class InvalidClassException extends ObjectStreamException {
      * created. {@code null} is returned if no message was provided at creation
      * time. If a detail message as well as a class name are provided, then the
      * values are concatenated and returned.
-     * 
+     *
      * @return the detail message, possibly concatenated with the name of the
      *         class that caused the problem.
      */
@@ -79,7 +79,7 @@ public class InvalidClassException extends ObjectStreamException {
     public String getMessage() {
         String msg = super.getMessage();
         if (classname != null) {
-            msg = classname + "; " + msg; //$NON-NLS-1$
+            msg = classname + "; " + msg;
         }
         return msg;
     }

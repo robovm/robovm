@@ -31,42 +31,42 @@ public interface RSAPrivateCrtKey extends RSAPrivateKey {
 
     /**
      * Returns the CRT coefficient, {@code q^-1 mod p}.
-     * 
+     *
      * @return the CRT coefficient.
      */
     public BigInteger getCrtCoefficient();
 
     /**
      * Returns the prime factor {@code p} of {@code n}.
-     * 
+     *
      * @return the prime factor {@code p} of {@code n}.
      */
     public BigInteger getPrimeP();
 
     /**
      * Returns the prime factor {@code q} of {@code n}.
-     * 
+     *
      * @return the prime factor {@code q} of {@code n}.
      */
     public BigInteger getPrimeQ();
 
     /**
      * Returns the CRT exponent of the primet {@code p}.
-     * 
+     *
      * @return the CRT exponent of the prime {@code p}.
      */
     public BigInteger getPrimeExponentP();
 
     /**
      * Returns the CRT exponent of the prime {@code q}.
-     * 
+     *
      * @return the CRT exponent of the prime {@code q}.
      */
     public BigInteger getPrimeExponentQ();
 
     /**
      * Returns the public exponent {@code e}.
-     * 
+     *
      * @return the public exponent {@code e}.
      */
     public BigInteger getPublicExponent();

@@ -15,14 +15,9 @@
  *  limitations under the License.
  */
 
-/**
- * @author Nikolay A. Kuznetsov
- */
 package java.util.regex;
 
 import java.util.Arrays;
-
-import org.apache.harmony.regex.internal.nls.Messages;
 
 /**
  * Encapsulates a syntax error that occurred during the compilation of a
@@ -31,11 +26,9 @@ import org.apache.harmony.regex.internal.nls.Messages;
  *
  * @see Pattern#compile(String)
  * @see Pattern#compile(java.lang.String,int)
- *
- * @author Nikolay A. Kuznetsov
  */
 public class PatternSyntaxException extends IllegalArgumentException {
-    
+
     private static final long serialVersionUID = -3864639126226059218L;
 
     /**
@@ -89,20 +82,40 @@ public class PatternSyntaxException extends IllegalArgumentException {
     /**
      * Returns a detailed error message for the exception. The message is
      * potentially multi-line, and it might include a detailed description, the
-     * original regular expression, and the index at which the error occured.
+     * original regular expression, and the index at which the error occurred.
      *
      * @return the error message.
      */
+    @Override
     public String getMessage() {
-        String filler = ""; //$NON-NLS-1$
-        if (index >= 1) {
-            char[] temp = new char[index];
-            Arrays.fill(temp, ' ');
-            filler = new String(temp);
+        StringBuilder sb = new StringBuilder();
+        if (desc != null) {
+            sb.append(desc);
         }
-        return desc
-                + ((pattern != null && pattern.length() != 0) ? Messages.getString("regex.07", //$NON-NLS-1$
-                        new Object[]{index, pattern, filler}) : ""); //$NON-NLS-1$
+
+        if (index >= 0) {
+            if (desc != null) {
+                sb.append(' ');
+            }
+            sb.append("near index ");
+            sb.append(index);
+            sb.append(':');
+        }
+
+        if (pattern != null) {
+            sb.append('\n');
+            sb.append(pattern);
+
+            if (index >= 0) {
+                char[] spaces = new char[index];
+                Arrays.fill(spaces, ' ');
+                sb.append('\n');
+                sb.append(spaces);
+                sb.append('^');
+            }
+        }
+
+        return sb.toString();
     }
 
     /**

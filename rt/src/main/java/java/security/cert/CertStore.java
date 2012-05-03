@@ -17,17 +17,13 @@
 
 package java.security.cert;
 
-import java.security.AccessController;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.Provider;
 import java.security.Security;
 import java.util.Collection;
-
 import org.apache.harmony.security.fortress.Engine;
-import org.apache.harmony.security.internal.nls.Messages;
-
 
 /**
  * This class provides the functionality to retrieve {@code Certificate}s and
@@ -37,17 +33,17 @@ import org.apache.harmony.security.internal.nls.Messages;
 public class CertStore {
 
     // Store spi implementation service name
-    private static final String SERVICE = "CertStore"; //$NON-NLS-1$
+    private static final String SERVICE = "CertStore";
 
     // Used to access common engine functionality
-    private static Engine engine = new Engine(SERVICE);
+    private static final Engine ENGINE = new Engine(SERVICE);
 
     // Store default property name
-    private static final String PROPERTYNAME = "certstore.type"; //$NON-NLS-1$
+    private static final String PROPERTYNAME = "certstore.type";
 
     // Default value of CertStore type. It returns if certpathbuild.type
     // property is not defined in java.security file
-    private static final String DEFAULTPROPERTY = "LDAP"; //$NON-NLS-1$
+    private static final String DEFAULTPROPERTY = "LDAP";
 
     // Store used provider
     private final Provider provider;
@@ -84,7 +80,7 @@ public class CertStore {
     /**
      * Creates a new {@code CertStore} instance with the specified type and
      * initialized with the specified parameters.
-     * 
+     *
      * @param type
      *            the certificate store type.
      * @param params
@@ -96,20 +92,16 @@ public class CertStore {
      * @throws InvalidAlgorithmParameterException
      *             if the specified parameters cannot be used to initialize this
      *             certificate store instance.
-     * @throws NullPointerException
-     *             if the {@code type} is {@code null}.
+     * @throws NullPointerException if {@code type == null}
      */
     public static CertStore getInstance(String type, CertStoreParameters params)
             throws InvalidAlgorithmParameterException, NoSuchAlgorithmException {
         if (type == null) {
-            throw new NullPointerException(Messages.getString("security.07")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
         try {
-            synchronized (engine) {
-                engine.getInstance(type, params);
-                return new CertStore((CertStoreSpi) engine.spi, engine.provider,
-                        type, params);
-            }
+            Engine.SpiAndProvider sap = ENGINE.getInstance(type, params);
+            return new CertStore((CertStoreSpi) sap.spi, sap.provider, type, params);
         } catch (NoSuchAlgorithmException e) {
             Throwable th = e.getCause();
             if (th == null) {
@@ -123,7 +115,7 @@ public class CertStore {
     /**
      * Creates a new {@code CertStore} instance from the specified provider with
      * the specified type and initialized with the specified parameters.
-     * 
+     *
      * @param type
      *            the certificate store type.
      * @param params
@@ -139,8 +131,7 @@ public class CertStore {
      * @throws InvalidAlgorithmParameterException
      *             if the specified parameters cannot be used to initialize this
      *             certificate store instance.
-     * @throws IllegalArgumentException
-     *             if provider is null of empty.
+     * @throws IllegalArgumentException if {@code provider == null || provider.isEmpty()}
      * @throws NullPointerException
      *             if {@code type} is {@code null}.
      */
@@ -148,8 +139,8 @@ public class CertStore {
             CertStoreParameters params, String provider)
             throws InvalidAlgorithmParameterException,
             NoSuchAlgorithmException, NoSuchProviderException {
-        if ((provider == null) || (provider.length() == 0)) {
-            throw new IllegalArgumentException(Messages.getString("security.02")); //$NON-NLS-1$
+        if (provider == null || provider.isEmpty()) {
+            throw new IllegalArgumentException();
         }
         Provider impProvider = Security.getProvider(provider);
         if (impProvider == null) {
@@ -174,26 +165,21 @@ public class CertStore {
      * @throws InvalidAlgorithmParameterException
      *             if the specified parameters cannot be used to initialize this
      *             certificate store instance.
-     * @throws IllegalArgumentException
-     *             if provider is {@code null}.
-     * @throws NullPointerException
-     *             if {@code type} is {@code null}.
+     * @throws IllegalArgumentException if {@code provider == null}
+     * @throws NullPointerException if {@code type == null}
      */
     public static CertStore getInstance(String type,
             CertStoreParameters params, Provider provider)
             throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
         if (provider == null) {
-            throw new IllegalArgumentException(Messages.getString("security.04")); //$NON-NLS-1$
+            throw new IllegalArgumentException();
         }
         if (type == null) {
-            throw new NullPointerException(Messages.getString("security.07")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
         try {
-            synchronized (engine) {
-                engine.getInstance(type, provider, params);
-                return new CertStore((CertStoreSpi) engine.spi, provider, type,
-                        params);
-            }
+            Object spi = ENGINE.getInstance(type, provider, params);
+            return new CertStore((CertStoreSpi) spi, provider, type, params);
         } catch (NoSuchAlgorithmException e) {
             Throwable th = e.getCause();
             if (th == null) {
@@ -280,12 +266,7 @@ public class CertStore {
      *         determined.
      */
     public static final String getDefaultType() {
-        String defaultType = AccessController
-                .doPrivileged(new java.security.PrivilegedAction<String>() {
-                    public String run() {
-                        return Security.getProperty(PROPERTYNAME);
-                    }
-                });
+        String defaultType = Security.getProperty(PROPERTYNAME);
         return (defaultType == null ? DEFAULTPROPERTY : defaultType);
     }
 }

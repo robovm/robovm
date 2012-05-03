@@ -94,14 +94,14 @@ public class ExecutorCompletionService<V> implements CompletionService<V> {
 
     private RunnableFuture<V> newTaskFor(Callable<V> task) {
         if (aes == null)
-        return new FutureTask<V>(task);
+            return new FutureTask<V>(task);
         else
             return aes.newTaskFor(task);
     }
 
     private RunnableFuture<V> newTaskFor(Runnable task, V result) {
         if (aes == null)
-        return new FutureTask<V>(task, result);
+            return new FutureTask<V>(task, result);
         else
             return aes.newTaskFor(task, result);
     }
@@ -168,7 +168,8 @@ public class ExecutorCompletionService<V> implements CompletionService<V> {
         return completionQueue.poll();
     }
 
-    public Future<V> poll(long timeout, TimeUnit unit) throws InterruptedException {
+    public Future<V> poll(long timeout, TimeUnit unit)
+            throws InterruptedException {
         return completionQueue.poll(timeout, unit);
     }
 

@@ -17,49 +17,41 @@
 
 /**
 * @author Vladimir N. Molotkov
+* @version $Revision$
 */
 
 package org.apache.harmony.security.asn1;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charsets;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-
 /**
  * This class represents ASN.1 UTCTime type
- * 
+ *
  * @see http://asn1.elibel.tm.fr/en/standards/index.htm
  */
-public class ASN1UTCTime extends ASN1Time {
+public final class ASN1UTCTime extends ASN1Time {
 
-    /**
-     * Length for the pattern: YYMMDDhhmm'Z'
-     */
+    /** Length for the pattern: YYMMDDhhmm'Z' */
     public static final int UTC_HM = 11;
 
-    /**
-     * Length for the pattern: YYMMDDhhmmss'Z'
-     */
+    /** Length for the pattern: YYMMDDhhmmss'Z' */
     public static final int UTC_HMS = 13;
 
-    /**
-     * Length for the pattern: YYMMDDhhmm('+'/'-')hhmm
-     */
+    /** Length for the pattern: YYMMDDhhmm('+'/'-')hhmm */
     public static final int UTC_LOCAL_HM = 15;
 
-    /**
-     * Length for the pattern: YYMMDDhhmmss('+'/'-')hhmm
-     */
+    /** Length for the pattern: YYMMDDhhmmss('+'/'-')hhmm */
     public static final int UTC_LOCAL_HMS = 17;
 
-    // default implementation
+    /** default implementation */
     private static final ASN1UTCTime ASN1 = new ASN1UTCTime();
 
     /**
      * Constructs ASN.1 UTCTime type
-     * 
+     *
      * The constructor is provided for inheritance purposes
      * when there is a need to create a custom ASN.1 UTCTime type.
      * To get a default implementation it is recommended to use
@@ -71,7 +63,7 @@ public class ASN1UTCTime extends ASN1Time {
 
     /**
      * Returns ASN.1 UTCTime type default implementation
-     * 
+     *
      * The default implementation works with encoding
      * that is represented as Date object.
      *
@@ -81,13 +73,7 @@ public class ASN1UTCTime extends ASN1Time {
         return ASN1;
     }
 
-    //
-    //
-    // Decode
-    //
-    //
-
-    public Object decode(BerInputStream in) throws IOException {
+    @Override public Object decode(BerInputStream in) throws IOException {
         in.readUTCTime();
 
         if (in.isVerify) {
@@ -96,12 +82,7 @@ public class ASN1UTCTime extends ASN1Time {
         return getDecodedObject(in);
     }
 
-    //
-    //
-    // Encode
-    //
-    //
-    public void encodeContent(BerOutputStream out) {
+    @Override public void encodeContent(BerOutputStream out) {
         out.encodeUTCTime();
     }
 
@@ -110,16 +91,12 @@ public class ASN1UTCTime extends ASN1Time {
     // According to X.680 coordinated universal time format:
     // two digit year, seconds always presented,
     // no fractional-seconds elements, 'Z' at the end
-    private final static String UTC_PATTERN = "yyMMddHHmmss'Z'"; //$NON-NLS-1$
+    private static final String UTC_PATTERN = "yyMMddHHmmss'Z'";
 
-    public void setEncodingContent(BerOutputStream out) {
+    @Override public void setEncodingContent(BerOutputStream out) {
         SimpleDateFormat sdf = new SimpleDateFormat(UTC_PATTERN);
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC")); //$NON-NLS-1$
-        try {
-            out.content = sdf.format(out.content).getBytes("UTF-8"); //$NON-NLS-1$
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        out.content = sdf.format(out.content).getBytes(Charsets.UTF_8);
         out.length = ((byte[]) out.content).length;
     }
 }

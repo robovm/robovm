@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,8 +23,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
-import org.apache.harmony.logging.internal.nls.Messages;
 
 /**
  * A {@code LogRecord} object represents a logging request. It is passed between
@@ -62,70 +60,70 @@ public class LogRecord implements Serializable {
 
     /**
      * The logging level.
-     * 
+     *
      * @serial
      */
     private Level level;
 
     /**
      * The sequence number.
-     * 
+     *
      * @serial
      */
     private long sequenceNumber;
 
     /**
      * The name of the class that issued the logging call.
-     * 
+     *
      * @serial
      */
     private String sourceClassName;
 
     /**
      * The name of the method that issued the logging call.
-     * 
+     *
      * @serial
      */
     private String sourceMethodName;
 
     /**
      * The original message text.
-     * 
+     *
      * @serial
      */
     private String message;
 
     /**
      * The ID of the thread that issued the logging call.
-     * 
+     *
      * @serial
      */
     private int threadID;
 
     /**
      * The time that the event occurred, in milliseconds since 1970.
-     * 
+     *
      * @serial
      */
     private long millis;
 
     /**
      * The associated {@code Throwable} object if any.
-     * 
+     *
      * @serial
      */
     private Throwable thrown;
 
     /**
      * The name of the source logger.
-     * 
+     *
      * @serial
      */
     private String loggerName;
 
     /**
      * The name of the resource bundle used to localize the log message.
-     * 
+     *
      * @serial
      */
     private String resourceBundleName;
@@ -137,13 +135,13 @@ public class LogRecord implements Serializable {
     private transient Object[] parameters;
 
     // If the source method and source class has been initialized
-    private transient boolean sourceInited;
+    private transient boolean sourceInitialized;
 
     /**
      * Constructs a {@code LogRecord} object using the supplied the logging
      * level and message. The millis property is set to the current time. The
      * sequence property is set to a new unique value, allocated in increasing
-     * order within the virtual machine. The thread ID is set to a unique value
+     * order within the VM. The thread ID is set to a unique value
      * for the current thread. All other properties are set to {@code null}.
      *
      * @param level
@@ -154,9 +152,8 @@ public class LogRecord implements Serializable {
      *             if {@code level} is {@code null}.
      */
     public LogRecord(Level level, String msg) {
-        if (null == level) {
-            // logging.4=The 'level' parameter is null.
-            throw new NullPointerException(Messages.getString("logging.4")); //$NON-NLS-1$
+        if (level == null) {
+            throw new NullPointerException("level == null");
         }
         this.level = level;
         this.message = msg;
@@ -165,7 +162,7 @@ public class LogRecord implements Serializable {
         synchronized (LogRecord.class) {
             this.sequenceNumber = currentSequenceNumber++;
             Integer id = currentThreadId.get();
-            if (null == id) {
+            if (id == null) {
                 this.threadID = initThreadId;
                 currentThreadId.set(Integer.valueOf(initThreadId++));
             } else {
@@ -184,7 +181,7 @@ public class LogRecord implements Serializable {
 
     /**
      * Gets the logging level.
-     * 
+     *
      * @return the logging level.
      */
     public Level getLevel() {
@@ -193,23 +190,22 @@ public class LogRecord implements Serializable {
 
     /**
      * Sets the logging level.
-     * 
+     *
      * @param level
      *            the level to set.
      * @throws NullPointerException
      *             if {@code level} is {@code null}.
      */
     public void setLevel(Level level) {
-        if (null == level) {
-            // logging.4=The 'level' parameter is null.
-            throw new NullPointerException(Messages.getString("logging.4")); //$NON-NLS-1$
+        if (level == null) {
+            throw new NullPointerException("level == null");
         }
         this.level = level;
     }
 
     /**
      * Gets the name of the logger.
-     * 
+     *
      * @return the logger name.
      */
     public String getLoggerName() {
@@ -218,7 +214,7 @@ public class LogRecord implements Serializable {
 
     /**
      * Sets the name of the logger.
-     * 
+     *
      * @param loggerName
      *            the logger name to set.
      */
@@ -228,7 +224,7 @@ public class LogRecord implements Serializable {
 
     /**
      * Gets the raw message.
-     * 
+     *
      * @return the raw message, may be {@code null}.
      */
     public String getMessage() {
@@ -239,7 +235,7 @@ public class LogRecord implements Serializable {
      * Sets the raw message. When this record is formatted by a logger that has
      * a localization resource bundle that contains an entry for {@code message},
      * then the raw message is replaced with its localized version.
-     * 
+     *
      * @param message
      *            the raw message to set, may be {@code null}.
      */
@@ -249,7 +245,7 @@ public class LogRecord implements Serializable {
 
     /**
      * Gets the time when this event occurred, in milliseconds since 1970.
-     * 
+     *
      * @return the time when this event occurred, in milliseconds since 1970.
      */
     public long getMillis() {
@@ -258,7 +254,7 @@ public class LogRecord implements Serializable {
 
     /**
      * Sets the time when this event occurred, in milliseconds since 1970.
-     * 
+     *
      * @param millis
      *            the time when this event occurred, in milliseconds since 1970.
      */
@@ -268,7 +264,7 @@ public class LogRecord implements Serializable {
 
     /**
      * Gets the parameters.
-     * 
+     *
      * @return the array of parameters or {@code null} if there are no
      *         parameters.
      */
@@ -278,7 +274,7 @@ public class LogRecord implements Serializable {
 
     /**
      * Sets the parameters.
-     * 
+     *
      * @param parameters
      *            the array of parameters to set, may be {@code null}.
      */
@@ -289,7 +285,7 @@ public class LogRecord implements Serializable {
     /**
      * Gets the resource bundle used to localize the raw message during
      * formatting.
-     * 
+     *
      * @return the associated resource bundle, {@code null} if none is
      *         available or the message is not localizable.
      */
@@ -310,7 +306,7 @@ public class LogRecord implements Serializable {
 
     /**
      * Gets the name of the resource bundle.
-     * 
+     *
      * @return the name of the resource bundle, {@code null} if none is
      *         available or the message is not localizable.
      */
@@ -320,7 +316,7 @@ public class LogRecord implements Serializable {
 
     /**
      * Sets the name of the resource bundle.
-     * 
+     *
      * @param resourceBundleName
      *            the name of the resource bundle to set.
      */
@@ -330,7 +326,7 @@ public class LogRecord implements Serializable {
 
     /**
      * Gets the sequence number.
-     * 
+     *
      * @return the sequence number.
      */
     public long getSequenceNumber() {
@@ -341,7 +337,7 @@ public class LogRecord implements Serializable {
      * Sets the sequence number. It is usually not necessary to call this method
      * to change the sequence number because the number is allocated when this
      * instance is constructed.
-     * 
+     *
      * @param sequenceNumber
      *            the sequence number to set.
      */
@@ -352,7 +348,7 @@ public class LogRecord implements Serializable {
     /**
      * Gets the name of the class that is the source of this log record. This
      * information can be changed, may be {@code null} and is untrusted.
-     * 
+     *
      * @return the name of the source class of this log record (possiblity {@code null})
      */
     public String getSourceClassName() {
@@ -364,43 +360,40 @@ public class LogRecord implements Serializable {
      *  Init the sourceClass and sourceMethod fields.
      */
     private void initSource() {
-        if (!sourceInited) {
-            StackTraceElement[] elements = (new Throwable()).getStackTrace();
-            int i = 0;
-            String current = null;
-            FINDLOG: for (; i < elements.length; i++) {
-                current = elements[i].getClassName();
-                if (current.equals(Logger.class.getName())) {
-                    break FINDLOG;
-                }
-            }
-            while (++i < elements.length
-                    && elements[i].getClassName().equals(current)) {
-                // do nothing
-            }
-            if (i < elements.length) {
-                this.sourceClassName = elements[i].getClassName();
-                this.sourceMethodName = elements[i].getMethodName();
-            }
-            sourceInited = true;
+        if (sourceInitialized) {
+            return;
         }
+
+        boolean sawLogger = false;
+        for (StackTraceElement element : new Throwable().getStackTrace()) {
+            String current = element.getClassName();
+            if (current.startsWith(Logger.class.getName())) {
+                sawLogger = true;
+            } else if (sawLogger) {
+                this.sourceClassName = element.getClassName();
+                this.sourceMethodName = element.getMethodName();
+                break;
+            }
+        }
+
+        sourceInitialized = true;
     }
 
     /**
      * Sets the name of the class that is the source of this log record.
-     * 
+     *
      * @param sourceClassName
      *            the name of the source class of this log record, may be
      *            {@code null}.
      */
     public void setSourceClassName(String sourceClassName) {
-        sourceInited = true;
+        sourceInitialized = true;
         this.sourceClassName = sourceClassName;
     }
 
     /**
      * Gets the name of the method that is the source of this log record.
-     * 
+     *
      * @return the name of the source method of this log record.
      */
     public String getSourceMethodName() {
@@ -410,13 +403,13 @@ public class LogRecord implements Serializable {
 
     /**
      * Sets the name of the method that is the source of this log record.
-     * 
+     *
      * @param sourceMethodName
      *            the name of the source method of this log record, may be
      *            {@code null}.
      */
     public void setSourceMethodName(String sourceMethodName) {
-        sourceInited = true;
+        sourceInitialized = true;
         this.sourceMethodName = sourceMethodName;
     }
 
@@ -426,7 +419,7 @@ public class LogRecord implements Serializable {
      * <p>
      * Notice : the ID doesn't necessary map the OS thread ID
      * </p>
-     * 
+     *
      * @return the ID of the thread originating this log record.
      */
     public int getThreadID() {
@@ -435,7 +428,7 @@ public class LogRecord implements Serializable {
 
     /**
      * Sets the ID of the thread originating this log record.
-     * 
+     *
      * @param threadID
      *            the new ID of the thread originating this log record.
      */
@@ -445,7 +438,7 @@ public class LogRecord implements Serializable {
 
     /**
      * Gets the {@code Throwable} object associated with this log record.
-     * 
+     *
      * @return the {@code Throwable} object associated with this log record.
      */
     public Throwable getThrown() {
@@ -454,7 +447,7 @@ public class LogRecord implements Serializable {
 
     /**
      * Sets the {@code Throwable} object associated with this log record.
-     * 
+     *
      * @param thrown
      *            the new {@code Throwable} object to associate with this log
      *            record.
@@ -470,12 +463,12 @@ public class LogRecord implements Serializable {
         out.defaultWriteObject();
         out.writeByte(MAJOR);
         out.writeByte(MINOR);
-        if (null == parameters) {
+        if (parameters == null) {
             out.writeInt(-1);
         } else {
             out.writeInt(parameters.length);
             for (Object element : parameters) {
-                out.writeObject(null == element ? null : element.toString());
+                out.writeObject((element == null) ? null : element.toString());
             }
         }
     }
@@ -490,9 +483,7 @@ public class LogRecord implements Serializable {
         byte minor = in.readByte();
         // only check MAJOR version
         if (major != MAJOR) {
-            // logging.5=Different version - {0}.{1}
-            throw new IOException(Messages.getString("logging.5", //$NON-NLS-1$
-                    Byte.valueOf(major), Byte.valueOf(minor)));
+            throw new IOException("Different version " + Byte.valueOf(major) + "." + Byte.valueOf(minor));
         }
 
         int length = in.readInt();
@@ -502,7 +493,7 @@ public class LogRecord implements Serializable {
                 parameters[i] = in.readObject();
             }
         }
-        if (null != resourceBundleName) {
+        if (resourceBundleName != null) {
             try {
                 resourceBundle = Logger.loadResourceBundle(resourceBundleName);
             } catch (MissingResourceException e) {

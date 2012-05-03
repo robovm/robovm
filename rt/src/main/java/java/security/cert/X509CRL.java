@@ -25,16 +25,10 @@ import java.security.NoSuchProviderException;
 import java.security.Principal;
 import java.security.PublicKey;
 import java.security.SignatureException;
-import java.security.cert.CRL;
-import java.security.cert.CRLException;
-import java.security.cert.X509CRLEntry;
-import java.security.cert.X509Extension;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Set;
 import javax.security.auth.x500.X500Principal;
-
-import org.apache.harmony.security.internal.nls.Messages;
 
 /**
  * Abstract base class for X.509 certificate revocation lists (CRL).
@@ -51,12 +45,12 @@ public abstract class X509CRL extends CRL implements X509Extension {
      * Creates a new {@code X509CRL} instance.
      */
     protected X509CRL() {
-        super("X.509"); //$NON-NLS-1$
+        super("X.509");
     }
 
     /**
      * Returns whether the specified object equals to this instance.
-     * 
+     *
      * @param other
      *            the object to compare.
      * @return {@code true} if the specified object is equal to this, otherwise
@@ -79,7 +73,7 @@ public abstract class X509CRL extends CRL implements X509Extension {
 
     /**
      * Returns the hashcode of this CRL instance.
-     * 
+     *
      * @return the hashcode.
      */
     public int hashCode() {
@@ -97,7 +91,7 @@ public abstract class X509CRL extends CRL implements X509Extension {
 
     /**
      * Returns this CRL in ASN.1 DER encoded form.
-     * 
+     *
      * @return this CRL in ASN.1 DER encoded form.
      * @throws CRLException
      *             if encoding fails.
@@ -108,7 +102,7 @@ public abstract class X509CRL extends CRL implements X509Extension {
     /**
      * Verifies this CRL by verifying that this CRL was signed with the
      * corresponding private key to the specified public key.
-     * 
+     *
      * @param key
      *            the public key to verify this CRL with.
      * @throws CRLException
@@ -131,7 +125,7 @@ public abstract class X509CRL extends CRL implements X509Extension {
      * Verifies this CRL by verifying that this CRL was signed with the
      * corresponding private key to the specified public key. The signature
      * verification engine of the specified provider will be used.
-     * 
+     *
      * @param key
      *            the public key to verify this CRL with.
      * @param sigProvider
@@ -154,7 +148,7 @@ public abstract class X509CRL extends CRL implements X509Extension {
 
     /**
      * Returns the version number of this CRL.
-     * 
+     *
      * @return the version number of this CRL.
      */
     public abstract int getVersion();
@@ -162,14 +156,14 @@ public abstract class X509CRL extends CRL implements X509Extension {
     /**
      * <b>Do not use</b>, use {@link #getIssuerX500Principal()} instead. Returns
      * the issuer as an implementation specific Principal object.
-     * 
+     *
      * @return the issuer distinguished name.
      */
     public abstract Principal getIssuerDN();
 
     /**
      * Returns the issuer distinguished name of this CRL.
-     * 
+     *
      * @return the issuer distinguished name of this CRL.
      */
     public X500Principal getIssuerX500Principal() {
@@ -177,7 +171,7 @@ public abstract class X509CRL extends CRL implements X509Extension {
             // TODO if there is no X.509 certificate provider installed
             // should we try to access Harmony X509CRLImpl via classForName?
             CertificateFactory factory = CertificateFactory
-                    .getInstance("X.509"); //$NON-NLS-1$
+                    .getInstance("X.509");
 
             X509CRL crl = (X509CRL) factory
                     .generateCRL(new ByteArrayInputStream(getEncoded()));
@@ -185,20 +179,20 @@ public abstract class X509CRL extends CRL implements X509Extension {
             return crl.getIssuerX500Principal();
 
         } catch (Exception e) {
-            throw new RuntimeException(Messages.getString("security.59"), e); //$NON-NLS-1$
+            throw new RuntimeException("Failed to get X500Principal issuer", e);
         }
     }
 
     /**
      * Returns the {@code thisUpdate} value of this CRL.
-     * 
+     *
      * @return the {@code thisUpdate} value of this CRL.
      */
     public abstract Date getThisUpdate();
 
     /**
      * Returns the {@code nextUpdate} value of this CRL.
-     * 
+     *
      * @return the {@code nextUpdate} value of this CRL, or {@code null} if none
      *         is present.
      */
@@ -206,7 +200,7 @@ public abstract class X509CRL extends CRL implements X509Extension {
 
     /**
      * Returns the CRL entry with the specified certificate serial number.
-     * 
+     *
      * @param serialNumber
      *            the certificate serial number to search for a CRL entry.
      * @return the entry for the specified certificate serial number, or {@code
@@ -216,7 +210,7 @@ public abstract class X509CRL extends CRL implements X509Extension {
 
     /**
      * Returns the CRL entry for the specified certificate.
-     * 
+     *
      * @param certificate
      *            the certificate to search a CRL entry for.
      * @return the entry for the specified certificate, or {@code null} if not
@@ -228,10 +222,10 @@ public abstract class X509CRL extends CRL implements X509Extension {
         }
         return getRevokedCertificate(certificate.getSerialNumber());
     }
-        
+
     /**
      * Returns the set of revoked certificates.
-     * 
+     *
      * @return the set of revoked certificates, or {@code null} if no revoked
      *         certificates are in this CRL.
      */
@@ -240,7 +234,7 @@ public abstract class X509CRL extends CRL implements X509Extension {
     /**
      * Returns the {@code tbsCertList} information of this CRL in DER encoded
      * form.
-     * 
+     *
      * @return the CRL information in DER encoded form.
      * @throws CRLException
      *             if encoding fails.
@@ -249,31 +243,30 @@ public abstract class X509CRL extends CRL implements X509Extension {
 
     /**
      * Returns the signature bytes of this CRL.
-     * 
+     *
      * @return the signature bytes of this CRL.
      */
     public abstract byte[] getSignature();
 
     /**
      * Returns the name of the signature algorithm.
-     * 
+     *
      * @return the name of the signature algorithm.
      */
     public abstract String getSigAlgName();
 
     /**
      * Returns the OID of the signature algorithm.
-     * 
+     *
      * @return the OID of the signature algorithm.
      */
     public abstract String getSigAlgOID();
 
     /**
      * Returns the parameters of the signature algorithm in DER encoded form.
-     * 
+     *
      * @return the parameters of the signature algorithm in DER encoded form, or
      *         {@code null} if not present.
      */
     public abstract byte[] getSigAlgParams();
 }
-

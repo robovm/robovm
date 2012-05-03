@@ -17,40 +17,34 @@
 
 package java.io;
 
+import dalvik.system.VMStack;
 import java.io.EmulatedFields.ObjectSlot;
 import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
-import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
-
-import org.apache.harmony.kernel.vm.VM;
-import org.apache.harmony.luni.internal.nls.Messages;
-import org.apache.harmony.luni.util.PriviAction;
-import org.apache.harmony.misc.accessors.AccessorFactory;
-import org.apache.harmony.misc.accessors.ObjectAccessor;
+import java.util.List;
+import libcore.util.EmptyArray;
 
 /**
  * A specialized {@link InputStream} that is able to read (deserialize) Java
  * objects as well as primitive data types (int, byte, char etc.). The data has
  * typically been saved using an ObjectOutputStream.
- * 
+ *
  * @see ObjectOutputStream
  * @see ObjectInput
  * @see Serializable
  * @see Externalizable
  */
-public class ObjectInputStream extends InputStream implements ObjectInput,
-        ObjectStreamConstants {
+public class ObjectInputStream extends InputStream implements ObjectInput, ObjectStreamConstants {
 
-    private InputStream emptyStream = new ByteArrayInputStream(
-            new byte[0]);
+    // TODO: this is non-static to avoid sync contention. Would static be faster?
+    private InputStream emptyStream = new ByteArrayInputStream(EmptyArray.BYTE);
 
     // To put into objectsRead when reading unsharedObject
     private static final Object UNSHARED_OBJ = new Object(); // $NON-LOCK-1$
@@ -66,7 +60,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
     private int nestedLevels;
 
     // All objects are assigned an ID (integer handle)
-    private int currentHandle;
+    private int nextHandle;
 
     // Where we read from
     private DataInputStream input;
@@ -80,8 +74,10 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
     // Resolve object is a mechanism for replacement
     private boolean enableResolve;
 
-    // Table mapping Integer (handle) -> Object
-    private HashMap<Integer, Object> objectsRead;
+    /**
+     * All the objects we've read, indexed by their serialization handle (minus the base offset).
+     */
+    private ArrayList<Object> objectsRead;
 
     // Used by defaultReadObject
     private Object currentObject;
@@ -103,24 +99,20 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
     private boolean mustResolve = true;
 
     // Handle for the current class descriptor
-    private Integer descriptorHandle;
+    private int descriptorHandle = -1;
 
-    private static final HashMap<String, Class<?>> PRIMITIVE_CLASSES =
-        new HashMap<String, Class<?>>();
-
+    private static final HashMap<String, Class<?>> PRIMITIVE_CLASSES = new HashMap<String, Class<?>>();
     static {
-        PRIMITIVE_CLASSES.put("byte", byte.class); //$NON-NLS-1$
-        PRIMITIVE_CLASSES.put("short", short.class); //$NON-NLS-1$
-        PRIMITIVE_CLASSES.put("int", int.class); //$NON-NLS-1$
-        PRIMITIVE_CLASSES.put("long", long.class); //$NON-NLS-1$
-        PRIMITIVE_CLASSES.put("boolean", boolean.class); //$NON-NLS-1$
-        PRIMITIVE_CLASSES.put("char", char.class); //$NON-NLS-1$
-        PRIMITIVE_CLASSES.put("float", float.class); //$NON-NLS-1$
-        PRIMITIVE_CLASSES.put("double", double.class); //$NON-NLS-1$
-        PRIMITIVE_CLASSES.put("void", void.class); //$NON-NLS-1$
+        PRIMITIVE_CLASSES.put("boolean", boolean.class);
+        PRIMITIVE_CLASSES.put("byte", byte.class);
+        PRIMITIVE_CLASSES.put("char", char.class);
+        PRIMITIVE_CLASSES.put("double", double.class);
+        PRIMITIVE_CLASSES.put("float", float.class);
+        PRIMITIVE_CLASSES.put("int", int.class);
+        PRIMITIVE_CLASSES.put("long", long.class);
+        PRIMITIVE_CLASSES.put("short", short.class);
+        PRIMITIVE_CLASSES.put("void", void.class);
     }
-
-    private ObjectAccessor accessor = AccessorFactory.getObjectAccessor();
 
     // Internal type used to keep track of validators & corresponding priority
     static class InputValidationDesc {
@@ -343,20 +335,11 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * Constructs a new ObjectInputStream. This default constructor can be used
      * by subclasses that do not want to use the public constructor if it
      * allocates unneeded data.
-     * 
+     *
      * @throws IOException
      *             if an error occurs when creating this stream.
-     * @throws SecurityException
-     *             if a security manager is installed and it denies subclassing
-     *             this class.
-     * @see SecurityManager#checkPermission(java.security.Permission)
      */
-    protected ObjectInputStream() throws IOException, SecurityException {
-        super();
-        SecurityManager currentManager = System.getSecurityManager();
-        if (currentManager != null) {
-            currentManager.checkPermission(SUBCLASS_IMPLEMENTATION_PERMISSION);
-        }
+    protected ObjectInputStream() throws IOException {
         // WARNING - we should throw IOException if not called from a subclass
         // according to the JavaDoc. Add the test.
         this.subclassOverridingImplementation = true;
@@ -365,7 +348,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
     /**
      * Constructs a new ObjectInputStream that reads from the InputStream
      * {@code input}.
-     * 
+     *
      * @param input
      *            the non-null source InputStream to filter reads on.
      * @throws IOException
@@ -373,49 +356,10 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * @throws StreamCorruptedException
      *             if the source stream does not contain serialized objects that
      *             can be read.
-     * @throws SecurityException
-     *             if a security manager is installed and it denies subclassing
-     *             this class.
      */
-    public ObjectInputStream(InputStream input)
-            throws StreamCorruptedException, IOException {
-        final Class<?> implementationClass = getClass();
-        final Class<?> thisClass = ObjectInputStream.class;
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null && implementationClass != thisClass) {
-            boolean mustCheck = (AccessController
-                    .doPrivileged(new PrivilegedAction<Boolean>() {
-                        public Boolean run() {
-                            try {
-                                Method method = implementationClass
-                                        .getMethod(
-                                                "readFields", //$NON-NLS-1$
-                                                ObjectStreamClass.EMPTY_CONSTRUCTOR_PARAM_TYPES);
-                                if (method.getDeclaringClass() != thisClass) {
-                                    return Boolean.TRUE;
-                                }
-                            } catch (NoSuchMethodException e) {
-                            }
-                            try {
-                                Method method = implementationClass
-                                        .getMethod(
-                                                "readUnshared", //$NON-NLS-1$
-                                                ObjectStreamClass.EMPTY_CONSTRUCTOR_PARAM_TYPES);
-                                if (method.getDeclaringClass() != thisClass) {
-                                    return Boolean.TRUE;
-                                }
-                            } catch (NoSuchMethodException e) {
-                            }
-                            return Boolean.FALSE;
-                        }
-                    })).booleanValue();
-            if (mustCheck) {
-                sm
-                        .checkPermission(ObjectStreamConstants.SUBCLASS_IMPLEMENTATION_PERMISSION);
-            }
-        }
-        this.input = (input instanceof DataInputStream) ? (DataInputStream) input
-                : new DataInputStream(input);
+    public ObjectInputStream(InputStream input) throws StreamCorruptedException, IOException {
+        this.input = (input instanceof DataInputStream)
+                ? (DataInputStream) input : new DataInputStream(input);
         primitiveTypes = new DataInputStream(this);
         enableResolve = false;
         this.subclassOverridingImplementation = false;
@@ -429,16 +373,6 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
         primitiveData = emptyStream;
     }
 
-    /**
-     * Returns the number of bytes of primitive data that can be read from this
-     * stream without blocking. This method should not be used at any arbitrary
-     * position; just when reading primitive data types (int, char etc).
-     * 
-     * @return the number of available primitive data bytes.
-     * @throws IOException
-     *             if any I/O problem occurs while computing the available
-     *             bytes.
-     */
     @Override
     public int available() throws IOException {
         // returns 0 if next data is an object, or N if reading primitive types
@@ -450,7 +384,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * Checks to if it is ok to read primitive types from this stream at
      * this point. One is not supposed to read primitive types when about to
      * read an object, for example, so an exception has to be thrown.
-     * 
+     *
      * @throws IOException
      *             If any IO problem occurred when trying to read primitive type
      *             or if it is illegal to read primitive types
@@ -476,8 +410,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
                     primitiveData = new ByteArrayInputStream(readBlockData());
                     return;
                 case TC_BLOCKDATALONG:
-                    primitiveData = new ByteArrayInputStream(
-                            readBlockDataLong());
+                    primitiveData = new ByteArrayInputStream(readBlockDataLong());
                     return;
                 case TC_RESET:
                     resetState();
@@ -494,7 +427,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
 
     /**
      * Closes this stream. This implementation closes the source stream.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing this stream.
      */
@@ -507,7 +440,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * Default method to read objects from this stream. Serializable fields
      * defined in the object's class and superclasses are read from the source
      * stream.
-     * 
+     *
      * @throws ClassNotFoundException
      *             if the object's class cannot be found.
      * @throws IOException
@@ -518,7 +451,6 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      */
     public void defaultReadObject() throws IOException, ClassNotFoundException,
             NotActiveException {
-        // We can't be called from just anywhere. There are rules.
         if (currentObject != null || !mustResolve) {
             readFieldValues(currentObject, currentClass);
         } else {
@@ -530,77 +462,39 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * Enables object replacement for this stream. By default this is not
      * enabled. Only trusted subclasses (loaded with system class loader) are
      * allowed to change this status.
-     * 
+     *
      * @param enable
      *            {@code true} to enable object replacement; {@code false} to
      *            disable it.
      * @return the previous setting.
-     * @throws SecurityException
-     *             if a security manager is installed and it denies enabling
-     *             object replacement for this stream.
      * @see #resolveObject
      * @see ObjectOutputStream#enableReplaceObject
      */
-    protected boolean enableResolveObject(boolean enable)
-            throws SecurityException {
-        if (enable) {
-            // The Stream has to be trusted for this feature to be enabled.
-            // trusted means the stream's classloader has to be null
-            SecurityManager currentManager = System.getSecurityManager();
-            if (currentManager != null) {
-                currentManager.checkPermission(SUBSTITUTION_PERMISSION);
-            }
-        }
+    protected boolean enableResolveObject(boolean enable) {
         boolean originalValue = enableResolve;
         enableResolve = enable;
         return originalValue;
     }
 
     /**
-     * Checks if two classes belong to the same package.
-     * 
-     * @param c1
-     *            one of the classes to test.
-     * @param c2
-     *            the other class to test.
-     * @return {@code true} if the two classes belong to the same package,
-     *         {@code false} otherwise.
-     */
-    private boolean inSamePackage(Class<?> c1, Class<?> c2) {
-        String nameC1 = c1.getName();
-        String nameC2 = c2.getName();
-        int indexDotC1 = nameC1.lastIndexOf('.');
-        int indexDotC2 = nameC2.lastIndexOf('.');
-        if (indexDotC1 != indexDotC2) {
-            return false; // cannot be in the same package if indices are not
-        }
-        // the same
-        if (indexDotC1 < 0) {
-            return true; // both of them are in default package
-        }
-        return nameC1.substring(0, indexDotC1).equals(
-                nameC2.substring(0, indexDotC2));
-    }
-
-    /**
      * Return the next {@code int} handle to be used to indicate cyclic
      * references being loaded from the stream.
-     * 
+     *
      * @return the next handle to represent the next cyclic reference
      */
-    private Integer nextHandle() {
-        return Integer.valueOf(this.currentHandle++);
+    private int nextHandle() {
+        return nextHandle++;
     }
 
     /**
      * Return the next token code (TC) from the receiver, which indicates what
      * kind of object follows
-     * 
+     *
      * @return the next TC from the receiver
-     * 
+     *
      * @throws IOException
      *             If an IO error occurs
-     * 
+     *
      * @see ObjectStreamConstants
      */
     private byte nextTC() throws IOException {
@@ -625,7 +519,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * Reads a single byte from the source stream and returns it as an integer
      * in the range from 0 to 255. Returns -1 if the end of the source stream
      * has been reached. Blocks if no input is available.
-     * 
+     *
      * @return the byte read or -1 if the end of the source stream has been
      *         reached.
      * @throws IOException
@@ -642,7 +536,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * in byte array {@code buffer} starting at offset {@code count}. Blocks
      * until {@code count} bytes have been read, the end of the source stream is
      * detected or an exception is thrown.
-     * 
+     *
      * @param buffer
      *            the array in which to store the bytes read.
      * @param offset
@@ -663,15 +557,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      */
     @Override
     public int read(byte[] buffer, int offset, int length) throws IOException {
-        // Force buffer null check first!
-        if (offset > buffer.length || offset < 0) {
-            // luni.12=Offset out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.12", offset)); //$NON-NLS-1$
-        }
-        if (length < 0 || length > buffer.length - offset) {
-            // luni.18=Length out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.18", length)); //$NON-NLS-1$
-        }
+        Arrays.checkOffsetAndCount(buffer.length, offset, length);
         if (length == 0) {
             return 0;
         }
@@ -683,9 +569,9 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * Reads and returns an array of raw bytes with primitive data. The array
      * will have up to 255 bytes. The primitive data will be in the format
      * described by {@code DataOutputStream}.
-     * 
+     *
      * @return The primitive data read, as raw bytes
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the primitive data.
      */
@@ -699,9 +585,9 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * Reads and returns an array of raw bytes with primitive data. The array
      * will have more than 255 bytes. The primitive data will be in the format
      * described by {@code DataOutputStream}.
-     * 
+     *
      * @return The primitive data read, as raw bytes
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the primitive data.
      */
@@ -713,7 +599,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
 
     /**
      * Reads a boolean from the source stream.
-     * 
+     *
      * @return the boolean value read from the source stream.
      * @throws EOFException
      *             if the end of the input is reached before the read
@@ -727,7 +613,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
 
     /**
      * Reads a byte (8 bit) from the source stream.
-     * 
+     *
      * @return the byte value read from the source stream.
      * @throws EOFException
      *             if the end of the input is reached before the read
@@ -741,7 +627,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
 
     /**
      * Reads a character (16 bit) from the source stream.
-     * 
+     *
      * @return the char value read from the source stream.
      * @throws EOFException
      *             if the end of the input is reached before the read
@@ -755,7 +641,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
 
     /**
      * Reads and discards block data and objects until TC_ENDBLOCKDATA is found.
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the optional class
      *             annotation.
@@ -780,9 +666,9 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
     /**
      * Reads a class descriptor (an {@code ObjectStreamClass}) from the
      * stream.
-     * 
+     *
      * @return the class descriptor read from the stream
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the class
      *             descriptor.
@@ -790,17 +676,15 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      *             If the class corresponding to the class descriptor could not
      *             be found.
      */
-    private ObjectStreamClass readClassDesc() throws ClassNotFoundException,
-            IOException {
+    private ObjectStreamClass readClassDesc() throws ClassNotFoundException, IOException {
         byte tc = nextTC();
         switch (tc) {
             case TC_CLASSDESC:
                 return readNewClassDesc(false);
             case TC_PROXYCLASSDESC:
                 Class<?> proxyClass = readNewProxyClassDesc();
-                ObjectStreamClass streamClass = ObjectStreamClass
-                        .lookup(proxyClass);
-                streamClass.setLoadFields(new ObjectStreamField[0]);
+                ObjectStreamClass streamClass = ObjectStreamClass.lookup(proxyClass);
+                streamClass.setLoadFields(ObjectStreamClass.NO_FIELDS);
                 registerObjectRead(streamClass, nextHandle(), false);
                 checkedSetSuperClassDesc(streamClass, readClassDesc());
                 return streamClass;
@@ -809,19 +693,22 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
             case TC_NULL:
                 return null;
             default:
-                throw new StreamCorruptedException(Messages.getString(
-                        "luni.BC", Integer.toHexString(tc & 0xff))); //$NON-NLS-1$
+                throw corruptStream(tc);
         }
+    }
+
+    private StreamCorruptedException corruptStream(byte tc) throws StreamCorruptedException {
+        throw new StreamCorruptedException("Wrong format: " + Integer.toHexString(tc & 0xff));
     }
 
     /**
      * Reads the content of the receiver based on the previously read token
      * {@code tc}.
-     * 
+     *
      * @param tc
      *            The token code for the next item in the stream
      * @return the object read from the stream
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the class
      *             descriptor.
@@ -854,24 +741,23 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
                 return null;
             case TC_EXCEPTION:
                 Exception exc = readException();
-                throw new WriteAbortedException(Messages.getString("luni.BD"), exc); //$NON-NLS-1$
+                throw new WriteAbortedException("Read an exception", exc);
             case TC_RESET:
                 resetState();
                 return null;
             default:
-                throw new StreamCorruptedException(Messages.getString(
-                        "luni.BC", Integer.toHexString(tc & 0xff))); //$NON-NLS-1$
+                throw corruptStream(tc);
         }
     }
 
     /**
      * Reads the content of the receiver based on the previously read token
      * {@code tc}. Primitive data content is considered an error.
-     * 
+     *
      * @param unshared
      *            read the object unshared
      * @return the object read from the stream
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the class
      *             descriptor.
@@ -908,14 +794,14 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
                 case TC_REFERENCE:
                     if (unshared) {
                         readNewHandle();
-                        throw new InvalidObjectException(Messages.getString("luni.BE")); //$NON-NLS-1$
+                        throw new InvalidObjectException("Unshared read of back reference");
                     }
                     return readCyclicReference();
                 case TC_NULL:
                     return null;
                 case TC_EXCEPTION:
                     Exception exc = readException();
-                    throw new WriteAbortedException(Messages.getString("luni.BD"), exc); //$NON-NLS-1$
+                    throw new WriteAbortedException("Read an exception", exc);
                 case TC_RESET:
                     resetState();
                     break;
@@ -925,8 +811,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
                     e.eof = true;
                     throw e;
                 default:
-                    throw new StreamCorruptedException(Messages.getString(
-                            "luni.BC", Integer.toHexString(tc & 0xff))); //$NON-NLS-1$
+                    throw corruptStream(tc);
             }
             // Only TC_RESET falls through
         } while (true);
@@ -935,23 +820,22 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
     /**
      * Reads the next item from the stream assuming it is a cyclic reference to
      * an object previously read. Return the actual object previously read.
-     * 
+     *
      * @return the object previously read from the stream
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the class
      *             descriptor.
      * @throws InvalidObjectException
      *             If the cyclic reference is not valid.
      */
-    private Object readCyclicReference() throws InvalidObjectException,
-            IOException {
+    private Object readCyclicReference() throws InvalidObjectException, IOException {
         return registeredObjectRead(readNewHandle());
     }
 
     /**
      * Reads a double (64 bit) from the source stream.
-     * 
+     *
      * @return the double value read from the source stream.
      * @throws EOFException
      *             if the end of the input is reached before the read
@@ -973,9 +857,9 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * When exceptions are found normally in the object graph, they are loaded
      * as a regular object, and not by this method. In that case, the set of
      * "known objects" is not reset.
-     * 
+     *
      * @return the exception read
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the exception
      *             object.
@@ -1008,17 +892,17 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
     /**
      * Reads a collection of field descriptors (name, type name, etc) for the
      * class descriptor {@code cDesc} (an {@code ObjectStreamClass})
-     * 
+     *
      * @param cDesc
      *            The class descriptor (an {@code ObjectStreamClass})
      *            for which to write field information
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the field
      *             descriptors.
      * @throws ClassNotFoundException
      *             If a class for one of the field types could not be found
-     * 
+     *
      * @see #readObject()
      */
     private void readFieldDescriptors(ObjectStreamClass cDesc)
@@ -1053,13 +937,13 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
                     enableResolve = old;
                 }
             }
-            
+
             classSig = formatClassSig(classSig);
             ObjectStreamField f = new ObjectStreamField(classSig, fieldName);
             fields[i] = f;
         }
     }
-    
+
     /*
      * Format the class signature for ObjectStreamField, for example,
      * "[L[Ljava.lang.String;;" is converted to "[Ljava.lang.String;"
@@ -1072,7 +956,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
             return classSig;
         }
 
-        while (classSig.startsWith("[L", start) //$NON-NLS-1$
+        while (classSig.startsWith("[L", start)
                 && classSig.charAt(end - 1) == ';') {
             start += 2;
             end--;
@@ -1091,7 +975,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * from the source stream. The values read are stored in a GetField object
      * that provides access to the persistent fields. This GetField object is
      * then returned.
-     * 
+     *
      * @return the GetField object from which persistent fields can be accessed
      *         by name.
      * @throws ClassNotFoundException
@@ -1102,14 +986,11 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * @throws NotActiveException
      *             if this stream is currently not reading an object.
      */
-    public GetField readFields() throws IOException, ClassNotFoundException,
-            NotActiveException {
-        // We can't be called from just anywhere. There are rules.
+    public GetField readFields() throws IOException, ClassNotFoundException, NotActiveException {
         if (currentObject == null) {
             throw new NotActiveException();
         }
-        EmulatedFieldsForLoading result = new EmulatedFieldsForLoading(
-                currentClass);
+        EmulatedFieldsForLoading result = new EmulatedFieldsForLoading(currentClass);
         readFieldValues(result);
         return result;
     }
@@ -1117,11 +998,11 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
     /**
      * Reads a collection of field values for the emulated fields
      * {@code emulatedFields}
-     * 
+     *
      * @param emulatedFields
      *            an {@code EmulatedFieldsForLoading}, concrete subclass
      *            of {@code GetField}
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the field values.
      * @throws InvalidClassException
@@ -1130,33 +1011,32 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * @throws OptionalDataException
      *             If optional data could not be found when reading the
      *             exception graph
-     * 
+     *
      * @see #readFields
      * @see #readObject()
      */
     private void readFieldValues(EmulatedFieldsForLoading emulatedFields)
             throws OptionalDataException, InvalidClassException, IOException {
-        EmulatedFields.ObjectSlot[] slots = emulatedFields.emulatedFields()
-                .slots();
+        EmulatedFields.ObjectSlot[] slots = emulatedFields.emulatedFields().slots();
         for (ObjectSlot element : slots) {
             element.defaulted = false;
             Class<?> type = element.field.getType();
-            if (type == Integer.TYPE) {
-                element.fieldValue = Integer.valueOf(input.readInt());
-            } else if (type == Byte.TYPE) {
-                element.fieldValue = Byte.valueOf(input.readByte());
-            } else if (type == Character.TYPE) {
-                element.fieldValue = Character.valueOf(input.readChar());
-            } else if (type == Short.TYPE) {
-                element.fieldValue = Short.valueOf(input.readShort());
-            } else if (type == Boolean.TYPE) {
-                element.fieldValue = Boolean.valueOf(input.readBoolean());
-            } else if (type == Long.TYPE) {
-                element.fieldValue = Long.valueOf(input.readLong());
-            } else if (type == Float.TYPE) {
-                element.fieldValue = Float.valueOf(input.readFloat());
-            } else if (type == Double.TYPE) {
-                element.fieldValue = Double.valueOf(input.readDouble());
+            if (type == int.class) {
+                element.fieldValue = input.readInt();
+            } else if (type == byte.class) {
+                element.fieldValue = input.readByte();
+            } else if (type == char.class) {
+                element.fieldValue = input.readChar();
+            } else if (type == short.class) {
+                element.fieldValue = input.readShort();
+            } else if (type == boolean.class) {
+                element.fieldValue = input.readBoolean();
+            } else if (type == long.class) {
+                element.fieldValue = input.readLong();
+            } else if (type == float.class) {
+                element.fieldValue = input.readFloat();
+            } else if (type == double.class) {
+                element.fieldValue = input.readDouble();
             } else {
                 // Either array or Object
                 try {
@@ -1177,13 +1057,13 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * This is the default mechanism, when emulated fields (an
      * {@code GetField}) are not used. Actual values to load are stored
      * directly into the object {@code obj}.
-     * 
+     *
      * @param obj
      *            Instance in which the fields will be set.
      * @param classDesc
      *            A class descriptor (an {@code ObjectStreamClass})
      *            defining which fields should be loaded.
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the field values.
      * @throws InvalidClassException
@@ -1194,149 +1074,95 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      *             exception graph
      * @throws ClassNotFoundException
      *             If a class of an object being de-serialized can not be found
-     * 
+     *
      * @see #readFields
      * @see #readObject()
      */
-    private void readFieldValues(Object obj, ObjectStreamClass classDesc)
-            throws OptionalDataException, ClassNotFoundException, IOException {
+    private void readFieldValues(Object obj, ObjectStreamClass classDesc) throws OptionalDataException, ClassNotFoundException, IOException {
         // Now we must read all fields and assign them to the receiver
         ObjectStreamField[] fields = classDesc.getLoadFields();
-        fields = (null == fields ? new ObjectStreamField[] {} : fields);
+        fields = (fields == null) ? ObjectStreamClass.NO_FIELDS : fields;
         Class<?> declaringClass = classDesc.forClass();
         if (declaringClass == null && mustResolve) {
             throw new ClassNotFoundException(classDesc.getName());
         }
 
         for (ObjectStreamField fieldDesc : fields) {
-
-            // get associated Field 
-            long fieldID = fieldDesc.getFieldID(accessor, declaringClass);
-
-            // Code duplication starts, just because Java is typed
-            if (fieldDesc.isPrimitive()) {
-                try {
-                    switch (fieldDesc.getTypeCode()) {
-                        case 'B':
-                            byte srcByte = input.readByte();
-                            if (fieldID != ObjectStreamField.FIELD_IS_ABSENT) { 
-                                accessor.setByte(obj, fieldID, srcByte);
-                            }
-                            break;
-                        case 'C':
-                            char srcChar = input.readChar();
-                            if (fieldID != ObjectStreamField.FIELD_IS_ABSENT) { 
-                                accessor.setChar(obj, fieldID, srcChar);
-                            }
-                            break;
-                        case 'D':
-                            double srcDouble = input.readDouble();
-                            if (fieldID != ObjectStreamField.FIELD_IS_ABSENT) { 
-                                accessor.setDouble(obj, fieldID, srcDouble);
-                            }
-                            break;
-                        case 'F':
-                            float srcFloat = input.readFloat();
-                            if (fieldID != ObjectStreamField.FIELD_IS_ABSENT) { 
-                                accessor.setFloat(obj, fieldID, srcFloat);
-                            }
-                            break;
-                        case 'I':
-                            int srcInt = input.readInt();
-                            if (fieldID != ObjectStreamField.FIELD_IS_ABSENT) { 
-                                accessor.setInt(obj, fieldID, srcInt);
-                            }
-                            break;
-                        case 'J':
-                            long srcLong = input.readLong();
-                            if (fieldID != ObjectStreamField.FIELD_IS_ABSENT) { 
-                                accessor.setLong(obj, fieldID, srcLong);
-                            }
-                            break;
-                        case 'S':
-                            short srcShort = input.readShort();
-                            if (fieldID != ObjectStreamField.FIELD_IS_ABSENT) { 
-                                accessor.setShort(obj, fieldID, srcShort);
-                            }
-                            break;
-                        case 'Z':
-                            boolean srcBoolean = input.readBoolean();
-                            if (fieldID != ObjectStreamField.FIELD_IS_ABSENT) { 
-                                accessor.setBoolean(obj, fieldID, srcBoolean);
-                            }
-                            break;
-                        default:
-                            throw new StreamCorruptedException(Messages.getString(
-                                    "luni.BF", fieldDesc.getTypeCode())); //$NON-NLS-1$
+            Field field = classDesc.getReflectionField(fieldDesc);
+            // We may not have been able to find the field, but we still need to read the value
+            // and do the other checking, so there's no null check on 'field' here.
+            try {
+                Class<?> type = fieldDesc.getTypeInternal();
+                if (type == byte.class) {
+                    byte b = input.readByte();
+                    if (field != null) {
+                        field.setByte(obj, b);
                     }
-                } catch (NoSuchFieldError err) {
-                }
-            } else {
-                // Object type (array included).
-                String fieldName = fieldDesc.getName();
-                boolean setBack = false;
-                if (mustResolve && fieldDesc == null) {
-                    setBack = true;
-                    mustResolve = false;
-                }
-                Object toSet;
-                if (fieldDesc != null && fieldDesc.isUnshared()) {
-                    toSet = readUnshared();
+                } else if (type == char.class) {
+                    char c = input.readChar();
+                    if (field != null) {
+                        field.setChar(obj, c);
+                    }
+                } else if (type == double.class) {
+                    double d = input.readDouble();
+                    if (field != null) {
+                        field.setDouble(obj, d);
+                    }
+                } else if (type == float.class) {
+                    float f = input.readFloat();
+                    if (field != null) {
+                        field.setFloat(obj, f);
+                    }
+                } else if (type == int.class) {
+                    int i = input.readInt();
+                    if (field != null) {
+                        field.setInt(obj, i);
+                    }
+                } else if (type == long.class) {
+                    long j = input.readLong();
+                    if (field != null) {
+                        field.setLong(obj, j);
+                    }
+                } else if (type == short.class) {
+                    short s = input.readShort();
+                    if (field != null) {
+                        field.setShort(obj, s);
+                    }
+                } else if (type == boolean.class) {
+                    boolean z = input.readBoolean();
+                    if (field != null) {
+                        field.setBoolean(obj, z);
+                    }
                 } else {
-                    toSet = readObject();
-                }
-                if (setBack) {
-                    mustResolve = true;
-                }
-                if (fieldDesc != null) {
+                    Object toSet = fieldDesc.isUnshared() ? readUnshared() : readObject();
                     if (toSet != null) {
-                        Class<?> fieldType = getFieldClass(obj, fieldName);
+                        // Get the field type from the local field rather than
+                        // from the stream's supplied data. That's the field
+                        // we'll be setting, so that's the one that needs to be
+                        // validated.
+                        String fieldName = fieldDesc.getName();
+                        ObjectStreamField localFieldDesc = classDesc.getField(fieldName);
+                        Class<?> fieldType = localFieldDesc.getTypeInternal();
                         Class<?> valueType = toSet.getClass();
-                        if (fieldType != null) {
-                            if (!fieldType.isAssignableFrom(valueType)) {
-                                throw new ClassCastException(Messages.getString(
-                                    "luni.C0", new String[] { //$NON-NLS-1$
-                                    fieldType.toString(), valueType.toString(),
-                                            classDesc.getName() + "." //$NON-NLS-1$
-                                                    + fieldName }));
-                            }
-                            try {
-                                if (fieldID != ObjectStreamField.FIELD_IS_ABSENT) { 
-                                    accessor.setObject(obj, fieldID, toSet);
-                                }
-                            } catch (NoSuchFieldError e) {
-                                // Ignored
-                            }
+                        if (!fieldType.isAssignableFrom(valueType)) {
+                            throw new ClassCastException(classDesc.getName() + "." + fieldName + " - " + fieldType + " not compatible with " + valueType);
+                        }
+                        if (field != null) {
+                            field.set(obj, toSet);
                         }
                     }
                 }
+            } catch (IllegalAccessException iae) {
+                // ObjectStreamField should have called setAccessible(true).
+                throw new AssertionError(iae);
+            } catch (NoSuchFieldError ignored) {
             }
         }
     }
 
-    private static Class<?> getFieldClass(final Object obj,
-                                          final String fieldName) {
-        return AccessController.doPrivileged(new PrivilegedAction<Class<?>>() {
-                public Class<?> run() {
-                    Class<?> objClass = obj.getClass();
-                    while (objClass != null) {
-                        try {
-                            Class<?> fc =
-                                objClass.getDeclaredField(fieldName).getType();
-                            return fc;
-                        } catch (NoSuchFieldException e) {
-                            // Ignored
-                        }
-                        objClass = objClass.getSuperclass();
-                    }
-                    return null;
-                }
-            });
-    }
-
     /**
      * Reads a float (32 bit) from the source stream.
-     * 
+     *
      * @return the float value read from the source stream.
      * @throws EOFException
      *             if the end of the input is reached before the read
@@ -1349,10 +1175,10 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
     }
 
     /**
-     * Reads bytes from the source stream into the byte array {@code buffer}.
-     * This method will block until {@code buffer.length} bytes have been read.
-     * 
-     * @param buffer
+     * Reads bytes from the source stream into the byte array {@code dst}.
+     * This method will block until {@code dst.length} bytes have been read.
+     *
+     * @param dst
      *            the array in which to store the bytes read.
      * @throws EOFException
      *             if the end of the input is reached before the read
@@ -1360,31 +1186,28 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * @throws IOException
      *             if an error occurs while reading from the source stream.
      */
-    public void readFully(byte[] buffer) throws IOException {
-        primitiveTypes.readFully(buffer);
+    public void readFully(byte[] dst) throws IOException {
+        primitiveTypes.readFully(dst);
     }
 
     /**
-     * Reads bytes from the source stream into the byte array {@code buffer}.
-     * This method will block until {@code length} number of bytes have been
-     * read.
-     * 
-     * @param buffer
+     * Reads {@code byteCount} bytes from the source stream into the byte array {@code dst}.
+     *
+     * @param dst
      *            the byte array in which to store the bytes read.
      * @param offset
-     *            the initial position in {@code buffer} to store the bytes
+     *            the initial position in {@code dst} to store the bytes
      *            read from the source stream.
-     * @param length
-     *            the maximum number of bytes to store in {@code buffer}.
+     * @param byteCount
+     *            the number of bytes to read.
      * @throws EOFException
      *             if the end of the input is reached before the read
      *             request can be satisfied.
      * @throws IOException
      *             if an error occurs while reading from the source stream.
      */
-    public void readFully(byte[] buffer, int offset, int length)
-            throws IOException {
-        primitiveTypes.readFully(buffer, offset, length);
+    public void readFully(byte[] dst, int offset, int byteCount) throws IOException {
+        primitiveTypes.readFully(dst, offset, byteCount);
     }
 
     /**
@@ -1395,13 +1218,13 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * (corresponding to class descriptor {@code classDesc}) defines
      * private instance method {@code readObject} it will be used to load
      * field values.
-     * 
+     *
      * @param object
      *            Instance into which stored field values loaded.
      * @param classDesc
      *            A class descriptor (an {@code ObjectStreamClass})
      *            defining which fields should be loaded.
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the field values in
      *             the hierarchy.
@@ -1410,47 +1233,34 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * @throws NotActiveException
      *             If {@code defaultReadObject} is called from the wrong
      *             context.
-     * 
+     *
      * @see #defaultReadObject
      * @see #readObject()
      */
     private void readHierarchy(Object object, ObjectStreamClass classDesc)
             throws IOException, ClassNotFoundException, NotActiveException {
-        // We can't be called from just anywhere. There are rules.
         if (object == null && mustResolve) {
             throw new NotActiveException();
         }
 
-        ArrayList<ObjectStreamClass> streamClassList = new ArrayList<ObjectStreamClass>(
-                32);
-        ObjectStreamClass nextStreamClass = classDesc;
-        while (nextStreamClass != null) {
-            streamClassList.add(0, nextStreamClass);
-            nextStreamClass = nextStreamClass.getSuperclass();
-        }
+        List<ObjectStreamClass> streamClassList = classDesc.getHierarchy();
         if (object == null) {
-            Iterator<ObjectStreamClass> streamIt = streamClassList.iterator();
-            while (streamIt.hasNext()) {
-                ObjectStreamClass streamClass = streamIt.next();
-                readObjectForClass(null, streamClass);
+            for (ObjectStreamClass objectStreamClass : streamClassList) {
+                readObjectForClass(null, objectStreamClass);
             }
         } else {
-            ArrayList<Class<?>> classList = new ArrayList<Class<?>>(32);
-            Class<?> nextClass = object.getClass();
-            while (nextClass != null) {
-                Class<?> testClass = nextClass.getSuperclass();
-                if (testClass != null) {
-                    classList.add(0, nextClass);
-                }
-                nextClass = testClass;
+            List<Class<?>> superclasses = cachedSuperclasses.get(object.getClass());
+            if (superclasses == null) {
+                superclasses = cacheSuperclassesFor(object.getClass());
             }
+
             int lastIndex = 0;
-            for (int i = 0; i < classList.size(); i++) {
-                Class<?> superclass = classList.get(i);
-                int index = findStreamSuperclass(superclass, streamClassList,
-                        lastIndex);
+            for (int i = 0, end = superclasses.size(); i < end; ++i) {
+                Class<?> superclass = superclasses.get(i);
+                int index = findStreamSuperclass(superclass, streamClassList, lastIndex);
                 if (index == -1) {
-                    readObjectNoData(object, superclass, ObjectStreamClass.lookupStreamClass(superclass));
+                    readObjectNoData(object, superclass,
+                            ObjectStreamClass.lookupStreamClass(superclass));
                 } else {
                     for (int j = lastIndex; j <= index; j++) {
                         readObjectForClass(object, streamClassList.get(j));
@@ -1461,14 +1271,26 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
         }
     }
 
-    private int findStreamSuperclass(Class<?> cl,
-            ArrayList<ObjectStreamClass> classList, int lastIndex) {
-        ObjectStreamClass objCl;
-        String forName;
+    private HashMap<Class<?>, List<Class<?>>> cachedSuperclasses = new HashMap<Class<?>, List<Class<?>>>();
 
-        for (int i = lastIndex; i < classList.size(); i++) {
-            objCl = classList.get(i);
-            forName = objCl.forClass().getName();
+    private List<Class<?>> cacheSuperclassesFor(Class<?> c) {
+        ArrayList<Class<?>> result = new ArrayList<Class<?>>();
+        Class<?> nextClass = c;
+        while (nextClass != null) {
+            Class<?> testClass = nextClass.getSuperclass();
+            if (testClass != null) {
+                result.add(0, nextClass);
+            }
+            nextClass = testClass;
+        }
+        cachedSuperclasses.put(c, result);
+        return result;
+    }
+
+    private int findStreamSuperclass(Class<?> cl, List<ObjectStreamClass> classList, int lastIndex) {
+        for (int i = lastIndex, end = classList.size(); i < end; i++) {
+            ObjectStreamClass objCl = classList.get(i);
+            String forName = objCl.forClass().getName();
 
             if (objCl.getName().equals(forName)) {
                 if (cl.getName().equals(objCl.getName())) {
@@ -1492,7 +1314,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
         if (classDesc.hasMethodReadObjectNoData()){
             final Method readMethod = classDesc.getMethodReadObjectNoData();
             try {
-                readMethod.invoke(object, new Object[0]);
+                readMethod.invoke(object);
             } catch (InvocationTargetException e) {
                 Throwable ex = e.getTargetException();
                 if (ex instanceof RuntimeException) {
@@ -1515,7 +1337,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
         currentObject = object;
         currentClass = classDesc;
 
-        boolean hadWriteMethod = (classDesc.getFlags() & SC_WRITE_METHOD) > 0;
+        boolean hadWriteMethod = (classDesc.getFlags() & SC_WRITE_METHOD) != 0;
         Class<?> targetClass = classDesc.forClass();
 
         final Method readMethod;
@@ -1527,10 +1349,9 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
         try {
             if (readMethod != null) {
                 // We have to be able to fetch its value, even if it is private
-                AccessController.doPrivileged(new PriviAction<Object>(
-                        readMethod));
+                readMethod.setAccessible(true);
                 try {
-                    readMethod.invoke(object, new Object[] { this });
+                    readMethod.invoke(object, this);
                 } catch (InvocationTargetException e) {
                     Throwable ex = e.getTargetException();
                     if (ex instanceof ClassNotFoundException) {
@@ -1561,7 +1382,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
 
     /**
      * Reads an integer (32 bit) from the source stream.
-     * 
+     *
      * @return the integer value read from the source stream.
      * @throws EOFException
      *             if the end of the input is reached before the read
@@ -1576,7 +1397,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
     /**
      * Reads the next line from the source stream. Lines are terminated by
      * {@code '\r'}, {@code '\n'}, {@code "\r\n"} or an {@code EOF}.
-     * 
+     *
      * @return the string read from the source stream.
      * @throws IOException
      *             if an error occurs while reading from the source stream.
@@ -1589,7 +1410,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
 
     /**
      * Reads a long (64 bit) from the source stream.
-     * 
+     *
      * @return the long value read from the source stream.
      * @throws EOFException
      *             if the end of the input is reached before the read
@@ -1604,11 +1425,11 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
     /**
      * Read a new array from the receiver. It is assumed the array has not been
      * read yet (not a cyclic reference). Return the array read.
-     * 
+     *
      * @param unshared
      *            read the object unshared
      * @return the array read
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the array.
      * @throws ClassNotFoundException
@@ -1621,10 +1442,10 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
         ObjectStreamClass classDesc = readClassDesc();
 
         if (classDesc == null) {
-            throw new InvalidClassException(Messages.getString("luni.C1")); //$NON-NLS-1$
+            throw missingClassDescriptor();
         }
 
-        Integer newHandle = nextHandle();
+        int newHandle = nextHandle();
 
         // Array size
         int size = input.readInt();
@@ -1639,47 +1460,46 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
         // the array first, and also call different methods depending on the
         // elements.
         if (componentType.isPrimitive()) {
-            if (componentType == Integer.TYPE) {
+            if (componentType == int.class) {
                 int[] intArray = (int[]) result;
                 for (int i = 0; i < size; i++) {
                     intArray[i] = input.readInt();
                 }
-            } else if (componentType == Byte.TYPE) {
+            } else if (componentType == byte.class) {
                 byte[] byteArray = (byte[]) result;
                 input.readFully(byteArray, 0, size);
-            } else if (componentType == Character.TYPE) {
+            } else if (componentType == char.class) {
                 char[] charArray = (char[]) result;
                 for (int i = 0; i < size; i++) {
                     charArray[i] = input.readChar();
                 }
-            } else if (componentType == Short.TYPE) {
+            } else if (componentType == short.class) {
                 short[] shortArray = (short[]) result;
                 for (int i = 0; i < size; i++) {
                     shortArray[i] = input.readShort();
                 }
-            } else if (componentType == Boolean.TYPE) {
+            } else if (componentType == boolean.class) {
                 boolean[] booleanArray = (boolean[]) result;
                 for (int i = 0; i < size; i++) {
                     booleanArray[i] = input.readBoolean();
                 }
-            } else if (componentType == Long.TYPE) {
+            } else if (componentType == long.class) {
                 long[] longArray = (long[]) result;
                 for (int i = 0; i < size; i++) {
                     longArray[i] = input.readLong();
                 }
-            } else if (componentType == Float.TYPE) {
+            } else if (componentType == float.class) {
                 float[] floatArray = (float[]) result;
                 for (int i = 0; i < size; i++) {
                     floatArray[i] = input.readFloat();
                 }
-            } else if (componentType == Double.TYPE) {
+            } else if (componentType == double.class) {
                 double[] doubleArray = (double[]) result;
                 for (int i = 0; i < size; i++) {
                     doubleArray[i] = input.readDouble();
                 }
             } else {
-                throw new ClassNotFoundException(Messages.getString(
-                        "luni.C2", classDesc.getName())); //$NON-NLS-1$
+                throw new ClassNotFoundException("Wrong base type in " + classDesc.getName());
             }
         } else {
             // Array of Objects
@@ -1687,7 +1507,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
             for (int i = 0; i < size; i++) {
                 // TODO: This place is the opportunity for enhancement
                 //      We can implement writing elements through fast-path,
-                //      without setting up the context (see readObject()) for 
+                //      without setting up the context (see readObject()) for
                 //      each element with public API
                 objectArray[i] = readObject();
             }
@@ -1702,28 +1522,26 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
     /**
      * Reads a new class from the receiver. It is assumed the class has not been
      * read yet (not a cyclic reference). Return the class read.
-     * 
+     *
      * @param unshared
      *            read the object unshared
      * @return The {@code java.lang.Class} read from the stream.
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the class.
      * @throws ClassNotFoundException
      *             If a class for one of the objects could not be found
      */
-    private Class<?> readNewClass(boolean unshared)
-            throws ClassNotFoundException, IOException {
+    private Class<?> readNewClass(boolean unshared) throws ClassNotFoundException, IOException {
         ObjectStreamClass classDesc = readClassDesc();
-
-        if (classDesc != null) {
-            Class<?> localClass = classDesc.forClass();
-            if (localClass != null) {
-                registerObjectRead(localClass, nextHandle(), unshared);
-            }
-            return localClass;
+        if (classDesc == null) {
+            throw missingClassDescriptor();
         }
-        throw new InvalidClassException(Messages.getString("luni.C1")); //$NON-NLS-1$
+        Class<?> localClass = classDesc.forClass();
+        if (localClass != null) {
+            registerObjectRead(localClass, nextHandle(), unshared);
+        }
+        return localClass;
     }
 
     /*
@@ -1741,16 +1559,14 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
             case TC_NULL:
                 return null;
             default:
-                throw new StreamCorruptedException(Messages.getString(
-                        "luni.BC", Integer.toHexString(tc & 0xff))); //$NON-NLS-1$
+                throw corruptStream(tc);
         }
     }
 
-    private ObjectStreamClass readEnumDescInternal() throws IOException,
-            ClassNotFoundException {
+    private ObjectStreamClass readEnumDescInternal() throws IOException, ClassNotFoundException {
         ObjectStreamClass classDesc;
         primitiveData = input;
-        Integer oldHandle = descriptorHandle;
+        int oldHandle = descriptorHandle;
         descriptorHandle = nextHandle();
         classDesc = readClassDescriptor();
         registerObjectRead(classDesc, descriptorHandle, false);
@@ -1762,11 +1578,9 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
         ObjectStreamClass superClass = readClassDesc();
         checkedSetSuperClassDesc(classDesc, superClass);
         // Check SUIDs, note all SUID for Enum is 0L
-        if (0L != classDesc.getSerialVersionUID()
-                || 0L != superClass.getSerialVersionUID()) {
-            throw new InvalidClassException(superClass.getName(), Messages
-                    .getString("luni.C3", superClass, //$NON-NLS-1$
-                            superClass));
+        if (0L != classDesc.getSerialVersionUID() || 0L != superClass.getSerialVersionUID()) {
+            throw new InvalidClassException(superClass.getName(),
+                    "Incompatible class (SUID): " + superClass + " but expected " + superClass);
         }
         byte tc = nextTC();
         // discard TC_ENDBLOCKDATA after classDesc if any
@@ -1785,7 +1599,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
             ClassNotFoundException, IOException {
         // read classdesc for Enum first
         ObjectStreamClass classDesc = readEnumDesc();
-        Integer newHandle = nextHandle();
+        int newHandle = nextHandle();
         // read name after class desc
         String name;
         byte tc = nextTC();
@@ -1793,7 +1607,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
             case TC_REFERENCE:
                 if (unshared) {
                     readNewHandle();
-                    throw new InvalidObjectException(Messages.getString("luni.BE")); //$NON-NLS-1$
+                    throw new InvalidObjectException("Unshared read of back reference");
                 }
                 name = (String) readCyclicReference();
                 break;
@@ -1801,7 +1615,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
                 name = (String) readNewString(unshared);
                 break;
             default:
-                throw new StreamCorruptedException(Messages.getString("luni.BC"));//$NON-NLS-1$
+                throw corruptStream(tc);
         }
 
         Enum<?> result = Enum.valueOf((Class) classDesc.forClass(), name);
@@ -1814,11 +1628,11 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * Reads a new class descriptor from the receiver. It is assumed the class
      * descriptor has not been read yet (not a cyclic reference). Return the
      * class descriptor read.
-     * 
+     *
      * @param unshared
      *            read the object unshared
      * @return The {@code ObjectStreamClass} read from the stream.
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the class
      *             descriptor.
@@ -1830,7 +1644,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
         // So read...() methods can be used by
         // subclasses during readClassDescriptor()
         primitiveData = input;
-        Integer oldHandle = descriptorHandle;
+        int oldHandle = descriptorHandle;
         descriptorHandle = nextHandle();
         ObjectStreamClass newClassDesc = readClassDescriptor();
         registerObjectRead(newClassDesc, descriptorHandle, unshared);
@@ -1852,7 +1666,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
         // Resolve the field signatures using the class loader of the
         // resolved class
         ObjectStreamField[] fields = newClassDesc.getLoadFields();
-        fields = (null == fields ? new ObjectStreamField[] {} : fields);
+        fields = (fields == null) ? ObjectStreamClass.NO_FIELDS : fields;
         ClassLoader loader = newClassDesc.forClass() == null ? callerClassLoader
                 : newClassDesc.forClass().getClassLoader();
         for (ObjectStreamField element : fields) {
@@ -1869,9 +1683,9 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * Reads a new proxy class descriptor from the receiver. It is assumed the
      * proxy class descriptor has not been read yet (not a cyclic reference).
      * Return the proxy class descriptor read.
-     * 
+     *
      * @return The {@code Class} read from the stream.
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the class
      *             descriptor.
@@ -1893,21 +1707,18 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
 
     /**
      * Reads a class descriptor from the source stream.
-     * 
+     *
      * @return the class descriptor read from the source stream.
      * @throws ClassNotFoundException
      *             if a class for one of the objects cannot be found.
      * @throws IOException
      *             if an error occurs while reading from the source stream.
      */
-    protected ObjectStreamClass readClassDescriptor() throws IOException,
-            ClassNotFoundException {
-
+    protected ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
         ObjectStreamClass newClassDesc = new ObjectStreamClass();
         String name = input.readUTF();
         if (name.length() == 0) {
-            // luni.07 = The stream is corrupted
-            throw new IOException(Messages.getString("luni.07")); //$NON-NLS-1$
+            throw new IOException("The stream is corrupted");
         }
         newClassDesc.setName(name);
         newClassDesc.setSerialVersionUID(input.readLong());
@@ -1916,9 +1727,11 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
         /*
          * We must register the class descriptor before reading field
          * descriptors. If called outside of readObject, the descriptorHandle
-         * might be null.
+         * might be unset.
          */
-        descriptorHandle = (null == descriptorHandle ? nextHandle() : descriptorHandle);
+        if (descriptorHandle == -1) {
+            descriptorHandle = nextHandle();
+        }
         registerObjectRead(newClassDesc, descriptorHandle, false);
 
         readFieldDescriptors(newClassDesc);
@@ -1928,7 +1741,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
     /**
      * Creates the proxy class that implements the interfaces specified in
      * {@code interfaceNames}.
-     * 
+     *
      * @param interfaceNames
      *            the interfaces used to create the proxy class.
      * @return the proxy class.
@@ -1941,10 +1754,9 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      */
     protected Class<?> resolveProxyClass(String[] interfaceNames)
             throws IOException, ClassNotFoundException {
-            
         // TODO: This method is opportunity for performance enhancement
-        //       We can cache the classloader and recently used interfaces.        
-        ClassLoader loader = VM.getNonBootstrapClassLoader();
+        //       We can cache the classloader and recently used interfaces.
+        ClassLoader loader = ClassLoader.getSystemClassLoader();
         Class<?>[] interfaces = new Class<?>[interfaceNames.length];
         for (int i = 0; i < interfaceNames.length; i++) {
             interfaces[i] = Class.forName(interfaceNames[i], false, loader);
@@ -1956,97 +1768,24 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
         }
     }
 
-    /**
-     * Write a new handle describing a cyclic reference from the stream.
-     * 
-     * @return the handle read
-     * 
-     * @throws IOException
-     *             If an IO exception happened when reading the handle
-     */
     private int readNewHandle() throws IOException {
         return input.readInt();
-    }
-
-    private Class<?> resolveConstructorClass(Class<?> objectClass, boolean wasSerializable, boolean wasExternalizable)
-        throws OptionalDataException, ClassNotFoundException, IOException {
-
-            // The class of the instance may not be the same as the class of the
-            // constructor to run
-            // This is the constructor to run if Externalizable
-            Class<?> constructorClass = objectClass;
-
-            // WARNING - What if the object is serializable and externalizable ?
-            // Is that possible ?
-            if (wasSerializable) {
-                // Now we must run the constructor of the class just above the
-                // one that implements Serializable so that slots that were not
-                // dumped can be initialized properly
-                while (constructorClass != null
-                        && ObjectStreamClass.isSerializable(constructorClass)) {
-                    constructorClass = constructorClass.getSuperclass();
-                }
-            }
-
-            // Fetch the empty constructor, or null if none.
-            Constructor<?> constructor = null;
-            if (constructorClass != null) {
-                try {
-                    constructor = constructorClass
-                            .getDeclaredConstructor(ObjectStreamClass.EMPTY_CONSTRUCTOR_PARAM_TYPES);
-                } catch (NoSuchMethodException nsmEx) {
-                    // Ignored
-                }
-            }
-
-            // Has to have an empty constructor
-            if (constructor == null) {
-                throw new InvalidClassException(constructorClass.getName(), Messages
-                        .getString("luni.C4")); //$NON-NLS-1$
-            }
-
-            int constructorModifiers = constructor.getModifiers();
-
-            // Now we must check if the empty constructor is visible to the
-            // instantiation class
-            if (Modifier.isPrivate(constructorModifiers)
-                    || (wasExternalizable && !Modifier
-                            .isPublic(constructorModifiers))) {
-                throw new InvalidClassException(constructorClass.getName(), Messages
-                        .getString("luni.C4")); //$NON-NLS-1$
-            }
-
-            // We know we are testing from a subclass, so the only other case
-            // where the visibility is not allowed is when the constructor has
-            // default visibility and the instantiation class is in a different
-            // package than the constructor class
-            if (!Modifier.isPublic(constructorModifiers)
-                    && !Modifier.isProtected(constructorModifiers)) {
-                // Not public, not private and not protected...means default
-                // visibility. Check if same package
-                if (!inSamePackage(constructorClass, objectClass)) {
-                    throw new InvalidClassException(constructorClass.getName(),
-                            Messages.getString("luni.C4")); //$NON-NLS-1$
-                }
-            }
-
-            return constructorClass;
     }
 
     /**
      * Read a new object from the stream. It is assumed the object has not been
      * loaded yet (not a cyclic reference). Return the object read.
-     * 
+     *
      * If the object implements <code>Externalizable</code> its
      * <code>readExternal</code> is called. Otherwise, all fields described by
      * the class hierarchy are loaded. Each class can define how its declared
      * instance fields are loaded by defining a private method
      * <code>readObject</code>
-     * 
+     *
      * @param unshared
      *            read the object unshared
      * @return the object read
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the object.
      * @throws OptionalDataException
@@ -2060,38 +1799,18 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
         ObjectStreamClass classDesc = readClassDesc();
 
         if (classDesc == null) {
-            throw new InvalidClassException(Messages.getString("luni.C1")); //$NON-NLS-1$
+            throw missingClassDescriptor();
         }
 
-        Integer newHandle = nextHandle();
-
-        // Note that these values come from the Stream, and in fact it could be
-        // that the classes have been changed so that the info below now
-        // conflicts with the newer class
-        boolean wasExternalizable = (classDesc.getFlags() & SC_EXTERNALIZABLE) > 0;
-        boolean wasSerializable = (classDesc.getFlags() & SC_SERIALIZABLE) > 0;
-
-
-        // Maybe we should cache the values above in classDesc ? It may be the
-        // case that when reading classDesc we may need to read more stuff
-        // depending on the values above
+        int newHandle = nextHandle();
         Class<?> objectClass = classDesc.forClass();
-
-        Object result, registeredResult = null;
+        Object result = null;
+        Object registeredResult = null;
         if (objectClass != null) {
-
-            long constructor = classDesc.getConstructor();
-            if (constructor == ObjectStreamClass.CONSTRUCTOR_IS_NOT_RESOLVED) {
-                constructor = accessor.getMethodID(resolveConstructorClass(objectClass, wasSerializable, wasExternalizable), null, new Class[0]);
-                classDesc.setConstructor(constructor);
-            }
-
             // Now we know which class to instantiate and which constructor to
             // run. We are allowed to run the constructor.
-            result = accessor.newInstance(objectClass, constructor, null);
-
+            result = classDesc.newInstance(objectClass);
             registerObjectRead(result, newHandle, unshared);
-
             registeredResult = result;
         } else {
             result = null;
@@ -2106,8 +1825,12 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
             currentClass = classDesc;
 
             // If Externalizable, just let the object read itself
+            // Note that this value comes from the Stream, and in fact it could be
+            // that the classes have been changed so that the info below now
+            // conflicts with the newer class
+            boolean wasExternalizable = (classDesc.getFlags() & SC_EXTERNALIZABLE) != 0;
             if (wasExternalizable) {
-                boolean blockData = (classDesc.getFlags() & SC_BLOCK_DATA) > 0;
+                boolean blockData = (classDesc.getFlags() & SC_BLOCK_DATA) != 0;
                 if (!blockData) {
                     primitiveData = input;
                 }
@@ -2140,7 +1863,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
                 Method methodReadResolve = classDesc.getMethodReadResolve();
                 try {
                     result = methodReadResolve.invoke(result, (Object[]) null);
-                } catch (IllegalAccessException iae) {
+                } catch (IllegalAccessException ignored) {
                 } catch (InvocationTargetException ite) {
                     Throwable target = ite.getTargetException();
                     if (target instanceof ObjectStreamException) {
@@ -2169,10 +1892,14 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
         return result;
     }
 
+    private InvalidClassException missingClassDescriptor() throws InvalidClassException {
+        throw new InvalidClassException("Read null attempting to read class descriptor for object");
+    }
+
     /**
      * Read a string encoded in {@link DataInput modified UTF-8} from the
      * receiver. Return the string read.
-     * 
+     *
      * @param unshared
      *            read the object unshared
      * @return the string just read.
@@ -2184,7 +1911,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
         if (enableResolve) {
             result = resolveObject(result);
         }
-		registerObjectRead(result, nextHandle(), unshared);
+        registerObjectRead(result, nextHandle(), unshared);
 
         return result;
     }
@@ -2192,11 +1919,11 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
     /**
      * Read a new String in UTF format from the receiver. Return the string
      * read.
-     * 
+     *
      * @param unshared
      *            read the object unshared
      * @return the string just read.
-     * 
+     *
      * @throws IOException
      *             If an IO exception happened when reading the String.
      */
@@ -2213,7 +1940,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
 
     /**
      * Reads the next object from the source stream.
-     * 
+     *
      * @return the object read from the source stream.
      * @throws ClassNotFoundException
      *             if the class of one of the objects in the object graph cannot
@@ -2231,7 +1958,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
 
     /**
      * Reads the next unshared object from the source stream.
-     * 
+     *
      * @return the new object read.
      * @throws ClassNotFoundException
      *             if the class of one of the objects in the object graph cannot
@@ -2266,7 +1993,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
             // original/outside caller
             if (++nestedLevels == 1) {
                 // Remember the caller's class loader
-                callerClassLoader = VM.getNonBootstrapClassLoader();
+                callerClassLoader = getClosestUserClassLoader();
             }
 
             result = readNonPrimitiveContent(unshared);
@@ -2303,10 +2030,30 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
         return result;
     }
 
+    private static final ClassLoader bootstrapLoader = Object.class.getClassLoader();
+    private static final ClassLoader systemLoader = ClassLoader.getSystemClassLoader();
+
     /**
-     * Method to be overriden by subclasses to read the next object from the
+     * Searches up the call stack to find the closest user-defined class loader.
+     *
+     * @return a user-defined class loader or null if one isn't found
+     */
+    private static ClassLoader getClosestUserClassLoader() {
+        Class<?>[] stackClasses = VMStack.getClasses(-1);
+        for (Class<?> stackClass : stackClasses) {
+            ClassLoader loader = stackClass.getClassLoader();
+            if (loader != null && loader != bootstrapLoader
+                    && loader != systemLoader) {
+                return loader;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Method to be overridden by subclasses to read the next object from the
      * source stream.
-     * 
+     *
      * @return the object read from the source stream.
      * @throws ClassNotFoundException
      *             if the class of one of the objects in the object graph cannot
@@ -2328,7 +2075,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
 
     /**
      * Reads a short (16 bit) from the source stream.
-     * 
+     *
      * @return the short value read from the source stream.
      * @throws IOException
      *             if an error occurs while reading from the source stream.
@@ -2339,7 +2086,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
 
     /**
      * Reads and validates the ObjectInputStream header from the source stream.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while reading from the source stream.
      * @throws StreamCorruptedException
@@ -2357,7 +2104,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
 
     /**
      * Reads an unsigned byte (8 bit) from the source stream.
-     * 
+     *
      * @return the unsigned byte value read from the source stream packaged in
      *         an integer.
      * @throws EOFException
@@ -2372,7 +2119,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
 
     /**
      * Reads an unsigned short (16 bit) from the source stream.
-     * 
+     *
      * @return the unsigned short value read from the source stream packaged in
      *         an integer.
      * @throws EOFException
@@ -2388,7 +2135,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
     /**
      * Reads a string encoded in {@link DataInput modified UTF-8} from the
      * source stream.
-     * 
+     *
      * @return the string encoded in {@link DataInput modified UTF-8} read from
      *         the source stream.
      * @throws EOFException
@@ -2402,41 +2149,39 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
     }
 
     /**
-     * Return the object previously read tagged with handle {@code handle}.
-     * 
-     * @param handle
-     *            The handle that this object was assigned when it was read.
-     * @return the object previously read.
-     * 
+     * Returns the previously-read object corresponding to the given serialization handle.
      * @throws InvalidObjectException
-     *             If there is no previously read object with this handle
+     *             If there is no previously-read object with this handle
      */
-    private Object registeredObjectRead(Integer handle)
-            throws InvalidObjectException {
-        Object res = objectsRead.get(handle);
-
+    private Object registeredObjectRead(int handle) throws InvalidObjectException {
+        Object res = objectsRead.get(handle - ObjectStreamConstants.baseWireHandle);
         if (res == UNSHARED_OBJ) {
-            throw new InvalidObjectException(Messages.getString("luni.C5")); //$NON-NLS-1$
+            throw new InvalidObjectException("Cannot read back reference to unshared object");
         }
-
         return res;
     }
 
     /**
-     * Assume object {@code obj} has been read, and assign a handle to
-     * it, {@code handle}.
-     * 
-     * @param obj
-     *            Non-null object being loaded.
-     * @param handle
-     *            An Integer, the handle to this object
-     * @param unshared
-     *            Boolean, indicates that caller is reading in unshared mode
-     * 
-     * @see #nextHandle
+     * Associates a read object with the its serialization handle.
      */
-    private void registerObjectRead(Object obj, Integer handle, boolean unshared) {
-        objectsRead.put(handle, unshared ? UNSHARED_OBJ : obj);
+    private void registerObjectRead(Object obj, int handle, boolean unshared) throws IOException {
+        if (unshared) {
+            obj = UNSHARED_OBJ;
+        }
+        int index = handle - ObjectStreamConstants.baseWireHandle;
+        int size = objectsRead.size();
+        // ObjectOutputStream sometimes wastes a handle. I've compared hex dumps of the RI
+        // and it seems like that's a 'feature'. Look for calls to objectsWritten.put that
+        // are guarded by !unshared tests.
+        while (index > size) {
+            objectsRead.add(null);
+            ++size;
+        }
+        if (index == size) {
+            objectsRead.add(obj);
+        } else {
+            objectsRead.set(index, obj);
+        }
     }
 
     /**
@@ -2447,7 +2192,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * a class that implements "special" deserialization rules. It can be called
      * multiple times. Validation callbacks are then done in order of decreasing
      * priority, defined by {@code priority}.
-     * 
+     *
      * @param object
      *            an object that can validate itself by receiving a callback.
      * @param priority
@@ -2464,12 +2209,11 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
         // Validation can only be registered when inside readObject calls
         Object instanceBeingRead = this.currentObject;
 
-        // We can't be called from just anywhere. There are rules.
         if (instanceBeingRead == null && nestedLevels == 0) {
             throw new NotActiveException();
         }
         if (object == null) {
-            throw new InvalidObjectException(Messages.getString("luni.C6")); //$NON-NLS-1$
+            throw new InvalidObjectException("Callback object cannot be null");
         }
         // From now on it is just insertion in a SortedCollection. Since
         // the Java class libraries don't provide that, we have to
@@ -2505,8 +2249,8 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * Reset the collection of objects already loaded by the receiver.
      */
     private void resetSeenObjects() {
-        objectsRead = new HashMap<Integer, Object>();
-        currentHandle = baseWireHandle;
+        objectsRead = new ArrayList<Object>();
+        nextHandle = baseWireHandle;
         primitiveData = emptyStream;
     }
 
@@ -2525,7 +2269,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
     /**
      * Loads the Java class corresponding to the class descriptor {@code
      * osClass} that has just been read from the source stream.
-     * 
+     *
      * @param osClass
      *            an ObjectStreamClass read from the source stream.
      * @return a Class corresponding to the descriptor {@code osClass}.
@@ -2539,14 +2283,14 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
             throws IOException, ClassNotFoundException {
         // fastpath: obtain cached value
         Class<?> cls = osClass.forClass();
-        if (null == cls) {
+        if (cls == null) {
             // slowpath: resolve the class
             String className = osClass.getName();
 
             // if it is primitive class, for example, long.class
             cls = PRIMITIVE_CLASSES.get(className);
 
-            if (null == cls) {
+            if (cls == null) {
                 // not primitive class
                 // Use the first non-null ClassLoader on the stack. If null, use
                 // the system class loader
@@ -2561,7 +2305,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * object} with a new object. Object substitution has to be activated first
      * with calling {@code enableResolveObject(true)}. This implementation just
      * returns {@code object}.
-     * 
+     *
      * @param object
      *            the original object for which a replacement may be defined.
      * @return the replacement object for {@code object}.
@@ -2613,10 +2357,10 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
      * <code>loadedStreamClass</code>matches
      * the SUID & the base name of the corresponding loaded class and
      * init private fields.
-     * 
+     *
      * @param loadedStreamClass
      *            An ObjectStreamClass that was loaded from the stream.
-     * 
+     *
      * @throws InvalidClassException
      *             If the SUID of the stream class does not match the VM class
      */
@@ -2629,21 +2373,21 @@ public class ObjectInputStream extends InputStream implements ObjectInput,
 
         if (loadedStreamClass.getSerialVersionUID() != localStreamClass
                 .getSerialVersionUID()) {
-            throw new InvalidClassException(loadedStreamClass.getName(), Messages
-                    .getString("luni.C3", loadedStreamClass, //$NON-NLS-1$
-                            localStreamClass));
+            throw new InvalidClassException(loadedStreamClass.getName(),
+                    "Incompatible class (SUID): " + loadedStreamClass +
+                            " but expected " + localStreamClass);
         }
 
         String loadedClassBaseName = getBaseName(loadedStreamClass.getName());
         String localClassBaseName = getBaseName(localStreamClass.getName());
 
         if (!loadedClassBaseName.equals(localClassBaseName)) {
-            throw new InvalidClassException(loadedStreamClass.getName(), Messages
-                    .getString("luni.C7", loadedClassBaseName, //$NON-NLS-1$
-                            localClassBaseName));
+            throw new InvalidClassException(loadedStreamClass.getName(),
+                    String.format("Incompatible class (base name): %s but expected %s",
+                            loadedClassBaseName, localClassBaseName));
         }
 
-        loadedStreamClass.initPrivateFields(localStreamClass);        
+        loadedStreamClass.initPrivateFields(localStreamClass);
     }
 
     private static String getBaseName(String fullName) {

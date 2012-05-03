@@ -23,7 +23,7 @@ package java.io;
  * does not implement {@code Serializable} or {@code Externalizable}, or if it
  * is serializable but it overrides {@code writeObject(ObjectOutputStream)} and
  * explicitly prevents serialization by throwing this type of exception.
- * 
+ *
  * @see ObjectOutput#writeObject(Object)
  * @see ObjectOutputStream#writeObject(Object)
  */
@@ -36,13 +36,12 @@ public class NotSerializableException extends ObjectStreamException {
      * filled in.
      */
     public NotSerializableException() {
-        super();
     }
 
     /**
      * Constructs a new {@link NotSerializableException} with its stack trace
      * and detail message filled in.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

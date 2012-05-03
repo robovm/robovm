@@ -27,14 +27,14 @@ package java.nio;
  * <p>
  * This class is marked final for runtime performance.
  * </p>
- * 
+ *
  */
 final class ReadOnlyCharArrayBuffer extends CharArrayBuffer {
 
     static ReadOnlyCharArrayBuffer copy(CharArrayBuffer other, int markOfOther) {
-        ReadOnlyCharArrayBuffer buf = new ReadOnlyCharArrayBuffer(other
-                .capacity(), other.backingArray, other.offset);
-        buf.limit = other.limit();
+        ReadOnlyCharArrayBuffer buf =
+                new ReadOnlyCharArrayBuffer(other.capacity(), other.backingArray, other.offset);
+        buf.limit = other.limit;
         buf.position = other.position();
         buf.mark = markOfOther;
         return buf;
@@ -90,7 +90,7 @@ final class ReadOnlyCharArrayBuffer extends CharArrayBuffer {
     }
 
     @Override
-    public final CharBuffer put(char[] src, int off, int len) {
+    public final CharBuffer put(char[] src, int srcOffset, int charCount) {
         throw new ReadOnlyBufferException();
     }
 
@@ -101,16 +101,11 @@ final class ReadOnlyCharArrayBuffer extends CharArrayBuffer {
 
     @Override
     public CharBuffer put(String src, int start, int end) {
-        if ((start < 0) || (end < 0)
-                || (long) start + (long) end > src.length()) {
-            throw new IndexOutOfBoundsException();
-        }
         throw new ReadOnlyBufferException();
     }
 
     @Override
     public CharBuffer slice() {
-        return new ReadOnlyCharArrayBuffer(remaining(), backingArray, offset
-                + position);
+        return new ReadOnlyCharArrayBuffer(remaining(), backingArray, offset + position);
     }
 }

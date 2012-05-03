@@ -26,7 +26,7 @@ public interface DSAKey {
 
     /**
      * Returns the DSA key parameters.
-     * 
+     *
      * @return the DSA key parameters.
      */
     public DSAParams getParams();

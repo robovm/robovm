@@ -15,10 +15,6 @@
  *  limitations under the License.
  */
 
-/**
-* @author Alexander Y. Kleymenov
-*/
-
 package javax.crypto.spec;
 
 import java.math.BigInteger;

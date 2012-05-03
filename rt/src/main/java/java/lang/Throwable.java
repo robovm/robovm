@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,12 +18,16 @@
 package java.lang;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import libcore.util.EmptyArray;
 
 /**
- * The superclass of all classes which can be thrown by the virtual machine. The
+ * The superclass of all classes which can be thrown by the VM. The
  * two direct subclasses are recoverable exceptions ({@code Exception}) and
  * unrecoverable errors ({@code Error}). This class provides common methods for
  * accessing a string message which provides extra information about the
@@ -43,12 +47,6 @@ import java.io.PrintWriter;
  * @see RuntimeException
  */
 public class Throwable implements java.io.Serializable {
-
-    /*
-     * This class must be implemented by the VM vendor, or the reference
-     * implementation can be used if the documented natives are implemented.
-     */
-
     private static final long serialVersionUID = -3042686055658047285L;
 
     /**
@@ -62,17 +60,26 @@ public class Throwable implements java.io.Serializable {
     private Throwable cause = this;
 
     /**
+     * Throwables suppressed by this throwable. Null when suppressed exceptions
+     * are disabled.
+     */
+    private List<Throwable> suppressedExceptions = new ArrayList<Throwable>();
+
+    /**
+     * An intermediate representation of the stack trace.  This field may
+     * be accessed by the VM; do not rename.
+     */
+    private volatile Object stackState;
+
+    /**
      * A fully-expanded representation of the stack trace.
      */
     private StackTraceElement[] stackTrace;
 
-    private long state = 0;
-    
     /**
      * Constructs a new {@code Throwable} that includes the current stack trace.
      */
     public Throwable() {
-        super();
         fillInStackTrace();
     }
 
@@ -91,7 +98,7 @@ public class Throwable implements java.io.Serializable {
     /**
      * Constructs a new {@code Throwable} with the current stack trace, the
      * specified detail message and the specified cause.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this {@code Throwable}.
      * @param throwable
@@ -117,21 +124,45 @@ public class Throwable implements java.io.Serializable {
     }
 
     /**
+     * Constructs a new {@code Throwable} with the current stack trace, the
+     * specified detail message and the specified cause.
+     *
+     * @param enableSuppression if false, throwables passed to {@link
+     *     #addSuppressed(Throwable)} will be silently discarded.
+     * @since 1.7
+     * @hide 1.7
+     */
+    protected Throwable(String detailMessage, Throwable throwable, boolean enableSuppression) {
+        this(detailMessage, throwable);
+        if (!enableSuppression) {
+            this.suppressedExceptions = null;
+        }
+    }
+
+    /**
      * Records the stack trace from the point where this method has been called
-     * to this {@code Throwable}. The method is public so that code which
-     * catches a {@code Throwable} and then re-throws it can adjust the stack
-     * trace to represent the location where the exception was re-thrown.
+     * to this {@code Throwable}. This method is invoked by the {@code Throwable} constructors.
+     *
+     * <p>This method is public so that code (such as an RPC system) which catches
+     * a {@code Throwable} and then re-throws it can replace the construction-time stack trace
+     * with a stack trace from the location where the exception was re-thrown, by <i>calling</i>
+     * {@code fillInStackTrace}.
+     *
+     * <p>This method is non-final so that non-Java language implementations can disable VM stack
+     * traces for their language. Filling in the stack trace is relatively expensive.
+     * <i>Overriding</i> this method in the root of a language's exception hierarchy allows the
+     * language to avoid paying for something it doesn't need.
      *
      * @return this {@code Throwable} instance.
      */
     public Throwable fillInStackTrace() {
-        state = fillInStackTrace0();
+        // Fill in the intermediate representation
+        stackState = nativeFillInStackTrace();
+        // Mark the full representation as empty
         stackTrace = null;
         return this;
     }
 
-    private native long fillInStackTrace0();
-    
     /**
      * Returns the extra information message which was provided when this
      * {@code Throwable} was created. Returns {@code null} if no message was
@@ -147,26 +178,13 @@ public class Throwable implements java.io.Serializable {
      * Returns the extra information message which was provided when this
      * {@code Throwable} was created. Returns {@code null} if no message was
      * provided at creation time. Subclasses may override this method to return
-     * localized text for the message. The Android reference implementation
-     * returns the unlocalized detail message.
-     * 
+     * localized text for the message. Android returns the regular detail message.
+     *
      * @return this {@code Throwable}'s localized detail message.
      */
     public String getLocalizedMessage() {
         return getMessage();
     }
-
-    /**
-     * This native must be implemented to use the reference implementation of
-     * this class. The result of this native is cloned, and returned from the
-     * public API getStackTrace().
-     *
-     * Answers an array of StackTraceElement. Each StackTraceElement represents
-     * a entry on the stack.
-     * 
-     * @return an array of StackTraceElement representing the stack
-     */
-    private native StackTraceElement[] getStackTraceImpl(long state);
 
     /**
      * Returns the array of stack trace elements of this {@code Throwable}. Each
@@ -200,7 +218,7 @@ public class Throwable implements java.io.Serializable {
      */
     public void setStackTrace(StackTraceElement[] trace) {
         StackTraceElement[] newTrace = trace.clone();
-        for (java.lang.StackTraceElement element : newTrace) {
+        for (StackTraceElement element : newTrace) {
             if (element == null) {
                 throw new NullPointerException();
             }
@@ -211,6 +229,7 @@ public class Throwable implements java.io.Serializable {
     /**
      * Writes a printable representation of this {@code Throwable}'s stack trace
      * to the {@code System.err} stream.
+     *
      */
     public void printStackTrace() {
         printStackTrace(System.err);
@@ -219,10 +238,10 @@ public class Throwable implements java.io.Serializable {
     /**
      * Counts the number of duplicate stack frames, starting from the
      * end of the stack.
-     * 
+     *
      * @param currentStack a stack to compare
      * @param parentStack a stack to compare
-     * 
+     *
      * @return the number of duplicate stack frames.
      */
     private static int countDuplicates(StackTraceElement[] currentStack,
@@ -241,15 +260,15 @@ public class Throwable implements java.io.Serializable {
     }
 
     /**
-     * Returns an array of StackTraceElements. Each StackTraceElement represents
-     * a entry on the stack. Cache the stack trace in the stackTrace field,
-     * returning the cached field when it has already been initialized.
-     * 
+     * Returns an array of StackTraceElement. Each StackTraceElement
+     * represents a entry on the stack.
+     *
      * @return an array of StackTraceElement representing the stack
      */
     private StackTraceElement[] getInternalStackTrace() {
         if (stackTrace == null) {
-            stackTrace = getStackTraceImpl(state);
+            stackTrace = nativeGetStackTrace(stackState);
+            stackState = null; // Clean up intermediate representation
         }
         return stackTrace;
     }
@@ -259,34 +278,16 @@ public class Throwable implements java.io.Serializable {
      * to the specified print stream. If the {@code Throwable} contains a
      * {@link #getCause() cause}, the method will be invoked recursively for
      * the nested {@code Throwable}.
-     * 
+     *
      * @param err
      *            the stream to write the stack trace on.
      */
     public void printStackTrace(PrintStream err) {
-        err.println(toString());
-        // Don't use getStackTrace() as it calls clone()
-        // Get stackTrace, in case stackTrace is reassigned
-        StackTraceElement[] stack = getInternalStackTrace();
-        for (java.lang.StackTraceElement element : stack) {
-            err.println("\tat " + element);
-        }
-
-        StackTraceElement[] parentStack = stack;
-        Throwable throwable = getCause();
-        while (throwable != null) {
-            err.print("Caused by: ");
-            err.println(throwable);
-            StackTraceElement[] currentStack = throwable.getInternalStackTrace();
-            int duplicates = countDuplicates(currentStack, parentStack);
-            for (int i = 0; i < currentStack.length - duplicates; i++) {
-                err.println("\tat " + currentStack[i]);
-            }
-            if (duplicates > 0) {
-                err.println("\t... " + duplicates + " more");
-            }
-            parentStack = currentStack;
-            throwable = throwable.getCause();
+        try {
+            printStackTrace(err, "", null);
+        } catch (IOException e) {
+            // Appendable.append throws IOException but PrintStream.append doesn't.
+            throw new AssertionError();
         }
     }
 
@@ -295,34 +296,62 @@ public class Throwable implements java.io.Serializable {
      * to the specified print writer. If the {@code Throwable} contains a
      * {@link #getCause() cause}, the method will be invoked recursively for the
      * nested {@code Throwable}.
-     * 
+     *
      * @param err
      *            the writer to write the stack trace on.
      */
     public void printStackTrace(PrintWriter err) {
-        err.println(toString());
-        // Don't use getStackTrace() as it calls clone()
-        // Get stackTrace, in case stackTrace is reassigned
+        try {
+            printStackTrace(err, "", null);
+        } catch (IOException e) {
+            // Appendable.append throws IOException, but PrintWriter.append doesn't.
+            throw new AssertionError();
+        }
+    }
+
+    /**
+     * @param indent additional indentation on each line of the stack trace.
+     *     This is the empty string for all but suppressed throwables.
+     * @param parentStack the parent stack trace to suppress duplicates from, or
+     *     null if this stack trace has no parent.
+     */
+    private void printStackTrace(Appendable err, String indent, StackTraceElement[] parentStack)
+            throws IOException {
+        err.append(toString());
+        err.append("\n");
+
         StackTraceElement[] stack = getInternalStackTrace();
-        for (java.lang.StackTraceElement element : stack) {
-            err.println("\tat " + element);
+        if (stack != null) {
+            int duplicates = parentStack != null ? countDuplicates(stack, parentStack) : 0;
+            for (int i = 0; i < stack.length - duplicates; i++) {
+                err.append(indent);
+                err.append("\tat ");
+                err.append(stack[i].toString());
+                err.append("\n");
+            }
+
+            if (duplicates > 0) {
+                err.append(indent);
+                err.append("\t... ");
+                err.append(Integer.toString(duplicates));
+                err.append(" more\n");
+            }
         }
 
-        StackTraceElement[] parentStack = stack;
-        Throwable throwable = getCause();
-        while (throwable != null) {
-            err.print("Caused by: ");
-            err.println(throwable);
-            StackTraceElement[] currentStack = throwable.getInternalStackTrace();
-            int duplicates = countDuplicates(currentStack, parentStack);
-            for (int i = 0; i < currentStack.length - duplicates; i++) {
-                err.println("\tat " + currentStack[i]);
+        // Print suppressed exceptions indented one level deeper.
+        if (suppressedExceptions != null) {
+            for (Throwable throwable : suppressedExceptions) {
+                err.append(indent);
+                err.append("\tSuppressed: ");
+                throwable.printStackTrace(err, indent + "\t", stack);
             }
-            if (duplicates > 0) {
-                err.println("\t... " + duplicates + " more");
-            }
-            parentStack = currentStack;
-            throwable = throwable.getCause();
+        }
+
+        Throwable cause = getCause();
+        if (cause != null) {
+            err.append(indent);
+            err.append("Caused by: ");
+            cause.printStackTrace(err, indent, stack);
         }
     }
 
@@ -333,8 +362,7 @@ public class Throwable implements java.io.Serializable {
         if (msg == null) {
             return name;
         }
-        return new StringBuilder(name.length() + 2 + msg.length()).append(name).append(": ")
-                .append(msg).toString();
+        return name + ": " + msg;
     }
 
     /**
@@ -349,21 +377,21 @@ public class Throwable implements java.io.Serializable {
      * @throws IllegalStateException
      *             if the cause has already been initialized.
      */
-    public synchronized Throwable initCause(Throwable throwable) {
-        if (cause == this) {
-            if (throwable != this) {
-                cause = throwable;
-                return this;
-            }
-            throw new IllegalArgumentException("Cause cannot be the receiver");
+    public Throwable initCause(Throwable throwable) {
+        if (cause != this) {
+            throw new IllegalStateException("Cause already initialized");
         }
-        throw new IllegalStateException("Cause already initialized");
+        if (throwable == this) {
+            throw new IllegalArgumentException("throwable == this");
+        }
+        cause = throwable;
+        return this;
     }
 
     /**
      * Returns the cause of this {@code Throwable}, or {@code null} if there is
      * no cause.
-     * 
+     *
      * @return Throwable this {@code Throwable}'s cause.
      */
     public Throwable getCause() {
@@ -373,9 +401,64 @@ public class Throwable implements java.io.Serializable {
         return cause;
     }
 
-    private void writeObject(ObjectOutputStream s) throws IOException {
+    /**
+     * Adds {@code throwable} to the list of throwables suppressed by this. The
+     * throwable will included when this exception's stack trace is printed.
+     *
+     * @throws IllegalArgumentException if {@code throwable == this}.
+     * @throws NullPointerException if {@code throwable == null}.
+     * @since 1.7
+     * @hide 1.7
+     */
+    public final void addSuppressed(Throwable throwable) {
+        if (throwable == this) {
+            throw new IllegalArgumentException("suppressed == this");
+        }
+        if (throwable == null) {
+            throw new NullPointerException("suppressed == null");
+        }
+        if (suppressedExceptions != null) {
+            suppressedExceptions.add(throwable);
+        }
+    }
+
+    /**
+     * Returns the throwables suppressed by this.
+     *
+     * @since 1.7
+     * @hide 1.7
+     */
+    public final Throwable[] getSuppressed() {
+        return (suppressedExceptions != null)
+                ? suppressedExceptions.toArray(new Throwable[suppressedExceptions.size()])
+                : EmptyArray.THROWABLE;
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
         // ensure the stackTrace field is initialized
         getInternalStackTrace();
-        s.defaultWriteObject();
+        out.defaultWriteObject();
     }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+
+        if (suppressedExceptions != null) {
+            // the deserialized list may be unmodifiable, so just create a mutable copy
+            suppressedExceptions = new ArrayList<Throwable>(suppressedExceptions);
+        }
+    }
+
+    /*
+     * Creates a compact, VM-specific collection of goodies, suitable for
+     * storing in the "stackState" field, based on the current thread's
+     * call stack.
+     */
+    private static native Object nativeFillInStackTrace();
+
+    /*
+     * Creates an array of StackTraceElement objects from the data held
+     * in "stackState".
+     */
+    private static native StackTraceElement[] nativeGetStackTrace(Object stackState);
 }

@@ -18,41 +18,17 @@
 package javax.net.ssl;
 
 import java.security.BasicPermission;
+import java.security.Permission;
 
 /**
- * The class representing a network permission.
- * <p>
- * The following permissions are defined, allowing the specified action:
- * <dl>
- * <dt> {@code "setHostnameVerifier"} </dt>
- * <dd> setting a callback object for additional verification of a hostname mismatch.</dd>
- * <dt> {@code "getSSLSessionContext"} </dt>
- * <dd> getting the {@code SSLSessionContext} of an {@code SSLSession}.</dd>
- * </dl>
+ * Legacy security code; do not use.
  */
 public final class SSLPermission extends BasicPermission {
+    public SSLPermission(String name) { super(""); }
 
-    private static final long serialVersionUID = -3456898025505876775L;
+    public SSLPermission(String name, String actions) { super("", ""); }
 
-    /**
-     * Creates a new {@code SSLPermission} with the specified name.
-     *
-     * @param name
-     *            the permission name.
-     */
-    public SSLPermission(String name) {
-        super(name);
-    }
+    @Override public String getActions() { return null; }
 
-    /**
-     * Creates a new {@code SSLPermission} with the specified name.
-     *
-     * @param name
-     *            the permission name.
-     * @param actions
-     *            is ignored and should be {@code null}.
-     */
-    public SSLPermission(String name, String actions) {
-        super(name, actions);
-    }
+    @Override public boolean implies(Permission permission) { return true; }
 }

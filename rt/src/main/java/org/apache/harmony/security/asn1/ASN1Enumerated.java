@@ -17,27 +17,28 @@
 
 /**
 * @author Stepan M. Mishura
+* @version $Revision$
 */
 
 package org.apache.harmony.security.asn1;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 
 /**
  * This class represents ASN.1 Enumerated type.
- * 
- * @see http://asn1.elibel.tm.fr/en/standards/index.htm
+ *
+ * @see <a href="http://asn1.elibel.tm.fr/en/standards/index.htm">ASN.1</a>
  */
-
-public class ASN1Enumerated extends ASN1Primitive {
+public final class ASN1Enumerated extends ASN1Primitive {
 
     // default implementation
     private static final ASN1Enumerated ASN1 = new ASN1Enumerated();
 
     /**
      * Constructs ASN.1 Enumerated type
-     * 
+     *
      * The constructor is provided for inheritance purposes
      * when there is a need to create a custom ASN.1 Enumerated type.
      * To get a default implementation it is recommended to use
@@ -49,7 +50,7 @@ public class ASN1Enumerated extends ASN1Primitive {
 
     /**
      * Returns ASN.1 Enumerated type default implementation
-     * 
+     *
      * The default implementation works with encoding
      * that is represented as byte array.
      *
@@ -58,12 +59,6 @@ public class ASN1Enumerated extends ASN1Primitive {
     public static ASN1Enumerated getInstance() {
         return ASN1;
     }
-
-    //
-    //
-    // Decode
-    //
-    //
 
     public Object decode(BerInputStream in) throws IOException {
         in.readEnumerated();
@@ -77,21 +72,11 @@ public class ASN1Enumerated extends ASN1Primitive {
     /**
      * Extracts array of bytes from BER input stream.
      *
-     * @param in - BER input stream
      * @return array of bytes
      */
     public Object getDecodedObject(BerInputStream in) throws IOException {
-        byte[] bytesEncoded = new byte[in.length];
-        System.arraycopy(in.buffer, in.contentOffset, bytesEncoded, 0,
-                in.length);
-        return bytesEncoded;
+        return Arrays.copyOfRange(in.buffer, in.contentOffset, in.contentOffset + in.length);
     }
-
-    //
-    //
-    // Encode
-    //
-    //
 
     public void encodeContent(BerOutputStream out) {
         out.encodeInteger();

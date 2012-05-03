@@ -14,13 +14,12 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
- * under the License.    
+ * under the License.
  */
 
 package org.apache.harmony.security.x509.tsp;
 
 import java.math.BigInteger;
-
 import org.apache.harmony.security.asn1.ASN1Boolean;
 import org.apache.harmony.security.asn1.ASN1Implicit;
 import org.apache.harmony.security.asn1.ASN1Integer;
@@ -34,7 +33,7 @@ import org.apache.harmony.security.x509.Extensions;
 /**
  * As defined in Time-Stamp Protocol (TSP)
  * (http://www.ietf.org/rfc/rfc3161.txt)
- * 
+ *
  * TimeStampReq ::= SEQUENCE  {
  *    version                      INTEGER  { v1(1) },
  *    messageImprint               MessageImprint,
@@ -43,9 +42,9 @@ import org.apache.harmony.security.x509.Extensions;
  *    reqPolicy             TSAPolicyId              OPTIONAL,
  *    nonce                 INTEGER                  OPTIONAL,
  *    certReq               BOOLEAN                  DEFAULT FALSE,
- *    extensions            [0] IMPLICIT Extensions  OPTIONAL  
+ *    extensions            [0] IMPLICIT Extensions  OPTIONAL
  *  }
- *  
+ *
  *  TSAPolicyId ::= OBJECT IDENTIFIER
  */
 public class TimeStampReq {
@@ -60,7 +59,7 @@ public class TimeStampReq {
     private final Boolean certReq;
 
     private final Extensions extensions;
-    
+
     private byte [] encoding;
 
     public TimeStampReq(int version, MessageImprint messageImprint,
@@ -151,31 +150,31 @@ public class TimeStampReq {
      */
     public int getVersion() {
         return version;
-    }    
-    
+    }
+
     public static final ASN1Sequence ASN1 = new ASN1Sequence(new ASN1Type[] {
             ASN1Integer.getInstance(),              // version
-            MessageImprint.ASN1,                    // messageImprint 
+            MessageImprint.ASN1,                    // messageImprint
             ASN1Oid.getInstance(),                  // reqPolicy
             ASN1Integer.getInstance(),              // nonce
             ASN1Boolean.getInstance(),              // certReq
             new ASN1Implicit(0, Extensions.ASN1)}) {// extensions
-                
+
         {
             setDefault(Boolean.FALSE, 4);
             setOptional(2);
             setOptional(3);
             setOptional(5);
         }
-        
+
         protected Object getDecodedObject(BerInputStream in) {
             Object[] values = (Object[]) in.content;
-            
+
             String objID = (values[2] == null) ? null : ObjectIdentifier
                     .toString((int[]) values[2]);
             BigInteger nonce = (values[3] == null) ? null : new BigInteger(
                     (byte[]) values[3]);
-            
+
             if (values[5] == null) {
                 return new TimeStampReq(
                         ASN1Integer.toIntValue(values[0]),
@@ -198,7 +197,7 @@ public class TimeStampReq {
                    );
             }
         }
-        
+
         protected void getValues(Object object, Object[] values) {
             TimeStampReq req = (TimeStampReq) object;
             values[0] = ASN1Integer.fromIntValue(req.version);

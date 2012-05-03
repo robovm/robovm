@@ -19,7 +19,7 @@ package java.security;
 
 /**
  * {@code PublicKey} is the common interface for public keys.
- * 
+ *
  * @see PrivateKey
  */
 public interface PublicKey extends Key {

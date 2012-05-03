@@ -24,26 +24,25 @@ import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 import javax.xml.namespace.QName;
 
 /**
  * <p>Immutable representation of a time span as defined in
  * the W3C XML Schema 1.0 specification.</p>
- * 
+ *
  * <p>A Duration object represents a period of Gregorian time,
  * which consists of six fields (years, months, days, hours,
  * minutes, and seconds) plus a sign (+/-) field.</p>
- * 
+ *
  * <p>The first five fields have non-negative (>=0) integers or null
  * (which represents that the field is not set),
  * and the seconds field has a non-negative decimal or null.
- * A negative sign indicates a negative duration.</p> 
- * 
+ * A negative sign indicates a negative duration.</p>
+ *
  * <p>This class provides a number of methods that make it easy
  * to use for the duration datatype of XML Schema 1.0 with
  * the errata.</p>
- * 
+ *
  * <h2>Order relationship</h2>
  * <p>Duration objects only have partial order, where two values A and B
  * maybe either:</p>
@@ -57,10 +56,10 @@ import javax.xml.namespace.QName;
  * <p>For example, 30 days cannot be meaningfully compared to one month.
  * The {@link #compare(Duration duration)} method implements this
  * relationship.</p>
- * 
+ *
  * <p>See the {@link #isLongerThan(Duration)} method for details about
  * the order relationship among <code>Duration</code> objects.</p>
- * 
+ *
  * <h2>Operations over Duration</h2>
  * <p>This class provides a set of basic arithmetic operations, such
  * as addition, subtraction and multiplication.
@@ -68,33 +67,33 @@ import javax.xml.namespace.QName;
  * fail for some combinations of operations. For example, you cannot
  * subtract 15 days from 1 month. See the javadoc of those methods
  * for detailed conditions where this could happen.</p>
- * 
+ *
  * <p>Also, division of a duration by a number is not provided because
  * the <code>Duration</code> class can only deal with finite precision
- * decimal numbers. For example, one cannot represent 1 sec divided by 3.</p> 
- * 
+ * decimal numbers. For example, one cannot represent 1 sec divided by 3.</p>
+ *
  * <p>However, you could substitute a division by 3 with multiplying
  * by numbers such as 0.3 or 0.333.</p>
- * 
+ *
  * <h2>Range of allowed values</h2>
  * <p>
  * Because some operations of <code>Duration</code> rely on {@link Calendar}
  * even though {@link Duration} can hold very large or very small values,
  * some of the methods may not work correctly on such <code>Duration</code>s.
  * The impacted methods document their dependency on {@link Calendar}.
- * 
- *  
+ *
+ *
  * @author <a href="mailto:Joseph.Fialli@Sun.COM">Joseph Fialli</a>
  * @author <a href="mailto:Kohsuke.Kawaguchi@Sun.com">Kohsuke Kawaguchi</a>
  * @author <a href="mailto:Jeff.Suttor@Sun.com">Jeff Suttor</a>
- * @version $Revision: 759828 $, $Date: 2009-03-29 21:26:29 -0400 (Sun, 29 Mar 2009) $    
+ * @version $Revision: 759828 $, $Date: 2009-03-29 18:26:29 -0700 (Sun, 29 Mar 2009) $
  * @see XMLGregorianCalendar#add(Duration)
  * @since 1.5
  */
-public abstract class Duration {
+public abstract class   Duration {
 
     /**
-     * <p>Return the name of the XML Schema date/time type that this instance 
+     * <p>Return the name of the XML Schema date/time type that this instance
      * maps to. Type is computed based on fields that are set,
      * i.e. {@link #isSet(DatatypeConstants.Field field)} == <code>true</code>.</p>
      *
@@ -146,12 +145,12 @@ public abstract class Duration {
      *     </tr>
      *   </tbody>
      * </table>
-     * 
+     *
      * @return one of the following constants:
      *   {@link DatatypeConstants#DURATION},
      *   {@link DatatypeConstants#DURATION_DAYTIME} or
      *   {@link DatatypeConstants#DURATION_YEARMONTH}.
-     *  
+     *
      * @throws IllegalStateException If the combination of set fields does not match one of the XML Schema date/time datatypes.
      */
     public QName getXMLSchemaType() {
@@ -208,7 +207,7 @@ public abstract class Duration {
 
     /**
      * Returns the sign of this duration in -1,0, or 1.
-     * 
+     *
      * @return
      *      -1 if this duration is negative, 0 if the duration is zero,
      *      and 1 if the duration is positive.
@@ -217,14 +216,14 @@ public abstract class Duration {
 
     /**
      * <p>Get the years value of this <code>Duration</code> as an <code>int</code> or <code>0</code> if not present.</p>
-     * 
+     *
      * <p><code>getYears()</code> is a convenience method for
      * {@link #getField(DatatypeConstants.Field field) getField(DatatypeConstants.YEARS)}.</p>
-     * 
+     *
      * <p>As the return value is an <code>int</code>, an incorrect value will be returned for <code>Duration</code>s
      * with years that go beyond the range of an <code>int</code>.
      * Use {@link #getField(DatatypeConstants.Field field) getField(DatatypeConstants.YEARS)} to avoid possible loss of precision.</p>
-     * 
+     *
      * @return If the years field is present, return its value as an <code>int</code>, else return <code>0</code>.
      */
     public int getYears() {
@@ -234,10 +233,10 @@ public abstract class Duration {
     /**
      * Obtains the value of the MONTHS field as an integer value,
      * or 0 if not present.
-     * 
+     *
      * This method works just like {@link #getYears()} except
      * that this method works on the MONTHS field.
-     * 
+     *
      * @return Months of this <code>Duration</code>.
      */
     public int getMonths() {
@@ -247,10 +246,10 @@ public abstract class Duration {
     /**
      * Obtains the value of the DAYS field as an integer value,
      * or 0 if not present.
-     * 
+     *
      * This method works just like {@link #getYears()} except
      * that this method works on the DAYS field.
-     * 
+     *
      * @return Days of this <code>Duration</code>.
      */
     public int getDays() {
@@ -260,12 +259,12 @@ public abstract class Duration {
     /**
      * Obtains the value of the HOURS field as an integer value,
      * or 0 if not present.
-     * 
+     *
      * This method works just like {@link #getYears()} except
      * that this method works on the HOURS field.
-     * 
+     *
      * @return Hours of this <code>Duration</code>.
-     * 
+     *
      */
     public int getHours() {
         return getFieldValueAsInt(DatatypeConstants.HOURS);
@@ -274,12 +273,12 @@ public abstract class Duration {
     /**
      * Obtains the value of the MINUTES field as an integer value,
      * or 0 if not present.
-     * 
+     *
      * This method works just like {@link #getYears()} except
      * that this method works on the MINUTES field.
-     * 
+     *
      * @return Minutes of this <code>Duration</code>.
-     * 
+     *
      */
     public int getMinutes() {
         return getFieldValueAsInt(DatatypeConstants.MINUTES);
@@ -288,10 +287,10 @@ public abstract class Duration {
     /**
      * Obtains the value of the SECONDS field as an integer value,
      * or 0 if not present.
-     * 
+     *
      * This method works just like {@link #getYears()} except
      * that this method works on the SECONDS field.
-     * 
+     *
      * @return seconds in the integer value. The fraction of seconds
      *   will be discarded (for example, if the actual value is 2.5,
      *   this method returns 2)
@@ -302,33 +301,33 @@ public abstract class Duration {
 
     /**
      * <p>Returns the length of the duration in milliseconds.</p>
-     * 
+     *
      * <p>If the seconds field carries more digits than millisecond order,
-     * those will be simply discarded (or in other words, rounded to zero.)  
+     * those will be simply discarded (or in other words, rounded to zero.)
      * For example, for any Calendar value <code>x</code>,</p>
      * <pre>
      * <code>new Duration("PT10.00099S").getTimeInMills(x) == 10000</code>.
      * <code>new Duration("-PT10.00099S").getTimeInMills(x) == -10000</code>.
      * </pre>
-     * 
+     *
      * <p>
      * Note that this method uses the {@link #addTo(Calendar)} method,
      * which may work incorrectly with <code>Duration</code> objects with
      * very large values in its fields. See the {@link #addTo(Calendar)}
      * method for details.
-     * 
+     *
      * @param startInstant
      *      The length of a month/year varies. The <code>startInstant</code> is
      *      used to disambiguate this variance. Specifically, this method
      *      returns the difference between <code>startInstant</code> and
      *      <code>startInstant+duration</code>
-     * 
+     *
      * @return milliseconds between <code>startInstant</code> and
      *   <code>startInstant</code> plus this <code>Duration</code>
      *
-     * @throws NullPointerException if <code>startInstant</code> parameter 
+     * @throws NullPointerException if <code>startInstant</code> parameter
      * is null.
-     * 
+     *
      */
     public long getTimeInMillis(final Calendar startInstant) {
         Calendar cal = (Calendar) startInstant.clone();
@@ -339,30 +338,30 @@ public abstract class Duration {
 
     /**
      * <p>Returns the length of the duration in milliseconds.</p>
-     * 
+     *
      * <p>If the seconds field carries more digits than millisecond order,
      * those will be simply discarded (or in other words, rounded to zero.)
-     * For example, for any <code>Date</code> value <code>x</code>,</p>   
+     * For example, for any <code>Date</code> value <code>x</code>,</p>
      * <pre>
      * <code>new Duration("PT10.00099S").getTimeInMills(x) == 10000</code>.
      * <code>new Duration("-PT10.00099S").getTimeInMills(x) == -10000</code>.
      * </pre>
-     * 
+     *
      * <p>
      * Note that this method uses the {@link #addTo(Date)} method,
      * which may work incorrectly with <code>Duration</code> objects with
      * very large values in its fields. See the {@link #addTo(Date)}
      * method for details.
-     * 
+     *
      * @param startInstant
      *      The length of a month/year varies. The <code>startInstant</code> is
      *      used to disambiguate this variance. Specifically, this method
      *      returns the difference between <code>startInstant</code> and
      *      <code>startInstant+duration</code>.
-     * 
+     *
      * @throws NullPointerException
      *      If the startInstant parameter is null.
-     * 
+     *
      * @return milliseconds between <code>startInstant</code> and
      *   <code>startInstant</code> plus this <code>Duration</code>
      *
@@ -376,15 +375,15 @@ public abstract class Duration {
     }
 
     /**
-     * Gets the value of a field. 
-     * 
+     * Gets the value of a field.
+     *
      * Fields of a duration object may contain arbitrary large value.
      * Therefore this method is designed to return a {@link Number} object.
-     * 
+     *
      * In case of YEARS, MONTHS, DAYS, HOURS, and MINUTES, the returned
      * number will be a non-negative integer. In case of seconds,
      * the returned number may be a non-negative decimal value.
-     * 
+     *
      * @param field
      *      one of the six Field constants (YEARS,MONTHS,DAYS,HOURS,
      *      MINUTES, or SECONDS.)
@@ -394,20 +393,20 @@ public abstract class Duration {
      *      represents its value. If it is not present, return null.
      *      For YEARS, MONTHS, DAYS, HOURS, and MINUTES, this method
      *      returns a {@link java.math.BigInteger} object. For SECONDS, this
-     *      method returns a {@link java.math.BigDecimal}. 
-     * 
+     *      method returns a {@link java.math.BigDecimal}.
+     *
      * @throws NullPointerException If the <code>field</code> is <code>null</code>.
      */
     public abstract Number getField(final DatatypeConstants.Field field);
-    
+
     /**
      * Gets the value of a field as an <code>int</code>.
-     * 
-     * @param field 
+     *
+     * @param field
      *      one of the six Field constants (YEARS,MONTHS,DAYS,HOURS,
      *      MINUTES, or SECONDS.)
-     * @return 
-     *      If the field is present, return its value as an <code>int</code>, 
+     * @return
+     *      If the field is present, return its value as an <code>int</code>,
      *      else return <code>0</code>.
      */
     private int getFieldValueAsInt(final DatatypeConstants.Field field) {
@@ -420,16 +419,16 @@ public abstract class Duration {
 
     /**
      * Checks if a field is set.
-     * 
+     *
      * A field of a duration object may or may not be present.
      * This method can be used to test if a field is present.
-     * 
+     *
      * @param field
      *      one of the six Field constants (YEARS,MONTHS,DAYS,HOURS,
      *      MINUTES, or SECONDS.)
      * @return
      *      true if the field is present. false if not.
-     * 
+     *
      * @throws NullPointerException
      *      If the field parameter is null.
      */
@@ -437,7 +436,7 @@ public abstract class Duration {
 
     /**
      * <p>Computes a new duration whose value is <code>this+rhs</code>.</p>
-     * 
+     *
      * <p>For example,</p>
      * <pre>
      * "1 day" + "-3 days" = "-2 days"
@@ -446,11 +445,11 @@ public abstract class Duration {
      * "15 hours" + "-3 days" = "-(2 days,9 hours)"
      * "1 year" + "-1 day" = IllegalStateException
      * </pre>
-     * 
+     *
      * <p>Since there's no way to meaningfully subtract 1 day from 1 month,
      * there are cases where the operation fails in
-     * {@link IllegalStateException}.</p> 
-     * 
+     * {@link IllegalStateException}.</p>
+     *
      * <p>
      * Formally, the computation is defined as follows.</p>
      * <p>
@@ -458,60 +457,60 @@ public abstract class Duration {
      * are both positive without losing generality (i.e.,
      * <code>(-X)+Y=Y-X</code>, <code>X+(-Y)=X-Y</code>,
      * <code>(-X)+(-Y)=-(X+Y)</code>)
-     * 
+     *
      * <p>
-     * Addition of two positive <code>Duration</code>s are simply defined as  
+     * Addition of two positive <code>Duration</code>s are simply defined as
      * field by field addition where missing fields are treated as 0.
      * <p>
      * A field of the resulting <code>Duration</code> will be unset if and
-     * only if respective fields of two input <code>Duration</code>s are unset. 
+     * only if respective fields of two input <code>Duration</code>s are unset.
      * <p>
      * Note that <code>lhs.add(rhs)</code> will be always successful if
      * <code>lhs.signum()*rhs.signum()!=-1</code> or both of them are
      * normalized.</p>
-     * 
+     *
      * @param rhs <code>Duration</code> to add to this <code>Duration</code>
-     * 
+     *
      * @return
      *      non-null valid Duration object.
-     * 
+     *
      * @throws NullPointerException
      *      If the rhs parameter is null.
      * @throws IllegalStateException
      *      If two durations cannot be meaningfully added. For
      *      example, adding negative one day to one month causes
      *      this exception.
-     * 
-     * 
+     *
+     *
      * @see #subtract(Duration)
      */
     public abstract Duration add(final Duration rhs);
 
     /**
      * Adds this duration to a {@link Calendar} object.
-     * 
+     *
      * <p>
      * Calls {@link java.util.Calendar#add(int,int)} in the
      * order of YEARS, MONTHS, DAYS, HOURS, MINUTES, SECONDS, and MILLISECONDS
      * if those fields are present. Because the {@link Calendar} class
      * uses int to hold values, there are cases where this method
      * won't work correctly (for example if values of fields
-     * exceed the range of int.) 
+     * exceed the range of int.)
      * </p>
-     * 
+     *
      * <p>
      * Also, since this duration class is a Gregorian duration, this
      * method will not work correctly if the given {@link Calendar}
-     * object is based on some other calendar systems. 
+     * object is based on some other calendar systems.
      * </p>
-     * 
+     *
      * <p>
      * Any fractional parts of this <code>Duration</code> object
      * beyond milliseconds will be simply ignored. For example, if
      * this duration is "P1.23456S", then 1 is added to SECONDS,
-     * 234 is added to MILLISECONDS, and the rest will be unused. 
+     * 234 is added to MILLISECONDS, and the rest will be unused.
      * </p>
-     * 
+     *
      * <p>
      * Note that because {@link Calendar#add(int, int)} is using
      * <tt>int</tt>, <code>Duration</code> with values beyond the
@@ -520,7 +519,7 @@ public abstract class Duration {
      * {@link XMLGregorianCalendar#add(Duration)} provides the same
      * basic operation as this method while avoiding
      * the overflow/underflow issues.
-     * 
+     *
      * @param calendar
      *      A calendar object whose value will be modified.
      * @throws NullPointerException
@@ -530,20 +529,20 @@ public abstract class Duration {
 
     /**
      * Adds this duration to a {@link Date} object.
-     * 
+     *
      * <p>
      * The given date is first converted into
      * a {@link java.util.GregorianCalendar}, then the duration
      * is added exactly like the {@link #addTo(Calendar)} method.
-     * 
+     *
      * <p>
      * The updated time instant is then converted back into a
      * {@link Date} object and used to update the given {@link Date} object.
-     * 
+     *
      * <p>
      * This somewhat redundant computation is necessary to unambiguously
      * determine the duration of months and years.
-     * 
+     *
      * @param date
      *      A date object whose value will be modified.
      * @throws NullPointerException
@@ -561,14 +560,14 @@ public abstract class Duration {
         }
 
         Calendar cal = new GregorianCalendar();
-        cal.setTime(date); 
+        cal.setTime(date);
         this.addTo(cal);
         date.setTime(getCalendarTimeInMillis(cal));
     }
 
     /**
      * <p>Computes a new duration whose value is <code>this-rhs</code>.</p>
-     * 
+     *
      * <p>For example:</p>
      * <pre>
      * "1 day" - "-3 days" = "4 days"
@@ -577,42 +576,42 @@ public abstract class Duration {
      * "15 hours" - "-3 days" = "3 days and 15 hours"
      * "1 year" - "-1 day" = "1 year and 1 day"
      * </pre>
-     * 
+     *
      * <p>Since there's no way to meaningfully subtract 1 day from 1 month,
-     * there are cases where the operation fails in {@link IllegalStateException}.</p> 
-     * 
+     * there are cases where the operation fails in {@link IllegalStateException}.</p>
+     *
      * <p>Formally the computation is defined as follows.
      * First, we can assume that two <code>Duration</code>s are both positive
      * without losing generality.  (i.e.,
      * <code>(-X)-Y=-(X+Y)</code>, <code>X-(-Y)=X+Y</code>,
      * <code>(-X)-(-Y)=-(X-Y)</code>)</p>
-     *  
+     *
      * <p>Then two durations are subtracted field by field.
      * If the sign of any non-zero field <tt>F</tt> is different from
      * the sign of the most significant field,
      * 1 (if <tt>F</tt> is negative) or -1 (otherwise)
      * will be borrowed from the next bigger unit of <tt>F</tt>.</p>
-     * 
+     *
      * <p>This process is repeated until all the non-zero fields have
-     * the same sign.</p> 
-     * 
+     * the same sign.</p>
+     *
      * <p>If a borrow occurs in the days field (in other words, if
      * the computation needs to borrow 1 or -1 month to compensate
      * days), then the computation fails by throwing an
      * {@link IllegalStateException}.</p>
-     * 
+     *
      * @param rhs <code>Duration</code> to subtract from this <code>Duration</code>.
-     *  
+     *
      * @return New <code>Duration</code> created from subtracting <code>rhs</code> from this <code>Duration</code>.
-     * 
+     *
      * @throws IllegalStateException
      *      If two durations cannot be meaningfully subtracted. For
      *      example, subtracting one day from one month causes
      *      this exception.
-     * 
+     *
      * @throws NullPointerException
      *      If the rhs parameter is null.
-     * 
+     *
      * @see #add(Duration)
      */
     public Duration subtract(final Duration rhs) {
@@ -622,17 +621,17 @@ public abstract class Duration {
     /**
      * <p>Computes a new duration whose value is <code>factor</code> times
      * longer than the value of this duration.</p>
-     * 
+     *
      * <p>This method is provided for the convenience.
      * It is functionally equivalent to the following code:</p>
      * <pre>
      * multiply(new BigDecimal(String.valueOf(factor)))
      * </pre>
-     * 
+     *
      * @param factor Factor times longer of new <code>Duration</code> to create.
-     * 
+     *
      * @return New <code>Duration</code> that is <code>factor</code>times longer than this <code>Duration</code>.
-     * 
+     *
      * @see #multiply(BigDecimal)
      */
     public Duration multiply(int factor) {
@@ -642,7 +641,7 @@ public abstract class Duration {
     /**
      * Computes a new duration whose value is <code>factor</code> times
      * longer than the value of this duration.
-     * 
+     *
      * <p>
      * For example,
      * <pre>
@@ -650,12 +649,12 @@ public abstract class Duration {
      * "PT1M" (1 min) * "0.3" = "PT18S" (18 seconds)
      * "P1M" (1 month) * "1.5" = IllegalStateException
      * </pre>
-     *  
+     *
      * <p>
      * Since the <code>Duration</code> class is immutable, this method
      * doesn't change the value of this object. It simply computes
      * a new Duration object and returns it.
-     * 
+     *
      * <p>
      * The operation will be performed field by field with the precision
      * of {@link BigDecimal}. Since all the fields except seconds are
@@ -666,23 +665,23 @@ public abstract class Duration {
      * which will be carried down to "PT12H" (12 hours).
      * When fractions of month cannot be meaningfully carried down
      * to days, or year to months, this will cause an
-     * {@link IllegalStateException} to be thrown. 
+     * {@link IllegalStateException} to be thrown.
      * For example if you multiple one month by 0.5.</p>
-     * 
+     *
      * <p>
      * To avoid {@link IllegalStateException}, use
      * the {@link #normalizeWith(Calendar)} method to remove the years
      * and months fields.
-     * 
+     *
      * @param factor to multiply by
-     * 
+     *
      * @return
      *      returns a non-null valid <code>Duration</code> object
      *
-     * @throws IllegalStateException if operation produces fraction in 
+     * @throws IllegalStateException if operation produces fraction in
      * the months field.
      *
-     * @throws NullPointerException if the <code>factor</code> parameter is 
+     * @throws NullPointerException if the <code>factor</code> parameter is
      * <code>null</code>.
      *
      */
@@ -691,56 +690,56 @@ public abstract class Duration {
     /**
      * Returns a new <code>Duration</code> object whose
      * value is <code>-this</code>.
-     * 
+     *
      * <p>
      * Since the <code>Duration</code> class is immutable, this method
      * doesn't change the value of this object. It simply computes
      * a new Duration object and returns it.
-     * 
+     *
      * @return
      *      always return a non-null valid <code>Duration</code> object.
      */
-    public abstract Duration negate();	
+    public abstract Duration negate();
 
     /**
      * <p>Converts the years and months fields into the days field
      * by using a specific time instant as the reference point.</p>
-     * 
+     *
      * <p>For example, duration of one month normalizes to 31 days
      * given the start time instance "July 8th 2003, 17:40:32".</p>
-     * 
+     *
      * <p>Formally, the computation is done as follows:</p>
      * <ol>
      *  <li>the given Calendar object is cloned</li>
      *  <li>the years, months and days fields will be added to the {@link Calendar} object
-     *      by using the {@link Calendar#add(int,int)} method</li> 
+     *      by using the {@link Calendar#add(int,int)} method</li>
      *  <li>the difference between the two Calendars in computed in milliseconds and converted to days,
      *     if a remainder occurs due to Daylight Savings Time, it is discarded</li>
      *  <li>the computed days, along with the hours, minutes and seconds
      *      fields of this duration object is used to construct a new
      *      Duration object.</li>
      * </ol>
-     * 
+     *
      * <p>Note that since the Calendar class uses <code>int</code> to
      * hold the value of year and month, this method may produce
      * an unexpected result if this duration object holds
      * a very large value in the years or months fields.</p>
      *
      * @param startTimeInstant <code>Calendar</code> reference point.
-     *  
+     *
      * @return <code>Duration</code> of years and months of this <code>Duration</code> as days.
-     * 
+     *
      * @throws NullPointerException If the startTimeInstant parameter is null.
      */
     public abstract Duration normalizeWith(final Calendar startTimeInstant);
 
     /**
      * <p>Partial order relation comparison with this <code>Duration</code> instance.</p>
-     * 
+     *
      * <p>Comparison result must be in accordance with
      * <a href="http://www.w3.org/TR/xmlschema-2/#duration-order">W3C XML Schema 1.0 Part 2, Section 3.2.7.6.2,
      * <i>Order relation on duration</i></a>.</p>
-     * 
+     *
      * <p>Return:</p>
      * <ul>
      *   <li>{@link DatatypeConstants#LESSER} if this <code>Duration</code> is shorter than <code>duration</code> parameter</li>
@@ -750,16 +749,16 @@ public abstract class Duration {
      * </ul>
      *
      * @param duration to compare
-     * 
+     *
      * @return the relationship between <code>this</code> <code>Duration</code>and <code>duration</code> parameter as
      *   {@link DatatypeConstants#LESSER}, {@link DatatypeConstants#EQUAL}, {@link DatatypeConstants#GREATER}
      *   or {@link DatatypeConstants#INDETERMINATE}.
-     * 
+     *
      * @throws UnsupportedOperationException If the underlying implementation
      *   cannot reasonably process the request, e.g. W3C XML Schema allows for
      *   arbitrarily large/small/precise values, the request may be beyond the
      *   implementations capability.
-     * @throws NullPointerException if <code>duration</code> is <code>null</code>. 
+     * @throws NullPointerException if <code>duration</code> is <code>null</code>.
      *
      * @see #isShorterThan(Duration)
      * @see #isLongerThan(Duration)
@@ -769,26 +768,26 @@ public abstract class Duration {
     /**
      * <p>Checks if this duration object is strictly longer than
      * another <code>Duration</code> object.</p>
-     * 
-     * <p>Duration X is "longer" than Y if and only if X>Y 
+     *
+     * <p>Duration X is "longer" than Y if and only if X>Y
      * as defined in the section 3.2.6.2 of the XML Schema 1.0
      * specification.</p>
-     * 
+     *
      * <p>For example, "P1D" (one day) > "PT12H" (12 hours) and
-     * "P2Y" (two years) > "P23M" (23 months).</p> 
-     * 
+     * "P2Y" (two years) > "P23M" (23 months).</p>
+     *
      * @param duration <code>Duration</code> to test this <code>Duration</code> against.
-     * 
+     *
      * @throws UnsupportedOperationException If the underlying implementation
      *   cannot reasonably process the request, e.g. W3C XML Schema allows for
      *   arbitrarily large/small/precise values, the request may be beyond the
      *   implementations capability.
      * @throws NullPointerException If <code>duration</code> is null.
-     * 
+     *
      * @return
      *      true if the duration represented by this object
      *      is longer than the given duration. false otherwise.
-     * 
+     *
      * @see #isShorterThan(Duration)
      * @see #compare(Duration duration)
      */
@@ -799,12 +798,12 @@ public abstract class Duration {
     /**
      * <p>Checks if this duration object is strictly shorter than
      * another <code>Duration</code> object.</p>
-     * 
+     *
      * @param duration <code>Duration</code> to test this <code>Duration</code> against.
-     * 
+     *
      * @return <code>true</code> if <code>duration</code> parameter is shorter than this <code>Duration</code>,
-     *   else <code>false</code>. 
-     * 
+     *   else <code>false</code>.
+     *
      * @throws UnsupportedOperationException If the underlying implementation
      *   cannot reasonably process the request, e.g. W3C XML Schema allows for
      *   arbitrarily large/small/precise values, the request may be beyond the
@@ -821,14 +820,14 @@ public abstract class Duration {
     /**
      * <p>Checks if this duration object has the same duration
      * as another <code>Duration</code> object.</p>
-     * 
+     *
      * <p>For example, "P1D" (1 day) is equal to "PT24H" (24 hours).</p>
-     * 
+     *
      * <p>Duration X is equal to Y if and only if time instant
      * t+X and t+Y are the same for all the test time instants
-     * specified in the section 3.2.6.2 of the XML Schema 1.0 
+     * specified in the section 3.2.6.2 of the XML Schema 1.0
      * specification.</p>
-     * 
+     *
      * <p>Note that there are cases where two <code>Duration</code>s are
      * "incomparable" to each other, like one month and 30 days.
      * For example,</p>
@@ -837,17 +836,17 @@ public abstract class Duration {
      * !new Duration("P1M").isLongerThan(new Duration("P30D"))
      * !new Duration("P1M").equals(new Duration("P30D"))
      * </pre>
-     * 
+     *
      * @param duration
      *      A non-null valid <code>Duration</code> object.
-     * 
+     *
      * @return
      *      <code>true</code> if this duration is the same length as
      *         <code>duration</code>.
      *      <code>false</code> if <code>duration</code> is not a
      *         <code>Duration</code> object, is <code>null</code>,
      *         or its length is different from this duration.
-     * 
+     *
      * @throws UnsupportedOperationException If the underlying implementation
      *   cannot reasonably process the request, e.g. W3C XML Schema allows for
      *   arbitrarily large/small/precise values, the request may be beyond the
@@ -867,28 +866,27 @@ public abstract class Duration {
 
     /**
      * Returns a hash code consistent with the definition of the equals method.
-     * 
-     * @see Object#hashCode() 
+     *
+     * @see Object#hashCode()
      */
     public abstract int hashCode();
 
     /**
      * <p>Returns a <code>String</code> representation of this <code>Duration</code> <code>Object</code>.</p>
-     * 
+     *
      * <p>The result is formatted according to the XML Schema 1.0 specification and can be always parsed back later into the
      * equivalent <code>Duration</code> <code>Object</code> by {@link DatatypeFactory#newDuration(String  lexicalRepresentation)}.</p>
-     * 
+     *
      * <p>Formally, the following holds for any <code>Duration</code>
-     * <code>Object</code> x:</p> 
+     * <code>Object</code> x:</p>
      * <pre>
      * new Duration(x.toString()).equals(x)
      * </pre>
-     * 
+     *
      * @return A non-<code>null</code> valid <code>String</code> representation of this <code>Duration</code>.
      */
     public String toString() {
-
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         if (getSign() < 0) {
             buf.append('-');
@@ -931,13 +929,13 @@ public abstract class Duration {
 
     /**
      * <p>Turns {@link BigDecimal} to a string representation.</p>
-     * 
+     *
      * <p>Due to a behavior change in the {@link BigDecimal#toString()}
      * method in JDK1.5, this had to be implemented here.</p>
-     * 
+     *
      * @param bd <code>BigDecimal</code> to format as a <code>String</code>
-     * 
-     * @return  <code>String</code> representation of <code>BigDecimal</code> 
+     *
+     * @return  <code>String</code> representation of <code>BigDecimal</code>
      */
     private String toString(BigDecimal bd) {
         String intString = bd.unscaledValue().toString();
@@ -948,17 +946,17 @@ public abstract class Duration {
         }
 
         /* Insert decimal point */
-        StringBuffer buf;
+        StringBuilder buf;
         int insertionPoint = intString.length() - scale;
         if (insertionPoint == 0) { /* Point goes right before intVal */
             return "0." + intString;
-        } 
+        }
         else if (insertionPoint > 0) { /* Point goes inside intVal */
-            buf = new StringBuffer(intString);
+            buf = new StringBuilder(intString);
             buf.insert(insertionPoint, '.');
-        } 
+        }
         else { /* We must insert zeros between point and intVal */
-            buf = new StringBuffer(3 - insertionPoint + intString.length());
+            buf = new StringBuilder(3 - insertionPoint + intString.length());
             buf.append("0.");
             for (int i = 0; i < -insertionPoint; i++) {
                 buf.append('0');
@@ -973,15 +971,14 @@ public abstract class Duration {
      * <p>Calls the {@link Calendar#getTimeInMillis} method.
      * Prior to JDK1.4, this method was protected and therefore
      * cannot be invoked directly.</p>
-     * 
+     *
      * <p>TODO: In future, this should be replaced by <code>cal.getTimeInMillis()</code>.</p>
-     * 
+     *
      * @param cal <code>Calendar</code> to get time in milliseconds.
-     * 
+     *
      * @return Milliseconds of <code>cal</code>.
      */
     private static long getCalendarTimeInMillis(final Calendar cal) {
         return cal.getTime().getTime();
     }
 }
-

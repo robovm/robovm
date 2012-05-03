@@ -37,7 +37,7 @@ public class ClassNotFoundException extends Exception {
     /**
      * Constructs a new {@code ClassNotFoundException} with the current stack
      * trace and the specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */
@@ -49,7 +49,7 @@ public class ClassNotFoundException extends Exception {
      * Constructs a new {@code ClassNotFoundException} with the current stack
      * trace, the specified detail message and the exception that occurred when
      * loading the class.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      * @param exception
@@ -62,7 +62,7 @@ public class ClassNotFoundException extends Exception {
 
     /**
      * Returns the exception which occurred when loading the class.
-     * 
+     *
      * @return Throwable the exception which occurred while loading the class.
      */
     public Throwable getException() {
@@ -72,7 +72,7 @@ public class ClassNotFoundException extends Exception {
     /**
      * Returns the cause of this Throwable, or {@code null} if there is no
      * cause.
-     * 
+     *
      * @return Throwable the receiver's cause.
      */
     @Override

@@ -20,35 +20,30 @@ package java.util.spi;
 import java.util.Locale;
 
 /**
- * CurrencyNameProvider is an abstract class to get localized currency symbols
- * from service providers.
- * 
+ * This abstract class should be extended by service providers that provide
+ * localized currency symbols (currency names) from currency codes.
+ * <p>Note that Android does not support user-supplied locale service providers.
  * @since 1.6
- * 
+ * @hide
  */
 public abstract class CurrencyNameProvider extends LocaleServiceProvider {
+    /**
+     * Default constructor, for use by subclasses.
+     */
+    protected CurrencyNameProvider() {
+        // do nothing
+    }
 
-	/**
-	 * The constructor
-	 * 
-	 */
-	protected CurrencyNameProvider() {
-		// do nothing
-	}
-
-	/**
-	 * Returns the symbol for the specified currency
-	 * 
-	 * @param code
-	 *            the code of the specified currency in "ISO 4217"
-	 * @param locale
-	 *            the locale
-	 * @return the symbol or null if there is no available symbol in the locale
-	 * @throws NullPointerException
-	 *             if code or locale is null
-	 * @throws IllegalArgumentException
-	 *             if code or locale is not in a legal format or not available
-	 */
-	public abstract String getSymbol(String code, Locale locale);
-
+    /**
+     * Returns the localized currency symbol for the given currency code.
+     *
+     * @param code an ISO 4217 currency code
+     * @param locale a locale
+     * @return the symbol or null if there is no available symbol in the locale
+     * @throws NullPointerException
+     *             if {@code code == null || locale == null}
+     * @throws IllegalArgumentException
+     *             if code or locale is not in a legal format or not available
+     */
+    public abstract String getSymbol(String code, Locale locale);
 }

@@ -36,7 +36,7 @@ public class LineNumberReader extends BufferedReader {
     /**
      * Constructs a new LineNumberReader on the Reader {@code in}. The internal
      * buffer gets the default size (8 KB).
-     * 
+     *
      * @param in
      *            the Reader that is buffered.
      */
@@ -47,7 +47,7 @@ public class LineNumberReader extends BufferedReader {
     /**
      * Constructs a new LineNumberReader on the Reader {@code in}. The size of
      * the internal buffer is specified by the parameter {@code size}.
-     * 
+     *
      * @param in
      *            the Reader that is buffered.
      * @param size
@@ -61,7 +61,7 @@ public class LineNumberReader extends BufferedReader {
 
     /**
      * Returns the current line number for this reader. Numbering starts at 0.
-     * 
+     *
      * @return the current line number.
      */
     public int getLineNumber() {
@@ -77,7 +77,7 @@ public class LineNumberReader extends BufferedReader {
      * position, provided that {@code readlimit} has not been surpassed. The
      * line number associated with this marked position is also stored so that
      * it can be restored when {@code reset()} is called.
-     * 
+     *
      * @param readlimit
      *            the number of characters that can be read from this stream
      *            before the mark is invalidated.
@@ -183,7 +183,7 @@ public class LineNumberReader extends BufferedReader {
      * represented by 0 or more characters followed by {@code '\r'},
      * {@code '\n'}, {@code "\r\n"} or the end of the stream. The returned
      * string does not include the newline sequence.
-     * 
+     *
      * @return the contents of the line or {@code null} if no characters have
      *         been read before the end of the stream has been reached.
      * @throws IOException
@@ -208,7 +208,7 @@ public class LineNumberReader extends BufferedReader {
      * Resets this reader to the last marked location. It also resets the line
      * count to what is was when this reader was marked. This implementation
      * resets the source reader.
-     * 
+     *
      * @throws IOException
      *             if this reader is already closed, no mark has been set or the
      *             mark is no longer valid because more than {@code readlimit}
@@ -229,7 +229,7 @@ public class LineNumberReader extends BufferedReader {
      * Sets the line number of this reader to the specified {@code lineNumber}.
      * Note that this may have side effects on the line number associated with
      * the last marked position.
-     * 
+     *
      * @param lineNumber
      *            the new line number value.
      * @see #mark(int)
@@ -242,17 +242,15 @@ public class LineNumberReader extends BufferedReader {
     }
 
     /**
-     * Skips {@code count} number of characters in this reader. Subsequent
-     * {@code read()}'s will not return these characters unless {@code reset()}
-     * is used. This implementation skips {@code count} number of characters in
+     * Skips {@code charCount} characters in this reader. Subsequent calls to
+     * {@code read} will not return these characters unless {@code reset}
+     * is used. This implementation skips {@code charCount} number of characters in
      * the source reader and increments the line number count whenever line
      * terminator sequences are skipped.
-     * 
-     * @param count
-     *            the number of characters to skip.
+     *
      * @return the number of characters actually skipped.
      * @throws IllegalArgumentException
-     *             if {@code count < 0}.
+     *             if {@code charCount < 0}.
      * @throws IOException
      *             if this reader is closed or another IOException occurs.
      * @see #mark(int)
@@ -260,17 +258,17 @@ public class LineNumberReader extends BufferedReader {
      * @see #reset()
      */
     @Override
-    public long skip(long count) throws IOException {
-        if (count < 0) {
-            throw new IllegalArgumentException();
+    public long skip(long charCount) throws IOException {
+        if (charCount < 0) {
+            throw new IllegalArgumentException("charCount < 0: " + charCount);
         }
         synchronized (lock) {
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < charCount; i++) {
                 if (read() == -1) {
                     return i;
                 }
             }
-            return count;
+            return charCount;
         }
     }
 }

@@ -23,8 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import org.apache.harmony.luni.internal.nls.Messages;
-
 /**
  * {@code Proxy} defines methods for creating dynamic proxy classes and instances.
  * A proxy class implements a declared set of interfaces and delegates method
@@ -50,6 +48,7 @@ public class Proxy implements Serializable {
      */
     protected InvocationHandler h;
 
+    @SuppressWarnings("unused")
     private Proxy() {
     }
 
@@ -71,11 +70,11 @@ public class Proxy implements Serializable {
      * different order result in different generated classes. The interfaces
      * must be visible from the supplied class loader; no duplicates are
      * permitted. All non-public interfaces must be defined in the same package.
-     * 
+     *
      * @param loader
      *            the class loader that will define the proxy class
      * @param interfaces
-     *            a list of {@code Class} objects, each one identifying an
+     *            an array of {@code Class} objects, each one identifying an
      *            interface that will be implemented by the returned proxy
      *            class
      * @return a proxy class that implements all of the interfaces referred to
@@ -100,32 +99,31 @@ public class Proxy implements Serializable {
             }
             String name = next.getName();
             if (!next.isInterface()) {
-                throw new IllegalArgumentException(Messages.getString("luni.50", name)); //$NON-NLS-1$
+                throw new IllegalArgumentException(name + " is not an interface");
             }
             if (loader != next.getClassLoader()) {
                 try {
                     if (next != Class.forName(name, false, loader)) {
-                        throw new IllegalArgumentException(Messages.getString(
-                                "luni.51", name)); //$NON-NLS-1$
+                        throw new IllegalArgumentException(name +
+                                " is not visible from class loader");
                     }
                 } catch (ClassNotFoundException ex) {
-                    throw new IllegalArgumentException(Messages.getString("luni.51", //$NON-NLS-1$
-                            name));
+                    throw new IllegalArgumentException(name + " is not visible from class loader");
                 }
             }
             for (int j = i + 1; j < length; j++) {
                 if (next == interfaces[j]) {
-                    throw new IllegalArgumentException(Messages.getString("luni.52", //$NON-NLS-1$
-                            name));
+                    throw new IllegalArgumentException(name + " appears more than once");
                 }
             }
             if (!Modifier.isPublic(next.getModifiers())) {
                 int last = name.lastIndexOf('.');
-                String p = last == -1 ? "" : name.substring(0, last); //$NON-NLS-1$
+                String p = last == -1 ? "" : name.substring(0, last);
                 if (commonPackageName == null) {
                     commonPackageName = p;
                 } else if (!commonPackageName.equals(p)) {
-                    throw new IllegalArgumentException(Messages.getString("luni.53")); //$NON-NLS-1$
+                    throw new IllegalArgumentException("non-public interfaces must be " +
+                            "in the same package");
                 }
             }
         }
@@ -141,7 +139,7 @@ public class Proxy implements Serializable {
                                 (interfaceCache = new HashMap<String, WeakReference<Class<?>>>()));
             }
 
-            String interfaceKey = ""; //$NON-NLS-1$
+            String interfaceKey = "";
             if (interfaces.length == 1) {
                 interfaceKey = interfaces[0].getName();
             } else {
@@ -156,21 +154,20 @@ public class Proxy implements Serializable {
             Class<?> newClass;
             WeakReference<Class<?>> ref = interfaceCache.get(interfaceKey);
             if (ref == null) {
-                String nextClassName = "$Proxy" + NextClassNameIndex++; //$NON-NLS-1$
+                String nextClassName = "$Proxy" + NextClassNameIndex++;
                 if (commonPackageName != null && commonPackageName.length() > 0) {
-                    nextClassName = commonPackageName + "." + nextClassName; //$NON-NLS-1$
+                    nextClassName = commonPackageName + "." + nextClassName;
                 }
-                // Start NullVM change
-                newClass = createProxyClass(loader, nextClassName.replace('.',
-                        '/'), interfaces);
-                // End NullVM change
+                if (loader == null) {
+                    loader = ClassLoader.getSystemClassLoader();
+                }
+                newClass = generateProxy(nextClassName.replace('.', '/'), interfaces, loader);
                 // Need a weak reference to the class so it can
                 // be unloaded if the class loader is discarded
-                interfaceCache.put(interfaceKey, new WeakReference<Class<?>>(
-                        newClass));
+                interfaceCache.put(interfaceKey, new WeakReference<Class<?>>(newClass));
                 synchronized (proxyCache) {
                     // the value is unused
-                    proxyCache.put(newClass, ""); //$NON-NLS-1$
+                    proxyCache.put(newClass, "");
                 }
             } else {
                 newClass = ref.get();
@@ -234,7 +231,7 @@ public class Proxy implements Serializable {
     /**
      * Indicates whether or not the specified class is a dynamically generated
      * proxy class.
-     * 
+     *
      * @param cl
      *            the class
      * @return {@code true} if the class is a proxy class, {@code false}
@@ -253,7 +250,7 @@ public class Proxy implements Serializable {
 
     /**
      * Returns the invocation handler of the specified proxy instance.
-     * 
+     *
      * @param proxy
      *            the proxy instance
      * @return the invocation handler of the specified proxy instance
@@ -267,12 +264,15 @@ public class Proxy implements Serializable {
             return ((Proxy) proxy).h;
         }
 
-        throw new IllegalArgumentException(Messages.getString("luni.54")); //$NON-NLS-1$
+        throw new IllegalArgumentException("not a proxy instance");
     }
 
-    // Start NullVM change
-    private static native Class<?> createProxyClass(ClassLoader classLoader,
-            String className, Class<?>[] interfaces);
-    // End NullVM change
+    native private static Class generateProxy(String name, Class[] interfaces,
+        ClassLoader loader);
 
+    /*
+     * The VM clones this method's descriptor when generating a proxy class.
+     * There is no implementation.
+     */
+    native private static void constructorPrototype(InvocationHandler h);
 }

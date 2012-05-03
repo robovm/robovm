@@ -22,7 +22,6 @@ package javax.xml.transform.stream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Reader;
-
 import javax.xml.transform.Source;
 
 /**
@@ -33,7 +32,7 @@ import javax.xml.transform.Source;
  * <code>StreamSource</code> instances may only be used once.</p>
  *
  * @author <a href="Jeff.Suttor@Sun.com">Jeff Suttor</a>
- * @version $Revision: 829971 $, $Date: 2009-10-26 17:15:39 -0400 (Mon, 26 Oct 2009) $
+ * @version $Revision: 829971 $, $Date: 2009-10-26 14:15:39 -0700 (Mon, 26 Oct 2009) $
  */
 public class StreamSource implements Source {
 
@@ -43,7 +42,7 @@ public class StreamSource implements Source {
      */
     public static final String FEATURE =
         "http://javax.xml.transform.stream.StreamSource/feature";
-    
+
     /**
      * <p>Zero-argument default constructor.  If this constructor is used, and
      * no Stream source is set using
@@ -52,9 +51,9 @@ public class StreamSource implements Source {
      * <code>Transformer</code> will
      * create an empty source {@link java.io.InputStream} using
      * {@link java.io.InputStream#InputStream() new InputStream()}.</p>
-     * 
+     *
      * @see javax.xml.transform.Transformer#transform(Source xmlSource, Result outputTarget)
-     */    
+     */
     public StreamSource() { }
 
     /**

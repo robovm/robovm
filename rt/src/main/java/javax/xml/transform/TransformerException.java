@@ -19,16 +19,13 @@
 
 package javax.xml.transform;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-
 /**
  * This class specifies an exceptional condition that occurred
  * during the transformation process.
  */
 public class TransformerException extends Exception {
-    
-    // Added serialVersionUID to preserve binary compatibility 
+
+    // Added serialVersionUID to preserve binary compatibility
     private static final long serialVersionUID = 975798773772956428L;
 
     /** Field locator specifies where the error occurred */
@@ -209,7 +206,7 @@ public class TransformerException extends Exception {
      */
     public String getMessageAndLocation() {
 
-        StringBuffer sbuffer = new StringBuffer();
+        StringBuilder sbuffer = new StringBuilder();
         String       message = super.getMessage();
 
         if (null != message) {
@@ -249,7 +246,7 @@ public class TransformerException extends Exception {
     public String getLocationAsString() {
 
         if (null != locator) {
-            StringBuffer sbuffer  = new StringBuffer();
+            StringBuilder sbuffer  = new StringBuilder();
             String       systemID = locator.getSystemId();
             int          line     = locator.getLineNumber();
             int          column   = locator.getColumnNumber();
@@ -315,66 +312,5 @@ public class TransformerException extends Exception {
 
             super.printStackTrace(s);
         } catch (Throwable e) {}
-
-        boolean isJdk14OrHigher = false;
-        try {
-        	Throwable.class.getMethod("getCause",(Class[]) null);
-        	isJdk14OrHigher = true;
-        } catch (NoSuchMethodException nsme) {
-        	// do nothing
-        }
-
-        // The printStackTrace method of the Throwable class in jdk 1.4 
-        // and higher will include the cause when printing the backtrace.
-        // The following code is only required when using jdk 1.3 or lower                 
-        if (!isJdk14OrHigher) {
-            Throwable exception = getException();
-
-            for (int i = 0; (i < 10) && (null != exception); i++) {
-                s.println("---------");
-
-                try {
-                    if (exception instanceof TransformerException) {
-                        String locInfo =
-                            ((TransformerException) exception)
-                            .getLocationAsString();
-
-                        if (null != locInfo) {
-                            s.println(locInfo);
-                        }
-                    }
-
-                    exception.printStackTrace(s);
-                } catch (Throwable e) {
-                    s.println("Could not print stack trace...");
-                }
-
-                try {
-                    Method meth =
-                        ((Object) exception).getClass().getMethod("getException",
-                        (Class[]) null);
-
-                    if (null != meth) {
-                        Throwable prev = exception;
-
-                        exception = (Throwable) meth.invoke(exception, (Object[]) null);
-
-                        if (prev == exception) {
-                            break;
-                        }
-                    } else {
-                        exception = null;
-                    }
-                } catch (InvocationTargetException ite) {
-                    exception = null;
-                } catch (IllegalAccessException iae) {
-                    exception = null;
-                } catch (NoSuchMethodException nsme) {
-                    exception = null;
-                }
-            }
-        }
-        // insure output is written
-        s.flush();
     }
 }

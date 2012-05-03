@@ -34,7 +34,6 @@ public abstract class SSLSocket extends Socket {
      * Creates a TCP socket.
      */
     protected SSLSocket() {
-        super();
     }
 
     /**
@@ -120,16 +119,28 @@ public abstract class SSLSocket extends Socket {
     }
 
     /**
+     * Unsupported for SSL because reading from an SSL socket may require
+     * writing to the network.
+     */
+    @Override public void shutdownInput() throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Unsupported for SSL because writing to an SSL socket may require reading
+     * from the network.
+     */
+    @Override public void shutdownOutput() throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
      * Returns the names of the supported cipher suites.
-     *
-     * @return the names of the supported cipher suites.
      */
     public abstract String[] getSupportedCipherSuites();
 
     /**
      * Returns the names of the enabled cipher suites.
-     *
-     * @return the names of the enabled cipher suites.
      */
     public abstract String[] getEnabledCipherSuites();
 
@@ -147,15 +158,11 @@ public abstract class SSLSocket extends Socket {
 
     /**
      * Returns the names of the supported protocols.
-     *
-     * @return the names of the supported protocols.
      */
     public abstract String[] getSupportedProtocols();
 
     /**
      * Returns the names of the enabled protocols.
-     *
-     * @return the names of the enabled protocols.
      */
     public abstract String[] getEnabledProtocols();
 
@@ -219,71 +226,56 @@ public abstract class SSLSocket extends Socket {
     public abstract void setUseClientMode(boolean mode);
 
     /**
-     * Returns whether this connection will act in client mode when handshaking.
-     *
-     * @return {@code true} if this connections will act in client mode when
-     *         handshaking, {@code false} if not.
+     * Returns true if this connection will act in client mode when handshaking.
      */
     public abstract boolean getUseClientMode();
 
     /**
-     * Sets whether this connection should require client authentication. This
-     * is only useful for sockets in server mode. The client authentication is
-     * one of the following:
+     * Sets whether the server should require client authentication. This
+     * does not apply to sockets in {@link #getUseClientMode() client mode}.
+     * Client authentication is one of the following:
      * <ul>
      * <li>authentication required</li>
      * <li>authentication requested</li>
      * <li>no authentication needed</li>
      * </ul>
      * This method overrides the setting of {@link #setWantClientAuth(boolean)}.
-     *
-     * @param need
-     *            {@code true} if client authentication is required,
-     *            {@code false} if no authentication is needed.
      */
     public abstract void setNeedClientAuth(boolean need);
 
     /**
-     * Returns whether this connection requires client authentication.
-     * This is only useful for sockets in server mode.
-     *
-     * @return {@code true} if client authentication is required, {@code false}
-     *         if no client authentication is needed.
-     */
-    public abstract boolean getNeedClientAuth();
-
-    /**
-     * Sets whether this connections should request client authentication. This
-     * is only useful for sockets in server mode. The client authentication is
-     * one of:
+     * Sets whether the server should request client authentication. Unlike
+     * {@link #setNeedClientAuth} this won't stop the negotiation if the client
+     * doesn't authenticate. This does not apply to sockets in {@link
+     * #getUseClientMode() client mode}.The client authentication is one of:
      * <ul>
      * <li>authentication required</li>
      * <li>authentication requested</li>
      * <li>no authentication needed</li>
      * </ul>
      * This method overrides the setting of {@link #setNeedClientAuth(boolean)}.
-     *
-     * @param want
-     *            {@code true} if client authentication should be requested,
-     *            {@code false} if not authentication is needed.
      */
     public abstract void setWantClientAuth(boolean want);
 
     /**
-     * Returns whether this connections will request client authentication.
-     *
-     * @return {@code true} is client authentication will be requested,
-     *         {@code false} if no client authentication is needed.
+     * Returns true if the server socket should require client authentication.
+     * This does not apply to sockets in {@link #getUseClientMode() client
+     * mode}.
+     */
+    public abstract boolean getNeedClientAuth();
+
+    /**
+     * Returns true if the server should request client authentication. This
+     * does not apply to sockets in {@link #getUseClientMode() client mode}.
      */
     public abstract boolean getWantClientAuth();
 
     /**
      * Sets whether new SSL sessions may be created by this socket or if
-     * existing sessions must be reused.
+     * existing sessions must be reused. If {@code flag} is false and there are
+     * no sessions to resume, handshaking will fail.
      *
-     * @param flag
-     *            {@code true} if new sessions may be created, otherwise
-     *            {@code false}.
+     * @param flag {@code true} if new sessions may be created.
      */
     public abstract void setEnableSessionCreation(boolean flag);
 
@@ -296,7 +288,45 @@ public abstract class SSLSocket extends Socket {
      */
     public abstract boolean getEnableSessionCreation();
 
-    public abstract void setSSLParameters(SSLParameters inputSSLParameters);
-    
-    public abstract SSLParameters getSSLParameters();
+    /**
+     * Returns a new SSLParameters based on this SSLSocket's current
+     * cipher suites, protocols, and client authentication settings.
+     *
+     * @since 1.6
+     */
+    public SSLParameters getSSLParameters() {
+        SSLParameters p = new SSLParameters();
+        p.setCipherSuites(getEnabledCipherSuites());
+        p.setProtocols(getEnabledProtocols());
+        p.setNeedClientAuth(getNeedClientAuth());
+        p.setWantClientAuth(getWantClientAuth());
+        return p;
+    }
+
+    /**
+     * Sets various SSL handshake parameters based on the SSLParameter
+     * argument. Specifically, sets the SSLSocket's enabled cipher
+     * suites if the parameter's cipher suites are non-null. Similarly
+     * sets the enabled protocols. If the parameters specify the want
+     * or need for client authentication, those requirements are set
+     * on the SSLSocket, otherwise both are set to false.
+     * @since 1.6
+     */
+    public void setSSLParameters(SSLParameters p) {
+        String[] cipherSuites = p.getCipherSuites();
+        if (cipherSuites != null) {
+            setEnabledCipherSuites(cipherSuites);
+        }
+        String[] protocols = p.getProtocols();
+        if (protocols != null) {
+            setEnabledProtocols(protocols);
+        }
+        if (p.getNeedClientAuth()) {
+            setNeedClientAuth(true);
+        } else if (p.getWantClientAuth()) {
+            setWantClientAuth(true);
+        } else {
+            setWantClientAuth(false);
+        }
+    }
 }

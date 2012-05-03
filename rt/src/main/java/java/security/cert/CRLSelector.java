@@ -23,7 +23,7 @@ package java.security.cert;
  * <p>
  * The implementations of this interface are typically used to define the
  * criteria for selecting {@code CRL}s from a {@code CertStore}.
- * 
+ *
  * @see CertStore
  * @see CRL
  */
@@ -31,7 +31,7 @@ public interface CRLSelector extends Cloneable {
 
     /**
      * Clones this {@code CRLSelector} instance.
-     * 
+     *
      * @return the cloned instance.
      */
     public Object clone();
@@ -39,7 +39,7 @@ public interface CRLSelector extends Cloneable {
     /**
      * Checks whether the defined criteria of this instance match the specified
      * CRL.
-     * 
+     *
      * @param crl
      *            the CRL to be evaluated.
      * @return {@code true} if the CRL matches the criteria, {@code false}

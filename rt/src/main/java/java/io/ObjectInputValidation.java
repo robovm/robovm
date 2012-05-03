@@ -21,13 +21,13 @@ package java.io;
  * A callback interface for post-deserialization checks on objects. Allows, for
  * example, the validation of a whole graph of objects after all of them have
  * been loaded.
- * 
+ *
  * @see ObjectInputStream#registerValidation(ObjectInputValidation, int)
  */
 public interface ObjectInputValidation {
     /**
      * Validates this object.
-     * 
+     *
      * @throws InvalidObjectException
      *             if this object fails to validate itself.
      */

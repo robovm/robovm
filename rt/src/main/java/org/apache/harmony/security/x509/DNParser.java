@@ -17,6 +17,7 @@
 
 /**
 * @author Alexander V. Esin, Stepan M. Mishura
+* @version $Revision$
 */
 
 package org.apache.harmony.security.x509;
@@ -24,64 +25,55 @@ package org.apache.harmony.security.x509;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.harmony.security.internal.nls.Messages;
 import org.apache.harmony.security.x501.AttributeTypeAndValue;
 import org.apache.harmony.security.x501.AttributeValue;
 
 
 /**
  * Distinguished Name Parser.
- * 
+ *
  * Parses a distinguished name(DN) string according
  * BNF syntax specified in RFC 2253 and RFC 1779
- * 
+ *
  * RFC 2253: Lightweight Directory Access Protocol (v3):
  *           UTF-8 String Representation of Distinguished Names
  *   http://www.ietf.org/rfc/rfc2253.txt
- * 
+ *
  * RFC 1779: A String Representation of Distinguished Names
  *   http://www.ietf.org/rfc/rfc1779.txt
  */
-public class DNParser {
+public final class DNParser {
+    private int pos;
+    private int beg;
+    private int end;
 
-    // length of distinguished name string
-    protected final int length;
+    /** distinguished name chars */
+    private final char[] chars;
 
-    protected int pos, beg, end;
+    /** raw string contains '"' or '\' */
+    private boolean hasQE;
 
-    // tmp vars to store positions of the currently parsed item
-    protected int cur;
-
-    // distinguished name chars
-    protected char[] chars;
-
-    // raw string contains '"' or '\'
-    protected boolean hasQE;
-
-    // DER encoding of currently parsed item
-    protected byte[] encoded;
+    /** DER encoding of currently parsed item */
+    private byte[] encoded;
 
     /**
-     * Constructs DN parser
-     * 
      * @param dn - distinguished name string to be parsed
      */
     public DNParser(String dn) throws IOException {
-        this.length = dn.length();
         chars = dn.toCharArray();
     }
 
-    // gets next attribute type: (ALPHA 1*keychar) / oid
-    protected String nextAT() throws IOException {
-
+    /**
+     * Returns the next attribute type: (ALPHA 1*keychar) / oid
+     */
+    private String nextAT() throws IOException {
         hasQE = false; // reset
 
         // skip preceding space chars, they can present after
         // comma or semicolon (compatibility with RFC 1779)
-        for (; pos < length && chars[pos] == ' '; pos++) {
+        for (; pos < chars.length && chars[pos] == ' '; pos++) {
         }
-        if (pos == length) {
+        if (pos == chars.length) {
             return null; // reached the end of DN
         }
 
@@ -90,14 +82,13 @@ public class DNParser {
 
         // attribute type chars
         pos++;
-        for (; pos < length && chars[pos] != '=' && chars[pos] != ' '; pos++) {
+        for (; pos < chars.length && chars[pos] != '=' && chars[pos] != ' '; pos++) {
             // we don't follow exact BNF syntax here:
             // accept any char except space and '='
         }
-        if (pos >= length) {
+        if (pos >= chars.length) {
             // unexpected end of DN
-            throw new IOException(
-                    Messages.getString("security.192")); //$NON-NLS-1$
+            throw new IOException("Invalid distinguished name string");
         }
 
         // mark the end of attribute type
@@ -106,13 +97,12 @@ public class DNParser {
         // skip trailing space chars between attribute type and '='
         // (compatibility with RFC 1779)
         if (chars[pos] == ' ') {
-            for (; pos < length && chars[pos] != '=' && chars[pos] == ' '; pos++) {
+            for (; pos < chars.length && chars[pos] != '=' && chars[pos] == ' '; pos++) {
             }
 
-            if (chars[pos] != '=' || pos == length) {
+            if (chars[pos] != '=' || pos == chars.length) {
                 // unexpected end of DN
-                throw new IOException(
-                        Messages.getString("security.192")); //$NON-NLS-1$
+                throw new IOException("Invalid distinguished name string");
             }
         }
 
@@ -120,7 +110,7 @@ public class DNParser {
 
         // skip space chars between '=' and attribute value
         // (compatibility with RFC 1779)
-        for (; pos < length && chars[pos] == ' '; pos++) {
+        for (; pos < chars.length && chars[pos] == ' '; pos++) {
         }
 
         // in case of oid attribute type skip its prefix: "oid." or "OID."
@@ -135,18 +125,17 @@ public class DNParser {
         return new String(chars, beg, end - beg);
     }
 
-    // gets quoted attribute value: QUOTATION *( quotechar / pair ) QUOTATION 
-    protected String quotedAV() throws IOException {
-
+    /**
+     * Returns a quoted attribute value: QUOTATION *( quotechar / pair ) QUOTATION
+     */
+    private String quotedAV() throws IOException {
         pos++;
         beg = pos;
         end = beg;
         while (true) {
-
-            if (pos == length) {
+            if (pos == chars.length) {
                 // unexpected end of DN
-                throw new IOException(
-                        Messages.getString("security.192")); //$NON-NLS-1$
+                throw new IOException("Invalid distinguished name string");
             }
 
             if (chars[pos] == '"') {
@@ -165,28 +154,27 @@ public class DNParser {
 
         // skip trailing space chars before comma or semicolon.
         // (compatibility with RFC 1779)
-        for (; pos < length && chars[pos] == ' '; pos++) {
+        for (; pos < chars.length && chars[pos] == ' '; pos++) {
         }
 
         return new String(chars, beg, end - beg);
     }
 
-    // gets hex string attribute value: "#" hexstring
+    /**
+     * Returns a hex string attribute value: "#" hexstring
+     */
     private String hexAV() throws IOException {
-
-        if (pos + 4 >= length) {
+        if (pos + 4 >= chars.length) {
             // encoded byte array  must be not less then 4 c
-            throw new IOException(
-                    Messages.getString("security.192")); //$NON-NLS-1$
+            throw new IOException("Invalid distinguished name string");
         }
 
         beg = pos; // store '#' position
         pos++;
         while (true) {
-
-            // check for end of attribute value 
+            // check for end of attribute value
             // looks for space and component separators
-            if (pos == length || chars[pos] == '+' || chars[pos] == ','
+            if (pos == chars.length || chars[pos] == '+' || chars[pos] == ','
                     || chars[pos] == ';') {
                 end = pos;
                 break;
@@ -197,7 +185,7 @@ public class DNParser {
                 pos++;
                 // skip trailing space chars before comma or semicolon.
                 // (compatibility with RFC 1779)
-                for (; pos < length && chars[pos] == ' '; pos++) {
+                for (; pos < chars.length && chars[pos] == ' '; pos++) {
                 }
                 break;
             } else if (chars[pos] >= 'A' && chars[pos] <= 'F') {
@@ -211,8 +199,7 @@ public class DNParser {
         // encoded byte array  must be not less then 4 and must be even number
         int hexLen = end - beg; // skip first '#' char
         if (hexLen < 5 || (hexLen & 1) == 0) {
-            throw new IOException(
-                    Messages.getString("security.192")); //$NON-NLS-1$
+            throw new IOException("Invalid distinguished name string");
         }
 
         // get byte encoding from string representation
@@ -224,14 +211,14 @@ public class DNParser {
         return new String(chars, beg, hexLen);
     }
 
-    // gets string attribute value: *( stringchar / pair )
-    protected String escapedAV() throws IOException {
-
+    /**
+     * Returns a string attribute value: *( stringchar / pair ).
+     */
+    private String escapedAV() throws IOException {
         beg = pos;
         end = pos;
         while (true) {
-
-            if (pos >= length) {
+            if (pos >= chars.length) {
                 // the end of DN has been found
                 return new String(chars, beg, end - beg);
             }
@@ -249,16 +236,16 @@ public class DNParser {
                 break;
             case ' ':
                 // need to figure out whether space defines
-                // the end of attribute value or not                 
-                cur = end;
+                // the end of attribute value or not
+                int cur = end;
 
                 pos++;
                 chars[end++] = ' ';
 
-                for (; pos < length && chars[pos] == ' '; pos++) {
+                for (; pos < chars.length && chars[pos] == ' '; pos++) {
                     chars[end++] = ' ';
                 }
-                if (pos == length || chars[pos] == ',' || chars[pos] == '+'
+                if (pos == chars.length || chars[pos] == ',' || chars[pos] == '+'
                         || chars[pos] == ';') {
                     // separator char or the end of DN has beed found
                     return new String(chars, beg, cur - beg);
@@ -271,19 +258,21 @@ public class DNParser {
         }
     }
 
-    // returns escaped char
+    /**
+     * Returns an escaped char
+     */
     private char getEscaped() throws IOException {
-
         pos++;
-        if (pos == length) {
-            throw new IOException(
-                    Messages.getString("security.192")); //$NON-NLS-1$
+        if (pos == chars.length) {
+            throw new IOException("Invalid distinguished name string");
         }
 
-        switch (chars[pos]) {
+        char ch = chars[pos];
+        switch (ch) {
         case '"':
         case '\\':
             hasQE = true;
+            return ch;
         case ',':
         case '=':
         case '+':
@@ -295,19 +284,19 @@ public class DNParser {
         case '*':
         case '%':
         case '_':
-            //FIXME: escaping is allowed only for leading or trailing space char 
-            return chars[pos];
+            //FIXME: escaping is allowed only for leading or trailing space char
+            return ch;
         default:
-            // RFC doesn't explicitly say that escaped hex pair is 
+            // RFC doesn't explicitly say that escaped hex pair is
             // interpreted as UTF-8 char. It only contains an example of such DN.
             return getUTF8();
         }
     }
 
-    // decodes UTF-8 char
-    // see http://www.unicode.org for UTF-8 bit distribution table
+    /**
+     * Decodes a UTF-8 char.
+     */
     protected char getUTF8() throws IOException {
-
         int res = getByte(pos);
         pos++; //FIXME tmp
 
@@ -330,7 +319,7 @@ public class DNParser {
             int b;
             for (int i = 0; i < count; i++) {
                 pos++;
-                if (pos == length || chars[pos] != '\\') {
+                if (pos == chars.length || chars[pos] != '\\') {
                     return 0x3F; //FIXME failed to decode UTF-8 char - return '?'
                 }
                 pos++;
@@ -349,23 +338,21 @@ public class DNParser {
         }
     }
 
-    // Returns byte representation of a char pair
-    // The char pair is composed of DN char in
-    // specified 'position' and the next char
-    // According to BNF syntax:
-    // hexchar    = DIGIT / "A" / "B" / "C" / "D" / "E" / "F"
-    //                    / "a" / "b" / "c" / "d" / "e" / "f"
-    protected int getByte(int position) throws IOException {
-
-        if ((position + 1) >= length) {
+    /**
+     * Returns byte representation of a char pair
+     * The char pair is composed of DN char in
+     * specified 'position' and the next char
+     * According to BNF syntax:
+     * hexchar    = DIGIT / "A" / "B" / "C" / "D" / "E" / "F"
+     *                     / "a" / "b" / "c" / "d" / "e" / "f"
+     */
+    private int getByte(int position) throws IOException {
+        if ((position + 1) >= chars.length) {
             // to avoid ArrayIndexOutOfBoundsException
-            throw new IOException(
-                    Messages.getString("security.192")); //$NON-NLS-1$
+            throw new IOException("Invalid distinguished name string");
         }
 
-        int b1, b2;
-
-        b1 = chars[position];
+        int b1 = chars[position];
         if (b1 >= '0' && b1 <= '9') {
             b1 = b1 - '0';
         } else if (b1 >= 'a' && b1 <= 'f') {
@@ -373,11 +360,10 @@ public class DNParser {
         } else if (b1 >= 'A' && b1 <= 'F') {
             b1 = b1 - 55; // 55 = 'A' - 10
         } else {
-            throw new IOException(
-                    Messages.getString("security.192")); //$NON-NLS-1$
+            throw new IOException("Invalid distinguished name string");
         }
 
-        b2 = chars[position + 1];
+        int b2 = chars[position + 1];
         if (b2 >= '0' && b2 <= '9') {
             b2 = b2 - '0';
         } else if (b2 >= 'a' && b2 <= 'f') {
@@ -385,8 +371,7 @@ public class DNParser {
         } else if (b2 >= 'A' && b2 <= 'F') {
             b2 = b2 - 55; // 55 = 'A' - 10
         } else {
-            throw new IOException(
-                    Messages.getString("security.192")); //$NON-NLS-1$
+            throw new IOException("Invalid distinguished name string");
         }
 
         return (b1 << 4) + b2;
@@ -398,72 +383,57 @@ public class DNParser {
      * @return a list of Relative Distinguished Names(RND),
      *         each RDN is represented as a list of AttributeTypeAndValue objects
      */
-    public List parse() throws IOException {
+    public List<List<AttributeTypeAndValue>> parse() throws IOException {
+        List<List<AttributeTypeAndValue>> list = new ArrayList<List<AttributeTypeAndValue>>();
 
-        List list = new ArrayList();
-
-        String attValue;
         String attType = nextAT();
         if (attType == null) {
-            return list; //empty list of RDNs 
+            return list; //empty list of RDNs
         }
 
-        List atav = new ArrayList();
+        List<AttributeTypeAndValue> atav = new ArrayList<AttributeTypeAndValue>();
         while (true) {
-
-            if (pos == length) {
-
+            if (pos == chars.length) {
                 //empty Attribute Value
-                atav.add(new AttributeTypeAndValue(attType, new AttributeValue(
-                        "", false))); //$NON-NLS-1$
+                atav.add(new AttributeTypeAndValue(attType, new AttributeValue("", false)));
                 list.add(0, atav);
-
                 return list;
             }
 
             switch (chars[pos]) {
             case '"':
-                attValue = quotedAV();
-                atav.add(new AttributeTypeAndValue(attType, new AttributeValue(
-                        attValue, hasQE)));
+                atav.add(new AttributeTypeAndValue(attType, new AttributeValue(quotedAV(), hasQE)));
                 break;
             case '#':
-                attValue = hexAV();
-
-                atav.add(new AttributeTypeAndValue(attType, new AttributeValue(
-                        attValue, encoded)));
+                atav.add(new AttributeTypeAndValue(attType, new AttributeValue(hexAV(), encoded)));
                 break;
             case '+':
             case ',':
             case ';': // compatibility with RFC 1779: semicolon can separate RDNs
                 //empty attribute value
-                atav.add(new AttributeTypeAndValue(attType, new AttributeValue(
-                        "", false))); //$NON-NLS-1$
+                atav.add(new AttributeTypeAndValue(attType, new AttributeValue("", false)));
                 break;
             default:
-                attValue = escapedAV();
                 atav.add(new AttributeTypeAndValue(attType, new AttributeValue(
-                        attValue, hasQE)));
+                        escapedAV(), hasQE)));
             }
 
-            if (pos >= length) {
+            if (pos >= chars.length) {
                 list.add(0, atav);
                 return list;
             }
 
             if (chars[pos] == ',' || chars[pos] == ';') {
                 list.add(0, atav);
-                atav = new ArrayList();
+                atav = new ArrayList<AttributeTypeAndValue>();
             } else if (chars[pos] != '+') {
-                throw new IOException(
-                        Messages.getString("security.192")); //$NON-NLS-1$
+                throw new IOException("Invalid distinguished name string");
             }
 
             pos++;
             attType = nextAT();
             if (attType == null) {
-                throw new IOException(
-                        Messages.getString("security.192")); //$NON-NLS-1$
+                throw new IOException("Invalid distinguished name string");
             }
         }
     }

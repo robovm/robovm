@@ -23,6 +23,10 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+/**
+ * This abstract class defines methods to create sockets. It can be subclassed
+ * to create specific socket types with additional socket-level functionality.
+ */
 public abstract class SocketFactory {
 
     private static SocketFactory defaultFactory;
@@ -44,7 +48,6 @@ public abstract class SocketFactory {
      * Creates a new {@code SocketFactory} instance.
      */
     protected SocketFactory() {
-        super();
     }
 
     /**

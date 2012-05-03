@@ -17,6 +17,7 @@
 
 package java.io;
 
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -39,7 +40,7 @@ public class SequenceInputStream extends InputStream {
     /**
      * Constructs a new {@code SequenceInputStream} using the two streams
      * {@code s1} and {@code s2} as the sequence of streams to read from.
-     * 
+     *
      * @param s1
      *            the first stream to get bytes from.
      * @param s2
@@ -61,7 +62,7 @@ public class SequenceInputStream extends InputStream {
      * Constructs a new SequenceInputStream using the elements returned from
      * Enumeration {@code e} as the stream sequence. The instances returned by
      * {@code e.nextElement()} must be of type {@link InputStream}.
-     * 
+     *
      * @param e
      *            the enumeration of {@code InputStreams} to get bytes from.
      * @throws NullPointerException
@@ -77,14 +78,6 @@ public class SequenceInputStream extends InputStream {
         }
     }
 
-    /**
-     * Returns the number of bytes that are available before the current input stream will
-     * block.
-     * 
-     * @return the number of bytes available in the current input stream before blocking.
-     * @throws IOException
-     *             if an I/O error occurs in the current input stream.
-     */
     @Override
     public int available() throws IOException {
         if (e != null && in != null) {
@@ -95,7 +88,7 @@ public class SequenceInputStream extends InputStream {
 
     /**
      * Closes all streams in this sequence of input stream.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing any of the input streams.
      */
@@ -109,7 +102,7 @@ public class SequenceInputStream extends InputStream {
 
     /**
      * Sets up the next InputStream or leaves it alone if there are none left.
-     * 
+     *
      * @throws IOException
      */
     private void nextStream() throws IOException {
@@ -132,7 +125,7 @@ public class SequenceInputStream extends InputStream {
      * stream first; if the end of this stream has been reached, it reads from
      * the next one. Blocks until one byte has been read, the end of the last
      * input stream in the sequence has been reached, or an exception is thrown.
-     * 
+     *
      * @return the byte read or -1 if either the end of the last stream in the
      *         sequence has been reached or this input stream sequence is
      *         closed.
@@ -168,7 +161,7 @@ public class SequenceInputStream extends InputStream {
      * If a substream has already reached the end when this call is made, it
      * will close that substream and start with the next one. If there are no
      * more substreams it will return -1.
-     * 
+     *
      * @param buffer
      *            the array in which to store the bytes read.
      * @param offset
@@ -192,13 +185,7 @@ public class SequenceInputStream extends InputStream {
         if (in == null) {
             return -1;
         }
-        if (buffer == null) {
-            throw new NullPointerException();
-        }
-        // avoid int overflow
-        if (offset < 0 || offset > buffer.length - count || count < 0) {
-            throw new IndexOutOfBoundsException();
-        }
+        Arrays.checkOffsetAndCount(buffer.length, offset, count);
         while (in != null) {
             int result = in.read(buffer, offset, count);
             if (result >= 0) {

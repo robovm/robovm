@@ -23,7 +23,7 @@ import java.io.IOException;
  * This class converts the content of a certain format (i.e. a MIME type) into a
  * Java type object. It is created by {@code ContentHandlerFactory}. The data
  * values should be accessed via {@code URL} or {@code URLConnection}.
- * 
+ *
  * @see ContentHandlerFactory
  * @see URL#getContent()
  * @see URLConnection#getContent()
@@ -31,7 +31,7 @@ import java.io.IOException;
 public abstract class ContentHandler {
     /**
      * Returns the object pointed by the specified URL connection {@code uConn}.
-     * 
+     *
      * @param uConn
      *            URL connection that points to the desired object.
      * @return object referred by {@code uConn}.
@@ -42,7 +42,7 @@ public abstract class ContentHandler {
 
     /**
      * Returns the object pointed by the specified URL connection {@code uConn}.
-     * 
+     *
      * @param uConn
      *            URL connection that points to the desired object.
      * @param types

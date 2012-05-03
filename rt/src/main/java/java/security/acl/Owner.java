@@ -21,15 +21,15 @@ import java.security.Principal;
 
 /**
  * The interface to manage owners of objects that require ownership.
- * 
+ *
  * @see Acl
  * @see Principal
  */
 public interface Owner {
-    
+
     /**
      * Adds a principal to the list of owners.
-     * 
+     *
      * @param caller
      *            the invoking principal.
      * @param owner
@@ -38,12 +38,12 @@ public interface Owner {
      * @throws NotOwnerException
      *             if the invoking principal is not an owner.
      */
-    boolean addOwner(Principal caller, Principal owner) 
+    boolean addOwner(Principal caller, Principal owner)
                  throws NotOwnerException;
-    
+
     /**
      * Removes a principal from the list of owners.
-     * 
+     *
      * @param caller
      *            the invoking principal.
      * @param owner
@@ -55,12 +55,12 @@ public interface Owner {
      *             if the owner to be removed is the last owner and hence removing it
      *             would make this object owner-less.
      */
-    boolean deleteOwner(Principal caller, Principal owner) 
+    boolean deleteOwner(Principal caller, Principal owner)
                 throws NotOwnerException, LastOwnerException;
-    
+
     /**
      * Checks whether the specified principal is an owner of this object.
-     * 
+     *
      * @param owner
      *            the principal to check.
      * @return {@code true} if the specified principal is an owner, otherwise {@code false}.

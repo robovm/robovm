@@ -19,18 +19,18 @@ package java.util;
 
 
 /**
- * {@code Observer} is the interface to be implemented by objects that 
+ * {@code Observer} is the interface to be implemented by objects that
  * receive notification of updates on an {@code Observable} object.
- * 
- * @see Observable 
+ *
+ * @see Observable
  */
 public interface Observer {
 
     /**
      * This method is called if the specified {@code Observable} object's
-     * {@code notifyObservers} method is called (because the {@code Observable} 
+     * {@code notifyObservers} method is called (because the {@code Observable}
      * object has been updated.
-     * 
+     *
      * @param observable
      *            the {@link Observable} object.
      * @param data

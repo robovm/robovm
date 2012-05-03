@@ -17,36 +17,36 @@
 
 /**
 * @author Boris Kuznetsov
+* @version $Revision$
 */
 package org.apache.harmony.security.pkcs7;
 
 import java.util.List;
-
 import org.apache.harmony.security.asn1.ASN1SetOf;
 import org.apache.harmony.security.asn1.BerInputStream;
 import org.apache.harmony.security.x501.AttributeTypeAndValue;
 
 /**
- * 
  * As defined in PKCS #7: Cryptographic Message Syntax Standard
  * (http://www.ietf.org/rfc/rfc2315.txt):
  * authenticatedAttributes is a set of attributes that are signed (i.e., authenticated) by the signer
  */
-class AuthenticatedAttributes {
+final class AuthenticatedAttributes {
     private byte[] encoding;
-    private List authenticatedAttributes;
-    
-    public AuthenticatedAttributes(byte[] encoding, List authenticatedAttributes) {
+    private final List<AttributeTypeAndValue> authenticatedAttributes;
+
+    private AuthenticatedAttributes(byte[] encoding,
+            List<AttributeTypeAndValue> authenticatedAttributes) {
         this.encoding = encoding;
         this.authenticatedAttributes = authenticatedAttributes;
     }
-    public List getAttributes() {
+
+    public List<AttributeTypeAndValue> getAttributes() {
         return authenticatedAttributes;
     }
 
     /**
      * Returns ASN.1 encoded form of this authenticatedAttributes.
-     * @return a byte array containing ASN.1 encode form.
      */
     public byte[] getEncoded() {
         if (encoding == null) {
@@ -57,9 +57,9 @@ class AuthenticatedAttributes {
 
     public static final ASN1SetOf ASN1 =
         new ASN1SetOf(AttributeTypeAndValue.ASN1) {
-        public Object getDecodedObject(BerInputStream in) {
+        @Override public Object getDecodedObject(BerInputStream in) {
             return new AuthenticatedAttributes(in.getEncoded(),
-                    (List) in.content);
+                    (List<AttributeTypeAndValue>) in.content);
         }
     };
 }

@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import libcore.util.EmptyArray;
 
 /**
  * Returns a fixed string based on a numeric value. The class can be used in
@@ -100,7 +101,7 @@ public class ChoiceFormat extends NumberFormat {
     /**
      * Constructs a new {@code ChoiceFormat} with the strings and limits parsed
      * from the specified pattern.
-     * 
+     *
      * @param template
      *            the pattern of strings and ranges.
      * @throws IllegalArgumentException
@@ -113,7 +114,7 @@ public class ChoiceFormat extends NumberFormat {
     /**
      * Parses the pattern to determine new strings and ranges for this
      * {@code ChoiceFormat}.
-     * 
+     *
      * @param template
      *            the pattern of strings and ranges.
      * @throws IllegalArgumentException
@@ -147,8 +148,8 @@ public class ChoiceFormat extends NumberFormat {
             index = skipWhitespace(template, position.getIndex());
             if (position.getErrorIndex() != -1 || index >= length) {
                 // Fix Harmony 540
-                choiceLimits = new double[0];
-                choiceFormats = new String[0];
+                choiceLimits = EmptyArray.DOUBLE;
+                choiceFormats = EmptyArray.STRING;
                 return;
             }
             char ch = template.charAt(index++);
@@ -184,9 +185,9 @@ public class ChoiceFormat extends NumberFormat {
     /**
      * Returns a new instance of {@code ChoiceFormat} with the same ranges and
      * strings as this {@code ChoiceFormat}.
-     * 
+     *
      * @return a shallow copy of this {@code ChoiceFormat}.
-     * 
+     *
      * @see java.lang.Cloneable
      */
     @Override
@@ -201,7 +202,7 @@ public class ChoiceFormat extends NumberFormat {
      * Compares the specified object with this {@code ChoiceFormat}. The object
      * must be an instance of {@code ChoiceFormat} and have the same limits and
      * formats to be equal to this instance.
-     * 
+     *
      * @param object
      *            the object to compare with this instance.
      * @return {@code true} if the specified object is equal to this instance;
@@ -224,7 +225,7 @@ public class ChoiceFormat extends NumberFormat {
     /**
      * Appends the string associated with the range in which the specified
      * double value fits to the specified string buffer.
-     * 
+     *
      * @param value
      *            the double to format.
      * @param buffer
@@ -248,7 +249,7 @@ public class ChoiceFormat extends NumberFormat {
     /**
      * Appends the string associated with the range in which the specified long
      * value fits to the specified string buffer.
-     * 
+     *
      * @param value
      *            the long to format.
      * @param buffer
@@ -266,7 +267,7 @@ public class ChoiceFormat extends NumberFormat {
     /**
      * Returns the strings associated with the ranges of this {@code
      * ChoiceFormat}.
-     * 
+     *
      * @return an array of format strings.
      */
     public Object[] getFormats() {
@@ -275,7 +276,7 @@ public class ChoiceFormat extends NumberFormat {
 
     /**
      * Returns the limits of this {@code ChoiceFormat}.
-     * 
+     *
      * @return the array of doubles which make up the limits of this {@code
      *         ChoiceFormat}.
      */
@@ -286,9 +287,9 @@ public class ChoiceFormat extends NumberFormat {
     /**
      * Returns an integer hash code for the receiver. Objects which are equal
      * return the same value for this method.
-     * 
+     *
      * @return the receiver's hash.
-     * 
+     *
      * @see #equals
      */
     @Override
@@ -304,7 +305,7 @@ public class ChoiceFormat extends NumberFormat {
     /**
      * Returns the double value which is closest to the specified double but
      * larger.
-     * 
+     *
      * @param value
      *            a double value.
      * @return the next larger double value.
@@ -326,7 +327,7 @@ public class ChoiceFormat extends NumberFormat {
     /**
      * Returns the double value which is closest to the specified double but
      * either larger or smaller as specified.
-     * 
+     *
      * @param value
      *            a double value.
      * @param increment
@@ -386,7 +387,7 @@ public class ChoiceFormat extends NumberFormat {
     /**
      * Returns the double value which is closest to the specified double but
      * smaller.
-     * 
+     *
      * @param value
      *            a double value.
      * @return the next smaller double value.
@@ -442,7 +443,7 @@ public class ChoiceFormat extends NumberFormat {
     /**
      * Returns the pattern of this {@code ChoiceFormat} which specifies the
      * ranges and their associated strings.
-     * 
+     *
      * @return the pattern.
      */
     public String toPattern() {

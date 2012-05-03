@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,75 +20,66 @@ package java.util.zip;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import libcore.io.Streams;
 
 /**
- * An inputstream filter to compress data by the compressing format of Deflate.
+ * An {@code InputStream} filter to compress data. Callers read
+ * compressed data in the "deflate" format from the uncompressed
+ * underlying stream.
+ * @since 1.6
  */
 public class DeflaterInputStream extends FilterInputStream {
+    private static final int DEFAULT_BUFFER_SIZE = 1024;
 
-    /**
-     * The Deflater used by this DeflaterInputStream
-     */
     protected final Deflater def;
-
-    /**
-     * The internal input data buffer used by this DeflaterInputStream.
-     */
     protected final byte[] buf;
 
-    private static final int defaultsize = 1024;
-
-    private static final int EOF = -1;
-
     private boolean closed = false;
-
     private boolean available = true;
 
     /**
-     * Constructs a DeflaterInputStream with the default Deflater and internal
-     * input buffer length.
-     * 
-     * @param in
-     *            the InputStream that the DeflaterInputStream reads data from.
+     * Constructs a {@code DeflaterInputStream} with a new {@code Deflater} and an
+     * implementation-defined default internal buffer size. {@code in} is a source of
+     * uncompressed data, and this stream will be a source of compressed data.
+     *
+     * @param in the source {@code InputStream}
      */
     public DeflaterInputStream(InputStream in) {
-        this(in, new Deflater(), defaultsize);
+        this(in, new Deflater(), DEFAULT_BUFFER_SIZE);
     }
 
     /**
-     * Constructs a DeflaterInputStream with a specified Deflater and the
-     * default internal input buffer length.
-     * 
-     * @param in
-     *            the InputStream that the DeflaterInputStream reads data from.
-     * @param defl
-     *            an specifed Deflater used to compress data.
+     * Constructs a {@code DeflaterInputStream} with the given {@code Deflater} and an
+     * implementation-defined default internal buffer size. {@code in} is a source of
+     * uncompressed data, and this stream will be a source of compressed data.
+     *
+     * @param in the source {@code InputStream}
+     * @param deflater the {@code Deflater} to be used for compression
      */
-    public DeflaterInputStream(InputStream in, Deflater defl) {
-        this(in, defl, defaultsize);
+    public DeflaterInputStream(InputStream in, Deflater deflater) {
+        this(in, deflater, DEFAULT_BUFFER_SIZE);
     }
 
     /**
-     * Constructs a DeflaterInputStream with a specified Deflater and input
-     * buffer length.
-     * 
-     * @param in
-     *            the InputStream that the DeflaterInputStream reads data from.
-     * @param defl
-     *            a specifed Deflater used to compress data.
-     * @param bufLen
-     *            the buffer length of the internal input data buffer.
+     * Constructs a {@code DeflaterInputStream} with the given {@code Deflater} and
+     * given internal buffer size. {@code in} is a source of
+     * uncompressed data, and this stream will be a source of compressed data.
+     *
+     * @param in the source {@code InputStream}
+     * @param deflater the {@code Deflater} to be used for compression
+     * @param bufferSize the length in bytes of the internal buffer
      */
-    public DeflaterInputStream(InputStream in, Deflater defl, int bufLen) {
+    public DeflaterInputStream(InputStream in, Deflater deflater, int bufferSize) {
         super(in);
-        if (null == in || null == defl) {
+        if (in == null || deflater == null) {
             throw new NullPointerException();
         }
-        if (bufLen <= 0) {
+        if (bufferSize <= 0) {
             throw new IllegalArgumentException();
         }
-        def = defl;
-        buf = new byte[bufLen];
+        this.def = deflater;
+        this.buf = new byte[bufferSize];
     }
 
     /**
@@ -103,133 +94,92 @@ public class DeflaterInputStream extends FilterInputStream {
     }
 
     /**
-     * Reads a byte from the compressed input stream.
-     * 
-     * @return the byte or -1 if the end of the compressed input stream has been
-     *         reached.
+     * Reads a byte from the compressed input stream. The result will be a byte of compressed
+     * data corresponding to an uncompressed byte or bytes read from the underlying stream.
+     *
+     * @return the byte or -1 if the end of the stream has been reached.
      */
-    @Override
-    public int read() throws IOException {
-        byte[] result = new byte[1];
-
-        // EOF
-        if (read(result, 0, 1) == EOF) {
-            return EOF;
-        }
-
-        int r = result[0];
-        if (r < 0) {
-            r += 256;
-        }
-        return r;
+    @Override public int read() throws IOException {
+        return Streams.readSingleByte(this);
     }
 
     /**
-     * Reads compressed data into a byte buffer.
-     * 
-     * @param b
-     *            the byte buffer that compressed data will be read into.
-     * @param off
-     *            the offset in the byte buffer where compressed data will start
-     *            to be read into.
-     * @param len
-     *            the length of the compressed data that is expected to read.
+     * Reads compressed data into a byte buffer. The result will be bytes of compressed
+     * data corresponding to an uncompressed byte or bytes read from the underlying stream.
      * @return the number of bytes read or -1 if the end of the compressed input
      *         stream has been reached.
      */
-    @Override
-    public int read(byte[] b, int off, int len) throws IOException {
+    @Override public int read(byte[] buffer, int offset, int byteCount) throws IOException {
         checkClosed();
-        if (null == b) {
-            throw new NullPointerException();
-        }
-        if (off < 0 || len < 0 || len > b.length - off) {
-            throw new IndexOutOfBoundsException();
+        Arrays.checkOffsetAndCount(buffer.length, offset, byteCount);
+        if (byteCount == 0) {
+            return 0;
         }
 
         if (!available) {
-            return EOF;
+            return -1;
         }
 
         int count = 0;
-
-        while (count < len && !def.finished()) {
+        while (count < byteCount && !def.finished()) {
             if (def.needsInput()) {
                 // read data from input stream
-                int readed = in.read(buf);
-                if (EOF == readed) {
-                    // gets to the end of the input stream
+                int bytesRead = in.read(buf);
+                if (bytesRead == -1) {
                     def.finish();
                 } else {
-                    def.setInput(buf, 0, readed);
+                    def.setInput(buf, 0, bytesRead);
                 }
             }
-            // gets compressed data from def
-            int readed = def.deflate(buf, 0, Math.min(buf.length, len - count));
-            if (EOF == readed) {
+            int bytesDeflated = def.deflate(buf, 0, Math.min(buf.length, byteCount - count));
+            if (bytesDeflated == -1) {
                 break;
             }
-            System.arraycopy(buf, 0, b, off + count, readed);
-            count += readed;
+            System.arraycopy(buf, 0, buffer, offset + count, bytesDeflated);
+            count += bytesDeflated;
         }
-        if (0 == count) {
-            count = EOF;
+        if (count == 0) {
+            count = -1;
             available = false;
         }
         return count;
     }
 
     /**
-     * Skips n bytes from the DeflateInputStream.
-     * 
-     * @param n
-     *            the bytes to skipped. If n is greater than Integer.MAX_VALUE,
-     *            the DeflateInputStream tries to skip Integer.MAX_VALUE bytes.
-     * @return the number of bytes actually skipped.
+     * {@inheritDoc}
+     * <p>Note: if {@code n > Integer.MAX_VALUE}, this stream will only attempt to
+     * skip {@code Integer.MAX_VALUE} bytes.
      */
     @Override
-    public long skip(long n) throws IOException {
-        if (n < 0) {
-            throw new IllegalArgumentException();
-        }
-        checkClosed();
-
-        int length = (int) (n > Integer.MAX_VALUE ? Integer.MAX_VALUE : n);
-        byte[] buffer = new byte[defaultsize > length ? length : defaultsize];
-        int skipped = 0;
-        int count = 0;
-        while (skipped < length
-                && (count = read(buffer, 0,
-                        (length - skipped > buffer.length) ? buffer.length
-                                : length - skipped)) >= 0) {
-            skipped += count;
-        }
-        return skipped;
+    public long skip(long byteCount) throws IOException {
+        byteCount = Math.min(Integer.MAX_VALUE, byteCount);
+        return Streams.skipByReading(this, byteCount);
     }
 
     /**
-     * Returns 1 to denote there is data to read while 0 if no data is
-     * available. The returned value does not denote how many bytes that can be
-     * read.
-     * 
-     * @return 1 to denote there is data to read while 0 if no data is
+     * Returns 0 when when this stream has exhausted its input; and 1 otherwise.
+     * A result of 1 does not guarantee that further bytes can be returned,
+     * with or without blocking.
+     *
+     * <p>Although consistent with the RI, this behavior is inconsistent with
+     * {@link InputStream#available()}, and violates the <a
+     * href="http://en.wikipedia.org/wiki/Liskov_substitution_principle">Liskov
+     * Substitution Principle</a>. This method should not be used.
+     *
+     * @return 0 if no further bytes are available. Otherwise returns 1,
+     *         which suggests (but does not guarantee) that additional bytes are
      *         available.
+     * @throws IOException if this stream is closed or an error occurs
      */
     @Override
     public int available() throws IOException {
         checkClosed();
-        if (available) {
-            return 1;
-        }
-        return 0;
+        return available ? 1 : 0;
     }
 
     /**
-     * Denotes whether this inputstream support mark()/reset() operation. Always
-     * returns false since the two operaions are not supported in
-     * DeflaterInputStream.
-     * 
-     * @return always returns false.
+     * Returns false because {@code DeflaterInputStream} does not support
+     * {@code mark}/{@code reset}.
      */
     @Override
     public boolean markSupported() {
@@ -237,19 +187,14 @@ public class DeflaterInputStream extends FilterInputStream {
     }
 
     /**
-     * Not supported in DeflaterInputStream and just does nothing.
-     * 
-     * @param limit
-     *            maximum number of bytes that can be read before the mark
-     *            becomes invalid.
+     * This operation is not supported and does nothing.
      */
     @Override
     public void mark(int limit) {
-        // do nothing
     }
 
     /**
-     * Not supported in DeflaterInputStream and just throws IOException.
+     * This operation is not supported and throws {@code IOException}.
      */
     @Override
     public void reset() throws IOException {
@@ -258,7 +203,7 @@ public class DeflaterInputStream extends FilterInputStream {
 
     private void checkClosed() throws IOException {
         if (closed) {
-            throw new IOException();
+            throw new IOException("Stream is closed");
         }
     }
 }

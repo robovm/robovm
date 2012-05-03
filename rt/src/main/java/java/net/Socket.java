@@ -17,69 +17,44 @@
 
 package java.net;
 
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.SocketChannel;
-import java.security.AccessController;
-
-import org.apache.harmony.luni.net.NetUtil;
-import org.apache.harmony.luni.net.PlainSocketImpl;
-import org.apache.harmony.luni.platform.Platform;
-import org.apache.harmony.luni.internal.nls.Messages;
-import org.apache.harmony.luni.util.PriviAction;
+import libcore.io.IoBridge;
 
 /**
  * Provides a client-side TCP socket.
  */
 public class Socket {
+    private static SocketImplFactory factory;
 
-    SocketImpl impl;
+    final SocketImpl impl;
+    private final Proxy proxy;
 
-    static SocketImplFactory factory;
-
-    private volatile boolean isCreated = false;
-
+    volatile boolean isCreated = false;
     private boolean isBound = false;
-
     private boolean isConnected = false;
-
     private boolean isClosed = false;
-
     private boolean isInputShutdown = false;
-
     private boolean isOutputShutdown = false;
 
-    private static class ConnectLock {
-    }
+    private InetAddress localAddress = Inet4Address.ANY;
 
-    private Object connectLock = new ConnectLock();
-
-    private Proxy proxy;
-
-    static final int MULTICAST_IF = 1;
-
-    static final int MULTICAST_TTL = 2;
-
-    static final int TCP_NODELAY = 4;
-
-    static final int FLAG_SHUTDOWN = 8;
-   
-    static {
-        Platform.getNetworkSystem().oneTimeInitialization(true);
-    }
+    private final Object connectLock = new Object();
 
     /**
      * Creates a new unconnected socket. When a SocketImplFactory is defined it
      * creates the internal socket implementation, otherwise the default socket
      * implementation will be used for this socket.
-     * 
+     *
      * @see SocketImplFactory
      * @see SocketImpl
      */
     public Socket() {
-        impl = factory != null ? factory.createSocketImpl()
-                : new PlainSocketImpl();
+        this.impl = factory != null ? factory.createSocketImpl() : new PlainSocketImpl();
+        this.proxy = null;
     }
 
     /**
@@ -92,45 +67,75 @@ public class Socket {
      * proxy server: <br>
      * {@code Socket sock = new Socket(new Proxy(Proxy.Type.SOCKS, new
      * InetSocketAddress("test.domain.org", 2130)));}
-     * 
+     *
      * @param proxy
      *            the specified proxy for this socket.
      * @throws IllegalArgumentException
      *             if the argument {@code proxy} is {@code null} or of an
      *             invalid type.
-     * @throws SecurityException
-     *             if a security manager exists and it denies the permission to
-     *             connect to the given proxy.
      * @see SocketImplFactory
      * @see SocketImpl
      */
     public Socket(Proxy proxy) {
-        if (null == proxy || Proxy.Type.HTTP == proxy.type()) {
-            // luni.73=Proxy is null or invalid type
-            throw new IllegalArgumentException(Messages.getString("luni.73")); //$NON-NLS-1$
+        if (proxy == null || proxy.type() == Proxy.Type.HTTP) {
+            throw new IllegalArgumentException("Invalid proxy: " + proxy);
         }
-        InetSocketAddress address = (InetSocketAddress) proxy.address();
-        if (null != address) {
-            InetAddress addr = address.getAddress();
-            String host;
-            if (null != addr) {
-                host = addr.getHostAddress();
-            } else {
-                host = address.getHostName();
-            }
-            int port = address.getPort();
-            checkConnectPermission(host, port);
-        }
-        impl = factory != null ? factory.createSocketImpl()
-                : new PlainSocketImpl(proxy);
         this.proxy = proxy;
+        this.impl = factory != null ? factory.createSocketImpl() : new PlainSocketImpl(proxy);
+    }
+
+    /**
+     * Tries to connect a socket to all IP addresses of the given hostname.
+     *
+     * @param dstName
+     *            the target host name or IP address to connect to.
+     * @param dstPort
+     *            the port on the target host to connect to.
+     * @param localAddress
+     *            the address on the local host to bind to.
+     * @param localPort
+     *            the port on the local host to bind to.
+     * @param streaming
+     *            if {@code true} a streaming socket is returned, a datagram
+     *            socket otherwise.
+     * @throws UnknownHostException
+     *             if the host name could not be resolved into an IP address.
+     * @throws IOException
+     *             if an error occurs while creating the socket.
+     */
+    private void tryAllAddresses(String dstName, int dstPort, InetAddress
+            localAddress, int localPort, boolean streaming) throws IOException {
+        InetAddress[] dstAddresses = InetAddress.getAllByName(dstName);
+        // Loop through all the destination addresses except the last, trying to
+        // connect to each one and ignoring errors. There must be at least one
+        // address, or getAllByName would have thrown UnknownHostException.
+        InetAddress dstAddress;
+        for (int i = 0; i < dstAddresses.length - 1; i++) {
+            dstAddress = dstAddresses[i];
+            try {
+                checkDestination(dstAddress, dstPort);
+                startupSocket(dstAddress, dstPort, localAddress, localPort, streaming);
+                return;
+            } catch (IOException ex) {
+            }
+        }
+
+        // Now try to connect to the last address in the array, handing back to
+        // the caller any exceptions that are thrown.
+        dstAddress = dstAddresses[dstAddresses.length - 1];
+        checkDestination(dstAddress, dstPort);
+        startupSocket(dstAddress, dstPort, localAddress, localPort, streaming);
     }
 
     /**
      * Creates a new streaming socket connected to the target host specified by
      * the parameters {@code dstName} and {@code dstPort}. The socket is bound
      * to any available port on the local host.
-     * 
+     *
+     * <p>This implementation tries each IP address for the given hostname (in
+     * <a href="http://www.ietf.org/rfc/rfc3484.txt">RFC 3484</a> order)
+     * until it either connects successfully or it exhausts the set.
+     *
      * @param dstName
      *            the target host name or IP address to connect to.
      * @param dstPort
@@ -139,25 +144,20 @@ public class Socket {
      *             if the host name could not be resolved into an IP address.
      * @throws IOException
      *             if an error occurs while creating the socket.
-     * @throws SecurityException
-     *             if a security manager exists and it denies the permission to
-     *             connect to the given address and port.
      */
-    public Socket(String dstName, int dstPort) throws UnknownHostException,
-            IOException {
-        this();
-        InetAddress dstAddress = InetAddress.getByName(dstName);
-        checkDestination(dstAddress, dstPort);
-        startupSocket(dstAddress, dstPort, null, 0, true);
+    public Socket(String dstName, int dstPort) throws UnknownHostException, IOException {
+        this(dstName, dstPort, null, 0);
     }
 
     /**
      * Creates a new streaming socket connected to the target host specified by
      * the parameters {@code dstName} and {@code dstPort}. On the local endpoint
      * the socket is bound to the given address {@code localAddress} on port
-     * {@code localPort}.
+     * {@code localPort}. If {@code host} is {@code null} a loopback address is used to connect to.
      *
-     * If {@code host} is {@code null} a loopback address is used to connect to.
+     * <p>This implementation tries each IP address for the given hostname (in
+     * <a href="http://www.ietf.org/rfc/rfc3484.txt">RFC 3484</a> order)
+     * until it either connects successfully or it exhausts the set.
      *
      * @param dstName
      *            the target host name or IP address to connect to.
@@ -171,23 +171,21 @@ public class Socket {
      *             if the host name could not be resolved into an IP address.
      * @throws IOException
      *             if an error occurs while creating the socket.
-     * @throws SecurityException
-     *             if a security manager exists and it denies the permission to
-     *             connect to the given address and port.
      */
-    public Socket(String dstName, int dstPort, InetAddress localAddress,
-            int localPort) throws IOException {
+    public Socket(String dstName, int dstPort, InetAddress localAddress, int localPort) throws IOException {
         this();
-        InetAddress dstAddress = InetAddress.getByName(dstName);
-        checkDestination(dstAddress, dstPort);
-        startupSocket(dstAddress, dstPort, localAddress, localPort, true);
+        tryAllAddresses(dstName, dstPort, localAddress, localPort, true);
     }
 
     /**
      * Creates a new streaming or datagram socket connected to the target host
      * specified by the parameters {@code hostName} and {@code port}. The socket
      * is bound to any available port on the local host.
-     * 
+     *
+     * <p>This implementation tries each IP address for the given hostname (in
+     * <a href="http://www.ietf.org/rfc/rfc3484.txt">RFC 3484</a> order)
+     * until it either connects successfully or it exhausts the set.
+     *
      * @param hostName
      *            the target host name or IP address to connect to.
      * @param port
@@ -199,36 +197,27 @@ public class Socket {
      *             if the host name could not be resolved into an IP address.
      * @throws IOException
      *             if an error occurs while creating the socket.
-     * @throws SecurityException
-     *             if a security manager exists and it denies the permission to
-     *             connect to the given address and port.
      * @deprecated Use {@code Socket(String, int)} instead of this for streaming
      *             sockets or an appropriate constructor of {@code
      *             DatagramSocket} for UDP transport.
      */
     @Deprecated
-    public Socket(String hostName, int port, boolean streaming)
-            throws IOException {
+    public Socket(String hostName, int port, boolean streaming) throws IOException {
         this();
-        InetAddress host = InetAddress.getByName(hostName);
-        checkDestination(host, port);
-        startupSocket(host, port, null, 0, streaming);
+        tryAllAddresses(hostName, port, null, 0, streaming);
     }
 
     /**
      * Creates a new streaming socket connected to the target host specified by
      * the parameters {@code dstAddress} and {@code dstPort}. The socket is
      * bound to any available port on the local host.
-     * 
+     *
      * @param dstAddress
      *            the target host address to connect to.
      * @param dstPort
      *            the port on the target host to connect to.
      * @throws IOException
      *             if an error occurs while creating the socket.
-     * @throws SecurityException
-     *             if a security manager exists and it denies the permission to
-     *             connect to the given address and port.
      */
     public Socket(InetAddress dstAddress, int dstPort) throws IOException {
         this();
@@ -241,7 +230,7 @@ public class Socket {
      * the parameters {@code dstAddress} and {@code dstPort}. On the local
      * endpoint the socket is bound to the given address {@code localAddress} on
      * port {@code localPort}.
-     * 
+     *
      * @param dstAddress
      *            the target host address to connect to.
      * @param dstPort
@@ -252,9 +241,6 @@ public class Socket {
      *            the port on the local host to bind to.
      * @throws IOException
      *             if an error occurs while creating the socket.
-     * @throws SecurityException
-     *             if a security manager exists and it denies the permission to
-     *             connect to the given address and port.
      */
     public Socket(InetAddress dstAddress, int dstPort,
             InetAddress localAddress, int localPort) throws IOException {
@@ -267,7 +253,7 @@ public class Socket {
      * Creates a new streaming or datagram socket connected to the target host
      * specified by the parameters {@code addr} and {@code port}. The socket is
      * bound to any available port on the local host.
-     * 
+     *
      * @param addr
      *            the Internet address to connect to.
      * @param port
@@ -277,16 +263,12 @@ public class Socket {
      *            socket otherwise.
      * @throws IOException
      *             if an error occurs while creating the socket.
-     * @throws SecurityException
-     *             if a security manager exists and it denies the permission to
-     *             connect to the given address and port.
      * @deprecated Use {@code Socket(InetAddress, int)} instead of this for
      *             streaming sockets or an appropriate constructor of {@code
      *             DatagramSocket} for UDP transport.
      */
     @Deprecated
-    public Socket(InetAddress addr, int port, boolean streaming)
-            throws IOException {
+    public Socket(InetAddress addr, int port, boolean streaming) throws IOException {
         this();
         checkDestination(addr, port);
         startupSocket(addr, port, null, 0, streaming);
@@ -294,64 +276,49 @@ public class Socket {
 
     /**
      * Creates an unconnected socket with the given socket implementation.
-     * 
-     * @param anImpl
+     *
+     * @param impl
      *            the socket implementation to be used.
      * @throws SocketException
      *             if an error occurs while creating the socket.
      */
-    protected Socket(SocketImpl anImpl) throws SocketException {
-        impl = anImpl;
+    protected Socket(SocketImpl impl) throws SocketException {
+        this.impl = impl;
+        this.proxy = null;
     }
 
     /**
      * Checks whether the connection destination satisfies the security policy
      * and the validity of the port range.
-     * 
+     *
      * @param destAddr
      *            the destination host address.
      * @param dstPort
      *            the port on the destination host.
      */
-    void checkDestination(InetAddress destAddr, int dstPort) {
+    private void checkDestination(InetAddress destAddr, int dstPort) {
         if (dstPort < 0 || dstPort > 65535) {
-            throw new IllegalArgumentException(Messages.getString("luni.38")); //$NON-NLS-1$
-        }
-        checkConnectPermission(destAddr.getHostName(), dstPort);
-    }
-
-    /**
-     * Checks whether the connection destination satisfies the security policy.
-     * 
-     * @param hostname
-     *            the destination hostname.
-     * @param dstPort
-     *            the port on the destination host.
-     */
-    private void checkConnectPermission(String hostname, int dstPort) {
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            security.checkConnect(hostname, dstPort);
+            throw new IllegalArgumentException("Port out of range: " + dstPort);
         }
     }
 
     /**
      * Closes the socket. It is not possible to reconnect or rebind to this
      * socket thereafter which means a new socket instance has to be created.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing the socket.
      */
     public synchronized void close() throws IOException {
         isClosed = true;
+        // RI compatibility: the RI returns the any address (but the original local port) after close.
+        localAddress = Inet4Address.ANY;
         impl.close();
     }
 
     /**
-     * Gets the IP address of the target host this socket is connected to.
-     * 
-     * @return the IP address of the connected target host or {@code null} if
-     *         this socket is not yet connected.
+     * Returns the IP address of the target host this socket is connected to, or null if this
+     * socket is not yet connected.
      */
     public InetAddress getInetAddress() {
         if (!isConnected()) {
@@ -361,55 +328,39 @@ public class Socket {
     }
 
     /**
-     * Gets an input stream to read data from this socket.
-     * 
+     * Returns an input stream to read data from this socket.
+     *
      * @return the byte-oriented input stream.
      * @throws IOException
      *             if an error occurs while creating the input stream or the
      *             socket is in an invalid state.
      */
     public InputStream getInputStream() throws IOException {
-        checkClosedAndCreate(false);
+        checkOpenAndCreate(false);
         if (isInputShutdown()) {
-            throw new SocketException(Messages.getString("luni.74")); //$NON-NLS-1$
+            throw new SocketException("Socket input is shutdown");
         }
         return impl.getInputStream();
     }
 
     /**
-     * Gets the setting of the socket option {@code SocketOptions.SO_KEEPALIVE}.
-     * 
-     * @return {@code true} if the {@code SocketOptions.SO_KEEPALIVE} is
-     *         enabled, {@code false} otherwise.
-     * @throws SocketException
-     *             if an error occurs while reading the socket option.
-     * @see SocketOptions#SO_KEEPALIVE
+     * Returns this socket's {@link SocketOptions#SO_KEEPALIVE} setting.
      */
     public boolean getKeepAlive() throws SocketException {
-        checkClosedAndCreate(true);
-        return ((Boolean) impl.getOption(SocketOptions.SO_KEEPALIVE))
-                .booleanValue();
+        checkOpenAndCreate(true);
+        return (Boolean) impl.getOption(SocketOptions.SO_KEEPALIVE);
     }
 
     /**
-     * Gets the local IP address this socket is bound to.
-     * 
-     * @return the local IP address of this socket or {@code InetAddress.ANY} if
-     *         the socket is unbound.
+     * Returns the local IP address this socket is bound to, or {@code InetAddress.ANY} if
+     * the socket is unbound.
      */
     public InetAddress getLocalAddress() {
-        if (!isBound()) {
-            return InetAddress.ANY;
-        }
-        return Platform.getNetworkSystem().getSocketLocalAddress(impl.fd,
-                InetAddress.preferIPv6Addresses());
+        return localAddress;
     }
 
     /**
-     * Gets the local port this socket is bound to.
-     * 
-     * @return the local port of this socket or {@code -1} if the socket is
-     *         unbound.
+     * Returns the local port this socket is bound to, or -1 if the socket is unbound.
      */
     public int getLocalPort() {
         if (!isBound()) {
@@ -419,26 +370,24 @@ public class Socket {
     }
 
     /**
-     * Gets an output stream to write data into this socket.
-     * 
+     * Returns an output stream to write data into this socket.
+     *
      * @return the byte-oriented output stream.
      * @throws IOException
      *             if an error occurs while creating the output stream or the
      *             socket is in an invalid state.
      */
     public OutputStream getOutputStream() throws IOException {
-        checkClosedAndCreate(false);
+        checkOpenAndCreate(false);
         if (isOutputShutdown()) {
-            throw new SocketException(Messages.getString("luni.75")); //$NON-NLS-1$
+            throw new SocketException("Socket output is shutdown");
         }
         return impl.getOutputStream();
     }
 
     /**
-     * Gets the port number of the target host this socket is connected to.
-     * 
-     * @return the port number of the connected target host or {@code 0} if this
-     *         socket is not yet connected.
+     * Returns the port number of the target host this socket is connected to, or 0 if this socket
+     * is not yet connected.
      */
     public int getPort() {
         if (!isConnected()) {
@@ -448,96 +397,66 @@ public class Socket {
     }
 
     /**
-     * Gets the value of the socket option {@code SocketOptions.SO_LINGER}.
-     * 
-     * @return the current value of the option {@code SocketOptions.SO_LINGER}
-     *         or {@code -1} if this option is disabled.
-     * @throws SocketException
-     *             if an error occurs while reading the socket option.
-     * @see SocketOptions#SO_LINGER
+     * Returns this socket's {@link SocketOptions#SO_LINGER linger} timeout in seconds, or -1
+     * for no linger (i.e. {@code close} will return immediately).
      */
     public int getSoLinger() throws SocketException {
-        checkClosedAndCreate(true);
-        return ((Integer) impl.getOption(SocketOptions.SO_LINGER)).intValue();
+        checkOpenAndCreate(true);
+        // The RI explicitly guarantees this idiocy in the SocketOptions.setOption documentation.
+        Object value = impl.getOption(SocketOptions.SO_LINGER);
+        if (value instanceof Integer) {
+            return (Integer) value;
+        } else {
+            return -1;
+        }
     }
 
     /**
-     * Gets the receive buffer size of this socket.
-     * 
-     * @return the current value of the option {@code SocketOptions.SO_RCVBUF}.
-     * @throws SocketException
-     *             if an error occurs while reading the socket option.
-     * @see SocketOptions#SO_RCVBUF
+     * Returns this socket's {@link SocketOptions#SO_RCVBUF receive buffer size}.
      */
     public synchronized int getReceiveBufferSize() throws SocketException {
-        checkClosedAndCreate(true);
-        return ((Integer) impl.getOption(SocketOptions.SO_RCVBUF)).intValue();
+        checkOpenAndCreate(true);
+        return (Integer) impl.getOption(SocketOptions.SO_RCVBUF);
     }
 
     /**
-     * Gets the send buffer size of this socket.
-     * 
-     * @return the current value of the option {@code SocketOptions.SO_SNDBUF}.
-     * @throws SocketException
-     *             if an error occurs while reading the socket option.
-     * @see SocketOptions#SO_SNDBUF
+     * Returns this socket's {@link SocketOptions#SO_SNDBUF send buffer size}.
      */
     public synchronized int getSendBufferSize() throws SocketException {
-        checkClosedAndCreate(true);
-        return ((Integer) impl.getOption(SocketOptions.SO_SNDBUF)).intValue();
+        checkOpenAndCreate(true);
+        return (Integer) impl.getOption(SocketOptions.SO_SNDBUF);
     }
 
     /**
-     * Gets the timeout for this socket during which a reading operation shall
-     * block while waiting for data.
-     * 
-     * @return the current value of the option {@code SocketOptions.SO_TIMEOUT}
-     *         or {@code 0} which represents an infinite timeout.
-     * @throws SocketException
-     *             if an error occurs while reading the socket option.
-     * @see SocketOptions#SO_TIMEOUT
+     * Returns this socket's {@link SocketOptions#SO_TIMEOUT receive timeout}.
      */
     public synchronized int getSoTimeout() throws SocketException {
-        checkClosedAndCreate(true);
-        return ((Integer) impl.getOption(SocketOptions.SO_TIMEOUT)).intValue();
+        checkOpenAndCreate(true);
+        return (Integer) impl.getOption(SocketOptions.SO_TIMEOUT);
     }
 
     /**
-     * Gets the setting of the socket option {@code SocketOptions.TCP_NODELAY}.
-     *
-     * @return {@code true} if the {@code SocketOptions.TCP_NODELAY} is enabled,
-     *         {@code false} otherwise.
-     * @throws SocketException
-     *             if an error occurs while reading the socket option.
-     * @see SocketOptions#TCP_NODELAY
+     * Returns this socket's {@code SocketOptions#TCP_NODELAY} setting.
      */
     public boolean getTcpNoDelay() throws SocketException {
-        checkClosedAndCreate(true);
-        return ((Boolean) impl.getOption(SocketOptions.TCP_NODELAY))
-                .booleanValue();
+        checkOpenAndCreate(true);
+        return (Boolean) impl.getOption(SocketOptions.TCP_NODELAY);
     }
 
     /**
-     * Sets the state of the {@code SocketOptions.SO_KEEPALIVE} for this socket.
-     * 
-     * @param value
-     *            the state whether this option is enabled or not.
-     * @throws SocketException
-     *             if an error occurs while setting the option.
-     * @see SocketOptions#SO_KEEPALIVE
+     * Sets this socket's {@link SocketOptions#SO_KEEPALIVE} option.
      */
-    public void setKeepAlive(boolean value) throws SocketException {
+    public void setKeepAlive(boolean keepAlive) throws SocketException {
         if (impl != null) {
-            checkClosedAndCreate(true);
-            impl.setOption(SocketOptions.SO_KEEPALIVE, value ? Boolean.TRUE
-                    : Boolean.FALSE);
+            checkOpenAndCreate(true);
+            impl.setOption(SocketOptions.SO_KEEPALIVE, Boolean.valueOf(keepAlive));
         }
     }
 
     /**
      * Sets the internal factory for creating socket implementations. This may
      * only be executed once during the lifetime of the application.
-     * 
+     *
      * @param fac
      *            the socket implementation factory to be set.
      * @throws IOException
@@ -545,116 +464,76 @@ public class Socket {
      */
     public static synchronized void setSocketImplFactory(SocketImplFactory fac)
             throws IOException {
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            security.checkSetFactory();
-        }
         if (factory != null) {
-            throw new SocketException(Messages.getString("luni.5C")); //$NON-NLS-1$
+            throw new SocketException("Factory already set");
         }
         factory = fac;
     }
 
     /**
-     * Sets the send buffer size of this socket.
-     * 
-     * @param size
-     *            the buffer size in bytes. This value must be a positive number
-     *            greater than {@code 0}.
-     * @throws SocketException
-     *             if an error occurs while setting the size or the given value
-     *             is an invalid size.
-     * @see SocketOptions#SO_SNDBUF
+     * Sets this socket's {@link SocketOptions#SO_SNDBUF send buffer size}.
      */
     public synchronized void setSendBufferSize(int size) throws SocketException {
-        checkClosedAndCreate(true);
+        checkOpenAndCreate(true);
         if (size < 1) {
-            throw new IllegalArgumentException(Messages.getString("luni.5A")); //$NON-NLS-1$
+            throw new IllegalArgumentException("size < 1");
         }
         impl.setOption(SocketOptions.SO_SNDBUF, Integer.valueOf(size));
     }
 
     /**
-     * Sets the receive buffer size of this socket.
-     * 
-     * @param size
-     *            the buffer size in bytes. This value must be a positive number
-     *            greater than {@code 0}.
-     * @throws SocketException
-     *             if an error occurs while setting the size or the given value
-     *             is an invalid size.
-     * @see SocketOptions#SO_RCVBUF
+     * Sets this socket's {@link SocketOptions#SO_SNDBUF receive buffer size}.
      */
-    public synchronized void setReceiveBufferSize(int size)
-            throws SocketException {
-        checkClosedAndCreate(true);
+    public synchronized void setReceiveBufferSize(int size) throws SocketException {
+        checkOpenAndCreate(true);
         if (size < 1) {
-            throw new IllegalArgumentException(Messages.getString("luni.5A")); //$NON-NLS-1$
+            throw new IllegalArgumentException("size < 1");
         }
         impl.setOption(SocketOptions.SO_RCVBUF, Integer.valueOf(size));
     }
 
     /**
-     * Sets the state of the {@code SocketOptions.SO_LINGER} with the given
-     * timeout in seconds. The timeout value for this option is silently limited
-     * to the maximum of {@code 65535}.
-     * 
-     * @param on
-     *            the state whether this option is enabled or not.
-     * @param timeout
-     *            the linger timeout value in seconds.
-     * @throws SocketException
-     *             if an error occurs while setting the option.
-     * @see SocketOptions#SO_LINGER
+     * Sets this socket's {@link SocketOptions#SO_LINGER linger} timeout in seconds.
+     * If {@code on} is false, {@code timeout} is irrelevant.
      */
     public void setSoLinger(boolean on, int timeout) throws SocketException {
-        checkClosedAndCreate(true);
+        checkOpenAndCreate(true);
+        // The RI explicitly guarantees this idiocy in the SocketOptions.setOption documentation.
         if (on && timeout < 0) {
-            throw new IllegalArgumentException(Messages.getString("luni.76")); //$NON-NLS-1$
+            throw new IllegalArgumentException("timeout < 0");
         }
-        int val = on ? (65535 < timeout ? 65535 : timeout) : -1;
-        impl.setOption(SocketOptions.SO_LINGER, Integer.valueOf(val));
+        if (on) {
+            impl.setOption(SocketOptions.SO_LINGER, Integer.valueOf(timeout));
+        } else {
+            impl.setOption(SocketOptions.SO_LINGER, Boolean.FALSE);
+        }
     }
 
     /**
-     * Sets the reading timeout in milliseconds for this socket. The read
-     * operation will block indefinitely if this option value is set to {@code
-     * 0}. The timeout must be set before calling the read operation. A
-     * {@code SocketTimeoutException} is thrown when this timeout expires.
-     * 
-     * @param timeout
-     *            the reading timeout value as number greater than {@code 0} or
-     *            {@code 0} for an infinite timeout.
-     * @throws SocketException
-     *             if an error occurs while setting the option.
-     * @see SocketOptions#SO_TIMEOUT
+     * Sets this socket's {@link SocketOptions#SO_TIMEOUT read timeout} in milliseconds.
+     * Use 0 for no timeout.
+     * To take effect, this option must be set before the blocking method was called.
      */
     public synchronized void setSoTimeout(int timeout) throws SocketException {
-        checkClosedAndCreate(true);
+        checkOpenAndCreate(true);
         if (timeout < 0) {
-            throw new IllegalArgumentException(Messages.getString("luni.5B")); //$NON-NLS-1$
+            throw new IllegalArgumentException("timeout < 0");
         }
         impl.setOption(SocketOptions.SO_TIMEOUT, Integer.valueOf(timeout));
     }
 
     /**
-     * Sets the state of the {@code SocketOptions.TCP_NODELAY} for this socket.
-     * 
-     * @param on
-     *            the state whether this option is enabled or not.
-     * @throws SocketException
-     *             if an error occurs while setting the option.
-     * @see SocketOptions#TCP_NODELAY
+     * Sets this socket's {@link SocketOptions#TCP_NODELAY} option.
      */
     public void setTcpNoDelay(boolean on) throws SocketException {
-        checkClosedAndCreate(true);
+        checkOpenAndCreate(true);
         impl.setOption(SocketOptions.TCP_NODELAY, Boolean.valueOf(on));
     }
 
     /**
      * Creates a stream socket, binds it to the nominated local address/port,
      * then connects it to the nominated destination address/port.
-     * 
+     *
      * @param dstAddress
      *            the destination host address.
      * @param dstPort
@@ -667,26 +546,26 @@ public class Socket {
      *             thrown if an error occurs during the bind or connect
      *             operations.
      */
-    void startupSocket(InetAddress dstAddress, int dstPort,
+    private void startupSocket(InetAddress dstAddress, int dstPort,
             InetAddress localAddress, int localPort, boolean streaming)
             throws IOException {
 
         if (localPort < 0 || localPort > 65535) {
-            throw new IllegalArgumentException(Messages.getString("luni.77")); //$NON-NLS-1$
+            throw new IllegalArgumentException("Local port out of range: " + localPort);
         }
 
-        InetAddress addr = localAddress == null ? InetAddress.ANY
-                : localAddress;
+        InetAddress addr = localAddress == null ? Inet4Address.ANY : localAddress;
         synchronized (this) {
             impl.create(streaming);
             isCreated = true;
             try {
-                if (!streaming || !NetUtil.usingSocks(proxy)) {
+                if (!streaming || !usingSocks()) {
                     impl.bind(addr, localPort);
                 }
                 isBound = true;
                 impl.connect(dstAddress, dstPort);
                 isConnected = true;
+                cacheLocalAddress();
             } catch (IOException e) {
                 impl.close();
                 throw e;
@@ -694,16 +573,20 @@ public class Socket {
         }
     }
 
+    private boolean usingSocks() {
+        return proxy != null && proxy.type() == Proxy.Type.SOCKS;
+    }
+
     /**
      * Returns a {@code String} containing a concise, human-readable description of the
      * socket.
-     * 
+     *
      * @return the textual representation of this socket.
      */
     @Override
     public String toString() {
         if (!isConnected()) {
-            return "Socket[unconnected]"; //$NON-NLS-1$
+            return "Socket[unconnected]";
         }
         return impl.toString();
     }
@@ -712,7 +595,7 @@ public class Socket {
      * Closes the input stream of this socket. Any further data sent to this
      * socket will be discarded. Reading from this socket after this method has
      * been called will return the value {@code EOF}.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing the socket input stream.
      * @throws SocketException
@@ -720,9 +603,9 @@ public class Socket {
      */
     public void shutdownInput() throws IOException {
         if (isInputShutdown()) {
-            throw new SocketException(Messages.getString("luni.74")); //$NON-NLS-1$
+            throw new SocketException("Socket input is shutdown");
         }
-        checkClosedAndCreate(false);
+        checkOpenAndCreate(false);
         impl.shutdownInput();
         isInputShutdown = true;
     }
@@ -731,7 +614,7 @@ public class Socket {
      * Closes the output stream of this socket. All buffered data will be sent
      * followed by the termination sequence. Writing to the closed output stream
      * will cause an {@code IOException}.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing the socket output stream.
      * @throws SocketException
@@ -739,9 +622,9 @@ public class Socket {
      */
     public void shutdownOutput() throws IOException {
         if (isOutputShutdown()) {
-            throw new SocketException(Messages.getString("luni.75")); //$NON-NLS-1$
+            throw new SocketException("Socket output is shutdown");
         }
-        checkClosedAndCreate(false);
+        checkOpenAndCreate(false);
         impl.shutdownOutput();
         isOutputShutdown = true;
     }
@@ -749,17 +632,17 @@ public class Socket {
     /**
      * Checks whether the socket is closed, and throws an exception. Otherwise
      * creates the underlying SocketImpl.
-     * 
+     *
      * @throws SocketException
      *             if the socket is closed.
      */
-    private void checkClosedAndCreate(boolean create) throws SocketException {
+    private void checkOpenAndCreate(boolean create) throws SocketException {
         if (isClosed()) {
-            throw new SocketException(Messages.getString("luni.0C")); //$NON-NLS-1$
+            throw new SocketException("Socket is closed");
         }
         if (!create) {
             if (!isConnected()) {
-                throw new SocketException(Messages.getString("luni.78")); //$NON-NLS-1$
+                throw new SocketException("Socket is not connected");
                 // a connected socket must be created
             }
 
@@ -788,11 +671,9 @@ public class Socket {
     }
 
     /**
-     * Gets the local address and port of this socket as a SocketAddress or
-     * {@code null} if the socket is unbound. This is useful on multihomed
+     * Returns the local address and port of this socket as a SocketAddress or
+     * null if the socket is unbound. This is useful on multihomed
      * hosts.
-     * 
-     * @return the bound local socket address and port.
      */
     public SocketAddress getLocalSocketAddress() {
         if (!isBound()) {
@@ -802,9 +683,9 @@ public class Socket {
     }
 
     /**
-     * Gets the remote address and port of this socket as a {@code
-     * SocketAddress} or {@code null} if the socket is not connected.
-     * 
+     * Returns the remote address and port of this socket as a {@code
+     * SocketAddress} or null if the socket is not connected.
+     *
      * @return the remote socket address and port.
      */
     public SocketAddress getRemoteSocketAddress() {
@@ -816,7 +697,7 @@ public class Socket {
 
     /**
      * Returns whether this socket is bound to a local address and port.
-     * 
+     *
      * @return {@code true} if the socket is bound to a local address, {@code
      *         false} otherwise.
      */
@@ -826,7 +707,7 @@ public class Socket {
 
     /**
      * Returns whether this socket is connected to a remote host.
-     * 
+     *
      * @return {@code true} if the socket is connected, {@code false} otherwise.
      */
     public boolean isConnected() {
@@ -835,7 +716,7 @@ public class Socket {
 
     /**
      * Returns whether this socket is closed.
-     * 
+     *
      * @return {@code true} if the socket is closed, {@code false} otherwise.
      */
     public boolean isClosed() {
@@ -847,7 +728,7 @@ public class Socket {
      * the SocketAddress {@code localAddr}. If {@code localAddr} is set to
      * {@code null}, this socket will be bound to an available local address on
      * any free port.
-     * 
+     *
      * @param localAddr
      *            the specific address and port on the local machine to bind to.
      * @throws IllegalArgumentException
@@ -857,22 +738,21 @@ public class Socket {
      *             binding.
      */
     public void bind(SocketAddress localAddr) throws IOException {
-        checkClosedAndCreate(true);
+        checkOpenAndCreate(true);
         if (isBound()) {
-            throw new BindException(Messages.getString("luni.71")); //$NON-NLS-1$
+            throw new BindException("Socket is already bound");
         }
 
         int port = 0;
-        InetAddress addr = InetAddress.ANY;
+        InetAddress addr = Inet4Address.ANY;
         if (localAddr != null) {
             if (!(localAddr instanceof InetSocketAddress)) {
-                throw new IllegalArgumentException(Messages.getString(
-                        "luni.49", localAddr.getClass())); //$NON-NLS-1$
+                throw new IllegalArgumentException("Local address not an InetSocketAddress: " +
+                        localAddr.getClass());
             }
             InetSocketAddress inetAddr = (InetSocketAddress) localAddr;
             if ((addr = inetAddr.getAddress()) == null) {
-                throw new SocketException(Messages.getString(
-                        "luni.1A", inetAddr.getHostName())); //$NON-NLS-1$
+                throw new UnknownHostException("Host is unresolved: " + inetAddr.getHostName());
             }
             port = inetAddr.getPort();
         }
@@ -881,6 +761,7 @@ public class Socket {
             try {
                 impl.bind(addr, port);
                 isBound = true;
+                cacheLocalAddress();
             } catch (IOException e) {
                 impl.close();
                 throw e;
@@ -891,7 +772,7 @@ public class Socket {
     /**
      * Connects this socket to the given remote host address and port specified
      * by the SocketAddress {@code remoteAddr}.
-     * 
+     *
      * @param remoteAddr
      *            the address and port of the remote host to connect to.
      * @throws IllegalArgumentException
@@ -909,7 +790,7 @@ public class Socket {
      * by the SocketAddress {@code remoteAddr} with the specified timeout. The
      * connecting method will block until the connection is established or an
      * error occurred.
-     * 
+     *
      * @param remoteAddr
      *            the address and port of the remote host to connect to.
      * @param timeout
@@ -922,27 +803,26 @@ public class Socket {
      *             if the socket is already connected or an error occurs while
      *             connecting.
      */
-    public void connect(SocketAddress remoteAddr, int timeout)
-            throws IOException {
-        checkClosedAndCreate(true);
+    public void connect(SocketAddress remoteAddr, int timeout) throws IOException {
+        checkOpenAndCreate(true);
         if (timeout < 0) {
-            throw new IllegalArgumentException(Messages.getString("luni.5B")); //$NON-NLS-1$
+            throw new IllegalArgumentException("timeout < 0");
         }
         if (isConnected()) {
-            throw new SocketException(Messages.getString("luni.5F")); //$NON-NLS-1$
+            throw new SocketException("Already connected");
         }
         if (remoteAddr == null) {
-            throw new IllegalArgumentException(Messages.getString("luni.5D")); //$NON-NLS-1$
+            throw new IllegalArgumentException("remoteAddr == null");
         }
 
         if (!(remoteAddr instanceof InetSocketAddress)) {
-            throw new IllegalArgumentException(Messages.getString(
-                    "luni.49", remoteAddr.getClass())); //$NON-NLS-1$
+            throw new IllegalArgumentException("Remote address not an InetSocketAddress: " +
+                    remoteAddr.getClass());
         }
         InetSocketAddress inetAddr = (InetSocketAddress) remoteAddr;
         InetAddress addr;
         if ((addr = inetAddr.getAddress()) == null) {
-            throw new UnknownHostException(Messages.getString("luni.1A", remoteAddr));//$NON-NLS-1$
+            throw new UnknownHostException("Host is unresolved: " + inetAddr.getHostName());
         }
         int port = inetAddr.getPort();
 
@@ -950,17 +830,18 @@ public class Socket {
         synchronized (connectLock) {
             try {
                 if (!isBound()) {
-                    // socket allready created at this point by earlier call or
-                    // checkClosedAndCreate this caused us to lose socket
+                    // socket already created at this point by earlier call or
+                    // checkOpenAndCreate this caused us to lose socket
                     // options on create
                     // impl.create(true);
-                    if (!NetUtil.usingSocks(proxy)) {
-                        impl.bind(InetAddress.ANY, 0);
+                    if (!usingSocks()) {
+                        impl.bind(Inet4Address.ANY, 0);
                     }
                     isBound = true;
                 }
                 impl.connect(remoteAddr, timeout);
                 isConnected = true;
+                cacheLocalAddress();
             } catch (IOException e) {
                 impl.close();
                 throw e;
@@ -971,7 +852,7 @@ public class Socket {
     /**
      * Returns whether the incoming channel of the socket has already been
      * closed.
-     * 
+     *
      * @return {@code true} if reading from this socket is not possible anymore,
      *         {@code false} otherwise.
      */
@@ -982,7 +863,7 @@ public class Socket {
     /**
      * Returns whether the outgoing channel of the socket has already been
      * closed.
-     * 
+     *
      * @return {@code true} if writing to this socket is not possible anymore,
      *         {@code false} otherwise.
      */
@@ -991,81 +872,42 @@ public class Socket {
     }
 
     /**
-     * Sets the state of the {@code SocketOptions.SO_REUSEADDR} for this socket.
-     * 
-     * @param reuse
-     *            the state whether this option is enabled or not.
-     * @throws SocketException
-     *             if an error occurs while setting the option.
-     * @see SocketOptions#SO_REUSEADDR
+     * Sets this socket's {@link SocketOptions#SO_REUSEADDR} option.
      */
     public void setReuseAddress(boolean reuse) throws SocketException {
-        checkClosedAndCreate(true);
-        impl.setOption(SocketOptions.SO_REUSEADDR, reuse ? Boolean.TRUE
-                : Boolean.FALSE);
+        checkOpenAndCreate(true);
+        impl.setOption(SocketOptions.SO_REUSEADDR, Boolean.valueOf(reuse));
     }
 
     /**
-     * Gets the setting of the socket option {@code SocketOptions.SO_REUSEADDR}.
-     * 
-     * @return {@code true} if the {@code SocketOptions.SO_REUSEADDR} is
-     *         enabled, {@code false} otherwise.
-     * @throws SocketException
-     *             if an error occurs while reading the socket option.
-     * @see SocketOptions#SO_REUSEADDR
+     * Returns this socket's {@link SocketOptions#SO_REUSEADDR} setting.
      */
     public boolean getReuseAddress() throws SocketException {
-        checkClosedAndCreate(true);
-        return ((Boolean) impl.getOption(SocketOptions.SO_REUSEADDR))
-                .booleanValue();
+        checkOpenAndCreate(true);
+        return (Boolean) impl.getOption(SocketOptions.SO_REUSEADDR);
     }
 
     /**
-     * Sets the state of the {@code SocketOptions.SO_OOBINLINE} for this socket.
-     * When this option is enabled urgent data can be received in-line with
-     * normal data.
-     * 
-     * @param oobinline
-     *            whether this option is enabled or not.
-     * @throws SocketException
-     *             if an error occurs while setting the option.
-     * @see SocketOptions#SO_OOBINLINE
+     * Sets this socket's {@link SocketOptions#SO_OOBINLINE} option.
      */
     public void setOOBInline(boolean oobinline) throws SocketException {
-        checkClosedAndCreate(true);
-        impl.setOption(SocketOptions.SO_OOBINLINE, oobinline ? Boolean.TRUE
-                : Boolean.FALSE);
+        checkOpenAndCreate(true);
+        impl.setOption(SocketOptions.SO_OOBINLINE, Boolean.valueOf(oobinline));
     }
 
     /**
-     * Gets the setting of the socket option {@code SocketOptions.SO_OOBINLINE}.
-     * 
-     * @return {@code true} if the {@code SocketOptions.SO_OOBINLINE} is
-     *         enabled, {@code false} otherwise.
-     * @throws SocketException
-     *             if an error occurs while reading the socket option.
-     * @see SocketOptions#SO_OOBINLINE
+     * Returns this socket's {@link SocketOptions#SO_OOBINLINE} setting.
      */
     public boolean getOOBInline() throws SocketException {
-        checkClosedAndCreate(true);
-        return ((Boolean) impl.getOption(SocketOptions.SO_OOBINLINE))
-                .booleanValue();
+        checkOpenAndCreate(true);
+        return (Boolean) impl.getOption(SocketOptions.SO_OOBINLINE);
     }
 
     /**
-     * Sets the value of the {@code SocketOptions.IP_TOS} for this socket. See
-     * the specification RFC 1349 for more information about the type of service
-     * field.
-     * 
-     * @param value
-     *            the value to be set for this option with a valid range of
-     *            {@code 0-255}.
-     * @throws SocketException
-     *             if an error occurs while setting the option.
-     * @see SocketOptions#IP_TOS
+     * Sets this socket's {@link SocketOptions#IP_TOS} value for every packet sent by this socket.
      */
     public void setTrafficClass(int value) throws SocketException {
-        checkClosedAndCreate(true);
+        checkOpenAndCreate(true);
         if (value < 0 || value > 255) {
             throw new IllegalArgumentException();
         }
@@ -1073,62 +915,64 @@ public class Socket {
     }
 
     /**
-     * Gets the value of the socket option {@code SocketOptions.IP_TOS}.
-     * 
-     * @return the value which represents the type of service.
-     * @throws SocketException
-     *             if an error occurs while reading the socket option.
-     * @see SocketOptions#IP_TOS
+     * Returns this socket's {@see SocketOptions#IP_TOS} setting.
      */
     public int getTrafficClass() throws SocketException {
-        checkClosedAndCreate(true);
-        return ((Number) impl.getOption(SocketOptions.IP_TOS)).intValue();
+        checkOpenAndCreate(true);
+        return (Integer) impl.getOption(SocketOptions.IP_TOS);
     }
 
     /**
      * Sends the given single byte data which is represented by the lowest octet
      * of {@code value} as "TCP urgent data".
-     * 
+     *
      * @param value
      *            the byte of urgent data to be sent.
      * @throws IOException
      *             if an error occurs while sending urgent data.
      */
     public void sendUrgentData(int value) throws IOException {
-        if (!impl.supportsUrgentData()) {
-            throw new SocketException(Messages.getString("luni.79")); //$NON-NLS-1$
-        }
         impl.sendUrgentData(value);
     }
 
     /**
      * Set the appropriate flags for a socket created by {@code
      * ServerSocket.accept()}.
-     * 
+     *
      * @see ServerSocket#implAccept
      */
     void accepted() {
         isCreated = isBound = isConnected = true;
+        cacheLocalAddress();
     }
 
-    static boolean preferIPv4Stack() {
-        return NetUtil.preferIPv4Stack();
+    private void cacheLocalAddress() {
+        this.localAddress = IoBridge.getSocketLocalAddress(impl.fd);
     }
 
     /**
-     * Gets the SocketChannel of this socket, if one is available. The current
-     * implementation of this method returns always {@code null}.
-     * 
-     * @return the related SocketChannel or {@code null} if no channel exists.
+     * Returns this socket's {@code SocketChannel}, if one exists. A channel is
+     * available only if this socket wraps a channel. (That is, you can go from a
+     * channel to a socket and back again, but you can't go from an arbitrary socket to a channel.)
+     * In practice, this means that the socket must have been created by
+     * {@link java.nio.channels.ServerSocketChannel#accept} or
+     * {@link java.nio.channels.SocketChannel#open}.
      */
     public SocketChannel getChannel() {
         return null;
     }
 
     /**
+     * @hide internal use only
+     */
+    public FileDescriptor getFileDescriptor$() {
+        return impl.fd;
+    }
+
+    /**
      * Sets performance preferences for connectionTime, latency and bandwidth.
-     * <p>
-     * This method does currently nothing.
+     *
+     * <p>This method does currently nothing.
      *
      * @param connectionTime
      *            the value representing the importance of a short connecting
@@ -1138,8 +982,7 @@ public class Socket {
      * @param bandwidth
      *            the value representing the importance of high bandwidth.
      */
-    public void setPerformancePreferences(int connectionTime, int latency,
-            int bandwidth) {
+    public void setPerformancePreferences(int connectionTime, int latency, int bandwidth) {
         // Our socket implementation only provide one protocol: TCP/IP, so
         // we do nothing for this method
     }

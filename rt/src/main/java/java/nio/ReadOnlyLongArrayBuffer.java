@@ -27,14 +27,14 @@ package java.nio;
  * <p>
  * This class is marked final for runtime performance.
  * </p>
- * 
+ *
  */
 final class ReadOnlyLongArrayBuffer extends LongArrayBuffer {
 
     static ReadOnlyLongArrayBuffer copy(LongArrayBuffer other, int markOfOther) {
-        ReadOnlyLongArrayBuffer buf = new ReadOnlyLongArrayBuffer(other
-                .capacity(), other.backingArray, other.offset);
-        buf.limit = other.limit();
+        ReadOnlyLongArrayBuffer buf =
+                new ReadOnlyLongArrayBuffer(other.capacity(), other.backingArray, other.offset);
+        buf.limit = other.limit;
         buf.position = other.position();
         buf.mark = markOfOther;
         return buf;
@@ -95,14 +95,13 @@ final class ReadOnlyLongArrayBuffer extends LongArrayBuffer {
     }
 
     @Override
-    public final LongBuffer put(long[] src, int off, int len) {
+    public final LongBuffer put(long[] src, int srcOffset, int longCount) {
         throw new ReadOnlyBufferException();
     }
 
     @Override
     public LongBuffer slice() {
-        return new ReadOnlyLongArrayBuffer(remaining(), backingArray, offset
-                + position);
+        return new ReadOnlyLongArrayBuffer(remaining(), backingArray, offset + position);
     }
 
 }

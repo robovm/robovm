@@ -17,6 +17,7 @@
 
 /**
 * @author Alexander Y. Kleymenov
+* @version $Revision$
 */
 
 package org.apache.harmony.security.x509;
@@ -30,68 +31,47 @@ import org.apache.harmony.security.asn1.BerInputStream;
 import org.apache.harmony.security.asn1.ObjectIdentifier;
 
 /**
- * The class encapsulates the ASN.1 DER encoding/decoding work 
+ * The class encapsulates the ASN.1 DER encoding/decoding work
  * with OtherName structure which is a subpart of GeneralName
  * (as specified in RFC 3280 -
  *  Internet X.509 Public Key Infrastructure.
  *  Certificate and Certificate Revocation List (CRL) Profile.
  *  http://www.ietf.org/rfc/rfc3280.txt):
- *   
+ *
  * <pre>
  *   OtherName ::= SEQUENCE {
  *        type-id    OBJECT IDENTIFIER,
- *        value      [0] EXPLICIT ANY DEFINED BY type-id 
+ *        value      [0] EXPLICIT ANY DEFINED BY type-id
  *   }
  * </pre>
  */
-public class OtherName {
-    // the value of typeID field of the structure
+public final class OtherName {
+    /** the value of typeID field of the structure */
     private String typeID;
-    // the value of value field of the structure
+    /** the value of value field of the structure */
     private byte[] value;
-    // the ASN.1 encoded form of OtherName
+    /** the ASN.1 encoded form of OtherName */
     private byte[] encoding;
-    
-    /**
-     * TODO
-     * @param   typeID: String
-     * @param   value:  byte[]
-     */
+
     public OtherName(String typeID, byte[] value) {
         this(typeID, value, null);
     }
 
-    // 
-    // TODO
-    // @param   typeID: String
-    // @param   value:  byte[]
-    // @param   encoding:   byte[]
-    // 
     private OtherName(String typeID, byte[] value, byte[] encoding) {
         this.typeID = typeID;
         this.value = value;
         this.encoding = encoding;
     }
-        
-    /**
-     * Returns the value of typeID field of the structure.
-     * @return  typeID
-     */
-    public String getTypeID() {
-        return typeID;
-    }
 
     /**
      * Returns the value of value field of the structure.
-     * @return  value
      */
     public byte[] getValue() {
         return value;
     }
-    
+
     /**
      * Returns ASN.1 encoded form of this X.509 OtherName value.
-     * @return a byte array containing ASN.1 encode form.
      */
     public byte[] getEncoded() {
         if (encoding == null) {
@@ -104,19 +84,17 @@ public class OtherName {
      * ASN.1 DER X.509 OtherName encoder/decoder class.
      */
     public static final ASN1Sequence ASN1 = new ASN1Sequence(new ASN1Type[] {
-            ASN1Oid.getInstance(), 
+            ASN1Oid.getInstance(),
             new ASN1Explicit(0, ASN1Any.getInstance()) }) {
 
-        protected Object getDecodedObject(BerInputStream in) {
+        @Override protected Object getDecodedObject(BerInputStream in) {
             Object[] values = (Object[]) in.content;
             return new OtherName(ObjectIdentifier.toString((int[]) values[0]),
                     (byte[]) values[1], in.getEncoded());
         }
 
-        protected void getValues(Object object, Object[] values) {
-
+        @Override protected void getValues(Object object, Object[] values) {
             OtherName on = (OtherName) object;
-
             values[0] = ObjectIdentifier.toIntArray(on.typeID);
             values[1] = on.value;
         }

@@ -5,10 +5,10 @@
  */
 
 package java.util.concurrent.atomic;
+
+import dalvik.system.VMStack; // android-added
 import sun.misc.Unsafe;
 import java.lang.reflect.*;
-
-import org.apache.harmony.kernel.vm.VM;
 
 /**
  * A reflection-based utility that enables atomic updates to
@@ -28,7 +28,7 @@ import org.apache.harmony.kernel.vm.VM;
  * @author Doug Lea
  * @param <T> The type of the object holding the updatable field
  */
-public abstract class  AtomicIntegerFieldUpdater<T>  {
+public abstract class  AtomicIntegerFieldUpdater<T> {
     /**
      * Creates and returns an updater for objects with the given field.
      * The Class argument is needed to check that reflective types and
@@ -236,7 +236,7 @@ public abstract class  AtomicIntegerFieldUpdater<T>  {
      * Standard hotspot implementation using intrinsics
      */
     private static class AtomicIntegerFieldUpdaterImpl<T> extends AtomicIntegerFieldUpdater<T> {
-        private static final Unsafe unsafe = Unsafe.getUnsafe();
+        private static final Unsafe unsafe = UnsafeAccess.THE_ONE; // android-changed
         private final long offset;
         private final Class<T> tclass;
         private final Class cclass;
@@ -247,16 +247,17 @@ public abstract class  AtomicIntegerFieldUpdater<T>  {
             int modifiers = 0;
             try {
                 field = tclass.getDeclaredField(fieldName);
-                caller = VM.getStackClass(2);
+                // BEGIN android-changed
+                caller = VMStack.getStackClass2();
+                // END android-changed
                 modifiers = field.getModifiers();
 
-                SecurityManager smgr = System.getSecurityManager();
-                if (smgr != null) {
-                    int type = Modifier.isPublic(modifiers)
-                            ? Member.PUBLIC : Member.DECLARED;
-                    smgr.checkMemberAccess(tclass, type);
-                    smgr.checkPackageAccess(tclass.getPackage().getName());
-                }
+                // BEGIN android-removed
+                // modifiers = field.getModifiers();
+                // sun.reflect.misc.ReflectUtil.ensureMemberAccess(
+                //     caller, tclass, null, modifiers);
+                // sun.reflect.misc.ReflectUtil.checkPackageAccess(tclass);
+                // END android-removed
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }

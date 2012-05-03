@@ -17,14 +17,19 @@
 
 package java.io;
 
+import dalvik.system.CloseGuard;
+import java.nio.ByteOrder;
+import java.nio.NioUtils;
 import java.nio.channels.FileChannel;
-
-import org.apache.harmony.luni.platform.IFileSystem;
-import org.apache.harmony.luni.platform.Platform;
-import org.apache.harmony.luni.internal.nls.Messages;
-import org.apache.harmony.luni.util.Util;
-
-import org.apache.harmony.nio.FileChannelFactory;
+import java.nio.charset.ModifiedUtf8;
+import java.util.Arrays;
+import libcore.io.ErrnoException;
+import libcore.io.IoBridge;
+import libcore.io.IoUtils;
+import libcore.io.Libcore;
+import libcore.io.Memory;
+import libcore.io.SizeOf;
+import static libcore.io.OsConstants.*;
 
 /**
  * Allows reading from and writing to a file in a random-access manner. This is
@@ -46,14 +51,11 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     // initialized).
     private FileChannel channel;
 
-    private IFileSystem fileSystem = Platform.getFileSystem();
+    private int mode;
 
-    private boolean isReadOnly;
+    private final CloseGuard guard = CloseGuard.get();
 
-    private static class RepositionLock {
-    }
-
-    private Object repositionLock = new RepositionLock();
+    private final byte[] scratch = new byte[8];
 
     /**
      * Constructs a new {@code RandomAccessFile} based on {@code file} and opens
@@ -95,50 +97,25 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * @throws IllegalArgumentException
      *             if {@code mode} is not {@code "r"}, {@code "rw"}, {@code
      *             "rws"} or {@code "rwd"}.
-     * @throws SecurityException
-     *             if a {@code SecurityManager} is installed and it denies
-     *             access request according to {@code mode}.
-     * @see java.lang.SecurityManager#checkRead(FileDescriptor)
-     * @see java.lang.SecurityManager#checkWrite(FileDescriptor)
      */
-    public RandomAccessFile(File file, String mode)
-            throws FileNotFoundException {
-        super();
-
-        int options = 0;
-        
-        fd = new FileDescriptor();
-       
-        if (mode.equals("r")) { //$NON-NLS-1$
-            isReadOnly = true;
-            fd.readOnly = true;
-            options = IFileSystem.O_RDONLY;
-        } else if (mode.equals("rw") || mode.equals("rws") || mode.equals("rwd")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            isReadOnly = false;
-            options = IFileSystem.O_RDWR;
-
-            if (mode.equals("rws")) { //$NON-NLS-1$
+    public RandomAccessFile(File file, String mode) throws FileNotFoundException {
+        int flags;
+        if (mode.equals("r")) {
+            flags = O_RDONLY;
+        } else if (mode.equals("rw") || mode.equals("rws") || mode.equals("rwd")) {
+            flags = O_RDWR | O_CREAT;
+            if (mode.equals("rws")) {
                 // Sync file and metadata with every write
                 syncMetadata = true;
-            } else if (mode.equals("rwd")) { //$NON-NLS-1$
+            } else if (mode.equals("rwd")) {
                 // Sync file, but not necessarily metadata
-                options = IFileSystem.O_RDWRSYNC;
+                flags |= O_SYNC;
             }
         } else {
-            throw new IllegalArgumentException(Messages.getString("luni.A2")); //$NON-NLS-1$
+            throw new IllegalArgumentException("Invalid mode: " + mode);
         }
-
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            security.checkRead(file.getPath());
-            if (!isReadOnly) {
-                security.checkWrite(file.getPath());
-            }
-        }
-        
-        fd.descriptor = fileSystem.open(file.properPath(true), options);
-        channel = FileChannelFactory.getFileChannel(this, fd.descriptor,
-                options);
+        this.mode = flags;
+        this.fd = IoBridge.open(file.getAbsolutePath(), flags);
 
         // if we are in "rws" mode, attempt to sync file+metadata
         if (syncMetadata) {
@@ -148,6 +125,7 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
                 // Ignored
             }
         }
+        guard.open("close");
     }
 
     /**
@@ -155,7 +133,7 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * fileName} and opens it according to the access string in {@code mode}.
      * The file path may be specified absolutely or relative to the system
      * property {@code "user.dir"}.
-     * 
+     *
      * @param fileName
      *            the name of the file to open.
      * @param mode
@@ -167,34 +145,36 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * @throws IllegalArgumentException
      *             if {@code mode} is not {@code "r"}, {@code "rw"}, {@code
      *             "rws"} or {@code "rwd"}.
-     * @throws SecurityException
-     *             if a {@code SecurityManager} is installed and it denies
-     *             access request according to {@code mode}.
-     * @see java.lang.SecurityManager#checkRead(FileDescriptor)
-     * @see java.lang.SecurityManager#checkWrite(FileDescriptor)
      */
-    public RandomAccessFile(String fileName, String mode)
-            throws FileNotFoundException {
+    public RandomAccessFile(String fileName, String mode) throws FileNotFoundException {
         this(new File(fileName), mode);
     }
 
     /**
      * Closes this file.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing this file.
      */
     public void close() throws IOException {
-        synchronized (channel) {
-            if (channel.isOpen()) {
-                channel.close();
-            }
-        }
+        guard.close();
         synchronized (this) {
-            if (fd != null && fd.descriptor >= 0) {
-                fileSystem.close(fd.descriptor);
-                fd.descriptor = -1;
+            if (channel != null && channel.isOpen()) {
+                channel.close();
+                channel = null;
             }
+            IoUtils.close(fd);
+        }
+    }
+
+    @Override protected void finalize() throws Throwable {
+        try {
+            if (guard != null) {
+                guard.warnIfOpen();
+            }
+            close();
+        } finally {
+            super.finalize();
         }
     }
 
@@ -205,17 +185,20 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * as this file's file pointer offset (see {@link #getFilePointer()}). Any
      * changes made to this file's file pointer offset are also visible in the
      * file channel's position and vice versa.
-     * 
+     *
      * @return this file's file channel instance.
      */
     public final synchronized FileChannel getChannel() {
+        if(channel == null) {
+            channel = NioUtils.newFileChannel(this, fd, mode);
+        }
         return channel;
     }
 
     /**
      * Gets this file's {@link FileDescriptor}. This represents the operating
      * system resource for this random access file.
-     * 
+     *
      * @return this file's file descriptor object.
      * @throws IOException
      *             if an error occurs while getting the file descriptor of this
@@ -228,68 +211,56 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     /**
      * Gets the current position within this file. All reads and
      * writes take place at the current file pointer position.
-     * 
+     *
      * @return the current offset in bytes from the beginning of the file.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while getting the file pointer of this
      *             file.
      */
     public long getFilePointer() throws IOException {
-        openCheck();
-        return fileSystem.seek(fd.descriptor, 0L, IFileSystem.SEEK_CUR);
-    }
-
-    /**
-     * Checks to see if the file is currently open. Returns silently if it is,
-     * and throws an exception if it is not.
-     * 
-     * @throws IOException
-     *             the receiver is closed.
-     */
-    private synchronized void openCheck() throws IOException {
-        if (fd.descriptor < 0) {
-            throw new IOException();
+        try {
+            return Libcore.os.lseek(fd, 0L, SEEK_CUR);
+        } catch (ErrnoException errnoException) {
+            throw errnoException.rethrowAsIOException();
         }
     }
 
     /**
      * Returns the length of this file in bytes.
-     * 
+     *
      * @return the file's length in bytes.
      * @throws IOException
      *             if this file is closed or some other I/O error occurs.
      */
     public long length() throws IOException {
-        openCheck();
-        return fileSystem.size(fd.descriptor);
+        try {
+            return Libcore.os.fstat(fd).st_size;
+        } catch (ErrnoException errnoException) {
+            throw errnoException.rethrowAsIOException();
+        }
     }
 
     /**
      * Reads a single byte from the current position in this file and returns it
      * as an integer in the range from 0 to 255. Returns -1 if the end of the
      * file has been reached. Blocks until one byte has been read, the end of
-     * the file is detected or an exception is thrown.
-     * 
+     * the file is detected, or an exception is thrown.
+     *
      * @return the byte read or -1 if the end of the file has been reached.
      * @throws IOException
      *             if this file is closed or another I/O error occurs.
      */
     public int read() throws IOException {
-        openCheck();
-        byte[] bytes = new byte[1];
-        synchronized (repositionLock) {
-            long readed = fileSystem.read(fd.descriptor, bytes, 0, 1);
-            return readed == -1 ? -1 : bytes[0] & 0xff;
-        }
+        return (read(scratch, 0, 1) != -1) ? scratch[0] & 0xff : -1;
     }
 
     /**
      * Reads bytes from the current position in this file and stores them in the
      * byte array {@code buffer}. The maximum number of bytes read corresponds
      * to the size of {@code buffer}. Blocks until at least one byte has been
-     * read.
-     * 
+     * read, the end of the file is detected, or an exception is thrown.
+     *
      * @param buffer
      *            the byte array in which to store the bytes read.
      * @return the number of bytes actually read or -1 if the end of the file
@@ -302,45 +273,28 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     }
 
     /**
-     * Reads at most {@code count} bytes from the current position in this file
+     * Reads at most {@code byteCount} bytes from the current position in this file
      * and stores them in the byte array {@code buffer} starting at {@code
-     * offset}. Blocks until {@code count} bytes have been read, the end of the
-     * file is reached or an exception is thrown.
-     * 
-     * @param buffer
-     *            the array in which to store the bytes read from this file.
-     * @param offset
-     *            the initial position in {@code buffer} to store the bytes read
-     *            from this file.
-     * @param count
-     *            the maximum number of bytes to store in {@code buffer}.
+     * byteOffset}. Blocks until at least one byte has been
+     * read, the end of the file is detected, or an exception is thrown.
+     *
      * @return the number of bytes actually read or -1 if the end of the stream
      *         has been reached.
      * @throws IndexOutOfBoundsException
-     *             if {@code offset < 0} or {@code count < 0}, or if {@code
-     *             offset + count} is greater than the size of {@code buffer}.
+     *             if {@code byteOffset < 0} or {@code byteCount < 0}, or if {@code
+     *             byteOffset + byteCount} is greater than the size of {@code buffer}.
      * @throws IOException
      *             if this file is closed or another I/O error occurs.
      */
-    public int read(byte[] buffer, int offset, int count) throws IOException {
-        // have to have four comparisions to not miss integer overflow cases
-        if (count > buffer.length - offset || count < 0 || offset < 0) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (0 == count) {
-            return 0;
-        }
-        openCheck();
-        synchronized (repositionLock) {
-            return (int) fileSystem.read(fd.descriptor, buffer, offset, count);
-        }
+    public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
+        return IoBridge.read(fd, buffer, byteOffset, byteCount);
     }
 
     /**
      * Reads a boolean from the current position in this file. Blocks until one
      * byte has been read, the end of the file is reached or an exception is
      * thrown.
-     * 
+     *
      * @return the next boolean value from this file.
      * @throws EOFException
      *             if the end of this file is detected.
@@ -360,7 +314,7 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * Reads an 8-bit byte from the current position in this file. Blocks until
      * one byte has been read, the end of the file is reached or an exception is
      * thrown.
-     * 
+     *
      * @return the next signed 8-bit byte value from this file.
      * @throws EOFException
      *             if the end of this file is detected.
@@ -377,10 +331,10 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     }
 
     /**
-     * Reads a 16-bit character from the current position in this file. Blocks until
+     * Reads a big-endian 16-bit character from the current position in this file. Blocks until
      * two bytes have been read, the end of the file is reached or an exception is
      * thrown.
-     * 
+     *
      * @return the next char value from this file.
      * @throws EOFException
      *             if the end of this file is detected.
@@ -389,18 +343,14 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * @see #writeChar(int)
      */
     public final char readChar() throws IOException {
-        byte[] buffer = new byte[2];
-        if (read(buffer, 0, buffer.length) != buffer.length) {
-            throw new EOFException();
-        }
-        return (char) (((buffer[0] & 0xff) << 8) + (buffer[1] & 0xff));
+        return (char) readShort();
     }
 
     /**
-     * Reads a 64-bit double from the current position in this file. Blocks
+     * Reads a big-endian 64-bit double from the current position in this file. Blocks
      * until eight bytes have been read, the end of the file is reached or an
      * exception is thrown.
-     * 
+     *
      * @return the next double value from this file.
      * @throws EOFException
      *             if the end of this file is detected.
@@ -413,10 +363,10 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     }
 
     /**
-     * Reads a 32-bit float from the current position in this file. Blocks
+     * Reads a big-endian 32-bit float from the current position in this file. Blocks
      * until four bytes have been read, the end of the file is reached or an
      * exception is thrown.
-     * 
+     *
      * @return the next float value from this file.
      * @throws EOFException
      *             if the end of this file is detected.
@@ -429,70 +379,55 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     }
 
     /**
-     * Reads bytes from this file into {@code buffer}. Blocks until {@code
-     * buffer.length} number of bytes have been read, the end of the file is
-     * reached or an exception is thrown.
-     * 
-     * @param buffer
-     *            the buffer to read bytes into.
-     * @throws EOFException
-     *             if the end of this file is detected.
-     * @throws IOException
-     *             if this file is closed or another I/O error occurs.
-     * @throws NullPointerException
-     *             if {@code buffer} is {@code null}.
+     * Equivalent to {@code readFully(dst, 0, dst.length);}.
      */
-    public final void readFully(byte[] buffer) throws IOException {
-        readFully(buffer, 0, buffer.length);
+    public final void readFully(byte[] dst) throws IOException {
+        readFully(dst, 0, dst.length);
     }
 
     /**
-     * Read bytes from this file into {@code buffer} starting at offset {@code
-     * offset}. This method blocks until {@code count} number of bytes have been
-     * read.
-     * 
-     * @param buffer
-     *            the buffer to read bytes into.
+     * Reads {@code byteCount} bytes from this stream and stores them in the byte
+     * array {@code dst} starting at {@code offset}. If {@code byteCount} is zero, then this
+     * method returns without reading any bytes. Otherwise, this method blocks until
+     * {@code byteCount} bytes have been read. If insufficient bytes are available,
+     * {@code EOFException} is thrown. If an I/O error occurs, {@code IOException} is
+     * thrown. When an exception is thrown, some bytes may have been consumed from the stream
+     * and written into the array.
+     *
+     * @param dst
+     *            the byte array into which the data is read.
      * @param offset
-     *            the initial position in {@code buffer} to store the bytes read
-     *            from this file.
-     * @param count
-     *            the maximum number of bytes to store in {@code buffer}.
+     *            the offset in {@code dst} at which to store the bytes.
+     * @param byteCount
+     *            the number of bytes to read.
      * @throws EOFException
-     *             if the end of this file is detected.
+     *             if the end of the source stream is reached before enough
+     *             bytes have been read.
      * @throws IndexOutOfBoundsException
-     *             if {@code offset < 0} or {@code count < 0}, or if {@code
-     *             offset + count} is greater than the length of {@code buffer}.
+     *             if {@code offset < 0} or {@code byteCount < 0}, or
+     *             {@code offset + byteCount > dst.length}.
      * @throws IOException
-     *             if this file is closed or another I/O error occurs.
+     *             if a problem occurs while reading from this stream.
      * @throws NullPointerException
-     *             if {@code buffer} is {@code null}.
+     *             if {@code dst} is null.
      */
-    public final void readFully(byte[] buffer, int offset, int count)
-            throws IOException {
-        if (buffer == null) {
-            throw new NullPointerException(Messages.getString("luni.11")); //$NON-NLS-1$
-        }
-        // avoid int overflow
-        if (offset < 0 || offset > buffer.length || count < 0
-                || count > buffer.length - offset) {
-            throw new IndexOutOfBoundsException();
-        }
-        while (count > 0) {
-            int result = read(buffer, offset, count);
+    public final void readFully(byte[] dst, int offset, int byteCount) throws IOException {
+        Arrays.checkOffsetAndCount(dst.length, offset, byteCount);
+        while (byteCount > 0) {
+            int result = read(dst, offset, byteCount);
             if (result < 0) {
                 throw new EOFException();
             }
             offset += result;
-            count -= result;
+            byteCount -= result;
         }
     }
 
     /**
-     * Reads a 32-bit integer from the current position in this file. Blocks
+     * Reads a big-endian 32-bit integer from the current position in this file. Blocks
      * until four bytes have been read, the end of the file is reached or an
      * exception is thrown.
-     * 
+     *
      * @return the next int value from this file.
      * @throws EOFException
      *             if the end of this file is detected.
@@ -501,12 +436,8 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * @see #writeInt(int)
      */
     public final int readInt() throws IOException {
-        byte[] buffer = new byte[4];
-        if (read(buffer, 0, buffer.length) != buffer.length) {
-            throw new EOFException();
-        }
-        return ((buffer[0] & 0xff) << 24) + ((buffer[1] & 0xff) << 16)
-                + ((buffer[2] & 0xff) << 8) + (buffer[3] & 0xff);
+        readFully(scratch, 0, SizeOf.INT);
+        return Memory.peekInt(scratch, 0, ByteOrder.BIG_ENDIAN);
     }
 
     /**
@@ -554,10 +485,10 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     }
 
     /**
-     * Reads a 64-bit long from the current position in this file. Blocks until
+     * Reads a big-endian 64-bit long from the current position in this file. Blocks until
      * eight bytes have been read, the end of the file is reached or an
      * exception is thrown.
-     * 
+     *
      * @return the next long value from this file.
      * @throws EOFException
      *             if the end of this file is detected.
@@ -566,23 +497,15 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * @see #writeLong(long)
      */
     public final long readLong() throws IOException {
-        byte[] buffer = new byte[8];
-        if (read(buffer, 0, buffer.length) != buffer.length) {
-            throw new EOFException();
-        }
-        return ((long) (((buffer[0] & 0xff) << 24) + ((buffer[1] & 0xff) << 16)
-                + ((buffer[2] & 0xff) << 8) + (buffer[3] & 0xff)) << 32)
-                + ((long) (buffer[4] & 0xff) << 24)
-                + ((buffer[5] & 0xff) << 16)
-                + ((buffer[6] & 0xff) << 8)
-                + (buffer[7] & 0xff);
+        readFully(scratch, 0, SizeOf.LONG);
+        return Memory.peekLong(scratch, 0, ByteOrder.BIG_ENDIAN);
     }
 
     /**
-     * Reads a 16-bit short from the current position in this file. Blocks until
+     * Reads a big-endian 16-bit short from the current position in this file. Blocks until
      * two bytes have been read, the end of the file is reached or an exception
      * is thrown.
-     * 
+     *
      * @return the next short value from this file.
      * @throws EOFException
      *             if the end of this file is detected.
@@ -591,18 +514,15 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * @see #writeShort(int)
      */
     public final short readShort() throws IOException {
-        byte[] buffer = new byte[2];
-        if (read(buffer, 0, buffer.length) != buffer.length) {
-            throw new EOFException();
-        }
-        return (short) (((buffer[0] & 0xff) << 8) + (buffer[1] & 0xff));
+        readFully(scratch, 0, SizeOf.SHORT);
+        return Memory.peekShort(scratch, 0, ByteOrder.BIG_ENDIAN);
     }
 
     /**
      * Reads an unsigned 8-bit byte from the current position in this file and
      * returns it as an integer. Blocks until one byte has been read, the end of
      * the file is reached or an exception is thrown.
-     * 
+     *
      * @return the next unsigned byte value from this file as an int.
      * @throws EOFException
      *             if the end of this file is detected.
@@ -619,10 +539,10 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     }
 
     /**
-     * Reads an unsigned 16-bit short from the current position in this file and
+     * Reads an unsigned big-endian 16-bit short from the current position in this file and
      * returns it as an integer. Blocks until two bytes have been read, the end of
      * the file is reached or an exception is thrown.
-     * 
+     *
      * @return the next unsigned short value from this file as an int.
      * @throws EOFException
      *             if the end of this file is detected.
@@ -631,11 +551,7 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * @see #writeShort(int)
      */
     public final int readUnsignedShort() throws IOException {
-        byte[] buffer = new byte[2];
-        if (read(buffer, 0, buffer.length) != buffer.length) {
-            throw new EOFException();
-        }
-        return ((buffer[0] & 0xff) << 8) + (buffer[1] & 0xff);
+        return ((int) readShort()) & 0xffff;
     }
 
     /**
@@ -644,7 +560,7 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * is determined by the first two bytes read from the file. Blocks until all
      * required bytes have been read, the end of the file is reached or an
      * exception is thrown.
-     * 
+     *
      * @return the next string encoded in {@link DataInput modified UTF-8} from
      *         this file.
      * @throws EOFException
@@ -658,13 +574,13 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     public final String readUTF() throws IOException {
         int utfSize = readUnsignedShort();
         if (utfSize == 0) {
-            return ""; //$NON-NLS-1$
+            return "";
         }
         byte[] buf = new byte[utfSize];
         if (read(buf, 0, buf.length) != buf.length) {
             throw new EOFException();
         }
-        return Util.convertFromUTF8(buf, 0, utfSize);
+        return ModifiedUtf8.decode(buf, new char[utfSize], 0, utfSize);
     }
 
     /**
@@ -673,21 +589,21 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * position may be greater than the current length of the file, but the
      * file's length will only change if the moving of the pointer is followed
      * by a {@code write} operation.
-     * 
-     * @param pos
+     *
+     * @param offset
      *            the new file pointer position.
      * @throws IOException
      *             if this file is closed, {@code pos < 0} or another I/O error
      *             occurs.
      */
-    public void seek(long pos) throws IOException {
-        if (pos < 0) {
-            // seek position is negative
-            throw new IOException(Messages.getString("luni.BB")); //$NON-NLS-1$
+    public void seek(long offset) throws IOException {
+        if (offset < 0) {
+            throw new IOException("offset < 0: " + offset);
         }
-        openCheck();
-        synchronized (repositionLock) {
-            fileSystem.seek(fd.descriptor, pos, IFileSystem.SEEK_SET);
+        try {
+            Libcore.os.lseek(fd, offset, SEEK_SET);
+        } catch (ErrnoException errnoException) {
+            throw errnoException.rethrowAsIOException();
         }
     }
 
@@ -697,7 +613,7 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * file to the new end are undefined. The file is truncated if its current
      * size is bigger than {@code newLength}. If the current file pointer
      * position is in the truncated part, it is set to the end of the file.
-     * 
+     *
      * @param newLength
      *            the new file length in bytes.
      * @throws IllegalArgumentException
@@ -706,15 +622,18 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      *             if this file is closed or another I/O error occurs.
      */
     public void setLength(long newLength) throws IOException {
-        openCheck();
         if (newLength < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("newLength < 0");
         }
-        synchronized (repositionLock) {
-            long position = fileSystem.seek(fd.descriptor, 0,
-                    IFileSystem.SEEK_CUR);
-            fileSystem.truncate(fd.descriptor, newLength);
-            seek(position > newLength ? newLength : position);
+        try {
+            Libcore.os.ftruncate(fd, newLength);
+        } catch (ErrnoException errnoException) {
+            throw errnoException.rethrowAsIOException();
+        }
+
+        long filePointer = getFilePointer();
+        if (filePointer > newLength) {
+            seek(newLength);
         }
 
         // if we are in "rws" mode, attempt to sync file+metadata
@@ -728,7 +647,7 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * bytes are skipped if the end of the file is reached or an exception is
      * thrown during the operation. Nothing is done if {@code count} is
      * negative.
-     * 
+     *
      * @param count
      *            the number of bytes to skip.
      * @return the number of bytes actually skipped.
@@ -738,8 +657,7 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     public int skipBytes(int count) throws IOException {
         if (count > 0) {
             long currentPos = getFilePointer(), eof = length();
-            int newCount = (int) ((currentPos + count > eof) ? eof - currentPos
-                    : count);
+            int newCount = (int) ((currentPos + count > eof) ? eof - currentPos : count);
             seek(currentPos + newCount);
             return newCount;
         }
@@ -749,50 +667,29 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     /**
      * Writes the entire contents of the byte array {@code buffer} to this file,
      * starting at the current file pointer.
-     * 
+     *
      * @param buffer
      *            the buffer to write.
      * @throws IOException
      *             if an I/O error occurs while writing to this file.
-     * @see #read(byte[])
-     * @see #read(byte[],int,int)
-     * @see #readFully(byte[])
-     * @see #readFully(byte[],int,int)
      */
     public void write(byte[] buffer) throws IOException {
         write(buffer, 0, buffer.length);
     }
 
     /**
-     * Writes {@code count} bytes from the byte array {@code buffer} to this
-     * file, starting at the current file pointer and using {@code offset} as
+     * Writes {@code byteCount} bytes from the byte array {@code buffer} to this
+     * file, starting at the current file pointer and using {@code byteOffset} as
      * the first position within {@code buffer} to get bytes.
-     * 
-     * @param buffer
-     *            the buffer to write to this file.
-     * @param offset
-     *            the index of the first byte in {@code buffer} to write.
-     * @param count
-     *            the number of bytes from {@code buffer} to write.
+     *
      * @throws IndexOutOfBoundsException
-     *             if {@code count < 0}, {@code offset < 0} or {@code count +
-     *             offset} is greater than the size of {@code buffer}.
+     *             if {@code byteCount < 0}, {@code byteOffset < 0} or {@code byteCount +
+     *             byteOffset} is greater than the size of {@code buffer}.
      * @throws IOException
      *             if an I/O error occurs while writing to this file.
-     * @see #read(byte[], int, int)
-     * @see #readFully(byte[], int, int)
      */
-    public void write(byte[] buffer, int offset, int count) throws IOException {
-        if (count > buffer.length - offset || count < 0 || offset < 0) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (count == 0) {
-            return;
-        }
-        synchronized (repositionLock) {
-            fileSystem.write(fd.descriptor, buffer, offset, count);
-        }
-
+    public void write(byte[] buffer, int byteOffset, int byteCount) throws IOException {
+        IoBridge.write(fd, buffer, byteOffset, byteCount);
         // if we are in "rws" mode, attempt to sync file+metadata
         if (syncMetadata) {
             fd.sync();
@@ -802,7 +699,7 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     /**
      * Writes a byte to this file, starting at the current file pointer. Only
      * the least significant byte of the integer {@code oneByte} is written.
-     * 
+     *
      * @param oneByte
      *            the byte to write to this file.
      * @throws IOException
@@ -810,22 +707,14 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * @see #read()
      */
     public void write(int oneByte) throws IOException {
-        openCheck();
-        byte[] bytes = new byte[1];
-        bytes[0] = (byte) (oneByte & 0xff);
-        synchronized (repositionLock) {
-            fileSystem.write(fd.descriptor, bytes, 0, 1);
-        }
-
-        // if we are in "rws" mode, attempt to sync file+metadata
-        if (syncMetadata) {
-            fd.sync();
-        }
+        scratch[0] = (byte) (oneByte & 0xff);
+        write(scratch, 0, 1);
     }
 
     /**
-     * Writes a boolean to this file, starting at the current file pointer.
-     * 
+     * Writes a boolean to this file as a single byte (1 for true, 0 for false), starting at the
+     * current file pointer.
+     *
      * @param val
      *            the boolean to write to this file.
      * @throws IOException
@@ -839,7 +728,7 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     /**
      * Writes an 8-bit byte to this file, starting at the current file pointer.
      * Only the least significant byte of the integer {@code val} is written.
-     * 
+     *
      * @param val
      *            the byte to write to this file.
      * @throws IOException
@@ -854,18 +743,14 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     /**
      * Writes the low order 8-bit bytes from a string to this file, starting at
      * the current file pointer.
-     * 
+     *
      * @param str
      *            the string containing the bytes to write to this file
      * @throws IOException
      *             if an I/O error occurs while writing to this file.
-     * @see #read(byte[])
-     * @see #read(byte[],int,int)
-     * @see #readFully(byte[])
-     * @see #readFully(byte[],int,int)
      */
     public final void writeBytes(String str) throws IOException {
-        byte bytes[] = new byte[str.length()];
+        byte[] bytes = new byte[str.length()];
         for (int index = 0; index < str.length(); index++) {
             bytes[index] = (byte) (str.charAt(index) & 0xFF);
         }
@@ -873,10 +758,10 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     }
 
     /**
-     * Writes a 16-bit character to this file, starting at the current file
+     * Writes a big-endian 16-bit character to this file, starting at the current file
      * pointer. Only the two least significant bytes of the integer {@code val}
      * are written, with the high byte first.
-     * 
+     *
      * @param val
      *            the char to write to this file.
      * @throws IOException
@@ -884,17 +769,13 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * @see #readChar()
      */
     public final void writeChar(int val) throws IOException {
-        byte[] buffer = new byte[2];
-        buffer[0] = (byte) (val >> 8);
-        buffer[1] = (byte) val;
-        write(buffer, 0, buffer.length);
+        writeShort(val);
     }
 
     /**
-     * Writes the 16-bit characters from a string to this file, starting at the
-     * current file pointer. Each character is written in the same way as with
-     * {@link #writeChar(int)}, with its high byte first.
-     * 
+     * Writes big-endian 16-bit characters from {@code str} to this file, starting at the
+     * current file pointer.
+     *
      * @param str
      *            the string to write to this file.
      * @throws IOException
@@ -902,20 +783,14 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * @see #readChar()
      */
     public final void writeChars(String str) throws IOException {
-        byte newBytes[] = new byte[str.length() * 2];
-        for (int index = 0; index < str.length(); index++) {
-            int newIndex = index == 0 ? index : index * 2;
-            newBytes[newIndex] = (byte) ((str.charAt(index) >> 8) & 0xFF);
-            newBytes[newIndex + 1] = (byte) (str.charAt(index) & 0xFF);
-        }
-        write(newBytes);
+        write(str.getBytes("UTF-16BE"));
     }
 
     /**
-     * Writes a 64-bit double to this file, starting at the current file
-     * pointer. The eight bytes returned by
-     * {@link Double#doubleToLongBits(double)} are written to this file.
-     * 
+     * Writes a big-endian 64-bit double to this file, starting at the current file
+     * pointer. The bytes are those returned by
+     * {@link Double#doubleToLongBits(double)}, meaning a canonical NaN is used.
+     *
      * @param val
      *            the double to write to this file.
      * @throws IOException
@@ -927,10 +802,10 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     }
 
     /**
-     * Writes a 32-bit float to this file, starting at the current file pointer.
-     * The four bytes returned by {@link Float#floatToIntBits(float)} are
-     * written to this file.
-     * 
+     * Writes a big-endian 32-bit float to this file, starting at the current file pointer.
+     * The bytes are those returned by {@link Float#floatToIntBits(float)}, meaning a canonical NaN
+     * is used.
+     *
      * @param val
      *            the float to write to this file.
      * @throws IOException
@@ -942,10 +817,9 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     }
 
     /**
-     * Writes a 32-bit integer to this file, starting at the current file
-     * pointer. The four bytes of the integer are written with the highest byte
-     * first.
-     * 
+     * Writes a big-endian 32-bit integer to this file, starting at the current file
+     * pointer.
+     *
      * @param val
      *            the int to write to this file.
      * @throws IOException
@@ -953,19 +827,14 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * @see #readInt()
      */
     public final void writeInt(int val) throws IOException {
-        byte[] buffer = new byte[4];
-        buffer[0] = (byte) (val >> 24);
-        buffer[1] = (byte) (val >> 16);
-        buffer[2] = (byte) (val >> 8);
-        buffer[3] = (byte) val;
-        write(buffer, 0, buffer.length);
+        Memory.pokeInt(scratch, 0, val, ByteOrder.BIG_ENDIAN);
+        write(scratch, 0, SizeOf.INT);
     }
 
     /**
-     * Writes a 64-bit long to this file, starting at the current file
-     * pointer. The eight bytes of the long are written with the highest byte
-     * first.
-     * 
+     * Writes a big-endian 64-bit long to this file, starting at the current file
+     * pointer.
+     *
      * @param val
      *            the long to write to this file.
      * @throws IOException
@@ -973,24 +842,15 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * @see #readLong()
      */
     public final void writeLong(long val) throws IOException {
-        byte[] buffer = new byte[8];
-        int t = (int) (val >> 32);
-        buffer[0] = (byte) (t >> 24);
-        buffer[1] = (byte) (t >> 16);
-        buffer[2] = (byte) (t >> 8);
-        buffer[3] = (byte) t;
-        buffer[4] = (byte) (val >> 24);
-        buffer[5] = (byte) (val >> 16);
-        buffer[6] = (byte) (val >> 8);
-        buffer[7] = (byte) val;
-        write(buffer, 0, buffer.length);
+        Memory.pokeLong(scratch, 0, val, ByteOrder.BIG_ENDIAN);
+        write(scratch, 0, SizeOf.LONG);
     }
 
     /**
-     * Writes a 16-bit short to this file, starting at the current file
+     * Writes a big-endian 16-bit short to this file, starting at the current file
      * pointer. Only the two least significant bytes of the integer {@code val}
-     * are written, with the high byte first.
-     * 
+     * are written.
+     *
      * @param val
      *            the short to write to this file.
      * @throws IOException
@@ -999,13 +859,14 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * @see DataInput#readUnsignedShort()
      */
     public final void writeShort(int val) throws IOException {
-        writeChar(val);
+        Memory.pokeShort(scratch, 0, (short) val, ByteOrder.BIG_ENDIAN);
+        write(scratch, 0, SizeOf.SHORT);
     }
 
     /**
      * Writes a string encoded with {@link DataInput modified UTF-8} to this
      * file, starting at the current file pointer.
-     * 
+     *
      * @param str
      *            the string to write in {@link DataInput modified UTF-8}
      *            format.
@@ -1016,37 +877,6 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * @see #readUTF()
      */
     public final void writeUTF(String str) throws IOException {
-        int utfCount = 0, length = str.length();
-        for (int i = 0; i < length; i++) {
-            int charValue = str.charAt(i);
-            if (charValue > 0 && charValue <= 127) {
-                utfCount++;
-            } else if (charValue <= 2047) {
-                utfCount += 2;
-            } else {
-                utfCount += 3;
-            }
-        }
-        if (utfCount > 65535) {
-            throw new UTFDataFormatException(Messages.getString("luni.AB")); //$NON-NLS-1$
-        }
-        byte utfBytes[] = new byte[utfCount + 2];
-        int utfIndex = 2;
-        for (int i = 0; i < length; i++) {
-            int charValue = str.charAt(i);
-            if (charValue > 0 && charValue <= 127) {
-                utfBytes[utfIndex++] = (byte) charValue;
-            } else if (charValue <= 2047) {
-                utfBytes[utfIndex++] = (byte) (0xc0 | (0x1f & (charValue >> 6)));
-                utfBytes[utfIndex++] = (byte) (0x80 | (0x3f & charValue));
-            } else {
-                utfBytes[utfIndex++] = (byte) (0xe0 | (0x0f & (charValue >> 12)));
-                utfBytes[utfIndex++] = (byte) (0x80 | (0x3f & (charValue >> 6)));
-                utfBytes[utfIndex++] = (byte) (0x80 | (0x3f & charValue));
-            }
-        }
-        utfBytes[0] = (byte) (utfCount >> 8);
-        utfBytes[1] = (byte) utfCount;
-        write(utfBytes);
+        write(ModifiedUtf8.encode(str));
     }
 }

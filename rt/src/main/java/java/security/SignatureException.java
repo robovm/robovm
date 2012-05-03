@@ -19,7 +19,7 @@ package java.security;
 
 /**
  *{@code SignatureException} is a general {@code Signature} exception.
- * 
+ *
  * @see Signature
  */
 public class SignatureException extends GeneralSecurityException {

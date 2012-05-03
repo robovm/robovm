@@ -19,7 +19,7 @@ package java.lang;
 
 /**
  * The wrapper for the primitive type {@code double}.
- * 
+ *
  * @see java.lang.Number
  * @since 1.0
  */
@@ -53,7 +53,7 @@ public final class Double extends Number implements Comparable<Double> {
     public static final double MIN_VALUE = 5e-324;
 
     /* 4.94065645841246544e-324 gets rounded to 9.88131e-324 */
-    
+
     /**
      * Constant for the Not-a-Number (NaN) value of the {@code double} type.
      */
@@ -63,7 +63,7 @@ public final class Double extends Number implements Comparable<Double> {
      * Constant for the positive infinity value of the {@code double} type.
      */
     public static final double POSITIVE_INFINITY = 1.0 / 0.0;
-    
+
     /**
      * Constant for the negative infinity value of the {@code double} type.
      */
@@ -75,8 +75,8 @@ public final class Double extends Number implements Comparable<Double> {
      * @since 1.6
      */
     public static final double MIN_NORMAL = 2.2250738585072014E-308;
-    
-        /**
+
+    /**
      * Maximum base-2 exponent that a finite value of the {@code double} type may have.
      * Equal to {@code Math.getExponent(Double.MAX_VALUE)}.
      *
@@ -115,7 +115,7 @@ public final class Double extends Number implements Comparable<Double> {
     /**
      * Constructs a new {@code Double} with the specified primitive double
      * value.
-     * 
+     *
      * @param value
      *            the primitive double value to store in the new instance.
      */
@@ -125,7 +125,7 @@ public final class Double extends Number implements Comparable<Double> {
 
     /**
      * Constructs a new {@code Double} from the specified string.
-     * 
+     *
      * @param string
      *            the string representation of a double value.
      * @throws NumberFormatException
@@ -144,7 +144,7 @@ public final class Double extends Number implements Comparable<Double> {
      * than any other double value, including {@code Double.POSITIVE_INFINITY};</li>
      * <li>+0.0d is greater than -0.0d</li>
      * </ul>
-     * 
+     *
      * @param object
      *            the double object to compare this object to.
      * @return a negative value if the value of this double is less than the
@@ -183,7 +183,7 @@ public final class Double extends Number implements Comparable<Double> {
 
     /**
      * Gets the primitive value of this double.
-     * 
+     *
      * @return this object's primitive value.
      */
     @Override
@@ -198,7 +198,7 @@ public final class Double extends Number implements Comparable<Double> {
      *
      * <p>Note that, unlike {@code ==}, {@code -0.0} and {@code +0.0} compare
      * unequal, and {@code NaN}s compare equal by this method.
-     * 
+     *
      * @param object
      *            the object to compare this double with.
      * @return {@code true} if the specified object is equal to this
@@ -228,7 +228,7 @@ public final class Double extends Number implements Comparable<Double> {
 
     /**
      * Indicates whether this object represents an infinite value.
-     * 
+     *
      * @return {@code true} if the value of this double is positive or negative
      *         infinity; {@code false} otherwise.
      */
@@ -238,7 +238,7 @@ public final class Double extends Number implements Comparable<Double> {
 
     /**
      * Indicates whether the specified double represents an infinite value.
-     * 
+     *
      * @param d
      *            the double to check.
      * @return {@code true} if the value of {@code d} is positive or negative
@@ -250,7 +250,7 @@ public final class Double extends Number implements Comparable<Double> {
 
     /**
      * Indicates whether this object is a <em>Not-a-Number (NaN)</em> value.
-     * 
+     *
      * @return {@code true} if this double is <em>Not-a-Number</em>;
      *         {@code false} if it is a (potentially infinite) double number.
      */
@@ -261,7 +261,7 @@ public final class Double extends Number implements Comparable<Double> {
     /**
      * Indicates whether the specified double is a <em>Not-a-Number (NaN)</em>
      * value.
-     * 
+     *
      * @param d
      *            the double value to check.
      * @return {@code true} if {@code d} is <em>Not-a-Number</em>;
@@ -284,7 +284,7 @@ public final class Double extends Number implements Comparable<Double> {
 
     /**
      * Parses the specified string as a double value.
-     * 
+     *
      * @param string
      *            the string representation of a double value.
      * @return the primitive double value represented by {@code string}.
@@ -308,7 +308,7 @@ public final class Double extends Number implements Comparable<Double> {
     /**
      * Returns a string containing a concise, human-readable description of the
      * specified double value.
-     * 
+     *
      * @param d
      *             the double to convert to a string.
      * @return a printable representation of {@code d}.
@@ -319,7 +319,7 @@ public final class Double extends Number implements Comparable<Double> {
 
     /**
      * Parses the specified string as a double value.
-     * 
+     *
      * @param string
      *            the string representation of a double value.
      * @return a {@code Double} instance containing the double value represented
@@ -339,7 +339,7 @@ public final class Double extends Number implements Comparable<Double> {
      * than any other double value, including {@code Double.POSITIVE_INFINITY};</li>
      * <li>+0.0d is greater than -0.0d</li>
      * </ul>
-     * 
+     *
      * @param double1
      *            the first value to compare.
      * @param double2
@@ -380,7 +380,7 @@ public final class Double extends Number implements Comparable<Double> {
 
     /**
      * Returns a {@code Double} instance for the specified double value.
-     * 
+     *
      * @param d
      *            the double value to store in the instance.
      * @return a {@code Double} instance containing {@code d}.

@@ -33,7 +33,7 @@ public class InvalidParameterSpecException extends GeneralSecurityException {
     /**
      * Creates a new {@code InvalidParameterSpecException} with the specified
      * message.
-     * 
+     *
      * @param msg
      *            the detail message for this exception.
      */

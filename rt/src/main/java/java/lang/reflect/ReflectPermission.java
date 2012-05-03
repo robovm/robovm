@@ -18,44 +18,17 @@
 package java.lang.reflect;
 
 import java.security.BasicPermission;
+import java.security.Permission;
 
 /**
- * A {@code ReflectPermission} object represents a permission to access
- * operations in the reflection layer.
+ * Legacy security code; do not use.
  */
 public final class ReflectPermission extends BasicPermission {
+    public ReflectPermission(String name) { super(""); }
 
-    private static final long serialVersionUID = 7412737110241507485L;
+    public ReflectPermission(String name, String actions) { super("", ""); }
 
-    /**
-     * Constructs a new {@code ReflectPermission} instance with the specified
-     * name.
-     * 
-     * @param permissionName
-     *            the name of the new permission
-     * @throws IllegalArgumentException
-     *             if {@code name} is empty
-     * @throws NullPointerException
-     *             if {@code name} is {@code null}
-     */
-    public ReflectPermission(String permissionName) {
-        super(permissionName);
-    }
+    @Override public String getActions() { return null; }
 
-    /**
-     * Constructs a new {@code ReflectPermission} instance with the specified
-     * name and action list. The action list will be ignored.
-     * 
-     * @param name
-     *            the name of the new permission
-     * @param actions
-     *            this parameter will be ignored
-     * @throws IllegalArgumentException
-     *             if {@code name} is empty
-     * @throws NullPointerException
-     *             if {@code name} is {@code null}
-     */
-    public ReflectPermission(String name, String actions) {
-        super(name, actions);
-    }
+    @Override public boolean implies(Permission permission) { return true; }
 }

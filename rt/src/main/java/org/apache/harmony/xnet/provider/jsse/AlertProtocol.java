@@ -17,10 +17,6 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import org.apache.harmony.xnet.provider.jsse.SSLRecordProtocol;
-import org.apache.harmony.xnet.provider.jsse.Logger;
-import org.apache.harmony.xnet.provider.jsse.ContentType;
-
 /**
  * This class encapsulates the functionality of Alert Protocol.
  * Constant values are taken according to the TLS v1 specification
@@ -142,7 +138,7 @@ public class AlertProtocol {
      * Creates the instance of AlertProtocol.
      * Note that class is not ready to work without providing of
      * record protocol
-     * @see setRecordProtocol
+     * @see #setRecordProtocol
      */
     protected AlertProtocol() {}
 

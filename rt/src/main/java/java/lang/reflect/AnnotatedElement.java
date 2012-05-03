@@ -30,7 +30,7 @@ public interface AnnotatedElement {
      * Returns, for this element, the annotation with the specified type, or
      * {@code null} if no annotation with the specified type is present
      * (including inherited annotations).
-     * 
+     *
      * @param annotationType
      *            the type of the annotation to search for
      * @return the annotation with the specified type or {@code null}
@@ -43,7 +43,7 @@ public interface AnnotatedElement {
      * Returns, for this element, an array containing all annotations (including
      * inherited annotations). If there are no annotations present, this method
      * returns a zero length array.
-     * 
+     *
      * @return an array of all annotations for this element
      */
     Annotation[] getAnnotations();
@@ -52,7 +52,7 @@ public interface AnnotatedElement {
      * Returns, for this element, all annotations that are explicitly declared
      * (not inherited). If there are no declared annotations present, this
      * method returns a zero length array.
-     * 
+     *
      * @return an array of annotations declared for this element
      */
     Annotation[] getDeclaredAnnotations();
@@ -60,7 +60,7 @@ public interface AnnotatedElement {
     /**
      * Indicates whether or not this element has an annotation with the
      * specified annotation type (including inherited annotations).
-     * 
+     *
      * @param annotationType
      *            the type of the annotation to search for
      * @return {@code true} if the annotation exists, {@code false} otherwise

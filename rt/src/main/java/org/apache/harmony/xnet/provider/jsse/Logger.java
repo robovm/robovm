@@ -18,8 +18,10 @@
 package org.apache.harmony.xnet.provider.jsse;
 
 import java.io.PrintStream;
+import java.util.Locale;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import libcore.util.EmptyArray;
 
 /**
  * This class provides debug logging for JSSE provider implementation
@@ -66,47 +68,34 @@ public class Logger {
             printAsHex(16, " ", "", data, offset, len);
         }
 
-        public void printAsHex(int perLine,
-                String prefix,
-                String delimiter,
-                byte[] data) {
+        public void printAsHex(int perLine, String prefix, String delimiter, byte[] data) {
             printAsHex(perLine, prefix, delimiter, data, 0, data.length);
         }
 
-        public void printAsHex(int perLine,
-                String prefix,
-                String delimiter,
+        public void printAsHex(int perLine, String prefix, String delimiter,
                 byte[] data, int offset, int len) {
-            String line = "";
-            for (int i=0; i<len; i++) {
-                String tail =
-                    Integer.toHexString(0x00ff & data[i+offset]).toUpperCase();
-                if (tail.length() == 1) {
-                    tail = "0" + tail;
-                }
-                line += prefix + tail + delimiter;
+            StringBuilder line = new StringBuilder();
+            for (int i = 0; i < len; i++) {
+                line.append(prefix);
+                line.append(Byte.toHexString(data[i+offset], false));
+                line.append(delimiter);
 
                 if (((i+1)%perLine) == 0) {
-                    super.println(line);
-                    line = "";
+                    super.println(line.toString());
+                    line = new StringBuilder();
                 }
             }
-            super.println(line);
+            super.println(line.toString());
         }
     }
 
     private static String[] names;
-    
+
     static {
         try {
-            names = AccessController
-                    .doPrivileged(new PrivilegedAction<String[]>() {
-                        public String[] run() {
-                            return System.getProperty("jsse", "").split(",");
-                        }
-                    });
+            names = System.getProperty("jsse", "").split(",");
         } catch (Exception e) {
-            names = new String[0];
+            names = EmptyArray.STRING;
         }
     }
 
@@ -119,4 +108,3 @@ public class Logger {
         return null;
     }
 }
-

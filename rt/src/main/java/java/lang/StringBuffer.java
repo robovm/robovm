@@ -28,7 +28,7 @@ import java.io.Serializable;
  * strings, where all accesses are synchronized. This class has mostly been replaced
  * by {@link StringBuilder} because this synchronization is rarely useful. This
  * class is mainly used to interact with legacy APIs that expose it.
- * 
+ *
  * <p>For particularly complex string-building needs, consider {@link java.util.Formatter}.
  *
  * <p>The majority of the modification methods on this class return {@code
@@ -61,7 +61,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
 
     /**
      * Constructs a new StringBuffer using the specified capacity.
-     * 
+     *
      * @param capacity
      *            the initial capacity.
      */
@@ -73,7 +73,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
      * Constructs a new StringBuffer containing the characters in the specified
      * string. The capacity of the new buffer will be the length of the
      * {@code String} plus the default capacity.
-     * 
+     *
      * @param string
      *            the string content with which to initialize the new instance.
      * @throws NullPointerException
@@ -87,7 +87,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
      * Constructs a StringBuffer and initializes it with the content from the
      * specified {@code CharSequence}. The capacity of the new buffer will be
      * the length of the {@code CharSequence} plus the default capacity.
-     * 
+     *
      * @param cs
      *            the content to initialize the instance.
      * @throws NullPointerException
@@ -116,7 +116,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
 
     /**
      * Adds the specified character to the end of this buffer.
-     * 
+     *
      * @param ch
      *            the character to append.
      * @return this StringBuffer.
@@ -130,7 +130,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
     /**
      * Adds the string representation of the specified double to the end of this
      * StringBuffer.
-     * 
+     *
      * @param d
      *            the double to append.
      * @return this StringBuffer.
@@ -144,7 +144,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
     /**
      * Adds the string representation of the specified float to the end of this
      * StringBuffer.
-     * 
+     *
      * @param f
      *            the float to append.
      * @return this StringBuffer.
@@ -158,7 +158,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
     /**
      * Adds the string representation of the specified integer to the end of
      * this StringBuffer.
-     * 
+     *
      * @param i
      *            the integer to append.
      * @return this StringBuffer.
@@ -172,7 +172,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
     /**
      * Adds the string representation of the specified long to the end of this
      * StringBuffer.
-     * 
+     *
      * @param l
      *            the long to append.
      * @return this StringBuffer.
@@ -230,7 +230,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
      * @param sb
      *            the StringBuffer to append (may be null).
      * @return this StringBuffer.
-     * 
+     *
      * @since 1.4
      */
     public synchronized StringBuffer append(StringBuffer sb) {
@@ -246,7 +246,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
 
     /**
      * Adds the character array to the end of this buffer.
-     * 
+     *
      * @param chars
      *            the character array to append.
      * @return this StringBuffer.
@@ -260,7 +260,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
 
     /**
      * Adds the specified sequence of characters to the end of this buffer.
-     * 
+     *
      * @param chars
      *            the character array to append.
      * @param start
@@ -363,7 +363,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
 
     /**
      * Deletes a range of characters.
-     * 
+     *
      * @param start
      *            the offset of the first character.
      * @param end
@@ -380,7 +380,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
 
     /**
      * Deletes the character at the specified offset.
-     * 
+     *
      * @param location
      *            the offset of the character to delete.
      * @return this StringBuffer.
@@ -400,7 +400,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
     /**
      * Copies the requested sequence of characters to the {@code char[]} passed
      * starting at {@code idx}.
-     * 
+     *
      * @param start
      *            the starting offset of characters to copy.
      * @param end
@@ -426,7 +426,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
 
     /**
      * Inserts the character into this buffer at the specified offset.
-     * 
+     *
      * @param index
      *            the index at which to insert.
      * @param ch
@@ -443,7 +443,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
     /**
      * Inserts the string representation of the specified boolean into this
      * buffer at the specified offset.
-     * 
+     *
      * @param index
      *            the index at which to insert.
      * @param b
@@ -459,7 +459,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
     /**
      * Inserts the string representation of the specified integer into this
      * buffer at the specified offset.
-     * 
+     *
      * @param index
      *            the index at which to insert.
      * @param i
@@ -475,7 +475,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
     /**
      * Inserts the string representation of the specified long into this buffer
      * at the specified offset.
-     * 
+     *
      * @param index
      *            the index at which to insert.
      * @param l
@@ -491,7 +491,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
     /**
      * Inserts the string representation of the specified into this buffer
      * double at the specified offset.
-     * 
+     *
      * @param index
      *            the index at which to insert.
      * @param d
@@ -507,7 +507,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
     /**
      * Inserts the string representation of the specified float into this buffer
      * at the specified offset.
-     * 
+     *
      * @param index
      *            the index at which to insert.
      * @param f
@@ -561,7 +561,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
 
     /**
      * Inserts the character array into this buffer at the specified offset.
-     * 
+     *
      * @param index
      *            the index at which to insert.
      * @param chars
@@ -580,7 +580,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
     /**
      * Inserts the specified subsequence of characters into this buffer at the
      * specified index.
-     * 
+     *
      * @param index
      *            the index at which to insert.
      * @param chars
@@ -629,7 +629,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
      * <p>
      * If the specified CharSequence is {@code null}, the string {@code "null"}
      * is inserted, otherwise the contents of the CharSequence.
-     * 
+     *
      * @param index
      *            The index at which to insert.
      * @param s
@@ -665,7 +665,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
     /**
      * Replaces the characters in the specified range with the contents of the
      * specified string.
-     * 
+     *
      * @param start
      *            the inclusive begin index.
      * @param end
@@ -685,7 +685,7 @@ public final class StringBuffer extends AbstractStringBuilder implements
 
     /**
      * Reverses the order of characters in this buffer.
-     * 
+     *
      * @return this buffer.
      */
     public synchronized StringBuffer reverse() {

@@ -17,6 +17,7 @@
 
 /**
 * @author Vladimir N. Molotkov
+* @version $Revision$
 */
 
 package org.apache.harmony.security.x509;
@@ -29,13 +30,13 @@ import org.apache.harmony.security.asn1.ASN1Type;
 
 /**
 /**
- * The class encapsulates the ASN.1 DER decoding work 
+ * The class encapsulates the ASN.1 DER decoding work
  * with PolicyQualifierInfo structure
  * (as specified in RFC 3280 -
  *  Internet X.509 Public Key Infrastructure.
  *  Certificate and Certificate Revocation List (CRL) Profile.
  *  http://www.ietf.org/rfc/rfc3280.txt):
- *   
+ *
  * <pre>
  *    PolicyQualifierInfo ::= SEQUENCE {
  *        policyQualifierId  PolicyQualifierId,
@@ -45,9 +46,9 @@ import org.apache.harmony.security.asn1.ASN1Type;
  *        OBJECT IDENTIFIER ( id-qt-cps | id-qt-unotice )
  *
  * </pre>
- * 
+ *
  */
-public class PolicyQualifierInfo {
+public final class PolicyQualifierInfo {
     // Contains only ASN1 DER decoder currently
     public static final ASN1Sequence ASN1 =
         new ASN1Sequence(new ASN1Type[] {ASN1Oid.getInstance(), ASN1Any.getInstance()}) {

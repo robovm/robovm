@@ -22,7 +22,7 @@ import java.lang.reflect.Array;
 
 /**
  * {@code Arrays} contains static methods which operate on arrays.
- * 
+ *
  * @since 1.2
  */
 public class Arrays {
@@ -105,9 +105,9 @@ public class Arrays {
 
         @Override
         public E set(int location, E object) {
-                E result = a[location];
-                a[location] = object;
-                return result;
+            E result = a[location];
+            a[location] = object;
+            return result;
         }
 
         @Override
@@ -145,7 +145,7 @@ public class Arrays {
      * {@code List} cannot be modified, i.e. adding and removing are unsupported, but
      * the elements can be set. Setting an element modifies the underlying
      * array.
-     * 
+     *
      * @param array
      *            the array.
      * @return a {@code List} of the elements of the specified array.
@@ -158,7 +158,7 @@ public class Arrays {
      * Performs a binary search for {@code value} in the ascending sorted array {@code array}.
      * Searching in an unsorted array has an undefined result. It's also undefined which element
      * is found if there are multiple occurrences of the same element.
-     * 
+     *
      * @param array the sorted array to search.
      * @param value the element to find.
      * @return the non-negative index of the element, or a negative index which
@@ -173,7 +173,7 @@ public class Arrays {
      * in the range specified by fromIndex (inclusive) and toIndex (exclusive).
      * Searching in an unsorted array has an undefined result. It's also undefined which element
      * is found if there are multiple occurrences of the same element.
-     * 
+     *
      * @param array the sorted array to search.
      * @param startIndex the inclusive start index.
      * @param endIndex the exclusive start index.
@@ -208,7 +208,7 @@ public class Arrays {
      * Performs a binary search for {@code value} in the ascending sorted array {@code array}.
      * Searching in an unsorted array has an undefined result. It's also undefined which element
      * is found if there are multiple occurrences of the same element.
-     * 
+     *
      * @param array the sorted array to search.
      * @param value the element to find.
      * @return the non-negative index of the element, or a negative index which
@@ -223,7 +223,7 @@ public class Arrays {
      * in the range specified by fromIndex (inclusive) and toIndex (exclusive).
      * Searching in an unsorted array has an undefined result. It's also undefined which element
      * is found if there are multiple occurrences of the same element.
-     * 
+     *
      * @param array the sorted array to search.
      * @param startIndex the inclusive start index.
      * @param endIndex the exclusive start index.
@@ -258,7 +258,7 @@ public class Arrays {
      * Performs a binary search for {@code value} in the ascending sorted array {@code array}.
      * Searching in an unsorted array has an undefined result. It's also undefined which element
      * is found if there are multiple occurrences of the same element.
-     * 
+     *
      * @param array the sorted array to search.
      * @param value the element to find.
      * @return the non-negative index of the element, or a negative index which
@@ -273,7 +273,7 @@ public class Arrays {
      * in the range specified by fromIndex (inclusive) and toIndex (exclusive).
      * Searching in an unsorted array has an undefined result. It's also undefined which element
      * is found if there are multiple occurrences of the same element.
-     * 
+     *
      * @param array the sorted array to search.
      * @param startIndex the inclusive start index.
      * @param endIndex the exclusive start index.
@@ -319,7 +319,7 @@ public class Arrays {
      * Performs a binary search for {@code value} in the ascending sorted array {@code array}.
      * Searching in an unsorted array has an undefined result. It's also undefined which element
      * is found if there are multiple occurrences of the same element.
-     * 
+     *
      * @param array the sorted array to search.
      * @param value the element to find.
      * @return the non-negative index of the element, or a negative index which
@@ -334,7 +334,7 @@ public class Arrays {
      * in the range specified by fromIndex (inclusive) and toIndex (exclusive).
      * Searching in an unsorted array has an undefined result. It's also undefined which element
      * is found if there are multiple occurrences of the same element.
-     * 
+     *
      * @param array the sorted array to search.
      * @param startIndex the inclusive start index.
      * @param endIndex the exclusive start index.
@@ -368,11 +368,11 @@ public class Arrays {
                     lo = mid + 1; // (-0.0, 0.0) or (not NaN, NaN); midVal < val
                 } else if (midValBits > valueBits) {
                     hi = mid - 1; // (0.0, -0.0) or (NaN, not NaN); midVal > val
-            } else {
+                } else {
                     return mid; // bit patterns are equal; value found
+                }
             }
         }
-                }
         return ~lo;  // value not present
     }
 
@@ -380,7 +380,7 @@ public class Arrays {
      * Performs a binary search for {@code value} in the ascending sorted array {@code array}.
      * Searching in an unsorted array has an undefined result. It's also undefined which element
      * is found if there are multiple occurrences of the same element.
-     * 
+     *
      * @param array the sorted array to search.
      * @param value the element to find.
      * @return the non-negative index of the element, or a negative index which
@@ -395,7 +395,7 @@ public class Arrays {
      * in the range specified by fromIndex (inclusive) and toIndex (exclusive).
      * Searching in an unsorted array has an undefined result. It's also undefined which element
      * is found if there are multiple occurrences of the same element.
-     * 
+     *
      * @param array the sorted array to search.
      * @param startIndex the inclusive start index.
      * @param endIndex the exclusive start index.
@@ -430,7 +430,7 @@ public class Arrays {
      * Performs a binary search for {@code value} in the ascending sorted array {@code array}.
      * Searching in an unsorted array has an undefined result. It's also undefined which element
      * is found if there are multiple occurrences of the same element.
-     * 
+     *
      * @param array the sorted array to search.
      * @param value the element to find.
      * @return the non-negative index of the element, or a negative index which
@@ -445,7 +445,7 @@ public class Arrays {
      * in the range specified by fromIndex (inclusive) and toIndex (exclusive).
      * Searching in an unsorted array has an undefined result. It's also undefined which element
      * is found if there are multiple occurrences of the same element.
-     * 
+     *
      * @param array the sorted array to search.
      * @param startIndex the inclusive start index.
      * @param endIndex the exclusive start index.
@@ -472,7 +472,7 @@ public class Arrays {
             } else {
                 return mid;  // value found
             }
-        }
+         }
          return ~lo;  // value not present
     }
 
@@ -480,7 +480,7 @@ public class Arrays {
      * Performs a binary search for {@code value} in the ascending sorted array {@code array}.
      * Searching in an unsorted array has an undefined result. It's also undefined which element
      * is found if there are multiple occurrences of the same element.
-     * 
+     *
      * @param array the sorted array to search.
      * @param value the element to find.
      * @return the non-negative index of the element, or a negative index which
@@ -498,7 +498,7 @@ public class Arrays {
      * in the range specified by fromIndex (inclusive) and toIndex (exclusive).
      * Searching in an unsorted array has an undefined result. It's also undefined which element
      * is found if there are multiple occurrences of the same element.
-     * 
+     *
      * @param array the sorted array to search.
      * @param startIndex the inclusive start index.
      * @param endIndex the exclusive start index.
@@ -519,7 +519,7 @@ public class Arrays {
 
         while (lo <= hi) {
             int mid = (lo + hi) >>> 1;
-    @SuppressWarnings("unchecked")
+            @SuppressWarnings("unchecked")
             int midValCmp = ((Comparable) array[mid]).compareTo(value);
 
             if (midValCmp < 0) {
@@ -531,7 +531,7 @@ public class Arrays {
             }
         }
         return ~lo;  // value not present
-                }
+    }
 
     /**
      * Performs a binary search for {@code value} in the ascending sorted array {@code array},
@@ -558,7 +558,7 @@ public class Arrays {
      * using {@code comparator} to compare elements.
      * Searching in an unsorted array has an undefined result. It's also undefined which element
      * is found if there are multiple occurrences of the same element.
-     * 
+     *
      * @param array the sorted array to search.
      * @param startIndex the inclusive start index.
      * @param endIndex the exclusive start index.
@@ -596,7 +596,7 @@ public class Arrays {
             }
         }
         return ~lo;  // value not present
-                }
+    }
 
     /**
      * Performs a binary search for {@code value} in the ascending sorted array {@code array}.
@@ -617,7 +617,7 @@ public class Arrays {
      * in the range specified by fromIndex (inclusive) and toIndex (exclusive).
      * Searching in an unsorted array has an undefined result. It's also undefined which element
      * is found if there are multiple occurrences of the same element.
-     * 
+     *
      * @param array the sorted array to search.
      * @param startIndex the inclusive start index.
      * @param endIndex the exclusive start index.
@@ -673,7 +673,7 @@ public class Arrays {
 
     /**
      * Fills the specified range in the array with the specified element.
-     * 
+     *
      * @param array
      *            the {@code byte} array to fill.
      * @param start
@@ -696,7 +696,7 @@ public class Arrays {
 
     /**
      * Fills the specified array with the specified element.
-     * 
+     *
      * @param array
      *            the {@code short} array to fill.
      * @param value
@@ -710,7 +710,7 @@ public class Arrays {
 
     /**
      * Fills the specified range in the array with the specified element.
-     * 
+     *
      * @param array
      *            the {@code short} array to fill.
      * @param start
@@ -733,7 +733,7 @@ public class Arrays {
 
     /**
      * Fills the specified array with the specified element.
-     * 
+     *
      * @param array
      *            the {@code char} array to fill.
      * @param value
@@ -747,7 +747,7 @@ public class Arrays {
 
     /**
      * Fills the specified range in the array with the specified element.
-     * 
+     *
      * @param array
      *            the {@code char} array to fill.
      * @param start
@@ -770,7 +770,7 @@ public class Arrays {
 
     /**
      * Fills the specified array with the specified element.
-     * 
+     *
      * @param array
      *            the {@code int} array to fill.
      * @param value
@@ -784,7 +784,7 @@ public class Arrays {
 
     /**
      * Fills the specified range in the array with the specified element.
-     * 
+     *
      * @param array
      *            the {@code int} array to fill.
      * @param start
@@ -807,7 +807,7 @@ public class Arrays {
 
     /**
      * Fills the specified array with the specified element.
-     * 
+     *
      * @param array
      *            the {@code long} array to fill.
      * @param value
@@ -821,7 +821,7 @@ public class Arrays {
 
     /**
      * Fills the specified range in the array with the specified element.
-     * 
+     *
      * @param array
      *            the {@code long} array to fill.
      * @param start
@@ -844,7 +844,7 @@ public class Arrays {
 
     /**
      * Fills the specified array with the specified element.
-     * 
+     *
      * @param array
      *            the {@code float} array to fill.
      * @param value
@@ -858,7 +858,7 @@ public class Arrays {
 
     /**
      * Fills the specified range in the array with the specified element.
-     * 
+     *
      * @param array
      *            the {@code float} array to fill.
      * @param start
@@ -881,7 +881,7 @@ public class Arrays {
 
     /**
      * Fills the specified array with the specified element.
-     * 
+     *
      * @param array
      *            the {@code double} array to fill.
      * @param value
@@ -895,7 +895,7 @@ public class Arrays {
 
     /**
      * Fills the specified range in the array with the specified element.
-     * 
+     *
      * @param array
      *            the {@code double} array to fill.
      * @param start
@@ -918,7 +918,7 @@ public class Arrays {
 
     /**
      * Fills the specified array with the specified element.
-     * 
+     *
      * @param array
      *            the {@code boolean} array to fill.
      * @param value
@@ -932,7 +932,7 @@ public class Arrays {
 
     /**
      * Fills the specified range in the array with the specified element.
-     * 
+     *
      * @param array
      *            the {@code boolean} array to fill.
      * @param start
@@ -955,7 +955,7 @@ public class Arrays {
 
     /**
      * Fills the specified array with the specified element.
-     * 
+     *
      * @param array
      *            the {@code Object} array to fill.
      * @param value
@@ -969,7 +969,7 @@ public class Arrays {
 
     /**
      * Fills the specified range in the array with the specified element.
-     * 
+     *
      * @param array
      *            the {@code Object} array to fill.
      * @param start
@@ -1001,7 +1001,7 @@ public class Arrays {
      * containing a sequence of {@link Boolean} instances representing the
      * elements of array in the same order. If the array is {@code null}, the return
      * value is 0.
-     * 
+     *
      * @param array
      *            the array whose hash code to compute.
      * @return the hash code for {@code array}.
@@ -1029,7 +1029,7 @@ public class Arrays {
      * containing a sequence of {@link Integer} instances representing the
      * elements of array in the same order. If the array is {@code null}, the return
      * value is 0.
-     * 
+     *
      * @param array
      *            the array whose hash code to compute.
      * @return the hash code for {@code array}.
@@ -1057,7 +1057,7 @@ public class Arrays {
      * containing a sequence of {@link Short} instances representing the
      * elements of array in the same order. If the array is {@code null}, the return
      * value is 0.
-     * 
+     *
      * @param array
      *            the array whose hash code to compute.
      * @return the hash code for {@code array}.
@@ -1085,7 +1085,7 @@ public class Arrays {
      * containing a sequence of {@link Character} instances representing the
      * elements of array in the same order. If the array is {@code null}, the return
      * value is 0.
-     * 
+     *
      * @param array
      *            the array whose hash code to compute.
      * @return the hash code for {@code array}.
@@ -1113,7 +1113,7 @@ public class Arrays {
      * containing a sequence of {@link Byte} instances representing the
      * elements of array in the same order. If the array is {@code null}, the return
      * value is 0.
-     * 
+     *
      * @param array
      *            the array whose hash code to compute.
      * @return the hash code for {@code array}.
@@ -1141,7 +1141,7 @@ public class Arrays {
      * containing a sequence of {@link Long} instances representing the
      * elements of array in the same order. If the array is {@code null}, the return
      * value is 0.
-     * 
+     *
      * @param array
      *            the array whose hash code to compute.
      * @return the hash code for {@code array}.
@@ -1173,7 +1173,7 @@ public class Arrays {
      * containing a sequence of {@link Float} instances representing the
      * elements of array in the same order. If the array is {@code null}, the return
      * value is 0.
-     * 
+     *
      * @param array
      *            the array whose hash code to compute.
      * @return the hash code for {@code array}.
@@ -1204,7 +1204,7 @@ public class Arrays {
      * containing a sequence of {@link Double} instances representing the
      * elements of array in the same order. If the array is {@code null}, the return
      * value is 0.
-     * 
+     *
      * @param array
      *            the array whose hash code to compute.
      * @return the hash code for {@code array}.
@@ -1241,7 +1241,7 @@ public class Arrays {
      * The value returned by this method is the same value as the method
      * Arrays.asList(array).hashCode(). If the array is {@code null}, the return value
      * is 0.
-     * 
+     *
      * @param array
      *            the array whose hash code to compute.
      * @return the hash code for {@code array}.
@@ -1286,7 +1286,7 @@ public class Arrays {
      * an array of a reference type. The value returned by this method is the
      * same value as the method {@code Arrays.asList(array).hashCode()}. If the array is
      * {@code null}, the return value is 0.
-     * 
+     *
      * @param array
      *            the array whose hash code to compute.
      * @return the hash code for {@code array}.
@@ -1347,7 +1347,7 @@ public class Arrays {
 
     /**
      * Compares the two arrays.
-     * 
+     *
      * @param array1
      *            the first {@code byte} array.
      * @param array2
@@ -1373,7 +1373,7 @@ public class Arrays {
 
     /**
      * Compares the two arrays.
-     * 
+     *
      * @param array1
      *            the first {@code short} array.
      * @param array2
@@ -1399,7 +1399,7 @@ public class Arrays {
 
     /**
      * Compares the two arrays.
-     * 
+     *
      * @param array1
      *            the first {@code char} array.
      * @param array2
@@ -1425,7 +1425,7 @@ public class Arrays {
 
     /**
      * Compares the two arrays.
-     * 
+     *
      * @param array1
      *            the first {@code int} array.
      * @param array2
@@ -1451,7 +1451,7 @@ public class Arrays {
 
     /**
      * Compares the two arrays.
-     * 
+     *
      * @param array1
      *            the first {@code long} array.
      * @param array2
@@ -1478,7 +1478,7 @@ public class Arrays {
     /**
      * Compares the two arrays. The values are compared in the same manner as
      * {@code Float.equals()}.
-     * 
+     *
      * @param array1
      *            the first {@code float} array.
      * @param array2
@@ -1507,7 +1507,7 @@ public class Arrays {
     /**
      * Compares the two arrays. The values are compared in the same manner as
      * {@code Double.equals()}.
-     * 
+     *
      * @param array1
      *            the first {@code double} array.
      * @param array2
@@ -1535,7 +1535,7 @@ public class Arrays {
 
     /**
      * Compares the two arrays.
-     * 
+     *
      * @param array1
      *            the first {@code boolean} array.
      * @param array2
@@ -1561,7 +1561,7 @@ public class Arrays {
 
     /**
      * Compares the two arrays.
-     * 
+     *
      * @param array1
      *            the first {@code Object} array.
      * @param array2
@@ -1613,7 +1613,7 @@ public class Arrays {
      * <p>
      * If either of the given arrays contain themselves as elements, the
      * behavior of this method is uncertain.
-     * 
+     *
      * @param array1
      *            the first {@code Object} array.
      * @param array2
@@ -1694,7 +1694,7 @@ public class Arrays {
 
     /**
      * Sorts the specified array in ascending numerical order.
-     * 
+     *
      * @param array
      *            the {@code byte} array to be sorted.
      */
@@ -1704,7 +1704,7 @@ public class Arrays {
 
     /**
      * Sorts the specified range in the array in ascending numerical order.
-     * 
+     *
      * @param array
      *            the {@code byte} array to be sorted.
      * @param start
@@ -1743,7 +1743,7 @@ public class Arrays {
         if (start < 0 || end > len) {
             throw new ArrayIndexOutOfBoundsException("start < 0 || end > len."
                     + " start=" + start + ", end=" + end + ", len=" + len);
-                }
+        }
         if (start > end) {
             throw new IllegalArgumentException("start > end: " + start + " > " + end);
         }
@@ -1751,7 +1751,7 @@ public class Arrays {
 
     /**
      * Sorts the specified array in ascending numerical order.
-     * 
+     *
      * @param array
      *            the {@code char} array to be sorted.
      */
@@ -1761,7 +1761,7 @@ public class Arrays {
 
     /**
      * Sorts the specified range in the array in ascending numerical order.
-     * 
+     *
      * @param array
      *            the {@code char} array to be sorted.
      * @param start
@@ -1779,7 +1779,7 @@ public class Arrays {
 
     /**
      * Sorts the specified array in ascending numerical order.
-     * 
+     *
      * @param array
      *            the {@code double} array to be sorted.
      * @see #sort(double[], int, int)
@@ -1791,7 +1791,7 @@ public class Arrays {
     /**
      * Sorts the specified range in the array in ascending numerical order. The
      * values are sorted according to the order imposed by {@code Double.compareTo()}.
-     * 
+     *
      * @param array
      *            the {@code double} array to be sorted.
      * @param start
@@ -1810,7 +1810,7 @@ public class Arrays {
 
     /**
      * Sorts the specified array in ascending numerical order.
-     * 
+     *
      * @param array
      *            the {@code float} array to be sorted.
      * @see #sort(float[], int, int)
@@ -1822,7 +1822,7 @@ public class Arrays {
     /**
      * Sorts the specified range in the array in ascending numerical order. The
      * values are sorted according to the order imposed by {@code Float.compareTo()}.
-     * 
+     *
      * @param array
      *            the {@code float} array to be sorted.
      * @param start
@@ -1841,7 +1841,7 @@ public class Arrays {
 
     /**
      * Sorts the specified array in ascending numerical order.
-     * 
+     *
      * @param array
      *            the {@code int} array to be sorted.
      */
@@ -1851,7 +1851,7 @@ public class Arrays {
 
     /**
      * Sorts the specified range in the array in ascending numerical order.
-     * 
+     *
      * @param array
      *            the {@code int} array to be sorted.
      * @param start
@@ -1869,7 +1869,7 @@ public class Arrays {
 
     /**
      * Sorts the specified array in ascending numerical order.
-     * 
+     *
      * @param array
      *            the {@code long} array to be sorted.
      */
@@ -1879,7 +1879,7 @@ public class Arrays {
 
     /**
      * Sorts the specified range in the array in ascending numerical order.
-     * 
+     *
      * @param array
      *            the {@code long} array to be sorted.
      * @param start
@@ -1893,7 +1893,7 @@ public class Arrays {
      */
     public static void sort(long[] array, int start, int end) {
         DualPivotQuicksort.sort(array, start, end);
-        }
+    }
 
     /**
      * Sorts the specified array in ascending numerical order.
@@ -1921,7 +1921,7 @@ public class Arrays {
      */
     public static void sort(short[] array, int start, int end) {
         DualPivotQuicksort.sort(array, start, end);
-                }
+    }
 
 // BEGIN android-note
 
@@ -1961,7 +1961,7 @@ public class Arrays {
 
     /**
      * Sorts the specified array in ascending natural order.
-     * 
+     *
      * @param array
      *            the {@code Object} array to be sorted.
      * @throws ClassCastException
@@ -1978,7 +1978,7 @@ public class Arrays {
      * elements must implement the {@code Comparable} interface and must be
      * comparable to each other without a {@code ClassCastException} being
      * thrown.
-     * 
+     *
      * @param array
      *            the {@code Object} array to be sorted.
      * @param start
@@ -2025,7 +2025,7 @@ public class Arrays {
     /**
      * Sorts the specified array using the specified {@code Comparator}. All elements
      * must be comparable to each other without a {@code ClassCastException} being thrown.
-     * 
+     *
      * @param array
      *            the {@code Object} array to be sorted.
      * @param comparator
@@ -2449,7 +2449,7 @@ public class Arrays {
      * Copies {@code newLength} elements from {@code original} into a new array.
      * If {@code newLength} is greater than {@code original.length}, the result is padded
      * with the value {@code false}.
-     * 
+     *
      * @param original the original array
      * @param newLength the length of the new array
      * @return the new array
@@ -2459,8 +2459,8 @@ public class Arrays {
      */
     public static boolean[] copyOf(boolean[] original, int newLength) {
         if (newLength < 0) {
-        throw new NegativeArraySizeException();
-    }
+            throw new NegativeArraySizeException();
+        }
         return copyOfRange(original, 0, newLength);
     }
 
@@ -2468,7 +2468,7 @@ public class Arrays {
      * Copies {@code newLength} elements from {@code original} into a new array.
      * If {@code newLength} is greater than {@code original.length}, the result is padded
      * with the value {@code (byte) 0}.
-     * 
+     *
      * @param original the original array
      * @param newLength the length of the new array
      * @return the new array
@@ -2478,8 +2478,8 @@ public class Arrays {
      */
     public static byte[] copyOf(byte[] original, int newLength) {
         if (newLength < 0) {
-        throw new NegativeArraySizeException();
-    }
+            throw new NegativeArraySizeException();
+        }
         return copyOfRange(original, 0, newLength);
     }
 
@@ -2487,7 +2487,7 @@ public class Arrays {
      * Copies {@code newLength} elements from {@code original} into a new array.
      * If {@code newLength} is greater than {@code original.length}, the result is padded
      * with the value {@code '\\u0000'}.
-     * 
+     *
      * @param original the original array
      * @param newLength the length of the new array
      * @return the new array
@@ -2497,8 +2497,8 @@ public class Arrays {
      */
     public static char[] copyOf(char[] original, int newLength) {
         if (newLength < 0) {
-        throw new NegativeArraySizeException();
-    }
+            throw new NegativeArraySizeException();
+        }
         return copyOfRange(original, 0, newLength);
     }
 
@@ -2506,7 +2506,7 @@ public class Arrays {
      * Copies {@code newLength} elements from {@code original} into a new array.
      * If {@code newLength} is greater than {@code original.length}, the result is padded
      * with the value {@code 0.0d}.
-     * 
+     *
      * @param original the original array
      * @param newLength the length of the new array
      * @return the new array
@@ -2516,8 +2516,8 @@ public class Arrays {
      */
     public static double[] copyOf(double[] original, int newLength) {
         if (newLength < 0) {
-        throw new NegativeArraySizeException();
-    }
+            throw new NegativeArraySizeException();
+        }
         return copyOfRange(original, 0, newLength);
     }
 
@@ -2525,7 +2525,7 @@ public class Arrays {
      * Copies {@code newLength} elements from {@code original} into a new array.
      * If {@code newLength} is greater than {@code original.length}, the result is padded
      * with the value {@code 0.0f}.
-     * 
+     *
      * @param original the original array
      * @param newLength the length of the new array
      * @return the new array
@@ -2535,8 +2535,8 @@ public class Arrays {
      */
     public static float[] copyOf(float[] original, int newLength) {
         if (newLength < 0) {
-        throw new NegativeArraySizeException();
-    }
+            throw new NegativeArraySizeException();
+        }
         return copyOfRange(original, 0, newLength);
     }
 
@@ -2544,7 +2544,7 @@ public class Arrays {
      * Copies {@code newLength} elements from {@code original} into a new array.
      * If {@code newLength} is greater than {@code original.length}, the result is padded
      * with the value {@code 0}.
-     * 
+     *
      * @param original the original array
      * @param newLength the length of the new array
      * @return the new array
@@ -2554,8 +2554,8 @@ public class Arrays {
      */
     public static int[] copyOf(int[] original, int newLength) {
         if (newLength < 0) {
-        throw new NegativeArraySizeException();
-    }
+            throw new NegativeArraySizeException();
+        }
         return copyOfRange(original, 0, newLength);
     }
 
@@ -2563,7 +2563,7 @@ public class Arrays {
      * Copies {@code newLength} elements from {@code original} into a new array.
      * If {@code newLength} is greater than {@code original.length}, the result is padded
      * with the value {@code 0L}.
-     * 
+     *
      * @param original the original array
      * @param newLength the length of the new array
      * @return the new array
@@ -2573,8 +2573,8 @@ public class Arrays {
      */
     public static long[] copyOf(long[] original, int newLength) {
         if (newLength < 0) {
-        throw new NegativeArraySizeException();
-    }
+            throw new NegativeArraySizeException();
+        }
         return copyOfRange(original, 0, newLength);
     }
 
@@ -2582,7 +2582,7 @@ public class Arrays {
      * Copies {@code newLength} elements from {@code original} into a new array.
      * If {@code newLength} is greater than {@code original.length}, the result is padded
      * with the value {@code (short) 0}.
-     * 
+     *
      * @param original the original array
      * @param newLength the length of the new array
      * @return the new array
@@ -2592,8 +2592,8 @@ public class Arrays {
      */
     public static short[] copyOf(short[] original, int newLength) {
         if (newLength < 0) {
-        throw new NegativeArraySizeException();
-    }
+            throw new NegativeArraySizeException();
+        }
         return copyOfRange(original, 0, newLength);
     }
 
@@ -2601,7 +2601,7 @@ public class Arrays {
      * Copies {@code newLength} elements from {@code original} into a new array.
      * If {@code newLength} is greater than {@code original.length}, the result is padded
      * with the value {@code null}.
-     * 
+     *
      * @param original the original array
      * @param newLength the length of the new array
      * @return the new array
@@ -2614,8 +2614,8 @@ public class Arrays {
             throw new NullPointerException();
         }
         if (newLength < 0) {
-        throw new NegativeArraySizeException();
-    }
+            throw new NegativeArraySizeException();
+        }
         return copyOfRange(original, 0, newLength);
     }
 
@@ -2623,7 +2623,7 @@ public class Arrays {
      * Copies {@code newLength} elements from {@code original} into a new array.
      * If {@code newLength} is greater than {@code original.length}, the result is padded
      * with the value {@code null}.
-     * 
+     *
      * @param original the original array
      * @param newLength the length of the new array
      * @param newType the class of the new array
@@ -2636,8 +2636,8 @@ public class Arrays {
     public static <T, U> T[] copyOf(U[] original, int newLength, Class<? extends T[]> newType) {
         // We use the null pointer check in copyOfRange for exception priority compatibility.
         if (newLength < 0) {
-        throw new NegativeArraySizeException();
-    }
+            throw new NegativeArraySizeException();
+        }
         return copyOfRange(original, 0, newLength, newType);
     }
 
@@ -2646,7 +2646,7 @@ public class Arrays {
      * end (exclusive). The original order of elements is preserved.
      * If {@code end} is greater than {@code original.length}, the result is padded
      * with the value {@code false}.
-     * 
+     *
      * @param original the original array
      * @param start the start index, inclusive
      * @param end the end index, exclusive
@@ -2659,7 +2659,7 @@ public class Arrays {
     public static boolean[] copyOfRange(boolean[] original, int start, int end) {
         if (start > end) {
             throw new IllegalArgumentException();
-            }
+        }
         int originalLength = original.length;
         if (start < 0 || start > originalLength) {
             throw new ArrayIndexOutOfBoundsException();
@@ -2676,7 +2676,7 @@ public class Arrays {
      * end (exclusive). The original order of elements is preserved.
      * If {@code end} is greater than {@code original.length}, the result is padded
      * with the value {@code (byte) 0}.
-     * 
+     *
      * @param original the original array
      * @param start the start index, inclusive
      * @param end the end index, exclusive
@@ -2689,7 +2689,7 @@ public class Arrays {
     public static byte[] copyOfRange(byte[] original, int start, int end) {
         if (start > end) {
             throw new IllegalArgumentException();
-            }
+        }
         int originalLength = original.length;
         if (start < 0 || start > originalLength) {
             throw new ArrayIndexOutOfBoundsException();
@@ -2706,7 +2706,7 @@ public class Arrays {
      * end (exclusive). The original order of elements is preserved.
      * If {@code end} is greater than {@code original.length}, the result is padded
      * with the value {@code '\\u0000'}.
-     * 
+     *
      * @param original the original array
      * @param start the start index, inclusive
      * @param end the end index, exclusive
@@ -2719,7 +2719,7 @@ public class Arrays {
     public static char[] copyOfRange(char[] original, int start, int end) {
         if (start > end) {
             throw new IllegalArgumentException();
-            }
+        }
         int originalLength = original.length;
         if (start < 0 || start > originalLength) {
             throw new ArrayIndexOutOfBoundsException();
@@ -2736,7 +2736,7 @@ public class Arrays {
      * end (exclusive). The original order of elements is preserved.
      * If {@code end} is greater than {@code original.length}, the result is padded
      * with the value {@code 0.0d}.
-     * 
+     *
      * @param original the original array
      * @param start the start index, inclusive
      * @param end the end index, exclusive
@@ -2749,7 +2749,7 @@ public class Arrays {
     public static double[] copyOfRange(double[] original, int start, int end) {
         if (start > end) {
             throw new IllegalArgumentException();
-            }
+        }
         int originalLength = original.length;
         if (start < 0 || start > originalLength) {
             throw new ArrayIndexOutOfBoundsException();
@@ -2766,7 +2766,7 @@ public class Arrays {
      * end (exclusive). The original order of elements is preserved.
      * If {@code end} is greater than {@code original.length}, the result is padded
      * with the value {@code 0.0f}.
-     * 
+     *
      * @param original the original array
      * @param start the start index, inclusive
      * @param end the end index, exclusive
@@ -2779,7 +2779,7 @@ public class Arrays {
     public static float[] copyOfRange(float[] original, int start, int end) {
         if (start > end) {
             throw new IllegalArgumentException();
-            }
+        }
         int originalLength = original.length;
         if (start < 0 || start > originalLength) {
             throw new ArrayIndexOutOfBoundsException();
@@ -2796,7 +2796,7 @@ public class Arrays {
      * end (exclusive). The original order of elements is preserved.
      * If {@code end} is greater than {@code original.length}, the result is padded
      * with the value {@code 0}.
-     * 
+     *
      * @param original the original array
      * @param start the start index, inclusive
      * @param end the end index, exclusive
@@ -2809,7 +2809,7 @@ public class Arrays {
     public static int[] copyOfRange(int[] original, int start, int end) {
         if (start > end) {
             throw new IllegalArgumentException();
-            }
+        }
         int originalLength = original.length;
         if (start < 0 || start > originalLength) {
             throw new ArrayIndexOutOfBoundsException();
@@ -2826,7 +2826,7 @@ public class Arrays {
      * end (exclusive). The original order of elements is preserved.
      * If {@code end} is greater than {@code original.length}, the result is padded
      * with the value {@code 0L}.
-     * 
+     *
      * @param original the original array
      * @param start the start index, inclusive
      * @param end the end index, exclusive
@@ -2839,7 +2839,7 @@ public class Arrays {
     public static long[] copyOfRange(long[] original, int start, int end) {
         if (start > end) {
             throw new IllegalArgumentException();
-            }
+        }
         int originalLength = original.length;
         if (start < 0 || start > originalLength) {
             throw new ArrayIndexOutOfBoundsException();
@@ -2856,7 +2856,7 @@ public class Arrays {
      * end (exclusive). The original order of elements is preserved.
      * If {@code end} is greater than {@code original.length}, the result is padded
      * with the value {@code (short) 0}.
-     * 
+     *
      * @param original the original array
      * @param start the start index, inclusive
      * @param end the end index, exclusive
@@ -2869,7 +2869,7 @@ public class Arrays {
     public static short[] copyOfRange(short[] original, int start, int end) {
         if (start > end) {
             throw new IllegalArgumentException();
-            }
+        }
         int originalLength = original.length;
         if (start < 0 || start > originalLength) {
             throw new ArrayIndexOutOfBoundsException();
@@ -2886,7 +2886,7 @@ public class Arrays {
      * end (exclusive). The original order of elements is preserved.
      * If {@code end} is greater than {@code original.length}, the result is padded
      * with the value {@code null}.
-     * 
+     *
      * @param original the original array
      * @param start the start index, inclusive
      * @param end the end index, exclusive
@@ -2903,8 +2903,8 @@ public class Arrays {
             throw new IllegalArgumentException();
         }
         if (start < 0 || start > originalLength) {
-        throw new ArrayIndexOutOfBoundsException();
-    }
+            throw new ArrayIndexOutOfBoundsException();
+        }
         int resultLength = end - start;
         int copyLength = Math.min(resultLength, originalLength - start);
         T[] result = (T[]) Array.newInstance(original.getClass().getComponentType(), resultLength);
@@ -2917,7 +2917,7 @@ public class Arrays {
      * end (exclusive). The original order of elements is preserved.
      * If {@code end} is greater than {@code original.length}, the result is padded
      * with the value {@code null}.
-     * 
+     *
      * @param original the original array
      * @param start the start index, inclusive
      * @param end the end index, exclusive
@@ -2932,7 +2932,7 @@ public class Arrays {
     public static <T, U> T[] copyOfRange(U[] original, int start, int end, Class<? extends T[]> newType) {
         if (start > end) {
             throw new IllegalArgumentException();
-            }
+        }
         int originalLength = original.length;
         if (start < 0 || start > originalLength) {
             throw new ArrayIndexOutOfBoundsException();

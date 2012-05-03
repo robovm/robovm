@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.harmony.text.internal.nls.Messages;
 
 /**
  * Holds a string with attributes describing the characters of
@@ -92,7 +90,7 @@ public class AttributedString {
         /**
          * Returns a new {@code AttributedIterator} with the same source string,
          * begin, end, and current index as this attributed iterator.
-         * 
+         *
          * @return a shallow copy of this attributed iterator.
          * @see java.lang.Cloneable
          */
@@ -107,7 +105,7 @@ public class AttributedString {
                 }
                 return clone;
             } catch (CloneNotSupportedException e) {
-                return null;
+                throw new AssertionError(e);
             }
         }
 
@@ -128,7 +126,7 @@ public class AttributedString {
 
         /**
          * Returns the begin index in the source string.
-         * 
+         *
          * @return the index of the first character to iterate.
          */
         public int getBeginIndex() {
@@ -137,7 +135,7 @@ public class AttributedString {
 
         /**
          * Returns the end index in the source String.
-         * 
+         *
          * @return the index one past the last character to iterate.
          */
         public int getEndIndex() {
@@ -146,7 +144,7 @@ public class AttributedString {
 
         /**
          * Returns the current index in the source String.
-         * 
+         *
          * @return the current index.
          */
         public int getIndex() {
@@ -389,8 +387,7 @@ public class AttributedString {
      */
     public AttributedString(AttributedCharacterIterator iterator) {
         if (iterator.getBeginIndex() > iterator.getEndIndex()) {
-            // text.0A=Invalid substring range
-            throw new IllegalArgumentException(Messages.getString("text.0A")); //$NON-NLS-1$
+            throw new IllegalArgumentException("Invalid substring range");
         }
         StringBuilder buffer = new StringBuilder();
         for (int i = iterator.getBeginIndex(); i < iterator.getEndIndex(); i++) {
@@ -509,8 +506,9 @@ public class AttributedString {
      */
     public AttributedString(AttributedCharacterIterator iterator, int start,
             int end, AttributedCharacterIterator.Attribute[] attributes) {
-        this(iterator, start, end, new HashSet<Attribute>(Arrays
-                .asList(attributes)));
+        this(iterator, start, end, (attributes == null
+                ? new HashSet<Attribute>()
+                : new HashSet<Attribute>(Arrays.asList(attributes))));
     }
 
     /**
@@ -547,8 +545,7 @@ public class AttributedString {
             throw new NullPointerException();
         }
         if (value.length() == 0 && !attributes.isEmpty()) {
-            // text.0B=Cannot add attributes to empty string
-            throw new IllegalArgumentException(Messages.getString("text.0B")); //$NON-NLS-1$
+            throw new IllegalArgumentException("Cannot add attributes to empty string");
         }
         text = value;
         attributeMap = new HashMap<Attribute, List<Range>>(
@@ -576,9 +573,8 @@ public class AttributedString {
      * @throws NullPointerException
      *             if {@code attribute} is {@code null}.
      */
-    public void addAttribute(AttributedCharacterIterator.Attribute attribute,
-            Object value) {
-        if (null == attribute) {
+    public void addAttribute(AttributedCharacterIterator.Attribute attribute, Object value) {
+        if (attribute == null) {
             throw new NullPointerException();
         }
         if (text.length() == 0) {
@@ -615,7 +611,7 @@ public class AttributedString {
      */
     public void addAttribute(AttributedCharacterIterator.Attribute attribute,
             Object value, int start, int end) {
-        if (null == attribute) {
+        if (attribute == null) {
             throw new NullPointerException();
         }
         if (start < 0 || end > text.length() || start >= end) {

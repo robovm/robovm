@@ -17,18 +17,15 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import org.apache.harmony.xnet.provider.jsse.AlertException;
-import org.apache.harmony.xnet.provider.jsse.SSLSessionImpl;
-import org.apache.harmony.xnet.provider.jsse.SSLEngineDataStream;
 
 import java.io.IOException;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
 import javax.net.ssl.SSLEngine;
-import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLEngineResult;
 import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLSession;
 
 /**
@@ -72,7 +69,7 @@ public class SSLEngineImpl extends SSLEngine {
     private SSLSessionImpl session;
 
     // peer configuration parameters
-    protected SSLParameters sslParameters;
+    protected SSLParametersImpl sslParameters;
 
     // in case of emergency situations when data could not be
     // placed in destination buffers it will be stored in this
@@ -83,30 +80,11 @@ public class SSLEngineImpl extends SSLEngine {
     // logger
     private Logger.Stream logger = Logger.getStream("engine");
 
-    /**
-     * Ctor
-     * @param   sslParameters:  SSLParameters
-     */
-    protected SSLEngineImpl(SSLParameters sslParameters) {
-        super();
+    protected SSLEngineImpl(SSLParametersImpl sslParameters) {
         this.sslParameters = sslParameters;
     }
 
-    @Override
-    public void setSSLParameters(javax.net.ssl.SSLParameters inputSSLParameters) {
-        setEnabledCipherSuites(inputSSLParameters.getCipherSuites());
-        setEnabledProtocols(inputSSLParameters.getProtocols());
-        setNeedClientAuth(inputSSLParameters.getNeedClientAuth());
-        setWantClientAuth(inputSSLParameters.getWantClientAuth());
-    }
-
-    /**
-     * Ctor
-     * @param   host:   String
-     * @param   port:   int
-     * @param   sslParameters:  SSLParameters
-     */
-    protected SSLEngineImpl(String host, int port, SSLParameters sslParameters) {
+    protected SSLEngineImpl(String host, int port, SSLParametersImpl sslParameters) {
         super(host, port);
         this.sslParameters = sslParameters;
     }
@@ -235,7 +213,7 @@ public class SSLEngineImpl extends SSLEngine {
 
     /**
      * This method works according to the specification of implemented class.
-     * @see javax.net.ssl.SSLEngine#setEnabledCipherSuites(String) method
+     * @see javax.net.ssl.SSLEngine#setEnabledCipherSuites(String[]) method
      * documentation for more information
      */
     @Override
@@ -265,7 +243,7 @@ public class SSLEngineImpl extends SSLEngine {
 
     /**
      * This method works according to the specification of implemented class.
-     * @see javax.net.ssl.SSLEngine#setEnabledProtocols(String) method
+     * @see javax.net.ssl.SSLEngine#setEnabledProtocols(String[]) method
      * documentation for more information
      */
     @Override
@@ -525,7 +503,7 @@ public class SSLEngineImpl extends SSLEngine {
                             case AlertProtocol.NO_RENEGOTIATION:
                                 alertProtocol.setProcessed();
                                 if (session == null) {
-                                    // message received during the initial 
+                                    // message received during the initial
                                     // handshake
                                     throw new AlertException(
                                         AlertProtocol.HANDSHAKE_FAILURE,
@@ -544,8 +522,8 @@ public class SSLEngineImpl extends SSLEngine {
                     break;
             }
             return new SSLEngineResult(getEngineStatus(), getHandshakeStatus(),
-                    recProtIS.consumed(), 
-                    // place the app. data (if any) into the dest. buffers 
+                    recProtIS.consumed(),
+                    // place the app. data (if any) into the dest. buffers
                     // and get the number of produced bytes:
                     appData.placeTo(dsts, offset, length));
         } catch (BufferUnderflowException e) {
@@ -708,7 +686,7 @@ public class SSLEngineImpl extends SSLEngine {
                     dst.put(remaining_wrapped_data);
                     produced = remaining_wrapped_data.length;
                     remaining_wrapped_data = null;
-                    return new SSLEngineResult(getEngineStatus(), 
+                    return new SSLEngineResult(getEngineStatus(),
                             handshakeStatus, dataStream.consumed(), produced);
                 }
             } else {
@@ -773,16 +751,4 @@ public class SSLEngineImpl extends SSLEngine {
             ? SSLEngineResult.Status.CLOSED
             : SSLEngineResult.Status.OK;
     }
-
-
-    @Override
-    public javax.net.ssl.SSLParameters getSSLParameters() {
-        javax.net.ssl.SSLParameters outputSSLParameters = new javax.net.ssl.SSLParameters();
-        outputSSLParameters.setCipherSuites(sslParameters.getEnabledCipherSuites());
-        outputSSLParameters.setProtocols(sslParameters.getEnabledProtocols());
-        outputSSLParameters.setNeedClientAuth(sslParameters.getNeedClientAuth());
-        outputSSLParameters.setWantClientAuth(sslParameters.getWantClientAuth());
-        return outputSSLParameters;
-    }
 }
-

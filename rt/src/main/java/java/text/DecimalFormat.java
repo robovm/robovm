@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,10 +24,10 @@ import java.io.ObjectStreamField;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.Currency;
 import java.util.Locale;
+import libcore.icu.LocaleData;
+import libcore.icu.NativeDecimalFormat;
 
 /**
  * A concrete subclass of {@link NumberFormat} that formats decimal numbers. It
@@ -58,49 +58,7 @@ import java.util.Locale;
  * </pre>
  *
  * </blockquote>
- * <h5>Example:</h5>
- * <blockquote>
  *
- * <pre>
- * // Print out a number using the localized number, currency,
- * // and percent format for each locale
- * Locale[] locales = NumberFormat.getAvailableLocales();
- * double myNumber = -1234.56;
- * NumberFormat format;
- * for (int j = 0; j &lt; 3; ++j) {
- *     System.out.println(&quot;FORMAT&quot;);
- *     for (int i = 0; i &lt; locales.length; ++i) {
- *         if (locales[i].getCountry().length() == 0) {
- *             // Skip language-only locales
- *             continue;
- *         }
- *         System.out.print(locales[i].getDisplayName());
- *         switch (j) {
- *             case 0:
- *                 format = NumberFormat.getInstance(locales[i]);
- *                 break;
- *             case 1:
- *                 format = NumberFormat.getCurrencyInstance(locales[i]);
- *                 break;
- *             default:
- *                 format = NumberFormat.getPercentInstance(locales[i]);
- *                 break;
- *         }
- *         try {
- *             // Assume format is a DecimalFormat
- *             System.out.print(&quot;: &quot;; + ((DecimalFormat)format).toPattern() + &quot; -&gt; &quot;
- *                     + form.format(myNumber));
- *         } catch (Exception e) {
- *         }
- *         try {
- *             System.out.println(&quot; -&gt; &quot; + format.parse(form.format(myNumber)));
- *         } catch (ParseException e) {
- *         }
- *     }
- * }
- * </pre>
- *
- * </blockquote>
  * <h4>Patterns</h4>
  * <p>
  * A {@code DecimalFormat} consists of a <em>pattern</em> and a set of
@@ -205,13 +163,13 @@ import java.util.Locale;
  * <td>Multiply by 100 and show as percentage.</td>
  * </tr>
  * <tr valign="top" bgcolor="#eeeeff">
- * <td>{@code \u2030} ({@code &#92;u2030})</td>
+ * <td>{@code \u2030} ({@code \u005Cu2030})</td>
  * <td>Prefix or suffix</td>
  * <td>Yes</td>
  * <td>Multiply by 1000 and show as per mille.</td>
  * </tr>
  * <tr valign="top">
- * <td>{@code &#164;} ({@code &#92;u00A4})</td>
+ * <td>{@code \u00A4} ({@code \u005Cu00A4})</td>
  * <td>Prefix or suffix</td>
  * <td>No</td>
  * <td>Currency sign, replaced by currency symbol. If doubled, replaced by
@@ -235,7 +193,7 @@ import java.util.Locale;
  * </tr>
  * </table> </blockquote>
  * <p>
- * A {@code DecimalFormat} pattern contains a postive and negative subpattern,
+ * A {@code DecimalFormat} pattern contains a positive and negative subpattern,
  * for example, "#,##0.00;(#,##0.00)". Each subpattern has a prefix, a numeric
  * part and a suffix. If there is no explicit negative subpattern, the negative
  * subpattern is the localized minus sign prefixed to the positive subpattern.
@@ -350,7 +308,7 @@ import java.util.Locale;
  * example, 0.125 is formatted as "0.12" if the maximum fraction digits is 2.
  * <li>If the number of actual fraction digits is less than the
  * <em>minimum fraction digits</em>, then trailing zeros are added. For
- * example, 0.125 is formatted as "0.1250" if the mimimum fraction digits is set
+ * example, 0.125 is formatted as "0.1250" if the minimum fraction digits is set
  * to 4.
  * <li>Trailing fractional zeros are not displayed if they occur <em>j</em>
  * positions after the decimal, where <em>j</em> is less than the maximum
@@ -361,11 +319,11 @@ import java.util.Locale;
  * <strong>Special Values</strong>
  * <p>
  * {@code NaN} is represented as a single character, typically
- * {@code &#92;uFFFD}. This character is determined by the
+ * {@code \u005cuFFFD}. This character is determined by the
  * {@link DecimalFormatSymbols} object. This is the only value for which the
  * prefixes and suffixes are not used.
  * <p>
- * Infinity is represented as a single character, typically {@code &#92;u221E},
+ * Infinity is represented as a single character, typically {@code \u005cu221E},
  * with the positive or negative prefixes and suffixes applied. The infinity
  * character is determined by the {@link DecimalFormatSymbols} object. <a
  * name="sci">
@@ -496,7 +454,7 @@ import java.util.Locale;
  * number of '@' characters in the pattern - 1, and a maximum fraction digit
  * count of the number of '@' and '#' characters in the pattern - 1. For
  * example, the pattern {@code "@@###E0"} is equivalent to {@code "0.0###E0"}.
- * <li>If signficant digits are in use then the integer and fraction digit
+ * <li>If significant digits are in use then the integer and fraction digit
  * counts, as set via the API, are ignored.
  * </ul>
  * <h4> <strong><font color="red">NEW</font>&nbsp;</strong> Padding</h4>
@@ -541,62 +499,49 @@ public class DecimalFormat extends NumberFormat {
 
     private static final long serialVersionUID = 864413376551465018L;
 
-    private transient boolean parseBigDecimal = false;
-
     private transient DecimalFormatSymbols symbols;
 
-    private transient com.ibm.icu.text.DecimalFormat dform;
+    private transient NativeDecimalFormat dform;
+    private final Object finalizerGuardian = new Object() {
+        @Override protected void finalize() throws Throwable {
+            try {
+                dform.close();
+            } finally {
+                super.finalize();
+            }
+        }
+    };
 
-    private transient com.ibm.icu.text.DecimalFormatSymbols icuSymbols;
-
-    private static final int CURRENT_SERIAL_VERTION = 3;
-
-    private transient int serialVersionOnStream = 3;
-    
-    // set default RoundingMode to RoundingMode.HALF_EVEN
     private transient RoundingMode roundingMode = RoundingMode.HALF_EVEN;
 
     /**
      * Constructs a new {@code DecimalFormat} for formatting and parsing numbers
-     * for the default locale.
+     * for the user's default locale.
+     * See "<a href="../util/Locale.html#default_locale">Be wary of the default locale</a>".
      */
     public DecimalFormat() {
         Locale locale = Locale.getDefault();
-        icuSymbols = new com.ibm.icu.text.DecimalFormatSymbols(locale);
-        symbols = new DecimalFormatSymbols(locale);
-        dform = new com.ibm.icu.text.DecimalFormat();
-
-        super.setMaximumFractionDigits(dform.getMaximumFractionDigits());
-        super.setMaximumIntegerDigits(dform.getMaximumIntegerDigits());
-        super.setMinimumFractionDigits(dform.getMinimumFractionDigits());
-        super.setMinimumIntegerDigits(dform.getMinimumIntegerDigits());
+        this.symbols = new DecimalFormatSymbols(locale);
+        initNative(LocaleData.get(locale).numberPattern);
     }
 
     /**
      * Constructs a new {@code DecimalFormat} using the specified non-localized
-     * pattern and the {@code DecimalFormatSymbols} for the default Locale.
-     * 
+     * pattern and the {@code DecimalFormatSymbols} for the user's default Locale.
+     * See "<a href="../util/Locale.html#default_locale">Be wary of the default locale</a>".
      * @param pattern
      *            the non-localized pattern.
      * @throws IllegalArgumentException
      *            if the pattern cannot be parsed.
      */
     public DecimalFormat(String pattern) {
-        Locale locale = Locale.getDefault();
-        icuSymbols = new com.ibm.icu.text.DecimalFormatSymbols(locale);
-        symbols = new DecimalFormatSymbols(locale);
-        dform = new com.ibm.icu.text.DecimalFormat(pattern, icuSymbols);
-
-        super.setMaximumFractionDigits(dform.getMaximumFractionDigits());
-        super.setMaximumIntegerDigits(dform.getMaximumIntegerDigits());
-        super.setMinimumFractionDigits(dform.getMinimumFractionDigits());
-        super.setMinimumIntegerDigits(dform.getMinimumIntegerDigits());
+        this(pattern, Locale.getDefault());
     }
 
     /**
      * Constructs a new {@code DecimalFormat} using the specified non-localized
      * pattern and {@code DecimalFormatSymbols}.
-     * 
+     *
      * @param pattern
      *            the non-localized pattern.
      * @param value
@@ -605,24 +550,22 @@ public class DecimalFormat extends NumberFormat {
      *            if the pattern cannot be parsed.
      */
     public DecimalFormat(String pattern, DecimalFormatSymbols value) {
-        symbols = (DecimalFormatSymbols) value.clone();
-        Locale locale = symbols.getLocale();
-        icuSymbols = new com.ibm.icu.text.DecimalFormatSymbols(locale);
-        copySymbols(icuSymbols, symbols);
-
-        dform = new com.ibm.icu.text.DecimalFormat(pattern, icuSymbols);
-
-        super.setMaximumFractionDigits(dform.getMaximumFractionDigits());
-        super.setMaximumIntegerDigits(dform.getMaximumIntegerDigits());
-        super.setMinimumFractionDigits(dform.getMinimumFractionDigits());
-        super.setMinimumIntegerDigits(dform.getMinimumIntegerDigits());
+        this.symbols = (DecimalFormatSymbols) value.clone();
+        initNative(pattern);
     }
 
-    DecimalFormat(String pattern, DecimalFormatSymbols value, com.ibm.icu.text.DecimalFormat icuFormat) {
-        symbols = value;
-        icuSymbols = value.getIcuSymbols();
-        dform = icuFormat;
+    // Used by NumberFormat.getInstance because cloning DecimalFormatSymbols is slow.
+    DecimalFormat(String pattern, Locale locale) {
+        this.symbols = new DecimalFormatSymbols(locale);
+        initNative(pattern);
+    }
 
+    private void initNative(String pattern) {
+        try {
+            this.dform = new NativeDecimalFormat(pattern, symbols);
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException(pattern);
+        }
         super.setMaximumFractionDigits(dform.getMaximumFractionDigits());
         super.setMaximumIntegerDigits(dform.getMaximumIntegerDigits());
         super.setMinimumFractionDigits(dform.getMinimumFractionDigits());
@@ -632,7 +575,7 @@ public class DecimalFormat extends NumberFormat {
     /**
      * Changes the pattern of this decimal format to the specified pattern which
      * uses localized pattern characters.
-     * 
+     *
      * @param pattern
      *            the localized pattern.
      * @throws IllegalArgumentException
@@ -640,47 +583,32 @@ public class DecimalFormat extends NumberFormat {
      */
     public void applyLocalizedPattern(String pattern) {
         dform.applyLocalizedPattern(pattern);
-        super.setMaximumFractionDigits(dform.getMaximumFractionDigits());
-        super.setMaximumIntegerDigits(dform.getMaximumIntegerDigits());
-        super.setMinimumFractionDigits(dform.getMinimumFractionDigits());
-        super.setMinimumIntegerDigits(dform.getMinimumIntegerDigits());
-        if (roundingMode != RoundingMode.HALF_EVEN) {
-            setRoundingIncrement(getMaximumFractionDigits());
-        }
     }
 
     /**
      * Changes the pattern of this decimal format to the specified pattern which
      * uses non-localized pattern characters.
-     * 
+     *
      * @param pattern
      *            the non-localized pattern.
      * @throws IllegalArgumentException
      *            if the pattern cannot be parsed.
      */
     public void applyPattern(String pattern) {
-
         dform.applyPattern(pattern);
-        super.setMaximumFractionDigits(dform.getMaximumFractionDigits());
-        super.setMaximumIntegerDigits(dform.getMaximumIntegerDigits());
-        super.setMinimumFractionDigits(dform.getMinimumFractionDigits());
-        super.setMinimumIntegerDigits(dform.getMinimumIntegerDigits());
-        if (roundingMode != RoundingMode.HALF_EVEN) {
-            setRoundingIncrement(getMaximumFractionDigits());
-        }
     }
 
     /**
      * Returns a new instance of {@code DecimalFormat} with the same pattern and
      * properties as this decimal format.
-     * 
+     *
      * @return a shallow copy of this decimal format.
      * @see java.lang.Cloneable
      */
     @Override
     public Object clone() {
         DecimalFormat clone = (DecimalFormat) super.clone();
-        clone.dform = (com.ibm.icu.text.DecimalFormat) dform.clone();
+        clone.dform = (NativeDecimalFormat) dform.clone();
         clone.symbols = (DecimalFormatSymbols) symbols.clone();
         return clone;
     }
@@ -689,7 +617,7 @@ public class DecimalFormat extends NumberFormat {
      * Compares the specified object to this decimal format and indicates if
      * they are equal. In order to be equal, {@code object} must be an instance
      * of {@code DecimalFormat} with the same pattern and properties.
-     * 
+     *
      * @param object
      *            the object to compare with this object.
      * @return {@code true} if the specified object is equal to this decimal
@@ -704,16 +632,16 @@ public class DecimalFormat extends NumberFormat {
         if (!(object instanceof DecimalFormat)) {
             return false;
         }
-        DecimalFormat format = (DecimalFormat) object;
-        return (this.dform == null ? format.dform == null : this.dform
-                .equals(format.dform));
+        DecimalFormat other = (DecimalFormat) object;
+        return (this.dform == null ? other.dform == null : this.dform.equals(other.dform)) &&
+                getDecimalFormatSymbols().equals(other.getDecimalFormatSymbols());
     }
 
     /**
      * Formats the specified object using the rules of this decimal format and
      * returns an {@code AttributedCharacterIterator} with the formatted number
      * and attributes.
-     * 
+     *
      * @param object
      *            the object to format.
      * @return an AttributedCharacterIterator with the formatted number and
@@ -731,96 +659,64 @@ public class DecimalFormat extends NumberFormat {
         return dform.formatToCharacterIterator(object);
     }
 
-    /**
-     * Formats the specified double value as a string using the pattern of this
-     * decimal format and appends the string to the specified string buffer.
-     * <p>
-     * If the {@code field} member of {@code position} contains a value
-     * specifying a format field, then its {@code beginIndex} and
-     * {@code endIndex} members will be updated with the position of the first
-     * occurrence of this field in the formatted text.
-     *
-     * @param value
-     *            the double to format.
-     * @param buffer
-     *            the target string buffer to append the formatted double value
-     *            to.
-     * @param position
-     *            on input: an optional alignment field; on output: the offsets
-     *            of the alignment field in the formatted text.
-     * @return the string buffer.
-     */
-    @Override
-    public StringBuffer format(double value, StringBuffer buffer,
-            FieldPosition position) {
-        return dform.format(value, buffer, position);
+    private void checkBufferAndFieldPosition(StringBuffer buffer, FieldPosition position) {
+        if (buffer == null) {
+            throw new NullPointerException("buffer == null");
+        }
+        if (position == null) {
+            throw new NullPointerException("position == null");
+        }
     }
 
-    /**
-     * Formats the specified long value as a string using the pattern of this
-     * decimal format and appends the string to the specified string buffer.
-     * <p>
-     * If the {@code field} member of {@code position} contains a value
-     * specifying a format field, then its {@code beginIndex} and
-     * {@code endIndex} members will be updated with the position of the first
-     * occurrence of this field in the formatted text.
-     *
-     * @param value
-     *            the long to format.
-     * @param buffer
-     *            the target string buffer to append the formatted long value
-     *            to.
-     * @param position
-     *            on input: an optional alignment field; on output: the offsets
-     *            of the alignment field in the formatted text.
-     * @return the string buffer.
-     */
     @Override
-    public StringBuffer format(long value, StringBuffer buffer,
-            FieldPosition position) {
-        return dform.format(value, buffer, position);
+    public StringBuffer format(double value, StringBuffer buffer, FieldPosition position) {
+        checkBufferAndFieldPosition(buffer, position);
+        // All float/double/Float/Double formatting ends up here...
+        if (roundingMode == RoundingMode.UNNECESSARY) {
+            // ICU4C doesn't support this rounding mode, so we have to fake it.
+            try {
+                setRoundingMode(RoundingMode.UP);
+                String upResult = format(value, new StringBuffer(), new FieldPosition(0)).toString();
+                setRoundingMode(RoundingMode.DOWN);
+                String downResult = format(value, new StringBuffer(), new FieldPosition(0)).toString();
+                if (!upResult.equals(downResult)) {
+                    throw new ArithmeticException("rounding mode UNNECESSARY but rounding required");
+                }
+            } finally {
+                setRoundingMode(RoundingMode.UNNECESSARY);
+            }
+        }
+        buffer.append(dform.formatDouble(value, position));
+        return buffer;
     }
 
-    /**
-     * Formats the specified object as a string using the pattern of this
-     * decimal format and appends the string to the specified string buffer.
-     * <p>
-     * If the {@code field} member of {@code position} contains a value
-     * specifying a format field, then its {@code beginIndex} and
-     * {@code endIndex} members will be updated with the position of the first
-     * occurrence of this field in the formatted text.
-     *
-     * @param number
-     *            the object to format.
-     * @param toAppendTo
-     *            the target string buffer to append the formatted number to.
-     * @param pos
-     *            on input: an optional alignment field; on output: the offsets
-     *            of the alignment field in the formatted text.
-     * @return the string buffer.
-     * @throws IllegalArgumentException
-     *             if {@code number} is not an instance of {@code Number}.
-     * @throws NullPointerException
-     *             if {@code toAppendTo} or {@code pos} is {@code null}.
-     */
     @Override
-    public final StringBuffer format(Object number, StringBuffer toAppendTo,
-            FieldPosition pos) {
-        if (!(number instanceof Number)) {
-            throw new IllegalArgumentException();
+    public StringBuffer format(long value, StringBuffer buffer, FieldPosition position) {
+        checkBufferAndFieldPosition(buffer, position);
+        buffer.append(dform.formatLong(value, position));
+        return buffer;
+    }
+
+    @Override
+    public final StringBuffer format(Object number, StringBuffer buffer, FieldPosition position) {
+        checkBufferAndFieldPosition(buffer, position);
+        if (number instanceof BigInteger) {
+            BigInteger bigInteger = (BigInteger) number;
+            char[] chars = (bigInteger.bitLength() < 64)
+                    ? dform.formatLong(bigInteger.longValue(), position)
+                    : dform.formatBigInteger(bigInteger, position);
+            buffer.append(chars);
+            return buffer;
+        } else if (number instanceof BigDecimal) {
+            buffer.append(dform.formatBigDecimal((BigDecimal) number, position));
+            return buffer;
         }
-        if (toAppendTo == null || pos == null) {
-            throw new NullPointerException();
-        }
-        if (number instanceof BigInteger || number instanceof BigDecimal) {
-            return dform.format(number, toAppendTo, pos);
-        }
-        return super.format(number, toAppendTo, pos);
+        return super.format(number, buffer, position);
     }
 
     /**
      * Returns the {@code DecimalFormatSymbols} used by this decimal format.
-     * 
+     *
      * @return a copy of the {@code DecimalFormatSymbols} used by this decimal
      *         format.
      */
@@ -830,16 +726,13 @@ public class DecimalFormat extends NumberFormat {
 
     /**
      * Returns the currency used by this decimal format.
-     * 
+     *
      * @return the currency used by this decimal format.
      * @see DecimalFormatSymbols#getCurrency()
      */
     @Override
     public Currency getCurrency() {
-        final com.ibm.icu.util.Currency cur = dform.getCurrency();
-        final String code = (cur == null) ? "XXX" : cur.getCurrencyCode(); //$NON-NLS-1$
-
-        return Currency.getInstance(code);
+        return symbols.getCurrency();
     }
 
     /**
@@ -856,7 +749,7 @@ public class DecimalFormat extends NumberFormat {
     /**
      * Returns the multiplier which is applied to the number before formatting
      * or after parsing.
-     * 
+     *
      * @return the multiplier.
      */
     public int getMultiplier() {
@@ -865,7 +758,7 @@ public class DecimalFormat extends NumberFormat {
 
     /**
      * Returns the prefix which is formatted or parsed before a negative number.
-     * 
+     *
      * @return the negative prefix.
      */
     public String getNegativePrefix() {
@@ -874,7 +767,7 @@ public class DecimalFormat extends NumberFormat {
 
     /**
      * Returns the suffix which is formatted or parsed after a negative number.
-     * 
+     *
      * @return the negative suffix.
      */
     public String getNegativeSuffix() {
@@ -883,7 +776,7 @@ public class DecimalFormat extends NumberFormat {
 
     /**
      * Returns the prefix which is formatted or parsed before a positive number.
-     * 
+     *
      * @return the positive prefix.
      */
     public String getPositivePrefix() {
@@ -892,7 +785,7 @@ public class DecimalFormat extends NumberFormat {
 
     /**
      * Returns the suffix which is formatted or parsed after a positive number.
-     * 
+     *
      * @return the positive suffix.
      */
     public String getPositiveSuffix() {
@@ -907,7 +800,7 @@ public class DecimalFormat extends NumberFormat {
     /**
      * Indicates whether the decimal separator is shown when there are no
      * fractional digits.
-     * 
+     *
      * @return {@code true} if the decimal separator should always be formatted;
      *         {@code false} otherwise.
      */
@@ -918,13 +811,13 @@ public class DecimalFormat extends NumberFormat {
     /**
      * This value indicates whether the return object of the parse operation is
      * of type {@code BigDecimal}. This value defaults to {@code false}.
-     * 
+     *
      * @return {@code true} if parse always returns {@code BigDecimals},
      *         {@code false} if the type of the result is {@code Long} or
      *         {@code Double}.
      */
     public boolean isParseBigDecimal() {
-        return this.parseBigDecimal;
+        return dform.isParseBigDecimal();
     }
 
     /**
@@ -933,7 +826,7 @@ public class DecimalFormat extends NumberFormat {
      * {@code true}, then the resulting numbers will be of type
      * {@code java.lang.Integer}. Special cases are NaN, positive and negative
      * infinity, which are still returned as {@code java.lang.Double}.
-     * 
+     *
      *
      * @param value
      *            {@code true} that the resulting numbers of parse operations
@@ -942,17 +835,16 @@ public class DecimalFormat extends NumberFormat {
      */
     @Override
     public void setParseIntegerOnly(boolean value) {
-        // In this implementation, com.ibm.icu.text.DecimalFormat is wrapped to
+        // In this implementation, NativeDecimalFormat is wrapped to
         // fulfill most of the format and parse feature. And this method is
-        // delegated to the wrapped instance of com.ibm.icu.text.DecimalFormat.
-
+        // delegated to the wrapped instance of NativeDecimalFormat.
         dform.setParseIntegerOnly(value);
     }
 
     /**
      * Indicates whether parsing with this decimal format will only
      * return numbers of type {@code java.lang.Integer}.
-     * 
+     *
      * @return {@code true} if this {@code DecimalFormat}'s parse method only
      *         returns {@code java.lang.Integer}; {@code false} otherwise.
      */
@@ -970,7 +862,7 @@ public class DecimalFormat extends NumberFormat {
      * updated to the index following the parsed text. On error, the index is
      * unchanged and the error index of {@code ParsePosition} is set to the
      * index where the error occurred.
-     * 
+     *
      * @param string
      *            the string to parse.
      * @param position
@@ -989,7 +881,7 @@ public class DecimalFormat extends NumberFormat {
     @Override
     public Number parse(String string, ParsePosition position) {
         Number number = dform.parse(string, position);
-        if (null == number) {
+        if (number == null) {
             return null;
         }
         if (this.isParseBigDecimal()) {
@@ -999,23 +891,18 @@ public class DecimalFormat extends NumberFormat {
             if ((number instanceof Double) && !((Double) number).isInfinite()
                     && !((Double) number).isNaN()) {
 
-                return new BigDecimal(number.doubleValue());
+                return new BigDecimal(number.toString());
             }
             if (number instanceof BigInteger) {
-                return new BigDecimal(number.doubleValue());
-            }
-            if (number instanceof com.ibm.icu.math.BigDecimal) {
                 return new BigDecimal(number.toString());
             }
             return number;
         }
-        if ((number instanceof com.ibm.icu.math.BigDecimal)
-                || (number instanceof BigInteger)) {
+        if ((number instanceof BigDecimal) || (number instanceof BigInteger)) {
             return new Double(number.doubleValue());
         }
-
         if (this.isParseIntegerOnly() && number.equals(NEGATIVE_ZERO_DOUBLE)) {
-            return new Long(0);
+            return Long.valueOf(0);
         }
         return number;
 
@@ -1023,38 +910,36 @@ public class DecimalFormat extends NumberFormat {
 
     /**
      * Sets the {@code DecimalFormatSymbols} used by this decimal format.
-     * 
+     *
      * @param value
      *            the {@code DecimalFormatSymbols} to set.
      */
     public void setDecimalFormatSymbols(DecimalFormatSymbols value) {
         if (value != null) {
-            symbols = (DecimalFormatSymbols) value.clone();
-            icuSymbols = dform.getDecimalFormatSymbols();
-            copySymbols(icuSymbols, symbols);
-            dform.setDecimalFormatSymbols(icuSymbols);
+            // The Java object is canonical, and we copy down to native code.
+            this.symbols = (DecimalFormatSymbols) value.clone();
+            dform.setDecimalFormatSymbols(this.symbols);
         }
     }
 
     /**
      * Sets the currency used by this decimal format. The min and max fraction
      * digits remain the same.
-     * 
+     *
      * @param currency
      *            the currency this {@code DecimalFormat} should use.
      * @see DecimalFormatSymbols#setCurrency(Currency)
      */
     @Override
     public void setCurrency(Currency currency) {
-        dform.setCurrency(com.ibm.icu.util.Currency.getInstance(currency
-                .getCurrencyCode()));
+        dform.setCurrency(Currency.getInstance(currency.getCurrencyCode()));
         symbols.setCurrency(currency);
     }
 
     /**
      * Sets whether the decimal separator is shown when there are no fractional
      * digits.
-     * 
+     *
      * @param value
      *            {@code true} if the decimal separator should always be
      *            formatted; {@code false} otherwise.
@@ -1078,7 +963,7 @@ public class DecimalFormat extends NumberFormat {
     /**
      * Sets whether or not grouping will be used in this format. Grouping
      * affects both parsing and formatting.
-     * 
+     *
      * @param value
      *            {@code true} if grouping is used; {@code false} otherwise.
      */
@@ -1089,7 +974,7 @@ public class DecimalFormat extends NumberFormat {
 
     /**
      * Indicates whether grouping will be used in this format.
-     * 
+     *
      * @return {@code true} if grouping is used; {@code false} otherwise.
      */
     @Override
@@ -1098,76 +983,63 @@ public class DecimalFormat extends NumberFormat {
     }
 
     /**
-     * Sets the maximum number of fraction digits that are printed when
-     * formatting numbers other than {@code BigDecimal} and {@code BigInteger}.
-     * If the maximum is less than the number of fraction digits, the least
-     * significant digits are truncated. If the value passed is bigger than 340
-     * then it is replaced by 340. If the value passed is negative then it is
-     * replaced by 0.
-     * 
-     * @param value
-     *            the maximum number of fraction digits.
+     * Sets the maximum number of digits after the decimal point.
+     * If the value passed is negative then it is replaced by 0.
+     * Regardless of this setting, no more than 340 digits will be used.
+     *
+     * @param value the maximum number of fraction digits.
      */
     @Override
     public void setMaximumFractionDigits(int value) {
         super.setMaximumFractionDigits(value);
-        dform.setMaximumFractionDigits(value);
-        
-        // update the RoundingIncrement
-		setRoundingIncrement(value);
+        dform.setMaximumFractionDigits(getMaximumFractionDigits());
+        // Changing the maximum fraction digits needs to update ICU4C's rounding configuration.
+        setRoundingMode(roundingMode);
     }
 
     /**
-     * Sets the maximum number of integer digits that are printed when
-     * formatting numbers other than {@code BigDecimal} and {@code BigInteger}.
-     * If the maximum is less than the number of integer digits, the most
-     * significant digits are truncated. If the value passed is bigger than 309
-     * then it is replaced by 309. If the value passed is negative then it is
-     * replaced by 0.
-     * 
-     * @param value
-     *            the maximum number of integer digits.
+     * Sets the maximum number of digits before the decimal point.
+     * If the value passed is negative then it is replaced by 0.
+     * Regardless of this setting, no more than 309 digits will be used.
+     *
+     * @param value the maximum number of integer digits.
      */
     @Override
     public void setMaximumIntegerDigits(int value) {
         super.setMaximumIntegerDigits(value);
-        dform.setMaximumIntegerDigits(value);
+        dform.setMaximumIntegerDigits(getMaximumIntegerDigits());
     }
 
     /**
-     * Sets the minimum number of fraction digits that are printed when
-     * formatting numbers other than {@code BigDecimal} and {@code BigInteger}.
-     * If the value passed is bigger than 340 then it is replaced by 340. If the
-     * value passed is negative then it is replaced by 0.
-     * 
-     * @param value
-     *            the minimum number of fraction digits.
+     * Sets the minimum number of digits after the decimal point.
+     * If the value passed is negative then it is replaced by 0.
+     * Regardless of this setting, no more than 340 digits will be used.
+     *
+     * @param value the minimum number of fraction digits.
      */
     @Override
     public void setMinimumFractionDigits(int value) {
         super.setMinimumFractionDigits(value);
-        dform.setMinimumFractionDigits(value);
+        dform.setMinimumFractionDigits(getMinimumFractionDigits());
     }
 
     /**
-     * Sets the minimum number of integer digits that are printed when
-     * formatting numbers other than {@code BigDecimal} and {@code BigInteger}.
-     * If the value passed is bigger than 309 then it is replaced by 309. If the
-     * value passed is negative then it is replaced by 0.
-     * 
-     * @param value
-     *            the minimum number of integer digits.
+     * Sets the minimum number of digits before the decimal point.
+     * If the value passed is negative then it is replaced by 0.
+     * Regardless of this setting, no more than 309 digits will be used.
+     *
+     * @param value the minimum number of integer digits.
      */
     @Override
     public void setMinimumIntegerDigits(int value) {
         super.setMinimumIntegerDigits(value);
-        dform.setMinimumIntegerDigits(value);
+        dform.setMinimumIntegerDigits(getMinimumIntegerDigits());
     }
 
     /**
      * Sets the multiplier which is applied to the number before formatting or
      * after parsing.
-     * 
+     *
      * @param value
      *            the multiplier.
      */
@@ -1177,7 +1049,7 @@ public class DecimalFormat extends NumberFormat {
 
     /**
      * Sets the prefix which is formatted or parsed before a negative number.
-     * 
+     *
      * @param value
      *            the negative prefix.
      */
@@ -1187,7 +1059,7 @@ public class DecimalFormat extends NumberFormat {
 
     /**
      * Sets the suffix which is formatted or parsed after a negative number.
-     * 
+     *
      * @param value
      *            the negative suffix.
      */
@@ -1197,7 +1069,7 @@ public class DecimalFormat extends NumberFormat {
 
     /**
      * Sets the prefix which is formatted or parsed before a positive number.
-     * 
+     *
      * @param value
      *            the positive prefix.
      */
@@ -1207,7 +1079,7 @@ public class DecimalFormat extends NumberFormat {
 
     /**
      * Sets the suffix which is formatted or parsed after a positive number.
-     * 
+     *
      * @param value
      *            the positive suffix.
      */
@@ -1216,21 +1088,21 @@ public class DecimalFormat extends NumberFormat {
     }
 
     /**
-     * Sets the behaviour of the parse method. If set to {@code true} then all
+     * Sets the behavior of the parse method. If set to {@code true} then all
      * the returned objects will be of type {@code BigDecimal}.
-     * 
+     *
      * @param newValue
      *            {@code true} if all the returned objects should be of type
      *            {@code BigDecimal}; {@code false} otherwise.
      */
     public void setParseBigDecimal(boolean newValue) {
-        this.parseBigDecimal = newValue;
+        dform.setParseBigDecimal(newValue);
     }
 
     /**
      * Returns the pattern of this decimal format using localized pattern
      * characters.
-     * 
+     *
      * @return the localized pattern.
      */
     public String toLocalizedPattern() {
@@ -1240,7 +1112,7 @@ public class DecimalFormat extends NumberFormat {
     /**
      * Returns the pattern of this decimal format using non-localized pattern
      * characters.
-     * 
+     *
      * @return the non-localized pattern.
      */
     public String toPattern() {
@@ -1249,81 +1121,71 @@ public class DecimalFormat extends NumberFormat {
 
     // the fields list to be serialized
     private static final ObjectStreamField[] serialPersistentFields = {
-            new ObjectStreamField("positivePrefix", String.class), //$NON-NLS-1$
-            new ObjectStreamField("positiveSuffix", String.class), //$NON-NLS-1$
-            new ObjectStreamField("negativePrefix", String.class), //$NON-NLS-1$
-            new ObjectStreamField("negativeSuffix", String.class), //$NON-NLS-1$
-            new ObjectStreamField("posPrefixPattern", String.class), //$NON-NLS-1$
-            new ObjectStreamField("posSuffixPattern", String.class), //$NON-NLS-1$
-            new ObjectStreamField("negPrefixPattern", String.class), //$NON-NLS-1$
-            new ObjectStreamField("negSuffixPattern", String.class), //$NON-NLS-1$
-            new ObjectStreamField("multiplier", int.class), //$NON-NLS-1$
-            new ObjectStreamField("groupingSize", byte.class), //$NON-NLS-1$
-            new ObjectStreamField("decimalSeparatorAlwaysShown", boolean.class), //$NON-NLS-1$
-            new ObjectStreamField("parseBigDecimal", boolean.class), //$NON-NLS-1$
-            new ObjectStreamField("symbols", DecimalFormatSymbols.class), //$NON-NLS-1$
-            new ObjectStreamField("useExponentialNotation", boolean.class), //$NON-NLS-1$
-            new ObjectStreamField("minExponentDigits", byte.class), //$NON-NLS-1$
-            new ObjectStreamField("maximumIntegerDigits", int.class), //$NON-NLS-1$
-            new ObjectStreamField("minimumIntegerDigits", int.class), //$NON-NLS-1$
-            new ObjectStreamField("maximumFractionDigits", int.class), //$NON-NLS-1$
-            new ObjectStreamField("minimumFractionDigits", int.class), //$NON-NLS-1$
-            new ObjectStreamField("serialVersionOnStream", int.class), }; //$NON-NLS-1$
+        new ObjectStreamField("positivePrefix", String.class),
+        new ObjectStreamField("positiveSuffix", String.class),
+        new ObjectStreamField("negativePrefix", String.class),
+        new ObjectStreamField("negativeSuffix", String.class),
+        new ObjectStreamField("posPrefixPattern", String.class),
+        new ObjectStreamField("posSuffixPattern", String.class),
+        new ObjectStreamField("negPrefixPattern", String.class),
+        new ObjectStreamField("negSuffixPattern", String.class),
+        new ObjectStreamField("multiplier", int.class),
+        new ObjectStreamField("groupingSize", byte.class),
+        new ObjectStreamField("groupingUsed", boolean.class),
+        new ObjectStreamField("decimalSeparatorAlwaysShown", boolean.class),
+        new ObjectStreamField("parseBigDecimal", boolean.class),
+        new ObjectStreamField("roundingMode", RoundingMode.class),
+        new ObjectStreamField("symbols", DecimalFormatSymbols.class),
+        new ObjectStreamField("useExponentialNotation", boolean.class),
+        new ObjectStreamField("minExponentDigits", byte.class),
+        new ObjectStreamField("maximumIntegerDigits", int.class),
+        new ObjectStreamField("minimumIntegerDigits", int.class),
+        new ObjectStreamField("maximumFractionDigits", int.class),
+        new ObjectStreamField("minimumFractionDigits", int.class),
+        new ObjectStreamField("serialVersionOnStream", int.class),
+    };
 
     /**
      * Writes serialized fields following serialized forms specified by Java
      * specification.
-     * 
+     *
      * @param stream
      *            the output stream to write serialized bytes
      * @throws IOException
      *             if some I/O error occurs
      * @throws ClassNotFoundException
      */
-    @SuppressWarnings("nls")
-    private void writeObject(ObjectOutputStream stream) throws IOException,
-            ClassNotFoundException {
+    private void writeObject(ObjectOutputStream stream) throws IOException, ClassNotFoundException {
         ObjectOutputStream.PutField fields = stream.putFields();
         fields.put("positivePrefix", dform.getPositivePrefix());
         fields.put("positiveSuffix", dform.getPositiveSuffix());
         fields.put("negativePrefix", dform.getNegativePrefix());
         fields.put("negativeSuffix", dform.getNegativeSuffix());
-        String posPrefixPattern = (String) Format.getInternalField(
-                "posPrefixPattern", dform);
-        fields.put("posPrefixPattern", posPrefixPattern);
-        String posSuffixPattern = (String) Format.getInternalField(
-                "posSuffixPattern", dform);
-        fields.put("posSuffixPattern", posSuffixPattern);
-        String negPrefixPattern = (String) Format.getInternalField(
-                "negPrefixPattern", dform);
-        fields.put("negPrefixPattern", negPrefixPattern);
-        String negSuffixPattern = (String) Format.getInternalField(
-                "negSuffixPattern", dform);
-        fields.put("negSuffixPattern", negSuffixPattern);
+        fields.put("posPrefixPattern", (String) null);
+        fields.put("posSuffixPattern", (String) null);
+        fields.put("negPrefixPattern", (String) null);
+        fields.put("negSuffixPattern", (String) null);
         fields.put("multiplier", dform.getMultiplier());
         fields.put("groupingSize", (byte) dform.getGroupingSize());
-        fields.put("decimalSeparatorAlwaysShown", dform
-                .isDecimalSeparatorAlwaysShown());
-        fields.put("parseBigDecimal", parseBigDecimal);
+        fields.put("groupingUsed", dform.isGroupingUsed());
+        fields.put("decimalSeparatorAlwaysShown", dform.isDecimalSeparatorAlwaysShown());
+        fields.put("parseBigDecimal", dform.isParseBigDecimal());
+        fields.put("roundingMode", roundingMode);
         fields.put("symbols", symbols);
-        boolean useExponentialNotation = ((Boolean) Format.getInternalField(
-                "useExponentialNotation", dform)).booleanValue();
-        fields.put("useExponentialNotation", useExponentialNotation);
-        byte minExponentDigits = ((Byte) Format.getInternalField(
-                "minExponentDigits", dform)).byteValue();
-        fields.put("minExponentDigits", minExponentDigits);
+        fields.put("useExponentialNotation", false);
+        fields.put("minExponentDigits", (byte) 0);
         fields.put("maximumIntegerDigits", dform.getMaximumIntegerDigits());
         fields.put("minimumIntegerDigits", dform.getMinimumIntegerDigits());
         fields.put("maximumFractionDigits", dform.getMaximumFractionDigits());
         fields.put("minimumFractionDigits", dform.getMinimumFractionDigits());
-        fields.put("serialVersionOnStream", CURRENT_SERIAL_VERTION);
+        fields.put("serialVersionOnStream", 4);
         stream.writeFields();
     }
 
     /**
      * Reads serialized fields following serialized forms specified by Java
      * specification.
-     * 
+     *
      * @param stream
      *            the input stream to read serialized bytes
      * @throws IOException
@@ -1331,203 +1193,67 @@ public class DecimalFormat extends NumberFormat {
      * @throws ClassNotFoundException
      *             if some class of serialized objects or fields cannot be found
      */
-    @SuppressWarnings("nls")
-    private void readObject(ObjectInputStream stream) throws IOException,
-            ClassNotFoundException {
-
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
         ObjectInputStream.GetField fields = stream.readFields();
-        String positivePrefix = (String) fields.get("positivePrefix", "");
-        String positiveSuffix = (String) fields.get("positiveSuffix", "");
-        String negativePrefix = (String) fields.get("negativePrefix", "-");
-        String negativeSuffix = (String) fields.get("negativeSuffix", "");
+        this.symbols = (DecimalFormatSymbols) fields.get("symbols", null);
 
-        String posPrefixPattern = (String) fields.get("posPrefixPattern", "");
-        String posSuffixPattern = (String) fields.get("posSuffixPattern", "");
-        String negPrefixPattern = (String) fields.get("negPrefixPattern", "-");
-        String negSuffixPattern = (String) fields.get("negSuffixPattern", "");
+        initNative("");
+        dform.setPositivePrefix((String) fields.get("positivePrefix", ""));
+        dform.setPositiveSuffix((String) fields.get("positiveSuffix", ""));
+        dform.setNegativePrefix((String) fields.get("negativePrefix", "-"));
+        dform.setNegativeSuffix((String) fields.get("negativeSuffix", ""));
+        dform.setMultiplier(fields.get("multiplier", 1));
+        dform.setGroupingSize(fields.get("groupingSize", (byte) 3));
+        dform.setGroupingUsed(fields.get("groupingUsed", true));
+        dform.setDecimalSeparatorAlwaysShown(fields.get("decimalSeparatorAlwaysShown", false));
 
-        int multiplier = fields.get("multiplier", 1);
-        byte groupingSize = fields.get("groupingSize", (byte) 3);
-        boolean decimalSeparatorAlwaysShown = fields.get(
-                "decimalSeparatorAlwaysShown", false);
-        boolean parseBigDecimal = fields.get("parseBigDecimal", false);
-        symbols = (DecimalFormatSymbols) fields.get("symbols", null);
+        setRoundingMode((RoundingMode) fields.get("roundingMode", RoundingMode.HALF_EVEN));
 
-        boolean useExponentialNotation = fields.get("useExponentialNotation",
-                false);
-        byte minExponentDigits = fields.get("minExponentDigits", (byte) 0);
-
-        int maximumIntegerDigits = fields.get("maximumIntegerDigits", 309);
-        int minimumIntegerDigits = fields.get("minimumIntegerDigits", 309);
-        int maximumFractionDigits = fields.get("maximumFractionDigits", 340);
-        int minimumFractionDigits = fields.get("minimumFractionDigits", 340);
-        this.serialVersionOnStream = fields.get("serialVersionOnStream", 0);
-
-        Locale locale = (Locale) Format.getInternalField("locale", symbols);
-        dform = new com.ibm.icu.text.DecimalFormat("",
-                new com.ibm.icu.text.DecimalFormatSymbols(locale));
-        setInternalField("useExponentialNotation", dform, Boolean
-                .valueOf(useExponentialNotation));
-        setInternalField("minExponentDigits", dform,
-                new Byte(minExponentDigits));
-        dform.setPositivePrefix(positivePrefix);
-        dform.setPositiveSuffix(positiveSuffix);
-        dform.setNegativePrefix(negativePrefix);
-        dform.setNegativeSuffix(negativeSuffix);
-        setInternalField("posPrefixPattern", dform, posPrefixPattern);
-        setInternalField("posSuffixPattern", dform, posSuffixPattern);
-        setInternalField("negPrefixPattern", dform, negPrefixPattern);
-        setInternalField("negSuffixPattern", dform, negSuffixPattern);
-        dform.setMultiplier(multiplier);
-        dform.setGroupingSize(groupingSize);
-        dform.setDecimalSeparatorAlwaysShown(decimalSeparatorAlwaysShown);
-        dform.setMinimumIntegerDigits(minimumIntegerDigits);
+        final int maximumIntegerDigits = fields.get("maximumIntegerDigits", 309);
+        final int minimumIntegerDigits = fields.get("minimumIntegerDigits", 309);
+        final int maximumFractionDigits = fields.get("maximumFractionDigits", 340);
+        final int minimumFractionDigits = fields.get("minimumFractionDigits", 340);
+        // Tell ICU what we want, then ask it what we can have, and then
+        // set that in our Java object. This isn't RI-compatible, but then very little of our
+        // behavior in this area is, and it's not obvious how we can second-guess ICU (or tell
+        // it to just do exactly what we ask). We only need to do this with maximumIntegerDigits
+        // because ICU doesn't seem to have its own ideas about the other options.
         dform.setMaximumIntegerDigits(maximumIntegerDigits);
-        dform.setMinimumFractionDigits(minimumFractionDigits);
-        dform.setMaximumFractionDigits(maximumFractionDigits);
-        this.setParseBigDecimal(parseBigDecimal);
+        super.setMaximumIntegerDigits(dform.getMaximumIntegerDigits());
 
-        if (serialVersionOnStream < 3) {
+        setMinimumIntegerDigits(minimumIntegerDigits);
+        setMinimumFractionDigits(minimumFractionDigits);
+        setMaximumFractionDigits(maximumFractionDigits);
+        setParseBigDecimal(fields.get("parseBigDecimal", false));
+
+        if (fields.get("serialVersionOnStream", 0) < 3) {
             setMaximumIntegerDigits(super.getMaximumIntegerDigits());
             setMinimumIntegerDigits(super.getMinimumIntegerDigits());
             setMaximumFractionDigits(super.getMaximumFractionDigits());
             setMinimumFractionDigits(super.getMinimumFractionDigits());
         }
-        if (serialVersionOnStream < 1) {
-            this.setInternalField("useExponentialNotation", dform,
-                    Boolean.FALSE);
-        }
-        serialVersionOnStream = 3;
     }
 
-    /*
-     * Copies decimal format symbols from text object to ICU one.
-     * 
-     * @param icu the object which receives the new values. @param dfs the
-     * object which contains the new values.
+    /**
+     * Returns the {@code RoundingMode} used by this {@code NumberFormat}.
+     * @since 1.6
      */
-    private void copySymbols(final com.ibm.icu.text.DecimalFormatSymbols icu,
-            final DecimalFormatSymbols dfs) {
-        Currency currency = dfs.getCurrency();
-        if (currency == null) {
-            icu.setCurrency(com.ibm.icu.util.Currency.getInstance("XXX")); //$NON-NLS-1$
-        } else {
-            icu.setCurrency(com.ibm.icu.util.Currency.getInstance(dfs
-                    .getCurrency().getCurrencyCode()));
-        }
-       
-        icu.setCurrencySymbol(dfs.getCurrencySymbol());
-        icu.setDecimalSeparator(dfs.getDecimalSeparator());
-        icu.setDigit(dfs.getDigit());
-        icu.setGroupingSeparator(dfs.getGroupingSeparator());
-        icu.setInfinity(dfs.getInfinity());
-        icu
-                .setInternationalCurrencySymbol(dfs
-                        .getInternationalCurrencySymbol());
-        icu.setMinusSign(dfs.getMinusSign());
-        icu.setMonetaryDecimalSeparator(dfs.getMonetaryDecimalSeparator());
-        icu.setNaN(dfs.getNaN());
-        icu.setPatternSeparator(dfs.getPatternSeparator());
-        icu.setPercent(dfs.getPercent());
-        icu.setPerMill(dfs.getPerMill());
-        icu.setZeroDigit(dfs.getZeroDigit());
+    public RoundingMode getRoundingMode() {
+        return roundingMode;
     }
 
-    /*
-     * Sets private field value by reflection.
-     * 
-     * @param fieldName the field name to be set @param target the object which
-     * field to be set @param value the value to be set
+    /**
+     * Sets the {@code RoundingMode} used by this {@code NumberFormat}.
+     * @since 1.6
      */
-    private void setInternalField(final String fieldName, final Object target,
-            final Object value) {
-        AccessController
-                .doPrivileged(new PrivilegedAction<java.lang.reflect.Field>() {
-                    public java.lang.reflect.Field run() {
-                        java.lang.reflect.Field field = null;
-                        try {
-                            field = target.getClass().getDeclaredField(
-                                    fieldName);
-                            field.setAccessible(true);
-                            field.set(target, value);
-                        } catch (Exception e) {
-                            return null;
-                        }
-                        return field;
-                    }
-                });
+    public void setRoundingMode(RoundingMode roundingMode) {
+        if (roundingMode == null) {
+            throw new NullPointerException();
+        }
+        this.roundingMode = roundingMode;
+        if (roundingMode != RoundingMode.UNNECESSARY) { // ICU4C doesn't support UNNECESSARY.
+            double roundingIncrement = 1.0 / Math.pow(10, Math.max(0, getMaximumFractionDigits()));
+            dform.setRoundingMode(roundingMode, roundingIncrement);
+        }
     }
-    
-	/**
-	 * Get the RoundingMode of this DecimalFormat
-	 * 
-	 * @return the RoundingMode
-	 */
-	public RoundingMode getRoundingMode() {
-		// return the RoundingMode of this DecimalFormat
-		return roundingMode;
-	}
-
-	/**
-	 * Set the RoundingMode of this DecimalFormat
-	 * 
-	 * @param roundingMode
-	 *            the given RoundingMode
-	 */
-	public void setRoundingMode(RoundingMode roundingMode) {
-		if (roundingMode == null) {
-			// when the given RoundingMode is null, throw NullPointerException
-			throw new NullPointerException();
-		}
-
-		// update the RoundingMode with the given RoundingMode
-		this.roundingMode = roundingMode;
-
-		// update the RoundingMode of com.ibm.icu.text.DecimalFormat
-		switch(roundingMode){
-		case CEILING:
-			dform.setRoundingMode(com.ibm.icu.math.BigDecimal.ROUND_CEILING);
-			break;
-		case DOWN:
-			dform.setRoundingMode(com.ibm.icu.math.BigDecimal.ROUND_DOWN);
-			break;
-		case UP:
-			dform.setRoundingMode(com.ibm.icu.math.BigDecimal.ROUND_UP);
-			break;
-		case FLOOR:
-			dform.setRoundingMode(com.ibm.icu.math.BigDecimal.ROUND_FLOOR);
-			break;
-		case HALF_DOWN:
-			dform.setRoundingMode(com.ibm.icu.math.BigDecimal.ROUND_HALF_DOWN);
-			break;
-		case HALF_UP:
-			dform.setRoundingMode(com.ibm.icu.math.BigDecimal.ROUND_HALF_UP);
-			break;
-		case UNNECESSARY:
-			dform.setRoundingMode(com.ibm.icu.math.BigDecimal.ROUND_UNNECESSARY);
-			break;
-		case HALF_EVEN:
-			dform.setRoundingMode(com.ibm.icu.math.BigDecimal.ROUND_HALF_EVEN);
-			break;
-		default:
-			break;
-		}
-		
-		// update the RoundingIncrement
-		setRoundingIncrement(getMaximumFractionDigits());
-	}
-
-	/*
-	 * Update the RoundingIncrement according to the given MaxFractionDigits
-	 */
-	private void setRoundingIncrement(int value) {
-		int maxFractionDigits = value;
-		// when value < 0, set maximumFractionDigits to 0 and update the
-		// RoundingIncreament
-		if (maxFractionDigits < 0) {
-			maxFractionDigits = 0;
-		}
-		double roundingIncrement = 1.0 / Math.pow(10, maxFractionDigits);
-		dform.setRoundingIncrement(roundingIncrement);
-	}
 }

@@ -20,9 +20,9 @@ package java.util.zip;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Vector;
-
-import org.apache.harmony.archive.internal.nls.Messages;
+import java.nio.charset.Charsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * This class provides an implementation of {@code FilterOutputStream} that
@@ -38,11 +38,31 @@ import org.apache.harmony.archive.internal.nls.Messages;
  * href="http://www.pkware.com/documents/casestudies/APPNOTE.TXT">file format
  * specification</a>.
  *
+ * <h3>Example</h3>
+ * <p>Using {@code ZipOutputStream} is a little more complicated than {@link GZIPOutputStream}
+ * because ZIP archives are containers that can contain multiple files. This code creates a ZIP
+ * archive containing several files, similar to the {@code zip(1)} utility.
+ * <pre>
+ * OutputStream os = ...
+ * ZipOutputStream zos = new ZipOutputStream(new BufferedOutputStream(os));
+ * try {
+ *     for (int i = 0; i < fileCount; ++i) {
+ *         String filename = ...
+ *         byte[] bytes = ...
+ *         ZipEntry entry = new ZipEntry(filename);
+ *         zos.putNextEntry(entry);
+ *         zos.write(bytes);
+ *         zos.closeEntry();
+ *     }
+ * } finally {
+ *     zos.close();
+ * }
+ * </pre>
+ *
  * @see ZipEntry
  * @see ZipFile
  */
-public class ZipOutputStream extends DeflaterOutputStream implements
-        ZipConstants {
+public class ZipOutputStream extends DeflaterOutputStream implements ZipConstants {
 
     /**
      * Indicates deflated entries.
@@ -54,13 +74,11 @@ public class ZipOutputStream extends DeflaterOutputStream implements
      */
     public static final int STORED = 0;
 
-    static final int ZIPDataDescriptorFlag = 8;
-
-    static final int ZIPLocalHeaderVersionNeeded = 20;
+    private static final int ZIPLocalHeaderVersionNeeded = 20;
 
     private String comment;
 
-    private final Vector<String> entries = new Vector<String>();
+    private final ArrayList<String> entries = new ArrayList<String>();
 
     private int compressMethod = DEFLATED;
 
@@ -96,8 +114,10 @@ public class ZipOutputStream extends DeflaterOutputStream implements
      */
     @Override
     public void close() throws IOException {
+        // don't call super.close() because that calls finish() conditionally
         if (out != null) {
             finish();
+            def.end();
             out.close();
             out = null;
         }
@@ -111,9 +131,7 @@ public class ZipOutputStream extends DeflaterOutputStream implements
      *             If an error occurs closing the entry.
      */
     public void closeEntry() throws IOException {
-        if (cDir == null) {
-            throw new IOException(Messages.getString("archive.1E")); //$NON-NLS-1$
-        }
+        checkClosed();
         if (currentEntry == null) {
             return;
         }
@@ -124,10 +142,10 @@ public class ZipOutputStream extends DeflaterOutputStream implements
         // Verify values for STORED types
         if (currentEntry.getMethod() == STORED) {
             if (crc.getValue() != currentEntry.crc) {
-                throw new ZipException(Messages.getString("archive.20")); //$NON-NLS-1$
+                throw new ZipException("CRC mismatch");
             }
             if (currentEntry.size != crc.tbytes) {
-                throw new ZipException(Messages.getString("archive.21")); //$NON-NLS-1$
+                throw new ZipException("Size mismatch");
             }
         }
         curOffset = LOCHDR;
@@ -141,11 +159,16 @@ public class ZipOutputStream extends DeflaterOutputStream implements
             writeLong(out, currentEntry.size = def.getTotalIn());
         }
         // Update the CentralDirectory
+        // http://www.pkware.com/documents/casestudies/APPNOTE.TXT
+        int flags = currentEntry.getMethod() == STORED ? 0 : ZipFile.GPBF_DATA_DESCRIPTOR_FLAG;
+        // Since gingerbread, we always set the UTF-8 flag on individual files.
+        // Some tools insist that the central directory also have the UTF-8 flag.
+        // http://code.google.com/p/android/issues/detail?id=20214
+        flags |= ZipFile.GPBF_UTF8_FLAG;
         writeLong(cDir, CENSIG);
         writeShort(cDir, ZIPLocalHeaderVersionNeeded); // Version created
         writeShort(cDir, ZIPLocalHeaderVersionNeeded); // Version to extract
-        writeShort(cDir, currentEntry.getMethod() == STORED ? 0
-                : ZIPDataDescriptorFlag);
+        writeShort(cDir, flags);
         writeShort(cDir, currentEntry.getMethod());
         writeShort(cDir, currentEntry.time);
         writeShort(cDir, currentEntry.modDate);
@@ -197,14 +220,15 @@ public class ZipOutputStream extends DeflaterOutputStream implements
      */
     @Override
     public void finish() throws IOException {
+        // TODO: is there a bug here? why not checkClosed?
         if (out == null) {
-            throw new IOException(Messages.getString("archive.1E")); //$NON-NLS-1$
+            throw new IOException("Stream is closed");
         }
         if (cDir == null) {
             return;
         }
-        if (entries.size() == 0) {
-            throw new ZipException(Messages.getString("archive.28")); //$NON-NLS-1$;
+        if (entries.isEmpty()) {
+            throw new ZipException("No entries");
         }
         if (currentEntry != null) {
             closeEntry();
@@ -227,7 +251,6 @@ public class ZipOutputStream extends DeflaterOutputStream implements
         // Write the central dir
         out.write(cDir.toByteArray());
         cDir = null;
-
     }
 
     /**
@@ -242,39 +265,29 @@ public class ZipOutputStream extends DeflaterOutputStream implements
      *             If an error occurs storing the entry.
      * @see #write
      */
-    public void putNextEntry(ZipEntry ze) throws java.io.IOException {
+    public void putNextEntry(ZipEntry ze) throws IOException {
         if (currentEntry != null) {
             closeEntry();
         }
-        if (ze.getMethod() == STORED
-                || (compressMethod == STORED && ze.getMethod() == -1)) {
+        if (ze.getMethod() == STORED || (compressMethod == STORED && ze.getMethod() == -1)) {
             if (ze.crc == -1) {
-                /* [MSG "archive.20", "Crc mismatch"] */
-                throw new ZipException(Messages.getString("archive.20")); //$NON-NLS-1$
+                throw new ZipException("CRC mismatch");
             }
             if (ze.size == -1 && ze.compressedSize == -1) {
-                /* [MSG "archive.21", "Size mismatch"] */
-                throw new ZipException(Messages.getString("archive.21")); //$NON-NLS-1$
+                throw new ZipException("Size mismatch");
             }
-            if (ze.size != ze.compressedSize && ze.compressedSize != -1
-                    && ze.size != -1) {
-                /* [MSG "archive.21", "Size mismatch"] */
-                throw new ZipException(Messages.getString("archive.21")); //$NON-NLS-1$
+            if (ze.size != ze.compressedSize && ze.compressedSize != -1 && ze.size != -1) {
+                throw new ZipException("Size mismatch");
             }
         }
-        /* [MSG "archive.1E", "Stream is closed"] */
-        if (cDir == null) {
-            throw new IOException(Messages.getString("archive.1E")); //$NON-NLS-1$
-        }
+        checkClosed();
         if (entries.contains(ze.name)) {
-            /* [MSG "archive.29", "Entry already exists: {0}"] */
-            throw new ZipException(Messages.getString("archive.29", ze.name)); //$NON-NLS-1$
+            throw new ZipException("Entry already exists: " + ze.name);
         }
-        nameLength = utf8Count(ze.name);
+        nameBytes = ze.name.getBytes(Charsets.UTF_8);
+        nameLength = nameBytes.length;
         if (nameLength > 0xffff) {
-            /* [MSG "archive.2A", "Name too long: {0}"] */
-            throw new IllegalArgumentException(Messages.getString(
-                    "archive.2A", ze.name)); //$NON-NLS-1$
+            throw new IllegalArgumentException("Name too long: " + nameLength + " UTF-8 bytes");
         }
 
         def.setLevel(compressLevel);
@@ -283,10 +296,16 @@ public class ZipOutputStream extends DeflaterOutputStream implements
         if (currentEntry.getMethod() == -1) {
             currentEntry.setMethod(compressMethod);
         }
+
+        // Local file header.
+        // http://www.pkware.com/documents/casestudies/APPNOTE.TXT
+        int flags = currentEntry.getMethod() == STORED ? 0 : ZipFile.GPBF_DATA_DESCRIPTOR_FLAG;
+        // Java always outputs UTF-8 filenames. (Before Java 7, the RI didn't set this flag and used
+        // modified UTF-8. From Java 7, it sets this flag and uses normal UTF-8.)
+        flags |= ZipFile.GPBF_UTF8_FLAG;
         writeLong(out, LOCSIG); // Entry header
         writeShort(out, ZIPLocalHeaderVersionNeeded); // Extraction version
-        writeShort(out, currentEntry.getMethod() == STORED ? 0
-                : ZIPDataDescriptorFlag);
+        writeShort(out, flags);
         writeShort(out, currentEntry.getMethod());
         if (currentEntry.getTime() == -1) {
             currentEntry.setTime(System.currentTimeMillis());
@@ -314,7 +333,6 @@ public class ZipOutputStream extends DeflaterOutputStream implements
         } else {
             writeShort(out, 0);
         }
-        nameBytes = toUTF8Bytes(currentEntry.name, nameLength);
         out.write(nameBytes);
         if (currentEntry.extra != null) {
             out.write(currentEntry.extra);
@@ -329,7 +347,7 @@ public class ZipOutputStream extends DeflaterOutputStream implements
      */
     public void setComment(String comment) {
         if (comment.length() > 0xFFFF) {
-            throw new IllegalArgumentException(Messages.getString("archive.2B")); //$NON-NLS-1$
+            throw new IllegalArgumentException("Comment too long: " + comment.length() + " characters");
         }
         this.comment = comment;
     }
@@ -344,8 +362,7 @@ public class ZipOutputStream extends DeflaterOutputStream implements
      * @see Deflater
      */
     public void setLevel(int level) {
-        if (level < Deflater.DEFAULT_COMPRESSION
-                || level > Deflater.BEST_COMPRESSION) {
+        if (level < Deflater.DEFAULT_COMPRESSION || level > Deflater.BEST_COMPRESSION) {
             throw new IllegalArgumentException();
         }
         compressLevel = level;
@@ -364,10 +381,9 @@ public class ZipOutputStream extends DeflaterOutputStream implements
             throw new IllegalArgumentException();
         }
         compressMethod = method;
-
     }
 
-    private long writeLong(OutputStream os, long i) throws java.io.IOException {
+    private long writeLong(OutputStream os, long i) throws IOException {
         // Write out the long value as an unsigned int
         os.write((int) (i & 0xFF));
         os.write((int) (i >> 8) & 0xFF);
@@ -376,11 +392,10 @@ public class ZipOutputStream extends DeflaterOutputStream implements
         return i;
     }
 
-    private int writeShort(OutputStream os, int i) throws java.io.IOException {
+    private int writeShort(OutputStream os, int i) throws IOException {
         os.write(i & 0xFF);
         os.write((i >> 8) & 0xFF);
         return i;
-
     }
 
     /**
@@ -390,58 +405,23 @@ public class ZipOutputStream extends DeflaterOutputStream implements
      *                If an error occurs writing to the stream
      */
     @Override
-    public void write(byte[] buffer, int off, int nbytes)
-            throws java.io.IOException {
-        // avoid int overflow, check null buf
-        if ((off < 0 || (nbytes < 0) || off > buffer.length)
-                || (buffer.length - off < nbytes)) {
-            throw new IndexOutOfBoundsException();
-        }
-
+    public void write(byte[] buffer, int offset, int byteCount) throws IOException {
+        Arrays.checkOffsetAndCount(buffer.length, offset, byteCount);
         if (currentEntry == null) {
-            /* [MSG "archive.2C", "No active entry"] */
-            throw new ZipException(Messages.getString("archive.2C")); //$NON-NLS-1$
+            throw new ZipException("No active entry");
         }
 
         if (currentEntry.getMethod() == STORED) {
-            out.write(buffer, off, nbytes);
+            out.write(buffer, offset, byteCount);
         } else {
-            super.write(buffer, off, nbytes);
+            super.write(buffer, offset, byteCount);
         }
-        crc.update(buffer, off, nbytes);
+        crc.update(buffer, offset, byteCount);
     }
 
-    static int utf8Count(String value) {
-        int total = 0;
-        for (int i = value.length(); --i >= 0;) {
-            char ch = value.charAt(i);
-            if (ch < 0x80) {
-                total++;
-            } else if (ch < 0x800) {
-                total += 2;
-            } else {
-                total += 3;
-            }
+    private void checkClosed() throws IOException {
+        if (cDir == null) {
+            throw new IOException("Stream is closed");
         }
-        return total;
-    }
-
-    static byte[] toUTF8Bytes(String value, int length) {
-        byte[] result = new byte[length];
-        int pos = result.length;
-        for (int i = value.length(); --i >= 0;) {
-            char ch = value.charAt(i);
-            if (ch < 0x80) {
-                result[--pos] = (byte) ch;
-            } else if (ch < 0x800) {
-                result[--pos] = (byte) (0x80 | (ch & 0x3f));
-                result[--pos] = (byte) (0xc0 | (ch >> 6));
-            } else {
-                result[--pos] = (byte) (0x80 | (ch & 0x3f));
-                result[--pos] = (byte) (0x80 | ((ch >> 6) & 0x3f));
-                result[--pos] = (byte) (0xe0 | (ch >> 12));
-            }
-        }
-        return result;
     }
 }

@@ -17,10 +17,8 @@
 
 package java.security.spec;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
- * The parameter specification used to generate elliptic curve domain parameters. 
+ * The parameter specification used to generate elliptic curve domain parameters.
  */
 public class ECGenParameterSpec implements AlgorithmParameterSpec {
     // Standard (or predefined) name for EC domain
@@ -30,21 +28,21 @@ public class ECGenParameterSpec implements AlgorithmParameterSpec {
     /**
      * Creates a new {@code ECGenParameterSpec} with the specified standard or
      * predefined name of the to-be-generated domain parameter.
-     * 
+     *
      * @param name
      *            the name of the elliptic curve domain parameter.
      */
     public ECGenParameterSpec(String name) {
         this.name = name;
         if (this.name == null) {
-            throw new NullPointerException(Messages.getString("security.83", "name")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException();
         }
     }
 
     /**
      * Returns the name (standard or predefined) of the to-be-generated elliptic
      * curve domain parameter.
-     * 
+     *
      * @return the name
      */
     public String getName() {

@@ -23,12 +23,10 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.util.Set;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
  * The parameter specification for a PKIX {@code CertPathBuilder}
- * algorithm used to {@link CertPathBuilder#build(CertPathParameters) build} 
- * certificate chains validated with the PKIX certification path validation. 
+ * algorithm used to {@link CertPathBuilder#build(CertPathParameters) build}
+ * certificate chains validated with the PKIX certification path validation.
  * <p>
  * The parameters must be created with <i>trusted</i> certificate authorities
  * and constraints for the target certificates.
@@ -43,7 +41,7 @@ public class PKIXBuilderParameters extends PKIXParameters {
     /**
      * Creates a new {@code PKIXBuilderParameters} instance with the specified
      * set of {@code TrustAnchor} and certificate constraints.
-     * 
+     *
      * @param trustAnchors
      *            the set of {@code TrustAnchors}.
      * @param targetConstraints
@@ -64,7 +62,7 @@ public class PKIXBuilderParameters extends PKIXParameters {
     /**
      * Creates a new {@code PKIXBuilderParameters} instance with the trusted
      * {@code X509Certificate} entries from the specified {@code KeyStore}.
-     * 
+     *
      * @param keyStore
      *            the key store containing trusted certificates.
      * @param targetConstraints
@@ -101,7 +99,7 @@ public class PKIXBuilderParameters extends PKIXParameters {
      * <p>
      * This is the maximum number of non-self-signed certificates in a
      * certification path.
-     * 
+     *
      * @param maxPathLength
      *            the maximum length of a certification path.
      * @throws InvalidParameterException
@@ -109,8 +107,7 @@ public class PKIXBuilderParameters extends PKIXParameters {
      */
     public void setMaxPathLength(int maxPathLength) {
         if (maxPathLength < -1) {
-            throw new InvalidParameterException(
-                    Messages.getString("security.5B")); //$NON-NLS-1$
+            throw new InvalidParameterException("maxPathLength < -1");
         }
         this.maxPathLength = maxPathLength;
     }
@@ -118,16 +115,16 @@ public class PKIXBuilderParameters extends PKIXParameters {
     /**
      * Returns a string representation of this {@code PKIXBuilderParameters}
      * instance.
-     * 
+     *
      * @return a string representation of this {@code PKIXBuilderParameters}
      *         instance.
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("[\n"); //$NON-NLS-1$
+        StringBuilder sb = new StringBuilder("[\n");
         sb.append(super.toString());
-        sb.append(" Max Path Length: "); //$NON-NLS-1$
+        sb.append(" Max Path Length: ");
         sb.append(maxPathLength);
-        sb.append("\n]"); //$NON-NLS-1$
+        sb.append("\n]");
         return sb.toString();
     }
 }

@@ -35,7 +35,7 @@ public class IllegalThreadStateException extends IllegalArgumentException {
     /**
      * Constructs a new {@code IllegalThreadStateException} with the current
      * stack trace and the specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

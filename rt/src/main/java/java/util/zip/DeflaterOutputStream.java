@@ -20,8 +20,8 @@ package java.util.zip;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-
-import org.apache.harmony.archive.internal.nls.Messages;
+import java.util.Arrays;
+import libcore.io.Streams;
 
 /**
  * This class provides an implementation of {@code FilterOutputStream} that
@@ -45,6 +45,8 @@ public class DeflaterOutputStream extends FilterOutputStream {
 
     boolean done = false;
 
+    private final boolean syncFlush;
+
     /**
      * This constructor lets you pass the {@code Deflater} specifying the
      * compression algorithm.
@@ -57,7 +59,7 @@ public class DeflaterOutputStream extends FilterOutputStream {
      *            data.
      */
     public DeflaterOutputStream(OutputStream os, Deflater def) {
-        this(os, def, BUF_SIZE);
+        this(os, def, BUF_SIZE, false);
     }
 
     /**
@@ -71,7 +73,7 @@ public class DeflaterOutputStream extends FilterOutputStream {
      *            is the OutputStream where to write the compressed data to.
      */
     public DeflaterOutputStream(OutputStream os) {
-        this(os, new Deflater());
+        this(os, new Deflater(), BUF_SIZE, false);
     }
 
     /**
@@ -88,6 +90,30 @@ public class DeflaterOutputStream extends FilterOutputStream {
      *            is the size to be used for the internal buffer.
      */
     public DeflaterOutputStream(OutputStream os, Deflater def, int bsize) {
+        this(os, def, bsize, false);
+    }
+
+    /**
+     * @hide
+     * @since 1.7
+     */
+    public DeflaterOutputStream(OutputStream os, boolean syncFlush) {
+        this(os, new Deflater(), BUF_SIZE, syncFlush);
+    }
+
+    /**
+     * @hide
+     * @since 1.7
+     */
+    public DeflaterOutputStream(OutputStream os, Deflater def, boolean syncFlush) {
+        this(os, def, BUF_SIZE, syncFlush);
+    }
+
+    /**
+     * @hide
+     * @since 1.7
+     */
+    public DeflaterOutputStream(OutputStream os, Deflater def, int bsize, boolean syncFlush) {
         super(os);
         if (os == null || def == null) {
             throw new NullPointerException();
@@ -96,6 +122,7 @@ public class DeflaterOutputStream extends FilterOutputStream {
             throw new IllegalArgumentException();
         }
         this.def = def;
+        this.syncFlush = syncFlush;
         buf = new byte[bsize];
     }
 
@@ -107,11 +134,10 @@ public class DeflaterOutputStream extends FilterOutputStream {
      *             If an error occurs during deflation.
      */
     protected void deflate() throws IOException {
-        int x = 0;
-        do {
-            x = def.deflate(buf);
-            out.write(buf, 0, x);
-        } while (!def.needsInput());
+        int byteCount;
+        while ((byteCount = def.deflate(buf)) != 0) {
+            out.write(buf, 0, byteCount);
+        }
     }
 
     /**
@@ -125,6 +151,7 @@ public class DeflaterOutputStream extends FilterOutputStream {
      */
     @Override
     public void close() throws IOException {
+        // everything closed here should also be closed in ZipOutputStream.close()
         if (!def.finished()) {
             finish();
         }
@@ -144,52 +171,51 @@ public class DeflaterOutputStream extends FilterOutputStream {
             return;
         }
         def.finish();
-        int x = 0;
         while (!def.finished()) {
-            if (def.needsInput()) {
-                def.setInput(buf, 0, 0);
-            }
-            x = def.deflate(buf);
-            out.write(buf, 0, x);
+            int byteCount = def.deflate(buf);
+            out.write(buf, 0, byteCount);
         }
         done = true;
     }
 
-    @Override
-    public void write(int i) throws IOException {
-        byte[] b = new byte[1];
-        b[0] = (byte) i;
-        write(b, 0, 1);
+    @Override public void write(int i) throws IOException {
+        Streams.writeSingleByte(this, i);
     }
 
     /**
-     * Compresses {@code nbytes} of data from {@code buf} starting at
-     * {@code off} and writes it to the underlying stream.
-     *
-     * @param buffer
-     *            the buffer of data to compress.
-     * @param off
-     *            offset in buffer to extract data from.
-     * @param nbytes
-     *            the number of bytes of data to read from the buffer.
+     * Compresses {@code byteCount} bytes of data from {@code buf} starting at
+     * {@code offset} and writes it to the underlying stream.
      * @throws IOException
      *             If an error occurs during writing.
      */
-    @Override
-    public void write(byte[] buffer, int off, int nbytes) throws IOException {
+    @Override public void write(byte[] buffer, int offset, int byteCount) throws IOException {
         if (done) {
-            throw new IOException(Messages.getString("archive.26")); //$NON-NLS-1$
+            throw new IOException("attempt to write after finish");
         }
-        // avoid int overflow, check null buf
-        if (off <= buffer.length && nbytes >= 0 && off >= 0
-                && buffer.length - off >= nbytes) {
-            if (!def.needsInput()) {
-                throw new IOException();
+        Arrays.checkOffsetAndCount(buffer.length, offset, byteCount);
+        if (!def.needsInput()) {
+            throw new IOException();
+        }
+        def.setInput(buffer, offset, byteCount);
+        deflate();
+    }
+
+    /**
+     * Flushes the underlying stream. This flushes only the bytes that can be
+     * compressed at the highest level.
+     *
+     * <p>For deflater output streams constructed with Java 7's
+     * {@code syncFlush} parameter set to true (not yet available on Android),
+     * this first flushes all outstanding data so that it may be immediately
+     * read by its recipient. Doing so may degrade compression.
+     */
+    @Override public void flush() throws IOException {
+        if (syncFlush) {
+            int byteCount;
+            while ((byteCount = def.deflate(buf, 0, buf.length, Deflater.SYNC_FLUSH)) != 0) {
+                out.write(buf, 0, byteCount);
             }
-            def.setInput(buffer, off, nbytes);
-            deflate();
-        } else {
-            throw new ArrayIndexOutOfBoundsException();
         }
+        out.flush();
     }
 }

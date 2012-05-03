@@ -50,7 +50,7 @@ public interface ErrorListener {
      * Receive notification of a warning.
      *
      * <p>{@link javax.xml.transform.Transformer} can use this method to report
-     * conditions that are not errors or fatal errors.  The default behaviour
+     * conditions that are not errors or fatal errors.  The default behavior
      * is to take no action.</p>
      *
      * <p>After invoking this method, the Transformer must continue with

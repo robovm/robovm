@@ -17,15 +17,15 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import org.apache.harmony.xnet.provider.jsse.Message;
-
 import java.io.IOException;
 import java.security.SecureRandom;
+import libcore.io.Streams;
 
 /**
- * 
+ *
  * Represents server hello message.
- * @see TLS 1.0 spec., 7.4.1.3. Server hello.
+ * @see <a href="http://www.ietf.org/rfc/rfc2246.txt">TLS 1.0 spec., 7.4.1.3.
+ * Server hello.</a>
  */
 public class ServerHello extends Message {
 
@@ -84,10 +84,10 @@ public class ServerHello extends Message {
      * @throws IOException
      */
     public ServerHello(HandshakeIODataStream in, int length) throws IOException {
-        
+
         server_version[0] = (byte) in.read();
         server_version[1] = (byte) in.read();
-        in.read(random, 0, 32);
+        Streams.readFully(in, random);
         int size = in.readUint8();
         session_id = new byte[size];
         in.read(session_id, 0, size);
@@ -126,7 +126,7 @@ public class ServerHello extends Message {
     }
 
     /**
-     * Returns message type 
+     * Returns message type
      * @return
      */
     @Override

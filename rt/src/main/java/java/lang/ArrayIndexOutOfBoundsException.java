@@ -36,7 +36,7 @@ public class ArrayIndexOutOfBoundsException extends IndexOutOfBoundsException {
      * Constructs a new {@code ArrayIndexOutOfBoundsException} with the current
      * stack trace and a detail message that is based on the specified invalid
      * {@code index}.
-     * 
+     *
      * @param index
      *            the invalid index.
      */

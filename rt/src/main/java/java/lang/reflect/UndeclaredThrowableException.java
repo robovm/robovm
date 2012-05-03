@@ -32,12 +32,11 @@ public class UndeclaredThrowableException extends RuntimeException {
     /**
      * Constructs a new {@code UndeclaredThrowableException} instance with the
      * undeclared, checked exception that occurred.
-     * 
+     *
      * @param exception
      *            the undeclared, checked exception that occurred
      */
     public UndeclaredThrowableException(Throwable exception) {
-        super();
         this.undeclaredThrowable = exception;
         initCause(exception);
     }
@@ -45,7 +44,7 @@ public class UndeclaredThrowableException extends RuntimeException {
     /**
      * Constructs a new {@code UndeclaredThrowableException} instance with the
      * undeclared, checked exception that occurred and a message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for the exception
      * @param exception

@@ -17,18 +17,17 @@
 
 /**
 * @author Alexander V. Esin, Stepan M. Mishura
+* @version $Revision$
 */
 
 package org.apache.harmony.security.x501;
 
 import java.io.IOException;
+import java.nio.charset.Charsets;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
-
+import java.util.Locale;
 import javax.security.auth.x500.X500Principal;
-import java.io.UnsupportedEncodingException;
-
 import org.apache.harmony.security.asn1.ASN1Constants;
 import org.apache.harmony.security.asn1.ASN1Oid;
 import org.apache.harmony.security.asn1.ASN1Sequence;
@@ -36,154 +35,111 @@ import org.apache.harmony.security.asn1.ASN1StringType;
 import org.apache.harmony.security.asn1.ASN1Type;
 import org.apache.harmony.security.asn1.BerInputStream;
 import org.apache.harmony.security.asn1.BerOutputStream;
-import org.apache.harmony.security.internal.nls.Messages;
 import org.apache.harmony.security.utils.ObjectIdentifier;
-import org.apache.harmony.security.Util;
 
 
 /**
  * X.501 AttributeTypeAndValue
  */
-public class AttributeTypeAndValue {
+public final class AttributeTypeAndValue {
 
-    // Country code attribute (name from RFC 1779)
-    private static final ObjectIdentifier C;
+    /** known attribute types for RFC1779 (see Table 1) */
+    private static final HashMap<String, ObjectIdentifier> RFC1779_NAMES
+            = new HashMap<String, ObjectIdentifier>(10);
 
-    // Common name attribute (name from RFC 1779)
-    private static final ObjectIdentifier CN;
+    /** known keywords attribute */
+    private static final HashMap<String, ObjectIdentifier> KNOWN_NAMES
+            = new HashMap<String, ObjectIdentifier>(30);
 
-    // Domain component attribute (name from RFC 2253)
-    private static final ObjectIdentifier DC;
+    /** known attribute types for RFC2253 (see 2.3.  Converting AttributeTypeAndValue) */
+    private static final HashMap<String, ObjectIdentifier> RFC2253_NAMES
+            = new HashMap<String, ObjectIdentifier>(10);
 
-    // DN qualifier attribute (name from API spec)
-    private static final ObjectIdentifier DNQ;
+    /** known attribute types for RFC2459 (see API spec.) */
+    private static final HashMap<String, ObjectIdentifier> RFC2459_NAMES
+            = new HashMap<String, ObjectIdentifier>(10);
 
-    private static final ObjectIdentifier DNQUALIFIER;
+    /** Country code attribute (name from RFC 1779) */
+    private static final ObjectIdentifier C
+            = new ObjectIdentifier(new int[] { 2, 5, 4, 6 }, "C", RFC1779_NAMES);
 
-    // Email Address attribute (name from API spec)
-    private static final ObjectIdentifier EMAILADDRESS;
+    /** Common name attribute (name from RFC 1779) */
+    private static final ObjectIdentifier CN
+            = new ObjectIdentifier(new int[] { 2, 5, 4, 3 }, "CN", RFC1779_NAMES);
 
-    // Generation attribute (qualifies an individual's name)
-    // (name from API spec)
-    private static final ObjectIdentifier GENERATION;
+    /** Domain component attribute (name from RFC 2253) */
+    private static final ObjectIdentifier DC = new ObjectIdentifier(
+            new int[] { 0, 9, 2342, 19200300, 100, 1, 25 }, "DC", RFC2253_NAMES);
 
-    // Given name attribute (name from API spec)
-    private static final ObjectIdentifier GIVENNAME;
+    /** DN qualifier attribute (name from API spec) */
+    private static final ObjectIdentifier DNQ
+            = new ObjectIdentifier(new int[] { 2, 5, 4, 46 }, "DNQ", RFC2459_NAMES);
 
-    // Initials attribute (initials of an individual's name)
-    // (name from API spec)
-    private static final ObjectIdentifier INITIALS;
+    private static final ObjectIdentifier DNQUALIFIER
+            = new ObjectIdentifier(new int[] { 2, 5, 4, 46 }, "DNQUALIFIER", RFC2459_NAMES);
 
-    // Name of a locality attribute (name from RFC 1779)
-    private static final ObjectIdentifier L;
+    /** Email Address attribute (name from API spec) */
+    private static final ObjectIdentifier EMAILADDRESS = new ObjectIdentifier(
+            new int[] { 1, 2, 840, 113549, 1, 9, 1}, "EMAILADDRESS", RFC2459_NAMES);
 
-    // Organization name attribute (name from RFC 1779)
-    private static final ObjectIdentifier O;
+    /** Generation attribute (qualifies an individual's name) (name from API spec) */
+    private static final ObjectIdentifier GENERATION
+            = new ObjectIdentifier(new int[] { 2, 5, 4, 44 }, "GENERATION", RFC2459_NAMES);
 
-    // Organizational unit name attribute (name from RFC 1779)
-    private static final ObjectIdentifier OU;
+    /** Given name attribute (name from API spec) */
+    private static final ObjectIdentifier GIVENNAME
+            = new ObjectIdentifier(new int[] { 2, 5, 4, 42 }, "GIVENNAME", RFC2459_NAMES);
 
-    // Serial number attribute (serial number of a device)
-    // (name from API spec)
-    private static final ObjectIdentifier SERIALNUMBER;
+    /** Initials attribute (initials of an individual's name) (name from API spec) */
+    private static final ObjectIdentifier INITIALS
+            = new ObjectIdentifier(new int[] { 2, 5, 4, 43 }, "INITIALS", RFC2459_NAMES);
 
-    // Attribute for the full name of a state or province
-    // (name from RFC 1779)
-    private static final ObjectIdentifier ST;
+    /** Name of a locality attribute (name from RFC 1779) */
+    private static final ObjectIdentifier L
+            = new ObjectIdentifier(new int[] { 2, 5, 4, 7 }, "L", RFC1779_NAMES);
 
-    // Street attribute (name from RFC 1779)
-    private static final ObjectIdentifier STREET;
+    /** Organization name attribute (name from RFC 1779) */
+    private static final ObjectIdentifier O
+            = new ObjectIdentifier(new int[] { 2, 5, 4, 10 }, "O", RFC1779_NAMES);
 
-    // Surname attribute (comes from an individual's parent name) 
-    // (name from API spec)
-    private static final ObjectIdentifier SURNAME;
+    /** Organizational unit name attribute (name from RFC 1779) */
+    private static final ObjectIdentifier OU
+            = new ObjectIdentifier(new int[] { 2, 5, 4, 11 }, "OU", RFC1779_NAMES);
 
-    // Title attribute (object in an organization)(name from API spec)
-    private static final ObjectIdentifier T;
+    /** Serial number attribute (serial number of a device) (name from API spec) */
+    private static final ObjectIdentifier SERIALNUMBER
+            = new ObjectIdentifier(new int[] { 2, 5, 4, 5 }, "SERIALNUMBER", RFC2459_NAMES);
 
-    // User identifier attribute (name from RFC 2253)
-    private static final ObjectIdentifier UID;
+    /** Attribute for the full name of a state or province (name from RFC 1779) */
+    private static final ObjectIdentifier ST
+            = new ObjectIdentifier(new int[] { 2, 5, 4, 8 }, "ST", RFC1779_NAMES);
 
-    //
-    // OID's pool
-    //
+    /** Street attribute (name from RFC 1779) */
+    private static final ObjectIdentifier STREET
+            = new ObjectIdentifier(new int[] { 2, 5, 4, 9 }, "STREET", RFC1779_NAMES);
 
-    // pool's capacity
-    private static final int CAPACITY;
+    /** Surname attribute (comes from an individual's parent name) (name from API spec) */
+    private static final ObjectIdentifier SURNAME
+            = new ObjectIdentifier(new int[] { 2, 5, 4, 4 }, "SURNAME", RFC2459_NAMES);
 
-    // pool's size
-    private static final int SIZE;
+    /** Title attribute (object in an organization)(name from API spec) */
+    private static final ObjectIdentifier T
+            = new ObjectIdentifier(new int[] { 2, 5, 4, 12 }, "T", RFC2459_NAMES);
 
-    // pool: contains all recognizable attribute type keywords
-    private static final ObjectIdentifier[][] KNOWN_OIDS;
+    /** User identifier attribute (name from RFC 2253) */
+    private static final ObjectIdentifier UID = new ObjectIdentifier(
+            new int[]{ 0, 9, 2342, 19200300, 100, 1, 1 }, "UID", RFC2253_NAMES);
 
-    // known keywords attribute
-    private static final HashMap KNOWN_NAMES = new HashMap(30);
+    /** pool's capacity */
+    private static final int CAPACITY = 10;
 
-    // known attribute types for RFC1779 (see Table 1)
-    private static final HashMap RFC1779_NAMES = new HashMap(10);
+    /** pool's size */
+    private static final int SIZE = 10;
 
-    // known attribute types for RFC2253
-    // (see 2.3.  Converting AttributeTypeAndValue)
-    private static final HashMap RFC2253_NAMES = new HashMap(10);
-
-    // known attribute types for RFC2459 (see API spec.)
-    private static final HashMap RFC2459_NAMES = new HashMap(10);
+    /** pool: contains all recognizable attribute type keywords */
+    private static final ObjectIdentifier[][] KNOWN_OIDS = new ObjectIdentifier[SIZE][CAPACITY];
 
     static {
-
-        // pool initialization
-        CAPACITY = 10;
-        SIZE = 10;
-        KNOWN_OIDS = new ObjectIdentifier[SIZE][CAPACITY];
-
-        // init known attribute type keywords
-        C = new ObjectIdentifier(new int[] { 2, 5, 4, 6 }, "C", RFC1779_NAMES); //$NON-NLS-1$
-        CN = new ObjectIdentifier(new int[] { 2, 5, 4, 3 }, "CN", RFC1779_NAMES); //$NON-NLS-1$
-
-        DC = new ObjectIdentifier(
-                new int[] { 0, 9, 2342, 19200300, 100, 1, 25 }, "DC", //$NON-NLS-1$
-                RFC2253_NAMES);
-        // DN qualifier aliases
-        DNQ = new ObjectIdentifier(new int[] { 2, 5, 4, 46 }, "DNQ", //$NON-NLS-1$
-                RFC2459_NAMES);
-        DNQUALIFIER = new ObjectIdentifier(new int[] { 2, 5, 4, 46 },
-                "DNQUALIFIER", RFC2459_NAMES); //$NON-NLS-1$
-
-        EMAILADDRESS = new ObjectIdentifier(new int[] { 1, 2, 840, 113549, 1,
-                9, 1 }, "EMAILADDRESS", RFC2459_NAMES); //$NON-NLS-1$
-
-        GENERATION = new ObjectIdentifier(new int[] { 2, 5, 4, 44 },
-                "GENERATION", RFC2459_NAMES); //$NON-NLS-1$
-        GIVENNAME = new ObjectIdentifier(new int[] { 2, 5, 4, 42 },
-                "GIVENNAME", RFC2459_NAMES); //$NON-NLS-1$
-
-        INITIALS = new ObjectIdentifier(new int[] { 2, 5, 4, 43 }, "INITIALS", //$NON-NLS-1$
-                RFC2459_NAMES);
-
-        L = new ObjectIdentifier(new int[] { 2, 5, 4, 7 }, "L", RFC1779_NAMES); //$NON-NLS-1$
-
-        O = new ObjectIdentifier(new int[] { 2, 5, 4, 10 }, "O", RFC1779_NAMES); //$NON-NLS-1$
-        OU = new ObjectIdentifier(new int[] { 2, 5, 4, 11 }, "OU", //$NON-NLS-1$
-                RFC1779_NAMES);
-
-        SERIALNUMBER = new ObjectIdentifier(new int[] { 2, 5, 4, 5 },
-                "SERIALNUMBER", RFC2459_NAMES); //$NON-NLS-1$
-        ST = new ObjectIdentifier(new int[] { 2, 5, 4, 8 }, "ST", RFC1779_NAMES); //$NON-NLS-1$
-        STREET = new ObjectIdentifier(new int[] { 2, 5, 4, 9 }, "STREET", //$NON-NLS-1$
-                RFC1779_NAMES);
-        SURNAME = new ObjectIdentifier(new int[] { 2, 5, 4, 4 }, "SURNAME", //$NON-NLS-1$
-                RFC2459_NAMES);
-
-        T = new ObjectIdentifier(new int[] { 2, 5, 4, 12 }, "T", RFC2459_NAMES); //$NON-NLS-1$
-
-        UID = new ObjectIdentifier(
-                new int[] { 0, 9, 2342, 19200300, 100, 1, 1 }, "UID", //$NON-NLS-1$
-                RFC2253_NAMES);
-
-        //
-        // RFC1779
-        //
         RFC1779_NAMES.put(CN.getName(), CN);
         RFC1779_NAMES.put(L.getName(), L);
         RFC1779_NAMES.put(ST.getName(), ST);
@@ -192,17 +148,10 @@ public class AttributeTypeAndValue {
         RFC1779_NAMES.put(C.getName(), C);
         RFC1779_NAMES.put(STREET.getName(), STREET);
 
-        //
-        // RFC2253: includes all from RFC1779
-        //
         RFC2253_NAMES.putAll(RFC1779_NAMES);
-
         RFC2253_NAMES.put(DC.getName(), DC);
         RFC2253_NAMES.put(UID.getName(), UID);
 
-        //
-        // RFC2459
-        //
         RFC2459_NAMES.put(DNQ.getName(), DNQ);
         RFC2459_NAMES.put(DNQUALIFIER.getName(), DNQUALIFIER);
         RFC2459_NAMES.put(EMAILADDRESS.getName(), EMAILADDRESS);
@@ -213,45 +162,31 @@ public class AttributeTypeAndValue {
         RFC2459_NAMES.put(SURNAME.getName(), SURNAME);
         RFC2459_NAMES.put(T.getName(), T);
 
-        //
-        // Init KNOWN_OIDS pool
-        //
-
-        // add from RFC2253 (includes RFC1779) 
-        Iterator it = RFC2253_NAMES.values().iterator();
-        while (it.hasNext()) {
-            addOID((ObjectIdentifier) it.next());
+        // add from RFC2253 (includes RFC1779)
+        for (ObjectIdentifier objectIdentifier : RFC2253_NAMES.values()) {
+            addOID(objectIdentifier);
         }
 
         // add attributes from RFC2459
-        it = RFC2459_NAMES.values().iterator();
-        while (it.hasNext()) {
-            Object o = it.next();
-
+        for (ObjectIdentifier o : RFC2459_NAMES.values()) {
             //don't add DNQUALIFIER because it has the same oid as DNQ
             if (!(o == DNQUALIFIER)) {
-                addOID((ObjectIdentifier) o);
+                addOID(o);
             }
         }
-
-        //
-        // Init KNOWN_NAMES pool
-        //
 
         KNOWN_NAMES.putAll(RFC2253_NAMES); // RFC2253 includes RFC1779
         KNOWN_NAMES.putAll(RFC2459_NAMES);
     }
 
-    //Attribute type
+    /** Attribute type */
     private final ObjectIdentifier oid;
 
-    //Attribute value
-    private AttributeValue value;
+    /** Attribute value */
+    private final AttributeValue value;
 
     // for decoder only
-    private AttributeTypeAndValue(int[] oid, AttributeValue value)
-            throws IOException {
-
+    private AttributeTypeAndValue(int[] oid, AttributeValue value) throws IOException {
         ObjectIdentifier thisOid = getOID(oid);
         if (thisOid == null) {
             thisOid = new ObjectIdentifier(oid);
@@ -263,7 +198,7 @@ public class AttributeTypeAndValue {
     /**
      * Creates AttributeTypeAndValue with OID and AttributeValue. Parses OID
      * string representation
-     * 
+     *
      * @param sOid
      *            string representation of OID
      * @param value
@@ -271,13 +206,9 @@ public class AttributeTypeAndValue {
      * @throws IOException
      *             if OID can not be created from its string representation
      */
-    public AttributeTypeAndValue(String sOid, AttributeValue value)
-            throws IOException {
+    public AttributeTypeAndValue(String sOid, AttributeValue value) throws IOException {
         if (sOid.charAt(0) >= '0' && sOid.charAt(0) <= '9') {
-
-            int[] array = org.apache.harmony.security.asn1.ObjectIdentifier
-                    .toIntArray(sOid);
-
+            int[] array = org.apache.harmony.security.asn1.ObjectIdentifier.toIntArray(sOid);
             ObjectIdentifier thisOid = getOID(array);
             if (thisOid == null) {
                 thisOid = new ObjectIdentifier(array);
@@ -285,9 +216,9 @@ public class AttributeTypeAndValue {
             this.oid = thisOid;
 
         } else {
-            this.oid = (ObjectIdentifier) KNOWN_NAMES.get(Util.toUpperCase(sOid));
+            this.oid = KNOWN_NAMES.get(sOid.toUpperCase(Locale.US));
             if (this.oid == null) {
-                throw new IOException(Messages.getString("security.178", sOid)); //$NON-NLS-1$
+                throw new IOException("Unrecognizable attribute name: " + sOid);
             }
         }
         this.value = value;
@@ -295,60 +226,59 @@ public class AttributeTypeAndValue {
 
     /**
      * Appends AttributeTypeAndValue string representation
-     * 
+     *
      * @param attrFormat - format of DN
-     * @param buf - string buffer to be used
      */
-    public void appendName(String attrFormat, StringBuffer buf) {
-
+    public void appendName(String attrFormat, StringBuilder sb) {
         boolean hexFormat = false;
         if (X500Principal.RFC1779.equals(attrFormat)) {
             if (RFC1779_NAMES == oid.getGroup()) {
-                buf.append(oid.getName());
+                sb.append(oid.getName());
             } else {
-                buf.append(oid.toOIDString());
+                sb.append(oid.toOIDString());
             }
 
-            buf.append('=');
+            sb.append('=');
             if (value.escapedString == value.getHexString()) {
-                //FIXME all chars in upper case
-                buf.append(Util.toUpperCase(value.getHexString()));
+                sb.append(value.getHexString().toUpperCase(Locale.US));
             } else if (value.escapedString.length() != value.rawString.length()) {
                 // was escaped
-                value.appendQEString(buf);
+                value.appendQEString(sb);
             } else {
-                buf.append(value.escapedString);
+                sb.append(value.escapedString);
             }
         } else {
             Object group = oid.getGroup();
             // RFC2253 includes names from RFC1779
             if (RFC1779_NAMES == group || RFC2253_NAMES == group) {
-                buf.append(oid.getName());
+                sb.append(oid.getName());
 
                 if (X500Principal.CANONICAL.equals(attrFormat)) {
                     // only PrintableString and UTF8String in string format
                     // all others are output in hex format
+                    // no hex for teletex; see http://b/2102191
                     int tag = value.getTag();
                     if (!ASN1StringType.UTF8STRING.checkTag(tag)
-                            && !ASN1StringType.PRINTABLESTRING.checkTag(tag)) {
+                            && !ASN1StringType.PRINTABLESTRING.checkTag(tag)
+                            && !ASN1StringType.TELETEXSTRING.checkTag(tag)) {
                         hexFormat = true;
                     }
                 }
 
             } else {
-                buf.append(oid.toString());
+                sb.append(oid.toString());
                 hexFormat = true;
             }
 
-            buf.append('=');
+            sb.append('=');
 
             if (hexFormat) {
-                buf.append(value.getHexString());
+                sb.append(value.getHexString());
             } else {
                 if (X500Principal.CANONICAL.equals(attrFormat)) {
-                    buf.append(value.makeCanonical());
+                    sb.append(value.makeCanonical());
                 } else {
-                    buf.append(value.escapedString);
+                    sb.append(value.escapedString);
                 }
             }
         }
@@ -356,23 +286,21 @@ public class AttributeTypeAndValue {
 
     /**
      * Gets type of the AttributeTypeAndValue
-     * 
-     * @return ObjectIdentifier
      */
     public ObjectIdentifier getType() {
         return oid;
     }
 
     /**
-     * According to RFC 3280 (http://www.ietf.org/rfc/rfc3280.txt) 
+     * According to RFC 3280 (http://www.ietf.org/rfc/rfc3280.txt)
      * X.501 AttributeTypeAndValue structure is defined as follows:
-     *  
+     *
      *   AttributeTypeAndValue ::= SEQUENCE {
      *      type     AttributeType,
      *      value    AttributeValue }
-     *   
+     *
      *    AttributeType ::= OBJECT IDENTIFIER
-     *  
+     *
      *    AttributeValue ::= ANY DEFINED BY AttributeType
      *    ...
      *    DirectoryString ::= CHOICE {
@@ -381,18 +309,15 @@ public class AttributeTypeAndValue {
      *          universalString         UniversalString (SIZE (1..MAX)),
      *          utf8String              UTF8String (SIZE (1.. MAX)),
      *          bmpString               BMPString (SIZE (1..MAX)) }
-     *  
+     *
      */
-
-    public static final ASN1Type attributeValue = new ASN1Type(
-            ASN1Constants.TAG_PRINTABLESTRING) {
+    public static final ASN1Type attributeValue = new ASN1Type(ASN1Constants.TAG_PRINTABLESTRING) {
 
         public boolean checkTag(int tag) {
             return true;
         }
 
         public Object decode(BerInputStream in) throws IOException {
-
             // FIXME what about constr???
             String str = null;
             if (DirectoryString.ASN1.checkTag(in.tag)) {
@@ -410,16 +335,15 @@ public class AttributeTypeAndValue {
             return new AttributeValue(str, bytesEncoded, in.tag);
         }
 
-        public Object getDecodedObject(BerInputStream in) throws IOException {
+        @Override public Object getDecodedObject(BerInputStream in) throws IOException {
             // stub to avoid wrong decoder usage
-            throw new RuntimeException(Messages.getString("security.179")); //$NON-NLS-1$
+            throw new RuntimeException("AttributeValue getDecodedObject MUST NOT be invoked");
         }
 
         //
         // Encode
         //
         public void encodeASN(BerOutputStream out) {
-
             AttributeValue av = (AttributeValue) out.content;
 
             if (av.encoded != null) {
@@ -433,27 +357,18 @@ public class AttributeTypeAndValue {
         }
 
         public void setEncodingContent(BerOutputStream out) {
-            
             AttributeValue av = (AttributeValue) out.content;
 
             if (av.encoded != null) {
                 out.length = av.encoded.length;
             } else {
-
                 if (av.getTag() == ASN1Constants.TAG_UTF8STRING) {
-
                     out.content = av.rawString;
-
                     ASN1StringType.UTF8STRING.setEncodingContent(out);
-
                     av.bytes = (byte[]) out.content;
                     out.content = av;
                 } else {
-                    try {
-                        av.bytes = av.rawString.getBytes("UTF-8"); //$NON-NLS-1$
-                    } catch (UnsupportedEncodingException e) {
-                        throw new RuntimeException(e.getMessage());
-                    }
+                    av.bytes = av.rawString.getBytes(Charsets.UTF_8);
                     out.length = av.bytes.length;
                 }
             }
@@ -461,13 +376,11 @@ public class AttributeTypeAndValue {
 
         public void encodeContent(BerOutputStream out) {
             // stub to avoid wrong encoder usage
-            throw new RuntimeException(Messages.getString("security.17A")); //$NON-NLS-1$
+            throw new RuntimeException("AttributeValue encodeContent MUST NOT be invoked");
         }
 
-        public int getEncodedLength(BerOutputStream out) { //FIXME name
-
+        @Override public int getEncodedLength(BerOutputStream out) { //FIXME name
             AttributeValue av = (AttributeValue) out.content;
-
             if (av.encoded != null) {
                 return out.length;
             } else {
@@ -479,26 +392,25 @@ public class AttributeTypeAndValue {
     public static final ASN1Sequence ASN1 = new ASN1Sequence(new ASN1Type[] {
             ASN1Oid.getInstance(), attributeValue }) {
 
-        protected Object getDecodedObject(BerInputStream in) throws IOException {
+        @Override protected Object getDecodedObject(BerInputStream in) throws IOException {
             Object[] values = (Object[]) in.content;
-            return new AttributeTypeAndValue((int[]) values[0],
-                    (AttributeValue) values[1]);
+            return new AttributeTypeAndValue((int[]) values[0], (AttributeValue) values[1]);
         }
 
-        protected void getValues(Object object, Object[] values) {
+        @Override protected void getValues(Object object, Object[] values) {
             AttributeTypeAndValue atav = (AttributeTypeAndValue) object;
-
             values[0] = atav.oid.getOid();
             values[1] = atav.value;
         }
     };
 
-    // returns known OID or null
+    /**
+     * Returns known OID or null.
+     */
     private static ObjectIdentifier getOID(int[] oid) {
-
         int index = hashIntArray(oid) % CAPACITY;
 
-        // look for OID in the pool 
+        // look for OID in the pool
         ObjectIdentifier[] list = KNOWN_OIDS[index];
         for (int i = 0; list[i] != null; i++) {
             if (Arrays.equals(oid, list[i].getOid())) {
@@ -508,33 +420,36 @@ public class AttributeTypeAndValue {
         return null;
     }
 
-    // adds known OID to pool
-    // for static AttributeTypeAndValue initialization only
+    /**
+     * Adds known OID to pool.
+     * for static AttributeTypeAndValue initialization only
+     */
     private static void addOID(ObjectIdentifier oid) {
-
         int[] newOid = oid.getOid();
         int index = hashIntArray(newOid) % CAPACITY;
 
-        // look for OID in the pool 
+        // look for OID in the pool
         ObjectIdentifier[] list = KNOWN_OIDS[index];
         int i = 0;
         for (; list[i] != null; i++) {
-
             // check wrong static initialization: no duplicate OIDs
             if (Arrays.equals(newOid, list[i].getOid())) {
-                throw new Error(Messages.getString("security.17B", //$NON-NLS-1$
-                                oid.getName(), list[i].getName()));
+                throw new Error("ObjectIdentifier: invalid static initialization; " +
+                        "duplicate OIDs: " + oid.getName() + " " + list[i].getName());
             }
         }
 
         // check : to avoid NPE
         if (i == (CAPACITY - 1)) {
-            throw new Error(Messages.getString("security.17C")); //$NON-NLS-1$
+            throw new Error("ObjectIdentifier: invalid static initialization; " +
+                    "small OID pool capacity");
         }
         list[i] = oid;
     }
 
-    // returns hash for array of integers
+    /**
+     * Returns hash for array of integers.
+     */
     private static int hashIntArray(int[] oid) {
         int intHash = 0;
         for (int i = 0; i < oid.length && i < 4; i++) {

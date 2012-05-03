@@ -15,10 +15,6 @@
  *  limitations under the License.
  */
 
-/**
-* @author Vera Y. Petrashkova
-*/
-
 package javax.crypto;
 
 import java.security.InvalidAlgorithmParameterException;
@@ -28,8 +24,6 @@ import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.spec.AlgorithmParameterSpec;
-
-import org.apache.harmony.crypto.internal.nls.Messages;
 import org.apache.harmony.security.fortress.Engine;
 
 
@@ -40,10 +34,10 @@ import org.apache.harmony.security.fortress.Engine;
 public class KeyGenerator {
 
     // Used to access common engine functionality
-    private static final Engine engine = new Engine("KeyGenerator"); //$NON-NLS-1$
+    private static final Engine ENGINE = new Engine("KeyGenerator");
 
     // Store SecureRandom
-    private static final SecureRandom rndm = new SecureRandom();
+    private static final SecureRandom RANDOM = new SecureRandom();
 
     // Store used provider
     private final Provider provider;
@@ -104,13 +98,10 @@ public class KeyGenerator {
     public static final KeyGenerator getInstance(String algorithm)
             throws NoSuchAlgorithmException {
         if (algorithm == null) {
-            throw new NullPointerException(Messages.getString("crypto.02")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
-        synchronized (engine) {
-            engine.getInstance(algorithm, null);
-            return new KeyGenerator((KeyGeneratorSpi) engine.spi, engine.provider,
-                    algorithm);
-        }
+        Engine.SpiAndProvider sap = ENGINE.getInstance(algorithm, null);
+        return new KeyGenerator((KeyGeneratorSpi) sap.spi, sap.provider, algorithm);
     }
 
     /**
@@ -133,10 +124,9 @@ public class KeyGenerator {
      *             if the specified algorithm name is {@code null}.
      */
     public static final KeyGenerator getInstance(String algorithm,
-            String provider) throws NoSuchAlgorithmException,
-            NoSuchProviderException {
-        if ((provider == null) || (provider.length() == 0)) {
-            throw new IllegalArgumentException(Messages.getString("crypto.03")); //$NON-NLS-1$
+            String provider) throws NoSuchAlgorithmException, NoSuchProviderException {
+        if (provider == null || provider.isEmpty()) {
+            throw new IllegalArgumentException("Provider is null or empty");
         }
         Provider impProvider = Security.getProvider(provider);
         if (impProvider == null) {
@@ -165,16 +155,13 @@ public class KeyGenerator {
     public static final KeyGenerator getInstance(String algorithm,
             Provider provider) throws NoSuchAlgorithmException {
         if (provider == null) {
-            throw new IllegalArgumentException(Messages.getString("crypto.04")); //$NON-NLS-1$
+            throw new IllegalArgumentException("provider == null");
         }
         if (algorithm == null) {
-            throw new NullPointerException(Messages.getString("crypto.02")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
-        synchronized (engine) {
-            engine.getInstance(algorithm, provider, null);
-            return new KeyGenerator((KeyGeneratorSpi) engine.spi, provider,
-                    algorithm);
-        }
+        Object spi = ENGINE.getInstance(algorithm, provider, null);
+        return new KeyGenerator((KeyGeneratorSpi) spi, provider, algorithm);
     }
 
     /**
@@ -198,7 +185,7 @@ public class KeyGenerator {
      */
     public final void init(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
-        spiImpl.engineInit(params, rndm);//new SecureRandom());
+        spiImpl.engineInit(params, RANDOM);//new SecureRandom());
     }
 
     /**
@@ -226,7 +213,7 @@ public class KeyGenerator {
      *            the size of the key (in bits).
      */
     public final void init(int keysize) {
-        spiImpl.engineInit(keysize, rndm);//new SecureRandom());
+        spiImpl.engineInit(keysize, RANDOM);//new SecureRandom());
     }
 
     /**

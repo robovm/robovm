@@ -75,12 +75,7 @@ import java.util.*;
  * alter the thread's name, thread group, priority, daemon status,
  * etc. If a {@code ThreadFactory} fails to create a thread when asked
  * by returning null from {@code newThread}, the executor will
- * continue, but might not be able to execute any tasks. Threads
- * should possess the "modifyThread" {@code RuntimePermission}. If
- * worker threads or other threads using the pool do not possess this
- * permission, service may be degraded: configuration changes may not
- * take effect in a timely manner, and a shutdown pool may remain in a
- * state in which termination is possible but not completed.</dd>
+ * continue, but might not be able to execute any tasks.</dd>
  *
  * <dt>Keep-alive times</dt>
  *
@@ -1812,6 +1807,43 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         }
     }
 
+    /**
+     * Returns a string identifying this pool, as well as its state,
+     * including indications of run state and estimated worker and
+     * task counts.
+     *
+     * @return a string identifying this pool, as well as its state
+     */
+    public String toString() {
+        long ncompleted;
+        int nworkers, nactive;
+        final ReentrantLock mainLock = this.mainLock;
+        mainLock.lock();
+        try {
+            ncompleted = completedTaskCount;
+            nactive = 0;
+            nworkers = workers.size();
+            for (Worker w : workers) {
+                ncompleted += w.completedTasks;
+                if (w.isLocked())
+                    ++nactive;
+            }
+        } finally {
+            mainLock.unlock();
+        }
+        int c = ctl.get();
+        String rs = (runStateLessThan(c, SHUTDOWN) ? "Running" :
+                     (runStateAtLeast(c, TERMINATED) ? "Terminated" :
+                      "Shutting down"));
+        return super.toString() +
+            "[" + rs +
+            ", pool size = " + nworkers +
+            ", active threads = " + nactive +
+            ", queued tasks = " + workQueue.size() +
+            ", completed tasks = " + ncompleted +
+            "]";
+    }
+
     /* Extension hooks */
 
     /**
@@ -1932,7 +1964,9 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
          * @throws RejectedExecutionException always.
          */
         public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
-            throw new RejectedExecutionException();
+            throw new RejectedExecutionException("Task " + r.toString() +
+                                                 " rejected from " +
+                                                 e.toString());
         }
     }
 

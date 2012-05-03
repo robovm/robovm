@@ -27,7 +27,7 @@ import java.math.BigInteger;
  * href="http://www.rsa.com/rsalabs/pubs/PKCS/html/pkcs-1.html">PKCS #1 v2.1</a>
  * standard.
  */
-public class RSAPrivateCrtKeySpec extends RSAPrivateKeySpec {    
+public class RSAPrivateCrtKeySpec extends RSAPrivateKeySpec {
     // Public Exponent
     private final BigInteger publicExponent;
     // Prime P
@@ -45,7 +45,7 @@ public class RSAPrivateCrtKeySpec extends RSAPrivateKeySpec {
      * Creates a new {@code RSAMultiPrimePrivateCrtKeySpec} with the specified
      * modulus, public exponent, private exponent, prime factors, prime
      * exponents, crt coefficient, and additional primes.
-     * 
+     *
      * @param modulus
      *            the modulus {@code n}.
      * @param publicExponent
@@ -84,7 +84,7 @@ public class RSAPrivateCrtKeySpec extends RSAPrivateKeySpec {
 
     /**
      * Returns the CRT coefficient, {@code q^-1 mod p}.
-     * 
+     *
      * @return the CRT coefficient, {@code q^-1 mod p}.
      */
     public BigInteger getCrtCoefficient() {
@@ -93,7 +93,7 @@ public class RSAPrivateCrtKeySpec extends RSAPrivateKeySpec {
 
     /**
      * Returns the exponent of the prime {@code p}.
-     * 
+     *
      * @return the exponent of the prime {@code p}.
      */
     public BigInteger getPrimeExponentP() {
@@ -102,7 +102,7 @@ public class RSAPrivateCrtKeySpec extends RSAPrivateKeySpec {
 
     /**
      * Returns the exponent of the prime {@code q}.
-     * 
+     *
      * @return the exponent of the prime {@code q}.
      */
     public BigInteger getPrimeExponentQ() {
@@ -111,7 +111,7 @@ public class RSAPrivateCrtKeySpec extends RSAPrivateKeySpec {
 
     /**
      * Returns the prime factor {@code p}.
-     * 
+     *
      * @return the prime factor {@code p}.
      */
     public BigInteger getPrimeP() {
@@ -120,7 +120,7 @@ public class RSAPrivateCrtKeySpec extends RSAPrivateKeySpec {
 
     /**
      * Returns the prime factor {@code q}.
-     * 
+     *
      * @return the prime factor {@code q}.
      */
     public BigInteger getPrimeQ() {
@@ -129,7 +129,7 @@ public class RSAPrivateCrtKeySpec extends RSAPrivateKeySpec {
 
     /**
      * Returns the public exponent {@code e}.
-     * 
+     *
      * @return the public exponent {@code e}.
      */
     public BigInteger getPublicExponent() {

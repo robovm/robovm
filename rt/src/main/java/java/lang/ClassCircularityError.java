@@ -39,7 +39,7 @@ public class ClassCircularityError extends LinkageError {
     /**
      * Constructs a new {@code ClassCircularityError} with the current stack
      * trace and the specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this error.
      */

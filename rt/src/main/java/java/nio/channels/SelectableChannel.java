@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,13 +38,12 @@ public abstract class SelectableChannel extends AbstractInterruptibleChannel
      * Constructs a new {@code SelectableChannel}.
      */
     protected SelectableChannel() {
-        super();
     }
 
     /**
      * Gets the blocking lock which synchronizes the {@code configureBlocking}
      * and {@code register} methods.
-     * 
+     *
      * @return the blocking object as lock.
      */
     public abstract Object blockingLock();
@@ -56,7 +55,7 @@ public abstract class SelectableChannel extends AbstractInterruptibleChannel
      * invoked after the call to this method. If other methods are already
      * executing when this method is called, they still have the old mode and
      * the call to this method might block depending on the implementation.
-     * 
+     *
      * @param block
      *            {@code true} for setting this channel's mode to blocking,
      *            {@code false} to set it to non-blocking.
@@ -74,7 +73,7 @@ public abstract class SelectableChannel extends AbstractInterruptibleChannel
 
     /**
      * Indicates whether this channel is in blocking mode.
-     * 
+     *
      * @return {@code true} if this channel is blocking, undefined if this
      *         channel is closed.
      */
@@ -82,7 +81,7 @@ public abstract class SelectableChannel extends AbstractInterruptibleChannel
 
     /**
      * Indicates whether this channel is registered with at least one selector.
-     * 
+     *
      * @return {@code true} if this channel is registered, {@code false}
      *         otherwise.
      */
@@ -90,7 +89,7 @@ public abstract class SelectableChannel extends AbstractInterruptibleChannel
 
     /**
      * Gets this channel's selection key for the specified selector.
-     * 
+     *
      * @param sel
      *            the selector with which this channel has been registered.
      * @return the selection key for the channel or {@code null} if this channel
@@ -100,7 +99,7 @@ public abstract class SelectableChannel extends AbstractInterruptibleChannel
 
     /**
      * Gets the provider of this channel.
-     * 
+     *
      * @return the provider of this channel.
      */
     public abstract SelectorProvider provider();

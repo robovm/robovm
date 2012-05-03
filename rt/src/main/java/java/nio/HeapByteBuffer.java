@@ -17,7 +17,8 @@
 
 package java.nio;
 
-import org.apache.harmony.luni.platform.Endianness;
+import libcore.io.SizeOf;
+import libcore.io.Memory;
 
 /**
  * HeapByteBuffer, ReadWriteHeapByteBuffer and ReadOnlyHeapByteBuffer compose
@@ -29,13 +30,15 @@ import org.apache.harmony.luni.platform.Endianness;
  * <p>
  * All methods are marked final for runtime performance.
  * </p>
- * 
+ *
  */
-abstract class HeapByteBuffer extends ByteBuffer {
+abstract class HeapByteBuffer extends BaseByteBuffer {
 
-    protected final byte[] backingArray;
-
-    protected final int offset;
+    /**
+     * These fields are non-private for NioUtils.unsafeArray.
+     */
+    final byte[] backingArray;
+    final int offset;
 
     HeapByteBuffer(byte[] backingArray) {
         this(backingArray, backingArray.length, 0);
@@ -46,34 +49,57 @@ abstract class HeapByteBuffer extends ByteBuffer {
     }
 
     HeapByteBuffer(byte[] backingArray, int capacity, int offset) {
-        super(capacity);
+        super(capacity, null);
         this.backingArray = backingArray;
         this.offset = offset;
-
         if (offset + capacity > backingArray.length) {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException("backingArray.length=" + backingArray.length +
+                    ", capacity=" + capacity + ", offset=" + offset);
         }
     }
 
-    /*
-     * Override ByteBuffer.get(byte[], int, int) to improve performance.
-     * 
-     * (non-Javadoc)
-     * 
-     * @see java.nio.ByteBuffer#get(byte[], int, int)
-     */
     @Override
-    public final ByteBuffer get(byte[] dest, int off, int len) {
-        int length = dest.length;
-        if (off < 0 || len < 0 || (long) off + (long) len > length) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (len > remaining()) {
-            throw new BufferUnderflowException();
-        }
-        System.arraycopy(backingArray, offset + position, dest, off, len);
-        position += len;
+    public final ByteBuffer get(byte[] dst, int dstOffset, int byteCount) {
+        checkGetBounds(1, dst.length, dstOffset, byteCount);
+        System.arraycopy(backingArray, offset + position, dst, dstOffset, byteCount);
+        position += byteCount;
         return this;
+    }
+
+    final void get(char[] dst, int dstOffset, int charCount) {
+        int byteCount = checkGetBounds(SizeOf.CHAR, dst.length, dstOffset, charCount);
+        Memory.unsafeBulkGet(dst, dstOffset, byteCount, backingArray, offset + position, SizeOf.CHAR, order.needsSwap);
+        position += byteCount;
+    }
+
+    final void get(double[] dst, int dstOffset, int doubleCount) {
+        int byteCount = checkGetBounds(SizeOf.DOUBLE, dst.length, dstOffset, doubleCount);
+        Memory.unsafeBulkGet(dst, dstOffset, byteCount, backingArray, offset + position, SizeOf.DOUBLE, order.needsSwap);
+        position += byteCount;
+    }
+
+    final void get(float[] dst, int dstOffset, int floatCount) {
+        int byteCount = checkGetBounds(SizeOf.FLOAT, dst.length, dstOffset, floatCount);
+        Memory.unsafeBulkGet(dst, dstOffset, byteCount, backingArray, offset + position, SizeOf.FLOAT, order.needsSwap);
+        position += byteCount;
+    }
+
+    final void get(int[] dst, int dstOffset, int intCount) {
+        int byteCount = checkGetBounds(SizeOf.INT, dst.length, dstOffset, intCount);
+        Memory.unsafeBulkGet(dst, dstOffset, byteCount, backingArray, offset + position, SizeOf.INT, order.needsSwap);
+        position += byteCount;
+    }
+
+    final void get(long[] dst, int dstOffset, int longCount) {
+        int byteCount = checkGetBounds(SizeOf.LONG, dst.length, dstOffset, longCount);
+        Memory.unsafeBulkGet(dst, dstOffset, byteCount, backingArray, offset + position, SizeOf.LONG, order.needsSwap);
+        position += byteCount;
+    }
+
+    final void get(short[] dst, int dstOffset, int shortCount) {
+        int byteCount = checkGetBounds(SizeOf.SHORT, dst.length, dstOffset, shortCount);
+        Memory.unsafeBulkGet(dst, dstOffset, byteCount, backingArray, offset + position, SizeOf.SHORT, order.needsSwap);
+        position += byteCount;
     }
 
     @Override
@@ -86,10 +112,25 @@ abstract class HeapByteBuffer extends ByteBuffer {
 
     @Override
     public final byte get(int index) {
-        if (index < 0 || index >= limit) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkIndex(index);
         return backingArray[offset + index];
+    }
+
+    @Override
+    public final char getChar() {
+        int newPosition = position + SizeOf.CHAR;
+        if (newPosition > limit) {
+            throw new BufferUnderflowException();
+        }
+        char result = (char) Memory.peekShort(backingArray, offset + position, order);
+        position = newPosition;
+        return result;
+    }
+
+    @Override
+    public final char getChar(int index) {
+        checkIndex(index, SizeOf.CHAR);
+        return (char) Memory.peekShort(backingArray, offset + index, order);
     }
 
     @Override
@@ -114,201 +155,57 @@ abstract class HeapByteBuffer extends ByteBuffer {
 
     @Override
     public final int getInt() {
-        int newPosition = position + 4;
+        int newPosition = position + SizeOf.INT;
         if (newPosition > limit) {
             throw new BufferUnderflowException();
         }
-        int result = loadInt(position);
+        int result = Memory.peekInt(backingArray, offset + position, order);
         position = newPosition;
         return result;
     }
 
     @Override
     public final int getInt(int index) {
-        if (index < 0 || index + 4 > limit) {
-            throw new IndexOutOfBoundsException();
-        }
-        return loadInt(index);
+        checkIndex(index, SizeOf.INT);
+        return Memory.peekInt(backingArray, offset + index, order);
     }
 
     @Override
     public final long getLong() {
-        int newPosition = position + 8;
+        int newPosition = position + SizeOf.LONG;
         if (newPosition > limit) {
             throw new BufferUnderflowException();
         }
-        long result = loadLong(position);
+        long result = Memory.peekLong(backingArray, offset + position, order);
         position = newPosition;
         return result;
     }
 
     @Override
     public final long getLong(int index) {
-        if (index < 0 || index + 8 > limit) {
-            throw new IndexOutOfBoundsException();
-        }
-        return loadLong(index);
+        checkIndex(index, SizeOf.LONG);
+        return Memory.peekLong(backingArray, offset + index, order);
     }
 
     @Override
     public final short getShort() {
-        int newPosition = position + 2;
+        int newPosition = position + SizeOf.SHORT;
         if (newPosition > limit) {
             throw new BufferUnderflowException();
         }
-        short result = loadShort(position);
+        short result = Memory.peekShort(backingArray, offset + position, order);
         position = newPosition;
         return result;
     }
 
     @Override
     public final short getShort(int index) {
-        if (index < 0 || index + 2 > limit) {
-            throw new IndexOutOfBoundsException();
-        }
-        return loadShort(index);
+        checkIndex(index, SizeOf.SHORT);
+        return Memory.peekShort(backingArray, offset + index, order);
     }
 
     @Override
     public final boolean isDirect() {
         return false;
-    }
-
-    protected final int loadInt(int index) {
-        int baseOffset = offset + index;
-        int bytes = 0;
-        if (order == Endianness.BIG_ENDIAN) {
-            for (int i = 0; i < 4; i++) {
-                bytes = bytes << 8;
-                bytes = bytes | (backingArray[baseOffset + i] & 0xFF);
-            }
-        } else {
-            for (int i = 3; i >= 0; i--) {
-                bytes = bytes << 8;
-                bytes = bytes | (backingArray[baseOffset + i] & 0xFF);
-            }
-        }
-        return bytes;
-    }
-
-    protected final long loadLong(int index) {
-        int baseOffset = offset + index;
-        long bytes = 0;
-        if (order == Endianness.BIG_ENDIAN) {
-            for (int i = 0; i < 8; i++) {
-                bytes = bytes << 8;
-                bytes = bytes | (backingArray[baseOffset + i] & 0xFF);
-            }
-        } else {
-            for (int i = 7; i >= 0; i--) {
-                bytes = bytes << 8;
-                bytes = bytes | (backingArray[baseOffset + i] & 0xFF);
-            }
-        }
-        return bytes;
-    }
-
-    protected final short loadShort(int index) {
-        int baseOffset = offset + index;
-        short bytes = 0;
-        if (order == Endianness.BIG_ENDIAN) {
-            bytes = (short) (backingArray[baseOffset] << 8);
-            bytes |= (backingArray[baseOffset + 1] & 0xFF);
-        } else {
-            bytes = (short) (backingArray[baseOffset + 1] << 8);
-            bytes |= (backingArray[baseOffset] & 0xFF);
-        }
-        return bytes;
-    }
-
-    protected final void store(int index, int value) {
-        int baseOffset = offset + index;
-        if (order == Endianness.BIG_ENDIAN) {
-            for (int i = 3; i >= 0; i--) {
-                backingArray[baseOffset + i] = (byte) (value & 0xFF);
-                value = value >> 8;
-            }
-        } else {
-            for (int i = 0; i <= 3; i++) {
-                backingArray[baseOffset + i] = (byte) (value & 0xFF);
-                value = value >> 8;
-            }
-        }
-    }
-
-    protected final void store(int index, long value) {
-        int baseOffset = offset + index;
-        if (order == Endianness.BIG_ENDIAN) {
-            for (int i = 7; i >= 0; i--) {
-                backingArray[baseOffset + i] = (byte) (value & 0xFF);
-                value = value >> 8;
-            }
-        } else {
-            for (int i = 0; i <= 7; i++) {
-                backingArray[baseOffset + i] = (byte) (value & 0xFF);
-                value = value >> 8;
-            }
-        }
-    }
-
-    protected final void store(int index, short value) {
-        int baseOffset = offset + index;
-        if (order == Endianness.BIG_ENDIAN) {
-            backingArray[baseOffset] = (byte) ((value >> 8) & 0xFF);
-            backingArray[baseOffset + 1] = (byte) (value & 0xFF);
-        } else {
-            backingArray[baseOffset + 1] = (byte) ((value >> 8) & 0xFF);
-            backingArray[baseOffset] = (byte) (value & 0xFF);
-        }
-    }
-
-    @Override
-    public final CharBuffer asCharBuffer() {
-        return CharToByteBufferAdapter.wrap(this);
-    }
-
-    @Override
-    public final DoubleBuffer asDoubleBuffer() {
-        return DoubleToByteBufferAdapter.wrap(this);
-    }
-
-    @Override
-    public final FloatBuffer asFloatBuffer() {
-        return FloatToByteBufferAdapter.wrap(this);
-    }
-
-    @Override
-    public final IntBuffer asIntBuffer() {
-        return IntToByteBufferAdapter.wrap(this);
-    }
-
-    @Override
-    public final LongBuffer asLongBuffer() {
-        return LongToByteBufferAdapter.wrap(this);
-    }
-
-    @Override
-    public final ShortBuffer asShortBuffer() {
-        return ShortToByteBufferAdapter.wrap(this);
-    }
-
-    @Override
-    public final char getChar() {
-        return (char) getShort();
-    }
-
-    @Override
-    public final char getChar(int index) {
-        return (char) getShort(index);
-    }
-
-    @Override
-    public final ByteBuffer putChar(char value) {
-        return putShort((short) value);
-    }
-
-    @Override
-    public final ByteBuffer putChar(int index, char value) {
-        return putShort(index, (short) value);
     }
 }

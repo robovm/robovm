@@ -19,8 +19,8 @@ package org.apache.harmony.security.x509;
 
 import java.io.IOException;
 import javax.security.auth.x500.X500Principal;
-import org.apache.harmony.security.asn1.ASN1Type;
 import org.apache.harmony.security.asn1.ASN1Sequence;
+import org.apache.harmony.security.asn1.ASN1Type;
 import org.apache.harmony.security.asn1.BerInputStream;
 import org.apache.harmony.security.x501.Name;
 
@@ -37,17 +37,9 @@ import org.apache.harmony.security.x501.Name;
  * In java implementation it is presumed that GeneralNames consist of
  * one element and its type is directoryName.
  */
-public class CertificateIssuer extends ExtensionValue {
-
-    // certificate issuer value
+public final class CertificateIssuer extends ExtensionValue {
+    /** certificate issuer value */
     private X500Principal issuer;
-
-    /**
-     * Creates an object on the base of GeneralName structure.
-     */
-    public CertificateIssuer(GeneralName issuer) {
-        super(ASN1.encode(issuer));
-    }
 
     /**
      * Creates an object on the base of its encoded form.
@@ -56,9 +48,6 @@ public class CertificateIssuer extends ExtensionValue {
         super(encoding);
     }
 
-    /**
-     * Returns the issuer.
-     */
     public X500Principal getIssuer() throws IOException {
         if (issuer == null) {
             issuer = (X500Principal) ASN1.decode(getEncoded());
@@ -66,36 +55,30 @@ public class CertificateIssuer extends ExtensionValue {
         return issuer;
     }
 
-    /**
-     * Places the string representation of extension value
-     * into the StringBuffer object.
-     */
-    public void dumpValue(StringBuffer buffer, String prefix) {
-        buffer.append(prefix).append("Certificate Issuer: "); //$NON-NLS-1$
+    @Override public void dumpValue(StringBuilder sb, String prefix) {
+        sb.append(prefix).append("Certificate Issuer: ");
         if (issuer == null) {
             try {
                 issuer = getIssuer();
             } catch (IOException e) {
                 // incorrect extension value encoding
-                buffer.append("Unparseable (incorrect!) extension value:\n"); //$NON-NLS-1$
-                super.dumpValue(buffer);
+                sb.append("Unparseable (incorrect!) extension value:\n");
+                super.dumpValue(sb);
             }
         }
-        buffer.append(issuer).append('\n');
+        sb.append(issuer).append('\n');
     }
 
     /**
      * ASN.1 Encoder/Decoder.
      */
-    public static final ASN1Type ASN1 = new ASN1Sequence(new ASN1Type[] {
-        GeneralName.ASN1
-    }) {
-        public Object getDecodedObject(BerInputStream in) {
+    public static final ASN1Type ASN1 = new ASN1Sequence(new ASN1Type[] { GeneralName.ASN1 }) {
+        @Override public Object getDecodedObject(BerInputStream in) {
             return ((Name) ((GeneralName) ((Object[]) in.content)[0])
                     .getName()).getX500Principal();
         }
 
-        protected void getValues(Object object, Object[] values) {
+        @Override protected void getValues(Object object, Object[] values) {
             values[0] = object;
         }
     };

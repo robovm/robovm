@@ -24,7 +24,7 @@ public interface SocketImplFactory {
 
     /**
      * Creates a new {@code SocketImpl} instance.
-     * 
+     *
      * @return the created {@code SocketImpl} instance.
      */
     SocketImpl createSocketImpl();

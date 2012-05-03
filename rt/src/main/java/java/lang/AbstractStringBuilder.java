@@ -182,7 +182,7 @@ abstract class AbstractStringBuilder {
 
     /**
      * Returns the number of characters that can be held without growing.
-     * 
+     *
      * @return the capacity
      * @see #ensureCapacity
      * @see #length
@@ -193,7 +193,7 @@ abstract class AbstractStringBuilder {
 
     /**
      * Retrieves the character at the {@code index}.
-     * 
+     *
      * @param index
      *            the index of the character to retrieve.
      * @return the char value.
@@ -271,7 +271,7 @@ abstract class AbstractStringBuilder {
      * value of either the {@code minimumCapacity} or the current capacity
      * multiplied by two plus two. Although this is the general policy, there is
      * no guarantee that the capacity will change.
-     * 
+     *
      * @param min
      *            the new minimum capacity to set.
      */
@@ -374,7 +374,7 @@ abstract class AbstractStringBuilder {
 
     /**
      * The current length.
-     * 
+     *
      * @return the number of characters contained in this instance.
      */
     public int length() {
@@ -525,7 +525,7 @@ abstract class AbstractStringBuilder {
 
     /**
      * Sets the character at the {@code index}.
-     * 
+     *
      * @param index
      *            the zero-based index of the character to replace.
      * @param ch
@@ -549,7 +549,7 @@ abstract class AbstractStringBuilder {
      * Sets the current length to a new value. If the new length is larger than
      * the current length, then the new characters at the end of this object
      * will contain the {@code char} value of {@code \u0000}.
-     * 
+     *
      * @param length
      *            the new length of this StringBuffer.
      * @exception IndexOutOfBoundsException
@@ -580,7 +580,7 @@ abstract class AbstractStringBuilder {
     /**
      * Returns the String value of the subsequence from the {@code start} index
      * to the current end.
-     * 
+     *
      * @param start
      *            the inclusive start index to begin the subsequence.
      * @return a String containing the subsequence.
@@ -603,7 +603,7 @@ abstract class AbstractStringBuilder {
     /**
      * Returns the String value of the subsequence from the {@code start} index
      * to the {@code end} index.
-     * 
+     *
      * @param start
      *            the inclusive start index to begin the subsequence.
      * @param end
@@ -627,7 +627,7 @@ abstract class AbstractStringBuilder {
 
     /**
      * Returns the current String representation.
-     * 
+     *
      * @return a String containing the characters in this instance.
      */
     @Override
@@ -648,7 +648,7 @@ abstract class AbstractStringBuilder {
     /**
      * Returns a {@code CharSequence} of the subsequence from the {@code start}
      * index to the {@code end} index.
-     * 
+     *
      * @param start
      *            the inclusive start index to begin the subsequence.
      * @param end
@@ -666,7 +666,7 @@ abstract class AbstractStringBuilder {
     /**
      * Searches for the first index of the specified character. The search for
      * the character starts at the beginning and moves towards the end.
-     * 
+     *
      * @param string
      *            the string to find.
      * @return the index of the specified character, -1 if the character isn't
@@ -681,7 +681,7 @@ abstract class AbstractStringBuilder {
     /**
      * Searches for the index of the specified character. The search for the
      * character starts at the specified offset and moves towards the end.
-     * 
+     *
      * @param subString
      *            the string to find.
      * @param start
@@ -730,7 +730,7 @@ abstract class AbstractStringBuilder {
     /**
      * Searches for the last index of the specified character. The search for
      * the character starts at the end and moves towards the beginning.
-     * 
+     *
      * @param string
      *            the string to find.
      * @return the index of the specified character, -1 if the character isn't
@@ -747,7 +747,7 @@ abstract class AbstractStringBuilder {
     /**
      * Searches for the index of the specified character. The search for the
      * character starts at the specified offset and moves towards the beginning.
-     * 
+     *
      * @param subString
      *            the string to find.
      * @param start
@@ -800,7 +800,7 @@ abstract class AbstractStringBuilder {
     /**
      * Trims off any extra capacity beyond the current length. Note, this method
      * is NOT guaranteed to change the capacity of this object.
-     * 
+     *
      * @since 1.5
      */
     public void trimToSize() {
@@ -814,7 +814,7 @@ abstract class AbstractStringBuilder {
 
     /**
      * Retrieves the Unicode code point value at the {@code index}.
-     * 
+     *
      * @param index
      *            the index to the {@code char} code unit.
      * @return the Unicode code point value.
@@ -834,7 +834,7 @@ abstract class AbstractStringBuilder {
 
     /**
      * Retrieves the Unicode code point value that precedes the {@code index}.
-     * 
+     *
      * @param index
      *            the index to the {@code char} code unit within this object.
      * @return the Unicode code point value.
@@ -855,7 +855,7 @@ abstract class AbstractStringBuilder {
     /**
      * Calculates the number of Unicode code points between {@code start}
      * and {@code end}.
-     * 
+     *
      * @param start
      *            the inclusive beginning index of the subsequence.
      * @param end

@@ -14,11 +14,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/*
+ * Copyright (C) 2012 The NullVM Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package java.lang.reflect;
 
 import java.lang.annotation.Annotation;
-
 import org.apache.harmony.luni.lang.reflect.GenericSignatureParser;
 import org.apache.harmony.luni.lang.reflect.ListOfTypes;
 import org.apache.harmony.luni.lang.reflect.Types;
@@ -32,11 +61,6 @@ import org.apache.harmony.luni.lang.reflect.Types;
 public final class Constructor<T> extends AccessibleObject implements GenericDeclaration,
         Member {
 
-    /*
-     * The modifiers that can be used on a constructor.
-     */
-    private static final int MODIFIERS_MASK = Modifier.PRIVATE | Modifier.PROTECTED | Modifier.PUBLIC;
-    
     /*
      * The NullVM Method* object
      */
@@ -55,20 +79,35 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
     TypeVariable<Constructor<T>>[] formalTypeParameters;
     private volatile boolean genericTypesAreInitialized = false;
     
-    /**
-     * Prevent this class from being instantiated
-     */
     Constructor(long method){
         this.method = method;
     }
+    
+    /**
+     * Construct a clone of the given instance.
+     *
+     * @param orig non-null; the original instance to clone
+     */
+    /*package*/ Constructor(Constructor<T> orig) {
 
-    Constructor(Constructor<T> c){
-        this.method = c.method;
-    }    
+        this.method = orig.method;
+        this.modifiers = orig.modifiers;
+        this.declaringClass = orig.declaringClass;
+        this.parameterTypes = orig.parameterTypes;
+        this.exceptionTypes = orig.exceptionTypes;
+        this.genericExceptionTypes = orig.genericExceptionTypes;
+        this.genericParameterTypes = orig.genericParameterTypes;
+        this.formalTypeParameters = orig.formalTypeParameters;
+        this.genericTypesAreInitialized = orig.genericTypesAreInitialized;
+        
+        // Copy the accessible flag.
+        if (orig.flag) {
+            this.flag = true;
+        }
+    }
     
     @SuppressWarnings("unchecked")
     private synchronized void initGenericTypes() {
-        // Start (C) Android
         if (!genericTypesAreInitialized) {
             String signatureAttribute = getSignatureAttribute();
             GenericSignatureParser parser = new GenericSignatureParser(
@@ -79,7 +118,6 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
             genericExceptionTypes = parser.exceptionTypes;
             genericTypesAreInitialized = true;
         }
-        // End (C) Android
     }
     
     @Override
@@ -97,15 +135,14 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
      * including the type parameters.
      *
      * @return the string representation of the constructor's declaration
-     * @since 1.5
      */
     public String toGenericString() {
         StringBuilder sb = new StringBuilder(80);
         initGenericTypes();
         // append modifiers if any
-        int modifier = getModifiers() & MODIFIERS_MASK;
+        int modifier = getModifiers();
         if (modifier != 0) {
-            sb.append(Modifier.toString(modifier)).append(' ');
+            sb.append(Modifier.toString(modifier & ~Modifier.VARARGS)).append(' ');
         }
         // append type parameters
         if (formalTypeParameters != null && formalTypeParameters.length > 0) {
@@ -141,6 +178,7 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
      * parameters, an empty array is returned.
      *
      * @return the parameter types
+     *
      * @throws GenericSignatureFormatError
      *             if the generic constructor signature is invalid
      * @throws TypeNotPresentException
@@ -148,7 +186,6 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
      * @throws MalformedParameterizedTypeException
      *             if any parameter type points to a type that cannot be
      *             instantiated for some reason
-     * @since 1.5
      */
     public Type[] getGenericParameterTypes() {
         initGenericTypes();
@@ -161,6 +198,7 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
      * returned.
      *
      * @return an array of generic exception types
+     *
      * @throws GenericSignatureFormatError
      *             if the generic constructor signature is invalid
      * @throws TypeNotPresentException
@@ -168,7 +206,6 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
      * @throws MalformedParameterizedTypeException
      *             if any exception type points to a type that cannot be
      *             instantiated for some reason
-     * @since 1.5
      */
     public Type[] getGenericExceptionTypes() {
         initGenericTypes();
@@ -187,16 +224,13 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
      * set, then an array of empty arrays is returned.
      *
      * @return an array of arrays of {@code Annotation} instances
-     * @since 1.5
      */
     public Annotation[][] getParameterAnnotations() {
-        // Start (C) Android
         Annotation[][] parameterAnnotations = Method.getParameterAnnotations(method);
         if (parameterAnnotations.length == 0) {
             return Method.noAnnotations(getParameterTypes(false).length);
         }
         return parameterAnnotations;
-        // End (C) Android
     }
 
     /**
@@ -205,7 +239,6 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
      *
      * @return {@code true} if a vararg is declare, otherwise
      *         {@code false}
-     * @since 1.5
      */
     public boolean isVarArgs() {
         return (getModifiers() & Modifier.VARARGS) != 0;
@@ -233,6 +266,7 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
      *
      * @return {@code true} if the specified object is equal to this
      *         constructor, {@code false} otherwise
+     *
      * @see #hashCode
      */
     @Override
@@ -315,6 +349,7 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
      * Constructor is the hash code of the name of the declaring class.
      *
      * @return the hash code
+     *
      * @see #equals
      */
     @Override
@@ -339,7 +374,7 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
      * <li>For each argument passed:
      * <ul>
      * <li>If the corresponding parameter type is a primitive type, the argument
-     * is unwrapped. If the unwrapping fails, an IllegalArgumentException is
+     * is unboxed. If the unboxing fails, an IllegalArgumentException is
      * thrown.</li>
      * <li>If the resulting argument cannot be converted to the parameter type
      * via a widening conversion, an IllegalArgumentException is thrown.</li>
@@ -410,33 +445,22 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
     @Override
     public String toString() {
         Class<?> declaringClass = getDeclaringClass();
-        Class<?>[] pTypes = getParameterTypes(false);
-        Class<?>[] eTypes = getExceptionTypes(false);
+        Class<?>[] parameterTypes = getParameterTypes(false);
+        Class<?>[] exceptionTypes = getExceptionTypes(false);
         
-        StringBuilder sb = new StringBuilder(Modifier.toString(getModifiers() & MODIFIERS_MASK));
+        StringBuilder result = new StringBuilder(Modifier.toString(getModifiers()));
 
-        if (sb.length() > 0) {
-            sb.append(' ');
-        }
-        sb.append(declaringClass.getName());
-        sb.append('(');
-        if (pTypes.length > 0) {
-            sb.append(pTypes[0].getCanonicalName());
-            for (int i = 1; i < pTypes.length; i++) {
-                sb.append(',');
-                sb.append(pTypes[i].getCanonicalName());
-            }
-        }
-        sb.append(')');
-        if (eTypes.length > 0) {
-            sb.append(" throws ");
-            sb.append(eTypes[0].getCanonicalName());
-            for (int i = 1; i < eTypes.length; i++) {
-                sb.append(',');
-                sb.append(eTypes[i].getCanonicalName());
-            }
+        if (result.length() != 0)
+            result.append(' ');
+        result.append(declaringClass.getName());
+        result.append("(");
+        result.append(toString(parameterTypes));
+        result.append(")");
+        if (exceptionTypes != null && exceptionTypes.length != 0) {
+            result.append(" throws ");
+            result.append(toString(exceptionTypes));
         }
         
-        return sb.toString();
+        return result.toString();
     }
 }

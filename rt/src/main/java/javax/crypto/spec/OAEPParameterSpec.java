@@ -15,15 +15,10 @@
  *  limitations under the License.
  */
 
-/**
-* @author Alexander Y. Kleymenov
-*/
-
 package javax.crypto.spec;
 
-import java.security.spec.MGF1ParameterSpec;
 import java.security.spec.AlgorithmParameterSpec;
-import javax.crypto.spec.PSource;
+import java.security.spec.MGF1ParameterSpec;
 
 /**
  * The algorithm parameter specification for the <i>OAEP Padding</i> algorithm.
@@ -51,8 +46,8 @@ public class OAEPParameterSpec implements AlgorithmParameterSpec {
     public static final OAEPParameterSpec DEFAULT = new OAEPParameterSpec();
 
     private OAEPParameterSpec() {
-        this.mdName = "SHA-1"; //$NON-NLS-1$
-        this.mgfName = "MGF1"; //$NON-NLS-1$
+        this.mdName = "SHA-1";
+        this.mgfName = "MGF1";
         this.mgfSpec = MGF1ParameterSpec.SHA1;
         this.pSrc = PSource.PSpecified.DEFAULT;
     }

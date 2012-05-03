@@ -17,14 +17,14 @@
 
 package java.util.zip;
 
+import java.util.Arrays;
+
 /**
  * The Adler-32 class is used to compute the {@code Adler32} checksum from a set
- * of data. Compared to the CRC-32 algorithm it trades reliabilty for speed.
+ * of data. Compared to {@link CRC32} it trades reliability for speed.
  * Refer to RFC 1950 for the specification.
- *
- * @see CRC32
  */
-public class Adler32 implements java.util.zip.Checksum {
+public class Adler32 implements Checksum {
 
     private long adler = 1;
 
@@ -67,29 +67,14 @@ public class Adler32 implements java.util.zip.Checksum {
 
     /**
      * Update this {@code Adler32} checksum with the contents of {@code buf},
-     * starting from the offset provided and reading n bytes of data.
-     *
-     * @param buf
-     *            buffer to obtain data from.
-     * @param off
-     *            offset in {@code buf} to start reading from.
-     * @param nbytes
-     *            number of bytes from {@code buf} to use.
-     * @throws ArrayIndexOutOfBoundsException
-     *             if {@code offset > buf.length} or {@code nbytes} is negative
-     *             or {@code offset + nbytes > buf.length}.
+     * starting from {@code offset} and reading {@code byteCount} bytes of data.
      */
-    public void update(byte[] buf, int off, int nbytes) {
-        // avoid int overflow, check null buf
-        if (off <= buf.length && nbytes >= 0 && off >= 0
-                && buf.length - off >= nbytes) {
-            adler = updateImpl(buf, off, nbytes, adler);
-        } else {
-            throw new ArrayIndexOutOfBoundsException();
-        }
+    public void update(byte[] buf, int offset, int byteCount) {
+        Arrays.checkOffsetAndCount(buf.length, offset, byteCount);
+        adler = updateImpl(buf, offset, byteCount, adler);
     }
 
-    private native long updateImpl(byte[] buf, int off, int nbytes, long adler1);
+    private native long updateImpl(byte[] buf, int offset, int byteCount, long adler1);
 
     private native long updateByteImpl(int val, long adler1);
 }

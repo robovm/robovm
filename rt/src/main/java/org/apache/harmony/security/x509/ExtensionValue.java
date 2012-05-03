@@ -24,52 +24,35 @@ import org.apache.harmony.security.utils.Array;
  */
 public class ExtensionValue {
 
-    /**
-     * Encoded form of the extension.
-     */
+    /** Encoded form of the extension. */
     protected byte[] encoding;
 
-    /**
-     * Default constructor.
-     */
-    public ExtensionValue() { }
+    /** Default constructor. */
+    public ExtensionValue() {}
 
-    /**
-     * Creates the object on the base of its encoded form.
-     */
+    /** Creates the object on the base of its encoded form. */
     public ExtensionValue(byte[] encoding) {
         this.encoding = encoding;
     }
 
-    /**
-     * Returns encoded form of the object.
-     */
+    /** Returns encoded form of the object. */
     public byte[] getEncoded() {
         return encoding;
     }
 
-    /**
-     * Places the string representation of extension value
-     * into the StringBuffer object.
-     */
-    public void dumpValue(StringBuffer buffer, String prefix) {
-        buffer.append(prefix).append("Unparseable extension value:\n"); //$NON-NLS-1$
+    public void dumpValue(StringBuilder sb, String prefix) {
+        sb.append(prefix).append("Unparseable extension value:\n");
         if (encoding == null) {
             encoding = getEncoded();
         }
         if (encoding == null) {
-            buffer.append("NULL\n"); //$NON-NLS-1$
+            sb.append("NULL\n");
         } else {
-            buffer.append(Array.toString(encoding, prefix));
+            sb.append(Array.toString(encoding, prefix));
         }
     }
 
-    /**
-     * Places the string representation of extension value
-     * into the StringBuffer object.
-     */
-    public void dumpValue(StringBuffer buffer) {
-        dumpValue(buffer, ""); //$NON-NLS-1$
-    };
+    public void dumpValue(StringBuilder sb) {
+        dumpValue(sb, "");
+    }
 }
-

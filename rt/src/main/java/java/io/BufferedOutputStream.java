@@ -26,7 +26,7 @@ import java.util.Arrays;
  * drawback is that some extra space is required to hold the buffer and that
  * copying takes place when flushing that buffer, but this is usually outweighed
  * by the performance benefits.
- * 
+ *
  * <p/>A typical application pattern for the class looks like this:<p/>
  *
  * <pre>
@@ -49,7 +49,7 @@ public class BufferedOutputStream extends FilterOutputStream {
     /**
      * Constructs a new {@code BufferedOutputStream}, providing {@code out} with a buffer
      * of 8192 bytes.
-     * 
+     *
      * @param out the {@code OutputStream} the buffer writes to.
      */
     public BufferedOutputStream(OutputStream out) {
@@ -59,7 +59,7 @@ public class BufferedOutputStream extends FilterOutputStream {
     /**
      * Constructs a new {@code BufferedOutputStream}, providing {@code out} with {@code size} bytes
      * of buffer.
-     * 
+     *
      * @param out the {@code OutputStream} the buffer writes to.
      * @param size the size of buffer in bytes.
      * @throws IllegalArgumentException if {@code size <= 0}.
@@ -75,7 +75,7 @@ public class BufferedOutputStream extends FilterOutputStream {
     /**
      * Flushes this stream to ensure all pending data is written out to the
      * target stream. In addition, the target stream is flushed.
-     * 
+     *
      * @throws IOException
      *             if an error occurs attempting to flush this stream.
      */
@@ -98,7 +98,7 @@ public class BufferedOutputStream extends FilterOutputStream {
      * bytes, they are copied in. If not, the buffered bytes plus the bytes in
      * {@code buffer} are written to the target stream, the target is flushed,
      * and the buffer is cleared.
-     * 
+     *
      * @param buffer
      *            the buffer to be written.
      * @param offset
@@ -147,7 +147,7 @@ public class BufferedOutputStream extends FilterOutputStream {
         if (buf == null) {
             return;
         }
-        
+
         try {
             super.close();
         } finally {
@@ -161,7 +161,7 @@ public class BufferedOutputStream extends FilterOutputStream {
      * copied into the buffer and the count incremented. Otherwise, the buffer
      * plus {@code oneByte} are written to the target stream, the target is
      * flushed, and the buffer is reset.
-     * 
+     *
      * @param oneByte
      *            the byte to be written.
      * @throws IOException

@@ -17,7 +17,8 @@
 
 package java.nio;
 
-import org.apache.harmony.luni.platform.Endianness;
+import java.util.Arrays;
+import libcore.io.Memory;
 
 /**
  * A buffer for bytes.
@@ -33,12 +34,11 @@ import org.apache.harmony.luni.platform.Endianness;
  * </ul>
  *
  */
-public abstract class ByteBuffer extends Buffer implements
-        Comparable<ByteBuffer> {
+public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer> {
 
     /**
      * Creates a byte buffer based on a newly allocated byte array.
-     * 
+     *
      * @param capacity
      *            the capacity of the new buffer
      * @return the created byte buffer.
@@ -49,12 +49,12 @@ public abstract class ByteBuffer extends Buffer implements
         if (capacity < 0) {
             throw new IllegalArgumentException();
         }
-        return BufferFactory.newByteBuffer(capacity);
+        return new ReadWriteHeapByteBuffer(capacity);
     }
 
     /**
      * Creates a direct byte buffer based on a newly allocated memory block.
-     * 
+     *
      * @param capacity
      *            the capacity of the new buffer
      * @return the created byte buffer.
@@ -65,7 +65,7 @@ public abstract class ByteBuffer extends Buffer implements
         if (capacity < 0) {
             throw new IllegalArgumentException();
         }
-        return BufferFactory.newDirectByteBuffer(capacity);
+        return new ReadWriteDirectByteBuffer(capacity);
     }
 
     /**
@@ -79,58 +79,47 @@ public abstract class ByteBuffer extends Buffer implements
      * @return the created byte buffer.
      */
     public static ByteBuffer wrap(byte[] array) {
-        return BufferFactory.newByteBuffer(array);
+        return new ReadWriteHeapByteBuffer(array);
     }
 
     /**
      * Creates a new byte buffer by wrapping the given byte array.
      * <p>
      * The new buffer's position will be {@code start}, limit will be
-     * {@code start + len}, capacity will be the length of the array.
+     * {@code start + byteCount}, capacity will be the length of the array.
      *
      * @param array
      *            the byte array which the new buffer will be based on.
      * @param start
      *            the start index, must not be negative and not greater than
      *            {@code array.length}.
-     * @param len
+     * @param byteCount
      *            the length, must not be negative and not greater than
      *            {@code array.length - start}.
      * @return the created byte buffer.
      * @exception IndexOutOfBoundsException
-     *                if either {@code start} or {@code len} is invalid.
+     *                if either {@code start} or {@code byteCount} is invalid.
      */
-    public static ByteBuffer wrap(byte[] array, int start, int len) {
-        int length = array.length;
-        if ((start < 0) || (len < 0) || ((long) start + (long) len > length)) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        ByteBuffer buf = BufferFactory.newByteBuffer(array);
+    public static ByteBuffer wrap(byte[] array, int start, int byteCount) {
+        Arrays.checkOffsetAndCount(array.length, start, byteCount);
+        ByteBuffer buf = new ReadWriteHeapByteBuffer(array);
         buf.position = start;
-        buf.limit = start + len;
-
+        buf.limit = start + byteCount;
         return buf;
     }
 
     /**
      * The byte order of this buffer, default is {@code BIG_ENDIAN}.
      */
-    Endianness order = Endianness.BIG_ENDIAN;
+    ByteOrder order = ByteOrder.BIG_ENDIAN;
 
-    /**
-     * Constructs a {@code ByteBuffer} with given capacity.
-     * 
-     * @param capacity
-     *            the capacity of the buffer.
-     */
-    ByteBuffer(int capacity) {
-        super(capacity);
+    ByteBuffer(int capacity, MemoryBlock block) {
+        super(0, capacity, block);
     }
 
     /**
      * Returns the byte array which this buffer is based on, if there is one.
-     * 
+     *
      * @return the byte array which this buffer is based on.
      * @exception ReadOnlyBufferException
      *                if this buffer is based on a read-only array.
@@ -284,7 +273,7 @@ public abstract class ByteBuffer extends Buffer implements
      * {@code remaining()}; the limit is set to capacity; the mark is
      * cleared.
      *
-     * @return this buffer.
+     * @return {@code this}
      * @exception ReadOnlyBufferException
      *                if no changes may be made to the contents of this buffer.
      */
@@ -293,7 +282,7 @@ public abstract class ByteBuffer extends Buffer implements
     /**
      * Compares the remaining bytes of this buffer to another byte buffer's
      * remaining bytes.
-     * 
+     *
      * @param otherBuffer
      *            another byte buffer.
      * @return a negative value if this is less than {@code other}; 0 if this
@@ -371,7 +360,7 @@ public abstract class ByteBuffer extends Buffer implements
 
     /**
      * Returns the byte at the current position and increases the position by 1.
-     * 
+     *
      * @return the byte at the current position.
      * @exception BufferUnderflowException
      *                if the position is equal or greater than limit.
@@ -383,55 +372,49 @@ public abstract class ByteBuffer extends Buffer implements
      * increases the position by the number of bytes read.
      * <p>
      * Calling this method has the same effect as
-     * {@code get(dest, 0, dest.length)}.
+     * {@code get(dst, 0, dst.length)}.
      *
-     * @param dest
+     * @param dst
      *            the destination byte array.
-     * @return this buffer.
+     * @return {@code this}
      * @exception BufferUnderflowException
-     *                if {@code dest.length} is greater than {@code remaining()}.
+     *                if {@code dst.length} is greater than {@code remaining()}.
      */
-    public ByteBuffer get(byte[] dest) {
-        return get(dest, 0, dest.length);
+    public ByteBuffer get(byte[] dst) {
+        return get(dst, 0, dst.length);
     }
 
     /**
      * Reads bytes from the current position into the specified byte array,
      * starting at the specified offset, and increases the position by the
      * number of bytes read.
-     * 
-     * @param dest
+     *
+     * @param dst
      *            the target byte array.
-     * @param off
+     * @param dstOffset
      *            the offset of the byte array, must not be negative and
-     *            not greater than {@code dest.length}.
-     * @param len
+     *            not greater than {@code dst.length}.
+     * @param byteCount
      *            the number of bytes to read, must not be negative and not
-     *            greater than {@code dest.length - off}
-     * @return this buffer.
-     * @exception IndexOutOfBoundsException
-     *                if either {@code off} or {@code len} is invalid.
-     * @exception BufferUnderflowException
-     *                if {@code len} is greater than {@code remaining()}.
+     *            greater than {@code dst.length - dstOffset}
+     * @return {@code this}
+     * @exception IndexOutOfBoundsException if {@code dstOffset < 0 ||  byteCount < 0}
+     * @exception BufferUnderflowException if {@code byteCount > remaining()}
      */
-    public ByteBuffer get(byte[] dest, int off, int len) {
-        int length = dest.length;
-        if ((off < 0) || (len < 0) || ((long) off + (long) len > length)) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        if (len > remaining()) {
+    public ByteBuffer get(byte[] dst, int dstOffset, int byteCount) {
+        Arrays.checkOffsetAndCount(dst.length, dstOffset, byteCount);
+        if (byteCount > remaining()) {
             throw new BufferUnderflowException();
         }
-        for (int i = off; i < off + len; i++) {
-            dest[i] = get();
+        for (int i = dstOffset; i < dstOffset + byteCount; ++i) {
+            dst[i] = get();
         }
         return this;
     }
 
     /**
      * Returns the byte at the specified index and does not change the position.
-     * 
+     *
      * @param index
      *            the index, must not be negative and less than limit.
      * @return the byte at the specified index.
@@ -458,7 +441,7 @@ public abstract class ByteBuffer extends Buffer implements
      * The 2 bytes starting from the specified index are composed into a char
      * according to the current byte order and returned. The position is not
      * changed.
-     * 
+     *
      * @param index
      *            the index, must not be negative and equal or less than
      *            {@code limit - 2}.
@@ -610,13 +593,6 @@ public abstract class ByteBuffer extends Buffer implements
      */
     public abstract short getShort(int index);
 
-    /**
-     * Indicates whether this buffer is based on a byte array and provides
-     * read/write access.
-     * 
-     * @return {@code true} if this buffer is based on a byte array and provides
-     *         read/write access, {@code false} otherwise.
-     */
     public final boolean hasArray() {
         return protectedHasArray();
     }
@@ -655,46 +631,50 @@ public abstract class ByteBuffer extends Buffer implements
      *         other primitive types.
      */
     public final ByteOrder order() {
-        return order == Endianness.BIG_ENDIAN ? ByteOrder.BIG_ENDIAN
-                : ByteOrder.LITTLE_ENDIAN;
+        return order;
     }
 
     /**
      * Sets the byte order of this buffer.
-     * 
+     *
      * @param byteOrder
      *            the byte order to set. If {@code null} then the order
      *            will be {@link ByteOrder#LITTLE_ENDIAN LITTLE_ENDIAN}.
-     * @return this buffer.
+     * @return {@code this}
      * @see ByteOrder
      */
     public final ByteBuffer order(ByteOrder byteOrder) {
-        return orderImpl(byteOrder);
-    }
-
-    ByteBuffer orderImpl(ByteOrder byteOrder) {
-        order = byteOrder == ByteOrder.BIG_ENDIAN ? Endianness.BIG_ENDIAN
-                : Endianness.LITTLE_ENDIAN;
+        orderImpl(byteOrder);
         return this;
     }
 
     /**
+     * Subverts the fact that order(ByteOrder) is final, for the benefit of MappedByteBufferAdapter.
+     */
+    void orderImpl(ByteOrder byteOrder) {
+        if (byteOrder == null) {
+            byteOrder = ByteOrder.LITTLE_ENDIAN;
+        }
+        order = byteOrder;
+    }
+
+    /**
      * Child class implements this method to realize {@code array()}.
-     * 
+     *
      * @see #array()
      */
     abstract byte[] protectedArray();
 
     /**
      * Child class implements this method to realize {@code arrayOffset()}.
-     * 
+     *
      * @see #arrayOffset()
      */
     abstract int protectedArrayOffset();
 
     /**
      * Child class implements this method to realize {@code hasArray()}.
-     * 
+     *
      * @see #hasArray()
      */
     abstract boolean protectedHasArray();
@@ -702,10 +682,10 @@ public abstract class ByteBuffer extends Buffer implements
     /**
      * Writes the given byte to the current position and increases the position
      * by 1.
-     * 
+     *
      * @param b
      *            the byte to write.
-     * @return this buffer.
+     * @return {@code this}
      * @exception BufferOverflowException
      *                if position is equal or greater than limit.
      * @exception ReadOnlyBufferException
@@ -722,7 +702,7 @@ public abstract class ByteBuffer extends Buffer implements
      *
      * @param src
      *            the source byte array.
-     * @return this buffer.
+     * @return {@code this}
      * @exception BufferOverflowException
      *                if {@code remaining()} is less than {@code src.length}.
      * @exception ReadOnlyBufferException
@@ -736,33 +716,29 @@ public abstract class ByteBuffer extends Buffer implements
      * Writes bytes in the given byte array, starting from the specified offset,
      * to the current position and increases the position by the number of bytes
      * written.
-     * 
+     *
      * @param src
      *            the source byte array.
-     * @param off
+     * @param srcOffset
      *            the offset of byte array, must not be negative and not greater
      *            than {@code src.length}.
-     * @param len
+     * @param byteCount
      *            the number of bytes to write, must not be negative and not
-     *            greater than {@code src.length - off}.
-     * @return this buffer.
+     *            greater than {@code src.length - srcOffset}.
+     * @return {@code this}
      * @exception BufferOverflowException
-     *                if {@code remaining()} is less than {@code len}.
+     *                if {@code remaining()} is less than {@code byteCount}.
      * @exception IndexOutOfBoundsException
-     *                if either {@code off} or {@code len} is invalid.
+     *                if either {@code srcOffset} or {@code byteCount} is invalid.
      * @exception ReadOnlyBufferException
      *                if no changes may be made to the contents of this buffer.
      */
-    public ByteBuffer put(byte[] src, int off, int len) {
-        int length = src.length;
-        if ((off < 0 ) || (len < 0) || ((long)off + (long)len > length)) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        if (len > remaining()) {
+    public ByteBuffer put(byte[] src, int srcOffset, int byteCount) {
+        Arrays.checkOffsetAndCount(src.length, srcOffset, byteCount);
+        if (byteCount > remaining()) {
             throw new BufferOverflowException();
         }
-        for (int i = off; i < off + len; i++) {
+        for (int i = srcOffset; i < srcOffset + byteCount; ++i) {
             put(src[i]);
         }
         return this;
@@ -772,10 +748,10 @@ public abstract class ByteBuffer extends Buffer implements
      * Writes all the remaining bytes of the {@code src} byte buffer to this
      * buffer's current position, and increases both buffers' position by the
      * number of bytes copied.
-     * 
+     *
      * @param src
      *            the source byte buffer.
-     * @return this buffer.
+     * @return {@code this}
      * @exception BufferOverflowException
      *                if {@code src.remaining()} is greater than this buffer's
      *                {@code remaining()}.
@@ -786,26 +762,42 @@ public abstract class ByteBuffer extends Buffer implements
      */
     public ByteBuffer put(ByteBuffer src) {
         if (src == this) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("src == this");
         }
-        if (src.remaining() > remaining()) {
+        int srcByteCount = src.remaining();
+        if (srcByteCount > remaining()) {
             throw new BufferOverflowException();
         }
-        byte[] contents = new byte[src.remaining()];
-        src.get(contents);
-        put(contents);
+
+        Object srcObject = src.isDirect() ? src : NioUtils.unsafeArray(src);
+        int srcOffset = src.position();
+        if (!src.isDirect()) {
+            srcOffset += NioUtils.unsafeArrayOffset(src);
+        }
+
+        ByteBuffer dst = this;
+        Object dstObject = dst.isDirect() ? dst : NioUtils.unsafeArray(dst);
+        int dstOffset = dst.position();
+        if (!dst.isDirect()) {
+            dstOffset += NioUtils.unsafeArrayOffset(dst);
+        }
+
+        Memory.memmove(dstObject, dstOffset, srcObject, srcOffset, srcByteCount);
+        src.position(src.limit());
+        dst.position(dst.position() + srcByteCount);
+
         return this;
     }
 
     /**
      * Write a byte to the specified index of this buffer without changing the
      * position.
-     * 
+     *
      * @param index
      *            the index, must not be negative and less than the limit.
      * @param b
      *            the byte to write.
-     * @return this buffer.
+     * @return {@code this}
      * @exception IndexOutOfBoundsException
      *                if {@code index} is invalid.
      * @exception ReadOnlyBufferException
@@ -821,7 +813,7 @@ public abstract class ByteBuffer extends Buffer implements
      *
      * @param value
      *            the char to write.
-     * @return this buffer.
+     * @return {@code this}
      * @exception BufferOverflowException
      *                if position is greater than {@code limit - 2}.
      * @exception ReadOnlyBufferException
@@ -840,7 +832,7 @@ public abstract class ByteBuffer extends Buffer implements
      *            {@code limit - 2}.
      * @param value
      *            the char to write.
-     * @return this buffer.
+     * @return {@code this}
      * @exception IndexOutOfBoundsException
      *                if {@code index} is invalid.
      * @exception ReadOnlyBufferException
@@ -856,7 +848,7 @@ public abstract class ByteBuffer extends Buffer implements
      *
      * @param value
      *            the double to write.
-     * @return this buffer.
+     * @return {@code this}
      * @exception BufferOverflowException
      *                if position is greater than {@code limit - 8}.
      * @exception ReadOnlyBufferException
@@ -875,7 +867,7 @@ public abstract class ByteBuffer extends Buffer implements
      *            {@code limit - 8}.
      * @param value
      *            the double to write.
-     * @return this buffer.
+     * @return {@code this}
      * @exception IndexOutOfBoundsException
      *                if {@code index} is invalid.
      * @exception ReadOnlyBufferException
@@ -891,7 +883,7 @@ public abstract class ByteBuffer extends Buffer implements
      *
      * @param value
      *            the float to write.
-     * @return this buffer.
+     * @return {@code this}
      * @exception BufferOverflowException
      *                if position is greater than {@code limit - 4}.
      * @exception ReadOnlyBufferException
@@ -910,7 +902,7 @@ public abstract class ByteBuffer extends Buffer implements
      *            {@code limit - 4}.
      * @param value
      *            the float to write.
-     * @return this buffer.
+     * @return {@code this}
      * @exception IndexOutOfBoundsException
      *                if {@code index} is invalid.
      * @exception ReadOnlyBufferException
@@ -926,7 +918,7 @@ public abstract class ByteBuffer extends Buffer implements
      *
      * @param value
      *            the int to write.
-     * @return this buffer.
+     * @return {@code this}
      * @exception BufferOverflowException
      *                if position is greater than {@code limit - 4}.
      * @exception ReadOnlyBufferException
@@ -945,7 +937,7 @@ public abstract class ByteBuffer extends Buffer implements
      *            {@code limit - 4}.
      * @param value
      *            the int to write.
-     * @return this buffer.
+     * @return {@code this}
      * @exception IndexOutOfBoundsException
      *                if {@code index} is invalid.
      * @exception ReadOnlyBufferException
@@ -961,7 +953,7 @@ public abstract class ByteBuffer extends Buffer implements
      *
      * @param value
      *            the long to write.
-     * @return this buffer.
+     * @return {@code this}
      * @exception BufferOverflowException
      *                if position is greater than {@code limit - 8}.
      * @exception ReadOnlyBufferException
@@ -980,7 +972,7 @@ public abstract class ByteBuffer extends Buffer implements
      *            {@code limit - 8}.
      * @param value
      *            the long to write.
-     * @return this buffer.
+     * @return {@code this}
      * @exception IndexOutOfBoundsException
      *                if {@code index} is invalid.
      * @exception ReadOnlyBufferException
@@ -996,7 +988,7 @@ public abstract class ByteBuffer extends Buffer implements
      *
      * @param value
      *            the short to write.
-     * @return this buffer.
+     * @return {@code this}
      * @exception BufferOverflowException
      *                if position is greater than {@code limit - 2}.
      * @exception ReadOnlyBufferException
@@ -1015,7 +1007,7 @@ public abstract class ByteBuffer extends Buffer implements
      *            {@code limit - 2}.
      * @param value
      *            the short to write.
-     * @return this buffer.
+     * @return {@code this}
      * @exception IndexOutOfBoundsException
      *                if {@code index} is invalid.
      * @exception ReadOnlyBufferException
@@ -1039,22 +1031,4 @@ public abstract class ByteBuffer extends Buffer implements
      * @return a sliced buffer that shares its content with this buffer.
      */
     public abstract ByteBuffer slice();
-
-    /**
-     * Returns a string representing the state of this byte buffer.
-     * 
-     * @return a string representing the state of this byte buffer.
-     */
-    @Override
-    public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append(getClass().getName());
-        buf.append(", status: capacity="); //$NON-NLS-1$
-        buf.append(capacity());
-        buf.append(" position="); //$NON-NLS-1$
-        buf.append(position());
-        buf.append(" limit="); //$NON-NLS-1$
-        buf.append(limit());
-        return buf.toString();
-    }
 }

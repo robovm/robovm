@@ -37,7 +37,7 @@ public class InstantiationError extends IncompatibleClassChangeError {
     /**
      * Constructs a new {@code InstantiationError} with the current stack trace
      * and the specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this error.
      */
@@ -48,7 +48,7 @@ public class InstantiationError extends IncompatibleClassChangeError {
     /**
      * Constructs a new {@code InstantiationError} with the current stack trace
      * and the class that caused this error.
-     * 
+     *
      * @param clazz
      *            the class that can not be instantiated.
      */

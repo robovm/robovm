@@ -53,7 +53,7 @@ public class CharArrayWriter extends Writer {
      * Constructs a new {@code CharArrayWriter} which has a buffer allocated
      * with the size of {@code initialSize} characters. The buffer is also used
      * as the {@code lock} to synchronize access to this writer.
-     * 
+     *
      * @param initialSize
      *            the initial size of this CharArrayWriters buffer.
      * @throws IllegalArgumentException
@@ -110,7 +110,7 @@ public class CharArrayWriter extends Writer {
      * Returns the size of this writer, that is the number of characters it
      * stores. This number changes if this writer is reset or when more
      * characters are written to it.
-     * 
+     *
      * @return this CharArrayWriter's current size in characters.
      */
     public int size() {
@@ -123,7 +123,7 @@ public class CharArrayWriter extends Writer {
      * Returns the contents of the receiver as a char array. The array returned
      * is a copy and any modifications made to this writer after calling this
      * method are not reflected in the result.
-     * 
+     *
      * @return this CharArrayWriter's contents as a new char array.
      */
     public char[] toCharArray() {
@@ -138,7 +138,7 @@ public class CharArrayWriter extends Writer {
      * Returns the contents of this {@code CharArrayWriter} as a string. The
      * string returned is a copy and any modifications made to this writer after
      * calling this method are not reflected in the result.
-     * 
+     *
      * @return this CharArrayWriters contents as a new string.
      */
     @Override
@@ -151,7 +151,7 @@ public class CharArrayWriter extends Writer {
     /**
      * Writes {@code count} characters starting at {@code offset} in {@code c}
      * to this writer.
-     * 
+     *
      * @param buffer
      *            the non-null array containing characters to write.
      * @param offset
@@ -176,7 +176,7 @@ public class CharArrayWriter extends Writer {
      * Writes the specified character {@code oneChar} to this writer.
      * This implementation writes the two low order bytes of the integer
      * {@code oneChar} to the buffer.
-     * 
+     *
      * @param oneChar
      *            the character to write.
      */
@@ -191,7 +191,7 @@ public class CharArrayWriter extends Writer {
     /**
      * Writes {@code count} characters starting at {@code offset} from
      * the string {@code str} to this CharArrayWriter.
-     * 
+     *
      * @throws NullPointerException
      *             if {@code str} is {@code null}.
      * @throws StringIndexOutOfBoundsException
@@ -218,7 +218,7 @@ public class CharArrayWriter extends Writer {
      * Writes the contents of this {@code CharArrayWriter} to another {@code
      * Writer}. The output is all the characters that have been written to the
      * receiver since the last reset or since it was created.
-     * 
+     *
      * @param out
      *            the non-null {@code Writer} on which to write the contents.
      * @throws NullPointerException
@@ -235,7 +235,7 @@ public class CharArrayWriter extends Writer {
     /**
      * Appends a char {@code c} to the {@code CharArrayWriter}. The method works
      * the same way as {@code write(c)}.
-     * 
+     *
      * @param c
      *            the character appended to the CharArrayWriter.
      * @return this CharArrayWriter.
@@ -250,7 +250,7 @@ public class CharArrayWriter extends Writer {
      * Appends a {@code CharSequence} to the {@code CharArrayWriter}. The method
      * works the same way as {@code write(csq.toString())}. If {@code csq} is
      * {@code null}, then it will be substituted with the string {@code "null"}.
-     * 
+     *
      * @param csq
      *            the {@code CharSequence} appended to the {@code
      *            CharArrayWriter}, may be {@code null}.
@@ -273,7 +273,7 @@ public class CharArrayWriter extends Writer {
      * CharArrayWriter.write(csq.subSequence(start, end).toString)}. If {@code
      * csq} is {@code null}, then it will be substituted with the string {@code
      * "null"}.
-     * 
+     *
      * @param csq
      *            the {@code CharSequence} appended to the {@code
      *            CharArrayWriter}, may be {@code null}.

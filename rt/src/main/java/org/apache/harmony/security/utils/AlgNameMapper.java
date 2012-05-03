@@ -17,6 +17,7 @@
 
 /**
 * @author Vladimir N. Molotkov
+* @version $Revision$
 */
 
 package org.apache.harmony.security.utils;
@@ -24,11 +25,10 @@ package org.apache.harmony.security.utils;
 import java.security.Provider;
 import java.security.Security;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
-
-import org.apache.harmony.security.Util;
+import java.util.Set;
 import org.apache.harmony.security.asn1.ObjectIdentifier;
 
 /**
@@ -37,12 +37,12 @@ import org.apache.harmony.security.asn1.ObjectIdentifier;
  * providers during initialization.
  */
 public class AlgNameMapper {
-    
+
     // Will search OID mappings for these services
     private static final String[] serviceName = {
-            "Cipher", //$NON-NLS-1$
-            "AlgorithmParameters", //$NON-NLS-1$
-            "Signature" //$NON-NLS-1$
+            "Cipher",
+            "AlgorithmParameters",
+            "Signature"
     };
 
     // These mappings CAN NOT be overridden
@@ -50,26 +50,29 @@ public class AlgNameMapper {
     // during maps initialization
     // (source: http://asn1.elibel.tm.fr):
     private static final String[][] knownAlgMappings = {
-        {"1.2.840.10040.4.1",       "DSA"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.10040.4.3",       "SHA1withDSA"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.113549.1.1.1",    "RSA"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.113549.1.1.2",    "MD2withRSA"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.113549.1.1.4",    "MD5withRSA"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.113549.1.1.5",    "SHA1withRSA"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.113549.1.3.1",    "DiffieHellman"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.113549.1.5.3",    "pbeWithMD5AndDES-CBC"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.113549.1.12.1.3", "pbeWithSHAAnd3-KeyTripleDES-CBC"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.113549.1.12.1.6", "pbeWithSHAAnd40BitRC2-CBC"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.113549.3.2",      "RC2-CBC"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.113549.3.3",      "RC2-EBC"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.113549.3.4",      "RC4"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.113549.3.5",      "RC4WithMAC"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.113549.3.6",      "DESx-CBC"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.113549.3.7",      "TripleDES-CBC"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.113549.3.8",      "rc5CBC"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.113549.3.9",      "RC5-CBC"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"1.2.840.113549.3.10",     "DESCDMF"}, //$NON-NLS-1$ //$NON-NLS-2$
-        {"2.23.42.9.11.4.1",        "ECDSA"}, //$NON-NLS-1$ //$NON-NLS-2$
+        {"1.2.840.10040.4.1",       "DSA"},
+        {"1.2.840.10040.4.3",       "SHA1withDSA"},
+        {"1.2.840.113549.1.1.1",    "RSA"},
+        // BEGIN android-removed
+        // Dropping MD2
+        // {"1.2.840.113549.1.1.2",    "MD2withRSA"},
+        // END android-removed
+        {"1.2.840.113549.1.1.4",    "MD5withRSA"},
+        {"1.2.840.113549.1.1.5",    "SHA1withRSA"},
+        {"1.2.840.113549.1.3.1",    "DiffieHellman"},
+        {"1.2.840.113549.1.5.3",    "pbeWithMD5AndDES-CBC"},
+        {"1.2.840.113549.1.12.1.3", "pbeWithSHAAnd3-KeyTripleDES-CBC"},
+        {"1.2.840.113549.1.12.1.6", "pbeWithSHAAnd40BitRC2-CBC"},
+        {"1.2.840.113549.3.2",      "RC2-CBC"},
+        {"1.2.840.113549.3.3",      "RC2-EBC"},
+        {"1.2.840.113549.3.4",      "RC4"},
+        {"1.2.840.113549.3.5",      "RC4WithMAC"},
+        {"1.2.840.113549.3.6",      "DESx-CBC"},
+        {"1.2.840.113549.3.7",      "TripleDES-CBC"},
+        {"1.2.840.113549.3.8",      "rc5CBC"},
+        {"1.2.840.113549.3.9",      "RC5-CBC"},
+        {"1.2.840.113549.3.10",     "DESCDMF"},
+        {"2.23.42.9.11.4.1",        "ECDSA"},
     };
     // Maps alg name to OID
     private static final Map<String, String> alg2OidMap = new HashMap<String, String>();
@@ -80,7 +83,7 @@ public class AlgNameMapper {
 
     static {
         for (String[] element : knownAlgMappings) {
-            String algUC = Util.toUpperCase(element[1]);
+            String algUC = element[1].toUpperCase(Locale.US);
             alg2OidMap.put(algUC, element[0]);
             oid2AlgMap.put(element[0], algUC);
             // map upper case alg name to its original name
@@ -98,10 +101,10 @@ public class AlgNameMapper {
         }
     }
 
-    // No instances 
+    // No instances
     private AlgNameMapper() {
     }
-  
+
     /**
      * Returns OID for algName
      *
@@ -110,7 +113,7 @@ public class AlgNameMapper {
      */
     public static String map2OID(String algName) {
         // alg2OidMap map contains upper case keys
-        return alg2OidMap.get(Util.toUpperCase(algName));
+        return alg2OidMap.get(algName.toUpperCase(Locale.US));
     }
 
     /**
@@ -133,7 +136,7 @@ public class AlgNameMapper {
      * @return algorithm name
      */
     public static String getStandardName(String algName) {
-        return algAliasesMap.get(Util.toUpperCase(algName));
+        return algAliasesMap.get(algName.toUpperCase(Locale.US));
     }
 
     // Searches given provider for mappings like
@@ -144,15 +147,15 @@ public class AlgNameMapper {
     private static void selectEntries(Provider p) {
         Set<Map.Entry<Object, Object>> entrySet = p.entrySet();
         for (String service : serviceName) {
-            String keyPrfix2find = "Alg.Alias." + service + ".";  //$NON-NLS-1$ //$NON-NLS-2$
+            String keyPrfix2find = "Alg.Alias." + service + ".";
             for (Entry<Object, Object> me : entrySet) {
                 String key = (String)me.getKey();
                 if (key.startsWith(keyPrfix2find)) {
                     String alias = key.substring(keyPrfix2find.length());
                     String alg = (String)me.getValue();
-                    String algUC = Util.toUpperCase(alg);
+                    String algUC = alg.toUpperCase(Locale.US);
                     if (isOID(alias)) {
-                        if (alias.startsWith("OID.")) { //$NON-NLS-1$
+                        if (alias.startsWith("OID.")) {
                             alias = alias.substring(4);
                         }
                         // Do not overwrite already known mappings
@@ -161,7 +164,7 @@ public class AlgNameMapper {
                         if (!oid2AlgContains || !alg2OidContains) {
                             if (!oid2AlgContains) {
                                 oid2AlgMap.put(alias, algUC);
-                            } 
+                            }
                             if (!alg2OidContains) {
                                 alg2OidMap.put(algUC, alias);
                             }
@@ -169,56 +172,33 @@ public class AlgNameMapper {
                             algAliasesMap.put(algUC, alg);
                         }
                            // Do not override known standard names
-                    } else if (!algAliasesMap.containsKey(Util.toUpperCase(alias))) {
-                        algAliasesMap.put(Util.toUpperCase(alias), alg);
+                    } else if (!algAliasesMap.containsKey(alias.toUpperCase(Locale.US))) {
+                        algAliasesMap.put(alias.toUpperCase(Locale.US), alg);
                     }
                 }
             }
         }
     }
-    
+
     /**
      * Checks if parameter represents OID
      *
      * @param alias alias to be checked
-     * @return 'true' if parameter represents OID 
+     * @return 'true' if parameter represents OID
      */
     public static boolean isOID(String alias) {
-        try {
-            // The method makes all needed checks in it.
-            // If alias is not an OID, exception is thrown.
-            ObjectIdentifier.toIntArray(normalize(alias));
-            
-            // will not come here if exception is thrown 
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
-        } 
+        return ObjectIdentifier.isOID(normalize(alias));
     }
 
     /**
      * Removes leading "OID." from oid String passed
      *
      * @param oid string that may contain leading "OID."
-     * @return string passed without leading "OID." 
+     * @return string passed without leading "OID."
      */
     public static String normalize(String oid) {
-        return oid.startsWith("OID.") //$NON-NLS-1$
+        return oid.startsWith("OID.")
             ? oid.substring(4)
             : oid;
-    }
-
-    /**
-     * Present all internal maps as formatted string
-     * @return Internal maps String representation
-     */
-    public static String dump() {
-        StringBuilder sb = new StringBuilder("alg2OidMap: "); //$NON-NLS-1$
-        sb.append(alg2OidMap);
-        sb.append("\noid2AlgMap: "); //$NON-NLS-1$
-        sb.append(oid2AlgMap);
-        sb.append("\nalgAliasesMap: "); //$NON-NLS-1$
-        sb.append(algAliasesMap);
-        return sb.toString();
     }
 }

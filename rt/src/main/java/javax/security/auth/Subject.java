@@ -36,8 +36,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
 
-import org.apache.harmony.auth.internal.nls.Messages;
-
 /**
  * The central class of the {@code javax.security.auth} package representing an
  * authenticated user or entity (both referred to as "subject"). IT defines also
@@ -55,43 +53,42 @@ import org.apache.harmony.auth.internal.nls.Messages;
 public final class Subject implements Serializable {
 
     private static final long serialVersionUID = -8308522755600156056L;
-    
-    private static final AuthPermission _AS = new AuthPermission("doAs"); //$NON-NLS-1$
+
+    private static final AuthPermission _AS = new AuthPermission("doAs");
 
     private static final AuthPermission _AS_PRIVILEGED = new AuthPermission(
-            "doAsPrivileged"); //$NON-NLS-1$
+            "doAsPrivileged");
 
     private static final AuthPermission _SUBJECT = new AuthPermission(
-            "getSubject"); //$NON-NLS-1$
+            "getSubject");
 
     private static final AuthPermission _PRINCIPALS = new AuthPermission(
-            "modifyPrincipals"); //$NON-NLS-1$
+            "modifyPrincipals");
 
     private static final AuthPermission _PRIVATE_CREDENTIALS = new AuthPermission(
-            "modifyPrivateCredentials"); //$NON-NLS-1$
+            "modifyPrivateCredentials");
 
     private static final AuthPermission _PUBLIC_CREDENTIALS = new AuthPermission(
-            "modifyPublicCredentials"); //$NON-NLS-1$
+            "modifyPublicCredentials");
 
     private static final AuthPermission _READ_ONLY = new AuthPermission(
-            "setReadOnly"); //$NON-NLS-1$
+            "setReadOnly");
 
     private final Set<Principal> principals;
 
     private boolean readOnly;
-    
+
     // set of private credentials
     private transient SecureSet<Object> privateCredentials;
 
     // set of public credentials
     private transient SecureSet<Object> publicCredentials;
-    
+
     /**
      * The default constructor initializing the sets of public and private
      * credentials and principals with the empty set.
      */
     public Subject() {
-        super();
         principals = new SecureSet<Principal>(_PRINCIPALS);
         publicCredentials = new SecureSet<Object>(_PUBLIC_CREDENTIALS);
         privateCredentials = new SecureSet<Object>(_PRIVATE_CREDENTIALS);
@@ -141,10 +138,7 @@ public final class Subject implements Serializable {
      * @return the {@code Object} returned when running the {@code action}.
      */
     @SuppressWarnings("unchecked")
-    public static Object doAs(Subject subject, PrivilegedAction action) {
-
-        checkPermission(_AS);
-
+    public static <T> T doAs(Subject subject, PrivilegedAction<T> action) {
         return doAs_PrivilegedAction(subject, action, AccessController.getContext());
     }
 
@@ -164,11 +158,8 @@ public final class Subject implements Serializable {
      * @return the {@code Object} returned when running the {@code action}.
      */
     @SuppressWarnings("unchecked")
-    public static Object doAsPrivileged(Subject subject, PrivilegedAction action,
+    public static <T> T doAsPrivileged(Subject subject, PrivilegedAction<T> action,
             AccessControlContext context) {
-
-        checkPermission(_AS_PRIVILEGED);
-
         if (context == null) {
             return doAs_PrivilegedAction(subject, action, new AccessControlContext(
                     new ProtectionDomain[0]));
@@ -178,7 +169,7 @@ public final class Subject implements Serializable {
 
     // instantiates a new context and passes it to AccessController
     @SuppressWarnings("unchecked")
-    private static Object doAs_PrivilegedAction(Subject subject, PrivilegedAction action,
+    private static <T> T doAs_PrivilegedAction(Subject subject, PrivilegedAction<T> action,
             final AccessControlContext context) {
 
         AccessControlContext newContext;
@@ -194,7 +185,6 @@ public final class Subject implements Serializable {
 
         PrivilegedAction dccAction = new PrivilegedAction() {
             public Object run() {
-
                 return new AccessControlContext(context, combiner);
             }
         };
@@ -217,11 +207,8 @@ public final class Subject implements Serializable {
      *             if running the {@code action} throws an exception.
      */
     @SuppressWarnings("unchecked")
-    public static Object doAs(Subject subject, PrivilegedExceptionAction action)
+    public static <T> T doAs(Subject subject, PrivilegedExceptionAction<T> action)
             throws PrivilegedActionException {
-
-        checkPermission(_AS);
-
         return doAs_PrivilegedExceptionAction(subject, action, AccessController.getContext());
     }
 
@@ -243,12 +230,9 @@ public final class Subject implements Serializable {
      *             if running the {@code action} throws an exception.
      */
     @SuppressWarnings("unchecked")
-    public static Object doAsPrivileged(Subject subject,
-            PrivilegedExceptionAction action, AccessControlContext context)
+    public static <T> T doAsPrivileged(Subject subject,
+            PrivilegedExceptionAction<T> action, AccessControlContext context)
             throws PrivilegedActionException {
-
-        checkPermission(_AS_PRIVILEGED);
-
         if (context == null) {
             return doAs_PrivilegedExceptionAction(subject, action,
                     new AccessControlContext(new ProtectionDomain[0]));
@@ -258,8 +242,8 @@ public final class Subject implements Serializable {
 
     // instantiates a new context and passes it to AccessController
     @SuppressWarnings("unchecked")
-    private static Object doAs_PrivilegedExceptionAction(Subject subject,
-            PrivilegedExceptionAction action, final AccessControlContext context)
+    private static <T> T doAs_PrivilegedExceptionAction(Subject subject,
+            PrivilegedExceptionAction<T> action, final AccessControlContext context)
             throws PrivilegedActionException {
 
         AccessControlContext newContext;
@@ -408,8 +392,6 @@ public final class Subject implements Serializable {
      * works though.
      */
     public void setReadOnly() {
-        checkPermission(_READ_ONLY);
-
         readOnly = true;
     }
 
@@ -429,19 +411,18 @@ public final class Subject implements Serializable {
      */
     @Override
     public String toString() {
-
-        StringBuilder buf = new StringBuilder("Subject:\n"); //$NON-NLS-1$
+        StringBuilder buf = new StringBuilder("Subject:\n");
 
         Iterator<?> it = principals.iterator();
         while (it.hasNext()) {
-            buf.append("\tPrincipal: "); //$NON-NLS-1$
+            buf.append("\tPrincipal: ");
             buf.append(it.next());
             buf.append('\n');
         }
 
         it = publicCredentials.iterator();
         while (it.hasNext()) {
-            buf.append("\tPublic Credential: "); //$NON-NLS-1$
+            buf.append("\tPublic Credential: ");
             buf.append(it.next());
             buf.append('\n');
         }
@@ -450,13 +431,13 @@ public final class Subject implements Serializable {
         it = privateCredentials.iterator();
         try {
             while (it.hasNext()) {
-                buf.append("\tPrivate Credential: "); //$NON-NLS-1$
+                buf.append("\tPrivate Credential: ");
                 buf.append(it.next());
                 buf.append('\n');
             }
         } catch (SecurityException e) {
             buf.delete(offset, buf.length());
-            buf.append("\tPrivate Credentials: no accessible information\n"); //$NON-NLS-1$
+            buf.append("\tPrivate Credentials: no accessible information\n");
         }
         return buf.toString();
     }
@@ -485,9 +466,8 @@ public final class Subject implements Serializable {
      *         context} provided as argument.
      */
     public static Subject getSubject(final AccessControlContext context) {
-        checkPermission(_SUBJECT);
         if (context == null) {
-            throw new NullPointerException(Messages.getString("auth.09")); //$NON-NLS-1$
+            throw new NullPointerException("AccessControlContext cannot be null");
         }
         PrivilegedAction<DomainCombiner> action = new PrivilegedAction<DomainCombiner>() {
             public DomainCombiner run() {
@@ -502,18 +482,9 @@ public final class Subject implements Serializable {
         return ((SubjectDomainCombiner) combiner).getSubject();
     }
 
-    // checks passed permission
-    private static void checkPermission(Permission p) {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(p);
-        }
-    }
-
-    // FIXME is used only in two places. remove?
     private void checkState() {
         if (readOnly) {
-            throw new IllegalStateException(Messages.getString("auth.0A")); //$NON-NLS-1$
+            throw new IllegalStateException("Set is read-only");
         }
     }
 
@@ -528,14 +499,14 @@ public final class Subject implements Serializable {
 
         /*
          * Is used to define a set type for serialization.
-         * 
+         *
          * A type can be principal, priv. or pub. credential set. The spec.
          * doesn't clearly says that priv. and pub. credential sets can be
          * serialized and what classes they are. It is only possible to figure
          * out from writeObject method comments that priv. credential set is
          * serializable and it is an instance of SecureSet class. So pub.
          * credential was implemented by analogy
-         * 
+         *
          * Compatibility issue: the class follows its specified serial form.
          * Also according to the serialization spec. adding new field is a
          * compatible change. So is ok for principal set (because the default
@@ -569,11 +540,9 @@ public final class Subject implements Serializable {
 
             // Subject's constructor receives a Set, we can trusts if a set is from bootclasspath,
             // and not to check whether it contains duplicates or not
-            boolean trust = s.getClass().getClassLoader() == null; 
-            
-            Iterator<? extends SST> it = s.iterator();
-            while (it.hasNext()) {
-                SST o = it.next();
+            boolean trust = s.getClass().getClassLoader() == null;
+
+            for (SST o : s) {
                 verifyElement(o);
                 if (trust || !elements.contains(o)) {
                     elements.add(o);
@@ -588,7 +557,7 @@ public final class Subject implements Serializable {
                 throw new NullPointerException();
             }
             if (permission == _PRINCIPALS && !(Principal.class.isAssignableFrom(o.getClass()))) {
-                throw new IllegalArgumentException(Messages.getString("auth.0B")); //$NON-NLS-1$
+                throw new IllegalArgumentException("Element is not instance of java.security.Principal");
             }
         }
 
@@ -602,7 +571,6 @@ public final class Subject implements Serializable {
             verifyElement(o);
 
             checkState();
-            checkPermission(permission);
 
             if (!elements.contains(o)) {
                 elements.add(o);
@@ -628,8 +596,6 @@ public final class Subject implements Serializable {
                     @Override
                     public SST next() {
                         SST obj = iterator.next();
-                        checkPermission(new PrivateCredentialPermission(obj
-                                .getClass().getName(), principals));
                         return obj;
                     }
                 };
@@ -666,10 +632,8 @@ public final class Subject implements Serializable {
 
                 @Override
                 public boolean add(E o) {
-
                     if (!c.isAssignableFrom(o.getClass())) {
-                        throw new IllegalArgumentException(
-                                Messages.getString("auth.0C", c.getName())); //$NON-NLS-1$
+                        throw new IllegalArgumentException("Invalid type: " + o.getClass());
                     }
 
                     if (elements.contains(o)) {
@@ -700,8 +664,7 @@ public final class Subject implements Serializable {
             };
 
             // FIXME must have permissions for requested priv. credentials
-            for (Iterator<SST> it = iterator(); it.hasNext();) {
-                SST o = it.next();
+            for (SST o : this) {
                 if (c.isAssignableFrom(o.getClass())) {
                     s.add(c.cast(o));
                 }
@@ -727,19 +690,15 @@ public final class Subject implements Serializable {
                 throw new IllegalArgumentException();
             }
 
-            Iterator<SST> it = elements.iterator();
-            while (it.hasNext()) {
-                verifyElement(it.next());
+            for (SST element : elements) {
+                verifyElement(element);
             }
         }
 
+        @SuppressWarnings("UnusedDeclaration")
         private void writeObject(ObjectOutputStream out) throws IOException {
 
             if (permission == _PRIVATE_CREDENTIALS) {
-                // does security check for each private credential
-                for (Iterator<SST> it = iterator(); it.hasNext();) {
-                    it.next();
-                }
                 setType = SET_PrivCred;
             } else if (permission == _PRINCIPALS) {
                 setType = SET_Principal;
@@ -774,7 +733,6 @@ public final class Subject implements Serializable {
              */
             public void remove() {
                 checkState();
-                checkPermission(permission);
                 iterator.remove();
             }
         }

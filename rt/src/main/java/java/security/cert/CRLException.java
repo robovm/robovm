@@ -28,7 +28,7 @@ public class CRLException extends GeneralSecurityException {
 
     /**
      * Creates a new {@code CRLException} with the specified message.
-     * 
+     *
      * @param msg
      *            the detail message for this exception.
      */
@@ -44,7 +44,7 @@ public class CRLException extends GeneralSecurityException {
 
     /**
      * Creates a new {@code CRLException} with the specified message and cause.
-     * 
+     *
      * @param message
      *            the detail message for this exception.
      * @param cause
@@ -56,7 +56,7 @@ public class CRLException extends GeneralSecurityException {
 
     /**
      * Creates a new {@code CRLException} with the specified cause.
-     * 
+     *
      * @param cause
      *            the cause for this exception.
      */

@@ -18,9 +18,7 @@
 package java.security;
 
 import java.security.spec.AlgorithmParameterSpec;
-
 import org.apache.harmony.security.fortress.Engine;
-import org.apache.harmony.security.internal.nls.Messages;
 
 /**
  * {@code AlgorithmParameterGenerator} is an engine class which is capable of
@@ -29,13 +27,13 @@ import org.apache.harmony.security.internal.nls.Messages;
 public class AlgorithmParameterGenerator {
 
     // Store spi service name
-    private static final String SERVICE = "AlgorithmParameterGenerator"; //$NON-NLS-1$
+    private static final String SERVICE = "AlgorithmParameterGenerator";
 
     // Used to access common engine functionality
-    private static Engine engine = new Engine(SERVICE);
+    private static final Engine ENGINE = new Engine(SERVICE);
 
     // Store SecureRandom
-    private static SecureRandom randm = new SecureRandom();
+    private static final SecureRandom RANDOM = new SecureRandom();
 
     // Store used provider
     private final Provider provider;
@@ -77,7 +75,7 @@ public class AlgorithmParameterGenerator {
     /**
      * Returns a new instance of {@code AlgorithmParameterGenerator} for the
      * specified algorithm.
-     * 
+     *
      * @param algorithm
      *            the name of the algorithm to use.
      * @return a new instance of {@code AlgorithmParameterGenerator} for the
@@ -90,20 +88,17 @@ public class AlgorithmParameterGenerator {
     public static AlgorithmParameterGenerator getInstance(String algorithm)
             throws NoSuchAlgorithmException {
         if (algorithm == null) {
-            throw new NullPointerException(Messages.getString("security.01")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
-        synchronized (engine) {
-            engine.getInstance(algorithm, null);
-            return new AlgorithmParameterGenerator(
-                    (AlgorithmParameterGeneratorSpi) engine.spi, engine.provider,
-                    algorithm);
-        }
+        Engine.SpiAndProvider sap = ENGINE.getInstance(algorithm, null);
+        return new AlgorithmParameterGenerator((AlgorithmParameterGeneratorSpi) sap.spi,
+                                               sap.provider, algorithm);
     }
 
     /**
      * Returns a new instance of {@code AlgorithmParameterGenerator} from the
      * specified provider for the specified algorithm.
-     * 
+     *
      * @param algorithm
      *            the name of the algorithm to use.
      * @param provider
@@ -115,15 +110,15 @@ public class AlgorithmParameterGenerator {
      *             if the specified algorithm is not available.
      * @throws NoSuchProviderException
      *             if the specified provider is not available.
+     * @throws IllegalArgumentException if {@code provider == null || provider.isEmpty()}
      * @throws NullPointerException
      *             if {@code algorithm} is {@code null}.
      */
     public static AlgorithmParameterGenerator getInstance(String algorithm,
             String provider) throws NoSuchAlgorithmException,
             NoSuchProviderException {
-        if ((provider == null) || (provider.length() == 0)) {
-            throw new IllegalArgumentException(
-                    Messages.getString("security.02")); //$NON-NLS-1$
+        if (provider == null || provider.isEmpty()) {
+            throw new IllegalArgumentException();
         }
         Provider impProvider = Security.getProvider(provider);
         if (impProvider == null) {
@@ -135,7 +130,7 @@ public class AlgorithmParameterGenerator {
     /**
      * Returns a new instance of {@code AlgorithmParameterGenerator} from the
      * specified provider for the specified algorithm.
-     * 
+     *
      * @param algorithm
      *            the name of the algorithm to use.
      * @param provider
@@ -146,21 +141,19 @@ public class AlgorithmParameterGenerator {
      *             if the specified algorithm is not available.
      * @throws NullPointerException
      *             if {@code algorithm} is {@code null}.
+     * @throws IllegalArgumentException if {@code provider == null}
      */
     public static AlgorithmParameterGenerator getInstance(String algorithm,
             Provider provider) throws NoSuchAlgorithmException {
         if (provider == null) {
-            throw new IllegalArgumentException(Messages.getString("security.04")); //$NON-NLS-1$
+            throw new IllegalArgumentException();
         }
         if (algorithm == null) {
-            throw new NullPointerException(Messages.getString("security.01")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
-        synchronized (engine) {
-            engine.getInstance(algorithm, provider, null);
-            return new AlgorithmParameterGenerator(
-                    (AlgorithmParameterGeneratorSpi) engine.spi, provider,
-                    algorithm);
-        }
+        Object spi = ENGINE.getInstance(algorithm, provider, null);
+        return new AlgorithmParameterGenerator((AlgorithmParameterGeneratorSpi) spi, provider,
+                                               algorithm);
     }
 
     /**
@@ -183,7 +176,7 @@ public class AlgorithmParameterGenerator {
      *            the size (in number of bits).
      */
     public final void init(int size) {
-        spiImpl.engineInit(size, randm);
+        spiImpl.engineInit(size, RANDOM);
     }
 
     /**
@@ -212,7 +205,7 @@ public class AlgorithmParameterGenerator {
      */
     public final void init(AlgorithmParameterSpec genParamSpec)
             throws InvalidAlgorithmParameterException {
-        spiImpl.engineInit(genParamSpec, randm);
+        spiImpl.engineInit(genParamSpec, RANDOM);
     }
 
     /**

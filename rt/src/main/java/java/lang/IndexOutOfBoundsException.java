@@ -35,7 +35,7 @@ public class IndexOutOfBoundsException extends RuntimeException {
     /**
      * Constructs a new {@code IndexOutOfBoundsException} with the current stack
      * trace and the specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

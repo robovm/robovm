@@ -17,6 +17,7 @@
 
 /**
 * @author Vladimir N. Molotkov, Stepan M. Mishura
+* @version $Revision$
 */
 
 package org.apache.harmony.security.asn1;
@@ -26,18 +27,17 @@ import java.io.IOException;
 
 /**
  * This class represents ASN.1 Object Identifier type.
- * 
- * @see http://asn1.elibel.tm.fr/en/standards/index.htm
+ *
+ * @see <a href="http://asn1.elibel.tm.fr/en/standards/index.htm">ASN.1</a>
  */
-
 public class ASN1Oid extends ASN1Primitive {
 
-    // default implementation
+    /** default implementation */
     private static final ASN1Oid ASN1 = new ASN1Oid();
 
     /**
      * Constructs ASN.1 Object Identifier type
-     * 
+     *
      * The constructor is provided for inheritance purposes
      * when there is a need to create a custom ASN.1 Object Identifier type.
      * To get a default implementation it is recommended to use
@@ -49,7 +49,7 @@ public class ASN1Oid extends ASN1Primitive {
 
     /**
      * Returns ASN.1 Object Identifier type default implementation
-     * 
+     *
      * The default implementation works with encoding
      * that is represented as array of integers.
      *
@@ -58,12 +58,6 @@ public class ASN1Oid extends ASN1Primitive {
     public static ASN1Oid getInstance() {
         return ASN1;
     }
-
-    //
-    //
-    // Decode
-    //
-    //
 
     public Object decode(BerInputStream in) throws IOException {
         in.readOID();
@@ -77,10 +71,9 @@ public class ASN1Oid extends ASN1Primitive {
     /**
      * Extracts array of integers from BER input stream.
      *
-     * @param in - BER input stream
      * @return array of integers
      */
-    public Object getDecodedObject(BerInputStream in) throws IOException {
+    @Override public Object getDecodedObject(BerInputStream in) throws IOException {
         // Allocate and decode
         int oidElement = in.oidElement;
         int[] oid = new int[oidElement];
@@ -104,12 +97,6 @@ public class ASN1Oid extends ASN1Primitive {
         }
         return oid;
     }
-
-    //
-    //
-    // Encode
-    //
-    //
 
     public void encodeContent(BerOutputStream out) {
         out.encodeOID();
@@ -143,23 +130,13 @@ public class ASN1Oid extends ASN1Primitive {
         out.length = length;
     }
 
-    //
-    //
-    // OID encoder/decoder for mapping to string 
-    //
-    //
-
-    private final static ASN1Oid STRING_OID = new ASN1Oid() {
-
-        public Object getDecodedObject(BerInputStream in) throws IOException {
-
+    private static final ASN1Oid STRING_OID = new ASN1Oid() {
+        @Override public Object getDecodedObject(BerInputStream in) throws IOException {
             StringBuilder buf = new StringBuilder();
-
-            int element;
 
             //Special handling for the first packed OID element
             int octet = in.buffer[in.contentOffset];
-            element = octet & 0x7F;
+            int element = octet & 0x7F;
 
             int index = 0;
             while ((octet & 0x80) != 0) {
@@ -198,18 +175,16 @@ public class ASN1Oid extends ASN1Primitive {
             return buf.toString();
         }
 
-        public void setEncodingContent(BerOutputStream out) {
-
+        @Override public void setEncodingContent(BerOutputStream out) {
             //FIXME this is a stub for a while
             out.content = ObjectIdentifier.toIntArray((String) out.content);
-
             super.setEncodingContent(out);
         }
     };
 
     /**
      * Returns ASN.1 Object Identifier type implementation
-     * 
+     *
      * This implementation works with encoding
      * that is mapped to java.lang.String object.
      *

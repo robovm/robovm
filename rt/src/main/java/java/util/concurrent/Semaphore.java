@@ -162,8 +162,11 @@ public class Semaphore implements java.io.Serializable {
 
         protected final boolean tryReleaseShared(int releases) {
             for (;;) {
-                int p = getState();
-                if (compareAndSetState(p, p + releases))
+                int current = getState();
+                int next = current + releases;
+                if (next < current) // overflow
+                    throw new Error("Maximum permit count exceeded");
+                if (compareAndSetState(current, next))
                     return true;
             }
         }
@@ -172,6 +175,8 @@ public class Semaphore implements java.io.Serializable {
             for (;;) {
                 int current = getState();
                 int next = current - reductions;
+                if (next > current) // underflow
+                    throw new Error("Permit count underflow");
                 if (compareAndSetState(current, next))
                     return;
             }
@@ -189,7 +194,7 @@ public class Semaphore implements java.io.Serializable {
     /**
      * NonFair version
      */
-    final static class NonfairSync extends Sync {
+    static final class NonfairSync extends Sync {
         private static final long serialVersionUID = -2694183684443567898L;
 
         NonfairSync(int permits) {
@@ -204,7 +209,7 @@ public class Semaphore implements java.io.Serializable {
     /**
      * Fair version
      */
-    final static class FairSync extends Sync {
+    static final class FairSync extends Sync {
         private static final long serialVersionUID = 2014338818796000944L;
 
         FairSync(int permits) {
@@ -212,10 +217,8 @@ public class Semaphore implements java.io.Serializable {
         }
 
         protected int tryAcquireShared(int acquires) {
-            Thread current = Thread.currentThread();
             for (;;) {
-                Thread first = getFirstQueuedThread();
-                if (first != null && first != current)
+                if (hasQueuedPredecessors())
                     return -1;
                 int available = getState();
                 int remaining = available - acquires;
@@ -250,7 +253,7 @@ public class Semaphore implements java.io.Serializable {
      *        else {@code false}
      */
     public Semaphore(int permits, boolean fair) {
-        sync = (fair)? new FairSync(permits) : new NonfairSync(permits);
+        sync = fair ? new FairSync(permits) : new NonfairSync(permits);
     }
 
     /**

@@ -17,32 +17,27 @@
 
 /**
 * @author Vladimir N. Molotkov, Stepan M. Mishura
+* @version $Revision$
 */
 
 package org.apache.harmony.security.asn1;
 
 import java.io.IOException;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
-
 /**
  * This class represents explicitly tagged ASN.1 type.
- * 
- * @see http://asn1.elibel.tm.fr/en/standards/index.htm
+ *
+ * @see <a href="http://asn1.elibel.tm.fr/en/standards/index.htm">ASN.1</a>
  */
+public final class ASN1Explicit extends ASN1Constructed {
 
-public final class ASN1Explicit extends ASN1Constructured {
-
-    /**
-     * Tagged type
-     */
+    /** Tagged type */
     public final ASN1Type type;
 
     /**
      * Constructs explicitly tagged ASN.1 type
-     * with context-specific tag class and specified tag number. 
-     * 
+     * with context-specific tag class and specified tag number.
+     *
      * @param tagNumber - ASN.1 tag number
      * @param type - ASN.1 type to be tagged
      * @throws IllegalArgumentException - if tagNumber is invalid
@@ -53,7 +48,7 @@ public final class ASN1Explicit extends ASN1Constructured {
 
     /**
      * Constructs explicitly tagged ASN.1 type.
-     * 
+     *
      * @param tagClass - ASN.1 tag class.
      * @param tagNumber - ASN.1 tag number
      * @param type - ASN.1 type to be tagged
@@ -61,22 +56,14 @@ public final class ASN1Explicit extends ASN1Constructured {
      */
     public ASN1Explicit(int tagClass, int tagNumber, ASN1Type type) {
         super(tagClass, tagNumber);
-
         this.type = type;
     }
 
-    //
-    //
-    // Decode
-    //
-    //
-
     public Object decode(BerInputStream in) throws IOException {
         if (constrId != in.tag) {
-            throw new ASN1Exception(
-                    Messages.getString("security.13F", //$NON-NLS-1$
-                    new Object[] { in.tagOffset, Integer.toHexString(constrId),
-                            Integer.toHexString(in.tag) }));
+            throw new ASN1Exception("ASN.1 explicitly tagged type is expected at [" +
+                    in.tagOffset + "]. Expected tag: " + Integer.toHexString(constrId) + ", " +
+                    "but encountered tag " + Integer.toHexString(in.tag));
         }
         in.next();
 
@@ -88,12 +75,6 @@ public final class ASN1Explicit extends ASN1Constructured {
         return getDecodedObject(in);
     }
 
-    //
-    //
-    // Encode
-    //
-    //
-
     public void encodeContent(BerOutputStream out) {
         out.encodeExplicit(this);
     }
@@ -102,8 +83,7 @@ public final class ASN1Explicit extends ASN1Constructured {
         out.getExplicitLength(this);
     }
 
-    public String toString() {
-        //FIXME fix performance
-        return super.toString() + " for type " + type; //$NON-NLS-1$
+    @Override public String toString() {
+        return super.toString() + " for type " + type;
     }
 }

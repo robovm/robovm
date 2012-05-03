@@ -25,7 +25,7 @@ public interface Appendable {
 
     /**
      * Provides the additional data to be read.
-     * 
+     *
      * @param src the source data to be appended.
      */
     public void append(byte[] src);

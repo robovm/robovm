@@ -42,28 +42,23 @@ public abstract class AbstractSelectableChannel extends SelectableChannel {
      */
     private List<SelectionKey> keyList = new ArrayList<SelectionKey>();
 
-    // Marker class so lock type shows up in profilers
-    static private class BlockingLock {
-    }
-
-    private final Object blockingLock = new BlockingLock();
+    private final Object blockingLock = new Object();
 
     boolean isBlocking = true;
 
     /**
      * Constructs a new {@code AbstractSelectableChannel}.
-     * 
+     *
      * @param selectorProvider
      *            the selector provider that creates this channel.
      */
     protected AbstractSelectableChannel(SelectorProvider selectorProvider) {
-        super();
         provider = selectorProvider;
     }
 
     /**
      * Returns the selector provider that has created this channel.
-     * 
+     *
      * @see java.nio.channels.SelectableChannel#provider()
      * @return this channel's selector provider.
      */
@@ -93,9 +88,8 @@ public abstract class AbstractSelectableChannel extends SelectableChannel {
      */
     @Override
     synchronized public final SelectionKey keyFor(Selector selector) {
-        for (int i = 0; i < keyList.size(); i++) {
-            SelectionKey key = keyList.get(i);
-            if (null != key && key.selector() == selector) {
+        for (SelectionKey key : keyList) {
+            if (key != null && key.selector() == selector) {
                 return key;
             }
         }
@@ -109,7 +103,7 @@ public abstract class AbstractSelectableChannel extends SelectableChannel {
      * the corresponding selection key is returned. If the channel is not yet
      * registered, this method calls the {@code register} method of
      * {@code selector} and adds the selection key to this channel's key set.
-     * 
+     *
      * @param selector
      *            the selector with which to register this channel.
      * @param interestSet
@@ -144,7 +138,7 @@ public abstract class AbstractSelectableChannel extends SelectableChannel {
                 throw new IllegalBlockingModeException();
             }
             if (!selector.isOpen()) {
-                if (0 == interestSet) {
+                if (interestSet == 0) {
                     // throw ISE exactly to keep consistency
                     throw new IllegalSelectorException();
                 }
@@ -152,9 +146,8 @@ public abstract class AbstractSelectableChannel extends SelectableChannel {
                 throw new NullPointerException();
             }
             SelectionKey key = keyFor(selector);
-            if (null == key) {
-                key = ((AbstractSelector) selector).register(this, interestSet,
-                        attachment);
+            if (key == null) {
+                key = ((AbstractSelector) selector).register(this, interestSet, attachment);
                 keyList.add(key);
             } else {
                 if (!key.isValid()) {
@@ -172,16 +165,15 @@ public abstract class AbstractSelectableChannel extends SelectableChannel {
      * {@code implCloseSelectableChannel()} first, then loops through the list
      * of selection keys and cancels them, which unregisters this channel from
      * all selectors it is registered with.
-     * 
+     *
      * @throws IOException
      *             if a problem occurs while closing the channel.
      */
     @Override
     synchronized protected final void implCloseChannel() throws IOException {
         implCloseSelectableChannel();
-        for (int i = 0; i < keyList.size(); i++) {
-            SelectionKey key = keyList.get(i);
-            if (null != key) {
+        for (SelectionKey key : keyList) {
+            if (key != null) {
                 key.cancel();
             }
         }
@@ -190,7 +182,7 @@ public abstract class AbstractSelectableChannel extends SelectableChannel {
     /**
      * Implements the closing function of the SelectableChannel. This method is
      * called from {@code implCloseChannel()}.
-     * 
+     *
      * @throws IOException
      *             if an I/O exception occurs.
      */
@@ -225,7 +217,7 @@ public abstract class AbstractSelectableChannel extends SelectableChannel {
      * other calls to this method or to {@code register} are executing. The
      * actual setting of the mode is done by calling
      * {@code implConfigureBlocking(boolean)}.
-     * 
+     *
      * @see java.nio.channels.SelectableChannel#configureBlocking(boolean)
      * @param blockingMode
      *            {@code true} for setting this channel's mode to blocking,
@@ -240,41 +232,37 @@ public abstract class AbstractSelectableChannel extends SelectableChannel {
      *             if an I/O error occurs.
      */
     @Override
-    public final SelectableChannel configureBlocking(boolean blockingMode)
-            throws IOException {
-        if (isOpen()) {
-            synchronized (blockingLock) {
-                if (isBlocking == blockingMode) {
-                    return this;
-                }
-                if (blockingMode && containsValidKeys()) {
-                    throw new IllegalBlockingModeException();
-                }
-                implConfigureBlocking(blockingMode);
-                isBlocking = blockingMode;
-            }
-            return this;
+    public final SelectableChannel configureBlocking(boolean blockingMode) throws IOException {
+        if (!isOpen()) {
+            throw new ClosedChannelException();
         }
-        throw new ClosedChannelException();
+        synchronized (blockingLock) {
+            if (isBlocking == blockingMode) {
+                return this;
+            }
+            if (blockingMode && containsValidKeys()) {
+                throw new IllegalBlockingModeException();
+            }
+            implConfigureBlocking(blockingMode);
+            isBlocking = blockingMode;
+        }
+        return this;
     }
 
     /**
-     * Implements the setting of the blocking mode.
-     * 
-     * @param blockingMode
-     *            {@code true} for setting this channel's mode to blocking,
-     *            {@code false} to set it to non-blocking.
+     * Implements the configuration of blocking/non-blocking mode.
+     *
+     * @param blocking true for blocking, false for non-blocking.
      * @throws IOException
      *             if an I/O error occurs.
      */
-    protected abstract void implConfigureBlocking(boolean blockingMode)
-            throws IOException;
+    protected abstract void implConfigureBlocking(boolean blocking) throws IOException;
 
     /*
      * package private for deregister method in AbstractSelector.
      */
     synchronized void deregister(SelectionKey k) {
-        if (null != keyList) {
+        if (keyList != null) {
             keyList.remove(k);
         }
     }
@@ -284,8 +272,7 @@ public abstract class AbstractSelectableChannel extends SelectableChannel {
      * otherwise.
      */
     private synchronized boolean containsValidKeys() {
-        for (int i = 0; i < keyList.size(); i++) {
-            SelectionKey key = keyList.get(i);
+        for (SelectionKey key : keyList) {
             if (key != null && key.isValid()) {
                 return true;
             }

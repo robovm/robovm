@@ -25,8 +25,6 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
  * An immutable certificate path that can be validated. All certificates in the
  * path are of the same type (i.e., X509).
@@ -114,32 +112,31 @@ public abstract class CertPath implements Serializable {
      */
     public String toString() {
         StringBuilder sb = new StringBuilder(getType());
-        sb.append(" Cert Path, len="); //$NON-NLS-1$
+        sb.append(" Cert Path, len=");
         sb.append(getCertificates().size());
-        sb.append(": [\n"); //$NON-NLS-1$
+        sb.append(": [\n");
         int n=1;
-        for (Iterator i=getCertificates().iterator();
-                      i.hasNext(); n++) {
-            sb.append("---------------certificate "); //$NON-NLS-1$
+        for (Iterator<? extends Certificate> i=getCertificates().iterator(); i.hasNext(); n++) {
+            sb.append("---------------certificate ");
             sb.append(n);
-            sb.append("---------------\n"); //$NON-NLS-1$
+            sb.append("---------------\n");
             sb.append(((Certificate)i.next()).toString());
         }
-        sb.append("\n]"); //$NON-NLS-1$
+        sb.append("\n]");
         return sb.toString();
     }
 
     /**
      * Returns an immutable List of the {@code Certificate}s contained
      * in the {@code CertPath}.
-     * 
+     *
      * @return a list of {@code Certificate}s in the {@code CertPath}.
      */
     public abstract List<? extends Certificate> getCertificates();
 
     /**
      * Returns an encoding of the {@code CertPath} using the default encoding.
-     * 
+     *
      * @return default encoding of the {@code CertPath}.
      * @throws CertificateEncodingException
      *             if the encoding fails.
@@ -149,7 +146,7 @@ public abstract class CertPath implements Serializable {
 
     /**
      * Returns an encoding of the {@code CertPath} using the specified encoding.
-     * 
+     *
      * @param encoding
      *            encoding that should be generated.
      * @return default encoding of the {@code CertPath}.
@@ -162,7 +159,7 @@ public abstract class CertPath implements Serializable {
     /**
      * Returns an {@code Iterator} over the supported encodings for a
      * representation of the certificate path.
-     * 
+     *
      * @return {@code Iterator} over supported encodings (as {@code String}s).
      */
     public abstract Iterator<String> getEncodings();
@@ -178,8 +175,7 @@ public abstract class CertPath implements Serializable {
         try {
             return new CertPathRep(getType(), getEncoded());
         } catch (CertificateEncodingException e) {
-            throw new NotSerializableException (
-                    Messages.getString("security.66", e)); //$NON-NLS-1$
+            throw new NotSerializableException("Could not create serialization object: " + e);
         }
     }
 
@@ -198,8 +194,8 @@ public abstract class CertPath implements Serializable {
         // Force default serialization to use writeUnshared/readUnshared
         // for cert path data
         private static final ObjectStreamField[] serialPersistentFields = {
-             new ObjectStreamField("type", String.class), //$NON-NLS-1$
-             new ObjectStreamField("data", byte[].class, true) //$NON-NLS-1$
+            new ObjectStreamField("type", String.class),
+            new ObjectStreamField("data", byte[].class, true),
         };
 
         /**
@@ -229,8 +225,7 @@ public abstract class CertPath implements Serializable {
                 CertificateFactory cf = CertificateFactory.getInstance(type);
                 return cf.generateCertPath(new ByteArrayInputStream(data));
             } catch (Throwable t) {
-                throw new NotSerializableException(
-                        Messages.getString("security.67", t)); //$NON-NLS-1$
+                throw new NotSerializableException("Could not resolve cert path: " + t);
             }
         }
     }

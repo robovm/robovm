@@ -27,15 +27,14 @@ package java.nio;
  * <p>
  * This class is marked final for runtime performance.
  * </p>
- * 
+ *
  */
 final class ReadWriteDoubleArrayBuffer extends DoubleArrayBuffer {
 
-    static ReadWriteDoubleArrayBuffer copy(DoubleArrayBuffer other,
-            int markOfOther) {
-        ReadWriteDoubleArrayBuffer buf = new ReadWriteDoubleArrayBuffer(other
-                .capacity(), other.backingArray, other.offset);
-        buf.limit = other.limit();
+    static ReadWriteDoubleArrayBuffer copy(DoubleArrayBuffer other, int markOfOther) {
+        ReadWriteDoubleArrayBuffer buf =
+                new ReadWriteDoubleArrayBuffer(other.capacity(), other.backingArray, other.offset);
+        buf.limit = other.limit;
         buf.position = other.position();
         buf.mark = markOfOther;
         return buf;
@@ -49,8 +48,7 @@ final class ReadWriteDoubleArrayBuffer extends DoubleArrayBuffer {
         super(capacity);
     }
 
-    ReadWriteDoubleArrayBuffer(int capacity, double[] backingArray,
-            int arrayOffset) {
+    ReadWriteDoubleArrayBuffer(int capacity, double[] backingArray, int arrayOffset) {
         super(capacity, backingArray, arrayOffset);
     }
 
@@ -61,8 +59,7 @@ final class ReadWriteDoubleArrayBuffer extends DoubleArrayBuffer {
 
     @Override
     public DoubleBuffer compact() {
-        System.arraycopy(backingArray, position + offset, backingArray, offset,
-                remaining());
+        System.arraycopy(backingArray, position + offset, backingArray, offset, remaining());
         position = limit - position;
         limit = capacity;
         mark = UNSET_MARK;
@@ -105,31 +102,24 @@ final class ReadWriteDoubleArrayBuffer extends DoubleArrayBuffer {
 
     @Override
     public DoubleBuffer put(int index, double c) {
-        if (index < 0 || index >= limit) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkIndex(index);
         backingArray[offset + index] = c;
         return this;
     }
 
     @Override
-    public DoubleBuffer put(double[] src, int off, int len) {
-        int length = src.length;
-        if (off < 0 || len < 0 || (long) off + (long) len > length) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (len > remaining()) {
+    public DoubleBuffer put(double[] src, int srcOffset, int doubleCount) {
+        if (doubleCount > remaining()) {
             throw new BufferOverflowException();
         }
-        System.arraycopy(src, off, backingArray, offset + position, len);
-        position += len;
+        System.arraycopy(src, srcOffset, backingArray, offset + position, doubleCount);
+        position += doubleCount;
         return this;
     }
 
     @Override
     public DoubleBuffer slice() {
-        return new ReadWriteDoubleArrayBuffer(remaining(), backingArray, offset
-                + position);
+        return new ReadWriteDoubleArrayBuffer(remaining(), backingArray, offset + position);
     }
 
 }

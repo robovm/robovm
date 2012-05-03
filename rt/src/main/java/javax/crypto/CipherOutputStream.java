@@ -15,16 +15,12 @@
  *  limitations under the License.
  */
 
-/**
-* @author Alexander Y. Kleymenov
-*/
-
 package javax.crypto;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import javax.crypto.NullCipher;
+import libcore.io.Streams;
 
 /**
  * This class wraps an output stream and a cipher so that {@code write} methods
@@ -39,7 +35,6 @@ import javax.crypto.NullCipher;
 public class CipherOutputStream extends FilterOutputStream {
 
     private final Cipher cipher;
-    private final byte[] arr = new byte[1];
 
     /**
      * Creates a new {@code CipherOutputStream} instance for an {@code
@@ -76,27 +71,8 @@ public class CipherOutputStream extends FilterOutputStream {
      * @throws IOException
      *             if an error occurs.
      */
-    @Override
-    public void write(int b) throws IOException {
-        byte[] result;
-        arr[0] = (byte) b;
-        result = cipher.update(arr);
-        if (result != null) {
-            out.write(result);
-        }
-    }
-
-    /**
-     * Writes the buffer of bytes to this cipher output stream.
-     *
-     * @param b
-     *            the buffer of bytes.
-     * @throws IOException
-     *             if an error occurs.
-     */
-    @Override
-    public void write(byte[] b) throws IOException {
-        write(b, 0, b.length);
+    @Override public void write(int b) throws IOException {
+        Streams.writeSingleByte(this, b);
     }
 
     /**
@@ -112,8 +88,7 @@ public class CipherOutputStream extends FilterOutputStream {
      * @throws IOException
      *             if an error occurs.
      */
-    @Override
-    public void write(byte[] b, int off, int len) throws IOException {
+    @Override public void write(byte[] b, int off, int len) throws IOException {
         if (len == 0) {
             return;
         }
@@ -168,4 +143,3 @@ public class CipherOutputStream extends FilterOutputStream {
         }
     }
 }
-

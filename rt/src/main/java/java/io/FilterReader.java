@@ -24,7 +24,7 @@ package java.io;
  * decompression of the underlying reader. Readers that wrap another reader and
  * provide some additional functionality on top of it usually inherit from this
  * class.
- * 
+ *
  * @see FilterWriter
  */
 public abstract class FilterReader extends Reader {
@@ -36,7 +36,7 @@ public abstract class FilterReader extends Reader {
 
     /**
      * Constructs a new FilterReader on the Reader {@code in}.
-     * 
+     *
      * @param in
      *            The non-null Reader to filter reads on.
      */
@@ -47,7 +47,7 @@ public abstract class FilterReader extends Reader {
 
     /**
      * Closes this reader. This implementation closes the filtered reader.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing this reader.
      */
@@ -65,7 +65,7 @@ public abstract class FilterReader extends Reader {
      * position, provided that {@code readlimit} has not been surpassed.
      * <p>
      * This implementation sets a mark in the filtered reader.
-     * 
+     *
      * @param readlimit
      *            the number of bytes that can be read from this reader before
      *            the mark is invalidated.
@@ -84,7 +84,7 @@ public abstract class FilterReader extends Reader {
     /**
      * Indicates whether this reader supports {@code mark()} and {@code reset()}.
      * This implementation returns whether the filtered reader supports marking.
-     * 
+     *
      * @return {@code true} if {@code mark()} and {@code reset()} are supported
      *         by the filtered reader, {@code false} otherwise.
      * @see #mark(int)
@@ -102,7 +102,7 @@ public abstract class FilterReader extends Reader {
      * Reads a single character from the filtered reader and returns it as an
      * integer with the two higher-order bytes set to 0. Returns -1 if the end
      * of the filtered reader has been reached.
-     * 
+     *
      * @return The character read or -1 if the end of the filtered reader has
      *         been reached.
      * @throws IOException
@@ -120,7 +120,7 @@ public abstract class FilterReader extends Reader {
      * in the byte array {@code buffer} starting at {@code offset}. Returns the
      * number of characters actually read or -1 if no characters were read and
      * the end of the filtered reader was encountered.
-     * 
+     *
      * @param buffer
      *            the char array in which to store the characters read.
      * @param offset
@@ -145,7 +145,7 @@ public abstract class FilterReader extends Reader {
      * the result is {@code true}, the next {@code read()} will not block. If
      * the result is {@code false}, this reader may or may not block when
      * {@code read()} is sent.
-     * 
+     *
      * @return {@code true} if this reader will not block when {@code read()}
      *         is called, {@code false} if unknown or blocking will occur.
      * @throws IOException
@@ -164,7 +164,7 @@ public abstract class FilterReader extends Reader {
      * this reader was not marked, the behavior depends on the implementation of
      * {@code reset()} in the Reader subclass that is filtered by this reader.
      * The default behavior for Reader is to throw an {@code IOException}.
-     * 
+     *
      * @throws IOException
      *             if a problem occurred or the filtered reader does not support
      *             {@code mark()} and {@code reset()}.
@@ -179,12 +179,10 @@ public abstract class FilterReader extends Reader {
     }
 
     /**
-     * Skips {@code count} characters in this reader. Subsequent {@code read()}'s
-     * will not return these characters unless {@code reset()} is used. The
+     * Skips {@code charCount} characters in this reader. Subsequent calls to {@code read}
+     * will not return these characters unless {@code reset} is used. The
      * default implementation is to skip characters in the filtered reader.
-     * 
-     * @param count
-     *            the maximum number of characters to skip.
+     *
      * @return the number of characters actually skipped.
      * @throws IOException
      *             if the filtered reader is closed or some other I/O error
@@ -194,9 +192,9 @@ public abstract class FilterReader extends Reader {
      * @see #reset()
      */
     @Override
-    public long skip(long count) throws IOException {
+    public long skip(long charCount) throws IOException {
         synchronized (lock) {
-            return in.skip(count);
+            return in.skip(charCount);
         }
     }
 }

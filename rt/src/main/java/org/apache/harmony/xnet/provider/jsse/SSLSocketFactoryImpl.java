@@ -17,44 +17,44 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import org.apache.harmony.xnet.provider.jsse.SSLSocketWrapper;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.KeyManagementException;
-
 import javax.net.ssl.SSLSocketFactory;
+import libcore.util.EmptyArray;
 
 /**
  * Implementation of SSLSocketFactory.
  */
 public class SSLSocketFactoryImpl extends SSLSocketFactory {
 
-    private SSLParameters sslParameters;
-    private IOException instantiationException;
+    private final SSLParametersImpl sslParameters;
+    private final IOException instantiationException;
 
     /**
      * Constructor.
      */
     public SSLSocketFactoryImpl() {
-        super();
+        SSLParametersImpl sslParametersLocal = null;
+        IOException instantiationExceptionLocal = null;
         try {
-            sslParameters = SSLParameters.getDefault();
+            sslParametersLocal = SSLParametersImpl.getDefault();
         } catch (KeyManagementException e) {
-            instantiationException =
-                new IOException("Delayed instantiation exception:");
-            instantiationException.initCause(e);
+            instantiationExceptionLocal = new IOException("Delayed instantiation exception:");
+            instantiationExceptionLocal.initCause(e);
         }
+        this.sslParameters = sslParametersLocal;
+        this.instantiationException = instantiationExceptionLocal;
     }
 
     /**
      * Constructor.
      */
-    protected SSLSocketFactoryImpl(SSLParameters sslParameters) {
-        super();
+    protected SSLSocketFactoryImpl(SSLParametersImpl sslParameters) {
         this.sslParameters = sslParameters;
+        this.instantiationException = null;
     }
 
     /**
@@ -63,7 +63,7 @@ public class SSLSocketFactoryImpl extends SSLSocketFactory {
     @Override
     public String[] getDefaultCipherSuites() {
         if (instantiationException != null) {
-            return new String[0];
+            return EmptyArray.STRING;
         }
         return sslParameters.getEnabledCipherSuites();
     }
@@ -74,7 +74,7 @@ public class SSLSocketFactoryImpl extends SSLSocketFactory {
     @Override
     public String[] getSupportedCipherSuites() {
         if (instantiationException != null) {
-            return new String[0];
+            return EmptyArray.STRING;
         }
         return CipherSuite.getSupportedCipherSuiteNames();
     }
@@ -88,7 +88,7 @@ public class SSLSocketFactoryImpl extends SSLSocketFactory {
         if (instantiationException != null) {
             throw instantiationException;
         }
-        return new SSLSocketWrapper(s, autoClose, (SSLParameters) sslParameters
+        return new SSLSocketWrapper(s, autoClose, (SSLParametersImpl) sslParameters
                 .clone());
     }
 
@@ -102,7 +102,7 @@ public class SSLSocketFactoryImpl extends SSLSocketFactory {
         if (instantiationException != null) {
             throw instantiationException;
         }
-        return new SSLSocketImpl((SSLParameters) sslParameters.clone());
+        return new SSLSocketImpl((SSLParametersImpl) sslParameters.clone());
     }
 
     /**
@@ -115,7 +115,7 @@ public class SSLSocketFactoryImpl extends SSLSocketFactory {
             throw instantiationException;
         }
         return new SSLSocketImpl(host, port,
-                (SSLParameters) sslParameters.clone());
+                (SSLParametersImpl) sslParameters.clone());
     }
 
     /**
@@ -129,7 +129,7 @@ public class SSLSocketFactoryImpl extends SSLSocketFactory {
             throw instantiationException;
         }
         return new SSLSocketImpl(host, port, localHost, localPort,
-                (SSLParameters) sslParameters.clone());
+                (SSLParametersImpl) sslParameters.clone());
     }
 
     /**
@@ -142,7 +142,7 @@ public class SSLSocketFactoryImpl extends SSLSocketFactory {
             throw instantiationException;
         }
         return new SSLSocketImpl(host, port,
-                (SSLParameters) sslParameters.clone());
+                (SSLParametersImpl) sslParameters.clone());
     }
 
     /**
@@ -155,9 +155,8 @@ public class SSLSocketFactoryImpl extends SSLSocketFactory {
             throw instantiationException;
         }
         return new SSLSocketImpl(address, port, localAddress, localPort,
-                (SSLParameters) sslParameters.clone());
+                (SSLParametersImpl) sslParameters.clone());
     }
 
     // ------------------------------------------------------------------
 }
-

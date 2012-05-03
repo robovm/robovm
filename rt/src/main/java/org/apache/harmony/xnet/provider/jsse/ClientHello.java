@@ -20,12 +20,14 @@ package org.apache.harmony.xnet.provider.jsse;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import libcore.io.Streams;
+import libcore.util.EmptyArray;
 
 /**
  * Represents Client Hello message
- * @see TLS 1.0 spec., 7.4.1.2. Client hello
- * (http://www.ietf.org/rfc/rfc2246.txt)
- * 
+ * @see <a href="http://www.ietf.org/rfc/rfc2246.txt">TLS 1.0 spec., 7.4.1.2.
+ * Client hello</a>
+ *
  */
 public class ClientHello extends Message {
 
@@ -87,7 +89,7 @@ public class ClientHello extends Message {
         client_version = new byte[2];
         client_version[0] = (byte) in.readUint8();
         client_version[1] = (byte) in.readUint8();
-        in.read(random, 0, 32);
+        Streams.readFully(in, random);
         int size = in.read();
         session_id = new byte[size];
         in.read(session_id, 0, size);
@@ -141,7 +143,7 @@ public class ClientHello extends Message {
         if (challenge_length < 16) {
             fatalAlert(AlertProtocol.DECODE_ERROR, "DECODE ERROR: incorrect V2ClientHello, short challenge data");
         }
-        session_id = new byte[0];
+        session_id = EmptyArray.BYTE;
         cipher_suites = new CipherSuite[cipher_spec_length/3];
         for (int i = 0; i < cipher_suites.length; i++) {
             byte b0 = (byte) in.read();
@@ -150,12 +152,12 @@ public class ClientHello extends Message {
             cipher_suites[i] = CipherSuite.getByCode(b0, b1, b2);
         }
         compression_methods = new byte[] { 0 }; // CompressionMethod.null
-        
+
         if (challenge_length < 32) {
             Arrays.fill(random, 0, 32 - challenge_length, (byte)0);
-            System.arraycopy(in.read(challenge_length), 0, random, 32 - challenge_length, challenge_length);            
+            System.arraycopy(in.read(challenge_length), 0, random, 32 - challenge_length, challenge_length);
         } else if (challenge_length == 32) {
-            System.arraycopy(in.read(32), 0, random, 0, 32);            
+            System.arraycopy(in.read(32), 0, random, 0, 32);
         } else {
             System.arraycopy(in.read(challenge_length), challenge_length - 32, random, 0, 32);
         }
@@ -163,7 +165,7 @@ public class ClientHello extends Message {
             fatalAlert(AlertProtocol.DECODE_ERROR, "DECODE ERROR: incorrect V2ClientHello, extra data");
         }
         this.length = 38 + session_id.length + (cipher_suites.length << 1)
-                + compression_methods.length;    
+                + compression_methods.length;
     }
 
     /**
@@ -196,7 +198,7 @@ public class ClientHello extends Message {
     }
 
     /**
-     * Returns message type 
+     * Returns message type
      * @return
      */
     @Override

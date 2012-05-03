@@ -25,7 +25,7 @@ import java.util.Enumeration;
  * <p>
  * An ACL is a set of {@link AclEntry} objects.
  * <p>
- * An {@code AclEntry} is a list of {@link Permission}s that are granted 
+ * An {@code AclEntry} is a list of {@link Permission}s that are granted
  * (<i>positive</i>) or denied
  * (<i>negative</i>) to a {@link Principal}.
  * <p>
@@ -52,7 +52,7 @@ public interface Acl extends Owner {
 
     /**
      * Sets the name of this <i>ACL</i> instance.
-     * 
+     *
      * @param caller
      *            the invoking {@code Principal}.
      * @param name
@@ -65,7 +65,7 @@ public interface Acl extends Owner {
 
     /**
      * Returns the name of this <i>ACL</i> instance.
-     * 
+     *
      * @return the name of this <i>ACL</i> instance.
      */
     String getName();
@@ -87,10 +87,10 @@ public interface Acl extends Owner {
      *             <i>ACL</i>.
      */
     boolean addEntry(Principal caller, AclEntry entry) throws NotOwnerException;
-    
+
     /**
      * Removes an {@code AclEntry} from this <i>ACL</i> instance.
-     * 
+     *
      * @param caller
      *            the invoking {@code Principal}.
      * @param entry
@@ -101,9 +101,9 @@ public interface Acl extends Owner {
      *             if the invoking {@code Principal} is not an owner of this
      *             <i>ACL</i>.
      */
-    boolean removeEntry(Principal caller, AclEntry entry) 
+    boolean removeEntry(Principal caller, AclEntry entry)
                 throws NotOwnerException;
-    
+
     /**
      * Returns the set of allowed permissions for the specified {@code
      * Principal}.
@@ -130,17 +130,17 @@ public interface Acl extends Owner {
      *            the principal to get the allowed permissions for.
      * @return the set of allowed permissions for the specified principal.
      */
-    Enumeration<Permission> getPermissions(Principal user); 
-    
+    Enumeration<Permission> getPermissions(Principal user);
+
     /**
      * Returns an {@code Enumeration} of the {@code AclEntry} of this
      * <i>ACL</i>.
-     * 
+     *
      * @return an {@code Enumeration} of the {@code AclEntry} of this
      *         <i>ACL</i>.
      */
     Enumeration<AclEntry> entries();
-    
+
     /**
      * Checks whether the specified principal is granted the specified
      * permission.
@@ -157,10 +157,10 @@ public interface Acl extends Owner {
      * @see #getPermissions(Principal)
      */
     boolean checkPermission(Principal principal, Permission permission);
-    
+
     /**
      * Returns the string representation of this ACL.
-     * 
+     *
      * @return the string representation of this ACL.
      */
     String toString();

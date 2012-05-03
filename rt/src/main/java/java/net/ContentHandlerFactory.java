@@ -19,13 +19,13 @@ package java.net;
 
 /**
  * Defines a factory which is responsible for creating a {@code ContentHandler}.
- * 
+ *
  * @see ContentHandler
  */
 public interface ContentHandlerFactory {
     /**
      * Creates a content handler to handle {@code contentType}.
-     * 
+     *
      * @param contentType
      *            specifies the content type which is handled by the returned
      *            {@code ContentHandler}.

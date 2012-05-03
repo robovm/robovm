@@ -28,7 +28,6 @@ import java.net.UnknownHostException;
 final class DefaultSocketFactory extends SocketFactory {
 
     DefaultSocketFactory() {
-        super();
     }
 
     @Override

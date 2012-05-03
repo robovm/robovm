@@ -579,7 +579,7 @@ public abstract class AbstractQueuedLongSynchronizer
      * @return {@code true} if interrupted
      */
     private final boolean parkAndCheckInterrupt() {
-        LockSupport.park();
+        LockSupport.park(this);
         return Thread.interrupted();
     }
 
@@ -674,7 +674,7 @@ public abstract class AbstractQueuedLongSynchronizer
                     return false;
                 if (shouldParkAfterFailedAcquire(p, node) &&
                     nanosTimeout > spinForTimeoutThreshold)
-                    LockSupport.parkNanos(nanosTimeout);
+                    LockSupport.parkNanos(this, nanosTimeout);
                 long now = System.nanoTime();
                 nanosTimeout -= now - lastTime;
                 lastTime = now;
@@ -778,7 +778,7 @@ public abstract class AbstractQueuedLongSynchronizer
                     return false;
                 if (shouldParkAfterFailedAcquire(p, node) &&
                     nanosTimeout > spinForTimeoutThreshold)
-                    LockSupport.parkNanos(nanosTimeout);
+                    LockSupport.parkNanos(this, nanosTimeout);
                 long now = System.nanoTime();
                 nanosTimeout -= now - lastTime;
                 lastTime = now;
@@ -961,7 +961,8 @@ public abstract class AbstractQueuedLongSynchronizer
      *        can represent anything you like.
      * @throws InterruptedException if the current thread is interrupted
      */
-    public final void acquireInterruptibly(long arg) throws InterruptedException {
+    public final void acquireInterruptibly(long arg)
+            throws InterruptedException {
         if (Thread.interrupted())
             throw new InterruptedException();
         if (!tryAcquire(arg))
@@ -985,7 +986,8 @@ public abstract class AbstractQueuedLongSynchronizer
      * @return {@code true} if acquired; {@code false} if timed out
      * @throws InterruptedException if the current thread is interrupted
      */
-    public final boolean tryAcquireNanos(long arg, long nanosTimeout) throws InterruptedException {
+    public final boolean tryAcquireNanos(long arg, long nanosTimeout)
+            throws InterruptedException {
         if (Thread.interrupted())
             throw new InterruptedException();
         return tryAcquire(arg) ||
@@ -1041,7 +1043,8 @@ public abstract class AbstractQueuedLongSynchronizer
      * you like.
      * @throws InterruptedException if the current thread is interrupted
      */
-    public final void acquireSharedInterruptibly(long arg) throws InterruptedException {
+    public final void acquireSharedInterruptibly(long arg)
+            throws InterruptedException {
         if (Thread.interrupted())
             throw new InterruptedException();
         if (tryAcquireShared(arg) < 0)
@@ -1064,7 +1067,8 @@ public abstract class AbstractQueuedLongSynchronizer
      * @return {@code true} if acquired; {@code false} if timed out
      * @throws InterruptedException if the current thread is interrupted
      */
-    public final boolean tryAcquireSharedNanos(long arg, long nanosTimeout) throws InterruptedException {
+    public final boolean tryAcquireSharedNanos(long arg, long nanosTimeout)
+            throws InterruptedException {
         if (Thread.interrupted())
             throw new InterruptedException();
         return tryAcquireShared(arg) >= 0 ||
@@ -1250,8 +1254,9 @@ public abstract class AbstractQueuedLongSynchronizer
      * @return {@code true} if there is a queued thread preceding the
      *         current thread, and {@code false} if the current thread
      *         is at the head of the queue or the queue is empty
+     * @since 1.7
      */
-    final boolean hasQueuedPredecessors() {
+    /*public*/ final boolean hasQueuedPredecessors() { // android-changed
         // The correctness of this depends on head being initialized
         // before tail and on head.next being accurate if the current
         // thread is first in queue.
@@ -1433,7 +1438,6 @@ public abstract class AbstractQueuedLongSynchronizer
      * Transfers node, if necessary, to sync queue after a cancelled
      * wait. Returns true if thread was cancelled before being
      * signalled.
-     * @param current the waiting thread
      * @param node its node
      * @return true if cancelled before the node was signalled
      */
@@ -1721,7 +1725,7 @@ public abstract class AbstractQueuedLongSynchronizer
             long savedState = fullyRelease(node);
             boolean interrupted = false;
             while (!isOnSyncQueue(node)) {
-                LockSupport.park();
+                LockSupport.park(this);
                 if (Thread.interrupted())
                     interrupted = true;
             }
@@ -1785,7 +1789,7 @@ public abstract class AbstractQueuedLongSynchronizer
             long savedState = fullyRelease(node);
             int interruptMode = 0;
             while (!isOnSyncQueue(node)) {
-                LockSupport.park();
+                LockSupport.park(this);
                 if ((interruptMode = checkInterruptWhileWaiting(node)) != 0)
                     break;
             }
@@ -1811,7 +1815,8 @@ public abstract class AbstractQueuedLongSynchronizer
          * <li> If interrupted while blocked in step 4, throw InterruptedException.
          * </ol>
          */
-        public final long awaitNanos(long nanosTimeout) throws InterruptedException {
+        public final long awaitNanos(long nanosTimeout)
+                throws InterruptedException {
             if (Thread.interrupted())
                 throw new InterruptedException();
             Node node = addConditionWaiter();
@@ -1823,7 +1828,7 @@ public abstract class AbstractQueuedLongSynchronizer
                     transferAfterCancelledWait(node);
                     break;
                 }
-                LockSupport.parkNanos(nanosTimeout);
+                LockSupport.parkNanos(this, nanosTimeout);
                 if ((interruptMode = checkInterruptWhileWaiting(node)) != 0)
                     break;
 
@@ -1855,7 +1860,8 @@ public abstract class AbstractQueuedLongSynchronizer
          * <li> If timed out while blocked in step 4, return false, else true.
          * </ol>
          */
-        public final boolean awaitUntil(Date deadline) throws InterruptedException {
+        public final boolean awaitUntil(Date deadline)
+                throws InterruptedException {
             if (deadline == null)
                 throw new NullPointerException();
             long abstime = deadline.getTime();
@@ -1870,7 +1876,7 @@ public abstract class AbstractQueuedLongSynchronizer
                     timedout = transferAfterCancelledWait(node);
                     break;
                 }
-                LockSupport.parkUntil(abstime);
+                LockSupport.parkUntil(this, abstime);
                 if ((interruptMode = checkInterruptWhileWaiting(node)) != 0)
                     break;
             }
@@ -1898,7 +1904,8 @@ public abstract class AbstractQueuedLongSynchronizer
          * <li> If timed out while blocked in step 4, return false, else true.
          * </ol>
          */
-        public final boolean await(long time, TimeUnit unit) throws InterruptedException {
+        public final boolean await(long time, TimeUnit unit)
+                throws InterruptedException {
             if (unit == null)
                 throw new NullPointerException();
             long nanosTimeout = unit.toNanos(time);
@@ -1915,7 +1922,7 @@ public abstract class AbstractQueuedLongSynchronizer
                     break;
                 }
                 if (nanosTimeout >= spinForTimeoutThreshold)
-                    LockSupport.parkNanos(nanosTimeout);
+                    LockSupport.parkNanos(this, nanosTimeout);
                 if ((interruptMode = checkInterruptWhileWaiting(node)) != 0)
                     break;
                 long now = System.nanoTime();
@@ -2054,7 +2061,7 @@ public abstract class AbstractQueuedLongSynchronizer
     /**
      * CAS waitStatus field of a node.
      */
-    private final static boolean compareAndSetWaitStatus(Node node,
+    private static final boolean compareAndSetWaitStatus(Node node,
                                                          int expect,
                                                          int update) {
         return unsafe.compareAndSwapInt(node, waitStatusOffset,
@@ -2064,7 +2071,7 @@ public abstract class AbstractQueuedLongSynchronizer
     /**
      * CAS next field of a node.
      */
-    private final static boolean compareAndSetNext(Node node,
+    private static final boolean compareAndSetNext(Node node,
                                                    Node expect,
                                                    Node update) {
         return unsafe.compareAndSwapObject(node, nextOffset, expect, update);

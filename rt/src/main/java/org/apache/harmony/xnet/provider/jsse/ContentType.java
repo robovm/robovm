@@ -18,7 +18,7 @@
 package org.apache.harmony.xnet.provider.jsse;
 
 /**
- * This class encapsulates the constants determining the
+ * This class incapsulates the constants determining the
  * types of SSL/TLS record's content data.
  * Constant values are taken according to the TLS v1 specification
  * (http://www.ietf.org/rfc/rfc2246.txt).

@@ -19,10 +19,8 @@ package java.security.spec;
 
 import java.math.BigInteger;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
- * A Point on an Elliptic Curve in barycentric (or affine) coordinates.  
+ * A Point on an Elliptic Curve in barycentric (or affine) coordinates.
  */
 public class ECPoint {
 
@@ -43,7 +41,7 @@ public class ECPoint {
 
     /**
      * Creates a new point at the specified coordinates.
-     * 
+     *
      * @param affineX
      *            the x-coordinate.
      * @param affineY
@@ -52,17 +50,17 @@ public class ECPoint {
     public ECPoint(BigInteger affineX, BigInteger affineY) {
         this.affineX = affineX;
         if (this.affineX == null) {
-            throw new NullPointerException(Messages.getString("security.83", "X")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("affineX == null");
         }
         this.affineY = affineY;
         if (this.affineY == null) {
-            throw new NullPointerException(Messages.getString("security.83", "Y")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("affineY == null");
         }
     }
 
     /**
      * Returns the x-coordinate.
-     * 
+     *
      * @return the x-coordinate, or {@code null} for the infinite point.
      */
     public BigInteger getAffineX() {
@@ -71,7 +69,7 @@ public class ECPoint {
 
     /**
      * Returns the y-coordinate.
-     * 
+     *
      * @return the y-coordinate, or {@code null} fot the infinite point.
      */
     public BigInteger getAffineY() {
@@ -81,7 +79,7 @@ public class ECPoint {
     /**
      * Returns whether the specified object and this elliptic curve point are
      * equal.
-     * 
+     *
      * @param other
      *            the object to compare.
      * @return {@code true} if the specified object and this elliptic curve
@@ -106,7 +104,7 @@ public class ECPoint {
 
     /**
      * Returns the hashcode of this elliptic curve point.
-     * 
+     *
      * @return the hashcode of this elliptic curve point.
      */
     public int hashCode() {

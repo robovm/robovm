@@ -24,7 +24,7 @@ package java.io;
  * decompression of the underlying writer. Writers that wrap another writer and
  * provide some additional functionality on top of it usually inherit from this
  * class.
- * 
+ *
  * @see FilterReader
  */
 public abstract class FilterWriter extends Writer {
@@ -37,7 +37,7 @@ public abstract class FilterWriter extends Writer {
     /**
      * Constructs a new FilterWriter on the Writer {@code out}. All writes are
      * now filtered through this writer.
-     * 
+     *
      * @param out
      *            the target Writer to filter writes on.
      */
@@ -48,7 +48,7 @@ public abstract class FilterWriter extends Writer {
 
     /**
      * Closes this writer. This implementation closes the target writer.
-     * 
+     *
      * @throws IOException
      *             if an error occurs attempting to close this writer.
      */
@@ -62,7 +62,7 @@ public abstract class FilterWriter extends Writer {
     /**
      * Flushes this writer to ensure all pending data is sent out to the target
      * writer. This implementation flushes the target writer.
-     * 
+     *
      * @throws IOException
      *             if an error occurs attempting to flush this writer.
      */
@@ -76,7 +76,7 @@ public abstract class FilterWriter extends Writer {
     /**
      * Writes {@code count} characters from the char array {@code buffer}
      * starting at position {@code offset} to the target writer.
-     * 
+     *
      * @param buffer
      *            the buffer to write.
      * @param offset
@@ -87,7 +87,7 @@ public abstract class FilterWriter extends Writer {
      *             if an error occurs while writing to this writer.
      */
     @Override
-    public void write(char buffer[], int offset, int count) throws IOException {
+    public void write(char[] buffer, int offset, int count) throws IOException {
         synchronized (lock) {
             out.write(buffer, offset, count);
         }
@@ -96,7 +96,7 @@ public abstract class FilterWriter extends Writer {
     /**
      * Writes the specified character {@code oneChar} to the target writer. Only the
      * two least significant bytes of the integer {@code oneChar} are written.
-     * 
+     *
      * @param oneChar
      *            the char to write to the target writer.
      * @throws IOException
@@ -113,7 +113,7 @@ public abstract class FilterWriter extends Writer {
      * Writes {@code count} characters from the string {@code str} starting at
      * position {@code index} to this writer. This implementation writes
      * {@code str} to the target writer.
-     * 
+     *
      * @param str
      *            the string to be written.
      * @param offset

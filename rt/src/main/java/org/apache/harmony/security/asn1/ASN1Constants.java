@@ -17,14 +17,15 @@
 
 /**
 * @author Vladimir N. Molotkov
+* @version $Revision$
 */
 
 package org.apache.harmony.security.asn1;
 
 /**
  * ASN.1 and some other constants holder interface
- * 
- * @see http://asn1.elibel.tm.fr/en/standards/index.htm
+ *
+ * @see <a href="http://asn1.elibel.tm.fr/en/standards/index.htm">ASN.1</a>
  */
 public interface ASN1Constants {
     /**
@@ -86,7 +87,7 @@ public interface ASN1Constants {
     int TAG_C_SETOF = TAG_SETOF | PC_CONSTRUCTED;
     int TAG_C_UTCTIME = TAG_UTCTIME | PC_CONSTRUCTED;
     int TAG_C_GENERALIZEDTIME = TAG_GENERALIZEDTIME | PC_CONSTRUCTED;
- 
+
     /**
      * Not from the ASN.1 specs. For implementation purposes.
      */

@@ -18,20 +18,8 @@
 package java.security;
 
 /**
- * {@code PrivilegedAction} represents an action that can be executed privileged
- * regarding access control. Instances of {@code PrivilegedAction} can be
- * executed on {@code AccessController.doPrivileged()}.
- *
- * @see AccessController
- * @see AccessController#doPrivileged(PrivilegedAction)
- * @see AccessController#doPrivileged(PrivilegedAction, AccessControlContext)
- * @see PrivilegedExceptionAction
+ * Legacy security code; do not use.
  */
 public interface PrivilegedAction<T> {
-    /**
-     * Returns the result of running the action.
-     *
-     * @return the result of running the action.
-     */
     public T run();
 }

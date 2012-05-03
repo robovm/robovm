@@ -15,10 +15,6 @@
  *  limitations under the License.
  */
 
-/**
-* @author Vera Y. Petrashkova
-*/
-
 package javax.crypto;
 
 import java.security.AlgorithmParameters;
@@ -123,7 +119,7 @@ public abstract class ExemptionMechanismSpi {
      * @throws InvalidKeyException
      *             if the key cannot be used to initialize this mechanism.
      * @throws InvalidAlgorithmParameterException
-     *             if the parameters cannot be used to initialize this
+     *             the the parameters cannot be used to initialize this
      *             mechanism.
      * @throws ExemptionMechanismException
      *             if error(s) occur during initialization.

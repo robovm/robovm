@@ -17,7 +17,7 @@
 
 package java.io;
 
-import org.apache.harmony.luni.internal.nls.Messages;
+import java.util.Arrays;
 
 /**
  * Wraps an existing {@link Reader} and adds functionality to "push back"
@@ -43,7 +43,7 @@ public class PushbackReader extends FilterReader {
      * Constructs a new {@code PushbackReader} with the specified reader as
      * source. The size of the pushback buffer is set to the default value of 1
      * character.
-     * 
+     *
      * @param in
      *            the source reader.
      */
@@ -56,7 +56,7 @@ public class PushbackReader extends FilterReader {
     /**
      * Constructs a new {@code PushbackReader} with {@code in} as source reader.
      * The size of the pushback buffer is set to {@code size}.
-     * 
+     *
      * @param in
      *            the source reader.
      * @param size
@@ -67,7 +67,7 @@ public class PushbackReader extends FilterReader {
     public PushbackReader(Reader in, int size) {
         super(in);
         if (size <= 0) {
-            throw new IllegalArgumentException(Messages.getString("luni.A3")); //$NON-NLS-1$
+            throw new IllegalArgumentException("size <= 0");
         }
         buf = new char[size];
         pos = size;
@@ -76,7 +76,7 @@ public class PushbackReader extends FilterReader {
     /**
      * Closes this reader. This implementation closes the source reader
      * and releases the pushback buffer.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing this reader.
      */
@@ -92,7 +92,7 @@ public class PushbackReader extends FilterReader {
      * Marks the current position in this stream. Setting a mark is not
      * supported in this class; this implementation always throws an
      * {@code IOException}.
-     * 
+     *
      * @param readAheadLimit
      *            the number of character that can be read from this reader
      *            before the mark is invalidated; this parameter is ignored.
@@ -101,14 +101,14 @@ public class PushbackReader extends FilterReader {
      */
     @Override
     public void mark(int readAheadLimit) throws IOException {
-        throw new IOException(Messages.getString("luni.D4")); //$NON-NLS-1$
+        throw new IOException("mark/reset not supported");
     }
 
     /**
      * Indicates whether this reader supports the {@code mark(int)} and
      * {@code reset()} methods. {@code PushbackReader} does not support them, so
      * it returns {@code false}.
-     * 
+     *
      * @return always {@code false}.
      * @see #mark(int)
      * @see #reset()
@@ -135,9 +135,7 @@ public class PushbackReader extends FilterReader {
     @Override
     public int read() throws IOException {
         synchronized (lock) {
-            if (buf == null) {
-                throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             /* Is there a pushback character available? */
             if (pos < buf.length) {
                 return buf[pos++];
@@ -150,13 +148,19 @@ public class PushbackReader extends FilterReader {
         }
     }
 
+    private void checkNotClosed() throws IOException {
+        if (buf == null) {
+            throw new IOException("PushbackReader is closed");
+        }
+    }
+
     /**
      * Reads at most {@code length} bytes from this reader and stores them in
      * byte array {@code buffer} starting at {@code offset}. Characters are
      * read from the pushback buffer first, then from the source reader if more
      * bytes are required. Blocks until {@code count} characters have been read,
      * the end of the source reader is detected or an exception is thrown.
-     * 
+     *
      * @param buffer
      *            the array in which to store the characters read from this
      *            reader.
@@ -178,13 +182,8 @@ public class PushbackReader extends FilterReader {
     @Override
     public int read(char[] buffer, int offset, int count) throws IOException {
         synchronized (lock) {
-            if (null == buf) {
-                throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
-            }
-            // avoid int overflow
-            if (offset < 0 || count < 0 || offset > buffer.length - count) {
-                throw new IndexOutOfBoundsException();
-            }
+            checkNotClosed();
+            Arrays.checkOffsetAndCount(buffer.length, offset, count);
 
             int copiedChars = 0;
             int copyLength = 0;
@@ -218,7 +217,7 @@ public class PushbackReader extends FilterReader {
      * Indicates whether this reader is ready to be read without blocking.
      * Returns {@code true} if this reader will not block when {@code read} is
      * called, {@code false} if unknown or blocking will occur.
-     * 
+     *
      * @return {@code true} if the receiver will not block when
      *         {@code read()} is called, {@code false} if unknown
      *         or blocking will occur.
@@ -231,7 +230,7 @@ public class PushbackReader extends FilterReader {
     public boolean ready() throws IOException {
         synchronized (lock) {
             if (buf == null) {
-                throw new IOException(Messages.getString("luni.D5")); //$NON-NLS-1$
+                throw new IOException("Reader is closed");
             }
             return (buf.length - pos > 0 || in.ready());
         }
@@ -241,13 +240,13 @@ public class PushbackReader extends FilterReader {
      * Resets this reader to the last marked position. Resetting the reader is
      * not supported in this class; this implementation always throws an
      * {@code IOException}.
-     * 
+     *
      * @throws IOException
      *             if this method is called.
      */
     @Override
     public void reset() throws IOException {
-        throw new IOException(Messages.getString("luni.D4")); //$NON-NLS-1$
+        throw new IOException("mark/reset not supported");
     }
 
     /**
@@ -304,24 +303,11 @@ public class PushbackReader extends FilterReader {
      */
     public void unread(char[] buffer, int offset, int length) throws IOException {
         synchronized (lock) {
-            if (buf == null) {
-                // luni.24=Stream is closed
-                throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             if (length > pos) {
-                // luni.D3=Pushback buffer full
-                throw new IOException(Messages.getString("luni.D3")); //$NON-NLS-1$
+                throw new IOException("Pushback buffer full");
             }
-            // Force buffer null check first!
-            if (offset > buffer.length - length || offset < 0) {
-                // luni.12=Offset out of bounds \: {0}
-                throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.12", offset)); //$NON-NLS-1$
-            }
-            if (length < 0) {
-                // luni.18=Length out of bounds \: {0}
-                throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.18", length)); //$NON-NLS-1$
-            }
-
+            Arrays.checkOffsetAndCount(buffer.length, offset, length);
             for (int i = offset + length - 1; i >= offset; i--) {
                 unread(buffer[i]);
             }
@@ -344,52 +330,46 @@ public class PushbackReader extends FilterReader {
      */
     public void unread(int oneChar) throws IOException {
         synchronized (lock) {
-            if (buf == null) {
-                throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             if (pos == 0) {
-                throw new IOException(Messages.getString("luni.D3")); //$NON-NLS-1$
+                throw new IOException("Pushback buffer full");
             }
             buf[--pos] = (char) oneChar;
         }
     }
 
     /**
-     * Skips {@code count} characters in this reader. This implementation skips
+     * Skips {@code charCount} characters in this reader. This implementation skips
      * characters in the pushback buffer first and then in the source reader if
      * necessary.
-     * 
-     * @param count
-     *            the number of characters to skip.
+     *
      * @return the number of characters actually skipped.
-     * @throws IllegalArgumentException if {@code count < 0}.
+     * @throws IllegalArgumentException if {@code charCount < 0}.
      * @throws IOException
      *             if this reader is closed or another I/O error occurs.
      */
     @Override
-    public long skip(long count) throws IOException {
-        if (count < 0) {
-            throw new IllegalArgumentException();
+    public long skip(long charCount) throws IOException {
+        if (charCount < 0) {
+            throw new IllegalArgumentException("charCount < 0: " + charCount);
         }
         synchronized (lock) {
-            if (buf == null) {
-                throw new IOException(Messages.getString("luni.24")); //$NON-NLS-1$
-            }
-            if (count == 0) {
+            checkNotClosed();
+            if (charCount == 0) {
                 return 0;
             }
             long inSkipped;
             int availableFromBuffer = buf.length - pos;
             if (availableFromBuffer > 0) {
-                long requiredFromIn = count - availableFromBuffer;
+                long requiredFromIn = charCount - availableFromBuffer;
                 if (requiredFromIn <= 0) {
-                    pos += count;
-                    return count;
+                    pos += charCount;
+                    return charCount;
                 }
                 pos += availableFromBuffer;
                 inSkipped = in.skip(requiredFromIn);
             } else {
-                inSkipped = in.skip(count);
+                inSkipped = in.skip(charCount);
             }
             return inSkipped + availableFromBuffer;
         }

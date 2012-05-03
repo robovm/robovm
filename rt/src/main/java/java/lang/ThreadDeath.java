@@ -27,7 +27,7 @@ public class ThreadDeath extends Error {
 
     /**
      * Constructs a new instance of this class. Note that in the case of
-     * ThreadDeath, the stacktrace may <em>not</em> be filled in a way which
+     * ThreadDeath, the stack trace may <em>not</em> be filled in a way which
      * allows a stack trace to be printed.
      */
     public ThreadDeath() {

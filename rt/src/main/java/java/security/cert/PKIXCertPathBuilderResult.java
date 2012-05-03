@@ -20,8 +20,6 @@ package java.security.cert;
 
 import java.security.PublicKey;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
  * The result of the PKIX certification path builder, returned by
  * {@link CertPathBuilder#build(CertPathParameters)}.
@@ -35,7 +33,7 @@ public class PKIXCertPathBuilderResult extends PKIXCertPathValidatorResult
      * Creates a new {@code PKIXCertPathBuilderResult} instance with the
      * specified validated certification path, the trust anchor of the
      * certification path, the policy tree and the public key of the subject.
-     * 
+     *
      * @param certPath
      *            the validated certification path.
      * @param trustAnchor
@@ -53,13 +51,13 @@ public class PKIXCertPathBuilderResult extends PKIXCertPathValidatorResult
         super(trustAnchor, policyTree, subjectPublicKey);
         this.certPath = certPath;
         if (this.certPath == null) {
-            throw new NullPointerException(Messages.getString("security.55")); //$NON-NLS-1$
+            throw new NullPointerException("certPath == null");
         }
     }
 
     /**
      * Returns the validated certification path.
-     * 
+     *
      * @return the validated certification path.
      */
     public CertPath getCertPath() {
@@ -69,15 +67,15 @@ public class PKIXCertPathBuilderResult extends PKIXCertPathValidatorResult
     /**
      * Returns a string representation of this {@code PKIXCertPathBuilderResult}
      * instance.
-     * 
+     *
      * @return a string representation of this {@code PKIXCertPathBuilderResult}
      *         instance.
      */
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
-        sb.append("\n Certification Path: "); //$NON-NLS-1$
+        sb.append("\n Certification Path: ");
         sb.append(certPath.toString());
-        sb.append("\n]"); //$NON-NLS-1$
+        sb.append("\n]");
         return sb.toString();
     }
 }

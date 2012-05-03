@@ -32,7 +32,7 @@ public class InvalidKeySpecException extends GeneralSecurityException {
 
     /**
      * Creates a new {@code InvalidKeySpecException} with the specified message.
-     * 
+     *
      * @param msg
      *            the detail message of this exception.
      */
@@ -49,7 +49,7 @@ public class InvalidKeySpecException extends GeneralSecurityException {
     /**
      * Creates a new {@code InvalidKeySpecException} with the specified message
      * and cause.
-     * 
+     *
      * @param message
      *            the detail message of this exception.
      * @param cause
@@ -61,7 +61,7 @@ public class InvalidKeySpecException extends GeneralSecurityException {
 
     /**
      * Creates a new {@code InvalidKeySpecException} with the specified cause.
-     * 
+     *
      * @param cause
      *            the cause of this exception.
      */

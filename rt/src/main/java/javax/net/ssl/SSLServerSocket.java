@@ -36,7 +36,6 @@ public abstract class SSLServerSocket extends ServerSocket {
      *             if creating the socket fails.
      */
     protected SSLServerSocket() throws IOException {
-        super();
     }
 
     /**

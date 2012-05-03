@@ -26,13 +26,13 @@ import java.util.Arrays;
  * some extra space is required to hold the buffer and that copying takes place
  * when filling that buffer, but this is usually outweighed by the performance
  * benefits.
- * 
+ *
  * <p/>A typical application pattern for the class looks like this:<p/>
  *
  * <pre>
  * BufferedReader buf = new BufferedReader(new FileReader(&quot;file.java&quot;));
  * </pre>
- * 
+ *
  * @see BufferedWriter
  * @since 1.1
  */
@@ -73,7 +73,7 @@ public class BufferedReader extends Reader {
     /**
      * Constructs a new {@code BufferedReader}, providing {@code in} with a buffer
      * of 8192 characters.
-     * 
+     *
      * @param in the {@code Reader} the buffer reads from.
      */
     public BufferedReader(Reader in) {
@@ -83,7 +83,7 @@ public class BufferedReader extends Reader {
     /**
      * Constructs a new {@code BufferedReader}, providing {@code in} with {@code size} characters
      * of buffer.
-     * 
+     *
      * @param in the {@code InputStream} the buffer reads from.
      * @param size the size of buffer in characters.
      * @throws IllegalArgumentException if {@code size <= 0}.
@@ -101,7 +101,7 @@ public class BufferedReader extends Reader {
      * Closes this reader. This implementation closes the buffered source reader
      * and releases the buffer. Nothing is done if this reader has already been
      * closed.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing this reader.
      */
@@ -163,7 +163,7 @@ public class BufferedReader extends Reader {
 
     /**
      * Indicates whether or not this reader is closed.
-     * 
+     *
      * @return {@code true} if this reader is closed, {@code false}
      *         otherwise.
      */
@@ -176,7 +176,7 @@ public class BufferedReader extends Reader {
      * indicates how many characters can be read before the mark is invalidated.
      * Calling {@code reset()} will reposition the reader back to the marked
      * position if {@code markLimit} has not been surpassed.
-     * 
+     *
      * @param markLimit
      *            the number of characters that can be read before the mark is
      *            invalidated.
@@ -208,7 +208,7 @@ public class BufferedReader extends Reader {
     /**
      * Indicates whether this reader supports the {@code mark()} and
      * {@code reset()} methods. This implementation returns {@code true}.
-     * 
+     *
      * @return {@code true} for {@code BufferedReader}.
      * @see #mark(int)
      * @see #reset()
@@ -250,7 +250,7 @@ public class BufferedReader extends Reader {
      * has not been set and the requested number of characters is larger than
      * this readers buffer size, BufferedReader bypasses the buffer and simply
      * places the results directly into {@code buffer}.
-     * 
+     *
      * @param buffer
      *            the character array to store the characters read.
      * @param offset
@@ -341,7 +341,7 @@ public class BufferedReader extends Reader {
      * represented by zero or more characters followed by {@code '\n'},
      * {@code '\r'}, {@code "\r\n"} or the end of the reader. The string does
      * not include the newline sequence.
-     * 
+     *
      * @return the contents of the line or {@code null} if no characters were
      *         read before the end of the reader has been reached.
      * @throws IOException
@@ -446,7 +446,7 @@ public class BufferedReader extends Reader {
      * Resets this reader's position to the last {@code mark()} location.
      * Invocations of {@code read()} and {@code skip()} will occur from this new
      * location.
-     * 
+     *
      * @throws IOException
      *             if this reader is closed or no mark has been set.
      * @see #mark(int)
@@ -469,7 +469,7 @@ public class BufferedReader extends Reader {
      * used.
      * Skipping characters may invalidate a mark if {@code markLimit}
      * is surpassed.
-     * 
+     *
      * @param byteCount
      *            the maximum number of characters to skip.
      * @return the number of characters actually skipped.

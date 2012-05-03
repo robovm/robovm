@@ -23,7 +23,7 @@ package java.lang;
  * support cloning. The implementation of {@code clone()} in {@code Object}
  * checks if the object being cloned implements this interface and throws
  * {@code CloneNotSupportedException} if it does not.
- * 
+ *
  * @see Object#clone
  * @see CloneNotSupportedException
  */

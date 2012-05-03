@@ -35,7 +35,7 @@ public class NoSuchFieldException extends Exception {
     /**
      * Constructs a new {@code NoSuchFieldException} with the current stack
      * trace and the specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

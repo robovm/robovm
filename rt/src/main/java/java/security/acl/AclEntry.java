@@ -23,7 +23,7 @@ import java.util.Enumeration;
 /**
  * The <i>Access Control List Entry</i> interface definition.
  * <p>
- * An {@code AclEntry} is a list of the {@link Permission}s that are 
+ * An {@code AclEntry} is a list of the {@link Permission}s that are
  *  granted (<i>positive</i>) or denied (<i>negative</i>) to a {@link Principal}.
  */
 public interface AclEntry extends Cloneable {
@@ -39,14 +39,14 @@ public interface AclEntry extends Cloneable {
      *         this entry.
      */
     boolean setPrincipal(Principal user);
-    
+
     /**
      * Returns the principal of this ACL entry.
-     * 
+     *
      * @return the principal of this ACL entry, or null if none is set.
      */
     Principal getPrincipal();
-    
+
     /**
      * Sets this ACL entry to be <i>negative</i>.
      * <p>
@@ -57,62 +57,62 @@ public interface AclEntry extends Cloneable {
      * <i>negative</i> by calling this method.
      */
     void setNegativePermissions();
-    
+
     /**
      * Returns whether this ACL entry is <i>negative</i>.
-     * 
+     *
      * @return {@code true} if this ACL entry is negative, {@code false} if it's positive.
      */
     boolean isNegative();
-    
+
     /**
      * Adds the specified permission to this ACL entry.
-     * 
+     *
      * @param permission
      *            the permission to be added.
      * @return {@code true} if the specified permission is added, {@code false} if the
      *         permission was already in this entry.
      */
     boolean addPermission(Permission permission);
-    
+
     /**
      * Removes the specified permission from this ACL entry.
-     * 
+     *
      * @param permission
      *            the permission to be removed.
      * @return {@code true} if the permission is removed, {@code false} if the permission was
      *         not in this entry.
      */
     boolean removePermission(Permission permission);
-    
+
     /**
      * Checks whether the specified permission is in this ACL entry.
-     * 
+     *
      * @param permission
      *            the permission to check.
      * @return {@code true} if the permission is in this entry, otherwise {@code false}.
      */
     boolean checkPermission(Permission permission);
-    
+
     /**
      * Returns the list of permissions of this ACL entry.
-     * 
+     *
      * @return the list of permissions of this ACL entry,
      */
     Enumeration<Permission> permissions();
-    
+
     /**
      * Returns the string representation of this ACL entry.
-     * 
+     *
      * @return the string representation of this ACL entry.
      */
     String toString();
-    
+
     /**
      * Clones this ACL entry instance.
-     * 
+     *
      * @return a copy of this entry.
      */
     Object clone();
-    
+
 }

@@ -23,11 +23,11 @@ package java.io;
  *
  * @see File#listFiles(FileFilter)
  */
-public abstract interface FileFilter {
+public interface FileFilter {
 
     /**
      * Indicating whether a specific file should be included in a pathname list.
-     * 
+     *
      * @param pathname
      *            the abstract file to check.
      * @return {@code true} if the file should be included, {@code false}

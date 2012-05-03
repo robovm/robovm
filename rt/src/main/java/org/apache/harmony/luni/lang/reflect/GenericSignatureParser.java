@@ -25,7 +25,7 @@ import java.lang.reflect.TypeVariable;
 
 /**
  * Implements a parser for the generics signature attribute.
- * Uses a top-down, resursive descent parsing approach for the following grammar:
+ * Uses a top-down, recursive descent parsing approach for the following grammar:
  * <pre>
  * ClassSignature ::=
  *     OptFormalTypeParams SuperclassSignature {SuperinterfaceSignature}.
@@ -125,11 +125,11 @@ public class GenericSignatureParser {
         } else {
             if(genericDecl instanceof Class) {
                 Class c = (Class) genericDecl;
-                this.formalTypeParameters = ListOfVariables.empty;
+                this.formalTypeParameters = ListOfVariables.EMPTY;
                 this.superclassType = c.getSuperclass();
                 this.interfaceTypes = new ListOfTypes(c.getInterfaces());
             } else {
-                this.formalTypeParameters = ListOfVariables.empty;
+                this.formalTypeParameters = ListOfVariables.EMPTY;
                 this.superclassType = Object.class;
                 this.interfaceTypes = ListOfTypes.EMPTY;
             }
@@ -151,12 +151,12 @@ public class GenericSignatureParser {
         } else {
             if(genericDecl instanceof Method) {
                 Method m = (Method) genericDecl;
-                this.formalTypeParameters = ListOfVariables.empty;
+                this.formalTypeParameters = ListOfVariables.EMPTY;
                 this.parameterTypes = new ListOfTypes(m.getParameterTypes());
                 this.exceptionTypes = new ListOfTypes(m.getExceptionTypes());
                 this.returnType = m.getReturnType();
             } else {
-                this.formalTypeParameters = ListOfVariables.empty;
+                this.formalTypeParameters = ListOfVariables.EMPTY;
                 this.parameterTypes = ListOfTypes.EMPTY;
                 this.exceptionTypes = ListOfTypes.EMPTY;
                 this.returnType = void.class;
@@ -179,11 +179,11 @@ public class GenericSignatureParser {
         } else {
             if(genericDecl instanceof Constructor) {
                 Constructor c = (Constructor) genericDecl;
-                this.formalTypeParameters = ListOfVariables.empty;
+                this.formalTypeParameters = ListOfVariables.EMPTY;
                 this.parameterTypes = new ListOfTypes(c.getParameterTypes());
                 this.exceptionTypes = new ListOfTypes(c.getExceptionTypes());
             } else {
-                this.formalTypeParameters = ListOfVariables.empty;
+                this.formalTypeParameters = ListOfVariables.EMPTY;
                 this.parameterTypes = ListOfTypes.EMPTY;
                 this.exceptionTypes = ListOfTypes.EMPTY;
             }

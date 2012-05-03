@@ -38,7 +38,7 @@ public abstract class ServerSocketChannel extends AbstractSelectableChannel {
 
     /**
      * Constructs a new {@link ServerSocketChannel}.
-     * 
+     *
      * @param selectorProvider
      *            an instance of SelectorProvider.
      */
@@ -64,7 +64,7 @@ public abstract class ServerSocketChannel extends AbstractSelectableChannel {
      * Gets the valid operations of this channel. Server-socket channels support
      * accepting operation, so this method returns {@code
      * SelectionKey.OP_ACCEPT}.
-     * 
+     *
      * @see java.nio.channels.SelectableChannel#validOps()
      * @return the operations supported by this channel.
      */
@@ -76,7 +76,7 @@ public abstract class ServerSocketChannel extends AbstractSelectableChannel {
     /**
      * Return the server-socket assigned this channel, which does not declare
      * any public methods that are not declared in {@code ServerSocket}.
-     * 
+     *
      * @return the server-socket assigned to this channel.
      */
     public abstract ServerSocket socket();
@@ -91,7 +91,7 @@ public abstract class ServerSocketChannel extends AbstractSelectableChannel {
      * <p>
      * This method just executes the same security checks as the {@code
      * accept()} method of the {@link ServerSocket} class.
-     * 
+     *
      * @return the accepted {@code SocketChannel} instance, or {@code null} if
      *         the channel is non-blocking and no connection is available.
      * @throws AsynchronousCloseException
@@ -107,9 +107,6 @@ public abstract class ServerSocketChannel extends AbstractSelectableChannel {
      *             if another I/O error occurs.
      * @throws NotYetBoundException
      *             if the socket has not yet been bound.
-     * @throws SecurityException
-     *             if there is a security manager and it does not permit to
-     *             access the new connection.
      */
     public abstract SocketChannel accept() throws IOException;
 }

@@ -15,10 +15,6 @@
  *  limitations under the License.
  */
 
-/**
-* @author Alexander Y. Kleymenov
-*/
-
 package javax.crypto;
 
 import java.io.ByteArrayInputStream;
@@ -33,10 +29,6 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
-import org.apache.harmony.crypto.internal.nls.Messages;
 
 /**
  * A {@code SealedObject} is a wrapper around a {@code serializable} object
@@ -91,7 +83,7 @@ public class SealedObject implements Serializable {
     public SealedObject(Serializable object, Cipher c)
                 throws IOException, IllegalBlockSizeException {
         if (c == null) {
-            throw new NullPointerException(Messages.getString("crypto.13")); //$NON-NLS-1$
+            throw new NullPointerException("c == null");
         }
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -119,7 +111,7 @@ public class SealedObject implements Serializable {
      */
     protected SealedObject(SealedObject so) {
         if (so == null) {
-            throw new NullPointerException(Messages.getString("crypto.14")); //$NON-NLS-1$
+            throw new NullPointerException("so == null");
         }
         this.encryptedContent = so.encryptedContent;
         this.encodedParams = so.encodedParams;
@@ -155,8 +147,7 @@ public class SealedObject implements Serializable {
                 throws IOException, ClassNotFoundException,
                        NoSuchAlgorithmException, InvalidKeyException {
         if (key == null) {
-            throw new NullPointerException(
-                    Messages.getString("crypto.05"));
+            throw new InvalidKeyException("key == null");
         }
         try {
             Cipher cipher = Cipher.getInstance(sealAlg);
@@ -217,7 +208,7 @@ public class SealedObject implements Serializable {
                 throws IOException, ClassNotFoundException,
                        IllegalBlockSizeException, BadPaddingException {
         if (c == null) {
-            throw new NullPointerException(Messages.getString("crypto.13")); //$NON-NLS-1$
+            throw new NullPointerException("c == null");
         }
         byte[] serialized = c.doFinal(encryptedContent);
         ObjectInputStream ois =
@@ -250,9 +241,8 @@ public class SealedObject implements Serializable {
                 throws IOException, ClassNotFoundException,
                        NoSuchAlgorithmException, NoSuchProviderException,
                        InvalidKeyException {
-        if ((provider == null) || (provider.length() == 0)) {
-            throw new IllegalArgumentException(
-                    Messages.getString("crypto.15")); //$NON-NLS-1$
+        if (provider == null || provider.isEmpty()) {
+            throw new IllegalArgumentException("provider name empty or null");
         }
         try {
             Cipher cipher = Cipher.getInstance(sealAlg, provider);
@@ -291,4 +281,3 @@ public class SealedObject implements Serializable {
         }
     }
 }
-

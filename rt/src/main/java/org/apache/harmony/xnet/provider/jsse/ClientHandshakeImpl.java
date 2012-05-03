@@ -30,46 +30,44 @@ import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
-import java.util.Enumeration;
-
 import javax.crypto.Cipher;
 import javax.crypto.KeyAgreement;
 import javax.crypto.interfaces.DHKey;
 import javax.crypto.interfaces.DHPublicKey;
 import javax.crypto.spec.DHParameterSpec;
 import javax.crypto.spec.DHPublicKeySpec;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSessionContext;
 import javax.net.ssl.X509ExtendedKeyManager;
+import javax.net.ssl.X509KeyManager;
+import javax.security.auth.x500.X500Principal;
 
 /**
  * Client side handshake protocol implementation.
  * Handshake protocol operates on top of the Record Protocol.
  * It is responsible for session negotiating.
- * 
+ *
  * The implementation processes inbound server handshake messages,
- * creates and sends respond messages. Outbound messages are supplied 
+ * creates and sends respond messages. Outbound messages are supplied
  * to Record Protocol. Detected errors are reported to the Alert protocol.
- * 
- * @see TLS 1.0 spec., 7. The TLS Handshake Protocol
- * (http://www.ietf.org/rfc/rfc2246.txt)
- *  
+ *
+ * @see <a href="http://www.ietf.org/rfc/rfc2246.txt">TLS 1.0 spec., 7. The
+ * TLS Handshake Protocol</a>
+ *
  */
-public class ClientHandshakeImpl extends HandshakeProtocol {  
-   
+public class ClientHandshakeImpl extends HandshakeProtocol {
+
     /**
      * Creates Client Handshake Implementation
-     * 
+     *
      * @param owner
      */
     ClientHandshakeImpl(Object owner) {
         super(owner);
     }
-    
+
     /**
      * Starts handshake
      *
-     */  
+     */
     @Override
     public void start() {
         if (session == null) { // initial handshake
@@ -85,34 +83,42 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
         }
         if (session != null) {
             isResuming = true;
-        } else if (parameters.getEnableSessionCreation()){    
+        } else if (parameters.getEnableSessionCreation()){
             isResuming = false;
             session = new SSLSessionImpl(parameters.getSecureRandom());
-            session.protocol = ProtocolVersion.getLatestVersion(parameters
-                    .getEnabledProtocols());
+            if (engineOwner != null) {
+                session.setPeer(engineOwner.getPeerHost(), engineOwner.getPeerPort());
+            } else {
+                session.setPeer(socketOwner.getInetAddress().getHostName(), socketOwner.getPort());
+            }
+            session.protocol = ProtocolVersion.getLatestVersion(parameters.getEnabledProtocols());
             recordProtocol.setVersion(session.protocol.version);
         } else {
             fatalAlert(AlertProtocol.HANDSHAKE_FAILURE, "SSL Session may not be created ");
         }
         startSession();
     }
-    
+
     /**
      * Starts renegotiation on a new session
      *
      */
     private void renegotiateNewSession() {
-        if (parameters.getEnableSessionCreation()){    
+        if (parameters.getEnableSessionCreation()){
             isResuming = false;
             session = new SSLSessionImpl(parameters.getSecureRandom());
-            session.protocol = ProtocolVersion.getLatestVersion(parameters
-                    .getEnabledProtocols());
+            if (engineOwner != null) {
+                session.setPeer(engineOwner.getPeerHost(), engineOwner.getPeerPort());
+            } else {
+                session.setPeer(socketOwner.getInetAddress().getHostName(), socketOwner.getPort());
+            }
+            session.protocol = ProtocolVersion.getLatestVersion(parameters.getEnabledProtocols());
             recordProtocol.setVersion(session.protocol.version);
             startSession();
         } else {
             status = NOT_HANDSHAKING;
             sendWarningAlert(AlertProtocol.NO_RENEGOTIATION);
-        }        
+        }
     }
 
     /*
@@ -123,7 +129,7 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
         if (isResuming) {
             cipher_suites = new CipherSuite[] { session.cipherSuite };
         } else {
-            cipher_suites = parameters.enabledCipherSuites;
+            cipher_suites = parameters.getEnabledCipherSuitesMember();
         }
         clientHello = new ClientHello(parameters.getSecureRandom(),
                 session.protocol.version, session.id, cipher_suites);
@@ -184,38 +190,35 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
                     serverHello = new ServerHello(io_stream, length);
 
                     //check protocol version
-                    ProtocolVersion servProt = ProtocolVersion
-                            .getByVersion(serverHello.server_version);
-                    String[] enabled = parameters.getEnabledProtocols();        
+                    ProtocolVersion servProt = ProtocolVersion.getByVersion(serverHello.server_version);
+                    String[] enabled = parameters.getEnabledProtocols();
                     find: {
                         for (int i = 0; i < enabled.length; i++) {
-                            if (servProt.equals(ProtocolVersion
-                                    .getByName(enabled[i]))) {
+                            if (servProt.equals(ProtocolVersion.getByName(enabled[i]))) {
                                 break find;
                             }
                         }
                         fatalAlert(AlertProtocol.HANDSHAKE_FAILURE,
-                                "Bad server hello protocol version");
+                                   "Bad server hello protocol version");
                     }
-                    
+
                     // check compression method
                     if (serverHello.compression_method != 0) {
                         fatalAlert(AlertProtocol.HANDSHAKE_FAILURE,
-                                "Bad server hello compression method");
+                                   "Bad server hello compression method");
                     }
-                    
+
                     //check cipher_suite
-                    CipherSuite[] enabledSuites = parameters.enabledCipherSuites;
+                    CipherSuite[] enabledSuites = parameters.getEnabledCipherSuitesMember();
                     find: {
                         for (int i = 0; i < enabledSuites.length; i++) {
-                            if (serverHello.cipher_suite
-                                    .equals(enabledSuites[i])) {
+                            if (serverHello.cipher_suite.equals(enabledSuites[i])) {
                                 break find;
                             }
                         }
                         fatalAlert(AlertProtocol.HANDSHAKE_FAILURE,
-                                "Bad server hello cipher suite");
-                    }                
+                                   "Bad server hello cipher suite");
+                    }
 
                     if (isResuming) {
                         if (serverHello.session_id.length == 0) {
@@ -226,11 +229,10 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
                             isResuming = false;
                         } else if (!session.protocol.equals(servProt)) {
                             fatalAlert(AlertProtocol.HANDSHAKE_FAILURE,
-                                    "Bad server hello protocol version");                            
-                        } else if (!session.cipherSuite
-                                .equals(serverHello.cipher_suite)) {
+                                       "Bad server hello protocol version");
+                        } else if (!session.cipherSuite.equals(serverHello.cipher_suite)) {
                             fatalAlert(AlertProtocol.HANDSHAKE_FAILURE,
-                                    "Bad server hello cipher suite");
+                                       "Bad server hello cipher suite");
                         }
                         if (serverHello.server_version[1] == 1) {
                             computerReferenceVerifyDataTLS("server finished");
@@ -267,23 +269,20 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
                         unexpectedMessage();
                         return;
                     }
-                    certificateRequest = new CertificateRequest(io_stream,
-                            length);
+                    certificateRequest = new CertificateRequest(io_stream, length);
                     break;
                 case 14: // SERVER_HELLO_DONE
-                    if (serverHello == null || serverHelloDone != null
-                            || isResuming) {
+                    if (serverHello == null || serverHelloDone != null || isResuming) {
                         unexpectedMessage();
                         return;
                     }
                     serverHelloDone = new ServerHelloDone(io_stream, length);
                     if (this.nonBlocking) {
-                        delegatedTasks.add(new DelegatedTask(new PrivilegedExceptionAction<Void>() {
-                            public Void run() throws Exception {
+                        delegatedTasks.add(new DelegatedTask(new Runnable() {
+                            public void run() {
                                 processServerHelloDone();
-                                return null;
                             }
-                        }, this, AccessController.getContext()));
+                        }, this));
                         return;
                     }
                     processServerHelloDone();
@@ -296,6 +295,7 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
                     serverFinished = new Finished(io_stream, length);
                     verifyFinished(serverFinished.getData());
                     session.lastAccessedTime = System.currentTimeMillis();
+                    session.context = parameters.getClientSessionContext();
                     parameters.getClientSessionContext().putSession(session);
                     if (isResuming) {
                         sendChangeCipherSpec();
@@ -319,8 +319,8 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
     }
 
     /**
-     * Processes SSLv2 Hello message. 
-     * SSLv2 client hello message message is an unexpected message 
+     * Processes SSLv2 Hello message.
+     * SSLv2 client hello message message is an unexpected message
      * for client side of handshake protocol.
      * @ see TLS 1.0 spec., E.1. Version 2 client hello
      * @param bytes
@@ -366,15 +366,13 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
         PrivateKey clientKey = null;
 
         if (serverCert != null) {
-            if (session.cipherSuite.keyExchange == CipherSuite.KeyExchange_DH_anon
-                    || session.cipherSuite.keyExchange == CipherSuite.KeyExchange_DH_anon_EXPORT) {
+            if (session.cipherSuite.isAnonymous()) {
                 unexpectedMessage();
                 return;
             }
             verifyServerCert();
         } else {
-            if (session.cipherSuite.keyExchange != CipherSuite.KeyExchange_DH_anon
-                    && session.cipherSuite.keyExchange != CipherSuite.KeyExchange_DH_anon_EXPORT) {
+            if (!session.cipherSuite.isAnonymous()) {
                 unexpectedMessage();
                 return;
             }
@@ -383,23 +381,36 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
         // Client certificate
         if (certificateRequest != null) {
             X509Certificate[] certs = null;
-            String clientAlias = ((X509ExtendedKeyManager) parameters
-                    .getKeyManager()).chooseClientAlias(certificateRequest
-                    .getTypesAsString(),
-                    certificateRequest.certificate_authorities, null);
-            if (clientAlias != null) {
-                X509ExtendedKeyManager km = (X509ExtendedKeyManager) parameters
-                        .getKeyManager();
-                certs = km.getCertificateChain((clientAlias));
-                clientKey = km.getPrivateKey(clientAlias);
+            // obtain certificates from key manager
+            String alias = null;
+            String[] certTypes = certificateRequest.getTypesAsString();
+            X500Principal[] issuers = certificateRequest.certificate_authorities;
+            X509KeyManager km = parameters.getKeyManager();
+            if (km instanceof X509ExtendedKeyManager) {
+                X509ExtendedKeyManager ekm = (X509ExtendedKeyManager)km;
+                if (this.socketOwner != null) {
+                    alias = ekm.chooseClientAlias(certTypes, issuers, this.socketOwner);
+                } else {
+                    alias = ekm.chooseEngineClientAlias(certTypes, issuers, this.engineOwner);
+                }
+                if (alias != null) {
+                    certs = ekm.getCertificateChain(alias);
+                }
+            } else {
+                alias = km.chooseClientAlias(certTypes, issuers, this.socketOwner);
+                if (alias != null) {
+                    certs = km.getCertificateChain(alias);
+                }
             }
+
             session.localCertificates = certs;
             clientCert = new CertificateMessage(certs);
+            clientKey = km.getPrivateKey(alias);
             send(clientCert);
         }
         // Client key exchange
-        if (session.cipherSuite.keyExchange == CipherSuite.KeyExchange_RSA
-                || session.cipherSuite.keyExchange == CipherSuite.KeyExchange_RSA_EXPORT) {
+        if (session.cipherSuite.keyExchange == CipherSuite.KEY_EXCHANGE_RSA
+                || session.cipherSuite.keyExchange == CipherSuite.KEY_EXCHANGE_RSA_EXPORT) {
             // RSA encrypted premaster secret message
             Cipher c;
             try {
@@ -417,8 +428,7 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
             }
             preMasterSecret = new byte[48];
             parameters.getSecureRandom().nextBytes(preMasterSecret);
-            System.arraycopy(clientHello.client_version, 0, preMasterSecret, 0,
-                    2);
+            System.arraycopy(clientHello.client_version, 0, preMasterSecret, 0, 2);
             try {
                 clientKeyExchange = new ClientKeyExchange(c
                         .doFinal(preMasterSecret),
@@ -429,29 +439,12 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
                 return;
             }
         } else {
-            PublicKey serverPublic;
-            KeyAgreement agreement = null;
-            DHParameterSpec spec;
             try {
-                KeyFactory kf = null;
-                try {
-                    kf = KeyFactory.getInstance("DH");
-                } catch (NoSuchAlgorithmException e) {
-                    kf = KeyFactory.getInstance("DiffieHellman");
-                }
-                
-                try {
-                    agreement = KeyAgreement.getInstance("DH");
-                } catch (NoSuchAlgorithmException ee) {
-                    agreement = KeyAgreement.getInstance("DiffieHellman");
-                }
-
-                KeyPairGenerator kpg = null;
-                try {
-                    kpg = KeyPairGenerator.getInstance("DH");
-                } catch (NoSuchAlgorithmException e) {
-                    kpg = KeyPairGenerator.getInstance("DiffieHellman");
-                }
+                KeyFactory kf = KeyFactory.getInstance("DH");
+                KeyAgreement agreement = KeyAgreement.getInstance("DH");
+                KeyPairGenerator kpg = KeyPairGenerator.getInstance("DH");
+                PublicKey serverPublic;
+                DHParameterSpec spec;
                 if (serverKeyExchange != null) {
                     serverPublic = kf.generatePublic(new DHPublicKeySpec(
                             serverKeyExchange.par3, serverKeyExchange.par1,
@@ -468,8 +461,8 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
                 Key key = kp.getPublic();
                 if (clientCert != null
                         && serverCert != null
-                        && (session.cipherSuite.keyExchange == CipherSuite.KeyExchange_DHE_RSA
-                                || session.cipherSuite.keyExchange == CipherSuite.KeyExchange_DHE_DSS)) {
+                        && (session.cipherSuite.keyExchange == CipherSuite.KEY_EXCHANGE_DHE_RSA
+                                || session.cipherSuite.keyExchange == CipherSuite.KEY_EXCHANGE_DHE_DSS)) {
                     PublicKey client_pk = clientCert.certs[0].getPublicKey();
                     PublicKey server_pk = serverCert.certs[0].getPublicKey();
                     if (client_pk instanceof DHKey
@@ -508,22 +501,17 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
         // fixed DH parameters
         if (clientCert != null && !clientKeyExchange.isEmpty()) {
             // Certificate verify
-            DigitalSignature ds = new DigitalSignature(
-                    session.cipherSuite.keyExchange);
+            String authType = clientKey.getAlgorithm();
+            DigitalSignature ds = new DigitalSignature(authType);
             ds.init(clientKey);
 
-            if (session.cipherSuite.keyExchange == CipherSuite.KeyExchange_RSA_EXPORT
-                    || session.cipherSuite.keyExchange == CipherSuite.KeyExchange_RSA
-                    || session.cipherSuite.keyExchange == CipherSuite.KeyExchange_DHE_RSA
-                    || session.cipherSuite.keyExchange == CipherSuite.KeyExchange_DHE_RSA_EXPORT) { 
+            if ("RSA".equals(authType)) {
                 ds.setMD5(io_stream.getDigestMD5());
                 ds.setSHA(io_stream.getDigestSHA());
-            } else if (session.cipherSuite.keyExchange == CipherSuite.KeyExchange_DHE_DSS
-                    || session.cipherSuite.keyExchange == CipherSuite.KeyExchange_DHE_DSS_EXPORT) {
+            } else if ("DSA".equals(authType)) {
                 ds.setSHA(io_stream.getDigestSHA());
-            // The Signature should be empty in case of anonimous signature algorithm:
-            // } else if (session.cipherSuite.keyExchange == CipherSuite.KeyExchange_DH_anon ||
-            //         session.cipherSuite.keyExchange == CipherSuite.KeyExchange_DH_anon_EXPORT) {
+            // The Signature should be empty in case of anonymous signature algorithm:
+            // } else if ("DH".equals(authType)) {
             }
             certificateVerify = new CertificateVerify(ds.sign());
             send(certificateVerify);
@@ -531,47 +519,17 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
 
         sendChangeCipherSpec();
     }
-    
+
     /*
      * Verifies certificate path
      */
     private void verifyServerCert() {
-        String authType = null;
-        switch (session.cipherSuite.keyExchange) {
-        case 1: // KeyExchange_RSA
-            authType = "RSA";
-            break;
-        case 2: // KeyExchange_RSA_EXPORT
-            if (serverKeyExchange != null ) {
-                // ephemeral RSA key is used 
-                authType = "RSA_EXPORT";
-            } else {
-                authType = "RSA";
-            }
-            break;
-        case 3: // KeyExchange_DHE_DSS
-        case 4: // KeyExchange_DHE_DSS_EXPORT
-            authType = "DHE_DSS";
-            break;
-        case 5: // KeyExchange_DHE_RSA
-        case 6: // KeyExchange_DHE_RSA_EXPORT
-            authType = "DHE_RSA";
-            break;
-        case 7: // KeyExchange_DH_DSS
-        case 11: // KeyExchange_DH_DSS_EXPORT
-            authType = "DH_DSS";
-            break;
-        case 8: // KeyExchange_DH_RSA
-        case 12: // KeyExchange_DH_RSA_EXPORT
-            authType = "DH_RSA";
-            break;
-        case 9: // KeyExchange_DH_anon
-        case 10: // KeyExchange_DH_anon_EXPORT
+        String authType = session.cipherSuite.getAuthType(serverKeyExchange != null);
+        if (authType == null) {
             return;
         }
         try {
-            parameters.getTrustManager().checkServerTrusted(serverCert.certs,
-                    authType);
+            parameters.getTrustManager().checkServerTrusted(serverCert.certs, authType);
         } catch (CertificateException e) {
             fatalAlert(AlertProtocol.BAD_CERTIFICATE, "Not trusted server certificate", e);
             return;
@@ -590,14 +548,14 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
             }
         } else if (clientFinished == null) {
             unexpectedMessage();
-        } 
+        }
         changeCipherSpecReceived = true;
     }
 
     // Find session to resume in client session context
     private SSLSessionImpl findSessionToResume() {
-        String host;
-        int port;
+        String host = null;
+        int port = -1;
         if (engineOwner != null) {
             host = engineOwner.getPeerHost();
             port = engineOwner.getPeerPort();
@@ -608,19 +566,14 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
         if (host == null || port == -1) {
             return null; // starts new session
         }
-        
-        byte[] id;
-        SSLSession ses;
-        SSLSessionContext context = parameters.getClientSessionContext();
-        for (Enumeration<?> en = context.getIds(); en.hasMoreElements();) {
-            id = (byte[])en.nextElement();
-            ses = context.getSession(id);
-            if (host.equals(ses.getPeerHost()) && port == ses.getPeerPort()) {
-                return (SSLSessionImpl)((SSLSessionImpl)ses).clone(); // resume
-            }            
+
+        ClientSessionContext context = parameters.getClientSessionContext();
+        SSLSessionImpl session
+                = (SSLSessionImpl) context.getSession(host, port);
+        if (session != null) {
+            session = (SSLSessionImpl) session.clone();
         }
-        return null; // starts new session
+        return session;
     }
 
 }
-

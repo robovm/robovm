@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -134,7 +134,7 @@ public final class StackTraceElement implements Serializable {
     /**
      * Returns the fully qualified name of the class belonging to this
      * {@code StackTraceElement}.
-     * 
+     *
      * @return the fully qualified type name of the class
      */
     public String getClassName() {
@@ -144,7 +144,7 @@ public final class StackTraceElement implements Serializable {
     /**
      * Returns the name of the Java source file containing class belonging to
      * this {@code StackTraceElement}.
-     * 
+     *
      * @return the name of the file, or {@code null} if this information is not
      *         available.
      */
@@ -155,7 +155,7 @@ public final class StackTraceElement implements Serializable {
     /**
      * Returns the line number in the source for the class belonging to this
      * {@code StackTraceElement}.
-     * 
+     *
      * @return the line number, or a negative number if this information is not
      *         available.
      */
@@ -166,7 +166,7 @@ public final class StackTraceElement implements Serializable {
     /**
      * Returns the name of the method belonging to this {@code
      * StackTraceElement}.
-     * 
+     *
      * @return the name of the method, or "<unknown method>" if this information
      *         is not available.
      */
@@ -191,7 +191,7 @@ public final class StackTraceElement implements Serializable {
     /**
      * Indicates if the method name returned by {@link #getMethodName()} is
      * implemented as a native method.
-     * 
+     *
      * @return {@code true} if the method in which this stack trace element is
      *         executing is a native method; {@code false} otherwise.
      */

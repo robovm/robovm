@@ -22,36 +22,36 @@ import java.io.Serializable;
 /**
  * {@code SecureRandomSpi} is the <i>Service Provider Interface</i> (<b>SPI</b>) definition
  * for {@link SecureRandom}.
- * 
+ *
  * @see SecureRandom
  */
 public abstract class SecureRandomSpi implements Serializable {
-    
+
     private static final long serialVersionUID = -2991854161009191830L;
-                
+
     /**
      * Reseeds this {@code SecureRandomSpi} instance with the specified {@code
      * seed}. The seed of this {@code SecureRandomSpi} instance is supplemented,
      * not replaced.
-     * 
+     *
      * @param seed
      *            the new seed.
      */
     protected abstract void engineSetSeed(byte[] seed);
-    
+
     /**
      * Generates and stores random bytes in the given {@code byte[]} for each
      * array element.
-     * 
+     *
      * @param bytes
      *            the {@code byte[]} to be filled with random bytes.
      */
     protected abstract void engineNextBytes(byte[] bytes);
-    
+
     /**
      * Generates and returns the specified number of seed bytes, computed using
      * the seed generation algorithm used by this {@code SecureRandomSpi}.
-     * 
+     *
      * @param numBytes
      *            the number of seed bytes.
      * @return the seed bytes

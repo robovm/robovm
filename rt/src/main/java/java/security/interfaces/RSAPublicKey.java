@@ -32,7 +32,7 @@ public interface RSAPublicKey extends PublicKey, RSAKey {
 
     /**
      * Returns the public exponent {@code e}.
-     * 
+     *
      * @return the public exponent {@code e}.
      */
     public BigInteger getPublicExponent();

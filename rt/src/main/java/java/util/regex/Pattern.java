@@ -1,300 +1,358 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
+ * Copyright (C) 2007 The Android Open Source Project
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-/**
- * @author Nikolay A. Kuznetsov
- */
 package java.util.regex;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
-import java.util.ArrayList;
-
-import org.apache.harmony.regex.internal.nls.Messages;
-
-
 /**
- * Represents a pattern used for matching, searching, or replacing strings.
- * {@code Pattern}s are specified in terms of regular expressions and compiled
- * using an instance of this class. They are then used in conjunction with a
- * {@link Matcher} to perform the actual search.
- * <p/>
- * A typical use case looks like this:
- * <p/>
- * <pre>
- * Pattern p = Pattern.compile("Hello, A[a-z]*!");
+ * Patterns are compiled regular expressions. In many cases, convenience methods such as
+ * {@link String#matches String.matches}, {@link String#replaceAll String.replaceAll} and
+ * {@link String#split String.split} will be preferable, but if you need to do a lot of work
+ * with the same regular expression, it may be more efficient to compile it once and reuse it.
+ * The {@code Pattern} class and its companion, {@link Matcher}, also offer more functionality
+ * than the small amount exposed by {@code String}.
  *
- * Matcher m = p.matcher("Hello, Android!");
- * boolean b1 = m.matches(); // true
- *
- * m.setInput("Hello, Robot!");
- * boolean b2 = m.matches(); // false
- * </pre>
- * <p/>
- * The above code could also be written in a more compact fashion, though this
- * variant is less efficient, since {@code Pattern} and {@code Matcher} objects
- * are created on the fly instead of being reused.
- * fashion:
  * <pre>
- *     boolean b1 = Pattern.matches("Hello, A[a-z]*!", "Hello, Android!"); // true
- *     boolean b2 = Pattern.matches("Hello, A[a-z]*!", "Hello, Robot!");   // false
+ * // String convenience methods:
+ * boolean sawFailures = s.matches("Failures: \\d+");
+ * String farewell = s.replaceAll("Hello, (\\S+)", "Goodbye, $1");
+ * String[] fields = s.split(":");
+ *
+ * // Direct use of Pattern:
+ * Pattern p = Pattern.compile("Hello, (\\S+)");
+ * Matcher m = p.matcher(inputString);
+ * while (m.find()) { // Find each match in turn; String can't do this.
+ *     String name = m.group(1); // Access a submatch group; String can't do this.
+ * }
  * </pre>
+ *
+ * <h3>Regular expression syntax</h3>
+ * <span class="datatable">
+ * <style type="text/css">
+ * .datatable td { padding-right: 20px; }
+ * </style>
+ *
+ * <p>Java supports a subset of Perl 5 regular expression syntax. An important gotcha is that Java
+ * has no regular expression literals, and uses plain old string literals instead. This means that
+ * you need an extra level of escaping. For example, the regular expression {@code \s+} has to
+ * be represented as the string {@code "\\s+"}.
+ *
+ * <h3>Escape sequences</h3>
+ * <p><table>
+ * <tr> <td> \ </td> <td>Quote the following metacharacter (so {@code \.} matches a literal {@code .}).</td> </tr>
+ * <tr> <td> \Q </td> <td>Quote all following metacharacters until {@code \E}.</td> </tr>
+ * <tr> <td> \E </td> <td>Stop quoting metacharacters (started by {@code \Q}).</td> </tr>
+ * <tr> <td> \\ </td> <td>A literal backslash.</td> </tr>
+ * <tr> <td> &#x005c;u<i>hhhh</i> </td> <td>The Unicode character U+hhhh (in hex).</td> </tr>
+ * <tr> <td> &#x005c;x<i>hh</i> </td> <td>The Unicode character U+00hh (in hex).</td> </tr>
+ * <tr> <td> \c<i>x</i> </td> <td>The ASCII control character ^x (so {@code \cH} would be ^H, U+0008).</td> </tr>
+ *
+ * <tr> <td> \a </td> <td>The ASCII bell character (U+0007).</td> </tr>
+ * <tr> <td> \e </td> <td>The ASCII ESC character (U+001b).</td> </tr>
+ * <tr> <td> \f </td> <td>The ASCII form feed character (U+000c).</td> </tr>
+ * <tr> <td> \n </td> <td>The ASCII newline character (U+000a).</td> </tr>
+ * <tr> <td> \r </td> <td>The ASCII carriage return character (U+000d).</td> </tr>
+ * <tr> <td> \t </td> <td>The ASCII tab character (U+0009).</td> </tr>
+ * </table>
+ *
+ * <h3>Character classes</h3>
+ * <p>It's possible to construct arbitrary character classes using set operations:
+ * <table>
+ * <tr> <td> [abc] </td> <td>Any one of {@code a}, {@code b}, or {@code c}. (Enumeration.)</td> </tr>
+ * <tr> <td> [a-c] </td> <td>Any one of {@code a}, {@code b}, or {@code c}. (Range.)</td> </tr>
+ * <tr> <td> [^abc] </td> <td>Any character <i>except</i> {@code a}, {@code b}, or {@code c}. (Negation.)</td> </tr>
+ * <tr> <td> [[a-f][0-9]] </td> <td>Any character in either range. (Union.)</td> </tr>
+ * <tr> <td> [[a-z]&&[jkl]] </td> <td>Any character in both ranges. (Intersection.)</td> </tr>
+ * </table>
+ * <p>Most of the time, the built-in character classes are more useful:
+ * <table>
+ * <tr> <td> \d </td> <td>Any digit character.</td> </tr>
+ * <tr> <td> \D </td> <td>Any non-digit character.</td> </tr>
+ * <tr> <td> \s </td> <td>Any whitespace character.</td> </tr>
+ * <tr> <td> \S </td> <td>Any non-whitespace character.</td> </tr>
+ * <tr> <td> \w </td> <td>Any word character.</td> </tr>
+ * <tr> <td> \W </td> <td>Any non-word character.</td> </tr>
+ * <tr> <td> \p{<i>NAME</i>} </td> <td> Any character in the class with the given <i>NAME</i>. </td> </tr>
+ * <tr> <td> \P{<i>NAME</i>} </td> <td> Any character <i>not</i> in the named class. </td> </tr>
+ * </table>
+ * <p>There are a variety of named classes:
+ * <ul>
+ * <li><a href="../../lang/Character.html#unicode_categories">Unicode category names</a>,
+ * prefixed by {@code Is}. For example {@code \p{IsLu}} for all uppercase letters.
+ * <li>POSIX class names. These are 'Alnum', 'Alpha', 'ASCII', 'Blank', 'Cntrl', 'Digit',
+ * 'Graph', 'Lower', 'Print', 'Punct', 'Upper', 'XDigit'.
+ * <li>Unicode block names, as used by {@link java.lang.Character.UnicodeBlock#forName} prefixed
+ * by {@code In}. For example {@code \p{InHebrew}} for all characters in the Hebrew block.
+ * <li>Character method names. These are all non-deprecated methods from {@link java.lang.Character}
+ * whose name starts with {@code is}, but with the {@code is} replaced by {@code java}.
+ * For example, {@code \p{javaLowerCase}}.
+ * </ul>
+ *
+ * <h3>Quantifiers</h3>
+ * <p>Quantifiers match some number of instances of the preceding regular expression.
+ * <table>
+ * <tr> <td> * </td> <td>Zero or more.</td> </tr>
+ * <tr> <td> ? </td> <td>Zero or one.</td> </tr>
+ * <tr> <td> + </td> <td>One or more.</td> </tr>
+ * <tr> <td> {<i>n</i>} </td> <td>Exactly <i>n</i>.</td> </tr>
+ * <tr> <td> {<i>n,</i>} </td> <td>At least <i>n</i>.</td> </tr>
+ * <tr> <td> {<i>n</i>,<i>m</i>} </td> <td>At least <i>n</i> but not more than <i>m</i>.</td> </tr>
+ * </table>
+ * <p>Quantifiers are "greedy" by default, meaning that they will match the longest possible input
+ * sequence. There are also non-greedy quantifiers that match the shortest possible input sequence.
+ * They're same as the greedy ones but with a trailing {@code ?}:
+ * <table>
+ * <tr> <td> *? </td> <td>Zero or more (non-greedy).</td> </tr>
+ * <tr> <td> ?? </td> <td>Zero or one (non-greedy).</td> </tr>
+ * <tr> <td> +? </td> <td>One or more (non-greedy).</td> </tr>
+ * <tr> <td> {<i>n</i>}? </td> <td>Exactly <i>n</i> (non-greedy).</td> </tr>
+ * <tr> <td> {<i>n,</i>}? </td> <td>At least <i>n</i> (non-greedy).</td> </tr>
+ * <tr> <td> {<i>n</i>,<i>m</i>}? </td> <td>At least <i>n</i> but not more than <i>m</i> (non-greedy).</td> </tr>
+ * </table>
+ * <p>Quantifiers allow backtracking by default. There are also possessive quantifiers to prevent
+ * backtracking. They're same as the greedy ones but with a trailing {@code +}:
+ * <table>
+ * <tr> <td> *+ </td> <td>Zero or more (possessive).</td> </tr>
+ * <tr> <td> ?+ </td> <td>Zero or one (possessive).</td> </tr>
+ * <tr> <td> ++ </td> <td>One or more (possessive).</td> </tr>
+ * <tr> <td> {<i>n</i>}+ </td> <td>Exactly <i>n</i> (possessive).</td> </tr>
+ * <tr> <td> {<i>n,</i>}+ </td> <td>At least <i>n</i> (possessive).</td> </tr>
+ * <tr> <td> {<i>n</i>,<i>m</i>}+ </td> <td>At least <i>n</i> but not more than <i>m</i> (possessive).</td> </tr>
+ * </table>
+ *
+ * <h3>Zero-width assertions</h3>
+ * <p><table>
+ * <tr> <td> ^ </td> <td>At beginning of line.</td> </tr>
+ * <tr> <td> $ </td> <td>At end of line.</td> </tr>
+ * <tr> <td> \A </td> <td>At beginning of input.</td> </tr>
+ * <tr> <td> \b </td> <td>At word boundary.</td> </tr>
+ * <tr> <td> \B </td> <td>At non-word boundary.</td> </tr>
+ * <tr> <td> \G </td> <td>At end of previous match.</td> </tr>
+ * <tr> <td> \z </td> <td>At end of input.</td> </tr>
+ * <tr> <td> \Z </td> <td>At end of input, or before newline at end.</td> </tr>
+ * </table>
+ *
+ * <h3>Look-around assertions</h3>
+ * <p>Look-around assertions assert that the subpattern does (positive) or doesn't (negative) match
+ * after (look-ahead) or before (look-behind) the current position, without including the matched
+ * text in the containing match. The maximum length of possible matches for look-behind patterns
+ * must not be unbounded.
+ * <p><table>
+ * <tr> <td> (?=<i>a</i>) </td> <td>Zero-width positive look-ahead.</td> </tr>
+ * <tr> <td> (?!<i>a</i>) </td> <td>Zero-width negative look-ahead.</td> </tr>
+ * <tr> <td> (?&lt;=<i>a</i>) </td> <td>Zero-width positive look-behind.</td> </tr>
+ * <tr> <td> (?&lt;!<i>a</i>) </td> <td>Zero-width negative look-behind.</td> </tr>
+ * </table>
+ *
+ * <h3>Groups</h3>
+ *
+ * <p><table>
+ * <tr> <td> (<i>a</i>) </td> <td>A capturing group.</td> </tr>
+ * <tr> <td> (?:<i>a</i>) </td> <td>A non-capturing group.</td> </tr>
+ * <tr> <td> (?&gt;<i>a</i>) </td> <td>An independent non-capturing group. (The first match of the subgroup is the only match tried.)</td> </tr>
+ * <tr> <td> \<i>n</i> </td> <td>The text already matched by capturing group <i>n</i>.</td> </tr>
+ * </table>
+ * <p>See {@link Matcher#group} for details of how capturing groups are numbered and accessed.
+ *
+ * <h3>Operators</h3>
+ * <p><table>
+ * <tr> <td> <i>ab</i> </td> <td>Expression <i>a</i> followed by expression <i>b</i>.</td> </tr>
+ * <tr> <td> <i>a</i>|<i>b</i> </td> <td>Either expression <i>a</i> or expression <i>b</i>.</td> </tr>
+ * </table>
+ *
+ * <a name="flags"><h3>Flags</h3></a>
+ * <p><table>
+ * <tr> <td> (?dimsux-dimsux:<i>a</i>) </td> <td>Evaluates the expression <i>a</i> with the given flags enabled/disabled.</td> </tr>
+ * <tr> <td> (?dimsux-dimsux) </td> <td>Evaluates the rest of the pattern with the given flags enabled/disabled.</td> </tr>
+ * </table>
+ *
+ * <p>The flags are:
+ * <table>
+ * <tr><td>{@code i}</td> <td>{@link #CASE_INSENSITIVE}</td> <td>case insensitive matching</td></tr>
+ * <tr><td>{@code d}</td> <td>{@link #UNIX_LINES}</td>       <td>only accept {@code '\n'} as a line terminator</td></tr>
+ * <tr><td>{@code m}</td> <td>{@link #MULTILINE}</td>        <td>allow {@code ^} and {@code $} to match beginning/end of any line</td></tr>
+ * <tr><td>{@code s}</td> <td>{@link #DOTALL}</td>           <td>allow {@code .} to match {@code '\n'} ("s" for "single line")</td></tr>
+ * <tr><td>{@code u}</td> <td>{@link #UNICODE_CASE}</td>     <td>enable Unicode case folding</td></tr>
+ * <tr><td>{@code x}</td> <td>{@link #COMMENTS}</td>         <td>allow whitespace and comments</td></tr>
+ * </table>
+ * <p>Either set of flags may be empty. For example, {@code (?i-m)} would turn on case-insensitivity
+ * and turn off multiline mode, {@code (?i)} would just turn on case-insensitivity,
+ * and {@code (?-m)} would just turn off multiline mode.
+ * <p>Note that on Android, {@code UNICODE_CASE} is always on: case-insensitive matching will
+ * always be Unicode-aware.
+ * <p>There are two other flags not settable via this mechanism: {@link #CANON_EQ} and
+ * {@link #LITERAL}. Attempts to use {@link #CANON_EQ} on Android will throw an exception.
+ * </span>
+ *
+ * <h3>Implementation notes</h3>
+ *
+ * <p>The regular expression implementation used in Android is provided by
+ * <a href="http://www.icu-project.org">ICU</a>. The notation for the regular
+ * expressions is mostly a superset of those used in other Java language
+ * implementations. This means that existing applications will normally work as
+ * expected, but in rare cases Android may accept a regular expression that is
+ * not accepted by other implementations.
+ *
+ * <p>In some cases, Android will recognize that a regular expression is a simple
+ * special case that can be handled more efficiently. This is true of both the convenience methods
+ * in {@code String} and the methods in {@code Pattern}.
  *
  * @see Matcher
  */
 public final class Pattern implements Serializable {
-    
+
     private static final long serialVersionUID = 5073258162644648461L;
-    
-    static final boolean _DEBUG_ = false;
 
     /**
      * This constant specifies that a pattern matches Unix line endings ('\n')
-     * only against the '.', '^', and '$' meta characters.
+     * only against the '.', '^', and '$' meta characters. Corresponds to {@code (?d)}.
      */
-    public static final int UNIX_LINES = 1 << 0;
+    public static final int UNIX_LINES = 0x01;
 
     /**
      * This constant specifies that a {@code Pattern} is matched
      * case-insensitively. That is, the patterns "a+" and "A+" would both match
-     * the string "aAaAaA".
+     * the string "aAaAaA". See {@link #UNICODE_CASE}. Corresponds to {@code (?i)}.
      */
-    public static final int CASE_INSENSITIVE = 1 << 1;
+    public static final int CASE_INSENSITIVE = 0x02;
 
     /**
      * This constant specifies that a {@code Pattern} may contain whitespace or
      * comments. Otherwise comments and whitespace are taken as literal
-     * characters.
+     * characters. Corresponds to {@code (?x)}.
      */
-    public static final int COMMENTS = 1 << 2;
+    public static final int COMMENTS = 0x04;
 
     /**
      * This constant specifies that the meta characters '^' and '$' match only
-     * the beginning and end end of an input line, respectively. Normally, they
-     * match the beginning and the end of the complete input.
+     * the beginning and end of an input line, respectively. Normally, they
+     * match the beginning and the end of the complete input. Corresponds to {@code (?m)}.
      */
-    public static final int MULTILINE = 1 << 3;
+    public static final int MULTILINE = 0x08;
 
     /**
      * This constant specifies that the whole {@code Pattern} is to be taken
      * literally, that is, all meta characters lose their meanings.
      */
-    public static final int LITERAL = 1 << 4;
+    public static final int LITERAL = 0x10;
 
     /**
      * This constant specifies that the '.' meta character matches arbitrary
      * characters, including line endings, which is normally not the case.
+     * Corresponds to {@code (?s)}.
      */
-    public static final int DOTALL = 1 << 5;
+    public static final int DOTALL = 0x20;
 
     /**
-     * This constant specifies that a {@code Pattern} is matched
-     * case-insensitively with regard to all Unicode characters. It is used in
-     * conjunction with the {@link #CASE_INSENSITIVE} constant to extend its
-     * meaning to all Unicode characters.
+     * This constant specifies that a {@code Pattern} that uses case-insensitive matching
+     * will use Unicode case folding. On Android, {@code UNICODE_CASE} is always on:
+     * case-insensitive matching will always be Unicode-aware. If your code is intended to
+     * be portable and uses case-insensitive matching on non-ASCII characters, you should
+     * use this flag. Corresponds to {@code (?u)}.
      */
-    public static final int UNICODE_CASE = 1 << 6;
+    public static final int UNICODE_CASE = 0x40;
 
     /**
      * This constant specifies that a character in a {@code Pattern} and a
      * character in the input string only match if they are canonically
-     * equivalent.
+     * equivalent. It is (currently) not supported in Android.
      */
-    public static final int CANON_EQ = 1 << 7;
-    
-    static final int BACK_REF_NUMBER = 10;
-    
-    /**
-     * Bit mask that includes all defined match flags
-     */
-    static final int flagsBitMask = Pattern.UNIX_LINES | 
-                                    Pattern.CASE_INSENSITIVE | 
-                                    Pattern.COMMENTS | 
-                                    Pattern.MULTILINE |
-                                    Pattern.LITERAL |
-                                    Pattern.DOTALL | 
-                                    Pattern.UNICODE_CASE | 
-                                    Pattern.CANON_EQ;
+    public static final int CANON_EQ = 0x80;
+
+    private final String pattern;
+    private final int flags;
+
+    transient int address;
 
     /**
-     * Current <code>pattern</code> to be compiled;
-     */
-    private transient Lexer lexemes = null;
-
-    /**
-     * Pattern compile flags;
-     */
-    private int flags = 0;
-
-    private String pattern = null;
-    
-    /*
-     * All backreferences that may be used in pattern.
-     */
-    transient private FSet backRefs [] = new FSet [BACK_REF_NUMBER];
-    
-    /*
-     * Is true if backreferenced sets replacement is needed
-     */
-    transient private boolean needsBackRefReplacement = false;
-
-    transient private int globalGroupIndex = -1;
-
-    transient private int compCount = -1;
-
-    transient private int consCount = -1;
-
-    transient AbstractSet start = null;
-
-    /**
-     * Returns a {@link Matcher} for the {@code Pattern} and a given input. The
-     * {@code Matcher} can be used to match the {@code Pattern} against the
+     * Returns a {@link Matcher} for this pattern applied to the given {@code input}.
+     * The {@code Matcher} can be used to match the {@code Pattern} against the
      * whole input, find occurrences of the {@code Pattern} in the input, or
      * replace parts of the input.
-     *
-     * @param input
-     *            the input to process.
-     *
-     * @return the resulting {@code Matcher}.
      */
     public Matcher matcher(CharSequence input) {
         return new Matcher(this, input);
     }
 
     /**
-     * Splits the given input sequence around occurrences of the {@code Pattern}.
-     * The function first determines all occurrences of the {@code Pattern}
-     * inside the input sequence. It then builds an array of the
-     * &quot;remaining&quot; strings before, in-between, and after these
-     * occurrences. An additional parameter determines the maximal number of
-     * entries in the resulting array and the handling of trailing empty
-     * strings.
+     * Splits the given {@code input} at occurrences of this pattern.
      *
-     * @param inputSeq
-     *            the input sequence.
+     * <p>If this pattern does not occur in the input, the result is an
+     * array containing the input (converted from a {@code CharSequence} to
+     * a {@code String}).
+     *
+     * <p>Otherwise, the {@code limit} parameter controls the contents of the
+     * returned array as described below.
+     *
      * @param limit
-     *            Determines the maximal number of entries in the resulting
-     *            array.
+     *            Determines the maximum number of entries in the resulting
+     *            array, and the treatment of trailing empty strings.
      *            <ul>
-     *            <li>For n &gt; 0, it is guaranteed that the resulting array
-     *            contains at most n entries.
+     *            <li>For n &gt; 0, the resulting array contains at most n
+     *            entries. If this is fewer than the number of matches, the
+     *            final entry will contain all remaining input.
      *            <li>For n &lt; 0, the length of the resulting array is
-     *            exactly the number of occurrences of the {@code Pattern} +1.
+     *            exactly the number of occurrences of the {@code Pattern}
+     *            plus one for the text after the final separator.
      *            All entries are included.
-     *            <li>For n == 0, the length of the resulting array is at most
-     *            the number of occurrences of the {@code Pattern} +1. Empty
-     *            strings at the end of the array are not included.
+     *            <li>For n == 0, the result is as for n &lt; 0, except
+     *            trailing empty strings will not be returned. (Note that
+     *            the case where the input is itself an empty string is
+     *            special, as described above, and the limit parameter does
+     *            not apply there.)
      *            </ul>
-     *
-     * @return the resulting array.
      */
-    public String[] split(CharSequence inputSeq, int limit) {
-        ArrayList res = new ArrayList();
-        Matcher mat = matcher(inputSeq);
-        int index = 0;
-        int curPos = 0;       
-        
-        if (inputSeq.length() == 0) {
-            return new String [] {""}; //$NON-NLS-1$
-        } else {
-            while (mat.find() && (index + 1 < limit || limit <= 0)) {
-                  res.add(inputSeq.subSequence(curPos, mat.start()).toString());
-                  curPos = mat.end();
-                  index++;
-            }
-                
-            res.add(inputSeq.subSequence(curPos, inputSeq.length()).toString());
-            index++;
-                             
-            /*
-             * discard trailing empty strings
-             */
-            if (limit == 0) {
-                while (--index >= 0 && res.get(index).toString().length() == 0) {
-                       res.remove(index);
-                }
-            }
-        }
-        return (String[]) res.toArray(new String[index >= 0 ? index : 0]);
+    public String[] split(CharSequence input, int limit) {
+        return Splitter.split(this, pattern, input.toString(), limit);
     }
 
     /**
-     * Splits a given input around occurrences of a regular expression. This is
-     * a convenience method that is equivalent to calling the method
-     * {@link #split(java.lang.CharSequence, int)} with a limit of 0.
-     *
-     * @param input
-     *            the input sequence.
-     *
-     * @return the resulting array.
+     * Equivalent to {@code split(input, 0)}.
      */
     public String[] split(CharSequence input) {
         return split(input, 0);
     }
 
     /**
-     * Returns the regular expression that was compiled into this
-     * {@code Pattern}.
-     *
-     * @return the regular expression.
+     * Returns the regular expression supplied to {@code compile}.
      */
     public String pattern() {
-        return lexemes.toString();
+        return pattern;
     }
 
     @Override
     public String toString() {
-        return this.pattern();
+        return pattern;
     }
 
     /**
-     * Returns the flags that have been set for this {@code Pattern}.
-     *
-     * @return the flags that have been set. A combination of the constants
-     *         defined in this class.
-     *
-     * @see #CANON_EQ
-     * @see #CASE_INSENSITIVE
-     * @see #COMMENTS
-     * @see #DOTALL
-     * @see #LITERAL
-     * @see #MULTILINE
-     * @see #UNICODE_CASE
-     * @see #UNIX_LINES
+     * Returns the flags supplied to {@code compile}.
      */
     public int flags() {
-        return this.flags;
+        return flags;
     }
 
     /**
-     * Compiles a regular expression, creating a new {@code Pattern} instance in
-     * the process. Allows to set some flags that modify the behavior of the
-     * {@code Pattern}.
+     * Returns a compiled form of the given {@code regularExpression}, as modified by the
+     * given {@code flags}. See the <a href="#flags">flags overview</a> for more on flags.
      *
-     * @param pattern
-     *            the regular expression.
-     * @param flags
-     *            the flags to set. Basically, any combination of the constants
-     *            defined in this class is valid.
-     *
-     * @return the new {@code Pattern} instance.
-     *
-     * @throws PatternSyntaxException
-     *             if the regular expression is syntactically incorrect.
+     * @throws PatternSyntaxException if the regular expression is syntactically incorrect.
      *
      * @see #CANON_EQ
      * @see #CASE_INSENSITIVE
@@ -305,1145 +363,88 @@ public final class Pattern implements Serializable {
      * @see #UNICODE_CASE
      * @see #UNIX_LINES
      */
-    public static Pattern compile(String pattern, int flags)
-            throws PatternSyntaxException {
-    	
-    	if ((flags != 0) &&
-    	   	((flags | flagsBitMask) != flagsBitMask)) {
-    	        	
-    	    throw new IllegalArgumentException(Messages.getString("regex.1C"));
-    	}
-    	
-        AbstractSet.counter = 1;
-
-        return new Pattern().compileImpl(pattern, flags);
+    public static Pattern compile(String regularExpression, int flags) throws PatternSyntaxException {
+        return new Pattern(regularExpression, flags);
     }
 
     /**
-     * 
-     * @param pattern -
-     *            Regular expression to be compiled
-     * @param flags -
-     *            The bit mask including CASE_INSENSITIVE, MULTILINE, DOTALL,
-     *            UNICODE_CASE, and CANON_EQ
-     * 
-     * @return Compiled pattern
-     */
-    private Pattern compileImpl(String pattern, int flags)
-            throws PatternSyntaxException {
-        this.lexemes = new Lexer(pattern, flags);
-        this.flags = flags;
-        this.pattern = pattern;
-
-        start = processExpression(-1, this.flags, null);
-        if (!lexemes.isEmpty()) {
-            throw new PatternSyntaxException(
-                    Messages.getString("regex.08"), lexemes.toString(), //$NON-NLS-1$
-                    lexemes.getIndex());
-        }
-        finalizeCompile();
-        return this;
-    }
-
-    /**
-     * A->(a|)+
-     */
-    private AbstractSet processAlternations(AbstractSet last) {
-        CharClass auxRange = new CharClass(hasFlag(Pattern.CASE_INSENSITIVE),
-                hasFlag(Pattern.UNICODE_CASE));
-        while (!lexemes.isEmpty()
-                && lexemes.isLetter()
-                && (lexemes.lookAhead() == 0
-                        || lexemes.lookAhead() == Lexer.CHAR_VERTICAL_BAR || lexemes
-                        .lookAhead() == Lexer.CHAR_RIGHT_PARENTHESIS)) {
-            auxRange.add(lexemes.next());
-            if (lexemes.peek() == Lexer.CHAR_VERTICAL_BAR)
-                lexemes.next();
-        }
-        AbstractSet rangeSet = processRangeSet(auxRange);
-        rangeSet.setNext(last);
-        
-        return rangeSet;
-    }
-
-    /**
-     * E->AE; E->S|E; E->S; A->(a|)+ E->S(|S)*
-     */
-    private AbstractSet processExpression(int ch, int newFlags,
-            AbstractSet last) {
-        ArrayList children = new ArrayList();
-        AbstractSet child;
-        int saveFlags = flags;
-        FSet fSet;
-        boolean saveChangedFlags = false;
-
-        if (newFlags != flags) {
-            flags = newFlags;
-        }
-
-        switch (ch) {
-        case Lexer.CHAR_NONCAP_GROUP:
-            fSet = new NonCapFSet(++consCount);
-            break;
-        
-        case Lexer.CHAR_POS_LOOKAHEAD:
-        	/* falls through */
-        	
-        case Lexer.CHAR_NEG_LOOKAHEAD:
-            fSet = new AheadFSet();
-            break;
-        
-        case Lexer.CHAR_POS_LOOKBEHIND:
-        	/* falls through */
-        	
-        case Lexer.CHAR_NEG_LOOKBEHIND: 
-            fSet = new BehindFSet(++consCount);
-            break;
-        
-        case Lexer.CHAR_ATOMIC_GROUP: 
-            fSet = new AtomicFSet(++consCount);
-            break;
-        
-        default: 
-            globalGroupIndex++;
-            if (last == null) {
-                
-            	// expr = new StartSet();
-            	fSet = new FinalSet();
-            	saveChangedFlags = true;
-            } else {
-                
-            	// expr = new JointSet(globalGroupIndex);
-            	fSet = new FSet(globalGroupIndex);         
-            }
-            if (globalGroupIndex > -1 && globalGroupIndex < 10) {
-            	backRefs[globalGroupIndex] = fSet;
-            }
-            break;
-        }
-
-        do {
-            if (lexemes.isLetter()
-                    && lexemes.lookAhead() == Lexer.CHAR_VERTICAL_BAR) {
-                child = processAlternations(fSet);
-            } else if (lexemes.peek() == Lexer.CHAR_VERTICAL_BAR){
-                child = new EmptySet(fSet);
-                lexemes.next();
-            } else {
-                child = processSubExpression(fSet);
-                if (lexemes.peek() == Lexer.CHAR_VERTICAL_BAR) {
-                    lexemes.next();
-                }
-            }
-            if (child != null) {
-                
-                //expr.addChild(child);
-            	children.add(child);                
-            }
-        } while (!(lexemes.isEmpty() 
-        		   || (lexemes.peek() == Lexer.CHAR_RIGHT_PARENTHESIS)));
-        
-        if (lexemes.back() == Lexer.CHAR_VERTICAL_BAR) {
-        	children.add(new EmptySet(fSet));
-        }
-        
-        if (flags != saveFlags && !saveChangedFlags) {
-            flags = saveFlags;
-            lexemes.restoreFlags(flags);
-        }
-
-        switch (ch) {
-        case Lexer.CHAR_NONCAP_GROUP:
-            return new NonCapJointSet(children, fSet);
-        
-        case Lexer.CHAR_POS_LOOKAHEAD:
-            return new PositiveLookAhead(children, fSet);           
-
-        case Lexer.CHAR_NEG_LOOKAHEAD: 
-            return new NegativeLookAhead(children, fSet);
-        
-        case Lexer.CHAR_POS_LOOKBEHIND:
-            return new PositiveLookBehind(children, fSet);
-        
-        case Lexer.CHAR_NEG_LOOKBEHIND:
-            return new NegativeLookBehind(children, fSet);
-        
-        case Lexer.CHAR_ATOMIC_GROUP:
-            return new AtomicJointSet(children, fSet);
-            
-        default: 
-            switch (children.size()) {
-            case 0:
-                return new EmptySet(fSet);
-                
-            case 1:
-                return new SingleSet((AbstractSet) children.get(0), fSet);
-                
-            default:
-                return new JointSet(children, fSet);
-            }
-        }
-    }
-
-
-    /**
-     * T->a+
-     */
-    private AbstractSet processSequence(AbstractSet last) {
-        StringBuffer substring = new StringBuffer();
-        
-        while (!lexemes.isEmpty()
-                && lexemes.isLetter()
-                && !lexemes.isHighSurrogate()
-                && !lexemes.isLowSurrogate()
-                && ((!lexemes.isNextSpecial() && lexemes.lookAhead() == 0) // end
-                        // of
-                        // pattern
-                        || (!lexemes.isNextSpecial() && Lexer.isLetter(lexemes
-                                .lookAhead()))
-                        || lexemes.lookAhead() == Lexer.CHAR_RIGHT_PARENTHESIS
-                        || (lexemes.lookAhead() & 0x8000ffff) == Lexer.CHAR_LEFT_PARENTHESIS
-                        || lexemes.lookAhead() == Lexer.CHAR_VERTICAL_BAR || lexemes
-                        .lookAhead() == Lexer.CHAR_DOLLAR)) {
-            int ch = lexemes.next();
-            
-            if (Character.isSupplementaryCodePoint(ch)) {
-                substring.append(Character.toChars(ch));
-            } else {
-                substring.append((char) ch);
-            }
-        }
-        if (!hasFlag(Pattern.CASE_INSENSITIVE)) {
-            return new SequenceSet(substring);
-        } else if (!hasFlag(Pattern.UNICODE_CASE)) {
-            return new CISequenceSet(substring);
-        } else {
-            return new UCISequenceSet(substring);
-        }
-    }
-    
-    /**
-     * D->a
-     */
-    private AbstractSet processDecomposedChar(AbstractSet last) {
-        int [] codePoints = new int [Lexer.MAX_DECOMPOSITION_LENGTH];                        
-        char [] codePointsHangul;
-        int readCodePoints = 0;
-        int curSymb = -1;
-        int curSymbIndex = -1;
-        
-        if (!lexemes.isEmpty() && lexemes.isLetter()) {
-            curSymb = lexemes.next();
-            codePoints [readCodePoints] = curSymb;            
-            curSymbIndex = curSymb - Lexer.LBase;
-        }
-        
-        /*
-         * We process decomposed Hangul syllable LV or LVT or process jamo L.
-         * See http://www.unicode.org/versions/Unicode4.0.0/ch03.pdf
-         * "3.12 Conjoining Jamo Behavior"
-         */
-        if ((curSymbIndex >= 0) && (curSymbIndex < Lexer.LCount)) {
-            codePointsHangul = new char [Lexer
-                                         .MAX_HANGUL_DECOMPOSITION_LENGTH];
-            codePointsHangul[readCodePoints++] = (char) curSymb;
-            
-            curSymb = lexemes.peek();
-            curSymbIndex = curSymb - Lexer.VBase;
-            if ((curSymbIndex >= 0) && (curSymbIndex < Lexer.VCount)) {
-                codePointsHangul [readCodePoints++] = (char) curSymb;
-                lexemes.next();
-                curSymb = lexemes.peek();
-                curSymbIndex = curSymb - Lexer.TBase;
-                if ((curSymbIndex >= 0) && (curSymbIndex < Lexer.TCount)) {
-                    codePointsHangul [readCodePoints++] = (char) curSymb;
-                    lexemes.next();
-                    
-                    //LVT syllable
-                    return new HangulDecomposedCharSet(codePointsHangul, 3);
-                } else {
-                    
-                    //LV syllable
-                    return new HangulDecomposedCharSet(codePointsHangul, 2);
-                }
-            } else {
-                   
-                   //L jamo
-                   if (!hasFlag(Pattern.CASE_INSENSITIVE)) {
-                       return new CharSet(codePointsHangul[0]);
-                   } else if (!hasFlag(Pattern.UNICODE_CASE)) {
-                       return new CICharSet(codePointsHangul[0]);
-                   } else {
-                       return new UCICharSet(codePointsHangul[0]);
-                   }
-            }
-        
-        /*
-         * We process single codepoint or decomposed codepoint.
-         * We collect decomposed codepoint and obtain 
-         * one DecomposedCharSet.
-         */
-        } else {
-            readCodePoints++;
-            
-            while((readCodePoints < Lexer.MAX_DECOMPOSITION_LENGTH) 
-                    && !lexemes.isEmpty() && lexemes.isLetter() 
-                    && !Lexer.isDecomposedCharBoundary(lexemes.peek())) {
-                  codePoints [readCodePoints++] = lexemes.next();
-            }
-  
-            /*
-             * We have read an ordinary symbol.
-             */
-            if (readCodePoints == 1     
-                && !Lexer.hasSingleCodepointDecomposition(codePoints[0])) {
-                return processCharSet(codePoints[0]);
-            } else {
-                if (!hasFlag(Pattern.CASE_INSENSITIVE)) {
-                    return new DecomposedCharSet(codePoints, readCodePoints);
-                } else if (!hasFlag(Pattern.UNICODE_CASE)) {
-                    return new CIDecomposedCharSet(codePoints, readCodePoints);
-                } else {
-                    return new UCIDecomposedCharSet(codePoints, readCodePoints);
-                }
-            }
-        }
-    }
-
-    /**
-     * S->BS; S->QS; S->Q; B->a+
-     */
-    private AbstractSet processSubExpression(AbstractSet last) {
-        AbstractSet cur;
-        if (lexemes.isLetter() && !lexemes.isNextSpecial()
-                && Lexer.isLetter(lexemes.lookAhead())) {
-            if (hasFlag(Pattern.CANON_EQ)) {
-                cur = processDecomposedChar(last);
-                if (!lexemes.isEmpty()        
-                        
-                        /* && !pattern.isQuantifier() */
-                        && (lexemes.peek() != Lexer.CHAR_RIGHT_PARENTHESIS 
-                                || last instanceof FinalSet)
-                        && lexemes.peek() != Lexer.CHAR_VERTICAL_BAR 
-                        && !lexemes.isLetter()) {
-                    cur = processQuantifier(last, cur);
-                }
-            } else if (lexemes.isHighSurrogate() || lexemes.isLowSurrogate()) {
-                AbstractSet term = processTerminal(last);
-                cur = processQuantifier(last, term);
-            } else {
-                cur = processSequence(last);
-            }
-        } else if (lexemes.peek() == Lexer.CHAR_RIGHT_PARENTHESIS) {
-        	if (last instanceof FinalSet) {
-        	    throw new PatternSyntaxException(
-        	            Messages.getString("regex.09"), lexemes.toString(),  //$NON-NLS-1$
-        	         lexemes.getIndex());
-        	} else {
-        	      cur = new EmptySet(last);
-        	}
-        } else {
-            AbstractSet term = processTerminal(last);
-            cur = processQuantifier(last, term);
-        }
-
-        if (!lexemes.isEmpty()
-        // && !pattern.isQuantifier()
-                && (lexemes.peek() != Lexer.CHAR_RIGHT_PARENTHESIS 
-                		|| last instanceof FinalSet)
-                && lexemes.peek() != Lexer.CHAR_VERTICAL_BAR) {
-            AbstractSet next = processSubExpression(last);
-            if (cur instanceof LeafQuantifierSet
-            // TODO create personal UnifiedQuantifierSet for composite
-                    // quantifiers
-                    // to take into account Quantifier counters
-                    // ////
-                    && !(cur instanceof CompositeQuantifierSet)
-                    && !(cur instanceof GroupQuantifierSet)
-                    && !(cur instanceof AltQuantifierSet)
-                    && !next.first(((LeafQuantifierSet) cur).getInnerSet())) {
-                cur = new UnifiedQuantifierSet((LeafQuantifierSet) cur);
-            }
-            if (((char) next.getType()) == '+') {
-                cur.setNext(((LeafQuantifierSet) next).getInnerSet());
-            } else {
-                cur.setNext(next);
-            }
-        } else if (cur != null) {
-            cur.setNext(last);
-        } else {
-            return null;
-        }
-
-        if (((char) cur.getType()) == '+') {
-            return ((QuantifierSet) cur).getInnerSet();
-        } else {
-            return cur;
-        }
-    }
-
-    /**
-     * Q->T(*|+|?...) also do some optimizations.
-     * 
-     */
-    private AbstractSet processQuantifier(AbstractSet last, AbstractSet term) {               
-        int quant = lexemes.peek();
-
-        if (term != null && !(term instanceof LeafSet)) {
-            switch (quant) {
-            case Lexer.QUANT_STAR:
-            case Lexer.QUANT_PLUS: {
-                QuantifierSet q;
-                
-                lexemes.next();
-                if (term.getType() == AbstractSet.TYPE_DOTSET) {
-                    if (!hasFlag(Pattern.DOTALL)) {
-                        q = new DotQuantifierSet(term, last, quant,
-                                AbstractLineTerminator.getInstance(flags));
-                    } else {
-                        q = new DotAllQuantifierSet(term, last, quant);
-                    }
-                } else {
-                    q = new GroupQuantifierSet(term, last, quant);
-                }
-                term.setNext(q);
-                return q;
-            }
-
-            case Lexer.QUANT_STAR_R:
-            case Lexer.QUANT_PLUS_R: {
-                lexemes.next();
-                GroupQuantifierSet q = new ReluctantGroupQuantifierSet(term,
-                        last, quant);
-                term.setNext(q);
-                return q;
-            }
-
-            case Lexer.QUANT_PLUS_P: {
-                lexemes.next();
-                // possessive plus will be handled by unique class
-                // and should not be postprocessed to point previous set
-                // to the inner one.
-                // //
-                return new PosPlusGroupQuantifierSet(term, last,
-                        Lexer.QUANT_STAR_P);
-            }
-
-            case Lexer.QUANT_STAR_P: {
-                lexemes.next();
-                return new PossessiveGroupQuantifierSet(term, last, quant);
-            }
-
-            case Lexer.QUANT_ALT: {
-                lexemes.next();
-                AltGroupQuantifierSet q = new AltGroupQuantifierSet(term, last,
-                        Lexer.QUANT_ALT);
-                term.setNext(last);
-                return q;
-            }
-
-            case Lexer.QUANT_ALT_P: {
-                lexemes.next();
-                return new PosAltGroupQuantifierSet(term, last, Lexer.QUANT_ALT);
-            }
-
-            case Lexer.QUANT_ALT_R: {
-                lexemes.next();
-                RelAltGroupQuantifierSet q = new RelAltGroupQuantifierSet(term,
-                        last, Lexer.QUANT_ALT);
-                term.setNext(last);
-                return q;
-            }
-
-            case Lexer.QUANT_COMP: {
-                CompositeGroupQuantifierSet q = new CompositeGroupQuantifierSet(
-                        (Quantifier) lexemes.nextSpecial(), term, last,
-                        Lexer.QUANT_ALT, ++compCount);
-                term.setNext(q);
-                return q;
-            }
-
-            case Lexer.QUANT_COMP_P: {
-                return new PosCompositeGroupQuantifierSet((Quantifier) lexemes
-                        .nextSpecial(), term, last, Lexer.QUANT_ALT,
-                        ++compCount);
-            }
-
-            case Lexer.QUANT_COMP_R: {
-                RelCompositeGroupQuantifierSet q = new RelCompositeGroupQuantifierSet(
-                        (Quantifier) lexemes.nextSpecial(), term, last,
-                        Lexer.QUANT_ALT, ++compCount);
-                term.setNext(q);
-                return q;
-            }
-
-            default:
-                return term;
-            }
-        } else {
-            LeafSet leaf = null;
-            if (term != null)
-                leaf = (LeafSet) term;
-            switch (quant) {
-            case Lexer.QUANT_STAR:
-            case Lexer.QUANT_PLUS: {
-                lexemes.next();
-                LeafQuantifierSet q = new LeafQuantifierSet(leaf,
-                        last, quant);
-                leaf.setNext(q);
-                return q;
-            }
-
-            case Lexer.QUANT_STAR_R:
-            case Lexer.QUANT_PLUS_R: {
-                lexemes.next();
-                ReluctantQuantifierSet q = new ReluctantQuantifierSet(leaf,
-                        last, quant);
-                leaf.setNext(q);
-                return q;
-            }
-
-            case Lexer.QUANT_PLUS_P:
-            case Lexer.QUANT_STAR_P: {
-                lexemes.next();
-                PossessiveQuantifierSet q = new PossessiveQuantifierSet(leaf,
-                        last, quant);
-                leaf.setNext(q);
-                return q;
-            }
-
-            case Lexer.QUANT_ALT: {
-                lexemes.next();
-                return new AltQuantifierSet(leaf, last, Lexer.QUANT_ALT);
-            }
-
-            case Lexer.QUANT_ALT_P: {
-                lexemes.next();
-                return new PossessiveAltQuantifierSet(leaf, last,
-                        Lexer.QUANT_ALT_P);
-            }
-
-            case Lexer.QUANT_ALT_R: {
-                lexemes.next();
-                return new ReluctantAltQuantifierSet(leaf, last,
-                        Lexer.QUANT_ALT_R);
-            }
-
-            case Lexer.QUANT_COMP: {
-                return new CompositeQuantifierSet((Quantifier) lexemes
-                        .nextSpecial(), leaf, last, Lexer.QUANT_COMP);
-            }
-
-            case Lexer.QUANT_COMP_P: {
-                return new PossessiveCompositeQuantifierSet(
-                        (Quantifier) lexemes.nextSpecial(), leaf, last,
-                        Lexer.QUANT_COMP_P);
-            }
-            case Lexer.QUANT_COMP_R: {
-                return new ReluctantCompositeQuantifierSet((Quantifier) lexemes
-                        .nextSpecial(), leaf, last, Lexer.QUANT_COMP_R);
-            }
-
-            default:
-                return term;
-            }
-        }
-    }
-
-    /**
-     * T-> letter|[range]|{char-class}|(E)
-     */
-    private AbstractSet processTerminal(AbstractSet last) {
-        int ch;
-        AbstractSet term = null;
-        do {
-            ch = lexemes.peek();
-            if ((ch & 0x8000ffff) == Lexer.CHAR_LEFT_PARENTHESIS) {
-            	 int newFlags;             	
-             	 lexemes.next();
-                 newFlags = (ch & 0x00ff0000) >> 16;
-                 ch = ch & 0xff00ffff;
-                 if (ch == Lexer.CHAR_FLAGS) {
-                     flags = newFlags;
-                 } else {
-                     newFlags = (ch == Lexer.CHAR_NONCAP_GROUP) 
-                                 ? newFlags
-                                 : flags;
-                     term = processExpression(ch, newFlags, last);
-                     if (lexemes.peek() != Lexer.CHAR_RIGHT_PARENTHESIS) {
-                         throw new PatternSyntaxException(
-                                 Messages.getString("regex.0A"), lexemes.toString(), //$NON-NLS-1$
-                                 lexemes.getIndex());
-                     }
-                     lexemes.next();
-                 }
-            } else
-                switch (ch) {
-                case Lexer.CHAR_LEFT_SQUARE_BRACKET: {
-                    lexemes.next();
-                    boolean negative = false;
-                    if (lexemes.peek() == Lexer.CHAR_CARET) {
-                        negative = true;
-                        lexemes.next();
-                    }
-
-                    term = processRange(negative, last);
-                    if (lexemes.peek() != Lexer.CHAR_RIGHT_SQUARE_BRACKET)
-                        throw new PatternSyntaxException(
-                                Messages.getString("regex.0B"), lexemes.toString(), //$NON-NLS-1$
-                                lexemes.getIndex());
-                    lexemes.setMode(Lexer.MODE_PATTERN);
-                    lexemes.next();
-                    break;
-                }
-
-                case Lexer.CHAR_DOT: {
-                    lexemes.next();
-
-                    if (!hasFlag(Pattern.DOTALL)) {
-                        term = new DotSet(AbstractLineTerminator
-                                .getInstance(flags));
-                    } else {
-                        term = new DotAllSet();
-                    }
-
-                    break;
-                }
-
-                case Lexer.CHAR_CARET: {
-                    lexemes.next();
-                    consCount++;
-                    if (!hasFlag(Pattern.MULTILINE)) {
-                        term = new SOLSet();
-                    } else {
-                        term = new MultiLineSOLSet(AbstractLineTerminator
-                                .getInstance(flags));
-                    }
-
-                    break;
-                }
-
-                case Lexer.CHAR_DOLLAR: {
-                    lexemes.next();
-                    consCount++;
-                    if (!hasFlag(Pattern.MULTILINE)) {
-                        if (!hasFlag(Pattern.UNIX_LINES)) {
-                            term = new EOLSet(consCount);
-                        } else {
-                            term = new UEOLSet(consCount);
-                        }
-                    } else {
-                        if (!hasFlag(Pattern.UNIX_LINES)) {
-                            term = new MultiLineEOLSet(consCount);
-                        } else {
-                            term = new UMultiLineEOLSet(consCount);
-                        }
-                    }
-
-                    break;
-                }
-
-                case Lexer.CHAR_WORD_BOUND: {
-                    lexemes.next();
-                    term = new WordBoundary(true);
-                    break;
-                }
-
-                case Lexer.CHAR_NONWORD_BOUND: {
-                    lexemes.next();
-                    term = new WordBoundary(false);
-                    break;
-                }
-
-                case Lexer.CHAR_END_OF_INPUT: {
-                    lexemes.next();
-                    term = new EOISet();
-                    break;
-                }
-
-                case Lexer.CHAR_END_OF_LINE: {
-                    lexemes.next();
-                    term = new EOLSet(++consCount);
-                    break;
-                }
-
-                case Lexer.CHAR_START_OF_INPUT: {
-                    lexemes.next();
-                    term = new SOLSet();
-                    break;
-                }
-
-                case Lexer.CHAR_PREVIOUS_MATCH: {
-                    lexemes.next();
-                    term = new PreviousMatch();
-                    break;
-                }
-
-                case 0x80000000 | '1':
-                case 0x80000000 | '2':
-                case 0x80000000 | '3':
-                case 0x80000000 | '4':
-                case 0x80000000 | '5':
-                case 0x80000000 | '6':
-                case 0x80000000 | '7':
-                case 0x80000000 | '8':
-                case 0x80000000 | '9': {
-                    int number = (ch & 0x7FFFFFFF) - '0';
-                    if (globalGroupIndex >= number) {
-                        lexemes.next();
-                        consCount++;
-                        if (!hasFlag(Pattern.CASE_INSENSITIVE)) {
-                            term = new BackReferenceSet(number, consCount);
-                        } else if (!hasFlag(Pattern.UNICODE_CASE)) {
-                            term = new CIBackReferenceSet(number, consCount);
-                        } else {
-                            term = new UCIBackReferenceSet(number, consCount);
-                        }
-                        (backRefs [number]).isBackReferenced = true;
-                        needsBackRefReplacement = true;
-                        break;
-                    } else {
-                        throw new PatternSyntaxException(
-                                Messages.getString("regex.0C") //$NON-NLS-1$
-                                        , lexemes.toString(), lexemes.getIndex());
-                    }
-                }
-
-                case 0: {
-                    AbstractCharClass cc = null;
-                    if ((cc = (AbstractCharClass) lexemes.peekSpecial()) != null) {
-                        term = processRangeSet(cc);
-                    } else if (!lexemes.isEmpty()) {
-                        
-                        //ch == 0
-                        term = new CharSet((char) ch);
-                    } else {
-                    	term = new EmptySet(last);
-                        break;
-                    }
-                    lexemes.next();
-                    break;
-                }
-
-                default: {
-                    if (ch >= 0 && !lexemes.isSpecial()) {
-                        term = processCharSet(ch);                        
-                        lexemes.next();
-                    } else if (ch == Lexer.CHAR_VERTICAL_BAR) {
-                    	term = new EmptySet(last);
-                    } else if (ch == Lexer.CHAR_RIGHT_PARENTHESIS) {
-                        if (last instanceof FinalSet) {
-                        	throw new PatternSyntaxException(
-                    				Messages.getString("regex.09"), lexemes.toString(),  //$NON-NLS-1$
-                    		    	lexemes.getIndex());
-                        } else {
-                    	    term = new EmptySet(last);
-                        }
-                    } else {
-                        throw new PatternSyntaxException(
-                                Messages.getString("regex.0D", //$NON-NLS-1$
-                                 (lexemes.isSpecial() ? lexemes.peekSpecial()
-                                        .toString() : Character
-                                        .toString((char) ch))), lexemes
-                                .toString(), lexemes.getIndex());
-                    }
-                }
-                }
-        } while (ch == Lexer.CHAR_FLAGS);
-        return term;
-    }
-
-    private AbstractSet processRange(boolean negative, AbstractSet last) {
-        AbstractCharClass res = processRangeExpression(negative);
-        AbstractSet rangeSet = processRangeSet(res);
-        rangeSet.setNext(last);
-   
-        return rangeSet;
-    }
-
-    /**
-     * process [...] ranges
-     */
-    private CharClass processRangeExpression(boolean alt) {
-        CharClass res = new CharClass(alt, hasFlag(Pattern.CASE_INSENSITIVE),
-                hasFlag(Pattern.UNICODE_CASE));
-        int buffer = -1;
-        boolean intersection = false;
-        boolean notClosed = false;
-        boolean firstInClass = true;
-
-        while (!lexemes.isEmpty()
-                && (notClosed = (lexemes.peek()) != Lexer.CHAR_RIGHT_SQUARE_BRACKET
-                        || firstInClass)) {
-            switch (lexemes.peek()) {
-
-            case Lexer.CHAR_RIGHT_SQUARE_BRACKET: {
-                if (buffer >= 0)
-                    res.add(buffer);
-                buffer = ']';
-                lexemes.next();
-                break;
-            }
-            case Lexer.CHAR_LEFT_SQUARE_BRACKET: {
-                if (buffer >= 0) {
-                    res.add(buffer);
-                    buffer = -1;
-                }
-                lexemes.next();
-                boolean negative = false;
-                if (lexemes.peek() == Lexer.CHAR_CARET) {
-                    lexemes.next();
-                    negative = true;
-                }
-
-                if (intersection)
-                    res.intersection(processRangeExpression(negative));
-                else
-                    res.union(processRangeExpression(negative));
-                intersection = false;
-                lexemes.next();
-                break;
-            }
-
-            case Lexer.CHAR_AMPERSAND: {
-                if (buffer >= 0)
-                    res.add(buffer);
-                buffer = lexemes.next();
-                
-                /*
-                 * if there is a start for subrange we will do an intersection
-                 * otherwise treat '&' as a normal character
-                 */
-                if (lexemes.peek() == Lexer.CHAR_AMPERSAND) {
-                    if (lexemes.lookAhead() 
-                            == Lexer.CHAR_LEFT_SQUARE_BRACKET) {
-                        lexemes.next();
-                        intersection = true;
-                        buffer = -1;
-                    } else {
-                        lexemes.next();
-                        if (firstInClass) {
-                            
-                            //skip "&&" at "[&&...]" or "[^&&...]"
-                            res = processRangeExpression(false);
-                        } else {
-                            
-                            //ignore "&&" at "[X&&]" ending where X != empty string
-                            if (!(lexemes.peek() 
-                                    == Lexer.CHAR_RIGHT_SQUARE_BRACKET)) {    
-                                res.intersection(processRangeExpression(false));
-                            }
-                        }
-                        
-                    }
-                } else {
-                    
-                    //treat '&' as a normal character
-                    buffer = '&';
-                }
-
-                break;
-            }
-
-            case Lexer.CHAR_HYPHEN: {
-                if (firstInClass
-                        || lexemes.lookAhead() == Lexer.CHAR_RIGHT_SQUARE_BRACKET
-                        || lexemes.lookAhead() == Lexer.CHAR_LEFT_SQUARE_BRACKET
-                        || buffer < 0) {
-                    // treat hypen as normal character
-                    if (buffer >= 0)
-                        res.add(buffer);
-                    buffer = '-';
-                    lexemes.next();
-                    // range
-                } else {
-                    lexemes.next();
-                    int cur = lexemes.peek();
-
-                    if (!lexemes.isSpecial()
-                            && (cur >= 0
-                                    || lexemes.lookAhead() == Lexer.CHAR_RIGHT_SQUARE_BRACKET
-                                    || lexemes.lookAhead() == Lexer.CHAR_LEFT_SQUARE_BRACKET || buffer < 0)) {
-
-                        try {
-                            if (!Lexer.isLetter(cur)) {
-                                cur = cur & 0xFFFF;
-                            }
-                            res.add(buffer, cur);
-                        } catch (Exception e) {
-                            throw new PatternSyntaxException(
-                                    Messages.getString("regex.0E"), //$NON-NLS-1$
-                                    pattern(), lexemes.getIndex());
-                        }
-                        lexemes.next();
-                        buffer = -1;
-                    } else {
-                        throw new PatternSyntaxException(
-                                Messages.getString("regex.0E"), //$NON-NLS-1$
-                                pattern(), lexemes.getIndex());
-                    }
-                }
-
-                break;
-            }
-
-            case Lexer.CHAR_CARET: {
-                if (buffer >= 0)
-                    res.add(buffer);
-                buffer = '^';
-                lexemes.next();
-                break;
-            }
-
-            case 0: {
-                if (buffer >= 0)
-                    res.add(buffer);
-                AbstractCharClass cs = (AbstractCharClass) lexemes
-                        .peekSpecial();
-                if (cs != null) {
-                    res.add(cs);
-                    buffer = -1;
-                } else {
-                    buffer = 0;
-                }
-
-                lexemes.next();
-                break;
-            }
-
-            default: {
-                if (buffer >= 0)
-                    res.add(buffer);
-                buffer = lexemes.next();
-                break;
-            }
-            }
-
-            firstInClass = false;
-        }
-        if (notClosed) {
-            throw new PatternSyntaxException(Messages.getString("regex.0F"), //$NON-NLS-1$
-                    pattern(), lexemes.getIndex() - 1);
-        }
-        if (buffer >= 0)
-            res.add(buffer);
-        return res;
-    }
-
-    private AbstractSet processCharSet(int ch) { 
-        boolean isSupplCodePoint = Character
-                .isSupplementaryCodePoint(ch);
-        
-        if (hasFlag(Pattern.CASE_INSENSITIVE)) {
-            
-            if ((ch >= 'a' && ch <= 'z')
-                    || (ch >= 'A' && ch <= 'Z')) {
-                return new CICharSet((char) ch);
-            } else if (hasFlag(Pattern.UNICODE_CASE)
-                    && ch > 128) {
-                if (isSupplCodePoint) {                                
-                    return new UCISupplCharSet(ch);
-                } else if (Lexer.isLowSurrogate(ch)) {
-                    
-                    //we need no UCILowSurrogateCharSet
-                    return new LowSurrogateCharSet((char) ch);
-                } else if (Lexer.isHighSurrogate(ch)) {
-
-                    //we need no UCIHighSurrogateCharSet
-                    return new HighSurrogateCharSet((char) ch);                                    
-                } else {
-                    return new UCICharSet((char) ch);                                                                    
-                }
-            }                          
-        }                      
-            
-        if (isSupplCodePoint) {                                
-            return new SupplCharSet(ch);
-        } else if (Lexer.isLowSurrogate(ch)) {
-            return new LowSurrogateCharSet((char) ch);
-        } else if (Lexer.isHighSurrogate(ch)) {
-            return new HighSurrogateCharSet((char) ch);                                    
-        } else {
-            return new CharSet((char) ch);                                                                    
-        }                        
-    }
-    
-    private AbstractSet processRangeSet(AbstractCharClass charClass) {
-        if (charClass.hasLowHighSurrogates()) {
-            AbstractCharClass surrogates = charClass.getSurrogates();            
-            LowHighSurrogateRangeSet lowHighSurrRangeSet 
-                    = new LowHighSurrogateRangeSet(surrogates); 
-            
-            if (charClass.mayContainSupplCodepoints()) {
-                if (!charClass.hasUCI()) {
-                    return new CompositeRangeSet(
-                            new SupplRangeSet(charClass.getWithoutSurrogates()),
-                            lowHighSurrRangeSet);                    
-                } else {
-                    return new CompositeRangeSet(
-                            new UCISupplRangeSet(charClass.getWithoutSurrogates()),
-                            lowHighSurrRangeSet);                    
-                }
-            }
-            
-            if (!charClass.hasUCI()) {
-                return new CompositeRangeSet(
-                        new RangeSet(charClass.getWithoutSurrogates()),
-                        lowHighSurrRangeSet);                    
-            } else {
-                return new CompositeRangeSet(
-                        new UCIRangeSet(charClass.getWithoutSurrogates()),
-                        lowHighSurrRangeSet);                    
-            }
-        }
-        
-        if (charClass.mayContainSupplCodepoints()) {
-            if (!charClass.hasUCI()) {
-                return new SupplRangeSet(charClass);
-            } else {
-                return new UCISupplRangeSet(charClass);
-            }
-        }
-        
-        if (!charClass.hasUCI()) {
-            return new RangeSet(charClass);
-        } else {
-            return new UCIRangeSet(charClass);
-        }
-    }
-
-    /**
-     * Compiles a regular expression, creating a new Pattern instance in the
-     * process. This is actually a convenience method that calls {@link
-     * #compile(String, int)} with a {@code flags} value of zero.
-     *
-     * @param pattern
-     *            the regular expression.
-     *
-     * @return the new {@code Pattern} instance.
-     *
-     * @throws PatternSyntaxException
-     *             if the regular expression is syntactically incorrect.
+     * Equivalent to {@code Pattern.compile(pattern, 0)}.
      */
     public static Pattern compile(String pattern) {
-        return compile(pattern, 0);
+        return new Pattern(pattern, 0);
     }
 
-    /*
-     * This method do traverses of
-     * automata to finish compilation.
-     */
-    private void finalizeCompile() {
-    	
-    	/*
-    	 * Processing second pass
-    	 */    	
-    	if (needsBackRefReplacement) { //|| needsReason1 || needsReason2) {
-    		start.processSecondPass();
-    	}
-    	
+    private Pattern(String pattern, int flags) throws PatternSyntaxException {
+        if ((flags & CANON_EQ) != 0) {
+            throw new UnsupportedOperationException("CANON_EQ flag not supported");
+        }
+        this.pattern = pattern;
+        this.flags = flags;
+        compile();
+    }
+
+    private void compile() throws PatternSyntaxException {
+        if (pattern == null) {
+            throw new NullPointerException("pattern == null");
+        }
+
+        String icuPattern = pattern;
+        if ((flags & LITERAL) != 0) {
+            icuPattern = quote(pattern);
+        }
+
+        // These are the flags natively supported by ICU.
+        // They even have the same value in native code.
+        int icuFlags = flags & (CASE_INSENSITIVE | COMMENTS | MULTILINE | DOTALL | UNIX_LINES);
+
+        address = compileImpl(icuPattern, icuFlags);
     }
 
     /**
-     * Tries to match a given regular expression against a given input. This is
-     * actually nothing but a convenience method that compiles the regular
-     * expression into a {@code Pattern}, builds a {@link Matcher} for it, and
-     * then does the match. If the same regular expression is used for multiple
-     * operations, it is recommended to compile it into a {@code Pattern}
-     * explicitly and request a reusable {@code Matcher}.
-     *
-     * @param regex
-     *            the regular expression.
-     * @param input
-     *            the input to process.
-     *
-     * @return true if and only if the {@code Pattern} matches the input.
+     * Tests whether the given {@code regularExpression} matches the given {@code input}.
+     * Equivalent to {@code Pattern.compile(regularExpression).matcher(input).matches()}.
+     * If the same regular expression is to be used for multiple operations, it may be more
+     * efficient to reuse a compiled {@code Pattern}.
      *
      * @see Pattern#compile(java.lang.String, int)
      * @see Matcher#matches()
      */
-    public static boolean matches(String regex, CharSequence input) {
-        return Pattern.compile(regex).matcher(input).matches();
+    public static boolean matches(String regularExpression, CharSequence input) {
+        return new Matcher(new Pattern(regularExpression, 0), input).matches();
     }
 
     /**
-     * Quotes a given string using "\Q" and "\E", so that all other
-     * meta-characters lose their special meaning. If the string is used for a
-     * {@code Pattern} afterwards, it can only be matched literally.
-     *
-     * @param s
-     *            the string to quote.
-     *
-     * @return the quoted string.
+     * Quotes the given {@code string} using "\Q" and "\E", so that all
+     * meta-characters lose their special meaning. This method correctly
+     * escapes embedded instances of "\Q" or "\E". If the entire result
+     * is to be passed verbatim to {@link #compile}, it's usually clearer
+     * to use the {@link #LITERAL} flag instead.
      */
-    public static String quote(String s) {
-        StringBuilder sb = new StringBuilder().append("\\Q"); //$NON-NLS-1$
+    public static String quote(String string) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\\Q");
         int apos = 0;
         int k;
-        while ((k = s.indexOf("\\E", apos)) >= 0) { //$NON-NLS-1$
-            sb.append(s.substring(apos, k + 2)).append("\\\\E\\Q"); //$NON-NLS-1$
+        while ((k = string.indexOf("\\E", apos)) >= 0) {
+            sb.append(string.substring(apos, k + 2)).append("\\\\E\\Q");
             apos = k + 2;
         }
-
-        return sb.append(s.substring(apos)).append("\\E").toString(); //$NON-NLS-1$
+        return sb.append(string.substring(apos)).append("\\E").toString();
     }
 
-    /**
-     * return number of groups found at compile time
-     */
-    int groupCount() {
-        return globalGroupIndex;
-    }
-
-    int compCount() {
-        return this.compCount + 1;
-    }
-
-    int consCount() {
-        return this.consCount + 1;
-    }
-
-    /**
-     * Returns supplementary character. At this time only for ASCII chars.
-     */
-    static char getSupplement(char ch) {
-        char res = ch;
-        if (ch >= 'a' && ch <= 'z') {
-            res -= 32;
-        } else if (ch >= 'A' && ch <= 'Z') {
-            res += 32;
+    @Override protected void finalize() throws Throwable {
+        try {
+            closeImpl(address);
+        } finally {
+            super.finalize();
         }
-
-        return res;
     }
 
-    /**
-     * @return true if pattern has specified flag
-     */
-    private boolean hasFlag(int flag) {
-        return (flags & flag) == flag;
-    }
-
-    /**
-     * Dismiss public constructor.
-     * 
-     */
-    private Pattern() {
-    }
-
-    /**
-     * Serialization support
-     */
-    private void readObject(java.io.ObjectInputStream s)
-            throws java.io.IOException, ClassNotFoundException {
+    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
         s.defaultReadObject();
-        AbstractSet.counter = 1;
-        globalGroupIndex = -1;
-        compCount = -1;
-        consCount = -1;
-        backRefs = new FSet [BACK_REF_NUMBER];
-
-        compileImpl(pattern, flags);
-
+        compile();
     }
+
+    private static native void closeImpl(int addr);
+    private static native int compileImpl(String regex, int flags);
 }

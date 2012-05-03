@@ -17,27 +17,21 @@
 
 package java.security;
 
-import java.io.InputStreamReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.Enumeration;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Map.Entry;
-
-import org.apache.harmony.security.Util;
 import org.apache.harmony.security.fortress.Engine;
-import org.apache.harmony.security.fortress.PolicyUtils;
 import org.apache.harmony.security.fortress.SecurityAccess;
 import org.apache.harmony.security.fortress.Services;
-import org.apache.harmony.security.internal.nls.Messages;
 
 /**
  * {@code Security} is the central class in the Java Security API. It manages
@@ -47,72 +41,27 @@ import org.apache.harmony.security.internal.nls.Messages;
 public final class Security {
 
     // Security properties
-    private static Properties secprops = new Properties();
+    private static final Properties secprops = new Properties();
 
     // static initialization
     // - load security properties files
     // - load statically registered providers
     // - if no provider description file found then load default providers
     static {
-        AccessController.doPrivileged(new java.security.PrivilegedAction<Void>() {
-            public Void run() {
-                boolean loaded = false;
-                File f = new File(System.getProperty("java.home") //$NON-NLS-1$
-                        + File.separator + "lib" + File.separator //$NON-NLS-1$
-                        + "security" + File.separator + "java.security"); //$NON-NLS-1$ //$NON-NLS-2$
-                if (f.exists()) {
-                    try {
-                        FileInputStream fis = new FileInputStream(f);
-                        InputStreamReader is = new InputStreamReader(fis);
-                        secprops.load(is);
-                        loaded = true;
-                        is.close();
-                    } catch (IOException e) {
-//                        System.err.println("Could not load Security properties file: "
-//                                        + e);
-                    }
-                }
-
-                if (Util.equalsIgnoreCase("true", secprops.getProperty("security.allowCustomPropertiesFile", "true"))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    String securityFile = System.getProperty("java.security.properties"); //$NON-NLS-1$
-                    if (securityFile != null) {
-                        if (securityFile.startsWith("=")) { // overwrite //$NON-NLS-1$
-                            secprops = new Properties();
-                            loaded = false;
-                            securityFile = securityFile.substring(1);
-                        }
-                        try {
-                            securityFile = PolicyUtils.expand(securityFile, System.getProperties());
-                        } catch (PolicyUtils.ExpansionFailedException e) {
-//                            System.err.println("Could not load custom Security properties file "
-//                                    + securityFile +": " + e);
-                        }
-                        f = new File(securityFile);
-                        InputStreamReader is;
-                        try {
-                            if (f.exists()) {
-                                FileInputStream fis = new FileInputStream(f);
-                                is = new InputStreamReader(fis);
-                            } else {
-                                URL url = new URL(securityFile);
-                                is = new InputStreamReader(url.openStream());
-                            }
-                            secprops.load(is);
-                            loaded = true;
-                            is.close();
-                        } catch (IOException e) {
- //                           System.err.println("Could not load custom Security properties file "
- //                                   + securityFile +": " + e);
-                        }
-                    }
-                }
-                if (!loaded) {
-                    registerDefaultProviders();
-                }
-                Engine.door = new SecurityDoor();
-                return null;
-            }
-        });
+        boolean loaded = false;
+        try {
+            InputStream configStream = Security.class.getResourceAsStream("security.properties");
+            InputStream input = new BufferedInputStream(configStream);
+            secprops.load(input);
+            loaded = true;
+            configStream.close();
+        } catch (Exception ex) {
+            System.logE("Could not load 'security.properties'", ex);
+        }
+        if (!loaded) {
+            registerDefaultProviders();
+        }
+        Engine.door = new SecurityDoor();
     }
 
     /**
@@ -123,10 +72,11 @@ public final class Security {
 
     // Register default providers
     private static void registerDefaultProviders() {
-        secprops.put("security.provider.1", "org.apache.harmony.security.provider.cert.DRLCertFactory");  //$NON-NLS-1$ //$NON-NLS-2$
-        secprops.put("security.provider.2", "org.apache.harmony.security.provider.crypto.CryptoProvider");  //$NON-NLS-1$ //$NON-NLS-2$
-        secprops.put("security.provider.3", "org.apache.harmony.xnet.provider.jsse.JSSEProvider");  //$NON-NLS-1$ //$NON-NLS-2$
-        secprops.put("security.provider.4", "org.bouncycastle.jce.provider.BouncyCastleProvider");  //$NON-NLS-1$ //$NON-NLS-2$
+        secprops.put("security.provider.1", "org.apache.harmony.xnet.provider.jsse.OpenSSLProvider");
+        secprops.put("security.provider.2", "org.apache.harmony.security.provider.cert.DRLCertFactory");
+        secprops.put("security.provider.3", "org.bouncycastle.jce.provider.BouncyCastleProvider");
+        secprops.put("security.provider.4", "org.apache.harmony.security.provider.crypto.CryptoProvider");
+        secprops.put("security.provider.5", "org.apache.harmony.xnet.provider.jsse.JSSEProvider");
     }
 
     /**
@@ -145,14 +95,13 @@ public final class Security {
         if (algName == null || propName == null) {
             return null;
         }
-        String prop = propName + "." + algName; //$NON-NLS-1$
+        String prop = "Alg." + propName + "." + algName;
         Provider[] providers = getProviders();
-        for (int i = 0; i < providers.length; i++) {
-            for (Enumeration e = providers[i].propertyNames(); e
-                    .hasMoreElements();) {
-                String pname = (String) e.nextElement();
-                if (Util.equalsIgnoreCase(prop, pname)) {
-                    return providers[i].getProperty(pname);
+        for (Provider provider : providers) {
+            for (Enumeration e = provider.propertyNames(); e.hasMoreElements(); ) {
+                String propertyName = (String) e.nextElement();
+                if (propertyName.equalsIgnoreCase(prop)) {
+                    return provider.getProperty(propertyName);
                 }
             }
         }
@@ -163,11 +112,6 @@ public final class Security {
      * Insert the given {@code Provider} at the specified {@code position}. The
      * positions define the preference order in which providers are searched for
      * requested algorithms.
-     * <p>
-     * If a {@code SecurityManager} is installed, code calling this method needs
-     * the {@code SecurityPermission} {@code insertProvider.NAME} (where NAME is
-     * the provider name) to be granted, otherwise a {@code SecurityException}
-     * will be thrown.
      *
      * @param provider
      *            the provider to insert.
@@ -176,20 +120,12 @@ public final class Security {
      * @return the actual position or {@code -1} if the given {@code provider}
      *         was already in the list. The actual position may be different
      *         from the desired position.
-     * @throws SecurityException
-     *             if a {@code SecurityManager} is installed and the caller does
-     *             not have permission to invoke this method.
      */
-    public static synchronized int insertProviderAt(Provider provider,
-            int position) {
-        // check security access; check that provider is not already
+    public static synchronized int insertProviderAt(Provider provider, int position) {
+        // check that provider is not already
         // installed, else return -1; if (position <1) or (position > max
         // position) position = max position + 1; insert provider, shift up
         // one position for next providers; Note: The position is 1-based
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkSecurityAccess("insertProvider." + provider.getName()); //$NON-NLS-1$
-        }
         if (getProvider(provider.getName()) != null) {
             return -1;
         }
@@ -201,19 +137,11 @@ public final class Security {
     /**
      * Adds the given {@code provider} to the collection of providers at the
      * next available position.
-     * <p>
-     * If a {@code SecurityManager} is installed, code calling this method needs
-     * the {@code SecurityPermission} {@code insertProvider.NAME} (where NAME is
-     * the provider name) to be granted, otherwise a {@code SecurityException}
-     * will be thrown.
      *
      * @param provider
      *            the provider to be added.
      * @return the actual position or {@code -1} if the given {@code provider}
      *         was already in the list.
-     * @throws SecurityException
-     *             if a {@code SecurityManager} is installed and the caller does
-     *             not have permission to invoke this method.
      */
     public static int addProvider(Provider provider) {
         return insertProviderAt(provider, 0);
@@ -224,25 +152,17 @@ public final class Security {
      * of providers. If the the {@code Provider} with the specified name is
      * removed, all provider at a greater position are shifted down one
      * position.
-     * <p>
-     * Returns silently if {@code name} is {@code null} or no provider with the
+     *
+     * <p>Returns silently if {@code name} is {@code null} or no provider with the
      * specified name is installed.
-     * <p>
-     * If a {@code SecurityManager} is installed, code calling this method needs
-     * the {@code SecurityPermission} {@code removeProvider.NAME} (where NAME is
-     * the provider name) to be granted, otherwise a {@code SecurityException}
-     * will be thrown.
      *
      * @param name
      *            the name of the provider to remove.
-     * @throws SecurityException
-     *             if a {@code SecurityManager} is installed and the caller does
-     *             not have permission to invoke this method.
      */
     public static synchronized void removeProvider(String name) {
         // It is not clear from spec.:
-    	// 1. if name is null, should we checkSecurityAccess or not? 
-    	//    throw SecurityException or not?
+        // 1. if name is null, should we checkSecurityAccess or not?
+        //    throw SecurityException or not?
         // 2. as 1 but provider is not installed
         // 3. behavior if name is empty string?
 
@@ -253,10 +173,6 @@ public final class Security {
         p = getProvider(name);
         if (p == null) {
             return;
-        }
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkSecurityAccess("removeProvider." + name); //$NON-NLS-1$
         }
         Services.removeProvider(p.getProviderNumber());
         renumProviders();
@@ -311,20 +227,18 @@ public final class Security {
      */
     public static Provider[] getProviders(String filter) {
         if (filter == null) {
-            throw new NullPointerException(Messages.getString("security.2A")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
         if (filter.length() == 0) {
-            throw new InvalidParameterException(
-                    Messages.getString("security.2B")); //$NON-NLS-1$
+            throw new InvalidParameterException();
         }
         HashMap<String, String> hm = new HashMap<String, String>();
         int i = filter.indexOf(':');
         if ((i == filter.length() - 1) || (i == 0)) {
-            throw new InvalidParameterException(
-                    Messages.getString("security.2B")); //$NON-NLS-1$
+            throw new InvalidParameterException();
         }
         if (i < 1) {
-            hm.put(filter, ""); //$NON-NLS-1$
+            hm.put(filter, "");
         } else {
             hm.put(filter.substring(0, i), filter.substring(i + 1));
         }
@@ -357,7 +271,7 @@ public final class Security {
      */
     public static synchronized Provider[] getProviders(Map<String,String> filter) {
         if (filter == null) {
-            throw new NullPointerException(Messages.getString("security.2A")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
         if (filter.isEmpty()) {
             return null;
@@ -373,31 +287,26 @@ public final class Security {
             int i = key.indexOf(' ');
             int j = key.indexOf('.');
             if (j == -1) {
-                throw new InvalidParameterException(
-                        Messages.getString("security.2B")); //$NON-NLS-1$
+                throw new InvalidParameterException();
             }
             if (i == -1) { // <crypto_service>.<algorithm_or_type>
                 if (val.length() != 0) {
-                    throw new InvalidParameterException(
-                            Messages.getString("security.2B")); //$NON-NLS-1$
+                    throw new InvalidParameterException();
                 }
             } else { // <crypto_service>.<algorithm_or_type> <attribute_name>
                 if (val.length() == 0) {
-                    throw new InvalidParameterException(
-                            Messages.getString("security.2B")); //$NON-NLS-1$
+                    throw new InvalidParameterException();
                 }
                 attribute = key.substring(i + 1);
                 if (attribute.trim().length() == 0) {
-                    throw new InvalidParameterException(
-                            Messages.getString("security.2B")); //$NON-NLS-1$
+                    throw new InvalidParameterException();
                 }
                 key = key.substring(0, i);
             }
             String serv = key.substring(0, j);
             String alg = key.substring(j + 1);
             if (serv.length() == 0 || alg.length() == 0) {
-                throw new InvalidParameterException(
-                        Messages.getString("security.2B")); //$NON-NLS-1$
+                throw new InvalidParameterException();
             }
             Provider p;
             for (int k = 0; k < result.size(); k++) {
@@ -420,26 +329,14 @@ public final class Security {
 
     /**
      * Returns the value of the security property named by the argument.
-     * <p>
-     * If a {@code SecurityManager} is installed, code calling this method needs
-     * the {@code SecurityPermission} {@code getProperty.KEY} (where KEY is the
-     * specified {@code key}) to be granted, otherwise a {@code
-     * SecurityException} will be thrown.
      *
      * @param key
      *            the name of the requested security property.
      * @return the value of the security property.
-     * @throws SecurityException
-     *             if a {@code SecurityManager} is installed and the caller does
-     *             not have permission to invoke this method.
      */
     public static String getProperty(String key) {
         if (key == null) {
-            throw new NullPointerException(Messages.getString("security.2C")); //$NON-NLS-1$
-        }
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkSecurityAccess("getProperty." + key); //$NON-NLS-1$
+            throw new NullPointerException("key == null");
         }
         String property = secprops.getProperty(key);
         if (property != null) {
@@ -450,26 +347,9 @@ public final class Security {
 
     /**
      * Sets the value of the specified security property.
-     * <p>
-     * If a {@code SecurityManager} is installed, code calling this method needs
-     * the {@code SecurityPermission} {@code setProperty.KEY} (where KEY is the
-     * specified {@code key}) to be granted, otherwise a {@code
-     * SecurityException} will be thrown.
-     *
-     * @param key
-     *            the name of the security property.
-     * @param datnum
-     *            the value of the security property.
-     * @throws SecurityException
-     *             if a {@code SecurityManager} is installed and the caller does
-     *             not have permission to invoke this method.
      */
-    public static void setProperty(String key, String datnum) {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkSecurityAccess("setProperty." + key); //$NON-NLS-1$
-        }
-        secprops.put(key, datnum);
+    public static void setProperty(String key, String value) {
+        secprops.put(key, value);
     }
 
     /**
@@ -486,12 +366,14 @@ public final class Security {
      */
     public static Set<String> getAlgorithms(String serviceName) {
         Set<String> result = new HashSet<String>();
-        Provider[] p = getProviders();
-        for (int i = 0; i < p.length; i++) {
-            for (Iterator it = p[i].getServices().iterator(); it.hasNext();) {
-                Provider.Service s = (Provider.Service) it.next();
-                if (Util.equalsIgnoreCase(s.getType(),serviceName)) {
-                    result.add(s.getAlgorithm());
+        // compatibility with RI
+        if (serviceName == null) {
+            return result;
+        }
+        for (Provider provider : getProviders()) {
+            for (Provider.Service service: provider.getServices()) {
+                if (service.getType().equalsIgnoreCase(serviceName)) {
+                    result.add(service.getAlgorithm());
                 }
             }
         }
@@ -499,9 +381,9 @@ public final class Security {
     }
 
     /**
-     * 
+     *
      * Update sequence numbers of all providers.
-     *  
+     *
      */
     private static void renumProviders() {
         Provider[] p = Services.getProviders();
@@ -517,10 +399,10 @@ public final class Security {
         }
 
         //  Access to Security.getAliases()
-        public Iterator<String> getAliases(Provider.Service s) {
+        public List<String> getAliases(Provider.Service s) {
             return s.getAliases();
         }
-        
+
         // Access to Provider.getService()
         public Provider.Service getService(Provider p, String type) {
             return p.getService(type);

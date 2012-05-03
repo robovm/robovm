@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,14 +45,13 @@ package java.nio;
  * synchronization issues.
  */
 public abstract class Buffer {
-
     /**
      * <code>UNSET_MARK</code> means the mark has not been set.
      */
-    final static int UNSET_MARK = -1;
+    static final int UNSET_MARK = -1;
 
     /**
-     * The capacity of this buffer, which never change.
+     * The capacity of this buffer, which never changes.
      */
     final int capacity;
 
@@ -76,73 +75,130 @@ public abstract class Buffer {
     int position = 0;
 
     /**
-     * Construct a buffer with the specified capacity.
-     * 
-     * @param capacity
-     *            The capacity of this buffer
+     * The log base 2 of the element size of this buffer.  Each typed subclass
+     * (ByteBuffer, CharBuffer, etc.) is responsible for initializing this
+     * value.  The value is used by JNI code in frameworks/base/ to avoid the
+     * need for costly 'instanceof' tests.
      */
-    Buffer(int capacity) {
-        super();
+    final int _elementSizeShift;
+
+    /**
+     * For direct buffers, the effective address of the data; zero otherwise.
+     * This is set in the constructor.
+     * TODO: make this final at the cost of loads of extra constructors? [how many?]
+     */
+    int effectiveDirectAddress;
+
+    /**
+     * For direct buffers, the underlying MemoryBlock; null otherwise.
+     */
+    final MemoryBlock block;
+
+    Buffer(int elementSizeShift, int capacity, MemoryBlock block) {
+        this._elementSizeShift = elementSizeShift;
         if (capacity < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("capacity < 0: " + capacity);
         }
         this.capacity = this.limit = capacity;
+        this.block = block;
     }
 
-	
-	/**
-	 * Answers the array that backs this buffer.
-	 * 
-	 * It wants to allow array-backed buffers to be passed to native code more
-	 * efficiently. Subclasses provide more concrete return values for this
-	 * method.
-	 * 
-	 * Modifications to this buffer's content will cause the returned array's
-	 * content to be modified, and vice versa.
-	 * 
-	 * Invoking the <code>hasArray</code> method before invoking this method
-	 * can guarantee it to be called safely.
-	 * 
-	 * @return The array that backs this buffer
-	 * 
-	 * @throws ReadOnlyBufferException -
-	 *             If this buffer is backed by an array but is read-only
-	 *         UnsupportedOperationException - If this buffer is not backed
-	 *             by an accessible array
-	 * @since 1.6
-	 * 
-	 */
-	public abstract Object array();
-	
-	/**
-	 * Returns the offset within this buffer's backing array of the first
-	 * element of the buffer (optional operation).
-	 * 
-	 * If this buffer is backed by an array then buffer position p corresponds
-	 * to array index p + arrayOffset().
-	 * 
-	 * Invoke the hasArray method before invoking this method in order to ensure
-	 * that this buffer has an accessible backing array.
-	 * 
-	 * @return The offset within this buffer's array of the first element of the
-	 *         buffer
-	 * 
-	 * @throws ReadOnlyBufferException -
-	 *             If this buffer is backed by an array but is read-only
-	 *         UnsupportedOperationException - If this buffer is not backed
-	 *             by an accessible array
-	 * 
-	 * @since 1.6
-	 */
-	public abstract int arrayOffset();
+    /**
+     * Returns the array that backs this buffer (optional operation).
+     * The returned value is the actual array, not a copy, so modifications
+     * to the array write through to the buffer.
+     *
+     * <p>Subclasses should override this method with a covariant return type
+     * to provide the exact type of the array.
+     *
+     * <p>Use {@code hasArray} to ensure this method won't throw.
+     * (A separate call to {@code isReadOnly} is not necessary.)
+     *
+     * @return the array
+     * @throws ReadOnlyBufferException if the buffer is read-only
+     *         UnsupportedOperationException if the buffer does not expose an array
+     * @since 1.6
+     */
+    public abstract Object array();
+
+    /**
+     * Returns the offset into the array returned by {@code array} of the first
+     * element of the buffer (optional operation). The backing array (if there is one)
+     * is not necessarily the same size as the buffer, and position 0 in the buffer is
+     * not necessarily the 0th element in the array. Use
+     * {@code buffer.array()[offset + buffer.arrayOffset()} to access element {@code offset}
+     * in {@code buffer}.
+     *
+     * <p>Use {@code hasArray} to ensure this method won't throw.
+     * (A separate call to {@code isReadOnly} is not necessary.)
+     *
+     * @return the offset
+     * @throws ReadOnlyBufferException if the buffer is read-only
+     *         UnsupportedOperationException if the buffer does not expose an array
+     * @since 1.6
+     */
+    public abstract int arrayOffset();
 
     /**
      * Returns the capacity of this buffer.
-     * 
+     *
      * @return the number of elements that are contained in this buffer.
      */
     public final int capacity() {
         return capacity;
+    }
+
+    /**
+     * Used for the scalar get/put operations.
+     */
+    void checkIndex(int index) {
+        if (index < 0 || index >= limit) {
+            throw new IndexOutOfBoundsException("index=" + index + ", limit=" + limit);
+        }
+    }
+
+    /**
+     * Used for the ByteBuffer operations that get types larger than a byte.
+     */
+    void checkIndex(int index, int sizeOfType) {
+        if (index < 0 || index > limit - sizeOfType) {
+            throw new IndexOutOfBoundsException("index=" + index + ", limit=" + limit +
+                    ", size of type=" + sizeOfType);
+        }
+    }
+
+    int checkGetBounds(int bytesPerElement, int length, int offset, int count) {
+        int byteCount = bytesPerElement * count;
+        if ((offset | count) < 0 || offset > length || length - offset < count) {
+            throw new IndexOutOfBoundsException("offset=" + offset +
+                    ", count=" + count + ", length=" + length);
+        }
+        if (byteCount > remaining()) {
+            throw new BufferUnderflowException();
+        }
+        return byteCount;
+    }
+
+    int checkPutBounds(int bytesPerElement, int length, int offset, int count) {
+        int byteCount = bytesPerElement * count;
+        if ((offset | count) < 0 || offset > length || length - offset < count) {
+            throw new IndexOutOfBoundsException("offset=" + offset +
+                    ", count=" + count + ", length=" + length);
+        }
+        if (byteCount > remaining()) {
+            throw new BufferOverflowException();
+        }
+        if (isReadOnly()) {
+            throw new ReadOnlyBufferException();
+        }
+        return byteCount;
+    }
+
+    void checkStartEndRemaining(int start, int end) {
+        if (end < start || start < 0 || end > remaining()) {
+            throw new IndexOutOfBoundsException("start=" + start + ", end=" + end +
+                    ", remaining()=" + remaining());
+        }
     }
 
     /**
@@ -179,52 +235,49 @@ public abstract class Buffer {
         return this;
     }
 
-
-	
-	/**
-	 * Answers if this buffer is backed by an available array.
-	 * 
-	 * If it returns true then the <code>array</code> and
-	 * <code>arrayOffset</code> methods can be called safely.
-	 * 
-	 * @return true if and only if this buffer is backed by an array and is
-	 *         not read-only.
-	 *         
-	 * @since 1.6
-	 */
-	public abstract boolean hasArray();
+    /**
+     * Returns true if {@code array} and {@code arrayOffset} won't throw. This method does not
+     * return true for buffers not backed by arrays because the other methods would throw
+     * {@code UnsupportedOperationException}, nor does it return true for buffers backed by
+     * read-only arrays, because the other methods would throw {@code ReadOnlyBufferException}.
+     * @since 1.6
+     */
+    public abstract boolean hasArray();
 
     /**
      * Indicates if there are elements remaining in this buffer, that is if
      * {@code position < limit}.
-     * 
+     *
      * @return {@code true} if there are elements remaining in this buffer,
      *         {@code false} otherwise.
      */
     public final boolean hasRemaining() {
         return position < limit;
     }
-	
-	/**
-	 * Answers if this buffer is direct.
-	 * 
-	 * @return true if and only if this buffer is direct
-	 * 
-	 * @since 1.6
-	 */
-	public abstract boolean isDirect();
+
+    /**
+     * Returns true if this is a direct buffer.
+     * @since 1.6
+     */
+    public abstract boolean isDirect();
 
     /**
      * Indicates whether this buffer is read-only.
-     * 
+     *
      * @return {@code true} if this buffer is read-only, {@code false}
      *         otherwise.
      */
     public abstract boolean isReadOnly();
 
+    final void checkWritable() {
+        if (isReadOnly()) {
+            throw new IllegalArgumentException("read-only buffer");
+        }
+    }
+
     /**
      * Returns the limit of this buffer.
-     * 
+     *
      * @return the limit of this buffer.
      */
     public final int limit() {
@@ -247,8 +300,16 @@ public abstract class Buffer {
      *                if <code>newLimit</code> is invalid.
      */
     public final Buffer limit(int newLimit) {
+        limitImpl(newLimit);
+        return this;
+    }
+
+    /**
+     * Subverts the fact that limit(int) is final, for the benefit of MappedByteBufferAdapter.
+     */
+    void limitImpl(int newLimit) {
         if (newLimit < 0 || newLimit > capacity) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Bad limit (capacity " + capacity + "): " + newLimit);
         }
 
         limit = newLimit;
@@ -258,13 +319,12 @@ public abstract class Buffer {
         if ((mark != UNSET_MARK) && (mark > newLimit)) {
             mark = UNSET_MARK;
         }
-        return this;
     }
 
     /**
      * Marks the current position, so that the position may return to this point
      * later by calling <code>reset()</code>.
-     * 
+     *
      * @return this buffer.
      */
     public final Buffer mark() {
@@ -274,7 +334,7 @@ public abstract class Buffer {
 
     /**
      * Returns the position of this buffer.
-     * 
+     *
      * @return the value of this buffer's current position.
      */
     public final int position() {
@@ -295,21 +355,25 @@ public abstract class Buffer {
      *                if <code>newPosition</code> is invalid.
      */
     public final Buffer position(int newPosition) {
+        positionImpl(newPosition);
+        return this;
+    }
+
+    void positionImpl(int newPosition) {
         if (newPosition < 0 || newPosition > limit) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Bad position (limit " + limit + "): " + newPosition);
         }
 
         position = newPosition;
         if ((mark != UNSET_MARK) && (mark > position)) {
             mark = UNSET_MARK;
         }
-        return this;
     }
 
     /**
      * Returns the number of remaining elements in this buffer, that is
      * {@code limit - position}.
-     * 
+     *
      * @return the number of remaining elements in this buffer.
      */
     public final int remaining() {
@@ -318,14 +382,14 @@ public abstract class Buffer {
 
     /**
      * Resets the position of this buffer to the <code>mark</code>.
-     * 
+     *
      * @return this buffer.
      * @exception InvalidMarkException
      *                if the mark is not set.
      */
     public final Buffer reset() {
         if (mark == UNSET_MARK) {
-            throw new InvalidMarkException();
+            throw new InvalidMarkException("Mark not set");
         }
         position = mark;
         return this;
@@ -343,5 +407,17 @@ public abstract class Buffer {
         position = 0;
         mark = UNSET_MARK;
         return this;
+    }
+
+    @Override public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append(getClass().getName());
+        buf.append(", status: capacity=");
+        buf.append(capacity);
+        buf.append(" position=");
+        buf.append(position);
+        buf.append(" limit=");
+        buf.append(limit);
+        return buf.toString();
     }
 }

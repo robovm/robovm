@@ -424,7 +424,7 @@ public final class Character implements Serializable, Comparable<Character> {
      * @since 1.4
      */
     public static final byte DIRECTIONALITY_POP_DIRECTIONAL_FORMAT = 18;
-    
+
     /**
      * The minimum value of a high surrogate or leading surrogate unit in UTF-16
      * encoding, {@code '\uD800'}.
@@ -540,7 +540,7 @@ public final class Character implements Serializable, Comparable<Character> {
         /**
          * Compares this character subset with the specified object. Uses
          * {@link java.lang.Object#equals(Object)} to do the comparison.
-         * 
+         *
          * @param object
          *            the object to compare this character subset with.
          * @return {@code true} if {@code object} is this subset, that is, if
@@ -553,7 +553,7 @@ public final class Character implements Serializable, Comparable<Character> {
 
         /**
          * Returns the integer hash code for this character subset.
-         * 
+         *
          * @return this subset's hash code, which is the hash code computed by
          *         {@link java.lang.Object#hashCode()}.
          */
@@ -564,7 +564,7 @@ public final class Character implements Serializable, Comparable<Character> {
 
         /**
          * Returns the string representation of this subset.
-         * 
+         *
          * @return this subset's name.
          */
         @Override
@@ -1342,7 +1342,7 @@ public final class Character implements Serializable, Comparable<Character> {
          * @since 1.5
          */
         public static final UnicodeBlock SUPPLEMENTARY_PRIVATE_USE_AREA_B = new UnicodeBlock("SUPPLEMENTARY_PRIVATE_USE_AREA_B", 0x100000, 0x10ffff);
-        
+
         /*
          * All of the UnicodeBlocks with valid ranges in ascending order.
          */
@@ -1474,7 +1474,7 @@ public final class Character implements Serializable, Comparable<Character> {
             UnicodeBlock.TAI_XUAN_JING_SYMBOLS,
             UnicodeBlock.VARIATION_SELECTORS_SUPPLEMENT
         };
-        
+
         /**
          * Retrieves the constant that corresponds to the specified block name.
          * The block names are defined by the Unicode 4.0.1 specification in the
@@ -1490,7 +1490,7 @@ public final class Character implements Serializable, Comparable<Character> {
          * uppercasing the canonical name and replacing all spaces and hyphens
          * with underscores.</li>
          * </ul>
-         * 
+         *
          * @param blockName
          *            the name of the block to retrieve.
          * @return the UnicodeBlock constant corresponding to {@code blockName}.
@@ -1514,16 +1514,16 @@ public final class Character implements Serializable, Comparable<Character> {
                         blockName.equals("Combining Marks for Symbols") ||
                         blockName.equals("CombiningMarksforSymbols")) {
                     return COMBINING_MARKS_FOR_SYMBOLS;
-            }
+                }
                 throw new IllegalArgumentException("Bad block name: " + blockName);
             }
             return BLOCKS[block];
         }
-        
+
         /**
          * Gets the constant for the Unicode block that contains the specified
          * character.
-         * 
+         *
          * @param c
          *            the character for which to get the {@code UnicodeBlock}
          *            constant.
@@ -1534,11 +1534,11 @@ public final class Character implements Serializable, Comparable<Character> {
         public static UnicodeBlock of(char c) {
             return of((int) c);
         }
-        
+
         /**
          * Gets the constant for the Unicode block that contains the specified
          * Unicode code point.
-         * 
+         *
          * @param codePoint
          *            the Unicode code point for which to get the
          *            {@code UnicodeBlock} constant.
@@ -1552,11 +1552,11 @@ public final class Character implements Serializable, Comparable<Character> {
             checkValidCodePoint(codePoint);
             int block = ofImpl(codePoint);
             if (block == -1 || block >= BLOCKS.length) {
-            return null;
-        }
+                return null;
+            }
             return BLOCKS[block];
         }
-        
+
         private UnicodeBlock(String blockName, int start, int end) {
             super(blockName);
         }
@@ -1569,7 +1569,7 @@ public final class Character implements Serializable, Comparable<Character> {
     /**
      * Constructs a new {@code Character} with the specified primitive char
      * value.
-     * 
+     *
      * @param value
      *            the primitive char value to store in the new instance.
      */
@@ -1579,7 +1579,7 @@ public final class Character implements Serializable, Comparable<Character> {
 
     /**
      * Gets the primitive value of this character.
-     * 
+     *
      * @return this object's primitive value.
      */
     public char charValue() {
@@ -1595,7 +1595,7 @@ public final class Character implements Serializable, Comparable<Character> {
     /**
      * Compares this object to the specified character object to determine their
      * relative order.
-     * 
+     *
      * @param c
      *            the character object to compare this object to.
      * @return {@code 0} if the value of this character and the value of
@@ -1619,7 +1619,7 @@ public final class Character implements Serializable, Comparable<Character> {
     public static int compare(char lhs, char rhs) {
         return lhs - rhs;
     }
-    
+
     /**
      * Returns a {@code Character} instance for the {@code char} value passed.
      * <p>
@@ -1638,10 +1638,10 @@ public final class Character implements Serializable, Comparable<Character> {
 
     /**
      * A cache of instances used by {@link #valueOf(char)} and auto-boxing
-        */
+     */
     private static final Character[] SMALL_VALUES = new Character[128];
 
-        static {
+    static {
         for (int i = 0; i < 128; i++) {
             SMALL_VALUES[i] = new Character((char) i);
         }
@@ -1886,7 +1886,7 @@ public final class Character implements Serializable, Comparable<Character> {
     public static int codePointAt(char[] seq, int index, int limit) {
         if (index < 0 || index >= limit || limit < 0 || limit > seq.length) {
             throw new IndexOutOfBoundsException();
-        }       
+        }
 
         char high = seq[index++];
         if (index >= limit) {
@@ -2082,7 +2082,7 @@ public final class Character implements Serializable, Comparable<Character> {
     /**
      * Converts the specified Unicode code point into a UTF-16 encoded sequence
      * and returns it as a char array.
-     * 
+     *
      * @param codePoint
      *            the Unicode code point to encode.
      * @return the UTF-16 encoded char sequence. If {@code codePoint} is a
@@ -2348,7 +2348,7 @@ public final class Character implements Serializable, Comparable<Character> {
      * Convenience method to determine the value of the specified character
      * {@code c} in the supplied radix. The value of {@code radix} must be
      * between MIN_RADIX and MAX_RADIX.
-     * 
+     *
      * @param c
      *            the character to determine the value of.
      * @param radix
@@ -2359,12 +2359,12 @@ public final class Character implements Serializable, Comparable<Character> {
     public static int digit(char c, int radix) {
         return digit((int) c, radix);
     }
-    
+
     /**
      * Convenience method to determine the value of the character
      * {@code codePoint} in the supplied radix. The value of {@code radix} must
      * be between MIN_RADIX and MAX_RADIX.
-     * 
+     *
      * @param codePoint
      *            the character, including supplementary characters.
      * @param radix
@@ -2376,7 +2376,7 @@ public final class Character implements Serializable, Comparable<Character> {
     public static int digit(int codePoint, int radix) {
         if (radix < MIN_RADIX || radix > MAX_RADIX) {
             return -1;
-    }
+        }
         if (codePoint < 128) {
             // Optimized for ASCII
             int result = -1;
@@ -2398,7 +2398,7 @@ public final class Character implements Serializable, Comparable<Character> {
      * Compares this object with the specified object and indicates if they are
      * equal. In order to be equal, {@code object} must be an instance of
      * {@code Character} and have the same char value as this object.
-     * 
+     *
      * @param object
      *            the object to compare this double with.
      * @return {@code true} if the specified object is equal to this
@@ -2415,7 +2415,7 @@ public final class Character implements Serializable, Comparable<Character> {
      * {@code MAX_RADIX} inclusive; {@code digit} must not be negative and
      * smaller than {@code radix}. If any of these conditions does not hold, 0
      * is returned.
-     * 
+     *
      * @param digit
      *            the integer value.
      * @param radix
@@ -2434,7 +2434,7 @@ public final class Character implements Serializable, Comparable<Character> {
 
     /**
      * Returns the name of the given code point, or null if the code point is unassigned.
-     * 
+     *
      * <p>As a fallback mechanism this method returns strings consisting of the Unicode
      * block name (with underscores replaced by spaces), a single space, and the uppercase
      * hex value of the code point, using as few digits as necessary.
@@ -2478,12 +2478,12 @@ public final class Character implements Serializable, Comparable<Character> {
     public static int getNumericValue(char c) {
         return getNumericValue((int) c);
     }
-    
+
     /**
      * Gets the numeric value of the specified Unicode code point. For example,
      * the code point '\u216B' stands for the Roman number XII, which has the
      * numeric value 12.
-     * 
+     *
      * <p>There are two points of divergence between this method and the Unicode
      * specification. This method treats the letters a-z (in both upper and lower
      * cases, and their full-width variants) as numbers from 10 to 35. The
@@ -2502,7 +2502,7 @@ public final class Character implements Serializable, Comparable<Character> {
         if (codePoint < 128) {
             if (codePoint >= '0' && codePoint <= '9') {
                 return codePoint - '0';
-    }
+            }
             if (codePoint >= 'a' && codePoint <= 'z') {
                 return codePoint - ('a' - 10);
             }
@@ -2526,7 +2526,7 @@ public final class Character implements Serializable, Comparable<Character> {
 
     /**
      * Gets the general Unicode category of the specified character.
-     * 
+     *
      * @param c
      *            the character to get the category of.
      * @return the Unicode category of {@code c}.
@@ -2534,10 +2534,10 @@ public final class Character implements Serializable, Comparable<Character> {
     public static int getType(char c) {
         return getType((int) c);
     }
-    
+
     /**
      * Gets the general Unicode category of the specified code point.
-     * 
+     *
      * @param codePoint
      *            the Unicode code point to get the category of.
      * @return the Unicode category of {@code codePoint}.
@@ -2555,7 +2555,7 @@ public final class Character implements Serializable, Comparable<Character> {
 
     /**
      * Gets the Unicode directionality of the specified character.
-     * 
+     *
      * @param c
      *            the character to get the directionality of.
      * @return the Unicode directionality of {@code c}.
@@ -2563,10 +2563,10 @@ public final class Character implements Serializable, Comparable<Character> {
     public static byte getDirectionality(char c) {
         return getDirectionality((int)c);
     }
-    
+
     /**
      * Gets the Unicode directionality of the specified character.
-     * 
+     *
      * @param codePoint
      *            the Unicode code point to get the directionality of.
      * @return the Unicode directionality of {@code codePoint}.
@@ -2575,7 +2575,7 @@ public final class Character implements Serializable, Comparable<Character> {
         if (getType(codePoint) == Character.UNASSIGNED) {
             return Character.DIRECTIONALITY_UNDEFINED;
         }
-        
+
         byte directionality = getDirectionalityImpl(codePoint);
         if (directionality == -1) {
             return -1;
@@ -2587,7 +2587,7 @@ public final class Character implements Serializable, Comparable<Character> {
 
     /**
      * Indicates whether the specified character is mirrored.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if {@code c} is mirrored; {@code false}
@@ -2596,10 +2596,10 @@ public final class Character implements Serializable, Comparable<Character> {
     public static boolean isMirrored(char c) {
         return isMirrored((int) c);
     }
-    
+
     /**
      * Indicates whether the specified code point is mirrored.
-     * 
+     *
      * @param codePoint
      *            the code point to check.
      * @return {@code true} if {@code codePoint} is mirrored, {@code false}
@@ -2649,7 +2649,7 @@ public final class Character implements Serializable, Comparable<Character> {
     /**
      * Indicates whether the specified character is defined in the Unicode
      * specification.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if the general Unicode category of the character is
@@ -2658,11 +2658,11 @@ public final class Character implements Serializable, Comparable<Character> {
     public static boolean isDefined(char c) {
         return isDefinedImpl(c);
     }
-    
+
     /**
      * Indicates whether the specified code point is defined in the Unicode
      * specification.
-     * 
+     *
      * @param codePoint
      *            the code point to check.
      * @return {@code true} if the general Unicode category of the code point is
@@ -2676,7 +2676,7 @@ public final class Character implements Serializable, Comparable<Character> {
 
     /**
      * Indicates whether the specified character is a digit.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if {@code c} is a digit; {@code false}
@@ -2685,10 +2685,10 @@ public final class Character implements Serializable, Comparable<Character> {
     public static boolean isDigit(char c) {
         return isDigit((int) c);
     }
-    
+
     /**
      * Indicates whether the specified code point is a digit.
-     * 
+     *
      * @param codePoint
      *            the code point to check.
      * @return {@code true} if {@code codePoint} is a digit; {@code false}
@@ -2698,7 +2698,7 @@ public final class Character implements Serializable, Comparable<Character> {
         // Optimized case for ASCII
         if ('0' <= codePoint && codePoint <= '9') {
             return true;
-    }
+        }
         if (codePoint < 1632) {
             return false;
         }
@@ -2710,7 +2710,7 @@ public final class Character implements Serializable, Comparable<Character> {
     /**
      * Indicates whether the specified character is ignorable in a Java or
      * Unicode identifier.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if {@code c} is ignorable; {@code false} otherwise.
@@ -2718,11 +2718,11 @@ public final class Character implements Serializable, Comparable<Character> {
     public static boolean isIdentifierIgnorable(char c) {
         return isIdentifierIgnorable((int) c);
     }
-    
+
     /**
      * Indicates whether the specified code point is ignorable in a Java or
      * Unicode identifier.
-     * 
+     *
      * @param codePoint
      *            the code point to check.
      * @return {@code true} if {@code codePoint} is ignorable; {@code false}
@@ -2733,7 +2733,7 @@ public final class Character implements Serializable, Comparable<Character> {
         if (codePoint < 0x600) {
             return (codePoint >= 0 && codePoint <= 8) || (codePoint >= 0xe && codePoint <= 0x1b) ||
                     (codePoint >= 0x7f && codePoint <= 0x9f) || (codePoint == 0xad);
-    }
+        }
         return isIdentifierIgnorableImpl(codePoint);
     }
 
@@ -2741,19 +2741,19 @@ public final class Character implements Serializable, Comparable<Character> {
 
     /**
      * Indicates whether the specified character is an ISO control character.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if {@code c} is an ISO control character;
      *         {@code false} otherwise.
      */
     public static boolean isISOControl(char c) {
-        return isISOControl((int)c);
+        return isISOControl((int) c);
     }
 
     /**
      * Indicates whether the specified code point is an ISO control character.
-     * 
+     *
      * @param c
      *            the code point to check.
      * @return {@code true} if {@code c} is an ISO control character;
@@ -2766,7 +2766,7 @@ public final class Character implements Serializable, Comparable<Character> {
     /**
      * Indicates whether the specified character is a valid part of a Java
      * identifier other than the first character.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if {@code c} is valid as part of a Java identifier;
@@ -2779,7 +2779,7 @@ public final class Character implements Serializable, Comparable<Character> {
     /**
      * Indicates whether the specified code point is a valid part of a Java
      * identifier other than the first character.
-     * 
+     *
      * @param codePoint
      *            the code point to check.
      * @return {@code true} if {@code c} is valid as part of a Java identifier;
@@ -2796,7 +2796,7 @@ public final class Character implements Serializable, Comparable<Character> {
         return (type >= UPPERCASE_LETTER && type <= OTHER_LETTER)
                 || type == CURRENCY_SYMBOL || type == CONNECTOR_PUNCTUATION
                 || (type >= DECIMAL_DIGIT_NUMBER && type <= LETTER_NUMBER)
-                || type == COMBINING_SPACING_MARK || type == NON_SPACING_MARK 
+                || type == COMBINING_SPACING_MARK || type == NON_SPACING_MARK
                 || (codePoint >= 0 && codePoint <= 8) || (codePoint >= 0xe && codePoint <= 0x1b)
                 || (codePoint >= 0x7f && codePoint <= 0x9f) || type == FORMAT;
     }
@@ -2804,7 +2804,7 @@ public final class Character implements Serializable, Comparable<Character> {
     /**
      * Indicates whether the specified character is a valid first character for
      * a Java identifier.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if {@code c} is a valid first character of a Java
@@ -2813,11 +2813,11 @@ public final class Character implements Serializable, Comparable<Character> {
     public static boolean isJavaIdentifierStart(char c) {
         return isJavaIdentifierStart((int) c);
     }
-    
+
     /**
      * Indicates whether the specified code point is a valid first character for
      * a Java identifier.
-     * 
+     *
      * @param codePoint
      *            the code point to check.
      * @return {@code true} if {@code codePoint} is a valid start of a Java
@@ -2837,7 +2837,7 @@ public final class Character implements Serializable, Comparable<Character> {
 
     /**
      * Indicates whether the specified character is a Java letter.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if {@code c} is a Java letter; {@code false}
@@ -2852,7 +2852,7 @@ public final class Character implements Serializable, Comparable<Character> {
     /**
      * Indicates whether the specified character is a Java letter or digit
      * character.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if {@code c} is a Java letter or digit;
@@ -2866,7 +2866,7 @@ public final class Character implements Serializable, Comparable<Character> {
 
     /**
      * Indicates whether the specified character is a letter.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if {@code c} is a letter; {@code false} otherwise.
@@ -2874,10 +2874,10 @@ public final class Character implements Serializable, Comparable<Character> {
     public static boolean isLetter(char c) {
         return isLetter((int) c);
     }
-    
+
     /**
      * Indicates whether the specified code point is a letter.
-     * 
+     *
      * @param codePoint
      *            the code point to check.
      * @return {@code true} if {@code codePoint} is a letter; {@code false}
@@ -2886,7 +2886,7 @@ public final class Character implements Serializable, Comparable<Character> {
     public static boolean isLetter(int codePoint) {
         if (('A' <= codePoint && codePoint <= 'Z') || ('a' <= codePoint && codePoint <= 'z')) {
             return true;
-    }
+        }
         if (codePoint < 128) {
             return false;
         }
@@ -2897,7 +2897,7 @@ public final class Character implements Serializable, Comparable<Character> {
 
     /**
      * Indicates whether the specified character is a letter or a digit.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if {@code c} is a letter or a digit; {@code false}
@@ -2906,10 +2906,10 @@ public final class Character implements Serializable, Comparable<Character> {
     public static boolean isLetterOrDigit(char c) {
         return isLetterOrDigit((int) c);
     }
-    
+
     /**
      * Indicates whether the specified code point is a letter or a digit.
-     * 
+     *
      * @param codePoint
      *            the code point to check.
      * @return {@code true} if {@code codePoint} is a letter or a digit;
@@ -2919,7 +2919,7 @@ public final class Character implements Serializable, Comparable<Character> {
         // Optimized case for ASCII
         if (('A' <= codePoint && codePoint <= 'Z') || ('a' <= codePoint && codePoint <= 'z')) {
             return true;
-    }
+        }
         if ('0' <= codePoint && codePoint <= '9') {
             return true;
         }
@@ -2933,7 +2933,7 @@ public final class Character implements Serializable, Comparable<Character> {
 
     /**
      * Indicates whether the specified character is a lower case letter.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if {@code c} is a lower case letter; {@code false}
@@ -2942,10 +2942,10 @@ public final class Character implements Serializable, Comparable<Character> {
     public static boolean isLowerCase(char c) {
         return isLowerCase((int) c);
     }
-    
+
     /**
      * Indicates whether the specified code point is a lower case letter.
-     * 
+     *
      * @param codePoint
      *            the code point to check.
      * @return {@code true} if {@code codePoint} is a lower case letter;
@@ -2955,7 +2955,7 @@ public final class Character implements Serializable, Comparable<Character> {
         // Optimized case for ASCII
         if ('a' <= codePoint && codePoint <= 'z') {
             return true;
-    }
+        }
         if (codePoint < 128) {
             return false;
         }
@@ -2966,7 +2966,7 @@ public final class Character implements Serializable, Comparable<Character> {
 
     /**
      * Indicates whether the specified character is a Java space.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if {@code c} is a Java space; {@code false}
@@ -2982,7 +2982,7 @@ public final class Character implements Serializable, Comparable<Character> {
      * Indicates whether the specified character is a Unicode space character.
      * That is, if it is a member of one of the Unicode categories Space
      * Separator, Line Separator, or Paragraph Separator.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if {@code c} is a Unicode space character,
@@ -2991,12 +2991,12 @@ public final class Character implements Serializable, Comparable<Character> {
     public static boolean isSpaceChar(char c) {
         return isSpaceChar((int) c);
     }
-    
+
     /**
      * Indicates whether the specified code point is a Unicode space character.
      * That is, if it is a member of one of the Unicode categories Space
      * Separator, Line Separator, or Paragraph Separator.
-     * 
+     *
      * @param codePoint
      *            the code point to check.
      * @return {@code true} if {@code codePoint} is a Unicode space character,
@@ -3005,7 +3005,7 @@ public final class Character implements Serializable, Comparable<Character> {
     public static boolean isSpaceChar(int codePoint) {
         if (codePoint == 0x20 || codePoint == 0xa0 || codePoint == 0x1680) {
             return true;
-    }
+        }
         if (codePoint < 0x2000) {
             return false;
         }
@@ -3020,7 +3020,7 @@ public final class Character implements Serializable, Comparable<Character> {
 
     /**
      * Indicates whether the specified character is a titlecase character.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if {@code c} is a titlecase character, {@code false}
@@ -3029,10 +3029,10 @@ public final class Character implements Serializable, Comparable<Character> {
     public static boolean isTitleCase(char c) {
         return isTitleCaseImpl(c);
     }
-    
+
     /**
      * Indicates whether the specified code point is a titlecase character.
-     * 
+     *
      * @param codePoint
      *            the code point to check.
      * @return {@code true} if {@code codePoint} is a titlecase character,
@@ -3047,7 +3047,7 @@ public final class Character implements Serializable, Comparable<Character> {
     /**
      * Indicates whether the specified character is valid as part of a Unicode
      * identifier other than the first character.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if {@code c} is valid as part of a Unicode
@@ -3056,11 +3056,11 @@ public final class Character implements Serializable, Comparable<Character> {
     public static boolean isUnicodeIdentifierPart(char c) {
         return isUnicodeIdentifierPartImpl(c);
     }
-    
+
     /**
      * Indicates whether the specified code point is valid as part of a Unicode
      * identifier other than the first character.
-     * 
+     *
      * @param codePoint
      *            the code point to check.
      * @return {@code true} if {@code codePoint} is valid as part of a Unicode
@@ -3075,7 +3075,7 @@ public final class Character implements Serializable, Comparable<Character> {
     /**
      * Indicates whether the specified character is a valid initial character
      * for a Unicode identifier.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if {@code c} is a valid first character for a
@@ -3084,11 +3084,11 @@ public final class Character implements Serializable, Comparable<Character> {
     public static boolean isUnicodeIdentifierStart(char c) {
         return isUnicodeIdentifierStartImpl(c);
     }
-    
+
     /**
      * Indicates whether the specified code point is a valid initial character
      * for a Unicode identifier.
-     * 
+     *
      * @param codePoint
      *            the code point to check.
      * @return {@code true} if {@code codePoint} is a valid first character for
@@ -3102,7 +3102,7 @@ public final class Character implements Serializable, Comparable<Character> {
 
     /**
      * Indicates whether the specified character is an upper case letter.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if {@code c} is a upper case letter; {@code false}
@@ -3111,10 +3111,10 @@ public final class Character implements Serializable, Comparable<Character> {
     public static boolean isUpperCase(char c) {
         return isUpperCase((int) c);
     }
-    
+
     /**
      * Indicates whether the specified code point is an upper case letter.
-     * 
+     *
      * @param codePoint
      *            the code point to check.
      * @return {@code true} if {@code codePoint} is a upper case letter;
@@ -3124,7 +3124,7 @@ public final class Character implements Serializable, Comparable<Character> {
         // Optimized case for ASCII
         if ('A' <= codePoint && codePoint <= 'Z') {
             return true;
-    }
+        }
         if (codePoint < 128) {
             return false;
         }
@@ -3136,7 +3136,7 @@ public final class Character implements Serializable, Comparable<Character> {
     /**
      * Indicates whether the specified character is a whitespace character in
      * Java.
-     * 
+     *
      * @param c
      *            the character to check.
      * @return {@code true} if the supplied {@code c} is a whitespace character
@@ -3145,11 +3145,11 @@ public final class Character implements Serializable, Comparable<Character> {
     public static boolean isWhitespace(char c) {
         return isWhitespace((int) c);
     }
-    
+
     /**
      * Indicates whether the specified code point is a whitespace character in
      * Java.
-     * 
+     *
      * @param codePoint
      *            the code point to check.
      * @return {@code true} if the supplied {@code c} is a whitespace character
@@ -3159,7 +3159,7 @@ public final class Character implements Serializable, Comparable<Character> {
         // This is both an optimization and papers over differences between Java and ICU.
         if ((codePoint >= 0x1c && codePoint <= 0x20) || (codePoint >= 0x9 && codePoint <= 0xd)) {
             return true;
-    }
+        }
         if (codePoint == 0x1680) {
             return true;
         }
@@ -3191,7 +3191,7 @@ public final class Character implements Serializable, Comparable<Character> {
      * Returns the lower case equivalent for the specified character if the
      * character is an upper case letter. Otherwise, the specified character is
      * returned unchanged.
-     * 
+     *
      * @param c
      *            the character
      * @return if {@code c} is an upper case character then its lower case
@@ -3200,12 +3200,12 @@ public final class Character implements Serializable, Comparable<Character> {
     public static char toLowerCase(char c) {
         return (char) toLowerCase((int) c);
     }
-    
+
     /**
      * Returns the lower case equivalent for the specified code point if it is
      * an upper case letter. Otherwise, the specified code point is returned
      * unchanged.
-     * 
+     *
      * @param codePoint
      *            the code point to check.
      * @return if {@code codePoint} is an upper case character then its lower
@@ -3215,7 +3215,7 @@ public final class Character implements Serializable, Comparable<Character> {
         // Optimized case for ASCII
         if ('A' <= codePoint && codePoint <= 'Z') {
             return (char) (codePoint + ('a' - 'A'));
-    }
+        }
         if (codePoint < 192) {
             return codePoint;
         }
@@ -3231,7 +3231,7 @@ public final class Character implements Serializable, Comparable<Character> {
 
     /**
      * Converts the specified character to its string representation.
-     * 
+     *
      * @param value
      *            the character to convert.
      * @return the character converted to a string.
@@ -3243,7 +3243,7 @@ public final class Character implements Serializable, Comparable<Character> {
     /**
      * Returns the title case equivalent for the specified character if it
      * exists. Otherwise, the specified character is returned unchanged.
-     * 
+     *
      * @param c
      *            the character to convert.
      * @return the title case equivalent of {@code c} if it exists, otherwise
@@ -3252,11 +3252,11 @@ public final class Character implements Serializable, Comparable<Character> {
     public static char toTitleCase(char c) {
         return (char) toTitleCaseImpl(c);
     }
-    
+
     /**
      * Returns the title case equivalent for the specified code point if it
      * exists. Otherwise, the specified code point is returned unchanged.
-     * 
+     *
      * @param codePoint
      *            the code point to convert.
      * @return the title case equivalent of {@code codePoint} if it exists,
@@ -3272,7 +3272,7 @@ public final class Character implements Serializable, Comparable<Character> {
      * Returns the upper case equivalent for the specified character if the
      * character is a lower case letter. Otherwise, the specified character is
      * returned unchanged.
-     * 
+     *
      * @param c
      *            the character to convert.
      * @return if {@code c} is a lower case character then its upper case
@@ -3281,12 +3281,12 @@ public final class Character implements Serializable, Comparable<Character> {
     public static char toUpperCase(char c) {
         return (char) toUpperCase((int) c);
     }
-    
+
     /**
      * Returns the upper case equivalent for the specified code point if the
      * code point is a lower case letter. Otherwise, the specified code point is
      * returned unchanged.
-     * 
+     *
      * @param codePoint
      *            the code point to convert.
      * @return if {@code codePoint} is a lower case character then its upper

@@ -14,7 +14,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
- * under the License.    
+ * under the License.
  */
 
 package org.apache.harmony.security.x509.tsp;
@@ -28,33 +28,33 @@ import org.apache.harmony.security.x509.AlgorithmIdentifier;
 /**
  * As defined in Time-Stamp Protocol (TSP)
  * (http://www.ietf.org/rfc/rfc3161.txt)
- * 
+ *
  * MessageImprint ::= SEQUENCE  {
  *      hashAlgorithm                AlgorithmIdentifier,
- *      hashedMessage                OCTET STRING  
+ *      hashedMessage                OCTET STRING
  * }
- * 
+ *
  */
 public class MessageImprint {
     private final AlgorithmIdentifier algId;
     private final byte [] hashedMessage;
-    
+
     public MessageImprint(AlgorithmIdentifier algId, byte [] hashedMessage){
         this.algId = algId;
         this.hashedMessage = hashedMessage;
     }
-    
+
     public static final ASN1Sequence ASN1 = new ASN1Sequence(new ASN1Type[] {
         AlgorithmIdentifier.ASN1,
         ASN1OctetString.getInstance()}) {
-        
+
         protected Object getDecodedObject(BerInputStream in) {
             Object[] values = (Object[]) in.content;
             return new MessageImprint(
                     (AlgorithmIdentifier)values[0],
                     (byte[])values[1]);
         }
-        
+
         protected void getValues(Object object, Object[] values) {
             MessageImprint mi = (MessageImprint) object;
             values[0] = mi.algId;

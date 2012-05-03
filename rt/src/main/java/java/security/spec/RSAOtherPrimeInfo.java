@@ -19,8 +19,6 @@ package java.security.spec;
 
 import java.math.BigInteger;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
  * The additional prime information specified as triplet of primes, a prime
  * exponent, and a Chinese Remainder Theorem (CRT) coefficient.
@@ -40,7 +38,7 @@ public class RSAOtherPrimeInfo {
     /**
      * Creates a new {@code RSAOtherPrimeInfo} with the specified prime,
      * exponent, and CRT coefficient.
-     * 
+     *
      * @param prime
      *            the prime factor.
      * @param primeExponent
@@ -51,13 +49,13 @@ public class RSAOtherPrimeInfo {
     public RSAOtherPrimeInfo(BigInteger prime,
             BigInteger primeExponent, BigInteger crtCoefficient) {
         if (prime == null) {
-            throw new NullPointerException(Messages.getString("security.83", "prime")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("prime == null");
         }
         if (primeExponent == null) {
-            throw new NullPointerException(Messages.getString("security.83", "primeExponent")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("primeExponent == null");
         }
         if (crtCoefficient == null) {
-            throw new NullPointerException(Messages.getString("security.83", "crtCoefficient")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("crtCoefficient == null");
         }
         this.prime = prime;
         this.primeExponent = primeExponent;
@@ -66,7 +64,7 @@ public class RSAOtherPrimeInfo {
 
     /**
      * Returns the CRT coefficient.
-     * 
+     *
      * @return the CRT coefficient.
      */
     public final BigInteger getCrtCoefficient() {
@@ -75,7 +73,7 @@ public class RSAOtherPrimeInfo {
 
     /**
      * Returns the prime factor.
-     * 
+     *
      * @return the prime factor.
      */
     public final BigInteger getPrime() {
@@ -84,7 +82,7 @@ public class RSAOtherPrimeInfo {
 
     /**
      * Returns the exponent.
-     * 
+     *
      * @return the exponent.
      */
     public final BigInteger getExponent() {

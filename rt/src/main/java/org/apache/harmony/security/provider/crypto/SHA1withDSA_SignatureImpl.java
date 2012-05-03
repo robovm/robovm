@@ -18,25 +18,19 @@
 package org.apache.harmony.security.provider.crypto;
 
 import java.math.BigInteger;
-
+import java.security.InvalidKeyException;
+import java.security.InvalidParameterException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Signature;
-
-import java.security.InvalidKeyException;
-import java.security.InvalidParameterException;
-import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
-
-import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAKey;
+import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.DSAPublicKey;
-
-import java.security.MessageDigest;
-
-import org.apache.harmony.security.internal.nls.Messages;
 
 public class SHA1withDSA_SignatureImpl extends Signature {
 
@@ -49,9 +43,9 @@ public class SHA1withDSA_SignatureImpl extends Signature {
      */
     public SHA1withDSA_SignatureImpl() throws NoSuchAlgorithmException {
 
-        super("SHA1withDSA"); //$NON-NLS-1$
+        super("SHA1withDSA");
 
-        msgDigest = MessageDigest.getInstance("SHA1"); //$NON-NLS-1$
+        msgDigest = MessageDigest.getInstance("SHA1");
     }
 
     /**
@@ -63,16 +57,16 @@ public class SHA1withDSA_SignatureImpl extends Signature {
     protected Object engineGetParameter(String param)
             throws InvalidParameterException {
         if (param == null) {
-            throw new NullPointerException(Messages.getString("security.01")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
         return null;
     }
 
     /**
-     * Initializes this signature object with PrivateKey object 
+     * Initializes this signature object with PrivateKey object
      * passed as argument to the method.
      *
-     * @param
+     * @params
      *    privateKey DSAPrivateKey object
      * @throws
      *    InvalidKeyException if privateKey is not DSAPrivateKey object
@@ -88,8 +82,7 @@ public class SHA1withDSA_SignatureImpl extends Signature {
         int n;
 
         if (privateKey == null || !(privateKey instanceof DSAPrivateKey)) {
-            throw new InvalidKeyException(
-                    Messages.getString("security.168")); //$NON-NLS-1$
+            throw new InvalidKeyException();
         }
 
         params = ((DSAPrivateKey) privateKey).getParams();
@@ -99,15 +92,14 @@ public class SHA1withDSA_SignatureImpl extends Signature {
 
         // checks described in DSA standard
         n = p.bitLength();
-        if (p.compareTo(BigInteger.valueOf(1)) != 1 || n < 512 || n > 1024
-                || (n & 077) != 0) {
-            throw new InvalidKeyException(Messages.getString("security.169")); //$NON-NLS-1$
+        if (p.compareTo(BigInteger.valueOf(1)) != 1 || n < 512 || n > 1024 || (n & 077) != 0) {
+            throw new InvalidKeyException("bad p");
         }
         if (q.signum() != 1 && q.bitLength() != 160) {
-            throw new InvalidKeyException(Messages.getString("security.16A")); //$NON-NLS-1$
+            throw new InvalidKeyException("bad q");
         }
         if (x.signum() != 1 || x.compareTo(q) != -1) {
-            throw new InvalidKeyException(Messages.getString("security.16B")); //$NON-NLS-1$
+            throw new InvalidKeyException("x <= 0 || x >= q");
         }
 
         dsaKey = (DSAKey) privateKey;
@@ -116,10 +108,10 @@ public class SHA1withDSA_SignatureImpl extends Signature {
     }
 
     /**
-     * Initializes this signature object with PublicKey object 
+     * Initializes this signature object with PublicKey object
      * passed as argument to the method.
      *
-     * @param
+     * @params
      *    publicKey DSAPublicKey object
      * @throws
      *    InvalidKeyException if publicKey is not DSAPublicKey object
@@ -133,8 +125,7 @@ public class SHA1withDSA_SignatureImpl extends Signature {
         int n1;
 
         if (publicKey == null || !(publicKey instanceof DSAPublicKey)) {
-            throw new InvalidKeyException(
-                    Messages.getString("security.16C")); //$NON-NLS-1$
+            throw new InvalidKeyException("publicKey is not an instance of DSAPublicKey");
         }
 
         DSAParams params = ((DSAPublicKey) publicKey).getParams();
@@ -144,15 +135,14 @@ public class SHA1withDSA_SignatureImpl extends Signature {
 
         // checks described in DSA standard
         n1 = p.bitLength();
-        if (p.compareTo(BigInteger.valueOf(1)) != 1 || n1 < 512 || n1 > 1024
-                || (n1 & 077) != 0) {
-            throw new InvalidKeyException(Messages.getString("security.169")); //$NON-NLS-1$
+        if (p.compareTo(BigInteger.valueOf(1)) != 1 || n1 < 512 || n1 > 1024 || (n1 & 077) != 0) {
+            throw new InvalidKeyException("bad p");
         }
         if (q.signum() != 1 || q.bitLength() != 160) {
-            throw new InvalidKeyException(Messages.getString("security.16A")); //$NON-NLS-1$
+            throw new InvalidKeyException("bad q");
         }
         if (y.signum() != 1) {
-            throw new InvalidKeyException(Messages.getString("security.16D")); //$NON-NLS-1$
+            throw new InvalidKeyException("y <= 0");
         }
 
         dsaKey = (DSAKey) publicKey;
@@ -166,27 +156,26 @@ public class SHA1withDSA_SignatureImpl extends Signature {
      * @throws
      *    InvalidParameterException
      */
-    protected void engineSetParameter(String param, Object value)
-            throws InvalidParameterException {
+    protected void engineSetParameter(String param, Object value) throws InvalidParameterException {
         if (param == null) {
-            throw new NullPointerException(Messages.getString("security.83", "param")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("param == null");
         }
-        throw new InvalidParameterException(Messages.getString("security.16E")); //$NON-NLS-1$
+        throw new InvalidParameterException("invalid parameter for this engine");
     }
 
     /**
-     * Returns signature bytes as byte array containing 
+     * Returns signature bytes as byte array containing
      * ASN1 representation for two BigInteger objects
      * which is SEQUENCE of two INTEGERS.
      * Length of sequence varies from less than 46 to 48.
      *
-     * Resets object to the state it was in 
+     * Resets object to the state it was in
      * when previous call to either "initSign" method was called.
      *
      * @return
      *    byte array containing signature in ASN1 representation
      * @throws
-     *    SignatureException if object's state is not SIGN or 
+     *    SignatureException if object's state is not SIGN or
      *                       signature algorithm cannot process data
      */
 
@@ -200,12 +189,14 @@ public class SHA1withDSA_SignatureImpl extends Signature {
         // parameters and private key
         BigInteger p, q, g, x;
 
-        // BigInteger for message digest 
+        // BigInteger for message digest
         BigInteger digestBI;
 
         // various byte array being used in computing signature
-        byte randomBytes[];
-        byte rBytes[], sBytes[], signature[];
+        byte[] randomBytes;
+        byte[] rBytes;
+        byte[] sBytes;
+        byte[] signature;
 
         int n, n1, n2;
 
@@ -249,7 +240,7 @@ public class SHA1withDSA_SignatureImpl extends Signature {
         }
 
         // forming signature's ASN1 representation which is SEQUENCE of two INTEGERs
-        // 
+        //
         rBytes = r.toByteArray();
         n1 = rBytes.length;
         if ((rBytes[0] & 0x80) != 0) {
@@ -289,7 +280,7 @@ public class SHA1withDSA_SignatureImpl extends Signature {
     /**
      * Updates data to sign or to verify.
      *
-     * @param
+     * @params
      *    b byte to update
      * @throws
      *    SignatureException if object was not initialized for signing or verifying
@@ -302,11 +293,11 @@ public class SHA1withDSA_SignatureImpl extends Signature {
     /**
      * Updates data to sign or to verify.
      *
-     * @param
+     * @params
      *    b byte array containing bytes to update
-     * @param
+     * @params
      *    off offset in byte array to start from
-     * @param
+     * @params
      *    len number of bytes to use for updating
      * @throws
      *    SignatureException if object was not initialized for signing or verifying
@@ -331,8 +322,8 @@ public class SHA1withDSA_SignatureImpl extends Signature {
 
         int n1, n2;
 
-        byte bytes[];
-        byte digest[];
+        byte[] bytes;
+        byte[] digest;
 
         // checking up on signature's ASN1
         try {
@@ -345,12 +336,12 @@ public class SHA1withDSA_SignatureImpl extends Signature {
                     || sigBytes[offset + 1] != (n1 + n2 + 4) || n1 > 21
                     || n2 > 21
                     || (length != 0 && (sigBytes[offset + 1] + 2) > length)) {
-                throw new SignatureException(Messages.getString("security.16F")); //$NON-NLS-1$
+                throw new SignatureException("signature bytes have invalid encoding");
             }
 
             dummy = sigBytes[5 + n1 + n2]; // to check length of sigBytes
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new SignatureException(Messages.getString("security.170")); //$NON-NLS-1$
+            throw new SignatureException("bad argument: byte[] is too small");
         }
 
         digest = msgDigest.digest();
@@ -392,7 +383,7 @@ public class SHA1withDSA_SignatureImpl extends Signature {
     /**
      * Verifies the signature bytes.
      *
-     * @param
+     * @params
      *    sigBytes byte array with signature bytes to verify.
      * @return
      *    true if signature bytes were verified, false otherwise
@@ -402,9 +393,8 @@ public class SHA1withDSA_SignatureImpl extends Signature {
      *                       signature algorithm cannot process data
      */
     protected boolean engineVerify(byte[] sigBytes) throws SignatureException {
-
         if (sigBytes == null) {
-            throw new NullPointerException(Messages.getString("security.83", "sigBytes")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("sigBytes == null");
         }
 
         return checkSignature(sigBytes, 0, 0);
@@ -413,11 +403,11 @@ public class SHA1withDSA_SignatureImpl extends Signature {
     /**
      * Verifies the signature bytes.
      *
-     * @param
+     * @params
      *    sigBytes byte array with signature bytes to verify.
-     * @param
+     * @params
      *    offset index in sigBytes to start from
-     * @param
+     * @params
      *    length number of bytes allotted for signature
      * @return
      *    true if signature bytes were verified, false otherwise

@@ -27,7 +27,7 @@ import java.util.List;
  *
  * @author  <a href="mailto:Norman.Walsh@Sun.com">Norman Walsh</a>
  * @author  <a href="mailto:Jeff.Suttor@Sun.com">Jeff Suttor</a>
- * @version $Revision: 446598 $, $Date: 2006-09-15 08:55:40 -0400 (Fri, 15 Sep 2006) $
+ * @version $Revision: 446598 $, $Date: 2006-09-15 05:55:40 -0700 (Fri, 15 Sep 2006) $
  * @since 1.5
  */
 public interface XPathFunction {
@@ -38,11 +38,11 @@ public interface XPathFunction {
    * definition of extension functions. The implementation evaluating an
    * XPath expression is under no obligation to call extension functions in
    * any particular order or any particular number of times.</p>
-   * 
+   *
    * @param args The arguments, <code>null</code> is a valid value.
-   * 
+   *
    * @return The result of evaluating the <code>XPath</code> function as an <code>Object</code>.
-   * 
+   *
    * @throws XPathFunctionException If <code>args</code> cannot be evaluated with this <code>XPath</code> function.
    */
   public Object evaluate(List args)

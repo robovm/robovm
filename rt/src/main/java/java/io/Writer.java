@@ -31,13 +31,10 @@ package java.io;
  * <p>
  * Many specialized readers for purposes like reading from a file already exist
  * in this package.
- * 
+ *
  * @see Reader
  */
 public abstract class Writer implements Appendable, Closeable, Flushable {
-
-    static final String TOKEN_NULL = "null"; //$NON-NLS-1$
-
     /**
      * The object used to synchronize access to the writer.
      */
@@ -48,14 +45,13 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
      * synchronize critical sections.
      */
     protected Writer() {
-        super();
         lock = this;
     }
 
     /**
      * Constructs a new {@code Writer} with {@code lock} used to synchronize
      * critical sections.
-     * 
+     *
      * @param lock
      *            the {@code Object} used to synchronize critical sections.
      * @throws NullPointerException
@@ -71,7 +67,7 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
     /**
      * Closes this writer. Implementations of this method should free any
      * resources associated with the writer.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing this writer.
      */
@@ -80,7 +76,7 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
     /**
      * Flushes this writer. Implementations of this method should ensure that
      * all buffered characters are written to the target.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while flushing this writer.
      */
@@ -88,13 +84,13 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
 
     /**
      * Writes the entire character buffer {@code buf} to the target.
-     * 
+     *
      * @param buf
      *            the non-null array containing characters to write.
      * @throws IOException
      *             if this writer is closed or another I/O error occurs.
      */
-    public void write(char buf[]) throws IOException {
+    public void write(char[] buf) throws IOException {
         write(buf, 0, buf.length);
     }
 
@@ -114,13 +110,12 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
      * @throws IOException
      *             if this writer is closed or another I/O error occurs.
      */
-    public abstract void write(char buf[], int offset, int count)
-            throws IOException;
+    public abstract void write(char[] buf, int offset, int count) throws IOException;
 
     /**
      * Writes one character to the target. Only the two least significant bytes
      * of the integer {@code oneChar} are written.
-     * 
+     *
      * @param oneChar
      *            the character to write to the target.
      * @throws IOException
@@ -128,7 +123,7 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
      */
     public void write(int oneChar) throws IOException {
         synchronized (lock) {
-            char oneCharArray[] = new char[1];
+            char[] oneCharArray = new char[1];
             oneCharArray[0] = (char) oneChar;
             write(oneCharArray);
         }
@@ -136,7 +131,7 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
 
     /**
      * Writes the characters from the specified string to the target.
-     * 
+     *
      * @param str
      *            the non-null string containing the characters to write.
      * @throws IOException
@@ -149,7 +144,7 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
     /**
      * Writes {@code count} characters from {@code str} starting at {@code
      * offset} to the target.
-     * 
+     *
      * @param str
      *            the non-null string containing the characters to write.
      * @param offset
@@ -163,12 +158,11 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
      *             offset + count} is greater than the length of {@code str}.
      */
     public void write(String str, int offset, int count) throws IOException {
-        if (count < 0) { // other cases tested by getChars()
-            throw new StringIndexOutOfBoundsException();
+        if ((offset | count) < 0 || offset > str.length() - count) {
+            throw new StringIndexOutOfBoundsException(str, offset, count);
         }
-        char buf[] = new char[count];
+        char[] buf = new char[count];
         str.getChars(offset, offset + count, buf, 0);
-
         synchronized (lock) {
             write(buf, 0, buf.length);
         }
@@ -177,7 +171,7 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
     /**
      * Appends the character {@code c} to the target. This method works the same
      * way as {@link #write(int)}.
-     * 
+     *
      * @param c
      *            the character to append to the target stream.
      * @return this writer.
@@ -194,7 +188,7 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
      * works the same way as {@code Writer.write(csq.toString())}. If {@code
      * csq} is {@code null}, then the string "null" is written to the target
      * stream.
-     * 
+     *
      * @param csq
      *            the character sequence appended to the target.
      * @return this writer.
@@ -202,11 +196,10 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
      *             if this writer is closed or another I/O error occurs.
      */
     public Writer append(CharSequence csq) throws IOException {
-        if (null == csq) {
-            write(TOKEN_NULL);
-        } else {
-            write(csq.toString());
+        if (csq == null) {
+            csq = "null";
         }
+        write(csq.toString());
         return this;
     }
 
@@ -216,7 +209,7 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
      * Writer.writer(csq.subsequence(start, end).toString())}. If {@code
      * csq} is {@code null}, then the specified subsequence of the string "null"
      * will be written to the target.
-     * 
+     *
      * @param csq
      *            the character sequence appended to the target.
      * @param start
@@ -233,13 +226,11 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
      *             either {@code start} or {@code end} are greater or equal than
      *             the length of {@code csq}.
      */
-    public Writer append(CharSequence csq, int start, int end)
-            throws IOException {
-        if (null == csq) {
-            write(TOKEN_NULL.substring(start, end));
-        } else {
-            write(csq.subSequence(start, end).toString());
+    public Writer append(CharSequence csq, int start, int end) throws IOException {
+        if (csq == null) {
+            csq = "null";
         }
+        write(csq.subSequence(start, end).toString());
         return this;
     }
 

@@ -23,8 +23,6 @@ import java.security.NoSuchProviderException;
 import java.security.PublicKey;
 import java.security.SignatureException;
 import java.util.Arrays;
-import javax.security.cert.CertificateEncodingException;
-import javax.security.cert.CertificateException;
 
 /**
  * Abstract class to represent identity certificates. It represents a way to
@@ -140,7 +138,7 @@ public abstract class Certificate {
      *                if signature errors are detected
      */
     public abstract void verify(PublicKey key, String sigProvider)
-            throws CertificateException, NoSuchAlgorithmException, 
+            throws CertificateException, NoSuchAlgorithmException,
                    InvalidKeyException, NoSuchProviderException,
                    SignatureException;
 

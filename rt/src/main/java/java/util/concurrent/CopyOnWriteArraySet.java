@@ -7,6 +7,10 @@
 package java.util.concurrent;
 import java.util.*;
 
+// BEGIN android-note
+// removed link to collections framework docs
+// END android-note
+
 /**
  * A {@link java.util.Set} that uses an internal {@link CopyOnWriteArrayList}
  * for all of its operations.  Thus, it shares the same basic properties:
@@ -30,28 +34,23 @@ import java.util.*;
  * copy-on-write set to maintain a set of Handler objects that
  * perform some action upon state updates.
  *
- * <pre>
+ *  <pre> {@code
  * class Handler { void handle(); ... }
  *
  * class X {
- *    private final CopyOnWriteArraySet&lt;Handler&gt; handlers
- *       = new CopyOnWriteArraySet&lt;Handler&gt;();
- *    public void addHandler(Handler h) { handlers.add(h); }
+ *   private final CopyOnWriteArraySet<Handler> handlers
+ *     = new CopyOnWriteArraySet<Handler>();
+ *   public void addHandler(Handler h) { handlers.add(h); }
  *
- *    private long internalState;
- *    private synchronized void changeState() { internalState = ...; }
+ *   private long internalState;
+ *   private synchronized void changeState() { internalState = ...; }
  *
- *    public void update() {
- *       changeState();
- *       for (Handler handler : handlers)
- *          handler.handle();
- *    }
- * }
- * </pre>
- *
- * <p>This class is a member of the
- * <a href="{@docRoot}/../technotes/guides/collections/index.html">
- * Java Collections Framework</a>.
+ *   public void update() {
+ *     changeState();
+ *     for (Handler handler : handlers)
+ *        handler.handle();
+ *   }
+ * }}</pre>
  *
  * @see CopyOnWriteArrayList
  * @since 1.5

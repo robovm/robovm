@@ -34,7 +34,7 @@ public class InstantiationException extends Exception {
     /**
      * Constructs a new {@code InstantiationException} with the current stack
      * trace and the specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */
@@ -45,7 +45,7 @@ public class InstantiationException extends Exception {
     /**
      * Constructs a new {@code InstantiationException} with the current stack
      * trace and the class that caused this exception.
-     * 
+     *
      * @param clazz
      *            the class that can not be instantiated.
      */

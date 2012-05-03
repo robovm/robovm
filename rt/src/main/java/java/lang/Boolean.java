@@ -61,7 +61,7 @@ public final class Boolean implements Serializable, Comparable<Boolean> {
      * "true" using a non-case sensitive comparison, the result will be a
      * Boolean representing the primitive value {@code true}, otherwise it will
      * be a Boolean representing the primitive value {@code false}.
-     * 
+     *
      * @param string
      *            the string representing a boolean value.
      */
@@ -72,7 +72,7 @@ public final class Boolean implements Serializable, Comparable<Boolean> {
     /**
      * Constructs a new {@code Boolean} with the specified primitive boolean
      * value.
-     * 
+     *
      * @param value
      *            the primitive boolean value, {@code true} or {@code false}.
      */
@@ -83,7 +83,7 @@ public final class Boolean implements Serializable, Comparable<Boolean> {
     /**
      * Gets the primitive value of this boolean, either {@code true} or
      * {@code false}.
-     * 
+     *
      * @return this object's primitive value, {@code true} or {@code false}.
      */
     public boolean booleanValue() {
@@ -94,7 +94,7 @@ public final class Boolean implements Serializable, Comparable<Boolean> {
      * Compares this instance with the specified object and indicates if they
      * are equal. In order to be equal, {@code o} must be an instance of
      * {@code Boolean} and have the same boolean value as this object.
-     * 
+     *
      * @param o
      *            the object to compare this boolean with.
      * @return {@code true} if the specified object is equal to this
@@ -109,7 +109,7 @@ public final class Boolean implements Serializable, Comparable<Boolean> {
     /**
      * Compares this object to the specified boolean object to determine their
      * relative order.
-     * 
+     *
      * @param that
      *            the boolean object to compare this object to.
      * @return 0 if the value of this boolean and the value of {@code that} are
@@ -122,7 +122,7 @@ public final class Boolean implements Serializable, Comparable<Boolean> {
      */
     public int compareTo(Boolean that) {
         return compare(value, that.value);
-        }
+    }
 
     /**
      * Compares two {@code boolean} values.
@@ -137,7 +137,7 @@ public final class Boolean implements Serializable, Comparable<Boolean> {
 
     /**
      * Returns an integer hash code for this boolean.
-     * 
+     *
      * @return this boolean's hash code, which is {@code 1231} for {@code true}
      *         values and {@code 1237} for {@code false} values.
      */
@@ -149,7 +149,7 @@ public final class Boolean implements Serializable, Comparable<Boolean> {
     /**
      * Returns a string containing a concise, human-readable description of this
      * boolean.
-     * 
+     *
      * @return "true" if the value of this boolean is {@code true}, "false"
      *         otherwise.
      */
@@ -161,7 +161,7 @@ public final class Boolean implements Serializable, Comparable<Boolean> {
     /**
      * Returns the {@code boolean} value of the system property identified by
      * {@code string}.
-     * 
+     *
      * @param string
      *            the name of the requested system property.
      * @return {@code true} if the system property named by {@code string}
@@ -178,7 +178,7 @@ public final class Boolean implements Serializable, Comparable<Boolean> {
 
     /**
      * Parses the specified string as a {@code boolean}.
-     * 
+     *
      * @param s
      *            the string representation of a boolean value.
      * @return {@code true} if {@code s} is not {@code null} and is equal to
@@ -192,7 +192,7 @@ public final class Boolean implements Serializable, Comparable<Boolean> {
 
     /**
      * Converts the specified boolean to its string representation.
-     * 
+     *
      * @param value
      *            the boolean to convert.
      * @return "true" if {@code value} is {@code true}, "false" otherwise.
@@ -203,7 +203,7 @@ public final class Boolean implements Serializable, Comparable<Boolean> {
 
     /**
      * Parses the specified string as a boolean value.
-     * 
+     *
      * @param string
      *            the string representation of a boolean value.
      * @return {@code Boolean.TRUE} if {@code string} is equal to "true" using

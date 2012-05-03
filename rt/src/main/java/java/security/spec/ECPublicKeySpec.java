@@ -17,10 +17,8 @@
 
 package java.security.spec;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
- * The parameters specifying an Elliptic Curve (EC) public key. 
+ * The parameters specifying an Elliptic Curve (EC) public key.
  */
 public class ECPublicKeySpec implements KeySpec {
     // The public point
@@ -31,7 +29,7 @@ public class ECPublicKeySpec implements KeySpec {
     /**
      * Creates a new {@code ECPublicKey} with the specified public elliptic
      * curve point and parameter specification.
-     * 
+     *
      * @param w
      *            the public elliptic curve point {@code W}.
      * @param params
@@ -44,21 +42,20 @@ public class ECPublicKeySpec implements KeySpec {
         this.params = params;
         // throw NullPointerException if w or params is null
         if (this.w == null) {
-            throw new NullPointerException(Messages.getString("security.83", "w")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("w == null");
         }
         if (this.params == null) {
-            throw new NullPointerException(Messages.getString("security.83", "params")); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new NullPointerException("params == null");
         }
         // throw IllegalArgumentException if w is point at infinity
         if (this.w.equals(ECPoint.POINT_INFINITY)) {
-            throw new IllegalArgumentException(
-                Messages.getString("security.84")); //$NON-NLS-1$
+            throw new IllegalArgumentException("the w parameter is point at infinity");
         }
     }
 
     /**
      * Returns the domain parameter specification.
-     * 
+     *
      * @return the domain parameter specification.
      */
     public ECParameterSpec getParams() {
@@ -67,7 +64,7 @@ public class ECPublicKeySpec implements KeySpec {
 
     /**
      * Returns the public elliptic curve point {@code W}.
-     * 
+     *
      * @return the public elliptic curve point {@code W}.
      */
     public ECPoint getW() {

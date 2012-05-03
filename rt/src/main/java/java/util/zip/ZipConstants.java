@@ -17,6 +17,11 @@
 
 package java.util.zip;
 
+/**
+ * Do not add constants to this interface! It's implemented by the classes
+ * in this package whose names start "Zip", and the constants are thereby
+ * public API.
+ */
 interface ZipConstants {
 
     public static final long LOCSIG = 0x4034b50, EXTSIG = 0x8074b50,

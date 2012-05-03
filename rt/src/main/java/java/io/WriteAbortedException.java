@@ -24,7 +24,7 @@ package java.io;
  * of the original object. It is a way to "propagate" an exception from the code
  * that attempted to write the object to the code that is attempting to read the
  * object.
- * 
+ *
  * @see ObjectInputStream#readObject()
  */
 public class WriteAbortedException extends ObjectStreamException {
@@ -41,7 +41,7 @@ public class WriteAbortedException extends ObjectStreamException {
      * Constructs a new {@code WriteAbortedException} with its stack trace,
      * detail message and the exception which caused the underlying problem when
      * serializing the object filled in.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      * @param rootCause
@@ -57,21 +57,21 @@ public class WriteAbortedException extends ObjectStreamException {
      * Gets the extra information message which was provided when this exception
      * was created. Returns {@code null} if no message was provided at creation
      * time.
-     * 
+     *
      * @return the exception message.
      */
     @Override
     public String getMessage() {
         String msg = super.getMessage();
         if (detail != null) {
-            msg = msg + "; " + detail.toString(); //$NON-NLS-1$
+            msg = msg + "; " + detail.toString();
         }
         return msg;
     }
 
     /**
      * Gets the cause of this exception or {@code null} if there is no cause.
-     * 
+     *
      * @return the exception cause.
      */
     @Override

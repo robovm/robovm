@@ -20,13 +20,12 @@
 package javax.xml.transform.sax;
 
 import javax.xml.transform.Result;
-
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 
 /**
  * <p>Acts as an holder for a transformation Result.</p>
- * 
+ *
  * @author <a href="Jeff.Suttor@Sun.com">Jeff Suttor</a>
  */
 public class SAXResult implements Result {

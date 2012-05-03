@@ -15,13 +15,9 @@
  *  limitations under the License.
  */
 
-/**
-* @author Alexander Y. Kleymenov
-*/
-
 package javax.crypto.spec;
 
-import org.apache.harmony.crypto.internal.nls.Messages;
+import libcore.util.EmptyArray;
 
 /**
  * The source of the label <code>L</code> as specified in <a
@@ -44,7 +40,7 @@ public class PSource {
      */
     protected PSource(String pSrcName) {
         if (pSrcName == null) {
-            throw new NullPointerException(Messages.getString("crypto.42")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
         this.pSrcName = pSrcName;
     }
@@ -73,8 +69,8 @@ public class PSource {
         public static final PSpecified DEFAULT = new PSpecified();
 
         private PSpecified() {
-            super("PSpecified"); //$NON-NLS-1$
-            p = new byte[0];
+            super("PSpecified");
+            p = EmptyArray.BYTE;
         }
 
         /**
@@ -87,9 +83,9 @@ public class PSource {
          *             if <code>p</code> is null.
          */
         public PSpecified(byte[] p) {
-            super("PSpecified"); //$NON-NLS-1$
+            super("PSpecified");
             if (p == null) {
-                throw new NullPointerException(Messages.getString("crypto.43")); //$NON-NLS-1$
+                throw new NullPointerException();
             }
             //TODO: It is unknown which name should be used!
             //super("");
@@ -109,4 +105,3 @@ public class PSource {
         }
     }
 }
-

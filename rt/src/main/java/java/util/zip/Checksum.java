@@ -18,8 +18,7 @@
 package java.util.zip;
 
 /**
- * Holds information about a checksum which was computed with the methods
- * implementing a checksum algorithm.
+ * The interface common to checksum classes such as {@link Adler32} and {@link CRC32}.
  */
 public interface Checksum {
 

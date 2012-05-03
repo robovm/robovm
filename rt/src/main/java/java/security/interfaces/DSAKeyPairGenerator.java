@@ -28,7 +28,7 @@ public interface DSAKeyPairGenerator {
     /**
      * Initializes this generator with the prime ({@code p}), subprime ({@code
      * q}), and base ({@code g}) values from the specified parameters.
-     * 
+     *
      * @param params
      *            the parameter values.
      * @param random
@@ -50,7 +50,7 @@ public interface DSAKeyPairGenerator {
      * it will use the pre-calculated values for the specified modulus
      * length. Default parameters are available for modulus lengths of 512 and 1024
      * bits.
-     * 
+     *
      * @param modlen
      *            the length of the modulus in bits.
      * @param genParams

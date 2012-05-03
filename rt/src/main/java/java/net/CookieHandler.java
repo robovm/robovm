@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,42 +27,23 @@ public abstract class CookieHandler {
 
     private static CookieHandler systemWideCookieHandler;
 
-    private final static NetPermission getCookieHandlerPermission = new NetPermission(
-            "getCookieHandler"); //$NON-NLS-1$
-
-    private final static NetPermission setCookieHandlerPermission = new NetPermission(
-            "setCookieHandler"); //$NON-NLS-1$
-
     /**
      * Returns the system-wide cookie handler or {@code null} if not set.
-     * 
-     * @return the system-wide cookie handler.
      */
     public static CookieHandler getDefault() {
-        SecurityManager sm = System.getSecurityManager();
-        if (null != sm) {
-            sm.checkPermission(getCookieHandlerPermission);
-        }
         return systemWideCookieHandler;
     }
 
     /**
      * Sets the system-wide cookie handler.
-     * 
-     * @param cHandler
-     *            a cookie handler to set as the system-wide default handler.
      */
     public static void setDefault(CookieHandler cHandler) {
-        SecurityManager sm = System.getSecurityManager();
-        if (null != sm) {
-            sm.checkPermission(setCookieHandlerPermission);
-        }
         systemWideCookieHandler = cHandler;
     }
 
     /**
      * Gets all cookies for a specific URI from the cookie cache.
-     * 
+     *
      * @param uri
      *            a URI to search for applicable cookies.
      * @param requestHeaders
@@ -77,7 +58,7 @@ public abstract class CookieHandler {
     /**
      * Sets all cookies of a specific URI in the {@code responseHeaders} into
      * the cookie cache.
-     * 
+     *
      * @param uri
      *            the origin URI of the cookies.
      * @param responseHeaders

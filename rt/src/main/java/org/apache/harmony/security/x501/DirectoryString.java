@@ -17,6 +17,7 @@
 
 /**
 * @author Alexander Y. Kleymenov
+* @version $Revision$
 */
 
 package org.apache.harmony.security.x501;
@@ -24,11 +25,10 @@ package org.apache.harmony.security.x501;
 import org.apache.harmony.security.asn1.ASN1Choice;
 import org.apache.harmony.security.asn1.ASN1StringType;
 import org.apache.harmony.security.asn1.ASN1Type;
-import org.apache.harmony.security.asn1.BerInputStream;
 
 
 /**
- * The class encapsulates the ASN.1 DER encoding/decoding work 
+ * The class encapsulates the ASN.1 DER encoding/decoding work
  * with the DirectoryString structure
  * (as specified in RFC 3280 -
  *  Internet X.509 Public Key Infrastructure.
@@ -41,12 +41,12 @@ import org.apache.harmony.security.asn1.BerInputStream;
  *        printableString           PrintableString (SIZE (1..MAX)),
  *        universalString           UniversalString (SIZE (1..MAX)),
  *        utf8String              UTF8String      (SIZE (1..MAX)),
- *        bmpString               BMPString       (SIZE (1..MAX)) 
+ *        bmpString               BMPString       (SIZE (1..MAX))
  *   }
  * </pre>
  */
-public class DirectoryString {
-    
+public final class DirectoryString {
+
     public static final ASN1Choice ASN1 = new ASN1Choice(new ASN1Type[] {
            ASN1StringType.TELETEXSTRING,
            ASN1StringType.PRINTABLESTRING,

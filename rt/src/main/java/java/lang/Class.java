@@ -1,13 +1,43 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/*
+ * Copyright (C) 2006-2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/*
+ * Copyright (C) 2012 The NullVM Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,6 +47,7 @@
 
 package java.lang;
 
+import dalvik.system.VMStack;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -33,12 +64,16 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.net.URL;
 import java.security.ProtectionDomain;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-
+import java.util.List;
+import libcore.util.CollectionUtils;
+import libcore.util.EmptyArray;
+import org.apache.harmony.kernel.vm.StringUtils;
 import org.apache.harmony.luni.lang.reflect.GenericSignatureParser;
 import org.apache.harmony.luni.lang.reflect.Types;
-import org.nullvm.rt.VM;
 
 /**
  * The in-memory representation of a Java class. This representation serves as
@@ -94,23 +129,16 @@ import org.nullvm.rt.VM;
  * <li>{@code [Ljava/lang/String;} representing the {@code String[]} type</li>
  * <li>{@code [[[C} representing the {@code char[][][]} type (three dimensions!)</li>
  * </ul>
- *
- * @since 1.0
  */
-public final class Class<T> implements Serializable, AnnotatedElement,
-        GenericDeclaration, Type {
+public final class Class<T> implements Serializable, AnnotatedElement, GenericDeclaration, Type {
 
     private static final long serialVersionUID = 3206093459760846163L;
-    
-    private static final Constructor<?>[] EMPTY_CONSTRUCTORS = new Constructor<?>[0];
-    private static final Method[] EMPTY_METHODS = new Method[0];
-    private static final Field[] EMPTY_FIELDS = new Field[0];
-    
+
     private SoftReference<ClassCache<T>> cacheRef;
-    
+
     private Class() {
-        // prevent this class to be instantiated, instance should be created by
-        // JVM only
+        // Prevent this class to be instantiated, instance
+        // should be created by JVM only
     }
 
     ClassCache<T> getClassCache() {
@@ -123,49 +151,10 @@ public final class Class<T> implements Serializable, AnnotatedElement,
     }
     
     /**
-     * This must be provided by the VM vendor, as it is used by other provided
-     * class implementations in this package. This method is used by
-     * SecurityManager.classDepth(), and getClassContext() which use the
-     * parameters (-1, false) and SecurityManager.classLoaderDepth(),
-     * currentClassLoader(), and currentLoadedClass() which use the parameters
-     * (-1, true). Walk the stack and answer an array containing the maxDepth
-     * most recent classes on the stack of the calling thread. Starting with the
-     * caller of the caller of getStackClasses(), return an array of not more
-     * than maxDepth Classes representing the classes of running methods on the
-     * stack (including native methods). Frames representing the VM
-     * implementation of java.lang.reflect are not included in the list. If
-     * stopAtPrivileged is true, the walk will terminate at any frame running
-     * one of the following methods: <code><ul>
-     * <li>java/security/AccessController.doPrivileged(Ljava/security/PrivilegedAction;)Ljava/lang/Object;</li>
-     * <li>java/security/AccessController.doPrivileged(Ljava/security/PrivilegedExceptionAction;)Ljava/lang/Object;</li>
-     * <li>java/security/AccessController.doPrivileged(Ljava/security/PrivilegedAction;Ljava/security/AccessControlContext;)Ljava/lang/Object;</li>
-     * <li>java/security/AccessController.doPrivileged(Ljava/security/PrivilegedExceptionAction;Ljava/security/AccessControlContext;)Ljava/lang/Object;</li>
-     * </ul></code> If one of the doPrivileged methods is found, the walk terminate
-     * and that frame is NOT included in the returned array. Notes:
-     * <ul>
-     * <li>This method operates on the defining classes of methods on stack.
-     * NOT the classes of receivers.</li>
-     * <li>The item at index zero in the result array describes the caller of
-     * the caller of this method.</li>
-     * </ul>
-     * 
-     * @param maxDepth
-     *            maximum depth to walk the stack, -1 for the entire stack
-     * @param stopAtPrivileged
-     *            stop at privileged classes
-     * @return the array of the most recent classes on the stack
-     */
-    static final Class<?>[] getStackClasses(int maxDepth) {
-        return VM.getStackClasses(2, maxDepth);
-    }
-
-    // Start (C) Android
-    /**
      * Get the Signature attribute for this class.  Returns null if not found.
      */
     private native String getSignatureAttribute();    
-    // End (C) Android
-    
+
     /**
      * Returns a {@code Class} object which represents the class with the
      * specified name. The name should be the name of a class as described in
@@ -188,9 +177,8 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *             if an exception occurs during static initialization of a
      *             class.
      */
-    public static Class<?> forName(String className)
-            throws ClassNotFoundException {
-        return forName(className, true, ClassLoader.callerClassLoader());
+    public static Class<?> forName(String className) throws ClassNotFoundException {
+        return forName(className, true, VMStack.getCallingClassLoader());
     }
 
     /**
@@ -225,26 +213,41 @@ public final class Class<T> implements Serializable, AnnotatedElement,
             ClassLoader classLoader) throws ClassNotFoundException {
 
         if (classLoader == null) {
-            SecurityManager smgr = System.getSecurityManager();
-            if (smgr != null) {
-                ClassLoader calling = ClassLoader.callerClassLoader();
-                if (calling != null) {
-                    smgr.checkPermission(new RuntimePermission("getClassLoader"));
-                }
-            }
-
             classLoader = ClassLoader.getSystemClassLoader();
         }
-        
-        Class<?> clazz = ClassLoader.nativeFindClassUsingLoader(className, classLoader);
-        if (initializeBoolean) {
-            initializeClass0(clazz);
+        // Catch an Exception thrown by the underlying native code. It wraps
+        // up everything inside a ClassNotFoundException, even if e.g. an
+        // Error occurred during initialization. This as a workaround for
+        // an ExceptionInInitilaizerError that's also wrapped. It is actually
+        // expected to be thrown. Maybe the same goes for other errors.
+        // Not wrapping up all the errors will break android though.
+        Class<?> result;
+        try {
+            result = classForName(className, initializeBoolean,
+                    classLoader);
+        } catch (ClassNotFoundException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof ExceptionInInitializerError) {
+                throw (ExceptionInInitializerError) cause;
+            }
+            throw e;
         }
-        return clazz;
+        return result;
     }
 
-    private native static final void initializeClass0(Class<?> clazz);
-    
+    /*
+     * Returns a class by name without any security checks.
+     *
+     * @param className The name of the non-primitive type class to find
+     * @param initializeBoolean A boolean indicating whether the class should be
+     *        initialized
+     * @param classLoader The class loader to use to load the class
+     * @return the named class.
+     * @throws ClassNotFoundException If the class could not be found
+     */
+    static native Class<?> classForName(String className, boolean initializeBoolean,
+            ClassLoader classLoader) throws ClassNotFoundException;
+
     /**
      * Returns an array containing {@code Class} objects for all public classes
      * and interfaces that are members of this class. This includes public
@@ -253,37 +256,31 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * of length 0 is returned.
      *
      * @return the public class members of the class represented by this object.
-     * @throws SecurityException
-     *             if a security manager exists and it does not allow member
-     *             access.
      */
     public Class<?>[] getClasses() {
-        checkPublicMemberAccess();
         return getClassCache().getClasses(true);
     }
 
-    /**
-     * Returns the annotation of the given type. If there is no such annotation
-     * then the method returns {@code null}.
-     *
-     * @param annotationClass
-     *            the annotation type.
-     * @return the annotation of the given type, or {@code null} if there is no
-     *         such annotation.
-     * @since 1.5
-     */
-    @SuppressWarnings("unchecked")
-    public <A extends Annotation> A getAnnotation(Class<A> annotationClass) {
-        // Start (C) Android
-        Annotation[] list = getAnnotations();
-        for (int i = 0; i < list.length; i++) {
-            if (annotationClass.isInstance(list[i])) {
-                return (A)list[i];
+    @Override public <A extends Annotation> A getAnnotation(Class<A> annotationType) {
+        if (annotationType == null) {
+            throw new NullPointerException("annotationType == null");
+        }
+
+        A annotation = getDeclaredAnnotation(annotationType);
+        if (annotation != null) {
+            return annotation;
+        }
+
+        if (annotationType.isAnnotationPresent(Inherited.class)) {
+            for (Class<?> sup = getSuperclass(); sup != null; sup = sup.getSuperclass()) {
+                annotation = sup.getDeclaredAnnotation(annotationType);
+                if (annotation != null) {
+                    return annotation;
+                }
             }
         }
 
         return null;
-        // End (C) Android
     }
 
     /**
@@ -294,7 +291,6 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @see #getDeclaredAnnotations()
      */
     public Annotation[] getAnnotations() {
-        // Start (C) Android
         /*
          * We need to get the annotations declared on this class, plus the
          * annotations from superclasses that have the "@Inherited" annotation
@@ -306,20 +302,18 @@ public final class Class<T> implements Serializable, AnnotatedElement,
          *
          * HashMap might be overkill here.
          */
-        HashMap<Class<?>, Annotation> map = new HashMap<Class<?>, Annotation>();
-        Annotation[] annos = getDeclaredAnnotations();
+        HashMap<Class, Annotation> map = new HashMap<Class, Annotation>();
+        Annotation[] declaredAnnotations = getDeclaredAnnotations();
 
-        for (int i = annos.length-1; i >= 0; --i)
-            map.put(annos[i].annotationType(), annos[i]);
-
-        for (Class<?> sup = getSuperclass(); sup != null;
-                sup = sup.getSuperclass()) {
-            annos = sup.getDeclaredAnnotations();
-            for (int i = annos.length-1; i >= 0; --i) {
-                Class<?> clazz = annos[i].annotationType();
-                if (!map.containsKey(clazz) &&
-                        clazz.isAnnotationPresent(Inherited.class)) {
-                    map.put(clazz, annos[i]);
+        for (int i = declaredAnnotations.length-1; i >= 0; --i) {
+            map.put(declaredAnnotations[i].annotationType(), declaredAnnotations[i]);
+        }
+        for (Class<?> sup = getSuperclass(); sup != null; sup = sup.getSuperclass()) {
+            declaredAnnotations = sup.getDeclaredAnnotations();
+            for (int i = declaredAnnotations.length-1; i >= 0; --i) {
+                Class<?> clazz = declaredAnnotations[i].annotationType();
+                if (!map.containsKey(clazz) && clazz.isAnnotationPresent(Inherited.class)) {
+                    map.put(clazz, declaredAnnotations[i]);
                 }
             }
         }
@@ -327,7 +321,6 @@ public final class Class<T> implements Serializable, AnnotatedElement,
         /* convert annotation values from HashMap to array */
         Collection<Annotation> coll = map.values();
         return coll.toArray(new Annotation[coll.size()]);
-        // End (C) Android
     }
 
     /**
@@ -339,23 +332,22 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *         canonical name.
      */
     public String getCanonicalName() {
-        // Start (C) Android
         if (isLocalClass() || isAnonymousClass())
             return null;
 
         if (isArray()) {
             /*
              * The canonical name of an array type depends on the (existence of)
-             * the component type's canonical name. 
+             * the component type's canonical name.
              */
             String name = getComponentType().getCanonicalName();
             if (name != null) {
                 return name + "[]";
-            } 
+            }
         } else if (isMemberClass()) {
             /*
              * The canonical name of an inner class depends on the (existence
-             * of) the declaring class' canonical name. 
+             * of) the declaring class' canonical name.
              */
             String name = getDeclaringClass().getCanonicalName();
             if (name != null) {
@@ -364,46 +356,35 @@ public final class Class<T> implements Serializable, AnnotatedElement,
         } else {
             /*
              * The canonical name of a top-level class or primitive type is
-             * equal to the fully qualified name. 
+             * equal to the fully qualified name.
              */
             return getName();
         }
-        
+
         /*
          * Other classes don't have a canonical name.
          */
         return null;
-        // End (C) Android
     }
 
     /**
      * Returns the class loader which was used to load the class represented by
      * this {@code Class}. Implementations are free to return {@code null} for
-     * classes that were loaded by the bootstrap class loader.
+     * classes that were loaded by the bootstrap class loader. The Android
+     * reference implementation, though, returns a reference to an actual
+     * representation of the bootstrap class loader.
      *
      * @return the class loader for the represented class.
-     * @throws SecurityException
-     *             if a security manager exists and it does not allow accessing
-     *             the class loader.
      * @see ClassLoader
      */
     public ClassLoader getClassLoader() {
-        SecurityManager smgr = System.getSecurityManager();
-        ClassLoader loader = getClassLoaderImpl();
-        if (smgr != null && loader != null) {
-            ClassLoader calling = ClassLoader.callerClassLoader();
-
-            if (calling != null && !calling.isAncestorOf(loader)) {
-                smgr.checkPermission(new RuntimePermission("getClassLoader"));
-            }
-        }
-
         if (this.isPrimitive()) {
             return null;
         }
-        
-        if (loader == ClassLoader.BootClassLoaderHolder.loader) {
-            return null;
+
+        ClassLoader loader = getClassLoaderImpl();
+        if (loader == null) {
+            loader = BootClassLoader.getInstance();
         }
         return loader;
     }
@@ -411,20 +392,25 @@ public final class Class<T> implements Serializable, AnnotatedElement,
     /**
      * This must be provided by the VM vendor, as it is used by other provided
      * class implementations in this package. Outside of this class, it is used
-     * by SecurityManager.checkMemberAccess(), classLoaderDepth(),
+     * by SecurityManager.classLoaderDepth(),
      * currentClassLoader() and currentLoadedClass(). Return the ClassLoader for
      * this Class without doing any security checks. The bootstrap ClassLoader
      * is returned, unlike getClassLoader() which returns null in place of the
      * bootstrap ClassLoader.
-     * 
+     *
      * @return the ClassLoader
-     * @see ClassLoader#isSystemClassLoader()
      */
     ClassLoader getClassLoaderImpl() {
         ClassLoader loader = getClassLoader(this);
-        return loader == null ? ClassLoader.BootClassLoaderHolder.loader : loader;
+        return loader == null ? BootClassLoader.getInstance() : loader;
     }
 
+    /*
+     * Returns the defining class loader for the given class.
+     *
+     * @param clazz the class the class loader of which we want
+     * @return the class loader
+     */
     private static native ClassLoader getClassLoader(Class<?> clazz);
 
     /**
@@ -443,21 +429,17 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *
      * @param parameterTypes
      *            the parameter types of the requested constructor.
+     *            {@code (Class[]) null} is equivalent to the empty array.
      * @return the constructor described by {@code parameterTypes}.
      * @throws NoSuchMethodException
      *             if the constructor can not be found.
-     * @throws SecurityException
-     *             if a security manager exists and it does not allow member
-     *             access.
      * @see #getDeclaredConstructor(Class[])
      */
-    public Constructor<T> getConstructor(Class<?>... parameterTypes)
-            throws NoSuchMethodException, SecurityException {
-
-        checkPublicMemberAccess();
+    @SuppressWarnings("unchecked")
+    public Constructor<T> getConstructor(Class<?>... parameterTypes) throws NoSuchMethodException {
         return getClassCache().getConstructor(true, parameterTypes);
     }
-    
+
     /**
      * Returns an array containing {@code Constructor} objects for all public
      * constructors for the class represented by this {@code Class}. If there
@@ -466,16 +448,12 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *
      * @return an array with the public constructors of the class represented by
      *         this {@code Class}.
-     * @throws SecurityException
-     *             if a security manager exists and it does not allow member
-     *             access.
      * @see #getDeclaredConstructors()
      */
-    public Constructor<?>[] getConstructors() throws SecurityException {
-        checkPublicMemberAccess();
+    public Constructor<?>[] getConstructors() {
         return getClassCache().getDeclaredPublicConstructors(true);
     }
-    
+
     /**
      * Returns the annotations that are directly defined on the class
      * represented by this {@code Class}. Annotations that are inherited are not
@@ -486,7 +464,33 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *         class that this {@code Class} represents.
      * @see #getAnnotations()
      */
-    public native Annotation[] getDeclaredAnnotations();
+    native public Annotation[] getDeclaredAnnotations();
+
+    /**
+     * Returns the annotation if it exists.
+     */
+    private <A extends Annotation> A getDeclaredAnnotation(Class<A> annotationClass) {
+        if (annotationClass == null) {
+            throw new NullPointerException("annotationClass == null");
+        }
+        Annotation[] annos = getDeclaredAnnotations();
+        for (int i = annos.length-1; i >= 0; --i) {
+            if (annos[i].annotationType() == annotationClass) {
+                return (A) annos[i];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns true if the annotation exists.
+     */
+    private boolean isDeclaredAnnotationPresent(Class<? extends Annotation> annotationClass) {
+        if (annotationClass == null) {
+            throw new NullPointerException("annotationClass == null");
+        }
+        return getDeclaredAnnotation(annotationClass) != null;
+    }
 
     /**
      * Returns an array containing {@code Class} objects for all classes and
@@ -497,17 +501,13 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *
      * @return an array with {@code Class} objects for all the classes and
      *         interfaces that are used in member declarations.
-     * @throws SecurityException
-     *             if a security manager exists and it does not allow member
-     *             access.
      */
-    public Class<?>[] getDeclaredClasses() throws SecurityException {
-        checkDeclaredMemberAccess();
+    public Class<?>[] getDeclaredClasses() {
         return getClassCache().getDeclaredClasses(true);
     }
 
     final native Class<?>[] getDeclaredClasses0(boolean publicOnly);    
-    
+
     /**
      * Returns a {@code Constructor} object which represents the constructor
      * matching the specified parameter types that is declared by the class
@@ -515,18 +515,15 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *
      * @param parameterTypes
      *            the parameter types of the requested constructor.
+     *            {@code (Class[]) null} is equivalent to the empty array.
      * @return the constructor described by {@code parameterTypes}.
      * @throws NoSuchMethodException
      *             if the requested constructor can not be found.
-     * @throws SecurityException
-     *             if a security manager exists and it does not allow member
-     *             access.
      * @see #getConstructor(Class[])
      */
+    @SuppressWarnings("unchecked")
     public Constructor<T> getDeclaredConstructor(Class<?>... parameterTypes)
-            throws NoSuchMethodException, SecurityException {
-        
-        checkDeclaredMemberAccess();
+            throws NoSuchMethodException {
         return getClassCache().getDeclaredConstructor(true, parameterTypes);
     }
 
@@ -538,14 +535,9 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *
      * @return an array with the constructors declared in the class represented
      *         by this {@code Class}.
-     *
-     * @throws SecurityException
-     *             if a security manager exists and it does not allow member
-     *             access.
      * @see #getConstructors()
      */
-    public Constructor<?>[] getDeclaredConstructors() throws SecurityException {
-        checkDeclaredMemberAccess();        
+    public Constructor<?>[] getDeclaredConstructors() {
         return getClassCache().getDeclaredConstructors(true);
     }
 
@@ -555,20 +547,15 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * Returns a {@code Field} object for the field with the specified name
      * which is declared in the class represented by this {@code Class}.
      *
-     * @param name
-     *            the name of the requested field.
+     * @param name the name of the requested field.
      * @return the requested field in the class represented by this class.
-     * @throws NoSuchFieldException
-     *             if the requested field can not be found.
-     * @throws SecurityException
-     *             if a security manager exists and it does not allow member
-     *             access.
+     * @throws NoSuchFieldException if the requested field can not be found.
      * @see #getField(String)
      */
-    public Field getDeclaredField(String name) throws NoSuchFieldException,
-            SecurityException {
-        
-        checkDeclaredMemberAccess();
+    public Field getDeclaredField(String name) throws NoSuchFieldException {
+        if (name == null) {
+            throw new NullPointerException("name == null");
+        }
         return getClassCache().getDeclaredField(true, name);        
     }
 
@@ -580,18 +567,14 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *
      * @return an array with the fields declared in the class represented by
      *         this class.
-     * @throws SecurityException
-     *             if a security manager exists and it does not allow member
-     *             access.
      * @see #getFields()
      */
-    public Field[] getDeclaredFields() throws SecurityException {
-        checkDeclaredMemberAccess();
+    public Field[] getDeclaredFields() {
         return getClassCache().getDeclaredFields(true);
     }
 
     final native Field[] getDeclaredFields0(boolean publicOnly);
-    
+
     /**
      * Returns a {@code Method} object which represents the method matching the
      * specified name and parameter types that is declared by the class
@@ -601,20 +584,16 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *            the requested method's name.
      * @param parameterTypes
      *            the parameter types of the requested method.
+     *            {@code (Class[]) null} is equivalent to the empty array.
      * @return the method described by {@code name} and {@code parameterTypes}.
      * @throws NoSuchMethodException
      *             if the requested constructor can not be found.
      * @throws NullPointerException
      *             if {@code name} is {@code null}.
-     * @throws SecurityException
-     *             if a security manager exists and it does not allow member
-     *             access.
      * @see #getMethod(String, Class[])
      */
     public Method getDeclaredMethod(String name, Class<?>... parameterTypes)
-            throws NoSuchMethodException, SecurityException {
-        
-        checkDeclaredMemberAccess();
+            throws NoSuchMethodException {
         return getClassCache().getDeclaredMethod(true, name, parameterTypes);
     }
 
@@ -626,18 +605,14 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *
      * @return an array with the methods declared in the class represented by
      *         this {@code Class}.
-     * @throws SecurityException
-     *             if a security manager exists and it does not allow member
-     *             access.
      * @see #getMethods()
      */
-    public Method[] getDeclaredMethods() throws SecurityException {
-        checkDeclaredMemberAccess();
+    public Method[] getDeclaredMethods() {
         return getClassCache().getDeclaredMethods(true);
     }
 
     final native Method[] getDeclaredMethods0(boolean publicOnly);
-    
+
     /**
      * Returns the declaring {@code Class} of this {@code Class}. Returns
      * {@code null} if the class is not a member of another class or if this
@@ -645,7 +620,7 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *
      * @return the declaring {@code Class} or {@code null}.
      */
-    public native Class<?> getDeclaringClass();
+    native public Class<?> getDeclaringClass();
 
     /**
      * Returns the enclosing {@code Class} of this {@code Class}. If there is no
@@ -653,7 +628,7 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *
      * @return the enclosing {@code Class} or {@code null}.
      */
-    public native Class<?> getEnclosingClass();
+    native public Class<?> getEnclosingClass();
 
     /**
      * Gets the enclosing {@code Constructor} of this {@code Class}, if it is an
@@ -661,7 +636,7 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *
      * @return the enclosing {@code Constructor} instance or {@code null}.
      */
-    public native Constructor<?> getEnclosingConstructor();
+    native public Constructor<?> getEnclosingConstructor();
 
     /**
      * Gets the enclosing {@code Method} of this {@code Class}, if it is an
@@ -669,7 +644,7 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *
      * @return the enclosing {@code Method} instance or {@code null}.
      */
-    public native Method getEnclosingMethod();
+    native public Method getEnclosingMethod();
 
     /**
      * Gets the {@code enum} constants associated with this {@code Class}.
@@ -677,9 +652,14 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * enum} type.
      *
      * @return an array with the {@code enum} constants or {@code null}.
-     * @since 1.5
      */
-    public native T[] getEnumConstants();
+    @SuppressWarnings("unchecked") // we only cast after confirming that this class is an enum
+    public T[] getEnumConstants() {
+        if (!isEnum()) {
+            return null;
+        }
+        return (T[]) Enum.getSharedConstants((Class) this).clone();
+    }
 
     /**
      * Returns a {@code Field} object which represents the public field with the
@@ -692,15 +672,12 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @return the public field specified by {@code name}.
      * @throws NoSuchFieldException
      *             if the field can not be found.
-     * @throws SecurityException
-     *             if a security manager exists and it does not allow member
-     *             access.
      * @see #getDeclaredField(String)
      */
-    public Field getField(String name) throws NoSuchFieldException,
-            SecurityException {
-        
-        checkPublicMemberAccess();
+    public Field getField(String name) throws NoSuchFieldException {
+        if (name == null) {
+            throw new NullPointerException("name == null");
+        }
         return getClassCache().getField(true, name);
     }
 
@@ -709,23 +686,18 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * for the class C represented by this {@code Class}. Fields may be declared
      * in C, the interfaces it implements or in the superclasses of C. The
      * elements in the returned array are in no particular order.
-     * <p>
-     * If there are no public fields or if this class represents an array class,
+     *
+     * <p>If there are no public fields or if this class represents an array class,
      * a primitive type or {@code void} then an empty array is returned.
-     * </p>
      *
      * @return an array with the public fields of the class represented by this
      *         {@code Class}.
-     * @throws SecurityException
-     *             if a security manager exists and it does not allow member
-     *             access.
      * @see #getDeclaredFields()
      */
-    public Field[] getFields() throws SecurityException {
-        checkPublicMemberAccess();
+    public Field[] getFields() {
         return getClassCache().getFields(true);
     }
-    
+
     /**
      * Gets the {@link Type}s of the interfaces that this {@code Class} directly
      * implements. If the {@code Class} represents a primitive type or {@code
@@ -735,11 +707,9 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *         class represented by this {@code class}.
      */
     public Type[] getGenericInterfaces() {
-        // Start (C) Android
         GenericSignatureParser parser = new GenericSignatureParser(getClassLoader());
         parser.parseForClass(this, getSignatureAttribute());
         return Types.getClonedTypeArray(parser.interfaceTypes);
-        // End (C) Android
     }
 
     /**
@@ -747,14 +717,11 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * class}.
      *
      * @return an instance of {@code Type} representing the superclass.
-     * @since 1.5
      */
     public Type getGenericSuperclass() {
-        // Start (C) Android
         GenericSignatureParser parser = new GenericSignatureParser(getClassLoader());
         parser.parseForClass(this, getSignatureAttribute());
         return Types.getType(parser.superclassType);
-        // End (C) Android
     }
 
     /**
@@ -780,21 +747,16 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *            the requested method's name.
      * @param parameterTypes
      *            the parameter types of the requested method.
+     *            {@code (Class[]) null} is equivalent to the empty array.
      * @return the public field specified by {@code name}.
      * @throws NoSuchMethodException
      *             if the method can not be found.
-     * @throws SecurityException
-     *             if a security manager exists and it does not allow member
-     *             access.
      * @see #getDeclaredMethod(String, Class[])
      */
-    public Method getMethod(String name, Class<?>... parameterTypes)
-            throws NoSuchMethodException, SecurityException {
-        
-        checkPublicMemberAccess();
+    public Method getMethod(String name, Class<?>... parameterTypes) throws NoSuchMethodException {
         return getClassCache().getMethod(true, name, parameterTypes);
     }
-    
+
     /**
      * Returns an array containing {@code Method} objects for all public methods
      * for the class C represented by this {@code Class}. Methods may be
@@ -807,63 +769,12 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *
      * @return an array with the methods of the class represented by this
      *         {@code Class}.
-     * @throws SecurityException
-     *             if a security manager exists and it does not allow member
-     *             access.
      * @see #getDeclaredMethods()
      */
-    public Method[] getMethods() throws SecurityException {
-        checkPublicMemberAccess();
+    public Method[] getMethods() {
         return getClassCache().getMethods(true);
     }
-    
-    // Start (C) Android
-    /**
-     * Performs the security checks regarding the access of a public
-     * member of this {@code Class}.
-     *
-     * <p><b>Note:</b> Because of the {@code getCallingClassLoader2()}
-     * check, this method must be called exactly one level deep into a
-     * public method on this instance.</p>
-     */
-    /*package*/ void checkPublicMemberAccess() {
-        SecurityManager smgr = System.getSecurityManager();
 
-        if (smgr != null) {
-            smgr.checkMemberAccess(this, Member.PUBLIC);
-
-            ClassLoader calling = ClassLoader.callerClassLoader2();
-            ClassLoader current = getClassLoader();
-
-            if (calling != null && !calling.isAncestorOf(current)) {
-                smgr.checkPackageAccess(this.getPackage().getName());
-            }
-        }
-    }
-
-    /**
-     * Performs the security checks regarding the access of a declared
-     * member of this {@code Class}.
-     *
-     * <p><b>Note:</b> Because of the {@code getCallingClassLoader2()}
-     * check, this method must be called exactly one level deep into a
-     * public method on this instance.</p>
-     */
-    private void checkDeclaredMemberAccess() {
-        SecurityManager smgr = System.getSecurityManager();
-        if (smgr != null) {
-            smgr.checkMemberAccess(this, Member.DECLARED);
-
-            ClassLoader calling = ClassLoader.callerClassLoader2();
-            ClassLoader current = getClassLoader();
-
-            if (calling != null && !calling.isAncestorOf(current)) {
-                smgr.checkPackageAccess(this.getPackage().getName());
-            }
-        }
-    }
-    // End (C) Android
-    
     /**
      * Returns an integer that represents the modifiers of the class represented
      * by this {@code Class}. The returned value is a combination of bits
@@ -875,7 +786,6 @@ public final class Class<T> implements Serializable, AnnotatedElement,
         return getModifiers(this, false);
     }
 
-    // Start (C) Android
     /*
      * Return the modifiers for the given class.
      *
@@ -884,8 +794,7 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *     flags from an "inner class" attribute
      */
     private static native int getModifiers(Class<?> clazz, boolean ignoreInnerClassesAttrib);
-    // End (C) Android
-    
+
     /**
      * Returns the name of the class represented by this {@code Class}. For a
      * description of the format which is used, see the class definition of
@@ -896,28 +805,29 @@ public final class Class<T> implements Serializable, AnnotatedElement,
     public String getName() {
         return getClassCache().getName();
     }
-    
+
     /**
      * Returns the NullVM class name. E.g. java/lang/String, I, [[I,
      * [Ljava/lang/Object;.
      */
     final native String getName0();
-
+    
     /**
      * Returns the simple name of the class represented by this {@code Class} as
      * defined in the source code. If there is no name (that is, the class is
      * anonymous) then an empty string is returned. If the receiver is an array
      * then the name of the underlying type with square braces appended (for
-     * example {@code &quot;Integer[]&quot;}) is returned.
+     * example {@code "Integer[]"}) is returned.
      *
      * @return the simple name of the class represented by this {@code Class}.
      */
     public String getSimpleName() {
-        // Start (C) Android
         if (isArray()) {
             return getComponentType().getSimpleName() + "[]";
         }
-                
+
+        String name = getName();
+
         if (isAnonymousClass()) {
             return "";
         }
@@ -925,53 +835,26 @@ public final class Class<T> implements Serializable, AnnotatedElement,
         if (isMemberClass() || isLocalClass()) {
             return getInnerClassName();
         }
-        
-        String name = getName();
+
         int dot = name.lastIndexOf('.');
         if (dot != -1) {
             return name.substring(dot + 1);
         }
-        
+
         return name;
-        // End (C) Android
     }
 
-    // Start (C) Android
     /*
-     * Returns the simple name of a member or local class, or null otherwise. 
-     * 
+     * Returns the simple name of a member or local class, or null otherwise.
+     *
      * @return The name.
      */
     private native String getInnerClassName();
-    // End (C) Android
-    
+
     /**
-     * Returns the {@code ProtectionDomain} of the class represented by this
-     * class.
-     * <p>
-     * Note: In order to conserve space in an embedded target like Android, we
-     * allow this method to return {@code null} for classes in the system
-     * protection domain (that is, for system classes). System classes are
-     * always given full permissions (that is, AllPermission). This can not be
-     * changed through the {@link java.security.Policy} class.
-     * </p>
-     *
-     * @return the {@code ProtectionDomain} of the class represented by this
-     *         class.
-     * @throws SecurityException
-     *             if a security manager exists and it does not allow member
-     *             access.
+     * Returns null.
      */
     public ProtectionDomain getProtectionDomain() {
-        // Start (C) Android
-        SecurityManager smgr = System.getSecurityManager();
-        if (smgr != null) {
-            // Security check is independent of calling class loader.
-            smgr.checkPermission(new RuntimePermission("getProtectionDomain"));
-        }
-
-        //return pd;
-        // End (C) Android
         return null;
     }
 
@@ -987,7 +870,6 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @see ClassLoader
      */
     public URL getResource(String resName) {
-        // Start (C) Android
         // Get absolute resource name, but without the leading slash
         if (resName.startsWith("/")) {
             resName = resName.substring(1);
@@ -1004,13 +886,12 @@ public final class Class<T> implements Serializable, AnnotatedElement,
         }
 
         // Delegate to proper class loader
-        ClassLoader loader = getClassLoaderImpl();
+        ClassLoader loader = getClassLoader();
         if (loader != null) {
             return loader.getResource(resName);
         } else {
             return ClassLoader.getSystemResource(resName);
         }
-        // End (C) Android
     }
 
     /**
@@ -1025,7 +906,6 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @see ClassLoader
      */
     public InputStream getResourceAsStream(String resName) {
-        // Start (C) Android
         // Get absolute resource name, but without the leading slash
         if (resName.startsWith("/")) {
             resName = resName.substring(1);
@@ -1042,24 +922,24 @@ public final class Class<T> implements Serializable, AnnotatedElement,
         }
 
         // Delegate to proper class loader
-        ClassLoader loader = getClassLoaderImpl();
+        ClassLoader loader = getClassLoader();
         if (loader != null) {
             return loader.getResourceAsStream(resName);
         } else {
             return ClassLoader.getSystemResourceAsStream(resName);
         }
-        // End (C) Android
     }
 
     /**
-     * Returns the signers for the class represented by this {@code Class} or
-     * {@code null} if either there are no signers or this {@code Class}
-     * represents a primitive type or void.
+     * Returns null. (On Android, a {@code ClassLoader} can load classes from multiple dex files.
+     * All classes from any given dex file will have the same signers, but different dex
+     * files may have different signers. This does not fit well with the original
+     * {@code ClassLoader}-based model of {@code getSigners}.)
      *
-     * @return the signers of the class represented by this {@code Class}.
+     * @return null.
      */
     public Object[] getSigners() {
-        // Code signing not supported by NullVM
+        // See http://code.google.com/p/android/issues/detail?id=1766.
         return null;
     }
 
@@ -1081,15 +961,12 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *
      * @return an array with the type variables of the class represented by this
      *         class.
-     * @since 1.5
      */
     @SuppressWarnings("unchecked")
     public synchronized TypeVariable<Class<T>>[] getTypeParameters() {
-        // Start (C) Android
         GenericSignatureParser parser = new GenericSignatureParser(getClassLoader());
         parser.parseForClass(this, getSignatureAttribute());
         return parser.formalTypeParameters.clone();
-        // End (C) Android
     }
 
     /**
@@ -1099,25 +976,29 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *         class; {@code false} otherwise.
      */
     public boolean isAnnotation() {
-        // Start (C) Android
         final int ACC_ANNOTATION = 0x2000;  // not public in reflect.Modifiers
         int mod = getModifiers(this, true);
         return (mod & ACC_ANNOTATION) != 0;
-        // End (C) Android
     }
 
-    /**
-     * Indicates whether the specified annotation is present for the class
-     * represented by this {@code Class}.
-     *
-     * @param annotationClass
-     *            the annotation to look for.
-     * @return {@code true} if the class represented by this {@code Class} is
-     *         annotated with {@code annotationClass}; {@code false} otherwise.
-     * @since 1.5
-     */
-    public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
-        return getAnnotation(annotationClass) != null;
+    @Override public boolean isAnnotationPresent(Class<? extends Annotation> annotationType) {
+        if (annotationType == null) {
+            throw new NullPointerException("annotationType == null");
+        }
+
+        if (isDeclaredAnnotationPresent(annotationType)) {
+            return true;
+        }
+
+        if (annotationType.isDeclaredAnnotationPresent(Inherited.class)) {
+            for (Class<?> sup = getSuperclass(); sup != null; sup = sup.getSuperclass()) {
+                if (sup.isDeclaredAnnotationPresent(annotationType)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -1126,9 +1007,8 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *
      * @return {@code true} if the class represented by this {@code Class} is
      *         anonymous; {@code false} otherwise.
-     * @since 1.5
      */
-    public native boolean isAnonymousClass();
+    native public boolean isAnonymousClass();
 
     /**
      * Indicates whether the class represented by this {@code Class} is an array
@@ -1137,7 +1017,9 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @return {@code true} if the class represented by this {@code Class} is an
      *         array class; {@code false} otherwise.
      */
-    public native boolean isArray();
+    public boolean isArray() {
+        return getComponentType() != null;
+    }
 
     /**
      * Indicates whether the specified class type can be converted to the class
@@ -1195,12 +1077,10 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *         defined locally; {@code false} otherwise.
      */
     public boolean isLocalClass() {
-        // Start (C) Android
         boolean enclosed = (getEnclosingMethod() != null ||
                          getEnclosingConstructor() != null);
         return enclosed && !isAnonymousClass();
-        // End (C) Android
-    }    
+    }
 
     /**
      * Indicates whether the class represented by this {@code Class} is a member
@@ -1228,11 +1108,9 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *         {@code false} otherwise.
      */
     public boolean isSynthetic() {
-        // Start (C) Android
         final int ACC_SYNTHETIC = 0x1000;   // not public in reflect.Modifiers
         int mod = getModifiers(this, true);
         return (mod & ACC_SYNTHETIC) != 0;
-        // End (C) Android
     }
 
     /**
@@ -1249,29 +1127,20 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *             if the default constructor is not visible.
      * @throws InstantiationException
      *             if the instance can not be created.
-     * @throws SecurityException
-     *             if a security manager exists and it does not allow creating
-     *             new instances.
      */
     public T newInstance() throws InstantiationException, IllegalAccessException {
-        // Start (C) Android
-        checkPublicMemberAccess();
         return newInstanceImpl();
-        // End (C) Android
     }
 
-    private native T newInstanceImpl() throws IllegalAccessException,
-            InstantiationException;
+    private native T newInstanceImpl() throws IllegalAccessException, InstantiationException;
 
     @Override
     public String toString() {
-        // Start (C) Android
         if (isPrimitive()) {
-            return getSimpleName().toLowerCase();
+            return getSimpleName();
         } else {
             return (isInterface() ? "interface " : "class ") + getName();
         }
-        // End (C) Android
     }
 
     /**
@@ -1283,17 +1152,14 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      *         member or {@code null}.
      */
     public Package getPackage() {
-        // Start (C) Android
         // TODO This might be a hack, but the VM doesn't have the necessary info.
         ClassLoader loader = getClassLoader();
         if (loader != null) {
             String name = getName();
             int dot = name.lastIndexOf('.');
-            return (dot != -1 ? ClassLoader.getPackage(loader, name.substring(0, dot)) : null);
+            return (dot != -1 ? loader.getPackage(name.substring(0, dot)) : null);
         }
-
         return null;
-        // End (C) Android
     }
 
     /**
@@ -1317,14 +1183,14 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @throws ClassCastException
      *             if this {@code Class} cannot be cast to the specified type.
      */
-    @SuppressWarnings("unchecked")    
+    @SuppressWarnings("unchecked")
     public <U> Class<? extends U> asSubclass(Class<U> clazz) {
-        // Start (C) Android
         if (clazz.isAssignableFrom(this)) {
             return (Class<? extends U>)this;
         }
-        throw new ClassCastException();
-        // End (C) Android
+        String actualClassName = this.getName();
+        String desiredClassName = clazz.getName();
+        throw new ClassCastException(actualClassName + " cannot be cast to " + desiredClassName);
     }
 
     /**
@@ -1337,19 +1203,18 @@ public final class Class<T> implements Serializable, AnnotatedElement,
      * @throws ClassCastException
      *             if the object cannot be cast to the specified type.
      */
-    @SuppressWarnings("unchecked")    
+    @SuppressWarnings("unchecked")
     public T cast(Object obj) {
-        // Start (C) Android
         if (obj == null) {
             return null;
         } else if (this.isInstance(obj)) {
-            return (T)obj;            
+            return (T)obj;
         }
-        throw new ClassCastException();
-        // End (C) Android
+        String actualClassName = obj.getClass().getName();
+        String desiredClassName = this.getName();
+        throw new ClassCastException(actualClassName + " cannot be cast to " + desiredClassName);
     }
-    
-    // Start (C) Android
+
     /**
      * Copies two arrays into one. Assumes that the destination array is large
      * enough.
@@ -1363,6 +1228,5 @@ public final class Class<T> implements Serializable, AnnotatedElement,
         System.arraycopy(head, 0, result, 0, head.length);
         System.arraycopy(tail, 0, result, head.length, tail.length);
         return result;
-    }    
-    // End (C) Android
+    }
 }

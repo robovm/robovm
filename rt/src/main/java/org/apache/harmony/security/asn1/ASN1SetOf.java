@@ -17,32 +17,24 @@
 
 /**
 * @author Vladimir N. Molotkov, Stepan M. Mishura
+* @version $Revision$
 */
 
 package org.apache.harmony.security.asn1;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 
 
 /**
  * This class represents ASN.1 SetOf type.
- * 
- * @see http://asn1.elibel.tm.fr/en/standards/index.htm
+ *
+ * @see <a href="http://asn1.elibel.tm.fr/en/standards/index.htm">ASN.1</a>
  */
-
 public class ASN1SetOf extends ASN1ValueCollection {
 
     public ASN1SetOf(ASN1Type type) {
         super(TAG_SETOF, type);
     }
-
-    //
-    //
-    // Decode
-    //
 
     public Object decode(BerInputStream in) throws IOException {
         in.readSetOf(this);
@@ -53,39 +45,12 @@ public class ASN1SetOf extends ASN1ValueCollection {
         return getDecodedObject(in);
     }
 
-    //
-    //
-    // Encode
-    //
-    //
     public final void encodeContent(BerOutputStream out) {
         out.encodeSetOf(this);
     }
 
     public final void setEncodingContent(BerOutputStream out) {
         out.getSetOfLength(this);
-    }
-
-    /**
-     * Creates array wrapper of provided ASN1 type
-     *
-     * @param type - ASN1 type to be wrapped
-     * @return - a wrapper for ASN1 set of type. 
-     * @throws IOException
-     * @see org.apache.harmony.security.asn1.ASN1ValueCollection
-     */
-    public static ASN1SetOf asArrayOf(ASN1Type type) throws IOException {
-
-        return new ASN1SetOf(type) {
-            public Object getDecodedObject(BerInputStream in)
-                    throws IOException {
-                return ((List) in.content).toArray();
-            }
-
-            public Collection getValues(Object object) {
-                return Arrays.asList((Object[]) object);
-            }
-        };
     }
 }
 

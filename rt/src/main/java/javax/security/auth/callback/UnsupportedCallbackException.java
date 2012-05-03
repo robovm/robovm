@@ -35,7 +35,6 @@ public class UnsupportedCallbackException extends Exception {
      *            the {@code Callback}
      */
     public UnsupportedCallbackException(Callback callback) {
-        super();
         this.callback = callback;
     }
 

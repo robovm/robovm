@@ -29,7 +29,6 @@ public class DataFormatException extends Exception {
      * Constructs a new {@code DataFormatException} instance.
      */
     public DataFormatException() {
-        super();
     }
 
     /**

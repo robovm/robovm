@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,81 +20,69 @@ package java.util.zip;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 /**
- * An ouput stream filter to decompress data compressed in the format of
- * Deflater.
+ * An {@code OutputStream} filter to decompress data. Callers write
+ * compressed data in the "deflate" format, and uncompressed data is
+ * written to the underlying stream.
+ * @since 1.6
  */
 public class InflaterOutputStream extends FilterOutputStream {
+    private static final int DEFAULT_BUFFER_SIZE = 1024;
 
-    /**
-     * The inflater used by InflaterOutputStream to decompress data.
-     */
     protected final Inflater inf;
-
-    /**
-     * The internal output buffer.
-     */
     protected final byte[] buf;
 
     private boolean closed = false;
 
-    private static final int DEFAULT_BUFFER_SIZE = 1024;
-
     /**
-     * Constructs an InflaterOutputStream with the default Inflater and internal
-     * output buffer size.
-     * 
-     * @param out
-     *            the output stream that InflaterOutputStream will write
-     *            compressed data into.
+     * Constructs an {@code InflaterOutputStream} with a new {@code Inflater} and an
+     * implementation-defined default internal buffer size. {@code out} is a destination
+     * for uncompressed data, and compressed data will be written to this stream.
+     *
+     * @param out the destination {@code OutputStream}
      */
     public InflaterOutputStream(OutputStream out) {
         this(out, new Inflater());
     }
 
     /**
-     * Constructs an InflaterOutputStream with the specifed Inflater and the
-     * default internal output buffer size.
-     * 
-     * @param out
-     *            the output stream that InflaterOutputStream will write
-     *            compressed data into.
-     * @param infl
-     *            the Inflater used by the InflaterOutputStream to decompress
-     *            data.
+     * Constructs an {@code InflaterOutputStream} with the given {@code Inflater} and an
+     * implementation-defined default internal buffer size. {@code out} is a destination
+     * for uncompressed data, and compressed data will be written to this stream.
+     *
+     * @param out the destination {@code OutputStream}
+     * @param inf the {@code Inflater} to be used for decompression
      */
-    public InflaterOutputStream(OutputStream out, Inflater infl) {
-        this(out, infl, DEFAULT_BUFFER_SIZE);
+    public InflaterOutputStream(OutputStream out, Inflater inf) {
+        this(out, inf, DEFAULT_BUFFER_SIZE);
     }
 
     /**
-     * Constructs an InflaterOutputStream with the specifed Inflater and
-     * internal output buffer size.
-     * 
-     * @param out
-     *            the output stream that InflaterOutputStream will write
-     *            compressed data into.
-     * @param infl
-     *            the Inflater used by the InflaterOutputStream to decompress
-     *            data.
-     * @param bufLen the size of the internal output buffer.
+     * Constructs an {@code InflaterOutputStream} with the given {@code Inflater} and
+     * given internal buffer size. {@code out} is a destination
+     * for uncompressed data, and compressed data will be written to this stream.
+     *
+     * @param out the destination {@code OutputStream}
+     * @param inf the {@code Inflater} to be used for decompression
+     * @param bufferSize the length in bytes of the internal buffer
      */
-    public InflaterOutputStream(OutputStream out, Inflater infl, int bufLen) {
+    public InflaterOutputStream(OutputStream out, Inflater inf, int bufferSize) {
         super(out);
-        if (null == out || null == infl) {
+        if (out == null || inf == null) {
             throw new NullPointerException();
         }
-        if (bufLen <= 0) {
+        if (bufferSize <= 0) {
             throw new IllegalArgumentException();
         }
-        inf = infl;
-        buf = new byte[bufLen];
+        this.inf = inf;
+        this.buf = new byte[bufferSize];
     }
 
     /**
-     * Writes remaining data into the output stream and closes the underling
-     * output stream data.
+     * Writes remaining data into the output stream and closes the underlying
+     * output stream.
      */
     @Override
     public void close() throws IOException {
@@ -106,9 +94,6 @@ public class InflaterOutputStream extends FilterOutputStream {
         }
     }
 
-    /**
-     * Flushes the output stream.
-     */
     @Override
     public void flush() throws IOException {
         finish();
@@ -117,10 +102,9 @@ public class InflaterOutputStream extends FilterOutputStream {
 
     /**
      * Finishes writing current uncompressed data into the InflaterOutputStream
-     * but not closes it.
-     * 
-     * @throws IOException
-     *             if the stream has been closed or some I/O error occurs.
+     * without closing it.
+     *
+     * @throws IOException if an I/O error occurs, or the stream has been closed
      */
     public void finish() throws IOException {
         checkClosed();
@@ -128,14 +112,13 @@ public class InflaterOutputStream extends FilterOutputStream {
     }
 
     /**
-     * Writes a bit to the uncompressing output stream.
-     * 
-     * @param b
-     *            the bit to write to the uncompressing output stream.
-     * @throws IOException
-     *             if the stream has been closed or some I/O error occurs.
-     * @throws ZipException
-     *             if a zip exception occurs.
+     * Writes a byte to the decompressing output stream. {@code b} should be a byte of
+     * compressed input. The corresponding uncompressed data will be written to the underlying
+     * stream.
+     *
+     * @param b the byte
+     * @throws IOException if an I/O error occurs, or the stream has been closed
+     * @throws ZipException if a zip exception occurs.
      */
     @Override
     public void write(int b) throws IOException, ZipException {
@@ -143,43 +126,26 @@ public class InflaterOutputStream extends FilterOutputStream {
     }
 
     /**
-     * Writes a bit to the uncompressing output stream.
-     * 
-     * @param b
-     *            the byte array to write to the uncompressing output stream.
-     * @param off
-     *            the offset in the byte array where the data is first to be
-     *            uncompressed.
-     * @param len
-     *            the number of the bytes to be uncompressed.
-     * @throws IOException
-     *             if the stream has been closed or some I/O error occurs.
-     * @throws ZipException
-     *             if a zip exception occurs.
-     * @throws NullPointerException
-     *             if the byte array is null.
-     * @throws IndexOutOfBoundsException
-     *             if the off less than zero or len less than zero or off + len
-     *             is greater than the byte array length.
+     * Writes to the decompressing output stream. The {@code bytes} array should contain
+     * compressed input. The corresponding uncompressed data will be written to the underlying
+     * stream.
+     *
+     * @throws IOException if an I/O error occurs, or the stream has been closed
+     * @throws ZipException if a zip exception occurs.
+     * @throws NullPointerException if {@code b == null}.
+     * @throws IndexOutOfBoundsException if {@code off < 0 || len < 0 || off + len > b.length}
      */
     @Override
-    public void write(byte[] b, int off, int len) throws IOException,
-            ZipException {
+    public void write(byte[] bytes, int offset, int byteCount) throws IOException, ZipException {
         checkClosed();
-        if (null == b) {
-            throw new NullPointerException();
-        }
-        if (off < 0 || len < 0 || len > b.length - off) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        inf.setInput(b, off, len);
+        Arrays.checkOffsetAndCount(bytes.length, offset, byteCount);
+        inf.setInput(bytes, offset, byteCount);
         write();
     }
 
     private void write() throws IOException, ZipException {
-        int inflated = 0;
         try {
+            int inflated;
             while ((inflated = inf.inflate(buf)) > 0) {
                 out.write(buf, 0, inflated);
             }

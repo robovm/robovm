@@ -19,6 +19,7 @@ package java.util.zip;
 
 import java.io.IOException;
 import java.io.InputStream;
+import libcore.io.Streams;
 
 /**
  * The {@code CheckedInputStream} class is used to maintain a checksum at the
@@ -34,6 +35,9 @@ public class CheckedInputStream extends java.io.FilterInputStream {
      * Constructs a new {@code CheckedInputStream} on {@code InputStream}
      * {@code is}. The checksum will be calculated using the algorithm
      * implemented by {@code csum}.
+     *
+     * <p><strong>Warning:</strong> passing a null source creates an invalid
+     * {@code CheckedInputStream}. All operations on such a stream will fail.
      *
      * @param is
      *            the input stream to calculate checksum from.
@@ -99,32 +103,15 @@ public class CheckedInputStream extends java.io.FilterInputStream {
     }
 
     /**
-     * Skip up to n bytes of data on the underlying input stream. Any skipped
-     * bytes are added to the running checksum value.
+     * Skip up to {@code byteCount} bytes of data on the underlying input
+     * stream. Any skipped bytes are added to the running checksum value.
      *
-     * @param nbytes
-     *            the number of bytes to skip.
-     * @throws IOException
-     *             if this stream is closed or another I/O error occurs.
+     * @param byteCount the number of bytes to skip.
+     * @throws IOException if this stream is closed or another I/O error occurs.
      * @return the number of bytes skipped.
      */
     @Override
-    public long skip(long nbytes) throws IOException {
-        if (nbytes < 1) {
-            return 0;
-        }
-        long skipped = 0;
-        byte[] b = new byte[(int)Math.min(nbytes, 2048L)];
-        int x, v;
-        while (skipped != nbytes) {
-            x = in.read(b, 0,
-                    (v = (int) (nbytes - skipped)) > b.length ? b.length : v);
-            if (x == -1) {
-                return skipped;
-            }
-            check.update(b, 0, x);
-            skipped += x;
-        }
-        return skipped;
+    public long skip(long byteCount) throws IOException {
+        return Streams.skipByReading(this, byteCount);
     }
 }

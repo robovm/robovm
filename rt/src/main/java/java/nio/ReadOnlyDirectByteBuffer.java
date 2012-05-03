@@ -17,8 +17,6 @@
 
 package java.nio;
 
-import org.apache.harmony.luni.platform.PlatformAddress;
-
 /**
  * DirectByteBuffer, ReadWriteDirectByteBuffer and ReadOnlyDirectByteBuffer
  * compose the implementation of platform memory based byte buffers.
@@ -29,32 +27,18 @@ import org.apache.harmony.luni.platform.PlatformAddress;
  * <p>
  * This class is marked final for runtime performance.
  * </p>
- * 
  */
 final class ReadOnlyDirectByteBuffer extends DirectByteBuffer {
-
     static ReadOnlyDirectByteBuffer copy(DirectByteBuffer other, int markOfOther) {
-        ReadOnlyDirectByteBuffer buf = new ReadOnlyDirectByteBuffer(
-                other.address, other.capacity(), other.offset);
-        buf.limit = other.limit();
+        ReadOnlyDirectByteBuffer buf = new ReadOnlyDirectByteBuffer(other.block, other.capacity(), other.offset);
+        buf.limit = other.limit;
         buf.position = other.position();
         buf.mark = markOfOther;
-        buf.order(other.order());
         return buf;
     }
 
-    protected ReadOnlyDirectByteBuffer(PlatformAddress address, int capacity,
-            int offset) {
-        super(address, capacity, offset);
-    }
-
-    /*
-     * This constructor is specifically for MappedByteBuffer construction
-     */
-    protected ReadOnlyDirectByteBuffer(PlatformAddress address, int capacity,
-            int offset, int mapMode) {
-        super(address, capacity, offset);
-        this.mapMode = mapMode;
+    protected ReadOnlyDirectByteBuffer(MemoryBlock block, int capacity, int offset) {
+        super(block, capacity, offset);
     }
 
     @Override
@@ -88,7 +72,7 @@ final class ReadOnlyDirectByteBuffer extends DirectByteBuffer {
     }
 
     @Override
-    public ByteBuffer put(byte[] src, int off, int len) {
+    public ByteBuffer put(byte[] src, int srcOffset, int byteCount) {
         throw new ReadOnlyBufferException();
     }
 
@@ -149,10 +133,18 @@ final class ReadOnlyDirectByteBuffer extends DirectByteBuffer {
 
     @Override
     public ByteBuffer slice() {
-        ReadOnlyDirectByteBuffer buf = new ReadOnlyDirectByteBuffer(
-                address, remaining(), offset + position);
-        buf.order = order;
-        return buf;
+        return new ReadOnlyDirectByteBuffer(block, remaining(), offset + position);
     }
 
+    @Override protected byte[] protectedArray() {
+        throw new ReadOnlyBufferException();
+    }
+
+    @Override protected int protectedArrayOffset() {
+        throw new ReadOnlyBufferException();
+    }
+
+    @Override protected boolean protectedHasArray() {
+        return false;
+    }
 }

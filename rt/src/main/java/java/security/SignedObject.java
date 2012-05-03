@@ -55,7 +55,7 @@ public final class SignedObject implements Serializable {
      * Constructs a new instance of {@code SignedObject} with the target object,
      * the private key and the engine to compute the signature. The given
      * {@code object} is signed with the specified key and engine.
-     * 
+     *
      * @param object
      *            the object to bes signed.
      * @param signingKey
@@ -92,7 +92,7 @@ public final class SignedObject implements Serializable {
     /**
      * Returns the encapsulated object. Each time this method is invoked, the
      * encapsulated object is deserialized before it is returned.
-     * 
+     *
      * @return the encapsulated object.
      * @throws IOException
      *             if deserialization failed.
@@ -112,7 +112,7 @@ public final class SignedObject implements Serializable {
 
     /**
      * Returns the signature data of the encapsulated serialized object.
-     * 
+     *
      * @return the signature data of the encapsulated serialized object.
      */
     public byte[] getSignature() {
@@ -123,7 +123,7 @@ public final class SignedObject implements Serializable {
 
     /**
      * Returns the name of the algorithm of this {@code SignedObject}.
-     * 
+     *
      * @return the name of the algorithm of this {@code SignedObject}.
      */
     public String getAlgorithm() {
@@ -133,7 +133,7 @@ public final class SignedObject implements Serializable {
     /**
      * Indicates whether the contained signature for the encapsulated object is
      * valid.
-     * 
+     *
      * @param verificationKey
      *            the public key to verify the signature.
      * @param verificationEngine

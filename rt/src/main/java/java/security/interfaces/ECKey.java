@@ -26,7 +26,7 @@ public interface ECKey {
 
     /**
      * Returns the EC key parameters.
-     * 
+     *
      * @return the EC key parameters.
      */
     public ECParameterSpec getParams();

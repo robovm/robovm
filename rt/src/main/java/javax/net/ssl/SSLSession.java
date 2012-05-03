@@ -150,13 +150,7 @@ public interface SSLSession {
     public String getProtocol();
 
     /**
-     * Returns the context of this session. If a context is available and a
-     * security manager is installed, the
-     * {@code SSLPermission("getSSLSessionContext"} is checked with the security
-     * manager.
-     *
-     * @return the context of this session or {@code null} if no context is
-     *         available.
+     * Returns the context of this session, or null if no context is available.
      */
     public SSLSessionContext getSessionContext();
 

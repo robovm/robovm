@@ -17,16 +17,14 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import org.apache.harmony.xnet.provider.jsse.Message;
-
 import java.io.IOException;
 
 /**
- * 
+ *
  * Represents server hello done message
- * @see TLS 1.0 spec., 7.4.5. Server hello done
- * (http://www.ietf.org/rfc/rfc2246.txt)
- * 
+ * @see <a href="http://www.ietf.org/rfc/rfc2246.txt">TLS 1.0 spec., 7.4.5.
+ * Server hello done</a>
+ *
  */
 public class ServerHelloDone extends Message {
 
@@ -34,9 +32,9 @@ public class ServerHelloDone extends Message {
      * Creates outbound message
      *
      */
-    public ServerHelloDone() {    
+    public ServerHelloDone() {
     }
-    
+
     /**
      * Creates inbound message
      * @param in
@@ -57,7 +55,7 @@ public class ServerHelloDone extends Message {
     @Override
     public void send(HandshakeIODataStream out) {
     }
-    
+
     /**
      * Returns message length
      * @return
@@ -66,9 +64,9 @@ public class ServerHelloDone extends Message {
     public int length() {
         return 0;
     }
-    
+
     /**
-     * Returns message type 
+     * Returns message type
      * @return
      */
     @Override

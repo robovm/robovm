@@ -35,7 +35,7 @@ public class UnknownError extends VirtualMachineError {
     /**
      * Constructs a new {@code UnknownError} with the current stack trace and
      * the specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

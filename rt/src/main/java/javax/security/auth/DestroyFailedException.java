@@ -28,7 +28,6 @@ public class DestroyFailedException extends Exception {
      * Creates an exception of type {@code DestroyFailedException}.
      */
     public DestroyFailedException() {
-        super();
     }
 
     /**

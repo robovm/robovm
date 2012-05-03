@@ -27,7 +27,7 @@ package java.nio;
  * <p>
  * All methods are marked final for runtime performance.
  * </p>
- * 
+ *
  */
 abstract class IntArrayBuffer extends IntBuffer {
 
@@ -59,23 +59,17 @@ abstract class IntArrayBuffer extends IntBuffer {
 
     @Override
     public final int get(int index) {
-        if (index < 0 || index >= limit) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkIndex(index);
         return backingArray[offset + index];
     }
 
     @Override
-    public final IntBuffer get(int[] dest, int off, int len) {
-        int length = dest.length;
-        if (off < 0 || len < 0 || (long) len + (long) off > length) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (len > remaining()) {
+    public final IntBuffer get(int[] dst, int dstOffset, int intCount) {
+        if (intCount > remaining()) {
             throw new BufferUnderflowException();
         }
-        System.arraycopy(backingArray, offset + position, dest, off, len);
-        position += len;
+        System.arraycopy(backingArray, offset + position, dst, dstOffset, intCount);
+        position += intCount;
         return this;
     }
 

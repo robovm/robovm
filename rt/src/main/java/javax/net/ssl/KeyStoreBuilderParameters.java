@@ -17,17 +17,17 @@
 
 package javax.net.ssl;
 
+import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.security.KeyStore;
 
 /**
  * The parameters for {@code KeyManager}s. The parameters are a list of
  * {@code KeyStore.Builder}s.
  *
  * @since 1.5
- * @see java.security.KeyStore.Builder
+ * @see KeyStore.Builder
  */
 public class KeyStoreBuilderParameters implements ManagerFactoryParameters {
 
@@ -36,32 +36,32 @@ public class KeyStoreBuilderParameters implements ManagerFactoryParameters {
     /**
      * Creates a new {@code KeyStoreBuilderParameters} with the specified key
      * store builder.
-     * 
+     *
      * @param builder
      *            the key store builder.
      */
     public KeyStoreBuilderParameters(KeyStore.Builder builder) {
-        super();
+        if (builder == null) {
+            throw new NullPointerException("builder == null");
+        }
         ksbuilders = Collections.singletonList(builder);
     }
 
     /**
      * Creates a new {@code KeyStoreBuilderParameters} with the specified list
      * of {@code KeyStore.Builder}s.
-     * 
+     *
      * @param parameters
      *            the list of key store builders
      * @throws IllegalArgumentException
      *             if the specified list is empty.
      */
-    @SuppressWarnings("unchecked")
-    public KeyStoreBuilderParameters(List parameters) {
-        super();
+    public KeyStoreBuilderParameters(List<KeyStore.Builder> parameters) {
         if (parameters == null) {
-            throw new NullPointerException("Builders list is null");
+            throw new NullPointerException("parameters == null");
         }
         if (parameters.isEmpty()) {
-            throw new IllegalArgumentException("Builders list is empty");
+            throw new IllegalArgumentException("parameters.isEmpty()");
         }
         ksbuilders = Collections.unmodifiableList(new ArrayList<KeyStore.Builder>(parameters));
     }
@@ -69,11 +69,10 @@ public class KeyStoreBuilderParameters implements ManagerFactoryParameters {
     /**
      * Returns the unmodifiable list of {@code KeyStore.Builder}s associated
      * with this parameters instance.
-     * 
+     *
      * @return the unmodifiable list of {@code KeyStore.Builder}s.
      */
-    @SuppressWarnings("unchecked")
-    public List getParameters() {
+    public List<KeyStore.Builder> getParameters() {
         return ksbuilders;
     }
 }

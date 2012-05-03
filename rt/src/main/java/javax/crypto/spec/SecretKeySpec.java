@@ -17,6 +17,7 @@
 
 /**
 * @author Alexander Y. Kleymenov
+* @version $Revision$
 */
 
 package javax.crypto.spec;
@@ -25,8 +26,6 @@ import java.io.Serializable;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
 import javax.crypto.SecretKey;
-
-import org.apache.harmony.crypto.internal.nls.Messages;
 
 /**
  * A key specification for a <code>SecretKey</code> and also a secret key
@@ -42,7 +41,6 @@ public class SecretKeySpec implements SecretKey, KeySpec, Serializable {
 
     private final byte[] key;
     private final String algorithm;
-    private final String format = "RAW"; //$NON-NLS-1$
 
     /**
      * Creates a new <code>SecretKeySpec</code> for the specified key data and
@@ -58,13 +56,13 @@ public class SecretKeySpec implements SecretKey, KeySpec, Serializable {
      */
     public SecretKeySpec(byte[] key, String algorithm) {
         if (key == null) {
-            throw new IllegalArgumentException(Messages.getString("crypto.05")); //$NON-NLS-1$
+            throw new IllegalArgumentException("key == null");
         }
         if (key.length == 0) {
-            throw new IllegalArgumentException(Messages.getString("crypto.35")); //$NON-NLS-1$
+            throw new IllegalArgumentException("key.length == 0");
         }
         if (algorithm == null) {
-            throw new IllegalArgumentException(Messages.getString("crypto.02")); //$NON-NLS-1$
+            throw new IllegalArgumentException("algorithm == null");
         }
 
         this.algorithm = algorithm;
@@ -94,22 +92,19 @@ public class SecretKeySpec implements SecretKey, KeySpec, Serializable {
      */
     public SecretKeySpec(byte[] key, int offset, int len, String algorithm) {
         if (key == null) {
-            throw new IllegalArgumentException(Messages.getString("crypto.05")); //$NON-NLS-1$
+            throw new IllegalArgumentException("key == null");
         }
         if (key.length == 0) {
-            throw new IllegalArgumentException(Messages.getString("crypto.35")); //$NON-NLS-1$
+            throw new IllegalArgumentException("key.length == 0");
         }
-        if (len < 0) {
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("crypto.36")); //$NON-NLS-1$
+        if (len < 0 || offset < 0) {
+            throw new ArrayIndexOutOfBoundsException("len < 0 || offset < 0");
         }
-        if (offset < 0) {
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("crypto.33")); //$NON-NLS-1$
-        }
-        if ((key.length - offset < len)) {
-            throw new IllegalArgumentException(Messages.getString("crypto.37")); //$NON-NLS-1$
+        if (key.length - offset < len) {
+            throw new IllegalArgumentException("key too short");
         }
         if (algorithm == null) {
-            throw new IllegalArgumentException(Messages.getString("crypto.02")); //$NON-NLS-1$
+            throw new IllegalArgumentException("algorithm == null");
         }
         this.algorithm = algorithm;
         this.key = new byte[len];
@@ -131,7 +126,7 @@ public class SecretKeySpec implements SecretKey, KeySpec, Serializable {
      * @return the format name "RAW".
      */
     public String getFormat() {
-        return format;
+        return "RAW";
     }
 
     /**
@@ -181,4 +176,3 @@ public class SecretKeySpec implements SecretKey, KeySpec, Serializable {
             && (Arrays.equals(key, ks.key));
     }
 }
-

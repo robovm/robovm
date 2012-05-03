@@ -26,12 +26,25 @@ public class SSLHandshakeException extends SSLException {
     private static final long serialVersionUID = -5045881315018326890L;
 
     /**
-     * Creates a new {@code SSLHandshakeException} with the specified message.
-     *
-     * @param reason
-     *            the detail message for the exception.
+     * Constructs a new instance with the given detail message.
      */
     public SSLHandshakeException(String reason) {
         super(reason);
+    }
+
+    /**
+     * Constructs a new instance with given cause.
+     * @hide internal use only
+     */
+    public SSLHandshakeException(Throwable cause) {
+        super(cause);
+    }
+
+    /**
+     * Constructs a new instance with given detail message and cause.
+     * @hide internal use only
+     */
+    public SSLHandshakeException(String reason, Throwable cause) {
+        super(reason, cause);
     }
 }

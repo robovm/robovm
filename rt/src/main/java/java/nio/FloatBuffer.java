@@ -17,6 +17,8 @@
 
 package java.nio;
 
+import java.util.Arrays;
+
 /**
  * A buffer of floats.
  * <p>
@@ -35,7 +37,7 @@ public abstract class FloatBuffer extends Buffer implements
 
     /**
      * Creates a float buffer based on a newly allocated float array.
-     * 
+     *
      * @param capacity
      *            the capacity of the new buffer.
      * @return the created float buffer.
@@ -46,7 +48,7 @@ public abstract class FloatBuffer extends Buffer implements
         if (capacity < 0) {
             throw new IllegalArgumentException();
         }
-        return BufferFactory.newFloatBuffer(capacity);
+        return new ReadWriteFloatArrayBuffer(capacity);
     }
 
     /**
@@ -67,72 +69,38 @@ public abstract class FloatBuffer extends Buffer implements
      * Creates a new float buffer by wrapping the given float array.
      * <p>
      * The new buffer's position will be {@code start}, limit will be
-     * {@code start + len}, capacity will be the length of the array.
+     * {@code start + floatCount}, capacity will be the length of the array.
      *
      * @param array
      *            the float array which the new buffer will be based on.
      * @param start
      *            the start index, must not be negative and not greater than
      *            {@code array.length}.
-     * @param len
+     * @param floatCount
      *            the length, must not be negative and not greater than
      *            {@code array.length - start}.
      * @return the created float buffer.
      * @exception IndexOutOfBoundsException
-     *                if either {@code start} or {@code len} is invalid.
+     *                if either {@code start} or {@code floatCount} is invalid.
      * @exception NullPointerException
      *                if {@code array} is null.
      */
-    public static FloatBuffer wrap(float[] array, int start, int len) {
-        if (array == null) {
-            throw new NullPointerException();
-        }
-        if (start < 0 || len < 0 || (long) start + (long) len > array.length) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        FloatBuffer buf = BufferFactory.newFloatBuffer(array);
+    public static FloatBuffer wrap(float[] array, int start, int floatCount) {
+        Arrays.checkOffsetAndCount(array.length, start, floatCount);
+        FloatBuffer buf = new ReadWriteFloatArrayBuffer(array);
         buf.position = start;
-        buf.limit = start + len;
-
+        buf.limit = start + floatCount;
         return buf;
     }
 
-    /**
-     * Constructs a {@code FloatBuffer} with given capacity.
-     *
-     * @param capacity  The capacity of the buffer
-     */
     FloatBuffer(int capacity) {
-        super(capacity);
+        super(2, capacity, null);
     }
 
-    /**
-     * Returns the float array which this buffer is based on, if there is one.
-     * 
-     * @return the float array which this buffer is based on.
-     * @exception ReadOnlyBufferException
-     *                if this buffer is based on an array, but it is read-only.
-     * @exception UnsupportedOperationException
-     *                if this buffer is not based on an array.
-     */
     public final float[] array() {
         return protectedArray();
     }
 
-    /**
-     * Returns the offset of the float array which this buffer is based on, if
-     * there is one.
-     * <p>
-     * The offset is the index of the array and corresponds to the zero position
-     * of the buffer.
-     *
-     * @return the offset of the float array which this buffer is based on.
-     * @exception ReadOnlyBufferException
-     *                if this buffer is based on an array, but it is read-only.
-     * @exception UnsupportedOperationException
-     *                if this buffer is not based on an array.
-     */
     public final int arrayOffset() {
         return protectedArrayOffset();
     }
@@ -168,7 +136,7 @@ public abstract class FloatBuffer extends Buffer implements
     /**
      * Compare the remaining floats of this buffer to another float buffer's
      * remaining floats.
-     * 
+     *
      * @param otherBuffer
      *            another float buffer.
      * @return a negative value if this is less than {@code otherBuffer}; 0 if
@@ -256,7 +224,7 @@ public abstract class FloatBuffer extends Buffer implements
     /**
      * Returns the float at the current position and increases the position by
      * 1.
-     * 
+     *
      * @return the float at the current position.
      * @exception BufferUnderflowException
      *                if the position is equal or greater than limit.
@@ -268,55 +236,51 @@ public abstract class FloatBuffer extends Buffer implements
      * increases the position by the number of floats read.
      * <p>
      * Calling this method has the same effect as
-     * {@code get(dest, 0, dest.length)}.
+     * {@code get(dst, 0, dst.length)}.
      *
-     * @param dest
+     * @param dst
      *            the destination float array.
      * @return this buffer.
      * @exception BufferUnderflowException
-     *                if {@code dest.length} is greater than {@code remaining()}.
+     *                if {@code dst.length} is greater than {@code remaining()}.
      */
-    public FloatBuffer get(float[] dest) {
-        return get(dest, 0, dest.length);
+    public FloatBuffer get(float[] dst) {
+        return get(dst, 0, dst.length);
     }
 
     /**
      * Reads floats from the current position into the specified float array,
      * starting from the specified offset, and increases the position by the
      * number of floats read.
-     * 
-     * @param dest
+     *
+     * @param dst
      *            the target float array.
-     * @param off
+     * @param dstOffset
      *            the offset of the float array, must not be negative and no
-     *            greater than {@code dest.length}.
-     * @param len
+     *            greater than {@code dst.length}.
+     * @param floatCount
      *            the number of floats to read, must be no less than zero and no
-     *            greater than {@code dest.length - off}.
+     *            greater than {@code dst.length - dstOffset}.
      * @return this buffer.
      * @exception IndexOutOfBoundsException
-     *                if either {@code off} or {@code len} is invalid.
+     *                if either {@code dstOffset} or {@code floatCount} is invalid.
      * @exception BufferUnderflowException
-     *                if {@code len} is greater than {@code remaining()}.
+     *                if {@code floatCount} is greater than {@code remaining()}.
      */
-    public FloatBuffer get(float[] dest, int off, int len) {
-        int length = dest.length;
-        if (off < 0 || len < 0 || (long) off + (long) len > length) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        if (len > remaining()) {
+    public FloatBuffer get(float[] dst, int dstOffset, int floatCount) {
+        Arrays.checkOffsetAndCount(dst.length, dstOffset, floatCount);
+        if (floatCount > remaining()) {
             throw new BufferUnderflowException();
         }
-        for (int i = off; i < off + len; i++) {
-            dest[i] = get();
+        for (int i = dstOffset; i < dstOffset + floatCount; ++i) {
+            dst[i] = get();
         }
         return this;
     }
 
     /**
      * Returns a float at the specified index; the position is not changed.
-     * 
+     *
      * @param index
      *            the index, must not be negative and less than limit.
      * @return a float at the specified index.
@@ -325,13 +289,6 @@ public abstract class FloatBuffer extends Buffer implements
      */
     public abstract float get(int index);
 
-    /**
-     * Indicates whether this buffer is based on a float array and is
-     * read/write.
-     *
-     * @return {@code true} if this buffer is based on a float array and
-     *         provides read/write access, {@code false} otherwise.
-     */
     public final boolean hasArray() {
         return protectedHasArray();
     }
@@ -400,7 +357,7 @@ public abstract class FloatBuffer extends Buffer implements
     /**
      * Writes the given float to the current position and increases the position
      * by 1.
-     * 
+     *
      * @param f
      *            the float to write.
      * @return this buffer.
@@ -434,33 +391,29 @@ public abstract class FloatBuffer extends Buffer implements
      * Writes floats from the given float array, starting from the specified
      * offset, to the current position and increases the position by the number
      * of floats written.
-     * 
+     *
      * @param src
      *            the source float array.
-     * @param off
+     * @param srcOffset
      *            the offset of float array, must not be negative and not
      *            greater than {@code src.length}.
-     * @param len
+     * @param floatCount
      *            the number of floats to write, must be no less than zero and
-     *            no greater than {@code src.length - off}.
+     *            no greater than {@code src.length - srcOffset}.
      * @return this buffer.
      * @exception BufferOverflowException
-     *                if {@code remaining()} is less than {@code len}.
+     *                if {@code remaining()} is less than {@code floatCount}.
      * @exception IndexOutOfBoundsException
-     *                if either {@code off} or {@code len} is invalid.
+     *                if either {@code srcOffset} or {@code floatCount} is invalid.
      * @exception ReadOnlyBufferException
      *                if no changes may be made to the contents of this buffer.
      */
-    public FloatBuffer put(float[] src, int off, int len) {
-        int length = src.length;
-        if (off < 0 || len < 0 || (long)off + (long)len > length) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        if (len > remaining()) {
+    public FloatBuffer put(float[] src, int srcOffset, int floatCount) {
+        Arrays.checkOffsetAndCount(src.length, srcOffset, floatCount);
+        if (floatCount > remaining()) {
             throw new BufferOverflowException();
         }
-        for (int i = off; i < off + len; i++) {
+        for (int i = srcOffset; i < srcOffset + floatCount; ++i) {
             put(src[i]);
         }
         return this;
@@ -470,7 +423,7 @@ public abstract class FloatBuffer extends Buffer implements
      * Writes all the remaining floats of the {@code src} float buffer to this
      * buffer's current position, and increases both buffers' position by the
      * number of floats copied.
-     * 
+     *
      * @param src
      *            the source float buffer.
      * @return this buffer.
@@ -498,7 +451,7 @@ public abstract class FloatBuffer extends Buffer implements
     /**
      * Writes a float to the specified index of this buffer; the position is not
      * changed.
-     * 
+     *
      * @param index
      *            the index, must not be negative and less than the limit.
      * @param f
@@ -523,26 +476,8 @@ public abstract class FloatBuffer extends Buffer implements
      * The new buffer shares its content with this buffer, which means either
      * buffer's change of content will be visible to the other. The two buffer's
      * position, limit and mark are independent.
-     * 
+     *
      * @return a sliced buffer that shares its content with this buffer.
      */
     public abstract FloatBuffer slice();
-
-    /**
-     * Returns a string representing the state of this float buffer.
-     * 
-     * @return a string representing the state of this float buffer.
-     */
-    @Override
-    public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append(getClass().getName());
-        buf.append(", status: capacity="); //$NON-NLS-1$
-        buf.append(capacity());
-        buf.append(" position="); //$NON-NLS-1$
-        buf.append(position());
-        buf.append(" limit="); //$NON-NLS-1$
-        buf.append(limit());
-        return buf.toString();
-    }
 }

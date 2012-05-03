@@ -17,19 +17,14 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import org.apache.harmony.xnet.provider.jsse.SSLSocketFactoryImpl;
-import org.apache.harmony.xnet.provider.jsse.SSLEngineImpl;
-import org.apache.harmony.xnet.provider.jsse.SSLParameters;
-import org.apache.harmony.xnet.provider.jsse.SSLServerSocketFactoryImpl;
-
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.security.SecureRandom;
-
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContextSpi;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLServerSocketFactory;
-import javax.net.ssl.SSLSessionContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 
@@ -38,32 +33,70 @@ import javax.net.ssl.TrustManager;
  */
 public class SSLContextImpl extends SSLContextSpi {
 
-    // client session context contains the set of reusable
-    // client-side SSL sessions
-    private SSLSessionContextImpl clientSessionContext =
-        new SSLSessionContextImpl();
-    // server session context contains the set of reusable
-    // server-side SSL sessions
-    private SSLSessionContextImpl serverSessionContext =
-        new SSLSessionContextImpl();
+    /**
+     * The default SSLContextImpl for use with SSLContext.getInstance("Default").
+     * Protected by the DefaultSSLContextImpl.class monitor.
+     */
+    private static DefaultSSLContextImpl DEFAULT_SSL_CONTEXT_IMPL;
 
-    protected SSLParameters sslParameters;
+    /** Client session cache. */
+    private final ClientSessionContext clientSessionContext;
+
+    /** Server session cache. */
+    private final ServerSessionContext serverSessionContext;
+
+    protected SSLParametersImpl sslParameters;
 
     public SSLContextImpl() {
-        super();
+        clientSessionContext = new ClientSessionContext();
+        serverSessionContext = new ServerSessionContext();
     }
 
+    /**
+     * Constuctor for the DefaultSSLContextImpl.
+     * @param dummy is null, used to distinguish this case from the
+     * public SSLContextImpl() constructor.
+     */
+    protected SSLContextImpl(DefaultSSLContextImpl dummy)
+            throws GeneralSecurityException, IOException {
+        synchronized (DefaultSSLContextImpl.class) {
+            if (DEFAULT_SSL_CONTEXT_IMPL == null) {
+                clientSessionContext = new ClientSessionContext();
+                serverSessionContext = new ServerSessionContext();
+                DEFAULT_SSL_CONTEXT_IMPL = (DefaultSSLContextImpl)this;
+            } else {
+                clientSessionContext = DEFAULT_SSL_CONTEXT_IMPL.engineGetClientSessionContext();
+                serverSessionContext = DEFAULT_SSL_CONTEXT_IMPL.engineGetServerSessionContext();
+            }
+            sslParameters = new SSLParametersImpl(DEFAULT_SSL_CONTEXT_IMPL.getKeyManagers(),
+                                                  DEFAULT_SSL_CONTEXT_IMPL.getTrustManagers(),
+                                                  null,
+                                                  clientSessionContext,
+                                                  serverSessionContext);
+        }
+    }
+
+    /**
+     * Initializes this {@code SSLContext} instance. All of the arguments are
+     * optional, and the security providers will be searched for the required
+     * implementations of the needed algorithms.
+     *
+     * @param kms the key sources or {@code null}
+     * @param tms the trust decision sources or {@code null}
+     * @param sr the randomness source or {@code null}
+     * @throws KeyManagementException if initializing this instance fails
+     */
     @Override
     public void engineInit(KeyManager[] kms, TrustManager[] tms,
             SecureRandom sr) throws KeyManagementException {
-        sslParameters = new SSLParameters(kms, tms, sr, clientSessionContext,
-                serverSessionContext);
+        sslParameters = new SSLParametersImpl(kms, tms, sr,
+                                              clientSessionContext, serverSessionContext);
     }
 
     @Override
     public SSLSocketFactory engineGetSocketFactory() {
         if (sslParameters == null) {
-            throw new IllegalStateException("SSLContext is not initiallized.");
+            throw new IllegalStateException("SSLContext is not initialized.");
         }
         return new SSLSocketFactoryImpl(sslParameters);
     }
@@ -71,7 +104,7 @@ public class SSLContextImpl extends SSLContextSpi {
     @Override
     public SSLServerSocketFactory engineGetServerSocketFactory() {
         if (sslParameters == null) {
-            throw new IllegalStateException("SSLContext is not initiallized.");
+            throw new IllegalStateException("SSLContext is not initialized.");
         }
         return new SSLServerSocketFactoryImpl(sslParameters);
     }
@@ -79,28 +112,30 @@ public class SSLContextImpl extends SSLContextSpi {
     @Override
     public SSLEngine engineCreateSSLEngine(String host, int port) {
         if (sslParameters == null) {
-            throw new IllegalStateException("SSLContext is not initiallized.");
+            throw new IllegalStateException("SSLContext is not initialized.");
         }
-        return new SSLEngineImpl(host, port,
-                (SSLParameters) sslParameters.clone());
+        SSLParametersImpl p = (SSLParametersImpl) sslParameters.clone();
+        p.setUseClientMode(false);
+        return new SSLEngineImpl(host, port, p);
     }
 
     @Override
     public SSLEngine engineCreateSSLEngine() {
         if (sslParameters == null) {
-            throw new IllegalStateException("SSLContext is not initiallized.");
+            throw new IllegalStateException("SSLContext is not initialized.");
         }
-        return new SSLEngineImpl((SSLParameters) sslParameters.clone());
+        SSLParametersImpl p = (SSLParametersImpl) sslParameters.clone();
+        p.setUseClientMode(false);
+        return new SSLEngineImpl(p);
     }
 
     @Override
-    public SSLSessionContext engineGetServerSessionContext() {
+    public ServerSessionContext engineGetServerSessionContext() {
         return serverSessionContext;
     }
 
     @Override
-    public SSLSessionContext engineGetClientSessionContext() {
+    public ClientSessionContext engineGetClientSessionContext() {
         return clientSessionContext;
     }
 }
-

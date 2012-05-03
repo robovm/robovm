@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,8 +21,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-
-import org.apache.harmony.logging.internal.nls.Messages;
 
 /**
  * A {@code StreamHandler} object writes log messages to an output stream, that
@@ -63,8 +61,7 @@ public class StreamHandler extends Handler {
      * does not have an associated output stream.
      */
     public StreamHandler() {
-        initProperties("INFO", null, "java.util.logging.SimpleFormatter", //$NON-NLS-1$//$NON-NLS-2$
-                null);
+        initProperties("INFO", null, "java.util.logging.SimpleFormatter", null);
         this.os = null;
         this.writer = null;
         this.writerNotInitialized = true;
@@ -73,7 +70,7 @@ public class StreamHandler extends Handler {
     /**
      * Constructs a {@code StreamHandler} object with the supplied output
      * stream. Default properties are read.
-     * 
+     *
      * @param os
      *            the output stream this handler writes to.
      */
@@ -99,7 +96,7 @@ public class StreamHandler extends Handler {
     /**
      * Constructs a {@code StreamHandler} object with the supplied output stream
      * and formatter.
-     * 
+     *
      * @param os
      *            the output stream this handler writes to.
      * @param formatter
@@ -110,21 +107,19 @@ public class StreamHandler extends Handler {
     public StreamHandler(OutputStream os, Formatter formatter) {
         this();
         if (os == null) {
-            // logging.2=The OutputStream parameter is null
-            throw new NullPointerException(Messages.getString("logging.2")); //$NON-NLS-1$
+            throw new NullPointerException("os == null");
         }
         if (formatter == null) {
-            // logging.3=The Formatter parameter is null.
-            throw new NullPointerException(Messages.getString("logging.3")); //$NON-NLS-1$
+            throw new NullPointerException("formatter == null");
         }
         this.os = os;
         internalSetFormatter(formatter);
     }
 
     // initialize the writer
-    private void initializeWritter() {
+    private void initializeWriter() {
         this.writerNotInitialized = false;
-        if (null == getEncoding()) {
+        if (getEncoding() == null) {
             this.writer = new OutputStreamWriter(this.os);
         } else {
             try {
@@ -144,15 +139,14 @@ public class StreamHandler extends Handler {
         try {
             this.writer.write(s);
         } catch (Exception e) {
-            // logging.14=Exception occurred when writing to the output stream.
-            getErrorManager().error(Messages.getString("logging.14"), e, //$NON-NLS-1$
+            getErrorManager().error("Exception occurred when writing to the output stream", e,
                     ErrorManager.WRITE_FAILURE);
         }
     }
 
     /**
      * Sets the output stream this handler writes to. Note it does nothing else.
-     * 
+     *
      * @param newOs
      *            the new output stream
      */
@@ -165,17 +159,14 @@ public class StreamHandler extends Handler {
      * output stream, the tail string of the associated formatter will be
      * written to it. Then it will be flushed, closed and replaced with
      * {@code os}.
-     * 
+     *
      * @param os
      *            the new output stream.
-     * @throws SecurityException
-     *             if a security manager determines that the caller does not
-     *             have the required permission.
      * @throws NullPointerException
      *             if {@code os} is {@code null}.
      */
     protected void setOutputStream(OutputStream os) {
-        if (null == os) {
+        if (os == null) {
             throw new NullPointerException();
         }
         LogManager.getLogManager().checkAccess();
@@ -188,24 +179,20 @@ public class StreamHandler extends Handler {
     /**
      * Sets the character encoding used by this handler. A {@code null} value
      * indicates that the default encoding should be used.
-     * 
+     *
      * @param encoding
      *            the character encoding to set.
-     * @throws SecurityException
-     *             if a security manager determines that the caller does not
-     *             have the required permission.
      * @throws UnsupportedEncodingException
      *             if the specified encoding is not supported by the runtime.
      */
     @Override
-    public void setEncoding(String encoding) throws SecurityException,
-            UnsupportedEncodingException {
+    public void setEncoding(String encoding) throws UnsupportedEncodingException {
         // flush first before set new encoding
         this.flush();
         super.setEncoding(encoding);
         // renew writer only if the writer exists
-        if (null != this.writer) {
-            if (null == getEncoding()) {
+        if (this.writer != null) {
+            if (getEncoding() == null) {
                 this.writer = new OutputStreamWriter(this.os);
             } else {
                 try {
@@ -224,14 +211,14 @@ public class StreamHandler extends Handler {
     /**
      * Closes this handler, but the underlying output stream is only closed if
      * {@code closeStream} is {@code true}. Security is not checked.
-     * 
+     *
      * @param closeStream
      *            whether to close the underlying output stream.
      */
     void close(boolean closeStream) {
-        if (null != this.os) {
+        if (this.os != null) {
             if (this.writerNotInitialized) {
-                initializeWritter();
+                initializeWriter();
             }
             write(getFormatter().getTail(this));
             try {
@@ -242,8 +229,7 @@ public class StreamHandler extends Handler {
                     this.os = null;
                 }
             } catch (Exception e) {
-                // logging.15=Exception occurred when closing the output stream.
-                getErrorManager().error(Messages.getString("logging.15"), e, //$NON-NLS-1$
+                getErrorManager().error("Exception occurred when closing the output stream", e,
                         ErrorManager.CLOSE_FAILURE);
             }
         }
@@ -254,10 +240,6 @@ public class StreamHandler extends Handler {
      * this handler is written out. A flush operation and a subsequent close
      * operation is then performed upon the output stream. Client applications
      * should not use a handler after closing it.
-     * 
-     * @throws SecurityException
-     *             if a security manager determines that the caller does not
-     *             have the required permission.
      */
     @Override
     public void close() {
@@ -270,17 +252,15 @@ public class StreamHandler extends Handler {
      */
     @Override
     public void flush() {
-        if (null != this.os) {
+        if (this.os != null) {
             try {
-                if (null != this.writer) {
+                if (this.writer != null) {
                     this.writer.flush();
                 } else {
                     this.os.flush();
                 }
             } catch (Exception e) {
-                // logging.16=Exception occurred while flushing the output
-                // stream.
-                getErrorManager().error(Messages.getString("logging.16"), //$NON-NLS-1$
+                getErrorManager().error("Exception occurred when flushing the output stream",
                         e, ErrorManager.FLUSH_FAILURE);
             }
         }
@@ -297,7 +277,7 @@ public class StreamHandler extends Handler {
      * </ul>
      * If it is the first time a log record is written out, the head string of
      * the formatter associated with this handler is written out first.
-     * 
+     *
      * @param record
      *            the log record to be logged.
      */
@@ -306,22 +286,19 @@ public class StreamHandler extends Handler {
         try {
             if (this.isLoggable(record)) {
                 if (this.writerNotInitialized) {
-                    initializeWritter();
+                    initializeWriter();
                 }
                 String msg = null;
                 try {
                     msg = getFormatter().format(record);
                 } catch (Exception e) {
-                    // logging.17=Exception occurred while formatting the log
-                    // record.
-                    getErrorManager().error(Messages.getString("logging.17"), //$NON-NLS-1$
+                    getErrorManager().error("Exception occurred when formatting the log record",
                             e, ErrorManager.FORMAT_FAILURE);
                 }
                 write(msg);
             }
         } catch (Exception e) {
-            // logging.18=Exception occurred while logging the record.
-            getErrorManager().error(Messages.getString("logging.18"), e, //$NON-NLS-1$
+            getErrorManager().error("Exception occurred when logging the record", e,
                     ErrorManager.GENERIC_FAILURE);
         }
     }
@@ -341,10 +318,10 @@ public class StreamHandler extends Handler {
      */
     @Override
     public boolean isLoggable(LogRecord record) {
-        if (null == record) {
+        if (record == null) {
             return false;
         }
-        if (null != this.os && super.isLoggable(record)) {
+        if (this.os != null && super.isLoggable(record)) {
             return true;
         }
         return false;

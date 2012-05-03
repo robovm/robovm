@@ -27,7 +27,7 @@ public interface X509Extension {
     /**
      * Returns the set of OIDs of the extension(s) marked as CRITICAL, that this
      * implementation manages.
-     * 
+     *
      * @return the set of extension OIDs marked as CRITIAL, an empty set if none
      *         are marked as CRITICAL, or {@code null} if no extensions are
      *         present.
@@ -37,7 +37,7 @@ public interface X509Extension {
     /**
      * Returns the extension value as DER-encoded OCTET string for the specified
      * OID.
-     * 
+     *
      * @param oid
      *            the object identifier to get the extension value for.
      * @return the extension value as DER-encoded OCTET string, or {@code null}
@@ -48,7 +48,7 @@ public interface X509Extension {
     /**
      * Returns the set of OIDs of the extension(s) marked as NON-CRITICAL, that
      * this implementation manages.
-     * 
+     *
      * @return the set of extension OIDs marked as NON-CRITIAL, an empty set if
      *         none are marked as NON-.CRITICAL, or {@code null} if no
      *         extensions are present.
@@ -58,7 +58,7 @@ public interface X509Extension {
     /**
      * Returns whether this instance has an extension marked as CRITICAL that it
      * cannot support.
-     * 
+     *
      * @return {@code true} if an unsupported CRITICAL extension is present,
      *         {@code false} otherwise.
      */

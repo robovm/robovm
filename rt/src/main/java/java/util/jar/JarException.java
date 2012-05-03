@@ -31,7 +31,6 @@ public class JarException extends ZipException {
      * Constructs a new {@code JarException} instance.
      */
     public JarException() {
-        super();
     }
 
     /**

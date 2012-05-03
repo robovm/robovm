@@ -32,6 +32,5 @@ public abstract class SocketAddress implements Serializable {
      * Creates a new {@code SocketAddress} instance.
      */
     public SocketAddress() {
-        super();
     }
 }

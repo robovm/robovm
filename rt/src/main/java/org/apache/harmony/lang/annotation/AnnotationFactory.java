@@ -25,8 +25,6 @@ import java.lang.annotation.IncompleteAnnotationException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +68,7 @@ public final class AnnotationFactory implements InvocationHandler, Serializable 
             Method[] m = annotationType.getDeclaredMethods();
             desc = new AnnotationMember[m.length];
             int idx = 0;
-            for(Method element : m) {
+            for (Method element : m) {
                 String name = element.getName();
                 Class<?> type = element.getReturnType();
                 try {
@@ -215,14 +213,7 @@ public final class AnnotationFactory implements InvocationHandler, Serializable 
                 }
                 try {
                     if (!el.definingMethod.isAccessible()) {
-                        AccessController.doPrivileged(new PrivilegedAction<Object>(){
-                            public Object run() {
-                                try {
-                                    el.definingMethod.setAccessible(true);
-                                } catch (Exception ignore) {}
-                                return null;
-                            }
-                        });
+                        el.definingMethod.setAccessible(true);
                     }
                     Object otherValue = el.definingMethod.invoke(obj);
                     if (otherValue != null ) {
@@ -265,14 +256,18 @@ public final class AnnotationFactory implements InvocationHandler, Serializable 
      * @return string representation of this annotation
      */
     public String toString() {
-        String res = "@" + klazz.getName() + "(";
-        for(int i = 0; i < elements.length; i++) {
-            if ( i != 0 ) {
-                res += ", ";
+        StringBuilder result = new StringBuilder();
+        result.append('@');
+        result.append(klazz.getName());
+        result.append('(');
+        for (int i = 0; i < elements.length; ++i) {
+            if (i != 0) {
+                result.append(", ");
             }
-            res += elements[i].toString();;
+            result.append(elements[i]);
         }
-        return res + ")";
+        result.append(')');
+        return result.toString();
     }
 
     /**

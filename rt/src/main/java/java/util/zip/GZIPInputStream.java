@@ -20,16 +20,31 @@ package java.util.zip;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.apache.harmony.archive.internal.nls.Messages;
+import java.nio.ByteOrder;
+import java.util.Arrays;
+import libcore.io.Memory;
 
 /**
  * The {@code GZIPInputStream} class is used to read data stored in the GZIP
  * format, reading and decompressing GZIP data from the underlying stream into
  * its buffer.
+ *
+ * <h3>Example</h3>
+ * <p>Using {@code GZIPInputStream} is easier than {@link ZipInputStream}
+ * because GZIP is only for compression, and is not a container for multiple files.
+ * This code decompresses the data from a GZIP stream, similar to the {@code gunzip(1)} utility.
+ * <pre>
+ * InputStream is = ...
+ * GZIPInputStream zis = new GZIPInputStream(new BufferedInputStream(is));
+ * try {
+ *     // Reading from 'zis' gets you the uncompressed bytes...
+ *     processStream(zis);
+ * } finally {
+ *     zis.close();
+ * }
+ * </pre>
  */
 public class GZIPInputStream extends InflaterInputStream {
-
     private static final int FCOMMENT = 16;
 
     private static final int FEXTRA = 4;
@@ -41,7 +56,7 @@ public class GZIPInputStream extends InflaterInputStream {
     /**
      * The magic header for the GZIP format.
      */
-    public final static int GZIP_MAGIC = 0x8b1f;
+    public static final int GZIP_MAGIC = 0x8b1f;
 
     /**
      * The checksum algorithm used when handling uncompressed data.
@@ -81,8 +96,9 @@ public class GZIPInputStream extends InflaterInputStream {
         super(is, new Inflater(true), size);
         byte[] header = new byte[10];
         readFully(header, 0, header.length);
-        if (getShort(header, 0) != GZIP_MAGIC) {
-            throw new IOException(Messages.getString("archive.1F")); //$NON-NLS-1$;
+        short magic = Memory.peekShort(header, 0, ByteOrder.LITTLE_ENDIAN);
+        if (magic != (short) GZIP_MAGIC) {
+            throw new IOException(String.format("unknown format (magic number %x)", magic));
         }
         int flags = header[3];
         boolean hcrc = (flags & FHCRC) != 0;
@@ -94,7 +110,7 @@ public class GZIPInputStream extends InflaterInputStream {
             if (hcrc) {
                 crc.update(header, 0, 2);
             }
-            int length = getShort(header, 0);
+            int length = Memory.peekShort(header, 0, ByteOrder.LITTLE_ENDIAN) & 0xffff;
             while (length > 0) {
                 int max = length > buf.length ? buf.length : length;
                 int result = in.read(buf, 0, max);
@@ -115,9 +131,9 @@ public class GZIPInputStream extends InflaterInputStream {
         }
         if (hcrc) {
             readFully(header, 0, 2);
-            int crc16 = getShort(header, 0);
-            if ((crc.getValue() & 0xffff) != crc16) {
-                throw new IOException(Messages.getString("archive.20")); //$NON-NLS-1$
+            short crc16 = Memory.peekShort(header, 0, ByteOrder.LITTLE_ENDIAN);
+            if ((short) crc.getValue() != crc16) {
+                throw new IOException("CRC mismatch");
             }
             crc.reset();
         }
@@ -132,53 +148,29 @@ public class GZIPInputStream extends InflaterInputStream {
         super.close();
     }
 
-    private long getLong(byte[] buffer, int off) {
-        long l = 0;
-        l |= (buffer[off] & 0xFF);
-        l |= (buffer[off + 1] & 0xFF) << 8;
-        l |= (buffer[off + 2] & 0xFF) << 16;
-        l |= ((long) (buffer[off + 3] & 0xFF)) << 24;
-        return l;
-    }
-
-    private int getShort(byte[] buffer, int off) {
-        return (buffer[off] & 0xFF) | ((buffer[off + 1] & 0xFF) << 8);
-    }
-
     /**
      * Reads and decompresses GZIP data from the underlying stream into the
      * given buffer.
-     *
-     * @param buffer
-     *            Buffer to receive data
-     * @param off
-     *            Offset in buffer to store data
-     * @param nbytes
-     *            Number of bytes to read
      */
     @Override
-    public int read(byte[] buffer, int off, int nbytes) throws IOException {
+    public int read(byte[] buffer, int offset, int byteCount) throws IOException {
         if (closed) {
-            throw new IOException(Messages.getString("archive.1E")); //$NON-NLS-1$
+            throw new IOException("Stream is closed");
         }
         if (eos) {
             return -1;
         }
-        // avoid int overflow, check null buffer
-        if (off > buffer.length || nbytes < 0 || off < 0
-                || buffer.length - off < nbytes) {
-            throw new ArrayIndexOutOfBoundsException();
-        }
+        Arrays.checkOffsetAndCount(buffer.length, offset, byteCount);
 
         int bytesRead;
         try {
-            bytesRead = super.read(buffer, off, nbytes);
+            bytesRead = super.read(buffer, offset, byteCount);
         } finally {
             eos = eof; // update eos after every read(), even when it throws
         }
 
         if (bytesRead != -1) {
-            crc.update(buffer, off, bytesRead);
+            crc.update(buffer, offset, bytesRead);
         }
 
         if (eos) {
@@ -198,16 +190,15 @@ public class GZIPInputStream extends InflaterInputStream {
         System.arraycopy(buf, len - size, b, 0, copySize);
         readFully(b, copySize, trailerSize - copySize);
 
-        if (getLong(b, 0) != crc.getValue()) {
-            throw new IOException(Messages.getString("archive.20")); //$NON-NLS-1$
+        if (Memory.peekInt(b, 0, ByteOrder.LITTLE_ENDIAN) != (int) crc.getValue()) {
+            throw new IOException("CRC mismatch");
         }
-        if ((int) getLong(b, 4) != inf.getTotalOut()) {
-            throw new IOException(Messages.getString("archive.21")); //$NON-NLS-1$
+        if (Memory.peekInt(b, 4, ByteOrder.LITTLE_ENDIAN) != inf.getTotalOut()) {
+            throw new IOException("Size mismatch");
         }
     }
 
-    private void readFully(byte[] buffer, int offset, int length)
-            throws IOException {
+    private void readFully(byte[] buffer, int offset, int length) throws IOException {
         int result;
         while (length > 0) {
             result = in.read(buffer, offset, length);

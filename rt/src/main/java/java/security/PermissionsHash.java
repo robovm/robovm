@@ -20,8 +20,6 @@ package java.security;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
  * A default {@code PermissionCollection} implementation that uses a hashtable.
  * Each hashtable entry stores a Permission object as both the key and the

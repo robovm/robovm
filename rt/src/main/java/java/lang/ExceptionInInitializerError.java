@@ -37,7 +37,7 @@ public class ExceptionInInitializerError extends LinkageError {
     /**
      * Constructs a new {@code ExceptionInInitializerError} with the current
      * stack trace and the specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this error.
      */
@@ -50,7 +50,7 @@ public class ExceptionInInitializerError extends LinkageError {
      * Constructs a new {@code ExceptionInInitializerError} with the current
      * stack trace and the specified cause. The exception should be the one
      * which originally occurred in the class initialization code.
-     * 
+     *
      * @param exception
      *            the exception that caused this error.
      */
@@ -61,7 +61,7 @@ public class ExceptionInInitializerError extends LinkageError {
 
     /**
      * Returns the exception that is the cause of this error.
-     * 
+     *
      * @return the exception that caused this error.
      */
     public Throwable getException() {
@@ -70,7 +70,7 @@ public class ExceptionInInitializerError extends LinkageError {
 
     /**
      * Returns the cause of this error, or {@code null} if there is no cause.
-     * 
+     *
      * @return the exception that caused this error.
      */
     @Override

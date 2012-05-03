@@ -22,8 +22,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
  * This class defines the <i>Service Provider Interface</i> (<b>SPI</b>) for the
  * {@code CertificateFactory} class. This SPI must be implemented for each
@@ -41,7 +39,7 @@ public abstract class CertificateFactorySpi {
     /**
      * Generates and initializes a {@code Certificate} from the provided input
      * stream.
-     * 
+     *
      * @param inStream
      *            the stream from which the data is read to create the
      *            certificate.
@@ -55,20 +53,20 @@ public abstract class CertificateFactorySpi {
     /**
      * Generates and initializes a collection of certificates from the provided
      * input stream.
-     * 
+     *
      * @param inStream
      *            the stream from where data is read to create the certificates.
      * @return a collection of certificates.
      * @exception CertificateException
      *                if parsing problems are detected.
      */
-    public abstract Collection<? extends Certificate> 
+    public abstract Collection<? extends Certificate>
         engineGenerateCertificates(InputStream inStream) throws CertificateException;
 
     /**
      * Generates and initializes a <i>Certificate Revocation List</i> (CRL) from
      * the provided input stream.
-     * 
+     *
      * @param inStream
      *            the stream from where data is read to create the CRL.
      * @return an CRL instance.
@@ -81,20 +79,20 @@ public abstract class CertificateFactorySpi {
     /**
      * Generates and initializes a collection of <i>Certificate Revocation
      * List</i> (CRL) from the provided input stream.
-     * 
+     *
      * @param inStream
      *            the stream from which the data is read to create the CRLs.
      * @return a collection of CRLs.
      * @exception CRLException
      *                if parsing problems are detected.
      */
-    public abstract Collection<? extends CRL> 
+    public abstract Collection<? extends CRL>
         engineGenerateCRLs(InputStream inStream) throws CRLException;
 
     /**
      * Generates a {@code CertPath} from the provided {@code InputStream}. The
      * default encoding scheme is applied.
-     * 
+     *
      * @param inStream
      *            an input stream with encoded data.
      * @return a {@code CertPath} initialized from the provided data.
@@ -103,14 +101,13 @@ public abstract class CertificateFactorySpi {
      */
     public CertPath engineGenerateCertPath(InputStream inStream)
             throws CertificateException {
-        throw new UnsupportedOperationException(
-                Messages.getString("security.70")); //$NON-NLS-1$
+        throw new UnsupportedOperationException();
     }
 
     /**
      * Generates a {@code CertPath} from the provided {@code
      * InputStream} in the specified encoding.
-     * 
+     *
      * @param inStream
      *            an input stream containing certificate path data in specified
      *            encoding.
@@ -124,14 +121,13 @@ public abstract class CertificateFactorySpi {
      */
     public CertPath engineGenerateCertPath(InputStream inStream, String encoding)
             throws CertificateException {
-        throw new UnsupportedOperationException(
-                Messages.getString("security.71")); //$NON-NLS-1$
+        throw new UnsupportedOperationException();
     }
 
     /**
      * Generates a {@code CertPath} from the provided list of certificates. The
      * encoding is the default encoding.
-     * 
+     *
      * @param certificates
      *            the list containing certificates in a format supported by the
      *            {@code CertificateFactory}.
@@ -141,21 +137,19 @@ public abstract class CertificateFactorySpi {
      * @throws UnsupportedOperationException
      *             if the provider does not implement this method.
      */
-    public CertPath engineGenerateCertPath(List<? extends Certificate>  certificates) 
+    public CertPath engineGenerateCertPath(List<? extends Certificate>  certificates)
             throws CertificateException {
-        throw new UnsupportedOperationException(
-                Messages.getString("security.72")); //$NON-NLS-1$
+        throw new UnsupportedOperationException();
     }
 
     /**
      * Returns an {@code Iterator} over the supported {@code CertPath} encodings
      * (as Strings). The first element is the default encoding.
-     * 
+     *
      * @return an iterator over supported {@code CertPath} encodings (as
      *         Strings).
      */
     public Iterator<String> engineGetCertPathEncodings() {
-        throw new UnsupportedOperationException(
-                Messages.getString("security.73")); //$NON-NLS-1$
+        throw new UnsupportedOperationException();
     }
 }

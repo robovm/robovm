@@ -17,17 +17,14 @@
 
 package javax.net.ssl;
 
-import java.security.AccessController;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.PrivilegedAction;
 import java.security.Provider;
 import java.security.Security;
 import java.security.UnrecoverableKeyException;
-
 import org.apache.harmony.security.fortress.Engine;
 
 /**
@@ -38,7 +35,7 @@ public class KeyManagerFactory {
     private static final String SERVICE = "KeyManagerFactory";
 
     // Used to access common engine functionality
-    private static Engine engine = new Engine(SERVICE);
+    private static final Engine ENGINE = new Engine(SERVICE);
 
     // Store default property name
     private static final String PROPERTY_NAME = "ssl.KeyManagerFactory.algorithm";
@@ -52,11 +49,7 @@ public class KeyManagerFactory {
      * @return the default algorithm name.
      */
     public static final String getDefaultAlgorithm() {
-        return AccessController.doPrivileged(new PrivilegedAction<String>() {
-            public String run() {
-                return Security.getProperty(PROPERTY_NAME);
-            }
-        });
+        return Security.getProperty(PROPERTY_NAME);
     }
 
     /**
@@ -77,11 +70,8 @@ public class KeyManagerFactory {
         if (algorithm == null) {
             throw new NullPointerException("algorithm is null");
         }
-        synchronized (engine) {
-            engine.getInstance(algorithm, null);
-            return new KeyManagerFactory((KeyManagerFactorySpi) engine.spi, engine.provider,
-                    algorithm);
-        }
+        Engine.SpiAndProvider sap = ENGINE.getInstance(algorithm, null);
+        return new KeyManagerFactory((KeyManagerFactorySpi) sap.spi, sap.provider, algorithm);
     }
 
     /**
@@ -139,10 +129,8 @@ public class KeyManagerFactory {
         if (algorithm == null) {
             throw new NullPointerException("algorithm is null");
         }
-        synchronized (engine) {
-            engine.getInstance(algorithm, provider, null);
-            return new KeyManagerFactory((KeyManagerFactorySpi) engine.spi, provider, algorithm);
-        }
+        Object spi = ENGINE.getInstance(algorithm, provider, null);
+        return new KeyManagerFactory((KeyManagerFactorySpi) spi, provider, algorithm);
     }
 
     // Store used provider
@@ -164,8 +152,8 @@ public class KeyManagerFactory {
      * @param algorithm
      *            the key management algorithm name.
      */
-    protected KeyManagerFactory(KeyManagerFactorySpi factorySpi, Provider provider, String algorithm) {
-        super();
+    protected KeyManagerFactory(KeyManagerFactorySpi factorySpi, Provider provider,
+                                String algorithm) {
         this.provider = provider;
         this.algorithm = algorithm;
         this.spiImpl = factorySpi;
@@ -217,7 +205,8 @@ public class KeyManagerFactory {
      * @throws InvalidAlgorithmParameterException
      *             if an error occurs.
      */
-    public final void init(ManagerFactoryParameters spec) throws InvalidAlgorithmParameterException {
+    public final void init(ManagerFactoryParameters spec)
+            throws InvalidAlgorithmParameterException {
         spiImpl.engineInit(spec);
     }
 

@@ -19,14 +19,14 @@ package java.security.spec;
 
 /**
  * The key specification for an encoded private key in ASN.1 format as defined
- * in the PKCS#8 standard.  
+ * in the PKCS#8 standard.
  */
-public class PKCS8EncodedKeySpec extends EncodedKeySpec {    
+public class PKCS8EncodedKeySpec extends EncodedKeySpec {
 
     /**
      * Creates a new {@code PKCS8EncodedKeySpec} with the specified encoded key
      * bytes.
-     * 
+     *
      * @param encodedKey
      *            the encoded key bytes.
      */
@@ -37,7 +37,7 @@ public class PKCS8EncodedKeySpec extends EncodedKeySpec {
 
     /**
      * Returns a copy of the encoded key bytes.
-     * 
+     *
      * @return a copy of the encoded key bytes.
      */
     public byte[] getEncoded() {
@@ -48,10 +48,10 @@ public class PKCS8EncodedKeySpec extends EncodedKeySpec {
     /**
      * Returns the name of the encoding format of this encoded key
      * specification.
-     * 
+     *
      * @return the string "PKCS#8".
      */
     public final String getFormat() {
-        return "PKCS#8"; //$NON-NLS-1$
+        return "PKCS#8";
     }
 }

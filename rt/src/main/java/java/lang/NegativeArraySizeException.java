@@ -35,7 +35,7 @@ public class NegativeArraySizeException extends RuntimeException {
     /**
      * Constructs a new {@code NegativeArraySizeException} with the current
      * stack trace and the specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

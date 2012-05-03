@@ -25,7 +25,7 @@ public class X509EncodedKeySpec extends EncodedKeySpec {
     /**
      * Creates a new {@code X509EncodedKeySpec} with the specified encoded key
      * bytes.
-     * 
+     *
      * @param encodedKey
      *            the encoded key bytes.
      */
@@ -36,7 +36,7 @@ public class X509EncodedKeySpec extends EncodedKeySpec {
 
     /**
      * Returns the encoded key bytes.
-     * 
+     *
      * @return the encoded key bytes.
      */
     public byte[] getEncoded() {
@@ -47,10 +47,10 @@ public class X509EncodedKeySpec extends EncodedKeySpec {
     /**
      * Returns the name of the encoding format of this encoded key
      * specification.
-     * 
+     *
      * @return the string "X.509".
      */
     public final String getFormat() {
-        return "X.509"; //$NON-NLS-1$
+        return "X.509";
     }
 }

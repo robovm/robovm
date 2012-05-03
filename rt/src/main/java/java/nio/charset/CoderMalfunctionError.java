@@ -31,7 +31,7 @@ public class CoderMalfunctionError extends Error {
 
     /**
      * Constructs a new {@code CoderMalfunctionError}.
-     * 
+     *
      * @param ex
      *            the original exception thrown by the encoder/decoder.
      */

@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,10 +16,11 @@
 
 package java.nio;
 
-import org.apache.harmony.luni.platform.IMemorySystem;
-import org.apache.harmony.luni.platform.MappedPlatformAddress;
-import org.apache.harmony.luni.platform.PlatformAddress;
-import org.apache.harmony.nio.internal.DirectBuffer;
+import java.nio.channels.FileChannel.MapMode;
+import libcore.io.ErrnoException;
+import libcore.io.Libcore;
+import libcore.io.Memory;
+import static libcore.io.OsConstants.*;
 
 /**
  * {@code MappedByteBuffer} is a special kind of direct byte buffer which maps a
@@ -37,35 +38,70 @@ import org.apache.harmony.nio.internal.DirectBuffer;
  */
 public abstract class MappedByteBuffer extends ByteBuffer {
 
-    // This is the base address of the direct byte buffer memory.
-    protected PlatformAddress address;
+    final DirectByteBuffer wrapped;
 
-    protected int mapMode;
+    private final MapMode mapMode;
 
-    MappedByteBuffer(int capacity) {
-        super(capacity);
+    MappedByteBuffer(ByteBuffer directBuffer) {
+        super(directBuffer.capacity, directBuffer.block);
+        if (!directBuffer.isDirect()) {
+            throw new IllegalArgumentException();
+        }
+        this.wrapped = (DirectByteBuffer) directBuffer;
+        this.mapMode = null;
+    }
+
+    MappedByteBuffer(MemoryBlock block, int capacity, int offset, MapMode mapMode) {
+        super(capacity, block);
+        this.mapMode = mapMode;
+        if (mapMode == MapMode.READ_ONLY) {
+            wrapped = new ReadOnlyDirectByteBuffer(block, capacity, offset);
+        } else {
+            wrapped = new ReadWriteDirectByteBuffer(block, capacity, offset);
+        }
     }
 
     /**
-     * Indicates whether this buffer's content is loaded. If the result is true
-     * there is a high probability that the whole buffer memory is currently
-     * loaded in RAM. If it is false it is unsure if it is loaded or not.
-     * 
-     * @return {@code true} if this buffer's content is loaded, {@code false}
-     *         otherwise.
+     * Returns true if there is a high probability that every page of this buffer is currently
+     * loaded in RAM, meaning that accesses will not cause a page fault. It is impossible to give
+     * a strong guarantee since this is only a snapshot of a dynamic situation.
      */
     public final boolean isLoaded() {
-        return ((MappedPlatformAddress)address).mmapIsLoaded();
+        long address = block.toInt();
+        long size = block.getSize();
+        if (size == 0) {
+            return true;
+        }
+
+        try {
+            int pageSize = (int) Libcore.os.sysconf(_SC_PAGE_SIZE);
+            int pageOffset = (int) (address % pageSize);
+            address -= pageOffset;
+            size += pageOffset;
+            int pageCount = (int) ((size + pageSize - 1) / pageSize);
+            byte[] vector = new byte[pageCount];
+            Libcore.os.mincore(address, size, vector);
+            for (int i = 0; i < vector.length; ++i) {
+                if ((vector[i] & 1) != 1) {
+                    return false;
+                }
+            }
+            return true;
+        } catch (ErrnoException errnoException) {
+            return false;
+        }
     }
 
     /**
-     * Loads this buffer's content into memory but it is not guaranteed to
-     * succeed.
-     * 
+     * Attempts to load every page of this buffer into RAM. See {@link #isLoaded}.
      * @return this buffer.
      */
     public final MappedByteBuffer load() {
-        ((MappedPlatformAddress)address).mmapLoad();
+        try {
+            Libcore.os.mlock(block.toInt(), block.getSize());
+            Libcore.os.munlock(block.toInt(), block.getSize());
+        } catch (ErrnoException ignored) {
+        }
         return this;
     }
 
@@ -74,12 +110,18 @@ public abstract class MappedByteBuffer extends ByteBuffer {
      * is stored on a local device, it is guaranteed that the changes are
      * written to the file. No such guarantee is given if the file is located on
      * a remote device.
-     * 
+     *
      * @return this buffer.
      */
     public final MappedByteBuffer force() {
-        if (mapMode == IMemorySystem.MMAP_READ_WRITE) {
-            ((MappedPlatformAddress)address).mmapFlush();
+        if (mapMode == MapMode.READ_WRITE) {
+            try {
+                Libcore.os.msync(block.toInt(), block.getSize(), MS_SYNC);
+            } catch (ErrnoException errnoException) {
+                // The RI doesn't throw, presumably on the assumption that you can't get into
+                // a state where msync(2) could return an error.
+                throw new AssertionError(errnoException);
+            }
         }
         return this;
     }

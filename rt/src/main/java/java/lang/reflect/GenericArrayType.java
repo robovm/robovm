@@ -20,7 +20,7 @@ package java.lang.reflect;
 /**
  * This interface represents an array type with a component type that is either
  * a parameterized type or a type variable.
- * 
+ *
  * @since 1.5
  */
 public interface GenericArrayType extends Type {

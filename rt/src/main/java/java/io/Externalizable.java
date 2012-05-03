@@ -24,7 +24,7 @@ package java.io;
 public interface Externalizable extends Serializable {
     /**
      * Reads the next object from the ObjectInput <code>input</code>.
-     * 
+     *
      * @param input
      *            the ObjectInput from which the next object is read.
      * @throws IOException
@@ -37,7 +37,7 @@ public interface Externalizable extends Serializable {
 
     /**
      * Writes the receiver to the ObjectOutput <code>output</code>.
-     * 
+     *
      * @param output
      *            the ObjectOutput to write the object to.
      * @throws IOException

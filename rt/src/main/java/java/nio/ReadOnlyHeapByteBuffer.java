@@ -27,17 +27,16 @@ package java.nio;
  * <p>
  * This class is marked final for runtime performance.
  * </p>
- * 
+ *
  */
 final class ReadOnlyHeapByteBuffer extends HeapByteBuffer {
 
     static ReadOnlyHeapByteBuffer copy(HeapByteBuffer other, int markOfOther) {
-        ReadOnlyHeapByteBuffer buf = new ReadOnlyHeapByteBuffer(
-                other.backingArray, other.capacity(), other.offset);
-        buf.limit = other.limit();
+        ReadOnlyHeapByteBuffer buf =
+                new ReadOnlyHeapByteBuffer(other.backingArray, other.capacity(), other.offset);
+        buf.limit = other.limit;
         buf.position = other.position();
         buf.mark = markOfOther;
-        buf.order(other.order());
         return buf;
     }
 
@@ -47,7 +46,7 @@ final class ReadOnlyHeapByteBuffer extends HeapByteBuffer {
 
     @Override
     public ByteBuffer asReadOnlyBuffer() {
-        return copy(this, mark);
+        return ReadOnlyHeapByteBuffer.copy(this, mark);
     }
 
     @Override
@@ -91,7 +90,7 @@ final class ReadOnlyHeapByteBuffer extends HeapByteBuffer {
     }
 
     @Override
-    public ByteBuffer put(byte[] src, int off, int len) {
+    public ByteBuffer put(byte[] src, int srcOffset, int byteCount) {
         throw new ReadOnlyBufferException();
     }
 
@@ -152,9 +151,6 @@ final class ReadOnlyHeapByteBuffer extends HeapByteBuffer {
 
     @Override
     public ByteBuffer slice() {
-        ReadOnlyHeapByteBuffer slice = new ReadOnlyHeapByteBuffer(backingArray,
-                remaining(), offset + position);
-        slice.order = order;
-        return slice;
+        return new ReadOnlyHeapByteBuffer(backingArray, remaining(), offset + position);
     }
 }

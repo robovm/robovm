@@ -17,8 +17,6 @@
 
 package java.nio.charset;
 
-import org.apache.harmony.niochar.internal.nls.Messages;
-
 /**
  * An {@code IllegalCharsetNameException} is thrown when an illegal charset name
  * is encountered.
@@ -37,22 +35,19 @@ public class IllegalCharsetNameException extends IllegalArgumentException {
     /**
      * Constructs a new {@code IllegalCharsetNameException} with the supplied
      * charset name.
-     * 
-     * @param charset
+     *
+     * @param charsetName
      *            the encountered illegal charset name.
      */
-    public IllegalCharsetNameException(String charset) {
-        // niochar.0F=The illegal charset name is "{0}".
-        super(Messages.getString("niochar.0F", charset)); //$NON-NLS-1$
-        this.charsetName = charset;
+    public IllegalCharsetNameException(String charsetName) {
+        super((charsetName != null) ? charsetName : "null");
+        this.charsetName = charsetName;
     }
 
     /**
-     * Gets the encountered illegal charset name.
-     * 
-     * @return the encountered illegal charset name.
+     * Returns the encountered illegal charset name.
      */
     public String getCharsetName() {
-        return this.charsetName;
+        return charsetName;
     }
 }

@@ -22,7 +22,7 @@ package java.lang;
  * {@code Error} is the superclass of all classes that represent unrecoverable
  * errors. When errors are thrown, they should not be caught by application
  * code.
- * 
+ *
  * @see Throwable
  * @see Exception
  * @see RuntimeException
@@ -40,7 +40,7 @@ public class Error extends Throwable {
     /**
      * Constructs a new {@code Error} with the current stack trace and the
      * specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this error.
      */
@@ -51,7 +51,7 @@ public class Error extends Throwable {
     /**
      * Constructs a new {@code Error} with the current stack trace, the
      * specified detail message and the specified cause.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this error.
      * @param throwable
@@ -64,7 +64,7 @@ public class Error extends Throwable {
     /**
      * Constructs a new {@code Error} with the current stack trace and the
      * specified cause.
-     * 
+     *
      * @param throwable
      *            the cause of this error.
      */

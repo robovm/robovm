@@ -27,22 +27,20 @@ package java.nio;
  * <p>
  * This class is marked final for runtime performance.
  * </p>
- * 
+ *
  */
 final class ReadOnlyDoubleArrayBuffer extends DoubleArrayBuffer {
 
-    static ReadOnlyDoubleArrayBuffer copy(DoubleArrayBuffer other,
-            int markOfOther) {
-        ReadOnlyDoubleArrayBuffer buf = new ReadOnlyDoubleArrayBuffer(other
-                .capacity(), other.backingArray, other.offset);
-        buf.limit = other.limit();
+    static ReadOnlyDoubleArrayBuffer copy(DoubleArrayBuffer other, int markOfOther) {
+        ReadOnlyDoubleArrayBuffer buf =
+                new ReadOnlyDoubleArrayBuffer(other.capacity(), other.backingArray, other.offset);
+        buf.limit = other.limit;
         buf.position = other.position();
         buf.mark = markOfOther;
         return buf;
     }
 
-    ReadOnlyDoubleArrayBuffer(int capacity, double[] backingArray,
-            int arrayOffset) {
+    ReadOnlyDoubleArrayBuffer(int capacity, double[] backingArray, int arrayOffset) {
         super(capacity, backingArray, arrayOffset);
     }
 
@@ -92,7 +90,7 @@ final class ReadOnlyDoubleArrayBuffer extends DoubleArrayBuffer {
     }
 
     @Override
-    public final DoubleBuffer put(double[] src, int off, int len) {
+    public final DoubleBuffer put(double[] src, int srcOffset, int byteCount) {
         throw new ReadOnlyBufferException();
     }
 
@@ -103,8 +101,7 @@ final class ReadOnlyDoubleArrayBuffer extends DoubleArrayBuffer {
 
     @Override
     public DoubleBuffer slice() {
-        return new ReadOnlyDoubleArrayBuffer(remaining(), backingArray, offset
-                + position);
+        return new ReadOnlyDoubleArrayBuffer(remaining(), backingArray, offset + position);
     }
 
 }

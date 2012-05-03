@@ -18,37 +18,31 @@
 package java.util.jar;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CoderResult;
+import java.nio.charset.Charsets;
 import java.util.Map;
 
-import org.apache.harmony.archive.internal.nls.Messages;
-import org.apache.harmony.luni.util.ThreadLocalCache;
-
+/**
+ * Reads a JAR file manifest. The specification is here:
+ * http://java.sun.com/javase/6/docs/technotes/guides/jar/jar.html
+ */
 class InitManifest {
-
-    private byte[] buf;
+    private final byte[] buf;
 
     private int pos;
 
-    Attributes.Name name;
+    private Attributes.Name name;
 
-    String value;
+    private String value;
 
-    CharsetDecoder decoder = ThreadLocalCache.utf8Decoder.get();
-    CharBuffer cBuf = ThreadLocalCache.charBuffer.get();
+    private final UnsafeByteSequence valueBuffer = new UnsafeByteSequence(80);
+    private int consecutiveLineBreaks = 0;
 
-    InitManifest(byte[] buf, Attributes main, Attributes.Name ver)
-            throws IOException {
-
+    InitManifest(byte[] buf, Attributes main, Attributes.Name ver) throws IOException {
         this.buf = buf;
 
         // check a version attribute
         if (!readHeader() || (ver != null && !name.equals(ver))) {
-            throw new IOException(Messages.getString(
-                    "archive.2D", ver)); //$NON-NLS-1$
+            throw new IOException("Missing version attribute: " + ver);
         }
 
         main.put(name, value);
@@ -63,7 +57,7 @@ class InitManifest {
         int mark = pos;
         while (readHeader()) {
             if (!Attributes.Name.NAME.equals(name)) {
-                throw new IOException(Messages.getString("archive.23")); //$NON-NLS-1$
+                throw new IOException("Entry is not named");
             }
             String entryNameValue = value;
 
@@ -84,7 +78,7 @@ class InitManifest {
                     // this: either use a list of chunks, or decide on used
                     // signature algorithm in advance and reread the chunks while
                     // updating the signature; for now a defensive error is thrown
-                    throw new IOException(Messages.getString("archive.34")); //$NON-NLS-1$
+                    throw new IOException("A jar verifier does not support more than one entry with the same name");
                 }
                 chunks.put(entryNameValue, new Manifest.Chunk(mark, pos));
                 mark = pos;
@@ -99,124 +93,84 @@ class InitManifest {
     }
 
     /**
-     * Number of subsequent line breaks.
-     */
-    int linebreak = 0;
-
-    /**
      * Read a single line from the manifest buffer.
      */
     private boolean readHeader() throws IOException {
-        if (linebreak > 1) {
+        if (consecutiveLineBreaks > 1) {
             // break a section on an empty line
-            linebreak = 0;
+            consecutiveLineBreaks = 0;
             return false;
         }
         readName();
-        linebreak = 0;
+        consecutiveLineBreaks = 0;
         readValue();
         // if the last line break is missed, the line
         // is ignored by the reference implementation
-        return linebreak > 0;
-    }
-
-    private byte[] wrap(int mark, int pos) {
-        byte[] buffer = new byte[pos - mark];
-        System.arraycopy(buf, mark, buffer, 0, pos - mark);
-        return buffer;
+        return consecutiveLineBreaks > 0;
     }
 
     private void readName() throws IOException {
-        int i = 0;
         int mark = pos;
 
         while (pos < buf.length) {
-            byte b = buf[pos++];
-
-            if (b == ':') {
-                byte[] nameBuffer = wrap(mark, pos - 1);
-
-                if (buf[pos++] != ' ') {
-                    throw new IOException(Messages.getString(
-                            "archive.30", nameBuffer)); //$NON-NLS-1$
-                }
-
-                name = new Attributes.Name(nameBuffer);
-                return;
+            if (buf[pos++] != ':') {
+                continue;
             }
 
-            if (!((b >= 'a' && b <= 'z') || (b >= 'A' && b <= 'Z') || b == '_'
-                    || b == '-' || (b >= '0' && b <= '9'))) {
-                throw new IOException(Messages.getString("archive.30", b)); //$NON-NLS-1$
+            String name = new String(buf, mark, pos - mark - 1, Charsets.US_ASCII);
+
+            if (buf[pos++] != ' ') {
+                throw new IOException(String.format("Invalid value for attribute '%s'", name));
             }
-        }
-        if (i > 0) {
-            throw new IOException(Messages.getString(
-                    "archive.30", wrap(mark, buf.length))); //$NON-NLS-1$
+
+            try {
+                this.name = new Attributes.Name(name);
+            } catch (IllegalArgumentException e) {
+                // new Attributes.Name() throws IllegalArgumentException but we declare IOException
+                throw new IOException(e.getMessage());
+            }
+            return;
         }
     }
 
     private void readValue() throws IOException {
-        byte next;
         boolean lastCr = false;
         int mark = pos;
         int last = pos;
-
-        decoder.reset();
-        cBuf.clear();
-
+        valueBuffer.rewind();
         while (pos < buf.length) {
-            next = buf[pos++];
-
+            byte next = buf[pos++];
             switch (next) {
             case 0:
-                throw new IOException(Messages.getString("archive.2F")); //$NON-NLS-1$
+                throw new IOException("NUL character in a manifest");
             case '\n':
                 if (lastCr) {
                     lastCr = false;
                 } else {
-                    linebreak++;
+                    consecutiveLineBreaks++;
                 }
                 continue;
             case '\r':
                 lastCr = true;
-                linebreak++;
+                consecutiveLineBreaks++;
                 continue;
             case ' ':
-                if (linebreak == 1) {
-                    decode(mark, last, false);
+                if (consecutiveLineBreaks == 1) {
+                    valueBuffer.write(buf, mark, last - mark);
                     mark = pos;
-                    linebreak = 0;
+                    consecutiveLineBreaks = 0;
                     continue;
                 }
             }
 
-            if (linebreak >= 1) {
+            if (consecutiveLineBreaks >= 1) {
                 pos--;
                 break;
             }
             last = pos;
         }
 
-        decode(mark, last, true);
-        while (CoderResult.OVERFLOW == decoder.flush(cBuf)) {
-            enlargeBuffer();
-        }
-        value = new String(cBuf.array(), cBuf.arrayOffset(), cBuf.position());
-    }
-
-    private void decode(int mark, int pos, boolean endOfInput)
-            throws IOException {
-        ByteBuffer bBuf = ByteBuffer.wrap(buf, mark, pos - mark);
-        while (CoderResult.OVERFLOW == decoder.decode(bBuf, cBuf, endOfInput)) {
-            enlargeBuffer();
-        }
-    }
-
-    private void enlargeBuffer() {
-        CharBuffer newBuf = CharBuffer.allocate(cBuf.capacity() * 2);
-        newBuf.put(cBuf.array(), cBuf.arrayOffset(), cBuf.position());
-        cBuf = newBuf;
-        ThreadLocalCache.charBuffer.set(cBuf);
+        valueBuffer.write(buf, mark, last - mark);
+        value = valueBuffer.toString(Charsets.UTF_8);
     }
 }

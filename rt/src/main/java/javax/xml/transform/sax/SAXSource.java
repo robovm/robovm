@@ -21,21 +21,20 @@ package javax.xml.transform.sax;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
-
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
 /**
  * <p>Acts as an holder for SAX-style Source.</p>
- * 
+ *
  * <p>Note that XSLT requires namespace support. Attempting to transform an
  * input source that is not
  * generated with a namespace-aware parser may result in errors.
  * Parsers can be made namespace aware by calling the
  * {@link javax.xml.parsers.SAXParserFactory#setNamespaceAware(boolean awareness)} method.</p>
- * 
+ *
  * @author <a href="mailto:Jeff.Suttor@Sun.com">Jeff Suttor</a>
- * @version $Revision: 446598 $, $Date: 2006-09-15 08:55:40 -0400 (Fri, 15 Sep 2006) $
+ * @version $Revision: 446598 $, $Date: 2006-09-15 05:55:40 -0700 (Fri, 15 Sep 2006) $
  */
 public class SAXSource implements Source {
 

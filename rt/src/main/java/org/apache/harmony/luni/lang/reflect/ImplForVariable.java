@@ -23,14 +23,12 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 
 
-public final class ImplForVariable<D extends GenericDeclaration>
-        implements TypeVariable<D> {
+public final class ImplForVariable<D extends GenericDeclaration> implements TypeVariable<D> {
     private ImplForVariable<D> formalVar;
     private final GenericDeclaration declOfVarUser;
     private final String name;
     private D genericDeclaration;
     private ListOfTypes bounds;
-
 
     @Override
     public boolean equals(Object o) {
@@ -52,7 +50,6 @@ public final class ImplForVariable<D extends GenericDeclaration>
      * @param genericDecl declaration where a type variable is declared
      * @param name type variable name
      * @param bounds class and interface bounds
-     * @api2vm
      */
     ImplForVariable(D genericDecl, String name, ListOfTypes bounds) {
         this.genericDeclaration = genericDecl;
@@ -65,7 +62,6 @@ public final class ImplForVariable<D extends GenericDeclaration>
     /**
      * @param genericDecl declaration where a type variable is used
      * @param name type variable name
-     * @api2vm
      */
     ImplForVariable(D genericDecl, String name) {
         this.name = name;
@@ -83,46 +79,43 @@ public final class ImplForVariable<D extends GenericDeclaration>
         return null;
     }
 
-    static GenericDeclaration nextLayer(GenericDeclaration decl) {
-            if (decl instanceof Class) {
-                // FIXME: Is the following hierarchy correct?:
-                Class cl = (Class)decl;
-                decl = cl.getEnclosingMethod();
-                if (decl != null) {
-                    return decl;
-                }
-                decl = cl.getEnclosingConstructor();
-                if (decl != null) {
-                    return decl;
-                }
-                return cl.getEnclosingClass();
-            } else if (decl instanceof Method) {
-                return ((Method)decl).getDeclaringClass();
-            } else if (decl instanceof Constructor) {
-                return ((Constructor)decl).getDeclaringClass();
+    private static GenericDeclaration nextLayer(GenericDeclaration decl) {
+        if (decl instanceof Class) {
+            // FIXME: Is the following hierarchy correct?:
+            Class cl = (Class)decl;
+            decl = cl.getEnclosingMethod();
+            if (decl != null) {
+                return decl;
             }
-            throw new RuntimeException("unknown GenericDeclaration2: "
-                    + decl.toString());
+            decl = cl.getEnclosingConstructor();
+            if (decl != null) {
+                return decl;
+            }
+            return cl.getEnclosingClass();
+        } else if (decl instanceof Method) {
+            return ((Method)decl).getDeclaringClass();
+        } else if (decl instanceof Constructor) {
+            return ((Constructor)decl).getDeclaringClass();
+        } else {
+            throw new AssertionError();
+        }
     }
 
     void resolve() {
-        if (formalVar == null) {
-            GenericDeclaration curLayer = declOfVarUser;
-            TypeVariable var = null;
-            do {
-                var = findFormalVar(curLayer, name);
-                if (var != null) break;
-                else {
-                    curLayer = nextLayer(curLayer);
-                    if (curLayer == null) break; // FIXME: SHOULD NEVER HAPPEN!
-                                                 // throw exception: illegal
-                                                 // type variable reference.
-                }
-            } while (true);
-            formalVar = (ImplForVariable<D>)var;
-            this.genericDeclaration = formalVar.genericDeclaration;
-            this.bounds = formalVar.bounds;
+        if (formalVar != null) {
+            return;
         }
+        GenericDeclaration curLayer = declOfVarUser;
+        TypeVariable var;
+        while ((var = findFormalVar(curLayer, name)) == null) {
+            curLayer = nextLayer(curLayer);
+            if (curLayer == null) {
+                throw new AssertionError("illegal type variable reference");
+            }
+        }
+        formalVar = (ImplForVariable<D>) var;
+        this.genericDeclaration = formalVar.genericDeclaration;
+        this.bounds = formalVar.bounds;
     }
 
     public Type[] getBounds() {

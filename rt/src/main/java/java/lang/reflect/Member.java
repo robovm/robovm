@@ -19,7 +19,7 @@ package java.lang.reflect;
 
 /**
  * Common interface providing access to reflective information on class members.
- * 
+ *
  * @see Field
  * @see Constructor
  * @see Method
@@ -29,16 +29,12 @@ public interface Member {
     /**
      * Designates all public members of a class or interface (including
      * inherited members).
-     *
-     * @see java.lang.SecurityManager#checkMemberAccess
      */
     public static final int PUBLIC = 0;
 
     /**
      * Designates all declared members of a class or interface (without
      * inherited members).
-     *
-     * @see java.lang.SecurityManager#checkMemberAccess
      */
     public static final int DECLARED = 1;
 
@@ -47,6 +43,7 @@ public interface Member {
      *
      * @return the declaring class
      */
+    @SuppressWarnings("unchecked")
     Class<?> getDeclaringClass();
 
     /**
@@ -69,7 +66,7 @@ public interface Member {
     /**
      * Indicates whether or not this member is synthetic (artificially
      * introduced by the compiler).
-     * 
+     *
      * @return {@code true} if this member is synthetic, {@code false} otherwise
      */
     boolean isSynthetic();

@@ -17,12 +17,12 @@
 
 package java.io;
 
-import org.apache.harmony.luni.internal.nls.Messages;
+import java.util.Arrays;
 
 /**
  * A specialized {@link InputStream} that reads bytes from a {@code String} in
  * a sequential manner.
- * 
+ *
  * @deprecated Use {@link StringReader}
  */
 @Deprecated
@@ -46,7 +46,7 @@ public class StringBufferInputStream extends InputStream {
      * Construct a new {@code StringBufferInputStream} with {@code str} as
      * source. The size of the stream is set to the {@code length()} of the
      * string.
-     * 
+     *
      * @param str
      *            the source string for this stream.
      * @throws NullPointerException
@@ -60,12 +60,6 @@ public class StringBufferInputStream extends InputStream {
         count = str.length();
     }
 
-    /**
-     * Returns the number of bytes that are available before this stream will
-     * block.
-     * 
-     * @return the number of bytes available before blocking.
-     */
     @Override
     public synchronized int available() {
         return count - pos;
@@ -75,7 +69,7 @@ public class StringBufferInputStream extends InputStream {
      * Reads a single byte from the source string and returns it as an integer
      * in the range from 0 to 255. Returns -1 if the end of the source string
      * has been reached.
-     * 
+     *
      * @return the byte read or -1 if the end of the source string has been
      *         reached.
      */
@@ -87,8 +81,8 @@ public class StringBufferInputStream extends InputStream {
     /**
      * Reads at most {@code length} bytes from the source string and stores them
      * in the byte array {@code b} starting at {@code offset}.
-     * 
-     * @param b
+     *
+     * @param buffer
      *            the byte array in which to store the bytes read.
      * @param offset
      *            the initial position in {@code b} to store the bytes read from
@@ -105,33 +99,18 @@ public class StringBufferInputStream extends InputStream {
      *             if {@code b} is {@code null}.
      */
     @Override
-    public synchronized int read(byte b[], int offset, int length) {
-        // According to 22.7.6 should return -1 before checking other
-        // parameters.
-        if (pos >= count) {
-            return -1;
+    public synchronized int read(byte[] buffer, int offset, int length) {
+        if (buffer == null) {
+            throw new NullPointerException("buffer == null");
         }
-        if (b == null) {
-            // luni.11=buffer is null
-            throw new NullPointerException(Messages.getString("luni.11")); //$NON-NLS-1$
-        }
-        // avoid int overflow
-        if (offset < 0 || offset > b.length) {
-            // luni.12=Offset out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.12", offset)); //$NON-NLS-1$
-        }
-        if (length < 0 || length > b.length - offset) {
-            // luni.18=Length out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.18", length)); //$NON-NLS-1$
-        }
-
+        Arrays.checkOffsetAndCount(buffer.length, offset, length);
         if (length == 0) {
             return 0;
         }
 
         int copylen = count - pos < length ? count - pos : length;
         for (int i = 0; i < copylen; i++) {
-            b[offset + i] = (byte) buffer.charAt(pos + i);
+            buffer[offset + i] = (byte) this.buffer.charAt(pos + i);
         }
         pos += copylen;
         return copylen;
@@ -146,28 +125,26 @@ public class StringBufferInputStream extends InputStream {
     }
 
     /**
-     * Skips {@code n} characters in the source string. It does nothing and
-     * returns 0 if {@code n} is negative. Less than {@code n} characters are
+     * Skips {@code charCount} characters in the source string. It does nothing and
+     * returns 0 if {@code charCount} is negative. Less than {@code charCount} characters are
      * skipped if the end of the source string is reached before the operation
      * completes.
-     * 
-     * @param n
-     *            the number of characters to skip.
+     *
      * @return the number of characters actually skipped.
      */
     @Override
-    public synchronized long skip(long n) {
-        if (n <= 0) {
+    public synchronized long skip(long charCount) {
+        if (charCount <= 0) {
             return 0;
         }
 
         int numskipped;
-        if (this.count - pos < n) {
+        if (this.count - pos < charCount) {
             numskipped = this.count - pos;
             pos = this.count;
         } else {
-            numskipped = (int) n;
-            pos += n;
+            numskipped = (int) charCount;
+            pos += charCount;
         }
         return numskipped;
     }

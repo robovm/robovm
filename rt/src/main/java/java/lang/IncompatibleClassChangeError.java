@@ -22,7 +22,7 @@ package java.lang;
  * {@code IncompatibleClassChangeError} is the superclass of all classes which
  * represent errors that occur when inconsistent class files are loaded into
  * the same running image.
- * 
+ *
  * @see Error
  */
 public class IncompatibleClassChangeError extends LinkageError {
@@ -39,7 +39,7 @@ public class IncompatibleClassChangeError extends LinkageError {
     /**
      * Constructs a new {@code IncompatibleClassChangeError} with the current
      * stack trace and the specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this error.
      */

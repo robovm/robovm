@@ -5,10 +5,10 @@
  */
 
 package java.util.concurrent.atomic;
+
+import dalvik.system.VMStack; // android-added
 import sun.misc.Unsafe;
 import java.lang.reflect.*;
-
-import org.apache.harmony.kernel.vm.VM;
 
 /**
  * A reflection-based utility that enables atomic updates to
@@ -28,7 +28,7 @@ import org.apache.harmony.kernel.vm.VM;
  * @author Doug Lea
  * @param <T> The type of the object holding the updatable field
  */
-public abstract class  AtomicLongFieldUpdater<T>  {
+public abstract class  AtomicLongFieldUpdater<T> {
     /**
      * Creates and returns an updater for objects with the given field.
      * The Class argument is needed to check that reflective types and
@@ -235,7 +235,7 @@ public abstract class  AtomicLongFieldUpdater<T>  {
     }
 
     private static class CASUpdater<T> extends AtomicLongFieldUpdater<T> {
-        private static final Unsafe unsafe = Unsafe.getUnsafe();
+        private static final Unsafe unsafe = UnsafeAccess.THE_ONE; // android-changed
         private final long offset;
         private final Class<T> tclass;
         private final Class cclass;
@@ -246,15 +246,13 @@ public abstract class  AtomicLongFieldUpdater<T>  {
             int modifiers = 0;
             try {
                 field = tclass.getDeclaredField(fieldName);
-                caller = VM.getStackClass(2);
+                caller = VMStack.getStackClass2(); // android-changed
                 modifiers = field.getModifiers();
-                SecurityManager smgr = System.getSecurityManager();
-                if (smgr != null) {
-                    int type = Modifier.isPublic(modifiers)
-                            ? Member.PUBLIC : Member.DECLARED;
-                    smgr.checkMemberAccess(tclass, type);
-                    smgr.checkPackageAccess(tclass.getPackage().getName());
-                }
+                // BEGIN android-removed
+                // sun.reflect.misc.ReflectUtil.ensureMemberAccess(
+                //     caller, tclass, null, modifiers);
+                // sun.reflect.misc.ReflectUtil.checkPackageAccess(tclass);
+                // END android-removed
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
@@ -308,7 +306,7 @@ public abstract class  AtomicLongFieldUpdater<T>  {
             if (cclass.isInstance(obj)) {
                 return;
             }
-            throw new RuntimeException (
+            throw new RuntimeException(
                 new IllegalAccessException("Class " +
                     cclass.getName() +
                     " can not access a protected member of class " +
@@ -322,7 +320,7 @@ public abstract class  AtomicLongFieldUpdater<T>  {
 
 
     private static class LockedUpdater<T> extends AtomicLongFieldUpdater<T> {
-        private static final Unsafe unsafe = Unsafe.getUnsafe();
+        private static final Unsafe unsafe = UnsafeAccess.THE_ONE; // android-changed
         private final long offset;
         private final Class<T> tclass;
         private final Class cclass;
@@ -333,15 +331,13 @@ public abstract class  AtomicLongFieldUpdater<T>  {
             int modifiers = 0;
             try {
                 field = tclass.getDeclaredField(fieldName);
-                caller = VM.getStackClass(2); 
+                caller = VMStack.getStackClass2(); // android-changed
                 modifiers = field.getModifiers();
-                SecurityManager smgr = System.getSecurityManager();
-                if (smgr != null) {
-                    int type = Modifier.isPublic(modifiers)
-                            ? Member.PUBLIC : Member.DECLARED;
-                    smgr.checkMemberAccess(tclass, type);
-                    smgr.checkPackageAccess(tclass.getPackage().getName());
-                }
+                // BEGIN android-removed
+                // sun.reflect.misc.ReflectUtil.ensureMemberAccess(
+                //     caller, tclass, null, modifiers);
+                // sun.reflect.misc.ReflectUtil.checkPackageAccess(tclass);
+                // END android-removed
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
@@ -368,7 +364,7 @@ public abstract class  AtomicLongFieldUpdater<T>  {
 
         public boolean compareAndSet(T obj, long expect, long update) {
             if (obj == null || obj.getClass() != tclass || cclass != null) fullCheck(obj);
-            synchronized(this) {
+            synchronized (this) {
                 long v = unsafe.getLong(obj, offset);
                 if (v != expect)
                     return false;
@@ -383,7 +379,7 @@ public abstract class  AtomicLongFieldUpdater<T>  {
 
         public void set(T obj, long newValue) {
             if (obj == null || obj.getClass() != tclass || cclass != null) fullCheck(obj);
-            synchronized(this) {
+            synchronized (this) {
                 unsafe.putLong(obj, offset, newValue);
             }
         }
@@ -394,7 +390,7 @@ public abstract class  AtomicLongFieldUpdater<T>  {
 
         public long get(T obj) {
             if (obj == null || obj.getClass() != tclass || cclass != null) fullCheck(obj);
-            synchronized(this) {
+            synchronized (this) {
                 return unsafe.getLong(obj, offset);
             }
         }
@@ -403,7 +399,7 @@ public abstract class  AtomicLongFieldUpdater<T>  {
             if (cclass.isInstance(obj)) {
                 return;
             }
-            throw new RuntimeException (
+            throw new RuntimeException(
                 new IllegalAccessException("Class " +
                     cclass.getName() +
                     " can not access a protected member of class " +

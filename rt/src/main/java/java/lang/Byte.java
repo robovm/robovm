@@ -45,7 +45,7 @@ public final class Byte extends Number implements Comparable<Byte> {
     /**
      * The number of bits needed to represent a {@code Byte} value in two's
      * complement form.
-     * 
+     *
      * @since 1.5
      */
     public static final int SIZE = 8;
@@ -61,7 +61,7 @@ public final class Byte extends Number implements Comparable<Byte> {
 
     /**
      * Constructs a new {@code Byte} with the specified primitive byte value.
-     * 
+     *
      * @param value
      *            the primitive byte value to store in the new instance.
      */
@@ -71,7 +71,7 @@ public final class Byte extends Number implements Comparable<Byte> {
 
     /**
      * Constructs a new {@code Byte} from the specified string.
-     * 
+     *
      * @param string
      *            the string representation of a single byte value.
      * @throws NumberFormatException
@@ -84,7 +84,7 @@ public final class Byte extends Number implements Comparable<Byte> {
 
     /**
      * Gets the primitive value of this byte.
-     * 
+     *
      * @return this object's primitive value.
      */
     @Override
@@ -95,7 +95,7 @@ public final class Byte extends Number implements Comparable<Byte> {
     /**
      * Compares this object to the specified byte object to determine their
      * relative order.
-     * 
+     *
      * @param object
      *            the byte object to compare this object to.
      * @return a negative value if the value of this byte is less than the value
@@ -124,12 +124,12 @@ public final class Byte extends Number implements Comparable<Byte> {
      * string can be decoded into a single byte value. The string may be an
      * optional minus sign "-" followed by a hexadecimal ("0x..." or "#..."),
      * octal ("0..."), or decimal ("...") representation of a byte.
-     * 
+     *
      * @param string
      *            a string representation of a single byte value.
      * @return a {@code Byte} containing the value represented by {@code string}.
      * @throws NumberFormatException
-     *             if {@code string} can not be parsed as a byte value.
+     *             if {@code string} cannot be parsed as a byte value.
      */
     public static Byte decode(String string) throws NumberFormatException {
         int intValue = Integer.decode(string);
@@ -149,7 +149,7 @@ public final class Byte extends Number implements Comparable<Byte> {
      * Compares this object with the specified object and indicates if they are
      * equal. In order to be equal, {@code object} must be an instance of
      * {@code Byte} and have the same byte value as this object.
-     * 
+     *
      * @param object
      *            the object to compare this byte with.
      * @return {@code true} if the specified object is equal to this
@@ -184,7 +184,7 @@ public final class Byte extends Number implements Comparable<Byte> {
     /**
      * Parses the specified string as a signed decimal byte value. The ASCII
      * character \u002d ('-') is recognized as the minus sign.
-     * 
+     *
      * @param string
      *            the string representation of a single byte value.
      * @return the primitive byte value represented by {@code string}.
@@ -198,7 +198,7 @@ public final class Byte extends Number implements Comparable<Byte> {
     /**
      * Parses the specified string as a signed byte value using the specified
      * radix. The ASCII character \u002d ('-') is recognized as the minus sign.
-     * 
+     *
      * @param string
      *            the string representation of a single byte value.
      * @param radix
@@ -240,7 +240,7 @@ public final class Byte extends Number implements Comparable<Byte> {
     /**
      * Returns a string containing a concise, human-readable description of the
      * specified byte value.
-     * 
+     *
      * @param value
      *            the byte to convert to a string.
      * @return a printable representation of {@code value}.
@@ -251,7 +251,7 @@ public final class Byte extends Number implements Comparable<Byte> {
 
     /**
      * Parses the specified string as a signed decimal byte value.
-     * 
+     *
      * @param string
      *            the string representation of a single byte value.
      * @return a {@code Byte} instance containing the byte value represented by
@@ -267,7 +267,7 @@ public final class Byte extends Number implements Comparable<Byte> {
     /**
      * Parses the specified string as a signed byte value using the specified
      * radix.
-     * 
+     *
      * @param string
      *            the string representation of a single byte value.
      * @param radix
@@ -290,7 +290,7 @@ public final class Byte extends Number implements Comparable<Byte> {
      * If it is not necessary to get a new {@code Byte} instance, it is
      * recommended to use this method instead of the constructor, since it
      * maintains a cache of instances which may result in better performance.
-     * 
+     *
      * @param b
      *            the byte value to store in the instance.
      * @return a {@code Byte} instance containing {@code b}.

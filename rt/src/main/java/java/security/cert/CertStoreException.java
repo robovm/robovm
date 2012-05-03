@@ -29,7 +29,7 @@ public class CertStoreException extends GeneralSecurityException {
     /**
      * Creates a new {@code CertStoreException} with the specified message and
      * cause.
-     * 
+     *
      * @param msg
      *            the detail message for this exception.
      * @param cause
@@ -41,7 +41,7 @@ public class CertStoreException extends GeneralSecurityException {
 
     /**
      * Creates a new {@code CertStoreException} with the specified cause.
-     * 
+     *
      * @param cause
      *            the cause why the access to the certificate store failed.
      */
@@ -51,7 +51,7 @@ public class CertStoreException extends GeneralSecurityException {
 
     /**
      * Creates a new {@code CertStoreException} with the specified message.
-     * 
+     *
      * @param msg
      *            the detail message for this exception.
      */

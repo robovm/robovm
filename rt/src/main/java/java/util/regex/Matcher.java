@@ -1,80 +1,98 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
+ * Copyright (C) 2007 The Android Open Source Project
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package java.util.regex;
 
-import java.util.ArrayList;
-
-import org.apache.harmony.regex.internal.nls.Messages;
-
 /**
- * Provides a means of matching regular expressions against a given input,
- * finding occurrences of regular expressions in a given input, or replacing
- * parts of a given input. A {@code Matcher} instance has an associated {@link
- * Pattern} instance and an input text. A typical use case is to
- * iteratively find all occurrences of the {@code Pattern}, until the end of
- * the input is reached, as the following example illustrates:
- *
- * <p/>
- *
- * <pre>
- * Pattern p = Pattern.compile("[A-Za-z]+");
- *
- * Matcher m = p.matcher("Hello, Android!");
- * while (m.find()) {
- *     System.out.println(m.group()); // prints "Hello" and "Android"
- * }
- * </pre>
- *
- * <p/>
- *
- * The {@code Matcher} has a state that results from the previous operations.
- * For example, it knows whether the most recent attempt to find the
- * {@code Pattern} was successful and at which position the next attempt would
- * resume the search. Depending on the application's needs, it may become
- * necessary to explicitly {@link #reset()} this state from time to time.
+ * The result of applying a {@code Pattern} to a given input. See {@link Pattern} for
+ * example uses.
  */
 public final class Matcher implements MatchResult {
 
-    static int MODE_FIND = 1 << 0;
+    /**
+     * Holds the pattern, that is, the compiled regular expression.
+     */
+    private Pattern pattern;
 
-    static int MODE_MATCH = 1 << 1;
+    /**
+     * Holds the handle for the native version of the pattern.
+     */
+    private int address;
 
-    private Pattern pat = null;
+    /**
+     * Holds the input text.
+     */
+    private String input;
 
-    private AbstractSet start = null;
+    /**
+     * Holds the start of the region, or 0 if the matching should start at the
+     * beginning of the text.
+     */
+    private int regionStart;
 
-    private CharSequence string = null;
+    /**
+     * Holds the end of the region, or input.length() if the matching should
+     * go until the end of the input.
+     */
+    private int regionEnd;
 
-    private MatchResultImpl matchResult = null;
+    /**
+     * Holds the position where the next find operation will take place.
+     */
+    private int findPos;
 
-    // bounds
-    private int leftBound = -1;
+    /**
+     * Holds the position where the next append operation will take place.
+     */
+    private int appendPos;
 
-    private int rightBound = -1;
+    /**
+     * Reflects whether a match has been found during the most recent find
+     * operation.
+     */
+    private boolean matchFound;
 
-    // replacements
-    private int appendPos = 0;
+    /**
+     * Holds the offsets for the most recent match.
+     */
+    private int[] matchOffsets;
 
-    private String replacement = null;
+    /**
+     * Reflects whether the bounds of the region are anchoring.
+     */
+    private boolean anchoringBounds = true;
 
-    private String processedRepl = null;
+    /**
+     * Reflects whether the bounds of the region are transparent.
+     */
+    private boolean transparentBounds;
 
-    private ArrayList replacementParts = null;
+    /**
+     * Creates a matcher for a given combination of pattern and input. Both
+     * elements can be changed later on.
+     *
+     * @param pattern
+     *            the pattern to use.
+     * @param input
+     *            the input to use.
+     */
+    Matcher(Pattern pattern, CharSequence input) {
+        usePattern(pattern);
+        reset(input);
+    }
 
     /**
      * Appends a literal part of the input plus a replacement for the current
@@ -93,95 +111,59 @@ public final class Matcher implements MatchResult {
      *             if no successful match has been made.
      */
     public Matcher appendReplacement(StringBuffer buffer, String replacement) {
-        processedRepl = processReplacement(replacement);
-        buffer.append(string.subSequence(appendPos, start()));
-        buffer.append(processedRepl);
+        buffer.append(input.substring(appendPos, start()));
+        appendEvaluated(buffer, replacement);
         appendPos = end();
+
         return this;
     }
 
     /**
-     * Parses replacement string and creates pattern
+     * Internal helper method to append a given string to a given string buffer.
+     * If the string contains any references to groups, these are replaced by
+     * the corresponding group's contents.
+     *
+     * @param buffer
+     *            the string buffer.
+     * @param s
+     *            the string to append.
      */
-    private String processReplacement(String replacement) {
-        if (this.replacement != null 
-                && this.replacement.equals(replacement)) {
-            if (replacementParts == null) {
-                return processedRepl;
+    private void appendEvaluated(StringBuffer buffer, String s) {
+        boolean escape = false;
+        boolean dollar = false;
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '\\' && !escape) {
+                escape = true;
+            } else if (c == '$' && !escape) {
+                dollar = true;
+            } else if (c >= '0' && c <= '9' && dollar) {
+                buffer.append(group(c - '0'));
+                dollar = false;
             } else {
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < replacementParts.size(); i++) {
-                    sb.append(replacementParts.get(i));
-                }
-
-                return sb.toString();
+                buffer.append(c);
+                dollar = false;
+                escape = false;
             }
-        } else {
-            this.replacement = replacement;
-            char[] repl = replacement.toCharArray();
-            StringBuilder res = new StringBuilder();
-            replacementParts = null;
-
-            int index = 0;
-            int replacementPos = 0;
-            boolean nextBackSlashed = false;
-
-            while (index < repl.length) {
-                
-                if (repl[index] == '\\' && !nextBackSlashed) {
-                    nextBackSlashed = true;
-                    index++;
-                } 
-               
-                if (nextBackSlashed) {
-                    res.append(repl[index]);
-                    nextBackSlashed = false;
-                } else {
-                    if (repl[index] == '$') {
-                        if (replacementParts == null) {
-                            replacementParts = new ArrayList();
-                        }
-                        try {
-                            final int gr = Integer.parseInt(new String(
-                                    repl, ++index, 1));
-
-                            if (replacementPos != res.length()) {
-                                replacementParts.add(res.subSequence(
-                                        replacementPos, res.length()));
-                                replacementPos = res.length();
-                            }
-
-                            replacementParts.add(new Object() {  //$NON-LOCK-1$
-                                private final int grN = gr;
-
-                                public String toString() {
-                                    return group(grN);
-                                }
-                            });
-                            String group = group(gr);
-                            replacementPos += group.length();
-                            res.append(group);
-
-                        } catch (IndexOutOfBoundsException iob) {
-                            throw iob;
-                        } catch (Exception e) {
-                            throw new IllegalArgumentException(
-                                    Messages.getString("regex.00")); //$NON-NLS-1$
-                        }
-                    } else {
-                        res.append(repl[index]);
-                    }
-                }
-
-                index++;
-            }
-
-            if (replacementParts != null && replacementPos != res.length()) {
-                replacementParts.add(res.subSequence(replacementPos, res
-                        .length()));
-            }
-            return res.toString();
         }
+
+        // This seemingly stupid piece of code reproduces a JDK bug.
+        if (escape) {
+            throw new ArrayIndexOutOfBoundsException(s.length());
+        }
+    }
+
+    /**
+     * Resets the {@code Matcher}. This results in the region being set to the
+     * whole input. Results of a previous find get lost. The next attempt to
+     * find an occurrence of the {@link Pattern} in the string will start at the
+     * beginning of the input.
+     *
+     * @return the {@code Matcher} itself.
+     */
+    public Matcher reset() {
+        return reset(input, 0, input.length());
     }
 
     /**
@@ -196,29 +178,82 @@ public final class Matcher implements MatchResult {
      * @return the {@code Matcher} itself.
      */
     public Matcher reset(CharSequence input) {
-        if (input == null) {
-            throw new NullPointerException(Messages.getString("regex.01")); //$NON-NLS-1$
-        }
-        this.string = input;
-        return reset();
+        return reset(input, 0, input.length());
     }
 
     /**
-     * Resets the {@code Matcher}. This results in the region being set to the
-     * whole input. Results of a previous find get lost. The next attempt to
-     * find an occurrence of the {@link Pattern} in the string will start at the
-     * beginning of the input.
+     * Resets the Matcher. A new input sequence and a new region can be
+     * specified. Results of a previous find get lost. The next attempt to find
+     * an occurrence of the Pattern in the string will start at the beginning of
+     * the region. This is the internal version of reset() to which the several
+     * public versions delegate.
+     *
+     * @param input
+     *            the input sequence.
+     * @param start
+     *            the start of the region.
+     * @param end
+     *            the end of the region.
+     *
+     * @return the matcher itself.
+     */
+    private Matcher reset(CharSequence input, int start, int end) {
+        if (input == null) {
+            throw new IllegalArgumentException();
+        }
+
+        if (start < 0 || end < 0 || start > input.length() || end > input.length() || start > end) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        this.input = input.toString();
+        this.regionStart = start;
+        this.regionEnd = end;
+        resetForInput();
+
+        matchFound = false;
+        findPos = regionStart;
+        appendPos = 0;
+
+        return this;
+    }
+
+    /**
+     * Sets a new pattern for the {@code Matcher}. Results of a previous find
+     * get lost. The next attempt to find an occurrence of the {@link Pattern}
+     * in the string will start at the beginning of the input.
+     *
+     * @param pattern
+     *            the new {@code Pattern}.
      *
      * @return the {@code Matcher} itself.
      */
-    public Matcher reset() {
-        this.leftBound = 0;
-        this.rightBound = string.length();
-        matchResult.reset(string, leftBound, rightBound);
-        appendPos = 0;
-        replacement = null;
-        matchResult.previousMatch = -1;
+    public Matcher usePattern(Pattern pattern) {
+        if (pattern == null) {
+            throw new IllegalArgumentException();
+        }
+
+        this.pattern = pattern;
+
+        if (address != 0) {
+            closeImpl(address);
+            address = 0;
+        }
+        address = openImpl(pattern.address);
+
+        if (input != null) {
+            resetForInput();
+        }
+
+        matchOffsets = new int[(groupCount() + 1) * 2];
+        matchFound = false;
         return this;
+    }
+
+    private void resetForInput() {
+        setInputImpl(address, input, regionStart, regionEnd);
+        useAnchoringBoundsImpl(address, anchoringBounds);
+        useTransparentBoundsImpl(address, transparentBounds);
     }
 
     /**
@@ -232,20 +267,7 @@ public final class Matcher implements MatchResult {
      * @return the {@code Matcher} itself.
      */
     public Matcher region(int start, int end) {
-
-        if (start > end || start < 0 || end < 0
-                || start > string.length() || end > string.length()) {
-            throw new IndexOutOfBoundsException( Messages.getString("regex.02", //$NON-NLS-1$
-                            Integer.toString(start), Integer.toString(end)));
-        }
-
-        this.leftBound = start;
-        this.rightBound = end;
-        matchResult.reset(null, start, end);
-        appendPos = 0;
-        replacement = null;
-
-        return this;
+        return reset(input, start, end);
     }
 
     /**
@@ -262,7 +284,10 @@ public final class Matcher implements MatchResult {
      *             if no successful match has been made.
      */
     public StringBuffer appendTail(StringBuffer buffer) {
-        return buffer.append(string.subSequence(appendPos, string.length()));
+        if (appendPos < regionEnd) {
+            buffer.append(input.substring(appendPos, regionEnd));
+        }
+        return buffer;
     }
 
     /**
@@ -275,14 +300,11 @@ public final class Matcher implements MatchResult {
      */
     public String replaceFirst(String replacement) {
         reset();
+        StringBuffer buffer = new StringBuffer(input.length());
         if (find()) {
-            StringBuffer sb = new StringBuffer();
-            appendReplacement(sb, replacement);
-            return appendTail(sb).toString();
+            appendReplacement(buffer, replacement);
         }
-
-        return string.toString();
-
+        return appendTail(buffer).toString();
     }
 
     /**
@@ -294,13 +316,12 @@ public final class Matcher implements MatchResult {
      * @return the modified input string.
      */
     public String replaceAll(String replacement) {
-        StringBuffer sb = new StringBuffer();
         reset();
+        StringBuffer buffer = new StringBuffer(input.length());
         while (find()) {
-            appendReplacement(sb, replacement);
+            appendReplacement(buffer, replacement);
         }
-
-        return appendTail(sb).toString();
+        return appendTail(buffer).toString();
     }
 
     /**
@@ -309,21 +330,39 @@ public final class Matcher implements MatchResult {
      * @return the {@code Pattern} instance.
      */
     public Pattern pattern() {
-        return pat;
+        return pattern;
     }
 
     /**
      * Returns the text that matched a given group of the regular expression.
+     * Explicit capturing groups in the pattern are numbered left to right in order
+     * of their <i>opening</i> parenthesis, starting at 1.
+     * The special group 0 represents the entire match (as if the entire pattern is surrounded
+     * by an implicit capturing group).
+     * For example, "a((b)c)" matching "abc" would give the following groups:
+     * <pre>
+     * 0 "abc"
+     * 1 "bc"
+     * 2 "b"
+     * </pre>
      *
-     * @param group
-     *            the group, ranging from 0 to groupCount() - 1, with 0
-     *            representing the whole pattern.
-     * @return the text that matched the group.
+     * <p>An optional capturing group that failed to match as part of an overall
+     * successful match (for example, "a(b)?c" matching "ac") returns null.
+     * A capturing group that matched the empty string (for example, "a(b?)c" matching "ac")
+     * returns the empty string.
+     *
      * @throws IllegalStateException
      *             if no successful match has been made.
      */
     public String group(int group) {
-        return matchResult.group(group);
+        ensureMatch();
+        int from = matchOffsets[group * 2];
+        int to = matchOffsets[(group * 2) + 1];
+        if (from == -1 || to == -1) {
+            return null;
+        } else {
+            return input.substring(from, to);
+        }
     }
 
     /**
@@ -349,30 +388,20 @@ public final class Matcher implements MatchResult {
      * @return true if (and only if) a match has been found.
      */
     public boolean find(int start) {
-        int stringLength = string.length();
-        if (start < 0 || start > stringLength) {
-            throw new IndexOutOfBoundsException(Messages.getString("regex.03", //$NON-NLS-1$ 
-                    Integer.valueOf(start)));
+        findPos = start;
+
+        if (findPos < regionStart) {
+            findPos = regionStart;
+        } else if (findPos >= regionEnd) {
+            matchFound = false;
+            return false;
         }
 
-        start = findAt(start);
-        if (start >= 0 && matchResult.isValid()) {
-            matchResult.finalizeMatch();
-            return true;
+        matchFound = findImpl(address, input, findPos, matchOffsets);
+        if (matchFound) {
+            findPos = matchOffsets[1];
         }
-        matchResult.startIndex = -1;
-        return false;
-    }
-
-    private int findAt(int startIndex) {
-        matchResult.reset();
-        matchResult.setMode(Matcher.MODE_FIND);
-        matchResult.setStartIndex(startIndex);
-        int foundIndex = start.find(startIndex, string, matchResult);
-        if (foundIndex == -1) {
-            matchResult.hitEnd = true;
-        }
-        return foundIndex;
+        return matchFound;
     }
 
     /**
@@ -384,21 +413,41 @@ public final class Matcher implements MatchResult {
      * @return true if (and only if) a match has been found.
      */
     public boolean find() {
-        int length = string.length();
-        if (!hasTransparentBounds())
-            length = rightBound;
-        if (matchResult.startIndex >= 0
-                && matchResult.mode() == Matcher.MODE_FIND) {
-            matchResult.startIndex = matchResult.end();
-            if (matchResult.end() == matchResult.start()) {
-                matchResult.startIndex++;
-            }
-
-            return matchResult.startIndex <= length ? find(matchResult.startIndex)
-                    : false;
-        } else {
-            return find(leftBound);
+        matchFound = findNextImpl(address, input, matchOffsets);
+        if (matchFound) {
+            findPos = matchOffsets[1];
         }
+        return matchFound;
+    }
+
+    /**
+     * Tries to match the {@link Pattern}, starting from the beginning of the
+     * region (or the beginning of the input, if no region has been set).
+     * Doesn't require the {@code Pattern} to match against the whole region.
+     *
+     * @return true if (and only if) the {@code Pattern} matches.
+     */
+    public boolean lookingAt() {
+        matchFound = lookingAtImpl(address, input, matchOffsets);
+        if (matchFound) {
+            findPos = matchOffsets[1];
+        }
+        return matchFound;
+    }
+
+    /**
+     * Tries to match the {@link Pattern} against the entire region (or the
+     * entire input, if no region has been set).
+     *
+     * @return true if (and only if) the {@code Pattern} matches the entire
+     *         region.
+     */
+    public boolean matches() {
+        matchFound = matchesImpl(address, input, matchOffsets);
+        if (matchFound) {
+            findPos = matchOffsets[1];
+        }
+        return matchFound;
     }
 
     /**
@@ -412,8 +461,9 @@ public final class Matcher implements MatchResult {
      * @throws IllegalStateException
      *             if no successful match has been made.
      */
-    public int start(int group) {
-        return matchResult.start(group);
+    public int start(int group) throws IllegalStateException {
+        ensureMatch();
+        return matchOffsets[group * 2];
     }
 
     /**
@@ -428,18 +478,8 @@ public final class Matcher implements MatchResult {
      *             if no successful match has been made.
      */
     public int end(int group) {
-        return matchResult.end(group);
-    }
-
-    /**
-     * Tries to match the {@link Pattern} against the entire region (or the
-     * entire input, if no region has been set).
-     *
-     * @return true if (and only if) the {@code Pattern} matches the entire
-     *         region.
-     */
-    public boolean matches() {
-        return lookingAt(leftBound, Matcher.MODE_MATCH);
+        ensureMatch();
+        return matchOffsets[(group * 2) + 1];
     }
 
     /**
@@ -452,64 +492,15 @@ public final class Matcher implements MatchResult {
      *         been escaped.
      */
     public static String quoteReplacement(String s) {
-        // first check whether we have smth to quote
-        if (s.indexOf('\\') < 0 && s.indexOf('$') < 0)
-            return s;
-        StringBuilder res = new StringBuilder(s.length() * 2);
-        char ch;
-        int len = s.length();
-
-        for (int i = 0; i < len; i++) {
-
-            switch (ch = s.charAt(i)) {
-            case '$':
-                res.append('\\');
-                res.append('$');
-                break;
-            case '\\':
-                res.append('\\');
-                res.append('\\');
-                break;
-            default:
-                res.append(ch);
+        StringBuilder result = new StringBuilder(s.length());
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '\\' || c == '$') {
+                result.append('\\');
             }
+            result.append(c);
         }
-
-        return res.toString();
-    }
-
-    /**
-     * Runs match starting from <code>set</code> specified against input
-     * sequence starting at <code>index</code> specified; Result of the match
-     * will be stored into matchResult instance;
-     */
-    private boolean runMatch(AbstractSet set, int index,
-            MatchResultImpl matchResult) {
-
-        if (set.matches(index, string, matchResult) >= 0) {
-            matchResult.finalizeMatch();
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Tries to match the {@link Pattern}, starting from the beginning of the
-     * region (or the beginning of the input, if no region has been set).
-     * Doesn't require the {@code Pattern} to match against the whole region.
-     *
-     * @return true if (and only if) the {@code Pattern} matches.
-     */
-    public boolean lookingAt() {
-        return lookingAt(leftBound, Matcher.MODE_FIND);
-    }
-
-    private boolean lookingAt(int startIndex, int mode) {
-        matchResult.reset();
-        matchResult.setMode(mode);
-        matchResult.setStartIndex(startIndex);
-        return runMatch(start, startIndex, matchResult);
+        return result.toString();
     }
 
     /**
@@ -531,7 +522,7 @@ public final class Matcher implements MatchResult {
      * @return the number of groups.
      */
     public int groupCount() {
-        return matchResult.groupCount();
+        return groupCountImpl(address);
     }
 
     /**
@@ -556,7 +547,8 @@ public final class Matcher implements MatchResult {
      *             if no successful match has been made.
      */
     public MatchResult toMatchResult() {
-        return this.matchResult.cloneImpl();
+        ensureMatch();
+        return new MatchResultImpl(input, matchOffsets);
     }
 
     /**
@@ -570,7 +562,8 @@ public final class Matcher implements MatchResult {
      * @return the {@code Matcher} itself.
      */
     public Matcher useAnchoringBounds(boolean value) {
-        matchResult.useAnchoringBounds(value);
+        anchoringBounds = value;
+        useAnchoringBoundsImpl(address, value);
         return this;
     }
 
@@ -583,7 +576,7 @@ public final class Matcher implements MatchResult {
      * @return true if (and only if) the {@code Matcher} uses anchoring bounds.
      */
     public boolean hasAnchoringBounds() {
-        return matchResult.hasAnchoringBounds();
+        return anchoringBounds;
     }
 
     /**
@@ -597,8 +590,22 @@ public final class Matcher implements MatchResult {
      * @return the {@code Matcher} itself.
      */
     public Matcher useTransparentBounds(boolean value) {
-        matchResult.useTransparentBounds(value);
+        transparentBounds = value;
+        useTransparentBoundsImpl(address, value);
         return this;
+    }
+
+    /**
+     * Makes sure that a successful match has been made. Is invoked internally
+     * from various places in the class.
+     *
+     * @throws IllegalStateException
+     *             if no successful match has been made.
+     */
+    private void ensureMatch() {
+        if (!matchFound) {
+            throw new IllegalStateException("No successful match so far");
+        }
     }
 
     /**
@@ -610,7 +617,7 @@ public final class Matcher implements MatchResult {
      * @return true if (and only if) the {@code Matcher} uses anchoring bounds.
      */
     public boolean hasTransparentBounds() {
-        return matchResult.hasTransparentBounds();
+        return transparentBounds;
     }
 
     /**
@@ -620,7 +627,7 @@ public final class Matcher implements MatchResult {
      * @return the start of the region.
      */
     public int regionStart() {
-        return matchResult.getLeftBound();
+        return regionStart;
     }
 
     /**
@@ -630,7 +637,7 @@ public final class Matcher implements MatchResult {
      * @return the end of the region.
      */
     public int regionEnd() {
-        return matchResult.getRightBound();
+        return regionEnd;
     }
 
     /**
@@ -641,7 +648,7 @@ public final class Matcher implements MatchResult {
      *         into an unsuccessful one.
      */
     public boolean requireEnd() {
-        return matchResult.requireEnd;
+        return requireEndImpl(address);
     }
 
     /**
@@ -650,53 +657,27 @@ public final class Matcher implements MatchResult {
      * @return true if (and only if) the last match hit the end of the input.
      */
     public boolean hitEnd() {
-        return matchResult.hitEnd;
+        return hitEndImpl(address);
     }
 
-    /**
-     * Sets a new pattern for the {@code Matcher}. Results of a previous find
-     * get lost. The next attempt to find an occurrence of the {@link Pattern}
-     * in the string will start at the beginning of the input.
-     *
-     * @param pattern
-     *            the new {@code Pattern}.
-     *
-     * @return the {@code Matcher} itself.
-     */
-    public Matcher usePattern(Pattern pattern) {
-    	if (pattern == null) {
-    		throw new IllegalArgumentException(Messages.getString("regex.1B"));
-    	}
-        int startIndex = matchResult.getPreviousMatchEnd();
-        int mode = matchResult.mode();
-        this.pat = pattern;
-        this.start = pattern.start;
-        matchResult = new MatchResultImpl(this.string, leftBound, rightBound,
-                pattern.groupCount(), pattern.compCount(), pattern.consCount());
-        matchResult.setStartIndex(startIndex);
-        matchResult.setMode(mode);
-        return this;
-    }
-
-    Matcher(Pattern pat, CharSequence cs) {
-        this.pat = pat;
-        this.start = pat.start;
-        this.string = cs;
-        this.leftBound = 0;
-        this.rightBound = string.length();
-        matchResult = new MatchResultImpl(cs, leftBound, rightBound, pat
-                .groupCount(), pat.compCount(), pat.consCount());
-    }
-
-    @Override
-    public String toString() {
-        String lastMatch = "";
+    @Override protected void finalize() throws Throwable {
         try {
-            lastMatch = Integer.toString(start());
-        } catch (IllegalStateException e) {
+            closeImpl(address);
+        } finally {
+            super.finalize();
         }
-        return getClass().getCanonicalName() + "[pattern=" + pat + " region="
-                + matchResult.getLeftBound() + ","
-                + matchResult.getRightBound() + " lastmatch=" + lastMatch + "]";
     }
+
+    private static native void closeImpl(int addr);
+    private static native boolean findImpl(int addr, String s, int startIndex, int[] offsets);
+    private static native boolean findNextImpl(int addr, String s, int[] offsets);
+    private static native int groupCountImpl(int addr);
+    private static native boolean hitEndImpl(int addr);
+    private static native boolean lookingAtImpl(int addr, String s, int[] offsets);
+    private static native boolean matchesImpl(int addr, String s, int[] offsets);
+    private static native int openImpl(int patternAddr);
+    private static native boolean requireEndImpl(int addr);
+    private static native void setInputImpl(int addr, String s, int start, int end);
+    private static native void useAnchoringBoundsImpl(int addr, boolean value);
+    private static native void useTransparentBoundsImpl(int addr, boolean value);
 }

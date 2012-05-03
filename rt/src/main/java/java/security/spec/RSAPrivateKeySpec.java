@@ -26,7 +26,7 @@ import java.math.BigInteger;
  * href="http://www.rsa.com/rsalabs/pubs/PKCS/html/pkcs-1.html">PKCS #1 v2.1</a>
  * standard
  */
-public class RSAPrivateKeySpec implements KeySpec {    
+public class RSAPrivateKeySpec implements KeySpec {
     // Modulus
     private final BigInteger modulus;
     // Private Exponent
@@ -35,7 +35,7 @@ public class RSAPrivateKeySpec implements KeySpec {
     /**
      * Creates a new {@code RSAPrivateKeySpec} with the specified modulus and
      * private exponent.
-     * 
+     *
      * @param modulus
      *            the modulus {@code n}.
      * @param privateExponent
@@ -48,7 +48,7 @@ public class RSAPrivateKeySpec implements KeySpec {
 
     /**
      * Returns the modulus {@code n}.
-     * 
+     *
      * @return the modulus {@code n}.
      */
     public BigInteger getModulus() {
@@ -57,7 +57,7 @@ public class RSAPrivateKeySpec implements KeySpec {
 
     /**
      * Returns the private exponent {@code e}.
-     * 
+     *
      * @return the private exponent {@code e}.
      */
     public BigInteger getPrivateExponent() {

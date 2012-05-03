@@ -22,7 +22,7 @@ package java.util;
  * A {@code MissingResourceException} is thrown by ResourceBundle when a
  * resource bundle cannot be found or a resource is missing from a resource
  * bundle.
- * 
+ *
  * @see ResourceBundle
  * @see java.lang.RuntimeException
  */
@@ -36,7 +36,7 @@ public class MissingResourceException extends RuntimeException {
      * Constructs a new {@code MissingResourceException} with the stack trace,
      * message, the class name of the resource bundle and the name of the
      * missing resource filled in.
-     * 
+     *
      * @param detailMessage
      *           the detail message for the exception.
      * @param className
@@ -55,7 +55,7 @@ public class MissingResourceException extends RuntimeException {
      * Returns the class name of the resource bundle from which a resource could
      * not be found, or in the case of a missing resource, the name of the
      * missing resource bundle.
-     * 
+     *
      * @return the class name of the resource bundle.
      */
     public String getClassName() {
@@ -65,7 +65,7 @@ public class MissingResourceException extends RuntimeException {
     /**
      * Returns the name of the missing resource, or an empty string if the
      * resource bundle is missing.
-     * 
+     *
      * @return the name of the missing resource.
      */
     public String getKey() {

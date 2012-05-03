@@ -55,7 +55,7 @@ public interface ParameterizedType extends Type {
     /**
      * Returns the parent / owner type, if this type is an inner type, otherwise
      * {@code null} is returned if this is a top-level type.
-     * 
+     *
      * @return the owner type or {@code null} if this is a top-level type
      *
      * @throws TypeNotPresentException
@@ -68,7 +68,7 @@ public interface ParameterizedType extends Type {
     /**
      * Returns the declaring type of this parameterized type.
      * <p>
-     * The raw type of {@code Set&lt;String&gt; field;} is {@code Set}.
+     * The raw type of {@code Set<String> field;} is {@code Set}.
      *
      * @return the raw type of this parameterized type
      */

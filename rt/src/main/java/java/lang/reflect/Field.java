@@ -14,11 +14,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/*
+ * Copyright (C) 2012 The NullVM Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package java.lang.reflect;
 
 import java.lang.annotation.Annotation;
-
+import java.util.Comparator;
+import org.apache.harmony.kernel.vm.StringUtils;
 import org.apache.harmony.luni.lang.reflect.GenericSignatureParser;
 import org.apache.harmony.luni.lang.reflect.Types;
 import org.nullvm.rt.VM;
@@ -28,6 +59,24 @@ import org.nullvm.rt.VM;
  * and the field's value can be accessed dynamically.
  */
 public final class Field extends AccessibleObject implements Member {
+    
+    /**
+     * Orders fields by their name and declaring class.
+     *
+     * @hide
+     */
+    public static final Comparator<Field> ORDER_BY_NAME_AND_DECLARING_CLASS
+            = new Comparator<Field>() {
+        @Override public int compare(Field a, Field b) {
+            int comparison = a.name.compareTo(b.name);
+            if (comparison != 0) {
+                return comparison;
+            }
+
+            return a.getDeclaringClass().getName().compareTo(b.getDeclaringClass().getName());
+        }
+    };
+    
     /*
      * The NullVM Field* object
      */
@@ -44,19 +93,31 @@ public final class Field extends AccessibleObject implements Member {
     private Type genericType;
     private volatile boolean genericTypesAreInitialized = false;
     
-    /**
-     * Prevent this class from being instantiated
-     */
     Field(long field){
         this.field = field;
     }
     
-    Field(Field f) {
-        this.field = f.field;
-    }
+    /**
+     * Construct a clone of the given instance.
+     *
+     * @param orig non-null; the original instance to clone
+     */
+    /*package*/ Field(Field orig) {
+        this.field = orig.field;
+        this.modifiers = orig.modifiers;
+        this.declaringClass = orig.declaringClass;
+        this.name = orig.name;
+        this.type = orig.type;
+        this.genericType = orig.genericType;
+        this.genericTypesAreInitialized = orig.genericTypesAreInitialized;
 
+        // Copy the accessible flag.
+        if (orig.flag) {
+            this.flag = true;
+        }
+    }
+    
     private synchronized void initGenericType() {
-        // Start (C) Android
         if (!genericTypesAreInitialized) {
             String signatureAttribute = getSignatureAttribute();
             GenericSignatureParser parser = new GenericSignatureParser(
@@ -68,7 +129,6 @@ public final class Field extends AccessibleObject implements Member {
             }
             genericTypesAreInitialized = true;
         }
-        // End (C) Android
     }
     
     @Override
@@ -93,10 +153,8 @@ public final class Field extends AccessibleObject implements Member {
      * generic type.
      *
      * @return the string representation of this field
-     * @since 1.5
      */
     public String toGenericString() {
-        // Start (C) Android
         StringBuilder sb = new StringBuilder(80);
         // append modifiers if any
         int modifier = getModifiers();
@@ -109,7 +167,6 @@ public final class Field extends AccessibleObject implements Member {
         // append full field name
         sb.append(getDeclaringClass().getName()).append('.').append(getName());
         return sb.toString();
-        // End (C) Android
     }
 
     /**
@@ -117,7 +174,6 @@ public final class Field extends AccessibleObject implements Member {
      *
      * @return {@code true} if this field is an enumeration constant, {@code
      *         false} otherwise
-     * @since 1.5
      */
     public boolean isEnumConstant() {
         return (getModifiers() & Modifier.ENUM) != 0;
@@ -134,7 +190,6 @@ public final class Field extends AccessibleObject implements Member {
      * @throws MalformedParameterizedTypeException
      *             if the generic type points to a type that cannot be
      *             instantiated for some reason
-     * @since 1.5
      */
     public Type getGenericType() {
         initGenericType();
@@ -336,22 +391,22 @@ public final class Field extends AccessibleObject implements Member {
     /**
      * Returns the value of the field in the specified object. This reproduces
      * the effect of {@code object.fieldName}
-     * <p>
-     * If the type of this field is a primitive type, the field value is
-     * automatically wrapped.
-     * <p>
-     * If this field is static, the object argument is ignored.
+     *
+     * <p>If the type of this field is a primitive type, the field value is
+     * automatically boxed.
+     *
+     * <p>If this field is static, the object argument is ignored.
      * Otherwise, if the object is null, a NullPointerException is thrown. If
      * the object is not an instance of the declaring class of the method, an
      * IllegalArgumentException is thrown.
-     * <p>
-     * If this Field object is enforcing access control (see AccessibleObject)
+     *
+     * <p>If this Field object is enforcing access control (see AccessibleObject)
      * and this field is not accessible from the current context, an
      * IllegalAccessException is thrown.
      *
      * @param object
      *            the object to access
-     * @return the field value, possibly wrapped
+     * @return the field value, possibly boxed
      * @throws NullPointerException
      *             if the object is {@code null} and the field is non-static
      * @throws IllegalArgumentException
@@ -710,24 +765,24 @@ public final class Field extends AccessibleObject implements Member {
      */
     @Override
     public int hashCode() {
-        return getDeclaringClass().getName().hashCode() ^ getName().hashCode();
+        return getName().hashCode() ^ getDeclaringClass().getName().hashCode();
     }
 
     /**
      * Sets the value of the field in the specified object to the value. This
      * reproduces the effect of {@code object.fieldName = value}
-     * <p>
-     * If this field is static, the object argument is ignored.
+     *
+     * <p>If this field is static, the object argument is ignored.
      * Otherwise, if the object is {@code null}, a NullPointerException is
      * thrown. If the object is not an instance of the declaring class of the
      * method, an IllegalArgumentException is thrown.
-     * <p>
-     * If this Field object is enforcing access control (see AccessibleObject)
+     *
+     * <p>If this Field object is enforcing access control (see AccessibleObject)
      * and this field is not accessible from the current context, an
      * IllegalAccessException is thrown.
-     * <p>
-     * If the field type is a primitive type, the value is automatically
-     * unwrapped. If the unwrap fails, an IllegalArgumentException is thrown. If
+     *
+     * <p>If the field type is a primitive type, the value is automatically
+     * unboxed. If the unboxing fails, an IllegalArgumentException is thrown. If
      * the value cannot be converted to the field type via a widening
      * conversion, an IllegalArgumentException is thrown.
      *
@@ -1082,17 +1137,15 @@ public final class Field extends AccessibleObject implements Member {
         Class<?> declaringClass = getDeclaringClass();
         String name = getName();
         
-        StringBuilder sb = new StringBuilder(Modifier.toString(getModifiers()));
-
-        if (sb.length() > 0) {
-            sb.append(' ');
+        StringBuilder result = new StringBuilder(Modifier.toString(getModifiers()));
+        if (result.length() != 0) {
+            result.append(' ');
         }
-        sb.append(type.getName());
-        sb.append(' ');
-        sb.append(declaringClass.getName());
-        sb.append('.');
-        sb.append(name);
-        
-        return sb.toString();
+        appendArrayType(result, type);
+        result.append(' ');
+        result.append(declaringClass.getName());
+        result.append('.');
+        result.append(name);
+        return result.toString();
     }
 }

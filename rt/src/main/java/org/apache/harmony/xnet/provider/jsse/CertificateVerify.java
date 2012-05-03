@@ -17,17 +17,12 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import org.apache.harmony.xnet.provider.jsse.Message;
-import org.apache.harmony.xnet.provider.jsse.Handshake;
-import org.apache.harmony.xnet.provider.jsse.HandshakeIODataStream;
-import org.apache.harmony.xnet.provider.jsse.AlertProtocol;
-
 import java.io.IOException;
 
 /**
  * Represents certificate verify message
- * @see TLS 1.0 spec., 7.4.8. Certificate verify
- * (http://www.ietf.org/rfc/rfc2246.txt)
+ * @see <a href="http://www.ietf.org/rfc/rfc2246.txt">TLS 1.0 spec., 7.4.8.
+ * Certificate verify</a>
  */
 public class CertificateVerify extends Message {
 
@@ -38,7 +33,7 @@ public class CertificateVerify extends Message {
 
     /**
      * Creates outbound message
-     * 
+     *
      * @param hash
      */
     public CertificateVerify(byte[] hash) {
@@ -52,7 +47,7 @@ public class CertificateVerify extends Message {
 
     /**
      * Creates inbound message
-     * 
+     *
      * @param in
      * @param length
      * @throws IOException
@@ -74,7 +69,7 @@ public class CertificateVerify extends Message {
 
     /**
      * Sends message
-     * 
+     *
      * @param out
      */
     @Override
@@ -87,7 +82,7 @@ public class CertificateVerify extends Message {
 
     /**
      * Returns message type
-     * 
+     *
      * @return
      */
     @Override

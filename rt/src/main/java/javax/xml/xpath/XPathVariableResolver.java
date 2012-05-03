@@ -31,20 +31,20 @@ import javax.xml.namespace.QName;
  *
  * @author  <a href="mailto:Norman.Walsh@Sun.com">Norman Walsh</a>
  * @author  <a href="mailto:Jeff.Suttor@Sun.com">Jeff Suttor</a>
- * @version $Revision: 446598 $, $Date: 2006-09-15 08:55:40 -0400 (Fri, 15 Sep 2006) $
+ * @version $Revision: 446598 $, $Date: 2006-09-15 05:55:40 -0700 (Fri, 15 Sep 2006) $
  * @since 1.5
  */
 public interface XPathVariableResolver {
-  /** 
+  /**
    * <p>Find a variable in the set of available variables.</p>
-   * 
+   *
    * <p>If <code>variableName</code> is <code>null</code>, then a <code>NullPointerException</code> is thrown.</p>
-   * 
+   *
    * @param variableName The <code>QName</code> of the variable name.
-   * 
+   *
    * @return The variables value, or <code>null</code> if no variable named <code>variableName</code>
    *   exists.  The value returned must be of a type appropriate for the underlying object model.
-   * 
+   *
    * @throws NullPointerException If <code>variableName</code> is <code>null</code>.
    */
   public Object resolveVariable(QName variableName);

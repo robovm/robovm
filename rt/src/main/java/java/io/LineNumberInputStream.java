@@ -17,7 +17,8 @@
 
 package java.io;
 
-import org.apache.harmony.luni.internal.nls.Messages;
+import java.util.Arrays;
+import libcore.io.Streams;
 
 /**
  * Wraps an existing {@link InputStream} and counts the line terminators
@@ -25,7 +26,7 @@ import org.apache.harmony.luni.internal.nls.Messages;
  * line terminator sequences are {@code '\r'}, {@code '\n'} and {@code "\r\n"}.
  * When using {@code read}, line terminator sequences are always translated into
  * {@code '\n'}.
- * 
+ *
  * @deprecated Use {@link LineNumberReader}
  */
 @Deprecated
@@ -42,7 +43,10 @@ public class LineNumberInputStream extends FilterInputStream {
     /**
      * Constructs a new {@code LineNumberInputStream} on the {@link InputStream}
      * {@code in}. Line numbers are counted for all data read from this stream.
-     * 
+     *
+     * <p><strong>Warning:</strong> passing a null source creates an invalid
+     * {@code LineNumberInputStream}. All operations on such a stream will fail.
+     *
      * @param in
      *            The non-null input stream to count line numbers.
      */
@@ -51,17 +55,12 @@ public class LineNumberInputStream extends FilterInputStream {
     }
 
     /**
-     * Returns the number of bytes that are available before this stream will
-     * block.
-     * <p>
-     * Note: The source stream may just be a sequence of {@code "\r\n"} bytes
+     * {@inheritDoc}
+     *
+     * <p>Note that the source stream may just be a sequence of {@code "\r\n"} bytes
      * which are converted into {@code '\n'} by this stream. Therefore,
      * {@code available} returns only {@code in.available() / 2} bytes as
      * result.
-     *
-     * @return the guaranteed number of bytes available before blocking.
-     * @throws IOException
-     *             if an error occurs in this stream.
      */
     @Override
     public int available() throws IOException {
@@ -70,7 +69,7 @@ public class LineNumberInputStream extends FilterInputStream {
 
     /**
      * Returns the current line number for this stream. Numbering starts at 0.
-     * 
+     *
      * @return the current line number.
      */
     public int getLineNumber() {
@@ -169,16 +168,7 @@ public class LineNumberInputStream extends FilterInputStream {
      */
     @Override
     public int read(byte[] buffer, int offset, int length) throws IOException {
-        // Force buffer null check first!
-        if (offset > buffer.length || offset < 0) {
-            // luni.12=Offset out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.12", offset)); //$NON-NLS-1$
-        } 
-        if (length < 0 || length > buffer.length - offset) {
-            // luni.18=Length out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("luni.18", length)); //$NON-NLS-1$
-        }
-
+        Arrays.checkOffsetAndCount(buffer.length, offset, length);
         for (int i = 0; i < length; i++) {
             int currentChar;
             try {
@@ -200,7 +190,7 @@ public class LineNumberInputStream extends FilterInputStream {
     /**
      * Resets this stream to the last marked location. It also resets the line
      * count to what is was when this stream was marked.
-     * 
+     *
      * @throws IOException
      *             if this stream is already closed, no mark has been set or the
      *             mark is no longer valid because more than {@code readlimit}
@@ -219,7 +209,7 @@ public class LineNumberInputStream extends FilterInputStream {
      * Sets the line number of this stream to the specified
      * {@code lineNumber}. Note that this may have side effects on the
      * line number associated with the last marked position.
-     * 
+     *
      * @param lineNumber
      *            the new lineNumber value.
      * @see #mark(int)
@@ -231,12 +221,12 @@ public class LineNumberInputStream extends FilterInputStream {
 
     /**
      * Skips {@code count} number of bytes in this stream. Subsequent
-     * {@code read()}'s will not return these bytes unless {@code reset()} is
-     * used. This implementation skips {@code count} number of bytes in the
+     * calls to {@code read} will not return these bytes unless {@code reset} is
+     * used. This implementation skips {@code byteCount} bytes in the
      * filtered stream and increments the line number count whenever line
      * terminator sequences are skipped.
-     * 
-     * @param count
+     *
+     * @param byteCount
      *            the number of bytes to skip.
      * @return the number of bytes actually skipped.
      * @throws IOException
@@ -246,16 +236,7 @@ public class LineNumberInputStream extends FilterInputStream {
      * @see #reset()
      */
     @Override
-    public long skip(long count) throws IOException {
-        if (count <= 0) {
-            return 0;
-        }
-        for (int i = 0; i < count; i++) {
-            int currentChar = read();
-            if (currentChar == -1) {
-                return i;
-            }
-        }
-        return count;
+    public long skip(long byteCount) throws IOException {
+        return Streams.skipByReading(this, byteCount);
     }
 }

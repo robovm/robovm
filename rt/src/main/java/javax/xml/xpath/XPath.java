@@ -18,9 +18,9 @@
 
 package javax.xml.xpath;
 
-import org.xml.sax.InputSource;
-import javax.xml.namespace.QName;
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.namespace.QName;
+import org.xml.sax.InputSource;
 
 /**
  * <p><code>XPath</code> provides access to the XPath evaluation environment and expressions.</p>
@@ -76,104 +76,104 @@ import javax.xml.namespace.NamespaceContext;
  *      </td>
  *    </tr>
  * </table>
- * 
+ *
  * @author  <a href="Norman.Walsh@Sun.com">Norman Walsh</a>
  * @author  <a href="Jeff.Suttor@Sun.com">Jeff Suttor</a>
- * @version $Revision: 569998 $, $Date: 2007-08-27 00:40:02 -0400 (Mon, 27 Aug 2007) $
+ * @version $Revision: 569998 $, $Date: 2007-08-26 21:40:02 -0700 (Sun, 26 Aug 2007) $
  * @see <a href="http://www.w3.org/TR/xpath">XML Path Language (XPath) Version 1.0</a>
  * @since 1.5
  */
 public interface XPath {
-    
-	/**
-	 * <p>Reset this <code>XPath</code> to its original configuration.</p>
-	 * 
-	 * <p><code>XPath</code> is reset to the same state as when it was created with
-	 * {@link XPathFactory#newXPath()}.
-	 * <code>reset()</code> is designed to allow the reuse of existing <code>XPath</code>s
-	 * thus saving resources associated with the creation of new <code>XPath</code>s.</p>
-	 * 
-	 * <p>The reset <code>XPath</code> is not guaranteed to have the same {@link XPathFunctionResolver}, {@link XPathVariableResolver}
-	 * or {@link NamespaceContext} <code>Object</code>s, e.g. {@link Object#equals(Object obj)}.
-	 * It is guaranteed to have a functionally equal <code>XPathFunctionResolver</code>, <code>XPathVariableResolver</code>
-	 * and <code>NamespaceContext</code>.</p>
-	 */
-	public void reset();
+
+    /**
+     * <p>Reset this <code>XPath</code> to its original configuration.</p>
+     *
+     * <p><code>XPath</code> is reset to the same state as when it was created with
+     * {@link XPathFactory#newXPath()}.
+     * <code>reset()</code> is designed to allow the reuse of existing <code>XPath</code>s
+     * thus saving resources associated with the creation of new <code>XPath</code>s.</p>
+     *
+     * <p>The reset <code>XPath</code> is not guaranteed to have the same {@link XPathFunctionResolver}, {@link XPathVariableResolver}
+     * or {@link NamespaceContext} <code>Object</code>s, e.g. {@link Object#equals(Object obj)}.
+     * It is guaranteed to have a functionally equal <code>XPathFunctionResolver</code>, <code>XPathVariableResolver</code>
+     * and <code>NamespaceContext</code>.</p>
+     */
+    public void reset();
 
     /**
      * <p>Establish a variable resolver.</p>
-     * 
+     *
      * <p>A <code>NullPointerException</code> is thrown if <code>resolver</code> is <code>null</code>.</p>
-     * 
+     *
      * @param resolver Variable resolver.
-     * 
+     *
      *  @throws NullPointerException If <code>resolver</code> is <code>null</code>.
      */
     public void setXPathVariableResolver(XPathVariableResolver resolver);
 
     /**
        * <p>Return the current variable resolver.</p>
-       * 
+       *
        * <p><code>null</code> is returned in no variable resolver is in effect.</p>
-       *  
+       *
        * @return Current variable resolver.
        */
     public XPathVariableResolver getXPathVariableResolver();
 
     /**
        * <p>Establish a function resolver.</p>
-       * 
+       *
        * <p>A <code>NullPointerException</code> is thrown if <code>resolver</code> is <code>null</code>.</p>
-       * 
+       *
        * @param resolver XPath function resolver.
-       * 
+       *
        * @throws NullPointerException If <code>resolver</code> is <code>null</code>.
        */
     public void setXPathFunctionResolver(XPathFunctionResolver resolver);
 
     /**
        * <p>Return the current function resolver.</p>
-       * 
+       *
        * <p><code>null</code> is returned in no function resolver is in effect.</p>
-       * 
+       *
        * @return Current function resolver.
        */
     public XPathFunctionResolver getXPathFunctionResolver();
 
     /**
        * <p>Establish a namespace context.</p>
-       * 
+       *
        * <p>A <code>NullPointerException</code> is thrown if <code>nsContext</code> is <code>null</code>.</p>
-       * 
+       *
        * @param nsContext Namespace context to use.
-       * 
+       *
        * @throws NullPointerException If <code>nsContext</code> is <code>null</code>.
        */
     public void setNamespaceContext(NamespaceContext nsContext);
 
     /**
        * <p>Return the current namespace context.</p>
-       * 
+       *
        * <p><code>null</code> is returned in no namespace context is in effect.</p>
-       * 
+       *
        * @return Current Namespace context.
        */
     public NamespaceContext getNamespaceContext();
 
-    /** 
+    /**
        * <p>Compile an XPath expression for later evaluation.</p>
-       * 
+       *
        * <p>If <code>expression</code> contains any {@link XPathFunction}s,
        * they must be available via the {@link XPathFunctionResolver}.
        * An {@link XPathExpressionException} will be thrown if the <code>XPathFunction</code>
        * cannot be resolved with the <code>XPathFunctionResolver</code>.</p>
-       *  
-       * <p>If <code>expression</code> is <code>null</code>, a <code>NullPointerException</code> is thrown.</p> 
+       *
+       * <p>If <code>expression</code> is <code>null</code>, a <code>NullPointerException</code> is thrown.</p>
        *
        * @param expression The XPath expression.
-       * 
+       *
        * @return Compiled XPath expression.
-    
+
        * @throws XPathExpressionException If <code>expression</code> cannot be compiled.
        * @throws NullPointerException If <code>expression</code> is <code>null</code>.
        */
@@ -185,7 +185,7 @@ public interface XPath {
      *
      * <p>See <a href="#XPath-evaluation">Evaluation of XPath Expressions</a> for context item evaluation,
      * variable, function and <code>QName</code> resolution and return type conversion.</p>
-     * 
+     *
      * <p>If <code>returnType</code> is not one of the types defined in {@link XPathConstants} (
      * {@link XPathConstants#NUMBER NUMBER},
      * {@link XPathConstants#STRING STRING},
@@ -193,8 +193,8 @@ public interface XPath {
      * {@link XPathConstants#NODE NODE} or
      * {@link XPathConstants#NODESET NODESET})
      * then an <code>IllegalArgumentException</code> is thrown.</p>
-     * 
-     * <p>If a <code>null</code> value is provided for 
+     *
+     * <p>If a <code>null</code> value is provided for
      * <code>item</code>, an empty document will be used for the
      * context.
      * If <code>expression</code> or <code>returnType</code> is <code>null</code>, then a
@@ -203,9 +203,9 @@ public interface XPath {
      * @param expression The XPath expression.
      * @param item The starting context (node or node list, for example).
      * @param returnType The desired return type.
-     * 
+     *
      * @return Result of evaluating an XPath expression as an <code>Object</code> of <code>returnType</code>.
-     * 
+     *
      * @throws XPathExpressionException If <code>expression</code> cannot be evaluated.
      * @throws IllegalArgumentException If <code>returnType</code> is not one of the types defined in {@link XPathConstants}.
      * @throws NullPointerException If <code>expression</code> or <code>returnType</code> is <code>null</code>.
@@ -218,21 +218,21 @@ public interface XPath {
      *
      * <p>This method calls {@link #evaluate(String expression, Object item, QName returnType)} with a <code>returnType</code> of
      * {@link XPathConstants#STRING}.</p>
-     * 
+     *
      * <p>See <a href="#XPath-evaluation">Evaluation of XPath Expressions</a> for context item evaluation,
      * variable, function and QName resolution and return type conversion.</p>
      *
-     * <p>If a <code>null</code> value is provided for 
+     * <p>If a <code>null</code> value is provided for
      * <code>item</code>, an empty document will be used for the
      * context.
      * If <code>expression</code> is <code>null</code>, then a <code>NullPointerException</code> is thrown.</p>
-     * 
+     *
      * @param expression The XPath expression.
      * @param item The starting context (node or node list, for example).
-     * 
+     *
      * @return The <code>String</code> that is the result of evaluating the expression and
      *   converting the result to a <code>String</code>.
-     * 
+     *
      * @throws XPathExpressionException If <code>expression</code> cannot be evaluated.
      * @throws NullPointerException If <code>expression</code> is <code>null</code>.
      */
@@ -248,19 +248,19 @@ public interface XPath {
      *
      * <p>See <a href="#XPath-evaluation">Evaluation of XPath Expressions</a> for context item evaluation,
      * variable, function and QName resolution and return type conversion.</p>
-     * 
+     *
      * <p>If <code>returnType</code> is not one of the types defined in {@link XPathConstants},
      * then an <code>IllegalArgumentException</code> is thrown.</p>
-     * 
+     *
      * <p>If <code>expression</code>, <code>source</code> or <code>returnType</code> is <code>null</code>,
      * then a <code>NullPointerException</code> is thrown.</p>
-     * 
+     *
      * @param expression The XPath expression.
      * @param source The input source of the document to evaluate over.
      * @param returnType The desired return type.
-     * 
+     *
      * @return The <code>Object</code> that encapsulates the result of evaluating the expression.
-     * 
+     *
      * @throws XPathExpressionException If expression cannot be evaluated.
      * @throws IllegalArgumentException If <code>returnType</code> is not one of the types defined in {@link XPathConstants}.
      * @throws NullPointerException If <code>expression</code>, <code>source</code> or <code>returnType</code>
@@ -281,16 +281,16 @@ public interface XPath {
      *
      * <p>See <a href="#XPath-evaluation">Evaluation of XPath Expressions</a> for context item evaluation,
      * variable, function and QName resolution and return type conversion.</p>
-     * 
+     *
      * <p>If <code>expression</code> or <code>source</code> is <code>null</code>,
      * then a <code>NullPointerException</code> is thrown.</p>
-     * 
+     *
      * @param expression The XPath expression.
      * @param source The <code>InputSource</code> of the document to evaluate over.
-     * 
+     *
      * @return The <code>String</code> that is the result of evaluating the expression and
      *   converting the result to a <code>String</code>.
-     * 
+     *
      * @throws XPathExpressionException If expression cannot be evaluated.
      * @throws NullPointerException If <code>expression</code> or <code>source</code> is <code>null</code>.
      */

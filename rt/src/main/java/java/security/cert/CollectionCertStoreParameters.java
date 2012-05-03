@@ -30,10 +30,10 @@ public class CollectionCertStoreParameters implements CertStoreParameters {
     // Default empty and immutable collection.
     // Used if <code>CollectionCertStoreParameters</code>instance
     // created by the no arg constructor
-    private static final Collection defaultCollection = Collections.EMPTY_SET;
+    private static final Collection<?> defaultCollection = Collections.EMPTY_SET;
     // A <code>Collection</code> of <code>Certificate</code>s
     // and <code>CRL</code>s
-    private final Collection collection;
+    private final Collection<?> collection;
 
     /**
      * Creates a new {@code CollectionCertStoreParameters} without a collection.
@@ -72,10 +72,10 @@ public class CollectionCertStoreParameters implements CertStoreParameters {
      */
     public Object clone() {
         try {
-			return super.clone();
-		} catch (CloneNotSupportedException e) {
-			return null;
-		}
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 
     /**
@@ -96,9 +96,9 @@ public class CollectionCertStoreParameters implements CertStoreParameters {
      */
     public String toString() {
         StringBuilder sb =
-            new StringBuilder("CollectionCertStoreParameters: [\ncollection: "); //$NON-NLS-1$
+            new StringBuilder("CollectionCertStoreParameters: [\ncollection: ");
         sb.append(getCollection().toString());
-        sb.append("\n]"); //$NON-NLS-1$
+        sb.append("\n]");
         return sb.toString();
     }
 }

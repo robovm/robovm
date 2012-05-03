@@ -25,13 +25,13 @@ import java.io.PrintWriter;
  *
  * @author  <a href="Norman.Walsh@Sun.com">Norman Walsh</a>
  * @author <a href="mailto:Jeff.Suttor@Sun.COM">Jeff Suttor</a>
- * @version $Revision: 446598 $, $Date: 2006-09-15 08:55:40 -0400 (Fri, 15 Sep 2006) $
+ * @version $Revision: 446598 $, $Date: 2006-09-15 05:55:40 -0700 (Fri, 15 Sep 2006) $
  * @since 1.5
  */
 public class XPathException extends Exception {
 
     private final Throwable cause;
-    
+
     /**
      * <p>Stream Unique Identifier.</p>
      */
@@ -70,7 +70,7 @@ public class XPathException extends Exception {
             throw new NullPointerException ( "cause can't be null");
         }
     }
-    
+
     public Throwable getCause() {
         return cause;
     }
@@ -83,7 +83,7 @@ public class XPathException extends Exception {
 
         super.printStackTrace(s);
     }
- 
+
     public void printStackTrace() {
         printStackTrace(System.err);
     }

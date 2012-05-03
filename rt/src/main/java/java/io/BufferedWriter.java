@@ -17,11 +17,8 @@
 
 package java.io;
 
-import java.security.AccessController;
-
-import org.apache.harmony.luni.internal.nls.Messages;
-import org.apache.harmony.luni.util.PriviAction;
-import org.apache.harmony.luni.util.SneakyThrow;
+import java.util.Arrays;
+import libcore.util.SneakyThrow;
 
 /**
  * Wraps an existing {@link Writer} and <em>buffers</em> the output. Expensive
@@ -30,7 +27,7 @@ import org.apache.harmony.luni.util.SneakyThrow;
  * some extra space is required to hold the buffer and that copying takes place
  * when filling that buffer, but this is usually outweighed by the performance
  * benefits.
- * 
+ *
  * <p/>A typical application pattern for the class looks like this:<p/>
  *
  * <pre>
@@ -43,43 +40,32 @@ public class BufferedWriter extends Writer {
 
     private Writer out;
 
-    private char buf[];
+    private char[] buf;
 
     private int pos;
 
-    private final String lineSeparator = AccessController
-            .doPrivileged(new PriviAction<String>("line.separator")); //$NON-NLS-1$
-
     /**
-     * Constructs a new {@code BufferedWriter} with {@code out} as the writer
-     * for which to buffer write operations. The buffer size is set to the
-     * default value of 8 KB.
-     * 
-     * @param out
-     *            the writer for which character writing is buffered.
+     * Constructs a new {@code BufferedWriter}, providing {@code out} with a buffer
+     * of 8192 bytes.
+     *
+     * @param out the {@code Writer} the buffer writes to.
      */
     public BufferedWriter(Writer out) {
-        super(out);
-        this.out = out;
-        buf = new char[8192];
+        this(out, 8192);
     }
 
     /**
-     * Constructs a new {@code BufferedWriter} with {@code out} as the writer
-     * for which to buffer write operations. The buffer size is set to {@code
-     * size}.
-     * 
-     * @param out
-     *            the writer for which character writing is buffered.
-     * @param size
-     *            the size of the buffer in bytes.
-     * @throws IllegalArgumentException
-     *             if {@code size <= 0}.
+     * Constructs a new {@code BufferedWriter}, providing {@code out} with {@code size} bytes
+     * of buffer.
+     *
+     * @param out the {@code OutputStream} the buffer writes to.
+     * @param size the size of buffer in bytes.
+     * @throws IllegalArgumentException if {@code size <= 0}.
      */
     public BufferedWriter(Writer out, int size) {
         super(out);
         if (size <= 0) {
-            throw new IllegalArgumentException(Messages.getString("luni.A3")); //$NON-NLS-1$
+            throw new IllegalArgumentException("size <= 0");
         }
         this.out = out;
         this.buf = new char[size];
@@ -89,7 +75,7 @@ public class BufferedWriter extends Writer {
      * Closes this writer. The contents of the buffer are flushed, the target
      * writer is closed, and the buffer is released. Only the first invocation
      * of close has any effect.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing this writer.
      */
@@ -126,18 +112,22 @@ public class BufferedWriter extends Writer {
     /**
      * Flushes this writer. The contents of the buffer are committed to the
      * target writer and it is then flushed.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while flushing this writer.
      */
     @Override
     public void flush() throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.A7")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             flushInternal();
             out.flush();
+        }
+    }
+
+    private void checkNotClosed() throws IOException {
+        if (isClosed()) {
+            throw new IOException("BufferedWriter is closed");
         }
     }
 
@@ -153,7 +143,7 @@ public class BufferedWriter extends Writer {
 
     /**
      * Indicates whether this writer is closed.
-     * 
+     *
      * @return {@code true} if this writer is closed, {@code false} otherwise.
      */
     private boolean isClosed() {
@@ -161,15 +151,14 @@ public class BufferedWriter extends Writer {
     }
 
     /**
-     * Writes a newline to this writer. A newline is determined by the System
-     * property "line.separator". The target writer may or may not be flushed
-     * when a newline is written.
-     * 
+     * Writes a newline to this writer. On Android, this is {@code "\n"}.
+     * The target writer may or may not be flushed when a newline is written.
+     *
      * @throws IOException
      *             if an error occurs attempting to write to this writer.
      */
     public void newLine() throws IOException {
-        write(lineSeparator, 0, lineSeparator.length());
+        write(System.lineSeparator());
     }
 
     /**
@@ -177,7 +166,7 @@ public class BufferedWriter extends Writer {
      * {@code cbuf} to this writer. If {@code count} is greater than this
      * writer's buffer, then the buffer is flushed and the characters are
      * written directly to the target writer.
-     * 
+     *
      * @param cbuf
      *            the array containing characters to write.
      * @param offset
@@ -194,12 +183,11 @@ public class BufferedWriter extends Writer {
     @Override
     public void write(char[] cbuf, int offset, int count) throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.A7")); //$NON-NLS-1$
+            checkNotClosed();
+            if (cbuf == null) {
+                throw new NullPointerException("buffer == null");
             }
-            if (offset < 0 || offset > cbuf.length - count || count < 0) {
-                throw new IndexOutOfBoundsException();
-            }
+            Arrays.checkOffsetAndCount(cbuf.length, offset, count);
             if (pos == 0 && count >= this.buf.length) {
                 out.write(cbuf, offset, count);
                 return;
@@ -234,7 +222,7 @@ public class BufferedWriter extends Writer {
      * Writes the character {@code oneChar} to this writer. If the buffer
      * gets full by writing this character, this writer is flushed. Only the
      * lower two bytes of the integer {@code oneChar} are written.
-     * 
+     *
      * @param oneChar
      *            the character to write.
      * @throws IOException
@@ -243,9 +231,7 @@ public class BufferedWriter extends Writer {
     @Override
     public void write(int oneChar) throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.A7")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             if (pos >= buf.length) {
                 out.write(buf, 0, buf.length);
                 pos = 0;
@@ -260,7 +246,7 @@ public class BufferedWriter extends Writer {
      * then this writer is flushed and the remaining characters are written
      * directly to the target writer. If count is negative no characters are
      * written to the buffer. This differs from the behavior of the superclass.
-     * 
+     *
      * @param str
      *            the non-null String containing characters to write.
      * @param offset
@@ -277,14 +263,12 @@ public class BufferedWriter extends Writer {
     @Override
     public void write(String str, int offset, int count) throws IOException {
         synchronized (lock) {
-            if (isClosed()) {
-                throw new IOException(Messages.getString("luni.A7")); //$NON-NLS-1$
-            }
+            checkNotClosed();
             if (count <= 0) {
                 return;
             }
-            if (offset > str.length() - count || offset < 0) {
-                throw new StringIndexOutOfBoundsException();
+            if (offset < 0 || offset > str.length() - count) {
+                throw new StringIndexOutOfBoundsException(str, offset, count);
             }
             if (pos == 0 && count >= buf.length) {
                 char[] chars = new char[count];

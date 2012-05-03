@@ -14,16 +14,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-/**
-* @author Alexander Y. Kleymenov
-*/
 
 package javax.crypto.spec;
 
 import java.security.InvalidKeyException;
 import java.security.spec.KeySpec;
-
-import org.apache.harmony.crypto.internal.nls.Messages;
 
 /**
  * The key specification for a triple-DES (DES-EDE) key.
@@ -48,14 +43,12 @@ public class DESedeKeySpec implements KeySpec {
      * @throws NullPointerException
      *             if the key data is null.
      */
-    public DESedeKeySpec(byte[] key)
-                throws InvalidKeyException {
+    public DESedeKeySpec(byte[] key) throws InvalidKeyException {
         if (key == null) {
-            throw new NullPointerException(Messages.getString("crypto.2F")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
         if (key.length < DES_EDE_KEY_LEN) {
-            throw new InvalidKeyException(
-                    Messages.getString("crypto.30")); //$NON-NLS-1$
+            throw new InvalidKeyException();
         }
         this.key = new byte[DES_EDE_KEY_LEN];
         System.arraycopy(key, 0, this.key, 0, DES_EDE_KEY_LEN);
@@ -76,14 +69,12 @@ public class DESedeKeySpec implements KeySpec {
      * @throws NullPointerException
      *             if the key data is null.
      */
-    public DESedeKeySpec(byte[] key, int offset)
-                throws InvalidKeyException {
+    public DESedeKeySpec(byte[] key, int offset) throws InvalidKeyException {
         if (key == null) {
-            throw new NullPointerException(Messages.getString("crypto.2F")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
         if (key.length - offset < DES_EDE_KEY_LEN) {
-            throw new InvalidKeyException(
-                    Messages.getString("crypto.30")); //$NON-NLS-1$
+            throw new InvalidKeyException();
         }
         this.key = new byte[DES_EDE_KEY_LEN];
         System.arraycopy(key, offset, this.key, 0, DES_EDE_KEY_LEN);
@@ -114,11 +105,9 @@ public class DESedeKeySpec implements KeySpec {
      *             if the length of the key data starting at offset is less than
      *             24.
      */
-    public static boolean isParityAdjusted(byte[] key, int offset)
-                throws InvalidKeyException {
+    public static boolean isParityAdjusted(byte[] key, int offset) throws InvalidKeyException {
         if (key.length - offset < DES_EDE_KEY_LEN) {
-            throw new InvalidKeyException(
-                    Messages.getString("crypto.30")); //$NON-NLS-1$
+            throw new InvalidKeyException();
         }
         for (int i=offset; i<DES_EDE_KEY_LEN+offset; i++) {
             int b = key[i];
@@ -131,4 +120,3 @@ public class DESedeKeySpec implements KeySpec {
         return true;
     }
 }
-

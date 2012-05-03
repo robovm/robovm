@@ -37,7 +37,7 @@ public class UnknownHostException extends IOException {
      * Constructs a new {@code UnknownHostException} instance with the given detail message.
      * The detail message should generally contain the hostname and a reason for the failure,
      * if known.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

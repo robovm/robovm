@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,22 +18,21 @@
 package java.text;
 
 import java.io.IOException;
-import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamField;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
-
-import org.apache.harmony.text.internal.nls.Messages;
+import libcore.util.EmptyArray;
 
 /**
- * Produces concatenated
- * messages in language-neutral way. Use this class to construct messages
- * displayed for end users.
+ * Produces concatenated messages in language-neutral way. New code
+ * should probably use {@link java.util.Formatter} instead.
  * <p>
  * {@code MessageFormat} takes a set of objects, formats them and then
  * inserts the formatted strings into the pattern at the appropriate places.
@@ -42,8 +41,8 @@ import org.apache.harmony.text.internal.nls.Messages;
  * {@code Format} classes in that you create a {@code MessageFormat}
  * object with one of its constructors (not with a {@code getInstance}
  * style factory method). The factory methods aren't necessary because
- * {@code MessageFormat} itself doesn't implement locale specific
- * behavior. Any locale specific behavior is defined by the pattern that you
+ * {@code MessageFormat} itself doesn't implement locale-specific
+ * behavior. Any locale-specific behavior is defined by the pattern that you
  * provide as well as the subformats used for inserted arguments.
  *
  * <h4><a name="patterns">Patterns and their interpretation</a></h4>
@@ -226,7 +225,7 @@ import org.apache.harmony.text.internal.nls.Messages;
  *
  * <pre>
  * Object[] arguments = {
- *         new Integer(7), new Date(System.currentTimeMillis()),
+ *         Integer.valueOf(7), new Date(System.currentTimeMillis()),
  *         "a disturbance in the Force"};
  * String result = MessageFormat.format(
  *         "At {1,time} on {1,date}, there was {2} on planet {0,number,integer}.",
@@ -245,7 +244,7 @@ import org.apache.harmony.text.internal.nls.Messages;
  * Example 2: <blockquote>
  *
  * <pre>
- * Object[] testArgs = {new Long(3), "MyDisk"};
+ * Object[] testArgs = {Long.valueOf(3), "MyDisk"};
  * MessageFormat form = new MessageFormat("The disk \"{1}\" contains {0} file(s).");
  * System.out.println(form.format(testArgs));
  * <em>
@@ -269,7 +268,7 @@ import org.apache.harmony.text.internal.nls.Messages;
  * String[] filepart = {"no files","one file","{0,number} files"};
  * ChoiceFormat fileform = new ChoiceFormat(filelimits, filepart);
  * form.setFormatByArgumentIndex(0, fileform);
- * Object[] testArgs = {new Long(12373), "MyDisk"};
+ * Object[] testArgs = {Long.valueOf(12373), "MyDisk"};
  * System.out.println(form.format(testArgs));
  * <em>
  * Output (with different testArgs):
@@ -328,17 +327,13 @@ import org.apache.harmony.text.internal.nls.Messages;
  * format instances for each thread. If multiple threads access a format
  * concurrently, it must be synchronized externally.
  *
- * @see java.util.Locale
- * @see Format
- * @see NumberFormat
- * @see DecimalFormat
- * @see ChoiceFormat
+ * @see java.util.Formatter
  */
 public class MessageFormat extends Format {
 
     private static final long serialVersionUID = 6479157306784022952L;
 
-    private Locale locale = Locale.getDefault();
+    private Locale locale;
 
     transient private String[] strings;
 
@@ -351,9 +346,8 @@ public class MessageFormat extends Format {
     transient private int maxArgumentIndex;
 
     /**
-     * Constructs a new {@code MessageFormat} using the specified pattern and
-     * the specified locale for formats.
-     * 
+     * Constructs a new {@code MessageFormat} using the specified pattern and {@code locale}.
+     *
      * @param template
      *            the pattern.
      * @param locale
@@ -368,20 +362,21 @@ public class MessageFormat extends Format {
 
     /**
      * Constructs a new {@code MessageFormat} using the specified pattern and
-     * the default locale for formats.
-     * 
+     * the user's default locale.
+     * See "<a href="../util/Locale.html#default_locale">Be wary of the default locale</a>".
+     *
      * @param template
      *            the pattern.
      * @throws IllegalArgumentException
      *            if the pattern cannot be parsed.
      */
     public MessageFormat(String template) {
-        applyPattern(template);
+        this(template, Locale.getDefault());
     }
 
     /**
      * Changes this {@code MessageFormat} to use the specified pattern.
-     * 
+     *
      * @param template
      *            the new pattern.
      * @throws IllegalArgumentException
@@ -391,40 +386,34 @@ public class MessageFormat extends Format {
         int length = template.length();
         StringBuffer buffer = new StringBuffer();
         ParsePosition position = new ParsePosition(0);
-        Vector<String> localStrings = new Vector<String>();
+        ArrayList<String> localStrings = new ArrayList<String>();
         int argCount = 0;
         int[] args = new int[10];
         int maxArg = -1;
-        Vector<Format> localFormats = new Vector<Format>();
+        ArrayList<Format> localFormats = new ArrayList<Format>();
         while (position.getIndex() < length) {
             if (Format.upTo(template, position, buffer, '{')) {
                 int arg = 0;
                 int offset = position.getIndex();
                 if (offset >= length) {
-                    // text.19=Invalid argument number
-                    throw new IllegalArgumentException(Messages
-                            .getString("text.19")); //$NON-NLS-1$
+                    throw new IllegalArgumentException("Invalid argument number");
                 }
                 // Get argument number
                 char ch;
                 while ((ch = template.charAt(offset++)) != '}' && ch != ',') {
                     if (ch < '0' && ch > '9') {
-                        // text.19=Invalid argument number
-                        throw new IllegalArgumentException(Messages
-                            .getString("text.19")); //$NON-NLS-1$
+                        throw new IllegalArgumentException("Invalid argument number");
                     }
-                    
+
                     arg = arg * 10 + (ch - '0');
-                    
+
                     if (arg < 0 || offset >= length) {
-                        // text.19=Invalid argument number
-                        throw new IllegalArgumentException(Messages
-                            .getString("text.19")); //$NON-NLS-1$
+                        throw new IllegalArgumentException("Invalid argument number");
                     }
                 }
                 offset--;
                 position.setIndex(offset);
-                localFormats.addElement(parseVariable(template, position));
+                localFormats.add(parseVariable(template, position));
                 if (argCount >= args.length) {
                     int[] newArgs = new int[args.length * 2];
                     System.arraycopy(args, 0, newArgs, 0, args.length);
@@ -435,18 +424,12 @@ public class MessageFormat extends Format {
                     maxArg = arg;
                 }
             }
-            localStrings.addElement(buffer.toString());
+            localStrings.add(buffer.toString());
             buffer.setLength(0);
         }
-        this.strings = new String[localStrings.size()];
-        for (int i = 0; i < localStrings.size(); i++) {
-            this.strings[i] = localStrings.elementAt(i);
-        }
+        this.strings = localStrings.toArray(new String[localStrings.size()]);
         argumentNumbers = args;
-        this.formats = new Format[argCount];
-        for (int i = 0; i < argCount; i++) {
-            this.formats[i] = localFormats.elementAt(i);
-        }
+        this.formats = localFormats.toArray(new Format[argCount]);
         maxOffset = argCount - 1;
         maxArgumentIndex = maxArg;
     }
@@ -454,7 +437,7 @@ public class MessageFormat extends Format {
     /**
      * Returns a new instance of {@code MessageFormat} with the same pattern and
      * formats as this {@code MessageFormat}.
-     * 
+     *
      * @return a shallow copy of this {@code MessageFormat}.
      * @see java.lang.Cloneable
      */
@@ -475,7 +458,7 @@ public class MessageFormat extends Format {
      * Compares the specified object to this {@code MessageFormat} and indicates
      * if they are equal. In order to be equal, {@code object} must be an
      * instance of {@code MessageFormat} and have the same pattern.
-     * 
+     *
      * @param object
      *            the object to compare with this object.
      * @return {@code true} if the specified object is equal to this
@@ -511,7 +494,7 @@ public class MessageFormat extends Format {
      * returns an {@code AttributedCharacterIterator} with the formatted message and
      * attributes. The {@code AttributedCharacterIterator} returned also includes the
      * attributes from the formats of this message format.
-     * 
+     *
      * @param object
      *            the object to format.
      * @return an {@code AttributedCharacterIterator} with the formatted message and
@@ -527,7 +510,7 @@ public class MessageFormat extends Format {
         }
 
         StringBuffer buffer = new StringBuffer();
-        Vector<FieldContainer> fields = new Vector<FieldContainer>();
+        ArrayList<FieldContainer> fields = new ArrayList<FieldContainer>();
 
         // format the message, and find fields
         formatImpl((Object[]) object, buffer, new FieldPosition(0), fields);
@@ -536,8 +519,7 @@ public class MessageFormat extends Format {
         AttributedString as = new AttributedString(buffer.toString());
 
         // add MessageFormat field attributes and values to the AttributedString
-        for (int i = 0; i < fields.size(); i++) {
-            FieldContainer fc = fields.elementAt(i);
+        for (FieldContainer fc : fields) {
             as.addAttribute(fc.attribute, fc.value, fc.start, fc.end);
         }
 
@@ -569,7 +551,7 @@ public class MessageFormat extends Format {
     }
 
     private StringBuffer formatImpl(Object[] objects, StringBuffer buffer,
-            FieldPosition position, Vector<FieldContainer> fields) {
+            FieldPosition position, List<FieldContainer> fields) {
         FieldPosition passedField = new FieldPosition(0);
         for (int i = 0; i <= maxOffset; i++) {
             buffer.append(strings[i]);
@@ -581,8 +563,7 @@ public class MessageFormat extends Format {
                 buffer.append('{');
                 buffer.append(argumentNumbers[i]);
                 buffer.append('}');
-                handleArgumentField(begin, buffer.length(), argumentNumbers[i],
-                        position, fields);
+                handleArgumentField(begin, buffer.length(), argumentNumbers[i], position, fields);
                 continue;
             }
             Format format = formats[i];
@@ -593,8 +574,7 @@ public class MessageFormat extends Format {
                     format = DateFormat.getInstance();
                 } else {
                     buffer.append(arg);
-                    handleArgumentField(begin, buffer.length(),
-                            argumentNumbers[i], position, fields);
+                    handleArgumentField(begin, buffer.length(), argumentNumbers[i], position, fields);
                     continue;
                 }
             }
@@ -603,14 +583,12 @@ public class MessageFormat extends Format {
                 MessageFormat mf = new MessageFormat(result);
                 mf.setLocale(locale);
                 mf.format(objects, buffer, passedField);
-                handleArgumentField(begin, buffer.length(), argumentNumbers[i],
-                        position, fields);
-                handleformat(format, arg, begin, fields);
+                handleArgumentField(begin, buffer.length(), argumentNumbers[i], position, fields);
+                handleFormat(format, arg, begin, fields);
             } else {
                 format.format(arg, buffer, passedField);
-                handleArgumentField(begin, buffer.length(), argumentNumbers[i],
-                        position, fields);
-                handleformat(format, arg, begin, fields);
+                handleArgumentField(begin, buffer.length(), argumentNumbers[i], position, fields);
+                handleFormat(format, arg, begin, fields);
             }
         }
         if (maxOffset + 1 < strings.length) {
@@ -621,21 +599,14 @@ public class MessageFormat extends Format {
 
     /**
      * Adds a new FieldContainer with MessageFormat.Field.ARGUMENT field,
-     * argnumber, begin and end index to the fields vector, or sets the
+     * argIndex, begin and end index to the fields list, or sets the
      * position's begin and end index if it has MessageFormat.Field.ARGUMENT as
      * its field attribute.
-     * 
-     * @param begin
-     * @param end
-     * @param argnumber
-     * @param position
-     * @param fields
      */
-    private void handleArgumentField(int begin, int end, int argnumber,
-            FieldPosition position, Vector<FieldContainer> fields) {
+    private void handleArgumentField(int begin, int end, int argIndex,
+            FieldPosition position, List<FieldContainer> fields) {
         if (fields != null) {
-            fields.add(new FieldContainer(begin, end, Field.ARGUMENT,
-                    new Integer(argnumber)));
+            fields.add(new FieldContainer(begin, end, Field.ARGUMENT, Integer.valueOf(argIndex)));
         } else {
             if (position != null
                     && position.getFieldAttribute() == Field.ARGUMENT
@@ -648,7 +619,7 @@ public class MessageFormat extends Format {
 
     /**
      * An inner class to store attributes, values, start and end indices.
-     * Instances of this inner class are used as elements for the fields vector
+     * Instances of this inner class are used as elements for the fields list.
      */
     private static class FieldContainer {
         int start, end;
@@ -667,38 +638,32 @@ public class MessageFormat extends Format {
     }
 
     /**
-     * If fields vector is not null, find and add the fields of this format to
-     * the fields vector by iterating through its AttributedCharacterIterator
-     * 
+     * If fields list is not null, find and add the fields of this format to
+     * the fields list by iterating through its AttributedCharacterIterator
+     *
      * @param format
      *            the format to find fields for
      * @param arg
      *            object to format
      * @param begin
      *            the index where the string this format has formatted begins
-     * @param fields
-     *            fields vector, each entry in this vector are of type
-     *            FieldContainer.
      */
-    private void handleformat(Format format, Object arg, int begin,
-            Vector<FieldContainer> fields) {
-        if (fields != null) {
-            AttributedCharacterIterator iterator = format
-                    .formatToCharacterIterator(arg);
-            while (iterator.getIndex() != iterator.getEndIndex()) {
-                int start = iterator.getRunStart();
-                int end = iterator.getRunLimit();
-
-                Iterator<?> it = iterator.getAttributes().keySet().iterator();
-                while (it.hasNext()) {
-                    AttributedCharacterIterator.Attribute attribute = (AttributedCharacterIterator.Attribute) it
-                            .next();
-                    Object value = iterator.getAttribute(attribute);
-                    fields.add(new FieldContainer(begin + start, begin + end,
-                            attribute, value));
-                }
-                iterator.setIndex(end);
+    private void handleFormat(Format format, Object arg, int begin, List<FieldContainer> fields) {
+        if (fields == null) {
+            return;
+        }
+        AttributedCharacterIterator iterator = format.formatToCharacterIterator(arg);
+        while (iterator.getIndex() != iterator.getEndIndex()) {
+            int start = iterator.getRunStart();
+            int end = iterator.getRunLimit();
+            Iterator<?> it = iterator.getAttributes().keySet().iterator();
+            while (it.hasNext()) {
+                AttributedCharacterIterator.Attribute attribute =
+                        (AttributedCharacterIterator.Attribute) it.next();
+                Object value = iterator.getAttribute(attribute);
+                fields.add(new FieldContainer(begin + start, begin + end, attribute, value));
             }
+            iterator.setIndex(end);
         }
     }
 
@@ -713,7 +678,7 @@ public class MessageFormat extends Format {
      * <p>
      * Calling this method is equivalent to calling
      * <blockquote>
-     * 
+     *
      * <pre>
      * format((Object[])object, buffer, field)
      * </pre>
@@ -739,29 +704,30 @@ public class MessageFormat extends Format {
 
     /**
      * Formats the supplied objects using the specified message format pattern.
-     * 
-     * @param template
-     *            the pattern to use for formatting.
-     * @param objects
-     *            the array of objects to format.
+     *
+     * @param format the format string (see {@link java.util.Formatter#format})
+     * @param args
+     *            the list of arguments passed to the formatter. If there are
+     *            more arguments than required by {@code format},
+     *            additional arguments are ignored.
      * @return the formatted result.
      * @throws IllegalArgumentException
      *            if the pattern cannot be parsed.
      */
-    public static String format(String template, Object... objects) {
-        if (objects != null) {
-            for (int i = 0; i < objects.length; i++) {
-                if (objects[i] == null) {
-                    objects[i] = "null";
+    public static String format(String format, Object... args) {
+        if (args != null) {
+            for (int i = 0; i < args.length; i++) {
+                if (args[i] == null) {
+                    args[i] = "null";
                 }
             }
         }
-        return com.ibm.icu.text.MessageFormat.format(template, objects);
+        return new MessageFormat(format).format(args);
     }
 
     /**
      * Returns the {@code Format} instances used by this message format.
-     * 
+     *
      * @return an array of {@code Format} instances.
      */
     public Format[] getFormats() {
@@ -772,7 +738,7 @@ public class MessageFormat extends Format {
      * Returns the formats used for each argument index. If an argument is
      * placed more than once in the pattern string, then this returns the format
      * of the last one.
-     * 
+     *
      * @return an array of formats, ordered by argument index.
      */
     public Format[] getFormatsByArgumentIndex() {
@@ -786,7 +752,7 @@ public class MessageFormat extends Format {
     /**
      * Sets the format used for the argument at index {@code argIndex} to
      * {@code format}.
-     * 
+     *
      * @param argIndex
      *            the index of the format to set.
      * @param format
@@ -803,7 +769,7 @@ public class MessageFormat extends Format {
     /**
      * Sets the formats used for each argument. The {@code formats} array
      * elements should be in the order of the argument indices.
-     * 
+     *
      * @param formats
      *            the formats in an array.
      */
@@ -819,7 +785,7 @@ public class MessageFormat extends Format {
 
     /**
      * Returns the locale used when creating formats.
-     * 
+     *
      * @return the locale used to create formats.
      */
     public Locale getLocale() {
@@ -847,7 +813,7 @@ public class MessageFormat extends Format {
     /**
      * Parses the message arguments from the specified string using the rules of
      * this message format.
-     * 
+     *
      * @param string
      *            the string to parse.
      * @return the array of {@code Object} arguments resulting from the parse.
@@ -858,9 +824,7 @@ public class MessageFormat extends Format {
         ParsePosition position = new ParsePosition(0);
         Object[] result = parse(string, position);
         if (position.getIndex() == 0) {
-            // text.1B=MessageFormat.parseObject(String) parse failure
-            throw new ParseException(
-                    Messages.getString("text.1B"), position.getErrorIndex()); //$NON-NLS-1$
+            throw new ParseException("Parse failure", position.getErrorIndex());
         }
         return result;
     }
@@ -872,7 +836,7 @@ public class MessageFormat extends Format {
      * index following the parsed text. On error, the index is unchanged and the
      * error index of {@code ParsePosition} is set to the index where the error
      * occurred.
-     * 
+     *
      * @param string
      *            the string to parse.
      * @param position
@@ -886,7 +850,7 @@ public class MessageFormat extends Format {
      */
     public Object[] parse(String string, ParsePosition position) {
         if (string == null) {
-            return new Object[0];
+            return EmptyArray.OBJECT;
         }
         ParsePosition internalPos = new ParsePosition(0);
         int offset = position.getIndex();
@@ -943,7 +907,7 @@ public class MessageFormat extends Format {
      * index following the parsed text. On error, the index is unchanged and the
      * error index of {@code ParsePosition} is set to the index where the error
      * occurred.
-     * 
+     *
      * @param string
      *            the string to parse.
      * @param position
@@ -992,20 +956,17 @@ public class MessageFormat extends Format {
     private Format parseVariable(String string, ParsePosition position) {
         int length = string.length(), offset = position.getIndex();
         char ch;
-        if (offset >= length
-                || ((ch = string.charAt(offset++)) != '}' && ch != ',')) {
-            // text.15=Missing element format
-            throw new IllegalArgumentException(Messages.getString("text.15")); //$NON-NLS-1$
+        if (offset >= length || ((ch = string.charAt(offset++)) != '}' && ch != ',')) {
+            throw new IllegalArgumentException("Missing element format");
         }
         position.setIndex(offset);
         if (ch == '}') {
             return null;
         }
-        int type = match(string, position, false, new String[] { "time", //$NON-NLS-1$
-                "date", "number", "choice" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        int type = match(string, position, false,
+                new String[] { "time", "date", "number", "choice" });
         if (type == -1) {
-            // text.16=Unknown element format
-            throw new IllegalArgumentException(Messages.getString("text.16")); //$NON-NLS-1$
+            throw new IllegalArgumentException("Unknown element format");
         }
         StringBuffer buffer = new StringBuffer();
         ch = string.charAt(position.getIndex() - 1);
@@ -1017,8 +978,8 @@ public class MessageFormat extends Format {
                             DateFormat.DEFAULT, locale) : DateFormat
                             .getTimeInstance(DateFormat.DEFAULT, locale);
                 }
-                int dateStyle = match(string, position, true, new String[] {
-                        "full", "long", "medium", "short" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                int dateStyle = match(string, position, true,
+                        new String[] { "full", "long", "medium", "short" });
                 if (dateStyle == -1) {
                     Format.upToWithQuotes(string, position, buffer, '}', '{');
                     return new SimpleDateFormat(buffer.toString(), locale);
@@ -1042,10 +1003,10 @@ public class MessageFormat extends Format {
                         .getTimeInstance(dateStyle, locale);
             case 2: // number
                 if (ch == '}') {
-                    return NumberFormat.getInstance();
+                    return NumberFormat.getInstance(locale);
                 }
-                int numberStyle = match(string, position, true, new String[] {
-                        "currency", "percent", "integer" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                int numberStyle = match(string, position, true,
+                        new String[] { "currency", "percent", "integer" });
                 if (numberStyle == -1) {
                     Format.upToWithQuotes(string, position, buffer, '}', '{');
                     return new DecimalFormat(buffer.toString(),
@@ -1070,7 +1031,7 @@ public class MessageFormat extends Format {
 
     /**
      * Sets the specified format used by this message format.
-     * 
+     *
      * @param offset
      *            the index of the format to change.
      * @param format
@@ -1082,7 +1043,7 @@ public class MessageFormat extends Format {
 
     /**
      * Sets the formats used by this message format.
-     * 
+     *
      * @param formats
      *            an array of {@code Format}.
      */
@@ -1100,7 +1061,7 @@ public class MessageFormat extends Format {
      * Sets the locale to use when creating {@code Format} instances. Changing
      * the locale may change the behavior of {@code applyPattern},
      * {@code toPattern}, {@code format} and {@code formatToCharacterIterator}.
-     * 
+     *
      * @param locale
      *            the new locale.
      */
@@ -1108,27 +1069,36 @@ public class MessageFormat extends Format {
         this.locale = locale;
         for (int i = 0; i <= maxOffset; i++) {
             Format format = formats[i];
+            // java specification undefined for null argument, change into
+            // a more tolerant implementation
             if (format instanceof DecimalFormat) {
-                formats[i] = new DecimalFormat(((DecimalFormat) format)
-                        .toPattern(), new DecimalFormatSymbols(locale));
+                try {
+                    formats[i] = new DecimalFormat(((DecimalFormat) format)
+                            .toPattern(), new DecimalFormatSymbols(locale));
+                } catch (NullPointerException npe){
+                    formats[i] = null;
+                }
             } else if (format instanceof SimpleDateFormat) {
-                formats[i] = new SimpleDateFormat(((SimpleDateFormat) format)
-                        .toPattern(), locale);
+                try {
+                    formats[i] = new SimpleDateFormat(((SimpleDateFormat) format)
+                            .toPattern(), locale);
+                } catch (NullPointerException npe) {
+                    formats[i] = null;
+                }
             }
-
         }
     }
 
     private String decodeDecimalFormat(StringBuffer buffer, Format format) {
-        buffer.append(",number"); //$NON-NLS-1$
+        buffer.append(",number");
         if (format.equals(NumberFormat.getNumberInstance(locale))) {
             // Empty block
         } else if (format.equals(NumberFormat.getIntegerInstance(locale))) {
-            buffer.append(",integer"); //$NON-NLS-1$
+            buffer.append(",integer");
         } else if (format.equals(NumberFormat.getCurrencyInstance(locale))) {
-            buffer.append(",currency"); //$NON-NLS-1$
+            buffer.append(",currency");
         } else if (format.equals(NumberFormat.getPercentInstance(locale))) {
-            buffer.append(",percent"); //$NON-NLS-1$
+            buffer.append(",percent");
         } else {
             buffer.append(',');
             return ((DecimalFormat) format).toPattern();
@@ -1137,32 +1107,31 @@ public class MessageFormat extends Format {
     }
 
     private String decodeSimpleDateFormat(StringBuffer buffer, Format format) {
-        if (format.equals(DateFormat
-                .getTimeInstance(DateFormat.DEFAULT, locale))) {
-            buffer.append(",time"); //$NON-NLS-1$
+        if (format.equals(DateFormat.getTimeInstance(DateFormat.DEFAULT, locale))) {
+            buffer.append(",time");
         } else if (format.equals(DateFormat.getDateInstance(DateFormat.DEFAULT,
                 locale))) {
-            buffer.append(",date"); //$NON-NLS-1$
+            buffer.append(",date");
         } else if (format.equals(DateFormat.getTimeInstance(DateFormat.SHORT,
                 locale))) {
-            buffer.append(",time,short"); //$NON-NLS-1$
+            buffer.append(",time,short");
         } else if (format.equals(DateFormat.getDateInstance(DateFormat.SHORT,
                 locale))) {
-            buffer.append(",date,short"); //$NON-NLS-1$
+            buffer.append(",date,short");
         } else if (format.equals(DateFormat.getTimeInstance(DateFormat.LONG,
                 locale))) {
-            buffer.append(",time,long"); //$NON-NLS-1$
+            buffer.append(",time,long");
         } else if (format.equals(DateFormat.getDateInstance(DateFormat.LONG,
                 locale))) {
-            buffer.append(",date,long"); //$NON-NLS-1$
+            buffer.append(",date,long");
         } else if (format.equals(DateFormat.getTimeInstance(DateFormat.FULL,
                 locale))) {
-            buffer.append(",time,full"); //$NON-NLS-1$
+            buffer.append(",time,full");
         } else if (format.equals(DateFormat.getDateInstance(DateFormat.FULL,
                 locale))) {
-            buffer.append(",date,full"); //$NON-NLS-1$
+            buffer.append(",date,full");
         } else {
-            buffer.append(",date,"); //$NON-NLS-1$
+            buffer.append(",date,");
             return ((SimpleDateFormat) format).toPattern();
         }
         return null;
@@ -1170,7 +1139,7 @@ public class MessageFormat extends Format {
 
     /**
      * Returns the pattern of this message format.
-     * 
+     *
      * @return the pattern.
      */
     public String toPattern() {
@@ -1182,16 +1151,14 @@ public class MessageFormat extends Format {
             Format format = formats[i];
             String pattern = null;
             if (format instanceof ChoiceFormat) {
-                buffer.append(",choice,"); //$NON-NLS-1$
+                buffer.append(",choice,");
                 pattern = ((ChoiceFormat) format).toPattern();
             } else if (format instanceof DecimalFormat) {
                 pattern = decodeDecimalFormat(buffer, format);
             } else if (format instanceof SimpleDateFormat) {
                 pattern = decodeSimpleDateFormat(buffer, format);
             } else if (format != null) {
-                // text.17=Unknown format
-                throw new IllegalArgumentException(Messages
-                        .getString("text.17")); //$NON-NLS-1$
+                throw new IllegalArgumentException("Unknown format");
             }
             if (pattern != null) {
                 boolean quote = false;
@@ -1209,7 +1176,7 @@ public class MessageFormat extends Format {
                             if (count > 0) {
                                 count--;
                             } else {
-                                buffer.append("'}"); //$NON-NLS-1$
+                                buffer.append("'}");
                                 ch = '\'';
                             }
                         }
@@ -1240,20 +1207,21 @@ public class MessageFormat extends Format {
     }
 
     private static final ObjectStreamField[] serialPersistentFields = {
-            new ObjectStreamField("argumentNumbers", int[].class), //$NON-NLS-1$
-            new ObjectStreamField("formats", Format[].class), //$NON-NLS-1$
-            new ObjectStreamField("locale", Locale.class), //$NON-NLS-1$
-            new ObjectStreamField("maxOffset", Integer.TYPE), //$NON-NLS-1$
-            new ObjectStreamField("offsets", int[].class), //$NON-NLS-1$
-            new ObjectStreamField("pattern", String.class), }; //$NON-NLS-1$
+        new ObjectStreamField("argumentNumbers", int[].class),
+        new ObjectStreamField("formats", Format[].class),
+        new ObjectStreamField("locale", Locale.class),
+        new ObjectStreamField("maxOffset", int.class),
+        new ObjectStreamField("offsets", int[].class),
+        new ObjectStreamField("pattern", String.class),
+    };
 
     private void writeObject(ObjectOutputStream stream) throws IOException {
         ObjectOutputStream.PutField fields = stream.putFields();
-        fields.put("argumentNumbers", argumentNumbers); //$NON-NLS-1$
+        fields.put("argumentNumbers", argumentNumbers);
         Format[] compatibleFormats = formats;
-        fields.put("formats", compatibleFormats); //$NON-NLS-1$
-        fields.put("locale", locale); //$NON-NLS-1$
-        fields.put("maxOffset", maxOffset); //$NON-NLS-1$
+        fields.put("formats", compatibleFormats);
+        fields.put("locale", locale);
+        fields.put("maxOffset", maxOffset);
         int offset = 0;
         int offsetsLength = maxOffset + 1;
         int[] offsets = new int[offsetsLength];
@@ -1266,20 +1234,20 @@ public class MessageFormat extends Format {
         if (maxOffset + 1 < strings.length) {
             pattern.append(strings[maxOffset + 1]);
         }
-        fields.put("offsets", offsets); //$NON-NLS-1$
-        fields.put("pattern", pattern.toString()); //$NON-NLS-1$
+        fields.put("offsets", offsets);
+        fields.put("pattern", pattern.toString());
         stream.writeFields();
     }
 
     private void readObject(ObjectInputStream stream) throws IOException,
             ClassNotFoundException {
         ObjectInputStream.GetField fields = stream.readFields();
-        argumentNumbers = (int[]) fields.get("argumentNumbers", null); //$NON-NLS-1$
-        formats = (Format[]) fields.get("formats", null); //$NON-NLS-1$
-        locale = (Locale) fields.get("locale", null); //$NON-NLS-1$
-        maxOffset = fields.get("maxOffset", 0); //$NON-NLS-1$
-        int[] offsets = (int[]) fields.get("offsets", null); //$NON-NLS-1$
-        String pattern = (String) fields.get("pattern", null); //$NON-NLS-1$
+        argumentNumbers = (int[]) fields.get("argumentNumbers", null);
+        formats = (Format[]) fields.get("formats", null);
+        locale = (Locale) fields.get("locale", null);
+        maxOffset = fields.get("maxOffset", 0);
+        int[] offsets = (int[]) fields.get("offsets", null);
+        String pattern = (String) fields.get("pattern", null);
         int length;
         if (maxOffset < 0) {
             length = pattern.length() > 0 ? 1 : 0;
@@ -1314,7 +1282,7 @@ public class MessageFormat extends Format {
         /**
          * This constant stands for the message argument.
          */
-        public static final Field ARGUMENT = new Field("message argument field"); //$NON-NLS-1$
+        public static final Field ARGUMENT = new Field("message argument field");
 
         /**
          * Constructs a new instance of {@code MessageFormat.Field} with the
@@ -1326,32 +1294,5 @@ public class MessageFormat extends Format {
         protected Field(String fieldName) {
             super(fieldName);
         }
-
-        /**
-         * Resolves instances that are deserialized to the constant
-         * {@code MessageFormat.Field} values.
-         *
-         * @return the resolved field object.
-         * @throws InvalidObjectException
-         *             if an error occurs while resolving the field object.
-         */
-        @Override
-        protected Object readResolve() throws InvalidObjectException {
-            String name = this.getName();
-            if (name == null) {
-                // text.18=Not a valid {0}, subclass should override
-                // readResolve()
-                throw new InvalidObjectException(Messages.getString(
-                        "text.18", "MessageFormat.Field")); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-
-            if (name.equals(ARGUMENT.getName())) {
-                return ARGUMENT;
-            }
-            // text.18=Not a valid {0}, subclass should override readResolve()
-            throw new InvalidObjectException(Messages.getString(
-                    "text.18", "MessageFormat.Field")); //$NON-NLS-1$ //$NON-NLS-2$
-        }
     }
-
 }

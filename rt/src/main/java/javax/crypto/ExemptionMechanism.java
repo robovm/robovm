@@ -27,8 +27,6 @@ import java.security.Provider;
 import java.security.Security;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Arrays;
-
-import org.apache.harmony.crypto.internal.nls.Messages;
 import org.apache.harmony.security.fortress.Engine;
 
 /**
@@ -38,7 +36,7 @@ import org.apache.harmony.security.fortress.Engine;
 public class ExemptionMechanism {
 
     // Used to access common engine functionality
-    private static final Engine engine = new Engine("ExemptionMechanism");
+    private static final Engine ENGINE = new Engine("ExemptionMechanism");
 
     // Store used provider
     private final Provider provider;
@@ -100,13 +98,10 @@ public class ExemptionMechanism {
     public static final ExemptionMechanism getInstance(String algorithm)
             throws NoSuchAlgorithmException {
         if (algorithm == null) {
-            throw new NullPointerException(Messages.getString("crypto.02")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
-        synchronized (engine) {
-            engine.getInstance(algorithm, null);
-            return new ExemptionMechanism((ExemptionMechanismSpi) engine.spi,
-                    engine.provider, algorithm);
-        }
+        Engine.SpiAndProvider sap = ENGINE.getInstance(algorithm, null);
+        return new ExemptionMechanism((ExemptionMechanismSpi) sap.spi, sap.provider, algorithm);
     }
 
     /**
@@ -132,14 +127,14 @@ public class ExemptionMechanism {
             String provider) throws NoSuchAlgorithmException,
             NoSuchProviderException {
         if (provider == null) {
-            throw new IllegalArgumentException(Messages.getString("crypto.04")); //$NON-NLS-1$
+            throw new IllegalArgumentException("provider == null");
         }
         Provider impProvider = Security.getProvider(provider);
         if (impProvider == null) {
             throw new NoSuchProviderException(provider);
         }
         if (algorithm == null) {
-            throw new NullPointerException(Messages.getString("crypto.02")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
         return getInstance(algorithm, impProvider);
     }
@@ -164,16 +159,13 @@ public class ExemptionMechanism {
     public static final ExemptionMechanism getInstance(String algorithm,
             Provider provider) throws NoSuchAlgorithmException {
         if (algorithm == null) {
-            throw new NullPointerException(Messages.getString("crypto.02")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
         if (provider == null) {
-            throw new IllegalArgumentException(Messages.getString("crypto.04")); //$NON-NLS-1$
+            throw new IllegalArgumentException("provider == null");
         }
-        synchronized (engine) {
-            engine.getInstance(algorithm, provider, null);
-            return new ExemptionMechanism((ExemptionMechanismSpi) engine.spi,
-                    provider, algorithm);
-        }
+        Object spi = ENGINE.getInstance(algorithm, provider, null);
+        return new ExemptionMechanism((ExemptionMechanismSpi) spi, provider, algorithm);
     }
 
     /**
@@ -223,7 +215,7 @@ public class ExemptionMechanism {
      */
     public final int getOutputSize(int inputLen) throws IllegalStateException {
         if (!isInit) {
-            throw new IllegalStateException(Messages.getString("crypto.2D"));
+            throw new IllegalStateException("ExemptionMechanism is not initialized");
         }
         return spiImpl.engineGetOutputSize(inputLen);
     }
@@ -283,7 +275,7 @@ public class ExemptionMechanism {
      * @throws InvalidKeyException
      *             if the key cannot be used to initialize this mechanism.
      * @throws InvalidAlgorithmParameterException
-     *             if the parameters cannot be used to initialize this
+     *             the the parameters cannot be used to initialize this
      *             mechanism.
      * @throws ExemptionMechanismException
      *             if error(s) occur during initialization.
@@ -310,7 +302,7 @@ public class ExemptionMechanism {
     public final byte[] genExemptionBlob() throws IllegalStateException,
             ExemptionMechanismException {
         if (!isInit) {
-            throw new IllegalStateException(Messages.getString("crypto.2D"));
+            throw new IllegalStateException("ExemptionMechanism is not initialized");
         }
         generated = false;
         byte[] result = spiImpl.engineGenExemptionBlob();
@@ -360,11 +352,24 @@ public class ExemptionMechanism {
             throws IllegalStateException, ShortBufferException,
             ExemptionMechanismException {
         if (!isInit) {
-            throw new IllegalStateException(Messages.getString("crypto.2D"));
+            throw new IllegalStateException("ExemptionMechanism is not initialized");
         }
         generated = false;
         int len = spiImpl.engineGenExemptionBlob(output, outputOffset);
         generated = true;
         return len;
+    }
+
+    /**
+     * Override to clear any key state in the instance.
+     */
+    @Override protected void finalize() {
+        try {
+            super.finalize();
+        } catch (Throwable t) {
+            // for consistency with the RI, we must override Object.finalize() to
+            // remove the throws clause.
+            throw new AssertionError(t);
+        }
     }
 }

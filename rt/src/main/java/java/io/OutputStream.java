@@ -17,22 +17,32 @@
 
 package java.io;
 
-import org.apache.harmony.luni.internal.nls.Messages;
+import java.util.Arrays;
 
 /**
- * The base class for all output streams. An output stream is a means of writing
- * data to a target in a byte-wise manner. Most output streams expect the
- * {@link #flush()} method to be called before closing the stream, to ensure all
- * data is actually written through.
- * <p>
- * This abstract class does not provide a fully working implementation, so it
- * needs to be subclassed, and at least the {@link #write(int)} method needs to
- * be overridden. Overriding some of the non-abstract methods is also often
- * advised, since it might result in higher efficiency.
- * <p>
- * Many specialized output streams for purposes like writing to a file already
- * exist in this package.
- * 
+ * A writable sink for bytes.
+ *
+ * <p>Most clients will use output streams that write data to the file system
+ * ({@link FileOutputStream}), the network ({@link java.net.Socket#getOutputStream()}/{@link
+ * java.net.HttpURLConnection#getOutputStream()}), or to an in-memory byte array
+ * ({@link ByteArrayOutputStream}).
+ *
+ * <p>Use {@link OutputStreamWriter} to adapt a byte stream like this one into a
+ * character stream.
+ *
+ * <p>Most clients should wrap their output stream with {@link
+ * BufferedOutputStream}. Callers that do only bulk writes may omit buffering.
+ *
+ * <h3>Subclassing OutputStream</h3>
+ * Subclasses that decorate another output stream should consider subclassing
+ * {@link FilterOutputStream}, which delegates all calls to the target output
+ * stream.
+ *
+ * <p>All output stream subclasses should override <strong>both</strong> {@link
+ * #write(int)} and {@link #write(byte[],int,int) write(byte[],int,int)}. The
+ * three argument overload is necessary for bulk access to the data. This is
+ * much more efficient than byte-by-byte access.
+ *
  * @see InputStream
  */
 public abstract class OutputStream implements Closeable, Flushable {
@@ -41,13 +51,12 @@ public abstract class OutputStream implements Closeable, Flushable {
      * Default constructor.
      */
     public OutputStream() {
-        super();
     }
 
     /**
      * Closes this stream. Implementations of this method should free any
      * resources used by the stream. This implementation does nothing.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing this stream.
      */
@@ -58,7 +67,7 @@ public abstract class OutputStream implements Closeable, Flushable {
     /**
      * Flushes this stream. Implementations of this method should ensure that
      * any buffered data is written out. This implementation does nothing.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while flushing this stream.
      */
@@ -67,22 +76,16 @@ public abstract class OutputStream implements Closeable, Flushable {
     }
 
     /**
-     * Writes the entire contents of the byte array {@code buffer} to this
-     * stream.
-     * 
-     * @param buffer
-     *            the buffer to be written.
-     * @throws IOException
-     *             if an error occurs while writing to this stream.
+     * Equivalent to {@code write(buffer, 0, buffer.length)}.
      */
-    public void write(byte buffer[]) throws IOException {
+    public void write(byte[] buffer) throws IOException {
         write(buffer, 0, buffer.length);
     }
 
     /**
      * Writes {@code count} bytes from the byte array {@code buffer} starting at
      * position {@code offset} to this stream.
-     * 
+     *
      * @param buffer
      *            the buffer to be written.
      * @param offset
@@ -97,12 +100,8 @@ public abstract class OutputStream implements Closeable, Flushable {
      *             {@code offset + count} is bigger than the length of
      *             {@code buffer}.
      */
-    public void write(byte buffer[], int offset, int count) throws IOException {
-        // avoid int overflow, check null buffer
-        if (offset > buffer.length || offset < 0 || count < 0
-                || count > buffer.length - offset) {
-            throw new IndexOutOfBoundsException(Messages.getString("luni.13")); //$NON-NLS-1$
-        }
+    public void write(byte[] buffer, int offset, int count) throws IOException {
+        Arrays.checkOffsetAndCount(buffer.length, offset, count);
         for (int i = offset; i < offset + count; i++) {
             write(buffer[i]);
         }
@@ -111,7 +110,7 @@ public abstract class OutputStream implements Closeable, Flushable {
     /**
      * Writes a single byte to this stream. Only the least significant byte of
      * the integer {@code oneByte} is written to the stream.
-     * 
+     *
      * @param oneByte
      *            the byte to be written.
      * @throws IOException

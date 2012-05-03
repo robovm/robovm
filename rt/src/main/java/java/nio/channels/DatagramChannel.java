@@ -24,8 +24,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.spi.AbstractSelectableChannel;
 import java.nio.channels.spi.SelectorProvider;
 
-import org.apache.harmony.luni.platform.Platform;
-
 /**
  * A {@code DatagramChannel} is a selectable channel that represents a partial
  * abstraction of a datagram socket. The {@code socket} method of this class can
@@ -44,13 +42,9 @@ import org.apache.harmony.luni.platform.Platform;
 public abstract class DatagramChannel extends AbstractSelectableChannel
         implements ByteChannel, ScatteringByteChannel, GatheringByteChannel {
 
-    static {
-        Platform.getNetworkSystem().oneTimeInitialization(true);
-    }
-
     /**
      * Constructs a new {@code DatagramChannel}.
-     * 
+     *
      * @param selectorProvider
      *            an instance of SelectorProvider.
      */
@@ -76,7 +70,7 @@ public abstract class DatagramChannel extends AbstractSelectableChannel
      * Gets the valid operations of this channel. Datagram channels support read
      * and write operations, so this method returns (
      * <code>SelectionKey.OP_READ</code> | <code>SelectionKey.OP_WRITE</code> ).
-     * 
+     *
      * @see java.nio.channels.SelectableChannel#validOps()
      * @return valid operations in bit-set.
      */
@@ -89,14 +83,14 @@ public abstract class DatagramChannel extends AbstractSelectableChannel
      * Returns the related datagram socket of this channel, which does not
      * define additional public methods to those defined by
      * {@link DatagramSocket}.
-     * 
+     *
      * @return the related DatagramSocket instance.
      */
     public abstract DatagramSocket socket();
 
     /**
      * Returns whether this channel's socket is connected or not.
-     * 
+     *
      * @return <code>true</code> if this channel's socket is connected;
      *         <code>false</code> otherwise.
      */
@@ -127,11 +121,8 @@ public abstract class DatagramChannel extends AbstractSelectableChannel
      *             if another thread interrupts the calling thread while the
      *             operation is in progress. The calling thread will have the
      *             interrupt state set and the channel will be closed.
-     * @throws SecurityException
-     *             if there is a security manager, and the address is not
-     *             permitted to be accessed.
      * @throws IOException
-     *             if some other I/O error occurrs.
+     *             if some other I/O error occurs.
      */
     public abstract DatagramChannel connect(SocketAddress address)
             throws IOException;
@@ -181,9 +172,6 @@ public abstract class DatagramChannel extends AbstractSelectableChannel
      *             if another thread interrupts the calling thread while the
      *             operation is in progress. The calling thread will have the
      *             interrupt state set and the channel will be closed.
-     * @throws SecurityException
-     *             if there is a security manager, and the address is not
-     *             permitted to be accessed.
      * @throws IOException
      *             some other I/O error occurs.
      */
@@ -222,14 +210,10 @@ public abstract class DatagramChannel extends AbstractSelectableChannel
      *             if another thread interrupts the calling thread while the
      *             operation is in progress. The calling thread will have the
      *             interrupt state set and the channel will be closed.
-     * @throws SecurityException
-     *             if there is a security manager, and the address is not
-     *             permitted to access.
      * @throws IOException
      *             some other I/O error occurs.
      */
-    public abstract int send(ByteBuffer source, SocketAddress address)
-            throws IOException;
+    public abstract int send(ByteBuffer source, SocketAddress address) throws IOException;
 
     /**
      * Reads a datagram from this channel into the byte buffer.
@@ -372,7 +356,7 @@ public abstract class DatagramChannel extends AbstractSelectableChannel
      * and the datagram is sent to the connected address. Otherwise, this method
      * has the same behavior as the {@code write} method in the
      * {@link GatheringByteChannel} interface.
-     * 
+     *
      * @see java.nio.channels.GatheringByteChannel#write(java.nio.ByteBuffer[],
      *      int, int)
      * @param sources
@@ -413,7 +397,7 @@ public abstract class DatagramChannel extends AbstractSelectableChannel
      * and the datagram is sent to the connected address. Otherwise, this method
      * has the same behavior as the write method in the
      * {@link GatheringByteChannel} interface.
-     * 
+     *
      * @see java.nio.channels.GatheringByteChannel#write(java.nio.ByteBuffer[])
      * @param sources
      *            the byte buffers as the source of the datagram.

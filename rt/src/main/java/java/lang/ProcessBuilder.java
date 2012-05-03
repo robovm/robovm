@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,7 +38,7 @@ public final class ProcessBuilder {
     /**
      * Constructs a new {@code ProcessBuilder} instance with the specified
      * operating system program and its arguments.
-     * 
+     *
      * @param command
      *            the requested operating system program and its arguments.
      */
@@ -51,7 +51,7 @@ public final class ProcessBuilder {
      * operating system program and its arguments. Note that the list passed to
      * this constructor is not copied, so any subsequent updates to it are
      * reflected in this instance's state.
-     * 
+     *
      * @param command
      *            the requested operating system program and its arguments.
      * @throws NullPointerException
@@ -80,7 +80,7 @@ public final class ProcessBuilder {
 
     /**
      * Changes the program and arguments of this process builder.
-     * 
+     *
      * @param command
      *            the new operating system program and its arguments.
      * @return this process builder instance.
@@ -112,7 +112,7 @@ public final class ProcessBuilder {
      * Returns the working directory of this process builder. If {@code null} is
      * returned, then the working directory of the Java process is used when a
      * process is started.
-     * 
+     *
      * @return the current working directory, may be {@code null}.
      */
     public File directory() {
@@ -162,7 +162,7 @@ public final class ProcessBuilder {
     /**
      * Changes the state of whether or not standard error is redirected to
      * standard output.
-     * 
+     *
      * @param redirectErrorStream
      *            {@code true} to redirect standard error, {@code false}
      *            otherwise.

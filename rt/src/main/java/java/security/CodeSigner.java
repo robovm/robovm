@@ -20,8 +20,6 @@ package java.security;
 import java.io.Serializable;
 import java.security.cert.CertPath;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
  * {@code CodeSigner} represents a signer of code. Instances are immutable.
  */
@@ -49,7 +47,7 @@ public final class CodeSigner implements Serializable {
      */
     public CodeSigner(CertPath signerCertPath, Timestamp timestamp) {
         if (signerCertPath == null) {
-            throw new NullPointerException(Messages.getString("security.10")); //$NON-NLS-1$
+            throw new NullPointerException("signerCertPath == null");
         }
         this.signerCertPath = signerCertPath;
         this.timestamp = timestamp;
@@ -131,13 +129,13 @@ public final class CodeSigner implements Serializable {
     public String toString() {
         // There is no any special reason for '256' here, it's taken abruptly
         StringBuilder buf = new StringBuilder(256);
-        // The javadoc says nothing, and the others implementations behavior seems as 
+        // The javadoc says nothing, and the others implementations behavior seems as
         // dumping only the first certificate. Well, let's do the same.
-        buf.append("CodeSigner [").append(signerCertPath.getCertificates().get(0)); //$NON-NLS-1$
+        buf.append("CodeSigner [").append(signerCertPath.getCertificates().get(0));
         if( timestamp != null ) {
-            buf.append("; ").append(timestamp); //$NON-NLS-1$
+            buf.append("; ").append(timestamp);
         }
-        buf.append("]"); //$NON-NLS-1$
+        buf.append("]");
         return buf.toString();
     }
 }

@@ -18,51 +18,17 @@
 package java.io;
 
 import java.security.BasicPermission;
+import java.security.Permission;
 
 /**
- * Is used to enable access to potentially unsafe serialization operations. It
- * does have a name but no action list. The following table lists valid
- * permission names:
- * <table>
- * <tr>
- * <td>enableSubclassImplementation</td>
- * <td>Subclasses can override serialization behavior.</td>
- * </tr>
- * <tr>
- * <td>enableSubstitution</td>
- * <td>Object substitution is allowed.</td>
- * </tr>
- * </table>
- * 
- * @see ObjectStreamConstants
+ * Legacy security code; do not use.
  */
 public final class SerializablePermission extends BasicPermission {
-    private static final long serialVersionUID = 8537212141160296410L;
+    public SerializablePermission(String permissionName) { super(""); }
 
-    // Serializable field
-    @SuppressWarnings("unused")
-    private String actions;
+    public SerializablePermission(String name, String actions) { super("", ""); }
 
-    /**
-     * Constructs a new {@code SerializablePermission} with the specified name.
-     * 
-     * @param permissionName
-     *            the name of the new permission.
-     */
-    public SerializablePermission(String permissionName) {
-        super(permissionName);
-    }
+    @Override public String getActions() { return null; }
 
-    /**
-     * Constructs a new {@code SerializablePermission} with the specified name.
-     * The action list is ignored.
-     * 
-     * @param name
-     *            the name of the new permission.
-     * @param actions
-     *            ignored.
-     */
-    public SerializablePermission(String name, String actions) {
-        super(name, actions);
-    }
+    @Override public boolean implies(Permission permission) { return true; }
 }

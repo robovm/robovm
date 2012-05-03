@@ -17,8 +17,6 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import org.apache.harmony.xnet.provider.jsse.SSLInputStream;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
@@ -49,9 +47,6 @@ public class SSLBufferedInput extends SSLInputStream {
         this.in = in;
     }
 
-    /**
-     * Returns the number of bytes available for reading.
-     */
     @Override
     public int available() throws IOException {
         // in assumption that the buffer has been set
@@ -66,16 +61,15 @@ public class SSLBufferedInput extends SSLInputStream {
     }
 
     /**
-     * Reads the following byte value. If there are no bytes in the source 
+     * Reads the following byte value. If there are no bytes in the source
      * buffer, method throws java.nio.BufferUnderflowException.
      */
     @Override
     public int read() throws IOException {
-        // TODO: implement optimized read(int) 
+        // TODO: implement optimized read(int)
         // and read(byte[], int, int) methods
         bytik = in.get() & 0x00FF;
         consumed ++;
         return bytik;
     }
 }
-

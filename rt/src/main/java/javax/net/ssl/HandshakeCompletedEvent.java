@@ -17,23 +17,16 @@
 
 package javax.net.ssl;
 
-import java.io.Serializable;
 import java.security.Principal;
 import java.security.cert.Certificate;
-import javax.security.cert.X509Certificate;
 import java.util.EventObject;
+import javax.security.cert.X509Certificate;
 
 /**
  * The event object encapsulating the information about a completed SSL
  * handshake on a SSL connection.
  */
-public class HandshakeCompletedEvent extends EventObject implements Serializable {
-
-    /**
-     * The 5.0 spec. doesn't declare this serialVersionUID field In order to be
-     * compatible it is explicitly declared here
-     */
-    private static final long serialVersionUID = 7914963744257769778L;
+public class HandshakeCompletedEvent extends EventObject {
 
     private transient SSLSession session;
 

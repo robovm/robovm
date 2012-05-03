@@ -17,6 +17,7 @@
 
 package java.net;
 
+import dalvik.system.BlockGuard;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -24,132 +25,161 @@ import java.io.ObjectOutputStream;
 import java.io.ObjectStreamException;
 import java.io.ObjectStreamField;
 import java.io.Serializable;
-import java.security.AccessController;
-import java.util.ArrayList;
+import java.nio.ByteOrder;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
-import java.util.StringTokenizer;
-
-import org.apache.harmony.luni.net.NetUtil;
-import org.apache.harmony.luni.platform.INetworkSystem;
-import org.apache.harmony.luni.platform.Platform;
-import org.apache.harmony.luni.util.Inet6Util;
-import org.apache.harmony.luni.internal.nls.Messages;
-import org.apache.harmony.luni.util.PriviAction;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
+import libcore.io.ErrnoException;
+import libcore.io.GaiException;
+import libcore.io.IoBridge;
+import libcore.io.Libcore;
+import libcore.io.Memory;
+import libcore.io.StructAddrinfo;
+import static libcore.io.OsConstants.*;
 
 /**
- * The Internet Protocol (IP) address representation class. This class
- * encapsulates an IP address and provides name and reverse name resolution
- * functions. The address is stored in network order, but as a signed (rather
- * than unsigned) integer.
+ * An Internet Protocol (IP) address. This can be either an IPv4 address or an IPv6 address, and
+ * in practice you'll have an instance of either {@code Inet4Address} or {@code Inet6Address} (this
+ * class cannot be instantiated directly). Most code does not need to distinguish between the two
+ * families, and should use {@code InetAddress}.
+ *
+ * <p>An {@code InetAddress} may have a hostname (accessible via {@code getHostName}), but may not,
+ * depending on how the {@code InetAddress} was created.
+ *
+ * <h4>IPv4 numeric address formats</h4>
+ * <p>The {@code getAllByName} method accepts IPv4 addresses in the "decimal-dotted-quad" form only:
+ * <ul>
+ * <li>{@code "1.2.3.4"} - 1.2.3.4
+ * </ul>
+ *
+ * <h4>IPv6 numeric address formats</h4>
+ * <p>The {@code getAllByName} method accepts IPv6 addresses in the following forms (this text
+ * comes from <a href="http://www.ietf.org/rfc/rfc2373.txt">RFC 2373</a>, which you should consult
+ * for full details of IPv6 addressing):
+ * <ul>
+ * <li><p>The preferred form is {@code x:x:x:x:x:x:x:x}, where the 'x's are the
+ * hexadecimal values of the eight 16-bit pieces of the address.
+ * Note that it is not necessary to write the leading zeros in an
+ * individual field, but there must be at least one numeral in every
+ * field (except for the case described in the next bullet).
+ * Examples:
+ * <pre>
+ *     FEDC:BA98:7654:3210:FEDC:BA98:7654:3210
+ *     1080:0:0:0:8:800:200C:417A</pre>
+ * </li>
+ * <li>Due to some methods of allocating certain styles of IPv6
+ * addresses, it will be common for addresses to contain long strings
+ * of zero bits.  In order to make writing addresses containing zero
+ * bits easier a special syntax is available to compress the zeros.
+ * The use of "::" indicates multiple groups of 16-bits of zeros.
+ * The "::" can only appear once in an address.  The "::" can also be
+ * used to compress the leading and/or trailing zeros in an address.
+ *
+ * For example the following addresses:
+ * <pre>
+ *     1080:0:0:0:8:800:200C:417A  a unicast address
+ *     FF01:0:0:0:0:0:0:101        a multicast address
+ *     0:0:0:0:0:0:0:1             the loopback address
+ *     0:0:0:0:0:0:0:0             the unspecified addresses</pre>
+ * may be represented as:
+ * <pre>
+ *     1080::8:800:200C:417A       a unicast address
+ *     FF01::101                   a multicast address
+ *     ::1                         the loopback address
+ *     ::                          the unspecified addresses</pre>
+ * </li>
+ * <li><p>An alternative form that is sometimes more convenient when dealing
+ * with a mixed environment of IPv4 and IPv6 nodes is
+ * {@code x:x:x:x:x:x:d.d.d.d}, where the 'x's are the hexadecimal values of
+ * the six high-order 16-bit pieces of the address, and the 'd's are
+ * the decimal values of the four low-order 8-bit pieces of the
+ * address (standard IPv4 representation).  Examples:
+ * <pre>
+ *     0:0:0:0:0:0:13.1.68.3
+ *     0:0:0:0:0:FFFF:129.144.52.38</pre>
+ * or in compressed form:
+ * <pre>
+ *     ::13.1.68.3
+ *     ::FFFF:129.144.52.38</pre>
+ * </li>
+ * </ul>
+ * <p>Scopes are given using a trailing {@code %} followed by the scope id, as in
+ * {@code 1080::8:800:200C:417A%2} or {@code 1080::8:800:200C:417A%en0}.
+ * See <a href="https://www.ietf.org/rfc/rfc4007.txt">RFC 4007</a> for more on IPv6's scoped
+ * address architecture.
+ *
+ * <p>Additionally, for backwards compatibility, IPv6 addresses may be surrounded by square
+ * brackets.
+ *
+ * <h4>DNS caching</h4>
+ * <p>On Android, addresses are cached for 600 seconds (10 minutes) by default. Failed lookups are
+ * cached for 10 seconds. The underlying C library or OS may cache for longer, but you can control
+ * the Java-level caching with the usual {@code "networkaddress.cache.ttl"} and
+ * {@code "networkaddress.cache.negative.ttl"} system properties. These are parsed as integer
+ * numbers of seconds, where the special value 0 means "don't cache" and -1 means "cache forever".
+ *
+ * <p>Note also that on Android &ndash; unlike the RI &ndash; the cache is not unbounded. The
+ * current implementation caches around 512 entries, removed on a least-recently-used basis.
+ * (Obviously, you should not rely on these details.)
+ *
+ * @see Inet4Address
+ * @see Inet6Address
  */
-public class InetAddress extends Object implements Serializable {
-
-    final static byte[] any_bytes = { 0, 0, 0, 0 };
-
-    final static byte[] localhost_bytes = { 127, 0, 0, 1 };
-
-    static InetAddress ANY = new Inet4Address(any_bytes);
-
-    private final static INetworkSystem NETIMPL = Platform.getNetworkSystem();
-
-    final static InetAddress LOOPBACK = new Inet4Address(localhost_bytes,
-            "localhost"); //$NON-NLS-1$
-
-    private static final String ERRMSG_CONNECTION_REFUSED = "Connection refused"; //$NON-NLS-1$
+public class InetAddress implements Serializable {
+    /** Our Java-side DNS cache. */
+    private static final AddressCache addressCache = new AddressCache();
 
     private static final long serialVersionUID = 3286316764910316507L;
 
-    String hostName;
-
-    private static class WaitReachable {
-    }
-
-    private transient Object waitReachable = new WaitReachable();
-
-    private boolean reached;
-
-    private int addrCount;
-
-    int family = 2;
+    private int family;
 
     byte[] ipaddress;
 
-    // Fill in the JNI id caches
-    private static native void oneTimeInitialization(boolean supportsIPv6);
-
-    static {
-        oneTimeInitialization(true);
-    }
+    String hostName;
 
     /**
-     * Constructs an InetAddress.
+     * Used by the DatagramSocket.disconnect implementation.
+     * @hide internal use only
      */
-    InetAddress() {
-        super();
-    }
+    public static final InetAddress UNSPECIFIED = new InetAddress(AF_UNSPEC, null, null);
 
     /**
-     * Constructs an {@code InetAddress}, representing the {@code address} and
-     * {@code hostName}.
+     * Constructs an {@code InetAddress}.
      *
-     * @param address
-     *            the network address.
+     * Note: this constructor is for subclasses only.
      */
-    InetAddress(byte[] address) {
-        super();
-        this.ipaddress = address;
-    }
-
-    /**
-     * Constructs an {@code InetAddress}, representing the {@code address} and
-     * {@code hostName}.
-     * 
-     * @param address
-     *            the network address.
-     */
-    InetAddress(byte[] address, String hostName) {
-        super();
-        this.ipaddress = address;
+    InetAddress(int family, byte[] ipaddress, String hostName) {
+        this.family = family;
+        this.ipaddress = ipaddress;
         this.hostName = hostName;
-    }
-
-    CacheElement cacheElement() {
-        return new CacheElement();
     }
 
     /**
      * Compares this {@code InetAddress} instance against the specified address
      * in {@code obj}. Two addresses are equal if their address byte arrays have
      * the same length and if the bytes in the arrays are equal.
-     * 
+     *
      * @param obj
      *            the object to be tested for equality.
      * @return {@code true} if both objects are equal, {@code false} otherwise.
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (!(obj instanceof InetAddress)) {
             return false;
         }
-        if (obj.getClass() != this.getClass()) {
-            return false;
-        }
-
-        // now check if their byte arrays match...
-        byte[] objIPaddress = ((InetAddress) obj).ipaddress;
-        for (int i = 0; i < objIPaddress.length; i++) {
-            if (objIPaddress[i] != this.ipaddress[i]) {
-                return false;
-            }
-        }
-        return true;
+        return Arrays.equals(this.ipaddress, ((InetAddress) obj).ipaddress);
     }
 
     /**
      * Returns the IP address represented by this {@code InetAddress} instance
      * as a byte array. The elements are in network order (the highest order
      * address byte is in the zeroth element).
-     * 
+     *
      * @return the address in form of a byte array.
      */
     public byte[] getAddress() {
@@ -157,81 +187,95 @@ public class InetAddress extends Object implements Serializable {
     }
 
     /**
+     * Converts an array of byte arrays representing raw IP addresses of a host
+     * to an array of InetAddress objects.
+     *
+     * @param rawAddresses the raw addresses to convert.
+     * @param hostName the hostname corresponding to the IP address.
+     * @return the corresponding InetAddresses, appropriately sorted.
+     */
+    private static InetAddress[] bytesToInetAddresses(byte[][] rawAddresses, String hostName)
+            throws UnknownHostException {
+        // Convert the byte arrays to InetAddresses.
+        InetAddress[] returnedAddresses = new InetAddress[rawAddresses.length];
+        for (int i = 0; i < rawAddresses.length; i++) {
+            returnedAddresses[i] = makeInetAddress(rawAddresses[i], hostName);
+        }
+        return returnedAddresses;
+    }
+
+    /**
      * Gets all IP addresses associated with the given {@code host} identified
-     * by name or IP address in dot-notation. The IP address is resolved by the
+     * by name or literal IP address. The IP address is resolved by the
      * configured name service. If the host name is empty or {@code null} an
-     * {@code UnknownHostException} is thrown. If the host name is a dotted IP
+     * {@code UnknownHostException} is thrown. If the host name is a literal IP
      * address string an array with the corresponding single {@code InetAddress}
      * is returned.
-     * 
-     * @param host
-     *            the host's name or IP to be resolved to an address.
+     *
+     * @param host the hostname or literal IP string to be resolved.
      * @return the array of addresses associated with the specified host.
-     * @throws UnknownHostException
-     *             if the address lookup fails.
+     * @throws UnknownHostException if the address lookup fails.
      */
-    public static InetAddress[] getAllByName(String host)
-            throws UnknownHostException {
-        if (host == null || 0 == host.length()) {
-            return new InetAddress[] { preferIPv6Addresses() ? Inet6Address.LOOPBACK
-                    : LOOPBACK };
+    public static InetAddress[] getAllByName(String host) throws UnknownHostException {
+        return getAllByNameImpl(host).clone();
+    }
+
+    /**
+     * Returns the InetAddresses for {@code host}. The returned array is shared
+     * and must be cloned before it is returned to application code.
+     */
+    private static InetAddress[] getAllByNameImpl(String host) throws UnknownHostException {
+        if (host == null || host.isEmpty()) {
+            return loopbackAddresses();
         }
 
-        if (isHostName(host)) {
-            SecurityManager security = System.getSecurityManager();
-            if (security != null) {
-                security.checkConnect(host, -1);
+        // Is it a numeric address?
+        InetAddress result = parseNumericAddressNoThrow(host);
+        if (result != null) {
+            result = disallowDeprecatedFormats(host, result);
+            if (result == null) {
+                throw new UnknownHostException("Deprecated IPv4 address format: " + host);
             }
-            if (Socket.preferIPv4Stack()) {
-                return getAliasesByNameImpl(host);
-            }
-
-            // ok we may have to re-order to make sure the
-            // preferIPv6Addresses is respected
-            InetAddress[] returnedAddresses = getAliasesByNameImpl(host);
-            InetAddress[] orderedAddresses = null;
-            if (returnedAddresses != null) {
-                orderedAddresses = new InetAddress[returnedAddresses.length];
-                int curPosition = 0;
-                if (InetAddress.preferIPv6Addresses()) {
-                    for (int i = 0; i < returnedAddresses.length; i++) {
-                        if (returnedAddresses[i] instanceof Inet6Address) {
-                            orderedAddresses[curPosition] = returnedAddresses[i];
-                            curPosition++;
-                        }
-                    }
-                    for (int i = 0; i < returnedAddresses.length; i++) {
-                        if (returnedAddresses[i] instanceof Inet4Address) {
-                            orderedAddresses[curPosition] = returnedAddresses[i];
-                            curPosition++;
-                        }
-                    }
-                } else {
-                    for (int i = 0; i < returnedAddresses.length; i++) {
-                        if (returnedAddresses[i] instanceof Inet4Address) {
-                            orderedAddresses[curPosition] = returnedAddresses[i];
-                            curPosition++;
-                        }
-                    }
-                    for (int i = 0; i < returnedAddresses.length; i++) {
-                        if (returnedAddresses[i] instanceof Inet6Address) {
-                            orderedAddresses[curPosition] = returnedAddresses[i];
-                            curPosition++;
-                        }
-                    }
-                }
-            }
-            return orderedAddresses;
+            return new InetAddress[] { result };
         }
 
-        byte[] hBytes = Inet6Util.createByteArrayFromIPAddressString(host);
-        if (hBytes.length == 4) {
-            return (new InetAddress[] { new Inet4Address(hBytes) });
-        } else if (hBytes.length == 16) {
-            return (new InetAddress[] { new Inet6Address(hBytes) });
-        }
+        return lookupHostByName(host).clone();
+    }
 
-        return (new InetAddress[] { new InetAddress(hBytes) });
+    private static InetAddress makeInetAddress(byte[] bytes, String hostName) throws UnknownHostException {
+        if (bytes.length == 4) {
+            return new Inet4Address(bytes, hostName);
+        } else if (bytes.length == 16) {
+            return new Inet6Address(bytes, hostName, 0);
+        } else {
+            throw badAddressLength(bytes);
+        }
+    }
+
+    private static InetAddress disallowDeprecatedFormats(String address, InetAddress inetAddress) {
+        // Only IPv4 addresses are problematic.
+        if (!(inetAddress instanceof Inet4Address) || address.indexOf(':') != -1) {
+            return inetAddress;
+        }
+        // If inet_pton(3) can't parse it, it must have been a deprecated format.
+        // We need to return inet_pton(3)'s result to ensure that numbers assumed to be octal
+        // by getaddrinfo(3) are reinterpreted by inet_pton(3) as decimal.
+        return Libcore.os.inet_pton(AF_INET, address);
+    }
+
+    private static InetAddress parseNumericAddressNoThrow(String address) {
+        // Accept IPv6 addresses (only) in square brackets for compatibility.
+        if (address.startsWith("[") && address.endsWith("]") && address.indexOf(':') != -1) {
+            address = address.substring(1, address.length() - 1);
+        }
+        StructAddrinfo hints = new StructAddrinfo();
+        hints.ai_flags = AI_NUMERICHOST;
+        InetAddress[] addresses = null;
+        try {
+            addresses = Libcore.os.getaddrinfo(address, hints);
+        } catch (GaiException ignored) {
+        }
+        return (addresses != null) ? addresses[0] : null;
     }
 
     /**
@@ -240,431 +284,350 @@ public class InetAddress extends Object implements Serializable {
      * string IP address. If the latter, the {@code hostName} field is
      * determined upon demand. {@code host} can be {@code null} which means that
      * an address of the loopback interface is returned.
-     * 
+     *
      * @param host
      *            the hostName to be resolved to an address or {@code null}.
      * @return the {@code InetAddress} instance representing the host.
      * @throws UnknownHostException
      *             if the address lookup fails.
      */
-    public static InetAddress getByName(String host)
-            throws UnknownHostException {
-        if (host == null || 0 == host.length()) {
-            return InetAddress.LOOPBACK;
-        }
-        if (host.equals("0")) { //$NON-NLS-1$
-            return InetAddress.ANY;
-        }
-
-        if (isHostName(host)) {
-            SecurityManager security = System.getSecurityManager();
-            if (security != null) {
-                security.checkConnect(host, -1);
-            }
-            return lookupHostByName(host);
-        }
-
-        return createHostNameFromIPAddress(host);
+    public static InetAddress getByName(String host) throws UnknownHostException {
+        return getAllByNameImpl(host)[0];
     }
 
     /**
-     * Gets the textual representation of this IP address.
-     * 
-     * @return the textual representation of this host address in form of a
-     *         dotted string.
+     * Returns the numeric representation of this IP address (such as "127.0.0.1").
      */
     public String getHostAddress() {
-        return inetNtoaImpl(bytesToInt(ipaddress, 0));
+        return Libcore.os.getnameinfo(this, NI_NUMERICHOST); // Can't throw.
     }
 
     /**
-     * Gets the host name of this IP address. If the IP address could not be
-     * resolved, the textual representation in a dotted-quad-notation is
-     * returned.
-     * 
-     * @return the corresponding string name of this IP address.
+     * Returns the host name corresponding to this IP address. This may or may not be a
+     * fully-qualified name. If the IP address could not be resolved, the numeric representation
+     * is returned instead (see {@link #getHostAddress}).
      */
     public String getHostName() {
-        try {
-            if (hostName == null) {
-                int address = 0;
-                if (ipaddress.length == 4) {
-                    address = bytesToInt(ipaddress, 0);
-                    if (address == 0) {
-                        return hostName = inetNtoaImpl(address);
-                    }
-                }
-                hostName = getHostByAddrImpl(ipaddress).hostName;
-                if (hostName.equals("localhost") && ipaddress.length == 4 //$NON-NLS-1$
-                        && address != 0x7f000001) {
-                    return hostName = inetNtoaImpl(address);
-                }
+        if (hostName == null) {
+            try {
+                hostName = getHostByAddrImpl(this).hostName;
+            } catch (UnknownHostException ex) {
+                hostName = getHostAddress();
             }
-        } catch (UnknownHostException e) {
-            return hostName = Inet6Util
-                    .createIPAddrStringFromByteArray(ipaddress);
-        }
-        SecurityManager security = System.getSecurityManager();
-        try {
-            // Only check host names, not addresses
-            if (security != null && isHostName(hostName)) {
-                security.checkConnect(hostName, -1);
-            }
-        } catch (SecurityException e) {
-            return Inet6Util.createIPAddrStringFromByteArray(ipaddress);
         }
         return hostName;
     }
 
     /**
-     * Gets the fully qualified domain name for the host associated with this IP
-     * address. If a security manager is set, it is checked if the method caller
-     * is allowed to get the hostname. Otherwise, the textual representation in
-     * a dotted-quad-notation is returned.
-     * 
-     * @return the fully qualified domain name of this IP address.
+     * Returns the fully qualified hostname corresponding to this IP address.
      */
     public String getCanonicalHostName() {
-        String canonicalName;
         try {
-            int address = 0;
-            if (ipaddress.length == 4) {
-                address = bytesToInt(ipaddress, 0);
-                if (address == 0) {
-                    return inetNtoaImpl(address);
-                }
-            }
-            canonicalName = getHostByAddrImpl(ipaddress).hostName;
-        } catch (UnknownHostException e) {
-            return Inet6Util.createIPAddrStringFromByteArray(ipaddress);
+            return getHostByAddrImpl(this).hostName;
+        } catch (UnknownHostException ex) {
+            return getHostAddress();
         }
-        SecurityManager security = System.getSecurityManager();
-        try {
-            // Only check host names, not addresses
-            if (security != null && isHostName(canonicalName)) {
-                security.checkConnect(canonicalName, -1);
-            }
-        } catch (SecurityException e) {
-            return Inet6Util.createIPAddrStringFromByteArray(ipaddress);
-        }
-        return canonicalName;
     }
 
     /**
-     * Gets the local host address if the security policy allows this.
-     * Otherwise, gets the loopback address which allows this machine to be
-     * contacted.
+     * Returns an {@code InetAddress} for the local host if possible, or the
+     * loopback address otherwise. This method works by getting the hostname,
+     * performing a DNS lookup, and then taking the first returned address.
+     * For devices with multiple network interfaces and/or multiple addresses
+     * per interface, this does not necessarily return the {@code InetAddress}
+     * you want.
      *
-     * @return the {@code InetAddress} representing the local host.
+     * <p>Multiple interface/address configurations were relatively rare
+     * when this API was designed, but multiple interfaces are the default for
+     * modern mobile devices (with separate wifi and radio interfaces), and
+     * the need to support both IPv4 and IPv6 has made multiple addresses
+     * commonplace. New code should thus avoid this method except where it's
+     * basically being used to get a loopback address or equivalent.
+     *
+     * <p>There are two main ways to get a more specific answer:
+     * <ul>
+     * <li>If you have a connected socket, you should probably use
+     * {@link Socket#getLocalAddress} instead: that will give you the address
+     * that's actually in use for that connection. (It's not possible to ask
+     * the question "what local address would a connection to a given remote
+     * address use?"; you have to actually make the connection and see.)</li>
+     * <li>For other use cases, see {@link NetworkInterface}, which lets you
+     * enumerate all available network interfaces and their addresses.</li>
+     * </ul>
+     *
+     * <p>Note that if the host doesn't have a hostname set&nbsp;&ndash; as
+     * Android devices typically don't&nbsp;&ndash; this method will
+     * effectively return the loopback address, albeit by getting the name
+     * {@code localhost} and then doing a lookup to translate that to
+     * {@code 127.0.0.1}.
+     *
+     * @return an {@code InetAddress} representing the local host, or the
+     * loopback address.
      * @throws UnknownHostException
      *             if the address lookup fails.
      */
     public static InetAddress getLocalHost() throws UnknownHostException {
-        String host = getHostNameImpl();
-        SecurityManager security = System.getSecurityManager();
-        try {
-            if (security != null) {
-                security.checkConnect(host, -1);
-            }
-        } catch (SecurityException e) {
-            return InetAddress.LOOPBACK;
-        }
-        return lookupHostByName(host);
+        String host = Libcore.os.uname().nodename;
+        return lookupHostByName(host)[0];
     }
 
     /**
      * Gets the hashcode of the represented IP address.
-     * 
+     *
      * @return the appropriate hashcode value.
      */
     @Override
     public int hashCode() {
-        return bytesToInt(ipaddress, 0);
+        return Arrays.hashCode(ipaddress);
     }
 
     /**
-     * Returns whether this address is an IP multicast address or not.
-     * 
-     * @return {@code true} if this address is in the multicast group, {@code
-     *         false} otherwise.
+     * Resolves a hostname to its IP addresses using a cache.
+     *
+     * @param host the hostname to resolve.
+     * @return the IP addresses of the host.
      */
-    public boolean isMulticastAddress() {
-        return ((ipaddress[0] & 255) >>> 4) == 0xE;
-    }
-
-    static synchronized InetAddress lookupHostByName(String host)
-            throws UnknownHostException {
-        int ttl = -1;
-
-        String ttlValue = AccessController
-                .doPrivileged(new PriviAction<String>(
-                        "networkaddress.cache.ttl")); //$NON-NLS-1$
+    private static InetAddress[] lookupHostByName(String host) throws UnknownHostException {
+        BlockGuard.getThreadPolicy().onNetwork();
+        // Do we have a result cached?
+        Object cachedResult = addressCache.get(host);
+        if (cachedResult != null) {
+            if (cachedResult instanceof InetAddress[]) {
+                // A cached positive result.
+                return (InetAddress[]) cachedResult;
+            } else {
+                // A cached negative result.
+                throw new UnknownHostException((String) cachedResult);
+            }
+        }
         try {
-            if (ttlValue != null) {
-                ttl = Integer.decode(ttlValue).intValue();
+            StructAddrinfo hints = new StructAddrinfo();
+            hints.ai_flags = AI_ADDRCONFIG;
+            hints.ai_family = AF_UNSPEC;
+            // If we don't specify a socket type, every address will appear twice, once
+            // for SOCK_STREAM and one for SOCK_DGRAM. Since we do not return the family
+            // anyway, just pick one.
+            hints.ai_socktype = SOCK_STREAM;
+            InetAddress[] addresses = Libcore.os.getaddrinfo(host, hints);
+            // TODO: should getaddrinfo set the hostname of the InetAddresses it returns?
+            for (InetAddress address : addresses) {
+                address.hostName = host;
             }
-        } catch (NumberFormatException e) {
-            // Ignored
+            addressCache.put(host, addresses);
+            return addresses;
+        } catch (GaiException gaiException) {
+            // TODO: bionic currently returns EAI_NODATA, which is indistinguishable from a real
+            // failure. We need to fix bionic before we can report a more useful error.
+            // if (gaiException.error == EAI_SYSTEM) {
+            //    throw new SecurityException("Permission denied (missing INTERNET permission?)");
+            // }
+            String detailMessage = "Unable to resolve host \"" + host + "\": " + Libcore.os.gai_strerror(gaiException.error);
+            addressCache.putUnknownHost(host, detailMessage);
+            throw gaiException.rethrowAsUnknownHostException(detailMessage);
         }
-        CacheElement element = null;
-        if (ttl == 0) {
-            Cache.clear();
-        } else {
-            element = Cache.get(host);
-            if (element != null
-                    && ttl > 0
-                    && element.timeAdded + (ttl * 1000) < System
-                            .currentTimeMillis()) {
-                element = null;
-            }
-        }
-        if (element != null) {
-            return element.inetAddress();
-        }
+    }
 
-        // TODO Clean up NegativeCache; there's no need to maintain the failure message
-        
-        // now try the negative cache
-        String failedMessage = NegativeCache.getFailedMessage(host);
-        if (failedMessage != null) {
-            throw new UnknownHostException(host);
-        }
+    /**
+     * Removes all entries from the VM's DNS cache. This does not affect the C library's DNS
+     * cache, nor any caching DNS servers between you and the canonical server.
+     * @hide
+     */
+    public static void clearDnsCache() {
+        addressCache.clear();
+    }
 
-        InetAddress anInetAddress;
+    private static InetAddress getHostByAddrImpl(InetAddress address) throws UnknownHostException {
+        BlockGuard.getThreadPolicy().onNetwork();
         try {
-            anInetAddress = getHostByNameImpl(host, preferIPv6Addresses());
-        } catch (UnknownHostException e) {
-            // put the entry in the negative cache
-            NegativeCache.put(host, e.getMessage());
-            // use host for message to match RI, save the cause for giggles
-            throw (UnknownHostException)new UnknownHostException(host).initCause(e);
+            String hostname = Libcore.os.getnameinfo(address, NI_NAMEREQD);
+            return makeInetAddress(address.ipaddress.clone(), hostname);
+        } catch (GaiException gaiException) {
+            throw gaiException.rethrowAsUnknownHostException();
         }
-
-        Cache.add(anInetAddress);
-        return anInetAddress;
-    }
-
-    /**
-     * Query the IP stack for aliases for the host. The host is in string name
-     * form.
-     * 
-     * @param name
-     *            the host name to lookup
-     * @throws UnknownHostException
-     *             if an error occurs during lookup
-     */
-    static native InetAddress[] getAliasesByNameImpl(String name)
-            throws UnknownHostException;
-
-    /**
-     * Query the IP stack for the host address. The host is in address form.
-     * 
-     * @param addr
-     *            the host address to lookup.
-     * @throws UnknownHostException
-     *             if an error occurs during lookup.
-     */
-    static native InetAddress getHostByAddrImpl(byte[] addr)
-            throws UnknownHostException;
-
-    static int inetAddr(String host) throws UnknownHostException {
-        return (host.equals("255.255.255.255")) ? 0xFFFFFFFF //$NON-NLS-1$
-                : inetAddrImpl(host);
-    }
-
-    /**
-     * Convert a string containing an IPv4 Internet Protocol dotted address into
-     * a binary address. Note, the special case of '255.255.255.255' throws an
-     * exception, so this value should not be used as an argument. See also
-     * inetAddr(String).
-     */
-    static native int inetAddrImpl(String host) throws UnknownHostException;
-
-    /**
-     * Convert a binary address into a string containing an Ipv4 Internet
-     * Protocol dotted address.
-     */
-    static native String inetNtoaImpl(int hipAddr);
-
-    /**
-     * Query the IP stack for the host address. The host is in string name form.
-     * 
-     * @param name
-     *            the host name to lookup
-     * @param preferIPv6Address
-     *            address preference if underlying platform is V4/V6
-     * @return InetAddress the host address
-     * @throws UnknownHostException
-     *             if an error occurs during lookup
-     */
-    static native InetAddress getHostByNameImpl(String name,
-            boolean preferIPv6Address) throws UnknownHostException;
-
-    /**
-     * Gets the host name of the system.
-     * 
-     * @return String the system hostname
-     */
-    static native String getHostNameImpl();
-
-    static String getHostNameInternal(String host, boolean isCheck) throws UnknownHostException {
-        if (host == null || 0 == host.length()) {
-            return InetAddress.LOOPBACK.getHostAddress();
-        }
-        if (isHostName(host)) {
-            if (isCheck) {
-                SecurityManager sm = System.getSecurityManager();
-                if (sm != null) {
-                    sm.checkConnect(host, -1);
-                }
-            }
-            return lookupHostByName(host).getHostAddress();
-        }
-        return host;
     }
 
     /**
      * Returns a string containing a concise, human-readable description of this
      * IP address.
-     * 
+     *
      * @return the description, as host/address.
      */
     @Override
     public String toString() {
-        return (hostName == null ? "" : hostName) + "/" + getHostAddress(); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-    class CacheElement {
-        final long timeAdded = System.currentTimeMillis();
-
-        CacheElement next;
-
-        CacheElement() {
-            super();
-        }
-
-        String hostName() {
-            return hostName;
-        }
-
-        InetAddress inetAddress() {
-            return InetAddress.this;
-        }
-    }
-
-    static class Cache {
-        private static int maxSize = 5;
-
-        private static int size = 0;
-
-        private static CacheElement head;
-
-        static synchronized void clear() {
-            size = 0;
-            head = null;
-        }
-
-        static synchronized void add(InetAddress value) {
-            CacheElement newElement = value.cacheElement();
-            if (size < maxSize) {
-                size++;
-            } else {
-                deleteTail();
-            }
-            newElement.next = head; // If the head is null, this does no harm.
-            head = newElement;
-        }
-
-        static synchronized CacheElement get(String name) {
-            CacheElement previous = null;
-            CacheElement current = head;
-            boolean notFound = true;
-            while ((null != current)
-                    && (notFound = !(name.equals(current.hostName())))) {
-                previous = current;
-                current = current.next;
-            }
-            if (notFound) {
-                return null;
-            }
-            moveToHead(current, previous);
-            return current;
-        }
-
-        private synchronized static void deleteTail() {
-            if (0 == size) {
-                return;
-            }
-            if (1 == size) {
-                head = null;
-            }
-
-            CacheElement previous = null;
-            CacheElement current = head;
-            while (null != current.next) {
-                previous = current;
-                current = current.next;
-            }
-            previous.next = null;
-        }
-
-        private synchronized static void moveToHead(CacheElement element,
-                CacheElement elementPredecessor) {
-            if (null == elementPredecessor) {
-                head = element;
-            } else {
-                elementPredecessor.next = element.next;
-                element.next = head;
-                head = element;
-            }
-        }
+        return (hostName == null ? "" : hostName) + "/" + getHostAddress();
     }
 
     /**
-     * Returns true if the string is a host name, false if it is an IP Address.
+     * Returns true if the string is a valid numeric IPv4 or IPv6 address (such as "192.168.0.1").
+     * This copes with all forms of address that Java supports, detailed in the {@link InetAddress}
+     * class documentation.
+     *
+     * @hide used by frameworks/base to ensure that a getAllByName won't cause a DNS lookup.
      */
-    private static boolean isHostName(String value) {
-        return !(Inet6Util.isValidIPV4Address(value) || Inet6Util
-                .isValidIP6Address(value));
+    public static boolean isNumeric(String address) {
+        InetAddress inetAddress = parseNumericAddressNoThrow(address);
+        return inetAddress != null && disallowDeprecatedFormats(address, inetAddress) != null;
     }
 
     /**
-     * Returns whether this address is a loopback address or not. This
-     * implementation returns always {@code false}. Valid IPv4 loopback
-     * addresses are 127.d.d.d The only valid IPv6 loopback address is ::1.
-     * 
-     * @return {@code true} if this instance represents a loopback address,
-     *         {@code false} otherwise.
+     * Returns an InetAddress corresponding to the given numeric address (such
+     * as {@code "192.168.0.1"} or {@code "2001:4860:800d::68"}).
+     * This method will never do a DNS lookup. Non-numeric addresses are errors.
+     *
+     * @hide used by frameworks/base's NetworkUtils.numericToInetAddress
+     * @throws IllegalArgumentException if {@code numericAddress} is not a numeric address
      */
-    public boolean isLoopbackAddress() {
+    public static InetAddress parseNumericAddress(String numericAddress) {
+        if (numericAddress == null || numericAddress.isEmpty()) {
+            return Inet6Address.LOOPBACK;
+        }
+        InetAddress result = parseNumericAddressNoThrow(numericAddress);
+        result = disallowDeprecatedFormats(numericAddress, result);
+        if (result == null) {
+            throw new IllegalArgumentException("Not a numeric address: " + numericAddress);
+        }
+        return result;
+    }
+
+    private static InetAddress[] loopbackAddresses() {
+        return new InetAddress[] { Inet6Address.LOOPBACK, Inet4Address.LOOPBACK };
+    }
+
+    /**
+     * Returns the IPv6 loopback address {@code ::1} or the IPv4 loopback address {@code 127.0.0.1}.
+     * @since 1.7
+     * @hide 1.7
+     */
+    public static InetAddress getLoopbackAddress() {
+        return Inet6Address.LOOPBACK;
+    }
+
+    /**
+     * Returns whether this is the IPv6 unspecified wildcard address {@code ::}
+     * or the IPv4 "any" address, {@code 0.0.0.0}.
+     */
+    public boolean isAnyLocalAddress() {
         return false;
     }
 
     /**
-     * Returns whether this address is a link-local address or not. This
-     * implementation returns always {@code false}.
-     * <p>
-     * Valid IPv6 link-local addresses are FE80::0 through to
-     * FEBF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF.
-     * <p>
-     * There are no valid IPv4 link-local addresses.
+     * Returns whether this address is a link-local address or not.
      *
-     * @return {@code true} if this instance represents a link-local address,
-     *         {@code false} otherwise.
+     * <p>Valid IPv6 link-local addresses have the prefix {@code fe80::/10}.
+     *
+     * <p><a href="http://www.ietf.org/rfc/rfc3484.txt">RFC 3484</a>
+     * "Default Address Selection for Internet Protocol Version 6 (IPv6)" states
+     * that both IPv4 auto-configuration addresses (prefix {@code 169.254/16}) and
+     * IPv4 loopback addresses (prefix {@code 127/8}) have link-local scope, but
+     * {@link Inet4Address} only considers the auto-configuration addresses
+     * to have link-local scope. That is: the IPv4 loopback address returns false.
      */
     public boolean isLinkLocalAddress() {
         return false;
     }
 
     /**
-     * Returns whether this address is a site-local address or not. This
-     * implementation returns always {@code false}.
-     * <p>
-     * Valid IPv6 site-local addresses are FEC0::0 through to
-     * FEFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF.
-     * <p>
-     * There are no valid IPv4 site-local addresses.
-     * 
+     * Returns whether this address is a loopback address or not.
+     *
+     * <p>Valid IPv4 loopback addresses have the prefix {@code 127/8}.
+     *
+     * <p>The only valid IPv6 loopback address is {@code ::1}.
+     */
+    public boolean isLoopbackAddress() {
+        return false;
+    }
+
+    /**
+     * Returns whether this address is a global multicast address or not.
+     *
+     * <p>Valid IPv6 global multicast addresses have the prefix {@code ffxe::/16},
+     * where {@code x} is a set of flags and the additional 112 bits make
+     * up the global multicast address space.
+     *
+     * <p>Valid IPv4 global multicast addresses are the range of addresses
+     * from {@code 224.0.1.0} to {@code 238.255.255.255}.
+     */
+    public boolean isMCGlobal() {
+        return false;
+    }
+
+    /**
+     * Returns whether this address is a link-local multicast address or not.
+     *
+     * <p>Valid IPv6 link-local multicast addresses have the prefix {@code ffx2::/16},
+     * where x is a set of flags and the additional 112 bits make up the link-local multicast
+     * address space.
+     *
+     * <p>Valid IPv4 link-local multicast addresses have the prefix {@code 224.0.0/24}.
+     */
+    public boolean isMCLinkLocal() {
+        return false;
+    }
+
+    /**
+     * Returns whether this address is a node-local multicast address or not.
+     *
+     * <p>Valid IPv6 node-local multicast addresses have the prefix {@code ffx1::/16},
+     * where x is a set of flags and the additional 112 bits make up the link-local multicast
+     * address space.
+     *
+     * <p>There are no valid IPv4 node-local multicast addresses.
+     */
+    public boolean isMCNodeLocal() {
+        return false;
+    }
+
+    /**
+     * Returns whether this address is a organization-local multicast address or not.
+     *
+     * <p>Valid IPv6 organization-local multicast addresses have the prefix {@code ffx8::/16},
+     * where x is a set of flags and the additional 112 bits make up the link-local multicast
+     * address space.
+     *
+     * <p>Valid IPv4 organization-local multicast addresses have the prefix {@code 239.192/14}.
+     */
+    public boolean isMCOrgLocal() {
+        return false;
+    }
+
+    /**
+     * Returns whether this address is a site-local multicast address or not.
+     *
+     * <p>Valid IPv6 site-local multicast addresses have the prefix {@code ffx5::/16},
+     * where x is a set of flags and the additional 112 bits make up the link-local multicast
+     * address space.
+     *
+     * <p>Valid IPv4 site-local multicast addresses have the prefix {@code 239.255/16}.
+     */
+    public boolean isMCSiteLocal() {
+        return false;
+    }
+
+    /**
+     * Returns whether this address is a multicast address or not.
+     *
+     * <p>Valid IPv6 multicast addresses have the prefix {@code ff::/8}.
+     *
+     * <p>Valid IPv4 multicast addresses have the prefix {@code 224/4}.
+     */
+    public boolean isMulticastAddress() {
+        return false;
+    }
+
+    /**
+     * Returns whether this address is a site-local address or not.
+     *
+     * <p>For the purposes of this method, valid IPv6 site-local addresses have
+     * the deprecated prefix {@code fec0::/10} from
+     * <a href="http://www.ietf.org/rfc/rfc1884.txt">RFC 1884</a>,
+     * <i>not</i> the modern prefix {@code fc00::/7} from
+     * <a href="http://www.ietf.org/rfc/rfc4193.txt">RFC 4193</a>.
+     *
+     * <p><a href="http://www.ietf.org/rfc/rfc3484.txt">RFC 3484</a>
+     * "Default Address Selection for Internet Protocol Version 6 (IPv6)" states
+     * that IPv4 private addresses have the prefix {@code 10/8}, {@code 172.16/12},
+     * or {@code 192.168/16}.
+     *
      * @return {@code true} if this instance represents a site-local address,
      *         {@code false} otherwise.
      */
@@ -673,109 +636,10 @@ public class InetAddress extends Object implements Serializable {
     }
 
     /**
-     * Returns whether this address is a global multicast address or not. This
-     * implementation returns always {@code false}.
-     * <p>
-     * Valid IPv6 link-global multicast addresses are FFxE:/112 where x is a set
-     * of flags, and the additional 112 bits make up the global multicast
-     * address space.
-     * <p>
-     * Valid IPv4 global multicast addresses are between: 224.0.1.0 to
-     * 238.255.255.255.
-     *
-     * @return {@code true} if this instance represents a global multicast
-     *         address, {@code false} otherwise.
-     */
-    public boolean isMCGlobal() {
-        return false;
-    }
-
-    /**
-     * Returns whether this address is a node-local multicast address or not.
-     * This implementation returns always {@code false}.
-     * <p>
-     * Valid IPv6 node-local multicast addresses are FFx1:/112 where x is a set
-     * of flags, and the additional 112 bits make up the node-local multicast
-     * address space.
-     * <p>
-     * There are no valid IPv4 node-local multicast addresses.
-     *
-     * @return {@code true} if this instance represents a node-local multicast
-     *         address, {@code false} otherwise.
-     */
-    public boolean isMCNodeLocal() {
-        return false;
-    }
-
-    /**
-     * Returns whether this address is a link-local multicast address or not.
-     * This implementation returns always {@code false}.
-     * <p>
-     * Valid IPv6 link-local multicast addresses are FFx2:/112 where x is a set
-     * of flags, and the additional 112 bits make up the link-local multicast
-     * address space.
-     * <p>
-     * Valid IPv4 link-local addresses are between: 224.0.0.0 to 224.0.0.255
-     *
-     * @return {@code true} if this instance represents a link-local multicast
-     *         address, {@code false} otherwise.
-     */
-    public boolean isMCLinkLocal() {
-        return false;
-    }
-
-    /**
-     * Returns whether this address is a site-local multicast address or not.
-     * This implementation returns always {@code false}.
-     * <p>
-     * Valid IPv6 site-local multicast addresses are FFx5:/112 where x is a set
-     * of flags, and the additional 112 bits make up the site-local multicast
-     * address space.
-     * <p>
-     * Valid IPv4 site-local addresses are between: 239.252.0.0 to
-     * 239.255.255.255
-     *
-     * @return {@code true} if this instance represents a site-local multicast
-     *         address, {@code false} otherwise.
-     */
-    public boolean isMCSiteLocal() {
-        return false;
-    }
-
-    /**
-     * Returns whether this address is a organization-local multicast address or
-     * not. This implementation returns always {@code false}.
-     * <p>
-     * Valid IPv6 organization-local multicast addresses are FFx8:/112 where x
-     * is a set of flags, and the additional 112 bits make up the
-     * organization-local multicast address space.
-     * <p>
-     * Valid IPv4 organization-local addresses are between: 239.192.0.0 to
-     * 239.251.255.255
-     *
-     * @return {@code true} if this instance represents a organization-local
-     *         multicast address, {@code false} otherwise.
-     */
-    public boolean isMCOrgLocal() {
-        return false;
-    }
-
-    /**
-     * Returns whether this is a wildcard address or not. This implementation
-     * returns always {@code false}.
-     * 
-     * @return {@code true} if this instance represents a wildcard address,
-     *         {@code false} otherwise.
-     */
-    public boolean isAnyLocalAddress() {
-        return false;
-    }
-
-    /**
      * Tries to reach this {@code InetAddress}. This method first tries to use
-     * ICMP <i>(ICMP ECHO REQUEST)</i>. When first step fails, a TCP connection
-     * on port 7 (Echo) of the remote host is established.
-     * 
+     * ICMP <i>(ICMP ECHO REQUEST)</i>, falling back to a TCP connection
+     * on port 7 (Echo) of the remote host.
+     *
      * @param timeout
      *            timeout in milliseconds before the test fails if no connection
      *            could be established.
@@ -792,10 +656,10 @@ public class InetAddress extends Object implements Serializable {
 
     /**
      * Tries to reach this {@code InetAddress}. This method first tries to use
-     * ICMP <i>(ICMP ECHO REQUEST)</i>. When first step fails, a TCP connection
-     * on port 7 (Echo) of the remote host is established.
-     * 
-     * @param netif
+     * ICMP <i>(ICMP ECHO REQUEST)</i>, falling back to a TCP connection
+     * on port 7 (Echo) of the remote host.
+     *
+     * @param networkInterface
      *            the network interface on which to connection should be
      *            established.
      * @param ttl
@@ -810,572 +674,182 @@ public class InetAddress extends Object implements Serializable {
      * @throws IllegalArgumentException
      *             if ttl or timeout is less than zero.
      */
-    public boolean isReachable(NetworkInterface netif, final int ttl,
-            final int timeout) throws IOException {
-        if (0 > ttl || 0 > timeout) {
-            throw new IllegalArgumentException(Messages.getString("luni.61")); //$NON-NLS-1$
+    public boolean isReachable(NetworkInterface networkInterface, final int ttl, final int timeout) throws IOException {
+        if (ttl < 0 || timeout < 0) {
+            throw new IllegalArgumentException("ttl < 0 || timeout < 0");
         }
-        boolean reachable = false;
-        if (null == netif) {
-            // network interface is null, binds to no address
-            reachable = NETIMPL.isReachableByICMP(this, null, ttl, timeout);
-            if (!reachable) {
-                reachable = isReachableByTCP(this, null, timeout);
-            }
-        } else {
-            // Not Bind to any address
-            if (null == netif.addresses) {
-                return false;
-            }
-            // binds to all address on this NetworkInterface, tries ICMP ping
-            // first
-            reachable = isReachableByICMPUseMultiThread(netif, ttl, timeout);
-            if (!reachable) {
-                // tries TCP echo if ICMP ping fails
-                reachable = isReachableByTCPUseMultiThread(netif, ttl, timeout);
-            }
-        }
-        return reachable;
-    }
 
-    /*
-     * Uses multi-Thread to try if isReachable, returns true if any of threads
-     * returns in time
-     */
-    private boolean isReachableByMultiThread(NetworkInterface netif,
-            final int ttl, final int timeout, final boolean isICMP)
-            throws IOException {
-        if (null == netif.addresses) {
+        // The simple case.
+        if (networkInterface == null) {
+            return isReachable(this, null, timeout);
+        }
+
+        // Try each NetworkInterface in parallel.
+        // Use a thread pool Executor?
+        List<InetAddress> sourceAddresses = Collections.list(networkInterface.getInetAddresses());
+        if (sourceAddresses.isEmpty()) {
             return false;
         }
-        Enumeration<InetAddress> addresses = netif.getInetAddresses();
-        reached = false;
-        addrCount = netif.addresses.size();
-        boolean needWait = false;
-        while (addresses.hasMoreElements()) {
-            final InetAddress addr = addresses.nextElement();
-
-            // loopback interface can only reach to local addresses
-            if (addr.isLoopbackAddress()) {
-                Enumeration<NetworkInterface> NetworkInterfaces = NetworkInterface
-                        .getNetworkInterfaces();
-                while (NetworkInterfaces.hasMoreElements()) {
-                    NetworkInterface networkInterface = NetworkInterfaces
-                            .nextElement();
-                    Enumeration<InetAddress> localAddresses = networkInterface
-                            .getInetAddresses();
-                    while (localAddresses.hasMoreElements()) {
-                        if (InetAddress.this.equals(localAddresses
-                                .nextElement())) {
-                            return true;
-                        }
-                    }
-                }
-
-                synchronized (waitReachable) {
-                    addrCount--;
-
-                    if (addrCount == 0) {
-                        // if count equals zero, all thread
-                        // expired,notifies main thread
-                        waitReachable.notifyAll();
-                    }
-                }
-                continue;
-            }
-
-            needWait = true;
+        final InetAddress destinationAddress = this;
+        final CountDownLatch latch = new CountDownLatch(sourceAddresses.size());
+        final AtomicBoolean isReachable = new AtomicBoolean(false);
+        for (final InetAddress sourceAddress : sourceAddresses) {
             new Thread() {
-                @Override
-                public void run() {
-                    boolean threadReached = false;
-                    // if isICMP, tries ICMP ping, else TCP echo
-                    if (isICMP) {
-                        threadReached = NETIMPL.isReachableByICMP(addr,
-                                InetAddress.this, ttl, timeout);
-                    } else {
-                        try {
-                            threadReached = isReachableByTCP(addr,
-                                    InetAddress.this, timeout);
-                        } catch (IOException e) {
-                            // do nothing
-                        }
-                    }
-
-                    synchronized (waitReachable) {
-                        if (threadReached) {
-                            // if thread reached this address, sets reached to
-                            // true and notifies main thread
-                            reached = true;
-                            waitReachable.notifyAll();
-                        } else {
-                            addrCount--;
-                            if (0 == addrCount) {
-                                // if count equals zero, all thread
-                                // expired,notifies main thread
-                                waitReachable.notifyAll();
+                @Override public void run() {
+                    try {
+                        if (isReachable(destinationAddress, sourceAddress, timeout)) {
+                            isReachable.set(true);
+                            // Wake the main thread so it can return success without
+                            // waiting for any other threads to time out.
+                            while (latch.getCount() > 0) {
+                                latch.countDown();
                             }
                         }
+                    } catch (IOException ignored) {
                     }
+                    latch.countDown();
                 }
             }.start();
         }
-
-        if (needWait) {
-            synchronized (waitReachable) {
-                try {
-                    while (!reached && (addrCount != 0)) {
-                        // wait for notification
-                        waitReachable.wait(1000);
-                    }
-                } catch (InterruptedException e) {
-                    // do nothing
-                }
-                return reached;
-            }
-        }
-
-        return false;
-    }
-
-    private boolean isReachableByICMPUseMultiThread(NetworkInterface netif,
-            int ttl, int timeout) throws IOException {
-        return isReachableByMultiThread(netif, ttl, timeout, true);
-    }
-
-    private boolean isReachableByTCPUseMultiThread(NetworkInterface netif,
-            int ttl, int timeout) throws IOException {
-        return isReachableByMultiThread(netif, ttl, timeout, false);
-    }
-
-    private boolean isReachableByTCP(InetAddress dest, InetAddress source,
-            int timeout) throws IOException {
-        FileDescriptor fd = new FileDescriptor();
-        // define traffic only for parameter
-        int traffic = 0;
-        boolean reached = false;
-        NETIMPL.createStreamSocket(fd, NetUtil.preferIPv4Stack());
         try {
-            if (null != source) {
-                NETIMPL.bind(fd, source, 0);
+            latch.await();
+        } catch (InterruptedException ignored) {
+            Thread.currentThread().interrupt(); // Leave the interrupted bit set.
+        }
+        return isReachable.get();
+    }
+
+    private boolean isReachable(InetAddress destination, InetAddress source, int timeout) throws IOException {
+        // TODO: try ICMP first (http://code.google.com/p/android/issues/detail?id=20106)
+        FileDescriptor fd = IoBridge.socket(true);
+        boolean reached = false;
+        try {
+            if (source != null) {
+                IoBridge.bind(fd, source, 0);
             }
-            NETIMPL.connectStreamWithTimeoutSocket(fd, 7, timeout, traffic,
-                    dest);
+            IoBridge.connect(fd, destination, 7, timeout);
             reached = true;
         } catch (IOException e) {
-            if (ERRMSG_CONNECTION_REFUSED.equals(e.getMessage())) {
-                // Connection refused means the IP is reachable
-                reached = true;
+            if (e.getCause() instanceof ErrnoException) {
+                // "Connection refused" means the IP address was reachable.
+                reached = (((ErrnoException) e.getCause()).errno == ECONNREFUSED);
             }
         }
 
-        NETIMPL.socketClose(fd);
+        IoBridge.closeSocket(fd);
 
         return reached;
     }
 
     /**
-     * Returns the {@code InetAddress} corresponding to the array of bytes. In
-     * the case of an IPv4 address there must be exactly 4 bytes and for IPv6
-     * exactly 16 bytes. If not, an {@code UnknownHostException} is thrown.
-     * <p>
-     * The IP address is not validated by a name service.
-     * <p>
-     * The high order byte is {@code ipAddress[0]}.
-     *
-     * @param ipAddress
-     *            is either a 4 (IPv4) or 16 (IPv6) byte long array.
-     * @return an {@code InetAddress} instance representing the given IP address
-     *         {@code ipAddress}.
-     * @throws UnknownHostException
-     *             if the given byte array has no valid length.
+     * Equivalent to {@code getByAddress(null, ipAddress)}. Handy for addresses with
+     * no associated hostname.
      */
-    public static InetAddress getByAddress(byte[] ipAddress)
-            throws UnknownHostException {
-        // simply call the method by the same name specifying the default scope
-        // id of 0
-        return getByAddress(ipAddress, 0);
+    public static InetAddress getByAddress(byte[] ipAddress) throws UnknownHostException {
+        return getByAddress(null, ipAddress, 0);
     }
 
     /**
-     * Returns the {@code InetAddress} corresponding to the array of bytes. In
-     * the case of an IPv4 address there must be exactly 4 bytes and for IPv6
-     * exactly 16 bytes. If not, an {@code UnknownHostException} is thrown. The
-     * IP address is not validated by a name service. The high order byte is
-     * {@code ipAddress[0]}.
-     * 
-     * @param ipAddress
-     *            either a 4 (IPv4) or 16 (IPv6) byte array.
-     * @param scope_id
-     *            the scope id for an IPV6 scoped address. If not a scoped
-     *            address just pass in 0.
-     * @return the InetAddress
-     * @throws UnknownHostException
+     * Returns an {@code InetAddress} corresponding to the given network-order
+     * bytes {@code ipAddress} and {@code scopeId}.
+     *
+     * <p>For an IPv4 address, the byte array must be of length 4.
+     * For IPv6, the byte array must be of length 16. Any other length will cause an {@code
+     * UnknownHostException}.
+     *
+     * <p>No reverse lookup is performed. The given {@code hostName} (which may be null) is
+     * associated with the new {@code InetAddress} with no validation done.
+     *
+     * <p>(Note that numeric addresses such as {@code "127.0.0.1"} are names for the
+     * purposes of this API. Most callers probably want {@link #getAllByName} instead.)
+     *
+     * @throws UnknownHostException if {@code ipAddress} is null or the wrong length.
      */
-    static InetAddress getByAddress(byte[] ipAddress, int scope_id)
-            throws UnknownHostException {
-        byte[] copy_address;
-        if (ipAddress != null && ipAddress.length == 4) {
-            copy_address = new byte[4];
-            for (int i = 0; i < 4; i++) {
-                copy_address[i] = ipAddress[i];
-            }
-            return new Inet4Address(copy_address);
-        }
+    public static InetAddress getByAddress(String hostName, byte[] ipAddress) throws UnknownHostException {
+        return getByAddress(hostName, ipAddress, 0);
+    }
 
-        if (ipAddress != null && ipAddress.length == 16) {
+    private static InetAddress getByAddress(String hostName, byte[] ipAddress, int scopeId) throws UnknownHostException {
+        if (ipAddress == null) {
+            throw new UnknownHostException("ipAddress == null");
+        }
+        if (ipAddress.length == 4) {
+            return new Inet4Address(ipAddress.clone(), hostName);
+        } else if (ipAddress.length == 16) {
             // First check to see if the address is an IPv6-mapped
             // IPv4 address. If it is, then we can make it a IPv4
             // address, otherwise, we'll create an IPv6 address.
             if (isIPv4MappedAddress(ipAddress)) {
-                copy_address = new byte[4];
-                for (int i = 0; i < 4; i++) {
-                    copy_address[i] = ipAddress[12 + i];
-                }
-                return new Inet4Address(copy_address);
+                return new Inet4Address(ipv4MappedToIPv4(ipAddress), hostName);
+            } else {
+                return new Inet6Address(ipAddress.clone(), hostName, scopeId);
             }
-            copy_address = ipAddress.clone();
-            return new Inet6Address(copy_address, scope_id);
+        } else {
+            throw badAddressLength(ipAddress);
         }
-
-        // luni.64=Invalid IP Address is neither 4 or 16 bytes
-        throw new UnknownHostException(Messages.getString("luni.64")); //$NON-NLS-1$
     }
 
-    private static boolean isIPv4MappedAddress(byte ipAddress[]) {
+    private static UnknownHostException badAddressLength(byte[] bytes) throws UnknownHostException {
+        throw new UnknownHostException("Address is neither 4 or 16 bytes: " + Arrays.toString(bytes));
+    }
+
+    private static boolean isIPv4MappedAddress(byte[] ipAddress) {
         // Check if the address matches ::FFFF:d.d.d.d
         // The first 10 bytes are 0. The next to are -1 (FF).
         // The last 4 bytes are varied.
+        if (ipAddress == null || ipAddress.length != 16) {
+            return false;
+        }
         for (int i = 0; i < 10; i++) {
             if (ipAddress[i] != 0) {
                 return false;
             }
         }
-
         if (ipAddress[10] != -1 || ipAddress[11] != -1) {
             return false;
         }
-
         return true;
     }
 
-    /**
-     * Returns the {@code InetAddress} corresponding to the array of bytes, and
-     * the given hostname. In the case of an IPv4 address there must be exactly
-     * 4 bytes and for IPv6 exactly 16 bytes. If not, an {@code
-     * UnknownHostException} will be thrown.
-     * <p>
-     * The host name and IP address are not validated.
-     * <p>
-     * The hostname either be a machine alias or a valid IPv6 or IPv4 address
-     * format.
-     * <p>
-     * The high order byte is {@code ipAddress[0]}.
-     *
-     * @param hostName
-     *            the string representation of hostname or IP address.
-     * @param ipAddress
-     *            either a 4 (IPv4) or 16 (IPv6) byte long array.
-     * @return an {@code InetAddress} instance representing the given IP address
-     *         and hostname.
-     * @throws UnknownHostException
-     *             if the given byte array has no valid length.
-     */
-    public static InetAddress getByAddress(String hostName, byte[] ipAddress)
-            throws UnknownHostException {
-        // just call the method by the same name passing in a default scope id
-        // of 0
-        return getByAddressInternal(hostName, ipAddress, 0);
-    }
-
-    /**
-     * Returns the {@code InetAddress} corresponding to the array of bytes, and
-     * the given hostname. In the case of an IPv4 address there must be exactly
-     * 4 bytes and for IPv6 exactly 16 bytes. If not, an {@code
-     * UnknownHostException} is thrown. The host name and IP address are not
-     * validated. The hostname either be a machine alias or a valid IPv6 or IPv4
-     * address format. The high order byte is {@code ipAddress[0]}.
-     * 
-     * @param hostName
-     *            string representation of hostname or IP address.
-     * @param ipAddress
-     *            either a 4 (IPv4) or 16 (IPv6) byte array.
-     * @param scope_id
-     *            the scope id for a scoped address. If not a scoped address
-     *            just pass in 0.
-     * @return the InetAddress
-     * @throws UnknownHostException
-     */
-    static InetAddress getByAddressInternal(String hostName, byte[] ipAddress,
-            int scope_id) throws UnknownHostException {
-        byte[] copy_address;
-        if (ipAddress != null && ipAddress.length == 4) {
-            copy_address = new byte[4];
-            for (int i = 0; i < 4; i++) {
-                copy_address[i] = ipAddress[i];
-            }
-            return new Inet4Address(ipAddress, hostName);
+    private static byte[] ipv4MappedToIPv4(byte[] mappedAddress) {
+        byte[] ipv4Address = new byte[4];
+        for (int i = 0; i < 4; i++) {
+            ipv4Address[i] = mappedAddress[12 + i];
         }
-
-        if (ipAddress != null && ipAddress.length == 16) {
-            // First check to see if the address is an IPv6-mapped
-            // IPv4 address. If it is, then we can make it a IPv4
-            // address, otherwise, we'll create an IPv6 address.
-            if (isIPv4MappedAddress(ipAddress)) {
-                copy_address = new byte[4];
-                for (int i = 0; i < 4; i++) {
-                    copy_address[i] = ipAddress[12 + i];
-                }
-                return new Inet4Address(ipAddress, hostName);
-            }
-
-            copy_address = new byte[16];
-            for (int i = 0; i < 16; i++) {
-                copy_address[i] = ipAddress[i];
-            }
-
-            return new Inet6Address(ipAddress, hostName, scope_id);
-        }
-
-        throw new UnknownHostException(Messages.getString("luni.65", hostName)); //$NON-NLS-1$
-    }
-
-    /**
-     * Takes the integer and chops it into 4 bytes, putting it into the byte
-     * array starting with the high order byte at the index start. This method
-     * makes no checks on the validity of the parameters.
-     */
-    static void intToBytes(int value, byte bytes[], int start) {
-        // Shift the int so the current byte is right-most
-        // Use a byte mask of 255 to single out the last byte.
-        bytes[start] = (byte) ((value >> 24) & 255);
-        bytes[start + 1] = (byte) ((value >> 16) & 255);
-        bytes[start + 2] = (byte) ((value >> 8) & 255);
-        bytes[start + 3] = (byte) (value & 255);
-    }
-
-    /**
-     * Takes the byte array and creates an integer out of four bytes starting at
-     * start as the high-order byte. This method makes no checks on the validity
-     * of the parameters.
-     */
-    static int bytesToInt(byte bytes[], int start) {
-        // First mask the byte with 255, as when a negative
-        // signed byte converts to an integer, it has bits
-        // on in the first 3 bytes, we are only concerned
-        // about the right-most 8 bits.
-        // Then shift the rightmost byte to align with its
-        // position in the integer.
-        int value = ((bytes[start + 3] & 255))
-                | ((bytes[start + 2] & 255) << 8)
-                | ((bytes[start + 1] & 255) << 16)
-                | ((bytes[start] & 255) << 24);
-        return value;
-    }
-
-    /**
-     * Creates an InetAddress based on the {@code ipAddressString}. No error
-     * handling is performed here.
-     */
-    static InetAddress createHostNameFromIPAddress(String ipAddressString)
-            throws UnknownHostException {
-
-        InetAddress address = null;
-
-        if (Inet6Util.isValidIPV4Address(ipAddressString)) {
-            byte[] byteAddress = new byte[4];
-            String[] parts = ipAddressString.split("\\."); //$NON-NLS-1$
-            int length = parts.length;
-            if (length == 1) {
-                long value = Long.parseLong(parts[0]);
-                for (int i = 0; i < 4; i++) {
-                    byteAddress[i] = (byte) (value >> ((3 - i) * 8));
-                }
-            } else {
-                for (int i = 0; i < length; i++) {
-                    byteAddress[i] = (byte) Integer.parseInt(parts[i]);
-                }
-            }
-
-            // adjust for 2/3 parts address
-            if (length == 2) {
-                byteAddress[3] = byteAddress[1];
-                byteAddress[1] = 0;
-            }
-            if (length == 3) {
-                byteAddress[3] = byteAddress[2];
-                byteAddress[2] = 0;
-            }
-
-            address = new Inet4Address(byteAddress);
-        } else { // otherwise it must be ipv6
-
-            if (ipAddressString.charAt(0) == '[') {
-                ipAddressString = ipAddressString.substring(1, ipAddressString
-                        .length() - 1);
-            }
-
-            StringTokenizer tokenizer = new StringTokenizer(ipAddressString,
-                    ":.%", true); //$NON-NLS-1$
-            ArrayList<String> hexStrings = new ArrayList<String>();
-            ArrayList<String> decStrings = new ArrayList<String>();
-            String scopeString = null;
-            String token = ""; //$NON-NLS-1$
-            String prevToken = ""; //$NON-NLS-1$
-            String prevPrevToken = ""; //$NON-NLS-1$
-            int doubleColonIndex = -1; // If a double colon exists, we need to
-            // insert 0s.
-
-            // Go through the tokens, including the separators ':' and '.'
-            // When we hit a : or . the previous token will be added to either
-            // the hex list or decimal list. In the case where we hit a ::
-            // we will save the index of the hexStrings so we can add zeros
-            // in to fill out the string
-            while (tokenizer.hasMoreTokens()) {
-                prevPrevToken = prevToken;
-                prevToken = token;
-                token = tokenizer.nextToken();
-
-                if (token.equals(":")) { //$NON-NLS-1$
-                    if (prevToken.equals(":")) { //$NON-NLS-1$
-                        doubleColonIndex = hexStrings.size();
-                    } else if (!prevToken.equals("")) { //$NON-NLS-1$
-                        hexStrings.add(prevToken);
-                    }
-                } else if (token.equals(".")) { //$NON-NLS-1$
-                    decStrings.add(prevToken);
-                } else if (token.equals("%")) { //$NON-NLS-1$
-                    // add the last word before the % properly
-                    if (!prevToken.equals(":") && !prevToken.equals(".")) { //$NON-NLS-1$ //$NON-NLS-2$
-                        if (prevPrevToken.equals(":")) { //$NON-NLS-1$
-                            hexStrings.add(prevToken);
-                        } else if (prevPrevToken.equals(".")) { //$NON-NLS-1$
-                            decStrings.add(prevToken);
-                        }
-                    }
-
-                    // the rest should be the scope string
-                    StringBuilder buf = new StringBuilder();
-                    while (tokenizer.hasMoreTokens()) {
-                        buf.append(tokenizer.nextToken());
-                    }
-                    scopeString = buf.toString();
-                }
-            }
-
-            if (prevToken.equals(":")) { //$NON-NLS-1$
-                if (token.equals(":")) { //$NON-NLS-1$
-                    doubleColonIndex = hexStrings.size();
-                } else {
-                    hexStrings.add(token);
-                }
-            } else if (prevToken.equals(".")) { //$NON-NLS-1$
-                decStrings.add(token);
-            }
-
-            // figure out how many hexStrings we should have
-            // also check if it is a IPv4 address
-            int hexStringsLength = 8;
-
-            // If we have an IPv4 address tagged on at the end, subtract
-            // 4 bytes, or 2 hex words from the total
-            if (decStrings.size() > 0) {
-                hexStringsLength -= 2;
-            }
-
-            // if we hit a double Colon add the appropriate hex strings
-            if (doubleColonIndex != -1) {
-                int numberToInsert = hexStringsLength - hexStrings.size();
-                for (int i = 0; i < numberToInsert; i++) {
-                    hexStrings.add(doubleColonIndex, "0"); //$NON-NLS-1$
-                }
-            }
-
-            byte ipByteArray[] = new byte[16];
-
-            // Finally convert these strings to bytes...
-            for (int i = 0; i < hexStrings.size(); i++) {
-                Inet6Util.convertToBytes(hexStrings.get(i), ipByteArray, i * 2);
-            }
-
-            // Now if there are any decimal values, we know where they go...
-            for (int i = 0; i < decStrings.size(); i++) {
-                ipByteArray[i + 12] = (byte) (Integer.parseInt(decStrings
-                        .get(i)) & 255);
-            }
-
-            // now check to see if this guy is actually and IPv4 address
-            // an ipV4 address is ::FFFF:d.d.d.d
-            boolean ipV4 = true;
-            for (int i = 0; i < 10; i++) {
-                if (ipByteArray[i] != 0) {
-                    ipV4 = false;
-                    break;
-                }
-            }
-
-            if (ipByteArray[10] != -1 || ipByteArray[11] != -1) {
-                ipV4 = false;
-            }
-
-            if (ipV4) {
-                byte ipv4ByteArray[] = new byte[4];
-                for (int i = 0; i < 4; i++) {
-                    ipv4ByteArray[i] = ipByteArray[i + 12];
-                }
-                address = InetAddress.getByAddress(ipv4ByteArray);
-            } else {
-                int scopeId = 0;
-                if (scopeString != null) {
-                    try {
-                        scopeId = Integer.parseInt(scopeString);
-                    } catch (Exception e) {
-                        // this should not occur as we should not get into this
-                        // function unless the address is in a valid format
-                    }
-                }
-                address = InetAddress.getByAddress(ipByteArray, scopeId);
-            }
-        }
-
-        return address;
-    }
-
-    static boolean preferIPv6Addresses() {
-        return NetUtil.preferIPv6Addresses();
+        return ipv4Address;
     }
 
     private static final ObjectStreamField[] serialPersistentFields = {
-            new ObjectStreamField("address", Integer.TYPE), //$NON-NLS-1$
-            new ObjectStreamField("family", Integer.TYPE), //$NON-NLS-1$
-            new ObjectStreamField("hostName", String.class) }; //$NON-NLS-1$
+        new ObjectStreamField("address", int.class),
+        new ObjectStreamField("family", int.class),
+        new ObjectStreamField("hostName", String.class),
+    };
 
     private void writeObject(ObjectOutputStream stream) throws IOException {
         ObjectOutputStream.PutField fields = stream.putFields();
         if (ipaddress == null) {
-            fields.put("address", 0); //$NON-NLS-1$
+            fields.put("address", 0);
         } else {
-            fields.put("address", bytesToInt(ipaddress, 0)); //$NON-NLS-1$
+            fields.put("address", Memory.peekInt(ipaddress, 0, ByteOrder.BIG_ENDIAN));
         }
-        fields.put("family", family); //$NON-NLS-1$
-        fields.put("hostName", hostName); //$NON-NLS-1$
+        fields.put("family", family);
+        fields.put("hostName", hostName);
 
         stream.writeFields();
     }
 
-    private void readObject(ObjectInputStream stream) throws IOException,
-            ClassNotFoundException {
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
         ObjectInputStream.GetField fields = stream.readFields();
-        int addr = fields.get("address", 0); //$NON-NLS-1$
+        int addr = fields.get("address", 0);
         ipaddress = new byte[4];
-        intToBytes(addr, ipaddress, 0);
-        hostName = (String) fields.get("hostName", null); //$NON-NLS-1$
-        family = fields.get("family", 2); //$NON-NLS-1$
+        Memory.pokeInt(ipaddress, 0, addr, ByteOrder.BIG_ENDIAN);
+        hostName = (String) fields.get("hostName", null);
+        family = fields.get("family", 2);
     }
 
     /*
      * The spec requires that if we encounter a generic InetAddress in
-     * serialized form then we should interpret it as an Inet4 address.
+     * serialized form then we should interpret it as an Inet4Address.
      */
     private Object readResolve() throws ObjectStreamException {
         return new Inet4Address(ipaddress, hostName);

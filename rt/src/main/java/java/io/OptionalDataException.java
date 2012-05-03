@@ -21,7 +21,7 @@ package java.io;
  * Signals that the {@link ObjectInputStream} class encountered a primitive type
  * ({@code int}, {@code char} etc.) instead of an object instance in the input
  * stream.
- * 
+ *
  * @see ObjectInputStream#available()
  * @see ObjectInputStream#readObject()
  * @see ObjectInputStream#skipBytes(int)
@@ -46,13 +46,12 @@ public class OptionalDataException extends ObjectStreamException {
      * filled in.
      */
     OptionalDataException() {
-        super();
     }
 
     /**
      * Constructs a new {@code OptionalDataException} with its stack trace and
      * detail message filled in.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

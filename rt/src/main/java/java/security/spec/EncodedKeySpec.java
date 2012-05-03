@@ -27,7 +27,7 @@ public abstract class EncodedKeySpec implements KeySpec {
 
     /**
      * Creates a new {@code EncodedKeySpec} with the specified encoded key bytes.
-     * 
+     *
      * @param encodedKey
      *            the encoded key bytes.
      */
@@ -41,7 +41,7 @@ public abstract class EncodedKeySpec implements KeySpec {
 
     /**
      * Returns the encoded key bytes.
-     * 
+     *
      * @return the encoded key bytes.
      */
     public byte[] getEncoded() {
@@ -55,7 +55,7 @@ public abstract class EncodedKeySpec implements KeySpec {
     /**
      * Returns the name of the encoding format of this encoded key
      * specification.
-     * 
+     *
      * @return the name of the encoding format of this encoded key
      *         specification.
      */

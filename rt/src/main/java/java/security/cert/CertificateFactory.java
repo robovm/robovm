@@ -25,9 +25,7 @@ import java.security.Security;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
 import org.apache.harmony.security.fortress.Engine;
-import org.apache.harmony.security.internal.nls.Messages;
 
 
 /**
@@ -40,10 +38,10 @@ import org.apache.harmony.security.internal.nls.Messages;
 public class CertificateFactory {
 
     // Store CertificateFactory service name
-    private static final String SERVICE = "CertificateFactory"; //$NON-NLS-1$
+    private static final String SERVICE = "CertificateFactory";
 
     // Used to access common engine functionality
-    private static Engine engine = new Engine(SERVICE);
+    private static final Engine ENGINE = new Engine(SERVICE);
 
     // Store used provider
     private final Provider provider;
@@ -74,27 +72,23 @@ public class CertificateFactory {
     /**
      * Creates a new {@code CertificateFactory} instance that provides the
      * requested certificate type.
-     * 
+     *
      * @param type
      *            the certificate type.
      * @return the new {@code CertificateFactory} instance.
      * @throws CertificateException
      *             if the specified certificate type is not available at any
      *             installed provider.
-     * @throws NullPointerException
-     *             if {@code type} is {@code null}.
+     * @throws NullPointerException if {@code type == null}
      */
     public static final CertificateFactory getInstance(String type)
             throws CertificateException {
         if (type == null) {
-            throw new NullPointerException(Messages.getString("security.07")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
         try {
-            synchronized (engine) {
-                engine.getInstance(type, null);
-                return new CertificateFactory((CertificateFactorySpi) engine.spi,
-                        engine.provider, type);
-            }
+            Engine.SpiAndProvider sap = ENGINE.getInstance(type, null);
+            return new CertificateFactory((CertificateFactorySpi) sap.spi, sap.provider, type);
         } catch (NoSuchAlgorithmException e) {
             throw new CertificateException(e);
         }
@@ -103,7 +97,7 @@ public class CertificateFactory {
     /**
      * Creates a new {@code CertificateFactory} instance from the specified
      * provider that provides the requested certificate type.
-     * 
+     *
      * @param type
      *            the certificate type.
      * @param provider
@@ -115,16 +109,15 @@ public class CertificateFactory {
      *             specified provider.
      * @throws NoSuchProviderException
      *             if no provider with the specified name can be found.
-     * @throws IllegalArgumentException
-     *             if the specified provider name is {@code null} or empty.
+     * @throws IllegalArgumentException if {@code provider == null || provider.isEmpty()}
      * @throws NullPointerException
      *             it {@code type} is {@code null}.
      */
     public static final CertificateFactory getInstance(String type,
             String provider) throws CertificateException,
             NoSuchProviderException {
-        if ((provider == null) || (provider.length() == 0)) {
-            throw new IllegalArgumentException(Messages.getString("security.02")); //$NON-NLS-1$
+        if (provider == null || provider.isEmpty()) {
+            throw new IllegalArgumentException();
         }
         Provider impProvider = Security.getProvider(provider);
         if (impProvider == null) {
@@ -136,7 +129,7 @@ public class CertificateFactory {
     /**
      * Creates a new {@code CertificateFactory} instance from the specified
      * provider that provides the requested certificate type.
-     * 
+     *
      * @param type
      *            the certificate type.
      * @param provider
@@ -148,32 +141,29 @@ public class CertificateFactory {
      *             specified provider.
      * @throws IllegalArgumentException
      *             if the specified provider is {@code null}.
-     * @throws NullPointerException
-     *             is {@code type} is {@code null}.
+     * @throws NullPointerException if {@code type == null}
+     * @throws IllegalArgumentException if {@code provider == null}
      */
     public static final CertificateFactory getInstance(String type,
             Provider provider) throws CertificateException {
         if (provider == null) {
-            throw new IllegalArgumentException(Messages.getString("security.04")); //$NON-NLS-1$
+            throw new IllegalArgumentException();
         }
         if (type == null) {
-            throw new NullPointerException(Messages.getString("security.07")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
         try {
-            synchronized (engine) {
-                engine.getInstance(type, provider, null);
-                return new CertificateFactory((CertificateFactorySpi) engine.spi,
-                        provider, type);
-            }
+            Object spi = ENGINE.getInstance(type, provider, null);
+            return new CertificateFactory((CertificateFactorySpi) spi, provider, type);
         } catch (NoSuchAlgorithmException e) {
-            throw new CertificateException(e.getMessage());
+            throw new CertificateException(e);
         }
     }
 
     /**
      * Returns the {@code Provider} of the certificate factory represented by
      * the certificate.
-     * 
+     *
      * @return the provider of this certificate factory.
      */
     public final Provider getProvider() {
@@ -182,7 +172,7 @@ public class CertificateFactory {
 
     /**
      * Returns the Certificate type.
-     * 
+     *
      * @return type of certificate being used.
      */
     public final String getType() {
@@ -192,7 +182,7 @@ public class CertificateFactory {
     /**
      * Generates and initializes a {@code Certificate} from the provided input
      * stream.
-     * 
+     *
      * @param inStream
      *            the stream from where data is read to create the {@code
      *            Certificate}.
@@ -208,7 +198,7 @@ public class CertificateFactory {
     /**
      * Returns an {@code Iterator} over the supported {@code CertPath} encodings
      * (as Strings). The first element is the default encoding scheme to apply.
-     * 
+     *
      * @return an iterator over supported {@link CertPath} encodings (as
      *         Strings).
      */
@@ -219,26 +209,25 @@ public class CertificateFactory {
     /**
      * Generates a {@code CertPath} (a certificate chain) from the provided
      * {@code InputStream}. The default encoding scheme is applied.
-     * 
+     *
      * @param inStream
      *            {@code InputStream} with encoded data.
      * @return a {@code CertPath} initialized from the provided data.
      * @throws CertificateException
      *             if parsing problems are detected.
      */
-    public final CertPath generateCertPath(InputStream inStream)
-            throws CertificateException {
-        Iterator it = getCertPathEncodings();
+    public final CertPath generateCertPath(InputStream inStream) throws CertificateException {
+        Iterator<String> it = getCertPathEncodings();
         if (!it.hasNext()) {
-            throw new CertificateException(Messages.getString("security.74")); //$NON-NLS-1$
+            throw new CertificateException("There are no CertPath encodings");
         }
-        return spiImpl.engineGenerateCertPath(inStream, (String) it.next());
+        return spiImpl.engineGenerateCertPath(inStream, it.next());
     }
 
     /**
      * Generates a {@code CertPath} (a certificate chain) from the provided
      * {@code InputStream} and the specified encoding scheme.
-     * 
+     *
      * @param inStream
      *            {@code InputStream} containing certificate path data in
      *            specified encoding.
@@ -258,7 +247,7 @@ public class CertificateFactory {
     /**
      * Generates a {@code CertPath} from the provided list of certificates. The
      * encoding is the default encoding.
-     * 
+     *
      * @param certificates
      *            the list containing certificates in a format supported by the
      *            {@code CertificateFactory}.
@@ -276,7 +265,7 @@ public class CertificateFactory {
     /**
      * Generates and initializes a collection of (unrelated) certificates from
      * the provided input stream.
-     * 
+     *
      * @param inStream
      *            the stream from which the data is read to create the
      *            collection.
@@ -292,7 +281,7 @@ public class CertificateFactory {
     /**
      * Generates and initializes a <i>Certificate Revocation List</i> (CRL) from
      * the provided input stream.
-     * 
+     *
      * @param inStream
      *            the stream from where data is read to create the CRL.
      * @return an initialized CRL.
@@ -306,7 +295,7 @@ public class CertificateFactory {
     /**
      * Generates and initializes a collection of <i>Certificate Revocation
      * List</i> (CRL) from the provided input stream.
-     * 
+     *
      * @param inStream
      *            the stream from which the data is read to create the CRLs.
      * @return an initialized collection of CRLs.

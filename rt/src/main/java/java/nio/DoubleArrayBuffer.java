@@ -27,7 +27,7 @@ package java.nio;
  * <p>
  * All methods are marked final for runtime performance.
  * </p>
- * 
+ *
  */
 abstract class DoubleArrayBuffer extends DoubleBuffer {
 
@@ -59,23 +59,17 @@ abstract class DoubleArrayBuffer extends DoubleBuffer {
 
     @Override
     public final double get(int index) {
-        if (index < 0 || index >= limit) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkIndex(index);
         return backingArray[offset + index];
     }
 
     @Override
-    public final DoubleBuffer get(double[] dest, int off, int len) {
-        int length = dest.length;
-        if (off < 0 || len < 0 || (long) off + (long) len > length) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (len > remaining()) {
+    public final DoubleBuffer get(double[] dst, int dstOffset, int doubleCount) {
+        if (doubleCount > remaining()) {
             throw new BufferUnderflowException();
         }
-        System.arraycopy(backingArray, offset + position, dest, off, len);
-        position += len;
+        System.arraycopy(backingArray, offset + position, dst, dstOffset, doubleCount);
+        position += doubleCount;
         return this;
     }
 

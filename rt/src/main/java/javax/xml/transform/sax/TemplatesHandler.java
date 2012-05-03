@@ -19,8 +19,7 @@
 
 package javax.xml.transform.sax;
 
-import javax.xml.transform.*;
-
+import javax.xml.transform.Templates;
 import org.xml.sax.ContentHandler;
 
 /**

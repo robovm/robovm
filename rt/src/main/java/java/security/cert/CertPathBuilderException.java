@@ -29,7 +29,7 @@ public class CertPathBuilderException extends GeneralSecurityException {
     /**
      * Creates a new {@code CertPathBuilderException} with the specified message
      * and cause.
-     * 
+     *
      * @param msg
      *            the detail message for the exception
      * @param cause
@@ -41,7 +41,7 @@ public class CertPathBuilderException extends GeneralSecurityException {
 
     /**
      * Creates a new {@code CertPathBuilderException} with the specified cause.
-     * 
+     *
      * @param cause
      *            why the building of the certification path failed.
      */
@@ -52,7 +52,7 @@ public class CertPathBuilderException extends GeneralSecurityException {
     /**
      * Creates a new {@code CertPathBuilderException} with the specified
      * message.
-     * 
+     *
      * @param msg
      *            the detail message for the exception.
      */

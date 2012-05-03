@@ -15,9 +15,6 @@
  *  limitations under the License.
  */
 
-/**
- * @author Nikolay A. Kuznetsov
- */
 package java.util.regex;
 
 /**
@@ -29,8 +26,6 @@ package java.util.regex;
  *
  * @see Matcher
  * @see Matcher#toMatchResult()
- *
- * @author Nikolay A. Kuznetsov
  */
 public interface MatchResult {
 

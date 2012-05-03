@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.math.BigInteger;
 import org.apache.harmony.security.asn1.ASN1Boolean;
 import org.apache.harmony.security.asn1.ASN1Integer;
-import org.apache.harmony.security.asn1.ASN1Type;
 import org.apache.harmony.security.asn1.ASN1Sequence;
+import org.apache.harmony.security.asn1.ASN1Type;
 import org.apache.harmony.security.asn1.BerInputStream;
 
 /**
@@ -34,29 +34,17 @@ import org.apache.harmony.security.asn1.BerInputStream;
  *   id-ce-basicConstraints OBJECT IDENTIFIER ::=  { id-ce 19 }
  *
  *   BasicConstraints ::= SEQUENCE {
- *        cA                      BOOLEAN DEFAULT FALSE,
+ *        ca                      BOOLEAN DEFAULT FALSE,
  *        pathLenConstraint       INTEGER (0..MAX) OPTIONAL
  *   }
  * </pre>
  * (as specified in RFC 3280)
  */
-public class BasicConstraints extends ExtensionValue {
-
-    // is CA
-    private boolean cA = false;
-    // path len constraint
+public final class BasicConstraints extends ExtensionValue {
+    /** is CA */
+    private boolean ca = false;
+    /** path len constraint */
     private int pathLenConstraint = Integer.MAX_VALUE;
-
-    // Constructor for creating the extension without
-    // encoding provided
-    /**
-     * Creates the extension object on the base of the values of
-     * fields of the structure..
-     */
-    public BasicConstraints(boolean cA, int pathLenConstraint) {
-        this.cA = cA;
-        this.pathLenConstraint = pathLenConstraint;
-    }
 
     /**
      * Creates the extension object on the base of its encoded form.
@@ -64,14 +52,10 @@ public class BasicConstraints extends ExtensionValue {
     public BasicConstraints(byte[] encoding) throws IOException {
         super(encoding);
         Object[] values = (Object[]) ASN1.decode(encoding);
-        cA = ((Boolean) values[0]).booleanValue();
+        ca = (Boolean) values[0];
         if (values[1] != null) {
             pathLenConstraint = new BigInteger((byte[]) values[1]).intValue();
         }
-    }
-
-    public boolean getCA() {
-        return cA;
     }
 
     public int getPathLenConstraint() {
@@ -83,23 +67,17 @@ public class BasicConstraints extends ExtensionValue {
      */
     public byte[] getEncoded() {
         if (encoding == null) {
-            encoding = ASN1.encode(
-                    new Object[] {Boolean.valueOf(cA),
-                        BigInteger.valueOf(pathLenConstraint)});
+            encoding = ASN1.encode(new Object[]{ca, BigInteger.valueOf(pathLenConstraint) });
         }
         return encoding;
     }
 
-    /**
-     * Places the string representation of extension value
-     * into the StringBuffer object.
-     */
-    public void dumpValue(StringBuffer buffer, String prefix) {
-        buffer.append(prefix).append("BasicConstraints [\n").append(prefix) //$NON-NLS-1$
-            .append("  CA: ").append(cA) //$NON-NLS-1$
-            .append("\n  ").append(prefix).append("pathLenConstraint: ") //$NON-NLS-1$ //$NON-NLS-2$
+    public void dumpValue(StringBuilder sb, String prefix) {
+        sb.append(prefix).append("BasicConstraints [\n").append(prefix)
+            .append("  CA: ").append(ca)
+            .append("\n  ").append(prefix).append("pathLenConstraint: ")
             .append(pathLenConstraint).append('\n').append(prefix)
-            .append("]\n"); //$NON-NLS-1$
+            .append("]\n");
     }
 
     /**
@@ -112,16 +90,14 @@ public class BasicConstraints extends ExtensionValue {
             setOptional(1);
         }
 
-        public Object getDecodedObject(BerInputStream in)
-                throws IOException {
+        public Object getDecodedObject(BerInputStream in) throws IOException {
             return in.content;
         }
 
         protected void getValues(Object object, Object[] values) {
-            Object[] vals = (Object[]) object;
-            values[0] = (Boolean) vals[0];
-            values[1] = ((BigInteger) vals[1]).toByteArray();
+            Object[] array = (Object[]) object;
+            values[0] = array[0];
+            values[1] = ((BigInteger) array[1]).toByteArray();
         }
-
     };
 }

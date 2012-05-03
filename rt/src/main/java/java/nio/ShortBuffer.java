@@ -17,6 +17,8 @@
 
 package java.nio;
 
+import java.util.Arrays;
+
 /**
  * A buffer of shorts.
  * <p>
@@ -35,7 +37,7 @@ public abstract class ShortBuffer extends Buffer implements
 
     /**
      * Creates a short buffer based on a newly allocated short array.
-     * 
+     *
      * @param capacity
      *            the capacity of the new buffer.
      * @return the created short buffer.
@@ -46,7 +48,7 @@ public abstract class ShortBuffer extends Buffer implements
         if (capacity < 0) {
             throw new IllegalArgumentException();
         }
-        return BufferFactory.newShortBuffer(capacity);
+        return new ReadWriteShortArrayBuffer(capacity);
     }
 
     /**
@@ -67,71 +69,36 @@ public abstract class ShortBuffer extends Buffer implements
      * Creates a new short buffer by wrapping the given short array.
      * <p>
      * The new buffer's position will be {@code start}, limit will be
-     * {@code start + len}, capacity will be the length of the array.
+     * {@code start + shortCount}, capacity will be the length of the array.
      *
      * @param array
      *            the short array which the new buffer will be based on.
      * @param start
      *            the start index, must not be negative and not greater than
      *            {@code array.length}.
-     * @param len
+     * @param shortCount
      *            the length, must not be negative and not greater than
      *            {@code array.length - start}.
      * @return the created short buffer.
      * @exception IndexOutOfBoundsException
-     *                if either {@code start} or {@code len} is invalid.
+     *                if either {@code start} or {@code shortCount} is invalid.
      */
-    public static ShortBuffer wrap(short[] array, int start, int len) {
-        if (array == null) {
-            throw new NullPointerException();
-        }
-        if (start < 0 || len < 0 || (long) start + (long) len > array.length) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        ShortBuffer buf = BufferFactory.newShortBuffer(array);
+    public static ShortBuffer wrap(short[] array, int start, int shortCount) {
+        Arrays.checkOffsetAndCount(array.length, start, shortCount);
+        ShortBuffer buf = new ReadWriteShortArrayBuffer(array);
         buf.position = start;
-        buf.limit = start + len;
-
+        buf.limit = start + shortCount;
         return buf;
     }
 
-    /**
-     * Constructs a {@code ShortBuffer} with given capacity.
-     *
-     * @param capacity
-     *            The capacity of the buffer
-     */
     ShortBuffer(int capacity) {
-        super(capacity);
+        super(1, capacity, null);
     }
 
-    /**
-     * Returns the short array which this buffer is based on, if there is one.
-     * 
-     * @return the short array which this buffer is based on.
-     * @exception ReadOnlyBufferException
-     *                if this buffer is based on an array, but it is read-only.
-     * @exception UnsupportedOperationException
-     *                if this buffer is not based on an array.
-     */
     public final short[] array() {
         return protectedArray();
     }
 
-    /**
-     * Returns the offset of the short array which this buffer is based on, if
-     * there is one.
-     * <p>
-     * The offset is the index of the array corresponding to the zero position
-     * of the buffer.
-     *
-     * @return the offset of the short array which this buffer is based on.
-     * @exception ReadOnlyBufferException
-     *                if this buffer is based on an array, but it is read-only.
-     * @exception UnsupportedOperationException
-     *                if this buffer is not based on an array.
-     */
     public final int arrayOffset() {
         return protectedArrayOffset();
     }
@@ -167,7 +134,7 @@ public abstract class ShortBuffer extends Buffer implements
     /**
      * Compare the remaining shorts of this buffer to another short buffer's
      * remaining shorts.
-     * 
+     *
      * @param otherBuffer
      *            another short buffer.
      * @return a negative value if this is less than {@code otherBuffer}; 0 if
@@ -246,7 +213,7 @@ public abstract class ShortBuffer extends Buffer implements
     /**
      * Returns the short at the current position and increases the position by
      * 1.
-     * 
+     *
      * @return the short at the current position.
      * @exception BufferUnderflowException
      *                if the position is equal or greater than limit.
@@ -258,54 +225,51 @@ public abstract class ShortBuffer extends Buffer implements
      * increases the position by the number of shorts read.
      * <p>
      * Calling this method has the same effect as
-     * {@code get(dest, 0, dest.length)}.
+     * {@code get(dst, 0, dst.length)}.
      *
-     * @param dest
+     * @param dst
      *            the destination short array.
      * @return this buffer.
      * @exception BufferUnderflowException
-     *                if {@code dest.length} is greater than {@code remaining()}.
+     *                if {@code dst.length} is greater than {@code remaining()}.
      */
-    public ShortBuffer get(short[] dest) {
-        return get(dest, 0, dest.length);
+    public ShortBuffer get(short[] dst) {
+        return get(dst, 0, dst.length);
     }
 
     /**
      * Reads shorts from the current position into the specified short array,
      * starting from the specified offset, and increases the position by the
      * number of shorts read.
-     * 
-     * @param dest
+     *
+     * @param dst
      *            the target short array.
-     * @param off
+     * @param dstOffset
      *            the offset of the short array, must not be negative and not
-     *            greater than {@code dest.length}.
-     * @param len
+     *            greater than {@code dst.length}.
+     * @param shortCount
      *            the number of shorts to read, must be no less than zero and
-     *            not greater than {@code dest.length - off}.
+     *            not greater than {@code dst.length - dstOffset}.
      * @return this buffer.
      * @exception IndexOutOfBoundsException
-     *                if either {@code off} or {@code len} is invalid.
+     *                if either {@code dstOffset} or {@code shortCount} is invalid.
      * @exception BufferUnderflowException
-     *                if {@code len} is greater than {@code remaining()}.
+     *                if {@code shortCount} is greater than {@code remaining()}.
      */
-    public ShortBuffer get(short[] dest, int off, int len) {
-        int length = dest.length;
-        if (off < 0 || len < 0 || (long) off + (long) len > length) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (len > remaining()) {
+    public ShortBuffer get(short[] dst, int dstOffset, int shortCount) {
+        Arrays.checkOffsetAndCount(dst.length, dstOffset, shortCount);
+        if (shortCount > remaining()) {
             throw new BufferUnderflowException();
         }
-        for (int i = off; i < off + len; i++) {
-            dest[i] = get();
+        for (int i = dstOffset; i < dstOffset + shortCount; ++i) {
+            dst[i] = get();
         }
         return this;
     }
 
     /**
      * Returns the short at the specified index; the position is not changed.
-     * 
+     *
      * @param index
      *            the index, must not be negative and less than limit.
      * @return a short at the specified index.
@@ -314,13 +278,6 @@ public abstract class ShortBuffer extends Buffer implements
      */
     public abstract short get(int index);
 
-    /**
-     * Indicates whether this buffer is based on a short array and is
-     * read/write.
-     *
-     * @return {@code true} if this buffer is based on a short array and
-     *         provides read/write access, {@code false} otherwise.
-     */
     public final boolean hasArray() {
         return protectedHasArray();
     }
@@ -389,7 +346,7 @@ public abstract class ShortBuffer extends Buffer implements
     /**
      * Writes the given short to the current position and increases the position
      * by 1.
-     * 
+     *
      * @param s
      *            the short to write.
      * @return this buffer.
@@ -423,33 +380,29 @@ public abstract class ShortBuffer extends Buffer implements
      * Writes shorts from the given short array, starting from the specified
      * offset, to the current position and increases the position by the number
      * of shorts written.
-     * 
+     *
      * @param src
      *            the source short array.
-     * @param off
+     * @param srcOffset
      *            the offset of short array, must not be negative and not
      *            greater than {@code src.length}.
-     * @param len
+     * @param shortCount
      *            the number of shorts to write, must be no less than zero and
-     *            not greater than {@code src.length - off}.
+     *            not greater than {@code src.length - srcOffset}.
      * @return this buffer.
      * @exception BufferOverflowException
-     *                if {@code remaining()} is less than {@code len}.
+     *                if {@code remaining()} is less than {@code shortCount}.
      * @exception IndexOutOfBoundsException
-     *                if either {@code off} or {@code len} is invalid.
+     *                if either {@code srcOffset} or {@code shortCount} is invalid.
      * @exception ReadOnlyBufferException
      *                if no changes may be made to the contents of this buffer.
      */
-    public ShortBuffer put(short[] src, int off, int len) {
-        int length = src.length;
-        if (off < 0 || len < 0 || (long) off + (long) len > length) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        if (len > remaining()) {
+    public ShortBuffer put(short[] src, int srcOffset, int shortCount) {
+        Arrays.checkOffsetAndCount(src.length, srcOffset, shortCount);
+        if (shortCount > remaining()) {
             throw new BufferOverflowException();
         }
-        for (int i = off; i < off + len; i++) {
+        for (int i = srcOffset; i < srcOffset + shortCount; ++i) {
             put(src[i]);
         }
         return this;
@@ -459,7 +412,7 @@ public abstract class ShortBuffer extends Buffer implements
      * Writes all the remaining shorts of the {@code src} short buffer to this
      * buffer's current position, and increases both buffers' position by the
      * number of shorts copied.
-     * 
+     *
      * @param src
      *            the source short buffer.
      * @return this buffer.
@@ -487,7 +440,7 @@ public abstract class ShortBuffer extends Buffer implements
     /**
      * Writes a short to the specified index of this buffer; the position is not
      * changed.
-     * 
+     *
      * @param index
      *            the index, must not be negative and less than the limit.
      * @param s
@@ -512,26 +465,8 @@ public abstract class ShortBuffer extends Buffer implements
      * The new buffer shares its content with this buffer, which means either
      * buffer's change of content will be visible to the other. The two buffer's
      * position, limit and mark are independent.
-     * 
+     *
      * @return a sliced buffer that shares its content with this buffer.
      */
     public abstract ShortBuffer slice();
-
-    /**
-     * Returns a string representing the state of this short buffer.
-     * 
-     * @return a string representing the state of this short buffer.
-     */
-    @Override
-    public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append(getClass().getName());
-        buf.append(", status: capacity="); //$NON-NLS-1$
-        buf.append(capacity());
-        buf.append(" position="); //$NON-NLS-1$
-        buf.append(position());
-        buf.append(" limit="); //$NON-NLS-1$
-        buf.append(limit());
-        return buf.toString();
-    }
 }

@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,13 +34,14 @@ public abstract class Enum<E extends Enum<E>> implements Serializable, Comparabl
     private static final BasicLruCache<Class<? extends Enum>, Object[]> sharedConstantsCache
             = new BasicLruCache<Class<? extends Enum>, Object[]>(64) {
         @Override protected Object[] create(Class<? extends Enum> enumType) {
-            Method method = (Method) Class.getDeclaredConstructorOrMethod(
-                    enumType, "values", EmptyArray.CLASS);
             try {
+                Method method = enumType.getDeclaredMethod("values", EmptyArray.CLASS);
                 return (Object[]) method.invoke((Object[]) null);
             } catch (IllegalAccessException impossible) {
                 throw new AssertionError();
             } catch (InvocationTargetException impossible) {
+                throw new AssertionError();
+            } catch (java.lang.NoSuchMethodException impossible) {
                 throw new AssertionError();
             }
         }
@@ -52,7 +53,7 @@ public abstract class Enum<E extends Enum<E>> implements Serializable, Comparabl
 
     /**
      * Constructor for constants of enum subtypes.
-     * 
+     *
      * @param name
      *            the enum constant's declared name.
      * @param ordinal
@@ -67,7 +68,7 @@ public abstract class Enum<E extends Enum<E>> implements Serializable, Comparabl
     /**
      * Returns the name of this enum constant. The name is the field as it
      * appears in the {@code enum} declaration.
-     * 
+     *
      * @return the name of this enum constant.
      * @see #toString()
      */
@@ -78,7 +79,7 @@ public abstract class Enum<E extends Enum<E>> implements Serializable, Comparabl
     /**
      * Returns the position of the enum constant in the declaration. The first
      * constant has an ordinal value of zero.
-     * 
+     *
      * @return the ordinal value of this enum constant.
      */
     public final int ordinal() {
@@ -88,7 +89,7 @@ public abstract class Enum<E extends Enum<E>> implements Serializable, Comparabl
     /**
      * Returns a string containing a concise, human-readable description of this
      * object. In this case, the enum constant's name is returned.
-     * 
+     *
      * @return a printable representation of this object.
      */
     @Override
@@ -100,7 +101,7 @@ public abstract class Enum<E extends Enum<E>> implements Serializable, Comparabl
      * Compares this object with the specified object and indicates if they are
      * equal. In order to be equal, {@code object} must be identical to this
      * enum constant.
-     * 
+     *
      * @param other
      *            the object to compare this enum constant with.
      * @return {@code true} if the specified object is equal to this
@@ -119,7 +120,7 @@ public abstract class Enum<E extends Enum<E>> implements Serializable, Comparabl
     /**
      * {@code Enum} objects are singletons, they may not be cloned. This method
      * always throws a {@code CloneNotSupportedException}.
-     * 
+     *
      * @return does not return.
      * @throws CloneNotSupportedException
      *             is always thrown.
@@ -133,7 +134,7 @@ public abstract class Enum<E extends Enum<E>> implements Serializable, Comparabl
      * Compares this object to the specified enum object to determine their
      * relative order. This method compares the object's ordinal values, that
      * is, their position in the enum declaration.
-     * 
+     *
      * @param o
      *            the enum object to compare this object to.
      * @return a negative value if the ordinal value of this enum constant is
@@ -149,7 +150,7 @@ public abstract class Enum<E extends Enum<E>> implements Serializable, Comparabl
 
     /**
      * Returns the enum constant's declaring class.
-     * 
+     *
      * @return the class object representing the constant's enum type.
      */
     @SuppressWarnings("unchecked")
@@ -164,7 +165,7 @@ public abstract class Enum<E extends Enum<E>> implements Serializable, Comparabl
 
     /**
      * Returns the constant with the specified name of the specified enum type.
-     * 
+     *
      * @param enumType
      *            the class of the enumerated type to search for the constant
      *            value.
@@ -201,11 +202,11 @@ public abstract class Enum<E extends Enum<E>> implements Serializable, Comparabl
     @SuppressWarnings("unchecked") // the cache always returns the type matching enumType
     public static <T extends Enum<T>> T[] getSharedConstants(Class<T> enumType) {
         return (T[]) sharedConstantsCache.get(enumType);
-                        }
+    }
 
     /**
      * Enum types may not have finalizers.
-     * 
+     *
      * @since 1.6
      */
     @Override

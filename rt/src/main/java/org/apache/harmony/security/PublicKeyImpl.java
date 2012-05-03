@@ -25,7 +25,7 @@ import java.security.PublicKey;
  * PublicKeyImpl
  */
 public class PublicKeyImpl implements PublicKey {
-    
+
     /**
      * @serial
      */
@@ -37,7 +37,7 @@ public class PublicKeyImpl implements PublicKey {
     private String algorithm;
 
 
-    public PublicKeyImpl(String algorithm) { 
+    public PublicKeyImpl(String algorithm) {
         this.algorithm = algorithm;
     }
 
@@ -48,7 +48,7 @@ public class PublicKeyImpl implements PublicKey {
 
 
     public String getFormat() {
-        return "X.509"; //$NON-NLS-1$
+        return "X.509";
     }
 
 

@@ -39,21 +39,21 @@ import javax.xml.namespace.QName;
  *
  * @author  <a href="mailto:Norman.Walsh@Sun.com">Norman Walsh</a>
  * @author  <a href="mailto:Jeff.Suttor@Sun.com">Jeff Suttor</a>
- * @version $Revision: 446598 $, $Date: 2006-09-15 08:55:40 -0400 (Fri, 15 Sep 2006) $
+ * @version $Revision: 446598 $, $Date: 2006-09-15 05:55:40 -0700 (Fri, 15 Sep 2006) $
  * @see <a href="http://www.w3.org/TR/xpath#corelib">XML Path Language (XPath) Version 1.0, Core Function Library</a>
  * @since 1.5
  */
 public interface XPathFunctionResolver {
-  /** 
+  /**
    * <p>Find a function in the set of available functions.</p>
-   * 
+   *
    * <p>If <code>functionName</code> or <code>arity</code> is <code>null</code>, then a <code>NullPointerException</code> is thrown.</p>
    *
    * @param functionName The function name.
    * @param arity The number of arguments that the returned function must accept.
-   * 
+   *
    * @return The function or <code>null</code> if no function named <code>functionName</code> with <code>arity</code> arguments exists.
-   * 
+   *
    * @throws NullPointerException If <code>functionName</code> or <code>arity</code> is <code>null</code>.
    */
   public XPathFunction resolveFunction(QName functionName, int arity);

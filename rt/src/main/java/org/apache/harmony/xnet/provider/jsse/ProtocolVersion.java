@@ -19,7 +19,7 @@ package org.apache.harmony.xnet.provider.jsse;
 import java.util.Hashtable;
 
 /**
- * 
+ *
  * Represents Protocol Version
  */
 public class ProtocolVersion {
@@ -32,9 +32,9 @@ public class ProtocolVersion {
     private static Hashtable<String, ProtocolVersion> protocolsByName = new Hashtable<String, ProtocolVersion>(4);
 
     /**
-     * 
+     *
      * Returns true if protocol version is supported
-     * 
+     *
      * @param version
      */
     public static boolean isSupported(byte[] version) {
@@ -46,7 +46,7 @@ public class ProtocolVersion {
 
     /**
      * Returns ProtocolVersion
-     * 
+     *
      * @param version
      * @return
      */
@@ -64,7 +64,7 @@ public class ProtocolVersion {
 
     /**
      * Returns true if provider supports protocol version
-     * 
+     *
      * @param name
      * @return
      */
@@ -74,7 +74,7 @@ public class ProtocolVersion {
 
     /**
      * Returns ProtocolVersion
-     * 
+     *
      * @param name
      * @return
      */
@@ -84,7 +84,7 @@ public class ProtocolVersion {
 
     /**
      * Highest protocol version supported by provider implementation
-     * 
+     *
      * @param protocols
      * @return
      */
@@ -141,26 +141,5 @@ public class ProtocolVersion {
     private ProtocolVersion(String name, byte[] version) {
         this.name = name;
         this.version = version;
-    }
-
-    /**
-     * Compares this ProtocolVersion to the specified object.
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof ProtocolVersion
-                && this.version[0] == ((ProtocolVersion) o).version[0]
-                && this.version[1] == ((ProtocolVersion) o).version[1]) {
-            return true;
-        }
-        return false;
-    }
-    
-    /**
-     * Returns the hash of the receiver.
-     */
-    @Override
-    public int hashCode() {
-        return version[0] + version[1];
     }
 }

@@ -22,13 +22,10 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
-import java.security.spec.X509EncodedKeySpec;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.InvalidKeySpecException;
-
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.harmony.security.internal.nls.Messages;
 
 /**
  * {@code KeyRep} is a standardized representation for serialized {@link Key}
@@ -64,23 +61,22 @@ public class KeyRep implements Serializable {
      *             if {@code type, algorithm, format or encoded} is {@code null}
      *             .
      */
-    public KeyRep(Type type,
-            String algorithm, String format, byte[] encoded) {
+    public KeyRep(Type type, String algorithm, String format, byte[] encoded) {
         this.type = type;
         this.algorithm = algorithm;
         this.format = format;
         this.encoded = encoded;
         if(this.type == null) {
-            throw new NullPointerException(Messages.getString("security.07")); //$NON-NLS-1$
+            throw new NullPointerException("type == null");
         }
         if(this.algorithm == null) {
-            throw new NullPointerException(Messages.getString("security.08")); //$NON-NLS-1$
+            throw new NullPointerException("algorithm == null");
         }
         if(this.format == null) {
-            throw new NullPointerException(Messages.getString("security.09")); //$NON-NLS-1$
+            throw new NullPointerException("format == null");
         }
         if(this.encoded == null) {
-            throw new NullPointerException(Messages.getString("security.0A")); //$NON-NLS-1$
+            throw new NullPointerException("encoded == null");
         }
     }
 
@@ -108,50 +104,42 @@ public class KeyRep implements Serializable {
     protected Object readResolve() throws ObjectStreamException {
         switch (type) {
         case SECRET:
-            if ("RAW".equals(format)) { //$NON-NLS-1$
+            if ("RAW".equals(format)) {
                 try {
                     return new SecretKeySpec(encoded, algorithm);
                 } catch (IllegalArgumentException e) {
-                    throw new NotSerializableException(
-                            Messages.getString("security.0B", e)); //$NON-NLS-1$
+                    throw new NotSerializableException("Could not create SecretKeySpec: " + e);
                 }
             }
-            throw new NotSerializableException(
-                Messages.getString("security.0C", type, format)); //$NON-NLS-1$
+            throw new NotSerializableException("unrecognized type/format combination: " + type + "/" + format);
         case PUBLIC:
-            if ("X.509".equals(format)) { //$NON-NLS-1$
+            if ("X.509".equals(format)) {
                 try {
                     KeyFactory kf = KeyFactory.getInstance(algorithm);
                     return kf.generatePublic(new X509EncodedKeySpec(encoded));
                 } catch (NoSuchAlgorithmException e) {
-                    throw new NotSerializableException(
-                            Messages.getString("security.0D", e)); //$NON-NLS-1$
+                    throw new NotSerializableException("Could not resolve key: " + e);
                 }
                 catch (InvalidKeySpecException e) {
-                    throw new NotSerializableException(
-                            Messages.getString("security.0D", e)); //$NON-NLS-1$
+                    throw new NotSerializableException("Could not resolve key: " + e);
                 }
             }
-            throw new NotSerializableException(
-                Messages.getString("security.0C", type, format)); //$NON-NLS-1$
+            throw new NotSerializableException("unrecognized type/format combination: " + type + "/" + format);
         case PRIVATE:
-            if ("PKCS#8".equals(format)) { //$NON-NLS-1$
+            if ("PKCS#8".equals(format)) {
                 try {
                     KeyFactory kf = KeyFactory.getInstance(algorithm);
                     return kf.generatePrivate(new PKCS8EncodedKeySpec(encoded));
                 } catch (NoSuchAlgorithmException e) {
-                    throw new NotSerializableException(
-                            Messages.getString("security.0D", e)); //$NON-NLS-1$
+                    throw new NotSerializableException("Could not resolve key: " + e);
                 }
                 catch (InvalidKeySpecException e) {
-                    throw new NotSerializableException(
-                            Messages.getString("security.0D", e)); //$NON-NLS-1$
+                    throw new NotSerializableException("Could not resolve key: " + e);
                 }
             }
-            throw new NotSerializableException(
-                Messages.getString("security.0C", type, format)); //$NON-NLS-1$
+            throw new NotSerializableException("unrecognized type/format combination: " + type + "/" + format);
         }
-        throw new NotSerializableException(Messages.getString("security.0E", type)); //$NON-NLS-1$
+        throw new NotSerializableException("unrecognized key type: " + type);
     }
 
     // Makes defensive copy of key encoding
@@ -160,14 +148,13 @@ public class KeyRep implements Serializable {
         is.defaultReadObject();
         byte[] new_encoded = new byte[encoded.length];
         System.arraycopy(encoded, 0, new_encoded, 0, new_encoded.length);
-        encoded = new_encoded;    
+        encoded = new_encoded;
     }
 
     /**
      * {@code Type} enumerates the supported key types.
      */
     public static enum Type {
-
         /**
          * Type for secret keys.
          */

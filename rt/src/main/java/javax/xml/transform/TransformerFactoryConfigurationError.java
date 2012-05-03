@@ -38,9 +38,6 @@ public class TransformerFactoryConfigurationError extends Error {
      * detail message.
      */
     public TransformerFactoryConfigurationError() {
-
-        super();
-
         this.exception = null;
     }
 

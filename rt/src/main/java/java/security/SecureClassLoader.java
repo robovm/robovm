@@ -33,32 +33,16 @@ public class SecureClassLoader extends ClassLoader {
     /**
      * Constructs a new instance of {@code SecureClassLoader}. The default
      * parent {@code ClassLoader} is used.
-     * <p>
-     * If a {@code SecurityManager} is installed, code calling this constructor
-     * needs the {@code SecurityPermission} {@code checkCreateClassLoader} to be
-     * granted, otherwise a {@code SecurityException} will be thrown.
-     *
-     * @throws SecurityException
-     *             if a {@code SecurityManager} is installed and the caller does
-     *             not have permission to invoke this constructor.
      */
     protected SecureClassLoader() {
-        super();
     }
 
     /**
      * Constructs a new instance of {@code SecureClassLoader} with the specified
      * parent {@code ClassLoader}.
-     * <p>
-     * If a {@code SecurityManager} is installed, code calling this constructor
-     * needs the {@code SecurityPermission} {@code checkCreateClassLoader} to be
-     * granted, otherwise a {@code SecurityException} will be thrown.
      *
      * @param parent
      *            the parent {@code ClassLoader}.
-     * @throws SecurityException
-     *             if a {@code SecurityManager} is installed and the caller does
-     *             not have permission to invoke this constructor.
      */
     protected SecureClassLoader(ClassLoader parent) {
         super(parent);
@@ -136,7 +120,7 @@ public class SecureClassLoader extends ClassLoader {
                 : defineClass(name, data, 0, data.length, getPD(cs));
     }
 
-    // Constructs and caches ProtectionDomain for the given CodeSource 
+    // Constructs and caches ProtectionDomain for the given CodeSource
     // object.<br>
     // It calls {@link getPermissions()} to get a set of permissions.
     //
@@ -146,7 +130,7 @@ public class SecureClassLoader extends ClassLoader {
         if (cs == null) {
             return null;
         }
-        // need to cache PDs, otherwise every class from a given CodeSource 
+        // need to cache PDs, otherwise every class from a given CodeSource
         // will have it's own ProtectionDomain, which does not look right.
         ProtectionDomain pd;
         synchronized (pds) {

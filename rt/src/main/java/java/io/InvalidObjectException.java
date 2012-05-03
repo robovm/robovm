@@ -19,7 +19,7 @@ package java.io;
 
 /**
  * Signals that, during deserialization, the validation of an object has failed.
- * 
+ *
  * @see ObjectInputStream#registerValidation(ObjectInputValidation, int)
  * @see ObjectInputValidation#validateObject()
  */
@@ -30,7 +30,7 @@ public class InvalidObjectException extends ObjectStreamException {
     /**
      * Constructs an {@code InvalidObjectException} with its stack trace and
      * detail message filled in.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

@@ -19,15 +19,15 @@ package java.io;
 
 /**
  * Defines an interface for classes that allow reading serialized objects.
- * 
+ *
  * @see ObjectOutputStream
  * @see ObjectInput
  */
-public interface ObjectOutput extends DataOutput {
+public interface ObjectOutput extends DataOutput, AutoCloseable {
     /**
      * Closes the target stream. Implementations of this method should free any
      * resources used by the stream.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing the target stream.
      */
@@ -36,7 +36,7 @@ public interface ObjectOutput extends DataOutput {
     /**
      * Flushes the target stream. Implementations of this method should ensure
      * that any pending writes are written out to the target stream.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while flushing the target stream.
      */
@@ -45,7 +45,7 @@ public interface ObjectOutput extends DataOutput {
     /**
      * Writes the entire contents of the byte array {@code buffer} to the output
      * stream. Blocks until all bytes are written.
-     * 
+     *
      * @param buffer
      *            the buffer to write.
      * @throws IOException
@@ -57,7 +57,7 @@ public interface ObjectOutput extends DataOutput {
      * Writes {@code count} bytes from the byte array {@code buffer} starting at
      * position {@code offset} to the target stream. Blocks until all bytes are
      * written.
-     * 
+     *
      * @param buffer
      *            the buffer to write.
      * @param offset
@@ -74,7 +74,7 @@ public interface ObjectOutput extends DataOutput {
      * Writes a single byte to the target stream. Only the least significant
      * byte of the integer {@code value} is written to the stream. Blocks until
      * the byte is actually written.
-     * 
+     *
      * @param value
      *            the byte to write.
      * @throws IOException
@@ -84,7 +84,7 @@ public interface ObjectOutput extends DataOutput {
 
     /**
      * Writes the specified object {@code obj} to the target stream.
-     * 
+     *
      * @param obj
      *            the object to write.
      * @throws IOException

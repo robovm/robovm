@@ -47,14 +47,14 @@ public final class Array {
     /**
      * Returns the element of the array at the specified index. This reproduces
      * the effect of {@code array[index]}. If the array component is a primitive
-     * type, the result is automatically wrapped.
+     * type, the result is automatically boxed.
      *
      * @param array
      *            the array
      * @param index
      *            the index
      *
-     * @return the requested element, possibly wrapped
+     * @return the requested element, possibly boxed
      *
      * @throws NullPointerException
      *             if the array is null
@@ -411,7 +411,7 @@ public final class Array {
         if (dimensions.length <= 0 || dimensions.length > 255)
             throw new IllegalArgumentException("Bad number of dimensions");
 
-        if (componentType == Void.TYPE)
+        if (componentType == void.class)
             throw new IllegalArgumentException();
 
         if (componentType == null)
@@ -444,37 +444,37 @@ public final class Array {
      */
     public static Object newInstance(Class<?> componentType, int size)
             throws NegativeArraySizeException {
-        if (!componentType.isPrimitive())
+        if (!componentType.isPrimitive()) {
             return createObjectArray(componentType, size);
-
-        if (componentType == Boolean.TYPE)
+        }
+        if (componentType == boolean.class) {
             return new boolean[size];
-
-        if (componentType == Byte.TYPE)
+        }
+        if (componentType == byte.class) {
             return new byte[size];
-
-        if (componentType == Character.TYPE)
+        }
+        if (componentType == char.class) {
             return new char[size];
-
-        if (componentType == Short.TYPE)
+        }
+        if (componentType == short.class) {
             return new short[size];
-
-        if (componentType == Integer.TYPE)
+        }
+        if (componentType == int.class) {
             return new int[size];
-
-        if (componentType == Long.TYPE)
+        }
+        if (componentType == long.class) {
             return new long[size];
-
-        if (componentType == Float.TYPE)
+        }
+        if (componentType == float.class) {
             return new float[size];
-
-        if (componentType == Double.TYPE)
+        }
+        if (componentType == double.class) {
             return new double[size];
-
-        if (componentType == Void.TYPE)
+        }
+        if (componentType == void.class) {
             throw new IllegalArgumentException();
-
-        throw new RuntimeException(); // should be impossible
+        }
+        throw new AssertionError();
     }
 
     /*
@@ -486,7 +486,7 @@ public final class Array {
     /**
      * Sets the element of the array at the specified index to the value. This
      * reproduces the effect of {@code array[index] = value}. If the array
-     * component is a primitive type, the value is automatically unwrapped.
+     * component is a primitive type, the value is automatically unboxed.
      *
      * @param array
      *            the array

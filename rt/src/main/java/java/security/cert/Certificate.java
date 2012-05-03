@@ -29,8 +29,6 @@ import java.security.PublicKey;
 import java.security.SignatureException;
 import java.util.Arrays;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
  * Abstract class to represent identity certificates. It represents a way to
  * verify the binding of a Principal and its public key. Examples are X.509,
@@ -197,9 +195,8 @@ public abstract class Certificate implements Serializable {
     protected Object writeReplace() throws ObjectStreamException {
         try {
             return new CertificateRep(getType(), getEncoded());
-        } catch (CertificateEncodingException e) {  
-            throw new NotSerializableException (
-                    Messages.getString("security.66", e)); //$NON-NLS-1$
+        } catch (CertificateEncodingException e) {
+            throw new NotSerializableException("Could not create serialization object: " + e);
         }
     }
 
@@ -218,8 +215,8 @@ public abstract class Certificate implements Serializable {
         // Force default serialization to use writeUnshared/readUnshared
         // for the certificate data
         private static final ObjectStreamField[] serialPersistentFields = {
-             new ObjectStreamField("type", String.class), //$NON-NLS-1$
-             new ObjectStreamField("data", byte[].class, true) //$NON-NLS-1$
+             new ObjectStreamField("type", String.class),
+             new ObjectStreamField("data", byte[].class, true)
         };
 
         /**
@@ -249,8 +246,7 @@ public abstract class Certificate implements Serializable {
                 CertificateFactory cf = CertificateFactory.getInstance(type);
                 return cf.generateCertificate(new ByteArrayInputStream(data));
             } catch (Throwable t) {
-                throw new NotSerializableException(
-                        Messages.getString("security.68", t)); //$NON-NLS-1$
+                throw new NotSerializableException("Could not resolve certificate: " + t);
             }
         }
     }

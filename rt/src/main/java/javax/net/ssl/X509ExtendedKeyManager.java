@@ -30,7 +30,6 @@ public abstract class X509ExtendedKeyManager implements X509KeyManager {
      * Creates a new {@code X509ExtendedKeyManager} instance.
      */
     protected X509ExtendedKeyManager() {
-        super();
     }
 
     /**

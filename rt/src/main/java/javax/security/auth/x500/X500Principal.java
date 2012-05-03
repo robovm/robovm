@@ -24,8 +24,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.security.Principal;
 import java.util.Map;
-
-import org.apache.harmony.auth.internal.nls.Messages;
 import org.apache.harmony.security.x501.Name;
 
 /**
@@ -44,19 +42,19 @@ public final class X500Principal implements Serializable, Principal {
      * Defines a constant for the canonical string format of distinguished
      * names.
      */
-    public static final String CANONICAL = "CANONICAL"; //$NON-NLS-1$
+    public static final String CANONICAL = "CANONICAL";
 
     /**
      * Defines a constant for the RFC 1779 string format of distinguished
      * names.
      */
-    public static final String RFC1779 = "RFC1779"; //$NON-NLS-1$
+    public static final String RFC1779 = "RFC1779";
 
     /**
      * Defines a constant for the RFC 2253 string format of distinguished
      * names.
      */
-    public static final String RFC2253 = "RFC2253"; //$NON-NLS-1$
+    public static final String RFC2253 = "RFC2253";
 
     //Distinguished Name
     private transient Name dn;
@@ -72,18 +70,14 @@ public final class X500Principal implements Serializable, Principal {
      *             if the ASN.1 DER-encoded distinguished name is incorrect
      */
     public X500Principal(byte[] name) {
-        super();
         if (name == null) {
-            throw new IllegalArgumentException(Messages.getString("auth.00")); //$NON-NLS-1$
+            throw new IllegalArgumentException("Name cannot be null");
         }
         try {
             // FIXME dn = new Name(name);
             dn = (Name) Name.ASN1.decode(name);
         } catch (IOException e) {
-            IllegalArgumentException iae = new IllegalArgumentException(Messages
-                    .getString("auth.2B")); //$NON-NLS-1$
-            iae.initCause(e);
-            throw iae;
+            throw incorrectInputEncoding(e);
         }
     }
 
@@ -99,19 +93,21 @@ public final class X500Principal implements Serializable, Principal {
      *             if the ASN.1 DER-encoded distinguished name is incorrect
      */
     public X500Principal(InputStream in) {
-        super();
         if (in == null) {
-            throw new NullPointerException(Messages.getString("auth.2C")); //$NON-NLS-1$
+            throw new NullPointerException("in == null");
         }
         try {
             // FIXME dn = new Name(is);
             dn = (Name) Name.ASN1.decode(in);
         } catch (IOException e) {
-            IllegalArgumentException iae = new IllegalArgumentException(Messages
-                    .getString("auth.2B")); //$NON-NLS-1$
-            iae.initCause(e);
-            throw iae;
+            throw incorrectInputEncoding(e);
         }
+    }
+
+    private IllegalArgumentException incorrectInputEncoding(IOException e) {
+        IllegalArgumentException iae = new IllegalArgumentException("Incorrect input encoding");
+        iae.initCause(e);
+        throw iae;
     }
 
     /**
@@ -126,34 +122,39 @@ public final class X500Principal implements Serializable, Principal {
      *             incorrect
      */
     public X500Principal(String name) {
-        super();
         if (name == null) {
-            throw new NullPointerException(Messages.getString("auth.00")); //$NON-NLS-1$
+            throw new NullPointerException("Name cannot be null");
         }
         try {
             dn = new Name(name);
         } catch (IOException e) {
-            IllegalArgumentException iae = new IllegalArgumentException(Messages
-                    .getString("auth.2D")); //$NON-NLS-1$
-            iae.initCause(e);
-            throw iae;
+            throw incorrectInputName(e, name);
         }
     }
-    
+
     public X500Principal(String name, Map<String,String> keywordMap){
-        super();
         if (name == null) {
-            throw new NullPointerException(Messages.getString("auth.00")); //$NON-NLS-1$
+            throw new NullPointerException("Name cannot be null");
         }
-        
         try {
-            dn = new Name(substituteNameFromMap(name,keywordMap));
+            dn = new Name(substituteNameFromMap(name, keywordMap));
         } catch (IOException e) {
-            IllegalArgumentException iae = new IllegalArgumentException(Messages
-                    .getString("auth.2D")); //$NON-NLS-1$
-            iae.initCause(e);
-            throw iae;
+            throw incorrectInputName(e, name);
         }
+    }
+
+    private IllegalArgumentException incorrectInputName(IOException e, String name) {
+        IllegalArgumentException iae = new IllegalArgumentException("Incorrect input name:" + name);
+        iae.initCause(e);
+        throw iae;
+    }
+
+    private transient String canonicalName;
+    private synchronized String getCanonicalName() {
+        if (canonicalName == null) {
+            canonicalName = dn.getName(CANONICAL);
+        }
+        return canonicalName;
     }
 
     @Override
@@ -165,7 +166,7 @@ public final class X500Principal implements Serializable, Principal {
             return false;
         }
         X500Principal principal = (X500Principal) o;
-        return dn.getName(CANONICAL).equals(principal.dn.getName(CANONICAL));
+        return getCanonicalName().equals(principal.getCanonicalName());
     }
 
     /**
@@ -211,14 +212,18 @@ public final class X500Principal implements Serializable, Principal {
      *             mentioned above
      */
     public String getName(String format) {
+        if (CANONICAL.equals(format)) {
+            return getCanonicalName();
+        }
+
         return dn.getName(format);
     }
-    
+
     public String getName(String format, Map<String, String> oidMap) {
         String rfc1779Name = dn.getName(RFC1779);
         String rfc2253Name = dn.getName(RFC2253);
 
-        if (format.toUpperCase().equals("RFC1779")) {
+        if (format.equalsIgnoreCase("RFC1779")) {
             StringBuilder resultName = new StringBuilder(rfc1779Name);
             int fromIndex = resultName.length();
             int equalIndex = -1;
@@ -238,7 +243,7 @@ public final class X500Principal implements Serializable, Principal {
                 fromIndex = commaIndex;
             }
             return resultName.toString();
-        } else if (format.toUpperCase().equals("RFC2253")) {
+        } else if (format.equalsIgnoreCase("RFC2253")) {
             StringBuilder resultName = new StringBuilder(rfc2253Name);
             StringBuilder subsidyName = new StringBuilder(rfc1779Name);
 
@@ -272,13 +277,13 @@ public final class X500Principal implements Serializable, Principal {
             }
             return resultName.toString();
         } else {
-            throw new IllegalArgumentException("invalid format specified");
+            throw new IllegalArgumentException("invalid format specified: " + format);
         }
     }
 
     @Override
     public int hashCode() {
-        return dn.getName(CANONICAL).hashCode();
+        return getCanonicalName().hashCode();
     }
 
     @Override
@@ -291,19 +296,18 @@ public final class X500Principal implements Serializable, Principal {
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-
         dn = (Name) Name.ASN1.decode((byte[]) in.readObject());
     }
-    
-    private String substituteNameFromMap(String name, Map<String,String> keywordMap){
+
+    private String substituteNameFromMap(String name, Map<String, String> keywordMap) {
         StringBuilder sbName = new StringBuilder(name);
         int fromIndex = sbName.length();
-        int equalIndex = -1;
-        while(-1 != (equalIndex = sbName.lastIndexOf("=",fromIndex))){
-            int commaIndex = sbName.lastIndexOf(",",equalIndex);
-            String subName = sbName.substring(commaIndex+1, equalIndex).trim();
-            if(keywordMap.containsKey(subName)){
-                sbName.replace(commaIndex+1, equalIndex, keywordMap.get(subName));
+        int equalIndex;
+        while (-1 != (equalIndex = sbName.lastIndexOf("=", fromIndex))) {
+            int commaIndex = sbName.lastIndexOf(",", equalIndex);
+            String subName = sbName.substring(commaIndex + 1, equalIndex).trim();
+            if (keywordMap.containsKey(subName)) {
+                sbName.replace(commaIndex + 1, equalIndex, keywordMap.get(subName));
             }
             fromIndex = commaIndex;
         }

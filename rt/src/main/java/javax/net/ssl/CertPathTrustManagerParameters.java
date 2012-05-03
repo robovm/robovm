@@ -32,7 +32,7 @@ public class CertPathTrustManagerParameters implements ManagerFactoryParameters 
     /**
      * Creates a new {@code CertPathTrustManagerParameters} with the specified
      * certification path parameters.
-     * 
+     *
      * @param parameters
      *            the certification path parameters.
      */
@@ -42,7 +42,7 @@ public class CertPathTrustManagerParameters implements ManagerFactoryParameters 
 
     /**
      * Returns a copy of the certification path parameters.
-     * 
+     *
      * @return a copy of the certification path parameters.
      */
     public CertPathParameters getParameters() {

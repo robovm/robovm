@@ -15,10 +15,6 @@
  *  limitations under the License.
  */
 
-/**
-* @author Vera Y. Petrashkova
-*/
-
 package javax.crypto;
 
 import java.security.InvalidAlgorithmParameterException;
@@ -30,8 +26,6 @@ import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.spec.AlgorithmParameterSpec;
-
-import org.apache.harmony.crypto.internal.nls.Messages;
 import org.apache.harmony.security.fortress.Engine;
 
 /**
@@ -42,10 +36,10 @@ import org.apache.harmony.security.fortress.Engine;
 public class KeyAgreement {
 
     // Used to access common engine functionality
-    private static final Engine engine = new Engine("KeyAgreement"); //$NON-NLS-1$
+    private static final Engine ENGINE = new Engine("KeyAgreement");
 
     // Store SecureRandom
-    private static final SecureRandom rndm = new SecureRandom();
+    private static final SecureRandom RANDOM = new SecureRandom();
 
     // Store used provider
     private final Provider provider;
@@ -105,13 +99,10 @@ public class KeyAgreement {
     public static final KeyAgreement getInstance(String algorithm)
             throws NoSuchAlgorithmException {
         if (algorithm == null) {
-            throw new NullPointerException(Messages.getString("crypto.02")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
-        synchronized (engine) {
-            engine.getInstance(algorithm, null);
-            return new KeyAgreement((KeyAgreementSpi) engine.spi, engine.provider,
-                    algorithm);
-        }
+        Engine.SpiAndProvider sap = ENGINE.getInstance(algorithm, null);
+        return new KeyAgreement((KeyAgreementSpi) sap.spi, sap.provider, algorithm);
     }
 
     /**
@@ -136,8 +127,8 @@ public class KeyAgreement {
     public static final KeyAgreement getInstance(String algorithm,
             String provider) throws NoSuchAlgorithmException,
             NoSuchProviderException {
-        if ((provider == null) || (provider.length() == 0)) {
-            throw new IllegalArgumentException(Messages.getString("crypto.03")); //$NON-NLS-1$
+        if (provider == null || provider.isEmpty()) {
+            throw new IllegalArgumentException("Provider is null or empty");
         }
         Provider impProvider = Security.getProvider(provider);
         if (impProvider == null) {
@@ -167,16 +158,13 @@ public class KeyAgreement {
     public static final KeyAgreement getInstance(String algorithm,
             Provider provider) throws NoSuchAlgorithmException {
         if (provider == null) {
-            throw new IllegalArgumentException(Messages.getString("crypto.04")); //$NON-NLS-1$
+            throw new IllegalArgumentException("provider == null");
         }
         if (algorithm == null) {
-            throw new NullPointerException(Messages.getString("crypto.02")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
-        synchronized (engine) {
-            engine.getInstance(algorithm, provider, null);
-            return new KeyAgreement((KeyAgreementSpi) engine.spi, provider,
-                    algorithm);
-        }
+        Object spi = ENGINE.getInstance(algorithm, provider, null);
+        return new KeyAgreement((KeyAgreementSpi) spi, provider, algorithm);
     }
 
     /**
@@ -189,7 +177,7 @@ public class KeyAgreement {
      *             agreement.
      */
     public final void init(Key key) throws InvalidKeyException {
-        spiImpl.engineInit(key, rndm);//new SecureRandom());
+        spiImpl.engineInit(key, RANDOM);//new SecureRandom());
     }
 
     /**
@@ -226,7 +214,7 @@ public class KeyAgreement {
      */
     public final void init(Key key, AlgorithmParameterSpec params)
             throws InvalidKeyException, InvalidAlgorithmParameterException {
-        spiImpl.engineInit(key, params, rndm);//new SecureRandom());
+        spiImpl.engineInit(key, params, RANDOM);//new SecureRandom());
     }
 
     /**

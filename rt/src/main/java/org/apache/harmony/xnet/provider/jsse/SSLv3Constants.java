@@ -18,28 +18,30 @@
 package org.apache.harmony.xnet.provider.jsse;
 
 /**
- * 
- * Contains SSL 3.0 constants 
- * @see SSL 3.0 Spec. 
- * http://wp.netscape.com/eng/ssl3
+ *
+ * Contains SSL 3.0 constants
+ * @see <a href="http://wp.netscape.com/eng/ssl3">SSL 3.0 Spec.</a>
  */
 public class SSLv3Constants {
 
     /**
      * Client is a sender. Used in hash calculating for finished message.
-     * @see SSL 3.0 Spec., 5.6.9 Finished
+     * @see <a href="http://wp.netscape.com/eng/ssl3">SSL 3.0 Spec., 5.6.9
+     * Finished</a>
      */
     static final byte[] client = new byte[] { 0x43, 0x4C, 0x4E, 0x54 };
 
     /**
      * Server is a sender. Used in hash calculating for finished message.
-     * @see SSL 3.0 Spec., 5.6.9 Finished
+     * @see <a href="http://wp.netscape.com/eng/ssl3">SSL 3.0 Spec., 5.6.9
+     * Finished</a>
      */
     static final byte[] server = new byte[] { 0x53, 0x52, 0x56, 0x52 };
 
     /**
      * pad_1 for MD5
-     * @see SSL 3.0 Spec., 5.2.3.1 Null or standard stream cipher
+     * @see <a href="http://wp.netscape.com/eng/ssl3">SSL 3.0 Spec., 5.2.3.1
+     * Null or standard stream cipher</a>
      */
     static final byte[] MD5pad1 = new byte[] { 0x36, 0x36, 0x36, 0x36,
             0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36,
@@ -49,7 +51,8 @@ public class SSLv3Constants {
 
     /**
      * pad_1 for SHA
-     * @see SSL 3.0 Spec., 5.2.3.1 Null or standard stream cipher
+     * @see <a href="http://wp.netscape.com/eng/ssl3">SSL 3.0 Spec., 5.2.3.1
+     * Null or standard stream cipher</a>
      */
     static final byte[] SHApad1 = new byte[] { 0x36, 0x36, 0x36, 0x36,
             0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36, 0x36,
@@ -59,7 +62,8 @@ public class SSLv3Constants {
 
     /**
      * pad_2 for MD5
-     * @see SSL 3.0 Spec., 5.2.3.1 Null or standard stream cipher
+     * @see <a href="http://wp.netscape.com/eng/ssl3">SSL 3.0 Spec., 5.2.3.1
+     * Null or standard stream cipher</a>
      */
     static final byte[] MD5pad2 = new byte[] { 0x5C, 0x5C, 0x5C, 0x5C,
             0x5C, 0x5C, 0x5C, 0x5C, 0x5C, 0x5C, 0x5C, 0x5C, 0x5C, 0x5C, 0x5C,
@@ -69,7 +73,8 @@ public class SSLv3Constants {
 
     /**
      * pad_2 for SHA
-     * @see SSL 3.0 Spec., 5.2.3.1 Null or standard stream cipher
+     * @see <a href="http://wp.netscape.com/eng/ssl3">SSL 3.0 Spec., 5.2.3.1
+     * Null or standard stream cipher</a>
      */
     static final byte[] SHApad2 = new byte[] { 0x5C, 0x5C, 0x5C, 0x5C,
             0x5C, 0x5C, 0x5C, 0x5C, 0x5C, 0x5C, 0x5C, 0x5C, 0x5C, 0x5C, 0x5C,

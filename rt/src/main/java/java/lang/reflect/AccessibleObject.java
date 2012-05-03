@@ -14,11 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package java.lang.reflect;
 
 import java.lang.annotation.Annotation;
-
+import java.util.Hashtable;
+import org.apache.harmony.kernel.vm.StringUtils;
 import org.nullvm.rt.ReflectionAccess;
 
 /**
@@ -36,7 +52,6 @@ import org.nullvm.rt.ReflectionAccess;
  * @see Field
  * @see Constructor
  * @see Method
- * @see ReflectPermission
  */
 public class AccessibleObject implements AnnotatedElement {
     static final ReflectionAccess REFLECTION_ACCESS = new ReflectionAccess() {
@@ -133,40 +148,45 @@ public class AccessibleObject implements AnnotatedElement {
             // End (C) Android
         }        
     };
-
+    
+    // If true, object is accessible, bypassing normal access checks
     boolean flag = false;
+        
+    // Holds a mapping from Java type names to native type codes.
+    static Hashtable<String, String> trans;
+        
+    static {
+        trans = new Hashtable<String, String>(9);
+        trans.put("byte", "B");
+        trans.put("char", "C");
+        trans.put("short", "S");
+        trans.put("int", "I");
+        trans.put("long", "J");
+        trans.put("float", "F");
+        trans.put("double", "D");
+        trans.put("void", "V");
+        trans.put("boolean", "Z");
+            }
 
     /**
      * Attempts to set the value of the accessible flag for all the objects in
-     * the array provided. Only one security check is performed. Setting this
+     * the array provided. Setting this
      * flag to {@code false} will enable access checks, setting to {@code true}
-     * will disable them. If there is a security manager, checkPermission is
-     * called with a {@code ReflectPermission("suppressAccessChecks")}.
+     * will disable them.
      *
      * @param objects
      *            the accessible objects
      * @param flag
      *            the new value for the accessible flag
-     * @throws SecurityException
-     *             if the request is denied
+     *
      * @see #setAccessible(boolean)
-     * @see ReflectPermission
      */
-    public static void setAccessible(AccessibleObject[] objects, boolean flag)
-            throws SecurityException {
-
-        // Start (C) Android
-        SecurityManager smgr = System.getSecurityManager();
-        if (smgr != null) {
-            smgr.checkPermission(new ReflectPermission("suppressAccessChecks"));
-        }
-
+    public static void setAccessible(AccessibleObject[] objects, boolean flag) {
         synchronized(AccessibleObject.class) {
-            for (int i = 0; i < objects.length; i++) {
-                objects[i].flag = flag;
+            for (AccessibleObject object : objects) {
+                object.flag = flag;
             }
         }
-        // End (C) Android
     }
 
     /**
@@ -175,14 +195,13 @@ public class AccessibleObject implements AnnotatedElement {
      * machine.
      */
     protected AccessibleObject() {
-        super();
     }
 
     /**
-     * Indicates whether this object is accessible without security checks being
+     * Indicates whether this object is accessible without access checks being
      * performed. Returns the accessible flag.
      *
-     * @return {@code true} if this object is accessible without security
+     * @return {@code true} if this object is accessible without access
      *         checks, {@code false} otherwise
      */
     public boolean isAccessible() {
@@ -191,49 +210,36 @@ public class AccessibleObject implements AnnotatedElement {
 
     /**
      * Attempts to set the value of the accessible flag. Setting this flag to
-     * false will enable access checks, setting to true will disable them. If
-     * there is a security manager, checkPermission is called with a
-     * ReflectPermission("suppressAccessChecks").
+     * {@code false} will enable access checks, setting to {@code true} will
+     * disable them.
      * 
-     * @param flag the new value for the accessible flag
-     * @see ReflectPermission
-     * @throws SecurityException if the request is denied
+     * @param flag
+     *            the new value for the accessible flag
      */
-    public void setAccessible(boolean flag) throws SecurityException {
-        // Start (C) Android
-        SecurityManager smgr = System.getSecurityManager();
-        if (smgr != null) {
-            smgr.checkPermission(new ReflectPermission("suppressAccessChecks"));
-        }
-
+    public void setAccessible(boolean flag) {
         this.flag = flag;
-        // End (C) Android
     }
 
     public boolean isAnnotationPresent(Class<? extends Annotation> annotationType) {
-        // Start (C) Android
+        if (annotationType == null) {
+            throw new NullPointerException("annotationType == null");
+        }
         return getAnnotation(annotationType) != null;
-        // End (C) Android
     }
     
     public Annotation[] getDeclaredAnnotations() {
-        // Start (C) Android
-        throw new RuntimeException("subclass must override this method");
-        // End (C) Android
+        throw new UnsupportedOperationException();
     }
 
     public Annotation[] getAnnotations() {
-        // Start (C) Android
         // for all but Class, getAnnotations == getDeclaredAnnotations
         return getDeclaredAnnotations();
-        // End (C) Android
     }
 
     /* slow, but works for all sub-classes */
     public <T extends Annotation> T getAnnotation(Class<T> annotationType) {
-        // Start (C) Android
         if (annotationType == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("annotationType == null");
         }
         Annotation[] annos = getAnnotations();
         for (int i = annos.length-1; i >= 0; --i) {
@@ -242,14 +248,92 @@ public class AccessibleObject implements AnnotatedElement {
             }
         }
         return null;
-        // End (C) Android
+    }
+
+    /**
+     * Returns the signature for a class. This is the kind of signature used
+     * internally by the JVM, with one-character codes representing the basic
+     * types. It is not suitable for printing.
+     *
+     * @param clazz
+     *            the class for which a signature is required
+     *
+     * @return The signature as a string
+     */
+    String getSignature(Class<?> clazz) {
+        String result = "";
+        String nextType = clazz.getName();
+
+        if(trans.containsKey(nextType)) {
+            result = trans.get(nextType);
+        } else {
+            if(clazz.isArray()) {
+                result = "[" + getSignature(clazz.getComponentType());
+            } else {
+                result = "L" + nextType + ";";
+            }
+        }
+        return result;
     }
     
-    protected String getSignatureAttribute() {
+    /**
+     * Returns a printable String consisting of the canonical names of the
+     * classes contained in an array. The form is that used in parameter and
+     * exception lists, that is, the class or type names are separated by
+     * commas.
+     *
+     * @param types
+     *            the array of classes
+     *
+     * @return The String of names
+     */
+    String toString(Class<?>[] types) {
+        StringBuilder result = new StringBuilder();
+
+        if (types.length != 0) {
+            result.append(types[0].getName());
+            for (int i = 1; i < types.length; i++) {
+                result.append(',');
+                result.append(types[i].getName());
+            }
+        }
+
+        return result.toString();
+    }
+
+    /**
+     * Gets the Signature attribute for this instance. Returns {@code null}
+     * if not found.
+     */
+    /*package*/ String getSignatureAttribute() {
+        /*
+         * Note: This method would have been declared abstract, but the
+         * standard API lists this class as concrete.
+         */
         throw new UnsupportedOperationException();
     }
     
-    // Start (C) Android
+    /**
+     * Retrieve the signature attribute from an arbitrary class.  This is
+     * the same as Class.getSignatureAttribute(), but it can be used from
+     * the java.lang.reflect package.
+     */
+    /*package*/ static String getClassSignatureAttribute(Class clazz) {
+        Object[] annotation = getClassSignatureAnnotation(clazz);
+
+        if (annotation == null) {
+            return null;
+        }
+
+        return StringUtils.combineStrings(annotation);
+    }
+
+    /**
+     * Retrieve the signature annotation from an arbitrary class.  This is
+     * the same as Class.getSignatureAttribute(), but it can be used from
+     * the java.lang.reflect package.
+     */
+    private static native Object[] getClassSignatureAnnotation(Class clazz);
     
     /**
      * Appends the specified class name to the buffer. The class may represent
@@ -261,32 +345,14 @@ public class AccessibleObject implements AnnotatedElement {
      * @throws NullPointerException if any of the arguments is null
      */
     void appendArrayType(StringBuilder sb, Class<?> obj) {
-        if (!obj.isArray()) {
-            sb.append(obj.getName());
-            return;
-        }
-        int dimensions = 1;
-        Class simplified = obj.getComponentType();
-        obj = simplified;
-        while (simplified.isArray()) {
-            obj = simplified;
+        int dimensions = 0;
+        while (obj.isArray()) {
+            obj = obj.getComponentType();
             dimensions++;
         }
         sb.append(obj.getName());
-        switch (dimensions) {
-        case 1:
+        for (int d = 0; d < dimensions; d++) {
             sb.append("[]");
-            break;
-        case 2:
-            sb.append("[][]");
-            break;
-        case 3:
-            sb.append("[][][]");
-            break;
-        default:
-            for (; dimensions > 0; dimensions--) {
-                sb.append("[]");
-            }
         }
     }
 
@@ -295,37 +361,15 @@ public class AccessibleObject implements AnnotatedElement {
      * elements may represent a simple type, a reference type or an array type.
      * Output format: java.lang.Object[], java.io.File, void
      *
-     * @param sb buffer
-     * @param objs array of classes to print the names
-     *
+     * @param types array of classes to print the names
      * @throws NullPointerException if any of the arguments is null
      */
-    void appendArrayType(StringBuilder sb, Class[] objs) {
-        if (objs.length > 0) {
-            appendArrayType(sb, objs[0]);
-            for (int i = 1; i < objs.length; i++) {
+    void appendArrayGenericType(StringBuilder sb, Type[] types) {
+        if (types.length > 0) {
+            appendGenericType(sb, types[0]);
+            for (int i = 1; i < types.length; i++) {
                 sb.append(',');
-                appendArrayType(sb, objs[i]);
-            }
-        }
-    }
-
-    /**
-     * Appends names of the specified array classes to the buffer. The array
-     * elements may represent a simple type, a reference type or an array type.
-     * Output format: java.lang.Object[], java.io.File, void
-     *
-     * @param sb buffer
-     * @param objs array of classes to print the names
-     *
-     * @throws NullPointerException if any of the arguments is null
-     */
-    void appendArrayGenericType(StringBuilder sb, Type[] objs) {
-        if (objs.length > 0) {
-            appendGenericType(sb, objs[0]);
-            for (int i = 1; i < objs.length; i++) {
-                sb.append(',');
-                appendGenericType(sb, objs[i]);
+                appendGenericType(sb, types[i]);
             }
         }
     }
@@ -383,28 +427,4 @@ public class AccessibleObject implements AnnotatedElement {
             }
         }
     }
-
-    /**
-     * Appends names of the specified array classes to the buffer. The array
-     * elements may represent a simple type, a reference type or an array type.
-     * In case if the specified array element represents an array type its
-     * internal will be appended to the buffer.
-     * Output format: [Ljava.lang.Object;, java.io.File, void
-     *
-     * @param sb buffer
-     * @param objs array of classes to print the names
-     *
-     * @throws NullPointerException if any of the arguments is null
-     */
-    void appendSimpleType(StringBuilder sb, Class<?>[] objs) {
-        if (objs.length > 0) {
-            sb.append(objs[0].getName());
-            for (int i = 1; i < objs.length; i++) {
-                sb.append(',');
-                sb.append(objs[i].getName());
-            }
-        }
-    }    
-
-    // End (C) Android
 }

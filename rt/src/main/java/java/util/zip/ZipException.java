@@ -34,7 +34,6 @@ public class ZipException extends IOException {
      * Constructs a new {@code ZipException} instance.
      */
     public ZipException() {
-        super();
     }
 
     /**

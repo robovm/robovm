@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,14 +32,13 @@ public abstract class Formatter {
      * Constructs a {@code Formatter} object.
      */
     protected Formatter() {
-        super();
     }
 
     /**
      * Converts a {@link LogRecord} object into a string representation. The
      * resulted string is usually localized and includes the message field of
      * the record.
-     * 
+     *
      * @param r
      *            the log record to be formatted into a string.
      * @return the formatted string.
@@ -65,21 +64,20 @@ public abstract class Formatter {
         String pattern = r.getMessage();
         ResourceBundle rb = null;
         // try to localize the message string first
-        if (null != (rb = r.getResourceBundle())) {
+        if ((rb = r.getResourceBundle()) != null) {
             try {
                 pattern = rb.getString(pattern);
             } catch (Exception e) {
                 pattern = r.getMessage();
             }
         }
-        if (null != pattern) {
+        if (pattern != null) {
             Object[] params = r.getParameters();
             /*
              * if the message contains "{0", use java.text.MessageFormat to
              * format the string
              */
-            if (pattern.indexOf("{0") >= 0 && null != params //$NON-NLS-1$
-                    && params.length > 0) {
+            if (pattern.indexOf("{0") >= 0 && params != null && params.length > 0) {
                 try {
                     pattern = MessageFormat.format(pattern, params);
                 } catch (IllegalArgumentException e) {
@@ -93,26 +91,26 @@ public abstract class Formatter {
     /**
      * Gets the head string used to wrap a set of log records. This base class
      * always returns an empty string.
-     * 
+     *
      * @param h
      *            the target handler.
      * @return the head string used to wrap a set of log records, empty in this
      *         implementation.
      */
     public String getHead(Handler h) {
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
     /**
      * Gets the tail string used to wrap a set of log records. This base class
      * always returns the empty string.
-     * 
+     *
      * @param h
      *            the target handler.
      * @return the tail string used to wrap a set of log records, empty in this
      *         implementation.
      */
     public String getTail(Handler h) {
-        return ""; //$NON-NLS-1$
+        return "";
     }
 }

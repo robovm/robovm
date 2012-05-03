@@ -20,8 +20,6 @@ package java.security.spec;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
  * The parameters specifying a <i>characteristic 2 finite field</i> of an
  * elliptic curve.
@@ -45,7 +43,7 @@ public class ECFieldF2m implements ECField {
     /**
      * Creates a new {@code ECFieldF2m} with {@code 2^m} elements with a normal
      * basis.
-     * 
+     *
      * @param m
      *            the exponent {@code m} for the number of elements.
      * @throws IllegalArgumentException
@@ -54,7 +52,7 @@ public class ECFieldF2m implements ECField {
     public ECFieldF2m(int m) {
         this.m = m;
         if (this.m <= 0) {
-            throw new IllegalArgumentException(Messages.getString("security.75")); //$NON-NLS-1$
+            throw new IllegalArgumentException("m <= 0");
         }
         this.rp = null;
         this.ks = null;
@@ -79,11 +77,11 @@ public class ECFieldF2m implements ECField {
     public ECFieldF2m(int m, BigInteger rp) {
         this.m = m;
         if (this.m <= 0) {
-            throw new IllegalArgumentException(Messages.getString("security.75")); //$NON-NLS-1$
+            throw new IllegalArgumentException("m <= 0");
         }
         this.rp = rp;
         if (this.rp == null) {
-            throw new NullPointerException(Messages.getString("security.76")); //$NON-NLS-1$
+            throw new NullPointerException("rp == null");
         }
         // the leftmost bit must be (m+1)-th one,
         // set bits count must be 3 or 5,
@@ -92,7 +90,7 @@ public class ECFieldF2m implements ECField {
         if ((this.rp.bitLength() != (m+1)) ||
             (rp_bc != TPB_LEN && rp_bc != PPB_LEN) ||
             (!this.rp.testBit(0) || !this.rp.testBit(m)) ) {
-            throw new IllegalArgumentException(Messages.getString("security.77")); //$NON-NLS-1$
+            throw new IllegalArgumentException("rp is invalid");
         }
 
         // setup ks using rp:
@@ -112,12 +110,12 @@ public class ECFieldF2m implements ECField {
      * <p>
      * The reduction polynomial must be either <i>trinomial</i> or
      * <i>pentanomial</i>.
-     * 
+     *
      * @param m
      *            the exponent {@code m} for the number of elements.
      * @param ks
      *            the base of the reduction polynomial with coefficients
-     *            given in descending order.     
+     *            given in descending order.
      * @throws IllegalArgumentException
      *             if {@code m <= zero} or the reduction polynomial is not
      *             valid.
@@ -125,7 +123,7 @@ public class ECFieldF2m implements ECField {
     public ECFieldF2m(int m, int[] ks) {
         this.m = m;
         if (this.m <= 0) {
-            throw new IllegalArgumentException(Messages.getString("security.75")); //$NON-NLS-1$
+            throw new IllegalArgumentException("m <= 0");
         }
         // Defensively copies array parameter
         // to prevent subsequent modification.
@@ -136,7 +134,7 @@ public class ECFieldF2m implements ECField {
         // no need to check for null already
         if (this.ks.length != TPB_MID_LEN && this.ks.length != PPB_MID_LEN) {
             // must be either trinomial or pentanomial basis
-            throw new IllegalArgumentException(Messages.getString("security.78")); //$NON-NLS-1$
+            throw new IllegalArgumentException("the length of ks is invalid");
         }
         // trinomial basis:
         // check that m > k >= 1, where k is ks[0]
@@ -155,7 +153,7 @@ public class ECFieldF2m implements ECField {
             break;
         }
         if (checkFailed || prev < 1) {
-            throw new IllegalArgumentException(Messages.getString("security.79")); //$NON-NLS-1$
+            throw new IllegalArgumentException("ks is invalid");
         }
 
         // Setup rp using ks:
@@ -170,7 +168,7 @@ public class ECFieldF2m implements ECField {
 
     /**
      * Returns whether the specified object equals to this finite field.
-     * 
+     *
      * @param obj
      *            the object to compare to this finite field.
      * @return {@code true} if the specified object is equal to this finite field,
@@ -204,7 +202,7 @@ public class ECFieldF2m implements ECField {
 
     /**
      * Returns the size of this finite field (in bits).
-     * 
+     *
      * @return the size of this finite field (in bits).
      */
     public int getFieldSize() {
@@ -214,7 +212,7 @@ public class ECFieldF2m implements ECField {
     /**
      * Returns the exponent {@code m} for this finite field, with {@code 2^m} as
      * the number of elements.
-     * 
+     *
      * @return the exponent {@code m} for this finite field
      */
     public int getM() {
@@ -224,7 +222,7 @@ public class ECFieldF2m implements ECField {
     /**
      * Returns a copy of the integer array containing the order of the middle
      * term(s) of the reduction polynomial for a polynomial basis.
-     * 
+     *
      * @return a copy of the integer array containing the order of the middle
      *         term(s) of the reduction polynomial for a polynomial basis or
      *         {@code null} for a normal basis.
@@ -246,7 +244,7 @@ public class ECFieldF2m implements ECField {
      * Returns the base of the reduction polynomial with the n-th bit
      * corresponding to the n-th coefficient of the reduction polynomial for a
      * polynomial basis.
-     * 
+     *
      * @return the base of the reduction polynomial with the n-th bit
      *         corresponding to the n-th coefficient of the reduction polynomial
      *         for a polynomial basis or {@code null} for a normal basis.
@@ -257,7 +255,7 @@ public class ECFieldF2m implements ECField {
 
     /**
      * Returns the hashcode value for this finite field.
-     * 
+     *
      * @return the hashcode value for this finite field.
      */
     public int hashCode() {

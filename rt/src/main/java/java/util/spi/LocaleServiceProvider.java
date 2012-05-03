@@ -21,24 +21,20 @@ import java.util.Locale;
 
 /**
  * The base class for all the locale related service provider interfaces (SPIs).
- * 
+ * <p>Note that Android does not support user-supplied locale service providers.
  * @since 1.6
+ * @hide
  */
 public abstract class LocaleServiceProvider {
-	/**
-	 * The constructor
-	 * 
-	 */
-	protected LocaleServiceProvider() {
-		// do nothing
-	}
+    /**
+     * Default constructor, for use by subclasses.
+     */
+    protected LocaleServiceProvider() {
+        // do nothing
+    }
 
-	/**
-	 * Gets all available locales that has localized objects or names from this
-	 * locale service provider.
-	 * 
-	 * @return all available locales that has localized objects or names from
-	 *         this locale service provider
-	 */
-	public abstract Locale[] getAvailableLocales();
+    /**
+     * Returns all locales for which this locale service provider has localized objects or names.
+     */
+    public abstract Locale[] getAvailableLocales();
 }

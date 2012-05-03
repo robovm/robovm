@@ -35,6 +35,5 @@ public class CharacterCodingException extends IOException {
      * Constructs a new {@code CharacterCodingException}.
      */
     public CharacterCodingException() {
-        super();
     }
 }

@@ -17,24 +17,19 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import org.apache.harmony.xnet.provider.jsse.Message;
-import org.apache.harmony.xnet.provider.jsse.Handshake;
-import org.apache.harmony.xnet.provider.jsse.HandshakeIODataStream;
-import org.apache.harmony.xnet.provider.jsse.AlertProtocol;
-
 import java.io.IOException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Represents server/client certificate message
- * @see TLS 1.0 spec., 7.4.2. Server certificate; 7.4.6. Client certificate
- * (http://www.ietf.org/rfc/rfc2246.txt)
- * 
+ * @see <a href="http://www.ietf.org/rfc/rfc2246.txt">TLS
+ * 1.0 spec., 7.4.2. Server certificate; 7.4.6. Client certificate</a>
+ *
  */
 public class CertificateMessage extends Message {
 
@@ -50,13 +45,12 @@ public class CertificateMessage extends Message {
 
     /**
      * Creates inbound message
-     * 
+     *
      * @param in
      * @param length
      * @throws IOException
      */
-    public CertificateMessage(HandshakeIODataStream in, int length)
-            throws IOException {
+    public CertificateMessage(HandshakeIODataStream in, int length) throws IOException {
         int l = in.readUint24(); // total_length
         if (l == 0) {  // message contais no certificates
             if (length != 3) { // no more bytes after total_length
@@ -75,35 +69,30 @@ public class CertificateMessage extends Message {
             fatalAlert(AlertProtocol.INTERNAL_ERROR, "INTERNAL ERROR", e);
             return;
         }
-        Vector<Certificate> certs_vector = new Vector<Certificate>();
+        ArrayList<X509Certificate> certsList = new ArrayList<X509Certificate>();
         int size = 0;
         int enc_size = 0;
         while (l > 0) {
             size = in.readUint24();
             l -= 3;
             try {
-                certs_vector.add(cf.generateCertificate(in));
+                certsList.add((X509Certificate) cf.generateCertificate(in));
             } catch (CertificateException e) {
                 fatalAlert(AlertProtocol.DECODE_ERROR, "DECODE ERROR", e);
             }
             l -= size;
             enc_size += size;
         }
-        certs = new X509Certificate[certs_vector.size()];
-        for (int i = 0; i < certs.length; i++) {
-            certs[i] = (X509Certificate) certs_vector.elementAt(i);
-        }
+        certs = certsList.toArray(new X509Certificate[certsList.size()]);
         this.length = 3 + 3 * certs.length + enc_size;
         if (this.length != length) {
-            fatalAlert(AlertProtocol.DECODE_ERROR,
-                    "DECODE ERROR: incorrect CertificateMessage");
+            fatalAlert(AlertProtocol.DECODE_ERROR, "DECODE ERROR: incorrect CertificateMessage");
         }
-
     }
 
     /**
      * Creates outbound message
-     * 
+     *
      * @param certs
      */
     public CertificateMessage(X509Certificate[] certs) {
@@ -133,7 +122,7 @@ public class CertificateMessage extends Message {
 
     /**
      * Sends message
-     * 
+     *
      * @param out
      */
     @Override
@@ -163,9 +152,13 @@ public class CertificateMessage extends Message {
 
     }
 
+    public String getAuthType() {
+        return certs[0].getPublicKey().getAlgorithm();
+    }
+
     /**
      * Returns message type
-     * 
+     *
      * @return
      */
     @Override

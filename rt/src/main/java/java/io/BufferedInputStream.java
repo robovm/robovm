@@ -26,7 +26,7 @@ import java.util.Arrays;
  * drawback is that some extra space is required to hold the buffer and that
  * copying takes place when filling that buffer, but this is usually outweighed
  * by the performance benefits.
- * 
+ *
  * <p/>A typical application pattern for the class looks like this:<p/>
  *
  * <pre>
@@ -65,7 +65,7 @@ public class BufferedInputStream extends FilterInputStream {
     /**
      * Constructs a new {@code BufferedInputStream}, providing {@code in} with a buffer
      * of 8192 bytes.
-     * 
+     *
      * <p><strong>Warning:</strong> passing a null source creates a closed
      * {@code BufferedInputStream}. All read operations on such a stream will
      * fail with an IOException.
@@ -79,7 +79,7 @@ public class BufferedInputStream extends FilterInputStream {
     /**
      * Constructs a new {@code BufferedInputStream}, providing {@code in} with {@code size} bytes
      * of buffer.
-     * 
+     *
      * <p><strong>Warning:</strong> passing a null source creates a closed
      * {@code BufferedInputStream}. All read operations on such a stream will
      * fail with an IOException.
@@ -101,7 +101,7 @@ public class BufferedInputStream extends FilterInputStream {
      * input. This method returns the number of bytes available in the buffer
      * plus those available in the source stream, but see {@link InputStream#available} for
      * important caveats.
-     * 
+     *
      * @return the estimated number of bytes available
      * @throws IOException if this stream is closed or an error occurs
      */
@@ -121,7 +121,7 @@ public class BufferedInputStream extends FilterInputStream {
     /**
      * Closes this stream. The source stream is closed and any resources
      * associated with it are released.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing this stream.
      */
@@ -177,7 +177,7 @@ public class BufferedInputStream extends FilterInputStream {
      * position if {@code readlimit} has not been surpassed. The underlying
      * buffer may be increased in size to allow {@code readlimit} number of
      * bytes to be supported.
-     * 
+     *
      * @param readlimit
      *            the number of bytes that can be read before the mark is
      *            invalidated.
@@ -192,7 +192,7 @@ public class BufferedInputStream extends FilterInputStream {
     /**
      * Indicates whether {@code BufferedInputStream} supports the {@code mark()}
      * and {@code reset()} methods.
-     * 
+     *
      * @return {@code true} for BufferedInputStreams.
      * @see #mark(int)
      * @see #reset()
@@ -207,7 +207,7 @@ public class BufferedInputStream extends FilterInputStream {
      * range from 0 to 255. Returns -1 if the end of the source string has been
      * reached. If the internal buffer does not contain any available bytes then
      * it is filled from the source stream and the first byte is returned.
-     * 
+     *
      * @return the byte read or -1 if the end of the source stream has been
      *         reached.
      * @throws IOException
@@ -250,7 +250,7 @@ public class BufferedInputStream extends FilterInputStream {
      * mark has not been set and the requested number of bytes is larger than
      * the receiver's buffer size, this implementation bypasses the buffer and
      * simply places the results directly into {@code buffer}.
-     * 
+     *
      * @param buffer
      *            the byte array in which to store the bytes read.
      * @return the number of bytes actually read or -1 if end of stream.
@@ -334,7 +334,7 @@ public class BufferedInputStream extends FilterInputStream {
 
     /**
      * Resets this stream to the last marked location.
-     * 
+     *
      * @throws IOException
      *             if this stream is closed, no mark has been set or the mark is
      *             no longer valid because more than {@code readlimit} bytes
@@ -356,7 +356,7 @@ public class BufferedInputStream extends FilterInputStream {
      * Skips {@code byteCount} bytes in this stream. Subsequent calls to
      * {@code read} will not return these bytes unless {@code reset} is
      * used.
-     * 
+     *
      * @param byteCount
      *            the number of bytes to skip. {@code skip} does nothing and
      *            returns 0 if {@code byteCount} is less than zero.

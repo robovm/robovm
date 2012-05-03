@@ -17,6 +17,7 @@
 
 /**
 * @author Alexander Y. Kleymenov
+* @version $Revision$
 */
 
 package org.apache.harmony.security.x509;
@@ -24,82 +25,56 @@ package org.apache.harmony.security.x509;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-
 import org.apache.harmony.security.asn1.ASN1SequenceOf;
 import org.apache.harmony.security.asn1.ASN1Type;
 import org.apache.harmony.security.asn1.BerInputStream;
 
 /**
- * The class encapsulates the ASN.1 DER encoding/decoding work 
+ * The class encapsulates the ASN.1 DER encoding/decoding work
  * with Certificate Policies structure which is a part of X.509 certificate
  * (as specified in RFC 3280 -
  *  Internet X.509 Public Key Infrastructure.
  *  Certificate and Certificate Revocation List (CRL) Profile.
  *  http://www.ietf.org/rfc/rfc3280.txt):
- * 
+ *
  * <pre>
  *   certificatePolicies ::= SEQUENCE SIZE (1..MAX) OF PolicyInformation
  * </pre>
- * 
  */
-
-public class CertificatePolicies extends ExtensionValue {
-
-    // the values of policyInformation field of the structure
-    private List policyInformations;
-    // the ASN.1 encoded form of CertificatePolicies
+public final class CertificatePolicies extends ExtensionValue {
+    /** the values of policyInformation field of the structure */
+    private List<PolicyInformation> policyInformations;
+    /** the ASN.1 encoded form of CertificatePolicies */
     private byte[] encoding;
-    
+
     /**
      * Constructs an object representing the value of CertificatePolicies.
      */
     public CertificatePolicies() {}
-    
-    /**
-     * TODO
-     * @param   policyInformations: List
-     */
-    public CertificatePolicies(List policyInformations) {
-        this.policyInformations = policyInformations;
-    }
 
-    public static CertificatePolicies decode(byte[] encoding) 
-            throws IOException {
+    public static CertificatePolicies decode(byte[] encoding) throws IOException {
         CertificatePolicies cps = ((CertificatePolicies) ASN1.decode(encoding));
         cps.encoding = encoding;
         return cps;
     }
-    
-    // 
-    // TODO
-    // @param   policyInformations: List
-    // @param   encoding:   byte[]
-    // 
-    private CertificatePolicies(List policyInformations, byte[] encoding) {
+
+    private CertificatePolicies(List<PolicyInformation> policyInformations, byte[] encoding) {
         this.policyInformations = policyInformations;
         this.encoding = encoding;
     }
 
     /**
      * Returns the values of policyInformation field of the structure.
-     * @return  policyInformations
      */
-    public List getPolicyInformations() {
-        return new ArrayList(policyInformations);
+    public List<PolicyInformation> getPolicyInformations() {
+        return new ArrayList<PolicyInformation>(policyInformations);
     }
 
-    /**
-     * TODO
-     * @param   policyInformation:  PolicyInformation
-     * @return
-     */
-    public CertificatePolicies addPolicyInformation(
-            PolicyInformation policyInformation) {
+    public CertificatePolicies addPolicyInformation(PolicyInformation policyInformation) {
         encoding = null;
         if (policyInformations == null) {
-            policyInformations = new ArrayList();
+            policyInformations = new ArrayList<PolicyInformation>();
         }
         policyInformations.add(policyInformation);
         return this;
@@ -107,44 +82,36 @@ public class CertificatePolicies extends ExtensionValue {
 
     /**
      * Returns ASN.1 encoded form of this X.509 CertificatePolicies value.
-     * @return a byte array containing ASN.1 encode form.
      */
-    public byte[] getEncoded() {
+    @Override public byte[] getEncoded() {
         if (encoding == null) {
             encoding = ASN1.encode(this);
         }
         return encoding;
     }
 
-    /**
-     * Places the string representation of extension value 
-     * into the StringBuffer object.
-     */
-    public void dumpValue(StringBuffer buffer, String prefix) {
-        buffer.append(prefix).append("CertificatePolicies [\n"); //$NON-NLS-1$
-        for (Iterator it=policyInformations.iterator(); it.hasNext();) {
-            buffer.append(prefix);
-            buffer.append("  "); //$NON-NLS-1$
-            ((PolicyInformation) it.next()).dumpValue(buffer);
-            buffer.append('\n');
+    @Override public void dumpValue(StringBuilder sb, String prefix) {
+        sb.append(prefix).append("CertificatePolicies [\n");
+        for (PolicyInformation policyInformation : policyInformations) {
+            sb.append(prefix);
+            sb.append("  ");
+            policyInformation.dumpValue(sb);
+            sb.append('\n');
         }
-        buffer.append(prefix).append("]\n"); //$NON-NLS-1$
+        sb.append(prefix).append("]\n");
     }
 
     /**
      * ASN.1 DER X.509 CertificatePolicies encoder/decoder class.
      */
-    public static final ASN1Type ASN1 = 
-        new ASN1SequenceOf(PolicyInformation.ASN1) {
-
-        public Object getDecodedObject(BerInputStream in) {
-            return new CertificatePolicies((List) in.content, in.getEncoded());
+    public static final ASN1Type ASN1 = new ASN1SequenceOf(PolicyInformation.ASN1) {
+        @Override public Object getDecodedObject(BerInputStream in) {
+            return new CertificatePolicies((List<PolicyInformation>) in.content, in.getEncoded());
         }
 
-        public Collection getValues(Object object) {
+        @Override public Collection getValues(Object object) {
             CertificatePolicies cps = (CertificatePolicies) object;
             return cps.policyInformations;
         }
     };
 }
-

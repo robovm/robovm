@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,59 +17,46 @@
 
 package java.lang;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import libcore.util.CollectionUtils;
+
 /**
- * A {@code ThreadGroup} is a means of organizing {@link Thread}s into a
- * hierarchical structure. A {@code ThreadGroup} can contain zero or more
- * {@code Thread}s and zero or more other {@code ThreadGroup}s. Each {@code
- * Thread} and each {@code ThreadGroup} (except the root group) has a unique
- * parent {@code ThreadGroup}. The result is a tree whose inner nodes are
- * {@code ThreadGroup}s and whose leaf nodes are {@code Threads}. The unique
- * root of the tree is a {@code ThreadGroup} that is created at VM startup and
- * has the name "system". The benefit of using {@code ThreadGroup}s, in addition
- * to the mere housekeeping aspect, is that all {@code Thread}s in a {@code
- * ThreadGroup} can be manipulated together, that is, the {@code ThreadGroup}
- * has methods that delegate to all its all {@code Thread}s.
- *
+ * {@code ThreadGroup} is a means of organizing threads into a hierarchical structure.
+ * This class is obsolete. See <i>Effective Java</i> Item 73, "Avoid thread groups" for details.
  * @see Thread
- * @see SecurityManager
  */
 public class ThreadGroup implements Thread.UncaughtExceptionHandler {
 
-    /*
-     * An implementation of this class is provided, but the documented
-     * constructors are used by the vm specific implementation to create the
-     * required "system" and "main" ThreadGroups. The documented methods are
-     * used by java.lang.Thread to add and remove Threads from their
-     * ThreadGroups.
-     */
-
     // Name of this ThreadGroup
+    // VM needs this field name for debugging.
     private String name;
 
     // Maximum priority for Threads inside this ThreadGroup
     private int maxPriority = Thread.MAX_PRIORITY;
 
     // The ThreadGroup to which this ThreadGroup belongs
-    ThreadGroup parent;
+    // VM needs this field name for debugging.
+    final ThreadGroup parent;
 
-    int numThreads;
+    /**
+     * Weak references to the threads in this group.
+     * Access is guarded by synchronizing on this field.
+     */
+    private final List<WeakReference<Thread>> threadRefs = new ArrayList<WeakReference<Thread>>(5);
 
-    // The Threads this ThreadGroup contains
-    private Thread[] childrenThreads = new Thread[5];
+    /**
+     * View of the threads.
+     * Access is guarded by synchronizing on threadRefs.
+     */
+    private final Iterable<Thread> threads = CollectionUtils.dereferenceIterable(threadRefs, true);
 
-    // The number of children groups
-    int numGroups;
-
-    // The ThreadGroups this ThreadGroup contains
-    private ThreadGroup[] childrenGroups = new ThreadGroup[3];
-
-    // Locked when using the childrenGroups field
-    private class ChildrenGroupsLock {}
-    private Object childrenGroupsLock = new ChildrenGroupsLock();
-
-    // Locked when using the childrenThreads field
-    private class ChildrenThreadsLock {}
-    private Object childrenThreadsLock = new ChildrenThreadsLock();
+    /**
+     * Thread groups. Access is guarded by synchronizing on this field.
+     */
+    private final List<ThreadGroup> groups = new ArrayList<ThreadGroup>(3);
 
     // Whether this ThreadGroup is a daemon ThreadGroup or not
     private boolean isDaemon;
@@ -77,59 +64,39 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
     // Whether this ThreadGroup has already been destroyed or not
     private boolean isDestroyed;
 
-    static ThreadGroup systemGroup = new ThreadGroup();
-    static ThreadGroup mainGroup = new ThreadGroup(systemGroup);
-    
-    /**
-     * Used by the JVM to create the "system" ThreadGroup. Construct a
-     * ThreadGroup instance, and assign the name "system".
-     */
-    private ThreadGroup() {
-        name = "system";
-    }
+    /* the VM uses these directly; do not rename */
+    static final ThreadGroup mSystem = new ThreadGroup();
+    static final ThreadGroup mMain = new ThreadGroup(mSystem, "main");
 
     /**
-     * Constructs a new ThreadGroup with the name provided. The new ThreadGroup
-     * will be child of the ThreadGroup to which the
-     * <code>Thread.currentThread()</code> belongs.
-     * 
-     * @param name Name for the ThreadGroup being created
-     * 
-     * @throws SecurityException if <code>checkAccess()</code> for the parent
-     *         group fails with a SecurityException
-     * 
-     * @see java.lang.Thread#currentThread
+     * Constructs a new {@code ThreadGroup} with the given name. The new {@code ThreadGroup}
+     * will be child of the {@code ThreadGroup} to which the calling thread belongs.
+     *
+     * @param name the name
+     * @see Thread#currentThread
      */
-
     public ThreadGroup(String name) {
         this(Thread.currentThread().getThreadGroup(), name);
     }
 
     /**
-     * Constructs a new ThreadGroup with the name provided, as child of the
-     * ThreadGroup <code>parent</code>
-     * 
-     * @param parent Parent ThreadGroup
-     * @param name Name for the ThreadGroup being created
-     * 
-     * @throws NullPointerException if <code>parent</code> is
-     *         <code>null</code>
-     * @throws SecurityException if <code>checkAccess()</code> for the parent
-     *         group fails with a SecurityException
-     * @throws IllegalThreadStateException if <code>parent</code> has been
+     * Constructs a new {@code ThreadGroup} with the given name, as a child of the
+     * given {@code ThreadGroup}.
+     *
+     * @param parent the parent
+     * @param name the name
+     * @throws NullPointerException if {@code parent == null}
+     * @throws IllegalThreadStateException if {@code parent} has been
      *         destroyed already
      */
     public ThreadGroup(ThreadGroup parent, String name) {
-        super();
-        if (Thread.currentThread() != null) {
-            // If parent is null we must throw NullPointerException, but that
-            // will be done "for free" with the message send below
-            parent.checkAccess();
+        if (parent == null) {
+            throw new NullPointerException("parent == null");
         }
-
         this.name = name;
-        this.setParent(parent);
+        this.parent = parent;
         if (parent != null) {
+            parent.add(this);
             this.setMaxPriority(parent.getMaxPriority());
             if (parent.isDaemon()) {
                 this.setDaemon(true);
@@ -138,99 +105,66 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
     }
 
     /**
-     * Initialize the "main" ThreadGroup
+     * Initialize the special "system" ThreadGroup. Was "main" in Harmony,
+     * but we have an additional group above that in Android.
      */
-    ThreadGroup(ThreadGroup parent) {
-        this.name = "main";
-        this.setParent(parent);
+    private ThreadGroup() {
+        this.name = "system";
+        this.parent = null;
     }
 
     /**
-     * Returns the number of Threads which are children of the receiver,
-     * directly or indirectly and are running.
+     * Returns the number of running {@code Thread}s which are children of this thread group,
+     * directly or indirectly.
      *
-     * @return the number of children Threads
+     * @return the number of children
      */
     public int activeCount() {
-        int count = numThreads;
-        // Lock this subpart of the tree as we walk
-        synchronized (this.childrenGroupsLock) {
-            for (int i = 0; i < numGroups; i++) {
-                count += this.childrenGroups[i].activeCount();
+        int count = 0;
+        synchronized (threadRefs) {
+            for (Thread thread : threads) {
+                if (thread.isAlive()) {
+                    count++;
+                }
+            }
+        }
+        synchronized (groups) {
+            for (ThreadGroup group : groups) {
+                count += group.activeCount();
             }
         }
         return count;
     }
 
     /**
-     * Returns the number of ThreadGroups which are children of the receiver,
+     * Returns the number of {@code ThreadGroup}s which are children of this group,
      * directly or indirectly.
-     * 
-     * @return the number of children ThreadGroups
+     *
+     * @return the number of children
      */
     public int activeGroupCount() {
         int count = 0;
-        // Lock this subpart of the tree as we walk
-        synchronized (this.childrenGroupsLock) {
-            for (int i = 0; i < numGroups; i++) {
+        synchronized (groups) {
+            for (ThreadGroup group : groups) {
                 // One for this group & the subgroups
-                count += 1 + this.childrenGroups[i].activeGroupCount();
+                count += 1 + group.activeGroupCount();
             }
         }
         return count;
     }
 
     /**
-     * Adds a Thread to the receiver. This should only be visible to class
-     * java.lang.Thread, and should only be called when a new Thread is created
-     * and initialized by the constructor.
-     * 
-     * @param thread Thread to add to the receiver
-     * 
-     * @throws IllegalThreadStateException if the receiver has been destroyed
-     *         already
-     * 
-     * @see #remove(java.lang.Thread)
-     */
-    final void add(Thread thread) throws IllegalThreadStateException {
-        synchronized (this.childrenThreadsLock) {
-            if (!isDestroyed) {
-                if (childrenThreads.length == numThreads) {
-                    Thread[] newThreads = new Thread[childrenThreads.length * 2];
-                    System.arraycopy(childrenThreads, 0, newThreads, 0, numThreads);
-                    newThreads[numThreads++] = thread;
-                    childrenThreads = newThreads;
-                } else {
-                    childrenThreads[numThreads++] = thread;
-                }
-            } else {
-                throw new IllegalThreadStateException();
-            }
-        }
-    }
-
-    /**
-     * Adds a ThreadGroup to the receiver.
-     * 
-     * @param g ThreadGroup to add to the receiver
-     * 
-     * @throws IllegalThreadStateException if the receiver has been destroyed
-     *         already
+     * Adds a {@code ThreadGroup} to this thread group.
+     *
+     * @param g ThreadGroup to add
+     * @throws IllegalThreadStateException if this group has been destroyed already
      */
     private void add(ThreadGroup g) throws IllegalThreadStateException {
-        synchronized (this.childrenGroupsLock) {
-            if (!isDestroyed) {
-                if (childrenGroups.length == numGroups) {
-                    ThreadGroup[] newGroups = new ThreadGroup[childrenGroups.length * 2];
-                    System.arraycopy(childrenGroups, 0, newGroups, 0, numGroups);
-                    newGroups[numGroups++] = g;
-                    childrenGroups = newGroups;
-                } else {
-                    childrenGroups[numGroups++] = g;
-                }
-            } else {
+        synchronized (groups) {
+            if (isDestroyed) {
                 throw new IllegalThreadStateException();
             }
+            groups.add(g);
         }
     }
 
@@ -238,7 +172,7 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
      * Does nothing. The definition of this method depends on the deprecated
      * method {@link #suspend()}. The exact behavior of this call was never
      * specified.
-     * 
+     *
      * @param b Used to control low memory implicit suspension
      * @return {@code true} (always)
      *
@@ -251,85 +185,66 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
     }
 
     /**
-     * Checks the accessibility of the ThreadGroup from the perspective of the
-     * caller. If there is a SecurityManager installed, calls
-     * {@code checkAccess} with the receiver as a parameter, otherwise does
-     * nothing.
+     * Does nothing.
      */
     public final void checkAccess() {
-        // Forwards the message to the SecurityManager (if there's one) passing
-        // the receiver as parameter
-        SecurityManager currentManager = System.getSecurityManager();
-        if (currentManager != null) {
-            currentManager.checkAccess(this);
-        }
     }
 
     /**
-     * Destroys the receiver and recursively all its subgroups. It is only legal
-     * to destroy a ThreadGroup that has no Threads in it. Any daemon
-     * ThreadGroup is destroyed automatically when it becomes empty (no Threads
-     * and no ThreadGroups in it).
-     * 
-     * @throws IllegalThreadStateException if the receiver or any of its
+     * Destroys this thread group and recursively all its subgroups. It is only legal
+     * to destroy a {@code ThreadGroup} that has no threads in it. Any daemon
+     * {@code ThreadGroup} is destroyed automatically when it becomes empty (no threads
+     * or thread groups in it).
+     *
+     * @throws IllegalThreadStateException if this thread group or any of its
      *         subgroups has been destroyed already or if it still contains
      *         threads.
-     * @throws SecurityException if {@code this.checkAccess()} fails with
-     *         a SecurityException
      */
-
     public final void destroy() {
-        checkAccess();
-
-        // Lock this subpart of the tree as we walk
-        synchronized (this.childrenThreadsLock) {
-            synchronized (this.childrenGroupsLock) {
-                // Start (C) Android
-                if (this.isDestroyed) {
+        synchronized (threadRefs) {
+            synchronized (groups) {
+                if (isDestroyed) {
                     throw new IllegalThreadStateException(
                             "Thread group was already destroyed: "
                             + (this.name != null ? this.name : "n/a"));
                 }
-                if (this.numThreads > 0) {
+                if (threads.iterator().hasNext()) {
                     throw new IllegalThreadStateException(
                             "Thread group still contains threads: "
                             + (this.name != null ? this.name : "n/a"));
                 }
-                // End (C) Android
-                int toDestroy = numGroups;
                 // Call recursively for subgroups
-                for (int i = 0; i < toDestroy; i++) {
+                while (!groups.isEmpty()) {
                     // We always get the first element - remember, when the
                     // child dies it removes itself from our collection. See
                     // below.
-                    this.childrenGroups[0].destroy();
+                    groups.get(0).destroy();
                 }
 
                 if (parent != null) {
                     parent.remove(this);
                 }
 
-                // Now that the ThreadGroup is really destroyed it can be tagged
-                // as so
+                // Now that the ThreadGroup is really destroyed it can be tagged as so
                 this.isDestroyed = true;
             }
         }
     }
 
     /*
-     * Auxiliary method that destroys the receiver and recursively all its
-     * subgroups if the receiver is a daemon ThreadGroup.
-     * 
+     * Auxiliary method that destroys this thread group and recursively all its
+     * subgroups if this is a daemon ThreadGroup.
+     *
      * @see #destroy
      * @see #setDaemon
      * @see #isDaemon
      */
     private void destroyIfEmptyDaemon() {
         // Has to be non-destroyed daemon to make sense
-        synchronized (this.childrenThreadsLock) {
-            if (isDaemon && !isDestroyed && numThreads == 0) {
-                synchronized (this.childrenGroupsLock) {
-                    if (numGroups == 0) {
+        synchronized (threadRefs) {
+            if (isDaemon && !isDestroyed && !threads.iterator().hasNext()) {
+                synchronized (groups) {
+                    if (groups.isEmpty()) {
                         destroy();
                     }
                 }
@@ -341,9 +256,12 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
      * Iterates over all active threads in this group (and its sub-groups) and
      * stores the threads in the given array. Returns when the array is full or
      * no more threads remain, whichever happens first.
-     * 
-     * @param threads the array into which the Threads will be copied
-     * @return the number of Threads that were copied
+     *
+     * <p>Note that this method will silently ignore any threads that don't fit in the
+     * supplied array.
+     *
+     * @param threads the array into which the {@code Thread}s will be copied
+     * @return the number of {@code Thread}s that were copied
      */
     public int enumerate(Thread[] threads) {
         return enumerate(threads, true);
@@ -353,11 +271,14 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
      * Iterates over all active threads in this group (and, optionally, its
      * sub-groups) and stores the threads in the given array. Returns when the
      * array is full or no more threads remain, whichever happens first.
-     * 
-     * @param threads the array into which the Threads will be copied
-     * @param recurse indicates whether Threads in subgroups should be
+     *
+     * <p>Note that this method will silently ignore any threads that don't fit in the
+     * supplied array.
+     *
+     * @param threads the array into which the {@code Thread}s will be copied
+     * @param recurse indicates whether {@code Thread}s in subgroups should be
      *        recursively copied as well
-     * @return the number of Threads that were copied
+     * @return the number of {@code Thread}s that were copied
      */
     public int enumerate(Thread[] threads, boolean recurse) {
         return enumerateGeneric(threads, recurse, 0, true);
@@ -367,10 +288,12 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
      * Iterates over all thread groups in this group (and its sub-groups) and
      * and stores the groups in the given array. Returns when the array is full
      * or no more groups remain, whichever happens first.
-     * 
-     * @param groups the array into which the ThreadGroups will be copied
-     * @return the number of ThreadGroups that were copied
-     * 
+     *
+     * <p>Note that this method will silently ignore any thread groups that don't fit in the
+     * supplied array.
+     *
+     * @param groups the array into which the {@code ThreadGroup}s will be copied
+     * @return the number of {@code ThreadGroup}s that were copied
      */
     public int enumerate(ThreadGroup[] groups) {
         return enumerate(groups, true);
@@ -380,12 +303,14 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
      * Iterates over all thread groups in this group (and, optionally, its
      * sub-groups) and stores the groups in the given array. Returns when
      * the array is full or no more groups remain, whichever happens first.
-     * 
-     * @param groups the array into which the ThreadGroups will be copied
-     * @param recurse indicates whether ThreadGroups in subgroups should be
+     *
+     * <p>Note that this method will silently ignore any thread groups that don't fit in the
+     * supplied array.
+     *
+     * @param groups the array into which the {@code ThreadGroup}s will be copied
+     * @param recurse indicates whether {@code ThreadGroup}s in subgroups should be
      *        recursively copied as well or not
-     * @return the number of ThreadGroups that were copied
-     * 
+     * @return the number of {@code ThreadGroup}s that were copied
      */
     public int enumerate(ThreadGroup[] groups, boolean recurse) {
         return enumerateGeneric(groups, recurse, 0, false);
@@ -396,10 +321,10 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
      * <param>enumerationIndex</param> all Threads or ThreadGroups in the
      * receiver. If <param>recurse</param> is true, recursively enumerate the
      * elements in subgroups.
-     * 
+     *
      * If the array passed as parameter is too small no exception is thrown -
      * the extra elements are simply not copied.
-     * 
+     *
      * @param enumeration array into which the elements will be copied
      * @param recurse Indicates whether subgroups should be enumerated or not
      * @param enumerationIndex Indicates in which position of the enumeration
@@ -410,30 +335,37 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
      */
     private int enumerateGeneric(Object[] enumeration, boolean recurse, int enumerationIndex,
             boolean enumeratingThreads) {
-        checkAccess();
-
-        Object[] immediateCollection = enumeratingThreads ? (Object[]) childrenThreads
-                : (Object[]) childrenGroups;
-        Object syncLock = enumeratingThreads ? childrenThreadsLock : childrenGroupsLock;
-
-        synchronized (syncLock) { // Lock this subpart of the tree as we walk
-            for (int i = enumeratingThreads ? numThreads : numGroups; --i >= 0;) {
-                if (!enumeratingThreads || ((Thread) immediateCollection[i]).isAlive()) {
+        if (enumeratingThreads) {
+            synchronized (threadRefs) {
+                // walk the references directly so we can iterate in reverse order
+                for (int i = threadRefs.size() - 1; i >= 0; --i) {
+                    Thread thread = threadRefs.get(i).get();
+                    if (thread != null && thread.isAlive()) {
+                        if (enumerationIndex >= enumeration.length) {
+                            return enumerationIndex;
+                        }
+                        enumeration[enumerationIndex++] = thread;
+                    }
+                }
+            }
+        } else {
+            synchronized (groups) {
+                for (int i = groups.size() - 1; i >= 0; --i) {
                     if (enumerationIndex >= enumeration.length) {
                         return enumerationIndex;
                     }
-                    enumeration[enumerationIndex++] = immediateCollection[i];
+                    enumeration[enumerationIndex++] = groups.get(i);
                 }
             }
         }
 
-        if (recurse) { // Lock this subpart of the tree as we walk
-            synchronized (this.childrenGroupsLock) {
-                for (int i = 0; i < numGroups; i++) {
+        if (recurse) {
+            synchronized (groups) {
+                for (ThreadGroup group : groups) {
                     if (enumerationIndex >= enumeration.length) {
                         return enumerationIndex;
                     }
-                    enumerationIndex = childrenGroups[i].enumerateGeneric(enumeration, recurse,
+                    enumerationIndex = group.enumerateGeneric(enumeration, recurse,
                             enumerationIndex, enumeratingThreads);
                 }
             }
@@ -442,10 +374,10 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
     }
 
     /**
-     * Returns the maximum allowed priority for a Thread in the receiver.
-     * 
+     * Returns the maximum allowed priority for a {@code Thread} in this thread group.
+     *
      * @return the maximum priority
-     * 
+     *
      * @see #setMaxPriority
      */
     public final int getMaxPriority() {
@@ -453,58 +385,48 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
     }
 
     /**
-     * Returns the name of the receiver.
-     * 
-     * @return the receiver's name
+     * Returns the name of this thread group.
+     *
+     * @return the group's name
      */
     public final String getName() {
         return name;
     }
 
     /**
-     * Returns the receiver's parent ThreadGroup. It can be {@code null}  if the
-     * receiver is the the root ThreadGroup.
-     * 
-     * @return the parent ThreadGroup
-     * 
+     * Returns this thread group's parent {@code ThreadGroup}. It can be null if this
+     * is the the root ThreadGroup.
+     *
+     * @return the parent
      */
     public final ThreadGroup getParent() {
-        if (parent != null) {
-            parent.checkAccess();
-        }
         return parent;
     }
 
     /**
-     * Interrupts every Thread in the receiver and recursively in all its
+     * Interrupts every {@code Thread} in this group and recursively in all its
      * subgroups.
-     * 
-     * @throws SecurityException if {@code this.checkAccess()} fails with
-     *         a SecurityException
-     * 
+     *
      * @see Thread#interrupt
      */
     public final void interrupt() {
-        checkAccess();
-        // Lock this subpart of the tree as we walk
-        synchronized (this.childrenThreadsLock) {
-            for (int i = 0; i < numThreads; i++) {
-                this.childrenThreads[i].interrupt();
+        synchronized (threadRefs) {
+            for (Thread thread : threads) {
+                thread.interrupt();
             }
         }
-        // Lock this subpart of the tree as we walk
-        synchronized (this.childrenGroupsLock) {
-            for (int i = 0; i < numGroups; i++) {
-                this.childrenGroups[i].interrupt();
+        synchronized (groups) {
+            for (ThreadGroup group : groups) {
+                group.interrupt();
             }
         }
     }
 
     /**
-     * Checks whether the receiver is a daemon ThreadGroup.
-     * 
-     * @return true if (and only if) the receiver is a daemon ThreadGroup
-     * 
+     * Checks whether this thread group is a daemon {@code ThreadGroup}.
+     *
+     * @return true if this thread group is a daemon {@code ThreadGroup}
+     *
      * @see #setDaemon
      * @see #destroy
      */
@@ -513,20 +435,19 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
     }
 
     /**
-     * Checks whether the receiver has already been destroyed.
-     * 
-     * @return true if (and only if) the receiver has already been destroyed
-     * 
+     * Checks whether this thread group has already been destroyed.
+     *
+     * @return true if this thread group has already been destroyed
      * @see #destroy
      */
-    public boolean isDestroyed() {
+    public synchronized boolean isDestroyed() {
         return isDestroyed;
     }
 
     /**
      * Outputs to {@code System.out} a text representation of the
-     * hierarchy of Threads and ThreadGroups in the receiver (and recursively).
-     * Proper indentation is done to suggest the nesting of groups inside groups
+     * hierarchy of {@code Thread}s and {@code ThreadGroup}s in this thread group (and recursively).
+     * Proper indentation is used to show the nesting of groups inside groups
      * and threads inside groups.
      */
     public void list() {
@@ -537,45 +458,42 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
 
     /*
      * Outputs to {@code System.out}a text representation of the
-     * hierarchy of Threads and ThreadGroups in the receiver (and recursively).
+     * hierarchy of Threads and ThreadGroups in this thread group (and recursively).
      * The indentation will be four spaces per level of nesting.
-     * 
+     *
      * @param levels How many levels of nesting, so that proper indentation can
      * be output.
      */
     private void list(int levels) {
-        for (int i = 0; i < levels; i++) {
-            System.out.print("    "); // 4 spaces for each level
-        }
-
-        // Print the receiver
+        indent(levels);
         System.out.println(this.toString());
 
-        // Print the children threads, with 1 extra indentation
-        synchronized (this.childrenThreadsLock) {
-            for (int i = 0; i < numThreads; i++) {
-                // children get an extra indentation, 4 spaces for each level
-                for (int j = 0; j <= levels; j++) {
-                    System.out.print("    ");
-                }
-                System.out.println(this.childrenThreads[i]);
+        ++levels;
+        synchronized (threadRefs) {
+            for (Thread thread : threads) {
+                indent(levels);
+                System.out.println(thread);
             }
         }
-        synchronized (this.childrenGroupsLock) {
-            for (int i = 0; i < numGroups; i++) {
-                this.childrenGroups[i].list(levels + 1);
+        synchronized (groups) {
+            for (ThreadGroup group : groups) {
+                group.list(levels);
             }
         }
     }
 
+    private void indent(int levels) {
+        for (int i = 0; i < levels; i++) {
+            System.out.print("    "); // 4 spaces for each level
+        }
+    }
+
     /**
-     * Checks whether the receiver is a direct or indirect parent group of a
-     * given ThreadGroup.
-     * 
-     * @param g the potential child ThreadGroup
-     * 
-     * @return true if (and only if) the receiver is parent of {@code g}
-     * 
+     * Checks whether this thread group is a direct or indirect parent group of a
+     * given {@code ThreadGroup}.
+     *
+     * @param g the potential child {@code ThreadGroup}
+     * @return true if this thread group is parent of {@code g}
      */
     public final boolean parentOf(ThreadGroup g) {
         while (g != null) {
@@ -588,44 +506,19 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
     }
 
     /**
-     * Removes a Thread from the receiver. This should only be visible to class
-     * java.lang.Thread, and should only be called when a Thread dies.
-     * 
-     * @param thread Thread to remove from the receiver
-     * 
-     * @see #add(Thread)
-     */
-    final void remove(java.lang.Thread thread) {
-        synchronized (this.childrenThreadsLock) {
-            for (int i = 0; i < numThreads; i++) {
-                if (childrenThreads[i].equals(thread)) {
-                    numThreads--;
-                    System
-                            .arraycopy(childrenThreads, i + 1, childrenThreads, i, numThreads
-                                    - i);
-                    childrenThreads[numThreads] = null;
-                    break;
-                }
-            }
-        }
-        destroyIfEmptyDaemon();
-    }
-
-    /**
-     * Removes an immediate subgroup from the receiver.
-     * 
-     * @param g ThreadGroup to remove from the receiver
-     * 
+     * Removes an immediate subgroup.
+     *
+     * @param g ThreadGroup to remove
+     *
      * @see #add(Thread)
      * @see #add(ThreadGroup)
      */
     private void remove(ThreadGroup g) {
-        synchronized (this.childrenGroupsLock) {
-            for (int i = 0; i < numGroups; i++) {
-                if (childrenGroups[i].equals(g)) {
-                    numGroups--;
-                    System.arraycopy(childrenGroups, i + 1, childrenGroups, i, numGroups - i);
-                    childrenGroups[numGroups] = null;
+        synchronized (groups) {
+            for (Iterator<ThreadGroup> i = groups.iterator(); i.hasNext(); ) {
+                ThreadGroup threadGroup = i.next();
+                if (threadGroup.equals(g)) {
+                    i.remove();
                     break;
                 }
             }
@@ -634,73 +527,57 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
     }
 
     /**
-     * Resumes every Thread in the receiver and recursively in all its
+     * Resumes every thread in this group and recursively in all its
      * subgroups.
-     * 
-     * @throws SecurityException if {@code this.checkAccess()} fails with
-     *         a SecurityException
-     * 
+     *
      * @see Thread#resume
      * @see #suspend
-     * 
+     *
      * @deprecated Requires deprecated method Thread.resume().
      */
     @SuppressWarnings("deprecation")
     @Deprecated
     public final void resume() {
-        checkAccess();
-        // Lock this subpart of the tree as we walk
-        synchronized (this.childrenThreadsLock) {
-            for (int i = 0; i < numThreads; i++) {
-                this.childrenThreads[i].resume();
+        synchronized (threadRefs) {
+            for (Thread thread : threads) {
+                thread.resume();
             }
         }
-        // Lock this subpart of the tree as we walk
-        synchronized (this.childrenGroupsLock) {
-            for (int i = 0; i < numGroups; i++) {
-                this.childrenGroups[i].resume();
+        synchronized (groups) {
+            for (ThreadGroup group : groups) {
+                group.resume();
             }
         }
     }
 
     /**
-     * Configures the receiver to be a daemon ThreadGroup or not. Daemon
-     * ThreadGroups are automatically destroyed when they become empty.
-     * 
-     * @param isDaemon the new value defining if receiver should be daemon or
-     *                 not
-     * 
-     * @throws SecurityException if {@code checkAccess()} for the parent
-     *         group fails with a SecurityException
-     * 
+     * Sets whether this is a daemon {@code ThreadGroup} or not. Daemon
+     * thread groups are automatically destroyed when they become empty.
+     *
+     * @param isDaemon the new value
      * @see #isDaemon
      * @see #destroy
      */
     public final void setDaemon(boolean isDaemon) {
-        checkAccess();
         this.isDaemon = isDaemon;
     }
 
     /**
-     * Configures the maximum allowed priority for a Thread in the receiver and
+     * Configures the maximum allowed priority for a {@code Thread} in this group and
      * recursively in all its subgroups.
-     * 
-     * One can never change the maximum priority of a ThreadGroup to be higher
-     * than it was. Such an attempt will not result in an exception, it will
-     * simply leave the ThreadGroup with its current maximum priority.
-     * 
+     *
+     * <p>A caller can never increase the maximum priority of a thread group.
+     * Such an attempt will not result in an exception, it will
+     * simply leave the thread group with its current maximum priority.
+     *
      * @param newMax the new maximum priority to be set
-     * 
-     * @throws SecurityException if {@code checkAccess()} fails with a
-     *         SecurityException
+     *
      * @throws IllegalArgumentException if the new priority is greater than
      *         Thread.MAX_PRIORITY or less than Thread.MIN_PRIORITY
-     * 
+     *
      * @see #getMaxPriority
      */
     public final void setMaxPriority(int newMax) {
-        checkAccess();
-
         if (newMax <= this.maxPriority) {
             if (newMax < Thread.MIN_PRIORITY) {
                 newMax = Thread.MIN_PRIORITY;
@@ -708,44 +585,21 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
 
             int parentPriority = parent == null ? newMax : parent.getMaxPriority();
             this.maxPriority = parentPriority <= newMax ? parentPriority : newMax;
-            // Lock this subpart of the tree as we walk
-            synchronized (this.childrenGroupsLock) {
-                // ??? why not maxPriority
-                for (int i = 0; i < numGroups; i++) {
-                    this.childrenGroups[i].setMaxPriority(newMax);
+            synchronized (groups) {
+                for (ThreadGroup group : groups) {
+                    group.setMaxPriority(newMax);
                 }
             }
         }
     }
 
     /**
-     * Sets the parent ThreadGroup of the receiver, and adds the receiver to the
-     * parent's collection of immediate children (if {@code parent} is
-     * not {@code null}).
-     * 
-     * @param parent The parent ThreadGroup, or null if the receiver is to be
-     *        the root ThreadGroup
-     * 
-     * @see #getParent
-     * @see #parentOf
-     */
-    private void setParent(ThreadGroup parent) {
-        if (parent != null) {
-            parent.add(this);
-        }
-        this.parent = parent;
-    }
-
-    /**
-     * Stops every Thread in the receiver and recursively in all its subgroups.
-     * 
-     * @throws SecurityException if {@code this.checkAccess()} fails with
-     *         a SecurityException
-     * 
+     * Stops every thread in this group and recursively in all its subgroups.
+     *
      * @see Thread#stop()
      * @see Thread#stop(Throwable)
      * @see ThreadDeath
-     * 
+     *
      * @deprecated Requires deprecated method Thread.stop().
      */
     @SuppressWarnings("deprecation")
@@ -756,45 +610,34 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
         }
     }
 
-    /**
-     * @deprecated Requires deprecated method Thread.suspend().
-     */
     @SuppressWarnings("deprecation")
-    @Deprecated
-    private final boolean stopHelper() {
-        checkAccess();
-
+    private boolean stopHelper() {
         boolean stopCurrent = false;
-        // Lock this subpart of the tree as we walk
-        synchronized (this.childrenThreadsLock) {
+        synchronized (threadRefs) {
             Thread current = Thread.currentThread();
-            for (int i = 0; i < numThreads; i++) {
-                if (this.childrenThreads[i] == current) {
+            for (Thread thread : threads) {
+                if (thread == current) {
                     stopCurrent = true;
                 } else {
-                    this.childrenThreads[i].stop();
+                    thread.stop();
                 }
             }
         }
-        // Lock this subpart of the tree as we walk
-        synchronized (this.childrenGroupsLock) {
-            for (int i = 0; i < numGroups; i++) {
-                stopCurrent |= this.childrenGroups[i].stopHelper();
+        synchronized (groups) {
+            for (ThreadGroup group : groups) {
+                stopCurrent |= group.stopHelper();
             }
         }
         return stopCurrent;
     }
 
     /**
-     * Suspends every Thread in the receiver and recursively in all its
+     * Suspends every thread in this group and recursively in all its
      * subgroups.
-     * 
-     * @throws SecurityException if {@code this.checkAccess()} fails with
-     *         a SecurityException
-     * 
+     *
      * @see Thread#suspend
      * @see #resume
-     * 
+     *
      * @deprecated Requires deprecated method Thread.suspend().
      */
     @SuppressWarnings("deprecation")
@@ -805,67 +648,79 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
         }
     }
 
-    /**
-     * @deprecated Requires deprecated method Thread.suspend().
-     */
     @SuppressWarnings("deprecation")
-    @Deprecated
-    private final boolean suspendHelper() {
-        checkAccess();
-
+    private boolean suspendHelper() {
         boolean suspendCurrent = false;
-        // Lock this subpart of the tree as we walk
-        synchronized (this.childrenThreadsLock) {
+        synchronized (threadRefs) {
             Thread current = Thread.currentThread();
-            for (int i = 0; i < numThreads; i++) {
-                if (this.childrenThreads[i] == current) {
+            for (Thread thread : threads) {
+                if (thread == current) {
                     suspendCurrent = true;
                 } else {
-                    this.childrenThreads[i].suspend();
+                    thread.suspend();
                 }
             }
         }
-        // Lock this subpart of the tree as we walk
-        synchronized (this.childrenGroupsLock) {
-            for (int i = 0; i < numGroups; i++) {
-                suspendCurrent |= this.childrenGroups[i].suspendHelper();
+        synchronized (groups) {
+            for (ThreadGroup group : groups) {
+                suspendCurrent |= group.suspendHelper();
             }
         }
         return suspendCurrent;
     }
 
-    /**
-     * Returns a string containing a concise, human-readable description of the
-     * receiver.
-     * 
-     * @return a printable representation of the ThreadGroup
-     */
     @Override
     public String toString() {
-        return getClass().getName() + "[name=" + this.getName() + ",maxpri="
-                + this.getMaxPriority() + "]";
+        return getClass().getName() + "[name=" + getName()
+                + ",maxPriority=" + getMaxPriority() + "]";
     }
 
     /**
-     * Handles uncaught exceptions. Any uncaught exception in any Thread
-     * is forwarded (by the VM) to the Thread's ThreadGroup by sending this
-     * message (uncaughtException). This allows users to define custom
-     * ThreadGroup classes and custom behavior for when a Thread has an
-     * uncaughtException or when it does (ThreadDeath).
-     * 
+     * Handles uncaught exceptions. Any uncaught exception in any {@code Thread}
+     * is forwarded to the thread's {@code ThreadGroup} by invoking this
+     * method.
+     *
+     * <p>New code should use {@link Thread#setUncaughtExceptionHandler} instead of thread groups.
+     *
      * @param t the Thread that terminated with an uncaught exception
      * @param e the uncaught exception itself
-     * 
-     * @see Thread#stop()
-     * @see Thread#stop(Throwable)
-     * @see ThreadDeath
      */
     public void uncaughtException(Thread t, Throwable e) {
         if (parent != null) {
             parent.uncaughtException(t, e);
+        } else if (Thread.getDefaultUncaughtExceptionHandler() != null) {
+            // TODO The spec is unclear regarding this. What do we do?
+            Thread.getDefaultUncaughtExceptionHandler().uncaughtException(t, e);
         } else if (!(e instanceof ThreadDeath)) {
             // No parent group, has to be 'system' Thread Group
             e.printStackTrace(System.err);
         }
+    }
+
+    /**
+     * Called by the Thread constructor.
+     */
+    final void addThread(Thread thread) throws IllegalThreadStateException {
+        synchronized (threadRefs) {
+            if (isDestroyed) {
+                throw new IllegalThreadStateException();
+            }
+            threadRefs.add(new WeakReference<Thread>(thread));
+        }
+    }
+
+    /**
+     * Called by the VM when a Thread dies.
+     */
+    final void removeThread(Thread thread) throws IllegalThreadStateException {
+        synchronized (threadRefs) {
+            for (Iterator<Thread> i = threads.iterator(); i.hasNext(); ) {
+                if (i.next().equals(thread)) {
+                    i.remove();
+                    break;
+                }
+            }
+        }
+        destroyIfEmptyDaemon();
     }
 }

@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,6 +17,7 @@
 
 package java.util.logging;
 
+import dalvik.system.VMStack;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -25,9 +26,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
-import org.apache.harmony.kernel.vm.VM;
-import org.apache.harmony.logging.internal.nls.Messages;
+import libcore.util.Objects;
 
 /**
  * {@code Level} objects are used to indicate the level of logging. There are a
@@ -49,51 +48,51 @@ public class Level implements Serializable {
     /**
      * The OFF level provides no logging messages.
      */
-    public static final Level OFF = new Level("OFF", Integer.MAX_VALUE); //$NON-NLS-1$
+    public static final Level OFF = new Level("OFF", Integer.MAX_VALUE);
 
     /**
      * The SEVERE level provides severe failure messages.
      */
-    public static final Level SEVERE = new Level("SEVERE", 1000); //$NON-NLS-1$
+    public static final Level SEVERE = new Level("SEVERE", 1000);
 
     /**
      * The WARNING level provides warnings.
      */
-    public static final Level WARNING = new Level("WARNING", 900); //$NON-NLS-1$
+    public static final Level WARNING = new Level("WARNING", 900);
 
     /**
      * The INFO level provides informative messages.
      */
-    public static final Level INFO = new Level("INFO", 800); //$NON-NLS-1$
+    public static final Level INFO = new Level("INFO", 800);
 
     /**
      * The CONFIG level provides static configuration messages.
      */
-    public static final Level CONFIG = new Level("CONFIG", 700); //$NON-NLS-1$
+    public static final Level CONFIG = new Level("CONFIG", 700);
 
     /**
      * The FINE level provides tracing messages.
      */
-    public static final Level FINE = new Level("FINE", 500); //$NON-NLS-1$
+    public static final Level FINE = new Level("FINE", 500);
 
     /**
      * The FINER level provides more detailed tracing messages.
      */
-    public static final Level FINER = new Level("FINER", 400); //$NON-NLS-1$
+    public static final Level FINER = new Level("FINER", 400);
 
     /**
      * The FINEST level provides highly detailed tracing messages.
      */
-    public static final Level FINEST = new Level("FINEST", 300); //$NON-NLS-1$
+    public static final Level FINEST = new Level("FINEST", 300);
 
     /**
      * The ALL level provides all logging messages.
      */
-    public static final Level ALL = new Level("ALL", Integer.MIN_VALUE); //$NON-NLS-1$
+    public static final Level ALL = new Level("ALL", Integer.MIN_VALUE);
 
     /**
      * Parses a level name into a {@code Level} object.
-     * 
+     *
      * @param name
      *            the name of the desired {@code level}, which cannot be
      *            {@code null}.
@@ -105,8 +104,7 @@ public class Level implements Serializable {
      */
     public static Level parse(String name) throws IllegalArgumentException {
         if (name == null) {
-            // logging.1C=The 'name' parameter is null.
-            throw new NullPointerException(Messages.getString("logging.1C")); //$NON-NLS-1$
+            throw new NullPointerException("name == null");
         }
 
         boolean isNameAnInt;
@@ -140,9 +138,7 @@ public class Level implements Serializable {
         }
 
         if (!isNameAnInt) {
-            // logging.1D=Cannot parse this name: {0}
-            throw new IllegalArgumentException(Messages.getString(
-                    "logging.1D", name)); //$NON-NLS-1$
+            throw new IllegalArgumentException("Cannot parse name '" + name + "'");
         }
 
         return new Level(name, nameAsInt);
@@ -150,21 +146,21 @@ public class Level implements Serializable {
 
     /**
      * The name of this Level.
-     * 
+     *
      * @serial
      */
     private final String name;
 
     /**
      * The integer value indicating the level.
-     * 
+     *
      * @serial
      */
     private final int value;
 
     /**
      * The name of the resource bundle used to localize the level name.
-     * 
+     *
      * @serial
      */
     private final String resourceBundleName;
@@ -178,7 +174,7 @@ public class Level implements Serializable {
     /**
      * Constructs an instance of {@code Level} taking the supplied name and
      * level value.
-     * 
+     *
      * @param name
      *            the name of the level.
      * @param level
@@ -193,7 +189,7 @@ public class Level implements Serializable {
     /**
      * Constructs an instance of {@code Level} taking the supplied name, level
      * value and resource bundle name.
-     * 
+     *
      * @param name
      *            the name of the level.
      * @param level
@@ -205,16 +201,15 @@ public class Level implements Serializable {
      */
     protected Level(String name, int level, String resourceBundleName) {
         if (name == null) {
-            // logging.1C=The 'name' parameter is null.
-            throw new NullPointerException(Messages.getString("logging.1C")); //$NON-NLS-1$
+            throw new NullPointerException("name == null");
         }
         this.name = name;
         this.value = level;
         this.resourceBundleName = resourceBundleName;
         if (resourceBundleName != null) {
             try {
-                rb = ResourceBundle.getBundle(resourceBundleName, Locale
-                        .getDefault(), VM.callerClassLoader());
+                rb = ResourceBundle.getBundle(resourceBundleName,
+                        Locale.getDefault(), VMStack.getCallingClassLoader());
             } catch (MissingResourceException e) {
                 rb = null;
             }
@@ -226,7 +221,7 @@ public class Level implements Serializable {
 
     /**
      * Gets the name of this level.
-     * 
+     *
      * @return this level's name.
      */
     public String getName() {
@@ -235,7 +230,7 @@ public class Level implements Serializable {
 
     /**
      * Gets the name of the resource bundle associated with this level.
-     * 
+     *
      * @return the name of this level's resource bundle.
      */
     public String getResourceBundleName() {
@@ -244,7 +239,7 @@ public class Level implements Serializable {
 
     /**
      * Gets the integer value indicating this level.
-     * 
+     *
      * @return this level's integer value.
      */
     public final int intValue() {
@@ -254,7 +249,7 @@ public class Level implements Serializable {
     /**
      * Serialization helper method to maintain singletons and add any new
      * levels.
-     * 
+     *
      * @return the resolved instance.
      */
     private Object readResolve() {
@@ -266,10 +261,7 @@ public class Level implements Serializable {
                 if (!name.equals(level.name)) {
                     continue;
                 }
-                if (resourceBundleName == level.resourceBundleName) {
-                    return level;
-                } else if (resourceBundleName != null
-                        && resourceBundleName.equals(level.resourceBundleName)) {
+                if (Objects.equal(resourceBundleName, level.resourceBundleName)) {
                     return level;
                 }
             }
@@ -281,7 +273,7 @@ public class Level implements Serializable {
 
     /**
      * Serialization helper to setup transient resource bundle instance.
-     * 
+     *
      * @param in
      *            the input stream to read the instance data from.
      * @throws IOException
@@ -305,7 +297,7 @@ public class Level implements Serializable {
      * Gets the localized name of this level. The default locale is used. If no
      * resource bundle is associated with this level then the original level
      * name is returned.
-     * 
+     *
      * @return the localized name of this level.
      */
     public String getLocalizedName() {
@@ -323,7 +315,7 @@ public class Level implements Serializable {
     /**
      * Compares two {@code Level} objects for equality. They are considered to
      * be equal if they have the same level value.
-     * 
+     *
      * @param o
      *            the other object to compare this level to.
      * @return {@code true} if this object equals to the supplied object,
@@ -344,7 +336,7 @@ public class Level implements Serializable {
 
     /**
      * Returns the hash code of this {@code Level} object.
-     * 
+     *
      * @return this level's hash code.
      */
     @Override
@@ -355,7 +347,7 @@ public class Level implements Serializable {
     /**
      * Returns the string representation of this {@code Level} object. In
      * this case, it is the level's name.
-     * 
+     *
      * @return the string representation of this level.
      */
     @Override

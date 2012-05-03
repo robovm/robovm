@@ -36,10 +36,10 @@ public class StringIndexOutOfBoundsException extends IndexOutOfBoundsException {
      * Constructs a new {@code StringIndexOutOfBoundsException} with the current
      * stack trace and a detail message that is based on the specified invalid
      * {@code index}.
-     * 
+     *
      * @param index
      *            the index which is out of bounds.
-     */    
+     */
     public StringIndexOutOfBoundsException(int index) {
         super("String index out of range: " + index);
     }
@@ -47,7 +47,7 @@ public class StringIndexOutOfBoundsException extends IndexOutOfBoundsException {
     /**
      * Constructs a new {@code StringIndexOutOfBoundsException} with the current
      * stack trace and the specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

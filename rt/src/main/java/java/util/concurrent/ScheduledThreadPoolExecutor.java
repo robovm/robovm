@@ -9,6 +9,10 @@ import java.util.concurrent.atomic.*;
 import java.util.concurrent.locks.*;
 import java.util.*;
 
+// BEGIN android-note
+// Omit class-level docs on setRemoveOnCancelPolicy()
+// END android-note
+
 /**
  * A {@link ThreadPoolExecutor} that can additionally schedule
  * commands to run after a given delay, or to execute
@@ -24,17 +28,14 @@ import java.util.*;
  * submission.
  *
  * <p>When a submitted task is cancelled before it is run, execution
- * is suppressed. By default, such a cancelled task is not
+ * is suppressed. Such a cancelled task is not
  * automatically removed from the work queue until its delay
  * elapses. While this enables further inspection and monitoring, it
- * may also cause unbounded retention of cancelled tasks. To avoid
- * this, set {@link #setRemoveOnCancelPolicy} to {@code true}, which
- * causes tasks to be immediately removed from the work queue at
- * time of cancellation.
+ * may also cause unbounded retention of cancelled tasks.
  *
  * <p>Successive executions of a task scheduled via
- * <code>scheduleAtFixedRate</code> or
- * <code>scheduleWithFixedDelay</code> do not overlap. While different
+ * {@code scheduleAtFixedRate} or
+ * {@code scheduleWithFixedDelay} do not overlap. While different
  * executions may be performed by different threads, the effects of
  * prior executions <a
  * href="package-summary.html#MemoryVisibility"><i>happen-before</i></a>
@@ -331,8 +332,12 @@ public class ScheduledThreadPoolExecutor
             getExecuteExistingDelayedTasksAfterShutdownPolicy();
         boolean keepPeriodic =
             getContinueExistingPeriodicTasksAfterShutdownPolicy();
-        if (!keepDelayed && !keepPeriodic)
+        if (!keepDelayed && !keepPeriodic) {
+            for (Object e : q.toArray())
+                if (e instanceof RunnableScheduledFuture<?>)
+                    ((RunnableScheduledFuture<?>) e).cancel(false);
             q.clear();
+        }
         else {
             // Traverse snapshot to avoid iterator exceptions
             for (Object e : q.toArray()) {
@@ -407,7 +412,7 @@ public class ScheduledThreadPoolExecutor
      * @throws NullPointerException if {@code threadFactory} is null
      */
     public ScheduledThreadPoolExecutor(int corePoolSize,
-                             ThreadFactory threadFactory) {
+                                       ThreadFactory threadFactory) {
         super(corePoolSize, Integer.MAX_VALUE, 0, TimeUnit.NANOSECONDS,
               new DelayedWorkQueue(), threadFactory);
     }
@@ -424,7 +429,7 @@ public class ScheduledThreadPoolExecutor
      * @throws NullPointerException if {@code handler} is null
      */
     public ScheduledThreadPoolExecutor(int corePoolSize,
-                              RejectedExecutionHandler handler) {
+                                       RejectedExecutionHandler handler) {
         super(corePoolSize, Integer.MAX_VALUE, 0, TimeUnit.NANOSECONDS,
               new DelayedWorkQueue(), handler);
     }
@@ -444,8 +449,8 @@ public class ScheduledThreadPoolExecutor
      *         {@code handler} is null
      */
     public ScheduledThreadPoolExecutor(int corePoolSize,
-                              ThreadFactory threadFactory,
-                              RejectedExecutionHandler handler) {
+                                       ThreadFactory threadFactory,
+                                       RejectedExecutionHandler handler) {
         super(corePoolSize, Integer.MAX_VALUE, 0, TimeUnit.NANOSECONDS,
               new DelayedWorkQueue(), threadFactory, handler);
     }
@@ -497,7 +502,7 @@ public class ScheduledThreadPoolExecutor
         delayedExecute(t);
         return t;
     }
-    
+
     /**
      * @throws RejectedExecutionException {@inheritDoc}
      * @throws NullPointerException       {@inheritDoc}
@@ -684,8 +689,9 @@ public class ScheduledThreadPoolExecutor
      *
      * @param value if {@code true}, remove on cancellation, else don't
      * @see #getRemoveOnCancelPolicy
+     * @since 1.7
      */
-    void setRemoveOnCancelPolicy(boolean value) {
+    /*public*/ void setRemoveOnCancelPolicy(boolean value) { // android-changed
         removeOnCancel = value;
     }
 
@@ -697,8 +703,9 @@ public class ScheduledThreadPoolExecutor
      * @return {@code true} if cancelled tasks are immediately removed
      *         from the queue
      * @see #setRemoveOnCancelPolicy
+     * @since 1.7
      */
-    boolean getRemoveOnCancelPolicy() {
+    /*public*/ boolean getRemoveOnCancelPolicy() { // android-changed
         return removeOnCancel;
     }
 

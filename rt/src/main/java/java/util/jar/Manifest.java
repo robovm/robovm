@@ -17,21 +17,20 @@
 
 package java.util.jar;
 
-import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharsetEncoder;
+import java.nio.charset.Charsets;
 import java.nio.charset.CoderResult;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.apache.harmony.archive.internal.nls.Messages;
-import org.apache.harmony.luni.util.InputStreamHelper;
-import org.apache.harmony.luni.util.ThreadLocalCache;
+import libcore.io.Streams;
 
 /**
  * The {@code Manifest} class is used to obtain attribute information for a
@@ -44,8 +43,20 @@ public class Manifest implements Cloneable {
 
     private static final byte[] VALUE_SEPARATOR = new byte[] { ':', ' ' };
 
-    private static final Attributes.Name NAME_ATTRIBUTE = new Attributes.Name(
-            "Name"); //$NON-NLS-1$
+    private static final Attributes.Name NAME_ATTRIBUTE = new Attributes.Name("Name");
+
+    private static final Field BAIS_BUF = getByteArrayInputStreamField("buf");
+    private static final Field BAIS_POS = getByteArrayInputStreamField("pos");
+
+    private static Field getByteArrayInputStreamField(String name) {
+        try {
+            Field f = ByteArrayInputStream.class.getDeclaredField(name);
+            f.setAccessible(true);
+            return f;
+        } catch (Exception ex) {
+            throw new AssertionError(ex);
+        }
+    }
 
     private Attributes mainAttributes = new Attributes();
 
@@ -64,11 +75,6 @@ public class Manifest implements Cloneable {
     private HashMap<String, Chunk> chunks;
 
     /**
-     * Manifest bytes are used for delayed entry parsing.
-     */
-    private InitManifest im;
-
-    /**
      * The end of the main attributes section in the manifest is needed in
      * verification.
      */
@@ -78,7 +84,6 @@ public class Manifest implements Cloneable {
      * Creates a new {@code Manifest} instance.
      */
     public Manifest() {
-        super();
     }
 
     /**
@@ -91,7 +96,6 @@ public class Manifest implements Cloneable {
      *             if an IO error occurs while creating this {@code Manifest}
      */
     public Manifest(InputStream is) throws IOException {
-        super();
         read(is);
     }
 
@@ -121,7 +125,6 @@ public class Manifest implements Cloneable {
      * associated with this {@code Manifest}.
      */
     public void clear() {
-        im = null;
         entries.clear();
         mainAttributes.clear();
     }
@@ -146,20 +149,7 @@ public class Manifest implements Cloneable {
      * @return the map of entry attributes.
      */
     public Map<String, Attributes> getEntries() {
-        initEntries();
         return entries;
-    }
-
-    private void initEntries() {
-        if (im == null) {
-            return;
-        }
-        // try {
-        // im.initEntries(entries, chunks);
-        // } catch (IOException ioe) {
-        // throw new RuntimeException(ioe);
-        // }
-        // im = null;
     }
 
     /**
@@ -197,21 +187,19 @@ public class Manifest implements Cloneable {
     }
 
     /**
-     * Constructs a new {@code Manifest} instance obtaining attribute
-     * information from the specified input stream.
+     * Merges name/attribute pairs read from the input stream {@code is} into this manifest.
      *
      * @param is
      *            The {@code InputStream} to read from.
      * @throws IOException
-     *             If an error occurs reading the {@code Manifest}.
+     *             If an error occurs reading the manifest.
      */
     public void read(InputStream is) throws IOException {
         byte[] buf;
-        // Try to read get a reference to the bytes directly
-        try {
-            buf = InputStreamHelper.expose(is);
-        } catch (UnsupportedOperationException uoe) {
-            buf = readFully(is);
+        if (is instanceof ByteArrayInputStream) {
+            buf = exposeByteArrayInputStreamBytes((ByteArrayInputStream) is);
+        } else {
+            buf = Streams.readFullyNoClose(is);
         }
 
         if (buf.length == 0) {
@@ -222,69 +210,42 @@ public class Manifest implements Cloneable {
         // replace EOF and NUL with another new line
         // which does not trigger an error
         byte b = buf[buf.length - 1];
-        if (0 == b || 26 == b) {
+        if (b == 0 || b == 26) {
             buf[buf.length - 1] = '\n';
         }
 
         // Attributes.Name.MANIFEST_VERSION is not used for
         // the second parameter for RI compatibility
-        im = new InitManifest(buf, mainAttributes, null);
+        InitManifest im = new InitManifest(buf, mainAttributes, null);
         mainEnd = im.getPos();
-        // FIXME
         im.initEntries(entries, chunks);
-        im = null;
     }
 
-    /*
-     * Helper to read the entire contents of the manifest from the
-     * given input stream.  Usually we can do this in a single read
-     * but we need to account for 'infinite' streams, by ensuring we
-     * have a line feed within a reasonable number of characters.
+    /**
+     * Returns a byte[] containing all the bytes from a ByteArrayInputStream.
+     * Where possible, this returns the actual array rather than a copy.
      */
-    private byte[] readFully(InputStream is) throws IOException {
-        // Initial read
-        byte[] buffer = new byte[4096];
-        int count = is.read(buffer);
-        int nextByte = is.read();
-
-        // Did we get it all in one read?
-        if (nextByte == -1) {
-            byte[] dest = new byte[count];
-            System.arraycopy(buffer, 0, dest, 0, count);
-            return dest;
-        }
-
-        // Does it look like a manifest?
-        if (!containsLine(buffer, count)) {
-            // archive.2E=Manifest is too long
-            throw new IOException(Messages.getString("archive.2E")); //$NON-NLS-1$
-        }
-
-        // Requires additional reads
-        ByteArrayOutputStream baos = new ByteArrayOutputStream(count * 2);
-        baos.write(buffer, 0, count);
-        baos.write(nextByte);
-        while (true) {
-            count = is.read(buffer);
-            if (count == -1) {
-                return baos.toByteArray();
+    private static byte[] exposeByteArrayInputStreamBytes(ByteArrayInputStream bais) {
+        byte[] buffer;
+        synchronized (bais) {
+            byte[] buf;
+            int pos;
+            try {
+                buf = (byte[]) BAIS_BUF.get(bais);
+                pos = BAIS_POS.getInt(bais);
+            } catch (IllegalAccessException iae) {
+                throw new AssertionError(iae);
             }
-            baos.write(buffer, 0, count);
-        }
-    }
-
-    /*
-     * Check to see if the buffer contains a newline or carriage
-     * return character within the first 'length' bytes.  Used to
-     * check the validity of the manifest input stream.
-     */
-    private boolean containsLine(byte[] buffer, int length) {
-        for (int i = 0; i < length; i++) {
-            if (buffer[i] == 0x0A || buffer[i] == 0x0D) {
-                return true;
+            int available = bais.available();
+            if (pos == 0 && buf.length == available) {
+                buffer = buf;
+            } else {
+                buffer = new byte[available];
+                System.arraycopy(buf, pos, buffer, 0, available);
             }
+            bais.skip(available);
         }
-        return false;
+        return buffer;
     }
 
     /**
@@ -344,20 +305,17 @@ public class Manifest implements Cloneable {
      *             If an error occurs writing the {@code Manifest}.
      */
     static void write(Manifest manifest, OutputStream out) throws IOException {
-        CharsetEncoder encoder = ThreadLocalCache.utf8Encoder.get();
-        ByteBuffer buffer = ThreadLocalCache.byteBuffer.get();
+        CharsetEncoder encoder = Charsets.UTF_8.newEncoder();
+        ByteBuffer buffer = ByteBuffer.allocate(LINE_LENGTH_LIMIT);
 
-        String version = manifest.mainAttributes
-                .getValue(Attributes.Name.MANIFEST_VERSION);
+        String version = manifest.mainAttributes.getValue(Attributes.Name.MANIFEST_VERSION);
         if (version != null) {
-            writeEntry(out, Attributes.Name.MANIFEST_VERSION, version, encoder,
-                    buffer);
+            writeEntry(out, Attributes.Name.MANIFEST_VERSION, version, encoder, buffer);
             Iterator<?> entries = manifest.mainAttributes.keySet().iterator();
             while (entries.hasNext()) {
                 Attributes.Name name = (Attributes.Name) entries.next();
                 if (!name.equals(Attributes.Name.MANIFEST_VERSION)) {
-                    writeEntry(out, name, manifest.mainAttributes
-                            .getValue(name), encoder, buffer);
+                    writeEntry(out, name, manifest.mainAttributes.getValue(name), encoder, buffer);
                 }
             }
         }
@@ -377,25 +335,18 @@ public class Manifest implements Cloneable {
     }
 
     private static void writeEntry(OutputStream os, Attributes.Name name,
-            String value, CharsetEncoder encoder, ByteBuffer bBuf)
-            throws IOException {
-        byte[] out = name.getBytes();
-        if (out.length > LINE_LENGTH_LIMIT) {
-            throw new IOException(Messages.getString(
-                    "archive.33", name, Integer.valueOf(LINE_LENGTH_LIMIT))); //$NON-NLS-1$
-        }
-
-        os.write(out);
+            String value, CharsetEncoder encoder, ByteBuffer bBuf) throws IOException {
+        String nameString = name.getName();
+        os.write(nameString.getBytes(Charsets.US_ASCII));
         os.write(VALUE_SEPARATOR);
 
         encoder.reset();
-        bBuf.clear().limit(LINE_LENGTH_LIMIT - out.length - 2);
+        bBuf.clear().limit(LINE_LENGTH_LIMIT - nameString.length() - 2);
 
         CharBuffer cBuf = CharBuffer.wrap(value);
-        CoderResult r;
 
         while (true) {
-            r = encoder.encode(cBuf, bBuf, true);
+            CoderResult r = encoder.encode(cBuf, bBuf, true);
             if (CoderResult.UNDERFLOW == r) {
                 r = encoder.flush(bBuf);
             }

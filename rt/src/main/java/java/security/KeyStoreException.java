@@ -19,7 +19,7 @@ package java.security;
 
 /**
  * {@code KeyStoreException} is a general {@code KeyStore} exception.
- * 
+ *
  * @see KeyStore
  */
 public class KeyStoreException extends GeneralSecurityException {

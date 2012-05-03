@@ -15,16 +15,11 @@
  *  limitations under the License.
  */
 
-/**
-* @author Alexander Y. Kleymenov
-*/
-
 package javax.crypto.spec;
 
 import java.security.spec.KeySpec;
 import java.util.Arrays;
-
-import org.apache.harmony.crypto.internal.nls.Messages;
+import libcore.util.EmptyArray;
 
 /**
  * The key specification for a <i>password based encryption</i> key.
@@ -47,7 +42,7 @@ public class PBEKeySpec implements KeySpec {
      */
     public PBEKeySpec(char[] password) {
         if (password == null) {
-            this.password = new char[0];
+            this.password = EmptyArray.CHAR;
         } else {
             this.password = new char[password.length];
             System.arraycopy(password, 0, this.password, 0, password.length);
@@ -78,21 +73,20 @@ public class PBEKeySpec implements KeySpec {
     public PBEKeySpec(char[] password, byte[] salt, int iterationCount,
                       int keyLength) {
         if (salt == null) {
-            throw new NullPointerException(Messages.getString("crypto.3B")); //$NON-NLS-1$
+            throw new NullPointerException("salt == null");
         }
         if (salt.length == 0) {
-            throw new IllegalArgumentException(Messages.getString("crypto.3C")); //$NON-NLS-1$
+            throw new IllegalArgumentException("salt.length == 0");
         }
         if (iterationCount <= 0) {
-            throw new IllegalArgumentException(
-                    Messages.getString("crypto.3D")); //$NON-NLS-1$
+            throw new IllegalArgumentException("iterationCount <= 0");
         }
         if (keyLength <= 0) {
-            throw new IllegalArgumentException(Messages.getString("crypto.3E")); //$NON-NLS-1$
+            throw new IllegalArgumentException("keyLength <= 0");
         }
 
         if (password == null) {
-            this.password = new char[0];
+            this.password = EmptyArray.CHAR;
         } else {
             this.password = new char[password.length];
             System.arraycopy(password, 0, this.password, 0, password.length);
@@ -120,18 +114,17 @@ public class PBEKeySpec implements KeySpec {
      */
     public PBEKeySpec(char[] password, byte[] salt, int iterationCount) {
         if (salt == null) {
-            throw new NullPointerException(Messages.getString("crypto.3B")); //$NON-NLS-1$
+            throw new NullPointerException("salt == null");
         }
         if (salt.length == 0) {
-            throw new IllegalArgumentException(Messages.getString("crypto.3C")); //$NON-NLS-1$
+            throw new IllegalArgumentException("salt.length == 0");
         }
         if (iterationCount <= 0) {
-            throw new IllegalArgumentException(
-                    Messages.getString("crypto.3D")); //$NON-NLS-1$
+            throw new IllegalArgumentException("iterationCount <= 0");
         }
 
         if (password == null) {
-            this.password = new char[0];
+            this.password = EmptyArray.CHAR;
         } else {
             this.password = new char[password.length];
             System.arraycopy(password, 0, this.password, 0, password.length);
@@ -159,7 +152,7 @@ public class PBEKeySpec implements KeySpec {
      */
     public final char[] getPassword() {
         if (password == null) {
-            throw new IllegalStateException(Messages.getString("crypto.3F")); //$NON-NLS-1$
+            throw new IllegalStateException("The password has been cleared");
         }
         char[] result = new char[password.length];
         System.arraycopy(password, 0, result, 0, password.length);
@@ -199,4 +192,3 @@ public class PBEKeySpec implements KeySpec {
         return keyLength;
     }
 }
-

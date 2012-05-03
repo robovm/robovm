@@ -23,6 +23,8 @@ import java.io.ObjectOutputStream;
 import java.io.ObjectStreamField;
 import java.io.Serializable;
 import java.text.DateFormatSymbols;
+import libcore.icu.ICU;
+import libcore.icu.LocaleData;
 
 /**
  * {@code Calendar} is an abstract base class for converting between a
@@ -31,7 +33,7 @@ import java.text.DateFormatSymbols;
  * {@code HOUR}, and so on. (A {@code Date} object represents a
  * specific instant in time with millisecond precision. See {@link Date} for
  * information about the {@code Date} class.)
- * 
+ *
  * <p>
  * Subclasses of {@code Calendar} interpret a {@code Date}
  * according to the rules of a specific calendar system.
@@ -284,64 +286,50 @@ import java.text.DateFormatSymbols;
  * @see GregorianCalendar
  * @see TimeZone
  */
-public abstract class Calendar implements Serializable, Cloneable,
-        Comparable<Calendar> {
+public abstract class Calendar implements Serializable, Cloneable, Comparable<Calendar> {
 
     private static final long serialVersionUID = -1807547505821590642L;
 
     /**
-     * Set to {@code true} when the calendar fields have been set from the time, set to
-     * {@code false} when a field is changed and the fields must be recomputed.
+     * True iff the values in {@code fields[]} correspond to {@code time}. Despite the name, this
+     * is effectively "are the values in fields[] up-to-date?" --- {@code fields[]} may contain
+     * non-zero values and {@code isSet[]} may contain {@code true} values even when
+     * {@code areFieldsSet} is false.
+     * Accessing the fields via {@code get} will ensure the fields are up-to-date.
      */
     protected boolean areFieldsSet;
 
     /**
-     * An integer array of calendar fields. The length is {@code FIELD_COUNT}.
+     * Contains broken-down field values for the current value of {@code time} if
+     * {@code areFieldsSet} is true, or stale data corresponding to some previous value otherwise.
+     * Accessing the fields via {@code get} will ensure the fields are up-to-date.
+     * The array length is always {@code FIELD_COUNT}.
      */
     protected int[] fields;
 
     /**
-     * A boolean array. Each element indicates if the corresponding field has
-     * been set. The length is {@code FIELD_COUNT}.
+     * Whether the corresponding element in {@code field[]} has been set. Initially, these are all
+     * false. The first time the fields are computed, these are set to true and remain set even if
+     * the data becomes stale: you <i>must</i> check {@code areFieldsSet} if you want to know
+     * whether the value is up-to-date.
+     * Note that {@code isSet} is <i>not</i> a safe alternative to accessing this array directly,
+     * and will likewise return stale data!
+     * The array length is always {@code FIELD_COUNT}.
      */
     protected boolean[] isSet;
 
     /**
-     * Set to {@code true} when the time has been set, set to {@code false} when a field is
-     * changed and the time must be recomputed.
+     * Whether {@code time} corresponds to the values in {@code fields[]}. If false, {@code time}
+     * is out-of-date with respect to changes {@code fields[]}.
+     * Accessing the time via {@code getTimeInMillis} will always return the correct value.
      */
     protected boolean isTimeSet;
 
-	/**
-	 * A specifier for all styles.
-	 * 
-	 * @since 1.6
-	 */
-	public static final int ALL_STYLES = 0;
-
-	/**
-	 * A specifier for a short name
-	 * 
-	 * @since 1.6
-	 */
-	public static final int SHORT = 1;
-
-	/**
-	 * A specifier for a long name
-	 * 
-	 * @since 1.6
-	 */
-	public static final int LONG = 2;
-
-	/**
-	 * The time in milliseconds since January 1, 1970.
-	 */
-	protected long time;
-
-	/**
-	 * The version of the serialized data of the class
-	 */
-	int serialVersionOnStream = 1;
+    /**
+     * A time in milliseconds since January 1, 1970. See {@code isTimeSet}.
+     * Accessing the time via {@code getTimeInMillis} will always return the correct value.
+     */
+    protected long time;
 
     transient int lastTimeFieldSet;
 
@@ -681,11 +669,32 @@ public abstract class Calendar implements Serializable, Cloneable,
      */
     public static final int PM = 1;
 
-    private static String[] fieldNames = { "ERA=", "YEAR=", "MONTH=", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            "WEEK_OF_YEAR=", "WEEK_OF_MONTH=", "DAY_OF_MONTH=", "DAY_OF_YEAR=", //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            "DAY_OF_WEEK=", "DAY_OF_WEEK_IN_MONTH=", "AM_PM=", "HOUR=", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
-            "HOUR_OF_DAY", "MINUTE=", "SECOND=", "MILLISECOND=", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            "ZONE_OFFSET=", "DST_OFFSET=" }; //$NON-NLS-1$ //$NON-NLS-2$
+    /**
+     * Requests both {@code SHORT} and {@code LONG} styles in the map returned by
+     * {@link #getDisplayNames}.
+     * @since 1.6
+     */
+    public static final int ALL_STYLES = 0;
+
+    /**
+     * Requests short names (such as "Jan") from
+     * {@link #getDisplayName} or {@link #getDisplayNames}.
+     * @since 1.6
+     */
+    public static final int SHORT = 1;
+
+    /**
+     * Requests long names (such as "January") from
+     * {@link #getDisplayName} or {@link #getDisplayNames}.
+     * @since 1.6
+     */
+    public static final int LONG = 2;
+
+    private static final String[] FIELD_NAMES = { "ERA", "YEAR", "MONTH",
+            "WEEK_OF_YEAR", "WEEK_OF_MONTH", "DAY_OF_MONTH", "DAY_OF_YEAR",
+            "DAY_OF_WEEK", "DAY_OF_WEEK_IN_MONTH", "AM_PM", "HOUR",
+            "HOUR_OF_DAY", "MINUTE", "SECOND", "MILLISECOND",
+            "ZONE_OFFSET", "DST_OFFSET" };
 
     /**
      * Constructs a {@code Calendar} instance using the default {@code TimeZone} and {@code Locale}.
@@ -712,17 +721,15 @@ public abstract class Calendar implements Serializable, Cloneable,
      */
     protected Calendar(TimeZone timezone, Locale locale) {
         this(timezone);
-        com.ibm.icu.util.Calendar icuCalendar = com.ibm.icu.util.Calendar
-                .getInstance(com.ibm.icu.util.SimpleTimeZone
-                        .getTimeZone(timezone.getID()), locale);
-        setFirstDayOfWeek(icuCalendar.getFirstDayOfWeek());
-        setMinimalDaysInFirstWeek(icuCalendar.getMinimalDaysInFirstWeek());
+        LocaleData localeData = LocaleData.get(locale);
+        setFirstDayOfWeek(localeData.firstDayOfWeek.intValue());
+        setMinimalDaysInFirstWeek(localeData.minimalDaysInFirstWeek.intValue());
     }
 
 
     /**
      * Adds the specified amount to a {@code Calendar} field.
-     * 
+     *
      * @param field
      *            the {@code Calendar} field to modify.
      * @param value
@@ -731,13 +738,13 @@ public abstract class Calendar implements Serializable, Cloneable,
      *                if {@code field} is {@code DST_OFFSET} or {@code
      *                ZONE_OFFSET}.
      */
-    abstract public void add(int field, int value);
+    public abstract void add(int field, int value);
 
     /**
      * Returns whether the {@code Date} specified by this {@code Calendar} instance is after the {@code Date}
      * specified by the parameter. The comparison is not dependent on the time
      * zones of the {@code Calendar}.
-     * 
+     *
      * @param calendar
      *            the {@code Calendar} instance to compare.
      * @return {@code true} when this Calendar is after calendar, {@code false} otherwise.
@@ -756,7 +763,7 @@ public abstract class Calendar implements Serializable, Cloneable,
      * Returns whether the {@code Date} specified by this {@code Calendar} instance is before the
      * {@code Date} specified by the parameter. The comparison is not dependent on the
      * time zones of the {@code Calendar}.
-     * 
+     *
      * @param calendar
      *            the {@code Calendar} instance to compare.
      * @return {@code true} when this Calendar is before calendar, {@code false} otherwise.
@@ -785,7 +792,7 @@ public abstract class Calendar implements Serializable, Cloneable,
 
     /**
      * Clears the specified field to zero and sets the isSet flag to {@code false}.
-     * 
+     *
      * @param field
      *            the field to clear.
      */
@@ -797,9 +804,9 @@ public abstract class Calendar implements Serializable, Cloneable,
 
     /**
      * Returns a new {@code Calendar} with the same properties.
-     * 
+     *
      * @return a shallow copy of this {@code Calendar}.
-     * 
+     *
      * @see java.lang.Cloneable
      */
     @Override
@@ -811,14 +818,14 @@ public abstract class Calendar implements Serializable, Cloneable,
             clone.zone = (TimeZone) zone.clone();
             return clone;
         } catch (CloneNotSupportedException e) {
-            return null;
+            throw new AssertionError(e);
         }
     }
 
     /**
      * Computes the time from the fields if the time has not already been set.
      * Computes the fields from the time if the fields are not already set.
-     * 
+     *
      * @throws IllegalArgumentException
      *                if the time is not set and the time cannot be computed
      *                from the current field values.
@@ -841,7 +848,7 @@ public abstract class Calendar implements Serializable, Cloneable,
 
     /**
      * Computes {@code time} from the Calendar fields.
-     * 
+     *
      * @throws IllegalArgumentException
      *                if the time cannot be computed from the current field
      *                values.
@@ -852,7 +859,7 @@ public abstract class Calendar implements Serializable, Cloneable,
      * Compares the specified object to this {@code Calendar} and returns whether they are
      * equal. The object must be an instance of {@code Calendar} and have the same
      * properties.
-     * 
+     *
      * @param object
      *            the object to compare with this object.
      * @return {@code true} if the specified object is equal to this {@code Calendar}, {@code false}
@@ -878,11 +885,11 @@ public abstract class Calendar implements Serializable, Cloneable,
     /**
      * Gets the value of the specified field after computing the field values by
      * calling {@code complete()} first.
-     * 
+     *
      * @param field
      *            the field to get.
      * @return the value of the specified field.
-     * 
+     *
      * @throws IllegalArgumentException
      *                if the fields are not set, the time is not set, and the
      *                time cannot be computed from the current field values.
@@ -897,7 +904,7 @@ public abstract class Calendar implements Serializable, Cloneable,
 
     /**
      * Gets the maximum value of the specified field for the current date.
-     * 
+     *
      * @param field
      *            the field.
      * @return the maximum value of the specified field.
@@ -922,7 +929,7 @@ public abstract class Calendar implements Serializable, Cloneable,
 
     /**
      * Gets the minimum value of the specified field for the current date.
-     * 
+     *
      * @param field
      *            the field.
      * @return the minimum value of the specified field.
@@ -946,17 +953,17 @@ public abstract class Calendar implements Serializable, Cloneable,
     }
 
     /**
-     * Gets the list of installed {@code Locale}s which support {@code Calendar}.
-     * 
-     * @return an array of {@code Locale}.
+     * Returns an array of locales for which custom {@code Calendar} instances
+     * are available.
+     * <p>Note that Android does not support user-supplied locale service providers.
      */
     public static synchronized Locale[] getAvailableLocales() {
-        return Locale.getAvailableLocales();
+        return ICU.getAvailableCalendarLocales();
     }
 
     /**
      * Gets the first day of the week for this {@code Calendar}.
-     * 
+     *
      * @return the first day of the week.
      */
     public int getFirstDayOfWeek() {
@@ -967,17 +974,17 @@ public abstract class Calendar implements Serializable, Cloneable,
      * Gets the greatest minimum value of the specified field. This is the
      * biggest value that {@code getActualMinimum} can return for any possible
      * time.
-     * 
+     *
      * @param field
      *            the field.
      * @return the greatest minimum value of the specified field.
      */
-    abstract public int getGreatestMinimum(int field);
+    public abstract int getGreatestMinimum(int field);
 
     /**
      * Constructs a new instance of the {@code Calendar} subclass appropriate for the
      * default {@code Locale}.
-     * 
+     *
      * @return a {@code Calendar} subclass instance set to the current date and time in
      *         the default {@code Timezone}.
      */
@@ -988,7 +995,7 @@ public abstract class Calendar implements Serializable, Cloneable,
     /**
      * Constructs a new instance of the {@code Calendar} subclass appropriate for the
      * specified {@code Locale}.
-     * 
+     *
      * @param locale
      *            the locale to use.
      * @return a {@code Calendar} subclass instance set to the current date and time.
@@ -1000,7 +1007,7 @@ public abstract class Calendar implements Serializable, Cloneable,
     /**
      * Constructs a new instance of the {@code Calendar} subclass appropriate for the
      * default {@code Locale}, using the specified {@code TimeZone}.
-     * 
+     *
      * @param timezone
      *            the {@code TimeZone} to use.
      * @return a {@code Calendar} subclass instance set to the current date and time in
@@ -1021,8 +1028,7 @@ public abstract class Calendar implements Serializable, Cloneable,
      * @return a {@code Calendar} subclass instance set to the current date and time in
      *         the specified timezone.
      */
-    public static synchronized Calendar getInstance(TimeZone timezone,
-            Locale locale) {
+    public static synchronized Calendar getInstance(TimeZone timezone, Locale locale) {
         return new GregorianCalendar(timezone, locale);
     }
 
@@ -1030,26 +1036,26 @@ public abstract class Calendar implements Serializable, Cloneable,
      * Gets the smallest maximum value of the specified field. This is the
      * smallest value that {@code getActualMaximum()} can return for any
      * possible time.
-     * 
+     *
      * @param field
      *            the field number.
      * @return the smallest maximum value of the specified field.
      */
-    abstract public int getLeastMaximum(int field);
+    public abstract int getLeastMaximum(int field);
 
     /**
      * Gets the greatest maximum value of the specified field. This returns the
      * biggest value that {@code get} can return for the specified field.
-     * 
+     *
      * @param field
      *            the field.
      * @return the greatest maximum value of the specified field.
      */
-    abstract public int getMaximum(int field);
+    public abstract int getMaximum(int field);
 
     /**
      * Gets the minimal days in the first week of the year.
-     * 
+     *
      * @return the minimal days in the first week of the year.
      */
     public int getMinimalDaysInFirstWeek() {
@@ -1059,18 +1065,18 @@ public abstract class Calendar implements Serializable, Cloneable,
     /**
      * Gets the smallest minimum value of the specified field. this returns the
      * smallest value thet {@code get} can return for the specified field.
-     * 
+     *
      * @param field
      *            the field number.
      * @return the smallest minimum value of the specified field.
      */
-    abstract public int getMinimum(int field);
+    public abstract int getMinimum(int field);
 
     /**
      * Gets the time of this {@code Calendar} as a {@code Date} object.
-     * 
+     *
      * @return a new {@code Date} initialized to the time of this {@code Calendar}.
-     * 
+     *
      * @throws IllegalArgumentException
      *                if the time is not set and the time cannot be computed
      *                from the current field values.
@@ -1081,9 +1087,9 @@ public abstract class Calendar implements Serializable, Cloneable,
 
     /**
      * Computes the time from the fields if required and returns the time.
-     * 
+     *
      * @return the time of this {@code Calendar}.
-     * 
+     *
      * @throws IllegalArgumentException
      *                if the time is not set and the time cannot be computed
      *                from the current field values.
@@ -1098,7 +1104,7 @@ public abstract class Calendar implements Serializable, Cloneable,
 
     /**
      * Gets the timezone of this {@code Calendar}.
-     * 
+     *
      * @return the {@code TimeZone} used by this {@code Calendar}.
      */
     public TimeZone getTimeZone() {
@@ -1108,9 +1114,9 @@ public abstract class Calendar implements Serializable, Cloneable,
     /**
      * Returns an integer hash code for the receiver. Objects which are equal
      * return the same value for this method.
-     * 
+     *
      * @return the receiver's hash.
-     * 
+     *
      * @see #equals
      */
     @Override
@@ -1121,7 +1127,7 @@ public abstract class Calendar implements Serializable, Cloneable,
 
     /**
      * Gets the value of the specified field without recomputing.
-     * 
+     *
      * @param field
      *            the field.
      * @return the value of the specified field.
@@ -1133,7 +1139,7 @@ public abstract class Calendar implements Serializable, Cloneable,
     /**
      * Returns if this {@code Calendar} accepts field values which are outside the valid
      * range for the field.
-     * 
+     *
      * @return {@code true} if this {@code Calendar} is lenient, {@code false} otherwise.
      */
     public boolean isLenient() {
@@ -1141,8 +1147,17 @@ public abstract class Calendar implements Serializable, Cloneable,
     }
 
     /**
-     * Returns whether the specified field is set.
-     * 
+     * Returns whether the specified field is set. Note that the interpretation of "is set" is
+     * somewhat technical. In particular, it does <i>not</i> mean that the field's value is up
+     * to date. If you want to know whether a field contains an up-to-date value, you must also
+     * check {@code areFieldsSet}, making this method somewhat useless unless you're a subclass,
+     * in which case you can access the {@code isSet} array directly.
+     * <p>
+     * A field remains "set" from the first time its value is computed until it's cleared by one
+     * of the {@code clear} methods. Thus "set" does not mean "valid". You probably want to call
+     * {@code get} -- which will update fields as necessary -- rather than try to make use of
+     * this method.
+     *
      * @param field
      *            a {@code Calendar} field number.
      * @return {@code true} if the specified field is set, {@code false} otherwise.
@@ -1156,7 +1171,7 @@ public abstract class Calendar implements Serializable, Cloneable,
      * the field when it goes beyond the maximum or minimum value for the
      * current date. Other fields will be adjusted as required to maintain a
      * consistent date.
-     * 
+     *
      * @param field
      *            the field to roll.
      * @param value
@@ -1175,17 +1190,17 @@ public abstract class Calendar implements Serializable, Cloneable,
      * field when it goes beyond the maximum or minimum value for the current
      * date. Other fields will be adjusted as required to maintain a consistent
      * date.
-     * 
+     *
      * @param field
      *            the number indicating the field to roll.
      * @param increment
      *            {@code true} to increment the field, {@code false} to decrement.
      */
-    abstract public void roll(int field, boolean increment);
+    public abstract void roll(int field, boolean increment);
 
     /**
      * Sets a field to the specified value.
-     * 
+     *
      * @param field
      *            the code indicating the {@code Calendar} field to modify.
      * @param value
@@ -1209,7 +1224,7 @@ public abstract class Calendar implements Serializable, Cloneable,
     /**
      * Sets the year, month and day of the month fields. Other fields are not
      * changed.
-     * 
+     *
      * @param year
      *            the year.
      * @param month
@@ -1248,7 +1263,7 @@ public abstract class Calendar implements Serializable, Cloneable,
     /**
      * Sets the year, month, day of the month, hour of day, minute and second
      * fields. Other fields are not changed.
-     * 
+     *
      * @param year
      *            the year.
      * @param month
@@ -1270,7 +1285,7 @@ public abstract class Calendar implements Serializable, Cloneable,
 
     /**
      * Sets the first day of the week for this {@code Calendar}.
-     * 
+     *
      * @param value
      *            a {@code Calendar} day of the week.
      */
@@ -1281,7 +1296,7 @@ public abstract class Calendar implements Serializable, Cloneable,
     /**
      * Sets this {@code Calendar} to accept field values which are outside the valid
      * range for the field.
-     * 
+     *
      * @param value
      *            a boolean value.
      */
@@ -1291,7 +1306,7 @@ public abstract class Calendar implements Serializable, Cloneable,
 
     /**
      * Sets the minimal days in the first week of the year.
-     * 
+     *
      * @param value
      *            the minimal days in the first week of the year.
      */
@@ -1301,7 +1316,7 @@ public abstract class Calendar implements Serializable, Cloneable,
 
     /**
      * Sets the time of this {@code Calendar}.
-     * 
+     *
      * @param date
      *            a {@code Date} object.
      */
@@ -1311,7 +1326,7 @@ public abstract class Calendar implements Serializable, Cloneable,
 
     /**
      * Sets the time of this {@code Calendar}.
-     * 
+     *
      * @param milliseconds
      *            the time as the number of milliseconds since Jan. 1, 1970.
      */
@@ -1326,7 +1341,7 @@ public abstract class Calendar implements Serializable, Cloneable,
 
     /**
      * Sets the {@code TimeZone} used by this Calendar.
-     * 
+     *
      * @param timezone
      *            a {@code TimeZone}.
      */
@@ -1337,23 +1352,19 @@ public abstract class Calendar implements Serializable, Cloneable,
 
     /**
      * Returns the string representation of this {@code Calendar}.
-     * 
-     * @return the string representation of this {@code Calendar}.
      */
     @Override
-    @SuppressWarnings("nls")
     public String toString() {
-        StringBuilder result = new StringBuilder(getClass().getName() + "[time="
-                + (isTimeSet ? String.valueOf(time) : "?")
-                + ",areFieldsSet="
-                + areFieldsSet
-                + // ",areAllFieldsSet=" + areAllFieldsSet +
-                ",lenient=" + lenient + ",zone=" + zone + ",firstDayOfWeek="
-                + firstDayOfWeek + ",minimalDaysInFirstWeek="
-                + minimalDaysInFirstWeek);
+        StringBuilder result = new StringBuilder(getClass().getName() +
+                "[time=" + (isTimeSet ? String.valueOf(time) : "?") +
+                ",areFieldsSet=" + areFieldsSet +
+                ",lenient=" + lenient +
+                ",zone=" + zone.getID() +
+                ",firstDayOfWeek=" + firstDayOfWeek +
+                ",minimalDaysInFirstWeek=" + minimalDaysInFirstWeek);
         for (int i = 0; i < FIELD_COUNT; i++) {
             result.append(',');
-            result.append(fieldNames[i]);
+            result.append(FIELD_NAMES[i]);
             result.append('=');
             if (isSet[i]) {
                 result.append(fields[i]);
@@ -1368,7 +1379,7 @@ public abstract class Calendar implements Serializable, Cloneable,
     /**
      * Compares the times of the two {@code Calendar}, which represent the milliseconds
      * from the January 1, 1970 00:00:00.000 GMT (Gregorian).
-     * 
+     *
      * @param anotherCalendar
      *            another calendar that this one is compared with.
      * @return 0 if the times of the two {@code Calendar}s are equal, -1 if the time of
@@ -1381,7 +1392,7 @@ public abstract class Calendar implements Serializable, Cloneable,
      *             value.
      */
     public int compareTo(Calendar anotherCalendar) {
-        if (null == anotherCalendar) {
+        if (anotherCalendar == null) {
             throw new NullPointerException();
         }
         long timeInMillis = getTimeInMillis();
@@ -1395,163 +1406,111 @@ public abstract class Calendar implements Serializable, Cloneable,
         return -1;
     }
 
-	/**
-	 * answers the display name for given field, style and locale
-	 * 
-	 * @param field
-	 *            the field of the calendar
-	 * @param style
-	 *            the style of the name
-	 * @param locale
-	 *            the locale to use
-	 * @return the display name
-	 * @since 1.6
-	 */
-	public String getDisplayName(int field, int style, Locale locale) {
-		if (field < 0 || field >= FIELD_COUNT) {
-			throw new IllegalArgumentException();
-		}
-		if (ALL_STYLES == style) {
-			if (!lenient) {
-				throw new IllegalArgumentException();
-			}
-			style = SHORT;
-		}
-		if (SHORT != style && LONG != style) {
-			throw new IllegalArgumentException();
-		}
-		DateFormatSymbols symbol = new DateFormatSymbols(locale);
-		int fid = get(field);
-		switch (field) {
-		case MONTH:
-			return (LONG == style ? symbol.getMonths()[fid] : symbol
-					.getShortMonths()[fid]);
-		case DAY_OF_WEEK:
-			return (LONG == style ? symbol.getWeekdays()[fid] : symbol
-					.getShortWeekdays()[fid]);
-		case AM_PM:
-			return symbol.getAmPmStrings()[fid];
-		case ERA:
-			return symbol.getEras()[fid];
-		default:
-			return null;
-		}
-	}
+    /**
+     * Returns a human-readable string for the value of {@code field}
+     * using the given style and locale. If no string is available, returns null.
+     * The value is retrieved by invoking {@code get(field)}.
+     *
+     * <p>For example, {@code getDisplayName(MONTH, SHORT, Locale.US)} will return "Jan"
+     * while {@code getDisplayName(MONTH, LONG, Locale.US)} will return "January".
+     *
+     * @param field the field
+     * @param style {@code SHORT} or {@code LONG}
+     * @param locale the locale
+     * @return the display name, or null
+     * @throws NullPointerException if {@code locale == null}
+     * @throws IllegalArgumentException if {@code field} or {@code style} is invalid
+     * @since 1.6
+     */
+    public String getDisplayName(int field, int style, Locale locale) {
+        // TODO: the RI's documentation says ALL_STYLES is invalid, but actually treats it as SHORT.
+        if (style == ALL_STYLES) {
+            style = SHORT;
+        }
+        String[] array = getDisplayNameArray(field, style, locale);
+        int value = get(field);
+        return (array != null) ? array[value] : null;
+    }
 
-	/**
-	 * answers a map of display names for given field, style and locale
-	 * 
-	 * @param field
-	 *            the field of the calendar
-	 * @param style
-	 *            the style of the name
-	 * @param locale
-	 *            the locale to use
-	 * @return a map of display names
-	 * @since 1.6
-	 */
-	public Map<String, Integer> getDisplayNames(int field, int style,
-			Locale locale) {
-		if (field < 0 || field >= FIELD_COUNT) {
-			throw new IllegalArgumentException();
-		}
-		if (ALL_STYLES != style && SHORT != style && LONG != style) {
-			throw new IllegalArgumentException();
-		}
-		complete();
-		DateFormatSymbols symbol = new DateFormatSymbols(locale);
-		Map<String, Integer> ret = new HashMap<String, Integer>();
-		switch (field) {
-		case MONTH:
-			String[] months;
-			switch (style) {
-			case LONG:
-				months = symbol.getMonths();
-				break;
-			case SHORT:
-				months = symbol.getShortMonths();
-				break;
-			case ALL_STYLES:
-				months = symbol.getMonths();
-				for (int i = 0; i < months.length; i++) {
-					if (!months[i].equals("") && months[i] != null) {
-						ret.put(months[i], i);
-					}
-				}
-				months = symbol.getShortMonths();
-				break;
-			default:
-				throw new IllegalArgumentException();
-			}
-			for (int i = 0; i < months.length; i++) {
-				if (!months[i].equals("") && months[i] != null) {
-					ret.put(months[i], i);
-				}
-			}
-			break;
-		case DAY_OF_WEEK:
-			String[] weekDays;
-			switch (style) {
-			case LONG:
-				weekDays = symbol.getWeekdays();
-				break;
-			case SHORT:
-				weekDays = symbol.getShortWeekdays();
-				break;
-			case ALL_STYLES:
-				weekDays = symbol.getWeekdays();
-				for (int i = 0; i < weekDays.length; i++) {
-					if (!weekDays[i].equals("") && weekDays[i] != null) {
-						ret.put(weekDays[i], i);
-					}
-				}
-				weekDays = symbol.getWeekdays();
-				break;
-			default:
-				throw new IllegalArgumentException();
-			}
-			for (int i = 0; i < weekDays.length; i++) {
-				if (!weekDays[i].equals("") && weekDays[i] != null) {
-					ret.put(weekDays[i], i);
-				}
-			}
-			break;
-		case AM_PM:
-			String[] amPms = symbol.getAmPmStrings();
-			for (int i = 0; i < amPms.length; i++) {
-				if (!amPms[i].equals("") && amPms[i] != null) {
-					ret.put(amPms[i], i);
-				}
-			}
-			break;
-		case ERA:
-			String[] eras = symbol.getEras();
-			for (int i = 0; i < eras.length; i++) {
-				if (!eras[i].equals("") && eras[i] != null) {
-					ret.put(eras[i], i);
-				}
-			}
-			break;
-		default:
-			ret = null;
-		}
-		return ret;
-	}
+    private String[] getDisplayNameArray(int field, int style, Locale locale) {
+        if (field < 0 || field >= FIELD_COUNT) {
+            throw new IllegalArgumentException("bad field " + field);
+        }
+        checkStyle(style);
+        DateFormatSymbols dfs = DateFormatSymbols.getInstance(locale);
+        switch (field) {
+        case AM_PM:
+            return dfs.getAmPmStrings();
+        case DAY_OF_WEEK:
+            return (style == LONG) ? dfs.getWeekdays() : dfs.getShortWeekdays();
+        case ERA:
+            return dfs.getEras();
+        case MONTH:
+            return (style == LONG) ? dfs.getMonths() : dfs.getShortMonths();
+        }
+        return null;
+    }
+
+    private static void checkStyle(int style) {
+        if (style != ALL_STYLES && style != SHORT && style != LONG) {
+            throw new IllegalArgumentException("bad style " + style);
+        }
+    }
+
+    /**
+     * Returns a map of human-readable strings to corresponding values,
+     * for the given field, style, and locale.
+     * Returns null if no strings are available.
+     *
+     * <p>For example, {@code getDisplayNames(MONTH, ALL_STYLES, Locale.US)} would
+     * contain mappings from "Jan" and "January" to {@link #JANUARY}, and so on.
+     *
+     * @param field the field
+     * @param style {@code SHORT}, {@code LONG}, or {@code ALL_STYLES}
+     * @param locale the locale
+     * @return the display name, or null
+     * @throws NullPointerException if {@code locale == null}
+     * @throws IllegalArgumentException if {@code field} or {@code style} is invalid
+     * @since 1.6
+     */
+    public Map<String, Integer> getDisplayNames(int field, int style, Locale locale) {
+        checkStyle(style);
+        complete();
+        Map<String, Integer> result = new HashMap<String, Integer>();
+        if (style == SHORT || style == ALL_STYLES) {
+            insertValuesInMap(result, getDisplayNameArray(field, SHORT, locale));
+        }
+        if (style == LONG || style == ALL_STYLES) {
+            insertValuesInMap(result, getDisplayNameArray(field, LONG, locale));
+        }
+        return result.isEmpty() ? null : result;
+    }
+
+    private static void insertValuesInMap(Map<String, Integer> map, String[] values) {
+        if (values == null) {
+            return;
+        }
+        for (int i = 0; i < values.length; ++i) {
+            if (values[i] != null && !values[i].isEmpty()) {
+                map.put(values[i], i);
+            }
+        }
+    }
 
     private static final ObjectStreamField[] serialPersistentFields = {
-            new ObjectStreamField("areFieldsSet", Boolean.TYPE),
-            new ObjectStreamField("fields", int[].class),
-            new ObjectStreamField("firstDayOfWeek", Integer.TYPE),
-            new ObjectStreamField("isSet", boolean[].class),
-            new ObjectStreamField("isTimeSet", Boolean.TYPE),
-            new ObjectStreamField("lenient", Boolean.TYPE),
-            new ObjectStreamField("minimalDaysInFirstWeek", Integer.TYPE),
-            new ObjectStreamField("nextStamp", Integer.TYPE),
-            new ObjectStreamField("serialVersionOnStream", Integer.TYPE),
-            new ObjectStreamField("time", Long.TYPE),
-            new ObjectStreamField("zone", TimeZone.class), };
+        new ObjectStreamField("areFieldsSet", boolean.class),
+        new ObjectStreamField("fields", int[].class),
+        new ObjectStreamField("firstDayOfWeek", int.class),
+        new ObjectStreamField("isSet", boolean[].class),
+        new ObjectStreamField("isTimeSet", boolean.class),
+        new ObjectStreamField("lenient", boolean.class),
+        new ObjectStreamField("minimalDaysInFirstWeek", int.class),
+        new ObjectStreamField("nextStamp", int.class),
+        new ObjectStreamField("serialVersionOnStream", int.class),
+        new ObjectStreamField("time", long.class),
+        new ObjectStreamField("zone", TimeZone.class),
+    };
 
-    @SuppressWarnings("nls")
     private void writeObject(ObjectOutputStream stream) throws IOException {
         complete();
         ObjectOutputStream.PutField putFields = stream.putFields();
@@ -1569,9 +1528,7 @@ public abstract class Calendar implements Serializable, Cloneable,
         stream.writeFields();
     }
 
-    @SuppressWarnings("nls")
-    private void readObject(ObjectInputStream stream) throws IOException,
-            ClassNotFoundException {
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
         ObjectInputStream.GetField readFields = stream.readFields();
         areFieldsSet = readFields.get("areFieldsSet", false);
         this.fields = (int[]) readFields.get("fields", null);

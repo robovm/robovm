@@ -1,176 +1,129 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
+ * Copyright (C) 2009 The Android Open Source Project
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package java.net;
 
 /**
- * This class is a Network Interface address. If the address is an IPv4 one, it
- * contains an IP address, a subnet mask and a broadcast address. If it is an
- * IPv6 one, there is a network prefix length, an IPv6 prefix and an IP address.
- * 
+ * Identifies one of a network interface's addresses.
+ * These are passed back from the JNI behind NetworkInterface.getNetworkInterfaces.
+ * Multiple addresses for the same interface are collected together on the Java side.
+ *
  * @since 1.6
  */
 public class InterfaceAddress {
+    /**
+     * An IPv4 or IPv6 address.
+     */
+    private final InetAddress address;
 
-    private InetAddress addr;
+    /**
+     * The IPv4 broadcast address, or null for IPv6.
+     */
+    private final InetAddress broadcastAddress;
 
-    // the subnet mask when IPv4 or null when IPv6
-    private InetAddress mask;
+    private final short prefixLength;
 
-    // cache broadcast address for performance concern
-    private InetAddress cacheBroadcast = new InetAddress(null);
-    
-    private short prefixLength;
-    
-    InterfaceAddress(InetAddress address, short prefix) {
-        addr = address;
-        prefixLength = prefix;
-        
-        if (addr != null) {
-            mask = calSubnetMask();            
-        }
-    }
-    
-    private InetAddress calSubnetMask() {
-        // if the address is ipv4, calculate its subnet mask address
-        if (addr instanceof Inet4Address) {
-            byte[] maskAddr = new byte[4];
-            for (int i = 0; i < prefixLength; i++) {
-                maskAddr[i / 8] |= 1 << (7 - i % 8);
-            }
-            return new Inet4Address(maskAddr);
-        }
-        return null;
+    /**
+     * For IPv4.
+     */
+    InterfaceAddress(Inet4Address address, Inet4Address broadcastAddress, Inet4Address mask) {
+        this.address = address;
+        this.broadcastAddress = broadcastAddress;
+        this.prefixLength = countPrefixLength(mask);
     }
 
     /**
-     * Answers whether this object is equal to another one. Returns true when
+     * For IPv6.
+     */
+    InterfaceAddress(Inet6Address address, short prefixLength) {
+        this.address = address;
+        this.broadcastAddress = null;
+        this.prefixLength = prefixLength;
+    }
+
+    private static short countPrefixLength(Inet4Address mask) {
+        short count = 0;
+        for (byte b : mask.ipaddress) {
+            for (int i = 0; i < 8; ++i) {
+                if ((b & (1 << i)) != 0) {
+                    ++count;
+                }
+            }
+        }
+        return count;
+    }
+
+    /**
+     * Tests whether this object is equal to another one. Returns true if
      * the address, broadcast address and prefix length are all equal.
-     * 
-     * @param obj
-     *            the object to be compared.
-     * @return true if two interface addresses equals, false otherwise
+     *
+     * @param obj the object to be compared.
+     * @return true if 'obj' is equal to this InterfaceAddress, false otherwise.
      */
     @Override
     public boolean equals(Object obj) {
-        if(obj == this){
+        if (obj == this){
             return true;
         }
-        if (obj instanceof InterfaceAddress) {
-            InterfaceAddress anotherInterAddr = (InterfaceAddress) obj;
-            boolean equals = addr == null ? anotherInterAddr.getAddress() == null
-                    : addr.equals(anotherInterAddr.getAddress());
-            if (equals
-                    && (anotherInterAddr.getNetworkPrefixLength() == prefixLength)) {
-                InetAddress boardcast = cacheBroadcast.ipaddress == null ? 
-                        getBroadcast() : cacheBroadcast;
-                InetAddress anotherBoardcast = anotherInterAddr.getBroadcast();
-                equals = boardcast == null ? anotherBoardcast == null
-                        : boardcast.equals(anotherBoardcast);
-            }
-            return equals;
+        if (!(obj instanceof InterfaceAddress)) {
+            return false;
         }
-        return false;
+        InterfaceAddress rhs = (InterfaceAddress) obj;
+        return ((address == null) ? rhs.address == null : address.equals(rhs.address)) &&
+                (rhs.prefixLength == prefixLength) &&
+                ((broadcastAddress == null) ? rhs.broadcastAddress == null : broadcastAddress.equals(rhs.broadcastAddress));
     }
 
-    /**
-     * Answers a hashcode for this Interface address.
-     * 
-     * @return a hash code value.
-     */
     @Override
     public int hashCode() {
-        int hashCode = addr == null ? 0 : -addr.hashCode();
-        InetAddress boardcast =  cacheBroadcast.ipaddress == null ? 
-                getBroadcast() : cacheBroadcast;
-        hashCode += boardcast == null ? 0 : boardcast.hashCode();
+        int hashCode = address == null ? 0 : -address.hashCode();
+        hashCode += broadcastAddress == null ? 0 : broadcastAddress.hashCode();
         hashCode += prefixLength;
         return hashCode;
     }
 
     /**
-     * Answers the string representation for this interface address. The string
-     * follows the form: InetAddress / prefix length [ broadcast address ].
-     * 
+     * Returns a string representation for this interface address.
+     * The string is of the form: InetAddress / prefix length [ broadcast address ].
+     *
      * @return a string representation of this interface address.
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        if (addr != null) {
-            builder.append(addr.toString());
-        }
-        builder.append("/"); //$NON-NLS-1$
-        builder.append(prefixLength);
-        builder.append(" ["); //$NON-NLS-1$
-        InetAddress broadcast = cacheBroadcast.ipaddress == null ? 
-                getBroadcast() : cacheBroadcast;
-        if (broadcast != null) {
-            builder.append(broadcast.toString());
-        } else {
-            builder.append("null"); //$NON-NLS-1$
-        }
-        builder.append("]"); //$NON-NLS-1$
-        return builder.toString();
+        return address + "/" + prefixLength + " [" + broadcastAddress + "]";
     }
 
     /**
-     * Answers an InetAddress for this address.
-     * 
-     * @return the InetAddress for this address.
+     * Returns the InetAddress for this address.
      */
     public InetAddress getAddress() {
-        return addr;
+        return address;
     }
 
     /**
-     * Answers an InetAddress for the brodcast address.
-     * 
-     * If the address is an IPv6 one, returns null.
-     * 
-     * @return the InetAddress that represents the broadcast address or null if
-     *         there is no broadcast address.
+     * Returns the subnet-directed broadcast address if this is an IPv4 interface, null otherwise.
      */
-    public InetAddress getBroadcast() {        
-        if (addr instanceof Inet4Address && mask instanceof Inet4Address) {
-            if (cacheBroadcast.ipaddress == null) {
-                byte[] broadcast = new byte[4];
-                if (prefixLength > 0) {
-                    byte[] maskBytes = mask.getAddress();
-                    byte[] addrBytes = addr.getAddress();
-                    for (int i = 0; i < broadcast.length; i++) {
-                        broadcast[i] = (byte) (addrBytes[i] | ~maskBytes[i]);
-                    }                    
-                }                
-                cacheBroadcast = new InetAddress(broadcast);
-            }
-            return cacheBroadcast;
-        }
-        return null;
+    public InetAddress getBroadcast() {
+        return broadcastAddress;
     }
 
     /**
-     * Answers the network prefix length for the InetAddress.
-     * 
-     * If the address is an IPv4 one, returns the length of the subnet mask.
-     * 
-     * @return a short representing the prefix length for the subnet mask of
-     *         this address.
-     * 
+     * Returns the network prefix length in bits.
+     * (In IPv4 parlance, this is known as the subnet mask,
+     * but this method applies to IPv6 addresses too.)
      */
     public short getNetworkPrefixLength() {
         return prefixLength;

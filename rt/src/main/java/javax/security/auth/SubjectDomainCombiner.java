@@ -18,106 +18,15 @@
 package javax.security.auth;
 
 import java.security.DomainCombiner;
-import java.security.Principal;
 import java.security.ProtectionDomain;
-import java.util.Set;
 
 /**
- * Merges permissions based on code source and code signers with permissions
- * granted to the specified {@link Subject}.
+ * Legacy security code; do not use.
  */
 public class SubjectDomainCombiner implements DomainCombiner {
+    public SubjectDomainCombiner(Subject subject) { }
 
-    // subject to be associated
-    private Subject subject;
+    public Subject getSubject() { return null; }
 
-    // permission required to get a subject object
-    private static final AuthPermission _GET = new AuthPermission(
-            "getSubjectFromDomainCombiner"); //$NON-NLS-1$
-
-    /**
-     * Creates a domain combiner for the entity provided in {@code subject}.
-     *
-     * @param subject
-     *            the entity to which this domain combiner is associated.
-     */
-    public SubjectDomainCombiner(Subject subject) {
-        super();
-        if (subject == null) {
-            throw new NullPointerException();
-        }
-        this.subject = subject;
-    }
-
-    /**
-     * Returns the entity to which this domain combiner is associated.
-     *
-     * @return the entity to which this domain combiner is associated.
-     */
-    public Subject getSubject() {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(_GET);
-        }
-
-        return subject;
-    }
-
-    /**
-     * Merges the {@code ProtectionDomain} with the {@code Principal}s
-     * associated with the subject of this {@code SubjectDomainCombiner}.
-     *
-     * @param currentDomains
-     *            the {@code ProtectionDomain}s associated with the context of
-     *            the current thread. The domains must be sorted according to
-     *            the execution order, the most recent residing at the
-     *            beginning.
-     * @param assignedDomains
-     *            the {@code ProtectionDomain}s from the parent thread based on
-     *            code source and signers.
-     * @return a single {@code ProtectionDomain} array computed from the two
-     *         provided arrays, or {@code null}.
-     * @see ProtectionDomain
-     */
-    public ProtectionDomain[] combine(ProtectionDomain[] currentDomains,
-            ProtectionDomain[] assignedDomains) {
-        // get array length for combining protection domains
-        int len = 0;
-        if (currentDomains != null) {
-            len += currentDomains.length;
-        }
-        if (assignedDomains != null) {
-            len += assignedDomains.length;
-        }
-        if (len == 0) {
-            return null;
-        }
-
-        ProtectionDomain[] pd = new ProtectionDomain[len];
-
-        // for each current domain substitute set of principal with subject's
-        int cur = 0;
-        if (currentDomains != null) {
-
-            Set<Principal> s = subject.getPrincipals();
-            Principal[] p = s.toArray(new Principal[s.size()]);
-
-            for (cur = 0; cur < currentDomains.length; cur++) {
-                if (currentDomains[cur] != null) {
-                    ProtectionDomain newPD;
-                    newPD = new ProtectionDomain(currentDomains[cur].getCodeSource(),
-                            currentDomains[cur].getPermissions(), currentDomains[cur]
-                                    .getClassLoader(), p);
-                    pd[cur] = newPD;
-                }
-            }
-        }
-
-        // copy assigned domains
-        if (assignedDomains != null) {
-            System.arraycopy(assignedDomains, 0, pd, cur, assignedDomains.length);
-        }
-
-        return pd;
-    }
+    public ProtectionDomain[] combine(ProtectionDomain[] currentDomains, ProtectionDomain[] assignedDomains) { return null; }
 }

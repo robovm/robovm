@@ -27,14 +27,14 @@ package java.nio;
  * <p>
  * This class is marked final for runtime performance.
  * </p>
- * 
+ *
  */
 final class ReadOnlyFloatArrayBuffer extends FloatArrayBuffer {
 
     static ReadOnlyFloatArrayBuffer copy(FloatArrayBuffer other, int markOfOther) {
-        ReadOnlyFloatArrayBuffer buf = new ReadOnlyFloatArrayBuffer(other
-                .capacity(), other.backingArray, other.offset);
-        buf.limit = other.limit();
+        ReadOnlyFloatArrayBuffer buf =
+                new ReadOnlyFloatArrayBuffer(other.capacity(), other.backingArray, other.offset);
+        buf.limit = other.limit;
         buf.position = other.position();
         buf.mark = markOfOther;
         return buf;
@@ -95,14 +95,13 @@ final class ReadOnlyFloatArrayBuffer extends FloatArrayBuffer {
     }
 
     @Override
-    public final FloatBuffer put(float[] src, int off, int len) {
+    public final FloatBuffer put(float[] src, int srcOffset, int byteCount) {
         throw new ReadOnlyBufferException();
     }
 
     @Override
     public FloatBuffer slice() {
-        return new ReadOnlyFloatArrayBuffer(remaining(), backingArray, offset
-                + position);
+        return new ReadOnlyFloatArrayBuffer(remaining(), backingArray, offset + position);
     }
 
 }

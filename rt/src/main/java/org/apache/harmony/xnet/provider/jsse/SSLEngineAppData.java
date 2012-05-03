@@ -17,8 +17,6 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import org.apache.harmony.xnet.provider.jsse.AlertException;
-
 import java.nio.ByteBuffer;
 import javax.net.ssl.SSLException;
 
@@ -39,7 +37,7 @@ public class SSLEngineAppData implements org.apache.harmony.xnet.provider.jsse.A
     protected SSLEngineAppData() {}
 
     /**
-     * Stores received data. The source data is not cloned, 
+     * Stores received data. The source data is not cloned,
      * just the array reference is remembered into the buffer field.
      */
     public void append(byte[] src) {

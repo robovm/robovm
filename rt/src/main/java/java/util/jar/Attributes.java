@@ -17,13 +17,11 @@
 
 package java.util.jar;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.harmony.archive.util.Util;
 
 /**
  * The {@code Attributes} class is used to store values for manifest entries.
@@ -52,216 +50,131 @@ public class Attributes implements Cloneable, Map<Object, Object> {
      * </pre>
      */
     public static class Name {
-        private final byte[] name;
+        private final String name;
 
-        private int hashCode;
+        /** The class path (a main attribute). */
+        public static final Name CLASS_PATH = new Name("Class-Path");
 
-        /**
-         * The class path (a main attribute).
-         */
-        public static final Name CLASS_PATH = new Name("Class-Path"); //$NON-NLS-1$
+        /** The version of the manifest file (a main attribute). */
+        public static final Name MANIFEST_VERSION = new Name("Manifest-Version");
 
-        /**
-         * The version of the manifest file (a main attribute).
-         */
-        public static final Name MANIFEST_VERSION = new Name("Manifest-Version"); //$NON-NLS-1$
+        /** The main class's name (for stand-alone applications). */
+        public static final Name MAIN_CLASS = new Name("Main-Class");
 
-        /**
-         * The main class's name (for stand-alone applications).
-         */
-        public static final Name MAIN_CLASS = new Name("Main-Class"); //$NON-NLS-1$
+        /** Defines the signature version of the JAR file. */
+        public static final Name SIGNATURE_VERSION = new Name("Signature-Version");
 
-        /**
-         * Defines the signature version of the JAR file.
-         */
-        public static final Name SIGNATURE_VERSION = new Name(
-                "Signature-Version"); //$NON-NLS-1$
-
-        /**
-         * The {@code Content-Type} manifest attribute.
-         */
-        public static final Name CONTENT_TYPE = new Name("Content-Type"); //$NON-NLS-1$
+        /** The {@code Content-Type} manifest attribute. */
+        public static final Name CONTENT_TYPE = new Name("Content-Type");
 
         /**
          * The {@code Sealed} manifest attribute which may have the value
          * {@code true} for sealed archives.
          */
-        public static final Name SEALED = new Name("Sealed"); //$NON-NLS-1$
+        public static final Name SEALED = new Name("Sealed");
 
         /**
          * The {@code Implementation-Title} attribute whose value is a string
          * that defines the title of the extension implementation.
          */
-        public static final Name IMPLEMENTATION_TITLE = new Name(
-                "Implementation-Title"); //$NON-NLS-1$
+        public static final Name IMPLEMENTATION_TITLE = new Name("Implementation-Title");
 
         /**
          * The {@code Implementation-Version} attribute defining the version of
          * the extension implementation.
          */
-        public static final Name IMPLEMENTATION_VERSION = new Name(
-                "Implementation-Version"); //$NON-NLS-1$
+        public static final Name IMPLEMENTATION_VERSION = new Name("Implementation-Version");
 
         /**
          * The {@code Implementation-Vendor} attribute defining the organization
          * that maintains the extension implementation.
          */
-        public static final Name IMPLEMENTATION_VENDOR = new Name(
-                "Implementation-Vendor"); //$NON-NLS-1$
+        public static final Name IMPLEMENTATION_VENDOR = new Name("Implementation-Vendor");
 
         /**
          * The {@code Specification-Title} attribute defining the title of the
          * extension specification.
          */
-        public static final Name SPECIFICATION_TITLE = new Name(
-                "Specification-Title"); //$NON-NLS-1$
+        public static final Name SPECIFICATION_TITLE = new Name("Specification-Title");
 
         /**
          * The {@code Specification-Version} attribute defining the version of
          * the extension specification.
          */
-        public static final Name SPECIFICATION_VERSION = new Name(
-                "Specification-Version"); //$NON-NLS-1$
+        public static final Name SPECIFICATION_VERSION = new Name("Specification-Version");
 
         /**
          * The {@code Specification-Vendor} attribute defining the organization
          * that maintains the extension specification.
          */
-        public static final Name SPECIFICATION_VENDOR = new Name(
-                "Specification-Vendor"); //$NON-NLS-1$
+        public static final Name SPECIFICATION_VENDOR = new Name("Specification-Vendor");
 
         /**
          * The {@code Extension-List} attribute defining the extensions that are
          * needed by the applet.
          */
-        public static final Name EXTENSION_LIST = new Name("Extension-List"); //$NON-NLS-1$
+        public static final Name EXTENSION_LIST = new Name("Extension-List");
 
         /**
          * The {@code Extension-Name} attribute which defines the unique name of
          * the extension.
          */
-        public static final Name EXTENSION_NAME = new Name("Extension-Name"); //$NON-NLS-1$
+        public static final Name EXTENSION_NAME = new Name("Extension-Name");
 
         /**
          * The {@code Extension-Installation} attribute.
          */
-        public static final Name EXTENSION_INSTALLATION = new Name(
-                "Extension-Installation"); //$NON-NLS-1$
+        public static final Name EXTENSION_INSTALLATION = new Name("Extension-Installation");
 
         /**
          * The {@code Implementation-Vendor-Id} attribute specifies the vendor
          * of an extension implementation if the applet requires an
          * implementation from a specific vendor.
          */
-        public static final Name IMPLEMENTATION_VENDOR_ID = new Name(
-                "Implementation-Vendor-Id"); //$NON-NLS-1$
+        public static final Name IMPLEMENTATION_VENDOR_ID = new Name("Implementation-Vendor-Id");
 
         /**
          * The {@code Implementation-URL} attribute specifying a URL that can be
          * used to obtain the most recent version of the extension if the
          * required version is not already installed.
          */
-        public static final Name IMPLEMENTATION_URL = new Name(
-                "Implementation-URL"); //$NON-NLS-1$
+        public static final Name IMPLEMENTATION_URL = new Name("Implementation-URL");
 
-        static final Name NAME = new Name("Name"); //$NON-NLS-1$
+        static final Name NAME = new Name("Name");
 
-        /**
-         * A String which must satisfy the following EBNF grammar to specify an
-         * additional attribute:
-         *
-         * <pre>
-         * name       = alphanum *headerchar
-         * headerchar = alphanum | - | _
-         * alphanum   = {A-Z} | {a-z} | {0-9}
-         * </pre>
-         *
-         * @param s
-         *            The Attribute string.
-         * @exception IllegalArgumentException
-         *                if the string does not satisfy the EBNF grammar.
-         */
-        public Name(String s) {
-            int i = s.length();
-            if (i == 0 || i > Manifest.LINE_LENGTH_LIMIT - 2) {
-                throw new IllegalArgumentException();
+        public Name(String name) {
+            // encoded name + "\r\n" must be <= 72 bytes; ASCII-only so byte count equals char count
+            if (name.isEmpty() || name.length() > Manifest.LINE_LENGTH_LIMIT - 2) {
+                throw new IllegalArgumentException(name);
             }
 
-            name = new byte[i];
-
-            for (; --i >= 0;) {
-                char ch = s.charAt(i);
+            for (int i = 0; i < name.length(); i++) {
+                char ch = name.charAt(i);
                 if (!((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')
                         || ch == '_' || ch == '-' || (ch >= '0' && ch <= '9'))) {
-                    throw new IllegalArgumentException(s);
+                    throw new IllegalArgumentException(name);
                 }
-                name[i] = (byte) ch;
             }
+
+            this.name = name;
         }
 
-        /**
-         * A private constructor for a trusted attribute name.
-         */
-        Name(byte[] buf) {
-            name = buf;
-        }
-
-        byte[] getBytes() {
+        String getName() {
             return name;
         }
 
-        /**
-         * Returns this attribute name.
-         *
-         * @return the attribute name.
-         */
-        @Override
-        public String toString() {
-            try {
-                return new String(name, "ISO-8859-1"); //$NON-NLS-1$
-            } catch (UnsupportedEncodingException iee) {
-                throw new InternalError(iee.getLocalizedMessage());
-            }
+        @Override public boolean equals(Object object) {
+            return object instanceof Name
+                    && ((Name) object).name.equalsIgnoreCase(name);
         }
 
-        /**
-         * Returns whether the argument provided is the same as the attribute
-         * name.
-         *
-         * @return if the attribute names correspond.
-         * @param object
-         *            An attribute name to be compared with this name.
-         */
-        @Override
-        public boolean equals(Object object) {
-            if (object == null || object.getClass() != getClass()
-                    || object.hashCode() != hashCode()) {
-                return false;
-            }
-
-            return Util.asciiEqualsIgnoreCase(name, ((Name) object).name);
+        @Override public int hashCode() {
+            return name.toLowerCase(Locale.US).hashCode();
         }
 
-        /**
-         * Computes a hash code of the name.
-         *
-         * @return the hash value computed from the name.
-         */
-        @Override
-        public int hashCode() {
-            if (hashCode == 0) {
-                int hash = 0, multiplier = 1;
-                for (int i = name.length - 1; i >= 0; i--) {
-                    // 'A' & 0xDF == 'a' & 0xDF, ..., 'Z' & 0xDF == 'z' & 0xDF
-                    hash += (name[i] & 0xDF) * multiplier;
-                    int shifted = multiplier << 5;
-                    multiplier = shifted - multiplier;
-                }
-                hashCode = hash;
-            }
-            return hashCode;
+        @Override public String toString() {
+            return name;
         }
-
     }
 
     /**
@@ -392,7 +305,7 @@ public class Attributes implements Cloneable, Map<Object, Object> {
      */
     public void putAll(Map<?, ?> attrib) {
         if (attrib == null || !(attrib instanceof Attributes)) {
-            throw new ClassCastException();
+            throw new ClassCastException(attrib.getClass().getName() + " not an Attributes");
         }
         this.map.putAll(attrib);
     }
@@ -437,7 +350,7 @@ public class Attributes implements Cloneable, Map<Object, Object> {
         try {
             clone = (Attributes) super.clone();
         } catch (CloneNotSupportedException e) {
-            return null;
+            throw new AssertionError(e);
         }
         clone.map = (Map<Object, Object>) ((HashMap) map).clone();
         return clone;

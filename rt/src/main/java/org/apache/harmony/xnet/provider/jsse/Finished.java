@@ -17,22 +17,20 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import org.apache.harmony.xnet.provider.jsse.Message;
-
 import java.io.IOException;
 
 /**
- * 
+ *
  * Represents Finished message
- * @see TLS 1.0 spec., 7.4.9. Finished
- * (http://www.ietf.org/rfc/rfc2246.txt)
- * 
+ * @see <a href="http://www.ietf.org/rfc/rfc2246.txt">TLS 1.0 spec., 7.4.9.
+ * Finished</a>
+ *
  */
 public class Finished extends Message {
-    
+
     // verify data
     private byte[] data;
-    
+
     /**
      * Creates outbound message
      * @param bytes
@@ -41,17 +39,18 @@ public class Finished extends Message {
         data = bytes;
         length = data.length;
     }
-    
+
     /**
      * Creates inbound message
      * @param in
      * @param length
      * @throws IOException
      */
-    public Finished(HandshakeIODataStream in, int length)  
+    public Finished(HandshakeIODataStream in, int length)
             throws IOException {
         if (length == 12 || length == 36) {
             data = in.read(length);
+            this.length = data.length;
         } else {
             fatalAlert(AlertProtocol.DECODE_ERROR, "DECODE ERROR: incorrect Finished");
         }
@@ -61,16 +60,16 @@ public class Finished extends Message {
     public void send(HandshakeIODataStream out) {
         out.write(data);
     }
-    
+
     /**
-     * Returns message type 
+     * Returns message type
      * @return
      */
     @Override
     public int getType() {
         return Handshake.FINISHED;
     }
-    
+
     /**
      * Returns verify data
      * @return

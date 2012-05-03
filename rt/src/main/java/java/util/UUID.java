@@ -20,11 +20,11 @@ package java.util;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.nio.ByteOrder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-
-import org.apache.harmony.luni.internal.nls.Messages;
+import libcore.io.Memory;
 
 /**
  * UUID is an immutable representation of a 128-bit universally unique
@@ -64,7 +64,6 @@ public final class UUID implements Serializable, Comparable<UUID> {
      *            The 64 least significant bits of the UUID.
      */
     public UUID(long mostSigBits, long leastSigBits) {
-        super();
         this.mostSigBits = mostSigBits;
         this.leastSigBits = leastSigBits;
         init();
@@ -121,34 +120,15 @@ public final class UUID implements Serializable, Comparable<UUID> {
      * @return an UUID instance.
      */
     public static UUID randomUUID() {
-        byte[] data;
+        byte[] data = new byte[16];
         // lock on the class to protect lazy init
         synchronized (UUID.class) {
             if (rng == null) {
                 rng = new SecureRandom();
             }
         }
-        rng.nextBytes(data = new byte[16]);
-        long msb = (data[0] & 0xFFL) << 56;
-        msb |= (data[1] & 0xFFL) << 48;
-        msb |= (data[2] & 0xFFL) << 40;
-        msb |= (data[3] & 0xFFL) << 32;
-        msb |= (data[4] & 0xFFL) << 24;
-        msb |= (data[5] & 0xFFL) << 16;
-        msb |= (data[6] & 0x0FL) << 8;
-        msb |= (0x4L << 12); // set the version to 4
-        msb |= (data[7] & 0xFFL);
-
-        long lsb = (data[8] & 0x3FL) << 56;
-        lsb |= (0x2L << 62); // set the variant to bits 01
-        lsb |= (data[9] & 0xFFL) << 48;
-        lsb |= (data[10] & 0xFFL) << 40;
-        lsb |= (data[11] & 0xFFL) << 32;
-        lsb |= (data[12] & 0xFFL) << 24;
-        lsb |= (data[13] & 0xFFL) << 16;
-        lsb |= (data[14] & 0xFFL) << 8;
-        lsb |= (data[15] & 0xFFL);
-        return new UUID(msb, lsb);
+        rng.nextBytes(data);
+        return makeUuid(data, 4);
     }
 
     /**
@@ -164,34 +144,24 @@ public final class UUID implements Serializable, Comparable<UUID> {
         if (name == null) {
             throw new NullPointerException();
         }
-
-        byte[] hash;
         try {
-            MessageDigest md = MessageDigest.getInstance("MD5"); //$NON-NLS-1$
-            hash = md.digest(name);
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            return makeUuid(md.digest(name), 3);
         } catch (NoSuchAlgorithmException e) {
             throw new AssertionError(e);
         }
+    }
 
-        long msb = (hash[0] & 0xFFL) << 56;
-        msb |= (hash[1] & 0xFFL) << 48;
-        msb |= (hash[2] & 0xFFL) << 40;
-        msb |= (hash[3] & 0xFFL) << 32;
-        msb |= (hash[4] & 0xFFL) << 24;
-        msb |= (hash[5] & 0xFFL) << 16;
-        msb |= (hash[6] & 0x0FL) << 8;
-        msb |= (0x3L << 12); // set the version to 3
-        msb |= (hash[7] & 0xFFL);
-
-        long lsb = (hash[8] & 0x3FL) << 56;
-        lsb |= (0x2L << 62); // set the variant to bits 01
-        lsb |= (hash[9] & 0xFFL) << 48;
-        lsb |= (hash[10] & 0xFFL) << 40;
-        lsb |= (hash[11] & 0xFFL) << 32;
-        lsb |= (hash[12] & 0xFFL) << 24;
-        lsb |= (hash[13] & 0xFFL) << 16;
-        lsb |= (hash[14] & 0xFFL) << 8;
-        lsb |= (hash[15] & 0xFFL);
+    private static UUID makeUuid(byte[] hash, int version) {
+        long msb = Memory.peekLong(hash, 0, ByteOrder.BIG_ENDIAN);
+        long lsb = Memory.peekLong(hash, 8, ByteOrder.BIG_ENDIAN);
+        // Set the version field.
+        msb &= ~(0xfL << 12);
+        msb |= ((long) version) << 12;
+        // Set the variant field to 2. Note that the variant field is variable-width,
+        // so supporting other variants is not just a matter of changing the constant 2 below!
+        lsb &= ~(0x3L << 62);
+        lsb |= 2L << 62;
         return new UUID(msb, lsb);
     }
 
@@ -218,24 +188,21 @@ public final class UUID implements Serializable, Comparable<UUID> {
 
         int i = 0;
         for (; i < position.length && lastPosition > 0; i++) {
-            position[i] = uuid.indexOf("-", startPosition); //$NON-NLS-1$
+            position[i] = uuid.indexOf("-", startPosition);
             lastPosition = position[i];
             startPosition = position[i] + 1;
         }
 
         // should have and only can have four "-" in UUID
         if (i != position.length || lastPosition != -1) {
-            throw new IllegalArgumentException(Messages.getString("luni.47") + uuid); //$NON-NLS-1$
+            throw new IllegalArgumentException("Invalid UUID: " + uuid);
         }
 
         long m1 = Long.parseLong(uuid.substring(0, position[0]), 16);
-        long m2 = Long.parseLong(uuid.substring(position[0] + 1, position[1]),
-                16);
-        long m3 = Long.parseLong(uuid.substring(position[1] + 1, position[2]),
-                16);
+        long m2 = Long.parseLong(uuid.substring(position[0] + 1, position[1]), 16);
+        long m3 = Long.parseLong(uuid.substring(position[1] + 1, position[2]), 16);
 
-        long lsb1 = Long.parseLong(
-                uuid.substring(position[2] + 1, position[3]), 16);
+        long lsb1 = Long.parseLong(uuid.substring(position[2] + 1, position[3]), 16);
         long lsb2 = Long.parseLong(uuid.substring(position[3] + 1), 16);
 
         long msb = (m1 << 32) | (m2 << 16) | m3;
@@ -276,7 +243,7 @@ public final class UUID implements Serializable, Comparable<UUID> {
      * <li>4 - Randomly generated UUID ({@link #randomUUID()})</li>
      * <li>5 - Name-based with SHA-1 hashing UUID</li>
      * </ul>
-     * 
+     *
      * @return an {@code int} value.
      */
     public int version() {
@@ -293,7 +260,7 @@ public final class UUID implements Serializable, Comparable<UUID> {
      * <li>6 - Reserved for Microsoft Corporation compatibility</li>
      * <li>7 - Reserved for future use</li>
      * </ul>
-     * 
+     *
      * @return an {@code int} value.
      */
     public int variant() {
@@ -444,7 +411,7 @@ public final class UUID implements Serializable, Comparable<UUID> {
      *                &quot;a&quot; / &quot;b&quot; / &quot;c&quot; / &quot;d&quot; / &quot;e&quot; / &quot;f&quot; /
      *                &quot;A&quot; / &quot;B&quot; / &quot;C&quot; / &quot;D&quot; / &quot;E&quot; / &quot;F&quot;
      * </pre>
-     * 
+     *
      * @return a String instance.
      */
     @Override
@@ -476,7 +443,7 @@ public final class UUID implements Serializable, Comparable<UUID> {
     /**
      * <p>
      * Resets the transient fields to match the behavior of the constructor.
-     * 
+     *
      * @param in
      *            the {@code InputStream} to read from.
      * @throws IOException

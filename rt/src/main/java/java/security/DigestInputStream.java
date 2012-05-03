@@ -39,6 +39,9 @@ public class DigestInputStream extends FilterInputStream {
      * Constructs a new instance of this {@code DigestInputStream}, using the
      * given {@code stream} and the {@code digest}.
      *
+     * <p><strong>Warning:</strong> passing a null source creates an invalid
+     * {@code DigestInputStream}. All operations on such a stream will fail.
+     *
      * @param stream
      *            the input stream.
      * @param digest
@@ -131,7 +134,7 @@ public class DigestInputStream extends FilterInputStream {
      * @param on
      *            {@code true} if the digest should be computed, {@code false}
      *            otherwise.
-	 * @see MessageDigest
+     * @see MessageDigest
      */
     public void on(boolean on) {
         isOn = on;
@@ -145,7 +148,7 @@ public class DigestInputStream extends FilterInputStream {
      */
     @Override
     public String toString() {
-        return super.toString() + ", " + digest.toString() + //$NON-NLS-1$
-            (isOn ? ", is on" : ", is off"); //$NON-NLS-1$ //$NON-NLS-2$
+        return super.toString() + ", " + digest.toString() +
+            (isOn ? ", is on" : ", is off");
     }
 }

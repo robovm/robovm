@@ -26,7 +26,7 @@ public interface URLStreamHandlerFactory {
     /**
      * Creates a new {@code URLStreamHandler} instance for the given {@code
      * protocol}.
-     * 
+     *
      * @param protocol
      *            the protocol for which a handler is needed.
      * @return the created handler.

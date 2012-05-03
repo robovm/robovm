@@ -17,6 +17,7 @@
 
 /**
 * @author Aleksei Y. Semenov
+* @version $Revision$
 */
 
 package org.apache.harmony.security;
@@ -27,8 +28,6 @@ import java.security.KeyManagementException;
 import java.security.PublicKey;
 import java.util.Enumeration;
 import java.util.Hashtable;
-
-import org.apache.harmony.security.internal.nls.Messages;
 
 /**
  * @see java.security.IdentityScope
@@ -51,7 +50,6 @@ public class SystemScope extends IdentityScope {
      * @see java.security.IdentityScope#IdentityScope()
      */
     public SystemScope() {
-        super();
     }
 
     /**
@@ -99,20 +97,19 @@ public class SystemScope extends IdentityScope {
     /**
      * @see java.security.IdentityScope#addIdentity(java.security.Identity)
      */
-    public synchronized void addIdentity(Identity identity)
-            throws KeyManagementException {
+    public synchronized void addIdentity(Identity identity) throws KeyManagementException {
         if (identity == null) {
-            throw new NullPointerException(Messages.getString("security.92")); //$NON-NLS-1$
+            throw new NullPointerException("identity == null");
         }
 
         String name = identity.getName();
         if (names.containsKey(name)) {
-            throw new KeyManagementException(Messages.getString("security.93", name)); //$NON-NLS-1$
+            throw new KeyManagementException("name '" + name + "' is already used");
         }
 
         PublicKey key = identity.getPublicKey();
         if (key != null && keys.containsKey(key)) {
-            throw new KeyManagementException(Messages.getString("security.94", key)); //$NON-NLS-1$
+            throw new KeyManagementException("key '" + key + "' is already used");
         }
 
         names.put(name, identity);
@@ -129,26 +126,26 @@ public class SystemScope extends IdentityScope {
 
         //Exception caught = null;
         if (identity == null) {
-            throw new NullPointerException(Messages.getString("security.92")); //$NON-NLS-1$
+            throw new NullPointerException("identity == null");
         }
 
         String name = identity.getName();
         if (name == null) {
-            throw new NullPointerException(Messages.getString("security.95")); //$NON-NLS-1$
+            throw new NullPointerException("name == null");
         }
 
         boolean contains = names.containsKey(name);
         names.remove(name);
 
         PublicKey key = identity.getPublicKey();
-        
+
         if (key != null) {
             contains = contains || keys.containsKey(key);
             keys.remove(key);
         }
-        
+
         if (!contains) {
-            throw new KeyManagementException(Messages.getString("security.96")); //$NON-NLS-1$
+            throw new KeyManagementException("identity not found");
         }
     }
 

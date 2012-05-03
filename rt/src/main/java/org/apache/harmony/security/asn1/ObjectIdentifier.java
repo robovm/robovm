@@ -17,42 +17,40 @@
 
 /**
 * @author Stepan M. Mishura
+* @version $Revision$
 */
 
 package org.apache.harmony.security.asn1;
 
 import java.util.Arrays;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
  * Instance of this class represents ObjectIdentifier (OID).
- * 
+ *
  * According to X.690:
  * OID is represented as a sequence of subidentifier.
  * Each subidentifier is represented as non negative integer value.
  * There are at least 2 subidentifiers in the sequence.
- * 
+ *
  * Valid values for first subidentifier are 0, 1 and 2.
  * If the first subidentifier has 0 or 1 value the second
  * subidentifier must be less then 40.
- * 
- * @see http://asn1.elibel.tm.fr/en/standards/index.htm
+ *
+ * @see <a href="http://asn1.elibel.tm.fr/en/standards/index.htm">ASN.1</a>
  */
-
 public final class ObjectIdentifier {
 
-    // OID as array of integers
+    /** OID as array of integers */
     private final int[] oid;
 
-    // OID as string
+    /** OID as string */
     private String soid;
 
     /**
      * Creates ObjectIdentifier(OID) from array of integers.
-     * 
-     * @param oid - array of integers
-     * @throws IllegalArgumentException - if oid is invalid or null
+     *
+     * @param oid array of integers
+     * @throws IllegalArgumentException if oid is invalid or null
      */
     public ObjectIdentifier(int[] oid) {
         validate(oid);
@@ -61,31 +59,16 @@ public final class ObjectIdentifier {
 
     /**
      * Creates ObjectIdentifier(OID) from string representation.
-     * 
-     * @param strOid - oid string
-     * @throws IllegalArgumentException - if oid string is invalid or null
+     *
+     * @param strOid oid string
+     * @throws IllegalArgumentException if oid string is invalid or null
      */
     public ObjectIdentifier(String strOid) {
         this.oid = toIntArray(strOid);
         this.soid = strOid;
     }
 
-    /**
-     * Returns array of integers.
-     * 
-     * @return array of integers
-     */
-    public int[] getOid() {
-        return oid;
-    }
-
-    /**
-     * Compares object with OID for equality.
-     * 
-     * @return true if object is ObjectIdentifier and it has the same
-     *         representation as array of integers, otherwise false
-     */
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -95,20 +78,14 @@ public final class ObjectIdentifier {
         return Arrays.equals(oid, ((ObjectIdentifier) o).oid);
     }
 
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
+    @Override public String toString() {
         if (soid == null) {
             soid = toString(oid);
         }
         return soid;
     }
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
-    public int hashCode() {
+    @Override public int hashCode() {
         // FIXME change me to Arrays.hashCode(int[])
         int intHash = 0;
         for (int i = 0; i < oid.length && i < 4; i++) {
@@ -119,126 +96,41 @@ public final class ObjectIdentifier {
 
     /**
      * Validates ObjectIdentifier (OID).
-     * 
-     * @param oid - oid as array of integers
-     * @throws IllegalArgumentException - if oid is invalid or null
+     *
+     * @param oid oid as array of integers
+     * @throws IllegalArgumentException if oid is invalid or null
      */
     public static void validate(int[] oid) {
-
         if (oid == null) {
-            throw new IllegalArgumentException(Messages.getString("security.98")); //$NON-NLS-1$
+            throw new IllegalArgumentException("oid == null");
         }
 
         if (oid.length < 2) {
-            throw new IllegalArgumentException(
-                    Messages.getString("security.99")); //$NON-NLS-1$
+            throw new IllegalArgumentException("OID MUST have at least 2 subidentifiers");
         }
 
         if (oid[0] > 2) {
             throw new IllegalArgumentException(
-                    Messages.getString("security.9A")); //$NON-NLS-1$
+                    "Valid values for first subidentifier are 0, 1 and 2");
         } else if (oid[0] != 2 && oid[1] > 39) {
-            throw new IllegalArgumentException(
-                    Messages.getString("security.9B")); //$NON-NLS-1$
+            throw new IllegalArgumentException("If the first subidentifier has 0 or 1 value the "
+                    + "second subidentifier value MUST be less than 40");
         }
 
-        for (int i = 0; i < oid.length; i++) {
-            if (oid[i] < 0) {
-                throw new IllegalArgumentException(
-                        Messages.getString("security.9C")); //$NON-NLS-1$
+        for (int anOid : oid) {
+            if (anOid < 0) {
+                throw new IllegalArgumentException("Subidentifier MUST have positive value");
             }
         }
     }
 
-    // FIXME: implement me
-    //    /**
-    //     * Validates ObjectIdentifier (OID).
-    //     * 
-    //     * @param oid - oid as string
-    //     * @throws IllegalArgumentException - if oid string  is invalid or null
-    //     */
-    //    public static void validate(String oid) {
-    //
-    //        if (oid == null) {
-    //            throw new NullPointerException();
-    //        }
-    //
-    //        int length = oid.length();
-    //        if (length < 3 || oid.charAt(1) != '.') {
-    //            throw new IllegalArgumentException("Invalid oid string");
-    //        }
-    //
-    //        int pos = 2;
-    //        int subidentifier = 0;
-    //        switch (oid.charAt(0)) {
-    //        case '0':
-    //        case '1':
-    //            for (char c = oid.charAt(pos);;) {
-    //                if (c < '0' || c > '9') {
-    //                    throw new IllegalArgumentException("Invalid oid string");
-    //                } else {
-    //                    subidentifier = subidentifier * 10 + c - '0';
-    //                }
-    //
-    //                pos++;
-    //                if (pos == length) {
-    //                    break;
-    //                }
-    //
-    //                c = oid.charAt(pos);
-    //                if (c == '.') {
-    //                    pos++;
-    //                    if (pos == length) {
-    //                        throw new IllegalArgumentException("Invalid oid string");
-    //                    }
-    //                    break;
-    //                }
-    //            }
-    //
-    //            if (subidentifier > 39) {
-    //                throw new IllegalArgumentException(
-    //                        "If the first subidentifier has 0 or 1 value the second "
-    //                                + "subidentifier value MUST be less then 40.");
-    //            }
-    //            break;
-    //        case '2':
-    //            break;
-    //        default:
-    //            throw new IllegalArgumentException(
-    //                    "Valid values for first subidentifier are 0, 1 and 2");
-    //        }
-    //
-    //        if (pos == length) {
-    //            return;
-    //        }
-    //
-    //        for (char c = oid.charAt(pos);;) {
-    //            if (c < '0' || c > '9') {
-    //                throw new IllegalArgumentException("Invalid oid string");
-    //            }
-    //
-    //            pos++;
-    //            if (pos == length) {
-    //                return;
-    //            }
-    //
-    //            c = oid.charAt(pos);
-    //            if (c == '.') {
-    //                pos++;
-    //                if (pos == length) {
-    //                    throw new IllegalArgumentException("Invalid oid string");
-    //                }
-    //            }
-    //        }
-    //    }
-
     /**
      * Returns string representation of OID.
-     * 
-     * Note: it is supposed that passed array of integers
-     * contains valid OID value, so no checks are performed. 
      *
-     * @param oid - oid as array of integers
+     * Note: it is supposed that passed array of integers
+     * contains valid OID value, so no checks are performed.
+     *
+     * @param oid oid as array of integers
      * @return oid string representation
      */
     public static String toString(int[] oid) {
@@ -254,25 +146,59 @@ public final class ObjectIdentifier {
 
     /**
      * Gets ObjectIdentifier (OID) from string representation.
-     * 
+     *
      * String representation is defined by the following syntax:
      *     OID = subidentifier 1*("." subidentifier)
      *     subidentifier = 1*(digit)
-     * 
-     * @param oidString -  string representation of OID
-     * @return - oid as array of integers
-     * @throws IllegalArgumentException - if oid string is invalid or null
+     *
+     * @param str string representation of OID
+     * @return oid as array of integers
+     * @throws IllegalArgumentException if oid string is invalid or null
      */
     public static int[] toIntArray(String str) {
+        return toIntArray(str, true);
+    }
 
+    /**
+     * Returns whether the given string is a valid ObjectIdentifier
+     * (OID) representation.
+     *
+     * String representation is defined as for {@link #toIntArray}.
+     *
+     * @param str string representation of OID
+     * @return true if oidString has valid syntax or false if not
+     */
+    public static boolean isOID(String str) {
+        return toIntArray(str, false) != null;
+    }
+
+    /**
+     * Gets ObjectIdentifier (OID) from string representation.
+     *
+     * String representation is defined by the following syntax:
+     *     OID = subidentifier 1*("." subidentifier)
+     *     subidentifier = 1*(digit)
+     *
+     * @param str string representation of OID
+     * @return oid as array of integers or null if the oid string is
+     * invalid or null and shouldThrow is false
+     * @throws IllegalArgumentException if oid string is invalid or null and
+     * shouldThrow is true
+     */
+    private static int[] toIntArray(String str, boolean shouldThrow) {
         if (str == null) {
-            throw new IllegalArgumentException(
-                    Messages.getString("security.9D")); //$NON-NLS-1$
+            if (! shouldThrow) {
+                return null;
+            }
+            throw new IllegalArgumentException();
         }
 
         int length = str.length();
         if (length == 0) {
-            throw new IllegalArgumentException(Messages.getString("security.9E")); //$NON-NLS-1$
+            if (! shouldThrow) {
+                return null;
+            }
+            throw new IllegalArgumentException("Incorrect syntax");
         }
 
         int count = 1; // number of subidentifiers
@@ -282,25 +208,36 @@ public final class ObjectIdentifier {
             c = str.charAt(i);
             if (c == '.') {
                 if (wasDot) {
-                    throw new IllegalArgumentException(Messages.getString("security.9E")); //$NON-NLS-1$
+                    if (! shouldThrow) {
+                        return null;
+                    }
+                    throw new IllegalArgumentException("Incorrect syntax");
                 }
                 wasDot = true;
                 count++;
             } else if (c >= '0' && c <= '9') {
                 wasDot = false;
             } else {
-                throw new IllegalArgumentException(Messages.getString("security.9E")); //$NON-NLS-1$
+                if (! shouldThrow) {
+                    return null;
+                }
+                throw new IllegalArgumentException("Incorrect syntax");
             }
         }
 
         if (wasDot) {
             // the last char is dot
-            throw new IllegalArgumentException(Messages.getString("security.9E")); //$NON-NLS-1$
+            if (! shouldThrow) {
+                return null;
+            }
+            throw new IllegalArgumentException("Incorrect syntax");
         }
 
         if (count < 2) {
-            throw new IllegalArgumentException(
-                    Messages.getString("security.99")); //$NON-NLS-1$
+            if (! shouldThrow) {
+                return null;
+            }
+            throw new IllegalArgumentException("Incorrect syntax");
         }
 
         int[] oid = new int[count];
@@ -314,11 +251,15 @@ public final class ObjectIdentifier {
         }
 
         if (oid[0] > 2) {
-            throw new IllegalArgumentException(
-                    Messages.getString("security.9A")); //$NON-NLS-1$
+            if (! shouldThrow) {
+                return null;
+            }
+            throw new IllegalArgumentException("Incorrect syntax");
         } else if (oid[0] != 2 && oid[1] > 39) {
-            throw new IllegalArgumentException(
-                    Messages.getString("security.9B")); //$NON-NLS-1$
+            if (! shouldThrow) {
+                return null;
+            }
+            throw new IllegalArgumentException("Incorrect syntax");
         }
 
         return oid;

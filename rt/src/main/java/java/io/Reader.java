@@ -33,7 +33,7 @@ import java.nio.ReadOnlyBufferException;
  * <p>
  * Many specialized readers for purposes like reading from a file already exist
  * in this package.
- * 
+ *
  * @see Writer
  */
 public abstract class Reader implements Readable, Closeable {
@@ -47,14 +47,13 @@ public abstract class Reader implements Readable, Closeable {
      * synchronize critical sections.
      */
     protected Reader() {
-        super();
         lock = this;
     }
 
     /**
      * Constructs a new {@code Reader} with {@code lock} used to synchronize
      * critical sections.
-     * 
+     *
      * @param lock
      *            the {@code Object} used to synchronize critical sections.
      * @throws NullPointerException
@@ -70,7 +69,7 @@ public abstract class Reader implements Readable, Closeable {
     /**
      * Closes this reader. Implementations of this method should free any
      * resources associated with the reader.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing this reader.
      */
@@ -84,7 +83,7 @@ public abstract class Reader implements Readable, Closeable {
      * <p>
      * This default implementation simply throws an {@code IOException};
      * subclasses must provide their own implementation.
-     * 
+     *
      * @param readLimit
      *            the number of characters that can be read before the mark is
      *            invalidated.
@@ -103,7 +102,7 @@ public abstract class Reader implements Readable, Closeable {
      * Indicates whether this reader supports the {@code mark()} and
      * {@code reset()} methods. This default implementation returns
      * {@code false}.
-     * 
+     *
      * @return always {@code false}.
      */
     public boolean markSupported() {
@@ -114,7 +113,7 @@ public abstract class Reader implements Readable, Closeable {
      * Reads a single character from this reader and returns it as an integer
      * with the two higher-order bytes set to 0. Returns -1 if the end of the
      * reader has been reached.
-     * 
+     *
      * @return the character read or -1 if the end of the reader has been
      *         reached.
      * @throws IOException
@@ -122,7 +121,7 @@ public abstract class Reader implements Readable, Closeable {
      */
     public int read() throws IOException {
         synchronized (lock) {
-            char charArray[] = new char[1];
+            char[] charArray = new char[1];
             if (read(charArray, 0, 1) != -1) {
                 return charArray[0];
             }
@@ -134,7 +133,7 @@ public abstract class Reader implements Readable, Closeable {
      * Reads characters from this reader and stores them in the character array
      * {@code buf} starting at offset 0. Returns the number of characters
      * actually read or -1 if the end of the reader has been reached.
-     * 
+     *
      * @param buf
      *            character array to store the characters read.
      * @return the number of characters read or -1 if the end of the reader has
@@ -142,7 +141,7 @@ public abstract class Reader implements Readable, Closeable {
      * @throws IOException
      *             if this reader is closed or some other I/O error occurs.
      */
-    public int read(char buf[]) throws IOException {
+    public int read(char[] buf) throws IOException {
         return read(buf, 0, buf.length);
     }
 
@@ -151,7 +150,7 @@ public abstract class Reader implements Readable, Closeable {
      * at {@code offset} in the character array {@code buf}. Returns the number
      * of characters actually read or -1 if the end of the reader has been
      * reached.
-     * 
+     *
      * @param buf
      *            the character array to store the characters read.
      * @param offset
@@ -164,15 +163,14 @@ public abstract class Reader implements Readable, Closeable {
      * @throws IOException
      *             if this reader is closed or some other I/O error occurs.
      */
-    public abstract int read(char buf[], int offset, int count)
-            throws IOException;
+    public abstract int read(char[] buf, int offset, int count) throws IOException;
 
     /**
      * Indicates whether this reader is ready to be read without blocking.
      * Returns {@code true} if this reader will not block when {@code read} is
      * called, {@code false} if unknown or blocking will occur. This default
      * implementation always returns {@code false}.
-     * 
+     *
      * @return always {@code false}.
      * @throws IOException
      *             if this reader is closed or some other I/O error occurs.
@@ -190,7 +188,7 @@ public abstract class Reader implements Readable, Closeable {
      * location. If this reader has not been marked, the behavior of
      * {@code reset()} is implementation specific. This default
      * implementation throws an {@code IOException}.
-     * 
+     *
      * @throws IOException
      *             always thrown in this default implementation.
      * @see #mark(int)
@@ -201,31 +199,29 @@ public abstract class Reader implements Readable, Closeable {
     }
 
     /**
-     * Skips {@code amount} characters in this reader. Subsequent calls of
+     * Skips {@code charCount} characters in this reader. Subsequent calls of
      * {@code read} methods will not return these characters unless {@code
-     * reset()} is used. This method may perform multiple reads to read {@code
-     * count} characters.
-     * 
-     * @param count
-     *            the maximum number of characters to skip.
+     * reset} is used. This method may perform multiple reads to read {@code
+     * charCount} characters.
+     *
      * @return the number of characters actually skipped.
      * @throws IllegalArgumentException
-     *             if {@code amount < 0}.
+     *             if {@code charCount < 0}.
      * @throws IOException
      *             if this reader is closed or some other I/O error occurs.
      * @see #mark(int)
      * @see #markSupported()
      * @see #reset()
      */
-    public long skip(long count) throws IOException {
-        if (count < 0) {
-            throw new IllegalArgumentException();
+    public long skip(long charCount) throws IOException {
+        if (charCount < 0) {
+            throw new IllegalArgumentException("charCount < 0: " + charCount);
         }
         synchronized (lock) {
             long skipped = 0;
-            int toRead = count < 512 ? (int) count : 512;
-            char charsSkipped[] = new char[toRead];
-            while (skipped < count) {
+            int toRead = charCount < 512 ? (int) charCount : 512;
+            char[] charsSkipped = new char[toRead];
+            while (skipped < charCount) {
                 int read = read(charsSkipped, 0, toRead);
                 if (read == -1) {
                     return skipped;
@@ -234,8 +230,8 @@ public abstract class Reader implements Readable, Closeable {
                 if (read < toRead) {
                     return skipped;
                 }
-                if (count - skipped < toRead) {
-                    toRead = (int) (count - skipped);
+                if (charCount - skipped < toRead) {
+                    toRead = (int) (charCount - skipped);
                 }
             }
             return skipped;
@@ -244,7 +240,7 @@ public abstract class Reader implements Readable, Closeable {
 
     /**
      * Reads characters and puts them into the {@code target} character buffer.
-     * 
+     *
      * @param target
      *            the destination character buffer.
      * @return the number of characters put into {@code target} or -1 if the end
@@ -257,9 +253,6 @@ public abstract class Reader implements Readable, Closeable {
      *             if {@code target} is read-only.
      */
     public int read(CharBuffer target) throws IOException {
-        if (null == target) {
-            throw new NullPointerException();
-        }
         int length = target.length();
         char[] buf = new char[length];
         length = Math.min(length, read(buf));

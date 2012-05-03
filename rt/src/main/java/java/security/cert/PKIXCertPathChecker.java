@@ -48,21 +48,21 @@ public abstract class PKIXCertPathChecker implements Cloneable {
 
     /**
      * Clones this {@code PKIXCertPathChecker} instance.
-     * 
+     *
      * @return the cloned instance.
      */
     public Object clone() {
         try {
             return super.clone();
         } catch (CloneNotSupportedException e) {
-            throw new Error(e);
+            throw new AssertionError(e);
         }
     }
 
     /**
      * Initializes this {@code PKIXCertPathChecker} instance for specified
      * <i>checking direction</i>.
-     * 
+     *
      * @param forward
      *            the direction of the certification path processing, {@code
      *            true} if the certificates are processed in forward direction
@@ -79,7 +79,7 @@ public abstract class PKIXCertPathChecker implements Cloneable {
     /**
      * Returns whether this {@code PKIXCertPathChecker} instance supports
      * <i>forward checking</i>.
-     * 
+     *
      * @return {@code true} if this {@code PKIXCertPathChecker} instance
      *         supports forward checking, otherwise {@code false}.
      */
@@ -88,7 +88,7 @@ public abstract class PKIXCertPathChecker implements Cloneable {
     /**
      * Returns the list of extensions of X.509 certificates that this {@code
      * PKIXCertPathChecker} is able to process.
-     * 
+     *
      * @return the list of extensions of X.509 certificates that this {@code
      *         PKIXCertPathChecker} is able to process, or {@code null} if there
      *         are none.
@@ -98,7 +98,7 @@ public abstract class PKIXCertPathChecker implements Cloneable {
     /**
      * Checks the specified certificate and removes the processed critical
      * extensions from the specified list of X.509 extension <i>OID</i>s.
-     * 
+     *
      * @param cert
      *            the certificate.
      * @param unresolvedCritExts

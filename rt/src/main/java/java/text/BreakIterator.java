@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,8 +18,8 @@
 package java.text;
 
 import java.util.Locale;
-
-import org.apache.harmony.text.internal.nls.Messages;
+import libcore.icu.ICU;
+import libcore.icu.NativeBreakIterator;
 
 /**
  * Locates boundaries in text. This class defines a protocol for objects that
@@ -230,151 +230,120 @@ public abstract class BreakIterator implements Cloneable {
      */
     public static final int DONE = -1;
 
-    private static final int LONG_LENGTH = 8;
-
-    private static final int INT_LENGTH = 4;
-
-    private static final int SHORT_LENGTH = 2;
-
     // the wrapped ICU implementation
-    com.ibm.icu.text.BreakIterator wrapped;
+    NativeBreakIterator wrapped;
 
     /**
-     * Default constructor, just for invocation by subclass.
+     * Default constructor, for use by subclasses.
      */
     protected BreakIterator() {
-        super();
     }
 
     /*
      * wrapping constructor
      */
-    BreakIterator(com.ibm.icu.text.BreakIterator iterator) {
+    BreakIterator(NativeBreakIterator iterator) {
         wrapped = iterator;
     }
 
     /**
-     * Returns all supported locales in an array.
-     * 
-     * @return all supported locales.
+     * Returns an array of locales for which custom {@code BreakIterator} instances
+     * are available.
+     * <p>Note that Android does not support user-supplied locale service providers.
      */
     public static Locale[] getAvailableLocales() {
-        return com.ibm.icu.text.BreakIterator.getAvailableLocales();
+        return ICU.getAvailableBreakIteratorLocales();
     }
 
     /**
      * Returns a new instance of {@code BreakIterator} to iterate over
-     * characters using the default locale.
-     * 
+     * characters using the user's default locale.
+     * See "<a href="../util/Locale.html#default_locale">Be wary of the default locale</a>".
      * @return a new instance of {@code BreakIterator} using the default locale.
      */
     public static BreakIterator getCharacterInstance() {
-        return new RuleBasedBreakIterator(com.ibm.icu.text.BreakIterator
-                .getCharacterInstance());
+        return getCharacterInstance(Locale.getDefault());
     }
 
     /**
      * Returns a new instance of {@code BreakIterator} to iterate over
      * characters using the given locale.
-     * 
+     *
      * @param where
      *            the given locale.
      * @return a new instance of {@code BreakIterator} using the given locale.
      */
     public static BreakIterator getCharacterInstance(Locale where) {
-        if (where == null) {
-            throw new NullPointerException();
-        }
-
-        return new RuleBasedBreakIterator(com.ibm.icu.text.BreakIterator
-                .getCharacterInstance(where));
+        return new RuleBasedBreakIterator(NativeBreakIterator.getCharacterInstance(where));
     }
 
     /**
      * Returns a new instance of {{@code BreakIterator} to iterate over
-     * line breaks using the default locale.
-     * 
+     * line breaks using the user's default locale.
+     * See "<a href="../util/Locale.html#default_locale">Be wary of the default locale</a>".
      * @return a new instance of {@code BreakIterator} using the default locale.
      */
     public static BreakIterator getLineInstance() {
-        return new RuleBasedBreakIterator(com.ibm.icu.text.BreakIterator
-                .getLineInstance());
+        return getLineInstance(Locale.getDefault());
     }
 
     /**
      * Returns a new instance of {@code BreakIterator} to iterate over
      * line breaks using the given locale.
-     * 
+     *
      * @param where
      *            the given locale.
      * @return a new instance of {@code BreakIterator} using the given locale.
      * @throws NullPointerException if {@code where} is {@code null}.
      */
     public static BreakIterator getLineInstance(Locale where) {
-        if (where == null) {
-            throw new NullPointerException();
-        }
-
-        return new RuleBasedBreakIterator(com.ibm.icu.text.BreakIterator
-                .getLineInstance(where));
+        return new RuleBasedBreakIterator(NativeBreakIterator.getLineInstance(where));
     }
 
     /**
      * Returns a new instance of {@code BreakIterator} to iterate over
      * sentence-breaks using the default locale.
-     * 
+     * See "<a href="../util/Locale.html#default_locale">Be wary of the default locale</a>".
      * @return a new instance of {@code BreakIterator} using the default locale.
      */
     public static BreakIterator getSentenceInstance() {
-        return new RuleBasedBreakIterator(com.ibm.icu.text.BreakIterator
-                .getSentenceInstance());
+        return getSentenceInstance(Locale.getDefault());
     }
 
     /**
      * Returns a new instance of {@code BreakIterator} to iterate over
      * sentence-breaks using the given locale.
-     * 
+     *
      * @param where
      *            the given locale.
      * @return a new instance of {@code BreakIterator} using the given locale.
      * @throws NullPointerException if {@code where} is {@code null}.
      */
     public static BreakIterator getSentenceInstance(Locale where) {
-        if (where == null) {
-            throw new NullPointerException();
-        }
-
-        return new RuleBasedBreakIterator(com.ibm.icu.text.BreakIterator
-                .getSentenceInstance(where));
+        return new RuleBasedBreakIterator(NativeBreakIterator.getSentenceInstance(where));
     }
 
     /**
      * Returns a new instance of {@code BreakIterator} to iterate over
      * word-breaks using the default locale.
-     * 
+     * See "<a href="../util/Locale.html#default_locale">Be wary of the default locale</a>".
      * @return a new instance of {@code BreakIterator} using the default locale.
      */
     public static BreakIterator getWordInstance() {
-        return new RuleBasedBreakIterator(com.ibm.icu.text.BreakIterator
-                .getWordInstance());
+        return getWordInstance(Locale.getDefault());
     }
 
     /**
      * Returns a new instance of {@code BreakIterator} to iterate over
      * word-breaks using the given locale.
-     * 
+     *
      * @param where
      *            the given locale.
      * @return a new instance of {@code BreakIterator} using the given locale.
      * @throws NullPointerException if {@code where} is {@code null}.
      */
     public static BreakIterator getWordInstance(Locale where) {
-        if (where == null) {
-            throw new NullPointerException();
-        }
-
-        return new RuleBasedBreakIterator(com.ibm.icu.text.BreakIterator
-                .getWordInstance(where));
+        return new RuleBasedBreakIterator(NativeBreakIterator.getWordInstance(where));
     }
 
     /**
@@ -382,7 +351,7 @@ public abstract class BreakIterator implements Cloneable {
      * returns true, the current iteration position is set to the given
      * position; if the function returns false, the current iteration position
      * is set as though {@link #following(int)} had been called.
-     * 
+     *
      * @param offset
      *            the given offset to check.
      * @return {@code true} if the given offset is a boundary position; {@code
@@ -411,7 +380,7 @@ public abstract class BreakIterator implements Cloneable {
      * Sets the new text string to be analyzed, the current position will be
      * reset to the beginning of this new string, and the old string will be
      * lost.
-     * 
+     *
      * @param newText
      *            the new text string to be analyzed.
      */
@@ -421,7 +390,7 @@ public abstract class BreakIterator implements Cloneable {
 
     /**
      * Returns this iterator's current position.
-     * 
+     *
      * @return this iterator's current position.
      */
     public abstract int current();
@@ -429,7 +398,7 @@ public abstract class BreakIterator implements Cloneable {
     /**
      * Sets this iterator's current position to the first boundary and returns
      * that position.
-     * 
+     *
      * @return the position of the first boundary.
      */
     public abstract int first();
@@ -453,7 +422,7 @@ public abstract class BreakIterator implements Cloneable {
      * iterator used by this object. If the invoker wants to modify the status
      * of the returned iterator, it is recommended to first create a clone of
      * the iterator returned.
-     * 
+     *
      * @return a {@code CharacterIterator} which represents the text being
      *         analyzed.
      */
@@ -462,7 +431,7 @@ public abstract class BreakIterator implements Cloneable {
     /**
      * Sets this iterator's current position to the last boundary and returns
      * that position.
-     * 
+     *
      * @return the position of last boundary.
      */
     public abstract int last();
@@ -471,7 +440,7 @@ public abstract class BreakIterator implements Cloneable {
      * Sets this iterator's current position to the next boundary after the
      * current position, and returns this position. Returns {@code DONE} if no
      * boundary was found after the current position.
-     * 
+     *
      * @return the position of last boundary.
      */
     public abstract int next();
@@ -480,7 +449,7 @@ public abstract class BreakIterator implements Cloneable {
      * Sets this iterator's current position to the next boundary after the
      * given position, and returns that position. Returns {@code DONE} if no
      * boundary was found after the given position.
-     * 
+     *
      * @param n
      *            the given position.
      * @return the position of last boundary.
@@ -491,7 +460,7 @@ public abstract class BreakIterator implements Cloneable {
      * Sets this iterator's current position to the previous boundary before the
      * current position and returns that position. Returns {@code DONE} if
      * no boundary was found before the current position.
-     * 
+     *
      * @return the position of last boundary.
      */
     public abstract int previous();
@@ -500,7 +469,7 @@ public abstract class BreakIterator implements Cloneable {
      * Sets the new text to be analyzed by the given {@code CharacterIterator}.
      * The position will be reset to the beginning of the new text, and other
      * status information of this iterator will be kept.
-     * 
+     *
      * @param newText
      *            the {@code CharacterIterator} referring to the text to be
      *            analyzed.
@@ -508,103 +477,16 @@ public abstract class BreakIterator implements Cloneable {
     public abstract void setText(CharacterIterator newText);
 
     /**
-     * Creates a copy of this iterator, all status information including the
-     * current position are kept the same.
-     * 
-     * @return a copy of this iterator.
+     * Returns a copy of this iterator.
      */
     @Override
     public Object clone() {
         try {
             BreakIterator cloned = (BreakIterator) super.clone();
-            cloned.wrapped = (com.ibm.icu.text.BreakIterator) wrapped.clone();
+            cloned.wrapped = (NativeBreakIterator) wrapped.clone();
             return cloned;
         } catch (CloneNotSupportedException e) {
-            throw new InternalError(e.getMessage());
+            throw new AssertionError(e);
         }
-    }
-
-    /**
-     * Gets a long value from the given byte array, starting from the given
-     * offset.
-     * 
-     * @param buf
-     *            the bytes to be converted.
-     * @param offset
-     *            the start position of the conversion.
-     * @return the converted long value.
-     * @throws NullPointerException
-     *             if {@code buf} is {@code null}.
-     * @throws ArrayIndexOutOfBoundsException
-     *             if {@code offset < 0} or {@code offset + LONG_LENGTH} is
-     *             greater than the length of {@code buf}.
-     */
-    protected static long getLong(byte[] buf, int offset) {
-        // Force a buf null check first!
-        if (buf.length - offset < LONG_LENGTH || offset < 0) {
-            // text.1E=Offset out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("text.1E", offset)); //$NON-NLS-1$
-        }
-        long result = 0;
-        for (int i = offset; i < offset + LONG_LENGTH; i++) {
-            result = (result << 8) | (buf[i] & 0xff);
-        }
-        return result;
-    }
-
-    /**
-     * Gets an int value from the given byte array, starting from the given
-     * offset.
-     * 
-     * @param buf
-     *            the bytes to be converted.
-     * @param offset
-     *            the start position of the conversion.
-     * @return the converted int value.
-     * @throws NullPointerException
-     *             if {@code buf} is {@code null}.
-     * @throws ArrayIndexOutOfBoundsException
-     *             if {@code offset < 0} or {@code offset + INT_LENGTH} is
-     *             greater than the length of {@code buf}.
-     */
-    protected static int getInt(byte[] buf, int offset) {
-        // Force buf null check first!
-        if (buf.length - INT_LENGTH < offset || offset < 0) {
-            // text.1E=Offset out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("text.1E", offset)); //$NON-NLS-1$
-        }
-        int result = 0;
-        for (int i = offset; i < offset + INT_LENGTH; i++) {
-            result = (result << 8) | (buf[i] & 0xff);
-        }
-        return result;
-    }
-
-    /**
-     * Gets a short value from the given byte array, starting from the given
-     * offset.
-     * 
-     * @param buf
-     *            the bytes to be converted.
-     * @param offset
-     *            the start position of the conversion.
-     * @return the converted short value.
-     * @throws NullPointerException
-     *             if {@code buf} is {@code null}.
-     * @throws ArrayIndexOutOfBoundsException
-     *             if {@code offset < 0} or {@code offset + SHORT_LENGTH} is
-     *             greater than the length of {@code buf}.
-     */
-    protected static short getShort(byte[] buf, int offset) {
-        // Force buf null check first!
-        if (buf.length - SHORT_LENGTH < offset || offset < 0) {
-            // text.1E=Offset out of bounds \: {0}
-            throw new ArrayIndexOutOfBoundsException(Messages.getString("text.1E", offset)); //$NON-NLS-1$
-        }
-        short result = 0;
-        for (int i = offset; i < offset + SHORT_LENGTH; i++) {
-            result = (short) ((result << 8) | (buf[i] & 0xff));
-        }
-        return result;
     }
 }

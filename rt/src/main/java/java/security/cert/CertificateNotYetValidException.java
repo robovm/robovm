@@ -28,7 +28,7 @@ public class CertificateNotYetValidException extends CertificateException {
     /**
      * Creates a new {@code CertificateNotYetValidException} with the specified
      * message.
-     * 
+     *
      * @param msg
      *            the detail message for the exception.
      */

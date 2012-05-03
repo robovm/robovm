@@ -27,7 +27,7 @@ package java.nio;
  * <p>
  * All methods are marked final for runtime performance.
  * </p>
- * 
+ *
  */
 abstract class CharArrayBuffer extends CharBuffer {
 
@@ -59,23 +59,17 @@ abstract class CharArrayBuffer extends CharBuffer {
 
     @Override
     public final char get(int index) {
-        if (index < 0 || index >= limit) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkIndex(index);
         return backingArray[offset + index];
     }
 
     @Override
-    public final CharBuffer get(char[] dest, int off, int len) {
-        int length = dest.length;
-        if ((off < 0) || (len < 0) || (long) off + (long) len > length) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (len > remaining()) {
+    public final CharBuffer get(char[] dst, int srcOffset, int charCount) {
+        if (charCount > remaining()) {
             throw new BufferUnderflowException();
         }
-        System.arraycopy(backingArray, offset + position, dest, off, len);
-        position += len;
+        System.arraycopy(backingArray, offset + position, dst, srcOffset, charCount);
+        position += charCount;
         return this;
     }
 
@@ -91,10 +85,7 @@ abstract class CharArrayBuffer extends CharBuffer {
 
     @Override
     public final CharSequence subSequence(int start, int end) {
-        if (start < 0 || end < start || end > remaining()) {
-            throw new IndexOutOfBoundsException();
-        }
-
+        checkStartEndRemaining(start, end);
         CharBuffer result = duplicate();
         result.limit(position + end);
         result.position(position + start);

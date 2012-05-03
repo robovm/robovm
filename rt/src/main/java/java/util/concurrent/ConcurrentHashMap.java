@@ -12,6 +12,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+// BEGIN android-note
+// removed link to collections framework docs
+// END android-note
+
 /**
  * A hash table supporting full concurrency of retrievals and
  * adjustable expected concurrency for updates. This class obeys the
@@ -60,10 +64,6 @@ import java.io.ObjectOutputStream;
  *
  * <p> Like {@link Hashtable} but unlike {@link HashMap}, this class
  * does <em>not</em> allow <tt>null</tt> to be used as a key or value.
- *
- * <p>This class is a member of the
- * <a href="{@docRoot}/../technotes/guides/collections/index.html">
- * Java Collections Framework</a>.
  *
  * @since 1.5
  * @author Doug Lea
@@ -1230,7 +1230,7 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
         }
     }
 
-   /* ---------------- Serialization Support -------------- */
+    /* ---------------- Serialization Support -------------- */
 
     /**
      * Save the state of the <tt>ConcurrentHashMap</tt> instance to a
@@ -1241,7 +1241,7 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
      * for each key-value mapping, followed by a null pair.
      * The key-value mappings are emitted in no particular order.
      */
-    private void writeObject(java.io.ObjectOutputStream s) throws IOException  {
+    private void writeObject(java.io.ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
 
         for (int k = 0; k < segments.length; ++k) {
@@ -1269,7 +1269,7 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
      * @param s the stream
      */
     private void readObject(java.io.ObjectInputStream s)
-        throws IOException, ClassNotFoundException  {
+        throws IOException, ClassNotFoundException {
         s.defaultReadObject();
 
         // Initialize each segment to be minimally sized, and let grow.

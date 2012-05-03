@@ -17,299 +17,178 @@
 
 package java.io;
 
+import dalvik.system.CloseGuard;
+import java.nio.NioUtils;
 import java.nio.channels.FileChannel;
-
-import org.apache.harmony.luni.platform.IFileSystem;
-import org.apache.harmony.luni.platform.Platform;
-import org.apache.harmony.luni.internal.nls.Messages;
-import org.apache.harmony.nio.FileChannelFactory;
+import java.util.Arrays;
+import libcore.io.IoBridge;
+import libcore.io.IoUtils;
+import static libcore.io.OsConstants.*;
 
 /**
- * A specialized {@link OutputStream} that writes to a file in the file system.
- * All write requests made by calling methods in this class are directly
- * forwarded to the equivalent function of the underlying operating system.
- * Since this may induce some performance penalty, in particular if many small
- * write requests are made, a FileOutputStream is often wrapped by a
- * BufferedOutputStream.
- * 
+ * An output stream that writes bytes to a file. If the output file exists, it
+ * can be replaced or appended to. If it does not exist, a new file will be
+ * created.
+ * <pre>   {@code
+ *   File file = ...
+ *   OutputStream out = null;
+ *   try {
+ *     out = new BufferedOutputStream(new FileOutputStream(file));
+ *     ...
+ *   } finally {
+ *     if (out != null) {
+ *       out.close();
+ *     }
+ *   }
+ * }</pre>
+ *
+ * <p>This stream is <strong>not buffered</strong>. Most callers should wrap
+ * this stream with a {@link BufferedOutputStream}.
+ *
+ * <p>Use {@link FileWriter} to write characters, as opposed to bytes, to a file.
+ *
  * @see BufferedOutputStream
  * @see FileInputStream
  */
 public class FileOutputStream extends OutputStream implements Closeable {
 
-    /**
-     * The FileDescriptor representing this FileOutputStream.
-     */
-    FileDescriptor fd;
+    private FileDescriptor fd;
+    private final boolean shouldClose;
 
-    boolean innerFD;
-
-    // The unique file channel associated with this FileInputStream (lazily
-    // initialized).
+    /** The unique file channel. Lazily initialized because it's rarely needed. */
     private FileChannel channel;
 
-    private IFileSystem fileSystem = Platform.getFileSystem();
+    /** File access mode */
+    private final int mode;
+
+    private final CloseGuard guard = CloseGuard.get();
 
     /**
-     * Constructs a new FileOutputStream on the File {@code file}. If the file
-     * exists, it is overwritten.
-     * 
-     * @param file
-     *            the file to which this stream writes.
-     * @throws FileNotFoundException
-     *             if {@code file} cannot be opened for writing.
-     * @throws SecurityException
-     *             if a {@code SecurityManager} is installed and it denies the
-     *             write request.
-     * @see java.lang.SecurityManager#checkWrite(FileDescriptor)
+     * Constructs a new {@code FileOutputStream} that writes to {@code file}. The file will be
+     * truncated if it exists, and created if it doesn't exist.
+     *
+     * @throws FileNotFoundException if file cannot be opened for writing.
      */
     public FileOutputStream(File file) throws FileNotFoundException {
         this(file, false);
     }
 
     /**
-     * Constructs a new FileOutputStream on the File {@code file}. The
-     * parameter {@code append} determines whether or not the file is opened and
-     * appended to or just opened and overwritten.
-     * 
-     * @param file
-     *            the file to which this stream writes.
-     * @param append
-     *            indicates whether or not to append to an existing file.
-     * @throws FileNotFoundException
-     *             if the {@code file} cannot be opened for writing.
-     * @throws SecurityException
-     *             if a {@code SecurityManager} is installed and it denies the
-     *             write request.
-     * @see java.lang.SecurityManager#checkWrite(FileDescriptor)
-     * @see java.lang.SecurityManager#checkWrite(String)
+     * Constructs a new {@code FileOutputStream} that writes to {@code file}.
+     * If {@code append} is true and the file already exists, it will be appended to; otherwise
+     * it will be truncated. The file will be created if it does not exist.
+     *
+     * @throws FileNotFoundException if the file cannot be opened for writing.
      */
-    public FileOutputStream(File file, boolean append)
-            throws FileNotFoundException {
-        super();
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            security.checkWrite(file.getPath());
+    public FileOutputStream(File file, boolean append) throws FileNotFoundException {
+        if (file == null) {
+            throw new NullPointerException("file == null");
         }
-        fd = new FileDescriptor();
-        fd.descriptor = fileSystem.open(file.properPath(true),
-                append ? IFileSystem.O_APPEND : IFileSystem.O_WRONLY);
-        innerFD = true;
-        channel = FileChannelFactory.getFileChannel(this, fd.descriptor,
-                append ? IFileSystem.O_APPEND : IFileSystem.O_WRONLY);
+        this.mode = O_WRONLY | O_CREAT | (append ? O_APPEND : O_TRUNC);
+        this.fd = IoBridge.open(file.getAbsolutePath(), mode);
+        this.shouldClose = true;
+        this.guard.open("close");
     }
 
     /**
-     * Constructs a new FileOutputStream on the FileDescriptor {@code fd}. The
-     * file must already be open, therefore no {@code FileNotFoundException}
-     * will be thrown.
-     * 
-     * @param fd
-     *            the FileDescriptor to which this stream writes.
-     * @throws NullPointerException
-     *             if {@code fd} is {@code null}.
-     * @throws SecurityException
-     *             if a {@code SecurityManager} is installed and it denies the
-     *             write request.
-     * @see java.lang.SecurityManager#checkWrite(FileDescriptor)
+     * Constructs a new {@code FileOutputStream} that writes to {@code fd}.
+     *
+     * @throws NullPointerException if {@code fd} is null.
      */
     public FileOutputStream(FileDescriptor fd) {
-        super();
         if (fd == null) {
-            throw new NullPointerException(Messages.getString("luni.B6")); //$NON-NLS-1$
-        }
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            security.checkWrite(fd);
+            throw new NullPointerException("fd == null");
         }
         this.fd = fd;
-        innerFD = false;
-        channel = FileChannelFactory.getFileChannel(this, fd.descriptor,
-                IFileSystem.O_WRONLY);
+        this.shouldClose = false;
+        this.mode = O_WRONLY;
+        this.channel = NioUtils.newFileChannel(this, fd, mode);
+        // Note that we do not call guard.open here because the
+        // FileDescriptor is not owned by the stream.
     }
 
     /**
-     * Constructs a new FileOutputStream on the file named {@code filename}. If
-     * the file exists, it is overwritten. The {@code filename} may be absolute
-     * or relative to the system property {@code "user.dir"}.
-     * 
-     * @param filename
-     *            the name of the file to which this stream writes.
-     * @throws FileNotFoundException
-     *             if the file cannot be opened for writing.
-     * @throws SecurityException
-     *             if a {@code SecurityManager} is installed and it denies the
-     *             write request.
+     * Constructs a new {@code FileOutputStream} that writes to {@code path}. The file will be
+     * truncated if it exists, and created if it doesn't exist.
+     *
+     * @throws FileNotFoundException if file cannot be opened for writing.
      */
-    public FileOutputStream(String filename) throws FileNotFoundException {
-        this(filename, false);
+    public FileOutputStream(String path) throws FileNotFoundException {
+        this(path, false);
     }
 
     /**
-     * Constructs a new FileOutputStream on the file named {@code filename}.
-     * The parameter {@code append} determines whether or not the file is opened
-     * and appended to or just opened and overwritten. The {@code filename} may
-     * be absolute or relative to the system property {@code "user.dir"}.
-     * 
-     * @param filename
-     *            the name of the file to which this stream writes.
-     * @param append
-     *            indicates whether or not to append to an existing file.
-     * @throws FileNotFoundException
-     *             if the file cannot be opened for writing.
-     * @throws SecurityException
-     *             if a {@code SecurityManager} is installed and it denies the
-     *             write request.
+     * Constructs a new {@code FileOutputStream} that writes to {@code path}.
+     * If {@code append} is true and the file already exists, it will be appended to; otherwise
+     * it will be truncated. The file will be created if it does not exist.
+     *
+     * @throws FileNotFoundException if the file cannot be opened for writing.
      */
-    public FileOutputStream(String filename, boolean append)
-            throws FileNotFoundException {
-        this(new File(filename), append);
+    public FileOutputStream(String path, boolean append) throws FileNotFoundException {
+        this(new File(path), append);
     }
 
-    /**
-     * Closes this stream. This implementation closes the underlying operating
-     * system resources allocated to represent this stream.
-     * 
-     * @throws IOException
-     *             if an error occurs attempting to close this stream.
-     */
     @Override
     public void close() throws IOException {
-        if (fd == null) {
-            // if fd is null, then the underlying file is not opened, so nothing
-            // to close
-            return;
-        }
-
-        if (channel != null) {
-            synchronized (channel) {
-                if (channel.isOpen() && fd.descriptor >= 0) {
-                    channel.close();
-                }
-            }
-        }
-
+        guard.close();
         synchronized (this) {
-            if (fd.descriptor >= 0 && innerFD) {
-                fileSystem.close(fd.descriptor);
-                fd.descriptor = -1;
+            if (channel != null) {
+                channel.close();
+            }
+            if (shouldClose) {
+                IoUtils.close(fd);
+            } else {
+                // An owned fd has been invalidated by IoUtils.close, but
+                // we need to explicitly stop using an unowned fd (http://b/4361076).
+                fd = new FileDescriptor();
+            }
+        }
+    }
+
+    @Override protected void finalize() throws IOException {
+        try {
+            if (guard != null) {
+                guard.warnIfOpen();
+            }
+            close();
+        } finally {
+            try {
+                super.finalize();
+            } catch (Throwable t) {
+                // for consistency with the RI, we must override Object.finalize() to
+                // remove the 'throws Throwable' clause.
+                throw new AssertionError(t);
             }
         }
     }
 
     /**
-     * Frees any resources allocated for this stream before it is garbage
-     * collected. This method is called from the Java Virtual Machine.
-     * 
-     * @throws IOException
-     *             if an error occurs attempting to finalize this stream.
-     */
-    @Override
-    protected void finalize() throws IOException {
-        close();
-    }
-
-    /**
-     * Returns the FileChannel equivalent to this output stream.
-     * <p>
-     * The file channel is write-only and has an initial position within the
-     * file that is the same as the current position of this stream within the
-     * file. All changes made to the underlying file descriptor state via the
-     * channel are visible by the output stream and vice versa.
-     *
-     * @return the file channel representation for this stream.
+     * Returns a write-only {@link FileChannel} that shares its position with
+     * this stream.
      */
     public FileChannel getChannel() {
-        return channel;
+        synchronized (this) {
+            if (channel == null) {
+                channel = NioUtils.newFileChannel(this, fd, mode);
+            }
+            return channel;
+        }
     }
 
     /**
-     * Returns a FileDescriptor which represents the lowest level representation
-     * of an operating system stream resource.
-     * 
-     * @return a FileDescriptor representing this stream.
-     * @throws IOException
-     *             if an error occurs attempting to get the FileDescriptor of
-     *             this stream.
+     * Returns the underlying file descriptor.
      */
     public final FileDescriptor getFD() throws IOException {
         return fd;
     }
 
-    /**
-     * Writes the entire contents of the byte array {@code buffer} to this
-     * stream.
-     * 
-     * @param buffer
-     *            the buffer to be written to the file.
-     * @throws IOException
-     *             if this stream is closed or an error occurs attempting to
-     *             write to this stream.
-     */
     @Override
-    public void write(byte[] buffer) throws IOException {
-        write(buffer, 0, buffer.length);
+    public void write(byte[] buffer, int byteOffset, int byteCount) throws IOException {
+        IoBridge.write(fd, buffer, byteOffset, byteCount);
     }
 
-    /**
-     * Writes {@code count} bytes from the byte array {@code buffer} starting at
-     * {@code offset} to this stream.
-     * 
-     * @param buffer
-     *            the buffer to write to this stream.
-     * @param offset
-     *            the index of the first byte in {@code buffer} to write.
-     * @param count
-     *            the number of bytes from {@code buffer} to write.
-     * @throws IndexOutOfBoundsException
-     *             if {@code count < 0} or {@code offset < 0}, or if
-     *             {@code count + offset} is greater than the length of
-     *             {@code buffer}.
-     * @throws IOException
-     *             if this stream is closed or an error occurs attempting to
-     *             write to this stream.
-     * @throws NullPointerException
-     *             if {@code buffer} is {@code null}.
-     */
-    @Override
-    public void write(byte[] buffer, int offset, int count) throws IOException {
-        if (buffer == null) {
-            throw new NullPointerException();
-        }
-        if (count < 0 || offset < 0 || offset > buffer.length
-                || count > buffer.length - offset) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        if (count == 0) {
-            return;
-        }
-
-        openCheck();
-        fileSystem.write(fd.descriptor, buffer, offset, count);
-    }
-
-    /**
-     * Writes the specified byte {@code oneByte} to this stream. Only the low
-     * order byte of the integer {@code oneByte} is written.
-     * 
-     * @param oneByte
-     *            the byte to be written.
-     * @throws IOException
-     *             if this stream is closed an error occurs attempting to write
-     *             to this stream.
-     */
     @Override
     public void write(int oneByte) throws IOException {
-        openCheck();
-        byte[] byteArray = new byte[1];
-        byteArray[0] = (byte) oneByte;
-        fileSystem.write(fd.descriptor, byteArray, 0, 1);
-    }
-
-    private synchronized void openCheck() throws IOException {
-        if (fd.descriptor < 0) {
-            throw new IOException();
-        }
+        write(new byte[] { (byte) oneByte }, 0, 1);
     }
 }

@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,6 +15,9 @@
  */
 
 package java.nio;
+
+import libcore.io.Memory;
+import libcore.io.SizeOf;
 
 /**
  * HeapByteBuffer, ReadWriteHeapByteBuffer and ReadOnlyHeapByteBuffer compose
@@ -25,17 +28,16 @@ package java.nio;
  * <p>
  * This class is marked final for runtime performance.
  * </p>
- * 
+ *
  */
 final class ReadWriteHeapByteBuffer extends HeapByteBuffer {
 
     static ReadWriteHeapByteBuffer copy(HeapByteBuffer other, int markOfOther) {
-        ReadWriteHeapByteBuffer buf = new ReadWriteHeapByteBuffer(
-                other.backingArray, other.capacity(), other.offset);
-        buf.limit = other.limit();
+        ReadWriteHeapByteBuffer buf =
+                new ReadWriteHeapByteBuffer(other.backingArray, other.capacity(), other.offset);
+        buf.limit = other.limit;
         buf.position = other.position();
         buf.mark = markOfOther;
-        buf.order(other.order());
         return buf;
     }
 
@@ -58,8 +60,7 @@ final class ReadWriteHeapByteBuffer extends HeapByteBuffer {
 
     @Override
     public ByteBuffer compact() {
-        System.arraycopy(backingArray, position + offset, backingArray, offset,
-                remaining());
+        System.arraycopy(backingArray, position + offset, backingArray, offset, remaining());
         position = limit - position;
         limit = capacity;
         mark = UNSET_MARK;
@@ -102,33 +103,70 @@ final class ReadWriteHeapByteBuffer extends HeapByteBuffer {
 
     @Override
     public ByteBuffer put(int index, byte b) {
-        if (index < 0 || index >= limit) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkIndex(index);
         backingArray[offset + index] = b;
         return this;
     }
 
-    /*
-     * Override ByteBuffer.put(byte[], int, int) to improve performance.
-     * 
-     * (non-Javadoc)
-     * 
-     * @see java.nio.ByteBuffer#put(byte[], int, int)
-     */
     @Override
-    public ByteBuffer put(byte[] src, int off, int len) {
-        if (off < 0 || len < 0 || (long) off + (long) len > src.length) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (len > remaining()) {
+    public ByteBuffer put(byte[] src, int srcOffset, int byteCount) {
+        checkPutBounds(1, src.length, srcOffset, byteCount);
+        System.arraycopy(src, srcOffset, backingArray, offset + position, byteCount);
+        position += byteCount;
+        return this;
+    }
+
+    final void put(char[] src, int srcOffset, int charCount) {
+        int byteCount = checkPutBounds(SizeOf.CHAR, src.length, srcOffset, charCount);
+        Memory.unsafeBulkPut(backingArray, offset + position, byteCount, src, srcOffset, SizeOf.CHAR, order.needsSwap);
+        position += byteCount;
+    }
+
+    final void put(double[] src, int srcOffset, int doubleCount) {
+        int byteCount = checkPutBounds(SizeOf.DOUBLE, src.length, srcOffset, doubleCount);
+        Memory.unsafeBulkPut(backingArray, offset + position, byteCount, src, srcOffset, SizeOf.DOUBLE, order.needsSwap);
+        position += byteCount;
+    }
+
+    final void put(float[] src, int srcOffset, int floatCount) {
+        int byteCount = checkPutBounds(SizeOf.FLOAT, src.length, srcOffset, floatCount);
+        Memory.unsafeBulkPut(backingArray, offset + position, byteCount, src, srcOffset, SizeOf.FLOAT, order.needsSwap);
+        position += byteCount;
+    }
+
+    final void put(int[] src, int srcOffset, int intCount) {
+        int byteCount = checkPutBounds(SizeOf.INT, src.length, srcOffset, intCount);
+        Memory.unsafeBulkPut(backingArray, offset + position, byteCount, src, srcOffset, SizeOf.INT, order.needsSwap);
+        position += byteCount;
+    }
+
+    final void put(long[] src, int srcOffset, int longCount) {
+        int byteCount = checkPutBounds(SizeOf.LONG, src.length, srcOffset, longCount);
+        Memory.unsafeBulkPut(backingArray, offset + position, byteCount, src, srcOffset, SizeOf.LONG, order.needsSwap);
+        position += byteCount;
+    }
+
+    final void put(short[] src, int srcOffset, int shortCount) {
+        int byteCount = checkPutBounds(SizeOf.SHORT, src.length, srcOffset, shortCount);
+        Memory.unsafeBulkPut(backingArray, offset + position, byteCount, src, srcOffset, SizeOf.SHORT, order.needsSwap);
+        position += byteCount;
+    }
+
+    @Override
+    public ByteBuffer putChar(int index, char value) {
+        checkIndex(index, SizeOf.CHAR);
+        Memory.pokeShort(backingArray, offset + index, (short) value, order);
+        return this;
+    }
+
+    @Override
+    public ByteBuffer putChar(char value) {
+        int newPosition = position + SizeOf.CHAR;
+        if (newPosition > limit) {
             throw new BufferOverflowException();
         }
-        if (isReadOnly()) {
-            throw new ReadOnlyBufferException();
-        }
-        System.arraycopy(src, off, backingArray, offset + position, len);
-        position += len;
+        Memory.pokeShort(backingArray, offset + position, (short) value, order);
+        position = newPosition;
         return this;
     }
 
@@ -144,79 +182,70 @@ final class ReadWriteHeapByteBuffer extends HeapByteBuffer {
 
     @Override
     public ByteBuffer putFloat(float value) {
-        return putInt(Float.floatToIntBits(value));
+        return putInt(Float.floatToRawIntBits(value));
     }
 
     @Override
     public ByteBuffer putFloat(int index, float value) {
-        return putInt(index, Float.floatToIntBits(value));
+        return putInt(index, Float.floatToRawIntBits(value));
     }
 
     @Override
     public ByteBuffer putInt(int value) {
-        int newPosition = position + 4;
+        int newPosition = position + SizeOf.INT;
         if (newPosition > limit) {
             throw new BufferOverflowException();
         }
-        store(position, value);
+        Memory.pokeInt(backingArray, offset + position, value, order);
         position = newPosition;
         return this;
     }
 
     @Override
     public ByteBuffer putInt(int index, int value) {
-        if (index < 0 || (long) index + 4 > limit) {
-            throw new IndexOutOfBoundsException();
-        }
-        store(index, value);
+        checkIndex(index, SizeOf.INT);
+        Memory.pokeInt(backingArray, offset + index, value, order);
         return this;
     }
 
     @Override
     public ByteBuffer putLong(int index, long value) {
-        if (index < 0 || (long) index + 8 > limit) {
-            throw new IndexOutOfBoundsException();
-        }
-        store(index, value);
+        checkIndex(index, SizeOf.LONG);
+        Memory.pokeLong(backingArray, offset + index, value, order);
         return this;
     }
 
     @Override
     public ByteBuffer putLong(long value) {
-        int newPosition = position + 8;
+        int newPosition = position + SizeOf.LONG;
         if (newPosition > limit) {
             throw new BufferOverflowException();
         }
-        store(position, value);
+        Memory.pokeLong(backingArray, offset + position, value, order);
         position = newPosition;
         return this;
     }
 
     @Override
     public ByteBuffer putShort(int index, short value) {
-        if (index < 0 || (long) index + 2 > limit) {
-            throw new IndexOutOfBoundsException();
-        }
-        store(index, value);
+        checkIndex(index, SizeOf.SHORT);
+        Memory.pokeShort(backingArray, offset + index, value, order);
         return this;
     }
 
     @Override
     public ByteBuffer putShort(short value) {
-        int newPosition = position + 2;
+        int newPosition = position + SizeOf.SHORT;
         if (newPosition > limit) {
             throw new BufferOverflowException();
         }
-        store(position, value);
+        Memory.pokeShort(backingArray, offset + position, value, order);
         position = newPosition;
         return this;
     }
 
     @Override
     public ByteBuffer slice() {
-        ReadWriteHeapByteBuffer slice = new ReadWriteHeapByteBuffer(
-                backingArray, remaining(), offset + position);
-        slice.order = order;
-        return slice;
+        return new ReadWriteHeapByteBuffer(backingArray, remaining(), offset + position);
     }
 }

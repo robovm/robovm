@@ -34,7 +34,7 @@ public class CharConversionException extends IOException {
     /**
      * Constructs a new {@code CharConversionException} with its stack trace and
      * detail message filled in.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

@@ -19,25 +19,60 @@ package org.apache.harmony.luni.util;
 
 
 import java.io.File;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Collections;
 
-import org.apache.harmony.kernel.vm.VM;
+/**
+ * Implements the actual DeleteOnExit mechanism. Is registered as a shutdown
+ * hook in the Runtime, once it is actually being used.
+ */
+public class DeleteOnExit extends Thread {
 
-public class DeleteOnExit {
-	private static Vector<String> deleteList = new Vector<String>();
+    /**
+     * Our singleton instance.
+     */
+    private static DeleteOnExit instance;
 
-	static {
-		VM.deleteOnExit();
-	}
+    /**
+     * Our list of files scheduled for deletion.
+     */
+    private ArrayList<String> files = new ArrayList<String>();
 
-	public static void addFile(String toDelete) {
-		deleteList.addElement(toDelete);
-	}
-
-	public static void deleteOnExit() {
-        for (int i = deleteList.size() - 1; i >= 0; i--) {
-            String name = deleteList.elementAt(i);
-            new File(name).delete();
+    /**
+     * Returns our singleton instance, creating it if necessary.
+     */
+    public static synchronized DeleteOnExit getInstance() {
+        if (instance == null) {
+            instance = new DeleteOnExit();
+            Runtime.getRuntime().addShutdownHook(instance);
         }
-	}
+
+        return instance;
+    }
+
+    /**
+     * Schedules a file for deletion.
+     *
+     * @param filename The file to delete.
+     */
+    public void addFile(String filename) {
+        synchronized(files) {
+            if (!files.contains(filename)) {
+                files.add(filename);
+            }
+        }
+    }
+
+    /**
+     * Does the actual work. Note we (a) first sort the files lexicographically
+     * and then (b) delete them in reverse order. This is to make sure files
+     * get deleted before their parent directories.
+     */
+    @Override
+    public void run() {
+        Collections.sort(files);
+        for (int i = files.size() - 1; i >= 0; i--) {
+            new File(files.get(i)).delete();
+        }
+    }
 }

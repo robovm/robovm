@@ -21,20 +21,15 @@ import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import org.apache.harmony.misc.accessors.ObjectAccessor;
-
 /**
  * Describes a field for the purpose of serialization. Classes can define the
  * collection of fields that are serialized, which may be different from the set
  * of all declared fields.
- * 
+ *
  * @see ObjectOutputStream#writeFields()
  * @see ObjectInputStream#readFields()
  */
 public class ObjectStreamField implements Comparable<Object> {
-
-    static final int FIELD_IS_NOT_RESOLVED = -1;
-    static final int FIELD_IS_ABSENT = -2;
 
     // Declared name of the field
     private String name;
@@ -52,24 +47,9 @@ public class ObjectStreamField implements Comparable<Object> {
 
     private boolean isDeserialized;
 
-    private long assocFieldID = FIELD_IS_NOT_RESOLVED;
-
-    long getFieldID(ObjectAccessor accessor, Class<?> declaringClass) {
-        if (assocFieldID != FIELD_IS_NOT_RESOLVED) {
-            return assocFieldID;
-        } else {
-            try {  
-                assocFieldID = accessor.getFieldID(declaringClass, name);
-            } catch(NoSuchFieldError e) {
-                assocFieldID = FIELD_IS_ABSENT;
-            }
-            return assocFieldID;
-        }
-    }
-
     /**
      * Constructs an ObjectStreamField with the specified name and type.
-     * 
+     *
      * @param name
      *            the name of the field.
      * @param cl
@@ -88,7 +68,7 @@ public class ObjectStreamField implements Comparable<Object> {
     /**
      * Constructs an ObjectStreamField with the specified name, type and the
      * indication if it is unshared.
-     * 
+     *
      * @param name
      *            the name of the field.
      * @param cl
@@ -105,15 +85,14 @@ public class ObjectStreamField implements Comparable<Object> {
             throw new NullPointerException();
         }
         this.name = name;
-        this.type = (cl.getClassLoader() == null) ? cl
-                : new WeakReference<Class<?>>(cl);
+        this.type = (cl.getClassLoader() == null) ? cl : new WeakReference<Class<?>>(cl);
         this.unshared = unshared;
     }
 
     /**
      * Constructs an ObjectStreamField with the given name and the given type.
      * The type may be null.
-     * 
+     *
      * @param signature
      *            A String representing the type of the field
      * @param name
@@ -134,7 +113,7 @@ public class ObjectStreamField implements Comparable<Object> {
      * of the compared fields has a primitive type and the other one not. If so,
      * the field with the primitive type is considered to be "smaller". If both
      * fields are equal, their names are compared.
-     * 
+     *
      * @param o
      *            the object to compare with.
      * @return -1 if this field is "smaller" than field {@code o}, 0 if both
@@ -156,19 +135,9 @@ public class ObjectStreamField implements Comparable<Object> {
         return this.getName().compareTo(f.getName());
     }
 
-    @Override
-    public boolean equals(Object arg0) {
-        return (arg0 instanceof ObjectStreamField) && (compareTo(arg0) == 0);
-    }
-
-    @Override
-    public int hashCode() {
-        return getName().hashCode();
-    }
-
     /**
      * Gets the name of this field.
-     * 
+     *
      * @return the field's name.
      */
     public String getName() {
@@ -177,7 +146,7 @@ public class ObjectStreamField implements Comparable<Object> {
 
     /**
      * Gets the offset of this field in the object.
-     * 
+     *
      * @return this field's offset.
      */
     public int getOffset() {
@@ -187,10 +156,11 @@ public class ObjectStreamField implements Comparable<Object> {
     /**
      * Return the type of the field the receiver represents, this is an internal
      * method
-     * 
+     *
      * @return A Class object representing the type of the field
      */
-    private Class<?> getTypeInternal() {
+    // Changed from private to default visibility for usage in ObjectStreamClass
+    /* package */ Class<?> getTypeInternal() {
         if (type instanceof WeakReference) {
             return (Class<?>) ((WeakReference<?>) type).get();
         }
@@ -199,7 +169,7 @@ public class ObjectStreamField implements Comparable<Object> {
 
     /**
      * Gets the type of this field.
-     * 
+     *
      * @return a {@code Class} object representing the type of the field.
      */
     public Class<?> getType() {
@@ -213,7 +183,7 @@ public class ObjectStreamField implements Comparable<Object> {
     /**
      * Gets a character code for the type of this field. The following codes are
      * used:
-     * 
+     *
      * <pre>
      * B     byte
      * C     char
@@ -230,41 +200,37 @@ public class ObjectStreamField implements Comparable<Object> {
      * @return the field's type code.
      */
     public char getTypeCode() {
-        Class<?> t = getTypeInternal();
-        if (t == Integer.TYPE) {
+        return typeCodeOf(getTypeInternal());
+    }
+
+    private char typeCodeOf(Class<?> type) {
+        if (type == int.class) {
             return 'I';
-        }
-        if (t == Byte.TYPE) {
+        } else if (type == byte.class) {
             return 'B';
-        }
-        if (t == Character.TYPE) {
+        } else if (type == char.class) {
             return 'C';
-        }
-        if (t == Short.TYPE) {
+        } else if (type == short.class) {
             return 'S';
-        }
-        if (t == Boolean.TYPE) {
+        } else if (type == boolean.class) {
             return 'Z';
-        }
-        if (t == Long.TYPE) {
+        } else if (type == long.class) {
             return 'J';
-        }
-        if (t == Float.TYPE) {
+        } else if (type == float.class) {
             return 'F';
-        }
-        if (t == Double.TYPE) {
+        } else if (type == double.class) {
             return 'D';
-        }
-        if (t.isArray()) {
+        } else if (type.isArray()) {
             return '[';
+        } else {
+            return 'L';
         }
-        return 'L';
     }
 
     /**
      * Gets the type signature used by the VM to represent the type of this
      * field.
-     * 
+     *
      * @return the signature of this field's class or {@code null} if this
      *         field's type is primitive.
      */
@@ -275,7 +241,7 @@ public class ObjectStreamField implements Comparable<Object> {
         if (typeString == null) {
             Class<?> t = getTypeInternal();
             String typeName = t.getName().replace('.', '/');
-            String str = (t.isArray()) ? typeName : ("L" + typeName + ';'); //$NON-NLS-1$
+            String str = (t.isArray()) ? typeName : ("L" + typeName + ';');
             typeString = str.intern();
         }
         return typeString;
@@ -283,7 +249,7 @@ public class ObjectStreamField implements Comparable<Object> {
 
     /**
      * Indicates whether this field's type is a primitive type.
-     * 
+     *
      * @return {@code true} if this field's type is primitive; {@code false} if
      *         the type of this field is a regular class.
      */
@@ -292,9 +258,16 @@ public class ObjectStreamField implements Comparable<Object> {
         return t != null && t.isPrimitive();
     }
 
+    boolean writeField(DataOutputStream out) throws IOException {
+        Class<?> t = getTypeInternal();
+        out.writeByte(typeCodeOf(t));
+        out.writeUTF(name);
+        return (t != null && t.isPrimitive());
+    }
+
     /**
      * Sets this field's offset in the object.
-     * 
+     *
      * @param newValue
      *            the field's new offset.
      */
@@ -305,36 +278,16 @@ public class ObjectStreamField implements Comparable<Object> {
     /**
      * Returns a string containing a concise, human-readable description of this
      * field descriptor.
-     * 
+     *
      * @return a printable representation of this descriptor.
      */
     @Override
     public String toString() {
-        return this.getClass().getName() + '(' + getName() + ':'
-                + getTypeInternal() + ')';
-    }
-
-    /**
-     * Sorts the fields for dumping. Primitive types come first, then regular
-     * types.
-     * 
-     * @param fields
-     *            ObjectStreamField[] fields to be sorted
-     */
-    static void sortFields(ObjectStreamField[] fields) {
-        // Sort if necessary
-        if (fields.length > 1) {
-            Comparator<ObjectStreamField> fieldDescComparator = new Comparator<ObjectStreamField>() {
-                public int compare(ObjectStreamField f1, ObjectStreamField f2) {
-                    return f1.compareTo(f2);
-                }
-            };
-            Arrays.sort(fields, fieldDescComparator);
-        }
+        return this.getClass().getName() + '(' + getName() + ':' + getTypeInternal() + ')';
     }
 
     void resolve(ClassLoader loader) {
-        if (typeString == null && isPrimitive()){
+        if (typeString == null && isPrimitive()) {
             // primitive type declared in a serializable class
             typeString = String.valueOf(getTypeCode());
         }
@@ -352,8 +305,7 @@ public class ObjectStreamField implements Comparable<Object> {
         }
         try {
             Class<?> cl = Class.forName(className, false, loader);
-            type = (cl.getClassLoader() == null) ? cl
-                    : new WeakReference<Class<?>>(cl);
+            type = (cl.getClassLoader() == null) ? cl : new WeakReference<Class<?>>(cl);
         } catch (ClassNotFoundException e) {
             // Ignored
         }
@@ -361,13 +313,13 @@ public class ObjectStreamField implements Comparable<Object> {
 
     /**
      * Indicates whether this field is unshared.
-     * 
+     *
      * @return {@code true} if this field is unshared, {@code false} otherwise.
      */
     public boolean isUnshared() {
         return unshared;
     }
-    
+
     void setUnshared(boolean unshared) {
         this.unshared = unshared;
     }
@@ -378,33 +330,33 @@ public class ObjectStreamField implements Comparable<Object> {
      */
     private boolean defaultResolve() {
         switch (typeString.charAt(0)) {
-            case 'I':
-                type = Integer.TYPE;
-                return true;
-            case 'B':
-                type = Byte.TYPE;
-                return true;
-            case 'C':
-                type = Character.TYPE;
-                return true;
-            case 'S':
-                type = Short.TYPE;
-                return true;
-            case 'Z':
-                type = Boolean.TYPE;
-                return true;
-            case 'J':
-                type = Long.TYPE;
-                return true;
-            case 'F':
-                type = Float.TYPE;
-                return true;
-            case 'D':
-                type = Double.TYPE;
-                return true;
-            default:
-                type = Object.class;
-                return false;
+        case 'I':
+            type = int.class;
+            return true;
+        case 'B':
+            type = byte.class;
+            return true;
+        case 'C':
+            type = char.class;
+            return true;
+        case 'S':
+            type = short.class;
+            return true;
+        case 'Z':
+            type = boolean.class;
+            return true;
+        case 'J':
+            type = long.class;
+            return true;
+        case 'F':
+            type = float.class;
+            return true;
+        case 'D':
+            type = double.class;
+            return true;
+        default:
+            type = Object.class;
+            return false;
         }
     }
 }

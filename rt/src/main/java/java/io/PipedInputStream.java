@@ -17,25 +17,42 @@
 
 package java.io;
 
-import org.apache.harmony.luni.internal.nls.Messages;
+import java.util.Arrays;
 
 /**
  * Receives information from a communications pipe. When two threads want to
  * pass data back and forth, one creates a piped output stream and the other one
  * creates a piped input stream.
- * 
+ *
  * @see PipedOutputStream
  */
 public class PipedInputStream extends InputStream {
 
-    private Thread lastReader, lastWriter;
+    private Thread lastReader;
 
-    private boolean isClosed = false;
+    private Thread lastWriter;
+
+    private boolean isClosed;
 
     /**
-     * The circular buffer through which data is passed.
+     * The circular buffer through which data is passed. Data is read from the
+     * range {@code [out, in)} and written to the range {@code [in, out)}.
+     * Data in the buffer is either sequential: <pre>
+     *     { - - - X X X X X X X - - - - - }
+     *             ^             ^
+     *             |             |
+     *            out           in</pre>
+     * ...or wrapped around the buffer's end: <pre>
+     *     { X X X X - - - - - - - - X X X }
+     *               ^               ^
+     *               |               |
+     *              in              out</pre>
+     * When the buffer is empty, {@code in == -1}. Reading when the buffer is
+     * empty will block until data is available. When the buffer is full,
+     * {@code in == out}. Writing when the buffer is full will block until free
+     * space is available.
      */
-    protected byte buffer[];
+    protected byte[] buffer;
 
     /**
      * The index in {@code buffer} where the next byte will be written.
@@ -45,7 +62,7 @@ public class PipedInputStream extends InputStream {
     /**
      * The index in {@code buffer} where the next byte will be read.
      */
-    protected int out = 0;
+    protected int out;
 
     /**
      * The size of the default pipe in bytes.
@@ -55,22 +72,20 @@ public class PipedInputStream extends InputStream {
     /**
      * Indicates if this pipe is connected.
      */
-    boolean isConnected = false;
+    boolean isConnected;
 
     /**
      * Constructs a new unconnected {@code PipedInputStream}. The resulting
      * stream must be connected to a {@link PipedOutputStream} before data may
      * be read from it.
      */
-    public PipedInputStream() {
-        /* empty */
-    }
+    public PipedInputStream() {}
 
     /**
      * Constructs a new {@code PipedInputStream} connected to the
      * {@link PipedOutputStream} {@code out}. Any data written to the output
      * stream can be read from the this input stream.
-     * 
+     *
      * @param out
      *            the piped output stream to connect to.
      * @throws IOException
@@ -79,54 +94,47 @@ public class PipedInputStream extends InputStream {
     public PipedInputStream(PipedOutputStream out) throws IOException {
         connect(out);
     }
-    
-    /**
-     * Constructs a new PipedInputStream connected to the PipedOutputStream
-     * <code>out</code> and uses the specified buffer size. Any data written
-     * to the output stream can be read from this input stream.
-     * 
-     * @param out
-     *            the PipedOutputStream to connect to.
-     * @param pipeSize
-     *            the size of the buffer.
-     * @throws IOException
-     *             if an I/O error occurs.
-     * @throws IllegalArgumentException
-     *             if pipeSize is less than or equal to zero.
-     * @since 1.6
-     */
-    public PipedInputStream(PipedOutputStream out, int pipeSize)
-            throws IOException {
-        this(pipeSize);
-        connect(out);
-    }
 
     /**
-     * Constructs a new unconnected PipedInputStream and uses the specified
-     * buffer size. The resulting Stream must be connected to a
-     * PipedOutputStream before data may be read from it.
-     * 
-     * @param pipeSize
-     *            the size of the buffer.
-     * @throws IllegalArgumentException
-     *             if pipeSize is less than or equal to zero.
+     * Constructs a new unconnected {@code PipedInputStream} with the given
+     * buffer size. The resulting stream must be connected to a
+     * {@code PipedOutputStream} before data may be read from it.
+     *
+     * @param pipeSize the size of the buffer in bytes.
+     * @throws IllegalArgumentException if pipeSize is less than or equal to zero.
      * @since 1.6
      */
     public PipedInputStream(int pipeSize) {
         if (pipeSize <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("pipe size " + pipeSize + " too small");
         }
         buffer = new byte[pipeSize];
     }
 
     /**
-     * Returns the number of bytes that are available before this stream will
-     * block. This implementation returns the number of bytes written to this
-     * pipe that have not been read yet.
-     * 
-     * @return the number of bytes available before blocking.
-     * @throws IOException
-     *             if an error occurs in this stream.
+     * Constructs a new {@code PipedInputStream} connected to the given {@code PipedOutputStream},
+     * with the given buffer size. Any data written to the output stream can be read from this
+     * input stream.
+     *
+     * @param out the {@code PipedOutputStream} to connect to.
+     * @param pipeSize the size of the buffer in bytes.
+     * @throws IOException if an I/O error occurs.
+     * @throws IllegalArgumentException if pipeSize is less than or equal to zero.
+     * @since 1.6
+     */
+    public PipedInputStream(PipedOutputStream out, int pipeSize) throws IOException {
+        this(pipeSize);
+        connect(out);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Unlike most streams, {@code PipedInputStream} returns 0 rather than throwing
+     * {@code IOException} if the stream has been closed. Unconnected and broken pipes also
+     * return 0.
+     *
+     * @throws IOException if an I/O error occurs
      */
     @Override
     public synchronized int available() throws IOException {
@@ -139,26 +147,21 @@ public class PipedInputStream extends InputStream {
     /**
      * Closes this stream. This implementation releases the buffer used for the
      * pipe and notifies all threads waiting to read or write.
-     * 
+     *
      * @throws IOException
      *             if an error occurs while closing this stream.
      */
     @Override
-    public void close() throws IOException {
-        synchronized (this) {
-            /* No exception thrown if already closed */
-            if (buffer != null) {
-                /* Release buffer to indicate closed. */
-                buffer = null;
-            }
-        }
+    public synchronized void close() throws IOException {
+        buffer = null;
+        notifyAll();
     }
 
     /**
      * Connects this {@code PipedInputStream} to a {@link PipedOutputStream}.
      * Any data written to the output stream becomes readable in this input
      * stream.
-     * 
+     *
      * @param src
      *            the source output stream.
      * @throws IOException
@@ -166,6 +169,22 @@ public class PipedInputStream extends InputStream {
      */
     public void connect(PipedOutputStream src) throws IOException {
         src.connect(this);
+    }
+
+    /**
+     * Establishes the connection to the PipedOutputStream.
+     *
+     * @throws IOException
+     *             If this Reader is already connected.
+     */
+    synchronized void establishConnection() throws IOException {
+        if (isConnected) {
+            throw new IOException("Pipe already connected");
+        }
+        if (buffer == null) { // We may already have allocated the buffer.
+            buffer = new byte[PipedInputStream.PIPE_SIZE];
+        }
+        isConnected = true;
     }
 
     /**
@@ -189,18 +208,12 @@ public class PipedInputStream extends InputStream {
     @Override
     public synchronized int read() throws IOException {
         if (!isConnected) {
-            // luni.CB=Not connected
-            throw new IOException(Messages.getString("luni.CB")); //$NON-NLS-1$
+            throw new IOException("Not connected");
         }
         if (buffer == null) {
-            // luni.CC=InputStream is closed
-            throw new IOException(Messages.getString("luni.CC")); //$NON-NLS-1$
+            throw new IOException("InputStream is closed");
         }
 
-        if (lastWriter != null && !lastWriter.isAlive() && (in < 0)) {
-            // luni.CD=Write end dead
-            throw new IOException(Messages.getString("luni.CD")); //$NON-NLS-1$
-        }
         /**
          * Set the last thread to be reading on this PipedInputStream. If
          * lastReader dies while someone is waiting to write an IOException of
@@ -215,8 +228,7 @@ public class PipedInputStream extends InputStream {
                     return -1;
                 }
                 if ((attempts-- <= 0) && lastWriter != null && !lastWriter.isAlive()) {
-                    // luni.CE=Pipe broken
-                    throw new IOException(Messages.getString("luni.CE")); //$NON-NLS-1$
+                    throw new IOException("Pipe broken");
                 }
                 // Notify callers of receive()
                 notifyAll();
@@ -226,7 +238,7 @@ public class PipedInputStream extends InputStream {
             throw new InterruptedIOException();
         }
 
-        byte result = buffer[out++];
+        int result = buffer[out++] & 0xff;
         if (out == buffer.length) {
             out = 0;
         }
@@ -235,11 +247,15 @@ public class PipedInputStream extends InputStream {
             in = -1;
             out = 0;
         }
-        return result & 0xff;
+
+        // let blocked writers write to the newly available buffer space
+        notifyAll();
+
+        return result;
     }
 
     /**
-     * Reads at most {@code count} bytes from this stream and stores them in the
+     * Reads at most {@code byteCount} bytes from this stream and stores them in the
      * byte array {@code bytes} starting at {@code offset}. Blocks until at
      * least one byte has been read, the end of the stream is detected or an
      * exception is thrown.
@@ -248,18 +264,11 @@ public class PipedInputStream extends InputStream {
      * and to write to the connected {@link PipedOutputStream}. If the same
      * thread is used, a deadlock may occur.
      *
-     * @param bytes
-     *            the array in which to store the bytes read.
-     * @param offset
-     *            the initial position in {@code bytes} to store the bytes
-     *            read from this stream.
-     * @param count
-     *            the maximum number of bytes to store in {@code bytes}.
      * @return the number of bytes actually read or -1 if the end of the stream
      *         has been reached.
      * @throws IndexOutOfBoundsException
-     *             if {@code offset < 0} or {@code count < 0}, or if {@code
-     *             offset + count} is greater than the size of {@code bytes}.
+     *             if {@code offset < 0} or {@code byteCount < 0}, or if {@code
+     *             offset + byteCount} is greater than the size of {@code bytes}.
      * @throws InterruptedIOException
      *             if the thread reading from this stream is interrupted.
      * @throws IOException
@@ -270,37 +279,21 @@ public class PipedInputStream extends InputStream {
      *             if {@code bytes} is {@code null}.
      */
     @Override
-    public synchronized int read(byte[] bytes, int offset, int count)
-            throws IOException {
-        if (bytes == null) {
-            throw new NullPointerException();
-        }
-
-        if (offset < 0 || offset > bytes.length || count < 0
-                || count > bytes.length - offset) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        if (count == 0) {
+    public synchronized int read(byte[] bytes, int offset, int byteCount) throws IOException {
+        Arrays.checkOffsetAndCount(bytes.length, offset, byteCount);
+        if (byteCount == 0) {
             return 0;
         }
 
         if (!isConnected) {
-            // luni.CB=Not connected
-            throw new IOException(Messages.getString("luni.CB")); //$NON-NLS-1$
+            throw new IOException("Not connected");
         }
 
         if (buffer == null) {
-            // luni.CC=InputStream is closed
-            throw new IOException(Messages.getString("luni.CC")); //$NON-NLS-1$
+            throw new IOException("InputStream is closed");
         }
 
-        if (lastWriter != null && !lastWriter.isAlive() && (in < 0)) {
-            // luni.CD=Write end dead
-            throw new IOException(Messages.getString("luni.CD")); //$NON-NLS-1$
-        }
-
-        /**
+        /*
          * Set the last thread to be reading on this PipedInputStream. If
          * lastReader dies while someone is waiting to write an IOException of
          * "Pipe broken" will be thrown in receive()
@@ -314,8 +307,7 @@ public class PipedInputStream extends InputStream {
                     return -1;
                 }
                 if ((attempts-- <= 0) && lastWriter != null && !lastWriter.isAlive()) {
-                    // luni.CE=Pipe broken
-                    throw new IOException(Messages.getString("luni.CE")); //$NON-NLS-1$
+                    throw new IOException("Pipe broken");
                 }
                 // Notify callers of receive()
                 notifyAll();
@@ -325,13 +317,14 @@ public class PipedInputStream extends InputStream {
             throw new InterruptedIOException();
         }
 
-        int copyLength = 0;
-        /* Copy bytes from out to end of buffer first */
+        int totalCopied = 0;
+
+        // copy bytes from out thru the end of buffer
         if (out >= in) {
-            copyLength = count > (buffer.length - out) ? buffer.length - out
-                    : count;
-            System.arraycopy(buffer, out, bytes, offset, copyLength);
-            out += copyLength;
+            int leftInBuffer = buffer.length - out;
+            int length = leftInBuffer < byteCount ? leftInBuffer : byteCount;
+            System.arraycopy(buffer, out, bytes, offset, length);
+            out += length;
             if (out == buffer.length) {
                 out = 0;
             }
@@ -340,28 +333,28 @@ public class PipedInputStream extends InputStream {
                 in = -1;
                 out = 0;
             }
+            totalCopied += length;
         }
 
-        /*
-         * Did the read fully succeed in the previous copy or is the buffer
-         * empty?
-         */
-        if (copyLength == count || in == -1) {
-            return copyLength;
+        // copy bytes from out thru in
+        if (totalCopied < byteCount && in != -1) {
+            int leftInBuffer = in - out;
+            int leftToCopy = byteCount - totalCopied;
+            int length = leftToCopy < leftInBuffer ? leftToCopy : leftInBuffer;
+            System.arraycopy(buffer, out, bytes, offset + totalCopied, length);
+            out += length;
+            if (out == in) {
+                // empty buffer
+                in = -1;
+                out = 0;
+            }
+            totalCopied += length;
         }
 
-        int bytesCopied = copyLength;
-        /* Copy bytes from 0 to the number of available bytes */
-        copyLength = in - out > (count - bytesCopied) ? count - bytesCopied
-                : in - out;
-        System.arraycopy(buffer, out, bytes, offset + bytesCopied, copyLength);
-        out += copyLength;
-        if (out == in) {
-            // empty buffer
-            in = -1;
-            out = 0;
-        }
-        return bytesCopied + copyLength;
+        // let blocked writers write to the newly available buffer space
+        notifyAll();
+
+        return totalCopied;
     }
 
     /**
@@ -371,7 +364,7 @@ public class PipedInputStream extends InputStream {
      * {@code in} in the {@code buffer}.
      * <p>
      * This method blocks as long as {@code buffer} is full.
-     * 
+     *
      * @param oneByte
      *            the byte to store in this pipe.
      * @throws InterruptedIOException
@@ -383,12 +376,10 @@ public class PipedInputStream extends InputStream {
      */
     protected synchronized void receive(int oneByte) throws IOException {
         if (buffer == null || isClosed) {
-            throw new IOException(Messages.getString("luni.CF")); //$NON-NLS-1$
+            throw new IOException("Pipe is closed");
         }
-        if (lastReader != null && !lastReader.isAlive()) {
-            throw new IOException(Messages.getString("luni.CE")); //$NON-NLS-1$
-        }
-        /**
+
+        /*
          * Set the last thread to be writing on this PipedInputStream. If
          * lastWriter dies while someone is waiting to read an IOException of
          * "Pipe broken" will be thrown in read()
@@ -396,25 +387,28 @@ public class PipedInputStream extends InputStream {
         lastWriter = Thread.currentThread();
         try {
             while (buffer != null && out == in) {
+                if (lastReader != null && !lastReader.isAlive()) {
+                    throw new IOException("Pipe broken");
+                }
                 notifyAll();
                 wait(1000);
-                if (lastReader != null && !lastReader.isAlive()) {
-                    throw new IOException(Messages.getString("luni.CE")); //$NON-NLS-1$
-                }
             }
         } catch (InterruptedException e) {
             throw new InterruptedIOException();
         }
-        if (buffer != null) {
-            if (in == -1) {
-                in = 0;
-            }
-            buffer[in++] = (byte) oneByte;
-            if (in == buffer.length) {
-                in = 0;
-            }
-            return;
+        if (buffer == null) {
+            throw new IOException("Pipe is closed");
         }
+        if (in == -1) {
+            in = 0;
+        }
+        buffer[in++] = (byte) oneByte;
+        if (in == buffer.length) {
+            in = 0;
+        }
+
+        // let blocked readers read the newly available data
+        notifyAll();
     }
 
     synchronized void done() {

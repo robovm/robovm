@@ -17,7 +17,6 @@
 
 package javax.net.ssl;
 
-import java.io.Serializable;
 import java.util.EventObject;
 
 /**
@@ -25,17 +24,8 @@ import java.util.EventObject;
  * object is bound ({@link SSLSession#putValue(String, Object)}) or unbound
  * ({@link SSLSession#removeValue(String)}) to an {@code SSLSession}.
  */
-public class SSLSessionBindingEvent extends EventObject implements Serializable {
+public class SSLSessionBindingEvent extends EventObject {
 
-    /**
-     * The 5.0 spec. doesn't declare this serialVersionUID field In order to be compatible it is
-     * explicitly declared here
-     */
-    private static final long serialVersionUID = 3989172637106345L;
-
-    /**
-     * @serial include
-     */
     private final String name;
 
     /**

@@ -32,7 +32,7 @@ public interface ECPrivateKey extends PrivateKey, ECKey {
 
     /**
      * Returns the private value {@code S}.
-     * 
+     *
      * @return the private value {@code S}.
      */
     public BigInteger getS();

@@ -17,11 +17,6 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import org.apache.harmony.xnet.provider.jsse.AlertException;
-import org.apache.harmony.xnet.provider.jsse.SSLSocketOutputStream;
-import org.apache.harmony.xnet.provider.jsse.SSLStreamedInput;
-import org.apache.harmony.xnet.provider.jsse.SSLSessionImpl;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -53,10 +48,10 @@ public class SSLSocketImpl extends SSLSocket {
     // alert protocol to be used
     private AlertProtocol alertProtocol;
     // application data input stream, this stream is presented by
-    // ssl socket as an input stream. Additionaly this object is a
+    // ssl socket as an input stream. Additionally this object is a
     // place where application data will be stored by record protocol
     private SSLSocketInputStream appDataIS;
-    // outcoming application data stream
+    // outgoing application data stream
     private SSLSocketOutputStream appDataOS;
     // active session object
     private SSLSessionImpl session;
@@ -69,7 +64,7 @@ public class SSLSocketImpl extends SSLSocket {
     // ssl socket, whether it require/want client authentication or not,
     // and controls whether new SSL sessions may be established by this
     // socket or not.
-    protected SSLParameters sslParameters;
+    protected SSLParametersImpl sslParameters;
     // super's streams to be wrapped:
     protected InputStream input;
     protected OutputStream output;
@@ -82,12 +77,11 @@ public class SSLSocketImpl extends SSLSocket {
 
     /**
      * Constructor
-     * @param   sslParameters:  SSLParameters
+     * @param   sslParameters:  SSLParametersImpl
      * @see javax.net.ssl.SSLSocket#SSLSocket() method documentation
      * for more information.
      */
-    protected SSLSocketImpl(SSLParameters sslParameters) {
-        super();
+    protected SSLSocketImpl(SSLParametersImpl sslParameters) {
         this.sslParameters = sslParameters;
         // init should be called after creation!
     }
@@ -96,13 +90,13 @@ public class SSLSocketImpl extends SSLSocket {
      * Constructor
      * @param   host:   String
      * @param   port:   int
-     * @param   sslParameters:  SSLParameters
+     * @param   sslParameters:  SSLParametersImpl
      * @throws  IOException
      * @throws  UnknownHostException
-     * @see javax.net.ssl.SSLSocket#SSLSocket(String,int) 
+     * @see javax.net.ssl.SSLSocket#SSLSocket(String,int)
      * method documentation for more information.
      */
-    protected SSLSocketImpl(String host, int port, SSLParameters sslParameters)
+    protected SSLSocketImpl(String host, int port, SSLParametersImpl sslParameters)
             throws IOException, UnknownHostException {
         super(host, port);
         this.sslParameters = sslParameters;
@@ -115,7 +109,7 @@ public class SSLSocketImpl extends SSLSocket {
      * @param   port:   int
      * @param   localHost:  InetAddress
      * @param   localPort:  int
-     * @param   sslParameters:  SSLParameters
+     * @param   sslParameters:  SSLParametersImpl
      * @throws  IOException
      * @throws  UnknownHostException
      * @see javax.net.ssl.SSLSocket#SSLSocket(String,int,InetAddress,int)
@@ -123,7 +117,7 @@ public class SSLSocketImpl extends SSLSocket {
      */
     protected SSLSocketImpl(String host, int port,
             InetAddress localHost, int localPort,
-            SSLParameters sslParameters) throws IOException,
+            SSLParametersImpl sslParameters) throws IOException,
             UnknownHostException {
         super(host, port, localHost, localPort);
         this.sslParameters = sslParameters;
@@ -134,14 +128,14 @@ public class SSLSocketImpl extends SSLSocket {
      * Constructor
      * @param   host:   InetAddress
      * @param   port:   int
-     * @param   sslParameters:  SSLParameters
+     * @param   sslParameters:  SSLParametersImpl
      * @return
      * @throws  IOException
-     * @see javax.net.ssl.SSLSocket#SSLSocket(InetAddress,int) 
+     * @see javax.net.ssl.SSLSocket#SSLSocket(InetAddress,int)
      * method documentation for more information.
      */
     protected SSLSocketImpl(InetAddress host, int port,
-            SSLParameters sslParameters) throws IOException {
+            SSLParametersImpl sslParameters) throws IOException {
         super(host, port);
         this.sslParameters = sslParameters;
         init();
@@ -153,7 +147,7 @@ public class SSLSocketImpl extends SSLSocket {
      * @param   port:   int
      * @param   localAddress:   InetAddress
      * @param   localPort:  int
-     * @param   sslParameters:  SSLParameters
+     * @param   sslParameters:  SSLParametersImpl
      * @return
      * @throws  IOException
      * @see javax.net.ssl.SSLSocket#SSLSocket(InetAddress,int,InetAddress,int)
@@ -161,7 +155,7 @@ public class SSLSocketImpl extends SSLSocket {
      */
     protected SSLSocketImpl(InetAddress address, int port,
             InetAddress localAddress, int localPort,
-            SSLParameters sslParameters) throws IOException {
+            SSLParametersImpl sslParameters) throws IOException {
         super(address, port, localAddress, localPort);
         this.sslParameters = sslParameters;
         init();
@@ -455,9 +449,6 @@ public class SSLSocketImpl extends SSLSocket {
         }
     }
 
-
-    // ---------------- Socket's methods overridings -------------------
-
     /**
      * This method works according to the specification of implemented class.
      * @see javax.net.ssl.SSLSocket#getInputStream()
@@ -494,19 +485,19 @@ public class SSLSocketImpl extends SSLSocket {
         super.connect(endpoint);
         init();
     }
-    
+
     /**
      * This method works according to the specification of implemented class.
      * @see java.net.Socket#connect(SocketAddress,int)
      * method documentation for more information
      */
     @Override
-    public void connect(SocketAddress endpoint, int timeout) 
+    public void connect(SocketAddress endpoint, int timeout)
             throws IOException {
         super.connect(endpoint, timeout);
         init();
     }
-    
+
     /**
      * This method works according to the specification of implemented class.
      * @see javax.net.ssl.SSLSocket#close()
@@ -550,35 +541,8 @@ public class SSLSocketImpl extends SSLSocket {
                 "Methods sendUrgentData, setOOBInline are not supported.");
     }
 
-    /**
-     * This method is not supported for SSLSocket implementation.
-     */
-    @Override
-    public void shutdownOutput() {
-        throw new UnsupportedOperationException(
-                "Method shutdownOutput() is not supported.");
-    }
-
-    /**
-     * This method is not supported for SSLSocket implementation.
-     */
-    @Override
-    public void shutdownInput() {
-        throw new UnsupportedOperationException(
-                "Method shutdownInput() is not supported.");
-    }
-
-    /**
-     * Returns the string representation of the object.
-     */
-    @Override
-    public String toString() {
-        return "[SSLSocketImpl]";
-    }
-
     // -----------------------------------------------------------------
 
-    // Shutdownes the ssl socket and makes all cleanup work.
     private void shutdown() {
         if (handshake_started) {
             alertProtocol.shutdown();
@@ -593,7 +557,7 @@ public class SSLSocketImpl extends SSLSocket {
 
     /**
      * This method is called by SSLSocketInputStream class
-     * when client application tryes to read application data from
+     * when client application tries to read application data from
      * the stream, but there is no data in its underlying buffer.
      * @throws  IOException
      */
@@ -616,7 +580,7 @@ public class SSLSocketImpl extends SSLSocket {
                         if (!handshakeProtocol.getStatus().equals(
                                 SSLEngineResult.HandshakeStatus
                                 .NOT_HANDSHAKING)) {
-                            // handshake protocol got addressed to it message 
+                            // handshake protocol got addressed to it message
                             // and did not ignore it, so it's a rehandshake
                             doHandshake();
                         }
@@ -640,7 +604,7 @@ public class SSLSocketImpl extends SSLSocket {
                                     + type + " has been got"));
                 }
                 if (alertProtocol.hasAlert()) {
-                    // warning alert occured during wrap or unwrap
+                    // warning alert occurred during wrap or unwrap
                     // (note: fatal alert causes AlertException
                     // to be thrown)
                     output.write(alertProtocol.wrap());
@@ -665,11 +629,10 @@ public class SSLSocketImpl extends SSLSocket {
     }
 
     /**
-     * This method is called by SSLSocketOutputStream when client application
-     * tryes to send the data over ssl protocol.
+     * This method is called by SSLSocketOutputStream when a client application
+     * tries to send the data over ssl protocol.
      */
-    protected void writeAppData(byte[] data, int offset, int len)
-                                                    throws IOException {
+    protected void writeAppData(byte[] data, int offset, int len) throws IOException {
         if (!handshake_started) {
             startHandshake();
         }
@@ -703,14 +666,14 @@ public class SSLSocketImpl extends SSLSocket {
     }
 
     /*
-     * Performs handshake proccess over this connection. The hanshake
-     * process is dirrected by the handshake status code provided by
+     * Performs handshake process over this connection. The handshake
+     * process is directed by the handshake status code provided by
      * handshake protocol. If this status is NEED_WRAP, method retrieves
      * handshake message from handshake protocol and sends it to another peer.
      * If this status is NEED_UNWRAP, method receives and processes handshake
      * message from another peer. Each of this stages (wrap/unwrap) change
-     * the state of handshake protocol and this process is performed 
-     * until handshake status is FINISHED. After handshake process is finnished
+     * the state of handshake protocol and this process is performed
+     * until handshake status is FINISHED. After handshake process is finished
      * handshake completed event are sent to the registered listeners.
      * For more information about the handshake process see
      * TLS v1 specification (http://www.ietf.org/rfc/rfc2246.txt) p 7.3.
@@ -771,7 +734,7 @@ public class SSLSocketImpl extends SSLSocket {
                             "Handshake passed unexpected status: "+status));
                 }
                 if (alertProtocol.hasAlert()) {
-                    // warning alert uccured during wrap or unwrap
+                    // warning alert occurred during wrap or unwrap
                     // (note: fatal alert causes AlertException
                     // to be thrown)
                     output.write(alertProtocol.wrap());
@@ -798,7 +761,7 @@ public class SSLSocketImpl extends SSLSocket {
             }
         }
     }
-        
+
     /*
      * Process received alert message
      */
@@ -813,7 +776,7 @@ public class SSLSocketImpl extends SSLSocket {
             shutdown();
             throw new SSLException(description);
         }
-        
+
         if (logger != null) {
             logger.println("Warning alert received: "
                 + alertProtocol.getAlertDescription());
@@ -829,11 +792,11 @@ public class SSLSocketImpl extends SSLSocket {
             // TODO: process other warning messages
         }
     }
-    
+
     /*
      * Sends fatal alert message and throws exception
      */
-    private void reportFatalAlert(byte description_code, 
+    private void reportFatalAlert(byte description_code,
             SSLException reason) throws IOException {
         alertProtocol.alert(AlertProtocol.FATAL, description_code);
         try {
@@ -844,24 +807,4 @@ public class SSLSocketImpl extends SSLSocket {
         shutdown();
         throw reason;
     }
-
-
-    @Override
-    public void setSSLParameters(javax.net.ssl.SSLParameters inputSSLParameters) {
-        setEnabledCipherSuites(inputSSLParameters.getCipherSuites());
-        setNeedClientAuth(inputSSLParameters.getNeedClientAuth());
-        setWantClientAuth(inputSSLParameters.getWantClientAuth());
-        setEnabledProtocols(inputSSLParameters.getProtocols());
-    }
-
-    @Override
-    public javax.net.ssl.SSLParameters getSSLParameters() {
-        javax.net.ssl.SSLParameters outputSSLParameters = new javax.net.ssl.SSLParameters();
-        outputSSLParameters.setCipherSuites(sslParameters.getEnabledCipherSuites());
-        outputSSLParameters.setProtocols(sslParameters.getEnabledProtocols());
-        outputSSLParameters.setNeedClientAuth(sslParameters.getNeedClientAuth());
-        outputSSLParameters.setWantClientAuth(sslParameters.getWantClientAuth());
-        return outputSSLParameters;
-    }
 }
-

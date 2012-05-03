@@ -32,21 +32,23 @@ public class InterruptedIOException extends IOException {
     public int bytesTransferred;
 
     /**
-     * Constructs a new {@code InterruptedIOException} with its stack trace
-     * filled in.
+     * Constructs a new instance.
      */
     public InterruptedIOException() {
-        super();
     }
 
     /**
-     * Constructs a new {@code InterruptedIOException} with its stack trace and
-     * detail message filled in.
-     * 
-     * @param detailMessage
-     *            the detail message for this exception.
+     * Constructs a new instance with the given detail message.
      */
     public InterruptedIOException(String detailMessage) {
         super(detailMessage);
+    }
+
+    /**
+     * Constructs a new instance with given detail message and cause.
+     * @hide internal use only
+     */
+    public InterruptedIOException(String detailMessage, Throwable cause) {
+        super(detailMessage, cause);
     }
 }

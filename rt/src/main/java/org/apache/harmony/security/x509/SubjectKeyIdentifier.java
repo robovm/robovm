@@ -18,7 +18,6 @@
 package org.apache.harmony.security.x509;
 
 import java.io.IOException;
-
 import org.apache.harmony.security.asn1.ASN1OctetString;
 import org.apache.harmony.security.utils.Array;
 
@@ -36,7 +35,7 @@ import org.apache.harmony.security.utils.Array;
  * </pre>
  * (as specified in RFC 3280 http://www.ietf.org/rfc/rfc3280.txt)
  */
-public class SubjectKeyIdentifier extends ExtensionValue {
+public final class SubjectKeyIdentifier extends ExtensionValue {
 
     // the value of key identifier
     private final byte[] keyIdentifier;
@@ -59,25 +58,16 @@ public class SubjectKeyIdentifier extends ExtensionValue {
         return res;
     }
 
-    /**
-     * Returns ASN.1 encoded form of extension.
-     * @return a byte array containing ASN.1 encoded form.
-     */
-    public byte[] getEncoded() {
+    @Override public byte[] getEncoded() {
         if (encoding == null) {
             encoding = ASN1OctetString.getInstance().encode(keyIdentifier);
         }
         return encoding;
     }
 
-    /**
-     * Places the string representation of extension value
-     * into the StringBuffer object.
-     */
-    public void dumpValue(StringBuffer buffer, String prefix) {
-        buffer.append(prefix).append("SubjectKeyIdentifier: [\n"); //$NON-NLS-1$
-        buffer.append(Array.toString(keyIdentifier, prefix));
-        buffer.append(prefix).append("]\n"); //$NON-NLS-1$
+    @Override public void dumpValue(StringBuilder sb, String prefix) {
+        sb.append(prefix).append("SubjectKeyIdentifier: [\n");
+        sb.append(Array.toString(keyIdentifier, prefix));
+        sb.append(prefix).append("]\n");
     }
 }
-

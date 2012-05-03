@@ -20,25 +20,32 @@ package java.net;
 /**
  * This {@code PortUnreachableException} will be thrown if an {@code
  * ICMP_Port_Unreachable} message has been received.
+ *
+ * <p>Most applications <strong>should not</strong> catch this exception; it is
+ * more robust to catch the superclass {@code SocketException}.
  */
 public class PortUnreachableException extends SocketException {
 
     private static final long serialVersionUID = 8462541992376507323L;
 
     /**
-     * Constructs a new instance of this class with its walkback filled in.
+     * Constructs a new instance.
      */
     public PortUnreachableException() {
     }
 
     /**
-     * Constructs a new instance of this class with its walkback and message
-     * filled in.
-     * 
-     * @param detailMessage
-     *            the detail message for this exception.
+     * Constructs a new instance with the given detail message.
      */
     public PortUnreachableException(String detailMessage) {
         super(detailMessage);
+    }
+
+    /**
+     * Constructs a new instance with given detail message and cause.
+     * @hide internal use only
+     */
+    public PortUnreachableException(String detailMessage, Throwable cause) {
+        super(detailMessage, cause);
     }
 }

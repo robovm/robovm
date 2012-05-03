@@ -25,7 +25,7 @@ public interface CertStoreParameters extends Cloneable {
 
     /**
      * Clones this {@code CertStoreParameters} instance.
-     * 
+     *
      * @return the cloned instance.
      */
     public Object clone();

@@ -18,12 +18,21 @@
 package java.lang.reflect;
 
 /**
- * This interface represents a wildcard type, such as the simple wildcard
- * {@code '?'}, the upper bounded wildcard {@code '? extends Closeable'}, the
- * multiple upper bounded wildcard {@code '? extends Closeable & Flushable'} or
- * the lower bounded wildcard {@code '? super OutputStream'}.
+ * A pattern type, such as the upper bounded wildcard {@code
+ * ? extends Closeable} or the lower bounded wildcard {@code ? super String}.
  *
- * @since 1.5
+ * <p>Although this interface permits an arbitrary number of upper and lower
+ * bounds, all wildcard types of Java language programs are in one of two forms:
+ * <ol>
+ * <li><strong>No lower bound and one upper bound.</strong> Such types are
+ *     written like {@code ? extends java.lang.Number}. When the upper bound is
+ *     {@code java.lang.Object}, the {@code extends java.lang.Object} suffix is
+ *     optional: {@code Set<?>} is shorthand for {@code
+ *     Set<? extends java.lang.Object>}.
+ * <li><strong>One lower bound and an upper bound of {@code
+ *     java.lang.Object}.</strong> Such types are written like {@code
+ *     ? super java.lang.String}.
+ * </ol>
  */
 public interface WildcardType extends Type {
     /**

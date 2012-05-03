@@ -17,6 +17,7 @@
 
 /**
 * @author Boris V. Kuznetsov
+* @version $Revision$
 */
 
 package org.apache.harmony.crypto.internal;
@@ -29,18 +30,15 @@ import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.CipherSpi;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.ShortBufferException;
 
-import org.apache.harmony.crypto.internal.nls.Messages;
-
 /**
  * CipherSpi implementation for javax.crypto.NullCipher
- * 
+ *
  */
 public class NullCipherSpi extends CipherSpi {
 
@@ -124,7 +122,7 @@ public class NullCipherSpi extends CipherSpi {
         try {
             output.put(input);
         } catch (java.nio.BufferOverflowException e) {
-            throw new ShortBufferException(Messages.getString("crypto.0F", e)); //$NON-NLS-1$
+            throw new ShortBufferException("output buffer too small");
         }
         return result;
     }
@@ -155,20 +153,19 @@ public class NullCipherSpi extends CipherSpi {
     }
 
     @Override
-    public byte[] engineWrap(Key key) throws IllegalBlockSizeException,
-            InvalidKeyException {
-        throw new UnsupportedOperationException(Messages.getString("crypto.44")); //$NON-NLS-1$
+    public byte[] engineWrap(Key key) throws IllegalBlockSizeException, InvalidKeyException {
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Key engineUnwrap(byte[] wrappedKey, String wrappedKeyAlgorithm,
             int wrappedKeyType) throws InvalidKeyException,
             NoSuchAlgorithmException {
-        throw new UnsupportedOperationException(Messages.getString("crypto.45")); //$NON-NLS-1$
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public int engineGetKeySize(Key key) throws InvalidKeyException {
-        throw new UnsupportedOperationException(Messages.getString("crypto.46")); //$NON-NLS-1$
+        throw new UnsupportedOperationException();
     }
 }

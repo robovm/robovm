@@ -17,14 +17,14 @@
 
 /**
 * @author Alexander Y. Kleymenov
+* @version $Revision$
 */
 
 package org.apache.harmony.security.provider.cert;
 
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charsets;
 import java.security.cert.CRL;
 import java.security.cert.CRLException;
 import java.security.cert.CertPath;
@@ -36,11 +36,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.harmony.luni.util.Base64;
+import libcore.io.Base64;
+import libcore.io.Streams;
 import org.apache.harmony.security.asn1.ASN1Constants;
 import org.apache.harmony.security.asn1.BerInputStream;
-import org.apache.harmony.security.internal.nls.Messages;
 import org.apache.harmony.security.pkcs7.ContentInfo;
 import org.apache.harmony.security.pkcs7.SignedData;
 import org.apache.harmony.security.x509.CertificateList;
@@ -57,13 +56,13 @@ import org.apache.harmony.security.x509.CertificateList;
 public class X509CertFactoryImpl extends CertificateFactorySpi {
 
     // number of leading/trailing bytes used for cert hash computation
-    private static int CERT_CACHE_SEED_LENGTH = 28;
+    private static final int CERT_CACHE_SEED_LENGTH = 28;
     // certificate cache
-    private static Cache CERT_CACHE = new Cache(CERT_CACHE_SEED_LENGTH);
+    private static final Cache CERT_CACHE = new Cache(CERT_CACHE_SEED_LENGTH);
     // number of leading/trailing bytes used for crl hash computation
-    private static int CRL_CACHE_SEED_LENGTH = 24;
+    private static final int CRL_CACHE_SEED_LENGTH = 24;
     // crl cache
-    private static Cache CRL_CACHE = new Cache(CRL_CACHE_SEED_LENGTH);
+    private static final Cache CRL_CACHE = new Cache(CRL_CACHE_SEED_LENGTH);
 
     /**
      * Default constructor.
@@ -90,7 +89,7 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
     public Certificate engineGenerateCertificate(InputStream inStream)
             throws CertificateException {
         if (inStream == null) {
-            throw new CertificateException(Messages.getString("security.153")); //$NON-NLS-1$
+            throw new CertificateException("inStream == null");
         }
         try {
             if (!inStream.markSupported()) {
@@ -124,9 +123,9 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
             engineGenerateCertificates(InputStream inStream)
                 throws CertificateException {
         if (inStream == null) {
-            throw new CertificateException(Messages.getString("security.153")); //$NON-NLS-1$
+            throw new CertificateException("inStream == null");
         }
-        ArrayList result = new ArrayList();
+        ArrayList<Certificate> result = new ArrayList<Certificate>();
         try {
             if (!inStream.markSupported()) {
                 // create the mark supporting wrapper
@@ -136,7 +135,7 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
             // so ((it is PEM) <-> (encoding != null))
             byte[] encoding = null;
             // The following by SEQUENCE ASN.1 tag, used for
-            // recognizing the data format 
+            // recognizing the data format
             // (is it PKCS7 ContentInfo structure, X.509 Certificate, or
             // unsupported encoding)
             int second_asn1_tag = -1;
@@ -154,8 +153,7 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
                     inStream.mark(CERT_CACHE_SEED_LENGTH);
                 } else { // unsupported data
                     if (result.size() == 0) {
-                        throw new CertificateException(
-                                Messages.getString("security.15F")); //$NON-NLS-1$
+                        throw new CertificateException("Unsupported encoding");
                     } else {
                         // it can be trailing user data,
                         // so keep it in the stream
@@ -176,8 +174,8 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
                 // check if it is a TBSCertificate structure
                 if (second_asn1_tag != ASN1Constants.TAG_C_SEQUENCE) {
                     if (result.size() == 0) {
-                        // there were not read X.509 Certificates, so 
-                        // break the cycle and check 
+                        // there were not read X.509 Certificates, so
+                        // break the cycle and check
                         // whether it is PKCS7 structure
                         break;
                     } else {
@@ -199,35 +197,30 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
                 // some Certificates have been read
                 return result;
             } else if (ch == -1) {
-                throw new CertificateException(
-                        Messages.getString("security.155")); //$NON-NLS-1$
+                throw new CertificateException("There is no data in the stream");
             }
             // else: check if it is PKCS7
             if (second_asn1_tag == ASN1Constants.TAG_OID) {
                 // it is PKCS7 ContentInfo structure, so decode it
-                ContentInfo info = (ContentInfo) 
+                ContentInfo info = (ContentInfo)
                     ((encoding != null)
                         ? ContentInfo.ASN1.decode(encoding)
                         : ContentInfo.ASN1.decode(inStream));
                 // retrieve SignedData
                 SignedData data = info.getSignedData();
                 if (data == null) {
-                    throw new CertificateException(
-                            Messages.getString("security.154")); //$NON-NLS-1$
+                    throw new CertificateException("Invalid PKCS7 data provided");
                 }
-                List certs = data.getCertificates();
+                List<org.apache.harmony.security.x509.Certificate> certs = data.getCertificates();
                 if (certs != null) {
-                    for (int i = 0; i < certs.size(); i++) {
-                        result.add(new X509CertImpl(
-                            (org.apache.harmony.security.x509.Certificate)
-                                certs.get(i)));
+                    for (org.apache.harmony.security.x509.Certificate cert : certs) {
+                        result.add(new X509CertImpl(cert));
                     }
                 }
                 return result;
             }
             // else: Unknown data format
-            throw new CertificateException(
-                            Messages.getString("security.15F")); //$NON-NLS-1$
+            throw new CertificateException("Unsupported encoding");
         } catch (IOException e) {
             throw new CertificateException(e);
         }
@@ -240,12 +233,12 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
     public CRL engineGenerateCRL(InputStream inStream)
             throws CRLException {
         if (inStream == null) {
-            throw new CRLException(Messages.getString("security.153")); //$NON-NLS-1$
+            throw new CRLException("inStream == null");
         }
         try {
             if (!inStream.markSupported()) {
                 // Create the mark supporting wrapper
-                // Mark is needed to recognize the format 
+                // Mark is needed to recognize the format
                 // of provided encoding form (ASN.1 or PEM)
                 inStream = new RestoringInputStream(inStream);
             }
@@ -271,9 +264,9 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
     public Collection<? extends CRL> engineGenerateCRLs(InputStream inStream)
             throws CRLException {
         if (inStream == null) {
-            throw new CRLException(Messages.getString("security.153")); //$NON-NLS-1$
+            throw new CRLException("inStream == null");
         }
-        ArrayList result = new ArrayList();
+        ArrayList<CRL> result = new ArrayList<CRL>();
         try {
             if (!inStream.markSupported()) {
                 inStream = new RestoringInputStream(inStream);
@@ -282,7 +275,7 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
             // so ((it is PEM) <-> (encoding != null))
             byte[] encoding = null;
             // The following by SEQUENCE ASN.1 tag, used for
-            // recognizing the data format 
+            // recognizing the data format
             // (is it PKCS7 ContentInfo structure, X.509 CRL, or
             // unsupported encoding)
             int second_asn1_tag = -1;
@@ -300,8 +293,7 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
                     inStream.mark(CRL_CACHE_SEED_LENGTH);
                 } else { // unsupported data
                     if (result.size() == 0) {
-                        throw new CRLException(
-                                Messages.getString("security.15F")); //$NON-NLS-1$
+                        throw new CRLException("Unsupported encoding");
                     } else {
                         // it can be trailing user data,
                         // so keep it in the stream
@@ -322,8 +314,8 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
                 // check if it is a TBSCertList structure
                 if (second_asn1_tag != ASN1Constants.TAG_C_SEQUENCE) {
                     if (result.size() == 0) {
-                        // there were not read X.509 CRLs, so 
-                        // break the cycle and check 
+                        // there were not read X.509 CRLs, so
+                        // break the cycle and check
                         // whether it is PKCS7 structure
                         break;
                     } else {
@@ -344,34 +336,30 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
                 // the stream was read out
                 return result;
             } else if (ch == -1) {
-                throw new CRLException(
-                        Messages.getString("security.155")); //$NON-NLS-1$
+                throw new CRLException("There is no data in the stream");
             }
             // else: check if it is PKCS7
             if (second_asn1_tag == ASN1Constants.TAG_OID) {
                 // it is PKCS7 ContentInfo structure, so decode it
-                ContentInfo info = (ContentInfo) 
+                ContentInfo info = (ContentInfo)
                     ((encoding != null)
                         ? ContentInfo.ASN1.decode(encoding)
                         : ContentInfo.ASN1.decode(inStream));
                 // retrieve SignedData
                 SignedData data = info.getSignedData();
                 if (data == null) {
-                    throw new CRLException(
-                            Messages.getString("security.154")); //$NON-NLS-1$
+                    throw new CRLException("Invalid PKCS7 data provided");
                 }
-                List crls = data.getCRLs();
+                List<CertificateList> crls = data.getCRLs();
                 if (crls != null) {
-                    for (int i = 0; i < crls.size(); i++) {
-                        result.add(new X509CRLImpl(
-                            (CertificateList) crls.get(i)));
+                    for (CertificateList crl : crls) {
+                        result.add(new X509CRLImpl(crl));
                     }
                 }
                 return result;
             }
             // else: Unknown data format
-            throw new CRLException(
-                        Messages.getString("security.15F")); //$NON-NLS-1$
+            throw new CRLException("Unsupported encoding");
         } catch (IOException e) {
             throw new CRLException(e);
         }
@@ -384,10 +372,9 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
     public CertPath engineGenerateCertPath(InputStream inStream)
             throws CertificateException {
         if (inStream == null) {
-            throw new CertificateException(
-                    Messages.getString("security.153")); //$NON-NLS-1$
+            throw new CertificateException("inStream == null");
         }
-        return engineGenerateCertPath(inStream, "PkiPath"); //$NON-NLS-1$
+        return engineGenerateCertPath(inStream, "PkiPath");
     }
 
     /**
@@ -397,8 +384,7 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
     public CertPath engineGenerateCertPath(
             InputStream inStream, String encoding) throws CertificateException {
         if (inStream == null) {
-            throw new CertificateException(
-                    Messages.getString("security.153")); //$NON-NLS-1$
+            throw new CertificateException("inStream == null");
         }
         if (!inStream.markSupported()) {
             inStream = new RestoringInputStream(inStream);
@@ -417,8 +403,7 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
                 // decode ASN.1 form
                 return X509CertPathImpl.getInstance(inStream, encoding);
             } else {
-                throw new CertificateException(
-                            Messages.getString("security.15F")); //$NON-NLS-1$
+                throw new CertificateException("Unsupported encoding");
             }
         } catch (IOException e) {
             throw new CertificateException(e);
@@ -446,34 +431,23 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
     // ------------------------ Staff methods ------------------------------
     // ---------------------------------------------------------------------
 
-    private static byte[] pemBegin;
-    private static byte[] pemClose;
+    private static final byte[] PEM_BEGIN = "-----BEGIN".getBytes(Charsets.UTF_8);
+    private static final byte[] PEM_END = "-----END".getBytes(Charsets.UTF_8);
     /**
      * Code describing free format for PEM boundary suffix:
      * "^-----BEGIN.*\n"         at the beginning, and<br>
      * "\n-----END.*(EOF|\n)$"   at the end.
      */
-    private static byte[] FREE_BOUND_SUFFIX = null;
+    private static final byte[] FREE_BOUND_SUFFIX = null;
     /**
      * Code describing PEM boundary suffix for X.509 certificate:
      * "^-----BEGIN CERTIFICATE-----\n"   at the beginning, and<br>
      * "\n-----END CERTIFICATE-----"   at the end.
      */
-    private static byte[] CERT_BOUND_SUFFIX;
-
-    static {
-        // Initialise statics
-        try {
-            pemBegin = "-----BEGIN".getBytes("UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
-            pemClose = "-----END".getBytes("UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
-            CERT_BOUND_SUFFIX = " CERTIFICATE-----".getBytes("UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
+    private static final byte[] CERT_BOUND_SUFFIX = " CERTIFICATE-----".getBytes(Charsets.UTF_8);
 
     /**
-     * Method retrieves the PEM encoded data from the stream 
+     * Method retrieves the PEM encoded data from the stream
      * and returns its decoded representation.
      * Method checks correctness of PEM boundaries. It supposes that
      * the first '-' of the opening boundary has already been read from
@@ -486,46 +460,44 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
      * After the opening boundary has been read and checked, the method
      * read Base64 encoded data until closing PEM boundary is not reached.<br>
      * Than it checks closing boundary - it should start with new line +
-     * "-----END" + boundary_suffix. If boundary_suffix is null, 
+     * "-----END" + boundary_suffix. If boundary_suffix is null,
      * any characters are skipped until the new line.<br>
      * After this any trailing new line characters are skipped from the stream,
      * Base64 encoding is decoded and returned.
      * @param inStream the stream containing the PEM encoding.
-     * @param boundary_suffix the suffix of expected PEM multipart 
+     * @param boundary_suffix the suffix of expected PEM multipart
      * boundary delimiter.<br>
      * If it is null, that any character sequences are accepted.
-     * @throws IOException If PEM boundary delimiter does not comply 
+     * @throws IOException If PEM boundary delimiter does not comply
      * with expected or some I/O or decoding problems occur.
      */
-    private byte[] decodePEM(InputStream inStream, byte[] boundary_suffix) 
+    private byte[] decodePEM(InputStream inStream, byte[] boundary_suffix)
                                                         throws IOException {
         int ch; // the char to be read
-        // check and skip opening boundary delimiter 
+        // check and skip opening boundary delimiter
         // (first '-' is supposed as already read)
-        for (int i=1; i<pemBegin.length; i++) {
-            if (pemBegin[i] != (ch = inStream.read())) {
+        for (int i = 1; i < PEM_BEGIN.length; ++i) {
+            if (PEM_BEGIN[i] != (ch = inStream.read())) {
                 throw new IOException(
                     "Incorrect PEM encoding: '-----BEGIN"
-                    + ((boundary_suffix == null) 
+                    + ((boundary_suffix == null)
                         ? "" : new String(boundary_suffix))
                     + "' is expected as opening delimiter boundary.");
             }
         }
         if (boundary_suffix == null) {
-            // read (skip) the trailing characters of 
+            // read (skip) the trailing characters of
             // the beginning PEM boundary delimiter
             while ((ch = inStream.read()) != '\n') {
                 if (ch == -1) {
-                    throw new IOException(
-                        Messages.getString("security.156")); //$NON-NLS-1$
+                    throw new IOException("Incorrect PEM encoding: EOF before content");
                 }
             }
         } else {
             for (int i=0; i<boundary_suffix.length; i++) {
                 if (boundary_suffix[i] != inStream.read()) {
-                    throw new IOException(
-                        Messages.getString("security.15B", //$NON-NLS-1$
-                            new String(boundary_suffix))); //$NON-NLS-1$
+                    throw new IOException("Incorrect PEM encoding: '-----BEGIN" +
+                            new String(boundary_suffix) + "' is expected as opening delimiter boundary.");
                 }
             }
             // read new line characters
@@ -534,8 +506,8 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
                 ch = inStream.read();
             }
             if (ch != '\n') {
-                throw new IOException(
-                    Messages.getString("security.15B2")); //$NON-NLS-1$
+                throw new IOException("Incorrect PEM encoding: newline expected after " +
+                        "opening delimiter boundary");
             }
         }
         int size = 1024; // the size of the buffer containing Base64 data
@@ -544,8 +516,7 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
         // read bytes while ending boundary delimiter is not reached
         while ((ch = inStream.read()) != '-') {
             if (ch == -1) {
-                throw new IOException(
-                        Messages.getString("security.157")); //$NON-NLS-1$
+                throw new IOException("Incorrect Base64 encoding: EOF without closing delimiter");
             }
             buff[index++] = (byte) ch;
             if (index == size) {
@@ -557,32 +528,25 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
             }
         }
         if (buff[index-1] != '\n') {
-            throw new IOException(
-                Messages.getString("security.158")); //$NON-NLS-1$
+            throw new IOException("Incorrect Base64 encoding: newline expected before " +
+                    "closing boundary delimiter");
         }
         // check and skip closing boundary delimiter prefix
         // (first '-' was read)
-        for (int i=1; i<pemClose.length; i++) {
-            if (pemClose[i] != inStream.read()) {
-                throw new IOException(
-                    Messages.getString("security.15B1", //$NON-NLS-1$
-                        ((boundary_suffix == null) 
-                            ? "" 
-                            : new String(boundary_suffix)))); //$NON-NLS-1$
+        for (int i = 1; i < PEM_END.length; ++i) {
+            if (PEM_END[i] != inStream.read()) {
+                throw badEnd(boundary_suffix);
             }
         }
         if (boundary_suffix == null) {
-            // read (skip) the trailing characters of 
+            // read (skip) the trailing characters of
             // the closing PEM boundary delimiter
-            while (((ch = inStream.read()) != -1)
-                    && (ch != '\n') && (ch != '\r')) {
+            while (((ch = inStream.read()) != -1) && (ch != '\n') && (ch != '\r')) {
             }
         } else {
             for (int i=0; i<boundary_suffix.length; i++) {
                 if (boundary_suffix[i] != inStream.read()) {
-                    throw new IOException(
-                        Messages.getString("security.15B1", //$NON-NLS-1$
-                            new String(boundary_suffix))); //$NON-NLS-1$
+                    throw badEnd(boundary_suffix);
                 }
             }
         }
@@ -594,19 +558,24 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
         inStream.reset();
         buff = Base64.decode(buff, index);
         if (buff == null) {
-            throw new IOException(Messages.getString("security.159")); //$NON-NLS-1$
+            throw new IOException("Incorrect Base64 encoding");
         }
         return buff;
-    };
-   
+    }
+
+    private IOException badEnd(byte[] boundary_suffix) throws IOException {
+        String s = (boundary_suffix == null) ? "" : new String(boundary_suffix);
+        throw new IOException("Incorrect PEM encoding: '-----END" + s + "' is expected as closing delimiter boundary.");
+    }
+
     /**
-     * Reads the data of specified length from source 
+     * Reads the data of specified length from source
      * and returns it as an array.
-     * @return the byte array contained read data or 
+     * @return the byte array contained read data or
      * null if the stream contains not enough data
      * @throws IOException if some I/O error has been occurred.
      */
-    private static byte[] readBytes(InputStream source, int length) 
+    private static byte[] readBytes(InputStream source, int length)
                                                             throws IOException {
         byte[] result = new byte[length];
         for (int i=0; i<length; i++) {
@@ -621,23 +590,22 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
 
     /**
      * Returns the Certificate object corresponding to the provided encoding.
-     * Resulting object is retrieved from the cache 
-     * if it contains such correspondence 
-     * and is constructed on the base of encoding 
+     * Resulting object is retrieved from the cache
+     * if it contains such correspondence
+     * and is constructed on the base of encoding
      * and stored in the cache otherwise.
      * @throws IOException if some decoding errors occur
      * (in the case of cache miss).
      */
-    private static Certificate getCertificate(byte[] encoding) 
+    private static Certificate getCertificate(byte[] encoding)
                                     throws CertificateException, IOException {
         if (encoding.length < CERT_CACHE_SEED_LENGTH) {
-            throw new CertificateException(
-                    Messages.getString("security.152")); //$NON-NLS-1$
+            throw new CertificateException("encoding.length < CERT_CACHE_SEED_LENGTH");
         }
         synchronized (CERT_CACHE) {
             long hash = CERT_CACHE.getHash(encoding);
             if (CERT_CACHE.contains(hash)) {
-                Certificate res = 
+                Certificate res =
                     (Certificate) CERT_CACHE.get(hash, encoding);
                 if (res != null) {
                     return res;
@@ -652,14 +620,14 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
     /**
      * Returns the Certificate object corresponding to the encoding provided
      * by the stream.
-     * Resulting object is retrieved from the cache 
-     * if it contains such correspondence 
-     * and is constructed on the base of encoding 
+     * Resulting object is retrieved from the cache
+     * if it contains such correspondence
+     * and is constructed on the base of encoding
      * and stored in the cache otherwise.
      * @throws IOException if some decoding errors occur
      * (in the case of cache miss).
      */
-    private static Certificate getCertificate(InputStream inStream) 
+    private static Certificate getCertificate(InputStream inStream)
                                     throws CertificateException, IOException {
         synchronized (CERT_CACHE) {
             inStream.mark(CERT_CACHE_SEED_LENGTH);
@@ -667,17 +635,15 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
             byte[] buff = readBytes(inStream, CERT_CACHE_SEED_LENGTH);
             inStream.reset();
             if (buff == null) {
-                throw new CertificateException(
-                        Messages.getString("security.152")); //$NON-NLS-1$
+                throw new CertificateException("InputStream doesn't contain enough data");
             }
             long hash = CERT_CACHE.getHash(buff);
             if (CERT_CACHE.contains(hash)) {
                 byte[] encoding = new byte[BerInputStream.getLength(buff)];
                 if (encoding.length < CERT_CACHE_SEED_LENGTH) {
-                    throw new CertificateException(
-                        Messages.getString("security.15B3")); //$NON-NLS-1$
+                    throw new CertificateException("Bad Certificate encoding");
                 }
-                inStream.read(encoding);
+                Streams.readFully(inStream, encoding);
                 Certificate res = (Certificate) CERT_CACHE.get(hash, encoding);
                 if (res != null) {
                     return res;
@@ -696,18 +662,17 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
 
     /**
      * Returns the CRL object corresponding to the provided encoding.
-     * Resulting object is retrieved from the cache 
-     * if it contains such correspondence 
-     * and is constructed on the base of encoding 
+     * Resulting object is retrieved from the cache
+     * if it contains such correspondence
+     * and is constructed on the base of encoding
      * and stored in the cache otherwise.
      * @throws IOException if some decoding errors occur
      * (in the case of cache miss).
      */
-    private static CRL getCRL(byte[] encoding) 
+    private static CRL getCRL(byte[] encoding)
                                             throws CRLException, IOException {
         if (encoding.length < CRL_CACHE_SEED_LENGTH) {
-            throw new CRLException(
-                    Messages.getString("security.152")); //$NON-NLS-1$
+            throw new CRLException("encoding.length < CRL_CACHE_SEED_LENGTH");
         }
         synchronized (CRL_CACHE) {
             long hash = CRL_CACHE.getHash(encoding);
@@ -726,14 +691,14 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
     /**
      * Returns the CRL object corresponding to the encoding provided
      * by the stream.
-     * Resulting object is retrieved from the cache 
-     * if it contains such correspondence 
-     * and is constructed on the base of encoding 
+     * Resulting object is retrieved from the cache
+     * if it contains such correspondence
+     * and is constructed on the base of encoding
      * and stored in the cache otherwise.
      * @throws IOException if some decoding errors occur
      * (in the case of cache miss).
      */
-    private static CRL getCRL(InputStream inStream) 
+    private static CRL getCRL(InputStream inStream)
                                             throws CRLException, IOException {
         synchronized (CRL_CACHE) {
             inStream.mark(CRL_CACHE_SEED_LENGTH);
@@ -741,17 +706,15 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
             // read the prefix of the encoding
             inStream.reset();
             if (buff == null) {
-                throw new CRLException(
-                        Messages.getString("security.152")); //$NON-NLS-1$
+                throw new CRLException("InputStream doesn't contain enough data");
             }
             long hash = CRL_CACHE.getHash(buff);
             if (CRL_CACHE.contains(hash)) {
                 byte[] encoding = new byte[BerInputStream.getLength(buff)];
                 if (encoding.length < CRL_CACHE_SEED_LENGTH) {
-                    throw new CRLException(
-                        Messages.getString("security.15B4")); //$NON-NLS-1$
+                    throw new CRLException("Bad CRL encoding");
                 }
-                inStream.read(encoding);
+                Streams.readFully(inStream, encoding);
                 CRL res = (CRL) CRL_CACHE.get(hash, encoding);
                 if (res != null) {
                     return res;
@@ -799,26 +762,17 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
             this.inStream = inStream;
         }
 
-        /**
-         * @see java.io.InputStream#available()
-         * method documentation for more info
-         */
+        @Override
         public int available() throws IOException {
             return (bar - pos) + inStream.available();
         }
 
-        /**
-         * @see java.io.InputStream#close()
-         * method documentation for more info
-         */
+        @Override
         public void close() throws IOException {
             inStream.close();
         }
 
-        /**
-         * @see java.io.InputStream#mark(int readlimit)
-         * method documentation for more info
-         */
+        @Override
         public void mark(int readlimit) {
             if (pos < 0) {
                 pos = 0;
@@ -829,10 +783,7 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
             }
         }
 
-        /**
-         * @see java.io.InputStream#markSupported()
-         * method documentation for more info
-         */
+        @Override
         public boolean markSupported() {
             return true;
         }
@@ -880,18 +831,7 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
             return inStream.read();
         }
 
-        /**
-         * @see java.io.InputStream#read(byte[] b)
-         * method documentation for more info
-         */
-        public int read(byte[] b) throws IOException {
-            return read(b, 0, b.length);
-        }
-
-        /**
-         * @see java.io.InputStream#read(byte[] b, int off, int len)
-         * method documentation for more info
-         */
+        @Override
         public int read(byte[] b, int off, int len) throws IOException {
             int read_b;
             int i;
@@ -904,40 +844,14 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
             return i;
         }
 
-        /**
-         * @see java.io.InputStream#reset()
-         * method documentation for more info
-         */
+        @Override
         public void reset() throws IOException {
             if (pos >= 0) {
                 pos = (end + 1) % BUFF_SIZE;
             } else {
-                throw new IOException(
-                        Messages.getString("security.15A")); //$NON-NLS-1$
-            }
-        }
-
-        /**
-         * @see java.io.InputStream#skip(long n)
-         * method documentation for more info
-         */
-        public long skip(long n) throws IOException {
-            if (pos >= 0) {
-                long i = 0;
-                int av = available();
-                if (av < n) {
-                    n = av;
-                }
-                while ((i < n) && (read() != -1)) {
-                    i++;
-                }
-                return i;
-            } else {
-                return inStream.skip(n);
+                throw new IOException("Could not reset the stream: " +
+                        "position became invalid or stream has not been marked");
             }
         }
     }
 }
-
-
-

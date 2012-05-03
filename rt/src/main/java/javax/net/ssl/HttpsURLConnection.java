@@ -24,8 +24,82 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 
 /**
- * This abstract subclass of {@code HttpURLConnection} defines methods for
- * managing HTTPS connections according to the description given by RFC 2818.
+ * An {@link HttpURLConnection} for HTTPS (<a
+ * href="http://tools.ietf.org/html/rfc2818">RFC 2818</a>). A
+ * connected {@code HttpsURLConnection} allows access to the
+ * negotiated cipher suite, the server certificate chain, and the
+ * client certificate chain if any.
+ *
+ * <h3>Providing an application specific X509TrustManager</h3>
+ *
+ * If an application wants to trust Certificate Authority (CA)
+ * certificates that are not part of the system, it should specify its
+ * own {@code X509TrustManager} via a {@code SSLSocketFactory} set on
+ * the {@code HttpsURLConnection}. The {@code X509TrustManager} can be
+ * created based on a {@code KeyStore} using a {@code
+ * TrustManagerFactory} to supply trusted CA certificates. Note that
+ * self-signed certificates are effectively their own CA and can be
+ * trusted by including them in a {@code KeyStore}.
+ *
+ * <p>For example, to trust a set of certificates specified by a {@code KeyStore}:
+ * <pre>   {@code
+ *   KeyStore keyStore = ...;
+ *   TrustManagerFactory tmf = TrustManagerFactory.getInstance("X509");
+ *   tmf.init(keyStore);
+ *
+ *   SSLContext context = SSLContext.getInstance("TLS");
+ *   context.init(null, tmf.getTrustManagers(), null);
+ *
+ *   URL url = new URL("https://www.example.com/");
+ *   HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
+ *   urlConnection.setSSLSocketFactory(context.getSocketFactory());
+ *   InputStream in = urlConnection.getInputStream();
+ * }</pre>
+ *
+ * <p>It is possible to implement {@code X509TrustManager} directly
+ * instead of using one created by a {@code
+ * TrustManagerFactory}. While this is straightforward in the insecure
+ * case of allowing all certificate chains to pass verification,
+ * writing a proper implementation will usually want to take advantage
+ * of {@link java.security.cert.CertPathValidator
+ * CertPathValidator}. In general, it might be better to write a
+ * custom {@code KeyStore} implementation to pass to the {@code
+ * TrustManagerFactory} than to try and write a custom {@code
+ * X509TrustManager}.
+ *
+ * <h3>Providing an application specific X509KeyManager</h3>
+ *
+ * A custom {@code X509KeyManager} can be used to supply a client
+ * certificate and its associated private key to authenticate a
+ * connection to the server. The {@code X509KeyManager} can be created
+ * based on a {@code KeyStore} using a {@code KeyManagerFactory}.
+ *
+ * <p>For example, to supply client certificates from a {@code KeyStore}:
+ * <pre>   {@code
+ *   KeyStore keyStore = ...;
+ *   KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
+ *   kmf.init(keyStore);
+ *
+ *   SSLContext context = SSLContext.getInstance("TLS");
+ *   context.init(kmf.getKeyManagers(), null, null);
+ *
+ *   URL url = new URL("https://www.example.com/");
+ *   HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
+ *   urlConnection.setSSLSocketFactory(context.getSocketFactory());
+ *   InputStream in = urlConnection.getInputStream();
+ * }</pre>
+ *
+ * <p>A {@code X509KeyManager} can also be implemented directly. This
+ * can allow an application to return a certificate and private key
+ * from a non-{@code KeyStore} source or to specify its own logic for
+ * selecting a specific credential to use when many may be present in
+ * a single {@code KeyStore}.
+ *
+ * <h3>TLS Intolerance Support</h3>
+ *
+ * This class attempts to create secure connections using common TLS
+ * extensions and SSL deflate compression. Should that fail, the
+ * connection will be retried with SSLv3 only.
  */
 public abstract class HttpsURLConnection extends HttpURLConnection {
 

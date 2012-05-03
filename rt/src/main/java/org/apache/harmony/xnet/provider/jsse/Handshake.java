@@ -18,70 +18,70 @@
 package org.apache.harmony.xnet.provider.jsse;
 
 /**
- * 
- * This class encapsulates the constants determining the types of handshake
+ *
+ * This class incapsulates the constants determining the types of handshake
  * messages as defined in TLS 1.0 spec., 7.4. Handshake protocol.
  * (http://www.ietf.org/rfc/rfc2246.txt)
- * 
+ *
  */
 public class Handshake {
 
     /**
-     * 
+     *
      * hello_request handshake type
      */
     public static final byte HELLO_REQUEST = 0;
 
     /**
-     * 
+     *
      * client_hello handshake type
      */
     public static final byte CLIENT_HELLO = 1;
 
     /**
-     * 
+     *
      * server_hello handshake type
      */
     public static final byte SERVER_HELLO = 2;
 
     /**
-     * 
+     *
      * certificate handshake type
      */
     public static final byte CERTIFICATE = 11;
 
     /**
-     * 
+     *
      * server_key_exchange  handshake type
      */
     public static final byte SERVER_KEY_EXCHANGE = 12;
 
     /**
-     * 
+     *
      * certificate_request handshake type
      */
     public static final byte CERTIFICATE_REQUEST = 13;
 
     /**
-     * 
+     *
      * server_hello_done handshake type
      */
     public static final byte SERVER_HELLO_DONE = 14;
 
     /**
-     * 
+     *
      * certificate_verify handshake type
      */
     public static final byte CERTIFICATE_VERIFY = 15;
 
     /**
-     * 
+     *
      * client_key_exchange handshake type
      */
     public static final byte CLIENT_KEY_EXCHANGE = 16;
 
     /**
-     * 
+     *
      * finished handshake type
      */
     public static final byte FINISHED = 20;

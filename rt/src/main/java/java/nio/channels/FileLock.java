@@ -41,11 +41,11 @@ import java.io.IOException;
  * Once a lock is acquired, it is immutable in all its state except {@code
  * isValid()}. The lock will initially be valid, but may be rendered invalid by
  * explicit removal of the lock, using {@code release()}, or implicitly by
- * closing the channel or exiting the process (terminating the virtual machine).
+ * closing the channel or exiting the process (terminating the VM).
  * <h3>Platform dependencies</h3>
  * <p>
  * Locks are intended to be true platform operating system file locks, and
- * therefore locks held by the virtual machine process will be visible to other
+ * therefore locks held by the VM will be visible to other
  * operating system processes.
  * <p>
  * The characteristics of the underlying operating system locks will show
@@ -85,7 +85,7 @@ public abstract class FileLock {
     /**
      * Constructs a new file lock instance for a given channel. The constructor
      * enforces the starting position, length and sharing mode of the lock.
-     * 
+     *
      * @param channel
      *            the underlying file channel that holds the lock.
      * @param position
@@ -96,9 +96,7 @@ public abstract class FileLock {
      *            the lock's sharing mode of lock; {@code true} is shared,
      *            {@code false} is exclusive.
      */
-    protected FileLock(FileChannel channel, long position, long size,
-            boolean shared) {
-        super();
+    protected FileLock(FileChannel channel, long position, long size, boolean shared) {
         if (position < 0 || size < 0 || position + size < 0) {
             throw new IllegalArgumentException();
         }
@@ -110,7 +108,7 @@ public abstract class FileLock {
 
     /**
      * Returns the lock's {@link FileChannel}.
-     * 
+     *
      * @return the channel.
      */
     public final FileChannel channel() {
@@ -119,7 +117,7 @@ public abstract class FileLock {
 
     /**
      * Returns the lock's starting position in the file.
-     * 
+     *
      * @return the lock position.
      */
     public final long position() {
@@ -128,7 +126,7 @@ public abstract class FileLock {
 
     /**
      * Returns the length of the file lock in bytes.
-     * 
+     *
      * @return the size of the file lock in bytes.
      */
     public final long size() {
@@ -138,7 +136,7 @@ public abstract class FileLock {
     /**
      * Indicates if the file lock is shared with other processes or if it is
      * exclusive.
-     * 
+     *
      * @return {@code true} if the lock is a shared lock, {@code false} if it is
      *         exclusive.
      */
@@ -149,7 +147,7 @@ public abstract class FileLock {
     /**
      * Indicates if the receiver's lock region overlaps the region described
      * in the parameter list.
-     * 
+     *
      * @param start
      *            the starting position for the comparative lock.
      * @param length
@@ -169,7 +167,7 @@ public abstract class FileLock {
      * Indicates whether this lock is a valid file lock. The lock is
      * valid unless the underlying channel has been closed or it has been
      * explicitly released.
-     * 
+     *
      * @return {@code true} if the lock is valid, {@code false} otherwise.
      */
     public abstract boolean isValid();
@@ -177,7 +175,7 @@ public abstract class FileLock {
     /**
      * Releases this particular lock on the file. If the lock is invalid then
      * this method has no effect. Once released, the lock becomes invalid.
-     * 
+     *
      * @throws ClosedChannelException
      *             if the channel is already closed when an attempt to release
      *             the lock is made.
@@ -189,20 +187,11 @@ public abstract class FileLock {
     /**
      * Returns a string that shows the details of the lock suitable for display
      * to an end user.
-     * 
+     *
      * @return the display string.
      */
     @Override
-    @SuppressWarnings("nls")
     public final String toString() {
-        StringBuilder buffer = new StringBuilder(64); // Guess length of string
-        buffer.append("FileLock: [position=");
-        buffer.append(position);
-        buffer.append(", size=");
-        buffer.append(size);
-        buffer.append(", shared=");
-        buffer.append(Boolean.toString(shared));
-        buffer.append(']');
-        return buffer.toString();
+        return "FileLock[position=" + position + ", size=" + size + ", shared=" + shared + "]";
     }
 }

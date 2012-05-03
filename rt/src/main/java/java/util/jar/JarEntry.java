@@ -27,7 +27,6 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
-
 import javax.security.auth.x500.X500Principal;
 
 /**
@@ -99,11 +98,11 @@ public class JarEntry extends ZipEntry {
      * @see java.security.cert.Certificate
      */
     public Certificate[] getCertificates() {
-        if (null == parentJar) {
+        if (parentJar == null) {
             return null;
         }
         JarVerifier jarVerifier = parentJar.verifier;
-        if (null == jarVerifier) {
+        if (jarVerifier == null) {
             return null;
         }
         return jarVerifier.getCertificates(getName());
@@ -137,10 +136,10 @@ public class JarEntry extends ZipEntry {
      * @see CodeSigner
      */
     public CodeSigner[] getCodeSigners() {
-        if (null == signers) {
+        if (signers == null) {
             signers = getCodeSigners(getCertificates());
         }
-        if (null == signers) {
+        if (signers == null) {
             return null;
         }
 
@@ -150,7 +149,7 @@ public class JarEntry extends ZipEntry {
     }
 
     private CodeSigner[] getCodeSigners(Certificate[] certs) {
-        if (null == certs) {
+        if (certs == null) {
             return null;
         }
 
@@ -164,7 +163,7 @@ public class JarEntry extends ZipEntry {
                 continue;
             }
             X509Certificate x509 = (X509Certificate) element;
-            if (null != prevIssuer) {
+            if (prevIssuer != null) {
                 X500Principal subj = x509.getSubjectX500Principal();
                 if (!prevIssuer.equals(subj)) {
                     // Ok, this ends the previous chain,
@@ -197,14 +196,14 @@ public class JarEntry extends ZipEntry {
         CertPath certPath = null;
         if (!isFactoryChecked) {
             try {
-                factory = CertificateFactory.getInstance("X.509"); //$NON-NLS-1$
+                factory = CertificateFactory.getInstance("X.509");
             } catch (CertificateException ex) {
                 // do nothing
             } finally {
                 isFactoryChecked = true;
             }
         }
-        if (null == factory) {
+        if (factory == null) {
             return;
         }
         try {
@@ -212,7 +211,7 @@ public class JarEntry extends ZipEntry {
         } catch (CertificateException ex) {
             // do nothing
         }
-        if (null != certPath) {
+        if (certPath != null) {
             asigners.add(new CodeSigner(certPath, null));
         }
     }

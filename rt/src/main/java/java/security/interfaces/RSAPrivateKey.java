@@ -32,7 +32,7 @@ public interface RSAPrivateKey extends PrivateKey, RSAKey {
 
     /**
      * Returns the private exponent {@code d}.
-     * 
+     *
      * @return the private exponent {@code d}.
      */
     public BigInteger getPrivateExponent();

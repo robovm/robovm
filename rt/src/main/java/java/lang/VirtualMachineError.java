@@ -21,7 +21,7 @@ package java.lang;
 /**
  * {@code VirtualMachineError} is the superclass of all error classes that occur
  * during the operation of the VM.
- * 
+ *
  * @see Error
  */
 public abstract class VirtualMachineError extends Error {
@@ -38,7 +38,7 @@ public abstract class VirtualMachineError extends Error {
     /**
      * Constructs a new {@code VirtualMachineError} with the current stack trace
      * and the specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

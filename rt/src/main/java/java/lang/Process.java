@@ -67,7 +67,7 @@ public abstract class Process {
     /**
      * Returns the exit value of the native process represented by this object.
      * It is available only when the native process has terminated.
-     * 
+     *
      * @return the exit value of this process.
      * @throws IllegalThreadStateException
      *             if this process has not terminated.
@@ -77,7 +77,7 @@ public abstract class Process {
     /**
      * Returns an input stream that is connected to the error stream
      * <em>(stderr)</em> of the native process represented by this object.
-     * 
+     *
      * @return the input stream to read from the error stream associated with
      *         the native process.
      */
@@ -86,7 +86,7 @@ public abstract class Process {
     /**
      * Returns an input stream that is connected to the standard output stream
      * <em>(stdout)</em> of the native process represented by this object.
-     * 
+     *
      * @return the input stream to read from the output stream associated with
      *         the native process.
      */
@@ -95,7 +95,7 @@ public abstract class Process {
     /**
      * Returns an output stream that is connected to the standard input stream
      * <em>(stdin)</em> of the native process represented by this object.
-     * 
+     *
      * @return the output stream to write to the input stream associated with
      *         the native process.
      */
@@ -104,7 +104,7 @@ public abstract class Process {
     /**
      * Causes the calling thread to wait for the native process associated with
      * this object to finish executing.
-     * 
+     *
      * @return the exit value of the native process being waited on.
      * @throws InterruptedException
      *             if the calling thread is interrupted.

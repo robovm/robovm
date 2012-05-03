@@ -25,7 +25,7 @@ package java.lang;
  * not require code to handle runtime exceptions.
  */
 public class RuntimeException extends Exception {
-    
+
     private static final long serialVersionUID = -7034897190745766939L;
 
     /**
@@ -38,7 +38,7 @@ public class RuntimeException extends Exception {
     /**
      * Constructs a new {@code RuntimeException} with the current stack trace
      * and the specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */
@@ -49,7 +49,7 @@ public class RuntimeException extends Exception {
    /**
      * Constructs a new {@code RuntimeException} with the current stack trace,
      * the specified detail message and the specified cause.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      * @param throwable
@@ -62,7 +62,7 @@ public class RuntimeException extends Exception {
     /**
      * Constructs a new {@code RuntimeException} with the current stack trace
      * and the specified cause.
-     * 
+     *
      * @param throwable
      *            the cause of this exception.
      */

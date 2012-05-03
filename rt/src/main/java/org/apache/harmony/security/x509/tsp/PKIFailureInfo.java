@@ -14,7 +14,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
- * under the License.    
+ * under the License.
  */
 
 package org.apache.harmony.security.x509.tsp;
@@ -27,7 +27,7 @@ import java.security.InvalidParameterException;
    Internet X.509 Public Key Infrastructure
    Time-Stamp Protocol (TSP)
    http://www.ietf.org/rfc/rfc3161.txt)
-    
+
    PKIFailureInfo ::= BIT STRING {
    badAlg               (0),
      -- unrecognized or unsupported Algorithm Identifier
@@ -52,46 +52,46 @@ import java.security.InvalidParameterException;
  */
 public enum PKIFailureInfo {
     /**
-     *  Unrecognized algorithm ID 
+     *  Unrecognized algorithm ID
      */
     BAD_ALG(0),
-    
+
     /**
-     *  Transaction is not supported 
+     *  Transaction is not supported
      */
     BAD_REQUEST(2),
-    
+
     /**
-     *  Data format is wrong 
+     *  Data format is wrong
      */
     BAD_DATA_FORMAT(5),
-    
+
     /**
-     *  TSA cannot use the time source  
+     *  TSA cannot use the time source
      */
     TIME_NOT_AVAILABLE(14),
-    
+
     /**
      *  The policy is not supported
      */
     UNACCEPTED_POLICY(15),
-    
+
     /**
      *  The extension is not supported
      */
     UNACCEPTED_EXTENSION(16),
-    
+
     /**
      *  The requested additional info is not available
      */
     ADD_INFO_NOT_AVAILABLE(17),
-    
+
     /**
      *  System failure has occured
      */
     SYSTEM_FAILURE(25);
 
-    
+
     private final int value;
 
     private static int maxValue;
@@ -99,7 +99,7 @@ public enum PKIFailureInfo {
     PKIFailureInfo(int value) {
         this.value = value;
     }
-    
+
     /**
      * @return int value of the failure
      */
@@ -119,7 +119,7 @@ public enum PKIFailureInfo {
         }
         return maxValue;
     }
-    
+
     /**
      * @param value
      * @return

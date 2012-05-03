@@ -39,13 +39,12 @@ public class NotActiveException extends ObjectStreamException {
      * in.
      */
     public NotActiveException() {
-        super();
     }
 
     /**
      * Constructs a new {@code NotActiveException} with its stack trace and
      * detail message filled in.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

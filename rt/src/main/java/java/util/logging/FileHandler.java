@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,11 +25,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.Hashtable;
-
-import org.apache.harmony.logging.internal.nls.Messages;
+import libcore.io.IoUtils;
 
 /**
  * A {@code FileHandler} writes logging records into a specified file or a
@@ -97,7 +94,7 @@ import org.apache.harmony.logging.internal.nls.Messages;
  */
 public class FileHandler extends StreamHandler {
 
-    private static final String LCK_EXT = ".lck"; //$NON-NLS-1$
+    private static final String LCK_EXT = ".lck";
 
     private static final int DEFAULT_COUNT = 1;
 
@@ -105,7 +102,7 @@ public class FileHandler extends StreamHandler {
 
     private static final boolean DEFAULT_APPEND = false;
 
-    private static final String DEFAULT_PATTERN = "%h/java%u.log"; //$NON-NLS-1$
+    private static final String DEFAULT_PATTERN = "%h/java%u.log";
 
     // maintain all file locks hold by this process
     private static final Hashtable<String, FileLock> allLocks = new Hashtable<String, FileLock>();
@@ -144,15 +141,9 @@ public class FileHandler extends StreamHandler {
     /**
      * Construct a {@code FileHandler} using {@code LogManager} properties or
      * their default value.
-     * 
+     *
      * @throws IOException
      *             if any I/O error occurs.
-     * @throws SecurityException
-     *             if a security manager exists and it determines that the
-     *             caller does not have the required permissions to control this
-     *             handler; required permissions include
-     *             {@code LogPermission("control")},
-     *             {@code FilePermission("write")} etc.
      */
     public FileHandler() throws IOException {
         init(null, null, null, null);
@@ -183,7 +174,7 @@ public class FileHandler extends StreamHandler {
                  * if current process has held lock for this fileName continue
                  * to find next file
                  */
-                if (null != allLocks.get(fileName)) {
+                if (allLocks.get(fileName) != null) {
                     continue;
                 }
                 if (files[0].exists()
@@ -204,12 +195,8 @@ public class FileHandler extends StreamHandler {
                  * undead cycle
                  */
                 lock = channel.tryLock();
-                if (null == lock) {
-                    try {
-                        fileStream.close();
-                    } catch (Exception e) {
-                        // ignore
-                    }
+                if (lock == null) {
+                    IoUtils.closeQuietly(fileStream);
                     continue;
                 }
                 allLocks.put(fileName, lock);
@@ -221,22 +208,20 @@ public class FileHandler extends StreamHandler {
         setOutputStream(output);
     }
 
-    @SuppressWarnings("nls")
     private void initProperties(String p, Boolean a, Integer l, Integer c) {
         super.initProperties("ALL", null, "java.util.logging.XMLFormatter",
                 null);
         String className = this.getClass().getName();
-        pattern = (null == p) ? getStringProperty(className + ".pattern",
+        pattern = (p == null) ? getStringProperty(className + ".pattern",
                 DEFAULT_PATTERN) : p;
-        if (null == pattern || "".equals(pattern)) {
-            // logging.19=Pattern cannot be empty
-            throw new NullPointerException(Messages.getString("logging.19"));
+        if (pattern == null || pattern.isEmpty()) {
+            throw new NullPointerException("Pattern cannot be empty or null");
         }
-        append = (null == a) ? getBooleanProperty(className + ".append",
+        append = (a == null) ? getBooleanProperty(className + ".append",
                 DEFAULT_APPEND) : a.booleanValue();
-        count = (null == c) ? getIntProperty(className + ".count",
+        count = (c == null) ? getIntProperty(className + ".count",
                 DEFAULT_COUNT) : c.intValue();
-        limit = (null == l) ? getIntProperty(className + ".limit",
+        limit = (l == null) ? getIntProperty(className + ".limit",
                 DEFAULT_LIMIT) : l.intValue();
         count = count < 1 ? DEFAULT_COUNT : count;
         limit = limit < 0 ? DEFAULT_LIMIT : limit;
@@ -255,20 +240,18 @@ public class FileHandler extends StreamHandler {
             output = new MeasureOutputStream(new BufferedOutputStream(
                     new FileOutputStream(files[0])));
         } catch (FileNotFoundException e1) {
-            // logging.1A=Error happened when open log file.
-            this.getErrorManager().error(Messages.getString("logging.1A"), //$NON-NLS-1$
-                    e1, ErrorManager.OPEN_FAILURE);
+            this.getErrorManager().error("Error opening log file", e1, ErrorManager.OPEN_FAILURE);
         }
         setOutputStream(output);
     }
 
     /**
      * Transform the pattern to the valid file name, replacing any patterns, and
-     * applying generation and uniqueID if present
-     * 
+     * applying generation and uniqueID if present.
+     *
      * @param gen
      *            generation of this file
-     * @return transformed filename ready for use
+     * @return transformed filename ready for use.
      */
     private String parseFileName(int gen) {
         int cur = 0;
@@ -277,15 +260,14 @@ public class FileHandler extends StreamHandler {
         boolean hasGeneration = false;
 
         // TODO privilege code?
-        String homePath = System.getProperty("user.home"); //$NON-NLS-1$
-        if (homePath == null) {
-            throw new NullPointerException();
-        }
-        boolean homePathHasSepEnd = homePath.endsWith(File.separator);
 
-        String tempPath = System.getProperty("java.io.tmpdir"); //$NON-NLS-1$
-        tempPath = tempPath == null ? homePath : tempPath;
-        boolean tempPathHasSepEnd = tempPath.endsWith(File.separator);
+        String tempPath = System.getProperty("java.io.tmpdir");
+        boolean tempPathHasSepEnd = (tempPath == null ? false : tempPath
+                .endsWith(File.separator));
+
+        String homePath = System.getProperty("user.home");
+        boolean homePathHasSepEnd = (homePath == null ? false : homePath
+                .endsWith(File.separator));
 
         StringBuilder sb = new StringBuilder();
         pattern = pattern.replace('/', File.separatorChar);
@@ -333,11 +315,11 @@ public class FileHandler extends StreamHandler {
         sb.append(value, cur, value.length - cur);
 
         if (!hasGeneration && count > 1) {
-            sb.append(".").append(gen); //$NON-NLS-1$
+            sb.append(".").append(gen);
         }
 
         if (!hasUniqueID && uniqueID > 0) {
-            sb.append(".").append(uniqueID); //$NON-NLS-1$
+            sb.append(".").append(uniqueID);
         }
 
         return sb.toString();
@@ -347,13 +329,13 @@ public class FileHandler extends StreamHandler {
     // value
     private boolean getBooleanProperty(String key, boolean defaultValue) {
         String property = manager.getProperty(key);
-        if (null == property) {
+        if (property == null) {
             return defaultValue;
         }
         boolean result = defaultValue;
-        if ("true".equalsIgnoreCase(property)) { //$NON-NLS-1$
+        if ("true".equalsIgnoreCase(property)) {
             result = true;
-        } else if ("false".equalsIgnoreCase(property)) { //$NON-NLS-1$
+        } else if ("false".equalsIgnoreCase(property)) {
             result = false;
         }
         return result;
@@ -369,7 +351,7 @@ public class FileHandler extends StreamHandler {
     private int getIntProperty(String key, int defaultValue) {
         String property = manager.getProperty(key);
         int result = defaultValue;
-        if (null != property) {
+        if (property != null) {
             try {
                 result = Integer.parseInt(property);
             } catch (Exception e) {
@@ -390,24 +372,16 @@ public class FileHandler extends StreamHandler {
      *            the name pattern for the output file.
      * @throws IOException
      *             if any I/O error occurs.
-     * @throws SecurityException
-     *             if a security manager exists and it determines that the
-     *             caller does not have the required permissions to control this
-     *             handler; required permissions include
-     *             {@code LogPermission("control")},
-     *             {@code FilePermission("write")} etc.
      * @throws IllegalArgumentException
      *             if the pattern is empty.
      * @throws NullPointerException
      *             if the pattern is {@code null}.
      */
     public FileHandler(String pattern) throws IOException {
-        if (pattern.equals("")) { //$NON-NLS-1$
-            // logging.19=Pattern cannot be empty
-            throw new IllegalArgumentException(Messages.getString("logging.19")); //$NON-NLS-1$
+        if (pattern.isEmpty()) {
+            throw new IllegalArgumentException("Pattern cannot be empty");
         }
-        init(pattern, null, Integer.valueOf(DEFAULT_LIMIT), Integer
-                .valueOf(DEFAULT_COUNT));
+        init(pattern, null, Integer.valueOf(DEFAULT_LIMIT), Integer.valueOf(DEFAULT_COUNT));
     }
 
     /**
@@ -424,22 +398,15 @@ public class FileHandler extends StreamHandler {
      *            the append mode.
      * @throws IOException
      *             if any I/O error occurs.
-     * @throws SecurityException
-     *             if a security manager exists and it determines that the
-     *             caller does not have the required permissions to control this
-     *             handler; required permissions include
-     *             {@code LogPermission("control")},
-     *             {@code FilePermission("write")} etc.
      * @throws IllegalArgumentException
      *             if {@code pattern} is empty.
      * @throws NullPointerException
      *             if {@code pattern} is {@code null}.
      */
     public FileHandler(String pattern, boolean append) throws IOException {
-        if (pattern.equals("")) { //$NON-NLS-1$
-            throw new IllegalArgumentException(Messages.getString("logging.19")); //$NON-NLS-1$ 
+        if (pattern.isEmpty()) {
+            throw new IllegalArgumentException("Pattern cannot be empty");
         }
-
         init(pattern, Boolean.valueOf(append), Integer.valueOf(DEFAULT_LIMIT),
                 Integer.valueOf(DEFAULT_COUNT));
     }
@@ -461,12 +428,6 @@ public class FileHandler extends StreamHandler {
      *            the maximum number of files to use, can not be less than one.
      * @throws IOException
      *             if any I/O error occurs.
-     * @throws SecurityException
-     *             if a security manager exists and it determines that the
-     *             caller does not have the required permissions to control this
-     *             handler; required permissions include
-     *             {@code LogPermission("control")},
-     *             {@code FilePermission("write")} etc.
      * @throws IllegalArgumentException
      *             if {@code pattern} is empty, {@code limit < 0} or
      *             {@code count < 1}.
@@ -474,13 +435,11 @@ public class FileHandler extends StreamHandler {
      *             if {@code pattern} is {@code null}.
      */
     public FileHandler(String pattern, int limit, int count) throws IOException {
-        if (pattern.equals("")) { //$NON-NLS-1$
-            throw new IllegalArgumentException(Messages.getString("logging.19")); //$NON-NLS-1$ 
+        if (pattern.isEmpty()) {
+            throw new IllegalArgumentException("Pattern cannot be empty");
         }
         if (limit < 0 || count < 1) {
-            // logging.1B=The limit and count property must be larger than 0 and
-            // 1, respectively
-            throw new IllegalArgumentException(Messages.getString("logging.1B")); //$NON-NLS-1$
+            throw new IllegalArgumentException("limit < 0 || count < 1");
         }
         init(pattern, null, Integer.valueOf(limit), Integer.valueOf(count));
     }
@@ -505,41 +464,24 @@ public class FileHandler extends StreamHandler {
      *            the append mode.
      * @throws IOException
      *             if any I/O error occurs.
-     * @throws SecurityException
-     *             if a security manager exists and it determines that the
-     *             caller does not have the required permissions to control this
-     *             handler; required permissions include
-     *             {@code LogPermission("control")},
-     *             {@code FilePermission("write")} etc.
      * @throws IllegalArgumentException
      *             if {@code pattern} is empty, {@code limit < 0} or
      *             {@code count < 1}.
      * @throws NullPointerException
      *             if {@code pattern} is {@code null}.
      */
-    public FileHandler(String pattern, int limit, int count, boolean append)
-            throws IOException {
-        if (pattern.equals("")) { //$NON-NLS-1$
-            throw new IllegalArgumentException(Messages.getString("logging.19")); //$NON-NLS-1$ 
+    public FileHandler(String pattern, int limit, int count, boolean append) throws IOException {
+        if (pattern.isEmpty()) {
+            throw new IllegalArgumentException("Pattern cannot be empty");
         }
         if (limit < 0 || count < 1) {
-            // logging.1B=The limit and count property must be larger than 0 and
-            // 1, respectively
-            throw new IllegalArgumentException(Messages.getString("logging.1B")); //$NON-NLS-1$
+            throw new IllegalArgumentException("limit < 0 || count < 1");
         }
-        init(pattern, Boolean.valueOf(append), Integer.valueOf(limit), Integer
-                .valueOf(count));
+        init(pattern, Boolean.valueOf(append), Integer.valueOf(limit), Integer.valueOf(count));
     }
 
     /**
      * Flushes and closes all opened files.
-     * 
-     * @throws SecurityException
-     *             if a security manager exists and it determines that the
-     *             caller does not have the required permissions to control this
-     *             handler; required permissions include
-     *             {@code LogPermission("control")},
-     *             {@code FilePermission("write")} etc.
      */
     @Override
     public void close() {
@@ -559,7 +501,7 @@ public class FileHandler extends StreamHandler {
 
     /**
      * Publish a {@code LogRecord}.
-     * 
+     *
      * @param record
      *            the log record to publish.
      */
@@ -568,12 +510,7 @@ public class FileHandler extends StreamHandler {
         super.publish(record);
         flush();
         if (limit > 0 && output.getLength() >= limit) {
-            AccessController.doPrivileged(new PrivilegedAction<Object>() {
-                public Object run() {
-                    findNextGeneration();
-                    return null;
-                }
-            });
+            findNextGeneration();
         }
     }
 
@@ -601,12 +538,6 @@ public class FileHandler extends StreamHandler {
         public void write(int oneByte) throws IOException {
             wrapped.write(oneByte);
             length++;
-        }
-
-        @Override
-        public void write(byte[] bytes) throws IOException {
-            wrapped.write(bytes);
-            length += bytes.length;
         }
 
         @Override

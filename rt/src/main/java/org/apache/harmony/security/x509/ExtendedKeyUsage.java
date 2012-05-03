@@ -20,9 +20,9 @@ package org.apache.harmony.security.x509;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import org.apache.harmony.security.asn1.ASN1Type;
-import org.apache.harmony.security.asn1.ASN1SequenceOf;
 import org.apache.harmony.security.asn1.ASN1Oid;
+import org.apache.harmony.security.asn1.ASN1SequenceOf;
+import org.apache.harmony.security.asn1.ASN1Type;
 import org.apache.harmony.security.asn1.BerInputStream;
 import org.apache.harmony.security.asn1.ObjectIdentifier;
 
@@ -40,18 +40,10 @@ import org.apache.harmony.security.asn1.ObjectIdentifier;
  * </pre>
  * (as specified in RFC 3280  http://www.ietf.org/rfc/rfc3280.txt
  */
-public class ExtendedKeyUsage extends ExtensionValue {
+public final class ExtendedKeyUsage extends ExtensionValue {
 
     // the value of extension
-    private List keys;
-
-    /**
-     * Creates an object on the base of list of integer arrays representing
-     * key purpose IDs.
-     */
-    public ExtendedKeyUsage(List keys) {
-        this.keys = keys;
-    }
+    private List<String> keys;
 
     /**
      * Creates the extension object on the base of its encoded form.
@@ -64,59 +56,48 @@ public class ExtendedKeyUsage extends ExtensionValue {
      * Returns the list of string representation of OIDs corresponding
      * to key purpose IDs.
      */
-    public List getExtendedKeyUsage() throws IOException {
+    public List<String> getExtendedKeyUsage() throws IOException {
         if (keys == null) {
-            keys = (List) ASN1.decode(getEncoded());
+            keys = (List<String>) ASN1.decode(getEncoded());
         }
         return keys;
     }
 
-    /**
-     * Returns the encoded form of the object.
-     */
-    public byte[] getEncoded() {
+    @Override public byte[] getEncoded() {
         if (encoding == null) {
             encoding = ASN1.encode(keys);
         }
         return encoding;
     }
 
-    /**
-     * Places the string representation of extension value
-     * into the StringBuffer object.
-     */
-    public void dumpValue(StringBuffer buffer, String prefix) {
-        buffer.append(prefix).append("Extended Key Usage: "); //$NON-NLS-1$
+    @Override public void dumpValue(StringBuilder sb, String prefix) {
+        sb.append(prefix).append("Extended Key Usage: ");
         if (keys == null) {
             try {
                 keys = getExtendedKeyUsage();
             } catch (IOException e) {
                 // incorrect extension value encoding
-                super.dumpValue(buffer);
+                super.dumpValue(sb);
                 return;
             }
         }
-        buffer.append('[');
-        for (Iterator it=keys.iterator(); it.hasNext();) {
-            buffer.append(" \"").append(it.next()).append('"'); //$NON-NLS-1$
+        sb.append('[');
+        for (Iterator<?> it = keys.iterator(); it.hasNext();) {
+            sb.append(" \"").append(it.next()).append('"');
             if (it.hasNext()) {
-                buffer.append(',');
+                sb.append(',');
             }
         }
-        buffer.append(" ]\n"); //$NON-NLS-1$
+        sb.append(" ]\n");
     }
 
     /**
      * ASN.1 Encoder/Decoder.
      */
-    public static final ASN1Type ASN1 =
-        new ASN1SequenceOf(new ASN1Oid() {
-
-            public Object getDecodedObject(BerInputStream in)
-                    throws IOException {
-                int[] oid = (int[]) super.getDecodedObject(in);
-                return ObjectIdentifier.toString(oid);
-            }
-
-        });
+    public static final ASN1Type ASN1 = new ASN1SequenceOf(new ASN1Oid() {
+        public Object getDecodedObject(BerInputStream in) throws IOException {
+            int[] oid = (int[]) super.getDecodedObject(in);
+            return ObjectIdentifier.toString(oid);
+        }
+    });
 }

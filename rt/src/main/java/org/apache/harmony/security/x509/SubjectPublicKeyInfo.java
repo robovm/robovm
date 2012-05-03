@@ -17,6 +17,7 @@
 
 /**
 * @author Alexander Y. Kleymenov
+* @version $Revision$
 */
 
 package org.apache.harmony.security.x509;
@@ -26,7 +27,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
-
 import org.apache.harmony.security.asn1.ASN1BitString;
 import org.apache.harmony.security.asn1.ASN1Sequence;
 import org.apache.harmony.security.asn1.ASN1Type;
@@ -45,53 +45,32 @@ import org.apache.harmony.security.utils.AlgNameMapper;
  * <pre>
  *  SubjectPublicKeyInfo  ::=  SEQUENCE  {
  *      algorithm            AlgorithmIdentifier,
- *      subjectPublicKey     BIT STRING  
+ *      subjectPublicKey     BIT STRING
  *  }
  * </pre>
  */
-public class SubjectPublicKeyInfo {
-
-    // the value of algorithmID field of the structure
+public final class SubjectPublicKeyInfo {
+    /** the value of algorithmID field of the structure */
     private AlgorithmIdentifier algorithmID;
-    // the value of subjectPublicKey field of the structure
+    /** the value of subjectPublicKey field of the structure */
     private byte[] subjectPublicKey;
-    // the public key corresponding to this SubjectPublicKeyInfo
+    /** the public key corresponding to this SubjectPublicKeyInfo */
     private PublicKey publicKey;
-    // the value of unusedBits field of the structure
+    /** the value of unusedBits field of the structure */
     private int unusedBits;
-    // the ASN.1 encoded form of SubjectPublicKeyInfo
+    /** the ASN.1 encoded form of SubjectPublicKeyInfo */
     private byte[] encoding;
-    
-    /**
-     * TODO
-     * @param   algID:  AlgorithmIdentifier
-     * @param   subjectPublicKey:   byte[]
-     */
-    public SubjectPublicKeyInfo(AlgorithmIdentifier algID, 
-                                byte[] subjectPublicKey) { 
+
+    public SubjectPublicKeyInfo(AlgorithmIdentifier algID, byte[] subjectPublicKey) {
         this(algID, subjectPublicKey, 0);
     }
 
-    /**
-     * TODO
-     * @param   algID:  AlgorithmIdentifier
-     * @param   subjectPublicKey:   byte[]
-     * @param   unused: int
-     */
-    public SubjectPublicKeyInfo(AlgorithmIdentifier algID, 
-                                byte[] subjectPublicKey, int unused) {
+    public SubjectPublicKeyInfo(AlgorithmIdentifier algID, byte[] subjectPublicKey, int unused) {
         this(algID, subjectPublicKey, 0, null);
     }
 
-    // 
-    // TODO
-    // @param   algID:  AlgorithmIdentifier
-    // @param   subjectPublicKey:   byte[]
-    // @param   unused: int
-    // @param   encoding:   byte[]
-    // 
-    private SubjectPublicKeyInfo(AlgorithmIdentifier algID, 
-                                 byte[] subjectPublicKey, int unused, 
+    private SubjectPublicKeyInfo(AlgorithmIdentifier algID,
+                                 byte[] subjectPublicKey, int unused,
                                  byte[] encoding) {
         this.algorithmID = algID;
         this.subjectPublicKey = subjectPublicKey;
@@ -101,7 +80,6 @@ public class SubjectPublicKeyInfo {
 
     /**
      * Returns the value of algorithmIdentifier field of the structure.
-     * @return  algorithmIdentifier
      */
     public AlgorithmIdentifier getAlgorithmIdentifier() {
         return algorithmID;
@@ -109,23 +87,13 @@ public class SubjectPublicKeyInfo {
 
     /**
      * Returns the value of subjectPublicKey field of the structure.
-     * @return  subjectPublicKey
      */
     public byte[] getSubjectPublicKey() {
         return subjectPublicKey;
     }
 
     /**
-     * Returns the value of unusedBits field of the structure.
-     * @return  unusedBits
-     */
-    public int getUnusedBits() {
-        return unusedBits;
-    }
-
-    /**
      * Returns ASN.1 encoded form of this X.509 SubjectPublicKeyInfo value.
-     * @return a byte array containing ASN.1 encode form.
      */
     public byte[] getEncoded() {
         if (encoding == null) {
@@ -137,22 +105,21 @@ public class SubjectPublicKeyInfo {
     /**
      * Returns The PublicKey corresponding to this SubjectPublicKeyInfo
      * instance.
-     * @return public key corresponding to this SubjectPublicKeyInfo.
      */
     public PublicKey getPublicKey() {
         if (publicKey == null) {
             String alg_oid = algorithmID.getAlgorithm();
             try {
-                String alg = 
+                String alg =
                     AlgNameMapper.map2AlgName(alg_oid);
-                
+
                 if (alg == null) {
                     alg = alg_oid;
                 }
                 publicKey = KeyFactory.getInstance(alg)
                     .generatePublic(new X509EncodedKeySpec(getEncoded()));
-            } catch (InvalidKeySpecException e) {
-            } catch (NoSuchAlgorithmException e) {
+            } catch (InvalidKeySpecException ignored) {
+            } catch (NoSuchAlgorithmException ignored) {
             }
             if (publicKey == null) {
                 publicKey = new X509PublicKey(alg_oid, getEncoded(),
@@ -161,11 +128,10 @@ public class SubjectPublicKeyInfo {
         }
         return publicKey;
     }
-    
+
     public static final ASN1Sequence ASN1 = new ASN1Sequence(new ASN1Type[] {
             AlgorithmIdentifier.ASN1, ASN1BitString.getInstance() }) {
-
-        protected Object getDecodedObject(BerInputStream in) {
+        @Override protected Object getDecodedObject(BerInputStream in) {
             Object[] values = (Object[]) in.content;
             return new SubjectPublicKeyInfo(
                     (AlgorithmIdentifier) values[0],
@@ -174,10 +140,8 @@ public class SubjectPublicKeyInfo {
                     in.getEncoded());
         }
 
-        protected void getValues(Object object, Object[] values) {
-
+        @Override protected void getValues(Object object, Object[] values) {
             SubjectPublicKeyInfo spki = (SubjectPublicKeyInfo) object;
-
             values[0] = spki.algorithmID;
             values[1] = new BitString(spki.subjectPublicKey, spki.unusedBits);
         }

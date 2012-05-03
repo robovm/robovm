@@ -24,8 +24,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.spi.AbstractSelectableChannel;
 import java.nio.channels.spi.SelectorProvider;
 
-import org.apache.harmony.luni.platform.Platform;
-
 /**
  * A {@code SocketChannel} is a selectable channel that provides a partial
  * abstraction of stream connecting socket. {@code socket()} returns the related
@@ -59,13 +57,9 @@ import org.apache.harmony.luni.platform.Platform;
 public abstract class SocketChannel extends AbstractSelectableChannel implements
         ByteChannel, ScatteringByteChannel, GatheringByteChannel {
 
-    static {
-        Platform.getNetworkSystem().oneTimeInitialization(true);
-    }
-
     /**
      * Constructs a new {@code SocketChannel}.
-     * 
+     *
      * @param selectorProvider
      *            an instance of SelectorProvider.
      */
@@ -91,7 +85,7 @@ public abstract class SocketChannel extends AbstractSelectableChannel implements
      * Creates a socket channel and connects it to a socket address.
      * <p>
      * This method performs a call to {@code open()} followed by a call to
-     * {@code connect(SocketAdress)}.
+     * {@code connect(SocketAddress)}.
      *
      * @param address
      *            the socket address to be connected to.
@@ -103,9 +97,6 @@ public abstract class SocketChannel extends AbstractSelectableChannel implements
      *             if another thread interrupts the calling thread while this
      *             operation is executing. The calling thread will have the
      *             interrupt state set and the channel will be closed.
-     * @throws SecurityException
-     *             if there is a security manager and it denies the access of
-     *             {@code address}.
      * @throws UnresolvedAddressException
      *             if the address is not resolved.
      * @throws UnsupportedAddressTypeException
@@ -115,7 +106,7 @@ public abstract class SocketChannel extends AbstractSelectableChannel implements
      */
     public static SocketChannel open(SocketAddress address) throws IOException {
         SocketChannel socketChannel = open();
-        if (null != socketChannel) {
+        if (socketChannel != null) {
             socketChannel.connect(address);
         }
         return socketChannel;
@@ -125,7 +116,7 @@ public abstract class SocketChannel extends AbstractSelectableChannel implements
      * Gets the valid operations of this channel. Socket channels support
      * connect, read and write operation, so this method returns
      * {@code SelectionKey.OP_CONNECT | SelectionKey.OP_READ | SelectionKey.OP_WRITE}.
-     * 
+     *
      * @return the operations supported by this channel.
      * @see java.nio.channels.SelectableChannel#validOps()
      */
@@ -137,14 +128,14 @@ public abstract class SocketChannel extends AbstractSelectableChannel implements
     /**
      * Returns the socket assigned to this channel, which does not declare any public
      * methods that are not declared in {@code Socket}.
-     * 
+     *
      * @return the socket assigned to this channel.
      */
     public abstract Socket socket();
 
     /**
      * Indicates whether this channel's socket is connected.
-     * 
+     *
      * @return {@code true} if this channel's socket is connected, {@code false}
      *         otherwise.
      */
@@ -152,7 +143,7 @@ public abstract class SocketChannel extends AbstractSelectableChannel implements
 
     /**
      * Indicates whether this channel's socket is still trying to connect.
-     * 
+     *
      * @return {@code true} if the connection is initiated but not finished;
      *         {@code false} otherwise.
      */
@@ -162,7 +153,7 @@ public abstract class SocketChannel extends AbstractSelectableChannel implements
      * Connects this channel's socket with a remote address.
      * <p>
      * If this channel is blocking, this method will suspend until connecting is
-     * finished or an I/O exception occurrs. If the channel is non-blocking,
+     * finished or an I/O exception occurs. If the channel is non-blocking,
      * this method will return {@code true} if the connection is finished at
      * once or return {@code false} when the connection must be finished later
      * by calling {@code finishConnect()}.
@@ -193,9 +184,6 @@ public abstract class SocketChannel extends AbstractSelectableChannel implements
      *             if the address is not resolved.
      * @throws UnsupportedAddressTypeException
      *             if the address type is not supported.
-     * @throws SecurityException
-     *             if there is a security manager and it denies the access of
-     *             {@code address}.
      * @throws IOException
      *             if an I/O error occurs.
      */
@@ -302,8 +290,7 @@ public abstract class SocketChannel extends AbstractSelectableChannel implements
      * @see java.nio.channels.ScatteringByteChannel#read(java.nio.ByteBuffer[],
      *      int, int)
      */
-    public abstract long read(ByteBuffer[] targets, int offset, int length)
-            throws IOException;
+    public abstract long read(ByteBuffer[] targets, int offset, int length) throws IOException;
 
     /**
      * Reads bytes from this socket channel and stores them in the specified
@@ -334,8 +321,7 @@ public abstract class SocketChannel extends AbstractSelectableChannel implements
      * @throws NotYetConnectedException
      *             if this channel is not yet connected.
      */
-    public synchronized final long read(ByteBuffer[] targets)
-            throws IOException {
+    public synchronized final long read(ByteBuffer[] targets) throws IOException {
         return read(targets, 0, targets.length);
     }
 
@@ -371,7 +357,7 @@ public abstract class SocketChannel extends AbstractSelectableChannel implements
     public abstract int write(ByteBuffer source) throws IOException;
 
     /**
-     * Attempts to writes a subset of the given bytes from the buffers to this
+     * Attempts to write a subset of the given bytes from the buffers to this
      * socket channel. This method attempts to write all {@code remaining()}
      * bytes from {@code length} byte buffers, in order, starting at {@code
      * sources[offset]}. The number of bytes actually written is returned.
@@ -407,8 +393,7 @@ public abstract class SocketChannel extends AbstractSelectableChannel implements
      * @see java.nio.channels.GatheringByteChannel#write(java.nio.ByteBuffer[],
      *      int, int)
      */
-    public abstract long write(ByteBuffer[] sources, int offset, int length)
-            throws IOException;
+    public abstract long write(ByteBuffer[] sources, int offset, int length) throws IOException;
 
     /**
      * Writes bytes from all the given byte buffers to this socket channel.
@@ -434,8 +419,7 @@ public abstract class SocketChannel extends AbstractSelectableChannel implements
      *             if this channel is not yet connected.
      * @see java.nio.channels.GatheringByteChannel#write(java.nio.ByteBuffer[])
      */
-    public synchronized final long write(ByteBuffer[] sources)
-            throws IOException {
+    public synchronized final long write(ByteBuffer[] sources) throws IOException {
         return write(sources, 0, sources.length);
     }
 }

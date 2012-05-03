@@ -19,10 +19,8 @@ package javax.net.ssl;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+import java.security.NoSuchAlgorithmException;
 import java.security.Security;
-
 import javax.net.SocketFactory;
 
 /**
@@ -47,28 +45,28 @@ public abstract class SSLSocketFactory extends SocketFactory {
             return defaultSocketFactory;
         }
         if (defaultName == null) {
-            AccessController.doPrivileged(new PrivilegedAction<Void>() {
-                public Void run() {
-                    defaultName = Security.getProperty("ssl.SocketFactory.provider");
-                    if (defaultName != null) {
-                        ClassLoader cl = Thread.currentThread().getContextClassLoader();
-                        if (cl == null) {
-                            cl = ClassLoader.getSystemClassLoader();
-                        }
-                        try {
-                            final Class<?> sfc = Class.forName(defaultName, true, cl);
-                            defaultSocketFactory = (SocketFactory) sfc.newInstance();
-                        } catch (Exception e) {
-                        }
-                    }
-                    return null;
+            defaultName = Security.getProperty("ssl.SocketFactory.provider");
+            if (defaultName != null) {
+                ClassLoader cl = Thread.currentThread().getContextClassLoader();
+                if (cl == null) {
+                    cl = ClassLoader.getSystemClassLoader();
                 }
-            });
+                try {
+                    final Class<?> sfc = Class.forName(defaultName, true, cl);
+                    defaultSocketFactory = (SocketFactory) sfc.newInstance();
+                } catch (Exception e) {
+                    System.logE("Problem creating " + defaultName, e);
+                }
+            }
         }
 
         if (defaultSocketFactory == null) {
-            // Try to find in providers
-            SSLContext context = DefaultSSLContext.getContext();
+            SSLContext context;
+            try {
+                context = SSLContext.getDefault();
+            } catch (NoSuchAlgorithmException e) {
+                context = null;
+            }
             if (context != null) {
                 defaultSocketFactory = context.getSocketFactory();
             }
@@ -84,7 +82,6 @@ public abstract class SSLSocketFactory extends SocketFactory {
      * Creates a new {@code SSLSocketFactory}.
      */
     public SSLSocketFactory() {
-        super();
     }
 
     /**

@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,15 +24,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Properties;
 import java.util.StringTokenizer;
-
-import org.apache.harmony.logging.internal.nls.Messages;
+import libcore.io.IoUtils;
 
 /**
  * {@code LogManager} is used to maintain configuration properties of the
@@ -114,16 +111,13 @@ import org.apache.harmony.logging.internal.nls.Messages;
  * the property file. The root logger's level can be defined by the property
  * named as ".level".
  * <p>
- * All methods on this type can be taken as being thread safe.
+ * This class is thread safe. It is an error to synchronize on a
+ * {@code LogManager} while synchronized on a {@code Logger}.
  */
 public class LogManager {
 
-    /** The line separator of the underlying OS. */
-    private static final String lineSeparator = getPrivilegedSystemProperty("line.separator"); //$NON-NLS-1$
-
     /** The shared logging permission. */
-    private static final LoggingPermission perm = new LoggingPermission(
-            "control", null); //$NON-NLS-1$
+    private static final LoggingPermission perm = new LoggingPermission("control", null);
 
     /** The singleton instance. */
     static LogManager manager;
@@ -131,7 +125,7 @@ public class LogManager {
     /**
      * The {@code String} value of the {@link LoggingMXBean}'s ObjectName.
      */
-    public static final String LOGGING_MXBEAN_NAME = "java.util.logging:type=Logging"; //$NON-NLS-1$
+    public static final String LOGGING_MXBEAN_NAME = "java.util.logging:type=Logging";
 
     /**
      * Get the {@code LoggingMXBean} instance. this implementation always throws
@@ -140,7 +134,6 @@ public class LogManager {
      * @return the {@code LoggingMXBean} instance
      */
     public static LoggingMXBean getLoggingMXBean() {
-        // Just like in Android we don't support this in NullVM.
         throw new UnsupportedOperationException();
     }
 
@@ -155,35 +148,28 @@ public class LogManager {
 
     static {
         // init LogManager singleton instance
-        AccessController.doPrivileged(new PrivilegedAction<Object>() {
-            public Object run() {
-                String className = System
-                        .getProperty("java.util.logging.manager"); //$NON-NLS-1$
+        String className = System.getProperty("java.util.logging.manager");
+        if (className != null) {
+            manager = (LogManager) getInstanceByClass(className);
+        }
+        if (manager == null) {
+            manager = new LogManager();
+        }
 
-                if (null != className) {
-                    manager = (LogManager) getInstanceByClass(className);
-                }
-                if (null == manager) {
-                    manager = new LogManager();
-                }
+        // read configuration
+        try {
+            manager.readConfiguration();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-                // read configuration
-                try {
-                    manager.readConfiguration();
-                } catch (Exception e) {
-                    // e.printStackTrace();
-                }
+        // if global logger has been initialized, set root as its parent
+        Logger root = new Logger("", null);
+        root.setLevel(Level.INFO);
+        Logger.global.setParent(root);
 
-                // if global logger has been initialized, set root as its parent
-                Logger root = new Logger("", null); //$NON-NLS-1$
-                root.setLevel(Level.INFO);
-                Logger.global.setParent(root);
-
-                manager.addLogger(root);
-                manager.addLogger(Logger.global);
-                return null;
-            }
-        });
+        manager.addLogger(root);
+        manager.addLogger(Logger.global);
     }
 
     /**
@@ -198,42 +184,17 @@ public class LogManager {
         listeners = new PropertyChangeSupport(this);
         // add shutdown hook to ensure that the associated resource will be
         // freed when JVM exits
-        AccessController.doPrivileged(new PrivilegedAction<Void>() {
-            public Void run() {
-                Runtime.getRuntime().addShutdownHook(new Thread() {
-                    @Override
-                    public void run() {
-                        reset();
-                    }
-                });
-                return null;
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override public void run() {
+                reset();
             }
         });
     }
 
-    /*
-     * Package private utilities Returns the line separator of the underlying
-     * OS.
-     */
-    static String getSystemLineSeparator() {
-        return lineSeparator;
-    }
-
     /**
-     * Check that the caller has {@code LoggingPermission("control")} so
-     * that it is trusted to modify the configuration for logging framework. If
-     * the check passes, just return, otherwise {@code SecurityException}
-     * will be thrown.
-     *
-     * @throws SecurityException
-     *             if there is a security manager in operation and the invoker
-     *             of this method does not have the required security permission
-     *             {@code LoggingPermission("control")}
+     * Does nothing.
      */
     public void checkAccess() {
-        if (null != System.getSecurityManager()) {
-            System.getSecurityManager().checkPermission(perm);
-        }
     }
 
     /**
@@ -255,7 +216,7 @@ public class LogManager {
      */
     public synchronized boolean addLogger(Logger logger) {
         String name = logger.getName();
-        if (null != loggers.get(name)) {
+        if (loggers.get(name) != null) {
             return false;
         }
         addToFamilyTree(logger, name);
@@ -275,33 +236,27 @@ public class LogManager {
             if (parent != null) {
                 setParent(logger, parent);
                 break;
-            } else if (getProperty(parentName + ".level") != null || //$NON-NLS-1$
-                    getProperty(parentName + ".handlers") != null) { //$NON-NLS-1$
+            } else if (getProperty(parentName + ".level") != null ||
+                    getProperty(parentName + ".handlers") != null) {
                 parent = Logger.getLogger(parentName);
                 setParent(logger, parent);
                 break;
             }
         }
-        if (parent == null && null != (parent = loggers.get(""))) { //$NON-NLS-1$
+        if (parent == null && (parent = loggers.get("")) != null) {
             setParent(logger, parent);
         }
 
         // find children
         // TODO: performance can be improved here?
+        String nameDot = name + '.';
         Collection<Logger> allLoggers = loggers.values();
         for (final Logger child : allLoggers) {
             Logger oldParent = child.getParent();
-            if (parent == oldParent
-                    && (name.length() == 0 || child.getName().startsWith(
-                            name + '.'))) {
+            if (parent == oldParent && (name.length() == 0 || child.getName().startsWith(nameDot))) {
                 final Logger thisLogger = logger;
-                AccessController.doPrivileged(new PrivilegedAction<Object>() {
-                    public Object run() {
-                        child.setParent(thisLogger);
-                        return null;
-                    }
-                });
-                if (null != oldParent) {
+                child.setParent(thisLogger);
+                if (oldParent != null) {
                     // -- remove from old parent as the parent has been changed
                     oldParent.children.remove(child);
                 }
@@ -358,71 +313,53 @@ public class LogManager {
      *
      * @throws IOException
      *             if any IO related problems happened.
-     * @throws SecurityException
-     *             if security manager exists and it determines that caller does
-     *             not have the required permissions to perform this action.
      */
     public void readConfiguration() throws IOException {
         // check config class
-        String configClassName = System
-                .getProperty("java.util.logging.config.class"); //$NON-NLS-1$
-        if (null == configClassName
-                || null == getInstanceByClass(configClassName)) {
+        String configClassName = System.getProperty("java.util.logging.config.class");
+        if (configClassName == null || getInstanceByClass(configClassName) == null) {
             // if config class failed, check config file
-            String configFile = System
-                    .getProperty("java.util.logging.config.file"); //$NON-NLS-1$
+            String configFile = System.getProperty("java.util.logging.config.file");
 
-            if (null == configFile) {
+            if (configFile == null) {
                 // if cannot find configFile, use default logging.properties
-                configFile = new StringBuilder().append(
-                        System.getProperty("java.home")).append(File.separator) //$NON-NLS-1$
-                        .append("lib").append(File.separator).append( //$NON-NLS-1$
-                                "logging.properties").toString(); //$NON-NLS-1$
+                configFile = System.getProperty("java.home") + File.separator + "lib" +
+                        File.separator + "logging.properties";
             }
 
             InputStream input = null;
             try {
-                input = new BufferedInputStream(new FileInputStream(configFile));
-                readConfiguration(input);
-            } finally {
-                if (input != null) {
-                    try {
-                        input.close();
-                    } catch (Exception e) {// ignore
+                try {
+                    input = new FileInputStream(configFile);
+                } catch (IOException exception) {
+                    // fall back to using the built-in logging.properties file
+                    input = LogManager.class.getResourceAsStream("logging.properties");
+                    if (input == null) {
+                        throw exception;
                     }
                 }
+                readConfiguration(new BufferedInputStream(input));
+            } finally {
+                IoUtils.closeQuietly(input);
             }
         }
-    }
-
-    // use privilege code to get system property
-    static String getPrivilegedSystemProperty(final String key) {
-        return AccessController.doPrivileged(new PrivilegedAction<String>() {
-            public String run() {
-                return System.getProperty(key);
-            }
-        });
     }
 
     // use SystemClassLoader to load class from system classpath
     static Object getInstanceByClass(final String className) {
         try {
-            Class<?> clazz = ClassLoader.getSystemClassLoader().loadClass(
-                    className);
+            Class<?> clazz = ClassLoader.getSystemClassLoader().loadClass(className);
             return clazz.newInstance();
         } catch (Exception e) {
             try {
-                Class<?> clazz = Thread.currentThread().getContextClassLoader()
-                        .loadClass(className);
+                Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
                 return clazz.newInstance();
             } catch (Exception innerE) {
-                // logging.20=Loading class "{0}" failed
-                System.err.println(Messages.getString("logging.20", className)); //$NON-NLS-1$
+                System.err.println("Loading class '" + className + "' failed");
                 System.err.println(innerE);
                 return null;
             }
         }
-
     }
 
     // actual initialization process from a given input stream
@@ -439,9 +376,9 @@ public class LogManager {
         }
 
         // parse property "config" and apply setting
-        String configs = props.getProperty("config"); //$NON-NLS-1$
-        if (null != configs) {
-            StringTokenizer st = new StringTokenizer(configs, " "); //$NON-NLS-1$
+        String configs = props.getProperty("config");
+        if (configs != null) {
+            StringTokenizer st = new StringTokenizer(configs, " ");
             while (st.hasMoreTokens()) {
                 String configerName = st.nextToken();
                 getInstanceByClass(configerName);
@@ -451,8 +388,8 @@ public class LogManager {
         // set levels for logger
         Collection<Logger> allLoggers = loggers.values();
         for (Logger logger : allLoggers) {
-            String property = props.getProperty(logger.getName() + ".level"); //$NON-NLS-1$
-            if (null != property) {
+            String property = props.getProperty(logger.getName() + ".level");
+            if (property != null) {
                 logger.setLevel(Level.parse(property));
             }
         }
@@ -470,9 +407,6 @@ public class LogManager {
      *            the input stream
      * @throws IOException
      *             if any IO related problems happened.
-     * @throws SecurityException
-     *             if security manager exists and it determines that caller does
-     *             not have the required permissions to perform this action.
      */
     public void readConfiguration(InputStream ins) throws IOException {
         checkAccess();
@@ -481,15 +415,10 @@ public class LogManager {
 
     /**
      * Reset configuration.
-     * <p>
-     * All handlers are closed and removed from any named loggers. All loggers'
+     *
+     * <p>All handlers are closed and removed from any named loggers. All loggers'
      * level is set to null, except the root logger's level is set to
      * {@code Level.INFO}.
-     * </p>
-     *
-     * @throws SecurityException
-     *             if security manager exists and it determines that caller does
-     *             not have the required permissions to perform this action.
      */
     public synchronized void reset() {
         checkAccess();
@@ -502,8 +431,8 @@ public class LogManager {
                 logger.reset();
             }
         }
-        Logger root = loggers.get(""); //$NON-NLS-1$
-        if (null != root) {
+        Logger root = loggers.get("");
+        if (root != null) {
             root.setLevel(Level.INFO);
         }
     }
@@ -514,9 +443,6 @@ public class LogManager {
      *
      * @param l
      *            the {@code PropertyChangeListener} to be added.
-     * @throws SecurityException
-     *             if security manager exists and it determines that caller does
-     *             not have the required permissions to perform this action.
      */
     public void addPropertyChangeListener(PropertyChangeListener l) {
         if (l == null) {
@@ -532,9 +458,6 @@ public class LogManager {
      *
      * @param l
      *            the {@code PropertyChangeListener} to be removed.
-     * @throws SecurityException
-     *             if security manager exists and it determines that caller does
-     *             not have the required permissions to perform this action.
      */
     public void removePropertyChangeListener(PropertyChangeListener l) {
         checkAccess();
@@ -571,6 +494,7 @@ public class LogManager {
             setLevelRecursively(logger, null);
         }
         newParent.children.add(logger);
+        logger.updateDalvikLogHandler();
     }
 
     /**

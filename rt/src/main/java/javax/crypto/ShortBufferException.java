@@ -17,6 +17,7 @@
 
 /**
 * @author Vera Y. Petrashkova
+* @version $Revision$
 */
 
 package javax.crypto;
@@ -37,7 +38,7 @@ public class ShortBufferException extends GeneralSecurityException {
     /**
      * Creates a new instance of {@code ShortBufferException} with the
      * specified message
-     * 
+     *
      * @param msg
      *            the exception message.
      */

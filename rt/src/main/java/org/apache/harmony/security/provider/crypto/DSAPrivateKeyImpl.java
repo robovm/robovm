@@ -35,10 +35,8 @@ import java.security.spec.DSAParameterSpec;
 import java.security.spec.DSAPrivateKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
-
 import org.apache.harmony.security.PrivateKeyImpl;
 import org.apache.harmony.security.asn1.ASN1Integer;
-import org.apache.harmony.security.internal.nls.Messages;
 import org.apache.harmony.security.pkcs8.PrivateKeyInfo;
 import org.apache.harmony.security.utils.AlgNameMapper;
 import org.apache.harmony.security.x509.AlgorithmIdentifier;
@@ -65,7 +63,7 @@ public class DSAPrivateKeyImpl extends PrivateKeyImpl implements DSAPrivateKey {
      */
     public DSAPrivateKeyImpl(DSAPrivateKeySpec keySpec) {
 
-        super("DSA"); //$NON-NLS-1$
+        super("DSA");
 
         PrivateKeyInfo pki;
 
@@ -77,7 +75,7 @@ public class DSAPrivateKeyImpl extends PrivateKeyImpl implements DSAPrivateKey {
                 .toByteArray(), q.toByteArray(), g.toByteArray());
 
         AlgorithmIdentifier ai = new AlgorithmIdentifier(AlgNameMapper
-                .map2OID("DSA"), //$NON-NLS-1$
+                .map2OID("DSA"),
                 threeInts.getEncoded());
         x = keySpec.getX();
 
@@ -99,14 +97,14 @@ public class DSAPrivateKeyImpl extends PrivateKeyImpl implements DSAPrivateKey {
     public DSAPrivateKeyImpl(PKCS8EncodedKeySpec keySpec)
             throws InvalidKeySpecException {
 
-        super("DSA"); //$NON-NLS-1$
+        super("DSA");
 
         AlgorithmIdentifier ai;
         ThreeIntegerSequence threeInts = null;
 
         String alg, algName;
 
-        byte encoding[] = keySpec.getEncoded();
+        byte[] encoding = keySpec.getEncoded();
 
         PrivateKeyInfo privateKeyInfo = null;
 
@@ -114,16 +112,14 @@ public class DSAPrivateKeyImpl extends PrivateKeyImpl implements DSAPrivateKey {
             privateKeyInfo = (PrivateKeyInfo) PrivateKeyInfo.ASN1
                     .decode(encoding);
         } catch (IOException e) {
-            throw new InvalidKeySpecException(Messages.getString(
-                    "security.19A", e)); //$NON-NLS-1$
+            throw new InvalidKeySpecException("Failed to decode keySpec encoding: " + e);
         }
 
         try {
             x = new BigInteger((byte[]) ASN1Integer.getInstance().decode(
                     privateKeyInfo.getPrivateKey()));
         } catch (IOException e) {
-            throw new InvalidKeySpecException(Messages.getString(
-                    "security.19B", e)); //$NON-NLS-1$
+            throw new InvalidKeySpecException("Failed to decode parameters: " + e);
         }
 
         ai = privateKeyInfo.getAlgorithmIdentifier();
@@ -131,8 +127,7 @@ public class DSAPrivateKeyImpl extends PrivateKeyImpl implements DSAPrivateKey {
             threeInts = (ThreeIntegerSequence) ThreeIntegerSequence.ASN1
                     .decode(ai.getParameters());
         } catch (IOException e) {
-            throw new InvalidKeySpecException(Messages.getString(
-                    "security.19B", e)); //$NON-NLS-1$
+            throw new InvalidKeySpecException("Failed to decode parameters: " + e);
         }
         p = new BigInteger(threeInts.p);
         q = new BigInteger(threeInts.q);
@@ -140,7 +135,7 @@ public class DSAPrivateKeyImpl extends PrivateKeyImpl implements DSAPrivateKey {
         params = new DSAParameterSpec(p, q, g);
         setEncoding(encoding);
 
-        /* 
+        /*
          * the following code implements RI behavior
          */
         alg = ai.getAlgorithm();
@@ -155,10 +150,10 @@ public class DSAPrivateKeyImpl extends PrivateKeyImpl implements DSAPrivateKey {
     public DSAParams getParams() {
         return params;
     }
-    
+
     private void readObject(java.io.ObjectInputStream in) throws NotActiveException, IOException, ClassNotFoundException {
-    	in.defaultReadObject();
-    	params = new DSAParameterSpec(p, q, g);    	
+        in.defaultReadObject();
+        params = new DSAParameterSpec(p, q, g);
     }
 
 }

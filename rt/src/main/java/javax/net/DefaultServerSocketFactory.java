@@ -21,13 +21,11 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 
-/**
- * Default implementation of {@link javax.net.ServerSocketFactory}
- */
 final class DefaultServerSocketFactory extends ServerSocketFactory {
 
-    DefaultServerSocketFactory() {
-        super();
+    @Override
+    public ServerSocket createServerSocket() throws IOException {
+        return new ServerSocket();
     }
 
     @Override
@@ -45,5 +43,4 @@ final class DefaultServerSocketFactory extends ServerSocketFactory {
             throws IOException {
         return new ServerSocket(port, backlog, iAddress);
     }
-
 }

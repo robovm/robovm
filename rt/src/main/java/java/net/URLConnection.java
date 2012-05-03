@@ -20,26 +20,61 @@ package java.net;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import java.util.StringTokenizer;
-
-import org.apache.harmony.luni.internal.net.www.MimeTable;
-import org.apache.harmony.luni.internal.nls.Messages;
-import org.apache.harmony.luni.util.PriviAction;
 
 /**
- * Concrete implementations of the abstract {@code URLConnection} class provide
- * a communication link to a URL for exchanging data with a specific protocol
- * type. A {@code URLConnection} can only be set up after the instantiation but
- * before connecting to the remote resource.
+ * A connection to a URL for reading or writing. For HTTP connections, see
+ * {@link HttpURLConnection} for documentation of HTTP-specific features.
+ *
+ * <p>For example, to retrieve {@code
+ * ftp://mirror.csclub.uwaterloo.ca/index.html}: <pre>   {@code
+ *   URL url = new URL("ftp://mirror.csclub.uwaterloo.ca/index.html");
+ *   URLConnection urlConnection = url.openConnection();
+ *   InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+ *   try {
+ *     readStream(in);
+ *   } finally {
+ *     in.close();
+ *   }
+ * }</pre>
+ *
+ * <p>{@code URLConnection} must be configured before it has connected to the
+ * remote resource. Instances of {@code URLConnection} are not reusable: you
+ * must use a different instance for each connection to a resource.
+ *
+ * <h3>Timeouts</h3>
+ * {@code URLConnection} supports two timeouts: a {@link #setConnectTimeout
+ * connect timeout} and a {@link #setReadTimeout read timeout}. By default,
+ * operations never time out.
+ *
+ * <h3>Built-in Protocols</h3>
+ * <ul>
+ *   <li><strong>File</strong><br>
+ *      Resources from the local file system can be loaded using {@code file:}
+ *      URIs. File connections can only be used for input.
+ *   <li><strong>FTP</strong><br>
+ *      File Transfer Protocol (<a href="http://www.ietf.org/rfc/rfc959.txt">RFC 959</a>)
+ *      is supported, but with no public subclass. FTP connections can
+ *      be used for input or output but not both.
+ *      <p>By default, FTP connections will be made using {@code anonymous} as
+ *      the username and the empty string as the password. Specify alternate
+ *      usernames and passwords in the URL: {@code
+ *      ftp://username:password@host/path}.
+ *   <li><strong>HTTP and HTTPS</strong><br>
+ *      Refer to the {@link HttpURLConnection} and {@link
+ *      javax.net.ssl.HttpsURLConnection HttpsURLConnection} subclasses.
+ *   <li><strong>Jar</strong><br>
+ *      Refer to the {@link JarURLConnection} subclass.
+ * </ul>
+ *
+ * <h3>Registering Additional Protocols</h3>
+ * Use {@link URL#setURLStreamHandlerFactory} to register handlers for other
+ * protocol types.
  */
 public abstract class URLConnection {
 
@@ -105,11 +140,6 @@ public abstract class URLConnection {
     static Hashtable<String, Object> contentHandlers = new Hashtable<String, Object>();
 
     /**
-     * HashMap for storing request property key-valuelist pairs
-     */
-    private HashMap<String, List<String>> requestProperties = new HashMap<String, List<String>>();
-
-    /**
      * A hashtable that maps the filename extension (key) to a MIME-type
      * (element)
      */
@@ -128,18 +158,18 @@ public abstract class URLConnection {
     }
 
     /**
-     * Establishes the connection to the earlier configured resource. The
-     * connection can only be set up before this method has been called.
-     * 
+     * Opens a connection to the resource. This method will <strong>not</strong>
+     * reconnect to a resource after the initial connection has been closed.
+     *
      * @throws IOException
      *             if an error occurs while connecting to the resource.
      */
     public abstract void connect() throws IOException;
 
     /**
-     * Gets the option value which indicates whether user interaction is allowed
+     * Returns the option value which indicates whether user interaction is allowed
      * on this {@code URLConnection}.
-     * 
+     *
      * @return the value of the option {@code allowUserInteraction}.
      * @see #allowUserInteraction
      */
@@ -148,13 +178,13 @@ public abstract class URLConnection {
     }
 
     /**
-     * Gets an object representing the content of the resource this {@code
+     * Returns an object representing the content of the resource this {@code
      * URLConnection} is connected to. First, it attempts to get the content
      * type from the method {@code getContentType()} which looks at the response
      * header field "Content-Type". If none is found it will guess the content
      * type from the filename extension. If that fails the stream itself will be
      * used to guess the content type.
-     * 
+     *
      * @return the content representing object.
      * @throws IOException
      *             if an error occurs obtaining the content.
@@ -176,14 +206,14 @@ public abstract class URLConnection {
     }
 
     /**
-     * Gets an object representing the content of the resource this {@code
+     * Returns an object representing the content of the resource this {@code
      * URLConnection} is connected to. First, it attempts to get the content
      * type from the method {@code getContentType()} which looks at the response
      * header field "Content-Type". If none is found it will guess the content
      * type from the filename extension. If that fails the stream itself will be
      * used to guess the content type. The content type must match with one of
      * the list {@code types}.
-     * 
+     *
      * @param types
      *            the list of acceptable content types.
      * @return the content representing object or {@code null} if the content
@@ -210,19 +240,19 @@ public abstract class URLConnection {
     }
 
     /**
-     * Gets the content encoding type specified by the response header field
+     * Returns the content encoding type specified by the response header field
      * {@code content-encoding} or {@code null} if this field is not set.
-     * 
+     *
      * @return the value of the response header field {@code content-encoding}.
      */
     public String getContentEncoding() {
-        return getHeaderField("Content-Encoding"); //$NON-NLS-1$
+        return getHeaderField("Content-Encoding");
     }
 
     /**
      * Returns the specific ContentHandler that will handle the type {@code
      * contentType}.
-     * 
+     *
      * @param type
      *            The type that needs to be handled
      * @return An instance of the Content Handler
@@ -243,19 +273,14 @@ public abstract class URLConnection {
             return (ContentHandler) cHandler;
         }
 
-        // search through the package list for the right class for the Content
-        // Type
-        String packageList = AccessController
-                .doPrivileged(new PriviAction<String>(
-                        "java.content.handler.pkgs")); //$NON-NLS-1$
+        // search through the package list for the right class for the Content Type
+        String packageList = System.getProperty("java.content.handler.pkgs");
         if (packageList != null) {
-            final StringTokenizer st = new StringTokenizer(packageList, "|"); //$NON-NLS-1$
-            while (st.countTokens() > 0) {
+            for (String packageName : packageList.split("\\|")) {
+                String className = packageName + "." + typeString;
                 try {
-                    Class<?> cl = Class.forName(st.nextToken() + "." //$NON-NLS-1$
-                            + typeString, true, ClassLoader
-                            .getSystemClassLoader());
-                    cHandler = cl.newInstance();
+                    Class<?> klass = Class.forName(className, true, ClassLoader.getSystemClassLoader());
+                    cHandler = klass.newInstance();
                 } catch (ClassNotFoundException e) {
                 } catch (IllegalAccessException e) {
                 } catch (InstantiationException e) {
@@ -264,21 +289,14 @@ public abstract class URLConnection {
         }
 
         if (cHandler == null) {
-            cHandler = AccessController
-                    .doPrivileged(new PrivilegedAction<Object>() {
-                        public Object run() {
-                            try {
-                                // Try looking up AWT image content handlers
-                                String className = "org.apache.harmony.awt.www.content." //$NON-NLS-1$
-                                        + typeString;
-                                return Class.forName(className).newInstance();
-                            } catch (ClassNotFoundException e) {
-                            } catch (IllegalAccessException e) {
-                            } catch (InstantiationException e) {
-                            }
-                            return null;
-                        }
-                    });
+            try {
+                // Try looking up AWT image content handlers
+                String className = "org.apache.harmony.awt.www.content." + typeString;
+                cHandler = Class.forName(className).newInstance();
+            } catch (ClassNotFoundException e) {
+            } catch (IllegalAccessException e) {
+            } catch (InstantiationException e) {
+            }
         }
         if (cHandler != null) {
             if (!(cHandler instanceof ContentHandler)) {
@@ -293,39 +311,39 @@ public abstract class URLConnection {
     }
 
     /**
-     * Gets the content length in bytes specified by the response header field
+     * Returns the content length in bytes specified by the response header field
      * {@code content-length} or {@code -1} if this field is not set.
-     * 
+     *
      * @return the value of the response header field {@code content-length}.
      */
     public int getContentLength() {
-        return getHeaderFieldInt("Content-Length", -1); //$NON-NLS-1$
+        return getHeaderFieldInt("Content-Length", -1);
     }
 
     /**
-     * Gets the MIME-type of the content specified by the response header field
+     * Returns the MIME-type of the content specified by the response header field
      * {@code content-type} or {@code null} if type is unknown.
-     * 
+     *
      * @return the value of the response header field {@code content-type}.
      */
     public String getContentType() {
-        return getHeaderField("Content-Type"); //$NON-NLS-1$
+        return getHeaderField("Content-Type");
     }
 
     /**
-     * Gets the timestamp when this response has been sent as a date in
+     * Returns the timestamp when this response has been sent as a date in
      * milliseconds since January 1, 1970 GMT or {@code 0} if this timestamp is
      * unknown.
-     * 
+     *
      * @return the sending timestamp of the current response.
      */
     public long getDate() {
-        return getHeaderFieldDate("Date", 0); //$NON-NLS-1$
+        return getHeaderFieldDate("Date", 0);
     }
 
     /**
-     * Gets the default setting whether this connection allows user interaction.
-     * 
+     * Returns the default setting whether this connection allows user interaction.
+     *
      * @return the value of the default setting {@code
      *         defaultAllowUserInteraction}.
      * @see #allowUserInteraction
@@ -335,13 +353,8 @@ public abstract class URLConnection {
     }
 
     /**
-     * Gets the default value for the specified request {@code field} or {@code
-     * null} if the field could not be found. The current implementation of this
-     * method returns always {@code null}.
-     * 
-     * @param field
-     *            the request field whose default value shall be returned.
-     * @return the default value for the given field.
+     * Returns null.
+     *
      * @deprecated Use {@link #getRequestProperty}
      */
     @Deprecated
@@ -350,8 +363,8 @@ public abstract class URLConnection {
     }
 
     /**
-     * Gets the default setting whether this connection allows using caches.
-     * 
+     * Returns the default setting whether this connection allows using caches.
+     *
      * @return the value of the default setting {@code defaultUseCaches}.
      * @see #useCaches
      */
@@ -360,9 +373,9 @@ public abstract class URLConnection {
     }
 
     /**
-     * Gets the value of the option {@code doInput} which specifies whether this
+     * Returns the value of the option {@code doInput} which specifies whether this
      * connection allows to receive data.
-     * 
+     *
      * @return {@code true} if this connection allows input, {@code false}
      *         otherwise.
      * @see #doInput
@@ -372,9 +385,9 @@ public abstract class URLConnection {
     }
 
     /**
-     * Gets the value of the option {@code doOutput} which specifies whether
+     * Returns the value of the option {@code doOutput} which specifies whether
      * this connection allows to send data.
-     * 
+     *
      * @return {@code true} if this connection allows output, {@code false}
      *         otherwise.
      * @see #doOutput
@@ -384,37 +397,38 @@ public abstract class URLConnection {
     }
 
     /**
-     * Gets the timestamp when this response will be expired in milliseconds
+     * Returns the timestamp when this response will be expired in milliseconds
      * since January 1, 1970 GMT or {@code 0} if this timestamp is unknown.
-     * 
+     *
      * @return the value of the response header field {@code expires}.
      */
     public long getExpiration() {
-        return getHeaderFieldDate("Expires", 0); //$NON-NLS-1$
+        return getHeaderFieldDate("Expires", 0);
     }
 
     /**
-     * Gets the table which is used by all {@code URLConnection} instances to
+     * Returns the table which is used by all {@code URLConnection} instances to
      * determine the MIME-type according to a file extension.
-     * 
+     *
      * @return the file name map to determine the MIME-type.
      */
     public static FileNameMap getFileNameMap() {
-        // Must use lazy initialization or there is a bootstrap problem
-        // trying to load the MimeTable resource from a .jar before
-        // JarURLConnection has finished initialization.
         synchronized (URLConnection.class) {
             if (fileNameMap == null) {
-                fileNameMap = new MimeTable();
+                fileNameMap = new DefaultFileNameMap();
             }
             return fileNameMap;
         }
     }
 
     /**
-     * Gets the header value at the field position {@code pos} or {@code null}
-     * if the header has fewer than {@code pos} fields. The current
+     * Returns the header value at the field position {@code pos} or {@code null}
+     * if the header has fewer than {@code pos} fields. The base
      * implementation of this method returns always {@code null}.
+     *
+     * <p>Some implementations (notably {@code HttpURLConnection}) include a mapping
+     * for the null key; in HTTP's case, this maps to the HTTP status line and is
+     * treated as being at position 0 when indexing into the header fields.
      *
      * @param pos
      *            the field position of the response header.
@@ -425,10 +439,14 @@ public abstract class URLConnection {
     }
 
     /**
-     * Gets an unchangeable map of the response-header fields and values. The
+     * Returns an unmodifiable map of the response-header fields and values. The
      * response-header field names are the key values of the map. The map values
      * are lists of header field values associated with a particular key name.
-     * 
+     *
+     * <p>Some implementations (notably {@code HttpURLConnection}) include a mapping
+     * for the null key; in HTTP's case, this maps to the HTTP status line and is
+     * treated as being at position 0 when indexing into the header fields.
+     *
      * @return the response-header representing generic map.
      * @since 1.4
      */
@@ -437,29 +455,28 @@ public abstract class URLConnection {
     }
 
     /**
-     * Gets an unchangeable map of general request properties used by this
+     * Returns an unmodifiable map of general request properties used by this
      * connection. The request property names are the key values of the map. The
      * map values are lists of property values of the corresponding key name.
-     * 
+     *
      * @return the request-property representing generic map.
      * @since 1.4
      */
     public Map<String, List<String>> getRequestProperties() {
-        if (connected) {
-            throw new IllegalStateException(Messages.getString("luni.5E")); //$NON-NLS-1$
-        }
+        checkNotConnected();
+        return Collections.emptyMap();
+    }
 
-        HashMap<String, List<String>> map = new HashMap<String, List<String>>();
-        for (String key : requestProperties.keySet()) {
-            map.put(key, Collections.unmodifiableList(requestProperties.get(key)));
+    private void checkNotConnected() {
+        if (connected) {
+            throw new IllegalStateException("Already connected");
         }
-        return Collections.unmodifiableMap(map);
     }
 
     /**
      * Adds the given property to the request header. Existing properties with
      * the same name will not be overwritten by this method.
-     * 
+     *
      * @param field
      *            the request property field name to add.
      * @param newValue
@@ -471,28 +488,21 @@ public abstract class URLConnection {
      * @since 1.4
      */
     public void addRequestProperty(String field, String newValue) {
-        if (connected) {
-            throw new IllegalStateException(Messages.getString("luni.5E")); //$NON-NLS-1$
-        }
+        checkNotConnected();
         if (field == null) {
-            throw new NullPointerException(Messages.getString("luni.95")); //$NON-NLS-1$
-        }
-
-        List<String> valuesList = requestProperties.get(field);
-        if (valuesList == null) {
-            valuesList = new ArrayList<String>();
-            valuesList.add(0, newValue);
-            requestProperties.put(field, valuesList);
-        } else {
-            valuesList.add(0, newValue);
+            throw new NullPointerException("field == null");
         }
     }
 
     /**
-     * Gets the value of the header field specified by {@code key} or {@code
-     * null} if there is no field with this name. The current implementation of
+     * Returns the value of the header field specified by {@code key} or {@code
+     * null} if there is no field with this name. The base implementation of
      * this method returns always {@code null}.
-     * 
+     *
+     * <p>Some implementations (notably {@code HttpURLConnection}) include a mapping
+     * for the null key; in HTTP's case, this maps to the HTTP status line and is
+     * treated as being at position 0 when indexing into the header fields.
+     *
      * @param key
      *            the name of the header field.
      * @return the value of the header field.
@@ -502,10 +512,10 @@ public abstract class URLConnection {
     }
 
     /**
-     * Gets the specified header value as a date in milliseconds since January
+     * Returns the specified header value as a date in milliseconds since January
      * 1, 1970 GMT. Returns the {@code defaultValue} if no such header field
      * could be found.
-     * 
+     *
      * @param field
      *            the header field name whose value is needed.
      * @param defaultValue
@@ -520,17 +530,17 @@ public abstract class URLConnection {
             return defaultValue;
         }
         try {
-            return Date.parse(date);
+            return Date.parse(date); // TODO: use HttpDate.parse()
         } catch (Exception e) {
             return defaultValue;
         }
     }
 
     /**
-     * Gets the specified header value as a number. Returns the {@code
+     * Returns the specified header value as a number. Returns the {@code
      * defaultValue} if no such header field could be found or the value could
      * not be parsed as an {@code Integer}.
-     * 
+     *
      * @param field
      *            the header field name whose value is needed.
      * @param defaultValue
@@ -546,10 +556,14 @@ public abstract class URLConnection {
     }
 
     /**
-     * Gets the name of the header field at the given position {@code posn} or
-     * {@code null} if there are fewer than {@code posn} fields. The current
+     * Returns the name of the header field at the given position {@code posn} or
+     * {@code null} if there are fewer than {@code posn} fields. The base
      * implementation of this method returns always {@code null}.
-     * 
+     *
+     * <p>Some implementations (notably {@code HttpURLConnection}) include a mapping
+     * for the null key; in HTTP's case, this maps to the HTTP status line and is
+     * treated as being at position 0 when indexing into the header fields.
+     *
      * @param posn
      *            the position of the header field which has to be returned.
      * @return the header field name at the given position.
@@ -559,10 +573,10 @@ public abstract class URLConnection {
     }
 
     /**
-     * Gets the point of time since when the data must be modified to be
+     * Returns the point of time since when the data must be modified to be
      * transmitted. Some protocols transmit data only if it has been modified
      * more recently than a particular time.
-     * 
+     *
      * @return the time in milliseconds since January 1, 1970 GMT.
      * @see #ifModifiedSince
      */
@@ -571,52 +585,52 @@ public abstract class URLConnection {
     }
 
     /**
-     * Gets an {@code InputStream} for reading data from the resource pointed by
+     * Returns an {@code InputStream} for reading data from the resource pointed by
      * this {@code URLConnection}. It throws an UnknownServiceException by
      * default. This method must be overridden by its subclasses.
-     * 
+     *
      * @return the InputStream to read data from.
      * @throws IOException
      *             if no InputStream could be created.
      */
     public InputStream getInputStream() throws IOException {
-        throw new UnknownServiceException(Messages.getString("luni.96")); //$NON-NLS-1$
+        throw new UnknownServiceException("Does not support writing to the input stream");
     }
 
     /**
-     * Gets the value of the response header field {@code last-modified} or
+     * Returns the value of the response header field {@code last-modified} or
      * {@code 0} if this value is not set.
-     * 
+     *
      * @return the value of the {@code last-modified} header field.
      */
     public long getLastModified() {
         if (lastModified != -1) {
             return lastModified;
         }
-        return lastModified = getHeaderFieldDate("Last-Modified", 0); //$NON-NLS-1$
+        return lastModified = getHeaderFieldDate("Last-Modified", 0);
     }
 
     /**
-     * Gets an {@code OutputStream} for writing data to this {@code
+     * Returns an {@code OutputStream} for writing data to this {@code
      * URLConnection}. It throws an {@code UnknownServiceException} by default.
      * This method must be overridden by its subclasses.
-     * 
+     *
      * @return the OutputStream to write data.
      * @throws IOException
      *             if no OutputStream could be created.
      */
     public OutputStream getOutputStream() throws IOException {
-        throw new UnknownServiceException(Messages.getString("luni.97")); //$NON-NLS-1$
+        throw new UnknownServiceException("Does not support writing to the output stream");
     }
 
     /**
-     * Gets a {@code Permission} object representing all needed permissions to
+     * Returns a {@code Permission} object representing all needed permissions to
      * open this connection. The returned permission object depends on the state
      * of the connection and will be {@code null} if no permissions are
      * necessary. By default, this method returns {@code AllPermission}.
      * Subclasses should overwrite this method to return an appropriate
      * permission object.
-     * 
+     *
      * @return the permission object representing the needed permissions to open
      *         this connection.
      * @throws IOException
@@ -627,9 +641,10 @@ public abstract class URLConnection {
     }
 
     /**
-     * Gets the value of the request header property specified by {code field}
-     * or {@code null} if there is no field with this name.
-     * 
+     * Returns the value of the request header property specified by {code field}
+     * or {@code null} if there is no field with this name. The base
+     * implementation of this method returns always {@code null}.
+     *
      * @param field
      *            the name of the request header property.
      * @return the value of the property.
@@ -637,19 +652,13 @@ public abstract class URLConnection {
      *             if the connection has been already established.
      */
     public String getRequestProperty(String field) {
-        if (connected) {
-            throw new IllegalStateException(Messages.getString("luni.5E")); //$NON-NLS-1$
-        }
-        List<String> valuesList = requestProperties.get(field);
-        if (valuesList == null) {
-            return null;
-        }
-        return valuesList.get(0);
+        checkNotConnected();
+        return null;
     }
 
     /**
-     * Gets the URL represented by this {@code URLConnection}.
-     * 
+     * Returns the URL represented by this {@code URLConnection}.
+     *
      * @return the URL of this connection.
      */
     public URL getURL() {
@@ -657,9 +666,9 @@ public abstract class URLConnection {
     }
 
     /**
-     * Gets the value of the flag which specifies whether this {@code
+     * Returns the value of the flag which specifies whether this {@code
      * URLConnection} allows to use caches.
-     * 
+     *
      * @return {@code true} if using caches is allowed, {@code false} otherwise.
      */
     public boolean getUseCaches() {
@@ -670,7 +679,7 @@ public abstract class URLConnection {
      * Determines the MIME-type of the given resource {@code url} by resolving
      * the filename extension with the internal FileNameMap. Any fragment
      * identifier is removed before processing.
-     * 
+     *
      * @param url
      *            the URL with the filename to get the MIME type.
      * @return the guessed content type or {@code null} if the type could not be
@@ -683,7 +692,7 @@ public abstract class URLConnection {
     /**
      * Determines the MIME-type of the resource represented by the input stream
      * {@code is} by reading its first few characters.
-     * 
+     *
      * @param is
      *            the resource representing input stream to determine the
      *            content type.
@@ -692,10 +701,7 @@ public abstract class URLConnection {
      * @throws IOException
      *             if an I/O error occurs while reading from the input stream.
      */
-    @SuppressWarnings("nls")
-    public static String guessContentTypeFromStream(InputStream is)
-            throws IOException {
-
+    public static String guessContentTypeFromStream(InputStream is) throws IOException {
         if (!is.markSupported()) {
             return null;
         }
@@ -705,14 +711,13 @@ public abstract class URLConnection {
         int length = is.read(bytes);
         is.reset();
 
-        // If there is no data from the input stream, can not determine
-        // content-type
+        // If there is no data from the input stream, we can't determine content type.
         if (length == -1) {
             return null;
         }
 
         // Check for Unicode BOM encoding indicators
-        String encoding = "ASCII";
+        String encoding = "US-ASCII";
         int start = 0;
         if (length > 1) {
             if ((bytes[0] == (byte) 0xFF) && (bytes[1] == (byte) 0xFE)) {
@@ -761,7 +766,7 @@ public abstract class URLConnection {
         }
 
         // Check text types
-        String textHeader = header.trim().toUpperCase();
+        String textHeader = header.trim().toUpperCase(Locale.US);
         if (textHeader.startsWith("<!DOCTYPE HTML") ||
                 textHeader.startsWith("<HTML") ||
                 textHeader.startsWith("<HEAD") ||
@@ -781,28 +786,28 @@ public abstract class URLConnection {
     /**
      * Performs any necessary string parsing on the input string such as
      * converting non-alphanumeric character into underscore.
-     * 
+     *
      * @param typeString
      *            the parsed string
      * @return the string to be parsed
      */
     private String parseTypeString(String typeString) {
-        StringBuilder typeStringBuffer = new StringBuilder(typeString);
-        for (int i = 0; i < typeStringBuffer.length(); i++) {
+        StringBuilder result = new StringBuilder(typeString);
+        for (int i = 0; i < result.length(); i++) {
             // if non-alphanumeric, replace it with '_'
-            char c = typeStringBuffer.charAt(i);
+            char c = result.charAt(i);
             if (!(Character.isLetter(c) || Character.isDigit(c) || c == '.')) {
-                typeStringBuffer.setCharAt(i, '_');
+                result.setCharAt(i, '_');
             }
         }
-        return typeStringBuffer.toString();
+        return result.toString();
     }
 
     /**
      * Sets the flag indicating whether this connection allows user interaction
      * or not. This method can only be called prior to the connection
      * establishment.
-     * 
+     *
      * @param newValue
      *            the value of the flag to be set.
      * @throws IllegalStateException
@@ -811,31 +816,22 @@ public abstract class URLConnection {
      * @see #allowUserInteraction
      */
     public void setAllowUserInteraction(boolean newValue) {
-        if (connected) {
-            throw new IllegalStateException(Messages.getString("luni.5E")); //$NON-NLS-1$
-        }
+        checkNotConnected();
         this.allowUserInteraction = newValue;
     }
 
     /**
      * Sets the internally used content handler factory. The content factory can
-     * only be set if it is allowed by the security manager and only once during
-     * the lifetime of the application.
-     * 
+     * only be set once during the lifetime of the application.
+     *
      * @param contentFactory
      *            the content factory to be set.
      * @throws Error
-     *             if the security manager does not allow to set the content
-     *             factory or it has been already set earlier ago.
+     *             if the factory has been already set.
      */
-    public static synchronized void setContentHandlerFactory(
-            ContentHandlerFactory contentFactory) {
+    public static synchronized void setContentHandlerFactory(ContentHandlerFactory contentFactory) {
         if (contentHandlerFactory != null) {
-            throw new Error(Messages.getString("luni.98")); //$NON-NLS-1$
-        }
-        SecurityManager sManager = System.getSecurityManager();
-        if (sManager != null) {
-            sManager.checkSetFactory();
+            throw new Error("Factory already set");
         }
         contentHandlerFactory = contentFactory;
     }
@@ -844,7 +840,7 @@ public abstract class URLConnection {
      * Sets the default value for the flag indicating whether this connection
      * allows user interaction or not. Existing {@code URLConnection}s are
      * unaffected.
-     * 
+     *
      * @param allows
      *            the default value of the flag to be used for new connections.
      * @see #defaultAllowUserInteraction
@@ -855,16 +851,9 @@ public abstract class URLConnection {
     }
 
     /**
-     * Sets the default value of the specified request header field. This value
-     * will be used for the specific field of every newly created connection.
-     * The current implementation of this method does nothing.
-     * 
-     * @param field
-     *            the request header field to be set.
-     * @param value
-     *            the default value to be used.
-     * @deprecated Use {@link #setRequestProperty} of an existing {@code
-     *             URLConnection} instance.
+     * Does nothing.
+     *
+     * @deprecated Use {@link URLConnection#setRequestProperty(String, String)}.
      */
     @Deprecated
     public static void setDefaultRequestProperty(String field, String value) {
@@ -873,23 +862,19 @@ public abstract class URLConnection {
     /**
      * Sets the default value for the flag indicating whether this connection
      * allows to use caches. Existing {@code URLConnection}s are unaffected.
-     * 
+     *
      * @param newValue
      *            the default value of the flag to be used for new connections.
-     * @see #defaultUseCaches
      * @see #useCaches
      */
     public void setDefaultUseCaches(boolean newValue) {
-        if (connected) {
-            throw new IllegalAccessError(Messages.getString("luni.5E")); //$NON-NLS-1$
-        }
         defaultUseCaches = newValue;
     }
 
     /**
      * Sets the flag indicating whether this {@code URLConnection} allows input.
      * It cannot be set after the connection is established.
-     * 
+     *
      * @param newValue
      *            the new value for the flag to be set.
      * @throws IllegalAccessError
@@ -898,16 +883,14 @@ public abstract class URLConnection {
      * @see #doInput
      */
     public void setDoInput(boolean newValue) {
-        if (connected) {
-            throw new IllegalStateException(Messages.getString("luni.5E")); //$NON-NLS-1$
-        }
+        checkNotConnected();
         this.doInput = newValue;
     }
 
     /**
      * Sets the flag indicating whether this {@code URLConnection} allows
      * output. It cannot be set after the connection is established.
-     * 
+     *
      * @param newValue
      *            the new value for the flag to be set.
      * @throws IllegalAccessError
@@ -916,24 +899,18 @@ public abstract class URLConnection {
      * @see #doOutput
      */
     public void setDoOutput(boolean newValue) {
-        if (connected) {
-            throw new IllegalStateException(Messages.getString("luni.5E")); //$NON-NLS-1$
-        }
+        checkNotConnected();
         this.doOutput = newValue;
     }
 
     /**
      * Sets the internal map which is used by all {@code URLConnection}
      * instances to determine the MIME-type according to a filename extension.
-     * 
+     *
      * @param map
      *            the MIME table to be set.
      */
     public static void setFileNameMap(FileNameMap map) {
-        SecurityManager manager = System.getSecurityManager();
-        if (manager != null) {
-            manager.checkSetFactory();
-        }
         synchronized (URLConnection.class) {
             fileNameMap = map;
         }
@@ -944,7 +921,7 @@ public abstract class URLConnection {
      * transmitted. Some protocols transmit data only if it has been modified
      * more recently than a particular time. The data will be transmitted
      * regardless of its timestamp if this option is set to {@code 0}.
-     * 
+     *
      * @param newValue
      *            the time in milliseconds since January 1, 1970 GMT.
      * @throws IllegalStateException
@@ -952,9 +929,7 @@ public abstract class URLConnection {
      * @see #ifModifiedSince
      */
     public void setIfModifiedSince(long newValue) {
-        if (connected) {
-            throw new IllegalStateException(Messages.getString("luni.5E")); //$NON-NLS-1$
-        }
+        checkNotConnected();
         this.ifModifiedSince = newValue;
     }
 
@@ -962,7 +937,7 @@ public abstract class URLConnection {
      * Sets the value of the specified request header field. The value will only
      * be used by the current {@code URLConnection} instance. This method can
      * only be called before the connection is established.
-     * 
+     *
      * @param field
      *            the request header field to be set.
      * @param newValue
@@ -973,23 +948,17 @@ public abstract class URLConnection {
      *             if the parameter {@code field} is {@code null}.
      */
     public void setRequestProperty(String field, String newValue) {
-        if (connected) {
-            throw new IllegalStateException(Messages.getString("luni.5E")); //$NON-NLS-1$
-        }
+        checkNotConnected();
         if (field == null) {
-            throw new NullPointerException(Messages.getString("luni.95")); //$NON-NLS-1$
+            throw new NullPointerException("field == null");
         }
-
-        List<String> valuesList = new ArrayList<String>();
-        valuesList.add(newValue);
-        requestProperties.put(field, valuesList);
     }
 
     /**
      * Sets the flag indicating whether this connection allows to use caches or
      * not. This method can only be called prior to the connection
      * establishment.
-     * 
+     *
      * @param newValue
      *            the value of the flag to be set.
      * @throws IllegalStateException
@@ -998,9 +967,7 @@ public abstract class URLConnection {
      * @see #useCaches
      */
     public void setUseCaches(boolean newValue) {
-        if (connected) {
-            throw new IllegalStateException(Messages.getString("luni.5E")); //$NON-NLS-1$
-        }
+        checkNotConnected();
         this.useCaches = newValue;
     }
 
@@ -1010,22 +977,22 @@ public abstract class URLConnection {
      * SocketTimeoutException} is thrown if the connection could not be
      * established in this time. Default is {@code 0} which stands for an
      * infinite timeout.
-     * 
+     *
      * @param timeout
      *            the connecting timeout in milliseconds.
      * @throws IllegalArgumentException
      *             if the parameter {@code timeout} is less than zero.
      */
     public void setConnectTimeout(int timeout) {
-        if (0 > timeout) {
-            throw new IllegalArgumentException(Messages.getString("luni.5B")); //$NON-NLS-1$
+        if (timeout < 0) {
+            throw new IllegalArgumentException("timeout < 0");
         }
         this.connectTimeout = timeout;
     }
 
     /**
-     * Gets the configured connecting timeout.
-     * 
+     * Returns the configured connecting timeout.
+     *
      * @return the connecting timeout value in milliseconds.
      */
     public int getConnectTimeout() {
@@ -1038,23 +1005,23 @@ public abstract class URLConnection {
      * SocketTimeoutException} is thrown if the connection could not be
      * established in this time. Default is {@code 0} which stands for an
      * infinite timeout.
-     * 
+     *
      * @param timeout
      *            the reading timeout in milliseconds.
      * @throws IllegalArgumentException
      *             if the parameter {@code timeout} is less than zero.
      */
     public void setReadTimeout(int timeout) {
-        if (0 > timeout) {
-            throw new IllegalArgumentException(Messages.getString("luni.5B")); //$NON-NLS-1$
+        if (timeout < 0) {
+            throw new IllegalArgumentException("timeout < 0");
         }
         this.readTimeout = timeout;
     }
 
     /**
-     * Gets the configured timeout for reading from the input stream of an
+     * Returns the configured timeout for reading from the input stream of an
      * established connection to the resource.
-     * 
+     *
      * @return the reading timeout value in milliseconds.
      */
     public int getReadTimeout() {
@@ -1064,22 +1031,15 @@ public abstract class URLConnection {
     /**
      * Returns the string representation containing the name of this class and
      * the URL.
-     * 
+     *
      * @return the string representation of this {@code URLConnection} instance.
      */
     @Override
     public String toString() {
-        return getClass().getName() + ":" + url.toString(); //$NON-NLS-1$
+        return getClass().getName() + ":" + url.toString();
     }
 
     static class DefaultContentHandler extends java.net.ContentHandler {
-
-        /**
-         * @param u
-         *            the URL connection
-         * 
-         * @see java.net.ContentHandler#getContent(java.net.URLConnection)
-         */
         @Override
         public Object getContent(URLConnection u) throws IOException {
             return u.getInputStream();

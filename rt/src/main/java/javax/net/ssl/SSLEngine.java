@@ -34,7 +34,6 @@ public abstract class SSLEngine {
      * Creates a new {@code SSLEngine} instance.
      */
     protected SSLEngine() {
-        super();
         peerHost = null;
         peerPort = -1;
     }
@@ -49,7 +48,6 @@ public abstract class SSLEngine {
      *            the port of the host.
      */
     protected SSLEngine(String host, int port) {
-        super();
         this.peerHost = host;
         this.peerPort = port;
     }
@@ -293,10 +291,6 @@ public abstract class SSLEngine {
      *            {@code false} if no authentication is needed.
      */
     public abstract void setWantClientAuth(boolean want);
-    
-    public abstract void setSSLParameters(SSLParameters sslP);
-
-    public abstract SSLParameters getSSLParameters();
 
     /**
      * Decodes the incoming network data buffer into application data buffers.
@@ -328,8 +322,10 @@ public abstract class SSLEngine {
      *             if the engine does not have all the needed settings (e.g.
      *             client/server mode not set).
      */
-    public abstract SSLEngineResult unwrap(ByteBuffer src, ByteBuffer[] dsts, int offset, int length)
-            throws SSLException;
+    public abstract SSLEngineResult unwrap(ByteBuffer src,
+                                           ByteBuffer[] dsts,
+                                           int offset,
+                                           int length) throws SSLException;
 
     /**
      * Encodes the outgoing application data buffers into the network data
@@ -367,7 +363,7 @@ public abstract class SSLEngine {
      * Decodes the incoming network data buffer into the application data
      * buffer. If a handshake has not been started yet, it will automatically be
      * started.
-     * 
+     *
      * @param src
      *            the buffer with incoming network data
      * @param dst
@@ -419,7 +415,7 @@ public abstract class SSLEngine {
      * Encodes the outgoing application data buffers into the network data
      * buffer. If a handshake has not been started yet, it will automatically be
      * started.
-     * 
+     *
      * @param srcs
      *            the array of source buffers of outgoing application data.
      * @param dst
@@ -446,7 +442,7 @@ public abstract class SSLEngine {
      * Encodes the outgoing application data buffer into the network data
      * buffer. If a handshake has not been started yet, it will automatically be
      * started.
-     * 
+     *
      * @param src
      *            the source buffers of outgoing application data.
      * @param dst
@@ -464,5 +460,47 @@ public abstract class SSLEngine {
      */
     public SSLEngineResult wrap(ByteBuffer src, ByteBuffer dst) throws SSLException {
         return wrap(new ByteBuffer[] { src }, 0, 1, dst);
+    }
+
+    /**
+     * Returns a new SSLParameters based on this SSLSocket's current
+     * cipher suites, protocols, and client authentication settings.
+     *
+     * @since 1.6
+     */
+    public SSLParameters getSSLParameters() {
+        SSLParameters p = new SSLParameters();
+        p.setCipherSuites(getEnabledCipherSuites());
+        p.setProtocols(getEnabledProtocols());
+        p.setNeedClientAuth(getNeedClientAuth());
+        p.setWantClientAuth(getWantClientAuth());
+        return p;
+    }
+
+    /**
+     * Sets various SSL handshake parameters based on the SSLParameter
+     * argument. Specifically, sets the SSLEngine's enabled cipher
+     * suites if the parameter's cipher suites are non-null. Similarly
+     * sets the enabled protocols. If the parameters specify the want
+     * or need for client authentication, those requirements are set
+     * on the SSLEngine, otherwise both are set to false.
+     * @since 1.6
+     */
+    public void setSSLParameters(SSLParameters p) {
+        String[] cipherSuites = p.getCipherSuites();
+        if (cipherSuites != null) {
+            setEnabledCipherSuites(cipherSuites);
+        }
+        String[] protocols = p.getProtocols();
+        if (protocols != null) {
+            setEnabledProtocols(protocols);
+        }
+        if (p.getNeedClientAuth()) {
+            setNeedClientAuth(true);
+        } else if (p.getWantClientAuth()) {
+            setWantClientAuth(true);
+        } else {
+            setWantClientAuth(false);
+        }
     }
 }

@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,7 +17,7 @@
 
 package java.text;
 
-import org.apache.harmony.text.internal.nls.Messages;
+import libcore.icu.RuleBasedCollatorICU;
 
 /**
  * A concrete implementation class for {@code Collation}.
@@ -30,50 +30,50 @@ import org.apache.harmony.text.internal.nls.Messages;
  * <li> All non-mentioned Unicode characters are at the end of the collation
  * order.</li>
  * <li> If a character is not located in the {@code RuleBasedCollator}, the
- * default Unicode Collation Algorithm (UCA) rulebased table is automatically
+ * default Unicode Collation Algorithm (UCA) rule-based table is automatically
  * searched as a backup.</li>
  * </ol>
  * <p>
  * The collation table is composed of a list of collation rules, where each rule
  * is of three forms:
  * <blockquote>
- *
  * <pre>
- * <modifier>
- * <relation> <text-argument>
- * <reset> <text-argument>
+ * &lt;modifier&gt;
+ * &lt;relation&gt; &lt;text-argument&gt;
+ * &lt;reset&gt; &lt;text-argument&gt;
  * </pre>
- *
  * </blockquote>
  * <p>
  * The rule elements are defined as follows:
  * <ul type="disc">
- * <li><strong>Text-Argument</strong>: A text-argument is any sequence of
- * characters, excluding special characters (that is, common whitespace
- * characters [0009-000D, 0020] and rule syntax characters [0021-002F,
- * 003A-0040, 005B-0060, 007B-007E]). If those characters are desired, you can
- * put them in single quotes (for example, use '&' for ampersand). Note that
- * unquoted white space characters are ignored; for example, {@code b c} is
- * treated as {@code bc}.</li>
  * <li><strong>Modifier</strong>: There is a single modifier which is used to
- * specify that all accents (secondary differences) are backwards.
- * <p>
- * '@' : Indicates that accents are sorted backwards, as in French.
+ * specify that all accents (secondary differences) are backwards:
+ * <ul type=square>
+ * <li>'@' : Indicates that accents are sorted backwards, as in French.
+ * </ul>
  * </li>
  * <li><strong>Relation</strong>: The relations are the following:
  * <ul type=square>
- * <li>'<' : Greater, as a letter difference (primary)
+ * <li>'&lt;' : Greater, as a letter difference (primary)
  * <li>';' : Greater, as an accent difference (secondary)
  * <li>',' : Greater, as a case difference (tertiary)
  * <li>'=' : Equal
  * </ul>
  * </li>
+ * <li><strong>Text-Argument</strong>: A text-argument is any sequence of
+ * characters, excluding special characters (that is, common whitespace
+ * characters [0009-000D, 0020] and rule syntax characters [0021-002F,
+ * 003A-0040, 005B-0060, 007B-007E]). If those characters are desired, you can
+ * put them in single quotes (for example, use '&amp;' for ampersand). Note that
+ * unquoted white space characters are ignored; for example, {@code b c} is
+ * treated as {@code bc}.</li>
  * <li><strong>Reset</strong>: There is a single reset which is used primarily
  * for contractions and expansions, but which can also be used to add a
- * modification at the end of a set of rules.
- * <p>
- * '&' : Indicates that the next rule follows the position to where the reset
+ * modification at the end of a set of rules:
+ * <ul type=square>
+ * <li>'&amp;' : Indicates that the next rule follows the position to where the reset
  * text-argument would be sorted.
+ * </ul>
  * </li>
  * </ul>
  * <p>
@@ -160,7 +160,6 @@ import org.apache.harmony.text.internal.nls.Messages;
  *
  * <pre>
  * String Simple = "< a < b < c < d";
- *
  * RuleBasedCollator mySimple = new RuleBasedCollator(Simple);
  * </pre>
  *
@@ -175,7 +174,6 @@ import org.apache.harmony.text.internal.nls.Messages;
  *         + "< s,S< t,T< u,U< v,V< w,W< x,X< y,Y< z,Z"
  *         + "< \u00E5=a\u030A,\u00C5=A\u030A"
  *         + ";aa,AA< \u00E6,\u00C6< \u00F8,\u00D8";
- *
  * RuleBasedCollator myNorwegian = new RuleBasedCollator(Norwegian);
  * </pre>
  *
@@ -261,8 +259,7 @@ import org.apache.harmony.text.internal.nls.Messages;
  * </blockquote>
  */
 public class RuleBasedCollator extends Collator {
-
-    RuleBasedCollator(com.ibm.icu.text.Collator wrapper) {
+    RuleBasedCollator(RuleBasedCollatorICU wrapper) {
         super(wrapper);
     }
 
@@ -273,15 +270,14 @@ public class RuleBasedCollator extends Collator {
      * the result of a former {@link #getRules()} call.
      * <p>
      * Note that the {@code rules} are actually interpreted as a delta to the
-     * standard Unicode Collation Algorithm (UCA). Hence, an empty {@code rules}
-     * string results in the default UCA rules being applied. This differs
+     * standard Unicode Collation Algorithm (UCA). This differs
      * slightly from other implementations which work with full {@code rules}
      * specifications and may result in different behavior.
      *
      * @param rules
      *            the collation rules.
      * @throws NullPointerException
-     *             if {@code rules} is {@code null}.
+     *             if {@code rules == null}.
      * @throws ParseException
      *             if {@code rules} contains rules with invalid collation rule
      *             syntax.
@@ -290,20 +286,18 @@ public class RuleBasedCollator extends Collator {
         if (rules == null) {
             throw new NullPointerException();
         }
-        if (rules.length() == 0) {
-            // text.06=Build rules empty
-            throw new ParseException(Messages.getString("text.06"), 0); //$NON-NLS-1$
+        if (rules.isEmpty()) {
+            throw new ParseException("empty rules", 0);
         }
-
         try {
-            this.icuColl = new com.ibm.icu.text.RuleBasedCollator(rules);
+            icuColl = new RuleBasedCollatorICU(rules);
         } catch (Exception e) {
             if (e instanceof ParseException) {
                 throw (ParseException) e;
             }
             /*
              * -1 means it's not a ParseException. Maybe IOException thrown when
-             * an error occured while reading internal data.
+             * an error occurred while reading internal data.
              */
             throw new ParseException(e.getMessage(), -1);
         }
@@ -313,24 +307,21 @@ public class RuleBasedCollator extends Collator {
      * Obtains a {@code CollationElementIterator} for the given
      * {@code CharacterIterator}. The source iterator's integrity will be
      * preserved since a new copy will be created for use.
-     * 
+     *
      * @param source
      *            the source character iterator.
      * @return a {@code CollationElementIterator} for {@code source}.
      */
-    public CollationElementIterator getCollationElementIterator(
-            CharacterIterator source) {
+    public CollationElementIterator getCollationElementIterator(CharacterIterator source) {
         if (source == null) {
             throw new NullPointerException();
         }
-        return new CollationElementIterator(
-                ((com.ibm.icu.text.RuleBasedCollator) this.icuColl)
-                        .getCollationElementIterator(source));
+        return new CollationElementIterator(icuColl.getCollationElementIterator(source));
     }
 
     /**
      * Obtains a {@code CollationElementIterator} for the given string.
-     * 
+     *
      * @param source
      *            the source string.
      * @return the {@code CollationElementIterator} for {@code source}.
@@ -339,9 +330,7 @@ public class RuleBasedCollator extends Collator {
         if (source == null) {
             throw new NullPointerException();
         }
-        return new CollationElementIterator(
-                ((com.ibm.icu.text.RuleBasedCollator) this.icuColl)
-                        .getCollationElementIterator(source));
+        return new CollationElementIterator(icuColl.getCollationElementIterator(source));
     }
 
     /**
@@ -357,13 +346,13 @@ public class RuleBasedCollator extends Collator {
      * @return the collation rules.
      */
     public String getRules() {
-        return ((com.ibm.icu.text.RuleBasedCollator) this.icuColl).getRules();
+        return icuColl.getRules();
     }
 
     /**
      * Returns a new collator with the same collation rules, decomposition mode and
      * strength value as this collator.
-     * 
+     *
      * @return a shallow copy of this collator.
      * @see java.lang.Cloneable
      */
@@ -385,7 +374,7 @@ public class RuleBasedCollator extends Collator {
      * {@code CollationKey.compareTo(CollationKey)} for the comparisons. If each
      * string is compared to only once, using
      * {@code RuleBasedCollator.compare(String, String)} has better performance.
-     * 
+     *
      * @param source
      *            the source text.
      * @param target
@@ -397,33 +386,26 @@ public class RuleBasedCollator extends Collator {
     @Override
     public int compare(String source, String target) {
         if (source == null || target == null) {
-            // text.08=one of arguments is null
-            throw new NullPointerException(Messages.getString("text.08")); //$NON-NLS-1$
+            throw new NullPointerException();
         }
-        return this.icuColl.compare(source, target);
+        return icuColl.compare(source, target);
     }
 
     /**
      * Returns the {@code CollationKey} for the given source text.
-     * 
+     *
      * @param source
      *            the specified source text.
      * @return the {@code CollationKey} for the given source text.
      */
     @Override
     public CollationKey getCollationKey(String source) {
-        com.ibm.icu.text.CollationKey icuKey = this.icuColl
-                .getCollationKey(source);
-        if (icuKey == null) {
-            return null;
-        }
-        return new CollationKey(source, icuKey);
+        return icuColl.getCollationKey(source);
     }
 
     @Override
     public int hashCode() {
-        return ((com.ibm.icu.text.RuleBasedCollator) this.icuColl).getRules()
-                .hashCode();
+        return icuColl.getRules().hashCode();
     }
 
     /**
@@ -431,7 +413,7 @@ public class RuleBasedCollator extends Collator {
      * indicates if they are equal. In order to be equal, {@code object} must be
      * an instance of {@code Collator} with the same collation rules and the
      * same attributes.
-     * 
+     *
      * @param obj
      *            the object to compare with this object.
      * @return {@code true} if the specified object is equal to this

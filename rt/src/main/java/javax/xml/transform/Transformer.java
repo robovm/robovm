@@ -37,9 +37,9 @@ import java.util.Properties;
  *
  * <p>A <code>Transformer</code> may be used multiple times.  Parameters and
  * output properties are preserved across transformations.</p>
- * 
+ *
  * @author <a href="Jeff.Suttor@Sun.com">Jeff Suttor</a>
- * @version $Revision: 570103 $, $Date: 2007-08-27 09:24:55 -0400 (Mon, 27 Aug 2007) $
+ * @version $Revision: 570103 $, $Date: 2007-08-27 06:24:55 -0700 (Mon, 27 Aug 2007) $
  */
 public abstract class Transformer {
 
@@ -47,33 +47,33 @@ public abstract class Transformer {
      * Default constructor is protected on purpose.
      */
     protected Transformer() { }
-    
-	/**
-	 * <p>Reset this <code>Transformer</code> to its original configuration.</p>
-	 * 
-	 * <p><code>Transformer</code> is reset to the same state as when it was created with
-	 * {@link TransformerFactory#newTransformer()},
-	 * {@link TransformerFactory#newTransformer(Source source)} or
-	 * {@link Templates#newTransformer()}.
-	 * <code>reset()</code> is designed to allow the reuse of existing <code>Transformer</code>s
-	 * thus saving resources associated with the creation of new <code>Transformer</code>s.</p>
-	 * 
-	 * <p>The reset <code>Transformer</code> is not guaranteed to have the same {@link URIResolver}
-	 * or {@link ErrorListener} <code>Object</code>s, e.g. {@link Object#equals(Object obj)}.
-	 * It is guaranteed to have a functionally equal <code>URIResolver</code>
-	 * and <code>ErrorListener</code>.</p>
-	 * 
-	 * @since 1.5
-	 */
-	public void reset() {
 
-		// implementors should override this method
-		throw new UnsupportedOperationException(
-			"This Transformer, \"" + this.getClass().getName() + "\", does not support the reset functionality."
-			+ "  Specification \"" + this.getClass().getPackage().getSpecificationTitle() + "\""
-			+ " version \"" + this.getClass().getPackage().getSpecificationVersion() + "\""
-			);
-	}
+    /**
+     * <p>Reset this <code>Transformer</code> to its original configuration.</p>
+     *
+     * <p><code>Transformer</code> is reset to the same state as when it was created with
+     * {@link TransformerFactory#newTransformer()},
+     * {@link TransformerFactory#newTransformer(Source source)} or
+     * {@link Templates#newTransformer()}.
+     * <code>reset()</code> is designed to allow the reuse of existing <code>Transformer</code>s
+     * thus saving resources associated with the creation of new <code>Transformer</code>s.</p>
+     *
+     * <p>The reset <code>Transformer</code> is not guaranteed to have the same {@link URIResolver}
+     * or {@link ErrorListener} <code>Object</code>s, e.g. {@link Object#equals(Object obj)}.
+     * It is guaranteed to have a functionally equal <code>URIResolver</code>
+     * and <code>ErrorListener</code>.</p>
+     *
+     * @since 1.5
+     */
+    public void reset() {
+
+        // implementors should override this method
+        throw new UnsupportedOperationException(
+            "This Transformer, \"" + this.getClass().getName() + "\", does not support the reset functionality."
+            + "  Specification \"" + this.getClass().getPackage().getSpecificationTitle() + "\""
+            + " version \"" + this.getClass().getPackage().getSpecificationVersion() + "\""
+            );
+    }
 
     /**
      * <p>Transform the XML <code>Source</code> to a <code>Result</code>.
@@ -133,10 +133,10 @@ public abstract class Transformer {
      * @return A parameter that has been set with setParameter.
      */
     public abstract Object getParameter(String name);
-    
+
     /**
      * <p>Set a list of parameters.</p>
-     * 
+     *
      * <p>Note that the list of parameters is specified as a
      * <code>Properties</code> <code>Object</code> which limits the parameter
      * values to <code>String</code>s.  Multiple calls to
@@ -146,14 +146,14 @@ public abstract class Transformer {
      * {@link #setParameter(String name, Object value)}.
      * An <code>IllegalArgumentException</code> is thrown if any names do not
      * conform.</p>
-     * 
+     *
      * <p>New parameters in the list are added to any existing parameters.
      * If the name of a new parameter is equal to the name of an existing
      * parameter as determined by {@link java.lang.Object#equals(Object obj)},
      *  the existing parameter is set to the new value.</p>
-     * 
+     *
      * @param params Parameters to set.
-     * 
+     *
      * @throws IllegalArgumentException If any parameter names do not conform
      *   to the naming rules.
      */
@@ -240,7 +240,7 @@ public abstract class Transformer {
      *
      * <p>If any of the argument keys are not recognized and are not
      * namespace qualified, the property will be ignored and not returned.
-     * In other words the behaviour is not orthogonal with
+     * In other words the behavior is not orthogonal with
      * {@link #setOutputProperties setOutputProperties}.</p>
      *
      * @return A copy of the set of output properties in effect for

@@ -33,12 +33,10 @@ import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 public class DSAKeyFactoryImpl extends KeyFactorySpi {
 
     /**
-     * This method generates a DSAPrivateKey object from the provided key specification. 
+     * This method generates a DSAPrivateKey object from the provided key specification.
      *
      * @param
      *    keySpec - the specification (key material) for the DSAPrivateKey.
@@ -62,11 +60,11 @@ public class DSAKeyFactoryImpl extends KeyFactorySpi {
                 return new DSAPrivateKeyImpl((PKCS8EncodedKeySpec) keySpec);
             }
         }
-        throw new InvalidKeySpecException(Messages.getString("security.19C")); //$NON-NLS-1$
+        throw new InvalidKeySpecException("'keySpec' is neither DSAPrivateKeySpec nor PKCS8EncodedKeySpec");
     }
 
     /**
-     * This method generates a DSAPublicKey object from the provided key specification. 
+     * This method generates a DSAPublicKey object from the provided key specification.
      *
      * @param
      *    keySpec - the specification (key material) for the DSAPublicKey.
@@ -90,22 +88,22 @@ public class DSAKeyFactoryImpl extends KeyFactorySpi {
                 return new DSAPublicKeyImpl((X509EncodedKeySpec) keySpec);
             }
         }
-        throw new InvalidKeySpecException(Messages.getString("security.19D")); //$NON-NLS-1$
+        throw new InvalidKeySpecException("'keySpec' is neither DSAPublicKeySpec nor X509EncodedKeySpec");
     }
-    
+
     /**
      * This method returns a specification for the supplied key.
-     * 
+     *
      * The specification will be returned in the form of an object of the type
      * specified by keySpec.
-     * 
+     *
      * @param key -
      *            either DSAPrivateKey or DSAPublicKey
      * @param keySpec -
      *            either DSAPrivateKeySpec.class or DSAPublicKeySpec.class
-     * 
+     *
      * @return either a DSAPrivateKeySpec or a DSAPublicKeySpec
-     * 
+     *
      * @throws InvalidKeySpecException
      *             if "keySpec" is not a specification for DSAPublicKey or
      *             DSAPrivateKey
@@ -117,8 +115,7 @@ public class DSAKeyFactoryImpl extends KeyFactorySpi {
 
         if (key != null) {
             if (keySpec == null) {
-                throw new NullPointerException(Messages
-                        .getString("security.19E")); //$NON-NLS-1$
+                throw new NullPointerException("keySpec == null");
             }
             if (key instanceof DSAPrivateKey) {
                 DSAPrivateKey privateKey = (DSAPrivateKey) key;
@@ -140,8 +137,7 @@ public class DSAKeyFactoryImpl extends KeyFactorySpi {
                     return (T) (new PKCS8EncodedKeySpec(key.getEncoded()));
                 }
 
-                throw new InvalidKeySpecException(Messages
-                        .getString("security.19C")); //$NON-NLS-1$
+                throw new InvalidKeySpecException("'keySpec' is neither DSAPrivateKeySpec nor PKCS8EncodedKeySpec");
             }
 
             if (key instanceof DSAPublicKey) {
@@ -164,15 +160,14 @@ public class DSAKeyFactoryImpl extends KeyFactorySpi {
                     return (T) (new X509EncodedKeySpec(key.getEncoded()));
                 }
 
-                throw new InvalidKeySpecException(Messages
-                        .getString("security.19D")); //$NON-NLS-1$
+                throw new InvalidKeySpecException("'keySpec' is neither DSAPublicKeySpec nor X509EncodedKeySpec");
             }
         }
-        throw new InvalidKeySpecException(Messages.getString("security.19F")); //$NON-NLS-1$
+        throw new InvalidKeySpecException("'key' is neither DSAPublicKey nor DSAPrivateKey");
     }
 
     /**
-     * The method generates a DSAPublicKey object from the provided key. 
+     * The method generates a DSAPublicKey object from the provided key.
      *
      * @param
      *    key - a DSAPublicKey object or DSAPrivateKey object.
@@ -197,8 +192,7 @@ public class DSAKeyFactoryImpl extends KeyFactorySpi {
                             params.getG()));
                 } catch (InvalidKeySpecException e) {
                     // Actually this exception shouldn't be thrown
-                    throw new InvalidKeyException(Messages.getString(
-                            "security.1A0", e)); //$NON-NLS-1$
+                    throw new InvalidKeyException("ATTENTION: InvalidKeySpecException: " + e);
                 }
             }
 
@@ -213,12 +207,11 @@ public class DSAKeyFactoryImpl extends KeyFactorySpi {
                             .getG()));
                 } catch (InvalidKeySpecException e) {
                     // Actually this exception shouldn't be thrown
-                    throw new InvalidKeyException(Messages.getString(
-                            "security.1A1", e)); //$NON-NLS-1$
+                    throw new InvalidKeyException("ATTENTION: InvalidKeySpecException: " + e);
                 }
             }
         }
-        throw new InvalidKeyException(Messages.getString("security.19F")); //$NON-NLS-1$
+        throw new InvalidKeyException("'key' is neither DSAPublicKey nor DSAPrivateKey");
     }
 
 }

@@ -22,7 +22,7 @@ package javax.xml.transform;
 /**
  * <p>An object that implements this interface contains the information
  * needed to build a transformation result tree.</p>
- * 
+ *
  * @author <a href="Jeff.Suttor@Sun.com">Jeff Suttor</a>
  */
 public interface Result {

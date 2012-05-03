@@ -17,35 +17,37 @@
 
 /**
 * @author Boris V. Kuznetsov
+* @version $Revision$
 */
 
 package org.apache.harmony.security.fortress;
 
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.security.Provider;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-
-import org.apache.harmony.security.Util;
 
 
 /**
  * This class contains information about all registered providers and preferred
  * implementations for all "serviceName.algName".
- * 
+ *
  */
 
 public class Services {
 
     // The HashMap that contains information about preferred implementations for
-    // all serviceName.algName in the registered providers
-    private static final Map<String, Provider.Service> services = new HashMap<String, Provider.Service>(512);
+    // all serviceName.algName in the registered providers.
+    // Set the initial size to 600 so we don't grow to 1024 by default because
+    // initialization adds a few entries more than the growth threshold.
+    private static final Map<String, Provider.Service> services
+            = new HashMap<String, Provider.Service>(600);
+    // Save default SecureRandom service as well.
+    // Avoids similar provider/services iteration in SecureRandom constructor
+    private static Provider.Service secureRandom;
 
     // Need refresh flag
     private static boolean needRefresh; // = false;
@@ -60,14 +62,8 @@ public class Services {
 
     // Hash for quick provider access by name
     private static final Map<String, Provider> providersNames = new HashMap<String, Provider>(20);
-
     static {
-        AccessController.doPrivileged(new PrivilegedAction<Object>() {
-            public Object run() {
-                loadProviders();
-                return null;
-            }
-        });
+        loadProviders();
     }
 
     // Load statically registered providers and init Services Info
@@ -77,7 +73,7 @@ public class Services {
         ClassLoader cl = ClassLoader.getSystemClassLoader();
         Provider p;
 
-        while ((providerClassName = Security.getProperty("security.provider." //$NON-NLS-1$
+        while ((providerClassName = Security.getProperty("security.provider."
                 + i++)) != null) {
             try {
                 p = (Provider) Class
@@ -88,15 +84,15 @@ public class Services {
                 initServiceInfo(p);
             } catch (ClassNotFoundException e) { // ignore Exceptions
             } catch (IllegalAccessException e) {
-			} catch (InstantiationException e) {
-			}
+            } catch (InstantiationException e) {
+            }
         }
         Engine.door.renumProviders();
     }
 
     /**
      * Returns registered providers
-     * 
+     *
      * @return
      */
     public static Provider[] getProviders() {
@@ -105,7 +101,7 @@ public class Services {
 
     /**
      * Returns registered providers as List
-     * 
+     *
      * @return
      */
     public static List<Provider> getProvidersList() {
@@ -114,7 +110,7 @@ public class Services {
 
     /**
      * Returns the provider with the specified name
-     * 
+     *
      * @param name
      * @return
      */
@@ -127,7 +123,7 @@ public class Services {
 
     /**
      * Inserts a provider at a specified position
-     * 
+     *
      * @param provider
      * @param position
      * @return
@@ -145,7 +141,7 @@ public class Services {
 
     /**
      * Removes the provider
-     * 
+     *
      * @param providerNumber
      */
     public static void removeProvider(int providerNumber) {
@@ -155,32 +151,23 @@ public class Services {
     }
 
     /**
-     * 
+     *
      * Adds information about provider services into HashMap.
-     * 
+     *
      * @param p
      */
     public static void initServiceInfo(Provider p) {
-        Provider.Service serv;
-        String key;
-        String type;
-        String alias;
-        StringBuilder sb = new StringBuilder(128);
-
-        for (Iterator<Provider.Service> it1 = p.getServices().iterator(); it1.hasNext();) {
-            serv = it1.next();
-            type = serv.getType();
-            sb.delete(0, sb.length());
-            key = sb.append(type).append(".").append( //$NON-NLS-1$
-                    Util.toUpperCase(serv.getAlgorithm())).toString();
+        for (Provider.Service serv : p.getServices()) {
+            String type = serv.getType();
+            if (secureRandom == null && type.equals("SecureRandom")) {
+                secureRandom = serv;
+            }
+            String key = type + "." + serv.getAlgorithm().toUpperCase(Locale.US);
             if (!services.containsKey(key)) {
                 services.put(key, serv);
             }
-            for (Iterator<String> it2 = Engine.door.getAliases(serv); it2.hasNext();) {
-                alias = it2.next();
-                sb.delete(0, sb.length());
-                key = sb.append(type).append(".").append(Util.toUpperCase(alias)) //$NON-NLS-1$
-                        .toString();
+            for (String alias : Engine.door.getAliases(serv)) {
+                key = type + "." + alias.toUpperCase(Locale.US);
                 if (!services.containsKey(key)) {
                     services.put(key, serv);
                 }
@@ -189,32 +176,32 @@ public class Services {
     }
 
     /**
-     * 
+     *
      * Updates services hashtable for all registered providers
-     *  
+     *
      */
     public static void updateServiceInfo() {
         services.clear();
-        for (Iterator<Provider> it = providers.iterator(); it.hasNext();) {
-            initServiceInfo(it.next());
+        secureRandom = null;
+        for (Provider p : providers) {
+            initServiceInfo(p);
         }
         needRefresh = false;
     }
 
     /**
-     * Returns true if services contain any provider information  
+     * Returns true if services contain any provider information
      * @return
      */
     public static boolean isEmpty() {
         return services.isEmpty();
     }
-    
+
     /**
-     * 
      * Returns service description.
      * Call refresh() before.
-     * 
-     * @param key
+     *
+     * @param key in the format TYPE.ALGORITHM
      * @return
      */
     public static Provider.Service getService(String key) {
@@ -222,20 +209,15 @@ public class Services {
     }
 
     /**
-     * Prints Services content  
+     * Returns the default SecureRandom service description.
+     * Call refresh() before.
      */
-    // FIXME remove debug function
-    public static void printServices() {
-        refresh();
-        Set<String> s = services.keySet();
-        for (Iterator<String> i = s.iterator(); i.hasNext();) {
-            String key = i.next();
-            System.out.println(key + "=" + services.get(key)); //$NON-NLS-1$
-        }
+    public static Provider.Service getSecureRandomService() {
+        return secureRandom;
     }
 
     /**
-     * Set flag needRefresh 
+     * Set flag needRefresh
      *
      */
     public static void setNeedRefresh() {

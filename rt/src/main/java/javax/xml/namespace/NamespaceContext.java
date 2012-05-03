@@ -61,7 +61,7 @@ import java.util.Iterator;
  * Namespace URI in the current scope.</p>
  *
  * @author <a href="mailto:Jeff.Suttor@Sun.com">Jeff Suttor</a>
- * @version $Revision: 446598 $, $Date: 2006-09-15 08:55:40 -0400 (Fri, 15 Sep 2006) $
+ * @version $Revision: 446598 $, $Date: 2006-09-15 05:55:40 -0700 (Fri, 15 Sep 2006) $
  * @see javax.xml.XMLConstants javax.XMLConstants for declarations of common XML values
  * @see <a href="http://www.w3.org/TR/xmlschema-2/#QName">XML Schema Part2: Datatypes</a>
  * @see <a href="http://www.w3.org/TR/REC-xml-names/#ns-qualnames">Namespaces in XML</a>
@@ -78,7 +78,7 @@ public interface NamespaceContext {
      * table describes the returned Namespace URI value for all
      * possible prefix values:</p>
      *
-     * <table border="2" rules="all" cellpadding="4"> 
+     * <table border="2" rules="all" cellpadding="4">
      *   <thead>
      *     <tr>
      *       <td align="center" colspan="2">
@@ -95,7 +95,7 @@ public interface NamespaceContext {
      *     <tr>
      *       <td><code>DEFAULT_NS_PREFIX</code> ("")</td>
      *       <td>default Namespace URI in the current scope or
-     *         <code>{@link javax.xml.XMLConstants#NULL_NS_URI XMLConstants.NULL_NS_URI("")}</code>   
+     *         <code>{@link javax.xml.XMLConstants#NULL_NS_URI XMLConstants.NULL_NS_URI("")}</code>
      *         when there is no default Namespace URI in the current scope</td>
      *     </tr>
      *     <tr>
@@ -122,12 +122,12 @@ public interface NamespaceContext {
      *     </tr>
      *    </tbody>
      * </table>
-     *  
+     *
      * @param prefix prefix to look up
      * @return Namespace URI bound to prefix in the current scope
-     */ 
+     */
     String getNamespaceURI(String prefix);
-  
+
     /**
      * <p>Get prefix bound to Namespace URI in the current scope.</p>
      *

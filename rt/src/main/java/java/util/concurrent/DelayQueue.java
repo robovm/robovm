@@ -9,6 +9,10 @@ package java.util.concurrent;
 import java.util.concurrent.locks.*;
 import java.util.*;
 
+// BEGIN android-note
+// removed link to collections framework docs
+// END android-note
+
 /**
  * An unbounded {@linkplain BlockingQueue blocking queue} of
  * <tt>Delayed</tt> elements, in which an element can only be taken
@@ -26,10 +30,6 @@ import java.util.*;
  * <p>This class and its iterator implement all of the
  * <em>optional</em> methods of the {@link Collection} and {@link
  * Iterator} interfaces.
- *
- * <p>This class is a member of the
- * <a href="{@docRoot}/../technotes/guides/collections/index.html">
- * Java Collections Framework</a>.
  *
  * @since 1.5
  * @author Doug Lea
@@ -453,12 +453,14 @@ public class DelayQueue<E extends Delayed> extends AbstractQueue<E>
     /**
      * Returns an iterator over all the elements (both expired and
      * unexpired) in this queue. The iterator does not return the
-     * elements in any particular order.  The returned
-     * <tt>Iterator</tt> is a "weakly consistent" iterator that will
-     * never throw {@link ConcurrentModificationException}, and
-     * guarantees to traverse elements as they existed upon
-     * construction of the iterator, and may (but is not guaranteed
-     * to) reflect any modifications subsequent to construction.
+     * elements in any particular order.
+     *
+     * <p>The returned iterator is a "weakly consistent" iterator that
+     * will never throw {@link java.util.ConcurrentModificationException
+     * ConcurrentModificationException}, and guarantees to traverse
+     * elements as they existed upon construction of the iterator, and
+     * may (but is not guaranteed to) reflect any modifications
+     * subsequent to construction.
      *
      * @return an iterator over the elements in this queue
      */

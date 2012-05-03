@@ -28,8 +28,7 @@ public interface SSLSessionContext {
      *
      * @return an iterable of all session identifiers in this session context.
      */
-    @SuppressWarnings("unchecked")
-    public Enumeration getIds();
+    public Enumeration<byte[]> getIds();
 
     /**
      * Returns the session for the specified session identifier.

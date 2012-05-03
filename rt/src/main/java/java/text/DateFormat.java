@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,8 +23,8 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import org.apache.harmony.text.internal.nls.Messages;
+import libcore.icu.ICU;
+import libcore.icu.LocaleData;
 
 /**
  * An abstract class for date/time formatting subclasses which formats and
@@ -143,51 +143,51 @@ public abstract class DateFormat extends Format {
      * The format style constant defining the default format style. The default
      * is MEDIUM.
      */
-    public final static int DEFAULT = 2;
+    public static final int DEFAULT = 2;
 
     /**
      * The format style constant defining the full style.
      */
-    public final static int FULL = 0;
+    public static final int FULL = 0;
 
     /**
      * The format style constant defining the long style.
      */
-    public final static int LONG = 1;
+    public static final int LONG = 1;
 
     /**
      * The format style constant defining the medium style.
      */
-    public final static int MEDIUM = 2;
+    public static final int MEDIUM = 2;
 
     /**
      * The format style constant defining the short style.
      */
-    public final static int SHORT = 3;
+    public static final int SHORT = 3;
 
     /**
      * The {@code FieldPosition} selector for 'G' field alignment, corresponds
      * to the {@link Calendar#ERA} field.
      */
-    public final static int ERA_FIELD = 0;
+    public static final int ERA_FIELD = 0;
 
     /**
      * The {@code FieldPosition} selector for 'y' field alignment, corresponds
      * to the {@link Calendar#YEAR} field.
      */
-    public final static int YEAR_FIELD = 1;
+    public static final int YEAR_FIELD = 1;
 
     /**
      * The {@code FieldPosition} selector for 'M' field alignment, corresponds
      * to the {@link Calendar#MONTH} field.
      */
-    public final static int MONTH_FIELD = 2;
+    public static final int MONTH_FIELD = 2;
 
     /**
      * The {@code FieldPosition} selector for 'd' field alignment, corresponds
      * to the {@link Calendar#DATE} field.
      */
-    public final static int DATE_FIELD = 3;
+    public static final int DATE_FIELD = 3;
 
     /**
      * The {@code FieldPosition} selector for 'k' field alignment, corresponds
@@ -195,7 +195,7 @@ public abstract class DateFormat extends Format {
      * used for the one-based 24-hour clock. For example, 23:59 + 01:00 results
      * in 24:59.
      */
-    public final static int HOUR_OF_DAY1_FIELD = 4;
+    public static final int HOUR_OF_DAY1_FIELD = 4;
 
     /**
      * The {@code FieldPosition} selector for 'H' field alignment, corresponds
@@ -203,83 +203,80 @@ public abstract class DateFormat extends Format {
      * used for the zero-based 24-hour clock. For example, 23:59 + 01:00 results
      * in 00:59.
      */
-    public final static int HOUR_OF_DAY0_FIELD = 5;
+    public static final int HOUR_OF_DAY0_FIELD = 5;
 
     /**
      * FieldPosition selector for 'm' field alignment, corresponds to the
      * {@link Calendar#MINUTE} field.
      */
-    public final static int MINUTE_FIELD = 6;
+    public static final int MINUTE_FIELD = 6;
 
     /**
      * FieldPosition selector for 's' field alignment, corresponds to the
      * {@link Calendar#SECOND} field.
      */
-    public final static int SECOND_FIELD = 7;
+    public static final int SECOND_FIELD = 7;
 
     /**
      * FieldPosition selector for 'S' field alignment, corresponds to the
      * {@link Calendar#MILLISECOND} field.
      */
-    public final static int MILLISECOND_FIELD = 8;
+    public static final int MILLISECOND_FIELD = 8;
 
     /**
      * FieldPosition selector for 'E' field alignment, corresponds to the
      * {@link Calendar#DAY_OF_WEEK} field.
      */
-    public final static int DAY_OF_WEEK_FIELD = 9;
+    public static final int DAY_OF_WEEK_FIELD = 9;
 
     /**
      * FieldPosition selector for 'D' field alignment, corresponds to the
      * {@link Calendar#DAY_OF_YEAR} field.
      */
-    public final static int DAY_OF_YEAR_FIELD = 10;
+    public static final int DAY_OF_YEAR_FIELD = 10;
 
     /**
      * FieldPosition selector for 'F' field alignment, corresponds to the
      * {@link Calendar#DAY_OF_WEEK_IN_MONTH} field.
      */
-    public final static int DAY_OF_WEEK_IN_MONTH_FIELD = 11;
+    public static final int DAY_OF_WEEK_IN_MONTH_FIELD = 11;
 
     /**
      * FieldPosition selector for 'w' field alignment, corresponds to the
      * {@link Calendar#WEEK_OF_YEAR} field.
      */
-    public final static int WEEK_OF_YEAR_FIELD = 12;
+    public static final int WEEK_OF_YEAR_FIELD = 12;
 
     /**
      * FieldPosition selector for 'W' field alignment, corresponds to the
      * {@link Calendar#WEEK_OF_MONTH} field.
      */
-    public final static int WEEK_OF_MONTH_FIELD = 13;
+    public static final int WEEK_OF_MONTH_FIELD = 13;
 
     /**
      * FieldPosition selector for 'a' field alignment, corresponds to the
      * {@link Calendar#AM_PM} field.
      */
-    public final static int AM_PM_FIELD = 14;
+    public static final int AM_PM_FIELD = 14;
 
     /**
      * FieldPosition selector for 'h' field alignment, corresponding to the
-     * {@link Calendar#HOUR} field. {@code HOUR1_FIELD} is used for the
-     * one-based 12-hour clock. For example, 11:30 PM + 1 hour results in 12:30
-     * AM.
+     * {@link Calendar#HOUR} field.
      */
-    public final static int HOUR1_FIELD = 15;
+    public static final int HOUR1_FIELD = 15;
+
+    /**
+     * The {@code FieldPosition} selector for 'K' field alignment, corresponding to the
+     * {@link Calendar#HOUR} field.
+     */
+    public static final int HOUR0_FIELD = 16;
 
     /**
      * The {@code FieldPosition} selector for 'z' field alignment, corresponds
      * to the {@link Calendar#ZONE_OFFSET} and {@link Calendar#DST_OFFSET}
      * fields.
      */
-    public final static int HOUR0_FIELD = 16;
-
-    /**
-     * The {@code FieldPosition} selector for 'z' field alignment, corresponds
-     * to the {@link Calendar#ZONE_OFFSET} and {@link Calendar#DST_OFFSET}
-     * fields.
-     */
-    public final static int TIMEZONE_FIELD = 17;
+    public static final int TIMEZONE_FIELD = 17;
 
     /**
      * Constructs a new instance of {@code DateFormat}.
@@ -289,9 +286,9 @@ public abstract class DateFormat extends Format {
 
     /**
      * Returns a new instance of {@code DateFormat} with the same properties.
-     * 
+     *
      * @return a shallow copy of this {@code DateFormat}.
-     * 
+     *
      * @see java.lang.Cloneable
      */
     @Override
@@ -305,7 +302,7 @@ public abstract class DateFormat extends Format {
     /**
      * Compares this date format with the specified object and indicates if they
      * are equal.
-     * 
+     *
      * @param object
      *            the object to compare with this date format.
      * @return {@code true} if {@code object} is a {@code DateFormat} object and
@@ -370,7 +367,7 @@ public abstract class DateFormat extends Format {
 
     /**
      * Formats the specified date using the rules of this date format.
-     * 
+     *
      * @param date
      *            the date to format.
      * @return the formatted string.
@@ -402,17 +399,17 @@ public abstract class DateFormat extends Format {
             FieldPosition field);
 
     /**
-     * Gets the list of installed locales which support {@code DateFormat}.
-     * 
-     * @return an array of locales.
+     * Returns an array of locales for which custom {@code DateFormat} instances
+     * are available.
+     * <p>Note that Android does not support user-supplied locale service providers.
      */
     public static Locale[] getAvailableLocales() {
-        return Locale.getAvailableLocales();
+        return ICU.getAvailableDateFormatLocales();
     }
 
     /**
      * Returns the calendar used by this {@code DateFormat}.
-     * 
+     *
      * @return the calendar used by this date format.
      */
     public Calendar getCalendar() {
@@ -422,17 +419,17 @@ public abstract class DateFormat extends Format {
     /**
      * Returns a {@code DateFormat} instance for formatting and parsing dates in
      * the DEFAULT style for the default locale.
-     * 
+     *
      * @return the {@code DateFormat} instance for the default style and locale.
      */
-    public final static DateFormat getDateInstance() {
+    public static final DateFormat getDateInstance() {
         return getDateInstance(DEFAULT);
     }
 
     /**
      * Returns a {@code DateFormat} instance for formatting and parsing dates in
-     * the specified style for the default locale.
-     * 
+     * the specified style for the user's default locale.
+     * See "<a href="../util/Locale.html#default_locale">Be wary of the default locale</a>".
      * @param style
      *            one of SHORT, MEDIUM, LONG, FULL, or DEFAULT.
      * @return the {@code DateFormat} instance for {@code style} and the default
@@ -441,7 +438,7 @@ public abstract class DateFormat extends Format {
      *             if {@code style} is not one of SHORT, MEDIUM, LONG, FULL, or
      *             DEFAULT.
      */
-    public final static DateFormat getDateInstance(int style) {
+    public static final DateFormat getDateInstance(int style) {
         checkDateStyle(style);
         return getDateInstance(style, Locale.getDefault());
     }
@@ -449,7 +446,7 @@ public abstract class DateFormat extends Format {
     /**
      * Returns a {@code DateFormat} instance for formatting and parsing dates in
      * the specified style for the specified locale.
-     * 
+     *
      * @param style
      *            one of SHORT, MEDIUM, LONG, FULL, or DEFAULT.
      * @param locale
@@ -460,26 +457,25 @@ public abstract class DateFormat extends Format {
      * @return the {@code DateFormat} instance for {@code style} and
      *         {@code locale}.
      */
-    public final static DateFormat getDateInstance(int style, Locale locale) {
+    public static final DateFormat getDateInstance(int style, Locale locale) {
         checkDateStyle(style);
-        com.ibm.icu.text.DateFormat icuFormat = com.ibm.icu.text.DateFormat.getDateInstance(style, locale);
-        return new SimpleDateFormat(locale, (com.ibm.icu.text.SimpleDateFormat)icuFormat);
+        return new SimpleDateFormat(LocaleData.get(locale).getDateFormat(style), locale);
     }
 
     /**
      * Returns a {@code DateFormat} instance for formatting and parsing dates
      * and time values in the DEFAULT style for the default locale.
-     * 
+     *
      * @return the {@code DateFormat} instance for the default style and locale.
      */
-    public final static DateFormat getDateTimeInstance() {
+    public static final DateFormat getDateTimeInstance() {
         return getDateTimeInstance(DEFAULT, DEFAULT);
     }
 
     /**
      * Returns a {@code DateFormat} instance for formatting and parsing of both
-     * dates and time values in the manner appropriate for the default locale.
-     * 
+     * dates and time values in the manner appropriate for the user's default locale.
+     * See "<a href="../util/Locale.html#default_locale">Be wary of the default locale</a>".
      * @param dateStyle
      *            one of SHORT, MEDIUM, LONG, FULL, or DEFAULT.
      * @param timeStyle
@@ -490,8 +486,7 @@ public abstract class DateFormat extends Format {
      *             if {@code dateStyle} or {@code timeStyle} is not one of
      *             SHORT, MEDIUM, LONG, FULL, or DEFAULT.
      */
-    public final static DateFormat getDateTimeInstance(int dateStyle,
-            int timeStyle) {
+    public static final DateFormat getDateTimeInstance(int dateStyle, int timeStyle) {
         checkTimeStyle(timeStyle);
         checkDateStyle(dateStyle);
         return getDateTimeInstance(dateStyle, timeStyle, Locale.getDefault());
@@ -500,7 +495,7 @@ public abstract class DateFormat extends Format {
     /**
      * Returns a {@code DateFormat} instance for formatting and parsing dates
      * and time values in the specified styles for the specified locale.
-     * 
+     *
      * @param dateStyle
      *            one of SHORT, MEDIUM, LONG, FULL, or DEFAULT.
      * @param timeStyle
@@ -513,69 +508,48 @@ public abstract class DateFormat extends Format {
      *             if {@code dateStyle} or {@code timeStyle} is not one of
      *             SHORT, MEDIUM, LONG, FULL, or DEFAULT.
      */
-    public final static DateFormat getDateTimeInstance(int dateStyle,
-            int timeStyle, Locale locale) {
+    public static final DateFormat getDateTimeInstance(int dateStyle, int timeStyle, Locale locale) {
         checkTimeStyle(timeStyle);
         checkDateStyle(dateStyle);
-        com.ibm.icu.text.DateFormat icuFormat = com.ibm.icu.text.DateFormat.getDateTimeInstance(dateStyle, timeStyle, locale);
-        return new SimpleDateFormat(locale, (com.ibm.icu.text.SimpleDateFormat)icuFormat);
+        LocaleData localeData = LocaleData.get(locale);
+        String pattern = localeData.getDateFormat(dateStyle) + " " + localeData.getTimeFormat(timeStyle);
+        return new SimpleDateFormat(pattern, locale);
     }
 
     /**
      * Returns a {@code DateFormat} instance for formatting and parsing dates
      * and times in the SHORT style for the default locale.
-     * 
+     *
      * @return the {@code DateFormat} instance for the SHORT style and default
      *         locale.
      */
-    public final static DateFormat getInstance() {
+    public static final DateFormat getInstance() {
         return getDateTimeInstance(SHORT, SHORT);
     }
 
     /**
      * Returns the {@code NumberFormat} used by this {@code DateFormat}.
-     * 
+     *
      * @return the {@code NumberFormat} used by this date format.
      */
     public NumberFormat getNumberFormat() {
         return numberFormat;
     }
 
-    static String getStyleName(int style) {
-        String styleName;
-        switch (style) {
-            case SHORT:
-                styleName = "SHORT"; //$NON-NLS-1$
-                break;
-            case MEDIUM:
-                styleName = "MEDIUM"; //$NON-NLS-1$
-                break;
-            case LONG:
-                styleName = "LONG"; //$NON-NLS-1$
-                break;
-            case FULL:
-                styleName = "FULL"; //$NON-NLS-1$
-                break;
-            default:
-                styleName = ""; //$NON-NLS-1$
-        }
-        return styleName;
-    }
-
     /**
      * Returns a {@code DateFormat} instance for formatting and parsing time
      * values in the DEFAULT style for the default locale.
-     * 
+     *
      * @return the {@code DateFormat} instance for the default style and locale.
      */
-    public final static DateFormat getTimeInstance() {
+    public static final DateFormat getTimeInstance() {
         return getTimeInstance(DEFAULT);
     }
 
     /**
      * Returns a {@code DateFormat} instance for formatting and parsing time
-     * values in the specified style for the default locale.
-     * 
+     * values in the specified style for the user's default locale.
+     * See "<a href="../util/Locale.html#default_locale">Be wary of the default locale</a>".
      * @param style
      *            one of SHORT, MEDIUM, LONG, FULL, or DEFAULT.
      * @return the {@code DateFormat} instance for {@code style} and the default
@@ -584,7 +558,7 @@ public abstract class DateFormat extends Format {
      *             if {@code style} is not one of SHORT, MEDIUM, LONG, FULL, or
      *             DEFAULT.
      */
-    public final static DateFormat getTimeInstance(int style) {
+    public static final DateFormat getTimeInstance(int style) {
         checkTimeStyle(style);
         return getTimeInstance(style, Locale.getDefault());
     }
@@ -592,7 +566,7 @@ public abstract class DateFormat extends Format {
     /**
      * Returns a {@code DateFormat} instance for formatting and parsing time
      * values in the specified style for the specified locale.
-     * 
+     *
      * @param style
      *            one of SHORT, MEDIUM, LONG, FULL, or DEFAULT.
      * @param locale
@@ -603,15 +577,14 @@ public abstract class DateFormat extends Format {
      * @return the {@code DateFormat} instance for {@code style} and
      *         {@code locale}.
      */
-    public final static DateFormat getTimeInstance(int style, Locale locale) {
+    public static final DateFormat getTimeInstance(int style, Locale locale) {
         checkTimeStyle(style);
-        com.ibm.icu.text.DateFormat icuFormat = com.ibm.icu.text.DateFormat.getTimeInstance(style, locale);
-        return new SimpleDateFormat(locale, (com.ibm.icu.text.SimpleDateFormat)icuFormat);
+        return new SimpleDateFormat(LocaleData.get(locale).getTimeFormat(style), locale);
     }
 
     /**
      * Returns the time zone of this date format's calendar.
-     * 
+     *
      * @return the time zone of the calendar used by this date format.
      */
     public TimeZone getTimeZone() {
@@ -629,7 +602,7 @@ public abstract class DateFormat extends Format {
 
     /**
      * Indicates whether the calendar used by this date format is lenient.
-     * 
+     *
      * @return {@code true} if the calendar is lenient; {@code false} otherwise.
      */
     public boolean isLenient() {
@@ -639,7 +612,7 @@ public abstract class DateFormat extends Format {
     /**
      * Parses a date from the specified string using the rules of this date
      * format.
-     * 
+     *
      * @param string
      *            the string to parse.
      * @return the {@code Date} resulting from the parsing.
@@ -650,9 +623,8 @@ public abstract class DateFormat extends Format {
         ParsePosition position = new ParsePosition(0);
         Date date = parse(string, position);
         if (position.getIndex() == 0) {
-            // text.19=Unparseable date: {0}
-            throw new ParseException(
-                    Messages.getString("text.19", string), position.getErrorIndex()); //$NON-NLS-1$
+            throw new ParseException("Unparseable date: \"" + string + "\"",
+                    position.getErrorIndex());
         }
         return date;
     }
@@ -712,7 +684,7 @@ public abstract class DateFormat extends Format {
 
     /**
      * Sets the calendar used by this date format.
-     * 
+     *
      * @param cal
      *            the new calendar.
      */
@@ -725,7 +697,7 @@ public abstract class DateFormat extends Format {
      * parsing, the parser may use heuristics to interpret inputs that do not
      * precisely match this object's format. With strict parsing, inputs must
      * match this object's format.
-     * 
+     *
      * @param value
      *            {@code true} to set the calendar to be lenient, {@code false}
      *            otherwise.
@@ -736,7 +708,7 @@ public abstract class DateFormat extends Format {
 
     /**
      * Sets the {@code NumberFormat} used by this date format.
-     * 
+     *
      * @param format
      *            the new number format.
      */
@@ -746,7 +718,7 @@ public abstract class DateFormat extends Format {
 
     /**
      * Sets the time zone of the calendar used by this date format.
-     * 
+     *
      * @param timezone
      *            the new time zone.
      */
@@ -771,100 +743,95 @@ public abstract class DateFormat extends Format {
         /**
          * Marks the era part of a date.
          */
-        public final static Field ERA = new Field("era", Calendar.ERA); //$NON-NLS-1$
+        public static final Field ERA = new Field("era", Calendar.ERA);
 
         /**
          * Marks the year part of a date.
          */
-        public final static Field YEAR = new Field("year", Calendar.YEAR); //$NON-NLS-1$
+        public static final Field YEAR = new Field("year", Calendar.YEAR);
 
         /**
          * Marks the month part of a date.
          */
-        public final static Field MONTH = new Field("month", Calendar.MONTH); //$NON-NLS-1$
+        public static final Field MONTH = new Field("month", Calendar.MONTH);
 
         /**
          * Marks the hour of the day part of a date (0-11).
          */
-        public final static Field HOUR_OF_DAY0 = new Field("hour of day", //$NON-NLS-1$
-                Calendar.HOUR_OF_DAY);
+        public static final Field HOUR_OF_DAY0 = new Field("hour of day", Calendar.HOUR_OF_DAY);
 
         /**
          * Marks the hour of the day part of a date (1-12).
          */
-        public final static Field HOUR_OF_DAY1 = new Field("hour of day 1", -1); //$NON-NLS-1$
+        public static final Field HOUR_OF_DAY1 = new Field("hour of day 1", -1);
 
         /**
          * Marks the minute part of a time.
          */
-        public final static Field MINUTE = new Field("minute", Calendar.MINUTE); //$NON-NLS-1$
+        public static final Field MINUTE = new Field("minute", Calendar.MINUTE);
 
         /**
          * Marks the second part of a time.
          */
-        public final static Field SECOND = new Field("second", Calendar.SECOND); //$NON-NLS-1$
+        public static final Field SECOND = new Field("second", Calendar.SECOND);
 
         /**
          * Marks the millisecond part of a time.
          */
-        public final static Field MILLISECOND = new Field("millisecond", //$NON-NLS-1$
-                Calendar.MILLISECOND);
+        public static final Field MILLISECOND = new Field("millisecond", Calendar.MILLISECOND);
 
         /**
          * Marks the day of the week part of a date.
          */
-        public final static Field DAY_OF_WEEK = new Field("day of week", //$NON-NLS-1$
-                Calendar.DAY_OF_WEEK);
+        public static final Field DAY_OF_WEEK = new Field("day of week", Calendar.DAY_OF_WEEK);
 
         /**
          * Marks the day of the month part of a date.
          */
-        public final static Field DAY_OF_MONTH = new Field("day of month", //$NON-NLS-1$
-                Calendar.DAY_OF_MONTH);
+        public static final Field DAY_OF_MONTH = new Field("day of month", Calendar.DAY_OF_MONTH);
 
         /**
          * Marks the day of the year part of a date.
          */
-        public final static Field DAY_OF_YEAR = new Field("day of year", //$NON-NLS-1$
-                Calendar.DAY_OF_YEAR);
+        public static final Field DAY_OF_YEAR = new Field("day of year", Calendar.DAY_OF_YEAR);
 
         /**
          * Marks the day of the week in the month part of a date.
          */
-        public final static Field DAY_OF_WEEK_IN_MONTH = new Field(
-                "day of week in month", Calendar.DAY_OF_WEEK_IN_MONTH); //$NON-NLS-1$
+        public static final Field DAY_OF_WEEK_IN_MONTH = new Field("day of week in month",
+                Calendar.DAY_OF_WEEK_IN_MONTH);
 
         /**
          * Marks the week of the year part of a date.
          */
-        public final static Field WEEK_OF_YEAR = new Field("week of year", //$NON-NLS-1$
+        public static final Field WEEK_OF_YEAR = new Field("week of year",
                 Calendar.WEEK_OF_YEAR);
 
         /**
          * Marks the week of the month part of a date.
          */
-        public final static Field WEEK_OF_MONTH = new Field("week of month", //$NON-NLS-1$
+        public static final Field WEEK_OF_MONTH = new Field("week of month",
                 Calendar.WEEK_OF_MONTH);
 
         /**
          * Marks the time indicator part of a date.
          */
-        public final static Field AM_PM = new Field("am pm", Calendar.AM_PM); //$NON-NLS-1$
+        public static final Field AM_PM = new Field("am pm", Calendar.AM_PM);
 
         /**
          * Marks the hour part of a date (0-11).
          */
-        public final static Field HOUR0 = new Field("hour", Calendar.HOUR); //$NON-NLS-1$
+        public static final Field HOUR0 = new Field("hour", Calendar.HOUR);
 
         /**
          * Marks the hour part of a date (1-12).
          */
-        public final static Field HOUR1 = new Field("hour 1", -1); //$NON-NLS-1$
+        public static final Field HOUR1 = new Field("hour 1", -1);
 
         /**
          * Marks the time zone part of a date.
          */
-        public final static Field TIME_ZONE = new Field("time zone", -1); //$NON-NLS-1$
+        public static final Field TIME_ZONE = new Field("time zone", -1);
 
         /**
          * The calendar field that this field represents.
@@ -883,15 +850,14 @@ public abstract class DateFormat extends Format {
         protected Field(String fieldName, int calendarField) {
             super(fieldName);
             this.calendarField = calendarField;
-            if (calendarField != -1
-                    && table.get(new Integer(calendarField)) == null) {
-                table.put(new Integer(calendarField), this);
+            if (calendarField != -1 && table.get(Integer.valueOf(calendarField)) == null) {
+                table.put(Integer.valueOf(calendarField), this);
             }
         }
 
         /**
          * Returns the Calendar field that this field represents.
-         * 
+         *
          * @return the calendar field.
          */
         public int getCalendarField() {
@@ -901,7 +867,7 @@ public abstract class DateFormat extends Format {
         /**
          * Returns the {@code DateFormat.Field} instance for the given calendar
          * field.
-         * 
+         *
          * @param calendarField
          *            a calendar field constant.
          * @return the {@code DateFormat.Field} corresponding to
@@ -915,67 +881,21 @@ public abstract class DateFormat extends Format {
                 throw new IllegalArgumentException();
             }
 
-            return table.get(new Integer(calendarField));
-        }
-
-        /**
-         * Resolves instances that are deserialized to the constant
-         * {@code DateFormat.Field} values.
-         *
-         * @return the resolved field object.
-         * @throws InvalidObjectException
-         *             if an error occurs while resolving the field object.
-         */
-        @Override
-        protected Object readResolve() throws InvalidObjectException {
-        	if (this.getClass() != Field.class) {
-                // text.0C=cannot resolve subclasses
-                throw new InvalidObjectException(Messages.getString("text.0C")); //$NON-NLS-1$
-            }
-        	
-            if (calendarField != -1) {
-                try {
-                    Field result = ofCalendarField(calendarField);
-                    
-                    if (result != null && this.getName().equals(result.getName())) {
-                        return result;
-                    }
-                } catch (IllegalArgumentException e) {
-                    // text.02=Unknown attribute
-                    throw new InvalidObjectException(Messages
-                            .getString("text.02")); //$NON-NLS-1$
-                }
-            } else {
-                if (this.equals(TIME_ZONE)) {
-                    return TIME_ZONE;
-                }
-                if (this.equals(HOUR1)) {
-                    return HOUR1;
-                }
-                if (this.equals(HOUR_OF_DAY1)) {
-                    return HOUR_OF_DAY1;
-                }
-            }
-            // text.02=Unknown attribute
-            throw new InvalidObjectException(Messages.getString("text.02")); //$NON-NLS-1$
+            return table.get(Integer.valueOf(calendarField));
         }
     }
 
     private static void checkDateStyle(int style) {
         if (!(style == SHORT || style == MEDIUM || style == LONG
                 || style == FULL || style == DEFAULT)) {
-            // text.0E=Illegal date style: {0}
-            throw new IllegalArgumentException(Messages.getString(
-                    "text.0E", style)); //$NON-NLS-1$
+            throw new IllegalArgumentException("Illegal date style " + style);
         }
     }
 
     private static void checkTimeStyle(int style) {
         if (!(style == SHORT || style == MEDIUM || style == LONG
                 || style == FULL || style == DEFAULT)) {
-            // text.0F=Illegal time style: {0}
-            throw new IllegalArgumentException(Messages.getString(
-                    "text.0F", style)); //$NON-NLS-1$
+            throw new IllegalArgumentException("Illegal time style " + style);
         }
     }
 }

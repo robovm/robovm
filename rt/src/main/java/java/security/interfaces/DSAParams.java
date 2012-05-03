@@ -20,27 +20,27 @@ package java.security.interfaces;
 import java.math.BigInteger;
 
 /**
- * The interface for Digital Signature Algorithm (DSA) specific parameters. 
+ * The interface for Digital Signature Algorithm (DSA) specific parameters.
  */
 public interface DSAParams {
 
     /**
      * Returns the base ({@code g}) value.
-     * 
+     *
      * @return the base ({@code g}) value.
      */
     public BigInteger getG();
 
     /**
      * Returns the prime ({@code p}) value.
-     * 
+     *
      * @return the prime ({@code p}) value.
      */
     public BigInteger getP();
 
     /**
      * Returns the subprime ({@code q} value.
-     * 
+     *
      * @return the subprime ({@code q} value.
      */
     public BigInteger getQ();

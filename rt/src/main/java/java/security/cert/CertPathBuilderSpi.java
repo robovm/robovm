@@ -33,7 +33,7 @@ public abstract class CertPathBuilderSpi {
 
     /**
      * Builds a certification path with the specified algorithm parameters.
-     * 
+     *
      * @param params
      *            the algorithm parameters.
      * @return a result of the build.

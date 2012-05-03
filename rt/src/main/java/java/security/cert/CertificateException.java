@@ -28,7 +28,7 @@ public class CertificateException extends GeneralSecurityException {
 
     /**
      * Creates a new {@code CertificateException} with the specified message.
-     * 
+     *
      * @param msg
      *            the detail message for the exception.
      */
@@ -45,7 +45,7 @@ public class CertificateException extends GeneralSecurityException {
     /**
      * Creates a new {@code CertificateException} with the specified message and
      * cause.
-     * 
+     *
      * @param message
      *            the detail message for the exception.
      * @param cause
@@ -57,7 +57,7 @@ public class CertificateException extends GeneralSecurityException {
 
     /**
      * Creates a new {@code CertificateException} with the specified cause.
-     * 
+     *
      * @param cause
      *            the cause
      */

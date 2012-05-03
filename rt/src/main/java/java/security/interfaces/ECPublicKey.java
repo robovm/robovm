@@ -17,8 +17,8 @@
 
 package java.security.interfaces;
 
-import java.security.spec.ECPoint;
 import java.security.PublicKey;
+import java.security.spec.ECPoint;
 
 /**
  * The interface for an Elliptic Curve (EC) public key.
@@ -32,7 +32,7 @@ public interface ECPublicKey extends PublicKey, ECKey {
 
     /**
      * Returns the public point {@code W} on an elliptic curve (EC).
-     * 
+     *
      * @return the public point {@code W} on an elliptic curve (EC).
      */
     public ECPoint getW();

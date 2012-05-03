@@ -39,7 +39,6 @@ public abstract class IdentityScope extends Identity {
      * Constructs a new instance of {@code IdentityScope}.
      */
     protected IdentityScope() {
-        super();
     }
 
     /**
@@ -75,17 +74,13 @@ public abstract class IdentityScope extends Identity {
      * @return the system's scope.
      */
     public static IdentityScope getSystemScope() {
-        /* 
+        /*
          * Test shows that the implementation class name is read from security property
          * "system.scope", and the class is only loaded from boot classpath. No default
-         * implementation as fallback, i.e., return null if fails to init an instance. 
+         * implementation as fallback, i.e., return null if fails to init an instance.
          */
         if (systemScope == null) {
-            String className = AccessController.doPrivileged(new PrivilegedAction<String>(){
-                public String run() {
-                    return Security.getProperty("system.scope"); //$NON-NLS-1$
-                }
-            });
+            String className = Security.getProperty("system.scope");
             if(className != null){
                 try {
                     systemScope = (IdentityScope) Class.forName(className).newInstance();
@@ -104,10 +99,6 @@ public abstract class IdentityScope extends Identity {
      *            the scope to set.
      */
     protected static void setSystemScope(IdentityScope scope) {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkSecurityAccess("setSystemScope"); //$NON-NLS-1$
-        }
         systemScope = scope;
     }
 
@@ -197,6 +188,6 @@ public abstract class IdentityScope extends Identity {
     @Override
     public String toString() {
         return new StringBuilder(super.toString())
-                .append("[").append(size()).append("]").toString(); //$NON-NLS-1$ //$NON-NLS-2$
+                .append("[").append(size()).append("]").toString();
     }
 }

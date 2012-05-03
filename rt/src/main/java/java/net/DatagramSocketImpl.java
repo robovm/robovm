@@ -19,9 +19,7 @@ package java.net;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
-
-import org.apache.harmony.luni.net.NetUtil;
-import org.apache.harmony.luni.platform.Platform;
+import libcore.io.IoBridge;
 
 /**
  * The abstract superclass for datagram and multicast socket implementations.
@@ -48,7 +46,7 @@ public abstract class DatagramSocketImpl implements SocketOptions {
     /**
      * Binds the datagram socket to the given localhost/port. Sockets must be
      * bound prior to attempting to send or receive data.
-     * 
+     *
      * @param port
      *            the port on the localhost to bind.
      * @param addr
@@ -57,8 +55,7 @@ public abstract class DatagramSocketImpl implements SocketOptions {
      *                if an error occurs while binding, for example, if the port
      *                has been already bound.
      */
-    protected abstract void bind(int port, InetAddress addr)
-            throws SocketException;
+    protected abstract void bind(int port, InetAddress addr) throws SocketException;
 
     /**
      * Closes this socket.
@@ -77,7 +74,7 @@ public abstract class DatagramSocketImpl implements SocketOptions {
     /**
      * Gets the {@code FileDescriptor} of this datagram socket, which is invalid
      * if the socket is closed or not bound.
-     * 
+     *
      * @return the current file descriptor of this socket.
      */
     protected FileDescriptor getFileDescriptor() {
@@ -85,19 +82,14 @@ public abstract class DatagramSocketImpl implements SocketOptions {
     }
 
     /**
-     * Gets the local address to which the socket is bound.
-     * 
-     * @return the local address to which the socket is bound.
+     * Returns the local address to which the socket is bound.
      */
     InetAddress getLocalAddress() {
-        return Platform.getNetworkSystem().getSocketLocalAddress(fd,
-                NetUtil.preferIPv6Addresses());
+        return IoBridge.getSocketLocalAddress(fd);
     }
 
     /**
-     * Gets the local port of this socket.
-     * 
-     * @return the local port to which this socket is bound.
+     * Returns the local port to which this socket is bound.
      */
     protected int getLocalPort() {
         return localPort;
@@ -105,7 +97,7 @@ public abstract class DatagramSocketImpl implements SocketOptions {
 
     /**
      * Gets the time-to-live (TTL) for multicast packets sent on this socket.
-     * 
+     *
      * @return the time-to-live option as a byte value.
      * @throws IOException
      *             if an error occurs while getting the time-to-live option
@@ -132,7 +124,7 @@ public abstract class DatagramSocketImpl implements SocketOptions {
      * Adds this socket to the multicast group {@code addr}. A socket must join
      * a group before being able to receive data. Further, a socket may be a
      * member of multiple groups but may join any group only once.
-     * 
+     *
      * @param addr
      *            the multicast group to which this socket has to be joined.
      * @throws IOException
@@ -145,7 +137,7 @@ public abstract class DatagramSocketImpl implements SocketOptions {
      * Adds this socket to the multicast group {@code addr}. A socket must join
      * a group before being able to receive data. Further, a socket may be a
      * member of multiple groups but may join any group only once.
-     * 
+     *
      * @param addr
      *            the multicast group to which this socket has to be joined.
      * @param netInterface
@@ -160,7 +152,7 @@ public abstract class DatagramSocketImpl implements SocketOptions {
 
     /**
      * Removes this socket from the multicast group {@code addr}.
-     * 
+     *
      * @param addr
      *            the multicast group to be left.
      * @throws IOException
@@ -171,7 +163,7 @@ public abstract class DatagramSocketImpl implements SocketOptions {
 
     /**
      * Removes this socket from the multicast group {@code addr}.
-     * 
+     *
      * @param addr
      *            the multicast group to be left.
      * @param netInterface
@@ -187,7 +179,7 @@ public abstract class DatagramSocketImpl implements SocketOptions {
      * Peeks at the incoming packet to this socket and returns the address of
      * the {@code sender}. The method will block until a packet is received or
      * timeout expires.
-     * 
+     *
      * @param sender
      *            the origin address of a packet.
      * @return the address of {@code sender} as an integer value.
@@ -201,7 +193,7 @@ public abstract class DatagramSocketImpl implements SocketOptions {
      * This call will block until either data has been received or, if a timeout
      * is set, the timeout has expired. If the timeout expires an {@code
      * InterruptedIOException} is thrown.
-     * 
+     *
      * @param pack
      *            the datagram packet container to fill in the received data.
      * @throws IOException
@@ -212,7 +204,7 @@ public abstract class DatagramSocketImpl implements SocketOptions {
     /**
      * Sends the given datagram packet {@code pack}. The packet contains the
      * data and the address and port information of the target host as well.
-     * 
+     *
      * @param pack
      *            the datagram packet to be sent.
      * @throws IOException
@@ -223,7 +215,7 @@ public abstract class DatagramSocketImpl implements SocketOptions {
     /**
      * Sets the time-to-live (TTL) option for multicast packets sent on this
      * socket.
-     * 
+     *
      * @param ttl
      *            the time-to-live option value. Valid values are 0 &lt; ttl
      *            &lt;= 255.
@@ -235,7 +227,7 @@ public abstract class DatagramSocketImpl implements SocketOptions {
     /**
      * Sets the time-to-live (TTL) option for multicast packets sent on this
      * socket.
-     * 
+     *
      * @param ttl
      *            the time-to-live option value. Valid values are 0 &lt; ttl
      *            &lt;= 255.
@@ -249,7 +241,7 @@ public abstract class DatagramSocketImpl implements SocketOptions {
 
     /**
      * Connects this socket to the specified remote address and port.
-     * 
+     *
      * @param inetAddr
      *            the address of the target host which has to be connected.
      * @param port
@@ -276,7 +268,7 @@ public abstract class DatagramSocketImpl implements SocketOptions {
      * {@code peekData()} or {@code receive()} call. This call blocks until
      * either data has been received or, if a timeout is set, the timeout has
      * been expired.
-     * 
+     *
      * @param pack
      *            the datagram packet used to store the data.
      * @return the port the packet was received from.

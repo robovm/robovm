@@ -17,18 +17,18 @@
 
 /**
 * @author Alexander Y. Kleymenov
+* @version $Revision$
 */
 
 package org.apache.harmony.security.x509;
 
 import java.io.IOException;
-
 import org.apache.harmony.security.asn1.ASN1BitString;
 import org.apache.harmony.security.asn1.BerInputStream;
 import org.apache.harmony.security.asn1.BerOutputStream;
 
 /**
- * The class encapsulates the ASN.1 DER encoding/decoding work 
+ * The class encapsulates the ASN.1 DER encoding/decoding work
  * with the following part of X.509 CRL
  * (as specified in RFC 3280 -
  *  Internet X.509 Public Key Infrastructure.
@@ -45,30 +45,30 @@ import org.apache.harmony.security.asn1.BerOutputStream;
  *        cessationOfOperation    (5),
  *        certificateHold         (6),
  *        privilegeWithdrawn      (7),
- *        aACompromise            (8) 
+ *        aACompromise            (8)
  *  }
  *  </pre>
  */
-public class ReasonFlags {
-    
+public final class ReasonFlags {
+
     /**
      * The names of the reasons.
      */
     static final String[] REASONS = {
-        "unused", //$NON-NLS-1$
-        "keyCompromise", //$NON-NLS-1$
-        "cACompromise", //$NON-NLS-1$
-        "affiliationChanged", //$NON-NLS-1$
-        "superseded", //$NON-NLS-1$
-        "cessationOfOperation", //$NON-NLS-1$
-        "certificateHold", //$NON-NLS-1$
-        "privilegeWithdrawn", //$NON-NLS-1$
-        "aACompromise" //$NON-NLS-1$
+        "unused",
+        "keyCompromise",
+        "cACompromise",
+        "affiliationChanged",
+        "superseded",
+        "cessationOfOperation",
+        "certificateHold",
+        "privilegeWithdrawn",
+        "aACompromise"
     };
 
-    // the value of extension
-    private boolean[] flags;
-    
+    /** the value of extension */
+    private final boolean[] flags;
+
     /**
      * Creates the extension object corresponding to the given flags.
      */
@@ -76,36 +76,30 @@ public class ReasonFlags {
         this.flags = flags;
     }
 
-    /**
-     * Places the string representation of extension value
-     * into the StringBuffer object.
-     */
-    public void dumpValue(StringBuffer buffer, String prefix) {
-        buffer.append(prefix);
-        buffer.append("ReasonFlags [\n"); //$NON-NLS-1$
+    public void dumpValue(StringBuilder sb, String prefix) {
+        sb.append(prefix);
+        sb.append("ReasonFlags [\n");
         for (int i=0; i<flags.length; i++) {
             if (flags[i]) {
-                buffer.append(prefix).append("  ") //$NON-NLS-1$
-                    .append(REASONS[i]).append('\n');
+                sb.append(prefix).append("  ").append(REASONS[i]).append('\n');
             }
         }
-        buffer.append(prefix);
-        buffer.append("]\n"); //$NON-NLS-1$
+        sb.append(prefix);
+        sb.append("]\n");
     }
-    
+
     /**
      * ASN.1 Encoder/Decoder.
      */
-    public static final ASN1BitString ASN1 = 
+    public static final ASN1BitString ASN1 =
                             new ASN1BitString.ASN1NamedBitList(REASONS.length) {
         public Object getDecodedObject(BerInputStream in) throws IOException {
             return new ReasonFlags((boolean[]) super.getDecodedObject(in));
         }
-        
+
         public void setEncodingContent(BerOutputStream out) {
             out.content = ((ReasonFlags) out.content).flags;
             super.setEncodingContent(out);
         }
     };
 }
-

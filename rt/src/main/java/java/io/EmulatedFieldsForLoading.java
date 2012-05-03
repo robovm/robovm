@@ -21,7 +21,7 @@ package java.io;
  * An EmulatedFieldsForLoading is an object that represents a set of emulated
  * fields for an object being loaded. It is a concrete implementation for
  * ObjectInputStream.GetField
- * 
+ *
  * @see ObjectInputStream.GetField
  * @see EmulatedFieldsForDumping
  */
@@ -34,29 +34,27 @@ class EmulatedFieldsForLoading extends ObjectInputStream.GetField {
     private EmulatedFields emulatedFields;
 
     /**
-     * Constructs a new instance of EmulatedFieldsForLoading.
-     * 
+     * Constructs a new instance of EmulatedFieldsForDumping.
+     *
      * @param streamClass
      *            an ObjectStreamClass, defining the class for which to emulate
      *            fields.
      */
     EmulatedFieldsForLoading(ObjectStreamClass streamClass) {
-        super();
         this.streamClass = streamClass;
-        emulatedFields = new EmulatedFields(streamClass.getLoadFields(),
-                streamClass.fields());
+        emulatedFields = new EmulatedFields(streamClass.getLoadFields(), streamClass.fields());
     }
 
     /**
      * Return a boolean indicating if the field named <code>name</code> has
      * been assigned a value explicitly (false) or if it still holds a default
      * value for the type (true) because it hasn't been assigned to yet.
-     * 
+     *
      * @param name
      *            A String, the name of the field to test
      * @return <code>true</code> if the field holds it default value,
      *         <code>false</code> otherwise.
-     * 
+     *
      * @throws IOException
      *             If an IO error occurs
      * @throws IllegalArgumentException
@@ -72,7 +70,7 @@ class EmulatedFieldsForLoading extends ObjectInputStream.GetField {
      * Return the actual EmulatedFields instance used by the receiver. We have
      * the actual work in a separate class so that the code can be shared. The
      * receiver has to be of a subclass of GetField.
-     * 
+     *
      * @return array of ObjectSlot the receiver represents.
      */
     EmulatedFields emulatedFields() {
@@ -83,14 +81,14 @@ class EmulatedFieldsForLoading extends ObjectInputStream.GetField {
      * Find and return the byte value of a given field named <code>name</code>
      * in the receiver. If the field has not been assigned any value yet, the
      * default value <code>defaultValue</code> is returned instead.
-     * 
+     *
      * @param name
      *            A String, the name of the field to find
      * @param defaultValue
      *            Return value in case the field has not been assigned to yet.
      * @return the value of the given field if it has been assigned, or the
      *         default value otherwise
-     * 
+     *
      * @throws IOException
      *             If an IO error occurs
      * @throws IllegalArgumentException
@@ -106,14 +104,14 @@ class EmulatedFieldsForLoading extends ObjectInputStream.GetField {
      * Find and return the char value of a given field named <code>name</code>
      * in the receiver. If the field has not been assigned any value yet, the
      * default value <code>defaultValue</code> is returned instead.
-     * 
+     *
      * @param name
      *            A String, the name of the field to find
      * @param defaultValue
      *            Return value in case the field has not been assigned to yet.
      * @return the value of the given field if it has been assigned, or the
      *         default value otherwise
-     * 
+     *
      * @throws IOException
      *             If an IO error occurs
      * @throws IllegalArgumentException
@@ -129,14 +127,14 @@ class EmulatedFieldsForLoading extends ObjectInputStream.GetField {
      * Find and return the double value of a given field named <code>name</code>
      * in the receiver. If the field has not been assigned any value yet, the
      * default value <code>defaultValue</code> is returned instead.
-     * 
+     *
      * @param name
      *            A String, the name of the field to find
      * @param defaultValue
      *            Return value in case the field has not been assigned to yet.
      * @return the value of the given field if it has been assigned, or the
      *         default value otherwise
-     * 
+     *
      * @throws IOException
      *             If an IO error occurs
      * @throws IllegalArgumentException
@@ -152,14 +150,14 @@ class EmulatedFieldsForLoading extends ObjectInputStream.GetField {
      * Find and return the float value of a given field named <code>name</code>
      * in the receiver. If the field has not been assigned any value yet, the
      * default value <code>defaultValue</code> is returned instead.
-     * 
+     *
      * @param name
      *            A String, the name of the field to find
      * @param defaultValue
      *            Return value in case the field has not been assigned to yet.
      * @return the value of the given field if it has been assigned, or the
      *         default value otherwise
-     * 
+     *
      * @throws IOException
      *             If an IO error occurs
      * @throws IllegalArgumentException
@@ -175,14 +173,14 @@ class EmulatedFieldsForLoading extends ObjectInputStream.GetField {
      * Find and return the int value of a given field named <code>name</code>
      * in the receiver. If the field has not been assigned any value yet, the
      * default value <code>defaultValue</code> is returned instead.
-     * 
+     *
      * @param name
      *            A String, the name of the field to find
      * @param defaultValue
      *            Return value in case the field has not been assigned to yet.
      * @return the value of the given field if it has been assigned, or the
      *         default value otherwise
-     * 
+     *
      * @throws IOException
      *             If an IO error occurs
      * @throws IllegalArgumentException
@@ -198,14 +196,14 @@ class EmulatedFieldsForLoading extends ObjectInputStream.GetField {
      * Find and return the long value of a given field named <code>name</code>
      * in the receiver. If the field has not been assigned any value yet, the
      * default value <code>defaultValue</code> is returned instead.
-     * 
+     *
      * @param name
      *            A String, the name of the field to find
      * @param defaultValue
      *            Return value in case the field has not been assigned to yet.
      * @return the value of the given field if it has been assigned, or the
      *         default value otherwise
-     * 
+     *
      * @throws IOException
      *             If an IO error occurs
      * @throws IllegalArgumentException
@@ -221,14 +219,14 @@ class EmulatedFieldsForLoading extends ObjectInputStream.GetField {
      * Find and return the Object value of a given field named <code>name</code>
      * in the receiver. If the field has not been assigned any value yet, the
      * default value <code>defaultValue</code> is returned instead.
-     * 
+     *
      * @param name
      *            A String, the name of the field to find
      * @param defaultValue
      *            Return value in case the field has not been assigned to yet.
      * @return the value of the given field if it has been assigned, or the
      *         default value otherwise
-     * 
+     *
      * @throws IOException
      *             If an IO error occurs
      * @throws IllegalArgumentException
@@ -244,14 +242,14 @@ class EmulatedFieldsForLoading extends ObjectInputStream.GetField {
      * Find and return the short value of a given field named <code>name</code>
      * in the receiver. If the field has not been assigned any value yet, the
      * default value <code>defaultValue</code> is returned instead.
-     * 
+     *
      * @param name
      *            A String, the name of the field to find
      * @param defaultValue
      *            Return value in case the field has not been assigned to yet.
      * @return the value of the given field if it has been assigned, or the
      *         default value otherwise
-     * 
+     *
      * @throws IOException
      *             If an IO error occurs
      * @throws IllegalArgumentException
@@ -268,14 +266,14 @@ class EmulatedFieldsForLoading extends ObjectInputStream.GetField {
      * <code>name</code> in the receiver. If the field has not been assigned
      * any value yet, the default value <code>defaultValue</code> is returned
      * instead.
-     * 
+     *
      * @param name
      *            A String, the name of the field to find
      * @param defaultValue
      *            Return value in case the field has not been assigned to yet.
      * @return the value of the given field if it has been assigned, or the
      *         default value otherwise
-     * 
+     *
      * @throws IOException
      *             If an IO error occurs
      * @throws IllegalArgumentException
@@ -289,7 +287,7 @@ class EmulatedFieldsForLoading extends ObjectInputStream.GetField {
 
     /**
      * Return the class descriptor for which the emulated fields are defined.
-     * 
+     *
      * @return ObjectStreamClass The class descriptor for which the emulated
      *         fields are defined.
      */

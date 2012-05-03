@@ -17,6 +17,7 @@
 
 /**
 * @author Boris V. Kuznetsov
+* @version $Revision$
 */
 
 package javax.crypto;
@@ -24,7 +25,6 @@ package javax.crypto;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.SecureRandom;
-
 import org.apache.harmony.crypto.internal.NullCipherSpi;
 
 
@@ -40,9 +40,9 @@ public class NullCipher extends Cipher {
     public NullCipher() {
         super(new NullCipherSpi(), null, null);
         try {
-            this.init(Cipher.ENCRYPT_MODE, (Key)null, (SecureRandom)null);    
-        } catch (InvalidKeyException e) {        
+            this.init(Cipher.ENCRYPT_MODE, (Key)null, (SecureRandom)null);
+        } catch (InvalidKeyException e) {
         }
     }
-    
+
 }

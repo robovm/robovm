@@ -17,8 +17,6 @@
 
 package java.math;
 
-import org.apache.harmony.math.internal.nls.Messages;
-
 /**
  * Specifies the rounding behavior for operations whose results cannot be
  * represented exactly.
@@ -118,8 +116,7 @@ public enum RoundingMode {
             case BigDecimal.ROUND_UP:
                 return UP;
             default:
-                // math.00=Invalid rounding mode
-                throw new IllegalArgumentException(Messages.getString("math.00")); //$NON-NLS-1$
+                throw new IllegalArgumentException("Invalid rounding mode");
         }
     }
 }

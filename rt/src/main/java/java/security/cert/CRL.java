@@ -21,7 +21,7 @@ package java.security.cert;
  * This class represents Certificate Revocation Lists (CRLs) maintained by a
  * certificate authority. They are used to indicate that a given Certificate has
  * expired and consequently has become invalid.
- * 
+ *
  * @see CertificateFactory
  */
 public abstract class CRL {

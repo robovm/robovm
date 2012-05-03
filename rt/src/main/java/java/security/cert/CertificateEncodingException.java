@@ -28,7 +28,7 @@ public class CertificateEncodingException extends CertificateException {
     /**
      * Creates a new {@code CertificateEncodingException} with the specified
      * message.
-     * 
+     *
      * @param msg
      *            The detail message for the exception.
      */
@@ -45,7 +45,7 @@ public class CertificateEncodingException extends CertificateException {
     /**
      * Creates a new {@code CertificateEncodingException} with the specified
      * message and cause.
-     * 
+     *
      * @param message
      *            the detail message for the exception.
      * @param cause
@@ -58,7 +58,7 @@ public class CertificateEncodingException extends CertificateException {
     /**
      * Creates a new {@code CertificateEncodingException} with the specified
      * cause.
-     * 
+     *
      * @param cause
      *            the cause.
      */

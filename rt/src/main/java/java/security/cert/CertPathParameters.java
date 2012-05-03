@@ -27,7 +27,7 @@ public interface CertPathParameters extends Cloneable {
 
     /**
      * Clones this {@code CertPathParameters} instance.
-     * 
+     *
      * @return the cloned instance.
      */
     public Object clone();

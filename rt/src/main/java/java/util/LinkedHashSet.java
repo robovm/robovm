@@ -47,7 +47,7 @@ public class LinkedHashSet<E> extends HashSet<E> implements Set<E>, Cloneable,
     /**
      * Constructs a new instance of {@code LinkedHashSet} with the specified
      * capacity.
-     * 
+     *
      * @param capacity
      *            the initial capacity of this {@code LinkedHashSet}.
      */
@@ -58,7 +58,7 @@ public class LinkedHashSet<E> extends HashSet<E> implements Set<E>, Cloneable,
     /**
      * Constructs a new instance of {@code LinkedHashSet} with the specified
      * capacity and load factor.
-     * 
+     *
      * @param capacity
      *            the initial capacity.
      * @param loadFactor
@@ -71,7 +71,7 @@ public class LinkedHashSet<E> extends HashSet<E> implements Set<E>, Cloneable,
     /**
      * Constructs a new instance of {@code LinkedHashSet} containing the unique
      * elements in the specified collection.
-     * 
+     *
      * @param collection
      *            the collection of elements to add.
      */

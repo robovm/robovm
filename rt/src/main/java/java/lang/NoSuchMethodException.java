@@ -29,13 +29,13 @@ public class NoSuchMethodException extends Exception {
      * Constructs a new {@code NoSuchMethodException} that includes the current
      * stack trace.
      */
-   public NoSuchMethodException() {
+    public NoSuchMethodException() {
     }
 
-   /**
+    /**
      * Constructs a new {@code NoSuchMethodException} with the current stack
      * trace and the specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

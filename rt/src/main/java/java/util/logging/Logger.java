@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,30 +17,34 @@
 
 package java.util.logging;
 
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+import dalvik.system.DalvikLogHandler;
+import dalvik.system.DalvikLogging;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.apache.harmony.logging.internal.nls.Messages;
-
 /**
- * Loggers are used to log records to certain outputs, including file, console,
- * etc. They use various handlers to actually do the output-dependent
+ * Loggers are used to log records to a variety of destinations such as log files or
+ * the console. They use instances of {@link Handler} to actually do the destination-specific
  * operations.
- * <p>
- * Client applications can get named loggers by calling the {@code getLogger}
+ *
+ * <p>Client applications can get named loggers by calling the {@code getLogger}
  * methods. They can also get anonymous loggers by calling the
  * {@code getAnonymousLogger} methods. Named loggers are organized in a
  * namespace hierarchy managed by a log manager. The naming convention is
- * usually the same as java package's naming convention, that is using
- * dot-separated strings. Anonymous loggers do not belong to any namespace.
- * <p>
- * Loggers "inherit" log level setting from their parent if their own level is
+ * usually the Java package naming convention. Anonymous loggers do not belong to any namespace.
+ *
+ * <p>Developers should use named loggers to enable logging to be controlled on a
+ * per-{@code Logger} granularity. The recommended idiom is to create and assign the logger to
+ * a {@code static final} field. This ensures that there's always a strong reference to the logger,
+ * preventing it from being garbage collected. In particular, {@link LogManager#addLogger(Logger)}
+ * will <i>not</i> keep your logger live.
+ *
+ * <p>Loggers "inherit" log level setting from their parent if their own level is
  * set to {@code null}. This is also true for the resource bundle. The logger's
  * resource bundle is used to localize the log messages if no resource bundle
  * name is given when a log method is called. If {@code getUseParentHandlers()}
@@ -50,9 +54,9 @@ import org.apache.harmony.logging.internal.nls.Messages;
  * {@code null}.
  * <p>
  * When loading a given resource bundle, the logger first tries to use the
- * context classloader. If that fails, it tries the system classloader. And if
+ * context {@code ClassLoader}. If that fails, it tries the system {@code ClassLoader}. And if
  * that still fails, it searches up the class stack and uses each class's
- * classloader to try to locate the resource bundle.
+ * {@code ClassLoader} to try to locate the resource bundle.
  * <p>
  * Some log methods accept log requests that do not specify the source class and
  * source method. In these cases, the logging framework will automatically infer
@@ -68,25 +72,41 @@ import org.apache.harmony.logging.internal.nls.Messages;
  */
 public class Logger {
 
+    /** A handler for use when no handler optimization is possible. */
+    private static final DalvikLogHandler GENERAL_LOG_HANDLER = new DalvikLogHandler() {
+        public void publish(Logger source, String tag, Level level, String message) {
+            LogRecord record = new LogRecord(level, message);
+            record.setLoggerName(source.name);
+            source.setResourceBundle(record);
+            source.log(record);
+        }
+    };
+
+    /**
+     * The name of the global logger. Before using this, see the discussion of how to use
+     * {@code Logger} in the class documentation.
+     * @since 1.6
+     */
+    public static final String GLOBAL_LOGGER_NAME = "global";
+
+    /**
+     * The global logger is provided as convenience for casual use.
+     * @deprecated deadlock-prone. Use {@code Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)} as
+     * a direct replacement, but see the discussion of how to use {@code Logger} in the class
+     * documentation.
+     */
+    @Deprecated
+    public static final Logger global = new Logger(GLOBAL_LOGGER_NAME, null);
+
     /**
      * When converting the concurrent collection of handlers to an array, we
      * always pass a zero-length array to avoid size miscalculations. Passing
      * properly-sized arrays is non-atomic, and risks a null element in the
      * result.
-     *
-     * @deprecated Use Logger.getLogger(Logger.GLOBAL_LOGGER_NAME) instead.
      */
-    @Deprecated
-    public final static Logger global = new Logger("global", null); //$NON-NLS-1$
-
     private static final Handler[] EMPTY_HANDLERS_ARRAY = new Handler[0];
 
-    /**
-     * @since 1.6
-     */
-    public static final String GLOBAL_LOGGER_NAME = "global";
-
-    // the name of this logger
+    /** The name of this logger. */
     private volatile String name;
 
     /** The parent logger of this logger. */
@@ -139,6 +159,81 @@ public class Logger {
      */
     final List<Logger> children = new ArrayList<Logger>();
 
+    /** the tag used for optimized logging. Derived from the logger name. */
+    private final String androidTag;
+
+    /** Handler delegate for either optimized or standard logging. */
+    private volatile DalvikLogHandler dalvikLogHandler = GENERAL_LOG_HANDLER;
+
+    /**
+     * We've optimized for the common case: logging to a single handler that
+     * implements {@link DalvikLogHandler}. This is how Android framework
+     * applications are configured by default.
+     *
+     * <p>This optimization has been measured to show a 2.75x improvement in
+     * throughput in the common case: 154ns vs. 56ns per message on a Cortex-A8.
+     * Direct use of {@code android.util.Log} takes 29ns per message.
+     *
+     * <p>Each time the handler configuration changes, either directly or
+     * indirectly, it's necessary to either turn on or off this optimization.
+     * When the optimization is off, {@link #dalvikLogHandler} is assigned to
+     * {@link #GENERAL_LOG_HANDLER} which can satisfy arbitrary configuration.
+     * When the optimization is possible, {@link #dalvikLogHandler} is assigned
+     * to the user's efficient implementation. In pratice this is usually the
+     * {@code com.android.internal.logging.AndroidHandler}.
+     */
+    void updateDalvikLogHandler() {
+        DalvikLogHandler newLogHandler = GENERAL_LOG_HANDLER;
+
+        Logger parent = this.parent;
+
+        if (getClass() != Logger.class) {
+            /*
+             * Do nothing. Subclasses aren't eligible for the optimization
+             * because they may override methods like getHandlers() or
+             * log(LogRecord).
+             */
+
+        } else if (parent == null) {
+            // we use an iterator rather than size()+get() for safe concurrency
+            Iterator<Handler> h = handlers.iterator();
+            if (h.hasNext()) {
+                Handler firstHandler = h.next();
+                if (!h.hasNext() && firstHandler instanceof DalvikLogHandler) {
+                    /*
+                     * At this point, we're eligible for the optimization. We've
+                     * satisfied these constraints:
+                     *   1. This is not a subclass of logger
+                     *   2. This is a root logger (no parent)
+                     *   3. There is exactly one handler installed
+                     *   4. That handler is a DalvikLogHandler
+                     */
+                    newLogHandler = (DalvikLogHandler) firstHandler;
+                }
+            }
+        } else if (handlers.isEmpty() && notifyParentHandlers) {
+            /*
+             * At this point, we're eligible for the optimization if our parent
+             * logger is eligible. We've satisfied these constraints:
+             *   1. This is not a subclass of logger
+             *   2. our parent exists
+             *   3. we have no handlers of our own
+             *   4. we notify our parent's handlers
+             */
+            newLogHandler = parent.dalvikLogHandler;
+        }
+
+        if (newLogHandler == this.dalvikLogHandler) {
+            return;
+        }
+
+        this.dalvikLogHandler = newLogHandler;
+
+        for (Logger logger : children) {
+            logger.updateDalvikLogHandler();
+        }
+    }
+
     /**
      * Constructs a {@code Logger} object with the supplied name and resource
      * bundle name; {@code notifiyParentHandlers} is set to {@code true}.
@@ -157,6 +252,8 @@ public class Logger {
     protected Logger(String name, String resourceBundleName) {
         this.name = name;
         initResourceBundle(resourceBundleName);
+        this.androidTag = DalvikLogging.loggerNameToTag(name);
+        updateDalvikLogHandler();
     }
 
     /**
@@ -170,64 +267,25 @@ public class Logger {
      */
     static ResourceBundle loadResourceBundle(String resourceBundleName) {
         // try context class loader to load the resource
-        ClassLoader cl = AccessController
-                .doPrivileged(new PrivilegedAction<ClassLoader>() {
-                    public ClassLoader run() {
-                        return Thread.currentThread().getContextClassLoader();
-                    }
-                });
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
         if (cl != null) {
             try {
-                return ResourceBundle.getBundle(resourceBundleName, Locale
-                        .getDefault(), cl);
-            } catch (MissingResourceException e) {
-                // Failed to load using context classloader, ignore
+                return ResourceBundle.getBundle(resourceBundleName, Locale.getDefault(), cl);
+            } catch (MissingResourceException ignored) {
+                // Failed to load using context class loader, ignore
             }
         }
         // try system class loader to load the resource
-        cl = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-            public ClassLoader run() {
-                return ClassLoader.getSystemClassLoader();
-            }
-        });
+        cl = ClassLoader.getSystemClassLoader();
         if (cl != null) {
             try {
-                return ResourceBundle.getBundle(resourceBundleName, Locale
-                        .getDefault(), cl);
-            } catch (MissingResourceException e) {
-                // Failed to load using system classloader, ignore
+                return ResourceBundle.getBundle(resourceBundleName, Locale.getDefault(), cl);
+            } catch (MissingResourceException ignored) {
+                // Failed to load using system class loader, ignore
             }
         }
-        // try all class loaders up the class stack
-        final Class<?>[] classes = AccessController
-                .doPrivileged(new PrivilegedAction<Class<?>[]>() {
-                    public Class<?>[] run() {
-                        return (new PrivateSecurityManager())
-                                .privateGetClassContext();
-                    }
-                });
-        // the first class, which is PrivateSecurityManager, is skipped
-        for (int i = 1; i < classes.length; i++) {
-            final int index = i;
-            try {
-                cl = AccessController
-                        .doPrivileged(new PrivilegedAction<ClassLoader>() {
-                            public ClassLoader run() {
-                                return classes[index].getClassLoader();
-                            }
-                        });
-                if (cl == null) {
-                    continue;
-                }
-                return ResourceBundle.getBundle(resourceBundleName, Locale
-                        .getDefault(), cl);
-            } catch (MissingResourceException e) {
-                // Failed to load using the current class's classloader, ignore
-            }
-        }
-        // logging.8=Failed to load the specified resource bundle "{0}".
-        throw new MissingResourceException(Messages.getString("logging.8", //$NON-NLS-1$
-                resourceBundleName), resourceBundleName, null);
+        throw new MissingResourceException("Failed to load the specified resource bundle \"" +
+                resourceBundleName + "\"", resourceBundleName, null);
     }
 
     /**
@@ -247,8 +305,7 @@ public class Logger {
     /**
      * Gets an anonymous logger to use internally in a thread. Anonymous loggers
      * are not registered in the log manager's namespace. No security checks
-     * will be performed when updating an anonymous logger's control settings so
-     * that they can be used in applets.
+     * will be performed when updating an anonymous logger's control settings.
      * <p>
      * The anonymous loggers' parent is set to be the root logger. This way it
      * inherits default logging level and handlers from the root logger.
@@ -280,11 +337,7 @@ public class Logger {
             if (current.equals(resourceBundleName)) {
                 return;
             } else {
-                // logging.9=The specified resource bundle name "{0}" is
-                // inconsistent with the existing one "{1}".
-                throw new IllegalArgumentException(Messages.getString(
-                        "logging.9", //$NON-NLS-1$
-                        resourceBundleName, current));
+                throw new IllegalArgumentException("Resource bundle name '" + resourceBundleName + "' is inconsistent with the existing '" + current + "'");
             }
         }
 
@@ -333,32 +386,37 @@ public class Logger {
     }
 
     /**
+     * Returns the global {@code Logger}.
+     * @since 1.7
+     * @hide 1.7
+     */
+    public static Logger getGlobal() {
+        return global;
+    }
+
+    /**
      * Adds a handler to this logger. The {@code name} will be fed with log
      * records received by this logger.
      *
      * @param handler
      *            the handler object to add, cannot be {@code null}.
-     * @throws SecurityException
-     *             if a security manager determines that the caller does not
-     *             have the required permission.
      */
     public void addHandler(Handler handler) {
         if (handler == null) {
-            // logging.A=The 'handler' parameter is null.
-            throw new NullPointerException(Messages.getString("logging.A")); //$NON-NLS-1$
+            throw new NullPointerException("handler == null");
         }
         // Anonymous loggers can always add handlers
         if (this.isNamed) {
             LogManager.getLogManager().checkAccess();
         }
         this.handlers.add(handler);
+        updateDalvikLogHandler();
     }
 
     /**
      * Set the logger's manager and initializes its configuration from the
      * manager's properties.
      */
-    @SuppressWarnings("nls")
     void setManager(LogManager manager) {
         String levelProperty = manager.getProperty(name + ".level");
         if (levelProperty != null) {
@@ -369,11 +427,11 @@ public class Logger {
             }
         }
 
-        String handlersPropertyName = "".equals(name) ? "handlers" : name + ".handlers";
+        String handlersPropertyName = name.isEmpty() ? "handlers" : name + ".handlers";
         String handlersProperty = manager.getProperty(handlersPropertyName);
         if (handlersProperty != null) {
             for (String handlerName : handlersProperty.split(",|\\s")) {
-                if (handlerName.equals("")) {
+                if (handlerName.isEmpty()) {
                     continue;
                 }
 
@@ -397,6 +455,8 @@ public class Logger {
                 handlers.add(handler);
             }
         }
+
+        updateDalvikLogHandler();
     }
 
     /**
@@ -414,9 +474,6 @@ public class Logger {
      *
      * @param handler
      *            the handler to be removed.
-     * @throws SecurityException
-     *             if a security manager determines that the caller does not
-     *             have the required permission.
      */
     public void removeHandler(Handler handler) {
         // Anonymous loggers can always remove handlers
@@ -427,6 +484,7 @@ public class Logger {
             return;
         }
         this.handlers.remove(handler);
+        updateDalvikLogHandler();
     }
 
     /**
@@ -443,9 +501,6 @@ public class Logger {
      *
      * @param newFilter
      *            the filter to set, may be {@code null}.
-     * @throws SecurityException
-     *             if a security manager determines that the caller does not
-     *             have the required permission.
      */
     public void setFilter(Filter newFilter) {
         // Anonymous loggers can always set the filter
@@ -471,9 +526,6 @@ public class Logger {
      *
      * @param newLevel
      *            the logging level to set.
-     * @throws SecurityException
-     *             if a security manager determines that the caller does not
-     *             have the required permission.
      */
     public void setLevel(Level newLevel) {
         // Anonymous loggers can always set the level
@@ -502,9 +554,6 @@ public class Logger {
      *
      * @param notifyParentHandlers
      *            the new flag indicating whether to use the parent's handlers.
-     * @throws SecurityException
-     *             if a security manager determines that the caller does not
-     *             have the required permission.
      */
     public void setUseParentHandlers(boolean notifyParentHandlers) {
         // Anonymous loggers can always set the useParentHandlers flag
@@ -512,6 +561,7 @@ public class Logger {
             LogManager.getLogManager().checkAccess();
         }
         this.notifyParentHandlers = notifyParentHandlers;
+        updateDalvikLogHandler();
     }
 
     /**
@@ -530,14 +580,10 @@ public class Logger {
      *
      * @param parent
      *            the parent logger to set.
-     * @throws SecurityException
-     *             if a security manager determines that the caller does not
-     *             have the required permission.
      */
     public void setParent(Logger parent) {
         if (parent == null) {
-            // logging.B=The 'parent' parameter is null.
-            throw new NullPointerException(Messages.getString("logging.B")); //$NON-NLS-1$
+            throw new NullPointerException("parent == null");
         }
 
         // even anonymous loggers are checked
@@ -638,7 +684,7 @@ public class Logger {
             return;
         }
 
-        LogRecord record = new LogRecord(Level.FINER, "ENTRY"); //$NON-NLS-1$
+        LogRecord record = new LogRecord(Level.FINER, "ENTRY");
         record.setLoggerName(this.name);
         record.setSourceClassName(sourceClass);
         record.setSourceMethodName(sourceMethod);
@@ -664,7 +710,7 @@ public class Logger {
             return;
         }
 
-        LogRecord record = new LogRecord(Level.FINER, "ENTRY" + " {0}"); //$NON-NLS-1$ //$NON-NLS-2$
+        LogRecord record = new LogRecord(Level.FINER, "ENTRY" + " {0}");
         record.setLoggerName(this.name);
         record.setSourceClassName(sourceClass);
         record.setSourceMethodName(sourceMethod);
@@ -686,7 +732,6 @@ public class Logger {
      * @param params
      *            an array of parameters for the method call.
      */
-    @SuppressWarnings("nls")
     public void entering(String sourceClass, String sourceMethod,
             Object[] params) {
         if (!internalIsLoggable(Level.FINER)) {
@@ -725,7 +770,7 @@ public class Logger {
             return;
         }
 
-        LogRecord record = new LogRecord(Level.FINER, "RETURN"); //$NON-NLS-1$
+        LogRecord record = new LogRecord(Level.FINER, "RETURN");
         record.setLoggerName(this.name);
         record.setSourceClassName(sourceClass);
         record.setSourceMethodName(sourceMethod);
@@ -750,7 +795,7 @@ public class Logger {
             return;
         }
 
-        LogRecord record = new LogRecord(Level.FINER, "RETURN" + " {0}"); //$NON-NLS-1$ //$NON-NLS-2$
+        LogRecord record = new LogRecord(Level.FINER, "RETURN" + " {0}");
         record.setLoggerName(this.name);
         record.setSourceClassName(sourceClass);
         record.setSourceMethodName(sourceMethod);
@@ -778,7 +823,7 @@ public class Logger {
             return;
         }
 
-        LogRecord record = new LogRecord(Level.FINER, "THROW"); //$NON-NLS-1$
+        LogRecord record = new LogRecord(Level.FINER, "THROW");
         record.setLoggerName(this.name);
         record.setSourceClassName(sourceClass);
         record.setSourceMethodName(sourceMethod);
@@ -877,11 +922,7 @@ public class Logger {
         if (!internalIsLoggable(logLevel)) {
             return;
         }
-
-        LogRecord record = new LogRecord(logLevel, msg);
-        record.setLoggerName(this.name);
-        setResourceBundle(record);
-        log(record);
+        dalvikLogHandler.publish(this, androidTag, logLevel, msg);
     }
 
     /**
@@ -1278,15 +1319,6 @@ public class Logger {
         log(record);
     }
 
-    /*
-     * This security manager is used to access the class context.
-     */
-    static class PrivateSecurityManager extends SecurityManager {
-        public Class<?>[] privateGetClassContext() {
-            return super.getClassContext();
-        }
-    }
-
     void reset() {
         levelObjVal = null;
         levelIntVal = Level.INFO.intValue();
@@ -1299,7 +1331,7 @@ public class Logger {
             } catch (Exception ignored) {
             }
         }
+
+        updateDalvikLogHandler();
     }
 }
-
-

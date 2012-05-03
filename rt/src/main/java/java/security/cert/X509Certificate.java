@@ -23,10 +23,7 @@ import java.security.Principal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
 import javax.security.auth.x500.X500Principal;
-
-import org.apache.harmony.security.internal.nls.Messages;
 
 /**
  * Abstract base class for X.509 certificates.
@@ -35,13 +32,13 @@ import org.apache.harmony.security.internal.nls.Messages;
  * certificates.
  * <p>
  * The basic X.509 v3 format described in ASN.1:
- * 
+ *
  * <pre>
  * Certificate  ::=  SEQUENCE  {
  *     tbsCertificate       TBSCertificate,
  *     signatureAlgorithm   AlgorithmIdentifier,
  *     signature            BIT STRING  }
- *     
+ *
  * TBSCertificate  ::=  SEQUENCE  {
  *      version         [0]  EXPLICIT Version DEFAULT v1,
  *      serialNumber         CertificateSerialNumber,
@@ -74,26 +71,26 @@ public abstract class X509Certificate
      * Creates a new {@code X509Certificate}.
      */
     protected X509Certificate() {
-        super("X.509"); //$NON-NLS-1$
+        super("X.509");
     }
 
     /**
      * Checks whether the certificate is currently valid.
      * <p>
      * The validity defined in ASN.1:
-     * 
+     *
      * <pre>
      * validity             Validity
-     * 
-     * Validity ::= SEQUENCE { 
-     *      notBefore       CertificateValidityDate, 
+     *
+     * Validity ::= SEQUENCE {
+     *      notBefore       CertificateValidityDate,
      *      notAfter        CertificateValidityDate }
-     * 
-     * CertificateValidityDate ::= CHOICE { 
-     *      utcTime         UTCTime, 
+     *
+     * CertificateValidityDate ::= CHOICE {
+     *      utcTime         UTCTime,
      *      generalTime     GeneralizedTime }
      * </pre>
-     * 
+     *
      * @throws CertificateExpiredException
      *             if the certificate has expired.
      * @throws CertificateNotYetValidException
@@ -104,7 +101,7 @@ public abstract class X509Certificate
 
     /**
      * Checks whether the certificate is valid at the specified date.
-     * 
+     *
      * @param date
      *            the date to check the validity against.
      * @throws CertificateExpiredException
@@ -120,11 +117,11 @@ public abstract class X509Certificate
      * Returns the certificates {@code version} (version number).
      * <p>
      * The version defined is ASN.1:
-     * 
+     *
      * <pre>
      * Version ::=  INTEGER  {  v1(0), v2(1), v3(2)  }
      * </pre>
-     * 
+     *
      * @return the version number.
      */
     public abstract int getVersion();
@@ -133,11 +130,11 @@ public abstract class X509Certificate
      * Returns the {@code serialNumber} of the certificate.
      * <p>
      * The ASN.1 definition of {@code serialNumber}:
-     * 
+     *
      * <pre>
      * CertificateSerialNumber  ::=  INTEGER
      * </pre>
-     * 
+     *
      * @return the serial number.
      */
     public abstract BigInteger getSerialNumber();
@@ -147,28 +144,28 @@ public abstract class X509Certificate
      * implementation specific {@code Principal} object.
      * <p>
      * The ASN.1 definition of {@code issuer}:
-     * 
+     *
      * <pre>
      *  issuer      Name
-     * 
+     *
      *  Name ::= CHOICE {
      *      RDNSequence }
-     * 
+     *
      *    RDNSequence ::= SEQUENCE OF RelativeDistinguishedName
-     * 
+     *
      *    RelativeDistinguishedName ::= SET OF AttributeTypeAndValue
-     * 
+     *
      *    AttributeTypeAndValue ::= SEQUENCE {
      *      type     AttributeType,
      *      value    AttributeValue }
-     * 
+     *
      *    AttributeType ::= OBJECT IDENTIFIER
-     * 
+     *
      *    AttributeValue ::= ANY DEFINED BY AttributeType
      * </pre>
-     * 
+     *
      * <b>replaced by:</b> {@link #getIssuerX500Principal()}.
-     * 
+     *
      * @return the {@code issuer} as an implementation specific {@code
      *         Principal}.
      */
@@ -177,7 +174,7 @@ public abstract class X509Certificate
     /**
      * Returns the {@code issuer} (issuer distinguished name) as an {@code
      * X500Principal}.
-     * 
+     *
      * @return the {@code issuer} (issuer distinguished name).
      */
     public X500Principal getIssuerX500Principal() {
@@ -186,7 +183,7 @@ public abstract class X509Certificate
             // TODO if there is no X.509 certificate provider installed
             // should we try to access Harmony X509CertImpl via classForName?
             CertificateFactory factory = CertificateFactory
-                    .getInstance("X.509"); //$NON-NLS-1$
+                    .getInstance("X.509");
 
             X509Certificate cert = (X509Certificate) factory
                     .generateCertificate(new ByteArrayInputStream(getEncoded()));
@@ -194,7 +191,7 @@ public abstract class X509Certificate
             return cert.getIssuerX500Principal();
 
         } catch (Exception e) {
-            throw new RuntimeException(Messages.getString("security.59"), e); //$NON-NLS-1$
+            throw new RuntimeException("Failed to get X500Principal issuer", e);
         }
     }
 
@@ -203,26 +200,26 @@ public abstract class X509Certificate
      * implementation specific {@code Principal} object.
      * <p>
      * The ASN.1 definition of {@code subject}:
-     * 
+     *
      * <pre>
      * subject      Name
-     * 
+     *
      *  Name ::= CHOICE {
      *      RDNSequence }
-     * 
+     *
      *    RDNSequence ::= SEQUENCE OF RelativeDistinguishedName
-     * 
+     *
      *    RelativeDistinguishedName ::= SET OF AttributeTypeAndValue
-     * 
+     *
      *    AttributeTypeAndValue ::= SEQUENCE {
      *      type     AttributeType,
      *      value    AttributeValue }
-     * 
+     *
      *    AttributeType ::= OBJECT IDENTIFIER
-     * 
+     *
      *    AttributeValue ::= ANY DEFINED BY AttributeType
      * </pre>
-     * 
+     *
      * <p>
      * <b>replaced by:</b> {@link #getSubjectX500Principal()}.
      *
@@ -233,7 +230,7 @@ public abstract class X509Certificate
     /**
      * Returns the {@code subject} (subject distinguished name) as an {@code
      * X500Principal}.
-     * 
+     *
      * @return the {@code subject} (subject distinguished name)
      */
     public X500Principal getSubjectX500Principal() {
@@ -242,22 +239,21 @@ public abstract class X509Certificate
             // TODO if there is no X.509 certificate provider installed
             // should we try to access Harmony X509CertImpl via classForName?
             CertificateFactory factory = CertificateFactory
-                    .getInstance("X.509"); //$NON-NLS-1$
+                    .getInstance("X.509");
 
             X509Certificate cert = (X509Certificate) factory
                     .generateCertificate(new ByteArrayInputStream(getEncoded()));
 
             return cert.getSubjectX500Principal();
-
         } catch (Exception e) {
-            throw new RuntimeException(Messages.getString("security.5A"), e); //$NON-NLS-1$
+            throw new RuntimeException("Failed to get X500Principal subject", e);
         }
     }
 
     /**
      * Returns the {@code notBefore} date from the validity period of the
      * certificate.
-     * 
+     *
      * @return the start of the validity period.
      */
     public abstract Date getNotBefore();
@@ -265,7 +261,7 @@ public abstract class X509Certificate
     /**
      * Returns the {@code notAfter} date of the validity period of the
      * certificate.
-     * 
+     *
      * @return the end of the validity period.
      */
     public abstract Date getNotAfter();
@@ -273,7 +269,7 @@ public abstract class X509Certificate
     /**
      * Returns the {@code tbsCertificate} information from this certificate in
      * DER-encoded format.
-     * 
+     *
      * @return the DER-encoded certificate information.
      * @throws CertificateEncodingException
      *             if an error occurs in encoding
@@ -283,28 +279,28 @@ public abstract class X509Certificate
 
     /**
      * Returns the raw signature bits from the certificate.
-     * 
+     *
      * @return the raw signature bits from the certificate.
      */
     public abstract byte[] getSignature();
 
     /**
      * Returns the name of the algorithm for the certificate signature.
-     * 
+     *
      * @return the signature algorithm name.
      */
     public abstract String getSigAlgName();
 
     /**
      * Returns the OID of the signature algorithm from the certificate.
-     * 
+     *
      * @return the OID of the signature algorithm.
      */
     public abstract String getSigAlgOID();
 
     /**
      * Returns the parameters of the signature algorithm in DER-encoded format.
-     * 
+     *
      * @return the parameters of the signature algorithm, or {@code null} if
      *         none are used.
      */
@@ -312,7 +308,7 @@ public abstract class X509Certificate
 
     /**
      * Returns the {@code issuerUniqueID} from the certificate.
-     * 
+     *
      * @return the {@code issuerUniqueID} or {@code null} if there's none in the
      *         certificate.
      */
@@ -320,7 +316,7 @@ public abstract class X509Certificate
 
     /**
      * Returns the {@code subjectUniqueID} from the certificate.
-     * 
+     *
      * @return the {@code subjectUniqueID} or null if there's none in the
      *         certificate.
      */
@@ -330,7 +326,7 @@ public abstract class X509Certificate
      * Returns the {@code KeyUsage} extension as a {@code boolean} array.
      * <p>
      * The ASN.1 definition of {@code KeyUsage}:
-     * 
+     *
      * <pre>
      * KeyUsage ::= BIT STRING {
      *      digitalSignature        (0),
@@ -342,9 +338,9 @@ public abstract class X509Certificate
      *      cRLSign                 (6),
      *      encipherOnly            (7),
      *      decipherOnly            (8) }
-     * 
+     *
      * </pre>
-     * 
+     *
      * @return the {@code KeyUsage} extension or {@code null} if there's none in
      *         the certificate.
      */
@@ -353,7 +349,7 @@ public abstract class X509Certificate
     /**
      * Returns a read-only list of OID strings representing the {@code
      * ExtKeyUsageSyntax} field of the extended key usage extension.
-     * 
+     *
      * @return the extended key usage extension, or {@code null} if there's none
      *         in the certificate.
      * @throws CertificateParsingException
@@ -367,7 +363,7 @@ public abstract class X509Certificate
     /**
      * Returns the path length of the certificate constraints from the {@code
      * BasicContraints} extension.
-     * 
+     *
      * @return the path length of the certificate constraints if the extension
      *         is present or {@code -1} if the extension is not present. {@code
      *         Integer.MAX_VALUE} if there's not limit.
@@ -379,12 +375,12 @@ public abstract class X509Certificate
      * {@code SubjectAltName} extension.
      * <p>
      * The ASN.1 definition of {@code SubjectAltName}:
-     * 
+     *
      * <pre>
      * SubjectAltName ::= GeneralNames
-     * 
+     *
      * GeneralNames ::= SEQUENCE SIZE (1..MAX) OF GeneralName
-     * 
+     *
      * GeneralName ::= CHOICE {
      *      otherName                       [0]     AnotherName,
      *      rfc822Name                      [1]     IA5String,
@@ -395,9 +391,9 @@ public abstract class X509Certificate
      *      uniformResourceIdentifier       [6]     IA5String,
      *      iPAddress                       [7]     OCTET STRING,
      *      registeredID                    [8]     OBJECT IDENTIFIER }
-     * 
+     *
      * </pre>
-     * 
+     *
      * @return the subject alternative names or {@code null} if there are none
      *         in the certificate.
      * @throws CertificateParsingException
@@ -413,12 +409,12 @@ public abstract class X509Certificate
      * IssuerAltName} extension.
      * <p>
      * The ASN.1 definition of {@code IssuerAltName}:
-     * 
+     *
      * <pre>
      * IssuerAltName ::= GeneralNames
-     * 
+     *
      * GeneralNames ::= SEQUENCE SIZE (1..MAX) OF GeneralName
-     * 
+     *
      * GeneralName ::= CHOICE {
      *      otherName                       [0]     AnotherName,
      *      rfc822Name                      [1]     IA5String,
@@ -429,9 +425,9 @@ public abstract class X509Certificate
      *      uniformResourceIdentifier       [6]     IA5String,
      *      iPAddress                       [7]     OCTET STRING,
      *      registeredID                    [8]     OBJECT IDENTIFIER }
-     * 
+     *
      * </pre>
-     * 
+     *
      * @return the issuer alternative names of {@code null} if there are none in
      *         the certificate.
      * @throws CertificateParsingException
@@ -442,4 +438,3 @@ public abstract class X509Certificate
         return null;
     }
 }
-

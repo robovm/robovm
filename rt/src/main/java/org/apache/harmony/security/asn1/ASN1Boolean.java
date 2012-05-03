@@ -17,6 +17,7 @@
 
 /**
 * @author Vladimir N. Molotkov, Stepan M. Mishura
+* @version $Revision$
 */
 
 package org.apache.harmony.security.asn1;
@@ -26,18 +27,17 @@ import java.io.IOException;
 
 /**
  * This class represents ASN.1 Boolean type.
- * 
- * @see http://asn1.elibel.tm.fr/en/standards/index.htm
+ *
+ * @see <a href="http://asn1.elibel.tm.fr/en/standards/index.htm">ASN.1</a>
  */
+public final class ASN1Boolean extends ASN1Primitive {
 
-public class ASN1Boolean extends ASN1Primitive {
-
-    // default implementation
+    /** default implementation */
     private static final ASN1Boolean ASN1 = new ASN1Boolean();
 
     /**
      * Constructs ASN.1 Boolean type
-     * 
+     *
      * The constructor is provided for inheritance purposes
      * when there is a need to create a custom ASN.1 Boolean type.
      * To get a default implementation it is recommended to use
@@ -49,7 +49,7 @@ public class ASN1Boolean extends ASN1Primitive {
 
     /**
      * Returns ASN.1 Boolean type default implementation
-     * 
+     *
      * The default implementation works with encoding
      * that is represented as Boolean object.
      *
@@ -58,12 +58,6 @@ public class ASN1Boolean extends ASN1Primitive {
     public static ASN1Boolean getInstance() {
         return ASN1;
     }
-
-    //
-    //
-    // Decode
-    //
-    //
 
     public Object decode(BerInputStream in) throws IOException {
         in.readBoolean();
@@ -80,18 +74,12 @@ public class ASN1Boolean extends ASN1Primitive {
      * @param in - BER input stream
      * @return java.lang.Boolean object
      */
-    public Object getDecodedObject(BerInputStream in) throws IOException {
+    @Override public Object getDecodedObject(BerInputStream in) throws IOException {
         if (in.buffer[in.contentOffset] == 0) {
             return Boolean.FALSE;
         }
         return Boolean.TRUE;
     }
-
-    //
-    //
-    // Encode
-    //
-    //
 
     public void encodeContent(BerOutputStream out) {
         out.encodeBoolean();

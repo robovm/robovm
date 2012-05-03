@@ -24,7 +24,7 @@ import java.security.spec.InvalidParameterSpecException;
 /**
  * {@code AlgorithmParametersSpi} is the Service Provider Interface (SPI)
  * definition for {@code AlgorithmParameters}.
- * 
+ *
  * @see AlgorithmParameters
  */
 public abstract class AlgorithmParametersSpi {

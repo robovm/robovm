@@ -28,7 +28,7 @@ public abstract class CertStoreSpi {
 
     /**
      * Creates a new {@code CertStoreSpi}.
-     * 
+     *
      * @param params
      *            the initialization parameters.
      * @throws InvalidAlgorithmParameterException
@@ -42,7 +42,7 @@ public abstract class CertStoreSpi {
     /**
      * Returns the list of {@code Certificate}s for the specified {@code
      * CertSelector} from this instance.
-     * 
+     *
      * @param selector
      *            the selector containing the criteria to search for
      *            certificates in this instance.
@@ -57,7 +57,7 @@ public abstract class CertStoreSpi {
     /**
      * Returns the list of {@code CRL}s for the specified {@code CRLSelector}
      * from this instance.
-     * 
+     *
      * @param selector
      *            the selector containing the criteria to search for certificate
      *            revocation lists in instance.

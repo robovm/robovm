@@ -17,8 +17,6 @@
 
 package java.security.spec;
 
-import org.apache.harmony.security.internal.nls.Messages;
-
 /**
  * The parameter specification for the Mask Generation Function (MGF1) in
  * the RSA-PSS Signature and OAEP Padding scheme.
@@ -34,28 +32,28 @@ public class MGF1ParameterSpec implements AlgorithmParameterSpec {
      * digest.
      */
     public static final MGF1ParameterSpec SHA1 =
-        new MGF1ParameterSpec("SHA-1"); //$NON-NLS-1$
+        new MGF1ParameterSpec("SHA-1");
 
     /**
      * The predefined MGF1 parameter specification with an "SHA-256" message
      * digest.
      */
     public static final MGF1ParameterSpec SHA256 =
-        new MGF1ParameterSpec("SHA-256"); //$NON-NLS-1$
+        new MGF1ParameterSpec("SHA-256");
 
     /**
      * The predefined MGF1 parameter specification with an "SHA-384" message
      * digest.
      */
     public static final MGF1ParameterSpec SHA384 =
-        new MGF1ParameterSpec("SHA-384"); //$NON-NLS-1$
+        new MGF1ParameterSpec("SHA-384");
 
     /**
      * The predefined MGF1 parameter specification with an "SHA-512" message
      * digest.
      */
     public static final MGF1ParameterSpec SHA512 =
-        new MGF1ParameterSpec("SHA-512"); //$NON-NLS-1$
+        new MGF1ParameterSpec("SHA-512");
 
     //  Message digest algorithm name
     private final String mdName;
@@ -63,20 +61,20 @@ public class MGF1ParameterSpec implements AlgorithmParameterSpec {
     /**
      * Creates a new {@code MGF1ParameterSpec} with the specified message digest
      * algorithm name.
-     * 
+     *
      * @param mdName
      *            the name of the message digest algorithm.
      */
     public MGF1ParameterSpec(String mdName) {
         this.mdName = mdName;
         if (this.mdName == null) {
-            throw new NullPointerException(Messages.getString("security.80")); //$NON-NLS-1$
+            throw new NullPointerException("mdName == null");
         }
     }
 
     /**
      * Returns the name of the message digest algorithm.
-     * 
+     *
      * @return the name of the message digest algorithm.
      */
     public String getDigestAlgorithm() {

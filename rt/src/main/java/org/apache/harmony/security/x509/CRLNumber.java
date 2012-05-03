@@ -14,14 +14,13 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
- * under the License.    
+ * under the License.
  */
 
 package org.apache.harmony.security.x509;
 
 import java.io.IOException;
 import java.math.BigInteger;
-
 import org.apache.harmony.security.asn1.ASN1Integer;
 import org.apache.harmony.security.asn1.ASN1Type;
 
@@ -34,17 +33,9 @@ import org.apache.harmony.security.asn1.ASN1Type;
  * </pre>
  * (as specified in RFC 3280 http://www.ietf.org/rfc/rfc3280.txt)
  */
-public class CRLNumber extends ExtensionValue {
-
-    // crl number value
+public final class CRLNumber extends ExtensionValue {
+    /** crl number value */
     private final BigInteger number;
-
-    /**
-     * Constructs the object on the base of the invalidity date value.
-     */
-    public CRLNumber(BigInteger number) {
-        this.number = number;
-    }
 
     /**
      * Constructs the object on the base of its encoded form.
@@ -63,22 +54,16 @@ public class CRLNumber extends ExtensionValue {
 
     /**
      * Returns ASN.1 encoded form of this X.509 CRLNumber value.
-     * @return a byte array containing ASN.1 encoded form.
      */
-    public byte[] getEncoded() {
+    @Override public byte[] getEncoded() {
         if (encoding == null) {
             encoding = ASN1.encode(number.toByteArray());
         }
         return encoding;
     }
 
-    /**
-     * Places the string representation of extension value
-     * into the StringBuffer object.
-     */
-    public void dumpValue(StringBuffer buffer, String prefix) {
-        buffer.append(prefix).append("CRL Number: [ ").append(number).append( //$NON-NLS-1$
-                " ]\n"); //$NON-NLS-1$
+    @Override public void dumpValue(StringBuilder sb, String prefix) {
+        sb.append(prefix).append("CRL Number: [ ").append(number).append(" ]\n");
     }
 
     /**

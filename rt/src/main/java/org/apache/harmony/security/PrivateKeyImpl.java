@@ -43,7 +43,7 @@ public class PrivateKeyImpl implements PrivateKey {
     }
 
     public String getFormat() {
-        return "PKCS#8"; //$NON-NLS-1$
+        return "PKCS#8";
     }
 
     public byte[] getEncoded() {

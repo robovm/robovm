@@ -18,63 +18,47 @@
 package org.apache.harmony.security.x509;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-
 import org.apache.harmony.security.asn1.ASN1SequenceOf;
 import org.apache.harmony.security.asn1.ASN1Type;
 import org.apache.harmony.security.asn1.BerInputStream;
-import org.apache.harmony.security.internal.nls.Messages;
 
 /**
  * The class encapsulates the ASN.1 DER encoding/decoding work
- * with the SubjectInfoAccessSyntax and AuthorityInfoAccessSyntax 
+ * with the SubjectInfoAccessSyntax and AuthorityInfoAccessSyntax
  * which are a part of X.509 framework
  * (as specified in RFC 3280 -
  *  Internet X.509 Public Key Infrastructure.
  *  Certificate and Certificate Revocation List (CRL) Profile.
  *  http://www.ietf.org/rfc/rfc3280.txt):
- *  
+ *
  *  SubjectInfoAccessSyntax  ::=
  *      SEQUENCE SIZE (1..MAX) OF AccessDescriptions
 
  *  AuthorityInfoAccessSyntax  ::=
  *      SEQUENCE SIZE (1..MAX) OF AccessDescriptions
- *  
+ *
  *  AccessDescription  ::=  SEQUENCE {
  *      accessMethod          OBJECT IDENTIFIER,
  *      accessLocation        GeneralName  }
- * 
+ *
  */
-public class InfoAccessSyntax extends ExtensionValue {
+public final class InfoAccessSyntax extends ExtensionValue {
+    private final List<?> accessDescriptions;
 
-    private final List accessDescriptions;
-
-    public InfoAccessSyntax(List accessDescriptions) throws IOException {
-        this(accessDescriptions, null);
-    }
-
-    private InfoAccessSyntax(List accessDescriptions, byte[] encoding)
-            throws IOException {
+    private InfoAccessSyntax(List<?> accessDescriptions, byte[] encoding) throws IOException {
         if (accessDescriptions == null || accessDescriptions.isEmpty()) {
-            // "AccessDescriptions list is null or empty"
-            throw new IOException(Messages.getString("security.1A3")); //$NON-NLS-1$
+            throw new IOException("AccessDescriptions list is null or empty");
         }
         this.accessDescriptions = accessDescriptions;
         this.encoding = encoding;
     }
 
-    public List getAccessDescriptions() {
-        return new ArrayList(accessDescriptions);
-    }
-    
     /**
      * Returns ASN.1 encoded form of this X.509 InfoAccessSyntax.
-     * @return a byte array containing ASN.1 encoded form.
      */
-    public byte[] getEncoded() {
+    @Override public byte[] getEncoded() {
         if (encoding == null) {
             encoding = ASN1.encode(this);
         }
@@ -85,51 +69,43 @@ public class InfoAccessSyntax extends ExtensionValue {
         return ((InfoAccessSyntax) ASN1.decode(encoding));
     }
 
-    public String toString() {
+    @Override public String toString() {
         StringBuilder res = new StringBuilder();
-        res.append("\n---- InfoAccessSyntax:"); //$NON-NLS-1$
+        res.append("\n---- InfoAccessSyntax:");
         if (accessDescriptions != null) {
-            for (Iterator it = accessDescriptions.iterator(); it.hasNext();) {
+            for (Object accessDescription : accessDescriptions) {
                 res.append('\n');
-                res.append(it.next());
+                res.append(accessDescription);
             }
         }
-        res.append("\n---- InfoAccessSyntax END\n"); //$NON-NLS-1$
+        res.append("\n---- InfoAccessSyntax END\n");
         return res.toString();
     }
 
-    /**
-     * Places the string representation of extension value
-     * into the StringBuffer object.
-     */
-    public void dumpValue(StringBuffer buffer, String prefix) {
-        buffer.append(prefix).append("AccessDescriptions:\n"); //$NON-NLS-1$
+    @Override public void dumpValue(StringBuilder sb, String prefix) {
+        sb.append(prefix).append("AccessDescriptions:\n");
         if (accessDescriptions == null || accessDescriptions.isEmpty()) {
-            buffer.append("NULL\n"); //$NON-NLS-1$
+            sb.append("NULL\n");
         } else {
-            Iterator itr = accessDescriptions.iterator();
-            while (itr.hasNext()) {
-                buffer.append(itr.next().toString());
+            for (Object accessDescription : accessDescriptions) {
+                sb.append(accessDescription.toString());
             }
         }
     }
 
-    
+
     /**
-     * ASN.1 DER X.509 AuthorityInfoAccessSyntax and SubjectInfoAccessSyntax 
+     * ASN.1 DER X.509 AuthorityInfoAccessSyntax and SubjectInfoAccessSyntax
      * encoder/decoder class.
      */
     public static final ASN1Type ASN1 = new ASN1SequenceOf(AccessDescription.ASN1) {
-
-        public Object getDecodedObject(BerInputStream in) throws IOException {
-            return new InfoAccessSyntax((List)in.content, in.getEncoded());
+        @Override public Object getDecodedObject(BerInputStream in) throws IOException {
+            return new InfoAccessSyntax((List<?>) in.content, in.getEncoded());
         }
 
-        public Collection getValues(Object object) {
-            InfoAccessSyntax aias = (InfoAccessSyntax) object;
-            return aias.accessDescriptions;
+        @Override public Collection getValues(Object object) {
+            return ((InfoAccessSyntax) object).accessDescriptions;
         }
     };
 
 }
-

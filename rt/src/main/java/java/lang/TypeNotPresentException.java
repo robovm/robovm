@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,7 +33,7 @@ public class TypeNotPresentException extends RuntimeException {
      * Constructs a new {@code TypeNotPresentException} with the current stack
      * trace, a detail message that includes the name of the type that could not
      * be found and the {@code Throwable} that caused this exception.
-     * 
+     *
      * @param typeName
      *            the fully qualified name of the type that could not be found.
      * @param cause
@@ -46,7 +46,7 @@ public class TypeNotPresentException extends RuntimeException {
 
     /**
      * Gets the fully qualified name of the type that could not be found.
-     * 
+     *
      * @return the name of the type that caused this exception.
      */
     public String typeName() {

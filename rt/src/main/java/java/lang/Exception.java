@@ -22,7 +22,7 @@ package java.lang;
  * {@code Exception} is the superclass of all classes that represent recoverable
  * exceptions. When exceptions are thrown, they may be caught by application
  * code.
- * 
+ *
  * @see Throwable
  * @see Error
  * @see RuntimeException
@@ -39,7 +39,7 @@ public class Exception extends Throwable {
     /**
      * Constructs a new {@code Exception} with the current stack trace and the
      * specified detail message.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */
@@ -50,7 +50,7 @@ public class Exception extends Throwable {
     /**
      * Constructs a new {@code Exception} with the current stack trace, the
      * specified detail message and the specified cause.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      * @param throwable
@@ -63,7 +63,7 @@ public class Exception extends Throwable {
     /**
      * Constructs a new {@code Exception} with the current stack trace and the
      * specified cause.
-     * 
+     *
      * @param throwable
      *            the cause of this exception.
      */

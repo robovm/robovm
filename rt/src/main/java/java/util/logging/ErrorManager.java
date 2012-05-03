@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,8 +16,6 @@
  */
 
 package java.util.logging;
-
-import org.apache.harmony.logging.internal.nls.Messages;
 
 /**
  * An error reporting facility for {@link Handler} implementations to record any
@@ -58,7 +56,6 @@ public class ErrorManager {
      */
     public static final int FORMAT_FAILURE = 5;
 
-    @SuppressWarnings("nls")
     private static final String[] FAILURES = new String[] { "GENERIC_FAILURE",
             "WRITE_FAILURE", "FLUSH_FAILURE", "CLOSE_FAILURE", "OPEN_FAILURE",
             "FORMAT_FAILURE" };
@@ -73,7 +70,6 @@ public class ErrorManager {
      * Constructs an instance of {@code ErrorManager}.
      */
     public ErrorManager() {
-        super();
     }
 
     /**
@@ -81,7 +77,7 @@ public class ErrorManager {
      * implementation will write out the message to {@link System#err} on the
      * first call and all subsequent calls are ignored. A subclass of this class
      * should override this method.
-     * 
+     *
      * @param message
      *            the error message, which may be {@code null}.
      * @param exception
@@ -98,15 +94,12 @@ public class ErrorManager {
             }
             called = true;
         }
-        System.err.println(this.getClass().getName()
-                + ": " + FAILURES[errorCode]); //$NON-NLS-1$
+        System.err.println(this.getClass().getName() + ": " + FAILURES[errorCode]);
         if (message != null) {
-            // logging.1E=Error message - {0}
-            System.err.println(Messages.getString("logging.1E", message)); //$NON-NLS-1$
+            System.err.println("Error message - " + message);
         }
         if (exception != null) {
-            // logging.1F=Exception - {0}
-            System.err.println(Messages.getString("logging.1F", exception)); //$NON-NLS-1$
+            System.err.println("Exception - " + exception);
         }
     }
 }

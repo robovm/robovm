@@ -29,9 +29,9 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
- * 
+ *
  * Reductive hash with two keys
- * 
+ *
  */
 public class TwoKeyHashMap<E, K, V> extends AbstractMap<String, V> {
 
@@ -58,7 +58,7 @@ public class TwoKeyHashMap<E, K, V> extends AbstractMap<String, V> {
 
     /**
      * Constructs an empty HashMap
-     * 
+     *
      * @param initialCapacity
      */
     public TwoKeyHashMap(int initialCapacity) {
@@ -67,7 +67,7 @@ public class TwoKeyHashMap<E, K, V> extends AbstractMap<String, V> {
 
     /**
      * Constructs an empty HashMap
-     * 
+     *
      * @param initialCapacity
      * @param initialLoadFactor
      */
@@ -120,19 +120,19 @@ public class TwoKeyHashMap<E, K, V> extends AbstractMap<String, V> {
 
     /**
      * Removes the mapping for the keys
-     * 
+     *
      * @param key1
      * @param key2
      * @return
      */
     public V remove(Object key1, Object key2) {
         Entry<E, K, V> e = removeEntry(key1, key2);
-        return null != e ? e.value : null;
+        return (e != null) ? e.value : null;
     }
 
     /**
      * Associates the specified value with the specified keys in this map
-     * 
+     *
      * @param key1
      * @param key2
      * @param value
@@ -179,7 +179,7 @@ public class TwoKeyHashMap<E, K, V> extends AbstractMap<String, V> {
 
     /**
      * Rehash the map
-     * 
+     *
      */
     @SuppressWarnings("unchecked")
     void rehash() {
@@ -214,12 +214,7 @@ public class TwoKeyHashMap<E, K, V> extends AbstractMap<String, V> {
     }
 
     /**
-     * Answers whether this map contains a mapping for the specified keys.
-     * 
-     * @param key1 first key
-     * @param key2 second key
-     * @return true if this map contains a mapping for the specified keys, and
-     *         false otherwise.
+     * Returns true if this map contains a mapping for {@code key1} and {@code key2}.
      */
     public boolean containsKey(Object key1, Object key2) {
         return findEntry(key1, key2) != null;
@@ -227,7 +222,7 @@ public class TwoKeyHashMap<E, K, V> extends AbstractMap<String, V> {
 
     /**
      * Return the value by keys
-     * 
+     *
      * @param key1
      * @param key2
      * @return
@@ -256,7 +251,7 @@ public class TwoKeyHashMap<E, K, V> extends AbstractMap<String, V> {
 
     /**
      * Creates new entry
-     * 
+     *
      * @param hashCode
      * @param key1
      * @param key2
@@ -271,7 +266,7 @@ public class TwoKeyHashMap<E, K, V> extends AbstractMap<String, V> {
 
     /**
      * Creates entries iterator
-     * 
+     *
      * @return
      */
     Iterator<Map.Entry<String, V>> createEntrySetIterator() {
@@ -280,7 +275,7 @@ public class TwoKeyHashMap<E, K, V> extends AbstractMap<String, V> {
 
     /**
      * Creates values iterator
-     * 
+     *
      * @return
      */
     Iterator<V> createValueCollectionIterator() {
@@ -289,7 +284,7 @@ public class TwoKeyHashMap<E, K, V> extends AbstractMap<String, V> {
 
     /**
      * Entry implementation for the TwoKeyHashMap class
-     * 
+     *
      */
     public static class Entry<E, K, V> implements Map.Entry<String, V> {
         int hash;
@@ -553,7 +548,6 @@ public class TwoKeyHashMap<E, K, V> extends AbstractMap<String, V> {
         private EntryIteratorImpl itr;
 
         ValueIteratorImpl() {
-            super();
             this.itr = new EntryIteratorImpl();
         }
 

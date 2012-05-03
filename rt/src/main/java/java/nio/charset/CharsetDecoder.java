@@ -4,9 +4,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,8 +20,6 @@ import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-
-import org.apache.harmony.niochar.internal.nls.Messages;
 
 /**
  * A converter that can convert a byte sequence from a charset into a 16-bit
@@ -84,37 +82,21 @@ import org.apache.harmony.niochar.internal.nls.Messages;
  * @see java.nio.charset.CharsetEncoder
  */
 public abstract class CharsetDecoder {
-
-    /*
-     * internal status consts
-     */
     private static final int INIT = 0;
-
     private static final int ONGOING = 1;
-
     private static final int END = 2;
-
     private static final int FLUSH = 3;
 
-    // average number of chars for one byte
-    private float averChars;
+    private final float averageCharsPerByte;
+    private final float maxCharsPerByte;
 
-    // maximum number of chars for one byte
-    private float maxChars;
+    private final Charset cs;
 
-    // charset for this decoder
-    private Charset cs;
+    private CodingErrorAction malformedInputAction;
+    private CodingErrorAction unmappableCharacterAction;
 
-    // specify the action if malformed input error encountered
-    private CodingErrorAction malformAction;
+    private String replacementChars;
 
-    // specify the action if unmappable character error encountered
-    private CodingErrorAction unmapAction;
-
-    // the replacement string
-    private String replace;
-
-    // the current status
     private int status;
 
     /**
@@ -122,7 +104,7 @@ public abstract class CharsetDecoder {
      * <code>Charset</code>, average number and maximum number of characters
      * created by this decoder for one input byte, and the default replacement
      * string "\uFFFD".
-     * 
+     *
      * @param charset
      *            the <code>Charset</code> to be used by this decoder.
      * @param averageCharsPerByte
@@ -135,40 +117,32 @@ public abstract class CharsetDecoder {
      *             if <code>averageCharsPerByte</code> or
      *             <code>maxCharsPerByte</code> is negative.
      */
-    protected CharsetDecoder(Charset charset, float averageCharsPerByte,
-            float maxCharsPerByte) {
+    protected CharsetDecoder(Charset charset, float averageCharsPerByte, float maxCharsPerByte) {
         if (averageCharsPerByte <= 0 || maxCharsPerByte <= 0) {
-            // niochar.00=Characters number for one byte must be positive.
-            throw new IllegalArgumentException(Messages.getString("niochar.00")); //$NON-NLS-1$
+            throw new IllegalArgumentException("averageCharsPerByte and maxCharsPerByte must be positive");
         }
         if (averageCharsPerByte > maxCharsPerByte) {
-            // niochar.01=averageCharsPerByte is greater than maxCharsPerByte
-            throw new IllegalArgumentException(Messages.getString("niochar.01")); //$NON-NLS-1$
+            throw new IllegalArgumentException("averageCharsPerByte is greater than maxCharsPerByte");
         }
-        averChars = averageCharsPerByte;
-        maxChars = maxCharsPerByte;
+        this.averageCharsPerByte = averageCharsPerByte;
+        this.maxCharsPerByte = maxCharsPerByte;
         cs = charset;
         status = INIT;
-        malformAction = CodingErrorAction.REPORT;
-        unmapAction = CodingErrorAction.REPORT;
-        replace = "\ufffd"; //$NON-NLS-1$
+        malformedInputAction = CodingErrorAction.REPORT;
+        unmappableCharacterAction = CodingErrorAction.REPORT;
+        replacementChars = "\ufffd";
     }
 
     /**
-     * Gets the average number of characters created by this decoder for a
+     * Returns the average number of characters created by this decoder for a
      * single input byte.
-     * 
-     * @return the average number of characters created by this decoder for a
-     *         single input byte.
      */
     public final float averageCharsPerByte() {
-        return averChars;
+        return averageCharsPerByte;
     }
 
     /**
-     * Gets the <code>Charset</code> which this decoder uses.
-     * 
-     * @return the <code>Charset</code> which this decoder uses.
+     * Returns the {@link Charset} which this decoder uses.
      */
     public final Charset charset() {
         return cs;
@@ -207,10 +181,9 @@ public abstract class CharsetDecoder {
      * @throws CharacterCodingException
      *             if another exception happened during the decode operation.
      */
-    public final CharBuffer decode(ByteBuffer in)
-            throws CharacterCodingException {
+    public final CharBuffer decode(ByteBuffer in) throws CharacterCodingException {
         reset();
-        int length = (int) (in.remaining() * averChars);
+        int length = (int) (in.remaining() * averageCharsPerByte);
         CharBuffer output = CharBuffer.allocate(length);
         CoderResult result = null;
         while (true) {
@@ -243,12 +216,10 @@ public abstract class CharsetDecoder {
     /*
      * checks the result whether it needs to throw CharacterCodingException.
      */
-    private void checkCoderResult(CoderResult result)
-            throws CharacterCodingException {
-        if (result.isMalformed() && malformAction == CodingErrorAction.REPORT) {
+    private void checkCoderResult(CoderResult result) throws CharacterCodingException {
+        if (result.isMalformed() && malformedInputAction == CodingErrorAction.REPORT) {
             throw new MalformedInputException(result.length());
-        } else if (result.isUnmappable()
-                && unmapAction == CodingErrorAction.REPORT) {
+        } else if (result.isUnmappable() && unmappableCharacterAction == CodingErrorAction.REPORT) {
             throw new UnmappableCharacterException(result.length());
         }
     }
@@ -372,16 +343,16 @@ public abstract class CharsetDecoder {
                 return result;
             }
             // set coding error handle action
-            action = malformAction;
+            action = malformedInputAction;
             if (result.isUnmappable()) {
-                action = unmapAction;
+                action = unmappableCharacterAction;
             }
             // If the action is IGNORE or REPLACE, we should continue decoding.
             if (action == CodingErrorAction.REPLACE) {
-                if (out.remaining() < replace.length()) {
+                if (out.remaining() < replacementChars.length()) {
                     return CoderResult.OVERFLOW;
                 }
-                out.put(replace);
+                out.put(replacementChars);
             } else {
                 if (action != CodingErrorAction.IGNORE)
                     return result;
@@ -415,7 +386,7 @@ public abstract class CharsetDecoder {
      * <p>
      * Note that some implementations may pre-scan the input buffer and return a
      * <code>CoderResult.UNDERFLOW</code> until it receives sufficient input.
-     * 
+     *
      * @param in
      *            the input buffer.
      * @param out
@@ -452,7 +423,7 @@ public abstract class CharsetDecoder {
 
     /**
      * Flushes this decoder.
-     * 
+     *
      * This method will call {@link #implFlush(CharBuffer) implFlush}. Some
      * decoders may need to write some characters to the output buffer when they
      * have read all input bytes; subclasses can override
@@ -497,7 +468,7 @@ public abstract class CharsetDecoder {
      * Flushes this decoder. The default implementation does nothing and always
      * returns <code>CoderResult.UNDERFLOW</code>; this method can be
      * overridden if needed.
-     * 
+     *
      * @param out
      *            the output buffer.
      * @return <code>CoderResult.UNDERFLOW</code> or
@@ -511,7 +482,7 @@ public abstract class CharsetDecoder {
      * Notifies that this decoder's <code>CodingErrorAction</code> specified
      * for malformed input error has been changed. The default implementation
      * does nothing; this method can be overridden if needed.
-     * 
+     *
      * @param newAction
      *            the new action.
      */
@@ -523,7 +494,7 @@ public abstract class CharsetDecoder {
      * Notifies that this decoder's <code>CodingErrorAction</code> specified
      * for unmappable character error has been changed. The default
      * implementation does nothing; this method can be overridden if needed.
-     * 
+     *
      * @param newAction
      *            the new action.
      */
@@ -534,7 +505,7 @@ public abstract class CharsetDecoder {
     /**
      * Notifies that this decoder's replacement has been changed. The default
      * implementation does nothing; this method can be overridden if needed.
-     * 
+     *
      * @param newReplacement
      *            the new replacement string.
      */
@@ -552,7 +523,7 @@ public abstract class CharsetDecoder {
 
     /**
      * Indicates whether this decoder implements an auto-detecting charset.
-     * 
+     *
      * @return <code>true</code> if this decoder implements an auto-detecting
      *         charset.
      */
@@ -579,7 +550,7 @@ public abstract class CharsetDecoder {
      * The default implementation always throws an
      * <code>UnsupportedOperationException</code>; it should be overridden by
      * a subclass if needed.
-     * 
+     *
      * @return <code>true</code> if this decoder has detected a charset.
      * @throws UnsupportedOperationException
      *             if this decoder doesn't implement an auto-detecting charset.
@@ -589,34 +560,28 @@ public abstract class CharsetDecoder {
     }
 
     /**
-     * Gets this decoder's <code>CodingErrorAction</code> when malformed input
+     * Returns this decoder's <code>CodingErrorAction</code> when malformed input
      * occurred during the decoding process.
-     * 
-     * @return this decoder's <code>CodingErrorAction</code> when malformed
-     *         input occurred during the decoding process.
      */
     public CodingErrorAction malformedInputAction() {
-        return malformAction;
+        return malformedInputAction;
     }
 
     /**
-     * Gets the maximum number of characters which can be created by this
+     * Returns the maximum number of characters which can be created by this
      * decoder for one input byte, must be positive.
-     * 
-     * @return the maximum number of characters which can be created by this
-     *         decoder for one input byte, must be positive.
      */
     public final float maxCharsPerByte() {
-        return maxChars;
+        return maxCharsPerByte;
     }
 
     /**
      * Sets this decoder's action on malformed input errors.
-     * 
+     *
      * This method will call the
      * {@link #implOnMalformedInput(CodingErrorAction) implOnMalformedInput}
      * method with the given new action as argument.
-     * 
+     *
      * @param newAction
      *            the new action on malformed input error.
      * @return this decoder.
@@ -624,55 +589,52 @@ public abstract class CharsetDecoder {
      *             if {@code newAction} is {@code null}.
      */
     public final CharsetDecoder onMalformedInput(CodingErrorAction newAction) {
-        if (null == newAction) {
+        if (newAction == null) {
             throw new IllegalArgumentException();
         }
-        malformAction = newAction;
+        malformedInputAction = newAction;
         implOnMalformedInput(newAction);
         return this;
     }
 
     /**
      * Sets this decoder's action on unmappable character errors.
-     * 
+     *
      * This method will call the
      * {@link #implOnUnmappableCharacter(CodingErrorAction) implOnUnmappableCharacter}
      * method with the given new action as argument.
-     * 
+     *
      * @param newAction
      *            the new action on unmappable character error.
      * @return this decoder.
      * @throws IllegalArgumentException
      *             if {@code newAction} is {@code null}.
      */
-    public final CharsetDecoder onUnmappableCharacter(
-            CodingErrorAction newAction) {
-        if (null == newAction) {
+    public final CharsetDecoder onUnmappableCharacter(CodingErrorAction newAction) {
+        if (newAction == null) {
             throw new IllegalArgumentException();
         }
-        unmapAction = newAction;
+        unmappableCharacterAction = newAction;
         implOnUnmappableCharacter(newAction);
         return this;
     }
 
     /**
-     * Gets the replacement string, which is never null or empty.
-     * 
-     * @return the replacement string, cannot be null or empty.
+     * Returns the replacement string, which is never null or empty.
      */
     public final String replacement() {
-        return replace;
+        return replacementChars;
     }
 
     /**
      * Sets the new replacement string.
-     * 
+     *
      * This method first checks the given replacement's validity, then changes
      * the replacement value, and at last calls the
      * {@link #implReplaceWith(String) implReplaceWith} method with the given
      * new replacement as argument.
-     * 
-     * @param newReplacement
+     *
+     * @param replacement
      *            the replacement string, cannot be null or empty. Its length
      *            cannot be larger than {@link #maxCharsPerByte()}.
      * @return this decoder.
@@ -680,18 +642,19 @@ public abstract class CharsetDecoder {
      *             if the given replacement cannot satisfy the requirement
      *             mentioned above.
      */
-    public final CharsetDecoder replaceWith(String newReplacement) {
-        if (null == newReplacement || newReplacement.length() == 0) {
-            // niochar.06=Replacement string cannot be null or empty.
-            throw new IllegalArgumentException(Messages.getString("niochar.06")); //$NON-NLS-1$
+    public final CharsetDecoder replaceWith(String replacement) {
+        if (replacement == null) {
+            throw new IllegalArgumentException("replacement == null");
         }
-        if (newReplacement.length() > maxChars) {
-            // niochar.07=Replacement string's length cannot be larger than max
-            // characters per byte.
-            throw new IllegalArgumentException(Messages.getString("niochar.07")); //$NON-NLS-1$
+        if (replacement.isEmpty()) {
+            throw new IllegalArgumentException("replacement.isEmpty()");
         }
-        replace = newReplacement;
-        implReplaceWith(newReplacement);
+        if (replacement.length() > maxCharsPerByte()) {
+            throw new IllegalArgumentException("replacement length > maxCharsPerByte: " +
+                    replacement.length() + " > " + maxCharsPerByte());
+        }
+        replacementChars = replacement;
+        implReplaceWith(replacement);
         return this;
     }
 
@@ -699,7 +662,7 @@ public abstract class CharsetDecoder {
      * Resets this decoder. This method will reset the internal status, and then
      * calls <code>implReset()</code> to reset any status related to the
      * specific charset.
-     * 
+     *
      * @return this decoder.
      */
     public final CharsetDecoder reset() {
@@ -709,13 +672,10 @@ public abstract class CharsetDecoder {
     }
 
     /**
-     * Gets this decoder's <code>CodingErrorAction</code> when an unmappable
+     * Returns this decoder's <code>CodingErrorAction</code> when an unmappable
      * character error occurred during the decoding process.
-     * 
-     * @return this decoder's <code>CodingErrorAction</code> when an
-     *         unmappable character error occurred during the decoding process.
      */
     public CodingErrorAction unmappableCharacterAction() {
-        return unmapAction;
+        return unmappableCharacterAction;
     }
 }

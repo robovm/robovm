@@ -26,7 +26,7 @@ public interface CertPathValidatorResult extends Cloneable {
 
     /**
      * Clones this {@code CertPathValidatorResult} instance.
-     * 
+     *
      * @return the cloned instance.
      */
     public Object clone();

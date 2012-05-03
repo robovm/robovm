@@ -17,16 +17,13 @@
 
 package javax.net.ssl;
 
-import java.security.AccessController;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.PrivilegedAction;
 import java.security.Provider;
 import java.security.Security;
-
 import org.apache.harmony.security.fortress.Engine;
 
 /**
@@ -38,7 +35,7 @@ public class TrustManagerFactory {
     private static final String SERVICE = "TrustManagerFactory";
 
     // Used to access common engine functionality
-    private static Engine engine = new Engine(SERVICE);
+    private static final Engine ENGINE = new Engine(SERVICE);
 
     // Store default property name
     private static final String PROPERTYNAME = "ssl.TrustManagerFactory.algorithm";
@@ -51,11 +48,7 @@ public class TrustManagerFactory {
      * @return the default algorithm name.
      */
     public static final String getDefaultAlgorithm() {
-        return AccessController.doPrivileged(new PrivilegedAction<String>() {
-            public String run() {
-                return Security.getProperty(PROPERTYNAME);
-            }
-        });
+        return Security.getProperty(PROPERTYNAME);
     }
 
     /**
@@ -76,11 +69,8 @@ public class TrustManagerFactory {
         if (algorithm == null) {
             throw new NullPointerException("algorithm is null");
         }
-        synchronized (engine) {
-            engine.getInstance(algorithm, null);
-            return new TrustManagerFactory((TrustManagerFactorySpi) engine.spi, engine.provider,
-                    algorithm);
-        }
+        Engine.SpiAndProvider sap = ENGINE.getInstance(algorithm, null);
+        return new TrustManagerFactory((TrustManagerFactorySpi) sap.spi, sap.provider, algorithm);
     }
 
     /**
@@ -105,7 +95,7 @@ public class TrustManagerFactory {
     public static final TrustManagerFactory getInstance(String algorithm, String provider)
             throws NoSuchAlgorithmException, NoSuchProviderException {
         if ((provider == null) || (provider.length() == 0)) {
-            throw new IllegalArgumentException("Provider is null oe empty");
+            throw new IllegalArgumentException("Provider is null or empty");
         }
         Provider impProvider = Security.getProvider(provider);
         if (impProvider == null) {
@@ -138,10 +128,8 @@ public class TrustManagerFactory {
         if (algorithm == null) {
             throw new NullPointerException("algorithm is null");
         }
-        synchronized (engine) {
-            engine.getInstance(algorithm, provider, null);
-            return new TrustManagerFactory((TrustManagerFactorySpi) engine.spi, provider, algorithm);
-        }
+        Object spi = ENGINE.getInstance(algorithm, provider, null);
+        return new TrustManagerFactory((TrustManagerFactorySpi) spi, provider, algorithm);
     }
 
     // Store used provider
@@ -212,7 +200,8 @@ public class TrustManagerFactory {
      * @throws InvalidAlgorithmParameterException
      *             if the initialization fails.
      */
-    public final void init(ManagerFactoryParameters spec) throws InvalidAlgorithmParameterException {
+    public final void init(ManagerFactoryParameters spec)
+            throws InvalidAlgorithmParameterException {
         spiImpl.engineInit(spec);
     }
 

@@ -18,7 +18,6 @@
 package org.apache.harmony.security.x509;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * This class implements the values of Subject Alternative Name
@@ -27,27 +26,17 @@ import java.util.List;
  * For more information about these extensions see RFC 3280
  * at http://www.ietf.org/rfc/rfc3280.txt
  */
-public class AlternativeName extends ExtensionValue {
+public final class AlternativeName extends ExtensionValue {
 
     // constants indicating which alternative name is presented
     // by this object
     public static final boolean ISSUER = false;
     public static final boolean SUBJECT = true;
 
-    // indicating which alternative name is presented by this object
+    /** indicating which alternative name is presented by this object */
     private boolean which;
-    // the alternative names
+    /** the alternative names */
     private GeneralNames alternativeNames;
-
-    /**
-     * Creates the extension object for given alternative names.
-     * @param which specifies which alternative names are given
-     * (Subject's or Issuer's)
-     */
-    public AlternativeName(boolean which, GeneralNames alternativeNames) {
-        this.which = which;
-        this.alternativeNames = alternativeNames;
-    }
 
     /**
      * Creates the extension object on the base of its encoded form.
@@ -57,39 +46,22 @@ public class AlternativeName extends ExtensionValue {
     public AlternativeName(boolean which, byte[] encoding) throws IOException {
         super(encoding);
         this.which = which;
-        this.alternativeNames =
-            (GeneralNames) GeneralNames.ASN1.decode(encoding);
-    }
-
-    /**
-     * Returns the list of alternative names.
-     * The list is in the collection of pairs:<br>
-     * [Integer (tag of GeneralName), Object (name value)]
-     */
-    public List getAlternativeNames() {
-        return alternativeNames.getPairsList();
+        this.alternativeNames = (GeneralNames) GeneralNames.ASN1.decode(encoding);
     }
 
     /**
      * Returns ASN.1 encoded form of this X.509 AlternativeName value.
-     * @return a byte array containing ASN.1 encode form.
      */
-    public byte[] getEncoded() {
+    @Override public byte[] getEncoded() {
         if (encoding == null) {
             encoding = GeneralNames.ASN1.encode(alternativeNames);
         }
         return encoding;
     }
 
-    /**
-     * Places the string representation of extension value
-     * into the StringBuffer object.
-     */
-    public void dumpValue(StringBuffer buffer, String prefix) {
-        buffer.append(prefix).append((which) ? "Subject" : "Issuer") //$NON-NLS-1$ //$NON-NLS-2$
-            .append(" Alternative Names [\n"); //$NON-NLS-1$
-        alternativeNames.dumpValue(buffer, prefix + "  "); //$NON-NLS-1$
-        buffer.append(prefix).append("]\n"); //$NON-NLS-1$
+    @Override public void dumpValue(StringBuilder sb, String prefix) {
+        sb.append(prefix).append((which) ? "Subject" : "Issuer").append(" Alternative Names [\n");
+        alternativeNames.dumpValue(sb, prefix + "  ");
+        sb.append(prefix).append("]\n");
     }
 }
-

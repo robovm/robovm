@@ -15,12 +15,9 @@
  *  limitations under the License.
  */
 
-/**
-* @author Vera Y. Petrashkova
-*/
-
 package javax.crypto;
 
+import java.nio.ByteBuffer;
 import java.security.AlgorithmParameters;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -28,9 +25,6 @@ import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
-import java.nio.ByteBuffer;
-
-import org.apache.harmony.crypto.internal.nls.Messages;
 
 /**
  * This class defines the <i>Service Provider Interface</i> (<b>SPI</b>) for
@@ -337,10 +331,10 @@ public abstract class CipherSpi {
     protected int engineUpdate(ByteBuffer input, ByteBuffer output)
             throws ShortBufferException {
         if (input == null) {
-            throw new NullPointerException(Messages.getString("crypto.0C")); //$NON-NLS-1$
+            throw new NullPointerException("input == null");
         }
         if (output == null) {
-            throw new NullPointerException(Messages.getString("crypto.0D")); //$NON-NLS-1$
+            throw new NullPointerException("output == null");
         }
         int position = input.position();
         int limit = input.limit();
@@ -359,13 +353,16 @@ public abstract class CipherSpi {
             input.get(bInput);
             bOutput = engineUpdate(bInput, 0, limit - position);
         }
+        if (bOutput == null) {
+            return 0;
+        }
         if (output.remaining() < bOutput.length) {
-            throw new ShortBufferException(Messages.getString("crypto.0E")); //$NON-NLS-1$
+            throw new ShortBufferException("output buffer too small");
         }
         try {
             output.put(bOutput);
         } catch (java.nio.BufferOverflowException e) {
-            throw new ShortBufferException(Messages.getString("crypto.0F", e)); //$NON-NLS-1$
+            throw new ShortBufferException("output buffer too small");
         }
         return bOutput.length;
     }
@@ -455,10 +452,10 @@ public abstract class CipherSpi {
             throws ShortBufferException, IllegalBlockSizeException,
             BadPaddingException {
         if (input == null) {
-            throw new NullPointerException(Messages.getString("crypto.0C")); //$NON-NLS-1$
+            throw new NullPointerException("input == null");
         }
         if (output == null) {
-            throw new NullPointerException(Messages.getString("crypto.0D")); //$NON-NLS-1$
+            throw new NullPointerException("output == null");
         }
         int position = input.position();
         int limit = input.limit();
@@ -480,12 +477,12 @@ public abstract class CipherSpi {
             bOutput = engineDoFinal(bInput, 0, limit - position);
         }
         if (output.remaining() < bOutput.length) {
-            throw new ShortBufferException(Messages.getString("crypto.0E")); //$NON-NLS-1$
+            throw new ShortBufferException("output buffer too small");
         }
         try {
             output.put(bOutput);
         } catch (java.nio.BufferOverflowException e) {
-            throw new ShortBufferException(Messages.getString("crypto.0F", e)); //$NON-NLS-1$
+            throw new ShortBufferException("output buffer too small");
         }
         return bOutput.length;
     }
@@ -505,10 +502,8 @@ public abstract class CipherSpi {
      * @throws InvalidKeyException
      *             if this cipher instance cannot wrap this key.
      */
-    protected byte[] engineWrap(Key key) throws IllegalBlockSizeException,
-            InvalidKeyException {
-        throw new UnsupportedOperationException(
-                Messages.getString("crypto.10")); //$NON-NLS-1$
+    protected byte[] engineWrap(Key key) throws IllegalBlockSizeException, InvalidKeyException {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -535,10 +530,8 @@ public abstract class CipherSpi {
      *             {@code wrappedKeyType} for the {@code wrappedKeyAlgorithm}.
      */
     protected Key engineUnwrap(byte[] wrappedKey, String wrappedKeyAlgorithm,
-            int wrappedKeyType) throws InvalidKeyException,
-            NoSuchAlgorithmException {
-        throw new UnsupportedOperationException(
-                Messages.getString("crypto.11")); //$NON-NLS-1$
+            int wrappedKeyType) throws InvalidKeyException, NoSuchAlgorithmException {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -555,7 +548,6 @@ public abstract class CipherSpi {
      *             implementation.
      */
     protected int engineGetKeySize(Key key) throws InvalidKeyException {
-        throw new UnsupportedOperationException(
-                Messages.getString("crypto.12")); //$NON-NLS-1$
+        throw new UnsupportedOperationException();
     }
 }

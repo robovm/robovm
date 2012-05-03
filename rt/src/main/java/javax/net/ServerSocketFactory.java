@@ -46,7 +46,6 @@ public abstract class ServerSocketFactory {
      * Creates a new {@code ServerSocketFactory} instance.
      */
     protected ServerSocketFactory() {
-        super();
     }
 
     /**
@@ -64,10 +63,10 @@ public abstract class ServerSocketFactory {
     }
 
     /**
-     * Creates a new server socket which is bound to the given port.
+     * Creates a new server socket which is bound to the given port with a
+     * maximum backlog of 50 unaccepted connections.
      *
-     * @param port
-     *            the port on which the created socket has to listen.
+     * @param port the port on which the created socket has to listen.
      * @return the created bound server socket.
      * @throws IOException
      *             if an error occurs while creating a new server socket.
@@ -78,13 +77,11 @@ public abstract class ServerSocketFactory {
      * Creates a new server socket which is bound to the given port and
      * configures its maximum of queued connections.
      *
-     * @param port
-     *            the port on which the created socket has to listen.
-     * @param backlog
-     *            the maximum of queued connections.
+     * @param port the port on which the created socket has to listen.
+     * @param backlog the maximum number of unaccepted connections. Passing 0 or
+     *     a negative value yields the default backlog of 50.
      * @return the created bound server socket.
-     * @throws IOException
-     *             if an error occurs while creating a new server socket.
+     * @throws IOException if an error occurs while creating a new server socket.
      */
     public abstract ServerSocket createServerSocket(int port, int backlog) throws IOException;
 
@@ -92,16 +89,13 @@ public abstract class ServerSocketFactory {
      * Creates a new server socket which is bound to the given address on the
      * specified port and configures its maximum of queued connections.
      *
-     * @param port
-     *            the port on which the created socket has to listen.
-     * @param backlog
-     *            the maximum of queued connections.
-     * @param iAddress
-     *            the address of the network interface which is used by the
-     *            created socket.
+     * @param port the port on which the created socket has to listen.
+     * @param backlog the maximum number of unaccepted connections. Passing 0 or
+     *     a negative value yields the default backlog of 50.
+     * @param iAddress the address of the network interface which is used by the
+     *     created socket.
      * @return the created bound server socket.
-     * @throws IOException
-     *             if an error occurs while creating a new server socket.
+     * @throws IOException if an error occurs while creating a new server socket.
      */
     public abstract ServerSocket createServerSocket(int port, int backlog, InetAddress iAddress)
             throws IOException;

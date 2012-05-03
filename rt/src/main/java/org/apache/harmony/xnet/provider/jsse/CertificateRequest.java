@@ -17,33 +17,19 @@
 
 package org.apache.harmony.xnet.provider.jsse;
 
-import org.apache.harmony.xnet.provider.jsse.Message;
-import org.apache.harmony.xnet.provider.jsse.Handshake;
-import org.apache.harmony.xnet.provider.jsse.HandshakeIODataStream;
-import org.apache.harmony.xnet.provider.jsse.AlertProtocol;
-
 import java.io.IOException;
 import java.security.cert.X509Certificate;
-import java.util.Vector;
-
+import java.util.ArrayList;
 import javax.security.auth.x500.X500Principal;
+import libcore.io.Streams;
 
 /**
- * 
+ *
  * Represents certificate request message
- * @see TLS 1.0 spec., 7.4.4. Certificate request
- * (http://www.ietf.org/rfc/rfc2246.txt)
+ * @see <a href="http://www.ietf.org/rfc/rfc2246.txt">TLS 1.0 spec., 7.4.4.
+ * Certificate request</a>
  */
 public class CertificateRequest extends Message {
-
-    /**
-     * Client certificate types as defined in 
-     * TLS 1.0 spec., 7.4.4. Certificate request
-     */
-    public static final byte RSA_SIGN = 1;
-    public static final byte DSS_SIGN = 2;
-    public static final byte RSA_FIXED_DH = 3;
-    public static final byte DSS_FIXED_DH = 4;
 
     /**
      * Requested certificate types
@@ -53,30 +39,34 @@ public class CertificateRequest extends Message {
     /**
      * Certificate authorities
      */
-    X500Principal[] certificate_authorities;
+    final X500Principal[] certificate_authorities;
 
-    //Requested certificate types as Strings
-    // ("RSA", "DSA", "DH_RSA" or "DH_DSA")
+    /**
+     * Requested certificate types as Strings
+     * ("RSA", "DSA", "DH_RSA" or "DH_DSA")
+     */
     private String[] types;
 
-    // Encoded form of certificate authorities
+    /**
+     * Encoded form of certificate authorities
+     */
     private byte[][] encoded_principals;
 
     /**
      * Creates outbound message
-     * 
+     *
      * @param certificate_types
      * @param accepted - array of certificate authority certificates
      */
     public CertificateRequest(byte[] certificate_types,
-            X509Certificate[] accepted) {
+                              X509Certificate[] accepted) {
 
         if (accepted == null) {
             fatalAlert(AlertProtocol.INTERNAL_ERROR,
                     "CertificateRequest: array of certificate authority certificates is null");
         }
         this.certificate_types = certificate_types;
-        
+
         int totalPrincipalsLength = 0;
         certificate_authorities = new X500Principal[accepted.length];
         encoded_principals = new byte[accepted.length][];
@@ -91,42 +81,35 @@ public class CertificateRequest extends Message {
 
     /**
      * Creates inbound message
-     * 
+     *
      * @param in
      * @param length
      * @throws IOException
      */
-    public CertificateRequest(HandshakeIODataStream in, int length)
-            throws IOException {
+    public CertificateRequest(HandshakeIODataStream in, int length) throws IOException {
         int size = in.readUint8();
         certificate_types = new byte[size];
-        in.read(certificate_types, 0, size);
+        Streams.readFully(in, certificate_types);
         size = in.readUint16();
-        certificate_authorities = new X500Principal[size];
         int totalPrincipalsLength = 0;
         int principalLength = 0;
-        Vector<X500Principal> principals = new Vector<X500Principal>();
-        while (totalPrincipalsLength < size) {            
+        ArrayList<X500Principal> principals = new ArrayList<X500Principal>();
+        while (totalPrincipalsLength < size) {
             principalLength = in.readUint16(); // encoded X500Principal size
             principals.add(new X500Principal(in));
             totalPrincipalsLength += 2;
             totalPrincipalsLength += principalLength;
         }
-        certificate_authorities = new X500Principal[principals.size()];
-        for (int i = 0; i < certificate_authorities.length; i++) {
-            certificate_authorities[i] = principals.elementAt(i);
-        }
+        certificate_authorities = principals.toArray(new X500Principal[principals.size()]);
         this.length = 3 + certificate_types.length + totalPrincipalsLength;
         if (this.length != length) {
-            fatalAlert(AlertProtocol.DECODE_ERROR,
-                    "DECODE ERROR: incorrect CertificateRequest");
+            fatalAlert(AlertProtocol.DECODE_ERROR, "DECODE ERROR: incorrect CertificateRequest");
         }
-
     }
 
     /**
      * Sends message
-     * 
+     *
      * @param out
      */
     @Override
@@ -149,7 +132,7 @@ public class CertificateRequest extends Message {
 
     /**
      * Returns message type
-     * 
+     *
      * @return
      */
     @Override
@@ -164,23 +147,12 @@ public class CertificateRequest extends Message {
         if (types == null) {
             types = new String[certificate_types.length];
             for (int i = 0; i < types.length; i++) {
-                switch (certificate_types[i]) {
-                case 1:
-                    types[i] = "RSA";
-                    break;
-                case 2:
-                    types[i] = "DSA";
-                    break;
-                case 3:
-                    types[i] = "DH_RSA";
-                    break;
-                case 4:
-                    types[i] = "DH_DSA";
-                    break;
-                default:
+                String type = CipherSuite.getClientKeyType(certificate_types[i]);
+                if (type == null) {
                     fatalAlert(AlertProtocol.DECODE_ERROR,
                             "DECODE ERROR: incorrect CertificateRequest");
                 }
+                types[i] = type;
             }
         }
         return types;

@@ -29,13 +29,12 @@ public class FileNotFoundException extends IOException {
      * filled in.
      */
     public FileNotFoundException() {
-        super();
     }
 
     /**
      * Constructs a new {@code FileNotFoundException} with its stack trace and
      * detail message filled in.
-     * 
+     *
      * @param detailMessage
      *            the detail message for this exception.
      */

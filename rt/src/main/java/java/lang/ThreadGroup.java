@@ -65,8 +65,8 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
     private boolean isDestroyed;
 
     /* the VM uses these directly; do not rename */
-    static final ThreadGroup mSystem = new ThreadGroup();
-    static final ThreadGroup mMain = new ThreadGroup(mSystem, "main");
+    //static final ThreadGroup mSystem = new ThreadGroup();
+    static final ThreadGroup mMain = new ThreadGroup(); //mSystem, "main");
 
     /**
      * Constructs a new {@code ThreadGroup} with the given name. The new {@code ThreadGroup}
@@ -109,7 +109,8 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
      * but we have an additional group above that in Android.
      */
     private ThreadGroup() {
-        this.name = "system";
+        //this.name = "system";
+        this.name = "main";
         this.parent = null;
     }
 

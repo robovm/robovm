@@ -16,6 +16,12 @@
 
 package dalvik.system;
 
+import java.lang.reflect.Array;
+
+import libcore.util.EmptyArray;
+
+import org.nullvm.rt.VM;
+
 /**
  * Provides an interface to VM-global, Dalvik-specific features.
  * An application cannot create its own Runtime instance, and must obtain
@@ -50,22 +56,35 @@ public final class VMRuntime {
      * Returns a copy of the VM's command-line property settings.
      * These are in the form "name=value" rather than "-Dname=value".
      */
-    public native String[] properties();
+    public String[] properties() {
+    	// NullVM note: This is native Android.
+    	// TODO: Support command-line supplied properties?
+    	return EmptyArray.STRING;
+    }
 
     /**
      * Returns the VM's boot class path.
      */
-    public native String bootClassPath();
+    public String bootClassPath() {
+    	// NullVM note: This is native Android.
+    	return VM.bootClassPath();
+    }
 
     /**
      * Returns the VM's class path.
      */
-    public native String classPath();
+    public String classPath() {
+    	// NullVM note: This is native Android.
+    	return VM.classPath();
+    }
 
     /**
      * Returns the VM's version.
      */
-    public native String vmVersion();
+    public String vmVersion() {
+    	// NullVM note: This is native Android.
+    	return VM.vmVersion();
+    }
 
     /**
      * Gets the current ideal heap utilization, represented as a number
@@ -113,7 +132,9 @@ public final class VMRuntime {
      * necessarily know the actual current SDK version, and the
      * allocated version numbers start at 1).
      */
-    public native void setTargetSdkVersion(int targetSdkVersion);
+    public void setTargetSdkVersion(int targetSdkVersion) {
+    	// NullVM note: This is native in Android. In NullVM this is a nop.
+    }
 
     /**
      * This method exists for binary compatibility.  It was part of a
@@ -186,26 +207,37 @@ public final class VMRuntime {
      * Tells the VM to enable the JIT compiler. If the VM does not have a JIT
      * implementation, calling this method should have no effect.
      */
-    public native void startJitCompilation();
+    public void startJitCompilation() {
+    	// NullVM note: This is native in Android. In NullVM there's no JIT so this is a nop.
+    }
 
     /**
      * Tells the VM to disable the JIT compiler. If the VM does not have a JIT
      * implementation, calling this method should have no effect.
      */
-    public native void disableJitCompilation();
+    public void disableJitCompilation() {
+    	// NullVM note: This is native in Android. In NullVM there's no JIT so this is a nop.
+    }
 
     /**
      * Returns an array allocated in an area of the Java heap where it will never be moved.
      * This is used to implement native allocations on the Java heap, such as DirectByteBuffers
      * and Bitmaps.
      */
-    public native Object newNonMovableArray(Class<?> componentType, int length);
+    public Object newNonMovableArray(Class<?> componentType, int length) {
+    	// NullVM note: This is native in Android. In NullVM the GC never moves around objects on
+    	// the heap so we can use Array.newInstance().
+    	return Array.newInstance(componentType, length);
+    }
 
     /**
      * Returns the address of array[0]. This differs from using JNI in that JNI might lie and
      * give you the address of a copy of the array when in forcecopy mode.
      */
-    public native long addressOf(Object array);
+    public long addressOf(Object array) {
+    	// NullVM note: This is native in Android.
+    	return VM.getArrayValuesAddress(array);
+    }
 
     /**
      * Removes any growth limits, allowing the application to allocate

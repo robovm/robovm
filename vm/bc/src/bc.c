@@ -5,6 +5,8 @@
 #include "MurmurHash3.h"
 #include "classinfo.h"
 
+#define LOG_TAG "bc"
+
 #define ALLOC_NATIVE_FRAMES_SIZE 8
 
 typedef struct {
@@ -700,7 +702,7 @@ void _nvmBcPopCallbackFrame(Env* env) {
 void* _nvmBcResolveNative(Env* env, Class* clazz, char* name, char* desc, char* shortMangledName, char* longMangledName, void** ptr) {
     if (*ptr != NULL) return *ptr;
     ENTER;
-    nvmLogTrace(env, "nvmBcResolveNative: owner=%s, name=%s, desc=%s, shortMangledName=%s, longMangledName=%s\n", 
+    TRACEF("nvmBcResolveNative: owner=%s, name=%s, desc=%s, shortMangledName=%s, longMangledName=%s", 
         clazz->name, name, desc, shortMangledName, longMangledName);
     NativeMethod* method = (NativeMethod*) nvmGetMethod(env, clazz, name, desc);
     void* impl = NULL;

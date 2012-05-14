@@ -4,8 +4,9 @@
 #include <string.h>
 #include "utlist.h"
 #include "private.h"
-#include "log.h"
 #include "uthash.h"
+
+#define LOG_TAG "core.class"
 
 Class* java_lang_Object;
 Class* java_lang_Class;
@@ -196,7 +197,7 @@ static Class* findClass(Env* env, const char* className, ClassLoader* classLoade
         return clazz;
     }
 
-    TRACE("Class '%s' not loaded\n", className);
+    TRACEF("Class '%s' not loaded", className);
 
     clazz = loaderFunc(env, className, classLoader);
     if (nvmExceptionOccurred(env)) {
@@ -551,43 +552,35 @@ jboolean nvmInitPrimitiveWrapperClasses(Env* env) {
 
     java_lang_Byte_valueOf = nvmGetClassMethod(env, java_lang_Byte, "valueOf", "(B)Ljava/lang/Byte;");
     if (!java_lang_Byte_valueOf) return FALSE;
-    f = nvmGetClassField(env, java_lang_Byte, "CACHE", "[Ljava/lang/Byte;");
+    f = nvmGetClassField(env, java_lang_Byte, "VALUES", "[Ljava/lang/Byte;");
     if (!f) return FALSE;
     bytesCache = (ObjectArray*) nvmGetObjectClassFieldValue(env, java_lang_Byte, f);
     if (!bytesCache) return FALSE;
 
     java_lang_Short_valueOf = nvmGetClassMethod(env, java_lang_Short, "valueOf", "(S)Ljava/lang/Short;");
     if (!java_lang_Short_valueOf) return FALSE;
-    c = findBootClass(env, "java/lang/Short$valueOfCache");
-    if (!c) return FALSE;
-    f = nvmGetClassField(env, c, "CACHE", "[Ljava/lang/Short;");
+    f = nvmGetClassField(env, java_lang_Short, "SMALL_VALUES", "[Ljava/lang/Short;");
     if (!f) return FALSE;
     shortsCache = (ObjectArray*) nvmGetObjectClassFieldValue(env, c, f);
     if (!shortsCache) return FALSE;
 
     java_lang_Character_valueOf = nvmGetClassMethod(env, java_lang_Character, "valueOf", "(C)Ljava/lang/Character;");
     if (!java_lang_Character_valueOf) return FALSE;
-    c = findBootClass(env, "java/lang/Character$valueOfCache");
-    if (!c) return FALSE;
-    f = nvmGetClassField(env, c, "CACHE", "[Ljava/lang/Character;");
+    f = nvmGetClassField(env, java_lang_Character, "SMALL_VALUES", "[Ljava/lang/Character;");
     if (!f) return FALSE;
     charactersCache = (ObjectArray*) nvmGetObjectClassFieldValue(env, c, f);
     if (!charactersCache) return FALSE;
 
     java_lang_Integer_valueOf = nvmGetClassMethod(env, java_lang_Integer, "valueOf", "(I)Ljava/lang/Integer;");
     if (!java_lang_Integer_valueOf) return FALSE;
-    c = findBootClass(env, "java/lang/Integer$valueOfCache");
-    if (!c) return FALSE;
-    f = nvmGetClassField(env, c, "CACHE", "[Ljava/lang/Integer;");
+    f = nvmGetClassField(env, java_lang_Integer, "SMALL_VALUES", "[Ljava/lang/Integer;");
     if (!f) return FALSE;
     integersCache = (ObjectArray*) nvmGetObjectClassFieldValue(env, c, f);
     if (!integersCache) return FALSE;
 
     java_lang_Long_valueOf = nvmGetClassMethod(env, java_lang_Long, "valueOf", "(J)Ljava/lang/Long;");
     if (!java_lang_Long_valueOf) return FALSE;
-    c = findBootClass(env, "java/lang/Long$valueOfCache");
-    if (!c) return FALSE;
-    f = nvmGetClassField(env, c, "CACHE", "[Ljava/lang/Long;");
+    f = nvmGetClassField(env, java_lang_Long, "SMALL_VALUES", "[Ljava/lang/Long;");
     if (!f) return FALSE;
     longsCache = (ObjectArray*) nvmGetObjectClassFieldValue(env, c, f);
     if (!longsCache) return FALSE;
@@ -646,7 +639,7 @@ Class* nvmFindLoadedClass(Env* env, const char* className, ClassLoader* classLoa
 }
 
 ClassLoader* nvmGetSystemClassLoader(Env* env) {
-    Class* holder = nvmFindClass(env, "java/lang/ClassLoader$SystemClassLoaderHolder");
+    Class* holder = nvmFindClass(env, "java/lang/ClassLoader$SystemClassLoader");
     if (!holder) return NULL;
     ClassField* field = nvmGetClassField(env, holder, "loader", "Ljava/lang/ClassLoader;");
     if (!field) return NULL;
@@ -909,7 +902,7 @@ void nvmInitialize(Env* env, Class* clazz) {
                 return;
             }
         }
-        TRACE("Initializing class %s\n", clazz->name);
+        TRACEF("Initializing class %s", clazz->name);
         void* initializer = clazz->initializer;
         if (!initializer) {
             if (!CLASS_IS_ARRAY(clazz) && !CLASS_IS_PROXY(clazz) && !CLASS_IS_PRIMITIVE(clazz)) {

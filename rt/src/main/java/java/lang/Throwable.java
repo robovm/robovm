@@ -69,7 +69,7 @@ public class Throwable implements java.io.Serializable {
      * An intermediate representation of the stack trace.  This field may
      * be accessed by the VM; do not rename.
      */
-    private volatile Object stackState;
+    private volatile long stackState;
 
     /**
      * A fully-expanded representation of the stack trace.
@@ -268,7 +268,7 @@ public class Throwable implements java.io.Serializable {
     private StackTraceElement[] getInternalStackTrace() {
         if (stackTrace == null) {
             stackTrace = nativeGetStackTrace(stackState);
-            stackState = null; // Clean up intermediate representation
+            stackState = 0; // Clean up intermediate representation
         }
         return stackTrace;
     }
@@ -454,11 +454,11 @@ public class Throwable implements java.io.Serializable {
      * storing in the "stackState" field, based on the current thread's
      * call stack.
      */
-    private static native Object nativeFillInStackTrace();
+    private static native long nativeFillInStackTrace();
 
     /*
      * Creates an array of StackTraceElement objects from the data held
      * in "stackState".
      */
-    private static native StackTraceElement[] nativeGetStackTrace(Object stackState);
+    private static native StackTraceElement[] nativeGetStackTrace(long stackState);
 }

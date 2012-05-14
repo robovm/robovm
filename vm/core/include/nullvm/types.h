@@ -10,6 +10,9 @@
 #define FALSE JNI_FALSE
 #define TRUE JNI_TRUE
 
+#define PTR_TO_LONG(p) ((jlong) (intptr_t) p)
+#define LONG_TO_PTR(l) ((void*) (intptr_t) l)
+
 struct HyThreadMonitor;
 
 typedef struct Field Field;
@@ -154,23 +157,28 @@ struct EnclosingMethod {
 struct Thread {
   Object object;
   jlong threadPtr;
-  Object* threadGroup;
+  Object* group;
   jlong id;
   Object* name;
+  jlong stackSize;
   jboolean daemon;
   jint priority;
   Object* target;
-  Object* action;
+  Object* interruptActions;
   ClassLoader* contextClassLoader;
-  Object* uncaughtExceptionHandler;
+  Object* uncaughtHandler;
   jboolean started;
   Object* localValues;
   Object* inheritableValues;
+  jint parkState;
+  Object* parkBlocker;
+  Object* lock;
 };
 
 struct Array {
   Object object;
   jint length;
+  void* values[0];
 };
 
 #define MAKE_ARRAY(T, N) \

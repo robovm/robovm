@@ -174,7 +174,7 @@ static void DeleteLocalRef(JNIEnv* env, jobject obj) {
 }
 
 static jboolean IsSameObject(JNIEnv* env, jobject obj1, jobject obj2) {
-    return obj1 == obj2;
+    return obj1 == obj2 ? TRUE : FALSE;
 }
 
 static jobject NewLocalRef(JNIEnv* env, jobject ref) {
@@ -200,7 +200,9 @@ static jobject NewObjectA(JNIEnv* env, jclass clazz, jmethodID methodID, jvalue*
 static jobject NewObject(JNIEnv* env, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return NewObjectV(env, clazz, methodID, args);
+    jobject o = NewObjectV(env, clazz, methodID, args);
+    va_end(args);
+    return o;
 }
 
 static jclass GetObjectClass(JNIEnv* env, jobject obj) {
@@ -226,7 +228,9 @@ static jobject CallObjectMethodA(JNIEnv* env, jobject obj, jmethodID methodID, j
 static jobject CallObjectMethod(JNIEnv* env, jobject obj, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallObjectMethodV(env, obj, methodID, args);
+    jobject o = CallObjectMethodV(env, obj, methodID, args);
+    va_end(args);
+    return o;
 }
 
 static jboolean CallBooleanMethodV(JNIEnv* env, jobject obj, jmethodID methodID, va_list args) {
@@ -240,7 +244,9 @@ static jboolean CallBooleanMethodA(JNIEnv* env, jobject obj, jmethodID methodID,
 static jboolean CallBooleanMethod(JNIEnv* env, jobject obj, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallBooleanMethodV(env, obj, methodID, args);
+    jboolean b = CallBooleanMethodV(env, obj, methodID, args);
+    va_end(args);
+    return b;
 }
 
 static jbyte CallByteMethodV(JNIEnv* env, jobject obj, jmethodID methodID, va_list args) {
@@ -254,7 +260,9 @@ static jbyte CallByteMethodA(JNIEnv* env, jobject obj, jmethodID methodID, jvalu
 static jbyte CallByteMethod(JNIEnv* env, jobject obj, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallByteMethodV(env, obj, methodID, args);
+    jbyte b = CallByteMethodV(env, obj, methodID, args);
+    va_end(args);
+    return b;
 }
 
 static jchar CallCharMethodV(JNIEnv* env, jobject obj, jmethodID methodID, va_list args) {
@@ -268,7 +276,9 @@ static jchar CallCharMethodA(JNIEnv* env, jobject obj, jmethodID methodID, jvalu
 static jchar CallCharMethod(JNIEnv* env, jobject obj, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallCharMethodV(env, obj, methodID, args);
+    jchar c = CallCharMethodV(env, obj, methodID, args);
+    va_end(args);
+    return c;
 }
 
 static jshort CallShortMethodV(JNIEnv* env, jobject obj, jmethodID methodID, va_list args) {
@@ -282,7 +292,9 @@ static jshort CallShortMethodA(JNIEnv* env, jobject obj, jmethodID methodID, jva
 static jshort CallShortMethod(JNIEnv* env, jobject obj, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallShortMethodV(env, obj, methodID, args);
+    jshort s = CallShortMethodV(env, obj, methodID, args);
+    va_end(args);
+    return s;
 }
 
 static jint CallIntMethodV(JNIEnv* env, jobject obj, jmethodID methodID, va_list args) {
@@ -296,7 +308,9 @@ static jint CallIntMethodA(JNIEnv* env, jobject obj, jmethodID methodID, jvalue*
 static jint CallIntMethod(JNIEnv* env, jobject obj, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallIntMethodV(env, obj, methodID, args);
+    jint i = CallIntMethodV(env, obj, methodID, args);
+    va_end(args);
+    return i;
 }
 
 static jlong CallLongMethodV(JNIEnv* env, jobject obj, jmethodID methodID, va_list args) {
@@ -310,7 +324,9 @@ static jlong CallLongMethodA(JNIEnv* env, jobject obj, jmethodID methodID, jvalu
 static jlong CallLongMethod(JNIEnv* env, jobject obj, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallLongMethodV(env, obj, methodID, args);
+    jlong l = CallLongMethodV(env, obj, methodID, args);
+    va_end(args);
+    return l;
 }
 
 static jfloat CallFloatMethodV(JNIEnv* env, jobject obj, jmethodID methodID, va_list args) {
@@ -324,7 +340,9 @@ static jfloat CallFloatMethodA(JNIEnv* env, jobject obj, jmethodID methodID, jva
 static jfloat CallFloatMethod(JNIEnv* env, jobject obj, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallFloatMethodV(env, obj, methodID, args);
+    jfloat f = CallFloatMethodV(env, obj, methodID, args);
+    va_end(args);
+    return f;
 }
 
 static jdouble CallDoubleMethodV(JNIEnv* env, jobject obj, jmethodID methodID, va_list args) {
@@ -338,7 +356,9 @@ static jdouble CallDoubleMethodA(JNIEnv* env, jobject obj, jmethodID methodID, j
 static jdouble CallDoubleMethod(JNIEnv* env, jobject obj, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallDoubleMethodV(env, obj, methodID, args);
+    jdouble d = CallDoubleMethodV(env, obj, methodID, args);
+    va_end(args);
+    return d;
 }
 
 static void CallVoidMethodV(JNIEnv* env, jobject obj, jmethodID methodID, va_list args) {
@@ -353,6 +373,7 @@ static void CallVoidMethod(JNIEnv* env, jobject obj, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
     CallVoidMethodV(env, obj, methodID, args);
+    va_end(args);
 }
 
 static jobject CallNonvirtualObjectMethodV(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args) {
@@ -366,7 +387,9 @@ static jobject CallNonvirtualObjectMethodA(JNIEnv* env, jobject obj, jclass claz
 static jobject CallNonvirtualObjectMethod(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallNonvirtualObjectMethodV(env, obj, clazz, methodID, args);
+    jobject o = CallNonvirtualObjectMethodV(env, obj, clazz, methodID, args);
+    va_end(args);
+    return o;
 }
 
 static jboolean CallNonvirtualBooleanMethodV(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args) {
@@ -380,7 +403,9 @@ static jboolean CallNonvirtualBooleanMethodA(JNIEnv* env, jobject obj, jclass cl
 static jboolean CallNonvirtualBooleanMethod(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallNonvirtualBooleanMethodV(env, obj, clazz, methodID, args);
+    jboolean b = CallNonvirtualBooleanMethodV(env, obj, clazz, methodID, args);
+    va_end(args);
+    return b;
 }
 
 static jbyte CallNonvirtualByteMethodV(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args) {
@@ -394,7 +419,9 @@ static jbyte CallNonvirtualByteMethodA(JNIEnv* env, jobject obj, jclass clazz, j
 static jbyte CallNonvirtualByteMethod(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallNonvirtualByteMethodV(env, obj, clazz, methodID, args);
+    jbyte b = CallNonvirtualByteMethodV(env, obj, clazz, methodID, args);
+    va_end(args);
+    return b;
 }
 
 static jchar CallNonvirtualCharMethodV(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args) {
@@ -408,7 +435,9 @@ static jchar CallNonvirtualCharMethodA(JNIEnv* env, jobject obj, jclass clazz, j
 static jchar CallNonvirtualCharMethod(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallNonvirtualCharMethodV(env, obj, clazz, methodID, args);
+    jchar c = CallNonvirtualCharMethodV(env, obj, clazz, methodID, args);
+    va_end(args);
+    return c;
 }
 
 static jshort CallNonvirtualShortMethodV(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args) {
@@ -422,7 +451,9 @@ static jshort CallNonvirtualShortMethodA(JNIEnv* env, jobject obj, jclass clazz,
 static jshort CallNonvirtualShortMethod(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallNonvirtualShortMethodV(env, obj, clazz, methodID, args);
+    jshort s = CallNonvirtualShortMethodV(env, obj, clazz, methodID, args);
+    va_end(args);
+    return s;
 }
 
 static jint CallNonvirtualIntMethodV(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args) {
@@ -436,7 +467,9 @@ static jint CallNonvirtualIntMethodA(JNIEnv* env, jobject obj, jclass clazz, jme
 static jint CallNonvirtualIntMethod(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallNonvirtualIntMethodV(env, obj, clazz, methodID, args);
+    jint i = CallNonvirtualIntMethodV(env, obj, clazz, methodID, args);
+    va_end(args);
+    return i;
 }
 
 static jlong CallNonvirtualLongMethodV(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args) {
@@ -450,7 +483,9 @@ static jlong CallNonvirtualLongMethodA(JNIEnv* env, jobject obj, jclass clazz, j
 static jlong CallNonvirtualLongMethod(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallNonvirtualLongMethodV(env, obj, clazz, methodID, args);
+    jlong l = CallNonvirtualLongMethodV(env, obj, clazz, methodID, args);
+    va_end(args);
+    return l;
 }
 
 static jfloat CallNonvirtualFloatMethodV(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args) {
@@ -464,7 +499,9 @@ static jfloat CallNonvirtualFloatMethodA(JNIEnv* env, jobject obj, jclass clazz,
 static jfloat CallNonvirtualFloatMethod(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallNonvirtualFloatMethodV(env, obj, clazz, methodID, args);
+    jfloat f = CallNonvirtualFloatMethodV(env, obj, clazz, methodID, args);
+    va_end(args);
+    return f;
 }
 
 static jdouble CallNonvirtualDoubleMethodV(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args) {
@@ -478,7 +515,9 @@ static jdouble CallNonvirtualDoubleMethodA(JNIEnv* env, jobject obj, jclass claz
 static jdouble CallNonvirtualDoubleMethod(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallNonvirtualDoubleMethodV(env, obj, clazz, methodID, args);
+    jdouble d = CallNonvirtualDoubleMethodV(env, obj, clazz, methodID, args);
+    va_end(args);
+    return d;
 }
 
 static void CallNonvirtualVoidMethodV(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args) {
@@ -493,6 +532,7 @@ static void CallNonvirtualVoidMethod(JNIEnv* env, jobject obj, jclass clazz, jme
     va_list args;
     va_start(args, methodID);
     CallNonvirtualVoidMethodV(env, obj, clazz, methodID, args);
+    va_end(args);
 }
 
 static jfieldID GetFieldID(JNIEnv* env, jclass clazz, const char* name, const char* sig) {
@@ -586,7 +626,9 @@ static jobject CallStaticObjectMethodA(JNIEnv* env, jclass clazz, jmethodID meth
 static jobject CallStaticObjectMethod(JNIEnv* env, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallStaticObjectMethodV(env, clazz, methodID, args);
+    jobject o = CallStaticObjectMethodV(env, clazz, methodID, args);
+    va_end(args);
+    return o;
 }
 
 static jboolean CallStaticBooleanMethodV(JNIEnv* env, jclass clazz, jmethodID methodID, va_list args) {
@@ -600,7 +642,9 @@ static jboolean CallStaticBooleanMethodA(JNIEnv* env, jclass clazz, jmethodID me
 static jboolean CallStaticBooleanMethod(JNIEnv* env, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallStaticBooleanMethodV(env, clazz, methodID, args);
+    jboolean b = CallStaticBooleanMethodV(env, clazz, methodID, args);
+    va_end(args);
+    return b;
 }
 
 static jbyte CallStaticByteMethodV(JNIEnv* env, jclass clazz, jmethodID methodID, va_list args) {
@@ -614,7 +658,9 @@ static jbyte CallStaticByteMethodA(JNIEnv* env, jclass clazz, jmethodID methodID
 static jbyte CallStaticByteMethod(JNIEnv* env, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallStaticByteMethodV(env, clazz, methodID, args);
+    jbyte b = CallStaticByteMethodV(env, clazz, methodID, args);
+    va_end(args);
+    return b;
 }
 
 static jchar CallStaticCharMethodV(JNIEnv* env, jclass clazz, jmethodID methodID, va_list args) {
@@ -628,7 +674,9 @@ static jchar CallStaticCharMethodA(JNIEnv* env, jclass clazz, jmethodID methodID
 static jchar CallStaticCharMethod(JNIEnv* env, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallStaticCharMethodV(env, clazz, methodID, args);
+    jchar c = CallStaticCharMethodV(env, clazz, methodID, args);
+    va_end(args);
+    return c;
 }
 
 static jshort CallStaticShortMethodV(JNIEnv* env, jclass clazz, jmethodID methodID, va_list args) {
@@ -642,7 +690,9 @@ static jshort CallStaticShortMethodA(JNIEnv* env, jclass clazz, jmethodID method
 static jshort CallStaticShortMethod(JNIEnv* env, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallStaticShortMethodV(env, clazz, methodID, args);
+    jshort s = CallStaticShortMethodV(env, clazz, methodID, args);
+    va_end(args);
+    return s;
 }
 
 static jint CallStaticIntMethodV(JNIEnv* env, jclass clazz, jmethodID methodID, va_list args) {
@@ -656,7 +706,9 @@ static jint CallStaticIntMethodA(JNIEnv* env, jclass clazz, jmethodID methodID, 
 static jint CallStaticIntMethod(JNIEnv* env, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallStaticIntMethodV(env, clazz, methodID, args);
+    jint i = CallStaticIntMethodV(env, clazz, methodID, args);
+    va_end(args);
+    return i;
 }
 
 static jlong CallStaticLongMethodV(JNIEnv* env, jclass clazz, jmethodID methodID, va_list args) {
@@ -670,7 +722,9 @@ static jlong CallStaticLongMethodA(JNIEnv* env, jclass clazz, jmethodID methodID
 static jlong CallStaticLongMethod(JNIEnv* env, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallStaticLongMethodV(env, clazz, methodID, args);
+    jlong l = CallStaticLongMethodV(env, clazz, methodID, args);
+    va_end(args);
+    return l;
 }
 
 static jfloat CallStaticFloatMethodV(JNIEnv* env, jclass clazz, jmethodID methodID, va_list args) {
@@ -684,7 +738,9 @@ static jfloat CallStaticFloatMethodA(JNIEnv* env, jclass clazz, jmethodID method
 static jfloat CallStaticFloatMethod(JNIEnv* env, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallStaticFloatMethodV(env, clazz, methodID, args);
+    jfloat f = CallStaticFloatMethodV(env, clazz, methodID, args);
+    va_end(args);
+    return f;
 }
 
 static jdouble CallStaticDoubleMethodV(JNIEnv* env, jclass clazz, jmethodID methodID, va_list args) {
@@ -698,7 +754,9 @@ static jdouble CallStaticDoubleMethodA(JNIEnv* env, jclass clazz, jmethodID meth
 static jdouble CallStaticDoubleMethod(JNIEnv* env, jclass clazz, jmethodID methodID, ...) {
     va_list args;
     va_start(args, methodID);
-    return CallStaticDoubleMethodV(env, clazz, methodID, args);
+    jdouble d = CallStaticDoubleMethodV(env, clazz, methodID, args);
+    va_end(args);
+    return d;
 }
 
 static void CallStaticVoidMethodV(JNIEnv* env, jclass clazz, jmethodID methodID, va_list args) {
@@ -713,6 +771,7 @@ static void CallStaticVoidMethod(JNIEnv* env, jclass clazz, jmethodID methodID, 
     va_list args;
     va_start(args, methodID);
     CallStaticVoidMethodV(env, clazz, methodID, args);
+    va_end(args);
 }
 
 static jfieldID GetStaticFieldID(JNIEnv* env, jclass clazz, const char* name, const char* sig) {

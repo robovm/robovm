@@ -29,6 +29,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*
+ * Copyright (C) 2012 The NullVM Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package java.lang;
 
@@ -202,7 +217,7 @@ public abstract class ClassLoader {
         }
         parent = parentLoader;
     }
-    
+
     /**
      * Constructs a new class from an array of bytes containing a class
      * definition in class file format.
@@ -585,7 +600,7 @@ public abstract class ClassLoader {
             return packages.get(name);
         }
     }
-    
+
     /**
      * Returns all the packages known to this class loader.
      *
@@ -629,7 +644,7 @@ public abstract class ClassLoader {
     protected Package definePackage(String name, String specTitle, String specVersion,
             String specVendor, String implTitle, String implVersion, String implVendor, URL sealBase)
             throws IllegalArgumentException {
-        
+
         synchronized (packages) {
             if (packages.containsKey(name)) {
                 throw new IllegalArgumentException("Package " + name + " already defined");
@@ -641,7 +656,7 @@ public abstract class ClassLoader {
             packages.put(name, newPackage);
 
             return newPackage;
-        }        
+        }
     }
 
     /**
@@ -709,7 +724,7 @@ public abstract class ClassLoader {
      */
     public void clearAssertionStatus() {
     }
-    }
+}
 
 /*
  * Provides a helper class that combines two existing URL enumerations into one.
@@ -741,23 +756,48 @@ class TwoEnumerationsInOne implements Enumeration<URL> {
 
 }
 
-    /**
+/**
  * Provides an explicit representation of the boot class loader. It sits at the
  * head of the class loader chain and delegates requests to the VM's internal
  * class loading mechanism.
-     */
-class BootClassLoader {
+ */
+class BootClassLoader extends PathClassLoader {
 
-    private static ClassLoader instance;
+    private static BootClassLoader instance;
 
     @FindBugsSuppressWarnings("DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED")
-    public static synchronized ClassLoader getInstance() {
+    public static synchronized BootClassLoader getInstance() {
         if (instance == null) {
-            String classPath = System.getProperty("java.boot.class.path", ".");
-            instance = new PathClassLoader(classPath, null, true);
+            instance = new BootClassLoader();
         }
 
         return instance;
+    }
+    
+    public BootClassLoader() {
+    	super(System.getProperty("java.boot.class.path", "."), null, true);
+    }
+
+    @Override
+    public URL getResource(String resName) {
+        return findResource(resName);
+    }
+
+    @Override
+    protected Class<?> loadClass(String className, boolean resolve)
+           throws ClassNotFoundException {
+        Class<?> clazz = findLoadedClass(className);
+
+        if (clazz == null) {
+            clazz = findClass(className);
+        }
+
+        return clazz;
+    }
+
+    @Override
+    public Enumeration<URL> getResources(String resName) throws IOException {
+        return findResources(resName);
     }
 }
 

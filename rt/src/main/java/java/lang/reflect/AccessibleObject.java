@@ -29,6 +29,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*
+ * Copyright (C) 2012 The NullVM Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package java.lang.reflect;
 
@@ -312,29 +327,7 @@ public class AccessibleObject implements AnnotatedElement {
          */
         throw new UnsupportedOperationException();
     }
-    
-    /**
-     * Retrieve the signature attribute from an arbitrary class.  This is
-     * the same as Class.getSignatureAttribute(), but it can be used from
-     * the java.lang.reflect package.
-     */
-    /*package*/ static String getClassSignatureAttribute(Class clazz) {
-        Object[] annotation = getClassSignatureAnnotation(clazz);
 
-        if (annotation == null) {
-            return null;
-        }
-
-        return StringUtils.combineStrings(annotation);
-    }
-
-    /**
-     * Retrieve the signature annotation from an arbitrary class.  This is
-     * the same as Class.getSignatureAttribute(), but it can be used from
-     * the java.lang.reflect package.
-     */
-    private static native Object[] getClassSignatureAnnotation(Class clazz);
-    
     /**
      * Appends the specified class name to the buffer. The class may represent
      * a simple type, a reference type or an array type.

@@ -583,7 +583,13 @@ outer:
      * @throws IndexOutOfBoundsException
      *             if {@code index < 0} or {@code index >= length()}.
      */
-    public native char charAt(int index);
+    public char charAt(int index) {
+    	// This method is native in Android    	
+        if (0 <= index && index < count) {
+            return value[offset + index];
+        }
+        throw indexAndLength(index);
+    }
 
     private StringIndexOutOfBoundsException indexAndLength(int index) {
         throw new StringIndexOutOfBoundsException(this, index);
@@ -631,7 +637,23 @@ outer:
      * @throws NullPointerException
      *             if {@code string} is {@code null}.
      */
-    public native int compareTo(String string);
+    public int compareTo(String string) {
+    	// This method is native in Android
+    	if (string == this) {
+    		return 0;
+    	}
+    	// The code below comes from Apache Harmony
+        // Code adapted from K&R, pg 101
+        int o1 = offset, o2 = string.offset, result;
+        int end = offset + (count < string.count ? count : string.count);
+        char[] target = string.value;
+        while (o1 < end) {
+            if ((result = value[o1++] - target[o2++]) != 0) {
+                return result;
+            }
+        }
+        return count - string.count;
+    }
 
     /**
      * Compares the specified string to this string using the Unicode values of
@@ -752,7 +774,37 @@ outer:
      *         {@code false} otherwise.
      * @see #hashCode
      */
-    @Override public native boolean equals(Object object);
+    @Override
+    public boolean equals(Object object) {
+    	// This method is native in Android
+    	// The code below has been copied from Apache Harmony 
+    	// and changed to be faster
+        if (object == this) {
+            return true;
+        }
+        if (object instanceof String) {
+            String s = (String) object;
+            int _count = count;
+            int _scount = s.count;
+            int _hash = hashCode;
+            int _shash = s.hashCode;
+            if (_count != _scount || (_hash != _shash && _hash != 0 && _shash != 0)) {
+                return false;
+            }
+            int i = offset;
+            int j = s.offset;
+            char[] _value = value;
+            char[] _svalue = s.value;
+            while (_count > 0) {
+                if (_value[i++] != _svalue[j++]) {
+                    return false;
+                }
+            	_count--;
+            }
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Compares the specified string to this string ignoring the case of the
@@ -966,7 +1018,23 @@ outer:
         return fastIndexOf(c, start);
     }
 
-    private native int fastIndexOf(int c, int start);
+    private int fastIndexOf(int c, int start) {
+    	// This is native in Android
+        int _count = count;
+        int _offset = offset;
+        char[] _value = value;
+        if (start < _count) {
+            if (start < 0) {
+                start = 0;
+            }
+            for (int i = _offset + start; i < _offset + _count; i++) {
+                if (_value[i] == c) {
+                    return i - _offset;
+                }
+            }
+        }
+        return -1;
+    }
 
     private int indexOfSupplementary(int c, int start) {
         if (!Character.isSupplementaryCodePoint(c)) {
@@ -1087,7 +1155,10 @@ outer:
      *
      * @since 1.6
      */
-    public native boolean isEmpty();
+    public boolean isEmpty() {
+    	// This method is native in Android
+        return count == 0;
+    }
 
     /**
      * Returns the last index of the code point {@code c}, or -1.
@@ -1211,7 +1282,10 @@ outer:
      *
      * @return the number of characters in this string.
      */
-    public native int length();
+    public int length() {
+    	// This method is native in Android
+        return count;
+    }
 
     /**
      * Compares the specified string to this string and compares the specified

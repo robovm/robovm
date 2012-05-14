@@ -1,5 +1,7 @@
 project(bc)
 
+include_directories(../../hyprt/include ../../core/include ${CMAKE_BINARY_DIR}/gc/include)
+
 if (WITH_FPIC)
   remove_definitions(-fPIC)
 endif()

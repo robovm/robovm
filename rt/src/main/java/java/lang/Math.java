@@ -89,7 +89,10 @@ public final class Math {
      * @return the argument if it is positive, otherwise the negation of the
      *         argument.
      */
-    public static native int abs(int i);
+    public static int abs(int i) {
+    	// This is native in Android
+        return (i >= 0) ? i : -i;
+    }
 
     /**
      * Returns the absolute value of the argument. If the argument is {@code
@@ -100,7 +103,10 @@ public final class Math {
      * @return the argument if it is positive, otherwise the negation of the
      *         argument.
      */
-    public static native long abs(long l);
+    public static long abs(long l) {
+    	// This is native in Android
+        return (l >= 0) ? l : -l;
+    }
 
     /**
      * Returns the closest double approximation of the arc cosine of the
@@ -540,7 +546,10 @@ public final class Math {
      *            the second argument.
      * @return the larger of {@code i1} and {@code i2}.
      */
-    public static native int max(int i1, int i2);
+    public static int max(int i1, int i2) {
+    	// This is native in Android
+    	return i1 > i2 ? i1 : i2;
+    }
 
     /**
      * Returns the most positive (closest to positive infinity) of the two
@@ -640,7 +649,10 @@ public final class Math {
      *            the second argument.
      * @return the smaller of {@code i1} and {@code i2}.
      */
-    public static native int min(int i1, int i2);
+    public static int min(int i1, int i2) {
+    	// This is native in Android
+    	return i1 < i2 ? i1 : i2;
+    }
 
     /**
      * Returns the most negative (closest to negative infinity) of the two

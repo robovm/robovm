@@ -3,8 +3,9 @@
 #include <unwind.h>
 #include <hythread.h>
 #include "private.h"
-#include "log.h"
 #include "utlist.h"
+
+#define LOG_TAG "core.method"
 
 DynamicLib* bootNativeLibs = NULL;
 DynamicLib* mainNativeLibs = NULL;
@@ -1067,15 +1068,15 @@ void* nvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const char* sho
 
         obtainNativeLibsLock();
 
-        TRACE("Searching for native method using short name: %s\n", shortMangledName);
+        TRACEF("Searching for native method using short name: %s", shortMangledName);
         f = nvmFindDynamicLibSymbol(env, nativeLibs, shortMangledName, TRUE);
         if (f) {
-            TRACE("Found native method using short name: %s\n", shortMangledName);
+            TRACEF("Found native method using short name: %s", shortMangledName);
         } else if (!strcmp(shortMangledName, longMangledName)) {
-            TRACE("Searching for native method using long name: %s\n", longMangledName);
+            TRACEF("Searching for native method using long name: %s", longMangledName);
             void* f = nvmFindDynamicLibSymbol(env, nativeLibs, longMangledName, TRUE);
             if (f) {
-                TRACE("Found native method using long name: %s\n", longMangledName);
+                TRACEF("Found native method using long name: %s", longMangledName);
             }
         }
 

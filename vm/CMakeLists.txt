@@ -5,11 +5,6 @@ include(ExternalProject)
 
 enable_testing()
 
-find_path(ZLIB_H_PATH zlib.h)
-if(NOT ZLIB_H_PATH)
-  message(FATAL_ERROR "zlib.h not found")
-endif()
-
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Debug")
 endif()
@@ -110,31 +105,29 @@ ExternalProject_Add(extgc
   PATCH_COMMAND patch -d ../extgc -p1 < ${CMAKE_SOURCE_DIR}/dependencies/bdwgc.patch
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_CFLAGS}' ../extgc/configure ${HOST} --enable-shared=no --prefix=${CMAKE_BINARY_DIR}/gc"
 )
-
-include_directories(hyprt/include core/include ${ZLIB_H_PATH} ${CMAKE_BINARY_DIR}/gc/include)
 link_directories(${CMAKE_BINARY_DIR}/gc/lib)
-add_definitions(-Wall)
-add_definitions(-fno-omit-frame-pointer) # The unwind code relies on frame pointers being present.
-add_definitions(-fasynchronous-unwind-tables) # Generate eh frames for C code. Without it we cannot unwind.
-if(LINUX)
-  add_definitions(-D_GNU_SOURCE)
-endif()
-add_definitions(-DGC_THREADS)
-add_definitions(-include ${CMAKE_BINARY_DIR}/gc/include/gc/gc.h)
-add_definitions(-DIPv6_FUNCTION_SUPPORT)
 
+# Set up global C and C++ compiler flags
+set(C_CXX_FLAGS "${C_CXX_FLAGS} -Wall -fvisibility=hidden -fdata-sections -ffunction-sections")
+set(C_CXX_FLAGS "${C_CXX_FLAGS} -fno-omit-frame-pointer") # The unwind code relies on frame pointers being present.
+set(C_CXX_FLAGS "${C_CXX_FLAGS} -fasynchronous-unwind-tables") # Generate eh frames for C code. Without it exceptions won't work.
 if((LINUX OR DARWIN) AND CMAKE_SIZEOF_VOID_P MATCHES "8")
   CHECK_C_COMPILER_FLAG("-fPIC" WITH_FPIC)
   if (WITH_FPIC)
-    add_definitions(-fPIC)
+    set(C_CXX_FLAGS "${C_CXX_FLAGS} -fPIC")
   endif()
 endif()
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_CXX_FLAGS} ${C_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${C_CXX_FLAGS} ${CXX_FLAGS}")
+
+if(LINUX)
+  add_definitions(-D_GNU_SOURCE)
+endif()
+add_definitions(-DIPv6_FUNCTION_SUPPORT)
 
 if(LINUX)
   set(HY_OS linux)
   add_definitions(-DLINUX)
-  add_definitions(-fdata-sections -ffunction-sections)
-  include_directories(hyprt/include/unix)
 elseif(DARWIN)
   if(MACOSX)
     add_definitions(-DMACOSX)
@@ -147,7 +140,6 @@ elseif(DARWIN)
   add_definitions(-DDARWIN)
   add_definitions(-arch ${CARCH})
   add_definitions(${CARCH_FLAGS})
-  include_directories(hyprt/include/unix)
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LINKER_FLAGS}")
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${LINKER_FLAGS}")
   set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${LINKER_FLAGS}")
@@ -180,5 +172,5 @@ install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.a DESTINATION ${INSTALL_DIR})
 add_subdirectory(core/src)
 add_subdirectory(bc/src)
 add_subdirectory(hyprt/src)
-add_subdirectory(rt/src)
+add_subdirectory(rt)
 

@@ -1,7 +1,8 @@
 #include <nullvm.h>
 #include <string.h>
-#include "log.h"
 #include "uthash.h"
+
+#define LOG_TAG "core.string"
 
 static Method* stringConstructor = NULL;
 static InstanceField* stringValueField = NULL;
@@ -157,6 +158,7 @@ Object* nvmNewStringAscii(Env* env, const char* s, jint length) {
 }
 
 Object* nvmNewStringUTF(Env* env, const char* s, jint length) {
+    if (!s) return NULL;
     length = (length == -1) ? getUnicodeLengthOfUtf8(s) : length;
     CharArray* value = nvmNewCharArray(env, length);
     if (!value) return NULL;
@@ -165,6 +167,7 @@ Object* nvmNewStringUTF(Env* env, const char* s, jint length) {
 }
 
 Object* nvmNewString(Env* env, const jchar* chars, jint length) {
+    if (!chars) return NULL;
     CharArray* value = nvmNewCharArray(env, length);
     if (!value) return NULL;
     memcpy(value->values, chars, sizeof(jchar) * length);
@@ -172,6 +175,7 @@ Object* nvmNewString(Env* env, const jchar* chars, jint length) {
 }
 
 Object* nvmNewInternedStringUTF(Env* env, const char* s, jint length) {
+    if (!s) return NULL;
     // Check the cache first.
     CacheEntry* cacheEntry;
     HASH_FIND_STR(internedStrings, s, cacheEntry);
@@ -209,6 +213,7 @@ Object* nvmNewInternedStringUTF(Env* env, const char* s, jint length) {
 }
 
 Object* nvmInternString(Env* env, Object* str) {
+    if (!str) return NULL;
     // Check the cache first.
     char* s = nvmGetStringUTFChars(env, str);
     if (!s) return NULL;

@@ -52,6 +52,53 @@ import org.nullvm.compiler.trampoline.Trampoline;
 public class Linker {
     private static final Pattern ANT_WILDCARDS = Pattern.compile("\\*\\*\\.?|\\*|\\?");
     
+    /**
+     * Patterns for root classes. Classes matching these patterns will always be linked in.
+     */
+    private static final String[] ROOT_CLASS_PATTERNS = {
+        "java.lang.**.*",
+        "org.apache.harmony.lang.annotation.*",
+        "org.nullvm.rt.*"
+    };
+    /**
+     * Names of root classes. These classes will always be linked in. Most of these
+     * are here because they are required by Android's libcore native code.
+     */
+    private static final String[] ROOT_CLASSES = {
+        "java/io/FileDescriptor",
+        "java/io/PrintWriter",
+        "java/io/Serializable",
+        "java/io/StringWriter",
+        "java/math/BigDecimal",
+        "java/net/Inet6Address",
+        "java/net/InetAddress",
+        "java/net/InetSocketAddress",
+        "java/net/Socket",
+        "java/net/SocketImpl",
+        "java/nio/charset/CharsetICU",
+        "java/text/Bidi$Run",
+        "java/text/ParsePosition",
+        "java/util/regex/PatternSyntaxException",
+        "java/util/zip/Deflater",
+        "java/util/zip/Inflater",
+        "libcore/icu/LocaleData",
+        "libcore/icu/NativeDecimalFormat$FieldPositionIterator",
+        "libcore/io/ErrnoException",
+        "libcore/io/GaiException",
+        "libcore/io/StructAddrinfo",
+        "libcore/io/StructFlock",
+        "libcore/io/StructGroupReq",
+        "libcore/io/StructLinger",
+        "libcore/io/StructPasswd",
+        "libcore/io/StructPollfd",
+        "libcore/io/StructStat",
+        "libcore/io/StructStatFs",
+        "libcore/io/StructTimeval",
+        "libcore/io/StructUtsname",
+        "libcore/util/MutableInt",
+        "libcore/util/MutableLong"
+    };
+    
     private final Config config;
 
     public Linker(Config config) {
@@ -63,7 +110,9 @@ public class Linker {
         int start = 0;
         Matcher matcher = ANT_WILDCARDS.matcher(pattern);
         while (matcher.find()) {
-            sb.append(Pattern.quote(pattern.substring(start, matcher.start())));
+        	if (matcher.start() - start > 0) {
+        		sb.append(Pattern.quote(pattern.substring(start, matcher.start())));
+        	}
             if ("**".equals(matcher.group()) || "**.".equals(matcher.group())) {
                 sb.append(".*");
             } else if ("*".equals(matcher.group())) {
@@ -96,12 +145,13 @@ public class Linker {
     
     private Set<Clazz> getRootClasses() {
         Set<Clazz> classes = new TreeSet<Clazz>();
-        classes.addAll(getMatchingClasses("java.lang.**.*"));
-        classes.addAll(getMatchingClasses("org.apache.harmony.lang.annotation.*"));
-        classes.addAll(getMatchingClasses("org.apache.harmony.niochar.*"));
-        classes.addAll(getMatchingClasses("org.apache.harmony.niochar.charset.*"));
-        classes.addAll(getMatchingClasses("org.nullvm.rt.*"));
-        classes.add(config.getClazzes().load("java/io/Serializable"));
+        for (String rootClassPattern : ROOT_CLASS_PATTERNS) {
+            classes.addAll(getMatchingClasses(rootClassPattern));        	
+        }
+        for (String rootClassName : ROOT_CLASSES) {
+            classes.add(config.getClazzes().load(rootClassName));        	
+        }
+        
         if (config.getRoots().isEmpty()) {
             if (config.getMainClass() != null) {
                 Clazz clazz = config.getClazzes().load(config.getMainClass().replace('.', '/'));

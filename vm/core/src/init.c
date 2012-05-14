@@ -3,15 +3,18 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <dlfcn.h>
-#include "log.h"
 #include "hyport.h"
 #include "utlist.h"
+
+#define LOG_TAG "core.init"
 
 HyPortLibraryVersion portLibraryVersion;
 HyPortLibrary portLibrary;
 ClassLoader* systemClassLoader = NULL;
 
 extern jint RT_JNI_OnLoad(JavaVM* vm, void *reserved);
+extern int registerJniHelp(JNIEnv* env);
+extern int registerCoreLibrariesJni(JNIEnv* env);
 
 static inline jint startsWith(char* s, char* prefix) {
     return s && strncmp(s, prefix, strlen(prefix)) == 0;
@@ -70,8 +73,8 @@ jboolean nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
                     if (options->logLevel == 0) options->logLevel = LOG_LEVEL_WARN;
                 } else if (startsWith(arg, "log=error")) {
                     if (options->logLevel == 0) options->logLevel = LOG_LEVEL_ERROR;
-                } else if (startsWith(arg, "log=none")) {
-                    if (options->logLevel == 0) options->logLevel = LOG_LEVEL_NONE;
+                } else if (startsWith(arg, "log=silent")) {
+                    if (options->logLevel == 0) options->logLevel = LOG_LEVEL_SILENT;
                 } else if (startsWith(arg, "MainClass=")) {
                     if (!options->mainClass) {
                         char* s = strdup(&arg[10]);
@@ -141,7 +144,12 @@ Env* nvmStartup(Options* options) {
     if (!nvmInitAttributes(env)) return NULL;
     if (!nvmInitPrimitiveWrapperClasses(env)) return NULL;
 
-    RT_JNI_OnLoad(&vm->javaVM, NULL);
+    // Initialize the NullVM rt JNI code
+//    RT_JNI_OnLoad(&vm->javaVM, NULL);
+    // Initialize the dalvik's JNIHelp code in libnativehelper
+    registerJniHelp((JNIEnv*) env);
+    // Initialize the dalvik rt JNI code
+    registerCoreLibrariesJni((JNIEnv*) env);
 
     systemClassLoader = nvmGetSystemClassLoader(env);
     if (nvmExceptionOccurred(env)) return NULL;
@@ -198,10 +206,12 @@ void nvmShutdown(Env* env, jint code) {
 
 void nvmAbort(char* format, ...) {
     va_list args;
-    va_start(args, format);
-    vfprintf(stderr, format, args);
-    va_end(args);
-    fprintf(stderr, "\n");
+    if (format) {
+        va_start(args, format);
+        vfprintf(stderr, format, args);
+        va_end(args);
+        fprintf(stderr, "\n");
+    }
     abort();
 }
 
@@ -210,11 +220,11 @@ DynamicLib* nvmOpenDynamicLib(Env* env, const char* file) {
 
     void* handle = dlopen(file, RTLD_LOCAL | RTLD_LAZY);
     if (!handle) {
-        TRACE("Failed to load dynamic library '%s': %s\n", file, dlerror());
+        TRACEF("Failed to load dynamic library '%s': %s", file, dlerror());
         return NULL;
     }
 
-    TRACE("Opening dynamic library '%s'\n", file);
+    TRACEF("Opening dynamic library '%s'", file);
 
     dlib = nvmAllocateMemory(env, sizeof(DynamicLib));
     if (!dlib) {
@@ -250,7 +260,7 @@ void nvmRemoveDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs) {
 }
 
 void* nvmFindDynamicLibSymbol(Env* env, DynamicLib* libs, const char* symbol, jboolean searchAll) {
-    TRACE("Searching for symbol '%s'\n", symbol);
+    TRACEF("Searching for symbol '%s'", symbol);
 
     DynamicLib* dlib = NULL;
     LL_FOREACH(libs, dlib) {

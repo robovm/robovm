@@ -32,7 +32,6 @@
 
 package java.lang;
 
-import dalvik.system.VMDebug;
 import dalvik.system.VMStack;
 import java.io.File;
 import java.io.IOException;
@@ -452,14 +451,15 @@ public class Runtime {
      *            off.
      */
     public void traceMethodCalls(boolean enable) {
-        if (enable != tracingMethods) {
-            if (enable) {
-                VMDebug.startMethodTracing();
-            } else {
-                VMDebug.stopMethodTracing();
-            }
-            tracingMethods = enable;
-        }
+    	// NullVM note: Method tracing is not supported by NullVM.
+//        if (enable != tracingMethods) {
+//            if (enable) {
+//                VMDebug.startMethodTracing();
+//            } else {
+//                VMDebug.stopMethodTracing();
+//            }
+//            tracingMethods = enable;
+//        }
     }
 
     /**
@@ -544,7 +544,7 @@ public class Runtime {
             throw new IllegalStateException("VM already shutting down");
         }
 
-        if (hook.hasBeenStarted) {
+        if (hook.started) {
             throw new IllegalArgumentException("Hook has already been started");
         }
 

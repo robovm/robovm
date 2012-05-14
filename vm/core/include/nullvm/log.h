@@ -1,19 +1,40 @@
 #ifndef NULLVM_LOG_H
 #define NULLVM_LOG_H
 
-#define LOG_LEVEL_TRACE 1
-#define LOG_LEVEL_DEBUG 2
-#define LOG_LEVEL_INFO 3
-#define LOG_LEVEL_WARN 4
-#define LOG_LEVEL_ERROR 5
-#define LOG_LEVEL_NONE 6
+#define LOG(level, text) nvmLog(level, LOG_TAG, text)
+#define LOGF(level, format, ...) nvmLogf(level, LOG_TAG, format, __VA_ARGS__)
+#define TRACE(text) LOG(LOG_LEVEL_TRACE, text)
+#define TRACEF(format, ...) LOGF(LOG_LEVEL_TRACE, format, __VA_ARGS__)
+#define DEBUG(text) LOG(LOG_LEVEL_DEBUG, text)
+#define DEBUGF(format, ...) LOGF(LOG_LEVEL_DEBUG, format, __VA_ARGS__)
+#define INFO(text) LOG(LOG_LEVEL_INFO, text)
+#define INFOF(format, ...) LOGF(LOG_LEVEL_INFO, format, __VA_ARGS__)
+#define WARN(text) LOG(LOG_LEVEL_WARN, text)
+#define WARNF(format, ...) LOGF(LOG_LEVEL_WARN, format, __VA_ARGS__)
+#define ERROR(text) LOG(LOG_LEVEL_ERROR, text)
+#define ERRORF(format, ...) LOGF(LOG_LEVEL_ERROR, format, __VA_ARGS__)
+#define FATAL(text) LOG(LOG_LEVEL_FATAL, text)
+#define FATALF(format, ...) LOGF(LOG_LEVEL_FATAL, format, __VA_ARGS__)
+
+/*
+ * Log levels. The values must match the values used 
+ * by the logging functions in Android's liblog. This
+ * is why we start at 2 for TRACE.
+ */
+typedef enum LogLevel {
+    LOG_LEVEL_TRACE = 2,
+    LOG_LEVEL_DEBUG,
+    LOG_LEVEL_INFO,
+    LOG_LEVEL_WARN,
+    LOG_LEVEL_ERROR,
+    LOG_LEVEL_FATAL,
+    LOG_LEVEL_SILENT,
+} LogLevel;
 
 extern jboolean nvmInitLog(Env* env);
-extern void nvmLogTrace(Env* env, char* format, ...);
-extern void nvmLogDebug(Env* env, char* format, ...);
-extern void nvmLogInfo(Env* env, char* format, ...);
-extern void nvmLogWarn(Env* env, char* format, ...);
-extern void nvmLogError(Env* env, char* format, ...);
+extern int nvmLog(int level, const char* tag, const char* text);
+extern int nvmLogf(int level, const char* tag, const char* format, ...);
+extern int nvmLogfv(int level, const char* tag, const char* format, va_list ap);
 
 #endif
 

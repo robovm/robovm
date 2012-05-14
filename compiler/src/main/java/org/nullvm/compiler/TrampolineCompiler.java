@@ -204,12 +204,14 @@ public class TrampolineCompiler {
                 call(fnLong, NVM_BC_THROW_UNSATISIFED_LINK_ERROR, fnLong.getParameterRef(0));
                 fnLong.add(new Unreachable());
                 mb.addFunction(fnLong);
+//                mb.addFunctionDeclaration(new FunctionDeclaration(fnLong.ref()));
                 FunctionRef targetFn = fnLong.ref();
                 if (!isLongNativeFunctionNameRequired(nc)) {
                     Function fnShort = new Function(weak, shortName, nc.getFunctionType());
                     Value resultInner = call(fnShort, fnLong.ref(), fnShort.getParameterRefs());
                     fnShort.add(new Ret(resultInner));
                     mb.addFunction(fnShort);
+//                    mb.addFunctionDeclaration(new FunctionDeclaration(fnShort.ref()));
                     targetFn = fnShort.ref();
                 }
                 Function fn = new Function(external, nc.getFunctionRef());

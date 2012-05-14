@@ -68,13 +68,13 @@ public final class StackTraceElement implements Serializable {
     }
 
     /**
-     * <p>
-     * Private, nullary constructor for VM use only.
-     * </p>
+     * Private constructor used by NullVM only.
      */
-    private StackTraceElement() {
+    @SuppressWarnings("unused")
+	private StackTraceElement(Class<?> cls, String method, String file, int line) {
+        this(cls.getName(), method, file, line);
     }
-
+    
     /**
      * Compares this instance with the specified object and indicates if they
      * are equal. In order to be equal, the following conditions must be

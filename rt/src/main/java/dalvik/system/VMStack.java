@@ -16,6 +16,8 @@
 
 package dalvik.system;
 
+import org.nullvm.rt.VM;
+
 /**
  * Provides a limited interface to the Dalvik VM stack. This class is mostly
  * used for implementing security checks.
@@ -29,14 +31,20 @@ public final class VMStack {
      * @return the requested class loader, or {@code null} if this is the
      *         bootstrap class loader.
      */
-    native public static ClassLoader getCallingClassLoader();
+    public static ClassLoader getCallingClassLoader() {
+    	// NullVM note: This is native in Android
+    	return VM.getStackClasses(0, 1)[0].getClassLoader();
+    }
 
     /**
      * Returns the class of the caller's caller's caller.
      *
      * @return the requested class, or {@code null}.
      */
-    native public static Class<?> getStackClass2();
+    public static Class<?> getStackClass2() {
+    	// NullVM note: This is native in Android
+    	return VM.getStackClasses(1, 1)[0];
+    }
 
     /**
      * Creates an array of classes from the methods at the top of the stack.
@@ -56,7 +64,11 @@ public final class VMStack {
      *      maximum number of classes to return, or -1 for all
      * @return an array with classes for the most-recent methods on the stack
      */
-    native public static Class<?>[] getClasses(int maxDepth);
+    public static Class<?>[] getClasses(int maxDepth) {
+    	// NullVM note: This is native in Android
+    	// TODO: Skip over java.lang.reflect classes.
+    	return VM.getStackClasses(0, maxDepth);
+    }
 
     /**
      * Retrieves the stack trace from the specified thread.

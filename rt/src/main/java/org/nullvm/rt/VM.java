@@ -25,6 +25,21 @@ import java.lang.reflect.Method;
 public final class VM {
 
     /**
+     * Returns the VM's boot class path.
+     */
+    public static native String bootClassPath();
+
+    /**
+     * Returns the VM's class path.
+     */
+    public static native String classPath();
+	
+    /**
+     * Returns the VM's version.
+     */
+    public static native String vmVersion();
+
+    /**
      * Returns the defining classes of the methods in the call stack. If 
      * <code>skipNum</code> is 0 the first entry in the returned array is the 
      * class of the method calling the caller of this method.
@@ -35,26 +50,12 @@ public final class VM {
      * @return the classes.
      */
     public static native final Class<?>[] getStackClasses(int skipNum, int maxDepth);
-
-    /**
-     * Searches an internal table of strings for a string equal to the specified
-     * String. If the string is not in the table, it is added. Answers the
-     * string contained in the table which is equal to the specified String. The
-     * same string object is always answered for strings which are equal.
-     * 
-     * @param string the String to intern
-     * @return the interned string equal to the specified String
-     */
-    public native static final String intern(String string);
-    
-    /**
-     * Returns the bootstrap {@link ClassLoader}.
-     * 
-     * @return the {@link ClassLoader}.
-     */
-    public native static final ClassLoader getBootClassLoader();
     
     public native static final long allocateMemory(int size);
+    
+    public native static final void memcpy(long s1, long s2, long n);
+    
+    public native static final void memmove(long s1, long s2, long n);
     
     public native static final long getCallbackMethodImpl(Method method);
     
@@ -90,14 +91,9 @@ public final class VM {
     
     public native static final long getStringUTFChars(String s);
     public native static final String newStringUTF(long address);
-    public native static final long getBooleanArrayElements(boolean[] array);
-    public native static final long getByteArrayElements(byte[] array);
-    public native static final long getCharArrayElements(char[] array);
-    public native static final long getShortArrayElements(short[] array);
-    public native static final long getIntArrayElements(int[] array);
-    public native static final long getLongArrayElements(long[] array);
-    public native static final long getFloatArrayElements(float[] array);
-    public native static final long getDoubleArrayElements(double[] array);
+    
+    public native static final long getArrayValuesAddress(Object array);
+    
     public native static final boolean[] newBooleanArray(long address, int size);
     public native static final byte[] newByteArray(long address, int size);
     public native static final char[] newCharArray(long address, int size);
@@ -107,6 +103,6 @@ public final class VM {
     public native static final float[] newFloatArray(long address, int size);
     public native static final double[] newDoubleArray(long address, int size);
     
-    public native static final long getPointerArrayElements(long[] array);
+    public native static final long getPointerArrayValuesAddress(long[] array);
     public native static final long[] newPointerArray(long address, int size);
 }

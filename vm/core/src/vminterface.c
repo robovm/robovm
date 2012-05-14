@@ -1,7 +1,6 @@
 #include <nullvm.h>
 #include <vmi.h>
 #include <string.h>
-#include "log.h"
 
 // Defined in init.c
 extern HyPortLibrary portLibrary;

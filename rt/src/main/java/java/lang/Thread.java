@@ -29,14 +29,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*
+ * Copyright (C) 2012 The NullVM Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package java.lang;
 
-import dalvik.system.VMStack;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import libcore.util.EmptyArray;
 
 /**
@@ -130,21 +145,29 @@ public class Thread implements Runnable {
      */
     public static final int NORM_PRIORITY = 5;
 
-    /* some of these are accessed directly by the VM; do not rename them */
-    volatile VMThread vmThread;
-    volatile ThreadGroup group;
-    volatile boolean daemon;
-    volatile String name;
-    volatile int priority;
-    volatile long stackSize;
-    Runnable target;
-    private static int count = 0;
+    private static long count = 0;
+    private static UncaughtExceptionHandler defaultUncaughtHandler = null;
+    
+    private long threadPtr = 0;
+    private ThreadGroup group = null;
 
     /**
      * Holds the thread's ID. We simply count upwards, so
      * each Thread has a unique ID.
      */
-    private long id;
+    private long id = 0;
+    private String name = null;
+    private long stackSize;
+    private boolean daemon = false;
+    private int priority = NORM_PRIORITY;
+    private Runnable target = null;
+
+    /** Callbacks to run on interruption. */
+    private final List<Runnable> interruptActions = new ArrayList<Runnable>();
+
+    private ClassLoader contextClassLoader = null;
+    private UncaughtExceptionHandler uncaughtHandler = null;
+    boolean started = false;
 
     /**
      * Normal thread local values.
@@ -156,38 +179,15 @@ public class Thread implements Runnable {
      */
     ThreadLocal.Values inheritableValues;
 
-    /** Callbacks to run on interruption. */
-    private final List<Runnable> interruptActions = new ArrayList<Runnable>();
-
-    /**
-     * Holds the class loader for this Thread, in case there is one.
-     */
-    private ClassLoader contextClassLoader;
-
-    /**
-     * Holds the handler for uncaught exceptions in this Thread,
-     * in case there is one.
-     */
-    private UncaughtExceptionHandler uncaughtHandler;
-
-    /**
-     * Holds the default handler for uncaught exceptions, in case there is one.
-     */
-    private static UncaughtExceptionHandler defaultUncaughtHandler;
-
-    /**
-     * Reflects whether this Thread has already been started. A Thread
-     * can only be started once (no recycling). Also, we need it to deduce
-     * the proper Thread status.
-     */
-    boolean hasBeenStarted = false;
-
     /** the park state of the thread */
     private int parkState = ParkState.UNPARKED;
 
     /** The synchronization object responsible for this thread parking. */
     private Object parkBlocker;
 
+    /** The object used to implement join() and parking. */
+    private Object lock = new Object();
+    
     /**
      * Constructs a new {@code Thread} with no {@code Runnable} object and a
      * newly generated name. The new {@code Thread} will belong to the same
@@ -352,35 +352,19 @@ public class Thread implements Runnable {
     }
 
     /**
-     * Package-scope method invoked by Dalvik VM to create "internal"
-     * threads or attach threads created externally.
-     *
-     * Don't call Thread.currentThread(), since there may not be such
-     * a thing (e.g. for Main).
+     * Called by the VM to create the main thread or attach a thread.
      */
-    Thread(ThreadGroup group, String name, int priority, boolean daemon) {
-        synchronized (Thread.class) {
-            id = ++Thread.count;
-        }
-
-        if (name == null) {
-            this.name = "Thread-" + id;
-        } else {
-            this.name = name;
-        }
-
-        if (group == null) {
-            throw new InternalError("group not specified");
-        }
-
-        this.group = group;
-
-        this.target = null;
-        this.stackSize = 0;
-        this.priority = priority;
+    Thread(long threadPtr, String name, ThreadGroup group, boolean daemon) {
+        // NOTE: Must set threadPtr before the synchronized block below
+        this.threadPtr = threadPtr;
         this.daemon = daemon;
-
-        /* add ourselves to our ThreadGroup of choice */
+        this.group = group == null ? ThreadGroup.mMain : group;
+        synchronized (Thread.class) {
+            id = ++count;
+        }
+        this.name = name == null ? "Thread-" + this.id : name;
+        this.priority = NORM_PRIORITY;        
+        this.started = true;
         this.group.addThread(this);
     }
 
@@ -472,9 +456,7 @@ public class Thread implements Runnable {
      *
      * @return the current Thread.
      */
-    public static Thread currentThread() {
-        return VMThread.currentThread();
-    }
+    public native static Thread currentThread();
 
     /**
      * Destroys the receiver without any monitor cleanup.
@@ -496,6 +478,14 @@ public class Thread implements Runnable {
         new Throwable("stack dump").printStackTrace();
     }
 
+    final void printStackTrace(Throwable t) {
+        System.err.print("Exception in thread \"");
+        System.err.print(name);
+        System.err.print("\" ");
+        t.printStackTrace(System.err);
+        System.err.flush();
+    }
+    
     /**
      * Copies an array with all Threads which are in the same ThreadGroup as the
      * receiver - and subgroups - into the array <code>threads</code> passed as
@@ -519,11 +509,11 @@ public class Thread implements Runnable {
 
         // Find out how many live threads we have. Allocate a bit more
         // space than needed, in case new ones are just being created.
-        int count = ThreadGroup.mSystem.activeCount();
+        int count = ThreadGroup.mMain.activeCount();
         Thread[] threads = new Thread[count + count / 2];
 
         // Enumerate the threads and collect the stacktraces.
-        count = ThreadGroup.mSystem.enumerate(threads);
+        count = ThreadGroup.mMain.enumerate(threads);
         for (int i = 0; i < count; i++) {
             map.put(threads[i], threads[i].getStackTrace());
         }
@@ -588,9 +578,12 @@ public class Thread implements Runnable {
      * Returns an array of {@link StackTraceElement} representing the current thread's stack.
      */
     public StackTraceElement[] getStackTrace() {
-        StackTraceElement ste[] = VMStack.getThreadStackTrace(this);
-        return ste != null ? ste : EmptyArray.STACK_TRACE_ELEMENT;
+        if (threadPtr == 0) {
+            return EmptyArray.STACK_TRACE_ELEMENT;
+        }
+        return internalGetStackTrace(this);
     }
+    private static native StackTraceElement[] internalGetStackTrace(Thread thread);
 
     /**
      * Returns the current state of the Thread. This method is useful for
@@ -599,22 +592,23 @@ public class Thread implements Runnable {
      * @return a {@link State} value.
      */
     public State getState() {
-        // TODO This is ugly and should be implemented better.
-        VMThread vmt = this.vmThread;
-
-        // Make sure we have a valid reference to an object. If native code
-        // deletes the reference we won't run into a null reference later.
-        VMThread thread = vmThread;
-        if (thread != null) {
-            // If the Thread Object became invalid or was not yet started,
-            // getStatus() will return -1.
-            int state = thread.getStatus();
-            if(state != -1) {
-                return VMThread.STATE_MAP[state];
-            }
+        int s = internalGetState(this);
+        if (s == State.BLOCKED.ordinal()) {
+            return State.BLOCKED;
+        } else if (s == State.NEW.ordinal()) {
+            return State.NEW;
+        } else if (s == State.RUNNABLE.ordinal()) {
+            return State.RUNNABLE;
+        } else if (s == State.TERMINATED.ordinal()) {
+            return State.TERMINATED;
+        } else if (s == State.TIMED_WAITING.ordinal()) {
+            return State.TIMED_WAITING;
+        } else if (s == State.WAITING.ordinal()) {
+            return State.WAITING;
         }
-        return hasBeenStarted ? Thread.State.TERMINATED : Thread.State.NEW;
+        throw new IllegalStateException();
     }
+    private static native int internalGetState(Thread thread);
 
     /**
      * Returns the ThreadGroup to which this Thread belongs.
@@ -674,12 +668,11 @@ public class Thread implements Runnable {
                 interruptActions.get(i).run();
             }
         }
-
-        VMThread vmt = this.vmThread;
-        if (vmt != null) {
-            vmt.interrupt();
+        if (threadPtr != 0) {
+            internalInterrupt(this);
         }
     }
+    private static native void internalInterrupt(Thread thread);
 
     /**
      * Returns a <code>boolean</code> indicating whether the current Thread (
@@ -693,8 +686,9 @@ public class Thread implements Runnable {
      * @see Thread#isInterrupted
      */
     public static boolean interrupted() {
-        return VMThread.interrupted();
+        return internalInterrupted();
     }
+    private static native boolean internalInterrupted();
 
     /**
      * Returns <code>true</code> if the receiver has already been started and
@@ -706,7 +700,7 @@ public class Thread implements Runnable {
      * @see Thread#start
      */
     public final boolean isAlive() {
-        return (vmThread != null);
+        return threadPtr != 0;
     }
 
     /**
@@ -733,13 +727,13 @@ public class Thread implements Runnable {
      * @see Thread#interrupted
      */
     public boolean isInterrupted() {
-        VMThread vmt = this.vmThread;
-        if (vmt != null) {
-            return vmt.isInterrupted();
+        if (threadPtr != 0) {
+            return internalIsInterrupted(this);
         }
 
         return false;
     }
+    private static native boolean internalIsInterrupted(Thread thread);
 
     /**
      * Blocks the current Thread (<code>Thread.currentThread()</code>) until
@@ -751,14 +745,13 @@ public class Thread implements Runnable {
      * @see java.lang.ThreadDeath
      */
     public final void join() throws InterruptedException {
-        VMThread t = vmThread;
-        if (t == null) {
+        if (threadPtr == 0) {
             return;
         }
 
-        synchronized (t) {
+        synchronized (lock) {
             while (isAlive()) {
-                t.wait();
+                lock.wait();
             }
         }
     }
@@ -803,12 +796,11 @@ public class Thread implements Runnable {
             return;
         }
 
-        VMThread t = vmThread;
-        if (t == null) {
+        if (threadPtr == 0) {
             return;
         }
 
-        synchronized (t) {
+        synchronized (lock) {
             if (!isAlive()) {
                 return;
             }
@@ -819,7 +811,7 @@ public class Thread implements Runnable {
             // wait until this thread completes or the timeout has elapsed
             long start = System.nanoTime();
             while (true) {
-                t.wait(millis, nanos);
+                lock.wait(millis, nanos);
                 if (!isAlive()) {
                     break;
                 }
@@ -876,11 +868,11 @@ public class Thread implements Runnable {
      * @see Thread#isDaemon
      */
     public final void setDaemon(boolean isDaemon) {
-        if (hasBeenStarted) {
+        if (started) {
             throw new IllegalThreadStateException("Thread already started."); // TODO Externalize?
         }
 
-        if (vmThread == null) {
+        if (threadPtr == 0) {
             daemon = isDaemon;
         }
     }
@@ -947,12 +939,12 @@ public class Thread implements Runnable {
         }
 
         name = threadName;
-        VMThread vmt = this.vmThread;
-        if (vmt != null) {
+        if (threadPtr != 0) {
             /* notify the VM that the thread name has changed */
-            vmt.nameChanged(threadName);
+            internalSetName(this, threadName);
         }
     }
+    private static native void internalSetName(Thread thread, String threadName);
 
     /**
      * Sets the priority of the Thread. Note that the final priority set may not
@@ -978,11 +970,11 @@ public class Thread implements Runnable {
 
         this.priority = priority;
 
-        VMThread vmt = this.vmThread;
-        if (vmt != null) {
-            vmt.setPriority(priority);
+        if (threadPtr != 0) {
+            internalSetPriority(this, priority);
         }
     }
+    private static native void internalSetPriority(Thread thread, int priority);
 
     /**
      * <p>
@@ -1028,8 +1020,9 @@ public class Thread implements Runnable {
      * @see Thread#interrupt()
      */
     public static void sleep(long millis, int nanos) throws InterruptedException {
-        VMThread.sleep(millis, nanos);
+        internalSleep(millis, nanos);
     }
+    private static native void internalSleep(long millis, int nanos) throws InterruptedException;
 
     /**
      * Starts the new Thread of execution. The <code>run()</code> method of
@@ -1041,14 +1034,14 @@ public class Thread implements Runnable {
      * @see Thread#run
      */
     public synchronized void start() {
-        if (hasBeenStarted) {
+        if (started) {
             throw new IllegalThreadStateException("Thread already started."); // TODO Externalize?
         }
 
-        hasBeenStarted = true;
-
-        VMThread.create(this, stackSize);
+        threadPtr = internalStart(this, priority);
+        started = true;
     }
+    private static native long internalStart(Thread t, int priority);
 
     /**
      * Requests the receiver Thread to stop and throw ThreadDeath. The Thread is
@@ -1103,8 +1096,9 @@ public class Thread implements Runnable {
      * is ready to run. The actual scheduling is implementation-dependent.
      */
     public static void yield() {
-        VMThread.yield();
+        internalYield();
     }
+    private static native void internalYield();
 
     /**
      * Indicates whether the current Thread has a monitor lock on the specified
@@ -1115,8 +1109,9 @@ public class Thread implements Runnable {
      *         object; false otherwise
      */
     public static boolean holdsLock(Object object) {
-        return currentThread().vmThread.holdsLock(object);
+        return internalHoldsLock(object);
     }
+    private static native boolean internalHoldsLock(Object object);
 
     /**
      * Implemented by objects that want to handle cases where a thread is being
@@ -1149,9 +1144,7 @@ public class Thread implements Runnable {
      * @hide for Unsafe
      */
     public void unpark() {
-        VMThread vmt = vmThread;
-
-        if (vmt == null) {
+        if (threadPtr == 0) {
             /*
              * vmThread is null before the thread is start()ed. In
              * this case, we just go ahead and set the state to
@@ -1163,7 +1156,7 @@ public class Thread implements Runnable {
             return;
         }
 
-        synchronized (vmt) {
+        synchronized (lock) {
             switch (parkState) {
                 case ParkState.PREEMPTIVELY_UNPARKED: {
                     /*
@@ -1180,7 +1173,7 @@ public class Thread implements Runnable {
                 }
                 default /*parked*/: {
                     parkState = ParkState.UNPARKED;
-                    vmt.notifyAll();
+                    lock.notifyAll();
                     break;
                 }
             }
@@ -1209,14 +1202,12 @@ public class Thread implements Runnable {
      * @hide for Unsafe
      */
     public void parkFor(long nanos) {
-        VMThread vmt = vmThread;
-
-        if (vmt == null) {
-            // Running threads should always have an associated vmThread.
+        if (threadPtr == 0) {
+            // Running threads should always have an associated threadPtr.
             throw new AssertionError();
         }
 
-        synchronized (vmt) {
+        synchronized (lock) {
             switch (parkState) {
                 case ParkState.PREEMPTIVELY_UNPARKED: {
                     parkState = ParkState.UNPARKED;
@@ -1228,7 +1219,7 @@ public class Thread implements Runnable {
 
                     parkState = ParkState.PARKED;
                     try {
-                        vmt.wait(millis, (int) nanos);
+                        lock.wait(millis, (int) nanos);
                     } catch (InterruptedException ex) {
                         interrupt();
                     } finally {
@@ -1273,14 +1264,12 @@ public class Thread implements Runnable {
      * @hide for Unsafe
      */
     public void parkUntil(long time) {
-        VMThread vmt = vmThread;
-
-        if (vmt == null) {
-            // Running threads should always have an associated vmThread.
+        if (threadPtr == 0) {
+            // Running threads should always have an associated threadPtr.
             throw new AssertionError();
         }
 
-        synchronized (vmt) {
+        synchronized (lock) {
             /*
              * Note: This conflates the two time bases of "wall clock"
              * time and "monotonic uptime" time. However, given that

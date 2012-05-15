@@ -49,7 +49,6 @@ package java.lang.reflect;
 
 import java.lang.annotation.Annotation;
 import java.util.Hashtable;
-import org.apache.harmony.kernel.vm.StringUtils;
 import org.nullvm.rt.ReflectionAccess;
 
 /**
@@ -306,16 +305,20 @@ public class AccessibleObject implements AnnotatedElement {
         StringBuilder result = new StringBuilder();
 
         if (types.length != 0) {
-            result.append(types[0].getName());
+            result.append(getTypeName(types[0]));
             for (int i = 1; i < types.length; i++) {
                 result.append(',');
-                result.append(types[i].getName());
+                result.append(getTypeName(types[i]));
             }
         }
 
         return result.toString();
     }
 
+    private String getTypeName(Class<?> type) {
+        return type.isArray() ? type.getCanonicalName() : type.getName();
+    }
+    
     /**
      * Gets the Signature attribute for this instance. Returns {@code null}
      * if not found.

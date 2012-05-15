@@ -1,6 +1,8 @@
 #ifndef NULLVM_FIELD_H
 #define NULLVM_FIELD_H
 
+#define FIELD_ACCESS_MASK   0x0000FFFF
+
 #define FIELD_IS_PUBLIC(f) (IS_PUBLIC((f)->access))
 #define FIELD_IS_PRIVATE(f) (IS_PRIVATE((f)->access))
 #define FIELD_IS_PROTECTED(f) (IS_PROTECTED((f)->access))

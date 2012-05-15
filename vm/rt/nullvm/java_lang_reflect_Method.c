@@ -9,7 +9,7 @@ Class* Java_java_lang_reflect_Method_getDeclaringClass(Env* env, Class* clazz, j
 
 jint Java_java_lang_reflect_Method_getModifiers(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) methodPtr;
-    return method->access & METHOD_ACCESS_MASK;
+    return (method->access & METHOD_ACCESS_MASK) & ~(ACC_BRIDGE | ACC_VARARGS | ACC_SYNTHETIC);
 }
 
 Object* Java_java_lang_reflect_Method_getName(Env* env, Class* clazz, jlong methodPtr) {

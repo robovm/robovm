@@ -22,10 +22,10 @@ if [ "x$TARGETS" = 'x' ]; then
   OS=$(uname)
   case $OS in
   Darwin)
-    TARGETS="macosx-x86 macosx-x86_64 ios-x86 ios-thumbv7"
+    TARGETS="macosx-x86 ios-x86 ios-thumbv7"
     ;;
   Linux)
-    TARGETS="linux-$(uname -m)"
+    TARGETS="linux-x86"
     ;;
   *)
     echo "Unsupported OS: $OS"
@@ -45,8 +45,10 @@ if [ "$CLEAN" = '1' ]; then
 fi
 
 CC=$(which gcc)
+CXX=$(which g++)
 if [ $(uname) = 'Darwin' ]; then
   CC=$(which clang)
+  CXX=$(which clang++)
 fi
 
 for T in $TARGETS; do
@@ -55,6 +57,7 @@ for T in $TARGETS; do
   for B in $BUILDS; do
     mkdir -p "$BASE/target/build/$T-$B"
     rm -rf "$BASE/binaries/$OS/$ARCH/$B"
-    bash -c "cd '$BASE/target/build/$T-$B'; cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_BUILD_TYPE=$B -DOS=$OS -DARCH=$ARCH '$BASE'; make install"
+    bash -c "cd '$BASE/target/build/$T-$B'; cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=$B -DOS=$OS -DARCH=$ARCH '$BASE'; make install"
   done
 done
+

@@ -74,6 +74,8 @@ public class CompilerUtil {
         if (config.getOs().getFamily() == OS.Family.darwin) {
             opts.add("-arch");            
             opts.add(config.getArch().getClangName());
+        } else {
+            opts.add("-m32");            
         }
 
         outFile.getParentFile().mkdirs();
@@ -98,6 +100,7 @@ public class CompilerUtil {
             opts.add(config.getArch().getClangName());            
             opts.add("-Wl,-filelist," + objectsFile.getAbsolutePath());
         } else {
+            opts.add("-m32");
             opts.add("@" + objectsFile.getAbsolutePath());
         }
         opts.addAll(args);

@@ -11,7 +11,6 @@ import java.io.File;
  */
 public enum Arch {
     x86("i386", "i386"), 
-    x86_64("x86_64", "x86_64"), 
     armv6("armv6", "armv6"),
     armv7("armv7", "armv7"),
     thumbv6("thumbv6", "armv6"),
@@ -46,9 +45,6 @@ public enum Arch {
     
     public static Arch getDefaultArch(File llvmHomeDir) {
         String host = OS.getHost(llvmHomeDir);
-        if (host.matches("^(x86.64|amd64).*")) {
-            return Arch.x86_64;
-        }
         if (host.matches("^(x86|i\\d86).*")) {
             return Arch.x86;
         }

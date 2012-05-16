@@ -35,10 +35,18 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <sys/vfs.h>
+// NullVM note: There's no sys/vfs.h on Darwin and it's not required to compile this file
+#if !defined(__APPLE__)
+#   include <sys/vfs.h>
+#endif
 #include <time.h>
 #include <unistd.h>
 #include <utime.h>
+
+// NullVM note: This prototype used to be local to the Java_java_io_File_realpath below.
+// This made clang confused and thought the call to realpath was to the system's C version 
+ // and not to the one in realpath.cpp.
+extern bool realpath(const char* path, std::string& resolved);
 
 extern "C" jstring Java_java_io_File_readlink(JNIEnv* env, jclass, jstring javaPath) {
     ScopedUtfChars path(env, javaPath);
@@ -60,7 +68,6 @@ extern "C" jstring Java_java_io_File_realpath(JNIEnv* env, jclass, jstring javaP
         return NULL;
     }
 
-    extern bool realpath(const char* path, std::string& resolved);
     std::string result;
     if (!realpath(path.c_str(), result)) {
         jniThrowIOException(env, errno);

@@ -49,7 +49,6 @@ set(SRC
   libcore_io_Memory.cpp
   libcore_io_OsConstants.cpp
   libcore_io_Posix.cpp
-  libcore_net_RawSocket.cpp
   org_apache_harmony_xml_ExpatParser.cpp
   org_apache_harmony_xnet_provider_jsse_NativeCrypto.cpp
   readlink.cpp
@@ -57,6 +56,12 @@ set(SRC
   toStringArray.cpp
   valueOf.cpp
 )
+if(LINUX)
+  set(SRC
+    ${SRC}
+    libcore_net_RawSocket.cpp
+  )
+endif()
 
 add_library(android-libcore-luni OBJECT ${SRC})
 set(LIBCORE_LUNI_OBJECTS $<TARGET_OBJECTS:android-libcore-luni> PARENT_SCOPE)

@@ -7,10 +7,13 @@
 #include <pwd.h>
 #include <sys/utsname.h>
 #include <string.h>
+#ifdef DARWIN
+#   include <mach/mach_time.h>
+#endif
 
 #define DSO_PREFIX "lib"
 #define DSO_EXT ".so"
-#ifdef DARWIN
+#if defined(DARWIN)
     #undef DSO_EXT
     #define DSO_EXT ".dylib"
 #endif
@@ -27,9 +30,18 @@ jlong Java_java_lang_System_currentTimeMillis(Env* env, Class* c) {
 }
 
 jlong Java_java_lang_System_nanoTime(JNIEnv* env, jclass clazz) {
+#if defined(DARWIN)
+    mach_timebase_info_data_t info;
+    mach_timebase_info(&info);
+    uint64_t t = mach_absolute_time();
+    t *= info.numer;
+    t /= info.denom;
+    return (jlong) t;
+#else
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
     return (jlong) ts.tv_sec * 1000000000LL + ts.tv_nsec;
+#endif
 }
 
 Object* Java_java_lang_System_mapLibraryName(Env* env, Class* c, Object* userLibName) {

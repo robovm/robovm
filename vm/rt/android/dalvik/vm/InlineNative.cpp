@@ -32,6 +32,11 @@
 #include <math.h>
 #include <jni.h>
 
+// NullVM note: isnanf is not available on Darwin
+#if defined(__APPLE__)
+#   define isnanf(X) isnan(X)
+#endif
+
 /*
  * ===========================================================================
  *      java.lang.Math

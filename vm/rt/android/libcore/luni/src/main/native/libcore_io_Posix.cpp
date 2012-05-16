@@ -42,7 +42,10 @@
 #include <stdlib.h>
 #include <sys/ioctl.h>
 #include <sys/mman.h>
-#include <sys/sendfile.h>
+// NullVM note: On Darwin sendfile is defined in sys/mman.h.
+#if !defined(__APPLE__)
+#   include <sys/sendfile.h>
+#endif
 #include <sys/socket.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
@@ -50,9 +53,45 @@
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <sys/utsname.h>
-#include <sys/vfs.h> // Bionic doesn't have <sys/statvfs.h>
+// NullVM note: Darwin needs these to be included for struct statfs.
+#if defined(__APPLE__)
+#   include <sys/param.h>
+#   include <sys/mount.h>
+#else
+#   include <sys/vfs.h> // Bionic doesn't have <sys/statvfs.h>
+#endif
 #include <sys/wait.h>
 #include <unistd.h>
+
+
+// NullVM note: Darwin doesn't have fdatasync. Use fsync instead.
+#if defined(__APPLE__)
+#   define fdatasync(fd) fsync(fd)
+#endif
+// NullVM note: On Darwin struct flock, ftruncate, lseek, pread and pwrite are already 64-bit so there are no *64 versions.
+#if defined(__APPLE__)
+#   define flock64 flock
+#   define ftruncate64 ftruncate
+#   define lseek64 lseek
+#   define pread64 pread
+#   define pwrite64 pwrite
+#endif
+ // NullVM note: The signature for sendfile on Linux and Darwin differs. This maps Linux's sendfile to Darwin's. 
+#if defined(__APPLE__)
+    static ssize_t sendfile(int out_fd, int in_fd, off_t* offset, size_t count) {
+        if (count <= 0) {
+            return 0;
+        }
+        off_t len = count;
+        int ret = sendfile(out_fd, in_fd, offset != NULL ? *offset : 0, &len, NULL, 0);
+        if (ret == 0 || ((errno == EAGAIN || errno == EINTR) && len > 0)) {
+            errno = 0;
+            if (offset != NULL) *offset += len;
+            return len;
+        }
+        return -1;
+    }
+#endif
 
 #define TO_JAVA_STRING(NAME, EXP) \
         jstring NAME = env->NewStringUTF(EXP); \
@@ -261,8 +300,14 @@ static jobject makeStructStatFs(JNIEnv* env, const struct statfs& sb) {
     return env->NewObject(JniConstants::structStatFsClass, ctor, static_cast<jlong>(sb.f_bsize),
             static_cast<jlong>(sb.f_blocks), static_cast<jlong>(sb.f_bfree),
             static_cast<jlong>(sb.f_bavail), static_cast<jlong>(sb.f_files),
+// NullVM note: Darwin's statfs doesn't have f_namelen and f_frsize. We use NAME_MAX and f_bsize instead.
+#if defined(__APPLE__)
+            static_cast<jlong>(sb.f_ffree), static_cast<jlong>(NAME_MAX),
+            static_cast<jlong>(sb.f_bsize));
+#else
             static_cast<jlong>(sb.f_ffree), static_cast<jlong>(sb.f_namelen),
             static_cast<jlong>(sb.f_frsize));
+#endif
 }
 
 static jobject makeStructLinger(JNIEnv* env, const struct linger& l) {
@@ -813,7 +858,12 @@ extern "C" void Java_libcore_io_Posix_mincore(JNIEnv* env, jobject, jlong addres
         return;
     }
     void* ptr = reinterpret_cast<void*>(static_cast<uintptr_t>(address));
+// NullVM note: On Darwin mincore takes a char* as third argument.
+#if !defined(__APPLE__)
     unsigned char* vec = reinterpret_cast<unsigned char*>(vector.get());
+#else
+    char* vec = reinterpret_cast<char*>(vector.get());
+#endif
     throwIfMinusOne(env, "mincore", TEMP_FAILURE_RETRY(mincore(ptr, byteCount, vec)));
 }
 

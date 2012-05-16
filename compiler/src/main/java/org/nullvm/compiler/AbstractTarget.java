@@ -68,7 +68,10 @@ public abstract class AbstractTarget implements Target {
                 "-lnullvm-hypool", 
                 "-lnullvm-hycommon", 
                 "-lgc",
-                "-lpthread", "-ldl", "-lm", "-lrt" /*, "-lz" */, "-lstdc++"));
+                "-lpthread", "-ldl", "-lm", "-lstdc++"));
+        if (config.getOs().getFamily() == OS.Family.linux) {
+            libs.add("-lrt");
+        }
         if (config.getOs().getFamily() == OS.Family.darwin) {
             libs.add("-liconv");
         }

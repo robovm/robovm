@@ -1,14 +1,22 @@
 project(android)
 
 include_directories(
-  system/core/include/arch/${OS}-${ARCH}
+  system/core/include/arch/${OS_FAMILY}-${ARCH}
   system/core/include
   dalvik/libnativehelper/include/nativehelper
 )
 
-#add_definitions(-DICU_DATA_DIR_PREFIX_ENV_VAR="ANDROID_ROOT")
 add_definitions(-DICU_DATA_DIR="/usr/icu")
-#add_definitions(-DICU_DATA_NAME="icudt48l")
+if(IOS)
+  if(X86)
+    add_definitions(-DICU_DATA_DIR_PREFIX_ENV_VAR="IPHONE_SIMULATOR_ROOT")
+  endif()
+  add_definitions(-DICU_DATA_NAME="icudt48l")
+endif()
+if(MACOSX)
+  add_definitions(-DICU_DATA_NAME="icudt48l")
+endif()
+add_definitions(-DHAVE_ANDROID_OS=1)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -include AndroidConfig.h")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -include AndroidConfig.h")

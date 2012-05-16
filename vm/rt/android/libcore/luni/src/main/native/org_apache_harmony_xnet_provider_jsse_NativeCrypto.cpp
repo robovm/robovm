@@ -1776,7 +1776,18 @@ extern "C" void Java_org_apache_harmony_xnet_provider_jsse_NativeCrypto_SSL_1use
         return;
     }
 
+// NullVM note: clang cannot handle the dynamic array allocated on the stack here. Use a fixed maximum size when compiler is clang.
+#ifndef __clang__
     Unique_X509 certificatesX509[length];
+#else
+    #define MAX_CERTS_LENGTH 64
+    if (length > MAX_CERTS_LENGTH) {
+        jniThrowExceptionFmt(env, "java/lang/IllegalArgumentException", "certificates.length > %d", MAX_CERTS_LENGTH);
+        JNI_TRACE("ssl=%p NativeCrypto_SSL_use_certificate => certificates.length > %d", ssl, MAX_CERTS_LENGTH);
+        return;
+    }
+    Unique_X509 certificatesX509[MAX_CERTS_LENGTH];
+#endif
     for (int i = 0; i < length; i++) {
         ScopedLocalRef<jbyteArray> certificate(env,
                 reinterpret_cast<jbyteArray>(env->GetObjectArrayElement(certificates, i)));

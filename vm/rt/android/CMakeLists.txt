@@ -6,7 +6,7 @@ include_directories(
   dalvik/libnativehelper/include/nativehelper
 )
 
-add_definitions(-DICU_DATA_DIR="/usr/icu")
+add_definitions(-DICU_DATA_DIR="/usr/share/icu")
 if(IOS)
   if(X86)
     add_definitions(-DICU_DATA_DIR_PREFIX_ENV_VAR="IPHONE_SIMULATOR_ROOT")

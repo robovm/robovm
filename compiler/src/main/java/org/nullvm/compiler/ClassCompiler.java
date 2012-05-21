@@ -942,7 +942,7 @@ public class ClassCompiler {
         Variable result = fn.newVariable(getType(field.getType()));
         if (Modifier.isVolatile(field.getModifiers())) {
             fn.add(new Fence(Ordering.seq_cst));
-            if (LongType.v().equals(field.getType())) {
+            if (LongType.v().equals(field.getType()) || DoubleType.v().equals(field.getType())) {
                 fn.add(new Load(result, fieldPtr, Ordering.unordered, 8));
             } else {
                 fn.add(new Load(result, fieldPtr));
@@ -971,8 +971,8 @@ public class ClassCompiler {
             fieldPtr = getInstanceFieldPtr(fn, new VariableRef("this", OBJECT_PTR), field);
             value = fn.getParameterRef(2);
         }
-        if (Modifier.isVolatile(field.getModifiers()) || Modifier.isFinal(field.getModifiers())) {
-            if (LongType.v().equals(field.getType())) {
+        if (Modifier.isVolatile(field.getModifiers()) || !field.isStatic() && Modifier.isFinal(field.getModifiers())) {
+            if (LongType.v().equals(field.getType()) || DoubleType.v().equals(field.getType())) {
                 fn.add(new Store(value, fieldPtr, Ordering.unordered, 8));
             } else {
                 fn.add(new Store(value, fieldPtr));

@@ -878,18 +878,20 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
         releaseClassLock();
         return FALSE;
     }
-    releaseClassLock();
 
     clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_LOADED;
 
+    releaseClassLock();
     return TRUE;
 }
 
 void nvmInitialize(Env* env, Class* clazz) {
+    obtainClassLock();
     // TODO: Throw java.lang.NoClassDefFoundError if state == CLASS_ERROR?
     if (CLASS_IS_STATE_ERROR(clazz)) {
         // TODO: Add the class' binary name in the message
         nvmThrowNew(env, java_lang_NoClassDefFoundError, "Could not initialize class ??");
+        releaseClassLock();
         return;
     }
     if (!CLASS_IS_STATE_INITIALIZED(clazz) && !CLASS_IS_STATE_INITIALIZING(clazz)) {
@@ -899,9 +901,15 @@ void nvmInitialize(Env* env, Class* clazz) {
             nvmInitialize(env, clazz->superclass);
             if (nvmExceptionOccurred(env)) {
                 clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | oldState;
+                releaseClassLock();
                 return;
             }
         }
+        if (CLASS_IS_STATE_INITIALIZED(clazz) || CLASS_IS_STATE_INITIALIZING(clazz)) {
+            releaseClassLock();
+            return;
+        }
+
         TRACEF("Initializing class %s", clazz->name);
         void* initializer = clazz->initializer;
         if (!initializer) {
@@ -909,6 +917,7 @@ void nvmInitialize(Env* env, Class* clazz) {
                 env->vm->options->classInitialized(env, clazz);
             }
             clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZED;
+            releaseClassLock();
             return;
         }
 
@@ -932,6 +941,7 @@ void nvmInitialize(Env* env, Class* clazz) {
                 exception = wrappedException;
             }
             nvmThrow(env, exception);
+            releaseClassLock();
             return;
         }
         if (!CLASS_IS_ARRAY(clazz) && !CLASS_IS_PROXY(clazz) && !CLASS_IS_PRIMITIVE(clazz)) {
@@ -939,6 +949,7 @@ void nvmInitialize(Env* env, Class* clazz) {
         }
         clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZED;
     }
+    releaseClassLock();
 }
 
 Object* nvmAllocateObject(Env* env, Class* clazz) {

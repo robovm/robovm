@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -78,6 +79,7 @@ import soot.IntType;
 import soot.LongType;
 import soot.Modifier;
 import soot.PrimType;
+import soot.RefLikeType;
 import soot.ShortType;
 import soot.SootClass;
 import soot.SootField;
@@ -696,7 +698,10 @@ public class ClassCompiler {
         
         int classFieldCounter = 0;
         int instanceFieldCounter = 0;
-        for (SootField f : sootClass.getFields()) {
+        List<SootField> fields = new ArrayList<SootField>();
+        fields.addAll(classFields);
+        fields.addAll(instanceFields);
+        for (SootField f : fields) {
             flags = 0;
             soot.Type t = f.getType();
             if (t instanceof PrimType) {
@@ -942,7 +947,7 @@ public class ClassCompiler {
         Variable result = fn.newVariable(getType(field.getType()));
         if (Modifier.isVolatile(field.getModifiers())) {
             fn.add(new Fence(Ordering.seq_cst));
-            if (LongType.v().equals(field.getType()) || DoubleType.v().equals(field.getType())) {
+            if (LongType.v().equals(field.getType())) {
                 fn.add(new Load(result, fieldPtr, Ordering.unordered, 8));
             } else {
                 fn.add(new Load(result, fieldPtr));
@@ -972,7 +977,7 @@ public class ClassCompiler {
             value = fn.getParameterRef(2);
         }
         if (Modifier.isVolatile(field.getModifiers()) || !field.isStatic() && Modifier.isFinal(field.getModifiers())) {
-            if (LongType.v().equals(field.getType()) || DoubleType.v().equals(field.getType())) {
+            if (LongType.v().equals(field.getType())) {
                 fn.add(new Store(value, fieldPtr, Ordering.unordered, 8));
             } else {
                 fn.add(new Store(value, fieldPtr));
@@ -1011,6 +1016,23 @@ public class ClassCompiler {
         fn.add(new Br(fn.newBasicBlockRef(trueLabel)));
         return fn;
     }
+
+    private static int getFieldSize(SootField f) {
+        if (LongType.v().equals(f.getType()) || DoubleType.v().equals(f.getType())) {
+            return 8;
+        }
+        if (IntType.v().equals(f.getType()) || FloatType.v().equals(f.getType())) {
+            return 4;
+        }
+        if (f.getType() instanceof RefLikeType) {
+            // Assume pointers are 32-bit
+            return 4;
+        }
+        if (ShortType.v().equals(f.getType()) || CharType.v().equals(f.getType())) {
+            return 2;
+        }
+        return 1;
+    }
     
     private static List<SootField> getFields(SootClass clazz, boolean ztatic) {
         List<SootField> l = new ArrayList<SootField>();
@@ -1019,6 +1041,21 @@ public class ClassCompiler {
                 l.add(f);
             }
         }
+        // sort the fields by size. longs/doubles come first.
+        Collections.sort(l, new Comparator<SootField>() {
+            @Override
+            public int compare(SootField o1, SootField o2) {
+                int size1 = getFieldSize(o1);
+                int size2 = getFieldSize(o2);
+                if (size1 > size2) {
+                    return -1;
+                }
+                if (size1 < size2) {
+                    return 1;
+                }
+                return 0;
+            }
+        });
         return l;
     }
     
@@ -1043,29 +1080,40 @@ public class ClassCompiler {
     
     private static StructureType getClassType(SootClass clazz) {
         List<Type> types = new ArrayList<Type>();
-        for (SootField field : clazz.getFields()) {
-            if (field.isStatic()) {
-                types.add(getType(field.getType()));
-            }
+        for (SootField field : getClassFields(clazz)) {
+            types.add(getType(field.getType()));
         }
         return new StructureType(CLASS, new StructureType(types.toArray(new Type[types.size()])));
     }
     
-    private static StructureType getInstanceType0(SootClass clazz) {
+    private static StructureType getInstanceType0(SootClass clazz, int alignment) {
         List<Type> types = new ArrayList<Type>();
-        if (clazz.hasSuperclass()) {
-            types.add(getInstanceType0(clazz.getSuperclass()));
+        List<SootField> fields = getInstanceFields(clazz);
+        int superAlignment = 1;
+        if (!fields.isEmpty()) {
+            // Pad the super type so that the first field is aligned properly
+            SootField field = fields.get(0);
+            superAlignment = getFieldSize(field);
         }
-        for (SootField field : clazz.getFields()) {
-            if (!field.isStatic()) {
-                types.add(getType(field.getType()));
+        if (clazz.hasSuperclass()) {
+            types.add(getInstanceType0(clazz.getSuperclass(), superAlignment));
+        }
+        int size = 0;
+        for (SootField field : fields) {
+            size += getFieldSize(field);
+            types.add(getType(field.getType()));
+        }
+        if (size > 0 && alignment > 1) {
+            int padding = alignment - size % alignment;
+            for (int i = 0; i < padding; i++) {
+                types.add(I8);
             }
         }
         return new StructureType(types.toArray(new Type[types.size()]));
     }
     
     private static StructureType getInstanceType(SootClass clazz) {
-        return new StructureType(OBJECT, getInstanceType0(clazz));
+        return new StructureType(OBJECT, getInstanceType0(clazz, 1));
     }
     
     private Constant getString(String string) {
@@ -1080,7 +1128,8 @@ public class ClassCompiler {
         Value info = getInfoStruct(f);        
         Variable base = f.newVariable(I8_PTR);
         f.add(new Load(base, info));
-        return getFieldPtr(f, new VariableRef(base), offsetof(classType, 1, classFields.indexOf(field)), getType(field.getType()));
+        return getFieldPtr(f, new VariableRef(base), offsetof(classType, 1, 
+                classFields.indexOf(field)), getType(field.getType()));
     }
 
     private Value getInfoStruct(Function f) {
@@ -1088,6 +1137,7 @@ public class ClassCompiler {
     }
     
     private Value getInstanceFieldPtr(Function f, Value base, SootField field) {
-        return getFieldPtr(f, base, offsetof(instanceType, 1, 1 + instanceFields.indexOf(field)), getType(field.getType()));
+        return getFieldPtr(f, base, offsetof(instanceType, 1, 
+                1 + instanceFields.indexOf(field)), getType(field.getType()));
     }
 }

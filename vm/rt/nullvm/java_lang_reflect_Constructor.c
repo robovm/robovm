@@ -2,7 +2,7 @@
 #include "reflection_helpers.h"
 
 Object* Java_java_lang_reflect_Constructor_internalNewInstance(Env* env, Class* clazz, jlong methodPtr, ObjectArray* parameterTypes, ObjectArray* args) {
-    Method* method = (Method*) methodPtr;
+    Method* method = (Method*) LONG_TO_PTR(methodPtr);
 
     /*
      * The Java code has already checked that the constructor is accessible

@@ -22,7 +22,7 @@ Object* createMethodObject(Env* env, Method* method) {
         if (!java_lang_reflect_Method_init) return NULL;
     }
     jvalue initArgs[1];
-    initArgs[0].j = (jlong) method;
+    initArgs[0].j = PTR_TO_LONG(method);
     return nvmNewObjectA(env, java_lang_reflect_Method, java_lang_reflect_Method_init, initArgs);
 }
 
@@ -36,7 +36,7 @@ Object* createFieldObject(Env* env, Field* field) {
         if (!java_lang_reflect_Field_init) return NULL;
     }
     jvalue initArgs[1];
-    initArgs[0].j = (jlong) field;
+    initArgs[0].j = PTR_TO_LONG(field);
     return nvmNewObjectA(env, java_lang_reflect_Field, java_lang_reflect_Field_init, initArgs);
 }
 
@@ -50,7 +50,7 @@ Object* createConstructorObject(Env* env, Method* method) {
         if (!java_lang_reflect_Constructor_init) return NULL;
     }
     jvalue initArgs[1];
-    initArgs[0].j = (jlong) method;
+    initArgs[0].j = PTR_TO_LONG(method);
     return nvmNewObjectA(env, java_lang_reflect_Constructor, java_lang_reflect_Constructor_init, initArgs);
 }
 
@@ -63,7 +63,7 @@ Method* getMethodFromMethodObject(Env* env, Object* methodObject) {
         java_lang_reflect_Method_method = nvmGetInstanceField(env, java_lang_reflect_Method, "method", "J");
         if (!java_lang_reflect_Method_method) return NULL;
     }
-    return (Method*) nvmGetLongInstanceFieldValue(env, methodObject, java_lang_reflect_Method_method);
+    return (Method*) LONG_TO_PTR(nvmGetLongInstanceFieldValue(env, methodObject, java_lang_reflect_Method_method));
 }
 
 Field* getFieldFromFieldObject(Env* env, Object* fieldObject) {
@@ -75,7 +75,7 @@ Field* getFieldFromFieldObject(Env* env, Object* fieldObject) {
         java_lang_reflect_Field_field = nvmGetInstanceField(env, java_lang_reflect_Field, "field", "J");
         if (!java_lang_reflect_Field_field) return NULL;
     }
-    return (Field*) nvmGetLongInstanceFieldValue(env, fieldObject, java_lang_reflect_Field_field);
+    return (Field*) LONG_TO_PTR(nvmGetLongInstanceFieldValue(env, fieldObject, java_lang_reflect_Field_field));
 }
 
 void throwInvocationTargetException(Env* env, Object* throwable) {

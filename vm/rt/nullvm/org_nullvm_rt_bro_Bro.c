@@ -4,6 +4,6 @@
 void Java_org_nullvm_rt_bro_Bro_bind(Env* env, Class* c, Object* methodObject, jlong function) {
     BridgeMethod* method = (BridgeMethod*) getMethodFromMethodObject(env, methodObject);
     if (!method) return;
-    *method->targetFnPtr = (void*) function;
+    *method->targetFnPtr = LONG_TO_PTR(function);
 }
 

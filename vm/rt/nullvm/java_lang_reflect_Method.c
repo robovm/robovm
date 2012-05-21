@@ -3,27 +3,27 @@
 #include "utlist.h"
 
 Class* Java_java_lang_reflect_Method_getDeclaringClass(Env* env, Class* clazz, jlong methodPtr) {
-    Method* method = (Method*) methodPtr;
+    Method* method = (Method*) LONG_TO_PTR(methodPtr);
     return method->clazz;
 }
 
 jint Java_java_lang_reflect_Method_getModifiers(Env* env, Class* clazz, jlong methodPtr) {
-    Method* method = (Method*) methodPtr;
+    Method* method = (Method*) LONG_TO_PTR(methodPtr);
     return (method->access & METHOD_ACCESS_MASK) & ~(ACC_BRIDGE | ACC_VARARGS | ACC_SYNTHETIC);
 }
 
 Object* Java_java_lang_reflect_Method_getName(Env* env, Class* clazz, jlong methodPtr) {
-    Method* method = (Method*) methodPtr;
+    Method* method = (Method*) LONG_TO_PTR(methodPtr);
     return nvmNewStringUTF(env, method->name, -1);
 }
 
 Class* Java_java_lang_reflect_Method_getReturnType(Env* env, Class* clazz, jlong methodPtr) {
-    Method* method = (Method*) methodPtr;
+    Method* method = (Method*) LONG_TO_PTR(methodPtr);
     return nvmFindClassByDescriptor(env, nvmGetReturnType(method->desc), method->clazz->classLoader);
 }
 
 Object* Java_java_lang_reflect_Method_getSignatureAttribute(Env* env, Class* clazz, jlong methodPtr) {
-    Method* method = (Method*) methodPtr;
+    Method* method = (Method*) LONG_TO_PTR(methodPtr);
     Class* java_lang_reflect_Proxy = nvmFindClass(env, "java/lang/reflect/Proxy");
     if (method->clazz->superclass == java_lang_reflect_Proxy) {
         return nvmAttributeGetMethodSignature(env, ((ProxyMethod*) method)->proxiedMethod);
@@ -32,7 +32,7 @@ Object* Java_java_lang_reflect_Method_getSignatureAttribute(Env* env, Class* cla
 }
 
 ObjectArray* Java_java_lang_reflect_Method_getParameterTypes(Env* env, Class* clazz, jlong methodPtr) {
-    Method* method = (Method*) methodPtr;
+    Method* method = (Method*) LONG_TO_PTR(methodPtr);
 
     jint argsCount = nvmGetParameterCount(method);
 
@@ -57,7 +57,7 @@ ObjectArray* Java_java_lang_reflect_Method_getParameterTypes(Env* env, Class* cl
 }
 
 ObjectArray* Java_java_lang_reflect_Method_getExceptionTypes(Env* env, Class* clazz, jlong methodPtr) {
-    Method* method = (Method*) methodPtr;
+    Method* method = (Method*) LONG_TO_PTR(methodPtr);
     Class* java_lang_reflect_Proxy = nvmFindClass(env, "java/lang/reflect/Proxy");
     if (method->clazz->superclass == java_lang_reflect_Proxy) {
         return nvmAttributeGetExceptions(env, ((ProxyMethod*) method)->proxiedMethod);
@@ -66,17 +66,17 @@ ObjectArray* Java_java_lang_reflect_Method_getExceptionTypes(Env* env, Class* cl
 }
 
 Object* Java_java_lang_reflect_Method_getDefaultValue(Env* env, Class* clazz, jlong methodPtr) {
-    Method* method = (Method*) methodPtr;
+    Method* method = (Method*) LONG_TO_PTR(methodPtr);
     return nvmAttributeGetAnnotationDefault(env, method);
 }
 
 ObjectArray* Java_java_lang_reflect_Method_getDeclaredAnnotations(Env* env, Class* clazz, jlong methodPtr) {
-    Method* method = (Method*) methodPtr;
+    Method* method = (Method*) LONG_TO_PTR(methodPtr);
     return nvmAttributeGetMethodRuntimeVisibleAnnotations(env, method);
 }
 
 ObjectArray* Java_java_lang_reflect_Method_getParameterAnnotations(Env* env, Class* clazz, jlong methodPtr) {
-    Method* method = (Method*) methodPtr;
+    Method* method = (Method*) LONG_TO_PTR(methodPtr);
     return nvmAttributeGetMethodRuntimeVisibleParameterAnnotations(env, method);
 }
 

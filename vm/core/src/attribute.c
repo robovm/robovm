@@ -407,7 +407,7 @@ static jboolean getAnnotationValue(Env* env, void** attributes, Class* expectedA
             Object* jName = nvmNewStringUTF(env, name, -1);
             if (!jName) return FALSE;
             jvalue args[4];
-            args[0].j = (jlong) method;
+            args[0].j = PTR_TO_LONG(method);
             Object* jMethod = nvmNewObjectA(env, java_lang_reflect_Method, java_lang_reflect_Method_init, args);
             if (!jMethod) return FALSE;
 

@@ -154,25 +154,26 @@ struct EnclosingMethod {
   char* methodDesc;
 };
 
+// NOTE: The compiler sorts fields by size so the order of the fields here don't match the order in Thread.java
 struct Thread {
   Object object;
   jlong threadPtr;
-  Object* group;
   jlong id;
-  Object* name;
   jlong stackSize;
-  jboolean daemon;
+  Object* group;
+  Object* name;
   jint priority;
   Object* target;
   Object* interruptActions;
   ClassLoader* contextClassLoader;
   Object* uncaughtHandler;
-  jboolean started;
   Object* localValues;
   Object* inheritableValues;
   jint parkState;
   Object* parkBlocker;
   Object* lock;
+  jboolean daemon;
+  jboolean started;
 };
 
 struct Array {

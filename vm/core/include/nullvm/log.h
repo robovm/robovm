@@ -15,6 +15,12 @@
 #define ERRORF(format, ...) LOGF(LOG_LEVEL_ERROR, format, __VA_ARGS__)
 #define FATAL(text) LOG(LOG_LEVEL_FATAL, text)
 #define FATALF(format, ...) LOGF(LOG_LEVEL_FATAL, format, __VA_ARGS__)
+#define IS_TRACE_ENABLED (nvmLogIsTraceEnabled())
+#define IS_DEBUG_ENABLED (nvmLogIsDebugEnabled())
+#define IS_INFO_ENABLED (nvmLogIsInfoEnabled())
+#define IS_WARN_ENABLED (nvmLogIsWarnEnabled())
+#define IS_ERROR_ENABLED (nvmLogIsErrorEnabled())
+#define IS_FATAL_ENABLED (nvmLogIsFatalEnabled())
 
 /*
  * Log levels. The values must match the values used 
@@ -32,6 +38,12 @@ typedef enum LogLevel {
 } LogLevel;
 
 extern jboolean nvmInitLog(Env* env);
+extern jboolean nvmLogIsTraceEnabled();
+extern jboolean nvmLogIsDebugEnabled();
+extern jboolean nvmLogIsInfoEnabled();
+extern jboolean nvmLogIsWarnEnabled();
+extern jboolean nvmLogIsErrorEnabled();
+extern jboolean nvmLogIsFatalEnabled();
 extern int nvmLog(int level, const char* tag, const char* text);
 extern int nvmLogf(int level, const char* tag, const char* format, ...);
 extern int nvmLogfv(int level, const char* tag, const char* format, va_list ap);

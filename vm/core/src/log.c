@@ -29,6 +29,30 @@ jboolean nvmInitLog(Env* env) {
     return TRUE;
 }
 
+jboolean nvmLogIsTraceEnabled() {
+    return IS_ENABLED(LOG_LEVEL_TRACE) ? TRUE : FALSE;
+}
+
+jboolean nvmLogIsDebugEnabled() {
+    return IS_ENABLED(LOG_LEVEL_DEBUG) ? TRUE : FALSE;
+}
+
+jboolean nvmLogIsInfoEnabled() {
+    return IS_ENABLED(LOG_LEVEL_INFO) ? TRUE : FALSE;
+}
+
+jboolean nvmLogIsWarnEnabled() {
+    return IS_ENABLED(LOG_LEVEL_WARN) ? TRUE : FALSE;
+}
+
+jboolean nvmLogIsErrorEnabled() {
+    return IS_ENABLED(LOG_LEVEL_ERROR) ? TRUE : FALSE;
+}
+
+jboolean nvmLogIsFatalEnabled() {
+    return IS_ENABLED(LOG_LEVEL_FATAL) ? TRUE : FALSE;
+}
+
 int nvmLog(int level, const char* tag, const char* text) {
     if (IS_ENABLED(level)) {
         return logwrite(level, tag, text);

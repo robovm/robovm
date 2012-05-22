@@ -52,8 +52,7 @@ public class NullVMPreferencePage extends FieldEditorPreferencePage implements
                 {Arch.armv7.toString(), Arch.armv7.toString()},
                 {Arch.thumbv6.toString(), Arch.thumbv6.toString()},
                 {Arch.thumbv7.toString(), Arch.thumbv7.toString()},
-                {Arch.x86.toString(), Arch.x86.toString()},
-                {Arch.x86_64.toString(), Arch.x86_64.toString()}
+                {Arch.x86.toString(), Arch.x86.toString()}
         }, parent);
         addField(archFieldEditor);
         

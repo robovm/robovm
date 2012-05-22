@@ -112,8 +112,7 @@ public class ProjectProperties {
                 Arch.armv7.toString(),
                 Arch.thumbv6.toString(),
                 Arch.thumbv7.toString(),
-                Arch.x86.toString(),
-                Arch.x86_64.toString()
+                Arch.x86.toString()
         });
         archCombo.select(0);
         archCombo.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));

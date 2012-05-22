@@ -79,6 +79,7 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
         List<Object> args = new ArrayList<Object>();
         args.add("-u");
         args.add("-d");
+        args.add("--mi");
         
         if (!launchParameters.getArguments().isEmpty()) {
             args.add("--args");

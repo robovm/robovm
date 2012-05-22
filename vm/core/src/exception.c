@@ -2,8 +2,12 @@
 #include <stddef.h>
 #include "private.h"
 
+#define LOG_TAG "core.exception"
+
 void nvmRaiseException(Env* env, Object* e) {
-    nvmThrow(env, e);
+    if (env->throwable != e) {
+        nvmThrow(env, e);
+    }
     jint result = unwindRaiseException(env);
     if (result == UNWIND_UNHANDLED_EXCEPTION) {
         nvmAbort("Unhandled exception: %s", e->clazz->name);
@@ -40,6 +44,24 @@ Object* nvmExceptionClear(Env* env) {
 
 jint nvmThrow(Env* env, Object* e) {
     // TODO: Check that e != NULL?
+    if (env->throwable) {
+        nvmAbort("nvmThrow() called with env->throwable already set");
+    }
+    if (IS_TRACE_ENABLED) {
+        InstanceField* field = nvmGetInstanceField(env, java_lang_Throwable, "stackState", "J");
+        jlong stackState = nvmGetLongInstanceFieldValue(env, e, field);
+        CallStackEntry* first = (CallStackEntry*) LONG_TO_PTR(stackState);
+        if (!first) {
+            TRACEF("Throwing a %s with empty call stack", e->clazz->name);
+        } else {
+            TRACEF("Throwing a %s. Call stack:", e->clazz->name);
+            while (first) {
+                Method* m = first->method;
+                TRACEF("    %s.%s%s", m->clazz->name, m->name, m->desc);
+                first = first->next;
+            }
+        }
+    }
     env->throwable = e;
     return 0;
 }

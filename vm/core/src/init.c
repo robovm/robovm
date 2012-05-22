@@ -135,25 +135,38 @@ Env* nvmStartup(Options* options) {
     if (hyport_init_library(&portLibrary, &portLibraryVersion, sizeof(HyPortLibrary))) return NULL;
 
     // Call init on modules
+    TRACE("Initializing logging");
     if (!nvmInitLog(env)) return NULL;
+    TRACE("Initializing classes");
     if (!nvmInitClasses(env)) return NULL;
+    TRACE("Initializing methods");
     if (!nvmInitMethods(env)) return NULL;
+    TRACE("Initializing strings");
     if (!nvmInitStrings(env)) return NULL;
+    TRACE("Initializing VMI");
     if (!nvmInitVMI(env)) return NULL;
+    TRACE("Initializing threads");
     if (!nvmInitThreads(env)) return NULL;
+    TRACE("Initializing attributes");
     if (!nvmInitAttributes(env)) return NULL;
+    TRACE("Initializing primitive wrapper classes");
     if (!nvmInitPrimitiveWrapperClasses(env)) return NULL;
 
     // Initialize the NullVM rt JNI code
 //    RT_JNI_OnLoad(&vm->javaVM, NULL);
     // Initialize the dalvik's JNIHelp code in libnativehelper
+    TRACE("Initializing dalvik's libnativehelper");
     registerJniHelp((JNIEnv*) env);
     // Initialize the dalvik rt JNI code
+    TRACE("Initializing dalvik's runtime JNI code");
     registerCoreLibrariesJni((JNIEnv*) env);
 
+    TRACE("Creating system ClassLoader");
     systemClassLoader = nvmGetSystemClassLoader(env);
     if (nvmExceptionOccurred(env)) return NULL;
     env->currentThread->contextClassLoader = systemClassLoader;
+
+    TRACE("Initialization done");
 
     return env;
 }

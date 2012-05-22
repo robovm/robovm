@@ -212,6 +212,7 @@ static Class* findClass(Env* env, const char* className, ClassLoader* classLoade
         nvmThrowClassNotFoundException(env, className);
     }
 
+    TRACEF("Class '%s' loaded successfully", className);
     releaseClassLock();
     return clazz;
 }
@@ -904,10 +905,6 @@ void nvmInitialize(Env* env, Class* clazz) {
                 releaseClassLock();
                 return;
             }
-        }
-        if (CLASS_IS_STATE_INITIALIZED(clazz) || CLASS_IS_STATE_INITIALIZING(clazz)) {
-            releaseClassLock();
-            return;
         }
 
         TRACEF("Initializing class %s", clazz->name);

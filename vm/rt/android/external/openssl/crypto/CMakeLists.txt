@@ -2,9 +2,9 @@ project(android-external-openssl-crypto)
 
 include_directories(. .. asn1 evp ../include ../include/openssl ../../zlib)
 add_definitions(-DNO_WINDOWS_BRAINDEATH)
-if(ARM)
-  add_definitions(-DOPENSSL_BN_ASM_MONT -DAES_ASM -DSHA1_ASM -DSHA256_ASM -DSHA512_ASM)
-endif()
+#if(ARM)
+#  add_definitions(-DOPENSSL_BN_ASM_MONT -DAES_ASM -DSHA1_ASM -DSHA256_ASM -DSHA512_ASM)
+#endif()
 
 set(SRC
   cryptlib.c
@@ -466,19 +466,19 @@ set(SRC
   x509v3/v3_utl.c
   x509v3/v3err.c
 )
-if(ARM)
-  set(SRC ${SRC}
-    aes/asm/aes-armv4.s
-    bn/asm/armv4-mont.s
-    sha/asm/sha1-armv4-large.s
-    sha/asm/sha256-armv4.s
-    sha/asm/sha512-armv4.s
-  )
-else()
+#if(ARM)
+#  set(SRC ${SRC}
+#    aes/asm/aes-armv4.s
+#    bn/asm/armv4-mont.s
+#    sha/asm/sha1-armv4-large.s
+#    sha/asm/sha256-armv4.s
+#    sha/asm/sha512-armv4.s
+#  )
+#else()
   set(SRC ${SRC}
     aes/aes_core.c
   )
-endif()
+#endif()
 
 add_library(android-external-openssl-crypto OBJECT ${SRC})
 set(EXTERNAL_OPENSSL_CRYPTO_OBJECTS $<TARGET_OBJECTS:android-external-openssl-crypto> PARENT_SCOPE)

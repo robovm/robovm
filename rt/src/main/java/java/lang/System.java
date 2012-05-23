@@ -66,7 +66,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.nullvm.rt.VM;
+import org.robovm.rt.VM;
 
 import libcore.icu.ICU;
 import libcore.io.Libcore;

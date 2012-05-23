@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nullvm.rt.bro;
+package org.robovm.rt.bro;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,8 +29,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.nullvm.rt.bro.annotation.Bridge;
-import org.nullvm.rt.bro.annotation.Library;
+import org.robovm.rt.bro.annotation.Bridge;
+import org.robovm.rt.bro.annotation.Library;
 
 /**
  *
@@ -84,7 +84,7 @@ public abstract class Runtime {
                 paths.add(new File(home, "lib").getAbsolutePath());
             }
         }
-        String basePath = System.getProperty("org.nullvm.base.path");
+        String basePath = System.getProperty("org.robovm.base.path");
         if (basePath != null) {
             paths.add(basePath);
         }

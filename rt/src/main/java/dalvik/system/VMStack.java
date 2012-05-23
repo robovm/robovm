@@ -16,7 +16,7 @@
 
 package dalvik.system;
 
-import org.nullvm.rt.VM;
+import org.robovm.rt.VM;
 
 /**
  * Provides a limited interface to the Dalvik VM stack. This class is mostly

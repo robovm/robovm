@@ -13,19 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nullvm.rt.bro.annotation;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package org.robovm.rt.bro;
 
 /**
  *
  * @version $Id$
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
-public @interface Library {
-    public String value();
+class Dl {
+
+    native static long open(String name);
+    native static long resolve(long handle, String name);
+    native static void close(long handle);
+    native static String lastError();
+    
 }

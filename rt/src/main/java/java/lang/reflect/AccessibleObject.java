@@ -49,7 +49,7 @@ package java.lang.reflect;
 
 import java.lang.annotation.Annotation;
 import java.util.Hashtable;
-import org.nullvm.rt.ReflectionAccess;
+import org.robovm.rt.ReflectionAccess;
 
 /**
  * {@code AccessibleObject} is the superclass of all member reflection classes

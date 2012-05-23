@@ -51,7 +51,7 @@ import java.lang.annotation.Annotation;
 import java.util.Comparator;
 import org.apache.harmony.luni.lang.reflect.GenericSignatureParser;
 import org.apache.harmony.luni.lang.reflect.Types;
-import org.nullvm.rt.VM;
+import org.robovm.rt.VM;
 
 /**
  * This class represents a field. Information about the field can be accessed,

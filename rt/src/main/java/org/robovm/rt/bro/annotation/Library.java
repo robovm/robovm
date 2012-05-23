@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nullvm.rt.bro.annotation;
+package org.robovm.rt.bro.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
  * @version $Id$
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Bridge {
-    public String symbol() default "";
+@Target({ElementType.TYPE})
+public @interface Library {
+    public String value();
 }

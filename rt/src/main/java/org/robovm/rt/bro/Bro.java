@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nullvm.rt.bro;
+package org.robovm.rt.bro;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.nullvm.rt.VM;
-import org.nullvm.rt.bro.annotation.Bridge;
-import org.nullvm.rt.bro.annotation.Library;
+import org.robovm.rt.VM;
+import org.robovm.rt.bro.annotation.Bridge;
+import org.robovm.rt.bro.annotation.Library;
 
 /**
  *
@@ -44,7 +44,7 @@ public class Bro {
     }
     
     public static void bind(Class<?> c) {
-        org.nullvm.rt.bro.annotation.Runtime runtime = c.getAnnotation(org.nullvm.rt.bro.annotation.Runtime.class);
+        org.robovm.rt.bro.annotation.Runtime runtime = c.getAnnotation(org.robovm.rt.bro.annotation.Runtime.class);
         Runtime runtimeImpl = getRuntime(runtime == null ? CRuntime.class : runtime.value());
         Library library = c.getAnnotation(Library.class);
         if (library != null) {

@@ -13,25 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nullvm.rt;
+package org.robovm.rt.bro.annotation;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  *
  * @version $Id$
  */
-public interface ReflectionAccess {
-
-    Field clone(Field f);
-    Constructor<?> clone(Constructor<?> c);
-    Method clone(Method m);
-    Field[] clone(Field[] f);
-    Constructor<?>[] clone(Constructor<?>[] c);
-    Method[] clone(Method[] m);
-    boolean equals(Method m1, Method m2);
-    boolean matchParameterTypes(Constructor<?> c, Class<?>[] parameterTypes);
-    boolean matchParameterTypes(Method m, Class<?>[] parameterTypes);
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface Bridge {
+    public String symbol() default "";
 }

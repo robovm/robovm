@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nullvm.rt.bro;
+package org.robovm.rt.bro;
 
 import java.lang.reflect.Method;
 
-import org.nullvm.rt.bro.annotation.Bridge;
-import org.nullvm.rt.bro.annotation.Library;
+import org.robovm.rt.bro.annotation.Bridge;
+import org.robovm.rt.bro.annotation.Library;
 
 /**
  *

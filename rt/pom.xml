@@ -3,14 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.nullvm</groupId>
-    <artifactId>nullvm-parent</artifactId>
+    <groupId>org.robovm</groupId>
+    <artifactId>robovm-parent</artifactId>
     <version>0.1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>nullvm-rt</artifactId>
-  <name>NullVM Runtime Library</name>
+  <artifactId>robovm-rt</artifactId>
+  <name>RoboVM Runtime Library</name>
   <packaging>jar</packaging>
   
 </project>
-

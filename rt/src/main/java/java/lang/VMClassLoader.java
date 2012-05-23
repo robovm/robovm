@@ -16,10 +16,6 @@
 
 package java.lang;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 class VMClassLoader {
 
@@ -77,13 +73,13 @@ class VMClassLoader {
 
     static Class defineClass(ClassLoader cl, String name, byte[] data, int offset, int len)
             throws ClassFormatError {
-    	throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     static Class defineClass(ClassLoader cl, byte[] data, int offset, int len)
             throws ClassFormatError {
-            	throw new UnsupportedOperationException();
-            }
+        throw new UnsupportedOperationException();
+    }
 
     native static Class findLoadedClass(ClassLoader cl, String name);
 

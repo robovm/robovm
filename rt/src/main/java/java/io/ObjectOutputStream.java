@@ -474,7 +474,7 @@ public class ObjectOutputStream extends OutputStream implements ObjectOutput, Ob
      *
      * @throws NoSuchFieldError If the field does not exist.
      */
-    // NullVM note: Commented out. Cannot find the implementation. It doesn't seem to be called anyway.
+    // RoboVM note: Commented out. Cannot find the implementation. It doesn't seem to be called anyway.
     //private static native Object getFieldL(Object instance, Class<?> declaringClass, String fieldName, String fieldTypeName);
 
     /**

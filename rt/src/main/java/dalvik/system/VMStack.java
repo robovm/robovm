@@ -32,8 +32,8 @@ public final class VMStack {
      *         bootstrap class loader.
      */
     public static ClassLoader getCallingClassLoader() {
-    	// NullVM note: This is native in Android
-    	return VM.getStackClasses(0, 1)[0].getClassLoader();
+        // RoboVM note: This is native in Android
+        return VM.getStackClasses(0, 1)[0].getClassLoader();
     }
 
     /**
@@ -42,8 +42,8 @@ public final class VMStack {
      * @return the requested class, or {@code null}.
      */
     public static Class<?> getStackClass2() {
-    	// NullVM note: This is native in Android
-    	return VM.getStackClasses(1, 1)[0];
+        // RoboVM note: This is native in Android
+        return VM.getStackClasses(1, 1)[0];
     }
 
     /**
@@ -65,9 +65,9 @@ public final class VMStack {
      * @return an array with classes for the most-recent methods on the stack
      */
     public static Class<?>[] getClasses(int maxDepth) {
-    	// NullVM note: This is native in Android
-    	// TODO: Skip over java.lang.reflect classes.
-    	return VM.getStackClasses(0, maxDepth);
+        // RoboVM note: This is native in Android
+        // TODO: Skip over java.lang.reflect classes.
+        return VM.getStackClasses(0, maxDepth);
     }
 
     /**

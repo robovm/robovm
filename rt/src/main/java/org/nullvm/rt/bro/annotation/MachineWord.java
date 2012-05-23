@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 The NullVM Open Source Project
+ * Copyright (C) 2012 RoboVM
  *
  * TODO: Insert proper license header.
  */

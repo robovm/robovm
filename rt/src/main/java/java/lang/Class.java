@@ -30,7 +30,7 @@
  * limitations under the License.
  */
 /*
- * Copyright (C) 2012 The NullVM Project
+ * Copyright (C) 2012 RoboVM
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -807,7 +807,7 @@ public final class Class<T> implements Serializable, AnnotatedElement, GenericDe
     }
 
     /**
-     * Returns the NullVM class name. E.g. java/lang/String, I, [[I,
+     * Returns the RoboVM class name. E.g. java/lang/String, I, [[I,
      * [Ljava/lang/Object;.
      */
     final native String getName0();

@@ -30,7 +30,7 @@
  * limitations under the License.
  */
 /*
- * Copyright (C) 2012 The NullVM Project
+ * Copyright (C) 2012 RoboVM
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ public abstract class ClassLoader {
     }
 
     /*
-     * NullVM NOTE: If the order of fields is changed or if fields are added/removed 
+     * RoboVM NOTE: If the order of fields is changed or if fields are added/removed 
      * the ClassLoader struct in types.h must also be changed accordingly 
      */
     
@@ -775,7 +775,7 @@ class BootClassLoader extends PathClassLoader {
     }
     
     public BootClassLoader() {
-    	super(System.getProperty("java.boot.class.path", "."), null, true);
+        super(System.getProperty("java.boot.class.path", "."), null, true);
     }
 
     @Override

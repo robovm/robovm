@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 /*
- * Copyright (C) 2012 The NullVM Project
+ * Copyright (C) 2012 RoboVM
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

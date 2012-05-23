@@ -90,7 +90,7 @@ public final class Math {
      *         argument.
      */
     public static int abs(int i) {
-    	// This is native in Android
+        // RoboVM note: This is native in Android
         return (i >= 0) ? i : -i;
     }
 
@@ -104,7 +104,7 @@ public final class Math {
      *         argument.
      */
     public static long abs(long l) {
-    	// This is native in Android
+        // RoboVM note: This is native in Android
         return (l >= 0) ? l : -l;
     }
 
@@ -547,8 +547,8 @@ public final class Math {
      * @return the larger of {@code i1} and {@code i2}.
      */
     public static int max(int i1, int i2) {
-    	// This is native in Android
-    	return i1 > i2 ? i1 : i2;
+        // RoboVM note: This is native in Android
+        return i1 > i2 ? i1 : i2;
     }
 
     /**
@@ -650,8 +650,8 @@ public final class Math {
      * @return the smaller of {@code i1} and {@code i2}.
      */
     public static int min(int i1, int i2) {
-    	// This is native in Android
-    	return i1 < i2 ? i1 : i2;
+        // RoboVM note: This is native in Android
+        return i1 < i2 ? i1 : i2;
     }
 
     /**

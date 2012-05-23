@@ -57,33 +57,33 @@ public final class VMRuntime {
      * These are in the form "name=value" rather than "-Dname=value".
      */
     public String[] properties() {
-    	// NullVM note: This is native Android.
-    	// TODO: Support command-line supplied properties?
-    	return EmptyArray.STRING;
+        // RoboVM note: This is native Android.
+        // TODO: Support command-line supplied properties?
+        return EmptyArray.STRING;
     }
 
     /**
      * Returns the VM's boot class path.
      */
     public String bootClassPath() {
-    	// NullVM note: This is native Android.
-    	return VM.bootClassPath();
+        // RoboVM note: This is native Android.
+        return VM.bootClassPath();
     }
 
     /**
      * Returns the VM's class path.
      */
     public String classPath() {
-    	// NullVM note: This is native Android.
-    	return VM.classPath();
+        // RoboVM note: This is native Android.
+        return VM.classPath();
     }
 
     /**
      * Returns the VM's version.
      */
     public String vmVersion() {
-    	// NullVM note: This is native Android.
-    	return VM.vmVersion();
+        // RoboVM note: This is native Android.
+        return VM.vmVersion();
     }
 
     /**
@@ -133,7 +133,7 @@ public final class VMRuntime {
      * allocated version numbers start at 1).
      */
     public void setTargetSdkVersion(int targetSdkVersion) {
-    	// NullVM note: This is native in Android. In NullVM this is a nop.
+        // RoboVM note: This is native in Android. In RoboVM this is a nop.
     }
 
     /**
@@ -208,7 +208,7 @@ public final class VMRuntime {
      * implementation, calling this method should have no effect.
      */
     public void startJitCompilation() {
-    	// NullVM note: This is native in Android. In NullVM there's no JIT so this is a nop.
+        // RoboVM note: This is native in Android. In RoboVM there's no JIT so this is a nop.
     }
 
     /**
@@ -216,7 +216,7 @@ public final class VMRuntime {
      * implementation, calling this method should have no effect.
      */
     public void disableJitCompilation() {
-    	// NullVM note: This is native in Android. In NullVM there's no JIT so this is a nop.
+        // RoboVM note: This is native in Android. In RoboVM there's no JIT so this is a nop.
     }
 
     /**
@@ -225,9 +225,9 @@ public final class VMRuntime {
      * and Bitmaps.
      */
     public Object newNonMovableArray(Class<?> componentType, int length) {
-    	// NullVM note: This is native in Android. In NullVM the GC never moves around objects on
-    	// the heap so we can use Array.newInstance().
-    	return Array.newInstance(componentType, length);
+        // RoboVM note: This is native in Android. In RoboVM the GC never moves around objects on
+        // the heap so we can use Array.newInstance().
+        return Array.newInstance(componentType, length);
     }
 
     /**
@@ -235,8 +235,8 @@ public final class VMRuntime {
      * give you the address of a copy of the array when in forcecopy mode.
      */
     public long addressOf(Object array) {
-    	// NullVM note: This is native in Android.
-    	return VM.getArrayValuesAddress(array);
+        // RoboVM note: This is native in Android.
+        return VM.getArrayValuesAddress(array);
     }
 
     /**

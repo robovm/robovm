@@ -584,7 +584,7 @@ outer:
      *             if {@code index < 0} or {@code index >= length()}.
      */
     public char charAt(int index) {
-    	// This method is native in Android    	
+        // RoboVM note: This method is native in Android
         if (0 <= index && index < count) {
             return value[offset + index];
         }
@@ -638,11 +638,11 @@ outer:
      *             if {@code string} is {@code null}.
      */
     public int compareTo(String string) {
-    	// This method is native in Android
-    	if (string == this) {
-    		return 0;
-    	}
-    	// The code below comes from Apache Harmony
+        // RoboVM note: This method is native in Android
+        if (string == this) {
+            return 0;
+        }
+        // The code below comes from Apache Harmony
         // Code adapted from K&R, pg 101
         int o1 = offset, o2 = string.offset, result;
         int end = offset + (count < string.count ? count : string.count);
@@ -776,9 +776,9 @@ outer:
      */
     @Override
     public boolean equals(Object object) {
-    	// This method is native in Android
-    	// The code below has been copied from Apache Harmony 
-    	// and changed to be faster
+        // RoboVM note: This method is native in Android
+        // The code below has been copied from Apache Harmony 
+        // and changed to be faster
         if (object == this) {
             return true;
         }
@@ -799,7 +799,7 @@ outer:
                 if (_value[i++] != _svalue[j++]) {
                     return false;
                 }
-            	_count--;
+                _count--;
             }
             return true;
         }
@@ -1019,7 +1019,7 @@ outer:
     }
 
     private int fastIndexOf(int c, int start) {
-    	// This is native in Android
+        // RoboVM note: This is native in Android
         int _count = count;
         int _offset = offset;
         char[] _value = value;
@@ -1156,7 +1156,7 @@ outer:
      * @since 1.6
      */
     public boolean isEmpty() {
-    	// This method is native in Android
+        // RoboVM note: This method is native in Android
         return count == 0;
     }
 
@@ -1283,7 +1283,7 @@ outer:
      * @return the number of characters in this string.
      */
     public int length() {
-    	// This method is native in Android
+        // RoboVM note: This method is native in Android
         return count;
     }
 

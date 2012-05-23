@@ -30,7 +30,7 @@
  * limitations under the License.
  */
 /*
- * Copyright (C) 2012 The NullVM Project
+ * Copyright (C) 2012 RoboVM
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -167,13 +167,13 @@ public final class System {
      */
     public static void arraycopy(Object src, int srcPos, Object dst, int dstPos,
             int length) {
-    	// This is native in Android. We're using the code from Apache Harmony instead.
-    	if (src == null) {
-    		throw new NullPointerException("src == null");
-    	}
-    	if (dst == null) {
-    		throw new NullPointerException("dst == null");
-    	}
+        // RoboVM note: This is native in Android. We're using code from Apache Harmony instead.
+        if (src == null) {
+            throw new NullPointerException("src == null");
+        }
+        if (dst == null) {
+            throw new NullPointerException("dst == null");
+        }
         Class<?> type1 = src.getClass();
         Class<?> type2 = dst.getClass();
         if (!type1.isArray()) {
@@ -187,13 +187,13 @@ public final class System {
         if (!componentType1.isPrimitive()) {
             if (componentType2.isPrimitive()) {
                 throw new ArrayStoreException(type1.getName() + " and " + type2.getName() 
-                		+ " are incompatible array types");
+                        + " are incompatible array types");
             }
             arraycopy((Object[]) src, srcPos, (Object[]) dst, dstPos, length);
         } else {
             if (componentType2 != componentType1) {
                 throw new ArrayStoreException(type1.getName() + " and " + type2.getName() 
-                		+ " are incompatible array types");
+                        + " are incompatible array types");
             }
             if (componentType1 == int.class) {
                 arraycopy((int[]) src, srcPos, (int[]) dst, dstPos, length);
@@ -217,82 +217,82 @@ public final class System {
 
     private static void arraycopyCheckBounds(int srcLength, int srcPos, int dstLength, int dstPos, int length) {
         if (srcPos < 0 || dstPos < 0 || length < 0 || 
-        		srcPos > srcLength - length ||
+                srcPos > srcLength - length ||
                 dstPos > dstLength - length) {
             throw new ArrayIndexOutOfBoundsException("src.length=" + srcLength + " srcPos=" + srcPos 
-            		+ " dst.length=" + dstLength + " dstPos=" + dstPos + " length=" + length);
+                    + " dst.length=" + dstLength + " dstPos=" + dstPos + " length=" + length);
         }
     }
     
     private static void arraycopyFast(Object src, int srcPos, Object dst, int dstPos, int length, int elemSizeShift) {
-    	if (length > 0) {
-    		long srcAddr = VM.getArrayValuesAddress(src) + (srcPos << elemSizeShift);
-    		long dstAddr = VM.getArrayValuesAddress(dst) + (dstPos << elemSizeShift);
-    		long byteCount = length << elemSizeShift;
-    		// Overlapping copy needs to use memmove
+        if (length > 0) {
+            long srcAddr = VM.getArrayValuesAddress(src) + (srcPos << elemSizeShift);
+            long dstAddr = VM.getArrayValuesAddress(dst) + (dstPos << elemSizeShift);
+            long byteCount = length << elemSizeShift;
+            // Overlapping copy needs to use memmove
             if (src != dst || srcPos > dstPos || srcPos + length <= dstPos) {
-            	VM.memcpy(dstAddr, srcAddr, byteCount);
+                VM.memcpy(dstAddr, srcAddr, byteCount);
             } else {
-            	VM.memmove(dstAddr, srcAddr, byteCount);
+                VM.memmove(dstAddr, srcAddr, byteCount);
             }
-    	}
+        }
     }
     
     private static void arraycopy(Object[] src, int srcPos, Object[] dst, int dstPos, int length) {
-    	arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
-    	if (length > 0) {
-    		// TODO: Use arraycopyFast() if src.class and dst.class have same dimensionality and (src instanceof dst)
-	        // Check if this is a forward or backwards arraycopy
-	        if (src != dst || srcPos > dstPos || srcPos + length <= dstPos) {
-	            for (int i = 0; i < length; ++i) {
-	                dst[dstPos + i] = src[srcPos + i];
-	            }
-	        } else {
-	            for (int i = length - 1; i >= 0; --i) {
-	                dst[dstPos + i] = src[srcPos + i];
-	            }
-	        }
-    	}
+        arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
+        if (length > 0) {
+            // TODO: Use arraycopyFast() if src.class and dst.class have same dimensionality and (src instanceof dst)
+            // Check if this is a forward or backwards arraycopy
+            if (src != dst || srcPos > dstPos || srcPos + length <= dstPos) {
+                for (int i = 0; i < length; ++i) {
+                    dst[dstPos + i] = src[srcPos + i];
+                }
+            } else {
+                for (int i = length - 1; i >= 0; --i) {
+                    dst[dstPos + i] = src[srcPos + i];
+                }
+            }
+        }
     }
 
     private static void arraycopy(int[] src, int srcPos, int[] dst, int dstPos, int length) {
-    	arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
-    	arraycopyFast(src, srcPos, dst, dstPos, length, 2);
+        arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
+        arraycopyFast(src, srcPos, dst, dstPos, length, 2);
     }
 
     private static void arraycopy(byte[] src, int srcPos, byte[] dst, int dstPos, int length) {
-    	arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
-    	arraycopyFast(src, srcPos, dst, dstPos, length, 0);
+        arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
+        arraycopyFast(src, srcPos, dst, dstPos, length, 0);
     }
 
     private static void arraycopy(short[] src, int srcPos, short[] dst, int dstPos, int length) {
-    	arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
-    	arraycopyFast(src, srcPos, dst, dstPos, length, 1);
+        arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
+        arraycopyFast(src, srcPos, dst, dstPos, length, 1);
     }
 
     private static void arraycopy(long[] src, int srcPos, long[] dst, int dstPos, int length) {
-    	arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
-    	arraycopyFast(src, srcPos, dst, dstPos, length, 3);
+        arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
+        arraycopyFast(src, srcPos, dst, dstPos, length, 3);
     }
 
     private static void arraycopy(char[] src, int srcPos, char[] dst, int dstPos, int length) {
-    	arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
-    	arraycopyFast(src, srcPos, dst, dstPos, length, 1);
+        arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
+        arraycopyFast(src, srcPos, dst, dstPos, length, 1);
     }
 
     private static void arraycopy(boolean[] src, int srcPos, boolean[] dst, int dstPos, int length) {
-    	arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
-    	arraycopyFast(src, srcPos, dst, dstPos, length, 0);
+        arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
+        arraycopyFast(src, srcPos, dst, dstPos, length, 0);
     }
 
     private static void arraycopy(double[] src, int srcPos, double[] dst, int dstPos, int length) {
-    	arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
-    	arraycopyFast(src, srcPos, dst, dstPos, length, 3);
+        arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
+        arraycopyFast(src, srcPos, dst, dstPos, length, 3);
     }
 
     private static void arraycopy(float[] src, int srcPos, float[] dst, int dstPos, int length) {
-    	arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
-    	arraycopyFast(src, srcPos, dst, dstPos, length, 2);
+        arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
+        arraycopyFast(src, srcPos, dst, dstPos, length, 2);
     }
     
     /**
@@ -406,8 +406,8 @@ public final class System {
         VMRuntime runtime = VMRuntime.getRuntime();
         Properties p = new Properties();
 
-        String projectUrl = "http://www.nullvm.org/";
-        String projectName = "The NullVM Project";
+        String projectUrl = "http://www.robovm.org/";
+        String projectName = "RoboVM";
 
         p.put("java.boot.class.path", runtime.bootClassPath());
         p.put("java.class.path", runtime.classPath());
@@ -425,14 +425,14 @@ public final class System {
         p.put("java.io.tmpdir", "/tmp");
         p.put("java.library.path", getenv("LD_LIBRARY_PATH", ""));
 
-        p.put("java.specification.name", "NullVM Core Library");
+        p.put("java.specification.name", "RoboVM Core Library");
         p.put("java.specification.vendor", projectName);
         p.put("java.specification.version", "0.9");
 
         p.put("java.vendor", projectName);
         p.put("java.vendor.url", projectUrl);
-        p.put("java.vm.name", "NullVM");
-        p.put("java.vm.specification.name", "NullVM Virtual Machine Specification");
+        p.put("java.vm.name", "RoboVM");
+        p.put("java.vm.specification.name", "RoboVM Virtual Machine Specification");
         p.put("java.vm.specification.vendor", projectName);
         p.put("java.vm.specification.version", "0.9");
         p.put("java.vm.vendor", projectName);
@@ -442,8 +442,8 @@ public final class System {
         p.put("line.separator", "\n");
         p.put("path.separator", ":");
 
-        p.put("java.runtime.name", "NullVM Runtime");
-        p.put("java.runtime.version", "0.9");
+        p.put("java.runtime.name", "RoboVM Runtime");
+        p.put("java.runtime.version", "0.9"); // RoboVM note: TODO: Use version from pom
         p.put("java.vm.vendor.url", projectUrl);
 
         p.put("file.encoding", "UTF-8");

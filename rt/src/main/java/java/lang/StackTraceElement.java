@@ -68,10 +68,10 @@ public final class StackTraceElement implements Serializable {
     }
 
     /**
-     * Private constructor used by NullVM only.
+     * Private constructor used by RoboVM only.
      */
     @SuppressWarnings("unused")
-	private StackTraceElement(Class<?> cls, String method, String file, int line) {
+    private StackTraceElement(Class<?> cls, String method, String file, int line) {
         this(cls.getName(), method, file, line);
     }
     

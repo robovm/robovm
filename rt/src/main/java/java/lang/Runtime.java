@@ -451,7 +451,7 @@ public class Runtime {
      *            off.
      */
     public void traceMethodCalls(boolean enable) {
-    	// NullVM note: Method tracing is not supported by NullVM.
+        // RoboVM note: Method tracing is not supported by RoboVM.
 //        if (enable != tracingMethods) {
 //            if (enable) {
 //                VMDebug.startMethodTracing();

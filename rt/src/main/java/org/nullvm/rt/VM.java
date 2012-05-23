@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 The NullVM Open Source Project
+ * Copyright (C) 2012 RoboVM
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ public final class VM {
      * Returns the VM's class path.
      */
     public static native String classPath();
-	
+
     /**
      * Returns the VM's version.
      */

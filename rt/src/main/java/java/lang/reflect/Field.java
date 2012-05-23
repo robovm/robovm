@@ -30,7 +30,7 @@
  * limitations under the License.
  */
 /*
- * Copyright (C) 2012 The NullVM Project
+ * Copyright (C) 2012 RoboVM
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,6 @@ package java.lang.reflect;
 
 import java.lang.annotation.Annotation;
 import java.util.Comparator;
-import org.apache.harmony.kernel.vm.StringUtils;
 import org.apache.harmony.luni.lang.reflect.GenericSignatureParser;
 import org.apache.harmony.luni.lang.reflect.Types;
 import org.nullvm.rt.VM;
@@ -78,7 +77,7 @@ public final class Field extends AccessibleObject implements Member {
     };
     
     /*
-     * The NullVM Field* object
+     * The RoboVM Field* object
      */
     private final long field;
     

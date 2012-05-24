@@ -22,7 +22,7 @@
 #include "ScopedPrimitiveArray.h"
 #include "UniquePtr.h"
 
-// NullVM note: Darwin has no byteswap.h
+// RoboVM note: Darwin has no byteswap.h
 #if defined(__APPLE__)
 #   include <libkern/OSByteOrder.h>
 #   define bswap_16(x) OSSwapInt16(x)

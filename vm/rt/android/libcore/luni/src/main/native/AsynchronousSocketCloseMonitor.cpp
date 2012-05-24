@@ -37,7 +37,7 @@ static AsynchronousSocketCloseMonitor* blockedThreadList = NULL;
 /**
  * The specific signal chosen here is arbitrary.
  */
-// NullVM note: Darwin doesn't have real-time signals. Use SIGUSR1 instead.
+// RoboVM note: Darwin doesn't have real-time signals. Use SIGUSR1 instead.
 #if defined(SIGRTMIN)
     static const int BLOCKED_THREAD_SIGNAL = SIGRTMIN + 2;
 #else

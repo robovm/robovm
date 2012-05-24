@@ -1,5 +1,5 @@
 #include <string.h>
-#include <nullvm.h>
+#include <robovm.h>
 
 #define LOG_BUF_SIZE 1024
 #define IS_ENABLED(level) (_logLevel < LOG_LEVEL_SILENT && _logLevel <= level)
@@ -83,7 +83,7 @@ int nvmLogfv(int level, const char* tag, const char* format, va_list ap) {
 
 /*
  * Implementations of log functions used by the Android code. These just forward to 
- * the NullVM log functions.
+ * the RoboVM log functions.
  */
 int __android_log_write(int prio, const char* tag, const char* text) {
     char realtag[128] = "android.";

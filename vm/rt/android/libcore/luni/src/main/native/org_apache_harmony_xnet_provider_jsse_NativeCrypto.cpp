@@ -1776,7 +1776,7 @@ extern "C" void Java_org_apache_harmony_xnet_provider_jsse_NativeCrypto_SSL_1use
         return;
     }
 
-// NullVM note: clang cannot handle the dynamic array allocated on the stack here. Use a fixed maximum size when compiler is clang.
+// RoboVM note: clang cannot handle the dynamic array allocated on the stack here. Use a fixed maximum size when compiler is clang.
 #ifndef __clang__
     Unique_X509 certificatesX509[length];
 #else

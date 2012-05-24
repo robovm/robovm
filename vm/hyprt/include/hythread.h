@@ -283,11 +283,11 @@ extern "C"
 #define hythread_monitor_init(pMon,flags)  hythread_monitor_init_with_name(pMon,flags, #pMon)
 #define hythread_monitor_set_name(pMon,pName) 
 
-/* Start NullVM changes */
+/* Start RoboVM changes */
   extern HY_CFUNC hythread_t VMCALL
     hythread_monitor_owner
     PROTOTYPE ((hythread_monitor_t monitor));
-/* End NullVM changes */
+/* End RoboVM changes */
 
 #if defined(__cplusplus)
 }

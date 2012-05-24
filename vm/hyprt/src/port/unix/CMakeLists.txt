@@ -3,7 +3,7 @@ project(port)
 add_definitions(-DHYPORT_LIBRARY_DEFINE)
 include_directories(../../include/shared ../../include/unix ../shared .)
 
-add_library(nullvm-hyprt STATIC 
+add_library(robovm-hyprt STATIC 
   ../shared/port_copyright.c ../shared/hyerror.c 
 	hyerrorhelpers.c ../shared/hyexit.c hyfile.c hyfiletext.c 
 	../shared/hygp.c hymem.c 
@@ -15,5 +15,5 @@ add_library(nullvm-hyprt STATIC
   hycpu.c hyipcmutex.c hyshmem.c hyshsem.c ${HY_OS}/hyvmem.c
 )
 
-install(TARGETS nullvm-hyprt DESTINATION ${INSTALL_DIR})
+install(TARGETS robovm-hyprt DESTINATION ${INSTALL_DIR})
 

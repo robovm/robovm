@@ -1,4 +1,4 @@
-#include <nullvm.h>
+#include <robovm.h>
 #include <string.h>
 
 extern struct JNINativeInterface_ jni;

@@ -150,7 +150,7 @@ extern "C" void Java_libcore_io_OsConstants_initConstants(JNIEnv* env, jclass c)
     initConstant(env, c, "F_GETFD", F_GETFD);
     initConstant(env, c, "F_GETFL", F_GETFL);
     initConstant(env, c, "F_GETLK", F_GETLK);
-// NullVM note: On Darwin struct flock is already 64-bit so we set F_GETLK64 = F_GETLK.
+// RoboVM note: On Darwin struct flock is already 64-bit so we set F_GETLK64 = F_GETLK.
 #if defined(F_GETLK64)
     initConstant(env, c, "F_GETLK64", F_GETLK64);
 #else
@@ -162,14 +162,14 @@ extern "C" void Java_libcore_io_OsConstants_initConstants(JNIEnv* env, jclass c)
     initConstant(env, c, "F_SETFD", F_SETFD);
     initConstant(env, c, "F_SETFL", F_SETFL);
     initConstant(env, c, "F_SETLK", F_SETLK);
-// NullVM note: On Darwin struct flock is already 64-bit so we set F_SETLK64 = F_SETLK.
+// RoboVM note: On Darwin struct flock is already 64-bit so we set F_SETLK64 = F_SETLK.
 #if defined(F_SETLK64)
     initConstant(env, c, "F_SETLK64", F_SETLK64);
 #else
     initConstant(env, c, "F_SETLK64", F_SETLK);
 #endif
     initConstant(env, c, "F_SETLKW", F_SETLKW);
-// NullVM note: On Darwin struct flock is already 64-bit so we set F_SETLKW64 = F_SETLKW.
+// RoboVM note: On Darwin struct flock is already 64-bit so we set F_SETLKW64 = F_SETLKW.
 #if defined(F_SETLKW64)
     initConstant(env, c, "F_SETLKW64", F_SETLKW64);
 #else
@@ -179,18 +179,18 @@ extern "C" void Java_libcore_io_OsConstants_initConstants(JNIEnv* env, jclass c)
     initConstant(env, c, "F_UNLCK", F_UNLCK);
     initConstant(env, c, "F_WRLCK", F_WRLCK);
     initConstant(env, c, "IFF_ALLMULTI", IFF_ALLMULTI);
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(IFF_AUTOMEDIA)
     initConstant(env, c, "IFF_AUTOMEDIA", IFF_AUTOMEDIA);
 #endif
     initConstant(env, c, "IFF_BROADCAST", IFF_BROADCAST);
     initConstant(env, c, "IFF_DEBUG", IFF_DEBUG);
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(IFF_DYNAMIC)
     initConstant(env, c, "IFF_DYNAMIC", IFF_DYNAMIC);
 #endif
     initConstant(env, c, "IFF_LOOPBACK", IFF_LOOPBACK);
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(IFF_MASTER)
     initConstant(env, c, "IFF_MASTER", IFF_MASTER);
 #endif
@@ -198,13 +198,13 @@ extern "C" void Java_libcore_io_OsConstants_initConstants(JNIEnv* env, jclass c)
     initConstant(env, c, "IFF_NOARP", IFF_NOARP);
     initConstant(env, c, "IFF_NOTRAILERS", IFF_NOTRAILERS);
     initConstant(env, c, "IFF_POINTOPOINT", IFF_POINTOPOINT);
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(IFF_PORTSEL)
     initConstant(env, c, "IFF_PORTSEL", IFF_PORTSEL);
 #endif
     initConstant(env, c, "IFF_PROMISC", IFF_PROMISC);
     initConstant(env, c, "IFF_RUNNING", IFF_RUNNING);
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(IFF_SLAVE)
     initConstant(env, c, "IFF_SLAVE", IFF_SLAVE);
 #endif
@@ -219,23 +219,23 @@ extern "C" void Java_libcore_io_OsConstants_initConstants(JNIEnv* env, jclass c)
     initConstant(env, c, "IPV6_MULTICAST_HOPS", IPV6_MULTICAST_HOPS);
     initConstant(env, c, "IPV6_MULTICAST_IF", IPV6_MULTICAST_IF);
     initConstant(env, c, "IPV6_MULTICAST_LOOP", IPV6_MULTICAST_LOOP);
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(IPV6_RECVDSTOPTS)
     initConstant(env, c, "IPV6_RECVDSTOPTS", IPV6_RECVDSTOPTS);
 #endif
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(IPV6_RECVHOPLIMIT)
     initConstant(env, c, "IPV6_RECVHOPLIMIT", IPV6_RECVHOPLIMIT);
 #endif
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(IPV6_RECVHOPOPTS)
     initConstant(env, c, "IPV6_RECVHOPOPTS", IPV6_RECVHOPOPTS);
 #endif
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(IPV6_RECVPKTINFO)
     initConstant(env, c, "IPV6_RECVPKTINFO", IPV6_RECVPKTINFO);
 #endif
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(IPV6_RECVRTHDR)
     initConstant(env, c, "IPV6_RECVRTHDR", IPV6_RECVRTHDR);
 #endif
@@ -315,21 +315,21 @@ extern "C" void Java_libcore_io_OsConstants_initConstants(JNIEnv* env, jclass c)
     initConstant(env, c, "SIGKILL", SIGKILL);
     initConstant(env, c, "SIGPIPE", SIGPIPE);
     initConstant(env, c, "SIGPROF", SIGPROF);
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(SIGPWR)
     initConstant(env, c, "SIGPWR", SIGPWR);
 #endif
     initConstant(env, c, "SIGQUIT", SIGQUIT);
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(SIGRTMAX)
     initConstant(env, c, "SIGRTMAX", SIGRTMAX);
 #endif
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(SIGRTMIN)
     initConstant(env, c, "SIGRTMIN", SIGRTMIN);
 #endif
     initConstant(env, c, "SIGSEGV", SIGSEGV);
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(SIGSTKFLT)
     initConstant(env, c, "SIGSTKFLT", SIGSTKFLT);
 #endif
@@ -356,7 +356,7 @@ extern "C" void Java_libcore_io_OsConstants_initConstants(JNIEnv* env, jclass c)
     initConstant(env, c, "SOCK_SEQPACKET", SOCK_SEQPACKET);
     initConstant(env, c, "SOCK_STREAM", SOCK_STREAM);
     initConstant(env, c, "SOL_SOCKET", SOL_SOCKET);
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(SO_BINDTODEVICE)
     initConstant(env, c, "SO_BINDTODEVICE", SO_BINDTODEVICE);
 #endif
@@ -413,7 +413,7 @@ extern "C" void Java_libcore_io_OsConstants_initConstants(JNIEnv* env, jclass c)
     initConstant(env, c, "_SC_2_CHAR_TERM", _SC_2_CHAR_TERM);
     initConstant(env, c, "_SC_2_C_BIND", _SC_2_C_BIND);
     initConstant(env, c, "_SC_2_C_DEV", _SC_2_C_DEV);
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(_SC_2_C_VERSION)
     initConstant(env, c, "_SC_2_C_VERSION", _SC_2_C_VERSION);
 #endif
@@ -429,7 +429,7 @@ extern "C" void Java_libcore_io_OsConstants_initConstants(JNIEnv* env, jclass c)
     initConstant(env, c, "_SC_ARG_MAX", _SC_ARG_MAX);
     initConstant(env, c, "_SC_ASYNCHRONOUS_IO", _SC_ASYNCHRONOUS_IO);
     initConstant(env, c, "_SC_ATEXIT_MAX", _SC_ATEXIT_MAX);
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(_SC_AVPHYS_PAGES)
     initConstant(env, c, "_SC_AVPHYS_PAGES", _SC_AVPHYS_PAGES);
 #endif
@@ -463,7 +463,7 @@ extern "C" void Java_libcore_io_OsConstants_initConstants(JNIEnv* env, jclass c)
     initConstant(env, c, "_SC_PAGESIZE", _SC_PAGESIZE);
     initConstant(env, c, "_SC_PAGE_SIZE", _SC_PAGE_SIZE);
     initConstant(env, c, "_SC_PASS_MAX", _SC_PASS_MAX);
-// NullVM note: Not available on Darwin.
+// RoboVM note: Not available on Darwin.
 #if defined(_SC_PHYS_PAGES)
     initConstant(env, c, "_SC_PHYS_PAGES", _SC_PHYS_PAGES);
 #endif

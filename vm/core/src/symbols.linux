@@ -1,4 +1,4 @@
-NULLVM_0.1 {
+ROBOVM_0.1 {
  global:
   VMI_*;
   java_lang_*;

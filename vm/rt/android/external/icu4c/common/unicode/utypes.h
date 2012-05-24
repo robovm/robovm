@@ -233,7 +233,7 @@
  * @stable ICU 2.0
  */
 #ifdef ICU_DATA_NAME
-// NullVM note: Allow U_ICUDATA_NAME to be overridden
+// RoboVM note: Allow U_ICUDATA_NAME to be overridden
 #    define U_ICUDATA_NAME    ICU_DATA_NAME
 #else
 #    define U_ICUDATA_NAME    "icudt" U_ICU_VERSION_SHORT U_ICUDATA_TYPE_LETTER  /**< @internal */

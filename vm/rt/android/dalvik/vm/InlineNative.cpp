@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 /*
- * Copyright (C) 2012 The NullVM Project
+ * Copyright (C) 2012 RoboVM
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@
 #include <math.h>
 #include <jni.h>
 
-// NullVM note: isnanf is not available on Darwin
+// RoboVM note: isnanf is not available on Darwin
 #if defined(__APPLE__)
 #   define isnanf(X) isnan(X)
 #endif

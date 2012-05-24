@@ -35,7 +35,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-// NullVM note: There's no sys/vfs.h on Darwin and it's not required to compile this file
+// RoboVM note: There's no sys/vfs.h on Darwin and it's not required to compile this file
 #if !defined(__APPLE__)
 #   include <sys/vfs.h>
 #endif
@@ -43,7 +43,7 @@
 #include <unistd.h>
 #include <utime.h>
 
-// NullVM note: This prototype used to be local to the Java_java_io_File_realpath below.
+// RoboVM note: This prototype used to be local to the Java_java_io_File_realpath below.
 // This made clang confused and thought the call to realpath was to the system's C version 
  // and not to the one in realpath.cpp.
 extern bool realpath(const char* path, std::string& resolved);

@@ -1,7 +1,7 @@
 #ifndef PACKED_H
 #define PACKED_H
 
-#include <nullvm.h>
+#include <robovm.h>
 
 static inline jbyte readByte(void** p) {
     jbyte v = *(jbyte*) *p;

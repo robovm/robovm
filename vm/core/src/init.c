@@ -1,4 +1,4 @@
-#include <nullvm.h>
+#include <robovm.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -152,7 +152,7 @@ Env* nvmStartup(Options* options) {
     TRACE("Initializing primitive wrapper classes");
     if (!nvmInitPrimitiveWrapperClasses(env)) return NULL;
 
-    // Initialize the NullVM rt JNI code
+    // Initialize the RoboVM rt JNI code
 //    RT_JNI_OnLoad(&vm->javaVM, NULL);
     // Initialize the dalvik's JNIHelp code in libnativehelper
     TRACE("Initializing dalvik's libnativehelper");

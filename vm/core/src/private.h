@@ -1,7 +1,7 @@
 #ifndef PRIVATE_H
 #define PRIVATE_H
 
-#include <nullvm.h>
+#include <robovm.h>
 
 /* unwind.c / unwind-zero.c / unwind-sjlj.c */
 #define UNWIND_EXCEPTION_CLASS 0x4A4A4A4A4A4A4A4A // "JJJJJJJJ"

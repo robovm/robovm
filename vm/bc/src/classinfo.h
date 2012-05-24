@@ -1,7 +1,7 @@
 #ifndef CLASSINFO_H
 #define CLASSINFO_H
 
-#include <nullvm.h>
+#include <robovm.h>
 
 #define CI_FLAGS_BITS 10
 #define CI_INTERFACE_COUNT_BITS 6

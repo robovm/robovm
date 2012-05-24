@@ -1,8 +1,8 @@
 project(rt)
 
-add_subdirectory(nullvm)
+add_subdirectory(robovm)
 add_subdirectory(android)
 
-add_library(nullvm-rt STATIC ${NULLVM_RT_CORE_OBJECTS} ${ANDROID_OBJECTS})
-install(TARGETS nullvm-rt DESTINATION ${INSTALL_DIR})
+add_library(robovm-rt STATIC ${ROBOVM_RT_CORE_OBJECTS} ${ANDROID_OBJECTS})
+install(TARGETS robovm-rt DESTINATION ${INSTALL_DIR})
 

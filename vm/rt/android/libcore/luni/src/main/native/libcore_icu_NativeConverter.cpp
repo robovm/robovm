@@ -238,7 +238,7 @@ extern "C" jboolean Java_libcore_icu_NativeConverter_canEncode(JNIEnv*, jclass, 
 static jstring getJavaCanonicalName(JNIEnv* env, const char* icuCanonicalName) {
     UErrorCode status = U_ZERO_ERROR;
 
-    // NullVM change: Fix IllegalCharsetNameException on iOS
+    // RoboVM change: Fix IllegalCharsetNameException on iOS
     if (!strcmp("UTF-16,version=1", icuCanonicalName) || !strcmp("UTF-16,version=2", icuCanonicalName)) {
         return env->NewStringUTF("x-JavaUnicode");
     }
@@ -329,7 +329,7 @@ static const char* getICUCanonicalName(const char* name) {
     UErrorCode error = U_ZERO_ERROR;
     const char* canonicalName = NULL;
 
-    // NullVM change: Fix IllegalCharsetNameException on iOS
+    // RoboVM change: Fix IllegalCharsetNameException on iOS
     if (!strcmp("x-JavaUnicode", name)) {
         return "UTF-16,version=1";
     }

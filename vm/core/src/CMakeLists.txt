@@ -33,10 +33,10 @@ set(SRC
   unwind.c
 )
 
-add_library(nullvm-core STATIC ${SRC})
-add_dependencies(nullvm-core extgc)
+add_library(robovm-core STATIC ${SRC})
+add_dependencies(robovm-core extgc)
 
-install(TARGETS nullvm-core DESTINATION ${INSTALL_DIR})
+install(TARGETS robovm-core DESTINATION ${INSTALL_DIR})
 
 add_executable(test_call0 test/test_call0.c test/CuTest.c call0-${OS_FAMILY}-${ARCH}.s ${UNWIND_SRC} unwind.c)
 add_test(testCall0ReturnByte test_call0 "testCall0ReturnByte")

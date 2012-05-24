@@ -53,6 +53,7 @@ public class Functions {
     public static final FunctionRef BC_LDC_ARRAY_BOOT_CLASS = new FunctionRef("_bcLdcArrayBootClass", new FunctionType(OBJECT_PTR, ENV_PTR, new PointerType(OBJECT_PTR), I8_PTR));
     public static final FunctionRef BC_LDC_ARRAY_CLASS = new FunctionRef("_bcLdcArrayClass", new FunctionType(OBJECT_PTR, ENV_PTR, new PointerType(OBJECT_PTR), I8_PTR));
     public static final FunctionRef BC_NEW_OBJECT_ARRAY = new FunctionRef("_bcNewObjectArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, OBJECT_PTR));
+    public static final FunctionRef BC_LDC_CLASS = new FunctionRef("_bcLdcClass", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR_PTR));
 
     public static final FunctionRef BC_PERSONALITY = new FunctionRef("_bcPersonality", new FunctionType(I8_PTR));
     public static final FunctionRef BC_EXCEPTION_MATCH = new FunctionRef("_bcExceptionMatch", new FunctionType(I32, ENV_PTR, CLASS_PTR));
@@ -135,6 +136,10 @@ public class Functions {
     public static final FunctionRef FCMPG = new FunctionRef("fcmpg", new FunctionType(I32, FLOAT, FLOAT));
     public static final FunctionRef DCMPL = new FunctionRef("dcmpl", new FunctionType(I32, DOUBLE, DOUBLE));
     public static final FunctionRef DCMPG = new FunctionRef("dcmpg", new FunctionType(I32, DOUBLE, DOUBLE));
+    public static final FunctionRef LDC_CLASS = new FunctionRef("ldcClass", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR_PTR));
+    public static final FunctionRef LDC_CLASS_WRAPPER = new FunctionRef("ldcClassWrapper", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR_PTR));
+    public static final FunctionRef CHECKCAST_WRAPPER = new FunctionRef("checkcastWrapper", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR_PTR, OBJECT_PTR));
+    public static final FunctionRef INSTANCEOF_WRAPPER = new FunctionRef("instanceofWrapper", new FunctionType(I32, ENV_PTR, I8_PTR_PTR, OBJECT_PTR));
 
     public static FunctionRef getArrayLoad(soot.Type sootType) {
         if (sootType.equals(soot.BooleanType.v())) {

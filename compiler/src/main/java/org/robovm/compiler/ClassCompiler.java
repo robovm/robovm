@@ -393,18 +393,13 @@ public class ClassCompiler {
         
         mb.addInclude(getClass().getClassLoader().getResource("header.ll"));
 
+        mb.addFunction(createInstanceof());
+        mb.addFunction(createCheckcast());
+        mb.addFunction(createLdcClass());
+        mb.addFunction(createLdcClassWrapper());
         Function allocator = createAllocator();
         mb.addFunction(allocator);
         mb.addFunction(createClassInitWrapperFunction(allocator.ref()));
-        Function instanceof_ = createInstanceof();
-        mb.addFunction(instanceof_);
-        mb.addFunction(createClassInitWrapperFunction(instanceof_.ref()));
-        Function checkcast = createCheckcast();
-        mb.addFunction(checkcast);
-        mb.addFunction(createClassInitWrapperFunction(checkcast.ref()));
-        Function ldcClass = createLdcClass();
-        mb.addFunction(ldcClass);
-        mb.addFunction(createClassInitWrapperFunction(ldcClass.ref()));
         
         for (SootField f : sootClass.getFields()) {
             Function getter = createFieldGetter(f);
@@ -912,32 +907,38 @@ public class ClassCompiler {
     }
     
     private Function createInstanceof() {
-        Function fn = new Function(_private, new FunctionAttribute[] {alwaysinline, optsize}, 
+        Function fn = new Function(external, new FunctionAttribute[] {alwaysinline, optsize}, 
                 mangleClass(sootClass) + "_instanceof", new FunctionType(I32, ENV_PTR, OBJECT_PTR));
         Value info = getInfoStruct(fn);        
         Value result = call(fn, BC_INSTANCEOF, fn.getParameterRef(0), info, fn.getParameterRef(1));
         fn.add(new Ret(result));
         return fn;
     }
-    
+
     private Function createCheckcast() {
-        Function fn = new Function(_private, new FunctionAttribute[] {alwaysinline, optsize}, 
+        Function fn = new Function(external, new FunctionAttribute[] {alwaysinline, optsize}, 
                 mangleClass(sootClass) + "_checkcast", new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR));
         Value info = getInfoStruct(fn);        
         Value result = call(fn, BC_CHECKCAST, fn.getParameterRef(0), info, fn.getParameterRef(1));
         fn.add(new Ret(result));
         return fn;
     }
-    
+
     private Function createLdcClass() {
         Function fn = new Function(_private, new FunctionAttribute[] {alwaysinline, optsize}, 
                 mangleClass(sootClass) + "_ldc", new FunctionType(OBJECT_PTR, ENV_PTR));
         Value info = getInfoStruct(fn);
-        Variable infoObjectPtr = fn.newVariable(new PointerType(OBJECT_PTR));
-        fn.add(new Bitcast(infoObjectPtr, info, infoObjectPtr.getType()));
-        Variable result = fn.newVariable(OBJECT_PTR);
-        fn.add(new Load(result, infoObjectPtr.ref()));
-        fn.add(new Ret(result.ref()));
+        Value result = call(fn, BC_LDC_CLASS, fn.getParameterRef(0), info);
+        fn.add(new Ret(result));
+        return fn;
+    }
+
+    private Function createLdcClassWrapper() {
+        Function fn = new Function(external, new FunctionAttribute[] {noinline, optsize}, 
+                mangleClass(sootClass) + "_ldc_load", new FunctionType(OBJECT_PTR, ENV_PTR));
+        Value info = getInfoStruct(fn);
+        Value result = call(fn, LDC_CLASS_WRAPPER, fn.getParameterRef(0), info);
+        fn.add(new Ret(result));
         return fn;
     }
     

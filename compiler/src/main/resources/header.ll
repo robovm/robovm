@@ -28,6 +28,7 @@ declare void @_bcInitializeClass(%Env*, i8**)
 declare %Object* @_bcAllocate(%Env*, i8**)
 declare %Object* @_bcLdcArrayBootClass(%Env*, %Object**, i8*)
 declare %Object* @_bcLdcArrayClass(%Env*, %Object**, i8*)
+declare %Object* @_bcLdcClass(%Env*, i8**)
 declare %Object* @_bcNewObjectArray(%Env*, i32, %Object*)
 declare %Object* @_bcCheckcast(%Env*, i8**, %Object*)
 declare %Object* @_bcCheckcastArray(%Env*, %Object*, %Object*)
@@ -419,4 +420,16 @@ define linkonce_odr i32 @dcmpg(double %op1, double %op2) alwaysinline {
     %4 = zext i1 %2 to i32
     %5 = sub i32 %3, %4
     ret i32 %5
+}
+
+define private %Object* @ldcClassWrapper(%Env* %env, i8** %header) alwaysinline {
+    %1 = load i8** %header
+    %2 = icmp ne i8* %1, null
+    br i1 %2, label %loaded, label %notLoaded
+loaded:
+    %3 = bitcast i8* %1 to %Object*
+    ret %Object* %3
+notLoaded:
+    %4 = call %Object* @_bcLdcClass(%Env* %env, i8** %header)
+    ret %Object* %4
 }

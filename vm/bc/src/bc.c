@@ -372,7 +372,7 @@ _Unwind_Reason_Code _bcPersonality(int version, _Unwind_Action actions, _Unwind_
     if (rvmExceptionCheck(env)) rvmRaiseException(env, rvmExceptionOccurred(env)); \
     return result
 
-static void initializeClass(Env* env, ClassInfoHeader* header) {
+static Class* ldcClass(Env* env, ClassInfoHeader* header) {
     Class* clazz = header->clazz;
     if (!clazz) {
         ClassLoader* loader = NULL;
@@ -382,6 +382,10 @@ static void initializeClass(Env* env, ClassInfoHeader* header) {
         clazz = rvmFindClassUsingLoader(env, header->className, loader);
         if (!clazz) wrapClassNotFoundException(env, header->className);
     }
+    return clazz;
+}
+static void initializeClass(Env* env, ClassInfoHeader* header) {
+    Class* clazz = ldcClass(env, header);
     if (clazz) rvmInitialize(env, clazz);
 }
 void _bcInitializeClass(Env* env, ClassInfoHeader* header) {
@@ -650,6 +654,13 @@ Object* _bcLdcArrayClass(Env* env, Class** arrayClassPtr, char* name) {
     LEAVE((Object*) arrayClass);
 }
 
+Object* _bcLdcClass(Env* env, ClassInfoHeader* header) {
+    ENTER;
+    Class* clazz = ldcClass(env, header);
+    LEAVE((Object*) clazz);
+}
+
+
 void _bcMonitorEnter(Env* env, Object* obj) {
     ENTER;
     rvmMonitorEnter(env, obj);
@@ -665,10 +676,12 @@ void _bcMonitorExit(Env* env, Object* obj) {
 Object* _bcCheckcast(Env* env, ClassInfoHeader* header, Object* o) {
     if (!o) return o;
     ENTER;
-    Class* clazz = header->clazz;
-    jboolean b = rvmIsAssignableFrom(env, o->clazz, clazz);
-    if (!rvmExceptionCheck(env) && !b) {
-        rvmThrowClassCastException(env, clazz, o->clazz);
+    Class* clazz = ldcClass(env, header);
+    if (clazz) {
+        jboolean b = rvmIsAssignableFrom(env, o->clazz, clazz);
+        if (!rvmExceptionCheck(env) && !b) {
+            rvmThrowClassCastException(env, clazz, o->clazz);
+        }
     }
     LEAVE(o);
 }
@@ -686,8 +699,11 @@ Object* _bcCheckcastArray(Env* env, Class* arrayClass, Object* o) {
 jint _bcInstanceof(Env* env, ClassInfoHeader* header, Object* o) {
     if (!o) return (jint) FALSE;
     ENTER;
-    Class* clazz = header->clazz;
-    jboolean b = rvmIsInstanceOf(env, o, clazz);
+    Class* clazz = ldcClass(env, header);
+    jboolean b = FALSE;
+    if (clazz) {
+        b = rvmIsInstanceOf(env, o, clazz);
+    }
     LEAVE((jint) b);
 }
 

@@ -159,7 +159,7 @@ public class TrampolineCompiler {
                 }
                 alias(t, fnName);
             } else {
-                String fnName = mangleClass(t.getTarget()) + "_instanceof_clinit";
+                String fnName = mangleClass(t.getTarget()) + "_instanceof";
                 alias(t, fnName);
             }
         } else if (t instanceof Checkcast) {
@@ -174,7 +174,7 @@ public class TrampolineCompiler {
                 }
                 alias(t, fnName);
             } else {
-                String fnName = mangleClass(t.getTarget()) + "_checkcast_clinit";
+                String fnName = mangleClass(t.getTarget()) + "_checkcast";
                 alias(t, fnName);
             }
         } else if (t instanceof LdcClass) {
@@ -182,7 +182,7 @@ public class TrampolineCompiler {
                 FunctionRef fn = createLdcArray(t.getTarget());
                 alias(t, fn.getName());
             } else {
-                String fnName = mangleClass(t.getTarget()) + "_ldc_clinit";
+                String fnName = mangleClass(t.getTarget()) + "_ldc_load";
                 alias(t, fnName);
             }
         } else if (t instanceof Anewarray) {
@@ -330,9 +330,6 @@ public class TrampolineCompiler {
         fnName += t.isGetter() ? "_getter" : "_setter";
         if (t.isStatic()) {
             fnName += "_clinit";
-        }
-        if (!mb.hasSymbol(fnName)) {
-            
         }
         alias(t, fnName);
     }

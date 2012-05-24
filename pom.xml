@@ -9,6 +9,10 @@
   <name>RoboVM</name>
   <packaging>pom</packaging>
   <url>http://www.robovm.org</url>
+  <inceptionYear>2012</inceptionYear>
+  <organization>
+    <name>RoboVM</name>
+  </organization>
 
 <!--  <scm>
     <connection></connection>

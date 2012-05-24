@@ -7,13 +7,13 @@
   </prerequisites>
 
   <parent>
-    <groupId>org.nullvm</groupId>
-    <artifactId>nullvm-parent</artifactId>
+    <groupId>org.robovm</groupId>
+    <artifactId>robovm-parent</artifactId>
     <version>0.1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.nullvm.ide</artifactId>
-  <name>NullVM Eclipse IDE Plugin</name>
+  <artifactId>org.robovm.ide</artifactId>
+  <name>RoboVM Eclipse IDE Plugin</name>
   <packaging>eclipse-plugin</packaging>
 
   <properties>
@@ -24,13 +24,13 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.nullvm</groupId>
-        <artifactId>nullvm-compiler</artifactId>
+        <groupId>org.robovm</groupId>
+        <artifactId>robovm-compiler</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.nullvm</groupId>
-        <artifactId>nullvm-rt</artifactId>
+        <groupId>org.robovm</groupId>
+        <artifactId>robovm-rt</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>
@@ -61,12 +61,12 @@
           <stripVersion>true</stripVersion>
           <artifactItems>
             <artifactItem>
-              <groupId>org.nullvm</groupId>
-              <artifactId>nullvm-compiler</artifactId>
+              <groupId>org.robovm</groupId>
+              <artifactId>robovm-compiler</artifactId>
             </artifactItem>
             <artifactItem>
-              <groupId>org.nullvm</groupId>
-              <artifactId>nullvm-rt</artifactId>
+              <groupId>org.robovm</groupId>
+              <artifactId>robovm-rt</artifactId>
             </artifactItem>
           </artifactItems>
         </configuration>

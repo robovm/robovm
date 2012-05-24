@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ActivationPolicy: lazy
-Bundle-Name: NullVM Eclipse IDE Plugin
+Bundle-Name: RoboVM Eclipse IDE Plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.launching;bundle-version="3.6.1"
 Bundle-Version: 0.1.0.qualifier
 Bundle-ManifestVersion: 2
-Bundle-Activator: org.nullvm.ide.NullVMPlugin
-Bundle-SymbolicName: org.nullvm.ide;singleton:=true
+Bundle-Activator: org.robovm.ide.RoboVMPlugin
+Bundle-SymbolicName: org.robovm.ide;singleton:=true
 Bundle-ClassPath: .,
- lib/nullvm-compiler.jar
+ lib/robovm-compiler.jar

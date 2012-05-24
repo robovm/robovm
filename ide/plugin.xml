@@ -2,60 +2,60 @@
 <?eclipse version="3.4"?>
 <plugin>
   <extension point="org.eclipse.ui.newWizards">
-    <category id="org.nullvm.ide.wizards.category" name="NullVM"/>
+    <category id="org.robovm.ide.wizards.category" name="RoboVM"/>
     <wizard
       canFinishEarly="false"
-      category="org.nullvm.ide.wizards.category"
-      class="org.nullvm.ide.internal.NewProjectWizard"
+      category="org.robovm.ide.wizards.category"
+      class="org.robovm.ide.internal.NewProjectWizard"
       finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
       hasPages="true"
-      icon="icons/new_nullvm_project.png"
-      id="org.nullvm.ide.NewProjectWizard"
-      name="NullVM Project"
+      icon="icons/new_robovm_project.png"
+      id="org.robovm.ide.NewProjectWizard"
+      name="RoboVM Project"
       preferredPerspectives="org.eclipse.jdt.ui.JavaPerspective"
       project="true"/>
   </extension>
   <extension point="org.eclipse.ui.perspectiveExtensions">
     <perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
-      <newWizardShortcut id="org.nullvm.ide.NewProjectWizard" />
+      <newWizardShortcut id="org.robovm.ide.NewProjectWizard" />
     </perspectiveExtension>
   </extension>  
   <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
     <classpathContainerInitializer
-      class="org.nullvm.ide.internal.NullVMClasspathContainerInitializer"
-      id="org.nullvm.ide.NULLVM_CONTAINER">
+      class="org.robovm.ide.internal.RoboVMClasspathContainerInitializer"
+      id="org.robovm.ide.ROBOVM_CONTAINER">
     </classpathContainerInitializer>
   </extension>
   <extension point="org.eclipse.jdt.ui.classpathContainerPage">
     <classpathContainerPage
-      id="org.nullvm.ide.NULLVM_CONTAINER"
-      name="NullVM Runtime Library"
-      class="org.nullvm.ide.internal.NullVMClasspathContainerPage">
+      id="org.robovm.ide.ROBOVM_CONTAINER"
+      name="RoboVM Runtime Library"
+      class="org.robovm.ide.internal.RoboVMClasspathContainerPage">
     </classpathContainerPage>
   </extension>
   <extension
-    id="org.nullvm.ide.NullVMClassBuilder"
-    name="NullVM Class Builder"
+    id="org.robovm.ide.RoboVMClassBuilder"
+    name="RoboVM Class Builder"
     point="org.eclipse.core.resources.builders">
     <builder hasNature="true">
-      <run class="org.nullvm.ide.internal.NullVMClassBuilder" />
+      <run class="org.robovm.ide.internal.RoboVMClassBuilder" />
     </builder>
   </extension>
   <extension
-    id="org.nullvm.ide.NullVMNature"
-    name="NullVM Project Nature"
+    id="org.robovm.ide.RoboVMNature"
+    name="RoboVM Project Nature"
     point="org.eclipse.core.resources.natures">
     <runtime>
-      <run class="org.nullvm.ide.internal.NullVMNature" />
+      <run class="org.robovm.ide.internal.RoboVMNature" />
     </runtime>
-    <builder id="org.nullvm.ide.NullVMClassBuilder" />
+    <builder id="org.robovm.ide.RoboVMClassBuilder" />
     <requires-nature id="org.eclipse.jdt.core.javanature"/>
   </extension>
   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
     <launchConfigurationType
-      id="org.nullvm.ide.ConsoleLaunchConfigurationType"
-      delegate="org.nullvm.ide.internal.ConsoleLaunchConfigurationDelegate"
-      delegateName="NullVM Console Launcher"
+      id="org.robovm.ide.ConsoleLaunchConfigurationType"
+      delegate="org.robovm.ide.internal.ConsoleLaunchConfigurationDelegate"
+      delegateName="RoboVM Console Launcher"
       modes="debug, run"
       name="Console Application"
       public="true"
@@ -63,8 +63,8 @@
       sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
     </launchConfigurationType>
     <launchConfigurationType
-      id="org.nullvm.ide.IOSSimulatorLaunchConfigurationType"
-      delegate="org.nullvm.ide.internal.IOSSimulatorLaunchConfigurationDelegate"
+      id="org.robovm.ide.IOSSimulatorLaunchConfigurationType"
+      delegate="org.robovm.ide.internal.IOSSimulatorLaunchConfigurationDelegate"
       delegateName="iOS Simulator Launcher"
       modes="debug, run"
       name="iOS Simulator App"
@@ -73,8 +73,8 @@
       sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
     </launchConfigurationType>
     <launchConfigurationType
-      id="org.nullvm.ide.IOSDeviceLaunchConfigurationType"
-      delegate="org.nullvm.ide.internal.IOSDeviceLaunchConfigurationDelegate"
+      id="org.robovm.ide.IOSDeviceLaunchConfigurationType"
+      delegate="org.robovm.ide.internal.IOSDeviceLaunchConfigurationDelegate"
       delegateName="iOS Device Launcher"
       modes="debug, run"
       name="iOS Device App"
@@ -85,25 +85,25 @@
   </extension>
   <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
     <launchConfigurationTabGroup
-        class="org.nullvm.ide.internal.NullVMLaunchConfigurationTabGroup"
+        class="org.robovm.ide.internal.RoboVMLaunchConfigurationTabGroup"
         description="Console Application"
-        id="org.nullvm.ide.ConsoleLaunchConfigurationTabGroup"
-        type="org.nullvm.ide.ConsoleLaunchConfigurationType" />
+        id="org.robovm.ide.ConsoleLaunchConfigurationTabGroup"
+        type="org.robovm.ide.ConsoleLaunchConfigurationType" />
     <launchConfigurationTabGroup
-        class="org.nullvm.ide.internal.NullVMLaunchConfigurationTabGroup"
+        class="org.robovm.ide.internal.RoboVMLaunchConfigurationTabGroup"
         description="iOS Simulator App"
-        id="org.nullvm.ide.IOSSimulatorLaunchConfigurationTabGroup"
-        type="org.nullvm.ide.IOSSimulatorLaunchConfigurationType" />
+        id="org.robovm.ide.IOSSimulatorLaunchConfigurationTabGroup"
+        type="org.robovm.ide.IOSSimulatorLaunchConfigurationType" />
     <launchConfigurationTabGroup
-        class="org.nullvm.ide.internal.NullVMLaunchConfigurationTabGroup"
+        class="org.robovm.ide.internal.RoboVMLaunchConfigurationTabGroup"
         description="iOS Device App"
-        id="org.nullvm.ide.IOSDeviceLaunchConfigurationTabGroup"
-        type="org.nullvm.ide.IOSDeviceLaunchConfigurationType" />
+        id="org.robovm.ide.IOSDeviceLaunchConfigurationTabGroup"
+        type="org.robovm.ide.IOSDeviceLaunchConfigurationType" />
   </extension>
   <extension point="org.eclipse.debug.ui.launchShortcuts">
     <shortcut
-        class="org.nullvm.ide.internal.ConsoleLaunchShortcut"
-        id="org.nullvm.ide.ConsoleLaunchShortcut"
+        class="org.robovm.ide.internal.ConsoleLaunchShortcut"
+        id="org.robovm.ide.ConsoleLaunchShortcut"
         label="Console Application"
         modes="run, debug">
       <contextualLaunch>
@@ -128,8 +128,8 @@
       </contextualLaunch>
     </shortcut>
     <shortcut
-        class="org.nullvm.ide.internal.IOSSimulatorLaunchShortcut"
-        id="org.nullvm.ide.IOSSimulatorLaunchShortcut"
+        class="org.robovm.ide.internal.IOSSimulatorLaunchShortcut"
+        id="org.robovm.ide.IOSSimulatorLaunchShortcut"
         label="iOS Simulator App"
         modes="run, debug">
       <contextualLaunch>
@@ -154,8 +154,8 @@
       </contextualLaunch>
     </shortcut>
     <shortcut
-        class="org.nullvm.ide.internal.IOSDeviceLaunchShortcut"
-        id="org.nullvm.ide.IOSDeviceLaunchShortcut"
+        class="org.robovm.ide.internal.IOSDeviceLaunchShortcut"
+        id="org.robovm.ide.IOSDeviceLaunchShortcut"
         label="iOS Device App"
         modes="run, debug">
       <contextualLaunch>
@@ -181,25 +181,25 @@
     </shortcut>
   </extension>
   <extension point="org.eclipse.core.runtime.preferences">
-    <initializer class="org.nullvm.ide.internal.NullVMPreferenceInitializer"/>
+    <initializer class="org.robovm.ide.internal.RoboVMPreferenceInitializer"/>
   </extension>
   <extension point="org.eclipse.ui.preferencePages">
     <page
-      class="org.nullvm.ide.internal.NullVMPreferencePage"
-      id="org.nullvm.ide.preferences.main"
-      name="NullVM" />
+      class="org.robovm.ide.internal.RoboVMPreferencePage"
+      id="org.robovm.ide.preferences.main"
+      name="RoboVM" />
   </extension>
   <extension point="org.eclipse.ui.propertyPages">
     <page
-      class="org.nullvm.ide.internal.NullVMPropertyPage"
-      id="org.nullvm.ide.NullVMPropertyPage"
-      name="NullVM"
+      class="org.robovm.ide.internal.RoboVMPropertyPage"
+      id="org.robovm.ide.RoboVMPropertyPage"
+      name="RoboVM"
       nameFilter="*">
       <enabledWhen>
         <and>
           <adapt type="org.eclipse.core.resources.IProject"/>
           <test property="org.eclipse.jdt.launching.hasProjectNature" 
-                args="org.nullvm.ide.NullVMNature" />
+                args="org.robovm.ide.RoboVMNature" />
         </and>
       </enabledWhen>
     </page>

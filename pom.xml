@@ -3,12 +3,12 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.nullvm</groupId>
+  <groupId>org.robovm</groupId>
   <version>0.1.0-SNAPSHOT</version>
-  <artifactId>nullvm-parent</artifactId>
-  <name>NullVM</name>
+  <artifactId>robovm-parent</artifactId>
+  <name>RoboVM</name>
   <packaging>pom</packaging>
-  <url>http://www.nullvm.org</url>
+  <url>http://www.robovm.org</url>
 
 <!--  <scm>
     <connection></connection>

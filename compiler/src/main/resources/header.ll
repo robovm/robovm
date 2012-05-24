@@ -420,36 +420,3 @@ define linkonce_odr i32 @dcmpg(double %op1, double %op2) alwaysinline {
     %5 = sub i32 %3, %4
     ret i32 %5
 }
-
-define linkonce_odr i1 @is64bit() alwaysinline {
-    %1 = bitcast i1 icmp eq (i32 ptrtoint (i32** getelementptr (i32** null, i32 1) to i32), i32 8) to i1
-    ret i1 %1
-}
-
-define linkonce_odr double @machineFpToDouble(float* %op) alwaysinline {
-    %is64bit = call i1 @is64bit()
-    br i1 %is64bit, label %retDouble, label %retFloat
-retFloat:
-    %1 = ptrtoint float* %op to i32
-    %2 = bitcast i32 %1 to float
-    %3 = fpext float %2 to double
-    ret double %3
-retDouble:
-    %4 = ptrtoint float* %op to i64
-    %5 = bitcast i64 %4 to double
-    ret double %5
-}
-
-define linkonce_odr float* @doubleToMachineFp(double %op) alwaysinline {
-    %is64bit = call i1 @is64bit()
-    br i1 %is64bit, label %retDouble, label %retFloat
-retFloat:
-    %1 = fptrunc double %op to float
-    %2 = bitcast float %1 to i32
-    %3 = inttoptr i32 %2 to float*
-    ret float* %3
-retDouble:
-    %4 = bitcast double %op to i64
-    %5 = inttoptr i64 %4 to float*
-    ret float* %5
-}

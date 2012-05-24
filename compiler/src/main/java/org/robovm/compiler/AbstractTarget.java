@@ -83,9 +83,9 @@ public abstract class AbstractTarget implements Target {
             ccArgs.add("-Wl,-rpath=$ORIGIN");
             ccArgs.add("-Wl,--gc-sections");
 //            ccArgs.add("-Wl,--print-gc-sections");
-            // This prevents _bcPersonality and _nvmPersonality from being removed by the linker
+            // This prevents _bcPersonality and _rvmPersonality from being removed by the linker
             // when garbage collecting unreferenced sections.
-            ccArgs.add("-Wl,-u,_nvmPersonality");
+            ccArgs.add("-Wl,-u,_rvmPersonality");
             ccArgs.add("-Wl,-u,_bcPersonality");
         } else if (config.getOs().getFamily() == OS.Family.darwin) {
             File unexportedSymbolsFile = new File(config.getTmpDir(), "unexported_symbols");

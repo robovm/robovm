@@ -5,7 +5,7 @@ static hythread_monitor_t monitorsLock;
 static hythread_tls_key_t tlsEnvKey;
 
 static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboolean daemon) {
-    Env* env = *envPtr; // env is NULL if nvmAttachCurrentThread() was called. If non NULL nvmInitThreads() was called.
+    Env* env = *envPtr; // env is NULL if rvmAttachCurrentThread() was called. If non NULL rvmInitThreads() was called.
     hythread_t hyThread = NULL;
     // Try to attach. If already attached this will simply set hyThread.
     if (hythread_attach(&hyThread) < 0) goto error;
@@ -20,14 +20,14 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
     }
     
     if (!env) {
-        env = nvmCreateEnv(vm);
+        env = rvmCreateEnv(vm);
         if (!env) goto error;
     }
 
     // Associate the current Env* with the thread
     hythread_tls_set(hyThread, tlsEnvKey, env);
 
-    Thread* thread = (Thread*) nvmAllocateObject(env, java_lang_Thread);
+    Thread* thread = (Thread*) rvmAllocateObject(env, java_lang_Thread);
     if (!thread) goto error;
 
     thread->threadPtr = PTR_TO_LONG(hyThread);
@@ -36,15 +36,15 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
 
     Object* threadName = NULL;
     if (name) {
-        threadName = nvmNewStringUTF(env, name, -1);
+        threadName = rvmNewStringUTF(env, name, -1);
         if (!threadName) goto error;
     }
 
-    Method* threadConstructor = nvmGetInstanceMethod(env, java_lang_Thread, "<init>", "(JLjava/lang/String;Ljava/lang/ThreadGroup;Z)V");
+    Method* threadConstructor = rvmGetInstanceMethod(env, java_lang_Thread, "<init>", "(JLjava/lang/String;Ljava/lang/ThreadGroup;Z)V");
     if (!threadConstructor) goto error;
 
-    nvmCallNonvirtualVoidInstanceMethod(env, (Object*) thread, threadConstructor, PTR_TO_LONG(hyThread), threadName, group, daemon);
-    if (nvmExceptionOccurred(env)) goto error;
+    rvmCallNonvirtualVoidInstanceMethod(env, (Object*) thread, threadConstructor, PTR_TO_LONG(hyThread), threadName, group, daemon);
+    if (rvmExceptionOccurred(env)) goto error;
 
     *envPtr = env;
     env->attachCount = 1;
@@ -79,7 +79,7 @@ static void monitorEnter(Env* env, hythread_monitor_t monitor) {
         if (result == HYTHREAD_PRIORITY_INTERRUPTED) {
             // TODO: What?
         }
-        nvmAbort("Unexpected value returned by hythread_monitor_enter_using_threadId(): %d", result);
+        rvmAbort("Unexpected value returned by hythread_monitor_enter_using_threadId(): %d", result);
     }
 }
 
@@ -87,10 +87,10 @@ static void monitorExit(Env* env, hythread_monitor_t monitor) {
     IDATA result = hythread_monitor_exit_using_threadId(monitor, (hythread_t) LONG_TO_PTR(env->currentThread->threadPtr));
     if (result != 0) {
         if (result == HYTHREAD_ILLEGAL_MONITOR_STATE) {
-            nvmThrowIllegalMonitorStateException(env);
+            rvmThrowIllegalMonitorStateException(env);
             return;
         }
-        nvmAbort("Unexpected value returned by hythread_monitor_exit_using_threadId(): %d", result);
+        rvmAbort("Unexpected value returned by hythread_monitor_exit_using_threadId(): %d", result);
     }
 }
 
@@ -98,36 +98,36 @@ static void monitorWait(Env* env, hythread_monitor_t monitor, jlong millis, jint
     IDATA result = hythread_monitor_wait_interruptable(monitor, millis, nanos);
     if (result != 0) {
         if (result == HYTHREAD_ILLEGAL_MONITOR_STATE) {
-            nvmThrowIllegalMonitorStateException(env);
+            rvmThrowIllegalMonitorStateException(env);
             return;
         }
         if (result == HYTHREAD_INTERRUPTED || result == HYTHREAD_PRIORITY_INTERRUPTED) {
-            nvmThrowInterruptedException(env);
+            rvmThrowInterruptedException(env);
             return;
         }
         if (result != HYTHREAD_TIMED_OUT) {
-            nvmAbort("Unexpected value returned by hythread_monitor_wait_interruptable(): %d", result);
+            rvmAbort("Unexpected value returned by hythread_monitor_wait_interruptable(): %d", result);
         }
     }
 }
 
-jboolean nvmInitThreads(Env* env) {
+jboolean rvmInitThreads(Env* env) {
     if (hythread_monitor_init_with_name(&monitorsLock, 0, NULL) < 0) return FALSE;
     if (hythread_tls_alloc(&tlsEnvKey) < 0) return FALSE;
     return attachThread(env->vm, &env, "main", NULL, FALSE) == JNI_OK;
 }
 
-jint nvmAttachCurrentThread(VM* vm, Env** env, char* name, Object* group) {
+jint rvmAttachCurrentThread(VM* vm, Env** env, char* name, Object* group) {
     *env = NULL;
     return attachThread(vm, env, name, group, FALSE);
 }
 
-jint nvmAttachCurrentThreadAsDaemon(VM* vm, Env** env, char* name, Object* group) {
+jint rvmAttachCurrentThreadAsDaemon(VM* vm, Env** env, char* name, Object* group) {
     *env = NULL;
     return attachThread(vm, env, name, group, TRUE);
 }
 
-jint nvmGetEnv(VM* vm, Env** env) {
+jint rvmGetEnv(VM* vm, Env** env) {
     *env = NULL;
     hythread_t hyThread = hythread_self();
     if (!hyThread) return JNI_EDETACHED;
@@ -137,7 +137,7 @@ jint nvmGetEnv(VM* vm, Env** env) {
     return JNI_EDETACHED; // TODO: What should we do here?
 }
 
-jint nvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount) {
+jint rvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount) {
     return detachThread(vm, ignoreAttachCount);
 }
 
@@ -145,21 +145,21 @@ static int startThreadEntryPoint(void* entryArgs) {
     Env* env = (Env*) entryArgs;
     Thread* thread = env->currentThread;
 
-    Method* run = nvmGetInstanceMethod(env, java_lang_Thread, "run", "()V");
+    Method* run = rvmGetInstanceMethod(env, java_lang_Thread, "run", "()V");
     if (!run) goto finish;
 
     jvalue emptyArgs[0];
-    nvmCallVoidInstanceMethodA(env, (Object*) thread, run, emptyArgs);
+    rvmCallVoidInstanceMethodA(env, (Object*) thread, run, emptyArgs);
 
 finish:
 
-    if (nvmExceptionOccurred(env)) {
-        Object* throwable = nvmExceptionClear(env);
-        Method* printStackTrace = nvmGetInstanceMethod(env, java_lang_Thread, "printStackTrace", "(Ljava/lang/Throwable;)V");
+    if (rvmExceptionOccurred(env)) {
+        Object* throwable = rvmExceptionClear(env);
+        Method* printStackTrace = rvmGetInstanceMethod(env, java_lang_Thread, "printStackTrace", "(Ljava/lang/Throwable;)V");
         if (printStackTrace) {
             jvalue args[1];
             args[0].l = (jobject) throwable;
-            nvmCallVoidInstanceMethodA(env, (Object*) thread, printStackTrace, args);
+            rvmCallVoidInstanceMethodA(env, (Object*) thread, printStackTrace, args);
         }
     }
 
@@ -167,7 +167,7 @@ finish:
     hythread_monitor_t monitor = thread->object.monitor;
     if (monitor) {
         // Notify all other threads waiting on this thread.
-        // We can't use nvmMonitor* functions here since threadPtr has been set to 0.
+        // We can't use rvmMonitor* functions here since threadPtr has been set to 0.
         hythread_monitor_enter(monitor);
         hythread_monitor_notify_all(monitor);
         hythread_monitor_exit(monitor);
@@ -178,10 +178,10 @@ finish:
     return 0;
 }
 
-jlong nvmStartThread(Env* env, Thread* thread, jint priority) {
-    Env* newEnv = nvmCreateEnv(env->vm);
+jlong rvmStartThread(Env* env, Thread* thread, jint priority) {
+    Env* newEnv = rvmCreateEnv(env->vm);
     if (!newEnv) {
-        nvmThrowOutOfMemoryError(env);
+        rvmThrowOutOfMemoryError(env);
         return 0;
     }
 
@@ -191,7 +191,7 @@ jlong nvmStartThread(Env* env, Thread* thread, jint priority) {
     IDATA result = hythread_create(&hyThread, 0, priority, 1, startThreadEntryPoint, newEnv);
     if (result < 0) {
         // TODO: What can we do here?
-        nvmAbort("Failed to start thread");
+        rvmAbort("Failed to start thread");
     }
     thread->threadPtr = PTR_TO_LONG(hyThread);
     hythread_resume(hyThread);
@@ -199,7 +199,7 @@ jlong nvmStartThread(Env* env, Thread* thread, jint priority) {
     return thread->threadPtr;
 }
 
-void nvmMonitorEnter(Env* env, Object* obj) {
+void rvmMonitorEnter(Env* env, Object* obj) {
     if (!obj->monitor) {
         monitorEnter(env, monitorsLock);
         if (!obj->monitor) {
@@ -207,7 +207,7 @@ void nvmMonitorEnter(Env* env, Object* obj) {
             IDATA result = hythread_monitor_init_with_name(&obj->monitor, 0, NULL);
             if (result < 0) {
                 monitorExit(env, monitorsLock);
-                nvmAbort("Failed to initialize monitor: %d", result);
+                rvmAbort("Failed to initialize monitor: %d", result);
             }
         }
         monitorExit(env, monitorsLock);
@@ -215,78 +215,78 @@ void nvmMonitorEnter(Env* env, Object* obj) {
     monitorEnter(env, obj->monitor);
 }
 
-void nvmMonitorExit(Env* env, Object* obj) {
+void rvmMonitorExit(Env* env, Object* obj) {
     // TODO: Protect access to monitor with global (spin?)lock
     if (!obj->monitor) {
-        nvmThrowIllegalMonitorStateException(env);
+        rvmThrowIllegalMonitorStateException(env);
         return;
     }
     monitorExit(env, obj->monitor);
 }
 
-void nvmMonitorNotify(Env* env, Object* obj) {
+void rvmMonitorNotify(Env* env, Object* obj) {
     // TODO: Protect access to monitor with global (spin?)lock
     if (!obj->monitor) {
-        nvmThrowIllegalMonitorStateException(env);
+        rvmThrowIllegalMonitorStateException(env);
         return;
     }
     IDATA result = hythread_monitor_notify(obj->monitor);
     if (result != 0) {
         if (result == HYTHREAD_ILLEGAL_MONITOR_STATE) {
-            nvmThrowIllegalMonitorStateException(env);
+            rvmThrowIllegalMonitorStateException(env);
             return;
         }
-        nvmAbort("Unexpected value returned by hythread_monitor_notify(): %d", result);
+        rvmAbort("Unexpected value returned by hythread_monitor_notify(): %d", result);
     }
 }
 
-void nvmMonitorNotifyAll(Env* env, Object* obj) {
+void rvmMonitorNotifyAll(Env* env, Object* obj) {
     // TODO: Protect access to monitor with global (spin?)lock
     if (!obj->monitor) {
-        nvmThrowIllegalMonitorStateException(env);
+        rvmThrowIllegalMonitorStateException(env);
         return;
     }
     IDATA result = hythread_monitor_notify_all(obj->monitor);
     if (result != 0) {
         if (result == HYTHREAD_ILLEGAL_MONITOR_STATE) {
-            nvmThrowIllegalMonitorStateException(env);
+            rvmThrowIllegalMonitorStateException(env);
             return;
         }
-        nvmAbort("Unexpected value returned by hythread_monitor_notify_all(): %d", result);
+        rvmAbort("Unexpected value returned by hythread_monitor_notify_all(): %d", result);
     }
 }
 
-void nvmMonitorWait(Env* env, Object* obj, jlong millis, jint nanos) {
+void rvmMonitorWait(Env* env, Object* obj, jlong millis, jint nanos) {
     if (millis < 0) {
-        nvmThrowIllegalArgumentException(env, "milliseconds value is negative");
+        rvmThrowIllegalArgumentException(env, "milliseconds value is negative");
         return;
     }
     if (nanos < 0 || nanos > 999999) {
-        nvmThrowIllegalArgumentException(env, "nanoseconds value is out of range");
+        rvmThrowIllegalArgumentException(env, "nanoseconds value is out of range");
         return;
     }
     // TODO: Protect access to monitor with global (spin?)lock
     if (!obj->monitor) {
-        nvmThrowIllegalMonitorStateException(env);
+        rvmThrowIllegalMonitorStateException(env);
         return;
     }
     monitorWait(env, obj->monitor, millis, nanos);
 }
 
-void nvmThreadSleep(Env* env, jlong millis, jint nanos) {
+void rvmThreadSleep(Env* env, jlong millis, jint nanos) {
     if (millis < 0) {
-        nvmThrowIllegalArgumentException(env, "milliseconds value is negative");
+        rvmThrowIllegalArgumentException(env, "milliseconds value is negative");
         return;
     }
     if (nanos < 0 || nanos > 999999) {
-        nvmThrowIllegalArgumentException(env, "nanoseconds value is out of range");
+        rvmThrowIllegalArgumentException(env, "nanoseconds value is out of range");
         return;
     }
     if (millis == 0 && nanos == 0) nanos = 1;
     hythread_sleep_interruptable(millis, nanos);
 }
 
-jboolean nvmThreadHoldsLock(Env* env, Object* obj) {
+jboolean rvmThreadHoldsLock(Env* env, Object* obj) {
     // TODO: Protect access to monitor with global (spin?)lock
     if (!obj->monitor) {
         return FALSE;
@@ -294,19 +294,19 @@ jboolean nvmThreadHoldsLock(Env* env, Object* obj) {
     return hythread_monitor_owner(obj->monitor) == (hythread_t) LONG_TO_PTR(env->currentThread->threadPtr);
 }
 
-jboolean nvmThreadClearInterrupted(Env* env) {
+jboolean rvmThreadClearInterrupted(Env* env) {
     return hythread_clear_interrupted() != 0;
 }
 
-jboolean nvmThreadIsInterrupted(Env* env, Thread* thread) {
+jboolean rvmThreadIsInterrupted(Env* env, Thread* thread) {
     return hythread_interrupted((hythread_t) LONG_TO_PTR(thread->threadPtr)) != 0;
 }
 
-void nvmThreadInterrupt(Env* env, Thread* thread) {
+void rvmThreadInterrupt(Env* env, Thread* thread) {
     hythread_interrupt((hythread_t) LONG_TO_PTR(thread->threadPtr));
 }
 
-void nvmThreadYield(Env* env) {
+void rvmThreadYield(Env* env) {
     hythread_yield();
 }
 

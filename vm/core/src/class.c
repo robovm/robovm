@@ -121,7 +121,7 @@ static Class* getLoadedClass(Env* env, const char* className) {
 }
 
 static jboolean addLoadedClass(Env* env, Class* clazz) {
-    LoadedClassEntry* entry = nvmAllocateMemory(env, sizeof(LoadedClassEntry));
+    LoadedClassEntry* entry = rvmAllocateMemory(env, sizeof(LoadedClassEntry));
     if (!entry) return FALSE;
     entry->key = clazz->name;
     entry->clazz = clazz;
@@ -138,7 +138,7 @@ static inline void releaseClassLock() {
 }
 
 static Class* createPrimitiveClass(Env* env, const char* desc) {
-    Class* clazz = nvmAllocateMemory(env, sizeof(Class));
+    Class* clazz = rvmAllocateMemory(env, sizeof(Class));
     if (!clazz) return NULL;
     clazz->name = desc;
     clazz->object.clazz = java_lang_Class;
@@ -151,12 +151,12 @@ static Class* createArrayClass(Env* env, Class* componentType) {
     char* desc = NULL;
 
     if (CLASS_IS_ARRAY(componentType) || CLASS_IS_PRIMITIVE(componentType)) {
-        desc = nvmAllocateMemory(env, length + 2);
+        desc = rvmAllocateMemory(env, length + 2);
         if (!desc) return NULL;
         desc[0] = '[';
         strcat(desc, componentType->name);
     } else {
-        desc = nvmAllocateMemory(env, length + 4);
+        desc = rvmAllocateMemory(env, length + 4);
         if (!desc) return NULL;
         desc[0] = '[';
         desc[1] = 'L';
@@ -165,15 +165,15 @@ static Class* createArrayClass(Env* env, Class* componentType) {
     }
 
     // TODO: Add clone() method.
-    Class* clazz = nvmAllocateClass(env, desc, java_lang_Object, componentType->classLoader, 
+    Class* clazz = rvmAllocateClass(env, desc, java_lang_Object, componentType->classLoader, 
         CLASS_FLAG_ARRAY | CLASS_STATE_INITIALIZED | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, sizeof(Class), sizeof(Object), sizeof(Object), NULL, NULL);
     if (!clazz) return NULL;
     clazz->componentType = componentType;
-    // Initialize methods to NULL to prevent nvmGetMethods() from trying to load the methods if called with this array class
+    // Initialize methods to NULL to prevent rvmGetMethods() from trying to load the methods if called with this array class
     clazz->_methods = NULL;
-    if (!nvmAddInterface(env, clazz, java_lang_Cloneable)) return NULL;
-    if (!nvmAddInterface(env, clazz, java_io_Serializable)) return NULL;
-    if (!nvmRegisterClass(env, clazz)) return NULL;
+    if (!rvmAddInterface(env, clazz, java_lang_Cloneable)) return NULL;
+    if (!rvmAddInterface(env, clazz, java_io_Serializable)) return NULL;
+    if (!rvmRegisterClass(env, clazz)) return NULL;
 
     return clazz;
 }
@@ -200,16 +200,16 @@ static Class* findClass(Env* env, const char* className, ClassLoader* classLoade
     TRACEF("Class '%s' not loaded", className);
 
     clazz = loaderFunc(env, className, classLoader);
-    if (nvmExceptionOccurred(env)) {
+    if (rvmExceptionOccurred(env)) {
         releaseClassLock();
         return NULL;
     }
 
     if (clazz == NULL) {
         if (!strcmp(className, "java/lang/ClassNotFoundException")) {
-            nvmAbort("Fatal error: java.lang.ClassNotFoundException not found!");
+            rvmAbort("Fatal error: java.lang.ClassNotFoundException not found!");
         }
-        nvmThrowClassNotFoundException(env, className);
+        rvmThrowClassNotFoundException(env, className);
     }
 
     TRACEF("Class '%s' loaded successfully", className);
@@ -219,11 +219,11 @@ static Class* findClass(Env* env, const char* className, ClassLoader* classLoade
 
 static Class* findBootClass(Env* env, const char* className) {
     Class* clazz = findClass(env, className, NULL, env->vm->options->loadBootClass);
-    if (nvmExceptionOccurred(env)) return NULL;
+    if (rvmExceptionOccurred(env)) return NULL;
     if (clazz != NULL) {
         if (clazz->classLoader != NULL) {
             // Not a boot class
-            nvmThrowClassNotFoundException(env, className);
+            rvmThrowClassNotFoundException(env, className);
             return NULL;
         }
     }
@@ -256,13 +256,13 @@ static Class* findClassByDescriptor(Env* env, const char* desc, ClassLoader* cla
     }
     // desc[0] == 'L'
     jint length = strlen(desc);
-    char* className = nvmAllocateMemory(env, length - 2 + 1);
+    char* className = rvmAllocateMemory(env, length - 2 + 1);
     if (!className) return NULL;
     strncpy(className, &desc[1], length - 2);
     return findClass(env, className, classLoader, loaderFunc);
 }
 
-Class* nvmFindClassByDescriptor(Env* env, const char* desc, ClassLoader* classLoader) {
+Class* rvmFindClassByDescriptor(Env* env, const char* desc, ClassLoader* classLoader) {
     switch (desc[0]) {
     case 'Z':
         return prim_Z;
@@ -283,18 +283,18 @@ Class* nvmFindClassByDescriptor(Env* env, const char* desc, ClassLoader* classLo
     case 'V':
         return prim_V;
     case '[':
-        return nvmFindClassUsingLoader(env, desc, classLoader);
+        return rvmFindClassUsingLoader(env, desc, classLoader);
     }
     // desc[0] == 'L'
     jint length = strlen(desc);
-    char* className = nvmAllocateMemory(env, length - 2 + 1);
+    char* className = rvmAllocateMemory(env, length - 2 + 1);
     if (!className) return NULL;
     strncpy(className, &desc[1], length - 2);
-    return nvmFindClassUsingLoader(env, className, classLoader);
+    return rvmFindClassUsingLoader(env, className, classLoader);
 }
 
-char* nvmToBinaryClassName(Env* env, const char* className) {
-    char* binName = nvmCopyMemoryZ(env, className);
+char* rvmToBinaryClassName(Env* env, const char* className) {
+    char* binName = rvmCopyMemoryZ(env, className);
     if (!binName) return NULL;
     jint i = 0;
     for (i = 0; binName[i] != '\0'; i++) {
@@ -303,8 +303,8 @@ char* nvmToBinaryClassName(Env* env, const char* className) {
     return binName;
 }
 
-char* nvmFromBinaryClassName(Env* env, const char* binaryClassName) {
-    char* className = nvmCopyMemoryZ(env, binaryClassName);
+char* rvmFromBinaryClassName(Env* env, const char* binaryClassName) {
+    char* className = rvmCopyMemoryZ(env, binaryClassName);
     if (!className) return NULL;
     jint i = 0;
     for (i = 0; className[i] != '\0'; i++) {
@@ -313,7 +313,7 @@ char* nvmFromBinaryClassName(Env* env, const char* binaryClassName) {
     return className;
 }
 
-jboolean nvmIsSubClass(Class* superclass, Class* clazz) {
+jboolean rvmIsSubClass(Class* superclass, Class* clazz) {
     // TODO: Array types
     while (clazz && clazz != superclass) {
         clazz = clazz->superclass;
@@ -321,7 +321,7 @@ jboolean nvmIsSubClass(Class* superclass, Class* clazz) {
     return clazz == superclass;
 }
 
-jboolean nvmIsSamePackage(Class* c1, Class* c2) {
+jboolean rvmIsSamePackage(Class* c1, Class* c2) {
     if (c1 == c2) return TRUE;
     if (c1->classLoader != c2->classLoader) return FALSE;
     // TODO: Array types
@@ -338,7 +338,7 @@ jboolean nvmIsSamePackage(Class* c1, Class* c2) {
     return strncmp(c1->name, c2->name, l1) == 0;
 }
 
-jboolean nvmIsAssignableFrom(Env* env, Class* s, Class* t) {
+jboolean rvmIsAssignableFrom(Env* env, Class* s, Class* t) {
     // TODO: What if s or t are NULL?
     if (s == t || t == java_lang_Object) {
         return TRUE;
@@ -361,16 +361,16 @@ jboolean nvmIsAssignableFrom(Env* env, Class* s, Class* t) {
             // already know that s != t and t != (Object|Serializable|Cloneable)
             return FALSE;
         }
-        return nvmIsAssignableFrom(env, componentType, t->componentType);
+        return rvmIsAssignableFrom(env, componentType, t->componentType);
     }
 
     if (CLASS_IS_INTERFACE(t)) {
         // s or any of its parents must implement the interface t
         for (; s; s = s->superclass) {
-            Interface* interface = nvmGetInterfaces(env, s);
-            if (nvmExceptionCheck(env)) return FALSE;
+            Interface* interface = rvmGetInterfaces(env, s);
+            if (rvmExceptionCheck(env)) return FALSE;
             for (; interface != NULL; interface = interface->next) {
-                if (nvmIsAssignableFrom(env, interface->interface, t)) {
+                if (rvmIsAssignableFrom(env, interface->interface, t)) {
                     return TRUE;
                 }
             }
@@ -384,9 +384,9 @@ jboolean nvmIsAssignableFrom(Env* env, Class* s, Class* t) {
     return s ? TRUE : FALSE;
 }
 
-jboolean nvmIsInstanceOf(Env* env, Object* obj, Class* clazz) {
+jboolean rvmIsInstanceOf(Env* env, Object* obj, Class* clazz) {
     if (!obj) return FALSE;
-    return nvmIsAssignableFrom(env, obj->clazz, clazz);
+    return rvmIsAssignableFrom(env, obj->clazz, clazz);
 }
 
 static jboolean fixClassPointer(Env* env, Class* c, void* data) {
@@ -394,7 +394,7 @@ static jboolean fixClassPointer(Env* env, Class* c, void* data) {
     return TRUE;
 }
 
-jboolean nvmInitClasses(Env* env) {
+jboolean rvmInitClasses(Env* env) {
 
     if (hythread_monitor_init_with_name(&classLock, 0, NULL) < 0) {
         return FALSE;
@@ -407,7 +407,7 @@ jboolean nvmInitClasses(Env* env) {
     if (!java_lang_Class) return FALSE;
 
     // Fix object.clazz pointers for the classes loaded so far
-    nvmIterateLoadedClasses(env, fixClassPointer, NULL);
+    rvmIterateLoadedClasses(env, fixClassPointer, NULL);
 
     java_lang_ClassLoader = findBootClass(env, "java/lang/ClassLoader");
     if (!java_lang_ClassLoader) return FALSE;
@@ -537,72 +537,72 @@ jboolean nvmInitClasses(Env* env) {
     return TRUE;
 }
 
-jboolean nvmInitPrimitiveWrapperClasses(Env* env) {
+jboolean rvmInitPrimitiveWrapperClasses(Env* env) {
     Class* c = NULL;
     ClassField* f = NULL;
 
-    f = nvmGetClassField(env, java_lang_Boolean, "TRUE", "Ljava/lang/Boolean;");
+    f = rvmGetClassField(env, java_lang_Boolean, "TRUE", "Ljava/lang/Boolean;");
     if (!f) return FALSE;
-    java_lang_Boolean_TRUE = (Boolean*) nvmGetObjectClassFieldValue(env, java_lang_Boolean, f);
+    java_lang_Boolean_TRUE = (Boolean*) rvmGetObjectClassFieldValue(env, java_lang_Boolean, f);
     if (!java_lang_Boolean_TRUE) return FALSE;
 
-    f = nvmGetClassField(env, java_lang_Boolean, "FALSE", "Ljava/lang/Boolean;");
+    f = rvmGetClassField(env, java_lang_Boolean, "FALSE", "Ljava/lang/Boolean;");
     if (!f) return FALSE;
-    java_lang_Boolean_FALSE = (Boolean*) nvmGetObjectClassFieldValue(env, java_lang_Boolean, f);
+    java_lang_Boolean_FALSE = (Boolean*) rvmGetObjectClassFieldValue(env, java_lang_Boolean, f);
     if (!java_lang_Boolean_FALSE) return FALSE;
 
-    java_lang_Byte_valueOf = nvmGetClassMethod(env, java_lang_Byte, "valueOf", "(B)Ljava/lang/Byte;");
+    java_lang_Byte_valueOf = rvmGetClassMethod(env, java_lang_Byte, "valueOf", "(B)Ljava/lang/Byte;");
     if (!java_lang_Byte_valueOf) return FALSE;
-    f = nvmGetClassField(env, java_lang_Byte, "VALUES", "[Ljava/lang/Byte;");
+    f = rvmGetClassField(env, java_lang_Byte, "VALUES", "[Ljava/lang/Byte;");
     if (!f) return FALSE;
-    bytesCache = (ObjectArray*) nvmGetObjectClassFieldValue(env, java_lang_Byte, f);
+    bytesCache = (ObjectArray*) rvmGetObjectClassFieldValue(env, java_lang_Byte, f);
     if (!bytesCache) return FALSE;
 
-    java_lang_Short_valueOf = nvmGetClassMethod(env, java_lang_Short, "valueOf", "(S)Ljava/lang/Short;");
+    java_lang_Short_valueOf = rvmGetClassMethod(env, java_lang_Short, "valueOf", "(S)Ljava/lang/Short;");
     if (!java_lang_Short_valueOf) return FALSE;
-    f = nvmGetClassField(env, java_lang_Short, "SMALL_VALUES", "[Ljava/lang/Short;");
+    f = rvmGetClassField(env, java_lang_Short, "SMALL_VALUES", "[Ljava/lang/Short;");
     if (!f) return FALSE;
-    shortsCache = (ObjectArray*) nvmGetObjectClassFieldValue(env, c, f);
+    shortsCache = (ObjectArray*) rvmGetObjectClassFieldValue(env, c, f);
     if (!shortsCache) return FALSE;
 
-    java_lang_Character_valueOf = nvmGetClassMethod(env, java_lang_Character, "valueOf", "(C)Ljava/lang/Character;");
+    java_lang_Character_valueOf = rvmGetClassMethod(env, java_lang_Character, "valueOf", "(C)Ljava/lang/Character;");
     if (!java_lang_Character_valueOf) return FALSE;
-    f = nvmGetClassField(env, java_lang_Character, "SMALL_VALUES", "[Ljava/lang/Character;");
+    f = rvmGetClassField(env, java_lang_Character, "SMALL_VALUES", "[Ljava/lang/Character;");
     if (!f) return FALSE;
-    charactersCache = (ObjectArray*) nvmGetObjectClassFieldValue(env, c, f);
+    charactersCache = (ObjectArray*) rvmGetObjectClassFieldValue(env, c, f);
     if (!charactersCache) return FALSE;
 
-    java_lang_Integer_valueOf = nvmGetClassMethod(env, java_lang_Integer, "valueOf", "(I)Ljava/lang/Integer;");
+    java_lang_Integer_valueOf = rvmGetClassMethod(env, java_lang_Integer, "valueOf", "(I)Ljava/lang/Integer;");
     if (!java_lang_Integer_valueOf) return FALSE;
-    f = nvmGetClassField(env, java_lang_Integer, "SMALL_VALUES", "[Ljava/lang/Integer;");
+    f = rvmGetClassField(env, java_lang_Integer, "SMALL_VALUES", "[Ljava/lang/Integer;");
     if (!f) return FALSE;
-    integersCache = (ObjectArray*) nvmGetObjectClassFieldValue(env, c, f);
+    integersCache = (ObjectArray*) rvmGetObjectClassFieldValue(env, c, f);
     if (!integersCache) return FALSE;
 
-    java_lang_Long_valueOf = nvmGetClassMethod(env, java_lang_Long, "valueOf", "(J)Ljava/lang/Long;");
+    java_lang_Long_valueOf = rvmGetClassMethod(env, java_lang_Long, "valueOf", "(J)Ljava/lang/Long;");
     if (!java_lang_Long_valueOf) return FALSE;
-    f = nvmGetClassField(env, java_lang_Long, "SMALL_VALUES", "[Ljava/lang/Long;");
+    f = rvmGetClassField(env, java_lang_Long, "SMALL_VALUES", "[Ljava/lang/Long;");
     if (!f) return FALSE;
-    longsCache = (ObjectArray*) nvmGetObjectClassFieldValue(env, c, f);
+    longsCache = (ObjectArray*) rvmGetObjectClassFieldValue(env, c, f);
     if (!longsCache) return FALSE;
 
-    java_lang_Float_valueOf = nvmGetClassMethod(env, java_lang_Float, "valueOf", "(F)Ljava/lang/Float;");
+    java_lang_Float_valueOf = rvmGetClassMethod(env, java_lang_Float, "valueOf", "(F)Ljava/lang/Float;");
     if (!java_lang_Float_valueOf) return FALSE;
 
-    java_lang_Double_valueOf = nvmGetClassMethod(env, java_lang_Double, "valueOf", "(D)Ljava/lang/Double;");
+    java_lang_Double_valueOf = rvmGetClassMethod(env, java_lang_Double, "valueOf", "(D)Ljava/lang/Double;");
     if (!java_lang_Double_valueOf) return FALSE;
 
     return TRUE;
 }
 
-Class* nvmFindClass(Env* env, const char* className) {
-    Method* method = nvmGetCallingMethod(env);
-    if (nvmExceptionOccurred(env)) return NULL;
+Class* rvmFindClass(Env* env, const char* className) {
+    Method* method = rvmGetCallingMethod(env);
+    if (rvmExceptionOccurred(env)) return NULL;
     ClassLoader* classLoader = method ? method->clazz->classLoader : NULL;
-    return nvmFindClassUsingLoader(env, className, classLoader);
+    return rvmFindClassUsingLoader(env, className, classLoader);
 }
 
-Class* nvmFindClassInClasspathForLoader(Env* env, const char* className, ClassLoader* classLoader) {
+Class* rvmFindClassInClasspathForLoader(Env* env, const char* className, ClassLoader* classLoader) {
     if (!classLoader || classLoader->parent == NULL) {
         // This is the bootstrap classloader
         return findBootClass(env, className);
@@ -610,53 +610,53 @@ Class* nvmFindClassInClasspathForLoader(Env* env, const char* className, ClassLo
     if (classLoader->parent->parent == NULL && classLoader->object.clazz->classLoader == NULL) {
         // This is the system classloader
         Class* clazz = findClass(env, className, classLoader, env->vm->options->loadUserClass);
-        if (nvmExceptionOccurred(env)) return NULL;
+        if (rvmExceptionOccurred(env)) return NULL;
         return clazz;
     }
-    nvmThrowClassNotFoundException(env, className);
+    rvmThrowClassNotFoundException(env, className);
     return NULL;
 }
 
-Class* nvmFindClassUsingLoader(Env* env, const char* className, ClassLoader* classLoader) {
+Class* rvmFindClassUsingLoader(Env* env, const char* className, ClassLoader* classLoader) {
     if (!classLoader || classLoader->parent == NULL) {
         // This is the bootstrap classloader. No need to call ClassLoader.loadClass()
         return findBootClass(env, className);
     }
-    char* binaryClassName = nvmToBinaryClassName(env, className);
+    char* binaryClassName = rvmToBinaryClassName(env, className);
     if (!binaryClassName) return NULL;
-    Object* binaryClassNameString = nvmNewInternedStringUTF(env, binaryClassName, -1);
+    Object* binaryClassNameString = rvmNewInternedStringUTF(env, binaryClassName, -1);
     if (!binaryClassNameString) return NULL;
-    Method* loadClassMethod = nvmGetInstanceMethod(env, java_lang_ClassLoader, "loadClass", "(Ljava/lang/String;)Ljava/lang/Class;");
+    Method* loadClassMethod = rvmGetInstanceMethod(env, java_lang_ClassLoader, "loadClass", "(Ljava/lang/String;)Ljava/lang/Class;");
     if (!loadClassMethod) return NULL;
-    Object* clazz = nvmCallObjectInstanceMethod(env, (Object*) classLoader, loadClassMethod, binaryClassNameString);
-    if (nvmExceptionOccurred(env)) return NULL;
+    Object* clazz = rvmCallObjectInstanceMethod(env, (Object*) classLoader, loadClassMethod, binaryClassNameString);
+    if (rvmExceptionOccurred(env)) return NULL;
     return (Class*) clazz;
 }
 
-Class* nvmFindLoadedClass(Env* env, const char* className, ClassLoader* classLoader) {
+Class* rvmFindLoadedClass(Env* env, const char* className, ClassLoader* classLoader) {
     Class* clazz = getLoadedClass(env, className);
-    if (nvmExceptionOccurred(env)) return NULL;
+    if (rvmExceptionOccurred(env)) return NULL;
     return clazz;
 }
 
-ClassLoader* nvmGetSystemClassLoader(Env* env) {
-    Class* holder = nvmFindClass(env, "java/lang/ClassLoader$SystemClassLoader");
+ClassLoader* rvmGetSystemClassLoader(Env* env) {
+    Class* holder = rvmFindClass(env, "java/lang/ClassLoader$SystemClassLoader");
     if (!holder) return NULL;
-    ClassField* field = nvmGetClassField(env, holder, "loader", "Ljava/lang/ClassLoader;");
+    ClassField* field = rvmGetClassField(env, holder, "loader", "Ljava/lang/ClassLoader;");
     if (!field) return NULL;
-    return (ClassLoader*) nvmGetObjectClassFieldValue(env, holder, field);
+    return (ClassLoader*) rvmGetObjectClassFieldValue(env, holder, field);
 }
 
-Class* nvmAllocateClass(Env* env, const char* className, Class* superclass, ClassLoader* classLoader, jint flags, 
+Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, ClassLoader* classLoader, jint flags, 
         jint classDataSize, jint instanceDataSize, jint instanceDataOffset, void* attributes, void* initializer) {
 
     if (superclass && CLASS_IS_INTERFACE(superclass)) {
         // TODO: Message should look like ?
-        nvmThrowIncompatibleClassChangeError(env, "");
+        rvmThrowIncompatibleClassChangeError(env, "");
         return NULL;
     }
 
-    Class* clazz = nvmAllocateMemory(env, classDataSize);
+    Class* clazz = rvmAllocateMemory(env, classDataSize);
     if (!clazz) return NULL;
 
     /*
@@ -664,7 +664,7 @@ Class* nvmAllocateClass(Env* env, const char* className, Class* superclass, Clas
      * important that we cache java.lang.Class as soon as possible. However, we have to cache
      * java.lang.Object first since it is the superclass of java.lang.Class. This means that
      * the java_lang_Object global variable will actually have NULL as clazz until we fix this in
-     * nvmInitClasses().
+     * rvmInitClasses().
      */
     clazz->object.clazz = java_lang_Class;
     clazz->name = className;
@@ -683,13 +683,13 @@ Class* nvmAllocateClass(Env* env, const char* className, Class* superclass, Clas
     return clazz;
 }
 
-jboolean nvmAddInterface(Env* env, Class* clazz, Class* interf) {
+jboolean rvmAddInterface(Env* env, Class* clazz, Class* interf) {
     if (!CLASS_IS_INTERFACE(interf)) {
         // TODO: Message should look like ?
-        nvmThrowIncompatibleClassChangeError(env, "");
+        rvmThrowIncompatibleClassChangeError(env, "");
         return FALSE;
     }
-    Interface* interface = nvmAllocateMemory(env, sizeof(Interface));
+    Interface* interface = rvmAllocateMemory(env, sizeof(Interface));
     if (!interface) return FALSE;
     interface->interface = interf;
     if (clazz->_interfaces == &INTERFACES_NOT_LOADED) {
@@ -699,8 +699,8 @@ jboolean nvmAddInterface(Env* env, Class* clazz, Class* interf) {
     return TRUE;
 }
 
-Method* nvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes) {
-    Method* method = nvmAllocateMemory(env, IS_NATIVE(access) ? sizeof(NativeMethod) : sizeof(Method));
+Method* rvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes) {
+    Method* method = rvmAllocateMemory(env, IS_NATIVE(access) ? sizeof(NativeMethod) : sizeof(Method));
     if (!method) return NULL;
     method->clazz = clazz;
     method->name = name;
@@ -722,7 +722,7 @@ Method* nvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc,
 }
 
 ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint access, void* impl) {
-    ProxyMethod* method = nvmAllocateMemory(env, sizeof(ProxyMethod));
+    ProxyMethod* method = rvmAllocateMemory(env, sizeof(ProxyMethod));
     if (!method) return NULL;
     method->method.clazz = clazz;
     method->method.name = proxiedMethod->name;
@@ -742,10 +742,10 @@ ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint 
     return method;
 }
 
-BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
+BridgeMethod* rvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
         void* synchronizedImpl, void** targetFnPtr, void* attributes) {
     
-    BridgeMethod* method = nvmAllocateMemory(env, sizeof(BridgeMethod));
+    BridgeMethod* method = rvmAllocateMemory(env, sizeof(BridgeMethod));
     if (!method) return NULL;
     method->method.clazz = clazz;
     method->method.name = name;
@@ -767,10 +767,10 @@ BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const
     return method;
 }
 
-CallbackMethod* nvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
+CallbackMethod* rvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
         void* synchronizedImpl, void* callbackImpl, void* attributes) {
     
-    CallbackMethod* method = nvmAllocateMemory(env, sizeof(CallbackMethod));
+    CallbackMethod* method = rvmAllocateMemory(env, sizeof(CallbackMethod));
     if (!method) return NULL;
     method->method.clazz = clazz;
     method->method.name = name;
@@ -792,8 +792,8 @@ CallbackMethod* nvmAddCallbackMethod(Env* env, Class* clazz, const char* name, c
     return method;
 }
 
-Field* nvmAddField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes) {
-    Field* field = nvmAllocateMemory(env, IS_STATIC(access) ? sizeof(ClassField) : sizeof(InstanceField));
+Field* rvmAddField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes) {
+    Field* field = rvmAllocateMemory(env, IS_STATIC(access) ? sizeof(ClassField) : sizeof(InstanceField));
     if (!field) return NULL;
     field->clazz = clazz;
     field->name = name;
@@ -816,7 +816,7 @@ Field* nvmAddField(Env* env, Class* clazz, const char* name, const char* desc, j
     return field;
 }
 
-Interface* nvmGetInterfaces(Env* env, Class* clazz) {
+Interface* rvmGetInterfaces(Env* env, Class* clazz) {
     if (clazz->_interfaces != &INTERFACES_NOT_LOADED) return clazz->_interfaces;
 
     // TODO: Double checked locking
@@ -828,13 +828,13 @@ Interface* nvmGetInterfaces(Env* env, Class* clazz) {
             clazz->_interfaces = NULL;
         }
     }
-    if (nvmExceptionCheck(env)) clazz->_interfaces = &INTERFACES_NOT_LOADED;
+    if (rvmExceptionCheck(env)) clazz->_interfaces = &INTERFACES_NOT_LOADED;
     releaseClassLock();
-    if (nvmExceptionCheck(env)) return NULL;
+    if (rvmExceptionCheck(env)) return NULL;
     return clazz->_interfaces;
 }
 
-Field* nvmGetFields(Env* env, Class* clazz) {
+Field* rvmGetFields(Env* env, Class* clazz) {
     if (clazz->_fields != &FIELDS_NOT_LOADED) return clazz->_fields;
 
     // TODO: Double checked locking
@@ -846,13 +846,13 @@ Field* nvmGetFields(Env* env, Class* clazz) {
             clazz->_fields = NULL;
         }
     }
-    if (nvmExceptionCheck(env)) clazz->_fields = &FIELDS_NOT_LOADED;
+    if (rvmExceptionCheck(env)) clazz->_fields = &FIELDS_NOT_LOADED;
     releaseClassLock();
-    if (nvmExceptionCheck(env)) return NULL;
+    if (rvmExceptionCheck(env)) return NULL;
     return clazz->_fields;
 }
 
-Method* nvmGetMethods(Env* env, Class* clazz) {
+Method* rvmGetMethods(Env* env, Class* clazz) {
     if (clazz->_methods != &METHODS_NOT_LOADED) return clazz->_methods;
 
     // TODO: Double checked locking
@@ -864,13 +864,13 @@ Method* nvmGetMethods(Env* env, Class* clazz) {
             clazz->_methods = NULL;
         }
     }
-    if (nvmExceptionCheck(env)) clazz->_methods = &METHODS_NOT_LOADED;
+    if (rvmExceptionCheck(env)) clazz->_methods = &METHODS_NOT_LOADED;
     releaseClassLock();
-    if (nvmExceptionCheck(env)) return NULL;
+    if (rvmExceptionCheck(env)) return NULL;
     return clazz->_methods;
 }
 
-jboolean nvmRegisterClass(Env* env, Class* clazz) {
+jboolean rvmRegisterClass(Env* env, Class* clazz) {
     // TODO: Check that the superclass and all interfaces are accessible to the new class
     // TODO: Verify the class hierarchy (class doesn't override final methods, changes public -> private, etc)
 
@@ -886,12 +886,12 @@ jboolean nvmRegisterClass(Env* env, Class* clazz) {
     return TRUE;
 }
 
-void nvmInitialize(Env* env, Class* clazz) {
+void rvmInitialize(Env* env, Class* clazz) {
     obtainClassLock();
     // TODO: Throw java.lang.NoClassDefFoundError if state == CLASS_ERROR?
     if (CLASS_IS_STATE_ERROR(clazz)) {
         // TODO: Add the class' binary name in the message
-        nvmThrowNew(env, java_lang_NoClassDefFoundError, "Could not initialize class ??");
+        rvmThrowNew(env, java_lang_NoClassDefFoundError, "Could not initialize class ??");
         releaseClassLock();
         return;
     }
@@ -899,8 +899,8 @@ void nvmInitialize(Env* env, Class* clazz) {
         jint oldState = clazz->flags & CLASS_STATE_MASK;
         clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZING;
         if (clazz->superclass) {
-            nvmInitialize(env, clazz->superclass);
-            if (nvmExceptionOccurred(env)) {
+            rvmInitialize(env, clazz->superclass);
+            if (rvmExceptionOccurred(env)) {
                 clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | oldState;
                 releaseClassLock();
                 return;
@@ -921,23 +921,23 @@ void nvmInitialize(Env* env, Class* clazz) {
         CallInfo* callInfo = call0AllocateCallInfo(env, initializer, 1, 0, 0, 0, 0);
         call0AddPtr(callInfo, env);
         void (*f)(CallInfo*) = (void (*)(CallInfo*)) _call0;
-        nvmPushGatewayFrame(env);
+        rvmPushGatewayFrame(env);
         f(callInfo);
-        nvmPopGatewayFrame(env);
+        rvmPopGatewayFrame(env);
 
-        Object* exception = nvmExceptionClear(env);
+        Object* exception = rvmExceptionClear(env);
         if (exception) {
             clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_ERROR;
-            if (!nvmIsInstanceOf(env, exception, java_lang_Error)) {
+            if (!rvmIsInstanceOf(env, exception, java_lang_Error)) {
                 // If exception isn't an instance of java.lang.Error 
                 // we must wrap it in a java.lang.ExceptionInInitializerError
-                Method* constructor = nvmGetInstanceMethod(env, java_lang_ExceptionInInitializerError, "<init>", "(Ljava/lang/Throwable;)V");
+                Method* constructor = rvmGetInstanceMethod(env, java_lang_ExceptionInInitializerError, "<init>", "(Ljava/lang/Throwable;)V");
                 if (!constructor) return;
-                Object* wrappedException = nvmNewObject(env, java_lang_ExceptionInInitializerError, constructor, exception);
+                Object* wrappedException = rvmNewObject(env, java_lang_ExceptionInInitializerError, constructor, exception);
                 if (!wrappedException) return;
                 exception = wrappedException;
             }
-            nvmThrow(env, exception);
+            rvmThrow(env, exception);
             releaseClassLock();
             return;
         }
@@ -949,145 +949,145 @@ void nvmInitialize(Env* env, Class* clazz) {
     releaseClassLock();
 }
 
-Object* nvmAllocateObject(Env* env, Class* clazz) {
+Object* rvmAllocateObject(Env* env, Class* clazz) {
     if (CLASS_IS_ABSTRACT(clazz) || CLASS_IS_INTERFACE(clazz)) {
         // TODO: Message
-        nvmThrowNew(env, java_lang_InstantiationException, "");
+        rvmThrowNew(env, java_lang_InstantiationException, "");
         return NULL;
     }
-    nvmInitialize(env, clazz);
-    if (nvmExceptionOccurred(env)) return NULL;
-    Object* obj = nvmAllocateMemory(env, clazz->instanceDataSize);
+    rvmInitialize(env, clazz);
+    if (rvmExceptionOccurred(env)) return NULL;
+    Object* obj = rvmAllocateMemory(env, clazz->instanceDataSize);
     if (!obj) return NULL;
     obj->clazz = clazz;
     return obj;
 }
 
-Object* nvmNewObject(Env* env, Class* clazz, Method* method, ...) {
+Object* rvmNewObject(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmNewObjectV(env, clazz, method, args);
+    return rvmNewObjectV(env, clazz, method, args);
 }
 
-Object* nvmNewObjectA(Env* env, Class* clazz, Method* method, jvalue *args) {
-    Object* obj = nvmAllocateObject(env, clazz);
+Object* rvmNewObjectA(Env* env, Class* clazz, Method* method, jvalue *args) {
+    Object* obj = rvmAllocateObject(env, clazz);
     if (!obj) return NULL;
-    nvmCallNonvirtualVoidInstanceMethodA(env, obj, method, args);
-    if (nvmExceptionOccurred(env)) return NULL;
+    rvmCallNonvirtualVoidInstanceMethodA(env, obj, method, args);
+    if (rvmExceptionOccurred(env)) return NULL;
     return obj;
 }
 
-Object* nvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args) {
-    Object* obj = nvmAllocateObject(env, clazz);
+Object* rvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args) {
+    Object* obj = rvmAllocateObject(env, clazz);
     if (!obj) return NULL;
-    nvmCallNonvirtualVoidInstanceMethodV(env, obj, method, args);
-    if (nvmExceptionOccurred(env)) return NULL;
+    rvmCallNonvirtualVoidInstanceMethodV(env, obj, method, args);
+    if (rvmExceptionOccurred(env)) return NULL;
     return obj;
 }
 
-Boolean* nvmNewBoolean(Env* env, jboolean value) {
+Boolean* rvmNewBoolean(Env* env, jboolean value) {
     return value ? java_lang_Boolean_TRUE : java_lang_Boolean_FALSE;
 }
 
-Byte* nvmNewByte(Env* env, jbyte value) {
+Byte* rvmNewByte(Env* env, jbyte value) {
     jint index = value + 128;
     if (index >= 0 && index < bytesCache->length && bytesCache->values[index] != NULL) {
         return (Byte*) bytesCache->values[index];
     }
     jvalue args[1];
     args[0].b = value;
-    return (Byte*) nvmCallObjectClassMethodA(env, java_lang_Byte, java_lang_Byte_valueOf, args);
+    return (Byte*) rvmCallObjectClassMethodA(env, java_lang_Byte, java_lang_Byte_valueOf, args);
 }
 
-Short* nvmNewShort(Env* env, jshort value) {
+Short* rvmNewShort(Env* env, jshort value) {
     jint index = value + 128;
     if (index >= 0 && index < shortsCache->length && shortsCache->values[index] != NULL) {
         return (Short*) shortsCache->values[index];
     }
     jvalue args[1];
     args[0].s = value;
-    return (Short*) nvmCallObjectClassMethodA(env, java_lang_Short, java_lang_Short_valueOf, args);
+    return (Short*) rvmCallObjectClassMethodA(env, java_lang_Short, java_lang_Short_valueOf, args);
 }
 
-Character* nvmNewCharacter(Env* env, jchar value) {
+Character* rvmNewCharacter(Env* env, jchar value) {
     jint index = value;
     if (index >= 0 && index < charactersCache->length && charactersCache->values[index] != NULL) {
         return (Character*) charactersCache->values[index];
     }
     jvalue args[1];
     args[0].c = value;
-    return (Character*) nvmCallObjectClassMethodA(env, java_lang_Character, java_lang_Character_valueOf, args);
+    return (Character*) rvmCallObjectClassMethodA(env, java_lang_Character, java_lang_Character_valueOf, args);
 }
 
-Integer* nvmNewInteger(Env* env, jint value) {
+Integer* rvmNewInteger(Env* env, jint value) {
     jint index = value + 128;
     if (index >= 0 && index < integersCache->length && integersCache->values[index] != NULL) {
         return (Integer*) integersCache->values[index];
     }
     jvalue args[1];
     args[0].i = value;
-    return (Integer*) nvmCallObjectClassMethodA(env, java_lang_Integer, java_lang_Integer_valueOf, args);
+    return (Integer*) rvmCallObjectClassMethodA(env, java_lang_Integer, java_lang_Integer_valueOf, args);
 }
 
-Long* nvmNewLong(Env* env, jlong value) {
+Long* rvmNewLong(Env* env, jlong value) {
     jint index = value + 128;
     if (index >= 0 && index < longsCache->length && longsCache->values[index] != NULL) {
         return (Long*) longsCache->values[index];
     }
     jvalue args[1];
     args[0].j = value;
-    return (Long*) nvmCallObjectClassMethodA(env, java_lang_Long, java_lang_Long_valueOf, args);
+    return (Long*) rvmCallObjectClassMethodA(env, java_lang_Long, java_lang_Long_valueOf, args);
 }
 
-Float* nvmNewFloat(Env* env, jfloat value) {
+Float* rvmNewFloat(Env* env, jfloat value) {
     jvalue args[1];
     args[0].f = value;
-    return (Float*) nvmCallObjectClassMethodA(env, java_lang_Float, java_lang_Float_valueOf, args);
+    return (Float*) rvmCallObjectClassMethodA(env, java_lang_Float, java_lang_Float_valueOf, args);
 }
 
-Double* nvmNewDouble(Env* env, jdouble value) {
+Double* rvmNewDouble(Env* env, jdouble value) {
     jvalue args[1];
     args[0].d = value;
-    return (Double*) nvmCallObjectClassMethodA(env, java_lang_Double, java_lang_Double_valueOf, args);
+    return (Double*) rvmCallObjectClassMethodA(env, java_lang_Double, java_lang_Double_valueOf, args);
 }
 
-Object* nvmWrapPrimitive(Env* env, Class* type, jvalue* value) {
+Object* rvmWrapPrimitive(Env* env, Class* type, jvalue* value) {
     if (CLASS_IS_PRIMITIVE(type)) {
         switch (type->name[0]) {
         case 'Z':
-            return (Object*) nvmNewBoolean(env, value->z);
+            return (Object*) rvmNewBoolean(env, value->z);
         case 'B':
-            return (Object*) nvmNewByte(env, value->b);
+            return (Object*) rvmNewByte(env, value->b);
         case 'S':
-            return (Object*) nvmNewShort(env, value->s);
+            return (Object*) rvmNewShort(env, value->s);
         case 'C':
-            return (Object*) nvmNewCharacter(env, value->c);
+            return (Object*) rvmNewCharacter(env, value->c);
         case 'I':
-            return (Object*) nvmNewInteger(env, value->i);
+            return (Object*) rvmNewInteger(env, value->i);
         case 'J':
-            return (Object*) nvmNewLong(env, value->j);
+            return (Object*) rvmNewLong(env, value->j);
         case 'F':
-            return (Object*) nvmNewFloat(env, value->f);
+            return (Object*) rvmNewFloat(env, value->f);
         case 'D':
-            return (Object*) nvmNewDouble(env, value->d);
+            return (Object*) rvmNewDouble(env, value->d);
         }
     }
     return (Object*) value->l;
 }
 
-Object* nvmCloneObject(Env* env, Object* obj) {
+Object* rvmCloneObject(Env* env, Object* obj) {
     if (CLASS_IS_ARRAY(obj->clazz)) {
-        return (Object*) nvmCloneArray(env, (Array*) obj);
+        return (Object*) rvmCloneArray(env, (Array*) obj);
     }
     jint size = obj->clazz->instanceDataSize;
-    Object* copy = nvmAllocateMemory(env, size);
+    Object* copy = rvmAllocateMemory(env, size);
     if (!copy) return NULL;
     memcpy(copy, obj, size);
     copy->monitor = NULL;
     return copy;
 }
 
-void nvmIterateLoadedClasses(Env* env, jboolean (*f)(Env*, Class*, void*), void* data) {
+void rvmIterateLoadedClasses(Env* env, jboolean (*f)(Env*, Class*, void*), void* data) {
     LoadedClassEntry* entry;
     for (entry = loadedClasses; entry != NULL; entry = entry->hh.next) {
         if (!f(env, entry->clazz, data)) return;
@@ -1099,7 +1099,7 @@ static jboolean dumpClassesIterator(Env* env, Class* clazz, void* d) {
     return TRUE;
 }
 
-void nvmDumpLoadedClasses(Env* env) {
-    nvmIterateLoadedClasses(env, dumpClassesIterator, NULL);
+void rvmDumpLoadedClasses(Env* env) {
+    rvmIterateLoadedClasses(env, dumpClassesIterator, NULL);
 }
 

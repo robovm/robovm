@@ -63,7 +63,7 @@ Lproxy0Begin:
     mov   %rax, stackArgs_offset(%rsp)         # stackArgs = first stack arg
 
     leaq  (%rsp), %rdi
-    callq  __nvmProxyHandler
+    callq  __rvmProxyHandler
 
     mov   returnValue_offset(%rsp), %rax       # if return value is int or long
     movsd returnValue_offset(%rsp), %xmm0      # if return value is float or double

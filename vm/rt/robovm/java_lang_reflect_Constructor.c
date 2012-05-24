@@ -13,9 +13,9 @@ Object* Java_java_lang_reflect_Constructor_internalNewInstance(Env* env, Class* 
     jvalue* jvalueArgs = validateAndUnwrapArgs(env, parameterTypes, args);
     if (!jvalueArgs) return NULL;
 
-    Object* o = nvmNewObjectA(env, method->clazz, method, jvalueArgs);
+    Object* o = rvmNewObjectA(env, method->clazz, method, jvalueArgs);
     if (!o) {
-        throwInvocationTargetException(env, nvmExceptionOccurred(env));
+        throwInvocationTargetException(env, rvmExceptionOccurred(env));
         return NULL;
     }
     return o;

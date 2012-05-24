@@ -13,7 +13,7 @@ CallInfo_size         = 28
     .align    4, 0x90
 __call0:
     .cfi_startproc
-    .cfi_personality 155, L__nvmPersonality$non_lazy_ptr
+    .cfi_personality 155, L__rvmPersonality$non_lazy_ptr
     .cfi_lsda 16, Lexception1
     .cfi_def_cfa %esp, 4
 Lcall0Begin:
@@ -86,6 +86,6 @@ Lexception1:
     .align   2
 
     .section    __IMPORT,__pointers,non_lazy_symbol_pointers
-L__nvmPersonality$non_lazy_ptr:
-    .indirect_symbol __nvmPersonality
+L__rvmPersonality$non_lazy_ptr:
+    .indirect_symbol __rvmPersonality
     .long   0

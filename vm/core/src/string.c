@@ -131,24 +131,24 @@ static Object* newString(Env* env, CharArray* value, jint length) {
     args[0].i = 0;
     args[1].i = length;
     args[2].l = (jobject) value;
-    return nvmNewObjectA(env, java_lang_String, stringConstructor, args);
+    return rvmNewObjectA(env, java_lang_String, stringConstructor, args);
 }
 
-jboolean nvmInitStrings(Env* env) {
-    stringConstructor = nvmGetInstanceMethod(env, java_lang_String, "<init>", "(II[C)V");
+jboolean rvmInitStrings(Env* env) {
+    stringConstructor = rvmGetInstanceMethod(env, java_lang_String, "<init>", "(II[C)V");
     if (!stringConstructor) return FALSE;
-    stringValueField = nvmGetInstanceField(env, java_lang_String, "value", "[C");
+    stringValueField = rvmGetInstanceField(env, java_lang_String, "value", "[C");
     if (!stringValueField) return FALSE;
-    stringOffsetField = nvmGetInstanceField(env, java_lang_String, "offset", "I");
+    stringOffsetField = rvmGetInstanceField(env, java_lang_String, "offset", "I");
     if (!stringOffsetField) return FALSE;
-    stringCountField = nvmGetInstanceField(env, java_lang_String, "count", "I");
+    stringCountField = rvmGetInstanceField(env, java_lang_String, "count", "I");
     if (!stringCountField) return FALSE;
     return TRUE;
 }
 
-Object* nvmNewStringAscii(Env* env, const char* s, jint length) {
+Object* rvmNewStringAscii(Env* env, const char* s, jint length) {
     length = (length == -1) ? strlen(s) : length;
-    CharArray* value = nvmNewCharArray(env, length);
+    CharArray* value = rvmNewCharArray(env, length);
     if (!value) return NULL;
     jint i;
     for (i = 0; i < length; i++) {
@@ -157,24 +157,24 @@ Object* nvmNewStringAscii(Env* env, const char* s, jint length) {
     return newString(env, value, length);
 }
 
-Object* nvmNewStringUTF(Env* env, const char* s, jint length) {
+Object* rvmNewStringUTF(Env* env, const char* s, jint length) {
     if (!s) return NULL;
     length = (length == -1) ? getUnicodeLengthOfUtf8(s) : length;
-    CharArray* value = nvmNewCharArray(env, length);
+    CharArray* value = rvmNewCharArray(env, length);
     if (!value) return NULL;
     utf8ToUnicode(value->values, s);
     return newString(env, value, length);
 }
 
-Object* nvmNewString(Env* env, const jchar* chars, jint length) {
+Object* rvmNewString(Env* env, const jchar* chars, jint length) {
     if (!chars) return NULL;
-    CharArray* value = nvmNewCharArray(env, length);
+    CharArray* value = rvmNewCharArray(env, length);
     if (!value) return NULL;
     memcpy(value->values, chars, sizeof(jchar) * length);
     return newString(env, value, length);
 }
 
-Object* nvmNewInternedStringUTF(Env* env, const char* s, jint length) {
+Object* rvmNewInternedStringUTF(Env* env, const char* s, jint length) {
     if (!s) return NULL;
     // Check the cache first.
     CacheEntry* cacheEntry;
@@ -187,13 +187,13 @@ Object* nvmNewInternedStringUTF(Env* env, const char* s, jint length) {
     }
 
     length = (length == -1) ? getUnicodeLengthOfUtf8(s) : length;
-    CharArray* value = nvmNewCharArray(env, length);
+    CharArray* value = rvmNewCharArray(env, length);
     if (!value) return NULL;
     utf8ToUnicode(value->values, s);
     Object* string = newString(env, value, length);
     if (!string) return NULL;
 
-    cacheEntry = nvmAllocateMemory(env, sizeof(CacheEntry));
+    cacheEntry = rvmAllocateMemory(env, sizeof(CacheEntry));
     if (!cacheEntry) return NULL;
     cacheEntry->key = s;
     cacheEntry->string = string;
@@ -212,10 +212,10 @@ Object* nvmNewInternedStringUTF(Env* env, const char* s, jint length) {
     return string;
 }
 
-Object* nvmInternString(Env* env, Object* str) {
+Object* rvmInternString(Env* env, Object* str) {
     if (!str) return NULL;
     // Check the cache first.
-    char* s = nvmGetStringUTFChars(env, str);
+    char* s = rvmGetStringUTFChars(env, str);
     if (!s) return NULL;
     CacheEntry* cacheEntry;
     HASH_FIND_STR(internedStrings, s, cacheEntry);
@@ -226,7 +226,7 @@ Object* nvmInternString(Env* env, Object* str) {
         return cacheEntry->string;
     }
 
-    cacheEntry = nvmAllocateMemory(env, sizeof(CacheEntry));
+    cacheEntry = rvmAllocateMemory(env, sizeof(CacheEntry));
     if (!cacheEntry) return NULL;
     cacheEntry->key = s;
     cacheEntry->string = str;
@@ -245,56 +245,56 @@ Object* nvmInternString(Env* env, Object* str) {
     return str;
 }
 
-jint nvmGetStringLength(Env* env, Object* str) {
-    return nvmGetIntInstanceFieldValue(env, str, stringCountField);
+jint rvmGetStringLength(Env* env, Object* str) {
+    return rvmGetIntInstanceFieldValue(env, str, stringCountField);
 }
 
-jchar* nvmGetStringChars(Env* env, Object* str) {
-    CharArray* value = (CharArray*) nvmGetObjectInstanceFieldValue(env, str, stringValueField);
-    jint offset = nvmGetIntInstanceFieldValue(env, str, stringOffsetField);
-    jint count = nvmGetIntInstanceFieldValue(env, str, stringCountField);
+jchar* rvmGetStringChars(Env* env, Object* str) {
+    CharArray* value = (CharArray*) rvmGetObjectInstanceFieldValue(env, str, stringValueField);
+    jint offset = rvmGetIntInstanceFieldValue(env, str, stringOffsetField);
+    jint count = rvmGetIntInstanceFieldValue(env, str, stringCountField);
 
-    jchar* result = nvmAllocateMemory(env, sizeof(jchar) * count);
+    jchar* result = rvmAllocateMemory(env, sizeof(jchar) * count);
     if (!result) return NULL;
 
     memcpy(result, value->values + offset, sizeof(jchar) * count);
     return result;
 }
 
-jint nvmGetStringUTFLength(Env* env, Object* str) {
-    CharArray* value = (CharArray*) nvmGetObjectInstanceFieldValue(env, str, stringValueField);
-    jint offset = nvmGetIntInstanceFieldValue(env, str, stringOffsetField);
-    jint count = nvmGetIntInstanceFieldValue(env, str, stringCountField);
+jint rvmGetStringUTFLength(Env* env, Object* str) {
+    CharArray* value = (CharArray*) rvmGetObjectInstanceFieldValue(env, str, stringValueField);
+    jint offset = rvmGetIntInstanceFieldValue(env, str, stringOffsetField);
+    jint count = rvmGetIntInstanceFieldValue(env, str, stringCountField);
     return getUtf8LengthOfUnicode(value->values + offset, count);
 }
 
-char* nvmGetStringUTFChars(Env* env, Object* str) {
-    CharArray* value = (CharArray*) nvmGetObjectInstanceFieldValue(env, str, stringValueField);
-    jint offset = nvmGetIntInstanceFieldValue(env, str, stringOffsetField);
-    jint count = nvmGetIntInstanceFieldValue(env, str, stringCountField);
+char* rvmGetStringUTFChars(Env* env, Object* str) {
+    CharArray* value = (CharArray*) rvmGetObjectInstanceFieldValue(env, str, stringValueField);
+    jint offset = rvmGetIntInstanceFieldValue(env, str, stringOffsetField);
+    jint count = rvmGetIntInstanceFieldValue(env, str, stringCountField);
 
     jint length = getUtf8LengthOfUnicode(value->values + offset, count);
 
-    char* result = nvmAllocateMemory(env, length + 1);
+    char* result = rvmAllocateMemory(env, length + 1);
     if (!result) return NULL;
 
     unicodeToUtf8(result, value->values + offset, count);
     return result;
 }
 
-void nvmGetStringRegion(Env* env, Object* str, jint start, jint len, jchar* buf) {
+void rvmGetStringRegion(Env* env, Object* str, jint start, jint len, jchar* buf) {
     // TODO: Check bounds
-    CharArray* value = (CharArray*) nvmGetObjectInstanceFieldValue(env, str, stringValueField);
-    jint offset = nvmGetIntInstanceFieldValue(env, str, stringOffsetField);
-    //jint count = nvmGetIntInstanceFieldValue(env, str, stringCountField);
+    CharArray* value = (CharArray*) rvmGetObjectInstanceFieldValue(env, str, stringValueField);
+    jint offset = rvmGetIntInstanceFieldValue(env, str, stringOffsetField);
+    //jint count = rvmGetIntInstanceFieldValue(env, str, stringCountField);
     memcpy(buf, value->values + offset + start, len);
 }
 
-void nvmGetStringUTFRegion(Env *env, Object* str, jint start, jint len, char* buf) {
+void rvmGetStringUTFRegion(Env *env, Object* str, jint start, jint len, char* buf) {
     // TODO: Check bounds
-    CharArray* value = (CharArray*) nvmGetObjectInstanceFieldValue(env, str, stringValueField);
-    jint offset = nvmGetIntInstanceFieldValue(env, str, stringOffsetField);
-    //jint count = nvmGetIntInstanceFieldValue(env, str, stringCountField);
+    CharArray* value = (CharArray*) rvmGetObjectInstanceFieldValue(env, str, stringValueField);
+    jint offset = rvmGetIntInstanceFieldValue(env, str, stringOffsetField);
+    //jint count = rvmGetIntInstanceFieldValue(env, str, stringCountField);
     unicodeToUtf8(buf, value->values + offset + start, len);
 }
 

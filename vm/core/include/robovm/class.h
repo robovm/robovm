@@ -95,62 +95,62 @@ extern Class* array_J;
 extern Class* array_F;
 extern Class* array_D;
 
-extern jboolean nvmInitClasses(Env* env);
-extern jboolean nvmInitPrimitiveWrapperClasses(Env* env);
+extern jboolean rvmInitClasses(Env* env);
+extern jboolean rvmInitPrimitiveWrapperClasses(Env* env);
 
-extern Class* nvmAllocateClass(Env* env, const char* className, Class* superclass, ClassLoader* classLoader, jint flags, 
+extern Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, ClassLoader* classLoader, jint flags, 
 		jint classDataSize, jint instanceDataSize, jint instanceDataOffset, void* attributes, void* initializer);
-extern jboolean nvmAddInterface(Env* env, Class* clazz, Class* interface);
-extern Field* nvmAddField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes);
-extern Method* nvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes);
-extern BridgeMethod* nvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
+extern jboolean rvmAddInterface(Env* env, Class* clazz, Class* interface);
+extern Field* rvmAddField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes);
+extern Method* rvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes);
+extern BridgeMethod* rvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
         void* synchronizedImpl, void** targetFnPtr, void* attributes);
-extern CallbackMethod* nvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
+extern CallbackMethod* rvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
 		void* synchronizedImpl, void* callbackImpl, void* attributes);
-extern jboolean nvmRegisterClass(Env* env, Class* clazz);
+extern jboolean rvmRegisterClass(Env* env, Class* clazz);
 
-extern Class* nvmFindClass(Env* env, const char* className);
-extern Class* nvmFindClassInClasspathForLoader(Env* env, const char* className, ClassLoader* classLoader);
-extern Class* nvmFindClassUsingLoader(Env* env, const char* className, ClassLoader* classLoader);
-extern Class* nvmFindClassByDescriptor(Env* env, const char* desc, ClassLoader* classLoader);
-extern Class* nvmFindLoadedClass(Env* env, const char* className, ClassLoader* classLoader);
-extern ClassLoader* nvmGetSystemClassLoader(Env* env);
+extern Class* rvmFindClass(Env* env, const char* className);
+extern Class* rvmFindClassInClasspathForLoader(Env* env, const char* className, ClassLoader* classLoader);
+extern Class* rvmFindClassUsingLoader(Env* env, const char* className, ClassLoader* classLoader);
+extern Class* rvmFindClassByDescriptor(Env* env, const char* desc, ClassLoader* classLoader);
+extern Class* rvmFindLoadedClass(Env* env, const char* className, ClassLoader* classLoader);
+extern ClassLoader* rvmGetSystemClassLoader(Env* env);
 
-extern Interface* nvmGetInterfaces(Env* env, Class* clazz);
-extern Field* nvmGetFields(Env* env, Class* clazz);
-extern Method* nvmGetMethods(Env* env, Class* clazz);
+extern Interface* rvmGetInterfaces(Env* env, Class* clazz);
+extern Field* rvmGetFields(Env* env, Class* clazz);
+extern Method* rvmGetMethods(Env* env, Class* clazz);
 
-extern void nvmIterateLoadedClasses(Env* env, jboolean (*f)(Env*, Class*, void*), void* data);
+extern void rvmIterateLoadedClasses(Env* env, jboolean (*f)(Env*, Class*, void*), void* data);
 
 /**
  * Creates a new instance of the specified class.
  */
-extern Object* nvmAllocateObject(Env* env, Class* clazz);
-extern void nvmInitialize(Env* env, Class* clazz);
-extern Object* nvmNewObject(Env* env, Class* clazz, Method* method, ...);
-extern Object* nvmNewObjectA(Env* env, Class* clazz, Method* method, jvalue* args);
-extern Object* nvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args);
+extern Object* rvmAllocateObject(Env* env, Class* clazz);
+extern void rvmInitialize(Env* env, Class* clazz);
+extern Object* rvmNewObject(Env* env, Class* clazz, Method* method, ...);
+extern Object* rvmNewObjectA(Env* env, Class* clazz, Method* method, jvalue* args);
+extern Object* rvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args);
 
-extern Boolean* nvmNewBoolean(Env* env, jboolean value);
-extern Byte* nvmNewByte(Env* env, jbyte value);
-extern Short* nvmNewShort(Env* env, jshort value);
-extern Character* nvmNewCharacter(Env* env, jchar value);
-extern Integer* nvmNewInteger(Env* env, jint value);
-extern Long* nvmNewLong(Env* env, jlong value);
-extern Float* nvmNewFloat(Env* env, jfloat value);
-extern Double* nvmNewDouble(Env* env, jdouble value);
-extern Object* nvmWrapPrimitive(Env* env, Class* type, jvalue* value);
+extern Boolean* rvmNewBoolean(Env* env, jboolean value);
+extern Byte* rvmNewByte(Env* env, jbyte value);
+extern Short* rvmNewShort(Env* env, jshort value);
+extern Character* rvmNewCharacter(Env* env, jchar value);
+extern Integer* rvmNewInteger(Env* env, jint value);
+extern Long* rvmNewLong(Env* env, jlong value);
+extern Float* rvmNewFloat(Env* env, jfloat value);
+extern Double* rvmNewDouble(Env* env, jdouble value);
+extern Object* rvmWrapPrimitive(Env* env, Class* type, jvalue* value);
 
-extern Object* nvmCloneObject(Env* env, Object* obj);
+extern Object* rvmCloneObject(Env* env, Object* obj);
 
-extern char* nvmToBinaryClassName(Env* env, const char* className);
-extern char* nvmFromBinaryClassName(Env* env, const char* binaryClassName);
+extern char* rvmToBinaryClassName(Env* env, const char* className);
+extern char* rvmFromBinaryClassName(Env* env, const char* binaryClassName);
 
-extern jboolean nvmIsSubClass(Class* superclass, Class* clazz);
-extern jboolean nvmIsSamePackage(Class* c1, Class* c2);
+extern jboolean rvmIsSubClass(Class* superclass, Class* clazz);
+extern jboolean rvmIsSamePackage(Class* c1, Class* c2);
 
-extern jboolean nvmIsAssignableFrom(Env* env, Class* sub, Class* sup);
-extern jboolean nvmIsInstanceOf(Env* env, Object* obj, Class* clazz);
+extern jboolean rvmIsAssignableFrom(Env* env, Class* sub, Class* sup);
+extern jboolean rvmIsInstanceOf(Env* env, Object* obj, Class* clazz);
 
 #endif
 

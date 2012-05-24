@@ -3,7 +3,7 @@
 #include "../private.h"
 #include "CuTest.h"
 
-void* nvmAllocateMemory(Env* env, int size) {
+void* rvmAllocateMemory(Env* env, int size) {
     return calloc(1, size);
 }
 

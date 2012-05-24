@@ -5,8 +5,8 @@ ROBOVM_0.1 {
   java_io_*;
   prim_*;
   array_*;
-  nvm*;
-  _nvmPersonality;
+  rvm*;
+  _rvmPersonality;
  local:
   *;
 };

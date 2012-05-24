@@ -14,41 +14,41 @@ jint Java_java_lang_reflect_Method_getModifiers(Env* env, Class* clazz, jlong me
 
 Object* Java_java_lang_reflect_Method_getName(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
-    return nvmNewStringUTF(env, method->name, -1);
+    return rvmNewStringUTF(env, method->name, -1);
 }
 
 Class* Java_java_lang_reflect_Method_getReturnType(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
-    return nvmFindClassByDescriptor(env, nvmGetReturnType(method->desc), method->clazz->classLoader);
+    return rvmFindClassByDescriptor(env, rvmGetReturnType(method->desc), method->clazz->classLoader);
 }
 
 Object* Java_java_lang_reflect_Method_getSignatureAttribute(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
-    Class* java_lang_reflect_Proxy = nvmFindClass(env, "java/lang/reflect/Proxy");
+    Class* java_lang_reflect_Proxy = rvmFindClass(env, "java/lang/reflect/Proxy");
     if (method->clazz->superclass == java_lang_reflect_Proxy) {
-        return nvmAttributeGetMethodSignature(env, ((ProxyMethod*) method)->proxiedMethod);
+        return rvmAttributeGetMethodSignature(env, ((ProxyMethod*) method)->proxiedMethod);
     }
-    return nvmAttributeGetMethodSignature(env, method);
+    return rvmAttributeGetMethodSignature(env, method);
 }
 
 ObjectArray* Java_java_lang_reflect_Method_getParameterTypes(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
 
-    jint argsCount = nvmGetParameterCount(method);
+    jint argsCount = rvmGetParameterCount(method);
 
-    Class* array_java_lang_Class = nvmFindClass(env, "[Ljava/lang/Class;");
+    Class* array_java_lang_Class = rvmFindClass(env, "[Ljava/lang/Class;");
     if (!array_java_lang_Class) return NULL;
-    ObjectArray* paramTypes = nvmNewObjectArray(env, argsCount, NULL, array_java_lang_Class, NULL);
+    ObjectArray* paramTypes = rvmNewObjectArray(env, argsCount, NULL, array_java_lang_Class, NULL);
     if (!paramTypes) return NULL;
 
     const char* desc = method->desc;
     const char* s;
     jint i = 0;
-    while ((s = nvmGetNextParameterType(&desc))) {
-        char* paramTypeName = nvmAllocateMemory(env, desc - s + 1);
+    while ((s = rvmGetNextParameterType(&desc))) {
+        char* paramTypeName = rvmAllocateMemory(env, desc - s + 1);
         if (!paramTypeName) return NULL;
         strncpy(paramTypeName, s, desc - s);
-        Class* paramType = nvmFindClassByDescriptor(env, paramTypeName, method->clazz->classLoader);
+        Class* paramType = rvmFindClassByDescriptor(env, paramTypeName, method->clazz->classLoader);
         if (!paramType) return NULL;
         paramTypes->values[i++] = (Object*) paramType;
     }
@@ -58,25 +58,25 @@ ObjectArray* Java_java_lang_reflect_Method_getParameterTypes(Env* env, Class* cl
 
 ObjectArray* Java_java_lang_reflect_Method_getExceptionTypes(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
-    Class* java_lang_reflect_Proxy = nvmFindClass(env, "java/lang/reflect/Proxy");
+    Class* java_lang_reflect_Proxy = rvmFindClass(env, "java/lang/reflect/Proxy");
     if (method->clazz->superclass == java_lang_reflect_Proxy) {
-        return nvmAttributeGetExceptions(env, ((ProxyMethod*) method)->proxiedMethod);
+        return rvmAttributeGetExceptions(env, ((ProxyMethod*) method)->proxiedMethod);
     }
-    return nvmAttributeGetExceptions(env, method);
+    return rvmAttributeGetExceptions(env, method);
 }
 
 Object* Java_java_lang_reflect_Method_getDefaultValue(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
-    return nvmAttributeGetAnnotationDefault(env, method);
+    return rvmAttributeGetAnnotationDefault(env, method);
 }
 
 ObjectArray* Java_java_lang_reflect_Method_getDeclaredAnnotations(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
-    return nvmAttributeGetMethodRuntimeVisibleAnnotations(env, method);
+    return rvmAttributeGetMethodRuntimeVisibleAnnotations(env, method);
 }
 
 ObjectArray* Java_java_lang_reflect_Method_getParameterAnnotations(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
-    return nvmAttributeGetMethodRuntimeVisibleParameterAnnotations(env, method);
+    return rvmAttributeGetMethodRuntimeVisibleParameterAnnotations(env, method);
 }
 

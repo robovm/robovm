@@ -11,7 +11,7 @@ static char* createClasspathFromClasspathEntries(Env* env, ClasspathEntry* first
         if (entry) length++; // Make room for the :
     }
 
-    char* p = nvmAllocateMemory(env, length + 1);
+    char* p = rvmAllocateMemory(env, length + 1);
     if (!p) return NULL;
 
     entry = first;
@@ -27,22 +27,22 @@ static char* createClasspathFromClasspathEntries(Env* env, ClasspathEntry* first
 Object* Java_org_robovm_rt_VM_bootClassPath(Env* env, Class* c) {
     char* bootclasspath = createClasspathFromClasspathEntries(env, env->vm->options->bootclasspath);
     if (!bootclasspath) return NULL;
-    return nvmNewStringUTF(env, bootclasspath, -1);
+    return rvmNewStringUTF(env, bootclasspath, -1);
 }
 
 Object* Java_org_robovm_rt_VM_classPath(Env* env, Class* c) {
     char* classpath = createClasspathFromClasspathEntries(env, env->vm->options->classpath);
     if (!classpath) return NULL;
-    return nvmNewStringUTF(env, classpath, -1);
+    return rvmNewStringUTF(env, classpath, -1);
 }
 
 Object* Java_org_robovm_rt_VM_vmVersion(Env* env, Class* c) {
     // TODO: Use version from Maven pom
-    return nvmNewStringUTF(env, "0.0.1-SNAPSHOT", -1);
+    return rvmNewStringUTF(env, "0.0.1-SNAPSHOT", -1);
 }
 
 ObjectArray* Java_org_robovm_rt_VM_getStackClasses(Env* env, Class* c, jint skipNum, jint maxDepth) {
-    CallStackEntry* first = nvmGetCallStack(env);
+    CallStackEntry* first = rvmGetCallStack(env);
     if (!first) return NULL;
     first = first->next; // Skip VM.getStackClasses()
     if (!first) return NULL;
@@ -65,7 +65,7 @@ ObjectArray* Java_org_robovm_rt_VM_getStackClasses(Env* env, Class* c, jint skip
         depth = maxDepth;
     }
     
-    ObjectArray* result = nvmNewObjectArray(env, depth, java_lang_Class, NULL, NULL);
+    ObjectArray* result = rvmNewObjectArray(env, depth, java_lang_Class, NULL, NULL);
     if (!result) return NULL;
     jint i;
     entry = first;
@@ -77,7 +77,7 @@ ObjectArray* Java_org_robovm_rt_VM_getStackClasses(Env* env, Class* c, jint skip
 }
 
 jlong Java_org_robovm_rt_VM_allocateMemory(Env* env, Class* c, jint size) {
-    return PTR_TO_LONG(nvmAllocateMemory(env, size));
+    return PTR_TO_LONG(rvmAllocateMemory(env, size));
 }
 
 void Java_org_robovm_rt_VM_memcpy(Env* env, Class* c, jlong s1, jlong s2, jlong n) {
@@ -192,11 +192,11 @@ void Java_org_robovm_rt_VM_setPointer(Env* env, Class* c, jlong address, jlong v
 }
 
 jlong Java_org_robovm_rt_VM_getStringUTFChars(Env* env, Class* c, Object* s) {
-    return PTR_TO_LONG(nvmGetStringUTFChars(env, s));
+    return PTR_TO_LONG(rvmGetStringUTFChars(env, s));
 }
 
 Object* Java_org_robovm_rt_VM_newStringUTF(Env* env, Class* c, jlong address) {
-    return nvmNewStringUTF(env, (char*) LONG_TO_PTR(address), -1);
+    return rvmNewStringUTF(env, (char*) LONG_TO_PTR(address), -1);
 }
 
 jlong Java_org_robovm_rt_VM_getArrayValuesAddress(Env* env, Class* c, Array* array) {
@@ -204,7 +204,7 @@ jlong Java_org_robovm_rt_VM_getArrayValuesAddress(Env* env, Class* c, Array* arr
 }
 
 BooleanArray* Java_org_robovm_rt_VM_newBooleanArray(Env* env, Class* c, jlong address, jint size) {
-    BooleanArray* array = nvmNewBooleanArray(env, size);
+    BooleanArray* array = rvmNewBooleanArray(env, size);
     if (array) {
         jbyte* data = (jbyte*) LONG_TO_PTR(address);
         jint i = 0;
@@ -217,7 +217,7 @@ BooleanArray* Java_org_robovm_rt_VM_newBooleanArray(Env* env, Class* c, jlong ad
 }
 
 ByteArray* Java_org_robovm_rt_VM_newByteArray(Env* env, Class* c, jlong address, jint size) {
-    ByteArray* array = nvmNewByteArray(env, size);
+    ByteArray* array = rvmNewByteArray(env, size);
     if (array) {
         memcpy(array->values, LONG_TO_PTR(address), size * sizeof(jbyte));
     }
@@ -225,7 +225,7 @@ ByteArray* Java_org_robovm_rt_VM_newByteArray(Env* env, Class* c, jlong address,
 }
 
 CharArray* Java_org_robovm_rt_VM_newCharArray(Env* env, Class* c, jlong address, jint size) {
-    CharArray* array = nvmNewCharArray(env, size);
+    CharArray* array = rvmNewCharArray(env, size);
     if (array) {
         memcpy(array->values, LONG_TO_PTR(address), size * sizeof(jchar));
     }
@@ -233,7 +233,7 @@ CharArray* Java_org_robovm_rt_VM_newCharArray(Env* env, Class* c, jlong address,
 }
 
 ShortArray* Java_org_robovm_rt_VM_newShortArray(Env* env, Class* c, jlong address, jint size) {
-    ShortArray* array = nvmNewShortArray(env, size);
+    ShortArray* array = rvmNewShortArray(env, size);
     if (array) {
         memcpy(array->values, LONG_TO_PTR(address), size * sizeof(jshort));
     }
@@ -241,7 +241,7 @@ ShortArray* Java_org_robovm_rt_VM_newShortArray(Env* env, Class* c, jlong addres
 }
 
 IntArray* Java_org_robovm_rt_VM_newIntArray(Env* env, Class* c, jlong address, jint size) {
-    IntArray* array = nvmNewIntArray(env, size);
+    IntArray* array = rvmNewIntArray(env, size);
     if (array) {
         memcpy(array->values, LONG_TO_PTR(address), size * sizeof(jint));
     }
@@ -249,7 +249,7 @@ IntArray* Java_org_robovm_rt_VM_newIntArray(Env* env, Class* c, jlong address, j
 }
 
 LongArray* Java_org_robovm_rt_VM_newLongArray(Env* env, Class* c, jlong address, jint size) {
-    LongArray* array = nvmNewLongArray(env, size);
+    LongArray* array = rvmNewLongArray(env, size);
     if (array) {
         memcpy(array->values, LONG_TO_PTR(address), size * sizeof(jlong));
     }
@@ -257,7 +257,7 @@ LongArray* Java_org_robovm_rt_VM_newLongArray(Env* env, Class* c, jlong address,
 }
 
 FloatArray* Java_org_robovm_rt_VM_newFloatArray(Env* env, Class* c, jlong address, jint size) {
-    FloatArray* array = nvmNewFloatArray(env, size);
+    FloatArray* array = rvmNewFloatArray(env, size);
     if (array) {
         memcpy(array->values, LONG_TO_PTR(address), size * sizeof(jfloat));
     }
@@ -265,7 +265,7 @@ FloatArray* Java_org_robovm_rt_VM_newFloatArray(Env* env, Class* c, jlong addres
 }
 
 DoubleArray* Java_org_robovm_rt_VM_newDoubleArray(Env* env, Class* c, jlong address, jint size) {
-    DoubleArray* array = nvmNewDoubleArray(env, size);
+    DoubleArray* array = rvmNewDoubleArray(env, size);
     if (array) {
         memcpy(array->values, LONG_TO_PTR(address), size * sizeof(jdouble));
     }
@@ -273,10 +273,10 @@ DoubleArray* Java_org_robovm_rt_VM_newDoubleArray(Env* env, Class* c, jlong addr
 }
 
 jlong Java_org_robovm_rt_VM_getPointerArrayValuesAddress(Env* env, Class* c, LongArray* array) {
-#ifdef NVM_X86_64
+#ifdef RVM_X86_64
     return PTR_TO_LONG(array->values);
 #else
-    void** data = nvmAllocateMemory(env, array->length * sizeof(void*));
+    void** data = rvmAllocateMemory(env, array->length * sizeof(void*));
     if (!data) return 0;
     jint i = 0;
     for (i = 0; i < array->length; i++) {
@@ -287,10 +287,10 @@ jlong Java_org_robovm_rt_VM_getPointerArrayValuesAddress(Env* env, Class* c, Lon
 }
 
 LongArray* Java_org_robovm_rt_VM_newPointerArray(Env* env, Class* c, jlong address, jint size) {
-#ifdef NVM_X86_64
+#ifdef RVM_X86_64
     return Java_org_robovm_rt_VM_newLongArray(env, c, LONG_TO_PTR(address), size);
 #else
-    LongArray* array = nvmNewLongArray(env, size);
+    LongArray* array = rvmNewLongArray(env, size);
     if (array) {
         void** data = (void**) LONG_TO_PTR(address);
         jint i = 0;

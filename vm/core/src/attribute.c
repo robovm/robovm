@@ -24,13 +24,13 @@ static ObjectArray* emptyExceptionTypes = NULL;
 static ObjectArray* emptyAnnotations = NULL;
 
 static Class* findType(Env* env, const char* classDesc, ClassLoader* loader) {
-    Class* c = nvmFindClassByDescriptor(env, classDesc, loader);
+    Class* c = rvmFindClassByDescriptor(env, classDesc, loader);
     if (!c) {
-        if (nvmExceptionOccurred(env)->clazz == java_lang_ClassNotFoundException) {
-            nvmExceptionClear(env);
-            char* className = nvmCopyMemoryZ(env, classDesc);
+        if (rvmExceptionOccurred(env)->clazz == java_lang_ClassNotFoundException) {
+            rvmExceptionClear(env);
+            char* className = rvmCopyMemoryZ(env, classDesc);
             className[strlen(className)] = 0;
-            nvmThrowNew(env, java_lang_TypeNotPresentException, nvmFromBinaryClassName(env, &className[1]));
+            rvmThrowNew(env, java_lang_TypeNotPresentException, rvmFromBinaryClassName(env, &className[1]));
         }
     }
     return c;
@@ -39,7 +39,7 @@ static Class* findType(Env* env, const char* classDesc, ClassLoader* loader) {
 static jboolean throwFormatError(Env* env, char* expectedType) {
     char msg[64];
     snprintf(msg, sizeof(msg), "Invalid format: %s expected", expectedType);
-    nvmThrowNew(env, java_lang_annotation_AnnotationFormatError, msg);
+    rvmThrowNew(env, java_lang_annotation_AnnotationFormatError, msg);
     return FALSE;
 }
 
@@ -153,7 +153,7 @@ static void iterateAttributes(Env* env, void* attributes, jboolean (*f)(Env*, jb
         if (!f(env, type, attributes, data)) {
             return;
         }
-        if (nvmExceptionCheck(env)) return;
+        if (rvmExceptionCheck(env)) return;
 
         switch (type) {
         case SOURCE_FILE:
@@ -258,32 +258,32 @@ static jboolean parseArrayElementValue(Env* env, void** attributes, Class* array
     if (CLASS_IS_PRIMITIVE(componentType)) {
         switch (componentType->name[0]) {
         case 'Z':
-            array = (Array*) nvmNewBooleanArray(env, length);
+            array = (Array*) rvmNewBooleanArray(env, length);
             break;
         case 'B':
-            array = (Array*) nvmNewByteArray(env, length);
+            array = (Array*) rvmNewByteArray(env, length);
             break;
         case 'S':
-            array = (Array*) nvmNewShortArray(env, length);
+            array = (Array*) rvmNewShortArray(env, length);
             break;
         case 'C':
-            array = (Array*) nvmNewCharArray(env, length);
+            array = (Array*) rvmNewCharArray(env, length);
             break;
         case 'I':
-            array = (Array*) nvmNewIntArray(env, length);
+            array = (Array*) rvmNewIntArray(env, length);
             break;
         case 'J':
-            array = (Array*) nvmNewLongArray(env, length);
+            array = (Array*) rvmNewLongArray(env, length);
             break;
         case 'F':
-            array = (Array*) nvmNewFloatArray(env, length);
+            array = (Array*) rvmNewFloatArray(env, length);
             break;
         case 'D':
-            array = (Array*) nvmNewDoubleArray(env, length);
+            array = (Array*) rvmNewDoubleArray(env, length);
             break;
         }
     } else {
-        array = (Array*) nvmNewObjectArray(env, length, NULL, arrayClass, NULL);
+        array = (Array*) rvmNewObjectArray(env, length, NULL, arrayClass, NULL);
     }
     if (!array) return FALSE;
 
@@ -338,7 +338,7 @@ static jboolean parseStringElementValue(Env* env, void** attributes, jvalue* res
     jbyte tag = getByte(attributes);
     if (tag != 's') return throwFormatError(env, "java.lang.String");
     char* s = getString(attributes);
-    result->l = (jobject) nvmNewStringUTF(env, s, -1);
+    result->l = (jobject) rvmNewStringUTF(env, s, -1);
     return result->l ? TRUE : FALSE;
 }
 
@@ -349,16 +349,16 @@ static jboolean parseEnumElementValue(Env* env, void** attributes, ClassLoader* 
     char* constName = getString(attributes);
     Class* c = findType(env, className, classLoader);
     if (c) {
-        ClassField* f = nvmGetClassField(env, c, constName, className);
+        ClassField* f = rvmGetClassField(env, c, constName, className);
         if (f) {
-            result->l = (jobject) nvmGetObjectClassFieldValue(env, c, f);
+            result->l = (jobject) rvmGetObjectClassFieldValue(env, c, f);
         }
     }
     return result->l ? TRUE : FALSE;
 }
 
 static Method* getAnnotationValueMethod(Env* env, Class* clazz, char* name) {
-    Method* method = nvmGetMethods(env, clazz);
+    Method* method = rvmGetMethods(env, clazz);
     for (; method != NULL; method = method->next) {
         if (!strcmp(method->name, name)) {
             return method;
@@ -370,52 +370,52 @@ static Method* getAnnotationValueMethod(Env* env, Class* clazz, char* name) {
 static jboolean getAnnotationValue(Env* env, void** attributes, Class* expectedAnnotationClass, ClassLoader* classLoader, jvalue* result) {
     char* annotationTypeName = getString(attributes);
     if (expectedAnnotationClass && strncmp(&annotationTypeName[1], expectedAnnotationClass->name, strlen(expectedAnnotationClass->name))) {
-        return throwFormatError(env, nvmFromBinaryClassName(env, expectedAnnotationClass->name));
+        return throwFormatError(env, rvmFromBinaryClassName(env, expectedAnnotationClass->name));
     }
 
     Class* annotationClass = expectedAnnotationClass;
     if (!annotationClass) {
-        annotationClass = nvmFindClassByDescriptor(env, annotationTypeName, classLoader);
+        annotationClass = rvmFindClassByDescriptor(env, annotationTypeName, classLoader);
         if (!annotationClass) return FALSE;
     }
 
     jint length = getInt(attributes);
 
-    ObjectArray* members = (ObjectArray*) nvmNewObjectArray(env, length, org_apache_harmony_lang_annotation_AnnotationMember, NULL, NULL);
+    ObjectArray* members = (ObjectArray*) rvmNewObjectArray(env, length, org_apache_harmony_lang_annotation_AnnotationMember, NULL, NULL);
     if (!members) return FALSE;
 
     jint i = 0;
     for (i = 0; i < length; i++) {
         char* name = getString(attributes);
         Method* method = getAnnotationValueMethod(env, annotationClass, name);
-        if (nvmExceptionCheck(env)) return FALSE;
+        if (rvmExceptionCheck(env)) return FALSE;
         if (!method) {
             skipElementValue(attributes);
         } else {
-            Class* type = findType(env, nvmGetReturnType(method->desc), method->clazz->classLoader);
+            Class* type = findType(env, rvmGetReturnType(method->desc), method->clazz->classLoader);
             Object* value = NULL;
             if (!type) {
-                value = nvmExceptionClear(env);
+                value = rvmExceptionClear(env);
             } else {
                 jvalue v = {0};
                 if (!parseElementValue(env, attributes, type, classLoader, &v)) {
-                    value = nvmExceptionClear(env);
+                    value = rvmExceptionClear(env);
                 } else {
-                    value = nvmWrapPrimitive(env, type, &v);
+                    value = rvmWrapPrimitive(env, type, &v);
                 }
             }
-            Object* jName = nvmNewStringUTF(env, name, -1);
+            Object* jName = rvmNewStringUTF(env, name, -1);
             if (!jName) return FALSE;
             jvalue args[4];
             args[0].j = PTR_TO_LONG(method);
-            Object* jMethod = nvmNewObjectA(env, java_lang_reflect_Method, java_lang_reflect_Method_init, args);
+            Object* jMethod = rvmNewObjectA(env, java_lang_reflect_Method, java_lang_reflect_Method_init, args);
             if (!jMethod) return FALSE;
 
             args[0].l = (jobject) jName;
             args[1].l = (jobject) value;
             args[2].l = (jobject) type;;
             args[3].l = (jobject) jMethod;
-            Object* member = nvmNewObjectA(env, org_apache_harmony_lang_annotation_AnnotationMember, 
+            Object* member = rvmNewObjectA(env, org_apache_harmony_lang_annotation_AnnotationMember, 
                                            org_apache_harmony_lang_annotation_AnnotationMember_init, args);
             if (!member) return FALSE;
             members->values[i] = member;
@@ -425,9 +425,9 @@ static jboolean getAnnotationValue(Env* env, void** attributes, Class* expectedA
     jvalue args[2];
     args[0].l = (jobject) annotationClass;
     args[1].l = (jobject) members;
-    Object* o = nvmCallObjectClassMethodA(env, org_apache_harmony_lang_annotation_AnnotationFactory, 
+    Object* o = rvmCallObjectClassMethodA(env, org_apache_harmony_lang_annotation_AnnotationFactory, 
                                           org_apache_harmony_lang_annotation_AnnotationFactory_createAnnotation, args);
-    if (!nvmExceptionCheck(env)) result->l = (jobject) o;
+    if (!rvmExceptionCheck(env)) result->l = (jobject) o;
     return result->l ? TRUE : FALSE;
 }
 
@@ -513,7 +513,7 @@ static jboolean getDeclaringClassIterator(Env* env, char* innerClass, char* oute
     Class** result = (Class**) ((void**) data)[0];
     Class* clazz = (Class*) ((void**) data)[1];
     if (innerClass && outerClass && !strcmp(innerClass, clazz->name)) {
-        *result = nvmFindClassUsingLoader(env, outerClass, clazz->classLoader);
+        *result = rvmFindClassUsingLoader(env, outerClass, clazz->classLoader);
         return FALSE; // Stop iterating
     }
     return TRUE; // Continue with next attribute
@@ -522,7 +522,7 @@ static jboolean getDeclaringClassIterator(Env* env, char* innerClass, char* oute
 static jboolean getEnclosingClassIterator(Env* env, char* className, char* methodName, char* methodDesc, void* data) {
     Class** result = (Class**) ((void**) data)[0];
     Class* clazz = (Class*) ((void**) data)[1];
-    *result = nvmFindClassUsingLoader(env, className, clazz->classLoader);
+    *result = rvmFindClassUsingLoader(env, className, clazz->classLoader);
     return FALSE; // Stop iterating
 }
 
@@ -530,9 +530,9 @@ static jboolean getEnclosingMethodIterator(Env* env, char* className, char* meth
     Method** result = (Method**) ((void**) data)[0];
     Class* clazz = (Class*) ((void**) data)[1];
     if (methodName && methodDesc) {
-        Class* c = nvmFindClassUsingLoader(env, className, clazz->classLoader);
+        Class* c = rvmFindClassUsingLoader(env, className, clazz->classLoader);
         if (c) {
-            *result = nvmGetMethod(env, c, methodName, methodDesc);
+            *result = rvmGetMethod(env, c, methodName, methodDesc);
         }
         return FALSE; // Stop iterating
     }
@@ -552,7 +552,7 @@ static jboolean isAnonymousClassIterator(Env* env, char* innerClass, char* outer
 static jboolean getSignatureIterator(Env* env, jbyte type, void* attributes, void* data) {
     Object** result = (Object**) data;
     if (type == SIGNATURE) {
-        *result = nvmNewStringUTF(env, getString(&attributes), -1);
+        *result = rvmNewStringUTF(env, getString(&attributes), -1);
         return FALSE; // Stop iterating
     }
     return TRUE; // Continue with next attribute
@@ -563,12 +563,12 @@ static jboolean getExceptionsIterator(Env* env, jbyte type, void* attributes, vo
     Method* method = (Method*) ((void**) data)[1];
     if (type == EXCEPTIONS) {
         jint length = getInt(&attributes);
-        ObjectArray* array = nvmNewObjectArray(env, length, java_lang_Class, NULL, NULL);
+        ObjectArray* array = rvmNewObjectArray(env, length, java_lang_Class, NULL, NULL);
         if (array) {
             jint i = 0;
             for (i = 0; i < length; i++) {
                 char* className = getString(&attributes);
-                Class* c = nvmFindClassUsingLoader(env, className, method->clazz->classLoader);
+                Class* c = rvmFindClassUsingLoader(env, className, method->clazz->classLoader);
                 if (!c) return FALSE;
                 array->values[i] = (Object*) c;
             }
@@ -583,11 +583,11 @@ static jboolean getAnnotationDefaultIterator(Env* env, jbyte type, void* attribu
     Object** result = (Object**) ((void**) data)[0];
     Method* method = (Method*) ((void**) data)[1];
     if (type == ANNOTATION_DEFAULT) {
-        Class* c = findType(env, nvmGetReturnType(method->desc), method->clazz->classLoader);
+        Class* c = findType(env, rvmGetReturnType(method->desc), method->clazz->classLoader);
         if (c) {
             jvalue value = {0};
             if (parseElementValue(env, &attributes, c, method->clazz->classLoader, &value)) {
-                *result = nvmWrapPrimitive(env, c, &value);
+                *result = rvmWrapPrimitive(env, c, &value);
             }
         }
         return FALSE; // Stop iterating
@@ -600,7 +600,7 @@ static jboolean getRuntimeVisibleAnnotationsIterator(Env* env, jbyte type, void*
     ClassLoader* classLoader = (ClassLoader*) ((void**) data)[1];
     if (type == RUNTIME_VISIBLE_ANNOTATIONS) {
         jint length = getInt(&attributes);
-        ObjectArray* annotations = nvmNewObjectArray(env, length, java_lang_annotation_Annotation, NULL, NULL);
+        ObjectArray* annotations = rvmNewObjectArray(env, length, java_lang_annotation_Annotation, NULL, NULL);
         if (!annotations) return FALSE;
         jint i = 0;
         for (i = 0; i < length; i++) {
@@ -619,12 +619,12 @@ static jboolean getRuntimeVisibleParameterAnnotationsIterator(Env* env, jbyte ty
     ClassLoader* classLoader = (ClassLoader*) ((void**) data)[1];
     if (type == RUNTIME_VISIBLE_PARAMETER_ANNOTATIONS) {
         jint numParams = getInt(&attributes);
-        ObjectArray* paramAnnotations = nvmNewObjectArray(env, numParams, array_of_java_lang_annotation_Annotation, NULL, NULL);
+        ObjectArray* paramAnnotations = rvmNewObjectArray(env, numParams, array_of_java_lang_annotation_Annotation, NULL, NULL);
         if (!paramAnnotations) return FALSE;
         jint i = 0;
         for (i = 0; i < numParams; i++) {
             jint length = getInt(&attributes);
-            ObjectArray* annotations = nvmNewObjectArray(env, length, java_lang_annotation_Annotation, NULL, NULL);
+            ObjectArray* annotations = rvmNewObjectArray(env, length, java_lang_annotation_Annotation, NULL, NULL);
             if (!annotations) return FALSE;
             jint j = 0;
             for (j = 0; j < length; j++) {
@@ -657,7 +657,7 @@ static jboolean getDeclaredClassesIterator(Env* env, char* innerClass, char* out
     if (!outerClass || strcmp(outerClass, clazz->name)) {
         return TRUE; // Continue with next attribute
     }
-    Class* c = nvmFindClassUsingLoader(env, innerClass, clazz->classLoader);
+    Class* c = rvmFindClassUsingLoader(env, innerClass, clazz->classLoader);
     if (!c) return FALSE; // Stop iterating
     result->values[*index] = (Object*) c;
     *index = *index + 1;
@@ -668,96 +668,96 @@ static jboolean getInnerClassNameIterator(Env* env, char* innerClass, char* oute
     Object** result = (Object**) ((void**) data)[0];
     Class* clazz = (Class*) ((void**) data)[1];
     if (innerName && innerClass && !strcmp(innerClass, clazz->name)) {
-        *result = nvmNewStringUTF(env, innerName, -1);
+        *result = rvmNewStringUTF(env, innerName, -1);
         return FALSE; // Stop iterating
     }
     return TRUE; // Continue with next attribute
 }
 
-jboolean nvmInitAttributes(Env* env) {
-    java_lang_TypeNotPresentException = nvmFindClassUsingLoader(env, "java/lang/TypeNotPresentException", NULL);
+jboolean rvmInitAttributes(Env* env) {
+    java_lang_TypeNotPresentException = rvmFindClassUsingLoader(env, "java/lang/TypeNotPresentException", NULL);
     if (!java_lang_TypeNotPresentException) return FALSE;
-    java_lang_annotation_AnnotationFormatError = nvmFindClassUsingLoader(env, "java/lang/annotation/AnnotationFormatError", NULL);
+    java_lang_annotation_AnnotationFormatError = rvmFindClassUsingLoader(env, "java/lang/annotation/AnnotationFormatError", NULL);
     if (!java_lang_annotation_AnnotationFormatError) return FALSE;
-    java_lang_reflect_Method = nvmFindClassUsingLoader(env, "java/lang/reflect/Method", NULL);
+    java_lang_reflect_Method = rvmFindClassUsingLoader(env, "java/lang/reflect/Method", NULL);
     if (!java_lang_reflect_Method) return FALSE;
-    java_lang_reflect_Method_init = nvmGetInstanceMethod(env, java_lang_reflect_Method, "<init>", "(J)V");
+    java_lang_reflect_Method_init = rvmGetInstanceMethod(env, java_lang_reflect_Method, "<init>", "(J)V");
     if (!java_lang_reflect_Method_init) return FALSE;
-    org_apache_harmony_lang_annotation_AnnotationMember = nvmFindClassUsingLoader(env, "org/apache/harmony/lang/annotation/AnnotationMember", NULL);
+    org_apache_harmony_lang_annotation_AnnotationMember = rvmFindClassUsingLoader(env, "org/apache/harmony/lang/annotation/AnnotationMember", NULL);
     if (!org_apache_harmony_lang_annotation_AnnotationMember) return FALSE;
-    org_apache_harmony_lang_annotation_AnnotationMember_init = nvmGetInstanceMethod(env, org_apache_harmony_lang_annotation_AnnotationMember, 
+    org_apache_harmony_lang_annotation_AnnotationMember_init = rvmGetInstanceMethod(env, org_apache_harmony_lang_annotation_AnnotationMember, 
         "<init>", "(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/reflect/Method;)V");
     if (!org_apache_harmony_lang_annotation_AnnotationMember_init) return FALSE;
 
-    org_apache_harmony_lang_annotation_AnnotationFactory = nvmFindClassUsingLoader(env, "org/apache/harmony/lang/annotation/AnnotationFactory", NULL);
+    org_apache_harmony_lang_annotation_AnnotationFactory = rvmFindClassUsingLoader(env, "org/apache/harmony/lang/annotation/AnnotationFactory", NULL);
     if (!org_apache_harmony_lang_annotation_AnnotationFactory) return FALSE;
-    org_apache_harmony_lang_annotation_AnnotationFactory_createAnnotation = nvmGetClassMethod(env, org_apache_harmony_lang_annotation_AnnotationFactory, 
+    org_apache_harmony_lang_annotation_AnnotationFactory_createAnnotation = rvmGetClassMethod(env, org_apache_harmony_lang_annotation_AnnotationFactory, 
         "createAnnotation", "(Ljava/lang/Class;[Lorg/apache/harmony/lang/annotation/AnnotationMember;)Ljava/lang/annotation/Annotation;");
     if (!org_apache_harmony_lang_annotation_AnnotationFactory_createAnnotation) return FALSE;
 
-    java_lang_annotation_Annotation = nvmFindClassUsingLoader(env, "java/lang/annotation/Annotation", NULL);
+    java_lang_annotation_Annotation = rvmFindClassUsingLoader(env, "java/lang/annotation/Annotation", NULL);
     if (!java_lang_annotation_Annotation) return FALSE;
-    array_of_java_lang_annotation_Annotation = nvmFindClassUsingLoader(env, "[Ljava/lang/annotation/Annotation;", NULL);
+    array_of_java_lang_annotation_Annotation = rvmFindClassUsingLoader(env, "[Ljava/lang/annotation/Annotation;", NULL);
     if (!array_of_java_lang_annotation_Annotation) return FALSE;
 
-    Class* array_java_lang_Class = nvmFindClassUsingLoader(env, "[Ljava/lang/Class;", NULL);
+    Class* array_java_lang_Class = rvmFindClassUsingLoader(env, "[Ljava/lang/Class;", NULL);
     if (!array_java_lang_Class) return FALSE;
-    emptyExceptionTypes = nvmNewObjectArray(env, 0, NULL, array_java_lang_Class, NULL);
+    emptyExceptionTypes = rvmNewObjectArray(env, 0, NULL, array_java_lang_Class, NULL);
     if (!emptyExceptionTypes) return FALSE;
 
-    emptyAnnotations = nvmNewObjectArray(env, 0, NULL, array_of_java_lang_annotation_Annotation, NULL);
+    emptyAnnotations = rvmNewObjectArray(env, 0, NULL, array_of_java_lang_annotation_Annotation, NULL);
     if (!emptyAnnotations) return FALSE;
 
     return TRUE;
 }
 
-Class* nvmAttributeGetDeclaringClass(Env* env, Class* clazz) {
+Class* rvmAttributeGetDeclaringClass(Env* env, Class* clazz) {
     Class* result = NULL;
     void* data[2] = {&result, clazz};
     iterateInnerClasses(env, clazz->attributes, getDeclaringClassIterator, data);
     return result;
 }
 
-Class* nvmAttributeGetEnclosingClass(Env* env, Class* clazz) {
+Class* rvmAttributeGetEnclosingClass(Env* env, Class* clazz) {
     Class* result = NULL;
     void* data[2] = {&result, clazz};
     iterateEnclosingMethods(env, clazz->attributes, getEnclosingClassIterator, data);
     return result;
 }
 
-Method* nvmAttributeGetEnclosingMethod(Env* env, Class* clazz) {
+Method* rvmAttributeGetEnclosingMethod(Env* env, Class* clazz) {
     Method* result = NULL;
     void* data[2] = {&result, clazz};
     iterateEnclosingMethods(env, clazz->attributes, getEnclosingMethodIterator, data);
     return result;
 }
 
-jboolean nvmAttributeIsAnonymousClass(Env* env, Class* clazz) {
+jboolean rvmAttributeIsAnonymousClass(Env* env, Class* clazz) {
     jboolean result = FALSE;
     void* data[2] = {&result, clazz};
     iterateInnerClasses(env, clazz->attributes, isAnonymousClassIterator, data);
     return result;
 }
 
-Object* nvmAttributeGetClassSignature(Env* env, Class* clazz) {
+Object* rvmAttributeGetClassSignature(Env* env, Class* clazz) {
     Object* result = NULL;
     iterateAttributes(env, clazz->attributes, getSignatureIterator, &result);
     return result;
 }
 
-Object* nvmAttributeGetMethodSignature(Env* env, Method* method) {
+Object* rvmAttributeGetMethodSignature(Env* env, Method* method) {
     Object* result = NULL;
     iterateAttributes(env, method->attributes, getSignatureIterator, &result);
     return result;
 }
 
-Object* nvmAttributeGetFieldSignature(Env* env, Field* field) {
+Object* rvmAttributeGetFieldSignature(Env* env, Field* field) {
     Object* result = NULL;
     iterateAttributes(env, field->attributes, getSignatureIterator, &result);
     return result;
 }
 
-ObjectArray* nvmAttributeGetExceptions(Env* env, Method* method) {
+ObjectArray* rvmAttributeGetExceptions(Env* env, Method* method) {
     if (!method->attributes) return emptyExceptionTypes;
     ObjectArray* result = NULL;
     void* data[2] = {&result, method};
@@ -765,55 +765,55 @@ ObjectArray* nvmAttributeGetExceptions(Env* env, Method* method) {
     return result ? result : emptyExceptionTypes;
 }
 
-Object* nvmAttributeGetAnnotationDefault(Env* env, Method* method) {
+Object* rvmAttributeGetAnnotationDefault(Env* env, Method* method) {
     Object* result = NULL;
     void* data[2] = {&result, method};
     iterateAttributes(env, method->attributes, getAnnotationDefaultIterator, data);
     return result;
 }
 
-ObjectArray* nvmAttributeGetClassRuntimeVisibleAnnotations(Env* env, Class* clazz) {
+ObjectArray* rvmAttributeGetClassRuntimeVisibleAnnotations(Env* env, Class* clazz) {
     ObjectArray* result = NULL;
     void* data[2] = {&result, clazz->classLoader};
     iterateAttributes(env, clazz->attributes, getRuntimeVisibleAnnotationsIterator, data);
     return result ? result : emptyAnnotations;
 }
 
-ObjectArray* nvmAttributeGetMethodRuntimeVisibleAnnotations(Env* env, Method* method) {
+ObjectArray* rvmAttributeGetMethodRuntimeVisibleAnnotations(Env* env, Method* method) {
     ObjectArray* result = NULL;
     void* data[2] = {&result, method->clazz->classLoader};
     iterateAttributes(env, method->attributes, getRuntimeVisibleAnnotationsIterator, data);
     return result ? result : emptyAnnotations;
 }
 
-ObjectArray* nvmAttributeGetFieldRuntimeVisibleAnnotations(Env* env, Field* field) {
+ObjectArray* rvmAttributeGetFieldRuntimeVisibleAnnotations(Env* env, Field* field) {
     ObjectArray* result = NULL;
     void* data[2] = {&result, field->clazz->classLoader};
     iterateAttributes(env, field->attributes, getRuntimeVisibleAnnotationsIterator, data);
     return result ? result : emptyAnnotations;
 }
 
-ObjectArray* nvmAttributeGetMethodRuntimeVisibleParameterAnnotations(Env* env, Method* method) {
+ObjectArray* rvmAttributeGetMethodRuntimeVisibleParameterAnnotations(Env* env, Method* method) {
     ObjectArray* result = NULL;
     void* data[2] = {&result, method->clazz->classLoader};
     iterateAttributes(env, method->attributes, getRuntimeVisibleParameterAnnotationsIterator, data);
     return result ? result : emptyAnnotations;
 }
 
-ObjectArray* nvmAttributeGetDeclaredClasses(Env* env, Class* clazz) {
+ObjectArray* rvmAttributeGetDeclaredClasses(Env* env, Class* clazz) {
     if (!clazz->attributes) return NULL;
     jint count = 0;
     void* countData[2] = {&count, clazz};
     iterateInnerClasses(env, clazz->attributes, getDeclaredClassesCountIterator, countData);
     if (count == 0) return NULL;
-    ObjectArray* result = nvmNewObjectArray(env, count, java_lang_Class, NULL, NULL);
+    ObjectArray* result = rvmNewObjectArray(env, count, java_lang_Class, NULL, NULL);
     jint index = 0;
     void* data[3] = {result, &index, clazz};
     iterateInnerClasses(env, clazz->attributes, getDeclaredClassesIterator, data);
     return result;
 }
 
-Object* nvmAttributeGetInnerClassName(Env* env, Class* clazz) {
+Object* rvmAttributeGetInnerClassName(Env* env, Class* clazz) {
     Object* result = NULL;
     void* data[2] = {&result, clazz};
     iterateInnerClasses(env, clazz->attributes, getInnerClassNameIterator, data);

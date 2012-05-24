@@ -20,7 +20,7 @@ RETURN_TYPE_DOUBLE = 3
     .align    4, 0x90
 __call0:
     .cfi_startproc
-    .cfi_personality 155, __nvmPersonality
+    .cfi_personality 155, __rvmPersonality
     .cfi_lsda 16, Lexception1
     .cfi_def_cfa %rsp, 8
 Lcall0Begin:

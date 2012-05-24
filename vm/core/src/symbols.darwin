@@ -3,6 +3,6 @@ _java_lang_*
 _java_io_*
 _prim_*
 _array_*
-_nvm*
-__nvmPersonality
+_rvm*
+__rvmPersonality
 

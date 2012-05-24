@@ -34,7 +34,7 @@ static char* absolutize(char* basePath, char* rel, char* dest) {
 static jboolean initClasspathEntries(Env* env, char* basePath, char** raw, ClasspathEntry** first) {
     jint i = 0;
     while (raw[i]) {
-        ClasspathEntry* entry = nvmAllocateMemory(env, sizeof(ClasspathEntry));
+        ClasspathEntry* entry = rvmAllocateMemory(env, sizeof(ClasspathEntry));
         if (!entry) return FALSE;
         absolutize(basePath, raw[i], entry->jarPath);
         LL_APPEND(*first, entry);
@@ -44,7 +44,7 @@ static jboolean initClasspathEntries(Env* env, char* basePath, char** raw, Class
     return TRUE;
 }
 
-jboolean nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreNvmArgs) {
+jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreRvmArgs) {
     char path[PATH_MAX];
     if (!realpath(argv[0], path)) {
         return FALSE;
@@ -64,8 +64,8 @@ jboolean nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
 
     jint firstJavaArg = 1;
     for (i = 1; i < argc; i++) {
-        if (startsWith(argv[i], "-nvm:")) {
-            if (!ignoreNvmArgs) {
+        if (startsWith(argv[i], "-rvm:")) {
+            if (!ignoreRvmArgs) {
                 char* arg = &argv[i][5];
                 if (startsWith(arg, "log=trace")) {
                     if (options->logLevel == 0) options->logLevel = LOG_LEVEL_TRACE;
@@ -101,30 +101,30 @@ jboolean nvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
     return options->mainClass != NULL;
 }
 
-VM* nvmCreateVM(Options* options) {
+VM* rvmCreateVM(Options* options) {
     VM* vm = GC_MALLOC(sizeof(VM));
     if (!vm) return NULL;
     vm->options = options;
-    nvmInitJavaVM(vm);
+    rvmInitJavaVM(vm);
     return vm;
 }
 
-Env* nvmCreateEnv(VM* vm) {
+Env* rvmCreateEnv(VM* vm) {
     Env* env = GC_MALLOC(sizeof(Env));
     if (!env) return NULL;
     env->vm = vm;
-    nvmInitJNIEnv(env);
+    rvmInitJNIEnv(env);
     return env;
 }
 
-Env* nvmStartup(Options* options) {
+Env* rvmStartup(Options* options) {
     GC_INIT();
     // TODO: Handle args like -Xmx?
 
-    VM* vm = nvmCreateVM(options);
+    VM* vm = rvmCreateVM(options);
     if (!vm) return NULL;
 
-    Env* env = nvmCreateEnv(vm);
+    Env* env = rvmCreateEnv(vm);
     if (!env) return NULL;
     // TODO: What if we can't allocate Env?
 
@@ -136,21 +136,21 @@ Env* nvmStartup(Options* options) {
 
     // Call init on modules
     TRACE("Initializing logging");
-    if (!nvmInitLog(env)) return NULL;
+    if (!rvmInitLog(env)) return NULL;
     TRACE("Initializing classes");
-    if (!nvmInitClasses(env)) return NULL;
+    if (!rvmInitClasses(env)) return NULL;
     TRACE("Initializing methods");
-    if (!nvmInitMethods(env)) return NULL;
+    if (!rvmInitMethods(env)) return NULL;
     TRACE("Initializing strings");
-    if (!nvmInitStrings(env)) return NULL;
+    if (!rvmInitStrings(env)) return NULL;
     TRACE("Initializing VMI");
-    if (!nvmInitVMI(env)) return NULL;
+    if (!rvmInitVMI(env)) return NULL;
     TRACE("Initializing threads");
-    if (!nvmInitThreads(env)) return NULL;
+    if (!rvmInitThreads(env)) return NULL;
     TRACE("Initializing attributes");
-    if (!nvmInitAttributes(env)) return NULL;
+    if (!rvmInitAttributes(env)) return NULL;
     TRACE("Initializing primitive wrapper classes");
-    if (!nvmInitPrimitiveWrapperClasses(env)) return NULL;
+    if (!rvmInitPrimitiveWrapperClasses(env)) return NULL;
 
     // Initialize the RoboVM rt JNI code
 //    RT_JNI_OnLoad(&vm->javaVM, NULL);
@@ -162,8 +162,8 @@ Env* nvmStartup(Options* options) {
     registerCoreLibrariesJni((JNIEnv*) env);
 
     TRACE("Creating system ClassLoader");
-    systemClassLoader = nvmGetSystemClassLoader(env);
-    if (nvmExceptionOccurred(env)) return NULL;
+    systemClassLoader = rvmGetSystemClassLoader(env);
+    if (rvmExceptionOccurred(env)) return NULL;
     env->currentThread->contextClassLoader = systemClassLoader;
 
     TRACE("Initialization done");
@@ -171,53 +171,53 @@ Env* nvmStartup(Options* options) {
     return env;
 }
 
-jboolean nvmRun(Env* env) {
+jboolean rvmRun(Env* env) {
     Options* options = env->vm->options;
     Class* clazz = NULL;
-    clazz = nvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
+    clazz = rvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
     if (clazz) {
-        Method* method = nvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
+        Method* method = rvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
         if (method) {
-            ObjectArray* args = nvmNewObjectArray(env, options->commandLineArgsCount, java_lang_String, NULL, NULL);
+            ObjectArray* args = rvmNewObjectArray(env, options->commandLineArgsCount, java_lang_String, NULL, NULL);
             if (args) {
                 jint i = 0;
                 for (i = 0; i < args->length; i++) {
                     // TODO: Don't assume modified UTF-8
-                    args->values[i] = nvmNewStringUTF(env, options->commandLineArgs[i], -1);
+                    args->values[i] = rvmNewStringUTF(env, options->commandLineArgs[i], -1);
                     if (!args->values[i]) {
                         args = NULL;
                         break;
                     }
                 }
-                if (args) nvmCallVoidClassMethod(env, clazz, method, args);
+                if (args) rvmCallVoidClassMethod(env, clazz, method, args);
             }
         }
     }
-    Object* throwable = nvmExceptionOccurred(env);
+    Object* throwable = rvmExceptionOccurred(env);
     if (throwable) {
         // TODO: Handle when the call to printStackTrace fails with an exception
-        nvmExceptionClear(env);
-        Method* printStackTrace = nvmGetInstanceMethod(env, java_lang_Thread, "printStackTrace", "(Ljava/lang/Throwable;)V");
+        rvmExceptionClear(env);
+        Method* printStackTrace = rvmGetInstanceMethod(env, java_lang_Thread, "printStackTrace", "(Ljava/lang/Throwable;)V");
         if (printStackTrace) {
             jvalue args[1];
             args[0].l = (jobject) throwable;
-            nvmCallVoidInstanceMethodA(env, (Object*) env->currentThread, printStackTrace, args);
+            rvmCallVoidInstanceMethodA(env, (Object*) env->currentThread, printStackTrace, args);
         }
-        nvmThrow(env, throwable);
+        rvmThrow(env, throwable);
         // TODO: Wait for other threads to finish?
     }
     if (!clazz) {
         fprintf(stderr, "Main class %s not found.\n", options->mainClass);
     }
-    return !nvmExceptionCheck(env);
+    return !rvmExceptionCheck(env);
 }
 
-void nvmShutdown(Env* env, jint code) {
+void rvmShutdown(Env* env, jint code) {
     // TODO: Cleanup, stop threads.
     exit(code);
 }
 
-void nvmAbort(char* format, ...) {
+void rvmAbort(char* format, ...) {
     va_list args;
     if (format) {
         va_start(args, format);
@@ -228,7 +228,7 @@ void nvmAbort(char* format, ...) {
     abort();
 }
 
-DynamicLib* nvmOpenDynamicLib(Env* env, const char* file) {
+DynamicLib* rvmOpenDynamicLib(Env* env, const char* file) {
     DynamicLib* dlib = NULL;
 
     void* handle = dlopen(file, RTLD_LOCAL | RTLD_LAZY);
@@ -239,7 +239,7 @@ DynamicLib* nvmOpenDynamicLib(Env* env, const char* file) {
 
     TRACEF("Opening dynamic library '%s'", file);
 
-    dlib = nvmAllocateMemory(env, sizeof(DynamicLib));
+    dlib = rvmAllocateMemory(env, sizeof(DynamicLib));
     if (!dlib) {
         dlclose(handle);
         return NULL;
@@ -250,11 +250,11 @@ DynamicLib* nvmOpenDynamicLib(Env* env, const char* file) {
     return dlib;
 }
 
-void nvmCloseDynamicLib(Env* env, DynamicLib* lib) {
+void rvmCloseDynamicLib(Env* env, DynamicLib* lib) {
     dlclose(lib->handle);
 }
 
-jboolean nvmHasDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs) {
+jboolean rvmHasDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs) {
     DynamicLib* dlib = NULL;
     LL_FOREACH(libs, dlib) {
         if (dlib->handle == lib->handle) {
@@ -264,15 +264,15 @@ jboolean nvmHasDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs) {
     return FALSE;
 }
 
-void nvmAddDynamicLib(Env* env, DynamicLib* lib, DynamicLib** libs) {
+void rvmAddDynamicLib(Env* env, DynamicLib* lib, DynamicLib** libs) {
     LL_APPEND(*libs, lib);
 }
 
-void nvmRemoveDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs) {
+void rvmRemoveDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs) {
     LL_DELETE(libs, lib);
 }
 
-void* nvmFindDynamicLibSymbol(Env* env, DynamicLib* libs, const char* symbol, jboolean searchAll) {
+void* rvmFindDynamicLibSymbol(Env* env, DynamicLib* libs, const char* symbol, jboolean searchAll) {
     TRACEF("Searching for symbol '%s'", symbol);
 
     DynamicLib* dlib = NULL;

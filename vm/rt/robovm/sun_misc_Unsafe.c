@@ -9,6 +9,6 @@ jlong Java_sun_misc_Unsafe_objectFieldOffset0(Env* env, Object* unsafe, Object* 
 
 jboolean Java_sun_misc_Unsafe_compareAndSwapInt(Env* env, Object* unsafe, Object* object, jlong fieldOffset, jint expected, jint update) {
     jint* address = (jint*) (((jbyte*) object) + fieldOffset);
-    return nvmCompareAndSwapInt(address, expected, update);
+    return rvmCompareAndSwapInt(address, expected, update);
 }
 

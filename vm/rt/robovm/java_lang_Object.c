@@ -5,7 +5,7 @@ Class* Java_java_lang_Object_getClass(Env* env, Object* thiz) {
 }
 
 Object* Java_java_lang_Object_internalClone(Env* env, Object* thiz) {
-    return nvmCloneObject(env, thiz);
+    return rvmCloneObject(env, thiz);
 }
 
 jint Java_java_lang_Object_hashCode(Env* env, Object* thiz) {
@@ -13,14 +13,14 @@ jint Java_java_lang_Object_hashCode(Env* env, Object* thiz) {
 }
 
 void Java_java_lang_Object_notify(Env* env, Object* thiz) {
-    nvmMonitorNotify(env, thiz);
+    rvmMonitorNotify(env, thiz);
 }
 
 void Java_java_lang_Object_notifyAll(Env* env, Object* thiz) {
-    nvmMonitorNotifyAll(env, thiz);
+    rvmMonitorNotifyAll(env, thiz);
 }
 
 void Java_java_lang_Object_wait(Env* env, Object* thiz, jlong millis, jint nanos) {
-    nvmMonitorWait(env, thiz, millis, nanos);
+    rvmMonitorWait(env, thiz, millis, nanos);
 }
 

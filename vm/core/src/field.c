@@ -2,19 +2,19 @@
 #include <string.h>
 
 static Field* getField(Env* env, Class* clazz, char* name, char* desc) {
-    Field* field = nvmGetFields(env, clazz);
-    if (nvmExceptionCheck(env)) return NULL;
+    Field* field = rvmGetFields(env, clazz);
+    if (rvmExceptionCheck(env)) return NULL;
     for (; field != NULL; field = field->next) {
         if (!strcmp(field->name, name) && !strcmp(field->desc, desc)) {
             return field;
         }
     }
 
-    Interface* interface = nvmGetInterfaces(env, clazz);
-    if (nvmExceptionCheck(env)) return NULL;
+    Interface* interface = rvmGetInterfaces(env, clazz);
+    if (rvmExceptionCheck(env)) return NULL;
     for (; interface != NULL; interface = interface->next) {
         field = getField(env, interface->interface, name, desc);
-        if (nvmExceptionCheck(env)) return NULL;
+        if (rvmExceptionCheck(env)) return NULL;
         if (field) return field;
     }
 
@@ -25,33 +25,33 @@ static Field* getField(Env* env, Class* clazz, char* name, char* desc) {
     return NULL;
 }
 
-Field* nvmGetField(Env* env, Class* clazz, char* name, char* desc) {
+Field* rvmGetField(Env* env, Class* clazz, char* name, char* desc) {
     Field* field = getField(env, clazz, name, desc);
-    if (nvmExceptionCheck(env)) return NULL;
+    if (rvmExceptionCheck(env)) return NULL;
     if (!field) {
-        nvmThrowNoSuchFieldError(env, name);
+        rvmThrowNoSuchFieldError(env, name);
         return NULL;
     }
     return field;
 }
 
-ClassField* nvmGetClassField(Env* env, Class* clazz, char* name, char* desc) {
-    Field* field = nvmGetField(env, clazz, name, desc);
+ClassField* rvmGetClassField(Env* env, Class* clazz, char* name, char* desc) {
+    Field* field = rvmGetField(env, clazz, name, desc);
     if (!field) return NULL;
     if (!(field->access & ACC_STATIC)) {
         // TODO: JNI spec doesn't say anything about throwing this
-        nvmThrowIncompatibleClassChangeErrorClassField(env, clazz, name, desc);
+        rvmThrowIncompatibleClassChangeErrorClassField(env, clazz, name, desc);
         return NULL;
     }
     return (ClassField*) field;
 }
 
-InstanceField* nvmGetInstanceField(Env* env, Class* clazz, char* name, char* desc) {
-    Field* field = nvmGetField(env, clazz, name, desc);
+InstanceField* rvmGetInstanceField(Env* env, Class* clazz, char* name, char* desc) {
+    Field* field = rvmGetField(env, clazz, name, desc);
     if (!field) return NULL;
     if (field->access & ACC_STATIC) {
         // TODO: JNI spec doesn't say anything about throwing this
-        nvmThrowIncompatibleClassChangeErrorInstanceField(env, clazz, name, desc);
+        rvmThrowIncompatibleClassChangeErrorInstanceField(env, clazz, name, desc);
         return NULL;
     }
     return (InstanceField*) field;
@@ -61,165 +61,165 @@ static inline void* getFieldAddress(Object* obj, InstanceField* field) {
     return (void*) ((jbyte*) obj + field->offset);
 }
 
-Object* nvmGetObjectInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
+Object* rvmGetObjectInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
     return *(Object**) getFieldAddress(obj, field);
 }
 
-jboolean nvmGetBooleanInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
+jboolean rvmGetBooleanInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
     return *(jboolean*) getFieldAddress(obj, field);
 }
 
-jbyte nvmGetByteInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
+jbyte rvmGetByteInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
     return *(jbyte*) getFieldAddress(obj, field);
 }
 
-jchar nvmGetCharInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
+jchar rvmGetCharInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
     return *(jchar*) getFieldAddress(obj, field);
 }
 
-jshort nvmGetShortInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
+jshort rvmGetShortInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
     return *(jshort*) getFieldAddress(obj, field);
 }
 
-jint nvmGetIntInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
+jint rvmGetIntInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
     return *(jint*) getFieldAddress(obj, field);
 }
 
-jlong nvmGetLongInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
+jlong rvmGetLongInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
     return *(jlong*) getFieldAddress(obj, field);
 }
 
-jfloat nvmGetFloatInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
+jfloat rvmGetFloatInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
     return *(jfloat*) getFieldAddress(obj, field);
 }
 
-jdouble nvmGetDoubleInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
+jdouble rvmGetDoubleInstanceFieldValue(Env* env, Object* obj, InstanceField* field) {
     return *(jdouble*) getFieldAddress(obj, field);
 }
 
-void nvmSetObjectInstanceFieldValue(Env* env, Object* obj, InstanceField* field, Object* value) {
+void rvmSetObjectInstanceFieldValue(Env* env, Object* obj, InstanceField* field, Object* value) {
     *(Object**) getFieldAddress(obj, field) = value;
 }
 
-void nvmSetBooleanInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jboolean value) {
+void rvmSetBooleanInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jboolean value) {
     *(jboolean*) getFieldAddress(obj, field) = value;
 }
 
-void nvmSetByteInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jbyte value) {
+void rvmSetByteInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jbyte value) {
     *(jbyte*) getFieldAddress(obj, field) = value;
 }
 
-void nvmSetCharInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jchar value) {
+void rvmSetCharInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jchar value) {
     *(jchar*) getFieldAddress(obj, field) = value;
 }
 
-void nvmSetShortInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jshort value) {
+void rvmSetShortInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jshort value) {
     *(jshort*) getFieldAddress(obj, field) = value;
 }
 
-void nvmSetIntInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jint value) {
+void rvmSetIntInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jint value) {
     *(jint*) getFieldAddress(obj, field) = value;
 }
 
-void nvmSetLongInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jlong value) {
+void rvmSetLongInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jlong value) {
     *(jlong*) getFieldAddress(obj, field) = value;
 }
 
-void nvmSetFloatInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jfloat value) {
+void rvmSetFloatInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jfloat value) {
     *(jfloat*) getFieldAddress(obj, field) = value;
 }
 
-void nvmSetDoubleInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jdouble value) {
+void rvmSetDoubleInstanceFieldValue(Env* env, Object* obj, InstanceField* field, jdouble value) {
     *(jdouble*) getFieldAddress(obj, field) = value;
 }
 
-Object* nvmGetObjectClassFieldValue(Env* env, Class* clazz, ClassField* field) {
-    nvmInitialize(env, field->field.clazz);
+Object* rvmGetObjectClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    rvmInitialize(env, field->field.clazz);
     return *(Object**) field->address;
 }
 
-jboolean nvmGetBooleanClassFieldValue(Env* env, Class* clazz, ClassField* field) {
-    nvmInitialize(env, field->field.clazz);
+jboolean rvmGetBooleanClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    rvmInitialize(env, field->field.clazz);
     return *(jboolean*) field->address;
 }
 
-jbyte nvmGetByteClassFieldValue(Env* env, Class* clazz, ClassField* field) {
-    nvmInitialize(env, field->field.clazz);
+jbyte rvmGetByteClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    rvmInitialize(env, field->field.clazz);
     return *(jbyte*) field->address;
 }
 
-jchar nvmGetCharClassFieldValue(Env* env, Class* clazz, ClassField* field) {
-    nvmInitialize(env, field->field.clazz);
+jchar rvmGetCharClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    rvmInitialize(env, field->field.clazz);
     return *(jchar*) field->address;
 }
 
-jshort nvmGetShortClassFieldValue(Env* env, Class* clazz, ClassField* field) {
-    nvmInitialize(env, field->field.clazz);
+jshort rvmGetShortClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    rvmInitialize(env, field->field.clazz);
     return *(jshort*) field->address;
 }
 
-jint nvmGetIntClassFieldValue(Env* env, Class* clazz, ClassField* field) {
-    nvmInitialize(env, field->field.clazz);
+jint rvmGetIntClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    rvmInitialize(env, field->field.clazz);
     return *(jint*) field->address;
 }
 
-jlong nvmGetLongClassFieldValue(Env* env, Class* clazz, ClassField* field) {
-    nvmInitialize(env, field->field.clazz);
+jlong rvmGetLongClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    rvmInitialize(env, field->field.clazz);
     return *(jlong*) field->address;
 }
 
-jfloat nvmGetFloatClassFieldValue(Env* env, Class* clazz, ClassField* field) {
-    nvmInitialize(env, field->field.clazz);
+jfloat rvmGetFloatClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    rvmInitialize(env, field->field.clazz);
     return *(jfloat*) field->address;
 }
 
-jdouble nvmGetDoubleClassFieldValue(Env* env, Class* clazz, ClassField* field) {
-    nvmInitialize(env, field->field.clazz);
+jdouble rvmGetDoubleClassFieldValue(Env* env, Class* clazz, ClassField* field) {
+    rvmInitialize(env, field->field.clazz);
     return *(jdouble*) field->address;
 }
 
-void nvmSetObjectClassFieldValue(Env* env, Class* clazz, ClassField* field, Object* value) {
-    nvmInitialize(env, field->field.clazz);
+void rvmSetObjectClassFieldValue(Env* env, Class* clazz, ClassField* field, Object* value) {
+    rvmInitialize(env, field->field.clazz);
     *(Object**) field->address = value;
 }
 
-void nvmSetBooleanClassFieldValue(Env* env, Class* clazz, ClassField* field, jboolean value) {
-    nvmInitialize(env, field->field.clazz);
+void rvmSetBooleanClassFieldValue(Env* env, Class* clazz, ClassField* field, jboolean value) {
+    rvmInitialize(env, field->field.clazz);
     *(jboolean*) field->address = value;
 }
 
-void nvmSetByteClassFieldValue(Env* env, Class* clazz, ClassField* field, jbyte value) {
-    nvmInitialize(env, field->field.clazz);
+void rvmSetByteClassFieldValue(Env* env, Class* clazz, ClassField* field, jbyte value) {
+    rvmInitialize(env, field->field.clazz);
     *(jbyte*) field->address = value;
 }
 
-void nvmSetCharClassFieldValue(Env* env, Class* clazz, ClassField* field, jchar value) {
-    nvmInitialize(env, field->field.clazz);
+void rvmSetCharClassFieldValue(Env* env, Class* clazz, ClassField* field, jchar value) {
+    rvmInitialize(env, field->field.clazz);
     *(jchar*) field->address = value;
 }
 
-void nvmSetShortClassFieldValue(Env* env, Class* clazz, ClassField* field, jshort value) {
-    nvmInitialize(env, field->field.clazz);
+void rvmSetShortClassFieldValue(Env* env, Class* clazz, ClassField* field, jshort value) {
+    rvmInitialize(env, field->field.clazz);
     *(jshort*) field->address = value;
 }
 
-void nvmSetIntClassFieldValue(Env* env, Class* clazz, ClassField* field, jint value) {
-    nvmInitialize(env, field->field.clazz);
+void rvmSetIntClassFieldValue(Env* env, Class* clazz, ClassField* field, jint value) {
+    rvmInitialize(env, field->field.clazz);
     *(jint*) field->address = value;
 }
 
-void nvmSetLongClassFieldValue(Env* env, Class* clazz, ClassField* field, jlong value) {
-    nvmInitialize(env, field->field.clazz);
+void rvmSetLongClassFieldValue(Env* env, Class* clazz, ClassField* field, jlong value) {
+    rvmInitialize(env, field->field.clazz);
     *(jlong*) field->address = value;
 }
 
-void nvmSetFloatClassFieldValue(Env* env, Class* clazz, ClassField* field, jfloat value) {
-    nvmInitialize(env, field->field.clazz);
+void rvmSetFloatClassFieldValue(Env* env, Class* clazz, ClassField* field, jfloat value) {
+    rvmInitialize(env, field->field.clazz);
     *(jfloat*) field->address = value;
 }
 
-void nvmSetDoubleClassFieldValue(Env* env, Class* clazz, ClassField* field, jdouble value) {
-    nvmInitialize(env, field->field.clazz);
+void rvmSetDoubleClassFieldValue(Env* env, Class* clazz, ClassField* field, jdouble value) {
+    rvmInitialize(env, field->field.clazz);
     *(jdouble*) field->address = value;
 }
 

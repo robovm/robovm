@@ -50,7 +50,7 @@ struct CallInfo;
 extern void _call0(struct CallInfo*);
 extern void _proxy0(void);
 
-#ifdef NVM_X86_64
+#ifdef RVM_X86_64
 
 #define MAX_INT_ARGS 6
 #define MAX_FP_ARGS 8
@@ -69,7 +69,7 @@ typedef struct CallInfo {
 } CallInfo;
 
 static inline CallInfo* call0AllocateCallInfo(Env* env, void* function, jint ptrArgsCount, jint intArgsCount, jint longArgsCount, jint floatArgsCount, jint doubleArgsCount) {
-    CallInfo* ci = nvmAllocateMemory(env, sizeof(CallInfo));
+    CallInfo* ci = rvmAllocateMemory(env, sizeof(CallInfo));
     if (!ci) return NULL;
     ci->function = function;
     jint stackArgsSize = ptrArgsCount + intArgsCount + longArgsCount + floatArgsCount + doubleArgsCount;
@@ -77,7 +77,7 @@ static inline CallInfo* call0AllocateCallInfo(Env* env, void* function, jint ptr
     stackArgsSize -= MIN(floatArgsCount + doubleArgsCount, MAX_FP_ARGS);
     if (stackArgsSize > 0) {
         ci->stackArgsSize = stackArgsSize;
-        ci->stackArgs = nvmAllocateMemory(env, stackArgsSize * sizeof(void*));
+        ci->stackArgs = rvmAllocateMemory(env, stackArgsSize * sizeof(void*));
         if (!ci->stackArgs) return NULL;
     }
     return ci;
@@ -183,7 +183,7 @@ static inline void proxy0ReturnDouble(CallInfo* ci, jdouble d) {
 }
 
 
-#elif NVM_X86
+#elif RVM_X86
 
 typedef struct CallInfo {
     void* function;
@@ -200,13 +200,13 @@ typedef struct CallInfo {
  */
 
 static inline CallInfo* call0AllocateCallInfo(Env* env, void* function, jint ptrArgsCount, jint intArgsCount, jint longArgsCount, jint floatArgsCount, jint doubleArgsCount) {
-    CallInfo* ci = nvmAllocateMemory(env, sizeof(CallInfo));
+    CallInfo* ci = rvmAllocateMemory(env, sizeof(CallInfo));
     if (!ci) return NULL;
     ci->function = function;
     jint stackArgsSize = ptrArgsCount + intArgsCount + (longArgsCount << 1) + floatArgsCount + (doubleArgsCount << 1);
     if (stackArgsSize > 0) {
         ci->stackArgsSize = stackArgsSize;
-        ci->stackArgs = nvmAllocateMemory(env, stackArgsSize * sizeof(void*));
+        ci->stackArgs = rvmAllocateMemory(env, stackArgsSize * sizeof(void*));
         if (!ci->stackArgs) return NULL;
     }
     return ci;
@@ -287,7 +287,7 @@ static inline void proxy0ReturnDouble(CallInfo* ci, jdouble d) {
     ci->returnType = RETURN_TYPE_DOUBLE;
 }
 
-#elif IOS && (NVM_THUMBV6 || NVM_THUMBV7)
+#elif IOS && (RVM_THUMBV6 || RVM_THUMBV7)
 
 #define MAX_REG_ARGS 4
 
@@ -308,14 +308,14 @@ typedef struct CallInfo {
  */
 
 static inline CallInfo* call0AllocateCallInfo(Env* env, void* function, jint ptrArgsCount, jint intArgsCount, jint longArgsCount, jint floatArgsCount, jint doubleArgsCount) {
-    CallInfo* ci = nvmAllocateMemory(env, sizeof(CallInfo));
+    CallInfo* ci = rvmAllocateMemory(env, sizeof(CallInfo));
     if (!ci) return NULL;
     ci->function = function;
     jint stackArgsSize = ptrArgsCount + intArgsCount + (longArgsCount << 1) + floatArgsCount + (doubleArgsCount << 1);
     stackArgsSize -= MIN(stackArgsSize, MAX_REG_ARGS);
     if (stackArgsSize > 0) {
         ci->stackArgsSize = stackArgsSize;
-        ci->stackArgs = nvmAllocateMemory(env, stackArgsSize * sizeof(void*));
+        ci->stackArgs = rvmAllocateMemory(env, stackArgsSize * sizeof(void*));
         if (!ci->stackArgs) return NULL;
     }
     return ci;

@@ -10,7 +10,7 @@ typedef struct UnwindInfo {
     _Unwind_Ptr landing_pad;
 } UnwindInfo;
 
-_Unwind_Reason_Code _nvmPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, 
+_Unwind_Reason_Code _rvmPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, 
         struct _Unwind_Exception* exception_info, struct _Unwind_Context* context) {
 
     UnwindInfo* info = (UnwindInfo*) exception_info;
@@ -34,7 +34,7 @@ _Unwind_Reason_Code _nvmPersonality(int version, _Unwind_Action actions, _Unwind
 }
 
 jint unwindRaiseException(Env* env) {
-    UnwindInfo* u = nvmAllocateMemory(env, sizeof(UnwindInfo));
+    UnwindInfo* u = rvmAllocateMemory(env, sizeof(UnwindInfo));
     u->exception_info.exception_class = UNWIND_EXCEPTION_CLASS;
     _Unwind_Reason_Code urc = _Unwind_RaiseException(&u->exception_info);
     return urc == _URC_END_OF_STACK ? UNWIND_UNHANDLED_EXCEPTION : UNWIND_FATAL_ERROR;

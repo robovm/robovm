@@ -36,8 +36,8 @@ __call0:
     str r0, [sp, #28]
 
     @ Save personality function to _Unwind_FunctionContext->personality
-    movw r0, :lower16:(L__nvmPersonality$non_lazy_ptr-(LPC1+4))
-    movt r0, :upper16:(L__nvmPersonality$non_lazy_ptr-(LPC1+4))
+    movw r0, :lower16:(L__rvmPersonality$non_lazy_ptr-(LPC1+4))
+    movt r0, :upper16:(L__rvmPersonality$non_lazy_ptr-(LPC1+4))
 LPC1:
     add r0, pc
     ldr r0, [r0]
@@ -107,6 +107,6 @@ Lcall0TryCatchLandingPad:
 
     .section    __DATA,__nl_symbol_ptr,non_lazy_symbol_pointers
     .align  2
-L__nvmPersonality$non_lazy_ptr:
-    .indirect_symbol    __nvmPersonality
+L__rvmPersonality$non_lazy_ptr:
+    .indirect_symbol    __rvmPersonality
     .long   0

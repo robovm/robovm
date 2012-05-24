@@ -4,52 +4,52 @@
 
 #define LOG_TAG "core.exception"
 
-void nvmRaiseException(Env* env, Object* e) {
+void rvmRaiseException(Env* env, Object* e) {
     if (env->throwable != e) {
-        nvmThrow(env, e);
+        rvmThrow(env, e);
     }
     jint result = unwindRaiseException(env);
     if (result == UNWIND_UNHANDLED_EXCEPTION) {
-        nvmAbort("Unhandled exception: %s", e->clazz->name);
+        rvmAbort("Unhandled exception: %s", e->clazz->name);
     }
-    nvmAbort("Fatal error in exception handler: %d", result);
+    rvmAbort("Fatal error in exception handler: %d", result);
 }
 
-void nvmReraiseException(Env* env, void* exInfo) {
+void rvmReraiseException(Env* env, void* exInfo) {
     jint result = unwindReraiseException(env, exInfo);
     if (result == UNWIND_UNHANDLED_EXCEPTION) {
-        nvmAbort("Unhandled exception: %s", env->throwable->clazz->name);
+        rvmAbort("Unhandled exception: %s", env->throwable->clazz->name);
     }
-    nvmAbort("Fatal error in exception handler: %d", result);
+    rvmAbort("Fatal error in exception handler: %d", result);
 }
 
-jboolean nvmExceptionCheck(Env* env) {
+jboolean rvmExceptionCheck(Env* env) {
     return env->throwable ? TRUE : FALSE;
 }
 
-Object* nvmExceptionOccurred(Env* env) {
+Object* rvmExceptionOccurred(Env* env) {
     return env->throwable;
 }
 
-void nvmExceptionPrintStackTrace(Env* env, Object* e, FILE* f) {
+void rvmExceptionPrintStackTrace(Env* env, Object* e, FILE* f) {
     // TODO: Write the stack trace to the FILE*
     fprintf(stderr, "Exception occurred: %s\n", e->clazz->name);
 }
 
-Object* nvmExceptionClear(Env* env) {
+Object* rvmExceptionClear(Env* env) {
     Object* e = env->throwable;
     env->throwable = NULL;
     return e;
 }
 
-jint nvmThrow(Env* env, Object* e) {
+jint rvmThrow(Env* env, Object* e) {
     // TODO: Check that e != NULL?
     if (env->throwable) {
-        nvmAbort("nvmThrow() called with env->throwable already set");
+        rvmAbort("rvmThrow() called with env->throwable already set");
     }
     if (IS_TRACE_ENABLED) {
-        InstanceField* field = nvmGetInstanceField(env, java_lang_Throwable, "stackState", "J");
-        jlong stackState = nvmGetLongInstanceFieldValue(env, e, field);
+        InstanceField* field = rvmGetInstanceField(env, java_lang_Throwable, "stackState", "J");
+        jlong stackState = rvmGetLongInstanceFieldValue(env, e, field);
         CallStackEntry* first = (CallStackEntry*) LONG_TO_PTR(stackState);
         if (!first) {
             TRACEF("Throwing a %s with empty call stack", e->clazz->name);
@@ -66,141 +66,141 @@ jint nvmThrow(Env* env, Object* e) {
     return 0;
 }
 
-jint nvmThrowNew(Env* env, Class* clazz, const char* message) {
-    Method* constructor = nvmGetInstanceMethod(env, clazz, "<init>", "(Ljava/lang/String;)V");
+jint rvmThrowNew(Env* env, Class* clazz, const char* message) {
+    Method* constructor = rvmGetInstanceMethod(env, clazz, "<init>", "(Ljava/lang/String;)V");
     if (!constructor) return 1;
     Object* string = NULL;
     // TODO: Check that clazz != NULL?
     if (message) {
-        string = nvmNewStringUTF(env, message, -1);
+        string = rvmNewStringUTF(env, message, -1);
         if (!string) return 2;
     }
-    Object* e = nvmNewObject(env, clazz, constructor, string);
+    Object* e = rvmNewObject(env, clazz, constructor, string);
     if (!e) return 3;
-    return nvmThrow(env, e);
+    return rvmThrow(env, e);
 }
 
-jint nvmThrowOutOfMemoryError(Env* env) {
-    return nvmThrowNew(env, java_lang_OutOfMemoryError, "");
+jint rvmThrowOutOfMemoryError(Env* env) {
+    return rvmThrowNew(env, java_lang_OutOfMemoryError, "");
 }
 
-jint nvmThrowNoClassDefFoundError(Env* env, const char* name) {
+jint rvmThrowNoClassDefFoundError(Env* env, const char* name) {
     // TODO: Message should look like "java.lang.NoClassDefFoundError: a/C"
-    return nvmThrowNew(env, java_lang_NoClassDefFoundError, "");
+    return rvmThrowNew(env, java_lang_NoClassDefFoundError, "");
 }
 
-jint nvmThrowLinkageError(Env* env) {
-    return nvmThrowNew(env, java_lang_LinkageError, "");
+jint rvmThrowLinkageError(Env* env) {
+    return rvmThrowNew(env, java_lang_LinkageError, "");
 }
 
-jint nvmThrowIllegalAccessError(Env* env, const char* message) {
-    return nvmThrowNew(env, java_lang_IllegalAccessError, message);
+jint rvmThrowIllegalAccessError(Env* env, const char* message) {
+    return rvmThrowNew(env, java_lang_IllegalAccessError, message);
 }
 
-jint nvmThrowIllegalAccessErrorClass(Env* env, Class* clazz, Class* caller) {
+jint rvmThrowIllegalAccessErrorClass(Env* env, Class* clazz, Class* caller) {
     // TODO: Message should look like ?
-    return nvmThrowNew(env, java_lang_IllegalAccessError, "");
+    return rvmThrowNew(env, java_lang_IllegalAccessError, "");
 }
 
-jint nvmThrowIllegalAccessErrorField(Env* env, Class* clazz, const char* name, const char* desc, Class* caller) {
+jint rvmThrowIllegalAccessErrorField(Env* env, Class* clazz, const char* name, const char* desc, Class* caller) {
     // TODO: Message should look like "java.lang.IllegalAccessError: tried to access field a.A.x from class b.B"
-    return nvmThrowNew(env, java_lang_IllegalAccessError, "");
+    return rvmThrowNew(env, java_lang_IllegalAccessError, "");
 }
 
-jint nvmThrowIllegalAccessErrorMethod(Env* env, Class* clazz, const char* name, const char* desc, Class* caller) {
+jint rvmThrowIllegalAccessErrorMethod(Env* env, Class* clazz, const char* name, const char* desc, Class* caller) {
     // TODO: Message should look like ?
-    return nvmThrowNew(env, java_lang_IllegalAccessError, "");
+    return rvmThrowNew(env, java_lang_IllegalAccessError, "");
 }
 
-jint nvmThrowNoSuchFieldError(Env* env, const char* name) {
+jint rvmThrowNoSuchFieldError(Env* env, const char* name) {
     // TODO: Message should look like "java.lang.NoSuchFieldError: x"
     // TODO: Cache java.lang.NoSuchFieldError at startup
-    return nvmThrowNew(env, java_lang_NoSuchFieldError, "");
+    return rvmThrowNew(env, java_lang_NoSuchFieldError, "");
 }
 
-jint nvmThrowNoSuchMethodError(Env* env, const char* name) {
+jint rvmThrowNoSuchMethodError(Env* env, const char* name) {
     // TODO: Message should look like "java.lang.NoSuchMethodError: x"
-    return nvmThrowNew(env, java_lang_NoSuchMethodError, "");
+    return rvmThrowNew(env, java_lang_NoSuchMethodError, "");
 }
 
-jint nvmThrowIncompatibleClassChangeError(Env* env, const char* message) {
-    return nvmThrowNew(env, java_lang_IncompatibleClassChangeError, message);
+jint rvmThrowIncompatibleClassChangeError(Env* env, const char* message) {
+    return rvmThrowNew(env, java_lang_IncompatibleClassChangeError, message);
 }
 
-jint nvmThrowIncompatibleClassChangeErrorClassField(Env* env, Class* clazz, const char* name, const char* desc) {
+jint rvmThrowIncompatibleClassChangeErrorClassField(Env* env, Class* clazz, const char* name, const char* desc) {
     // TODO: Message should look like "java.lang.ThrowIncompatibleClassChangeError: Expected static field a.C.x"
-    return nvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
+    return rvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
 }
 
-jint nvmThrowIncompatibleClassChangeErrorInstanceField(Env* env, Class* clazz, const char* name, const char* desc) {
+jint rvmThrowIncompatibleClassChangeErrorInstanceField(Env* env, Class* clazz, const char* name, const char* desc) {
     // TODO: Message should look like "java.lang.ThrowIncompatibleClassChangeError: Expected non-static field a.C.x"
-    return nvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
+    return rvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
 }
 
-jint nvmThrowIncompatibleClassChangeErrorMethod(Env* env, Class* clazz, const char* name, const char* desc) {
+jint rvmThrowIncompatibleClassChangeErrorMethod(Env* env, Class* clazz, const char* name, const char* desc) {
     // TODO: Message should look like ?
-    return nvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
+    return rvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
 }
 
-jint nvmThrowClassCastException(Env* env, Class* expectedClass, Class* actualClass) {
+jint rvmThrowClassCastException(Env* env, Class* expectedClass, Class* actualClass) {
     // TODO: Message should look like "java.lang.ClassCastException: java.lang.Object cannot be cast to java.lang.String"
     // TODO: Cache java.lang.ClassCastException at startup
-    return nvmThrowNew(env, java_lang_ClassCastException, "");
+    return rvmThrowNew(env, java_lang_ClassCastException, "");
 }
 
-jint nvmThrowNullPointerException(Env* env) {
-    return nvmThrowNew(env, java_lang_NullPointerException, "");
+jint rvmThrowNullPointerException(Env* env) {
+    return rvmThrowNew(env, java_lang_NullPointerException, "");
 }
 
-jint nvmThrowAbstractMethodError(Env* env, const char* message) {
-    return nvmThrowNew(env, java_lang_AbstractMethodError, message);
+jint rvmThrowAbstractMethodError(Env* env, const char* message) {
+    return rvmThrowNew(env, java_lang_AbstractMethodError, message);
 }
 
-jint nvmThrowArrayIndexOutOfBoundsException(Env* env, jint index) {
+jint rvmThrowArrayIndexOutOfBoundsException(Env* env, jint index) {
     // TODO: Set index on exception
-    return nvmThrowNew(env, java_lang_ArrayIndexOutOfBoundsException, "");
+    return rvmThrowNew(env, java_lang_ArrayIndexOutOfBoundsException, "");
 }
 
-jint nvmThrowArrayStoreException(Env* env) {
-    return nvmThrowNew(env, java_lang_ArrayStoreException, "");
+jint rvmThrowArrayStoreException(Env* env) {
+    return rvmThrowNew(env, java_lang_ArrayStoreException, "");
 }
 
-jint nvmThrowClassNotFoundException(Env* env, const char* className) {
-    char* msg = nvmToBinaryClassName(env, className);
+jint rvmThrowClassNotFoundException(Env* env, const char* className) {
+    char* msg = rvmToBinaryClassName(env, className);
     if (!msg) return 1;
-    return nvmThrowNew(env, java_lang_ClassNotFoundException, msg);
+    return rvmThrowNew(env, java_lang_ClassNotFoundException, msg);
 }
 
-jint nvmThrowNegativeArraySizeException(Env* env) {
-    return nvmThrowNew(env, java_lang_NegativeArraySizeException, "");
+jint rvmThrowNegativeArraySizeException(Env* env) {
+    return rvmThrowNew(env, java_lang_NegativeArraySizeException, "");
 }
 
-jint nvmThrowUnsatisfiedLinkError(Env* env) {
+jint rvmThrowUnsatisfiedLinkError(Env* env) {
     // TODO: Message should look like "java.lang.UnsatisfiedLinkError: Foo.nativeFunction()V"
-    return nvmThrowNew(env, java_lang_UnsatisfiedLinkError, "");
+    return rvmThrowNew(env, java_lang_UnsatisfiedLinkError, "");
 }
 
-jint nvmThrowIllegalArgumentException(Env* env, const char* message) {
-    return nvmThrowNew(env, java_lang_IllegalArgumentException, message);
+jint rvmThrowIllegalArgumentException(Env* env, const char* message) {
+    return rvmThrowNew(env, java_lang_IllegalArgumentException, message);
 }
 
-jint nvmThrowVerifyError(Env* env, const char* msg) {
-    return nvmThrowNew(env, java_lang_VerifyError, msg);
+jint rvmThrowVerifyError(Env* env, const char* msg) {
+    return rvmThrowNew(env, java_lang_VerifyError, msg);
 }
 
-jint nvmThrowArithmeticException(Env* env) {
-    return nvmThrowNew(env, java_lang_ArithmeticException, NULL);
+jint rvmThrowArithmeticException(Env* env) {
+    return rvmThrowNew(env, java_lang_ArithmeticException, NULL);
 }
 
-jint nvmThrowIllegalMonitorStateException(Env* env) {
-    return nvmThrowNew(env, java_lang_IllegalMonitorStateException, NULL);
+jint rvmThrowIllegalMonitorStateException(Env* env) {
+    return rvmThrowNew(env, java_lang_IllegalMonitorStateException, NULL);
 }
 
-jint nvmThrowInterruptedException(Env* env) {
-    return nvmThrowNew(env, java_lang_InterruptedException, NULL);
+jint rvmThrowInterruptedException(Env* env) {
+    return rvmThrowNew(env, java_lang_InterruptedException, NULL);
 }
 
-jint nvmThrowInstantiationError(Env* env, const char* message) {
-    return nvmThrowNew(env, java_lang_InstantiationError, message);
+jint rvmThrowInstantiationError(Env* env, const char* message) {
+    return rvmThrowNew(env, java_lang_InstantiationError, message);
 }
 

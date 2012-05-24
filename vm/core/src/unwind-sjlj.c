@@ -2,7 +2,7 @@
 #include <unwind.h>
 #include "private.h"
 
-_Unwind_Reason_Code _nvmPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exClass, 
+_Unwind_Reason_Code _rvmPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exClass, 
         struct _Unwind_Exception* exInfo, struct _Unwind_Context* context) {
 
     if (exClass == UNWIND_EXCEPTION_CLASS) {
@@ -27,7 +27,7 @@ _Unwind_Reason_Code _nvmPersonality(int version, _Unwind_Action actions, _Unwind
 }
 
 jint unwindRaiseException(Env* env) {
-    struct _Unwind_Exception* u = nvmAllocateMemory(env, sizeof(struct _Unwind_Exception));
+    struct _Unwind_Exception* u = rvmAllocateMemory(env, sizeof(struct _Unwind_Exception));
     u->exception_class = UNWIND_EXCEPTION_CLASS;
     _Unwind_Reason_Code urc = _Unwind_SjLj_RaiseException(u);
     return urc == _URC_END_OF_STACK ? UNWIND_UNHANDLED_EXCEPTION : UNWIND_FATAL_ERROR;

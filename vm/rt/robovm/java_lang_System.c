@@ -46,13 +46,13 @@ jlong Java_java_lang_System_nanoTime(JNIEnv* env, jclass clazz) {
 
 Object* Java_java_lang_System_mapLibraryName(Env* env, Class* c, Object* userLibName) {
     if (!userLibName) return NULL;
-    char* libName = nvmGetStringUTFChars(env, userLibName);
+    char* libName = rvmGetStringUTFChars(env, userLibName);
     if (!libName) return NULL;
-    char* result = nvmAllocateMemory(env, strlen(libName) + strlen(DSO_PREFIX) + strlen(DSO_EXT) + 1);
+    char* result = rvmAllocateMemory(env, strlen(libName) + strlen(DSO_PREFIX) + strlen(DSO_EXT) + 1);
     if (!result) return NULL;
     strcpy(result, DSO_PREFIX);
     strcat(result, libName);
     strcat(result, DSO_EXT);
-    return nvmNewStringUTF(env, result, -1);
+    return rvmNewStringUTF(env, result, -1);
 }
 

@@ -22,7 +22,7 @@ RETURN_TYPE_DOUBLE = 3
     .type    _call0, @function
 _call0:
     .cfi_startproc
-    .cfi_personality 3, _nvmPersonality
+    .cfi_personality 3, _rvmPersonality
     .cfi_lsda 3, .Lexception1
     .cfi_def_cfa %rsp, 8
 .Lcall0Begin:

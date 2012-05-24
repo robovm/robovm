@@ -3,7 +3,7 @@
 #include <unwind.h>
 
 jlong Java_java_lang_Throwable_nativeFillInStackTrace(Env* env, Object* thiz) {
-    CallStackEntry* first = nvmGetCallStack(env);
+    CallStackEntry* first = rvmGetCallStack(env);
     if (!first) return 0;
     first = first->next; // Skip Throwable.fillInStackTrace0()
     if (!first) return 0;
@@ -34,7 +34,7 @@ jlong Java_java_lang_Throwable_nativeFillInStackTrace(Env* env, Object* thiz) {
 }
 
 ObjectArray* Java_java_lang_Throwable_nativeGetStackTrace(Env* env, Object* thiz, jlong stackState) {
-    Class* java_lang_StackTraceElement = nvmFindClass(env, "java/lang/StackTraceElement");
+    Class* java_lang_StackTraceElement = rvmFindClass(env, "java/lang/StackTraceElement");
     if (!java_lang_StackTraceElement) return NULL;
 
     jint length = 0;
@@ -44,11 +44,11 @@ ObjectArray* Java_java_lang_Throwable_nativeGetStackTrace(Env* env, Object* thiz
         first = first->next;
     }
 
-    ObjectArray* array = nvmNewObjectArray(env, length, java_lang_StackTraceElement, NULL, NULL);
+    ObjectArray* array = rvmNewObjectArray(env, length, java_lang_StackTraceElement, NULL, NULL);
     if (!array) return NULL;
 
     if (length > 0) {
-        Method* steConstructor = nvmGetInstanceMethod(env, java_lang_StackTraceElement, "<init>", 
+        Method* steConstructor = rvmGetInstanceMethod(env, java_lang_StackTraceElement, "<init>", 
                                       "(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/String;I)V");
         if (!steConstructor) return NULL;
 
@@ -58,11 +58,11 @@ ObjectArray* Java_java_lang_Throwable_nativeGetStackTrace(Env* env, Object* thiz
         for (i = 0; i < length; i++) {
             Method* m = first->method;
             args[0].l = (jobject) m->clazz;
-            args[1].l = (jobject) nvmNewStringUTF(env, m->name, -1);
+            args[1].l = (jobject) rvmNewStringUTF(env, m->name, -1);
             if (!args[1].l) return NULL;
             args[2].l = NULL; // TODO: File names
             args[3].i = METHOD_IS_NATIVE(m) ? -2 : -1; // TODO: Line numbers
-            array->values[i] = nvmNewObjectA(env, java_lang_StackTraceElement, steConstructor, args);
+            array->values[i] = rvmNewObjectA(env, java_lang_StackTraceElement, steConstructor, args);
             if (!array->values[i]) return NULL;
             first = first->next;
         }

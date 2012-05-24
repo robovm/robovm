@@ -7,7 +7,7 @@ Class* Java_java_lang_reflect_Field_getDeclaringClass(Env* env, Class* clazz, jl
 
 Object* Java_java_lang_reflect_Field_getName(Env* env, Class* clazz, jlong fieldPtr) {
     Field* field = (Field*) LONG_TO_PTR(fieldPtr);
-    return nvmNewStringUTF(env, field->name, -1);
+    return rvmNewStringUTF(env, field->name, -1);
 }
 
 jint Java_java_lang_reflect_Field_getModifiers(Env* env, Class* clazz, jlong fieldPtr) {
@@ -17,16 +17,16 @@ jint Java_java_lang_reflect_Field_getModifiers(Env* env, Class* clazz, jlong fie
 
 Class* Java_java_lang_reflect_Field_getType(Env* env, Class* clazz, jlong fieldPtr) {
     Field* field = (Field*) LONG_TO_PTR(fieldPtr);
-    return nvmFindClassByDescriptor(env, field->desc, field->clazz->classLoader);
+    return rvmFindClassByDescriptor(env, field->desc, field->clazz->classLoader);
 }
 
 Object* Java_java_lang_reflect_Field_getSignatureAttribute(Env* env, Class* clazz, jlong fieldPtr) {
     Field* field = (Field*) LONG_TO_PTR(fieldPtr);
-    return nvmAttributeGetFieldSignature(env, field);
+    return rvmAttributeGetFieldSignature(env, field);
 }
 
 ObjectArray* Java_java_lang_reflect_Field_getDeclaredAnnotations(Env* env, Class* clazz, jlong fieldPtr) {
     Field* field = (Field*) LONG_TO_PTR(fieldPtr);
-    return nvmAttributeGetFieldRuntimeVisibleAnnotations(env, field);
+    return rvmAttributeGetFieldRuntimeVisibleAnnotations(env, field);
 }
 

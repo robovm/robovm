@@ -30,11 +30,11 @@ static jint getElementSize(const char* typeName) {
 static Array* newArray(Env* env, Class* arrayType, jint elementSize, jint dims, jint* lengths) {
     jint length = lengths[0];
     if (length < 0) {
-        nvmThrowNegativeArraySizeException(env);
+        rvmThrowNegativeArraySizeException(env);
         return NULL;
     }
 
-    Array* array = nvmAllocateMemory(env, sizeof(Array) + length * elementSize);
+    Array* array = rvmAllocateMemory(env, sizeof(Array) + length * elementSize);
     if (!array) return NULL;
 
     ((Object*) array)->clazz = arrayType;
@@ -55,54 +55,54 @@ static Array* newArray(Env* env, Class* arrayType, jint elementSize, jint dims, 
     return array;
 }
 
-BooleanArray* nvmNewBooleanArray(Env* env, jint length) {
+BooleanArray* rvmNewBooleanArray(Env* env, jint length) {
     return (BooleanArray*) newArray(env, array_Z, sizeof(jboolean), 1, &length);
 }
 
-ByteArray* nvmNewByteArray(Env* env, jint length) {
+ByteArray* rvmNewByteArray(Env* env, jint length) {
     return (ByteArray*) newArray(env, array_B, sizeof(jbyte), 1, &length);
 }
 
-CharArray* nvmNewCharArray(Env* env, jint length) {
+CharArray* rvmNewCharArray(Env* env, jint length) {
     return (CharArray*) newArray(env, array_C, sizeof(jchar), 1, &length);
 }
 
-ShortArray* nvmNewShortArray(Env* env, jint length) {
+ShortArray* rvmNewShortArray(Env* env, jint length) {
     return (ShortArray*) newArray(env, array_S, sizeof(jshort), 1, &length);
 }
 
-IntArray* nvmNewIntArray(Env* env, jint length) {
+IntArray* rvmNewIntArray(Env* env, jint length) {
     return (IntArray*) newArray(env, array_I, sizeof(jint), 1, &length);
 }
 
-LongArray* nvmNewLongArray(Env* env, jint length) {
+LongArray* rvmNewLongArray(Env* env, jint length) {
     return (LongArray*) newArray(env, array_J, sizeof(jlong), 1, &length);
 }
 
-FloatArray* nvmNewFloatArray(Env* env, jint length) {
+FloatArray* rvmNewFloatArray(Env* env, jint length) {
     return (FloatArray*) newArray(env, array_F, sizeof(jfloat), 1, &length);
 }
 
-DoubleArray* nvmNewDoubleArray(Env* env, jint length) {
+DoubleArray* rvmNewDoubleArray(Env* env, jint length) {
     return (DoubleArray*) newArray(env, array_D, sizeof(jdouble), 1, &length);
 }
 
-ObjectArray* nvmNewObjectArray(Env* env, jint length, Class* elementClass, Class* arrayClass, Object* init) {
+ObjectArray* rvmNewObjectArray(Env* env, jint length, Class* elementClass, Class* arrayClass, Object* init) {
     if (!arrayClass) {
         if (CLASS_IS_ARRAY(elementClass)) {
-            char* name = nvmAllocateMemory(env, strlen(elementClass->name) + 2);
+            char* name = rvmAllocateMemory(env, strlen(elementClass->name) + 2);
             if (!name) return NULL;
             strcpy(name, "[");
             strcat(name, elementClass->name);
-            arrayClass = nvmFindClass(env, name);
+            arrayClass = rvmFindClass(env, name);
             if (!arrayClass) return NULL;
         } else {
-            char* name = nvmAllocateMemory(env, strlen(elementClass->name) + 4);
+            char* name = rvmAllocateMemory(env, strlen(elementClass->name) + 4);
             if (!name) return NULL;
             strcpy(name, "[L");
             strcat(name, elementClass->name);
             strcat(name, ";");
-            arrayClass = nvmFindClass(env, name);
+            arrayClass = rvmFindClass(env, name);
             if (!arrayClass) return NULL;
         }
     }
@@ -117,21 +117,21 @@ ObjectArray* nvmNewObjectArray(Env* env, jint length, Class* elementClass, Class
     return array;
 }
 
-Array* nvmNewMultiArray(Env* env, jint dims, jint* lengths, Class* clazz) {
+Array* rvmNewMultiArray(Env* env, jint dims, jint* lengths, Class* clazz) {
     return newArray(env, clazz, sizeof(Object*), dims, lengths);
 }
 
-Array* nvmCloneArray(Env* env, Array* array) {
+Array* rvmCloneArray(Env* env, Array* array) {
     jint elementSize = getElementSize(array->object.clazz->name);
     jint size = sizeof(Array) + array->length * elementSize;
-    Array* copy = nvmAllocateMemory(env, size);
+    Array* copy = rvmAllocateMemory(env, size);
     if (!copy) return NULL;
     memcpy(copy, array, size);
     copy->object.monitor = NULL;
     return copy;
 }
 
-jint nvmGetArrayDimensions(Env* env, Array* array) {
+jint rvmGetArrayDimensions(Env* env, Array* array) {
     jint i = 1;
     const char* desc = array->object.clazz->name;
     while (desc[i] == '[') {

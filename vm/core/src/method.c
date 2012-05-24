@@ -22,8 +22,8 @@ static inline void releaseNativeLibsLock() {
 }
 
 static Method* findMethod(Env* env, Class* clazz, const char* name, const char* desc) {
-    Method* method = nvmGetMethods(env, clazz);
-    if (nvmExceptionCheck(env)) return NULL;
+    Method* method = rvmGetMethods(env, clazz);
+    if (rvmExceptionCheck(env)) return NULL;
     for (; method != NULL; method = method->next) {
         if (!strcmp(method->name, name) && !strcmp(method->desc, desc)) {
             return method;
@@ -41,7 +41,7 @@ static Method* getMethod(Env* env, Class* clazz, const char* name, const char* d
     Class* c = clazz;
     for (c = clazz; c != NULL; c = c->superclass) {
         Method* method = findMethod(env, c, name, desc);
-        if (nvmExceptionCheck(env)) return NULL;
+        if (rvmExceptionCheck(env)) return NULL;
         if (method) return method;
     }
 
@@ -50,11 +50,11 @@ static Method* getMethod(Env* env, Class* clazz, const char* name, const char* d
      * TODO: Should we really do this? Does the JNI GetMethodID() function do this?
      */
     for (c = clazz; c != NULL; c = c->superclass) {
-        Interface* interface = nvmGetInterfaces(env, c);
-        if (nvmExceptionCheck(env)) return NULL;
+        Interface* interface = rvmGetInterfaces(env, c);
+        if (rvmExceptionCheck(env)) return NULL;
         for (; interface != NULL; interface = interface->next) {
             Method* method = getMethod(env, interface->interface, name, desc);
-            if (nvmExceptionCheck(env)) return NULL;
+            if (rvmExceptionCheck(env)) return NULL;
             if (method) return method;
         }
     }
@@ -70,60 +70,60 @@ static Method* getMethod(Env* env, Class* clazz, const char* name, const char* d
     return NULL;
 }
 
-jboolean nvmInitMethods(Env* env) {
+jboolean rvmInitMethods(Env* env) {
     if (hythread_monitor_init_with_name(&nativeLibsLock, 0, NULL) < 0) {
         return FALSE;
     }
     return TRUE;
 }
 
-jboolean nvmHasMethod(Env* env, Class* clazz, const char* name, const char* desc) {
+jboolean rvmHasMethod(Env* env, Class* clazz, const char* name, const char* desc) {
     Method* method = getMethod(env, clazz, name, desc);
-    if (nvmExceptionCheck(env)) return FALSE;
+    if (rvmExceptionCheck(env)) return FALSE;
     return method ? TRUE : FALSE;
 }
 
-Method* nvmGetMethod(Env* env, Class* clazz, const char* name, const char* desc) {
+Method* rvmGetMethod(Env* env, Class* clazz, const char* name, const char* desc) {
     Method* method = getMethod(env, clazz, name, desc);
-    if (nvmExceptionCheck(env)) return NULL;
+    if (rvmExceptionCheck(env)) return NULL;
     if (!method) {
-        nvmThrowNoSuchMethodError(env, name);
+        rvmThrowNoSuchMethodError(env, name);
         return NULL;
     }
     return method;
 }
 
-Method* nvmGetClassMethod(Env* env, Class* clazz, const char* name, const char* desc) {
-    Method* method = nvmGetMethod(env, clazz, name, desc);
+Method* rvmGetClassMethod(Env* env, Class* clazz, const char* name, const char* desc) {
+    Method* method = rvmGetMethod(env, clazz, name, desc);
     if (!method) return NULL;
     if (!METHOD_IS_STATIC(method)) {
         // TODO: JNI spec doesn't say anything about throwing this
-        nvmThrowIncompatibleClassChangeErrorMethod(env, clazz, name, desc);
+        rvmThrowIncompatibleClassChangeErrorMethod(env, clazz, name, desc);
         return NULL;
     }
     return method;
 }
 
-Method* nvmGetClassInitializer(Env* env, Class* clazz) {
+Method* rvmGetClassInitializer(Env* env, Class* clazz) {
     return getMethod(env, clazz, "<clinit>", "()V");
 }
 
-Method* nvmGetInstanceMethod(Env* env, Class* clazz, const char* name, const char* desc) {
-    Method* method = nvmGetMethod(env, clazz, name, desc);
+Method* rvmGetInstanceMethod(Env* env, Class* clazz, const char* name, const char* desc) {
+    Method* method = rvmGetMethod(env, clazz, name, desc);
     if (!method) return NULL;
     if (METHOD_IS_STATIC(method)) {
         // TODO: JNI spec doesn't say anything about throwing this
-        nvmThrowIncompatibleClassChangeErrorMethod(env, clazz, name, desc);
+        rvmThrowIncompatibleClassChangeErrorMethod(env, clazz, name, desc);
         return NULL;
     }
     return method;
 }
 
-Method* nvmFindMethodAtAddress(Env* env, void* address) {
+Method* rvmFindMethodAtAddress(Env* env, void* address) {
     Class* clazz = env->vm->options->findClassAt(env, address);
     if (!clazz) return NULL;
-    Method* method = nvmGetMethods(env, clazz);
-    if (nvmExceptionCheck(env)) return NULL;
+    Method* method = rvmGetMethods(env, clazz);
+    if (rvmExceptionCheck(env)) return NULL;
     for (; method != NULL; method = method->next) {
         void* start = method->impl;
         void* end = start + method->size;
@@ -138,7 +138,7 @@ Method* nvmFindMethodAtAddress(Env* env, void* address) {
 static jboolean getCallingMethodIterator(Env* env, void* pc, ProxyMethod* proxyMethod, void* data) {
     Method** result = data;
 
-    Method* method = nvmFindMethodAtAddress(env, pc);
+    Method* method = rvmFindMethodAtAddress(env, pc);
     if (method) {
         *result = method;
         return FALSE; // Stop iterating
@@ -152,10 +152,10 @@ static jboolean getCallStackIterator(Env* env, void* pc, ProxyMethod* proxyMetho
     if (proxyMethod) {
         method = (Method*) proxyMethod;
     } else {
-        method = nvmFindMethodAtAddress(env, pc);
+        method = rvmFindMethodAtAddress(env, pc);
     }
     if (method) {
-        CallStackEntry* entry = nvmAllocateMemory(env, sizeof(CallStackEntry));
+        CallStackEntry* entry = rvmAllocateMemory(env, sizeof(CallStackEntry));
         if (!entry) {
             return FALSE; // Stop iterating
         }
@@ -166,26 +166,26 @@ static jboolean getCallStackIterator(Env* env, void* pc, ProxyMethod* proxyMetho
     return TRUE;
 }
 
-Method* nvmGetCallingMethod(Env* env) {
+Method* rvmGetCallingMethod(Env* env) {
     Method* result = NULL;
     unwindIterateCallStack(env, getCallingMethodIterator, &result);
     return result;
 }
 
-CallStackEntry* nvmGetCallStack(Env* env) {
+CallStackEntry* rvmGetCallStack(Env* env) {
     CallStackEntry* data = NULL;
     unwindIterateCallStack(env, getCallStackIterator, &data);
-    if (nvmExceptionOccurred(env)) return NULL;
+    if (rvmExceptionOccurred(env)) return NULL;
     return data;
 }
 
-const char* nvmGetReturnType(const char* desc) {
+const char* rvmGetReturnType(const char* desc) {
     while (*desc != ')') desc++;
     desc++;
     return desc;
 }
 
-const char* nvmGetNextParameterType(const char** desc) {
+const char* rvmGetNextParameterType(const char** desc) {
     const char* s = *desc;
     (*desc)++;
     switch (s[0]) {
@@ -199,22 +199,22 @@ const char* nvmGetNextParameterType(const char** desc) {
     case 'D':
         return s;
     case '[':
-        nvmGetNextParameterType(desc);
+        rvmGetNextParameterType(desc);
         return s;
     case 'L':
         while (**desc != ';') (*desc)++;
         (*desc)++;
         return s;
     case '(':
-        return nvmGetNextParameterType(desc);
+        return rvmGetNextParameterType(desc);
     }
     return 0;
 }
 
-jint nvmGetParameterCount(Method* method) {
+jint rvmGetParameterCount(Method* method) {
     const char* desc = method->desc;
     jint count = 0;
-    while (nvmGetNextParameterType(&desc)) {
+    while (rvmGetNextParameterType(&desc)) {
         count++;
     }
     return count;
@@ -227,7 +227,7 @@ static inline jboolean isFpType(char type) {
 CallInfo* initCallInfo(Env* env, Object* obj, Method* method, jboolean virtual, jvalue* args) {
     if (virtual && !(method->access & ACC_PRIVATE)) {
         // Lookup the real method to be invoked
-        method = nvmGetMethod(env, obj->clazz, method->name, method->desc);
+        method = rvmGetMethod(env, obj->clazz, method->name, method->desc);
         if (!method) return NULL;
     }
 
@@ -241,7 +241,7 @@ CallInfo* initCallInfo(Env* env, Object* obj, Method* method, jboolean virtual, 
 
     const char* desc = method->desc;
     const char* c;
-    while ((c = nvmGetNextParameterType(&desc))) {
+    while ((c = rvmGetNextParameterType(&desc))) {
         switch (c[0]) {
         case 'Z':
         case 'B':
@@ -278,7 +278,7 @@ CallInfo* initCallInfo(Env* env, Object* obj, Method* method, jboolean virtual, 
 
     desc = method->desc;
     jint i = 0;
-    while ((c = nvmGetNextParameterType(&desc))) {
+    while ((c = rvmGetNextParameterType(&desc))) {
         switch (c[0]) {
         case 'Z':
             call0AddInt(callInfo, (jint) args[i++].z);
@@ -315,19 +315,19 @@ CallInfo* initCallInfo(Env* env, Object* obj, Method* method, jboolean virtual, 
 }
 
 static jvalue* va_list2jargs(Env* env, Method* method, va_list args) {
-    jint argsCount = nvmGetParameterCount(method);
+    jint argsCount = rvmGetParameterCount(method);
 
     if (argsCount == 0) {
         return emptyJValueArgs;
     }
 
-    jvalue *jvalueArgs = (jvalue*) nvmAllocateMemory(env, sizeof(jvalue) * argsCount);
+    jvalue *jvalueArgs = (jvalue*) rvmAllocateMemory(env, sizeof(jvalue) * argsCount);
     if (!jvalueArgs) return NULL;
 
     const char* desc = method->desc;
     const char* c;
     jint i = 0;
-    while ((c = nvmGetNextParameterType(&desc))) {
+    while ((c = rvmGetNextParameterType(&desc))) {
         switch (c[0]) {
         case 'B':
             jvalueArgs[i++].b = (jbyte) va_arg(args, jint);
@@ -363,694 +363,694 @@ static jvalue* va_list2jargs(Env* env, Method* method, va_list args) {
     return jvalueArgs;
 }
 
-void nvmCallVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+void rvmCallVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return;
     void (*f)(CallInfo*) = _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
 }
 
-void nvmCallVoidInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+void rvmCallVoidInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return;
-    nvmCallVoidInstanceMethodA(env, obj, method, jargs);
+    rvmCallVoidInstanceMethodA(env, obj, method, jargs);
 }
 
-void nvmCallVoidInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+void rvmCallVoidInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    nvmCallVoidInstanceMethodV(env, obj, method, args);
+    rvmCallVoidInstanceMethodV(env, obj, method, args);
 }
 
-Object* nvmCallObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+Object* rvmCallObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return NULL;
     Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     Object* result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-Object* nvmCallObjectInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+Object* rvmCallObjectInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return NULL;
-    return nvmCallObjectInstanceMethodA(env, obj, method, jargs);
+    return rvmCallObjectInstanceMethodA(env, obj, method, jargs);
 }
 
-Object* nvmCallObjectInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+Object* rvmCallObjectInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallObjectInstanceMethodV(env, obj, method, args);
+    return rvmCallObjectInstanceMethodV(env, obj, method, args);
 }
 
-jboolean nvmCallBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jboolean rvmCallBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return FALSE;
     jboolean (*f)(CallInfo*) = (jboolean (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jboolean result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jboolean nvmCallBooleanInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jboolean rvmCallBooleanInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return FALSE;
-    return nvmCallBooleanInstanceMethodA(env, obj, method, jargs);
+    return rvmCallBooleanInstanceMethodA(env, obj, method, jargs);
 }
 
-jboolean nvmCallBooleanInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jboolean rvmCallBooleanInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallBooleanInstanceMethodV(env, obj, method, args);
+    return rvmCallBooleanInstanceMethodV(env, obj, method, args);
 }
 
-jbyte nvmCallByteInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jbyte rvmCallByteInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
     jbyte (*f)(CallInfo*) = (jbyte (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jbyte result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jbyte nvmCallByteInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jbyte rvmCallByteInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallByteInstanceMethodA(env, obj, method, jargs);
+    return rvmCallByteInstanceMethodA(env, obj, method, jargs);
 }
 
-jbyte nvmCallByteInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jbyte rvmCallByteInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallByteInstanceMethodV(env, obj, method, args);
+    return rvmCallByteInstanceMethodV(env, obj, method, args);
 }
 
-jchar nvmCallCharInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jchar rvmCallCharInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
     jchar (*f)(CallInfo*) = (jchar (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jchar result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jchar nvmCallCharInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jchar rvmCallCharInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallCharInstanceMethodA(env, obj, method, jargs);
+    return rvmCallCharInstanceMethodA(env, obj, method, jargs);
 }
 
-jchar nvmCallCharInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jchar rvmCallCharInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallCharInstanceMethodV(env, obj, method, args);
+    return rvmCallCharInstanceMethodV(env, obj, method, args);
 }
 
-jshort nvmCallShortInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jshort rvmCallShortInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
     jshort (*f)(CallInfo*) = (jshort (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jshort result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jshort nvmCallShortInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jshort rvmCallShortInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallShortInstanceMethodA(env, obj, method, jargs);
+    return rvmCallShortInstanceMethodA(env, obj, method, jargs);
 }
 
-jshort nvmCallShortInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jshort rvmCallShortInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallShortInstanceMethodV(env, obj, method, args);
+    return rvmCallShortInstanceMethodV(env, obj, method, args);
 }
 
-jint nvmCallIntInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jint rvmCallIntInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
     jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jint result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jint nvmCallIntInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jint rvmCallIntInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallIntInstanceMethodA(env, obj, method, jargs);
+    return rvmCallIntInstanceMethodA(env, obj, method, jargs);
 }
 
-jint nvmCallIntInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jint rvmCallIntInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallIntInstanceMethodV(env, obj, method, args);
+    return rvmCallIntInstanceMethodV(env, obj, method, args);
 }
 
-jlong nvmCallLongInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jlong rvmCallLongInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
     jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jlong result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jlong nvmCallLongInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jlong rvmCallLongInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallLongInstanceMethodA(env, obj, method, jargs);
+    return rvmCallLongInstanceMethodA(env, obj, method, jargs);
 }
 
-jlong nvmCallLongInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jlong rvmCallLongInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallLongInstanceMethodV(env, obj, method, args);
+    return rvmCallLongInstanceMethodV(env, obj, method, args);
 }
 
-jfloat nvmCallFloatInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jfloat rvmCallFloatInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0.0f;
     jfloat (*f)(CallInfo*) = (jfloat (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jfloat result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jfloat nvmCallFloatInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jfloat rvmCallFloatInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0.0f;
-    return nvmCallFloatInstanceMethodA(env, obj, method, jargs);
+    return rvmCallFloatInstanceMethodA(env, obj, method, jargs);
 }
 
-jfloat nvmCallFloatInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jfloat rvmCallFloatInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallFloatInstanceMethodV(env, obj, method, args);
+    return rvmCallFloatInstanceMethodV(env, obj, method, args);
 }
 
-jdouble nvmCallDoubleInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jdouble rvmCallDoubleInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0.0;
     jdouble (*f)(CallInfo*) = (jdouble (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jdouble result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jdouble nvmCallDoubleInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jdouble rvmCallDoubleInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0.0;
-    return nvmCallDoubleInstanceMethodA(env, obj, method, jargs);
+    return rvmCallDoubleInstanceMethodA(env, obj, method, jargs);
 }
 
-jdouble nvmCallDoubleInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jdouble rvmCallDoubleInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallDoubleInstanceMethodV(env, obj, method, args);
+    return rvmCallDoubleInstanceMethodV(env, obj, method, args);
 }
 
-void nvmCallNonvirtualVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+void rvmCallNonvirtualVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return;
     void (*f)(CallInfo*) = _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
 }
 
-void nvmCallNonvirtualVoidInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+void rvmCallNonvirtualVoidInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return;
-    nvmCallNonvirtualVoidInstanceMethodA(env, obj, method, jargs);
+    rvmCallNonvirtualVoidInstanceMethodA(env, obj, method, jargs);
 }
 
-void nvmCallNonvirtualVoidInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+void rvmCallNonvirtualVoidInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    nvmCallNonvirtualVoidInstanceMethodV(env, obj, method, args);
+    rvmCallNonvirtualVoidInstanceMethodV(env, obj, method, args);
 }
 
-Object* nvmCallNonvirtualObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+Object* rvmCallNonvirtualObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return NULL;
     Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     Object* result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-Object* nvmCallNonvirtualObjectInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+Object* rvmCallNonvirtualObjectInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return NULL;
-    return nvmCallNonvirtualObjectInstanceMethodA(env, obj, method, jargs);
+    return rvmCallNonvirtualObjectInstanceMethodA(env, obj, method, jargs);
 }
 
-Object* nvmCallNonvirtualObjectInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+Object* rvmCallNonvirtualObjectInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallNonvirtualObjectInstanceMethodV(env, obj, method, args);
+    return rvmCallNonvirtualObjectInstanceMethodV(env, obj, method, args);
 }
 
-jboolean nvmCallNonvirtualBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jboolean rvmCallNonvirtualBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return FALSE;
     jboolean (*f)(CallInfo*) = (jboolean (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jboolean result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jboolean nvmCallNonvirtualBooleanInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jboolean rvmCallNonvirtualBooleanInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return FALSE;
-    return nvmCallNonvirtualBooleanInstanceMethodA(env, obj, method, jargs);
+    return rvmCallNonvirtualBooleanInstanceMethodA(env, obj, method, jargs);
 }
 
-jboolean nvmCallNonvirtualBooleanInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jboolean rvmCallNonvirtualBooleanInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallNonvirtualBooleanInstanceMethodV(env, obj, method, args);
+    return rvmCallNonvirtualBooleanInstanceMethodV(env, obj, method, args);
 }
 
-jbyte nvmCallNonvirtualByteInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jbyte rvmCallNonvirtualByteInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
     jbyte (*f)(CallInfo*) = (jbyte (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jbyte result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jbyte nvmCallNonvirtualByteInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jbyte rvmCallNonvirtualByteInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallNonvirtualByteInstanceMethodA(env, obj, method, jargs);
+    return rvmCallNonvirtualByteInstanceMethodA(env, obj, method, jargs);
 }
 
-jbyte nvmCallNonvirtualByteInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jbyte rvmCallNonvirtualByteInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallNonvirtualByteInstanceMethodV(env, obj, method, args);
+    return rvmCallNonvirtualByteInstanceMethodV(env, obj, method, args);
 }
 
-jchar nvmCallNonvirtualCharInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jchar rvmCallNonvirtualCharInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
     jchar (*f)(CallInfo*) = (jchar (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jchar result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jchar nvmCallNonvirtualCharInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jchar rvmCallNonvirtualCharInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallNonvirtualCharInstanceMethodA(env, obj, method, jargs);
+    return rvmCallNonvirtualCharInstanceMethodA(env, obj, method, jargs);
 }
 
-jchar nvmCallNonvirtualCharInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jchar rvmCallNonvirtualCharInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallNonvirtualCharInstanceMethodV(env, obj, method, args);
+    return rvmCallNonvirtualCharInstanceMethodV(env, obj, method, args);
 }
 
-jshort nvmCallNonvirtualShortInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jshort rvmCallNonvirtualShortInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
     jshort (*f)(CallInfo*) = (jshort (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jshort result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jshort nvmCallNonvirtualShortInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jshort rvmCallNonvirtualShortInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallNonvirtualShortInstanceMethodA(env, obj, method, jargs);
+    return rvmCallNonvirtualShortInstanceMethodA(env, obj, method, jargs);
 }
 
-jshort nvmCallNonvirtualShortInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jshort rvmCallNonvirtualShortInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallNonvirtualShortInstanceMethodV(env, obj, method, args);
+    return rvmCallNonvirtualShortInstanceMethodV(env, obj, method, args);
 }
 
-jint nvmCallNonvirtualIntInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jint rvmCallNonvirtualIntInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
     jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jint result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jint nvmCallNonvirtualIntInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jint rvmCallNonvirtualIntInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallNonvirtualIntInstanceMethodA(env, obj, method, jargs);
+    return rvmCallNonvirtualIntInstanceMethodA(env, obj, method, jargs);
 }
 
-jint nvmCallNonvirtualIntInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jint rvmCallNonvirtualIntInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallNonvirtualIntInstanceMethodV(env, obj, method, args);
+    return rvmCallNonvirtualIntInstanceMethodV(env, obj, method, args);
 }
 
-jlong nvmCallNonvirtualLongInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jlong rvmCallNonvirtualLongInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
     jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jlong result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jlong nvmCallNonvirtualLongInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jlong rvmCallNonvirtualLongInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallNonvirtualLongInstanceMethodA(env, obj, method, jargs);
+    return rvmCallNonvirtualLongInstanceMethodA(env, obj, method, jargs);
 }
 
-jlong nvmCallNonvirtualLongInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jlong rvmCallNonvirtualLongInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallNonvirtualLongInstanceMethodV(env, obj, method, args);
+    return rvmCallNonvirtualLongInstanceMethodV(env, obj, method, args);
 }
 
-jfloat nvmCallNonvirtualFloatInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jfloat rvmCallNonvirtualFloatInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0.0f;
     jfloat (*f)(CallInfo*) = (jfloat (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jfloat result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jfloat nvmCallNonvirtualFloatInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jfloat rvmCallNonvirtualFloatInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0.0f;
-    return nvmCallNonvirtualFloatInstanceMethodA(env, obj, method, jargs);
+    return rvmCallNonvirtualFloatInstanceMethodA(env, obj, method, jargs);
 }
 
-jfloat nvmCallNonvirtualFloatInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jfloat rvmCallNonvirtualFloatInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallNonvirtualFloatInstanceMethodV(env, obj, method, args);
+    return rvmCallNonvirtualFloatInstanceMethodV(env, obj, method, args);
 }
 
-jdouble nvmCallNonvirtualDoubleInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
+jdouble rvmCallNonvirtualDoubleInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0.0;
     jdouble (*f)(CallInfo*) = (jdouble (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jdouble result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jdouble nvmCallNonvirtualDoubleInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
+jdouble rvmCallNonvirtualDoubleInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0.0;
-    return nvmCallNonvirtualDoubleInstanceMethodA(env, obj, method, jargs);
+    return rvmCallNonvirtualDoubleInstanceMethodA(env, obj, method, jargs);
 }
 
-jdouble nvmCallNonvirtualDoubleInstanceMethod(Env* env, Object* obj, Method* method, ...) {
+jdouble rvmCallNonvirtualDoubleInstanceMethod(Env* env, Object* obj, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallNonvirtualDoubleInstanceMethodV(env, obj, method, args);
+    return rvmCallNonvirtualDoubleInstanceMethodV(env, obj, method, args);
 }
 
-void nvmCallVoidClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+void rvmCallVoidClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, NULL, method, FALSE, args);
     if (!callInfo) return;
-    nvmInitialize(env, method->clazz);
-    if (nvmExceptionOccurred(env)) return;
+    rvmInitialize(env, method->clazz);
+    if (rvmExceptionOccurred(env)) return;
     void (*f)(CallInfo*) = _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
 }
 
-void nvmCallVoidClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+void rvmCallVoidClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return;
-    nvmCallVoidClassMethodA(env, clazz, method, jargs);
+    rvmCallVoidClassMethodA(env, clazz, method, jargs);
 }
 
-void nvmCallVoidClassMethod(Env* env, Class* clazz, Method* method, ...) {
+void rvmCallVoidClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    nvmCallVoidClassMethodV(env, clazz, method, args);
+    rvmCallVoidClassMethodV(env, clazz, method, args);
 }
 
-Object* nvmCallObjectClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+Object* rvmCallObjectClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, NULL, method, FALSE, args);
     if (!callInfo) return NULL;
-    nvmInitialize(env, method->clazz);
-    if (nvmExceptionOccurred(env)) return NULL;
+    rvmInitialize(env, method->clazz);
+    if (rvmExceptionOccurred(env)) return NULL;
     Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     Object* result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-Object* nvmCallObjectClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+Object* rvmCallObjectClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return NULL;
-    return nvmCallObjectClassMethodA(env, clazz, method, jargs);
+    return rvmCallObjectClassMethodA(env, clazz, method, jargs);
 }
 
-Object* nvmCallObjectClassMethod(Env* env, Class* clazz, Method* method, ...) {
+Object* rvmCallObjectClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallObjectClassMethodV(env, clazz, method, args);
+    return rvmCallObjectClassMethodV(env, clazz, method, args);
 }
 
-jboolean nvmCallBooleanClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+jboolean rvmCallBooleanClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, NULL, method, FALSE, args);
     if (!callInfo) return FALSE;
-    nvmInitialize(env, method->clazz);
-    if (nvmExceptionOccurred(env)) return FALSE;
+    rvmInitialize(env, method->clazz);
+    if (rvmExceptionOccurred(env)) return FALSE;
     jboolean (*f)(CallInfo*) = (jboolean (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jboolean result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jboolean nvmCallBooleanClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+jboolean rvmCallBooleanClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return FALSE;
-    return nvmCallBooleanClassMethodA(env, clazz, method, jargs);
+    return rvmCallBooleanClassMethodA(env, clazz, method, jargs);
 }
 
-jboolean nvmCallBooleanClassMethod(Env* env, Class* clazz, Method* method, ...) {
+jboolean rvmCallBooleanClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallBooleanClassMethodV(env, clazz, method, args);
+    return rvmCallBooleanClassMethodV(env, clazz, method, args);
 }
 
-jbyte nvmCallByteClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+jbyte rvmCallByteClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, NULL, method, FALSE, args);
     if (!callInfo) return 0;
-    nvmInitialize(env, method->clazz);
-    if (nvmExceptionOccurred(env)) return 0;
+    rvmInitialize(env, method->clazz);
+    if (rvmExceptionOccurred(env)) return 0;
     jbyte (*f)(CallInfo*) = (jbyte (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jbyte result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jbyte nvmCallByteClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+jbyte rvmCallByteClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallByteClassMethodA(env, clazz, method, jargs);
+    return rvmCallByteClassMethodA(env, clazz, method, jargs);
 }
 
-jbyte nvmCallByteClassMethod(Env* env, Class* clazz, Method* method, ...) {
+jbyte rvmCallByteClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallByteClassMethodV(env, clazz, method, args);
+    return rvmCallByteClassMethodV(env, clazz, method, args);
 }
 
-jchar nvmCallCharClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+jchar rvmCallCharClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, NULL, method, FALSE, args);
     if (!callInfo) return 0;
-    nvmInitialize(env, method->clazz);
-    if (nvmExceptionOccurred(env)) return 0;
+    rvmInitialize(env, method->clazz);
+    if (rvmExceptionOccurred(env)) return 0;
     jchar (*f)(CallInfo*) = (jchar (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jchar result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jchar nvmCallCharClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+jchar rvmCallCharClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallCharClassMethodA(env, clazz, method, jargs);
+    return rvmCallCharClassMethodA(env, clazz, method, jargs);
 }
 
-jchar nvmCallCharClassMethod(Env* env, Class* clazz, Method* method, ...) {
+jchar rvmCallCharClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallCharClassMethodV(env, clazz, method, args);
+    return rvmCallCharClassMethodV(env, clazz, method, args);
 }
 
-jshort nvmCallShortClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+jshort rvmCallShortClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, NULL, method, FALSE, args);
     if (!callInfo) return 0;
-    nvmInitialize(env, method->clazz);
-    if (nvmExceptionOccurred(env)) return 0;
+    rvmInitialize(env, method->clazz);
+    if (rvmExceptionOccurred(env)) return 0;
     jshort (*f)(CallInfo*) = (jshort (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jshort result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jshort nvmCallShortClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+jshort rvmCallShortClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallShortClassMethodA(env, clazz, method, jargs);
+    return rvmCallShortClassMethodA(env, clazz, method, jargs);
 }
 
-jshort nvmCallShortClassMethod(Env* env, Class* clazz, Method* method, ...) {
+jshort rvmCallShortClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallShortClassMethodV(env, clazz, method, args);
+    return rvmCallShortClassMethodV(env, clazz, method, args);
 }
 
-jint nvmCallIntClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+jint rvmCallIntClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, NULL, method, FALSE, args);
     if (!callInfo) return 0;
-    nvmInitialize(env, method->clazz);
-    if (nvmExceptionOccurred(env)) return 0;
+    rvmInitialize(env, method->clazz);
+    if (rvmExceptionOccurred(env)) return 0;
     jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jint result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jint nvmCallIntClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+jint rvmCallIntClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallIntClassMethodA(env, clazz, method, jargs);
+    return rvmCallIntClassMethodA(env, clazz, method, jargs);
 }
 
-jint nvmCallIntClassMethod(Env* env, Class* clazz, Method* method, ...) {
+jint rvmCallIntClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallIntClassMethodV(env, clazz, method, args);
+    return rvmCallIntClassMethodV(env, clazz, method, args);
 }
 
-jlong nvmCallLongClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+jlong rvmCallLongClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, NULL, method, FALSE, args);
     if (!callInfo) return 0;
-    nvmInitialize(env, method->clazz);
-    if (nvmExceptionOccurred(env)) return 0;
+    rvmInitialize(env, method->clazz);
+    if (rvmExceptionOccurred(env)) return 0;
     jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jlong result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jlong nvmCallLongClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+jlong rvmCallLongClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0;
-    return nvmCallLongClassMethodA(env, clazz, method, jargs);
+    return rvmCallLongClassMethodA(env, clazz, method, jargs);
 }
 
-jlong nvmCallLongClassMethod(Env* env, Class* clazz, Method* method, ...) {
+jlong rvmCallLongClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallLongClassMethodV(env, clazz, method, args);
+    return rvmCallLongClassMethodV(env, clazz, method, args);
 }
 
-jfloat nvmCallFloatClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+jfloat rvmCallFloatClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, NULL, method, FALSE, args);
     if (!callInfo) return 0.0f;
-    nvmInitialize(env, method->clazz);
-    if (nvmExceptionOccurred(env)) return 0.0f;
+    rvmInitialize(env, method->clazz);
+    if (rvmExceptionOccurred(env)) return 0.0f;
     jfloat (*f)(CallInfo*) = (jfloat (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jfloat result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jfloat nvmCallFloatClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+jfloat rvmCallFloatClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0.0f;
-    return nvmCallFloatClassMethodA(env, clazz, method, jargs);
+    return rvmCallFloatClassMethodA(env, clazz, method, jargs);
 }
 
-jfloat nvmCallFloatClassMethod(Env* env, Class* clazz, Method* method, ...) {
+jfloat rvmCallFloatClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallFloatClassMethodV(env, clazz, method, args);
+    return rvmCallFloatClassMethodV(env, clazz, method, args);
 }
 
-jdouble nvmCallDoubleClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
+jdouble rvmCallDoubleClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, NULL, method, FALSE, args);
     if (!callInfo) return 0.0;
-    nvmInitialize(env, method->clazz);
-    if (nvmExceptionOccurred(env)) return 0.0;
+    rvmInitialize(env, method->clazz);
+    if (rvmExceptionOccurred(env)) return 0.0;
     jdouble (*f)(CallInfo*) = (jdouble (*)(CallInfo*)) _call0;
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     jdouble result = f(callInfo);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
     return result;
 }
 
-jdouble nvmCallDoubleClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
+jdouble rvmCallDoubleClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
     jvalue* jargs = va_list2jargs(env, method, args);
     if (!jargs) return 0.0;
-    return nvmCallDoubleClassMethodA(env, clazz, method, jargs);
+    return rvmCallDoubleClassMethodA(env, clazz, method, jargs);
 }
 
-jdouble nvmCallDoubleClassMethod(Env* env, Class* clazz, Method* method, ...) {
+jdouble rvmCallDoubleClassMethod(Env* env, Class* clazz, Method* method, ...) {
     va_list args;
     va_start(args, method);
-    return nvmCallDoubleClassMethodV(env, clazz, method, args);
+    return rvmCallDoubleClassMethodV(env, clazz, method, args);
 }
 
-jboolean nvmRegisterNative(Env* env, NativeMethod* method, void* impl) {
+jboolean rvmRegisterNative(Env* env, NativeMethod* method, void* impl) {
     method->nativeImpl = impl;
     return TRUE;
 }
 
-jboolean nvmUnregisterNative(Env* env, NativeMethod* method) {
+jboolean rvmUnregisterNative(Env* env, NativeMethod* method) {
     method->nativeImpl = NULL;
     return TRUE;
 }
 
-void* nvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const char* shortMangledName, const char* longMangledName, ClassLoader* classLoader, void** ptr) {
+void* rvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const char* shortMangledName, const char* longMangledName, ClassLoader* classLoader, void** ptr) {
     void* f = method->nativeImpl;
     if (!f) {
         DynamicLib* nativeLibs = NULL;
@@ -1062,19 +1062,19 @@ void* nvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const char* sho
             nativeLibs = mainNativeLibs;
         } else {
             // Unknown classloader
-            nvmThrowUnsatisfiedLinkError(env);
+            rvmThrowUnsatisfiedLinkError(env);
             return NULL;
         }
 
         obtainNativeLibsLock();
 
         TRACEF("Searching for native method using short name: %s", shortMangledName);
-        f = nvmFindDynamicLibSymbol(env, nativeLibs, shortMangledName, TRUE);
+        f = rvmFindDynamicLibSymbol(env, nativeLibs, shortMangledName, TRUE);
         if (f) {
             TRACEF("Found native method using short name: %s", shortMangledName);
         } else if (!strcmp(shortMangledName, longMangledName)) {
             TRACEF("Searching for native method using long name: %s", longMangledName);
-            void* f = nvmFindDynamicLibSymbol(env, nativeLibs, longMangledName, TRUE);
+            void* f = rvmFindDynamicLibSymbol(env, nativeLibs, longMangledName, TRUE);
             if (f) {
                 TRACEF("Found native method using long name: %s", longMangledName);
             }
@@ -1086,7 +1086,7 @@ void* nvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const char* sho
     }
 
     if (!f) {
-        nvmThrowUnsatisfiedLinkError(env);
+        rvmThrowUnsatisfiedLinkError(env);
         return NULL;
     }
     // TODO: Remember ptr to allow it to be reset when the JNI RegisterNatives/UnregisterNatives functions are called
@@ -1095,7 +1095,7 @@ void* nvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const char* sho
 }
 
 
-jboolean nvmLoadNativeLibrary(Env* env, const char* path, ClassLoader* classLoader) {
+jboolean rvmLoadNativeLibrary(Env* env, const char* path, ClassLoader* classLoader) {
     DynamicLib** nativeLibs = NULL;
     if (!classLoader || classLoader->parent == NULL) {
         // This is the bootstrap classloader
@@ -1106,18 +1106,18 @@ jboolean nvmLoadNativeLibrary(Env* env, const char* path, ClassLoader* classLoad
     } else {
         // Unknown classloader
         if (bootNativeLibs) {
-            // if bootNativeLibs is NULL we're being called from nvmStartup() and we cannot throw exceptions.
-            nvmThrowUnsatisfiedLinkError(env);
+            // if bootNativeLibs is NULL we're being called from rvmStartup() and we cannot throw exceptions.
+            rvmThrowUnsatisfiedLinkError(env);
         }
         return FALSE;
     }
 
-    DynamicLib* lib = nvmOpenDynamicLib(env, path);
+    DynamicLib* lib = rvmOpenDynamicLib(env, path);
     if (!lib) {
-        if (!nvmExceptionOccurred(env)) {
+        if (!rvmExceptionOccurred(env)) {
             if (bootNativeLibs) {
-                // if bootNativeLibs is NULL we're being called from nvmStartup() and we cannot throw exceptions.
-                nvmThrowUnsatisfiedLinkError(env);
+                // if bootNativeLibs is NULL we're being called from rvmStartup() and we cannot throw exceptions.
+                rvmThrowUnsatisfiedLinkError(env);
             }
         }
         return FALSE;
@@ -1125,24 +1125,24 @@ jboolean nvmLoadNativeLibrary(Env* env, const char* path, ClassLoader* classLoad
 
     obtainNativeLibsLock();
 
-    if (nvmHasDynamicLib(env, lib, *nativeLibs)) {
+    if (rvmHasDynamicLib(env, lib, *nativeLibs)) {
         // The lib is already in nativeLibs
-        nvmCloseDynamicLib(env, lib);
+        rvmCloseDynamicLib(env, lib);
         releaseNativeLibsLock();
         return TRUE;
     }
 
-    jint (*JNI_OnLoad)(JavaVM*, void*) = nvmFindDynamicLibSymbol(env, lib, "JNI_OnLoad", FALSE);
+    jint (*JNI_OnLoad)(JavaVM*, void*) = rvmFindDynamicLibSymbol(env, lib, "JNI_OnLoad", FALSE);
     if (JNI_OnLoad) {
         // TODO: Check that JNI_OnLoad returns a supported JNI version?
         JNI_OnLoad(&env->vm->javaVM, NULL);
-        if (nvmExceptionOccurred(env)) {
+        if (rvmExceptionOccurred(env)) {
             releaseNativeLibsLock();
             return FALSE;
         }
     }
 
-    nvmAddDynamicLib(env, lib, nativeLibs);
+    rvmAddDynamicLib(env, lib, nativeLibs);
 
     releaseNativeLibsLock();
 

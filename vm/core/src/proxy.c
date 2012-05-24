@@ -34,14 +34,14 @@ static ProxyMethod* hasMethod(Env* env, Class* clazz, const char* name, const ch
 
 static jboolean addProxyMethods(Env* env, Class* proxyClass, Class* clazz, ProxyClassData* proxyClassData) {
     // Add constructors from the super class and override all overridable methods. Constructors will use 
-    // the same impl as the superclass. Overridden methods will have _nvmProxy0 as its impl.
+    // the same impl as the superclass. Overridden methods will have _rvmProxy0 as its impl.
 
     if (clazz->superclass) {
         if (!addProxyMethods(env, proxyClass, clazz->superclass, proxyClassData)) return FALSE;
     }
 
-    Method* method = nvmGetMethods(env, clazz);
-    if (nvmExceptionOccurred(env)) return FALSE;
+    Method* method = rvmGetMethods(env, clazz);
+    if (rvmExceptionOccurred(env)) return FALSE;
     for (; method != NULL; method = method->next) {
         if (!METHOD_IS_STATIC(method) && !METHOD_IS_PRIVATE(method) && !METHOD_IS_FINAL(method)
                 && (!METHOD_IS_CONSTRUCTOR(method) || clazz == proxyClass->superclass)) {
@@ -57,13 +57,13 @@ static jboolean addProxyMethods(Env* env, Class* proxyClass, Class* clazz, Proxy
                 impl = _proxy0;
                 if (METHOD_IS_PUBLIC(method)) { 
                     ProxyMethod* proxyMethod = hasMethod(env, proxyClass, method->name, method->desc);
-                    if (nvmExceptionOccurred(env)) return FALSE;
+                    if (rvmExceptionOccurred(env)) return FALSE;
                     if (!proxyMethod) {
                         proxyMethod = addProxyMethod(env, proxyClass, method, access, impl);
                         if (!proxyMethod) return FALSE;
                     }
                     // Record the lookup function in proxyClassData
-                    LookupEntry* entry = nvmAllocateMemory(env, sizeof(LookupEntry));
+                    LookupEntry* entry = rvmAllocateMemory(env, sizeof(LookupEntry));
                     if (!entry) return FALSE;
                     entry->key.name = method->name;
                     entry->key.desc = method->desc;
@@ -85,19 +85,19 @@ static jboolean addProxyMethods(Env* env, Class* proxyClass, Class* clazz, Proxy
 static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, Interface* interface, ProxyClassData* proxyClassData) {
     if (!interface) return TRUE;
 
-    Method* method = nvmGetMethods(env, interface->interface);
-    if (nvmExceptionOccurred(env)) return FALSE;
+    Method* method = rvmGetMethods(env, interface->interface);
+    if (rvmExceptionOccurred(env)) return FALSE;
     for (; method != NULL; method = method->next) {
         if (!METHOD_IS_CLASS_INITIALIZER(method)) {
             ProxyMethod* proxyMethod = hasMethod(env, proxyClass, method->name, method->desc);
-            if (nvmExceptionOccurred(env)) return FALSE;
+            if (rvmExceptionOccurred(env)) return FALSE;
             if (!proxyMethod) { 
                 jint access = (method->access & (~ACC_ABSTRACT)) | ACC_FINAL;
                 proxyMethod = addProxyMethod(env, proxyClass, method, access, _proxy0);
                 if (!proxyMethod) return FALSE;
             }
             // Record the lookup function in proxyClassData
-            LookupEntry* entry = nvmAllocateMemory(env, sizeof(LookupEntry));
+            LookupEntry* entry = rvmAllocateMemory(env, sizeof(LookupEntry));
             if (!entry) return FALSE;
             entry->key.name = method->name;
             entry->key.desc = method->desc;
@@ -107,18 +107,18 @@ static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, I
     }
 
     if (!implementAbstractInterfaceMethods(env, proxyClass, interface->next, proxyClassData)) return FALSE;
-    Interface* interfaceInterfaces = nvmGetInterfaces(env, interface->interface);
-    if (nvmExceptionCheck(env)) return FALSE;
+    Interface* interfaceInterfaces = rvmGetInterfaces(env, interface->interface);
+    if (rvmExceptionCheck(env)) return FALSE;
     if (!implementAbstractInterfaceMethods(env, proxyClass, interfaceInterfaces, proxyClassData)) return FALSE;
 
     return TRUE;
 }
 
-Class* nvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classLoader, char* className, jint interfacesCount, Class** interfaces, 
+Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classLoader, char* className, jint interfacesCount, Class** interfaces, 
         jint instanceDataSize, jint instanceDataOffset, ProxyHandler handler) {
 
     // Allocate the proxy class.
-    Class* proxyClass = nvmAllocateClass(env, className, superclass, classLoader, CLASS_FLAG_PROXY | ACC_PUBLIC | ACC_FINAL, 
+    Class* proxyClass = rvmAllocateClass(env, className, superclass, classLoader, CLASS_FLAG_PROXY | ACC_PUBLIC | ACC_FINAL, 
         offsetof(Class, data) + sizeof(ProxyClassData), instanceDataSize, instanceDataOffset, NULL, NULL);
     if (!proxyClass) return NULL;
 
@@ -128,28 +128,28 @@ Class* nvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classL
     // Add interfaces
     jint i;
     for (i = 0; i < interfacesCount; i++) {
-        if (!nvmAddInterface(env, proxyClass, (Class*) interfaces[i])) return NULL;
+        if (!rvmAddInterface(env, proxyClass, (Class*) interfaces[i])) return NULL;
     }
 
-    // Initialize methods to NULL to prevent nvmGetMethods() from trying to load the methods if called with this proxy class
+    // Initialize methods to NULL to prevent rvmGetMethods() from trying to load the methods if called with this proxy class
     proxyClass->_methods = NULL;
 
     Class* c = proxyClass;
     while (c) {
-        Interface* interface = nvmGetInterfaces(env, c);
-        if (nvmExceptionCheck(env)) return NULL;
+        Interface* interface = rvmGetInterfaces(env, c);
+        if (rvmExceptionCheck(env)) return NULL;
         if (!implementAbstractInterfaceMethods(env, proxyClass, interface, proxyClassData)) return NULL;
         c = c->superclass;
     }
 
     if (!addProxyMethods(env, proxyClass, superclass, proxyClassData)) return NULL;
 
-    if (!nvmRegisterClass(env, proxyClass)) return NULL;
+    if (!rvmRegisterClass(env, proxyClass)) return NULL;
 
     return proxyClass;
 }
 
-void _nvmProxyHandler(CallInfo* callInfo) {
+void _rvmProxyHandler(CallInfo* callInfo) {
     Env* env = (Env*) proxy0NextPtr(callInfo);
     Object* receiver = (Object*) proxy0NextPtr(callInfo);
     Class* proxyClass = receiver->clazz;
@@ -162,24 +162,24 @@ void _nvmProxyHandler(CallInfo* callInfo) {
     LookupEntry* entry;
     HASH_FIND(hh, proxyClassData->lookupsHash, &key, sizeof(LookupKey), entry);
     if (!entry) {
-        nvmThrowNoSuchMethodError(env, "Failed to determine which method was called on proxy class");
+        rvmThrowNoSuchMethodError(env, "Failed to determine which method was called on proxy class");
         goto error;
     }
 
     ProxyMethod* method = entry->method;
 
-    nvmPushGatewayFrameProxy(env, method);
+    rvmPushGatewayFrameProxy(env, method);
 
-    jint argsCount = nvmGetParameterCount((Method*) method);
+    jint argsCount = rvmGetParameterCount((Method*) method);
     jvalue *jvalueArgs = NULL;
     if (argsCount > 0) {
-        jvalueArgs = (jvalue*) nvmAllocateMemory(env, sizeof(jvalue) * argsCount);
+        jvalueArgs = (jvalue*) rvmAllocateMemory(env, sizeof(jvalue) * argsCount);
         if (!jvalueArgs) goto errorPop;
 
         const char* desc = method->method.desc;
         const char* c;
         jint i = 0;
-        while ((c = nvmGetNextParameterType(&desc))) {
+        while ((c = rvmGetNextParameterType(&desc))) {
             switch (c[0]) {
             case 'B':
                 jvalueArgs[i++].b = (jbyte) proxy0NextInt(callInfo);
@@ -216,12 +216,12 @@ void _nvmProxyHandler(CallInfo* callInfo) {
     jvalue returnValue;
     proxyClassData->handler(env, receiver, method, jvalueArgs, &returnValue);
 
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
 
-    if (nvmExceptionCheck(env)) goto error;
+    if (rvmExceptionCheck(env)) goto error;
 
     proxy0ReturnInt(callInfo, 0);
-    switch (nvmGetReturnType(method->method.desc)[0]) {
+    switch (rvmGetReturnType(method->method.desc)[0]) {
     case 'B':
         proxy0ReturnInt(callInfo, (jint) returnValue.b);
         break;
@@ -255,8 +255,8 @@ void _nvmProxyHandler(CallInfo* callInfo) {
     return;
 
 errorPop:
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
 error:
-    nvmRaiseException(env, nvmExceptionOccurred(env));
+    rvmRaiseException(env, rvmExceptionOccurred(env));
 }
 

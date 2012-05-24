@@ -72,7 +72,7 @@ struct VMInterfaceFunctions_ vmiImpl = {
     &_IterateSystemProperties
 };
 
-jboolean nvmInitVMI(Env* env) {
+jboolean rvmInitVMI(Env* env) {
     return TRUE;
 }
 

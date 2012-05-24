@@ -14,7 +14,7 @@ CallInfo_size         = 28
     .type    _call0, @function
 _call0:
     .cfi_startproc
-    .cfi_personality 0, _nvmPersonality
+    .cfi_personality 0, _rvmPersonality
     .cfi_lsda 16, .Lexception1
     .cfi_def_cfa %esp, 4
 .Lcall0Begin:

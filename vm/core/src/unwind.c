@@ -75,8 +75,8 @@ static jboolean unwindCallStack(UnwindContext* context, void* _data) {
 }
 
 void unwindIterateCallStack(Env* env, jboolean (*it)(Env*, void*, ProxyMethod*, void*), void* data) {
-    nvmPushGatewayFrame(env);
+    rvmPushGatewayFrame(env);
     UnwindCallStackData d = {it, env, env->gatewayFrames, data};
     unwindBacktrace(unwindCallStack, &d);
-    nvmPopGatewayFrame(env);
+    rvmPopGatewayFrame(env);
 }

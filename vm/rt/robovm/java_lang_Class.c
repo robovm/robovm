@@ -15,7 +15,7 @@ jboolean Java_java_lang_Class_isPrimitive(Env* env, Class* thiz) {
 }
 
 jboolean Java_java_lang_Class_isAnonymousClass(Env* env, Class* thiz) {
-    return nvmAttributeIsAnonymousClass(env, thiz);
+    return rvmAttributeIsAnonymousClass(env, thiz);
 }
 
 jboolean Java_java_lang_Class_isInterface(Env* env, Class* thiz) {
@@ -24,14 +24,14 @@ jboolean Java_java_lang_Class_isInterface(Env* env, Class* thiz) {
 
 jboolean Java_java_lang_Class_isAssignableFrom(Env* env, Class* thiz, Class* that) {
     if (!that) {
-        nvmThrowNullPointerException(env);
+        rvmThrowNullPointerException(env);
         return FALSE;
     }
-    return nvmIsAssignableFrom(env, that, thiz);
+    return rvmIsAssignableFrom(env, that, thiz);
 }
 
 jboolean Java_java_lang_Class_isInstance(Env* env, Class* thiz, Object* object) {
-    return nvmIsInstanceOf(env, object, thiz);
+    return rvmIsInstanceOf(env, object, thiz);
 }
 
 jint Java_java_lang_Class_getModifiers(Env* env, Class* c, Class* thiz, jboolean ignoreInnerClassesAttrib) {
@@ -39,66 +39,66 @@ jint Java_java_lang_Class_getModifiers(Env* env, Class* c, Class* thiz, jboolean
 }
 
 Object* Java_java_lang_Class_getSignatureAttribute(Env* env, Class* thiz) {
-    return nvmAttributeGetClassSignature(env, thiz);
+    return rvmAttributeGetClassSignature(env, thiz);
 }
 
 Object* Java_java_lang_Class_getInnerClassName(Env* env, Class* thiz) {
-    return nvmAttributeGetInnerClassName(env, thiz);
+    return rvmAttributeGetInnerClassName(env, thiz);
 }
 
 Object* Java_java_lang_Class_getName0(Env* env, Class* thiz) {
-    return nvmNewStringUTF(env, thiz->name, -1);
+    return rvmNewStringUTF(env, thiz->name, -1);
 }
 
 Class* Java_java_lang_Class_getDeclaringClass(Env* env, Class* thiz) {
-    return nvmAttributeGetDeclaringClass(env, thiz);
+    return rvmAttributeGetDeclaringClass(env, thiz);
 }
 
 Class* Java_java_lang_Class_getEnclosingClass(Env* env, Class* thiz) {
-    Class* enclosingClass = nvmAttributeGetEnclosingClass(env, thiz);
-    if (nvmExceptionCheck(env) && nvmExceptionOccurred(env)->clazz != java_lang_ClassNotFoundException) {
+    Class* enclosingClass = rvmAttributeGetEnclosingClass(env, thiz);
+    if (rvmExceptionCheck(env) && rvmExceptionOccurred(env)->clazz != java_lang_ClassNotFoundException) {
         return NULL;
     }
     if (!enclosingClass) {
-        nvmExceptionClear(env);
-        return nvmAttributeGetDeclaringClass(env, thiz);
+        rvmExceptionClear(env);
+        return rvmAttributeGetDeclaringClass(env, thiz);
     }
     return enclosingClass;
 }
 
 Object* Java_java_lang_Class_getEnclosingMethod(Env* env, Class* thiz) {
-    Method* method = nvmAttributeGetEnclosingMethod(env, thiz);
+    Method* method = rvmAttributeGetEnclosingMethod(env, thiz);
     if (!method || METHOD_IS_CONSTRUCTOR(method)) return NULL;
-    Class* jlr_Method = nvmFindClass(env, "java/lang/reflect/Method");
+    Class* jlr_Method = rvmFindClass(env, "java/lang/reflect/Method");
     if (!jlr_Method) return NULL;
-    Method* constructor = nvmGetInstanceMethod(env, jlr_Method, "<init>", "(J)V");
+    Method* constructor = rvmGetInstanceMethod(env, jlr_Method, "<init>", "(J)V");
     if (!constructor) return NULL;
     jvalue args[1];
     args[0].j = PTR_TO_LONG(method);
-    return nvmNewObjectA(env, jlr_Method, constructor, args);
+    return rvmNewObjectA(env, jlr_Method, constructor, args);
 }
 
 Object* Java_java_lang_Class_getEnclosingConstructor(Env* env, Class* thiz) {
-    Method* method = nvmAttributeGetEnclosingMethod(env, thiz);
+    Method* method = rvmAttributeGetEnclosingMethod(env, thiz);
     if (!method || !METHOD_IS_CONSTRUCTOR(method)) return NULL;
-    Class* jlr_Constructor = nvmFindClass(env, "java/lang/reflect/Constructor");
+    Class* jlr_Constructor = rvmFindClass(env, "java/lang/reflect/Constructor");
     if (!jlr_Constructor) return NULL;
-    Method* constructor = nvmGetInstanceMethod(env, jlr_Constructor, "<init>", "(J)V");
+    Method* constructor = rvmGetInstanceMethod(env, jlr_Constructor, "<init>", "(J)V");
     if (!constructor) return NULL;
     jvalue args[1];
     args[0].j = PTR_TO_LONG(method);
-    return nvmNewObjectA(env, jlr_Constructor, constructor, args);
+    return rvmNewObjectA(env, jlr_Constructor, constructor, args);
 }
 
 ObjectArray* Java_java_lang_Class_getInterfaces(Env* env, Class* thiz) {
-    Interface* interfaces = nvmGetInterfaces(env, thiz);
-    if (nvmExceptionCheck(env)) return NULL;
+    Interface* interfaces = rvmGetInterfaces(env, thiz);
+    if (rvmExceptionCheck(env)) return NULL;
     Interface* interface;
     jint length = 0;
     LL_FOREACH(interfaces, interface) {
         length++;
     }
-    ObjectArray* result = nvmNewObjectArray(env, length, java_lang_Class, NULL, NULL);
+    ObjectArray* result = rvmNewObjectArray(env, length, java_lang_Class, NULL, NULL);
     if (!result) return NULL;
     jint i = 0;
     LL_FOREACH(interfaces, interface) {
@@ -121,7 +121,7 @@ ClassLoader* Java_java_lang_Class_getClassLoader(Env* env, Class* c, Class* claz
 
 ObjectArray* Java_java_lang_Class_getDeclaredClasses0(Env* env, Class* clazz, jboolean publicOnly) {
     if (CLASS_IS_PRIMITIVE(clazz) || CLASS_IS_ARRAY(clazz)) return NULL;
-    ObjectArray* result = nvmAttributeGetDeclaredClasses(env, clazz);
+    ObjectArray* result = rvmAttributeGetDeclaredClasses(env, clazz);
     if (!result || result->length == 0 || !publicOnly) {
         return result;
     }
@@ -137,7 +137,7 @@ ObjectArray* Java_java_lang_Class_getDeclaredClasses0(Env* env, Class* clazz, jb
 
     if (length == 0) return NULL;
 
-    ObjectArray* publicResult = nvmNewObjectArray(env, length, java_lang_Class, NULL, NULL);
+    ObjectArray* publicResult = rvmNewObjectArray(env, length, java_lang_Class, NULL, NULL);
     if (!publicResult) return NULL;
     jint index = 0;
     for (i = 0; i < result->length; i++) {
@@ -153,8 +153,8 @@ ObjectArray* Java_java_lang_Class_getDeclaredClasses0(Env* env, Class* clazz, jb
 ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(Env* env, Class* clazz, jboolean publicOnly) {
     if (CLASS_IS_PRIMITIVE(clazz) || CLASS_IS_ARRAY(clazz)) return NULL;
 
-    Method* methods = nvmGetMethods(env, clazz);
-    if (nvmExceptionCheck(env)) return NULL;
+    Method* methods = rvmGetMethods(env, clazz);
+    if (rvmExceptionCheck(env)) return NULL;
 
     Method* method;
     jint length = 0;
@@ -174,7 +174,7 @@ ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(Env* env, Class* claz
                 Object* c = createConstructorObject(env, method);
                 if (!c) return NULL;
                 if (!result) {
-                    result = nvmNewObjectArray(env, length, c->clazz, NULL, NULL);
+                    result = rvmNewObjectArray(env, length, c->clazz, NULL, NULL);
                     if (!result) return NULL;
                 }
                 result->values[i++] = c;
@@ -188,8 +188,8 @@ ObjectArray* Java_java_lang_Class_getDeclaredConstructors0(Env* env, Class* claz
 ObjectArray* Java_java_lang_Class_getDeclaredMethods0(Env* env, Class* clazz, jboolean publicOnly) {
     if (CLASS_IS_PRIMITIVE(clazz) || CLASS_IS_ARRAY(clazz)) return NULL;
 
-    Method* methods = nvmGetMethods(env, clazz);
-    if (nvmExceptionCheck(env)) return NULL;
+    Method* methods = rvmGetMethods(env, clazz);
+    if (rvmExceptionCheck(env)) return NULL;
 
     Method* method;
     jint length = 0;
@@ -209,7 +209,7 @@ ObjectArray* Java_java_lang_Class_getDeclaredMethods0(Env* env, Class* clazz, jb
                 Object* c = createMethodObject(env, method);
                 if (!c) return NULL;
                 if (!result) {
-                    result = nvmNewObjectArray(env, length, c->clazz, NULL, NULL);
+                    result = rvmNewObjectArray(env, length, c->clazz, NULL, NULL);
                     if (!result) return NULL;
                 }
                 result->values[i++] = c;
@@ -223,8 +223,8 @@ ObjectArray* Java_java_lang_Class_getDeclaredMethods0(Env* env, Class* clazz, jb
 ObjectArray* Java_java_lang_Class_getDeclaredFields0(Env* env, Class* clazz, jboolean publicOnly) {
     if (CLASS_IS_PRIMITIVE(clazz) || CLASS_IS_ARRAY(clazz)) return NULL;
 
-    Field* fields = nvmGetFields(env, clazz);
-    if (nvmExceptionCheck(env)) return NULL;
+    Field* fields = rvmGetFields(env, clazz);
+    if (rvmExceptionCheck(env)) return NULL;
 
     Field* field;
     jint length = 0;
@@ -241,7 +241,7 @@ ObjectArray* Java_java_lang_Class_getDeclaredFields0(Env* env, Class* clazz, jbo
             Object* c = createFieldObject(env, field);
             if (!c) return NULL;
             if (!result) {
-                result = nvmNewObjectArray(env, length, c->clazz, NULL, NULL);
+                result = rvmNewObjectArray(env, length, c->clazz, NULL, NULL);
                 if (!result) return NULL;
             }
             result->values[i++] = c;
@@ -252,26 +252,26 @@ ObjectArray* Java_java_lang_Class_getDeclaredFields0(Env* env, Class* clazz, jbo
 }
 
 ObjectArray* Java_java_lang_Class_getDeclaredAnnotations(Env* env, Class* clazz) {
-    return nvmAttributeGetClassRuntimeVisibleAnnotations(env, clazz);
+    return rvmAttributeGetClassRuntimeVisibleAnnotations(env, clazz);
 }
 
 Object* Java_java_lang_Class_newInstanceImpl(Env* env, Class* clazz) {
     if (CLASS_IS_PRIMITIVE(clazz) || CLASS_IS_INTERFACE(clazz) || CLASS_IS_ARRAY(clazz) || CLASS_IS_ABSTRACT(clazz)) {
-        nvmThrowNew(env, java_lang_InstantiationException, clazz->name);
+        rvmThrowNew(env, java_lang_InstantiationException, clazz->name);
         return NULL;
     }
-    Method* constructor = nvmGetInstanceMethod(env, clazz, "<init>", "()V");
+    Method* constructor = rvmGetInstanceMethod(env, clazz, "<init>", "()V");
     if (!constructor) {
-        nvmThrowNew(env, java_lang_InstantiationException, clazz->name);
+        rvmThrowNew(env, java_lang_InstantiationException, clazz->name);
         return NULL;
     }
 
     // TODO: Access checks
 
     jvalue args[1];
-    Object* o = nvmNewObjectA(env, clazz, constructor, args);
+    Object* o = rvmNewObjectA(env, clazz, constructor, args);
     if (!o) {
-        throwInvocationTargetException(env, nvmExceptionOccurred(env));
+        throwInvocationTargetException(env, rvmExceptionOccurred(env));
         return NULL;
     }
     return o;
@@ -281,16 +281,16 @@ Class* Java_java_lang_Class_classForName(Env* env, Class* cls, Object* className
             ClassLoader* classLoader) {
 
     if (!className) {
-        nvmThrowNullPointerException(env);
+        rvmThrowNullPointerException(env);
         return NULL;
     }
     char* classNameUTF = toBinaryName(env, className);
     if (!classNameUTF) return NULL;
-    Class* clazz = nvmFindClassUsingLoader(env, classNameUTF, classLoader);
+    Class* clazz = rvmFindClassUsingLoader(env, classNameUTF, classLoader);
     if (!clazz) return NULL;
     if (initializeBoolean) {
-        nvmInitialize(env, clazz);
-        if (nvmExceptionCheck(env)) return NULL;
+        rvmInitialize(env, clazz);
+        if (rvmExceptionCheck(env)) return NULL;
     }
     return clazz;
 }

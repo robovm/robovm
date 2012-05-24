@@ -116,9 +116,9 @@ struct Class {
   Class* componentType;
   void* initializer;       // Points to the <clinit> method implementation of the class. NULL if there is no <clinit>.
   jint flags;
-  Interface* _interfaces;  // Lazily loaded linked list of interfaces. Use nvmGetInterfaces() to get this value.
-  Field* _fields;          // Lazily loaded linked list of fields. Use nvmGetFields() to get this value.
-  Method* _methods;        // Lazily loaded linked list of methods. Use nvmGetMethods() to get this value.
+  Interface* _interfaces;  // Lazily loaded linked list of interfaces. Use rvmGetInterfaces() to get this value.
+  Field* _fields;          // Lazily loaded linked list of fields. Use rvmGetFields() to get this value.
+  Method* _methods;        // Lazily loaded linked list of methods. Use rvmGetMethods() to get this value.
   void* attributes;
   jint classDataSize;
   jint instanceDataOffset; // The offset from the base of Object->data
@@ -291,19 +291,19 @@ typedef struct GatewayFrame {
     ProxyMethod* proxyMethod; // Whenever we call a dynamic proxy we push the ProxyMethod* here. This is used when generating stack traces.
 } GatewayFrame;
 
-#define nvmPushGatewayFrame0(env, f, address, pm)  \
+#define rvmPushGatewayFrame0(env, f, address, pm)  \
     (f)->prev = env->gatewayFrames;                    \
     (f)->frameAddress = address;                       \
     (f)->proxyMethod = pm;                             \
     env->gatewayFrames = (f)
-#define nvmPushGatewayFrame1(env, f, address, pm)  \
+#define rvmPushGatewayFrame1(env, f, address, pm)  \
     GatewayFrame f;                                       \
-    nvmPushGatewayFrame0(env, &f, address, pm)
+    rvmPushGatewayFrame0(env, &f, address, pm)
 
-#define nvmPushGatewayFrameAddress(env, address) nvmPushGatewayFrame1(env, __gwFrame##__COUNTER__, address, NULL)
-#define nvmPushGatewayFrameProxy(env, pm) nvmPushGatewayFrame1(env, __gwFrame##__COUNTER__, __builtin_frame_address(0), pm)
-#define nvmPushGatewayFrame(env) nvmPushGatewayFrame1(env, __gwFrame##__COUNTER__, __builtin_frame_address(0), NULL)
-#define nvmPopGatewayFrame(env) env->gatewayFrames = env->gatewayFrames->prev
+#define rvmPushGatewayFrameAddress(env, address) rvmPushGatewayFrame1(env, __gwFrame##__COUNTER__, address, NULL)
+#define rvmPushGatewayFrameProxy(env, pm) rvmPushGatewayFrame1(env, __gwFrame##__COUNTER__, __builtin_frame_address(0), pm)
+#define rvmPushGatewayFrame(env) rvmPushGatewayFrame1(env, __gwFrame##__COUNTER__, __builtin_frame_address(0), NULL)
+#define rvmPopGatewayFrame(env) env->gatewayFrames = env->gatewayFrames->prev
 
 struct Env {
     JNIEnv jni;

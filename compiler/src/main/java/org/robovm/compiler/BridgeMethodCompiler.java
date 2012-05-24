@@ -96,7 +96,7 @@ public class BridgeMethodCompiler extends AbstractMethodCompiler {
             if (targetParameterTypes[i] instanceof PointerType) {
                 PointerType type = (PointerType) targetParameterTypes[i];
                 if (type.getBase() instanceof StructureType) {
-                    Value tmp = call(innerFn, NVM_BC_BY_VALUE_GET_STRUCT_HANDLE, 
+                    Value tmp = call(innerFn, BC_BY_VALUE_GET_STRUCT_HANDLE, 
                             innerFn.getParameterRef(0), args.get(i).getValue());
                     Variable arg = innerFn.newVariable(type);
                     innerFn.add(new Bitcast(arg, tmp, arg.getType()));
@@ -126,7 +126,7 @@ public class BridgeMethodCompiler extends AbstractMethodCompiler {
         innerFn.add(new Icmp(nullCheck, Condition.eq, targetFn.ref(), new NullConstant(targetFnType)));
         innerFn.add(new Br(nullCheck.ref(), innerFn.newBasicBlockRef(nullLabel), innerFn.newBasicBlockRef(notNullLabel)));
         innerFn.newBasicBlock(nullLabel);
-        call(innerFn, NVM_BC_THROW_UNSATISIFED_LINK_ERROR, innerFn.getParameterRef(0));
+        call(innerFn, BC_THROW_UNSATISIFED_LINK_ERROR, innerFn.getParameterRef(0));
         innerFn.add(new Unreachable());
         innerFn.newBasicBlock(notNullLabel);
         

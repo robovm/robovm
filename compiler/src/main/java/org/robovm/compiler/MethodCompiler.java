@@ -325,7 +325,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
         next: for (List<Trap> traps : recordedTraps) {
             BasicBlock bb = function.newBasicBlock(new Label(traps));
             Variable result = function.newVariable(new StructureType(I8_PTR, I32));
-            bb.add(new Landingpad(result, new ConstantBitcast(NVM_BC_PERSONALITY, I8_PTR), new Catch(new NullConstant(I8_PTR))));
+            bb.add(new Landingpad(result, new ConstantBitcast(BC_PERSONALITY, I8_PTR), new Catch(new NullConstant(I8_PTR))));
             for (Trap trap : traps) {
                 String exName = trap.getException().getName();
                 if ("java.lang.Throwable".equals(exName)) {
@@ -343,7 +343,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 bb = function.newBasicBlock(falseBlock.getLabel());
             }
             
-            bb.add(new Call(NVM_BC_RETHROW, env, result.ref()));
+            bb.add(new Call(BC_RETHROW, env, result.ref()));
             bb.add(new Unreachable());
         }
     }
@@ -679,7 +679,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             Value p = new VariableRef("p" + ref.getIndex(), getType(ref.getType()));
             result = widenToI32Value(p, isUnsigned(ref.getType()));
         } else if (rightOp instanceof CaughtExceptionRef) {
-            result = call(NVM_BC_EXCEPTION_CLEAR, env);
+            result = call(BC_EXCEPTION_CLEAR, env);
         } else if (rightOp instanceof ArrayRef) {
             ArrayRef ref = (ArrayRef) rightOp;
             VariableRef base = (VariableRef) immediate(stmt, (Immediate) ref.getBase());
@@ -979,7 +979,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 checkNull(stmt, base);
                 checkBounds(stmt, base, index);
                 if (leftOp.getType() instanceof RefLikeType) {
-                    callOrInvoke(stmt, NVM_BC_SET_OBJECT_ARRAY_ELEMENT, env, base, index, narrowedResult);
+                    callOrInvoke(stmt, BC_SET_OBJECT_ARRAY_ELEMENT, env, base, index, narrowedResult);
                 } else {
                     callOrInvoke(stmt, getArrayStore(leftOp.getType()), base, index, narrowedResult);
                 }
@@ -1090,7 +1090,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
     private void throw_(ThrowStmt stmt) {
         Value obj = immediate(stmt, (Immediate) stmt.getOp());
         checkNull(stmt, obj);
-        callOrInvoke(stmt, NVM_BC_THROW, env, obj);
+        callOrInvoke(stmt, BC_THROW, env, obj);
         function.add(new Unreachable());
     }
     
@@ -1101,13 +1101,13 @@ public class MethodCompiler extends AbstractMethodCompiler {
     private void enterMonitor(EnterMonitorStmt stmt) {
         Value op = immediate(stmt, (Immediate) stmt.getOp());
         checkNull(stmt, op);
-        callOrInvoke(stmt, NVM_BC_MONITOR_ENTER, env, op);
+        callOrInvoke(stmt, BC_MONITOR_ENTER, env, op);
     }
     
     private void exitMonitor(ExitMonitorStmt stmt) {
         Value op = immediate(stmt, (Immediate) stmt.getOp());
         checkNull(stmt, op);
-        callOrInvoke(stmt, NVM_BC_MONITOR_EXIT, env, op);
+        callOrInvoke(stmt, BC_MONITOR_EXIT, env, op);
     }
     
 }

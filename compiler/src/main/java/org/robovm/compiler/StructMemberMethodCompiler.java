@@ -159,7 +159,7 @@ public class StructMemberMethodCompiler extends AbstractMethodCompiler {
                 function.add(new Bitcast(objectPtr, p, OBJECT_PTR));
                 Variable memberI8Ptr = function.newVariable(I8_PTR);
                 function.add(new Bitcast(memberI8Ptr, memberPtr.ref(), I8_PTR));
-                call(function, NVM_BC_COPY_STRUCT, function.getParameterRef(0), 
+                call(function, BC_COPY_STRUCT, function.getParameterRef(0), 
                         objectPtr.ref(), memberI8Ptr.ref(), sizeof((StructureType) memberType));
             } else {
                 if (memberType == I8_PTR) {
@@ -171,7 +171,7 @@ public class StructMemberMethodCompiler extends AbstractMethodCompiler {
                         // Must be pointer to struct type
                         Variable objectPtr = function.newVariable(OBJECT_PTR);
                         function.add(new Bitcast(objectPtr, p, OBJECT_PTR));
-                        p = call(function, NVM_BC_GET_STRUCT_HANDLE, 
+                        p = call(function, BC_GET_STRUCT_HANDLE, 
                                 function.getParameterRef(0), objectPtr.ref());
                     }
                 }

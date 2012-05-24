@@ -24,72 +24,72 @@
 @array_F = external global %Object*
 @array_D = external global %Object*
 
-declare void @_nvmBcInitializeClass(%Env*, i8**)
-declare %Object* @_nvmBcAllocate(%Env*, i8**)
-declare %Object* @_nvmBcLdcArrayBootClass(%Env*, %Object**, i8*)
-declare %Object* @_nvmBcLdcArrayClass(%Env*, %Object**, i8*)
-declare %Object* @_nvmBcNewObjectArray(%Env*, i32, %Object*)
-declare %Object* @_nvmBcCheckcast(%Env*, i8**, %Object*)
-declare %Object* @_nvmBcCheckcastArray(%Env*, %Object*, %Object*)
-declare i32 @_nvmBcInstanceof(%Env*, i8**, %Object*)
-declare i32 @_nvmBcInstanceofArray(%Env*, %Object*, %Object*)
+declare void @_bcInitializeClass(%Env*, i8**)
+declare %Object* @_bcAllocate(%Env*, i8**)
+declare %Object* @_bcLdcArrayBootClass(%Env*, %Object**, i8*)
+declare %Object* @_bcLdcArrayClass(%Env*, %Object**, i8*)
+declare %Object* @_bcNewObjectArray(%Env*, i32, %Object*)
+declare %Object* @_bcCheckcast(%Env*, i8**, %Object*)
+declare %Object* @_bcCheckcastArray(%Env*, %Object*, %Object*)
+declare i32 @_bcInstanceof(%Env*, i8**, %Object*)
+declare i32 @_bcInstanceofArray(%Env*, %Object*, %Object*)
 
-declare i8* @_nvmBcLookupVirtualMethod(%Env*, %Object*, i8*, i8*)
-declare i8* @_nvmBcLookupInterfaceMethod(%Env*, i8**, %Object*, i8*, i8*)
-declare void @_nvmBcThrow(%Env*, %Object*)
-declare void @_nvmBcRethrow(%Env*, {i8*, i32})
-declare void @_nvmBcThrowIfExceptionOccurred(%Env*)
-declare %Object* @_nvmBcExceptionClear(%Env*)
-declare i32 @_nvmBcExceptionMatch(%Env*, i8**)
-declare void @_nvmBcExceptionSet(%Env*, %Object*)
-declare void @_nvmBcThrowNullPointerException(%Env*)
-declare void @_nvmBcThrowArrayIndexOutOfBoundsException(%Env*, i32)
-declare void @_nvmBcThrowArithmeticException(%Env*)
-declare void @_nvmBcThrowUnsatisfiedLinkError(%Env*)
-declare void @_nvmBcThrowNoClassDefFoundError(%Env*, i8*)
-declare void @_nvmBcThrowNoSuchFieldError(%Env*, i8*)
-declare void @_nvmBcThrowNoSuchMethodError(%Env*, i8*)
-declare void @_nvmBcThrowIllegalAccessError(%Env*, i8*)
-declare void @_nvmBcThrowInstantiationError(%Env*, i8*)
-declare void @_nvmBcThrowIncompatibleClassChangeError(%Env*, i8*)
-declare void @_nvmBcThrowAbstractMethodError(%Env*, i8*)
+declare i8* @_bcLookupVirtualMethod(%Env*, %Object*, i8*, i8*)
+declare i8* @_bcLookupInterfaceMethod(%Env*, i8**, %Object*, i8*, i8*)
+declare void @_bcThrow(%Env*, %Object*)
+declare void @_bcRethrow(%Env*, {i8*, i32})
+declare void @_bcThrowIfExceptionOccurred(%Env*)
+declare %Object* @_bcExceptionClear(%Env*)
+declare i32 @_bcExceptionMatch(%Env*, i8**)
+declare void @_bcExceptionSet(%Env*, %Object*)
+declare void @_bcThrowNullPointerException(%Env*)
+declare void @_bcThrowArrayIndexOutOfBoundsException(%Env*, i32)
+declare void @_bcThrowArithmeticException(%Env*)
+declare void @_bcThrowUnsatisfiedLinkError(%Env*)
+declare void @_bcThrowNoClassDefFoundError(%Env*, i8*)
+declare void @_bcThrowNoSuchFieldError(%Env*, i8*)
+declare void @_bcThrowNoSuchMethodError(%Env*, i8*)
+declare void @_bcThrowIllegalAccessError(%Env*, i8*)
+declare void @_bcThrowInstantiationError(%Env*, i8*)
+declare void @_bcThrowIncompatibleClassChangeError(%Env*, i8*)
+declare void @_bcThrowAbstractMethodError(%Env*, i8*)
 
-declare %Object* @_nvmBcNew(%Env*, i8*)
-declare %Object* @_nvmBcNewBooleanArray(%Env*, i32)
-declare %Object* @_nvmBcNewByteArray(%Env*, i32)
-declare %Object* @_nvmBcNewCharArray(%Env*, i32)
-declare %Object* @_nvmBcNewShortArray(%Env*, i32)
-declare %Object* @_nvmBcNewIntArray(%Env*, i32)
-declare %Object* @_nvmBcNewLongArray(%Env*, i32)
-declare %Object* @_nvmBcNewFloatArray(%Env*, i32)
-declare %Object* @_nvmBcNewDoubleArray(%Env*, i32)
-declare %Object* @_nvmBcNewMultiArray(%Env*, i32, i32*, %Object*)
-declare void @_nvmBcSetObjectArrayElement(%Env*, %Object*, i32, %Object*)
+declare %Object* @_bcNew(%Env*, i8*)
+declare %Object* @_bcNewBooleanArray(%Env*, i32)
+declare %Object* @_bcNewByteArray(%Env*, i32)
+declare %Object* @_bcNewCharArray(%Env*, i32)
+declare %Object* @_bcNewShortArray(%Env*, i32)
+declare %Object* @_bcNewIntArray(%Env*, i32)
+declare %Object* @_bcNewLongArray(%Env*, i32)
+declare %Object* @_bcNewFloatArray(%Env*, i32)
+declare %Object* @_bcNewDoubleArray(%Env*, i32)
+declare %Object* @_bcNewMultiArray(%Env*, i32, i32*, %Object*)
+declare void @_bcSetObjectArrayElement(%Env*, %Object*, i32, %Object*)
 
-declare %Object* @_nvmBcLdcString(%Env*, i8*)
+declare %Object* @_bcLdcString(%Env*, i8*)
         
-declare void @_nvmBcMonitorEnter(%Env*, %Object*)
-declare void @_nvmBcMonitorExit(%Env*, %Object*)
+declare void @_bcMonitorEnter(%Env*, %Object*)
+declare void @_bcMonitorExit(%Env*, %Object*)
 
-declare i8* @_nvmBcResolveNative(%Env*, %Object*, i8*, i8*, i8*, i8*, i8**)
+declare i8* @_bcResolveNative(%Env*, %Object*, i8*, i8*, i8*, i8*, i8**)
 
-declare void @_nvmBcPushNativeFrame(%Env*, %GatewayFrame*, i8*)
-declare void @_nvmBcPopNativeFrame(%Env*)
+declare void @_bcPushNativeFrame(%Env*, %GatewayFrame*, i8*)
+declare void @_bcPopNativeFrame(%Env*)
 
-declare void @_nvmBcPushCallbackFrame(%Env*, %GatewayFrame*, i8*)
-declare void @_nvmBcPopCallbackFrame(%Env*)
+declare void @_bcPushCallbackFrame(%Env*, %GatewayFrame*, i8*)
+declare void @_bcPopCallbackFrame(%Env*)
 
-declare %Env* @_nvmBcAttachThreadFromCallback()
-declare void @_nvmBcDetachThreadFromCallback(%Env*)
+declare %Env* @_bcAttachThreadFromCallback()
+declare void @_bcDetachThreadFromCallback(%Env*)
 
-declare %Object* @_nvmBcNewStruct(%Env*, i8*, %Class*, i8*)
-declare i8* @_nvmBcGetStructHandle(%Env*, %Object*)
-declare i8* @_nvmBcByValueGetStructHandle(%Env*, %Object*)
-declare void @_nvmBcCopyStruct(%Env*, %Object*, i8*, i32)
+declare %Object* @_bcNewStruct(%Env*, i8*, %Class*, i8*)
+declare i8* @_bcGetStructHandle(%Env*, %Object*)
+declare i8* @_bcByValueGetStructHandle(%Env*, %Object*)
+declare void @_bcCopyStruct(%Env*, %Object*, i8*, i32)
 
 declare i8* @llvm.eh.exception() nounwind
 declare i32 @llvm.eh.selector(i8*, i8*, ...) nounwind
-declare i8* @_nvmBcPersonality()
+declare i8* @_bcPersonality()
 declare i8* @llvm.frameaddress(i32) nounwind readnone
 
 
@@ -234,7 +234,7 @@ define linkonce_odr void @checknull(%Env* %env, %Object* %o) alwaysinline {
 success:
     ret void
 failure:
-    call void @_nvmBcThrowNullPointerException(%Env* %env)
+    call void @_bcThrowNullPointerException(%Env* %env)
     unreachable
 }
 
@@ -244,7 +244,7 @@ define linkonce_odr void @checklower(%Env* %env, %Object* %o, i32 %index) always
 success:
     ret void
 failure:
-    call void @_nvmBcThrowArrayIndexOutOfBoundsException(%Env* %env, i32 %index)
+    call void @_bcThrowArrayIndexOutOfBoundsException(%Env* %env, i32 %index)
     unreachable
 }
 
@@ -255,7 +255,7 @@ define linkonce_odr void @checkupper(%Env* %env, %Object* %o, i32 %index) always
 success:
     ret void
 failure:
-    call void @_nvmBcThrowArrayIndexOutOfBoundsException(%Env* %env, i32 %index)
+    call void @_bcThrowArrayIndexOutOfBoundsException(%Env* %env, i32 %index)
     unreachable
 }
 
@@ -332,7 +332,7 @@ minusOne:
     %result2 = mul i32 %op1, %op2
     ret i32 %result2
 zero:
-    call void @_nvmBcThrowArithmeticException(%Env* %env)
+    call void @_bcThrowArithmeticException(%Env* %env)
     unreachable
 }
 
@@ -349,7 +349,7 @@ minusOne:
     %result2 = mul i64 %op1, %op2
     ret i64 %result2
 zero:
-    call void @_nvmBcThrowArithmeticException(%Env* %env)
+    call void @_bcThrowArithmeticException(%Env* %env)
     unreachable
 }
 
@@ -365,7 +365,7 @@ notMinusOne:
 minusOne:
     ret i32 0
 zero:
-    call void @_nvmBcThrowArithmeticException(%Env* %env)
+    call void @_bcThrowArithmeticException(%Env* %env)
     unreachable
 }
 
@@ -381,7 +381,7 @@ notMinusOne:
 minusOne:
     ret i64 0
 zero:
-    call void @_nvmBcThrowArithmeticException(%Env* %env)
+    call void @_bcThrowArithmeticException(%Env* %env)
     unreachable
 }
 

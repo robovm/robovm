@@ -35,58 +35,58 @@ import soot.SootMethod;
  */
 public class Functions {
 
-    public static final FunctionRef NVM_BC_INITIALIZE_CLASS = new FunctionRef("_nvmBcInitializeClass", new FunctionType(VOID, ENV_PTR, I8_PTR_PTR));
-    public static final FunctionRef NVM_BC_ALLOCATE = new FunctionRef("_nvmBcAllocate", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR_PTR));
-    public static final FunctionRef NVM_BC_LDC_ARRAY_BOOT_CLASS = new FunctionRef("_nvmBcLdcArrayBootClass", new FunctionType(OBJECT_PTR, ENV_PTR, new PointerType(OBJECT_PTR), I8_PTR));
-    public static final FunctionRef NVM_BC_LDC_ARRAY_CLASS = new FunctionRef("_nvmBcLdcArrayClass", new FunctionType(OBJECT_PTR, ENV_PTR, new PointerType(OBJECT_PTR), I8_PTR));
-    public static final FunctionRef NVM_BC_NEW_OBJECT_ARRAY = new FunctionRef("_nvmBcNewObjectArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, OBJECT_PTR));
+    public static final FunctionRef BC_INITIALIZE_CLASS = new FunctionRef("_bcInitializeClass", new FunctionType(VOID, ENV_PTR, I8_PTR_PTR));
+    public static final FunctionRef BC_ALLOCATE = new FunctionRef("_bcAllocate", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR_PTR));
+    public static final FunctionRef BC_LDC_ARRAY_BOOT_CLASS = new FunctionRef("_bcLdcArrayBootClass", new FunctionType(OBJECT_PTR, ENV_PTR, new PointerType(OBJECT_PTR), I8_PTR));
+    public static final FunctionRef BC_LDC_ARRAY_CLASS = new FunctionRef("_bcLdcArrayClass", new FunctionType(OBJECT_PTR, ENV_PTR, new PointerType(OBJECT_PTR), I8_PTR));
+    public static final FunctionRef BC_NEW_OBJECT_ARRAY = new FunctionRef("_bcNewObjectArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, OBJECT_PTR));
 
-    public static final FunctionRef NVM_BC_PERSONALITY = new FunctionRef("_nvmBcPersonality", new FunctionType(I8_PTR));
-    public static final FunctionRef NVM_BC_EXCEPTION_MATCH = new FunctionRef("_nvmBcExceptionMatch", new FunctionType(I32, ENV_PTR, CLASS_PTR));
-    public static final FunctionRef NVM_BC_EXCEPTION_CLEAR = new FunctionRef("_nvmBcExceptionClear", new FunctionType(OBJECT_PTR, ENV_PTR));
-    public static final FunctionRef NVM_BC_EXCEPTION_SET = new FunctionRef("_nvmBcExceptionSet", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
-    public static final FunctionRef NVM_BC_THROW = new FunctionRef("_nvmBcThrow", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
-    public static final FunctionRef NVM_BC_RETHROW = new FunctionRef("_nvmBcRethrow", new FunctionType(VOID, ENV_PTR, new StructureType(I8_PTR, I32)));
-    public static final FunctionRef NVM_BC_THROW_IF_EXCEPTION_OCCURRED = new FunctionRef("_nvmBcThrowIfExceptionOccurred", new FunctionType(VOID, ENV_PTR));
-    public static final FunctionRef NVM_BC_THROW_UNSATISIFED_LINK_ERROR = new FunctionRef("_nvmBcThrowUnsatisfiedLinkError", new FunctionType(VOID, ENV_PTR));
-    public static final FunctionRef NVM_BC_THROW_NO_CLASS_DEF_FOUND_ERROR = new FunctionRef("_nvmBcThrowNoClassDefFoundError", new FunctionType(VOID, ENV_PTR, I8_PTR));
-    public static final FunctionRef NVM_BC_THROW_NO_SUCH_FIELD_ERROR = new FunctionRef("_nvmBcThrowNoSuchFieldError", new FunctionType(VOID, ENV_PTR, I8_PTR));
-    public static final FunctionRef NVM_BC_THROW_NO_SUCH_METHOD_ERROR = new FunctionRef("_nvmBcThrowNoSuchMethodError", new FunctionType(VOID, ENV_PTR, I8_PTR));
-    public static final FunctionRef NVM_BC_THROW_ILLEGAL_ACCESS_ERROR = new FunctionRef("_nvmBcThrowIllegalAccessError", new FunctionType(VOID, ENV_PTR, I8_PTR));
-    public static final FunctionRef NVM_BC_THROW_INSTANTIATION_ERROR = new FunctionRef("_nvmBcThrowInstantiationError", new FunctionType(VOID, ENV_PTR, I8_PTR));
-    public static final FunctionRef NVM_BC_THROW_INCOMPATIBLE_CLASS_CHANGE_ERROR = new FunctionRef("_nvmBcThrowIncompatibleClassChangeError", new FunctionType(VOID, ENV_PTR, I8_PTR));
-    public static final FunctionRef NVM_BC_THROW_ABSTRACT_METHOD_ERROR = new FunctionRef("_nvmBcThrowAbstractMethodError", new FunctionType(VOID, ENV_PTR, I8_PTR));
+    public static final FunctionRef BC_PERSONALITY = new FunctionRef("_bcPersonality", new FunctionType(I8_PTR));
+    public static final FunctionRef BC_EXCEPTION_MATCH = new FunctionRef("_bcExceptionMatch", new FunctionType(I32, ENV_PTR, CLASS_PTR));
+    public static final FunctionRef BC_EXCEPTION_CLEAR = new FunctionRef("_bcExceptionClear", new FunctionType(OBJECT_PTR, ENV_PTR));
+    public static final FunctionRef BC_EXCEPTION_SET = new FunctionRef("_bcExceptionSet", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
+    public static final FunctionRef BC_THROW = new FunctionRef("_bcThrow", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
+    public static final FunctionRef BC_RETHROW = new FunctionRef("_bcRethrow", new FunctionType(VOID, ENV_PTR, new StructureType(I8_PTR, I32)));
+    public static final FunctionRef BC_THROW_IF_EXCEPTION_OCCURRED = new FunctionRef("_bcThrowIfExceptionOccurred", new FunctionType(VOID, ENV_PTR));
+    public static final FunctionRef BC_THROW_UNSATISIFED_LINK_ERROR = new FunctionRef("_bcThrowUnsatisfiedLinkError", new FunctionType(VOID, ENV_PTR));
+    public static final FunctionRef BC_THROW_NO_CLASS_DEF_FOUND_ERROR = new FunctionRef("_bcThrowNoClassDefFoundError", new FunctionType(VOID, ENV_PTR, I8_PTR));
+    public static final FunctionRef BC_THROW_NO_SUCH_FIELD_ERROR = new FunctionRef("_bcThrowNoSuchFieldError", new FunctionType(VOID, ENV_PTR, I8_PTR));
+    public static final FunctionRef BC_THROW_NO_SUCH_METHOD_ERROR = new FunctionRef("_bcThrowNoSuchMethodError", new FunctionType(VOID, ENV_PTR, I8_PTR));
+    public static final FunctionRef BC_THROW_ILLEGAL_ACCESS_ERROR = new FunctionRef("_bcThrowIllegalAccessError", new FunctionType(VOID, ENV_PTR, I8_PTR));
+    public static final FunctionRef BC_THROW_INSTANTIATION_ERROR = new FunctionRef("_bcThrowInstantiationError", new FunctionType(VOID, ENV_PTR, I8_PTR));
+    public static final FunctionRef BC_THROW_INCOMPATIBLE_CLASS_CHANGE_ERROR = new FunctionRef("_bcThrowIncompatibleClassChangeError", new FunctionType(VOID, ENV_PTR, I8_PTR));
+    public static final FunctionRef BC_THROW_ABSTRACT_METHOD_ERROR = new FunctionRef("_bcThrowAbstractMethodError", new FunctionType(VOID, ENV_PTR, I8_PTR));
     
-    public static final FunctionRef NVM_BC_NEW_BOOLEAN_ARRAY = new FunctionRef("_nvmBcNewBooleanArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
-    public static final FunctionRef NVM_BC_NEW_BYTE_ARRAY = new FunctionRef("_nvmBcNewByteArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
-    public static final FunctionRef NVM_BC_NEW_CHAR_ARRAY = new FunctionRef("_nvmBcNewCharArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
-    public static final FunctionRef NVM_BC_NEW_SHORT_ARRAY = new FunctionRef("_nvmBcNewShortArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
-    public static final FunctionRef NVM_BC_NEW_INT_ARRAY = new FunctionRef("_nvmBcNewIntArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
-    public static final FunctionRef NVM_BC_NEW_LONG_ARRAY = new FunctionRef("_nvmBcNewLongArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
-    public static final FunctionRef NVM_BC_NEW_FLOAT_ARRAY = new FunctionRef("_nvmBcNewFloatArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
-    public static final FunctionRef NVM_BC_NEW_DOUBLE_ARRAY = new FunctionRef("_nvmBcNewDoubleArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
-    public static final FunctionRef NVM_BC_MONITOR_ENTER = new FunctionRef("_nvmBcMonitorEnter", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
-    public static final FunctionRef NVM_BC_MONITOR_EXIT = new FunctionRef("_nvmBcMonitorExit", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
-    public static final FunctionRef NVM_BC_LDC_STRING = new FunctionRef("_nvmBcLdcString", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR));
-    public static final FunctionRef NVM_BC_LOOKUP_VIRTUAL_METHOD = new FunctionRef("_nvmBcLookupVirtualMethod", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR, I8_PTR, I8_PTR));
-    public static final FunctionRef NVM_BC_LOOKUP_INTERFACE_METHOD = new FunctionRef("_nvmBcLookupInterfaceMethod", new FunctionType(I8_PTR, ENV_PTR, I8_PTR_PTR, OBJECT_PTR, I8_PTR, I8_PTR));
-    public static final FunctionRef NVM_BC_CHECKCAST = new FunctionRef("_nvmBcCheckcast", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR_PTR, OBJECT_PTR));
-    public static final FunctionRef NVM_BC_CHECKCAST_ARRAY = new FunctionRef("_nvmBcCheckcastArray", new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR, OBJECT_PTR));
-    public static final FunctionRef NVM_BC_INSTANCEOF = new FunctionRef("_nvmBcInstanceof", new FunctionType(I32, ENV_PTR, I8_PTR_PTR, OBJECT_PTR));
-    public static final FunctionRef NVM_BC_INSTANCEOF_ARRAY = new FunctionRef("_nvmBcInstanceofArray", new FunctionType(I32, ENV_PTR, OBJECT_PTR, OBJECT_PTR));
-    public static final FunctionRef NVM_BC_NEW_MULTI_ARRAY = new FunctionRef("_nvmBcNewMultiArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, new PointerType(I32), OBJECT_PTR));
-    public static final FunctionRef NVM_BC_SET_OBJECT_ARRAY_ELEMENT = new FunctionRef("_nvmBcSetObjectArrayElement", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I32, OBJECT_PTR));
-    public static final FunctionRef NVM_BC_RESOLVE_NATIVE = new FunctionRef("_nvmBcResolveNative", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
-    public static final FunctionRef NVM_BC_PUSH_NATIVE_FRAME = new FunctionRef("_nvmBcPushNativeFrame", new FunctionType(VOID, ENV_PTR, GATEWAY_FRAME_PTR, I8_PTR));
-    public static final FunctionRef NVM_BC_POP_NATIVE_FRAME = new FunctionRef("_nvmBcPopNativeFrame", new FunctionType(VOID, ENV_PTR));
-    public static final FunctionRef NVM_BC_PUSH_CALLBACK_FRAME = new FunctionRef("_nvmBcPushCallbackFrame", new FunctionType(VOID, ENV_PTR, GATEWAY_FRAME_PTR, I8_PTR));
-    public static final FunctionRef NVM_BC_POP_CALLBACK_FRAME = new FunctionRef("_nvmBcPopCallbackFrame", new FunctionType(VOID, ENV_PTR));
-    public static final FunctionRef NVM_BC_ATTACH_THREAD_FROM_CALLBACK = new FunctionRef("_nvmBcAttachThreadFromCallback", new FunctionType(ENV_PTR));
-    public static final FunctionRef NVM_BC_DETACH_THREAD_FROM_CALLBACK = new FunctionRef("_nvmBcDetachThreadFromCallback", new FunctionType(VOID, ENV_PTR));
-    public static final FunctionRef NVM_BC_NEW_STRUCT = new FunctionRef("_nvmBcNewStruct", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR, CLASS_PTR, I8_PTR));
-    public static final FunctionRef NVM_BC_GET_STRUCT_HANDLE = new FunctionRef("_nvmBcGetStructHandle", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR));
-    public static final FunctionRef NVM_BC_BY_VALUE_GET_STRUCT_HANDLE = new FunctionRef("_nvmBcByValueGetStructHandle", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR));
-    public static final FunctionRef NVM_BC_COPY_STRUCT = new FunctionRef("_nvmBcCopyStruct", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I8_PTR, I32));
+    public static final FunctionRef BC_NEW_BOOLEAN_ARRAY = new FunctionRef("_bcNewBooleanArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
+    public static final FunctionRef BC_NEW_BYTE_ARRAY = new FunctionRef("_bcNewByteArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
+    public static final FunctionRef BC_NEW_CHAR_ARRAY = new FunctionRef("_bcNewCharArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
+    public static final FunctionRef BC_NEW_SHORT_ARRAY = new FunctionRef("_bcNewShortArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
+    public static final FunctionRef BC_NEW_INT_ARRAY = new FunctionRef("_bcNewIntArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
+    public static final FunctionRef BC_NEW_LONG_ARRAY = new FunctionRef("_bcNewLongArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
+    public static final FunctionRef BC_NEW_FLOAT_ARRAY = new FunctionRef("_bcNewFloatArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
+    public static final FunctionRef BC_NEW_DOUBLE_ARRAY = new FunctionRef("_bcNewDoubleArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
+    public static final FunctionRef BC_MONITOR_ENTER = new FunctionRef("_bcMonitorEnter", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
+    public static final FunctionRef BC_MONITOR_EXIT = new FunctionRef("_bcMonitorExit", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
+    public static final FunctionRef BC_LDC_STRING = new FunctionRef("_bcLdcString", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR));
+    public static final FunctionRef BC_LOOKUP_VIRTUAL_METHOD = new FunctionRef("_bcLookupVirtualMethod", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR, I8_PTR, I8_PTR));
+    public static final FunctionRef BC_LOOKUP_INTERFACE_METHOD = new FunctionRef("_bcLookupInterfaceMethod", new FunctionType(I8_PTR, ENV_PTR, I8_PTR_PTR, OBJECT_PTR, I8_PTR, I8_PTR));
+    public static final FunctionRef BC_CHECKCAST = new FunctionRef("_bcCheckcast", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR_PTR, OBJECT_PTR));
+    public static final FunctionRef BC_CHECKCAST_ARRAY = new FunctionRef("_bcCheckcastArray", new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR, OBJECT_PTR));
+    public static final FunctionRef BC_INSTANCEOF = new FunctionRef("_bcInstanceof", new FunctionType(I32, ENV_PTR, I8_PTR_PTR, OBJECT_PTR));
+    public static final FunctionRef BC_INSTANCEOF_ARRAY = new FunctionRef("_bcInstanceofArray", new FunctionType(I32, ENV_PTR, OBJECT_PTR, OBJECT_PTR));
+    public static final FunctionRef BC_NEW_MULTI_ARRAY = new FunctionRef("_bcNewMultiArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, new PointerType(I32), OBJECT_PTR));
+    public static final FunctionRef BC_SET_OBJECT_ARRAY_ELEMENT = new FunctionRef("_bcSetObjectArrayElement", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I32, OBJECT_PTR));
+    public static final FunctionRef BC_RESOLVE_NATIVE = new FunctionRef("_bcResolveNative", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR));
+    public static final FunctionRef BC_PUSH_NATIVE_FRAME = new FunctionRef("_bcPushNativeFrame", new FunctionType(VOID, ENV_PTR, GATEWAY_FRAME_PTR, I8_PTR));
+    public static final FunctionRef BC_POP_NATIVE_FRAME = new FunctionRef("_bcPopNativeFrame", new FunctionType(VOID, ENV_PTR));
+    public static final FunctionRef BC_PUSH_CALLBACK_FRAME = new FunctionRef("_bcPushCallbackFrame", new FunctionType(VOID, ENV_PTR, GATEWAY_FRAME_PTR, I8_PTR));
+    public static final FunctionRef BC_POP_CALLBACK_FRAME = new FunctionRef("_bcPopCallbackFrame", new FunctionType(VOID, ENV_PTR));
+    public static final FunctionRef BC_ATTACH_THREAD_FROM_CALLBACK = new FunctionRef("_bcAttachThreadFromCallback", new FunctionType(ENV_PTR));
+    public static final FunctionRef BC_DETACH_THREAD_FROM_CALLBACK = new FunctionRef("_bcDetachThreadFromCallback", new FunctionType(VOID, ENV_PTR));
+    public static final FunctionRef BC_NEW_STRUCT = new FunctionRef("_bcNewStruct", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR, CLASS_PTR, I8_PTR));
+    public static final FunctionRef BC_GET_STRUCT_HANDLE = new FunctionRef("_bcGetStructHandle", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR));
+    public static final FunctionRef BC_BY_VALUE_GET_STRUCT_HANDLE = new FunctionRef("_bcByValueGetStructHandle", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR));
+    public static final FunctionRef BC_COPY_STRUCT = new FunctionRef("_bcCopyStruct", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I8_PTR, I32));
 
     public static final FunctionRef LLVM_FRAMEADDRESS = new FunctionRef("llvm.frameaddress", new FunctionType(I8_PTR, I32));
 
@@ -173,21 +173,21 @@ public class Functions {
     
     public static FunctionRef getNewArray(soot.Type sootType) {
         if (sootType.equals(soot.BooleanType.v())) {
-            return NVM_BC_NEW_BOOLEAN_ARRAY;
+            return BC_NEW_BOOLEAN_ARRAY;
         } else if (sootType.equals(soot.ByteType.v())) {
-            return NVM_BC_NEW_BYTE_ARRAY;
+            return BC_NEW_BYTE_ARRAY;
         } else if (sootType.equals(soot.ShortType.v())) {
-            return NVM_BC_NEW_SHORT_ARRAY;
+            return BC_NEW_SHORT_ARRAY;
         } else if (sootType.equals(soot.CharType.v())) {
-            return NVM_BC_NEW_CHAR_ARRAY;
+            return BC_NEW_CHAR_ARRAY;
         } else if (sootType.equals(soot.IntType.v())) {
-            return NVM_BC_NEW_INT_ARRAY;
+            return BC_NEW_INT_ARRAY;
         } else if (sootType.equals(soot.LongType.v())) {
-            return NVM_BC_NEW_LONG_ARRAY;
+            return BC_NEW_LONG_ARRAY;
         } else if (sootType.equals(soot.FloatType.v())) {
-            return NVM_BC_NEW_FLOAT_ARRAY;
+            return BC_NEW_FLOAT_ARRAY;
         } else if (sootType.equals(soot.DoubleType.v())) {
-            return NVM_BC_NEW_DOUBLE_ARRAY;
+            return BC_NEW_DOUBLE_ARRAY;
         } else {
             throw new IllegalArgumentException("Unknown Type: " + sootType);
         }
@@ -273,21 +273,21 @@ public class Functions {
         Variable gwFrame = fn.newVariable(GATEWAY_FRAME_PTR);
         fn.add(new Alloca(gwFrame, GATEWAY_FRAME));
         Value frameAddress = call(fn, LLVM_FRAMEADDRESS, new IntegerConstant(0));
-        call(fn, NVM_BC_PUSH_NATIVE_FRAME, fn.getParameterRef(0), gwFrame.ref(), frameAddress);
+        call(fn, BC_PUSH_NATIVE_FRAME, fn.getParameterRef(0), gwFrame.ref(), frameAddress);
     }
 
     public static void popNativeFrame(Function fn) {
-        call(fn, NVM_BC_POP_NATIVE_FRAME, fn.getParameterRef(0));
+        call(fn, BC_POP_NATIVE_FRAME, fn.getParameterRef(0));
     }
     
     public static void pushCallbackFrame(Function fn, Value env) {
         Variable gwFrame = fn.newVariable(GATEWAY_FRAME_PTR);
         fn.add(new Alloca(gwFrame, GATEWAY_FRAME));
         Value frameAddress = call(fn, LLVM_FRAMEADDRESS, new IntegerConstant(0));
-        call(fn, NVM_BC_PUSH_CALLBACK_FRAME, env, gwFrame.ref(), frameAddress);
+        call(fn, BC_PUSH_CALLBACK_FRAME, env, gwFrame.ref(), frameAddress);
     }
 
     public static void popCallbackFrame(Function fn, Value env) {
-        call(fn, NVM_BC_POP_CALLBACK_FRAME, env);
+        call(fn, BC_POP_CALLBACK_FRAME, env);
     }
 }

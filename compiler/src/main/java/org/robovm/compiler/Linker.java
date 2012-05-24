@@ -259,8 +259,8 @@ public class Linker {
             }
             trampolines.addAll(clazz.getClazzInfo().getTrampolines());
         }
-        mb.addGlobal(new Global("_nvmBcBootClassesHash", new ConstantGetelementptr(mb.newGlobal(bcpHashGen.generate(), true).ref(), 0, 0)));
-        mb.addGlobal(new Global("_nvmBcClassesHash", new ConstantGetelementptr(mb.newGlobal(cpHashGen.generate(), true).ref(), 0, 0)));
+        mb.addGlobal(new Global("_bcBootClassesHash", new ConstantGetelementptr(mb.newGlobal(bcpHashGen.generate(), true).ref(), 0, 0)));
+        mb.addGlobal(new Global("_bcClassesHash", new ConstantGetelementptr(mb.newGlobal(cpHashGen.generate(), true).ref(), 0, 0)));
         
         ArrayConstantBuilder bootClasspathValues = new ArrayConstantBuilder(I8_PTR);
         ArrayConstantBuilder classpathValues = new ArrayConstantBuilder(I8_PTR);
@@ -279,11 +279,11 @@ public class Linker {
         }
         bootClasspathValues.add(new NullConstant(Type.I8_PTR));
         classpathValues.add(new NullConstant(Type.I8_PTR));
-        mb.addGlobal(new Global("_nvmBcBootclasspath", new ConstantGetelementptr(mb.newGlobal(bootClasspathValues.build()).ref(), 0, 0)));
-        mb.addGlobal(new Global("_nvmBcClasspath", new ConstantGetelementptr(mb.newGlobal(classpathValues.build()).ref(), 0, 0)));
+        mb.addGlobal(new Global("_bcBootclasspath", new ConstantGetelementptr(mb.newGlobal(bootClasspathValues.build()).ref(), 0, 0)));
+        mb.addGlobal(new Global("_bcClasspath", new ConstantGetelementptr(mb.newGlobal(classpathValues.build()).ref(), 0, 0)));
 
         if (config.getMainClass() != null) {
-            mb.addGlobal(new Global("_nvmBcMainClass", mb.getString(config.getMainClass())));
+            mb.addGlobal(new Global("_bcMainClass", mb.getString(config.getMainClass())));
         }        
         
         File linkerLl = new File(config.getTmpDir(), "linker.ll");

@@ -502,7 +502,7 @@ public class ClassCompiler {
         function.add(new Store(getString(getDescriptor(m)), reserved1.ref()));
         
         Value lookupFn = sootClass.isInterface() 
-                ? NVM_BC_LOOKUP_INTERFACE_METHOD : NVM_BC_LOOKUP_VIRTUAL_METHOD;
+                ? BC_LOOKUP_INTERFACE_METHOD : BC_LOOKUP_VIRTUAL_METHOD;
         List<Value> args = new ArrayList<Value>();
         args.add(function.getParameterRef(0));
         if (sootClass.isInterface()) {
@@ -895,7 +895,7 @@ public class ClassCompiler {
         Function fn = new Function(_private, new FunctionAttribute[] {alwaysinline, optsize}, 
                 mangleClass(sootClass) + "_allocator", new FunctionType(OBJECT_PTR, ENV_PTR));
         Value info = getInfoStruct(fn);        
-        Value result = call(fn, NVM_BC_ALLOCATE, fn.getParameterRef(0), info);
+        Value result = call(fn, BC_ALLOCATE, fn.getParameterRef(0), info);
         fn.add(new Ret(result));
         return fn;
     }
@@ -904,7 +904,7 @@ public class ClassCompiler {
         Function fn = new Function(_private, new FunctionAttribute[] {alwaysinline, optsize}, 
                 mangleClass(sootClass) + "_instanceof", new FunctionType(I32, ENV_PTR, OBJECT_PTR));
         Value info = getInfoStruct(fn);        
-        Value result = call(fn, NVM_BC_INSTANCEOF, fn.getParameterRef(0), info, fn.getParameterRef(1));
+        Value result = call(fn, BC_INSTANCEOF, fn.getParameterRef(0), info, fn.getParameterRef(1));
         fn.add(new Ret(result));
         return fn;
     }
@@ -913,7 +913,7 @@ public class ClassCompiler {
         Function fn = new Function(_private, new FunctionAttribute[] {alwaysinline, optsize}, 
                 mangleClass(sootClass) + "_checkcast", new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR));
         Value info = getInfoStruct(fn);        
-        Value result = call(fn, NVM_BC_CHECKCAST, fn.getParameterRef(0), info, fn.getParameterRef(1));
+        Value result = call(fn, BC_CHECKCAST, fn.getParameterRef(0), info, fn.getParameterRef(1));
         fn.add(new Ret(result));
         return fn;
     }
@@ -1012,7 +1012,7 @@ public class ClassCompiler {
         Value result = call(fn, targetFn, fn.getParameterRefs());
         fn.add(new Ret(result));
         fn.newBasicBlock(falseLabel);
-        call(fn, NVM_BC_INITIALIZE_CLASS, fn.getParameterRef(0), info);
+        call(fn, BC_INITIALIZE_CLASS, fn.getParameterRef(0), info);
         fn.add(new Br(fn.newBasicBlockRef(trueLabel)));
         return fn;
     }

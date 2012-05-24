@@ -90,7 +90,7 @@ public class TrampolineCompiler {
         if (t instanceof LdcString) {
             Function f = new Function(weak, t.getFunctionRef());
             mb.addFunction(f);
-            Value result = call(f, NVM_BC_LDC_STRING, f.getParameterRef(0), 
+            Value result = call(f, BC_LDC_STRING, f.getParameterRef(0), 
                     mb.getString(t.getTarget()));
             f.add(new Ret(result));
             return;
@@ -113,7 +113,7 @@ public class TrampolineCompiler {
         if (t instanceof New) {
             SootClass target = config.getClazzes().load(t.getTarget()).getSootClass();
             if (target.isAbstract() || target.isInterface()) {
-                call(f, NVM_BC_THROW_INSTANTIATION_ERROR, f.getParameterRef(0), mb.getString(t.getTarget()));
+                call(f, BC_THROW_INSTANTIATION_ERROR, f.getParameterRef(0), mb.getString(t.getTarget()));
                 f.add(new Unreachable());
                 mb.addFunction(f);
                 return;
@@ -129,7 +129,7 @@ public class TrampolineCompiler {
                 if (!mb.hasSymbol(exInfoFn.getName())) {
                     mb.addFunctionDeclaration(new FunctionDeclaration(exInfoFn));
                 }
-                Value result = call(fn, NVM_BC_EXCEPTION_MATCH, f.getParameterRef(0), exInfo);
+                Value result = call(fn, BC_EXCEPTION_MATCH, f.getParameterRef(0), exInfo);
                 fn.add(new Ret(result));
                 mb.addFunction(fn);
             }
@@ -140,7 +140,7 @@ public class TrampolineCompiler {
                 if (!mb.hasSymbol(fnName)) {
                     Function fn = new Function(weak, t.getFunctionRef(), fnName);
                     Value arrayClass = callLdcArray(fn, t.getTarget());
-                    Value result = call(fn, NVM_BC_INSTANCEOF_ARRAY, fn.getParameterRef(0), arrayClass, fn.getParameterRef(1));
+                    Value result = call(fn, BC_INSTANCEOF_ARRAY, fn.getParameterRef(0), arrayClass, fn.getParameterRef(1));
                     fn.add(new Ret(result));
                     mb.addFunction(fn);
                 }
@@ -155,7 +155,7 @@ public class TrampolineCompiler {
                 if (!mb.hasSymbol(fnName)) {
                     Function fn = new Function(weak, t.getFunctionRef(), fnName);
                     Value arrayClass = callLdcArray(fn, t.getTarget());
-                    Value result = call(fn, NVM_BC_CHECKCAST_ARRAY, fn.getParameterRef(0), arrayClass, fn.getParameterRef(1));
+                    Value result = call(fn, BC_CHECKCAST_ARRAY, fn.getParameterRef(0), arrayClass, fn.getParameterRef(1));
                     fn.add(new Ret(result));
                     mb.addFunction(fn);
                 }
@@ -177,7 +177,7 @@ public class TrampolineCompiler {
             if (!mb.hasSymbol(fnName)) {
                 Function fn = new Function(weak, t.getFunctionRef(), fnName);
                 Value arrayClass = callLdcArray(fn, t.getTarget());
-                Value result = call(fn, NVM_BC_NEW_OBJECT_ARRAY, fn.getParameterRef(0), 
+                Value result = call(fn, BC_NEW_OBJECT_ARRAY, fn.getParameterRef(0), 
                       fn.getParameterRef(1), arrayClass);
                 fn.add(new Ret(result));
                 mb.addFunction(fn);
@@ -188,7 +188,7 @@ public class TrampolineCompiler {
             if (!mb.hasSymbol(fnName)) {
                 Function fn = new Function(weak, t.getFunctionRef(), fnName);
                 Value arrayClass = callLdcArray(fn, t.getTarget());
-                Value result = call(fn, NVM_BC_NEW_MULTI_ARRAY, fn.getParameterRef(0), 
+                Value result = call(fn, BC_NEW_MULTI_ARRAY, fn.getParameterRef(0), 
                       fn.getParameterRef(1), fn.getParameterRef(2), arrayClass);
                 fn.add(new Ret(result));
                 mb.addFunction(fn);
@@ -201,7 +201,7 @@ public class TrampolineCompiler {
             String longName = mangleNativeMethod(target.getInternalName(), nc.getMethodName(), nc.getMethodDesc());
             if (target.isInBootClasspath()) {
                 Function fnLong = new Function(weak, longName, nc.getFunctionType());
-                call(fnLong, NVM_BC_THROW_UNSATISIFED_LINK_ERROR, fnLong.getParameterRef(0));
+                call(fnLong, BC_THROW_UNSATISIFED_LINK_ERROR, fnLong.getParameterRef(0));
                 fnLong.add(new Unreachable());
                 mb.addFunction(fnLong);
 //                mb.addFunctionDeclaration(new FunctionDeclaration(fnLong.ref()));
@@ -227,7 +227,7 @@ public class TrampolineCompiler {
                 FunctionRef ldcFn = new FunctionRef(mangleClass(nc.getTarget()) + "_ldc", 
                         new FunctionType(OBJECT_PTR, ENV_PTR));
                 Value theClass = call(fn, ldcFn, fn.getParameterRef(0));
-                Value implI8Ptr = call(fn, NVM_BC_RESOLVE_NATIVE, fn.getParameterRef(0), 
+                Value implI8Ptr = call(fn, BC_RESOLVE_NATIVE, fn.getParameterRef(0), 
                       theClass,
                       mb.getString(nc.getMethodName()), 
                       mb.getString(nc.getMethodDesc()),
@@ -288,7 +288,7 @@ public class TrampolineCompiler {
                 return;
             }
             if (t instanceof Invokespecial && method.isAbstract()) {
-                call(f, NVM_BC_THROW_ABSTRACT_METHOD_ERROR, f.getParameterRef(0), 
+                call(f, BC_THROW_ABSTRACT_METHOD_ERROR, f.getParameterRef(0), 
                         mb.getString(String.format(NO_SUCH_METHOD_ERROR, 
                                 method.getDeclaringClass(), method.getName(), 
                                 getDescriptor(method))));
@@ -377,11 +377,11 @@ public class TrampolineCompiler {
                 if (!mb.hasSymbol(g.getName())) {
                     mb.addGlobal(g);
                 }
-                FunctionRef ldcArrayClassFn = NVM_BC_LDC_ARRAY_BOOT_CLASS;
+                FunctionRef ldcArrayClassFn = BC_LDC_ARRAY_BOOT_CLASS;
                 if (!isPrimitiveBaseType(targetClass)) {
                     Clazz baseType = config.getClazzes().load(getBaseType(targetClass));
                     if (!baseType.isInBootClasspath()) {
-                        ldcArrayClassFn = NVM_BC_LDC_ARRAY_CLASS;
+                        ldcArrayClassFn = BC_LDC_ARRAY_CLASS;
                     }
                 }
                 arrayClass = call(fn, ldcArrayClassFn, fn.getParameterRef(0), g.ref(), mb.getString(targetClass));
@@ -411,7 +411,7 @@ public class TrampolineCompiler {
             }
         }
         
-        call(f, NVM_BC_THROW_NO_CLASS_DEF_FOUND_ERROR, f.getParameterRef(0), 
+        call(f, BC_THROW_NO_CLASS_DEF_FOUND_ERROR, f.getParameterRef(0), 
                 mb.getString(t.getTarget()));
         f.add(new Unreachable());
         return false;
@@ -474,7 +474,7 @@ public class TrampolineCompiler {
     }
     
     private void throwNoSuchMethodError(Function f, Invoke invoke) {
-        call(f, NVM_BC_THROW_NO_SUCH_METHOD_ERROR, f.getParameterRef(0), 
+        call(f, BC_THROW_NO_SUCH_METHOD_ERROR, f.getParameterRef(0), 
                 mb.getString(String.format(NO_SUCH_METHOD_ERROR, 
                         invoke.getTarget().replace('/', '.'), 
                         invoke.getMethodName(), invoke.getMethodDesc())));
@@ -482,7 +482,7 @@ public class TrampolineCompiler {
     }
     
     private void throwNoSuchFieldError(Function f, FieldAccessor accessor) {
-        call(f, NVM_BC_THROW_NO_SUCH_FIELD_ERROR, f.getParameterRef(0), 
+        call(f, BC_THROW_NO_SUCH_FIELD_ERROR, f.getParameterRef(0), 
                 mb.getString(String.format(NO_SUCH_FIELD_ERROR, 
                         accessor.getTarget().replace('/', '.'), 
                         accessor.getFieldName())));
@@ -490,13 +490,13 @@ public class TrampolineCompiler {
     }
     
     private void throwIncompatibleChangeError(Function f, String message, Object ... args) {
-        call(f, NVM_BC_THROW_INCOMPATIBLE_CLASS_CHANGE_ERROR, f.getParameterRef(0), 
+        call(f, BC_THROW_INCOMPATIBLE_CLASS_CHANGE_ERROR, f.getParameterRef(0), 
                 mb.getString(String.format(message, args)));
         f.add(new Unreachable());
     }
     
     private void throwIllegalAccessError(Function f, String message, Object ... args) {
-        call(f, NVM_BC_THROW_ILLEGAL_ACCESS_ERROR, f.getParameterRef(0), 
+        call(f, BC_THROW_ILLEGAL_ACCESS_ERROR, f.getParameterRef(0), 
                 mb.getString(String.format(message, args)));
         f.add(new Unreachable());
     }

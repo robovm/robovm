@@ -88,20 +88,20 @@ public abstract class AbstractMethodCompiler {
             monitor = new VariableRef("this", OBJECT_PTR);
         }
         
-        call(syncFn, NVM_BC_MONITOR_ENTER, syncFn.getParameterRef(0), monitor);
+        call(syncFn, BC_MONITOR_ENTER, syncFn.getParameterRef(0), monitor);
         BasicBlockRef bbSuccess = syncFn.newBasicBlockRef(new Label("success"));
         BasicBlockRef bbFailure = syncFn.newBasicBlockRef(new Label("failure"));
         Value result = invoke(syncFn, target, bbSuccess, bbFailure, syncFn.getParameterRefs());
         
         syncFn.newBasicBlock(new Label("success"));
-        call(syncFn, NVM_BC_MONITOR_EXIT, syncFn.getParameterRef(0), monitor);
+        call(syncFn, BC_MONITOR_EXIT, syncFn.getParameterRef(0), monitor);
         syncFn.add(new Ret(result));
 
         syncFn.newBasicBlock(new Label("failure"));
         Variable lpResult = syncFn.newVariable(new StructureType(I8_PTR, I32));
-        syncFn.add(new Landingpad(lpResult, new ConstantBitcast(NVM_BC_PERSONALITY, I8_PTR), new Catch(new NullConstant(I8_PTR))));
-        call(syncFn, NVM_BC_MONITOR_EXIT, syncFn.getParameterRef(0), monitor);
-        call(syncFn, NVM_BC_RETHROW, syncFn.getParameterRef(0), lpResult.ref());
+        syncFn.add(new Landingpad(lpResult, new ConstantBitcast(BC_PERSONALITY, I8_PTR), new Catch(new NullConstant(I8_PTR))));
+        call(syncFn, BC_MONITOR_EXIT, syncFn.getParameterRef(0), monitor);
+        call(syncFn, BC_RETHROW, syncFn.getParameterRef(0), lpResult.ref());
         syncFn.add(new Unreachable());
     }
     
@@ -131,7 +131,7 @@ public abstract class AbstractMethodCompiler {
 
         // Increase the attach count for the current thread (attaches the thread
         // if not attached)
-        Value env = call(callbackFn, NVM_BC_ATTACH_THREAD_FROM_CALLBACK);
+        Value env = call(callbackFn, BC_ATTACH_THREAD_FROM_CALLBACK);
 
         pushCallbackFrame(callbackFn, env);
 
@@ -163,15 +163,15 @@ public abstract class AbstractMethodCompiler {
             result = resultI8Ptr.ref();
         }
         popCallbackFrame(callbackFn, env);
-        call(callbackFn, NVM_BC_DETACH_THREAD_FROM_CALLBACK, env);
+        call(callbackFn, BC_DETACH_THREAD_FROM_CALLBACK, env);
         callbackFn.add(new Ret(result));
 
         callbackFn.newBasicBlock(new Label("failure"));
         Variable lpResult = callbackFn.newVariable(new StructureType(I8_PTR, I32));
-        callbackFn.add(new Landingpad(lpResult, new ConstantBitcast(NVM_BC_PERSONALITY, I8_PTR), new Catch(new NullConstant(I8_PTR))));
+        callbackFn.add(new Landingpad(lpResult, new ConstantBitcast(BC_PERSONALITY, I8_PTR), new Catch(new NullConstant(I8_PTR))));
         popCallbackFrame(callbackFn, env);
-        call(callbackFn, NVM_BC_DETACH_THREAD_FROM_CALLBACK, env);
-        call(callbackFn, NVM_BC_RETHROW, env, lpResult.ref());
+        call(callbackFn, BC_DETACH_THREAD_FROM_CALLBACK, env);
+        call(callbackFn, BC_RETHROW, env, lpResult.ref());
         callbackFn.add(new Unreachable());
     }
 }

@@ -62,7 +62,7 @@ public class NativeMethodCompiler extends AbstractMethodCompiler {
         pushNativeFrame(innerFn);
         Value resultInner = call(innerFn, trampoline.getFunctionRef(), args);
         popNativeFrame(innerFn);
-        call(innerFn, NVM_BC_THROW_IF_EXCEPTION_OCCURRED, env);
+        call(innerFn, BC_THROW_IF_EXCEPTION_OCCURRED, env);
         innerFn.add(new Ret(resultInner));
     }
 }

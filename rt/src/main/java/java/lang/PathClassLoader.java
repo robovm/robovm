@@ -50,6 +50,7 @@ import java.util.zip.ZipFile;
 class PathClassLoader extends ClassLoader {
 
     private final String path;
+    private final String libPath;
 
     /*
      * Parallel arrays for jar/apk files.
@@ -57,14 +58,14 @@ class PathClassLoader extends ClassLoader {
      * (could stuff these into an object and have a single array;
      * improves clarity but adds overhead)
      */
-    private final String[] mPaths;
-    private final File[] mFiles;
-    private final ZipFile[] mZips;
+    private String[] mPaths;
+    private File[] mFiles;
+    private ZipFile[] mZips;
 
     /**
      * Native library path.
      */
-    private final List<String> libraryPathElements;
+    private List<String> libraryPathElements;
 
     /**
      * Creates a {@code PathClassLoader} that operates on a given list of files
@@ -115,7 +116,13 @@ class PathClassLoader extends ClassLoader {
             throw new NullPointerException();
 
         this.path = path;
+        this.libPath = libPath;
+    }
 
+    private synchronized void init() {
+        if (mPaths != null) {
+            return;
+        }
         mPaths = path.split(System.getProperty("path.separator"));
         int length = mPaths.length;
 
@@ -198,6 +205,7 @@ class PathClassLoader extends ClassLoader {
      */
     @Override
     protected URL findResource(String name) {
+        init();
         //java.util.logging.Logger.global.severe("findResource: " + name);
 
         int length = mPaths.length;
@@ -221,6 +229,8 @@ class PathClassLoader extends ClassLoader {
      */
     @Override
     protected Enumeration<URL> findResources(String resName) {
+        init();
+
         int length = mPaths.length;
         ArrayList<URL> results = new ArrayList<URL>();
 
@@ -289,6 +299,8 @@ class PathClassLoader extends ClassLoader {
      *         is not found.
      */
     public String findLibrary(String libname) {
+        init();
+
         String fileName = System.mapLibraryName(libname);
         for (String pathElement : libraryPathElements) {
             String pathName = pathElement + fileName;

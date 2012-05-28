@@ -56,7 +56,10 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
     protected abstract Arch getArch(ILaunchConfiguration configuration, String mode);
     protected abstract OS getOS(ILaunchConfiguration configuration, String mode);
     protected abstract Config configure(Config.Builder configBuilder, ILaunchConfiguration configuration, String mode) throws IOException;
+    
     protected void customizeLaunchParameters(LaunchParameters launchParameters) throws IOException {
+        launchParameters.setStdoutFifo(mkfifo("stdout"));
+        launchParameters.setStderrFifo(mkfifo("stderr"));
     }
     
     @Override

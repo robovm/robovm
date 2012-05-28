@@ -23,7 +23,6 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.robovm.compiler.Arch;
 import org.robovm.compiler.Config;
 import org.robovm.compiler.IOSSimulatorTarget;
-import org.robovm.compiler.LaunchParameters;
 import org.robovm.compiler.OS;
 
 /**
@@ -54,11 +53,5 @@ public class IOSSimulatorLaunchConfigurationDelegate extends AbstractLaunchConfi
         configBuilder.targetBuilder(targetBuilder);
         
         return configBuilder.build();
-    }
-    
-    @Override
-    protected void customizeLaunchParameters(LaunchParameters launchParameters) throws IOException {
-        launchParameters.setStdoutFifo(mkfifo("stdout"));
-        launchParameters.setStderrFifo(mkfifo("stderr"));
     }
 }

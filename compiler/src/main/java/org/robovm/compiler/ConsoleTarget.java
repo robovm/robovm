@@ -16,6 +16,12 @@
  */
 package org.robovm.compiler;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
+import org.apache.commons.exec.PumpStreamHandler;
+import org.robovm.compiler.io.OpenOnWriteFileOutputStream;
+
 
 /**
  * @author niklas
@@ -24,6 +30,20 @@ package org.robovm.compiler;
 public class ConsoleTarget extends AbstractTarget {
 
     ConsoleTarget() {
+    }
+    
+    protected void initStreams(AsyncExecutor executor, LaunchParameters launchParameters) throws IOException {
+        OutputStream out = System.out;
+        OutputStream err = System.err;
+        if (launchParameters.isRedirectStreamsToLogger()) {
+            out = new DebugOutputStream(config.getLogger()); 
+            err = new ErrorOutputStream(config.getLogger());
+        } else if (launchParameters.getStdoutFifo() != null) {
+            out = new OpenOnWriteFileOutputStream(launchParameters.getStdoutFifo());
+        } else if (launchParameters.getStderrFifo() != null) {
+            err = new OpenOnWriteFileOutputStream(launchParameters.getStderrFifo());
+        }
+        executor.setStreamHandler(new PumpStreamHandler(out, err));
     }
     
     public static class Builder implements Target.Builder {

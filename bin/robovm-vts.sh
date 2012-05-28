@@ -3,23 +3,23 @@
 export HOME=$(cd ~; pwd)
 
 BASE=$(cd $(dirname $0)/..; pwd -P)
-if [ -f "$BASE/bin/nullvm-vts.env" ]; then
-  . $BASE/bin/nullvm-vts.env
+if [ -f "$BASE/bin/robovm-vts.env" ]; then
+  . $BASE/bin/robovm-vts.env
 fi
-[ "x$COMPILER_JAR" == 'x' ] && COMPILER_JAR=$(ls $BASE/compiler/target/nullvm-compiler-*.jar 2> /dev/null)
+[ "x$COMPILER_JAR" == 'x' ] && COMPILER_JAR=$(ls $BASE/compiler/target/robovm-compiler-*.jar 2> /dev/null)
 if [ "x$COMPILER_JAR" == 'x' ]; then
-  echo "nullvm-compiler JAR file not found in path $BASE/compiler/target/"
+  echo "robovm-compiler JAR file not found in path $BASE/compiler/target/"
   exit 1
 fi
 [ "x$ARCH" == 'x' ] && ARCH=auto
-[ "x$TARGET" == 'x' ] && TARGET=/tmp/nullvm-vts.$ARCH
+[ "x$TARGET" == 'x' ] && TARGET=/tmp/robovm-vts.$ARCH
 
 export PATH
 
-mkdir -p $HOME/.nullvm/vts/
-mkdir -p $HOME/.nullvm/vts/nullvm-home/lib/
-rsync -a --delete $BASE/vm/binaries/ $HOME/.nullvm/vts/nullvm-home/lib/
-cp -p $BASE/rt/target/nullvm-rt-*.jar $HOME/.nullvm/vts/nullvm-home/lib/nullvm-rt.jar
+mkdir -p $HOME/.robovm/vts/
+mkdir -p $HOME/.robovm/vts/robovm-home/lib/
+rsync -a --delete $BASE/vm/binaries/ $HOME/.robovm/vts/robovm-home/lib/
+cp -p $BASE/rt/target/robovm-rt-*.jar $HOME/.robovm/vts/robovm-home/lib/robovm-rt.jar
 
 n=0
 while [ ${1:0:1} = '-' ]; do
@@ -28,7 +28,7 @@ while [ ${1:0:1} = '-' ]; do
     parts=$(echo $1 | tr ':' '\n')
     for p in $parts; do
       if [ -d "$p" ]; then
-        JAR=$HOME/.nullvm/vts/vts$n.jar
+        JAR=$HOME/.robovm/vts/vts$n.jar
         if [ ! -f "$JAR" ]; then
           jar cf $JAR -C "$p" .
         fi
@@ -55,7 +55,7 @@ done
 #echo "MAINCLASS=$MAINCLASS"
 
 if [ ! -x $TARGET/vts ]; then
-  java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -Xss1024k -jar $COMPILER_JAR -home $HOME/.nullvm/vts/nullvm-home -tmp /tmp/nullvm-vts.tmp -d $TARGET -arch $ARCH -o vts -debug -verbose -cp $CP
+  java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -Xss1024k -jar $COMPILER_JAR -home $HOME/.robovm/vts/robovm-home -tmp /tmp/robovm-vts.tmp -d $TARGET -arch $ARCH -o vts -debug -verbose -cp $CP
 fi
 
 LIBPATH=$TARGET
@@ -66,7 +66,7 @@ if [ "x$DYLD_LIBRARY_PATH" != 'x' ]; then
   LIBPATH=$LIBPATH:$DYLD_LIBRARY_PATH
 fi
 
-LD_LIBRARY_PATH=$LIBPATH DYLD_LIBRARY_PATH=$LIBPATH $TARGET/vts -nvm:MainClass=$MAINCLASS $RUNARGS
+LD_LIBRARY_PATH=$LIBPATH DYLD_LIBRARY_PATH=$LIBPATH $TARGET/vts -rvm:MainClass=$MAINCLASS $RUNARGS
 CODE=$?
 exit $CODE
 

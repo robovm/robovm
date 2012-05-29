@@ -91,10 +91,8 @@ public class RoboVMClassBuilder extends IncrementalProjectBuilder {
         configBuilder.debug(true);
         configBuilder.arch(RoboVMPlugin.getArch(getProject()));
         configBuilder.os(RoboVMPlugin.getOS(getProject()));
-        if (RoboVMPlugin.useBundledRoboVM()) {
-            configBuilder.roboVMHomeDir(RoboVMPlugin.getBundledRoboVMDir());
-        } else {
-            configBuilder.roboVMHomeDir(RoboVMPlugin.getRoboVMHomeDir());
+        if (!RoboVMPlugin.useSystemRoboVM()) {
+            configBuilder.homeDir(RoboVMPlugin.getRoboVMHomeDir());
         }
         if (!RoboVMPlugin.useSystemLlvm()) {
             configBuilder.llvmHomeDir(RoboVMPlugin.getLlvmHomeDir());
@@ -103,14 +101,16 @@ public class RoboVMClassBuilder extends IncrementalProjectBuilder {
         
         for (IClasspathEntry entry : javaProject.getResolvedClasspath(false)) {
             if (entry.getEntryKind() != IClasspathEntry.CPE_SOURCE) {
-                IResource member = root.findMember(entry.getPath());
+                IPath path = entry.getPath();
+                IResource member = root.findMember(path);
                 if (member != null) {
                     configBuilder.addClasspathEntry(member.getLocation().toFile());
                 } else {
-                    if (entry.getPath().toString().contains("/robovm-rt.jar")) {
-                        configBuilder.addBootClasspathEntry(entry.getPath().toFile());
+                    if (path.toString().contains("/robovm-rt.jar") 
+                            || path.toString().contains("/rt/target/classes/")) {
+                        configBuilder.addBootClasspathEntry(path.toFile());
                     } else {
-                        configBuilder.addClasspathEntry(entry.getPath().toFile());
+                        configBuilder.addClasspathEntry(path.toFile());
                     }
                 }
             }

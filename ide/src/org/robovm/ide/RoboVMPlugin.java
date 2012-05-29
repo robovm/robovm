@@ -16,18 +16,10 @@
  */
 package org.robovm.ide;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URL;
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.Platform;
@@ -49,10 +41,10 @@ import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.BundleContext;
 import org.robovm.compiler.Arch;
 import org.robovm.compiler.Logger;
 import org.robovm.compiler.OS;
-import org.osgi.framework.BundleContext;
 
 /**
  *
@@ -63,7 +55,7 @@ public class RoboVMPlugin extends AbstractUIPlugin {
     public static final String PLUGIN_ID = "org.robovm.ide";
     public static final String PREFERENCE_USE_SYSTEM_LLVM = PLUGIN_ID + ".prefs.useSystemLlvm";
     public static final String PREFERENCE_LLVM_HOME_DIR = PLUGIN_ID + ".prefs.llvmHomeDir";
-    public static final String PREFERENCE_USE_BUNDLED_ROBOVM = PLUGIN_ID + ".prefs.useBundledRoboVM";
+    public static final String PREFERENCE_USE_SYSTEM_ROBOVM = PLUGIN_ID + ".prefs.useSystemRoboVM";
     public static final String PREFERENCE_ROBOVM_HOME_DIR = PLUGIN_ID + ".prefs.roboVMHomeDir";
     public static final String PREFERENCE_USE_SYSTEM_GCC = PLUGIN_ID + ".prefs.useSystemGcc";
     public static final String PREFERENCE_GCC_BIN_DIR = PLUGIN_ID + ".prefs.gccBinDir";
@@ -129,48 +121,8 @@ public class RoboVMPlugin extends AbstractUIPlugin {
                 errorStream.setColor(errorColor);
             }
         });
-        
-        // Extract bundled robovm
-        String version = getBundle().getHeaders().get("Bundle-Version");
-        File versionFile = new File(getMetadataDir(), "version");
-        if (!versionFile.exists() || !FileUtils.readFileToString(versionFile, "UTF8").equals(version)) {
-            File lib = new File(getBundledRoboVMDir(), "lib");
-            try {
-                FileUtils.deleteDirectory(lib);
-            } catch (IOException ignored) {
-            }
-            lib.mkdirs();
-            FileUtils.copyURLToFile(getBundle().getResource("/lib/robovm-rt.jar"), new File(lib, "robovm-rt.jar"));
-            unzip(getBundle().getResource("/lib/binaries.zip"), lib);
-            FileUtils.writeStringToFile(versionFile, version, "UTF8");
-        }
     }
 
-    private static void unzip(URL zipResource, File targetDir) throws IOException {
-        ZipInputStream in = null;
-        try {
-            in = new ZipInputStream(zipResource.openStream());
-            ZipEntry entry = null;
-            while ((entry = in.getNextEntry()) != null) {
-                File f = new File(targetDir, entry.getName());
-                if (entry.isDirectory()) {
-                    f.mkdirs();
-                } else {
-                    f.getParentFile().mkdirs();
-                    BufferedOutputStream out = null;
-                    try {
-                        out = new BufferedOutputStream(new FileOutputStream(f));
-                        IOUtils.copy(in, out);
-                    } finally {
-                        IOUtils.closeQuietly(out);
-                    }
-                }
-            }
-        } finally {
-            IOUtils.closeQuietly(in);
-        }
-    }
-    
     public void stop(BundleContext context) throws Exception {
         super.stop(context);
         
@@ -214,17 +166,13 @@ public class RoboVMPlugin extends AbstractUIPlugin {
         return plugin.getStateLocation().toFile();
     }
 
-    public static File getBundledRoboVMDir() {
-        return new File(getMetadataDir(), "robo-home");
-    }
-    
-    public static boolean useBundledRoboVM() {
+    public static boolean useSystemRoboVM() {
         IPreferencesService prefs = Platform.getPreferencesService();
-        return prefs.getBoolean(PLUGIN_ID, PREFERENCE_USE_BUNDLED_ROBOVM, true, null);
+        return prefs.getBoolean(PLUGIN_ID, PREFERENCE_USE_SYSTEM_ROBOVM, true, null);
     }
 
     public static File getRoboVMHomeDir() {
-        if (!useBundledRoboVM()) {
+        if (!useSystemRoboVM()) {
             IPreferencesService prefs = Platform.getPreferencesService();
             return new File(prefs.getString(PLUGIN_ID, PREFERENCE_ROBOVM_HOME_DIR, null, null));
         }

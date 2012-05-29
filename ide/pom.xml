@@ -28,11 +28,6 @@
         <artifactId>robovm-compiler</artifactId>
         <version>${project.version}</version>
       </dependency>
-      <dependency>
-        <groupId>org.robovm</groupId>
-        <artifactId>robovm-rt</artifactId>
-        <version>${project.version}</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -64,10 +59,6 @@
               <groupId>org.robovm</groupId>
               <artifactId>robovm-compiler</artifactId>
             </artifactItem>
-            <artifactItem>
-              <groupId>org.robovm</groupId>
-              <artifactId>robovm-rt</artifactId>
-            </artifactItem>
           </artifactItems>
         </configuration>
         <executions>
@@ -77,26 +68,6 @@
             <goals>
               <goal>copy</goal>
             </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.7</version>
-        <executions>
-          <execution>
-            <phase>initialize</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <tasks>
-                <zip destfile="lib/binaries.zip">
-                  <fileset dir="../vm/binaries/"/>
-                </zip>
-              </tasks>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -117,19 +88,6 @@
                     <versionRange>[2.0,)</versionRange>
                     <goals>
                       <goal>copy</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore />
-                  </action>
-                </pluginExecution>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-antrun-plugin</artifactId>
-                    <versionRange>[1.0,)</versionRange>
-                    <goals>
-                      <goal>run</goal>
                     </goals>
                   </pluginExecutionFilter>
                   <action>

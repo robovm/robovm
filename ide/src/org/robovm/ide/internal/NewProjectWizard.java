@@ -90,6 +90,7 @@ public class NewProjectWizard extends Wizard implements INewWizard {
                     new NullProgressMonitor());
             RoboVMNature.configureNatures(project, new NullProgressMonitor());
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         OpenJavaPerspectiveAction action = new OpenJavaPerspectiveAction();

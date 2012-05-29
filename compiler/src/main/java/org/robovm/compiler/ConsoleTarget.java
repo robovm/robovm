@@ -17,6 +17,7 @@
 package org.robovm.compiler;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.commons.exec.PumpStreamHandler;
@@ -38,12 +39,21 @@ public class ConsoleTarget extends AbstractTarget {
         if (launchParameters.isRedirectStreamsToLogger()) {
             out = new DebugOutputStream(config.getLogger()); 
             err = new ErrorOutputStream(config.getLogger());
-        } else if (launchParameters.getStdoutFifo() != null) {
-            out = new OpenOnWriteFileOutputStream(launchParameters.getStdoutFifo());
-        } else if (launchParameters.getStderrFifo() != null) {
-            err = new OpenOnWriteFileOutputStream(launchParameters.getStderrFifo());
+        } else {
+            if (launchParameters.getStdoutFifo() != null) {
+                out = new OpenOnWriteFileOutputStream(launchParameters.getStdoutFifo());
+            }
+            if (launchParameters.getStderrFifo() != null) {
+                err = new OpenOnWriteFileOutputStream(launchParameters.getStderrFifo());
+            }
         }
-        executor.setStreamHandler(new PumpStreamHandler(out, err));
+        executor.setStreamHandler(new PumpStreamHandler(out, err) {
+            @Override
+            protected Thread createPump(InputStream is, OutputStream os,
+                    boolean closeWhenExhausted) {
+                return super.createPump(is, os, true);
+            }
+        });
     }
     
     public static class Builder implements Target.Builder {

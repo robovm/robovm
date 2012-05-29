@@ -138,7 +138,7 @@ public class AppCompiler {
                 } else if ("-cache".equals(args[i])) {
                     builder.cacheDir(new File(args[++i]));
                 } else if ("-home".equals(args[i])) {
-                    builder.roboVMHomeDir(new File(args[++i]));
+                    builder.homeDir(new File(args[++i]));
                 } else if ("-tmp".equals(args[i])) {
                     builder.tmpDir(new File(args[++i]));
                 } else if ("-run".equals(args[i])) {
@@ -157,8 +157,6 @@ public class AppCompiler {
                     printUsageAndExit(null);
                 } else if ("-cc-bin".equals(args[i])) {
                     builder.ccBinPath(new File(args[++i]));
-                } else if ("-ar-bin".equals(args[i])) {
-                    builder.arBinPath(new File(args[++i]));
                 } else if ("-llvm-home".equals(args[i])) {
                     builder.llvmHomeDir(new File(args[++i]));
                 } else if ("-os".equals(args[i])) {
@@ -270,7 +268,7 @@ public class AppCompiler {
         System.err.println("  -bcp <list>           : separated list of directories, JAR archives, and ZIP \n" 
                          + "                        archives to search for class files. Used to locate the \n" 
                          + "                        java.* and javax.* classes. Default is \n"
-                         + "                        $ROBOVM_HOME/lib/robovm-rt.jar.");
+                         + "                        <robovm-home>/lib/robovm-rt.jar.");
         System.err.println("  -cp <list>            ");
         System.err.println("  -classpath <list>     : separated list of directories, JAR archives, and ZIP \n" 
                          + "                        archives to search for class files.");
@@ -280,13 +278,14 @@ public class AppCompiler {
                          + "                        exists in the cache.");
         System.err.println("  -d <dir>              Install the generated executable and other files in <dir>.\n" 
                          + "                        Default is <wd>/<class>");
-        System.err.println("  -cc-bin <path>        Path to the c compiler binary. gcc and clang are supported.");
-        System.err.println("  -ar-bin <path>        Path to the ar binary");
+        System.err.println("  -cc <path>            Path to the c compiler binary. gcc and clang are supported.");
         System.err.println("  -home <dir>           Directory where RoboVM runtime has been installed.\n"
-        		         + "                        Default is $ROBOVM_HOME");
+                         + "                        Default is $ROBOVM_HOME. If not set the following paths\n" 
+                         + "                        will be searched: ~/Applications/robovm/, ~/.robovm/home/,\n" 
+                         + "                        /usr/local/lib/robovm/, /opt/robovm/, /usr/lib/robovm/.");
         System.err.println("  -tmp <dir>            Directory where temporary files will be placed during\n"
-        		         + "                        compilation. By default a new dir will be created under\n" 
-        		         + "                        ${java.io.tmpdir}.");
+                         + "                        compilation. By default a new dir will be created under\n" 
+                         + "                        ${java.io.tmpdir}.");
         System.err.println("  -jar <path>           Use main class as specified by the manifest in this JAR \n" 
                          + "                        archive.");
         System.err.println("  -llvm-home <path>     Path where LLVM has been installed");

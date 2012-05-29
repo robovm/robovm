@@ -19,6 +19,7 @@ package org.robovm.ide.internal;
 import static org.robovm.ide.RoboVMPlugin.*;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
@@ -33,6 +34,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.robovm.compiler.Arch;
+import org.robovm.compiler.Config;
 import org.robovm.compiler.OS;
 import org.robovm.ide.RoboVMPlugin;
 
@@ -78,13 +80,18 @@ public class RoboVMPreferencePage extends FieldEditorPreferencePage implements
         }, parent);
         addField(osFieldEditor);
         
-        final BoolFieldEditor useBundledRoboVMEditor = new BoolFieldEditor(PREFERENCE_USE_BUNDLED_ROBOVM, "Use bundled RoboVM", parent);
+        final BoolFieldEditor useBundledRoboVMEditor = new BoolFieldEditor(PREFERENCE_USE_SYSTEM_ROBOVM, "Use system RoboVM", parent);
         final RequiredDirectoryFieldEditor roboVMHomeFieldEditor = new RequiredDirectoryFieldEditor(PREFERENCE_ROBOVM_HOME_DIR, "RoboVM home:", parent) {
             @Override
             protected boolean validateDir(File dir) {
-                File lib = new File(dir, "lib");
-                File rt = new File(lib, "robovm-rt.jar");
-                return lib.exists() && lib.isDirectory() && rt.exists() && rt.isFile();
+                try {
+                    Config.validateHomeDir(dir);
+                    return true;
+                } catch (IllegalArgumentException e) {
+                    return false;
+                } catch (IOException e) {
+                    return false;
+                }
             }
         };
         roboVMHomeFieldEditor.setErrorMessage("RoboVM home value is invalid");
@@ -138,7 +145,7 @@ public class RoboVMPreferencePage extends FieldEditorPreferencePage implements
             }
         });
         
-        if (RoboVMPlugin.getDefault().getPreferenceStore().getBoolean(PREFERENCE_USE_BUNDLED_ROBOVM)) {
+        if (RoboVMPlugin.getDefault().getPreferenceStore().getBoolean(PREFERENCE_USE_SYSTEM_ROBOVM)) {
             roboVMHomeFieldEditor.setEnabled(false);
             roboVMHomeFieldEditor.setStringValue("");
         }

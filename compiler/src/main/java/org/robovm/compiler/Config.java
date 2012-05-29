@@ -26,7 +26,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -43,11 +47,13 @@ import org.robovm.compiler.clazz.Path;
 public class Config {
     private File installDir = null;
     private String executable = null;
-    private File roboVMHomeDir = null;
+    private File homeDir = null;
+    private File binDir = null;
+    private File libVmDir = null;
+    private File rtPath = null;
     private File cacheDir = new File(System.getProperty("user.home"), ".robovm/cache");
     private File llvmHomeDir = null;
     private File ccBinPath = null;
-    private File arBinPath = null;
     
     private OS os = null;
     private Arch arch = null;
@@ -74,6 +80,14 @@ public class Config {
     Config() {
     }
     
+    public File getBinDir() {
+        return binDir;
+    }
+    
+    public File getRtPath() {
+        return rtPath;
+    }
+    
     public File getInstallDir() {
         return installDir;
     }
@@ -82,20 +96,12 @@ public class Config {
         return executable;
     }
 
-    public File getRoboVMHomeDir() {
-        return roboVMHomeDir;
-    }
-
     public File getCacheDir() {
         return cacheDir;
     }
 
     public File getCcBinPath() {
         return ccBinPath;
-    }
-
-    public File getArBinPath() {
-        return arBinPath;
     }
 
     public OS getOs() {
@@ -139,6 +145,15 @@ public class Config {
     }
 
     public File getTmpDir() {
+        if (tmpDir == null) {
+            try {
+                tmpDir = File.createTempFile("robovm", ".tmp");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            tmpDir.delete();
+            tmpDir.mkdirs();
+        }
         return tmpDir;
     }
 
@@ -272,36 +287,163 @@ public class Config {
         }
     }
     
-    private Config build() throws IOException {
+    private static Map<Object, Object> getManifestAttributes(File jarFile) throws IOException {
+        JarFile jf = null;
+        try {
+            jf = new JarFile(jarFile);
+            return new HashMap<Object, Object>(jf.getManifest().getMainAttributes());
+        } finally {
+            jf.close();
+        }
+    }
+    
+    private static String getImplementationVersion(File jarFile) throws IOException {
+        return (String) getManifestAttributes(jarFile).get(Attributes.Name.IMPLEMENTATION_VERSION);
+    }
+
+    private static String getMainClass(File jarFile) throws IOException {
+        return (String) getManifestAttributes(jarFile).get(Attributes.Name.MAIN_CLASS);
+    }
+
+    public static void validateHomeDir(File dir) throws IOException {
+        String error = "Path " + dir + " is not a valid RoboVM install directory: ";
+        // Check for required dirs and match the compiler version
+        // with our version.
+        if (!dir.exists()) {
+            throw new IllegalArgumentException(error + "no such path");
+        }
         
-        if (roboVMHomeDir == null) {
-            if (System.getenv("ROBOVM_HOME") == null) {
-                throw new IllegalArgumentException("Environment variable ROBOVM_HOME not set");
-            }
-            roboVMHomeDir = new File(System.getenv("ROBOVM_HOME"));
-            if (!roboVMHomeDir.exists()) {
-                throw new IllegalArgumentException("ROBOVM_HOME directory " 
-                        + roboVMHomeDir.getAbsolutePath() + " not found");
-            }
-            if (!roboVMHomeDir.isDirectory()) {
-                throw new IllegalArgumentException("Value of ROBOVM_HOME environment " 
-                        + "variable does not point to a directory");
+        if (!dir.isDirectory()) {
+            throw new IllegalArgumentException(error + "not a directory");
+        }
+        
+        File libDir = new File(dir, "lib");
+        if (!libDir.exists() || !libDir.isDirectory()) {
+            throw new IllegalArgumentException(error + "lib/ missing or invalid");
+        }
+        File binDir = new File(dir, "bin");
+        if (!binDir.exists() || !binDir.isDirectory()) {
+            throw new IllegalArgumentException(error + "bin/ missing or invalid");
+        }
+        File libVmDir = new File(libDir, "vm");
+        if (!libVmDir.exists() || !libVmDir.isDirectory()) {
+            throw new IllegalArgumentException(error + "lib/vm/ missing or invalid");
+        }
+        File compilerJarFile = new File(libDir, "robovm-compiler.jar");
+        if (!compilerJarFile.exists() || !compilerJarFile.isFile()) {
+            throw new IllegalArgumentException(error 
+                    + "lib/robovm-compiler.jar missing or invalid");
+        }
+        File rtJarFile = new File(libDir, "robovm-rt.jar");
+        if (!rtJarFile.exists() || !rtJarFile.isFile()) {
+            throw new IllegalArgumentException(error 
+                    + "lib/robovm-rt.jar missing or invalid");
+        }
+        
+        // Compare the version of this compiler with the version of the
+        // robovm-compiler.jar.
+        String thisVersion = Config.class.getPackage().getImplementationVersion();
+        String thatVersion = getImplementationVersion(compilerJarFile);
+        if (thisVersion == null || thatVersion == null || !thisVersion.equals(thatVersion)) {
+            throw new IllegalArgumentException(error + "compiler version mismatch (expected: " 
+                    + thisVersion + ", was: " + thatVersion + ")");
+        }
+    }
+
+    public static void validateDevRootDir(File dir) {
+        String error = "Path " + dir + " is not a valid RoboVM source tree: ";
+        // Check for required dirs and match the compiler version
+        // with our version.
+        if (!dir.exists()) {
+            throw new IllegalArgumentException(error + "no such path");
+        }
+        
+        if (!dir.isDirectory()) {
+            throw new IllegalArgumentException(error + "not a directory");
+        }
+        
+        File vmBinariesDir = new File(dir, "vm/binaries");
+        if (!vmBinariesDir.exists() || !vmBinariesDir.isDirectory()) {
+            throw new IllegalArgumentException(error + "vm/binaries/ missing or invalid");
+        }
+        File binDir = new File(dir, "bin");
+        if (!binDir.exists() || !binDir.isDirectory()) {
+            throw new IllegalArgumentException(error + "bin/ missing or invalid");
+        }
+
+        File rtTargetClasses = new File(dir, "rt/target/classes");
+        if (!rtTargetClasses.exists() || !rtTargetClasses.isDirectory()) {
+            throw new IllegalArgumentException(error 
+                    + "rt/target/classes/ missing or invalid");
+        }
+    }
+    
+    private void useHomeDir(File dir) throws IOException {
+        validateHomeDir(dir);
+        homeDir = dir;
+        binDir = new File(dir, "bin");
+        libVmDir = new File(dir, "lib/vm");
+        rtPath = new File(dir, "lib/robovm-rt.jar");        
+    }
+    
+    private void findHomeDir() throws IOException {
+        if (homeDir != null) {
+            useHomeDir(homeDir);
+            return;
+        }
+        
+        // Check if ROBOVM_DEV_ROOT has been set. If set it should be pointing
+        // at the root of a complete RoboVM source tree.
+        if (System.getenv("ROBOVM_DEV_ROOT") != null) {
+            File dir = new File(System.getenv("ROBOVM_DEV_ROOT"));
+            validateDevRootDir(dir);
+            binDir = new File(dir, "bin");
+            libVmDir = new File(dir, "vm/binaries");
+            rtPath = new File(dir, "rt/target/classes");
+            return;
+        }
+        
+        if (System.getenv("ROBOVM_HOME") != null) {
+            File dir = new File(System.getenv("ROBOVM_HOME"));
+            useHomeDir(dir);
+            return;
+        }
+        
+        List<File> candidates = new ArrayList<File>();
+        File userHome = new File(System.getProperty("user.home"));
+        candidates.add(new File(userHome, "Applications/robovm"));
+        candidates.add(new File(userHome, ".robovm/home"));
+        candidates.add(new File("/usr/local/lib/robovm"));
+        candidates.add(new File("/opt/robovm"));
+        candidates.add(new File("/usr/lib/robovm"));
+        
+        for (File dir : candidates) {
+            if (dir.exists()) {
+                useHomeDir(dir);
+                return;
             }
         }
+        
+        throw new IllegalArgumentException("ROBOVM_HOME not set and no RoboVM " 
+                + "installation found in " + candidates);
+    }
+    
+    private Config build() throws IOException {
+        findHomeDir();
         
         if (mainJar != null) {
-            //mainClass = readMainClassFromManifest(jarFile);
+            mainClass = getMainClass(mainJar);
             classpath.add(mainJar);
-        }
-        
-        if (classpath.isEmpty()) {
-            throw new IllegalArgumentException("No classpath specified");
         }
         
         if (!skipLinking && executable == null && mainClass == null) {
             throw new IllegalArgumentException("No target and no main class specified");
         }
 
+        if (!skipLinking && classpath.isEmpty()) {
+            throw new IllegalArgumentException("No classpath specified");
+        }
+        
         if (os == null) {
             os = OS.getDefaultOS(llvmHomeDir);
         }
@@ -314,8 +456,8 @@ public class Config {
             skipInstall = true;
         }
         
-        File homeLib = new File(roboVMHomeDir, "lib");
-        osArchDepLibDir = new File(new File(new File(homeLib, os.toString()), arch.toString()), debug ? "Debug" : "Release");
+        osArchDepLibDir = new File(new File(new File(libVmDir, os.toString()), 
+                arch.toString()), debug ? "Debug" : "Release");
         
         File osDir = new File(cacheDir, os.toString());
         File archDir = new File(osDir, arch.toString());
@@ -327,16 +469,7 @@ public class Config {
         }
         
         if (!skipRuntimeLib) {
-            bootclasspath.add(0, new File(homeLib, "robovm-rt.jar"));
-        }
-
-        /*
-         * Create tmp directory
-         */
-        if (tmpDir == null) {
-            tmpDir = File.createTempFile("robovm", ".tmp");
-            tmpDir.delete();
-            tmpDir.mkdirs();
+            bootclasspath.add(0, rtPath);
         }
 
         this.clazzes = new Clazzes(this, bootclasspath, classpath);
@@ -384,8 +517,8 @@ public class Config {
             return this;
         }
 
-        public Builder roboVMHomeDir(File roboVMHomeDir) {
-            config.roboVMHomeDir = roboVMHomeDir;
+        public Builder homeDir(File homeDir) {
+            config.homeDir = homeDir;
             return this;
         }
 
@@ -406,11 +539,6 @@ public class Config {
 
         public Builder ccBinPath(File ccBinPath) {
             config.ccBinPath = ccBinPath;
-            return this;
-        }
-
-        public Builder arBinPath(File arBinPath) {
-            config.arBinPath = arBinPath;
             return this;
         }
 

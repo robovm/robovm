@@ -17,7 +17,7 @@
   <packaging>eclipse-plugin</packaging>
 
   <properties>
-    <tycho-version>0.13.0</tycho-version>
+    <tycho-version>0.14.1</tycho-version>
     <eclipse-site>http://download.eclipse.org/releases/indigo</eclipse-site>
   </properties>
 

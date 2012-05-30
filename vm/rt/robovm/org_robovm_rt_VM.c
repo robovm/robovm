@@ -52,8 +52,7 @@ Object* Java_org_robovm_rt_VM_classPath(Env* env, Class* c) {
 }
 
 Object* Java_org_robovm_rt_VM_vmVersion(Env* env, Class* c) {
-    // TODO: Use version from Maven pom
-    return rvmNewStringUTF(env, "0.0.1-SNAPSHOT", -1);
+    return rvmNewStringUTF(env, VMVERSION, -1);
 }
 
 ObjectArray* Java_org_robovm_rt_VM_getStackClasses(Env* env, Class* c, jint skipNum, jint maxDepth) {

@@ -152,10 +152,13 @@ elseif (ARCH STREQUAL "thumbv7")
   add_definitions(-DRVM_THUMBV7)
 endif()
 
+add_definitions(-DVMVERSION="${VMVERSION}")
+
 set(INSTALL_DIR ${CMAKE_SOURCE_DIR}/binaries/${OS}/${ARCH}/${CMAKE_BUILD_TYPE})
 
 message(STATUS "ARCH: ${ARCH}")
 message(STATUS "OS: ${OS}")
+message(STATUS "VMVERSION: ${VMVERSION}")
 message(STATUS "SYSROOT: ${SYSROOT}")
 message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 message(STATUS "CMAKE_C_COMPILER: ${CMAKE_C_COMPILER}")

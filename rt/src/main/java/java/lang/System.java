@@ -443,7 +443,7 @@ public final class System {
         p.put("path.separator", ":");
 
         p.put("java.runtime.name", "RoboVM Runtime");
-        p.put("java.runtime.version", "0.9"); // RoboVM note: TODO: Use version from pom
+        p.put("java.runtime.version", "0.9");
         p.put("java.vm.vendor.url", projectUrl);
 
         p.put("file.encoding", "UTF-8");

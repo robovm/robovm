@@ -51,13 +51,15 @@ if [ $(uname) = 'Darwin' ]; then
   CXX=$(which clang++)
 fi
 
+VMVERSION=$(grep '<version>' "$BASE/../pom.xml" | head -1 | sed 's/ *<\/*version> *//g')
+
 for T in $TARGETS; do
   OS=${T%%-*}
   ARCH=${T#*-}
   for B in $BUILDS; do
     mkdir -p "$BASE/target/build/$T-$B"
     rm -rf "$BASE/binaries/$OS/$ARCH/$B"
-    bash -c "cd '$BASE/target/build/$T-$B'; cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=$B -DOS=$OS -DARCH=$ARCH '$BASE'; make install"
+    bash -c "cd '$BASE/target/build/$T-$B'; cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=$B -DOS=$OS -DARCH=$ARCH -DVMVERSION=$VMVERSION '$BASE'; make install"
   done
 done
 

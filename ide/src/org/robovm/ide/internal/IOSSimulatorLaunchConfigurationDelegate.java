@@ -24,6 +24,7 @@ import org.robovm.compiler.Arch;
 import org.robovm.compiler.Config;
 import org.robovm.compiler.IOSSimulatorTarget;
 import org.robovm.compiler.OS;
+import org.robovm.ide.RoboVMPlugin;
 
 /**
  * @author niklas
@@ -49,7 +50,7 @@ public class IOSSimulatorLaunchConfigurationDelegate extends AbstractLaunchConfi
             ILaunchConfiguration configuration, String mode) throws IOException {
         
         IOSSimulatorTarget.Builder targetBuilder = new IOSSimulatorTarget.Builder();
-        targetBuilder.iosSimBinPath(new File("/usr/local/bin/ios-sim"));
+        targetBuilder.iosSimBinPath(new File(RoboVMPlugin.getRoboVMHome().getBinDir(), "ios-sim"));
         configBuilder.targetBuilder(targetBuilder);
         
         return configBuilder.build();

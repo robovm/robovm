@@ -43,6 +43,7 @@ import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.robovm.compiler.Arch;
+import org.robovm.compiler.Config;
 import org.robovm.compiler.Logger;
 import org.robovm.compiler.OS;
 
@@ -171,12 +172,13 @@ public class RoboVMPlugin extends AbstractUIPlugin {
         return prefs.getBoolean(PLUGIN_ID, PREFERENCE_USE_SYSTEM_ROBOVM, true, null);
     }
 
-    public static File getRoboVMHomeDir() {
+    public static Config.Home getRoboVMHome() {
         if (!useSystemRoboVM()) {
             IPreferencesService prefs = Platform.getPreferencesService();
-            return new File(prefs.getString(PLUGIN_ID, PREFERENCE_ROBOVM_HOME_DIR, null, null));
+            File dir = new File(prefs.getString(PLUGIN_ID, PREFERENCE_ROBOVM_HOME_DIR, null, null));
+            return new Config.Home(dir);
         }
-        return null;
+        return Config.Home.find();
     }
 
     public static boolean useSystemLlvm() {

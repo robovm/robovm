@@ -25,7 +25,6 @@ import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
-import org.robovm.compiler.Config;
 import org.robovm.ide.RoboVMPlugin;
 
 /**
@@ -38,13 +37,7 @@ public class RoboVMClasspathContainer implements IClasspathContainer {
     public static final IPath PATH = new Path(ID);
     
     public IClasspathEntry[] getClasspathEntries() {
-        Config.Home home = null;
-        if (!RoboVMPlugin.useSystemRoboVM()) {
-            home = new Config.Home(RoboVMPlugin.getRoboVMHomeDir());
-        } else {
-            home = Config.Home.find();
-        }
-        File f = home.getRtPath();
+        File f = RoboVMPlugin.getRoboVMHome().getRtPath();
         return new IClasspathEntry[] {
             JavaCore.newLibraryEntry(new Path(f.getAbsolutePath()), null, null,
                     new IAccessRule[] {}, new IClasspathAttribute[] {}, false)

@@ -24,6 +24,7 @@ import org.robovm.compiler.Arch;
 import org.robovm.compiler.Config;
 import org.robovm.compiler.IOSDeviceTarget;
 import org.robovm.compiler.OS;
+import org.robovm.ide.RoboVMPlugin;
 
 /**
  * @author niklas
@@ -49,7 +50,7 @@ public class IOSDeviceLaunchConfigurationDelegate extends AbstractLaunchConfigur
             ILaunchConfiguration configuration, String mode) throws IOException {
         
         IOSDeviceTarget.Builder targetBuilder = new IOSDeviceTarget.Builder();
-        targetBuilder.fruitstrapBinPath(new File("/usr/local/bin/fruitstrap"));
+        targetBuilder.fruitstrapBinPath(new File(RoboVMPlugin.getRoboVMHome().getBinDir(), "fruitstrap"));
         configBuilder.targetBuilder(targetBuilder);
         
         return configBuilder.build();

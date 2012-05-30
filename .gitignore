@@ -1,10 +1,8 @@
 *~
 *.o
 a.out
-*.a
 *.class
 .*
 target
-drlvm-vts-bundle.patched
 bin/robovm-vts.env
 ide/lib

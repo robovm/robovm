@@ -84,7 +84,7 @@ Class* Java_java_lang_Class_getEnclosingClass(Env* env, Class* thiz) {
 Object* Java_java_lang_Class_getEnclosingMethod(Env* env, Class* thiz) {
     Method* method = rvmAttributeGetEnclosingMethod(env, thiz);
     if (!method || METHOD_IS_CONSTRUCTOR(method)) return NULL;
-    Class* jlr_Method = rvmFindClass(env, "java/lang/reflect/Method");
+    Class* jlr_Method = rvmFindClassUsingLoader(env, "java/lang/reflect/Method", NULL);
     if (!jlr_Method) return NULL;
     Method* constructor = rvmGetInstanceMethod(env, jlr_Method, "<init>", "(J)V");
     if (!constructor) return NULL;
@@ -96,7 +96,7 @@ Object* Java_java_lang_Class_getEnclosingMethod(Env* env, Class* thiz) {
 Object* Java_java_lang_Class_getEnclosingConstructor(Env* env, Class* thiz) {
     Method* method = rvmAttributeGetEnclosingMethod(env, thiz);
     if (!method || !METHOD_IS_CONSTRUCTOR(method)) return NULL;
-    Class* jlr_Constructor = rvmFindClass(env, "java/lang/reflect/Constructor");
+    Class* jlr_Constructor = rvmFindClassUsingLoader(env, "java/lang/reflect/Constructor", NULL);
     if (!jlr_Constructor) return NULL;
     Method* constructor = rvmGetInstanceMethod(env, jlr_Constructor, "<init>", "(J)V");
     if (!constructor) return NULL;

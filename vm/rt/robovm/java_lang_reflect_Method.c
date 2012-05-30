@@ -39,7 +39,7 @@ Class* Java_java_lang_reflect_Method_getReturnType(Env* env, Class* clazz, jlong
 
 Object* Java_java_lang_reflect_Method_getSignatureAttribute(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
-    Class* java_lang_reflect_Proxy = rvmFindClass(env, "java/lang/reflect/Proxy");
+    Class* java_lang_reflect_Proxy = rvmFindClassUsingLoader(env, "java/lang/reflect/Proxy", NULL);
     if (method->clazz->superclass == java_lang_reflect_Proxy) {
         return rvmAttributeGetMethodSignature(env, ((ProxyMethod*) method)->proxiedMethod);
     }
@@ -51,7 +51,7 @@ ObjectArray* Java_java_lang_reflect_Method_getParameterTypes(Env* env, Class* cl
 
     jint argsCount = rvmGetParameterCount(method);
 
-    Class* array_java_lang_Class = rvmFindClass(env, "[Ljava/lang/Class;");
+    Class* array_java_lang_Class = rvmFindClassUsingLoader(env, "[Ljava/lang/Class;", NULL);
     if (!array_java_lang_Class) return NULL;
     ObjectArray* paramTypes = rvmNewObjectArray(env, argsCount, NULL, array_java_lang_Class, NULL);
     if (!paramTypes) return NULL;
@@ -73,7 +73,7 @@ ObjectArray* Java_java_lang_reflect_Method_getParameterTypes(Env* env, Class* cl
 
 ObjectArray* Java_java_lang_reflect_Method_getExceptionTypes(Env* env, Class* clazz, jlong methodPtr) {
     Method* method = (Method*) LONG_TO_PTR(methodPtr);
-    Class* java_lang_reflect_Proxy = rvmFindClass(env, "java/lang/reflect/Proxy");
+    Class* java_lang_reflect_Proxy = rvmFindClassUsingLoader(env, "java/lang/reflect/Proxy", NULL);
     if (method->clazz->superclass == java_lang_reflect_Proxy) {
         return rvmAttributeGetExceptions(env, ((ProxyMethod*) method)->proxiedMethod);
     }

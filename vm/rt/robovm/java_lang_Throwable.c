@@ -49,7 +49,7 @@ jlong Java_java_lang_Throwable_nativeFillInStackTrace(Env* env, Object* thiz) {
 }
 
 ObjectArray* Java_java_lang_Throwable_nativeGetStackTrace(Env* env, Object* thiz, jlong stackState) {
-    Class* java_lang_StackTraceElement = rvmFindClass(env, "java/lang/StackTraceElement");
+    Class* java_lang_StackTraceElement = rvmFindClassUsingLoader(env, "java/lang/StackTraceElement", NULL);
     if (!java_lang_StackTraceElement) return NULL;
 
     jint length = 0;

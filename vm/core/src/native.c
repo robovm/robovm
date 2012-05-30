@@ -28,7 +28,7 @@ void rvmInitJNIEnv(Env* env) {
 }
 
 static void throwUnsupportedOperationException(Env* env, char* msg) {
-    Class* clazz = rvmFindClass(env, "java/lang/UnsupportedOperationException");
+    Class* clazz = rvmFindClassUsingLoader(env, "java/lang/UnsupportedOperationException", NULL);
     if (!clazz) return;
     rvmThrowNew(env, clazz, msg);
 }

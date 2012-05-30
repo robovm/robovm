@@ -104,22 +104,21 @@ DoubleArray* rvmNewDoubleArray(Env* env, jint length) {
 
 ObjectArray* rvmNewObjectArray(Env* env, jint length, Class* elementClass, Class* arrayClass, Object* init) {
     if (!arrayClass) {
+        char* name = NULL;
         if (CLASS_IS_ARRAY(elementClass)) {
-            char* name = rvmAllocateMemory(env, strlen(elementClass->name) + 2);
+            name = rvmAllocateMemory(env, strlen(elementClass->name) + 2);
             if (!name) return NULL;
             strcpy(name, "[");
             strcat(name, elementClass->name);
-            arrayClass = rvmFindClass(env, name);
-            if (!arrayClass) return NULL;
         } else {
-            char* name = rvmAllocateMemory(env, strlen(elementClass->name) + 4);
+            name = rvmAllocateMemory(env, strlen(elementClass->name) + 4);
             if (!name) return NULL;
             strcpy(name, "[L");
             strcat(name, elementClass->name);
             strcat(name, ";");
-            arrayClass = rvmFindClass(env, name);
-            if (!arrayClass) return NULL;
         }
+        arrayClass = rvmFindClassUsingLoader(env, name, elementClass->classLoader);
+        if (!arrayClass) return NULL;
     }
 
     ObjectArray *array = (ObjectArray*) newArray(env, arrayClass, sizeof(Object*), 1, &length);

@@ -655,7 +655,7 @@ Class* rvmFindLoadedClass(Env* env, const char* className, ClassLoader* classLoa
 }
 
 ClassLoader* rvmGetSystemClassLoader(Env* env) {
-    Class* holder = rvmFindClass(env, "java/lang/ClassLoader$SystemClassLoader");
+    Class* holder = rvmFindClassUsingLoader(env, "java/lang/ClassLoader$SystemClassLoader", NULL);
     if (!holder) return NULL;
     ClassField* field = rvmGetClassField(env, holder, "loader", "Ljava/lang/ClassLoader;");
     if (!field) return NULL;

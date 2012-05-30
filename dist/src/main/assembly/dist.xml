@@ -1,0 +1,49 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+
+  <id>dist</id>
+
+  <formats>
+    <format>tar.gz</format>
+  </formats>
+  <includeBaseDirectory>true</includeBaseDirectory>
+  <baseDirectory>robovm-${project.version}</baseDirectory>
+
+  <fileSets>
+    <fileSet>
+      <directory>${basedir}/../vm/binaries</directory>
+      <includes>
+        <include>**/*</include>
+      </includes>
+      <directoryMode>755</directoryMode>
+      <fileMode>644</fileMode>
+      <outputDirectory>lib/vm</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>${basedir}/../bin</directory>
+      <includes>
+        <include>*</include>
+      </includes>
+      <fileMode>755</fileMode>
+      <outputDirectory>bin</outputDirectory>
+    </fileSet>
+  </fileSets>
+
+  <moduleSets>
+    <moduleSet>
+      <useAllReactorProjects>true</useAllReactorProjects>
+      <includes>
+        <include>org.robovm:robovm-compiler</include>
+        <include>org.robovm:robovm-rt</include>
+      </includes>
+      <binaries>
+        <outputDirectory>lib</outputDirectory>
+        <unpack>false</unpack>
+        <outputFileNameMapping>${module.artifactId}.${module.extension}</outputFileNameMapping>
+        <fileMode>644</fileMode>
+      </binaries>
+    </moduleSet>
+  </moduleSets>
+</assembly>
+

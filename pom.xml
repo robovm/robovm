@@ -91,6 +91,7 @@
     <module>compiler</module>
     <module>rt</module>
     <module>ide</module>
+    <module>dist</module>
   </modules>
 </project>
 

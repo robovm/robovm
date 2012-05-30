@@ -2,9 +2,9 @@
 
 export HOME=$(cd ~; pwd)
 
-BASE=$(cd $(dirname $0)/..; pwd -P)
-if [ -f "$BASE/bin/robovm-vts.env" ]; then
-  . $BASE/bin/robovm-vts.env
+BASE=$(cd $(dirname $0)/../..; pwd -P)
+if [ -f "$BASE/tests/bin/robovm-vts.env" ]; then
+  . $BASE/tests/bin/robovm-vts.env
 fi
 [ "x$COMPILER_JAR" == 'x' ] && COMPILER_JAR=$(ls $BASE/compiler/target/robovm-compiler-*.jar 2> /dev/null)
 if [ "x$COMPILER_JAR" == 'x' ]; then
@@ -17,8 +17,9 @@ fi
 export PATH
 
 mkdir -p $HOME/.robovm/vts/
-mkdir -p $HOME/.robovm/vts/robovm-home/lib/
-rsync -a --delete $BASE/vm/binaries/ $HOME/.robovm/vts/robovm-home/lib/
+mkdir -p $HOME/.robovm/vts/robovm-home/bin/
+mkdir -p $HOME/.robovm/vts/robovm-home/lib/vm/
+rsync -a --delete $BASE/vm/binaries/ $HOME/.robovm/vts/robovm-home/lib/vm/
 cp -p $BASE/rt/target/robovm-rt-*.jar $HOME/.robovm/vts/robovm-home/lib/robovm-rt.jar
 
 n=0

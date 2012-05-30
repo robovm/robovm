@@ -4,5 +4,5 @@ a.out
 *.class
 .*
 target
-bin/robovm-vts.env
+tests/bin/robovm-vts.env
 ide/lib

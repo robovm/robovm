@@ -33,7 +33,7 @@ public final class VMStack {
      */
     public static ClassLoader getCallingClassLoader() {
         // RoboVM note: This is native in Android
-        return VM.getStackClasses(0, 1)[0].getClassLoader();
+        return VM.getStackClasses(1, 1)[0].getClassLoader();
     }
 
     /**
@@ -43,7 +43,8 @@ public final class VMStack {
      */
     public static Class<?> getStackClass2() {
         // RoboVM note: This is native in Android
-        return VM.getStackClasses(1, 1)[0];
+        Class<?>[] classes = VM.getStackClasses(2, 1);
+        return classes != null && classes.length > 0 ? classes[0] : null;
     }
 
     /**
@@ -67,7 +68,7 @@ public final class VMStack {
     public static Class<?>[] getClasses(int maxDepth) {
         // RoboVM note: This is native in Android
         // TODO: Skip over java.lang.reflect classes.
-        return VM.getStackClasses(0, maxDepth);
+        return VM.getStackClasses(1, maxDepth);
     }
 
     /**

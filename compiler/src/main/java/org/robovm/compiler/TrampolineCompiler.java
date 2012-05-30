@@ -214,6 +214,9 @@ public class TrampolineCompiler {
             String longName = mangleNativeMethod(target.getInternalName(), nc.getMethodName(), nc.getMethodDesc());
             if (target.isInBootClasspath()) {
                 Function fnLong = new Function(weak, longName, nc.getFunctionType());
+                // The NativeCall caller pushed a GatewayFrame and will only pop it 
+                // if the native method exists. So we need to pop it here.
+                popNativeFrame(fnLong);
                 call(fnLong, BC_THROW_UNSATISIFED_LINK_ERROR, fnLong.getParameterRef(0));
                 fnLong.add(new Unreachable());
                 mb.addFunction(fnLong);

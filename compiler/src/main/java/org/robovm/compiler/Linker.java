@@ -123,9 +123,9 @@ public class Linker {
         int start = 0;
         Matcher matcher = ANT_WILDCARDS.matcher(pattern);
         while (matcher.find()) {
-        	if (matcher.start() - start > 0) {
-        		sb.append(Pattern.quote(pattern.substring(start, matcher.start())));
-        	}
+            if (matcher.start() - start > 0) {
+                sb.append(Pattern.quote(pattern.substring(start, matcher.start())));
+            }
             if ("**".equals(matcher.group()) || "**.".equals(matcher.group())) {
                 sb.append(".*");
             } else if ("*".equals(matcher.group())) {
@@ -159,10 +159,10 @@ public class Linker {
     private Set<Clazz> getRootClasses() {
         Set<Clazz> classes = new TreeSet<Clazz>();
         for (String rootClassPattern : ROOT_CLASS_PATTERNS) {
-            classes.addAll(getMatchingClasses(rootClassPattern));        	
+            classes.addAll(getMatchingClasses(rootClassPattern));            
         }
         for (String rootClassName : ROOT_CLASSES) {
-            classes.add(config.getClazzes().load(rootClassName));        	
+            classes.add(config.getClazzes().load(rootClassName));            
         }
         
         if (config.getRoots().isEmpty()) {

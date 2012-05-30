@@ -19,7 +19,6 @@ package org.robovm.ide.internal;
 import static org.robovm.ide.RoboVMPlugin.*;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
@@ -85,11 +84,9 @@ public class RoboVMPreferencePage extends FieldEditorPreferencePage implements
             @Override
             protected boolean validateDir(File dir) {
                 try {
-                    Config.validateHomeDir(dir);
+                    Config.Home.validate(dir);
                     return true;
                 } catch (IllegalArgumentException e) {
-                    return false;
-                } catch (IOException e) {
                     return false;
                 }
             }

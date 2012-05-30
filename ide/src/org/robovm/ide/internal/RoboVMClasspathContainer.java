@@ -17,7 +17,6 @@
 package org.robovm.ide.internal;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -39,24 +38,17 @@ public class RoboVMClasspathContainer implements IClasspathContainer {
     public static final IPath PATH = new Path(ID);
     
     public IClasspathEntry[] getClasspathEntries() {
-        try {
-            Config.Builder configBuilder = new Config.Builder();
-            configBuilder.skipLinking(true);
-            if (!RoboVMPlugin.useSystemRoboVM()) {
-                configBuilder.homeDir(RoboVMPlugin.getRoboVMHomeDir());
-            }
-            if (!RoboVMPlugin.useSystemLlvm()) {
-                configBuilder.llvmHomeDir(RoboVMPlugin.getLlvmHomeDir());
-            }            
-            Config config = configBuilder.build();
-            File f = config.getRtPath();
-            return new IClasspathEntry[] {
-                JavaCore.newLibraryEntry(new Path(f.getAbsolutePath()), null, null,
-                        new IAccessRule[] {}, new IClasspathAttribute[] {}, false)
-            };
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        Config.Home home = null;
+        if (!RoboVMPlugin.useSystemRoboVM()) {
+            home = new Config.Home(RoboVMPlugin.getRoboVMHomeDir());
+        } else {
+            home = Config.Home.find();
         }
+        File f = home.getRtPath();
+        return new IClasspathEntry[] {
+            JavaCore.newLibraryEntry(new Path(f.getAbsolutePath()), null, null,
+                    new IAccessRule[] {}, new IClasspathAttribute[] {}, false)
+        };
     }
 
     public String getDescription() {

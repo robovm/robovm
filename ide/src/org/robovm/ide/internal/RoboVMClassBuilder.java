@@ -92,7 +92,7 @@ public class RoboVMClassBuilder extends IncrementalProjectBuilder {
         configBuilder.arch(RoboVMPlugin.getArch(getProject()));
         configBuilder.os(RoboVMPlugin.getOS(getProject()));
         if (!RoboVMPlugin.useSystemRoboVM()) {
-            configBuilder.homeDir(RoboVMPlugin.getRoboVMHomeDir());
+            configBuilder.home(new Config.Home(RoboVMPlugin.getRoboVMHomeDir()));
         }
         if (!RoboVMPlugin.useSystemLlvm()) {
             configBuilder.llvmHomeDir(RoboVMPlugin.getLlvmHomeDir());

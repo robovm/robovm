@@ -138,7 +138,7 @@ public class AppCompiler {
                 } else if ("-cache".equals(args[i])) {
                     builder.cacheDir(new File(args[++i]));
                 } else if ("-home".equals(args[i])) {
-                    builder.homeDir(new File(args[++i]));
+                    builder.home(new Config.Home(new File(args[++i])));
                 } else if ("-tmp".equals(args[i])) {
                     builder.tmpDir(new File(args[++i]));
                 } else if ("-run".equals(args[i])) {

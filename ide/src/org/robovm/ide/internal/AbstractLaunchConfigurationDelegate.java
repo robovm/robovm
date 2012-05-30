@@ -115,7 +115,7 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
             configBuilder.debug(true);
             configBuilder.skipInstall(false);
             if (!RoboVMPlugin.useSystemRoboVM()) {
-                configBuilder.homeDir(RoboVMPlugin.getRoboVMHomeDir());
+                configBuilder.home(new Config.Home(RoboVMPlugin.getRoboVMHomeDir()));
             }
             if (!RoboVMPlugin.useSystemLlvm()) {
                 configBuilder.llvmHomeDir(RoboVMPlugin.getLlvmHomeDir());

@@ -1,6 +1,7 @@
 project(core)
+include(../../drlvm/drlvm-defines.cmake)
 
-include_directories(../../hyprt/include ../include ${CMAKE_BINARY_DIR}/gc/include)
+include_directories(../../drlvm/vm/include ../../drlvm/vm/port/include ../include ${CMAKE_BINARY_DIR}/gc/include ${CMAKE_BINARY_DIR}/apr/include/apr-1)
 
 if(IOS AND ARM)
   set(UNWIND_SRC
@@ -28,7 +29,6 @@ set(SRC
   thread.c 
   call0-${OS_FAMILY}-${ARCH}.s
   proxy0-${OS_FAMILY}-${ARCH}.s
-  vminterface.c
   ${UNWIND_SRC}
   unwind.c
 )

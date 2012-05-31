@@ -16,6 +16,7 @@
 #ifndef PRIVATE_H
 #define PRIVATE_H
 
+#include <pthread.h>
 #include <robovm.h>
 
 /* unwind.c / unwind-zero.c / unwind-sjlj.c */
@@ -33,6 +34,21 @@ extern void unwindIterateCallStack(Env* env, jboolean (*iterator)(Env*, void*, P
 
 /* class.c */
 extern ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint access, void* impl);
+
+/* Mutex wrappers around pthread mutexes */
+typedef pthread_mutex_t Mutex;
+static inline jboolean initMutex(Mutex* mutex) {
+    pthread_mutexattr_t mutexAttrs;
+    pthread_mutexattr_init(&mutexAttrs);
+    pthread_mutexattr_settype(&mutexAttrs, PTHREAD_MUTEX_RECURSIVE);
+    return pthread_mutex_init(mutex, &mutexAttrs) == 0 ? TRUE : FALSE;
+}
+static inline jint lockMutex(Mutex* mutex) {
+    return pthread_mutex_lock(mutex);
+}
+static inline jint unlockMutex(Mutex* mutex) {
+    return pthread_mutex_unlock(mutex);
+}
 
 /* call0-<os>-<arch>.s and proxy0-<os>-<arch>.s */
 #define RETURN_TYPE_INT    0

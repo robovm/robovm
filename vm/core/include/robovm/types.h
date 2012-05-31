@@ -28,8 +28,6 @@
 #define PTR_TO_LONG(p) ((jlong) (intptr_t) p)
 #define LONG_TO_PTR(l) ((void*) (intptr_t) l)
 
-struct HyThreadMonitor;
-
 typedef struct Field Field;
 typedef struct ClassField ClassField;
 typedef struct InstanceField InstanceField;
@@ -45,7 +43,7 @@ typedef struct Class Class;
 typedef struct Object Object;
 typedef struct ClassLoader ClassLoader;
 typedef struct DataObject DataObject;
-typedef struct HyThreadMonitor Monitor;
+typedef uint32_t Monitor;
 typedef struct Thread Thread;
 typedef struct Array Array;
 typedef struct EnclosingMethod EnclosingMethod;
@@ -114,7 +112,7 @@ struct Exception {
 
 struct Object {
   Class* clazz;
-  Monitor* monitor;
+  Monitor monitor;
 };
 
 /* 

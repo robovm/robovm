@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 #include <robovm.h>
-#include <hythread.h>
+#include <jvmti_types.h>
+#include <open/hythread_ext.h>
+#include "private.h"
 
-static hythread_monitor_t monitorsLock;
+static Mutex monitorsLock;
 static hythread_tls_key_t tlsEnvKey;
+static hythread_library_t lib;
+
+static inline void setThreadPtr(Thread* thread, hythread_t hyThread) {
+    while (!rvmCompareAndSwapLong(&thread->threadPtr, thread->threadPtr, PTR_TO_LONG(hyThread)))
+        ;
+}
 
 static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboolean daemon) {
     Env* env = *envPtr; // env is NULL if rvmAttachCurrentThread() was called. If non NULL rvmInitThreads() was called.
@@ -45,7 +53,7 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
     Thread* thread = (Thread*) rvmAllocateObject(env, java_lang_Thread);
     if (!thread) goto error;
 
-    thread->threadPtr = PTR_TO_LONG(hyThread);
+    setThreadPtr(thread, hyThread);
     thread->daemon = daemon;
     env->currentThread = thread;
 
@@ -63,6 +71,12 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
 
     *envPtr = env;
     env->attachCount = 1;
+
+    if (!daemon) {
+        IDATA status = hythread_increase_nondaemon_threads_count(hyThread);
+        assert(status == TM_ERROR_NONE);
+    }
+
     return JNI_OK;
 
 error:
@@ -71,63 +85,150 @@ error:
     return JNI_ERR;
 }
 
-static jint detachThread(VM* vm, jboolean ignoreAttachCount) {
-    hythread_t hyThread = hythread_self();
-    if (!hyThread) return JNI_EDETACHED;
-    // If the thread is attached there's an Env* associated with the thread.
-    Env* env = (Env*) hythread_tls_get(hyThread, tlsEnvKey);
-    if (!env) return JNI_EDETACHED;
+static jint detachThread(Env* env, jboolean ignoreAttachCount) {
     env->attachCount--;
     if (!ignoreAttachCount && env->attachCount > 0) {
         return JNI_OK;
     }
+
+    Thread* thread = env->currentThread;
+    hythread_t hyThread = (hythread_t) LONG_TO_PTR(thread->threadPtr);
+
+    if (!thread->daemon) {
+        IDATA status = hythread_decrease_nondaemon_threads_count(hyThread, 1);
+        assert(status == TM_ERROR_NONE);
+    }
+
+    setThreadPtr(thread, NULL);
+    rvmMonitorEnter(env, thread->lock);
+    rvmMonitorNotifyAll(env, thread->lock);
+    rvmMonitorExit(env, thread->lock);
+
     hythread_tls_set(hyThread, tlsEnvKey, NULL);
-    hythread_detach(hyThread); // TODO: Will this release all monitors and notify waiting threads?
+    hythread_set_state(hyThread, TM_THREAD_STATE_TERMINATED);
+    hythread_detach_ex(hyThread);
+
     // What if this was called from JNI code which was called from Java and that JNI code returns to Java and doesn't kill the thread? 
     // Should we prevent that from happening some how?
     return JNI_OK;
 }
 
-static void monitorEnter(Env* env, hythread_monitor_t monitor) {
-    IDATA result = hythread_monitor_enter_using_threadId(monitor, (hythread_t) LONG_TO_PTR(env->currentThread->threadPtr));
-    if (result != 0) {
-        if (result == HYTHREAD_PRIORITY_INTERRUPTED) {
-            // TODO: What?
-        }
-        rvmAbort("Unexpected value returned by hythread_monitor_enter_using_threadId(): %d", result);
+static IDATA monitorEnter(Env* env, Object* obj) {
+    // Start (C) DRLVM
+    IDATA state;
+    hythread_t native_thread;
+
+    assert(obj);
+    hythread_suspend_disable();
+    hythread_thin_monitor_t* lockword = &obj->monitor;
+    IDATA status = hythread_thin_monitor_try_enter(lockword);
+    if (status != TM_ERROR_EBUSY) {
+        goto entered;
     }
+
+    native_thread = hythread_self();
+    hythread_thread_lock(native_thread);
+    state = hythread_get_state(native_thread);
+    state &= ~TM_THREAD_STATE_RUNNABLE;
+    state |= TM_THREAD_STATE_BLOCKED_ON_MONITOR_ENTER;
+    status = hythread_set_state(native_thread, state);
+    assert(status == TM_ERROR_NONE);
+    hythread_thread_unlock(native_thread);
+
+    // busy wait and inflate
+    // reload pointer after safepoints
+    lockword = &obj->monitor;
+    while ((status =
+            hythread_thin_monitor_try_enter(lockword)) == TM_ERROR_EBUSY)
+    {
+        hythread_safe_point();
+        hythread_exception_safe_point();
+        lockword = &obj->monitor;
+
+        if (hythread_is_fat_lock(*lockword)) {
+            status = hythread_thin_monitor_enter(lockword);
+            if (status != TM_ERROR_NONE) {
+                hythread_suspend_enable();
+                assert(0);
+                return status;
+            }
+            goto contended_entered;
+        }
+        hythread_yield();
+    }
+    assert(status == TM_ERROR_NONE);
+    if (!hythread_is_fat_lock(*lockword)) {
+        hythread_inflate_lock(lockword);
+    }
+
+contended_entered:
+    hythread_thread_lock(native_thread);
+    state = hythread_get_state(native_thread);
+    state &= ~TM_THREAD_STATE_BLOCKED_ON_MONITOR_ENTER;
+    state |= TM_THREAD_STATE_RUNNABLE;
+    status = hythread_set_state(native_thread, state);
+    assert(status == TM_ERROR_NONE);
+    hythread_thread_unlock(native_thread);
+
+entered:
+    hythread_suspend_enable();
+    return TM_ERROR_NONE;
+    // End (C) DRLVM
 }
 
-static void monitorExit(Env* env, hythread_monitor_t monitor) {
-    IDATA result = hythread_monitor_exit_using_threadId(monitor, (hythread_t) LONG_TO_PTR(env->currentThread->threadPtr));
-    if (result != 0) {
-        if (result == HYTHREAD_ILLEGAL_MONITOR_STATE) {
-            rvmThrowIllegalMonitorStateException(env);
-            return;
-        }
-        rvmAbort("Unexpected value returned by hythread_monitor_exit_using_threadId(): %d", result);
-    }
-}
+static IDATA monitorWait(Env* env, Object* obj, jlong millis, jint nanos) {
+    // Start (C) DRLVM
+    assert(obj);
 
-static void monitorWait(Env* env, hythread_monitor_t monitor, jlong millis, jint nanos) {
-    IDATA result = hythread_monitor_wait_interruptable(monitor, millis, nanos);
-    if (result != 0) {
-        if (result == HYTHREAD_ILLEGAL_MONITOR_STATE) {
-            rvmThrowIllegalMonitorStateException(env);
-            return;
+    hythread_suspend_disable();
+    hythread_t native_thread = hythread_self();
+    hythread_thin_monitor_t* lockword = &obj->monitor;
+    if (!hythread_is_fat_lock(*lockword)) {
+        if (!hythread_owns_thin_lock(native_thread, *lockword)) {
+            hythread_suspend_enable();
+            return TM_ERROR_ILLEGAL_STATE;
         }
-        if (result == HYTHREAD_INTERRUPTED || result == HYTHREAD_PRIORITY_INTERRUPTED) {
-            rvmThrowInterruptedException(env);
-            return;
-        }
-        if (result != HYTHREAD_TIMED_OUT) {
-            rvmAbort("Unexpected value returned by hythread_monitor_wait_interruptable(): %d", result);
-        }
+        hythread_inflate_lock(lockword);
     }
+
+    hythread_thread_lock(native_thread);
+    IDATA state = hythread_get_state(native_thread);
+    state &= ~TM_THREAD_STATE_RUNNABLE;
+    state |= TM_THREAD_STATE_WAITING | TM_THREAD_STATE_IN_MONITOR_WAIT;
+    if ((millis > 0) || (nanos > 0)) {
+        state |= TM_THREAD_STATE_WAITING_WITH_TIMEOUT;
+    }
+    else {
+        state |= TM_THREAD_STATE_WAITING_INDEFINITELY;
+    }
+    IDATA status = hythread_set_state(native_thread, state);
+    assert(status == TM_ERROR_NONE);
+    hythread_thread_unlock(native_thread);
+
+    status =
+        hythread_thin_monitor_wait_interruptable(lockword, millis, nanos);
+
+    hythread_thread_lock(native_thread);
+    state = hythread_get_state(native_thread);
+    if ((millis > 0) || (nanos > 0)) {
+        state &= ~TM_THREAD_STATE_WAITING_WITH_TIMEOUT;
+    }
+    else {
+        state &= ~TM_THREAD_STATE_WAITING_INDEFINITELY;
+    }
+    state &= ~(TM_THREAD_STATE_WAITING | TM_THREAD_STATE_IN_MONITOR_WAIT);
+    state |= TM_THREAD_STATE_RUNNABLE;
+    hythread_set_state(native_thread, state);
+    hythread_thread_unlock(native_thread);
+
+    hythread_suspend_enable();
+    return status;
+    // End (C) DRLVM
 }
 
 jboolean rvmInitThreads(Env* env) {
-    if (hythread_monitor_init_with_name(&monitorsLock, 0, NULL) < 0) return FALSE;
+    if (hythread_lib_create(&lib) < 0) return FALSE;
+    if (!initMutex(&monitorsLock)) return FALSE;
     if (hythread_tls_alloc(&tlsEnvKey) < 0) return FALSE;
     return attachThread(env->vm, &env, "main", NULL, FALSE) == JNI_OK;
 }
@@ -153,12 +254,70 @@ jint rvmGetEnv(VM* vm, Env** env) {
 }
 
 jint rvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount) {
-    return detachThread(vm, ignoreAttachCount);
+    Env* env = NULL;
+    jint status = rvmGetEnv(vm, &env);
+    if (status != JNI_OK) return status;
+    return detachThread(env, ignoreAttachCount);
 }
 
 static int startThreadEntryPoint(void* entryArgs) {
     Env* env = (Env*) entryArgs;
     Thread* thread = env->currentThread;
+
+    // Start (C) DRLVM
+    // get hythread global lock
+    IDATA status = hythread_global_lock();
+    assert(status == TM_ERROR_NONE);
+
+    // get native thread
+    hythread_t native_thread = LONG_TO_PTR(thread->threadPtr);
+
+    // check hythread library state
+    if (hythread_lib_state() != TM_LIBRARY_STATUS_INITIALIZED) {
+        // set TERMINATED state
+        status = hythread_set_state(native_thread, TM_THREAD_STATE_TERMINATED);
+        assert(status == TM_ERROR_NONE);
+
+        // set hythread_self()
+        hythread_set_self(native_thread);
+        assert(native_thread == hythread_self());
+
+        // release thread structure data
+        hythread_detach_ex(native_thread);
+
+        // zero hythread_self() because we don't do it in hythread_detach_ex()
+        hythread_set_self(NULL);
+
+        // release hythread global lock
+        status = hythread_global_unlock();
+        assert(status == TM_ERROR_NONE);
+
+        goto finish;
+    }
+
+    // register to group and set ALIVE & RUNNABLE states
+    status = hythread_set_to_group(native_thread, get_java_thread_group());
+    assert(status == TM_ERROR_NONE);
+
+    // set hythread_self()
+    hythread_set_self(native_thread);
+    assert(native_thread == hythread_self());
+
+    // set priority
+    status = hythread_set_priority(native_thread,
+                                   hythread_get_priority(native_thread));
+    // FIXME - cannot set priority
+    //assert(status == TM_ERROR_NONE);
+
+    if (!thread->daemon) {
+        status = hythread_increase_nondaemon_threads_count(native_thread);
+        assert(status == TM_ERROR_NONE);
+    }
+
+    // release hythread global lock
+    status = hythread_global_unlock();
+    assert(status == TM_ERROR_NONE);
+    // End (C) DRLVM
 
     Method* run = rvmGetInstanceMethod(env, java_lang_Thread, "run", "()V");
     if (!run) goto finish;
@@ -178,22 +337,12 @@ finish:
         }
     }
 
-    thread->threadPtr = 0; // Clear threadPtr. The thread is not alive anymore.
-    hythread_monitor_t monitor = thread->object.monitor;
-    if (monitor) {
-        // Notify all other threads waiting on this thread.
-        // We can't use rvmMonitor* functions here since threadPtr has been set to 0.
-        hythread_monitor_enter(monitor);
-        hythread_monitor_notify_all(monitor);
-        hythread_monitor_exit(monitor);
-    }
-
-    hythread_exit(NULL);
+    detachThread(env, TRUE);
 
     return 0;
 }
 
-jlong rvmStartThread(Env* env, Thread* thread, jint priority) {
+jlong rvmStartThread(Env* env, Thread* thread) {
     Env* newEnv = rvmCreateEnv(env->vm);
     if (!newEnv) {
         rvmThrowOutOfMemoryError(env);
@@ -201,73 +350,100 @@ jlong rvmStartThread(Env* env, Thread* thread, jint priority) {
     }
 
     newEnv->currentThread = thread;
+    newEnv->attachCount = 1;
 
-    hythread_t hyThread;
-    IDATA result = hythread_create(&hyThread, 0, priority, 1, startThreadEntryPoint, newEnv);
-    if (result < 0) {
+    hythread_t hyThread = rvmAllocateMemory(env, hythread_get_struct_size());
+    if (!hyThread) {
+        rvmThrowOutOfMemoryError(env);
+        return 0;
+    }
+
+    setThreadPtr(thread, hyThread);
+    IDATA status = hythread_create_ex(hyThread, NULL, 8 * 1024, thread->priority, startThreadEntryPoint, NULL, newEnv);
+
+    if (status != TM_ERROR_NONE) {
         // TODO: What can we do here?
         rvmAbort("Failed to start thread");
     }
-    thread->threadPtr = PTR_TO_LONG(hyThread);
-    hythread_resume(hyThread);
 
     return thread->threadPtr;
 }
 
 void rvmMonitorEnter(Env* env, Object* obj) {
+    lockMutex(&monitorsLock);
     if (!obj->monitor) {
-        monitorEnter(env, monitorsLock);
-        if (!obj->monitor) {
-            // TODO: Double checked locking. Is this ok?
-            IDATA result = hythread_monitor_init_with_name(&obj->monitor, 0, NULL);
-            if (result < 0) {
-                monitorExit(env, monitorsLock);
-                rvmAbort("Failed to initialize monitor: %d", result);
-            }
+        hythread_suspend_disable();
+        hythread_thin_monitor_t* lockword = &obj->monitor;
+        IDATA status = hythread_thin_monitor_create(lockword);
+        hythread_suspend_enable();
+        if (status != TM_ERROR_NONE) {
+            unlockMutex(&monitorsLock);
+            rvmAbort("Failed to initialize monitor: %d", status);
         }
-        monitorExit(env, monitorsLock);
     }
-    monitorEnter(env, obj->monitor);
+    unlockMutex(&monitorsLock);
+    monitorEnter(env, obj);
 }
 
 void rvmMonitorExit(Env* env, Object* obj) {
-    // TODO: Protect access to monitor with global (spin?)lock
     if (!obj->monitor) {
         rvmThrowIllegalMonitorStateException(env);
         return;
     }
-    monitorExit(env, obj->monitor);
+
+    // Start (C) DRLVM
+    hythread_suspend_disable();
+    hythread_thin_monitor_t* lockword = &obj->monitor;
+    IDATA status = hythread_thin_monitor_exit(lockword);
+    hythread_suspend_enable();
+    // End (C) DRLVM
+
+    if (status == TM_ERROR_ILLEGAL_STATE) {
+        rvmThrowIllegalMonitorStateException(env);
+    }
 }
 
 void rvmMonitorNotify(Env* env, Object* obj) {
-    // TODO: Protect access to monitor with global (spin?)lock
     if (!obj->monitor) {
         rvmThrowIllegalMonitorStateException(env);
         return;
     }
-    IDATA result = hythread_monitor_notify(obj->monitor);
-    if (result != 0) {
-        if (result == HYTHREAD_ILLEGAL_MONITOR_STATE) {
+
+    // Start (C) DRLVM
+    hythread_suspend_disable();
+    hythread_thin_monitor_t* lockword = &obj->monitor;
+    IDATA status = hythread_thin_monitor_notify(lockword);
+    hythread_suspend_enable();
+    // End (C) DRLVM
+
+    if (status != TM_ERROR_NONE) {
+        if (status == TM_ERROR_ILLEGAL_STATE) {
             rvmThrowIllegalMonitorStateException(env);
             return;
         }
-        rvmAbort("Unexpected value returned by hythread_monitor_notify(): %d", result);
+        rvmAbort("Unexpected value returned by hythread_thin_monitor_notify(): %d", status);
     }
 }
 
 void rvmMonitorNotifyAll(Env* env, Object* obj) {
-    // TODO: Protect access to monitor with global (spin?)lock
     if (!obj->monitor) {
         rvmThrowIllegalMonitorStateException(env);
         return;
     }
-    IDATA result = hythread_monitor_notify_all(obj->monitor);
-    if (result != 0) {
-        if (result == HYTHREAD_ILLEGAL_MONITOR_STATE) {
+
+    // Start (C) DRLVM
+    hythread_suspend_disable();
+    hythread_thin_monitor_t* lockword = &obj->monitor;
+    IDATA status = hythread_thin_monitor_notify_all(lockword);
+    hythread_suspend_enable();
+    // End (C) DRLVM
+
+    if (status != TM_ERROR_NONE) {
+        if (status == TM_ERROR_ILLEGAL_STATE) {
             rvmThrowIllegalMonitorStateException(env);
             return;
         }
-        rvmAbort("Unexpected value returned by hythread_monitor_notify_all(): %d", result);
+        rvmAbort("Unexpected value returned by hythread_thin_monitor_notify_all(): %d", status);
     }
 }
 
@@ -280,12 +456,19 @@ void rvmMonitorWait(Env* env, Object* obj, jlong millis, jint nanos) {
         rvmThrowIllegalArgumentException(env, "nanoseconds value is out of range");
         return;
     }
-    // TODO: Protect access to monitor with global (spin?)lock
     if (!obj->monitor) {
         rvmThrowIllegalMonitorStateException(env);
         return;
     }
-    monitorWait(env, obj->monitor, millis, nanos);
+    IDATA status = monitorWait(env, obj, millis, nanos);
+    if (status == TM_ERROR_ILLEGAL_STATE) {
+        rvmThrowIllegalMonitorStateException(env);
+        return;
+    }
+    if (status == TM_ERROR_INTERRUPT) {
+        rvmThrowInterruptedException(env);
+        return;
+    }
 }
 
 void rvmThreadSleep(Env* env, jlong millis, jint nanos) {
@@ -298,23 +481,49 @@ void rvmThreadSleep(Env* env, jlong millis, jint nanos) {
         return;
     }
     if (millis == 0 && nanos == 0) nanos = 1;
-    hythread_sleep_interruptable(millis, nanos);
+
+    // Start (C) DRLVM
+    hythread_t native_thread = hythread_self();
+    hythread_thread_lock(native_thread);
+    IDATA state = hythread_get_state(native_thread);
+    state &= ~TM_THREAD_STATE_RUNNABLE;
+    state |= TM_THREAD_STATE_WAITING | TM_THREAD_STATE_SLEEPING
+                | TM_THREAD_STATE_WAITING_WITH_TIMEOUT;
+    IDATA status = hythread_set_state(native_thread, state);
+    assert(status == TM_ERROR_NONE);
+    hythread_thread_unlock(native_thread);
+
+    status = hythread_sleep_interruptable(millis, nanos);
+
+    hythread_thread_lock(native_thread);
+    state = hythread_get_state(native_thread);
+    state &= ~(TM_THREAD_STATE_WAITING | TM_THREAD_STATE_SLEEPING
+                    | TM_THREAD_STATE_WAITING_WITH_TIMEOUT);
+    state |= TM_THREAD_STATE_RUNNABLE;
+    hythread_set_state(native_thread, state);
+    hythread_thread_unlock(native_thread);
+    // End (C) DRLVM
 }
 
 jboolean rvmThreadHoldsLock(Env* env, Object* obj) {
-    // TODO: Protect access to monitor with global (spin?)lock
     if (!obj->monitor) {
         return FALSE;
     }
-    return hythread_monitor_owner(obj->monitor) == (hythread_t) LONG_TO_PTR(env->currentThread->threadPtr);
+
+    hythread_suspend_disable();
+    hythread_thin_monitor_t* lockword = &obj->monitor;
+    hythread_t owner_thread = hythread_thin_monitor_get_owner(lockword);
+    hythread_suspend_enable();
+
+    return owner_thread == (hythread_t) LONG_TO_PTR(env->currentThread->threadPtr);
 }
 
-jboolean rvmThreadClearInterrupted(Env* env) {
-    return hythread_clear_interrupted() != 0;
+jboolean rvmThreadClearInterrupted(Env* env, Thread* thread) {
+    return (hythread_clear_interrupted_other((hythread_t) LONG_TO_PTR(thread->threadPtr)) == TM_ERROR_INTERRUPT) ? TRUE : FALSE;
 }
 
 jboolean rvmThreadIsInterrupted(Env* env, Thread* thread) {
-    return hythread_interrupted((hythread_t) LONG_TO_PTR(thread->threadPtr)) != 0;
+    return hythread_interrupted((hythread_t) LONG_TO_PTR(thread->threadPtr)) > 0 ? TRUE : FALSE;
 }
 
 void rvmThreadInterrupt(Env* env, Thread* thread) {
@@ -325,3 +534,35 @@ void rvmThreadYield(Env* env) {
     hythread_yield();
 }
 
+jint rvmThreadGetState(Env* env, Thread* thread) {
+    hythread_t hyThread = LONG_TO_PTR(thread->threadPtr);
+    if (!hyThread) {
+        return thread->started ? THREAD_STATE_TERMINATED : THREAD_STATE_NEW;
+    }
+
+    if (hythread_is_terminated(hyThread)) {
+        return THREAD_STATE_TERMINATED;
+    }
+    if (hythread_is_waiting_with_timeout(hyThread)) {
+        return THREAD_STATE_TIMED_WAITING;
+    }
+    if (hythread_is_waiting(hyThread)) {
+        return THREAD_STATE_WAITING;
+    }
+    if (hythread_is_waiting_indefinitely(hyThread)) {
+        return THREAD_STATE_WAITING;
+    }
+    if (hythread_is_parked(hyThread)) {
+        return THREAD_STATE_WAITING;
+    }
+    if (hythread_is_blocked_on_monitor_enter(hyThread)) {
+        return THREAD_STATE_BLOCKED;
+    }
+    if (hythread_is_runnable(hyThread)) {
+        return THREAD_STATE_RUNNABLE;
+    }
+    if (hythread_is_alive(hyThread)) {
+        return THREAD_STATE_RUNNABLE;
+    }
+    return THREAD_STATE_NEW;
+}

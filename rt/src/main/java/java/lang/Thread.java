@@ -148,7 +148,7 @@ public class Thread implements Runnable {
     private static long count = 0;
     private static UncaughtExceptionHandler defaultUncaughtHandler = null;
     
-    private long threadPtr = 0;
+    private volatile long threadPtr = 0;
     private ThreadGroup group = null;
 
     /**
@@ -1038,10 +1038,10 @@ public class Thread implements Runnable {
             throw new IllegalThreadStateException("Thread already started."); // TODO Externalize?
         }
 
-        threadPtr = internalStart(this, priority);
+        threadPtr = internalStart(this);
         started = true;
     }
-    private static native long internalStart(Thread t, int priority);
+    private static native long internalStart(Thread t);
 
     /**
      * Requests the receiver Thread to stop and throw ThreadDeath. The Thread is

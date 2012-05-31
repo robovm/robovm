@@ -18,16 +18,12 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <dlfcn.h>
-#include "hyport.h"
 #include "utlist.h"
 
 #define LOG_TAG "core.init"
 
-HyPortLibraryVersion portLibraryVersion;
-HyPortLibrary portLibrary;
 ClassLoader* systemClassLoader = NULL;
 
-extern jint RT_JNI_OnLoad(JavaVM* vm, void *reserved);
 extern int registerJniHelp(JNIEnv* env);
 extern int registerCoreLibrariesJni(JNIEnv* env);
 
@@ -146,9 +142,6 @@ Env* rvmStartup(Options* options) {
     if (!initClasspathEntries(env, options->basePath, options->rawBootclasspath, &options->bootclasspath)) return NULL;
     if (!initClasspathEntries(env, options->basePath, options->rawClasspath, &options->classpath)) return NULL;
 
-    HYPORT_SET_VERSION(&portLibraryVersion, HYPORT_CAPABILITY_MASK);
-    if (hyport_init_library(&portLibrary, &portLibraryVersion, sizeof(HyPortLibrary))) return NULL;
-
     // Call init on modules
     TRACE("Initializing logging");
     if (!rvmInitLog(env)) return NULL;
@@ -158,8 +151,6 @@ Env* rvmStartup(Options* options) {
     if (!rvmInitMethods(env)) return NULL;
     TRACE("Initializing strings");
     if (!rvmInitStrings(env)) return NULL;
-    TRACE("Initializing VMI");
-    if (!rvmInitVMI(env)) return NULL;
     TRACE("Initializing threads");
     if (!rvmInitThreads(env)) return NULL;
     TRACE("Initializing attributes");
@@ -169,7 +160,7 @@ Env* rvmStartup(Options* options) {
 
     // Initialize the RoboVM rt JNI code
 //    RT_JNI_OnLoad(&vm->javaVM, NULL);
-    // Initialize the dalvik's JNIHelp code in libnativehelper
+    // Initialize dalvik's JNIHelp code in libnativehelper
     TRACE("Initializing dalvik's libnativehelper");
     registerJniHelp((JNIEnv*) env);
     // Initialize the dalvik rt JNI code

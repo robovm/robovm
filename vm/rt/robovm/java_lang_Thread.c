@@ -19,8 +19,8 @@ Thread* Java_java_lang_Thread_currentThread(Env* env, Class* cls) {
     return env->currentThread;
 }
 
-jlong Java_java_lang_Thread_internalStart(Env* env, Class* cls, Thread* t, jint priority) {
-    jlong threadPtr = rvmStartThread(env, t, priority);
+jlong Java_java_lang_Thread_internalStart(Env* env, Class* cls, Thread* t) {
+    jlong threadPtr = rvmStartThread(env, t);
     return threadPtr;
 }
 
@@ -29,7 +29,7 @@ void Java_java_lang_Thread_internalSleep(Env* env, Class* cls, jlong millis, jin
 }
 
 jboolean Java_java_lang_Thread_internalInterrupted(Env* env, Class* cls) {
-    return rvmThreadClearInterrupted(env);
+    return rvmThreadClearInterrupted(env, env->currentThread);
 }
 
 jboolean Java_java_lang_Thread_internalIsInterrupted(Env* env, Class* cls, Thread* thread) {
@@ -48,3 +48,6 @@ void Java_java_lang_Thread_internalYield(Env* env, Class* cls) {
     rvmThreadYield(env);
 }
 
+jint Java_java_lang_Thread_internalGetState(Env* env, Class* cls, Thread* t) {
+    return rvmThreadGetState(env, t);
+}

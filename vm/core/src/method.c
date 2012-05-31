@@ -16,7 +16,6 @@
 #include <robovm.h>
 #include <string.h>
 #include <unwind.h>
-#include <hythread.h>
 #include "private.h"
 #include "utlist.h"
 
@@ -25,15 +24,15 @@
 DynamicLib* bootNativeLibs = NULL;
 DynamicLib* mainNativeLibs = NULL;
 
-static hythread_monitor_t nativeLibsLock;
+static Mutex nativeLibsLock;
 static jvalue emptyJValueArgs[1];
 
 static inline void obtainNativeLibsLock() {
-    hythread_monitor_enter(nativeLibsLock);
+    lockMutex(&nativeLibsLock);
 }
 
 static inline void releaseNativeLibsLock() {
-    hythread_monitor_exit(nativeLibsLock);
+    unlockMutex(&nativeLibsLock);
 }
 
 static Method* findMethod(Env* env, Class* clazz, const char* name, const char* desc) {
@@ -86,7 +85,7 @@ static Method* getMethod(Env* env, Class* clazz, const char* name, const char* d
 }
 
 jboolean rvmInitMethods(Env* env) {
-    if (hythread_monitor_init_with_name(&nativeLibsLock, 0, NULL) < 0) {
+    if (!initMutex(&nativeLibsLock)) {
         return FALSE;
     }
     return TRUE;

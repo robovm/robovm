@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include <robovm.h>
-#include <hythread.h>
 #include <stdlib.h>
 #include <string.h>
 #include "utlist.h"
@@ -110,7 +109,7 @@ static ObjectArray* longsCache = NULL;
 static Method* java_lang_Float_valueOf = NULL;
 static Method* java_lang_Double_valueOf = NULL;
 
-static hythread_monitor_t classLock;
+static Mutex classLock;
 
 typedef struct LoadedClassEntry {
     const char* key;      // The class name
@@ -145,11 +144,11 @@ static jboolean addLoadedClass(Env* env, Class* clazz) {
 }
 
 static inline void obtainClassLock() {
-    hythread_monitor_enter(classLock);
+    lockMutex(&classLock);
 }
 
 static inline void releaseClassLock() {
-    hythread_monitor_exit(classLock);
+    unlockMutex(&classLock);
 }
 
 static Class* createPrimitiveClass(Env* env, const char* desc) {
@@ -411,7 +410,7 @@ static jboolean fixClassPointer(Env* env, Class* c, void* data) {
 
 jboolean rvmInitClasses(Env* env) {
 
-    if (hythread_monitor_init_with_name(&classLock, 0, NULL) < 0) {
+    if (!initMutex(&classLock)) {
         return FALSE;
     }
 

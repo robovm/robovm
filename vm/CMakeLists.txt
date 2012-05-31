@@ -119,11 +119,6 @@ set(CMAKE_ASM_COMPILE_OBJECT "${CMAKE_C_COMPILER} ${ASM_FLAGS} -o <OBJECT> <SOUR
 enable_language(ASM)
 
 if(LINUX)
-  add_definitions(-D_GNU_SOURCE)
-endif()
-
-if(LINUX)
-  set(HY_OS linux)
   add_definitions(-DLINUX)
 elseif(DARWIN)
   if(MACOSX)
@@ -131,24 +126,18 @@ elseif(DARWIN)
   else()
     add_definitions(-DIOS)
   endif()
-  set(HY_OS macosx)
   add_definitions(-DDARWIN)
 endif()
 
 if (ARCH STREQUAL "x86")
-  add_definitions(-DHYX86)
   add_definitions(-DRVM_X86)
 elseif (ARCH STREQUAL "armv6")
-  add_definitions(-DHYARM)
   add_definitions(-DRVM_ARMV6)
 elseif (ARCH STREQUAL "armv7")
-  add_definitions(-DHYARM)
   add_definitions(-DRVM_ARMV7)
 elseif (ARCH STREQUAL "thumbv6")
-  add_definitions(-DHYARM)
   add_definitions(-DRVM_THUMBV6)
 elseif (ARCH STREQUAL "thumbv7")
-  add_definitions(-DHYARM)
   add_definitions(-DRVM_THUMBV7)
 endif()
 
@@ -169,26 +158,36 @@ message(STATUS "CMAKE_EXE_LINKER_FLAGS: ${CMAKE_EXE_LINKER_FLAGS}")
 message(STATUS "CMAKE_SHARED_LINKER_FLAGS: ${CMAKE_SHARED_LINKER_FLAGS}")
 message(STATUS "CMAKE_MODULE_LINKER_FLAGS: ${CMAKE_MODULE_LINKER_FLAGS}")
 
-set(EXTGC_CFLAGS "${CMAKE_C_FLAGS}")
+set(EXT_C_FLAGS "${CMAKE_C_FLAGS}")
 if(DARWIN)
-  set(EXTGC_CFLAGS "${EXTGC_CFLAGS} -DNO_DYLD_BIND_FULLY_IMAGE")
   if(IOS)
-    set(EXTGC_CFLAGS "${EXTGC_CFLAGS} -isysroot ${SYSROOT} -miphoneos-version-min=3.0")
+    set(EXT_C_FLAGS "${EXT_CFLAGS} -isysroot ${SYSROOT} -miphoneos-version-min=3.0")
     if (ARCH MATCHES ".*(thumb|arm).*")
-      set(HOST --host=arm-apple-darwin7)
+      set(EXT_HOST --host=arm-apple-darwin7)
     endif()
   endif()
 endif()
-# TODO: Use CMake to build GC? There is a CMakeLists.txt but I cannot get the install to work.
+
+set(EXTGC_C_FLAGS  "${EXT_C_FLAGS}")
+if(DARWIN)
+  set(EXTGC_C_FLAGS "${EXTGC_C_FLAGS} -DNO_DYLD_BIND_FULLY_IMAGE")
+endif()
 ExternalProject_Add(extgc 
   URL ${CMAKE_SOURCE_DIR}/dependencies/bdwgc-20120327.tar.gz
   PATCH_COMMAND patch -d ../extgc -p1 < ${CMAKE_SOURCE_DIR}/dependencies/bdwgc.patch
-  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_CFLAGS}' ../extgc/configure ${HOST} --enable-shared=no --prefix=${CMAKE_BINARY_DIR}/gc"
+  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS}' ../extgc/configure ${EXT_HOST} --enable-shared=no --prefix=${CMAKE_BINARY_DIR}/gc"
 )
 install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.a DESTINATION ${INSTALL_DIR})
 
+set(EXTAPR_C_FLAGS "${EXT_C_FLAGS} -DGC_THREADS -include ${CMAKE_BINARY_DIR}/gc/include/gc/gc.h")
+ExternalProject_Add(extapr 
+  URL http://archive.apache.org/dist/apr/apr-1.4.6.tar.gz
+  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTAPR_C_FLAGS}' ../extapr/configure ${HOST} --enable-shared=no --disable-dso --prefix=${CMAKE_BINARY_DIR}/apr"
+)
+add_dependencies(extapr extgc)
+install(FILES ${CMAKE_BINARY_DIR}/apr/lib/libapr-1.a DESTINATION ${INSTALL_DIR} RENAME libapr.a)
+
 add_subdirectory(core/src)
 add_subdirectory(bc/src)
-add_subdirectory(hyprt/src)
 add_subdirectory(rt)
-
+add_subdirectory(drlvm)

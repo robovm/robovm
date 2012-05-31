@@ -358,8 +358,9 @@ jlong rvmStartThread(Env* env, Thread* thread) {
         return 0;
     }
 
+    // TODO: Default stack size is 512 kB which is a bit too much on iOS. Android seems to be using 8 kB as default stack size.
     setThreadPtr(thread, hyThread);
-    IDATA status = hythread_create_ex(hyThread, NULL, 8 * 1024, thread->priority, startThreadEntryPoint, NULL, newEnv);
+    IDATA status = hythread_create_ex(hyThread, NULL, thread->stackSize, thread->priority, startThreadEntryPoint, NULL, newEnv);
 
     if (status != TM_ERROR_NONE) {
         // TODO: What can we do here?

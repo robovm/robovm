@@ -3,6 +3,8 @@
 a.out
 *.class
 .*
-target
-tests/bin/robovm-vts.env
-ide/lib
+target/
+/tests/bin/robovm-vts.env
+/tests/drlvm-vts-bundle/
+/ide/lib/
+/tmp/

@@ -8,7 +8,7 @@ if [ -f "$BASE/tests/bin/robovm-vts.env" ]; then
 fi
 [ "x$COMPILER_JAR" == 'x' ] && COMPILER_JAR=$(ls $BASE/compiler/target/robovm-compiler-*.jar 2> /dev/null)
 if [ "x$COMPILER_JAR" == 'x' ]; then
-  echo "robovm-compiler JAR file not found in path $BASE/compiler/target/"
+  echo "robovm-compiler-*.jar file not found in path $BASE/compiler/target/"
   exit 1
 fi
 [ "x$ARCH" == 'x' ] && ARCH=auto
@@ -17,10 +17,6 @@ fi
 export PATH
 
 mkdir -p $HOME/.robovm/vts/
-mkdir -p $HOME/.robovm/vts/robovm-home/bin/
-mkdir -p $HOME/.robovm/vts/robovm-home/lib/vm/
-rsync -a --delete $BASE/vm/binaries/ $HOME/.robovm/vts/robovm-home/lib/vm/
-cp -p $BASE/rt/target/robovm-rt-*.jar $HOME/.robovm/vts/robovm-home/lib/robovm-rt.jar
 
 n=0
 while [ ${1:0:1} = '-' ]; do
@@ -56,7 +52,18 @@ done
 #echo "MAINCLASS=$MAINCLASS"
 
 if [ ! -x $TARGET/vts ]; then
-  java -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -Xss1024k -jar $COMPILER_JAR -home $HOME/.robovm/vts/robovm-home -tmp /tmp/robovm-vts.tmp -d $TARGET -arch $ARCH -o vts -debug -verbose -cp $CP
+  ROBOVM_DEV_ROOT=$BASE java \
+    -XX:+HeapDumpOnOutOfMemoryError \
+    -Xmx1024m \
+    -Xss1024k \
+    -jar $COMPILER_JAR \
+    -tmp /tmp/robovm-vts.tmp \
+    -d $TARGET \
+    -arch $ARCH \
+    -o vts \
+    -debug \
+    -verbose \
+    -cp $CP
 fi
 
 LIBPATH=$TARGET

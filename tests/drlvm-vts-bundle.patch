@@ -1,6 +1,6 @@
 diff -rupN drlvm-vts-bundle.unpatched/tools/harness/build.xml drlvm-vts-bundle.patched/tools/harness/build.xml
 --- drlvm-vts-bundle.unpatched/tools/harness/build.xml	2007-01-31 06:06:14.000000000 +0100
-+++ drlvm-vts-bundle.patched/tools/harness/build.xml	2012-03-21 16:13:28.142335268 +0100
++++ drlvm-vts-bundle.patched/tools/harness/build.xml	2012-05-31 21:50:20.382392335 +0200
 @@ -75,14 +75,14 @@
          <mkdir dir="${th.dest}"/>
          <javac destdir="${th.dest}" srcdir="${share}" includes="**/*.java" nowarn="yes">
@@ -18,20 +18,34 @@ diff -rupN drlvm-vts-bundle.unpatched/tools/harness/build.xml drlvm-vts-bundle.p
          </javac>
      </target>
  
+diff -rupN drlvm-vts-bundle.unpatched/tools/vmtt/src/org/apache/harmony/vmtt/ir/ClassFile.java drlvm-vts-bundle.patched/tools/vmtt/src/org/apache/harmony/vmtt/ir/ClassFile.java
+--- drlvm-vts-bundle.unpatched/tools/vmtt/src/org/apache/harmony/vmtt/ir/ClassFile.java	2007-01-30 08:40:48.000000000 +0100
++++ drlvm-vts-bundle.patched/tools/vmtt/src/org/apache/harmony/vmtt/ir/ClassFile.java	2012-05-31 21:52:42.642395581 +0200
+@@ -211,7 +211,7 @@ public class ClassFile
+ 	}
+ 	
+ 	/** Add new constant to this class
+-	 * @param ñ constant
++	 * @param  constant
+ 	 * @return index of added constant in the constant pool
+ 	 * @throws NullPointerException if c argument is null
+ 	 */
 diff -rupN drlvm-vts-bundle.unpatched/vts/vm/build/build-native.xml drlvm-vts-bundle.patched/vts/vm/build/build-native.xml
 --- drlvm-vts-bundle.unpatched/vts/vm/build/build-native.xml	2007-01-30 08:40:50.000000000 +0100
-+++ drlvm-vts-bundle.patched/vts/vm/build/build-native.xml	2012-05-31 09:36:00.581387002 +0200
++++ drlvm-vts-bundle.patched/vts/vm/build/build-native.xml	2012-06-01 13:06:32.729884909 +0200
 @@ -53,15 +53,31 @@
  		<property name="ext" value=".so"/>
  		<property name="pref" value="lib"/>
  		<property name="compiler.name" value="gcc"/>
 -		<property name="add.option" value="-DLINUX -DPLATFORM_POSIX -fPIC"/>
-+		<property name="add.option.1" value="-DLINUX"/>
-+		<property name="add.option.2" value="-DPLATFORM_POSIX"/>
-+		<property name="add.option.3" value="-fPIC"/>
-+		<property name="add.option.4" value="-m32"/>
-         <!--property name="out.lib" location="${vts.built}/bin/lib/lnx.${os.arch}"/-->
-         <property name="out.lib" location="${vts.built}/bin/lib"/>
+-        <!--property name="out.lib" location="${vts.built}/bin/lib/lnx.${os.arch}"/-->
+-        <property name="out.lib" location="${vts.built}/bin/lib"/>
++		<property name="cc.option.1" value="-DLINUX"/>
++		<property name="cc.option.2" value="-DPLATFORM_POSIX"/>
++		<property name="cc.option.3" value="-m32"/>
++		<property name="ld.option.1" value="-m32"/>
++		<!--property name="out.lib" location="${vts.built}/bin/lib/lnx.${os.arch}"/-->
++		<property name="out.lib" location="${vts.built}/bin/lib"/>
  		<mkdir dir="${out.lib}"/>
  		<property name="tmp.dir" location="${out.lib}/tmp"/>
  	</target>
@@ -40,10 +54,10 @@ diff -rupN drlvm-vts-bundle.unpatched/vts/vm/build/build-native.xml drlvm-vts-bu
 +		<property name="ext" value=".dylib"/>
 +		<property name="pref" value="lib"/>
 +		<property name="compiler.name" value="gcc"/>
-+		<property name="add.option.1" value="-DMACOSX"/>
-+		<property name="add.option.2" value="-DPLATFORM_POSIX"/>
-+		<property name="add.option.3" value="-fPIC"/>
-+		<property name="add.option.4" value="-arch i386"/>
++		<property name="cc.option.1" value="-DMACOSX"/>
++		<property name="cc.option.2" value="-DPLATFORM_POSIX"/>
++		<property name="cc.option.3" value="-arch i386"/>
++		<property name="ld.option.1" value="-arch i386"/>
 +		<!--property name="out.lib" location="${vts.built}/bin/lib/lnx.${os.arch}"/-->
 +		<property name="out.lib" location="${vts.built}/bin/lib"/>
 +		<mkdir dir="${out.lib}"/>
@@ -71,10 +85,10 @@ diff -rupN drlvm-vts-bundle.unpatched/vts/vm/build/build-native.xml drlvm-vts-bu
 +                    <compilerarg value="-I${java.home}/Headers" if="if.mac"/> 
                      <compilerarg value="-I${jni.share}"/>
 -                    <compilerarg value="${add.option}"/>
-+                    <compilerarg value="${add.option.1}"/>
-+                    <compilerarg value="${add.option.2}"/>
-+                    <compilerarg value="${add.option.3}"/>
-+                    <compilerarg value="${add.option.4}"/>
++                    <compilerarg value="${cc.option.1}"/>
++                    <compilerarg value="${cc.option.2}"/>
++                    <compilerarg value="${cc.option.3}"/>
++                    <linkerarg value="${ld.option.1}"/>
  
                  </cc>
                  <copy todir="${out.lib}">
@@ -140,7 +154,7 @@ diff -rupN drlvm-vts-bundle.unpatched/vts/vm/build/build-native.xml drlvm-vts-bu
  		<!-- compile files -->
 diff -rupN drlvm-vts-bundle.unpatched/vts/vm/build/build-settings.xml drlvm-vts-bundle.patched/vts/vm/build/build-settings.xml
 --- drlvm-vts-bundle.unpatched/vts/vm/build/build-settings.xml	2007-01-30 08:40:50.000000000 +0100
-+++ drlvm-vts-bundle.patched/vts/vm/build/build-settings.xml	2012-05-31 09:29:48.073378501 +0200
++++ drlvm-vts-bundle.patched/vts/vm/build/build-settings.xml	2012-05-31 21:50:20.394392334 +0200
 @@ -92,24 +92,33 @@
              <os family="unix"/>
          </and>
@@ -249,7 +263,7 @@ diff -rupN drlvm-vts-bundle.unpatched/vts/vm/build/build-settings.xml drlvm-vts-
  ========================================
 diff -rupN drlvm-vts-bundle.unpatched/vts/vm/build/build-vm.xml drlvm-vts-bundle.patched/vts/vm/build/build-vm.xml
 --- drlvm-vts-bundle.unpatched/vts/vm/build/build-vm.xml	2007-01-30 08:40:50.000000000 +0100
-+++ drlvm-vts-bundle.patched/vts/vm/build/build-vm.xml	2012-03-21 16:27:01.446353825 +0100
++++ drlvm-vts-bundle.patched/vts/vm/build/build-vm.xml	2012-05-31 21:50:20.394392334 +0200
 @@ -91,7 +91,7 @@
                  Compile framework and tests.
          </description>
@@ -303,7 +317,7 @@ diff -rupN drlvm-vts-bundle.unpatched/vts/vm/build/build-vm.xml drlvm-vts-bundle
              <property name="out.lib" value="${vts.built.bin.lib}"/>
 diff -rupN drlvm-vts-bundle.unpatched/vts/vm/build/build.xml drlvm-vts-bundle.patched/vts/vm/build/build.xml
 --- drlvm-vts-bundle.unpatched/vts/vm/build/build.xml	2007-01-30 08:40:50.000000000 +0100
-+++ drlvm-vts-bundle.patched/vts/vm/build/build.xml	2012-03-21 16:13:28.146335268 +0100
++++ drlvm-vts-bundle.patched/vts/vm/build/build.xml	2012-05-31 21:50:20.394392334 +0200
 @@ -172,7 +172,7 @@ to download and install them.
          <echo message="ok"/>
      </target>
@@ -365,7 +379,7 @@ diff -rupN drlvm-vts-bundle.unpatched/vts/vm/build/build.xml drlvm-vts-bundle.pa
          <tstamp>
 diff -rupN drlvm-vts-bundle.unpatched/vts/vm/config/cfg_env.xml drlvm-vts-bundle.patched/vts/vm/config/cfg_env.xml
 --- drlvm-vts-bundle.unpatched/vts/vm/config/cfg_env.xml	2007-01-30 08:40:50.000000000 +0100
-+++ drlvm-vts-bundle.patched/vts/vm/config/cfg_env.xml	2012-03-21 16:13:55.170335883 +0100
++++ drlvm-vts-bundle.patched/vts/vm/config/cfg_env.xml	2012-05-31 21:50:20.398392335 +0200
 @@ -30,7 +30,7 @@ Version: $Revision: 1.3 $
  		<property name="TestedCompile">#TestedCompile#</property>
  		<property name="ReferenceRuntime">#ReferenceRuntime#</property>
@@ -377,7 +391,7 @@ diff -rupN drlvm-vts-bundle.unpatched/vts/vm/config/cfg_env.xml drlvm-vts-bundle
  
 diff -rupN drlvm-vts-bundle.unpatched/vts/vm/config/compile.exclude.file drlvm-vts-bundle.patched/vts/vm/config/compile.exclude.file
 --- drlvm-vts-bundle.unpatched/vts/vm/config/compile.exclude.file	1970-01-01 01:00:00.000000000 +0100
-+++ drlvm-vts-bundle.patched/vts/vm/config/compile.exclude.file	2012-03-21 16:13:28.158335268 +0100
++++ drlvm-vts-bundle.patched/vts/vm/config/compile.exclude.file	2012-05-31 21:50:20.458392336 +0200
 @@ -0,0 +1,3033 @@
 +# sed -e 's/\*\*\/\*//' -e 's/\(.*\/\).*/\1/' -e '/#.*/d' compile.exclude.file > exclude.patterns
 +
@@ -3414,8 +3428,8 @@ diff -rupN drlvm-vts-bundle.unpatched/vts/vm/config/compile.exclude.file drlvm-v
 +
 diff -rupN drlvm-vts-bundle.unpatched/vts/vm/config/exclude.file drlvm-vts-bundle.patched/vts/vm/config/exclude.file
 --- drlvm-vts-bundle.unpatched/vts/vm/config/exclude.file	2007-01-30 08:40:50.000000000 +0100
-+++ drlvm-vts-bundle.patched/vts/vm/config/exclude.file	2012-03-21 16:13:28.162335268 +0100
-@@ -1,89 +1,1670 @@
++++ drlvm-vts-bundle.patched/vts/vm/config/exclude.file	2012-06-01 12:43:37.669853532 +0200
+@@ -1,89 +1,1673 @@
 -// Unexpected failed tests
 -
 -vm/jvms/classFile/attributes/enclosingMethod/enclosingMethod04/enclosingMethod04.xml
@@ -3551,7 +3565,7 @@ diff -rupN drlvm-vts-bundle.unpatched/vts/vm/config/exclude.file drlvm-vts-bundl
 +vm/jvms/classLLI/initialization/initialization03/initialization0301/initialization0301.xml
 +vm/jvms/classLLI/initialization/initialization03/initialization0302/initialization0302.xml
 +
-+// Use custom ClassLoader. NullVM doesn't support that.
++// Use custom ClassLoader. RoboVM doesn't support that.
 +vm/jvms/classFile/attributes/annotation/annotationDefault/methodinfo18/methodinfo18.xml
 +vm/jvms/classFile/limitations/fields/fields01/fields01.xml
 +vm/jvms/classFile/limitations/interfaces/interfaces01/interfaces01.xml
@@ -3569,6 +3583,9 @@ diff -rupN drlvm-vts-bundle.unpatched/vts/vm/config/exclude.file drlvm-vts-bundl
 +vm/jvms/classLLI/loading/loading11/loading1101/loading1101.xml
 +vm/jvms/classLLI/loading/loading11/loading1102/loading1102.xml
 +vm/jvms/classLLI/loading/loading11/loading1103/loading1103.xml
++
++// Uses Thread.stop() which throws UnsuppportedOperationException in RoboVM and Android
++vm/jvms/instructions/sync/monitorenter/monitorenter01/monitorenter0101/monitorenter0101.xml
 +
 +// Tests limitations
 +
@@ -5178,8 +5195,8 @@ diff -rupN drlvm-vts-bundle.unpatched/vts/vm/config/exclude.file drlvm-vts-bundl
 +vm/jvmti/funcs/StopThread/StopThread0101/StopThread0101.xml
 diff -rupN drlvm-vts-bundle.unpatched/vts/vm/config/include.file drlvm-vts-bundle.patched/vts/vm/config/include.file
 --- drlvm-vts-bundle.unpatched/vts/vm/config/include.file	1970-01-01 01:00:00.000000000 +0100
-+++ drlvm-vts-bundle.patched/vts/vm/config/include.file	2012-03-21 16:13:28.170335268 +0100
-@@ -0,0 +1,3670 @@
++++ drlvm-vts-bundle.patched/vts/vm/config/include.file	2012-06-01 12:42:30.505852004 +0200
+@@ -0,0 +1,3669 @@
 +vm/jvms/classFile/attributes/annotation/annotationDefault/methodinfo01/methodinfo01.xml
 +vm/jvms/classFile/attributes/annotation/annotationDefault/methodinfo02/methodinfo02.xml
 +vm/jvms/classFile/attributes/annotation/annotationDefault/methodinfo03/methodinfo03.xml
@@ -8693,7 +8710,6 @@ diff -rupN drlvm-vts-bundle.unpatched/vts/vm/config/include.file drlvm-vts-bundl
 +vm/jvms/instructions/stack/swap/swap01/swap0102/swap0102.xml
 +vm/jvms/instructions/stack/swap/swap02/swap0201/swap0201.xml
 +vm/jvms/instructions/stack/swap/swap02/swap0202/swap0202.xml
-+vm/jvms/instructions/sync/monitorenter/monitorenter01/monitorenter0101/monitorenter0101.xml
 +vm/jvms/instructions/sync/monitorenter/monitorenter02/monitorenter0201/monitorenter0201.xml
 +vm/jvms/instructions/sync/monitorenter/monitorenter03/monitorenter0301/monitorenter0301.xml
 +vm/jvms/instructions/sync/monitorenter/monitorenter04/monitorenter0401/monitorenter0401.xml
@@ -8852,7 +8868,7 @@ diff -rupN drlvm-vts-bundle.unpatched/vts/vm/config/include.file drlvm-vts-bundl
 +vm/jvms/threads/threads250/threads25001/threads25001.xml
 diff -rupN drlvm-vts-bundle.unpatched/vts/vm/src/test/vm/jni/NIOSupport/NewDirectByteBufferTest/NewDirectByteBufferTest.c drlvm-vts-bundle.patched/vts/vm/src/test/vm/jni/NIOSupport/NewDirectByteBufferTest/NewDirectByteBufferTest.c
 --- drlvm-vts-bundle.unpatched/vts/vm/src/test/vm/jni/NIOSupport/NewDirectByteBufferTest/NewDirectByteBufferTest.c	2007-01-25 12:09:04.000000000 +0100
-+++ drlvm-vts-bundle.patched/vts/vm/src/test/vm/jni/NIOSupport/NewDirectByteBufferTest/NewDirectByteBufferTest.c	2012-03-21 16:13:28.170335268 +0100
++++ drlvm-vts-bundle.patched/vts/vm/src/test/vm/jni/NIOSupport/NewDirectByteBufferTest/NewDirectByteBufferTest.c	2012-05-31 21:50:20.526392337 +0200
 @@ -17,7 +17,7 @@
    
  #include <jni.h>
@@ -8864,7 +8880,7 @@ diff -rupN drlvm-vts-bundle.unpatched/vts/vm/src/test/vm/jni/NIOSupport/NewDirec
   * Method: org.apache.harmony.vts.test.vm.jni.NIOSupport.NewDirectByteBufferTest.nativeExecute()Ljava/nio/ByteBuffer;
 diff -rupN drlvm-vts-bundle.unpatched/vts/vm/src/test/vm/jni/string_operations/GetStringUTFRegionTest/GetStringUTFRegionTest.c drlvm-vts-bundle.patched/vts/vm/src/test/vm/jni/string_operations/GetStringUTFRegionTest/GetStringUTFRegionTest.c
 --- drlvm-vts-bundle.unpatched/vts/vm/src/test/vm/jni/string_operations/GetStringUTFRegionTest/GetStringUTFRegionTest.c	2007-01-25 12:11:22.000000000 +0100
-+++ drlvm-vts-bundle.patched/vts/vm/src/test/vm/jni/string_operations/GetStringUTFRegionTest/GetStringUTFRegionTest.c	2012-03-21 16:13:28.170335268 +0100
++++ drlvm-vts-bundle.patched/vts/vm/src/test/vm/jni/string_operations/GetStringUTFRegionTest/GetStringUTFRegionTest.c	2012-05-31 21:50:20.530392337 +0200
 @@ -16,7 +16,7 @@
  */
    
@@ -8876,7 +8892,7 @@ diff -rupN drlvm-vts-bundle.unpatched/vts/vm/src/test/vm/jni/string_operations/G
  /*
 diff -rupN drlvm-vts-bundle.unpatched/vts/vm/src/test/vm/jni/string_operations/NewStringUTFTest/NewStringUTFTest.c drlvm-vts-bundle.patched/vts/vm/src/test/vm/jni/string_operations/NewStringUTFTest/NewStringUTFTest.c
 --- drlvm-vts-bundle.unpatched/vts/vm/src/test/vm/jni/string_operations/NewStringUTFTest/NewStringUTFTest.c	2007-01-25 12:11:22.000000000 +0100
-+++ drlvm-vts-bundle.patched/vts/vm/src/test/vm/jni/string_operations/NewStringUTFTest/NewStringUTFTest.c	2012-03-21 16:13:28.170335268 +0100
++++ drlvm-vts-bundle.patched/vts/vm/src/test/vm/jni/string_operations/NewStringUTFTest/NewStringUTFTest.c	2012-05-31 21:50:20.530392337 +0200
 @@ -16,7 +16,7 @@
  */
    

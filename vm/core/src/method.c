@@ -1076,7 +1076,7 @@ void* rvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const char* sho
             nativeLibs = mainNativeLibs;
         } else {
             // Unknown classloader
-            rvmThrowUnsatisfiedLinkError(env);
+            rvmThrowUnsatisfiedLinkError(env, "Unknown classloader");
             return NULL;
         }
 
@@ -1100,7 +1100,10 @@ void* rvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const char* sho
     }
 
     if (!f) {
-        rvmThrowUnsatisfiedLinkError(env);
+        char* className = rvmToBinaryClassName(env, method->method.clazz->name);
+        if (className) {
+            rvmThrowNewf(env, java_lang_UnsatisfiedLinkError, "%s.%s%s", className, method->method.name, method->method.desc);
+        }
         return NULL;
     }
     // TODO: Remember ptr to allow it to be reset when the JNI RegisterNatives/UnregisterNatives functions are called
@@ -1121,17 +1124,18 @@ jboolean rvmLoadNativeLibrary(Env* env, const char* path, ClassLoader* classLoad
         // Unknown classloader
         if (bootNativeLibs) {
             // if bootNativeLibs is NULL we're being called from rvmStartup() and we cannot throw exceptions.
-            rvmThrowUnsatisfiedLinkError(env);
+            rvmThrowUnsatisfiedLinkError(env, "Unknown classloader");
         }
         return FALSE;
     }
 
-    DynamicLib* lib = rvmOpenDynamicLib(env, path);
+    char* errorMsg = NULL;
+    DynamicLib* lib = rvmOpenDynamicLib(env, path, &errorMsg);
     if (!lib) {
         if (!rvmExceptionOccurred(env)) {
             if (bootNativeLibs) {
                 // if bootNativeLibs is NULL we're being called from rvmStartup() and we cannot throw exceptions.
-                rvmThrowUnsatisfiedLinkError(env);
+                rvmThrowUnsatisfiedLinkError(env, errorMsg);
             }
         }
         return FALSE;

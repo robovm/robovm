@@ -145,11 +145,12 @@ static jobject ToReflectedField(JNIEnv* env, jclass cls, jfieldID fieldID, jbool
 }
 
 static jint Throw(JNIEnv* env, jthrowable obj) {
-    return rvmThrow((Env*) env, (Object*) obj);
+    rvmThrow((Env*) env, (Object*) obj);
+    return 0;
 }
 
 static jint ThrowNew(JNIEnv* env, jclass clazz, const char* msg) {
-    return rvmThrowNew((Env*) env, (Class*) clazz, (char*) msg);
+    return rvmThrowNew((Env*) env, (Class*) clazz, msg) ? 0 : -1;
 }
 
 static jthrowable ExceptionOccurred(JNIEnv* env) {
@@ -1014,8 +1015,7 @@ static jboolean checkBounds(Env* env, Array* array, jint start, jint len) {
     jsize length = array->length;
     jsize end = start + len;
     if (start < 0 || len < 0 || end > length) {
-        // TODO: Nicer message?
-        rvmThrowArrayIndexOutOfBoundsException(env, start);
+        rvmThrowArrayIndexOutOfBoundsException(env, length, start);
         return FALSE;
     }
     return TRUE;

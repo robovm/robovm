@@ -89,6 +89,7 @@ public class TrampolineCompiler {
     public static final String EXPECTED_STATIC_FIELD = "Expected static field %s.%s";
     public static final String NO_SUCH_FIELD_ERROR = "%s.%s";
     public static final String NO_SUCH_METHOD_ERROR = "%s.%s%s";
+    public static final String UNSATISFIED_LINK_ERROR = "%s.%s%s";
     
     private final Config config;
     private ModuleBuilder mb;
@@ -126,7 +127,7 @@ public class TrampolineCompiler {
         if (t instanceof New) {
             SootClass target = config.getClazzes().load(t.getTarget()).getSootClass();
             if (target.isAbstract() || target.isInterface()) {
-                call(f, BC_THROW_INSTANTIATION_ERROR, f.getParameterRef(0), mb.getString(t.getTarget()));
+                call(f, BC_THROW_INSTANTIATION_ERROR, f.getParameterRef(0), mb.getString(t.getTarget().replace('/', '.')));
                 f.add(new Unreachable());
                 mb.addFunction(f);
                 return;
@@ -217,7 +218,9 @@ public class TrampolineCompiler {
                 // The NativeCall caller pushed a GatewayFrame and will only pop it 
                 // if the native method exists. So we need to pop it here.
                 popNativeFrame(fnLong);
-                call(fnLong, BC_THROW_UNSATISIFED_LINK_ERROR, fnLong.getParameterRef(0));
+                call(fnLong, BC_THROW_UNSATISIFED_LINK_ERROR, fnLong.getParameterRef(0), 
+                        mb.getString(String.format(UNSATISFIED_LINK_ERROR, target.getClassName(),
+                                nc.getMethodName(), nc.getMethodDesc())));
                 fnLong.add(new Unreachable());
                 mb.addFunction(fnLong);
 //                mb.addFunctionDeclaration(new FunctionDeclaration(fnLong.ref()));

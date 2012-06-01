@@ -44,9 +44,9 @@ declare %Object* @_bcExceptionClear(%Env*)
 declare i32 @_bcExceptionMatch(%Env*, i8**)
 declare void @_bcExceptionSet(%Env*, %Object*)
 declare void @_bcThrowNullPointerException(%Env*)
-declare void @_bcThrowArrayIndexOutOfBoundsException(%Env*, i32)
+declare void @_bcThrowArrayIndexOutOfBoundsException(%Env*, i32, i32)
 declare void @_bcThrowArithmeticException(%Env*)
-declare void @_bcThrowUnsatisfiedLinkError(%Env*)
+declare void @_bcThrowUnsatisfiedLinkError(%Env*, i8*)
 declare void @_bcThrowNoClassDefFoundError(%Env*, i8*)
 declare void @_bcThrowNoSuchFieldError(%Env*, i8*)
 declare void @_bcThrowNoSuchMethodError(%Env*, i8*)
@@ -245,7 +245,8 @@ define linkonce_odr void @checklower(%Env* %env, %Object* %o, i32 %index) always
 success:
     ret void
 failure:
-    call void @_bcThrowArrayIndexOutOfBoundsException(%Env* %env, i32 %index)
+    %length = call i32 @arraylength(%Object* %o)
+    call void @_bcThrowArrayIndexOutOfBoundsException(%Env* %env, i32 %length, i32 %index)
     unreachable
 }
 
@@ -256,7 +257,7 @@ define linkonce_odr void @checkupper(%Env* %env, %Object* %o, i32 %index) always
 success:
     ret void
 failure:
-    call void @_bcThrowArrayIndexOutOfBoundsException(%Env* %env, i32 %index)
+    call void @_bcThrowArrayIndexOutOfBoundsException(%Env* %env, i32 %length, i32 %index)
     unreachable
 }
 

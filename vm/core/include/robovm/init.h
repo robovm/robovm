@@ -26,7 +26,7 @@ extern jboolean rvmRun(Env* env);
 extern void rvmShutdown(Env* env, jint code);
 extern void rvmAbort(char* format, ...);
 
-extern DynamicLib* rvmOpenDynamicLib(Env* env, const char* file);
+extern DynamicLib* rvmOpenDynamicLib(Env* env, const char* file, char** errorMsg);
 extern void rvmCloseDynamicLib(Env* env, DynamicLib* lib);
 extern jboolean rvmHasDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs);
 extern void rvmAddDynamicLib(Env* env, DynamicLib* lib, DynamicLib** libs);

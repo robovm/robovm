@@ -334,10 +334,8 @@ public class Runtime {
         if (filename == null) {
             throw new NullPointerException("library path was null.");
         }
-        String error = nativeLoad(filename, loader);
-        if (error != null) {
-            throw new UnsatisfiedLinkError(error);
-        }
+        // RoboVM note: See note on nativeLoad() method.
+        nativeLoad(filename, loader);
     }
 
     /**
@@ -364,10 +362,8 @@ public class Runtime {
                 throw new UnsatisfiedLinkError("Couldn't load " + libraryName + ": " +
                         "findLibrary returned null");
             }
-            String error = nativeLoad(filename, loader);
-            if (error != null) {
-                throw new UnsatisfiedLinkError(error);
-            }
+            // RoboVM note: See note on nativeLoad() method.
+            nativeLoad(filename, loader);
             return;
         }
 
@@ -378,11 +374,13 @@ public class Runtime {
             String candidate = directory + filename;
             candidates.add(candidate);
             if (new File(candidate).exists()) {
-                String error = nativeLoad(candidate, loader);
-                if (error == null) {
+                try {
+                    // RoboVM note: See note on nativeLoad() method.
+                    nativeLoad(candidate, loader);
                     return; // We successfully loaded the library. Job done.
+                } catch (UnsatisfiedLinkError e) {
+                    lastError = e.getMessage();
                 }
-                lastError = error;
             }
         }
 
@@ -394,7 +392,10 @@ public class Runtime {
 
     private static native void nativeExit(int code, boolean isExit);
 
-    private static native String nativeLoad(String filename, ClassLoader loader);
+    // RoboVM note: On Android nativeLoad() returns an error message String 
+    // on errors which is then wrapped in an UnsatisfiedLinkError. Our 
+    // nativeLoad() throws UnsatisfiedLinkError directly.
+    private static native void nativeLoad(String filename, ClassLoader loader);
 
     /**
      * Provides a hint to the VM that it would be useful to attempt

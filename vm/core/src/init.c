@@ -234,12 +234,14 @@ void rvmAbort(char* format, ...) {
     abort();
 }
 
-DynamicLib* rvmOpenDynamicLib(Env* env, const char* file) {
+DynamicLib* rvmOpenDynamicLib(Env* env, const char* file, char** errorMsg) {
+    *errorMsg = NULL;
     DynamicLib* dlib = NULL;
 
     void* handle = dlopen(file, RTLD_LOCAL | RTLD_LAZY);
     if (!handle) {
-        TRACEF("Failed to load dynamic library '%s': %s", file, dlerror());
+        *errorMsg = dlerror();
+        TRACEF("Failed to load dynamic library '%s': %s", file, *errorMsg);
         return NULL;
     }
 

@@ -480,9 +480,9 @@ void _bcThrowNullPointerException(Env* env) {
     LEAVEV;
 }
 
-void _bcThrowArrayIndexOutOfBoundsException(Env* env, jint index) {
+void _bcThrowArrayIndexOutOfBoundsException(Env* env, jint length, jint index) {
     ENTER;
-    rvmThrowArrayIndexOutOfBoundsException(env, index);
+    rvmThrowArrayIndexOutOfBoundsException(env, length, index);
     LEAVEV;
 }
 
@@ -492,9 +492,9 @@ void _bcThrowArithmeticException(Env* env) {
     LEAVEV;
 }
 
-void _bcThrowUnsatisfiedLinkError(Env* env) {
+void _bcThrowUnsatisfiedLinkError(Env* env, char* msg) {
     ENTER;
-    rvmThrowUnsatisfiedLinkError(env);
+    rvmThrowUnsatisfiedLinkError(env, msg);
     LEAVEV;
 }
 

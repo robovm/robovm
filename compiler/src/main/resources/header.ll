@@ -312,8 +312,8 @@ define linkonce_odr i64 @d2l(double %op) alwaysinline {
     ; if (%op <= MIN_VALUE) %res = MIN_VALUE
     ; else %res = (i64) %op
     %1 = fcmp oeq double %op, %op
-    %2 = fcmp oge double %op, bitcast (i64 4746794007244308480 to double)
-    %3 = fcmp ole double %op, bitcast (i64 -4476578029606273024 to double)
+    %2 = fcmp oge double %op, bitcast (i64 4890909195324358656 to double)
+    %3 = fcmp ole double %op, bitcast (i64 -4332462841530417152 to double)
     %4 = fptosi double %op to i64
     %5 = select i1 %1, i64 %4, i64 0
     %6 = select i1 %2, i64  9223372036854775807, i64 %5

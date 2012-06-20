@@ -19,17 +19,18 @@ package org.robovm.compiler;
 import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
-import static org.robovm.compiler.llvm.FunctionAttribute.*;
-import static org.robovm.compiler.llvm.Linkage.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.robovm.compiler.llvm.Add;
 import org.robovm.compiler.llvm.Alloca;
@@ -57,6 +58,7 @@ import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.Getelementptr;
+import org.robovm.compiler.llvm.Global;
 import org.robovm.compiler.llvm.GlobalRef;
 import org.robovm.compiler.llvm.Icmp;
 import org.robovm.compiler.llvm.Icmp.Condition;
@@ -65,8 +67,6 @@ import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.IntegerType;
 import org.robovm.compiler.llvm.Invoke;
 import org.robovm.compiler.llvm.Label;
-import org.robovm.compiler.llvm.Landingpad;
-import org.robovm.compiler.llvm.Landingpad.Catch;
 import org.robovm.compiler.llvm.Load;
 import org.robovm.compiler.llvm.Lshr;
 import org.robovm.compiler.llvm.Mul;
@@ -78,7 +78,7 @@ import org.robovm.compiler.llvm.Sext;
 import org.robovm.compiler.llvm.Shl;
 import org.robovm.compiler.llvm.Sitofp;
 import org.robovm.compiler.llvm.Store;
-import org.robovm.compiler.llvm.StructureType;
+import org.robovm.compiler.llvm.StructureConstantBuilder;
 import org.robovm.compiler.llvm.Sub;
 import org.robovm.compiler.llvm.Switch;
 import org.robovm.compiler.llvm.Trunc;
@@ -91,7 +91,6 @@ import org.robovm.compiler.llvm.Xor;
 import org.robovm.compiler.llvm.Zext;
 import org.robovm.compiler.trampoline.Anewarray;
 import org.robovm.compiler.trampoline.Checkcast;
-import org.robovm.compiler.trampoline.ExceptionMatch;
 import org.robovm.compiler.trampoline.GetField;
 import org.robovm.compiler.trampoline.GetStatic;
 import org.robovm.compiler.trampoline.Instanceof;
@@ -124,6 +123,7 @@ import soot.SootMethod;
 import soot.SootMethodRef;
 import soot.Trap;
 import soot.Unit;
+import soot.UnitBox;
 import soot.jimple.AddExpr;
 import soot.jimple.AndExpr;
 import soot.jimple.ArrayRef;
@@ -196,10 +196,7 @@ import soot.util.Chain;
 public class MethodCompiler extends AbstractMethodCompiler {
 
     private Function function;
-    private Set<Unit> jumpTargets;
-    private Set<Unit> trapHandlers;
     private Map<Unit, List<Trap>> trapsAt;
-    private Set<List<Trap>> recordedTraps;
     private Value env;
     
     private Variable dims;
@@ -209,12 +206,8 @@ public class MethodCompiler extends AbstractMethodCompiler {
     }
     
     protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
-        jumpTargets = new HashSet<Unit>();
-        trapHandlers = new HashSet<Unit>();
+        function = FunctionBuilder.method(method);
         trapsAt = new HashMap<Unit, List<Trap>>();
-        recordedTraps = new HashSet<List<Trap>>();
-        
-        function = createFunction(method, external, noinline);
         moduleBuilder.addFunction(function);
         
         env = function.getParameterRef(0);
@@ -223,32 +216,25 @@ public class MethodCompiler extends AbstractMethodCompiler {
         PackManager.v().getPack("jtp").apply(body);
         PackManager.v().getPack("jop").apply(body);
         PackManager.v().getPack("jap").apply(body);
+
+        PatchingChain<Unit> units = body.getUnits();
+        Map<Unit, List<Unit>> branchTargets = getBranchTargets(body);
+        Map<Unit, Integer> trapHandlers = getTrapHandlers(body);
+        Map<Unit, Integer> selChanges = new HashMap<Unit, Integer>();
         
-        Set<String> seen = new HashSet<String>();
-        for (Unit unit : body.getUnits()) {
+        int multiANewArrayMaxDims = 0;
+        Set<Local> locals = new HashSet<Local>();
+        for (Unit unit : units) {
             if (unit instanceof DefinitionStmt) {
                 DefinitionStmt stmt = (DefinitionStmt) unit;
                 if (stmt.getLeftOp() instanceof Local) {
                     Local local = (Local) stmt.getLeftOp();
-                    if (!seen.contains(local.getName())) {
+                    if (!locals.contains(local)) {
                         Type type = getLocalType(local.getType());
                         function.add(new Alloca(function.newVariable(local.getName(), type), type));
-                        seen.add(local.getName());
+                        locals.add(local);
                     }
                 }
-            }
-        }
-        
-        if ("<clinit>".equals(method.getName())) {
-            initializeClassFields();
-        }
-        
-        PatchingChain<Unit> units = body.getUnits();
-        
-        int multiANewArrayMaxDims = 0;
-        for (Unit unit : units) {
-            if (unit instanceof DefinitionStmt) {
-                DefinitionStmt stmt = (DefinitionStmt) unit;
                 if (stmt.getRightOp() instanceof NewMultiArrayExpr) {
                     NewMultiArrayExpr expr = (NewMultiArrayExpr) stmt.getRightOp();
                     multiANewArrayMaxDims = Math.max(multiANewArrayMaxDims, expr.getSizeCount());
@@ -262,41 +248,88 @@ public class MethodCompiler extends AbstractMethodCompiler {
             function.add(new Alloca(dims, new ArrayType(multiANewArrayMaxDims, I32)));
         }
         
-        for (Unit unit : units) {
-            for (Unit u : units) {
-                if (u instanceof GotoStmt) {
-                    Unit target = ((GotoStmt) u).getTarget();
-                    if (target == unit) {
-                        jumpTargets.add(unit);
-                    }
-                } else if (u instanceof IfStmt) {
-                    Unit target = ((IfStmt) u).getTarget();
-                    if (target == unit || unit == units.getSuccOf(u)) {
-                        jumpTargets.add(unit);
-                    }
-                } else if (u instanceof LookupSwitchStmt) {
-                    LookupSwitchStmt stmt = (LookupSwitchStmt) u;
-                    if (unit == stmt.getDefaultTarget() || stmt.getTargets().contains(unit)) {
-                        jumpTargets.add(unit);
-                    }
-                } else if (u instanceof TableSwitchStmt) {
-                    TableSwitchStmt stmt = (TableSwitchStmt) u;
-                    if (unit == stmt.getDefaultTarget() || stmt.getTargets().contains(unit)) {
-                        jumpTargets.add(unit);
+        Value trycatchContext = null;
+        if (!body.getTraps().isEmpty()) {
+            List<List<Trap>> recordedTraps = new ArrayList<List<Trap>>();
+            for (Unit unit : units) {
+                // Calculate the predecessor units of unit 
+                Set<Unit> incoming = new HashSet<Unit>();
+                if (units.getFirst() != unit && units.getPredOf(unit).fallsThrough()) {
+                    incoming.add(units.getPredOf(unit));
+                }
+                if (branchTargets.keySet().contains(unit)) {
+                    incoming.addAll(branchTargets.get(unit));
+                }
+                
+                if (unit == units.getFirst() || trapHandlers.containsKey(unit) 
+                        || trapsDiffer(unit, incoming)) {
+                    
+                    List<Trap> traps = getTrapsAt(unit);
+                    if (traps.isEmpty()) {
+                        selChanges.put(unit, 0);
+                    } else {
+                        int index = recordedTraps.indexOf(traps);
+                        if (index == -1) {
+                            index = recordedTraps.size();
+                            recordedTraps.add(traps);
+                        }
+                        selChanges.put(unit, index + 1);
                     }
                 }
             }
-            for (Trap trap : body.getTraps()) {
-                Unit beginUnit = trap.getBeginUnit();
-                Unit endUnit = trap.getEndUnit();
-                if (beginUnit != endUnit && unit == trap.getHandlerUnit()) {
-                    trapHandlers.add(unit);
+            
+            StructureConstantBuilder landingPadsPtrs = new StructureConstantBuilder();
+            for (List<Trap> traps : recordedTraps) {
+                StructureConstantBuilder landingPads = new StructureConstantBuilder();
+                for (Trap trap : traps) {
+                    SootClass exClass = trap.getException();
+                    StructureConstantBuilder landingPad = new StructureConstantBuilder();
+                    if ("java.lang.Throwable".equals(exClass.getName()) || exClass.isPhantom()) {
+                        landingPad.add(new NullConstant(I8_PTR));
+                    } else {
+                        catches.add(getInternalName(exClass));
+                        Global g = new Global(mangleClass(exClass) + "_info_struct", I8_PTR, true);
+                        if (!moduleBuilder.hasSymbol(g.getName())) {
+                            moduleBuilder.addGlobal(g);
+                        }
+                        landingPad.add(g.ref());
+                    }
+                    landingPad.add(new IntegerConstant(trapHandlers.get(trap.getHandlerUnit()) + 1));
+                    landingPads.add(landingPad.build());
                 }
+                landingPads.add(new StructureConstantBuilder().add(new NullConstant(I8_PTR)).add(new IntegerConstant(0)).build());
+                Global g = moduleBuilder.newGlobal(landingPads.build(), true);
+                landingPadsPtrs.add(new ConstantBitcast(g.ref(), I8_PTR));
+            }
+            Global g = moduleBuilder.newGlobal(landingPadsPtrs.build(), true);
+            Variable ctx = function.newVariable(TRYCATCH_CONTEXT_PTR);
+            Variable bcCtx = function.newVariable(BC_TRYCATCH_CONTEXT_PTR);
+            function.add(new Alloca(bcCtx, BC_TRYCATCH_CONTEXT));
+            Variable selPtr = function.newVariable(new PointerType(I32));
+            function.add(new Getelementptr(selPtr, bcCtx.ref(), 0, 0, 1));
+            function.add(new Store(new IntegerConstant(0), selPtr.ref()));        
+            Variable bcCtxLandingPadsPtr = function.newVariable(I8_PTR_PTR);
+            function.add(new Getelementptr(bcCtxLandingPadsPtr, bcCtx.ref(), 0, 1));
+            function.add(new Store(new ConstantBitcast(g.ref(), I8_PTR), bcCtxLandingPadsPtr.ref()));
+            function.add(new Bitcast(ctx, bcCtx.ref(), TRYCATCH_CONTEXT_PTR));
+            trycatchContext = ctx.ref();
+            Value result = call(RVM_TRYCATCH_ENTER, env, trycatchContext);
+            Map<IntegerConstant, BasicBlockRef> alt = new TreeMap<IntegerConstant, BasicBlockRef>();
+            for (Entry<Unit, Integer> entry : trapHandlers.entrySet()) {
+                alt.put(new IntegerConstant(entry.getValue() + 1), function.newBasicBlockRef(new Label(entry.getKey())));
+            }
+            function.add(new Switch(result, function.newBasicBlockRef(new Label(units.getFirst())), alt));
+            if (!branchTargets.containsKey(units.getFirst())) {
+                function.newBasicBlock(new Label(units.getFirst()));
             }
         }
         
+        if ("<clinit>".equals(method.getName())) {
+            initializeClassFields();
+        }
+        
         for (Unit unit : units) {
-            if (jumpTargets.contains(unit) || trapHandlers.contains(unit)) {
+            if (branchTargets.containsKey(unit) || trapHandlers.containsKey(unit)) {
                 BasicBlock oldBlock = function.getCurrentBasicBlock();
                 function.newBasicBlock(new Label(unit));
                 if (oldBlock != null) {
@@ -306,11 +339,26 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     }
                 }
             }
+            
+            if (selChanges.containsKey(unit)) {
+                int sel = selChanges.get(unit);
+                // trycatchContext->sel = sel
+                Variable selPtr = function.newVariable(new PointerType(I32));
+                function.add(new Getelementptr(selPtr, trycatchContext, 0, 1));
+                function.add(new Store(new IntegerConstant(sel), selPtr.ref()));
+            }
+            
             if (unit instanceof DefinitionStmt) {
                 assign((DefinitionStmt) unit);
             } else if (unit instanceof ReturnStmt) {
+                if (!body.getTraps().isEmpty()) {
+                    trycatchLeave(function);
+                }
                 return_((ReturnStmt) unit);
             } else if (unit instanceof ReturnVoidStmt) {
+                if (!body.getTraps().isEmpty()) {
+                    trycatchLeave(function);
+                }
                 returnVoid();
             } else if (unit instanceof IfStmt) {
                 if_((IfStmt) unit);
@@ -332,40 +380,63 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 throw new IllegalArgumentException("Unknown Unit type: " + unit.getClass());
             }
         }
-
-        next: for (List<Trap> traps : recordedTraps) {
-            BasicBlock bb = function.newBasicBlock(new Label(traps));
-            Variable result = function.newVariable(new StructureType(I8_PTR, I32));
-            bb.add(new Landingpad(result, new ConstantBitcast(BC_PERSONALITY, I8_PTR), new Catch(new NullConstant(I8_PTR))));
-            for (Trap trap : traps) {
-                String exName = trap.getException().getName();
-                if ("java.lang.Throwable".equals(exName)) {
-                    bb.add(new Br(function.newBasicBlockRef(new Label(trap.getHandlerUnit()))));
-                    continue next;
-                }
-                Trampoline trampoline = new ExceptionMatch(this.className, getInternalName(trap.getException()));
-                trampolines.add(trampoline);
-                Variable v = function.newVariable(I32);
-                bb.add(new Call(v, trampoline.getFunctionRef(), env));
-                Variable cond = function.newVariable(I1);
-                bb.add(new Trunc(cond, new VariableRef(v), I1));
-                BasicBlockRef falseBlock = function.newBasicBlockRef(new Label());
-                bb.add(new Br(new VariableRef(cond), function.newBasicBlockRef(new Label(trap.getHandlerUnit())), falseBlock));
-                bb = function.newBasicBlock(falseBlock.getLabel());
-            }
-            
-            bb.add(new Call(BC_RETHROW, env, result.ref()));
-            bb.add(new Unreachable());
-        }
     }
 
+    /**
+     * Returns <code>true</code> if the {@link Trap}s at {@link Unit} <code>unit</code>
+     * differ from any of those at the {@link Unit}s that branch to <code>unit</code>.
+     */
+    private boolean trapsDiffer(Unit unit, Collection<Unit> incomingUnits) {
+        List<Trap> traps = getTrapsAt(unit);
+        for (Unit incomingUnit : incomingUnits) {
+            if (!traps.equals(getTrapsAt(incomingUnit))) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private Map<Unit, List<Unit>> getBranchTargets(Body body) {
+        Map<Unit, List<Unit>> result = new HashMap<Unit, List<Unit>>();
+        for (Unit unit : body.getUnits()) {
+            if (unit.branches()) {
+                List<Unit> targetUnits = new ArrayList<Unit>();
+                for (UnitBox ub : unit.getUnitBoxes()) {
+                    targetUnits.add(ub.getUnit());
+                }
+                if (unit.fallsThrough()) {
+                    targetUnits.add(body.getUnits().getSuccOf(unit));
+                }
+                for (Unit targetUnit : targetUnits) {
+                    List<Unit> sourceUnits = result.get(targetUnit);
+                    if (sourceUnits == null) {
+                        sourceUnits = new ArrayList<Unit>();
+                        result.put(targetUnit, sourceUnits);
+                    }
+                    sourceUnits.add(unit);
+                }
+            }
+        }
+        return result;
+    }
+    
+    private Map<Unit, Integer> getTrapHandlers(Body body) {
+        Map<Unit, Integer> trapHandlers = new HashMap<Unit, Integer>();
+        for (Trap trap : body.getTraps()) {
+            Unit beginUnit = trap.getBeginUnit();
+            Unit endUnit = trap.getEndUnit();
+            if (beginUnit != endUnit && !trapHandlers.containsKey(trap.getHandlerUnit())) {
+                trapHandlers.put(trap.getHandlerUnit(), trapHandlers.size());
+            }
+        }
+        return trapHandlers;
+    }
+        
     private void initializeClassFields() {
         for (SootField field : sootMethod.getDeclaringClass().getFields()) {
             if (!field.isStatic()) {
                 continue;
             }
-            String fieldName = field.getName();
-            String fieldDesc = getDescriptor(field.getType());
             for (Tag tag : field.getTags()) {
                 Value value = null;
                 if (tag instanceof DoubleConstantValueTag) {
@@ -392,8 +463,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 }
                 
                 if (value != null) {
-                    FunctionRef fn = new FunctionRef(mangleField(this.className, fieldName, fieldDesc) + "_setter", 
-                            new FunctionType(VOID, ENV_PTR, getType(fieldDesc)));
+                    FunctionRef fn = FunctionBuilder.setter(field).ref();
                     call(fn, env, value);
                 }
             }
@@ -414,7 +484,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             Type type = getLocalType(v.getType());
             VariableRef var = new VariableRef(local.getName(), new PointerType(type));
             Variable tmp = function.newVariable(type);
-            function.add(new Load(tmp, var));
+            function.add(new Load(tmp, var, !sootMethod.getActiveBody().getTraps().isEmpty()));
             return new VariableRef(tmp);
         } else if (v instanceof soot.jimple.IntConstant) {
             return new IntegerConstant(((soot.jimple.IntConstant) v).value);
@@ -430,7 +500,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             String s = ((soot.jimple.StringConstant) v).value;
             Trampoline trampoline = new LdcString(className, s);
             trampolines.add(trampoline);
-            return callOrInvoke(unit, trampoline.getFunctionRef(), env);
+            return call(trampoline.getFunctionRef(), env);
         } else if (v instanceof soot.jimple.ClassConstant) {
             // ClassConstant is either the internal name of a class or the descriptor of an array
             String targetClassName = ((soot.jimple.ClassConstant) v).getValue();
@@ -442,14 +512,13 @@ public class MethodCompiler extends AbstractMethodCompiler {
             } else {
                 FunctionRef fn = null;
                 if (targetClassName.equals(this.className)) {
-                    fn = new FunctionRef(mangleClass(sootMethod.getDeclaringClass()) + "_ldc", 
-                            new FunctionType(OBJECT_PTR, ENV_PTR));
+                    fn = FunctionBuilder.ldcInternal(sootMethod.getDeclaringClass()).ref();
                 } else {
                     Trampoline trampoline = new LdcClass(className, ((soot.jimple.ClassConstant) v).getValue());
                     trampolines.add(trampoline);
                     fn = trampoline.getFunctionRef();
                 }
-                return callOrInvoke(unit, fn, env);
+                return call(fn, env);
             }
         }
         throw new IllegalArgumentException("Unknown Immediate type: " + v.getClass());
@@ -483,25 +552,25 @@ public class MethodCompiler extends AbstractMethodCompiler {
         return Functions.call(this.function, fn, args);
     }
     
-    private Value callOrInvoke(Unit unit, Value fn, Value ... args) {
-        Variable result = null;
-        Type returnType = ((FunctionType) fn.getType()).getReturnType();
-        if (returnType != VOID) {
-            result = this.function.newVariable(returnType);
-        }
-        List<Trap> traps = getTrapsAt(unit);
-        if (!traps.isEmpty()) {
-            Label label = new Label();
-            BasicBlockRef to = function.newBasicBlockRef(label);
-            BasicBlockRef unwind = function.newBasicBlockRef(new Label(traps));
-            function.add(new Invoke(result, fn, to, unwind, args));
-            function.newBasicBlock(label);
-            recordedTraps.add(traps);
-        } else {
-            function.add(new Call(result, fn, args));
-        }
-        return result == null ? null : result.ref();
-    }
+//    private Value callOrInvoke(Unit unit, Value fn, Value ... args) {
+//        Variable result = null;
+//        Type returnType = ((FunctionType) fn.getType()).getReturnType();
+//        if (returnType != VOID) {
+//            result = this.function.newVariable(returnType);
+//        }
+//        List<Trap> traps = getTrapsAt(unit);
+//        if (!traps.isEmpty()) {
+//            Label label = new Label();
+//            BasicBlockRef to = function.newBasicBlockRef(label);
+//            BasicBlockRef unwind = function.newBasicBlockRef(new Label(traps));
+//            function.add(new Invoke(result, fn, to, unwind, args));
+//            function.newBasicBlock(label);
+//            recordedTraps.add(traps);
+//        } else {
+//            function.add(new Call(result, fn, args));
+//        }
+//        return result == null ? null : result.ref();
+//    }
     
     private boolean canAccessDirectly(FieldRef ref) {
         SootClass sootClass = this.sootMethod.getDeclaringClass();
@@ -594,11 +663,11 @@ public class MethodCompiler extends AbstractMethodCompiler {
         if (canCallDirectly(expr)) {
             SootMethod method = this.sootMethod.getDeclaringClass().getMethod(methodRef.name(), 
                     methodRef.parameterTypes(), methodRef.returnType());
-            String functionName = mangleMethod(method);
             if (method.isSynchronized()) {
-                functionName += "_synchronized";
+                functionRef = FunctionBuilder.synchronizedWrapper(method).ref();
+            } else {
+                functionRef = FunctionBuilder.method(method).ref();
             }
-            functionRef = new FunctionRef(functionName, getFunctionType(method));
         } else {
             Trampoline trampoline = null;
             String targetClassName = getInternalName(methodRef.declaringClass());
@@ -620,7 +689,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             trampolines.add(trampoline);
             functionRef = trampoline.getFunctionRef();
         }
-        result = callOrInvoke(stmt, functionRef, args.toArray(new Value[0]));
+        result = call(functionRef, args.toArray(new Value[0]));
         if (result != null) {
             return widenToI32Value(result, methodRef.returnType().equals(CharType.v()));
         } else {
@@ -631,17 +700,17 @@ public class MethodCompiler extends AbstractMethodCompiler {
     private void checkNull(Stmt stmt, Value base) {
         NullCheckTag nullCheckTag = (NullCheckTag) stmt.getTag("NullCheckTag");
         if (nullCheckTag == null || nullCheckTag.needCheck()) {
-            callOrInvoke(stmt, CHECK_NULL, env, base);
+            call(CHECK_NULL, env, base);
         }
     }
     
     private void checkBounds(Stmt stmt, Value base, Value index) {
         ArrayCheckTag arrayCheckTag = (ArrayCheckTag) stmt.getTag("ArrayCheckTag");
         if (arrayCheckTag == null || arrayCheckTag.isCheckLower()) {
-            callOrInvoke(stmt, CHECK_LOWER, env, base, index);
+            call(CHECK_LOWER, env, base, index);
         }
         if (arrayCheckTag == null || arrayCheckTag.isCheckUpper()) {
-            callOrInvoke(stmt, CHECK_UPPER, env, base, index);
+            call(CHECK_UPPER, env, base, index);
         }
     }
     
@@ -669,7 +738,6 @@ public class MethodCompiler extends AbstractMethodCompiler {
         }
         return result;
     }
-
     
     private void assign(DefinitionStmt stmt) {
         /*
@@ -684,10 +752,11 @@ public class MethodCompiler extends AbstractMethodCompiler {
             Immediate immediate = (Immediate) rightOp;
             result = immediate(stmt, immediate);
         } else if (rightOp instanceof ThisRef) {
-            result = new VariableRef("this", OBJECT_PTR);
+            result = function.getParameterRef(1);
         } else if (rightOp instanceof ParameterRef) {
             ParameterRef ref = (ParameterRef) rightOp;
-            Value p = new VariableRef("p" + ref.getIndex(), getType(ref.getType()));
+            int index = (sootMethod.isStatic() ? 1 : 2) + ref.getIndex();
+            Value p = new VariableRef("p" + index, getType(ref.getType()));
             result = widenToI32Value(p, isUnsigned(ref.getType()));
         } else if (rightOp instanceof CaughtExceptionRef) {
             result = call(BC_EXCEPTION_CLEAR, env);
@@ -697,7 +766,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             Value index = immediate(stmt, (Immediate) ref.getIndex());
             checkNull(stmt, base);
             checkBounds(stmt, base, index);
-            result = callOrInvoke(stmt, getArrayLoad(ref.getType()), base, index);
+            result = call(getArrayLoad(ref.getType()), base, index);
             result = widenToI32Value(result, isUnsigned(ref.getType()));
         } else if (rightOp instanceof InstanceFieldRef) {
             InstanceFieldRef ref = (InstanceFieldRef) rightOp;
@@ -716,7 +785,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 trampolines.add(trampoline);
                 fn = trampoline.getFunctionRef();
             }
-            result = callOrInvoke(stmt, fn, env, base);
+            result = call(fn, env, base);
             result = widenToI32Value(result, isUnsigned(ref.getType()));
         } else if (rightOp instanceof StaticFieldRef) {
             StaticFieldRef ref = (StaticFieldRef) rightOp;
@@ -731,7 +800,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 trampolines.add(trampoline);
                 fn = trampoline.getFunctionRef();
             }
-            result = callOrInvoke(stmt, fn, env);
+            result = call(fn, env);
             result = widenToI32Value(result, isUnsigned(ref.getType()));
         } else if (rightOp instanceof Expr) {
             if (rightOp instanceof BinopExpr) {
@@ -762,7 +831,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 } else if (rightOp instanceof DivExpr) {
                     if (rightType instanceof IntegerType) {
                         FunctionRef f = rightType == I64 ? LDIV : IDIV;
-                        result = callOrInvoke(stmt, f, env, op1, op2);
+                        result = call(f, env, op1, op2);
                     } else {
                         // float or double
                         function.add(new Fdiv(resultVar, op1, op2));
@@ -778,7 +847,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 } else if (rightOp instanceof RemExpr) {
                     if (rightType instanceof IntegerType) {
                         FunctionRef f = rightType == I64 ? LREM : IREM;
-                        result = callOrInvoke(stmt, f, env, op1, op2);
+                        result = call(f, env, op1, op2);
                     } else {
                         // float or double
                         function.add(new Frem(resultVar, op1, op2));
@@ -888,14 +957,13 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     String targetClassName = getInternalName(sootTargetType);
                     FunctionRef fn = null;
                     if (targetClassName.equals(this.className)) {
-                        fn = new FunctionRef(mangleClass(this.className) + "_checkcast", 
-                                new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR));
+                        fn = FunctionBuilder.checkcast(sootMethod.getDeclaringClass()).ref();
                     } else {
                         Trampoline trampoline = new Checkcast(this.className, targetClassName);
                         trampolines.add(trampoline);
                         fn = trampoline.getFunctionRef();                        
                     }
-                    result = callOrInvoke(stmt, fn, env, op);
+                    result = call(fn, env, op);
                 }
             } else if (rightOp instanceof InstanceOfExpr) {
                 Value op = immediate(stmt, (Immediate) ((InstanceOfExpr) rightOp).getOp());
@@ -903,36 +971,34 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 String targetClassName = getInternalName(checkType);
                 FunctionRef fn = null;
                 if (targetClassName.equals(this.className)) {
-                    fn = new FunctionRef(mangleClass(this.className) + "_instanceof", 
-                            new FunctionType(I32, ENV_PTR, OBJECT_PTR));
+                    fn = FunctionBuilder.instanceOf(sootMethod.getDeclaringClass()).ref();
                 } else {
                     Trampoline trampoline = new Instanceof(this.className, targetClassName);
                     trampolines.add(trampoline);
                     fn = trampoline.getFunctionRef();
                 }
-                result = callOrInvoke(stmt, fn, env, op);
+                result = call(fn, env, op);
             } else if (rightOp instanceof NewExpr) {
                 String targetClassName = getInternalName(((NewExpr) rightOp).getBaseType());
                 FunctionRef fn = null;
                 if (targetClassName.equals(this.className)) {
-                    fn = new FunctionRef(mangleClass(this.className) + "_allocator", 
-                            new FunctionType(OBJECT_PTR, ENV_PTR));
+                    fn = FunctionBuilder.allocator(sootMethod.getDeclaringClass()).ref();
                 } else {
                     Trampoline trampoline = new New(this.className, targetClassName);
                     trampolines.add(trampoline);
                     fn = trampoline.getFunctionRef();
                 }
-                result = callOrInvoke(stmt, fn, env);
+                result = call(fn, env);
             } else if (rightOp instanceof NewArrayExpr) {
                 NewArrayExpr expr = (NewArrayExpr) rightOp;
                 Value size = immediate(stmt, (Immediate) expr.getSize());
                 if (expr.getBaseType() instanceof PrimType) {
-                    result = callOrInvoke(stmt, getNewArray(expr.getBaseType()), env, size);
+                    result = call(getNewArray(expr.getBaseType()), env, size);
                 } else {
                     String targetClassName = getInternalName(expr.getType());
                     Trampoline trampoline = new Anewarray(this.className, targetClassName);
                     trampolines.add(trampoline);
-                    result = callOrInvoke(stmt, trampoline.getFunctionRef(), env, size);
+                    result = call(trampoline.getFunctionRef(), env, size);
                 }
             } else if (rightOp instanceof NewMultiArrayExpr) {
                 NewMultiArrayExpr expr = (NewMultiArrayExpr) rightOp;
@@ -947,7 +1013,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 String targetClassName = getInternalName(expr.getType());
                 Trampoline trampoline = new Multianewarray(this.className, targetClassName);
                 trampolines.add(trampoline);
-                result = callOrInvoke(stmt, trampoline.getFunctionRef(), env, new IntegerConstant(expr.getSizeCount()), dimsI32.ref());
+                result = call(trampoline.getFunctionRef(), env, new IntegerConstant(expr.getSizeCount()), dimsI32.ref());
             } else if (rightOp instanceof InvokeExpr) {
                 result = invokeExpr(stmt, (InvokeExpr) rightOp);
             } else if (rightOp instanceof LengthExpr) {
@@ -979,7 +1045,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
         if (leftOp instanceof Local) {
             Local local = (Local) leftOp;
             VariableRef v = new VariableRef(local.getName(), new PointerType(getLocalType(leftOp.getType())));
-            function.add(new Store(result, v));
+            function.add(new Store(result, v, !sootMethod.getActiveBody().getTraps().isEmpty()));
         } else {
             Type leftType = getType(leftOp.getType());
             Value narrowedResult = narrowFromI32Value(leftType, result);
@@ -990,9 +1056,9 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 checkNull(stmt, base);
                 checkBounds(stmt, base, index);
                 if (leftOp.getType() instanceof RefLikeType) {
-                    callOrInvoke(stmt, BC_SET_OBJECT_ARRAY_ELEMENT, env, base, index, narrowedResult);
+                    call(BC_SET_OBJECT_ARRAY_ELEMENT, env, base, index, narrowedResult);
                 } else {
-                    callOrInvoke(stmt, getArrayStore(leftOp.getType()), base, index, narrowedResult);
+                    call(getArrayStore(leftOp.getType()), base, index, narrowedResult);
                 }
             } else if (leftOp instanceof InstanceFieldRef) {
                 InstanceFieldRef ref = (InstanceFieldRef) leftOp;
@@ -1011,7 +1077,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     trampolines.add(trampoline);
                     fn = trampoline.getFunctionRef();
                 }
-                callOrInvoke(stmt, fn, env, base, narrowedResult);
+                call(fn, env, base, narrowedResult);
             } else if (leftOp instanceof StaticFieldRef) {
                 StaticFieldRef ref = (StaticFieldRef) leftOp;
                 FunctionRef fn = null;
@@ -1025,7 +1091,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     trampolines.add(trampoline);
                     fn = trampoline.getFunctionRef();
                 }
-                callOrInvoke(stmt, fn, env, narrowedResult);
+                call(fn, env, narrowedResult);
             } else {
                 throw new IllegalArgumentException("Unknown type for leftOp: " + leftOp.getClass());
             }
@@ -1101,7 +1167,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
     private void throw_(ThrowStmt stmt) {
         Value obj = immediate(stmt, (Immediate) stmt.getOp());
         checkNull(stmt, obj);
-        callOrInvoke(stmt, BC_THROW, env, obj);
+        call(BC_THROW, env, obj);
         function.add(new Unreachable());
     }
     
@@ -1112,13 +1178,13 @@ public class MethodCompiler extends AbstractMethodCompiler {
     private void enterMonitor(EnterMonitorStmt stmt) {
         Value op = immediate(stmt, (Immediate) stmt.getOp());
         checkNull(stmt, op);
-        callOrInvoke(stmt, BC_MONITOR_ENTER, env, op);
+        call(BC_MONITOR_ENTER, env, op);
     }
     
     private void exitMonitor(ExitMonitorStmt stmt) {
         Value op = immediate(stmt, (Immediate) stmt.getOp());
         checkNull(stmt, op);
-        callOrInvoke(stmt, BC_MONITOR_EXIT, env, op);
+        call(BC_MONITOR_EXIT, env, op);
     }
     
 }

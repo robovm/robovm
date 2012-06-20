@@ -17,17 +17,13 @@
 package org.robovm.compiler;
 
 import static org.robovm.compiler.Functions.*;
-import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
-import static org.robovm.compiler.llvm.FunctionAttribute.*;
-import static org.robovm.compiler.llvm.Linkage.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionRef;
-import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.Ret;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.trampoline.NativeCall;
@@ -46,10 +42,9 @@ public class NativeMethodCompiler extends AbstractMethodCompiler {
     }
 
     protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
-        Function outerFn = createFunction(method, external, noinline);
+        Function outerFn = FunctionBuilder.method(method);
         moduleBuilder.addFunction(outerFn);
-        Function innerFn = createFunction(mangleMethod(method) + "_inner", 
-                method, internal, noinline);
+        Function innerFn = FunctionBuilder.nativeInner(method);
         moduleBuilder.addFunction(innerFn);
 
         Value env = innerFn.getParameterRef(0);
@@ -66,8 +61,7 @@ public class NativeMethodCompiler extends AbstractMethodCompiler {
         ArrayList<Value> args = new ArrayList<Value>(Arrays.asList(outerFn.getParameterRefs()));
         if (method.isStatic()) {
             // Add the current class as second parameter
-            FunctionRef ldcFn = new FunctionRef(mangleClass(sootMethod.getDeclaringClass()) + "_ldc", 
-                    new FunctionType(OBJECT_PTR, ENV_PTR));
+            FunctionRef ldcFn = FunctionBuilder.ldcInternal(sootMethod.getDeclaringClass()).ref();
             Value clazz = call(innerFn, ldcFn, env);
             args.add(1, clazz);
         }

@@ -20,8 +20,6 @@ import static org.robovm.compiler.Access.*;
 import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
-import static org.robovm.compiler.llvm.FunctionAttribute.*;
-import static org.robovm.compiler.llvm.Linkage.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import java.io.BufferedReader;
@@ -55,9 +53,7 @@ import org.robovm.compiler.llvm.Constant;
 import org.robovm.compiler.llvm.ConstantBitcast;
 import org.robovm.compiler.llvm.Fence;
 import org.robovm.compiler.llvm.Function;
-import org.robovm.compiler.llvm.FunctionAttribute;
 import org.robovm.compiler.llvm.FunctionRef;
-import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.Getelementptr;
 import org.robovm.compiler.llvm.Global;
 import org.robovm.compiler.llvm.GlobalRef;
@@ -78,7 +74,6 @@ import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
 import org.robovm.compiler.llvm.VariableRef;
-import org.robovm.compiler.trampoline.ExceptionMatch;
 import org.robovm.compiler.trampoline.Trampoline;
 
 import soot.BooleanType;
@@ -175,6 +170,7 @@ public class ClassCompiler {
     
     private ModuleBuilder mb;
     private Set<Trampoline> trampolines;
+    private Set<String> catches;
     /**
      * Contains the class fields of the class being compiled.
      */
@@ -352,6 +348,7 @@ public class ClassCompiler {
         sootClass = null;
         mb = null;
         trampolines = null;
+        catches = null;
         classFields = null;
         instanceFields = null;
         classType = null;
@@ -362,6 +359,7 @@ public class ClassCompiler {
         sootClass = clazz.getSootClass();
         mb = new ModuleBuilder();
         trampolines = new HashSet<Trampoline>();
+        catches = new HashSet<String>();
         classFields = getClassFields(sootClass);
         instanceFields = getInstanceFields(sootClass);
         classType = getClassType(sootClass);
@@ -391,6 +389,7 @@ public class ClassCompiler {
             sootClass.addMethod(sizeOf);
         }
         
+        mb.addInclude(getClass().getClassLoader().getResource(String.format("header-%s-%s.ll", config.getOs(), config.getArch())));
         mb.addInclude(getClass().getClassLoader().getResource("header.ll"));
 
         mb.addFunction(createInstanceof());
@@ -458,8 +457,7 @@ public class ClassCompiler {
         }
         mb.addGlobal(classInfoStruct);
         
-        Function infoFn = new Function(external, new FunctionAttribute[] {alwaysinline, optsize}, 
-                getInfoStructFn(getInternalName(sootClass)));
+        Function infoFn = FunctionBuilder.infoStruct(sootClass);
         infoFn.add(new Ret(new ConstantBitcast(classInfoStruct.ref(), I8_PTR_PTR)));
         mb.addFunction(infoFn);
         
@@ -491,13 +489,13 @@ public class ClassCompiler {
         clazzInfo.setStruct(isStruct(this.sootClass));
         clazzInfo.setAttributeDependencies(attributesEncoder.getDependencies());
         clazzInfo.setTrampolines(trampolines);
+        clazzInfo.setCatches(catches);
         clazz.commitClazzInfo();
     }
     
     private void createLookupFunction(SootMethod m) {
         // TODO: This should use a virtual method table or interface method table.
-        String name = mangleMethod(m) + "_lookup";
-        Function function = new Function(external, name, getFunctionType(m));
+        Function function = FunctionBuilder.lookup(m);
         mb.addFunction(function);
 
         Variable reserved0 = function.newVariable(I8_PTR_PTR);
@@ -580,18 +578,16 @@ public class ClassCompiler {
             // Check exceptions used in catch clauses. I cannot find any info in
             // the VM spec specifying that this has to be done when the class is loaded.
             // However, this is how it's done in other VMs so we do it too.
-            for (Trampoline t : trampolines) {
-                if (t instanceof ExceptionMatch) {
-                    Clazz ex = config.getClazzes().load(t.getTarget());
-                    if (ex == null || ex.getSootClass().isPhantom()) {
-                        errorType = ClassCompiler.CI_ERROR_TYPE_NO_CLASS_DEF_FOUND;
-                        errorMessage = t.getTarget();
-                        break;
-                    } else if (!checkClassAccessible(ex.getSootClass(), sootClass)) {
-                        errorType = ClassCompiler.CI_ERROR_TYPE_ILLEGAL_ACCESS;
-                        errorMessage = String.format(ILLEGAL_ACCESS_ERROR_CLASS, ex, sootClass);
-                        break;
-                    }
+            for (String exName : catches) {
+                Clazz ex = config.getClazzes().load(exName);
+                if (ex == null || ex.getSootClass().isPhantom()) {
+                    errorType = ClassCompiler.CI_ERROR_TYPE_NO_CLASS_DEF_FOUND;
+                    errorMessage = exName;
+                    break;
+                } else if (!checkClassAccessible(ex.getSootClass(), sootClass)) {
+                    errorType = ClassCompiler.CI_ERROR_TYPE_ILLEGAL_ACCESS;
+                    errorMessage = String.format(ILLEGAL_ACCESS_ERROR_CLASS, ex, sootClass);
+                    break;
                 }
             }
         }
@@ -880,26 +876,29 @@ public class ClassCompiler {
     private void nativeMethod(SootMethod method) {
         nativeMethodCompiler.compile(mb, method);
         trampolines.addAll(nativeMethodCompiler.getTrampolines());
+        catches.addAll(nativeMethodCompiler.getCatches());
     }
     
     private void bridgeMethod(SootMethod method) {
         bridgeMethodCompiler.compile(mb, method);
         trampolines.addAll(bridgeMethodCompiler.getTrampolines());
+        catches.addAll(bridgeMethodCompiler.getCatches());
     }
     
     private void structMember(SootMethod method) {
         structMemberMethodCompiler.compile(mb, method);
         trampolines.addAll(structMemberMethodCompiler.getTrampolines());
+        catches.addAll(structMemberMethodCompiler.getCatches());
     }
     
     private void method(SootMethod method) {
         methodCompiler.compile(mb, method);
         trampolines.addAll(methodCompiler.getTrampolines());
+        catches.addAll(methodCompiler.getCatches());
     }
     
     private Function createAllocator() {
-        Function fn = new Function(_private, new FunctionAttribute[] {alwaysinline, optsize}, 
-                mangleClass(sootClass) + "_allocator", new FunctionType(OBJECT_PTR, ENV_PTR));
+        Function fn = FunctionBuilder.allocator(sootClass);
         Value info = getInfoStruct(fn);        
         Value result = call(fn, BC_ALLOCATE, fn.getParameterRef(0), info);
         fn.add(new Ret(result));
@@ -907,8 +906,7 @@ public class ClassCompiler {
     }
     
     private Function createInstanceof() {
-        Function fn = new Function(external, new FunctionAttribute[] {alwaysinline, optsize}, 
-                mangleClass(sootClass) + "_instanceof", new FunctionType(I32, ENV_PTR, OBJECT_PTR));
+        Function fn = FunctionBuilder.instanceOf(sootClass);
         Value info = getInfoStruct(fn);        
         Value result = call(fn, BC_INSTANCEOF, fn.getParameterRef(0), info, fn.getParameterRef(1));
         fn.add(new Ret(result));
@@ -916,8 +914,7 @@ public class ClassCompiler {
     }
 
     private Function createCheckcast() {
-        Function fn = new Function(external, new FunctionAttribute[] {alwaysinline, optsize}, 
-                mangleClass(sootClass) + "_checkcast", new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR));
+        Function fn = FunctionBuilder.checkcast(sootClass);
         Value info = getInfoStruct(fn);        
         Value result = call(fn, BC_CHECKCAST, fn.getParameterRef(0), info, fn.getParameterRef(1));
         fn.add(new Ret(result));
@@ -925,17 +922,15 @@ public class ClassCompiler {
     }
 
     private Function createLdcClass() {
-        Function fn = new Function(_private, new FunctionAttribute[] {alwaysinline, optsize}, 
-                mangleClass(sootClass) + "_ldc", new FunctionType(OBJECT_PTR, ENV_PTR));
+        Function fn = FunctionBuilder.ldcInternal(sootClass);
         Value info = getInfoStruct(fn);
         Value result = call(fn, BC_LDC_CLASS, fn.getParameterRef(0), info);
         fn.add(new Ret(result));
         return fn;
     }
-
+    
     private Function createLdcClassWrapper() {
-        Function fn = new Function(external, new FunctionAttribute[] {noinline, optsize}, 
-                mangleClass(sootClass) + "_ldc_load", new FunctionType(OBJECT_PTR, ENV_PTR));
+        Function fn = FunctionBuilder.ldcExternal(sootClass);
         Value info = getInfoStruct(fn);
         Value result = call(fn, LDC_CLASS_WRAPPER, fn.getParameterRef(0), info);
         fn.add(new Ret(result));
@@ -943,24 +938,18 @@ public class ClassCompiler {
     }
     
     private Function createFieldGetter(SootField field) {
-        String name = mangleField(field) + "_getter";
-        Function fn = null;
+        Function fn = FunctionBuilder.getter(field);
         Value fieldPtr = null;
         if (field.isStatic()) {
-            fn = new Function(_private, new FunctionAttribute[] {alwaysinline, optsize}, 
-                    name, new FunctionType(getType(field.getType()), ENV_PTR), "env");
             fieldPtr = getClassFieldPtr(fn, field);
         } else {
-            fn = new Function(field.isPrivate() ? _private : external, 
-                    new FunctionAttribute[] {alwaysinline, optsize}, 
-                    name, new FunctionType(getType(field.getType()), ENV_PTR, OBJECT_PTR), "env", "this");
-            fieldPtr = getInstanceFieldPtr(fn, new VariableRef("this", OBJECT_PTR), field);
+            fieldPtr = getInstanceFieldPtr(fn, fn.getParameterRef(1), field);
         }
         Variable result = fn.newVariable(getType(field.getType()));
         if (Modifier.isVolatile(field.getModifiers())) {
             fn.add(new Fence(Ordering.seq_cst));
             if (LongType.v().equals(field.getType())) {
-                fn.add(new Load(result, fieldPtr, Ordering.unordered, 8));
+                fn.add(new Load(result, fieldPtr, false, Ordering.unordered, 8));
             } else {
                 fn.add(new Load(result, fieldPtr));
             }
@@ -972,25 +961,19 @@ public class ClassCompiler {
     }
     
     private Function createFieldSetter(SootField field) {
-        String name = mangleField(field) + "_setter";
-        Function fn = null;
+        Function fn = FunctionBuilder.setter(field);
         Value fieldPtr = null;
         Value value = null;
         if (field.isStatic()) {
-            fn = new Function(_private, new FunctionAttribute[] {alwaysinline, optsize}, 
-                    name, new FunctionType(VOID, ENV_PTR, getType(field.getType())), "env", "value");
             fieldPtr = getClassFieldPtr(fn, field);
             value = fn.getParameterRef(1);
         } else {
-            fn = new Function(field.isPrivate() || field.isFinal() ? _private : external, 
-                    new FunctionAttribute[] {alwaysinline, optsize}, 
-                    name, new FunctionType(VOID, ENV_PTR, OBJECT_PTR, getType(field.getType())), "env", "this", "value");
-            fieldPtr = getInstanceFieldPtr(fn, new VariableRef("this", OBJECT_PTR), field);
+            fieldPtr = getInstanceFieldPtr(fn, fn.getParameterRef(1), field);
             value = fn.getParameterRef(2);
         }
         if (Modifier.isVolatile(field.getModifiers()) || !field.isStatic() && Modifier.isFinal(field.getModifiers())) {
             if (LongType.v().equals(field.getType())) {
-                fn.add(new Store(value, fieldPtr, Ordering.unordered, 8));
+                fn.add(new Store(value, fieldPtr, false, Ordering.unordered, 8));
             } else {
                 fn.add(new Store(value, fieldPtr));
             }
@@ -1003,9 +986,7 @@ public class ClassCompiler {
     }
     
     private Function createClassInitWrapperFunction(FunctionRef targetFn) {
-        String fnName = targetFn.getName() + "_clinit";
-        Function fn = new Function(external, new FunctionAttribute[] {noinline, optsize},
-                fnName, targetFn.getType());
+        Function fn = FunctionBuilder.clinitWrapper(targetFn);
         Value info = getInfoStruct(fn);
         Variable infoHeader = fn.newVariable(new PointerType(new StructureType(I8_PTR, I32)));
         fn.add(new Bitcast(infoHeader, info, infoHeader.getType()));
@@ -1145,7 +1126,7 @@ public class ClassCompiler {
     }
 
     private Value getInfoStruct(Function f) {
-        return Functions.getInfoStruct(f, sootClass);
+        return call(f, FunctionBuilder.infoStruct(sootClass).ref());
     }
     
     private Value getInstanceFieldPtr(Function f, Value base, SootField field) {

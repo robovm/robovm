@@ -30,6 +30,16 @@ typedef struct {
     void* end;
 } AddressClassLookup;
 
+typedef struct {
+    ClassInfoHeader* exHeader;
+    jint landingPadId;
+} LandingPad;
+
+typedef struct {
+    TrycatchContext tc;
+    LandingPad** landingPads;
+} BcTrycatchContext;
+
 extern _Unwind_Reason_Code _rvmPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context);
 
 const char* __attribute__ ((weak)) _bcMainClass = NULL;
@@ -45,6 +55,7 @@ static void loadFields(Env*, Class*);
 static void loadMethods(Env*, Class*);
 static Class* findClassAt(Env*, void*);
 static Class* createClass(Env*, ClassInfoHeader*, ClassLoader*);
+static jboolean exceptionMatch(Env* env, TrycatchContext*);
 static Options options = {0};
 static VM* vm = NULL;
 static jint addressClassLookupsCount = 0;
@@ -61,6 +72,7 @@ int main(int argc, char* argv[]) {
     options.loadFields = loadFields;
     options.loadMethods = loadMethods;
     options.findClassAt = findClassAt;
+    options.exceptionMatch = exceptionMatch;
     if (!rvmInitOptions(argc, argv, &options, FALSE)) {
         fprintf(stderr, "rvmInitOptions(...) failed!\n");
         return 1;
@@ -307,18 +319,17 @@ static jboolean initAddressClassLookupsCallback(Env* env, ClassInfoHeader* heade
     return TRUE;
 }
 
-static int addressClassLookupCompare(const void* _a, const void* _b) {
+static int addressClassLookupCompareBSearch(const void* _a, const void* _b) {
+    AddressClassLookup* needle = (AddressClassLookup*) _a;
+    AddressClassLookup* el = (AddressClassLookup*) _b;
+    void* pc = needle->start;
+    return (pc >= el->start && pc < el->end) ? 0 : ((pc < el->start) ? -1 : 1);
+}
+
+static int addressClassLookupCompareQSort(const void* _a, const void* _b) {
     AddressClassLookup* a = (AddressClassLookup*) _a;
     AddressClassLookup* b = (AddressClassLookup*) _b;
-    if (a->start == a->end) {
-        void* pc = a->start;
-        return (pc >= b->start && pc < b->end) ? 0 : ((pc < b->start) ? -1 : 1);
-    }
-    if (b->start == b->end) {
-        void* pc = b->start;
-        return (pc >= a->start && pc < a->end) ? 0 : ((pc >= a->end) ? -1 : 1);
-    }
-    return (a->end < b->start) ? -1 : 1;
+    return (a->end <= b->start) ? -1 : 1;
 }
 
 static AddressClassLookup* getAddressClassLookups(Env* env) {
@@ -334,7 +345,7 @@ static AddressClassLookup* getAddressClassLookups(Env* env) {
         callbacks.methodCallback = initAddressClassLookupsCallback;
         iterateClassInfos(env, &callbacks, _bcBootClassesHash, &_lookups);
         iterateClassInfos(env, &callbacks, _bcClassesHash, &_lookups);
-        qsort(lookups, count, sizeof(AddressClassLookup), addressClassLookupCompare);
+        qsort(lookups, count, sizeof(AddressClassLookup), addressClassLookupCompareQSort);
         addressClassLookupsCount = count;
         addressClassLookups = lookups;
     }
@@ -345,7 +356,7 @@ Class* findClassAt(Env* env, void* pc) {
     AddressClassLookup* lookups = getAddressClassLookups(env);
     if (!lookups) return NULL;
     AddressClassLookup needle = {NULL, pc, pc};
-    AddressClassLookup* result = bsearch(&needle, lookups, addressClassLookupsCount, sizeof(AddressClassLookup), addressClassLookupCompare);
+    AddressClassLookup* result = bsearch(&needle, lookups, addressClassLookupsCount, sizeof(AddressClassLookup), addressClassLookupCompareBSearch);
     if (!result) return NULL;
     ClassInfoHeader* header = result->classInfoHeader;
     Class* clazz = header->clazz;
@@ -359,8 +370,33 @@ Class* findClassAt(Env* env, void* pc) {
     return clazz;
 }
 
-_Unwind_Reason_Code _bcPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context) {
-    return _rvmPersonality(version, actions, exception_class, exception_info, context);
+jboolean exceptionMatch(Env* env, TrycatchContext* _tc) {
+    BcTrycatchContext* tc = (BcTrycatchContext*) _tc;
+    LandingPad* lps = tc->landingPads[tc->tc.sel - 1];
+    Object* throwable = rvmExceptionOccurred(env);
+    jint i;
+    for (i = 0; lps[i].landingPadId > 0; i++) {
+        ClassInfoHeader* header = lps[i].exHeader;
+        if (!header) {
+            // NULL means java.lang.Throwable which always matches
+            tc->tc.sel = lps[i].landingPadId;
+            return TRUE;
+        }
+        if (!header->clazz) {
+            // Exception class not yet loaded so it cannot match.
+            continue;
+        }
+        Class* clazz = header->clazz;
+        Class* c = throwable->clazz;
+        while (c && c != clazz) {
+            c = c->superclass;
+        }
+        if (c == clazz) {
+            tc->tc.sel = lps[i].landingPadId;
+            return TRUE;
+        }
+    }
+    return FALSE;
 }
 
 #define ENTER rvmPushGatewayFrame(env)
@@ -439,12 +475,12 @@ void* _bcLookupInterfaceMethod(Env* env, ClassInfoHeader* header, Object* thiz, 
     LEAVE(result);
 }
 
-void _bcThrow(Env* env, Object* throwable) {
-    rvmRaiseException(env, throwable);
+void _bcTrycatchLeave(Env* env) {
+    rvmTrycatchLeave(env);
 }
 
-void _bcRethrow(Env* env, void* exInfo) {
-    rvmReraiseException(env, exInfo);
+void _bcThrow(Env* env, Object* throwable) {
+    rvmRaiseException(env, throwable);
 }
 
 void _bcThrowIfExceptionOccurred(Env* env) {
@@ -454,24 +490,6 @@ void _bcThrowIfExceptionOccurred(Env* env) {
 
 Object* _bcExceptionClear(Env* env) {
     return rvmExceptionClear(env);
-}
-
-jint _bcExceptionMatch(Env* env, ClassInfoHeader* header) {
-    if (!header->clazz) {
-        // Exception class not yet loaded so it cannot match.
-        return 0;
-    }
-    Class* clazz = header->clazz;
-    Object* throwable = rvmExceptionOccurred(env);
-    Class* c = throwable->clazz;
-    while (c && c != clazz) {
-        c = c->superclass;
-    }
-    return c == clazz ? 1 : 0;
-}
-
-void _bcExceptionSet(Env* env, Object* throwable) {
-    rvmThrow(env, throwable);
 }
 
 void _bcThrowNullPointerException(Env* env) {

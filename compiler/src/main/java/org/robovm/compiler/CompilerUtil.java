@@ -68,7 +68,7 @@ public class CompilerUtil {
         }
         opts.add("-ffunction-sections");
         opts.add("-fdata-sections");
-        opts.add("--disable-fp-elim");
+        opts.add("-disable-fp-elim");
     
         outFile.getParentFile().mkdirs();
         exec(config, llcPath, opts, "-o=" + outFile.toString(), inFile);

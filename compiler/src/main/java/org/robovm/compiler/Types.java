@@ -72,6 +72,11 @@ public class Types {
 
     public static final StructureType GATEWAY_FRAME = new StructureType("GatewayFrame", I8_PTR, I8_PTR, I8_PTR);
     public static final Type GATEWAY_FRAME_PTR = new PointerType(GATEWAY_FRAME);
+    // Dummy TrycatchContext type definition. The real one is in header-<os>-<arch>.ll
+    public static final StructureType TRYCATCH_CONTEXT = new StructureType("TrycatchContext", I8_PTR);
+    public static final Type TRYCATCH_CONTEXT_PTR = new PointerType(TRYCATCH_CONTEXT);
+    public static final StructureType BC_TRYCATCH_CONTEXT = new StructureType("BcTrycatchContext", TRYCATCH_CONTEXT, I8_PTR);
+    public static final Type BC_TRYCATCH_CONTEXT_PTR = new PointerType(BC_TRYCATCH_CONTEXT);
     public static final Type ENV_PTR = new PointerType(new StructureType("Env", I8_PTR, I8_PTR, I8_PTR, 
             I8_PTR, I8_PTR, I8_PTR, I8_PTR, I8_PTR, I32));
     // Dummy Class type definition. The real one is in header.ll
@@ -461,10 +466,14 @@ public class Types {
     }
     
     public static boolean isStruct(SootClass sc) {
+        return isSubclass(sc, "org.robovm.rt.bro.Struct");
+    }
+    
+    public static boolean isSubclass(SootClass sc, String className) {
         SootClass clazz = sc;
         while (clazz.hasSuperclass()) {
             clazz = clazz.getSuperclass();
-            if ("org.robovm.rt.bro.Struct".equals(clazz.getName())) {
+            if (className.equals(clazz.getName())) {
                 return true;
             }
         }

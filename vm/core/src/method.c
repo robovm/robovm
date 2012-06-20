@@ -377,13 +377,148 @@ static jvalue* va_list2jargs(Env* env, Method* method, va_list args) {
     return jvalueArgs;
 }
 
+static void callVoidMethod(Env* env, CallInfo* callInfo) {
+    void (*f)(CallInfo*) = _call0;
+    rvmPushGatewayFrame(env);
+    TrycatchContext tc = {0};
+    tc.sel = CATCH_ALL_SEL;
+    if (!rvmTrycatchEnter(env, &tc)) {
+        f(callInfo);
+    }
+    rvmTrycatchLeave(env);
+    rvmPopGatewayFrame(env);
+}
+
+static Object* callObjectMethod(Env* env, CallInfo* callInfo) {
+    Object* result = NULL;
+    Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _call0;
+    rvmPushGatewayFrame(env);
+    TrycatchContext tc = {0};
+    tc.sel = CATCH_ALL_SEL;
+    if (!rvmTrycatchEnter(env, &tc)) {
+        result = f(callInfo);
+    }
+    rvmTrycatchLeave(env);
+    rvmPopGatewayFrame(env);
+    return result;
+}
+
+static jboolean callBooleanMethod(Env* env, CallInfo* callInfo) {
+    jboolean result = FALSE;
+    jboolean (*f)(CallInfo*) = (jboolean (*)(CallInfo*)) _call0;
+    rvmPushGatewayFrame(env);
+    TrycatchContext tc = {0};
+    tc.sel = CATCH_ALL_SEL;
+    if (!rvmTrycatchEnter(env, &tc)) {
+        result = f(callInfo);
+    }
+    rvmTrycatchLeave(env);
+    rvmPopGatewayFrame(env);
+    return result;
+}
+
+static jbyte callByteMethod(Env* env, CallInfo* callInfo) {
+    jbyte result = 0;
+    jbyte (*f)(CallInfo*) = (jbyte (*)(CallInfo*)) _call0;
+    rvmPushGatewayFrame(env);
+    TrycatchContext tc = {0};
+    tc.sel = CATCH_ALL_SEL;
+    if (!rvmTrycatchEnter(env, &tc)) {
+        result = f(callInfo);
+    }
+    rvmTrycatchLeave(env);
+    rvmPopGatewayFrame(env);
+    return result;
+}
+
+static jchar callCharMethod(Env* env, CallInfo* callInfo) {
+    jchar result = 0;
+    jchar (*f)(CallInfo*) = (jchar (*)(CallInfo*)) _call0;
+    rvmPushGatewayFrame(env);
+    TrycatchContext tc = {0};
+    tc.sel = CATCH_ALL_SEL;
+    if (!rvmTrycatchEnter(env, &tc)) {
+        result = f(callInfo);
+    }
+    rvmTrycatchLeave(env);
+    rvmPopGatewayFrame(env);
+    return result;
+}
+
+static jshort callShortMethod(Env* env, CallInfo* callInfo) {
+    jshort result = 0;
+    jshort (*f)(CallInfo*) = (jshort (*)(CallInfo*)) _call0;
+    rvmPushGatewayFrame(env);
+    TrycatchContext tc = {0};
+    tc.sel = CATCH_ALL_SEL;
+    if (!rvmTrycatchEnter(env, &tc)) {
+        result = f(callInfo);
+    }
+    rvmTrycatchLeave(env);
+    rvmPopGatewayFrame(env);
+    return result;
+}
+
+static jint callIntMethod(Env* env, CallInfo* callInfo) {
+    jint result = 0;
+    jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _call0;
+    rvmPushGatewayFrame(env);
+    TrycatchContext tc = {0};
+    tc.sel = CATCH_ALL_SEL;
+    if (!rvmTrycatchEnter(env, &tc)) {
+        result = f(callInfo);
+    }
+    rvmTrycatchLeave(env);
+    rvmPopGatewayFrame(env);
+    return result;
+}
+
+static jlong callLongMethod(Env* env, CallInfo* callInfo) {
+    jlong result = 0;
+    jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _call0;
+    rvmPushGatewayFrame(env);
+    TrycatchContext tc = {0};
+    tc.sel = CATCH_ALL_SEL;
+    if (!rvmTrycatchEnter(env, &tc)) {
+        result = f(callInfo);
+    }
+    rvmTrycatchLeave(env);
+    rvmPopGatewayFrame(env);
+    return result;
+}
+
+static jfloat callFloatMethod(Env* env, CallInfo* callInfo) {
+    jfloat result = 0;
+    jfloat (*f)(CallInfo*) = (jfloat (*)(CallInfo*)) _call0;
+    rvmPushGatewayFrame(env);
+    TrycatchContext tc = {0};
+    tc.sel = CATCH_ALL_SEL;
+    if (!rvmTrycatchEnter(env, &tc)) {
+        result = f(callInfo);
+    }
+    rvmTrycatchLeave(env);
+    rvmPopGatewayFrame(env);
+    return result;
+}
+
+static jdouble callDoubleMethod(Env* env, CallInfo* callInfo) {
+    jdouble result = 0;
+    jdouble (*f)(CallInfo*) = (jdouble (*)(CallInfo*)) _call0;
+    rvmPushGatewayFrame(env);
+    TrycatchContext tc = {0};
+    tc.sel = CATCH_ALL_SEL;
+    if (!rvmTrycatchEnter(env, &tc)) {
+        result = f(callInfo);
+    }
+    rvmTrycatchLeave(env);
+    rvmPopGatewayFrame(env);
+    return result;
+}
+
 void rvmCallVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return;
-    void (*f)(CallInfo*) = _call0;
-    rvmPushGatewayFrame(env);
-    f(callInfo);
-    rvmPopGatewayFrame(env);
+    callVoidMethod(env, callInfo);
 }
 
 void rvmCallVoidInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -401,11 +536,7 @@ void rvmCallVoidInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 Object* rvmCallObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return NULL;
-    Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    Object* result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callObjectMethod(env, callInfo);
 }
 
 Object* rvmCallObjectInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -423,11 +554,7 @@ Object* rvmCallObjectInstanceMethod(Env* env, Object* obj, Method* method, ...) 
 jboolean rvmCallBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return FALSE;
-    jboolean (*f)(CallInfo*) = (jboolean (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jboolean result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callBooleanMethod(env, callInfo);
 }
 
 jboolean rvmCallBooleanInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -445,11 +572,7 @@ jboolean rvmCallBooleanInstanceMethod(Env* env, Object* obj, Method* method, ...
 jbyte rvmCallByteInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
-    jbyte (*f)(CallInfo*) = (jbyte (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jbyte result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callByteMethod(env, callInfo);
 }
 
 jbyte rvmCallByteInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -467,11 +590,7 @@ jbyte rvmCallByteInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 jchar rvmCallCharInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
-    jchar (*f)(CallInfo*) = (jchar (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jchar result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callCharMethod(env, callInfo);
 }
 
 jchar rvmCallCharInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -489,11 +608,7 @@ jchar rvmCallCharInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 jshort rvmCallShortInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
-    jshort (*f)(CallInfo*) = (jshort (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jshort result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callShortMethod(env, callInfo);
 }
 
 jshort rvmCallShortInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -511,11 +626,7 @@ jshort rvmCallShortInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 jint rvmCallIntInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
-    jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jint result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callIntMethod(env, callInfo);
 }
 
 jint rvmCallIntInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -533,11 +644,7 @@ jint rvmCallIntInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 jlong rvmCallLongInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
-    jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jlong result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callLongMethod(env, callInfo);
 }
 
 jlong rvmCallLongInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -555,11 +662,7 @@ jlong rvmCallLongInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 jfloat rvmCallFloatInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0.0f;
-    jfloat (*f)(CallInfo*) = (jfloat (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jfloat result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callFloatMethod(env, callInfo);
 }
 
 jfloat rvmCallFloatInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -577,11 +680,7 @@ jfloat rvmCallFloatInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 jdouble rvmCallDoubleInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0.0;
-    jdouble (*f)(CallInfo*) = (jdouble (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jdouble result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callDoubleMethod(env, callInfo);
 }
 
 jdouble rvmCallDoubleInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -599,10 +698,7 @@ jdouble rvmCallDoubleInstanceMethod(Env* env, Object* obj, Method* method, ...) 
 void rvmCallNonvirtualVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return;
-    void (*f)(CallInfo*) = _call0;
-    rvmPushGatewayFrame(env);
-    f(callInfo);
-    rvmPopGatewayFrame(env);
+    callVoidMethod(env, callInfo);
 }
 
 void rvmCallNonvirtualVoidInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -620,11 +716,7 @@ void rvmCallNonvirtualVoidInstanceMethod(Env* env, Object* obj, Method* method, 
 Object* rvmCallNonvirtualObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return NULL;
-    Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    Object* result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callObjectMethod(env, callInfo);
 }
 
 Object* rvmCallNonvirtualObjectInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -642,11 +734,7 @@ Object* rvmCallNonvirtualObjectInstanceMethod(Env* env, Object* obj, Method* met
 jboolean rvmCallNonvirtualBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return FALSE;
-    jboolean (*f)(CallInfo*) = (jboolean (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jboolean result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callBooleanMethod(env, callInfo);
 }
 
 jboolean rvmCallNonvirtualBooleanInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -664,11 +752,7 @@ jboolean rvmCallNonvirtualBooleanInstanceMethod(Env* env, Object* obj, Method* m
 jbyte rvmCallNonvirtualByteInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
-    jbyte (*f)(CallInfo*) = (jbyte (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jbyte result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callByteMethod(env, callInfo);
 }
 
 jbyte rvmCallNonvirtualByteInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -686,11 +770,7 @@ jbyte rvmCallNonvirtualByteInstanceMethod(Env* env, Object* obj, Method* method,
 jchar rvmCallNonvirtualCharInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
-    jchar (*f)(CallInfo*) = (jchar (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jchar result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callCharMethod(env, callInfo);
 }
 
 jchar rvmCallNonvirtualCharInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -708,11 +788,7 @@ jchar rvmCallNonvirtualCharInstanceMethod(Env* env, Object* obj, Method* method,
 jshort rvmCallNonvirtualShortInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
-    jshort (*f)(CallInfo*) = (jshort (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jshort result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callShortMethod(env, callInfo);
 }
 
 jshort rvmCallNonvirtualShortInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -730,11 +806,7 @@ jshort rvmCallNonvirtualShortInstanceMethod(Env* env, Object* obj, Method* metho
 jint rvmCallNonvirtualIntInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
-    jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jint result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callIntMethod(env, callInfo);
 }
 
 jint rvmCallNonvirtualIntInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -752,11 +824,7 @@ jint rvmCallNonvirtualIntInstanceMethod(Env* env, Object* obj, Method* method, .
 jlong rvmCallNonvirtualLongInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
-    jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jlong result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callLongMethod(env, callInfo);
 }
 
 jlong rvmCallNonvirtualLongInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -774,11 +842,7 @@ jlong rvmCallNonvirtualLongInstanceMethod(Env* env, Object* obj, Method* method,
 jfloat rvmCallNonvirtualFloatInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0.0f;
-    jfloat (*f)(CallInfo*) = (jfloat (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jfloat result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callFloatMethod(env, callInfo);
 }
 
 jfloat rvmCallNonvirtualFloatInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -796,11 +860,7 @@ jfloat rvmCallNonvirtualFloatInstanceMethod(Env* env, Object* obj, Method* metho
 jdouble rvmCallNonvirtualDoubleInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0.0;
-    jdouble (*f)(CallInfo*) = (jdouble (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jdouble result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callDoubleMethod(env, callInfo);
 }
 
 jdouble rvmCallNonvirtualDoubleInstanceMethodV(Env* env, Object* obj, Method* method, va_list args) {
@@ -820,10 +880,7 @@ void rvmCallVoidClassMethodA(Env* env, Class* clazz, Method* method, jvalue* arg
     if (!callInfo) return;
     rvmInitialize(env, method->clazz);
     if (rvmExceptionOccurred(env)) return;
-    void (*f)(CallInfo*) = _call0;
-    rvmPushGatewayFrame(env);
-    f(callInfo);
-    rvmPopGatewayFrame(env);
+    callVoidMethod(env, callInfo);
 }
 
 void rvmCallVoidClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -843,11 +900,7 @@ Object* rvmCallObjectClassMethodA(Env* env, Class* clazz, Method* method, jvalue
     if (!callInfo) return NULL;
     rvmInitialize(env, method->clazz);
     if (rvmExceptionOccurred(env)) return NULL;
-    Object* (*f)(CallInfo*) = (Object* (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    Object* result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callObjectMethod(env, callInfo);
 }
 
 Object* rvmCallObjectClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -867,11 +920,7 @@ jboolean rvmCallBooleanClassMethodA(Env* env, Class* clazz, Method* method, jval
     if (!callInfo) return FALSE;
     rvmInitialize(env, method->clazz);
     if (rvmExceptionOccurred(env)) return FALSE;
-    jboolean (*f)(CallInfo*) = (jboolean (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jboolean result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callBooleanMethod(env, callInfo);
 }
 
 jboolean rvmCallBooleanClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -891,11 +940,7 @@ jbyte rvmCallByteClassMethodA(Env* env, Class* clazz, Method* method, jvalue* ar
     if (!callInfo) return 0;
     rvmInitialize(env, method->clazz);
     if (rvmExceptionOccurred(env)) return 0;
-    jbyte (*f)(CallInfo*) = (jbyte (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jbyte result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callByteMethod(env, callInfo);
 }
 
 jbyte rvmCallByteClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -915,11 +960,7 @@ jchar rvmCallCharClassMethodA(Env* env, Class* clazz, Method* method, jvalue* ar
     if (!callInfo) return 0;
     rvmInitialize(env, method->clazz);
     if (rvmExceptionOccurred(env)) return 0;
-    jchar (*f)(CallInfo*) = (jchar (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jchar result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callCharMethod(env, callInfo);
 }
 
 jchar rvmCallCharClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -939,11 +980,7 @@ jshort rvmCallShortClassMethodA(Env* env, Class* clazz, Method* method, jvalue* 
     if (!callInfo) return 0;
     rvmInitialize(env, method->clazz);
     if (rvmExceptionOccurred(env)) return 0;
-    jshort (*f)(CallInfo*) = (jshort (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jshort result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callShortMethod(env, callInfo);
 }
 
 jshort rvmCallShortClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -963,11 +1000,7 @@ jint rvmCallIntClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args
     if (!callInfo) return 0;
     rvmInitialize(env, method->clazz);
     if (rvmExceptionOccurred(env)) return 0;
-    jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jint result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callIntMethod(env, callInfo);
 }
 
 jint rvmCallIntClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -987,11 +1020,7 @@ jlong rvmCallLongClassMethodA(Env* env, Class* clazz, Method* method, jvalue* ar
     if (!callInfo) return 0;
     rvmInitialize(env, method->clazz);
     if (rvmExceptionOccurred(env)) return 0;
-    jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jlong result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callLongMethod(env, callInfo);
 }
 
 jlong rvmCallLongClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -1011,11 +1040,7 @@ jfloat rvmCallFloatClassMethodA(Env* env, Class* clazz, Method* method, jvalue* 
     if (!callInfo) return 0.0f;
     rvmInitialize(env, method->clazz);
     if (rvmExceptionOccurred(env)) return 0.0f;
-    jfloat (*f)(CallInfo*) = (jfloat (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jfloat result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callFloatMethod(env, callInfo);
 }
 
 jfloat rvmCallFloatClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {
@@ -1035,11 +1060,7 @@ jdouble rvmCallDoubleClassMethodA(Env* env, Class* clazz, Method* method, jvalue
     if (!callInfo) return 0.0;
     rvmInitialize(env, method->clazz);
     if (rvmExceptionOccurred(env)) return 0.0;
-    jdouble (*f)(CallInfo*) = (jdouble (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    jdouble result = f(callInfo);
-    rvmPopGatewayFrame(env);
-    return result;
+    return callDoubleMethod(env, callInfo);
 }
 
 jdouble rvmCallDoubleClassMethodV(Env* env, Class* clazz, Method* method, va_list args) {

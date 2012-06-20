@@ -16,7 +16,6 @@
  */
 package org.robovm.compiler;
 
-import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
@@ -27,20 +26,17 @@ import org.robovm.compiler.llvm.Argument;
 import org.robovm.compiler.llvm.BasicBlockRef;
 import org.robovm.compiler.llvm.Call;
 import org.robovm.compiler.llvm.Function;
-import org.robovm.compiler.llvm.FunctionAttribute;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
+import org.robovm.compiler.llvm.Getelementptr;
 import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.Invoke;
-import org.robovm.compiler.llvm.Linkage;
 import org.robovm.compiler.llvm.PointerType;
-import org.robovm.compiler.llvm.StructureType;
+import org.robovm.compiler.llvm.Store;
+import org.robovm.compiler.llvm.Switch;
 import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
-
-import soot.SootClass;
-import soot.SootMethod;
 
 /**
  * @author niklas
@@ -55,12 +51,8 @@ public class Functions {
     public static final FunctionRef BC_NEW_OBJECT_ARRAY = new FunctionRef("_bcNewObjectArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32, OBJECT_PTR));
     public static final FunctionRef BC_LDC_CLASS = new FunctionRef("_bcLdcClass", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR_PTR));
 
-    public static final FunctionRef BC_PERSONALITY = new FunctionRef("_bcPersonality", new FunctionType(I8_PTR));
-    public static final FunctionRef BC_EXCEPTION_MATCH = new FunctionRef("_bcExceptionMatch", new FunctionType(I32, ENV_PTR, CLASS_PTR));
     public static final FunctionRef BC_EXCEPTION_CLEAR = new FunctionRef("_bcExceptionClear", new FunctionType(OBJECT_PTR, ENV_PTR));
-    public static final FunctionRef BC_EXCEPTION_SET = new FunctionRef("_bcExceptionSet", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef BC_THROW = new FunctionRef("_bcThrow", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
-    public static final FunctionRef BC_RETHROW = new FunctionRef("_bcRethrow", new FunctionType(VOID, ENV_PTR, new StructureType(I8_PTR, I32)));
     public static final FunctionRef BC_THROW_IF_EXCEPTION_OCCURRED = new FunctionRef("_bcThrowIfExceptionOccurred", new FunctionType(VOID, ENV_PTR));
     public static final FunctionRef BC_THROW_UNSATISIFED_LINK_ERROR = new FunctionRef("_bcThrowUnsatisfiedLinkError", new FunctionType(VOID, ENV_PTR, I8_PTR));
     public static final FunctionRef BC_THROW_NO_CLASS_DEF_FOUND_ERROR = new FunctionRef("_bcThrowNoClassDefFoundError", new FunctionType(VOID, ENV_PTR, I8_PTR));
@@ -101,6 +93,8 @@ public class Functions {
     public static final FunctionRef BC_GET_STRUCT_HANDLE = new FunctionRef("_bcGetStructHandle", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef BC_BY_VALUE_GET_STRUCT_HANDLE = new FunctionRef("_bcByValueGetStructHandle", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef BC_COPY_STRUCT = new FunctionRef("_bcCopyStruct", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I8_PTR, I32));
+    public static final FunctionRef RVM_TRYCATCH_ENTER = new FunctionRef("rvmTrycatchEnter", new FunctionType(I32, ENV_PTR, TRYCATCH_CONTEXT_PTR));
+    public static final FunctionRef BC_TRYCATCH_LEAVE = new FunctionRef("_bcTrycatchLeave", new FunctionType(VOID, ENV_PTR));
 
     public static final FunctionRef LLVM_FRAMEADDRESS = new FunctionRef("llvm.frameaddress", new FunctionType(I8_PTR, I32));
 
@@ -211,28 +205,6 @@ public class Functions {
         }
     }
 
-    public static Function createFunction(SootMethod method, Linkage linkage, 
-            FunctionAttribute ... functionAttributes) {
-        return createFunction(mangleMethod(method.makeRef()), method, linkage, functionAttributes);
-    }
-    
-    public static Function createFunction(String name, SootMethod method, Linkage linkage, 
-            FunctionAttribute ... functionAttributes) {
-        
-        FunctionType functionType = getFunctionType(method.makeRef());
-        String[] parameterNames = new String[functionType.getParameterTypes().length];
-        int i = 0;
-        parameterNames[i++] = "env";
-        if (!method.isStatic()) {
-            parameterNames[i++] = "this";
-        }
-        for (int j = 0; j < method.getParameterCount(); j++) {
-            parameterNames[i++] = "p" + j;
-        }
-            
-        return new Function(linkage, functionAttributes, name, functionType, parameterNames);
-    }
-    
     public static Value call(Function currentFunction, Value fn, List<Value> args) {
         return call(currentFunction, fn, args.toArray(new Value[args.size()]));
     }
@@ -279,14 +251,6 @@ public class Functions {
         return result == null ? null : result.ref();
     }
     
-    public static Value getInfoStruct(Function f, SootClass sootClass) {
-        return call(f, getInfoStructFn(getInternalName(sootClass)));
-    }
-    
-    public static FunctionRef getInfoStructFn(String internalName) {
-        return new FunctionRef(mangleClass(internalName) + "_info", new FunctionType(I8_PTR_PTR));
-    }
-    
     public static void pushNativeFrame(Function fn) {
         Variable gwFrame = fn.newVariable(GATEWAY_FRAME_PTR);
         fn.add(new Alloca(gwFrame, GATEWAY_FRAME));
@@ -307,5 +271,27 @@ public class Functions {
 
     public static void popCallbackFrame(Function fn, Value env) {
         call(fn, BC_POP_CALLBACK_FRAME, env);
+    }
+    
+    public static void trycatchAllEnter(Function fn, BasicBlockRef onNoException, BasicBlockRef onException) {
+        trycatchAllEnter(fn, fn.getParameterRef(0), onNoException, onException);
+    }
+
+    public static void trycatchAllEnter(Function fn, Value env, BasicBlockRef onNoException, BasicBlockRef onException) {
+        Variable ctx = fn.newVariable(TRYCATCH_CONTEXT_PTR);
+        fn.add(new Alloca(ctx, TRYCATCH_CONTEXT));
+        Variable selPtr = fn.newVariable(new PointerType(I32));
+        fn.add(new Getelementptr(selPtr, ctx.ref(), 0, 1));
+        fn.add(new Store(new IntegerConstant(-1), selPtr.ref()));        
+        Value result = call(fn, RVM_TRYCATCH_ENTER, env, ctx.ref());
+        fn.add(new Switch(result, onException, new IntegerConstant(0), onNoException));        
+    }
+    
+    public static void trycatchLeave(Function fn) {
+        trycatchLeave(fn, fn.getParameterRef(0));
+    }
+    
+    public static void trycatchLeave(Function fn, Value env) {
+        call(fn, BC_TRYCATCH_LEAVE, env);
     }
 }

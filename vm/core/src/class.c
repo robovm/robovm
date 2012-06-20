@@ -936,7 +936,12 @@ void rvmInitialize(Env* env, Class* clazz) {
         call0AddPtr(callInfo, env);
         void (*f)(CallInfo*) = (void (*)(CallInfo*)) _call0;
         rvmPushGatewayFrame(env);
-        f(callInfo);
+        TrycatchContext tc = {0};
+        tc.sel = CATCH_ALL_SEL;
+        if (!rvmTrycatchEnter(env, &tc)) {
+            f(callInfo);
+        }
+        rvmTrycatchLeave(env);
         rvmPopGatewayFrame(env);
 
         Object* exception = rvmExceptionClear(env);

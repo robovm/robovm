@@ -16,14 +16,6 @@
 #ifndef ROBOVM_EXCEPTION_H
 #define ROBOVM_EXCEPTION_H
 
-#include <unwind.h>
-
-#if defined(DARWIN)
-#define _Unwind_Ptr uintptr_t
-#define _Unwind_Word uintptr_t
-#define _Unwind_Exception_Class uint64_t
-#endif
-
 extern Object* rvmExceptionOccurred(Env* env);
 extern jboolean rvmExceptionCheck(Env* env);
 extern Object* rvmExceptionClear(Env* env);
@@ -56,7 +48,6 @@ extern jboolean rvmThrowLinkageError(Env* env);
 extern jboolean rvmThrowIllegalMonitorStateException(Env* env);
 extern jboolean rvmThrowInterruptedException(Env* env);
 extern void rvmRaiseException(Env* env, Object* e);
-extern void rvmReraiseException(Env* env, void* exInfo);
 
 #endif
 

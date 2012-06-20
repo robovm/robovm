@@ -23,15 +23,21 @@ package org.robovm.compiler.llvm;
  * @version $Id$
  */
 public class Load extends UnaryOpInstruction {
+    private final boolean _volatile;
     private final Ordering ordering;
     private final int alignment;
 
     public Load(Variable result, Value op) {
-        this(result, op, null, -1);
+        this(result, op, false, null, -1);
     }
     
-    public Load(Variable result, Value op, Ordering ordering, int alignment) {
+    public Load(Variable result, Value op, boolean _volatile) {
+        this(result, op, _volatile, null, -1);
+    }
+
+    public Load(Variable result, Value op, boolean _volatile, Ordering ordering, int alignment) {
         super(result, op);
+        this._volatile = _volatile;
         this.ordering = ordering;
         this.alignment = alignment;
     }
@@ -41,6 +47,9 @@ public class Load extends UnaryOpInstruction {
         StringBuilder sb = new StringBuilder();
         sb.append(result);
         sb.append(" = load ");
+        if (_volatile) {
+            sb.append("volatile ");
+        }
         if (ordering != null) {
             sb.append("atomic ");
         }

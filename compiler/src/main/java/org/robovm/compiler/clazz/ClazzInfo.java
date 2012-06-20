@@ -43,6 +43,7 @@ public class ClazzInfo implements Serializable {
     private final Set<String> structDependencies = new HashSet<String>();
     private final List<FieldInfo> fields = new ArrayList<FieldInfo>();
     private final List<MethodInfo> methods = new ArrayList<MethodInfo>();
+    private final Set<String> catches = new HashSet<String>();
     private boolean struct;
     private boolean hasAttributes;
     
@@ -127,6 +128,15 @@ public class ClazzInfo implements Serializable {
     public void setTrampolines(Set<Trampoline> trampolines) {
         this.trampolines.clear();
         this.trampolines.addAll(trampolines);
+    }
+
+    public Set<String> getCatches() {
+        return catches;
+    }
+
+    public void setCatches(Set<String> catches) {
+        this.catches.clear();
+        this.catches.addAll(catches);
     }
 
     public FieldInfo getField(String name, String desc) {

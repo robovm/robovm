@@ -24,19 +24,17 @@ void rvmRaiseException(Env* env, Object* e) {
     if (env->throwable != e) {
         rvmThrow(env, e);
     }
-    jint result = unwindRaiseException(env);
-    if (result == UNWIND_UNHANDLED_EXCEPTION) {
-        rvmAbort("Unhandled exception: %s", e->clazz->name);
+    jboolean (*exceptionMatch)(Env*, TrycatchContext*) = env->vm->options->exceptionMatch;
+    TrycatchContext* tc = env->trycatchContext;
+    while (tc) {
+        if (tc->sel != 0 && (tc->sel == CATCH_ALL_SEL || exceptionMatch(env, tc))) {
+            rvmTrycatchJump(tc);
+            // unreachable
+        }
+        rvmTrycatchLeave(env);
+        tc = env->trycatchContext;
     }
-    rvmAbort("Fatal error in exception handler: %d", result);
-}
-
-void rvmReraiseException(Env* env, void* exInfo) {
-    jint result = unwindReraiseException(env, exInfo);
-    if (result == UNWIND_UNHANDLED_EXCEPTION) {
-        rvmAbort("Unhandled exception: %s", env->throwable->clazz->name);
-    }
-    rvmAbort("Fatal error in exception handler: %d", result);
+    rvmAbort("Unhandled exception: %s", e->clazz->name);
 }
 
 jboolean rvmExceptionCheck(Env* env) {

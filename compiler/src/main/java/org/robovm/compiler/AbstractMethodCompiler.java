@@ -19,8 +19,6 @@ package org.robovm.compiler;
 import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
-import static org.robovm.compiler.llvm.FunctionAttribute.*;
-import static org.robovm.compiler.llvm.Linkage.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.ArrayList;
@@ -28,19 +26,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.robovm.compiler.llvm.BasicBlockRef;
-import org.robovm.compiler.llvm.ConstantBitcast;
 import org.robovm.compiler.llvm.Function;
-import org.robovm.compiler.llvm.FunctionAttribute;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.Inttoptr;
 import org.robovm.compiler.llvm.Label;
-import org.robovm.compiler.llvm.Landingpad;
-import org.robovm.compiler.llvm.Landingpad.Catch;
-import org.robovm.compiler.llvm.NullConstant;
 import org.robovm.compiler.llvm.Ptrtoint;
 import org.robovm.compiler.llvm.Ret;
-import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Unreachable;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
@@ -59,6 +51,7 @@ public abstract class AbstractMethodCompiler {
     protected String className;
     protected SootMethod sootMethod;
     protected Set<Trampoline> trampolines;
+    protected Set<String> catches;
     
     public AbstractMethodCompiler(Config config) {
     }
@@ -67,10 +60,15 @@ public abstract class AbstractMethodCompiler {
         return trampolines;
     }
     
+    public Set<String> getCatches() {
+        return catches;
+    }
+    
     public void compile(ModuleBuilder moduleBuilder, SootMethod method) {
         className = getInternalName(method.getDeclaringClass());
         sootMethod = method;
         trampolines = new HashSet<Trampoline>();
+        catches = new HashSet<String>();
         doCompile(moduleBuilder, method);
         if (method.isSynchronized()) {
             compileSynchronizedWrapper(moduleBuilder, method);
@@ -84,35 +82,34 @@ public abstract class AbstractMethodCompiler {
 
     private void compileSynchronizedWrapper(ModuleBuilder moduleBuilder, SootMethod method) {
         String targetName = mangleMethod(method);
-        Function syncFn = createFunction(targetName + "_synchronized", method, 
-                external, noinline);
+        Function syncFn = FunctionBuilder.synchronizedWrapper(method);
         moduleBuilder.addFunction(syncFn);
         FunctionType functionType = syncFn.getType();
         FunctionRef target = new FunctionRef(targetName, functionType);
         
         Value monitor = null;
         if (method.isStatic()) {
-            FunctionRef fn = new FunctionRef(mangleClass(sootMethod.getDeclaringClass()) + "_ldc", 
-                    new FunctionType(OBJECT_PTR, ENV_PTR));
+            FunctionRef fn = FunctionBuilder.ldcInternal(sootMethod.getDeclaringClass()).ref();
             monitor = call(syncFn, fn, syncFn.getParameterRef(0));
         } else {
-            monitor = new VariableRef("this", OBJECT_PTR);
+            monitor = syncFn.getParameterRef(1);
         }
         
         call(syncFn, BC_MONITOR_ENTER, syncFn.getParameterRef(0), monitor);
         BasicBlockRef bbSuccess = syncFn.newBasicBlockRef(new Label("success"));
         BasicBlockRef bbFailure = syncFn.newBasicBlockRef(new Label("failure"));
-        Value result = invoke(syncFn, target, bbSuccess, bbFailure, syncFn.getParameterRefs());
-        
-        syncFn.newBasicBlock(new Label("success"));
+        trycatchAllEnter(syncFn, bbSuccess, bbFailure);
+
+        syncFn.newBasicBlock(bbSuccess.getLabel());
+        Value result = call(syncFn, target, syncFn.getParameterRefs());
+        trycatchLeave(syncFn);
         call(syncFn, BC_MONITOR_EXIT, syncFn.getParameterRef(0), monitor);
         syncFn.add(new Ret(result));
 
-        syncFn.newBasicBlock(new Label("failure"));
-        Variable lpResult = syncFn.newVariable(new StructureType(I8_PTR, I32));
-        syncFn.add(new Landingpad(lpResult, new ConstantBitcast(BC_PERSONALITY, I8_PTR), new Catch(new NullConstant(I8_PTR))));
+        syncFn.newBasicBlock(bbFailure.getLabel());
+        trycatchLeave(syncFn);
         call(syncFn, BC_MONITOR_EXIT, syncFn.getParameterRef(0), monitor);
-        call(syncFn, BC_RETHROW, syncFn.getParameterRef(0), lpResult.ref());
+        call(syncFn, BC_THROW_IF_EXCEPTION_OCCURRED, syncFn.getParameterRef(0));
         syncFn.add(new Unreachable());
     }
     
@@ -134,10 +131,7 @@ public abstract class AbstractMethodCompiler {
     private void compileCallback(ModuleBuilder moduleBuilder, SootMethod method) {
         validateCallbackMethod(method);
 
-        Function callbackFn = new Function(external,
-                new FunctionAttribute[] { noinline, optsize },
-                mangleMethod(method) + "_callback",
-                getCallbackFunctionType(method));
+        Function callbackFn = FunctionBuilder.callback(method);
         moduleBuilder.addFunction(callbackFn);
 
         // Increase the attach count for the current thread (attaches the thread
@@ -165,24 +159,25 @@ public abstract class AbstractMethodCompiler {
         
         BasicBlockRef bbSuccess = callbackFn.newBasicBlockRef(new Label("success"));
         BasicBlockRef bbFailure = callbackFn.newBasicBlockRef(new Label("failure"));
-        Value result = invoke(callbackFn, targetFn, bbSuccess, bbFailure, args);
+        trycatchAllEnter(callbackFn, env, bbSuccess, bbFailure);
         
-        callbackFn.newBasicBlock(new Label("success"));
+        callbackFn.newBasicBlock(bbSuccess.getLabel());
+        Value result = call(callbackFn, targetFn, args);
         if (callbackFn.getType().getReturnType() == I8_PTR) {
             Variable resultI8Ptr = callbackFn.newVariable(I8_PTR);
             callbackFn.add(new Inttoptr(resultI8Ptr, result, I8_PTR));
             result = resultI8Ptr.ref();
         }
+        trycatchLeave(callbackFn, env);
         popCallbackFrame(callbackFn, env);
         call(callbackFn, BC_DETACH_THREAD_FROM_CALLBACK, env);
         callbackFn.add(new Ret(result));
 
-        callbackFn.newBasicBlock(new Label("failure"));
-        Variable lpResult = callbackFn.newVariable(new StructureType(I8_PTR, I32));
-        callbackFn.add(new Landingpad(lpResult, new ConstantBitcast(BC_PERSONALITY, I8_PTR), new Catch(new NullConstant(I8_PTR))));
+        callbackFn.newBasicBlock(bbFailure.getLabel());
+        trycatchLeave(callbackFn, env);
         popCallbackFrame(callbackFn, env);
         call(callbackFn, BC_DETACH_THREAD_FROM_CALLBACK, env);
-        call(callbackFn, BC_RETHROW, env, lpResult.ref());
+        call(callbackFn, BC_THROW_IF_EXCEPTION_OCCURRED, env);
         callbackFn.add(new Unreachable());
     }
 }

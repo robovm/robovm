@@ -19,8 +19,6 @@ package org.robovm.compiler;
 import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
-import static org.robovm.compiler.llvm.FunctionAttribute.*;
-import static org.robovm.compiler.llvm.Linkage.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.HashMap;
@@ -29,7 +27,6 @@ import java.util.Map;
 import org.robovm.compiler.llvm.Bitcast;
 import org.robovm.compiler.llvm.Br;
 import org.robovm.compiler.llvm.Function;
-import org.robovm.compiler.llvm.FunctionAttribute;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.Getelementptr;
@@ -81,8 +78,7 @@ public class StructMemberMethodCompiler extends AbstractMethodCompiler {
         if (type == null) {
             throw new IllegalArgumentException("Struct class " + sootClass + " has no @StructMember annotated methods");
         }
-        Function fn = new Function(external, new FunctionAttribute[] {noinline, optsize}, 
-                mangleMethod(method), getFunctionType(method));
+        Function fn = FunctionBuilder.structSizeOf(method);
         moduleBuilder.addFunction(fn);
         fn.add(new Ret(sizeof(type)));
     }
@@ -120,8 +116,7 @@ public class StructMemberMethodCompiler extends AbstractMethodCompiler {
         if (structType == null) {
             throw new IllegalArgumentException("Struct class " + sootClass + " has not @StructMember annotated methods");
         }
-        Function function = new Function(external, new FunctionAttribute[] {noinline, optsize}, 
-                mangleMethod(method), getFunctionType(method));
+        Function function = FunctionBuilder.structMember(method);
         moduleBuilder.addFunction(function);
         
         // Get the value of the handle field in the Struct base class and cast it to a <structType>*

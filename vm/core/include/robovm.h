@@ -45,6 +45,7 @@ extern "C" {
 #include <robovm/native.h>
 #include <robovm/proxy.h>
 #include <robovm/log.h>
+#include <robovm/trycatch.h>
 
 #ifdef __cplusplus
 }

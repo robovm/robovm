@@ -222,6 +222,8 @@ public class Linker {
                 deps.addAll(getDependencies(method.getDesc()));
             }
             
+            deps.addAll(clazz.getClazzInfo().getCatches());
+            
             for (Trampoline t : clazz.getClazzInfo().getTrampolines()) {
                 if (!(t instanceof LdcString)) {
                     String targetClass = t.getTarget();
@@ -257,6 +259,7 @@ public class Linker {
         config.getLogger().info("Linking %d classes", required.size());
 
         ModuleBuilder mb = new ModuleBuilder();
+        mb.addInclude(getClass().getClassLoader().getResource(String.format("header-%s-%s.ll", config.getOs(), config.getArch())));
         mb.addInclude(getClass().getClassLoader().getResource("header.ll"));
         
         HashTableGenerator<String, Constant> bcpHashGen = new HashTableGenerator<String, Constant>(new ModifiedUtf8HashFunction());

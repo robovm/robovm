@@ -281,24 +281,6 @@ void* findFunctionAt(void* pc) {
 }
 
 
-void testCall0Raise_target(jint* data) {
-    Env env = {0};
-    data[0] = 0xdeadcab0;
-    unwindRaiseException(&env);
-    data[1] = 0xdeadcab1;
-}
-void testCall0Raise(CuTest* tc) {
-    jint data[2] = {0};
-    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0Raise_target, 1, 0, 0, 0, 0);
-    CuAssertPtrNotNull(tc, ci);
-    call0AddPtr(ci, data);
-    void (*f)(CallInfo*) = (void (*)(CallInfo*)) _call0;
-    f(ci);
-    CuAssertIntEquals(tc, 0xdeadcab0, data[0]);
-    CuAssertIntEquals(tc, 0, data[1]);
-}
-
-
 int main(int argc, char* argv[]) {
     CuSuite* suite = CuSuiteNew();
 
@@ -311,7 +293,6 @@ int main(int argc, char* argv[]) {
     if (argc < 2 || !strcmp(argv[1], "testCall0OneArgOfEach")) SUITE_ADD_TEST(suite, testCall0OneArgOfEach);
     if (argc < 2 || !strcmp(argv[1], "testCall0ManyArgsOfEach")) SUITE_ADD_TEST(suite, testCall0ManyArgsOfEach);
     if (argc < 2 || !strcmp(argv[1], "testCall0Unwind")) SUITE_ADD_TEST(suite, testCall0Unwind);
-    if (argc < 2 || !strcmp(argv[1], "testCall0Raise")) SUITE_ADD_TEST(suite, testCall0Raise);
 
     CuSuiteRun(suite);
 

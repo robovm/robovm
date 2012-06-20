@@ -28,16 +28,22 @@ import java.util.Set;
 public class Store extends Instruction {
     private final Value value;
     private final Value pointer;
+    private final boolean _volatile;
     private final Ordering ordering;
     private final int alignment;
 
     public Store(Value value, Value pointer) {
-        this(value, pointer, null, -1);
+        this(value, pointer, false, null, -1);
     }
 
-    public Store(Value value, Value pointer, Ordering ordering, int alignment) {
+    public Store(Value value, Value pointer, boolean _volatile) {
+        this(value, pointer, _volatile, null, -1);
+    }
+    
+    public Store(Value value, Value pointer, boolean _volatile, Ordering ordering, int alignment) {
         this.value = value;
         this.pointer = pointer;
+        this._volatile = _volatile;
         this.ordering = ordering;
         this.alignment = alignment;
     }
@@ -58,6 +64,9 @@ public class Store extends Instruction {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("store ");
+        if (_volatile) {
+            sb.append("volatile ");
+        }
         if (ordering != null) {
             sb.append("atomic ");
         }

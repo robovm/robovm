@@ -37,23 +37,22 @@ declare i32 @_bcInstanceofArray(%Env*, %Object*, %Object*)
 
 declare i8* @_bcLookupVirtualMethod(%Env*, %Object*, i8*, i8*)
 declare i8* @_bcLookupInterfaceMethod(%Env*, i8**, %Object*, i8*, i8*)
-declare void @_bcThrow(%Env*, %Object*)
-declare void @_bcRethrow(%Env*, {i8*, i32})
+declare void @_bcThrow(%Env*, %Object*) noreturn
 declare void @_bcThrowIfExceptionOccurred(%Env*)
 declare %Object* @_bcExceptionClear(%Env*)
-declare i32 @_bcExceptionMatch(%Env*, i8**)
-declare void @_bcExceptionSet(%Env*, %Object*)
-declare void @_bcThrowNullPointerException(%Env*)
-declare void @_bcThrowArrayIndexOutOfBoundsException(%Env*, i32, i32)
-declare void @_bcThrowArithmeticException(%Env*)
-declare void @_bcThrowUnsatisfiedLinkError(%Env*, i8*)
-declare void @_bcThrowNoClassDefFoundError(%Env*, i8*)
-declare void @_bcThrowNoSuchFieldError(%Env*, i8*)
-declare void @_bcThrowNoSuchMethodError(%Env*, i8*)
-declare void @_bcThrowIllegalAccessError(%Env*, i8*)
-declare void @_bcThrowInstantiationError(%Env*, i8*)
-declare void @_bcThrowIncompatibleClassChangeError(%Env*, i8*)
-declare void @_bcThrowAbstractMethodError(%Env*, i8*)
+declare i32 @rvmTrycatchEnter(%Env*, %TrycatchContext*) returns_twice
+declare void @_bcTrycatchLeave(%Env*)
+declare void @_bcThrowNullPointerException(%Env*) noreturn
+declare void @_bcThrowArrayIndexOutOfBoundsException(%Env*, i32, i32) noreturn
+declare void @_bcThrowArithmeticException(%Env*) noreturn
+declare void @_bcThrowUnsatisfiedLinkError(%Env*, i8*) noreturn
+declare void @_bcThrowNoClassDefFoundError(%Env*, i8*) noreturn
+declare void @_bcThrowNoSuchFieldError(%Env*, i8*) noreturn
+declare void @_bcThrowNoSuchMethodError(%Env*, i8*) noreturn
+declare void @_bcThrowIllegalAccessError(%Env*, i8*) noreturn
+declare void @_bcThrowInstantiationError(%Env*, i8*) noreturn
+declare void @_bcThrowIncompatibleClassChangeError(%Env*, i8*) noreturn
+declare void @_bcThrowAbstractMethodError(%Env*, i8*) noreturn
 
 declare %Object* @_bcNew(%Env*, i8*)
 declare %Object* @_bcNewBooleanArray(%Env*, i32)
@@ -88,9 +87,6 @@ declare i8* @_bcGetStructHandle(%Env*, %Object*)
 declare i8* @_bcByValueGetStructHandle(%Env*, %Object*)
 declare void @_bcCopyStruct(%Env*, %Object*, i8*, i32)
 
-declare i8* @llvm.eh.exception() nounwind
-declare i32 @llvm.eh.selector(i8*, i8*, ...) nounwind
-declare i8* @_bcPersonality()
 declare i8* @llvm.frameaddress(i32) nounwind readnone
 
 

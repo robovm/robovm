@@ -267,6 +267,8 @@ struct ClasspathEntry {
 
 struct Env;
 typedef struct Env Env;
+struct TrycatchContext;
+typedef struct TrycatchContext TrycatchContext;
 
 typedef struct Options {
     char* mainClass;
@@ -286,6 +288,7 @@ typedef struct Options {
     void (*loadFields)(Env*, Class*);
     void (*loadMethods)(Env*, Class*);
     Class* (*findClassAt)(Env*, void*);
+    jboolean (*exceptionMatch)(Env*, TrycatchContext*);
 } Options;
 
 typedef struct VM {
@@ -318,6 +321,19 @@ typedef struct GatewayFrame {
 #define rvmPushGatewayFrame(env) rvmPushGatewayFrame1(env, __gwFrame##__COUNTER__, __builtin_frame_address(0), NULL)
 #define rvmPopGatewayFrame(env) env->gatewayFrames = env->gatewayFrames->prev
 
+struct TrycatchContext {
+    struct TrycatchContext* prev;
+    jint sel;
+    void* fp;
+    void* pc;
+#if defined(RVM_X86)
+    void* esp;
+    void* ebx;
+    void* esi;
+    void* edi;
+#endif
+};
+
 struct Env {
     JNIEnv jni;
     VM* vm;
@@ -326,6 +342,7 @@ struct Env {
     void* reserved0; // Used internally
     void* reserved1; // Used internally
     GatewayFrame* gatewayFrames;
+    TrycatchContext* trycatchContext;
     jint attachCount;
 };
 

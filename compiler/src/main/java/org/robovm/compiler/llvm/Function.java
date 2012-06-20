@@ -38,26 +38,6 @@ public class Function {
     private int counter = 0;
     private final String[] parameterNames;
 
-    public Function(String name, FunctionType type, String ... parameterNames) {
-        this(null, name, type, parameterNames);
-    }
-    
-    public Function(Linkage linkage, String name, FunctionType type, String ... parameterNames) {
-        this(linkage, null, null, name, type, parameterNames);
-    }
-    
-    public Function(Linkage linkage, String section, String name, FunctionType type, String ... parameterNames) {
-        this(linkage, null, section, name, type, parameterNames);
-    }
-    
-    public Function(Linkage linkage, FunctionAttribute[] attributes, String name, FunctionType type, String ... parameterNames) {
-        this(linkage, attributes, null, name, type, parameterNames);
-    }
-    
-    public Function(Linkage linkage, FunctionAttribute[] attributes, FunctionRef ref, String ... parameterNames) {
-        this(linkage, attributes, null, ref.getName(), ref.getType(), parameterNames);
-    }
-    
     public Function(Linkage linkage, FunctionAttribute[] attributes, String section, String name, FunctionType type, String ... parameterNames) {
         this.linkage = linkage;
         this.attributes = attributes;
@@ -73,18 +53,6 @@ public class Function {
         this.parameterNames = parameterNames;
     }
 
-    public Function(FunctionRef ref) {
-        this(null, ref);
-    }
-
-    public Function(Linkage linkage, FunctionRef ref) {
-        this(linkage, ref.getName(), ref.getType(), (String[]) null);
-    }
-    
-    public Function(Linkage linkage, FunctionRef ref, String name) {
-        this(linkage, name, ref.getType(), (String[]) null);
-    }
-    
     public FunctionRef ref() {
         return new FunctionRef(this);
     }

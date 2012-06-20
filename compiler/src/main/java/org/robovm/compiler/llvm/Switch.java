@@ -30,6 +30,10 @@ public class Switch extends Instruction {
     private final BasicBlockRef def;
     private final Map<IntegerConstant, BasicBlockRef> alt;
 
+    public Switch(Value value, BasicBlockRef def, IntegerConstant altVal, BasicBlockRef altBlock) {
+        this(value, def, Collections.singletonMap(altVal, altBlock));
+    }
+    
     public Switch(Value value, BasicBlockRef def, Map<IntegerConstant, BasicBlockRef> alt) {
         if (!value.isInteger()) {
             throw new IllegalArgumentException("Integer type expected");

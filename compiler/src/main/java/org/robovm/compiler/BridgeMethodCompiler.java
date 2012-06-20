@@ -20,7 +20,6 @@ import static org.robovm.compiler.Annotations.*;
 import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
-import static org.robovm.compiler.llvm.FunctionAttribute.*;
 import static org.robovm.compiler.llvm.Linkage.*;
 import static org.robovm.compiler.llvm.Type.*;
 
@@ -80,10 +79,9 @@ public class BridgeMethodCompiler extends AbstractMethodCompiler {
     protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
         validateBridgeMethod(method);
 
-        Function outerFn = createFunction(method, external, noinline);
+        Function outerFn = FunctionBuilder.method(method);
         moduleBuilder.addFunction(outerFn);
-        Function innerFn = createFunction(mangleMethod(method) + "_inner", 
-                method, internal, noinline);
+        Function innerFn = FunctionBuilder.bridgeInner(method);
         moduleBuilder.addFunction(innerFn);
         
         Type[] parameterTypes = innerFn.getType().getParameterTypes();
@@ -139,7 +137,9 @@ public class BridgeMethodCompiler extends AbstractMethodCompiler {
         innerFn.add(new Icmp(nullCheck, Condition.eq, targetFn.ref(), new NullConstant(targetFnType)));
         innerFn.add(new Br(nullCheck.ref(), innerFn.newBasicBlockRef(nullLabel), innerFn.newBasicBlockRef(notNullLabel)));
         innerFn.newBasicBlock(nullLabel);
-        call(innerFn, BC_THROW_UNSATISIFED_LINK_ERROR, innerFn.getParameterRef(0));
+        call(innerFn, BC_THROW_UNSATISIFED_LINK_ERROR, innerFn.getParameterRef(0),
+                moduleBuilder.getString(String.format("Bridge method %s.%s%s not bound", className,
+                        method.getName(), getDescriptor(method))));
         innerFn.add(new Unreachable());
         innerFn.newBasicBlock(notNullLabel);
         

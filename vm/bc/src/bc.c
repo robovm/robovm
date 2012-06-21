@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include <robovm.h>
-#include <unwind.h>
 #include "uthash.h"
 #include "utlist.h"
 #include "MurmurHash3.h"
@@ -39,8 +38,6 @@ typedef struct {
     TrycatchContext tc;
     LandingPad** landingPads;
 } BcTrycatchContext;
-
-extern _Unwind_Reason_Code _rvmPersonality(int version, _Unwind_Action actions, _Unwind_Exception_Class exception_class, struct _Unwind_Exception* exception_info, struct _Unwind_Context* context);
 
 const char* __attribute__ ((weak)) _bcMainClass = NULL;
 extern char** _bcBootclasspath;

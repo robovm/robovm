@@ -141,7 +141,7 @@ Array* rvmCloneArray(Env* env, Array* array) {
     Array* copy = rvmAllocateMemory(env, size);
     if (!copy) return NULL;
     memcpy(copy, array, size);
-    copy->object.monitor = NULL;
+    copy->object.monitor = 0;
     return copy;
 }
 

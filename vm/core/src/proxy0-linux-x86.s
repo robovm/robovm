@@ -38,15 +38,9 @@ RETURN_TYPE_DOUBLE = 3
     .align    16, 0x90
     .type    _proxy0, @function
 _proxy0:
-    .cfi_startproc
-    .cfi_def_cfa %esp, 4
 .Lproxy0Begin:
     pushl %ebp
-    .cfi_def_cfa_offset 8
-    .cfi_offset %ebp, -8
     mov   %esp, %ebp
-    .cfi_def_cfa_offset 8
-    .cfi_def_cfa %ebp, 8
 
     sub   $proxy0_stack_size, %esp       # Make room for local variables on the stack
 
@@ -79,7 +73,6 @@ _proxy0:
 
     leave
     ret
-    .cfi_endproc
 
     .size _proxy0, . - .Lproxy0Begin
 .Lproxy0End:

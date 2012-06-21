@@ -259,7 +259,7 @@ public class Linker {
         config.getLogger().info("Linking %d classes", required.size());
 
         ModuleBuilder mb = new ModuleBuilder();
-        mb.addInclude(getClass().getClassLoader().getResource(String.format("header-%s-%s.ll", config.getOs(), config.getArch())));
+        mb.addInclude(getClass().getClassLoader().getResource(String.format("header-%s-%s.ll", config.getOs().getFamily(), config.getArch())));
         mb.addInclude(getClass().getClassLoader().getResource("header.ll"));
         
         HashTableGenerator<String, Constant> bcpHashGen = new HashTableGenerator<String, Constant>(new ModifiedUtf8HashFunction());

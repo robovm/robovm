@@ -84,7 +84,7 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
     protected CommandLine doGenerateCommandLine(LaunchParameters launchParameters) {
         File dir = getAppDir();
         
-        String fruitstrapPath = "fruitstrap";
+        String fruitstrapPath = new File(config.getHome().getBinDir(), "fruitstrap").getAbsolutePath();
         if (fruitstrapBinPath != null) {
             fruitstrapPath = fruitstrapBinPath.getAbsolutePath();
         }

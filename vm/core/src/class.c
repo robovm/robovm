@@ -1102,7 +1102,7 @@ Object* rvmCloneObject(Env* env, Object* obj) {
     Object* copy = rvmAllocateMemory(env, size);
     if (!copy) return NULL;
     memcpy(copy, obj, size);
-    copy->monitor = NULL;
+    copy->monitor = 0;
     return copy;
 }
 

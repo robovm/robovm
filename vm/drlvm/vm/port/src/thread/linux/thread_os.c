@@ -32,6 +32,9 @@
 #if defined(FREEBSD)
 #define STACK_MMAP_ATTRS \
     (MAP_FIXED | MAP_PRIVATE | MAP_ANON | MAP_STACK)
+#elif defined(DARWIN)
+#define STACK_MMAP_ATTRS \
+    (MAP_FIXED | MAP_PRIVATE | MAP_ANON)
 #else
 #ifdef _IPF_
 #define STACK_MMAP_ATTRS \
@@ -58,7 +61,7 @@ static void suspend_remove_thread(osthread_t thread);
 static port_thread_info_t* suspend_find_thread(osthread_t thread);
 static void sigusr2_handler(int signum, siginfo_t* info, void* context);
 
-
+#if !defined(DARWIN)
 /**
  * Calculates absolute time in future for sem_timedwait timeout.
  * @param ptime The pointer to time structure to fill
@@ -76,6 +79,7 @@ void get_exceed_time(struct timespec* ptime, long delay)
         ++ptime->tv_sec;
     }
 }
+#endif
 
 typedef void* (PORT_CDECL *pthread_func_t)(void*);
 
@@ -355,8 +359,19 @@ static int setup_stack(port_tls_data_t* tlsdata)
     return 0;
 }
 
-inline int find_stack_addr_size(void** paddr, size_t* psize)
+static inline int find_stack_addr_size(void** paddr, size_t* psize)
 {
+#if defined(DARWIN)
+    void* stack_addr;
+    size_t stack_size;
+    pthread_t thread = pthread_self();
+
+    stack_addr = pthread_get_stackaddr_np(thread);
+    stack_size = pthread_get_stacksize_np(thread);
+    *paddr = (void*)((size_t)stack_addr + stack_size);
+    *psize = stack_size;
+    return 0;    
+#else
     int err;
     pthread_attr_t pthread_attr;
     void* stack_addr;
@@ -382,6 +397,7 @@ inline int find_stack_addr_size(void** paddr, size_t* psize)
     *paddr = (void*)((size_t)stack_addr + stack_size);
     *psize = stack_size;
     return 0;
+#endif
 }
 
 static int init_stack(port_tls_data_t* tlsdata, size_t stack_size, boolean temp)
@@ -510,7 +526,7 @@ int port_thread_detach()
 
 int port_thread_set_priority(osthread_t os_thread, int priority)
 {
-#if defined(FREEBSD)
+#if defined(FREEBSD) || defined(DARWIN)
     /* Not sure why we don't just use this on linux? - MRH */
     struct sched_param param;
     int policy;
@@ -591,12 +607,12 @@ void port_thread_exit(int status)
 
 int port_get_thread_times(osthread_t os_thread, int64* pkernel, int64* puser)
 {
+#if defined(FREEBSD) || defined(DARWIN)
+    return EINVAL; /* TOFIX: Implement */
+#else
     clockid_t clock_id;
     struct timespec tp;
     int r;
-#ifdef FREEBSD
-    return EINVAL; /* TOFIX: Implement */
-#else
 
     r = pthread_getcpuclockid(os_thread, &clock_id);
     if (r) return r;
@@ -628,11 +644,16 @@ void port_thread_yield_other(osthread_t os_thread) {
 
     assert(os_thread);
     if (pthread_kill(os_thread, SIGUSR2) == 0) {
+#if !defined(DARWIN)
         // signal sent, let's do timed wait to make sure the signal
         // was actually delivered
         get_exceed_time(&timeout, 10000000L);
         err = sem_timedwait(&PSD->yield_sem, &timeout);
 //        sem_wait(&PSD->yield_sem);
+#else
+        // TODO: Darwin doesn't have sem_timedwait()
+        sem_wait(&PSD->yield_sem);
+#endif
     } else {
         if (pinfo)
             suspend_remove_thread(os_thread);

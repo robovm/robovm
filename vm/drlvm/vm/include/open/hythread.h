@@ -493,7 +493,7 @@ typedef struct HyThread_public {
 #       define HYTHREAD_FAST_TLS (1)
 #       define HYTHREAD_FAST_TLS_ATTRIBUTE __attribute__((tls_model("initial-exec")))
 #   endif
-#elif defined(FREEBSD)
+#elif defined(FREEBSD) || defined(DARWIN)
 #   define APR_TLS_USE
 #   define HYTHREAD_FAST_TLS_ATTRIBUTE   
 #   undef HYTHREAD_FAST_TLS
@@ -512,8 +512,8 @@ typedef struct HyThread_public {
 extern "C" {
 #endif
 
-hy_inline hythread_t VMCALL hythread_self() {
-    extern hythread_t hythread_self_slow();
+static inline hythread_t VMCALL hythread_self() {
+//    extern hythread_t hythread_self_slow();
     return hythread_self_slow();
 }
 

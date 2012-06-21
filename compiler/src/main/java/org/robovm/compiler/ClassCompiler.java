@@ -389,7 +389,7 @@ public class ClassCompiler {
             sootClass.addMethod(sizeOf);
         }
         
-        mb.addInclude(getClass().getClassLoader().getResource(String.format("header-%s-%s.ll", config.getOs(), config.getArch())));
+        mb.addInclude(getClass().getClassLoader().getResource(String.format("header-%s-%s.ll", config.getOs().getFamily(), config.getArch())));
         mb.addInclude(getClass().getClassLoader().getResource("header.ll"));
 
         mb.addFunction(createInstanceof());

@@ -27,7 +27,7 @@
 #define LOG_DOMAIN "tm.native"
 
 #ifdef PLATFORM_POSIX
-#   define hy_inline inline
+#   define hy_inline static inline
 #else
 #   define hy_inline
 #endif //PLATFORM_POSIX

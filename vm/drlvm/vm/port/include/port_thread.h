@@ -29,7 +29,7 @@
 #include "port_general.h"
 
 /* Thread context definition for UNIX-like systems */
-#if defined(LINUX) || defined(FREEBSD) 
+#if defined(LINUX) || defined(FREEBSD) || defined(DARWIN) 
 #if defined(LINUX)
 
 #include <sys/types.h>
@@ -50,7 +50,7 @@ static _syscall0(pid_t, gettid)/* static definition */
 #define gettid() getpid()
 #endif
 
-#endif /* LINUX || FREEBSD */
+#endif /* LINUX || FREEBSD || DARWIN */
 
 
 /* To skip platform_types.h inclusion */

@@ -49,7 +49,7 @@ public class IOSSimulatorTarget extends AbstractIOSTarget {
  
     @Override
     protected List<SDK> getSDKs() {
-        return listSDKs(iosSimBinPath);
+        return listSDKs(iosSimBinPath != null ? iosSimBinPath : new File(config.getHome().getBinDir(), "ios-sim"));
     }
     
     @Override
@@ -63,7 +63,7 @@ public class IOSSimulatorTarget extends AbstractIOSTarget {
     protected CommandLine doGenerateCommandLine(LaunchParameters launchParameters) {
         File dir = getAppDir();
         
-        String iosSimPath = "ios-sim";
+        String iosSimPath = new File(config.getHome().getBinDir(), "ios-sim").getAbsolutePath();
         if (iosSimBinPath != null) {
             iosSimPath = iosSimBinPath.getAbsolutePath();
         }

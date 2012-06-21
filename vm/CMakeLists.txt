@@ -77,7 +77,6 @@ endif()
 # Set up global C and C++ compiler flags
 set(C_CXX_FLAGS "${C_CXX_FLAGS} -Wall -fvisibility=hidden -fdata-sections -ffunction-sections")
 set(C_CXX_FLAGS "${C_CXX_FLAGS} -fno-omit-frame-pointer") # The unwind code relies on frame pointers being present.
-set(C_CXX_FLAGS "${C_CXX_FLAGS} -fasynchronous-unwind-tables") # Generate eh frames for C code. Without it exceptions won't work.
 if(CARCH)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch ${CARCH}")
 else()
@@ -162,9 +161,10 @@ message(STATUS "CMAKE_SHARED_LINKER_FLAGS: ${CMAKE_SHARED_LINKER_FLAGS}")
 message(STATUS "CMAKE_MODULE_LINKER_FLAGS: ${CMAKE_MODULE_LINKER_FLAGS}")
 
 set(EXT_C_FLAGS "${CMAKE_C_FLAGS}")
+set(EXT_LD_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 if(DARWIN)
   if(IOS)
-    set(EXT_C_FLAGS "${EXT_CFLAGS} -isysroot ${SYSROOT} -miphoneos-version-min=3.0")
+    set(EXT_C_FLAGS "${EXT_C_FLAGS} -isysroot ${SYSROOT} -miphoneos-version-min=3.0")
     if (ARCH MATCHES ".*(thumb|arm).*")
       set(EXT_HOST --host=arm-apple-darwin7)
     endif()
@@ -172,20 +172,22 @@ if(DARWIN)
 endif()
 
 set(EXTGC_C_FLAGS  "${EXT_C_FLAGS}")
+set(EXTGC_LD_FLAGS  "${EXT_LD_FLAGS}")
 if(DARWIN)
   set(EXTGC_C_FLAGS "${EXTGC_C_FLAGS} -DNO_DYLD_BIND_FULLY_IMAGE")
 endif()
 ExternalProject_Add(extgc 
   URL ${CMAKE_SOURCE_DIR}/dependencies/bdwgc-20120327.tar.gz
   PATCH_COMMAND patch -d ../extgc -p1 < ${CMAKE_SOURCE_DIR}/dependencies/bdwgc.patch
-  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS}' ../extgc/configure ${EXT_HOST} --enable-shared=no --prefix=${CMAKE_BINARY_DIR}/gc"
+  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS}' LDFLAGS='${EXTGC_LD_FLAGS}' ../extgc/configure ${EXT_HOST} --enable-shared=no --prefix=${CMAKE_BINARY_DIR}/gc"
 )
 install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.a DESTINATION ${INSTALL_DIR})
 
 set(EXTAPR_C_FLAGS "${EXT_C_FLAGS} -DGC_THREADS -include ${CMAKE_BINARY_DIR}/gc/include/gc/gc.h")
+set(EXTAPR_LD_FLAGS  "${EXT_LD_FLAGS}")
 ExternalProject_Add(extapr 
   URL http://archive.apache.org/dist/apr/apr-1.4.6.tar.gz
-  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTAPR_C_FLAGS}' ../extapr/configure ${HOST} --enable-shared=no --disable-dso --prefix=${CMAKE_BINARY_DIR}/apr"
+  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTAPR_C_FLAGS}' LDFLAGS='${EXTAPR_LD_FLAGS}' ../extapr/configure ${HOST} --enable-shared=no --disable-dso --prefix=${CMAKE_BINARY_DIR}/apr"
 )
 add_dependencies(extapr extgc)
 install(FILES ${CMAKE_BINARY_DIR}/apr/lib/libapr-1.a DESTINATION ${INSTALL_DIR} RENAME libapr.a)

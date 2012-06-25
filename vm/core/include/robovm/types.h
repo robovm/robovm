@@ -324,13 +324,31 @@ typedef struct GatewayFrame {
 struct TrycatchContext {
     struct TrycatchContext* prev;
     jint sel;
+#if defined(RVM_X86)
     void* fp;
     void* pc;
-#if defined(RVM_X86)
     void* esp;
     void* ebx;
     void* esi;
     void* edi;
+#elif defined(DARWIN) && defined(RVM_THUMBV7)
+    void* sp; // r13
+    void* r4;
+    void* r5;
+    void* r6;
+    void* fp; // r7
+    void* r8;
+    void* r10;
+    void* r11;
+    void* pc; // r14 (lr)
+    double d8;
+    double d9;
+    double d10;
+    double d11;
+    double d12;
+    double d13;
+    double d14;
+    double d15;
 #endif
 };
 

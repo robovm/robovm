@@ -61,6 +61,8 @@ PORT_INLINE void port_rw_barrier(void)
 {
 #if defined(_EM64T_)
     asm volatile ("mfence" : : : "memory");
+#elif defined(__arm__)
+    asm volatile ("dmb" : : : "memory");
 #else /* General x86 case */
     /*
      * This code must use a lock-prefixed assembly instruction, so that 
@@ -80,13 +82,17 @@ PORT_INLINE void port_rw_barrier(void)
 
 PORT_INLINE void port_write_barrier(void)
 {
+#if defined(__arm__)
+    asm volatile ("dmb" : : : "memory");
+#else
     /* General x86 and x86_64 case */
     /*
      * We could use the same lock-prefixed assembly instruction above,
      * but since we have support for P3 processors (SSE2) we'll just 
      * use 'sfence'.
      */
-     asm volatile ("sfence" : : : "memory");
+     asm volatile ("sfence" : : : "memory")
+#endif
 }
 #endif /* !defined(_IPF_) */
 

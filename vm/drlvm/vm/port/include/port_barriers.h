@@ -91,7 +91,7 @@ PORT_INLINE void port_write_barrier(void)
      * but since we have support for P3 processors (SSE2) we'll just 
      * use 'sfence'.
      */
-     asm volatile ("sfence" : : : "memory")
+     asm volatile ("sfence" : : : "memory");
 #endif
 }
 #endif /* !defined(_IPF_) */

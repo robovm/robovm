@@ -67,28 +67,10 @@ _rvmTrycatchJump:
     mov   esi_offset(%ecx), %esi
     mov   edi_offset(%ecx), %edi
 
-    # Remove the return address of the caller of rvmTrycatchJump from the stack
+    # Remove the return address of the caller of rvmTrycatchEnter from the stack
     pop   %eax
 
     # Set the return value that the call to rvmTrycatchEnter will return
     mov   sel_offset(%ecx), %eax
     # Jump to the return address from the initial call to rvmTrycatchEnter
     jmp   *pc_offset(%ecx)
-
-/*
- * rvmTrycatchLeave(Env* env) 
- */
-    .globl _rvmTrycatchLeave
-    .align 4, 0x90
-_rvmTrycatchLeave:
-    push  %ebp
-    mov   %esp, %ebp
-
-    # env->trycatchContext = env->trycatchContext->prev;
-    mov   8(%ebp), %ecx         # %ecx = First arg (Env*)
-    mov   Env_trycatchContext_offset(%ecx), %eax
-    mov   prev_offset(%eax), %edx
-    mov   %edx, Env_trycatchContext_offset(%ecx)
-
-    leave
-    ret

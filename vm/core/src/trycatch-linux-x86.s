@@ -86,27 +86,3 @@ rvmTrycatchJump:
 
     .size rvmTrycatchJump, . - .LrvmTrycatchJumpBegin
 .LrvmTrycatchJumpEnd:
-
-/*
- * rvmTrycatchLeave(Env* env) 
- */
-    .globl rvmTrycatchLeave
-    
-    .align    16, 0x90
-    .type    rvmTrycatchLeave, @function
-rvmTrycatchLeave:
-.LrvmTrycatchLeaveBegin:
-    push  %ebp
-    mov   %esp, %ebp
-
-    # env->trycatchContext = env->trycatchContext->prev;
-    mov   8(%ebp), %ecx         # %ecx = First arg (Env*)
-    mov   Env_trycatchContext_offset(%ecx), %eax
-    mov   prev_offset(%eax), %edx
-    mov   %edx, Env_trycatchContext_offset(%ecx)
-
-    leave
-    ret
-
-    .size rvmTrycatchLeave, . - .LrvmTrycatchLeaveBegin
-.LrvmTrycatchLeaveEnd:

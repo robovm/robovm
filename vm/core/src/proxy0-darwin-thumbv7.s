@@ -36,10 +36,10 @@ RETURN_TYPE_DOUBLE = 3
     .code     16
     .thumb_func __proxy0
 __proxy0:
-    push {r4, r5, r7, lr}
+    push {r4, r7, lr}
 
     @ Save frame pointer
-    add r7, sp, #8
+    add r7, sp, #4
 
     sub sp, sp, #CallInfo_size              @ Make room for a CallInfo struct on the stack
 
@@ -65,4 +65,4 @@ __proxy0:
 
     add sp, sp, #CallInfo_size              @ Restore stack pointer
 
-    pop {r4, r5, r7, pc}
+    pop {r4, r7, pc}

@@ -173,90 +173,19 @@ PORT_INLINE void * port_atomic_casptr(volatile void ** data, void * value, const
 #elif defined (PLATFORM_POSIX)  
 
 PORT_INLINE U_8 port_atomic_cas8(volatile U_8 * data , U_8 value, U_8 comp) {
-#if defined(_IA32_) || defined(_EM64T_)
-    __asm__ __volatile__(
-        "lock cmpxchgb %1, (%2)"
-        :"=a"(comp)
-        :"d"(value), "r"(data), "0"(comp)
-    );
-    return comp;
-#else
-    ABORT("Not supported");
-#endif
+    return __sync_val_compare_and_swap(data, comp, value);
 }
 
 PORT_INLINE uint16 port_atomic_cas16(volatile uint16 * data , uint16 value, uint16 comp) {
-    uint16 ret;
-#if defined(_IA32_) || defined(_EM64T_)
-    __asm__ __volatile__(
-        "lock cmpxchgw %w1, %2"
-        :"=a"(ret)
-        :"q"(value), "m"(*data), "0"(comp)
-        : "memory"
-    );
-    return ret;
-#else
-    ABORT("Not supported");
-#endif
+    return __sync_val_compare_and_swap(data, comp, value);
 }
 
 PORT_INLINE uint64 port_atomic_cas64(volatile uint64 * data , uint64 value, uint64 comp) {
-#if defined(_IA32_)
-    __asm__ __volatile__(
-        "push %%ebx;\n\t"
-        "lea %0, %%esi;\n\t"
-        "mov (%%esi), %%eax;\n\t"
-        "mov 4(%%esi), %%edx;\n\t"
-        "lea %1, %%esi;\n\t"
-        "mov (%%esi), %%ebx;\n\t"
-        "mov 4(%%esi), %%ecx;\n\t"
-        "mov %2, %%esi;\n\t"
-        "lock cmpxchg8b (%%esi);\n\t"
-        "lea %0, %%esi;\n\t"
-        "mov %%eax, (%%esi);\n\t"
-        "mov %%edx, 4(%%esi);\n\t"
-        "pop %%ebx"
-        : /* no outputs (why not comp?)*/
-        :"m"(comp), "m"(value), "m"(data) /* inputs */
-        :"%eax", "%ecx", "%edx", "%esi", "memory" /* clobbers */
-    );
-    return comp;
-#elif defined(_EM64T_) // defined(_IA32_)
-    __asm__ __volatile__(
-        "lock cmpxchgq %1, (%2)"
-        :"=a"(comp) /* outputs */
-        :"d"(value), "r"(data), "a"(comp)
-    );
-    return comp;
-#else
-    ABORT("Not supported");
-#endif
+    return __sync_val_compare_and_swap(data, comp, value);
 }
 
 PORT_INLINE void * port_atomic_casptr(volatile void ** data, void * value, const void * comp) {
-#if defined(_IA32_)
-    U_32 Exchange = (U_32)value;
-    U_32 Comperand = (U_32)comp;
-    __asm__ __volatile__(
-        "lock cmpxchgl %1, (%2)"
-        :"=a"(Comperand)
-        :"d"(Exchange), "r"(data), "a"(Comperand) 
-        );
-    return (void*)Comperand;
-
-#elif defined(_EM64T_) // defined(_IA32_)
-    uint64 Exchange = (uint64)value;
-    uint64 Comperand = (uint64)comp;
-    __asm__(
-        "lock cmpxchgq %1, (%2)"
-        :"=a"(Comperand)
-        :"d"(Exchange), "r"(data), "a"(Comperand) 
-        );
-    return (void *)Comperand;
-
-#else // defined(_EM64T_)
-    ABORT("Not supported");
-#endif
+    return (void*) __sync_val_compare_and_swap(data, comp, value);
 }
 
 #endif //defined (POSIX)

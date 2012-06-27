@@ -1,7 +1,6 @@
 project(core)
-include(../../drlvm/drlvm-defines.cmake)
 
-include_directories(../../drlvm/vm/include ../../drlvm/vm/port/include ../include ${CMAKE_BINARY_DIR}/gc/include ${CMAKE_BINARY_DIR}/apr/include/apr-1)
+include_directories(../include ${CMAKE_BINARY_DIR}/gc/include)
 
 set(SRC
   array.c 
@@ -13,6 +12,7 @@ set(SRC
   log.c 
   memory.c 
   method.c 
+  monitor.c 
   native.c 
   proxy.c 
   string.c 

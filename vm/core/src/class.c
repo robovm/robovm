@@ -69,6 +69,7 @@ Class* java_lang_UnsupportedOperationException;
 Class* java_lang_IllegalMonitorStateException;
 Class* java_lang_InstantiationException;
 Class* java_lang_InterruptedException;
+Class* java_lang_IllegalStateException;
 
 Class* java_lang_InterruptedException;
 
@@ -144,11 +145,11 @@ static jboolean addLoadedClass(Env* env, Class* clazz) {
 }
 
 static inline void obtainClassLock() {
-    lockMutex(&classLock);
+    rvmLockMutex(&classLock);
 }
 
 static inline void releaseClassLock() {
-    unlockMutex(&classLock);
+    rvmUnlockMutex(&classLock);
 }
 
 static Class* createPrimitiveClass(Env* env, const char* desc) {
@@ -410,7 +411,7 @@ static jboolean fixClassPointer(Env* env, Class* c, void* data) {
 
 jboolean rvmInitClasses(Env* env) {
 
-    if (!initMutex(&classLock)) {
+    if (rvmInitMutex(&classLock) != 0) {
         return FALSE;
     }
 
@@ -511,6 +512,8 @@ jboolean rvmInitClasses(Env* env) {
     if (!java_lang_InstantiationException) return FALSE;
     java_lang_InterruptedException = findBootClass(env, "java/lang/InterruptedException");
     if (!java_lang_InterruptedException) return FALSE;
+    java_lang_IllegalStateException = findBootClass(env, "java/lang/IllegalStateException");
+    if (!java_lang_IllegalStateException) return FALSE;
 
     prim_Z = createPrimitiveClass(env, "Z");
     if (!prim_Z) return FALSE;
@@ -1102,7 +1105,7 @@ Object* rvmCloneObject(Env* env, Object* obj) {
     Object* copy = rvmAllocateMemory(env, size);
     if (!copy) return NULL;
     memcpy(copy, obj, size);
-    copy->monitor = 0;
+    copy->lock = 0;
     return copy;
 }
 

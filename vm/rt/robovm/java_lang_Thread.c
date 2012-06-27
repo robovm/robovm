@@ -15,13 +15,12 @@
  */
 #include <robovm.h>
 
-Thread* Java_java_lang_Thread_currentThread(Env* env, Class* cls) {
-    return env->currentThread;
+JavaThread* Java_java_lang_Thread_currentThread(Env* env, Class* cls) {
+    return env->currentThread->threadObj;
 }
 
-jlong Java_java_lang_Thread_internalStart(Env* env, Class* cls, Thread* t) {
-    jlong threadPtr = rvmStartThread(env, t);
-    return threadPtr;
+jlong Java_java_lang_Thread_internalStart(Env* env, Class* cls, JavaThread* t) {
+    return rvmStartThread(env, t);
 }
 
 void Java_java_lang_Thread_internalSleep(Env* env, Class* cls, jlong millis, jint nanos) {
@@ -29,25 +28,53 @@ void Java_java_lang_Thread_internalSleep(Env* env, Class* cls, jlong millis, jin
 }
 
 jboolean Java_java_lang_Thread_internalInterrupted(Env* env, Class* cls) {
-    return rvmThreadClearInterrupted(env, env->currentThread);
+    jboolean interrupted = env->currentThread->interrupted;
+    env->currentThread->interrupted = FALSE;
+    return interrupted;
 }
 
-jboolean Java_java_lang_Thread_internalIsInterrupted(Env* env, Class* cls, Thread* thread) {
-    return rvmThreadIsInterrupted(env, thread);
+jboolean Java_java_lang_Thread_internalIsInterrupted(Env* env, Class* cls, JavaThread* threadObj) {
+    rvmLockThreadsList();
+    Thread* thread = (Thread*) LONG_TO_PTR(threadObj->threadPtr);
+    jboolean interrupted = FALSE;
+    if (thread) {
+        interrupted = thread->interrupted;
+    }
+    rvmUnlockThreadsList();
+    return interrupted;
 }
 
-void Java_java_lang_Thread_internalInterrupt(Env* env, Class* cls, Thread* thread) {
-    rvmThreadInterrupt(env, thread);
+void Java_java_lang_Thread_internalInterrupt(Env* env, Class* cls, JavaThread* threadObj) {
+    rvmLockThreadsList();
+    Thread* thread = (Thread*) LONG_TO_PTR(threadObj->threadPtr);
+    if (thread) {
+        rvmThreadInterrupt(env, thread);
+    }
+    rvmUnlockThreadsList();
 }
 
 jboolean Java_java_lang_Thread_internalHoldsLock(Env* env, Class* cls, Object* obj) {
-    return rvmThreadHoldsLock(env, obj);
+    if (!obj) {
+        rvmThrowNullPointerException(env);
+        return FALSE;
+    }
+    rvmLockThreadsList();
+    jboolean result = rvmHoldsLock(env, env->currentThread, obj);
+    rvmUnlockThreadsList();
+    return result;
 }
 
 void Java_java_lang_Thread_internalYield(Env* env, Class* cls) {
-    rvmThreadYield(env);
+    sched_yield();
 }
 
-jint Java_java_lang_Thread_internalGetState(Env* env, Class* cls, Thread* t) {
-    return rvmThreadGetState(env, t);
+jint Java_java_lang_Thread_internalGetState(Env* env, Class* cls, JavaThread* threadObj) {
+    rvmLockThreadsList();
+    Thread* thread = (Thread*) LONG_TO_PTR(threadObj->threadPtr);
+    jint status = THREAD_ZOMBIE; // If thread==NULL we assume the thread has been finished
+    if (thread) {
+        status = thread->status;
+    }
+    rvmUnlockThreadsList();
+    return status;
 }

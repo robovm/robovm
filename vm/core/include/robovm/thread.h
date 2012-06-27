@@ -17,32 +17,41 @@
 #define ROBOVM_THREAD_H
 
 enum {
-    THREAD_STATE_NEW,
-    THREAD_STATE_RUNNABLE,
-    THREAD_STATE_BLOCKED,
-    THREAD_STATE_WAITING,
-    THREAD_STATE_TIMED_WAITING,
-    THREAD_STATE_TERMINATED
+    THREAD_UNDEFINED    = -1,       /* makes enum compatible with int32_t */
+
+    /* these match up with JDWP values */
+    THREAD_ZOMBIE       = 0,        /* TERMINATED */
+    THREAD_RUNNING      = 1,        /* RUNNABLE or running now */
+    THREAD_TIMED_WAIT   = 2,        /* TIMED_WAITING in Object.wait() */
+    THREAD_MONITOR      = 3,        /* BLOCKED on a monitor */
+    THREAD_WAIT         = 4,        /* WAITING in Object.wait() */
+    /* non-JDWP states */
+    THREAD_INITIALIZING = 5,        /* allocated, not yet running */
+    THREAD_STARTING     = 6,        /* started, not yet on thread list */
+    THREAD_NATIVE       = 7,        /* off in a JNI native method */
+    THREAD_VMWAIT       = 8,        /* waiting on a VM resource */
+    THREAD_SUSPENDED    = 9,        /* suspended, usually by GC or debugger */
+};
+
+/* thread priorities, from java.lang.Thread */
+enum {
+    THREAD_MIN_PRIORITY     = 1,
+    THREAD_NORM_PRIORITY    = 5,
+    THREAD_MAX_PRIORITY     = 10,
 };
 
 extern jboolean rvmInitThreads(Env* env);
-extern void rvmMonitorEnter(Env* env, Object* obj);
-extern void rvmMonitorExit(Env* env, Object* obj);
-extern void rvmMonitorNotify(Env* env, Object* obj);
-extern void rvmMonitorNotifyAll(Env* env, Object* obj);
-extern void rvmMonitorWait(Env* env, Object* obj, jlong millis, jint nanos);
-extern jlong rvmStartThread(Env* env, Thread* thread);
-extern void rvmThreadSleep(Env* env, jlong millis, jint nanos);
-extern jboolean rvmThreadHoldsLock(Env* env, Object* obj);
-extern jboolean rvmThreadClearInterrupted(Env* env, Thread* thread);
-extern jboolean rvmThreadIsInterrupted(Env* env, Thread* thread);
-extern void rvmThreadInterrupt(Env* env, Thread* thread);
+extern void rvmLockThreadsList();
+extern void rvmUnlockThreadsList();
+extern jlong rvmStartThread(Env* env, JavaThread* threadObj);
 extern void rvmThreadYield(Env* env);
 extern jint rvmAttachCurrentThread(VM* vm, Env** env, char* name, Object* group);
 extern jint rvmAttachCurrentThreadAsDaemon(VM* vm, Env** env, char* name, Object* group);
 extern jint rvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount);
 extern jint rvmGetEnv(VM* vm, Env** env);
-extern jint rvmThreadGetState(Env* env, Thread* thread);
+extern Thread* rvmGetThreadByThreadId(Env* env, uint32_t threadId);
+extern jint rvmChangeThreadStatus(Env* env, Thread* thread, jint newStatus);
+extern void rvmChangeThreadPriority(Env* env, Thread* thread, jint priority);
 
 #endif
 

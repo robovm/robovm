@@ -151,12 +151,16 @@ Env* rvmStartup(Options* options) {
     if (!rvmInitMethods(env)) return NULL;
     TRACE("Initializing strings");
     if (!rvmInitStrings(env)) return NULL;
+    TRACE("Initializing monitors");
+    if (!rvmInitMonitors(env)) return NULL;
     TRACE("Initializing threads");
     if (!rvmInitThreads(env)) return NULL;
     TRACE("Initializing attributes");
     if (!rvmInitAttributes(env)) return NULL;
     TRACE("Initializing primitive wrapper classes");
     if (!rvmInitPrimitiveWrapperClasses(env)) return NULL;
+    TRACE("Initializing exceptions");
+    if (!rvmInitExceptions(env)) return NULL;
 
     // Initialize the RoboVM rt JNI code
 //    RT_JNI_OnLoad(&vm->javaVM, NULL);
@@ -170,7 +174,7 @@ Env* rvmStartup(Options* options) {
     TRACE("Creating system ClassLoader");
     systemClassLoader = rvmGetSystemClassLoader(env);
     if (rvmExceptionOccurred(env)) return NULL;
-    env->currentThread->contextClassLoader = systemClassLoader;
+    env->currentThread->threadObj->contextClassLoader = systemClassLoader;
 
     TRACE("Initialization done");
 
@@ -199,23 +203,10 @@ jboolean rvmRun(Env* env) {
             }
         }
     }
+
     Object* throwable = rvmExceptionOccurred(env);
-    if (throwable) {
-        // TODO: Handle when the call to printStackTrace fails with an exception
-        rvmExceptionClear(env);
-        Method* printStackTrace = rvmGetInstanceMethod(env, java_lang_Thread, "printStackTrace", "(Ljava/lang/Throwable;)V");
-        if (printStackTrace) {
-            jvalue args[1];
-            args[0].l = (jobject) throwable;
-            rvmCallVoidInstanceMethodA(env, (Object*) env->currentThread, printStackTrace, args);
-        }
-        rvmThrow(env, throwable);
-        // TODO: Wait for other threads to finish?
-    }
-    if (!clazz) {
-        fprintf(stderr, "Main class %s not found.\n", options->mainClass);
-    }
-    return !rvmExceptionCheck(env);
+    rvmDetachCurrentThread(env->vm, TRUE);
+    return throwable == NULL ? TRUE : FALSE;
 }
 
 void rvmShutdown(Env* env, jint code) {

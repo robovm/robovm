@@ -32,6 +32,7 @@ extern "C" {
 
 #include <robovm/types.h>
 #include <robovm/access.h>
+#include <robovm/atomic.h>
 #include <robovm/memory.h>
 #include <robovm/init.h>
 #include <robovm/method.h>
@@ -46,6 +47,8 @@ extern "C" {
 #include <robovm/proxy.h>
 #include <robovm/log.h>
 #include <robovm/trycatch.h>
+#include <robovm/mutex.h>
+#include <robovm/monitor.h>
 
 #ifdef __cplusplus
 }

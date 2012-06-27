@@ -28,14 +28,14 @@ jint Java_java_lang_Object_hashCode(Env* env, Object* thiz) {
 }
 
 void Java_java_lang_Object_notify(Env* env, Object* thiz) {
-    rvmMonitorNotify(env, thiz);
+    rvmObjectNotify(env, thiz);
 }
 
 void Java_java_lang_Object_notifyAll(Env* env, Object* thiz) {
-    rvmMonitorNotifyAll(env, thiz);
+    rvmObjectNotifyAll(env, thiz);
 }
 
 void Java_java_lang_Object_wait(Env* env, Object* thiz, jlong millis, jint nanos) {
-    rvmMonitorWait(env, thiz, millis, nanos);
+    rvmObjectWait(env, thiz, millis, nanos, TRUE);
 }
 

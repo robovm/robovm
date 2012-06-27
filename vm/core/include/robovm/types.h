@@ -16,6 +16,7 @@
 #ifndef ROBOVM_TYPES_H
 #define ROBOVM_TYPES_H
 
+#include <pthread.h>
 #include <jni_types.h>
 #include <jni.h>
 #include <limits.h>
@@ -43,11 +44,13 @@ typedef struct Class Class;
 typedef struct Object Object;
 typedef struct ClassLoader ClassLoader;
 typedef struct DataObject DataObject;
-typedef uint32_t Monitor;
 typedef struct Thread Thread;
+typedef struct JavaThread JavaThread;
+typedef struct Monitor Monitor;
 typedef struct Array Array;
 typedef struct EnclosingMethod EnclosingMethod;
 typedef struct InnerClass InnerClass;
+typedef pthread_mutex_t Mutex;
 
 struct Field {
   Field* next;
@@ -112,7 +115,7 @@ struct Exception {
 
 struct Object {
   Class* clazz;
-  Monitor monitor;
+  uint32_t lock;
 };
 
 /* 
@@ -167,10 +170,20 @@ struct EnclosingMethod {
   char* methodDesc;
 };
 
+struct Monitor {
+  Thread*     owner;          /* which thread currently owns the lock? */
+  int         lockCount;      /* owner's recursive lock depth */
+  Object*     obj;            /* what object are we part of [debug only] */
+
+  Thread*     waitSet;  /* threads currently waiting on this monitor */
+  Monitor*    next;
+  Mutex lock;
+};
+
 // NOTE: The compiler sorts fields by size so the order of the fields here don't match the order in Thread.java
-struct Thread {
+struct JavaThread {
   Object object;
-  jlong threadPtr;
+  jlong threadPtr; // Points to the Thread
   jlong id;
   jlong stackSize;
   Object* group;
@@ -187,6 +200,20 @@ struct Thread {
   Object* lock;
   jboolean daemon;
   jboolean started;
+};
+
+struct Thread {
+  pthread_t pThread;
+  JavaThread* threadObj;
+  jint threadId;
+  jboolean interrupted;
+  Monitor* waitMonitor;
+  Mutex waitMutex;
+  jint status;
+  pthread_cond_t waitCond;
+  struct Thread* waitNext;
+  struct Thread* prev;
+  struct Thread* next;
 };
 
 struct Array {

@@ -15,9 +15,6 @@
  */
 #include <robovm.h>
 #include <string.h>
-#if defined(DARWIN)
-#   include <libkern/OSAtomic.h>
-#endif
 
 void* rvmAllocateMemory(Env* env, int size) {
     void* m = GC_MALLOC(size);
@@ -38,28 +35,3 @@ void* rvmCopyMemory(Env* env, const void* src, int size) {
 void* rvmCopyMemoryZ(Env* env, const char* src) {
     return rvmCopyMemory(env, src, strlen(src) + 1);
 }
-
-jboolean rvmCompareAndSwapInt(jint* ptr, jint oldval, jint newval) {
-#if defined(DARWIN)
-    return OSAtomicCompareAndSwap32(oldval, newval, ptr) ? TRUE : FALSE;
-#else
-    return __sync_bool_compare_and_swap(ptr, oldval, newval) ? TRUE : FALSE;
-#endif
-}
-
-jboolean rvmCompareAndSwapLong(jlong* ptr, jlong oldval, jlong newval) {
-#if defined(DARWIN)
-    return OSAtomicCompareAndSwap64(oldval, newval, ptr) ? TRUE : FALSE;
-#else
-    return __sync_bool_compare_and_swap(ptr, oldval, newval) ? TRUE : FALSE;
-#endif
-}
-
-jboolean rvmCompareAndSwapPtr(void** ptr, void* oldval, void* newval) {
-#if defined(DARWIN)
-    return OSAtomicCompareAndSwapPtr(oldval, newval, ptr) ? TRUE : FALSE;
-#else
-    return __sync_bool_compare_and_swap(ptr, oldval, newval) ? TRUE : FALSE;
-#endif
-}
-

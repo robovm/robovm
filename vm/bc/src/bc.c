@@ -678,13 +678,13 @@ Object* _bcLdcClass(Env* env, ClassInfoHeader* header) {
 
 void _bcMonitorEnter(Env* env, Object* obj) {
     ENTER;
-    rvmMonitorEnter(env, obj);
+    rvmLockObject(env, obj);
     LEAVEV;
 }
 
 void _bcMonitorExit(Env* env, Object* obj) {
     ENTER;
-    rvmMonitorExit(env, obj);
+    rvmUnlockObject(env, obj);
     LEAVEV;
 }
 

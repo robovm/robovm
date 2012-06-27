@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ACCESS_H
-#define ACCESS_H
+#ifndef ROBOVM_ACCESS_H
+#define ROBOVM_ACCESS_H
 
 #define ACC_PUBLIC 0x0001
 #define ACC_PRIVATE 0x0002

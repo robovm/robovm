@@ -1102,13 +1102,13 @@ static void SetDoubleArrayRegion(JNIEnv* env, jdoubleArray array, jsize start, j
 }
 
 static jint MonitorEnter(JNIEnv* env, jobject obj) {
-    rvmMonitorEnter((Env*) env, (Object*) obj);
+    rvmLockObject((Env*) env, (Object*) obj);
     if (rvmExceptionOccurred((Env*) env)) return -1;
     return 0;
 }
 
 static jint MonitorExit(JNIEnv* env, jobject obj) {
-    rvmMonitorExit((Env*) env, (Object*) obj);
+    rvmUnlockObject((Env*) env, (Object*) obj);
     if (rvmExceptionOccurred((Env*) env)) return -1;
     return 0;
 }

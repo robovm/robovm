@@ -592,21 +592,22 @@ public class Thread implements Runnable {
      * @return a {@link State} value.
      */
     public State getState() {
-        int s = internalGetState(this);
-        if (s == State.BLOCKED.ordinal()) {
-            return State.BLOCKED;
-        } else if (s == State.NEW.ordinal()) {
-            return State.NEW;
-        } else if (s == State.RUNNABLE.ordinal()) {
-            return State.RUNNABLE;
-        } else if (s == State.TERMINATED.ordinal()) {
-            return State.TERMINATED;
-        } else if (s == State.TIMED_WAITING.ordinal()) {
-            return State.TIMED_WAITING;
-        } else if (s == State.WAITING.ordinal()) {
-            return State.WAITING;
+        if (threadPtr != 0) {
+            int s = internalGetState(this);
+            switch (s) {
+            case 0: return State.TERMINATED;    // ZOMBIE
+            case 1: return State.RUNNABLE;      // RUNNING
+            case 2: return State.TIMED_WAITING; // TIMED_WAIT
+            case 3: return State.BLOCKED;       // MONITOR
+            case 4: return State.WAITING;       // WAIT
+            case 5: return State.NEW;           // INITIALIZING
+            case 6: return State.NEW;           // STARTING
+            case 7: return State.RUNNABLE;      // NATIVE
+            case 8: return State.WAITING;       // VMWAIT
+            case 9: return State.RUNNABLE;      // SUSPENDED
+            }
         }
-        throw new IllegalStateException();
+        return started ? State.TERMINATED : State.NEW;
     }
     private static native int internalGetState(Thread thread);
 

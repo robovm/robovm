@@ -16,10 +16,12 @@
 #ifndef ROBOVM_EXCEPTION_H
 #define ROBOVM_EXCEPTION_H
 
+extern jboolean rvmInitExceptions(Env* env);
 extern Object* rvmExceptionOccurred(Env* env);
 extern jboolean rvmExceptionCheck(Env* env);
 extern Object* rvmExceptionClear(Env* env);
 extern void rvmExceptionPrintStackTrace(Env* env, Object* e, FILE* f);
+extern void rvmPrintStackTrace(Env* env, Object* throwable);
 extern void rvmThrow(Env* env, Object* e);
 extern jboolean rvmThrowNew(Env* env, Class* clazz, const char* message);
 extern jboolean rvmThrowNewf(Env* env, Class* clazz, const char* format, ...);
@@ -45,8 +47,9 @@ extern jboolean rvmThrowUnsatisfiedLinkError(Env* env, const char* message);
 extern jboolean rvmThrowIllegalArgumentException(Env* env, const char* message);
 extern jboolean rvmThrowArithmeticException(Env* env);
 extern jboolean rvmThrowLinkageError(Env* env);
-extern jboolean rvmThrowIllegalMonitorStateException(Env* env);
+extern jboolean rvmThrowIllegalMonitorStateException(Env* env, const char* message);
 extern jboolean rvmThrowInterruptedException(Env* env);
+extern jboolean rvmThrowIllegalStateException(Env* env, const char* message);
 extern void rvmRaiseException(Env* env, Object* e);
 
 #endif

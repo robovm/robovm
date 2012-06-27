@@ -75,10 +75,7 @@ public abstract class AbstractTarget implements Target {
             libs.addAll(Arrays.asList("-Wl,--whole-archive", "-lrobovm-rt", "-Wl,--no-whole-archive"));            
         }
         libs.addAll(Arrays.asList(
-                "-lrobovm-core", 
-                "-lrobovm-drlvm", 
-                "-lapr", "-lgc", 
-                "-lpthread", "-ldl", "-lm", "-lstdc++"));
+                "-lrobovm-core", "-lgc", "-lpthread", "-ldl", "-lm", "-lstdc++"));
         if (config.getOs().getFamily() == OS.Family.linux) {
             libs.add("-lrt");
         }

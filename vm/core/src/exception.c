@@ -20,6 +20,14 @@
 #define LOG_TAG "core.exception"
 #define THROW_FORMAT_BUF_SIZE 512
 
+static Method* printStackTraceMethod;
+
+jboolean rvmInitExceptions(Env* env) {
+    printStackTraceMethod = rvmGetInstanceMethod(env, java_lang_Thread, "printStackTrace", "(Ljava/lang/Throwable;)V");
+    if (!printStackTraceMethod) return FALSE;
+    return TRUE;
+}
+
 void rvmRaiseException(Env* env, Object* e) {
     if (env->throwable != e) {
         rvmThrow(env, e);
@@ -48,6 +56,12 @@ Object* rvmExceptionOccurred(Env* env) {
 void rvmExceptionPrintStackTrace(Env* env, Object* e, FILE* f) {
     // TODO: Write the stack trace to the FILE*
     fprintf(stderr, "Exception occurred: %s\n", e->clazz->name);
+}
+
+void rvmPrintStackTrace(Env* env, Object* throwable) {
+    jvalue args[1];
+    args[0].l = (jobject) throwable;
+    rvmCallVoidInstanceMethodA(env, (Object*) env->currentThread, printStackTraceMethod, args);
 }
 
 Object* rvmExceptionClear(Env* env) {
@@ -195,12 +209,16 @@ jboolean rvmThrowArithmeticException(Env* env) {
     return rvmThrowNew(env, java_lang_ArithmeticException, NULL);
 }
 
-jboolean rvmThrowIllegalMonitorStateException(Env* env) {
-    return rvmThrowNew(env, java_lang_IllegalMonitorStateException, NULL);
+jboolean rvmThrowIllegalMonitorStateException(Env* env, const char* message) {
+    return rvmThrowNew(env, java_lang_IllegalMonitorStateException, message);
 }
 
 jboolean rvmThrowInterruptedException(Env* env) {
     return rvmThrowNew(env, java_lang_InterruptedException, NULL);
+}
+
+jboolean rvmThrowIllegalStateException(Env* env, const char* message) {
+    return rvmThrowNew(env, java_lang_IllegalStateException, message);
 }
 
 jboolean rvmThrowInstantiationError(Env* env, const char* message) {

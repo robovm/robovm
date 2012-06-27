@@ -28,11 +28,11 @@ static Mutex nativeLibsLock;
 static jvalue emptyJValueArgs[1];
 
 static inline void obtainNativeLibsLock() {
-    lockMutex(&nativeLibsLock);
+    rvmLockMutex(&nativeLibsLock);
 }
 
 static inline void releaseNativeLibsLock() {
-    unlockMutex(&nativeLibsLock);
+    rvmUnlockMutex(&nativeLibsLock);
 }
 
 static Method* findMethod(Env* env, Class* clazz, const char* name, const char* desc) {
@@ -85,7 +85,7 @@ static Method* getMethod(Env* env, Class* clazz, const char* name, const char* d
 }
 
 jboolean rvmInitMethods(Env* env) {
-    if (!initMutex(&nativeLibsLock)) {
+    if (rvmInitMutex(&nativeLibsLock) != 0) {
         return FALSE;
     }
     return TRUE;

@@ -183,19 +183,6 @@ ExternalProject_Add(extgc
 )
 install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.a DESTINATION ${INSTALL_DIR})
 
-set(EXTAPR_C_FLAGS "${EXT_C_FLAGS} -DGC_THREADS -include ${CMAKE_BINARY_DIR}/gc/include/gc/gc.h")
-set(EXTAPR_LD_FLAGS  "${EXT_LD_FLAGS}")
-if (IOS AND ARCH MATCHES ".*(thumb|arm).*")
-  set(EXTAPR_EXTRA_FLAGS "ac_cv_file__dev_zero=yes ac_cv_func_setpgrp_void=yes apr_cv_tcp_nodelay_with_cork=yes ac_cv_sizeof_struct_iovec=8")
-endif()
-ExternalProject_Add(extapr 
-  URL http://archive.apache.org/dist/apr/apr-1.4.6.tar.gz
-  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTAPR_C_FLAGS}' LDFLAGS='${EXTAPR_LD_FLAGS}' ../extapr/configure ${EXT_HOST} --enable-shared=no --disable-dso --prefix=${CMAKE_BINARY_DIR}/apr ${EXTAPR_EXTRA_FLAGS}"
-)
-add_dependencies(extapr extgc)
-install(FILES ${CMAKE_BINARY_DIR}/apr/lib/libapr-1.a DESTINATION ${INSTALL_DIR} RENAME libapr.a)
-
 add_subdirectory(core/src)
 add_subdirectory(bc/src)
 add_subdirectory(rt)
-add_subdirectory(drlvm)

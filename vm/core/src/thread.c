@@ -17,6 +17,10 @@
 #include <robovm.h>
 #include "utlist.h"
 
+/*
+ * This code has been heavily inspired by Android's dalvik/vm/Thread.cpp code.
+ */
+
 static Mutex threadsLock;
 static pthread_cond_t threadStartCond;
 static Thread* threads = NULL;

@@ -53,7 +53,7 @@ static jint DetachCurrentThread(JavaVM* vm) {
 
 static jint GetEnv(JavaVM* vm, void** penv, jint ver) {
     // TODO: Check version?
-    return rvmGetEnv((VM*) vm, (Env**) penv);
+    return rvmGetEnv((Env**) penv);
 }
 
 static jint AttachCurrentThreadAsDaemon(JavaVM* vm, void** penv, void* args) {

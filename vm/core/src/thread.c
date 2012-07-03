@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#define _GNU_SOURCE
 #include <pthread.h>
 #include <robovm.h>
 #include "utlist.h"
@@ -37,6 +38,32 @@ inline void rvmLockThreadsList() {
 
 inline void rvmUnlockThreadsList() {
     rvmUnlockMutex(&threadsLock);
+}
+
+/**
+ * Determines the stack address of the current thread
+ */
+static void* getStackAddress(void) {
+    void* result = NULL;
+    size_t stackSize = 0;
+    pthread_t self = pthread_self();
+#if defined(DARWIN)
+    result = pthread_get_stackaddr_np(self);
+    size = pthread_get_stacksize_np(self);
+    // pthread_get_stackaddr_np returns the beginning (highest address) of the stack
+    // while we want the address of the memory area allocated for the stack (lowest address).
+    result -= stackSize;
+#else
+    size_t guardSize = 0;
+    pthread_attr_t attr;
+    pthread_getattr_np(self, &attr);
+    pthread_attr_getstack(&attr, &result, &stackSize);
+    pthread_attr_getguardsize(&attr, &guardSize);
+    // On Linux pthread_attr_getstack() returns the address of the memory area allocated for the stack
+    // including the guard page.
+    result += guardSize;
+#endif
+    return result;
 }
 
 static Thread* allocThread(Env* env) {
@@ -88,6 +115,7 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
         rvmUnlockThreadsList();
         goto error;
     }
+    thread->stackAddr = getStackAddress();
     thread->pThread = pthread_self();
     DL_PREPEND(threads, thread);
     rvmUnlockThreadsList();
@@ -204,7 +232,7 @@ jint rvmAttachCurrentThreadAsDaemon(VM* vm, Env** env, char* name, Object* group
     return attachThread(vm, env, name, group, TRUE);
 }
 
-jint rvmGetEnv(VM* vm, Env** env) {
+jint rvmGetEnv(Env** env) {
     *env = NULL;
     // If the thread is attached there's an Env* associated with the thread.
     *env = (Env*) pthread_getspecific(tlsEnvKey);
@@ -214,7 +242,7 @@ jint rvmGetEnv(VM* vm, Env** env) {
 
 jint rvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount) {
     Env* env = NULL;
-    jint status = rvmGetEnv(vm, &env);
+    jint status = rvmGetEnv(&env);
     if (status != JNI_OK) return status;
     return detachThread(env, ignoreAttachCount);
 }
@@ -235,6 +263,7 @@ static void* startThreadEntryPoint(void* _args) {
     if (!initThread(env, thread, threadObj)) {
         rvmAbort("Thread creation failed");
     }
+    thread->stackAddr = getStackAddress();
     thread->status = THREAD_STARTING;
     pthread_cond_broadcast(&threadStartCond);
     while (thread->status != THREAD_VMWAIT) {
@@ -276,11 +305,20 @@ jlong rvmStartThread(Env* env, JavaThread* threadObj) {
         return 0;
     }
 
-    // TODO: Stack size
+    size_t stackSize = (size_t) threadObj->stackSize;
+    if (stackSize == 0) {
+        stackSize = THREAD_DEFAULT_STACK_SIZE;
+    } else if (stackSize < THREAD_MIN_STACK_SIZE) {
+        stackSize = THREAD_MIN_STACK_SIZE;
+    }
+    stackSize = (stackSize + THREAD_STACK_SIZE_MULTIPLE - 1) & ~(THREAD_STACK_SIZE_MULTIPLE - 1);
 
     pthread_attr_t threadAttr;
     pthread_attr_init(&threadAttr);
     pthread_attr_setdetachstate(&threadAttr, PTHREAD_CREATE_DETACHED);
+    pthread_attr_setstacksize(&threadAttr, stackSize);
+    pthread_attr_setguardsize(&threadAttr, THREAD_STACK_GUARD_SIZE);
+
     ThreadEntryPointArgs args = {0};
     args.env = newEnv;
     args.thread = thread;

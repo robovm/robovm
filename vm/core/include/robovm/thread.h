@@ -16,6 +16,11 @@
 #ifndef ROBOVM_THREAD_H
 #define ROBOVM_THREAD_H
 
+#define THREAD_MIN_STACK_SIZE (64 * 1024)
+#define THREAD_DEFAULT_STACK_SIZE (512 * 1024)
+#define THREAD_STACK_SIZE_MULTIPLE (4 * 1024)
+#define THREAD_STACK_GUARD_SIZE 4096 // 4k seems to be the default on both Linux, Mac OS X and iOS
+
 enum {
     THREAD_UNDEFINED    = -1,       /* makes enum compatible with int32_t */
 
@@ -48,7 +53,7 @@ extern void rvmThreadYield(Env* env);
 extern jint rvmAttachCurrentThread(VM* vm, Env** env, char* name, Object* group);
 extern jint rvmAttachCurrentThreadAsDaemon(VM* vm, Env** env, char* name, Object* group);
 extern jint rvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount);
-extern jint rvmGetEnv(VM* vm, Env** env);
+extern jint rvmGetEnv(Env** env);
 extern Thread* rvmGetThreadByThreadId(Env* env, uint32_t threadId);
 extern jint rvmChangeThreadStatus(Env* env, Thread* thread, jint newStatus);
 extern void rvmChangeThreadPriority(Env* env, Thread* thread, jint priority);

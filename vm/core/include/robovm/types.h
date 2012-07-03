@@ -206,6 +206,7 @@ struct Thread {
   pthread_t pThread;
   JavaThread* threadObj;
   jint threadId;
+  void* stackAddr;
   jboolean interrupted;
   Monitor* waitMonitor;
   Mutex waitMutex;

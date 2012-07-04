@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ROBOVM_MEMORY_H
-#define ROBOVM_MEMORY_H
+#ifndef ROBOVM_SIGNAL_H
+#define ROBOVM_SIGNAL_H
 
-extern void* rvmAllocateMemory(Env* env, int size);
-extern void* rvmAllocateMemoryUncollectable(Env* env, int size);
-extern void rvmFreeMemory(void* m);
-extern void* rvmCopyMemory(Env* env, const void* src, int size);
-extern void* rvmCopyMemoryZ(Env* env, const char* src);
+extern jboolean rvmInitSignals(Env* env);
+extern jboolean rvmSetupSignals(Env* env);
+extern void rvmTearDownSignals(Env* env);
+extern void rvmRestoreSignalMask(Env* env);
 
 #endif
-

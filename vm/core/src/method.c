@@ -160,37 +160,54 @@ static jboolean getCallingMethodIterator(Env* env, void* pc, ProxyMethod* proxyM
     return TRUE;
 }
 
-static jboolean getCallStackIterator(Env* env, void* pc, ProxyMethod* proxyMethod, void* data) {
-    CallStackEntry** head = (CallStackEntry**) data;
-    Method* method = NULL;
-    if (proxyMethod) {
-        method = (Method*) proxyMethod;
-    } else {
-        method = rvmFindMethodAtAddress(env, pc);
-    }
-    if (method) {
-        CallStackEntry* entry = rvmAllocateMemory(env, sizeof(CallStackEntry));
-        if (!entry) {
-            return FALSE; // Stop iterating
-        }
-        entry->method = method;
-        entry->offset = proxyMethod ? 0 : pc - method->impl;
-        DL_APPEND(*head, entry);
-    }
-    return TRUE;
-}
-
 Method* rvmGetCallingMethod(Env* env) {
     Method* result = NULL;
-    unwindIterateCallStack(env, getCallingMethodIterator, &result);
+    unwindIterateCallStack(env, NULL, getCallingMethodIterator, &result);
     return result;
 }
 
-CallStackEntry* rvmGetCallStack(Env* env) {
-    CallStackEntry* data = NULL;
-    unwindIterateCallStack(env, getCallStackIterator, &data);
+static jboolean captureCallStackCountFramesIterator(Env* env, void* pc, ProxyMethod* proxyMethod, void* data) {
+    jint* countPtr = (jint*) data;
+    *countPtr += 1;
+    return TRUE;
+}
+
+static jboolean captureCallStackIterator(Env* env, void* pc, ProxyMethod* proxyMethod, void* _data) {
+    CallStack* data = (CallStack*) _data;
+    data->frames[data->length].pc = pc;
+    data->frames[data->length].method = (Method*) proxyMethod;
+    data->length++;
+    return TRUE;
+}
+
+CallStack* rvmCaptureCallStack(Env* env, void* fp) {
+    jint count = 0;
+    unwindIterateCallStack(env, fp, captureCallStackCountFramesIterator, &count);
     if (rvmExceptionOccurred(env)) return NULL;
+    CallStack* data = rvmAllocateMemory(env, sizeof(CallStack) + sizeof(CallStackFrame) * count);
+    if (!data) return NULL;
+    unwindIterateCallStack(env, fp, captureCallStackIterator, data);
     return data;
+}
+
+Method* rvmResolveCallStackFrame(Env* env, CallStackFrame* frame) {
+    if (frame->pc == NULL && frame->method == NULL) {
+        // We've already tried to resolve this frame but 
+        // it doesn't correspond to any method
+        return NULL;
+    }
+    if (frame->method != NULL) {
+        // We've already resolved this frame successfully or
+        // the method is a ProxyMethod so no call to rvmFindMethodAtAddress()
+        // is required
+        return frame->method;
+    }
+    frame->method = rvmFindMethodAtAddress(env, frame->pc);
+    if (!frame->method) {
+        frame->pc = NULL;
+        return NULL;
+    }
+    return frame->method;
 }
 
 const char* rvmGetReturnType(const char* desc) {

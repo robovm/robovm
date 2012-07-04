@@ -25,6 +25,19 @@ void* rvmAllocateMemory(Env* env, int size) {
     return m;
 }
 
+void* rvmAllocateMemoryUncollectable(Env* env, int size) {
+    void* m = GC_MALLOC_UNCOLLECTABLE(size);
+    if (!m) {
+        rvmThrowOutOfMemoryError(env);
+        return NULL;
+    }
+    return m;
+}
+
+void rvmFreeMemory(void* m) {
+    GC_FREE(m);
+}
+
 void* rvmCopyMemory(Env* env, const void* src, int size) {
     void* dest = rvmAllocateMemory(env, size);
     if (!dest) return NULL;

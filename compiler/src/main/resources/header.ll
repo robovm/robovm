@@ -225,14 +225,10 @@ define linkonce_odr void @aastore(%Object* %o, i32 %index, %Object* %value) alwa
     ret void
 }
 
-define linkonce_odr void @checknull(%Env* %env, %Object* %o) alwaysinline {
-    %cond = icmp ne %Object* %o, inttoptr (i32 0 to %Object*)
-    br i1 %cond, label %success, label %failure
-success:
-    ret void
-failure:
-    call void @_bcThrowNullPointerException(%Env* %env)
-    unreachable
+define linkonce_odr i8 @checknull(%Env* %env, %Object* %o) alwaysinline {
+    %p = bitcast %Object* %o to i8*
+    %i = load volatile i8* %p
+    ret i8 %i
 }
 
 define linkonce_odr void @checklower(%Env* %env, %Object* %o, i32 %index) alwaysinline {

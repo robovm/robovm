@@ -242,7 +242,7 @@ static jboolean unwindCallStack(UnwindContext* ctx, void* d) {
     return (i < 9 && address != main) ? TRUE : FALSE;
 }
 void testCall0Unwind_target(void** ptrs) {
-    unwindBacktrace(unwindCallStack, ptrs);
+    unwindBacktrace(NULL, unwindCallStack, ptrs);
 }
 void testCall0Unwind(CuTest* tc) {
     void* callers[10] = {0};

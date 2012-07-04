@@ -18,45 +18,54 @@
 #include <unwind.h>
 
 jlong Java_java_lang_Throwable_nativeFillInStackTrace(Env* env, Object* thiz) {
-    CallStackEntry* first = rvmGetCallStack(env);
-    if (!first) return 0;
-    first = first->next; // Skip Throwable.fillInStackTrace0()
-    if (!first) return 0;
-    first = first->next; // Skip Throwable.fillInStackTrace()
-    if (!first) return 0;
-
-    Class* clazz = first->method->clazz;
-    if (clazz == java_lang_Throwable && METHOD_IS_CONSTRUCTOR(first->method)) {
-        // fillInStackTrace() was called from the constructor of Throwable
-        // Skip all constructors until the constructor of thiz->clazz
-        Class* superclass = java_lang_Object;
-        while (first && METHOD_IS_CONSTRUCTOR(first->method) && clazz != thiz->clazz && clazz->superclass == superclass) {
-            first = first->next;
-            if (first && first->method->clazz != clazz) {
-                superclass = clazz;
-                clazz = first->method->clazz;
-            }
-        }
-        // We're now at the constructor of thiz->clazz which called super(). 
-        // Skip all constructors belonging to thiz->clazz to get to the method which created the throwable
-        while (first && METHOD_IS_CONSTRUCTOR(first->method) && clazz == thiz->clazz) {
-            first = first->next;
-            if (first) clazz = first->method->clazz;
-        }
-    }
-
-    return PTR_TO_LONG(first);
+    return PTR_TO_LONG(rvmCaptureCallStack(env, NULL));
 }
 
 ObjectArray* Java_java_lang_Throwable_nativeGetStackTrace(Env* env, Object* thiz, jlong stackState) {
     Class* java_lang_StackTraceElement = rvmFindClassUsingLoader(env, "java/lang/StackTraceElement", NULL);
     if (!java_lang_StackTraceElement) return NULL;
 
+    CallStack* callStack = (CallStack*) LONG_TO_PTR(stackState);
+    if (!callStack) return rvmNewObjectArray(env, 0, java_lang_StackTraceElement, NULL, NULL);;
+
+    jint index = 0;
+    jint first = 0;
+    Method* m = rvmGetNextCallStackMethod(env, callStack, &index);
+    if (m && m->clazz == java_lang_Throwable && !strcmp(m->name, "nativeFillInStackTrace")) {
+        // Skip Throwable.nativeFillInStackTrace()
+        rvmGetNextCallStackMethod(env, callStack, &index); // Skip Throwable.fillInStackTrace()
+        m = rvmGetNextCallStackMethod(env, callStack, &index);
+        first = index;
+        if (m) {
+            Class* clazz = m->clazz;
+            if (clazz == java_lang_Throwable && METHOD_IS_CONSTRUCTOR(m)) {
+                // fillInStackTrace() was called from the constructor of Throwable
+                // Skip all constructors until the constructor of thiz->clazz
+                Class* superclass = java_lang_Object;
+                while (m && METHOD_IS_CONSTRUCTOR(m) && clazz != thiz->clazz && clazz->superclass == superclass) {
+                    m = rvmGetNextCallStackMethod(env, callStack, &index);
+                    if (m && m->clazz != clazz) {
+                        superclass = clazz;
+                        clazz = m->clazz;
+                    }
+                    first = index - 1;
+                }
+                // We're now at the constructor of thiz->clazz which called super(). 
+                // Skip all constructors belonging to thiz->clazz to get to the method which created the throwable
+                while (m && METHOD_IS_CONSTRUCTOR(m) && clazz == thiz->clazz) {
+                    m = rvmGetNextCallStackMethod(env, callStack, &index);
+                    if (m) clazz = m->clazz;
+                    first = index - 1;
+                }
+            }
+        }
+    }
+
+    // Count the number of methods remaining
+    index = first;
     jint length = 0;
-    CallStackEntry* first = (CallStackEntry*) LONG_TO_PTR(stackState);
-    while (first) {
+    while (rvmGetNextCallStackMethod(env, callStack, &index)) {
         length++;
-        first = first->next;
     }
 
     ObjectArray* array = rvmNewObjectArray(env, length, java_lang_StackTraceElement, NULL, NULL);
@@ -68,10 +77,10 @@ ObjectArray* Java_java_lang_Throwable_nativeGetStackTrace(Env* env, Object* thiz
         if (!steConstructor) return NULL;
 
         jvalue args[4];
-        CallStackEntry* first = (CallStackEntry*) LONG_TO_PTR(stackState);
-        jint i = 0;
+        index = first;
+        jint i;
         for (i = 0; i < length; i++) {
-            Method* m = first->method;
+            m = rvmGetNextCallStackMethod(env, callStack, &index);
             args[0].l = (jobject) m->clazz;
             args[1].l = (jobject) rvmNewStringUTF(env, m->name, -1);
             if (!args[1].l) return NULL;
@@ -79,10 +88,8 @@ ObjectArray* Java_java_lang_Throwable_nativeGetStackTrace(Env* env, Object* thiz
             args[3].i = METHOD_IS_NATIVE(m) ? -2 : -1; // TODO: Line numbers
             array->values[i] = rvmNewObjectA(env, java_lang_StackTraceElement, steConstructor, args);
             if (!array->values[i]) return NULL;
-            first = first->next;
         }
     }
 
     return array;
 }
-

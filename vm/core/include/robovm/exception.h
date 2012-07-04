@@ -26,6 +26,7 @@ extern void rvmThrow(Env* env, Object* e);
 extern jboolean rvmThrowNew(Env* env, Class* clazz, const char* message);
 extern jboolean rvmThrowNewf(Env* env, Class* clazz, const char* format, ...);
 extern jboolean rvmThrowNewfv(Env* env, Class* clazz, const char* format, va_list ap);
+extern jboolean rvmThrowInternalErrorErrno(Env* env, int errnum);
 extern jboolean rvmThrowOutOfMemoryError(Env* env);
 extern jboolean rvmThrowNoClassDefFoundError(Env* env, const char* message);
 extern jboolean rvmThrowIllegalAccessError(Env* env, const char* message);

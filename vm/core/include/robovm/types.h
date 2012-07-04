@@ -20,6 +20,7 @@
 #include <jni_types.h>
 #include <jni.h>
 #include <limits.h>
+#include <signal.h>
 
 #undef FALSE
 #undef TRUE
@@ -207,6 +208,7 @@ struct Thread {
   JavaThread* threadObj;
   jint threadId;
   void* stackAddr;
+  sigset_t signalMask;
   jboolean interrupted;
   Monitor* waitMonitor;
   Mutex waitMutex;
@@ -392,13 +394,26 @@ struct Env {
     jint attachCount;
 };
 
-typedef struct CallStackEntry CallStackEntry;
-struct CallStackEntry {
-    CallStackEntry* next;
-    CallStackEntry* prev;
+typedef struct {
+    void* pc;
     Method* method;
-    jint offset;
-};
+} CallStackFrame;
+typedef struct {
+    jint length;
+    CallStackFrame frames[0];
+} CallStack;
+
+static inline jboolean rvmIsNonNativeFrame(Env* env) {
+    // Count the number of GatewayFrames. If the number is odd we're in
+    // non native code.
+    jint count = 0;
+    GatewayFrame* gw = env->gatewayFrames;
+    while (gw) {
+        count++;
+        gw = gw->prev;
+    }
+    return (count & 1);
+}
 
 #endif
 

@@ -54,6 +54,8 @@ Class* java_lang_ExceptionInInitializerError;
 Class* java_lang_VerifyError;
 Class* java_lang_LinkageError;
 Class* java_lang_InstantiationError;
+Class* java_lang_StackOverflowError;
+Class* java_lang_InternalError;
 
 Class* java_lang_Throwable;
 Class* java_lang_RuntimeException;
@@ -485,6 +487,10 @@ jboolean rvmInitClasses(Env* env) {
     if (!java_lang_LinkageError) return FALSE;
     java_lang_InstantiationError = findBootClass(env, "java/lang/InstantiationError");
     if (!java_lang_InstantiationError) return FALSE;
+    java_lang_StackOverflowError = findBootClass(env, "java/lang/StackOverflowError");
+    if (!java_lang_StackOverflowError) return FALSE;
+    java_lang_InternalError = findBootClass(env, "java/lang/InternalError");
+    if (!java_lang_InternalError) return FALSE;
 
     java_lang_Throwable = findBootClass(env, "java/lang/Throwable");
     if (!java_lang_Throwable) return FALSE;

@@ -56,24 +56,24 @@ Object* Java_org_robovm_rt_VM_vmVersion(Env* env, Class* c) {
 }
 
 ObjectArray* Java_org_robovm_rt_VM_getStackClasses(Env* env, Class* c, jint skipNum, jint maxDepth) {
-    CallStackEntry* first = rvmGetCallStack(env);
-    if (!first) return NULL;
-    first = first->next; // Skip VM.getStackClasses()
-    if (!first) return NULL;
-    first = first->next; // Skip caller of VM.getStackClasses()
-    if (!first) return NULL;
+    CallStack* callStack = rvmCaptureCallStack(env, NULL);
+    if (!callStack) return NULL;
+
+    jint index = 0;
+    rvmGetNextCallStackMethod(env, callStack, &index); // Skip VM.getStackClasses()
+    rvmGetNextCallStackMethod(env, callStack, &index); // Skip caller of VM.getStackClasses()
 
     while (skipNum > 0) {
-        first = first->next; // Skip
-        if (!first) return NULL;
+        Method* m = rvmGetNextCallStackMethod(env, callStack, &index);
+        if (!m) return NULL;
         skipNum--;
     }
 
+    jint first = index;
+
     jint depth = 0;
-    CallStackEntry* entry = first;
-    while (entry) {
+    while (rvmGetNextCallStackMethod(env, callStack, &index)) {
         depth++;
-        entry = entry->next;
     }
     if (maxDepth > -1 && maxDepth < depth) {
         depth = maxDepth;
@@ -82,10 +82,10 @@ ObjectArray* Java_org_robovm_rt_VM_getStackClasses(Env* env, Class* c, jint skip
     ObjectArray* result = rvmNewObjectArray(env, depth, java_lang_Class, NULL, NULL);
     if (!result) return NULL;
     jint i;
-    entry = first;
+    index = first;
     for (i = 0; i < depth; i++) {
-        result->values[i] = (Object*) entry->method->clazz;
-        entry = entry->next;
+        Method* m = rvmGetNextCallStackMethod(env, callStack, &index);
+        result->values[i] = (Object*) m->clazz;
     }
     return result;
 }

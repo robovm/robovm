@@ -30,25 +30,26 @@
 extern "C" {
 #endif
 
-#include <robovm/types.h>
-#include <robovm/access.h>
-#include <robovm/atomic.h>
-#include <robovm/memory.h>
-#include <robovm/init.h>
-#include <robovm/method.h>
-#include <robovm/field.h>
-#include <robovm/class.h>
-#include <robovm/array.h>
-#include <robovm/exception.h>
-#include <robovm/string.h>
-#include <robovm/thread.h>
-#include <robovm/attribute.h>
-#include <robovm/native.h>
-#include <robovm/proxy.h>
-#include <robovm/log.h>
-#include <robovm/trycatch.h>
-#include <robovm/mutex.h>
-#include <robovm/monitor.h>
+#include "robovm/types.h"
+#include "robovm/access.h"
+#include "robovm/atomic.h"
+#include "robovm/memory.h"
+#include "robovm/init.h"
+#include "robovm/method.h"
+#include "robovm/field.h"
+#include "robovm/class.h"
+#include "robovm/array.h"
+#include "robovm/exception.h"
+#include "robovm/string.h"
+#include "robovm/thread.h"
+#include "robovm/attribute.h"
+#include "robovm/native.h"
+#include "robovm/proxy.h"
+#include "robovm/log.h"
+#include "robovm/trycatch.h"
+#include "robovm/mutex.h"
+#include "robovm/monitor.h"
+#include "robovm/signal.h"
 
 #ifdef __cplusplus
 }

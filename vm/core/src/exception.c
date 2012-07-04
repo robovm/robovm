@@ -15,14 +15,18 @@
  */
 #include <robovm.h>
 #include <stddef.h>
+#include <string.h>
 #include "private.h"
 
 #define LOG_TAG "core.exception"
 #define THROW_FORMAT_BUF_SIZE 512
 
-static Method* printStackTraceMethod;
+static InstanceField* stackStateField = NULL;
+static Method* printStackTraceMethod = NULL;
 
 jboolean rvmInitExceptions(Env* env) {
+    stackStateField = rvmGetInstanceField(env, java_lang_Throwable, "stackState", "J");
+    if (!stackStateField) return FALSE;
     printStackTraceMethod = rvmGetInstanceMethod(env, java_lang_Thread, "printStackTrace", "(Ljava/lang/Throwable;)V");
     if (!printStackTraceMethod) return FALSE;
     return TRUE;
@@ -36,6 +40,7 @@ void rvmRaiseException(Env* env, Object* e) {
     TrycatchContext* tc = env->trycatchContext;
     while (tc) {
         if (tc->sel != 0 && (tc->sel == CATCH_ALL_SEL || exceptionMatch(env, tc))) {
+            rvmRestoreSignalMask(env);
             rvmTrycatchJump(tc);
             // unreachable
         }
@@ -76,17 +81,16 @@ void rvmThrow(Env* env, Object* e) {
         rvmAbort("rvmThrow() called with env->throwable already set");
     }
     if (IS_TRACE_ENABLED) {
-        InstanceField* field = rvmGetInstanceField(env, java_lang_Throwable, "stackState", "J");
-        jlong stackState = rvmGetLongInstanceFieldValue(env, e, field);
-        CallStackEntry* first = (CallStackEntry*) LONG_TO_PTR(stackState);
-        if (!first) {
+        jlong stackState = rvmGetLongInstanceFieldValue(env, e, stackStateField);
+        CallStack* callStack = (CallStack*) LONG_TO_PTR(stackState);
+        if (!callStack || callStack->length == 0) {
             TRACEF("Throwing a %s with empty call stack", e->clazz->name);
         } else {
             TRACEF("Throwing a %s. Call stack:", e->clazz->name);
-            while (first) {
-                Method* m = first->method;
+            Method* m;
+            jint index = 0;
+            while ((m = rvmGetNextCallStackMethod(env, callStack, &index)) != NULL) {
                 TRACEF("    %s.%s%s", m->clazz->name, m->name, m->desc);
-                first = first->next;
             }
         }
     }
@@ -121,6 +125,15 @@ jboolean rvmThrowNewfv(Env* env, Class* clazz, const char* format, va_list ap) {
     char message[THROW_FORMAT_BUF_SIZE];
     vsnprintf(message, THROW_FORMAT_BUF_SIZE, format, ap);
     return rvmThrowNew(env, clazz, message);
+}
+
+jboolean rvmThrowInternalErrorErrno(Env* env, int errnum) {
+    char message[THROW_FORMAT_BUF_SIZE];
+    if (strerror_r(errnum, message, THROW_FORMAT_BUF_SIZE) == 0) {
+        return rvmThrowNew(env, java_lang_InternalError, message);
+    } else {
+        return rvmThrowNew(env, java_lang_InternalError, NULL);
+    }
 }
 
 jboolean rvmThrowOutOfMemoryError(Env* env) {
@@ -172,7 +185,7 @@ jboolean rvmThrowClassCastException(Env* env, Class* expectedClass, Class* actua
 }
 
 jboolean rvmThrowNullPointerException(Env* env) {
-    return rvmThrowNew(env, java_lang_NullPointerException, "");
+    return rvmThrowNew(env, java_lang_NullPointerException, NULL);
 }
 
 jboolean rvmThrowAbstractMethodError(Env* env, const char* message) {

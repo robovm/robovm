@@ -24,13 +24,22 @@
 #define UNWIND_UNHANDLED_EXCEPTION 1
 #define UNWIND_FATAL_ERROR 2
 
-typedef struct UnwindContext UnwindContext;
+typedef struct Frame {
+    struct Frame* prev;
+    void* returnAddress;
+} Frame;
 
-extern void unwindBacktrace(jboolean (*it)(UnwindContext*, void*), void* data);
+typedef struct UnwindContext {
+    Frame* fp;
+    void* pc;
+    Frame* newFrame;
+} UnwindContext;
+
+extern void unwindBacktrace(void* fp, jboolean (*it)(UnwindContext*, void*), void* data);
 extern void* unwindGetIP(UnwindContext* context);
 extern jint unwindRaiseException(Env* env);
 extern jint unwindReraiseException(Env* env, void* exInfo);
-extern void unwindIterateCallStack(Env* env, jboolean (*iterator)(Env*, void*, ProxyMethod*, void*), void* data);
+extern void unwindIterateCallStack(Env* env, void* fp, jboolean (*iterator)(Env*, void*, ProxyMethod*, void*), void* data);
 
 /* class.c */
 extern ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint access, void* impl);

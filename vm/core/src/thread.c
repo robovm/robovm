@@ -75,8 +75,12 @@ static Thread* allocThread(Env* env) {
 
 static jboolean initThread(Env* env, Thread* thread, JavaThread* threadObj) {
     // NOTE: threadsLock must be held
+    int err = 0;
     pthread_cond_init(&thread->waitCond, NULL);
-    if (rvmInitMutex(&thread->waitMutex) != 0) return FALSE;
+    if ((err = rvmInitMutex(&thread->waitMutex)) != 0) {
+        rvmThrowInternalErrorErrno(env, err);
+        return FALSE;
+    }
     thread->threadId = nextThreadId++;
     thread->threadObj = threadObj;
     threadObj->threadPtr = PTR_TO_LONG(thread);
@@ -103,7 +107,11 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
     }
 
     // Associate the current Env* with the thread
-    if (pthread_setspecific(tlsEnvKey, env) != 0) goto error;
+    int err = 0;
+    if ((err = pthread_setspecific(tlsEnvKey, env)) != 0) {
+        rvmThrowInternalErrorErrno(env, err);
+        goto error;
+    }
 
     Thread* thread = allocThread(env);
     if (!thread) goto error;
@@ -112,6 +120,10 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
 
     rvmLockThreadsList();
     if (!initThread(env, thread, threadObj)) {
+        rvmUnlockThreadsList();
+        goto error;
+    }
+    if (!rvmSetupSignals(env)) {
         rvmUnlockThreadsList();
         goto error;
     }
@@ -141,6 +153,7 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
 error_remove:
     rvmLockThreadsList();
     DL_DELETE(threads, thread);
+    rvmTearDownSignals(env);
     rvmUnlockThreadsList();
 error:
     if (env) env->currentThread = NULL;
@@ -200,6 +213,7 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount) {
     rvmLockThreadsList();
     thread->status = THREAD_ZOMBIE;
     DL_DELETE(threads, thread);
+    rvmTearDownSignals(env);
     env->currentThread = NULL;
     pthread_setspecific(tlsEnvKey, NULL);
     rvmUnlockThreadsList();
@@ -232,18 +246,14 @@ jint rvmAttachCurrentThreadAsDaemon(VM* vm, Env** env, char* name, Object* group
     return attachThread(vm, env, name, group, TRUE);
 }
 
-jint rvmGetEnv(Env** env) {
-    *env = NULL;
+Env* rvmGetEnv(void) {
     // If the thread is attached there's an Env* associated with the thread.
-    *env = (Env*) pthread_getspecific(tlsEnvKey);
-    if (*env) return JNI_OK;
-    return JNI_EDETACHED; // TODO: What should we do here?
+    return (Env*) pthread_getspecific(tlsEnvKey);
 }
 
 jint rvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount) {
-    Env* env = NULL;
-    jint status = rvmGetEnv(&env);
-    if (status != JNI_OK) return status;
+    Env* env = rvmGetEnv();
+    if (!env) return JNI_EDETACHED;
     return detachThread(env, ignoreAttachCount);
 }
 
@@ -260,10 +270,13 @@ static void* startThreadEntryPoint(void* _args) {
     JavaThread* threadObj = args->threadObj;
 
     rvmLockThreadsList();
-    if (!initThread(env, thread, threadObj)) {
-        rvmAbort("Thread creation failed");
+    jboolean failure = TRUE;
+    if (initThread(env, thread, threadObj)) {
+        if (rvmSetupSignals(env)) {
+            failure = FALSE;
+            thread->stackAddr = getStackAddress();
+        }
     }
-    thread->stackAddr = getStackAddress();
     thread->status = THREAD_STARTING;
     pthread_cond_broadcast(&threadStartCond);
     while (thread->status != THREAD_VMWAIT) {
@@ -271,14 +284,16 @@ static void* startThreadEntryPoint(void* _args) {
     }
     rvmUnlockThreadsList();
 
-    rvmChangeThreadStatus(env, thread, THREAD_RUNNING);
+    if (!failure) {
+        rvmChangeThreadStatus(env, thread, THREAD_RUNNING);
 
-    rvmChangeThreadPriority(env, thread, thread->threadObj->priority);
+        rvmChangeThreadPriority(env, thread, thread->threadObj->priority);
 
-    Method* run = rvmGetInstanceMethod(env, java_lang_Thread, "run", "()V");
-    if (run) {
-        jvalue emptyArgs[0];
-        rvmCallVoidInstanceMethodA(env, (Object*) threadObj, run, emptyArgs);
+        Method* run = rvmGetInstanceMethod(env, java_lang_Thread, "run", "()V");
+        if (run) {
+            jvalue emptyArgs[0];
+            rvmCallVoidInstanceMethodA(env, (Object*) threadObj, run, emptyArgs);
+        }
     }
 
     detachThread(env, TRUE);
@@ -289,7 +304,7 @@ static void* startThreadEntryPoint(void* _args) {
 jlong rvmStartThread(Env* env, JavaThread* threadObj) {
     Env* newEnv = rvmCreateEnv(env->vm);
     if (!newEnv) {
-        rvmThrowOutOfMemoryError(env);
+        rvmThrowOutOfMemoryError(env); // rvmCreateEnv() doesn't throw OutOfMemoryError if allocation fails
         return 0;
     }
 
@@ -323,9 +338,10 @@ jlong rvmStartThread(Env* env, JavaThread* threadObj) {
     args.env = newEnv;
     args.thread = thread;
     args.threadObj = threadObj;
-    if (pthread_create(&thread->pThread, &threadAttr, startThreadEntryPoint, &args) != 0) {
+    int err = 0;
+    if ((err = pthread_create(&thread->pThread, &threadAttr, startThreadEntryPoint, &args)) != 0) {
         rvmUnlockThreadsList();
-        rvmThrowOutOfMemoryError(env);
+        rvmThrowInternalErrorErrno(env, err);
         return 0;
     }
 

@@ -17,6 +17,7 @@ set(SRC
   proxy.c 
   string.c 
   thread.c 
+  signal.c 
   call0-${OS_FAMILY}-${ARCH}.s
   proxy0-${OS_FAMILY}-${ARCH}.s
   trycatch-${OS_FAMILY}-${ARCH}.s

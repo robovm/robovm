@@ -48,7 +48,8 @@ extern void* rvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const ch
 extern jboolean rvmLoadNativeLibrary(Env* env, const char* path, ClassLoader* classLoader);
 extern Method* rvmFindMethodAtAddress(Env* env, void* address);
 extern Method* rvmGetCallingMethod(Env* env);
-extern CallStackEntry* rvmGetCallStack(Env* env);
+extern CallStack* rvmCaptureCallStack(Env* env, void* fp);
+extern Method* rvmResolveCallStackFrame(Env* env, CallStackFrame* frame);
 extern void rvmCallVoidInstanceMethod(Env* env, Object* obj, Method* method, ...);
 extern void rvmCallVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args);
 extern void rvmCallVoidInstanceMethodV(Env* env, Object* obj, Method* method, va_list args);
@@ -140,6 +141,17 @@ extern jdouble rvmCallDoubleClassMethod(Env* env, Class* clazz, Method* method, 
 extern jdouble rvmCallDoubleClassMethodA(Env* env, Class* clazz, Method* method, jvalue* args);
 extern jdouble rvmCallDoubleClassMethodV(Env* env, Class* clazz, Method* method, va_list args);
 
+
+static inline Method* rvmGetNextCallStackMethod(Env* env, CallStack* callStack, jint* index) {
+    while (*index < callStack->length) {
+        Method* method = rvmResolveCallStackFrame(env, &callStack->frames[*index]);
+        *index += 1;
+        if (method) {
+            return method;
+        }
+    }
+    return NULL;
+}
 
 #endif
 

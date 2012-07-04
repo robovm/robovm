@@ -17,17 +17,6 @@
 #include "uthash.h"
 #include "private.h"
 
-typedef struct Frame {
-    struct Frame* prev;
-    void* returnAddress;
-} Frame;
-
-struct UnwindContext {
-    Frame* fp;
-    void* pc;
-    Frame* newFrame;
-};
-
 typedef struct UnwindCallStackData {
     jboolean (*it)(Env*, void*, ProxyMethod*, void*);
     Env* env;
@@ -39,9 +28,9 @@ void* unwindGetIP(UnwindContext* context) {
     return context->pc;
 }
 
-void unwindBacktrace(jboolean (*it)(UnwindContext*, void*), void* data) {
+void unwindBacktrace(void* fp, jboolean (*it)(UnwindContext*, void*), void* data) {
     UnwindContext context = {0};
-    context.fp = (Frame*) __builtin_frame_address(0);
+    context.fp = (Frame*) (fp ? fp : __builtin_frame_address(0));
     context.pc = context.fp->returnAddress;
     context.fp = context.fp->prev;
     // fp now points to the frame of the caller of unwindBacktrace
@@ -89,9 +78,14 @@ static jboolean unwindCallStack(UnwindContext* context, void* _data) {
     return data->it(env, pc, NULL, data->data);
 }
 
-void unwindIterateCallStack(Env* env, jboolean (*it)(Env*, void*, ProxyMethod*, void*), void* data) {
-    rvmPushGatewayFrame(env);
+void unwindIterateCallStack(Env* env, void* fp, jboolean (*it)(Env*, void*, ProxyMethod*, void*), void* data) {
+    jboolean calledFromNative = !rvmIsNonNativeFrame(env);
+    if (calledFromNative) {
+        rvmPushGatewayFrame(env);
+    }
     UnwindCallStackData d = {it, env, env->gatewayFrames, data};
-    unwindBacktrace(unwindCallStack, &d);
-    rvmPopGatewayFrame(env);
+    unwindBacktrace(fp, unwindCallStack, &d);
+    if (calledFromNative) {
+        rvmPopGatewayFrame(env);
+    }
 }

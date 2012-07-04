@@ -261,7 +261,7 @@ static jboolean unwindCallStack(UnwindContext* ctx, void* d) {
 }
 void testProxy0Unwind_handler(CallInfo* ci) {
     void** ptrs = proxy0NextPtr(ci);
-    unwindBacktrace(unwindCallStack, ptrs);
+    unwindBacktrace(NULL, unwindCallStack, ptrs);
 }
 void testProxy0Unwind(CuTest* tc) {
     handler = testProxy0Unwind_handler;

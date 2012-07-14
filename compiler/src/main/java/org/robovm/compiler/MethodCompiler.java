@@ -224,6 +224,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
         
         int multiANewArrayMaxDims = 0;
         Set<Local> locals = new HashSet<Local>();
+        boolean emitCheckStackOverflow = false;
         for (Unit unit : units) {
             if (unit instanceof DefinitionStmt) {
                 DefinitionStmt stmt = (DefinitionStmt) unit;
@@ -239,6 +240,12 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     NewMultiArrayExpr expr = (NewMultiArrayExpr) stmt.getRightOp();
                     multiANewArrayMaxDims = Math.max(multiANewArrayMaxDims, expr.getSizeCount());
                 }
+                if (stmt.getRightOp() instanceof InvokeExpr) {
+                	emitCheckStackOverflow = true;
+                }
+            }
+            if (unit instanceof InvokeStmt) {
+            	emitCheckStackOverflow = true;
             }
         }
         
@@ -246,6 +253,10 @@ public class MethodCompiler extends AbstractMethodCompiler {
         if (multiANewArrayMaxDims > 0) {
             dims = function.newVariable("dims", new PointerType(new ArrayType(multiANewArrayMaxDims, I32)));
             function.add(new Alloca(dims, new ArrayType(multiANewArrayMaxDims, I32)));
+        }
+        
+        if (emitCheckStackOverflow) {
+        	call(CHECK_STACK_OVERFLOW);
         }
         
         Value trycatchContext = null;

@@ -22,7 +22,17 @@
 
 #define LOG_TAG "core.signal"
 
-#define ALT_STACK_SIZE (64 * 1024)
+/*
+ * The common way to implement stack overflow detection is to catch SIGSEGV and see if the
+ * address that generated the fault is in the current thread's stack guard page. Since the stack
+ * has been consumed at this point one usually uses an alternate signal stack for the signal
+ * handler to run on using sigaltstack(). Unfortunately sigaltstack() seems to be broken on
+ * iOS. Even if it completes without errors the alternate stack won't be used by the signal
+ * handler. In RoboVM we work around this bug by inserting code in the prologue of
+ * compiled methods which tries to read from the stack area at sp-64k. If this read hits the 
+ * guard page a fault will occur but we'll still have about 64k left of stack space to run the signal 
+ * handler on.
+ */
 
 static InstanceField* stackStateField = NULL;
 
@@ -34,28 +44,15 @@ jboolean rvmInitSignals(Env* env) {
     return TRUE;
 }
 
-jboolean rvmSetupSignals(Env* env) {
-    stack_t sigalt;
+static jboolean installSignalHandlers(Env* env) {
     struct sigaction sa;
-
-    sigalt.ss_sp = rvmAllocateMemoryUncollectable(env, ALT_STACK_SIZE);
-    if (sigalt.ss_sp == NULL) {
-        return FALSE;
-    }
-    sigalt.ss_size = ALT_STACK_SIZE;
-    sigalt.ss_flags = 0;
-    if (sigaltstack(&sigalt, NULL) != 0) {
-        rvmThrowInternalErrorErrno(env, errno);
-        rvmTearDownSignals(env);
-        return FALSE;
-    }
 
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_SIGINFO | SA_ONSTACK;
     sa.sa_sigaction = &signalHandler;
 
 #if defined(DARWIN)
-    // On Darwin SIGBUS is used for stack overflows
+    // On Darwin SIGBUS is generated when dereferencing NULL pointers
     if (sigaction(SIGBUS, &sa, NULL) != 0) {
         rvmThrowInternalErrorErrno(env, errno);
         rvmTearDownSignals(env);
@@ -69,8 +66,20 @@ jboolean rvmSetupSignals(Env* env) {
         return FALSE;
     }
 
-    pthread_sigmask(0, NULL, &env->currentThread->signalMask);
+    int err;
+    if ((err = pthread_sigmask(0, NULL, &env->currentThread->signalMask)) != 0) {
+        rvmThrowInternalErrorErrno(env, err);
+        rvmTearDownSignals(env);
+        return FALSE;        
+    }
 
+    return TRUE;
+}
+
+jboolean rvmSetupSignals(Env* env) {
+    if (!installSignalHandlers(env)) {
+        return FALSE;
+    }
     return TRUE;
 }
 
@@ -79,18 +88,14 @@ void rvmRestoreSignalMask(Env* env) {
 }
 
 void rvmTearDownSignals(Env* env) {
-    stack_t sigalt;
-    if (sigaltstack(NULL, &sigalt) == 0) {
-        rvmFreeMemory(sigalt.ss_sp);
-    }
 }
 
 static inline void* getFramePointer(ucontext_t* context) {
 #if defined(DARWIN)
 #   if defined(RVM_X86)
-        return (ptrdiff_t) context->uc_mcontext->__ss.__ebp;
+        return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__ebp;
 #   elif defined(RVM_THUMBV7)
-        return (ptrdiff_t) context->uc_mcontext->__ss.__fp;
+        return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__r[7];
 #   endif
 #elif defined(LINUX)
 #   if defined(RVM_X86)
@@ -102,9 +107,9 @@ static inline void* getFramePointer(ucontext_t* context) {
 static inline void* getPC(ucontext_t* context) {
 #if defined(DARWIN)
 #   if defined(RVM_X86)
-        return (ptrdiff_t) context->uc_mcontext->__ss.__eip;
+        return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__eip;
 #   elif defined(RVM_THUMBV7)
-        return (ptrdiff_t) context->uc_mcontext->__ss.__pc;
+        return (void*) (ptrdiff_t) context->uc_mcontext->__ss.__pc;
 #   endif
 #elif defined(LINUX)
 #   if defined(RVM_X86)
@@ -116,7 +121,7 @@ static inline void* getPC(ucontext_t* context) {
 static void signalHandler(int signum, siginfo_t* info, void* context) {
     Env* env = rvmGetEnv();
     if (env && rvmIsNonNativeFrame(env)) {
-        void* faultAddr = info ? info->si_addr : NULL;
+        void* faultAddr = info->si_addr;
         void* stackAddr = env->currentThread->stackAddr;
         Class* exClass = NULL;
         if (!faultAddr) {
@@ -138,6 +143,8 @@ static void signalHandler(int signum, siginfo_t* info, void* context) {
             CallStack* callStack = rvmCaptureCallStack(env, &fakeFrame);
             rvmSetLongInstanceFieldValue(env, throwable, stackStateField, PTR_TO_LONG(callStack));
             rvmRaiseException(env, throwable);
+                puts("foo7\n");
+
         }
     }
 

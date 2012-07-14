@@ -101,6 +101,7 @@ public class Functions {
     public static final FunctionRef CHECK_NULL = new FunctionRef("checknull", new FunctionType(I8, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef CHECK_LOWER = new FunctionRef("checklower", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I32));
     public static final FunctionRef CHECK_UPPER = new FunctionRef("checkupper", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I32));
+    public static final FunctionRef CHECK_STACK_OVERFLOW = new FunctionRef("checkso", new FunctionType(VOID));
     public static final FunctionRef ARRAY_LENGTH = new FunctionRef("arraylength", new FunctionType(I32, OBJECT_PTR));
     public static final FunctionRef BALOAD = new FunctionRef("baload", new FunctionType(I8, OBJECT_PTR, I32));
     public static final FunctionRef SALOAD = new FunctionRef("saload", new FunctionType(I16, OBJECT_PTR, I32));

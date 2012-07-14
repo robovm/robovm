@@ -169,7 +169,7 @@ Method* rvmGetCallingMethod(Env* env) {
 static jboolean captureCallStackCountFramesIterator(Env* env, void* pc, ProxyMethod* proxyMethod, void* data) {
     jint* countPtr = (jint*) data;
     *countPtr += 1;
-    return TRUE;
+    return *countPtr < MAX_CALL_STACK_LENGTH ? TRUE : FALSE;
 }
 
 static jboolean captureCallStackIterator(Env* env, void* pc, ProxyMethod* proxyMethod, void* _data) {
@@ -177,7 +177,7 @@ static jboolean captureCallStackIterator(Env* env, void* pc, ProxyMethod* proxyM
     data->frames[data->length].pc = pc;
     data->frames[data->length].method = (Method*) proxyMethod;
     data->length++;
-    return TRUE;
+    return data->length < MAX_CALL_STACK_LENGTH ? TRUE : FALSE;
 }
 
 CallStack* rvmCaptureCallStack(Env* env, void* fp) {

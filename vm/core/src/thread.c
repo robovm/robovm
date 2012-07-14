@@ -49,7 +49,7 @@ static void* getStackAddress(void) {
     pthread_t self = pthread_self();
 #if defined(DARWIN)
     result = pthread_get_stackaddr_np(self);
-    size = pthread_get_stacksize_np(self);
+    stackSize = pthread_get_stacksize_np(self);
     // pthread_get_stackaddr_np returns the beginning (highest address) of the stack
     // while we want the address of the memory area allocated for the stack (lowest address).
     result -= stackSize;
@@ -326,6 +326,7 @@ jlong rvmStartThread(Env* env, JavaThread* threadObj) {
     } else if (stackSize < THREAD_MIN_STACK_SIZE) {
         stackSize = THREAD_MIN_STACK_SIZE;
     }
+    stackSize += THREAD_SIGNAL_STACK_SIZE;
     stackSize = (stackSize + THREAD_STACK_SIZE_MULTIPLE - 1) & ~(THREAD_STACK_SIZE_MULTIPLE - 1);
 
     pthread_attr_t threadAttr;

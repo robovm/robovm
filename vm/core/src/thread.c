@@ -60,7 +60,8 @@ static void* getStackAddress(void) {
     pthread_attr_getstack(&attr, &result, &stackSize);
     pthread_attr_getguardsize(&attr, &guardSize);
     // On Linux pthread_attr_getstack() returns the address of the memory area allocated for the stack
-    // including the guard page.
+    // including the guard page (except for the main thread which returns the correct stack address and 
+    // pthread_attr_getguardsize() returns 0 even if there is a guard page).
     result += guardSize;
 #endif
     return result;

@@ -1,4 +1,4 @@
-%TrycatchContext = type {i8*, i32, i8*, i8*, i8*, i8*, i8*, i8*}
+%TrycatchContext = type {i8*, i32, i8*, i8*, i8*, i8*, i8*, i8*, i32, i16}
 %BcTrycatchContext = type {%TrycatchContext, i8*}
 
 define private void @checkso() alwaysinline {

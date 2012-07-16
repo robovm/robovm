@@ -361,6 +361,8 @@ struct TrycatchContext {
     void* ebx;
     void* esi;
     void* edi;
+    uint32_t mxcsr;
+    uint16_t fpucw;
 #elif defined(DARWIN) && defined(RVM_THUMBV7)
     void* sp; // r13
     void* r4;

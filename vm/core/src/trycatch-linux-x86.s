@@ -22,6 +22,8 @@ esp_offset  = 16
 ebx_offset  = 20
 esi_offset  = 24
 edi_offset  = 28
+mxcsr_offset = 32
+fpucw_offset = 36
 
 Env_trycatchContext_offset = 28
 
@@ -44,6 +46,8 @@ rvmTrycatchEnter:
     mov   %ebx, ebx_offset(%eax)
     mov   %esi, esi_offset(%eax)
     mov   %edi, edi_offset(%eax)
+    stmxcsr mxcsr_offset(%eax)
+    fnstcw fpucw_offset(%eax)
 
     # tc->prev = env->trycatchContext;
     # env->trycatchContext = tc;
@@ -75,6 +79,8 @@ rvmTrycatchJump:
     mov   ebx_offset(%ecx), %ebx
     mov   esi_offset(%ecx), %esi
     mov   edi_offset(%ecx), %edi
+    ldmxcsr mxcsr_offset(%ecx)
+    fldcw fpucw_offset(%ecx)
 
     # Remove the return address of the caller of rvmTrycatchJump from the stack
     pop   %eax

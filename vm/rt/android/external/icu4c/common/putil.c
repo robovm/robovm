@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *
-*   Copyright (C) 1997-2010, International Business Machines
+*   Copyright (C) 1997-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -75,10 +75,9 @@ Cleanly installed Solaris can use this #define.
 #include <math.h>
 #include <locale.h>
 #include <float.h>
-#include <time.h>
 
 /* include system headers */
-#ifdef U_WINDOWS
+#if defined(U_WINDOWS) || defined(U_MINGW)
 #   define WIN32_LEAN_AND_MEAN
 #   define VC_EXTRALEAN
 #   define NOUSER
@@ -87,9 +86,6 @@ Cleanly installed Solaris can use this #define.
 #   define NOMCX
 #   include <windows.h>
 #   include "wintz.h"
-#elif defined(U_CYGWIN) && defined(__STRICT_ANSI__)
-/* tzset isn't defined in strict ANSI on Cygwin. */
-#   undef __STRICT_ANSI__
 #elif defined(OS400)
 #   include <float.h>
 #   include <qusec.h>       /* error code structure */
@@ -105,18 +101,27 @@ Cleanly installed Solaris can use this #define.
 #   include <TextUtils.h>
 #   define ICU_NO_USER_DATA_OVERRIDE 1
 #elif defined(OS390)
-#include "unicode/ucnv.h"   /* Needed for UCNV_SWAP_LFNL_OPTION_STRING */
+#   include "unicode/ucnv.h"   /* Needed for UCNV_SWAP_LFNL_OPTION_STRING */
 #elif defined(U_DARWIN) || defined(U_LINUX) || defined(U_BSD)
-#include <limits.h>
-#include <unistd.h>
+#   include <limits.h>
+#   include <unistd.h>
 #elif defined(U_QNX)
-#include <sys/neutrino.h>
+#   include <sys/neutrino.h>
 #elif defined(U_SOLARIS)
-# ifndef _XPG4_2
-#  define _XPG4_2
-# endif
+#   ifndef _XPG4_2
+#       define _XPG4_2
+#   endif
 #endif
 
+#if (defined(U_CYGWIN) || defined(U_MINGW)) && defined(__STRICT_ANSI__)
+/* tzset isn't defined in strict ANSI on Cygwin and MinGW. */
+#undef __STRICT_ANSI__
+#endif
+
+/*
+ * Cygwin with GCC requires inclusion of time.h after the above disabling strict asci mode statement.
+ */
+#include <time.h>
 
 #if defined(U_DARWIN)
 #include <TargetConditionals.h>
@@ -140,7 +145,7 @@ Cleanly installed Solaris can use this #define.
  * Simple things (presence of functions, etc) should just go in configure.in and be added to
  * icucfg.h via autoheader.
  */
-#if defined(HAVE_CONFIG_H)
+#if defined(U_HAVE_ICUCFG)
 #include "icucfg.h"
 #endif
 
@@ -171,7 +176,7 @@ static const BitPatternConversion gInf = { (int64_t) INT64_C(0x7FF0000000000000)
   functions).
   ---------------------------------------------------------------------------*/
 
-#if defined(U_WINDOWS) || defined(XP_MAC) || defined(OS400)
+#if defined(U_WINDOWS) || defined(XP_MAC) || defined(OS400) || defined(U_MINGW)
 #   undef U_POSIX_LOCALE
 #else
 #   define U_POSIX_LOCALE    1
@@ -608,7 +613,7 @@ uprv_maximumPtr(void * base)
 U_CAPI void U_EXPORT2
 uprv_tzset()
 {
-#ifdef U_TZSET
+#if defined(U_TZSET)
     U_TZSET();
 #else
     /* no initialization*/
@@ -870,7 +875,7 @@ static UBool compareBinaryFiles(const char* defaultTZFileName, const char* TZFil
             if (tzInfo->defaultTZBuffer == NULL) {
                 rewind(tzInfo->defaultTZFilePtr);
                 tzInfo->defaultTZBuffer = (char*)uprv_malloc(sizeof(char) * tzInfo->defaultTZFileSize);
-                fread(tzInfo->defaultTZBuffer, 1, tzInfo->defaultTZFileSize, tzInfo->defaultTZFilePtr);
+                sizeFileRead = fread(tzInfo->defaultTZBuffer, 1, tzInfo->defaultTZFileSize, tzInfo->defaultTZFilePtr);
             }
             rewind(file);
             while(sizeFileLeft > 0) {
@@ -1043,7 +1048,7 @@ uprv_tzname(int n)
 #endif
 
 #ifdef U_TZNAME
-#ifdef U_WINDOWS
+#if defined(U_WINDOWS) || defined(U_MINGW)
     /* The return value is free'd in timezone.cpp on Windows because
      * the other code path returns a pointer to a heap location. */
     return uprv_strdup(U_TZNAME[n]);
@@ -1563,7 +1568,7 @@ The leftmost codepage (.xxx) wins.
 
     return posixID;
 
-#elif defined(U_WINDOWS)
+#elif defined(U_WINDOWS) || defined(U_MINGW)
     UErrorCode status = U_ZERO_ERROR;
     LCID id = GetThreadLocale();
     const char* locID = uprv_convertToPosix(id, &status);
@@ -2110,15 +2115,24 @@ uprv_dl_close(void *lib, UErrorCode *status) {
   dlclose(lib);
 }
 
-U_INTERNAL void* U_EXPORT2
-uprv_dl_sym(void *lib, const char* sym, UErrorCode *status) {
-  void *ret = NULL;
-  if(U_FAILURE(*status)) return ret;
-  ret = dlsym(lib, sym);
-  if(ret == NULL) {
+U_INTERNAL UVoidFunction* U_EXPORT2
+uprv_dlsym_func(void *lib, const char* sym, UErrorCode *status) {
+  union {
+      void* voidPtr;
+      UVoidFunction* voidFunc;
+  } ret;
+  ret.voidPtr = NULL;
+  if(U_FAILURE(*status)) return NULL;
+  /*
+   * ISO forbids the following cast, but it's needed for dlsym.
+   *  See: http://pubs.opengroup.org/onlinepubs/009695399/functions/dlsym.html
+   *  See: http://www.trilithium.com/johan/2004/12/problem-with-dlsym/ 
+   */
+  ret.voidPtr = dlsym(lib, sym);
+  if(ret.voidPtr == NULL) {
     *status = U_MISSING_RESOURCE_ERROR;
   }
-  return ret;
+  return ret.voidFunc;
 }
 
 #else
@@ -2140,11 +2154,12 @@ uprv_dl_close(void *lib, UErrorCode *status) {
 }
 
 
-U_INTERNAL void* U_EXPORT2
-uprv_dl_sym(void *lib, const char* sym, UErrorCode *status) {
-  if(U_FAILURE(*status)) return NULL;
-  *status = U_UNSUPPORTED_ERROR;
-  return NULL;
+U_INTERNAL UVoidFunction* U_EXPORT2
+uprv_dlsym_func(void *lib, const char* sym, UErrorCode *status) {
+  if(U_SUCCESS(*status)) {
+    *status = U_UNSUPPORTED_ERROR;
+  }
+  return (UVoidFunction*)NULL;
 }
 
 
@@ -2159,7 +2174,7 @@ uprv_dl_open(const char *libName, UErrorCode *status) {
   
   if(U_FAILURE(*status)) return NULL;
   
-  lib = LoadLibrary(libName);
+  lib = LoadLibraryA(libName);
   
   if(lib==NULL) {
     *status = U_MISSING_RESOURCE_ERROR;
@@ -2179,14 +2194,14 @@ uprv_dl_close(void *lib, UErrorCode *status) {
 }
 
 
-U_INTERNAL void* U_EXPORT2
-uprv_dl_sym(void *lib, const char* sym, UErrorCode *status) {
+U_INTERNAL UVoidFunction* U_EXPORT2
+uprv_dlsym_func(void *lib, const char* sym, UErrorCode *status) {
   HMODULE handle = (HMODULE)lib;
-  void * addr = NULL;
+  UVoidFunction* addr = NULL;
   
   if(U_FAILURE(*status) || lib==NULL) return NULL;
   
-  addr = GetProcAddress(handle, sym);
+  addr = (UVoidFunction*)GetProcAddress(handle, sym);
   
   if(addr==NULL) {
     DWORD lastError = GetLastError();
@@ -2220,33 +2235,18 @@ uprv_dl_close(void *lib, UErrorCode *status) {
 }
 
 
-U_INTERNAL void* U_EXPORT2
-uprv_dl_sym(void *lib, const char* sym, UErrorCode *status) {
-    if(U_FAILURE(*status)) return NULL;
+U_INTERNAL UVoidFunction* U_EXPORT2
+uprv_dlsym_func(void *lib, const char* sym, UErrorCode *status) {
+  if(U_SUCCESS(*status)) {
     *status = U_UNSUPPORTED_ERROR;
-    return NULL;
+  }
+  return (UVoidFunction*)NULL;
 }
 
 
 #endif
 
 #endif /* U_ENABLE_DYLOAD */
-
-/* BEGIN Andriod-added */
-/* Remove this after Android RTTI supports exception */
-U_CAPI void U_EXPORT2
-__cxa_bad_cast (void)
-{
- abort();
-}
-
-U_CAPI void U_EXPORT2
-__cxa_bad_typeid (void)
-{
- abort();
-}
-
-/* END Android-added */
 
 /*
  * Hey, Emacs, please set the following:

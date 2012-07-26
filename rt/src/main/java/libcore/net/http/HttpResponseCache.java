@@ -29,8 +29,10 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.CacheRequest;
 import java.net.CacheResponse;
+import java.net.ExtendedResponseCache;
 import java.net.HttpURLConnection;
 import java.net.ResponseCache;
+import java.net.ResponseSource;
 import java.net.SecureCacheResponse;
 import java.net.URI;
 import java.net.URLConnection;
@@ -58,7 +60,7 @@ import libcore.io.Streams;
  * {@code android.net.HttpResponseCache}, the stable, documented front end for
  * this.
  */
-public final class HttpResponseCache extends ResponseCache {
+public final class HttpResponseCache extends ResponseCache implements ExtendedResponseCache {
     // TODO: add APIs to iterate the cache?
     private static final int VERSION = 201105;
     private static final int ENTRY_METADATA = 0;
@@ -109,23 +111,9 @@ public final class HttpResponseCache extends ResponseCache {
             return null;
         }
 
-        InputStream body = newBodyInputStream(snapshot);
         return entry.isHttps()
-                ? entry.newSecureCacheResponse(body)
-                : entry.newCacheResponse(body);
-    }
-
-    /**
-     * Returns an input stream that reads the body of a snapshot, closing the
-     * snapshot when the stream is closed.
-     */
-    private InputStream newBodyInputStream(final DiskLruCache.Snapshot snapshot) {
-        return new FilterInputStream(snapshot.getInputStream(ENTRY_BODY)) {
-            @Override public void close() throws IOException {
-                snapshot.close();
-                super.close();
-            }
-        };
+                ? new EntrySecureCacheResponse(entry, snapshot)
+                : new EntryCacheResponse(entry, snapshot);
     }
 
     @Override public CacheRequest put(URI uri, URLConnection urlConnection) throws IOException {
@@ -178,14 +166,46 @@ public final class HttpResponseCache extends ResponseCache {
             entry.writeTo(editor);
             return new CacheRequestImpl(editor);
         } catch (IOException e) {
-            // Give up because the cache cannot be written.
-            try {
-                if (editor != null) {
-                    editor.abort();
-                }
-            } catch (IOException ignored) {
-            }
+            abortQuietly(editor);
             return null;
+        }
+    }
+
+    /**
+     * Handles a conditional request hit by updating the stored cache response
+     * with the headers from {@code httpConnection}. The cached response body is
+     * not updated. If the stored response has changed since {@code
+     * conditionalCacheHit} was returned, this does nothing.
+     */
+    public void update(CacheResponse conditionalCacheHit, HttpURLConnection httpConnection) {
+        HttpEngine httpEngine = getHttpEngine(httpConnection);
+        URI uri = httpEngine.getUri();
+        ResponseHeaders response = httpEngine.getResponseHeaders();
+        RawHeaders varyHeaders = httpEngine.getRequestHeaders().getHeaders()
+                .getAll(response.getVaryFields());
+        Entry entry = new Entry(uri, varyHeaders, httpConnection);
+        DiskLruCache.Snapshot snapshot = (conditionalCacheHit instanceof EntryCacheResponse)
+                ? ((EntryCacheResponse) conditionalCacheHit).snapshot
+                : ((EntrySecureCacheResponse) conditionalCacheHit).snapshot;
+        DiskLruCache.Editor editor = null;
+        try {
+            editor = snapshot.edit(); // returns null if snapshot is not current
+            if (editor != null) {
+                entry.writeTo(editor);
+                editor.commit();
+            }
+        } catch (IOException e) {
+            abortQuietly(editor);
+        }
+    }
+
+    private void abortQuietly(DiskLruCache.Editor editor) {
+        // Give up because the cache cannot be written.
+        try {
+            if (editor != null) {
+                editor.abort();
+            }
+        } catch (IOException ignored) {
         }
     }
 
@@ -211,7 +231,7 @@ public final class HttpResponseCache extends ResponseCache {
         return writeSuccessCount;
     }
 
-    synchronized void trackResponse(ResponseSource source) {
+    public synchronized void trackResponse(ResponseSource source) {
         requestCount++;
 
         switch (source) {
@@ -225,7 +245,7 @@ public final class HttpResponseCache extends ResponseCache {
         }
     }
 
-    synchronized void trackConditionalCacheHit() {
+    public synchronized void trackConditionalCacheHit() {
         hitCount++;
     }
 
@@ -483,62 +503,91 @@ public final class HttpResponseCache extends ResponseCache {
                     && new ResponseHeaders(uri, responseHeaders)
                             .varyMatches(varyHeaders.toMultimap(), requestHeaders);
         }
+    }
 
-        public CacheResponse newCacheResponse(final InputStream in) {
-            return new CacheResponse() {
-                @Override public Map<String, List<String>> getHeaders() {
-                    return responseHeaders.toMultimap();
-                }
+    /**
+     * Returns an input stream that reads the body of a snapshot, closing the
+     * snapshot when the stream is closed.
+     */
+    private static InputStream newBodyInputStream(final DiskLruCache.Snapshot snapshot) {
+        return new FilterInputStream(snapshot.getInputStream(ENTRY_BODY)) {
+            @Override public void close() throws IOException {
+                snapshot.close();
+                super.close();
+            }
+        };
+    }
 
-                @Override public InputStream getBody() {
-                    return in;
-                }
-            };
+    static class EntryCacheResponse extends CacheResponse {
+        private final Entry entry;
+        private final DiskLruCache.Snapshot snapshot;
+        private final InputStream in;
+
+        public EntryCacheResponse(Entry entry, DiskLruCache.Snapshot snapshot) {
+            this.entry = entry;
+            this.snapshot = snapshot;
+            this.in = newBodyInputStream(snapshot);
         }
 
-        public SecureCacheResponse newSecureCacheResponse(final InputStream in) {
-            return new SecureCacheResponse() {
-                @Override public Map<String, List<String>> getHeaders() {
-                    return responseHeaders.toMultimap();
-                }
+        @Override public Map<String, List<String>> getHeaders() {
+            return entry.responseHeaders.toMultimap();
+        }
 
-                @Override public InputStream getBody() {
-                    return in;
-                }
+        @Override public InputStream getBody() {
+            return in;
+        }
+    }
 
-                @Override public String getCipherSuite() {
-                    return cipherSuite;
-                }
+    static class EntrySecureCacheResponse extends SecureCacheResponse {
+        private final Entry entry;
+        private final DiskLruCache.Snapshot snapshot;
+        private final InputStream in;
 
-                @Override public List<Certificate> getServerCertificateChain()
-                        throws SSLPeerUnverifiedException {
-                    if (peerCertificates == null || peerCertificates.length == 0) {
-                        throw new SSLPeerUnverifiedException(null);
-                    }
-                    return Arrays.asList(peerCertificates.clone());
-                }
+        public EntrySecureCacheResponse(Entry entry, DiskLruCache.Snapshot snapshot) {
+            this.entry = entry;
+            this.snapshot = snapshot;
+            this.in = newBodyInputStream(snapshot);
+        }
 
-                @Override public Principal getPeerPrincipal() throws SSLPeerUnverifiedException {
-                    if (peerCertificates == null || peerCertificates.length == 0) {
-                        throw new SSLPeerUnverifiedException(null);
-                    }
-                    return ((X509Certificate) peerCertificates[0]).getSubjectX500Principal();
-                }
+        @Override public Map<String, List<String>> getHeaders() {
+            return entry.responseHeaders.toMultimap();
+        }
 
-                @Override public List<Certificate> getLocalCertificateChain() {
-                    if (localCertificates == null || localCertificates.length == 0) {
-                        return null;
-                    }
-                    return Arrays.asList(localCertificates.clone());
-                }
+        @Override public InputStream getBody() {
+            return in;
+        }
 
-                @Override public Principal getLocalPrincipal() {
-                    if (localCertificates == null || localCertificates.length == 0) {
-                        return null;
-                    }
-                    return ((X509Certificate) localCertificates[0]).getSubjectX500Principal();
-                }
-            };
+        @Override public String getCipherSuite() {
+            return entry.cipherSuite;
+        }
+
+        @Override public List<Certificate> getServerCertificateChain()
+                throws SSLPeerUnverifiedException {
+            if (entry.peerCertificates == null || entry.peerCertificates.length == 0) {
+                throw new SSLPeerUnverifiedException(null);
+            }
+            return Arrays.asList(entry.peerCertificates.clone());
+        }
+
+        @Override public Principal getPeerPrincipal() throws SSLPeerUnverifiedException {
+            if (entry.peerCertificates == null || entry.peerCertificates.length == 0) {
+                throw new SSLPeerUnverifiedException(null);
+            }
+            return ((X509Certificate) entry.peerCertificates[0]).getSubjectX500Principal();
+        }
+
+        @Override public List<Certificate> getLocalCertificateChain() {
+            if (entry.localCertificates == null || entry.localCertificates.length == 0) {
+                return null;
+            }
+            return Arrays.asList(entry.localCertificates.clone());
+        }
+
+        @Override public Principal getLocalPrincipal() {
+            if (entry.localCertificates == null || entry.localCertificates.length == 0) {
+                return null;
+            }
+            return ((X509Certificate) entry.localCertificates[0]).getSubjectX500Principal();
         }
     }
 }

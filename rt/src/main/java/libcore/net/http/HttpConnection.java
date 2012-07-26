@@ -28,8 +28,8 @@ import java.net.ProxySelector;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.net.URI;
+import java.net.UnknownHostException;
 import java.util.List;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSocket;
@@ -49,15 +49,14 @@ import org.apache.harmony.xnet.provider.jsse.OpenSSLSocketImpl;
  */
 final class HttpConnection {
     private final Address address;
-
     private final Socket socket;
     private InputStream inputStream;
     private OutputStream outputStream;
-
     private SSLSocket unverifiedSocket;
     private SSLSocket sslSocket;
     private InputStream sslInputStream;
     private OutputStream sslOutputStream;
+    private boolean recycled = false;
 
     private HttpConnection(Address config, int connectTimeout) throws IOException {
         this.address = config;
@@ -87,15 +86,15 @@ final class HttpConnection {
         this.socket = socketCandidate;
     }
 
-    public static HttpConnection connect(URI uri, Proxy proxy, boolean requiresTunnel,
-            int connectTimeout) throws IOException {
+    public static HttpConnection connect(URI uri, SSLSocketFactory sslSocketFactory,
+            Proxy proxy, boolean requiresTunnel, int connectTimeout) throws IOException {
         /*
          * Try an explicitly-specified proxy.
          */
         if (proxy != null) {
             Address address = (proxy.type() == Proxy.Type.DIRECT)
-                    ? new Address(uri)
-                    : new Address(uri, proxy, requiresTunnel);
+                    ? new Address(uri, sslSocketFactory)
+                    : new Address(uri, sslSocketFactory, proxy, requiresTunnel);
             return HttpConnectionPool.INSTANCE.get(address, connectTimeout);
         }
 
@@ -113,7 +112,8 @@ final class HttpConnection {
                     continue;
                 }
                 try {
-                    Address address = new Address(uri, selectedProxy, requiresTunnel);
+                    Address address = new Address(uri, sslSocketFactory,
+                            selectedProxy, requiresTunnel);
                     return HttpConnectionPool.INSTANCE.get(address, connectTimeout);
                 } catch (IOException e) {
                     // failed to connect, tell it to the selector
@@ -125,7 +125,7 @@ final class HttpConnection {
         /*
          * Try a direct connection. If this fails, this method will throw.
          */
-        return HttpConnectionPool.INSTANCE.get(new Address(uri), connectTimeout);
+        return HttpConnectionPool.INSTANCE.get(new Address(uri, sslSocketFactory), connectTimeout);
     }
 
     public void closeSocketAndStreams() {
@@ -235,43 +235,20 @@ final class HttpConnection {
     }
 
     /**
-     * Returns true if the connection is functional. This uses a shameful hack
-     * to peek a byte from the socket.
+     * Returns true if this connection has been used to satisfy an earlier
+     * HTTP request/response pair.
      */
-    boolean isStale() throws IOException {
-        if (!isEligibleForRecycling()) {
-            return true;
-        }
+    public boolean isRecycled() {
+        return recycled;
+    }
 
-        InputStream in = getInputStream();
-        if (in.available() > 0) {
-            return false;
-        }
-
-        Socket socket = getSocket();
-        int soTimeout = socket.getSoTimeout();
-        try {
-            socket.setSoTimeout(1);
-            in.mark(1);
-            int byteRead = in.read();
-            if (byteRead != -1) {
-                in.reset();
-                return false;
-            }
-            return true; // the socket is reporting all data read; it's stale
-        } catch (SocketTimeoutException e) {
-            return false; // the connection is not stale; hooray
-        } catch (IOException e) {
-            return true; // the connection is stale, the read or soTimeout failed.
-        } finally {
-            socket.setSoTimeout(soTimeout);
-        }
+    public void setRecycled() {
+        this.recycled = true;
     }
 
     /**
-     * Returns true if this connection is eligible to be recycled. This
-     * is like {@link #isStale} except that it doesn't try to actually
-     * perform any I/O.
+     * Returns true if this connection is eligible to be reused for another
+     * request/response pair.
      */
     protected boolean isEligibleForRecycling() {
         return !socket.isClosed()
@@ -282,7 +259,8 @@ final class HttpConnection {
     /**
      * This address has two parts: the address we connect to directly and the
      * origin address of the resource. These are the same unless a proxy is
-     * being used.
+     * being used. It also includes the SSL socket factory so that a socket will
+     * not be reused if its SSL configuration is different.
      */
     public static final class Address {
         private final Proxy proxy;
@@ -291,14 +269,19 @@ final class HttpConnection {
         private final int uriPort;
         private final String socketHost;
         private final int socketPort;
+        private final SSLSocketFactory sslSocketFactory;
 
-        public Address(URI uri) {
+        public Address(URI uri, SSLSocketFactory sslSocketFactory) throws UnknownHostException {
             this.proxy = null;
             this.requiresTunnel = false;
             this.uriHost = uri.getHost();
             this.uriPort = uri.getEffectivePort();
+            this.sslSocketFactory = sslSocketFactory;
             this.socketHost = uriHost;
             this.socketPort = uriPort;
+            if (uriHost == null) {
+                throw new UnknownHostException(uri.toString());
+            }
         }
 
         /**
@@ -307,11 +290,13 @@ final class HttpConnection {
          *     proxy. When doing so, we must avoid buffering bytes intended for
          *     the higher-level protocol.
          */
-        public Address(URI uri, Proxy proxy, boolean requiresTunnel) {
+        public Address(URI uri, SSLSocketFactory sslSocketFactory,
+                Proxy proxy, boolean requiresTunnel) throws UnknownHostException {
             this.proxy = proxy;
             this.requiresTunnel = requiresTunnel;
             this.uriHost = uri.getHost();
             this.uriPort = uri.getEffectivePort();
+            this.sslSocketFactory = sslSocketFactory;
 
             SocketAddress proxyAddress = proxy.address();
             if (!(proxyAddress instanceof InetSocketAddress)) {
@@ -321,6 +306,9 @@ final class HttpConnection {
             InetSocketAddress proxySocketAddress = (InetSocketAddress) proxyAddress;
             this.socketHost = proxySocketAddress.getHostName();
             this.socketPort = proxySocketAddress.getPort();
+            if (uriHost == null) {
+                throw new UnknownHostException(uri.toString());
+            }
         }
 
         public Proxy getProxy() {
@@ -333,6 +321,7 @@ final class HttpConnection {
                 return Objects.equal(this.proxy, that.proxy)
                         && this.uriHost.equals(that.uriHost)
                         && this.uriPort == that.uriPort
+                        && Objects.equal(this.sslSocketFactory, that.sslSocketFactory)
                         && this.requiresTunnel == that.requiresTunnel;
             }
             return false;
@@ -342,6 +331,7 @@ final class HttpConnection {
             int result = 17;
             result = 31 * result + uriHost.hashCode();
             result = 31 * result + uriPort;
+            result = 31 * result + (sslSocketFactory != null ? sslSocketFactory.hashCode() : 0);
             result = 31 * result + (proxy != null ? proxy.hashCode() : 0);
             result = 31 * result + (requiresTunnel ? 1 : 0);
             return result;

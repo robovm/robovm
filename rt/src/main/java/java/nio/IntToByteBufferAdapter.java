@@ -125,18 +125,15 @@ final class IntToByteBufferAdapter extends IntBuffer {
         return byteBuffer.order();
     }
 
-    @Override
-    protected int[] protectedArray() {
+    @Override int[] protectedArray() {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    protected int protectedArrayOffset() {
+    @Override int protectedArrayOffset() {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    protected boolean protectedHasArray() {
+    @Override boolean protectedHasArray() {
         return false;
     }
 

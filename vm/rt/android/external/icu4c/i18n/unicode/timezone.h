@@ -1,5 +1,5 @@
 /*************************************************************************
-* Copyright (c) 1997-2010, International Business Machines Corporation
+* Copyright (c) 1997-2011, International Business Machines Corporation
 * and others. All Rights Reserved.
 **************************************************************************
 *
@@ -39,6 +39,7 @@
 #include "unicode/uobject.h"
 #include "unicode/unistr.h"
 #include "unicode/ures.h"
+#include "unicode/ucal.h"
 
 U_NAMESPACE_BEGIN
 
@@ -138,13 +139,35 @@ public:
      * Creates a <code>TimeZone</code> for the given ID.
      * @param ID the ID for a <code>TimeZone</code>, such as "America/Los_Angeles",
      * or a custom ID such as "GMT-8:00".
-     * @return the specified <code>TimeZone</code>, or the GMT zone if the given ID
-     * cannot be understood.  Return result guaranteed to be non-null.  If you
-     * require that the specific zone asked for be returned, check the ID of the
-     * return result.
+     * @return the specified <code>TimeZone</code>, or the GMT zone with ID
+     * <code>UCAL_UNKNOWN_ZONE_ID</code> ("Etc/Unknown") if the given ID cannot be understood.
+     * Return result guaranteed to be non-null. If you require that the specific zone asked
+     * for be returned, check the ID of the return result.
      * @stable ICU 2.0
      */
     static TimeZone* U_EXPORT2 createTimeZone(const UnicodeString& ID);
+
+
+    /**
+     * Returns an enumeration over system time zone IDs with the given
+     * filter conditions.
+     * @param zoneType      The system time zone type.
+     * @param region        The ISO 3166 two-letter country code or UN M.49
+     *                      three-digit area code. When NULL, no filtering
+     *                      done by region. 
+     * @param rawOffset     An offset from GMT in milliseconds, ignoring
+     *                      the effect of daylight savings time, if any.
+     *                      When NULL, no filtering done by zone offset. 
+     * @param ec            Output param to filled in with a success or
+     *                      an error.
+     * @return an enumeration object, owned by the caller.
+     * @draft ICU 4.8
+     */
+    static StringEnumeration* U_EXPORT2 createTimeZoneIDEnumeration(
+        USystemTimeZoneType zoneType,
+        const char* region,
+        const int32_t* rawOffset,
+        UErrorCode& ec);
 
     /**
      * Returns an enumeration over all recognized time zone IDs. (i.e.,
@@ -554,6 +577,16 @@ public:
      * Queries if this time zone uses daylight savings time.
      * @return true if this time zone uses daylight savings time,
      * false, otherwise.
+     * <p><strong>Note:</strong>The default implementation of
+     * ICU TimeZone uses the tz database, which supports historic
+     * rule changes, for system time zones. With the implementation,
+     * there are time zones that used daylight savings time in the
+     * past, but no longer used currently. For example, Asia/Tokyo has
+     * never used daylight savings time since 1951. Most clients would
+     * expect that this method to return <code>FALSE</code> for such case.
+     * The default implementation of this method returns <code>TRUE</code>
+     * when the time zone uses daylight savings time in the current
+     * (Gregorian) calendar year.
      * @stable ICU 2.0
      */
     virtual UBool useDaylightTime(void) const = 0;
@@ -630,6 +663,26 @@ public:
      */
     virtual int32_t getDSTSavings() const;
 
+    /** 
+     * Gets the region code associated with the given
+     * system time zone ID. The region code is either ISO 3166
+     * 2-letter country code or UN M.49 3-digit area code.
+     * When the time zone is not associated with a specific location,
+     * for example - "Etc/UTC", "EST5EDT", then this method returns
+     * "001" (UN M.49 area code for World).
+     * 
+     * @param id            The system time zone ID.
+     * @param region        Output buffer for receiving the region code.
+     * @param capacity      The size of the output buffer.
+     * @param status        Receives the status.  When the given time zone ID
+     *                      is not a known system time zone ID,
+     *                      U_ILLEGAL_ARGUMENT_ERROR is set.
+     * @return The length of the output region code.
+     * @draft ICU 4.8 
+     */ 
+    static int32_t U_EXPORT2 getRegion(const UnicodeString& id, 
+        char *region, int32_t capacity, UErrorCode& status); 
+
 protected:
 
     /**
@@ -670,11 +723,22 @@ protected:
      */
     static UResourceBundle* loadRule(const UResourceBundle* top, const UnicodeString& ruleid, UResourceBundle* oldbundle, UErrorCode&status);
 
+
 private:
     friend class ZoneMeta;
 
 
     static TimeZone*        createCustomTimeZone(const UnicodeString&); // Creates a time zone based on the string.
+
+    /**
+     * Finds the given ID in the Olson tzdata. If the given ID is found in the tzdata,
+     * returns the pointer to the ID resource. This method is exposed through ZoneMeta class
+     * for ICU internal implementation and useful for building hashtable using a time zone
+     * ID as a key.
+     * @param id zone id string
+     * @return the pointer of the ID resource, or NULL.
+     */
+    static const UChar* findID(const UnicodeString& id);
 
     /**
      * Resolve a link in Olson tzdata.  When the given id is known and it's not a link,
@@ -687,11 +751,21 @@ private:
     static const UChar* dereferOlsonLink(const UnicodeString& id);
 
     /**
-     * Returns the region code associated with the given zone.
+     * Returns the region code associated with the given zone,
+     * or NULL if the zone is not known.
      * @param id zone id string
      * @return the region associated with the given zone
      */
     static const UChar* getRegion(const UnicodeString& id);
+
+    /**
+     * Returns the region code associated with the given zone,
+     * or NULL if the zone is not known.
+     * @param id zone id string
+     * @param status Status parameter
+     * @return the region associated with the given zone
+     */
+    static const UChar* getRegion(const UnicodeString& id, UErrorCode& status);
 
     /**
      * Parses the given custom time zone identifier
@@ -704,7 +778,7 @@ private:
      * @return Returns TRUE when the given custom id is valid.
      */
     static UBool parseCustomID(const UnicodeString& id, int32_t& sign, int32_t& hour,
-        int32_t& min, int32_t& sec);
+        int32_t& minute, int32_t& second);
 
     /**
      * Parse a custom time zone identifier and return the normalized
@@ -724,7 +798,7 @@ private:
      * @param hour offset hours
      * @param min offset minutes
      * @param sec offset seconds
-     * @param netative sign of the offset, TRUE for negative offset.
+     * @param negative sign of the offset, TRUE for negative offset.
      * @param id Receves the format result (normalized custom ID)
      * @return The reference to id
      */
@@ -747,9 +821,11 @@ private:
      * @return the TimeZone indicated by the 'name'.
      */
     static TimeZone*        createSystemTimeZone(const UnicodeString& name);
+    static TimeZone*        createSystemTimeZone(const UnicodeString& name, UErrorCode& ec);
 
     UnicodeString           fID;    // this time zone's ID
 
+    friend class TZEnumeration;
 };
 
 

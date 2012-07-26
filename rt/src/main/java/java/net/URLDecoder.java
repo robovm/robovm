@@ -42,7 +42,7 @@ public class URLDecoder {
      */
     @Deprecated
     public static String decode(String s) {
-        return UriCodec.decode(s, true, Charset.defaultCharset());
+        return UriCodec.decode(s, true, Charset.defaultCharset(), true);
     }
 
     /**
@@ -64,6 +64,6 @@ public class URLDecoder {
      *             if the specified encoding scheme is invalid.
      */
     public static String decode(String s, String encoding) throws UnsupportedEncodingException {
-        return UriCodec.decode(s, true, Charset.forName(encoding));
+        return UriCodec.decode(s, true, Charset.forName(encoding), true);
     }
 }

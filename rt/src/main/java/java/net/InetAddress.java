@@ -116,15 +116,9 @@ import static libcore.io.OsConstants.*;
  * brackets.
  *
  * <h4>DNS caching</h4>
- * <p>On Android, addresses are cached for 600 seconds (10 minutes) by default. Failed lookups are
- * cached for 10 seconds. The underlying C library or OS may cache for longer, but you can control
- * the Java-level caching with the usual {@code "networkaddress.cache.ttl"} and
- * {@code "networkaddress.cache.negative.ttl"} system properties. These are parsed as integer
- * numbers of seconds, where the special value 0 means "don't cache" and -1 means "cache forever".
- *
- * <p>Note also that on Android &ndash; unlike the RI &ndash; the cache is not unbounded. The
- * current implementation caches around 512 entries, removed on a least-recently-used basis.
- * (Obviously, you should not rely on these details.)
+ * <p>In Android 4.0 (Ice Cream Sandwich) and earlier, DNS caching was performed both by
+ * InetAddress and by the C library, which meant that DNS TTLs could not be honored correctly.
+ * In later releases, caching is done solely by the C library and DNS TTLs are honored.
  *
  * @see Inet4Address
  * @see Inet6Address
@@ -416,11 +410,15 @@ public class InetAddress implements Serializable {
             addressCache.put(host, addresses);
             return addresses;
         } catch (GaiException gaiException) {
-            // TODO: bionic currently returns EAI_NODATA, which is indistinguishable from a real
-            // failure. We need to fix bionic before we can report a more useful error.
-            // if (gaiException.error == EAI_SYSTEM) {
-            //    throw new SecurityException("Permission denied (missing INTERNET permission?)");
-            // }
+            // If the failure appears to have been a lack of INTERNET permission, throw a clear
+            // SecurityException to aid in debugging this common mistake.
+            // http://code.google.com/p/android/issues/detail?id=15722
+            if (gaiException.getCause() instanceof ErrnoException) {
+                if (((ErrnoException) gaiException.getCause()).errno == EACCES) {
+                    throw new SecurityException("Permission denied (missing INTERNET permission?)", gaiException);
+                }
+            }
+            // Otherwise, throw an UnknownHostException.
             String detailMessage = "Unable to resolve host \"" + host + "\": " + Libcore.os.gai_strerror(gaiException.error);
             addressCache.putUnknownHost(host, detailMessage);
             throw gaiException.rethrowAsUnknownHostException(detailMessage);
@@ -447,13 +445,14 @@ public class InetAddress implements Serializable {
     }
 
     /**
-     * Returns a string containing a concise, human-readable description of this
-     * IP address.
+     * Returns a string containing the host name (if available) and host address.
+     * For example: {@code "www.google.com/74.125.224.115"} or {@code "/127.0.0.1"}.
      *
-     * @return the description, as host/address.
+     * <p>IPv6 addresses may additionally include an interface name or scope id.
+     * For example: {@code "www.google.com/2001:4860:4001:803::1013%eth0"} or
+     * {@code "/2001:4860:4001:803::1013%2"}.
      */
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return (hostName == null ? "" : hostName) + "/" + getHostAddress();
     }
 

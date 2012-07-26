@@ -255,7 +255,7 @@ extern "C" pid_t Java_java_lang_ProcessManager_exec(JNIEnv* env, jclass, jobject
     // Re-throw exception if present.
     if (exception != NULL) {
         if (env->Throw(exception) < 0) {
-            LOGE("Error rethrowing exception!");
+            ALOGE("Error rethrowing exception!");
         }
     }
 

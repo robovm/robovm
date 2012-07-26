@@ -1,7 +1,7 @@
 /*
  *******************************************************************************
- * Copyright (C) 2010, Google, International Business Machines Corporation and *
- * others. All Rights Reserved.                                                *
+ * Copyright (C) 2008-2011, Google, International Business Machines Corporation
+ * and others. All Rights Reserved.
  *******************************************************************************
  */
 
@@ -26,10 +26,21 @@
 #include "unicode/plurrule.h"
 
 /**
- * @internal ICU 4.2
+ * Constants for various styles.
+ * There are 2 styles: full name and abbreviated name.
+ * For example, for English, the full name for hour duration is "3 hours",
+ * and the abbreviated name is "3 hrs".
+ * @draft ICU 4.8
  */
-
-union UHashTok;
+enum UTimeUnitFormatStyle {
+    /** @draft ICU 4.8 */
+    UTMUTFMT_FULL_STYLE,
+    /** @draft ICU 4.8 */
+    UTMUTFMT_ABBREVIATED_STYLE,
+    /** @draft ICU 4.8 */
+    UTMUTFMT_FORMAT_STYLE_COUNT
+};
+typedef enum UTimeUnitFormatStyle UTimeUnitFormatStyle; /**< @draft ICU 4.8 */
 
 U_NAMESPACE_BEGIN
 
@@ -70,19 +81,6 @@ class U_I18N_API TimeUnitFormat: public MeasureFormat {
 public:
 
     /**
-     * Constants for various styles.
-     * There are 2 styles: full name and abbreviated name.
-     * For example, for English, the full name for hour duration is "3 hours",
-     * and the abbreviated name is "3 hrs".
-     * @draft ICU 4.2
-     */
-    enum EStyle {
-        kFull = 0,
-        kAbbreviate = 1,
-        kTotal = kAbbreviate + 1
-    };
-
-    /**
      * Create TimeUnitFormat with default locale, and full name style.
      * Use setLocale and/or setFormat to modify.
      * @stable ICU 4.2
@@ -97,9 +95,9 @@ public:
 
     /**
      * Create TimeUnitFormat given locale and style.
-     * @draft ICU 4.2
+     * @draft ICU 4.8
      */
-    TimeUnitFormat(const Locale& locale, EStyle style, UErrorCode& status);
+    TimeUnitFormat(const Locale& locale, UTimeUnitFormatStyle style, UErrorCode& status);
 
     /**
      * Copy constructor.
@@ -219,9 +217,9 @@ private:
     Locale        fLocale;
     Hashtable*    fTimeUnitToCountToPatterns[TimeUnit::UTIMEUNIT_FIELD_COUNT];
     PluralRules*  fPluralRules;
-    EStyle           fStyle;
+    UTimeUnitFormatStyle fStyle;
 
-    void create(const Locale& locale, EStyle style, UErrorCode& status);
+    void create(const Locale& locale, UTimeUnitFormatStyle style, UErrorCode& status);
 
     // it might actually be simpler to make them Decimal Formats later.
     // initialize all private data members
@@ -231,15 +229,15 @@ private:
     void initDataMembers(UErrorCode& status);
 
     // initialize fTimeUnitToCountToPatterns from current locale's resource.
-    void readFromCurrentLocale(EStyle style, const char* key, UErrorCode& status);
+    void readFromCurrentLocale(UTimeUnitFormatStyle style, const char* key, UErrorCode& status);
 
     // check completeness of fTimeUnitToCountToPatterns against all time units,
     // and all plural rules, fill in fallback as necessary.
-    void checkConsistency(EStyle style, const char* key, UErrorCode& status);
+    void checkConsistency(UTimeUnitFormatStyle style, const char* key, UErrorCode& status);
 
     // fill in fTimeUnitToCountToPatterns from locale fall-back chain
-    void searchInLocaleChain(EStyle style, const char* key, const char* localeName,
-                             TimeUnit::UTimeUnitFields field, const char*,
+    void searchInLocaleChain(UTimeUnitFormatStyle style, const char* key, const char* localeName,
+                             TimeUnit::UTimeUnitFields field, const UnicodeString&,
                              const char*, Hashtable*, UErrorCode&);
 
     // initialize hash table

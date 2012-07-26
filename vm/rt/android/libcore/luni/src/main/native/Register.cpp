@@ -106,7 +106,7 @@ extern "C" int registerCoreLibrariesJni(JNIEnv* env) {
             true;
 
     if (!result) {
-        LOGE("Failed to initialize the core libraries; aborting...");
+        ALOGE("Failed to initialize the core libraries; aborting...");
         abort();
     }
     return 0;

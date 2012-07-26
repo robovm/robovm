@@ -115,8 +115,7 @@ StringEnumeration::setChars(const char *s, int32_t length, UErrorCode &status) {
 }
 UBool 
 StringEnumeration::operator==(const StringEnumeration& that)const {
-    return typeid(*this) == typeid(that);
-
+    return typeid(*this) == typeid(that); 
 }
 
 UBool

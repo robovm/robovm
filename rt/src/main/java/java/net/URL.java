@@ -340,8 +340,8 @@ public final class URL implements Serializable {
      * devices. Two URLs could be equal on some networks and unequal on
      * others.</li>
      * </ul>
-     * <p>This problem is fixed in Android in the Ice Cream Sandwich release. In
-     * that release, URLs are only equal if their host names are equal (ignoring
+     * <p>This problem is fixed in Android 4.0 (Ice Cream Sandwich). In that
+     * release, URLs are only equal if their host names are equal (ignoring
      * case).
      */
     @Override public boolean equals(Object o) {

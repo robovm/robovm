@@ -102,18 +102,15 @@ final class CharSequenceAdapter extends CharBuffer {
         return ByteOrder.nativeOrder();
     }
 
-    @Override
-    protected char[] protectedArray() {
+    @Override char[] protectedArray() {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    protected int protectedArrayOffset() {
+    @Override int protectedArrayOffset() {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    protected boolean protectedHasArray() {
+    @Override boolean protectedHasArray() {
         return false;
     }
 

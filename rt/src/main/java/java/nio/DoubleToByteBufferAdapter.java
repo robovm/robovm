@@ -125,18 +125,15 @@ final class DoubleToByteBufferAdapter extends DoubleBuffer {
         return byteBuffer.order();
     }
 
-    @Override
-    protected double[] protectedArray() {
+    @Override double[] protectedArray() {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    protected int protectedArrayOffset() {
+    @Override int protectedArrayOffset() {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    protected boolean protectedHasArray() {
+    @Override boolean protectedHasArray() {
         return false;
     }
 

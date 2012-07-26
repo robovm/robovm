@@ -18,7 +18,6 @@ package org.apache.harmony.xnet.provider.jsse;
 
 import dalvik.system.BlockGuard;
 import dalvik.system.CloseGuard;
-
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,9 +48,6 @@ import org.apache.harmony.security.provider.cert.X509CertImpl;
 /**
  * Implementation of the class OpenSSLSocketImpl based on OpenSSL.
  * <p>
- * This class only supports SSLv3 and TLSv1. This should be documented elsewhere
- * later, for example in the package.html or a separate reference document.
- * <p>
  * Extensions to SSLSocket include:
  * <ul>
  * <li>handshake timeout
@@ -71,6 +67,7 @@ public class OpenSSLSocketImpl
     private final Object readLock = new Object();
     private final Object writeLock = new Object();
     private SSLParametersImpl sslParameters;
+    private byte[] npnProtocols;
     private String[] enabledProtocols;
     private String[] enabledCipherSuites;
     private String[] enabledCompressionMethods;
@@ -171,7 +168,7 @@ public class OpenSSLSocketImpl
      */
     private void init(SSLParametersImpl sslParameters) throws IOException {
         init(sslParameters,
-             NativeCrypto.getSupportedProtocols(),
+             NativeCrypto.getDefaultProtocols(),
              NativeCrypto.getDefaultCipherSuites(),
              NativeCrypto.getDefaultCompressionMethods());
     }
@@ -194,14 +191,12 @@ public class OpenSSLSocketImpl
      * Gets the suitable session reference from the session cache container.
      */
     private OpenSSLSessionImpl getCachedClientSession(ClientSessionContext sessionContext) {
-        if (super.getInetAddress() == null ||
-                super.getInetAddress().getHostAddress() == null ||
-                super.getInetAddress().getHostName() == null) {
+        String hostName = getPeerHostName();
+        int port = getPeerPort();
+        if (hostName == null) {
             return null;
         }
-        OpenSSLSessionImpl session = (OpenSSLSessionImpl) sessionContext.getSession(
-                super.getInetAddress().getHostName(),
-                super.getPort());
+        OpenSSLSessionImpl session = (OpenSSLSessionImpl) sessionContext.getSession(hostName, port);
         if (session == null) {
             return null;
         }
@@ -231,30 +226,20 @@ public class OpenSSLSocketImpl
         }
 
         String compressionMethod = session.getCompressionMethod();
-        boolean compressionMethodFound = false;
-        for (String enabledCompressionMethod : enabledCompressionMethods) {
-            if (compressionMethod.equals(enabledCompressionMethod)) {
-                compressionMethodFound = true;
-                break;
+        if (!compressionMethod.equals(NativeCrypto.SUPPORTED_COMPRESSION_METHOD_NULL)) {
+            boolean compressionMethodFound = false;
+            for (String enabledCompressionMethod : enabledCompressionMethods) {
+                if (compressionMethod.equals(enabledCompressionMethod)) {
+                    compressionMethodFound = true;
+                    break;
+                }
             }
-        }
-        if (!compressionMethodFound) {
-            return null;
+            if (!compressionMethodFound) {
+                return null;
+            }
         }
 
         return session;
-    }
-
-    /**
-     * Starts a TLS/SSL handshake on this connection using some native methods
-     * from the OpenSSL library. It can negotiate new encryption keys, change
-     * cipher suites, or initiate a new session. The certificate chain is
-     * verified if the correspondent property in java.Security is set. All
-     * listeners are notified at the end of the TLS/SSL handshake.
-     */
-    @Override
-    public void startHandshake() throws IOException {
-        startHandshake(true);
     }
 
     private void checkOpen() throws SocketException {
@@ -264,11 +249,13 @@ public class OpenSSLSocketImpl
     }
 
     /**
-     * Perform the handshake
-     *
-     * @param full If true, disable handshake cutthrough for a fully synchronous handshake
+     * Starts a TLS/SSL handshake on this connection using some native methods
+     * from the OpenSSL library. It can negotiate new encryption keys, change
+     * cipher suites, or initiate a new session. The certificate chain is
+     * verified if the correspondent property in java.Security is set. All
+     * listeners are notified at the end of the TLS/SSL handshake.
      */
-    public synchronized void startHandshake(boolean full) throws IOException {
+    @Override public synchronized void startHandshake() throws IOException {
         synchronized (handshakeLock) {
             checkOpen();
             if (!handshakeStarted) {
@@ -298,6 +285,10 @@ public class OpenSSLSocketImpl
         try {
             sslNativePointer = NativeCrypto.SSL_new(sslCtxNativePointer);
             guard.open("close");
+
+            if (npnProtocols != null) {
+                NativeCrypto.SSL_CTX_enable_npn(sslCtxNativePointer);
+            }
 
             // setup server certificates and private keys.
             // clients will receive a call back to request certificates.
@@ -393,12 +384,6 @@ public class OpenSSLSocketImpl
                 }
             }
 
-            if (client && full) {
-                // we want to do a full synchronous handshake, so turn off cutthrough
-                NativeCrypto.SSL_clear_mode(sslNativePointer,
-                                            NativeCrypto.SSL_MODE_HANDSHAKE_CUTTHROUGH);
-            }
-
             // Temporarily use a different timeout for the handshake process
             int savedTimeoutMilliseconds = getSoTimeout();
             if (handshakeTimeoutMilliseconds >= 0) {
@@ -408,7 +393,7 @@ public class OpenSSLSocketImpl
             int sslSessionNativePointer;
             try {
                 sslSessionNativePointer = NativeCrypto.SSL_do_handshake(sslNativePointer,
-                        socket.getFileDescriptor$(), this, getSoTimeout(), client);
+                        socket.getFileDescriptor$(), this, getSoTimeout(), client, npnProtocols);
             } catch (CertificateException e) {
                 SSLHandshakeException wrapper = new SSLHandshakeException(e.getMessage());
                 wrapper.initCause(e);
@@ -428,17 +413,8 @@ public class OpenSSLSocketImpl
                         = createCertChain(NativeCrypto.SSL_get_certificate(sslNativePointer));
                 X509Certificate[] peerCertificates
                         = createCertChain(NativeCrypto.SSL_get_peer_cert_chain(sslNativePointer));
-                if (wrappedHost == null) {
-                    sslSession = new OpenSSLSessionImpl(sslSessionNativePointer,
-                                                        localCertificates, peerCertificates,
-                                                        super.getInetAddress().getHostName(),
-                                                        super.getPort(), sessionContext);
-                } else  {
-                    sslSession = new OpenSSLSessionImpl(sslSessionNativePointer,
-                                                        localCertificates, peerCertificates,
-                                                        wrappedHost, wrappedPort,
-                                                        sessionContext);
-                }
+                sslSession = new OpenSSLSessionImpl(sslSessionNativePointer, localCertificates,
+                        peerCertificates, getPeerHostName(), getPeerPort(), sessionContext);
                 // if not, putSession later in handshakeCompleted() callback
                 if (handshakeCompleted) {
                     sessionContext.putSession(sslSession);
@@ -464,6 +440,21 @@ public class OpenSSLSocketImpl
                 close();
             }
         }
+    }
+
+    private String getPeerHostName() {
+        if (wrappedHost != null) {
+            return wrappedHost;
+        }
+        InetAddress inetAddress = super.getInetAddress();
+        if (inetAddress != null) {
+            return inetAddress.getHostName();
+        }
+        return null;
+    }
+
+    private int getPeerPort() {
+        return wrappedHost == null ? super.getPort() : wrappedPort;
     }
 
     /**
@@ -498,9 +489,22 @@ public class OpenSSLSocketImpl
             return;
         }
 
-        byte[] privateKeyBytes = privateKey.getEncoded();
+        if (privateKey instanceof OpenSSLRSAPrivateKey) {
+            OpenSSLRSAPrivateKey rsaKey = (OpenSSLRSAPrivateKey) privateKey;
+            OpenSSLKey key = rsaKey.getOpenSSLKey();
+            NativeCrypto.SSL_use_OpenSSL_PrivateKey(sslNativePointer, key.getPkeyContext());
+        } else if (privateKey instanceof OpenSSLDSAPrivateKey) {
+            OpenSSLDSAPrivateKey dsaKey = (OpenSSLDSAPrivateKey) privateKey;
+            OpenSSLKey key = dsaKey.getOpenSSLKey();
+            NativeCrypto.SSL_use_OpenSSL_PrivateKey(sslNativePointer, key.getPkeyContext());
+        } else if ("PKCS#8".equals(privateKey.getFormat())) {
+            byte[] privateKeyBytes = privateKey.getEncoded();
+            NativeCrypto.SSL_use_PrivateKey(sslNativePointer, privateKeyBytes);
+        } else {
+            throw new SSLException("Unsupported PrivateKey format: " + privateKey.getFormat());
+        }
+
         byte[][] certificateBytes = NativeCrypto.encodeCertificates(certificates);
-        NativeCrypto.SSL_use_PrivateKey(sslNativePointer, privateKeyBytes);
         NativeCrypto.SSL_use_certificate(sslNativePointer, certificateBytes);
 
         // checks the last installed private key and certificate,
@@ -636,11 +640,11 @@ public class OpenSSLSocketImpl
      */
     private class SSLInputStream extends InputStream {
         SSLInputStream() throws IOException {
-            /**
-            /* Note: When startHandshake() throws an exception, no
+            /*
+             * Note: When startHandshake() throws an exception, no
              * SSLInputStream object will be created.
              */
-            OpenSSLSocketImpl.this.startHandshake(false);
+            OpenSSLSocketImpl.this.startHandshake();
         }
 
         /**
@@ -681,11 +685,11 @@ public class OpenSSLSocketImpl
      */
     private class SSLOutputStream extends OutputStream {
         SSLOutputStream() throws IOException {
-            /**
-            /* Note: When startHandshake() throws an exception, no
+            /*
+             * Note: When startHandshake() throws an exception, no
              * SSLOutputStream object will be created.
              */
-            OpenSSLSocketImpl.this.startHandshake(false);
+            OpenSSLSocketImpl.this.startHandshake();
         }
 
         /**
@@ -720,7 +724,7 @@ public class OpenSSLSocketImpl
     @Override public SSLSession getSession() {
         if (sslSession == null) {
             try {
-                startHandshake(true);
+                startHandshake();
             } catch (IOException e) {
                 // return an invalid session with
                 // invalid cipher suite of "SSL_NULL_WITH_NULL_NULL"
@@ -996,5 +1000,29 @@ public class OpenSSLSocketImpl
         } else {
             return socket.getFileDescriptor$();
         }
+    }
+
+    /**
+     * Returns the protocol agreed upon by client and server, or null if no
+     * protocol was agreed upon.
+     */
+    public byte[] getNpnSelectedProtocol() {
+        return NativeCrypto.SSL_get_npn_negotiated_protocol(sslNativePointer);
+    }
+
+    /**
+     * Sets the list of protocols this peer is interested in. If null no
+     * protocols will be used.
+     *
+     * @param npnProtocols a non-empty array of protocol names. From
+     *     SSL_select_next_proto, "vector of 8-bit, length prefixed byte
+     *     strings. The length byte itself is not included in the length. A byte
+     *     string of length 0 is invalid. No byte string may be truncated.".
+     */
+    public void setNpnProtocols(byte[] npnProtocols) {
+        if (npnProtocols != null && npnProtocols.length == 0) {
+            throw new IllegalArgumentException("npnProtocols.length == 0");
+        }
+        this.npnProtocols = npnProtocols;
     }
 }

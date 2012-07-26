@@ -398,7 +398,7 @@ public abstract class AbstractList<E> extends AbstractCollection<E> implements L
      * @throws IllegalArgumentException
      *                if the object cannot be added to this List
      * @throws IndexOutOfBoundsException
-     *                if {@code location < 0 || >= size()}
+     *                if {@code location < 0 || location > size()}
      */
     public void add(int location, E object) {
         throw new UnsupportedOperationException();
@@ -443,7 +443,7 @@ public abstract class AbstractList<E> extends AbstractCollection<E> implements L
      * @throws IllegalArgumentException
      *             if an object cannot be added to this list.
      * @throws IndexOutOfBoundsException
-     *             if {@code location < 0 || > size()}
+     *             if {@code location < 0 || location > size()}
      */
     public boolean addAll(int location, Collection<? extends E> collection) {
         Iterator<? extends E> it = collection.iterator();
@@ -507,7 +507,7 @@ public abstract class AbstractList<E> extends AbstractCollection<E> implements L
      *            the index of the element to return.
      * @return the element at the specified index.
      * @throws IndexOutOfBoundsException
-     *             if {@code location < 0 || >= size()}
+     *             if {@code location < 0 || location >= size()}
      */
     public abstract E get(int location);
 
@@ -632,7 +632,7 @@ public abstract class AbstractList<E> extends AbstractCollection<E> implements L
      * @throws UnsupportedOperationException
      *             if removing from this list is not supported.
      * @throws IndexOutOfBoundsException
-     *             if {@code location < 0 || >= size()}
+     *             if {@code location < 0 || location >= size()}
      */
     public E remove(int location) {
         throw new UnsupportedOperationException();
@@ -675,7 +675,7 @@ public abstract class AbstractList<E> extends AbstractCollection<E> implements L
      * @throws IllegalArgumentException
      *             if an object cannot be added to this list.
      * @throws IndexOutOfBoundsException
-     *             if {@code location < 0 || >= size()}
+     *             if {@code location < 0 || location >= size()}
      */
     public E set(int location, E object) {
         throw new UnsupportedOperationException();

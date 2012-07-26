@@ -19,16 +19,21 @@ package org.apache.harmony.xnet.provider.jsse;
 import java.security.Provider;
 
 public final class OpenSSLProvider extends Provider {
+    public static final String PROVIDER_NAME = "AndroidOpenSSL";
 
     public OpenSSLProvider() {
-        super("AndroidOpenSSL", 1.0, "Android's OpenSSL-backed security provider");
+        super(PROVIDER_NAME, 1.0, "Android's OpenSSL-backed security provider");
 
+        // SSL Contexts
         put("SSLContext.SSL", OpenSSLContextImpl.class.getName());
         put("SSLContext.SSLv3", OpenSSLContextImpl.class.getName());
         put("SSLContext.TLS", OpenSSLContextImpl.class.getName());
         put("SSLContext.TLSv1", OpenSSLContextImpl.class.getName());
+        put("SSLContext.TLSv1.1", OpenSSLContextImpl.class.getName());
+        put("SSLContext.TLSv1.2", OpenSSLContextImpl.class.getName());
         put("SSLContext.Default", DefaultSSLContextImpl.class.getName());
 
+        // Message Digests
         put("MessageDigest.SHA-1",
             "org.apache.harmony.xnet.provider.jsse.OpenSSLMessageDigestJDK$SHA1");
         put("Alg.Alias.MessageDigest.SHA1", "SHA-1");
@@ -54,6 +59,54 @@ public final class OpenSSLProvider extends Provider {
             "org.apache.harmony.xnet.provider.jsse.OpenSSLMessageDigestJDK$MD5");
         put("Alg.Alias.MessageDigest.1.2.840.113549.2.5", "MD5");
 
-        // TODO Flush out implementation of OpenSSLSignature so it can be registered here
+        // KeyPairGenerators
+        put("KeyPairGenerator.RSA", OpenSSLRSAKeyPairGenerator.class.getName());
+        put("Alg.Alias.KeyPairGenerator.1.2.840.113549.1.1.1", "RSA");
+
+        put("KeyPairGenerator.DSA", OpenSSLDSAKeyPairGenerator.class.getName());
+
+        // KeyFactory
+
+        put("KeyFactory.RSA", OpenSSLRSAKeyFactory.class.getName());
+        put("Alg.Alias.KeyFactory.1.2.840.113549.1.1.1", "RSA");
+
+        // put("KeyFactory.DSA", OpenSSLDSAKeyFactory.class.getName());
+
+        // Signatures
+        put("Signature.MD5WithRSAEncryption", OpenSSLSignature.MD5RSA.class.getName());
+        put("Alg.Alias.Signature.MD5WithRSA", "MD5WithRSAEncryption");
+        put("Alg.Alias.Signature.MD5/RSA", "MD5WithRSAEncryption");
+        put("Alg.Alias.Signature.1.2.840.113549.1.1.4", "MD5WithRSAEncryption");
+        put("Alg.Alias.Signature.1.2.840.113549.2.5with1.2.840.113549.1.1.1",
+                "MD5WithRSAEncryption");
+
+        put("Signature.SHA1WithRSAEncryption", OpenSSLSignature.SHA1RSA.class.getName());
+        put("Alg.Alias.Signature.SHA1WithRSA", "SHA1WithRSAEncryption");
+        put("Alg.Alias.Signature.SHA1/RSA", "SHA1WithRSAEncryption");
+        put("Alg.Alias.Signature.SHA-1/RSA", "SHA1WithRSAEncryption");
+        put("Alg.Alias.Signature.1.2.840.113549.1.1.5", "SHA1WithRSAEncryption");
+        put("Alg.Alias.Signature.1.3.14.3.2.26with1.2.840.113549.1.1.1", "SHA1WithRSAEncryption");
+        put("Alg.Alias.Signature.1.3.14.3.2.26with1.2.840.113549.1.1.5", "SHA1WithRSAEncryption");
+        put("Alg.Alias.Signature.1.3.14.3.2.29", "SHA1WithRSAEncryption");
+
+        put("Signature.SHA256WithRSAEncryption", OpenSSLSignature.SHA256RSA.class.getName());
+        put("Alg.Alias.Signature.SHA256WithRSA", "SHA256WithRSAEncryption");
+        put("Alg.Alias.Signature.1.2.840.113549.1.1.11", "SHA256WithRSAEncryption");
+
+        put("Signature.SHA384WithRSAEncryption", OpenSSLSignature.SHA384RSA.class.getName());
+        put("Alg.Alias.Signature.SHA384WithRSA", "SHA384WithRSAEncryption");
+        put("Alg.Alias.Signature.1.2.840.113549.1.1.12", "SHA384WithRSAEncryption");
+
+        put("Signature.SHA512WithRSAEncryption", OpenSSLSignature.SHA512RSA.class.getName());
+        put("Alg.Alias.Signature.SHA512WithRSA", "SHA512WithRSAEncryption");
+        put("Alg.Alias.Signature.1.2.840.113549.1.1.13", "SHA512WithRSAEncryption");
+
+        put("Signature.SHA1withDSA", OpenSSLSignature.SHA1DSA.class.getName());
+        put("Alg.Alias.Signature.SHA/DSA", "SHA1withDSA");
+        put("Alg.Alias.Signature.DSA", "SHA1withDSA");
+        put("Alg.Alias.Signature.1.3.14.3.2.26with1.2.840.10040.4.1", "SHA1withDSA");
+        put("Alg.Alias.Signature.1.3.14.3.2.26with1.2.840.10040.4.3", "SHA1withDSA");
+        put("Alg.Alias.Signature.DSAWithSHA1", "SHA1withDSA");
+        put("Alg.Alias.Signature.1.2.840.10040.4.3", "SHA1withDSA");
     }
 }

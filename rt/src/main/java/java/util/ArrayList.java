@@ -134,7 +134,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
      * @param object
      *            the object to add.
      * @throws IndexOutOfBoundsException
-     *             when {@code location < 0 || > size()}
+     *             when {@code location < 0 || location > size()}
      */
     @Override public void add(int index, E object) {
         Object[] a = array;
@@ -213,7 +213,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
      * @return {@code true} if this {@code ArrayList} is modified, {@code false}
      *         otherwise.
      * @throws IndexOutOfBoundsException
-     *             when {@code location < 0 || > size()}
+     *             when {@code location < 0 || location > size()}
      */
     @Override
     public boolean addAll(int index, Collection<? extends E> collection) {
@@ -390,7 +390,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
      *            the index of the object to remove.
      * @return the removed object.
      * @throws IndexOutOfBoundsException
-     *             when {@code location < 0 || >= size()}
+     *             when {@code location < 0 || location >= size()}
      */
     @Override public E remove(int index) {
         Object[] a = array;
@@ -469,7 +469,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
      *            the object to add.
      * @return the previous element at the index.
      * @throws IndexOutOfBoundsException
-     *             when {@code location < 0 || >= size()}
+     *             when {@code location < 0 || location >= size()}
      */
     @Override public E set(int index, E object) {
         Object[] a = array;

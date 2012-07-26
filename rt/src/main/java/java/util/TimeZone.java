@@ -265,7 +265,7 @@ public abstract class TimeZone implements Serializable, Cloneable {
     public abstract int getRawOffset();
 
     /**
-     * Returns a {@code TimeZone} suitable for {@code id}, or {@code GMT} on failure.
+     * Returns a {@code TimeZone} suitable for {@code id}, or {@code GMT} for unknown ids.
      *
      * <p>An id can be an Olson name of the form <i>Area</i>/<i>Location</i>, such
      * as {@code America/Los_Angeles}. The {@link #getAvailableIDs} method returns
@@ -282,6 +282,9 @@ public abstract class TimeZone implements Serializable, Cloneable {
      * zone IDs used in Java 1.1.
      */
     public static synchronized TimeZone getTimeZone(String id) {
+        if (id == null) {
+            throw new NullPointerException("id == null");
+        }
         TimeZone zone = ZoneInfoDB.getTimeZone(id);
         if (zone != null) {
             return zone;

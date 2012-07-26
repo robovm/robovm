@@ -27,9 +27,6 @@ import javax.net.ssl.SSLException;
 
 /**
  * OpenSSL-based implementation of server sockets.
- *
- * This class only supports SSLv3 and TLSv1. This should be documented elsewhere
- * later, for example in the package.html or a separate reference document.
  */
 public class OpenSSLServerSocketImpl extends javax.net.ssl.SSLServerSocket {
     private final SSLParametersImpl sslParameters;

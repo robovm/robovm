@@ -76,18 +76,15 @@ final class ReadWriteDoubleArrayBuffer extends DoubleArrayBuffer {
         return false;
     }
 
-    @Override
-    protected double[] protectedArray() {
+    @Override double[] protectedArray() {
         return backingArray;
     }
 
-    @Override
-    protected int protectedArrayOffset() {
+    @Override int protectedArrayOffset() {
         return offset;
     }
 
-    @Override
-    protected boolean protectedHasArray() {
+    @Override boolean protectedHasArray() {
         return true;
     }
 

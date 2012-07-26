@@ -79,7 +79,7 @@ public final class Currency implements Serializable {
             String currencyCode = ICU.getCurrencyCode(country);
             if (currencyCode == null) {
                 throw new IllegalArgumentException("Unsupported ISO 3166 country: " + locale);
-            } else if (currencyCode.equals("None")) {
+            } else if (currencyCode.equals("XXX")) {
                 return null;
             }
             Currency result = getInstance(currencyCode);

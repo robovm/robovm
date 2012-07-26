@@ -64,18 +64,15 @@ final class ReadOnlyLongArrayBuffer extends LongArrayBuffer {
         return true;
     }
 
-    @Override
-    protected long[] protectedArray() {
+    @Override long[] protectedArray() {
         throw new ReadOnlyBufferException();
     }
 
-    @Override
-    protected int protectedArrayOffset() {
+    @Override int protectedArrayOffset() {
         throw new ReadOnlyBufferException();
     }
 
-    @Override
-    protected boolean protectedHasArray() {
+    @Override boolean protectedHasArray() {
         return false;
     }
 

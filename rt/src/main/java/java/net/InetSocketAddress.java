@@ -177,13 +177,11 @@ public class InetSocketAddress extends SocketAddress {
     }
 
     /**
-     * Gets a string representation of this socket included the address and the
-     * port number.
-     *
-     * @return the address and port number as a textual representation.
+     * Returns a string containing the address (or the hostname for an
+     * unresolved {@code InetSocketAddress}) and port number.
+     * For example: {@code "www.google.com/74.125.224.115:80"} or {@code "/127.0.0.1:80"}.
      */
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return ((addr != null) ? addr.toString() : hostname) + ":" + port;
     }
 

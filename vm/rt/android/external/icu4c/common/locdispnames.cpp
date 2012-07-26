@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 1997-2010, International Business Machines
+*   Copyright (C) 1997-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -427,38 +427,52 @@ uloc_getDisplayVariant(const char *locale,
                 uloc_getVariant, _kVariants, pErrorCode);
 }
 
+/* Instead of having a separate pass for 'special' patterns, reintegrate the two
+ * so we don't get bitten by preflight bugs again.  We can be reasonably efficient
+ * without two separate code paths, this code isn't that performance-critical.
+ *
+ * This code is general enough to deal with patterns that have a prefix or swap the
+ * language and remainder components, since we gave developers enough rope to do such
+ * things if they futz with the pattern data.  But since we don't give them a way to
+ * specify a pattern for arbitrary combinations of components, there's not much use in
+ * that.  I don't think our data includes such patterns, the only variable I know if is
+ * whether there is a space before the open paren, or not.  Oh, and zh uses different
+ * chars than the standard open/close paren (which ja and ko use, btw).
+ */
 U_CAPI int32_t U_EXPORT2
 uloc_getDisplayName(const char *locale,
                     const char *displayLocale,
                     UChar *dest, int32_t destCapacity,
                     UErrorCode *pErrorCode)
 {
-    int32_t length, length2, length3 = 0;
-    UBool hasLanguage, hasScript, hasCountry, hasVariant, hasKeywords;
-    UEnumeration* keywordEnum = NULL;
-    int32_t keywordCount = 0;
-    const char *keyword = NULL;
-    int32_t keywordLen = 0;
-    char keywordValue[256];
-    int32_t keywordValueLen = 0;
+    static const UChar defaultSeparator[3] = { 0x002c, 0x0020, 0x0000 }; /* comma + space */
+    static const int32_t defaultSepLen = 2;
+    static const UChar sub0[4] = { 0x007b, 0x0030, 0x007d , 0x0000 } ; /* {0} */
+    static const UChar sub1[4] = { 0x007b, 0x0031, 0x007d , 0x0000 } ; /* {1} */
+    static const int32_t subLen = 3;
+    static const UChar defaultPattern[10] = {
+        0x007b, 0x0030, 0x007d, 0x0020, 0x0028, 0x007b, 0x0031, 0x007d, 0x0029, 0x0000
+    }; /* {0} ({1}) */
+    static const int32_t defaultPatLen = 9;
+    static const int32_t defaultSub0Pos = 0;
+    static const int32_t defaultSub1Pos = 5;
 
-    int32_t locSepLen = 0;
-    int32_t locPatLen = 0;
-    int32_t p0Len = 0;
-    int32_t defaultPatternLen = 9;
-    const UChar *dispLocSeparator;
-    const UChar *dispLocPattern;
-    static const UChar defaultSeparator[3] = { 0x002c, 0x0020 , 0x0000 }; /* comma + space */
-    static const UChar defaultPattern[10] = { 0x007b, 0x0030, 0x007d, 0x0020, 0x0028, 0x007b, 0x0031, 0x007d, 0x0029, 0x0000 }; /* {0} ({1}) */
-    static const UChar pat0[4] = { 0x007b, 0x0030, 0x007d , 0x0000 } ; /* {0} */
-    static const UChar pat1[4] = { 0x007b, 0x0031, 0x007d , 0x0000 } ; /* {1} */
-    
-    UResourceBundle *bundle = NULL;
-    UResourceBundle *locdsppat = NULL;
-    
-    UErrorCode status = U_ZERO_ERROR;
+    int32_t length; /* of formatted result */
 
-    /* argument checking */
+    const UChar *separator;
+    int32_t sepLen = 0;
+    const UChar *pattern;
+    int32_t patLen = 0;
+    int32_t sub0Pos, sub1Pos;
+
+    UBool haveLang = TRUE; /* assume true, set false if we find we don't have
+                              a lang component in the locale */
+    UBool haveRest = TRUE; /* assume true, set false if we find we don't have
+                              any other component in the locale */
+    UBool retry = FALSE; /* set true if we need to retry, see below */
+
+    int32_t langi = 0; /* index of the language substitution (0 or 1), virtually always 0 */
+
     if(pErrorCode==NULL || U_FAILURE(*pErrorCode)) {
         return 0;
     }
@@ -468,238 +482,226 @@ uloc_getDisplayName(const char *locale,
         return 0;
     }
 
-    bundle    = ures_open(U_ICUDATA_LANG, displayLocale, &status);
+    {
+        UErrorCode status = U_ZERO_ERROR;
+        UResourceBundle* locbundle=ures_open(U_ICUDATA_LANG, displayLocale, &status);
+        UResourceBundle* dspbundle=ures_getByKeyWithFallback(locbundle, _kLocaleDisplayPattern,
+                                                             NULL, &status);
 
-    locdsppat = ures_getByKeyWithFallback(bundle, _kLocaleDisplayPattern, NULL, &status);
-    dispLocSeparator = ures_getStringByKeyWithFallback(locdsppat, _kSeparator, &locSepLen, &status);
-    dispLocPattern = ures_getStringByKeyWithFallback(locdsppat, _kPattern, &locPatLen, &status);
-        
-    /*close the bundles */
-    ures_close(locdsppat);
-    ures_close(bundle);
+        separator=ures_getStringByKeyWithFallback(dspbundle, _kSeparator, &sepLen, &status);
+        pattern=ures_getStringByKeyWithFallback(dspbundle, _kPattern, &patLen, &status);
+
+        ures_close(dspbundle);
+        ures_close(locbundle);
+    }
 
     /* If we couldn't find any data, then use the defaults */
-    if ( locSepLen == 0) {
-       dispLocSeparator = defaultSeparator;
-       locSepLen = 2;
+    if(sepLen == 0) {
+       separator = defaultSeparator;
+       sepLen = defaultSepLen;
     }
 
-    if ( locPatLen == 0) {
-       dispLocPattern = defaultPattern;
-       locPatLen = 9;
+    if(patLen==0 || (patLen==defaultPatLen && !u_strncmp(pattern, defaultPattern, patLen))) {
+        pattern=defaultPattern;
+        patLen=defaultPatLen;
+        sub0Pos=defaultSub0Pos;
+        sub1Pos=defaultSub1Pos;
+    } else { /* non-default pattern */
+        UChar *p0=u_strstr(pattern, sub0);
+        UChar *p1=u_strstr(pattern, sub1);
+        if (p0==NULL || p1==NULL) {
+            *pErrorCode=U_ILLEGAL_ARGUMENT_ERROR;
+            return 0;
+        }
+        sub0Pos=p0-pattern;
+        sub1Pos=p1-pattern;
+        if (sub1Pos < sub0Pos) { /* a very odd pattern */
+            int32_t t=sub0Pos; sub0Pos=sub1Pos; sub1Pos=t;
+            langi=1;
+        }
     }
 
-    /*
-     * if there is a language, then write "language (country, variant)"
-     * otherwise write "country, variant"
+    /* We loop here because there is one case in which after the first pass we could need to
+     * reextract the data.  If there's initial padding before the first element, we put in
+     * the padding and then write that element.  If it turns out there's no second element,
+     * we didn't need the padding.  If we do need the data (no preflight), and the first element
+     * would have fit but for the padding, we need to reextract.  In this case (only) we
+     * adjust the parameters so padding is not added, and repeat.
      */
+    do {
+        UChar* p=dest;
+        int32_t patPos=0; /* position in the pattern, used for non-substitution portions */
+        int32_t langLen=0; /* length of language substitution */
+        int32_t langPos=0; /* position in output of language substitution */
+        int32_t restLen=0; /* length of 'everything else' substitution */
+        int32_t restPos=0; /* position in output of 'everything else' substitution */
+        UEnumeration* kenum = NULL; /* keyword enumeration */
 
-    /* write the language */
-    length=uloc_getDisplayLanguage(locale, displayLocale,
-                                   dest, destCapacity,
-                                   pErrorCode);
-    hasLanguage= length>0;
-
-    if(hasLanguage) {
-        p0Len = length;
-
-        /* append " (" */
-        if(length<destCapacity) {
-            dest[length]=0x20;
-        }
-        ++length;
-        if(length<destCapacity) {
-            dest[length]=0x28;
-        }
-        ++length;
-    }
-
-    if(*pErrorCode==U_BUFFER_OVERFLOW_ERROR) {
-        /* keep preflighting */
-        *pErrorCode=U_ZERO_ERROR;
-    }
-
-    /* append the script */
-    if(length<destCapacity) {
-        length2=uloc_getDisplayScript(locale, displayLocale,
-                                       dest+length, destCapacity-length,
-                                       pErrorCode);
-    } else {
-        length2=uloc_getDisplayScript(locale, displayLocale,
-                                       NULL, 0,
-                                       pErrorCode);
-    }
-    hasScript= length2>0;
-    length+=length2;
-
-    if(hasScript) {
-        /* append separator */
-        if(length+locSepLen<=destCapacity) {
-            u_memcpy(dest+length,dispLocSeparator,locSepLen);
-        }
-        length+=locSepLen;
-    }
-
-    if(*pErrorCode==U_BUFFER_OVERFLOW_ERROR) {
-        /* keep preflighting */
-        *pErrorCode=U_ZERO_ERROR;
-    }
-
-    /* append the country */
-    if(length<destCapacity) {
-        length2=uloc_getDisplayCountry(locale, displayLocale,
-                                       dest+length, destCapacity-length,
-                                       pErrorCode);
-    } else {
-        length2=uloc_getDisplayCountry(locale, displayLocale,
-                                       NULL, 0,
-                                       pErrorCode);
-    }
-    hasCountry= length2>0;
-    length+=length2;
-
-    if(hasCountry) {
-        /* append separator */
-        if(length+locSepLen<=destCapacity) {
-            u_memcpy(dest+length,dispLocSeparator,locSepLen);
-        }
-        length+=locSepLen;
-    }
-
-    if(*pErrorCode==U_BUFFER_OVERFLOW_ERROR) {
-        /* keep preflighting */
-        *pErrorCode=U_ZERO_ERROR;
-    }
-
-    /* append the variant */
-    if(length<destCapacity) {
-        length2=uloc_getDisplayVariant(locale, displayLocale,
-                                       dest+length, destCapacity-length,
-                                       pErrorCode);
-    } else {
-        length2=uloc_getDisplayVariant(locale, displayLocale,
-                                       NULL, 0,
-                                       pErrorCode);
-    }
-    hasVariant= length2>0;
-    length+=length2;
-
-    if(hasVariant) {
-        /* append separator */
-        if(length+locSepLen<=destCapacity) {
-            u_memcpy(dest+length,dispLocSeparator,locSepLen);
-        }
-        length+=locSepLen;
-    }
-
-    keywordEnum = uloc_openKeywords(locale, pErrorCode);
-    
-    for(keywordCount = uenum_count(keywordEnum, pErrorCode); keywordCount > 0 ; keywordCount--){
-          if(U_FAILURE(*pErrorCode)){
-              break;
-          }
-          /* the uenum_next returns NUL terminated string */
-          keyword = uenum_next(keywordEnum, &keywordLen, pErrorCode);
-          if(length + length3 < destCapacity) {
-            length3 += uloc_getDisplayKeyword(keyword, displayLocale, dest+length+length3, destCapacity-length-length3, pErrorCode);
-          } else {
-            length3 += uloc_getDisplayKeyword(keyword, displayLocale, NULL, 0, pErrorCode);
-          }
-          if(*pErrorCode==U_BUFFER_OVERFLOW_ERROR) {
-              /* keep preflighting */
-              *pErrorCode=U_ZERO_ERROR;
-          }
-          keywordValueLen = uloc_getKeywordValue(locale, keyword, keywordValue, 256, pErrorCode);
-          if(keywordValueLen) {
-            if(length + length3 < destCapacity) {
-              dest[length + length3] = 0x3D;
-            }
-            length3++;
-            if(length + length3 < destCapacity) {
-              length3 += uloc_getDisplayKeywordValue(locale, keyword, displayLocale, dest+length+length3, destCapacity-length-length3, pErrorCode);
+        /* prefix of pattern, extremely likely to be empty */
+        if(sub0Pos) {
+            if(destCapacity >= sub0Pos) {
+                while (patPos < sub0Pos) {
+                    *p++ = pattern[patPos++];
+                }
             } else {
-              length3 += uloc_getDisplayKeywordValue(locale, keyword, displayLocale, NULL, 0, pErrorCode);
+                patPos=sub0Pos;
             }
-            if(*pErrorCode==U_BUFFER_OVERFLOW_ERROR) {
-                /* keep preflighting */
+            length=sub0Pos;
+        } else {
+            length=0;
+        }
+
+        for(int32_t subi=0,resti=0;subi<2;) { /* iterate through patterns 0 and 1*/
+            UBool subdone = FALSE; /* set true when ready to move to next substitution */
+
+            /* prep p and cap for calls to get display components, pin cap to 0 since
+               they complain if cap is negative */
+            int32_t cap=destCapacity-length;
+            if (cap <= 0) {
+                cap=0;
+            } else {
+                p=dest+length;
+            }
+
+            if (subi == langi) { /* {0}*/
+                if(haveLang) {
+                    langPos=length;
+                    langLen=uloc_getDisplayLanguage(locale, displayLocale, p, cap, pErrorCode);
+                    length+=langLen;
+                    haveLang=langLen>0;
+                }
+                subdone=TRUE;
+            } else { /* {1} */
+                if(!haveRest) {
+                    subdone=TRUE;
+                } else {
+                    int32_t len; /* length of component (plus other stuff) we just fetched */
+                    switch(resti++) {
+                        case 0:
+                            restPos=length;
+                            len=uloc_getDisplayScript(locale, displayLocale, p, cap, pErrorCode);
+                            break;
+                        case 1:
+                            len=uloc_getDisplayCountry(locale, displayLocale, p, cap, pErrorCode);
+                            break;
+                        case 2:
+                            len=uloc_getDisplayVariant(locale, displayLocale, p, cap, pErrorCode);
+                            break;
+                        case 3:
+                            kenum = uloc_openKeywords(locale, pErrorCode);
+                            /* fall through */
+                        default: {
+                            const char* kw=uenum_next(kenum, &len, pErrorCode);
+                            if (kw == NULL) {
+                                uenum_close(kenum);
+                                len=0; /* mark that we didn't add a component */
+                                subdone=TRUE;
+                            } else {
+                                /* incorporating this behavior into the loop made it even more complex,
+                                   so just special case it here */
+                                len = uloc_getDisplayKeyword(kw, displayLocale, p, cap, pErrorCode);
+                                if(len) {
+                                    if(len < cap) {
+                                        p[len]=0x3d; /* '=', assume we'll need it */
+                                    }
+                                    len+=1;
+
+                                    /* adjust for call to get keyword */
+                                    cap-=len;
+                                    if(cap <= 0) {
+                                        cap=0;
+                                    } else {
+                                        p+=len;
+                                    }
+                                }
+                                /* reset for call below */
+                                if(*pErrorCode == U_BUFFER_OVERFLOW_ERROR) {
+                                    *pErrorCode=U_ZERO_ERROR;
+                                }
+                                int32_t vlen = uloc_getDisplayKeywordValue(locale, kw, displayLocale,
+                                                                           p, cap, pErrorCode);
+                                if(len) {
+                                    if(vlen==0) {
+                                        --len; /* remove unneeded '=' */
+                                    }
+                                    /* restore cap and p to what they were at start */
+                                    cap=destCapacity-length;
+                                    if(cap <= 0) {
+                                        cap=0;
+                                    } else {
+                                        p=dest+length;
+                                    }
+                                }
+                                len+=vlen; /* total we added for key + '=' + value */
+                            }
+                        } break;
+                    } /* end switch */
+
+                    if (len>0) {
+                        /* we addeed a component, so add separator and write it if there's room. */
+                        if(len+sepLen<=cap) {
+                            p+=len;
+                            for(int32_t i=0;i<sepLen;++i) {
+                                *p++=separator[i];
+                            }
+                        }
+                        length+=len+sepLen;
+                    } else if(subdone) {
+                        /* remove separator if we added it */
+                        if (length!=restPos) {
+                            length-=sepLen;
+                        }
+                        restLen=length-restPos;
+                        haveRest=restLen>0;
+                    }
+                }
+            }
+
+            if(*pErrorCode == U_BUFFER_OVERFLOW_ERROR) {
                 *pErrorCode=U_ZERO_ERROR;
             }
-          }
-          if(keywordCount > 1) {
-              if(length + length3 + locSepLen <= destCapacity && keywordCount) {
-                  u_memcpy(dest+length+length3,dispLocSeparator,locSepLen);
-                  length3+=locSepLen;
-              }
-          }
-    }
-    uenum_close(keywordEnum);
 
-    hasKeywords = length3 > 0;
-    length += length3;
+            if(subdone) {
+                if(haveLang && haveRest) {
+                    /* append internal portion of pattern, the first time,
+                       or last portion of pattern the second time */
+                    int32_t padLen;
+                    patPos+=subLen;
+                    padLen=(subi==0 ? sub1Pos : patLen)-patPos;
+                    if(length+padLen < destCapacity) {
+                        p=dest+length;
+                        for(int32_t i=0;i<padLen;++i) {
+                            *p++=pattern[patPos++];
+                        }
+                    } else {
+                        patPos+=padLen;
+                    }
+                    length+=padLen;
+                } else if(subi==0) {
+                    /* don't have first component, reset for second component */
+                    sub0Pos=0;
+                    length=0;
+                } else if(length>0) {
+                    /* true length is the length of just the component we got. */
+                    length=haveLang?langLen:restLen;
+                    if(dest && sub0Pos!=0) {
+                        if (sub0Pos+length<=destCapacity) {
+                            /* first component not at start of result,
+                               but we have full component in buffer. */
+                            u_memmove(dest, dest+(haveLang?langPos:restPos), length);
+                        } else {
+                            /* would have fit, but didn't because of pattern prefix. */
+                            sub0Pos=0; /* stops initial padding (and a second retry,
+                                          so we won't end up here again) */
+                            retry=TRUE;
+                        }
+                    }
+                }
 
-
-    if ((hasScript && !hasCountry)
-        || ((hasScript || hasCountry) && !hasVariant && !hasKeywords)
-        || ((hasScript || hasCountry || hasVariant) && !hasKeywords)) {
-        /* Remove separator  */
-        length -= locSepLen;
-    } else if (hasLanguage && !hasScript && !hasCountry && !hasVariant && !hasKeywords) {
-        /* Remove " (" */
-        length-=2;
-    }
-
-    if (hasLanguage && (hasScript || hasCountry || hasVariant || hasKeywords)) {
-        /* append ")" */
-        if(length<destCapacity) {
-            dest[length]=0x29;
+                ++subi; /* move on to next substitution */
+            }
         }
-        ++length;
-
-        /* If the localized display pattern is something other than the default pattern of "{0} ({1})", then
-         * then we need to do the formatting here.  It would be easier to use a messageFormat to do this, but we
-         * can't since we don't have the APIs in the i18n library available to us at this point.
-         */
-        if (locPatLen != defaultPatternLen || u_strcmp(dispLocPattern,defaultPattern)) { /* Something other than the default pattern */
-           UChar *p0 = u_strstr(dispLocPattern,pat0);
-           UChar *p1 = u_strstr(dispLocPattern,pat1);
-           u_terminateUChars(dest, destCapacity, length, pErrorCode);
-
-           if ( p0 != NULL && p1 != NULL ) { /* The pattern is well formed */
-              if ( dest ) {
-                  int32_t destLen = 0;
-                  UChar *result = (UChar *)uprv_malloc((length+1)*sizeof(UChar));
-                  UChar *upos = (UChar *)dispLocPattern;
-                  u_strcpy(result,dest);
-                  dest[0] = 0;
-                  while ( *upos ) {
-                     if ( upos == p0 ) { /* Handle {0} substitution */
-                         u_strncat(dest,result,p0Len);
-                         destLen += p0Len;
-                         dest[destLen] = 0; /* Null terminate */
-                         upos += 3;
-                     } else if ( upos == p1 ) { /* Handle {1} substitution */
-                         UChar *p1Start = &result[p0Len+2];
-                         u_strncat(dest,p1Start,length-p0Len-3);
-                         destLen += (length-p0Len-3);
-                         dest[destLen] = 0; /* Null terminate */
-                         upos += 3;
-                     } else { /* Something from the pattern not {0} or {1} */
-                         u_strncat(dest,upos,1);
-                         upos++;
-                         destLen++;
-                         dest[destLen] = 0; /* Null terminate */
-                     }
-                  }
-                  length = destLen;
-                  uprv_free(result);
-              }
-           }
-        }
-    }
-    if(*pErrorCode==U_BUFFER_OVERFLOW_ERROR) {
-        /* keep preflighting */
-        *pErrorCode=U_ZERO_ERROR;
-    }
+    } while(retry);
 
     return u_terminateUChars(dest, destCapacity, length, pErrorCode);
 }

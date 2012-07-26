@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *
-*   Copyright (C) 1997-2010, International Business Machines
+*   Copyright (C) 1997-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -254,7 +254,7 @@ public:
             capacity=otherCapacity;
             needToRelease=FALSE;
         }
-    };
+    }
     /**
      * Deletes the array (if owned) and allocates a new one, copying length T items.
      * Returns the new array pointer.
@@ -275,7 +275,6 @@ public:
      * @param resultCapacity will be set to the returned array's capacity (output-only)
      * @return the array pointer;
      *         caller becomes responsible for deleting the array
-     * @draft ICU 4.4
      */
     inline T *orphanOrClone(int32_t length, int32_t &resultCapacity);
 private:
@@ -289,11 +288,11 @@ private:
         }
     }
     /* No comparison operators with other MaybeStackArray's. */
-    bool operator==(const MaybeStackArray & /*other*/) {return FALSE;};
-    bool operator!=(const MaybeStackArray & /*other*/) {return TRUE;};
+    bool operator==(const MaybeStackArray & /*other*/) {return FALSE;}
+    bool operator!=(const MaybeStackArray & /*other*/) {return TRUE;}
     /* No ownership transfer: No copy constructor, no assignment operator. */
-    MaybeStackArray(const MaybeStackArray & /*other*/) {};
-    void operator=(const MaybeStackArray & /*other*/) {};
+    MaybeStackArray(const MaybeStackArray & /*other*/) {}
+    void operator=(const MaybeStackArray & /*other*/) {}
 
     // No heap allocation. Use only on the stack.
     //   (Declaring these functions private triggers a cascade of problems:
@@ -426,7 +425,7 @@ public:
             capacity=otherCapacity;
             needToRelease=FALSE;
         }
-    };
+    }
     /**
      * Deletes the memory block (if owned) and allocates a new one,
      * copying the header and length T array items.
@@ -448,7 +447,6 @@ public:
      * @param resultCapacity will be set to the returned array's capacity (output-only)
      * @return the header pointer;
      *         caller becomes responsible for deleting the array
-     * @draft ICU 4.4
      */
     inline H *orphanOrClone(int32_t length, int32_t &resultCapacity);
 private:
@@ -464,11 +462,11 @@ private:
         }
     }
     /* No comparison operators with other MaybeStackHeaderAndArray's. */
-    bool operator==(const MaybeStackHeaderAndArray & /*other*/) {return FALSE;};
-    bool operator!=(const MaybeStackHeaderAndArray & /*other*/) {return TRUE;};
+    bool operator==(const MaybeStackHeaderAndArray & /*other*/) {return FALSE;}
+    bool operator!=(const MaybeStackHeaderAndArray & /*other*/) {return TRUE;}
     /* No ownership transfer: No copy constructor, no assignment operator. */
-    MaybeStackHeaderAndArray(const MaybeStackHeaderAndArray & /*other*/) {};
-    void operator=(const MaybeStackHeaderAndArray & /*other*/) {};
+    MaybeStackHeaderAndArray(const MaybeStackHeaderAndArray & /*other*/) {}
+    void operator=(const MaybeStackHeaderAndArray & /*other*/) {}
 
     // No heap allocation. Use only on the stack.
     //   (Declaring these functions private triggers a cascade of problems;

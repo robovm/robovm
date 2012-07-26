@@ -33,56 +33,47 @@
 package java.lang.ref;
 
 /**
- * Implements a soft reference, which is the least-weak of the three types of
- * references. Once the garbage collector has decided that an object {@code obj}
- * is softly-reachable, the following
- * may happen, either immediately or at a later point:
+ * A reference that is cleared when its referent is not strongly reachable and
+ * there is memory pressure.
  *
+ * <h3>Avoid Soft References for Caching</h3>
+ * In practice, soft references are inefficient for caching. The runtime doesn't
+ * have enough information on which references to clear and which to keep. Most
+ * fatally, it doesn't know what to do when given the choice between clearing a
+ * soft reference and growing the heap.
+ *
+ * <p>The lack of information on the value to your application of each reference
+ * limits the usefulness of soft references. References that are cleared too
+ * early cause unnecessary work; those that are cleared too late waste memory.
+ *
+ * <p>Most applications should use an {@code android.util.LruCache} instead of
+ * soft references. LruCache has an effective eviction policy and lets the user
+ * tune how much memory is allotted.
+ *
+ * <h3>Garbage Collection of Soft References</h3>
+ * When the garbage collector encounters an object {@code obj} that is
+ * softly-reachable, the following happens:
  * <ul>
- *   <li>
- *     A set {@code ref} of references is determined. {@code ref} contains the
- *     following elements:
- *     <ul>
- *       <li>
- *         All soft references pointing to {@code obj}.
- *       </li>
- *       <li>
- *         All soft references pointing to objects from which {@code obj} is
- *         strongly reachable.
- *       </li>
- *     </ul>
+ *   <li>A set {@code refs} of references is determined. {@code refs} contains
+ *       the following elements:
+ *       <ul>
+ *         <li>All soft references pointing to {@code obj}.</li>
+ *         <li>All soft references pointing to objects from which {@code obj} is
+ *           strongly reachable.</li>
+ *       </ul>
  *   </li>
- *   <li>
- *     All references in {@code ref} are atomically cleared.
- *   </li>
- *   <li>
- *     At the same time or some time in the future, all references in {@code
- *     ref} will be enqueued with their corresponding reference queues, if any.
- *   </li>
+ *   <li>All references in {@code refs} are atomically cleared.</li>
+ *   <li>At the same time or some time in the future, all references in {@code
+ *       refs} will be enqueued with their corresponding reference queues, if
+ *       any.</li>
  * </ul>
+ * The system may delay clearing and enqueueing soft references, yet all {@code
+ * SoftReference}s pointing to softly reachable objects will be cleared before
+ * the runtime throws an {@link OutOfMemoryError}.
  *
- * The system may decide not to clear and enqueue soft references until a later
- * time, yet all {@code SoftReference}s pointing to softly reachable objects are
- * guaranteed to be cleared before the VM will throw an {@link
- * java.lang.OutOfMemoryError}.
- *
- * Soft references are useful for caches that should automatically have
- * their entries removed once they are not referenced any more (from outside),
- * and there is a need for memory. The difference between a {@code
- * SoftReference} and a {@code WeakReference} is the point of time at which the
- * decision is made to clear and enqueue the reference:
- *
- * <ul>
- *   <li>
- *     A {@code SoftReference} should be cleared and enqueued <em>as late as
- *     possible</em>, that is, in case the VM is in danger of running out of
- *     memory.
- *   </li>
- *   <li>
- *     A {@code WeakReference} may be cleared and enqueued as soon as is
- *     known to be weakly-referenced.
- *   </li>
- * </ul>
+ * <p>Unlike a {@code WeakReference}, a {@code SoftReference} will not be
+ * cleared and enqueued until the runtime must reclaim memory to satisfy an
+ * allocation.
  */
 public class SoftReference<T> extends Reference<T> {
 

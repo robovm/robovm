@@ -96,13 +96,11 @@ public class InterfaceAddress {
     }
 
     /**
-     * Returns a string representation for this interface address.
-     * The string is of the form: InetAddress / prefix length [ broadcast address ].
-     *
-     * @return a string representation of this interface address.
+     * Returns a string containing this interface's address, prefix length, and broadcast address.
+     * For example: {@code "/172.18.103.112/23 [/172.18.103.255]"} or
+     * {@code "/0:0:0:0:0:0:0:1%1/128 [null]"}.
      */
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return address + "/" + prefixLength + " [" + broadcastAddress + "]";
     }
 

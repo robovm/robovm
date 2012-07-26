@@ -1,5 +1,5 @@
 /********************************************************************************
-* Copyright (C) 2008-2010, International Business Machines Corporation and
+* Copyright (C) 2008-2011, International Business Machines Corporation and
 * others. All Rights Reserved.
 *******************************************************************************
 *
@@ -257,7 +257,7 @@ public:
      * "EEE, d MMM, yyyy - EEE, d MMM, yyyy" for year differs,
      * "EEE, d MMM - EEE, d MMM, yyyy" for month differs,
      * "EEE, d - EEE, d MMM, yyyy" for day differs,
-     * @param skeleton  the skeleton on which interval format based.
+     * @param skeleton  the skeleton on which the interval format is based.
      * @param locale    the given locale
      * @param status    output param set to success/failure code on exit
      * @return          a date time interval formatter which the caller owns.
@@ -490,6 +490,28 @@ public:
     const DateFormat* getDateFormat(void) const;
 
     /**
+     * Returns a reference to the TimeZone used by this DateIntervalFormat's calendar.
+     * @return the time zone associated with the calendar of DateIntervalFormat.
+     * @draft ICU 4.8
+     */
+    virtual const TimeZone& getTimeZone(void) const;
+
+    /**
+     * Sets the time zone for the calendar used by this DateIntervalFormat object. The
+     * caller no longer owns the TimeZone object and should not delete it after this call.
+     * @param zoneToAdopt the TimeZone to be adopted.
+     * @draft ICU 4.8
+     */
+    virtual void adoptTimeZone(TimeZone* zoneToAdopt);
+
+    /**
+     * Sets the time zone for the calendar used by this DateIntervalFormat object.
+     * @param zone the new time zone.
+     * @draft ICU 4.8
+     */
+    virtual void setTimeZone(const TimeZone& zone);
+
+    /**
      * Return the class ID for this class. This is useful only for comparing to
      * a return value from getDynamicClassID(). For example:
      * <pre>
@@ -585,7 +607,7 @@ private:
      * Caller should not delete them.
      *
      * @param locale    the locale of this date interval formatter.
-     * @param dtitvinf  the DateIntervalInfo object to be adopted.
+     * @param dtItvInfo the DateIntervalInfo object to be adopted.
      * @param skeleton  the skeleton of the date formatter
      * @param status    output param set to success/failure code on exit
      * @internal ICU 4.0
@@ -832,7 +854,7 @@ private:
      *
      * @param inputSkeleton            the input skeleton
      * @param bestMatchSkeleton        the best match skeleton
-     * @param bestMatchIntervalpattern the best match interval pattern
+     * @param bestMatchIntervalPattern the best match interval pattern
      * @param differenceInfo           the difference between 2 skeletons
      *                                 1 means only field width differs
      *                                 2 means v/z exchange
@@ -919,7 +941,7 @@ private:
      */
     void setPatternInfo(UCalendarDateFields field,
                         const UnicodeString* firstPart,
-                        const UnicodeString* secondpart,
+                        const UnicodeString* secondPart,
                         UBool laterDateFirst);
 
 

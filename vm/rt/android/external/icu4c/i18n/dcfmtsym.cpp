@@ -28,6 +28,7 @@
 #include "unicode/choicfmt.h"
 #include "unicode/unistr.h"
 #include "unicode/numsys.h"
+#include "unicode/unum.h"
 #include "ucurrimp.h"
 #include "cstring.h"
 #include "locbased.h"
@@ -108,7 +109,7 @@ DecimalFormatSymbols::operator=(const DecimalFormatSymbols& rhs)
             // fastCopyFrom is safe, see docs on fSymbols
             fSymbols[(ENumberFormatSymbol)i].fastCopyFrom(rhs.fSymbols[(ENumberFormatSymbol)i]);
         }
-        for(int32_t i = 0; i < (int32_t)kCurrencySpacingCount; ++i) {
+        for(int32_t i = 0; i < (int32_t)UNUM_CURRENCY_SPACING_COUNT; ++i) {
             currencySpcBeforeSym[i].fastCopyFrom(rhs.currencySpcBeforeSym[i]);
             currencySpcAfterSym[i].fastCopyFrom(rhs.currencySpcAfterSym[i]);
         }
@@ -132,7 +133,7 @@ DecimalFormatSymbols::operator==(const DecimalFormatSymbols& that) const
             return FALSE;
         }
     }
-    for(int32_t i = 0; i < (int32_t)kCurrencySpacingCount; ++i) {
+    for(int32_t i = 0; i < (int32_t)UNUM_CURRENCY_SPACING_COUNT; ++i) {
         if(currencySpcBeforeSym[i] != that.currencySpcBeforeSym[i]) {
             return FALSE;
         }
@@ -352,7 +353,7 @@ DecimalFormatSymbols::initialize(const Locale& loc, UErrorCode& status, UBool us
                                            gCurrencySpacingTag, NULL, &localStatus);
 
         if (localStatus == U_USING_FALLBACK_WARNING || U_SUCCESS(localStatus)) {
-            const char* keywords[kCurrencySpacingCount] = {
+            const char* keywords[UNUM_CURRENCY_SPACING_COUNT] = {
                 gCurrencyMatchTag, gCurrencySudMatchTag, gCurrencyInsertBtnTag
             };
             localStatus = U_ZERO_ERROR;
@@ -360,7 +361,7 @@ DecimalFormatSymbols::initialize(const Locale& loc, UErrorCode& status, UBool us
                                        gBeforeCurrencyTag, NULL, &localStatus);
             if (localStatus == U_USING_FALLBACK_WARNING || U_SUCCESS(localStatus)) {
                 localStatus = U_ZERO_ERROR;
-                for (int32_t i = 0; i < kCurrencySpacingCount; i++) {
+                for (int32_t i = 0; i < UNUM_CURRENCY_SPACING_COUNT; i++) {
                   currencySpcBeforeSym[i] = ures_getStringByKey(dataRes, keywords[i],
                                                             NULL, &localStatus);
                 }
@@ -370,7 +371,7 @@ DecimalFormatSymbols::initialize(const Locale& loc, UErrorCode& status, UBool us
                                       gAfterCurrencyTag, NULL, &localStatus);
             if (localStatus == U_USING_FALLBACK_WARNING || U_SUCCESS(localStatus)) {
                 localStatus = U_ZERO_ERROR;
-                for (int32_t i = 0; i < kCurrencySpacingCount; i++) {
+                for (int32_t i = 0; i < UNUM_CURRENCY_SPACING_COUNT; i++) {
                   currencySpcAfterSym[i] = ures_getStringByKey(dataRes, keywords[i],
                                                                 NULL, &localStatus);
                 }
@@ -428,7 +429,7 @@ DecimalFormatSymbols::getLocale(ULocDataLocaleType type, UErrorCode& status) con
 }
 
 const UnicodeString&
-DecimalFormatSymbols::getPatternForCurrencySpacing(ECurrencySpacing type,
+DecimalFormatSymbols::getPatternForCurrencySpacing(UCurrencySpacing type,
                                                  UBool beforeCurrency,
                                                  UErrorCode& status) const {
     if (U_FAILURE(status)) {
@@ -442,7 +443,7 @@ DecimalFormatSymbols::getPatternForCurrencySpacing(ECurrencySpacing type,
 }
 
 void
-DecimalFormatSymbols::setPatternForCurrencySpacing(ECurrencySpacing type,
+DecimalFormatSymbols::setPatternForCurrencySpacing(UCurrencySpacing type,
                                                    UBool beforeCurrency,
                                              const UnicodeString& pattern) {
   if (beforeCurrency) {

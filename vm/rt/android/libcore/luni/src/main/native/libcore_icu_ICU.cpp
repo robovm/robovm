@@ -135,7 +135,7 @@ extern "C" jstring Java_libcore_icu_ICU_getCurrencyCode(JNIEnv* env, jclass, jst
 
     ScopedResourceBundle currencyElem(ures_getByIndex(currency.get(), 0, NULL, &status));
     if (U_FAILURE(status)) {
-        return env->NewStringUTF("None");
+        return env->NewStringUTF("XXX");
     }
 
     // Check if there's a 'to' date. If there is, the currency isn't used anymore.
@@ -149,12 +149,12 @@ extern "C" jstring Java_libcore_icu_ICU_getCurrencyCode(JNIEnv* env, jclass, jst
     ScopedResourceBundle currencyId(ures_getByKey(currencyElem.get(), "id", NULL, &status));
     if (U_FAILURE(status)) {
         // No id defined for this country
-        return env->NewStringUTF("None");
+        return env->NewStringUTF("XXX");
     }
 
     int32_t charCount;
     const jchar* chars = ures_getString(currencyId.get(), &charCount, &status);
-    return (charCount == 0) ? env->NewStringUTF("None") : env->NewString(chars, charCount);
+    return (charCount == 0) ? env->NewStringUTF("XXX") : env->NewString(chars, charCount);
 }
 
 extern "C" jstring Java_libcore_icu_ICU_getCurrencyDisplayName(JNIEnv* env, jclass, jstring javaLocaleName, jstring javaCurrencyCode) {
@@ -269,97 +269,6 @@ extern "C" jobjectArray Java_libcore_icu_ICU_getAvailableNumberFormatLocalesNati
     return toStringArray(env, unum_countAvailable, unum_getAvailable);
 }
 
-static bool getDayIntVector(JNIEnv*, UResourceBundle* gregorian, int* values) {
-    // get the First day of week and the minimal days in first week numbers
-    UErrorCode status = U_ZERO_ERROR;
-    ScopedResourceBundle gregorianElems(ures_getByKey(gregorian, "DateTimeElements", NULL, &status));
-    if (U_FAILURE(status)) {
-        return false;
-    }
-
-    int intVectSize;
-    const int* result = ures_getIntVector(gregorianElems.get(), &intVectSize, &status);
-    if (U_FAILURE(status) || intVectSize != 2) {
-        return false;
-    }
-
-    values[0] = result[0];
-    values[1] = result[1];
-    return true;
-}
-
-// This allows you to leave extra space at the beginning or end of the array to support the
-// month names and day names arrays.
-static jobjectArray toStringArray(JNIEnv* env, UResourceBundle* rb, size_t size, int capacity, size_t offset) {
-    if (capacity == -1) {
-        capacity = size;
-    }
-    jobjectArray result = env->NewObjectArray(capacity, JniConstants::stringClass, NULL);
-    if (result == NULL) {
-        return NULL;
-    }
-    UErrorCode status = U_ZERO_ERROR;
-    for (size_t i = 0; i < size; ++i) {
-        int charCount;
-        const jchar* chars = ures_getStringByIndex(rb, i, &charCount, &status);
-        if (U_FAILURE(status)) {
-            return NULL;
-        }
-        ScopedLocalRef<jstring> s(env, env->NewString(chars, charCount));
-        if (env->ExceptionCheck()) {
-            return NULL;
-        }
-        env->SetObjectArrayElement(result, offset + i, s.get());
-        if (env->ExceptionCheck()) {
-            return NULL;
-        }
-    }
-    return result;
-}
-
-static jobjectArray getAmPmMarkers(JNIEnv* env, UResourceBundle* gregorian) {
-    UErrorCode status = U_ZERO_ERROR;
-    ScopedResourceBundle amPmMarkers(ures_getByKey(gregorian, "AmPmMarkers", NULL, &status));
-    if (U_FAILURE(status)) {
-        return NULL;
-    }
-    return toStringArray(env, amPmMarkers.get(), ures_getSize(amPmMarkers.get()), -1, 0);
-}
-
-static jobjectArray getEras(JNIEnv* env, UResourceBundle* gregorian) {
-    UErrorCode status = U_ZERO_ERROR;
-    ScopedResourceBundle eras(ures_getByKey(gregorian, "eras", NULL, &status));
-    if (U_FAILURE(status)) {
-        return NULL;
-    }
-    ScopedResourceBundle abbreviatedEras(ures_getByKey(eras.get(), "abbreviated", NULL, &status));
-    if (U_FAILURE(status)) {
-        return NULL;
-    }
-    return toStringArray(env, abbreviatedEras.get(), ures_getSize(abbreviatedEras.get()), -1, 0);
-}
-
-enum NameType { REGULAR, STAND_ALONE };
-enum NameWidth { LONG, SHORT };
-static jobjectArray getNames(JNIEnv* env, UResourceBundle* namesBundle, bool months, NameType type, NameWidth width) {
-    const char* typeKey = (type == REGULAR) ? "format" : "stand-alone";
-    const char* widthKey = (width == LONG) ? "wide" : "abbreviated";
-    UErrorCode status = U_ZERO_ERROR;
-    ScopedResourceBundle formatBundle(ures_getByKey(namesBundle, typeKey, NULL, &status));
-    ScopedResourceBundle valuesBundle(ures_getByKey(formatBundle.get(), widthKey, NULL, &status));
-    if (U_FAILURE(status)) {
-        return NULL;
-    }
-
-    // The months array has a trailing empty string. The days array has a leading empty string.
-    int count = ures_getSize(valuesBundle.get());
-    int offset = months ? 0 : 1;
-    jobjectArray result = toStringArray(env, valuesBundle.get(), count, count + 1, offset);
-    ScopedLocalRef<jstring> emptyString(env, env->NewStringUTF(""));
-    env->SetObjectArrayElement(result, months ? count : 0, emptyString.get());
-    return result;
-}
-
 static void setIntegerField(JNIEnv* env, jobject obj, const char* fieldName, int value) {
     ScopedLocalRef<jobject> integerValue(env, integerValueOf(env, value));
     jfieldID fid = env->GetFieldID(JniConstants::localeDataClass, fieldName, "Ljava/lang/Integer;");
@@ -377,6 +286,21 @@ static void setStringArrayField(JNIEnv* env, jobject obj, const char* fieldName,
     env->SetObjectField(obj, fid, value);
 }
 
+static void setStringArrayField(JNIEnv* env, jobject obj, const char* fieldName, const UnicodeString* valueArray, int32_t size) {
+    ScopedLocalRef<jobjectArray> result(env, env->NewObjectArray(size, JniConstants::stringClass, NULL));
+    for (int32_t i = 0; i < size ; i++) {
+        ScopedLocalRef<jstring> s(env, env->NewString(valueArray[i].getBuffer(),valueArray[i].length()));
+        if (env->ExceptionCheck()) {
+            return;
+        }
+        env->SetObjectArrayElement(result.get(), i, s.get());
+        if (env->ExceptionCheck()) {
+            return;
+        }
+    }
+    setStringArrayField(env, obj, fieldName, result.get());
+}
+
 static void setStringField(JNIEnv* env, jobject obj, const char* fieldName, UResourceBundle* bundle, int index) {
     UErrorCode status = U_ZERO_ERROR;
     int charCount;
@@ -384,168 +308,57 @@ static void setStringField(JNIEnv* env, jobject obj, const char* fieldName, URes
     if (U_SUCCESS(status)) {
         setStringField(env, obj, fieldName, env->NewString(chars, charCount));
     } else {
-        LOGE("Error setting String field %s from ICU resource: %s", fieldName, u_errorName(status));
+        ALOGE("Error setting String field %s from ICU resource: %s", fieldName, u_errorName(status));
     }
 }
 
-static bool setStringField(JNIEnv* env, jobject obj, const char* key, const char* fieldName, UResourceBundle* bundle) {
-    if (bundle == NULL) {
-        return false;
-    }
-    UErrorCode status = U_ZERO_ERROR;
-    int charCount;
-    const UChar* chars = ures_getStringByKey(bundle, key, &charCount, &status);
-    if (U_SUCCESS(status)) {
-        setStringField(env, obj, fieldName, env->NewString(chars, charCount));
-        return true;
-    } else {
-        // Missing item in current resource bundle but not an error.
-        return false;
-    }
-}
-
-static void setStringField(JNIEnv* env, jobject obj, const char* key, const char* fieldName,
-    UResourceBundle* bundle, UResourceBundle* fallbackBundle) {
-    if (!setStringField(env, obj, key, fieldName, bundle) && fallbackBundle != NULL) {
-        setStringField(env, obj, key, fieldName, fallbackBundle);
-    }
-}
-
-static bool setCharField(JNIEnv* env, jobject obj, const char* key, const char* fieldName,
-    UResourceBundle* bundle) {
-    if (bundle == NULL) {
-        return false;
-    }
-    UErrorCode status = U_ZERO_ERROR;
-    int charCount;
-    const UChar* chars = ures_getStringByKey(bundle, key, &charCount, &status);
-    if (U_SUCCESS(status)) {
-        jfieldID fid = env->GetFieldID(JniConstants::localeDataClass, fieldName, "C");
-        env->SetCharField(obj, fid, chars[0]);
-        return true;
-    } else {
-        // Missing item in current resource bundle but not an error.
-        return false;
-    }
-}
-
-static void setCharField(JNIEnv* env, jobject obj, const char* key, const char* fieldName,
-    UResourceBundle* bundle, UResourceBundle* fallbackBundle) {
-    if (!setCharField(env, obj, key, fieldName, bundle) && fallbackBundle != NULL) {
-        setCharField(env, obj, key, fieldName, fallbackBundle);
-    }
-}
-
-static void setNumberSymbols(JNIEnv* env, jobject obj, UResourceBundle* numberSymbols, UResourceBundle* fallbackNumberSymbols) {
-    setCharField(env, obj, "decimal", "decimalSeparator", numberSymbols, fallbackNumberSymbols);
-    setCharField(env, obj, "group", "groupingSeparator", numberSymbols, fallbackNumberSymbols);
-    setCharField(env, obj, "list", "patternSeparator", numberSymbols, fallbackNumberSymbols);
-    setCharField(env, obj, "percentSign", "percent", numberSymbols, fallbackNumberSymbols);
-    setCharField(env, obj, "perMille", "perMill", numberSymbols, fallbackNumberSymbols);
-    setCharField(env, obj, "decimal", "monetarySeparator", numberSymbols, fallbackNumberSymbols);
-    setCharField(env, obj, "minusSign", "minusSign", numberSymbols, fallbackNumberSymbols);
-    setStringField(env, obj, "exponential", "exponentSeparator", numberSymbols, fallbackNumberSymbols);
-    setStringField(env, obj, "infinity", "infinity", numberSymbols, fallbackNumberSymbols);
-    setStringField(env, obj, "nan", "NaN", numberSymbols, fallbackNumberSymbols);
-}
-
-static void setZeroDigitToDefault(JNIEnv* env, jobject obj) {
-    static jfieldID fid = env->GetFieldID(JniConstants::localeDataClass, "zeroDigit", "C");
-    env->SetCharField(obj, fid, '0');
-}
-
-static void setZeroDigit(JNIEnv* env, jobject obj, bool isLatn, char* buffer) {
-    if (isLatn || buffer == NULL || buffer[0] == '\0') {
-        return setZeroDigitToDefault(env, obj);
-    }
-    UErrorCode status = U_ZERO_ERROR;
-    ScopedResourceBundle numSystemRoot(ures_openDirect(NULL, "numberingSystems", &status));
-    if (U_FAILURE(status)) {
-        return setZeroDigitToDefault(env, obj);
-    }
-    ScopedResourceBundle numSystem(ures_getByKey(numSystemRoot.get(), "numberingSystems", NULL, &status));
-    if (U_FAILURE(status)) {
-        return setZeroDigitToDefault(env, obj);
-    }
-    ScopedResourceBundle nonLatnSystem(ures_getByKey(numSystem.get(), buffer, NULL, &status));
-    if (U_FAILURE(status)) {
-        return setZeroDigitToDefault(env, obj);
-    }
-    int32_t charCount = 0;
-    const UChar* chars = ures_getStringByKey(nonLatnSystem.get(), "desc", &charCount, &status);
-    if (charCount == 0) {
-        setZeroDigitToDefault(env, obj);
-    } else {
-        static jfieldID fid = env->GetFieldID(JniConstants::localeDataClass, "zeroDigit", "C");
-        env->SetCharField(obj, fid, chars[0]);
-    }
-}
-
-static void setNumberElements(JNIEnv* env, jobject obj, UResourceBundle* numberElements) {
-    UErrorCode status = U_ZERO_ERROR;
-    ScopedResourceBundle latnNumberRB(ures_getByKey(numberElements, "latn", NULL, &status));
-    if (U_FAILURE(status)) {
-        LOGW("Error getting ICU latn number elements system value: %s", u_errorName(status));
+static void setCharField(JNIEnv* env, jobject obj, const char* fieldName, const UnicodeString& value) {
+    if (value.length() == 0) {
         return;
     }
-    ScopedResourceBundle patternsRB(ures_getByKey(latnNumberRB.get(), "patterns", NULL, &status));
-    if (U_FAILURE(status)) {
-        LOGW("Error getting ICU latn number patterns value: %s", u_errorName(status));
-        return;
-    }
-    // Get the patterns from the 'latn' numberElements
-    // This is a temporary workaround for ICU ticket#8611.
-    UResourceBundle* bundle = patternsRB.get();
-    setStringField(env, obj, "currencyFormat", "currencyPattern", bundle);
-    setStringField(env, obj, "decimalFormat", "numberPattern", bundle);
-    setStringField(env, obj, "percentFormat", "percentPattern", bundle);
+    jfieldID fid = env->GetFieldID(JniConstants::localeDataClass, fieldName, "C");
+    env->SetCharField(obj, fid, value.charAt(0));
+}
 
-    status = U_ZERO_ERROR;
-    bool isLatn = false;
-    char buffer[256];
-    buffer[0] = '\0';
-    ScopedResourceBundle defaultNumberElem(ures_getByKey(numberElements, "default", NULL, &status));
-    if (U_SUCCESS(status)) {
-        int32_t charCount = 256;
-        ures_getUTF8String(defaultNumberElem.get(), buffer, &charCount, true, &status);
-        buffer[charCount] = '\0';
-        if (U_FAILURE(status)) {
-            LOGW("Error getting ICU default number element system value: %s", u_errorName(status));
-            // Use latn number symbols instead.
-            isLatn = true;
-        } else {
-            isLatn = (strcmp(buffer, "latn") == 0);
-        }
-    } else {
-        // Not default data, fallback to latn number elements.
-        isLatn = true;
-    }
+static void setStringField(JNIEnv* env, jobject obj, const char* fieldName, const UnicodeString& value) {
+    const UChar* chars = value.getBuffer();
+    setStringField(env, obj, fieldName, env->NewString(chars, value.length()));
+}
 
-    status = U_ZERO_ERROR;
-    setZeroDigit(env, obj, isLatn, buffer);
-    if (isLatn) {
-        ScopedResourceBundle symbolsRB(ures_getByKey(latnNumberRB.get(), "symbols", NULL, &status));
-        if (U_SUCCESS(status)) {
-            setNumberSymbols(env, obj, symbolsRB.get(), NULL);
-        } else {
-            LOGW("Missing ICU latn symbols system value: %s", u_errorName(status));
-        }
-    } else {
-        // Get every symbol item from default numbering system first. If it does not
-        // exist, get the symbol from latn numbering system.
-        ScopedResourceBundle defaultNumberRB(ures_getByKey(numberElements, (const char*)buffer, NULL, &status));
-        ScopedResourceBundle defaultSymbolsRB(ures_getByKey(defaultNumberRB.get(), "symbols", NULL, &status));
-        if (U_FAILURE(status)) {
-            LOGW("Missing ICU %s symbols system value: %s", buffer, u_errorName(status));
-            isLatn = true;  // Fallback to latn symbols.
-            status = U_ZERO_ERROR;
-        }
-        ScopedResourceBundle latnSymbolsRB(ures_getByKey(latnNumberRB.get(), "symbols", NULL, &status));
-        if (isLatn && U_FAILURE(status)) {
-            return;
-        }
-        setNumberSymbols(env, obj, defaultSymbolsRB.get(), latnSymbolsRB.get());
-    }
+static void setNumberPatterns(JNIEnv* env, jobject obj, jstring locale) {
+    UErrorCode status = U_ZERO_ERROR;
+    Locale localeObj = getLocale(env, locale);
+
+    UnicodeString pattern;
+    UniquePtr<DecimalFormat> fmt(static_cast<DecimalFormat*>(NumberFormat::createInstance(localeObj, UNUM_CURRENCY, status)));
+    pattern = fmt->toPattern(pattern.remove());
+    setStringField(env, obj, "currencyPattern", pattern);
+
+    fmt.reset(static_cast<DecimalFormat*>(NumberFormat::createInstance(localeObj, UNUM_DECIMAL, status)));
+    pattern = fmt->toPattern(pattern.remove());
+    setStringField(env, obj, "numberPattern", pattern);
+
+    fmt.reset(static_cast<DecimalFormat*>(NumberFormat::createInstance(localeObj, UNUM_PERCENT, status)));
+    pattern = fmt->toPattern(pattern.remove());
+    setStringField(env, obj, "percentPattern", pattern);
+}
+
+static void setDecimalFormatSymbolsData(JNIEnv* env, jobject obj, jstring locale) {
+    UErrorCode status = U_ZERO_ERROR;
+    Locale localeObj = getLocale(env, locale);
+    DecimalFormatSymbols dfs(localeObj, status);
+
+    setCharField(env, obj, "decimalSeparator", dfs.getSymbol(DecimalFormatSymbols::kDecimalSeparatorSymbol));
+    setCharField(env, obj, "groupingSeparator", dfs.getSymbol(DecimalFormatSymbols::kGroupingSeparatorSymbol));
+    setCharField(env, obj, "patternSeparator", dfs.getSymbol(DecimalFormatSymbols::kPatternSeparatorSymbol));
+    setCharField(env, obj, "percent", dfs.getSymbol(DecimalFormatSymbols::kPercentSymbol));
+    setCharField(env, obj, "perMill", dfs.getSymbol(DecimalFormatSymbols::kPerMillSymbol));
+    setCharField(env, obj, "monetarySeparator", dfs.getSymbol(DecimalFormatSymbols::kMonetarySeparatorSymbol));
+    setCharField(env, obj, "minusSign", dfs.getSymbol(DecimalFormatSymbols:: kMinusSignSymbol));
+    setStringField(env, obj, "exponentSeparator", dfs.getSymbol(DecimalFormatSymbols::kExponentialSymbol));
+    setStringField(env, obj, "infinity", dfs.getSymbol(DecimalFormatSymbols::kInfinitySymbol));
+    setStringField(env, obj, "NaN", dfs.getSymbol(DecimalFormatSymbols::kNaNSymbol));
+    setCharField(env, obj, "zeroDigit", dfs.getSymbol(DecimalFormatSymbols::kZeroDigitSymbol));
 }
 
 extern "C" jboolean Java_libcore_icu_ICU_initLocaleDataImpl(JNIEnv* env, jclass, jstring locale, jobject localeData) {
@@ -554,96 +367,110 @@ extern "C" jboolean Java_libcore_icu_ICU_initLocaleDataImpl(JNIEnv* env, jclass,
         return JNI_FALSE;
     }
 
-    UErrorCode status = U_ZERO_ERROR;
-    ScopedResourceBundle root(ures_open(NULL, localeName.c_str(), &status));
+    // Get DateTimePatterns
+    UErrorCode status;
+    char currentLocale[ULOC_FULLNAME_CAPACITY];
+    int32_t localeNameLen = 0;
+    if (localeName.size() >= ULOC_FULLNAME_CAPACITY) {
+        return JNI_FALSE;  // Exceed ICU defined limit of the whole locale ID.
+    }
+    strcpy(currentLocale, localeName.c_str());
+    do {
+        status = U_ZERO_ERROR;
+        ScopedResourceBundle root(ures_open(NULL, currentLocale, &status));
+        if (U_FAILURE(status)) {
+            if (localeNameLen == 0) {
+                break;  // No parent locale, report this error outside the loop.
+            } else {
+                status = U_ZERO_ERROR;
+                continue;  // get parent locale.
+            }
+        }
+        ScopedResourceBundle calendar(ures_getByKey(root.get(), "calendar", NULL, &status));
+        if (U_FAILURE(status)) {
+            status = U_ZERO_ERROR;
+            continue;  // get parent locale.
+        }
+
+        ScopedResourceBundle gregorian(ures_getByKey(calendar.get(), "gregorian", NULL, &status));
+        if (U_FAILURE(status)) {
+            status = U_ZERO_ERROR;
+            continue;  // get parent locale.
+        }
+        ScopedResourceBundle dateTimePatterns(ures_getByKey(gregorian.get(), "DateTimePatterns", NULL, &status));
+        if (U_SUCCESS(status)) {
+            setStringField(env, localeData, "fullTimeFormat", dateTimePatterns.get(), 0);
+            setStringField(env, localeData, "longTimeFormat", dateTimePatterns.get(), 1);
+            setStringField(env, localeData, "mediumTimeFormat", dateTimePatterns.get(), 2);
+            setStringField(env, localeData, "shortTimeFormat", dateTimePatterns.get(), 3);
+            setStringField(env, localeData, "fullDateFormat", dateTimePatterns.get(), 4);
+            setStringField(env, localeData, "longDateFormat", dateTimePatterns.get(), 5);
+            setStringField(env, localeData, "mediumDateFormat", dateTimePatterns.get(), 6);
+            setStringField(env, localeData, "shortDateFormat", dateTimePatterns.get(), 7);
+            break;
+        } else {
+            status = U_ZERO_ERROR;  // get parent locale.
+        }
+    } while((localeNameLen = uloc_getParent(currentLocale, currentLocale, sizeof(currentLocale), &status)) >= 0);
     if (U_FAILURE(status)) {
-        LOGE("Error getting ICU resource bundle: %s", u_errorName(status));
+        ALOGE("Error getting ICU resource bundle: %s", u_errorName(status));
         return JNI_FALSE;
     }
 
-    ScopedResourceBundle calendar(ures_getByKey(root.get(), "calendar", NULL, &status));
+    status = U_ZERO_ERROR;
+    Locale localeObj = getLocale(env, locale);
+
+    UniquePtr<Calendar> cal(Calendar::createInstance(localeObj, status));
     if (U_FAILURE(status)) {
-        LOGE("Error getting ICU calendar resource bundle: %s", u_errorName(status));
         return JNI_FALSE;
     }
+    setIntegerField(env, localeData, "firstDayOfWeek", cal->getFirstDayOfWeek());
+    setIntegerField(env, localeData, "minimalDaysInFirstWeek", cal->getMinimalDaysInFirstWeek());
 
-    ScopedResourceBundle gregorian(ures_getByKey(calendar.get(), "gregorian", NULL, &status));
+    // Get DateFormatSymbols
+    status = U_ZERO_ERROR;
+    DateFormatSymbols dateFormatSym(localeObj, status);
     if (U_FAILURE(status)) {
-        LOGE("Error getting ICU gregorian resource bundle: %s", u_errorName(status));
         return JNI_FALSE;
     }
+    int32_t count = 0;
+    // Get AM/PM marker
+    const UnicodeString* amPmStrs = dateFormatSym.getAmPmStrings(count);
+    setStringArrayField(env, localeData, "amPm", amPmStrs, count);
+    const UnicodeString* erasStrs = dateFormatSym.getEras(count);
+    setStringArrayField(env, localeData, "eras", erasStrs, count);
 
-    int firstDayVals[] = { 0, 0 };
-    if (getDayIntVector(env, gregorian.get(), firstDayVals)) {
-        setIntegerField(env, localeData, "firstDayOfWeek", firstDayVals[0]);
-        setIntegerField(env, localeData, "minimalDaysInFirstWeek", firstDayVals[1]);
-    }
+    const UnicodeString* longMonthNames =
+       dateFormatSym.getMonths(count, DateFormatSymbols::FORMAT, DateFormatSymbols::WIDE);
+    setStringArrayField(env, localeData, "longMonthNames", longMonthNames, count);
+    const UnicodeString* shortMonthNames =
+        dateFormatSym.getMonths(count, DateFormatSymbols::FORMAT, DateFormatSymbols::ABBREVIATED);
+    setStringArrayField(env, localeData, "shortMonthNames", shortMonthNames, count);
+    const UnicodeString* longWeekdayNames =
+        dateFormatSym.getWeekdays(count, DateFormatSymbols::FORMAT, DateFormatSymbols::WIDE);
+    setStringArrayField(env, localeData, "longWeekdayNames", longWeekdayNames, count);
+    const UnicodeString* shortWeekdayNames =
+        dateFormatSym.getWeekdays(count, DateFormatSymbols::FORMAT, DateFormatSymbols::ABBREVIATED);
+    setStringArrayField(env, localeData, "shortWeekdayNames", shortWeekdayNames, count);
 
-    jobjectArray amPmMarkers = getAmPmMarkers(env, gregorian.get());
-    setStringArrayField(env, localeData, "amPm", amPmMarkers);
-    env->DeleteLocalRef(amPmMarkers);
+    const UnicodeString* longStandAloneMonthNames =
+        dateFormatSym.getMonths(count, DateFormatSymbols::STANDALONE, DateFormatSymbols::WIDE);
+    setStringArrayField(env, localeData, "longStandAloneMonthNames", longStandAloneMonthNames, count);
+    const UnicodeString* shortStandAloneMonthNames =
+        dateFormatSym.getMonths(count, DateFormatSymbols::STANDALONE, DateFormatSymbols::ABBREVIATED);
+    setStringArrayField(env, localeData, "shortStandAloneMonthNames", shortStandAloneMonthNames, count);
+    const UnicodeString* longStandAloneWeekdayNames =
+        dateFormatSym.getWeekdays(count, DateFormatSymbols::STANDALONE, DateFormatSymbols::WIDE);
+    setStringArrayField(env, localeData, "longStandAloneWeekdayNames", longStandAloneWeekdayNames, count);
+    const UnicodeString* shortStandAloneWeekdayNames =
+        dateFormatSym.getWeekdays(count, DateFormatSymbols::STANDALONE, DateFormatSymbols::ABBREVIATED);
+    setStringArrayField(env, localeData, "shortStandAloneWeekdayNames", shortStandAloneWeekdayNames, count);
 
-    jobjectArray eras = getEras(env, gregorian.get());
-    setStringArrayField(env, localeData, "eras", eras);
-    env->DeleteLocalRef(eras);
-
-    ScopedResourceBundle dayNames(ures_getByKey(gregorian.get(), "dayNames", NULL, &status));
-    ScopedResourceBundle monthNames(ures_getByKey(gregorian.get(), "monthNames", NULL, &status));
-
-    // Get the regular month and weekday names.
-    jobjectArray longMonthNames = getNames(env, monthNames.get(), true, REGULAR, LONG);
-    jobjectArray shortMonthNames = getNames(env, monthNames.get(), true, REGULAR, SHORT);
-    jobjectArray longWeekdayNames = getNames(env, dayNames.get(), false, REGULAR, LONG);
-    jobjectArray shortWeekdayNames = getNames(env, dayNames.get(), false, REGULAR, SHORT);
-    setStringArrayField(env, localeData, "longMonthNames", longMonthNames);
-    setStringArrayField(env, localeData, "shortMonthNames", shortMonthNames);
-    setStringArrayField(env, localeData, "longWeekdayNames", longWeekdayNames);
-    setStringArrayField(env, localeData, "shortWeekdayNames", shortWeekdayNames);
-
-    // Get the stand-alone month and weekday names. If they're not available (as they aren't for
-    // English), we reuse the regular names. If we returned null to Java, the usual fallback
-    // mechanisms would come into play and we'd end up with the bogus stand-alone names from the
-    // root locale ("1" for January, and so on).
-    jobjectArray longStandAloneMonthNames = getNames(env, monthNames.get(), true, STAND_ALONE, LONG);
-    if (longStandAloneMonthNames == NULL) {
-        longStandAloneMonthNames = longMonthNames;
-    }
-    jobjectArray shortStandAloneMonthNames = getNames(env, monthNames.get(), true, STAND_ALONE, SHORT);
-    if (shortStandAloneMonthNames == NULL) {
-        shortStandAloneMonthNames = shortMonthNames;
-    }
-    jobjectArray longStandAloneWeekdayNames = getNames(env, dayNames.get(), false, STAND_ALONE, LONG);
-    if (longStandAloneWeekdayNames == NULL) {
-        longStandAloneWeekdayNames = longWeekdayNames;
-    }
-    jobjectArray shortStandAloneWeekdayNames = getNames(env, dayNames.get(), false, STAND_ALONE, SHORT);
-    if (shortStandAloneWeekdayNames == NULL) {
-        shortStandAloneWeekdayNames = shortWeekdayNames;
-    }
-    setStringArrayField(env, localeData, "longStandAloneMonthNames", longStandAloneMonthNames);
-    setStringArrayField(env, localeData, "shortStandAloneMonthNames", shortStandAloneMonthNames);
-    setStringArrayField(env, localeData, "longStandAloneWeekdayNames", longStandAloneWeekdayNames);
-    setStringArrayField(env, localeData, "shortStandAloneWeekdayNames", shortStandAloneWeekdayNames);
-
-    ScopedResourceBundle dateTimePatterns(ures_getByKey(gregorian.get(), "DateTimePatterns", NULL, &status));
-    if (U_SUCCESS(status)) {
-        setStringField(env, localeData, "fullTimeFormat", dateTimePatterns.get(), 0);
-        setStringField(env, localeData, "longTimeFormat", dateTimePatterns.get(), 1);
-        setStringField(env, localeData, "mediumTimeFormat", dateTimePatterns.get(), 2);
-        setStringField(env, localeData, "shortTimeFormat", dateTimePatterns.get(), 3);
-        setStringField(env, localeData, "fullDateFormat", dateTimePatterns.get(), 4);
-        setStringField(env, localeData, "longDateFormat", dateTimePatterns.get(), 5);
-        setStringField(env, localeData, "mediumDateFormat", dateTimePatterns.get(), 6);
-        setStringField(env, localeData, "shortDateFormat", dateTimePatterns.get(), 7);
-    }
     status = U_ZERO_ERROR;
 
     // For numberPatterns and symbols.
-    ScopedResourceBundle numberElements(ures_getByKey(root.get(), "NumberElements", NULL, &status));
-    if (U_SUCCESS(status)) {
-        setNumberElements(env, localeData, numberElements.get());
-    }
-    status = U_ZERO_ERROR;
+    setNumberPatterns(env, localeData, locale);
+    setDecimalFormatSymbolsData(env, localeData, locale);
 
     jstring countryCode = env->NewStringUTF(Locale::createFromName(localeName.c_str()).getCountry());
     jstring internationalCurrencySymbol = Java_libcore_icu_ICU_getCurrencyCode(env, NULL, countryCode);
@@ -731,12 +558,12 @@ int register_libcore_icu_ICU(JNIEnv* env) {
     path += ".dat";
 
     #define FAIL_WITH_STRERROR(s) \
-        LOGE("Couldn't " s " '%s': %s", path.c_str(), strerror(errno)); \
-        return -1;
+        ALOGE("Couldn't " s " '%s': %s", path.c_str(), strerror(errno)); \
+        abort();
     #define MAYBE_FAIL_WITH_ICU_ERROR(s) \
         if (status != U_ZERO_ERROR) {\
-            LOGE("Couldn't initialize ICU (" s "): %s (%s)", u_errorName(status), path.c_str()); \
-            return -1; \
+            ALOGE("Couldn't initialize ICU (" s "): %s (%s)", u_errorName(status), path.c_str()); \
+            abort(); \
         }
 
     // Open the file and get its length.

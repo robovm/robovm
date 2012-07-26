@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *
-*   Copyright (C) 1998-2010, International Business Machines
+*   Copyright (C) 1998-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -2881,6 +2881,30 @@ ucnv_toUCountPending(const UConverter* cnv, UErrorCode* status){
         return cnv->toULength;
     }
     return 0;
+}
+
+U_DRAFT UBool U_EXPORT2
+ucnv_isFixedWidth(UConverter *cnv, UErrorCode *status){
+    if (U_FAILURE(*status)) {
+        return FALSE;
+    }
+
+    if (cnv == NULL) {
+        *status = U_ILLEGAL_ARGUMENT_ERROR;
+        return FALSE;
+    }
+
+    switch (ucnv_getType(cnv)) {
+        case UCNV_SBCS:
+        case UCNV_DBCS:
+        case UCNV_UTF32_BigEndian:
+        case UCNV_UTF32_LittleEndian:
+        case UCNV_UTF32:
+        case UCNV_US_ASCII:
+            return TRUE;
+        default:
+            return FALSE;
+    }
 }
 #endif
 

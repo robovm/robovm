@@ -1,13 +1,13 @@
-/* 
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -226,7 +226,7 @@ public class AccessibleObject implements AnnotatedElement {
      * Attempts to set the value of the accessible flag. Setting this flag to
      * {@code false} will enable access checks, setting to {@code true} will
      * disable them.
-     * 
+     *
      * @param flag
      *            the new value for the accessible flag
      */
@@ -289,7 +289,7 @@ public class AccessibleObject implements AnnotatedElement {
         }
         return result;
     }
-    
+
     /**
      * Returns a printable String consisting of the canonical names of the
      * classes contained in an array. The form is that used in parameter and

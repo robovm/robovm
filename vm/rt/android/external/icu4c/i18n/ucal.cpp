@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-*   Copyright (C) 1996-2010, International Business Machines
+*   Copyright (C) 1996-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *******************************************************************************
 */
@@ -43,6 +43,13 @@ _createTimeZone(const UChar* zoneID, int32_t len, UErrorCode* ec) {
         }
     }
     return zone;
+}
+
+U_CAPI UEnumeration* U_EXPORT2
+ucal_openTimeZoneIDEnumeration(USystemTimeZoneType zoneType, const char* region,
+                                const int32_t* rawOffset, UErrorCode* ec) {
+    return uenum_openFromStringEnumeration(TimeZone::createTimeZoneIDEnumeration(
+        zoneType, region, rawOffset, *ec), ec);
 }
 
 U_CAPI UEnumeration* U_EXPORT2
@@ -251,6 +258,15 @@ ucal_setGregorianChange(UCalendar *cal, UDate date, UErrorCode *pErrorCode) {
     // Not if(gregocal == NULL) {
     // because we really want to work only with a GregorianCalendar, not with
     // its subclasses like BuddhistCalendar.
+    // BEGIN android-added.
+    // See ICU ticket#9047.
+    if (cpp_cal == NULL) {
+        // We normally don't check "this" pointers for NULL, but this here avoids
+        // compiler-generated exception-throwing code in case cal == NULL.
+        *pErrorCode = U_ILLEGAL_ARGUMENT_ERROR;
+        return;
+    }
+    // END android-added
     if(typeid(*cpp_cal) != typeid(GregorianCalendar)) {
         *pErrorCode = U_UNSUPPORTED_ERROR;
         return;
@@ -267,6 +283,15 @@ ucal_getGregorianChange(const UCalendar *cal, UErrorCode *pErrorCode) {
     const GregorianCalendar *gregocal = dynamic_cast<const GregorianCalendar *>(cpp_cal);
     // Not if(gregocal == NULL) {
     // see comments in ucal_setGregorianChange().
+    // BEGIN android-added.
+    // See ICU ticket#9047.
+    if (cpp_cal == NULL) {
+        // We normally don't check "this" pointers for NULL, but this here avoids
+        // compiler-generated exception-throwing code in case cal == NULL.
+        *pErrorCode = U_ILLEGAL_ARGUMENT_ERROR;
+        return (UDate)0;
+    }
+    // END android-added
     if(typeid(*cpp_cal) != typeid(GregorianCalendar)) {
         *pErrorCode = U_UNSUPPORTED_ERROR;
         return (UDate)0;
@@ -571,6 +596,17 @@ ucal_isWeekend(const UCalendar *cal, UDate date, UErrorCode *status)
         return FALSE;
     }
     return ((Calendar*)cal)->isWeekend(date, *status);
+}
+
+U_CAPI int32_t  U_EXPORT2
+ucal_getFieldDifference(UCalendar* cal, UDate target,
+                        UCalendarDateFields field,
+                        UErrorCode* status )
+{
+    if (U_FAILURE(*status)) {
+        return 0;
+    }
+    return ((Calendar*)cal)->fieldDifference(target, field, *status);
 }
 
 

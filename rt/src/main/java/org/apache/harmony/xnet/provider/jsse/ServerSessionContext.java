@@ -37,6 +37,12 @@ public class ServerSessionContext extends AbstractSessionContext {
 
         // TODO override trimToSize and removeEldestEntry to use
         // SSL_CTX_sessions to remove from native cache
+
+        // Set a trivial session id context. OpenSSL uses this to make
+        // sure you don't reuse sessions externalized with i2d_SSL_SESSION
+        // between apps. However our sessions are either in memory or
+        // exported to a app's SSLServerSessionCache.
+        NativeCrypto.SSL_CTX_set_session_id_context(sslCtxNativePointer, new byte[] { ' ' });
     }
 
     public void setPersistentCache(SSLServerSessionCache persistentCache) {

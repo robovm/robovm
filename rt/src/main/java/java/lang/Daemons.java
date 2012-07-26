@@ -58,7 +58,8 @@ public final class Daemons {
             if (thread != null) {
                 throw new IllegalStateException("already running");
             }
-            thread = new Thread(this, getClass().getSimpleName());
+            thread = new Thread(ThreadGroup.mMain, this,
+                getClass().getSimpleName());
             thread.setDaemon(true);
             thread.start();
         }
@@ -179,6 +180,9 @@ public final class Daemons {
             try {
                 finalizingStartedNanos = System.nanoTime();
                 finalizingObject = object;
+                synchronized (FinalizerWatchdogDaemon.INSTANCE) {
+                    FinalizerWatchdogDaemon.INSTANCE.notify();
+                }
                 object.finalize();
             } catch (Throwable ex) {
                 // The RI silently swallows these, but Android has always logged.
@@ -199,37 +203,40 @@ public final class Daemons {
 
         @Override public void run() {
             while (isRunning()) {
-                Object object = FinalizerDaemon.INSTANCE.finalizingObject;
-                long startedNanos = FinalizerDaemon.INSTANCE.finalizingStartedNanos;
+                try {
+                    Object object = FinalizerDaemon.INSTANCE.finalizingObject;
+                    long startedNanos = FinalizerDaemon.INSTANCE.finalizingStartedNanos;
 
-                long sleepMillis = MAX_FINALIZE_MILLIS;
-                if (object != null) {
+                    if (object == null) {
+                        synchronized (this) {
+                            // wait until something is being finalized
+                            // http://code.google.com/p/android/issues/detail?id=22778
+                            wait();
+                            continue;
+                        }
+                    }
+
                     long elapsedMillis = (System.nanoTime() - startedNanos) / NANOS_PER_MILLI;
-                    sleepMillis -= elapsedMillis;
-                }
-
-                if (sleepMillis > 0) {
-                    try {
+                    long sleepMillis = MAX_FINALIZE_MILLIS - elapsedMillis;
+                    if (sleepMillis > 0) {
                         Thread.sleep(sleepMillis);
-                    } catch (InterruptedException e) {
+                        elapsedMillis = (System.nanoTime() - startedNanos) / NANOS_PER_MILLI;
+                    }
+
+                    if (object != FinalizerDaemon.INSTANCE.finalizingObject
+                            || VMRuntime.getRuntime().isDebuggerActive()) {
                         continue;
                     }
-                }
 
-                if (object == null
-                        || object != FinalizerDaemon.INSTANCE.finalizingObject
-                        || VMRuntime.getRuntime().isDebuggerActive()) {
-                    continue;
+                    // The current object has exceeded the finalization deadline; abort!
+                    Exception syntheticException = new TimeoutException();
+                    syntheticException.setStackTrace(FinalizerDaemon.INSTANCE.getStackTrace());
+                    System.logE(object.getClass().getName() + ".finalize() timed out after "
+                            + elapsedMillis + " ms; limit is " + MAX_FINALIZE_MILLIS + " ms",
+                            syntheticException);
+                    System.exit(2);
+                } catch (InterruptedException ignored) {
                 }
-
-                // The current object has exceeded the finalization deadline; abort!
-                long elapsedMillis = (System.nanoTime() - startedNanos) / NANOS_PER_MILLI;
-                Exception syntheticException = new TimeoutException();
-                syntheticException.setStackTrace(FinalizerDaemon.INSTANCE.getStackTrace());
-                System.logE(object.getClass().getName() + ".finalize() timed out after "
-                        + elapsedMillis + " ms; limit is " + MAX_FINALIZE_MILLIS + " ms",
-                        syntheticException);
-                System.exit(2);
             }
         }
     }

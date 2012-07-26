@@ -1,6 +1,6 @@
 /*
 **********************************************************************
-*   Copyright (C) 2008-2010, International Business Machines
+*   Copyright (C) 2008-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 **********************************************************************
 */
@@ -27,7 +27,7 @@ U_NAMESPACE_BEGIN
 UOBJECT_DEFINE_RTTI_IMPLEMENTATION(SpoofImpl)
 
 SpoofImpl::SpoofImpl(SpoofData *data, UErrorCode &status) :
-    fMagic(0), fSpoofData(NULL), fAllowedCharsSet(NULL) , fAllowedLocales(NULL) {
+    fMagic(0), fSpoofData(NULL), fAllowedCharsSet(NULL) , fAllowedLocales(uprv_strdup("")) {
     if (U_FAILURE(status)) {
         return;
     }
@@ -35,12 +35,12 @@ SpoofImpl::SpoofImpl(SpoofData *data, UErrorCode &status) :
     fSpoofData = data;
     fChecks = USPOOF_ALL_CHECKS;
     UnicodeSet *allowedCharsSet = new UnicodeSet(0, 0x10ffff);
-    if (allowedCharsSet == NULL) {
+    if (allowedCharsSet == NULL || fAllowedLocales == NULL) {
         status = U_MEMORY_ALLOCATION_ERROR;
+        return;
     }
     allowedCharsSet->freeze();
     fAllowedCharsSet = allowedCharsSet;
-    fAllowedLocales  = uprv_strdup("");
 }
 
 
@@ -66,7 +66,6 @@ SpoofImpl::SpoofImpl(const SpoofImpl &src, UErrorCode &status)  :
     if (src.fSpoofData != NULL) {
         fSpoofData = src.fSpoofData->addReference();
     }
-    fCheckMask = src.fCheckMask;
     fAllowedCharsSet = static_cast<const UnicodeSet *>(src.fAllowedCharsSet->clone());
     if (fAllowedCharsSet == NULL) {
         status = U_MEMORY_ALLOCATION_ERROR;
@@ -210,7 +209,7 @@ int32_t SpoofImpl::confusableLookup(UChar32 inChar, int32_t tableMask, UChar *de
         U_ASSERT(ix < stringLengthsLimit);
     }
 
-    U_ASSERT(value + stringLen < fSpoofData->fRawData->fCFUStringTableLen);
+    U_ASSERT(value + stringLen <= fSpoofData->fRawData->fCFUStringTableLen);
     UChar *src = &fSpoofData->fCFUStrings[value];
     for (ix=0; ix<stringLen; ix++) {
         destBuf[ix] = src[ix];
@@ -223,7 +222,7 @@ int32_t SpoofImpl::confusableLookup(UChar32 inChar, int32_t tableMask, UChar *de
 //
 //  wholeScriptCheck()
 //
-//      Input text is already normalized to NFKD
+//      Input text is already normalized to NFD
 //      Return the set of scripts, each of which can represent something that is
 //             confusable with the input text.  The script of the input text
 //             is included; input consisting of characters from a single script will
@@ -309,7 +308,7 @@ void SpoofImpl::setAllowedLocales(const char *localesList, UErrorCode &status) {
         tmpSet->freeze();
         delete fAllowedCharsSet;
         fAllowedCharsSet = tmpSet;
-        fCheckMask &= ~USPOOF_CHAR_LIMIT;
+        fChecks &= ~USPOOF_CHAR_LIMIT;
         return;
     }
 
@@ -339,7 +338,7 @@ void SpoofImpl::setAllowedLocales(const char *localesList, UErrorCode &status) {
     tmpSet->freeze();
     delete fAllowedCharsSet;
     fAllowedCharsSet = tmpSet;
-    fCheckMask |= USPOOF_CHAR_LIMIT;
+    fChecks |= USPOOF_CHAR_LIMIT;
 }
 
 
@@ -390,6 +389,16 @@ int32_t SpoofImpl::scriptScan
         if (sc == USCRIPT_COMMON || sc == USCRIPT_INHERITED || sc == USCRIPT_UNKNOWN) {
             continue;
         }
+
+        // Temporary fix: fold Japanese Hiragana and Katakana into Han.
+        //   Names are allowed to mix these scripts.
+        //   A more general solution will follow later for characters that are
+        //   used with multiple scripts.
+
+        if (sc == USCRIPT_HIRAGANA || sc == USCRIPT_KATAKANA || sc == USCRIPT_HANGUL) {
+            sc = USCRIPT_HAN;
+        }
+
         if (sc != lastScript) {
            scriptCount++;
            lastScript = sc;
@@ -760,11 +769,11 @@ int32_t ScriptSet::countMembers() {
 
 //-----------------------------------------------------------------------------
 //
-//  NFKDBuffer Implementation.
+//  NFDBuffer Implementation.
 //
 //-----------------------------------------------------------------------------
 
-NFKDBuffer::NFKDBuffer(const UChar *text, int32_t length, UErrorCode &status) {
+NFDBuffer::NFDBuffer(const UChar *text, int32_t length, UErrorCode &status) {
     fNormalizedText = NULL;
     fNormalizedTextLength = 0;
     fOriginalText = text;
@@ -773,32 +782,32 @@ NFKDBuffer::NFKDBuffer(const UChar *text, int32_t length, UErrorCode &status) {
     }
     fNormalizedText = fSmallBuf;
     fNormalizedTextLength = unorm_normalize(
-        text, length, UNORM_NFKD, 0, fNormalizedText, USPOOF_STACK_BUFFER_SIZE, &status);
+        text, length, UNORM_NFD, 0, fNormalizedText, USPOOF_STACK_BUFFER_SIZE, &status);
     if (status == U_BUFFER_OVERFLOW_ERROR) {
         status = U_ZERO_ERROR;
         fNormalizedText = (UChar *)uprv_malloc((fNormalizedTextLength+1)*sizeof(UChar));
         if (fNormalizedText == NULL) {
             status = U_MEMORY_ALLOCATION_ERROR;
         } else {
-            fNormalizedTextLength = unorm_normalize(text, length, UNORM_NFKD, 0,
+            fNormalizedTextLength = unorm_normalize(text, length, UNORM_NFD, 0,
                                         fNormalizedText, fNormalizedTextLength+1, &status);
         }
     }
 }
 
 
-NFKDBuffer::~NFKDBuffer() {
+NFDBuffer::~NFDBuffer() {
     if (fNormalizedText != fSmallBuf) {
         uprv_free(fNormalizedText);
     }
     fNormalizedText = 0;
 }
 
-const UChar *NFKDBuffer::getBuffer() {
+const UChar *NFDBuffer::getBuffer() {
     return fNormalizedText;
 }
 
-int32_t NFKDBuffer::getLength() {
+int32_t NFDBuffer::getLength() {
     return fNormalizedTextLength;
 }
 
@@ -952,7 +961,10 @@ uspoof_swap(const UDataSwapper *ds, const void *inData, int32_t length, void *ou
     //
     uint32_t magic = ds->readUInt32(spoofDH->fMagic);
     ds->writeUInt32((uint32_t *)&outputDH->fMagic, magic);
-    uprv_memcpy(outputDH->fFormatVersion, spoofDH->fFormatVersion, sizeof(spoofDH->fFormatVersion));
+
+    if (outputDH->fFormatVersion != spoofDH->fFormatVersion) {
+        uprv_memcpy(outputDH->fFormatVersion, spoofDH->fFormatVersion, sizeof(spoofDH->fFormatVersion));
+    }
     // swap starting at fLength
     ds->swapArray32(ds, &spoofDH->fLength, sizeof(SpoofDataHeader)-8 /* minus magic and fFormatVersion[4] */, &outputDH->fLength, status);
 

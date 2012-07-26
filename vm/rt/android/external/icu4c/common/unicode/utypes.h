@@ -1,6 +1,6 @@
 /*
 **********************************************************************
-*   Copyright (C) 1996-2010, International Business Machines
+*   Copyright (C) 1996-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 **********************************************************************
 *
@@ -37,6 +37,7 @@
 #include "unicode/utf.h"
 #include "unicode/uversion.h"
 #include "unicode/uconfig.h"
+#include "float.h"
 
 /*!
  * \file
@@ -67,6 +68,12 @@
 /**
  * \def U_HIDE_DRAFT_API
  * Define this to 1 to request that draft API be "hidden"
+ * @internal
+ */
+/**
+ * \def U_HIDE_INTERNAL_API
+ * Define this to 1 to request that internal API be "hidden"
+ * @internal
  */
 #if !U_DEFAULT_SHOW_DRAFT && !defined(U_SHOW_DRAFT_API)
 #define U_HIDE_DRAFT_API 1
@@ -232,12 +239,7 @@
  * ICU 1.8.x on EBCDIC, etc..
  * @stable ICU 2.0
  */
-#ifdef ICU_DATA_NAME
-// RoboVM note: Allow U_ICUDATA_NAME to be overridden
-#    define U_ICUDATA_NAME    ICU_DATA_NAME
-#else
-#    define U_ICUDATA_NAME    "icudt" U_ICU_VERSION_SHORT U_ICUDATA_TYPE_LETTER  /**< @internal */
-#endif
+#define U_ICUDATA_NAME    "icudt" U_ICU_VERSION_SHORT U_ICUDATA_TYPE_LETTER  /**< @internal */
 #define U_USRDATA_NAME    "usrdt" U_ICU_VERSION_SHORT U_ICUDATA_TYPE_LETTER  /**< @internal */
 #define U_USE_USRDATA     1  /**< @internal */
 
@@ -319,6 +321,19 @@ typedef double UDate;
 #define U_MILLIS_PER_HOUR       (3600000)
 /** The number of milliseconds per day @stable ICU 2.0 */
 #define U_MILLIS_PER_DAY       (86400000)
+
+/** 
+ * Maximum UDate value 
+ * @draft ICU 4.8 
+ */ 
+#define U_DATE_MAX DBL_MAX
+
+/**
+ * Minimum UDate value 
+ * @draft ICU 4.8 
+ */ 
+#define U_DATE_MIN -U_DATE_MAX
+
 
 
 /*===========================================================================*/
@@ -748,6 +763,7 @@ typedef enum UErrorCode {
     U_UNDEFINED_KEYWORD,              /**< Undefined Plural keyword */
     U_DEFAULT_KEYWORD_MISSING,        /**< Missing DEFAULT rule in plural rules */
     U_DECIMAL_NUMBER_SYNTAX_ERROR,    /**< Decimal number syntax error */
+    U_FORMAT_INEXACT_ERROR,           /**< Cannot format a number exactly and rounding mode is ROUND_UNNECESSARY @draft ICU 4.8 */
     U_FMT_PARSE_ERROR_LIMIT,          /**< The limit for format library errors */
 
     /*

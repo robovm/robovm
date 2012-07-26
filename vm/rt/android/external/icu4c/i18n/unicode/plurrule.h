@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-* Copyright (C) 2008-2010, International Business Machines Corporation and
+* Copyright (C) 2008-2011, International Business Machines Corporation and
 * others. All Rights Reserved.
 *******************************************************************************
 *
@@ -27,19 +27,31 @@
 
 #include "unicode/format.h"
 
+/**
+ * Value returned by PluralRules::getUniqueKeywordValue() when there is no
+ * unique value to return.
+ * @draft ICU 4.8
+ */
+#define UPLRULES_NO_UNIQUE_VALUE ((double)-0.00123456777)
+
 U_NAMESPACE_BEGIN
 
 class Hashtable;
 class RuleChain;
 class RuleParser;
+class PluralKeywordEnumeration;
 
 /**
- * Defines rules for mapping positive long values onto a small set of
+ * Defines rules for mapping non-negative numeric values onto a small set of
  * keywords. Rules are constructed from a text description, consisting
  * of a series of keywords and conditions.  The {@link #select} method
  * examines each condition in order and returns the keyword for the
  * first condition that matches the number.  If none match,
  * default rule(other) is returned.
+ *
+ * For more information, details, and tips for writing rules, see the
+ * LDML spec, C.11 Language Plural Rules:
+ * http://www.unicode.org/draft/reports/tr35/tr35.html#Language_Plural_Rules
  *
  * Examples:<pre>
  *   "one: n is 1; few: n in 2..4"</pre>
@@ -74,24 +86,28 @@ class RuleParser;
  * and_condition = relation ('and' relation)*
  * relation      = is_relation | in_relation | within_relation | 'n' <EOL>
  * is_relation   = expr 'is' ('not')? value
- * in_relation   = expr ('not')? 'in' range
+ * in_relation   = expr ('not')? 'in' range_list
  * within_relation = expr ('not')? 'within' range
  * expr          = 'n' ('mod' value)?
+ * range_list    = (range | value) (',' range_list)*
  * value         = digit+
  * digit         = 0|1|2|3|4|5|6|7|8|9
  * range         = value'..'value
  * \endcode
  * </pre></p>
  * <p>
- *  The difference between 'in' and 'within' is that 'in' only includes
- *  integers in the specified range, while 'within' includes all values.</p>
- *  <p>
- *  Keywords
- *  could be defined by users or from ICU locale data. There are 6
- *  predefined values in ICU - 'zero', 'one', 'two', 'few', 'many' and
- *  'other'. Callers need to check the value of keyword returned by
- *  {@link #select} method.
- *  </p>
+ * An "identifier" is a sequence of characters that do not have the
+ * Unicode Pattern_Syntax or Pattern_White_Space properties.
+ * <p>
+ * The difference between 'in' and 'within' is that 'in' only includes
+ * integers in the specified range, while 'within' includes all values.</p>
+ * <p>
+ * Keywords
+ * could be defined by users or from ICU locale data. There are 6
+ * predefined values in ICU - 'zero', 'one', 'two', 'few', 'many' and
+ * 'other'. Callers need to check the value of keyword returned by
+ * {@link #select} method.
+ * </p>
  *
  * Examples:<pre>
  * UnicodeString keyword = pl->select(number);
@@ -103,7 +119,7 @@ class RuleParser;
  * <strong>Note:</strong><br>
  *  <p>
  *   ICU defines plural rules for many locales based on CLDR <i>Language Plural Rules</i>.
- *   For these predefined rules, see CLDR page at 
+ *   For these predefined rules, see CLDR page at
  *    http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html
  * </p>
  */
@@ -145,7 +161,7 @@ public:
 
     /**
      * Creates a PluralRules from a description if it is parsable, otherwise
-     * returns null.
+     * returns NULL.
      *
      * @param description rule description
      * @param status      Output param set to success/failure code on exit, which
@@ -182,7 +198,7 @@ public:
      * @stable ICU 4.0
      */
     static PluralRules* U_EXPORT2 forLocale(const Locale& locale, UErrorCode& status);
-    
+
     /**
      * Given a number, returns the keyword of the first rule that applies to
      * the number.  This function can be used with isKeyword* functions to
@@ -193,7 +209,7 @@ public:
      * @stable ICU 4.0
      */
     UnicodeString select(int32_t number) const;
-    
+
     /**
      * Given a number, returns the keyword of the first rule that applies to
      * the number.  This function can be used with isKeyword* functions to
@@ -216,6 +232,62 @@ public:
      * @stable ICU 4.0
      */
     StringEnumeration* getKeywords(UErrorCode& status) const;
+
+    /**
+     * Returns a unique value for this keyword if it exists, else the constant
+     * UPLRULES_NO_UNIQUE_VALUE.
+     *
+     * @param keyword The keyword.
+     * @return        The unique value that generates the keyword, or
+     *                UPLRULES_NO_UNIQUE_VALUE if the keyword is undefined or there is no
+     *                unique value that generates this keyword.
+     * @draft ICU 4.8
+     */
+    double getUniqueKeywordValue(const UnicodeString& keyword);
+
+    /**
+     * Returns all the values for which select() would return the keyword.  If
+     * the keyword is unknown, returns no values, but this is not an error.  If
+     * the number of values is unlimited, returns no values and -1 as the
+     * count.
+     *
+     * The number of returned values is typically small.
+     *
+     * @param keyword      The keyword.
+     * @param dest         Array into which to put the returned values.  May
+     *                     be NULL if destCapacity is 0.
+     * @param destCapacity The capacity of the array, must be at least 0.
+     * @param status       The error code.
+     * @return             The count of values available, or -1.  This count
+     *                     can be larger than destCapacity, but no more than
+     *                     destCapacity values will be written.
+     * @draft ICU 4.8
+     */
+    int32_t getAllKeywordValues(const UnicodeString &keyword,
+                                double *dest, int32_t destCapacity,
+                                UErrorCode& status);
+
+    /**
+     * Returns sample values for which select() would return the keyword.  If
+     * the keyword is unknown, returns no values, but this is not an error.
+     *
+     * The number of returned values is typically small.
+     *
+     * @param keyword      The keyword.
+     * @param dest         Array into which to put the returned values.  May
+     *                     be NULL if destCapacity is 0.
+     * @param destCapacity The capacity of the array, must be at least 0.
+     * @param status       The error code.
+     * @return             The count of values written.
+     *                     If more than destCapacity samples are available, then
+     *                     only destCapacity are written, and destCapacity is returned as the count,
+     *                     rather than setting a U_BUFFER_OVERFLOW_ERROR.
+     *                     (The actual number of keyword values could be unlimited.)
+     * @draft ICU 4.8
+     */
+    int32_t getSamples(const UnicodeString &keyword,
+                       double *dest, int32_t destCapacity,
+                       UErrorCode& status);
 
     /**
      * Returns TRUE if the given keyword is defined in this
@@ -276,10 +348,11 @@ public:
 
 
 private:
-    Hashtable       *fLocaleStringsHash;
-    UnicodeString   mLocaleName;
-    RuleChain       *mRules;
-    RuleParser      *mParser;
+    RuleChain  *mRules;
+    RuleParser *mParser;
+    double     *mSamples;
+    int32_t    *mSampleInfo;
+    int32_t    mSampleInfoCount;
 
     PluralRules();   // default constructor not implemented
     int32_t getRepeatLimit() const;
@@ -288,6 +361,15 @@ private:
     void addRules(RuleChain& rules);
     int32_t getNumberValue(const UnicodeString& token) const;
     UnicodeString getRuleFromResource(const Locale& locale, UErrorCode& status);
+
+    static const int32_t MAX_SAMPLES = 3;
+
+    int32_t getSamplesInternal(const UnicodeString &keyword, double *dest,
+                               int32_t destCapacity, UBool includeUnlimited,
+                               UErrorCode& status);
+    int32_t getKeywordIndex(const UnicodeString& keyword,
+                            UErrorCode& status) const;
+    void initSamples(UErrorCode& status);
 
 };
 

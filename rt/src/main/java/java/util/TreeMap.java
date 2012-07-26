@@ -132,7 +132,7 @@ public class TreeMap<K, V> extends AbstractMap<K, V>
      *
      * <p>The constructed map <strong>will always use</strong> {@code
      * copyFrom}'s ordering. Because the {@code TreeMap} constructor overloads
-     * are ambigous, prefer to construct a map and populate it in two steps:
+     * are ambiguous, prefer to construct a map and populate it in two steps:
      * <pre>   {@code
      *   TreeMap<String, Integer> customOrderedMap
      *       = new TreeMap<String, Integer>(copyFrom.comparator());
@@ -1364,11 +1364,12 @@ public class TreeMap<K, V> extends AbstractMap<K, V>
         }
 
         public Comparator<? super K> comparator() {
-          if (ascending) {
-            return TreeMap.this.comparator();
-          } else {
-            return Collections.reverseOrder(comparator);
-          }
+            Comparator<? super K> forward = TreeMap.this.comparator();
+            if (ascending) {
+                return forward;
+            } else {
+                return Collections.reverseOrder(forward);
+            }
         }
 
         /*
@@ -1665,7 +1666,7 @@ public class TreeMap<K, V> extends AbstractMap<K, V>
     private static final long serialVersionUID = 919286545866124006L;
 
     private void writeObject(ObjectOutputStream stream) throws IOException {
-        stream.putFields().put("comparator", comparator != NATURAL_ORDER ? comparator : null);
+        stream.putFields().put("comparator", comparator());
         stream.writeFields();
         stream.writeInt(size);
         for (Map.Entry<K, V> entry : entrySet()) {

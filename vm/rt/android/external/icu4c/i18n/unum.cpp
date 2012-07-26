@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-*   Copyright (C) 1996-2010, International Business Machines
+*   Copyright (C) 1996-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *******************************************************************************
 * Modification History:
@@ -38,78 +38,45 @@ unum_open(  UNumberFormatStyle    style,
             int32_t            patternLength,
             const    char*     locale,
             UParseError*       parseErr,
-            UErrorCode*        status)
-{
-
-    if(U_FAILURE(*status))
-    {
-        return 0;
+            UErrorCode*        status) {
+    if(U_FAILURE(*status)) {
+        return NULL;
     }
 
-    UNumberFormat *retVal = 0;
+    NumberFormat *retVal = NULL;
 
     switch(style) {
     case UNUM_DECIMAL:
-        if(locale == 0)
-            retVal = (UNumberFormat*)NumberFormat::createInstance(*status);
-        else
-            retVal = (UNumberFormat*)NumberFormat::createInstance(Locale(locale),
-            *status);
-        break;
-
     case UNUM_CURRENCY:
-        if(locale == 0)
-            retVal = (UNumberFormat*)NumberFormat::createCurrencyInstance(*status);
-        else
-            retVal = (UNumberFormat*)NumberFormat::createCurrencyInstance(Locale(locale),
-            *status);
-        break;
-
     case UNUM_PERCENT:
-        if(locale == 0)
-            retVal = (UNumberFormat*)NumberFormat::createPercentInstance(*status);
-        else
-            retVal = (UNumberFormat*)NumberFormat::createPercentInstance(Locale(locale),
-            *status);
-        break;
-
     case UNUM_SCIENTIFIC:
-        if(locale == 0)
-            retVal = (UNumberFormat*)NumberFormat::createScientificInstance(*status);
-        else
-            retVal = (UNumberFormat*)NumberFormat::createScientificInstance(Locale(locale),
-            *status);
+        retVal = NumberFormat::createInstance(Locale(locale), style, *status);
         break;
 
     case UNUM_PATTERN_DECIMAL: {
         UParseError tErr;
         /* UnicodeString can handle the case when patternLength = -1. */
         const UnicodeString pat(pattern, patternLength);
-        DecimalFormatSymbols *syms = 0;
 
         if(parseErr==NULL){
             parseErr = &tErr;
         }
 
-        if(locale == 0)
-            syms = new DecimalFormatSymbols(*status);
-        else
-            syms = new DecimalFormatSymbols(Locale(locale), *status);
-
-        if(syms == 0) {
+        DecimalFormatSymbols *syms = new DecimalFormatSymbols(Locale(locale), *status);
+        if(syms == NULL) {
             *status = U_MEMORY_ALLOCATION_ERROR;
-            return 0;
+            return NULL;
         }
         if (U_FAILURE(*status)) {
             delete syms;
-            return 0;
+            return NULL;
         }
 
-        retVal = (UNumberFormat*)new DecimalFormat(pat, syms, *parseErr, *status);
-        if(retVal == 0) {
+        retVal = new DecimalFormat(pat, syms, *parseErr, *status);
+        if(retVal == NULL) {
             delete syms;
         }
-                               } break;
+    } break;
 
 #if U_HAVE_RBNF
     case UNUM_PATTERN_RULEBASED: {
@@ -121,36 +88,36 @@ unum_open(  UNumberFormatStyle    style,
             parseErr = &tErr;
         }
         
-        retVal = (UNumberFormat*)new RuleBasedNumberFormat(pat, Locale(locale), *parseErr, *status);
+        retVal = new RuleBasedNumberFormat(pat, Locale(locale), *parseErr, *status);
     } break;
 
     case UNUM_SPELLOUT:
-        retVal = (UNumberFormat*)new RuleBasedNumberFormat(URBNF_SPELLOUT, Locale(locale), *status);
+        retVal = new RuleBasedNumberFormat(URBNF_SPELLOUT, Locale(locale), *status);
         break;
 
     case UNUM_ORDINAL:
-        retVal = (UNumberFormat*)new RuleBasedNumberFormat(URBNF_ORDINAL, Locale(locale), *status);
+        retVal = new RuleBasedNumberFormat(URBNF_ORDINAL, Locale(locale), *status);
         break;
 
     case UNUM_DURATION:
-        retVal = (UNumberFormat*)new RuleBasedNumberFormat(URBNF_DURATION, Locale(locale), *status);
+        retVal = new RuleBasedNumberFormat(URBNF_DURATION, Locale(locale), *status);
         break;
 
     case UNUM_NUMBERING_SYSTEM:
-        retVal = (UNumberFormat*)new RuleBasedNumberFormat(URBNF_NUMBERING_SYSTEM, Locale(locale), *status);
+        retVal = new RuleBasedNumberFormat(URBNF_NUMBERING_SYSTEM, Locale(locale), *status);
         break;
 #endif
 
     default:
         *status = U_UNSUPPORTED_ERROR;
-        return 0;
+        return NULL;
     }
 
-    if(retVal == 0 && U_SUCCESS(*status)) {
+    if(retVal == NULL && U_SUCCESS(*status)) {
         *status = U_MEMORY_ALLOCATION_ERROR;
     }
 
-    return retVal;
+    return reinterpret_cast<UNumberFormat *>(retVal);
 }
 
 U_CAPI void U_EXPORT2
@@ -483,6 +450,11 @@ unum_getAttribute(const UNumberFormat*          fmt,
           UNumberFormatAttribute  attr)
 {
   const NumberFormat* nf = reinterpret_cast<const NumberFormat*>(fmt);
+  if ( attr == UNUM_LENIENT_PARSE ) {
+    // Supported for all subclasses
+    return nf->isLenient();
+  }
+  // The remaining attributea are only supported for DecimalFormat
   const DecimalFormat* df = dynamic_cast<const DecimalFormat*>(nf);
   if (df != NULL) {
     switch(attr) {
@@ -541,18 +513,10 @@ unum_getAttribute(const UNumberFormat*          fmt,
         
     case UNUM_SECONDARY_GROUPING_SIZE:
         return df->getSecondaryGroupingSize();
-        
+
     default:
         /* enums out of sync? unsupported enum? */
         break;
-    }
-  } else {
-    const RuleBasedNumberFormat* rbnf = dynamic_cast<const RuleBasedNumberFormat*>(nf);
-    U_ASSERT(rbnf != NULL);
-    if (attr == UNUM_LENIENT_PARSE) {
-#if !UCONFIG_NO_COLLATION
-      return rbnf->isLenient();
-#endif
     }
   }
 
@@ -565,6 +529,11 @@ unum_setAttribute(    UNumberFormat*          fmt,
             int32_t                 newValue)
 {
   NumberFormat* nf = reinterpret_cast<NumberFormat*>(fmt);
+  if ( attr == UNUM_LENIENT_PARSE ) {
+    // Supported for all subclasses
+    return nf->setLenient(newValue != 0);
+  }
+  // The remaining attributea are only supported for DecimalFormat
   DecimalFormat* df = dynamic_cast<DecimalFormat*>(nf);
   if (df != NULL) {
     switch(attr) {
@@ -642,18 +611,10 @@ unum_setAttribute(    UNumberFormat*          fmt,
     case UNUM_SECONDARY_GROUPING_SIZE:
         df->setSecondaryGroupingSize(newValue);
         break;
-        
+
     default:
         /* Shouldn't get here anyway */
         break;
-    }
-  } else {
-    RuleBasedNumberFormat* rbnf = dynamic_cast<RuleBasedNumberFormat*>(nf);
-    U_ASSERT(rbnf != NULL);
-    if (attr == UNUM_LENIENT_PARSE) {
-#if !UCONFIG_NO_COLLATION
-      rbnf->setLenient((UBool)newValue);
-#endif
     }
   }
 }
@@ -849,7 +810,7 @@ unum_getSymbol(const UNumberFormat *fmt,
     if(status==NULL || U_FAILURE(*status)) {
         return 0;
     }
-    if(fmt==NULL || (uint16_t)symbol>=UNUM_FORMAT_SYMBOL_COUNT) {
+    if(fmt==NULL || symbol< 0 || symbol>=UNUM_FORMAT_SYMBOL_COUNT) {
         *status=U_ILLEGAL_ARGUMENT_ERROR;
         return 0;
     }
@@ -876,7 +837,7 @@ unum_setSymbol(UNumberFormat *fmt,
     if(status==NULL || U_FAILURE(*status)) {
         return;
     }
-    if(fmt==NULL || (uint16_t)symbol>=UNUM_FORMAT_SYMBOL_COUNT || value==NULL || length<-1) {
+    if(fmt==NULL || symbol< 0 || symbol>=UNUM_FORMAT_SYMBOL_COUNT || value==NULL || length<-1) {
         *status=U_ILLEGAL_ARGUMENT_ERROR;
         return;
     }

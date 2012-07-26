@@ -128,32 +128,39 @@ public final class IoBridge {
             return true;
         }
 
-        // With a timeout, we set the socket to non-blocking, connect(2), and then loop
-        // using poll(2) to decide whether we're connected, whether we should keep waiting,
-        // or whether we've seen a permanent failure and should give up.
-        long finishTimeMs = System.currentTimeMillis() + timeoutMs;
+        // For connect with a timeout, we:
+        //   1. set the socket to non-blocking,
+        //   2. connect(2),
+        //   3. loop using poll(2) to decide whether we're connected, whether we should keep
+        //      waiting, or whether we've seen a permanent failure and should give up,
+        //   4. set the socket back to blocking.
+
+        // 1. set the socket to non-blocking.
         IoUtils.setBlocking(fd, false);
+
+        // 2. call connect(2) non-blocking.
+        long finishTimeMs = System.currentTimeMillis() + timeoutMs;
         try {
-            try {
-                Libcore.os.connect(fd, inetAddress, port);
-                return true; // We connected immediately.
-            } catch (ErrnoException errnoException) {
-                if (errnoException.errno != EINPROGRESS) {
-                    throw errnoException;
-                }
-                // EINPROGRESS means we should keep trying...
+            Libcore.os.connect(fd, inetAddress, port);
+            IoUtils.setBlocking(fd, true); // 4. set the socket back to blocking.
+            return true; // We connected immediately.
+        } catch (ErrnoException errnoException) {
+            if (errnoException.errno != EINPROGRESS) {
+                throw errnoException;
             }
-            int remainingTimeoutMs;
-            do {
-                remainingTimeoutMs = (int) (finishTimeMs - System.currentTimeMillis());
-                if (remainingTimeoutMs <= 0) {
-                    throw new SocketTimeoutException(connectDetail(inetAddress, port, timeoutMs, null));
-                }
-            } while (!IoBridge.isConnected(fd, inetAddress, port, timeoutMs, remainingTimeoutMs));
-            return true; // Or we'd have thrown.
-        } finally {
-            IoUtils.setBlocking(fd, true);
+            // EINPROGRESS means we should keep trying...
         }
+
+        // 3. loop using poll(2).
+        int remainingTimeoutMs;
+        do {
+            remainingTimeoutMs = (int) (finishTimeMs - System.currentTimeMillis());
+            if (remainingTimeoutMs <= 0) {
+                throw new SocketTimeoutException(connectDetail(inetAddress, port, timeoutMs, null));
+            }
+        } while (!IoBridge.isConnected(fd, inetAddress, port, timeoutMs, remainingTimeoutMs));
+        IoUtils.setBlocking(fd, true); // 4. set the socket back to blocking.
+        return true; // Or we'd have thrown.
     }
 
     private static String connectDetail(InetAddress inetAddress, int port, int timeoutMs, ErrnoException cause) {
@@ -200,6 +207,9 @@ public final class IoBridge {
             }
             throw new ErrnoException("isConnected", connectError); // The connect(2) failed.
         } catch (ErrnoException errnoException) {
+            if (!fd.valid()) {
+                throw new SocketException("Socket closed");
+            }
             if (errnoException.errno == EINTR) {
                 return false; // Punt and ask the caller to try again.
             } else {
@@ -209,8 +219,8 @@ public final class IoBridge {
         // TODO: is it really helpful/necessary to throw so many different exceptions?
         String detail = connectDetail(inetAddress, port, timeoutMs, cause);
         if (cause.errno == ECONNRESET || cause.errno == ECONNREFUSED ||
-        cause.errno == EADDRNOTAVAIL || cause.errno == EADDRINUSE ||
-        cause.errno == ENETUNREACH) {
+                cause.errno == EADDRNOTAVAIL || cause.errno == EADDRINUSE ||
+                cause.errno == ENETUNREACH) {
             throw new ConnectException(detail, cause);
         } else if (cause.errno == EACCES) {
             throw new SecurityException(detail, cause);
@@ -525,7 +535,7 @@ public final class IoBridge {
             return -1;
         }
         if (packet != null) {
-            packet.setLength(byteCount);
+            packet.setReceivedLength(byteCount);
             if (!isConnected) {
                 packet.setAddress(srcAddress.getAddress());
                 packet.setPort(srcAddress.getPort());

@@ -112,6 +112,7 @@ import java.io.Reader;
  * Start tag foo
  * Text Hello World!
  * End tag foo
+ * End document
  * </pre>
  *
  * <p>For more details on API usage, please refer to the
@@ -160,9 +161,9 @@ public interface XmlPullParser {
      * Logical end of the xml document. Returned from getEventType, next()
      * and nextToken()
      * when the end of the input document has been reached.
-     * <p><strong>NOTE:</strong> calling again
+     * <p><strong>NOTE:</strong> subsequent calls to
      * <a href="#next()">next()</a> or <a href="#nextToken()">nextToken()</a>
-     * will result in exception being thrown.
+     * may result in exception being thrown.
      *
      * @see #next
      * @see #nextToken
@@ -1051,7 +1052,7 @@ public interface XmlPullParser {
      * If current event is START_TAG then if next element is TEXT then element content is returned
      * or if next event is END_TAG then empty string is returned, otherwise exception is thrown.
      * After calling this function successfully parser will be positioned on END_TAG.
-     *
+     * 
      * <p>The motivation for this function is to allow to parse consistently both
      * empty elements and elements that has non empty content, for example for input: <ol>
      * <li>&lt;tag&gt;foo&lt;/tag&gt;
@@ -1087,6 +1088,15 @@ public interface XmlPullParser {
      *  } else {
      *     throw new XmlPullParserException(
      *       "parser must be on START_TAG or TEXT to read text", this, null);
+     *  }
+     * </pre>
+     *
+     * <p><strong>Warning:</strong> Prior to API level 14, the pull parser returned by {@code
+     * android.util.Xml} did not always advance to the END_TAG event when this method was called.
+     * Work around by using manually advancing after calls to nextText(): <pre>
+     *  String text = xpp.nextText();
+     *  if (xpp.getEventType() != XmlPullParser.END_TAG) {
+     *      xpp.next();
      *  }
      * </pre>
      */

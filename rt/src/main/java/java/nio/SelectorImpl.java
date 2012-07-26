@@ -170,7 +170,7 @@ final class SelectorImpl extends AbstractSelector {
                     synchronized (keysLock) {
                         preparePollFds();
                     }
-                    int rc;
+                    int rc = -1;
                     try {
                         if (isBlock) {
                             begin();
@@ -178,7 +178,9 @@ final class SelectorImpl extends AbstractSelector {
                         try {
                             rc = Libcore.os.poll(pollFds.array(), (int) timeout);
                         } catch (ErrnoException errnoException) {
-                            throw errnoException.rethrowAsIOException();
+                            if (errnoException.errno != EINTR) {
+                                throw errnoException.rethrowAsIOException();
+                            }
                         }
                     } finally {
                         if (isBlock) {

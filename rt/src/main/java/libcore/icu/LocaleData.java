@@ -108,7 +108,7 @@ public final class LocaleData {
                 return localeData;
             }
         }
-        LocaleData newLocaleData = makeLocaleData(locale);
+        LocaleData newLocaleData = initLocaleData(locale);
         synchronized (localeDataCache) {
             LocaleData localeData = localeDataCache.get(localeName);
             if (localeData != null) {
@@ -117,24 +117,6 @@ public final class LocaleData {
             localeDataCache.put(localeName, newLocaleData);
             return newLocaleData;
         }
-    }
-
-    private static LocaleData makeLocaleData(Locale locale) {
-        String language = locale.getLanguage();
-        String country = locale.getCountry();
-        String variant = locale.getVariant();
-        // Start with data from the parent (next-most-specific) locale...
-        LocaleData result = new LocaleData();
-        if (!variant.isEmpty()) {
-            result.overrideWithDataFrom(get(new Locale(language, country, "")));
-        } else if (!country.isEmpty()) {
-            result.overrideWithDataFrom(get(new Locale(language, "", "")));
-        } else if (!language.isEmpty()) {
-            result.overrideWithDataFrom(get(Locale.ROOT));
-        }
-        // Override with data from this locale.
-        result.overrideWithDataFrom(initLocaleData(locale));
-        return result;
     }
 
     @Override public String toString() {
@@ -176,120 +158,6 @@ public final class LocaleData {
                 "integerPattern=" + integerPattern + "," +
                 "currencyPattern=" + currencyPattern + "," +
                 "percentPattern=" + percentPattern + "]";
-    }
-
-    private void overrideWithDataFrom(LocaleData overrides) {
-        if (overrides.firstDayOfWeek != null) {
-            firstDayOfWeek = overrides.firstDayOfWeek;
-        }
-        if (overrides.minimalDaysInFirstWeek != null) {
-            minimalDaysInFirstWeek = overrides.minimalDaysInFirstWeek;
-        }
-        if (overrides.amPm != null) {
-            amPm = overrides.amPm;
-        }
-        if (overrides.eras != null) {
-            eras = overrides.eras;
-        }
-        if (overrides.longMonthNames != null) {
-            longMonthNames = overrides.longMonthNames;
-        }
-        if (overrides.shortMonthNames != null) {
-            shortMonthNames = overrides.shortMonthNames;
-        }
-        if (overrides.longStandAloneMonthNames != null) {
-            longStandAloneMonthNames = overrides.longStandAloneMonthNames;
-        }
-        if (overrides.shortStandAloneMonthNames != null) {
-            shortStandAloneMonthNames = overrides.shortStandAloneMonthNames;
-        }
-        if (overrides.longWeekdayNames != null) {
-            longWeekdayNames = overrides.longWeekdayNames;
-        }
-        if (overrides.shortWeekdayNames != null) {
-            shortWeekdayNames = overrides.shortWeekdayNames;
-        }
-        if (overrides.longStandAloneWeekdayNames != null) {
-            longStandAloneWeekdayNames = overrides.longStandAloneWeekdayNames;
-        }
-        if (overrides.shortStandAloneWeekdayNames != null) {
-            shortStandAloneWeekdayNames = overrides.shortStandAloneWeekdayNames;
-        }
-        if (overrides.fullTimeFormat != null) {
-            fullTimeFormat = overrides.fullTimeFormat;
-        }
-        if (overrides.longTimeFormat != null) {
-            longTimeFormat = overrides.longTimeFormat;
-        }
-        if (overrides.mediumTimeFormat != null) {
-            mediumTimeFormat = overrides.mediumTimeFormat;
-        }
-        if (overrides.shortTimeFormat != null) {
-            shortTimeFormat = overrides.shortTimeFormat;
-        }
-        if (overrides.fullDateFormat != null) {
-            fullDateFormat = overrides.fullDateFormat;
-        }
-        if (overrides.longDateFormat != null) {
-            longDateFormat = overrides.longDateFormat;
-        }
-        if (overrides.mediumDateFormat != null) {
-            mediumDateFormat = overrides.mediumDateFormat;
-        }
-        if (overrides.shortDateFormat != null) {
-            shortDateFormat = overrides.shortDateFormat;
-        }
-        if (overrides.zeroDigit != '\0') {
-            zeroDigit = overrides.zeroDigit;
-        }
-        if (overrides.decimalSeparator != '\0') {
-            decimalSeparator = overrides.decimalSeparator;
-        }
-        if (overrides.groupingSeparator != '\0') {
-            groupingSeparator = overrides.groupingSeparator;
-        }
-        if (overrides.patternSeparator != '\0') {
-            patternSeparator = overrides.patternSeparator;
-        }
-        if (overrides.percent != '\0') {
-            percent = overrides.percent;
-        }
-        if (overrides.perMill != '\0') {
-            perMill = overrides.perMill;
-        }
-        if (overrides.monetarySeparator != '\0') {
-            monetarySeparator = overrides.monetarySeparator;
-        }
-        if (overrides.minusSign != '\0') {
-            minusSign = overrides.minusSign;
-        }
-        if (overrides.exponentSeparator != null) {
-            exponentSeparator = overrides.exponentSeparator;
-        }
-        if (overrides.NaN != null) {
-            NaN = overrides.NaN;
-        }
-        if (overrides.infinity != null) {
-            infinity = overrides.infinity;
-        }
-        if (overrides.currencySymbol != null) {
-            currencySymbol = overrides.currencySymbol;
-        }
-        if (overrides.internationalCurrencySymbol != null) {
-            internationalCurrencySymbol = overrides.internationalCurrencySymbol;
-        }
-        if (overrides.numberPattern != null) {
-            numberPattern = overrides.numberPattern;
-        }
-        if (overrides.integerPattern != null) {
-            integerPattern = overrides.integerPattern;
-        }
-        if (overrides.currencyPattern != null) {
-            currencyPattern = overrides.currencyPattern;
-        }
-        if (overrides.percentPattern != null) {
-            percentPattern = overrides.percentPattern;
-        }
     }
 
     public String getDateFormat(int style) {

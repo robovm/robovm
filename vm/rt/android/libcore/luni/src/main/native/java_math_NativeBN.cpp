@@ -405,7 +405,7 @@ extern "C" jboolean Java_java_math_NativeBN_BN_1is_1bit_1set(JNIEnv* env, jclass
 }
 
 extern "C" jboolean Java_java_math_NativeBN_modifyBit(JNIEnv* env, jclass, BIGNUM* a, int n, int op) {
-// LOGD("NativeBN_BN_modifyBit");
+// ALOGD("NativeBN_BN_modifyBit");
     if (!oneValidHandle(env, a)) return JNI_FALSE;
     switch (op) {
     case 1: return BN_set_bit(a, n);

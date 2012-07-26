@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 1998-2010, International Business Machines
+*   Copyright (C) 1998-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -182,7 +182,7 @@
 #define UCA_DATA_FORMAT_3 ((uint8_t)0x6c)
 
 #define UCA_FORMAT_VERSION_0 ((uint8_t)3)
-#define UCA_FORMAT_VERSION_1 ((uint8_t)0)
+#define UCA_FORMAT_VERSION_1 0
 #define UCA_FORMAT_VERSION_2 ((uint8_t)0)
 #define UCA_FORMAT_VERSION_3 ((uint8_t)0)
 
@@ -205,7 +205,17 @@
 #define UCOL_PRIMARY_MAX_BUFFER 8*UCOL_MAX_BUFFER
 #define UCOL_SECONDARY_MAX_BUFFER UCOL_MAX_BUFFER
 #define UCOL_TERTIARY_MAX_BUFFER UCOL_MAX_BUFFER
+/*
 #define UCOL_CASE_MAX_BUFFER UCOL_MAX_BUFFER/4
+
+UCOL_CASE_MAX_BUFFER as previously defined above was too small. A single collation element can
+generate two caseShift values, and UCOL_CASE_SHIFT_START (=7) caseShift values are compressed into
+one byte. UCOL_MAX_BUFFER should effectively be multipled by 2/UCOL_CASE_SHIFT_START (2/7), not 1/4.
+Perhaps UCOL_CASE_SHIFT_START used to be 8; then this would have been correct. We should dynamically
+define UCOL_CASE_MAX_BUFFER in terms of both UCOL_MAX_BUFFER and UCOL_CASE_SHIFT_START. Since
+UCOL_CASE_SHIFT_START is defined lower down, we move the real definition of UCOL_CASE_MAX_BUFFER
+after it, further down.
+*/
 #define UCOL_QUAD_MAX_BUFFER 2*UCOL_MAX_BUFFER
 
 #define UCOL_NORMALIZATION_GROWTH 2
@@ -410,6 +420,15 @@ uprv_init_pce(const struct UCollationElements *elems);
 #define UCOL_CASE_BYTE_START 0x80
 #define UCOL_CASE_SHIFT_START 7
 
+/*
+The definition of UCOL_CASE_MAX_BUFFER is moved down here so it can use UCOL_CASE_SHIFT_START.
+
+A single collation element can generate two caseShift values, and UCOL_CASE_SHIFT_START caseShift
+values are compressed into one byte. The UCOL_CASE_MAX_BUFFER should effectively be UCOL_MAX_BUFFER
+multipled by 2/UCOL_CASE_SHIFT_START, with suitable rounding up.
+*/
+#define UCOL_CASE_MAX_BUFFER (((2*UCOL_MAX_BUFFER) + UCOL_CASE_SHIFT_START - 1)/UCOL_CASE_SHIFT_START)
+
 #define UCOL_IGNORABLE 0
 
 /* get weights from a CE */
@@ -526,42 +545,59 @@ U_CAPI uint32_t U_EXPORT2 ucol_getNextCE(const UCollator *coll,
 U_CFUNC uint32_t U_EXPORT2 ucol_getPrevCE(const UCollator *coll,
                                           U_NAMESPACE_QUALIFIER collIterate *collationSource,
                                           UErrorCode *status);
+/* get some memory */
+void *ucol_getABuffer(const UCollator *coll, uint32_t size);
+
+#ifdef XP_CPLUSPLUS
+
+U_NAMESPACE_BEGIN
+
+class SortKeyByteSink;
+
+U_NAMESPACE_END
+
 /* function used by C++ getCollationKey to prevent restarting the calculation */
 U_CFUNC int32_t
 ucol_getSortKeyWithAllocation(const UCollator *coll,
                               const UChar *source, int32_t sourceLength,
-                              uint8_t **pResult,
+                              uint8_t *&result, int32_t &resultCapacity,
                               UErrorCode *pErrorCode);
 
-/* get some memory */
-void *ucol_getABuffer(const UCollator *coll, uint32_t size);
+typedef void U_CALLCONV
+SortKeyGenerator(const    UCollator    *coll,
+        const    UChar        *source,
+        int32_t        sourceLength,
+        U_NAMESPACE_QUALIFIER SortKeyByteSink &result,
+        UErrorCode *status);
 
 /* worker function for generating sortkeys */
 U_CFUNC
-int32_t U_CALLCONV
+void U_CALLCONV
 ucol_calcSortKey(const    UCollator    *coll,
         const    UChar        *source,
         int32_t        sourceLength,
-        uint8_t        **result,
-        uint32_t        resultLength,
-        UBool allocatePrimary,
+        U_NAMESPACE_QUALIFIER SortKeyByteSink &result,
         UErrorCode *status);
 
 U_CFUNC
-int32_t U_CALLCONV
+void U_CALLCONV
 ucol_calcSortKeySimpleTertiary(const    UCollator    *coll,
         const    UChar        *source,
         int32_t        sourceLength,
-        uint8_t        **result,
-        uint32_t        resultLength,
-        UBool allocatePrimary,
+        U_NAMESPACE_QUALIFIER SortKeyByteSink &result,
         UErrorCode *status);
 
-U_CFUNC
-int32_t 
-ucol_getSortKeySize(const UCollator *coll, U_NAMESPACE_QUALIFIER collIterate *s, 
-                    int32_t currentSize, UColAttributeValue strength, 
-                    int32_t len);
+#else
+
+typedef void U_CALLCONV
+SortKeyGenerator(const    UCollator    *coll,
+        const    UChar        *source,
+        int32_t        sourceLength,
+        void *result,
+        UErrorCode *status);
+
+#endif
+
 /**
  * Makes a copy of the Collator's rule data. The format is
  * that of .col files.
@@ -939,15 +975,6 @@ typedef struct {
   uint8_t padding[8];
 } InverseUCATableHeader;
 
-typedef int32_t U_CALLCONV
-SortKeyGenerator(const    UCollator    *coll,
-        const    UChar        *source,
-        int32_t        sourceLength,
-        uint8_t        **result,
-        uint32_t        resultLength,
-        UBool allocatePrimary,
-        UErrorCode *status);
-
 typedef void U_CALLCONV
 ResourceCleaner(UCollator *coll);
 
@@ -1010,6 +1037,9 @@ struct UCollator {
     UBool freeOptionsOnClose;
     UBool freeRulesOnClose;
     UBool freeImageOnClose;
+    UBool freeDefaultReorderCodesOnClose;
+    UBool freeReorderCodesOnClose;
+    UBool freeLeadBytePermutationTableOnClose;
 
     UBool latinOneUse;
     UBool latinOneRegenTable;
@@ -1025,6 +1055,8 @@ struct UCollator {
     uint8_t tertiaryBottomCount;
 
     UVersionInfo dataVersion;               /* Data info of UCA table */
+    int32_t* defaultReorderCodes;
+    int32_t defaultReorderCodesLength;
     int32_t* reorderCodes;
     int32_t reorderCodesLength;
     uint8_t* leadBytePermutationTable;
@@ -1091,8 +1123,14 @@ ucol_openRulesForImport( const UChar        *rules,
                          UErrorCode         *status);
 
        
-U_CAPI void U_EXPORT2 ucol_buildPermutationTable(UCollator *coll, UErrorCode *status);
+U_CFUNC void U_EXPORT2 
+ucol_buildPermutationTable(UCollator *coll, UErrorCode *status);
 
+U_CFUNC int U_EXPORT2 
+ucol_getLeadBytesForReorderCode(const UCollator *uca, int reorderCode, uint16_t* returnLeadBytes, int returnCapacity);
+
+U_CFUNC int U_EXPORT2 
+ucol_getReorderCodesForLeadByte(const UCollator *uca, int leadByte, int16_t* returnReorderCodes, int returnCapacity);
 
 #ifdef XP_CPLUSPLUS
 /*

@@ -152,6 +152,7 @@ Format::parseObject(const UnicodeString& source,
 UBool
 Format::operator==(const Format& that) const
 {
+    // Subclasses: Call this method and then add more specific checks.
     return typeid(*this) == typeid(that);
 }
 //---------------------------------------

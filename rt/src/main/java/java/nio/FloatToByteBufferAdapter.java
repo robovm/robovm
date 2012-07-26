@@ -124,18 +124,15 @@ final class FloatToByteBufferAdapter extends FloatBuffer {
         return byteBuffer.order();
     }
 
-    @Override
-    protected float[] protectedArray() {
+    @Override float[] protectedArray() {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    protected int protectedArrayOffset() {
+    @Override int protectedArrayOffset() {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    protected boolean protectedHasArray() {
+    @Override boolean protectedHasArray() {
         return false;
     }
 

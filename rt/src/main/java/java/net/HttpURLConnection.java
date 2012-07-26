@@ -65,7 +65,6 @@ import libcore.net.http.HttpEngine;
  * }</pre>
  *
  * <h3>Secure Communication with HTTPS</h3>
-
  * Calling {@link URL#openConnection()} on a URL with the "https"
  * scheme will return an {@code HttpsURLConnection}, which allows for
  * overriding the default {@link javax.net.ssl.HostnameVerifier
@@ -131,9 +130,9 @@ import libcore.net.http.HttpEngine;
  * for multiple request/response pairs. As a result, HTTP connections may be
  * held open longer than necessary. Calls to {@link #disconnect()} may return
  * the socket to a pool of connected sockets. This behavior can be disabled by
- * setting the "http.keepAlive" system property to "false" before issuing any
- * HTTP requests. The "http.maxConnections" property may be used to control how
- * many idle connections to each server will be held.
+ * setting the {@code http.keepAlive} system property to {@code false} before
+ * issuing any HTTP requests. The {@code http.maxConnections} property may be
+ * used to control how many idle connections to each server will be held.
  *
  * <p>By default, this implementation of {@code HttpURLConnection} requests that
  * servers use gzip compression. Since {@link #getContentLength()} returns the
@@ -237,12 +236,22 @@ import libcore.net.http.HttpEngine;
  * until a connection is established.
  *
  * <h3>Response Caching</h3>
- * <p>{@code HttpURLConnection} supports a VM-wide HTTP response cache.
- * Implement {@link ResponseCache} and use {@link ResponseCache#setDefault} to
- * install a custom cache. Implementing this API is onerous: correct
- * implementations should follow all caching rules defined by <a
- * href="http://tools.ietf.org/html/rfc2616#section-13">Section 13 of RFC
- * 2616</a>.
+ * Android 4.0 (Ice Cream Sandwich) includes a response cache. See {@code
+ * android.net.http.HttpResponseCache} for instructions on enabling HTTP caching
+ * in your application.
+ *
+ * <h3>Avoiding Bugs In Earlier Releases</h3>
+ * Prior to Android 2.2 (Froyo), this class had some frustrating bugs. In
+ * particular, calling {@code close()} on a readable {@code InputStream} could
+ * <a href="http://code.google.com/p/android/issues/detail?id=2939">poison the
+ * connection pool</a>. Work around this by disabling connection pooling:
+ * <pre>   {@code
+ * private void disableConnectionReuseIfNecessary() {
+ *   // Work around pre-Froyo bugs in HTTP connection reuse.
+ *   if (Integer.parseInt(Build.VERSION.SDK) < Build.VERSION_CODES.FROYO) {
+ *     System.setProperty("http.keepAlive", "false");
+ *   }
+ * }}</pre>
  *
  * <p>Each instance of {@code HttpURLConnection} may be used for one
  * request/response pair. Instances of this class are not thread safe.
@@ -514,10 +523,13 @@ public abstract class HttpURLConnection extends URLConnection {
     }
 
     /**
-     * Closes the connection to the HTTP server.
+     * Releases this connection so that its resources may be either reused or
+     * closed.
      *
-     * @see URLConnection#connect()
-     * @see URLConnection#connected
+     * <p>Unlike other Java implementations, this will not necessarily close
+     * socket connections that can be reused. You can disable all connection
+     * reuse by setting the {@code http.keepAlive} system property to {@code
+     * false} before issuing any HTTP requests.
      */
     public abstract void disconnect();
 

@@ -166,6 +166,16 @@ ubrk_setText(UBreakIterator* bi,
              int32_t         textLength,
              UErrorCode*     status)
 {
+    // BEGIN android-added
+    // For icu ticket#9115
+    if (bi == NULL) {
+        if (U_SUCCESS(*status)) {
+            *status = U_ILLEGAL_ARGUMENT_ERROR;
+        }
+        return;
+    }
+    // END android-added
+
     BreakIterator *brit = (BreakIterator *)bi;
     UText  ut = UTEXT_INITIALIZER;
     utext_openUChars(&ut, text, textLength, status);

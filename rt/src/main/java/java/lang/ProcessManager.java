@@ -253,11 +253,17 @@ final class ProcessManager {
         }
 
         public void destroy() {
-            try {
-                Libcore.os.kill(pid, SIGKILL);
-            } catch (ErrnoException e) {
-                System.logI("Failed to destroy process " + pid, e);
+            // If the process hasn't already exited, send it SIGKILL.
+            synchronized (exitValueMutex) {
+                if (exitValue == null) {
+                    try {
+                        Libcore.os.kill(pid, SIGKILL);
+                    } catch (ErrnoException e) {
+                        System.logI("Failed to destroy process " + pid, e);
+                    }
+                }
             }
+            // Close any open streams.
             IoUtils.closeQuietly(inputStream);
             IoUtils.closeQuietly(errorStream);
             IoUtils.closeQuietly(outputStream);
@@ -266,10 +272,8 @@ final class ProcessManager {
         public int exitValue() {
             synchronized (exitValueMutex) {
                 if (exitValue == null) {
-                    throw new IllegalThreadStateException(
-                            "Process has not yet terminated.");
+                    throw new IllegalThreadStateException("Process has not yet terminated: " + pid);
                 }
-
                 return exitValue;
             }
         }

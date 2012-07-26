@@ -249,11 +249,8 @@ public class DatagramSocket {
         if (pendingConnectException != null) {
             throw new SocketException("Pending connect failure", pendingConnectException);
         }
-
-        pack.setLength(pack.getCapacity());
+        pack.resetLengthForReceive();
         impl.receive(pack);
-        // pack's length field is now updated by native code call;
-        // pack's capacity field is unchanged
     }
 
     /**

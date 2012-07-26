@@ -39,8 +39,9 @@ public class CipherInputStream extends FilterInputStream {
 
     private final Cipher cipher;
     private final byte[] inputBuffer = new byte[I_BUFFER_SIZE];
-    private int index; // index of the bytes to return from outputBuffer
     private byte[] outputBuffer;
+    private int outputIndex; // index of the first byte to return from outputBuffer
+    private int outputLength; // count of the bytes to return from outputBuffer
     private boolean finished;
 
     /**
@@ -84,27 +85,35 @@ public class CipherInputStream extends FilterInputStream {
     @Override
     public int read() throws IOException {
         if (finished) {
-            return ((outputBuffer == null) || (index == outputBuffer.length))
-                            ? -1
-                            : outputBuffer[index++] & 0xFF;
+            return (outputIndex == outputLength) ? -1 : outputBuffer[outputIndex++] & 0xFF;
         }
-        if ((outputBuffer != null) && (index < outputBuffer.length)) {
-            return outputBuffer[index++] & 0xFF;
+        if (outputIndex < outputLength) {
+            return outputBuffer[outputIndex++] & 0xFF;
         }
-        index = 0;
-        outputBuffer = null;
-        int byteCount;
-        while (outputBuffer == null) {
-            if ((byteCount = in.read(inputBuffer)) == -1) {
+        outputIndex = 0;
+        outputLength = 0;
+        while (outputLength == 0) {
+            // check output size on each iteration since pending state
+            // in the cipher can cause this to vary from call to call
+            int outputSize = cipher.getOutputSize(inputBuffer.length);
+            if ((outputBuffer == null) || (outputBuffer.length < outputSize)) {
+                this.outputBuffer = new byte[outputSize];
+            }
+            int byteCount = in.read(inputBuffer);
+            if (byteCount == -1) {
                 try {
-                    outputBuffer = cipher.doFinal();
+                    outputLength = cipher.doFinal(outputBuffer, 0);
                 } catch (Exception e) {
                     throw new IOException(e.getMessage());
                 }
                 finished = true;
                 break;
             }
-            outputBuffer = cipher.update(inputBuffer, 0, byteCount);
+            try {
+                outputLength = cipher.update(inputBuffer, 0, byteCount, outputBuffer, 0);
+            } catch (ShortBufferException e) {
+                throw new AssertionError(e);  // should not happen since we sized with getOutputSize
+            }
         }
         return read();
     }
@@ -113,10 +122,10 @@ public class CipherInputStream extends FilterInputStream {
      * Reads the next {@code len} bytes from this input stream into buffer
      * {@code buf} starting at offset {@code off}.
      * <p>
-     * if {@code b} is {@code null}, the next {@code len} bytes are read and
+     * if {@code buf} is {@code null}, the next {@code len} bytes are read and
      * discarded.
      *
-     * @return the number of bytes filled into buffer {@code b}, or {@code -1}
+     * @return the number of bytes filled into buffer {@code buf}, or {@code -1}
      *         of the of the stream is reached.
      * @throws IOException
      *             if an error occurs.

@@ -21,8 +21,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charsets;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 /**
  * This class provides an implementation of {@code FilterOutputStream} that
@@ -78,7 +78,7 @@ public class ZipOutputStream extends DeflaterOutputStream implements ZipConstant
 
     private String comment;
 
-    private final ArrayList<String> entries = new ArrayList<String>();
+    private final HashSet<String> entries = new HashSet<String>();
 
     private int compressMethod = DEFLATED;
 
@@ -283,6 +283,10 @@ public class ZipOutputStream extends DeflaterOutputStream implements ZipConstant
         checkClosed();
         if (entries.contains(ze.name)) {
             throw new ZipException("Entry already exists: " + ze.name);
+        }
+        if (entries.size() == 64*1024-1) {
+            // TODO: support Zip64.
+            throw new ZipException("Too many entries for the zip file format's 16-bit entry count");
         }
         nameBytes = ze.name.getBytes(Charsets.UTF_8);
         nameLength = nameBytes.length;

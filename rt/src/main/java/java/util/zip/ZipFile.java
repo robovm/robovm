@@ -318,7 +318,7 @@ public class ZipFile implements ZipConstants {
          */
         long scanOffset = mRaf.length() - ENDHDR;
         if (scanOffset < 0) {
-            throw new ZipException("too short to be Zip");
+            throw new ZipException("File too short to be a zip file: " + mRaf.length());
         }
 
         long stopOffset = scanOffset - 65536;
@@ -346,10 +346,10 @@ public class ZipFile implements ZipConstants {
 
         // Pull out the information we need.
         BufferIterator it = HeapBufferIterator.iterator(eocd, 0, eocd.length, ByteOrder.LITTLE_ENDIAN);
-        short diskNumber = it.readShort();
-        short diskWithCentralDir = it.readShort();
-        short numEntries = it.readShort();
-        short totalNumEntries = it.readShort();
+        int diskNumber = it.readShort() & 0xffff;
+        int diskWithCentralDir = it.readShort() & 0xffff;
+        int numEntries = it.readShort() & 0xffff;
+        int totalNumEntries = it.readShort() & 0xffff;
         it.skip(4); // Ignore centralDirSize.
         int centralDirOffset = it.readInt();
 

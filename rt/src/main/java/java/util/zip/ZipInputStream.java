@@ -227,6 +227,7 @@ public class ZipInputStream extends InflaterInputStream implements ZipConstants 
             return null;
         }
 
+        // Read the signature to see whether there's another local file header.
         Streams.readFully(in, hdrBuf, 0, 4);
         int hdr = Memory.peekInt(hdrBuf, 0, ByteOrder.LITTLE_ENDIAN);
         if (hdr == CENSIG) {
@@ -237,28 +238,28 @@ public class ZipInputStream extends InflaterInputStream implements ZipConstants 
             return null;
         }
 
-        // Read the local header
+        // Read the local file header.
         Streams.readFully(in, hdrBuf, 0, (LOCHDR - LOCVER));
-        int version = Memory.peekShort(hdrBuf, 0, ByteOrder.LITTLE_ENDIAN) & 0xff;
+        int version = peekShort(0) & 0xff;
         if (version > ZIPLocalHeaderVersionNeeded) {
             throw new ZipException("Cannot read local header version " + version);
         }
-        short flags = Memory.peekShort(hdrBuf, LOCFLG - LOCVER, ByteOrder.LITTLE_ENDIAN);
+        int flags = peekShort(LOCFLG - LOCVER);
         hasDD = ((flags & ZipFile.GPBF_DATA_DESCRIPTOR_FLAG) != 0);
-        int ceTime = Memory.peekShort(hdrBuf, LOCTIM - LOCVER, ByteOrder.LITTLE_ENDIAN) & 0xffff;
-        int ceModDate = Memory.peekShort(hdrBuf, LOCTIM - LOCVER + 2, ByteOrder.LITTLE_ENDIAN) & 0xffff;
-        int ceCompressionMethod = Memory.peekShort(hdrBuf, LOCHOW - LOCVER, ByteOrder.LITTLE_ENDIAN) & 0xffff;
+        int ceLastModifiedTime = peekShort(LOCTIM - LOCVER);
+        int ceLastModifiedDate = peekShort(LOCTIM - LOCVER + 2);
+        int ceCompressionMethod = peekShort(LOCHOW - LOCVER);
         long ceCrc = 0, ceCompressedSize = 0, ceSize = -1;
         if (!hasDD) {
             ceCrc = ((long) Memory.peekInt(hdrBuf, LOCCRC - LOCVER, ByteOrder.LITTLE_ENDIAN)) & 0xffffffffL;
             ceCompressedSize = ((long) Memory.peekInt(hdrBuf, LOCSIZ - LOCVER, ByteOrder.LITTLE_ENDIAN)) & 0xffffffffL;
             ceSize = ((long) Memory.peekInt(hdrBuf, LOCLEN - LOCVER, ByteOrder.LITTLE_ENDIAN)) & 0xffffffffL;
         }
-        int nameLength = Memory.peekShort(hdrBuf, LOCNAM - LOCVER, ByteOrder.LITTLE_ENDIAN) & 0xffff;
+        int nameLength = peekShort(LOCNAM - LOCVER);
         if (nameLength == 0) {
             throw new ZipException("Entry is not named");
         }
-        int extraLength = Memory.peekShort(hdrBuf, LOCEXT - LOCVER, ByteOrder.LITTLE_ENDIAN) & 0xffff;
+        int extraLength = peekShort(LOCEXT - LOCVER);
 
         if (nameLength > nameBuf.length) {
             nameBuf = new byte[nameLength];
@@ -268,8 +269,8 @@ public class ZipInputStream extends InflaterInputStream implements ZipConstants 
         }
         Streams.readFully(in, nameBuf, 0, nameLength);
         currentEntry = createZipEntry(ModifiedUtf8.decode(nameBuf, charBuf, 0, nameLength));
-        currentEntry.time = ceTime;
-        currentEntry.modDate = ceModDate;
+        currentEntry.time = ceLastModifiedTime;
+        currentEntry.modDate = ceLastModifiedDate;
         currentEntry.setMethod(ceCompressionMethod);
         if (ceSize != -1) {
             currentEntry.setCrc(ceCrc);
@@ -282,6 +283,10 @@ public class ZipInputStream extends InflaterInputStream implements ZipConstants 
             currentEntry.setExtra(extraData);
         }
         return currentEntry;
+    }
+
+    private int peekShort(int offset) {
+        return Memory.peekShort(hdrBuf, offset, ByteOrder.LITTLE_ENDIAN) & 0xffff;
     }
 
     /**

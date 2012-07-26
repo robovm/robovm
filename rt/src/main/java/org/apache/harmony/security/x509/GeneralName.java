@@ -539,9 +539,12 @@ public final class GeneralName {
     }
 
     /**
-     * Checks the correctness of the string representation of DNS name.
-     * The correctness is checked as specified in RFC 1034 p. 10, and modified
-     * by RFC 1123 (section 2.1).
+     * Checks the correctness of the string representation of DNS name as
+     * specified in RFC 1034 p. 10 and RFC 1123 section 2.1.
+     *
+     * <p>This permits a wildcard character '*' anywhere in the name; it is up
+     * to the application to check which wildcards are permitted. See RFC 6125
+     * for recommended wildcard matching rules.
      */
     public static void checkDNS(String dns) throws IOException {
         String string = dns.toLowerCase(Locale.US);
@@ -551,18 +554,14 @@ public final class GeneralName {
         for (int i = 0; i < length; i++) {
             char ch = string.charAt(i);
             if (first_letter) {
-                if ((length > 2) && (ch == '*') && (string.charAt(1) == '.')) {
-                    first_letter = false;
-                    continue;
-                }
-                if ((ch > 'z' || ch < 'a') && (ch < '0' || ch > '9')) {
+                if ((ch > 'z' || ch < 'a') && (ch < '0' || ch > '9') && (ch != '*')) {
                     throw new IOException("DNS name must start with a letter: " + dns);
                 }
                 first_letter = false;
                 continue;
             }
             if (!((ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9')
-                    || (ch == '-') || (ch == '.'))) {
+                    || (ch == '-') || (ch == '.') || (ch == '*'))) {
                 throw new IOException("Incorrect DNS name: " + dns);
             }
             if (ch == '.') {

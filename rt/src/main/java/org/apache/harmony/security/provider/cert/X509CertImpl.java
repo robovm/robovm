@@ -38,7 +38,6 @@ import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
-import java.security.interfaces.RSAPublicKey;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -49,7 +48,7 @@ import org.apache.harmony.security.x509.Certificate;
 import org.apache.harmony.security.x509.Extension;
 import org.apache.harmony.security.x509.Extensions;
 import org.apache.harmony.security.x509.TBSCertificate;
-import org.apache.harmony.xnet.provider.jsse.OpenSSLSignature;
+import org.apache.harmony.xnet.provider.jsse.OpenSSLProvider;
 
 /**
  * This class is an implementation of X509Certificate. It wraps
@@ -372,7 +371,7 @@ public final class X509CertImpl extends X509Certificate {
 
         Signature signature;
         try {
-            signature = OpenSSLSignature.getInstance(getSigAlgName());
+            signature = Signature.getInstance(getSigAlgName(), OpenSSLProvider.PROVIDER_NAME);
         } catch (NoSuchAlgorithmException ignored) {
             signature = Signature.getInstance(getSigAlgName());
         }
@@ -393,7 +392,7 @@ public final class X509CertImpl extends X509Certificate {
         Signature signature;
         try {
             if (sigProvider == null) {
-                signature = OpenSSLSignature.getInstance(getSigAlgName());
+                signature = Signature.getInstance(getSigAlgName(), OpenSSLProvider.PROVIDER_NAME);
             } else {
                 signature = Signature.getInstance(getSigAlgName(), sigProvider);
             }

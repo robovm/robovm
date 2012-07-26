@@ -1,6 +1,6 @@
 /*
 ***************************************************************************
-*   Copyright (C) 1999-2010 International Business Machines Corporation
+*   Copyright (C) 1999-2011 International Business Machines Corporation
 *   and others. All rights reserved.
 ***************************************************************************
 */
@@ -85,6 +85,36 @@ RuleBasedBreakIterator::RuleBasedBreakIterator(const RBBIDataHeader* data, enum 
         return;
     }
 }
+
+
+//
+//  Construct from precompiled binary rules (tables).  This constructor is public API,
+//  taking the rules as a (const uint8_t *) to match the type produced by getBinaryRules().
+//
+RuleBasedBreakIterator::RuleBasedBreakIterator(const uint8_t *compiledRules,
+                       uint32_t       ruleLength,
+                       UErrorCode     &status) {
+    init();
+    if (U_FAILURE(status)) {
+        return;
+    }
+    if (compiledRules == NULL || ruleLength < sizeof(RBBIDataHeader)) {
+        status = U_ILLEGAL_ARGUMENT_ERROR;
+        return;
+    }
+    const RBBIDataHeader *data = (const RBBIDataHeader *)compiledRules;
+    if (data->fLength > ruleLength) {
+        status = U_ILLEGAL_ARGUMENT_ERROR;
+        return;
+    }
+    fData = new RBBIDataWrapper(data, RBBIDataWrapper::kDontAdopt, status); 
+    if (U_FAILURE(status)) {return;}
+    if(fData == 0) {
+        status = U_MEMORY_ALLOCATION_ERROR;
+        return;
+    }
+}    
+
 
 //-------------------------------------------------------------------------------
 //
@@ -591,7 +621,7 @@ int32_t RuleBasedBreakIterator::previous(void) {
 
     int32_t start = current();
 
-    UTEXT_PREVIOUS32(fText);
+    (void)UTEXT_PREVIOUS32(fText);
     int32_t lastResult    = handlePrevious(fData->fReverseTable);
     if (lastResult == UBRK_DONE) {
         lastResult = 0;
@@ -687,7 +717,7 @@ int32_t RuleBasedBreakIterator::following(int32_t offset) {
         // move forward one codepoint to prepare for moving back to a
         // safe point.
         // this handles offset being between a supplementary character
-        UTEXT_NEXT32(fText);
+        (void)UTEXT_NEXT32(fText);
         // handlePrevious will move most of the time to < 1 boundary away
         handlePrevious(fData->fSafeRevTable);
         int32_t result = next();
@@ -699,7 +729,7 @@ int32_t RuleBasedBreakIterator::following(int32_t offset) {
     if (fData->fSafeFwdTable != NULL) {
         // backup plan if forward safe table is not available
         utext_setNativeIndex(fText, offset);
-        UTEXT_PREVIOUS32(fText);
+        (void)UTEXT_PREVIOUS32(fText);
         // handle next will give result >= offset
         handleNext(fData->fSafeFwdTable);
         // previous will give result 0 or 1 boundary away from offset,
@@ -799,7 +829,7 @@ int32_t RuleBasedBreakIterator::preceding(int32_t offset) {
             //   indices to the containing code point.
             // For breakitereator::preceding only, these non-code-point indices need to be moved
             //   up to refer to the following codepoint.
-            UTEXT_NEXT32(fText);
+            (void)UTEXT_NEXT32(fText);
             offset = (int32_t)UTEXT_GETNATIVEINDEX(fText);
         }
 
@@ -808,7 +838,7 @@ int32_t RuleBasedBreakIterator::preceding(int32_t offset) {
         //        (Change would interact with safe rules.)
         // TODO:  change RBBI behavior for off-boundary indices to match that of UText?
         //        affects only preceding(), seems cleaner, but is slightly different.
-        UTEXT_PREVIOUS32(fText);
+        (void)UTEXT_PREVIOUS32(fText);
         handleNext(fData->fSafeFwdTable);
         int32_t result = (int32_t)UTEXT_GETNATIVEINDEX(fText);
         while (result >= offset) {
@@ -823,7 +853,7 @@ int32_t RuleBasedBreakIterator::preceding(int32_t offset) {
         //            if they use safe tables at all.  We have certainly never described
         //            to anyone how to work with just one safe table.
         utext_setNativeIndex(fText, offset);
-        UTEXT_NEXT32(fText);
+        (void)UTEXT_NEXT32(fText);
         
         // handle previous will give result <= offset
         handlePrevious(fData->fSafeRevTable);
@@ -1203,7 +1233,7 @@ int32_t RuleBasedBreakIterator::handlePrevious(const RBBIStateTable *statetable)
                     // Ran off start, no match found.
                     // move one index one (towards the start, since we are doing a previous())
                     UTEXT_SETNATIVEINDEX(fText, initialPosition);
-                    UTEXT_PREVIOUS32(fText);   // TODO:  shouldn't be necessary.  We're already at beginning.  Check.
+                    (void)UTEXT_PREVIOUS32(fText);   // TODO:  shouldn't be necessary.  We're already at beginning.  Check.
                 }
                 break;
             }
@@ -1504,19 +1534,8 @@ BreakIterator *  RuleBasedBreakIterator::createBufferClone(void *stackBuffer,
 
     //
     //  Clone the source BI into the caller-supplied buffer.
-    //    TODO:  using an overloaded operator new to directly initialize the
-    //           copy in the user's buffer would be better, but it doesn't seem
-    //           to get along with namespaces.  Investigate why.
     //
-    //           The memcpy is only safe with an empty (default constructed)
-    //           break iterator.  Use on others can screw up reference counts
-    //           to data.  memcpy-ing objects is not really a good idea...
-    //
-    RuleBasedBreakIterator localIter;        // Empty break iterator, source for memcpy
-    RuleBasedBreakIterator *clone = (RuleBasedBreakIterator *)buf;
-    uprv_memcpy(clone, &localIter, sizeof(RuleBasedBreakIterator)); // init C++ gorp, BreakIterator base class part
-    clone->init();                // Init RuleBasedBreakIterator part, (user default constructor)
-    *clone = *this;               // clone = the real BI we want.
+    RuleBasedBreakIterator *clone = new(buf) RuleBasedBreakIterator(*this);
     clone->fBufferClone = TRUE;   // Flag to prevent deleting storage on close (From C code)
 
     return clone;

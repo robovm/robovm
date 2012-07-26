@@ -176,9 +176,12 @@ static void throwErrnoException(JNIEnv* env, const char* functionName) {
 }
 
 static void throwGaiException(JNIEnv* env, const char* functionName, int error) {
-    if (error == EAI_SYSTEM) {
-        // EAI_SYSTEM means "look at errno instead", so we want our GaiException to have the
-        // relevant ErrnoException as its cause.
+    if (errno != 0) {
+        // EAI_SYSTEM should mean "look at errno instead", but both glibc and bionic seem to
+        // mess this up. In particular, if you don't have INTERNET permission, errno will be EACCES
+        // but you'll get EAI_NONAME or EAI_NODATA. So we want our GaiException to have a
+        // potentially-relevant ErrnoException as its cause even if error != EAI_SYSTEM.
+        // http://code.google.com/p/android/issues/detail?id=15722
         throwErrnoException(env, functionName);
         // Deliberately fall through to throw another exception...
     }
@@ -598,6 +601,7 @@ extern "C" jobjectArray Java_libcore_io_Posix_getaddrinfo(JNIEnv* env, jobject, 
     hints.ai_protocol = env->GetIntField(javaHints, protocolFid);
 
     addrinfo* addressList = NULL;
+    errno = 0;
     int rc = getaddrinfo(node.c_str(), NULL, &hints, &addressList);
     UniquePtr<addrinfo, addrinfo_deleter> addressListDeleter(addressList);
     if (rc != 0) {
@@ -611,7 +615,7 @@ extern "C" jobjectArray Java_libcore_io_Posix_getaddrinfo(JNIEnv* env, jobject, 
         if (ai->ai_family == AF_INET || ai->ai_family == AF_INET6) {
             ++addressCount;
         } else {
-            LOGE("getaddrinfo unexpected ai_family %i", ai->ai_family);
+            ALOGE("getaddrinfo unexpected ai_family %i", ai->ai_family);
         }
     }
     if (addressCount == 0) {
@@ -629,7 +633,7 @@ extern "C" jobjectArray Java_libcore_io_Posix_getaddrinfo(JNIEnv* env, jobject, 
     for (addrinfo* ai = addressList; ai != NULL; ai = ai->ai_next) {
         if (ai->ai_family != AF_INET && ai->ai_family != AF_INET6) {
             // Unknown address family. Skip this address.
-            LOGE("getaddrinfo unexpected ai_family %i", ai->ai_family);
+            ALOGE("getaddrinfo unexpected ai_family %i", ai->ai_family);
             continue;
         }
 
@@ -676,6 +680,7 @@ extern "C" jstring Java_libcore_io_Posix_getnameinfo(JNIEnv* env, jobject, jobje
     // then remove this hack.
     socklen_t size = (ss.ss_family == AF_INET) ? sizeof(sockaddr_in) : sizeof(sockaddr_in6);
     char buf[NI_MAXHOST]; // NI_MAXHOST is longer than INET6_ADDRSTRLEN.
+    errno = 0;
     int rc = getnameinfo(reinterpret_cast<sockaddr*>(&ss), size, buf, sizeof(buf), NULL, 0, flags);
     if (rc != 0) {
         throwGaiException(env, "getnameinfo", rc);
@@ -958,7 +963,16 @@ extern "C" jint Java_libcore_io_Posix_poll(JNIEnv* env, jobject, jobjectArray ja
         ++count;
     }
 
-    int rc = TEMP_FAILURE_RETRY(poll(fds.get(), count, timeoutMs));
+    // Since we don't know which fds -- if any -- are sockets, be conservative and register
+    // all fds for asynchronous socket close monitoring.
+    std::vector<AsynchronousSocketCloseMonitor*> monitors;
+    for (size_t i = 0; i < count; ++i) {
+        monitors.push_back(new AsynchronousSocketCloseMonitor(fds[i].fd));
+    }
+    int rc = poll(fds.get(), count, timeoutMs);
+    for (size_t i = 0; i < monitors.size(); ++i) {
+        delete monitors[i];
+    }
     if (rc == -1) {
         throwErrnoException(env, "poll");
         return -1;

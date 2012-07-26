@@ -360,18 +360,15 @@ final class MappedByteBufferAdapter extends MappedByteBuffer {
         return result;
     }
 
-    @Override
-    byte[] protectedArray() {
+    @Override byte[] protectedArray() {
         return wrapped.protectedArray();
     }
 
-    @Override
-    int protectedArrayOffset() {
+    @Override int protectedArrayOffset() {
         return wrapped.protectedArrayOffset();
     }
 
-    @Override
-    boolean protectedHasArray() {
+    @Override boolean protectedHasArray() {
         return wrapped.protectedHasArray();
     }
 

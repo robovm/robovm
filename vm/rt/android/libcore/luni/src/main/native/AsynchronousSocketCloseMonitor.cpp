@@ -58,7 +58,7 @@ void AsynchronousSocketCloseMonitor::init() {
     sa.sa_flags = 0;
     int rc = sigaction(BLOCKED_THREAD_SIGNAL, &sa, NULL);
     if (rc == -1) {
-        LOGE("setting blocked thread signal handler failed: %s", strerror(errno));
+        ALOGE("setting blocked thread signal handler failed: %s", strerror(errno));
     }
 }
 

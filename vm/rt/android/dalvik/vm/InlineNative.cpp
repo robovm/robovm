@@ -44,31 +44,32 @@
  */
 
 union Convert32 {
-    jint ii;
+    jint arg;
     float ff;
 };
 
 union Convert64 {
-    jlong ll;
+    jlong arg;
+	jlong ll;
     double dd;
 };
 
 /*
  * public static float abs(float)
  */
-extern "C" float Java_java_lang_Math_abs__F(JNIEnv*, jclass, float f)
+extern "C" float Java_java_lang_Math_abs__float(JNIEnv*, jclass, float f)
 {
     Convert32 convert;
     convert.ff = f;
     /* clear the sign bit; assumes a fairly common fp representation */
-    convert.ii &= 0x7fffffff;
+    convert.arg &= 0x7fffffff;
     return convert.ff;
 }
 
 /*
  * public static double abs(double)
  */
-extern "C" double Java_java_lang_Math_abs__D(JNIEnv*, jclass, double d)
+extern "C" double Java_java_lang_Math_abs__double(JNIEnv*, jclass, double d)
 {
     Convert64 convert;
     convert.dd = d;
@@ -114,21 +115,21 @@ extern "C" double Java_java_lang_Math_sin(JNIEnv*, jclass, double d)
 extern "C" jint Java_java_lang_Float_floatToIntBits(JNIEnv*, jclass, float value)
 {
     Convert32 convert;
-    convert.ff = value;
-    return isnanf(convert.ff) ? 0x7fc00000 : convert.ii;
+    convert.arg = value;
+    return isnanf(convert.ff) ? 0x7fc00000 : convert.arg;
 }
 
 extern "C" jint Java_java_lang_Float_floatToRawIntBits(JNIEnv*, jclass, float value)
 {
     Convert32 convert;
     convert.ff = value;
-    return convert.ii;
+    return convert.arg;
 }
 
 extern "C" float Java_java_lang_Float_intBitsToFloat(JNIEnv*, jclass, jint bits)
 {
     Convert32 convert;
-    convert.ii = bits;
+    convert.arg = bits;
     return convert.ff;
 }
 

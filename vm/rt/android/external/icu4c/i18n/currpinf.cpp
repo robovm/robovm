@@ -1,6 +1,6 @@
 /*
  *******************************************************************************
- * Copyright (C) 2009-2010, International Business Machines Corporation and
+ * Copyright (C) 2009-2011, International Business Machines Corporation and
  * others. All Rights Reserved.
  *******************************************************************************
  */
@@ -159,9 +159,9 @@ CurrencyPluralInfo::getCurrencyPluralPattern(const UnicodeString&  pluralCount,
         (UnicodeString*)fPluralCountToCurrencyUnitPattern->get(pluralCount);
     if (currencyPluralPattern == NULL) {
         // fall back to "other"
-        if (pluralCount.compare(gPluralCountOther)) {
+        if (pluralCount.compare(gPluralCountOther, 5)) {
             currencyPluralPattern = 
-                (UnicodeString*)fPluralCountToCurrencyUnitPattern->get(gPluralCountOther);
+                (UnicodeString*)fPluralCountToCurrencyUnitPattern->get(UnicodeString(TRUE, gPluralCountOther, 5));
         }
         if (currencyPluralPattern == NULL) {
             // no currencyUnitPatterns defined, 
@@ -241,9 +241,9 @@ CurrencyPluralInfo::setupCurrencyPluralPattern(const Locale& loc, UErrorCode& st
 
     UErrorCode ec = U_ZERO_ERROR;
     UResourceBundle *rb = ures_open(NULL, loc.getName(), &ec);
-    rb = ures_getByKey(rb, gNumberElementsTag, rb, &ec);
-    rb = ures_getByKey(rb, gLatnTag, rb, &ec);
-    rb = ures_getByKey(rb, gPatternsTag, rb, &ec);
+    rb = ures_getByKeyWithFallback(rb, gNumberElementsTag, rb, &ec);
+    rb = ures_getByKeyWithFallback(rb, gLatnTag, rb, &ec);
+    rb = ures_getByKeyWithFallback(rb, gPatternsTag, rb, &ec);
     int32_t ptnLen;
     const UChar* numberStylePattern = ures_getStringByKeyWithFallback(rb, gDecimalFormatTag, &ptnLen, &ec);
     int32_t numberStylePatternLen = ptnLen;
@@ -291,15 +291,15 @@ CurrencyPluralInfo::setupCurrencyPluralPattern(const Locale& loc, UErrorCode& st
                     pattern->extract(0, pattern->length(), result_1, "UTF-8");
                     std::cout << "pluralCount: " << pluralCount << "; pattern: " << result_1 << "\n";
 #endif
-                    pattern->findAndReplace(gPart0, 
+                    pattern->findAndReplace(UnicodeString(TRUE, gPart0, 3), 
                       UnicodeString(numberStylePattern, numberStylePatternLen));
-                    pattern->findAndReplace(gPart1, gTripleCurrencySign);
+                    pattern->findAndReplace(UnicodeString(TRUE, gPart1, 3), UnicodeString(TRUE, gTripleCurrencySign, 3));
 
                     if (hasSeparator) {
                         UnicodeString negPattern(patternChars, ptnLen);
-                        negPattern.findAndReplace(gPart0, 
+                        negPattern.findAndReplace(UnicodeString(TRUE, gPart0, 3), 
                           UnicodeString(negNumberStylePattern, negNumberStylePatternLen));
-                        negPattern.findAndReplace(gPart1, gTripleCurrencySign);
+                        negPattern.findAndReplace(UnicodeString(TRUE, gPart1, 3), UnicodeString(TRUE, gTripleCurrencySign, 3));
                         pattern->append(gNumberPatternSeparator);
                         pattern->append(negPattern);
                     }
@@ -308,7 +308,7 @@ CurrencyPluralInfo::setupCurrencyPluralPattern(const Locale& loc, UErrorCode& st
                     std::cout << "pluralCount: " << pluralCount << "; pattern: " << result_1 << "\n";
 #endif
 
-                    fPluralCountToCurrencyUnitPattern->put(UnicodeString(pluralCount), pattern, status);
+                    fPluralCountToCurrencyUnitPattern->put(UnicodeString(pluralCount, -1, US_INV), pattern, status);
                 }
             }
         }
@@ -347,6 +347,10 @@ CurrencyPluralInfo::initHash(UErrorCode& status) {
     Hashtable* hTable;
     if ( (hTable = new Hashtable(TRUE, status)) == NULL ) {
         status = U_MEMORY_ALLOCATION_ERROR;
+        return NULL;
+    }
+    if ( U_FAILURE(status) ) {
+        delete hTable; 
         return NULL;
     }
     hTable->setValueComparator(ValueComparator);

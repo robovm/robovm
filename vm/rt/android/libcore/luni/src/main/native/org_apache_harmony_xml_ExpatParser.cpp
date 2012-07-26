@@ -27,7 +27,7 @@
 #include "UniquePtr.h"
 #include "jni.h"
 #include "cutils/log.h"
-#include "cutils/jstring.h" // for strcpylen8to16
+#include "unicode/unistr.h"
 
 #include <string.h>
 #include <expat.h>
@@ -410,26 +410,23 @@ static void jniThrowExpatException(JNIEnv* env, XML_Error error) {
  * Copies UTF-8 characters into the buffer. Returns the number of Java chars
  * which were buffered.
  *
- * @param characters to copy into the buffer
- * @param length of characters to copy (in bytes)
  * @returns number of UTF-16 characters which were copied
  */
-static size_t fillBuffer(ParsingContext* parsingContext, const char* characters, int length) {
+static size_t fillBuffer(ParsingContext* parsingContext, const char* utf8, int byteCount) {
     JNIEnv* env = parsingContext->env;
 
-    // Grow buffer if necessary.
-    jcharArray buffer = parsingContext->ensureCapacity(length);
-    if (buffer == NULL) return -1;
+    // Grow buffer if necessary (the length in bytes is always >= the length in chars).
+    jcharArray javaChars = parsingContext->ensureCapacity(byteCount);
+    if (javaChars == NULL) return -1;
 
-    // Decode UTF-8 characters into our buffer.
-    ScopedCharArrayRW nativeBuffer(env, buffer);
-    if (nativeBuffer.get() == NULL) {
+    // Decode UTF-8 characters into our char[].
+    ScopedCharArrayRW chars(env, javaChars);
+    if (chars.get() == NULL) {
         return -1;
     }
-
-    size_t utf16length;
-    strcpylen8to16(nativeBuffer.get(), characters, length, &utf16length);
-    return utf16length;
+    UErrorCode status = U_ZERO_ERROR;
+    UnicodeString utf16(UnicodeString::fromUTF8(StringPiece(utf8, byteCount)));
+    return utf16.extract(chars.get(), byteCount, status);
 }
 
 /**

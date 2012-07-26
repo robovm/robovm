@@ -75,18 +75,15 @@ final class ReadWriteCharArrayBuffer extends CharArrayBuffer {
         return false;
     }
 
-    @Override
-    protected char[] protectedArray() {
+    @Override char[] protectedArray() {
         return backingArray;
     }
 
-    @Override
-    protected int protectedArrayOffset() {
+    @Override int protectedArrayOffset() {
         return offset;
     }
 
-    @Override
-    protected boolean protectedHasArray() {
+    @Override boolean protectedHasArray() {
         return true;
     }
 

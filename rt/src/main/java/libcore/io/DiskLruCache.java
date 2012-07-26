@@ -69,7 +69,7 @@ import java.util.concurrent.TimeUnit;
  *     <li>When an entry is being <strong>created</strong> it is necessary to
  *         supply a full set of values; the empty value should be used as a
  *         placeholder if necessary.
- *     <li>When an entry is being <strong>created</strong>, it is not necessary
+ *     <li>When an entry is being <strong>edited</strong>, it is not necessary
  *         to supply data for every value; values default to their previous
  *         value.
  * </ul>
@@ -92,6 +92,7 @@ public final class DiskLruCache implements Closeable {
     static final String JOURNAL_FILE_TMP = "journal.tmp";
     static final String MAGIC = "libcore.io.DiskLruCache";
     static final String VERSION_1 = "1";
+    static final long ANY_SEQUENCE_NUMBER = -1;
     private static final String CLEAN = "CLEAN";
     private static final String DIRTY = "DIRTY";
     private static final String REMOVE = "REMOVE";
@@ -148,6 +149,13 @@ public final class DiskLruCache implements Closeable {
     private final LinkedHashMap<String, Entry> lruEntries
             = new LinkedHashMap<String, Entry>(0, 0.75f, true);
     private int redundantOpCount;
+
+    /**
+     * To differentiate between old and current snapshots, each entry is given
+     * a sequence number each time an edit is committed. A snapshot is stale if
+     * its sequence number is not equal to its entry's sequence number.
+     */
+    private long nextSequenceNumber = 0;
 
     /** This cache uses a single background thread to evict entries. */
     private final ExecutorService executorService = new ThreadPoolExecutor(0, 1,
@@ -382,22 +390,30 @@ public final class DiskLruCache implements Closeable {
             executorService.submit(cleanupCallable);
         }
 
-        return new Snapshot(ins);
+        return new Snapshot(key, entry.sequenceNumber, ins);
     }
 
     /**
-     * Returns an editor for the entry named {@code key}, or null if it cannot
-     * currently be edited.
+     * Returns an editor for the entry named {@code key}, or null if another
+     * edit is in progress.
      */
-    public synchronized Editor edit(String key) throws IOException {
+    public Editor edit(String key) throws IOException {
+        return edit(key, ANY_SEQUENCE_NUMBER);
+    }
+
+    private synchronized Editor edit(String key, long expectedSequenceNumber) throws IOException {
         checkNotClosed();
         validateKey(key);
         Entry entry = lruEntries.get(key);
+        if (expectedSequenceNumber != ANY_SEQUENCE_NUMBER
+                && (entry == null || entry.sequenceNumber != expectedSequenceNumber)) {
+            return null; // snapshot is stale
+        }
         if (entry == null) {
             entry = new Entry(key);
             lruEntries.put(key, entry);
         } else if (entry.currentEditor != null) {
-            return null;
+            return null; // another edit is in progress
         }
 
         Editor editor = new Editor(entry);
@@ -470,6 +486,9 @@ public final class DiskLruCache implements Closeable {
         if (entry.readable | success) {
             entry.readable = true;
             journalWriter.write(CLEAN + ' ' + entry.key + entry.getLengths() + '\n');
+            if (success) {
+                entry.sequenceNumber = nextSequenceNumber++;
+            }
         } else {
             lruEntries.remove(entry.key);
             journalWriter.write(REMOVE + ' ' + entry.key + '\n');
@@ -594,11 +613,24 @@ public final class DiskLruCache implements Closeable {
     /**
      * A snapshot of the values for an entry.
      */
-    public static final class Snapshot implements Closeable {
+    public final class Snapshot implements Closeable {
+        private final String key;
+        private final long sequenceNumber;
         private final InputStream[] ins;
 
-        private Snapshot(InputStream[] ins) {
+        private Snapshot(String key, long sequenceNumber, InputStream[] ins) {
+            this.key = key;
+            this.sequenceNumber = sequenceNumber;
             this.ins = ins;
+        }
+
+        /**
+         * Returns an editor for this snapshot's entry, or null if either the
+         * entry has changed since this snapshot was created or if another edit
+         * is in progress.
+         */
+        public Editor edit() throws IOException {
+            return DiskLruCache.this.edit(key, sequenceNumber);
         }
 
         /**
@@ -758,6 +790,9 @@ public final class DiskLruCache implements Closeable {
 
         /** The ongoing edit or null if this entry is not being edited. */
         private Editor currentEditor;
+
+        /** The sequence number of the most recently committed edit to this entry. */
+        private long sequenceNumber;
 
         private Entry(String key) {
             this.key = key;

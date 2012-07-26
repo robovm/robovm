@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *                                                                            *
-* Copyright (C) 2001-2009, International Business Machines                   *
+* Copyright (C) 2001-2011, International Business Machines                   *
 *                Corporation and others. All Rights Reserved.                *
 *                                                                            *
 ******************************************************************************
@@ -33,12 +33,15 @@ typedef enum ECleanupI18NType {
     UCLN_I18N_HEBREW_CALENDAR,
     UCLN_I18N_ASTRO_CALENDAR,
     UCLN_I18N_CALENDAR,
+    UCLN_I18N_TIMEZONEFORMAT,
+    UCLN_I18N_TIMEZONENAMES,
     UCLN_I18N_ZONEMETA,
-    UCLN_I18N_ZSFORMAT,
     UCLN_I18N_TIMEZONE,
     UCLN_I18N_PLURAL_RULE,
     UCLN_I18N_CURRENCY,
+    UCLN_I18N_DECFMT,
     UCLN_I18N_NUMFMT,
+    UCLN_I18N_SMPDTFMT,
     UCLN_I18N_USEARCH,
     UCLN_I18N_COLLATOR,
     UCLN_I18N_UCOL,
@@ -46,6 +49,7 @@ typedef enum ECleanupI18NType {
     UCLN_I18N_UCOL_BLD,
     UCLN_I18N_CSDET,
     UCLN_I18N_COLL_DATA,
+    UCLN_I18N_INDEX_CHARACTERS,
     UCLN_I18N_COUNT /* This must be last */
 } ECleanupI18NType;
 

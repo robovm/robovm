@@ -179,6 +179,7 @@ public final class MimeUtils {
         add("application/x-object", "o");
         add("application/x-oz-application", "oza");
         add("application/x-pkcs12", "p12");
+        add("application/x-pkcs12", "pfx");
         add("application/x-pkcs7-certreqresp", "p7r");
         add("application/x-pkcs7-crl", "crl");
         add("application/x-quicktimeplayer", "qtl");

@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-*   Copyright (C) 2004-2010, International Business Machines
+*   Copyright (C) 2004-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *******************************************************************************
 *
@@ -24,16 +24,17 @@
 #ifdef U_HIDE_DRAFT_API
 
 #    if U_DISABLE_RENAMING
+#        define StringPiece StringPiece_DRAFT_API_DO_NOT_USE
 #        define ubidi_getBaseDirection ubidi_getBaseDirection_DRAFT_API_DO_NOT_USE
+#        define ubidi_setContext ubidi_setContext_DRAFT_API_DO_NOT_USE
+#        define ucal_getFieldDifference ucal_getFieldDifference_DRAFT_API_DO_NOT_USE
+#        define ucal_openTimeZoneIDEnumeration ucal_openTimeZoneIDEnumeration_DRAFT_API_DO_NOT_USE
+#        define ucnv_isFixedWidth ucnv_isFixedWidth_DRAFT_API_DO_NOT_USE
+#        define ucol_getEquivalentReorderCodes ucol_getEquivalentReorderCodes_DRAFT_API_DO_NOT_USE
+#        define ucol_getReorderCodes ucol_getReorderCodes_DRAFT_API_DO_NOT_USE
+#        define ucol_setReorderCodes ucol_setReorderCodes_DRAFT_API_DO_NOT_USE
+#        define ucurr_isAvailable ucurr_isAvailable_DRAFT_API_DO_NOT_USE
 #        define uidna_close uidna_close_DRAFT_API_DO_NOT_USE
-#        define uidna_labelToASCII uidna_labelToASCII_DRAFT_API_DO_NOT_USE
-#        define uidna_labelToASCII_UTF8 uidna_labelToASCII_UTF8_DRAFT_API_DO_NOT_USE
-#        define uidna_labelToUnicode uidna_labelToUnicode_DRAFT_API_DO_NOT_USE
-#        define uidna_labelToUnicodeUTF8 uidna_labelToUnicodeUTF8_DRAFT_API_DO_NOT_USE
-#        define uidna_nameToASCII uidna_nameToASCII_DRAFT_API_DO_NOT_USE
-#        define uidna_nameToASCII_UTF8 uidna_nameToASCII_UTF8_DRAFT_API_DO_NOT_USE
-#        define uidna_nameToUnicode uidna_nameToUnicode_DRAFT_API_DO_NOT_USE
-#        define uidna_nameToUnicodeUTF8 uidna_nameToUnicodeUTF8_DRAFT_API_DO_NOT_USE
 #        define uidna_openUTS46 uidna_openUTS46_DRAFT_API_DO_NOT_USE
 #        define uloc_forLanguageTag uloc_forLanguageTag_DRAFT_API_DO_NOT_USE
 #        define uloc_toLanguageTag uloc_toLanguageTag_DRAFT_API_DO_NOT_USE
@@ -54,35 +55,36 @@
 #        define uscript_getScriptExtensions uscript_getScriptExtensions_DRAFT_API_DO_NOT_USE
 #        define uscript_hasScript uscript_hasScript_DRAFT_API_DO_NOT_USE
 #    else
-#        define ubidi_getBaseDirection_4_6 ubidi_getBaseDirection_DRAFT_API_DO_NOT_USE
-#        define uidna_close_4_6 uidna_close_DRAFT_API_DO_NOT_USE
-#        define uidna_labelToASCII_4_6 uidna_labelToASCII_DRAFT_API_DO_NOT_USE
-#        define uidna_labelToASCII_UTF8_4_6 uidna_labelToASCII_UTF8_DRAFT_API_DO_NOT_USE
-#        define uidna_labelToUnicodeUTF8_4_6 uidna_labelToUnicodeUTF8_DRAFT_API_DO_NOT_USE
-#        define uidna_labelToUnicode_4_6 uidna_labelToUnicode_DRAFT_API_DO_NOT_USE
-#        define uidna_nameToASCII_4_6 uidna_nameToASCII_DRAFT_API_DO_NOT_USE
-#        define uidna_nameToASCII_UTF8_4_6 uidna_nameToASCII_UTF8_DRAFT_API_DO_NOT_USE
-#        define uidna_nameToUnicodeUTF8_4_6 uidna_nameToUnicodeUTF8_DRAFT_API_DO_NOT_USE
-#        define uidna_nameToUnicode_4_6 uidna_nameToUnicode_DRAFT_API_DO_NOT_USE
-#        define uidna_openUTS46_4_6 uidna_openUTS46_DRAFT_API_DO_NOT_USE
-#        define uloc_forLanguageTag_4_6 uloc_forLanguageTag_DRAFT_API_DO_NOT_USE
-#        define uloc_toLanguageTag_4_6 uloc_toLanguageTag_DRAFT_API_DO_NOT_USE
-#        define unorm2_getDecomposition_4_6 unorm2_getDecomposition_DRAFT_API_DO_NOT_USE
-#        define uregex_end64_4_6 uregex_end64_DRAFT_API_DO_NOT_USE
-#        define uregex_find64_4_6 uregex_find64_DRAFT_API_DO_NOT_USE
-#        define uregex_getFindProgressCallback_4_6 uregex_getFindProgressCallback_DRAFT_API_DO_NOT_USE
-#        define uregex_lookingAt64_4_6 uregex_lookingAt64_DRAFT_API_DO_NOT_USE
-#        define uregex_matches64_4_6 uregex_matches64_DRAFT_API_DO_NOT_USE
-#        define uregex_patternUText_4_6 uregex_patternUText_DRAFT_API_DO_NOT_USE
-#        define uregex_regionEnd64_4_6 uregex_regionEnd64_DRAFT_API_DO_NOT_USE
-#        define uregex_regionStart64_4_6 uregex_regionStart64_DRAFT_API_DO_NOT_USE
-#        define uregex_reset64_4_6 uregex_reset64_DRAFT_API_DO_NOT_USE
-#        define uregex_setFindProgressCallback_4_6 uregex_setFindProgressCallback_DRAFT_API_DO_NOT_USE
-#        define uregex_setRegion64_4_6 uregex_setRegion64_DRAFT_API_DO_NOT_USE
-#        define uregex_setRegionAndStart_4_6 uregex_setRegionAndStart_DRAFT_API_DO_NOT_USE
-#        define uregex_start64_4_6 uregex_start64_DRAFT_API_DO_NOT_USE
-#        define uscript_getScriptExtensions_4_6 uscript_getScriptExtensions_DRAFT_API_DO_NOT_USE
-#        define uscript_hasScript_4_6 uscript_hasScript_DRAFT_API_DO_NOT_USE
+#        define StringPiece_48 StringPiece_DRAFT_API_DO_NOT_USE
+#        define ubidi_getBaseDirection_48 ubidi_getBaseDirection_DRAFT_API_DO_NOT_USE
+#        define ubidi_setContext_48 ubidi_setContext_DRAFT_API_DO_NOT_USE
+#        define ucal_getFieldDifference_48 ucal_getFieldDifference_DRAFT_API_DO_NOT_USE
+#        define ucal_openTimeZoneIDEnumeration_48 ucal_openTimeZoneIDEnumeration_DRAFT_API_DO_NOT_USE
+#        define ucnv_isFixedWidth_48 ucnv_isFixedWidth_DRAFT_API_DO_NOT_USE
+#        define ucol_getEquivalentReorderCodes_48 ucol_getEquivalentReorderCodes_DRAFT_API_DO_NOT_USE
+#        define ucol_getReorderCodes_48 ucol_getReorderCodes_DRAFT_API_DO_NOT_USE
+#        define ucol_setReorderCodes_48 ucol_setReorderCodes_DRAFT_API_DO_NOT_USE
+#        define ucurr_isAvailable_48 ucurr_isAvailable_DRAFT_API_DO_NOT_USE
+#        define uidna_close_48 uidna_close_DRAFT_API_DO_NOT_USE
+#        define uidna_openUTS46_48 uidna_openUTS46_DRAFT_API_DO_NOT_USE
+#        define uloc_forLanguageTag_48 uloc_forLanguageTag_DRAFT_API_DO_NOT_USE
+#        define uloc_toLanguageTag_48 uloc_toLanguageTag_DRAFT_API_DO_NOT_USE
+#        define unorm2_getDecomposition_48 unorm2_getDecomposition_DRAFT_API_DO_NOT_USE
+#        define uregex_end64_48 uregex_end64_DRAFT_API_DO_NOT_USE
+#        define uregex_find64_48 uregex_find64_DRAFT_API_DO_NOT_USE
+#        define uregex_getFindProgressCallback_48 uregex_getFindProgressCallback_DRAFT_API_DO_NOT_USE
+#        define uregex_lookingAt64_48 uregex_lookingAt64_DRAFT_API_DO_NOT_USE
+#        define uregex_matches64_48 uregex_matches64_DRAFT_API_DO_NOT_USE
+#        define uregex_patternUText_48 uregex_patternUText_DRAFT_API_DO_NOT_USE
+#        define uregex_regionEnd64_48 uregex_regionEnd64_DRAFT_API_DO_NOT_USE
+#        define uregex_regionStart64_48 uregex_regionStart64_DRAFT_API_DO_NOT_USE
+#        define uregex_reset64_48 uregex_reset64_DRAFT_API_DO_NOT_USE
+#        define uregex_setFindProgressCallback_48 uregex_setFindProgressCallback_DRAFT_API_DO_NOT_USE
+#        define uregex_setRegion64_48 uregex_setRegion64_DRAFT_API_DO_NOT_USE
+#        define uregex_setRegionAndStart_48 uregex_setRegionAndStart_DRAFT_API_DO_NOT_USE
+#        define uregex_start64_48 uregex_start64_DRAFT_API_DO_NOT_USE
+#        define uscript_getScriptExtensions_48 uscript_getScriptExtensions_DRAFT_API_DO_NOT_USE
+#        define uscript_hasScript_48 uscript_hasScript_DRAFT_API_DO_NOT_USE
 #    endif /* U_DISABLE_RENAMING */
 
 #endif /* U_HIDE_DRAFT_API */

@@ -272,7 +272,7 @@ public class LinkedList<E> extends AbstractSequentialList<E> implements
      * @param object
      *            the object to add.
      * @throws IndexOutOfBoundsException
-     *             if {@code location < 0 || >= size()}
+     *             if {@code location < 0 || location > size()}
      */
     @Override
     public void add(int location, E object) {
@@ -336,7 +336,7 @@ public class LinkedList<E> extends AbstractSequentialList<E> implements
      * @throws IllegalArgumentException
      *             if an object cannot be added to this list.
      * @throws IndexOutOfBoundsException
-     *             if {@code location < 0 || > size()}
+     *             if {@code location < 0 || location > size()}
      */
     @Override
     public boolean addAll(int location, Collection<? extends E> collection) {
@@ -619,7 +619,7 @@ public class LinkedList<E> extends AbstractSequentialList<E> implements
      *            the index at which to start the iteration
      * @return a ListIterator on the elements of this {@code LinkedList}
      * @throws IndexOutOfBoundsException
-     *             if {@code location < 0 || >= size()}
+     *             if {@code location < 0 || location > size()}
      * @see ListIterator
      */
     @Override
@@ -634,7 +634,7 @@ public class LinkedList<E> extends AbstractSequentialList<E> implements
      *            the index of the object to remove
      * @return the removed object
      * @throws IndexOutOfBoundsException
-     *             if {@code location < 0 || >= size()}
+     *             if {@code location < 0 || location >= size()}
      */
     @Override
     public E remove(int location) {
@@ -855,7 +855,7 @@ public class LinkedList<E> extends AbstractSequentialList<E> implements
      * @throws IllegalArgumentException
      *             if an object cannot be added to this list.
      * @throws IndexOutOfBoundsException
-     *             if {@code location < 0 || >= size()}
+     *             if {@code location < 0 || location >= size()}
      */
     @Override
     public E set(int location, E object) {

@@ -64,18 +64,15 @@ final class ReadOnlyFloatArrayBuffer extends FloatArrayBuffer {
         return true;
     }
 
-    @Override
-    protected float[] protectedArray() {
+    @Override float[] protectedArray() {
         throw new ReadOnlyBufferException();
     }
 
-    @Override
-    protected int protectedArrayOffset() {
+    @Override int protectedArrayOffset() {
         throw new ReadOnlyBufferException();
     }
 
-    @Override
-    protected boolean protectedHasArray() {
+    @Override boolean protectedHasArray() {
         return false;
     }
 

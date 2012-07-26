@@ -64,18 +64,15 @@ final class ReadOnlyShortArrayBuffer extends ShortArrayBuffer {
         return true;
     }
 
-    @Override
-    protected short[] protectedArray() {
+    @Override short[] protectedArray() {
         throw new ReadOnlyBufferException();
     }
 
-    @Override
-    protected int protectedArrayOffset() {
+    @Override int protectedArrayOffset() {
         throw new ReadOnlyBufferException();
     }
 
-    @Override
-    protected boolean protectedHasArray() {
+    @Override boolean protectedHasArray() {
         return false;
     }
 

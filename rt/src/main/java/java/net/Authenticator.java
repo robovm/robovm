@@ -33,27 +33,13 @@ public abstract class Authenticator {
     // the default authenticator that needs to be set
     private static Authenticator thisAuthenticator;
 
-    private static final NetPermission requestPasswordAuthenticationPermission = new NetPermission(
-            "requestPasswordAuthentication");
-
-    private static final NetPermission setDefaultAuthenticatorPermission = new NetPermission(
-            "setDefaultAuthenticator");
-
-    // the requester connection info
     private String host;
-
     private InetAddress addr;
-
     private int port;
-
     private String protocol;
-
     private String prompt;
-
     private String scheme;
-
     private URL url;
-
     private RequestorType rt;
 
     /**

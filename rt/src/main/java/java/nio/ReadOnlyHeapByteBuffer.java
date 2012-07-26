@@ -64,18 +64,15 @@ final class ReadOnlyHeapByteBuffer extends HeapByteBuffer {
         return true;
     }
 
-    @Override
-    protected byte[] protectedArray() {
+    @Override byte[] protectedArray() {
         throw new ReadOnlyBufferException();
     }
 
-    @Override
-    protected int protectedArrayOffset() {
+    @Override int protectedArrayOffset() {
         throw new ReadOnlyBufferException();
     }
 
-    @Override
-    protected boolean protectedHasArray() {
+    @Override boolean protectedHasArray() {
         return false;
     }
 

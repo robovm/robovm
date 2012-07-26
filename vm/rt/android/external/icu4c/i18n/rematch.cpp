@@ -1,6 +1,6 @@
 /*
 **************************************************************************
-*   Copyright (C) 2002-2010 International Business Machines Corporation  *
+*   Copyright (C) 2002-2011 International Business Machines Corporation  *
 *   and others. All rights reserved.                                     *
 **************************************************************************
 */
@@ -378,13 +378,13 @@ RegexMatcher &RegexMatcher::appendReplacement(UText *dest,
                     // TODO:  Report errors for mal-formed \u escapes?
                     //        As this is, the original sequence is output, which may be OK.
                     if (context.lastOffset == offset) {
-                        UTEXT_PREVIOUS32(replacement);
+                        (void)UTEXT_PREVIOUS32(replacement);
                     } else if (context.lastOffset != offset-1) {
                         utext_moveIndex32(replacement, offset - context.lastOffset - 1);
                     }
                 }
             } else {
-                UTEXT_NEXT32(replacement);
+                (void)UTEXT_NEXT32(replacement);
                 // Plain backslash escape.  Just put out the escaped character.
                 if (U_IS_BMP(c)) {
                     UChar c16 = (UChar)c;
@@ -427,7 +427,7 @@ RegexMatcher &RegexMatcher::appendReplacement(UText *dest,
                 if (u_isdigit(digitC) == FALSE) {
                     break;
                 }
-                UTEXT_NEXT32(replacement);
+                (void)UTEXT_NEXT32(replacement);
                 groupNum=groupNum*10 + u_charDigitValue(digitC);
                 numDigits++;
                 if (numDigits >= fPattern->fMaxCaptureDigits) {
@@ -616,7 +616,7 @@ UBool RegexMatcher::find() {
                 return FALSE;
             }
             UTEXT_SETNATIVEINDEX(fInputText, startPos);
-            UTEXT_NEXT32(fInputText);
+            (void)UTEXT_NEXT32(fInputText);
             startPos = UTEXT_GETNATIVEINDEX(fInputText);
         }
     } else {
@@ -668,7 +668,7 @@ UBool RegexMatcher::find() {
                 return FALSE;
             }
             UTEXT_SETNATIVEINDEX(fInputText, startPos);
-            UTEXT_NEXT32(fInputText);
+            (void)UTEXT_NEXT32(fInputText);
             startPos = UTEXT_GETNATIVEINDEX(fInputText);
             // Note that it's perfectly OK for a pattern to have a zero-length
             //   match at the end of a string, so we must make sure that the loop
@@ -810,7 +810,7 @@ UBool RegexMatcher::find() {
                     if (((c & 0x7f) <= 0x29) &&     // First quickly bypass as many chars as possible
                         ((c<=0x0d && c>=0x0a) || c==0x85 ||c==0x2028 || c==0x2029 )) {
                             if (c == 0x0d && startPos < fActiveLimit && UTEXT_CURRENT32(fInputText) == 0x0a) {
-                                UTEXT_NEXT32(fInputText);
+                                (void)UTEXT_NEXT32(fInputText);
                                 startPos = UTEXT_GETNATIVEINDEX(fInputText);
                             }
                             MatchAt(startPos, FALSE, fDeferredStatus);
@@ -1963,8 +1963,6 @@ RegexMatcher &RegexMatcher::reset(int64_t position, UErrorCode &status) {
 }
 
 
-// BEGIN android-added
-// Removed this function after Android upgrad to ICU4.8.
 //--------------------------------------------------------------------------------
 //
 //    refresh
@@ -2000,7 +1998,7 @@ RegexMatcher &RegexMatcher::refreshInputText(UText *input, UErrorCode &status) {
     }
     return *this;
 }
-// END android-added
+
 
 
 //--------------------------------------------------------------------------------
@@ -2172,27 +2170,33 @@ int32_t  RegexMatcher::split(UText *input,
             // If the delimiter pattern has capturing parentheses, the captured
             //  text goes out into the next n destination strings.
             int32_t groupNum;
-            UBool lastGroupWasNullUText = FALSE;
             for (groupNum=1; groupNum<=numCaptureGroups; groupNum++) {
-                if (i==destCapacity-1) {
+                if (i >= destCapacity-2) {
+                    // Never fill the last available output string with capture group text.
+                    // It will filled with the last field, the remainder of the
+                    //  unsplit input text.
                     break;
                 }
                 i++;
-                lastGroupWasNullUText = (dest[i] == NULL ? TRUE : FALSE);
                 dest[i] = group(groupNum, dest[i], status);
             }
 
             if (nextOutputStringStart == fActiveLimit) {
-                // The delimiter was at the end of the string.  We're done.
-                break;
-            } else if (i == destCapacity-1) {
-                // We're out of capture groups, and the rest of the string is more important
-                if (lastGroupWasNullUText) {
-                    utext_close(dest[i]);
-                    dest[i] = NULL;
+                // The delimiter was at the end of the string.  We're done, but first
+                // we output one last empty string, for the empty field following
+                //   the delimiter at the end of input.
+                if (i+1 < destCapacity) {
+                    ++i;
+                    if (dest[i] == NULL) {
+                        dest[i] = utext_openUChars(NULL, NULL, 0, &status);
+                    } else {
+                        static UChar emptyString[] = {(UChar)0};
+                        utext_replace(dest[i], 0, utext_nativeLength(dest[i]), emptyString, 0, &status);
+                    }
                 }
-            }
-
+                break;
+            
+            } 
         }
         else
         {
@@ -3019,7 +3023,7 @@ void RegexMatcher::MatchAt(int64_t startIdx, UBool toEnd, UErrorCode &status) {
                 if (UTEXT_GETNATIVEINDEX(fInputText) >= fAnchorLimit) {
                     if ((c>=0x0a && c<=0x0d) || c==0x85 || c==0x2028 || c==0x2029) {
                         // If not in the middle of a CR/LF sequence
-                        if ( !(c==0x0a && fp->fInputIdx>fAnchorStart && (UTEXT_PREVIOUS32(fInputText), UTEXT_PREVIOUS32(fInputText))==0x0d)) {
+                      if ( !(c==0x0a && fp->fInputIdx>fAnchorStart && ((void)UTEXT_PREVIOUS32(fInputText), UTEXT_PREVIOUS32(fInputText))==0x0d)) {
                             // At new-line at end of input. Success
                             fHitEnd = TRUE;
                             fRequireEnd = TRUE;
@@ -3246,7 +3250,7 @@ GC_L:
                 if (sets[URX_GC_LV]->contains(c))      goto GC_V;
                 if (sets[URX_GC_LVT]->contains(c))     goto GC_T;
                 if (sets[URX_GC_V]->contains(c))       goto GC_V;
-                UTEXT_PREVIOUS32(fInputText);
+                (void)UTEXT_PREVIOUS32(fInputText);
                 fp->fInputIdx = UTEXT_GETNATIVEINDEX(fInputText);
                 goto GC_Extend;
 
@@ -3256,7 +3260,7 @@ GC_V:
                 fp->fInputIdx = UTEXT_GETNATIVEINDEX(fInputText);
                 if (sets[URX_GC_V]->contains(c))       goto GC_V;
                 if (sets[URX_GC_T]->contains(c))       goto GC_T;
-                UTEXT_PREVIOUS32(fInputText);
+                (void)UTEXT_PREVIOUS32(fInputText);
                 fp->fInputIdx = UTEXT_GETNATIVEINDEX(fInputText);
                 goto GC_Extend;
 
@@ -3265,7 +3269,7 @@ GC_T:
                 c = UTEXT_NEXT32(fInputText);
                 fp->fInputIdx = UTEXT_GETNATIVEINDEX(fInputText);
                 if (sets[URX_GC_T]->contains(c))       goto GC_T;
-                UTEXT_PREVIOUS32(fInputText);
+                (void)UTEXT_PREVIOUS32(fInputText);
                 fp->fInputIdx = UTEXT_GETNATIVEINDEX(fInputText);
                 goto GC_Extend;
 
@@ -3279,7 +3283,7 @@ GC_Extend:
                     if (sets[URX_GC_EXTEND]->contains(c) == FALSE) {
                         break;
                     }
-                    UTEXT_NEXT32(fInputText);
+                    (void)UTEXT_NEXT32(fInputText);
                     fp->fInputIdx = UTEXT_GETNATIVEINDEX(fInputText);
                 }
                 goto GC_Done;
@@ -3577,7 +3581,7 @@ GC_Done:
                     // In the case of a CR/LF, we need to advance over both.
                     UChar32 nextc = UTEXT_CURRENT32(fInputText);
                     if (nextc == 0x0a) {
-                        UTEXT_NEXT32(fInputText);
+                        (void)UTEXT_NEXT32(fInputText);
                         fp->fInputIdx = UTEXT_GETNATIVEINDEX(fInputText);
                     }
                 }
@@ -4094,7 +4098,7 @@ GC_Done:
                         (*lbStartIdx)--;
                     } else {
                         UTEXT_SETNATIVEINDEX(fInputText, *lbStartIdx);
-                        UTEXT_PREVIOUS32(fInputText);
+                        (void)UTEXT_PREVIOUS32(fInputText);
                         *lbStartIdx = UTEXT_GETNATIVEINDEX(fInputText);
                     }
                 }
@@ -4170,7 +4174,7 @@ GC_Done:
                         (*lbStartIdx)--;
                     } else {
                         UTEXT_SETNATIVEINDEX(fInputText, *lbStartIdx);
-                        UTEXT_PREVIOUS32(fInputText);
+                        (void)UTEXT_PREVIOUS32(fInputText);
                         *lbStartIdx = UTEXT_GETNATIVEINDEX(fInputText);
                     }
                 }
@@ -5621,29 +5625,27 @@ GC_Done:
                 {
                     int32_t stringStartIdx, stringLen;
                     stringStartIdx = opValue;
-
+                    
                     op      = (int32_t)pat[fp->fPatIdx];
                     fp->fPatIdx++;
                     opType  = URX_TYPE(op);
                     opValue = URX_VAL(op);
                     U_ASSERT(opType == URX_STRING_LEN);
                     stringLen = opValue;
-
+                    
                     const UChar *patternChars = litText+stringStartIdx;
                     const UChar *patternEnd = patternChars+stringLen;
-
+                    
                     const UChar *foldChars = NULL;
                     int32_t foldOffset, foldLength;
                     UChar32 c;
-                    // BEGIN android-changed
-                    // For ICU ticket#8824
                     UBool c_is_valid = FALSE;
-
+                    
                     #ifdef REGEX_SMART_BACKTRACKING
                     int32_t originalInputIdx = fp->fInputIdx;
                     #endif
                     UBool success = TRUE;
-
+                    
                     foldOffset = foldLength = 0;
 
                     while (patternChars < patternEnd && success) {
@@ -5668,9 +5670,9 @@ GC_Done:
                                 }
                             }
                         } else {
-                            c_is_valid = FALSE;
+                          c_is_valid = FALSE;
                         }
-
+                        
                         if (fp->fInputIdx <= fActiveLimit && c_is_valid) {
                             if (U_IS_BMP(c)) {
                                 success = (*patternChars == c);
@@ -5684,8 +5686,7 @@ GC_Done:
                             fHitEnd = TRUE;          //   TODO:  See ticket 6074
                         }
                     }
-                    // END android-changed
-
+                    
                     if (!success) {
                         #ifdef REGEX_SMART_BACKTRACKING
                         if (fp->fInputIdx > backSearchIndex && fStack->size()) {
@@ -5694,7 +5695,7 @@ GC_Done:
                                 // Reset to last start point
                                 int64_t reverseIndex = originalInputIdx;
                                 patternChars = litText+stringStartIdx;
-
+                                
                                 // Search backwards for a possible start
                                 do {
                                     U16_PREV(inputBuf, backSearchIndex, reverseIndex, c);
@@ -5708,14 +5709,14 @@ GC_Done:
                                             foldLength = foldOffset; // to avoid reading chars from the folding buffer
                                         }
                                     }
-
+                                    
                                     if ((U_IS_BMP(c) && *patternChars == c) ||
                                            (*patternChars == U16_LEAD(c) && *(patternChars+1) == U16_TRAIL(c))) {
                                         success = TRUE;
                                         break;
                                     }
                                 } while (reverseIndex > backSearchIndex);
-
+                                
                                 // And try again
                                 if (success) {
                                     fp = (REStackFrame *)fStack->popFrame(fFrameSize);
@@ -6119,4 +6120,3 @@ UOBJECT_DEFINE_RTTI_IMPLEMENTATION(RegexMatcher)
 U_NAMESPACE_END
 
 #endif  // !UCONFIG_NO_REGULAR_EXPRESSIONS
-

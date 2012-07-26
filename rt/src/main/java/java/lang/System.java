@@ -756,7 +756,8 @@ public final class System {
      *
      * <p>Security managers do <i>not</i> provide a secure environment for
      * executing untrusted code and are unsupported on Android. Untrusted code
-     * cannot be safely isolated within a single VM on Android.
+     * cannot be safely isolated within a single VM on Android, so this method
+     * <i>always</i> throws a {@code SecurityException}.
      *
      * @param sm a security manager
      * @throws SecurityException always

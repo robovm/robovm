@@ -74,6 +74,19 @@ public final class TrustedCertificateIndex {
         }
     }
 
+    public void reset() {
+        synchronized (subjectToTrustAnchors) {
+            subjectToTrustAnchors.clear();
+        }
+    }
+
+    public void reset(Set<TrustAnchor> anchors) {
+        synchronized (subjectToTrustAnchors) {
+            reset();
+            index(anchors);
+        }
+    }
+
     public TrustAnchor findByIssuerAndSignature(X509Certificate cert) {
         X500Principal issuer = cert.getIssuerX500Principal();
         synchronized (subjectToTrustAnchors) {

@@ -84,7 +84,7 @@ public interface List<E> extends Collection<E> {
      * @throws IllegalArgumentException
      *                if an object cannot be added to this {@code List}.
      * @throws IndexOutOfBoundsException
-     *                if {@code location < 0 || > size()}
+     *                if {@code location < 0 || location > size()}
      */
     public boolean addAll(int location, Collection<? extends E> collection);
 
@@ -159,7 +159,7 @@ public interface List<E> extends Collection<E> {
      *            the index of the element to return.
      * @return the element at the specified location.
      * @throws IndexOutOfBoundsException
-     *                if {@code location < 0 || >= size()}
+     *                if {@code location < 0 || location >= size()}
      */
     public E get(int location);
 
@@ -244,7 +244,7 @@ public interface List<E> extends Collection<E> {
      * @throws UnsupportedOperationException
      *                if removing from this {@code List} is not supported.
      * @throws IndexOutOfBoundsException
-     *                if {@code location < 0 || >= size()}
+     *                if {@code location < 0 || location >= size()}
      */
     public E remove(int location);
 
@@ -301,7 +301,7 @@ public interface List<E> extends Collection<E> {
      * @throws IllegalArgumentException
      *                if an object cannot be added to this {@code List}.
      * @throws IndexOutOfBoundsException
-     *                if {@code location < 0 || >= size()}
+     *                if {@code location < 0 || location >= size()}
      */
     public E set(int location, E object);
 

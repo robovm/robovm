@@ -36,6 +36,7 @@ import javax.crypto.interfaces.DHKey;
 import javax.crypto.interfaces.DHPublicKey;
 import javax.crypto.spec.DHParameterSpec;
 import javax.crypto.spec.DHPublicKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.X509ExtendedKeyManager;
 import javax.net.ssl.X509KeyManager;
 import javax.security.auth.x500.X500Principal;
@@ -416,10 +417,10 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
             try {
                 c = Cipher.getInstance("RSA/ECB/PKCS1Padding");
                 if (serverKeyExchange != null) {
-                    c.init(Cipher.ENCRYPT_MODE, serverKeyExchange
+                    c.init(Cipher.WRAP_MODE, serverKeyExchange
                             .getRSAPublicKey());
                 } else {
-                    c.init(Cipher.ENCRYPT_MODE, serverCert.certs[0]);
+                    c.init(Cipher.WRAP_MODE, serverCert.certs[0]);
                 }
             } catch (Exception e) {
                 fatalAlert(AlertProtocol.INTERNAL_ERROR,
@@ -431,7 +432,7 @@ public class ClientHandshakeImpl extends HandshakeProtocol {
             System.arraycopy(clientHello.client_version, 0, preMasterSecret, 0, 2);
             try {
                 clientKeyExchange = new ClientKeyExchange(c
-                        .doFinal(preMasterSecret),
+                        .wrap(new SecretKeySpec(preMasterSecret, "preMasterSecret")),
                         serverHello.server_version[1] == 1);
             } catch (Exception e) {
                 fatalAlert(AlertProtocol.INTERNAL_ERROR,

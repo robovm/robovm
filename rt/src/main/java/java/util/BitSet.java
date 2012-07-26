@@ -602,7 +602,7 @@ public class BitSet implements Serializable, Cloneable {
         while (++arrayIndex < longCount && bits[arrayIndex] == ALL_ONES) {
         }
         if (arrayIndex == longCount) {
-            return size();
+            return 64 * longCount;
         }
         return 64 * arrayIndex + Long.numberOfTrailingZeros(~bits[arrayIndex]);
     }

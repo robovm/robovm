@@ -1,6 +1,6 @@
 /*
 **********************************************************************
-*   Copyright (C) 1998-2010, International Business Machines
+*   Copyright (C) 1998-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 **********************************************************************
 *
@@ -55,9 +55,10 @@ u_strlen(const UChar *s);
 
 U_NAMESPACE_BEGIN
 
+class BreakIterator;        // unicode/brkiter.h
 class Locale;               // unicode/locid.h
 class StringCharacterIterator;
-class BreakIterator;        // unicode/brkiter.h
+class UnicodeStringAppendable;  // unicode/appendable.h
 
 /* The <iostream> include has been moved to unicode/ustream.h */
 
@@ -1991,8 +1992,7 @@ public:
 
   /**
    * Append operator. Append the characters in <TT>srcText</TT> to the
-   * UnicodeString object at offset <TT>start</TT>. <TT>srcText</TT> is
-   * not modified.
+   * UnicodeString object. <TT>srcText</TT> is not modified.
    * @param srcText the source for the new characters
    * @return a reference to this
    * @stable ICU 2.0
@@ -2018,8 +2018,8 @@ public:
             int32_t srcLength);
 
   /**
-   * Append the characters in <TT>srcText</TT> to the UnicodeString object at
-   * offset <TT>start</TT>. <TT>srcText</TT> is not modified.
+   * Append the characters in <TT>srcText</TT> to the UnicodeString object.
+   * <TT>srcText</TT> is not modified.
    * @param srcText the source for the new characters
    * @return a reference to this
    * @stable ICU 2.0
@@ -2035,7 +2035,7 @@ public:
    * @param srcStart the offset into <TT>srcChars</TT> where new characters
    * will be obtained
    * @param srcLength the number of characters in <TT>srcChars</TT> in
-   * the append string
+   *                  the append string; can be -1 if <TT>srcChars</TT> is NUL-terminated
    * @return a reference to this
    * @stable ICU 2.0
    */
@@ -2047,7 +2047,8 @@ public:
    * Append the characters in <TT>srcChars</TT> to the UnicodeString object
    * at offset <TT>start</TT>. <TT>srcChars</TT> is not modified.
    * @param srcChars the source for the new characters
-   * @param srcLength the number of Unicode characters in <TT>srcChars</TT>
+   * @param srcLength the number of Unicode characters in <TT>srcChars</TT>;
+   *                  can be -1 if <TT>srcChars</TT> is NUL-terminated
    * @return a reference to this
    * @stable ICU 2.0
    */
@@ -3368,10 +3369,9 @@ private:
 
   // constants
   enum {
-    // Set the stack buffer size so that sizeof(UnicodeString) is a multiple of sizeof(pointer):
-    // 32-bit pointers: 4+1+1+13*2 = 32 bytes
-    // 64-bit pointers: 8+1+1+15*2 = 40 bytes
-    US_STACKBUF_SIZE= sizeof(void *)==4 ? 13 : 15, // Size of stack buffer for small strings
+    // Set the stack buffer size so that sizeof(UnicodeString) is,
+    // naturally (without padding), a multiple of sizeof(pointer).
+    US_STACKBUF_SIZE= sizeof(void *)==4 ? 13 : 15, // Size of stack buffer for short strings
     kInvalidUChar=0xffff, // invalid UChar index
     kGrowSize=128, // grow size for this buffer
     kInvalidHashCode=0, // invalid hash code
@@ -3379,7 +3379,7 @@ private:
 
     // bit flag values for fFlags
     kIsBogus=1,         // this string is bogus, i.e., not valid or NULL
-    kUsingStackBuffer=2,// fArray==fStackBuffer
+    kUsingStackBuffer=2,// using fUnion.fStackBuffer instead of fUnion.fFields
     kRefCounted=4,      // there is a refCount field before the characters in fArray
     kBufferIsReadonly=8,// do not write to this buffer
     kOpenGetBuffer=16,  // getBuffer(minCapacity) was called (is "open"),
@@ -3393,6 +3393,7 @@ private:
   };
 
   friend class StringThreadTest;
+  friend class UnicodeStringAppendable;
 
   union StackBufferOrFields;        // forward declaration necessary before friend declaration
   friend union StackBufferOrFields; // make US_STACKBUF_SIZE visible inside fUnion
@@ -3403,25 +3404,48 @@ private:
    * Note that UnicodeString has virtual functions,
    * therefore there is an implicit vtable pointer
    * as the first real field.
-   * The fields should be aligned such that no padding is
-   * necessary, mostly by having larger types first.
+   * The fields should be aligned such that no padding is necessary.
    * On 32-bit machines, the size should be 32 bytes,
    * on 64-bit machines (8-byte pointers), it should be 40 bytes.
+   *
+   * We use a hack to achieve this.
+   *
+   * With at least some compilers, each of the following is forced to
+   * a multiple of sizeof(pointer) [the largest field base unit here is a data pointer],
+   * rounded up with additional padding if the fields do not already fit that requirement:
+   * - sizeof(class UnicodeString)
+   * - offsetof(UnicodeString, fUnion)
+   * - sizeof(fUnion)
+   * - sizeof(fFields)
+   *
+   * In order to avoid padding, we make sizeof(fStackBuffer)=16 (=8 UChars)
+   * which is at least as large as sizeof(fFields) on 32-bit and 64-bit machines.
+   * (Padding at the end of fFields is ok:
+   * As long as there is no padding after fStackBuffer, it is not wasted space.)
+   *
+   * We further assume that the compiler does not reorder the fields,
+   * so that fRestOfStackBuffer (which holds a few more UChars) immediately follows after fUnion,
+   * with at most some padding (but no other field) in between.
+   * (Padding there would be wasted space, but functionally harmless.)
+   *
+   * We use a few more sizeof(pointer)'s chunks of space with
+   * fRestOfStackBuffer, fShortLength and fFlags,
+   * to get up exactly to the intended sizeof(UnicodeString).
    */
   // (implicit) *vtable;
-  int8_t    fShortLength;   // 0..127: length  <0: real length is in fUnion.fFields.fLength
-  uint8_t   fFlags;         // bit flags: see constants above
   union StackBufferOrFields {
     // fStackBuffer is used iff (fFlags&kUsingStackBuffer)
     // else fFields is used
-    UChar     fStackBuffer [US_STACKBUF_SIZE]; // buffer for small strings
+    UChar fStackBuffer[8];  // buffer for short strings, together with fRestOfStackBuffer
     struct {
-      uint16_t  fPadding;   // align the following field at 8B (32b pointers) or 12B (64b)
-      int32_t   fLength;    // number of characters in fArray if >127; else undefined
-      UChar     *fArray;    // the Unicode data (aligned at 12B (32b pointers) or 16B (64b))
-      int32_t   fCapacity;  // sizeof fArray
+      UChar   *fArray;    // the Unicode data
+      int32_t fCapacity;  // capacity of fArray (in UChars)
+      int32_t fLength;    // number of characters in fArray if >127; else undefined
     } fFields;
   } fUnion;
+  UChar fRestOfStackBuffer[US_STACKBUF_SIZE-8];
+  int8_t fShortLength;  // 0..127: length  <0: real length is in fUnion.fFields.fLength
+  uint8_t fFlags;       // bit flags: see constants above
 };
 
 /**
@@ -3932,15 +3956,20 @@ UnicodeString::startsWith(const UnicodeString& srcText,
 { return doCompare(0, srcLength, srcText, srcStart, srcLength) == 0; }
 
 inline UBool
-UnicodeString::startsWith(const UChar *srcChars,
-              int32_t srcLength) const
-{ return doCompare(0, srcLength, srcChars, 0, srcLength) == 0; }
+UnicodeString::startsWith(const UChar *srcChars, int32_t srcLength) const {
+  if(srcLength < 0) {
+    srcLength = u_strlen(srcChars);
+  }
+  return doCompare(0, srcLength, srcChars, 0, srcLength) == 0;
+}
 
 inline UBool
-UnicodeString::startsWith(const UChar *srcChars,
-              int32_t srcStart,
-              int32_t srcLength) const
-{ return doCompare(0, srcLength, srcChars, srcStart, srcLength) == 0;}
+UnicodeString::startsWith(const UChar *srcChars, int32_t srcStart, int32_t srcLength) const {
+  if(srcLength < 0) {
+    srcLength = u_strlen(srcChars);
+  }
+  return doCompare(0, srcLength, srcChars, srcStart, srcLength) == 0;
+}
 
 inline UBool
 UnicodeString::endsWith(const UnicodeString& text) const
@@ -4086,13 +4115,7 @@ UnicodeString::extract(int32_t start,
 
 {
   // This dstSize value will be checked explicitly
-#if defined(__GNUC__)
-  // Ticket #7039: Clip length to the maximum valid length to the end of addressable memory given the starting address
-  // This is only an issue when using GCC and certain optimizations are turned on.
-  return extract(start, _length, dst, dst!=0 ? ((dst >= (char*)((size_t)-1) - UINT32_MAX) ? (((char*)UINT32_MAX) - dst) : UINT32_MAX) : 0, codepage);
-#else
   return extract(start, _length, dst, dst!=0 ? 0xffffffff : 0, codepage);
-#endif
 }
 
 #endif
@@ -4269,8 +4292,7 @@ UnicodeString::setTo(const UnicodeString& srcText,
 inline UnicodeString&
 UnicodeString::setTo(const UnicodeString& srcText)
 {
-  unBogus();
-  return doReplace(0, length(), srcText, 0, srcText.length());
+  return copyFrom(srcText);
 }
 
 inline UnicodeString&

@@ -163,6 +163,14 @@ public final class TrustManagerImpl implements X509TrustManager {
         checkTrusted(chain, authType);
     }
 
+    public void handleTrustStorageUpdate() {
+        if (acceptedIssuers == null) {
+            trustedCertificateIndex.reset();
+        } else {
+            trustedCertificateIndex.reset(trustAnchors(acceptedIssuers));
+        }
+    }
+
     private void checkTrusted(X509Certificate[] chain, String authType)
             throws CertificateException {
         if (chain == null || chain.length == 0 || authType == null || authType.length() == 0) {

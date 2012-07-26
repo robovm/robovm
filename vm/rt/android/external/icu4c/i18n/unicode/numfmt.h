@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
-* Copyright (C) 1997-2010, International Business Machines Corporation and others.
+* Copyright (C) 1997-2011, International Business Machines Corporation and others.
 * All Rights Reserved.
 ********************************************************************************
 *
@@ -36,6 +36,8 @@
 #include "unicode/unum.h" // UNumberFormatStyle
 #include "unicode/locid.h"
 #include "unicode/stringpiece.h"
+
+class NumberFormatTest;
 
 U_NAMESPACE_BEGIN
 
@@ -162,30 +164,6 @@ class StringEnumeration;
  */
 class U_I18N_API NumberFormat : public Format {
 public:
-
-    /**
-     * Constants for various number format styles.
-     * kNumberStyle specifies a normal number style of format.
-     * kCurrencyStyle specifies a currency format using currency symbol name,
-     * such as in "$1.00".
-     * kPercentStyle specifies a style of format to display percent.
-     * kScientificStyle specifies a style of format to display scientific number.
-     * kISOCurrencyStyle specifies a currency format using ISO currency code,
-     * such as in "USD1.00".
-     * kPluralCurrencyStyle specifies a currency format using currency plural
-     * names, such as in "1.00 US dollar" and "3.00 US dollars".
-     * @draft ICU 4.2
-     */
-    enum EStyles {
-        kNumberStyle,
-        kCurrencyStyle,
-        kPercentStyle,
-        kScientificStyle,
-        kIsoCurrencyStyle,
-        kPluralCurrencyStyle,
-        kStyleCount // ALWAYS LAST ENUM: number of styles
-    };
-
     /**
      * Alignment Field constants used to construct a FieldPosition object.
      * Signifies that the position of the integer part or fraction part of
@@ -622,6 +600,25 @@ public:
     virtual void setParseIntegerOnly(UBool value);
 
     /**
+     * Sets whether lenient parsing should be enabled (it is off by default).
+     *
+     * @param enable <code>TRUE</code> if lenient parsing should be used,
+     *               <code>FALSE</code> otherwise.
+     * @draft ICU 4.8
+     */
+    virtual void setLenient(UBool enable);
+
+    /**
+     * Returns whether lenient parsing is enabled (it is off by default).
+     *
+     * @return <code>TRUE</code> if lenient parsing is enabled,
+     *         <code>FALSE</code> otherwise.
+     * @see #setLenient
+     * @draft ICU 4.8
+     */
+    virtual UBool isLenient(void) const;
+
+    /**
      * Returns the default number format for the current default
      * locale.  The default format is one of the styles provided by
      * the other factory methods: getNumberInstance,
@@ -645,12 +642,14 @@ public:
     /**
      * Creates the specified decimal format style of the desired locale.
      * @param desiredLocale    the given locale.
-     * @param choice           the given style.
-     * @param success          Output param filled with success/failure status.
+     * @param style            the given style.
+     * @param errorCode        Output param filled with success/failure status.
      * @return                 A new NumberFormat instance.
-     * @draft ICU 4.2
+     * @draft ICU 4.8
      */
-    static NumberFormat* U_EXPORT2 createInstance(const Locale& desiredLocale, EStyles choice, UErrorCode& success);
+    static NumberFormat* U_EXPORT2 createInstance(const Locale& desiredLocale,
+                                                  UNumberFormatStyle style,
+                                                  UErrorCode& errorCode);
 
 
     /**
@@ -921,14 +920,18 @@ protected:
 
 private:
 
+    static UBool isStyleSupported(UNumberFormatStyle style);
+
     /**
      * Creates the specified decimal format style of the desired locale.
      * @param desiredLocale    the given locale.
-     * @param choice           the given style.
-     * @param success          Output param filled with success/failure status.
+     * @param style            the given style.
+     * @param errorCode        Output param filled with success/failure status.
      * @return                 A new NumberFormat instance.
      */
-    static NumberFormat* makeInstance(const Locale& desiredLocale, EStyles choice, UErrorCode& success);
+    static NumberFormat* makeInstance(const Locale& desiredLocale,
+                                      UNumberFormatStyle style,
+                                      UErrorCode& errorCode);
 
     UBool      fGroupingUsed;
     int32_t     fMaxIntegerDigits;
@@ -936,12 +939,14 @@ private:
     int32_t     fMaxFractionDigits;
     int32_t     fMinFractionDigits;
     UBool      fParseIntegerOnly;
+    UBool      fLenient; // TRUE => lenient parse is enabled
 
     // ISO currency code
     UChar      fCurrency[4];
 
-    friend class ICUNumberFormatFactory; // access to makeInstance, EStyles
+    friend class ICUNumberFormatFactory; // access to makeInstance
     friend class ICUNumberFormatService;
+    friend class ::NumberFormatTest;  // access to isStyleSupported()
 };
 
 #if !UCONFIG_NO_SERVICE
@@ -1034,6 +1039,12 @@ inline UBool
 NumberFormat::isParseIntegerOnly() const
 {
     return fParseIntegerOnly;
+}
+
+inline UBool
+NumberFormat::isLenient() const
+{
+	return fLenient;
 }
 
 inline UnicodeString&

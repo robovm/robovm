@@ -33,7 +33,6 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.security.auth.x500.X500Principal;
@@ -43,7 +42,7 @@ import org.apache.harmony.security.pkcs7.SignedData;
 import org.apache.harmony.security.pkcs7.SignerInfo;
 import org.apache.harmony.security.provider.cert.X509CertImpl;
 import org.apache.harmony.security.x501.AttributeTypeAndValue;
-import org.apache.harmony.xnet.provider.jsse.OpenSSLSignature;
+import org.apache.harmony.xnet.provider.jsse.OpenSSLProvider;
 
 public class JarUtils {
 
@@ -122,7 +121,7 @@ public class JarUtils {
         if (da != null && dea != null) {
             alg = da + "with" +  dea;
             try {
-                sig = OpenSSLSignature.getInstance(alg);
+                sig = Signature.getInstance(alg, OpenSSLProvider.PROVIDER_NAME);
             } catch (NoSuchAlgorithmException e) {}
         }
         if (sig == null) {
@@ -131,7 +130,7 @@ public class JarUtils {
                 return null;
             }
             try {
-                sig = OpenSSLSignature.getInstance(alg);
+                sig = Signature.getInstance(alg, OpenSSLProvider.PROVIDER_NAME);
             } catch (NoSuchAlgorithmException e) {
                 return null;
             }

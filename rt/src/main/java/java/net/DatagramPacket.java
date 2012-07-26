@@ -26,26 +26,26 @@ package java.net;
  */
 public final class DatagramPacket {
 
-    byte[] data;
+    private byte[] data;
 
     /**
      * Length of the data to be sent or size of data that was received via
      * DatagramSocket#receive() method call.
      */
-    int length;
+    private int length;
 
     /**
-     * Size of internal buffer that is used to store received data. Should be
-     * greater or equal to "length" field.
+     * The last user-supplied length (as opposed to a length set by simply receiving a packet).
+     * This length (unlike 'length') is sticky, and survives until the user sets another length.
+     * It's used to limit the amount of data that will be taken from future packets.
      */
-    int capacity;
+    private int userSuppliedLength;
 
-    InetAddress address;
+    private InetAddress address;
 
-    int port = -1; // The default port number is -1
+    private int port = -1; // The default port number is -1
 
-    int offset = 0;
-
+    private int offset = 0;
 
     /**
      * Constructs a new {@code DatagramPacket} object to receive data up to
@@ -92,8 +92,7 @@ public final class DatagramPacket {
      * @param aPort
      *            the port of the target host.
      */
-    public DatagramPacket(byte[] data, int offset, int length,
-            InetAddress host, int aPort) {
+    public DatagramPacket(byte[] data, int offset, int length, InetAddress host, int aPort) {
         this(data, offset, length);
         setPort(aPort);
         address = host;
@@ -185,7 +184,7 @@ public final class DatagramPacket {
         this.data = data;
         this.offset = offset;
         this.length = byteCount;
-        this.capacity = byteCount;
+        this.userSuppliedLength = byteCount;
     }
 
     /**
@@ -197,18 +196,9 @@ public final class DatagramPacket {
      */
     public synchronized void setData(byte[] buf) {
         length = buf.length; // This will check for null
-        capacity = buf.length;
+        userSuppliedLength = length;
         data = buf;
         offset = 0;
-    }
-
-    /**
-     * Gets the current capacity value.
-     *
-     * @return the current capacity value
-     */
-    synchronized int getCapacity() {
-        return capacity;
     }
 
     /**
@@ -219,21 +209,27 @@ public final class DatagramPacket {
      *            the length of this datagram packet.
      */
     public synchronized void setLength(int length) {
-        setLengthOnly(length);
-        this.capacity = length;
+        if (length < 0 || offset + length > data.length) {
+            throw new IndexOutOfBoundsException("length=" + length + ", offset=" + offset +
+                                                ", buffer size=" + data.length);
+        }
+        this.length = length;
+        this.userSuppliedLength = length;
     }
 
     /**
-     * An alternative to {@link #setLength(int)}, that doesn't reset the {@link #capacity}
-     * field.
-     *
-     * @param len the length of this datagram packet
+     * Resets 'length' to the last user-supplied length, ready to receive another packet.
+     * @hide for PlainDatagramSocketImpl
      */
-    synchronized void setLengthOnly(int length) {
-        if (length < 0 || offset + length > data.length) {
-            throw new IndexOutOfBoundsException("length=" + length + ", offset=" + offset +
-                    ", buffer size=" + data.length);
-        }
+    public void resetLengthForReceive() {
+        this.length = userSuppliedLength;
+    }
+
+    /**
+     * Sets 'length' without changing 'userSuppliedLength', after receiving a packet.
+     * @hide for IoBridge
+     */
+    public void setReceivedLength(int length) {
         this.length = length;
     }
 

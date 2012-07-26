@@ -24,7 +24,7 @@ import java.net.UnknownHostException;
 
 /**
  * The extension of {@code Socket} providing secure protocols like SSL (Secure
- * Socket Layer") or TLS (Transport Layer Security).
+ * Sockets Layer) or TLS (Transport Layer Security).
  */
 public abstract class SSLSocket extends Socket {
 

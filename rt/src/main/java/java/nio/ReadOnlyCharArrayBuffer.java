@@ -64,18 +64,15 @@ final class ReadOnlyCharArrayBuffer extends CharArrayBuffer {
         return true;
     }
 
-    @Override
-    protected char[] protectedArray() {
+    @Override char[] protectedArray() {
         throw new ReadOnlyBufferException();
     }
 
-    @Override
-    protected int protectedArrayOffset() {
+    @Override int protectedArrayOffset() {
         throw new ReadOnlyBufferException();
     }
 
-    @Override
-    protected boolean protectedHasArray() {
+    @Override boolean protectedHasArray() {
         return false;
     }
 

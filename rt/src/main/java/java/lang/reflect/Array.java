@@ -33,446 +33,343 @@
 package java.lang.reflect;
 
 /**
- * This class provides static methods to create and access arrays dynamically.
+ * Provides static methods to create and access arrays dynamically.
  */
 public final class Array {
+    private Array() {
+    }
 
-    /**
-     * Prevent this class from being instantiated.
-     */
-    private Array(){
-        //do nothing
+    private static IllegalArgumentException notAnArray(Object o) {
+        throw new IllegalArgumentException("Not an array: " + o.getClass());
+    }
+
+    private static IllegalArgumentException incompatibleType(Object o) {
+        throw new IllegalArgumentException("Array has incompatible type: " + o.getClass());
+    }
+
+    private static RuntimeException badArray(Object array) {
+        if (array == null) {
+            throw new NullPointerException("array == null");
+        } else if (!array.getClass().isArray()) {
+            throw notAnArray(array);
+        } else {
+            throw incompatibleType(array);
+        }
     }
 
     /**
-     * Returns the element of the array at the specified index. This reproduces
-     * the effect of {@code array[index]}. If the array component is a primitive
-     * type, the result is automatically boxed.
+     * Returns the element of the array at the specified index. Equivalent to {@code array[index]}.
+     * If the array component is a primitive type, the result is automatically boxed.
      *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     *
-     * @return the requested element, possibly boxed
-     *
-     * @throws NullPointerException
-     *             if the array is null
+     * @throws NullPointerException if {@code array == null}
      * @throws IllegalArgumentException
      *             if {@code array} is not an array
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code  index < 0 || index >= array.length}
      */
-    public static Object get(Object array, int index)
-            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
-        if (array instanceof Object[])
+    public static Object get(Object array, int index) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof Object[]) {
             return ((Object[]) array)[index];
-
-        if (array instanceof boolean[])
+        }
+        if (array instanceof boolean[]) {
             return ((boolean[]) array)[index] ? Boolean.TRUE : Boolean.FALSE;
-
-        if (array instanceof byte[])
+        }
+        if (array instanceof byte[]) {
             return Byte.valueOf(((byte[]) array)[index]);
-
-        if (array instanceof char[])
+        }
+        if (array instanceof char[]) {
             return Character.valueOf(((char[]) array)[index]);
-
-        if (array instanceof short[])
+        }
+        if (array instanceof short[]) {
             return Short.valueOf(((short[]) array)[index]);
-
-        if (array instanceof int[])
+        }
+        if (array instanceof int[]) {
             return Integer.valueOf(((int[]) array)[index]);
-
-        if (array instanceof long[])
+        }
+        if (array instanceof long[]) {
             return Long.valueOf(((long[]) array)[index]);
-
-        if (array instanceof float[])
+        }
+        if (array instanceof float[]) {
             return new Float(((float[]) array)[index]);
-
-        if (array instanceof double[])
+        }
+        if (array instanceof double[]) {
             return new Double(((double[]) array)[index]);
-
-        if (array == null)
-            throw new NullPointerException();
-
-        throw new IllegalArgumentException("Not an array");
+        }
+        if (array == null) {
+            throw new NullPointerException("array == null");
+        }
+        throw notAnArray(array);
     }
 
     /**
-     * Returns the element of the array at the specified index, converted to a
-     * {@code boolean}, if possible. This reproduces the effect of {@code
-     * array[index]}
+     * Returns the boolean at the given index in the given boolean array.
      *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     *
-     * @return the requested element
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
+     * @throws NullPointerException if {@code array == null}
      * @throws IllegalArgumentException
      *             if {@code array} is not an array or the element at the
      *             index position can not be converted to the return type
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code index < 0 || index >= array.length}
      */
-    public static boolean getBoolean(Object array, int index)
-            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+    public static boolean getBoolean(Object array, int index) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
         if (array instanceof boolean[]) {
             return ((boolean[]) array)[index];
-        } else if (array == null) {
-            throw new NullPointerException();
-        } else if (array.getClass().isArray()) {
-            throw new IllegalArgumentException("Wrong array type");
-        } else {
-            throw new IllegalArgumentException("Not an array");
         }
+        throw badArray(array);
     }
 
     /**
-     * Returns the element of the array at the specified index, converted to a
-     * {@code byte}, if possible. This reproduces the effect of {@code
-     * array[index]}
+     * Returns the byte at the given index in the given byte array.
      *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     *
-     * @return the requested element
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
+     * @throws NullPointerException if {@code array == null}
      * @throws IllegalArgumentException
      *             if {@code array} is not an array or the element at the
      *             index position can not be converted to the return type
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code index < 0 || index >= array.length}
      */
-    public static byte getByte(Object array, int index)
-            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+    public static byte getByte(Object array, int index) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
         if (array instanceof byte[]) {
             return ((byte[]) array)[index];
-        } else {
-            return getBoolean(array, index) ? (byte)1 : (byte)0;
         }
+        throw badArray(array);
     }
 
     /**
-     * Returns the element of the array at the specified index, converted to a
-     * {@code char}, if possible. This reproduces the effect of {@code
-     * array[index]}
+     * Returns the char at the given index in the given char array.
      *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     *
-     * @return the requested element
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
+     * @throws NullPointerException if {@code array == null}
      * @throws IllegalArgumentException
      *             if {@code array} is not an array or the element at the
      *             index position can not be converted to the return type
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code index < 0 || index >= array.length}
      */
-    public static char getChar(Object array, int index)
-            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+    public static char getChar(Object array, int index) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
         if (array instanceof char[]) {
             return ((char[]) array)[index];
-        } else if (array == null) {
-            throw new NullPointerException();
-        } else if (array.getClass().isArray()) {
-            throw new IllegalArgumentException("Wrong array type");
-        } else {
-            throw new IllegalArgumentException("Not an array");
         }
+        throw badArray(array);
     }
 
     /**
-     * Returns the element of the array at the specified index, converted to a
-     * {@code double}, if possible. This reproduces the effect of {@code
-     * array[index]}
+     * Returns the double at the given index in the given array.
+     * Applies to byte, char, float, double, int, long, and short arrays.
      *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     *
-     * @return the requested element
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
+     * @throws NullPointerException if {@code array == null}
      * @throws IllegalArgumentException
      *             if {@code array} is not an array or the element at the
      *             index position can not be converted to the return type
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code index < 0 || index >= array.length}
      */
-    public static double getDouble(Object array, int index)
-            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+    public static double getDouble(Object array, int index) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
         if (array instanceof double[]) {
             return ((double[]) array)[index];
-        } else {
-            return getFloat(array, index);
+        } else if (array instanceof byte[]) {
+            return ((byte[]) array)[index];
+        } else if (array instanceof char[]) {
+            return ((char[]) array)[index];
+        } else if (array instanceof float[]) {
+            return ((float[]) array)[index];
+        } else if (array instanceof int[]) {
+            return ((int[]) array)[index];
+        } else if (array instanceof long[]) {
+            return ((long[]) array)[index];
+        } else if (array instanceof short[]) {
+            return ((short[]) array)[index];
         }
+        throw badArray(array);
     }
 
     /**
-     * Returns the element of the array at the specified index, converted to a
-     * {@code float}, if possible. This reproduces the effect of {@code
-     * array[index]}
+     * Returns the float at the given index in the given array.
+     * Applies to byte, char, float, int, long, and short arrays.
      *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     *
-     * @return the requested element
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
+     * @throws NullPointerException if {@code array == null}
      * @throws IllegalArgumentException
      *             if {@code array} is not an array or the element at the
      *             index position can not be converted to the return type
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code index < 0 || index >= array.length}
      */
-    public static float getFloat(Object array, int index)
-            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+    public static float getFloat(Object array, int index) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
         if (array instanceof float[]) {
             return ((float[]) array)[index];
-        } else {
-            return getLong(array, index);
+        } else if (array instanceof byte[]) {
+            return ((byte[]) array)[index];
+        } else if (array instanceof char[]) {
+            return ((char[]) array)[index];
+        } else if (array instanceof int[]) {
+            return ((int[]) array)[index];
+        } else if (array instanceof long[]) {
+            return ((long[]) array)[index];
+        } else if (array instanceof short[]) {
+            return ((short[]) array)[index];
         }
+        throw badArray(array);
     }
 
     /**
-     * Returns the element of the array at the specified index, converted to an
-     * {@code int}, if possible. This reproduces the effect of {@code
-     * array[index]}
+     * Returns the int at the given index in the given array.
+     * Applies to byte, char, int, and short arrays.
      *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     *
-     * @return the requested element
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
+     * @throws NullPointerException if {@code array == null}
      * @throws IllegalArgumentException
      *             if {@code array} is not an array or the element at the
      *             index position can not be converted to the return type
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code index < 0 || index >= array.length}
      */
-    public static int getInt(Object array, int index)
-            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+    public static int getInt(Object array, int index) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
         if (array instanceof int[]) {
             return ((int[]) array)[index];
-        } else {
-            return getShort(array, index);
+        } else if (array instanceof byte[]) {
+            return ((byte[]) array)[index];
+        } else if (array instanceof char[]) {
+            return ((char[]) array)[index];
+        } else if (array instanceof short[]) {
+            return ((short[]) array)[index];
         }
+        throw badArray(array);
     }
 
     /**
-     * Returns the length of the array. This reproduces the effect of {@code
-     * array.length}
+     * Returns the length of the array. Equivalent to {@code array.length}.
      *
-     * @param array
-     *            the array
-     *
-     * @return the length of the array
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
+     * @throws NullPointerException if {@code array == null}
      * @throws IllegalArgumentException
      *             if {@code array} is not an array
      */
     public static int getLength(Object array) {
-        if (array instanceof Object[])
+        if (array instanceof Object[]) {
             return ((Object[]) array).length;
-
-        if (array instanceof boolean[])
+        } else if (array instanceof boolean[]) {
             return ((boolean[]) array).length;
-
-        if (array instanceof byte[])
+        } else if (array instanceof byte[]) {
             return ((byte[]) array).length;
-
-        if (array instanceof char[])
+        } else if (array instanceof char[]) {
             return ((char[]) array).length;
-
-        if (array instanceof short[])
-            return ((short[]) array).length;
-
-        if (array instanceof int[])
-            return ((int[]) array).length;
-
-        if (array instanceof long[])
-            return ((long[]) array).length;
-
-        if (array instanceof float[])
-            return ((float[]) array).length;
-
-        if (array instanceof double[])
+        } else if (array instanceof double[]) {
             return ((double[]) array).length;
-
-        if (array == null)
-            throw new NullPointerException();
-
-        throw new IllegalArgumentException("Not an array");
-    }
+        } else if (array instanceof float[]) {
+            return ((float[]) array).length;
+        } else if (array instanceof int[]) {
+            return ((int[]) array).length;
+        } else if (array instanceof long[]) {
+            return ((long[]) array).length;
+        } else if (array instanceof short[]) {
+            return ((short[]) array).length;
+        }
+        throw badArray(array);
+      }
 
     /**
-     * Returns the element of the array at the specified index, converted to a
-     * {@code long}, if possible. This reproduces the effect of {@code
-     * array[index]}
+     * Returns the long at the given index in the given array.
+     * Applies to byte, char, int, long, and short arrays.
      *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     *
-     * @return the requested element
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
+     * @throws NullPointerException if {@code array == null}
      * @throws IllegalArgumentException
      *             if {@code array} is not an array or the element at the
      *             index position can not be converted to the return type
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code index < 0 || index >= array.length}
      */
-    public static long getLong(Object array, int index)
-            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+    public static long getLong(Object array, int index) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
         if (array instanceof long[]) {
             return ((long[]) array)[index];
-        } else {
-            return getInt(array, index);
+        } else if (array instanceof byte[]) {
+            return ((byte[]) array)[index];
+        } else if (array instanceof char[]) {
+            return ((char[]) array)[index];
+        } else if (array instanceof int[]) {
+            return ((int[]) array)[index];
+        } else if (array instanceof short[]) {
+            return ((short[]) array)[index];
         }
+        throw badArray(array);
     }
 
     /**
-     * Returns the element of the array at the specified index, converted to a
-     * {@code short}, if possible. This reproduces the effect of {@code
-     * array[index]}
+     * Returns the short at the given index in the given array.
+     * Applies to byte and short arrays.
      *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     *
-     * @return the requested element
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
+     * @throws NullPointerException if {@code array == null}
      * @throws IllegalArgumentException
      *             if {@code array} is not an array or the element at the
      *             index position can not be converted to the return type
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code index < 0 || index >= array.length}
      */
-    public static short getShort(Object array, int index)
-            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
-        if (array instanceof short[])
+    public static short getShort(Object array, int index) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof short[]) {
             return ((short[]) array)[index];
-
-        return getByte(array, index);
+        } else if (array instanceof byte[]) {
+            return ((byte[]) array)[index];
+        }
+        throw badArray(array);
     }
 
     /**
      * Returns a new multidimensional array of the specified component type and
-     * dimensions. This reproduces the effect of {@code new
-     * componentType[d0][d1]...[dn]} for a dimensions array of { d0, d1, ... ,
-     * dn }.
+     * dimensions. Equivalent to {@code new componentType[d0][d1]...[dn]} for a
+     * dimensions array of { d0, d1, ... , dn }.
      *
-     * @param componentType
-     *            the component type of the new array
-     * @param dimensions
-     *            the dimensions of the new array
-     *
-     * @return the new array
-     *
-     * @throws NullPointerException
-     *             if the component type is {@code null}
+     * @throws NullPointerException if {@code array == null}
      * @throws NegativeArraySizeException
      *             if any of the dimensions are negative
      * @throws IllegalArgumentException
      *             if the array of dimensions is of size zero, or exceeds the
      *             limit of the number of dimension for an array (currently 255)
      */
-    public static Object newInstance(Class<?> componentType, int... dimensions)
-            throws NegativeArraySizeException, IllegalArgumentException {
-        if (dimensions.length <= 0 || dimensions.length > 255)
-            throw new IllegalArgumentException("Bad number of dimensions");
-
-        if (componentType == void.class)
-            throw new IllegalArgumentException();
-
-        if (componentType == null)
-            throw new NullPointerException();
-
+    public static Object newInstance(Class<?> componentType, int... dimensions) throws NegativeArraySizeException, IllegalArgumentException {
+        if (dimensions.length <= 0 || dimensions.length > 255) {
+            throw new IllegalArgumentException("Bad number of dimensions: " + dimensions.length);
+        }
+        if (componentType == void.class) {
+            throw new IllegalArgumentException("Can't allocate an array of void");
+        }
+        if (componentType == null) {
+            throw new NullPointerException("componentType == null");
+        }
         return createMultiArray(componentType, dimensions);
     }
 
     /*
      * Create a multi-dimensional array of objects with the specified type.
      */
-    native private static Object createMultiArray(Class<?> componentType,
-        int[] dimensions) throws NegativeArraySizeException;
+    private static native Object createMultiArray(Class<?> componentType, int[] dimensions) throws NegativeArraySizeException;
 
     /**
-     * Returns a new array of the specified component type and length. This
-     * reproduces the effect of {@code new componentType[size]}.
-     *
-     * @param componentType
-     *            the component type of the new array
-     * @param size
-     *            the length of the new array
-     *
-     * @return the new array
+     * Returns a new array of the specified component type and length.
+     * Equivalent to {@code new componentType[size]}.
      *
      * @throws NullPointerException
      *             if the component type is null
      * @throws NegativeArraySizeException
      *             if {@code size < 0}
      */
-    public static Object newInstance(Class<?> componentType, int size)
-            throws NegativeArraySizeException {
+    public static Object newInstance(Class<?> componentType, int size) throws NegativeArraySizeException {
         if (!componentType.isPrimitive()) {
             return createObjectArray(componentType, size);
-        }
-        if (componentType == boolean.class) {
+        } else if (componentType == boolean.class) {
             return new boolean[size];
-        }
-        if (componentType == byte.class) {
+        } else if (componentType == byte.class) {
             return new byte[size];
-        }
-        if (componentType == char.class) {
+        } else if (componentType == char.class) {
             return new char[size];
-        }
-        if (componentType == short.class) {
+        } else if (componentType == short.class) {
             return new short[size];
-        }
-        if (componentType == int.class) {
+        } else if (componentType == int.class) {
             return new int[size];
-        }
-        if (componentType == long.class) {
+        } else if (componentType == long.class) {
             return new long[size];
-        }
-        if (componentType == float.class) {
+        } else if (componentType == float.class) {
             return new float[size];
-        }
-        if (componentType == double.class) {
+        } else if (componentType == double.class) {
             return new double[size];
-        }
-        if (componentType == void.class) {
-            throw new IllegalArgumentException();
+        } else if (componentType == void.class) {
+            throw new IllegalArgumentException("Can't allocate an array of void");
         }
         throw new AssertionError();
     }
@@ -480,81 +377,58 @@ public final class Array {
     /*
      * Create a one-dimensional array of objects with the specified type.
      */
-    native private static Object createObjectArray(Class<?> componentType,
-        int length) throws NegativeArraySizeException;
+    private static native Object createObjectArray(Class<?> componentType, int length) throws NegativeArraySizeException;
 
     /**
-     * Sets the element of the array at the specified index to the value. This
-     * reproduces the effect of {@code array[index] = value}. If the array
+     * Sets the element of the array at the specified index to the value.
+     * Equivalent to {@code array[index] = value}. If the array
      * component is a primitive type, the value is automatically unboxed.
      *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     * @param value
-     *            the new value
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
+     * @throws NullPointerException if {@code array == null}
      * @throws IllegalArgumentException
      *             if {@code array} is not an array or the value cannot be
      *             converted to the array type by a widening conversion
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code  index < 0 || index >= array.length}
      */
-    public static void set(Object array, int index, Object value)
-            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+    public static void set(Object array, int index, Object value) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
         if (!array.getClass().isArray()) {
-            throw new IllegalArgumentException("Not an array type");
+            throw notAnArray(array);
         }
 
         if (array instanceof Object[]) {
-            if (value != null &&
-                !array.getClass().getComponentType().isInstance(value)) {
-                // incompatible object type for this array
-                throw new IllegalArgumentException("Wrong array type");
+            if (value != null && !array.getClass().getComponentType().isInstance(value)) {
+                throw incompatibleType(array);
             }
-
             ((Object[]) array)[index] = value;
         } else {
             if (value == null) {
                 throw new IllegalArgumentException("Primitive array can't take null values.");
             }
-
-            if (value instanceof Boolean)
+            if (value instanceof Boolean) {
                 setBoolean(array, index, ((Boolean) value).booleanValue());
-            else if (value instanceof Byte)
+            } else if (value instanceof Byte) {
                 setByte(array, index, ((Byte) value).byteValue());
-            else if (value instanceof Character)
+            } else if (value instanceof Character) {
                 setChar(array, index, ((Character) value).charValue());
-            else if (value instanceof Short)
+            } else if (value instanceof Short) {
                 setShort(array, index, ((Short) value).shortValue());
-            else if (value instanceof Integer)
+            } else if (value instanceof Integer) {
                 setInt(array, index, ((Integer) value).intValue());
-            else if (value instanceof Long)
+            } else if (value instanceof Long) {
                 setLong(array, index, ((Long) value).longValue());
-            else if (value instanceof Float)
+            } else if (value instanceof Float) {
                 setFloat(array, index, ((Float) value).floatValue());
-            else if (value instanceof Double)
+            } else if (value instanceof Double) {
                 setDouble(array, index, ((Double) value).doubleValue());
+            }
         }
     }
 
     /**
-     * Sets the element of the array at the specified index to the {@code
-     * boolean} value. This reproduces the effect of {@code array[index] =
-     * value}.
+     * Sets {@code array[index] = value}. Applies to boolean arrays.
      *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     * @param value
-     *            the new value
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
+     * @throws NullPointerException if {@code array == null}
      * @throws IllegalArgumentException
      *             if the {@code array} is not an array or the value cannot be
      *             converted to the array type by a widening conversion
@@ -565,212 +439,171 @@ public final class Array {
         if (array instanceof boolean[]) {
             ((boolean[]) array)[index] = value;
         } else {
-            setByte(array, index, value ? (byte)1 : (byte)0);
+            throw badArray(array);
         }
     }
 
     /**
-     * Sets the element of the array at the specified index to the {@code byte}
-     * value. This reproduces the effect of {@code array[index] = value}.
+     * Sets {@code array[index] = value}. Applies to byte, double, float, int, long, and short arrays.
      *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     * @param value
-     *            the new value
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
+     * @throws NullPointerException if {@code array == null}
      * @throws IllegalArgumentException
      *             if the {@code array} is not an array or the value cannot be
      *             converted to the array type by a widening conversion
      * @throws ArrayIndexOutOfBoundsException
      *             if {@code  index < 0 || index >= array.length}
      */
-    public static void setByte(Object array, int index, byte value)
-            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+    public static void setByte(Object array, int index, byte value) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
         if (array instanceof byte[]) {
             ((byte[]) array)[index] = value;
-        } else {
-            setShort(array, index, value);
-        }
-    }
-
-    /**
-     * Set the element of the array at the specified index to the {@code char}
-     * value. This reproduces the effect of {@code array[index] = value}.
-     *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     * @param value
-     *            the new value
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
-     * @throws IllegalArgumentException
-     *             if the {@code array} is not an array or the value cannot be
-     *             converted to the array type by a widening conversion
-     * @throws ArrayIndexOutOfBoundsException
-     *             if {@code  index < 0 || index >= array.length}
-     */
-    public static void setChar(Object array, int index, char value)
-            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
-        if (array instanceof char[]) {
-            ((char[]) array)[index] = value;
-        } else if (array == null) {
-            throw new NullPointerException();
-        } else if (!array.getClass().isArray()) {
-            throw new IllegalArgumentException("Not an array");
-        } else {
-            throw new IllegalArgumentException("Wrong array type");
-        }
-    }
-
-    /**
-     * Set the element of the array at the specified index to the {@code double}
-     * value. This reproduces the effect of {@code array[index] = value}.
-     *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     * @param value
-     *            the new value
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
-     * @throws IllegalArgumentException
-     *             if the {@code array} is not an array or the value cannot be
-     *             converted to the array type by a widening conversion
-     * @throws ArrayIndexOutOfBoundsException
-     *             if {@code  index < 0 || index >= array.length}
-     */
-    public static void setDouble(Object array, int index, double value)
-            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
-        if (array instanceof double[]) {
+        } else if (array instanceof double[]) {
             ((double[]) array)[index] = value;
-        } else if (array == null) {
-            throw new NullPointerException();
-        } else if (!array.getClass().isArray()) {
-            throw new IllegalArgumentException("Not an array");
-        } else {
-            throw new IllegalArgumentException("Wrong array type");
-        }
-    }
-
-    /**
-     * Set the element of the array at the specified index to the {@code float}
-     * value. This reproduces the effect of {@code array[index] = value}.
-     *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     * @param value
-     *            the new value
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
-     * @throws IllegalArgumentException
-     *             if the {@code array} is not an array or the value cannot be
-     *             converted to the array type by a widening conversion
-     * @throws ArrayIndexOutOfBoundsException
-     *             if {@code  index < 0 || index >= array.length}
-     */
-    public static void setFloat(Object array, int index, float value)
-            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
-        if (array instanceof float[]) {
+        } else if (array instanceof float[]) {
             ((float[]) array)[index] = value;
-        } else {
-            setDouble(array, index, value);
-        }
-    }
-
-    /**
-     * Set the element of the array at the specified index to the {@code int}
-     * value. This reproduces the effect of {@code array[index] = value}.
-     *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     * @param value
-     *            the new value
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
-     * @throws IllegalArgumentException
-     *             if the {@code array} is not an array or the value cannot be
-     *             converted to the array type by a widening conversion
-     * @throws ArrayIndexOutOfBoundsException
-     *             if {@code  index < 0 || index >= array.length}
-     */
-    public static void setInt(Object array, int index, int value)
-            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
-        if (array instanceof int[]) {
+        } else if (array instanceof int[]) {
             ((int[]) array)[index] = value;
-        } else {
-            setLong(array, index, value);
-        }
-    }
-
-    /**
-     * Set the element of the array at the specified index to the {@code long}
-     * value. This reproduces the effect of {@code array[index] = value}.
-     *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     * @param value
-     *            the new value
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
-     * @throws IllegalArgumentException
-     *             if the {@code array} is not an array or the value cannot be
-     *             converted to the array type by a widening conversion
-     * @throws ArrayIndexOutOfBoundsException
-     *             if {@code  index < 0 || index >= array.length}
-     */
-    public static void setLong(Object array, int index, long value)
-            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
-        if (array instanceof long[]) {
+        } else if (array instanceof long[]) {
             ((long[]) array)[index] = value;
-        } else {
-            setFloat(array, index, value);
-        }
-    }
-
-    /**
-     * Set the element of the array at the specified index to the {@code short}
-     * value. This reproduces the effect of {@code array[index] = value}.
-     *
-     * @param array
-     *            the array
-     * @param index
-     *            the index
-     * @param value
-     *            the new value
-     *
-     * @throws NullPointerException
-     *             if the {@code array} is {@code null}
-     * @throws IllegalArgumentException
-     *             if the {@code array} is not an array or the value cannot be
-     *             converted to the array type by a widening conversion
-     * @throws ArrayIndexOutOfBoundsException
-     *             if {@code  index < 0 || index >= array.length}
-     */
-    public static void setShort(Object array, int index, short value)
-            throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
-        if (array instanceof short[]) {
+        } else if (array instanceof short[]) {
             ((short[]) array)[index] = value;
         } else {
-            setInt(array, index, value);
+            throw badArray(array);
         }
     }
 
+    /**
+     * Sets {@code array[index] = value}. Applies to char, double, float, int, and long arrays.
+     *
+     * @throws NullPointerException if {@code array == null}
+     * @throws IllegalArgumentException
+     *             if the {@code array} is not an array or the value cannot be
+     *             converted to the array type by a widening conversion
+     * @throws ArrayIndexOutOfBoundsException
+     *             if {@code  index < 0 || index >= array.length}
+     */
+    public static void setChar(Object array, int index, char value) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof char[]) {
+            ((char[]) array)[index] = value;
+        } else if (array instanceof double[]) {
+            ((double[]) array)[index] = value;
+        } else if (array instanceof float[]) {
+            ((float[]) array)[index] = value;
+        } else if (array instanceof int[]) {
+            ((int[]) array)[index] = value;
+        } else if (array instanceof long[]) {
+            ((long[]) array)[index] = value;
+        } else {
+            throw badArray(array);
+        }
+    }
+
+    /**
+     * Sets {@code array[index] = value}. Applies to double arrays.
+     *
+     * @throws NullPointerException if {@code array == null}
+     * @throws IllegalArgumentException
+     *             if the {@code array} is not an array or the value cannot be
+     *             converted to the array type by a widening conversion
+     * @throws ArrayIndexOutOfBoundsException
+     *             if {@code  index < 0 || index >= array.length}
+     */
+    public static void setDouble(Object array, int index, double value) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof double[]) {
+            ((double[]) array)[index] = value;
+        } else {
+            throw badArray(array);
+        }
+    }
+
+    /**
+     * Sets {@code array[index] = value}. Applies to double and float arrays.
+     *
+     * @throws NullPointerException if {@code array == null}
+     * @throws IllegalArgumentException
+     *             if the {@code array} is not an array or the value cannot be
+     *             converted to the array type by a widening conversion
+     * @throws ArrayIndexOutOfBoundsException
+     *             if {@code  index < 0 || index >= array.length}
+     */
+    public static void setFloat(Object array, int index, float value) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof float[]) {
+            ((float[]) array)[index] = value;
+        } else if (array instanceof double[]) {
+            ((double[]) array)[index] = value;
+        } else {
+            throw badArray(array);
+        }
+    }
+
+    /**
+     * Sets {@code array[index] = value}. Applies to double, float, int, and long arrays.
+     *
+     * @throws NullPointerException if {@code array == null}
+     * @throws IllegalArgumentException
+     *             if the {@code array} is not an array or the value cannot be
+     *             converted to the array type by a widening conversion
+     * @throws ArrayIndexOutOfBoundsException
+     *             if {@code  index < 0 || index >= array.length}
+     */
+    public static void setInt(Object array, int index, int value) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof int[]) {
+            ((int[]) array)[index] = value;
+        } else if (array instanceof double[]) {
+            ((double[]) array)[index] = value;
+        } else if (array instanceof float[]) {
+            ((float[]) array)[index] = value;
+        } else if (array instanceof long[]) {
+            ((long[]) array)[index] = value;
+        } else {
+            throw badArray(array);
+        }
+    }
+
+    /**
+     * Sets {@code array[index] = value}. Applies to double, float, and long arrays.
+     *
+     * @throws NullPointerException if {@code array == null}
+     * @throws IllegalArgumentException
+     *             if the {@code array} is not an array or the value cannot be
+     *             converted to the array type by a widening conversion
+     * @throws ArrayIndexOutOfBoundsException
+     *             if {@code  index < 0 || index >= array.length}
+     */
+    public static void setLong(Object array, int index, long value) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof long[]) {
+            ((long[]) array)[index] = value;
+        } else if (array instanceof double[]) {
+            ((double[]) array)[index] = value;
+        } else if (array instanceof float[]) {
+            ((float[]) array)[index] = value;
+        } else {
+            throw badArray(array);
+        }
+    }
+
+    /**
+     * Sets {@code array[index] = value}. Applies to double, float, int, long, and short arrays.
+     *
+     * @throws NullPointerException if {@code array == null}
+     * @throws IllegalArgumentException
+     *             if the {@code array} is not an array or the value cannot be
+     *             converted to the array type by a widening conversion
+     * @throws ArrayIndexOutOfBoundsException
+     *             if {@code  index < 0 || index >= array.length}
+     */
+    public static void setShort(Object array, int index, short value) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+        if (array instanceof short[]) {
+            ((short[]) array)[index] = value;
+        } else if (array instanceof double[]) {
+            ((double[]) array)[index] = value;
+        } else if (array instanceof float[]) {
+            ((float[]) array)[index] = value;
+        } else if (array instanceof int[]) {
+            ((int[]) array)[index] = value;
+        } else if (array instanceof long[]) {
+            ((long[]) array)[index] = value;
+        } else {
+            throw badArray(array);
+        }
+    }
 }

@@ -124,18 +124,15 @@ final class ShortToByteBufferAdapter extends ShortBuffer {
         return byteBuffer.order();
     }
 
-    @Override
-    protected short[] protectedArray() {
+    @Override short[] protectedArray() {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    protected int protectedArrayOffset() {
+    @Override int protectedArrayOffset() {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    protected boolean protectedHasArray() {
+    @Override boolean protectedHasArray() {
         return false;
     }
 

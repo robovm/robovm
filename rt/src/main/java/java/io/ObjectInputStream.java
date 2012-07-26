@@ -1618,9 +1618,13 @@ public class ObjectInputStream extends InputStream implements ObjectInput, Objec
                 throw corruptStream(tc);
         }
 
-        Enum<?> result = Enum.valueOf((Class) classDesc.forClass(), name);
+        Enum<?> result;
+        try {
+            result = Enum.valueOf((Class) classDesc.forClass(), name);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidObjectException(e.getMessage());
+        }
         registerObjectRead(result, newHandle, unshared);
-
         return result;
     }
 

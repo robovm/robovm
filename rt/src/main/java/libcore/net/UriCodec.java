@@ -144,8 +144,12 @@ public abstract class UriCodec {
 
     /**
      * @param convertPlus true to convert '+' to ' '.
+     * @param throwOnFailure true to throw an IllegalArgumentException on
+     *     invalid escape sequences; false to replace them with the replacement
+     *     character (U+fffd).
      */
-    public static String decode(String s, boolean convertPlus, Charset charset) {
+    public static String decode(String s, boolean convertPlus, Charset charset,
+            boolean throwOnFailure) {
         if (s.indexOf('%') == -1 && (!convertPlus || s.indexOf('+') == -1)) {
             return s;
         }
@@ -156,16 +160,17 @@ public abstract class UriCodec {
             char c = s.charAt(i);
             if (c == '%') {
                 do {
-                    if (i + 2 >= s.length()) {
-                        throw new IllegalArgumentException("Incomplete % sequence at: " + i);
+                    int d1, d2;
+                    if (i + 2 < s.length()
+                            && (d1 = hexToInt(s.charAt(i + 1))) != -1
+                            && (d2 = hexToInt(s.charAt(i + 2))) != -1) {
+                        out.write((byte) ((d1 << 4) + d2));
+                    } else if (throwOnFailure) {
+                        throw new IllegalArgumentException("Invalid % sequence at " + i + ": " + s);
+                    } else {
+                        byte[] replacement = "\ufffd".getBytes(charset);
+                        out.write(replacement, 0, replacement.length);
                     }
-                    int d1 = hexToInt(s.charAt(i + 1));
-                    int d2 = hexToInt(s.charAt(i + 2));
-                    if (d1 == -1 || d2 == -1) {
-                        throw new IllegalArgumentException("Invalid % sequence " +
-                                s.substring(i, i + 3) + " at " + i);
-                    }
-                    out.write((byte) ((d1 << 4) + d2));
                     i += 3;
                 } while (i < s.length() && s.charAt(i) == '%');
                 result.append(new String(out.toByteArray(), charset));
@@ -198,7 +203,7 @@ public abstract class UriCodec {
     }
 
     public static String decode(String s) {
-        return decode(s, false, Charsets.UTF_8);
+        return decode(s, false, Charsets.UTF_8, true);
     }
 
     private static void appendHex(StringBuilder builder, String s, Charset charset) {

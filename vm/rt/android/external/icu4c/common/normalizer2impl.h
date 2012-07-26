@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2009-2010, International Business Machines
+*   Copyright (C) 2009-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -31,7 +31,7 @@
 
 U_NAMESPACE_BEGIN
 
-class CanonIterData;
+struct CanonIterData;
 
 class Hangul {
 public:
@@ -150,6 +150,9 @@ public:
         remainingCapacity+=(int32_t)(limit-newLimit);
         reorderStart=limit=newLimit;
         lastCC=0;
+    }
+    void copyReorderableSuffixTo(UnicodeString &s) const {
+        s.setTo(reorderStart, (int32_t)(limit-reorderStart));
     }
 private:
     /*
@@ -328,6 +331,7 @@ public:
                            ReorderingBuffer *buffer, UErrorCode &errorCode) const;
     void decomposeAndAppend(const UChar *src, const UChar *limit,
                             UBool doDecompose,
+                            UnicodeString &safeMiddle,
                             ReorderingBuffer &buffer,
                             UErrorCode &errorCode) const;
     UBool compose(const UChar *src, const UChar *limit,
@@ -341,12 +345,14 @@ public:
     void composeAndAppend(const UChar *src, const UChar *limit,
                           UBool doCompose,
                           UBool onlyContiguous,
+                          UnicodeString &safeMiddle,
                           ReorderingBuffer &buffer,
                           UErrorCode &errorCode) const;
     const UChar *makeFCD(const UChar *src, const UChar *limit,
                          ReorderingBuffer *buffer, UErrorCode &errorCode) const;
     void makeFCDAndAppend(const UChar *src, const UChar *limit,
                           UBool doMakeFCD,
+                          UnicodeString &safeMiddle,
                           ReorderingBuffer &buffer,
                           UErrorCode &errorCode) const;
 

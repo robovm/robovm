@@ -5,15 +5,19 @@
 <html>
 <body>
 <p>
-This package provides all the classes and interfaces needed to implement and program the Secure Socket
-abstraction based on the SSL protocol SSSLv3.0 or TLSv1.2.
-All the details of the SSL handshake protocol are accounted for, and a client or a server can specify the cipher 
-set to use.
-
-X.509 certificates are verified, and, if desired, the client and the server each have the option of verifying
-the entire certificate chain until the root Certificate Authority is reached.
-
-Android uses code from The Legion of the Bouncy Castle (http://www.bouncycastle.org) and OpenSSL (http://openssl.org).
+This package provides classes and interfaces needed to use the Secure
+Sockets Layer (SSL) protocol and the successor Transport Layer
+Security (TLS) protocol.  The API allows for both client and server
+sockets, the selection of desired SSL and TLS protocol versions, and
+the selection of desired cipher suites. The {@link
+javax.net.ssl.X509TrustManager X509TrustManager} interface allows
+customization of certificate chain verification. The
+{@link javax.net.ssl.X509KeyManager X509KeyManager} interface and
+{@link javax.net.ssl.X509ExtendedKeyManager X509ExtendedKeyManager}
+class allows the specification of a server's required certificate or a
+client's optional client certificate. Android uses code
+from <a href="http://www.bouncycastle.org">The Legion of the Bouncy
+Castle</a> and <a href="http://openssl.org">OpenSSL</a>.
 
 </p>
 </body>

@@ -266,34 +266,37 @@ public final class NetworkInterface extends Object {
     private static List<NetworkInterface> getNetworkInterfacesList() throws SocketException {
         String[] interfaceNames = new File("/sys/class/net").list();
         NetworkInterface[] interfaces = new NetworkInterface[interfaceNames.length];
+        boolean[] done = new boolean[interfaces.length];
         for (int i = 0; i < interfaceNames.length; ++i) {
             interfaces[i] = NetworkInterface.getByName(interfaceNames[i]);
+            // http://b/5833739: getByName can return null if the interface went away between our
+            // readdir(2) and our stat(2), so mark interfaces that disappeared as 'done'.
+            if (interfaces[i] == null) {
+                done[i] = true;
+            }
         }
 
         List<NetworkInterface> result = new ArrayList<NetworkInterface>();
-        boolean[] peeked = new boolean[interfaces.length];
         for (int counter = 0; counter < interfaces.length; counter++) {
-            // If this interface has been touched, continue.
-            if (peeked[counter]) {
+            // If this interface has been dealt with already, continue.
+            if (done[counter]) {
                 continue;
             }
             int counter2 = counter;
             // Checks whether the following interfaces are children.
             for (; counter2 < interfaces.length; counter2++) {
-                if (peeked[counter2]) {
+                if (done[counter2]) {
                     continue;
                 }
                 if (interfaces[counter2].name.startsWith(interfaces[counter].name + ":")) {
-                    // Tagged as peeked
-                    peeked[counter2] = true;
                     interfaces[counter].children.add(interfaces[counter2]);
                     interfaces[counter2].parent = interfaces[counter];
                     interfaces[counter].addresses.addAll(interfaces[counter2].addresses);
-                }
+                    done[counter2] = true;
+                  }
             }
-            // Tagged as peeked
             result.add(interfaces[counter]);
-            peeked[counter] = true;
+            done[counter] = true;
         }
         return result;
     }
@@ -334,6 +337,11 @@ public final class NetworkInterface extends Object {
         return name.hashCode();
     }
 
+    /**
+     * Returns a string containing details of this network interface.
+     * The exact format is deliberately unspecified. Callers that require a specific
+     * format should build a string themselves, using this class' accessor methods.
+     */
     @Override public String toString() {
         StringBuilder sb = new StringBuilder(25);
         sb.append("[");

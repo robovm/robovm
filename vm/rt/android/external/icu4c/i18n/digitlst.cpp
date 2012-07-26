@@ -1,6 +1,6 @@
 /*
 **********************************************************************
-*   Copyright (C) 1997-2010, International Business Machines
+*   Copyright (C) 1997-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 **********************************************************************
 *
@@ -234,6 +234,15 @@ formatBase10(int64_t number, char *outputStr) {
 
 
 // -------------------------------------
+//
+//  setRoundingMode()
+//    For most modes, the meaning and names are the same between the decNumber library
+//      (which DigitList follows) and the ICU Formatting Rounding Mode values.
+//      The flag constants are different, however.
+//
+//     Note that ICU's kRoundingUnnecessary is not implemented directly by DigitList.
+//     This mode, inherited from Java, means that numbers that would not format exactly
+//     will return an error when formatting is attempted.
 
 void 
 DigitList::setRoundingMode(DecimalFormat::ERoundingMode m) {
@@ -247,6 +256,7 @@ DigitList::setRoundingMode(DecimalFormat::ERoundingMode m) {
       case  DecimalFormat::kRoundHalfEven: r = DEC_ROUND_HALF_EVEN; break;
       case  DecimalFormat::kRoundHalfDown: r = DEC_ROUND_HALF_DOWN; break;
       case  DecimalFormat::kRoundHalfUp:   r = DEC_ROUND_HALF_UP;   break;
+      case  DecimalFormat::kRoundUnnecessary: r = DEC_ROUND_HALF_EVEN; break;
       default:
          // TODO: how to report the problem?
          // Leave existing mode unchanged.

@@ -1035,7 +1035,6 @@ VTimeZone::operator==(const TimeZone& that) const {
     if (this == &that) {
         return TRUE;
     }
-
     if (typeid(*this) != typeid(that) || !BasicTimeZone::operator==(that)) {
         return FALSE;
     }

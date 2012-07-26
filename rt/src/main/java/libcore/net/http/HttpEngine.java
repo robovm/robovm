@@ -25,9 +25,11 @@ import java.io.OutputStream;
 import java.net.CacheRequest;
 import java.net.CacheResponse;
 import java.net.CookieHandler;
+import java.net.ExtendedResponseCache;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.ResponseCache;
+import java.net.ResponseSource;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -38,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
+import javax.net.ssl.SSLSocketFactory;
 import libcore.io.IoUtils;
 import libcore.io.Streams;
 import libcore.util.EmptyArray;
@@ -197,6 +200,10 @@ public class HttpEngine {
         this.requestHeaders = new RequestHeaders(uri, new RawHeaders(requestHeaders));
     }
 
+    public URI getUri() {
+        return uri;
+    }
+
     /**
      * Figures out what the response source will be, and opens a socket to that
      * source if necessary. Prepares the request headers and gets ready to start
@@ -209,8 +216,8 @@ public class HttpEngine {
 
         prepareRawRequestHeaders();
         initResponseSource();
-        if (responseCache instanceof HttpResponseCache) {
-            ((HttpResponseCache) responseCache).trackResponse(responseSource);
+        if (responseCache instanceof ExtendedResponseCache) {
+            ((ExtendedResponseCache) responseCache).trackResponse(responseSource);
         }
 
         /*
@@ -305,8 +312,8 @@ public class HttpEngine {
     }
 
     protected final HttpConnection openSocketConnection() throws IOException {
-        HttpConnection result = HttpConnection.connect(
-                uri, policy.getProxy(), requiresTunnel(), policy.getConnectTimeout());
+        HttpConnection result = HttpConnection.connect(uri, getSslSocketFactory(),
+                policy.getProxy(), requiresTunnel(), policy.getConnectTimeout());
         Proxy proxy = result.getAddress().getProxy();
         if (proxy != null) {
             policy.setProxy(proxy);
@@ -415,6 +422,10 @@ public class HttpEngine {
         return connection;
     }
 
+    public final boolean hasRecycledConnection() {
+        return connection != null && connection.isRecycled();
+    }
+
     /**
      * Returns true if {@code cacheResponse} is of the right type. This
      * condition is necessary but not sufficient for the cached response to
@@ -425,6 +436,11 @@ public class HttpEngine {
     }
 
     private void maybeCache() throws IOException {
+        // Never cache responses to proxy CONNECT requests.
+        if (method == CONNECT) {
+            return;
+        }
+
         // Are we caching at all?
         if (!policy.getUseCaches() || responseCache == null) {
             return;
@@ -553,8 +569,13 @@ public class HttpEngine {
      */
     public final boolean hasResponseBody() {
         int responseCode = responseHeaders.getHeaders().getResponseCode();
-        if (method != HEAD
-                && method != CONNECT
+
+        // HEAD requests never yield a body regardless of the response headers.
+        if (method == HEAD) {
+            return false;
+        }
+
+        if (method != CONNECT
                 && (responseCode < HTTP_CONTINUE || responseCode >= 200)
                 && responseCode != HttpURLConnectionImpl.HTTP_NO_CONTENT
                 && responseCode != HttpURLConnectionImpl.HTTP_NOT_MODIFIED) {
@@ -724,6 +745,14 @@ public class HttpEngine {
         return policy.usingProxy();
     }
 
+    /**
+     * Returns the SSL configuration for connections created by this engine.
+     * We cannot reuse HTTPS connections if the socket factory has changed.
+     */
+    protected SSLSocketFactory getSslSocketFactory() {
+        return null;
+    }
+
     protected final String getDefaultUserAgent() {
         String agent = System.getProperty("http.agent");
         return agent != null ? agent : ("Java" + System.getProperty("java.version"));
@@ -786,12 +815,14 @@ public class HttpEngine {
 
         if (responseSource == ResponseSource.CONDITIONAL_CACHE) {
             if (cachedResponseHeaders.validate(responseHeaders)) {
-                if (responseCache instanceof HttpResponseCache) {
-                    ((HttpResponseCache) responseCache).trackConditionalCacheHit();
-                }
-                // Discard the network response body. Combine the headers.
                 release(true);
-                setResponse(cachedResponseHeaders.combine(responseHeaders), cachedResponseBody);
+                ResponseHeaders combinedHeaders = cachedResponseHeaders.combine(responseHeaders);
+                setResponse(combinedHeaders, cachedResponseBody);
+                if (responseCache instanceof ExtendedResponseCache) {
+                    ExtendedResponseCache httpResponseCache = (ExtendedResponseCache) responseCache;
+                    httpResponseCache.trackConditionalCacheHit();
+                    httpResponseCache.update(cacheResponse, getHttpConnectionToCache());
+                }
                 return;
             } else {
                 IoUtils.closeQuietly(cachedResponseBody);

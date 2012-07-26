@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
-*   Copyright (C) 1997-2010, International Business Machines
+*   Copyright (C) 1997-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 ********************************************************************************
 *
@@ -32,6 +32,7 @@
 
 #include "unicode/uobject.h"
 #include "unicode/locid.h"
+#include "unicode/unum.h"
 
 /**
  * \file
@@ -167,17 +168,6 @@ public:
     };
 
     /**
-      * Constants for specifying currency spacing
-      * @draft ICU 4.2
-      */
-     enum ECurrencySpacing {
-       kCurrencyMatch,
-       kSurroundingMatch,
-       kInsert,
-       kCurrencySpacingCount
-     };
-
-    /**
      * Create a DecimalFormatSymbols object for the given locale.
      *
      * @param locale    The locale to get symbols for.
@@ -284,7 +274,7 @@ public:
       * This API gets the CurrencySpacing data from ResourceBundle. The pattern can
       * be empty if there is no data from current locale and its parent locales.
       *
-      * @param type :  kCurrencyMatch, kSurroundingMatch or kInsert.
+      * @param type :  UNUM_CURRENCY_MATCH, UNUM_CURRENCY_SURROUNDING_MATCH or UNUM_CURRENCY_INSERT.
       * @param beforeCurrency : true if the pattern is for before currency symbol.
       *                         false if the pattern is for after currency symbol.
       * @param status: Input/output parameter, set to success or
@@ -292,22 +282,22 @@ public:
       * @return pattern string for currencyMatch, surroundingMatch or spaceInsert.
       *     Return empty string if there is no data for this locale and its parent
       *     locales.
-      * @draft ICU 4.2
+      * @draft ICU 4.8
       */
-     const UnicodeString& getPatternForCurrencySpacing(ECurrencySpacing type,
+     const UnicodeString& getPatternForCurrencySpacing(UCurrencySpacing type,
                                                  UBool beforeCurrency,
                                                  UErrorCode& status) const;
      /**
        * Set pattern string for 'CurrencySpacing' that can be applied to
        * currency format.
        *
-       * @param type : kCurrencyMatch, kSurroundingMatch or kInsert.
+       * @param type : UNUM_CURRENCY_MATCH, UNUM_CURRENCY_SURROUNDING_MATCH or UNUM_CURRENCY_INSERT.
        * @param beforeCurrency : true if the pattern is for before currency symbol.
        *                         false if the pattern is for after currency symbol.
        * @param pattern : pattern string to override current setting.
-       * @draft ICU 4.2
+       * @draft ICU 4.8
        */
-     void setPatternForCurrencySpacing(ECurrencySpacing type,
+     void setPatternForCurrencySpacing(UCurrencySpacing type,
                                        UBool beforeCurrency,
                                        const UnicodeString& pattern);
 
@@ -399,8 +389,8 @@ private:
     char validLocale[ULOC_FULLNAME_CAPACITY];
     const UChar* currPattern;
 
-    UnicodeString currencySpcBeforeSym[kCurrencySpacingCount];
-    UnicodeString currencySpcAfterSym[kCurrencySpacingCount];
+    UnicodeString currencySpcBeforeSym[UNUM_CURRENCY_SPACING_COUNT];
+    UnicodeString currencySpcAfterSym[UNUM_CURRENCY_SPACING_COUNT];
 };
 
 // -------------------------------------

@@ -972,57 +972,54 @@ public abstract class URLConnection {
     }
 
     /**
-     * Sets the timeout value in milliseconds for establishing the connection to
-     * the resource pointed by this {@code URLConnection} instance. A {@code
-     * SocketTimeoutException} is thrown if the connection could not be
-     * established in this time. Default is {@code 0} which stands for an
-     * infinite timeout.
+     * Sets the maximum time to wait for a connect to complete before giving up.
+     * Connecting to a server will fail with a {@link SocketTimeoutException} if
+     * the timeout elapses before a connection is established. The default value
+     * of {@code 0} disables connect timeouts; connect attempts may wait
+     * indefinitely.
      *
-     * @param timeout
-     *            the connecting timeout in milliseconds.
-     * @throws IllegalArgumentException
-     *             if the parameter {@code timeout} is less than zero.
+     * <p><strong>Warning:</strong> if the hostname resolves to multiple IP
+     * addresses, this client will try each in <a
+     * href="http://www.ietf.org/rfc/rfc3484.txt">RFC 3484</a> order. If
+     * connecting to each of these addresses fails, multiple timeouts will
+     * elapse before the connect attempt throws an exception. Host names that
+     * support both IPv6 and IPv4 always have at least 2 IP addresses.
+     *
+     * @param timeoutMillis the connect timeout in milliseconds. Non-negative.
      */
-    public void setConnectTimeout(int timeout) {
-        if (timeout < 0) {
-            throw new IllegalArgumentException("timeout < 0");
+    public void setConnectTimeout(int timeoutMillis) {
+        if (timeoutMillis < 0) {
+            throw new IllegalArgumentException("timeoutMillis < 0");
         }
-        this.connectTimeout = timeout;
+        this.connectTimeout = timeoutMillis;
     }
 
     /**
-     * Returns the configured connecting timeout.
-     *
-     * @return the connecting timeout value in milliseconds.
+     * Returns the connect timeout in milliseconds, or {@code 0} if connect
+     * attempts never timeout.
      */
     public int getConnectTimeout() {
         return connectTimeout;
     }
 
     /**
-     * Sets the timeout value in milliseconds for reading from the input stream
-     * of an established connection to the resource. A {@code
-     * SocketTimeoutException} is thrown if the connection could not be
-     * established in this time. Default is {@code 0} which stands for an
-     * infinite timeout.
+     * Sets the maximum time to wait for an input stream read to complete before
+     * giving up. Reading will fail with a {@link SocketTimeoutException} if the
+     * timeout elapses before data becomes available. The default value of
+     * {@code 0} disables read timeouts; read attempts will block indefinitely.
      *
-     * @param timeout
-     *            the reading timeout in milliseconds.
-     * @throws IllegalArgumentException
-     *             if the parameter {@code timeout} is less than zero.
+     * @param timeoutMillis the read timeout in milliseconds. Non-negative.
      */
-    public void setReadTimeout(int timeout) {
-        if (timeout < 0) {
-            throw new IllegalArgumentException("timeout < 0");
+    public void setReadTimeout(int timeoutMillis) {
+        if (timeoutMillis < 0) {
+            throw new IllegalArgumentException("timeoutMillis < 0");
         }
-        this.readTimeout = timeout;
+        this.readTimeout = timeoutMillis;
     }
 
     /**
-     * Returns the configured timeout for reading from the input stream of an
-     * established connection to the resource.
-     *
-     * @return the reading timeout value in milliseconds.
+     * Returns the read timeout in milliseconds, or {@code 0} if reads never
+     * timeout.
      */
     public int getReadTimeout() {
         return readTimeout;

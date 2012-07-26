@@ -24,6 +24,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.UnrecoverableKeyException;
+import java.util.Arrays;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManager;
@@ -112,18 +113,12 @@ public class SSLParametersImpl implements Cloneable {
         } else {
             keyManager = findX509KeyManager(kms);
         }
-        if (keyManager == null) {
-            throw new KeyManagementException("No X509KeyManager found");
-        }
 
         // initialize trustManager
         if ((tms == null) || (tms.length == 0)) {
             trustManager = getDefaultTrustManager();
         } else {
             trustManager = findX509TrustManager(tms);
-        }
-        if (trustManager == null) {
-            throw new KeyManagementException("No X509TrustManager found");
         }
         // initialize secure random
         // BEGIN android-removed
@@ -354,7 +349,7 @@ public class SSLParametersImpl implements Cloneable {
         }
     }
 
-    private static X509KeyManager getDefaultKeyManager() {
+    private static X509KeyManager getDefaultKeyManager() throws KeyManagementException {
         X509KeyManager result = defaultKeyManager;
         if (result == null) {
             // single-check idiom
@@ -362,7 +357,7 @@ public class SSLParametersImpl implements Cloneable {
         }
         return result;
     }
-    private static X509KeyManager createDefaultKeyManager() {
+    private static X509KeyManager createDefaultKeyManager() throws KeyManagementException {
         try {
             String algorithm = KeyManagerFactory.getDefaultAlgorithm();
             KeyManagerFactory kmf = KeyManagerFactory.getInstance(algorithm);
@@ -370,20 +365,20 @@ public class SSLParametersImpl implements Cloneable {
             KeyManager[] kms = kmf.getKeyManagers();
             return findX509KeyManager(kms);
         } catch (NoSuchAlgorithmException e) {
-            return null;
+            throw new KeyManagementException(e);
         } catch (KeyStoreException e) {
-            return null;
+            throw new KeyManagementException(e);
         } catch (UnrecoverableKeyException e) {
-            return null;
+            throw new KeyManagementException(e);
         }
     }
-    private static X509KeyManager findX509KeyManager(KeyManager[] kms) {
+    private static X509KeyManager findX509KeyManager(KeyManager[] kms) throws KeyManagementException {
         for (KeyManager km : kms) {
             if (km instanceof X509KeyManager) {
                 return (X509KeyManager)km;
             }
         }
-        return null;
+        throw new KeyManagementException("Failed to find an X509KeyManager in " + Arrays.toString(kms));
     }
 
     /**
@@ -391,7 +386,7 @@ public class SSLParametersImpl implements Cloneable {
      *
      * TODO: Move this to a published API under dalvik.system.
      */
-    public static X509TrustManager getDefaultTrustManager() {
+    public static X509TrustManager getDefaultTrustManager() throws KeyManagementException {
         X509TrustManager result = defaultTrustManager;
         if (result == null) {
             // single-check idiom
@@ -399,7 +394,7 @@ public class SSLParametersImpl implements Cloneable {
         }
         return result;
     }
-    private static X509TrustManager createDefaultTrustManager() {
+    private static X509TrustManager createDefaultTrustManager() throws KeyManagementException {
         try {
             String algorithm = TrustManagerFactory.getDefaultAlgorithm();
             TrustManagerFactory tmf = TrustManagerFactory.getInstance(algorithm);
@@ -408,17 +403,17 @@ public class SSLParametersImpl implements Cloneable {
             X509TrustManager trustManager = findX509TrustManager(tms);
             return trustManager;
         } catch (NoSuchAlgorithmException e) {
-            return null;
+            throw new KeyManagementException(e);
         } catch (KeyStoreException e) {
-            return null;
+            throw new KeyManagementException(e);
         }
     }
-    private static X509TrustManager findX509TrustManager(TrustManager[] tms) {
+    private static X509TrustManager findX509TrustManager(TrustManager[] tms) throws KeyManagementException {
         for (TrustManager tm : tms) {
             if (tm instanceof X509TrustManager) {
                 return (X509TrustManager)tm;
             }
         }
-        return null;
+        throw new KeyManagementException("Failed to find an X509TrustManager in " +  Arrays.toString(tms));
     }
 }

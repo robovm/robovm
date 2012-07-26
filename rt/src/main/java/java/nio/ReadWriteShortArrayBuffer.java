@@ -77,18 +77,15 @@ final class ReadWriteShortArrayBuffer extends ShortArrayBuffer {
         return false;
     }
 
-    @Override
-    protected short[] protectedArray() {
+    @Override short[] protectedArray() {
         return backingArray;
     }
 
-    @Override
-    protected int protectedArrayOffset() {
+    @Override int protectedArrayOffset() {
         return offset;
     }
 
-    @Override
-    protected boolean protectedHasArray() {
+    @Override boolean protectedHasArray() {
         return true;
     }
 

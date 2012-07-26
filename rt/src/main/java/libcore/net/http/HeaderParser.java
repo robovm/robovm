@@ -16,7 +16,13 @@
 
 package libcore.net.http;
 
-final class HeaderParser {
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @hide
+ */
+public final class HeaderParser {
 
     public interface CacheControlHandler {
         void handle(String directive, String parameter);
@@ -60,6 +66,55 @@ final class HeaderParser {
 
             handler.handle(directive, parameter);
         }
+    }
+
+    /**
+     * Parse RFC 2617 challenges. This API is only interested in the scheme
+     * name and realm.
+     */
+    public static List<Challenge> parseChallenges(
+            RawHeaders responseHeaders, String challengeHeader) {
+        /*
+         * auth-scheme = token
+         * auth-param  = token "=" ( token | quoted-string )
+         * challenge   = auth-scheme 1*SP 1#auth-param
+         * realm       = "realm" "=" realm-value
+         * realm-value = quoted-string
+         */
+        List<Challenge> result = new ArrayList<Challenge>();
+        for (int h = 0; h < responseHeaders.length(); h++) {
+            if (!challengeHeader.equalsIgnoreCase(responseHeaders.getFieldName(h))) {
+                continue;
+            }
+            String value = responseHeaders.getValue(h);
+            int pos = 0;
+            while (pos < value.length()) {
+                int tokenStart = pos;
+                pos = skipUntil(value, pos, " ");
+
+                String scheme = value.substring(tokenStart, pos).trim();
+                pos = skipWhitespace(value, pos);
+
+                // TODO: This currently only handles schemes with a 'realm' parameter;
+                //       It needs to be fixed to handle any scheme and any parameters
+                //       http://code.google.com/p/android/issues/detail?id=11140
+
+                if (!value.regionMatches(pos, "realm=\"", 0, "realm=\"".length())) {
+                    break; // unexpected challenge parameter; give up
+                }
+
+                pos += "realm=\"".length();
+                int realmStart = pos;
+                pos = skipUntil(value, pos, "\"");
+                String realm = value.substring(realmStart, pos);
+                pos++; // consume '"' close quote
+                pos = skipUntil(value, pos, ",");
+                pos++; // consume ',' comma
+                pos = skipWhitespace(value, pos);
+                result.add(new Challenge(scheme, realm));
+            }
+        }
+        return result;
     }
 
     /**

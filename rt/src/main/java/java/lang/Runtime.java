@@ -283,7 +283,7 @@ public class Runtime {
                 }
 
                 // Get out of here finally...
-                nativeExit(code, true);
+                nativeExit(code);
             }
         }
     }
@@ -390,7 +390,7 @@ public class Runtime {
         throw new UnsatisfiedLinkError("Library " + libraryName + " not found; tried " + candidates);
     }
 
-    private static native void nativeExit(int code, boolean isExit);
+    private static native void nativeExit(int code);
 
     // RoboVM note: On Android nativeLoad() returns an error message String 
     // on errors which is then wrapped in an UnsatisfiedLinkError. Our 
@@ -596,7 +596,7 @@ public class Runtime {
      */
     public void halt(int code) {
         // Get out of here...
-        nativeExit(code, false);
+        nativeExit(code);
     }
 
     /**

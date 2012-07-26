@@ -21,18 +21,20 @@ import libcore.util.BasicLruCache;
 /**
  * Implements caching for {@code InetAddress}. We use a unified cache for both positive and negative
  * cache entries.
+ *
+ * TODO: benchmark and optimize InetAddress until we get to the point where we can just rely on
+ * the C library level caching. The main thing caching at this level buys us is avoiding repeated
+ * conversions from 'struct sockaddr's to InetAddress[].
  */
 class AddressCache {
     /**
      * When the cache contains more entries than this, we start dropping the oldest ones.
      * This should be a power of two to avoid wasted space in our custom map.
      */
-    private static final int MAX_ENTRIES = 512;
+    private static final int MAX_ENTRIES = 16;
 
-    // Default time-to-live for positive cache entries. 600 seconds (10 minutes).
-    private static final long DEFAULT_POSITIVE_TTL_NANOS = 600 * 1000000000L;
-    // Default time-to-live for negative cache entries. 10 seconds.
-    private static final long DEFAULT_NEGATIVE_TTL_NANOS = 10 * 1000000000L;
+    // The TTL for the Java-level cache is short, just 2s.
+    private static final long TTL_NANOS = 2 * 1000000000L;
 
     // The actual cache.
     private final BasicLruCache<String, AddressCacheEntry> cache
@@ -47,13 +49,13 @@ class AddressCache {
          * The absolute expiry time in nanoseconds. Nanoseconds from System.nanoTime is ideal
          * because -- unlike System.currentTimeMillis -- it can never go backwards.
          *
-         * Unless we need to cope with DNS TTLs of 292 years, we don't need to worry about overflow.
+         * We don't need to worry about overflow with a TTL_NANOS of 2s.
          */
         final long expiryNanos;
 
-        AddressCacheEntry(Object value, long expiryNanos) {
+        AddressCacheEntry(Object value) {
             this.value = value;
-            this.expiryNanos = expiryNanos;
+            this.expiryNanos = System.nanoTime() + TTL_NANOS;
         }
     }
 
@@ -85,28 +87,7 @@ class AddressCache {
      * certain length of time.
      */
     public void put(String hostname, InetAddress[] addresses) {
-        put(hostname, addresses, true);
-    }
-
-    /**
-     * Associates the given 'detailMessage' with 'hostname'. The association will expire after a
-     * certain length of time.
-     */
-    public void put(String hostname, String detailMessage) {
-        put(hostname, detailMessage, false);
-    }
-
-    /**
-     * Associates the given 'addresses' with 'hostname'. The association will expire after a
-     * certain length of time.
-     */
-    public void put(String hostname, Object value, boolean isPositive) {
-        // Calculate the expiry time.
-        String propertyName = isPositive ? "networkaddress.cache.ttl" : "networkaddress.cache.negative.ttl";
-        long defaultTtlNanos = isPositive ? DEFAULT_POSITIVE_TTL_NANOS : DEFAULT_NEGATIVE_TTL_NANOS;
-        long expiryNanos = System.nanoTime() + defaultTtlNanos;
-        // Update the cache.
-        cache.put(hostname, new AddressCacheEntry(value, expiryNanos));
+        cache.put(hostname, new AddressCacheEntry(addresses));
     }
 
     /**
@@ -114,26 +95,6 @@ class AddressCache {
      * negative cache entry.)
      */
     public void putUnknownHost(String hostname, String detailMessage) {
-        put(hostname, detailMessage);
-    }
-
-    private long customTtl(String propertyName, long defaultTtlNanos) {
-        String ttlString = System.getProperty(propertyName, null);
-        if (ttlString == null) {
-            return System.nanoTime() + defaultTtlNanos;
-        }
-        try {
-            long ttlS = Long.parseLong(ttlString);
-            // For the system properties, -1 means "cache forever" and 0 means "don't cache".
-            if (ttlS == -1) {
-                return Long.MAX_VALUE;
-            } else if (ttlS == 0) {
-                return Long.MIN_VALUE;
-            } else {
-                return System.nanoTime() + ttlS * 1000000000L;
-            }
-        } catch (NumberFormatException ex) {
-            return System.nanoTime() + defaultTtlNanos;
-        }
+        cache.put(hostname, new AddressCacheEntry(detailMessage));
     }
 }

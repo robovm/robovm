@@ -77,18 +77,15 @@ final class ReadWriteHeapByteBuffer extends HeapByteBuffer {
         return false;
     }
 
-    @Override
-    protected byte[] protectedArray() {
+    @Override byte[] protectedArray() {
         return backingArray;
     }
 
-    @Override
-    protected int protectedArrayOffset() {
+    @Override int protectedArrayOffset() {
         return offset;
     }
 
-    @Override
-    protected boolean protectedHasArray() {
+    @Override boolean protectedHasArray() {
         return true;
     }
 

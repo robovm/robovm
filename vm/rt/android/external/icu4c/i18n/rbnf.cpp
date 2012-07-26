@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-* Copyright (C) 1997-2010, International Business Machines Corporation
+* Copyright (C) 1997-2011, International Business Machines Corporation
 * and others. All Rights Reserved.
 *******************************************************************************
 */
@@ -25,7 +25,7 @@
 
 #include "cmemory.h"
 #include "cstring.h"
-#include "util.h"
+#include "patternprops.h"
 #include "uresimp.h"
 
 // debugging
@@ -75,7 +75,7 @@ The RTTI code was also removed due to lack of code coverage.
 */
 class LocalizationInfo : public UMemory {
 protected:
-    virtual ~LocalizationInfo() {};
+    virtual ~LocalizationInfo() {}
     uint32_t refcount;
     
 public:
@@ -313,9 +313,9 @@ private:
     void inc(void) { ++p; ch = 0xffff; }
     UBool checkInc(UChar c) { if (p < e && (ch == c || *p == c)) { inc(); return TRUE; } return FALSE; }
     UBool check(UChar c) { return p < e && (ch == c || *p == c); }
-    void skipWhitespace(void) { while (p < e && uprv_isRuleWhiteSpace(ch != 0xffff ? ch : *p)) inc();}
+    void skipWhitespace(void) { while (p < e && PatternProps::isWhiteSpace(ch != 0xffff ? ch : *p)) inc();}
     UBool inList(UChar c, const UChar* list) const {
-        if (*list == SPACE && uprv_isRuleWhiteSpace(c)) return TRUE;
+        if (*list == SPACE && PatternProps::isWhiteSpace(c)) return TRUE;
         while (*list && *list != c) ++list; return *list == c;
     }
     void parseError(const char* msg);
@@ -1067,7 +1067,15 @@ RuleBasedNumberFormat::format(double number,
                               UnicodeString& toAppendTo,
                               FieldPosition& /* pos */) const
 {
-    if (defaultRuleSet) defaultRuleSet->format(number, toAppendTo, toAppendTo.length());
+    // Special case for NaN; adapted from what DecimalFormat::_format( double number,...) does.
+    if (uprv_isNaN(number)) {
+        DecimalFormatSymbols* decFmtSyms = getDecimalFormatSymbols(); // RuleBasedNumberFormat internal
+        if (decFmtSyms) {
+            toAppendTo += decFmtSyms->getConstSymbol(DecimalFormatSymbols::kNaNSymbol);
+        }
+    } else if (defaultRuleSet) {
+        defaultRuleSet->format(number, toAppendTo, toAppendTo.length());
+    }
     return toAppendTo;
 }
 
@@ -1331,7 +1339,7 @@ RuleBasedNumberFormat::init(const UnicodeString& rules, LocalizationInfo* locali
                 lpEnd = description.length() - 1;
             }
             int lpStart = lp + u_strlen(gLenientParse);
-            while (uprv_isRuleWhiteSpace(description.charAt(lpStart))) {
+            while (PatternProps::isWhiteSpace(description.charAt(lpStart))) {
                 ++lpStart;
             }
 
@@ -1467,7 +1475,7 @@ RuleBasedNumberFormat::stripWhitespace(UnicodeString& description)
     while (start != -1 && start < description.length()) {
         // seek to the first non-whitespace character...
         while (start < description.length()
-            && uprv_isRuleWhiteSpace(description.charAt(start))) {
+            && PatternProps::isWhiteSpace(description.charAt(start))) {
             ++start;
         }
 

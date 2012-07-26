@@ -1,6 +1,6 @@
 /*
  *******************************************************************************
- * Copyright (C) 1996-2010, International Business Machines Corporation and
+ * Copyright (C) 1996-2011, International Business Machines Corporation and
  * others. All Rights Reserved.
  *******************************************************************************
  */
@@ -139,6 +139,12 @@
  *
  * @stable ICU 2.0
  */
+
+/**
+ * The time zone ID reserved for unknown time zone.
+ * @draft ICU 4.8
+ */
+#define UCAL_UNKNOWN_ZONE_ID "Etc/Unknown"
 
 /** A calendar.
  *  For usage in C programs.
@@ -516,6 +522,53 @@ enum UCalendarAMPMs {
 typedef enum UCalendarAMPMs UCalendarAMPMs;
 
 /**
+ * System time zone type constants used by filtering zones
+ * in ucal_openTimeZoneIDEnumeration.
+ * @see ucal_openTimeZoneIDEnumeration
+ * @draft ICU 4.8
+ */
+enum USystemTimeZoneType {
+    /**
+     * Any system zones.
+     * @draft ICU 4.8
+     */
+    UCAL_ZONE_TYPE_ANY,
+    /**
+     * Canonical system zones.
+     * @draft ICU 4.8
+     */
+    UCAL_ZONE_TYPE_CANONICAL,
+    /**
+     * Canonical system zones associated with actual locations.
+     * @draft ICU 4.8
+     */
+    UCAL_ZONE_TYPE_CANONICAL_LOCATION
+};
+
+/** @draft ICU 4.8 */
+typedef enum USystemTimeZoneType USystemTimeZoneType;
+
+/** 
+ * Create an enumeration over system time zone IDs with the given
+ * filter conditions. 
+ * @param zoneType  The system time zone type.
+ * @param region    The ISO 3166 two-letter country code or UN M.49
+ *                  three-digit area code.  When NULL, no filtering
+ *                  done by region. 
+ * @param rawOffset An offset from GMT in milliseconds, ignoring the
+ *                  effect of daylight savings time, if any. When NULL,
+ *                  no filtering done by zone offset.
+ * @param ec        A pointer to an UErrorCode to receive any errors
+ * @return  an enumeration object that the caller must dispose of
+ *          using enum_close(), or NULL upon failure. In case of failure,
+ *          *ec will indicate the error.
+ * @draft ICU 4.8
+ */ 
+U_DRAFT UEnumeration* U_EXPORT2
+ucal_openTimeZoneIDEnumeration(USystemTimeZoneType zoneType, const char* region,
+                                const int32_t* rawOffset, UErrorCode* ec);
+
+/**
  * Create an enumeration over all time zones.
  *
  * @param ec input/output error code
@@ -613,9 +666,9 @@ ucal_getNow(void);
  * month, and day.
  * <p>
  * Note: When unknown TimeZone ID is specified, the UCalendar returned
- * by the function is initialized with GMT ("Etc/GMT") without any
- * errors/warnings.  If you want to check if a TimeZone ID is valid,
- * use ucal_getCanonicalTimeZoneID prior to this function.
+ * by the function is initialized with GMT zone with TimeZone ID <code>UCAL_UNKNOWN_ZONE_ID</code>
+ * ("Etc/Unknown") without any errors/warnings.  If you want to check if a TimeZone ID is valid
+ * prior to this function, use <code>ucal_getCanonicalTimeZoneID</code>.
  * 
  * @param zoneID The desired TimeZone ID.  If 0, use the default time zone.
  * @param len The length of zoneID, or -1 if null-terminated.
@@ -627,6 +680,7 @@ ucal_getNow(void);
  * and then pass the locale to ucal_open with UCAL_DEFAULT as the type.
  * @param status A pointer to an UErrorCode to receive any errors
  * @return A pointer to a UCalendar, or 0 if an error occurred.
+ * @see #UCAL_UNKNOWN_ZONE_ID
  * @stable ICU 2.0
  */
 U_STABLE UCalendar* U_EXPORT2 
@@ -1278,6 +1332,36 @@ ucal_getWeekendTransition(const UCalendar *cal, UCalendarDaysOfWeek dayOfWeek, U
  */
 U_STABLE UBool U_EXPORT2
 ucal_isWeekend(const UCalendar *cal, UDate date, UErrorCode *status);
+
+/**
+ * Return the difference between the target time and the time this calendar object is currently set to.
+ * If the target time is after the current calendar setting, the the returned value will be positive.
+ * The field parameter specifies the units of the return value. For example, if field is UCAL_MONTH
+ * and ucal_getFieldDifference returns 3, then the target time is 3 to less than 4 months after the
+ * current calendar setting.
+ *
+ * As a side effect of this call, this calendar is advanced toward target by the given amount. That is,
+ * calling this function has the side effect of calling ucal_add on this calendar with the specified
+ * field and an amount equal to the return value from this function.
+ *
+ * A typical way of using this function is to call it first with the largest field of interest, then
+ * with progressively smaller fields.
+ * 
+ * @param cal The UCalendar to compare and update.
+ * @param target The target date to compare to the current calendar setting.
+ * @param field The field to compare; one of UCAL_ERA, UCAL_YEAR, UCAL_MONTH,
+ * UCAL_WEEK_OF_YEAR, UCAL_WEEK_OF_MONTH, UCAL_DATE, UCAL_DAY_OF_YEAR, UCAL_DAY_OF_WEEK,
+ * UCAL_DAY_OF_WEEK_IN_MONTH, UCAL_AM_PM, UCAL_HOUR, UCAL_HOUR_OF_DAY, UCAL_MINUTE, UCAL_SECOND,
+ * UCAL_MILLISECOND, UCAL_ZONE_OFFSET, UCAL_DST_OFFSET.
+ * @param status A pointer to an UErrorCode to receive any errors
+ * @return The date difference for the specified field.
+ * @draft ICU 4.8
+ */
+U_DRAFT int32_t U_EXPORT2 
+ucal_getFieldDifference(UCalendar* cal,
+                        UDate target,
+                        UCalendarDateFields field,
+                        UErrorCode* status);
 
 
 #endif /* #if !UCONFIG_NO_FORMATTING */

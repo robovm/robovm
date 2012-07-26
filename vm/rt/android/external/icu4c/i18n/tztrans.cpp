@@ -69,7 +69,6 @@ TimeZoneTransition::operator==(const TimeZoneTransition& that) const {
     if (typeid(*this) != typeid(that)) {
         return FALSE;
     }
-
     if (fTime != that.fTime) {
         return FALSE;
     }

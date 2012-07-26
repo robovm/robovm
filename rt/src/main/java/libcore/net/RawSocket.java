@@ -32,35 +32,50 @@ import libcore.io.IoBridge;
  * @hide
  */
 public class RawSocket implements Closeable {
-    private static native void create(FileDescriptor fd, String interfaceName)
+    /**
+     * Ethernet IP protocol type, part of the L2 header of IP packets.
+     */
+    public static final short ETH_P_IP = (short) 0x0800;
+
+    /**
+     * Ethernet ARP protocol type, part of the L2 header of ARP packets.
+     */
+    public static final short ETH_P_ARP = (short) 0x0806;
+
+    private static native void create(FileDescriptor fd, short
+            protocolType, String interfaceName)
             throws SocketException;
     private static native int sendPacket(FileDescriptor fd,
-        String interfaceName, byte[] destMac, byte[] packet, int offset,
-        int byteCount);
+        String interfaceName, short protocolType, byte[] destMac, byte[] packet,
+        int offset, int byteCount);
     private static native int recvPacket(FileDescriptor fd, byte[] packet,
         int offset, int byteCount, int destPort, int timeoutMillis);
 
     private final FileDescriptor fd;
     private final String mInterfaceName;
+    private final short mProtocolType;
     private final CloseGuard guard = CloseGuard.get();
 
     /**
      * Creates a socket on the specified interface.
      */
-    public RawSocket(String interfaceName) throws SocketException {
+    public RawSocket(String interfaceName, short protocolType)
+        throws SocketException {
         mInterfaceName = interfaceName;
+        mProtocolType = protocolType;
         fd = new FileDescriptor();
-        create(fd, mInterfaceName);
+        create(fd, mProtocolType, mInterfaceName);
         guard.open("close");
     }
 
     /**
      * Reads a raw packet into the specified buffer, with the
-     * specified timeout.  Packets not destined for the desired UDP
-     * port are discarded.  Returns the length actually read.  No
-     * indication of overflow is signaled.  The packet data will start
-     * at the IP header (EthernetII dest/source/type headers are
-     * removed).
+     * specified timeout.  If the destPort is -1, then the IP
+     * destination port is not verified, otherwise only packets
+     * destined for the specified UDP port are returned.  Returns the
+     * length actually read.  No indication of overflow is signaled.
+     * The packet data will start at the IP header (EthernetII
+     * dest/source/type headers are removed).
      */
     public int read(byte[] packet, int offset, int byteCount, int destPort,
         int timeoutMillis) {
@@ -70,7 +85,7 @@ public class RawSocket implements Closeable {
 
         Arrays.checkOffsetAndCount(packet.length, offset, byteCount);
 
-        if (destPort < 0 || destPort > 65535) {
+        if (destPort > 65535) {
             throw new IllegalArgumentException("Port out of range: "
                 + destPort);
         }
@@ -82,8 +97,8 @@ public class RawSocket implements Closeable {
     /**
      * Writes a raw packet to the desired interface.  A L2 header will
      * be added which includes the specified destination address, our
-     * source MAC, and the IP type.  The caller is responsible for
-     * computing correct IP-header and payload checksums.
+     * source MAC, and the specified protocol type.  The caller is responsible
+     * for computing correct IP-header and payload checksums.
      */
     public int write(byte[] destMac, byte[] packet, int offset, int byteCount) {
         if (destMac == null) {
@@ -101,8 +116,8 @@ public class RawSocket implements Closeable {
                 + destMac.length);
         }
 
-        return sendPacket(fd, mInterfaceName, destMac, packet, offset,
-            byteCount);
+        return sendPacket(fd, mInterfaceName, mProtocolType, destMac, packet,
+            offset, byteCount);
     }
 
     /**

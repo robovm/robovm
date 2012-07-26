@@ -23,66 +23,20 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.security.SignatureException;
-import java.security.interfaces.DSAParams;
+import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.RSAPrivateCrtKey;
+import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * Implements the subset of the JDK Signature interface needed for
  * signature verification using OpenSSL.
  */
 public class OpenSSLSignature extends Signature {
-
-    private static Map<String,Class<? extends OpenSSLSignature>> jdkToOpenSsl
-            = new HashMap<String,Class<? extends OpenSSLSignature>>();
-    private static void register(String algorithm, Class implementation) {
-        jdkToOpenSsl.put(algorithm.toUpperCase(Locale.US), implementation);
-    }
-    private static Class lookup(String algorithm) {
-        return jdkToOpenSsl.get(algorithm.toUpperCase(Locale.US));
-    }
-
-    static {
-        // TODO Finish OpenSSLSignature implementation and move
-        // registration information to the OpenSSLProvider
-        register("MD5WithRSAEncryption", MD5RSA.class);
-        register("MD5WithRSA", MD5RSA.class);
-        register("MD5/RSA", MD5RSA.class);
-        register("1.2.840.113549.1.1.4", MD5RSA.class);
-        register("1.2.840.113549.2.5with1.2.840.113549.1.1.1", MD5RSA.class);
-
-        register("SHA1WithRSAEncryption", SHA1RSA.class);
-        register("SHA1WithRSA", SHA1RSA.class);
-        register("SHA1/RSA", SHA1RSA.class);
-        register("SHA-1/RSA", SHA1RSA.class);
-        register("1.2.840.113549.1.1.5", SHA1RSA.class);
-        register("1.3.14.3.2.26with1.2.840.113549.1.1.1", SHA1RSA.class);
-        register("1.3.14.3.2.26with1.2.840.113549.1.1.5", SHA1RSA.class);
-        register("1.3.14.3.2.29", SHA1RSA.class);
-
-        register("SHA256WithRSAEncryption", SHA256RSA.class);
-        register("SHA256WithRSA", SHA256RSA.class);
-        register("1.2.840.113549.1.1.11", SHA256RSA.class);
-
-        register("SHA384WithRSAEncryption", SHA384RSA.class);
-        register("SHA384WithRSA", SHA384RSA.class);
-        register("1.2.840.113549.1.1.12", SHA384RSA.class);
-
-        register("SHA512WithRSAEncryption", SHA512RSA.class);
-        register("SHA512WithRSA", SHA512RSA.class);
-        register("1.2.840.113549.1.1.13", SHA512RSA.class);
-
-        register("SHA1withDSA", SHA1DSA.class);
-        register("SHA/DSA", SHA1DSA.class);
-        register("DSA", SHA1DSA.class);
-        register("1.3.14.3.2.26with1.2.840.10040.4.1", SHA1DSA.class);
-        register("1.3.14.3.2.26with1.2.840.10040.4.3", SHA1DSA.class);
-        register("DSAWithSHA1", SHA1DSA.class);
-        register("1.2.840.10040.4.3", SHA1DSA.class);
-    }
+    private static enum EngineType {
+        RSA, DSA,
+    };
 
     /**
      * Holds a pointer to the native message digest context.
@@ -90,14 +44,14 @@ public class OpenSSLSignature extends Signature {
     private int ctx;
 
     /**
-     * Holds a pointer to the native DSA key.
+     * The current OpenSSL key we're operating on.
      */
-    private int dsa;
+    private OpenSSLKey key;
 
     /**
-     * Holds a pointer to the native RSA key.
+     * Holds the type of the Java algorithm.
      */
-    private int rsa;
+    private final EngineType engineType;
 
     /**
      * Holds the OpenSSL name of the algorithm (lower case, no dashes).
@@ -112,34 +66,10 @@ public class OpenSSLSignature extends Signature {
     /**
      * Creates a new OpenSSLSignature instance for the given algorithm name.
      *
-     * @param algorithm The name of the algorithm, e.g. "SHA1WithRSA".
-     *
-     * @return The new OpenSSLSignature instance.
-     *
-     * @throws RuntimeException In case of problems.
-     */
-    public static OpenSSLSignature getInstance(String algorithm) throws NoSuchAlgorithmException {
-        // System.out.println("getInstance() invoked with " + algorithm);
-
-        Class <? extends OpenSSLSignature> clazz = lookup(algorithm);
-        if (clazz == null) {
-            throw new NoSuchAlgorithmException(algorithm);
-        }
-        try {
-            return clazz.newInstance();
-        } catch (InstantiationException e) {
-            throw new NoSuchAlgorithmException(algorithm, e);
-        } catch (IllegalAccessException e) {
-            throw new NoSuchAlgorithmException(algorithm, e);
-        }
-    }
-
-    /**
-     * Creates a new OpenSSLSignature instance for the given algorithm name.
-     *
      * @param algorithm OpenSSL name of the algorithm, e.g. "RSA-SHA1".
      */
-    private OpenSSLSignature(String algorithm) throws NoSuchAlgorithmException {
+    private OpenSSLSignature(String algorithm, EngineType engineType)
+            throws NoSuchAlgorithmException {
         super(algorithm);
 
         // We don't support MD2
@@ -147,6 +77,7 @@ public class OpenSSLSignature extends Signature {
             throw new NoSuchAlgorithmException(algorithm);
         }
 
+        this.engineType = engineType;
         this.evpAlgorithm = algorithm;
     }
 
@@ -159,8 +90,24 @@ public class OpenSSLSignature extends Signature {
     @Override
     protected void engineUpdate(byte[] input, int offset, int len) {
         if (state == SIGN) {
-            throw new UnsupportedOperationException();
+            if (ctx == 0) {
+                try {
+                    ctx = NativeCrypto.EVP_SignInit(evpAlgorithm);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+
+            NativeCrypto.EVP_SignUpdate(ctx, input, offset, len);
         } else {
+            if (ctx == 0) {
+                try {
+                    ctx = NativeCrypto.EVP_VerifyInit(evpAlgorithm);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+
             NativeCrypto.EVP_VerifyUpdate(ctx, input, offset, len);
         }
     }
@@ -172,42 +119,83 @@ public class OpenSSLSignature extends Signature {
 
     @Override
     protected void engineInitSign(PrivateKey privateKey) throws InvalidKeyException {
-        throw new UnsupportedOperationException();
+        destroyContextIfExists();
+
+        if (privateKey instanceof OpenSSLDSAPrivateKey) {
+            if (engineType != EngineType.DSA) {
+                throw new InvalidKeyException("Signature not initialized as DSA");
+            }
+
+            OpenSSLDSAPrivateKey dsaPrivateKey = (OpenSSLDSAPrivateKey) privateKey;
+            key = dsaPrivateKey.getOpenSSLKey();
+        } else if (privateKey instanceof DSAPrivateKey) {
+            if (engineType != EngineType.DSA) {
+                throw new InvalidKeyException("Signature not initialized as DSA");
+            }
+
+            DSAPrivateKey dsaPrivateKey = (DSAPrivateKey) privateKey;
+            key = OpenSSLDSAPrivateKey.getInstance(dsaPrivateKey);
+        } else if (privateKey instanceof OpenSSLRSAPrivateKey) {
+            if (engineType != EngineType.RSA) {
+                throw new InvalidKeyException("Signature not initialized as RSA");
+            }
+
+            OpenSSLRSAPrivateKey rsaPrivateKey = (OpenSSLRSAPrivateKey) privateKey;
+            key = rsaPrivateKey.getOpenSSLKey();
+        } else if (privateKey instanceof RSAPrivateCrtKey) {
+            if (engineType != EngineType.RSA) {
+                throw new InvalidKeyException("Signature not initialized as RSA");
+            }
+
+            RSAPrivateCrtKey rsaPrivateKey = (RSAPrivateCrtKey) privateKey;
+            key = OpenSSLRSAPrivateCrtKey.getInstance(rsaPrivateKey);
+        } else if (privateKey instanceof RSAPrivateKey) {
+            if (engineType != EngineType.RSA) {
+                throw new InvalidKeyException("Signature not initialized as RSA");
+            }
+
+            RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) privateKey;
+            key = OpenSSLRSAPrivateKey.getInstance(rsaPrivateKey);
+        } else {
+            throw new InvalidKeyException("Need DSA or RSA private key");
+        }
     }
 
     @Override
     protected void engineInitVerify(PublicKey publicKey) throws InvalidKeyException {
-        // System.out.println("engineInitVerify() invoked with "
-        //                    + publicKey.getClass().getCanonicalName());
+        // If we had an existing context, destroy it first.
+        destroyContextIfExists();
 
-        if (publicKey instanceof DSAPublicKey) {
-            try {
-                DSAPublicKey dsaPublicKey = (DSAPublicKey)publicKey;
-                DSAParams dsaParams = dsaPublicKey.getParams();
-                dsa = NativeCrypto.EVP_PKEY_new_DSA(dsaParams.getP().toByteArray(),
-                        dsaParams.getQ().toByteArray(), dsaParams.getG().toByteArray(),
-                        dsaPublicKey.getY().toByteArray(), null);
-
-            } catch (Exception e) {
-                throw new InvalidKeyException(e);
+        if (publicKey instanceof OpenSSLDSAPublicKey) {
+            if (engineType != EngineType.DSA) {
+                throw new InvalidKeyException("Signature not initialized as DSA");
             }
+
+            OpenSSLDSAPublicKey dsaPublicKey = (OpenSSLDSAPublicKey) publicKey;
+            key = dsaPublicKey.getOpenSSLKey();
+        } else if (publicKey instanceof DSAPublicKey) {
+            if (engineType != EngineType.DSA) {
+                throw new InvalidKeyException("Signature not initialized as DSA");
+            }
+
+            DSAPublicKey dsaPublicKey = (DSAPublicKey) publicKey;
+            key = OpenSSLDSAPublicKey.getInstance(dsaPublicKey);
+        } else if (publicKey instanceof OpenSSLRSAPublicKey) {
+            if (engineType != EngineType.RSA) {
+                throw new InvalidKeyException("Signature not initialized as RSA");
+            }
+
+            OpenSSLRSAPublicKey rsaPublicKey = (OpenSSLRSAPublicKey) publicKey;
+            key = rsaPublicKey.getOpenSSLKey();
         } else if (publicKey instanceof RSAPublicKey) {
-            try {
-                RSAPublicKey rsaPublicKey = (RSAPublicKey)publicKey;
-                rsa = NativeCrypto.EVP_PKEY_new_RSA(rsaPublicKey.getModulus().toByteArray(),
-                        rsaPublicKey.getPublicExponent().toByteArray(), null, null, null);
-
-            } catch (Exception e) {
-                throw new InvalidKeyException(e);
+            if (engineType != EngineType.RSA) {
+                throw new InvalidKeyException("Signature not initialized as RSA");
             }
+
+            RSAPublicKey rsaPublicKey = (RSAPublicKey) publicKey;
+            key = OpenSSLRSAPublicKey.getInstance(rsaPublicKey);
         } else {
             throw new InvalidKeyException("Need DSA or RSA public key");
-        }
-
-        try {
-            ctx = NativeCrypto.EVP_VerifyInit(evpAlgorithm);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
         }
     }
 
@@ -217,37 +205,62 @@ public class OpenSSLSignature extends Signature {
 
     @Override
     protected byte[] engineSign() throws SignatureException {
-        throw new UnsupportedOperationException();
+        if (key == null) {
+            // This can't actually happen, but you never know...
+            throw new SignatureException("Need DSA or RSA private key");
+        }
+
+        try {
+            byte[] buffer = new byte[NativeCrypto.EVP_PKEY_size(key.getPkeyContext())];
+            int bytesWritten = NativeCrypto.EVP_SignFinal(ctx, buffer, 0, key.getPkeyContext());
+
+            byte[] signature = new byte[bytesWritten];
+            System.arraycopy(buffer, 0, signature, 0, bytesWritten);
+
+            return signature;
+        } catch (Exception ex) {
+            throw new SignatureException(ex);
+        } finally {
+            /*
+             * Java expects the digest context to be reset completely after sign
+             * calls.
+             */
+            destroyContextIfExists();
+        }
     }
 
     @Override
     protected boolean engineVerify(byte[] sigBytes) throws SignatureException {
-        int handle = (rsa != 0) ? rsa : dsa;
-
-        if (handle == 0) {
+        if (key == null) {
             // This can't actually happen, but you never know...
             throw new SignatureException("Need DSA or RSA public key");
         }
 
         try {
-            int result = NativeCrypto.EVP_VerifyFinal(ctx, sigBytes, 0, sigBytes.length, handle);
+            int result = NativeCrypto.EVP_VerifyFinal(ctx, sigBytes, 0, sigBytes.length,
+                    key.getPkeyContext());
             return result == 1;
         } catch (Exception ex) {
             throw new SignatureException(ex);
+        } finally {
+            /*
+             * Java expects the digest context to be reset completely after
+             * verify calls.
+             */
+            destroyContextIfExists();
         }
-
     }
 
-    @Override protected void finalize() throws Throwable {
+    private void destroyContextIfExists() {
+        if (ctx != 0) {
+            NativeCrypto.EVP_MD_CTX_destroy(ctx);
+            ctx = 0;
+        }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
         try {
-            if (dsa != 0) {
-                NativeCrypto.EVP_PKEY_free(dsa);
-            }
-
-            if (rsa != 0) {
-                NativeCrypto.EVP_PKEY_free(rsa);
-            }
-
             if (ctx != 0) {
                 NativeCrypto.EVP_MD_CTX_destroy(ctx);
             }
@@ -258,32 +271,32 @@ public class OpenSSLSignature extends Signature {
 
     public static final class MD5RSA extends OpenSSLSignature {
         public MD5RSA() throws NoSuchAlgorithmException {
-            super("RSA-MD5");
+            super("RSA-MD5", EngineType.RSA);
         }
     }
     public static final class SHA1RSA extends OpenSSLSignature {
         public SHA1RSA() throws NoSuchAlgorithmException {
-            super("RSA-SHA1");
+            super("RSA-SHA1", EngineType.RSA);
         }
     }
     public static final class SHA256RSA extends OpenSSLSignature {
         public SHA256RSA() throws NoSuchAlgorithmException {
-            super("RSA-SHA256");
+            super("RSA-SHA256", EngineType.RSA);
         }
     }
     public static final class SHA384RSA extends OpenSSLSignature {
         public SHA384RSA() throws NoSuchAlgorithmException {
-            super("RSA-SHA384");
+            super("RSA-SHA384", EngineType.RSA);
         }
     }
     public static final class SHA512RSA extends OpenSSLSignature {
         public SHA512RSA() throws NoSuchAlgorithmException {
-            super("RSA-SHA512");
+            super("RSA-SHA512", EngineType.RSA);
         }
     }
     public static final class SHA1DSA extends OpenSSLSignature {
         public SHA1DSA() throws NoSuchAlgorithmException {
-            super("DSA-SHA1");
+            super("DSA-SHA1", EngineType.DSA);
         }
     }
 }

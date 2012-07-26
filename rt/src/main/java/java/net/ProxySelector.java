@@ -29,11 +29,11 @@ import java.util.List;
  * <tr class="TableHeadingColor"><th colspan="4">Hostname patterns</th></tr>
  * <tr><th>URL scheme</th><th>property name</th><th>description</th><th>default</th></tr>
  * <tr><td>ftp</td><td>ftp.nonProxyHosts</td><td>Hostname pattern for FTP servers to connect to
- *     directly (without a proxy).</td><td>*</td></tr>
+ *     directly (without a proxy).</td><td></td></tr>
  * <tr><td>http</td><td>http.nonProxyHosts</td><td>Hostname pattern for HTTP servers to connect to
- *     directly (without a proxy).</td><td>*</td></tr>
+ *     directly (without a proxy).</td><td></td></tr>
  * <tr><td>https</td><td>https.nonProxyHosts</td><td>Hostname pattern for HTTPS servers to connect
- *     to directly (without a proxy).</td><td>*</td></tr>
+ *     to directly (without a proxy).</td><td></td></tr>
  * <tr><td colspan="4"><br></td></tr>
  *
  * <tr class="TableHeadingColor"><th colspan="4">{@linkplain Proxy.Type#HTTP HTTP Proxies}</th></tr>

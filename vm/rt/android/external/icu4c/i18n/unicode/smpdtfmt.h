@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1997-2010, International Business Machines Corporation and
+* Copyright (C) 1997-2011, International Business Machines Corporation and
 * others. All Rights Reserved.
 *******************************************************************************
 *
@@ -41,6 +41,7 @@ class DateFormatSymbols;
 class DateFormat;
 class MessageFormat;
 class FieldPositionHandler;
+class TimeZoneFormat;
 
 /**
  *
@@ -810,6 +811,7 @@ private:
      *                  "yyyy" in the pattern would result in a call to this function
      *                  with ch equal to 'y' and count equal to 4)
      * @param handler   Records information about field positions.
+     * @param cal       Calendar to use
      * @param status    Receives a status code, which will be U_ZERO_ERROR if the operation
      *                  succeeds.
      */
@@ -826,6 +828,7 @@ private:
      * having a number of digits between "minDigits" and
      * "maxDigits".  Uses the DateFormat's NumberFormat.
      *
+     * @param currentNumberFormat 
      * @param appendTo  Output parameter to receive result.
      *                  Formatted number is appended to existing contents.
      * @param value     Value to format.
@@ -876,7 +879,7 @@ private:
      * Called by construct() and the various constructors to set up the SimpleDateFormat's
      * Calendar and NumberFormat objects.
      * @param locale    The locale for which we want a Calendar and a NumberFormat.
-     * @param statuc    Filled in with an error code if creating either subobject fails.
+     * @param status    Filled in with an error code if creating either subobject fails.
      */
     void initialize(const Locale& locale, UErrorCode& status);
 
@@ -909,7 +912,23 @@ private:
      */
     int32_t matchQuarterString(const UnicodeString& text, int32_t start, UCalendarDateFields field,
                                const UnicodeString* stringArray, int32_t stringArrayCount, Calendar& cal) const;
-
+    
+    /**
+     * Private function used by subParse to match literal pattern text.
+     *
+     * @param pattern the pattern string
+     * @param patternOffset the starting offset into the pattern text. On
+     *        outupt will be set the offset of the first non-literal character in the pattern
+     * @param text the text being parsed
+     * @param textOffset the starting offset into the text. On output
+     *                   will be set to the offset of the character after the match
+     * @param lenient <code>TRUE</code> if the parse is lenient, <code>FALSE</code> otherwise.
+     *
+     * @return <code>TRUE</code> if the literal text could be matched, <code>FALSE</code> otherwise.
+     */
+    static UBool matchLiterals(const UnicodeString &pattern, int32_t &patternOffset,
+                               const UnicodeString &text, int32_t &textOffset, UBool lenient);
+    
     /**
      * Private member function that converts the parsed date strings into
      * timeFields. Returns -start (for ParsePosition) if failed.
@@ -918,10 +937,12 @@ private:
      * @param ch the pattern character for the date field text to be parsed.
      * @param count the count of a pattern character.
      * @param obeyCount if true then the count is strictly obeyed.
+     * @param allowNegative
      * @param ambiguousYear If true then the two-digit year == the default start year.
      * @param saveHebrewMonth Used to hang onto month until year is known.
      * @param cal a Calendar set to the date and time to be formatted
      *            into a date/time string.
+     * @param patLoc
      * @return the new start position if matching succeeded; a negative number
      * indicating matching failure, otherwise.
      */
@@ -986,10 +1007,10 @@ private:
                    int32_t pos) const;
 
     /**
-     * Skip over a run of zero or more isRuleWhiteSpace() characters at
+     * Skip over a run of zero or more Pattern_White_Space characters at
      * pos in text.
      */
-    int32_t skipRuleWhiteSpace(const UnicodeString& text, int32_t pos) const;
+    int32_t skipPatternWhiteSpace(const UnicodeString& text, int32_t pos) const;
 
     /**
      * Skip over a run of zero or more isUWhiteSpace() characters at pos
@@ -1039,6 +1060,11 @@ private:
     static const UDateFormatField fgPatternIndexToDateFormatField[];
 
     /**
+     * Lazy TimeZoneFormat instantiation, semantically const
+     */
+    TimeZoneFormat *tzFormat() const;
+
+    /**
      * Used to map Calendar field to field level.
      * The larger the level, the smaller the field unit.
      * For example, UCAL_ERA level is 0, UCAL_YEAR level is 10,
@@ -1073,6 +1099,11 @@ private:
      * month and day names, AM and PM strings, time zone names, etc.)
      */
     DateFormatSymbols*  fSymbols;   // Owned
+
+    /**
+     * The time zone formatter
+     */
+    TimeZoneFormat* fTimeZoneFormat;
 
     /**
      * If dates have ambiguous years, we map them into the century starting

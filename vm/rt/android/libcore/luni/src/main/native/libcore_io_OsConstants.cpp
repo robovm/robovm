@@ -21,6 +21,8 @@
 
 #include <errno.h>
 #include <fcntl.h>
+ // RoboVM note: On Darwin sys/socket.h must be included before net/if.h to prevent compilation errors
+#include <sys/socket.h>
 #include <net/if.h>
 #include <netdb.h>
 #include <netinet/in.h>
@@ -30,7 +32,6 @@
 #include <stdlib.h>
 #include <sys/ioctl.h>
 #include <sys/mman.h>
-#include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <unistd.h>

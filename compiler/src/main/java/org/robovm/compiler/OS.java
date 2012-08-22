@@ -51,7 +51,7 @@ public enum OS {
         if (host.contains("linux")) {
             return OS.linux;
         }
-        if (host.contains("darwin")) {
+        if (host.contains("darwin") || host.contains("apple")) {
             return OS.macosx;
         }
         throw new IllegalArgumentException("Unrecognized OS in Host string: " + host);
@@ -77,7 +77,7 @@ public enum OS {
             executor.setExitValues(new int[] {0, 1});
             executor.execute(command, env);
             String output = new String(baos.toByteArray());
-            Matcher m = Pattern.compile("(?m)Host:\\s*(.*)$").matcher(output);
+            Matcher m = Pattern.compile("(?m)(?:Host|Default target):\\s*(.*)$").matcher(output);
             if (m.find()) {
                 llvmHostString = m.group(1).trim();
                 llvmHostStrings.put(llvmHomeDir, llvmHostString);

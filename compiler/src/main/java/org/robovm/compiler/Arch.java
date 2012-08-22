@@ -52,8 +52,9 @@ public enum Arch {
         case thumbv6:
         case thumbv7:
             return true;
+        default:
+            return false;
         }
-        return false;
     }
     
     public static Arch getDefaultArch(File llvmHomeDir) {

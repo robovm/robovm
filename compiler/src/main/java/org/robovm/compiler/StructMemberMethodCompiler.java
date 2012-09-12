@@ -200,11 +200,10 @@ public class StructMemberMethodCompiler extends AbstractMethodCompiler {
             fn = trampoline.getFunctionRef();
         }
         Value result = call(function, fn, function.getParameterRef(0));
-        Variable handleI64 = function.newVariable(I64);
-        function.add(new Ptrtoint(handleI64, handle, I64));
-        Invokespecial constructor = new Invokespecial(this.className, targetClassName, "<init>", "(J)V", targetClassName);
-        trampolines.add(constructor);
-        call(function, constructor.getFunctionRef(), function.getParameterRef(0), result, handleI64.ref());
+        Variable handleI8Ptr = function.newVariable(I8_PTR);
+        function.add(new Bitcast(handleI8Ptr, handle, I8_PTR));
+        call(function, BC_SET_STRUCT_HANDLE, function.getParameterRef(0), result, handleI8Ptr.ref());
+
         return result;
     }
 }

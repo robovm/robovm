@@ -53,6 +53,8 @@ public final class VM {
     
     public native static final long allocateMemory(int size);
     
+    public native static final <T> T allocateObject(Class<T> cls);
+    
     public native static final void memcpy(long s1, long s2, long n);
     
     public native static final void memmove(long s1, long s2, long n);
@@ -102,7 +104,4 @@ public final class VM {
     public native static final long[] newLongArray(long address, int size);
     public native static final float[] newFloatArray(long address, int size);
     public native static final double[] newDoubleArray(long address, int size);
-    
-    public native static final long getPointerArrayValuesAddress(long[] array);
-    public native static final long[] newPointerArray(long address, int size);
 }

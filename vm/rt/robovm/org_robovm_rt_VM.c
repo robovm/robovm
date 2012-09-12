@@ -94,6 +94,10 @@ jlong Java_org_robovm_rt_VM_allocateMemory(Env* env, Class* c, jint size) {
     return PTR_TO_LONG(rvmAllocateMemory(env, size));
 }
 
+Object* Java_org_robovm_rt_VM_allocateObject(Env* env, Class* c, Class* cls) {
+    return rvmAllocateObject(env, cls);
+}
+
 void Java_org_robovm_rt_VM_memcpy(Env* env, Class* c, jlong s1, jlong s2, jlong n) {
     memcpy(LONG_TO_PTR(s1), LONG_TO_PTR(s2), (size_t) n);
 }
@@ -285,34 +289,3 @@ DoubleArray* Java_org_robovm_rt_VM_newDoubleArray(Env* env, Class* c, jlong addr
     }
     return array;
 }
-
-jlong Java_org_robovm_rt_VM_getPointerArrayValuesAddress(Env* env, Class* c, LongArray* array) {
-#ifdef RVM_X86_64
-    return PTR_TO_LONG(array->values);
-#else
-    void** data = rvmAllocateMemory(env, array->length * sizeof(void*));
-    if (!data) return 0;
-    jint i = 0;
-    for (i = 0; i < array->length; i++) {
-        data[i] = LONG_TO_PTR(array->values[i]);
-    }
-    return PTR_TO_LONG(data);
-#endif
-}
-
-LongArray* Java_org_robovm_rt_VM_newPointerArray(Env* env, Class* c, jlong address, jint size) {
-#ifdef RVM_X86_64
-    return Java_org_robovm_rt_VM_newLongArray(env, c, LONG_TO_PTR(address), size);
-#else
-    LongArray* array = rvmNewLongArray(env, size);
-    if (array) {
-        void** data = (void**) LONG_TO_PTR(address);
-        jint i = 0;
-        for (i = 0; i < size; i++) {
-            array->values[i] = PTR_TO_LONG(data[i]);
-        }
-    }
-    return array;
-#endif
-}
-

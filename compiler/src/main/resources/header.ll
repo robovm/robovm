@@ -84,6 +84,7 @@ declare void @_bcDetachThreadFromCallback(%Env*)
 
 declare %Object* @_bcNewStruct(%Env*, i8*, %Class*, i8*)
 declare i8* @_bcGetStructHandle(%Env*, %Object*)
+declare void @_bcSetStructHandle(%Env*, %Object*, i8*)
 declare i8* @_bcByValueGetStructHandle(%Env*, %Object*)
 declare void @_bcCopyStruct(%Env*, %Object*, i8*, i32)
 

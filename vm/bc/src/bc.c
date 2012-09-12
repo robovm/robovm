@@ -770,9 +770,25 @@ void _bcDetachThreadFromCallback(Env* env) {
     rvmDetachCurrentThread(env->vm, FALSE);
 }
 
-void* _bcGetStructHandle(Env* env, Object* object) {
+static inline void** getStructHandlePtr(Object* object) {
     if (!object) return NULL;
-    return *((void**) (((void*) object) + sizeof(Object)));
+    return (void**) (((char*) object) + sizeof(Object));
+}
+
+void* _bcGetStructHandle(Env* env, Object* object) {
+    void** handlePtr = getStructHandlePtr(object);
+    return handlePtr ? *handlePtr : NULL;
+}
+
+void _bcSetStructHandle(Env* env, Object* object, void* value) {
+    ENTER;
+    void** handlePtr = getStructHandlePtr(object);
+    if (!handlePtr) {
+        rvmThrowNullPointerException(env);
+    } else {
+        *handlePtr = value;
+    }
+    LEAVEV;
 }
 
 void* _bcByValueGetStructHandle(Env* env, Object* object) {

@@ -23,18 +23,18 @@ import org.robovm.rt.VM;
  */
 public abstract class Struct {
 
-    private final long handle;
+    private long handle;
 
     protected Struct() {
         this.handle = VM.allocateMemory(_sizeOf());
     }
     
-    protected Struct(long handle) {
-        this.handle = handle;
-    }
-    
     public final long getHandle() {
         return handle;
+    }
+    
+    protected final void setHandle(long handle) {
+        this.handle = handle;
     }
     
     protected int _sizeOf() {
@@ -47,5 +47,14 @@ public abstract class Struct {
     
     public static int offsetOf(int index) {
         return 0;
+    }
+    
+    public static <T extends Struct> T fromHandle(Class<T> cls, long handle) {
+        if (handle == 0L) {
+            return null;
+        }
+        T o = VM.allocateObject(cls);
+        o.setHandle(handle);
+        return o;
     }
 }

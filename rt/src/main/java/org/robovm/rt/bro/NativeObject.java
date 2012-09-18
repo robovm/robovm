@@ -15,36 +15,22 @@
  */
 package org.robovm.rt.bro;
 
-import org.robovm.rt.VM;
 
 /**
- *
- * @version $Id$
+ * Common base class for objects that wraps native objects.
  */
-public abstract class Struct extends NativeObject {
+public abstract class NativeObject {
+    private long handle;
 
-    protected Struct() {
-        setHandle(VM.allocateMemory(_sizeOf()));
+    protected NativeObject() {
     }
     
-    protected int _sizeOf() {
-        return 0;
+    public final long getHandle() {
+        return handle;
     }
     
-    public static int sizeOf() {
-        return 0;
+    protected final void setHandle(long handle) {
+        this.handle = handle;
     }
     
-    public static int offsetOf(int index) {
-        return 0;
-    }
-    
-    public static <T extends Struct> T fromHandle(Class<T> cls, long handle) {
-        if (handle == 0L) {
-            return null;
-        }
-        T o = VM.allocateObject(cls);
-        o.setHandle(handle);
-        return o;
-    }
 }

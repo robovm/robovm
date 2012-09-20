@@ -17,23 +17,28 @@
 package org.robovm.compiler;
 
 import static org.robovm.compiler.Annotations.*;
+import static org.robovm.compiler.Bro.*;
 import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Linkage.*;
+import static org.robovm.compiler.llvm.ParameterAttribute.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.robovm.compiler.llvm.Alloca;
 import org.robovm.compiler.llvm.Argument;
-import org.robovm.compiler.llvm.Bitcast;
 import org.robovm.compiler.llvm.Br;
 import org.robovm.compiler.llvm.ConstantBitcast;
 import org.robovm.compiler.llvm.Function;
+import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.Global;
 import org.robovm.compiler.llvm.Icmp;
 import org.robovm.compiler.llvm.Icmp.Condition;
+import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.Inttoptr;
 import org.robovm.compiler.llvm.Label;
 import org.robovm.compiler.llvm.Load;
@@ -42,36 +47,37 @@ import org.robovm.compiler.llvm.ParameterAttribute;
 import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.Ptrtoint;
 import org.robovm.compiler.llvm.Ret;
-import org.robovm.compiler.llvm.StructureType;
+import org.robovm.compiler.llvm.Store;
 import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Unreachable;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
 import org.robovm.compiler.llvm.VariableRef;
+import org.robovm.compiler.trampoline.Invokestatic;
+import org.robovm.compiler.trampoline.LdcClass;
+import org.robovm.compiler.trampoline.Trampoline;
 
-import soot.PrimType;
 import soot.SootMethod;
-import soot.VoidType;
 
 /**
  * @author niklas
  *
  */
-public class BridgeMethodCompiler extends AbstractMethodCompiler {
+public class BridgeMethodCompiler extends BroMethodCompiler {
 
     public BridgeMethodCompiler(Config config) {
         super(config);
     }
 
     private void validateBridgeMethod(SootMethod method) {
-        soot.Type sootRetType = method.getReturnType();
-        if (!sootRetType.equals(VoidType.v()) && !(sootRetType instanceof PrimType) && !isStruct(sootRetType)) {
-            throw new IllegalArgumentException("@Bridge annotated method must return void or a primitive or Struct type");
+        if (!canMarshal(method)) {
+            throw new IllegalArgumentException("No @Marshaler for return type of" 
+                    + " @Bridge annotated method " + method.getName() + " found");
         }
         for (int i = 0; i < method.getParameterCount(); i++) {
-            soot.Type t = method.getParameterType(i);
-            if (!(t instanceof PrimType) && !isStruct(t)) {
-                throw new IllegalArgumentException("@Bridge annotated method must take only primitive or Struct type arguments");
+            if (!canMarshal(method, i)) {
+                throw new IllegalArgumentException("No @Marshaler for parameter " + (i + 1) 
+                        + " of @Bridge annotated method " + method.getName() + " found");
             }            
         }
     }
@@ -96,35 +102,7 @@ public class BridgeMethodCompiler extends AbstractMethodCompiler {
 
         FunctionType targetFnType = getBridgeFunctionType(method);
 
-        // Remove Env* from args
-        args.remove(0);
-        if (!method.isStatic()) {
-            // Remove receiver from args
-            args.remove(0);
-        }
-        Type[] targetParameterTypes = targetFnType.getParameterTypes();
-        for (int i = 0; i < targetParameterTypes.length; i++) {
-            if (targetParameterTypes[i] instanceof PointerType) {
-                PointerType type = (PointerType) targetParameterTypes[i];
-                if (type.getBase() instanceof StructureType) {
-                    Value tmp = call(innerFn, BC_BY_VALUE_GET_STRUCT_HANDLE, 
-                            innerFn.getParameterRef(0), args.get(i).getValue());
-                    Variable arg = innerFn.newVariable(type);
-                    innerFn.add(new Bitcast(arg, tmp, arg.getType()));
-                    args.set(i, new Argument(arg.ref(), ParameterAttribute.byval));
-                } else if (type == I8_PTR) {
-                    // Convert arg at index i from i64 to i8*
-                    Variable arg = innerFn.newVariable(I8_PTR);
-                    innerFn.add(new Inttoptr(arg, args.get(i).getValue(), I8_PTR));
-                    if (hasStructRetAnnotation(method, i)) {
-                        args.set(i, new Argument(arg.ref(), ParameterAttribute.sret));
-                    } else {
-                        args.set(i, new Argument(arg.ref()));                    
-                    }
-                }
-            }
-        }
-        
+        // Load the address of the resolved @Bridge method
         Variable targetFn = innerFn.newVariable(targetFnType);
         Global targetFnPtr = new Global(getTargetFnPtrName(method), 
                 _private, new NullConstant(I8_PTR));
@@ -143,11 +121,127 @@ public class BridgeMethodCompiler extends AbstractMethodCompiler {
         innerFn.add(new Unreachable());
         innerFn.newBasicBlock(notNullLabel);
         
+        // Marshal args
+        
+        // Remove Env* from args
+        args.remove(0);
+        if (!method.isStatic()) {
+            // Remove receiver from args
+            args.remove(0);
+        }
+
+        // Save the Object->handle mapping for each marshaled object. We need it
+        // after the native call to call updateObject() on the marshaler for 
+        // each value. Since the LLVM variables that store these values are used 
+        // after the native call we get the nice side effect that neither the
+        // Java objects nor the handles can be garbage collected while we're in
+        // native code.
+        class MarshaledValue {
+            private Value object;
+            private Value handle;
+            private String marshalerClassName;
+        }
+        List<MarshaledValue> marshaledValues = new ArrayList<MarshaledValue>();
+        
+        Type[] targetParameterTypes = targetFnType.getParameterTypes();
+        for (int i = 0; i < sootMethod.getParameterCount(); i++) {
+            soot.Type type = sootMethod.getParameterType(i);
+            if (needsMarshaler(type)) {
+
+                ParameterAttribute[] parameterAttributes = new ParameterAttribute[0];
+                if (isPassByValue(method, i) || isStructRet(method, i)) {
+                    // The parameter must not be null. We assume that Structs 
+                    // never have a NULL handle so we just check that the Java
+                    // Object isn't null.
+                    call(innerFn, CHECK_NULL, innerFn.getParameterRef(0), args.get(i).getValue());
+                    parameterAttributes = new ParameterAttribute[1];
+                    if (isStructRet(method, i)) {
+                        parameterAttributes[0] = sret;
+                    } else {
+                        parameterAttributes[0] = byval;
+                    }
+                }
+                
+                MarshaledValue marshaledValue = new MarshaledValue();
+                marshaledValues.add(marshaledValue);
+                marshaledValue.object = args.get(i).getValue();
+                
+                // Call the Marshaler's toNative() method
+                String marshalerClassName = getMarshalerClassName(method, i);
+                Invokestatic invokestatic = new Invokestatic(
+                        getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                        "toNative", "(Ljava/lang/Object;)J");
+                trampolines.add(invokestatic);
+                Value argI64 = call(innerFn, invokestatic.getFunctionRef(), 
+                        innerFn.getParameterRef(0), args.get(i).getValue());
+
+                marshaledValue.marshalerClassName = marshalerClassName;
+                marshaledValue.handle = argI64;
+                
+                Variable arg = innerFn.newVariable(targetParameterTypes[i]);
+                innerFn.add(new Inttoptr(arg, argI64, arg.getType()));
+                args.set(i, new Argument(arg.ref(), parameterAttributes));
+            } else if (hasPointerAnnotation(method, i)) {
+                // @Pointer long. Convert from i64 to i8*
+                Variable arg = innerFn.newVariable(I8_PTR);
+                innerFn.add(new Inttoptr(arg, args.get(i).getValue(), I8_PTR));
+                args.set(i, new Argument(arg.ref()));                    
+                
+            }
+        }        
+        
+        // Execute the call to native code
         pushNativeFrame(innerFn);
         Value resultInner = callWithArguments(innerFn, targetFn.ref(), args);
         popNativeFrame(innerFn);
 
-        if (targetFnType.getReturnType() == I8_PTR) {
+        // Call Marshaler.updateObject() for each object that was marshaled before
+        // the call.
+        for (MarshaledValue value : marshaledValues) {
+            // Call the Marshaler's updateObject() method
+            Invokestatic invokestatic = new Invokestatic(
+                    getInternalName(method.getDeclaringClass()), value.marshalerClassName, 
+                    "updateObject", "(Ljava/lang/Object;J)V");
+            trampolines.add(invokestatic);
+            call(innerFn, invokestatic.getFunctionRef(), 
+                    innerFn.getParameterRef(0), value.object, value.handle);
+        }
+        
+        // Marshal the return value
+        if (needsMarshaler(method.getReturnType())) {
+            Value copy = new IntegerConstant((byte) 0);
+            if (isPassByValue(method)) {
+                // Copy the result to the stack
+                Variable stackCopy = innerFn.newVariable(new PointerType(targetFnType.getReturnType()));
+                innerFn.add(new Alloca(stackCopy, targetFnType.getReturnType()));
+                innerFn.add(new Store(resultInner, stackCopy.ref()));
+                resultInner = stackCopy.ref();
+                copy = new IntegerConstant((byte) 1);
+            }
+            
+            // Load the declared Class of the return value
+            String targetClassName = getInternalName(method.getReturnType());
+            FunctionRef ldcClassFn = null;
+            if (targetClassName.equals(this.className)) {
+                ldcClassFn = FunctionBuilder.ldcInternal(method.getDeclaringClass()).ref();
+            } else {
+                Trampoline trampoline = new LdcClass(className, targetClassName);
+                trampolines.add(trampoline);
+                ldcClassFn = trampoline.getFunctionRef();
+            }
+            Value returnClass = call(innerFn, ldcClassFn, innerFn.getParameterRef(0));
+            
+            // Call the Marshaler's toObject() method
+            String marshalerClassName = getMarshalerClassName(method);
+            Invokestatic invokestatic = new Invokestatic(
+                    getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                    "toObject", "(Ljava/lang/Class;JZ)Ljava/lang/Object;");
+            trampolines.add(invokestatic);
+            Variable resultI64 = innerFn.newVariable(I64);
+            innerFn.add(new Ptrtoint(resultI64, resultInner, I64));
+            resultInner = call(innerFn, invokestatic.getFunctionRef(), 
+                    innerFn.getParameterRef(0), returnClass, resultI64.ref(), copy);
+        } else if (hasPointerAnnotation(method)) {
             Variable resultI64 = innerFn.newVariable(I64);
             innerFn.add(new Ptrtoint(resultI64, resultInner, I64));
             resultInner = resultI64.ref();

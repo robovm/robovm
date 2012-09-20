@@ -94,6 +94,31 @@ jlong Java_org_robovm_rt_VM_allocateMemory(Env* env, Class* c, jint size) {
     return PTR_TO_LONG(rvmAllocateMemory(env, size));
 }
 
+jlong Java_org_robovm_rt_VM_allocateMemoryUncollectable(Env* env, Class* c, jint size) {
+    return PTR_TO_LONG(rvmAllocateMemoryUncollectable(env, size));
+}
+
+jlong Java_org_robovm_rt_VM_allocateMemoryAtomic(Env* env, Class* c, jint size) {
+    return PTR_TO_LONG(rvmAllocateMemoryAtomic(env, size));
+}
+
+void Java_org_robovm_rt_VM_freeMemory(Env* env, Class* c, jlong address) {
+    rvmFreeMemory(LONG_TO_PTR(address));
+}
+
+jlong Java_org_robovm_rt_VM_malloc(Env* env, Class* c, jint size) {
+    void* m = malloc(size);
+    if (!m) {
+        rvmThrowOutOfMemoryError(env);
+        return 0;
+    }
+    return PTR_TO_LONG(m);
+}
+
+void Java_org_robovm_rt_VM_free(Env* env, Class* c, jlong address) {
+    free(LONG_TO_PTR(address));
+}
+
 Object* Java_org_robovm_rt_VM_allocateObject(Env* env, Class* c, Class* cls) {
     return rvmAllocateObject(env, cls);
 }
@@ -104,6 +129,10 @@ void Java_org_robovm_rt_VM_memcpy(Env* env, Class* c, jlong s1, jlong s2, jlong 
 
 void Java_org_robovm_rt_VM_memmove(Env* env, Class* c, jlong s1, jlong s2, jlong n) {
     memmove(LONG_TO_PTR(s1), LONG_TO_PTR(s2), (size_t) n);
+}
+
+void Java_org_robovm_rt_VM_memset(Env* env, Class* cls, jlong s, jbyte c, jlong n) {
+    memset(LONG_TO_PTR(s), (unsigned char) c, (size_t) n);
 }
 
 jlong Java_org_robovm_rt_VM_getCallbackMethodImpl(Env* env, Class* c, Object* methodObject) {

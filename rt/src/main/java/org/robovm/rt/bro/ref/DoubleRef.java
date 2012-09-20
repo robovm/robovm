@@ -21,7 +21,7 @@ import org.robovm.rt.bro.annotation.StructMember;
 /**
  * Used to map a <code>double *</code>.
  */
-public final class DoubleRef extends Struct {
+public final class DoubleRef extends Struct<DoubleRef> {
     /**
      * Creates a new {@link DoubleRef} with a value of 0.0.
      */

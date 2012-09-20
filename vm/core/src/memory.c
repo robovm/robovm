@@ -34,6 +34,15 @@ void* rvmAllocateMemoryUncollectable(Env* env, int size) {
     return m;
 }
 
+void* rvmAllocateMemoryAtomic(Env* env, int size) {
+    void* m = GC_MALLOC_ATOMIC(size);
+    if (!m) {
+        rvmThrowOutOfMemoryError(env);
+        return NULL;
+    }
+    return m;
+}
+
 void rvmFreeMemory(void* m) {
     GC_FREE(m);
 }

@@ -21,7 +21,7 @@ import org.robovm.rt.bro.annotation.StructMember;
 /**
  * Used to map a <code>float *</code>.
  */
-public final class FloatRef extends Struct {
+public final class FloatRef extends Struct<FloatRef> {
     /**
      * Creates a new {@link FloatRef} with a value of 0.0f.
      */

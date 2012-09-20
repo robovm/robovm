@@ -21,7 +21,7 @@ import org.robovm.rt.bro.annotation.StructMember;
 /**
  * Used to map a <code>int *</code>.
  */
-public final class IntRef extends Struct {
+public final class IntRef extends Struct<IntRef> {
     /**
      * Creates a new {@link IntRef} with a value of 0.
      */

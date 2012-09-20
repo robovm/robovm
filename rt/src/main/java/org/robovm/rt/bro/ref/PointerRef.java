@@ -15,9 +15,6 @@
  */
 package org.robovm.rt.bro.ref;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructMember;
@@ -25,7 +22,7 @@ import org.robovm.rt.bro.annotation.StructMember;
 /**
  * Used to map a <code>void **</code>.
  */
-public final class PointerRef extends Struct {
+public final class PointerRef extends Struct<PointerRef> {
     /**
      * Creates a new {@link PointerRef} with a value of NULL.
      */
@@ -73,7 +70,7 @@ public final class PointerRef extends Struct {
         return getValue() == 0L;
     }
     
-    public <T extends Struct> T asStruct(Class<T> cls) {
+    public <T extends Struct<T>> T asStruct(Class<T> cls) {
         long value = getValue();
         if (value == 0L) {
             return null;

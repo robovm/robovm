@@ -21,7 +21,7 @@ import org.robovm.rt.bro.annotation.StructMember;
 /**
  * Used to map a <code>char *</code>.
  */
-public final class ByteRef extends Struct {
+public final class ByteRef extends Struct<ByteRef> {
     /**
      * Creates a new {@link ByteRef} with a value of 0.
      */

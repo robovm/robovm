@@ -52,12 +52,20 @@ public final class VM {
     public static native final Class<?>[] getStackClasses(int skipNum, int maxDepth);
     
     public native static final long allocateMemory(int size);
+    public native static final long allocateMemoryUncollectable(int size);
+    public native static final long allocateMemoryAtomic(int size);
+    public native static final long freeMemoryUncollectable(long address);
+    
+    public native static final long malloc(int size);
+    public native static final void free(long address);
     
     public native static final <T> T allocateObject(Class<T> cls);
     
     public native static final void memcpy(long s1, long s2, long n);
     
     public native static final void memmove(long s1, long s2, long n);
+    
+    public native static final void memset(long s, byte c, long n);
     
     public native static final long getCallbackMethodImpl(Method method);
     

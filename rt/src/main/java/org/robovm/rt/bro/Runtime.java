@@ -36,7 +36,7 @@ import org.robovm.rt.bro.annotation.Library;
  *
  * @version $Id$
  */
-public abstract class Runtime {
+public final class Runtime {
 
     private static final Map<String, Long> handles = new HashMap<String, Long>();
     private static final List<String> searchPaths;
@@ -176,15 +176,39 @@ public abstract class Runtime {
         searchPaths.add(path);
     }
     
-    public abstract void loadLibrary(Library library);
+    public static void loadLibrary(String name) {
+        getHandle(name);
+    }
     
-    public abstract long resolveBridge(Library library, Bridge bridge, Method method);
+    public static void loadLibrary(Library library) {
+        getHandle(library.value());
+    }
     
-    protected static long getHandle(Library library) {
+    public static long resolveBridge(Library library, Bridge bridge, Method method) {
+        if (library == null) {
+            throw new IllegalArgumentException("No @" + Library.class.getName() 
+                    + " annotation found on class " + method.getDeclaringClass().getName());
+        }
+        
+        long handle = getHandle(library.value());
+        String symbol = bridge.symbol();
+        if (symbol == null || "".equals(symbol)) {
+            symbol = method.getName();
+        }
+        long f = Dl.resolve(handle, symbol);
+        if (f == 0L) {
+            throw new UnsatisfiedLinkError("Failed to resolve native function " 
+                    + "for method " + method + " with bridge annotation " + bridge 
+                    + " in library " + library);
+        }
+        return f;
+    }
+    
+    protected static long getHandle(String name) {
         synchronized (handles) {
-            Long handle = handles.get(library.value());
+            Long handle = handles.get(name);
             if (handle == null) {
-                String libName = System.mapLibraryName(library.value());
+                String libName = System.mapLibraryName(name);
                 for (String searchPath : searchPaths) {
                     File f = new File(searchPath, libName);
                     if (f.exists()) {
@@ -211,9 +235,9 @@ public abstract class Runtime {
                         }
                     }
                     if (Bro.IS_DARWIN) {
-                        File fwDir = new File(searchPath, library.value() + ".framework");
+                        File fwDir = new File(searchPath, name + ".framework");
                         if (fwDir.exists()) {
-                            f = new File(fwDir, library.value());
+                            f = new File(fwDir, name);
                             handle = Dl.open(f.getAbsolutePath());
                             if (handle != 0L) {
                                 break;
@@ -222,15 +246,15 @@ public abstract class Runtime {
                     }
                 }
                 if (handle == null || handle == 0L) {
-                    handle = Dl.open(library.value());
+                    handle = Dl.open(name);
                     if (handle == 0L) {
                         handle = Dl.open(libName);
                     }
                 }
                 if (handle == null || handle == 0L) {
-                    throw new UnsatisfiedLinkError("Library '" + library.value() + "' not found");
+                    throw new UnsatisfiedLinkError("Library '" + name + "' not found");
                 }
-                handles.put(library.value(), handle);
+                handles.put(name, handle);
             }
             return handle;
         }

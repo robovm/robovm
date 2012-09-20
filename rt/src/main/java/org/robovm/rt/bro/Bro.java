@@ -16,8 +16,6 @@
 package org.robovm.rt.bro;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.annotation.Bridge;
@@ -28,32 +26,33 @@ import org.robovm.rt.bro.annotation.Library;
  * @version $Id$
  */
 public class Bro {
-    public static final boolean IS_DARWIN = System.getProperty("os.name", "").matches("(?i).*(mac|darwin).*");
-    public static final boolean IS_LINUX = System.getProperty("os.name", "").toLowerCase().contains("linux");
-    public static final boolean IS_I386 = System.getProperty("os.arch", "").toLowerCase().contains("i386");
-    public static final boolean IS_X86_64 = System.getProperty("os.arch", "").matches("(?i).*(amd64|x86.64).*");
-    public static final boolean IS_ARM = System.getProperty("os.arch", "").toLowerCase().contains("arm");
-    public static final boolean IS_64_BIT = IS_X86_64;
-    public static final boolean IS_32_BIT = !IS_X86_64;
+    public static final boolean IS_DARWIN;
+    public static final boolean IS_LINUX;
+    public static final boolean IS_X86;
+    public static final boolean IS_ARM;
 
-    private static final Map<Class<? extends Runtime>, Runtime> runtimes = 
-        new HashMap<Class<? extends Runtime>, Runtime>();
+    static {
+        String os = System.getProperty("os.name", "").toLowerCase();
+        String arch = System.getProperty("os.arch", "").toLowerCase();
+        IS_DARWIN = os.contains("mac") || os.contains("darwin");
+        IS_LINUX = !IS_DARWIN && os.contains("linux");
+        IS_X86 = arch.contains("i386");
+        IS_ARM = !IS_X86 && arch.contains("arm");
+    }
     
     public static void bind() {
         bind(VM.getStackClasses(0, 1)[0]);
     }
     
     public static void bind(Class<?> c) {
-        org.robovm.rt.bro.annotation.Runtime runtime = c.getAnnotation(org.robovm.rt.bro.annotation.Runtime.class);
-        Runtime runtimeImpl = getRuntime(runtime == null ? CRuntime.class : runtime.value());
         Library library = c.getAnnotation(Library.class);
         if (library != null) {
-            runtimeImpl.loadLibrary(library);
+            Runtime.loadLibrary(library);
         }
         for (Method method : c.getDeclaredMethods()) {
             Bridge bridge = method.getAnnotation(Bridge.class);
             if (bridge != null) {
-                long f = runtimeImpl.resolveBridge(library, bridge, method);
+                long f = Runtime.resolveBridge(library, bridge, method);
                 bind(method, f);
             }
         }
@@ -63,21 +62,5 @@ public class Bro {
     
     public static void addSearchPath(String path) {
         Runtime.addSearchPath(path);
-    }
-    
-    private static Runtime getRuntime(Class<? extends Runtime> runtimeClass) {
-        synchronized (runtimes) {
-            Runtime runtime = runtimes.get(runtimeClass);
-            if (runtime == null) {
-                try {
-                    runtime = runtimeClass.newInstance();
-                } catch (Exception e) {
-                    throw (UnsatisfiedLinkError) new UnsatisfiedLinkError(
-                            "Failed to create Runtime").initCause(e);
-                }
-                runtimes.put(runtimeClass,runtime);
-            }
-            return runtime;
-        }
     }
 }

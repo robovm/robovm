@@ -21,7 +21,7 @@ import org.robovm.rt.bro.annotation.StructMember;
 /**
  * Used to map a <code>int64_t *</code>.
  */
-public final class LongRef extends Struct {
+public final class LongRef extends Struct<LongRef> {
     /**
      * Creates a new {@link LongRef} with a value of 0.
      */

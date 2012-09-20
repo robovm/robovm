@@ -310,62 +310,6 @@ public class Types {
         return new FunctionType(returnType, paramTypes.toArray(new Type[paramTypes.size()]));
     }
     
-    public static FunctionType getBridgeFunctionType(SootMethod method) {
-        return getBridgeOrCallbackFunctionType("@Bridge", method);
-    }
-    
-    public static FunctionType getCallbackFunctionType(SootMethod method) {
-        return getBridgeOrCallbackFunctionType("@Callback", method);
-    }
-    
-    @SuppressWarnings("unchecked")
-    private static FunctionType getBridgeOrCallbackFunctionType(String anno, SootMethod method) {
-        soot.Type sootRetType = method.getReturnType();
-        Type returnType = isStruct(sootRetType) ? getStructType(sootRetType) : getType(sootRetType);
-        if (hasPointerAnnotation(method)) {
-            if (!sootRetType.equals(LongType.v()) && !isStruct(sootRetType)) {
-                throw new IllegalArgumentException(anno + " annotated method " 
-                        + method.getName() + " must return long or Struct when annotated with @Pointer");
-            }
-            returnType = I8_PTR;
-        }
-        
-        Type[] paramTypes = new Type[method.getParameterTypes().size()];
-        int i = 0;
-        for (soot.Type t : (List<soot.Type>) method.getParameterTypes()) {
-            paramTypes[i++] = isStruct(t) ? new PointerType(getStructType(t)) : getType(t);
-        }
-        
-        for (i = 0; i < paramTypes.length; i++) {
-            if (hasStructRetAnnotation(method, i)) {
-                if (i > 0) {
-                    throw new IllegalArgumentException("Parameter " + (i + 1) 
-                            + " of " + anno + " annotated method " 
-                            + method.getName() 
-                            + " cannot be annotated with @StructRet. Only first parameter can have this annotation.");
-                }
-                if (!hasPointerAnnotation(method, i)) {
-                    throw new IllegalArgumentException("Parameter " + (i + 1) 
-                            + " of " + anno + " annotated method " 
-                            + method.getName() 
-                            + " must be annotated with @Pointer when annotated with @StructRet.");
-                }
-            }
-            soot.Type t = method.getParameterType(i);
-            if (hasPointerAnnotation(method, i)) {
-                if (!t.equals(LongType.v()) && !isStruct(t)) {
-                    throw new IllegalArgumentException("Parameter " + (i + 1) 
-                            + " of " + anno + " annotated method " 
-                            + method.getName() 
-                            + " must be of type long or Struct when annotated with @Pointer");
-                }
-                paramTypes[i] = I8_PTR;
-            }
-        }
-        
-        return new FunctionType(returnType, paramTypes);
-    }
-    
     public static StructureType getStructType(soot.Type t) {
         return getStructType(((RefType) t).getSootClass(), null);                
     }
@@ -457,6 +401,16 @@ public class Types {
         return null;
     }
     
+    public static boolean isNativeObject(soot.Type t) {
+        if (t instanceof RefType) {
+            return isNativeObject(((RefType) t).getSootClass());
+        }
+        return false;
+    }
+    
+    public static boolean isNativeObject(SootClass sc) {
+        return isSubclass(sc, "org.robovm.rt.bro.NativeObject");
+    }
     
     public static boolean isStruct(soot.Type t) {
         if (t instanceof RefType) {

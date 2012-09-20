@@ -21,7 +21,7 @@ import org.robovm.rt.bro.annotation.StructMember;
 /**
  * Used to map an <code>unsigned short *</code>.
  */
-public final class CharRef extends Struct {
+public final class CharRef extends Struct<CharRef> {
     /**
      * Creates a new {@link CharRef} with a value of 0.
      */

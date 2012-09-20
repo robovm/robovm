@@ -232,6 +232,11 @@ define linkonce_odr i8 @checknull(%Env* %env, %Object* %o) alwaysinline {
     ret i8 %i
 }
 
+define linkonce_odr i8 @checknull_i8_ptr(%Env* %env, i8* %p) alwaysinline {
+    %i = load volatile i8* %p
+    ret i8 %i
+}
+
 define linkonce_odr void @checklower(%Env* %env, %Object* %o, i32 %index) alwaysinline {
     %cond = icmp sge i32 %index, 0
     br i1 %cond, label %success, label %failure

@@ -35,31 +35,24 @@ public final class PointerRef extends Struct<PointerRef> {
      * @param value the value.
      */
     public PointerRef(long value) {
-        setValue(value);
+        set(value);
     }
 
-    @StructMember
-    private native @Pointer long getValue();
-    @StructMember
-    private native void setValue(@Pointer long value);
-    
     /**
      * Returns the current value.
      * 
      * @return the value.
      */
-    public long get() {
-        return getValue();
-    }
+    @StructMember(0)
+    public native @Pointer long get();
     
     /**
      * Sets the value.
      * 
      * @param value the new value.
      */
-    public void set(long value) {
-        setValue(value);
-    }
+    @StructMember(0)
+    public native void set(@Pointer long value);
     
     /**
      * Returns whether the value pointed to by this {@link PointerRef} is NULL.
@@ -67,11 +60,11 @@ public final class PointerRef extends Struct<PointerRef> {
      * @return <code>true</code> if NULL, <code>false</code> otherwise.
      */
     public boolean isNull() {
-        return getValue() == 0L;
+        return get() == 0L;
     }
     
     public <T extends Struct<T>> T asStruct(Class<T> cls) {
-        long value = getValue();
+        long value = get();
         if (value == 0L) {
             return null;
         }

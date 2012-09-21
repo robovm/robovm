@@ -34,29 +34,22 @@ public final class LongRef extends Struct<LongRef> {
      * @param value the value.
      */
     public LongRef(long value) {
-        setValue(value);
+        set(value);
     }
 
-    @StructMember
-    private native long getValue();
-    @StructMember
-    private native void setValue(long value);
-    
     /**
      * Returns the current value.
      * 
      * @return the value.
      */
-    public long get() {
-        return getValue();
-    }
+    @StructMember(0)
+    public native long get();
     
     /**
      * Sets the value.
      * 
      * @param value the new value.
      */
-    public void set(long value) {
-        setValue(value);
-    }
+    @StructMember(0)
+    public native void set(long value);
 }

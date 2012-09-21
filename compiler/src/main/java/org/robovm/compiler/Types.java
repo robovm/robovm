@@ -21,9 +21,7 @@ import static org.robovm.compiler.llvm.Type.*;
 
 import java.nio.CharBuffer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.robovm.compiler.llvm.AggregateType;
 import org.robovm.compiler.llvm.ArrayType;
@@ -310,119 +308,6 @@ public class Types {
         return new FunctionType(returnType, paramTypes.toArray(new Type[paramTypes.size()]));
     }
     
-    public static StructureType getStructType(soot.Type t) {
-        return getStructType(((RefType) t).getSootClass(), null);                
-    }
-    
-    public static StructureType getStructType(SootClass clazz) {
-        return getStructType(clazz, null);                
-    }
-    
-    public static StructureType getStructType(SootClass clazz, Map<String, Integer> indexes) {
-        List<Type> types = new ArrayList<Type>();
-        Map<String, Type> members = new HashMap<String, Type>();
-        int index = 0;
-        for (SootMethod method : clazz.getMethods()) {
-            if (isStructMember(method)) {
-                
-                boolean getter = method.getName().startsWith("get");
-                boolean setter = method.getName().startsWith("set");
-                if (!method.isNative() && !method.isStatic()) {
-                    throw new IllegalArgumentException("@StructMember annotated method must be native and not static");
-                }
-                if (!getter && !setter || method.getName().length() == 3) {
-                    throw new IllegalArgumentException("@StructMember annotated method has invalid name");
-                }
-                if (getter && method.getParameterCount() != 0) {
-                    throw new IllegalArgumentException("@StructMember annotated getter method must have no arguments");
-                }
-                if (setter && method.getParameterCount() != 1) {
-                    throw new IllegalArgumentException("@StructMember annotated setter method must take a single argument");
-                }
-                soot.Type sootType = getter ? method.getReturnType() : method.getParameterType(0);
-                if (!(sootType instanceof PrimType || sootType instanceof RefType && isStruct(sootType))) {
-                    if (getter) {
-                        throw new IllegalArgumentException("@StructMember annotated getter method must return primitive or Struct type");
-                    } else {
-                        throw new IllegalArgumentException("@StructMember annotated setter method must take a single primitive or Struct type argument");
-                    }
-                }
-                
-                String name = method.getName().substring(3, 4).toLowerCase() + method.getName().substring(4);
-                Type type = sootType instanceof PrimType ? getType(sootType) : I8_PTR;
-                if (getter) {
-                    if (hasPointerAnnotation(method)) {
-                        if (!sootType.equals(LongType.v()) && !isStruct(sootType)) {
-                            throw new IllegalArgumentException("@StructMember annotated getter method " 
-                                    + method.getName() + " must return long or Struct when annotated with @Pointer");
-                        }
-                        type = I8_PTR; // NOTE: We use i8* instead of <StructType>* to support pointers to recursive structs 
-                    } else if (isStruct(sootType)) {
-                        try {
-                            type = getStructType(sootType);
-                        } catch (StackOverflowError e) {
-                            throw new IllegalArgumentException("Struct type " + sootType + " refers to itself");
-                        }
-                    }
-                } else {
-                    if (hasPointerAnnotation(method, 0)) {
-                        if (!sootType.equals(LongType.v()) && !isStruct(sootType)) {
-                            throw new IllegalArgumentException("First parameter of @StructMember annotated setter method " 
-                                    + method.getName() 
-                                    + " must be of type long or Struct when annotated with @Pointer");
-                        }
-                        type = I8_PTR;
-                    } else if (isStruct(sootType)) {
-                        try {
-                            type = getStructType(sootType);
-                        } catch (StackOverflowError e) {
-                            throw new IllegalArgumentException("Struct type " + sootType + " refers to itself");
-                        }
-                    }
-                }
-                if (members.containsKey(name)) { 
-                    if (!members.get(name).equals(type)) {
-                        throw new IllegalArgumentException("@StructMember annotated getter and setter methods for property " 
-                                + name + " have different types");
-                    }
-                } else {
-                    members.put(name, type);
-                    types.add(type);
-                    if (indexes != null) {
-                        indexes.put(name, index);
-                    }
-                    index++;
-                }
-            }
-        }
-        if (!types.isEmpty()) {
-            return new StructureType(types.toArray(new Type[types.size()]));
-        }
-        return null;
-    }
-    
-    public static boolean isNativeObject(soot.Type t) {
-        if (t instanceof RefType) {
-            return isNativeObject(((RefType) t).getSootClass());
-        }
-        return false;
-    }
-    
-    public static boolean isNativeObject(SootClass sc) {
-        return isSubclass(sc, "org.robovm.rt.bro.NativeObject");
-    }
-    
-    public static boolean isStruct(soot.Type t) {
-        if (t instanceof RefType) {
-            return isStruct(((RefType) t).getSootClass());
-        }
-        return false;
-    }
-    
-    public static boolean isStruct(SootClass sc) {
-        return isSubclass(sc, "org.robovm.rt.bro.Struct");
-    }
-    
     public static boolean isSubclass(SootClass sc, String className) {
         SootClass clazz = sc;
         while (clazz.hasSuperclass()) {
@@ -432,18 +317,6 @@ public class Types {
             }
         }
         return false;
-    }
-    
-    public static boolean isBridge(SootMethod sm) {
-        return hasBridgeAnnotation(sm);
-    }
-    
-    public static boolean isCallback(SootMethod sm) {
-        return hasCallbackAnnotation(sm);
-    }
-    
-    public static boolean isStructMember(SootMethod sm) {
-        return hasStructMemberAnnotation(sm);
     }
     
     public static Constant sizeof(AggregateType type) {

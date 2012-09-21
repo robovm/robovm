@@ -34,29 +34,22 @@ public final class CharRef extends Struct<CharRef> {
      * @param value the value.
      */
     public CharRef(char value) {
-        setValue(value);
+        set(value);
     }
 
-    @StructMember
-    private native char getValue();
-    @StructMember
-    private native void setValue(char value);
-    
     /**
      * Returns the current value.
      * 
      * @return the value.
      */
-    public char get() {
-        return getValue();
-    }
+    @StructMember(0)
+    public native char get();
     
     /**
      * Sets the value.
      * 
      * @param value the new value.
      */
-    public void set(char value) {
-        setValue(value);
-    }
+    @StructMember(0)
+    public native void set(char value);
 }

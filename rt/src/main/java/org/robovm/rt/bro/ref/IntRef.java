@@ -34,29 +34,22 @@ public final class IntRef extends Struct<IntRef> {
      * @param value the value.
      */
     public IntRef(int value) {
-        setValue(value);
+        set(value);
     }
 
-    @StructMember
-    private native int getValue();
-    @StructMember
-    private native void setValue(int value);
-    
     /**
      * Returns the current value.
      * 
      * @return the value.
      */
-    public int get() {
-        return getValue();
-    }
+    @StructMember(0)
+    public native int get();
     
     /**
      * Sets the value.
      * 
      * @param value the new value.
      */
-    public void set(int value) {
-        setValue(value);
-    }
+    @StructMember(0)
+    public native void set(int value);
 }

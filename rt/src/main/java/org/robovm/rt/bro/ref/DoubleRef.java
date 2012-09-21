@@ -34,29 +34,22 @@ public final class DoubleRef extends Struct<DoubleRef> {
      * @param value the value.
      */
     public DoubleRef(double value) {
-        setValue(value);
+        set(value);
     }
 
-    @StructMember
-    private native double getValue();
-    @StructMember
-    private native void setValue(double value);
-    
     /**
      * Returns the current value.
      * 
      * @return the value.
      */
-    public double get() {
-        return getValue();
-    }
+    @StructMember(0)
+    public native double get();
     
     /**
      * Sets the value.
      * 
      * @param value the new value.
      */
-    public void set(double value) {
-        setValue(value);
-    }
+    @StructMember(0)
+    public native void set(double value);
 }

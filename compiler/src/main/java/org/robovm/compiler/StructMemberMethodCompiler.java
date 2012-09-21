@@ -16,25 +16,22 @@
  */
 package org.robovm.compiler;
 
+
+import static org.robovm.compiler.Annotations.*;
+import static org.robovm.compiler.Bro.*;
 import static org.robovm.compiler.Functions.*;
-import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import org.robovm.compiler.Bro.StructMemberPair;
 import org.robovm.compiler.llvm.Bitcast;
-import org.robovm.compiler.llvm.Br;
+import org.robovm.compiler.llvm.BooleanConstant;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionRef;
-import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.Getelementptr;
-import org.robovm.compiler.llvm.Icmp;
+import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.Inttoptr;
-import org.robovm.compiler.llvm.Label;
 import org.robovm.compiler.llvm.Load;
-import org.robovm.compiler.llvm.NullConstant;
 import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.Ptrtoint;
 import org.robovm.compiler.llvm.Ret;
@@ -43,15 +40,13 @@ import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
-import org.robovm.compiler.trampoline.Invokespecial;
-import org.robovm.compiler.trampoline.New;
+import org.robovm.compiler.trampoline.Invokestatic;
+import org.robovm.compiler.trampoline.LdcClass;
 import org.robovm.compiler.trampoline.Trampoline;
 
-import soot.LongType;
-import soot.PrimType;
-import soot.RefType;
 import soot.SootClass;
 import soot.SootMethod;
+import soot.VoidType;
 
 /**
  * @author niklas
@@ -83,38 +78,11 @@ public class StructMemberMethodCompiler extends AbstractMethodCompiler {
         fn.add(new Ret(sizeof(type)));
     }
 
-    private void validateStructMember(SootMethod method) {
-        if (!method.isNative() && !method.isStatic()) {
-            throw new IllegalArgumentException("@StructMember annotated method must be native and not static");
-        }
-        if (!method.getName().startsWith("get") && !method.getName().startsWith("set") || method.getName().length() == 3) {
-            throw new IllegalArgumentException("@StructMember annotated method has invalid name");
-        }
-        if (method.getName().startsWith("get") && method.getParameterCount() != 0) {
-            throw new IllegalArgumentException("@StructMember annotated getter method must have no arguments");
-        }
-        if (method.getName().startsWith("set") && method.getParameterCount() != 1) {
-            throw new IllegalArgumentException("@StructMember annotated setter method must take a single argument");
-        }
-        boolean getter = method.getName().startsWith("get");
-        soot.Type t = getter ? method.getReturnType() : method.getParameterType(0);
-        if (!(t instanceof PrimType || t instanceof RefType && isStruct(t))) {
-            if (getter) {
-                throw new IllegalArgumentException("@StructMember annotated getter method must return primitive or Struct type");
-            } else {
-                throw new IllegalArgumentException("@StructMember annotated setter method must take a single primitive or Struct type argument");
-            }
-        }
-    }
-
     private void structMember(ModuleBuilder moduleBuilder, SootMethod method) {
-        validateStructMember(method);
-        
         SootClass sootClass = method.getDeclaringClass();
-        Map<String, Integer> indexes = new HashMap<String, Integer>();
-        StructureType structType = getStructType(sootClass, indexes);
+        StructureType structType = getStructType(sootClass);
         if (structType == null) {
-            throw new IllegalArgumentException("Struct class " + sootClass + " has not @StructMember annotated methods");
+            throw new IllegalArgumentException("Struct class " + sootClass + " has no @StructMember annotated methods");
         }
         Function function = FunctionBuilder.structMember(method);
         moduleBuilder.addFunction(function);
@@ -125,85 +93,115 @@ public class StructMemberMethodCompiler extends AbstractMethodCompiler {
         Variable handlePtr = function.newVariable(new PointerType(structType));
         function.add(new Inttoptr(handlePtr, handleI64.ref(), handlePtr.getType()));
         
-        String name = method.getName().substring(3, 4).toLowerCase() + method.getName().substring(4);
-        int index = indexes.get(name);        
-        Type memberType = structType.getTypeAt(index);
+        int offset = getStructMemberOffset(method);      
+        Type memberType = structType.getTypeAt(offset);
         Variable memberPtr = function.newVariable(new PointerType(memberType));
-        function.add(new Getelementptr(memberPtr, handlePtr.ref(), 0, index));
+        function.add(new Getelementptr(memberPtr, handlePtr.ref(), 0, offset));
         
-        if (method.getName().startsWith("get")) {
-            if (memberType instanceof StructureType) {
-                Value result = newStruct(function, getInternalName(method.getReturnType()), memberPtr.ref());
+        StructMemberPair pair = getStructMemberPair(sootClass, offset);
+        
+        if (method == pair.getGetter()) {
+            
+            // Marshal the return value
+            if (needsMarshaler(method.getReturnType())) {
+                Value result = null;
+                if (isPassByValue(method)) {
+                    // Return by value for Structs means that the member is a 
+                    // child struct contained in the current struct and not a 
+                    // pointer to a struct 
+                    result = memberPtr.ref();
+                } else {
+                    // Pointer
+                    Variable tmp = function.newVariable(memberType);
+                    function.add(new Load(tmp, memberPtr.ref()));
+                    result = tmp.ref();
+                }
+                
+                // Load the declared Class of the return value
+                String targetClassName = getInternalName(method.getReturnType());
+                FunctionRef ldcClassFn = null;
+                if (targetClassName.equals(this.className)) {
+                    ldcClassFn = FunctionBuilder.ldcInternal(method.getDeclaringClass()).ref();
+                } else {
+                    Trampoline trampoline = new LdcClass(className, targetClassName);
+                    trampolines.add(trampoline);
+                    ldcClassFn = trampoline.getFunctionRef();
+                }
+                Value returnClass = call(function, ldcClassFn, function.getParameterRef(0));
+                
+                // Call the Marshaler's toObject() method
+                String marshalerClassName = getMarshalerClassName(method);
+                Invokestatic invokestatic = new Invokestatic(
+                        getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                        "toObject", "(Ljava/lang/Class;JZ)Ljava/lang/Object;");
+                trampolines.add(invokestatic);
+                Variable resultI64 = function.newVariable(I64);
+                function.add(new Ptrtoint(resultI64, result, I64));
+                result = call(function, invokestatic.getFunctionRef(), 
+                        function.getParameterRef(0), returnClass, resultI64.ref(), new IntegerConstant((byte) 0));
                 function.add(new Ret(result));
+            } else if (hasPointerAnnotation(method)) {
+                // @Pointer long
+                Variable tmp = function.newVariable(I8_PTR);
+                function.add(new Load(tmp, memberPtr.ref()));
+                Variable result = function.newVariable(I64);
+                function.add(new Ptrtoint(result, tmp.ref(), I64));
+                function.add(new Ret(result.ref()));
             } else {
                 Variable result = function.newVariable(memberType);
                 function.add(new Load(result, memberPtr.ref()));
-                if (memberType == I8_PTR) {
-                    if (method.getReturnType().equals(LongType.v())) {
-                        Variable resultI64 = function.newVariable(I64);
-                        function.add(new Ptrtoint(resultI64, result.ref(), I64));
-                        function.add(new Ret(resultI64.ref()));
-                    } else {
-                        // Must be pointer to struct type
-                        Variable isNull = function.newVariable(I1);
-                        function.add(new Icmp(isNull, Icmp.Condition.ne, result.ref(), new NullConstant(I8_PTR)));
-                        Label success = new Label();
-                        Label failure = new Label();
-                        function.add(new Br(isNull.ref(), function.newBasicBlockRef(success), function.newBasicBlockRef(failure)));
-                        function.newBasicBlock(success);
-                        Value result2 = newStruct(function, getInternalName(method.getReturnType()), result.ref());
-                        function.add(new Ret(result2));
-                        function.newBasicBlock(failure);
-                        function.add(new Ret(new NullConstant(OBJECT_PTR)));
-                    }
-                } else {
-                    function.add(new Ret(result.ref()));
-                }
+                function.add(new Ret(result.ref()));
             }
-        } else {
-            Value p = function.getParameterRef(2); // 'env' is parameter 0, 'this' is at 1, the value we're interested in is at index 2
-            if (memberType instanceof StructureType) {
-                Variable objectPtr = function.newVariable(OBJECT_PTR);
-                function.add(new Bitcast(objectPtr, p, OBJECT_PTR));
-                Variable memberI8Ptr = function.newVariable(I8_PTR);
-                function.add(new Bitcast(memberI8Ptr, memberPtr.ref(), I8_PTR));
-                call(function, BC_COPY_STRUCT, function.getParameterRef(0), 
-                        objectPtr.ref(), memberI8Ptr.ref(), sizeof((StructureType) memberType));
-            } else {
-                if (memberType == I8_PTR) {
-                    if (method.getParameterType(0).equals(LongType.v())) {
-                        Variable tmp = function.newVariable(I8_PTR);
-                        function.add(new Inttoptr(tmp, p, I8_PTR));
-                        p = tmp.ref();
-                    } else {
-                        // Must be pointer to struct type
-                        Variable objectPtr = function.newVariable(OBJECT_PTR);
-                        function.add(new Bitcast(objectPtr, p, OBJECT_PTR));
-                        p = call(function, BC_GET_STRUCT_HANDLE, 
-                                function.getParameterRef(0), objectPtr.ref());
-                    }
-                }
-                function.add(new Store(p, memberPtr.ref()));
-            }
-            function.add(new Ret());
-        }
-    }
-    
-    private Value newStruct(Function function, String targetClassName, Value handle) {
-        FunctionRef fn = null;
-        if (targetClassName.equals(this.className)) {
-            fn = new FunctionRef(mangleClass(this.className) + "_allocator", 
-                    new FunctionType(OBJECT_PTR, ENV_PTR));
-        } else {
-            Trampoline trampoline = new New(this.className, targetClassName);
-            trampolines.add(trampoline);
-            fn = trampoline.getFunctionRef();
-        }
-        Value result = call(function, fn, function.getParameterRef(0));
-        Variable handleI8Ptr = function.newVariable(I8_PTR);
-        function.add(new Bitcast(handleI8Ptr, handle, I8_PTR));
-        call(function, BC_SET_STRUCT_HANDLE, function.getParameterRef(0), result, handleI8Ptr.ref());
 
-        return result;
+        } else {
+            
+            Value p = function.getParameterRef(2); // 'env' is parameter 0, 'this' is at 1, the value we're interested in is at index 2
+            if (needsMarshaler(method.getParameterType(0))) {
+
+                if (isPassByValue(method, 0)) {
+                    // The parameter must not be null. We assume that Structs 
+                    // never have a NULL handle so we just check that the Java
+                    // Object isn't null.
+                    call(function, CHECK_NULL, function.getParameterRef(0), p);
+                }
+                
+                // Call the Marshaler's toNative() method
+                String marshalerClassName = getMarshalerClassName(method, 0);
+                Invokestatic invokestatic = new Invokestatic(
+                        getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                        "toNative", "(Ljava/lang/Object;)J");
+                trampolines.add(invokestatic);
+                Value ptrI64 = call(function, invokestatic.getFunctionRef(), 
+                        function.getParameterRef(0), p);
+
+                // Convert the returned i64 to i8*
+                Variable ptr = function.newVariable(I8_PTR);
+                function.add(new Inttoptr(ptr, ptrI64, I8_PTR));
+                
+                if (isPassByValue(method, 0)) {
+                    // Copy the struct
+                    Variable memberI8Ptr = function.newVariable(I8_PTR);
+                    function.add(new Bitcast(memberI8Ptr, memberPtr.ref(), I8_PTR));
+                    call(function, LLVM_MEMCPY, memberI8Ptr.ref(), ptr.ref(), 
+                            sizeof((StructureType) memberType), new IntegerConstant(1), 
+                            BooleanConstant.FALSE);
+                } else {
+                    function.add(new Store(ptr.ref(), memberPtr.ref()));                    
+                }
+            } else if (hasPointerAnnotation(method, 0)) {
+                // @Pointer long. Convert from i64 to i8*
+                Variable ptr = function.newVariable(I8_PTR);
+                function.add(new Inttoptr(ptr, p, I8_PTR));
+                function.add(new Store(ptr.ref(), memberPtr.ref()));                    
+            } else {
+                function.add(new Store(p, memberPtr.ref()));                    
+            }
+            
+            if (method.getReturnType().equals(VoidType.v())) {
+                function.add(new Ret());
+            } else {
+                function.add(new Ret(function.getParameterRef(1)));
+            }
+        }
     }
 }

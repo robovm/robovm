@@ -34,29 +34,22 @@ public final class ShortRef extends Struct<ShortRef> {
      * @param value the value.
      */
     public ShortRef(short value) {
-        setValue(value);
+        set(value);
     }
 
-    @StructMember
-    private native short getValue();
-    @StructMember
-    private native void setValue(short value);
-    
     /**
      * Returns the current value.
      * 
      * @return the value.
      */
-    public short get() {
-        return getValue();
-    }
+    @StructMember(0)
+    public native short get();
     
     /**
      * Sets the value.
      * 
      * @param value the new value.
      */
-    public void set(short value) {
-        setValue(value);
-    }
+    @StructMember(0)
+    public native void set(short value);
 }

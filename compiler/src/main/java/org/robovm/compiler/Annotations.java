@@ -145,6 +145,10 @@ public class Annotations {
         return null;
     }
 
+    public static AnnotationTag getStructMemberAnnotation(SootMethod method) {
+        return getAnnotation(method, STRUCT_MEMBER);
+    }
+    
     public static boolean hasByValAnnotation(SootClass clazz) {
         while (!clazz.isPhantom() && clazz.hasSuperclass()) {
             if (hasAnnotation(clazz, BY_VAL)) {

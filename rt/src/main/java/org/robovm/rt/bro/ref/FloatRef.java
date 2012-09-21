@@ -34,29 +34,22 @@ public final class FloatRef extends Struct<FloatRef> {
      * @param value the value.
      */
     public FloatRef(float value) {
-        setValue(value);
+        set(value);
     }
 
-    @StructMember
-    private native float getValue();
-    @StructMember
-    private native void setValue(float value);
-    
     /**
      * Returns the current value.
      * 
      * @return the value.
      */
-    public float get() {
-        return getValue();
-    }
+    @StructMember(0)
+    public native float get();
     
     /**
      * Sets the value.
      * 
      * @param value the new value.
      */
-    public void set(float value) {
-        setValue(value);
-    }
+    @StructMember(0)
+    public native void set(float value);
 }

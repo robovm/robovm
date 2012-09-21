@@ -34,29 +34,22 @@ public final class ByteRef extends Struct<ByteRef> {
      * @param value the value.
      */
     public ByteRef(byte value) {
-        setValue(value);
+        set(value);
     }
 
-    @StructMember
-    private native byte getValue();
-    @StructMember
-    private native void setValue(byte value);
-    
     /**
      * Returns the current value.
      * 
      * @return the value.
      */
-    public byte get() {
-        return getValue();
-    }
+    @StructMember(0)
+    public native byte get();
     
     /**
      * Sets the value.
      * 
      * @param value the new value.
      */
-    public void set(byte value) {
-        setValue(value);
-    }
+    @StructMember(0)
+    public native void set(byte value);
 }

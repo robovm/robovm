@@ -20,16 +20,22 @@ import static org.robovm.compiler.Annotations.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.PointerType;
+import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Type;
 
 import soot.LongType;
 import soot.PrimType;
 import soot.RefType;
+import soot.SootClass;
 import soot.SootMethod;
 import soot.VoidType;
 import soot.tagkit.AnnotationClassElem;
+import soot.tagkit.AnnotationIntElem;
 import soot.tagkit.AnnotationTag;
 
 /**
@@ -93,6 +99,14 @@ public abstract class Bro {
         return desc.substring(1, desc.length() - 1);
     }
 
+    public static int getStructMemberOffset(SootMethod method) {
+        AnnotationTag annotation = getStructMemberAnnotation(method);
+        if (annotation == null) {
+            return -1;
+        }
+        return ((AnnotationIntElem) annotation.getElemAt(0)).getValue();
+    }
+    
     public static boolean isPassByValue(SootMethod method) {
         soot.Type sootType = method.getReturnType();
         return isStruct(sootType) && (hasByValAnnotation(method) 
@@ -190,4 +204,198 @@ public abstract class Bro {
         return new FunctionType(returnType, paramTypes);
     }
     
+    public static boolean isBridge(SootMethod sm) {
+        return hasBridgeAnnotation(sm);
+    }
+    
+    public static boolean isCallback(SootMethod sm) {
+        return hasCallbackAnnotation(sm);
+    }
+    
+    public static boolean isStructMember(SootMethod sm) {
+        return hasStructMemberAnnotation(sm);
+    }
+    
+    public static StructureType getStructType(soot.Type t) {
+        return getStructType(((RefType) t).getSootClass());                
+    }
+    
+    private static void validateStructMemberPair(SootMethod getter, SootMethod setter, SootClass clazz, int offset) {
+        if (getter != null && setter != null) {
+            if (!setter.getParameterType(0).equals(getter.getReturnType())) {
+                throw new IllegalArgumentException("Different type used " 
+                        + "for getter and setter of " 
+                        + "@StructMember(" + offset + ") in class " + clazz);                        
+            }
+            soot.Type type = getter.getReturnType();
+            if (hasPointerAnnotation(getter) || hasPointerAnnotation(setter, 0)) {
+                if (hasPointerAnnotation(getter) != hasPointerAnnotation(setter, 0)) {
+                    throw new IllegalArgumentException("Getter and setter of " 
+                            + "@StructMember(" + offset + ") in class " + clazz 
+                            + " must both be annotated with @Pointer");                    
+                }
+            } else if (isStruct(type)) {
+                // Both has to be either pass by value or pass by reference
+                if (isPassByValue(getter) != isPassByValue(setter, 0)) {
+                    throw new IllegalArgumentException("Getter and setter of " 
+                            + "@StructMember(" + offset + ") in class " + clazz 
+                            + " must either both use @ByVal or @ByRef");                    
+                }
+            }
+        }
+    }
+    
+    public static StructMemberPair getStructMemberPair(SootClass clazz, int offset) {
+        return getStructMemberPairs(clazz)[offset];
+    }
+    
+    private static StructMemberPair[] getStructMemberPairs(SootClass clazz) {
+        int n = 0;
+        for (SootMethod method : clazz.getMethods()) {
+            n = Math.max(getStructMemberOffset(method) + 1, n);
+        }
+        if (n == 0) {
+            return new StructMemberPair[0];
+        }
+        StructMemberPair[] result = new StructMemberPair[n];
+        for (SootMethod method : clazz.getMethods()) {
+            int offset = getStructMemberOffset(method);
+            if (offset != -1) {
+                StructMemberPair pair = result[offset];
+                if (pair == null) {
+                    pair = new StructMemberPair();
+                    result[offset] = pair;
+                }
+                if (pair.getter != null && pair.setter != null) {
+                    throw new IllegalArgumentException("Too many @StructMember " 
+                            + "annotated methods with offset " + offset + " in class " + clazz);
+                }
+                if (!method.isNative() && !method.isStatic()) {
+                    throw new IllegalArgumentException("@StructMember annotated method " 
+                            + method.getName() + " in class " + clazz 
+                            + " must be native and not static");
+                }
+                if (method.getParameterCount() == 0) {
+                    // Possibly a getter
+                    if (pair.getter != null) {
+                        throw new IllegalArgumentException("Two getters for " 
+                                + "@StructMember(" + offset + ") found in class " + clazz);
+                    }
+                    if (hasPointerAnnotation(method) && !method.getReturnType().equals(LongType.v())) {
+                        throw new IllegalArgumentException("@StructMember(" + offset + ") in class " 
+                                + clazz + " must be of type long when annotated with @Pointer");
+                    }
+                    if (!canMarshal(method)) {
+                        throw new IllegalArgumentException("No @Marshaler found for " 
+                                + "@StructMember(" + offset + ") in class " + clazz);
+                    }
+                    validateStructMemberPair(method, pair.setter, clazz, offset);
+                    pair.getter = method;
+                } else if (method.getParameterCount() == 1) {
+                    if (pair.setter != null) {
+                        throw new IllegalArgumentException("Two setters for " 
+                                + "@StructMember(" + offset + ") found in class " + clazz);
+                    }
+                    if (hasPointerAnnotation(method, 0) && !method.getParameterType(0).equals(LongType.v())) {
+                        throw new IllegalArgumentException("@StructMember(" + offset + ") in class " 
+                                + clazz + " must be of type long when annotated with @Pointer");
+                    }
+                    if (!canMarshal(method, 0)) {
+                        throw new IllegalArgumentException("No @Marshaler found for " 
+                                + "@StructMember(" + offset + ") in class " + clazz);
+                    }
+                    validateStructMemberPair(pair.getter, method, clazz, offset);
+                    soot.Type retType = method.getReturnType();
+                    // The return type of the setter must be void or this
+                    if (!retType.equals(VoidType.v()) && !(retType instanceof RefType && ((RefType) retType).getSootClass().equals(clazz))) {
+                        throw new IllegalArgumentException("Setter " + method.getName() +" for " 
+                                + "@StructMember(" + offset + ") in class " + clazz 
+                                + " must either return nothing or return " + clazz);
+                    }
+                    pair.setter = method;
+                } else {
+                    throw new IllegalArgumentException("@StructMember annotated method " 
+                            + method.getName() + " in class " + clazz 
+                            + " has too many parameters");
+                }
+            }
+        }
+        
+        for (int i = 0; i < result.length; i++) {
+            if (result[i] == null) {
+                throw new IllegalArgumentException("No @StructMember(" + i 
+                        + ") defined in class " + clazz);
+            }
+        }
+        
+        return result;
+    }
+    
+    public static StructureType getStructType(SootClass clazz) {
+        List<Type> types = new ArrayList<Type>();
+        
+        for (StructMemberPair pair : getStructMemberPairs(clazz)) {
+            SootMethod getter = pair.getter;
+            SootMethod setter = pair.setter;
+            soot.Type type = getter != null 
+                    ? getter.getReturnType() : setter.getParameterType(0);
+            if (isStruct(type)) {
+                boolean byVal = getter != null ? isPassByValue(getter) : isPassByValue(setter, 0);
+                if (!byVal) {
+                    // NOTE: We use i8* instead of <StructType>* to support pointers to recursive structs
+                    types.add(I8_PTR);
+                } else {
+                    try {
+                        types.add(getStructType(type));
+                    } catch (StackOverflowError e) {
+                        throw new IllegalArgumentException("Struct type " + type + " refers to itself");
+                    }
+                }
+            } else if (isNativeObject(type)) {
+                types.add(I8_PTR);
+            } else if (getter != null && hasPointerAnnotation(getter) || hasPointerAnnotation(setter)) {
+                types.add(I8_PTR);
+            } else {
+                types.add(getType(type));
+            }
+        }
+        
+        if (types.isEmpty()) {
+            throw new IllegalArgumentException("Struct class " + clazz + " has no @StructMember annotated methods");
+        }
+        return new StructureType(types.toArray(new Type[types.size()]));
+    }
+    
+    public static boolean isNativeObject(soot.Type t) {
+        if (t instanceof RefType) {
+            return isNativeObject(((RefType) t).getSootClass());
+        }
+        return false;
+    }
+    
+    public static boolean isNativeObject(SootClass sc) {
+        return isSubclass(sc, "org.robovm.rt.bro.NativeObject");
+    }
+    
+    public static boolean isStruct(soot.Type t) {
+        if (t instanceof RefType) {
+            return isStruct(((RefType) t).getSootClass());
+        }
+        return false;
+    }
+    
+    public static boolean isStruct(SootClass sc) {
+        return isSubclass(sc, "org.robovm.rt.bro.Struct");
+    }
+    
+    public static class StructMemberPair {
+        private SootMethod getter;
+        private SootMethod setter;
+        public SootMethod getGetter() {
+            return getter;
+        }
+        public SootMethod getSetter() {
+            return setter;
+        }
+    }
 }

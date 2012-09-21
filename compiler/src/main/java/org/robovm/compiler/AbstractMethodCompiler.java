@@ -16,6 +16,7 @@
  */
 package org.robovm.compiler;
 
+import static org.robovm.compiler.Bro.*;
 import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;

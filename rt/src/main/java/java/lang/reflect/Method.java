@@ -525,14 +525,32 @@ public final class Method extends AccessibleObject implements GenericDeclaration
      */
     public Object invoke(Object receiver, Object... args)
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+        // TODO: Check access
+        
+        if (!Modifier.isStatic(getModifiers())) {
+            if (receiver == null) {
+                throw new NullPointerException();
+            }
+            if (!getDeclaringClass().isInstance(receiver)) {
+                throw new IllegalArgumentException("receiver is not an instance " 
+                        + "of this method's declaring class");
+            }
+        }
+        
         if (args == null) {
             args = EmptyArray.OBJECT;
         }
         
-        return invoke(method, flag, receiver, args);
+        Class<?>[] pTypes = getParameterTypes(false);
+        if (args.length != pTypes.length) {
+            throw new IllegalArgumentException("wrong number of arguments");
+        }
+        
+        return internalInvoke(method, pTypes, receiver, args);
     }
     
-    private static native Object invoke(long method, boolean flag, Object receiver, Object... args)
+    private static native Object internalInvoke(long method, Class<?>[] pTypes, Object receiver, Object[] args)
             throws IllegalAccessException, IllegalArgumentException,
             InvocationTargetException;
     

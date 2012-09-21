@@ -48,6 +48,9 @@
 package java.lang.reflect;
 
 import java.lang.annotation.Annotation;
+
+import libcore.util.EmptyArray;
+
 import org.apache.harmony.luni.lang.reflect.GenericSignatureParser;
 import org.apache.harmony.luni.lang.reflect.ListOfTypes;
 import org.apache.harmony.luni.lang.reflect.Types;
@@ -412,11 +415,16 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
         Class<T> clazz = getDeclaringClass();
         int clazzModifiers = clazz.getModifiers();
         if (clazz.isArray() || Modifier.isAbstract(clazzModifiers) || Modifier.isInterface(clazzModifiers) || clazz.isPrimitive()) {
-            throw new InstantiationException("Class " + clazz.getName() + " cannot be instantiated");
+            throw new InstantiationException("class " + clazz.getName() + " cannot be instantiated");
         }
+        
+        if (args == null) {
+            args = EmptyArray.OBJECT;
+        }
+
         Class<?>[] pTypes = getParameterTypes(false);
         if (args.length != pTypes.length) {
-            throw new IllegalArgumentException("Wrong number of arguments");
+            throw new IllegalArgumentException("wrong number of arguments");
         }
         return (T) internalNewInstance(method, pTypes, args);
     }

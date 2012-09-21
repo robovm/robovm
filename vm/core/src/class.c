@@ -1013,11 +1013,11 @@ Object* rvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args) {
     return obj;
 }
 
-Boolean* rvmNewBoolean(Env* env, jboolean value) {
+Boolean* rvmBoxBoolean(Env* env, jboolean value) {
     return value ? java_lang_Boolean_TRUE : java_lang_Boolean_FALSE;
 }
 
-Byte* rvmNewByte(Env* env, jbyte value) {
+Byte* rvmBoxByte(Env* env, jbyte value) {
     jint index = value + 128;
     if (index >= 0 && index < bytesCache->length && bytesCache->values[index] != NULL) {
         return (Byte*) bytesCache->values[index];
@@ -1027,7 +1027,7 @@ Byte* rvmNewByte(Env* env, jbyte value) {
     return (Byte*) rvmCallObjectClassMethodA(env, java_lang_Byte, java_lang_Byte_valueOf, args);
 }
 
-Short* rvmNewShort(Env* env, jshort value) {
+Short* rvmBoxShort(Env* env, jshort value) {
     jint index = value + 128;
     if (index >= 0 && index < shortsCache->length && shortsCache->values[index] != NULL) {
         return (Short*) shortsCache->values[index];
@@ -1037,7 +1037,7 @@ Short* rvmNewShort(Env* env, jshort value) {
     return (Short*) rvmCallObjectClassMethodA(env, java_lang_Short, java_lang_Short_valueOf, args);
 }
 
-Character* rvmNewCharacter(Env* env, jchar value) {
+Character* rvmBoxChar(Env* env, jchar value) {
     jint index = value;
     if (index >= 0 && index < charactersCache->length && charactersCache->values[index] != NULL) {
         return (Character*) charactersCache->values[index];
@@ -1047,7 +1047,7 @@ Character* rvmNewCharacter(Env* env, jchar value) {
     return (Character*) rvmCallObjectClassMethodA(env, java_lang_Character, java_lang_Character_valueOf, args);
 }
 
-Integer* rvmNewInteger(Env* env, jint value) {
+Integer* rvmBoxInt(Env* env, jint value) {
     jint index = value + 128;
     if (index >= 0 && index < integersCache->length && integersCache->values[index] != NULL) {
         return (Integer*) integersCache->values[index];
@@ -1057,7 +1057,7 @@ Integer* rvmNewInteger(Env* env, jint value) {
     return (Integer*) rvmCallObjectClassMethodA(env, java_lang_Integer, java_lang_Integer_valueOf, args);
 }
 
-Long* rvmNewLong(Env* env, jlong value) {
+Long* rvmBoxLong(Env* env, jlong value) {
     jint index = value + 128;
     if (index >= 0 && index < longsCache->length && longsCache->values[index] != NULL) {
         return (Long*) longsCache->values[index];
@@ -1067,40 +1067,208 @@ Long* rvmNewLong(Env* env, jlong value) {
     return (Long*) rvmCallObjectClassMethodA(env, java_lang_Long, java_lang_Long_valueOf, args);
 }
 
-Float* rvmNewFloat(Env* env, jfloat value) {
+Float* rvmBoxFloat(Env* env, jfloat value) {
     jvalue args[1];
     args[0].f = value;
     return (Float*) rvmCallObjectClassMethodA(env, java_lang_Float, java_lang_Float_valueOf, args);
 }
 
-Double* rvmNewDouble(Env* env, jdouble value) {
+Double* rvmBoxDouble(Env* env, jdouble value) {
     jvalue args[1];
     args[0].d = value;
     return (Double*) rvmCallObjectClassMethodA(env, java_lang_Double, java_lang_Double_valueOf, args);
 }
 
-Object* rvmWrapPrimitive(Env* env, Class* type, jvalue* value) {
+Object* rvmBox(Env* env, Class* type, jvalue* value) {
     if (CLASS_IS_PRIMITIVE(type)) {
         switch (type->name[0]) {
         case 'Z':
-            return (Object*) rvmNewBoolean(env, value->z);
+            return (Object*) rvmBoxBoolean(env, value->z);
         case 'B':
-            return (Object*) rvmNewByte(env, value->b);
+            return (Object*) rvmBoxByte(env, value->b);
         case 'S':
-            return (Object*) rvmNewShort(env, value->s);
+            return (Object*) rvmBoxShort(env, value->s);
         case 'C':
-            return (Object*) rvmNewCharacter(env, value->c);
+            return (Object*) rvmBoxChar(env, value->c);
         case 'I':
-            return (Object*) rvmNewInteger(env, value->i);
+            return (Object*) rvmBoxInt(env, value->i);
         case 'J':
-            return (Object*) rvmNewLong(env, value->j);
+            return (Object*) rvmBoxLong(env, value->j);
         case 'F':
-            return (Object*) rvmNewFloat(env, value->f);
+            return (Object*) rvmBoxFloat(env, value->f);
         case 'D':
-            return (Object*) rvmNewDouble(env, value->d);
+            return (Object*) rvmBoxDouble(env, value->d);
         }
     }
     return (Object*) value->l;
+}
+
+jboolean rvmUnboxBoolean(Env* env, Object* arg, jvalue* value) {
+    if (!arg) {
+        rvmThrowNullPointerException(env);
+        return FALSE;
+    }
+    if (arg->clazz != java_lang_Boolean) {
+        rvmThrowClassCastException(env, java_lang_Boolean, arg->clazz);
+        return FALSE;
+    }
+    value->z = ((Boolean*) arg)->value;
+    return TRUE;
+}
+
+jboolean rvmUnboxByte(Env* env, Object* arg, jvalue* value) {
+    if (!arg) {
+        rvmThrowNullPointerException(env);
+        return FALSE;
+    }
+    if (arg->clazz != java_lang_Byte) {
+        rvmThrowClassCastException(env, java_lang_Byte, arg->clazz);
+        return FALSE;
+    }
+    value->b = ((Byte*) arg)->value;
+    return TRUE;
+}
+
+jboolean rvmUnboxChar(Env* env, Object* arg, jvalue* value) {
+    if (!arg) {
+        rvmThrowNullPointerException(env);
+        return FALSE;
+    }
+    if (arg->clazz != java_lang_Character) {
+        rvmThrowClassCastException(env, java_lang_Character, arg->clazz);
+        return FALSE;
+    }
+    value->c = ((Character*) arg)->value;
+    return TRUE;
+}
+
+jboolean rvmUnboxShort(Env* env, Object* arg, jvalue* value) {
+    if (!arg) {
+        rvmThrowNullPointerException(env);
+        return FALSE;
+    }
+    if (arg->clazz != java_lang_Short) {
+        if (rvmUnboxByte(env, arg, value)) {
+            value->s = value->b;
+            return TRUE;
+        } else {
+            rvmExceptionClear(env);
+        }
+        rvmThrowClassCastException(env, java_lang_Short, arg->clazz);
+        return FALSE;
+    }
+    value->s = ((Short*) arg)->value;
+    return TRUE;
+}
+
+jboolean rvmUnboxInt(Env* env, Object* arg, jvalue* value) {
+    if (!arg) {
+        rvmThrowNullPointerException(env);
+        return FALSE;
+    }
+    if (arg->clazz != java_lang_Integer) {
+        if (rvmUnboxShort(env, arg, value)) {
+            value->i = value->s;
+            return TRUE;
+        } else {
+            rvmExceptionClear(env);
+        }
+        rvmThrowClassCastException(env, java_lang_Integer, arg->clazz);
+        return FALSE;
+    }
+    value->i = ((Integer*) arg)->value;
+    return TRUE;
+}
+
+jboolean rvmUnboxLong(Env* env, Object* arg, jvalue* value) {
+    if (!arg) {
+        rvmThrowNullPointerException(env);
+        return FALSE;
+    }
+    if (arg->clazz != java_lang_Long) {
+        if (rvmUnboxInt(env, arg, value)) {
+            value->j = value->i;
+            return TRUE;
+        } else {
+            rvmExceptionClear(env);
+        }
+        rvmThrowClassCastException(env, java_lang_Long, arg->clazz);
+        return FALSE;
+    }
+    value->j = ((Long*) arg)->value;
+    return TRUE;
+}
+
+jboolean rvmUnboxFloat(Env* env, Object* arg, jvalue* value) {
+    if (!arg) {
+        rvmThrowNullPointerException(env);
+        return FALSE;
+    }
+    if (arg->clazz != java_lang_Float) {
+        if (rvmUnboxLong(env, arg, value)) {
+            value->f = value->j;
+            return TRUE;
+        } else {
+            rvmExceptionClear(env);
+        }
+        rvmThrowClassCastException(env, java_lang_Float, arg->clazz);
+        return FALSE;
+    }
+    value->f = ((Float*) arg)->value;
+    return TRUE;
+}
+
+jboolean rvmUnboxDouble(Env* env, Object* arg, jvalue* value) {
+    if (!arg) {
+        rvmThrowNullPointerException(env);
+        return FALSE;
+    }
+    if (arg->clazz != java_lang_Double) {
+        if (rvmUnboxLong(env, arg, value)) {
+            value->d = value->j;
+            return TRUE;
+        } else {
+            rvmExceptionClear(env);
+        }
+        if (rvmUnboxFloat(env, arg, value)) {
+            value->d = value->f;
+            return TRUE;
+        } else {
+            rvmExceptionClear(env);
+        }
+        rvmThrowClassCastException(env, java_lang_Double, arg->clazz);
+        return FALSE;
+    }
+    value->d = ((Double*) arg)->value;
+    return TRUE;
+}
+
+jboolean rvmUnbox(Env* env, Object* arg, Class* type, jvalue* value) {
+    jboolean (*unboxFunc)(Env*, Object*, jvalue*) = NULL;
+    if (type == prim_Z) {
+        unboxFunc = rvmUnboxBoolean;
+    } else if (type == prim_B) {
+        unboxFunc = rvmUnboxByte;
+    } else if (type == prim_C) {
+        unboxFunc = rvmUnboxChar;
+    } else if (type == prim_S) {
+        unboxFunc = rvmUnboxShort;
+    } else if (type == prim_I) {
+        unboxFunc = rvmUnboxInt;
+    } else if (type == prim_J) {
+        unboxFunc = rvmUnboxLong;
+    } else if (type == prim_F) {
+        unboxFunc = rvmUnboxFloat;
+    } else if (type == prim_D) {
+        unboxFunc = rvmUnboxDouble;
+    }
+
+    if (!unboxFunc) {
+        // No unboxing needed
+        value->l = (jobject) arg;
+        return TRUE;
+    }
+    return !unboxFunc(env, arg, value);
 }
 
 Object* rvmCloneObject(Env* env, Object* obj) {

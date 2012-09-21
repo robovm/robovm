@@ -58,7 +58,7 @@ static void handler(Env* env, Object* receiver, ProxyMethod* method, jvalue* arg
             char typeName[2] = {c[0], 0};
             Class* type = rvmFindClassByDescriptor(env, typeName, NULL);
             if (!type) return;
-            args[i].l = (jobject) rvmWrapPrimitive(env, type, &args[i]);
+            args[i].l = (jobject) rvmBox(env, type, &args[i]);
         }
         i++;
     }

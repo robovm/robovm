@@ -149,15 +149,24 @@ extern Object* rvmNewObject(Env* env, Class* clazz, Method* method, ...);
 extern Object* rvmNewObjectA(Env* env, Class* clazz, Method* method, jvalue* args);
 extern Object* rvmNewObjectV(Env* env, Class* clazz, Method* method, va_list args);
 
-extern Boolean* rvmNewBoolean(Env* env, jboolean value);
-extern Byte* rvmNewByte(Env* env, jbyte value);
-extern Short* rvmNewShort(Env* env, jshort value);
-extern Character* rvmNewCharacter(Env* env, jchar value);
-extern Integer* rvmNewInteger(Env* env, jint value);
-extern Long* rvmNewLong(Env* env, jlong value);
-extern Float* rvmNewFloat(Env* env, jfloat value);
-extern Double* rvmNewDouble(Env* env, jdouble value);
-extern Object* rvmWrapPrimitive(Env* env, Class* type, jvalue* value);
+extern Boolean* rvmBoxBoolean(Env* env, jboolean value);
+extern Byte* rvmBoxByte(Env* env, jbyte value);
+extern Short* rvmBoxShort(Env* env, jshort value);
+extern Character* rvmBoxChar(Env* env, jchar value);
+extern Integer* rvmBoxInt(Env* env, jint value);
+extern Long* rvmBoxLong(Env* env, jlong value);
+extern Float* rvmBoxFloat(Env* env, jfloat value);
+extern Double* rvmBoxDouble(Env* env, jdouble value);
+extern Object* rvmBox(Env* env, Class* type, jvalue* value);
+extern jboolean rvmUnboxBoolean(Env* env, Object* arg, jvalue* value);
+extern jboolean rvmUnboxByte(Env* env, Object* arg, jvalue* value);
+extern jboolean rvmUnboxShort(Env* env, Object* arg, jvalue* value);
+extern jboolean rvmUnboxChar(Env* env, Object* arg, jvalue* value);
+extern jboolean rvmUnboxInt(Env* env, Object* arg, jvalue* value);
+extern jboolean rvmUnboxLong(Env* env, Object* arg, jvalue* value);
+extern jboolean rvmUnboxFloat(Env* env, Object* arg, jvalue* value);
+extern jboolean rvmUnboxDouble(Env* env, Object* arg, jvalue* value);
+extern jboolean rvmUnbox(Env* env, Object* arg, Class* type, jvalue* value);
 
 extern Object* rvmCloneObject(Env* env, Object* obj);
 

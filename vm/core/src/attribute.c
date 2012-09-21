@@ -416,7 +416,7 @@ static jboolean getAnnotationValue(Env* env, void** attributes, Class* expectedA
                 if (!parseElementValue(env, attributes, type, classLoader, &v)) {
                     value = rvmExceptionClear(env);
                 } else {
-                    value = rvmWrapPrimitive(env, type, &v);
+                    value = rvmBox(env, type, &v);
                 }
             }
             Object* jName = rvmNewStringUTF(env, name, -1);
@@ -602,7 +602,7 @@ static jboolean getAnnotationDefaultIterator(Env* env, jbyte type, void* attribu
         if (c) {
             jvalue value = {0};
             if (parseElementValue(env, &attributes, c, method->clazz->classLoader, &value)) {
-                *result = rvmWrapPrimitive(env, c, &value);
+                *result = rvmBox(env, c, &value);
             }
         }
         return FALSE; // Stop iterating

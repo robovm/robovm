@@ -21,8 +21,8 @@ Object* Java_java_lang_reflect_Constructor_internalNewInstance(Env* env, Class* 
 
     /*
      * The Java code has already checked that the constructor is accessible
-     * to the the caller, that it can be instatiated and that the number 
-     * of arguments are correct.
+     * to the the caller, that the class can be instatiated and that the number 
+     * of arguments are correct. The args array is never null.
      */
 
     jvalue* jvalueArgs = validateAndUnwrapArgs(env, parameterTypes, args);

@@ -694,7 +694,8 @@ public class ThreadGroup implements Thread.UncaughtExceptionHandler {
             Thread.getDefaultUncaughtExceptionHandler().uncaughtException(t, e);
         } else if (!(e instanceof ThreadDeath)) {
             // No parent group, has to be 'system' Thread Group
-            e.printStackTrace(System.err);
+            //e.printStackTrace(System.err);
+            t.printStackTrace(e);
         }
     }
 

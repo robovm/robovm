@@ -13,28 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.rt.bro.ref;
+package org.robovm.rt.bro.ptr;
 
 import org.robovm.rt.bro.Struct;
-import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructMember;
 
 /**
- * Used to map a <code>void *</code>.
+ * Points to a 32-bit signed value (<code>int32_t *</code> in C).
  */
-public final class VoidPtr extends Struct<VoidPtr> {
+public final class IntPtr extends Struct<IntPtr> {
     /**
-     * Creates a new {@link VoidPtr} with a value of NULL.
+     * Creates a new {@link IntPtr} with a value of 0.
      */
-    public VoidPtr() {
+    public IntPtr() {
     }
     
     /**
-     * Creates a new {@link VoidPtr} and initializes it with the specified value.
+     * Creates a new {@link IntPtr} and initializes it with the specified value.
      * 
      * @param value the value.
      */
-    public VoidPtr(long value) {
+    public IntPtr(int value) {
         set(value);
     }
 
@@ -44,7 +43,7 @@ public final class VoidPtr extends Struct<VoidPtr> {
      * @return the value.
      */
     @StructMember(0)
-    public native @Pointer long get();
+    public native int get();
     
     /**
      * Sets the value.
@@ -52,14 +51,5 @@ public final class VoidPtr extends Struct<VoidPtr> {
      * @param value the new value.
      */
     @StructMember(0)
-    public native void set(@Pointer long value);
-    
-    /**
-     * Returns whether the value pointed to by this {@link VoidPtr} is NULL.
-     * 
-     * @return <code>true</code> if NULL, <code>false</code> otherwise.
-     */
-    public boolean isNull() {
-        return get() == 0L;
-    }
+    public native void set(int value);
 }

@@ -13,27 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.rt.bro.ref;
+package org.robovm.rt.bro.ptr;
 
 import org.robovm.rt.bro.Struct;
+import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructMember;
 
 /**
- * Points to a 16-bit unsigned value (<code>unsigned short *</code> in C).
+ * Used to map a <code>void *</code>.
  */
-public final class CharPtr extends Struct<CharPtr> {
+public final class VoidPtr extends Struct<VoidPtr> {
     /**
-     * Creates a new {@link CharPtr} with a value of 0.
+     * Creates a new {@link VoidPtr} with a value of NULL.
      */
-    public CharPtr() {
+    public VoidPtr() {
     }
     
     /**
-     * Creates a new {@link CharPtr} and initializes it with the specified value.
+     * Creates a new {@link VoidPtr} and initializes it with the specified value.
      * 
      * @param value the value.
      */
-    public CharPtr(char value) {
+    public VoidPtr(long value) {
         set(value);
     }
 
@@ -43,7 +44,7 @@ public final class CharPtr extends Struct<CharPtr> {
      * @return the value.
      */
     @StructMember(0)
-    public native char get();
+    public native @Pointer long get();
     
     /**
      * Sets the value.
@@ -51,5 +52,14 @@ public final class CharPtr extends Struct<CharPtr> {
      * @param value the new value.
      */
     @StructMember(0)
-    public native void set(char value);
+    public native void set(@Pointer long value);
+    
+    /**
+     * Returns whether the value pointed to by this {@link VoidPtr} is NULL.
+     * 
+     * @return <code>true</code> if NULL, <code>false</code> otherwise.
+     */
+    public boolean isNull() {
+        return get() == 0L;
+    }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.rt.bro.ref;
+package org.robovm.rt.bro.ptr;
 
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;

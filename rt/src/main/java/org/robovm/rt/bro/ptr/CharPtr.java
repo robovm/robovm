@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.rt.bro.ref;
+package org.robovm.rt.bro.ptr;
 
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
 /**
- * Points to an 8-bit signed value (<code>char *</code> in C).
+ * Points to a 16-bit unsigned value (<code>unsigned short *</code> in C).
  */
-public final class BytePtr extends Struct<BytePtr> {
+public final class CharPtr extends Struct<CharPtr> {
     /**
-     * Creates a new {@link BytePtr} with a value of 0.
+     * Creates a new {@link CharPtr} with a value of 0.
      */
-    public BytePtr() {
+    public CharPtr() {
     }
     
     /**
-     * Creates a new {@link BytePtr} and initializes it with the specified value.
+     * Creates a new {@link CharPtr} and initializes it with the specified value.
      * 
      * @param value the value.
      */
-    public BytePtr(byte value) {
+    public CharPtr(char value) {
         set(value);
     }
 
@@ -43,7 +43,7 @@ public final class BytePtr extends Struct<BytePtr> {
      * @return the value.
      */
     @StructMember(0)
-    public native byte get();
+    public native char get();
     
     /**
      * Sets the value.
@@ -51,5 +51,5 @@ public final class BytePtr extends Struct<BytePtr> {
      * @param value the new value.
      */
     @StructMember(0)
-    public native void set(byte value);
+    public native void set(char value);
 }

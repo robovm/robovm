@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.rt.bro.ref;
+package org.robovm.rt.bro.ptr;
 
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
 /**
- * Points to a <code>float</code> value (<code>float *</code> in C).
+ * Points to a 64-bit signed value (<code>int64_t *</code> in C).
  */
-public final class FloatPtr extends Struct<FloatPtr> {
+public final class LongPtr extends Struct<LongPtr> {
     /**
-     * Creates a new {@link FloatPtr} with a value of 0.0f.
+     * Creates a new {@link LongPtr} with a value of 0.
      */
-    public FloatPtr() {
+    public LongPtr() {
     }
     
     /**
-     * Creates a new {@link FloatPtr} and initializes it with the specified value.
+     * Creates a new {@link LongPtr} and initializes it with the specified value.
      * 
      * @param value the value.
      */
-    public FloatPtr(float value) {
+    public LongPtr(long value) {
         set(value);
     }
 
@@ -43,7 +43,7 @@ public final class FloatPtr extends Struct<FloatPtr> {
      * @return the value.
      */
     @StructMember(0)
-    public native float get();
+    public native long get();
     
     /**
      * Sets the value.
@@ -51,5 +51,5 @@ public final class FloatPtr extends Struct<FloatPtr> {
      * @param value the new value.
      */
     @StructMember(0)
-    public native void set(float value);
+    public native void set(long value);
 }

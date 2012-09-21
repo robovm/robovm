@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.rt.bro.ref;
+package org.robovm.rt.bro.ptr;
 
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
 /**
- * Points to a <code>double</code> value (<code>double *</code> in C).
+ * Points to a <code>float</code> value (<code>float *</code> in C).
  */
-public final class DoublePtr extends Struct<DoublePtr> {
+public final class FloatPtr extends Struct<FloatPtr> {
     /**
-     * Creates a new {@link DoublePtr} with a value of 0.0.
+     * Creates a new {@link FloatPtr} with a value of 0.0f.
      */
-    public DoublePtr() {
+    public FloatPtr() {
     }
     
     /**
-     * Creates a new {@link DoublePtr} and initializes it with the specified value.
+     * Creates a new {@link FloatPtr} and initializes it with the specified value.
      * 
      * @param value the value.
      */
-    public DoublePtr(double value) {
+    public FloatPtr(float value) {
         set(value);
     }
 
@@ -43,7 +43,7 @@ public final class DoublePtr extends Struct<DoublePtr> {
      * @return the value.
      */
     @StructMember(0)
-    public native double get();
+    public native float get();
     
     /**
      * Sets the value.
@@ -51,5 +51,5 @@ public final class DoublePtr extends Struct<DoublePtr> {
      * @param value the new value.
      */
     @StructMember(0)
-    public native void set(double value);
+    public native void set(float value);
 }

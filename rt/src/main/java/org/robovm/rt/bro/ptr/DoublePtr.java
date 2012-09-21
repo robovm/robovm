@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.rt.bro.ref;
+package org.robovm.rt.bro.ptr;
 
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
 /**
- * Points to a 64-bit signed value (<code>int64_t *</code> in C).
+ * Points to a <code>double</code> value (<code>double *</code> in C).
  */
-public final class LongPtr extends Struct<LongPtr> {
+public final class DoublePtr extends Struct<DoublePtr> {
     /**
-     * Creates a new {@link LongPtr} with a value of 0.
+     * Creates a new {@link DoublePtr} with a value of 0.0.
      */
-    public LongPtr() {
+    public DoublePtr() {
     }
     
     /**
-     * Creates a new {@link LongPtr} and initializes it with the specified value.
+     * Creates a new {@link DoublePtr} and initializes it with the specified value.
      * 
      * @param value the value.
      */
-    public LongPtr(long value) {
+    public DoublePtr(double value) {
         set(value);
     }
 
@@ -43,7 +43,7 @@ public final class LongPtr extends Struct<LongPtr> {
      * @return the value.
      */
     @StructMember(0)
-    public native long get();
+    public native double get();
     
     /**
      * Sets the value.
@@ -51,5 +51,5 @@ public final class LongPtr extends Struct<LongPtr> {
      * @param value the new value.
      */
     @StructMember(0)
-    public native void set(long value);
+    public native void set(double value);
 }

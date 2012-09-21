@@ -19,21 +19,21 @@ import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
 /**
- * Used to map a <code>int64_t *</code>.
+ * Points to a 64-bit signed value (<code>int64_t *</code> in C).
  */
-public final class LongRef extends Struct<LongRef> {
+public final class LongPtr extends Struct<LongPtr> {
     /**
-     * Creates a new {@link LongRef} with a value of 0.
+     * Creates a new {@link LongPtr} with a value of 0.
      */
-    public LongRef() {
+    public LongPtr() {
     }
     
     /**
-     * Creates a new {@link LongRef} and initializes it with the specified value.
+     * Creates a new {@link LongPtr} and initializes it with the specified value.
      * 
      * @param value the value.
      */
-    public LongRef(long value) {
+    public LongPtr(long value) {
         set(value);
     }
 

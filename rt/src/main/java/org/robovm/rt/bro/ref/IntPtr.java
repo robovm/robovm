@@ -19,21 +19,21 @@ import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
 /**
- * Used to map an <code>unsigned short *</code>.
+ * Points to a 32-bit signed value (<code>int32_t *</code> in C).
  */
-public final class CharRef extends Struct<CharRef> {
+public final class IntPtr extends Struct<IntPtr> {
     /**
-     * Creates a new {@link CharRef} with a value of 0.
+     * Creates a new {@link IntPtr} with a value of 0.
      */
-    public CharRef() {
+    public IntPtr() {
     }
     
     /**
-     * Creates a new {@link CharRef} and initializes it with the specified value.
+     * Creates a new {@link IntPtr} and initializes it with the specified value.
      * 
      * @param value the value.
      */
-    public CharRef(char value) {
+    public IntPtr(int value) {
         set(value);
     }
 
@@ -43,7 +43,7 @@ public final class CharRef extends Struct<CharRef> {
      * @return the value.
      */
     @StructMember(0)
-    public native char get();
+    public native int get();
     
     /**
      * Sets the value.
@@ -51,5 +51,5 @@ public final class CharRef extends Struct<CharRef> {
      * @param value the new value.
      */
     @StructMember(0)
-    public native void set(char value);
+    public native void set(int value);
 }

@@ -16,25 +16,24 @@
 package org.robovm.rt.bro.ref;
 
 import org.robovm.rt.bro.Struct;
-import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructMember;
 
 /**
- * Used to map a <code>void **</code>.
+ * Points to a 16-bit unsigned value (<code>unsigned short *</code> in C).
  */
-public final class PointerRef extends Struct<PointerRef> {
+public final class CharPtr extends Struct<CharPtr> {
     /**
-     * Creates a new {@link PointerRef} with a value of NULL.
+     * Creates a new {@link CharPtr} with a value of 0.
      */
-    public PointerRef() {
+    public CharPtr() {
     }
     
     /**
-     * Creates a new {@link PointerRef} and initializes it with the specified value.
+     * Creates a new {@link CharPtr} and initializes it with the specified value.
      * 
      * @param value the value.
      */
-    public PointerRef(long value) {
+    public CharPtr(char value) {
         set(value);
     }
 
@@ -44,7 +43,7 @@ public final class PointerRef extends Struct<PointerRef> {
      * @return the value.
      */
     @StructMember(0)
-    public native @Pointer long get();
+    public native char get();
     
     /**
      * Sets the value.
@@ -52,22 +51,5 @@ public final class PointerRef extends Struct<PointerRef> {
      * @param value the new value.
      */
     @StructMember(0)
-    public native void set(@Pointer long value);
-    
-    /**
-     * Returns whether the value pointed to by this {@link PointerRef} is NULL.
-     * 
-     * @return <code>true</code> if NULL, <code>false</code> otherwise.
-     */
-    public boolean isNull() {
-        return get() == 0L;
-    }
-    
-    public <T extends Struct<T>> T asStruct(Class<T> cls) {
-        long value = get();
-        if (value == 0L) {
-            return null;
-        }
-        return Struct.fromHandle(cls, value);
-    }
+    public native void set(char value);
 }

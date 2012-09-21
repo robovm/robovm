@@ -19,21 +19,21 @@ import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
 /**
- * Used to map a <code>float *</code>.
+ * Points to an 8-bit signed value (<code>char *</code> in C).
  */
-public final class FloatRef extends Struct<FloatRef> {
+public final class BytePtr extends Struct<BytePtr> {
     /**
-     * Creates a new {@link FloatRef} with a value of 0.0f.
+     * Creates a new {@link BytePtr} with a value of 0.
      */
-    public FloatRef() {
+    public BytePtr() {
     }
     
     /**
-     * Creates a new {@link FloatRef} and initializes it with the specified value.
+     * Creates a new {@link BytePtr} and initializes it with the specified value.
      * 
      * @param value the value.
      */
-    public FloatRef(float value) {
+    public BytePtr(byte value) {
         set(value);
     }
 
@@ -43,7 +43,7 @@ public final class FloatRef extends Struct<FloatRef> {
      * @return the value.
      */
     @StructMember(0)
-    public native float get();
+    public native byte get();
     
     /**
      * Sets the value.
@@ -51,5 +51,5 @@ public final class FloatRef extends Struct<FloatRef> {
      * @param value the new value.
      */
     @StructMember(0)
-    public native void set(float value);
+    public native void set(byte value);
 }

@@ -16,24 +16,25 @@
 package org.robovm.rt.bro.ref;
 
 import org.robovm.rt.bro.Struct;
+import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructMember;
 
 /**
- * Used to map a <code>double *</code>.
+ * Used to map a <code>void *</code>.
  */
-public final class DoubleRef extends Struct<DoubleRef> {
+public final class VoidPtr extends Struct<VoidPtr> {
     /**
-     * Creates a new {@link DoubleRef} with a value of 0.0.
+     * Creates a new {@link VoidPtr} with a value of NULL.
      */
-    public DoubleRef() {
+    public VoidPtr() {
     }
     
     /**
-     * Creates a new {@link DoubleRef} and initializes it with the specified value.
+     * Creates a new {@link VoidPtr} and initializes it with the specified value.
      * 
      * @param value the value.
      */
-    public DoubleRef(double value) {
+    public VoidPtr(long value) {
         set(value);
     }
 
@@ -43,7 +44,7 @@ public final class DoubleRef extends Struct<DoubleRef> {
      * @return the value.
      */
     @StructMember(0)
-    public native double get();
+    public native @Pointer long get();
     
     /**
      * Sets the value.
@@ -51,5 +52,14 @@ public final class DoubleRef extends Struct<DoubleRef> {
      * @param value the new value.
      */
     @StructMember(0)
-    public native void set(double value);
+    public native void set(@Pointer long value);
+    
+    /**
+     * Returns whether the value pointed to by this {@link VoidPtr} is NULL.
+     * 
+     * @return <code>true</code> if NULL, <code>false</code> otherwise.
+     */
+    public boolean isNull() {
+        return get() == 0L;
+    }
 }

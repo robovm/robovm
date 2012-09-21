@@ -19,21 +19,21 @@ import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
 /**
- * Used to map a <code>char *</code>.
+ * Points to a 16-bit signed value (<code>short *</code> in C).
  */
-public final class ByteRef extends Struct<ByteRef> {
+public final class ShortPtr extends Struct<ShortPtr> {
     /**
-     * Creates a new {@link ByteRef} with a value of 0.
+     * Creates a new {@link ShortPtr} with a value of 0.
      */
-    public ByteRef() {
+    public ShortPtr() {
     }
     
     /**
-     * Creates a new {@link ByteRef} and initializes it with the specified value.
+     * Creates a new {@link ShortPtr} and initializes it with the specified value.
      * 
      * @param value the value.
      */
-    public ByteRef(byte value) {
+    public ShortPtr(short value) {
         set(value);
     }
 
@@ -43,7 +43,7 @@ public final class ByteRef extends Struct<ByteRef> {
      * @return the value.
      */
     @StructMember(0)
-    public native byte get();
+    public native short get();
     
     /**
      * Sets the value.
@@ -51,5 +51,5 @@ public final class ByteRef extends Struct<ByteRef> {
      * @param value the new value.
      */
     @StructMember(0)
-    public native void set(byte value);
+    public native void set(short value);
 }

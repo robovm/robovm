@@ -19,21 +19,21 @@ import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
 /**
- * Used to map an <code>short *</code>.
+ * Points to a <code>float</code> value (<code>float *</code> in C).
  */
-public final class ShortRef extends Struct<ShortRef> {
+public final class FloatPtr extends Struct<FloatPtr> {
     /**
-     * Creates a new {@link ShortRef} with a value of 0.
+     * Creates a new {@link FloatPtr} with a value of 0.0f.
      */
-    public ShortRef() {
+    public FloatPtr() {
     }
     
     /**
-     * Creates a new {@link ShortRef} and initializes it with the specified value.
+     * Creates a new {@link FloatPtr} and initializes it with the specified value.
      * 
      * @param value the value.
      */
-    public ShortRef(short value) {
+    public FloatPtr(float value) {
         set(value);
     }
 
@@ -43,7 +43,7 @@ public final class ShortRef extends Struct<ShortRef> {
      * @return the value.
      */
     @StructMember(0)
-    public native short get();
+    public native float get();
     
     /**
      * Sets the value.
@@ -51,5 +51,5 @@ public final class ShortRef extends Struct<ShortRef> {
      * @param value the new value.
      */
     @StructMember(0)
-    public native void set(short value);
+    public native void set(float value);
 }

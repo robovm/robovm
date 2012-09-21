@@ -19,21 +19,21 @@ import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
 /**
- * Used to map a <code>int *</code>.
+ * Points to a <code>double</code> value (<code>double *</code> in C).
  */
-public final class IntRef extends Struct<IntRef> {
+public final class DoublePtr extends Struct<DoublePtr> {
     /**
-     * Creates a new {@link IntRef} with a value of 0.
+     * Creates a new {@link DoublePtr} with a value of 0.0.
      */
-    public IntRef() {
+    public DoublePtr() {
     }
     
     /**
-     * Creates a new {@link IntRef} and initializes it with the specified value.
+     * Creates a new {@link DoublePtr} and initializes it with the specified value.
      * 
      * @param value the value.
      */
-    public IntRef(int value) {
+    public DoublePtr(double value) {
         set(value);
     }
 
@@ -43,7 +43,7 @@ public final class IntRef extends Struct<IntRef> {
      * @return the value.
      */
     @StructMember(0)
-    public native int get();
+    public native double get();
     
     /**
      * Sets the value.
@@ -51,5 +51,5 @@ public final class IntRef extends Struct<IntRef> {
      * @param value the new value.
      */
     @StructMember(0)
-    public native void set(int value);
+    public native void set(double value);
 }

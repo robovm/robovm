@@ -71,7 +71,7 @@ public class Linker {
     private static final String[] ROOT_CLASS_PATTERNS = {
         "java.lang.**.*",
         "org.apache.harmony.lang.annotation.*",
-        "org.robovm.rt.*"
+        "org.robovm.rt.**.*"
     };
     /**
      * Names of root classes. These classes will always be linked in. Most of these
@@ -164,15 +164,17 @@ public class Linker {
         for (String rootClassName : ROOT_CLASSES) {
             classes.add(config.getClazzes().load(rootClassName));            
         }
+
+        if (config.getMainClass() != null) {
+            Clazz clazz = config.getClazzes().load(config.getMainClass().replace('.', '/'));
+            if (clazz == null) {
+                throw new CompilerException("Main class " + config.getMainClass() + " not found");
+            }
+            classes.add(clazz);
+        }
         
         if (config.getRoots().isEmpty()) {
-            if (config.getMainClass() != null) {
-                Clazz clazz = config.getClazzes().load(config.getMainClass().replace('.', '/'));
-                if (clazz == null) {
-                    throw new CompilerException("Main class " + config.getMainClass() + " not found");
-                }
-                classes.add(clazz);
-            } else {
+            if (config.getMainClass() == null) {
                 classes.addAll(config.getClazzes().listClasses());
             }
         } else {

@@ -163,6 +163,8 @@ Env* rvmStartup(Options* options) {
     if (!rvmInitExceptions(env)) return NULL;
     TRACE("Initializing signals");
     if (!rvmInitSignals(env)) return NULL;
+    TRACE("Initializing memory");
+    if (!rvmInitMemory(env)) return NULL;
 
     // Initialize the RoboVM rt JNI code
 //    RT_JNI_OnLoad(&vm->javaVM, NULL);

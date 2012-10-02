@@ -15,6 +15,9 @@
  */
 package org.robovm.rt.bro.ptr;
 
+import java.nio.CharBuffer;
+import java.nio.ShortBuffer;
+
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
@@ -52,4 +55,17 @@ public final class CharPtr extends Struct<CharPtr> {
      */
     @StructMember(0)
     public native void set(char value);
+    
+    /**
+     * Returns a {@link CharBuffer} which reads and writes to the same memory
+     * location pointed to by this {@link CharPtr}.
+     * 
+     * @param n the maximum number of chars the {@link CharBuffer} can 
+     *        read/write. This will be the {@link CharBuffer}'s 
+     *        <code>capacity</code>.
+     * @return the {@link ShortBuffer}.
+     */
+    public CharBuffer asCharBuffer(int n) {
+        return as(BytePtr.class).asByteBuffer(n >> 1).asCharBuffer();
+    }
 }

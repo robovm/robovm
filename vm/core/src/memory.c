@@ -16,7 +16,21 @@
 #include <robovm.h>
 #include <string.h>
 
-void* rvmAllocateMemory(Env* env, int size) {
+static Class* java_nio_ReadWriteDirectByteBuffer = NULL;
+static Method* java_nio_ReadWriteDirectByteBuffer_init = NULL;
+static InstanceField* java_nio_ReadWriteDirectByteBuffer_effectiveDirectAddress = NULL;
+
+jboolean rvmInitMemory(Env* env) {
+    java_nio_ReadWriteDirectByteBuffer = rvmFindClassUsingLoader(env, "java/nio/ReadWriteDirectByteBuffer", NULL);
+    if (!java_nio_ReadWriteDirectByteBuffer) return FALSE;
+    java_nio_ReadWriteDirectByteBuffer_init = rvmGetInstanceMethod(env, java_nio_ReadWriteDirectByteBuffer, "<init>", "(II)V");
+    if (!java_nio_ReadWriteDirectByteBuffer_init) return FALSE;
+    java_nio_ReadWriteDirectByteBuffer_effectiveDirectAddress = rvmGetInstanceField(env, java_nio_ReadWriteDirectByteBuffer, "effectiveDirectAddress", "I");
+    if (!java_nio_ReadWriteDirectByteBuffer_effectiveDirectAddress) return FALSE;
+    return TRUE;
+}
+
+void* rvmAllocateMemory(Env* env, jint size) {
     void* m = GC_MALLOC(size);
     if (!m) {
         rvmThrowOutOfMemoryError(env);
@@ -25,7 +39,7 @@ void* rvmAllocateMemory(Env* env, int size) {
     return m;
 }
 
-void* rvmAllocateMemoryUncollectable(Env* env, int size) {
+void* rvmAllocateMemoryUncollectable(Env* env, jint size) {
     void* m = GC_MALLOC_UNCOLLECTABLE(size);
     if (!m) {
         rvmThrowOutOfMemoryError(env);
@@ -34,7 +48,7 @@ void* rvmAllocateMemoryUncollectable(Env* env, int size) {
     return m;
 }
 
-void* rvmAllocateMemoryAtomic(Env* env, int size) {
+void* rvmAllocateMemoryAtomic(Env* env, jint size) {
     void* m = GC_MALLOC_ATOMIC(size);
     if (!m) {
         rvmThrowOutOfMemoryError(env);
@@ -47,7 +61,7 @@ void rvmFreeMemory(void* m) {
     GC_FREE(m);
 }
 
-void* rvmCopyMemory(Env* env, const void* src, int size) {
+void* rvmCopyMemory(Env* env, const void* src, jint size) {
     void* dest = rvmAllocateMemory(env, size);
     if (!dest) return NULL;
     memcpy(dest, src, size);
@@ -56,4 +70,11 @@ void* rvmCopyMemory(Env* env, const void* src, int size) {
 
 void* rvmCopyMemoryZ(Env* env, const char* src) {
     return rvmCopyMemory(env, src, strlen(src) + 1);
+}
+
+Object* rvmNewDirectByteBuffer(Env* env, void* address, jlong capacity) {
+    jvalue args[2];
+    args[0].i = (jint) address;
+    args[1].i = (jint) capacity;
+    return rvmNewObjectA(env, java_nio_ReadWriteDirectByteBuffer, java_nio_ReadWriteDirectByteBuffer_init, args);
 }

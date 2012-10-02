@@ -15,6 +15,9 @@
  */
 package org.robovm.rt.bro.ptr;
 
+import java.nio.ByteBuffer;
+
+import org.robovm.rt.VM;
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
@@ -52,4 +55,17 @@ public final class BytePtr extends Struct<BytePtr> {
      */
     @StructMember(0)
     public native void set(byte value);
+    
+    /**
+     * Returns a {@link ByteBuffer} which reads and writes to the same memory
+     * location pointed to by this {@link BytePtr}.
+     * 
+     * @param n the maximum number of bytes the {@link ByteBuffer} can 
+     *        read/write. This will be the {@link ByteBuffer}'s 
+     *        <code>capacity</code>.
+     * @return the {@link ByteBuffer}.
+     */
+    public ByteBuffer asByteBuffer(int n) {
+        return VM.newDirectByteBuffer(getHandle(), n);
+    }
 }

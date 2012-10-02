@@ -15,6 +15,8 @@
  */
 package org.robovm.rt.bro.ptr;
 
+import java.nio.DoubleBuffer;
+
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
@@ -52,4 +54,17 @@ public final class DoublePtr extends Struct<DoublePtr> {
      */
     @StructMember(0)
     public native void set(double value);
+    
+    /**
+     * Returns a {@link DoubleBuffer} which reads and writes to the same memory
+     * location pointed to by this {@link DoublePtr}.
+     * 
+     * @param n the maximum number of doubles the {@link DoubleBuffer} can 
+     *        read/write. This will be the {@link DoubleBuffer}'s 
+     *        <code>capacity</code>.
+     * @return the {@link DoubleBuffer}.
+     */
+    public DoubleBuffer asDoubleBuffer(int n) {
+        return as(BytePtr.class).asByteBuffer(n >> 3).asDoubleBuffer();
+    }
 }

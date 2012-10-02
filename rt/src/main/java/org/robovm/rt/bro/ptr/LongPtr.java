@@ -15,6 +15,9 @@
  */
 package org.robovm.rt.bro.ptr;
 
+import java.nio.DoubleBuffer;
+import java.nio.LongBuffer;
+
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
@@ -52,4 +55,17 @@ public final class LongPtr extends Struct<LongPtr> {
      */
     @StructMember(0)
     public native void set(long value);
+    
+    /**
+     * Returns a {@link LongBuffer} which reads and writes to the same memory
+     * location pointed to by this {@link LongPtr}.
+     * 
+     * @param n the maximum number of longs the {@link LongBuffer} can 
+     *        read/write. This will be the {@link LongBuffer}'s 
+     *        <code>capacity</code>.
+     * @return the {@link LongBuffer}.
+     */
+    public LongBuffer asLongBuffer(int n) {
+        return as(BytePtr.class).asByteBuffer(n >> 3).asLongBuffer();
+    }    
 }

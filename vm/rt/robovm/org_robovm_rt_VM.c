@@ -123,6 +123,10 @@ Object* Java_org_robovm_rt_VM_allocateObject(Env* env, Class* c, Class* cls) {
     return rvmAllocateObject(env, cls);
 }
 
+Object* Java_org_robovm_rt_VM_newDirectByteBuffer(Env* env, Class* c, jlong address, jlong capacity) {
+    return rvmNewDirectByteBuffer(env, LONG_TO_PTR(address), capacity);
+}
+
 void Java_org_robovm_rt_VM_memcpy(Env* env, Class* c, jlong s1, jlong s2, jlong n) {
     memcpy(LONG_TO_PTR(s1), LONG_TO_PTR(s2), (size_t) n);
 }

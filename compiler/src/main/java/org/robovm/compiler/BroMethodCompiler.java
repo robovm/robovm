@@ -16,15 +16,13 @@
  */
 package org.robovm.compiler;
 
-import static org.robovm.compiler.Bro.*;
+import static org.robovm.compiler.Functions.*;
 
-import java.util.ArrayList;
-
-import org.robovm.compiler.llvm.Argument;
 import org.robovm.compiler.llvm.Function;
-import org.robovm.compiler.llvm.Type;
+import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.Value;
-import org.robovm.compiler.llvm.VariableRef;
+import org.robovm.compiler.trampoline.LdcClass;
+import org.robovm.compiler.trampoline.Trampoline;
 
 /**
  * 
@@ -35,31 +33,15 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         super(config);
     }
 
-    protected Value marshalBridgeArgs(Function fn) {
-        Type[] parameterTypes = fn.getType().getParameterTypes();
-        String[] parameterNames = fn.getParameterNames();
-        ArrayList<Argument> args = new ArrayList<Argument>();
-        for (int i = 0; i < parameterTypes.length; i++) {
-            args.add(new Argument(new VariableRef(parameterNames[i], parameterTypes[i])));
+    protected Value ldcClass(Function fn, String name) {
+        FunctionRef ldcClassFn = null;
+        if (name.equals(this.className)) {
+            ldcClassFn = FunctionBuilder.ldcInternal(this.className).ref();
+        } else {
+            Trampoline trampoline = new LdcClass(this.className, name);
+            trampolines.add(trampoline);
+            ldcClassFn = trampoline.getFunctionRef();
         }
-        
-        // Remove Env* from args
-        args.remove(0);
-        if (!sootMethod.isStatic()) {
-            // Remove receiver from args
-            args.remove(0);
-        }
-        
-        for (int i = 0; i < sootMethod.getParameterCount(); i++) {
-            soot.Type type = sootMethod.getParameterType(i);
-            if (needsMarshaler(type)) {
-                //callMarshaler();
-            }
-        }
-        
-        return null;
+        return call(fn, ldcClassFn, fn.getParameterRef(0));
     }
-    
-    
-
 }

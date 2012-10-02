@@ -27,16 +27,19 @@ import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Type;
+import org.robovm.compiler.util.GenericSignatureParser;
 
 import soot.LongType;
 import soot.PrimType;
 import soot.RefType;
 import soot.SootClass;
 import soot.SootMethod;
+import soot.SootResolver;
 import soot.VoidType;
 import soot.tagkit.AnnotationClassElem;
 import soot.tagkit.AnnotationIntElem;
 import soot.tagkit.AnnotationTag;
+import soot.tagkit.SignatureTag;
 
 /**
  * 
@@ -81,19 +84,68 @@ public abstract class Bro {
         return false;
     }
     
-    public static String getMarshalerClassName(SootMethod method) {
+    public static SootClass getPtrTargetClass(SootMethod method) {
+        return getPtrTargetClass(method, -1);
+    }
+    
+    public static SootClass getPtrTargetClass(SootMethod method, int paramIndex) {
+        SignatureTag signatureTag = (SignatureTag) method.getTag("SignatureTag");
+        if (signatureTag == null) {
+            // Assume Ptr<VoidPtr>
+            return SootResolver.v().resolveClass("org.robovm.bro.ptr.VoidPtr", SootClass.SIGNATURES);
+        } else {
+            GenericSignatureParser parser = new GenericSignatureParser(signatureTag.getSignature());
+            String sig = paramIndex != -1 ? parser.getParameterSignature(paramIndex) : parser.getReturnTypeSignature();
+            String name = sig.replaceAll("(?:Lorg/robovm/rt/bro/ptr/Ptr<)+L([^<;]+).*", "$1");
+            name = name.replace('/', '.');
+            return SootResolver.v().resolveClass(name, SootClass.SIGNATURES);
+        }
+    }
+
+    public static int getPtrWrapCount(SootMethod method) {
+        return getPtrWrapCount(method, -1);
+    }
+    
+    public static int getPtrWrapCount(SootMethod method, int paramIndex) {
+        SignatureTag signatureTag = (SignatureTag) method.getTag("SignatureTag");
+        if (signatureTag == null) {
+            // Assume Ptr<VoidPtr>
+            return 1;
+        } else {
+            GenericSignatureParser parser = new GenericSignatureParser(signatureTag.getSignature());
+            String sig = paramIndex != -1 ? parser.getParameterSignature(paramIndex) : parser.getReturnTypeSignature();
+            int count = 0;
+            while (sig.startsWith("Lorg/robovm/rt/bro/ptr/Ptr<")) {
+                count++;
+                sig = sig.substring("Lorg/robovm/rt/bro/ptr/Ptr<".length());
+            }
+            return count;
+        }
+    }
+    
+    public static String getMarshalerClassName(SootMethod method, boolean unwrapPtr) {
         AnnotationTag annotation = getMarshalerAnnotation(method);
         if (annotation == null) {
-            annotation = getMarshalerAnnotation(((RefType) method.getReturnType()).getSootClass());
+            SootClass paramType = ((RefType) method.getReturnType()).getSootClass();
+            if (unwrapPtr && isPtr(paramType)) {
+                // Return the marshaler for the type pointed to.
+                paramType = getPtrTargetClass(method);
+            }
+            annotation = getMarshalerAnnotation(paramType);
         }
         String desc = ((AnnotationClassElem) annotation.getElemAt(0)).getDesc();
         return desc.substring(1, desc.length() - 1);
     }
     
-    public static String getMarshalerClassName(SootMethod method, int paramIndex) {
+    public static String getMarshalerClassName(SootMethod method, int paramIndex, boolean unwrapPtr) {
         AnnotationTag annotation = getMarshalerAnnotation(method, paramIndex);
         if (annotation == null) {
-            annotation = getMarshalerAnnotation(((RefType) method.getParameterType(paramIndex)).getSootClass());
+            SootClass paramType = ((RefType) method.getParameterType(paramIndex)).getSootClass();
+            if (unwrapPtr && isPtr(paramType)) {
+                // Return the marshaler for the type pointed to.
+                paramType = getPtrTargetClass(method, paramIndex);
+            }
+            annotation = getMarshalerAnnotation(paramType);
         }
         String desc = ((AnnotationClassElem) annotation.getElemAt(0)).getDesc();
         return desc.substring(1, desc.length() - 1);
@@ -385,7 +437,18 @@ public abstract class Bro {
     }
     
     public static boolean isStruct(SootClass sc) {
-        return isSubclass(sc, "org.robovm.rt.bro.Struct");
+        return !sc.isAbstract() && isSubclass(sc, "org.robovm.rt.bro.Struct");
+    }
+    
+    public static boolean isPtr(soot.Type t) {
+        if (t instanceof RefType) {
+            return isPtr(((RefType) t).getSootClass());
+        }
+        return false;
+    }
+    
+    public static boolean isPtr(SootClass sc) {
+        return sc.getName().equals("org.robovm.rt.bro.ptr.Ptr");
     }
     
     public static class StructMemberPair {

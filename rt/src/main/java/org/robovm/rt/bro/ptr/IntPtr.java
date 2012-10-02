@@ -15,6 +15,9 @@
  */
 package org.robovm.rt.bro.ptr;
 
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
@@ -52,4 +55,17 @@ public final class IntPtr extends Struct<IntPtr> {
      */
     @StructMember(0)
     public native void set(int value);
+    
+    /**
+     * Returns a {@link IntBuffer} which reads and writes to the same memory
+     * location pointed to by this {@link IntPtr}.
+     * 
+     * @param n the maximum number of ints the {@link IntBuffer} can 
+     *        read/write. This will be the {@link IntBuffer}'s 
+     *        <code>capacity</code>.
+     * @return the {@link IntBuffer}.
+     */
+    public IntBuffer asIntBuffer(int n) {
+        return as(BytePtr.class).asByteBuffer(n >> 2).asIntBuffer();
+    }
 }

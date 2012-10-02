@@ -20,7 +20,9 @@ import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructMember;
 
 /**
- * Used to map a <code>void *</code>.
+ * Points to an unspecified value (<code>void *</code> in C). As in C there's no
+ * way to dereference a {@link VoidPtr}. Use {@link #as(Class)} to cast it to
+ * another type first.
  */
 public final class VoidPtr extends Struct<VoidPtr> {
     /**
@@ -30,36 +32,14 @@ public final class VoidPtr extends Struct<VoidPtr> {
     }
     
     /**
-     * Creates a new {@link VoidPtr} and initializes it with the specified value.
-     * 
-     * @param value the value.
-     */
-    public VoidPtr(long value) {
-        set(value);
-    }
-
-    /**
-     * Returns the current value.
-     * 
-     * @return the value.
+     * Hidden.
      */
     @StructMember(0)
-    public native @Pointer long get();
+    private native @Pointer long get();
     
     /**
-     * Sets the value.
-     * 
-     * @param value the new value.
+     * Hidden.
      */
     @StructMember(0)
-    public native void set(@Pointer long value);
-    
-    /**
-     * Returns whether the value pointed to by this {@link VoidPtr} is NULL.
-     * 
-     * @return <code>true</code> if NULL, <code>false</code> otherwise.
-     */
-    public boolean isNull() {
-        return get() == 0L;
-    }
+    private native void set(@Pointer long value);
 }

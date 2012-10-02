@@ -27,7 +27,6 @@ import org.robovm.compiler.Bro.StructMemberPair;
 import org.robovm.compiler.llvm.Bitcast;
 import org.robovm.compiler.llvm.BooleanConstant;
 import org.robovm.compiler.llvm.Function;
-import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.Getelementptr;
 import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.Inttoptr;
@@ -41,8 +40,6 @@ import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
 import org.robovm.compiler.trampoline.Invokestatic;
-import org.robovm.compiler.trampoline.LdcClass;
-import org.robovm.compiler.trampoline.Trampoline;
 
 import soot.SootClass;
 import soot.SootMethod;
@@ -52,7 +49,7 @@ import soot.VoidType;
  * @author niklas
  *
  */
-public class StructMemberMethodCompiler extends AbstractMethodCompiler {
+public class StructMemberMethodCompiler extends BroMethodCompiler {
 
     public StructMemberMethodCompiler(Config config) {
         super(config);
@@ -116,29 +113,36 @@ public class StructMemberMethodCompiler extends AbstractMethodCompiler {
                     function.add(new Load(tmp, memberPtr.ref()));
                     result = tmp.ref();
                 }
+                Variable handle = function.newVariable(I64);
+                function.add(new Ptrtoint(handle, result, I64));
                 
-                // Load the declared Class of the return value
-                String targetClassName = getInternalName(method.getReturnType());
-                FunctionRef ldcClassFn = null;
-                if (targetClassName.equals(this.className)) {
-                    ldcClassFn = FunctionBuilder.ldcInternal(method.getDeclaringClass()).ref();
+                String marshalerClassName = getMarshalerClassName(method, true);
+                if (isPtr(method.getReturnType())) {
+                    // Call the Marshaler's toPtr() method
+                    SootClass sootPtrTargetClass = getPtrTargetClass(method);
+                    Value ptrTargetClass = ldcClass(function, getInternalName(sootPtrTargetClass));
+                    int ptrWrapCount = getPtrWrapCount(method);
+                    Invokestatic invokestatic = new Invokestatic(
+                            getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                            "toPtr", "(Ljava/lang/Class;JI)Lorg/robovm/rt/bro/ptr/Ptr;");
+                    trampolines.add(invokestatic);
+                    result = call(function, invokestatic.getFunctionRef(), 
+                            function.getParameterRef(0), ptrTargetClass, 
+                            handle.ref(), new IntegerConstant(ptrWrapCount));
                 } else {
-                    Trampoline trampoline = new LdcClass(className, targetClassName);
-                    trampolines.add(trampoline);
-                    ldcClassFn = trampoline.getFunctionRef();
-                }
-                Value returnClass = call(function, ldcClassFn, function.getParameterRef(0));
+                    // Call the Marshaler's toObject() method
+                    // Load the declared Class of the return value
+                    String targetClassName = getInternalName(method.getReturnType());
+                    Value returnClass = ldcClass(function, targetClassName);
                 
-                // Call the Marshaler's toObject() method
-                String marshalerClassName = getMarshalerClassName(method);
-                Invokestatic invokestatic = new Invokestatic(
-                        getInternalName(method.getDeclaringClass()), marshalerClassName, 
-                        "toObject", "(Ljava/lang/Class;JZ)Ljava/lang/Object;");
-                trampolines.add(invokestatic);
-                Variable resultI64 = function.newVariable(I64);
-                function.add(new Ptrtoint(resultI64, result, I64));
-                result = call(function, invokestatic.getFunctionRef(), 
-                        function.getParameterRef(0), returnClass, resultI64.ref(), new IntegerConstant((byte) 0));
+                    Invokestatic invokestatic = new Invokestatic(
+                            getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                            "toObject", "(Ljava/lang/Class;JZ)Ljava/lang/Object;");
+                    trampolines.add(invokestatic);
+                    result = call(function, invokestatic.getFunctionRef(), 
+                            function.getParameterRef(0), returnClass, handle.ref(), 
+                            new IntegerConstant((byte) 0));
+                }
                 function.add(new Ret(result));
             } else if (hasPointerAnnotation(method)) {
                 // @Pointer long
@@ -158,7 +162,8 @@ public class StructMemberMethodCompiler extends AbstractMethodCompiler {
             Value p = function.getParameterRef(2); // 'env' is parameter 0, 'this' is at 1, the value we're interested in is at index 2
             if (needsMarshaler(method.getParameterType(0))) {
 
-                if (isPassByValue(method, 0)) {
+                boolean copy = !isPtr(method.getReturnType()) && isPassByValue(method, 0);
+                if (copy) {
                     // The parameter must not be null. We assume that Structs 
                     // never have a NULL handle so we just check that the Java
                     // Object isn't null.
@@ -166,7 +171,7 @@ public class StructMemberMethodCompiler extends AbstractMethodCompiler {
                 }
                 
                 // Call the Marshaler's toNative() method
-                String marshalerClassName = getMarshalerClassName(method, 0);
+                String marshalerClassName = getMarshalerClassName(method, 0, false);
                 Invokestatic invokestatic = new Invokestatic(
                         getInternalName(method.getDeclaringClass()), marshalerClassName, 
                         "toNative", "(Ljava/lang/Object;)J");
@@ -178,7 +183,7 @@ public class StructMemberMethodCompiler extends AbstractMethodCompiler {
                 Variable ptr = function.newVariable(I8_PTR);
                 function.add(new Inttoptr(ptr, ptrI64, I8_PTR));
                 
-                if (isPassByValue(method, 0)) {
+                if (copy) {
                     // Copy the struct
                     Variable memberI8Ptr = function.newVariable(I8_PTR);
                     function.add(new Bitcast(memberI8Ptr, memberPtr.ref(), I8_PTR));

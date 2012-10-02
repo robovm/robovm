@@ -89,11 +89,6 @@ public class Functions {
     public static final FunctionRef BC_POP_CALLBACK_FRAME = new FunctionRef("_bcPopCallbackFrame", new FunctionType(VOID, ENV_PTR));
     public static final FunctionRef BC_ATTACH_THREAD_FROM_CALLBACK = new FunctionRef("_bcAttachThreadFromCallback", new FunctionType(ENV_PTR));
     public static final FunctionRef BC_DETACH_THREAD_FROM_CALLBACK = new FunctionRef("_bcDetachThreadFromCallback", new FunctionType(VOID, ENV_PTR));
-    public static final FunctionRef BC_NEW_STRUCT = new FunctionRef("_bcNewStruct", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR, CLASS_PTR, I8_PTR));
-    public static final FunctionRef BC_GET_STRUCT_HANDLE = new FunctionRef("_bcGetStructHandle", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR));
-    public static final FunctionRef BC_SET_STRUCT_HANDLE = new FunctionRef("_bcSetStructHandle", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I8_PTR));
-    public static final FunctionRef BC_BY_VALUE_GET_STRUCT_HANDLE = new FunctionRef("_bcByValueGetStructHandle", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR));
-    public static final FunctionRef BC_COPY_STRUCT = new FunctionRef("_bcCopyStruct", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I8_PTR, I32));
     public static final FunctionRef RVM_TRYCATCH_ENTER = new FunctionRef("rvmTrycatchEnter", new FunctionType(I32, ENV_PTR, TRYCATCH_CONTEXT_PTR));
     public static final FunctionRef BC_TRYCATCH_LEAVE = new FunctionRef("_bcTrycatchLeave", new FunctionType(VOID, ENV_PTR));
 

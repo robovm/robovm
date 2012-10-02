@@ -16,6 +16,7 @@
 package org.robovm.rt;
 
 import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -60,6 +61,8 @@ public final class VM {
     public native static final void free(long address);
     
     public native static final <T> T allocateObject(Class<T> cls);
+    
+    public native static final ByteBuffer newDirectByteBuffer(long address, long capacity);
     
     public native static final void memcpy(long s1, long s2, long n);
     

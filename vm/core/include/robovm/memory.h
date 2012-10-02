@@ -16,12 +16,14 @@
 #ifndef ROBOVM_MEMORY_H
 #define ROBOVM_MEMORY_H
 
+extern jboolean rvmInitMemory(Env* env);
 extern void* rvmAllocateMemory(Env* env, int size);
 extern void* rvmAllocateMemoryUncollectable(Env* env, int size);
 extern void* rvmAllocateMemoryAtomic(Env* env, int size);
 extern void rvmFreeMemory(void* m);
 extern void* rvmCopyMemory(Env* env, const void* src, int size);
 extern void* rvmCopyMemoryZ(Env* env, const char* src);
+extern Object* rvmNewDirectByteBuffer(Env* env, void* address, jlong capacity);
 
 #endif
 

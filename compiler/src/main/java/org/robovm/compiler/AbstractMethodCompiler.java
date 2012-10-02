@@ -16,6 +16,7 @@
  */
 package org.robovm.compiler;
 
+import static org.robovm.compiler.Annotations.*;
 import static org.robovm.compiler.Bro.*;
 import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Mangler.*;
@@ -24,12 +25,14 @@ import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.robovm.compiler.llvm.BasicBlockRef;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
+import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.Inttoptr;
 import org.robovm.compiler.llvm.Label;
 import org.robovm.compiler.llvm.Ptrtoint;
@@ -37,12 +40,12 @@ import org.robovm.compiler.llvm.Ret;
 import org.robovm.compiler.llvm.Unreachable;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
-import org.robovm.compiler.llvm.VariableRef;
+import org.robovm.compiler.trampoline.Invokestatic;
+import org.robovm.compiler.trampoline.LdcClass;
 import org.robovm.compiler.trampoline.Trampoline;
 
-import soot.PrimType;
+import soot.SootClass;
 import soot.SootMethod;
-import soot.VoidType;
 
 /**
  *
@@ -116,17 +119,19 @@ public abstract class AbstractMethodCompiler {
     
     private void validateCallbackMethod(SootMethod method) {
         if (!method.isStatic()) {
-            throw new IllegalArgumentException("@Callback annotated method must be static: " + method);
+            throw new IllegalArgumentException("@Callback annotated method " 
+                    + method.getName() + " must be static");
         }
-        soot.Type sootRetType = method.getReturnType();
-        if (!sootRetType.equals(VoidType.v()) && !(sootRetType instanceof PrimType)) {
-            throw new IllegalArgumentException("@Callback annotated method must return void or primitive type");
+        if (!canMarshal(method)) {
+            throw new IllegalArgumentException("No @Marshaler for return type of" 
+                    + " @Callback annotated method " + method.getName() + " found");
         }
         for (int i = 0; i < method.getParameterCount(); i++) {
-            if (!(method.getParameterType(i) instanceof PrimType)) {
-                throw new IllegalArgumentException("@Callback annotated method must take only primitive type arguments");
-            }
-        }
+            if (!canMarshal(method, i)) {
+                throw new IllegalArgumentException("No @Marshaler for parameter " + (i + 1) 
+                        + " of @Callback annotated method " + method.getName() + " found");
+            }            
+        }        
     }
     
     private void compileCallback(ModuleBuilder moduleBuilder, SootMethod method) {
@@ -135,40 +140,118 @@ public abstract class AbstractMethodCompiler {
         Function callbackFn = FunctionBuilder.callback(method);
         moduleBuilder.addFunction(callbackFn);
 
-        // Increase the attach count for the current thread (attaches the thread
-        // if not attached)
-        Value env = call(callbackFn, BC_ATTACH_THREAD_FROM_CALLBACK);
-
-        pushCallbackFrame(callbackFn, env);
-
-        ArrayList<Value> args = new ArrayList<Value>();
-        args.add(env);
-        for (VariableRef ref : callbackFn.getParameterRefs()) {
-            if (ref.getType() == I8_PTR) {
-                Variable tmp = callbackFn.newVariable(I64);
-                callbackFn.add(new Ptrtoint(tmp, ref, I64));
-                ref = tmp.ref();
-            }
-            args.add(ref);
-        }
-
         String targetName = mangleMethod(method);
         if (method.isSynchronized()) {
             targetName += "_synchronized";
         }
         FunctionRef targetFn = new FunctionRef(targetName, getFunctionType(method));
         
+        // Increase the attach count for the current thread (attaches the thread
+        // if not attached)
+        Value env = call(callbackFn, BC_ATTACH_THREAD_FROM_CALLBACK);
+
         BasicBlockRef bbSuccess = callbackFn.newBasicBlockRef(new Label("success"));
         BasicBlockRef bbFailure = callbackFn.newBasicBlockRef(new Label("failure"));
+        pushCallbackFrame(callbackFn, env);
         trycatchAllEnter(callbackFn, env, bbSuccess, bbFailure);
-        
         callbackFn.newBasicBlock(bbSuccess.getLabel());
+
+        class MarshaledValue {
+            private Value object;
+            private Value handle;
+            private int paramIndex;
+        }
+        List<MarshaledValue> marshaledValues = new ArrayList<MarshaledValue>();
+        
+        ArrayList<Value> args = new ArrayList<Value>();
+        args.add(env);
+        
+        for (int i = 0; i < sootMethod.getParameterCount(); i++) {
+            Value arg = callbackFn.getParameterRef(i);
+            soot.Type type = sootMethod.getParameterType(i);
+            if (needsMarshaler(type)) {
+                String marshalerClassName = getMarshalerClassName(method, i, true);
+
+                Variable handle = callbackFn.newVariable(I64);
+                callbackFn.add(new Ptrtoint(handle, arg, I64));
+                
+                MarshaledValue marshaledValue = new MarshaledValue();
+                marshaledValues.add(marshaledValue);
+                marshaledValue.handle = handle.ref();
+                marshaledValue.paramIndex = i;
+                
+                if (isPtr(type)) {
+                    // Call the Marshaler's toPtr() method
+                    SootClass sootPtrTargetClass = getPtrTargetClass(method, i);
+                    Value ptrTargetClass = ldcClass(callbackFn, getInternalName(sootPtrTargetClass), env);
+                    int ptrWrapCount = getPtrWrapCount(method, i);
+                    Invokestatic invokestatic = new Invokestatic(
+                            getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                            "toPtr", "(Ljava/lang/Class;JI)Lorg/robovm/rt/bro/ptr/Ptr;");
+                    trampolines.add(invokestatic);
+                    arg = call(callbackFn, invokestatic.getFunctionRef(), 
+                            env, ptrTargetClass, 
+                            handle.ref(), new IntegerConstant(ptrWrapCount));
+                } else {
+                    // Load the declared Class of the parameter
+                    String targetClassName = getInternalName(type);
+                    Value targetClass = ldcClass(callbackFn, targetClassName, env);
+                    
+                    // Call the Marshaler's toObject() method
+                    Invokestatic invokestatic = new Invokestatic(
+                            getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                            "toObject", "(Ljava/lang/Class;JZ)Ljava/lang/Object;");
+                    trampolines.add(invokestatic);
+                    arg = call(callbackFn, invokestatic.getFunctionRef(), 
+                            env, targetClass, handle.ref(), new IntegerConstant((byte) 0));
+                }                
+                marshaledValue.object = arg;
+            } else if (hasPointerAnnotation(method, i)) {
+                Variable resultI64 = callbackFn.newVariable(I64);
+                callbackFn.add(new Ptrtoint(resultI64, arg, I64));
+                arg = resultI64.ref();
+            }
+            args.add(arg);
+        }
+        
         Value result = call(callbackFn, targetFn, args);
-        if (callbackFn.getType().getReturnType() == I8_PTR) {
+        
+        // Call Marshaler.updateNative() for each object that was marshaled before
+        // the call.
+        for (MarshaledValue value : marshaledValues) {
+            String marshalerClassName = getMarshalerClassName(method, value.paramIndex, false);
+            // Call the Marshaler's updateNative() method
+            Invokestatic invokestatic = new Invokestatic(
+                    getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                    "updateNative", "(Ljava/lang/Object;J)V");
+            trampolines.add(invokestatic);
+            call(callbackFn, invokestatic.getFunctionRef(), 
+                    env, value.object, value.handle);
+        }
+
+        
+        // Marshal the returned value to a native value before returning
+        if (needsMarshaler(method.getReturnType())) {
+            // Call the Marshaler's toNative() method
+            String marshalerClassName = getMarshalerClassName(method, false);
+            Invokestatic invokestatic = new Invokestatic(
+                    getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                    "toNative", "(Ljava/lang/Object;)J");
+            trampolines.add(invokestatic);
+            Value resultI64 = call(callbackFn, invokestatic.getFunctionRef(), 
+                    env, result);
+            
+            // Convert the return long to an appropriate pointer
+            Variable resultPtr = callbackFn.newVariable(callbackFn.getType().getReturnType());
+            callbackFn.add(new Inttoptr(resultPtr, resultI64, resultPtr.getType()));
+            result = resultPtr.ref();
+        } else if (hasPointerAnnotation(method)) {
+            // @Pointer long. Convert from i64 to i8*
             Variable resultI8Ptr = callbackFn.newVariable(I8_PTR);
             callbackFn.add(new Inttoptr(resultI8Ptr, result, I8_PTR));
             result = resultI8Ptr.ref();
         }
+        
         trycatchLeave(callbackFn, env);
         popCallbackFrame(callbackFn, env);
         call(callbackFn, BC_DETACH_THREAD_FROM_CALLBACK, env);
@@ -177,8 +260,21 @@ public abstract class AbstractMethodCompiler {
         callbackFn.newBasicBlock(bbFailure.getLabel());
         trycatchLeave(callbackFn, env);
         popCallbackFrame(callbackFn, env);
+        Value ex = call(callbackFn, BC_EXCEPTION_CLEAR, env);
         call(callbackFn, BC_DETACH_THREAD_FROM_CALLBACK, env);
-        call(callbackFn, BC_THROW_IF_EXCEPTION_OCCURRED, env);
+        call(callbackFn, BC_THROW, env, ex);
         callbackFn.add(new Unreachable());
+    }
+    
+    protected Value ldcClass(Function fn, String name, Value env) {
+        FunctionRef ldcClassFn = null;
+        if (name.equals(this.className)) {
+            ldcClassFn = FunctionBuilder.ldcInternal(this.className).ref();
+        } else {
+            Trampoline trampoline = new LdcClass(this.className, name);
+            trampolines.add(trampoline);
+            ldcClassFn = trampoline.getFunctionRef();
+        }
+        return call(fn, ldcClassFn, env);
     }
 }

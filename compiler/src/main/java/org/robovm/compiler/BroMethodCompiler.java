@@ -16,13 +16,6 @@
  */
 package org.robovm.compiler;
 
-import static org.robovm.compiler.Functions.*;
-
-import org.robovm.compiler.llvm.Function;
-import org.robovm.compiler.llvm.FunctionRef;
-import org.robovm.compiler.llvm.Value;
-import org.robovm.compiler.trampoline.LdcClass;
-import org.robovm.compiler.trampoline.Trampoline;
 
 /**
  * 
@@ -33,15 +26,4 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         super(config);
     }
 
-    protected Value ldcClass(Function fn, String name) {
-        FunctionRef ldcClassFn = null;
-        if (name.equals(this.className)) {
-            ldcClassFn = FunctionBuilder.ldcInternal(this.className).ref();
-        } else {
-            Trampoline trampoline = new LdcClass(this.className, name);
-            trampolines.add(trampoline);
-            ldcClassFn = trampoline.getFunctionRef();
-        }
-        return call(fn, ldcClassFn, fn.getParameterRef(0));
-    }
 }

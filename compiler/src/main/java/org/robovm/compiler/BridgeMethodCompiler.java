@@ -37,6 +37,7 @@ import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.Global;
 import org.robovm.compiler.llvm.Icmp;
 import org.robovm.compiler.llvm.Icmp.Condition;
+import org.robovm.compiler.llvm.BasicBlockRef;
 import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.Inttoptr;
 import org.robovm.compiler.llvm.Label;
@@ -113,7 +114,8 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         innerFn.add(new Icmp(nullCheck, Condition.eq, targetFn.ref(), new NullConstant(targetFnType)));
         innerFn.add(new Br(nullCheck.ref(), innerFn.newBasicBlockRef(nullLabel), innerFn.newBasicBlockRef(notNullLabel)));
         innerFn.newBasicBlock(nullLabel);
-        call(innerFn, BC_THROW_UNSATISIFED_LINK_ERROR, innerFn.getParameterRef(0),
+        VariableRef env = innerFn.getParameterRef(0);
+        call(innerFn, BC_THROW_UNSATISIFED_LINK_ERROR, env,
                 moduleBuilder.getString(String.format("Bridge method %s.%s%s not bound", className,
                         method.getName(), getDescriptor(method))));
         innerFn.add(new Unreachable());
@@ -151,7 +153,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                     // The parameter must not be null. We assume that Structs 
                     // never have a NULL handle so we just check that the Java
                     // Object isn't null.
-                    call(innerFn, CHECK_NULL, innerFn.getParameterRef(0), args.get(i).getValue());
+                    call(innerFn, CHECK_NULL, env, args.get(i).getValue());
                     parameterAttributes = new ParameterAttribute[1];
                     if (isStructRet(method, i)) {
                         parameterAttributes[0] = sret;
@@ -172,7 +174,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                         "toNative", "(Ljava/lang/Object;)J");
                 trampolines.add(invokestatic);
                 Value argI64 = call(innerFn, invokestatic.getFunctionRef(), 
-                        innerFn.getParameterRef(0), args.get(i).getValue());
+                        env, args.get(i).getValue());
 
                 marshaledValue.handle = argI64;
                 
@@ -189,7 +191,11 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         }        
         
         // Execute the call to native code
+        BasicBlockRef bbSuccess = innerFn.newBasicBlockRef(new Label("success"));
+        BasicBlockRef bbFailure = innerFn.newBasicBlockRef(new Label("failure"));
         pushNativeFrame(innerFn);
+        trycatchAllEnter(innerFn, env, bbSuccess, bbFailure);
+        innerFn.newBasicBlock(bbSuccess.getLabel());
         Value resultInner = callWithArguments(innerFn, targetFn.ref(), args);
         popNativeFrame(innerFn);
 
@@ -201,14 +207,14 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             if (isPtr(type)) {
                 // Call the Marshaler's updatePtr() method
                 SootClass sootPtrTargetClass = getPtrTargetClass(method, value.paramIndex);
-                Value ptrTargetClass = ldcClass(innerFn, getInternalName(sootPtrTargetClass));
+                Value ptrTargetClass = ldcClass(innerFn, getInternalName(sootPtrTargetClass), env);
                 int ptrWrapCount = getPtrWrapCount(method, value.paramIndex);
                 Invokestatic invokestatic = new Invokestatic(
                         getInternalName(method.getDeclaringClass()), marshalerClassName, 
                         "updatePtr", "(Lorg/robovm/rt/bro/ptr/Ptr;Ljava/lang/Class;JI)V");
                 trampolines.add(invokestatic);
                 call(innerFn, invokestatic.getFunctionRef(), 
-                        innerFn.getParameterRef(0), value.object, ptrTargetClass, 
+                        env, value.object, ptrTargetClass, 
                         value.handle, new IntegerConstant(ptrWrapCount));
             } else {
                 // Call the Marshaler's updateObject() method
@@ -217,7 +223,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                         "updateObject", "(Ljava/lang/Object;J)V");
                 trampolines.add(invokestatic);
                 call(innerFn, invokestatic.getFunctionRef(), 
-                        innerFn.getParameterRef(0), value.object, value.handle);
+                        env, value.object, value.handle);
             }
         }
         
@@ -227,7 +233,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             if (isPtr(method.getReturnType())) {
                 // Call the Marshaler's toPtr() method
                 SootClass sootPtrTargetClass = getPtrTargetClass(method);
-                Value ptrTargetClass = ldcClass(innerFn, getInternalName(sootPtrTargetClass));
+                Value ptrTargetClass = ldcClass(innerFn, getInternalName(sootPtrTargetClass), env);
                 int ptrWrapCount = getPtrWrapCount(method);
                 Invokestatic invokestatic = new Invokestatic(
                         getInternalName(method.getDeclaringClass()), marshalerClassName, 
@@ -236,7 +242,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                 Variable handle = innerFn.newVariable(I64);
                 innerFn.add(new Ptrtoint(handle, resultInner, I64));
                 resultInner = call(innerFn, invokestatic.getFunctionRef(), 
-                        innerFn.getParameterRef(0), ptrTargetClass, 
+                        env, ptrTargetClass, 
                         handle.ref(), new IntegerConstant(ptrWrapCount));
             } else {
                 boolean copy = isPassByValue(method);
@@ -250,17 +256,17 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                 
                 // Load the declared Class of the return value
                 String targetClassName = getInternalName(method.getReturnType());
-                Value returnClass = ldcClass(innerFn, targetClassName);
+                Value returnClass = ldcClass(innerFn, targetClassName, env);
                 
                 // Call the Marshaler's toObject() method
                 Invokestatic invokestatic = new Invokestatic(
                         getInternalName(method.getDeclaringClass()), marshalerClassName, 
-                        "toObject", "(Ljava/lang/Class;JIZ)Ljava/lang/Object;");
+                        "toObject", "(Ljava/lang/Class;JZ)Ljava/lang/Object;");
                 trampolines.add(invokestatic);
                 Variable handle = innerFn.newVariable(I64);
                 innerFn.add(new Ptrtoint(handle, resultInner, I64));
                 resultInner = call(innerFn, invokestatic.getFunctionRef(), 
-                        innerFn.getParameterRef(0), returnClass, handle.ref(), 
+                        env, returnClass, handle.ref(), 
                         new IntegerConstant((byte) (copy ? 1 : 0)));
             }
         } else if (hasPointerAnnotation(method)) {
@@ -269,6 +275,12 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             resultInner = resultI64.ref();
         }
         innerFn.add(new Ret(resultInner));
+        
+        innerFn.newBasicBlock(bbFailure.getLabel());
+        trycatchLeave(innerFn, env);
+        popNativeFrame(innerFn);
+        call(innerFn, BC_THROW_IF_EXCEPTION_OCCURRED, env);
+        innerFn.add(new Unreachable());
     }
     
     public static String getTargetFnPtrName(SootMethod method) {

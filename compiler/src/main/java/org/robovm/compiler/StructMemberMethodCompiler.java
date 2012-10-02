@@ -39,6 +39,7 @@ import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
+import org.robovm.compiler.llvm.VariableRef;
 import org.robovm.compiler.trampoline.Invokestatic;
 
 import soot.SootClass;
@@ -97,6 +98,7 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
         
         StructMemberPair pair = getStructMemberPair(sootClass, offset);
         
+        VariableRef env = function.getParameterRef(0);
         if (method == pair.getGetter()) {
             
             // Marshal the return value
@@ -120,27 +122,27 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
                 if (isPtr(method.getReturnType())) {
                     // Call the Marshaler's toPtr() method
                     SootClass sootPtrTargetClass = getPtrTargetClass(method);
-                    Value ptrTargetClass = ldcClass(function, getInternalName(sootPtrTargetClass));
+                    Value ptrTargetClass = ldcClass(function, getInternalName(sootPtrTargetClass), env);
                     int ptrWrapCount = getPtrWrapCount(method);
                     Invokestatic invokestatic = new Invokestatic(
                             getInternalName(method.getDeclaringClass()), marshalerClassName, 
                             "toPtr", "(Ljava/lang/Class;JI)Lorg/robovm/rt/bro/ptr/Ptr;");
                     trampolines.add(invokestatic);
                     result = call(function, invokestatic.getFunctionRef(), 
-                            function.getParameterRef(0), ptrTargetClass, 
+                            env, ptrTargetClass, 
                             handle.ref(), new IntegerConstant(ptrWrapCount));
                 } else {
                     // Call the Marshaler's toObject() method
                     // Load the declared Class of the return value
                     String targetClassName = getInternalName(method.getReturnType());
-                    Value returnClass = ldcClass(function, targetClassName);
+                    Value returnClass = ldcClass(function, targetClassName, env);
                 
                     Invokestatic invokestatic = new Invokestatic(
                             getInternalName(method.getDeclaringClass()), marshalerClassName, 
                             "toObject", "(Ljava/lang/Class;JZ)Ljava/lang/Object;");
                     trampolines.add(invokestatic);
                     result = call(function, invokestatic.getFunctionRef(), 
-                            function.getParameterRef(0), returnClass, handle.ref(), 
+                            env, returnClass, handle.ref(), 
                             new IntegerConstant((byte) 0));
                 }
                 function.add(new Ret(result));
@@ -167,7 +169,7 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
                     // The parameter must not be null. We assume that Structs 
                     // never have a NULL handle so we just check that the Java
                     // Object isn't null.
-                    call(function, CHECK_NULL, function.getParameterRef(0), p);
+                    call(function, CHECK_NULL, env, p);
                 }
                 
                 // Call the Marshaler's toNative() method
@@ -177,7 +179,7 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
                         "toNative", "(Ljava/lang/Object;)J");
                 trampolines.add(invokestatic);
                 Value ptrI64 = call(function, invokestatic.getFunctionRef(), 
-                        function.getParameterRef(0), p);
+                        env, p);
 
                 // Convert the returned i64 to i8*
                 Variable ptr = function.newVariable(I8_PTR);

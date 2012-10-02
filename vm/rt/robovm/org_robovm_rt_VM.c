@@ -144,6 +144,12 @@ jlong Java_org_robovm_rt_VM_getCallbackMethodImpl(Env* env, Class* c, Object* me
     return PTR_TO_LONG(((CallbackMethod*) method)->callbackImpl);
 }
 
+void Java_org_robovm_rt_VM_bindBridgeMethod(Env* env, Class* c, Object* methodObject, jlong impl) {
+    BridgeMethod* method = (BridgeMethod*) getMethodFromMethodObject(env, methodObject);
+    if (!method) return;
+    *method->targetFnPtr = LONG_TO_PTR(impl);
+}
+
 jlong Java_org_robovm_rt_VM_getObjectAddress(Env* env, Class* c, Object* object) {
     return PTR_TO_LONG(object);
 }

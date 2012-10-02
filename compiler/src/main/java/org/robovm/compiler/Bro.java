@@ -167,13 +167,14 @@ public abstract class Bro {
     
     public static boolean isPassByValue(SootMethod method, int paramIndex) {
         soot.Type sootType = method.getParameterType(paramIndex);
-        return isStruct(sootType) && (hasByValAnnotation(method, paramIndex) 
+        return isStruct(sootType) && !isPtr(sootType) && (hasByValAnnotation(method, paramIndex) 
                 || hasByValAnnotation(((RefType) sootType).getSootClass()));
     }
     
     public static boolean isStructRet(SootMethod method, int paramIndex) {
         soot.Type sootType = method.getParameterType(paramIndex);
-        return paramIndex == 0 && isStruct(sootType) && (hasStructRetAnnotation(method, paramIndex));
+        return paramIndex == 0 && isStruct(sootType) && !isPtr(sootType) 
+                && (hasStructRetAnnotation(method, paramIndex));
     }
     
     private static Type getReturnType(String anno, SootMethod method) {
@@ -226,9 +227,13 @@ public abstract class Bro {
             return new PointerType(getStructType(sootType));
         }        
         if (isStruct(sootType)) {
-            // Structs are always passed as pointers. The LLVM byval attribute 
-            // will be added to the parameter when making the call if @ByVal has 
-            // been specified to get the desired pass by value semantics.
+            if (isPassByValue(method, i) && "@Callback".equals(anno)) {
+                return getStructType(sootType);
+            }
+            // For Callbacks Structs are always passed as pointers. The LLVM 
+            // byval attribute  will be added to the parameter when making the 
+            // call if @ByVal has been specified to get the desired pass by 
+            // value semantics.
             return new PointerType(getStructType(sootType));
         } else if (isNativeObject(sootType)) {
             // NativeObjects are always passed by reference.

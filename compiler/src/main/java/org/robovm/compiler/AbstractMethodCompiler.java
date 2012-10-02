@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.robovm.compiler.llvm.Alloca;
 import org.robovm.compiler.llvm.BasicBlockRef;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionRef;
@@ -35,8 +36,10 @@ import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.Inttoptr;
 import org.robovm.compiler.llvm.Label;
+import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.Ptrtoint;
 import org.robovm.compiler.llvm.Ret;
+import org.robovm.compiler.llvm.Store;
 import org.robovm.compiler.llvm.Unreachable;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
@@ -172,13 +175,17 @@ public abstract class AbstractMethodCompiler {
             if (needsMarshaler(type)) {
                 String marshalerClassName = getMarshalerClassName(method, i, true);
 
-                Variable handle = callbackFn.newVariable(I64);
-                callbackFn.add(new Ptrtoint(handle, arg, I64));
-                
-                MarshaledValue marshaledValue = new MarshaledValue();
-                marshaledValues.add(marshaledValue);
-                marshaledValue.handle = handle.ref();
-                marshaledValue.paramIndex = i;
+                if (isPassByValue(method, i)) {
+                    // Copy the arg to the stack
+                    Variable stackCopy = callbackFn.newVariable(new PointerType(arg.getType()));
+                    callbackFn.add(new Alloca(stackCopy, arg.getType()));
+                    callbackFn.add(new Store(arg, stackCopy.ref()));
+                    arg = stackCopy.ref();
+                }
+
+                Variable tmp = callbackFn.newVariable(I64);
+                callbackFn.add(new Ptrtoint(tmp, arg, I64));
+                Value handle = tmp.ref();
                 
                 if (isPtr(type)) {
                     // Call the Marshaler's toPtr() method
@@ -191,7 +198,7 @@ public abstract class AbstractMethodCompiler {
                     trampolines.add(invokestatic);
                     arg = call(callbackFn, invokestatic.getFunctionRef(), 
                             env, ptrTargetClass, 
-                            handle.ref(), new IntegerConstant(ptrWrapCount));
+                            handle, new IntegerConstant(ptrWrapCount));
                 } else {
                     // Load the declared Class of the parameter
                     String targetClassName = getInternalName(type);
@@ -203,9 +210,15 @@ public abstract class AbstractMethodCompiler {
                             "toObject", "(Ljava/lang/Class;JZ)Ljava/lang/Object;");
                     trampolines.add(invokestatic);
                     arg = call(callbackFn, invokestatic.getFunctionRef(), 
-                            env, targetClass, handle.ref(), new IntegerConstant((byte) 0));
-                }                
+                            env, targetClass, handle, new IntegerConstant((byte) 0));
+                }
+                
+                MarshaledValue marshaledValue = new MarshaledValue();
+                marshaledValues.add(marshaledValue);
+                marshaledValue.handle = handle;
+                marshaledValue.paramIndex = i;
                 marshaledValue.object = arg;
+                
             } else if (hasPointerAnnotation(method, i)) {
                 Variable resultI64 = callbackFn.newVariable(I64);
                 callbackFn.add(new Ptrtoint(resultI64, arg, I64));

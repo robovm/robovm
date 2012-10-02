@@ -20,7 +20,6 @@ set(SRC
   java_lang_reflect_Proxy.c 
   org_robovm_rt_VM.c 
   org_robovm_rt_bro_Dl.c 
-  org_robovm_rt_bro_Bro.c 
   sun_misc_Unsafe.c 
 )
 

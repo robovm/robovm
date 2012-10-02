@@ -53,12 +53,10 @@ public class Bro {
             Bridge bridge = method.getAnnotation(Bridge.class);
             if (bridge != null) {
                 long f = Runtime.resolveBridge(library, bridge, method);
-                bind(method, f);
+                VM.bindBridgeMethod(method, f);
             }
         }
     }
-    
-    private static native void bind(Method method, long function);
     
     public static void addSearchPath(String path) {
         Runtime.addSearchPath(path);

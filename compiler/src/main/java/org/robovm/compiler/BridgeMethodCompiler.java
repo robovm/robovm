@@ -197,6 +197,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         trycatchAllEnter(innerFn, env, bbSuccess, bbFailure);
         innerFn.newBasicBlock(bbSuccess.getLabel());
         Value resultInner = callWithArguments(innerFn, targetFn.ref(), args);
+        trycatchLeave(innerFn, env);
         popNativeFrame(innerFn);
 
         // Call Marshaler.updateObject() or Marshaler.updatePtr() for each object that was marshaled before

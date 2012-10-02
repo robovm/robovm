@@ -36,6 +36,7 @@ import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.Inttoptr;
 import org.robovm.compiler.llvm.Label;
+import org.robovm.compiler.llvm.Load;
 import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.Ptrtoint;
 import org.robovm.compiler.llvm.Ret;
@@ -254,10 +255,16 @@ public abstract class AbstractMethodCompiler {
             Value resultI64 = call(callbackFn, invokestatic.getFunctionRef(), 
                     env, result);
             
-            // Convert the return long to an appropriate pointer
-            Variable resultPtr = callbackFn.newVariable(callbackFn.getType().getReturnType());
-            callbackFn.add(new Inttoptr(resultPtr, resultI64, resultPtr.getType()));
-            result = resultPtr.ref();
+            // Convert the returned long to an appropriate value
+            Variable resultVal = callbackFn.newVariable(callbackFn.getType().getReturnType());
+            if (isPassByValue(method)) {
+                Variable tmp = callbackFn.newVariable(new PointerType(resultVal.getType()));
+                callbackFn.add(new Inttoptr(tmp, resultI64, tmp.getType()));
+                callbackFn.add(new Load(resultVal, tmp.ref()));
+            } else {
+                callbackFn.add(new Inttoptr(resultVal, resultI64, resultVal.getType()));
+            }
+            result = resultVal.ref();
         } else if (hasPointerAnnotation(method)) {
             // @Pointer long. Convert from i64 to i8*
             Variable resultI8Ptr = callbackFn.newVariable(I8_PTR);

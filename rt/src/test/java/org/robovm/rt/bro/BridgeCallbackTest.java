@@ -72,6 +72,13 @@ public class BridgeCallbackTest {
         p.y(p.y() * scale);
     }
     
+    @Bridge
+    public static native @ByVal Point copyPoint(Point p);
+    @Callback
+    public static @ByVal Point copyPoint_cb(Point p) {
+        return p;
+    }
+    
     private static Method find(String name) {
         for (Method m : BridgeCallbackTest.class.getDeclaredMethods()) {
             if (m.getName().equals(name)) {
@@ -121,4 +128,14 @@ public class BridgeCallbackTest {
         assertEquals(1, p.x());
         assertEquals(2, p.y());
     }
+    
+    @Test
+    public void testMarshalStructReturnValueByVal() {
+        Point p1 = new Point().x(1).y(2);
+        Point p2 = copyPoint(p1);
+        assertEquals(1, p2.x());
+        assertEquals(2, p2.y());
+        assertFalse(p1.equals(p2));
+    }
+
 }

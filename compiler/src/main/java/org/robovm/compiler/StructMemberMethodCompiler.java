@@ -24,8 +24,6 @@ import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import org.robovm.compiler.Bro.StructMemberPair;
-import org.robovm.compiler.llvm.Bitcast;
-import org.robovm.compiler.llvm.BooleanConstant;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.Getelementptr;
 import org.robovm.compiler.llvm.IntegerConstant;
@@ -181,18 +179,19 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
                 Value ptrI64 = call(function, invokestatic.getFunctionRef(), 
                         env, p);
 
-                // Convert the returned i64 to i8*
-                Variable ptr = function.newVariable(I8_PTR);
-                function.add(new Inttoptr(ptr, ptrI64, I8_PTR));
-                
                 if (copy) {
-                    // Copy the struct
-                    Variable memberI8Ptr = function.newVariable(I8_PTR);
-                    function.add(new Bitcast(memberI8Ptr, memberPtr.ref(), I8_PTR));
-                    call(function, LLVM_MEMCPY, memberI8Ptr.ref(), ptr.ref(), 
-                            sizeof((StructureType) memberType), new IntegerConstant(1), 
-                            BooleanConstant.FALSE);
+                    // Copy the struct by doing a Load followed by a Store
+                    
+                    Variable ptr = function.newVariable(memberPtr.getType());
+                    function.add(new Inttoptr(ptr, ptrI64, ptr.getType()));
+                    
+                    Variable memberValue = function.newVariable(memberType);
+                    function.add(new Load(memberValue, ptr.ref()));
+                    function.add(new Store(memberValue.ref(), memberPtr.ref()));
                 } else {
+                    // Convert the returned i64 to an i8*
+                    Variable ptr = function.newVariable(I8_PTR);
+                    function.add(new Inttoptr(ptr, ptrI64, I8_PTR));
                     function.add(new Store(ptr.ref(), memberPtr.ref()));                    
                 }
             } else if (hasPointerAnnotation(method, 0)) {

@@ -89,7 +89,6 @@ declare i8* @_bcByValueGetStructHandle(%Env*, %Object*)
 declare void @_bcCopyStruct(%Env*, %Object*, i8*, i32)
 
 declare i8* @llvm.frameaddress(i32) nounwind readnone
-declare void @llvm.memcpy.p0i8.p0i8.i32(i8*, i8*, i32, i32, i1)
 
 define linkonce_odr i32 @arraylength(%Object* %o) alwaysinline {
     %array = bitcast %Object* %o to %Array*

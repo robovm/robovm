@@ -8,17 +8,17 @@
     <version>0.1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>robovm-rt</artifactId>
-  <name>RoboVM Runtime Library</name>
+  <artifactId>robovm-objc</artifactId>
+  <name>RoboVM Objective-C Bridge</name>
   <packaging>jar</packaging>
-
+  
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.5</version>
-      <scope>test</scope>
-    </dependency>  
+      <groupId>org.robovm</groupId>
+      <artifactId>robovm-rt</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
-  
+
 </project>

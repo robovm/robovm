@@ -15,6 +15,12 @@
   <dependencies>
     <dependency>
       <groupId>org.robovm</groupId>
+      <artifactId>robovm-rt</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>  
+    <dependency>
+      <groupId>org.robovm</groupId>
       <artifactId>robovm-objc</artifactId>
       <version>${project.version}</version>
     </dependency>

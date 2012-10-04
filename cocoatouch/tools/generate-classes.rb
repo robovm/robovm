@@ -403,11 +403,12 @@ def get_enums(doc, conf)
   enums
 end
 
+script_dir = File.expand_path(File.dirname(__FILE__))
 target_dir = ARGV[0]
-def_class_template = IO.read(ARGV[1])
-def_protocol_template = IO.read(ARGV[2])
+def_class_template = IO.read("#{script_dir}/class_template.java")
+def_protocol_template = IO.read("#{script_dir}/protocol_template.java")
 
-ARGV[3..-1].each do |yaml_file|
+ARGV[1..-1].each do |yaml_file|
   conf = YAML.load_file(yaml_file)
   base_url = conf['base_url']
   package = conf['package'] || ''

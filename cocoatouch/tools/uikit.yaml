@@ -16,12 +16,13 @@ license: |
      */
 package: org.robovm.cocoatouch.uikit
 library: UIKit
-base_url: http://developer.apple.com/library/ios/documentation/uikit/reference/
+base_url: http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/
 data_type_urls: 
-    - UIKitDataTypesReference/Reference/reference.html
-    - NSString_UIKit_Additions/Reference/Reference.html
+    - ../UIKitDataTypesReference/Reference/reference.html
+    - ../NSString_UIKit_Additions/Reference/Reference.html
 imports:
     - org.robovm.cocoatouch.coreanimation.*
+    - org.robovm.cocoatouch.coredata.*
     - org.robovm.cocoatouch.coregraphics.*
     - org.robovm.cocoatouch.coreimage.*
     - org.robovm.cocoatouch.foundation.*
@@ -35,6 +36,7 @@ typedefs:
     CGColorRef: CGColor
     CGImageRef: CGImage
     UIWindowLevel: float
+    NSLayoutPriority: UILayoutPriority
 enums:
     UIInterfaceOrientation:
     UIStatusBarStyle:
@@ -163,17 +165,44 @@ enums:
     UILineBreakMode:
     UITextAlignment:
     UILayoutConstraintAxis:
+    UIImageResizingMode:
+    UILayoutPriority:
+    NSLineBreakMode:
+        first: NSLineBreakByWordWrapping
+    NSLayoutRelation:
+    NSLayoutAttribute:
+    NSLayoutFormatOptions:
+        first: NSLayoutFormatAlignAllLeft
+    UICollectionViewScrollPosition:
+    UICollectionViewScrollDirection:
+    UICollectionElementCategory:
+    UICollectionUpdateAction:
 classes:
+    NSLayoutConstraint:
+        url: ../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html
+        methods:
+            "+constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:":
+                name: create
+            "+constraintsWithVisualFormat:options:metrics:views:":
+                name: fromVisualFormat
+    NSMutableParagraphStyle:
+        url: ../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html
+    NSParagraphStyle:
+        url: ../../../Cocoa/Reference/ApplicationKit/Classes/NSParagraphStyle_Class/Reference/Reference.html
+    NSShadow:
+        url: ../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html
+    NSStringDrawingContext:
+        url: ../NSStringDrawingContext_class/Reference/Reference.html
 #    UIAcceleration:
 #        # Only used by UIAccelerometerDelegate which is deprected in iOS 5
-#        url: UIAcceleration_Class/Reference/UIAcceleration.html
+#        url: ../UIAcceleration_Class/Reference/UIAcceleration.html
 #    UIAccelerometer:
 #        # Unusable since UIAccelerometerDelegate is deprected in iOS 5???
-#        url: UIAccelerometer_Class/Reference/UIAccelerometer.html
+#        url: ../UIAccelerometer_Class/Reference/UIAccelerometer.html
 #    UIAccessibilityElement:
-#        url: UIAccessibilityElement_Class/Reference/Reference.html
+#        url: ../UIAccessibilityElement_Class/Reference/Reference.html
     UIActionSheet:
-        url: UIActionSheet_Class/Reference/Reference.html
+        url: ../UIActionSheet_Class/Reference/Reference.html
         methods:
             "-initWithTitle:delegate:cancelButtonTitle:destructiveButtonTitle:otherButtonTitles:":
                 exclude: true
@@ -191,10 +220,40 @@ classes:
                 name: showFrom
             "-showFromToolbar:":
                 name: showFrom
+    UIActivity:
+        url: ../UIActivity_Class/Reference/Reference.html
+        methods:
+            "-activityDidFinish:":
+                name: didFinish
+            "-activityImage":
+                name: getImage
+            "-activityTitle":
+                name: getTitle
+            "-activityType":
+                name: getType
+            "-activityViewController":
+                name: getViewController
+            "-performActivity":
+                name: perform
+            "-canPerformWithActivityItems:":
+                name: canPerform
+            "-prepareWithActivityItems:":
+                name: prepare
     UIActivityIndicatorView:
-        url: UIActivityIndicatorView_Class/Reference/UIActivityIndicatorView.html
+        url: ../UIActivityIndicatorView_Class/Reference/UIActivityIndicatorView.html
+    UIActivityItemProvider:
+        url: ../UIActivityItemProvider_Class/Reference/Reference.html
+        protocols: []
+        methods: 
+            "-item":
+                name: getItem
+    UIActivityViewController:
+        url: ../UIActivityViewController_Class/Reference/Reference.html
+        properties:
+            "completionHandler":
+                exclude: true # TODO: Enable once we know how to handle blocks
     UIAlertView:
-        url: UIAlertView_Class/UIAlertView/UIAlertView.html
+        url: ../UIAlertView_Class/UIAlertView/UIAlertView.html
         methods:
             "-initWithTitle:message:delegate:cancelButtonTitle:otherButtonTitles:":
                 exclude: true
@@ -210,7 +269,7 @@ classes:
             "delegate":
                 type: UIAlertViewDelegate
     UIApplication:
-        url: UIApplication_Class/Reference/Reference.html
+        url: ../UIApplication_Class/Reference/Reference.html
         protocols: []
         methods:
             "+sharedApplication":
@@ -228,8 +287,10 @@ classes:
 #                args:
 #                    action: 
 #                        type: Action
+            "-supportedInterfaceOrientationsForWindow:":
+                name: getSupportedInterfaceOrientations
     UIBarButtonItem:
-        url: UIBarButtonItem_Class/Reference/Reference.html
+        url: ../UIBarButtonItem_Class/Reference/Reference.html
         methods:
             "-backButtonBackgroundImageForState:barMetrics:":
                 name: getBackButtonBackgroundImage
@@ -243,15 +304,17 @@ classes:
                 name: getBackgroundVerticalPositionAdjustment
             "-titlePositionAdjustmentForBarMetrics:":
                 name: getTitlePositionAdjustment
+            "-backgroundImageForState:style:barMetrics:":
+                name: getBackgroundImage
     UIBarItem:
-        url: UIBarItem_Class/Reference/Reference.html
+        url: ../UIBarItem_Class/Reference/Reference.html
         methods:
             "-setTitleTextAttributes:forState:":
                 name: setTitleTextAttributes
             "-titleTextAttributesForState:":
                 name: getTitleTextAttributes
     UIBezierPath:
-        url: UIBezierPath_class/Reference/Reference.html
+        url: ../UIBezierPath_class/Reference/Reference.html
         methods:
             "+bezierPath":
                 name: create
@@ -284,18 +347,10 @@ classes:
                 name: move
             "-strokeWithBlendMode:alpha:":
                 name: stroke
-            "-getLineDash:count:phase:":
-                visibility: private
-                args:
-                    pattern:
-                        type: @Pointer long
-            "-setLineDash:count:phase:":
-                visibility: private
-                args:
-                    pattern:
-                        type: @Pointer long
+            "-bezierPathByReversingPath":
+                name: reverse
     UIButton:
-        url: UIButton_Class/UIButton/UIButton.html
+        url: ../UIButton_Class/UIButton/UIButton.html
         methods:
             "+buttonWithType:":
                 return_type: UIButton
@@ -320,8 +375,115 @@ classes:
                 name: getTitleRect
             "-attributedTitleForState:":
                 name: getAttributedTitle
+    UICollectionReusableView:
+        url: ../UICollectionReusableView_class/Reference/Reference.html
+        methods:
+            "-didTransitionFromLayout:toLayout:":
+                name: didTransition
+            "-willTransitionFromLayout:toLayout:":
+                name: willTransition
+    UICollectionView:
+        url: ../UICollectionView_class/Reference/Reference.html
+        methods:
+            "-cellForItemAtIndexPath:":
+                name: getItemCell
+            "-deleteItemsAtIndexPaths:":
+                name: deleteItems
+            "-dequeueReusableCellWithReuseIdentifier:forIndexPath:":
+                name: dequeueReusableCell
+            "-dequeueReusableSupplementaryViewOfKind:withReuseIdentifier:forIndexPath:":
+                name: dequeueReusableSupplementaryView
+            "-deselectItemAtIndexPath:animated:":
+                name: deselectItem
+            "-indexPathForCell:":
+                name: getCellIndexPath
+            "-indexPathForItemAtPoint:":
+                name: getItemIndexPath
+            "-indexPathsForSelectedItems":
+                name: getSelectedItemsIndexPaths
+            "-indexPathsForVisibleItems":
+                name: getVisibleItemsIndexPaths
+            "-insertItemsAtIndexPaths:":
+                name: insertItems
+            "-layoutAttributesForItemAtIndexPath:":
+                name: getItemLayoutAttributes
+            "-layoutAttributesForSupplementaryElementOfKind:atIndexPath:":
+                name: getSupplementaryElementLayoutAttributes
+            "-moveItemAtIndexPath:toIndexPath:":
+                name: moveItem
+            "-numberOfItemsInSection:":
+                name: getNumberOfItemsInSection
+            "-numberOfSections":
+                name: getNumberOfSections
+            "-registerClass:forCellWithReuseIdentifier:":
+                name: registerReusableCellClass
+            "-registerClass:forSupplementaryViewOfKind:withReuseIdentifier:":
+                name: registerReusableSupplementaryViewClass
+            "-registerNib:forCellWithReuseIdentifier:":
+                name: registerReusableCellNib
+            "-registerNib:forSupplementaryViewOfKind:withReuseIdentifier:":
+                name: registerReusableSupplementaryViewNib
+            "-reloadItemsAtIndexPaths:":
+                name: reloadItems
+            "-scrollToItemAtIndexPath:atScrollPosition:animated:":
+                name: scrollToItem
+            "-selectItemAtIndexPath:animated:scrollPosition:":
+                name: selectItem
+            "-visibleCells":
+                name: getVisibleCells
+    UICollectionViewCell:
+        url: ../UICollectionViewCell_class/Reference/Reference.html
+    UICollectionViewController:
+        url: ../UICollectionViewController_clas/Reference/Reference.html
+        protocols: []
+    UICollectionViewFlowLayout:
+        url: ../UICollectionViewFlowLayout_class/Reference/Reference.html
+    UICollectionViewLayout:
+        url: ../UICollectionViewLayout_class/Reference/Reference.html
+        methods:
+            "+layoutAttributesClass":
+                name: getLayoutAttributesClass
+            "-collectionViewContentSize":
+                name: getCollectionViewContentSize
+            "-finalLayoutAttributesForDisappearingDecorationElementOfKind:atIndexPath:":
+                name: getFinalLayoutAttributesForDisappearingDecorationElement
+            "-finalLayoutAttributesForDisappearingItemAtIndexPath:":
+                name: getFinalLayoutAttributesForDisappearingItem
+            "-finalLayoutAttributesForDisappearingSupplementaryElementOfKind:atIndexPath:":
+                name: getFinalLayoutAttributesForDisappearingSupplementaryElement
+            "-initialLayoutAttributesForAppearingDecorationElementOfKind:atIndexPath:":
+                name: getInitialLayoutAttributesForAppearingDecorationElement
+            "-initialLayoutAttributesForAppearingItemAtIndexPath:":
+                name: getInitialLayoutAttributesForAppearingItem
+            "-initialLayoutAttributesForAppearingSupplementaryElementOfKind:atIndexPath:":
+                name: getInitialLayoutAttributesForAppearingSupplementaryElement
+            "-layoutAttributesForDecorationViewOfKind:atIndexPath:":
+                name: getLayoutAttributesForDecorationView
+            "-layoutAttributesForElementsInRect:":
+                name: getLayoutAttributesForElements
+            "-layoutAttributesForItemAtIndexPath:":
+                name: getLayoutAttributesForItem
+            "-layoutAttributesForSupplementaryViewOfKind:atIndexPath:":
+                name: getLayoutAttributesForSupplementaryView
+            "-registerClass:forDecorationViewOfKind:":
+                name: registerDecorationViewClass
+            "-registerNib:forDecorationViewOfKind:":
+                name: registerDecorationViewNib
+            "-targetContentOffsetForProposedContentOffset:withScrollingVelocity:":
+                name: getTargetContentOffset
+    UICollectionViewLayoutAttributes:
+        url: ../UICollectionViewLayoutAttributes_class/Reference/Reference.html
+        methods:
+            "+layoutAttributesForCellWithIndexPath:":
+                name: createForCell
+            "+layoutAttributesForDecorationViewOfKind:withIndexPath:":
+                name: createForDecorationView
+            "+layoutAttributesForSupplementaryViewOfKind:withIndexPath:":
+                name: createForSupplementaryView
+    UICollectionViewUpdateItem:
+        url: ../UICollectionViewUpdateItem_class/Reference/Reference.html
     UIColor:
-        url: UIColor_Class/Reference/Reference.html
+        url: ../UIColor_Class/Reference/Reference.html
         methods:
             "-initWithHue:saturation:brightness:alpha:":
                 exclude: true
@@ -382,7 +544,7 @@ classes:
             "-set":
                 name: setFillAndStroke
     UIControl:
-        url: UIControl_Class/Reference/Reference.html
+        url: ../UIControl_Class/Reference/Reference.html
         methods:
             "-actionsForTarget:forControlEvent:":
                 name: getActions
@@ -413,13 +575,16 @@ classes:
                     "controlEvents":
                         type: "EnumSet<UIControlEvent>"
     UIDatePicker:
-        url: UIDatePicker_Class/Reference/UIDatePicker.html
+        url: ../UIDatePicker_Class/Reference/UIDatePicker.html
     UIDevice:
-        url: UIDevice_Class/Reference/UIDevice.html
+        url: ../UIDevice_Class/Reference/UIDevice.html
+        properties:
+            "identifierForVendor":
+                name: vendorIdentifier
     UIDictationPhrase:
-        url: UIDictationPhraseClass/Reference/Reference.html
+        url: ../UIDictationPhraseClass/Reference/Reference.html
     UIDocument:
-        url: UIDocument_Class/UIDocument/UIDocument.html
+        url: ../UIDocument_Class/UIDocument/UIDocument.html
         protocols: []
         methods:
             "-savingFileType":
@@ -445,7 +610,7 @@ classes:
             "-updateChangeCountWithToken:forSaveOperation:":
                 name: updateChangeCount
     UIDocumentInteractionController:
-        url: UIDocumentInteractionController_class/Reference/Reference.html
+        url: ../UIDocumentInteractionController_class/Reference/Reference.html
         protocols: []
         methods:
             "+interactionControllerWithURL:":
@@ -465,7 +630,7 @@ classes:
             "-presentPreviewAnimated:":
                 name: presentPreview
     UIEvent:
-        url: UIEvent_Class/Reference/Reference.html
+        url: ../UIEvent_Class/Reference/Reference.html
         methods:
             "-allTouches":
                 name: getAllTouches
@@ -476,7 +641,7 @@ classes:
             "-touchesForWindow:":
                 name: getTouches
     UIFont:
-        url: UIFont_Class/Reference/Reference.html
+        url: ../UIFont_Class/Reference/Reference.html
         methods:
             "+boldSystemFontOfSize:":
                 name: getBoldSystemFont
@@ -501,7 +666,7 @@ classes:
             "-fontWithSize:":
                 name: getFontWithSize
     UIGestureRecognizer:
-        url: UIGestureRecognizer_Class/Reference/Reference.html
+        url: ../UIGestureRecognizer_Class/Reference/Reference.html
         methods:
             "-locationInView:":
                 name: getLocation
@@ -510,13 +675,15 @@ classes:
             "-numberOfTouches":
                 name: getNumberOfTouches
     UIImage:
-        url: UIImage_Class/Reference/Reference.html
+        url: ../UIImage_Class/Reference/Reference.html
         methods:
             "+animatedImageNamed:duration:":
                 name: createAnimated
             "+animatedImageWithImages:duration:":
                 name: createAnimated
             "+animatedResizableImageNamed:capInsets:duration:":
+                name: createAnimatedResizable
+            "+animatedResizableImageNamed:capInsets:resizingMode:duration:":
                 name: createAnimatedResizable
             "+imageNamed:":
                 name: fromBundle
@@ -530,8 +697,16 @@ classes:
                 name: fromImage
             "+imageWithData:":
                 name: fromData
+            "+imageWithCIImage:scale:orientation:":
+                name: fromImage
+            "+imageWithData:scale:":
+                name: fromData
             "-resizableImageWithCapInsets:":
-                name: createResizable
+                name: copyWithCapInsets
+            "-resizableImageWithCapInsets:resizingMode:":
+                name: copyWithCapInsets
+            "-imageWithAlignmentRectInsets:":
+                name: copyWithAlignmentRectInsets
             "-drawAtPoint:":
                 name: draw
             "-drawAtPoint:blendMode:alpha:":
@@ -546,7 +721,7 @@ classes:
             "imageOrientation":
                 name: orientation
     UIImagePickerController:
-        url: UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html
+        url: ../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html
         methods:
             "+availableCaptureModesForCameraDevice:":
                 name: getAvailableCaptureModes
@@ -556,16 +731,16 @@ classes:
             "delegate":
                 type: UIImagePickerControllerDelegate
     UIImageView:
-        url: UIImageView_Class/Reference/Reference.html
+        url: ../UIImageView_Class/Reference/Reference.html
     UILabel:
-        url: UILabel_Class/Reference/UILabel.html
+        url: ../UILabel_Class/Reference/UILabel.html
         methods:
             "-drawTextInRect:":
                 name: drawText
             "-textRectForBounds:limitedToNumberOfLines:":
                 name: getTextRect
     UILocalizedIndexedCollation:
-        url: ../../iPhone/Reference/UILocalizedIndexedCollation_Class/UILocalizedIndexedCollation.html
+        url: ../../../iPhone/Reference/UILocalizedIndexedCollation_Class/UILocalizedIndexedCollation.html
         methods:
             "+currentCollation":
                 name: getCurrentCollation
@@ -576,11 +751,11 @@ classes:
             "-sortedArrayFromArray:collationStringSelector:":
                 name: sortArray
     UILocalNotification:
-        url: ../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html
+        url: ../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html
     UILongPressGestureRecognizer:
-        url: UILongPressGestureRecognizer_Class/Reference/Reference.html
+        url: ../UILongPressGestureRecognizer_Class/Reference/Reference.html
     UIManagedDocument:
-        url: UIManagedDocument_Class/Reference/Reference.html
+        url: ../UIManagedDocument_Class/Reference/Reference.html
         methods:
             "+persistentStoreName":
                 name: getPersistentStoreName
@@ -593,16 +768,16 @@ classes:
             "-readAdditionalContentFromURL:error:":
                 name: readAdditionalContent
     UIMarkupTextPrintFormatter:
-        url: UIMarkupTextPrintFormatter_Class/Reference/Reference.html
+        url: ../UIMarkupTextPrintFormatter_Class/Reference/Reference.html
     UIMenuController:
-        url: ../../iPhone/Reference/UIMenuController_Class/UIMenuController.html
+        url: ../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html
         methods:
             "+sharedMenuController":
                 name: getSharedMenuController
     UIMenuItem:
-        url: UIMenuItem_Class/Reference/MenuItem.html
+        url: ../UIMenuItem_Class/Reference/MenuItem.html
     UINavigationBar:
-        url: UINavigationBar_Class/Reference/UINavigationBar.html
+        url: ../UINavigationBar_Class/Reference/UINavigationBar.html
         methods:
             "-backgroundImageForBarMetrics:":
                 name: getBackgroundImage
@@ -611,7 +786,7 @@ classes:
             "-titleVerticalPositionAdjustmentForBarMetrics:":
                 name: getTitleVerticalPositionAdjustment
     UINavigationController:
-        url: UINavigationController_Class/Reference/Reference.html
+        url: ../UINavigationController_Class/Reference/Reference.html
         methods:
             "-popToRootViewControllerAnimated:":
                 name: popToRootViewController
@@ -619,9 +794,9 @@ classes:
 #            "delegate":
 #                name: navigationControllerDelegate
     UINavigationItem:
-        url: UINavigationItem_Class/Reference/UINavigationItem.html
+        url: ../UINavigationItem_Class/Reference/UINavigationItem.html
     UINib:
-        url: UINib_Ref/Reference/Reference.html
+        url: ../UINib_Ref/Reference/Reference.html
         methods:
             "+nibWithData:bundle:":
                 name: fromData
@@ -630,21 +805,21 @@ classes:
             "-instantiateWithOwner:options:":
                 name: instantiate
     UIPageControl:
-        url: UIPageControl_Class/Reference/Reference.html
+        url: ../UIPageControl_Class/Reference/Reference.html
         methods:
             "-sizeForNumberOfPages:":
                 name: getSizeForNumberOfPages
     UIPageViewController:
-        url: UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html
+        url: ../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html
     UIPanGestureRecognizer:
-        url: UIPanGestureRecognizer_Class/Reference/Reference.html
+        url: ../UIPanGestureRecognizer_Class/Reference/Reference.html
         methods: 
             "-translationInView:":
                 name: getTranslation
             "-velocityInView:":
                 name: getVelocity
     UIPasteboard:
-        url: UIPasteboard_Class/Reference.html
+        url: ../UIPasteboard_Class/Reference.html
         methods:
             "+generalPasteboard":
                 name: getGeneral
@@ -676,7 +851,7 @@ classes:
             "numberOfItems":
                 name: count
     UIPickerView:
-        url: UIPickerView_Class/Reference/UIPickerView.html
+        url: ../UIPickerView_Class/Reference/UIPickerView.html
         protocols: []
         methods:
             "-numberOfRowsInComponent:":
@@ -694,9 +869,9 @@ classes:
             "-viewForRow:forComponent:":
                 name: getRowView
     UIPinchGestureRecognizer:
-        url: UIPinchGestureRecognizer_Class/Reference/Reference.html
+        url: ../UIPinchGestureRecognizer_Class/Reference/Reference.html
     UIPopoverBackgroundView:
-        url: UIPopoverBackgroundView_class/Reference/Reference.html
+        url: ../UIPopoverBackgroundView_class/Reference/Reference.html
         methods:
             "+arrowBase":
                 name: getArrowBase
@@ -705,7 +880,7 @@ classes:
             "+contentViewInsets":
                 name: getContentViewInsets
     UIPopoverController:
-        url: UIPopoverController_class/Reference/Reference.html
+        url: ../UIPopoverController_class/Reference/Reference.html
         methods:
             "-dismissPopoverAnimated:":
                 name: dismiss
@@ -720,14 +895,14 @@ classes:
                     "arrowDirections":
                         type: EnumSet<UIPopoverArrowDirection>
     UIPrintFormatter:
-        url: UIPrintFormatter_Class/Reference/Reference.html
+        url: ../UIPrintFormatter_Class/Reference/Reference.html
         methods:
             "-drawInRect:forPageAtIndex:":
                 name: draw
             "-rectForPageAtIndex:":
                 name: getRectForPage
     UIPrintInfo:
-        url: UIPrintInfo_Class/Reference/Reference.html
+        url: ../UIPrintInfo_Class/Reference/Reference.html
         methods:
             "+printInfo":
                 name: getPrintInfo
@@ -736,7 +911,7 @@ classes:
             "-dictionaryRepresentation":
                 name: toDictionary
     UIPrintInteractionController:
-        url: UIPrintInteractionController_Class/Reference/Reference.html
+        url: ../UIPrintInteractionController_Class/Reference/Reference.html
         methods:
             "+canPrintData:":
                 name: canPrint
@@ -750,10 +925,14 @@ classes:
                 name: dismiss
             "-presentAnimated:completionHandler:":
                 name: present
+                exclude: true # TODO: enable once we now how to handle blocks
             "-presentFromRect:inView:animated:completionHandler:":
                 name: presentFromRectInView
+                exclude: true # TODO: enable once we now how to handle blocks
+            "-presentFromBarButtonItem:animated:completionHandler:":
+                exclude: true # TODO: enable once we now how to handle blocks
     UIPrintPageRenderer:
-        url: ../../iPhone/Reference/UIPrintPageRenderer_Class/Reference/Reference.html
+        url: ../../../iPhone/Reference/UIPrintPageRenderer_Class/Reference/Reference.html
         methods:
             "-numberOfPages":
                 name: getNumberOfPages
@@ -770,25 +949,31 @@ classes:
             "-printFormattersForPageAtIndex:":
                 name: getPrintFormatters
     UIPrintPaper:
-        url: UIPrintPaper_Class/Reference/Reference.html
+        url: ../UIPrintPaper_Class/Reference/Reference.html
         methods:
             "+bestPaperForPageSize:withPapersFromArray:":
                 name: forPageSize
     UIProgressView:
-        url: UIProgressView_Class/Reference/Reference.html
+        url: ../UIProgressView_Class/Reference/Reference.html
     UIReferenceLibraryViewController:
-        url: UIReferenceLibraryViewControllerClassRef/Reference/Reference.html
+        url: ../UIReferenceLibraryViewControllerClassRef/Reference/Reference.html
+    UIRefreshControl:
+        url: ../UIRefreshControl_class/Reference/Reference.html
+        protocols: []
+        methods:
+            "-init":
+                exclude: true
     UIResponder:
-        url: UIResponder_Class/Reference/Reference.html
+        url: ../UIResponder_Class/Reference/Reference.html
         methods:
             "-nextResponder":
                 name: getNextResponder
             "-remoteControlReceivedWithEvent:":
                 name: remoteControlReceived
     UIRotationGestureRecognizer:
-        url: UIRotateGestureRecognizer_Class/Reference/Reference.html
+        url: ../UIRotateGestureRecognizer_Class/Reference/Reference.html
     UIScreen:
-        url: UIScreen_Class/Reference/UIScreen.html
+        url: ../UIScreen_Class/Reference/UIScreen.html
         methods:
             "+mainScreen":
                 name: getMainScreen
@@ -797,11 +982,11 @@ classes:
             "-displayLinkWithTarget:selector:":
                 name: createDisplayLink
     UIScreenMode:
-        url: UIScreenMode_class/Reference/Reference.html
+        url: ../UIScreenMode_class/Reference/Reference.html
     UIScrollView:
-        url: UIScrollView_Class/Reference/UIScrollView.html
+        url: ../UIScrollView_Class/Reference/UIScrollView.html
     UISearchBar:
-        url: UISearchBar_Class/Reference/Reference.html
+        url: ../UISearchBar_Class/Reference/Reference.html
         methods:
             "-imageForSearchBarIcon:state:":
                 name: getImageForSearchBarIcon
@@ -820,9 +1005,9 @@ classes:
             "-setPositionAdjustment:forSearchBarIcon:":
                 name: setPositionAdjustmentForSearchBarIcon
     UISearchDisplayController:
-        url: UISearchDisplayController_Class/Reference/Reference.html
+        url: ../UISearchDisplayController_Class/Reference/Reference.html
     UISegmentedControl:
-        url: UISegmentedControl_Class/Reference/UISegmentedControl.html
+        url: ../UISegmentedControl_Class/Reference/UISegmentedControl.html
         methods:
             "-backgroundImageForState:barMetrics:":
                 name: getBackgroundImage
@@ -852,9 +1037,9 @@ classes:
             "selectedSegmentIndex":
                 name: selectedSegment
     UISimpleTextPrintFormatter:
-        url: UISimpleTextPrintFormatter_Class/Reference/Reference.html
+        url: ../UISimpleTextPrintFormatter_Class/Reference/Reference.html
     UISlider:
-        url: UISlider_Class/Reference/Reference.html
+        url: ../UISlider_Class/Reference/Reference.html
         methods:
             "-maximumTrackImageForState:":
                 name: getMaximumTrackImage
@@ -871,36 +1056,45 @@ classes:
             "-trackRectForBounds:":
                 name: getTrackRect
     UISplitViewController:
-        url: UISplitViewController_class/Reference/Reference.html
+        url: ../UISplitViewController_class/Reference/Reference.html
     UIStepper:
-        url: UIStepper_Class/Reference/Reference.html
+        url: ../UIStepper_Class/Reference/Reference.html
+        methods:
+            "-backgroundImageForState:":
+                name: getBackgroundImage
+            "-decrementImageForState:":
+                name: getDecrementImage
+            "-dividerImageForLeftSegmentState:rightSegmentState:":
+                name: getDividerImage
+            "-incrementImageForState:":
+                name: getIncrementImage
     UIStoryboard:
-        url: UIStoryboard_Class/Reference/Reference.html
+        url: ../UIStoryboard_Class/Reference/Reference.html
         methods:
             "+storyboardWithName:bundle:":
                 name: fromName
             "-instantiateViewControllerWithIdentifier:":
                 name: instantiateViewController
     UIStoryboardPopoverSegue:
-        url: UIStoryboardPopoverSegue_Class/Reference/Reference.html
+        url: ../UIStoryboardPopoverSegue_Class/Reference/Reference.html
     UIStoryboardSegue:
-        url: UIStoryboardSegue_Class/Reference/Reference.html
+        url: ../UIStoryboardSegue_Class/Reference/Reference.html
     UISwipeGestureRecognizer:
-        url: UISwipeGestureRecognizer_Class/Reference/Reference.html
+        url: ../UISwipeGestureRecognizer_Class/Reference/Reference.html
     UISwitch:
-        url: UISwitch_Class/Reference/Reference.html
+        url: ../UISwitch_Class/Reference/Reference.html
     UITabBar:
-        url: UITabBar_Class/Reference/Reference.html
+        url: ../UITabBar_Class/Reference/Reference.html
         methods:
             "-beginCustomizingItems:":
                 name: beginCustomizing
             "-endCustomizingAnimated:":
                 name: endCustomizing
     UITabBarController:
-        url: UITabBarController_Class/Reference/Reference.html
+        url: ../UITabBarController_Class/Reference/Reference.html
         protocols: []
     UITabBarItem:
-        url: UITabBarItem_Class/Reference/Reference.html
+        url: ../UITabBarItem_Class/Reference/Reference.html
         methods:
             "-finishedSelectedImage":
                 name: getFinishedSelectedImage
@@ -911,7 +1105,7 @@ classes:
             "-titlePositionAdjustment":
                 name: getTitlePositionAdjustment
     UITableView:
-        url: UITableView_Class/Reference/Reference.html
+        url: ../UITableView_Class/Reference/Reference.html
         methods:
             "-cellForRowAtIndexPath:":
                 name: getRowCell
@@ -919,16 +1113,20 @@ classes:
                 name: deleteRows
             "-dequeueReusableCellWithIdentifier:":
                 name: dequeueReusableCell
+            "-dequeueReusableCellWithIdentifier:forIndexPath:":
+                name: dequeueReusableCell
+            "-dequeueReusableHeaderFooterViewWithIdentifier:":
+                name: dequeueReusableHeaderFooterView
             "-deselectRowAtIndexPath:animated:":
                 name: deselectRow
             "-indexPathForCell:":
-                name: getIndexPath
+                name: getCellIndexPath
             "-indexPathForRowAtPoint:":
-                name: getIndexPath
+                name: getRowIndexPath
             "-indexPathForSelectedRow":
                 name: getSelectedRowIndexPath
             "-indexPathsForRowsInRect:":
-                name: getIndexPath
+                name: getRowsIndexPaths
             "-indexPathsForSelectedRows":
                 name: getSelectedRowsIndexPaths
             "-indexPathsForVisibleRows":
@@ -967,8 +1165,12 @@ classes:
                 name: registerReusableHeaderFooterViewClass
             "-registerNib:forHeaderFooterViewReuseIdentifier:":
                 name: registerReusableHeaderFooterViewNib
+            "-footerViewForSection:":
+                name: getSectionFooterView
+            "-headerViewForSection:":
+                name: getSectionHeaderView
     UITableViewCell:
-        url: UITableViewCell_Class/Reference/Reference.html
+        url: ../UITableViewCell_Class/Reference/Reference.html
         protocols: []
         methods:
             "-didTransitionToState:":
@@ -980,12 +1182,15 @@ classes:
                     "state":
                         type: EnumSet<UITableViewCellStateMask>
     UITableViewController:
-        url: UITableViewController_Class/Reference/Reference.html
+        url: ../UITableViewController_Class/Reference/Reference.html
+        protocols: []
+    UITableViewHeaderFooterView:
+        url: ../UITableViewHeaderFooterView_class/Reference/Reference.html
         protocols: []
     UITapGestureRecognizer:
-        url: UITapGestureRecognizer_Class/Reference/Reference.html
+        url: ../UITapGestureRecognizer_Class/Reference/Reference.html
     UITextField:
-        urls: [UITextField_Class/Reference/UITextField.html, UITextInput_Protocol/Reference/Reference.html, UIKeyInput_Protocol/Reference/Reference.html, UITextInputTraits_Protocol/Reference/UITextInputTraits.html]
+        urls: [../UITextField_Class/Reference/UITextField.html, ../UITextInput_Protocol/Reference/Reference.html, ../UIKeyInput_Protocol/Reference/Reference.html, ../UITextInputTraits_Protocol/Reference/UITextInputTraits.html]
         methods:
             "-baseWritingDirectionForPosition:inDirection:":
                 name: getBaseWritingDirection
@@ -1041,15 +1246,21 @@ classes:
                 name: getTextRect
             "-textStylingAtPosition:inDirection:":
                 name: getTextStyling
+            "-frameForDictationResultPlaceholder:":
+                name: getDictationResultPlaceholderFrame
+            "-selectionRectsForRange:":
+                name: getSelectionRects
+            "-shouldChangeTextInRange:replacementText:":
+                name: shouldChangeText
     UITextInputMode:
-        url: UITextInputMode_Class/Reference/Reference.html
+        url: ../UITextInputMode_Class/Reference/Reference.html
         methods:
             "+activeInputModes":
                 name: getActiveInputModes
             "+currentInputMode":
                 name: getCurrentInputMode
     UITextInputStringTokenizer:
-        urls: [UITextInputStringTokenizer_Class/Reference/Reference.html, UITextInputTokenizer_Protocol/Reference/Reference.html]
+        urls: [../UITextInputStringTokenizer_Class/Reference/Reference.html, ../UITextInputTokenizer_Protocol/Reference/Reference.html]
         methods: 
             "-initWithTextInput:":
                 args:
@@ -1064,11 +1275,16 @@ classes:
             "-isPosition:withinTextUnit:inDirection:":
                 name: isPositionWithinTextUnit
     UITextPosition:
-        url: UITextPosition_Class/Reference/Reference.html
+        url: ../UITextPosition_Class/Reference/Reference.html
     UITextRange:
-        url: UITextRange_Class/Reference/Reference.html
+        url: ../UITextRange_Class/Reference/Reference.html
+    UITextSelectionRect:
+        url: ../UITextSelectionRect_class/Reference/Reference.html
+        properties:
+            "isVertical":
+                name: vertical
     UITextView:
-        urls: [UITextView_Class/Reference/UITextView.html, UITextInput_Protocol/Reference/Reference.html, UIKeyInput_Protocol/Reference/Reference.html, UITextInputTraits_Protocol/Reference/UITextInputTraits.html]
+        urls: [../UITextView_Class/Reference/UITextView.html, ../UITextInput_Protocol/Reference/Reference.html, ../UIKeyInput_Protocol/Reference/Reference.html, ../UITextInputTraits_Protocol/Reference/UITextInputTraits.html]
         methods:
             "-baseWritingDirectionForPosition:inDirection:":
                 name: getBaseWritingDirection
@@ -1124,23 +1340,31 @@ classes:
                 name: getTextRect
             "-textStylingAtPosition:inDirection:":
                 name: getTextStyling
+            "-frameForDictationResultPlaceholder:":
+                name: getDictationResultPlaceholderFrame
+            "-selectionRectsForRange:":
+                name: getSelectionRects
+            "-shouldChangeTextInRange:replacementText:":
+                name: shouldChangeText
         properties:
             "dataDetectorTypes":
                 type: EnumSet<UIDataDetectorType>
     UIToolbar:
-        url: UIToolbar_Class/Reference/Reference.html
+        url: ../UIToolbar_Class/Reference/Reference.html
         methods:
             "-backgroundImageForToolbarPosition:barMetrics:":
                 name: getBackgroundImage
+            "-shadowImageForToolbarPosition:":
+                name: getShadowImage
     UITouch:
-        url: UITouch_Class/Reference/Reference.html
+        url: ../UITouch_Class/Reference/Reference.html
         methods:
             "-locationInView:":
                 name: getLocation
             "-previousLocationInView:":
                 name: getPreviousLocation
     UIVideoEditorController:
-        url: UIVideoEditorController_ClassReference/Reference/Reference.html
+        url: ../UIVideoEditorController_ClassReference/Reference/Reference.html
         methods:
             "+canEditVideoAtPath:":
                 name: canEditVideo
@@ -1148,7 +1372,7 @@ classes:
             "delegate":
                 type: UIVideoEditorControllerDelegate
     UIView:
-        url: UIView_Class/UIView/UIView.html
+        url: ../UIView_Class/UIView/UIView.html
         methods:
             "+animateWithDuration:animations:":
                 name: animate
@@ -1222,14 +1446,36 @@ classes:
             "+setAnimationDuration:":
                 name: setDurationForAnimation
             "-contentCompressionResistancePriorityForAxis:":
-                name: getSontentCompressionResistancePriority
+                name: getContentCompressionResistancePriority
             "-contentHuggingPriorityForAxis:":
                 name: getContentHuggingPriority
+            "-alignmentRectForFrame:":
+                name: getFrameAlignmentRect
+            "-alignmentRectInsets":
+                name: getAlignmentRectInsets
+            "-constraints":
+                name: getConstraints
+            "-constraintsAffectingLayoutForAxis:":
+                name: getConstraintsAffectingLayout
+            "-decodeRestorableStateWithCoder:":
+                name: decodeRestorableState
+            "-encodeRestorableStateWithCoder:":
+                name: encodeRestorableState
+            "-frameForAlignmentRect:":
+                name: getAlignmentRectFrame
+            "-intrinsicContentSize":
+                name: getIntrinsicContentSize
+            "-systemLayoutSizeFittingSize:":
+                name: getSystemLayoutSizeFittingSize
+            "-translatesAutoresizingMaskIntoConstraints":
+                name: isTranslatesAutoresizingMaskIntoConstraints
+            "-viewForBaselineLayout":
+                name: getBaselineLayoutView
         properties:
             "autoresizingMask":
                 type: EnumSet<UIViewAutoresizing>
     UIViewController:
-        url: UIViewController_Class/Reference/Reference.html
+        url: ../UIViewController_Class/Reference/Reference.html
         methods:
             "-rotatingFooterView":
                 name: getRotatingFooterView
@@ -1254,12 +1500,32 @@ classes:
                 name: willAnimateRotation
             "-willRotateToInterfaceOrientation:duration:":
                 name: willRotate
+            "-willMoveToParentViewController:":
+                name: willMoveToParent
             "-editButtonItem":
                 name: getEditButtonItem
+            "-decodeRestorableStateWithCoder:":
+                name: decodeRestorableState
+            "-encodeRestorableStateWithCoder:":
+                name: encodeRestorableState
+            "-preferredInterfaceOrientationForPresentation":
+                name: getPreferredInterfaceOrientation
+            "-segueForUnwindingToViewController:fromViewController:identifier:":
+                name: getUnwindSegue
+            "-shouldPerformSegueWithIdentifier:sender:":
+                name: shouldPerformSegue
+            "-supportedInterfaceOrientations":
+                name: getSupportedInterfaceOrientations
+                return_type: EnumSet<UIInterfaceOrientationMask>
+            "-viewControllerForUnwindSegueAction:fromViewController:withSender:":
+                name: getUnwindSegueActionViewController
+        properties:
+            "restorationClass":
+                type: ObjCClass
     UIViewPrintFormatter:
-        url: UIViewPrintFormatter_Class/Reference/Reference.html
+        url: ../UIViewPrintFormatter_Class/Reference/Reference.html
     UIWebView:
-        url: UIWebView_Class/Reference/Reference.html
+        url: ../UIWebView_Class/Reference/Reference.html
         protocols: []
         methods:
             "-loadHTMLString:baseURL:":
@@ -1270,7 +1536,7 @@ classes:
             "dataDetectorTypes":
                 type: EnumSet<UIDataDetectorType>
     UIWindow:
-        url: UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html
+        url: ../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html
         methods:
             "-convertPoint:fromWindow:":
                 name: convertPointFromWindow
@@ -1283,17 +1549,17 @@ classes:
 protocols:
 #    UIAccelerometerDelegate:
 #        # Deprecated in iOS 5
-#        url: UIAccelerometerDelegate_Protocol/UIAccelerometerDelegate/UIAccelerometerDelegate.html
+#        url: ../UIAccelerometerDelegate_Protocol/UIAccelerometerDelegate/UIAccelerometerDelegate.html
 #    UIAccessibility:
-#        url: UIAccessibility_Protocol/Introduction/Introduction.html
+#        url: ../UIAccessibility_Protocol/Introduction/Introduction.html
 #    UIAccessibilityAction:
-#        url: UIAccessibilityAction_Protocol/Introduction/Introduction.html
+#        url: ../UIAccessibilityAction_Protocol/Introduction/Introduction.html
 #    UIAccessibilityContainer:
-#        url: UIAccessibilityContainer_Protocol/Introduction/Introduction.html
+#        url: ../UIAccessibilityContainer_Protocol/Introduction/Introduction.html
 #    UIAccessibilityFocus:
-#        url: UIAccessibilityFocus_Protocol/Introduction/Introduction.html
+#        url: ../UIAccessibilityFocus_Protocol/Introduction/Introduction.html
     UIActionSheetDelegate:
-        url: UIModalViewDelegate_Protocol/UIActionSheetDelegate/UIActionSheetDelegate.html
+        url: ../UIModalViewDelegate_Protocol/UIActionSheetDelegate/UIActionSheetDelegate.html
         methods:
             "-actionSheet:clickedButtonAtIndex:":
                 name: clicked
@@ -1307,8 +1573,15 @@ protocols:
                 name: didPresent
             "-willPresentActionSheet:":
                 name: willPresent
+    UIActivityItemSource:
+        url: ../UIActivityItemSource_protocol/Reference/Reference.html
+        methods:
+            "-activityViewController:itemForActivityType:":
+                name: getItem
+            "-activityViewControllerPlaceholderItem:":
+                name: getPlaceholderItem
     UIAlertViewDelegate:
-        url: UIAlertViewDelegate_Protocol/UIAlertViewDelegate/UIAlertViewDelegate.html
+        url: ../UIAlertViewDelegate_Protocol/UIAlertViewDelegate/UIAlertViewDelegate.html
         methods:
             "-alertView:clickedButtonAtIndex:":
                 name: clicked
@@ -1325,14 +1598,14 @@ protocols:
             "-alertViewShouldEnableFirstOtherButton:":
                 name: shouldEnableFirstOtherButton
     UIAppearance:
-        url: UIAppearance_Protocol/Reference/Reference.html
+        url: ../UIAppearance_Protocol/Reference/Reference.html
         methods:
             "+*":
                 exclude: true
     UIAppearanceContainer:
-        url: ../../../recipes/UIAppearanceContainer_Protocol/Reference/Reference.html
+        url: ../../../../recipes/UIAppearanceContainer_Protocol/Reference/Reference.html
     UIApplicationDelegate:
-        url: UIApplicationDelegate_Protocol/Reference/Reference.html
+        url: ../UIApplicationDelegate_Protocol/Reference/Reference.html
         methods:
             "-application:didChangeStatusBarFrame:":
                 name: didChangStatusBarFrame
@@ -1390,8 +1663,68 @@ protocols:
                 name: willEncodeRestorableState
             "-application:willFinishLaunchingWithOptions:":
                 name: willFinishLaunching
+    UICollectionViewDataSource:
+        url: ../UICollectionViewDataSource_protocol/Reference/Reference.html
+        methods:
+            "-collectionView:cellForItemAtIndexPath:":
+                name: getItemCell
+            "-collectionView:numberOfItemsInSection:":
+                name: getNumberOfItemsInSection
+            "-collectionView:viewForSupplementaryElementOfKind:atIndexPath:":
+                name: getSupplementaryElementView
+            "-numberOfSectionsInCollectionView:":
+                name: getNumberOfSections
+    UICollectionViewDelegate:
+        url: ../UICollectionViewDelegate_protocol/Reference/Reference.html
+        methods:
+            "-collectionView:canPerformAction:forItemAtIndexPath:withSender:":
+                name: canPerformAction
+            "-collectionView:didDeselectItemAtIndexPath:":
+                name: didDeselectItem
+            "-collectionView:didEndDisplayingCell:forItemAtIndexPath:":
+                name: didEndDisplayingCell
+            "-collectionView:didEndDisplayingSupplementaryView:forElementOfKind:atIndexPath:":
+                name: didEndDisplayingSupplementaryView
+            "-collectionView:didHighlightItemAtIndexPath:":
+                name: didHighlightItem
+            "-collectionView:didSelectItemAtIndexPath:":
+                name: didSelectItem
+            "-collectionView:didUnhighlightItemAtIndexPath:":
+                name: didUnhighlightItem
+            "-collectionView:performAction:forItemAtIndexPath:withSender:":
+                name: performAction
+            "-collectionView:shouldDeselectItemAtIndexPath:":
+                name: shouldDeselectItem
+            "-collectionView:shouldHighlightItemAtIndexPath:":
+                name: shouldHighlightItem
+            "-collectionView:shouldSelectItemAtIndexPath:":
+                name: shouldSelectItem
+            "-collectionView:shouldShowMenuForItemAtIndexPath:":
+                name: shouldShowMenuForItem
+    UICollectionViewDelegateFlowLayout:
+        url: ../UICollectionViewDelegateFlowLayout_protocol/Reference/Reference.html
+        methods:
+            "-collectionView:layout:insetForSectionAtIndex:":
+                name: getSectionInset
+            "-collectionView:layout:minimumInteritemSpacingForSectionAtIndex:":
+                name: getSectionMinimumInteritemSpacing
+            "-collectionView:layout:minimumLineSpacingForSectionAtIndex:":
+                name: getSectionMinimumLineSpacing
+            "-collectionView:layout:referenceSizeForFooterInSection:":
+                name: getSectionFooterReferenceSize
+            "-collectionView:layout:referenceSizeForHeaderInSection:":
+                name: getSectionHeaderReferenceSize
+            "-collectionView:layout:sizeForItemAtIndexPath:":
+                name: getItemSize
+    UIDataSourceModelAssociation:
+        url: ../UIDataSourceModelAssociation_protocol/Reference/Reference.html
+        methods:
+            "-indexPathForElementWithModelIdentifier:inView:":
+                name: getElementIndexPath
+            "-modelIdentifierForElementAtIndexPath:inView:":
+                name: getElementModelIdentifier
     UIDocumentInteractionControllerDelegate:
-        url: UIDocumentInteractionControllerDelegate_protocol/Reference/Reference.html
+        url: ../UIDocumentInteractionControllerDelegate_protocol/Reference/Reference.html
         methods:
             "-documentInteractionController:canPerformAction:":
                 name: canPerformAction
@@ -1420,7 +1753,7 @@ protocols:
             "-documentInteractionControllerWillPresentOptionsMenu:":
                 name: willPresentOptionsMenu
     UIGestureRecognizerDelegate:
-        url: UIGestureRecognizerDelegate_Protocol/Reference/Reference.html
+        url: ../UIGestureRecognizerDelegate_Protocol/Reference/Reference.html
         methods:
             "-gestureRecognizer:shouldReceiveTouch:":
                 name: shouldReceiveTouch
@@ -1429,7 +1762,7 @@ protocols:
             "-gestureRecognizerShouldBegin:":
                 name: shouldBegin
     UIImagePickerControllerDelegate:
-        url: UIImagePickerControllerDelegate_Protocol/UIImagePickerControllerDelegate/UIImagePickerControllerDelegate.html
+        url: ../UIImagePickerControllerDelegate_Protocol/UIImagePickerControllerDelegate/UIImagePickerControllerDelegate.html
         protocols: [UINavigationControllerDelegate]
         methods:
             "-imagePickerController:didFinishPickingMediaWithInfo:":
@@ -1437,9 +1770,9 @@ protocols:
             "-imagePickerControllerDidCancel:":
                 name: didCancel
     UIKeyInput:
-        url: UIKeyInput_Protocol/Reference/Reference.html
+        url: ../UIKeyInput_Protocol/Reference/Reference.html
     UINavigationBarDelegate:
-        url: UINavigationBarDelegate_Protocol/Reference/Reference.html
+        url: ../UINavigationBarDelegate_Protocol/Reference/Reference.html
         methods:
             "-navigationBar:didPopItem:":
                 name: didPopItem
@@ -1450,42 +1783,48 @@ protocols:
             "-navigationBar:shouldPushItem:":
                 name: shouldPushItem
     UINavigationControllerDelegate:
-        url: UINavigationControllerDelegate_Protocol/Reference/Reference.html
+        url: ../UINavigationControllerDelegate_Protocol/Reference/Reference.html
         methods:
             "-navigationController:didShowViewController:animated:":
                 name: didShowViewController
             "-navigationController:willShowViewController:animated:":
                 name: willShowViewController
     UIPageViewControllerDataSource:
-        url: UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html
+        url: ../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html
         methods:
             "-pageViewController:viewControllerAfterViewController:":
                 name: getViewControllerAfter
             "-pageViewController:viewControllerBeforeViewController:":
                 name: getViewControllerBefore
+            "-presentationCountForPageViewController:":
+                name: getPresentationCount
+            "-presentationIndexForPageViewController:":
+                name: getPresentationIndex
     UIPageViewControllerDelegate:
-        url: UIPageViewControllerDelegateProtocolRef/UIPageViewControllerDelegate.html
+        url: ../UIPageViewControllerDelegateProtocolRef/UIPageViewControllerDelegate.html
         methods:
             "-pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:":
                 name: didFinishAnimating
             "-pageViewController:spineLocationForInterfaceOrientation:":
                 name: getSpineLocation
+            "-pageViewController:willTransitionToViewControllers:":
+                name: willTransition
     UIPickerViewAccessibilityDelegate:
-        url: UIPickerViewAccessibilityDelegate_Protocol/Introduction/Introduction.html
+        url: ../UIPickerViewAccessibilityDelegate_Protocol/Introduction/Introduction.html
         methods:
             "-pickerView:accessibilityHintForComponent:":
-                name: accessibilityHint
+                name: getAccessibilityHint
             "-pickerView:accessibilityLabelForComponent:":
-                name: accessibilityLabel
+                name: getAccessibilityLabel
     UIPickerViewDataSource:
-        url: ../../iPhone/Reference/UIPickerViewDataSource_Protocol/Reference/Reference.html
+        url: ../../../iPhone/Reference/UIPickerViewDataSource_Protocol/Reference/Reference.html
         methods:
             "-numberOfComponentsInPickerView:":
                 name: getNumberOfComponents
             "-pickerView:numberOfRowsInComponent:":
                 name: getNumberOfRows
     UIPickerViewDelegate:
-        url: UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html
+        url: ../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html
         methods:
             "-pickerView:didSelectRow:inComponent:":
                 name: didSelectRow
@@ -1500,14 +1839,14 @@ protocols:
             "-pickerView:attributedTitleForRow:forComponent:":
                 name: getAttributedRowTitle
     UIPopoverControllerDelegate:
-        url: UIPopoverControllerDelegate_protocol/Reference/Reference.html
+        url: ../UIPopoverControllerDelegate_protocol/Reference/Reference.html
         methods:
             "-popoverControllerDidDismissPopover:":
                 name: didDismissPopover
             "-popoverControllerShouldDismissPopover:":
                 name: shouldDismissPopover
     UIPrintInteractionControllerDelegate:
-        url: UIPrintInteractionControllerDelegate_Protocol/Reference/Reference.html
+        url: ../UIPrintInteractionControllerDelegate_Protocol/Reference/Reference.html
         methods:
             "-printInteractionController:choosePaper:":
                 name: choosePaper
@@ -1526,9 +1865,9 @@ protocols:
             "-printInteractionControllerWillStartJob:":
                 name: willStartJob
     UIResponderStandardEditActions:
-        url: UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html
+        url: ../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html
     UIScrollViewDelegate:
-        url: UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html
+        url: ../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html
         methods:
             "-scrollViewDidEndDecelerating:":
                 name: didEndDecelerating
@@ -1557,7 +1896,7 @@ protocols:
             "-viewForZoomingInScrollView:":
                 name: getViewForZooming
     UISearchBarDelegate:
-        url: UISearchBarDelegate_Protocol/Reference/Reference.html
+        url: ../UISearchBarDelegate_Protocol/Reference/Reference.html
         methods:
             "-searchBar:selectedScopeButtonIndexDidChange:":
                 name: selectedScopeButtonIndexDidChange
@@ -1582,7 +1921,7 @@ protocols:
             "-searchBarTextDidEndEditing:":
                 name: didEndEditing
     UISearchDisplayDelegate:
-        url: UISearchDisplayDelegate_Protocol/Reference/Reference.html
+        url: ../UISearchDisplayDelegate_Protocol/Reference/Reference.html
         methods:
             "-searchDisplayController:didHideSearchResultsTableView:":
                 name: didHideSearchResults
@@ -1609,7 +1948,7 @@ protocols:
             "-searchDisplayControllerWillEndSearch:":
                 name: willEndSearch
     UISplitViewControllerDelegate:
-        url: UISplitViewControllerDelegate_protocol/Reference/Reference.html
+        url: ../UISplitViewControllerDelegate_protocol/Reference/Reference.html
         methods:
             "-splitViewController:popoverController:willPresentViewController:":
                 name: willPresentViewController
@@ -1620,7 +1959,7 @@ protocols:
             "-splitViewController:willShowViewController:invalidatingBarButtonItem:":
                 name: willShowViewController
     UITabBarControllerDelegate:
-        url: UITabBarControllerDelegate_Protocol/Reference/Reference.html
+        url: ../UITabBarControllerDelegate_Protocol/Reference/Reference.html
         methods:
             "-tabBarController:didEndCustomizingViewControllers:changed:":
                 name: didEndCustomizingViewControllers
@@ -1633,7 +1972,7 @@ protocols:
             "-tabBarController:willEndCustomizingViewControllers:changed:":
                 name: willEndCustomizingViewControllers
     UITabBarDelegate:
-        url: UITabBarDelegate_Protocol/Reference/Reference.html
+        url: ../UITabBarDelegate_Protocol/Reference/Reference.html
         methods:
             "-tabBar:didBeginCustomizingItems:":
                 name: didBeginCustomizingItems
@@ -1646,7 +1985,7 @@ protocols:
             "-tabBar:willEndCustomizingItems:changed:":
                 name: willEndCustomizingItems
     UITableViewDataSource:
-        url: UITableViewDataSource_Protocol/Reference/Reference.html
+        url: ../UITableViewDataSource_Protocol/Reference/Reference.html
         methods:
             "-numberOfSectionsInTableView:":
                 name: getNumberOfSections
@@ -1671,7 +2010,7 @@ protocols:
             "-tableView:titleForHeaderInSection:":
                 name: getSectionHeaderTitle
     UITableViewDelegate:
-        url: UITableViewDelegate_Protocol/Reference/Reference.html
+        url: ../UITableViewDelegate_Protocol/Reference/Reference.html
         methods:
             "-tableView:accessoryButtonTappedForRowWithIndexPath:":
                 name: accessoryButtonTapped
@@ -1732,7 +2071,7 @@ protocols:
             "-tableView:willDisplayHeaderView:forSection:":
                 name: willDisplayHeaderView
     UITextFieldDelegate:
-        url: UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html
+        url: ../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html
         methods:
             "-textField:shouldChangeCharactersInRange:replacementString:":
                 name: shouldChangeCharacters
@@ -1749,7 +2088,7 @@ protocols:
             "-textFieldShouldReturn:":
                 name: shouldReturn
     UITextInput:
-        url: UITextInput_Protocol/Reference/Reference.html
+        url: ../UITextInput_Protocol/Reference/Reference.html
         methods:
             "-baseWritingDirectionForPosition:inDirection:":
                 name: getBaseWritingDirection
@@ -1786,11 +2125,17 @@ protocols:
             "-textRangeFromPosition:toPosition:":
                 name: getTextRange
             "-textStylingAtPosition:inDirection:":
-                name: getTextStyling        
+                name: getTextStyling
+            "-frameForDictationResultPlaceholder:":
+                name: getDictationResultPlaceholderFrame
+            "-selectionRectsForRange:":
+                name: getSelectionRects
+            "-shouldChangeTextInRange:replacementText:":
+                name: shouldChangeText
     UITextInputDelegate:
-        url: UITextInputDelegate_Protocol/Reference/Reference.html
+        url: ../UITextInputDelegate_Protocol/Reference/Reference.html
     UITextInputTokenizer:
-        url: UITextInputTokenizer_Protocol/Reference/Reference.html
+        url: ../UITextInputTokenizer_Protocol/Reference/Reference.html
         methods:
             "-positionFromPosition:toBoundary:inDirection:":
                 name: getPosition
@@ -1801,9 +2146,9 @@ protocols:
             "-isPosition:withinTextUnit:inDirection:":
                 name: isPositionWithinTextUnit
     UITextInputTraits:
-        url: UITextInputTraits_Protocol/Reference/UITextInputTraits.html
+        url: ../UITextInputTraits_Protocol/Reference/UITextInputTraits.html
     UITextViewDelegate:
-        url: UITextViewDelegate_Protocol/Reference/UITextViewDelegate.html
+        url: ../UITextViewDelegate_Protocol/Reference/UITextViewDelegate.html
         methods:
             "-textView:shouldChangeTextInRange:replacementText:":
                 name: shouldChangeCharacters
@@ -1820,7 +2165,7 @@ protocols:
             "-textViewShouldEndEditing:":
                 name: shouldEndEditing
     UIVideoEditorControllerDelegate:
-        url: UIVideoEditorControllerDelegate_ProtocolReference/Reference/Reference.html
+        url: ../UIVideoEditorControllerDelegate_ProtocolReference/Reference/Reference.html
         protocols: [UINavigationControllerDelegate]
         methods:
             "-videoEditorController:didFailWithError:":
@@ -1829,8 +2174,11 @@ protocols:
                 name: didSave
             "-videoEditorControllerDidCancel:":
                 name: didCancel
+# Contains a single static method
+#    UIViewControllerRestoration:
+#        url: ../UIViewControllerRestoration_protocol/Reference/Reference.html
     UIWebViewDelegate:
-        url: UIWebViewDelegate_Protocol/Reference/Reference.html
+        url: ../UIWebViewDelegate_Protocol/Reference/Reference.html
         methods:
             "-webView:didFailLoadWithError:":
                 name: didFailLoad

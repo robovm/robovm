@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionControllerDelegate_Protocol/Reference/Reference.html">UIPrintInteractionControllerDelegate Protocol Reference</a>
+ *   @since Available in iOS 4.2 and later.
+ * </div>
+ */
 @Protocol
 public interface /*<name>*/ UIPrintInteractionControllerDelegate /*</name>*/ /*<implements>*/ /*</implements>*/ {
 
@@ -35,13 +44,45 @@ public interface /*<name>*/ UIPrintInteractionControllerDelegate /*</name>*/ /*<
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPrintInteractionControllerDelegate/printInteractionController:choosePaper:">- (UIPrintPaper *)printInteractionController:(UIPrintInteractionController *)printInteractionController choosePaper:(NSArray *)paperList</a>
+     * @since Available in iOS 4.2 and later.
+     */
     @Bind("printInteractionController:choosePaper:") @Type("UIPrintPaper *") UIPrintPaper choosePaper(@Type("UIPrintInteractionController *") UIPrintInteractionController printInteractionController, @Type("NSArray *") NSArray paperList);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPrintInteractionControllerDelegate/printInteractionControllerDidDismissPrinterOptions:">- (void)printInteractionControllerDidDismissPrinterOptions:(UIPrintInteractionController *)printInteractionController</a>
+     * @since Available in iOS 4.2 and later.
+     */
     @Bind("printInteractionControllerDidDismissPrinterOptions:") @Type("void") void didDismissPrinterOptions(@Type("UIPrintInteractionController *") UIPrintInteractionController printInteractionController);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPrintInteractionControllerDelegate/printInteractionControllerDidFinishJob:">- (void)printInteractionControllerDidFinishJob:(UIPrintInteractionController *)printInteractionController</a>
+     * @since Available in iOS 4.2 and later.
+     */
     @Bind("printInteractionControllerDidFinishJob:") @Type("void") void didFinishJob(@Type("UIPrintInteractionController *") UIPrintInteractionController printInteractionController);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPrintInteractionControllerDelegate/printInteractionControllerDidPresentPrinterOptions:">- (void)printInteractionControllerDidPresentPrinterOptions:(UIPrintInteractionController *)printInteractionController</a>
+     * @since Available in iOS 4.2 and later.
+     */
     @Bind("printInteractionControllerDidPresentPrinterOptions:") @Type("void") void didPresentPrinterOptions(@Type("UIPrintInteractionController *") UIPrintInteractionController printInteractionController);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPrintInteractionControllerDelegate/printInteractionControllerParentViewController:">- (UIViewController *)printInteractionControllerParentViewController:(UIPrintInteractionController *)printInteractionController</a>
+     * @since Available in iOS 4.2 and later.
+     */
     @Bind("printInteractionControllerParentViewController:") @Type("UIViewController *") UIViewController getParentViewController(@Type("UIPrintInteractionController *") UIPrintInteractionController printInteractionController);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPrintInteractionControllerDelegate/printInteractionControllerWillDismissPrinterOptions:">- (void)printInteractionControllerWillDismissPrinterOptions:(UIPrintInteractionController *)printInteractionController</a>
+     * @since Available in iOS 4.2 and later.
+     */
     @Bind("printInteractionControllerWillDismissPrinterOptions:") @Type("void") void willDismissPrinterOptions(@Type("UIPrintInteractionController *") UIPrintInteractionController printInteractionController);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPrintInteractionControllerDelegate/printInteractionControllerWillPresentPrinterOptions:">- (void)printInteractionControllerWillPresentPrinterOptions:(UIPrintInteractionController *)printInteractionController</a>
+     * @since Available in iOS 4.2 and later.
+     */
     @Bind("printInteractionControllerWillPresentPrinterOptions:") @Type("void") void willPresentPrinterOptions(@Type("UIPrintInteractionController *") UIPrintInteractionController printInteractionController);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPrintInteractionControllerDelegate/printInteractionControllerWillStartJob:">- (void)printInteractionControllerWillStartJob:(UIPrintInteractionController *)printInteractionController</a>
+     * @since Available in iOS 4.2 and later.
+     */
     @Bind("printInteractionControllerWillStartJob:") @Type("void") void willStartJob(@Type("UIPrintInteractionController *") UIPrintInteractionController printInteractionController);
     /*</methods>*/
 

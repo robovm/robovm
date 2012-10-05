@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html">UIPageViewControllerDataSource Protocol Reference</a>
+ *   @since Available in iOS 5.0 and later.
+ * </div>
+ */
 @Protocol
 public interface /*<name>*/ UIPageViewControllerDataSource /*</name>*/ /*<implements>*/ /*</implements>*/ {
 
@@ -35,10 +44,26 @@ public interface /*<name>*/ UIPageViewControllerDataSource /*</name>*/ /*<implem
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html#//apple_ref/occ/intfm/UIPageViewControllerDataSource/presentationCountForPageViewController:">- (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController</a>
+     * @since Available in iOS 6.0 and later.
+     */
+    @Bind("presentationCountForPageViewController:") @Type("NSInteger") int getPresentationCount(@Type("UIPageViewController *") UIPageViewController pageViewController);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html#//apple_ref/occ/intfm/UIPageViewControllerDataSource/presentationIndexForPageViewController:">- (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController</a>
+     * @since Available in iOS 6.0 and later.
+     */
+    @Bind("presentationIndexForPageViewController:") @Type("NSInteger") int getPresentationIndex(@Type("UIPageViewController *") UIPageViewController pageViewController);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html#//apple_ref/occ/intfm/UIPageViewControllerDataSource/pageViewController:viewControllerAfterViewController:">- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController</a>
+     * @since Available in iOS 5.0 and later.
+     */
     @Bind("pageViewController:viewControllerAfterViewController:") @Type("UIViewController *") UIViewController getViewControllerAfter(@Type("UIPageViewController *") UIPageViewController pageViewController, @Type("UIViewController *") UIViewController viewController);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html#//apple_ref/occ/intfm/UIPageViewControllerDataSource/pageViewController:viewControllerBeforeViewController:">- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController</a>
+     * @since Available in iOS 5.0 and later.
+     */
     @Bind("pageViewController:viewControllerBeforeViewController:") @Type("UIViewController *") UIViewController getViewControllerBefore(@Type("UIPageViewController *") UIPageViewController pageViewController, @Type("UIViewController *") UIViewController viewController);
-    @Bind("presentationCountForPageViewController:") @Type("NSInteger") int presentationCountForPageViewController(@Type("UIPageViewController *") UIPageViewController pageViewController);
-    @Bind("presentationIndexForPageViewController:") @Type("NSInteger") int presentationIndexForPageViewController(@Type("UIPageViewController *") UIPageViewController pageViewController);
     /*</methods>*/
 
 }

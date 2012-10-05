@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html">UITextInputMode Class Reference</a>
+ *   @since Available in iOS 4.2 and later.
+ * </div>
+ */
 /*<library>*/@Library("UIKit")/*</library>*/
 public class /*<name>*/ UITextInputMode /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
@@ -42,10 +51,22 @@ public class /*<name>*/ UITextInputMode /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html#//apple_ref/occ/instp/UITextInputMode/primaryLanguage">@property (nonatomic, readonly, retain) NSString *primaryLanguage</a>
+     * @since Available in iOS 4.2 and later.
+     */
     @Bind("primaryLanguage") public native @Type("NSString *") String getPrimaryLanguage();
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html#//apple_ref/occ/clm/UITextInputMode/activeInputModes">+ (NSArray *)activeInputModes</a>
+     * @since Available in iOS 5.0 and later.
+     */
     @Bind("activeInputModes") public native static @Type("NSArray *") NSArray getActiveInputModes();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html#//apple_ref/occ/clm/UITextInputMode/currentInputMode">+ (UITextInputMode *)currentInputMode</a>
+     * @since Available in iOS 4.2 and later.
+     */
     @Bind("currentInputMode") public native static @Type("UITextInputMode *") UITextInputMode getCurrentInputMode();
     /*</methods>*/
 

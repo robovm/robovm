@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputDelegate_Protocol/Reference/Reference.html">UITextInputDelegate Protocol Reference</a>
+ *   @since Available in iOS 3.2 and later.
+ * </div>
+ */
 @Protocol
 public interface /*<name>*/ UITextInputDelegate /*</name>*/ /*<implements>*/ /*</implements>*/ {
 
@@ -35,9 +44,25 @@ public interface /*<name>*/ UITextInputDelegate /*</name>*/ /*<implements>*/ /*<
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInputDelegate/selectionDidChange:">- (void)selectionDidChange:(id &amp;lt;UITextInput&amp;gt;)textInput</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("selectionDidChange:") @Type("void") void selectionDidChange(@Type("id <UITextInput>") UITextInput textInput);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInputDelegate/selectionWillChange:">- (void)selectionWillChange:(id &amp;lt;UITextInput&amp;gt;)textInput</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("selectionWillChange:") @Type("void") void selectionWillChange(@Type("id <UITextInput>") UITextInput textInput);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInputDelegate/textDidChange:">- (void)textDidChange:(id &amp;lt;UITextInput&amp;gt;)textInput</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("textDidChange:") @Type("void") void textDidChange(@Type("id <UITextInput>") UITextInput textInput);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInputDelegate/textWillChange:">- (void)textWillChange:(id &amp;lt;UITextInput&amp;gt;)textInput</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("textWillChange:") @Type("void") void textWillChange(@Type("id <UITextInput>") UITextInput textInput);
     /*</methods>*/
 

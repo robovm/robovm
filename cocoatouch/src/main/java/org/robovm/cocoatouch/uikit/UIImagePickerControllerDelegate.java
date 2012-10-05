@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerControllerDelegate_Protocol/UIImagePickerControllerDelegate/UIImagePickerControllerDelegate.html">UIImagePickerControllerDelegate Protocol Reference</a>
+ *   @since Available in iOS 2.0 and later.
+ * </div>
+ */
 @Protocol
 public interface /*<name>*/ UIImagePickerControllerDelegate /*</name>*/ /*<implements>*/ extends UINavigationControllerDelegate /*</implements>*/ {
 
@@ -35,7 +44,16 @@ public interface /*<name>*/ UIImagePickerControllerDelegate /*</name>*/ /*<imple
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerControllerDelegate_Protocol/UIImagePickerControllerDelegate/UIImagePickerControllerDelegate.html#//apple_ref/occ/intfm/UIImagePickerControllerDelegate/imagePickerControllerDidCancel:">- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("imagePickerControllerDidCancel:") @Type("void") void didCancel(@Type("UIImagePickerController *") UIImagePickerController picker);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerControllerDelegate_Protocol/UIImagePickerControllerDelegate/UIImagePickerControllerDelegate.html#//apple_ref/occ/intfm/UIImagePickerControllerDelegate/imagePickerController:didFinishPickingMediaWithInfo:">- (void)imagePickerController:(UIImagePickerController *)picker
+    didFinishPickingMediaWithInfo:(NSDictionary *)info</a>
+     * @since Available in iOS 3.0 and later.
+     */
     @Bind("imagePickerController:didFinishPickingMediaWithInfo:") @Type("void") void didFinishPickingMedia(@Type("UIImagePickerController *") UIImagePickerController picker, @Type("NSDictionary *") NSDictionary info);
     /*</methods>*/
 

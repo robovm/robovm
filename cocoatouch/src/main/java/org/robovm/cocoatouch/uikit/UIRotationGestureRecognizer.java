@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIRotateGestureRecognizer_Class/Reference/Reference.html">UIRotationGestureRecognizer Class Reference</a>
+ *   @since Available in iOS 3.2 and later.
+ * </div>
+ */
 /*<library>*/@Library("UIKit")/*</library>*/
 public class /*<name>*/ UIRotationGestureRecognizer /*</name>*/ 
     extends /*<extends>*/ UIGestureRecognizer /*</extends>*/ 
@@ -42,8 +51,20 @@ public class /*<name>*/ UIRotationGestureRecognizer /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIRotateGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIRotationGestureRecognizer/rotation">@property(nonatomic) CGFloat rotation</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("rotation") public native @Type("CGFloat") float getRotation();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIRotateGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIRotationGestureRecognizer/rotation">@property(nonatomic) CGFloat rotation</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("setRotation:") public native void setRotation(@Type("CGFloat") float v);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIRotateGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIRotationGestureRecognizer/velocity">@property(nonatomic, readonly) CGFloat velocity</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("velocity") public native @Type("CGFloat") float getVelocity();
     /*</properties>*/
     /*<methods>*/

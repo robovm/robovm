@@ -24,6 +24,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html">NSDictionary Class Reference</a>
+ *   @since Available in iOS 2.0 and later.
+ * </div>
+ */
 /*<library>*/@Library("Foundation")/*</library>*/
 public class /*<name>*/ NSDictionary /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 

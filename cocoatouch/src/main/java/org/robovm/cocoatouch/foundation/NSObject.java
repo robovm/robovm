@@ -24,6 +24,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSObject_Class/Reference/Reference.html">NSObject Class Reference</a>
+ *   @since Available in iOS 2.0 and later.
+ * </div>
+ */
 /*<library>*/@Library("Foundation")/*</library>*/
 public class /*<name>*/ NSObject /*</name>*/ 
     extends /*<extends>*/ ObjCObject /*</extends>*/ 
@@ -71,9 +79,25 @@ public class /*<name>*/ NSObject /*</name>*/
     }
     
     /*<methods>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/description">- (NSString *)description</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("description") public native @Type("NSString *") String description();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/instm/NSObject/init">- (id)init</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("init") protected native @Type("id") NSObject init();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/release">- (oneway void)release</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("release") protected native @Type("void") void release();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/retain">- (id)retain</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("retain") protected native @Type("id") NSObject retain();
     /*</methods>*/
 

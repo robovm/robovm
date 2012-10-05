@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIReferenceLibraryViewControllerClassRef/Reference/Reference.html">UIReferenceLibraryViewController Class Reference</a>
+ *   @since Available in iOS 5.0 and later.
+ * </div>
+ */
 /*<library>*/@Library("UIKit")/*</library>*/
 public class /*<name>*/ UIReferenceLibraryViewController /*</name>*/ 
     extends /*<extends>*/ UIViewController /*</extends>*/ 
@@ -39,12 +48,20 @@ public class /*<name>*/ UIReferenceLibraryViewController /*</name>*/
 
     /*<constructors>*/
     public UIReferenceLibraryViewController() {}
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIReferenceLibraryViewControllerClassRef/Reference/Reference.html#//apple_ref/occ/instm/UIReferenceLibraryViewController/initWithTerm:">- (id)initWithTerm:(NSString *)term</a>
+     * @since Available in iOS 5.0 and later.
+     */
     @Bind("initWithTerm:") public UIReferenceLibraryViewController(@Type("NSString *") String term) {}
     /*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIReferenceLibraryViewControllerClassRef/Reference/Reference.html#//apple_ref/occ/clm/UIReferenceLibraryViewController/dictionaryHasDefinitionForTerm:">+ (BOOL)dictionaryHasDefinitionForTerm:(NSString *)term</a>
+     * @since Available in iOS 5.0 and later.
+     */
     @Bind("dictionaryHasDefinitionForTerm:") public native static @Type("BOOL") boolean dictionaryHasDefinitionForTerm(@Type("NSString *") String term);
     /*</methods>*/
 

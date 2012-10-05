@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBarDelegate_Protocol/Reference/Reference.html">UINavigationBarDelegate Protocol Reference</a>
+ *   @since Available in iOS 2.0 and later.
+ * </div>
+ */
 @Protocol
 public interface /*<name>*/ UINavigationBarDelegate /*</name>*/ /*<implements>*/ /*</implements>*/ {
 
@@ -35,9 +44,25 @@ public interface /*<name>*/ UINavigationBarDelegate /*</name>*/ /*<implements>*/
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UINavigationBarDelegate/navigationBar:didPopItem:">- (void)navigationBar:(UINavigationBar *)navigationBar didPopItem:(UINavigationItem *)item</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("navigationBar:didPopItem:") @Type("void") void didPopItem(@Type("UINavigationBar *") UINavigationBar navigationBar, @Type("UINavigationItem *") UINavigationItem item);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UINavigationBarDelegate/navigationBar:didPushItem:">- (void)navigationBar:(UINavigationBar *)navigationBar didPushItem:(UINavigationItem *)item</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("navigationBar:didPushItem:") @Type("void") void didPushItem(@Type("UINavigationBar *") UINavigationBar navigationBar, @Type("UINavigationItem *") UINavigationItem item);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UINavigationBarDelegate/navigationBar:shouldPopItem:">- (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("navigationBar:shouldPopItem:") @Type("BOOL") boolean shouldPopItem(@Type("UINavigationBar *") UINavigationBar navigationBar, @Type("UINavigationItem *") UINavigationItem item);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UINavigationBarDelegate/navigationBar:shouldPushItem:">- (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPushItem:(UINavigationItem *)item</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("navigationBar:shouldPushItem:") @Type("BOOL") boolean shouldPushItem(@Type("UINavigationBar *") UINavigationBar navigationBar, @Type("UINavigationItem *") UINavigationItem item);
     /*</methods>*/
 

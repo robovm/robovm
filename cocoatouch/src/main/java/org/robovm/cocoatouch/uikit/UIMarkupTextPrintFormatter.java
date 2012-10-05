@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMarkupTextPrintFormatter_Class/Reference/Reference.html">UIMarkupTextPrintFormatter Class Reference</a>
+ *   @since Available in iOS 4.2 and later.
+ * </div>
+ */
 /*<library>*/@Library("UIKit")/*</library>*/
 public class /*<name>*/ UIMarkupTextPrintFormatter /*</name>*/ 
     extends /*<extends>*/ UIPrintFormatter /*</extends>*/ 
@@ -39,10 +48,22 @@ public class /*<name>*/ UIMarkupTextPrintFormatter /*</name>*/
 
     /*<constructors>*/
     public UIMarkupTextPrintFormatter() {}
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMarkupTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instm/UIMarkupTextPrintFormatter/initWithMarkupText:">- (id)initWithMarkupText:(NSString *)markupText</a>
+     * @since Available in iOS 4.2 and later.
+     */
     @Bind("initWithMarkupText:") public UIMarkupTextPrintFormatter(@Type("NSString *") String markupText) {}
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMarkupTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIMarkupTextPrintFormatter/markupText">@property(nonatomic, copy) NSString *markupText</a>
+     * @since Available in iOS 4.2 and later.
+     */
     @Bind("markupText") public native @Type("NSString *") String getMarkupText();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMarkupTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIMarkupTextPrintFormatter/markupText">@property(nonatomic, copy) NSString *markupText</a>
+     * @since Available in iOS 4.2 and later.
+     */
     @Bind("setMarkupText:") public native void setMarkupText(@Type("NSString *") String v);
     /*</properties>*/
     /*<methods>*/

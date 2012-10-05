@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html">UIVideoEditorController Class Reference</a>
+ *   @since Available in iOS 3.1 and later.
+ * </div>
+ */
 /*<library>*/@Library("UIKit")/*</library>*/
 public class /*<name>*/ UIVideoEditorController /*</name>*/ 
     extends /*<extends>*/ UINavigationController /*</extends>*/ 
@@ -42,16 +51,52 @@ public class /*<name>*/ UIVideoEditorController /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/delegate">@property(nonatomic,assign) id &amp;lt;UINavigationControllerDelegate, UIVideoEditorControllerDelegate&amp;gt; delegate</a>
+     * @since Available in iOS 3.1 and later.
+     */
     @Bind("delegate") public native @Type("id <UINavigationControllerDelegate, UIVideoEditorControllerDelegate>") UIVideoEditorControllerDelegate getDelegate();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/delegate">@property(nonatomic,assign) id &amp;lt;UINavigationControllerDelegate, UIVideoEditorControllerDelegate&amp;gt; delegate</a>
+     * @since Available in iOS 3.1 and later.
+     */
     @Bind("setDelegate:") public native void setDelegate(@Type("id <UINavigationControllerDelegate, UIVideoEditorControllerDelegate>") UIVideoEditorControllerDelegate v);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/videoMaximumDuration">@property(nonatomic) NSTimeInterval videoMaximumDuration</a>
+     * @since Available in iOS 3.1 and later.
+     */
     @Bind("videoMaximumDuration") public native @Type("NSTimeInterval") double getVideoMaximumDuration();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/videoMaximumDuration">@property(nonatomic) NSTimeInterval videoMaximumDuration</a>
+     * @since Available in iOS 3.1 and later.
+     */
     @Bind("setVideoMaximumDuration:") public native void setVideoMaximumDuration(@Type("NSTimeInterval") double v);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/videoPath">@property(nonatomic, copy) NSString *videoPath</a>
+     * @since Available in iOS 3.1 and later.
+     */
     @Bind("videoPath") public native @Type("NSString *") String getVideoPath();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/videoPath">@property(nonatomic, copy) NSString *videoPath</a>
+     * @since Available in iOS 3.1 and later.
+     */
     @Bind("setVideoPath:") public native void setVideoPath(@Type("NSString *") String v);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/videoQuality">@property(nonatomic) UIImagePickerControllerQualityType videoQuality</a>
+     * @since Available in iOS 3.1 and later.
+     */
     @Bind("videoQuality") public native @Type("UIImagePickerControllerQualityType") UIImagePickerControllerQualityType getVideoQuality();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/videoQuality">@property(nonatomic) UIImagePickerControllerQualityType videoQuality</a>
+     * @since Available in iOS 3.1 and later.
+     */
     @Bind("setVideoQuality:") public native void setVideoQuality(@Type("UIImagePickerControllerQualityType") UIImagePickerControllerQualityType v);
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/clm/UIVideoEditorController/canEditVideoAtPath:">+ (BOOL)canEditVideoAtPath:(NSString *)videoPath</a>
+     * @since Available in iOS 3.1 and later.
+     */
     @Bind("canEditVideoAtPath:") public native static @Type("BOOL") boolean canEditVideo(@Type("NSString *") String videoPath);
     /*</methods>*/
 

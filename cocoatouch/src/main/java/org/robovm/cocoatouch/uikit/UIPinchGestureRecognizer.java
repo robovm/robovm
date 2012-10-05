@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPinchGestureRecognizer_Class/Reference/Reference.html">UIPinchGestureRecognizer Class Reference</a>
+ *   @since Available in iOS 3.2 and later.
+ * </div>
+ */
 /*<library>*/@Library("UIKit")/*</library>*/
 public class /*<name>*/ UIPinchGestureRecognizer /*</name>*/ 
     extends /*<extends>*/ UIGestureRecognizer /*</extends>*/ 
@@ -42,8 +51,20 @@ public class /*<name>*/ UIPinchGestureRecognizer /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPinchGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPinchGestureRecognizer/scale">@property(nonatomic) CGFloat scale</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("scale") public native @Type("CGFloat") float getScale();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPinchGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPinchGestureRecognizer/scale">@property(nonatomic) CGFloat scale</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("setScale:") public native void setScale(@Type("CGFloat") float v);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPinchGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPinchGestureRecognizer/velocity">@property(nonatomic, readonly) CGFloat velocity</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("velocity") public native @Type("CGFloat") float getVelocity();
     /*</properties>*/
     /*<methods>*/

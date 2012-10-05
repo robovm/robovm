@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIKeyInput_Protocol/Reference/Reference.html">UIKeyInput Protocol Reference</a>
+ *   @since Available in iOS 3.2 and later.
+ * </div>
+ */
 @Protocol
 public interface /*<name>*/ UIKeyInput /*</name>*/ /*<implements>*/ extends UITextInputTraits /*</implements>*/ {
 
@@ -35,8 +44,20 @@ public interface /*<name>*/ UIKeyInput /*</name>*/ /*<implements>*/ extends UITe
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIKeyInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIKeyInput/deleteBackward">- (void)deleteBackward</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("deleteBackward") @Type("void") void deleteBackward();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIKeyInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIKeyInput/hasText">- (BOOL)hasText</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("hasText") @Type("BOOL") boolean hasText();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIKeyInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIKeyInput/insertText:">- (void)insertText:(NSString *)text</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("insertText:") @Type("void") void insertText(@Type("NSString *") String text);
     /*</methods>*/
 

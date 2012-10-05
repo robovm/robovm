@@ -24,17 +24,24 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../../NSOperation_class/Reference/Reference.html">NSOperation Class Reference</a>
+ *   @since Available in iOS 2.0 and later.
+ * </div>
+ */
 /*<library>*/@Library("Foundation")/*</library>*/
-public class /*<name>*/ NSLayoutConstraint /*</name>*/ 
+public class /*<name>*/ NSOperation /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 
     static {
-        ObjCRuntime.bind(/*<name>*/ NSLayoutConstraint /*</name>*/.class);
+        ObjCRuntime.bind(/*<name>*/ NSOperation /*</name>*/.class);
     }
 
     /*<constructors>*/
-    public NSLayoutConstraint() {}
+    public NSOperation() {}
     
     /*</constructors>*/
     /*<properties>*/

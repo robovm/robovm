@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDictationPhraseClass/Reference/Reference.html">UIDictationPhrase Class Reference</a>
+ *   @since Available in iOS 5.1 and later.
+ * </div>
+ */
 /*<library>*/@Library("UIKit")/*</library>*/
 public class /*<name>*/ UIDictationPhrase /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
@@ -42,7 +51,15 @@ public class /*<name>*/ UIDictationPhrase /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDictationPhraseClass/Reference/Reference.html#//apple_ref/occ/instp/UIDictationPhrase/alternativeInterpretations">@property (nonatomic, readonly) NSArray *alternativeInterpretations</a>
+     * @since Available in iOS 5.1 and later.
+     */
     @Bind("alternativeInterpretations") public native @Type("NSArray *") NSArray getAlternativeInterpretations();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDictationPhraseClass/Reference/Reference.html#//apple_ref/occ/instp/UIDictationPhrase/text">@property (nonatomic, readonly) NSString *text</a>
+     * @since Available in iOS 5.1 and later.
+     */
     @Bind("text") public native @Type("NSString *") String getText();
     /*</properties>*/
     /*<methods>*/

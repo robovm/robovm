@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html">UILocalNotification Class Reference</a>
+ *   @since Available in iOS 4.0 and later.
+ * </div>
+ */
 /*<library>*/@Library("UIKit")/*</library>*/
 public class /*<name>*/ UILocalNotification /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
@@ -42,27 +51,115 @@ public class /*<name>*/ UILocalNotification /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/alertAction">@property(nonatomic, copy) NSString *alertAction</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("alertAction") public native @Type("NSString *") String getAlertAction();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/alertAction">@property(nonatomic, copy) NSString *alertAction</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("setAlertAction:") public native void setAlertAction(@Type("NSString *") String v);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/alertBody">@property(nonatomic, copy) NSString *alertBody</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("alertBody") public native @Type("NSString *") String getAlertBody();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/alertBody">@property(nonatomic, copy) NSString *alertBody</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("setAlertBody:") public native void setAlertBody(@Type("NSString *") String v);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/alertLaunchImage">@property(nonatomic,copy) NSString *alertLaunchImage</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("alertLaunchImage") public native @Type("NSString *") String getAlertLaunchImage();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/alertLaunchImage">@property(nonatomic,copy) NSString *alertLaunchImage</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("setAlertLaunchImage:") public native void setAlertLaunchImage(@Type("NSString *") String v);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/applicationIconBadgeNumber">@property(nonatomic) NSInteger applicationIconBadgeNumber</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("applicationIconBadgeNumber") public native @Type("NSInteger") int getApplicationIconBadgeNumber();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/applicationIconBadgeNumber">@property(nonatomic) NSInteger applicationIconBadgeNumber</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("setApplicationIconBadgeNumber:") public native void setApplicationIconBadgeNumber(@Type("NSInteger") int v);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/fireDate">@property(nonatomic, copy) NSDate *fireDate</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("fireDate") public native @Type("NSDate *") NSDate getFireDate();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/fireDate">@property(nonatomic, copy) NSDate *fireDate</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("setFireDate:") public native void setFireDate(@Type("NSDate *") NSDate v);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/hasAction">@property(nonatomic) BOOL hasAction</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("hasAction") public native @Type("BOOL") boolean isHasAction();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/hasAction">@property(nonatomic) BOOL hasAction</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("setHasAction:") public native void setHasAction(@Type("BOOL") boolean v);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/repeatCalendar">@property(nonatomic, copy) NSCalendar *repeatCalendar</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("repeatCalendar") public native @Type("NSCalendar *") NSCalendar getRepeatCalendar();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/repeatCalendar">@property(nonatomic, copy) NSCalendar *repeatCalendar</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("setRepeatCalendar:") public native void setRepeatCalendar(@Type("NSCalendar *") NSCalendar v);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/repeatInterval">@property(nonatomic) NSCalendarUnit repeatInterval</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("repeatInterval") public native @Type("NSCalendarUnit") NSCalendarUnit getRepeatInterval();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/repeatInterval">@property(nonatomic) NSCalendarUnit repeatInterval</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("setRepeatInterval:") public native void setRepeatInterval(@Type("NSCalendarUnit") NSCalendarUnit v);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/soundName">@property(nonatomic, copy) NSString *soundName</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("soundName") public native @Type("NSString *") String getSoundName();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/soundName">@property(nonatomic, copy) NSString *soundName</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("setSoundName:") public native void setSoundName(@Type("NSString *") String v);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/timeZone">@property(nonatomic, copy) NSTimeZone *timeZone</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("timeZone") public native @Type("NSTimeZone *") NSTimeZone getTimeZone();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/timeZone">@property(nonatomic, copy) NSTimeZone *timeZone</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("setTimeZone:") public native void setTimeZone(@Type("NSTimeZone *") NSTimeZone v);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/userInfo">@property(nonatomic, copy) NSDictionary *userInfo</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("userInfo") public native @Type("NSDictionary *") NSDictionary getUserInfo();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalNotification_Class/Reference/Reference.html#//apple_ref/occ/instp/UILocalNotification/userInfo">@property(nonatomic, copy) NSDictionary *userInfo</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("setUserInfo:") public native void setUserInfo(@Type("NSDictionary *") NSDictionary v);
     /*</properties>*/
     /*<methods>*/

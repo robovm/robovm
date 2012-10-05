@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboard_Class/Reference/Reference.html">UIStoryboard Class Reference</a>
+ *   @since Available in iOS 5.0 and later.
+ * </div>
+ */
 /*<library>*/@Library("UIKit")/*</library>*/
 public class /*<name>*/ UIStoryboard /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
@@ -45,8 +54,20 @@ public class /*<name>*/ UIStoryboard /*</name>*/
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboard_Class/Reference/Reference.html#//apple_ref/occ/clm/UIStoryboard/storyboardWithName:bundle:">+ (UIStoryboard *)storyboardWithName:(NSString *)name bundle:(NSBundle *)storyboardBundleOrNil</a>
+     * @since Available in iOS 5.0 and later.
+     */
     @Bind("storyboardWithName:bundle:") public native static @Type("UIStoryboard *") UIStoryboard fromName(@Type("NSString *") String name, @Type("NSBundle *") NSBundle storyboardBundleOrNil);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboard_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboard/instantiateInitialViewController">- (id)instantiateInitialViewController</a>
+     * @since Available in iOS 5.0 and later.
+     */
     @Bind("instantiateInitialViewController") public native @Type("id") NSObject instantiateInitialViewController();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboard_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboard/instantiateViewControllerWithIdentifier:">- (id)instantiateViewControllerWithIdentifier:(NSString *)identifier</a>
+     * @since Available in iOS 5.0 and later.
+     */
     @Bind("instantiateViewControllerWithIdentifier:") public native @Type("id") NSObject instantiateViewController(@Type("NSString *") String identifier);
     /*</methods>*/
 

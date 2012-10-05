@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIPickerViewDataSource_Protocol/Reference/Reference.html">UIPickerViewDataSource Protocol Reference</a>
+ *   @since Available in iOS 2.0 and later.
+ * </div>
+ */
 @Protocol
 public interface /*<name>*/ UIPickerViewDataSource /*</name>*/ /*<implements>*/ /*</implements>*/ {
 
@@ -35,7 +44,15 @@ public interface /*<name>*/ UIPickerViewDataSource /*</name>*/ /*<implements>*/ 
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIPickerViewDataSource_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPickerViewDataSource/numberOfComponentsInPickerView:">- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("numberOfComponentsInPickerView:") @Type("NSInteger") int getNumberOfComponents(@Type("UIPickerView *") UIPickerView pickerView);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIPickerViewDataSource_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPickerViewDataSource/pickerView:numberOfRowsInComponent:">- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("pickerView:numberOfRowsInComponent:") @Type("NSInteger") int getNumberOfRows(@Type("UIPickerView *") UIPickerView pickerView, @Type("NSInteger") int component);
     /*</methods>*/
 

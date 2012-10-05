@@ -24,6 +24,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSAutoreleasePool_Class/Reference/Reference.html">NSAutoreleasePool Class Reference</a>
+ *   @since Available in iOS 2.0 and later.
+ * </div>
+ */
 /*<library>*/@Library("Foundation")/*</library>*/
 public class /*<name>*/ NSAutoreleasePool /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
@@ -41,6 +49,10 @@ public class /*<name>*/ NSAutoreleasePool /*</name>*/
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSAutoreleasePool_Class/Reference/Reference.html#//apple_ref/occ/instm/NSAutoreleasePool/drain">- (void)drain</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("drain") public native @Type("void") void drain();
     /*</methods>*/
 

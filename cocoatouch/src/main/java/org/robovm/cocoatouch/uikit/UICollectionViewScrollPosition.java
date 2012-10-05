@@ -13,28 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.cocoatouch.foundation;
+package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum NSLineBreakMode {
-    WordWrapping(0),
-    CharWrapping(1),
-    Clipping(2),
-    TruncatingHead(3),
-    TruncatingTail(4),
-    TruncatingMiddle(5);
+public enum UICollectionViewScrollPosition {
+    None(0),
+    Top(1 << 0),
+    CenteredVertically(1 << 1),
+    Bottom(1 << 2),
+    Left(1 << 3),
+    CenteredHorizontally(1 << 4),
+    Right(1 << 5);
 
     private final int n;
 
-    private NSLineBreakMode(int n) { this.n = n; }
+    private UICollectionViewScrollPosition(int n) { this.n = n; }
     public int value() { return n; }
-    public static NSLineBreakMode fromValue(int n) {
-        for (NSLineBreakMode v : values()) {
+    public static UICollectionViewScrollPosition fromValue(int n) {
+        for (UICollectionViewScrollPosition v : values()) {
             if (n == v.value()) {
                 return v;
             }
         }
-        throw new IllegalArgumentException("Unknown NSLineBreakMode value: " + n);
+        throw new IllegalArgumentException("Unknown UICollectionViewScrollPosition value: " + n);
     }
 }

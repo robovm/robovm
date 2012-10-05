@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebViewDelegate_Protocol/Reference/Reference.html">UIWebViewDelegate Protocol Reference</a>
+ *   @since Available in iOS 2.0 and later.
+ * </div>
+ */
 @Protocol
 public interface /*<name>*/ UIWebViewDelegate /*</name>*/ /*<implements>*/ /*</implements>*/ {
 
@@ -35,9 +44,25 @@ public interface /*<name>*/ UIWebViewDelegate /*</name>*/ /*<implements>*/ /*</i
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebViewDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIWebViewDelegate/webView:didFailLoadWithError:">- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("webView:didFailLoadWithError:") @Type("void") void didFailLoad(@Type("UIWebView *") UIWebView webView, @Type("NSError *") NSError error);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebViewDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIWebViewDelegate/webViewDidFinishLoad:">- (void)webViewDidFinishLoad:(UIWebView *)webView</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("webViewDidFinishLoad:") @Type("void") void didFinishLoad(@Type("UIWebView *") UIWebView webView);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebViewDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIWebViewDelegate/webViewDidStartLoad:">- (void)webViewDidStartLoad:(UIWebView *)webView</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("webViewDidStartLoad:") @Type("void") void didStartLoad(@Type("UIWebView *") UIWebView webView);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebViewDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIWebViewDelegate/webView:shouldStartLoadWithRequest:navigationType:">- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("webView:shouldStartLoadWithRequest:navigationType:") @Type("BOOL") boolean shouldStartLoad(@Type("UIWebView *") UIWebView webView, @Type("NSURLRequest *") NSURLRequest request, @Type("UIWebViewNavigationType") UIWebViewNavigationType navigationType);
     /*</methods>*/
 

@@ -13,26 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.cocoatouch.foundation;
+package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UILayoutPriority {
-    Required(1000),
-    DefaultHigh(750),
-    DefaultLow(250),
-    FittingSizeLevel(50);
+public enum UICollectionUpdateAction {
+    None(0),
+    Insert(1),
+    Delete(2),
+    Reload(3),
+    Move(4);
 
     private final int n;
 
-    private UILayoutPriority(int n) { this.n = n; }
+    private UICollectionUpdateAction(int n) { this.n = n; }
     public int value() { return n; }
-    public static UILayoutPriority fromValue(int n) {
-        for (UILayoutPriority v : values()) {
+    public static UICollectionUpdateAction fromValue(int n) {
+        for (UICollectionUpdateAction v : values()) {
             if (n == v.value()) {
                 return v;
             }
         }
-        throw new IllegalArgumentException("Unknown UILayoutPriority value: " + n);
+        throw new IllegalArgumentException("Unknown UICollectionUpdateAction value: " + n);
     }
 }

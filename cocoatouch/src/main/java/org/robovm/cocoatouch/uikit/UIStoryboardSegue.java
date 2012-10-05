@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html">UIStoryboardSegue Class Reference</a>
+ *   @since Available in iOS 5.0 and later.
+ * </div>
+ */
 /*<library>*/@Library("UIKit")/*</library>*/
 public class /*<name>*/ UIStoryboardSegue /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
@@ -39,14 +48,34 @@ public class /*<name>*/ UIStoryboardSegue /*</name>*/
 
     /*<constructors>*/
     public UIStoryboardSegue() {}
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboardSegue/initWithIdentifier:source:destination:">- (id)initWithIdentifier:(NSString *)identifier source:(UIViewController *)source destination:(UIViewController *)destination</a>
+     * @since Available in iOS 5.0 and later.
+     */
     @Bind("initWithIdentifier:source:destination:") public UIStoryboardSegue(@Type("NSString *") String identifier, @Type("UIViewController *") UIViewController source, @Type("UIViewController *") UIViewController destination) {}
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/destinationViewController">@property(nonatomic, readonly) id destinationViewController</a>
+     * @since Available in iOS 5.0 and later.
+     */
     @Bind("destinationViewController") public native @Type("id") NSObject getDestinationViewController();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/identifier">@property (nonatomic, readonly) NSString *identifier</a>
+     * @since Available in iOS 5.0 and later.
+     */
     @Bind("identifier") public native @Type("NSString *") String getIdentifier();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/sourceViewController">@property(nonatomic, readonly) id sourceViewController</a>
+     * @since Available in iOS 5.0 and later.
+     */
     @Bind("sourceViewController") public native @Type("id") NSObject getSourceViewController();
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboardSegue/perform">- (void)perform</a>
+     * @since Available in iOS 5.0 and later.
+     */
     @Bind("perform") public native @Type("void") void perform();
     /*</methods>*/
 

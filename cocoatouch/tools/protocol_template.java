@@ -18,6 +18,10 @@ package org.robovm.foo;
 /*<imports>*/
 /*</imports>*/
 
+/**
+ *
+ * <div class="javadoc"></div>
+ */
 @Protocol
 public interface /*<name>*/ TheName /*</name>*/ /*<implements>*/ extends A, B, C /*</implements>*/ {
 

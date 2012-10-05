@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewPrintFormatter_Class/Reference/Reference.html">UIViewPrintFormatter Class Reference</a>
+ *   @since Available in iOS 4.2 and later.
+ * </div>
+ */
 /*<library>*/@Library("UIKit")/*</library>*/
 public class /*<name>*/ UIViewPrintFormatter /*</name>*/ 
     extends /*<extends>*/ UIPrintFormatter /*</extends>*/ 
@@ -42,6 +51,10 @@ public class /*<name>*/ UIViewPrintFormatter /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewPrintFormatter/view">@property(nonatomic, readonly) UIView *view</a>
+     * @since Available in iOS 4.2 and later.
+     */
     @Bind("view") public native @Type("UIView *") UIView getView();
     /*</properties>*/
     /*<methods>*/

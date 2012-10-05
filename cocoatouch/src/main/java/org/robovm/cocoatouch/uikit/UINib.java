@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINib_Ref/Reference/Reference.html">UINib Class Reference</a>
+ *   @since Available in iOS 4.0 and later.
+ * </div>
+ */
 /*<library>*/@Library("UIKit")/*</library>*/
 public class /*<name>*/ UINib /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
@@ -45,8 +54,20 @@ public class /*<name>*/ UINib /*</name>*/
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINib_Ref/Reference/Reference.html#//apple_ref/occ/clm/UINib/nibWithData:bundle:">+ (UINib *)nibWithData:(NSData *)data bundle:(NSBundle *)bundleOrNil</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("nibWithData:bundle:") public native static @Type("UINib *") UINib fromData(@Type("NSData *") NSData data, @Type("NSBundle *") NSBundle bundleOrNil);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINib_Ref/Reference/Reference.html#//apple_ref/occ/clm/UINib/nibWithNibName:bundle:">+ (UINib *)nibWithNibName:(NSString *)name bundle:(NSBundle *)bundleOrNil</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("nibWithNibName:bundle:") public native static @Type("UINib *") UINib fromName(@Type("NSString *") String name, @Type("NSBundle *") NSBundle bundleOrNil);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINib_Ref/Reference/Reference.html#//apple_ref/occ/instm/UINib/instantiateWithOwner:options:">- (NSArray *)instantiateWithOwner:(id)ownerOrNil options:(NSDictionary *)optionsOrNil</a>
+     * @since Available in iOS 4.0 and later.
+     */
     @Bind("instantiateWithOwner:options:") public native @Type("NSArray *") NSArray instantiate(@Type("id") NSObject ownerOrNil, @Type("NSDictionary *") NSDictionary optionsOrNil);
     /*</methods>*/
 

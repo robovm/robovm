@@ -16,7 +16,7 @@ license: |
      */
 package: org.robovm.cocoatouch.foundation
 library: Foundation
-base_url: http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/
+base_url: http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/
 enums:
 #    NSStringEncoding:
 #        first: NSASCIIStringEncoding
@@ -32,13 +32,11 @@ enums:
         first: NSDataReadingMappedIfSafe
     NSDataWritingOptions:
         first: NSDataWritingAtomic
-    NSLineBreakMode:
-        first: NSLineBreakByWordWrapping
-    UILayoutPriority:
     NSTextAlignment:
+    NSWritingDirection:
 classes:
     NSArray:
-        url: Classes/NSArray_Class/NSArray.html
+        url: ../Classes/NSArray_Class/NSArray.html
         protocols: []
         methods:
             "+*":
@@ -46,7 +44,7 @@ classes:
             "-*":
                 exclude: true
     NSAttributedString:
-        url: Classes/NSAttributedString_Class/Reference/Reference.html
+        url: ../Classes/NSAttributedString_Class/Reference/Reference.html
         protocols: []
         methods:
             "+*":
@@ -54,7 +52,7 @@ classes:
             "-*":
                 exclude: true
     NSAutoreleasePool:
-        url: Classes/NSAutoreleasePool_Class/Reference/Reference.html
+        url: ../Classes/NSAutoreleasePool_Class/Reference/Reference.html
         protocols: []
         methods:
             "-drain":
@@ -63,7 +61,7 @@ classes:
             "-*":
                 exclude: true
     NSBundle:
-        url: Classes/NSBundle_Class/Reference/Reference.html
+        url: ../Classes/NSBundle_Class/Reference/Reference.html
         protocols: []
         methods:
             "+*":
@@ -71,7 +69,7 @@ classes:
             "-*":
                 exclude: true
     NSCoder:
-        url: Classes/NSCoder_Class/Reference/NSCoder.html
+        url: ../Classes/NSCoder_Class/Reference/NSCoder.html
         protocols: []
         methods:
             "+*":
@@ -79,7 +77,7 @@ classes:
             "-*":
                 exclude: true
     NSCalendar:
-        url: Classes/NSCalendar_Class/Reference/NSCalendar.html
+        url: ../Classes/NSCalendar_Class/Reference/NSCalendar.html
         protocols: []
         methods:
             "+*":
@@ -87,7 +85,7 @@ classes:
             "-*":
                 exclude: true
     NSData:
-        url: Classes/NSData_Class/Reference/Reference.html
+        url: ../Classes/NSData_Class/Reference/Reference.html
         protocols: []
         methods:
             "+*":
@@ -95,7 +93,7 @@ classes:
             "-*":
                 exclude: true
     NSDate:
-        url: Classes/NSDate_Class/Reference/Reference.html
+        url: ../Classes/NSDate_Class/Reference/Reference.html
         protocols: []
         methods:
             "+*":
@@ -103,7 +101,7 @@ classes:
             "-*":
                 exclude: true
     NSDictionary:
-        url: Classes/NSDictionary_Class/Reference/Reference.html
+        url: ../Classes/NSDictionary_Class/Reference/Reference.html
         protocols: []
         methods:
             "+*":
@@ -111,7 +109,7 @@ classes:
             "-*":
                 exclude: true
     NSError:
-        url: Classes/NSError_Class/Reference/Reference.html
+        url: ../Classes/NSError_Class/Reference/Reference.html
         protocols: []
         methods:
             "+*":
@@ -119,7 +117,7 @@ classes:
             "-*":
                 exclude: true
     NSIndexPath:
-        url: Classes/NSIndexPath_Class/Reference/Reference.html
+        url: ../Classes/NSIndexPath_Class/Reference/Reference.html
         protocols: []
         methods:
             "+*":
@@ -127,26 +125,15 @@ classes:
             "-*":
                 exclude: true
     NSIndexSet:
-        url: Classes/NSIndexSet_Class/Reference/Reference.html
+        url: ../Classes/NSIndexSet_Class/Reference/Reference.html
         protocols: []
         methods:
             "+*":
                 exclude: true
             "-*":
-                exclude: true
-    NSLayoutConstraint:
-        url: ../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html
-        protocols: []
-        methods:
-            "+*":
-                exclude: true
-            "-*":
-                exclude: true
-        properties:
-            "*":
                 exclude: true
     NSLocale:
-        url: Classes/NSLocale_Class/Reference/Reference.html
+        url: ../Classes/NSLocale_Class/Reference/Reference.html
         protocols: []
         methods:
             "+*":
@@ -156,24 +143,24 @@ classes:
         properties:
             "*":
                 exclude: true
-    NSManagedObjectContext:
-        url: ../CoreDataFramework/Classes/NSManagedObjectContext_Class/NSManagedObjectContext.html
-        protocols: []
-        methods:
-            "+*":
-                exclude: true
-            "-*":
-                exclude: true
-    NSManagedObjectModel:
-        url: ../CoreDataFramework/Classes/NSManagedObjectModel_Class/Reference/Reference.html
-        protocols: []
-        methods:
-            "+*":
-                exclude: true
-            "-*":
-                exclude: true
+#    NSManagedObjectContext:
+#        url: ../CoreDataFramework/Classes/NSManagedObjectContext_Class/NSManagedObjectContext.html
+#        protocols: []
+#        methods:
+#            "+*":
+#                exclude: true
+#            "-*":
+#                exclude: true
+#    NSManagedObjectModel:
+#        url: ../CoreDataFramework/Classes/NSManagedObjectModel_Class/Reference/Reference.html
+#        protocols: []
+#        methods:
+#            "+*":
+#                exclude: true
+#            "-*":
+#                exclude: true
     NSObject:
-        urls: [Classes/NSObject_Class/Reference/Reference.html, Protocols/NSObject_Protocol/Reference/NSObject.html, Protocols/NSCoding_Protocol/Reference/Reference.html]
+        urls: [../Classes/NSObject_Class/Reference/Reference.html, ../Protocols/NSObject_Protocol/Reference/NSObject.html, ../Protocols/NSCoding_Protocol/Reference/Reference.html]
         protocols: []
         skip_def_constructor: true
         methods:
@@ -189,8 +176,64 @@ classes:
                 exclude: true
             "-*":
                 exclude: true
-    NSParagraphStyle:
-        url: ../ApplicationKit/Classes/NSParagraphStyle_Class/Reference/Reference.html
+    NSOperation:
+        url: ../../NSOperation_class/Reference/Reference.html
+        protocols: []
+        methods:
+            "+*":
+                exclude: true
+            "-*":
+                exclude: true
+    NSSet:
+        url: ../Classes/NSSet_Class/Reference/Reference.html
+        protocols: []
+        methods:
+            "+*":
+                exclude: true
+            "-*":
+                exclude: true
+    NSString:
+        urls: [../Classes/NSString_Class/Reference/NSString.html, ../../../../UIKit/Reference/NSString_UIKit_Additions/Reference/Reference.html]
+        protocols: []
+        methods:
+            "+*":
+                exclude: true
+            "-*":
+                exclude: true
+    NSTimeZone:
+        url: ../Classes/NSTimeZone_Class/Reference/Reference.html
+        protocols: []
+        methods:
+            "+*":
+                exclude: true
+            "-*":
+                exclude: true
+    NSUndoManager:
+        url: ../Classes/NSUndoManager_Class/Reference/Reference.html
+        protocols: []
+        methods:
+            "+*":
+                exclude: true
+            "-*":
+                exclude: true
+    NSURL:
+        url: ../Classes/NSURL_Class/Reference/Reference.html
+        protocols: []
+        methods:
+            "+*":
+                exclude: true
+            "-*":
+                exclude: true
+    NSURLRequest:
+        url: ../Classes/NSURLRequest_Class/Reference/Reference.html
+        protocols: []
+        methods:
+            "+*":
+                exclude: true
+            "-*":
+                exclude: true
+    NSUUID:
+        url: ../../../../Foundation/Reference/NSUUID_Class/Reference/Reference.html
         protocols: []
         methods:
             "+*":
@@ -199,53 +242,5 @@ classes:
                 exclude: true
         properties:
             "*":
-                exclude: true
-    NSSet:
-        url: Classes/NSSet_Class/Reference/Reference.html
-        protocols: []
-        methods:
-            "+*":
-                exclude: true
-            "-*":
-                exclude: true
-    NSString:
-        urls: [Classes/NSString_Class/Reference/NSString.html, ../../../UIKit/Reference/NSString_UIKit_Additions/Reference/Reference.html]
-        protocols: []
-        methods:
-            "+*":
-                exclude: true
-            "-*":
-                exclude: true
-    NSTimeZone:
-        url: Classes/NSTimeZone_Class/Reference/Reference.html
-        protocols: []
-        methods:
-            "+*":
-                exclude: true
-            "-*":
-                exclude: true
-    NSUndoManager:
-        url: Classes/NSUndoManager_Class/Reference/Reference.html
-        protocols: []
-        methods:
-            "+*":
-                exclude: true
-            "-*":
-                exclude: true
-    NSURL:
-        url: Classes/NSURL_Class/Reference/Reference.html
-        protocols: []
-        methods:
-            "+*":
-                exclude: true
-            "-*":
-                exclude: true
-    NSURLRequest:
-        url: Classes/NSURLRequest_Class/Reference/Reference.html
-        protocols: []
-        methods:
-            "+*":
-                exclude: true
-            "-*":
                 exclude: true
 protocols:

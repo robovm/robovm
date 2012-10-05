@@ -24,6 +24,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/../ApplicationKit/Classes/NSParagraphStyle_Class/Reference/Reference.html">NSParagraphStyle Class Reference</a>
+ *   @since Available in iOS 6.0 and later.
+ * </div>
+ */
 /*<library>*/@Library("Foundation")/*</library>*/
 public class /*<name>*/ NSParagraphStyle /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 

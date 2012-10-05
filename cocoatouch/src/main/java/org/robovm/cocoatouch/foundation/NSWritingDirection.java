@@ -15,33 +15,23 @@
  */
 package org.robovm.cocoatouch.foundation;
 
-/*<imports>*/
 import java.util.*;
-import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
-import org.robovm.objc.block.*;
-import org.robovm.rt.bro.annotation.*;
-import org.robovm.rt.bro.ptr.*;
-/*</imports>*/
 
-/*<library>*/@Library("Foundation")/*</library>*/
-public class /*<name>*/ NSManagedObjectContext /*</name>*/ 
-    extends /*<extends>*/ NSObject /*</extends>*/ 
-    /*<implements>*/ /*</implements>*/ {
+public enum NSWritingDirection {
+    Natural(-1),
+    LeftToRight(0),
+    RightToLeft(1);
 
-    static {
-        ObjCRuntime.bind(/*<name>*/ NSManagedObjectContext /*</name>*/.class);
+    private final int n;
+
+    private NSWritingDirection(int n) { this.n = n; }
+    public int value() { return n; }
+    public static NSWritingDirection fromValue(int n) {
+        for (NSWritingDirection v : values()) {
+            if (n == v.value()) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("Unknown NSWritingDirection value: " + n);
     }
-
-    /*<constructors>*/
-    public NSManagedObjectContext() {}
-    
-    /*</constructors>*/
-    /*<properties>*/
-    
-    /*</properties>*/
-    /*<methods>*/
-    
-    /*</methods>*/
-
 }

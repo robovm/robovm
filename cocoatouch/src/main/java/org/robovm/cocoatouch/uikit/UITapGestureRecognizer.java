@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITapGestureRecognizer_Class/Reference/Reference.html">UITapGestureRecognizer Class Reference</a>
+ *   @since Available in iOS 3.2 and later.
+ * </div>
+ */
 /*<library>*/@Library("UIKit")/*</library>*/
 public class /*<name>*/ UITapGestureRecognizer /*</name>*/ 
     extends /*<extends>*/ UIGestureRecognizer /*</extends>*/ 
@@ -42,9 +51,25 @@ public class /*<name>*/ UITapGestureRecognizer /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITapGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UITapGestureRecognizer/numberOfTapsRequired">@property(nonatomic) NSUInteger numberOfTapsRequired</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("numberOfTapsRequired") public native @Type("NSUInteger") int getNumberOfTapsRequired();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITapGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UITapGestureRecognizer/numberOfTapsRequired">@property(nonatomic) NSUInteger numberOfTapsRequired</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("setNumberOfTapsRequired:") public native void setNumberOfTapsRequired(@Type("NSUInteger") int v);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITapGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UITapGestureRecognizer/numberOfTouchesRequired">@property(nonatomic) NSUInteger numberOfTouchesRequired</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("numberOfTouchesRequired") public native @Type("NSUInteger") int getNumberOfTouchesRequired();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITapGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UITapGestureRecognizer/numberOfTouchesRequired">@property(nonatomic) NSUInteger numberOfTouchesRequired</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("setNumberOfTouchesRequired:") public native void setNumberOfTouchesRequired(@Type("NSUInteger") int v);
     /*</properties>*/
     /*<methods>*/

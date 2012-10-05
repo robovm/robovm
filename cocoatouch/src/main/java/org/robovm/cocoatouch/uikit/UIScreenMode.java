@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreenMode_class/Reference/Reference.html">UIScreenMode Class Reference</a>
+ *   @since Available in iOS 3.2 and later.
+ * </div>
+ */
 /*<library>*/@Library("UIKit")/*</library>*/
 public class /*<name>*/ UIScreenMode /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
@@ -42,7 +51,15 @@ public class /*<name>*/ UIScreenMode /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreenMode_class/Reference/Reference.html#//apple_ref/occ/instp/UIScreenMode/pixelAspectRatio">@property(readonly,nonatomic) CGFloat pixelAspectRatio</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("pixelAspectRatio") public native @Type("CGFloat") float getPixelAspectRatio();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreenMode_class/Reference/Reference.html#//apple_ref/occ/instp/UIScreenMode/size">@property(readonly,nonatomic) CGSize size</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("size") public native @Type("CGSize") CGSize getSize();
     /*</properties>*/
     /*<methods>*/

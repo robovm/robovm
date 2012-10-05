@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwipeGestureRecognizer_Class/Reference/Reference.html">UISwipeGestureRecognizer Class Reference</a>
+ *   @since Available in iOS 3.2 and later.
+ * </div>
+ */
 /*<library>*/@Library("UIKit")/*</library>*/
 public class /*<name>*/ UISwipeGestureRecognizer /*</name>*/ 
     extends /*<extends>*/ UIGestureRecognizer /*</extends>*/ 
@@ -42,9 +51,25 @@ public class /*<name>*/ UISwipeGestureRecognizer /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwipeGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwipeGestureRecognizer/direction">@property(nonatomic) UISwipeGestureRecognizerDirection direction</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("direction") public native @Type("UISwipeGestureRecognizerDirection") UISwipeGestureRecognizerDirection getDirection();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwipeGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwipeGestureRecognizer/direction">@property(nonatomic) UISwipeGestureRecognizerDirection direction</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("setDirection:") public native void setDirection(@Type("UISwipeGestureRecognizerDirection") UISwipeGestureRecognizerDirection v);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwipeGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwipeGestureRecognizer/numberOfTouchesRequired">@property(nonatomic) NSUInteger numberOfTouchesRequired</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("numberOfTouchesRequired") public native @Type("NSUInteger") int getNumberOfTouchesRequired();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwipeGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwipeGestureRecognizer/numberOfTouchesRequired">@property(nonatomic) NSUInteger numberOfTouchesRequired</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("setNumberOfTouchesRequired:") public native void setNumberOfTouchesRequired(@Type("NSUInteger") int v);
     /*</properties>*/
     /*<methods>*/

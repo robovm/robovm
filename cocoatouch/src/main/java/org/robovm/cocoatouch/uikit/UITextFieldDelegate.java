@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html">UITextFieldDelegate Protocol Reference</a>
+ *   @since Available in iOS 2.0 and later.
+ * </div>
+ */
 @Protocol
 public interface /*<name>*/ UITextFieldDelegate /*</name>*/ /*<implements>*/ /*</implements>*/ {
 
@@ -35,12 +44,40 @@ public interface /*<name>*/ UITextFieldDelegate /*</name>*/ /*<implements>*/ /*<
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldDidBeginEditing:">- (void)textFieldDidBeginEditing:(UITextField *)textField</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("textFieldDidBeginEditing:") @Type("void") void didBeginEditing(@Type("UITextField *") UITextField textField);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldDidEndEditing:">- (void)textFieldDidEndEditing:(UITextField *)textField</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("textFieldDidEndEditing:") @Type("void") void didEndEditing(@Type("UITextField *") UITextField textField);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldShouldBeginEditing:">- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("textFieldShouldBeginEditing:") @Type("BOOL") boolean shouldBeginEditing(@Type("UITextField *") UITextField textField);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textField:shouldChangeCharactersInRange:replacementString:">- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("textField:shouldChangeCharactersInRange:replacementString:") @Type("BOOL") boolean shouldChangeCharacters(@Type("UITextField *") UITextField textField, @Type("NSRange") NSRange range, @Type("NSString *") String string);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldShouldClear:">- (BOOL)textFieldShouldClear:(UITextField *)textField</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("textFieldShouldClear:") @Type("BOOL") boolean shouldClear(@Type("UITextField *") UITextField textField);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldShouldEndEditing:">- (BOOL)textFieldShouldEndEditing:(UITextField *)textField</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("textFieldShouldEndEditing:") @Type("BOOL") boolean shouldEndEditing(@Type("UITextField *") UITextField textField);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldShouldReturn:">- (BOOL)textFieldShouldReturn:(UITextField *)textField</a>
+     * @since Available in iOS 2.0 and later.
+     */
     @Bind("textFieldShouldReturn:") @Type("BOOL") boolean shouldReturn(@Type("UITextField *") UITextField textField);
     /*</methods>*/
 

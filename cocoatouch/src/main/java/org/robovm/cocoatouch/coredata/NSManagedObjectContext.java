@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.cocoatouch.foundation;
+package org.robovm.cocoatouch.coredata;
 
 /*<imports>*/
+import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.bind.*;
@@ -24,17 +25,24 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
-/*<library>*/@Library("Foundation")/*</library>*/
-public class /*<name>*/ NSManagedObjectModel /*</name>*/ 
+/**
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreData_ObjC/../CoreDataFramework/Classes/NSManagedObjectContext_Class/NSManagedObjectContext.html">NSManagedObjectContext Class Reference</a>
+ *   @since Available in iOS 3.0 and later.
+ * </div>
+ */
+/*<library>*/@Library("CoreData")/*</library>*/
+public class /*<name>*/ NSManagedObjectContext /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 
     static {
-        ObjCRuntime.bind(/*<name>*/ NSManagedObjectModel /*</name>*/.class);
+        ObjCRuntime.bind(/*<name>*/ NSManagedObjectContext /*</name>*/.class);
     }
 
     /*<constructors>*/
-    public NSManagedObjectModel() {}
+    public NSManagedObjectContext() {}
     
     /*</constructors>*/
     /*<properties>*/

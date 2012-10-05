@@ -10,10 +10,6 @@ IGNORED_PROTOCOLS = ['NSObject', 'NSCoding', 'NSCopying', 'NSMutableCopying', 'N
 
 $script_name = File.basename($0, File.extname($0))
 
-def assert(msg = nil)
-  raise "Assertion failed: #{msg}" unless yield
-end
-
 class Array
   def odd_values
     self.values_at(* self.each_index.select {|i| i.odd?})
@@ -23,10 +19,10 @@ class Array
   end
 end
 
-def objc_to_java(type, typedefs, overrides = nil)
-  if type =~ /^oneway\s+(.*?)$/ then return objc_to_java($1, typedefs) end
-  if type =~ /^inout\s+(.*?)$/ then return objc_to_java($1, typedefs) end
-  if type =~ /^const\s+(.*?)$/ then return objc_to_java($1, typedefs) end
+def objc_to_java(type, instancetype, typedefs, overrides = nil)
+  if type =~ /^oneway\s+(.*?)$/ then return objc_to_java($1, instancetype, typedefs) end
+  if type =~ /^inout\s+(.*?)$/ then return objc_to_java($1, instancetype, typedefs) end
+  if type =~ /^const\s+(.*?)$/ then return objc_to_java($1, instancetype, typedefs) end
 
   java_type = overrides || typedefs[type] || case type
   when 'BOOL' then 'boolean'
@@ -50,19 +46,20 @@ def objc_to_java(type, typedefs, overrides = nil)
   when /^id\s*<\s*(.*?)\s*>$/ then $1
   when /^(.*?)\s*\*\*$/ then "Ptr<#{$1}>"
   when /^(.*?)\s*\*$/ then $1
+  when 'instancetype' then instancetype
   else type
   end
 
   "@Type(\"#{type}\") #{java_type}"
 end
 
-def arg_to_java(arg, typedefs, overrides)
+def arg_to_java(arg, instancetype, typedefs, overrides)
   type = arg[0]
   name = arg[1]
   if overrides && overrides[name] && overrides[name]['type']
-    type = objc_to_java(type, typedefs, overrides[name]['type'])
+    type = objc_to_java(type, instancetype, typedefs, overrides[name]['type'])
   else
-    type = objc_to_java(type, typedefs)
+    type = objc_to_java(type, instancetype, typedefs)
   end
   if overrides && overrides[name] && overrides[name]['name']
     name = overrides[name]['name']
@@ -75,9 +72,15 @@ def wildcard_match(pattern, s)
   s.match(re)
 end
 
+def escape_html(s)
+  s.gsub(/</, '&lt;').gsub(/>/, '&gt;').gsub(/&/, '&amp;')
+end
+
 class ObjCClass
   attr_accessor :name
   attr_accessor :superclass
+  attr_accessor :url
+  attr_accessor :availability
   attr_accessor :conf
   attr_accessor :typedefs
   attr_accessor :protocols
@@ -99,6 +102,13 @@ class ObjCClass
     @methods = @methods.sort_by {|m| m.static ? "0_#{m.name}" : "1_#{m.name}"}
     @methods.uniq!
 
+    javadoc = ["@see <a href=\"#{@url}\">#{@name} #{@is_protocol ? 'Protocol' : 'Class'} Reference</a>"]
+    if availability
+      javadoc.push("@since #{escape_html(@availability)}")
+    end
+    javadoc_s = javadoc.join("\n *   ")
+
+    template = template.sub(/<div class="javadoc">.*<\/div>/m, "<div class=\"javadoc\">\n *   #{javadoc_s}\n * </div>")
     template = template.gsub(/\/\*<name>\*\/.*\/\*<\/name>\*\//, "/*<name>*/ #{@name} /*</name>*/")
     template = template.sub(/\/\*<extends>\*\/.*\/\*<\/extends>\*\//, "/*<extends>*/ #{@superclass} /*</extends>*/")
     if !@protocols.empty?
@@ -111,14 +121,14 @@ class ObjCClass
       template = template.sub(/\/\*<implements>\*\/.*\/\*<\/implements>\*\//, "/*<implements>*/ /*</implements>*/")
     end
     constructors = @methods.select {|m| m.constructor?}
-    constructors_s = constructors.map {|m| m.to_java}.join("\n    ") + "\n"
+    constructors_s = constructors.map {|m| m.to_java}.join("\n").gsub(/\n/m, "\n    ") + "\n"
     if !@conf['skip_def_constructor']
       constructors_s = "public #{@name}() {}\n    " + constructors_s
     end
     template = template.sub(/\/\*<constructors>\*\/.*\/\*<\/constructors>\*\//m, "/*<constructors>*/\n    #{constructors_s}    /*</constructors>*/")
-    properties_s = @properties.map {|p| p.to_java}.flatten.join("\n    ")
+    properties_s = @properties.map {|p| p.to_java}.flatten.join("\n").gsub(/\n/m, "\n    ")
     template = template.sub(/\/\*<properties>\*\/.*\/\*<\/properties>\*\//m, "/*<properties>*/\n    #{properties_s}\n    /*</properties>*/")
-    methods_s = @methods.select {|m| !m.constructor?}.map {|m| m.to_java}.join("\n    ")
+    methods_s = @methods.select {|m| !m.constructor?}.map {|m| m.to_java}.join("\n").gsub(/\n/m, "\n    ")
     template = template.sub(/\/\*<methods>\*\/.*\/\*<\/methods>\*\//m, "/*<methods>*/\n    #{methods_s}\n    /*</methods>*/")
     template
   end
@@ -131,8 +141,11 @@ class ObjCMethod
   attr_accessor :name
   attr_accessor :selector
   attr_accessor :static
+  attr_accessor :url
+  attr_accessor :availability  
   def initialize(clazz, objcprot)
     @clazz = clazz
+    objcprot = objcprot.sub(/;$/, '')
     @objcprot = objcprot
     @static = objcprot.start_with?('+')
     objcprot = objcprot.sub(/^[-+]\s*/, '')
@@ -164,15 +177,21 @@ class ObjCMethod
     !@clazz.is_protocol && !@static && @name.start_with?('init') && (!@conf.has_key?('constructor') || @conf['constructor']) && 
         (@returnType == 'id' || @returnType == 'instancetype' || @returnType == "#{@clazz.name} *")
   end
+  def get_javadoc
+    "/**\n" +
+    (@url ? " * @see <a href=\"#{@url}\">#{escape_html(@objcprot)}</a>\n" : '') +
+    (@availability ? " * @since #{escape_html(@availability)}\n" : '') +
+    " */"
+  end
   def to_java
-    jtype = objc_to_java(@returnType, @clazz.typedefs, @conf['return_type'])
-    args = @args.map {|a| arg_to_java(a, @clazz.typedefs, @conf['args'])}
+    jtype = objc_to_java(@returnType, @clazz.name, @clazz.typedefs, @conf['return_type'])
+    args = @args.map {|a| arg_to_java(a, @clazz.name, @clazz.typedefs, @conf['args'])}
     if constructor? then
-      "@Bind(\"#{@selector}\") #{@visibility} #{@clazz.name}" + '(' + args.join(', ') + ') {}'
+      "#{get_javadoc}\n@Bind(\"#{@selector}\") #{@visibility} #{@clazz.name}" + '(' + args.join(', ') + ') {}'
     elsif @clazz.is_protocol
-      "@Bind(\"#{@selector}\") " + (@static && 'static ' || '') + jtype + ' ' + @name + '(' + args.join(', ') + ');'
+      "#{get_javadoc}\n@Bind(\"#{@selector}\") " + (@static && 'static ' || '') + jtype + ' ' + @name + '(' + args.join(', ') + ');'
     else
-      "@Bind(\"#{@selector}\") #{@visibility} native " + (@static && 'static ' || '') + jtype + ' ' + @name + '(' + args.join(', ') + ');'
+      "#{get_javadoc}\n@Bind(\"#{@selector}\") #{@visibility} native " + (@static && 'static ' || '') + jtype + ' ' + @name + '(' + args.join(', ') + ');'
     end
   end
   def hash
@@ -189,6 +208,8 @@ class ObjCProperty
   attr_accessor :name
   attr_accessor :getter_selector
   attr_accessor :setter_selector
+  attr_accessor :url
+  attr_accessor :availability  
   def initialize(clazz, decl)
     @clazz = clazz
     @decl = decl
@@ -223,22 +244,28 @@ class ObjCProperty
     @attrs['readonly']
   end
   def getter_to_java
-    jtype = objc_to_java(@type, @clazz.typedefs, @conf['type'])
+    jtype = objc_to_java(@type, @clazz.name, @clazz.typedefs, @conf['type'])
     getter = @type == 'BOOL' ? "is#{@base_java_name}" : "get#{@base_java_name}"
     if @clazz.is_protocol
-      "@Bind(\"#{@getter_selector}\") #{jtype} #{getter}();"
+      "#{get_javadoc}\n@Bind(\"#{@getter_selector}\") #{jtype} #{getter}();"
     else
-      "@Bind(\"#{@getter_selector}\") #{@visibility} native #{jtype} #{getter}();"
+      "#{get_javadoc}\n@Bind(\"#{@getter_selector}\") #{@visibility} native #{jtype} #{getter}();"
     end
   end
   def setter_to_java
-    jtype = objc_to_java(@type, @clazz.typedefs, @conf['type'])
+    jtype = objc_to_java(@type, @clazz.name, @clazz.typedefs, @conf['type'])
     setter = @attrs.has_key?('setter') ? @attrs['setter'] : "set#{@base_java_name}"
     if @clazz.is_protocol
-      "@Bind(\"#{@setter_selector}\") void #{setter}(#{jtype} v);"
+      "#{get_javadoc}\n@Bind(\"#{@setter_selector}\") void #{setter}(#{jtype} v);"
     else
-      "@Bind(\"#{@setter_selector}\") #{@visibility} native void #{setter}(#{jtype} v);"
+      "#{get_javadoc}\n@Bind(\"#{@setter_selector}\") #{@visibility} native void #{setter}(#{jtype} v);"
     end
+  end
+  def get_javadoc
+    "/**\n" +
+    (@url ? " * @see <a href=\"#{@url}\">#{escape_html(@decl)}</a>\n" : '') +
+    (availability ? " * @since #{escape_html(availability)}\n" : '') +
+    " */"
   end
   def to_java
     read_only? ? [getter_to_java] : [getter_to_java, setter_to_java]
@@ -363,12 +390,30 @@ def get_protocols(doc)
   protocols
 end
 
-def get_methods(doc, clazz)
+def get_availability(doc)
+  availability = nil
+  doc.css('div.spec_sheet_info_box tr').each do |n|
+    td = n.css('td').first
+    if td != nil && td.content == 'Availability'
+      div = td.next.css('div').first
+      availability = div != nil ? div.content : nil
+    end
+  end
+  availability
+end
+
+def get_methods(doc, clazz, url)
   methods = []
   elems = [doc.css('div.api.classMethod'), doc.css('div.api.instanceMethod')].flatten
   elems.each do |n|
     prot = n.css('div.declaration').first.content.gsub(/\302\240/, ' ').strip
+    availability_div = n.css('div.availability').css('li').first
+    availability = availability_div ? availability_div.content.strip : nil
+    anchor_a = n.xpath('./a').find {|a| a['name'] && a['name'].start_with?('//apple_ref/occ/')}
+    anchor = anchor_a ? anchor_a['name'] : nil
     method = ObjCMethod.new(clazz, prot)
+    method.availability = availability
+    method.url = anchor ? "#{url}##{anchor}" : nil
     if !method.conf['exclude']
       methods.push(method)
     end
@@ -376,11 +421,17 @@ def get_methods(doc, clazz)
   methods
 end
 
-def get_properties(doc, clazz)
+def get_properties(doc, clazz, url)
   properties = []
   doc.css('div.api.propertyObjC').each do |n|
     decl = n.css('div.declaration').first.content.gsub(/\302\240/, ' ').strip
+    availability_div = n.css('div.availability').css('li').first
+    availability = availability_div ? availability_div.content.strip : nil
+    anchor_a = n.xpath('./a').find {|a| a['name'] && a['name'].start_with?('//apple_ref/occ/')}
+    anchor = anchor_a ? anchor_a['name'] : nil
     property = ObjCProperty.new(clazz, decl)
+    property.availability = availability
+    property.url = anchor ? "#{url}##{anchor}" : nil
     if !property.conf['exclude']
       properties.push(property)
     end
@@ -433,12 +484,14 @@ ARGV[1..-1].each do |yaml_file|
     class_conf = conf['classes'][class_name]
     clazz = ObjCClass.new(class_name, class_conf, typedefs)
     urls = class_conf['urls'] || [class_conf['url']]
+    clazz.url = base_url + urls.first
     urls.each_with_index do |url, i|
       doc = parse_url(base_url + url, "#{class_name}_#{i}")
       clazz.superclass = get_superclass(doc) || clazz.superclass
+      clazz.availability = clazz.availability || get_availability(doc)
       (class_conf['protocols'] || get_protocols(doc)).each {|p| clazz.protocols.push(p)}
-      get_methods(doc, clazz).each {|m| clazz.methods.push(m)}
-      get_properties(doc, clazz).each {|p| clazz.properties.push(p)}
+      get_methods(doc, clazz, base_url + url).each {|m| clazz.methods.push(m)}
+      get_properties(doc, clazz, base_url + url).each {|p| clazz.properties.push(p)}
       get_enums(doc, enums_conf).each {|e| enums.push(e)}
     end
 
@@ -465,11 +518,13 @@ ARGV[1..-1].each do |yaml_file|
     class_conf = conf['protocols'][class_name]
     clazz = ObjCClass.new(class_name, class_conf, typedefs, true)
     urls = class_conf['urls'] || [class_conf['url']]
+    clazz.url = base_url + urls.first
     urls.each_with_index do |url, i|
       doc = parse_url(base_url + url, "#{class_name}_#{i}")
+      clazz.availability = clazz.availability || get_availability(doc)
       (class_conf['protocols'] || get_protocols(doc)).each {|p| clazz.protocols.push(p)}
-      get_methods(doc, clazz).each {|m| clazz.methods.push(m)}
-      get_properties(doc, clazz).each {|p| clazz.properties.push(p)}
+      get_methods(doc, clazz, base_url + url).each {|m| clazz.methods.push(m)}
+      get_properties(doc, clazz, base_url + url).each {|p| clazz.properties.push(p)}
       get_enums(doc, enums_conf).each {|e| enums.push(e)}
     end
 

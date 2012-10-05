@@ -17,6 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 /*<imports>*/
 import org.robovm.cocoatouch.coreanimation.*;
+import org.robovm.cocoatouch.coredata.*;
 import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
@@ -28,6 +29,14 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
+/**
+ *
+ *
+ * <div class="javadoc">
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextRange_Class/Reference/Reference.html">UITextRange Class Reference</a>
+ *   @since Available in iOS 3.2 and later.
+ * </div>
+ */
 /*<library>*/@Library("UIKit")/*</library>*/
 public class /*<name>*/ UITextRange /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
@@ -42,8 +51,20 @@ public class /*<name>*/ UITextRange /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextRange_Class/Reference/Reference.html#//apple_ref/occ/instp/UITextRange/empty">@property(nonatomic, readonly, getter=isEmpty) BOOL empty</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("isEmpty") public native @Type("BOOL") boolean isEmpty();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextRange_Class/Reference/Reference.html#//apple_ref/occ/instp/UITextRange/end">@property(nonatomic, readonly) UITextPosition *end</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("end") public native @Type("UITextPosition *") UITextPosition getEnd();
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextRange_Class/Reference/Reference.html#//apple_ref/occ/instp/UITextRange/start">@property(nonatomic, readonly) UITextPosition *start</a>
+     * @since Available in iOS 3.2 and later.
+     */
     @Bind("start") public native @Type("UITextPosition *") UITextPosition getStart();
     /*</properties>*/
     /*<methods>*/

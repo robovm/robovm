@@ -45,7 +45,10 @@ public class /*<name>*/ UICollectionViewCell /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UICollectionViewCell /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UICollectionViewCell /*</name>*/.class);
+
     /*<constructors>*/
+    protected UICollectionViewCell(SkipInit skipInit) { super(skipInit); }
     public UICollectionViewCell() {}
     
     /*</constructors>*/
@@ -54,47 +57,47 @@ public class /*<name>*/ UICollectionViewCell /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/backgroundView">@property (nonatomic, retain) UIView *backgroundView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("backgroundView") public native @Type("UIView *") UIView getBackgroundView();
+    @Bind("backgroundView") public native UIView getBackgroundView();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/backgroundView">@property (nonatomic, retain) UIView *backgroundView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setBackgroundView:") public native void setBackgroundView(@Type("UIView *") UIView v);
+    @Bind("setBackgroundView:") public native void setBackgroundView(UIView v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/contentView">@property (nonatomic, readonly) UIView *contentView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("contentView") public native @Type("UIView *") UIView getContentView();
+    @Bind("contentView") public native UIView getContentView();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/highlighted">@property (nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("isHighlighted") public native @Type("BOOL") boolean isHighlighted();
+    @Bind("isHighlighted") public native boolean isHighlighted();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/highlighted">@property (nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setHighlighted:") public native void setHighlighted(@Type("BOOL") boolean v);
+    @Bind("setHighlighted:") public native void setHighlighted(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/selected">@property (nonatomic, getter=isSelected) BOOL selected</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("isSelected") public native @Type("BOOL") boolean isSelected();
+    @Bind("isSelected") public native boolean isSelected();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/selected">@property (nonatomic, getter=isSelected) BOOL selected</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setSelected:") public native void setSelected(@Type("BOOL") boolean v);
+    @Bind("setSelected:") public native void setSelected(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/selectedBackgroundView">@property (nonatomic, retain) UIView *selectedBackgroundView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("selectedBackgroundView") public native @Type("UIView *") UIView getSelectedBackgroundView();
+    @Bind("selectedBackgroundView") public native UIView getSelectedBackgroundView();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/selectedBackgroundView">@property (nonatomic, retain) UIView *selectedBackgroundView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setSelectedBackgroundView:") public native void setSelectedBackgroundView(@Type("UIView *") UIView v);
+    @Bind("setSelectedBackgroundView:") public native void setSelectedBackgroundView(UIView v);
     /*</properties>*/
     /*<methods>*/
     

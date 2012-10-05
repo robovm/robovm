@@ -41,7 +41,10 @@ public class /*<name>*/ NSTimeZone /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSTimeZone /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSTimeZone /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSTimeZone(SkipInit skipInit) { super(skipInit); }
     public NSTimeZone() {}
     
     /*</constructors>*/

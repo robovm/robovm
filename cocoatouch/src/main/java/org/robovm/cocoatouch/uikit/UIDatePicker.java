@@ -46,7 +46,10 @@ public class /*<name>*/ UIDatePicker /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIDatePicker /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIDatePicker /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIDatePicker(SkipInit skipInit) { super(skipInit); }
     public UIDatePicker() {}
     
     /*</constructors>*/
@@ -55,99 +58,105 @@ public class /*<name>*/ UIDatePicker /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/calendar">@property(nonatomic, copy) NSCalendar *calendar</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("calendar") public native @Type("NSCalendar *") NSCalendar getCalendar();
+    @Bind("calendar") public native NSCalendar getCalendar();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/calendar">@property(nonatomic, copy) NSCalendar *calendar</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setCalendar:") public native void setCalendar(@Type("NSCalendar *") NSCalendar v);
+    @Bind("setCalendar:") public native void setCalendar(NSCalendar v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/countDownDuration">@property(nonatomic) NSTimeInterval countDownDuration</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("countDownDuration") public native @Type("NSTimeInterval") double getCountDownDuration();
+    @Bind("countDownDuration") public native double getCountDownDuration();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/countDownDuration">@property(nonatomic) NSTimeInterval countDownDuration</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setCountDownDuration:") public native void setCountDownDuration(@Type("NSTimeInterval") double v);
+    @Bind("setCountDownDuration:") public native void setCountDownDuration(double v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/date">@property(nonatomic, retain) NSDate *date</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("date") public native @Type("NSDate *") NSDate getDate();
+    @Bind("date") public native NSDate getDate();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/date">@property(nonatomic, retain) NSDate *date</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDate:") public native void setDate(@Type("NSDate *") NSDate v);
+    @Bind("setDate:") public native void setDate(NSDate v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/datePickerMode">@property(nonatomic) UIDatePickerMode datePickerMode</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("datePickerMode") public native @Type("UIDatePickerMode") UIDatePickerMode getDatePickerMode();
+    @Bind("datePickerMode") public native UIDatePickerMode getDatePickerMode();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/datePickerMode">@property(nonatomic) UIDatePickerMode datePickerMode</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDatePickerMode:") public native void setDatePickerMode(@Type("UIDatePickerMode") UIDatePickerMode v);
+    @Bind("setDatePickerMode:") public native void setDatePickerMode(UIDatePickerMode v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/locale">@property(nonatomic, retain) NSLocale *locale</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("locale") public native @Type("NSLocale *") NSLocale getLocale();
+    @Bind("locale") public native NSLocale getLocale();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/locale">@property(nonatomic, retain) NSLocale *locale</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setLocale:") public native void setLocale(@Type("NSLocale *") NSLocale v);
+    @Bind("setLocale:") public native void setLocale(NSLocale v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/maximumDate">@property(nonatomic, retain) NSDate *maximumDate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("maximumDate") public native @Type("NSDate *") NSDate getMaximumDate();
+    @Bind("maximumDate") public native NSDate getMaximumDate();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/maximumDate">@property(nonatomic, retain) NSDate *maximumDate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setMaximumDate:") public native void setMaximumDate(@Type("NSDate *") NSDate v);
+    @Bind("setMaximumDate:") public native void setMaximumDate(NSDate v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/minimumDate">@property(nonatomic, retain) NSDate *minimumDate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("minimumDate") public native @Type("NSDate *") NSDate getMinimumDate();
+    @Bind("minimumDate") public native NSDate getMinimumDate();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/minimumDate">@property(nonatomic, retain) NSDate *minimumDate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setMinimumDate:") public native void setMinimumDate(@Type("NSDate *") NSDate v);
+    @Bind("setMinimumDate:") public native void setMinimumDate(NSDate v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/minuteInterval">@property(nonatomic) NSInteger minuteInterval</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("minuteInterval") public native @Type("NSInteger") int getMinuteInterval();
+    @Bind("minuteInterval") public native int getMinuteInterval();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/minuteInterval">@property(nonatomic) NSInteger minuteInterval</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setMinuteInterval:") public native void setMinuteInterval(@Type("NSInteger") int v);
+    @Bind("setMinuteInterval:") public native void setMinuteInterval(int v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/timeZone">@property(nonatomic, retain) NSTimeZone *timeZone</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("timeZone") public native @Type("NSTimeZone *") NSTimeZone getTimeZone();
+    @Bind("timeZone") public native NSTimeZone getTimeZone();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/timeZone">@property(nonatomic, retain) NSTimeZone *timeZone</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTimeZone:") public native void setTimeZone(@Type("NSTimeZone *") NSTimeZone v);
+    @Bind("setTimeZone:") public native void setTimeZone(NSTimeZone v);
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector setDate$animated$ = Selector.register("setDate:animated:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDate(UIDatePicker __self__, Selector __cmd__, NSDate date, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDateSuper(ObjCSuper __super__, UIDatePicker __self__, Selector __cmd__, NSDate date, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instm/UIDatePicker/setDate:animated:">- (void)setDate:(NSDate *)date animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDate:animated:") public native @Type("void") void setDate(@Type("NSDate *") NSDate date, @Type("BOOL") boolean animated);
+    public void setDate(NSDate date, boolean animated) {
+        if (customClass) { objc_setDateSuper(getSuper(), this, setDate$animated$, date, animated); } else { objc_setDate(this, setDate$animated$, date, animated); }
+    }
     /*</methods>*/
 
 }

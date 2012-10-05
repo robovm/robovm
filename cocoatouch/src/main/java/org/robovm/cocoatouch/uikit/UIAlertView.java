@@ -46,7 +46,10 @@ public class /*<name>*/ UIAlertView /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIAlertView /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIAlertView /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIAlertView(SkipInit skipInit) { super(skipInit); }
     public UIAlertView() {}
     
     /*</constructors>*/
@@ -55,94 +58,124 @@ public class /*<name>*/ UIAlertView /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/alertViewStyle">@property(nonatomic, assign) UIAlertViewStyle alertViewStyle</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("alertViewStyle") public native @Type("UIAlertViewStyle") UIAlertViewStyle getAlertViewStyle();
+    @Bind("alertViewStyle") public native UIAlertViewStyle getAlertViewStyle();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/alertViewStyle">@property(nonatomic, assign) UIAlertViewStyle alertViewStyle</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setAlertViewStyle:") public native void setAlertViewStyle(@Type("UIAlertViewStyle") UIAlertViewStyle v);
+    @Bind("setAlertViewStyle:") public native void setAlertViewStyle(UIAlertViewStyle v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/cancelButtonIndex">@property(nonatomic) NSInteger cancelButtonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("cancelButtonIndex") public native @Type("NSInteger") int getCancelButtonIndex();
+    @Bind("cancelButtonIndex") public native int getCancelButtonIndex();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/cancelButtonIndex">@property(nonatomic) NSInteger cancelButtonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setCancelButtonIndex:") public native void setCancelButtonIndex(@Type("NSInteger") int v);
+    @Bind("setCancelButtonIndex:") public native void setCancelButtonIndex(int v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/delegate">@property(nonatomic, assign) id delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("delegate") public native @Type("id") UIAlertViewDelegate getDelegate();
+    @Bind("delegate") public native UIAlertViewDelegate getDelegate();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/delegate">@property(nonatomic, assign) id delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(@Type("id") UIAlertViewDelegate v);
+    @Bind("setDelegate:") public native void setDelegate(UIAlertViewDelegate v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/firstOtherButtonIndex">@property(nonatomic, readonly) NSInteger firstOtherButtonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("firstOtherButtonIndex") public native @Type("NSInteger") int getFirstOtherButtonIndex();
+    @Bind("firstOtherButtonIndex") public native int getFirstOtherButtonIndex();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/message">@property(nonatomic, copy) NSString *message</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("message") public native @Type("NSString *") String getMessage();
+    @Bind("message") public native String getMessage();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/message">@property(nonatomic, copy) NSString *message</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setMessage:") public native void setMessage(@Type("NSString *") String v);
+    @Bind("setMessage:") public native void setMessage(String v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/numberOfButtons">@property(nonatomic, readonly) NSInteger numberOfButtons</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("numberOfButtons") public native @Type("NSInteger") int getNumberOfButtons();
+    @Bind("numberOfButtons") public native int getNumberOfButtons();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/title">@property(nonatomic, copy) NSString *title</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("title") public native @Type("NSString *") String getTitle();
+    @Bind("title") public native String getTitle();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/title">@property(nonatomic, copy) NSString *title</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTitle:") public native void setTitle(@Type("NSString *") String v);
+    @Bind("setTitle:") public native void setTitle(String v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/visible">@property(nonatomic, readonly, getter=isVisible) BOOL visible</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isVisible") public native @Type("BOOL") boolean isVisible();
+    @Bind("isVisible") public native boolean isVisible();
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector addButtonWithTitle$ = Selector.register("addButtonWithTitle:");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_addButton(UIAlertView __self__, Selector __cmd__, String title);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_addButtonSuper(ObjCSuper __super__, UIAlertView __self__, Selector __cmd__, String title);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instm/UIAlertView/addButtonWithTitle:">- (NSInteger)addButtonWithTitle:(NSString *)title</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("addButtonWithTitle:") public native @Type("NSInteger") int addButton(@Type("NSString *") String title);
+    public int addButton(String title) {
+        if (customClass) { return objc_addButtonSuper(getSuper(), this, addButtonWithTitle$, title); } else { return objc_addButton(this, addButtonWithTitle$, title); }
+    }
+    
+    private static final Selector dismissWithClickedButtonIndex$animated$ = Selector.register("dismissWithClickedButtonIndex:animated:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_dismiss(UIAlertView __self__, Selector __cmd__, int buttonIndex, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_dismissSuper(ObjCSuper __super__, UIAlertView __self__, Selector __cmd__, int buttonIndex, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instm/UIAlertView/dismissWithClickedButtonIndex:animated:">- (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("dismissWithClickedButtonIndex:animated:") public native @Type("void") void dismiss(@Type("NSInteger") int buttonIndex, @Type("BOOL") boolean animated);
+    public void dismiss(int buttonIndex, boolean animated) {
+        if (customClass) { objc_dismissSuper(getSuper(), this, dismissWithClickedButtonIndex$animated$, buttonIndex, animated); } else { objc_dismiss(this, dismissWithClickedButtonIndex$animated$, buttonIndex, animated); }
+    }
+    
+    private static final Selector buttonTitleAtIndex$ = Selector.register("buttonTitleAtIndex:");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getButtonTitle(UIAlertView __self__, Selector __cmd__, int buttonIndex);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getButtonTitleSuper(ObjCSuper __super__, UIAlertView __self__, Selector __cmd__, int buttonIndex);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instm/UIAlertView/buttonTitleAtIndex:">- (NSString *)buttonTitleAtIndex:(NSInteger)buttonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("buttonTitleAtIndex:") public native @Type("NSString *") String getButtonTitle(@Type("NSInteger") int buttonIndex);
+    public String getButtonTitle(int buttonIndex) {
+        if (customClass) { return objc_getButtonTitleSuper(getSuper(), this, buttonTitleAtIndex$, buttonIndex); } else { return objc_getButtonTitle(this, buttonTitleAtIndex$, buttonIndex); }
+    }
+    
+    private static final Selector textFieldAtIndex$ = Selector.register("textFieldAtIndex:");
+    @Bridge(symbol = "objc_msgSend") private native static UITextField objc_getTextField(UIAlertView __self__, Selector __cmd__, int textFieldIndex);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextField objc_getTextFieldSuper(ObjCSuper __super__, UIAlertView __self__, Selector __cmd__, int textFieldIndex);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instm/UIAlertView/textFieldAtIndex:">- (UITextField *)textFieldAtIndex:(NSInteger)textFieldIndex</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("textFieldAtIndex:") public native @Type("UITextField *") UITextField getTextField(@Type("NSInteger") int textFieldIndex);
+    public UITextField getTextField(int textFieldIndex) {
+        if (customClass) { return objc_getTextFieldSuper(getSuper(), this, textFieldAtIndex$, textFieldIndex); } else { return objc_getTextField(this, textFieldAtIndex$, textFieldIndex); }
+    }
+    
+    private static final Selector show = Selector.register("show");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_show(UIAlertView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_showSuper(ObjCSuper __super__, UIAlertView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instm/UIAlertView/show">- (void)show</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("show") public native @Type("void") void show();
+    public void show() {
+        if (customClass) { objc_showSuper(getSuper(), this, show); } else { objc_show(this, show); }
+    }
     /*</methods>*/
 
 }

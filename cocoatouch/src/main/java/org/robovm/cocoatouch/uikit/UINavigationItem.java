@@ -46,142 +46,181 @@ public class /*<name>*/ UINavigationItem /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UINavigationItem /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UINavigationItem /*</name>*/.class);
+
     /*<constructors>*/
+    protected UINavigationItem(SkipInit skipInit) { super(skipInit); }
     public UINavigationItem() {}
+    
+    private static final Selector initWithTitle$ = Selector.register("initWithTitle:");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithTitle(UINavigationItem __self__, Selector __cmd__, String title);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instm/UINavigationItem/initWithTitle:">- (id)initWithTitle:(NSString *)title</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("initWithTitle:") public UINavigationItem(@Type("NSString *") String title) {}
+    public UINavigationItem(String title) {
+        super((SkipInit) null);
+        objc_initWithTitle(this, initWithTitle$, title);
+    }
     /*</constructors>*/
     /*<properties>*/
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/backBarButtonItem">@property(nonatomic, retain) UIBarButtonItem *backBarButtonItem</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("backBarButtonItem") public native @Type("UIBarButtonItem *") UIBarButtonItem getBackBarButtonItem();
+    @Bind("backBarButtonItem") public native UIBarButtonItem getBackBarButtonItem();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/backBarButtonItem">@property(nonatomic, retain) UIBarButtonItem *backBarButtonItem</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setBackBarButtonItem:") public native void setBackBarButtonItem(@Type("UIBarButtonItem *") UIBarButtonItem v);
+    @Bind("setBackBarButtonItem:") public native void setBackBarButtonItem(UIBarButtonItem v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/hidesBackButton">@property(nonatomic, assign) BOOL hidesBackButton</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("hidesBackButton") public native @Type("BOOL") boolean isHidesBackButton();
+    @Bind("hidesBackButton") public native boolean isHidesBackButton();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/hidesBackButton">@property(nonatomic, assign) BOOL hidesBackButton</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setHidesBackButton:") public native void setHidesBackButton(@Type("BOOL") boolean v);
+    @Bind("setHidesBackButton:") public native void setHidesBackButton(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/leftBarButtonItem">@property(nonatomic, retain) UIBarButtonItem *leftBarButtonItem</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("leftBarButtonItem") public native @Type("UIBarButtonItem *") UIBarButtonItem getLeftBarButtonItem();
+    @Bind("leftBarButtonItem") public native UIBarButtonItem getLeftBarButtonItem();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/leftBarButtonItem">@property(nonatomic, retain) UIBarButtonItem *leftBarButtonItem</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setLeftBarButtonItem:") public native void setLeftBarButtonItem(@Type("UIBarButtonItem *") UIBarButtonItem v);
+    @Bind("setLeftBarButtonItem:") public native void setLeftBarButtonItem(UIBarButtonItem v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/leftBarButtonItems">@property(nonatomic, copy) NSArray *leftBarButtonItems</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("leftBarButtonItems") public native @Type("NSArray *") NSArray getLeftBarButtonItems();
+    @Bind("leftBarButtonItems") public native NSArray getLeftBarButtonItems();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/leftBarButtonItems">@property(nonatomic, copy) NSArray *leftBarButtonItems</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setLeftBarButtonItems:") public native void setLeftBarButtonItems(@Type("NSArray *") NSArray v);
+    @Bind("setLeftBarButtonItems:") public native void setLeftBarButtonItems(NSArray v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/leftItemsSupplementBackButton">@property BOOL leftItemsSupplementBackButton</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("leftItemsSupplementBackButton") public native @Type("BOOL") boolean isLeftItemsSupplementBackButton();
+    @Bind("leftItemsSupplementBackButton") public native boolean isLeftItemsSupplementBackButton();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/leftItemsSupplementBackButton">@property BOOL leftItemsSupplementBackButton</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setLeftItemsSupplementBackButton:") public native void setLeftItemsSupplementBackButton(@Type("BOOL") boolean v);
+    @Bind("setLeftItemsSupplementBackButton:") public native void setLeftItemsSupplementBackButton(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/prompt">@property(nonatomic, copy) NSString *prompt</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("prompt") public native @Type("NSString *") String getPrompt();
+    @Bind("prompt") public native String getPrompt();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/prompt">@property(nonatomic, copy) NSString *prompt</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setPrompt:") public native void setPrompt(@Type("NSString *") String v);
+    @Bind("setPrompt:") public native void setPrompt(String v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/rightBarButtonItem">@property(nonatomic, retain) UIBarButtonItem *rightBarButtonItem</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("rightBarButtonItem") public native @Type("UIBarButtonItem *") UIBarButtonItem getRightBarButtonItem();
+    @Bind("rightBarButtonItem") public native UIBarButtonItem getRightBarButtonItem();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/rightBarButtonItem">@property(nonatomic, retain) UIBarButtonItem *rightBarButtonItem</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setRightBarButtonItem:") public native void setRightBarButtonItem(@Type("UIBarButtonItem *") UIBarButtonItem v);
+    @Bind("setRightBarButtonItem:") public native void setRightBarButtonItem(UIBarButtonItem v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/rightBarButtonItems">@property(nonatomic, copy) NSArray *rightBarButtonItems</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("rightBarButtonItems") public native @Type("NSArray *") NSArray getRightBarButtonItems();
+    @Bind("rightBarButtonItems") public native NSArray getRightBarButtonItems();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/rightBarButtonItems">@property(nonatomic, copy) NSArray *rightBarButtonItems</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setRightBarButtonItems:") public native void setRightBarButtonItems(@Type("NSArray *") NSArray v);
+    @Bind("setRightBarButtonItems:") public native void setRightBarButtonItems(NSArray v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/title">@property(nonatomic, copy) NSString *title</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("title") public native @Type("NSString *") String getTitle();
+    @Bind("title") public native String getTitle();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/title">@property(nonatomic, copy) NSString *title</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTitle:") public native void setTitle(@Type("NSString *") String v);
+    @Bind("setTitle:") public native void setTitle(String v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/titleView">@property(nonatomic, retain) UIView *titleView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("titleView") public native @Type("UIView *") UIView getTitleView();
+    @Bind("titleView") public native UIView getTitleView();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/titleView">@property(nonatomic, retain) UIView *titleView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTitleView:") public native void setTitleView(@Type("UIView *") UIView v);
+    @Bind("setTitleView:") public native void setTitleView(UIView v);
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector setHidesBackButton$animated$ = Selector.register("setHidesBackButton:animated:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setHidesBackButton(UINavigationItem __self__, Selector __cmd__, boolean hidesBackButton, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHidesBackButtonSuper(ObjCSuper __super__, UINavigationItem __self__, Selector __cmd__, boolean hidesBackButton, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instm/UINavigationItem/setHidesBackButton:animated:">- (void)setHidesBackButton:(BOOL)hidesBackButton animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setHidesBackButton:animated:") public native @Type("void") void setHidesBackButton(@Type("BOOL") boolean hidesBackButton, @Type("BOOL") boolean animated);
+    public void setHidesBackButton(boolean hidesBackButton, boolean animated) {
+        if (customClass) { objc_setHidesBackButtonSuper(getSuper(), this, setHidesBackButton$animated$, hidesBackButton, animated); } else { objc_setHidesBackButton(this, setHidesBackButton$animated$, hidesBackButton, animated); }
+    }
+    
+    private static final Selector setLeftBarButtonItem$animated$ = Selector.register("setLeftBarButtonItem:animated:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setLeftBarButtonItem(UINavigationItem __self__, Selector __cmd__, UIBarButtonItem item, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setLeftBarButtonItemSuper(ObjCSuper __super__, UINavigationItem __self__, Selector __cmd__, UIBarButtonItem item, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instm/UINavigationItem/setLeftBarButtonItem:animated:">- (void)setLeftBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setLeftBarButtonItem:animated:") public native @Type("void") void setLeftBarButtonItem(@Type("UIBarButtonItem *") UIBarButtonItem item, @Type("BOOL") boolean animated);
+    public void setLeftBarButtonItem(UIBarButtonItem item, boolean animated) {
+        if (customClass) { objc_setLeftBarButtonItemSuper(getSuper(), this, setLeftBarButtonItem$animated$, item, animated); } else { objc_setLeftBarButtonItem(this, setLeftBarButtonItem$animated$, item, animated); }
+    }
+    
+    private static final Selector setLeftBarButtonItems$animated$ = Selector.register("setLeftBarButtonItems:animated:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setLeftBarButtonItems(UINavigationItem __self__, Selector __cmd__, NSArray items, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setLeftBarButtonItemsSuper(ObjCSuper __super__, UINavigationItem __self__, Selector __cmd__, NSArray items, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instm/UINavigationItem/setLeftBarButtonItems:animated:">- (void)setLeftBarButtonItems:(NSArray *)items animated:(BOOL)animated</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setLeftBarButtonItems:animated:") public native @Type("void") void setLeftBarButtonItems(@Type("NSArray *") NSArray items, @Type("BOOL") boolean animated);
+    public void setLeftBarButtonItems(NSArray items, boolean animated) {
+        if (customClass) { objc_setLeftBarButtonItemsSuper(getSuper(), this, setLeftBarButtonItems$animated$, items, animated); } else { objc_setLeftBarButtonItems(this, setLeftBarButtonItems$animated$, items, animated); }
+    }
+    
+    private static final Selector setRightBarButtonItem$animated$ = Selector.register("setRightBarButtonItem:animated:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setRightBarButtonItem(UINavigationItem __self__, Selector __cmd__, UIBarButtonItem item, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setRightBarButtonItemSuper(ObjCSuper __super__, UINavigationItem __self__, Selector __cmd__, UIBarButtonItem item, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instm/UINavigationItem/setRightBarButtonItem:animated:">- (void)setRightBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setRightBarButtonItem:animated:") public native @Type("void") void setRightBarButtonItem(@Type("UIBarButtonItem *") UIBarButtonItem item, @Type("BOOL") boolean animated);
+    public void setRightBarButtonItem(UIBarButtonItem item, boolean animated) {
+        if (customClass) { objc_setRightBarButtonItemSuper(getSuper(), this, setRightBarButtonItem$animated$, item, animated); } else { objc_setRightBarButtonItem(this, setRightBarButtonItem$animated$, item, animated); }
+    }
+    
+    private static final Selector setRightBarButtonItems$animated$ = Selector.register("setRightBarButtonItems:animated:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setRightBarButtonItems(UINavigationItem __self__, Selector __cmd__, NSArray items, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setRightBarButtonItemsSuper(ObjCSuper __super__, UINavigationItem __self__, Selector __cmd__, NSArray items, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instm/UINavigationItem/setRightBarButtonItems:animated:">- (void)setRightBarButtonItems:(NSArray *)items animated:(BOOL)animated</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setRightBarButtonItems:animated:") public native @Type("void") void setRightBarButtonItems(@Type("NSArray *") NSArray items, @Type("BOOL") boolean animated);
+    public void setRightBarButtonItems(NSArray items, boolean animated) {
+        if (customClass) { objc_setRightBarButtonItemsSuper(getSuper(), this, setRightBarButtonItems$animated$, items, animated); } else { objc_setRightBarButtonItems(this, setRightBarButtonItems$animated$, items, animated); }
+    }
     /*</methods>*/
 
 }

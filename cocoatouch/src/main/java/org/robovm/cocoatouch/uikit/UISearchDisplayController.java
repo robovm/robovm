@@ -46,87 +46,102 @@ public class /*<name>*/ UISearchDisplayController /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UISearchDisplayController /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UISearchDisplayController /*</name>*/.class);
+
     /*<constructors>*/
+    protected UISearchDisplayController(SkipInit skipInit) { super(skipInit); }
     public UISearchDisplayController() {}
+    
+    private static final Selector initWithSearchBar$contentsController$ = Selector.register("initWithSearchBar:contentsController:");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithSearchBar(UISearchDisplayController __self__, Selector __cmd__, UISearchBar searchBar, UIViewController viewController);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instm/UISearchDisplayController/initWithSearchBar:contentsController:">- (id)initWithSearchBar:(UISearchBar *)searchBar contentsController:(UIViewController *)viewController</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("initWithSearchBar:contentsController:") public UISearchDisplayController(@Type("UISearchBar *") UISearchBar searchBar, @Type("UIViewController *") UIViewController viewController) {}
+    public UISearchDisplayController(UISearchBar searchBar, UIViewController viewController) {
+        super((SkipInit) null);
+        objc_initWithSearchBar(this, initWithSearchBar$contentsController$, searchBar, viewController);
+    }
     /*</constructors>*/
     /*<properties>*/
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/active">@property(nonatomic, getter=isActive) BOOL active</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("isActive") public native @Type("BOOL") boolean isActive();
+    @Bind("isActive") public native boolean isActive();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/active">@property(nonatomic, getter=isActive) BOOL active</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setActive:") public native void setActive(@Type("BOOL") boolean v);
+    @Bind("setActive:") public native void setActive(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/delegate">@property(nonatomic, assign) id&amp;lt;UISearchDisplayDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("delegate") public native @Type("id<UISearchDisplayDelegate>") UISearchDisplayDelegate getDelegate();
+    @Bind("delegate") public native UISearchDisplayDelegate getDelegate();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/delegate">@property(nonatomic, assign) id&amp;lt;UISearchDisplayDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(@Type("id<UISearchDisplayDelegate>") UISearchDisplayDelegate v);
+    @Bind("setDelegate:") public native void setDelegate(UISearchDisplayDelegate v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchBar">@property(nonatomic, readonly) UISearchBar *searchBar</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("searchBar") public native @Type("UISearchBar *") UISearchBar getSearchBar();
+    @Bind("searchBar") public native UISearchBar getSearchBar();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchContentsController">@property(nonatomic, readonly) UIViewController *searchContentsController</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("searchContentsController") public native @Type("UIViewController *") UIViewController getSearchContentsController();
+    @Bind("searchContentsController") public native UIViewController getSearchContentsController();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDataSource">@property(nonatomic, assign) id&amp;lt;UITableViewDataSource&amp;gt; searchResultsDataSource</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("searchResultsDataSource") public native @Type("id<UITableViewDataSource>") UITableViewDataSource getSearchResultsDataSource();
+    @Bind("searchResultsDataSource") public native UITableViewDataSource getSearchResultsDataSource();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDataSource">@property(nonatomic, assign) id&amp;lt;UITableViewDataSource&amp;gt; searchResultsDataSource</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setSearchResultsDataSource:") public native void setSearchResultsDataSource(@Type("id<UITableViewDataSource>") UITableViewDataSource v);
+    @Bind("setSearchResultsDataSource:") public native void setSearchResultsDataSource(UITableViewDataSource v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDelegate">@property(nonatomic, assign) id&amp;lt;UITableViewDelegate&amp;gt; searchResultsDelegate</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("searchResultsDelegate") public native @Type("id<UITableViewDelegate>") UITableViewDelegate getSearchResultsDelegate();
+    @Bind("searchResultsDelegate") public native UITableViewDelegate getSearchResultsDelegate();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDelegate">@property(nonatomic, assign) id&amp;lt;UITableViewDelegate&amp;gt; searchResultsDelegate</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setSearchResultsDelegate:") public native void setSearchResultsDelegate(@Type("id<UITableViewDelegate>") UITableViewDelegate v);
+    @Bind("setSearchResultsDelegate:") public native void setSearchResultsDelegate(UITableViewDelegate v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsTableView">@property(nonatomic, readonly) UITableView *searchResultsTableView</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("searchResultsTableView") public native @Type("UITableView *") UITableView getSearchResultsTableView();
+    @Bind("searchResultsTableView") public native UITableView getSearchResultsTableView();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsTitle">@property(nonatomic, copy) NSString *searchResultsTitle</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("searchResultsTitle") public native @Type("NSString *") String getSearchResultsTitle();
+    @Bind("searchResultsTitle") public native String getSearchResultsTitle();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsTitle">@property(nonatomic, copy) NSString *searchResultsTitle</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setSearchResultsTitle:") public native void setSearchResultsTitle(@Type("NSString *") String v);
+    @Bind("setSearchResultsTitle:") public native void setSearchResultsTitle(String v);
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector setActive$animated$ = Selector.register("setActive:animated:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setActive(UISearchDisplayController __self__, Selector __cmd__, boolean visible, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setActiveSuper(ObjCSuper __super__, UISearchDisplayController __self__, Selector __cmd__, boolean visible, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instm/UISearchDisplayController/setActive:animated:">- (void)setActive:(BOOL)visible animated:(BOOL)animated</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setActive:animated:") public native @Type("void") void setActive(@Type("BOOL") boolean visible, @Type("BOOL") boolean animated);
+    public void setActive(boolean visible, boolean animated) {
+        if (customClass) { objc_setActiveSuper(getSuper(), this, setActive$animated$, visible, animated); } else { objc_setActive(this, setActive$animated$, visible, animated); }
+    }
     /*</methods>*/
 
 }

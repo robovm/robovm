@@ -48,32 +48,32 @@ public interface /*<name>*/ UIPickerViewDelegate /*</name>*/ /*<implements>*/ /*
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:didSelectRow:inComponent:">- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("pickerView:didSelectRow:inComponent:") @Type("void") void didSelectRow(@Type("UIPickerView *") UIPickerView pickerView, @Type("NSInteger") int row, @Type("NSInteger") int component);
+    void didSelectRow(UIPickerView pickerView, int row, int component);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:attributedTitleForRow:forComponent:">- (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("pickerView:attributedTitleForRow:forComponent:") @Type("NSAttributedString *") NSAttributedString getAttributedRowTitle(@Type("UIPickerView *") UIPickerView pickerView, @Type("NSInteger") int row, @Type("NSInteger") int component);
+    NSAttributedString getAttributedRowTitle(UIPickerView pickerView, int row, int component);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:widthForComponent:">- (CGFloat)pickerView:(UIPickerView *)pickerView  widthForComponent:(NSInteger)component</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("pickerView:widthForComponent:") @Type("CGFloat") float getComponentWidth(@Type("UIPickerView *") UIPickerView pickerView, @Type("NSInteger") int component);
+    float getComponentWidth(UIPickerView pickerView, int component);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:rowHeightForComponent:">- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("pickerView:rowHeightForComponent:") @Type("CGFloat") float getRowHeight(@Type("UIPickerView *") UIPickerView pickerView, @Type("NSInteger") int component);
+    float getRowHeight(UIPickerView pickerView, int component);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:titleForRow:forComponent:">- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("pickerView:titleForRow:forComponent:") @Type("NSString *") String getRowTitle(@Type("UIPickerView *") UIPickerView pickerView, @Type("NSInteger") int row, @Type("NSInteger") int component);
+    String getRowTitle(UIPickerView pickerView, int row, int component);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:viewForRow:forComponent:reusingView:">- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("pickerView:viewForRow:forComponent:reusingView:") @Type("UIView *") UIView getRowView(@Type("UIPickerView *") UIPickerView pickerView, @Type("NSInteger") int row, @Type("NSInteger") int component, @Type("UIView *") UIView view);
+    UIView getRowView(UIPickerView pickerView, int row, int component, UIView view);
     /*</methods>*/
 
 }

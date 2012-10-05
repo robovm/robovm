@@ -15,7 +15,23 @@
  */package org.robovm.cocoatouch.coregraphics;
 
 import org.robovm.rt.bro.Struct;
+import org.robovm.rt.bro.annotation.StructMember;
 
-public final class CGPoint extends Struct {
+public final class CGPoint extends Struct<CGPoint> {
+
+    public CGPoint() {}
+    public CGPoint(float x, float y) {
+        x(x);
+        y(y);
+    }
+    
+    @StructMember(0)
+    public native float x();
+    @StructMember(0)
+    public native CGPoint x(float x);
+    @StructMember(1)
+    public native float y();
+    @StructMember(1)
+    public native CGPoint y(float y);
 
 }

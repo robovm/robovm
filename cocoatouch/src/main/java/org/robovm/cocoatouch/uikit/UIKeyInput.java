@@ -48,17 +48,17 @@ public interface /*<name>*/ UIKeyInput /*</name>*/ /*<implements>*/ extends UITe
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIKeyInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIKeyInput/deleteBackward">- (void)deleteBackward</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("deleteBackward") @Type("void") void deleteBackward();
+    void deleteBackward();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIKeyInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIKeyInput/hasText">- (BOOL)hasText</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("hasText") @Type("BOOL") boolean hasText();
+    boolean hasText();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIKeyInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIKeyInput/insertText:">- (void)insertText:(NSString *)text</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("insertText:") @Type("void") void insertText(@Type("NSString *") String text);
+    void insertText(String text);
     /*</methods>*/
 
 }

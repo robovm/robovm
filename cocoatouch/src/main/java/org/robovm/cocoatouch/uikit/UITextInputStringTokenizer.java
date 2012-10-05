@@ -46,38 +46,71 @@ public class /*<name>*/ UITextInputStringTokenizer /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UITextInputStringTokenizer /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITextInputStringTokenizer /*</name>*/.class);
+
     /*<constructors>*/
+    protected UITextInputStringTokenizer(SkipInit skipInit) { super(skipInit); }
     public UITextInputStringTokenizer() {}
+    
+    private static final Selector initWithTextInput$ = Selector.register("initWithTextInput:");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithTextInput(UITextInputStringTokenizer __self__, Selector __cmd__, UITextInput textInput);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputStringTokenizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UITextInputStringTokenizer/initWithTextInput:">- (id)initWithTextInput:(UIResponder &amp;lt; UITextInput &amp;gt; *)textInput</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("initWithTextInput:") public UITextInputStringTokenizer(@Type("UIResponder < UITextInput > *") UITextInput textInput) {}
+    public UITextInputStringTokenizer(UITextInput textInput) {
+        super((SkipInit) null);
+        objc_initWithTextInput(this, initWithTextInput$, textInput);
+    }
     /*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector positionFromPosition$toBoundary$inDirection$ = Selector.register("positionFromPosition:toBoundary:inDirection:");
+    @Bridge(symbol = "objc_msgSend") private native static UITextPosition objc_getPosition(UITextInputStringTokenizer __self__, Selector __cmd__, UITextPosition position, UITextGranularity granularity, UITextDirection direction);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextPosition objc_getPositionSuper(ObjCSuper __super__, UITextInputStringTokenizer __self__, Selector __cmd__, UITextPosition position, UITextGranularity granularity, UITextDirection direction);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTokenizer_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInputTokenizer/positionFromPosition:toBoundary:inDirection:">- (UITextPosition *)positionFromPosition:(UITextPosition *)position toBoundary:(UITextGranularity)granularity inDirection:(UITextDirection)direction</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("positionFromPosition:toBoundary:inDirection:") public native @Type("UITextPosition *") UITextPosition getPosition(@Type("UITextPosition *") UITextPosition position, @Type("UITextGranularity") UITextGranularity granularity, @Type("UITextDirection") UITextDirection direction);
+    public UITextPosition getPosition(UITextPosition position, UITextGranularity granularity, UITextDirection direction) {
+        if (customClass) { return objc_getPositionSuper(getSuper(), this, positionFromPosition$toBoundary$inDirection$, position, granularity, direction); } else { return objc_getPosition(this, positionFromPosition$toBoundary$inDirection$, position, granularity, direction); }
+    }
+    
+    private static final Selector rangeEnclosingPosition$withGranularity$inDirection$ = Selector.register("rangeEnclosingPosition:withGranularity:inDirection:");
+    @Bridge(symbol = "objc_msgSend") private native static UITextRange objc_getRangeEnclosingPosition(UITextInputStringTokenizer __self__, Selector __cmd__, UITextPosition position, UITextGranularity granularity, UITextDirection direction);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextRange objc_getRangeEnclosingPositionSuper(ObjCSuper __super__, UITextInputStringTokenizer __self__, Selector __cmd__, UITextPosition position, UITextGranularity granularity, UITextDirection direction);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTokenizer_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInputTokenizer/rangeEnclosingPosition:withGranularity:inDirection:">- (UITextRange *)rangeEnclosingPosition:(UITextPosition *)position withGranularity:(UITextGranularity)granularity inDirection:(UITextDirection)direction</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("rangeEnclosingPosition:withGranularity:inDirection:") public native @Type("UITextRange *") UITextRange getRangeEnclosingPosition(@Type("UITextPosition *") UITextPosition position, @Type("UITextGranularity") UITextGranularity granularity, @Type("UITextDirection") UITextDirection direction);
+    public UITextRange getRangeEnclosingPosition(UITextPosition position, UITextGranularity granularity, UITextDirection direction) {
+        if (customClass) { return objc_getRangeEnclosingPositionSuper(getSuper(), this, rangeEnclosingPosition$withGranularity$inDirection$, position, granularity, direction); } else { return objc_getRangeEnclosingPosition(this, rangeEnclosingPosition$withGranularity$inDirection$, position, granularity, direction); }
+    }
+    
+    private static final Selector isPosition$atBoundary$inDirection$ = Selector.register("isPosition:atBoundary:inDirection:");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isPositionAtBoundary(UITextInputStringTokenizer __self__, Selector __cmd__, UITextPosition position, UITextGranularity granularity, UITextDirection direction);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isPositionAtBoundarySuper(ObjCSuper __super__, UITextInputStringTokenizer __self__, Selector __cmd__, UITextPosition position, UITextGranularity granularity, UITextDirection direction);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTokenizer_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInputTokenizer/isPosition:atBoundary:inDirection:">- (BOOL)isPosition:(UITextPosition *)position atBoundary:(UITextGranularity)granularity inDirection:(UITextDirection)direction</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("isPosition:atBoundary:inDirection:") public native @Type("BOOL") boolean isPositionAtBoundary(@Type("UITextPosition *") UITextPosition position, @Type("UITextGranularity") UITextGranularity granularity, @Type("UITextDirection") UITextDirection direction);
+    public boolean isPositionAtBoundary(UITextPosition position, UITextGranularity granularity, UITextDirection direction) {
+        if (customClass) { return objc_isPositionAtBoundarySuper(getSuper(), this, isPosition$atBoundary$inDirection$, position, granularity, direction); } else { return objc_isPositionAtBoundary(this, isPosition$atBoundary$inDirection$, position, granularity, direction); }
+    }
+    
+    private static final Selector isPosition$withinTextUnit$inDirection$ = Selector.register("isPosition:withinTextUnit:inDirection:");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isPositionWithinTextUnit(UITextInputStringTokenizer __self__, Selector __cmd__, UITextPosition position, UITextGranularity granularity, UITextDirection direction);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isPositionWithinTextUnitSuper(ObjCSuper __super__, UITextInputStringTokenizer __self__, Selector __cmd__, UITextPosition position, UITextGranularity granularity, UITextDirection direction);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTokenizer_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInputTokenizer/isPosition:withinTextUnit:inDirection:">- (BOOL)isPosition:(UITextPosition *)position withinTextUnit:(UITextGranularity)granularity inDirection:(UITextDirection)direction</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("isPosition:withinTextUnit:inDirection:") public native @Type("BOOL") boolean isPositionWithinTextUnit(@Type("UITextPosition *") UITextPosition position, @Type("UITextGranularity") UITextGranularity granularity, @Type("UITextDirection") UITextDirection direction);
+    public boolean isPositionWithinTextUnit(UITextPosition position, UITextGranularity granularity, UITextDirection direction) {
+        if (customClass) { return objc_isPositionWithinTextUnitSuper(getSuper(), this, isPosition$withinTextUnit$inDirection$, position, granularity, direction); } else { return objc_isPositionWithinTextUnit(this, isPosition$withinTextUnit$inDirection$, position, granularity, direction); }
+    }
     /*</methods>*/
 
 }

@@ -15,6 +15,7 @@
  */
 package org.robovm.rt;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 
@@ -78,6 +79,8 @@ public final class VM {
     
     public native static final Object castAddressToObject(long address);
 
+    public native static final long getFieldAddress(Field field);
+    
     public native static final int getInstanceFieldOffset(long field);
     
     public native static final long getClassFieldAddress(long field);

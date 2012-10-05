@@ -41,7 +41,10 @@ public class /*<name>*/ NSURLRequest /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSURLRequest /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSURLRequest /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSURLRequest(SkipInit skipInit) { super(skipInit); }
     public NSURLRequest() {}
     
     /*</constructors>*/

@@ -46,7 +46,10 @@ public class /*<name>*/ UITabBarController /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UITabBarController /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITabBarController /*</name>*/.class);
+
     /*<constructors>*/
+    protected UITabBarController(SkipInit skipInit) { super(skipInit); }
     public UITabBarController() {}
     
     /*</constructors>*/
@@ -55,69 +58,75 @@ public class /*<name>*/ UITabBarController /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/customizableViewControllers">@property(nonatomic, copy) NSArray *customizableViewControllers</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("customizableViewControllers") public native @Type("NSArray *") NSArray getCustomizableViewControllers();
+    @Bind("customizableViewControllers") public native NSArray getCustomizableViewControllers();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/customizableViewControllers">@property(nonatomic, copy) NSArray *customizableViewControllers</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setCustomizableViewControllers:") public native void setCustomizableViewControllers(@Type("NSArray *") NSArray v);
+    @Bind("setCustomizableViewControllers:") public native void setCustomizableViewControllers(NSArray v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/delegate">@property(nonatomic, assign) id&amp;lt;UITabBarControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("delegate") public native @Type("id<UITabBarControllerDelegate>") UITabBarControllerDelegate getDelegate();
+    @Bind("delegate") public native UITabBarControllerDelegate getDelegate();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/delegate">@property(nonatomic, assign) id&amp;lt;UITabBarControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(@Type("id<UITabBarControllerDelegate>") UITabBarControllerDelegate v);
+    @Bind("setDelegate:") public native void setDelegate(UITabBarControllerDelegate v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/moreNavigationController">@property(nonatomic, readonly) UINavigationController *moreNavigationController</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("moreNavigationController") public native @Type("UINavigationController *") UINavigationController getMoreNavigationController();
+    @Bind("moreNavigationController") public native UINavigationController getMoreNavigationController();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/selectedIndex">@property(nonatomic) NSUInteger selectedIndex</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("selectedIndex") public native @Type("NSUInteger") int getSelectedIndex();
+    @Bind("selectedIndex") public native int getSelectedIndex();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/selectedIndex">@property(nonatomic) NSUInteger selectedIndex</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setSelectedIndex:") public native void setSelectedIndex(@Type("NSUInteger") int v);
+    @Bind("setSelectedIndex:") public native void setSelectedIndex(int v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/selectedViewController">@property(nonatomic, assign) UIViewController *selectedViewController</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("selectedViewController") public native @Type("UIViewController *") UIViewController getSelectedViewController();
+    @Bind("selectedViewController") public native UIViewController getSelectedViewController();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/selectedViewController">@property(nonatomic, assign) UIViewController *selectedViewController</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setSelectedViewController:") public native void setSelectedViewController(@Type("UIViewController *") UIViewController v);
+    @Bind("setSelectedViewController:") public native void setSelectedViewController(UIViewController v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/tabBar">@property(nonatomic,readonly) UITabBar *tabBar</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("tabBar") public native @Type("UITabBar *") UITabBar getTabBar();
+    @Bind("tabBar") public native UITabBar getTabBar();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/viewControllers">@property(nonatomic, copy) NSArray *viewControllers</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("viewControllers") public native @Type("NSArray *") NSArray getViewControllers();
+    @Bind("viewControllers") public native NSArray getViewControllers();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/viewControllers">@property(nonatomic, copy) NSArray *viewControllers</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setViewControllers:") public native void setViewControllers(@Type("NSArray *") NSArray v);
+    @Bind("setViewControllers:") public native void setViewControllers(NSArray v);
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector setViewControllers$animated$ = Selector.register("setViewControllers:animated:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setViewControllers(UITabBarController __self__, Selector __cmd__, NSArray viewControllers, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setViewControllersSuper(ObjCSuper __super__, UITabBarController __self__, Selector __cmd__, NSArray viewControllers, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarController/setViewControllers:animated:">- (void)setViewControllers:(NSArray *)viewControllers  animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setViewControllers:animated:") public native @Type("void") void setViewControllers(@Type("NSArray *") NSArray viewControllers, @Type("BOOL") boolean animated);
+    public void setViewControllers(NSArray viewControllers, boolean animated) {
+        if (customClass) { objc_setViewControllersSuper(getSuper(), this, setViewControllers$animated$, viewControllers, animated); } else { objc_setViewControllers(this, setViewControllers$animated$, viewControllers, animated); }
+    }
     /*</methods>*/
 
 }

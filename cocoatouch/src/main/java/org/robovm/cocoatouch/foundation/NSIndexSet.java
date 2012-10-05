@@ -41,7 +41,10 @@ public class /*<name>*/ NSIndexSet /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSIndexSet /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSIndexSet /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSIndexSet(SkipInit skipInit) { super(skipInit); }
     public NSIndexSet() {}
     
     /*</constructors>*/

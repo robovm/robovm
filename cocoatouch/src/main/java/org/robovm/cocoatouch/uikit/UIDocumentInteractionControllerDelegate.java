@@ -48,57 +48,57 @@ public interface /*<name>*/ UIDocumentInteractionControllerDelegate /*</name>*/ 
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIDocumentInteractionControllerDelegate/documentInteractionControllerDidDismissOpenInMenu:">- (void) documentInteractionControllerDidDismissOpenInMenu: (UIDocumentInteractionController *) controller</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("documentInteractionControllerDidDismissOpenInMenu:") @Type("void") void didDismissOpenInMenu(@Type("UIDocumentInteractionController *") UIDocumentInteractionController  controller);
+    void didDismissOpenInMenu(UIDocumentInteractionController  controller);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIDocumentInteractionControllerDelegate/documentInteractionControllerDidDismissOptionsMenu:">- (void) documentInteractionControllerDidDismissOptionsMenu: (UIDocumentInteractionController *) controller</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("documentInteractionControllerDidDismissOptionsMenu:") @Type("void") void didDismissOptionsMenu(@Type("UIDocumentInteractionController *") UIDocumentInteractionController  controller);
+    void didDismissOptionsMenu(UIDocumentInteractionController  controller);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIDocumentInteractionControllerDelegate/documentInteractionControllerDidEndPreview:">- (void)documentInteractionControllerDidEndPreview:(UIDocumentInteractionController *)controller</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("documentInteractionControllerDidEndPreview:") @Type("void") void didEndPreview(@Type("UIDocumentInteractionController *") UIDocumentInteractionController controller);
+    void didEndPreview(UIDocumentInteractionController controller);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIDocumentInteractionControllerDelegate/documentInteractionController:didEndSendingToApplication:">- (void) documentInteractionController: (UIDocumentInteractionController *) controller  didEndSendingToApplication: (NSString *) application</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("documentInteractionController:didEndSendingToApplication:") @Type("void") void didEndSendingToApplication(@Type("UIDocumentInteractionController *") UIDocumentInteractionController  controller, @Type("NSString *") String  application);
+    void didEndSendingToApplication(UIDocumentInteractionController  controller, String  application);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIDocumentInteractionControllerDelegate/documentInteractionControllerRectForPreview:">- (CGRect) documentInteractionControllerRectForPreview: (UIDocumentInteractionController *) controller</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("documentInteractionControllerRectForPreview:") @Type("CGRect") CGRect getRectForPreview(@Type("UIDocumentInteractionController *") UIDocumentInteractionController  controller);
+    CGRect getRectForPreview(UIDocumentInteractionController  controller);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIDocumentInteractionControllerDelegate/documentInteractionControllerViewControllerForPreview:">- (UIViewController *) documentInteractionControllerViewControllerForPreview: (UIDocumentInteractionController *) controller</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("documentInteractionControllerViewControllerForPreview:") @Type("UIViewController *") UIViewController getViewControllerForPreview(@Type("UIDocumentInteractionController *") UIDocumentInteractionController  controller);
+    UIViewController getViewControllerForPreview(UIDocumentInteractionController  controller);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIDocumentInteractionControllerDelegate/documentInteractionControllerViewForPreview:">- (UIView *) documentInteractionControllerViewForPreview: (UIDocumentInteractionController *) controller</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("documentInteractionControllerViewForPreview:") @Type("UIView *") UIView getViewForPreview(@Type("UIDocumentInteractionController *") UIDocumentInteractionController  controller);
+    UIView getViewForPreview(UIDocumentInteractionController  controller);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIDocumentInteractionControllerDelegate/documentInteractionControllerWillBeginPreview:">- (void) documentInteractionControllerWillBeginPreview: (UIDocumentInteractionController *) controller</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("documentInteractionControllerWillBeginPreview:") @Type("void") void willBeginPreview(@Type("UIDocumentInteractionController *") UIDocumentInteractionController  controller);
+    void willBeginPreview(UIDocumentInteractionController  controller);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIDocumentInteractionControllerDelegate/documentInteractionController:willBeginSendingToApplication:">- (void) documentInteractionController: (UIDocumentInteractionController *) controller  willBeginSendingToApplication: (NSString *) application</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("documentInteractionController:willBeginSendingToApplication:") @Type("void") void willBeginSendingToApplication(@Type("UIDocumentInteractionController *") UIDocumentInteractionController  controller, @Type("NSString *") String  application);
+    void willBeginSendingToApplication(UIDocumentInteractionController  controller, String  application);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIDocumentInteractionControllerDelegate/documentInteractionControllerWillPresentOpenInMenu:">- (void) documentInteractionControllerWillPresentOpenInMenu: (UIDocumentInteractionController *) controller</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("documentInteractionControllerWillPresentOpenInMenu:") @Type("void") void willPresentOpenInMenu(@Type("UIDocumentInteractionController *") UIDocumentInteractionController  controller);
+    void willPresentOpenInMenu(UIDocumentInteractionController  controller);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIDocumentInteractionControllerDelegate/documentInteractionControllerWillPresentOptionsMenu:">- (void) documentInteractionControllerWillPresentOptionsMenu: (UIDocumentInteractionController *) controller</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("documentInteractionControllerWillPresentOptionsMenu:") @Type("void") void willPresentOptionsMenu(@Type("UIDocumentInteractionController *") UIDocumentInteractionController  controller);
+    void willPresentOptionsMenu(UIDocumentInteractionController  controller);
     /*</methods>*/
 
 }

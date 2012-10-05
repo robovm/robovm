@@ -48,12 +48,12 @@ public interface /*<name>*/ UIPickerViewAccessibilityDelegate /*</name>*/ /*<imp
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewAccessibilityDelegate_Protocol/Introduction/Introduction.html#//apple_ref/occ/intfm/UIPickerViewAccessibilityDelegate/pickerView:accessibilityHintForComponent:">- (NSString *)pickerView:(UIPickerView *)pickerView accessibilityHintForComponent:(NSInteger)component</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("pickerView:accessibilityHintForComponent:") @Type("NSString *") String getAccessibilityHint(@Type("UIPickerView *") UIPickerView pickerView, @Type("NSInteger") int component);
+    String getAccessibilityHint(UIPickerView pickerView, int component);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewAccessibilityDelegate_Protocol/Introduction/Introduction.html#//apple_ref/occ/intfm/UIPickerViewAccessibilityDelegate/pickerView:accessibilityLabelForComponent:">- (NSString *)pickerView:(UIPickerView *)pickerView accessibilityLabelForComponent:(NSInteger)component</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("pickerView:accessibilityLabelForComponent:") @Type("NSString *") String getAccessibilityLabel(@Type("UIPickerView *") UIPickerView pickerView, @Type("NSInteger") int component);
+    String getAccessibilityLabel(UIPickerView pickerView, int component);
     /*</methods>*/
 
 }

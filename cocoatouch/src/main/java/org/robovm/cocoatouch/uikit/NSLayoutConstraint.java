@@ -45,7 +45,10 @@ public class /*<name>*/ NSLayoutConstraint /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSLayoutConstraint /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSLayoutConstraint /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSLayoutConstraint(SkipInit skipInit) { super(skipInit); }
     public NSLayoutConstraint() {}
     
     /*</constructors>*/
@@ -54,74 +57,84 @@ public class /*<name>*/ NSLayoutConstraint /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/constant">@property CGFloat constant</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("constant") public native @Type("CGFloat") float getConstant();
+    @Bind("constant") public native float getConstant();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/constant">@property CGFloat constant</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setConstant:") public native void setConstant(@Type("CGFloat") float v);
+    @Bind("setConstant:") public native void setConstant(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/firstAttribute">@property (readonly) NSLayoutAttribute firstAttribute</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("firstAttribute") public native @Type("NSLayoutAttribute") NSLayoutAttribute getFirstAttribute();
+    @Bind("firstAttribute") public native NSLayoutAttribute getFirstAttribute();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/firstItem">@property (readonly, assign) id firstItem</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("firstItem") public native @Type("id") NSObject getFirstItem();
+    @Bind("firstItem") public native NSObject getFirstItem();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/multiplier">@property (readonly) CGFloat multiplier</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("multiplier") public native @Type("CGFloat") float getMultiplier();
+    @Bind("multiplier") public native float getMultiplier();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/priority">@property NSLayoutPriority priority;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("priority") public native @Type("NSLayoutPriority") UILayoutPriority getPriority();
+    @Bind("priority") public native UILayoutPriority getPriority();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/priority">@property NSLayoutPriority priority;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setPriority:") public native void setPriority(@Type("NSLayoutPriority") UILayoutPriority v);
+    @Bind("setPriority:") public native void setPriority(UILayoutPriority v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/relation">@property (readonly) NSLayoutRelation relation</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("relation") public native @Type("NSLayoutRelation") NSLayoutRelation getRelation();
+    @Bind("relation") public native NSLayoutRelation getRelation();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/secondAttribute">@property (readonly) NSLayoutAttribute secondAttribute</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("secondAttribute") public native @Type("NSLayoutAttribute") NSLayoutAttribute getSecondAttribute();
+    @Bind("secondAttribute") public native NSLayoutAttribute getSecondAttribute();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/secondItem">@property (readonly, assign) id secondItem</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("secondItem") public native @Type("id") NSObject getSecondItem();
+    @Bind("secondItem") public native NSObject getSecondItem();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/shouldBeArchived">@property BOOL shouldBeArchived;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("shouldBeArchived") public native @Type("BOOL") boolean isShouldBeArchived();
+    @Bind("shouldBeArchived") public native boolean isShouldBeArchived();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/shouldBeArchived">@property BOOL shouldBeArchived;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setShouldBeArchived:") public native void setShouldBeArchived(@Type("BOOL") boolean v);
+    @Bind("setShouldBeArchived:") public native void setShouldBeArchived(boolean v);
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector constraintWithItem$attribute$relatedBy$toItem$attribute$multiplier$constant$ = Selector.register("constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_create(ObjCClass __self__, Selector __cmd__, NSObject view1, NSLayoutAttribute attr1, NSLayoutRelation relation, NSObject view2, NSLayoutAttribute attr2, float multiplier, float c);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/clm/NSLayoutConstraint/constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:">+ (id)constraintWithItem:(id)view1 attribute:(NSLayoutAttribute)attr1 relatedBy:(NSLayoutRelation)relation toItem:(id)view2 attribute:(NSLayoutAttribute)attr2 multiplier:(CGFloat)multiplier constant:(CGFloat)c</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:") public native static @Type("id") NSObject create(@Type("id") NSObject view1, @Type("NSLayoutAttribute") NSLayoutAttribute attr1, @Type("NSLayoutRelation") NSLayoutRelation relation, @Type("id") NSObject view2, @Type("NSLayoutAttribute") NSLayoutAttribute attr2, @Type("CGFloat") float multiplier, @Type("CGFloat") float c);
+    public static NSObject create(NSObject view1, NSLayoutAttribute attr1, NSLayoutRelation relation, NSObject view2, NSLayoutAttribute attr2, float multiplier, float c) {
+        return objc_create(objCClass, constraintWithItem$attribute$relatedBy$toItem$attribute$multiplier$constant$, view1, attr1, relation, view2, attr2, multiplier, c);
+    }
+    
+    private static final Selector constraintsWithVisualFormat$options$metrics$views$ = Selector.register("constraintsWithVisualFormat:options:metrics:views:");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_fromVisualFormat(ObjCClass __self__, Selector __cmd__, String format, NSLayoutFormatOptions opts, NSDictionary metrics, NSDictionary views);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/clm/NSLayoutConstraint/constraintsWithVisualFormat:options:metrics:views:">+ (NSArray *)constraintsWithVisualFormat:(NSString *)format  options:(NSLayoutFormatOptions)opts  metrics:(NSDictionary *)metrics  views:(NSDictionary *)views</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("constraintsWithVisualFormat:options:metrics:views:") public native static @Type("NSArray *") NSArray fromVisualFormat(@Type("NSString *") String format, @Type("NSLayoutFormatOptions") NSLayoutFormatOptions opts, @Type("NSDictionary *") NSDictionary metrics, @Type("NSDictionary *") NSDictionary views);
+    public static NSArray fromVisualFormat(String format, NSLayoutFormatOptions opts, NSDictionary metrics, NSDictionary views) {
+        return objc_fromVisualFormat(objCClass, constraintsWithVisualFormat$options$metrics$views$, format, opts, metrics, views);
+    }
     /*</methods>*/
 
 }

@@ -15,7 +15,24 @@
  */package org.robovm.cocoatouch.coregraphics;
 
 import org.robovm.rt.bro.Struct;
+import org.robovm.rt.bro.annotation.ByVal;
+import org.robovm.rt.bro.annotation.StructMember;
 
-public final class CGRect extends Struct {
+public final class CGRect extends Struct<CGRect> {
 
+    public CGRect() {}
+    public CGRect(CGPoint origin, CGSize size) {
+        origin(origin);
+        size(size);
+    }
+    
+    @StructMember(0)
+    public native @ByVal CGPoint origin();
+    @StructMember(0)
+    public native CGRect origin(@ByVal CGPoint origin);
+    @StructMember(1)
+    public native @ByVal CGSize size();
+    @StructMember(1)
+    public native CGRect size(@ByVal CGSize size);
+    
 }

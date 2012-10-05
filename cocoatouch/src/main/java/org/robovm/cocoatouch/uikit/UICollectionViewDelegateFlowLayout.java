@@ -47,32 +47,32 @@ public interface /*<name>*/ UICollectionViewDelegateFlowLayout /*</name>*/ /*<im
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegateFlowLayout_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegateFlowLayout/collectionView:layout:sizeForItemAtIndexPath:">- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("collectionView:layout:sizeForItemAtIndexPath:") @Type("CGSize") CGSize getItemSize(@Type("UICollectionView *") UICollectionView collectionView, @Type("UICollectionViewLayout*") UICollectionViewLayout collectionViewLayout, @Type("NSIndexPath *") NSIndexPath indexPath);
+    CGSize getItemSize(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, NSIndexPath indexPath);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegateFlowLayout_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegateFlowLayout/collectionView:layout:referenceSizeForFooterInSection:">- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("collectionView:layout:referenceSizeForFooterInSection:") @Type("CGSize") CGSize getSectionFooterReferenceSize(@Type("UICollectionView *") UICollectionView collectionView, @Type("UICollectionViewLayout*") UICollectionViewLayout collectionViewLayout, @Type("NSInteger") int section);
+    CGSize getSectionFooterReferenceSize(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, int section);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegateFlowLayout_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegateFlowLayout/collectionView:layout:referenceSizeForHeaderInSection:">- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("collectionView:layout:referenceSizeForHeaderInSection:") @Type("CGSize") CGSize getSectionHeaderReferenceSize(@Type("UICollectionView *") UICollectionView collectionView, @Type("UICollectionViewLayout*") UICollectionViewLayout collectionViewLayout, @Type("NSInteger") int section);
+    CGSize getSectionHeaderReferenceSize(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, int section);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegateFlowLayout_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegateFlowLayout/collectionView:layout:insetForSectionAtIndex:">- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("collectionView:layout:insetForSectionAtIndex:") @Type("UIEdgeInsets") UIEdgeInsets getSectionInset(@Type("UICollectionView *") UICollectionView collectionView, @Type("UICollectionViewLayout*") UICollectionViewLayout collectionViewLayout, @Type("NSInteger") int section);
+    UIEdgeInsets getSectionInset(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, int section);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegateFlowLayout_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegateFlowLayout/collectionView:layout:minimumInteritemSpacingForSectionAtIndex:">- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("collectionView:layout:minimumInteritemSpacingForSectionAtIndex:") @Type("CGFloat") float getSectionMinimumInteritemSpacing(@Type("UICollectionView *") UICollectionView collectionView, @Type("UICollectionViewLayout*") UICollectionViewLayout collectionViewLayout, @Type("NSInteger") int section);
+    float getSectionMinimumInteritemSpacing(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, int section);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegateFlowLayout_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegateFlowLayout/collectionView:layout:minimumLineSpacingForSectionAtIndex:">- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("collectionView:layout:minimumLineSpacingForSectionAtIndex:") @Type("CGFloat") float getSectionMinimumLineSpacing(@Type("UICollectionView *") UICollectionView collectionView, @Type("UICollectionViewLayout*") UICollectionViewLayout collectionViewLayout, @Type("NSInteger") int section);
+    float getSectionMinimumLineSpacing(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, int section);
     /*</methods>*/
 
 }

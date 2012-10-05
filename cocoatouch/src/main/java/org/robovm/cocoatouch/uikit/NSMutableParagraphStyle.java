@@ -45,7 +45,10 @@ public class /*<name>*/ NSMutableParagraphStyle /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSMutableParagraphStyle /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSMutableParagraphStyle /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSMutableParagraphStyle(SkipInit skipInit) { super(skipInit); }
     public NSMutableParagraphStyle() {}
     
     /*</constructors>*/
@@ -54,132 +57,132 @@ public class /*<name>*/ NSMutableParagraphStyle /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/alignment">@property(readwrite) NSTextAlignment alignment</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("alignment") public native @Type("NSTextAlignment") NSTextAlignment getAlignment();
+    @Bind("alignment") public native NSTextAlignment getAlignment();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/alignment">@property(readwrite) NSTextAlignment alignment</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setAlignment:") public native void setAlignment(@Type("NSTextAlignment") NSTextAlignment v);
+    @Bind("setAlignment:") public native void setAlignment(NSTextAlignment v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/baseWritingDirection">@property(readwrite) NSWritingDirection baseWritingDirection</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("baseWritingDirection") public native @Type("NSWritingDirection") NSWritingDirection getBaseWritingDirection();
+    @Bind("baseWritingDirection") public native NSWritingDirection getBaseWritingDirection();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/baseWritingDirection">@property(readwrite) NSWritingDirection baseWritingDirection</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setBaseWritingDirection:") public native void setBaseWritingDirection(@Type("NSWritingDirection") NSWritingDirection v);
+    @Bind("setBaseWritingDirection:") public native void setBaseWritingDirection(NSWritingDirection v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/firstLineHeadIndent">@property(readwrite) CGFloat firstLineHeadIndent</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("firstLineHeadIndent") public native @Type("CGFloat") float getFirstLineHeadIndent();
+    @Bind("firstLineHeadIndent") public native float getFirstLineHeadIndent();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/firstLineHeadIndent">@property(readwrite) CGFloat firstLineHeadIndent</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setFirstLineHeadIndent:") public native void setFirstLineHeadIndent(@Type("CGFloat") float v);
+    @Bind("setFirstLineHeadIndent:") public native void setFirstLineHeadIndent(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/headIndent">@property(readwrite) CGFloat headIndent</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("headIndent") public native @Type("CGFloat") float getHeadIndent();
+    @Bind("headIndent") public native float getHeadIndent();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/headIndent">@property(readwrite) CGFloat headIndent</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setHeadIndent:") public native void setHeadIndent(@Type("CGFloat") float v);
+    @Bind("setHeadIndent:") public native void setHeadIndent(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/hyphenationFactor">@property(readwrite) float hyphenationFactor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("hyphenationFactor") public native @Type("float") float getHyphenationFactor();
+    @Bind("hyphenationFactor") public native float getHyphenationFactor();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/hyphenationFactor">@property(readwrite) float hyphenationFactor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setHyphenationFactor:") public native void setHyphenationFactor(@Type("float") float v);
+    @Bind("setHyphenationFactor:") public native void setHyphenationFactor(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/lineBreakMode">@property(readwrite) NSLineBreakMode lineBreakMode</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("lineBreakMode") public native @Type("NSLineBreakMode") NSLineBreakMode getLineBreakMode();
+    @Bind("lineBreakMode") public native NSLineBreakMode getLineBreakMode();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/lineBreakMode">@property(readwrite) NSLineBreakMode lineBreakMode</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setLineBreakMode:") public native void setLineBreakMode(@Type("NSLineBreakMode") NSLineBreakMode v);
+    @Bind("setLineBreakMode:") public native void setLineBreakMode(NSLineBreakMode v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/lineHeightMultiple">@property(readwrite) CGFloat lineHeightMultiple</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("lineHeightMultiple") public native @Type("CGFloat") float getLineHeightMultiple();
+    @Bind("lineHeightMultiple") public native float getLineHeightMultiple();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/lineHeightMultiple">@property(readwrite) CGFloat lineHeightMultiple</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setLineHeightMultiple:") public native void setLineHeightMultiple(@Type("CGFloat") float v);
+    @Bind("setLineHeightMultiple:") public native void setLineHeightMultiple(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/lineSpacing">@property(readwrite) CGFloat lineSpacing</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("lineSpacing") public native @Type("CGFloat") float getLineSpacing();
+    @Bind("lineSpacing") public native float getLineSpacing();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/lineSpacing">@property(readwrite) CGFloat lineSpacing</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setLineSpacing:") public native void setLineSpacing(@Type("CGFloat") float v);
+    @Bind("setLineSpacing:") public native void setLineSpacing(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/maximumLineHeight">@property(readwrite) CGFloat maximumLineHeight</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("maximumLineHeight") public native @Type("CGFloat") float getMaximumLineHeight();
+    @Bind("maximumLineHeight") public native float getMaximumLineHeight();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/maximumLineHeight">@property(readwrite) CGFloat maximumLineHeight</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setMaximumLineHeight:") public native void setMaximumLineHeight(@Type("CGFloat") float v);
+    @Bind("setMaximumLineHeight:") public native void setMaximumLineHeight(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/minimumLineHeight">@property(readwrite) CGFloat minimumLineHeight</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("minimumLineHeight") public native @Type("CGFloat") float getMinimumLineHeight();
+    @Bind("minimumLineHeight") public native float getMinimumLineHeight();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/minimumLineHeight">@property(readwrite) CGFloat minimumLineHeight</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setMinimumLineHeight:") public native void setMinimumLineHeight(@Type("CGFloat") float v);
+    @Bind("setMinimumLineHeight:") public native void setMinimumLineHeight(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/paragraphSpacing">@property(readwrite) CGFloat paragraphSpacing</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("paragraphSpacing") public native @Type("CGFloat") float getParagraphSpacing();
+    @Bind("paragraphSpacing") public native float getParagraphSpacing();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/paragraphSpacing">@property(readwrite) CGFloat paragraphSpacing</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setParagraphSpacing:") public native void setParagraphSpacing(@Type("CGFloat") float v);
+    @Bind("setParagraphSpacing:") public native void setParagraphSpacing(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/paragraphSpacingBefore">@property(readwrite) CGFloat paragraphSpacingBefore</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("paragraphSpacingBefore") public native @Type("CGFloat") float getParagraphSpacingBefore();
+    @Bind("paragraphSpacingBefore") public native float getParagraphSpacingBefore();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/paragraphSpacingBefore">@property(readwrite) CGFloat paragraphSpacingBefore</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setParagraphSpacingBefore:") public native void setParagraphSpacingBefore(@Type("CGFloat") float v);
+    @Bind("setParagraphSpacingBefore:") public native void setParagraphSpacingBefore(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/tailIndent">@property(readwrite) CGFloat tailIndent</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("tailIndent") public native @Type("CGFloat") float getTailIndent();
+    @Bind("tailIndent") public native float getTailIndent();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html#//apple_ref/occ/instp/NSMutableParagraphStyle/tailIndent">@property(readwrite) CGFloat tailIndent</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setTailIndent:") public native void setTailIndent(@Type("CGFloat") float v);
+    @Bind("setTailIndent:") public native void setTailIndent(float v);
     /*</properties>*/
     /*<methods>*/
     

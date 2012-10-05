@@ -46,7 +46,10 @@ public class /*<name>*/ UIScreenMode /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIScreenMode /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIScreenMode /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIScreenMode(SkipInit skipInit) { super(skipInit); }
     public UIScreenMode() {}
     
     /*</constructors>*/
@@ -55,12 +58,12 @@ public class /*<name>*/ UIScreenMode /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreenMode_class/Reference/Reference.html#//apple_ref/occ/instp/UIScreenMode/pixelAspectRatio">@property(readonly,nonatomic) CGFloat pixelAspectRatio</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("pixelAspectRatio") public native @Type("CGFloat") float getPixelAspectRatio();
+    @Bind("pixelAspectRatio") public native float getPixelAspectRatio();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreenMode_class/Reference/Reference.html#//apple_ref/occ/instp/UIScreenMode/size">@property(readonly,nonatomic) CGSize size</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("size") public native @Type("CGSize") CGSize getSize();
+    @Bind("size") public native CGSize getSize();
     /*</properties>*/
     /*<methods>*/
     

@@ -40,7 +40,10 @@ public class /*<name>*/ NSOperation /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSOperation /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSOperation /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSOperation(SkipInit skipInit) { super(skipInit); }
     public NSOperation() {}
     
     /*</constructors>*/

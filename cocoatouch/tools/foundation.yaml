@@ -143,33 +143,18 @@ classes:
         properties:
             "*":
                 exclude: true
-#    NSManagedObjectContext:
-#        url: ../CoreDataFramework/Classes/NSManagedObjectContext_Class/NSManagedObjectContext.html
-#        protocols: []
-#        methods:
-#            "+*":
-#                exclude: true
-#            "-*":
-#                exclude: true
-#    NSManagedObjectModel:
-#        url: ../CoreDataFramework/Classes/NSManagedObjectModel_Class/Reference/Reference.html
-#        protocols: []
-#        methods:
-#            "+*":
-#                exclude: true
-#            "-*":
-#                exclude: true
     NSObject:
         urls: [../Classes/NSObject_Class/Reference/Reference.html, ../Protocols/NSObject_Protocol/Reference/NSObject.html, ../Protocols/NSCoding_Protocol/Reference/Reference.html]
         protocols: []
         skip_def_constructor: true
+        skip_skip_init_constructor: true
         methods:
             "-retain":
                 visibility: protected
             "-release":
                 visibility: protected
             "-init":
-                visibility: protected
+                visibility: private
                 constructor: false
             "-description":
             "+*":

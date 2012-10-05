@@ -45,7 +45,10 @@ public class /*<name>*/ NSStringDrawingContext /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSStringDrawingContext /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSStringDrawingContext /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSStringDrawingContext(SkipInit skipInit) { super(skipInit); }
     public NSStringDrawingContext() {}
     
     /*</constructors>*/
@@ -54,37 +57,37 @@ public class /*<name>*/ NSStringDrawingContext /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../NSStringDrawingContext_class/Reference/Reference.html#//apple_ref/occ/instp/NSStringDrawingContext/actualScaleFactor">@property(nonatomic, readonly) CGFloat actualScaleFactor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("actualScaleFactor") public native @Type("CGFloat") float getActualScaleFactor();
+    @Bind("actualScaleFactor") public native float getActualScaleFactor();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../NSStringDrawingContext_class/Reference/Reference.html#//apple_ref/occ/instp/NSStringDrawingContext/actualTrackingAdjustment">@property(nonatomic, readonly) CGFloat actualTrackingAdjustment</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("actualTrackingAdjustment") public native @Type("CGFloat") float getActualTrackingAdjustment();
+    @Bind("actualTrackingAdjustment") public native float getActualTrackingAdjustment();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../NSStringDrawingContext_class/Reference/Reference.html#//apple_ref/occ/instp/NSStringDrawingContext/minimumScaleFactor">@property(nonatomic) CGFloat minimumScaleFactor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("minimumScaleFactor") public native @Type("CGFloat") float getMinimumScaleFactor();
+    @Bind("minimumScaleFactor") public native float getMinimumScaleFactor();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../NSStringDrawingContext_class/Reference/Reference.html#//apple_ref/occ/instp/NSStringDrawingContext/minimumScaleFactor">@property(nonatomic) CGFloat minimumScaleFactor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setMinimumScaleFactor:") public native void setMinimumScaleFactor(@Type("CGFloat") float v);
+    @Bind("setMinimumScaleFactor:") public native void setMinimumScaleFactor(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../NSStringDrawingContext_class/Reference/Reference.html#//apple_ref/occ/instp/NSStringDrawingContext/minimumTrackingAdjustment">@property(nonatomic) CGFloat minimumTrackingAdjustment</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("minimumTrackingAdjustment") public native @Type("CGFloat") float getMinimumTrackingAdjustment();
+    @Bind("minimumTrackingAdjustment") public native float getMinimumTrackingAdjustment();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../NSStringDrawingContext_class/Reference/Reference.html#//apple_ref/occ/instp/NSStringDrawingContext/minimumTrackingAdjustment">@property(nonatomic) CGFloat minimumTrackingAdjustment</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setMinimumTrackingAdjustment:") public native void setMinimumTrackingAdjustment(@Type("CGFloat") float v);
+    @Bind("setMinimumTrackingAdjustment:") public native void setMinimumTrackingAdjustment(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../NSStringDrawingContext_class/Reference/Reference.html#//apple_ref/occ/instp/NSStringDrawingContext/totalBounds">@property(nonatomic, readonly) CGRect totalBounds</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("totalBounds") public native @Type("CGRect") CGRect getTotalBounds();
+    @Bind("totalBounds") public native CGRect getTotalBounds();
     /*</properties>*/
     /*<methods>*/
     

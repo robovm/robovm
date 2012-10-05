@@ -41,7 +41,10 @@ public class /*<name>*/ NSLocale /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSLocale /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSLocale /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSLocale(SkipInit skipInit) { super(skipInit); }
     public NSLocale() {}
     
     /*</constructors>*/

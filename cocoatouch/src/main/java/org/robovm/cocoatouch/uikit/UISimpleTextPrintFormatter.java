@@ -46,63 +46,72 @@ public class /*<name>*/ UISimpleTextPrintFormatter /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UISimpleTextPrintFormatter /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UISimpleTextPrintFormatter /*</name>*/.class);
+
     /*<constructors>*/
+    protected UISimpleTextPrintFormatter(SkipInit skipInit) { super(skipInit); }
     public UISimpleTextPrintFormatter() {}
+    
+    private static final Selector initWithText$ = Selector.register("initWithText:");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithText(UISimpleTextPrintFormatter __self__, Selector __cmd__, String text);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instm/UISimpleTextPrintFormatter/initWithText:">- (id)initWithText:(NSString *)text</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("initWithText:") public UISimpleTextPrintFormatter(@Type("NSString *") String text) {}
+    public UISimpleTextPrintFormatter(String text) {
+        super((SkipInit) null);
+        objc_initWithText(this, initWithText$, text);
+    }
     /*</constructors>*/
     /*<properties>*/
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UISimpleTextPrintFormatter/color">@property(nonatomic, retain) UIColor *color</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("color") public native @Type("UIColor *") UIColor getColor();
+    @Bind("color") public native UIColor getColor();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UISimpleTextPrintFormatter/color">@property(nonatomic, retain) UIColor *color</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setColor:") public native void setColor(@Type("UIColor *") UIColor v);
+    @Bind("setColor:") public native void setColor(UIColor v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UISimpleTextPrintFormatter/font">@property(nonatomic, retain) UIFont *font</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("font") public native @Type("UIFont *") UIFont getFont();
+    @Bind("font") public native UIFont getFont();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UISimpleTextPrintFormatter/font">@property(nonatomic, retain) UIFont *font</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setFont:") public native void setFont(@Type("UIFont *") UIFont v);
+    @Bind("setFont:") public native void setFont(UIFont v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UISimpleTextPrintFormatter/lineBreakMode">@property(nonatomic) UILineBreakMode lineBreakMode</a>
      */
-    @Bind("lineBreakMode") public native @Type("UILineBreakMode") UILineBreakMode getLineBreakMode();
+    @Bind("lineBreakMode") public native UILineBreakMode getLineBreakMode();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UISimpleTextPrintFormatter/lineBreakMode">@property(nonatomic) UILineBreakMode lineBreakMode</a>
      */
-    @Bind("setLineBreakMode:") public native void setLineBreakMode(@Type("UILineBreakMode") UILineBreakMode v);
+    @Bind("setLineBreakMode:") public native void setLineBreakMode(UILineBreakMode v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UISimpleTextPrintFormatter/text">@property(nonatomic, copy) NSString *text</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("text") public native @Type("NSString *") String getText();
+    @Bind("text") public native String getText();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UISimpleTextPrintFormatter/text">@property(nonatomic, copy) NSString *text</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setText:") public native void setText(@Type("NSString *") String v);
+    @Bind("setText:") public native void setText(String v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UISimpleTextPrintFormatter/textAlignment">@property(nonatomic) UITextAlignment textAlignment</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("textAlignment") public native @Type("UITextAlignment") UITextAlignment getTextAlignment();
+    @Bind("textAlignment") public native UITextAlignment getTextAlignment();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UISimpleTextPrintFormatter/textAlignment">@property(nonatomic) UITextAlignment textAlignment</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setTextAlignment:") public native void setTextAlignment(@Type("UITextAlignment") UITextAlignment v);
+    @Bind("setTextAlignment:") public native void setTextAlignment(UITextAlignment v);
     /*</properties>*/
     /*<methods>*/
     

@@ -41,6 +41,8 @@ public class /*<name>*/ NSManagedObjectContext /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSManagedObjectContext /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSManagedObjectContext /*</name>*/.class);
+
     /*<constructors>*/
     public NSManagedObjectContext() {}
     

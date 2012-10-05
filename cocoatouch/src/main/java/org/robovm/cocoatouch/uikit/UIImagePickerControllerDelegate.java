@@ -48,13 +48,13 @@ public interface /*<name>*/ UIImagePickerControllerDelegate /*</name>*/ /*<imple
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerControllerDelegate_Protocol/UIImagePickerControllerDelegate/UIImagePickerControllerDelegate.html#//apple_ref/occ/intfm/UIImagePickerControllerDelegate/imagePickerControllerDidCancel:">- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("imagePickerControllerDidCancel:") @Type("void") void didCancel(@Type("UIImagePickerController *") UIImagePickerController picker);
+    void didCancel(UIImagePickerController picker);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerControllerDelegate_Protocol/UIImagePickerControllerDelegate/UIImagePickerControllerDelegate.html#//apple_ref/occ/intfm/UIImagePickerControllerDelegate/imagePickerController:didFinishPickingMediaWithInfo:">- (void)imagePickerController:(UIImagePickerController *)picker
     didFinishPickingMediaWithInfo:(NSDictionary *)info</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("imagePickerController:didFinishPickingMediaWithInfo:") @Type("void") void didFinishPickingMedia(@Type("UIImagePickerController *") UIImagePickerController picker, @Type("NSDictionary *") NSDictionary info);
+    void didFinishPickingMedia(UIImagePickerController picker, NSDictionary info);
     /*</methods>*/
 
 }

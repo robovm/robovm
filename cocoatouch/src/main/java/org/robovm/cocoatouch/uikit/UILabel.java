@@ -46,7 +46,10 @@ public class /*<name>*/ UILabel /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UILabel /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UILabel /*</name>*/.class);
+
     /*<constructors>*/
+    protected UILabel(SkipInit skipInit) { super(skipInit); }
     public UILabel() {}
     
     /*</constructors>*/
@@ -55,194 +58,206 @@ public class /*<name>*/ UILabel /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/adjustsFontSizeToFitWidth">@property(nonatomic) BOOL adjustsFontSizeToFitWidth</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("adjustsFontSizeToFitWidth") public native @Type("BOOL") boolean isAdjustsFontSizeToFitWidth();
+    @Bind("adjustsFontSizeToFitWidth") public native boolean isAdjustsFontSizeToFitWidth();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/adjustsFontSizeToFitWidth">@property(nonatomic) BOOL adjustsFontSizeToFitWidth</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAdjustsFontSizeToFitWidth:") public native void setAdjustsFontSizeToFitWidth(@Type("BOOL") boolean v);
+    @Bind("setAdjustsFontSizeToFitWidth:") public native void setAdjustsFontSizeToFitWidth(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/adjustsLetterSpacingToFitWidth">@property(nonatomic) BOOL adjustsLetterSpacingToFitWidth</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("adjustsLetterSpacingToFitWidth") public native @Type("BOOL") boolean isAdjustsLetterSpacingToFitWidth();
+    @Bind("adjustsLetterSpacingToFitWidth") public native boolean isAdjustsLetterSpacingToFitWidth();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/adjustsLetterSpacingToFitWidth">@property(nonatomic) BOOL adjustsLetterSpacingToFitWidth</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setAdjustsLetterSpacingToFitWidth:") public native void setAdjustsLetterSpacingToFitWidth(@Type("BOOL") boolean v);
+    @Bind("setAdjustsLetterSpacingToFitWidth:") public native void setAdjustsLetterSpacingToFitWidth(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/attributedText">@property(nonatomic,copy) NSAttributedString *attributedText</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("attributedText") public native @Type("NSAttributedString *") NSAttributedString getAttributedText();
+    @Bind("attributedText") public native NSAttributedString getAttributedText();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/attributedText">@property(nonatomic,copy) NSAttributedString *attributedText</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setAttributedText:") public native void setAttributedText(@Type("NSAttributedString *") NSAttributedString v);
+    @Bind("setAttributedText:") public native void setAttributedText(NSAttributedString v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/baselineAdjustment">@property(nonatomic) UIBaselineAdjustment baselineAdjustment</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("baselineAdjustment") public native @Type("UIBaselineAdjustment") UIBaselineAdjustment getBaselineAdjustment();
+    @Bind("baselineAdjustment") public native UIBaselineAdjustment getBaselineAdjustment();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/baselineAdjustment">@property(nonatomic) UIBaselineAdjustment baselineAdjustment</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setBaselineAdjustment:") public native void setBaselineAdjustment(@Type("UIBaselineAdjustment") UIBaselineAdjustment v);
+    @Bind("setBaselineAdjustment:") public native void setBaselineAdjustment(UIBaselineAdjustment v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/enabled">@property(nonatomic, getter=isEnabled) BOOL enabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isEnabled") public native @Type("BOOL") boolean isEnabled();
+    @Bind("isEnabled") public native boolean isEnabled();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/enabled">@property(nonatomic, getter=isEnabled) BOOL enabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setEnabled:") public native void setEnabled(@Type("BOOL") boolean v);
+    @Bind("setEnabled:") public native void setEnabled(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/font">@property(nonatomic, retain) UIFont *font</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("font") public native @Type("UIFont *") UIFont getFont();
+    @Bind("font") public native UIFont getFont();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/font">@property(nonatomic, retain) UIFont *font</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setFont:") public native void setFont(@Type("UIFont *") UIFont v);
+    @Bind("setFont:") public native void setFont(UIFont v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/highlighted">@property(nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isHighlighted") public native @Type("BOOL") boolean isHighlighted();
+    @Bind("isHighlighted") public native boolean isHighlighted();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/highlighted">@property(nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setHighlighted:") public native void setHighlighted(@Type("BOOL") boolean v);
+    @Bind("setHighlighted:") public native void setHighlighted(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/highlightedTextColor">@property(nonatomic, retain) UIColor *highlightedTextColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("highlightedTextColor") public native @Type("UIColor *") UIColor getHighlightedTextColor();
+    @Bind("highlightedTextColor") public native UIColor getHighlightedTextColor();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/highlightedTextColor">@property(nonatomic, retain) UIColor *highlightedTextColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setHighlightedTextColor:") public native void setHighlightedTextColor(@Type("UIColor *") UIColor v);
+    @Bind("setHighlightedTextColor:") public native void setHighlightedTextColor(UIColor v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/lineBreakMode">@property(nonatomic) NSLineBreakMode lineBreakMode</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("lineBreakMode") public native @Type("NSLineBreakMode") NSLineBreakMode getLineBreakMode();
+    @Bind("lineBreakMode") public native NSLineBreakMode getLineBreakMode();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/lineBreakMode">@property(nonatomic) NSLineBreakMode lineBreakMode</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setLineBreakMode:") public native void setLineBreakMode(@Type("NSLineBreakMode") NSLineBreakMode v);
+    @Bind("setLineBreakMode:") public native void setLineBreakMode(NSLineBreakMode v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/minimumScaleFactor">@property(nonatomic) CGFloat minimumScaleFactor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("minimumScaleFactor") public native @Type("CGFloat") float getMinimumScaleFactor();
+    @Bind("minimumScaleFactor") public native float getMinimumScaleFactor();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/minimumScaleFactor">@property(nonatomic) CGFloat minimumScaleFactor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setMinimumScaleFactor:") public native void setMinimumScaleFactor(@Type("CGFloat") float v);
+    @Bind("setMinimumScaleFactor:") public native void setMinimumScaleFactor(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/numberOfLines">@property(nonatomic) NSInteger numberOfLines</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("numberOfLines") public native @Type("NSInteger") int getNumberOfLines();
+    @Bind("numberOfLines") public native int getNumberOfLines();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/numberOfLines">@property(nonatomic) NSInteger numberOfLines</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setNumberOfLines:") public native void setNumberOfLines(@Type("NSInteger") int v);
+    @Bind("setNumberOfLines:") public native void setNumberOfLines(int v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/preferredMaxLayoutWidth">@property(nonatomic) CGFloat preferredMaxLayoutWidth</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("preferredMaxLayoutWidth") public native @Type("CGFloat") float getPreferredMaxLayoutWidth();
+    @Bind("preferredMaxLayoutWidth") public native float getPreferredMaxLayoutWidth();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/preferredMaxLayoutWidth">@property(nonatomic) CGFloat preferredMaxLayoutWidth</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setPreferredMaxLayoutWidth:") public native void setPreferredMaxLayoutWidth(@Type("CGFloat") float v);
+    @Bind("setPreferredMaxLayoutWidth:") public native void setPreferredMaxLayoutWidth(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/shadowColor">@property(nonatomic, retain) UIColor *shadowColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("shadowColor") public native @Type("UIColor *") UIColor getShadowColor();
+    @Bind("shadowColor") public native UIColor getShadowColor();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/shadowColor">@property(nonatomic, retain) UIColor *shadowColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setShadowColor:") public native void setShadowColor(@Type("UIColor *") UIColor v);
+    @Bind("setShadowColor:") public native void setShadowColor(UIColor v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/shadowOffset">@property(nonatomic) CGSize shadowOffset</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("shadowOffset") public native @Type("CGSize") CGSize getShadowOffset();
+    @Bind("shadowOffset") public native CGSize getShadowOffset();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/shadowOffset">@property(nonatomic) CGSize shadowOffset</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setShadowOffset:") public native void setShadowOffset(@Type("CGSize") CGSize v);
+    @Bind("setShadowOffset:") public native void setShadowOffset(CGSize v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/text">@property(nonatomic, copy) NSString *text</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("text") public native @Type("NSString *") String getText();
+    @Bind("text") public native String getText();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/text">@property(nonatomic, copy) NSString *text</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setText:") public native void setText(@Type("NSString *") String v);
+    @Bind("setText:") public native void setText(String v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/textAlignment">@property(nonatomic) NSTextAlignment textAlignment</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("textAlignment") public native @Type("NSTextAlignment") NSTextAlignment getTextAlignment();
+    @Bind("textAlignment") public native NSTextAlignment getTextAlignment();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/textAlignment">@property(nonatomic) NSTextAlignment textAlignment</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTextAlignment:") public native void setTextAlignment(@Type("NSTextAlignment") NSTextAlignment v);
+    @Bind("setTextAlignment:") public native void setTextAlignment(NSTextAlignment v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/textColor">@property(nonatomic, retain) UIColor *textColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("textColor") public native @Type("UIColor *") UIColor getTextColor();
+    @Bind("textColor") public native UIColor getTextColor();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/textColor">@property(nonatomic, retain) UIColor *textColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTextColor:") public native void setTextColor(@Type("UIColor *") UIColor v);
+    @Bind("setTextColor:") public native void setTextColor(UIColor v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/userInteractionEnabled">@property(nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isUserInteractionEnabled") public native @Type("BOOL") boolean isUserInteractionEnabled();
+    @Bind("isUserInteractionEnabled") public native boolean isUserInteractionEnabled();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/userInteractionEnabled">@property(nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setUserInteractionEnabled:") public native void setUserInteractionEnabled(@Type("BOOL") boolean v);
+    @Bind("setUserInteractionEnabled:") public native void setUserInteractionEnabled(boolean v);
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector drawTextInRect$ = Selector.register("drawTextInRect:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_drawText(UILabel __self__, Selector __cmd__, CGRect rect);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_drawTextSuper(ObjCSuper __super__, UILabel __self__, Selector __cmd__, CGRect rect);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instm/UILabel/drawTextInRect:">- (void)drawTextInRect:(CGRect)rect</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("drawTextInRect:") public native @Type("void") void drawText(@Type("CGRect") CGRect rect);
+    public void drawText(CGRect rect) {
+        if (customClass) { objc_drawTextSuper(getSuper(), this, drawTextInRect$, rect); } else { objc_drawText(this, drawTextInRect$, rect); }
+    }
+    
+    private static final Selector textRectForBounds$limitedToNumberOfLines$ = Selector.register("textRectForBounds:limitedToNumberOfLines:");
+    @Bridge(symbol = "objc_msgSend") private native static CGRect objc_getTextRect(UILabel __self__, Selector __cmd__, CGRect bounds, int numberOfLines);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGRect objc_getTextRectSuper(ObjCSuper __super__, UILabel __self__, Selector __cmd__, CGRect bounds, int numberOfLines);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instm/UILabel/textRectForBounds:limitedToNumberOfLines:">- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(NSInteger)numberOfLines</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("textRectForBounds:limitedToNumberOfLines:") public native @Type("CGRect") CGRect getTextRect(@Type("CGRect") CGRect bounds, @Type("NSInteger") int numberOfLines);
+    public CGRect getTextRect(CGRect bounds, int numberOfLines) {
+        if (customClass) { return objc_getTextRectSuper(getSuper(), this, textRectForBounds$limitedToNumberOfLines$, bounds, numberOfLines); } else { return objc_getTextRect(this, textRectForBounds$limitedToNumberOfLines$, bounds, numberOfLines); }
+    }
     /*</methods>*/
 
 }

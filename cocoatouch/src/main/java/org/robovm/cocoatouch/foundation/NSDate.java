@@ -41,7 +41,10 @@ public class /*<name>*/ NSDate /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSDate /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSDate /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSDate(SkipInit skipInit) { super(skipInit); }
     public NSDate() {}
     
     /*</constructors>*/

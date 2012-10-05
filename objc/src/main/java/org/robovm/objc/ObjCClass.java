@@ -45,13 +45,13 @@ public class ObjCClass extends ObjCObject {
 
     private final Class<? extends ObjCObject> type;
     private final String name;
-    private final boolean customClass;
+    private final boolean custom;
     
-    private ObjCClass(long handle, Class<? extends ObjCObject> type, String name, boolean customClass) {
+    private ObjCClass(long handle, Class<? extends ObjCObject> type, String name, boolean custom) {
         super(handle);
         this.type = type;
         this.name = name;
-        this.customClass = customClass;
+        this.custom = custom;
     }
     
     public Class<? extends ObjCObject> getType() {
@@ -62,8 +62,8 @@ public class ObjCClass extends ObjCObject {
         return name;
     }
     
-    public boolean isCustomClass() {
-        return customClass;
+    public boolean isCustom() {
+        return custom;
     }
     
     @Override

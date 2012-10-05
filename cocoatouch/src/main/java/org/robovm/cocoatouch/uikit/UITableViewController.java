@@ -46,45 +46,54 @@ public class /*<name>*/ UITableViewController /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UITableViewController /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITableViewController /*</name>*/.class);
+
     /*<constructors>*/
+    protected UITableViewController(SkipInit skipInit) { super(skipInit); }
     public UITableViewController() {}
+    
+    private static final Selector initWithStyle$ = Selector.register("initWithStyle:");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithStyle(UITableViewController __self__, Selector __cmd__, UITableViewStyle style);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewController/initWithStyle:">- (id)initWithStyle:(UITableViewStyle)style</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("initWithStyle:") public UITableViewController(@Type("UITableViewStyle") UITableViewStyle style) {}
+    public UITableViewController(UITableViewStyle style) {
+        super((SkipInit) null);
+        objc_initWithStyle(this, initWithStyle$, style);
+    }
     /*</constructors>*/
     /*<properties>*/
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewController/clearsSelectionOnViewWillAppear">@property(nonatomic) BOOL clearsSelectionOnViewWillAppear</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("clearsSelectionOnViewWillAppear") public native @Type("BOOL") boolean isClearsSelectionOnViewWillAppear();
+    @Bind("clearsSelectionOnViewWillAppear") public native boolean isClearsSelectionOnViewWillAppear();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewController/clearsSelectionOnViewWillAppear">@property(nonatomic) BOOL clearsSelectionOnViewWillAppear</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setClearsSelectionOnViewWillAppear:") public native void setClearsSelectionOnViewWillAppear(@Type("BOOL") boolean v);
+    @Bind("setClearsSelectionOnViewWillAppear:") public native void setClearsSelectionOnViewWillAppear(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewController/refreshControl">@property (nonatomic,retain) UIRefreshControl *refreshControl</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("refreshControl") public native @Type("UIRefreshControl *") UIRefreshControl getRefreshControl();
+    @Bind("refreshControl") public native UIRefreshControl getRefreshControl();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewController/refreshControl">@property (nonatomic,retain) UIRefreshControl *refreshControl</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setRefreshControl:") public native void setRefreshControl(@Type("UIRefreshControl *") UIRefreshControl v);
+    @Bind("setRefreshControl:") public native void setRefreshControl(UIRefreshControl v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewController/tableView">@property(nonatomic, retain) UITableView *tableView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("tableView") public native @Type("UITableView *") UITableView getTableView();
+    @Bind("tableView") public native UITableView getTableView();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewController/tableView">@property(nonatomic, retain) UITableView *tableView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTableView:") public native void setTableView(@Type("UITableView *") UITableView v);
+    @Bind("setTableView:") public native void setTableView(UITableView v);
     /*</properties>*/
     /*<methods>*/
     

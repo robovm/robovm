@@ -46,25 +46,34 @@ public class /*<name>*/ UIMarkupTextPrintFormatter /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIMarkupTextPrintFormatter /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIMarkupTextPrintFormatter /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIMarkupTextPrintFormatter(SkipInit skipInit) { super(skipInit); }
     public UIMarkupTextPrintFormatter() {}
+    
+    private static final Selector initWithMarkupText$ = Selector.register("initWithMarkupText:");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithMarkupText(UIMarkupTextPrintFormatter __self__, Selector __cmd__, String markupText);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMarkupTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instm/UIMarkupTextPrintFormatter/initWithMarkupText:">- (id)initWithMarkupText:(NSString *)markupText</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("initWithMarkupText:") public UIMarkupTextPrintFormatter(@Type("NSString *") String markupText) {}
+    public UIMarkupTextPrintFormatter(String markupText) {
+        super((SkipInit) null);
+        objc_initWithMarkupText(this, initWithMarkupText$, markupText);
+    }
     /*</constructors>*/
     /*<properties>*/
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMarkupTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIMarkupTextPrintFormatter/markupText">@property(nonatomic, copy) NSString *markupText</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("markupText") public native @Type("NSString *") String getMarkupText();
+    @Bind("markupText") public native String getMarkupText();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMarkupTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIMarkupTextPrintFormatter/markupText">@property(nonatomic, copy) NSString *markupText</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setMarkupText:") public native void setMarkupText(@Type("NSString *") String v);
+    @Bind("setMarkupText:") public native void setMarkupText(String v);
     /*</properties>*/
     /*<methods>*/
     

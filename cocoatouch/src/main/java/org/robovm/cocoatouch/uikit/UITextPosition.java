@@ -46,7 +46,10 @@ public class /*<name>*/ UITextPosition /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UITextPosition /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITextPosition /*</name>*/.class);
+
     /*<constructors>*/
+    protected UITextPosition(SkipInit skipInit) { super(skipInit); }
     public UITextPosition() {}
     
     /*</constructors>*/

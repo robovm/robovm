@@ -41,6 +41,8 @@ public class /*<name>*/ NSManagedObjectModel /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSManagedObjectModel /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSManagedObjectModel /*</name>*/.class);
+
     /*<constructors>*/
     public NSManagedObjectModel() {}
     

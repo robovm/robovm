@@ -48,12 +48,12 @@ public interface /*<name>*/ UIPopoverControllerDelegate /*</name>*/ /*<implement
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPopoverControllerDelegate/popoverControllerDidDismissPopover:">- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("popoverControllerDidDismissPopover:") @Type("void") void didDismissPopover(@Type("UIPopoverController *") UIPopoverController popoverController);
+    void didDismissPopover(UIPopoverController popoverController);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPopoverControllerDelegate/popoverControllerShouldDismissPopover:">- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("popoverControllerShouldDismissPopover:") @Type("BOOL") boolean shouldDismissPopover(@Type("UIPopoverController *") UIPopoverController popoverController);
+    boolean shouldDismissPopover(UIPopoverController popoverController);
     /*</methods>*/
 
 }

@@ -46,7 +46,10 @@ public class /*<name>*/ UITextInputMode /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UITextInputMode /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITextInputMode /*</name>*/.class);
+
     /*<constructors>*/
+    protected UITextInputMode(SkipInit skipInit) { super(skipInit); }
     public UITextInputMode() {}
     
     /*</constructors>*/
@@ -55,19 +58,29 @@ public class /*<name>*/ UITextInputMode /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html#//apple_ref/occ/instp/UITextInputMode/primaryLanguage">@property (nonatomic, readonly, retain) NSString *primaryLanguage</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("primaryLanguage") public native @Type("NSString *") String getPrimaryLanguage();
+    @Bind("primaryLanguage") public native String getPrimaryLanguage();
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector activeInputModes = Selector.register("activeInputModes");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getActiveInputModes(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html#//apple_ref/occ/clm/UITextInputMode/activeInputModes">+ (NSArray *)activeInputModes</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("activeInputModes") public native static @Type("NSArray *") NSArray getActiveInputModes();
+    public static NSArray getActiveInputModes() {
+        return objc_getActiveInputModes(objCClass, activeInputModes);
+    }
+    
+    private static final Selector currentInputMode = Selector.register("currentInputMode");
+    @Bridge(symbol = "objc_msgSend") private native static UITextInputMode objc_getCurrentInputMode(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html#//apple_ref/occ/clm/UITextInputMode/currentInputMode">+ (UITextInputMode *)currentInputMode</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("currentInputMode") public native static @Type("UITextInputMode *") UITextInputMode getCurrentInputMode();
+    public static UITextInputMode getCurrentInputMode() {
+        return objc_getCurrentInputMode(objCClass, currentInputMode);
+    }
     /*</methods>*/
 
 }

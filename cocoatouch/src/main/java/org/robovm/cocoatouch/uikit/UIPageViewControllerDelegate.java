@@ -51,18 +51,18 @@ public interface /*<name>*/ UIPageViewControllerDelegate /*</name>*/ /*<implemen
     transitionCompleted:(BOOL)completed</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:") @Type("void") void didFinishAnimating(@Type("UIPageViewController *") UIPageViewController pageViewController, @Type("BOOL") boolean finished, @Type("NSArray *") NSArray previousViewControllers, @Type("BOOL") boolean completed);
+    void didFinishAnimating(UIPageViewController pageViewController, boolean finished, NSArray previousViewControllers, boolean completed);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDelegateProtocolRef/UIPageViewControllerDelegate.html#//apple_ref/occ/intfm/UIPageViewControllerDelegate/pageViewController:spineLocationForInterfaceOrientation:">- (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController *)pageViewController
     spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("pageViewController:spineLocationForInterfaceOrientation:") @Type("UIPageViewControllerSpineLocation") UIPageViewControllerSpineLocation getSpineLocation(@Type("UIPageViewController *") UIPageViewController pageViewController, @Type("UIInterfaceOrientation") UIInterfaceOrientation orientation);
+    UIPageViewControllerSpineLocation getSpineLocation(UIPageViewController pageViewController, UIInterfaceOrientation orientation);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDelegateProtocolRef/UIPageViewControllerDelegate.html#//apple_ref/occ/intfm/UIPageViewControllerDelegate/pageViewController:willTransitionToViewControllers:">- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("pageViewController:willTransitionToViewControllers:") @Type("void") void willTransition(@Type("UIPageViewController *") UIPageViewController pageViewController, @Type("NSArray *") NSArray pendingViewControllers);
+    void willTransition(UIPageViewController pageViewController, NSArray pendingViewControllers);
     /*</methods>*/
 
 }

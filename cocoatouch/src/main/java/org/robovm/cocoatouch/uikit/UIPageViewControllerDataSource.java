@@ -48,22 +48,22 @@ public interface /*<name>*/ UIPageViewControllerDataSource /*</name>*/ /*<implem
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html#//apple_ref/occ/intfm/UIPageViewControllerDataSource/presentationCountForPageViewController:">- (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("presentationCountForPageViewController:") @Type("NSInteger") int getPresentationCount(@Type("UIPageViewController *") UIPageViewController pageViewController);
+    int getPresentationCount(UIPageViewController pageViewController);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html#//apple_ref/occ/intfm/UIPageViewControllerDataSource/presentationIndexForPageViewController:">- (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("presentationIndexForPageViewController:") @Type("NSInteger") int getPresentationIndex(@Type("UIPageViewController *") UIPageViewController pageViewController);
+    int getPresentationIndex(UIPageViewController pageViewController);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html#//apple_ref/occ/intfm/UIPageViewControllerDataSource/pageViewController:viewControllerAfterViewController:">- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("pageViewController:viewControllerAfterViewController:") @Type("UIViewController *") UIViewController getViewControllerAfter(@Type("UIPageViewController *") UIPageViewController pageViewController, @Type("UIViewController *") UIViewController viewController);
+    UIViewController getViewControllerAfter(UIPageViewController pageViewController, UIViewController viewController);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html#//apple_ref/occ/intfm/UIPageViewControllerDataSource/pageViewController:viewControllerBeforeViewController:">- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("pageViewController:viewControllerBeforeViewController:") @Type("UIViewController *") UIViewController getViewControllerBefore(@Type("UIPageViewController *") UIPageViewController pageViewController, @Type("UIViewController *") UIViewController viewController);
+    UIViewController getViewControllerBefore(UIPageViewController pageViewController, UIViewController viewController);
     /*</methods>*/
 
 }

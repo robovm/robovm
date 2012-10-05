@@ -46,7 +46,10 @@ public class /*<name>*/ UIRotationGestureRecognizer /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIRotationGestureRecognizer /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIRotationGestureRecognizer /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIRotationGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     public UIRotationGestureRecognizer() {}
     
     /*</constructors>*/
@@ -55,17 +58,17 @@ public class /*<name>*/ UIRotationGestureRecognizer /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIRotateGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIRotationGestureRecognizer/rotation">@property(nonatomic) CGFloat rotation</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("rotation") public native @Type("CGFloat") float getRotation();
+    @Bind("rotation") public native float getRotation();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIRotateGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIRotationGestureRecognizer/rotation">@property(nonatomic) CGFloat rotation</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setRotation:") public native void setRotation(@Type("CGFloat") float v);
+    @Bind("setRotation:") public native void setRotation(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIRotateGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIRotationGestureRecognizer/velocity">@property(nonatomic, readonly) CGFloat velocity</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("velocity") public native @Type("CGFloat") float getVelocity();
+    @Bind("velocity") public native float getVelocity();
     /*</properties>*/
     /*<methods>*/
     

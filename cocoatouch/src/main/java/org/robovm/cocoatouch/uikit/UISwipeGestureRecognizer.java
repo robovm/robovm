@@ -46,7 +46,10 @@ public class /*<name>*/ UISwipeGestureRecognizer /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UISwipeGestureRecognizer /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UISwipeGestureRecognizer /*</name>*/.class);
+
     /*<constructors>*/
+    protected UISwipeGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     public UISwipeGestureRecognizer() {}
     
     /*</constructors>*/
@@ -55,22 +58,22 @@ public class /*<name>*/ UISwipeGestureRecognizer /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwipeGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwipeGestureRecognizer/direction">@property(nonatomic) UISwipeGestureRecognizerDirection direction</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("direction") public native @Type("UISwipeGestureRecognizerDirection") UISwipeGestureRecognizerDirection getDirection();
+    @Bind("direction") public native UISwipeGestureRecognizerDirection getDirection();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwipeGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwipeGestureRecognizer/direction">@property(nonatomic) UISwipeGestureRecognizerDirection direction</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setDirection:") public native void setDirection(@Type("UISwipeGestureRecognizerDirection") UISwipeGestureRecognizerDirection v);
+    @Bind("setDirection:") public native void setDirection(UISwipeGestureRecognizerDirection v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwipeGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwipeGestureRecognizer/numberOfTouchesRequired">@property(nonatomic) NSUInteger numberOfTouchesRequired</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("numberOfTouchesRequired") public native @Type("NSUInteger") int getNumberOfTouchesRequired();
+    @Bind("numberOfTouchesRequired") public native int getNumberOfTouchesRequired();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwipeGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwipeGestureRecognizer/numberOfTouchesRequired">@property(nonatomic) NSUInteger numberOfTouchesRequired</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setNumberOfTouchesRequired:") public native void setNumberOfTouchesRequired(@Type("NSUInteger") int v);
+    @Bind("setNumberOfTouchesRequired:") public native void setNumberOfTouchesRequired(int v);
     /*</properties>*/
     /*<methods>*/
     

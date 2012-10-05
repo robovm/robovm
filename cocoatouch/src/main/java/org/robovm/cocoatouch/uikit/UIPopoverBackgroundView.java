@@ -46,7 +46,10 @@ public class /*<name>*/ UIPopoverBackgroundView /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIPopoverBackgroundView /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPopoverBackgroundView /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIPopoverBackgroundView(SkipInit skipInit) { super(skipInit); }
     public UIPopoverBackgroundView() {}
     
     /*</constructors>*/
@@ -55,44 +58,64 @@ public class /*<name>*/ UIPopoverBackgroundView /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverBackgroundView_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverBackgroundView/arrowDirection">@property (nonatomic, readwrite) UIPopoverArrowDirection arrowDirection</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("arrowDirection") public native @Type("UIPopoverArrowDirection") UIPopoverArrowDirection getArrowDirection();
+    @Bind("arrowDirection") public native UIPopoverArrowDirection getArrowDirection();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverBackgroundView_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverBackgroundView/arrowDirection">@property (nonatomic, readwrite) UIPopoverArrowDirection arrowDirection</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setArrowDirection:") public native void setArrowDirection(@Type("UIPopoverArrowDirection") UIPopoverArrowDirection v);
+    @Bind("setArrowDirection:") public native void setArrowDirection(UIPopoverArrowDirection v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverBackgroundView_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverBackgroundView/arrowOffset">@property (nonatomic, readwrite) CGFloat arrowOffset</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("arrowOffset") public native @Type("CGFloat") float getArrowOffset();
+    @Bind("arrowOffset") public native float getArrowOffset();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverBackgroundView_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverBackgroundView/arrowOffset">@property (nonatomic, readwrite) CGFloat arrowOffset</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setArrowOffset:") public native void setArrowOffset(@Type("CGFloat") float v);
+    @Bind("setArrowOffset:") public native void setArrowOffset(float v);
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector arrowBase = Selector.register("arrowBase");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getArrowBase(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverBackgroundView_class/Reference/Reference.html#//apple_ref/occ/clm/UIPopoverBackgroundView/arrowBase">+ (CGFloat)arrowBase</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("arrowBase") public native static @Type("CGFloat") float getArrowBase();
+    public static float getArrowBase() {
+        return objc_getArrowBase(objCClass, arrowBase);
+    }
+    
+    private static final Selector arrowHeight = Selector.register("arrowHeight");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getArrowHeight(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverBackgroundView_class/Reference/Reference.html#//apple_ref/occ/clm/UIPopoverBackgroundView/arrowHeight">+ (CGFloat)arrowHeight</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("arrowHeight") public native static @Type("CGFloat") float getArrowHeight();
+    public static float getArrowHeight() {
+        return objc_getArrowHeight(objCClass, arrowHeight);
+    }
+    
+    private static final Selector contentViewInsets = Selector.register("contentViewInsets");
+    @Bridge(symbol = "objc_msgSend") private native static UIEdgeInsets objc_getContentViewInsets(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverBackgroundView_class/Reference/Reference.html#//apple_ref/occ/clm/UIPopoverBackgroundView/contentViewInsets">+ (UIEdgeInsets)contentViewInsets</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("contentViewInsets") public native static @Type("UIEdgeInsets") UIEdgeInsets getContentViewInsets();
+    public static UIEdgeInsets getContentViewInsets() {
+        return objc_getContentViewInsets(objCClass, contentViewInsets);
+    }
+    
+    private static final Selector wantsDefaultContentAppearance = Selector.register("wantsDefaultContentAppearance");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_wantsDefaultContentAppearance(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverBackgroundView_class/Reference/Reference.html#//apple_ref/occ/clm/UIPopoverBackgroundView/wantsDefaultContentAppearance">+ (BOOL)wantsDefaultContentAppearance</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("wantsDefaultContentAppearance") public native static @Type("BOOL") boolean wantsDefaultContentAppearance();
+    public static boolean wantsDefaultContentAppearance() {
+        return objc_wantsDefaultContentAppearance(objCClass, wantsDefaultContentAppearance);
+    }
     /*</methods>*/
 
 }

@@ -48,27 +48,27 @@ public interface /*<name>*/ UITabBarControllerDelegate /*</name>*/ /*<implements
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarControllerDelegate/tabBarController:didEndCustomizingViewControllers:changed:">- (void)tabBarController:(UITabBarController *)tabBarController  didEndCustomizingViewControllers:(NSArray *)viewControllers  changed:(BOOL)changed</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("tabBarController:didEndCustomizingViewControllers:changed:") @Type("void") void didEndCustomizingViewControllers(@Type("UITabBarController *") UITabBarController tabBarController, @Type("NSArray *") NSArray viewControllers, @Type("BOOL") boolean changed);
+    void didEndCustomizingViewControllers(UITabBarController tabBarController, NSArray viewControllers, boolean changed);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarControllerDelegate/tabBarController:didSelectViewController:">- (void)tabBarController:(UITabBarController *)tabBarController  didSelectViewController:(UIViewController *)viewController</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("tabBarController:didSelectViewController:") @Type("void") void didSelectViewController(@Type("UITabBarController *") UITabBarController tabBarController, @Type("UIViewController *") UIViewController viewController);
+    void didSelectViewController(UITabBarController tabBarController, UIViewController viewController);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarControllerDelegate/tabBarController:shouldSelectViewController:">- (BOOL)tabBarController:(UITabBarController *)tabBarController  shouldSelectViewController:(UIViewController *)viewController</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("tabBarController:shouldSelectViewController:") @Type("BOOL") boolean shouldSelectViewController(@Type("UITabBarController *") UITabBarController tabBarController, @Type("UIViewController *") UIViewController viewController);
+    boolean shouldSelectViewController(UITabBarController tabBarController, UIViewController viewController);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarControllerDelegate/tabBarController:willBeginCustomizingViewControllers:">- (void)tabBarController:(UITabBarController *)tabBarController  willBeginCustomizingViewControllers:(NSArray *)viewControllers</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("tabBarController:willBeginCustomizingViewControllers:") @Type("void") void willBeginCustomizingViewControllers(@Type("UITabBarController *") UITabBarController tabBarController, @Type("NSArray *") NSArray viewControllers);
+    void willBeginCustomizingViewControllers(UITabBarController tabBarController, NSArray viewControllers);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarControllerDelegate/tabBarController:willEndCustomizingViewControllers:changed:">- (void)tabBarController:(UITabBarController *)tabBarController  willEndCustomizingViewControllers:(NSArray *)viewControllers  changed:(BOOL)changed</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("tabBarController:willEndCustomizingViewControllers:changed:") @Type("void") void willEndCustomizingViewControllers(@Type("UITabBarController *") UITabBarController tabBarController, @Type("NSArray *") NSArray viewControllers, @Type("BOOL") boolean changed);
+    void willEndCustomizingViewControllers(UITabBarController tabBarController, NSArray viewControllers, boolean changed);
     /*</methods>*/
 
 }

@@ -47,22 +47,22 @@ public interface /*<name>*/ UICollectionViewDataSource /*</name>*/ /*<implements
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDataSource_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDataSource/collectionView:cellForItemAtIndexPath:">- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("collectionView:cellForItemAtIndexPath:") @Type("UICollectionViewCell *") UICollectionViewCell getItemCell(@Type("UICollectionView *") UICollectionView collectionView, @Type("NSIndexPath *") NSIndexPath indexPath);
+    UICollectionViewCell getItemCell(UICollectionView collectionView, NSIndexPath indexPath);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDataSource_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDataSource/collectionView:numberOfItemsInSection:">- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("collectionView:numberOfItemsInSection:") @Type("NSInteger") int getNumberOfItemsInSection(@Type("UICollectionView *") UICollectionView collectionView, @Type("NSInteger") int section);
+    int getNumberOfItemsInSection(UICollectionView collectionView, int section);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDataSource_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDataSource/numberOfSectionsInCollectionView:">- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("numberOfSectionsInCollectionView:") @Type("NSInteger") int getNumberOfSections(@Type("UICollectionView *") UICollectionView collectionView);
+    int getNumberOfSections(UICollectionView collectionView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDataSource_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDataSource/collectionView:viewForSupplementaryElementOfKind:atIndexPath:">- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("collectionView:viewForSupplementaryElementOfKind:atIndexPath:") @Type("UICollectionReusableView *") UICollectionReusableView getSupplementaryElementView(@Type("UICollectionView *") UICollectionView collectionView, @Type("NSString *") String kind, @Type("NSIndexPath *") NSIndexPath indexPath);
+    UICollectionReusableView getSupplementaryElementView(UICollectionView collectionView, String kind, NSIndexPath indexPath);
     /*</methods>*/
 
 }

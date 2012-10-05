@@ -46,35 +46,44 @@ public class /*<name>*/ UIMenuItem /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIMenuItem /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIMenuItem /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIMenuItem(SkipInit skipInit) { super(skipInit); }
     public UIMenuItem() {}
+    
+    private static final Selector initWithTitle$action$ = Selector.register("initWithTitle:action:");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithTitle(UIMenuItem __self__, Selector __cmd__, String title, Selector action);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMenuItem_Class/Reference/MenuItem.html#//apple_ref/occ/instm/UIMenuItem/initWithTitle:action:">- (id)initWithTitle:(NSString *)title action:(SEL)action</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("initWithTitle:action:") public UIMenuItem(@Type("NSString *") String title, @Type("SEL") Selector action) {}
+    public UIMenuItem(String title, Selector action) {
+        super((SkipInit) null);
+        objc_initWithTitle(this, initWithTitle$action$, title, action);
+    }
     /*</constructors>*/
     /*<properties>*/
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMenuItem_Class/Reference/MenuItem.html#//apple_ref/occ/instp/UIMenuItem/action">@property SEL action</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("action") public native @Type("SEL") Selector getAction();
+    @Bind("action") public native Selector getAction();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMenuItem_Class/Reference/MenuItem.html#//apple_ref/occ/instp/UIMenuItem/action">@property SEL action</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setAction:") public native void setAction(@Type("SEL") Selector v);
+    @Bind("setAction:") public native void setAction(Selector v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMenuItem_Class/Reference/MenuItem.html#//apple_ref/occ/instp/UIMenuItem/title">@property(copy) NSString *title</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("title") public native @Type("NSString *") String getTitle();
+    @Bind("title") public native String getTitle();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMenuItem_Class/Reference/MenuItem.html#//apple_ref/occ/instp/UIMenuItem/title">@property(copy) NSString *title</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setTitle:") public native void setTitle(@Type("NSString *") String v);
+    @Bind("setTitle:") public native void setTitle(String v);
     /*</properties>*/
     /*<methods>*/
     

@@ -48,17 +48,17 @@ public interface /*<name>*/ UIGestureRecognizerDelegate /*</name>*/ /*<implement
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIGestureRecognizerDelegate/gestureRecognizerShouldBegin:">- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("gestureRecognizerShouldBegin:") @Type("BOOL") boolean shouldBegin(@Type("UIGestureRecognizer *") UIGestureRecognizer gestureRecognizer);
+    boolean shouldBegin(UIGestureRecognizer gestureRecognizer);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIGestureRecognizerDelegate/gestureRecognizer:shouldReceiveTouch:">- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer   shouldReceiveTouch:(UITouch *)touch</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("gestureRecognizer:shouldReceiveTouch:") @Type("BOOL") boolean shouldReceiveTouch(@Type("UIGestureRecognizer *") UIGestureRecognizer gestureRecognizer, @Type("UITouch *") UITouch touch);
+    boolean shouldReceiveTouch(UIGestureRecognizer gestureRecognizer, UITouch touch);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIGestureRecognizerDelegate/gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:">- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer  shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:") @Type("BOOL") boolean shouldRecognizeSimultaneously(@Type("UIGestureRecognizer *") UIGestureRecognizer gestureRecognizer, @Type("UIGestureRecognizer *") UIGestureRecognizer otherGestureRecognizer);
+    boolean shouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer);
     /*</methods>*/
 
 }

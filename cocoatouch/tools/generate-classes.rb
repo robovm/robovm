@@ -20,10 +20,6 @@ class Array
 end
 
 def objc_to_java(type, instancetype, typedefs, overrides = nil)
-  if type =~ /^oneway\s+(.*?)$/ then return objc_to_java($1, instancetype, typedefs) end
-  if type =~ /^inout\s+(.*?)$/ then return objc_to_java($1, instancetype, typedefs) end
-  if type =~ /^const\s+(.*?)$/ then return objc_to_java($1, instancetype, typedefs) end
-
   java_type = overrides || typedefs[type] || case type
   when 'BOOL' then 'boolean'
   when /^void \(\^\)\(void\)$/ then 'VoidBlock'
@@ -50,21 +46,7 @@ def objc_to_java(type, instancetype, typedefs, overrides = nil)
   else type
   end
 
-  "@Type(\"#{type}\") #{java_type}"
-end
-
-def arg_to_java(arg, instancetype, typedefs, overrides)
-  type = arg[0]
-  name = arg[1]
-  if overrides && overrides[name] && overrides[name]['type']
-    type = objc_to_java(type, instancetype, typedefs, overrides[name]['type'])
-  else
-    type = objc_to_java(type, instancetype, typedefs)
-  end
-  if overrides && overrides[name] && overrides[name]['name']
-    name = overrides[name]['name']
-  end
-  "#{type} #{name}"
+  java_type
 end
 
 def wildcard_match(pattern, s)
@@ -74,6 +56,36 @@ end
 
 def escape_html(s)
   s.gsub(/</, '&lt;').gsub(/>/, '&gt;').gsub(/&/, '&amp;')
+end
+
+class ObjCType
+  attr_accessor :decl
+  attr_accessor :attributes
+  attr_accessor :type
+  def initialize(decl, instancetype, typedefs, overrides = nil)
+    @decl = decl
+    @attributes = []
+    if decl =~ /\boneway\b/ 
+      decl = decl.sub(/oneway/, '')
+      @attributes.push('oneway')
+    end
+    if decl =~ /\binout\b/ 
+      decl = decl.sub(/inout/, '')
+      @attributes.push('inout')
+    end
+    if decl =~ /\bconst\b/ 
+      decl = decl.sub(/const/, '')
+      @attributes.push('const')
+    end
+    @type = decl.strip
+    @java_type = objc_to_java(@type, instancetype, typedefs, overrides)
+  end
+  def primitive?
+    @java_type =~ /void|byte|boolean|char|short|int|long|float|double/
+  end
+  def to_java
+    @java_type
+  end
 end
 
 class ObjCClass
@@ -125,6 +137,9 @@ class ObjCClass
     if !@conf['skip_def_constructor']
       constructors_s = "public #{@name}() {}\n    " + constructors_s
     end
+    if !@conf['skip_skip_init_constructor']
+      constructors_s = "protected #{@name}(SkipInit skipInit) { super(skipInit); }\n    " + constructors_s
+    end
     template = template.sub(/\/\*<constructors>\*\/.*\/\*<\/constructors>\*\//m, "/*<constructors>*/\n    #{constructors_s}    /*</constructors>*/")
     properties_s = @properties.map {|p| p.to_java}.flatten.join("\n").gsub(/\n/m, "\n    ")
     template = template.sub(/\/\*<properties>\*\/.*\/\*<\/properties>\*\//m, "/*<properties>*/\n    #{properties_s}\n    /*</properties>*/")
@@ -155,10 +170,8 @@ class ObjCMethod
       parts = objcprot.split(/(\w+:)/)
     end
     parts = parts.map {|p| p.strip}
-    @returnType = parts.shift.sub(/^\((.*)\)$/, '\\1')
-    @name = parts.first.chomp(':')
-    @args = parts.odd_values.map {|a| a.match(/^\((.*?)\)([^\)]+?)[.;]*$/).values_at(1, 2)}
-    @selector = parts.even_values.join('')
+
+    @selector = parts[1..-1].even_values.join('')
     methods_conf = @clazz.conf['methods'] || {}
     conf_key = (@static ? '+' : '-') + @selector
     @conf = methods_conf[conf_key]
@@ -167,15 +180,22 @@ class ObjCMethod
       @conf = (methods_conf.to_a.select {|p| wildcard_match(p[0], conf_key)}.first || [nil, nil])[1]
     end
     @conf = @conf || {}
-    @name = @conf['name'] || @name
+
+    @name = @conf['name'] || parts[1].chomp(':')
     @visibility = @conf['visibility'] || 'public'
+
+    @return_type = ObjCType.new(parts.first.sub(/^\((.*)\)$/, '\\1'), @clazz.name, @clazz.typedefs, @conf['return_type'])
+    @parameters = parts[1..-1].odd_values.map {|part| part.match(/^\((.*?)\)([^\)]+?)[.;]*$/).values_at(1, 2)}.map do |pair|
+      overrides = @conf['parameters'] ? (@conf['parameters'][pair[1]] ? @conf['parameters'][pair[1]]['type'] : nil) : nil
+      [ObjCType.new(pair[0], @clazz.name, @clazz.typedefs, overrides), pair[1]]
+    end
   end
   def static?
     @static
   end
   def constructor?
     !@clazz.is_protocol && !@static && @name.start_with?('init') && (!@conf.has_key?('constructor') || @conf['constructor']) && 
-        (@returnType == 'id' || @returnType == 'instancetype' || @returnType == "#{@clazz.name} *")
+        (@return_type.decl == 'id' || @return_type.decl == 'instancetype' || @return_type.decl == "#{@clazz.name} *")
   end
   def get_javadoc
     "/**\n" +
@@ -184,15 +204,37 @@ class ObjCMethod
     " */"
   end
   def to_java
-    jtype = objc_to_java(@returnType, @clazz.name, @clazz.typedefs, @conf['return_type'])
-    args = @args.map {|a| arg_to_java(a, @clazz.name, @clazz.typedefs, @conf['args'])}
-    if constructor? then
-      "#{get_javadoc}\n@Bind(\"#{@selector}\") #{@visibility} #{@clazz.name}" + '(' + args.join(', ') + ') {}'
-    elsif @clazz.is_protocol
-      "#{get_javadoc}\n@Bind(\"#{@selector}\") " + (@static && 'static ' || '') + jtype + ' ' + @name + '(' + args.join(', ') + ');'
+    parameters_s = @parameters.map {|p| "#{p[0].to_java} #{p[1]}"}.join(', ')
+    selector_var = @selector.gsub(/:/, '$')
+    java = ''
+    if @clazz.is_protocol
+      java = "#{get_javadoc}\n" + (@static && 'static ' || '') + @return_type.to_java + ' ' + @name + '(' + parameters_s + ');'
     else
-      "#{get_javadoc}\n@Bind(\"#{@selector}\") #{@visibility} native " + (@static && 'static ' || '') + jtype + ' ' + @name + '(' + args.join(', ') + ');'
+      java = "#{java}\nprivate static final Selector #{selector_var} = Selector.register(\"#{@selector}\");"
+      if constructor? then
+        sig = "#{@visibility} #{@clazz.name}" + '(' + parameters_s + ')'
+      else
+        sig = "#{@visibility} " + (@static && 'static ' || '') + @return_type.to_java + ' ' + @name + '(' + parameters_s + ')'
+      end
+      msg_send = "objc_#{@name}"
+      msg_send_parameters_s = [@static ? 'ObjCClass __self__' : "#{@clazz.name} __self__", 'Selector __cmd__', @parameters.map {|p| "#{p[0].to_java} #{p[1]}"}].flatten.join(', ')
+      java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static #{@return_type.to_java} #{msg_send}(#{msg_send_parameters_s});"
+      args = [@static ? 'objCClass' : 'this', selector_var, @parameters.map {|p| p[1]}].flatten.join(', ')
+      body = ""
+      ret = !constructor? && @return_type.to_java != 'void' ? 'return ' : ''
+      if !@static && !constructor? && !(@visibility.include?('private') || @visibility.include?('final'))
+        # Call objc_msgSendSuper if this is a custom class
+        java = "#{java}\n@Bridge(symbol = \"objc_msgSendSuper\") private native static #{@return_type.to_java} #{msg_send}Super(ObjCSuper __super__, #{msg_send_parameters_s});"
+        body = "if (customClass) { #{ret}#{msg_send}Super(getSuper(), #{args}); } else { #{ret}#{msg_send}(#{args}); }"
+      elsif constructor?
+        body = "super((SkipInit) null);\n#{msg_send}(#{args});"
+      else
+        body = "#{ret}#{msg_send}(#{args});"
+      end
+      body = body.gsub(/\n/m, "\n    ")
+      java = "#{java}\n#{get_javadoc}\n#{sig} {\n    #{body}\n}"
     end
+    java
   end
   def hash
     @selector.hash

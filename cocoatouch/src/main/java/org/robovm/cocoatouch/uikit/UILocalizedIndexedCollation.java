@@ -46,7 +46,10 @@ public class /*<name>*/ UILocalizedIndexedCollation /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UILocalizedIndexedCollation /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UILocalizedIndexedCollation /*</name>*/.class);
+
     /*<constructors>*/
+    protected UILocalizedIndexedCollation(SkipInit skipInit) { super(skipInit); }
     public UILocalizedIndexedCollation() {}
     
     /*</constructors>*/
@@ -55,34 +58,57 @@ public class /*<name>*/ UILocalizedIndexedCollation /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalizedIndexedCollation_Class/UILocalizedIndexedCollation.html#//apple_ref/occ/instp/UILocalizedIndexedCollation/sectionIndexTitles">@property(nonatomic, readonly) NSArray *sectionIndexTitles</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("sectionIndexTitles") public native @Type("NSArray *") NSArray getSectionIndexTitles();
+    @Bind("sectionIndexTitles") public native NSArray getSectionIndexTitles();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalizedIndexedCollation_Class/UILocalizedIndexedCollation.html#//apple_ref/occ/instp/UILocalizedIndexedCollation/sectionTitles">@property(nonatomic, readonly) NSArray *sectionTitles</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("sectionTitles") public native @Type("NSArray *") NSArray getSectionTitles();
+    @Bind("sectionTitles") public native NSArray getSectionTitles();
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector currentCollation = Selector.register("currentCollation");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_getCurrentCollation(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalizedIndexedCollation_Class/UILocalizedIndexedCollation.html#//apple_ref/occ/clm/UILocalizedIndexedCollation/currentCollation">+ (id)currentCollation</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("currentCollation") public native static @Type("id") NSObject getCurrentCollation();
+    public static NSObject getCurrentCollation() {
+        return objc_getCurrentCollation(objCClass, currentCollation);
+    }
+    
+    private static final Selector sectionForObject$collationStringSelector$ = Selector.register("sectionForObject:collationStringSelector:");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getSectionForObject(UILocalizedIndexedCollation __self__, Selector __cmd__, NSObject object, Selector selector);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getSectionForObjectSuper(ObjCSuper __super__, UILocalizedIndexedCollation __self__, Selector __cmd__, NSObject object, Selector selector);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalizedIndexedCollation_Class/UILocalizedIndexedCollation.html#//apple_ref/occ/instm/UILocalizedIndexedCollation/sectionForObject:collationStringSelector:">- (NSInteger)sectionForObject:(id)object collationStringSelector:(SEL)selector</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("sectionForObject:collationStringSelector:") public native @Type("NSInteger") int getSectionForObject(@Type("id") NSObject object, @Type("SEL") Selector selector);
+    public int getSectionForObject(NSObject object, Selector selector) {
+        if (customClass) { return objc_getSectionForObjectSuper(getSuper(), this, sectionForObject$collationStringSelector$, object, selector); } else { return objc_getSectionForObject(this, sectionForObject$collationStringSelector$, object, selector); }
+    }
+    
+    private static final Selector sectionForSectionIndexTitleAtIndex$ = Selector.register("sectionForSectionIndexTitleAtIndex:");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getSectionForSectionIndexTitle(UILocalizedIndexedCollation __self__, Selector __cmd__, int indexTitleIndex);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getSectionForSectionIndexTitleSuper(ObjCSuper __super__, UILocalizedIndexedCollation __self__, Selector __cmd__, int indexTitleIndex);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalizedIndexedCollation_Class/UILocalizedIndexedCollation.html#//apple_ref/occ/instm/UILocalizedIndexedCollation/sectionForSectionIndexTitleAtIndex:">- (NSInteger)sectionForSectionIndexTitleAtIndex:(NSInteger)indexTitleIndex</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("sectionForSectionIndexTitleAtIndex:") public native @Type("NSInteger") int getSectionForSectionIndexTitle(@Type("NSInteger") int indexTitleIndex);
+    public int getSectionForSectionIndexTitle(int indexTitleIndex) {
+        if (customClass) { return objc_getSectionForSectionIndexTitleSuper(getSuper(), this, sectionForSectionIndexTitleAtIndex$, indexTitleIndex); } else { return objc_getSectionForSectionIndexTitle(this, sectionForSectionIndexTitleAtIndex$, indexTitleIndex); }
+    }
+    
+    private static final Selector sortedArrayFromArray$collationStringSelector$ = Selector.register("sortedArrayFromArray:collationStringSelector:");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_sortArray(UILocalizedIndexedCollation __self__, Selector __cmd__, NSArray array, Selector selector);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_sortArraySuper(ObjCSuper __super__, UILocalizedIndexedCollation __self__, Selector __cmd__, NSArray array, Selector selector);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalizedIndexedCollation_Class/UILocalizedIndexedCollation.html#//apple_ref/occ/instm/UILocalizedIndexedCollation/sortedArrayFromArray:collationStringSelector:">- (NSArray *)sortedArrayFromArray:(NSArray *)array collationStringSelector:(SEL)selector</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("sortedArrayFromArray:collationStringSelector:") public native @Type("NSArray *") NSArray sortArray(@Type("NSArray *") NSArray array, @Type("SEL") Selector selector);
+    public NSArray sortArray(NSArray array, Selector selector) {
+        if (customClass) { return objc_sortArraySuper(getSuper(), this, sortedArrayFromArray$collationStringSelector$, array, selector); } else { return objc_sortArray(this, sortedArrayFromArray$collationStringSelector$, array, selector); }
+    }
     /*</methods>*/
 
 }

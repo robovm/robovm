@@ -46,7 +46,10 @@ public class /*<name>*/ UIStoryboardPopoverSegue /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIStoryboardPopoverSegue /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIStoryboardPopoverSegue /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIStoryboardPopoverSegue(SkipInit skipInit) { super(skipInit); }
     public UIStoryboardPopoverSegue() {}
     
     /*</constructors>*/
@@ -55,7 +58,7 @@ public class /*<name>*/ UIStoryboardPopoverSegue /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardPopoverSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardPopoverSegue/popoverController">@property(nonatomic, retain, readonly) UIPopoverController *popoverController</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("popoverController") public native @Type("UIPopoverController *") UIPopoverController getPopoverController();
+    @Bind("popoverController") public native UIPopoverController getPopoverController();
     /*</properties>*/
     /*<methods>*/
     

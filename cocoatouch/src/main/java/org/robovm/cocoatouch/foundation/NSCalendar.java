@@ -41,7 +41,10 @@ public class /*<name>*/ NSCalendar /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSCalendar /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSCalendar /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSCalendar(SkipInit skipInit) { super(skipInit); }
     public NSCalendar() {}
     
     /*</constructors>*/

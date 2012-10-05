@@ -40,7 +40,10 @@ public class /*<name>*/ NSUUID /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSUUID /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSUUID /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSUUID(SkipInit skipInit) { super(skipInit); }
     public NSUUID() {}
     
     /*</constructors>*/

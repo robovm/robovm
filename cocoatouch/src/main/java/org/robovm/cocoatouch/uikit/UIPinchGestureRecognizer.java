@@ -46,7 +46,10 @@ public class /*<name>*/ UIPinchGestureRecognizer /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIPinchGestureRecognizer /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPinchGestureRecognizer /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIPinchGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     public UIPinchGestureRecognizer() {}
     
     /*</constructors>*/
@@ -55,17 +58,17 @@ public class /*<name>*/ UIPinchGestureRecognizer /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPinchGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPinchGestureRecognizer/scale">@property(nonatomic) CGFloat scale</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("scale") public native @Type("CGFloat") float getScale();
+    @Bind("scale") public native float getScale();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPinchGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPinchGestureRecognizer/scale">@property(nonatomic) CGFloat scale</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setScale:") public native void setScale(@Type("CGFloat") float v);
+    @Bind("setScale:") public native void setScale(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPinchGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPinchGestureRecognizer/velocity">@property(nonatomic, readonly) CGFloat velocity</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("velocity") public native @Type("CGFloat") float getVelocity();
+    @Bind("velocity") public native float getVelocity();
     /*</properties>*/
     /*<methods>*/
     

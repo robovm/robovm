@@ -48,37 +48,37 @@ public interface /*<name>*/ UIAlertViewDelegate /*</name>*/ /*<implements>*/ /*<
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertViewDelegate_Protocol/UIAlertViewDelegate/UIAlertViewDelegate.html#//apple_ref/occ/intfm/UIAlertViewDelegate/alertViewCancel:">- (void)alertViewCancel:(UIAlertView *)alertView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("alertViewCancel:") @Type("void") void cancel(@Type("UIAlertView *") UIAlertView alertView);
+    void cancel(UIAlertView alertView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertViewDelegate_Protocol/UIAlertViewDelegate/UIAlertViewDelegate.html#//apple_ref/occ/intfm/UIAlertViewDelegate/alertView:clickedButtonAtIndex:">- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("alertView:clickedButtonAtIndex:") @Type("void") void clicked(@Type("UIAlertView *") UIAlertView alertView, @Type("NSInteger") int buttonIndex);
+    void clicked(UIAlertView alertView, int buttonIndex);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertViewDelegate_Protocol/UIAlertViewDelegate/UIAlertViewDelegate.html#//apple_ref/occ/intfm/UIAlertViewDelegate/alertView:didDismissWithButtonIndex:">- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("alertView:didDismissWithButtonIndex:") @Type("void") void didDismiss(@Type("UIAlertView *") UIAlertView alertView, @Type("NSInteger") int buttonIndex);
+    void didDismiss(UIAlertView alertView, int buttonIndex);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertViewDelegate_Protocol/UIAlertViewDelegate/UIAlertViewDelegate.html#//apple_ref/occ/intfm/UIAlertViewDelegate/didPresentAlertView:">- (void)didPresentAlertView:(UIAlertView *)alertView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("didPresentAlertView:") @Type("void") void didPresent(@Type("UIAlertView *") UIAlertView alertView);
+    void didPresent(UIAlertView alertView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertViewDelegate_Protocol/UIAlertViewDelegate/UIAlertViewDelegate.html#//apple_ref/occ/intfm/UIAlertViewDelegate/alertViewShouldEnableFirstOtherButton:">- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("alertViewShouldEnableFirstOtherButton:") @Type("BOOL") boolean shouldEnableFirstOtherButton(@Type("UIAlertView *") UIAlertView alertView);
+    boolean shouldEnableFirstOtherButton(UIAlertView alertView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertViewDelegate_Protocol/UIAlertViewDelegate/UIAlertViewDelegate.html#//apple_ref/occ/intfm/UIAlertViewDelegate/alertView:willDismissWithButtonIndex:">- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("alertView:willDismissWithButtonIndex:") @Type("void") void willDismiss(@Type("UIAlertView *") UIAlertView alertView, @Type("NSInteger") int buttonIndex);
+    void willDismiss(UIAlertView alertView, int buttonIndex);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertViewDelegate_Protocol/UIAlertViewDelegate/UIAlertViewDelegate.html#//apple_ref/occ/intfm/UIAlertViewDelegate/willPresentAlertView:">- (void)willPresentAlertView:(UIAlertView *)alertView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("willPresentAlertView:") @Type("void") void willPresent(@Type("UIAlertView *") UIAlertView alertView);
+    void willPresent(UIAlertView alertView);
     /*</methods>*/
 
 }

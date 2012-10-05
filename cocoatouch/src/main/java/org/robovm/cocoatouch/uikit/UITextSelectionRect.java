@@ -45,7 +45,10 @@ public class /*<name>*/ UITextSelectionRect /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UITextSelectionRect /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITextSelectionRect /*</name>*/.class);
+
     /*<constructors>*/
+    protected UITextSelectionRect(SkipInit skipInit) { super(skipInit); }
     public UITextSelectionRect() {}
     
     /*</constructors>*/
@@ -54,31 +57,31 @@ public class /*<name>*/ UITextSelectionRect /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextSelectionRect_class/Reference/Reference.html#//apple_ref/occ/instp/UITextSelectionRect/containsEnd">@property (nonatomic, readonly) BOOL containsEnd</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("containsEnd") public native @Type("BOOL") boolean isContainsEnd();
+    @Bind("containsEnd") public native boolean isContainsEnd();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextSelectionRect_class/Reference/Reference.html#//apple_ref/occ/instp/UITextSelectionRect/containsStart">@property (nonatomic, readonly) BOOL containsStart</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("containsStart") public native @Type("BOOL") boolean isContainsStart();
+    @Bind("containsStart") public native boolean isContainsStart();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextSelectionRect_class/Reference/Reference.html#//apple_ref/occ/instp/UITextSelectionRect/range">@property (nonatomic, readonly) UITextRange *range</a>
      */
-    @Bind("range") public native @Type("UITextRange *") UITextRange getRange();
+    @Bind("range") public native UITextRange getRange();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextSelectionRect_class/Reference/Reference.html#//apple_ref/occ/instp/UITextSelectionRect/rect">@property (nonatomic, readonly) CGRect rect</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("rect") public native @Type("CGRect") CGRect getRect();
+    @Bind("rect") public native CGRect getRect();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextSelectionRect_class/Reference/Reference.html#//apple_ref/occ/instp/UITextSelectionRect/isVertical">@property (nonatomic, readonly) BOOL isVertical</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("isVertical") public native @Type("BOOL") boolean isVertical();
+    @Bind("isVertical") public native boolean isVertical();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextSelectionRect_class/Reference/Reference.html#//apple_ref/occ/instp/UITextSelectionRect/writingDirection">@property (nonatomic, readonly) UITextWritingDirection writingDirection</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("writingDirection") public native @Type("UITextWritingDirection") UITextWritingDirection getWritingDirection();
+    @Bind("writingDirection") public native UITextWritingDirection getWritingDirection();
     /*</properties>*/
     /*<methods>*/
     

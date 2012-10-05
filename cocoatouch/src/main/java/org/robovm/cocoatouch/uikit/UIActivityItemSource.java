@@ -47,12 +47,12 @@ public interface /*<name>*/ UIActivityItemSource /*</name>*/ /*<implements>*/ /*
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityItemSource_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIActivityItemSource/activityViewController:itemForActivityType:">- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("activityViewController:itemForActivityType:") @Type("id") NSObject getItem(@Type("UIActivityViewController *") UIActivityViewController activityViewController, @Type("NSString *") String activityType);
+    NSObject getItem(UIActivityViewController activityViewController, String activityType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityItemSource_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIActivityItemSource/activityViewControllerPlaceholderItem:">- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("activityViewControllerPlaceholderItem:") @Type("id") NSObject getPlaceholderItem(@Type("UIActivityViewController *") UIActivityViewController activityViewController);
+    NSObject getPlaceholderItem(UIActivityViewController activityViewController);
     /*</methods>*/
 
 }

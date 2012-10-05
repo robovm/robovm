@@ -47,12 +47,12 @@ public interface /*<name>*/ UIDataSourceModelAssociation /*</name>*/ /*<implemen
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDataSourceModelAssociation_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIDataSourceModelAssociation/indexPathForElementWithModelIdentifier:inView:">- (NSIndexPath *) indexPathForElementWithModelIdentifier:(NSString *)identifier inView:(UIView *)view</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("indexPathForElementWithModelIdentifier:inView:") @Type("NSIndexPath *") NSIndexPath getElementIndexPath(@Type("NSString *") String identifier, @Type("UIView *") UIView view);
+    NSIndexPath getElementIndexPath(String identifier, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDataSourceModelAssociation_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIDataSourceModelAssociation/modelIdentifierForElementAtIndexPath:inView:">- (NSString *) modelIdentifierForElementAtIndexPath:(NSIndexPath *)idx inView:(UIView *)view</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("modelIdentifierForElementAtIndexPath:inView:") @Type("NSString *") String getElementModelIdentifier(@Type("NSIndexPath *") NSIndexPath idx, @Type("UIView *") UIView view);
+    String getElementModelIdentifier(NSIndexPath idx, UIView view);
     /*</methods>*/
 
 }

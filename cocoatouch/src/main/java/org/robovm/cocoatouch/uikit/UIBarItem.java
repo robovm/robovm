@@ -46,7 +46,10 @@ public class /*<name>*/ UIBarItem /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIBarItem /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIBarItem /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIBarItem(SkipInit skipInit) { super(skipInit); }
     public UIBarItem() {}
     
     /*</constructors>*/
@@ -55,84 +58,96 @@ public class /*<name>*/ UIBarItem /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarItem/enabled">@property(nonatomic, getter=isEnabled) BOOL enabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isEnabled") public native @Type("BOOL") boolean isEnabled();
+    @Bind("isEnabled") public native boolean isEnabled();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarItem/enabled">@property(nonatomic, getter=isEnabled) BOOL enabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setEnabled:") public native void setEnabled(@Type("BOOL") boolean v);
+    @Bind("setEnabled:") public native void setEnabled(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarItem/image">@property(nonatomic, retain) UIImage *image</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("image") public native @Type("UIImage *") UIImage getImage();
+    @Bind("image") public native UIImage getImage();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarItem/image">@property(nonatomic, retain) UIImage *image</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setImage:") public native void setImage(@Type("UIImage *") UIImage v);
+    @Bind("setImage:") public native void setImage(UIImage v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarItem/imageInsets">@property(nonatomic) UIEdgeInsets imageInsets</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("imageInsets") public native @Type("UIEdgeInsets") UIEdgeInsets getImageInsets();
+    @Bind("imageInsets") public native UIEdgeInsets getImageInsets();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarItem/imageInsets">@property(nonatomic) UIEdgeInsets imageInsets</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setImageInsets:") public native void setImageInsets(@Type("UIEdgeInsets") UIEdgeInsets v);
+    @Bind("setImageInsets:") public native void setImageInsets(UIEdgeInsets v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarItem/landscapeImagePhone">@property(nonatomic, retain) UIImage *landscapeImagePhone</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("landscapeImagePhone") public native @Type("UIImage *") UIImage getLandscapeImagePhone();
+    @Bind("landscapeImagePhone") public native UIImage getLandscapeImagePhone();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarItem/landscapeImagePhone">@property(nonatomic, retain) UIImage *landscapeImagePhone</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setLandscapeImagePhone:") public native void setLandscapeImagePhone(@Type("UIImage *") UIImage v);
+    @Bind("setLandscapeImagePhone:") public native void setLandscapeImagePhone(UIImage v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarItem/landscapeImagePhoneInsets">@property(nonatomic) UIEdgeInsets landscapeImagePhoneInsets</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("landscapeImagePhoneInsets") public native @Type("UIEdgeInsets") UIEdgeInsets getLandscapeImagePhoneInsets();
+    @Bind("landscapeImagePhoneInsets") public native UIEdgeInsets getLandscapeImagePhoneInsets();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarItem/landscapeImagePhoneInsets">@property(nonatomic) UIEdgeInsets landscapeImagePhoneInsets</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setLandscapeImagePhoneInsets:") public native void setLandscapeImagePhoneInsets(@Type("UIEdgeInsets") UIEdgeInsets v);
+    @Bind("setLandscapeImagePhoneInsets:") public native void setLandscapeImagePhoneInsets(UIEdgeInsets v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarItem/tag">@property(nonatomic) NSInteger tag</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("tag") public native @Type("NSInteger") int getTag();
+    @Bind("tag") public native int getTag();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarItem/tag">@property(nonatomic) NSInteger tag</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTag:") public native void setTag(@Type("NSInteger") int v);
+    @Bind("setTag:") public native void setTag(int v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarItem/title">@property(nonatomic, copy) NSString *title</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("title") public native @Type("NSString *") String getTitle();
+    @Bind("title") public native String getTitle();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarItem/title">@property(nonatomic, copy) NSString *title</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTitle:") public native void setTitle(@Type("NSString *") String v);
+    @Bind("setTitle:") public native void setTitle(String v);
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector titleTextAttributesForState$ = Selector.register("titleTextAttributesForState:");
+    @Bridge(symbol = "objc_msgSend") private native static NSDictionary objc_getTitleTextAttributes(UIBarItem __self__, Selector __cmd__, UIControlState state);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSDictionary objc_getTitleTextAttributesSuper(ObjCSuper __super__, UIBarItem __self__, Selector __cmd__, UIControlState state);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UIBarItem/titleTextAttributesForState:">- (NSDictionary *)titleTextAttributesForState:(UIControlState)state</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("titleTextAttributesForState:") public native @Type("NSDictionary *") NSDictionary getTitleTextAttributes(@Type("UIControlState") UIControlState state);
+    public NSDictionary getTitleTextAttributes(UIControlState state) {
+        if (customClass) { return objc_getTitleTextAttributesSuper(getSuper(), this, titleTextAttributesForState$, state); } else { return objc_getTitleTextAttributes(this, titleTextAttributesForState$, state); }
+    }
+    
+    private static final Selector setTitleTextAttributes$forState$ = Selector.register("setTitleTextAttributes:forState:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTitleTextAttributes(UIBarItem __self__, Selector __cmd__, NSDictionary attributes, UIControlState state);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTitleTextAttributesSuper(ObjCSuper __super__, UIBarItem __self__, Selector __cmd__, NSDictionary attributes, UIControlState state);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UIBarItem/setTitleTextAttributes:forState:">- (void)setTitleTextAttributes:(NSDictionary *)attributes forState:(UIControlState)state</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setTitleTextAttributes:forState:") public native @Type("void") void setTitleTextAttributes(@Type("NSDictionary *") NSDictionary attributes, @Type("UIControlState") UIControlState state);
+    public void setTitleTextAttributes(NSDictionary attributes, UIControlState state) {
+        if (customClass) { objc_setTitleTextAttributesSuper(getSuper(), this, setTitleTextAttributes$forState$, attributes, state); } else { objc_setTitleTextAttributes(this, setTitleTextAttributes$forState$, attributes, state); }
+    }
     /*</methods>*/
 
 }

@@ -46,7 +46,10 @@ public class /*<name>*/ UIPrintInteractionController /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIPrintInteractionController /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPrintInteractionController /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIPrintInteractionController(SkipInit skipInit) { super(skipInit); }
     public UIPrintInteractionController() {}
     
     /*</constructors>*/
@@ -55,109 +58,140 @@ public class /*<name>*/ UIPrintInteractionController /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/delegate">@property(nonatomic, assign) id&amp;lt;UIPrintInteractionControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("delegate") public native @Type("id<UIPrintInteractionControllerDelegate>") UIPrintInteractionControllerDelegate getDelegate();
+    @Bind("delegate") public native UIPrintInteractionControllerDelegate getDelegate();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/delegate">@property(nonatomic, assign) id&amp;lt;UIPrintInteractionControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(@Type("id<UIPrintInteractionControllerDelegate>") UIPrintInteractionControllerDelegate v);
+    @Bind("setDelegate:") public native void setDelegate(UIPrintInteractionControllerDelegate v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/printFormatter">@property(nonatomic, retain) UIPrintFormatter *printFormatter</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("printFormatter") public native @Type("UIPrintFormatter *") UIPrintFormatter getPrintFormatter();
+    @Bind("printFormatter") public native UIPrintFormatter getPrintFormatter();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/printFormatter">@property(nonatomic, retain) UIPrintFormatter *printFormatter</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setPrintFormatter:") public native void setPrintFormatter(@Type("UIPrintFormatter *") UIPrintFormatter v);
+    @Bind("setPrintFormatter:") public native void setPrintFormatter(UIPrintFormatter v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/printInfo">@property(nonatomic, retain) UIPrintInfo *printInfo</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("printInfo") public native @Type("UIPrintInfo *") UIPrintInfo getPrintInfo();
+    @Bind("printInfo") public native UIPrintInfo getPrintInfo();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/printInfo">@property(nonatomic, retain) UIPrintInfo *printInfo</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setPrintInfo:") public native void setPrintInfo(@Type("UIPrintInfo *") UIPrintInfo v);
+    @Bind("setPrintInfo:") public native void setPrintInfo(UIPrintInfo v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/printPageRenderer">@property(nonatomic, retain) UIPrintPageRenderer printPageRenderer</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("printPageRenderer") public native @Type("UIPrintPageRenderer") UIPrintPageRenderer getPrintPageRenderer();
+    @Bind("printPageRenderer") public native UIPrintPageRenderer getPrintPageRenderer();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/printPageRenderer">@property(nonatomic, retain) UIPrintPageRenderer printPageRenderer</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setPrintPageRenderer:") public native void setPrintPageRenderer(@Type("UIPrintPageRenderer") UIPrintPageRenderer v);
+    @Bind("setPrintPageRenderer:") public native void setPrintPageRenderer(UIPrintPageRenderer v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/printPaper">@property(nonatomic, readonly) UIPrintPaper *printPaper</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("printPaper") public native @Type("UIPrintPaper *") UIPrintPaper getPrintPaper();
+    @Bind("printPaper") public native UIPrintPaper getPrintPaper();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/printingItem">@property(nonatomic, copy) id printingItem</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("printingItem") public native @Type("id") NSObject getPrintingItem();
+    @Bind("printingItem") public native NSObject getPrintingItem();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/printingItem">@property(nonatomic, copy) id printingItem</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setPrintingItem:") public native void setPrintingItem(@Type("id") NSObject v);
+    @Bind("setPrintingItem:") public native void setPrintingItem(NSObject v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/printingItems">@property(nonatomic, copy) NSArray *printingItems</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("printingItems") public native @Type("NSArray *") NSArray getPrintingItems();
+    @Bind("printingItems") public native NSArray getPrintingItems();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/printingItems">@property(nonatomic, copy) NSArray *printingItems</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setPrintingItems:") public native void setPrintingItems(@Type("NSArray *") NSArray v);
+    @Bind("setPrintingItems:") public native void setPrintingItems(NSArray v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/showsPageRange">@property(nonatomic) BOOL showsPageRange</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("showsPageRange") public native @Type("BOOL") boolean isShowsPageRange();
+    @Bind("showsPageRange") public native boolean isShowsPageRange();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/showsPageRange">@property(nonatomic) BOOL showsPageRange</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setShowsPageRange:") public native void setShowsPageRange(@Type("BOOL") boolean v);
+    @Bind("setShowsPageRange:") public native void setShowsPageRange(boolean v);
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector canPrintData$ = Selector.register("canPrintData:");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_canPrint(ObjCClass __self__, Selector __cmd__, NSData data);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInteractionController/canPrintData:">+ (BOOL)canPrintData:(NSData *)data</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("canPrintData:") public native static @Type("BOOL") boolean canPrint(@Type("NSData *") NSData data);
+    public static boolean canPrint(NSData data) {
+        return objc_canPrint(objCClass, canPrintData$, data);
+    }
+    
+    private static final Selector canPrintURL$ = Selector.register("canPrintURL:");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_canPrint(ObjCClass __self__, Selector __cmd__, NSURL url);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInteractionController/canPrintURL:">+ (BOOL)canPrintURL:(NSURL *)url</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("canPrintURL:") public native static @Type("BOOL") boolean canPrint(@Type("NSURL *") NSURL url);
+    public static boolean canPrint(NSURL url) {
+        return objc_canPrint(objCClass, canPrintURL$, url);
+    }
+    
+    private static final Selector printableUTIs = Selector.register("printableUTIs");
+    @Bridge(symbol = "objc_msgSend") private native static NSSet objc_getPrintableUTIs(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInteractionController/printableUTIs">+ (NSSet *)printableUTIs</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("printableUTIs") public native static @Type("NSSet *") NSSet getPrintableUTIs();
+    public static NSSet getPrintableUTIs() {
+        return objc_getPrintableUTIs(objCClass, printableUTIs);
+    }
+    
+    private static final Selector sharedPrintController = Selector.register("sharedPrintController");
+    @Bridge(symbol = "objc_msgSend") private native static UIPrintInteractionController objc_getSharedPrintController(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInteractionController/sharedPrintController">+ (UIPrintInteractionController *)sharedPrintController</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("sharedPrintController") public native static @Type("UIPrintInteractionController *") UIPrintInteractionController getSharedPrintController();
+    public static UIPrintInteractionController getSharedPrintController() {
+        return objc_getSharedPrintController(objCClass, sharedPrintController);
+    }
+    
+    private static final Selector isPrintingAvailable = Selector.register("isPrintingAvailable");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isPrintingAvailable(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInteractionController/isPrintingAvailable">+ (BOOL)isPrintingAvailable</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("isPrintingAvailable") public native static @Type("BOOL") boolean isPrintingAvailable();
+    public static boolean isPrintingAvailable() {
+        return objc_isPrintingAvailable(objCClass, isPrintingAvailable);
+    }
+    
+    private static final Selector dismissAnimated$ = Selector.register("dismissAnimated:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_dismiss(UIPrintInteractionController __self__, Selector __cmd__, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_dismissSuper(ObjCSuper __super__, UIPrintInteractionController __self__, Selector __cmd__, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPrintInteractionController/dismissAnimated:">- (void)dismissAnimated:(BOOL)animated</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("dismissAnimated:") public native @Type("void") void dismiss(@Type("BOOL") boolean animated);
+    public void dismiss(boolean animated) {
+        if (customClass) { objc_dismissSuper(getSuper(), this, dismissAnimated$, animated); } else { objc_dismiss(this, dismissAnimated$, animated); }
+    }
     /*</methods>*/
 
 }

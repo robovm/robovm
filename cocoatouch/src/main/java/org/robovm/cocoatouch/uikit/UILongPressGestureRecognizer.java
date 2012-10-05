@@ -46,7 +46,10 @@ public class /*<name>*/ UILongPressGestureRecognizer /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UILongPressGestureRecognizer /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UILongPressGestureRecognizer /*</name>*/.class);
+
     /*<constructors>*/
+    protected UILongPressGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     public UILongPressGestureRecognizer() {}
     
     /*</constructors>*/
@@ -55,42 +58,42 @@ public class /*<name>*/ UILongPressGestureRecognizer /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILongPressGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UILongPressGestureRecognizer/allowableMovement">@property(nonatomic) CGFloat allowableMovement</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("allowableMovement") public native @Type("CGFloat") float getAllowableMovement();
+    @Bind("allowableMovement") public native float getAllowableMovement();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILongPressGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UILongPressGestureRecognizer/allowableMovement">@property(nonatomic) CGFloat allowableMovement</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setAllowableMovement:") public native void setAllowableMovement(@Type("CGFloat") float v);
+    @Bind("setAllowableMovement:") public native void setAllowableMovement(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILongPressGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UILongPressGestureRecognizer/minimumPressDuration">@property(nonatomic) CFTimeInterval minimumPressDuration</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("minimumPressDuration") public native @Type("CFTimeInterval") double getMinimumPressDuration();
+    @Bind("minimumPressDuration") public native double getMinimumPressDuration();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILongPressGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UILongPressGestureRecognizer/minimumPressDuration">@property(nonatomic) CFTimeInterval minimumPressDuration</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setMinimumPressDuration:") public native void setMinimumPressDuration(@Type("CFTimeInterval") double v);
+    @Bind("setMinimumPressDuration:") public native void setMinimumPressDuration(double v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILongPressGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UILongPressGestureRecognizer/numberOfTapsRequired">@property (nonatomic) NSUInteger  numberOfTapsRequired</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("numberOfTapsRequired") public native @Type("NSUInteger") int getNumberOfTapsRequired();
+    @Bind("numberOfTapsRequired") public native int getNumberOfTapsRequired();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILongPressGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UILongPressGestureRecognizer/numberOfTapsRequired">@property (nonatomic) NSUInteger  numberOfTapsRequired</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setNumberOfTapsRequired:") public native void setNumberOfTapsRequired(@Type("NSUInteger") int v);
+    @Bind("setNumberOfTapsRequired:") public native void setNumberOfTapsRequired(int v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILongPressGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UILongPressGestureRecognizer/numberOfTouchesRequired">@property(nonatomic) NSInteger numberOfTouchesRequired</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("numberOfTouchesRequired") public native @Type("NSInteger") int getNumberOfTouchesRequired();
+    @Bind("numberOfTouchesRequired") public native int getNumberOfTouchesRequired();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILongPressGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UILongPressGestureRecognizer/numberOfTouchesRequired">@property(nonatomic) NSInteger numberOfTouchesRequired</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setNumberOfTouchesRequired:") public native void setNumberOfTouchesRequired(@Type("NSInteger") int v);
+    @Bind("setNumberOfTouchesRequired:") public native void setNumberOfTouchesRequired(int v);
     /*</properties>*/
     /*<methods>*/
     

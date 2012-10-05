@@ -46,7 +46,10 @@ public class /*<name>*/ UIEvent /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIEvent /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIEvent /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIEvent(SkipInit skipInit) { super(skipInit); }
     public UIEvent() {}
     
     /*</constructors>*/
@@ -55,39 +58,63 @@ public class /*<name>*/ UIEvent /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIEvent_Class/Reference/Reference.html#//apple_ref/occ/instp/UIEvent/subtype">@property(readonly) UIEventSubtype subtype</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("subtype") public native @Type("UIEventSubtype") UIEventSubtype getSubtype();
+    @Bind("subtype") public native UIEventSubtype getSubtype();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIEvent_Class/Reference/Reference.html#//apple_ref/occ/instp/UIEvent/timestamp">@property(nonatomic, readonly) NSTimeInterval timestamp</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("timestamp") public native @Type("NSTimeInterval") double getTimestamp();
+    @Bind("timestamp") public native double getTimestamp();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIEvent_Class/Reference/Reference.html#//apple_ref/occ/instp/UIEvent/type">@property(readonly) UIEventType type</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("type") public native @Type("UIEventType") UIEventType getType();
+    @Bind("type") public native UIEventType getType();
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector allTouches = Selector.register("allTouches");
+    @Bridge(symbol = "objc_msgSend") private native static NSSet objc_getAllTouches(UIEvent __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSSet objc_getAllTouchesSuper(ObjCSuper __super__, UIEvent __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIEvent_Class/Reference/Reference.html#//apple_ref/occ/instm/UIEvent/allTouches">- (NSSet *)allTouches</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("allTouches") public native @Type("NSSet *") NSSet getAllTouches();
+    public NSSet getAllTouches() {
+        if (customClass) { return objc_getAllTouchesSuper(getSuper(), this, allTouches); } else { return objc_getAllTouches(this, allTouches); }
+    }
+    
+    private static final Selector touchesForView$ = Selector.register("touchesForView:");
+    @Bridge(symbol = "objc_msgSend") private native static NSSet objc_getTouches(UIEvent __self__, Selector __cmd__, UIView view);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSSet objc_getTouchesSuper(ObjCSuper __super__, UIEvent __self__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIEvent_Class/Reference/Reference.html#//apple_ref/occ/instm/UIEvent/touchesForView:">- (NSSet *)touchesForView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("touchesForView:") public native @Type("NSSet *") NSSet getTouches(@Type("UIView *") UIView view);
+    public NSSet getTouches(UIView view) {
+        if (customClass) { return objc_getTouchesSuper(getSuper(), this, touchesForView$, view); } else { return objc_getTouches(this, touchesForView$, view); }
+    }
+    
+    private static final Selector touchesForGestureRecognizer$ = Selector.register("touchesForGestureRecognizer:");
+    @Bridge(symbol = "objc_msgSend") private native static NSSet objc_getTouches(UIEvent __self__, Selector __cmd__, UIGestureRecognizer gesture);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSSet objc_getTouchesSuper(ObjCSuper __super__, UIEvent __self__, Selector __cmd__, UIGestureRecognizer gesture);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIEvent_Class/Reference/Reference.html#//apple_ref/occ/instm/UIEvent/touchesForGestureRecognizer:">- (NSSet *)touchesForGestureRecognizer:(UIGestureRecognizer *)gesture</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("touchesForGestureRecognizer:") public native @Type("NSSet *") NSSet getTouches(@Type("UIGestureRecognizer *") UIGestureRecognizer gesture);
+    public NSSet getTouches(UIGestureRecognizer gesture) {
+        if (customClass) { return objc_getTouchesSuper(getSuper(), this, touchesForGestureRecognizer$, gesture); } else { return objc_getTouches(this, touchesForGestureRecognizer$, gesture); }
+    }
+    
+    private static final Selector touchesForWindow$ = Selector.register("touchesForWindow:");
+    @Bridge(symbol = "objc_msgSend") private native static NSSet objc_getTouches(UIEvent __self__, Selector __cmd__, UIWindow window);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSSet objc_getTouchesSuper(ObjCSuper __super__, UIEvent __self__, Selector __cmd__, UIWindow window);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIEvent_Class/Reference/Reference.html#//apple_ref/occ/instm/UIEvent/touchesForWindow:">- (NSSet *)touchesForWindow:(UIWindow *)window</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("touchesForWindow:") public native @Type("NSSet *") NSSet getTouches(@Type("UIWindow *") UIWindow window);
+    public NSSet getTouches(UIWindow window) {
+        if (customClass) { return objc_getTouchesSuper(getSuper(), this, touchesForWindow$, window); } else { return objc_getTouches(this, touchesForWindow$, window); }
+    }
     /*</methods>*/
 
 }

@@ -46,7 +46,10 @@ public class /*<name>*/ UIPageControl /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIPageControl /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPageControl /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIPageControl(SkipInit skipInit) { super(skipInit); }
     public UIPageControl() {}
     
     /*</constructors>*/
@@ -55,74 +58,86 @@ public class /*<name>*/ UIPageControl /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPage">@property(nonatomic) NSInteger currentPage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("currentPage") public native @Type("NSInteger") int getCurrentPage();
+    @Bind("currentPage") public native int getCurrentPage();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPage">@property(nonatomic) NSInteger currentPage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setCurrentPage:") public native void setCurrentPage(@Type("NSInteger") int v);
+    @Bind("setCurrentPage:") public native void setCurrentPage(int v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPageIndicatorTintColor">@property(nonatomic,retain) UIColor *currentPageIndicatorTintColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("currentPageIndicatorTintColor") public native @Type("UIColor *") UIColor getCurrentPageIndicatorTintColor();
+    @Bind("currentPageIndicatorTintColor") public native UIColor getCurrentPageIndicatorTintColor();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPageIndicatorTintColor">@property(nonatomic,retain) UIColor *currentPageIndicatorTintColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setCurrentPageIndicatorTintColor:") public native void setCurrentPageIndicatorTintColor(@Type("UIColor *") UIColor v);
+    @Bind("setCurrentPageIndicatorTintColor:") public native void setCurrentPageIndicatorTintColor(UIColor v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/defersCurrentPageDisplay">@property(nonatomic) BOOL defersCurrentPageDisplay</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("defersCurrentPageDisplay") public native @Type("BOOL") boolean isDefersCurrentPageDisplay();
+    @Bind("defersCurrentPageDisplay") public native boolean isDefersCurrentPageDisplay();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/defersCurrentPageDisplay">@property(nonatomic) BOOL defersCurrentPageDisplay</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDefersCurrentPageDisplay:") public native void setDefersCurrentPageDisplay(@Type("BOOL") boolean v);
+    @Bind("setDefersCurrentPageDisplay:") public native void setDefersCurrentPageDisplay(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/hidesForSinglePage">@property(nonatomic) BOOL hidesForSinglePage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("hidesForSinglePage") public native @Type("BOOL") boolean isHidesForSinglePage();
+    @Bind("hidesForSinglePage") public native boolean isHidesForSinglePage();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/hidesForSinglePage">@property(nonatomic) BOOL hidesForSinglePage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setHidesForSinglePage:") public native void setHidesForSinglePage(@Type("BOOL") boolean v);
+    @Bind("setHidesForSinglePage:") public native void setHidesForSinglePage(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/numberOfPages">@property(nonatomic) NSInteger numberOfPages</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("numberOfPages") public native @Type("NSInteger") int getNumberOfPages();
+    @Bind("numberOfPages") public native int getNumberOfPages();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/numberOfPages">@property(nonatomic) NSInteger numberOfPages</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setNumberOfPages:") public native void setNumberOfPages(@Type("NSInteger") int v);
+    @Bind("setNumberOfPages:") public native void setNumberOfPages(int v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/pageIndicatorTintColor">@property(nonatomic,retain) UIColor *pageIndicatorTintColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("pageIndicatorTintColor") public native @Type("UIColor *") UIColor getPageIndicatorTintColor();
+    @Bind("pageIndicatorTintColor") public native UIColor getPageIndicatorTintColor();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/pageIndicatorTintColor">@property(nonatomic,retain) UIColor *pageIndicatorTintColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setPageIndicatorTintColor:") public native void setPageIndicatorTintColor(@Type("UIColor *") UIColor v);
+    @Bind("setPageIndicatorTintColor:") public native void setPageIndicatorTintColor(UIColor v);
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector sizeForNumberOfPages$ = Selector.register("sizeForNumberOfPages:");
+    @Bridge(symbol = "objc_msgSend") private native static CGSize objc_getSizeForNumberOfPages(UIPageControl __self__, Selector __cmd__, int pageCount);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGSize objc_getSizeForNumberOfPagesSuper(ObjCSuper __super__, UIPageControl __self__, Selector __cmd__, int pageCount);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPageControl/sizeForNumberOfPages:">- (CGSize)sizeForNumberOfPages:(NSInteger)pageCount</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("sizeForNumberOfPages:") public native @Type("CGSize") CGSize getSizeForNumberOfPages(@Type("NSInteger") int pageCount);
+    public CGSize getSizeForNumberOfPages(int pageCount) {
+        if (customClass) { return objc_getSizeForNumberOfPagesSuper(getSuper(), this, sizeForNumberOfPages$, pageCount); } else { return objc_getSizeForNumberOfPages(this, sizeForNumberOfPages$, pageCount); }
+    }
+    
+    private static final Selector updateCurrentPageDisplay = Selector.register("updateCurrentPageDisplay");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_updateCurrentPageDisplay(UIPageControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_updateCurrentPageDisplaySuper(ObjCSuper __super__, UIPageControl __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPageControl/updateCurrentPageDisplay">- (void)updateCurrentPageDisplay</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("updateCurrentPageDisplay") public native @Type("void") void updateCurrentPageDisplay();
+    public void updateCurrentPageDisplay() {
+        if (customClass) { objc_updateCurrentPageDisplaySuper(getSuper(), this, updateCurrentPageDisplay); } else { objc_updateCurrentPageDisplay(this, updateCurrentPageDisplay); }
+    }
     /*</methods>*/
 
 }

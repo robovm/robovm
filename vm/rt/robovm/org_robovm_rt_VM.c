@@ -158,6 +158,11 @@ Object* Java_org_robovm_rt_VM_castAddressToObject(Env* env, Class* c, jlong addr
     return (Object*) LONG_TO_PTR(address);
 }
 
+jlong Java_org_robovm_rt_VM_getFieldAddress(Env* env, Class* c, Object* fieldObject) {
+    Field* field = (Field*) getFieldFromFieldObject(env, fieldObject);
+    return PTR_TO_LONG(field);
+}
+
 jint Java_org_robovm_rt_VM_getInstanceFieldOffset(Env* env, Class* c, jlong fieldPtr) {
     InstanceField* field = (InstanceField*) LONG_TO_PTR(fieldPtr);
     return field->offset;

@@ -48,59 +48,59 @@ public interface /*<name>*/ UISearchBarDelegate /*</name>*/ /*<implements>*/ /*<
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchBarDelegate/searchBarBookmarkButtonClicked:">- (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("searchBarBookmarkButtonClicked:") @Type("void") void bookmarkButtonClicked(@Type("UISearchBar *") UISearchBar searchBar);
+    void bookmarkButtonClicked(UISearchBar searchBar);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchBarDelegate/searchBarCancelButtonClicked:">- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("searchBarCancelButtonClicked:") @Type("void") void cancelButtonClicked(@Type("UISearchBar *") UISearchBar searchBar);
+    void cancelButtonClicked(UISearchBar searchBar);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchBarDelegate/searchBarTextDidBeginEditing:">- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("searchBarTextDidBeginEditing:") @Type("void") void didBeginEditing(@Type("UISearchBar *") UISearchBar searchBar);
+    void didBeginEditing(UISearchBar searchBar);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchBarDelegate/searchBar:textDidChange:">- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("searchBar:textDidChange:") @Type("void") void didChange(@Type("UISearchBar *") UISearchBar searchBar, @Type("NSString *") String searchText);
+    void didChange(UISearchBar searchBar, String searchText);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchBarDelegate/searchBarTextDidEndEditing:">- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("searchBarTextDidEndEditing:") @Type("void") void didEndEditing(@Type("UISearchBar *") UISearchBar searchBar);
+    void didEndEditing(UISearchBar searchBar);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchBarDelegate/searchBarResultsListButtonClicked:">- (void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("searchBarResultsListButtonClicked:") @Type("void") void resultsListButtonClicked(@Type("UISearchBar *") UISearchBar searchBar);
+    void resultsListButtonClicked(UISearchBar searchBar);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchBarDelegate/searchBarSearchButtonClicked:">- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("searchBarSearchButtonClicked:") @Type("void") void searchButtonClicked(@Type("UISearchBar *") UISearchBar searchBar);
+    void searchButtonClicked(UISearchBar searchBar);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchBarDelegate/searchBar:selectedScopeButtonIndexDidChange:">- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("searchBar:selectedScopeButtonIndexDidChange:") @Type("void") void selectedScopeButtonIndexDidChange(@Type("UISearchBar *") UISearchBar searchBar, @Type("NSInteger") int selectedScope);
+    void selectedScopeButtonIndexDidChange(UISearchBar searchBar, int selectedScope);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchBarDelegate/searchBarShouldBeginEditing:">- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("searchBarShouldBeginEditing:") @Type("BOOL") boolean shouldBeginEditing(@Type("UISearchBar *") UISearchBar searchBar);
+    boolean shouldBeginEditing(UISearchBar searchBar);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchBarDelegate/searchBar:shouldChangeTextInRange:replacementText:">- (BOOL)searchBar:(UISearchBar *)searchBar
     shouldChangeTextInRange:(NSRange)range 
     replacementText:(NSString *)text</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("searchBar:shouldChangeTextInRange:replacementText:") @Type("BOOL") boolean shouldChange(@Type("UISearchBar *") UISearchBar searchBar, @Type("NSRange") NSRange range, @Type("NSString *") String text);
+    boolean shouldChange(UISearchBar searchBar, NSRange range, String text);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchBarDelegate/searchBarShouldEndEditing:">- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("searchBarShouldEndEditing:") @Type("BOOL") boolean shouldEndEditing(@Type("UISearchBar *") UISearchBar searchBar);
+    boolean shouldEndEditing(UISearchBar searchBar);
     /*</methods>*/
 
 }

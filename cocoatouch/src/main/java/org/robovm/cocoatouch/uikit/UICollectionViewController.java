@@ -45,35 +45,44 @@ public class /*<name>*/ UICollectionViewController /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UICollectionViewController /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UICollectionViewController /*</name>*/.class);
+
     /*<constructors>*/
+    protected UICollectionViewController(SkipInit skipInit) { super(skipInit); }
     public UICollectionViewController() {}
+    
+    private static final Selector initWithCollectionViewLayout$ = Selector.register("initWithCollectionViewLayout:");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithCollectionViewLayout(UICollectionViewController __self__, Selector __cmd__, UICollectionViewLayout layout);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewController_clas/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewController/initWithCollectionViewLayout:">- (id)initWithCollectionViewLayout:(UICollectionViewLayout *)layout</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("initWithCollectionViewLayout:") public UICollectionViewController(@Type("UICollectionViewLayout *") UICollectionViewLayout layout) {}
+    public UICollectionViewController(UICollectionViewLayout layout) {
+        super((SkipInit) null);
+        objc_initWithCollectionViewLayout(this, initWithCollectionViewLayout$, layout);
+    }
     /*</constructors>*/
     /*<properties>*/
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewController_clas/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewController/clearsSelectionOnViewWillAppear">@property (nonatomic) BOOL clearsSelectionOnViewWillAppear</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("clearsSelectionOnViewWillAppear") public native @Type("BOOL") boolean isClearsSelectionOnViewWillAppear();
+    @Bind("clearsSelectionOnViewWillAppear") public native boolean isClearsSelectionOnViewWillAppear();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewController_clas/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewController/clearsSelectionOnViewWillAppear">@property (nonatomic) BOOL clearsSelectionOnViewWillAppear</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setClearsSelectionOnViewWillAppear:") public native void setClearsSelectionOnViewWillAppear(@Type("BOOL") boolean v);
+    @Bind("setClearsSelectionOnViewWillAppear:") public native void setClearsSelectionOnViewWillAppear(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewController_clas/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewController/collectionView">@property (nonatomic, retain) UICollectionView *collectionView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("collectionView") public native @Type("UICollectionView *") UICollectionView getCollectionView();
+    @Bind("collectionView") public native UICollectionView getCollectionView();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewController_clas/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewController/collectionView">@property (nonatomic, retain) UICollectionView *collectionView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setCollectionView:") public native void setCollectionView(@Type("UICollectionView *") UICollectionView v);
+    @Bind("setCollectionView:") public native void setCollectionView(UICollectionView v);
     /*</properties>*/
     /*<methods>*/
     

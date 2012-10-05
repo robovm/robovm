@@ -46,7 +46,10 @@ public class /*<name>*/ UIWindow /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIWindow /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIWindow /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIWindow(SkipInit skipInit) { super(skipInit); }
     public UIWindow() {}
     
     /*</constructors>*/
@@ -55,84 +58,138 @@ public class /*<name>*/ UIWindow /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/keyWindow">@property(nonatomic, readonly, getter=isKeyWindow) BOOL keyWindow</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isKeyWindow") public native @Type("BOOL") boolean isKeyWindow();
+    @Bind("isKeyWindow") public native boolean isKeyWindow();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/rootViewController">@property(nonatomic, retain) UIViewController *rootViewController</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("rootViewController") public native @Type("UIViewController *") UIViewController getRootViewController();
+    @Bind("rootViewController") public native UIViewController getRootViewController();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/rootViewController">@property(nonatomic, retain) UIViewController *rootViewController</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("setRootViewController:") public native void setRootViewController(@Type("UIViewController *") UIViewController v);
+    @Bind("setRootViewController:") public native void setRootViewController(UIViewController v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/screen">@property(nonatomic, retain) UIScreen *screen</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("screen") public native @Type("UIScreen *") UIScreen getScreen();
+    @Bind("screen") public native UIScreen getScreen();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/screen">@property(nonatomic, retain) UIScreen *screen</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setScreen:") public native void setScreen(@Type("UIScreen *") UIScreen v);
+    @Bind("setScreen:") public native void setScreen(UIScreen v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/windowLevel">@property(nonatomic) UIWindowLevel windowLevel</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("windowLevel") public native @Type("UIWindowLevel") float getWindowLevel();
+    @Bind("windowLevel") public native float getWindowLevel();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/windowLevel">@property(nonatomic) UIWindowLevel windowLevel</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setWindowLevel:") public native void setWindowLevel(@Type("UIWindowLevel") float v);
+    @Bind("setWindowLevel:") public native void setWindowLevel(float v);
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector becomeKeyWindow = Selector.register("becomeKeyWindow");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_becomeKeyWindow(UIWindow __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_becomeKeyWindowSuper(ObjCSuper __super__, UIWindow __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/becomeKeyWindow">- (void)becomeKeyWindow</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("becomeKeyWindow") public native @Type("void") void becomeKeyWindow();
+    public void becomeKeyWindow() {
+        if (customClass) { objc_becomeKeyWindowSuper(getSuper(), this, becomeKeyWindow); } else { objc_becomeKeyWindow(this, becomeKeyWindow); }
+    }
+    
+    private static final Selector convertPoint$fromWindow$ = Selector.register("convertPoint:fromWindow:");
+    @Bridge(symbol = "objc_msgSend") private native static CGPoint objc_convertPointFromWindow(UIWindow __self__, Selector __cmd__, CGPoint point, UIWindow window);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGPoint objc_convertPointFromWindowSuper(ObjCSuper __super__, UIWindow __self__, Selector __cmd__, CGPoint point, UIWindow window);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/convertPoint:fromWindow:">- (CGPoint)convertPoint:(CGPoint)point fromWindow:(UIWindow *)window</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("convertPoint:fromWindow:") public native @Type("CGPoint") CGPoint convertPointFromWindow(@Type("CGPoint") CGPoint point, @Type("UIWindow *") UIWindow window);
+    public CGPoint convertPointFromWindow(CGPoint point, UIWindow window) {
+        if (customClass) { return objc_convertPointFromWindowSuper(getSuper(), this, convertPoint$fromWindow$, point, window); } else { return objc_convertPointFromWindow(this, convertPoint$fromWindow$, point, window); }
+    }
+    
+    private static final Selector convertPoint$toWindow$ = Selector.register("convertPoint:toWindow:");
+    @Bridge(symbol = "objc_msgSend") private native static CGPoint objc_convertPointToWindow(UIWindow __self__, Selector __cmd__, CGPoint point, UIWindow window);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGPoint objc_convertPointToWindowSuper(ObjCSuper __super__, UIWindow __self__, Selector __cmd__, CGPoint point, UIWindow window);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/convertPoint:toWindow:">- (CGPoint)convertPoint:(CGPoint)point toWindow:(UIWindow *)window</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("convertPoint:toWindow:") public native @Type("CGPoint") CGPoint convertPointToWindow(@Type("CGPoint") CGPoint point, @Type("UIWindow *") UIWindow window);
+    public CGPoint convertPointToWindow(CGPoint point, UIWindow window) {
+        if (customClass) { return objc_convertPointToWindowSuper(getSuper(), this, convertPoint$toWindow$, point, window); } else { return objc_convertPointToWindow(this, convertPoint$toWindow$, point, window); }
+    }
+    
+    private static final Selector convertRect$fromWindow$ = Selector.register("convertRect:fromWindow:");
+    @Bridge(symbol = "objc_msgSend") private native static CGRect objc_convertRectFromWindow(UIWindow __self__, Selector __cmd__, CGRect rect, UIWindow window);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGRect objc_convertRectFromWindowSuper(ObjCSuper __super__, UIWindow __self__, Selector __cmd__, CGRect rect, UIWindow window);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/convertRect:fromWindow:">- (CGRect)convertRect:(CGRect)rect fromWindow:(UIWindow *)window</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("convertRect:fromWindow:") public native @Type("CGRect") CGRect convertRectFromWindow(@Type("CGRect") CGRect rect, @Type("UIWindow *") UIWindow window);
+    public CGRect convertRectFromWindow(CGRect rect, UIWindow window) {
+        if (customClass) { return objc_convertRectFromWindowSuper(getSuper(), this, convertRect$fromWindow$, rect, window); } else { return objc_convertRectFromWindow(this, convertRect$fromWindow$, rect, window); }
+    }
+    
+    private static final Selector convertRect$toWindow$ = Selector.register("convertRect:toWindow:");
+    @Bridge(symbol = "objc_msgSend") private native static CGRect objc_convertRectToWindow(UIWindow __self__, Selector __cmd__, CGRect rect, UIWindow window);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGRect objc_convertRectToWindowSuper(ObjCSuper __super__, UIWindow __self__, Selector __cmd__, CGRect rect, UIWindow window);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/convertRect:toWindow:">- (CGRect)convertRect:(CGRect)rect toWindow:(UIWindow *)window</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("convertRect:toWindow:") public native @Type("CGRect") CGRect convertRectToWindow(@Type("CGRect") CGRect rect, @Type("UIWindow *") UIWindow window);
+    public CGRect convertRectToWindow(CGRect rect, UIWindow window) {
+        if (customClass) { return objc_convertRectToWindowSuper(getSuper(), this, convertRect$toWindow$, rect, window); } else { return objc_convertRectToWindow(this, convertRect$toWindow$, rect, window); }
+    }
+    
+    private static final Selector makeKeyAndVisible = Selector.register("makeKeyAndVisible");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_makeKeyAndVisible(UIWindow __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_makeKeyAndVisibleSuper(ObjCSuper __super__, UIWindow __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/makeKeyAndVisible">- (void)makeKeyAndVisible</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("makeKeyAndVisible") public native @Type("void") void makeKeyAndVisible();
+    public void makeKeyAndVisible() {
+        if (customClass) { objc_makeKeyAndVisibleSuper(getSuper(), this, makeKeyAndVisible); } else { objc_makeKeyAndVisible(this, makeKeyAndVisible); }
+    }
+    
+    private static final Selector makeKeyWindow = Selector.register("makeKeyWindow");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_makeKeyWindow(UIWindow __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_makeKeyWindowSuper(ObjCSuper __super__, UIWindow __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/makeKeyWindow">- (void)makeKeyWindow</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("makeKeyWindow") public native @Type("void") void makeKeyWindow();
+    public void makeKeyWindow() {
+        if (customClass) { objc_makeKeyWindowSuper(getSuper(), this, makeKeyWindow); } else { objc_makeKeyWindow(this, makeKeyWindow); }
+    }
+    
+    private static final Selector resignKeyWindow = Selector.register("resignKeyWindow");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_resignKeyWindow(UIWindow __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_resignKeyWindowSuper(ObjCSuper __super__, UIWindow __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/resignKeyWindow">- (void)resignKeyWindow</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("resignKeyWindow") public native @Type("void") void resignKeyWindow();
+    public void resignKeyWindow() {
+        if (customClass) { objc_resignKeyWindowSuper(getSuper(), this, resignKeyWindow); } else { objc_resignKeyWindow(this, resignKeyWindow); }
+    }
+    
+    private static final Selector sendEvent$ = Selector.register("sendEvent:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_sendEvent(UIWindow __self__, Selector __cmd__, UIEvent event);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_sendEventSuper(ObjCSuper __super__, UIWindow __self__, Selector __cmd__, UIEvent event);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/sendEvent:">- (void)sendEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("sendEvent:") public native @Type("void") void sendEvent(@Type("UIEvent *") UIEvent event);
+    public void sendEvent(UIEvent event) {
+        if (customClass) { objc_sendEventSuper(getSuper(), this, sendEvent$, event); } else { objc_sendEvent(this, sendEvent$, event); }
+    }
     /*</methods>*/
 
 }

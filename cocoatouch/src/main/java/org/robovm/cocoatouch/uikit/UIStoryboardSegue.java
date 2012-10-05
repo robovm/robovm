@@ -46,37 +46,52 @@ public class /*<name>*/ UIStoryboardSegue /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIStoryboardSegue /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIStoryboardSegue /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIStoryboardSegue(SkipInit skipInit) { super(skipInit); }
     public UIStoryboardSegue() {}
+    
+    private static final Selector initWithIdentifier$source$destination$ = Selector.register("initWithIdentifier:source:destination:");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithIdentifier(UIStoryboardSegue __self__, Selector __cmd__, String identifier, UIViewController source, UIViewController destination);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboardSegue/initWithIdentifier:source:destination:">- (id)initWithIdentifier:(NSString *)identifier source:(UIViewController *)source destination:(UIViewController *)destination</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("initWithIdentifier:source:destination:") public UIStoryboardSegue(@Type("NSString *") String identifier, @Type("UIViewController *") UIViewController source, @Type("UIViewController *") UIViewController destination) {}
+    public UIStoryboardSegue(String identifier, UIViewController source, UIViewController destination) {
+        super((SkipInit) null);
+        objc_initWithIdentifier(this, initWithIdentifier$source$destination$, identifier, source, destination);
+    }
     /*</constructors>*/
     /*<properties>*/
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/destinationViewController">@property(nonatomic, readonly) id destinationViewController</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("destinationViewController") public native @Type("id") NSObject getDestinationViewController();
+    @Bind("destinationViewController") public native NSObject getDestinationViewController();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/identifier">@property (nonatomic, readonly) NSString *identifier</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("identifier") public native @Type("NSString *") String getIdentifier();
+    @Bind("identifier") public native String getIdentifier();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/sourceViewController">@property(nonatomic, readonly) id sourceViewController</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("sourceViewController") public native @Type("id") NSObject getSourceViewController();
+    @Bind("sourceViewController") public native NSObject getSourceViewController();
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector perform = Selector.register("perform");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_perform(UIStoryboardSegue __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_performSuper(ObjCSuper __super__, UIStoryboardSegue __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboardSegue/perform">- (void)perform</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("perform") public native @Type("void") void perform();
+    public void perform() {
+        if (customClass) { objc_performSuper(getSuper(), this, perform); } else { objc_perform(this, perform); }
+    }
     /*</methods>*/
 
 }

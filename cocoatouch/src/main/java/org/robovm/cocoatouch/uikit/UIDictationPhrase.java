@@ -46,7 +46,10 @@ public class /*<name>*/ UIDictationPhrase /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIDictationPhrase /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIDictationPhrase /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIDictationPhrase(SkipInit skipInit) { super(skipInit); }
     public UIDictationPhrase() {}
     
     /*</constructors>*/
@@ -55,12 +58,12 @@ public class /*<name>*/ UIDictationPhrase /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDictationPhraseClass/Reference/Reference.html#//apple_ref/occ/instp/UIDictationPhrase/alternativeInterpretations">@property (nonatomic, readonly) NSArray *alternativeInterpretations</a>
      * @since Available in iOS 5.1 and later.
      */
-    @Bind("alternativeInterpretations") public native @Type("NSArray *") NSArray getAlternativeInterpretations();
+    @Bind("alternativeInterpretations") public native NSArray getAlternativeInterpretations();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDictationPhraseClass/Reference/Reference.html#//apple_ref/occ/instp/UIDictationPhrase/text">@property (nonatomic, readonly) NSString *text</a>
      * @since Available in iOS 5.1 and later.
      */
-    @Bind("text") public native @Type("NSString *") String getText();
+    @Bind("text") public native String getText();
     /*</properties>*/
     /*<methods>*/
     

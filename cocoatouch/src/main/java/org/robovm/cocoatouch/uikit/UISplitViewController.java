@@ -46,7 +46,10 @@ public class /*<name>*/ UISplitViewController /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UISplitViewController /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UISplitViewController /*</name>*/.class);
+
     /*<constructors>*/
+    protected UISplitViewController(SkipInit skipInit) { super(skipInit); }
     public UISplitViewController() {}
     
     /*</constructors>*/
@@ -55,32 +58,32 @@ public class /*<name>*/ UISplitViewController /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewController_class/Reference/Reference.html#//apple_ref/occ/instp/UISplitViewController/delegate">@property(nonatomic, assign) id &amp;lt;UISplitViewControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("delegate") public native @Type("id <UISplitViewControllerDelegate>") UISplitViewControllerDelegate getDelegate();
+    @Bind("delegate") public native UISplitViewControllerDelegate getDelegate();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewController_class/Reference/Reference.html#//apple_ref/occ/instp/UISplitViewController/delegate">@property(nonatomic, assign) id &amp;lt;UISplitViewControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(@Type("id <UISplitViewControllerDelegate>") UISplitViewControllerDelegate v);
+    @Bind("setDelegate:") public native void setDelegate(UISplitViewControllerDelegate v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewController_class/Reference/Reference.html#//apple_ref/occ/instp/UISplitViewController/presentsWithGesture">@property (nonatomic) BOOL presentsWithGesture</a>
      * @since Available in iOS 5.1 and later.
      */
-    @Bind("presentsWithGesture") public native @Type("BOOL") boolean isPresentsWithGesture();
+    @Bind("presentsWithGesture") public native boolean isPresentsWithGesture();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewController_class/Reference/Reference.html#//apple_ref/occ/instp/UISplitViewController/presentsWithGesture">@property (nonatomic) BOOL presentsWithGesture</a>
      * @since Available in iOS 5.1 and later.
      */
-    @Bind("setPresentsWithGesture:") public native void setPresentsWithGesture(@Type("BOOL") boolean v);
+    @Bind("setPresentsWithGesture:") public native void setPresentsWithGesture(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewController_class/Reference/Reference.html#//apple_ref/occ/instp/UISplitViewController/viewControllers">@property(nonatomic, copy) NSArray *viewControllers</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("viewControllers") public native @Type("NSArray *") NSArray getViewControllers();
+    @Bind("viewControllers") public native NSArray getViewControllers();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewController_class/Reference/Reference.html#//apple_ref/occ/instp/UISplitViewController/viewControllers">@property(nonatomic, copy) NSArray *viewControllers</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setViewControllers:") public native void setViewControllers(@Type("NSArray *") NSArray v);
+    @Bind("setViewControllers:") public native void setViewControllers(NSArray v);
     /*</properties>*/
     /*<methods>*/
     

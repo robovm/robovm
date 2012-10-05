@@ -46,7 +46,10 @@ public class /*<name>*/ UITextRange /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UITextRange /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITextRange /*</name>*/.class);
+
     /*<constructors>*/
+    protected UITextRange(SkipInit skipInit) { super(skipInit); }
     public UITextRange() {}
     
     /*</constructors>*/
@@ -55,17 +58,17 @@ public class /*<name>*/ UITextRange /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextRange_Class/Reference/Reference.html#//apple_ref/occ/instp/UITextRange/empty">@property(nonatomic, readonly, getter=isEmpty) BOOL empty</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("isEmpty") public native @Type("BOOL") boolean isEmpty();
+    @Bind("isEmpty") public native boolean isEmpty();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextRange_Class/Reference/Reference.html#//apple_ref/occ/instp/UITextRange/end">@property(nonatomic, readonly) UITextPosition *end</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("end") public native @Type("UITextPosition *") UITextPosition getEnd();
+    @Bind("end") public native UITextPosition getEnd();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextRange_Class/Reference/Reference.html#//apple_ref/occ/instp/UITextRange/start">@property(nonatomic, readonly) UITextPosition *start</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("start") public native @Type("UITextPosition *") UITextPosition getStart();
+    @Bind("start") public native UITextPosition getStart();
     /*</properties>*/
     /*<methods>*/
     

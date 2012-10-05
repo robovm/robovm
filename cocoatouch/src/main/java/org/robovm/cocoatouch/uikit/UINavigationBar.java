@@ -46,7 +46,10 @@ public class /*<name>*/ UINavigationBar /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UINavigationBar /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UINavigationBar /*</name>*/.class);
+
     /*<constructors>*/
+    protected UINavigationBar(SkipInit skipInit) { super(skipInit); }
     public UINavigationBar() {}
     
     /*</constructors>*/
@@ -55,119 +58,161 @@ public class /*<name>*/ UINavigationBar /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/backItem">@property(nonatomic, readonly, retain) UINavigationItem *backItem</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("backItem") public native @Type("UINavigationItem *") UINavigationItem getBackItem();
+    @Bind("backItem") public native UINavigationItem getBackItem();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/barStyle">@property(nonatomic, assign) UIBarStyle barStyle</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("barStyle") public native @Type("UIBarStyle") UIBarStyle getBarStyle();
+    @Bind("barStyle") public native UIBarStyle getBarStyle();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/barStyle">@property(nonatomic, assign) UIBarStyle barStyle</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setBarStyle:") public native void setBarStyle(@Type("UIBarStyle") UIBarStyle v);
+    @Bind("setBarStyle:") public native void setBarStyle(UIBarStyle v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/delegate">@property(nonatomic, assign) id delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("delegate") public native @Type("id") NSObject getDelegate();
+    @Bind("delegate") public native NSObject getDelegate();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/delegate">@property(nonatomic, assign) id delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(@Type("id") NSObject v);
+    @Bind("setDelegate:") public native void setDelegate(NSObject v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/items">@property(nonatomic, copy) NSArray *items</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("items") public native @Type("NSArray *") NSArray getItems();
+    @Bind("items") public native NSArray getItems();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/items">@property(nonatomic, copy) NSArray *items</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setItems:") public native void setItems(@Type("NSArray *") NSArray v);
+    @Bind("setItems:") public native void setItems(NSArray v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/shadowImage">@property(nonatomic,retain) UIImage *shadowImage</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("shadowImage") public native @Type("UIImage *") UIImage getShadowImage();
+    @Bind("shadowImage") public native UIImage getShadowImage();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/shadowImage">@property(nonatomic,retain) UIImage *shadowImage</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setShadowImage:") public native void setShadowImage(@Type("UIImage *") UIImage v);
+    @Bind("setShadowImage:") public native void setShadowImage(UIImage v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("tintColor") public native @Type("UIColor *") UIColor getTintColor();
+    @Bind("tintColor") public native UIColor getTintColor();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTintColor:") public native void setTintColor(@Type("UIColor *") UIColor v);
+    @Bind("setTintColor:") public native void setTintColor(UIColor v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/titleTextAttributes">@property(nonatomic, copy) NSDictionary *titleTextAttributes</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("titleTextAttributes") public native @Type("NSDictionary *") NSDictionary getTitleTextAttributes();
+    @Bind("titleTextAttributes") public native NSDictionary getTitleTextAttributes();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/titleTextAttributes">@property(nonatomic, copy) NSDictionary *titleTextAttributes</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setTitleTextAttributes:") public native void setTitleTextAttributes(@Type("NSDictionary *") NSDictionary v);
+    @Bind("setTitleTextAttributes:") public native void setTitleTextAttributes(NSDictionary v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/topItem">@property(nonatomic, readonly, retain) UINavigationItem *topItem</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("topItem") public native @Type("UINavigationItem *") UINavigationItem getTopItem();
+    @Bind("topItem") public native UINavigationItem getTopItem();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/translucent">@property(nonatomic, assign, getter=isTranslucent) BOOL translucent</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("isTranslucent") public native @Type("BOOL") boolean isTranslucent();
+    @Bind("isTranslucent") public native boolean isTranslucent();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/translucent">@property(nonatomic, assign, getter=isTranslucent) BOOL translucent</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setTranslucent:") public native void setTranslucent(@Type("BOOL") boolean v);
+    @Bind("setTranslucent:") public native void setTranslucent(boolean v);
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector backgroundImageForBarMetrics$ = Selector.register("backgroundImageForBarMetrics:");
+    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getBackgroundImage(UINavigationBar __self__, Selector __cmd__, UIBarMetrics barMetrics);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getBackgroundImageSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__, UIBarMetrics barMetrics);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instm/UINavigationBar/backgroundImageForBarMetrics:">- (UIImage *)backgroundImageForBarMetrics:(UIBarMetrics)barMetrics</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("backgroundImageForBarMetrics:") public native @Type("UIImage *") UIImage getBackgroundImage(@Type("UIBarMetrics") UIBarMetrics barMetrics);
+    public UIImage getBackgroundImage(UIBarMetrics barMetrics) {
+        if (customClass) { return objc_getBackgroundImageSuper(getSuper(), this, backgroundImageForBarMetrics$, barMetrics); } else { return objc_getBackgroundImage(this, backgroundImageForBarMetrics$, barMetrics); }
+    }
+    
+    private static final Selector titleVerticalPositionAdjustmentForBarMetrics$ = Selector.register("titleVerticalPositionAdjustmentForBarMetrics:");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getTitleVerticalPositionAdjustment(UINavigationBar __self__, Selector __cmd__, UIBarMetrics barMetrics);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getTitleVerticalPositionAdjustmentSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__, UIBarMetrics barMetrics);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instm/UINavigationBar/titleVerticalPositionAdjustmentForBarMetrics:">- (CGFloat)titleVerticalPositionAdjustmentForBarMetrics:(UIBarMetrics)barMetrics</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("titleVerticalPositionAdjustmentForBarMetrics:") public native @Type("CGFloat") float getTitleVerticalPositionAdjustment(@Type("UIBarMetrics") UIBarMetrics barMetrics);
+    public float getTitleVerticalPositionAdjustment(UIBarMetrics barMetrics) {
+        if (customClass) { return objc_getTitleVerticalPositionAdjustmentSuper(getSuper(), this, titleVerticalPositionAdjustmentForBarMetrics$, barMetrics); } else { return objc_getTitleVerticalPositionAdjustment(this, titleVerticalPositionAdjustmentForBarMetrics$, barMetrics); }
+    }
+    
+    private static final Selector popNavigationItemAnimated$ = Selector.register("popNavigationItemAnimated:");
+    @Bridge(symbol = "objc_msgSend") private native static UINavigationItem objc_popNavigationItem(UINavigationBar __self__, Selector __cmd__, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UINavigationItem objc_popNavigationItemSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instm/UINavigationBar/popNavigationItemAnimated:">- (UINavigationItem *)popNavigationItemAnimated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("popNavigationItemAnimated:") public native @Type("UINavigationItem *") UINavigationItem popNavigationItem(@Type("BOOL") boolean animated);
+    public UINavigationItem popNavigationItem(boolean animated) {
+        if (customClass) { return objc_popNavigationItemSuper(getSuper(), this, popNavigationItemAnimated$, animated); } else { return objc_popNavigationItem(this, popNavigationItemAnimated$, animated); }
+    }
+    
+    private static final Selector pushNavigationItem$animated$ = Selector.register("pushNavigationItem:animated:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_pushNavigationItem(UINavigationBar __self__, Selector __cmd__, UINavigationItem item, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_pushNavigationItemSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__, UINavigationItem item, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instm/UINavigationBar/pushNavigationItem:animated:">- (void)pushNavigationItem:(UINavigationItem *)item animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("pushNavigationItem:animated:") public native @Type("void") void pushNavigationItem(@Type("UINavigationItem *") UINavigationItem item, @Type("BOOL") boolean animated);
+    public void pushNavigationItem(UINavigationItem item, boolean animated) {
+        if (customClass) { objc_pushNavigationItemSuper(getSuper(), this, pushNavigationItem$animated$, item, animated); } else { objc_pushNavigationItem(this, pushNavigationItem$animated$, item, animated); }
+    }
+    
+    private static final Selector setBackgroundImage$forBarMetrics$ = Selector.register("setBackgroundImage:forBarMetrics:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setBackgroundImage(UINavigationBar __self__, Selector __cmd__, UIImage backgroundImage, UIBarMetrics barMetrics);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBackgroundImageSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__, UIImage backgroundImage, UIBarMetrics barMetrics);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instm/UINavigationBar/setBackgroundImage:forBarMetrics:">- (void)setBackgroundImage:(UIImage *)backgroundImage forBarMetrics:(UIBarMetrics)barMetrics</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setBackgroundImage:forBarMetrics:") public native @Type("void") void setBackgroundImage(@Type("UIImage *") UIImage backgroundImage, @Type("UIBarMetrics") UIBarMetrics barMetrics);
+    public void setBackgroundImage(UIImage backgroundImage, UIBarMetrics barMetrics) {
+        if (customClass) { objc_setBackgroundImageSuper(getSuper(), this, setBackgroundImage$forBarMetrics$, backgroundImage, barMetrics); } else { objc_setBackgroundImage(this, setBackgroundImage$forBarMetrics$, backgroundImage, barMetrics); }
+    }
+    
+    private static final Selector setItems$animated$ = Selector.register("setItems:animated:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setItems(UINavigationBar __self__, Selector __cmd__, NSArray items, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setItemsSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__, NSArray items, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instm/UINavigationBar/setItems:animated:">- (void)setItems:(NSArray *)items animated:(BOOL)animated</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setItems:animated:") public native @Type("void") void setItems(@Type("NSArray *") NSArray items, @Type("BOOL") boolean animated);
+    public void setItems(NSArray items, boolean animated) {
+        if (customClass) { objc_setItemsSuper(getSuper(), this, setItems$animated$, items, animated); } else { objc_setItems(this, setItems$animated$, items, animated); }
+    }
+    
+    private static final Selector setTitleVerticalPositionAdjustment$forBarMetrics$ = Selector.register("setTitleVerticalPositionAdjustment:forBarMetrics:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTitleVerticalPositionAdjustment(UINavigationBar __self__, Selector __cmd__, float adjustment, UIBarMetrics barMetrics);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTitleVerticalPositionAdjustmentSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__, float adjustment, UIBarMetrics barMetrics);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instm/UINavigationBar/setTitleVerticalPositionAdjustment:forBarMetrics:">- (void)setTitleVerticalPositionAdjustment:(CGFloat)adjustment forBarMetrics:(UIBarMetrics)barMetrics</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setTitleVerticalPositionAdjustment:forBarMetrics:") public native @Type("void") void setTitleVerticalPositionAdjustment(@Type("CGFloat") float adjustment, @Type("UIBarMetrics") UIBarMetrics barMetrics);
+    public void setTitleVerticalPositionAdjustment(float adjustment, UIBarMetrics barMetrics) {
+        if (customClass) { objc_setTitleVerticalPositionAdjustmentSuper(getSuper(), this, setTitleVerticalPositionAdjustment$forBarMetrics$, adjustment, barMetrics); } else { objc_setTitleVerticalPositionAdjustment(this, setTitleVerticalPositionAdjustment$forBarMetrics$, adjustment, barMetrics); }
+    }
     /*</methods>*/
 
 }

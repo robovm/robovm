@@ -46,23 +46,37 @@ public class /*<name>*/ UIReferenceLibraryViewController /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIReferenceLibraryViewController /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIReferenceLibraryViewController /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIReferenceLibraryViewController(SkipInit skipInit) { super(skipInit); }
     public UIReferenceLibraryViewController() {}
+    
+    private static final Selector initWithTerm$ = Selector.register("initWithTerm:");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithTerm(UIReferenceLibraryViewController __self__, Selector __cmd__, String term);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIReferenceLibraryViewControllerClassRef/Reference/Reference.html#//apple_ref/occ/instm/UIReferenceLibraryViewController/initWithTerm:">- (id)initWithTerm:(NSString *)term</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("initWithTerm:") public UIReferenceLibraryViewController(@Type("NSString *") String term) {}
+    public UIReferenceLibraryViewController(String term) {
+        super((SkipInit) null);
+        objc_initWithTerm(this, initWithTerm$, term);
+    }
     /*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector dictionaryHasDefinitionForTerm$ = Selector.register("dictionaryHasDefinitionForTerm:");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_dictionaryHasDefinitionForTerm(ObjCClass __self__, Selector __cmd__, String term);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIReferenceLibraryViewControllerClassRef/Reference/Reference.html#//apple_ref/occ/clm/UIReferenceLibraryViewController/dictionaryHasDefinitionForTerm:">+ (BOOL)dictionaryHasDefinitionForTerm:(NSString *)term</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("dictionaryHasDefinitionForTerm:") public native static @Type("BOOL") boolean dictionaryHasDefinitionForTerm(@Type("NSString *") String term);
+    public static boolean dictionaryHasDefinitionForTerm(String term) {
+        return objc_dictionaryHasDefinitionForTerm(objCClass, dictionaryHasDefinitionForTerm$, term);
+    }
     /*</methods>*/
 
 }

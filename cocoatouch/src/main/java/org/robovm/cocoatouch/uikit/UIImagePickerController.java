@@ -46,7 +46,10 @@ public class /*<name>*/ UIImagePickerController /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIImagePickerController /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIImagePickerController /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIImagePickerController(SkipInit skipInit) { super(skipInit); }
     public UIImagePickerController() {}
     
     /*</constructors>*/
@@ -55,164 +58,207 @@ public class /*<name>*/ UIImagePickerController /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/allowsEditing">@property (nonatomic) BOOL allowsEditing</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("allowsEditing") public native @Type("BOOL") boolean isAllowsEditing();
+    @Bind("allowsEditing") public native boolean isAllowsEditing();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/allowsEditing">@property (nonatomic) BOOL allowsEditing</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("setAllowsEditing:") public native void setAllowsEditing(@Type("BOOL") boolean v);
+    @Bind("setAllowsEditing:") public native void setAllowsEditing(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraCaptureMode">@property (nonatomic) UIImagePickerControllerCameraCaptureMode cameraCaptureMode</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("cameraCaptureMode") public native @Type("UIImagePickerControllerCameraCaptureMode") UIImagePickerControllerCameraCaptureMode getCameraCaptureMode();
+    @Bind("cameraCaptureMode") public native UIImagePickerControllerCameraCaptureMode getCameraCaptureMode();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraCaptureMode">@property (nonatomic) UIImagePickerControllerCameraCaptureMode cameraCaptureMode</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("setCameraCaptureMode:") public native void setCameraCaptureMode(@Type("UIImagePickerControllerCameraCaptureMode") UIImagePickerControllerCameraCaptureMode v);
+    @Bind("setCameraCaptureMode:") public native void setCameraCaptureMode(UIImagePickerControllerCameraCaptureMode v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraDevice">@property (nonatomic) UIImagePickerControllerCameraDevice cameraDevice</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("cameraDevice") public native @Type("UIImagePickerControllerCameraDevice") UIImagePickerControllerCameraDevice getCameraDevice();
+    @Bind("cameraDevice") public native UIImagePickerControllerCameraDevice getCameraDevice();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraDevice">@property (nonatomic) UIImagePickerControllerCameraDevice cameraDevice</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("setCameraDevice:") public native void setCameraDevice(@Type("UIImagePickerControllerCameraDevice") UIImagePickerControllerCameraDevice v);
+    @Bind("setCameraDevice:") public native void setCameraDevice(UIImagePickerControllerCameraDevice v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraFlashMode">@property (nonatomic) UIImagePickerControllerCameraFlashMode cameraFlashMode</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("cameraFlashMode") public native @Type("UIImagePickerControllerCameraFlashMode") UIImagePickerControllerCameraFlashMode getCameraFlashMode();
+    @Bind("cameraFlashMode") public native UIImagePickerControllerCameraFlashMode getCameraFlashMode();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraFlashMode">@property (nonatomic) UIImagePickerControllerCameraFlashMode cameraFlashMode</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("setCameraFlashMode:") public native void setCameraFlashMode(@Type("UIImagePickerControllerCameraFlashMode") UIImagePickerControllerCameraFlashMode v);
+    @Bind("setCameraFlashMode:") public native void setCameraFlashMode(UIImagePickerControllerCameraFlashMode v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraOverlayView">@property (nonatomic, retain) UIView *cameraOverlayView</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("cameraOverlayView") public native @Type("UIView *") UIView getCameraOverlayView();
+    @Bind("cameraOverlayView") public native UIView getCameraOverlayView();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraOverlayView">@property (nonatomic, retain) UIView *cameraOverlayView</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("setCameraOverlayView:") public native void setCameraOverlayView(@Type("UIView *") UIView v);
+    @Bind("setCameraOverlayView:") public native void setCameraOverlayView(UIView v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraViewTransform">@property (nonatomic) CGAffineTransform cameraViewTransform</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("cameraViewTransform") public native @Type("CGAffineTransform") CGAffineTransform getCameraViewTransform();
+    @Bind("cameraViewTransform") public native CGAffineTransform getCameraViewTransform();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraViewTransform">@property (nonatomic) CGAffineTransform cameraViewTransform</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("setCameraViewTransform:") public native void setCameraViewTransform(@Type("CGAffineTransform") CGAffineTransform v);
+    @Bind("setCameraViewTransform:") public native void setCameraViewTransform(CGAffineTransform v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/delegate">@property (nonatomic, assign) id&amp;lt;UINavigationControllerDelegate, UIImagePickerControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("delegate") public native @Type("id<UINavigationControllerDelegate, UIImagePickerControllerDelegate>") UIImagePickerControllerDelegate getDelegate();
+    @Bind("delegate") public native UIImagePickerControllerDelegate getDelegate();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/delegate">@property (nonatomic, assign) id&amp;lt;UINavigationControllerDelegate, UIImagePickerControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(@Type("id<UINavigationControllerDelegate, UIImagePickerControllerDelegate>") UIImagePickerControllerDelegate v);
+    @Bind("setDelegate:") public native void setDelegate(UIImagePickerControllerDelegate v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/mediaTypes">@property (nonatomic, copy) NSArray *mediaTypes</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("mediaTypes") public native @Type("NSArray *") NSArray getMediaTypes();
+    @Bind("mediaTypes") public native NSArray getMediaTypes();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/mediaTypes">@property (nonatomic, copy) NSArray *mediaTypes</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setMediaTypes:") public native void setMediaTypes(@Type("NSArray *") NSArray v);
+    @Bind("setMediaTypes:") public native void setMediaTypes(NSArray v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/showsCameraControls">@property (nonatomic) BOOL showsCameraControls</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("showsCameraControls") public native @Type("BOOL") boolean isShowsCameraControls();
+    @Bind("showsCameraControls") public native boolean isShowsCameraControls();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/showsCameraControls">@property (nonatomic) BOOL showsCameraControls</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("setShowsCameraControls:") public native void setShowsCameraControls(@Type("BOOL") boolean v);
+    @Bind("setShowsCameraControls:") public native void setShowsCameraControls(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/sourceType">@property (nonatomic) UIImagePickerControllerSourceType sourceType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("sourceType") public native @Type("UIImagePickerControllerSourceType") UIImagePickerControllerSourceType getSourceType();
+    @Bind("sourceType") public native UIImagePickerControllerSourceType getSourceType();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/sourceType">@property (nonatomic) UIImagePickerControllerSourceType sourceType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setSourceType:") public native void setSourceType(@Type("UIImagePickerControllerSourceType") UIImagePickerControllerSourceType v);
+    @Bind("setSourceType:") public native void setSourceType(UIImagePickerControllerSourceType v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/videoMaximumDuration">@property (nonatomic) NSTimeInterval videoMaximumDuration</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("videoMaximumDuration") public native @Type("NSTimeInterval") double getVideoMaximumDuration();
+    @Bind("videoMaximumDuration") public native double getVideoMaximumDuration();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/videoMaximumDuration">@property (nonatomic) NSTimeInterval videoMaximumDuration</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("setVideoMaximumDuration:") public native void setVideoMaximumDuration(@Type("NSTimeInterval") double v);
+    @Bind("setVideoMaximumDuration:") public native void setVideoMaximumDuration(double v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/videoQuality">@property (nonatomic) UIImagePickerControllerQualityType videoQuality</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("videoQuality") public native @Type("UIImagePickerControllerQualityType") UIImagePickerControllerQualityType getVideoQuality();
+    @Bind("videoQuality") public native UIImagePickerControllerQualityType getVideoQuality();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/videoQuality">@property (nonatomic) UIImagePickerControllerQualityType videoQuality</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("setVideoQuality:") public native void setVideoQuality(@Type("UIImagePickerControllerQualityType") UIImagePickerControllerQualityType v);
+    @Bind("setVideoQuality:") public native void setVideoQuality(UIImagePickerControllerQualityType v);
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector availableCaptureModesForCameraDevice$ = Selector.register("availableCaptureModesForCameraDevice:");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getAvailableCaptureModes(ObjCClass __self__, Selector __cmd__, UIImagePickerControllerCameraDevice cameraDevice);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/clm/UIImagePickerController/availableCaptureModesForCameraDevice:">+ (NSArray *)availableCaptureModesForCameraDevice:(UIImagePickerControllerCameraDevice)cameraDevice</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("availableCaptureModesForCameraDevice:") public native static @Type("NSArray *") NSArray getAvailableCaptureModes(@Type("UIImagePickerControllerCameraDevice") UIImagePickerControllerCameraDevice cameraDevice);
+    public static NSArray getAvailableCaptureModes(UIImagePickerControllerCameraDevice cameraDevice) {
+        return objc_getAvailableCaptureModes(objCClass, availableCaptureModesForCameraDevice$, cameraDevice);
+    }
+    
+    private static final Selector availableMediaTypesForSourceType$ = Selector.register("availableMediaTypesForSourceType:");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getAvailableMediaTypes(ObjCClass __self__, Selector __cmd__, UIImagePickerControllerSourceType sourceType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/clm/UIImagePickerController/availableMediaTypesForSourceType:">+ (NSArray *)availableMediaTypesForSourceType:(UIImagePickerControllerSourceType)sourceType</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("availableMediaTypesForSourceType:") public native static @Type("NSArray *") NSArray getAvailableMediaTypes(@Type("UIImagePickerControllerSourceType") UIImagePickerControllerSourceType sourceType);
+    public static NSArray getAvailableMediaTypes(UIImagePickerControllerSourceType sourceType) {
+        return objc_getAvailableMediaTypes(objCClass, availableMediaTypesForSourceType$, sourceType);
+    }
+    
+    private static final Selector isCameraDeviceAvailable$ = Selector.register("isCameraDeviceAvailable:");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isCameraDeviceAvailable(ObjCClass __self__, Selector __cmd__, UIImagePickerControllerCameraDevice cameraDevice);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/clm/UIImagePickerController/isCameraDeviceAvailable:">+ (BOOL)isCameraDeviceAvailable:(UIImagePickerControllerCameraDevice)cameraDevice</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("isCameraDeviceAvailable:") public native static @Type("BOOL") boolean isCameraDeviceAvailable(@Type("UIImagePickerControllerCameraDevice") UIImagePickerControllerCameraDevice cameraDevice);
+    public static boolean isCameraDeviceAvailable(UIImagePickerControllerCameraDevice cameraDevice) {
+        return objc_isCameraDeviceAvailable(objCClass, isCameraDeviceAvailable$, cameraDevice);
+    }
+    
+    private static final Selector isFlashAvailableForCameraDevice$ = Selector.register("isFlashAvailableForCameraDevice:");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isFlashAvailableForCameraDevice(ObjCClass __self__, Selector __cmd__, UIImagePickerControllerCameraDevice cameraDevice);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/clm/UIImagePickerController/isFlashAvailableForCameraDevice:">+ (BOOL)isFlashAvailableForCameraDevice:(UIImagePickerControllerCameraDevice)cameraDevice</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("isFlashAvailableForCameraDevice:") public native static @Type("BOOL") boolean isFlashAvailableForCameraDevice(@Type("UIImagePickerControllerCameraDevice") UIImagePickerControllerCameraDevice cameraDevice);
+    public static boolean isFlashAvailableForCameraDevice(UIImagePickerControllerCameraDevice cameraDevice) {
+        return objc_isFlashAvailableForCameraDevice(objCClass, isFlashAvailableForCameraDevice$, cameraDevice);
+    }
+    
+    private static final Selector isSourceTypeAvailable$ = Selector.register("isSourceTypeAvailable:");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isSourceTypeAvailable(ObjCClass __self__, Selector __cmd__, UIImagePickerControllerSourceType sourceType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/clm/UIImagePickerController/isSourceTypeAvailable:">+ (BOOL)isSourceTypeAvailable:(UIImagePickerControllerSourceType)sourceType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isSourceTypeAvailable:") public native static @Type("BOOL") boolean isSourceTypeAvailable(@Type("UIImagePickerControllerSourceType") UIImagePickerControllerSourceType sourceType);
+    public static boolean isSourceTypeAvailable(UIImagePickerControllerSourceType sourceType) {
+        return objc_isSourceTypeAvailable(objCClass, isSourceTypeAvailable$, sourceType);
+    }
+    
+    private static final Selector startVideoCapture = Selector.register("startVideoCapture");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_startVideoCapture(UIImagePickerController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_startVideoCaptureSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instm/UIImagePickerController/startVideoCapture">- (BOOL)startVideoCapture</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("startVideoCapture") public native @Type("BOOL") boolean startVideoCapture();
+    public boolean startVideoCapture() {
+        if (customClass) { return objc_startVideoCaptureSuper(getSuper(), this, startVideoCapture); } else { return objc_startVideoCapture(this, startVideoCapture); }
+    }
+    
+    private static final Selector stopVideoCapture = Selector.register("stopVideoCapture");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_stopVideoCapture(UIImagePickerController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_stopVideoCaptureSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instm/UIImagePickerController/stopVideoCapture">- (void)stopVideoCapture</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("stopVideoCapture") public native @Type("void") void stopVideoCapture();
+    public void stopVideoCapture() {
+        if (customClass) { objc_stopVideoCaptureSuper(getSuper(), this, stopVideoCapture); } else { objc_stopVideoCapture(this, stopVideoCapture); }
+    }
+    
+    private static final Selector takePicture = Selector.register("takePicture");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_takePicture(UIImagePickerController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_takePictureSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instm/UIImagePickerController/takePicture">- (void)takePicture</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("takePicture") public native @Type("void") void takePicture();
+    public void takePicture() {
+        if (customClass) { objc_takePictureSuper(getSuper(), this, takePicture); } else { objc_takePicture(this, takePicture); }
+    }
     /*</methods>*/
 
 }

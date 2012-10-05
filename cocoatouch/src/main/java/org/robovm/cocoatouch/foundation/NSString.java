@@ -20,6 +20,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -41,7 +42,14 @@ public class /*<name>*/ NSString /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSString /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSString /*</name>*/.class);
+
+    public NSString(String s) {
+        super((SkipInit) null);
+    }
+    
     /*<constructors>*/
+    protected NSString(SkipInit skipInit) { super(skipInit); }
     public NSString() {}
     
     /*</constructors>*/
@@ -52,4 +60,20 @@ public class /*<name>*/ NSString /*</name>*/
     
     /*</methods>*/
 
+    public static class StringMarshaler {
+        public static Object toObject(Class cls, long handle, boolean copy) {
+            NSString o = ObjCObject.toObjCObject(NSString.class, handle);
+            return o != null ? o.toString() : null;
+        }
+        public static void updateObject(Object o, long handle) {
+        }
+        public static long toNative(Object o) {
+            if (o == null) {
+                return 0L;
+            }
+            return new NSString((String) o).getHandle();
+        }
+        public static void updateNative(Object o, long handle) {
+        }
+    }
 }

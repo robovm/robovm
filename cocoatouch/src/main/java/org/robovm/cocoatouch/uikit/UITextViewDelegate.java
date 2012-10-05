@@ -48,37 +48,37 @@ public interface /*<name>*/ UITextViewDelegate /*</name>*/ /*<implements>*/ exte
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextViewDelegate_Protocol/Reference/UITextViewDelegate.html#//apple_ref/occ/intfm/UITextViewDelegate/textViewDidBeginEditing:">- (void)textViewDidBeginEditing:(UITextView *)textView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("textViewDidBeginEditing:") @Type("void") void didBeginEditing(@Type("UITextView *") UITextView textView);
+    void didBeginEditing(UITextView textView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextViewDelegate_Protocol/Reference/UITextViewDelegate.html#//apple_ref/occ/intfm/UITextViewDelegate/textViewDidChange:">- (void)textViewDidChange:(UITextView *)textView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("textViewDidChange:") @Type("void") void didChange(@Type("UITextView *") UITextView textView);
+    void didChange(UITextView textView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextViewDelegate_Protocol/Reference/UITextViewDelegate.html#//apple_ref/occ/intfm/UITextViewDelegate/textViewDidChangeSelection:">- (void)textViewDidChangeSelection:(UITextView *)textView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("textViewDidChangeSelection:") @Type("void") void didChangeSelection(@Type("UITextView *") UITextView textView);
+    void didChangeSelection(UITextView textView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextViewDelegate_Protocol/Reference/UITextViewDelegate.html#//apple_ref/occ/intfm/UITextViewDelegate/textViewDidEndEditing:">- (void)textViewDidEndEditing:(UITextView *)textView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("textViewDidEndEditing:") @Type("void") void didEndEditing(@Type("UITextView *") UITextView textView);
+    void didEndEditing(UITextView textView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextViewDelegate_Protocol/Reference/UITextViewDelegate.html#//apple_ref/occ/intfm/UITextViewDelegate/textViewShouldBeginEditing:">- (BOOL)textViewShouldBeginEditing:(UITextView *)textView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("textViewShouldBeginEditing:") @Type("BOOL") boolean shouldBeginEditing(@Type("UITextView *") UITextView textView);
+    boolean shouldBeginEditing(UITextView textView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextViewDelegate_Protocol/Reference/UITextViewDelegate.html#//apple_ref/occ/intfm/UITextViewDelegate/textView:shouldChangeTextInRange:replacementText:">- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("textView:shouldChangeTextInRange:replacementText:") @Type("BOOL") boolean shouldChangeCharacters(@Type("UITextView *") UITextView textView, @Type("NSRange") NSRange range, @Type("NSString *") String text);
+    boolean shouldChangeCharacters(UITextView textView, NSRange range, String text);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextViewDelegate_Protocol/Reference/UITextViewDelegate.html#//apple_ref/occ/intfm/UITextViewDelegate/textViewShouldEndEditing:">- (BOOL)textViewShouldEndEditing:(UITextView *)textView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("textViewShouldEndEditing:") @Type("BOOL") boolean shouldEndEditing(@Type("UITextView *") UITextView textView);
+    boolean shouldEndEditing(UITextView textView);
     /*</methods>*/
 
 }

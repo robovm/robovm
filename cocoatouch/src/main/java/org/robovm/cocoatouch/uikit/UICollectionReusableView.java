@@ -45,7 +45,10 @@ public class /*<name>*/ UICollectionReusableView /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UICollectionReusableView /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UICollectionReusableView /*</name>*/.class);
+
     /*<constructors>*/
+    protected UICollectionReusableView(SkipInit skipInit) { super(skipInit); }
     public UICollectionReusableView() {}
     
     /*</constructors>*/
@@ -54,29 +57,53 @@ public class /*<name>*/ UICollectionReusableView /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionReusableView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionReusableView/reuseIdentifier">@property (nonatomic, readonly, copy) NSString *reuseIdentifier</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("reuseIdentifier") public native @Type("NSString *") String getReuseIdentifier();
+    @Bind("reuseIdentifier") public native String getReuseIdentifier();
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector applyLayoutAttributes$ = Selector.register("applyLayoutAttributes:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_applyLayoutAttributes(UICollectionReusableView __self__, Selector __cmd__, UICollectionViewLayoutAttributes layoutAttributes);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_applyLayoutAttributesSuper(ObjCSuper __super__, UICollectionReusableView __self__, Selector __cmd__, UICollectionViewLayoutAttributes layoutAttributes);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionReusableView_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionReusableView/applyLayoutAttributes:">- (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("applyLayoutAttributes:") public native @Type("void") void applyLayoutAttributes(@Type("UICollectionViewLayoutAttributes *") UICollectionViewLayoutAttributes layoutAttributes);
+    public void applyLayoutAttributes(UICollectionViewLayoutAttributes layoutAttributes) {
+        if (customClass) { objc_applyLayoutAttributesSuper(getSuper(), this, applyLayoutAttributes$, layoutAttributes); } else { objc_applyLayoutAttributes(this, applyLayoutAttributes$, layoutAttributes); }
+    }
+    
+    private static final Selector didTransitionFromLayout$toLayout$ = Selector.register("didTransitionFromLayout:toLayout:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_didTransition(UICollectionReusableView __self__, Selector __cmd__, UICollectionViewLayout oldLayout, UICollectionViewLayout newLayout);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_didTransitionSuper(ObjCSuper __super__, UICollectionReusableView __self__, Selector __cmd__, UICollectionViewLayout oldLayout, UICollectionViewLayout newLayout);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionReusableView_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionReusableView/didTransitionFromLayout:toLayout:">- (void)didTransitionFromLayout:(UICollectionViewLayout *)oldLayout toLayout:(UICollectionViewLayout *)newLayout</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("didTransitionFromLayout:toLayout:") public native @Type("void") void didTransition(@Type("UICollectionViewLayout *") UICollectionViewLayout oldLayout, @Type("UICollectionViewLayout *") UICollectionViewLayout newLayout);
+    public void didTransition(UICollectionViewLayout oldLayout, UICollectionViewLayout newLayout) {
+        if (customClass) { objc_didTransitionSuper(getSuper(), this, didTransitionFromLayout$toLayout$, oldLayout, newLayout); } else { objc_didTransition(this, didTransitionFromLayout$toLayout$, oldLayout, newLayout); }
+    }
+    
+    private static final Selector prepareForReuse = Selector.register("prepareForReuse");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_prepareForReuse(UICollectionReusableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_prepareForReuseSuper(ObjCSuper __super__, UICollectionReusableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionReusableView_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionReusableView/prepareForReuse">- (void)prepareForReuse</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("prepareForReuse") public native @Type("void") void prepareForReuse();
+    public void prepareForReuse() {
+        if (customClass) { objc_prepareForReuseSuper(getSuper(), this, prepareForReuse); } else { objc_prepareForReuse(this, prepareForReuse); }
+    }
+    
+    private static final Selector willTransitionFromLayout$toLayout$ = Selector.register("willTransitionFromLayout:toLayout:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_willTransition(UICollectionReusableView __self__, Selector __cmd__, UICollectionViewLayout oldLayout, UICollectionViewLayout newLayout);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_willTransitionSuper(ObjCSuper __super__, UICollectionReusableView __self__, Selector __cmd__, UICollectionViewLayout oldLayout, UICollectionViewLayout newLayout);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionReusableView_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionReusableView/willTransitionFromLayout:toLayout:">- (void)willTransitionFromLayout:(UICollectionViewLayout *)oldLayout toLayout:(UICollectionViewLayout *)newLayout</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("willTransitionFromLayout:toLayout:") public native @Type("void") void willTransition(@Type("UICollectionViewLayout *") UICollectionViewLayout oldLayout, @Type("UICollectionViewLayout *") UICollectionViewLayout newLayout);
+    public void willTransition(UICollectionViewLayout oldLayout, UICollectionViewLayout newLayout) {
+        if (customClass) { objc_willTransitionSuper(getSuper(), this, willTransitionFromLayout$toLayout$, oldLayout, newLayout); } else { objc_willTransition(this, willTransitionFromLayout$toLayout$, oldLayout, newLayout); }
+    }
     /*</methods>*/
 
 }

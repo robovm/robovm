@@ -41,7 +41,10 @@ public class /*<name>*/ NSBundle /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSBundle /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSBundle /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSBundle(SkipInit skipInit) { super(skipInit); }
     public NSBundle() {}
     
     /*</constructors>*/

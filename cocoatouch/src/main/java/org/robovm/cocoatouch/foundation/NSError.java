@@ -41,7 +41,10 @@ public class /*<name>*/ NSError /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSError /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSError /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSError(SkipInit skipInit) { super(skipInit); }
     public NSError() {}
     
     /*</constructors>*/

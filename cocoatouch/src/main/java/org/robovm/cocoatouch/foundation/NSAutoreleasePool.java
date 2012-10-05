@@ -41,7 +41,10 @@ public class /*<name>*/ NSAutoreleasePool /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSAutoreleasePool /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSAutoreleasePool /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSAutoreleasePool(SkipInit skipInit) { super(skipInit); }
     public NSAutoreleasePool() {}
     
     /*</constructors>*/
@@ -49,11 +52,17 @@ public class /*<name>*/ NSAutoreleasePool /*</name>*/
     
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector drain = Selector.register("drain");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_drain(NSAutoreleasePool __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_drainSuper(ObjCSuper __super__, NSAutoreleasePool __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSAutoreleasePool_Class/Reference/Reference.html#//apple_ref/occ/instm/NSAutoreleasePool/drain">- (void)drain</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("drain") public native @Type("void") void drain();
+    public void drain() {
+        if (customClass) { objc_drainSuper(getSuper(), this, drain); } else { objc_drain(this, drain); }
+    }
     /*</methods>*/
 
 }

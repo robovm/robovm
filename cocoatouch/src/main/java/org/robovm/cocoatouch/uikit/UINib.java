@@ -46,7 +46,10 @@ public class /*<name>*/ UINib /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UINib /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UINib /*</name>*/.class);
+
     /*<constructors>*/
+    protected UINib(SkipInit skipInit) { super(skipInit); }
     public UINib() {}
     
     /*</constructors>*/
@@ -54,21 +57,37 @@ public class /*<name>*/ UINib /*</name>*/
     
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector nibWithData$bundle$ = Selector.register("nibWithData:bundle:");
+    @Bridge(symbol = "objc_msgSend") private native static UINib objc_fromData(ObjCClass __self__, Selector __cmd__, NSData data, NSBundle bundleOrNil);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINib_Ref/Reference/Reference.html#//apple_ref/occ/clm/UINib/nibWithData:bundle:">+ (UINib *)nibWithData:(NSData *)data bundle:(NSBundle *)bundleOrNil</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("nibWithData:bundle:") public native static @Type("UINib *") UINib fromData(@Type("NSData *") NSData data, @Type("NSBundle *") NSBundle bundleOrNil);
+    public static UINib fromData(NSData data, NSBundle bundleOrNil) {
+        return objc_fromData(objCClass, nibWithData$bundle$, data, bundleOrNil);
+    }
+    
+    private static final Selector nibWithNibName$bundle$ = Selector.register("nibWithNibName:bundle:");
+    @Bridge(symbol = "objc_msgSend") private native static UINib objc_fromName(ObjCClass __self__, Selector __cmd__, String name, NSBundle bundleOrNil);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINib_Ref/Reference/Reference.html#//apple_ref/occ/clm/UINib/nibWithNibName:bundle:">+ (UINib *)nibWithNibName:(NSString *)name bundle:(NSBundle *)bundleOrNil</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("nibWithNibName:bundle:") public native static @Type("UINib *") UINib fromName(@Type("NSString *") String name, @Type("NSBundle *") NSBundle bundleOrNil);
+    public static UINib fromName(String name, NSBundle bundleOrNil) {
+        return objc_fromName(objCClass, nibWithNibName$bundle$, name, bundleOrNil);
+    }
+    
+    private static final Selector instantiateWithOwner$options$ = Selector.register("instantiateWithOwner:options:");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_instantiate(UINib __self__, Selector __cmd__, NSObject ownerOrNil, NSDictionary optionsOrNil);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_instantiateSuper(ObjCSuper __super__, UINib __self__, Selector __cmd__, NSObject ownerOrNil, NSDictionary optionsOrNil);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINib_Ref/Reference/Reference.html#//apple_ref/occ/instm/UINib/instantiateWithOwner:options:">- (NSArray *)instantiateWithOwner:(id)ownerOrNil options:(NSDictionary *)optionsOrNil</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("instantiateWithOwner:options:") public native @Type("NSArray *") NSArray instantiate(@Type("id") NSObject ownerOrNil, @Type("NSDictionary *") NSDictionary optionsOrNil);
+    public NSArray instantiate(NSObject ownerOrNil, NSDictionary optionsOrNil) {
+        if (customClass) { return objc_instantiateSuper(getSuper(), this, instantiateWithOwner$options$, ownerOrNil, optionsOrNil); } else { return objc_instantiate(this, instantiateWithOwner$options$, ownerOrNil, optionsOrNil); }
+    }
     /*</methods>*/
 
 }

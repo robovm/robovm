@@ -41,7 +41,10 @@ public class /*<name>*/ NSCoder /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSCoder /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSCoder /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSCoder(SkipInit skipInit) { super(skipInit); }
     public NSCoder() {}
     
     /*</constructors>*/

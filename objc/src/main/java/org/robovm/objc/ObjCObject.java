@@ -15,6 +15,8 @@
  */
 package org.robovm.objc;
 
+import java.lang.reflect.Field;
+
 import org.robovm.objc.annotation.BindClass;
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.NativeObject;
@@ -31,28 +33,39 @@ import org.robovm.rt.bro.ptr.Ptr.MarshalerCallback;
 @Marshaler(ObjCObject.Marshaler.class)
 public abstract class ObjCObject extends NativeObject {
 
-    static {
-        ObjCRuntime.bind();
-    }
-    
     private static final long PEER_OBJECT_KEY = VM.getObjectAddress(ObjCObject.class);
+    private static final long CUSTOM_CLASS_OFFSET;
     private static final long NSNUMBER_CLASS = ObjCRuntime.objc_getClass(VM.getStringUTFChars("NSNumber"));
     private static final int OBJC_ASSOCIATION_RETAIN_NONATOMIC = 1;
     private static final Selector alloc = Selector.register("alloc");
     private static final Selector initWithLongLong$ = Selector.register("initWithLongLong:");
     private static final Selector longLongValue = Selector.register("longLongValue");
     
+    static {
+        ObjCRuntime.bind();
+        
+        try {
+            Field f = ObjCObject.class.getDeclaredField("customClass");
+            CUSTOM_CLASS_OFFSET = VM.getInstanceFieldOffset(VM.getFieldAddress(f));
+        } catch (Throwable t) {
+            throw new Error(t);
+        }
+    }
+    
     private ObjCSuper zuper;
+    protected final boolean customClass;
     
     protected ObjCObject() {
         long handle = alloc();
         setHandle(handle);
         setAssociatedObject(handle, PEER_OBJECT_KEY, this);
+        customClass = getObjCClass().isCustom();
     }
     
     protected ObjCObject(long handle) {
         setHandle(handle);
         setAssociatedObject(handle, PEER_OBJECT_KEY, this);
+        customClass = getObjCClass().isCustom();
     }
     
     protected long alloc() {
@@ -64,7 +77,7 @@ public abstract class ObjCObject extends NativeObject {
         if (zuper == null) {
             Class<? extends ObjCObject> javaClass = (Class<? extends ObjCObject>) getClass().getSuperclass();
             ObjCClass objCClass = ObjCClass.getByType(javaClass);
-            while (objCClass.isCustomClass()) {
+            while (objCClass.isCustom()) {
                 javaClass = (Class<? extends ObjCObject>) javaClass.getSuperclass();
                 objCClass = ObjCClass.getByType(javaClass);
             }
@@ -148,6 +161,9 @@ public abstract class ObjCObject extends NativeObject {
         o = VM.allocateObject(c);
         o.setHandle(handle);
         setAssociatedObject(handle, PEER_OBJECT_KEY, o);
+        if (objCClass.isCustom()) {
+            VM.setBoolean(VM.getObjectAddress(o) + CUSTOM_CLASS_OFFSET, true);
+        }
         o.afterMarshaled();
         return o;
     }

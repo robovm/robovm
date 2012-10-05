@@ -46,7 +46,10 @@ public class /*<name>*/ UIPrintPaper /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIPrintPaper /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPrintPaper /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIPrintPaper(SkipInit skipInit) { super(skipInit); }
     public UIPrintPaper() {}
     
     /*</constructors>*/
@@ -55,19 +58,24 @@ public class /*<name>*/ UIPrintPaper /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintPaper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintPaper/paperSize">@property(readonly) CGSize paperSize</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("paperSize") public native @Type("CGSize") CGSize getPaperSize();
+    @Bind("paperSize") public native CGSize getPaperSize();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintPaper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintPaper/printableRect">@property(readonly) CGRect printableRect</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("printableRect") public native @Type("CGRect") CGRect getPrintableRect();
+    @Bind("printableRect") public native CGRect getPrintableRect();
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector bestPaperForPageSize$withPapersFromArray$ = Selector.register("bestPaperForPageSize:withPapersFromArray:");
+    @Bridge(symbol = "objc_msgSend") private native static UIPrintPaper objc_forPageSize(ObjCClass __self__, Selector __cmd__, CGSize pageSize, NSArray paperList);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintPaper_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintPaper/bestPaperForPageSize:withPapersFromArray:">+ (UIPrintPaper *)bestPaperForPageSize:(CGSize)pageSize withPapersFromArray:(NSArray *)paperList</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("bestPaperForPageSize:withPapersFromArray:") public native static @Type("UIPrintPaper *") UIPrintPaper forPageSize(@Type("CGSize") CGSize pageSize, @Type("NSArray *") NSArray paperList);
+    public static UIPrintPaper forPageSize(CGSize pageSize, NSArray paperList) {
+        return objc_forPageSize(objCClass, bestPaperForPageSize$withPapersFromArray$, pageSize, paperList);
+    }
     /*</methods>*/
 
 }

@@ -45,7 +45,10 @@ public class /*<name>*/ NSShadow /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSShadow /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSShadow /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSShadow(SkipInit skipInit) { super(skipInit); }
     public NSShadow() {}
     
     /*</constructors>*/
@@ -54,32 +57,32 @@ public class /*<name>*/ NSShadow /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html#//apple_ref/occ/instp/NSShadow/shadowBlurRadius">@property (nonatomic, assign) CGFloat shadowBlurRadius</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("shadowBlurRadius") public native @Type("CGFloat") float getShadowBlurRadius();
+    @Bind("shadowBlurRadius") public native float getShadowBlurRadius();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html#//apple_ref/occ/instp/NSShadow/shadowBlurRadius">@property (nonatomic, assign) CGFloat shadowBlurRadius</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setShadowBlurRadius:") public native void setShadowBlurRadius(@Type("CGFloat") float v);
+    @Bind("setShadowBlurRadius:") public native void setShadowBlurRadius(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html#//apple_ref/occ/instp/NSShadow/shadowColor">@property (nonatomic, retain) id shadowColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("shadowColor") public native @Type("id") NSObject getShadowColor();
+    @Bind("shadowColor") public native NSObject getShadowColor();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html#//apple_ref/occ/instp/NSShadow/shadowColor">@property (nonatomic, retain) id shadowColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setShadowColor:") public native void setShadowColor(@Type("id") NSObject v);
+    @Bind("setShadowColor:") public native void setShadowColor(NSObject v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html#//apple_ref/occ/instp/NSShadow/shadowOffset">@property (nonatomic, assign) CGSize shadowOffset</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("shadowOffset") public native @Type("CGSize") CGSize getShadowOffset();
+    @Bind("shadowOffset") public native CGSize getShadowOffset();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html#//apple_ref/occ/instp/NSShadow/shadowOffset">@property (nonatomic, assign) CGSize shadowOffset</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setShadowOffset:") public native void setShadowOffset(@Type("CGSize") CGSize v);
+    @Bind("setShadowOffset:") public native void setShadowOffset(CGSize v);
     /*</properties>*/
     /*<methods>*/
     

@@ -46,7 +46,10 @@ public class /*<name>*/ UITapGestureRecognizer /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UITapGestureRecognizer /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITapGestureRecognizer /*</name>*/.class);
+
     /*<constructors>*/
+    protected UITapGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     public UITapGestureRecognizer() {}
     
     /*</constructors>*/
@@ -55,22 +58,22 @@ public class /*<name>*/ UITapGestureRecognizer /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITapGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UITapGestureRecognizer/numberOfTapsRequired">@property(nonatomic) NSUInteger numberOfTapsRequired</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("numberOfTapsRequired") public native @Type("NSUInteger") int getNumberOfTapsRequired();
+    @Bind("numberOfTapsRequired") public native int getNumberOfTapsRequired();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITapGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UITapGestureRecognizer/numberOfTapsRequired">@property(nonatomic) NSUInteger numberOfTapsRequired</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setNumberOfTapsRequired:") public native void setNumberOfTapsRequired(@Type("NSUInteger") int v);
+    @Bind("setNumberOfTapsRequired:") public native void setNumberOfTapsRequired(int v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITapGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UITapGestureRecognizer/numberOfTouchesRequired">@property(nonatomic) NSUInteger numberOfTouchesRequired</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("numberOfTouchesRequired") public native @Type("NSUInteger") int getNumberOfTouchesRequired();
+    @Bind("numberOfTouchesRequired") public native int getNumberOfTouchesRequired();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITapGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UITapGestureRecognizer/numberOfTouchesRequired">@property(nonatomic) NSUInteger numberOfTouchesRequired</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setNumberOfTouchesRequired:") public native void setNumberOfTouchesRequired(@Type("NSUInteger") int v);
+    @Bind("setNumberOfTouchesRequired:") public native void setNumberOfTouchesRequired(int v);
     /*</properties>*/
     /*<methods>*/
     

@@ -41,7 +41,10 @@ public class /*<name>*/ NSSet /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSSet /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSSet /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSSet(SkipInit skipInit) { super(skipInit); }
     public NSSet() {}
     
     /*</constructors>*/

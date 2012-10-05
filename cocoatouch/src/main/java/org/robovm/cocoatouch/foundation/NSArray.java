@@ -41,7 +41,10 @@ public class /*<name>*/ NSArray /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSArray /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSArray /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSArray(SkipInit skipInit) { super(skipInit); }
     public NSArray() {}
     
     /*</constructors>*/

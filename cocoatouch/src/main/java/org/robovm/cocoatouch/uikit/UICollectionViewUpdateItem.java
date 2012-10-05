@@ -45,7 +45,10 @@ public class /*<name>*/ UICollectionViewUpdateItem /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UICollectionViewUpdateItem /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UICollectionViewUpdateItem /*</name>*/.class);
+
     /*<constructors>*/
+    protected UICollectionViewUpdateItem(SkipInit skipInit) { super(skipInit); }
     public UICollectionViewUpdateItem() {}
     
     /*</constructors>*/
@@ -53,22 +56,22 @@ public class /*<name>*/ UICollectionViewUpdateItem /*</name>*/
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewUpdateItem_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewUpdateItem/elementKind">@property (nonatomic, readonly) NSString *elementKind</a>
      */
-    @Bind("elementKind") public native @Type("NSString *") String getElementKind();
+    @Bind("elementKind") public native String getElementKind();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewUpdateItem_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewUpdateItem/indexPathAfterUpdate">@property (nonatomic, readonly) NSIndexPath *indexPathAfterUpdate</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("indexPathAfterUpdate") public native @Type("NSIndexPath *") NSIndexPath getIndexPathAfterUpdate();
+    @Bind("indexPathAfterUpdate") public native NSIndexPath getIndexPathAfterUpdate();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewUpdateItem_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewUpdateItem/indexPathBeforeUpdate">@property (nonatomic, readonly) NSIndexPath *indexPathBeforeUpdate</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("indexPathBeforeUpdate") public native @Type("NSIndexPath *") NSIndexPath getIndexPathBeforeUpdate();
+    @Bind("indexPathBeforeUpdate") public native NSIndexPath getIndexPathBeforeUpdate();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewUpdateItem_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewUpdateItem/updateAction">@property (nonatomic, readonly) UICollectionUpdateAction updateAction</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("updateAction") public native @Type("UICollectionUpdateAction") UICollectionUpdateAction getUpdateAction();
+    @Bind("updateAction") public native UICollectionUpdateAction getUpdateAction();
     /*</properties>*/
     /*<methods>*/
     

@@ -46,7 +46,10 @@ public class /*<name>*/ UITouch /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UITouch /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITouch /*</name>*/.class);
+
     /*<constructors>*/
+    protected UITouch(SkipInit skipInit) { super(skipInit); }
     public UITouch() {}
     
     /*</constructors>*/
@@ -55,44 +58,56 @@ public class /*<name>*/ UITouch /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/gestureRecognizers">@property(nonatomic,readonly,copy) NSArray *gestureRecognizers</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("gestureRecognizers") public native @Type("NSArray *") NSArray getGestureRecognizers();
+    @Bind("gestureRecognizers") public native NSArray getGestureRecognizers();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/phase">@property(nonatomic, readonly) UITouchPhase phase</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("phase") public native @Type("UITouchPhase") UITouchPhase getPhase();
+    @Bind("phase") public native UITouchPhase getPhase();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/tapCount">@property(nonatomic, readonly) NSUInteger tapCount</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("tapCount") public native @Type("NSUInteger") int getTapCount();
+    @Bind("tapCount") public native int getTapCount();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/timestamp">@property(nonatomic, readonly) NSTimeInterval timestamp</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("timestamp") public native @Type("NSTimeInterval") double getTimestamp();
+    @Bind("timestamp") public native double getTimestamp();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/view">@property(nonatomic, readonly, retain) UIView *view</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("view") public native @Type("UIView *") UIView getView();
+    @Bind("view") public native UIView getView();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/window">@property(nonatomic, readonly, retain) UIWindow *window</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("window") public native @Type("UIWindow *") UIWindow getWindow();
+    @Bind("window") public native UIWindow getWindow();
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector locationInView$ = Selector.register("locationInView:");
+    @Bridge(symbol = "objc_msgSend") private native static CGPoint objc_getLocation(UITouch __self__, Selector __cmd__, UIView view);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGPoint objc_getLocationSuper(ObjCSuper __super__, UITouch __self__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instm/UITouch/locationInView:">- (CGPoint)locationInView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("locationInView:") public native @Type("CGPoint") CGPoint getLocation(@Type("UIView *") UIView view);
+    public CGPoint getLocation(UIView view) {
+        if (customClass) { return objc_getLocationSuper(getSuper(), this, locationInView$, view); } else { return objc_getLocation(this, locationInView$, view); }
+    }
+    
+    private static final Selector previousLocationInView$ = Selector.register("previousLocationInView:");
+    @Bridge(symbol = "objc_msgSend") private native static CGPoint objc_getPreviousLocation(UITouch __self__, Selector __cmd__, UIView view);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGPoint objc_getPreviousLocationSuper(ObjCSuper __super__, UITouch __self__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instm/UITouch/previousLocationInView:">- (CGPoint)previousLocationInView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("previousLocationInView:") public native @Type("CGPoint") CGPoint getPreviousLocation(@Type("UIView *") UIView view);
+    public CGPoint getPreviousLocation(UIView view) {
+        if (customClass) { return objc_getPreviousLocationSuper(getSuper(), this, previousLocationInView$, view); } else { return objc_getPreviousLocation(this, previousLocationInView$, view); }
+    }
     /*</methods>*/
 
 }

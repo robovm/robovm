@@ -48,22 +48,22 @@ public interface /*<name>*/ UISplitViewControllerDelegate /*</name>*/ /*<impleme
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISplitViewControllerDelegate/splitViewController:shouldHideViewController:inOrientation:">- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("splitViewController:shouldHideViewController:inOrientation:") @Type("BOOL") boolean shouldHideViewController(@Type("UISplitViewController *") UISplitViewController svc, @Type("UIViewController *") UIViewController vc, @Type("UIInterfaceOrientation") UIInterfaceOrientation orientation);
+    boolean shouldHideViewController(UISplitViewController svc, UIViewController vc, UIInterfaceOrientation orientation);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISplitViewControllerDelegate/splitViewController:willHideViewController:withBarButtonItem:forPopoverController:">- (void)splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("splitViewController:willHideViewController:withBarButtonItem:forPopoverController:") @Type("void") void willHideViewController(@Type("UISplitViewController *") UISplitViewController svc, @Type("UIViewController *") UIViewController aViewController, @Type("UIBarButtonItem *") UIBarButtonItem barButtonItem, @Type("UIPopoverController *") UIPopoverController pc);
+    void willHideViewController(UISplitViewController svc, UIViewController aViewController, UIBarButtonItem barButtonItem, UIPopoverController pc);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISplitViewControllerDelegate/splitViewController:popoverController:willPresentViewController:">- (void)splitViewController:(UISplitViewController *)svc popoverController:(UIPopoverController *)pc willPresentViewController:(UIViewController *)aViewController</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("splitViewController:popoverController:willPresentViewController:") @Type("void") void willPresentViewController(@Type("UISplitViewController *") UISplitViewController svc, @Type("UIPopoverController *") UIPopoverController pc, @Type("UIViewController *") UIViewController aViewController);
+    void willPresentViewController(UISplitViewController svc, UIPopoverController pc, UIViewController aViewController);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISplitViewControllerDelegate/splitViewController:willShowViewController:invalidatingBarButtonItem:">- (void)splitViewController:(UISplitViewController *)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)button</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("splitViewController:willShowViewController:invalidatingBarButtonItem:") @Type("void") void willShowViewController(@Type("UISplitViewController *") UISplitViewController svc, @Type("UIViewController *") UIViewController aViewController, @Type("UIBarButtonItem *") UIBarButtonItem button);
+    void willShowViewController(UISplitViewController svc, UIViewController aViewController, UIBarButtonItem button);
     /*</methods>*/
 
 }

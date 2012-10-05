@@ -41,7 +41,10 @@ public class /*<name>*/ NSUndoManager /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSUndoManager /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSUndoManager /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSUndoManager(SkipInit skipInit) { super(skipInit); }
     public NSUndoManager() {}
     
     /*</constructors>*/

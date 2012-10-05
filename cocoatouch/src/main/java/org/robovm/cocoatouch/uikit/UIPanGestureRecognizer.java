@@ -46,7 +46,10 @@ public class /*<name>*/ UIPanGestureRecognizer /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIPanGestureRecognizer /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPanGestureRecognizer /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIPanGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     public UIPanGestureRecognizer() {}
     
     /*</constructors>*/
@@ -55,39 +58,57 @@ public class /*<name>*/ UIPanGestureRecognizer /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPanGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPanGestureRecognizer/maximumNumberOfTouches">@property(nonatomic) NSUInteger maximumNumberOfTouches</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("maximumNumberOfTouches") public native @Type("NSUInteger") int getMaximumNumberOfTouches();
+    @Bind("maximumNumberOfTouches") public native int getMaximumNumberOfTouches();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPanGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPanGestureRecognizer/maximumNumberOfTouches">@property(nonatomic) NSUInteger maximumNumberOfTouches</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setMaximumNumberOfTouches:") public native void setMaximumNumberOfTouches(@Type("NSUInteger") int v);
+    @Bind("setMaximumNumberOfTouches:") public native void setMaximumNumberOfTouches(int v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPanGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPanGestureRecognizer/minimumNumberOfTouches">@property(nonatomic) NSUInteger minimumNumberOfTouches</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("minimumNumberOfTouches") public native @Type("NSUInteger") int getMinimumNumberOfTouches();
+    @Bind("minimumNumberOfTouches") public native int getMinimumNumberOfTouches();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPanGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPanGestureRecognizer/minimumNumberOfTouches">@property(nonatomic) NSUInteger minimumNumberOfTouches</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setMinimumNumberOfTouches:") public native void setMinimumNumberOfTouches(@Type("NSUInteger") int v);
+    @Bind("setMinimumNumberOfTouches:") public native void setMinimumNumberOfTouches(int v);
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector translationInView$ = Selector.register("translationInView:");
+    @Bridge(symbol = "objc_msgSend") private native static CGPoint objc_getTranslation(UIPanGestureRecognizer __self__, Selector __cmd__, UIView view);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGPoint objc_getTranslationSuper(ObjCSuper __super__, UIPanGestureRecognizer __self__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPanGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPanGestureRecognizer/translationInView:">- (CGPoint)translationInView:(UIView *)view</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("translationInView:") public native @Type("CGPoint") CGPoint getTranslation(@Type("UIView *") UIView view);
+    public CGPoint getTranslation(UIView view) {
+        if (customClass) { return objc_getTranslationSuper(getSuper(), this, translationInView$, view); } else { return objc_getTranslation(this, translationInView$, view); }
+    }
+    
+    private static final Selector velocityInView$ = Selector.register("velocityInView:");
+    @Bridge(symbol = "objc_msgSend") private native static CGPoint objc_getVelocity(UIPanGestureRecognizer __self__, Selector __cmd__, UIView view);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGPoint objc_getVelocitySuper(ObjCSuper __super__, UIPanGestureRecognizer __self__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPanGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPanGestureRecognizer/velocityInView:">- (CGPoint)velocityInView:(UIView *)view</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("velocityInView:") public native @Type("CGPoint") CGPoint getVelocity(@Type("UIView *") UIView view);
+    public CGPoint getVelocity(UIView view) {
+        if (customClass) { return objc_getVelocitySuper(getSuper(), this, velocityInView$, view); } else { return objc_getVelocity(this, velocityInView$, view); }
+    }
+    
+    private static final Selector setTranslation$inView$ = Selector.register("setTranslation:inView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTranslation(UIPanGestureRecognizer __self__, Selector __cmd__, CGPoint translation, UIView view);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTranslationSuper(ObjCSuper __super__, UIPanGestureRecognizer __self__, Selector __cmd__, CGPoint translation, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPanGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPanGestureRecognizer/setTranslation:inView:">- (void)setTranslation:(CGPoint)translation inView:(UIView *)view</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setTranslation:inView:") public native @Type("void") void setTranslation(@Type("CGPoint") CGPoint translation, @Type("UIView *") UIView view);
+    public void setTranslation(CGPoint translation, UIView view) {
+        if (customClass) { objc_setTranslationSuper(getSuper(), this, setTranslation$inView$, translation, view); } else { objc_setTranslation(this, setTranslation$inView$, translation, view); }
+    }
     /*</methods>*/
 
 }

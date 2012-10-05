@@ -46,7 +46,10 @@ public class /*<name>*/ UIPrintInfo /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIPrintInfo /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPrintInfo /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIPrintInfo(SkipInit skipInit) { super(skipInit); }
     public UIPrintInfo() {}
     
     /*</constructors>*/
@@ -55,69 +58,85 @@ public class /*<name>*/ UIPrintInfo /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/duplex">@property(nonatomic) UIPrintInfoDuplex duplex</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("duplex") public native @Type("UIPrintInfoDuplex") UIPrintInfoDuplex getDuplex();
+    @Bind("duplex") public native UIPrintInfoDuplex getDuplex();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/duplex">@property(nonatomic) UIPrintInfoDuplex duplex</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setDuplex:") public native void setDuplex(@Type("UIPrintInfoDuplex") UIPrintInfoDuplex v);
+    @Bind("setDuplex:") public native void setDuplex(UIPrintInfoDuplex v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/jobName">@property(nonatomic, copy) NSString *jobName</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("jobName") public native @Type("NSString *") String getJobName();
+    @Bind("jobName") public native String getJobName();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/jobName">@property(nonatomic, copy) NSString *jobName</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setJobName:") public native void setJobName(@Type("NSString *") String v);
+    @Bind("setJobName:") public native void setJobName(String v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/orientation">@property(nonatomic) UIPrintInfoOrientation orientation</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("orientation") public native @Type("UIPrintInfoOrientation") UIPrintInfoOrientation getOrientation();
+    @Bind("orientation") public native UIPrintInfoOrientation getOrientation();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/orientation">@property(nonatomic) UIPrintInfoOrientation orientation</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setOrientation:") public native void setOrientation(@Type("UIPrintInfoOrientation") UIPrintInfoOrientation v);
+    @Bind("setOrientation:") public native void setOrientation(UIPrintInfoOrientation v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/outputType">@property(nonatomic) UIPrintInfoOutputType outputType</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("outputType") public native @Type("UIPrintInfoOutputType") UIPrintInfoOutputType getOutputType();
+    @Bind("outputType") public native UIPrintInfoOutputType getOutputType();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/outputType">@property(nonatomic) UIPrintInfoOutputType outputType</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setOutputType:") public native void setOutputType(@Type("UIPrintInfoOutputType") UIPrintInfoOutputType v);
+    @Bind("setOutputType:") public native void setOutputType(UIPrintInfoOutputType v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/printerID">@property(nonatomic, copy) NSString *printerID</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("printerID") public native @Type("NSString *") String getPrinterID();
+    @Bind("printerID") public native String getPrinterID();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/printerID">@property(nonatomic, copy) NSString *printerID</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setPrinterID:") public native void setPrinterID(@Type("NSString *") String v);
+    @Bind("setPrinterID:") public native void setPrinterID(String v);
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector printInfoWithDictionary$ = Selector.register("printInfoWithDictionary:");
+    @Bridge(symbol = "objc_msgSend") private native static UIPrintInfo objc_fromDictionary(ObjCClass __self__, Selector __cmd__, NSDictionary dictionary);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInfo/printInfoWithDictionary:">+ (UIPrintInfo *)printInfoWithDictionary:(NSDictionary *)dictionary</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("printInfoWithDictionary:") public native static @Type("UIPrintInfo *") UIPrintInfo fromDictionary(@Type("NSDictionary *") NSDictionary dictionary);
+    public static UIPrintInfo fromDictionary(NSDictionary dictionary) {
+        return objc_fromDictionary(objCClass, printInfoWithDictionary$, dictionary);
+    }
+    
+    private static final Selector printInfo = Selector.register("printInfo");
+    @Bridge(symbol = "objc_msgSend") private native static UIPrintInfo objc_getPrintInfo(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInfo/printInfo">+ (UIPrintInfo *)printInfo</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("printInfo") public native static @Type("UIPrintInfo *") UIPrintInfo getPrintInfo();
+    public static UIPrintInfo getPrintInfo() {
+        return objc_getPrintInfo(objCClass, printInfo);
+    }
+    
+    private static final Selector dictionaryRepresentation = Selector.register("dictionaryRepresentation");
+    @Bridge(symbol = "objc_msgSend") private native static NSDictionary objc_toDictionary(UIPrintInfo __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSDictionary objc_toDictionarySuper(ObjCSuper __super__, UIPrintInfo __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPrintInfo/dictionaryRepresentation">- (NSDictionary *)dictionaryRepresentation</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("dictionaryRepresentation") public native @Type("NSDictionary *") NSDictionary toDictionary();
+    public NSDictionary toDictionary() {
+        if (customClass) { return objc_toDictionarySuper(getSuper(), this, dictionaryRepresentation); } else { return objc_toDictionary(this, dictionaryRepresentation); }
+    }
     /*</methods>*/
 
 }

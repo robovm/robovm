@@ -48,22 +48,22 @@ public interface /*<name>*/ UINavigationBarDelegate /*</name>*/ /*<implements>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UINavigationBarDelegate/navigationBar:didPopItem:">- (void)navigationBar:(UINavigationBar *)navigationBar didPopItem:(UINavigationItem *)item</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("navigationBar:didPopItem:") @Type("void") void didPopItem(@Type("UINavigationBar *") UINavigationBar navigationBar, @Type("UINavigationItem *") UINavigationItem item);
+    void didPopItem(UINavigationBar navigationBar, UINavigationItem item);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UINavigationBarDelegate/navigationBar:didPushItem:">- (void)navigationBar:(UINavigationBar *)navigationBar didPushItem:(UINavigationItem *)item</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("navigationBar:didPushItem:") @Type("void") void didPushItem(@Type("UINavigationBar *") UINavigationBar navigationBar, @Type("UINavigationItem *") UINavigationItem item);
+    void didPushItem(UINavigationBar navigationBar, UINavigationItem item);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UINavigationBarDelegate/navigationBar:shouldPopItem:">- (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("navigationBar:shouldPopItem:") @Type("BOOL") boolean shouldPopItem(@Type("UINavigationBar *") UINavigationBar navigationBar, @Type("UINavigationItem *") UINavigationItem item);
+    boolean shouldPopItem(UINavigationBar navigationBar, UINavigationItem item);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UINavigationBarDelegate/navigationBar:shouldPushItem:">- (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPushItem:(UINavigationItem *)item</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("navigationBar:shouldPushItem:") @Type("BOOL") boolean shouldPushItem(@Type("UINavigationBar *") UINavigationBar navigationBar, @Type("UINavigationItem *") UINavigationItem item);
+    boolean shouldPushItem(UINavigationBar navigationBar, UINavigationItem item);
     /*</methods>*/
 
 }

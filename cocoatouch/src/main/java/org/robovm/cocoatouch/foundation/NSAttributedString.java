@@ -41,7 +41,10 @@ public class /*<name>*/ NSAttributedString /*</name>*/
         ObjCRuntime.bind(/*<name>*/ NSAttributedString /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSAttributedString /*</name>*/.class);
+
     /*<constructors>*/
+    protected NSAttributedString(SkipInit skipInit) { super(skipInit); }
     public NSAttributedString() {}
     
     /*</constructors>*/

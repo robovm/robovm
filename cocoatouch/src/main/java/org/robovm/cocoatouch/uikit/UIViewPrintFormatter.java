@@ -46,7 +46,10 @@ public class /*<name>*/ UIViewPrintFormatter /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIViewPrintFormatter /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIViewPrintFormatter /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIViewPrintFormatter(SkipInit skipInit) { super(skipInit); }
     public UIViewPrintFormatter() {}
     
     /*</constructors>*/
@@ -55,7 +58,7 @@ public class /*<name>*/ UIViewPrintFormatter /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewPrintFormatter/view">@property(nonatomic, readonly) UIView *view</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("view") public native @Type("UIView *") UIView getView();
+    @Bind("view") public native UIView getView();
     /*</properties>*/
     /*<methods>*/
     

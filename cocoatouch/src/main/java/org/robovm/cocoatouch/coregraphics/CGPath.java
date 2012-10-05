@@ -16,6 +16,6 @@
 
 import org.robovm.rt.bro.Struct;
 
-public final class CGPath extends Struct {
+public final class CGPath {
 
 }

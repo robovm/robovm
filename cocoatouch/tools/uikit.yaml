@@ -280,11 +280,11 @@ classes:
                 name: getEnabledRemoteNotificationTypes
                 return_type: EnumSet<UIRemoteNotificationType>
             "-registerForRemoteNotificationTypes:":
-                args:
+                parameters:
                     "types":
                         type: EnumSet<UIRemoteNotificationType>
 #            "-sendAction:to:from:forEvent:":
-#                args:
+#                parameters:
 #                    action: 
 #                        type: Action
             "-supportedInterfaceOrientationsForWindow:":
@@ -328,7 +328,7 @@ classes:
                 name: fromRect
             "+bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:":
                 name: fromRoundedRect
-                args:
+                parameters:
                     "corners":
                         type: EnumSet<UIRectCorner>
             "+bezierPathWithRoundedRect:cornerRadius:":
@@ -549,7 +549,7 @@ classes:
             "-actionsForTarget:forControlEvent:":
                 name: getActions
             "-addTarget:action:forControlEvents:":
-                args:
+                parameters:
                     "controlEvents":
                         type: "EnumSet<UIControlEvent>"
             "-allControlEvents":
@@ -566,12 +566,12 @@ classes:
             "-endTrackingWithTouch:withEvent:":
                 name: endTracking
             "-removeTarget:action:forControlEvents:":
-                args:
+                parameters:
                     "controlEvents":
                         type: "EnumSet<UIControlEvent>"
             "-sendActionsForControlEvents:":
                 name: sendControlEventsActions
-                args:
+                parameters:
                     "controlEvents":
                         type: "EnumSet<UIControlEvent>"
     UIDatePicker:
@@ -886,12 +886,12 @@ classes:
                 name: dismiss
             "-presentPopoverFromBarButtonItem:permittedArrowDirections:animated:":
                 name: presentFromBarButtonItem
-                args:
+                parameters:
                     "arrowDirections":
                         type: EnumSet<UIPopoverArrowDirection>
             "-presentPopoverFromRect:inView:permittedArrowDirections:animated:":
                 name: presentFromRectInView
-                args:
+                parameters:
                     "arrowDirections":
                         type: EnumSet<UIPopoverArrowDirection>
     UIPrintFormatter:
@@ -1174,11 +1174,11 @@ classes:
         protocols: []
         methods:
             "-didTransitionToState:":
-                args:
+                parameters:
                     "state":
                         type: EnumSet<UITableViewCellStateMask>
             "-willTransitionToState:":
-                args:
+                parameters:
                     "state":
                         type: EnumSet<UITableViewCellStateMask>
     UITableViewController:
@@ -1263,7 +1263,7 @@ classes:
         urls: [../UITextInputStringTokenizer_Class/Reference/Reference.html, ../UITextInputTokenizer_Protocol/Reference/Reference.html]
         methods: 
             "-initWithTextInput:":
-                args:
+                parameters:
                     textInput:
                         type: UITextInput
             "-positionFromPosition:toBoundary:inDirection:":
@@ -1380,29 +1380,29 @@ classes:
                 name: animate
             "+animateWithDuration:delay:options:animations:completion:":
                 name: animate
-                args:
+                parameters:
                     "options":
                         type: EnumSet<UIViewAnimationOption>                
             "+transitionFromView:toView:duration:options:completion:":
                 name: transition
-                args:
+                parameters:
                     "options":
                         type: EnumSet<UIViewAnimationOption>                
             "+transitionWithView:duration:options:animations:completion:":
                 name: transition
-                args:
+                parameters:
                     "options":
                         type: EnumSet<UIViewAnimationOption>                
             "+layerClass":
                 name: getLayerClass
 #            "+setAnimationDidStopSelector:":
-#                args:
+#                parameters:
 #                    selector: 
 #                        type: AnimationDidStopAction
 #                        name: action
 #                name: setAnimationDidStopAction
 #            "+setAnimationWillStartSelector:":
-#                args:
+#                parameters:
 #                    selector: 
 #                        type: AnimationDidStartAction
 #                        name: action
@@ -1493,7 +1493,7 @@ classes:
                 name: performSegue
             "-transitionFromViewController:toViewController:duration:options:animations:completion:":
                 name: transition
-                args:
+                parameters:
                     "options":
                         type: EnumSet<UIViewAnimationOption>                
             "-willAnimateRotationToInterfaceOrientation:duration:":

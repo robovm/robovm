@@ -31,6 +31,8 @@ public class /*<name>*/ TheName /*</name>*/
         ObjCRuntime.bind(/*<name>*/ TheName /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ TheName /*</name>*/.class);
+
     /*<constructors>*/
     /*</constructors>*/
     /*<properties>*/

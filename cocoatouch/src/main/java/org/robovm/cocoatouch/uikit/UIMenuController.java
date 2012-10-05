@@ -46,7 +46,10 @@ public class /*<name>*/ UIMenuController /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIMenuController /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIMenuController /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIMenuController(SkipInit skipInit) { super(skipInit); }
     public UIMenuController() {}
     
     /*</constructors>*/
@@ -55,59 +58,82 @@ public class /*<name>*/ UIMenuController /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instp/UIMenuController/arrowDirection">@property UIMenuControllerArrowDirection arrowDirection</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("arrowDirection") public native @Type("UIMenuControllerArrowDirection") UIMenuControllerArrowDirection getArrowDirection();
+    @Bind("arrowDirection") public native UIMenuControllerArrowDirection getArrowDirection();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instp/UIMenuController/arrowDirection">@property UIMenuControllerArrowDirection arrowDirection</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setArrowDirection:") public native void setArrowDirection(@Type("UIMenuControllerArrowDirection") UIMenuControllerArrowDirection v);
+    @Bind("setArrowDirection:") public native void setArrowDirection(UIMenuControllerArrowDirection v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instp/UIMenuController/menuFrame">@property(nonatomic, readonly) CGRect menuFrame</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("menuFrame") public native @Type("CGRect") CGRect getMenuFrame();
+    @Bind("menuFrame") public native CGRect getMenuFrame();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instp/UIMenuController/menuItems">@property(copy) NSArray *menuItems</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("menuItems") public native @Type("NSArray *") NSArray getMenuItems();
+    @Bind("menuItems") public native NSArray getMenuItems();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instp/UIMenuController/menuItems">@property(copy) NSArray *menuItems</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setMenuItems:") public native void setMenuItems(@Type("NSArray *") NSArray v);
+    @Bind("setMenuItems:") public native void setMenuItems(NSArray v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instp/UIMenuController/menuVisible">@property(nonatomic, getter=isMenuVisible) BOOL menuVisible</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("isMenuVisible") public native @Type("BOOL") boolean isMenuVisible();
+    @Bind("isMenuVisible") public native boolean isMenuVisible();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instp/UIMenuController/menuVisible">@property(nonatomic, getter=isMenuVisible) BOOL menuVisible</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setMenuVisible:") public native void setMenuVisible(@Type("BOOL") boolean v);
+    @Bind("setMenuVisible:") public native void setMenuVisible(boolean v);
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector sharedMenuController = Selector.register("sharedMenuController");
+    @Bridge(symbol = "objc_msgSend") private native static UIMenuController objc_getSharedMenuController(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/clm/UIMenuController/sharedMenuController">+ (UIMenuController *)sharedMenuController</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("sharedMenuController") public native static @Type("UIMenuController *") UIMenuController getSharedMenuController();
+    public static UIMenuController getSharedMenuController() {
+        return objc_getSharedMenuController(objCClass, sharedMenuController);
+    }
+    
+    private static final Selector setMenuVisible$animated$ = Selector.register("setMenuVisible:animated:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMenuVisible(UIMenuController __self__, Selector __cmd__, boolean menuVisible, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMenuVisibleSuper(ObjCSuper __super__, UIMenuController __self__, Selector __cmd__, boolean menuVisible, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instm/UIMenuController/setMenuVisible:animated:">- (void)setMenuVisible:(BOOL)menuVisible animated:(BOOL)animated</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setMenuVisible:animated:") public native @Type("void") void setMenuVisible(@Type("BOOL") boolean menuVisible, @Type("BOOL") boolean animated);
+    public void setMenuVisible(boolean menuVisible, boolean animated) {
+        if (customClass) { objc_setMenuVisibleSuper(getSuper(), this, setMenuVisible$animated$, menuVisible, animated); } else { objc_setMenuVisible(this, setMenuVisible$animated$, menuVisible, animated); }
+    }
+    
+    private static final Selector setTargetRect$inView$ = Selector.register("setTargetRect:inView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTargetRect(UIMenuController __self__, Selector __cmd__, CGRect targetRect, UIView targetView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTargetRectSuper(ObjCSuper __super__, UIMenuController __self__, Selector __cmd__, CGRect targetRect, UIView targetView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instm/UIMenuController/setTargetRect:inView:">- (void)setTargetRect:(CGRect)targetRect inView:(UIView *)targetView</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setTargetRect:inView:") public native @Type("void") void setTargetRect(@Type("CGRect") CGRect targetRect, @Type("UIView *") UIView targetView);
+    public void setTargetRect(CGRect targetRect, UIView targetView) {
+        if (customClass) { objc_setTargetRectSuper(getSuper(), this, setTargetRect$inView$, targetRect, targetView); } else { objc_setTargetRect(this, setTargetRect$inView$, targetRect, targetView); }
+    }
+    
+    private static final Selector update = Selector.register("update");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_update(UIMenuController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_updateSuper(ObjCSuper __super__, UIMenuController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instm/UIMenuController/update">- (void)update</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("update") public native @Type("void") void update();
+    public void update() {
+        if (customClass) { objc_updateSuper(getSuper(), this, update); } else { objc_update(this, update); }
+    }
     /*</methods>*/
 
 }

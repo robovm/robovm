@@ -45,7 +45,10 @@ public class /*<name>*/ UICollectionViewFlowLayout /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UICollectionViewFlowLayout /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UICollectionViewFlowLayout /*</name>*/.class);
+
     /*<constructors>*/
+    protected UICollectionViewFlowLayout(SkipInit skipInit) { super(skipInit); }
     public UICollectionViewFlowLayout() {}
     
     /*</constructors>*/
@@ -54,72 +57,72 @@ public class /*<name>*/ UICollectionViewFlowLayout /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/footerReferenceSize">@property (nonatomic) CGSize footerReferenceSize;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("footerReferenceSize") public native @Type("CGSize") CGSize getFooterReferenceSize();
+    @Bind("footerReferenceSize") public native CGSize getFooterReferenceSize();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/footerReferenceSize">@property (nonatomic) CGSize footerReferenceSize;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setFooterReferenceSize:") public native void setFooterReferenceSize(@Type("CGSize") CGSize v);
+    @Bind("setFooterReferenceSize:") public native void setFooterReferenceSize(CGSize v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/headerReferenceSize">@property (nonatomic) CGSize headerReferenceSize;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("headerReferenceSize") public native @Type("CGSize") CGSize getHeaderReferenceSize();
+    @Bind("headerReferenceSize") public native CGSize getHeaderReferenceSize();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/headerReferenceSize">@property (nonatomic) CGSize headerReferenceSize;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setHeaderReferenceSize:") public native void setHeaderReferenceSize(@Type("CGSize") CGSize v);
+    @Bind("setHeaderReferenceSize:") public native void setHeaderReferenceSize(CGSize v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/itemSize">@property (nonatomic) CGSize itemSize;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("itemSize") public native @Type("CGSize") CGSize getItemSize();
+    @Bind("itemSize") public native CGSize getItemSize();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/itemSize">@property (nonatomic) CGSize itemSize;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setItemSize:") public native void setItemSize(@Type("CGSize") CGSize v);
+    @Bind("setItemSize:") public native void setItemSize(CGSize v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/minimumInteritemSpacing">@property (nonatomic) CGFloat minimumInteritemSpacing;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("minimumInteritemSpacing") public native @Type("CGFloat") float getMinimumInteritemSpacing();
+    @Bind("minimumInteritemSpacing") public native float getMinimumInteritemSpacing();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/minimumInteritemSpacing">@property (nonatomic) CGFloat minimumInteritemSpacing;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setMinimumInteritemSpacing:") public native void setMinimumInteritemSpacing(@Type("CGFloat") float v);
+    @Bind("setMinimumInteritemSpacing:") public native void setMinimumInteritemSpacing(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/minimumLineSpacing">@property (nonatomic) CGFloat minimumLineSpacing;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("minimumLineSpacing") public native @Type("CGFloat") float getMinimumLineSpacing();
+    @Bind("minimumLineSpacing") public native float getMinimumLineSpacing();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/minimumLineSpacing">@property (nonatomic) CGFloat minimumLineSpacing;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setMinimumLineSpacing:") public native void setMinimumLineSpacing(@Type("CGFloat") float v);
+    @Bind("setMinimumLineSpacing:") public native void setMinimumLineSpacing(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/scrollDirection">@property (nonatomic) UICollectionViewScrollDirection scrollDirection;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("scrollDirection") public native @Type("UICollectionViewScrollDirection") UICollectionViewScrollDirection getScrollDirection();
+    @Bind("scrollDirection") public native UICollectionViewScrollDirection getScrollDirection();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/scrollDirection">@property (nonatomic) UICollectionViewScrollDirection scrollDirection;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setScrollDirection:") public native void setScrollDirection(@Type("UICollectionViewScrollDirection") UICollectionViewScrollDirection v);
+    @Bind("setScrollDirection:") public native void setScrollDirection(UICollectionViewScrollDirection v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/sectionInset">@property (nonatomic) UIEdgeInsets sectionInset;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("sectionInset") public native @Type("UIEdgeInsets") UIEdgeInsets getSectionInset();
+    @Bind("sectionInset") public native UIEdgeInsets getSectionInset();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/sectionInset">@property (nonatomic) UIEdgeInsets sectionInset;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setSectionInset:") public native void setSectionInset(@Type("UIEdgeInsets") UIEdgeInsets v);
+    @Bind("setSectionInset:") public native void setSectionInset(UIEdgeInsets v);
     /*</properties>*/
     /*<methods>*/
     

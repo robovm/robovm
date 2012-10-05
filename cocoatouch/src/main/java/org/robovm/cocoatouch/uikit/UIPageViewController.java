@@ -46,77 +46,92 @@ public class /*<name>*/ UIPageViewController /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIPageViewController /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPageViewController /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIPageViewController(SkipInit skipInit) { super(skipInit); }
     public UIPageViewController() {}
+    
+    private static final Selector initWithTransitionStyle$navigationOrientation$options$ = Selector.register("initWithTransitionStyle:navigationOrientation:options:");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithTransitionStyle(UIPageViewController __self__, Selector __cmd__, UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, NSDictionary options);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instm/UIPageViewController/initWithTransitionStyle:navigationOrientation:options:">- (id)initWithTransitionStyle:(UIPageViewControllerTransitionStyle)style navigationOrientation:(UIPageViewControllerNavigationOrientation)navigationOrientation options:(NSDictionary *)options</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("initWithTransitionStyle:navigationOrientation:options:") public UIPageViewController(@Type("UIPageViewControllerTransitionStyle") UIPageViewControllerTransitionStyle style, @Type("UIPageViewControllerNavigationOrientation") UIPageViewControllerNavigationOrientation navigationOrientation, @Type("NSDictionary *") NSDictionary options) {}
+    public UIPageViewController(UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, NSDictionary options) {
+        super((SkipInit) null);
+        objc_initWithTransitionStyle(this, initWithTransitionStyle$navigationOrientation$options$, style, navigationOrientation, options);
+    }
     /*</constructors>*/
     /*<properties>*/
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instp/UIPageViewController/dataSource">@property(nonatomic, assign) id&amp;lt;UIPageViewControllerDataSource&amp;gt; dataSource</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("dataSource") public native @Type("id<UIPageViewControllerDataSource>") UIPageViewControllerDataSource getDataSource();
+    @Bind("dataSource") public native UIPageViewControllerDataSource getDataSource();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instp/UIPageViewController/dataSource">@property(nonatomic, assign) id&amp;lt;UIPageViewControllerDataSource&amp;gt; dataSource</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setDataSource:") public native void setDataSource(@Type("id<UIPageViewControllerDataSource>") UIPageViewControllerDataSource v);
+    @Bind("setDataSource:") public native void setDataSource(UIPageViewControllerDataSource v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instp/UIPageViewController/delegate">@property(nonatomic, assign) id&amp;lt;UIPageViewControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("delegate") public native @Type("id<UIPageViewControllerDelegate>") UIPageViewControllerDelegate getDelegate();
+    @Bind("delegate") public native UIPageViewControllerDelegate getDelegate();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instp/UIPageViewController/delegate">@property(nonatomic, assign) id&amp;lt;UIPageViewControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(@Type("id<UIPageViewControllerDelegate>") UIPageViewControllerDelegate v);
+    @Bind("setDelegate:") public native void setDelegate(UIPageViewControllerDelegate v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instp/UIPageViewController/doubleSided">@property(nonatomic, getter=isDoubleSided) BOOL doubleSided</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("isDoubleSided") public native @Type("BOOL") boolean isDoubleSided();
+    @Bind("isDoubleSided") public native boolean isDoubleSided();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instp/UIPageViewController/doubleSided">@property(nonatomic, getter=isDoubleSided) BOOL doubleSided</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setDoubleSided:") public native void setDoubleSided(@Type("BOOL") boolean v);
+    @Bind("setDoubleSided:") public native void setDoubleSided(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instp/UIPageViewController/gestureRecognizers">@property(nonatomic, readonly) NSArray *gestureRecognizers</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("gestureRecognizers") public native @Type("NSArray *") NSArray getGestureRecognizers();
+    @Bind("gestureRecognizers") public native NSArray getGestureRecognizers();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instp/UIPageViewController/navigationOrientation">@property(nonatomic, readonly) UIPageViewControllerNavigationOrientation navigationOrientation</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("navigationOrientation") public native @Type("UIPageViewControllerNavigationOrientation") UIPageViewControllerNavigationOrientation getNavigationOrientation();
+    @Bind("navigationOrientation") public native UIPageViewControllerNavigationOrientation getNavigationOrientation();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instp/UIPageViewController/spineLocation">@property(nonatomic, readonly) UIPageViewControllerSpineLocation spineLocation</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("spineLocation") public native @Type("UIPageViewControllerSpineLocation") UIPageViewControllerSpineLocation getSpineLocation();
+    @Bind("spineLocation") public native UIPageViewControllerSpineLocation getSpineLocation();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instp/UIPageViewController/transitionStyle">@property(nonatomic, readonly) UIPageViewControllerTransitionStyle transitionStyle</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("transitionStyle") public native @Type("UIPageViewControllerTransitionStyle") UIPageViewControllerTransitionStyle getTransitionStyle();
+    @Bind("transitionStyle") public native UIPageViewControllerTransitionStyle getTransitionStyle();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instp/UIPageViewController/viewControllers">@property(nonatomic, readonly) NSArray *viewControllers</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("viewControllers") public native @Type("NSArray *") NSArray getViewControllers();
+    @Bind("viewControllers") public native NSArray getViewControllers();
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector setViewControllers$direction$animated$completion$ = Selector.register("setViewControllers:direction:animated:completion:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setViewControllers(UIPageViewController __self__, Selector __cmd__, NSArray viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, VoidBooleanBlock completion);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setViewControllersSuper(ObjCSuper __super__, UIPageViewController __self__, Selector __cmd__, NSArray viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, VoidBooleanBlock completion);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instm/UIPageViewController/setViewControllers:direction:animated:completion:">- (void)setViewControllers:(NSArray *)viewControllers direction:(UIPageViewControllerNavigationDirection)direction animated:(BOOL)animated completion:(void (^)(BOOL finished))completion</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setViewControllers:direction:animated:completion:") public native @Type("void") void setViewControllers(@Type("NSArray *") NSArray viewControllers, @Type("UIPageViewControllerNavigationDirection") UIPageViewControllerNavigationDirection direction, @Type("BOOL") boolean animated, @Type("void (^)(BOOL finished)") VoidBooleanBlock completion);
+    public void setViewControllers(NSArray viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, VoidBooleanBlock completion) {
+        if (customClass) { objc_setViewControllersSuper(getSuper(), this, setViewControllers$direction$animated$completion$, viewControllers, direction, animated, completion); } else { objc_setViewControllers(this, setViewControllers$direction$animated$completion$, viewControllers, direction, animated, completion); }
+    }
     /*</methods>*/
 
 }

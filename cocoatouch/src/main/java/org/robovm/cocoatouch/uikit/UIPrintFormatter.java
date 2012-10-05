@@ -46,7 +46,10 @@ public class /*<name>*/ UIPrintFormatter /*</name>*/
         ObjCRuntime.bind(/*<name>*/ UIPrintFormatter /*</name>*/.class);
     }
 
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPrintFormatter /*</name>*/.class);
+
     /*<constructors>*/
+    protected UIPrintFormatter(SkipInit skipInit) { super(skipInit); }
     public UIPrintFormatter() {}
     
     /*</constructors>*/
@@ -55,69 +58,87 @@ public class /*<name>*/ UIPrintFormatter /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/contentInsets">@property(nonatomic) UIEdgeInsets contentInsets</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("contentInsets") public native @Type("UIEdgeInsets") UIEdgeInsets getContentInsets();
+    @Bind("contentInsets") public native UIEdgeInsets getContentInsets();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/contentInsets">@property(nonatomic) UIEdgeInsets contentInsets</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setContentInsets:") public native void setContentInsets(@Type("UIEdgeInsets") UIEdgeInsets v);
+    @Bind("setContentInsets:") public native void setContentInsets(UIEdgeInsets v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/maximumContentHeight">@property(nonatomic) CGFloat maximumContentHeight</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("maximumContentHeight") public native @Type("CGFloat") float getMaximumContentHeight();
+    @Bind("maximumContentHeight") public native float getMaximumContentHeight();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/maximumContentHeight">@property(nonatomic) CGFloat maximumContentHeight</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setMaximumContentHeight:") public native void setMaximumContentHeight(@Type("CGFloat") float v);
+    @Bind("setMaximumContentHeight:") public native void setMaximumContentHeight(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/maximumContentWidth">@property(nonatomic) CGFloat maximumContentWidth</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("maximumContentWidth") public native @Type("CGFloat") float getMaximumContentWidth();
+    @Bind("maximumContentWidth") public native float getMaximumContentWidth();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/maximumContentWidth">@property(nonatomic) CGFloat maximumContentWidth</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setMaximumContentWidth:") public native void setMaximumContentWidth(@Type("CGFloat") float v);
+    @Bind("setMaximumContentWidth:") public native void setMaximumContentWidth(float v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/pageCount">@property(nonatomic, readonly) NSInteger pageCount</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("pageCount") public native @Type("NSInteger") int getPageCount();
+    @Bind("pageCount") public native int getPageCount();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/printPageRenderer">@property(readonly) UIPrintPageRenderer *printPageRenderer</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("printPageRenderer") public native @Type("UIPrintPageRenderer *") UIPrintPageRenderer getPrintPageRenderer();
+    @Bind("printPageRenderer") public native UIPrintPageRenderer getPrintPageRenderer();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/startPage">@property(nonatomic) NSInteger startPage</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("startPage") public native @Type("NSInteger") int getStartPage();
+    @Bind("startPage") public native int getStartPage();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/startPage">@property(nonatomic) NSInteger startPage</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("setStartPage:") public native void setStartPage(@Type("NSInteger") int v);
+    @Bind("setStartPage:") public native void setStartPage(int v);
     /*</properties>*/
     /*<methods>*/
+    
+    private static final Selector drawInRect$forPageAtIndex$ = Selector.register("drawInRect:forPageAtIndex:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_draw(UIPrintFormatter __self__, Selector __cmd__, CGRect rect, int pageIndex);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_drawSuper(ObjCSuper __super__, UIPrintFormatter __self__, Selector __cmd__, CGRect rect, int pageIndex);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPrintFormatter/drawInRect:forPageAtIndex:">- (void)drawInRect:(CGRect)rect forPageAtIndex:(NSInteger)pageIndex</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("drawInRect:forPageAtIndex:") public native @Type("void") void draw(@Type("CGRect") CGRect rect, @Type("NSInteger") int pageIndex);
+    public void draw(CGRect rect, int pageIndex) {
+        if (customClass) { objc_drawSuper(getSuper(), this, drawInRect$forPageAtIndex$, rect, pageIndex); } else { objc_draw(this, drawInRect$forPageAtIndex$, rect, pageIndex); }
+    }
+    
+    private static final Selector rectForPageAtIndex$ = Selector.register("rectForPageAtIndex:");
+    @Bridge(symbol = "objc_msgSend") private native static CGRect objc_getRectForPage(UIPrintFormatter __self__, Selector __cmd__, int pageIndex);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGRect objc_getRectForPageSuper(ObjCSuper __super__, UIPrintFormatter __self__, Selector __cmd__, int pageIndex);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPrintFormatter/rectForPageAtIndex:">- (CGRect)rectForPageAtIndex:(NSIndex)pageIndex</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("rectForPageAtIndex:") public native @Type("CGRect") CGRect getRectForPage(@Type("NSIndex") int pageIndex);
+    public CGRect getRectForPage(int pageIndex) {
+        if (customClass) { return objc_getRectForPageSuper(getSuper(), this, rectForPageAtIndex$, pageIndex); } else { return objc_getRectForPage(this, rectForPageAtIndex$, pageIndex); }
+    }
+    
+    private static final Selector removeFromPrintPageRenderer = Selector.register("removeFromPrintPageRenderer");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_removeFromPrintPageRenderer(UIPrintFormatter __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_removeFromPrintPageRendererSuper(ObjCSuper __super__, UIPrintFormatter __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPrintFormatter/removeFromPrintPageRenderer">- (void)removeFromPrintPageRenderer</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("removeFromPrintPageRenderer") public native @Type("void") void removeFromPrintPageRenderer();
+    public void removeFromPrintPageRenderer() {
+        if (customClass) { objc_removeFromPrintPageRendererSuper(getSuper(), this, removeFromPrintPageRenderer); } else { objc_removeFromPrintPageRenderer(this, removeFromPrintPageRenderer); }
+    }
     /*</methods>*/
 
 }

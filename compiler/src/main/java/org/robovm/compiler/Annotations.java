@@ -16,15 +16,12 @@
  */
 package org.robovm.compiler;
 
-import java.util.Collections;
-import java.util.List;
+import static org.robovm.compiler.Types.*;
 
-import soot.SootClass;
-import soot.SootMethod;
-import soot.tagkit.AnnotationTag;
-import soot.tagkit.Host;
-import soot.tagkit.VisibilityAnnotationTag;
-import soot.tagkit.VisibilityParameterAnnotationTag;
+import java.util.*;
+
+import soot.*;
+import soot.tagkit.*;
 
 /**
  * @author niklas
@@ -37,6 +34,7 @@ public class Annotations {
     public static final String STRUCT_RET = "Lorg/robovm/rt/bro/annotation/StructRet;";
     public static final String POINTER = "Lorg/robovm/rt/bro/annotation/Pointer;";
     public static final String MARSHALER = "Lorg/robovm/rt/bro/annotation/Marshaler;";
+    public static final String MARSHALERS = "Lorg/robovm/rt/bro/annotation/Marshalers;";
     public static final String BY_VAL = "Lorg/robovm/rt/bro/annotation/ByVal;";
     public static final String BY_REF = "Lorg/robovm/rt/bro/annotation/ByRef;";
 
@@ -135,10 +133,36 @@ public class Annotations {
     }
     
     public static AnnotationTag getMarshalerAnnotation(SootClass clazz) {
+        return getMarshalerAnnotation(clazz, null);
+    }
+    
+    public static AnnotationTag getMarshalerAnnotation(SootClass clazz, soot.Type type) {
         while (!clazz.isPhantom() && clazz.hasSuperclass()) {
-            AnnotationTag tag = getAnnotation(clazz, MARSHALER);
-            if (tag != null) {
-                return tag;
+            List<AnnotationTag> tags = new ArrayList<AnnotationTag>();
+            AnnotationTag marshaler = getAnnotation(clazz, MARSHALER);
+            if (marshaler != null) {
+                tags.add(marshaler);
+            } else {
+                AnnotationTag marshalers = getAnnotation(clazz, MARSHALERS);
+                if (marshalers != null) {
+                    for (AnnotationElem e : ((AnnotationArrayElem) marshalers.getElemAt(0)).getValues()) {
+                        AnnotationAnnotationElem elem = (AnnotationAnnotationElem) e;
+                        tags.add(elem.getValue());
+                    }
+                }
+            }
+            
+            for (AnnotationTag tag : tags) {
+                AnnotationClassElem elem = (AnnotationClassElem) getElemByName(tag, "type");
+                if (elem == null && type == null) {
+                    return tag;
+                }
+                if (elem != null && type != null) {
+                    String desc = elem.getDesc();
+                    if (getInternalName(type).equals(getInternalNameFromDescriptor(desc))) {
+                        return tag;                    
+                    }
+                }
             }
             clazz = clazz.getSuperclass();
         }
@@ -173,5 +197,15 @@ public class Annotations {
             clazz = clazz.getSuperclass();
         }
         return false;
+    }
+    
+    public static AnnotationElem getElemByName(AnnotationTag annotation, String name) {
+        for (int i = 0; i < annotation.getNumElems(); i++) {
+            AnnotationElem elem = annotation.getElemAt(i);
+            if (name.equals(elem.getName())) {
+                return elem;
+            }
+        }
+        return null;
     }
 }

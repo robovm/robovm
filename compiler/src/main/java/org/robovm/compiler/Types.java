@@ -178,6 +178,13 @@ public class Types {
         return sc.getName().replace('.', '/');
     }
     
+    public static String getInternalNameFromDescriptor(String desc) {
+        if (!desc.startsWith("L")) {
+            throw new IllegalArgumentException(desc + " is not a class descriptor");
+        }
+        return desc.substring(1, desc.length() - 1);
+    }
+    
     public static String getDescriptor(soot.Type t) {
         if (t instanceof PrimType) {
             if (t.equals(BooleanType.v())) {

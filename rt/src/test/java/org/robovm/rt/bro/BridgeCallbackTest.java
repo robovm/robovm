@@ -17,17 +17,12 @@ package org.robovm.rt.bro;
 
 import static org.junit.Assert.*;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 
-import org.junit.Test;
-import org.robovm.rt.VM;
-import org.robovm.rt.bro.annotation.Bridge;
-import org.robovm.rt.bro.annotation.ByVal;
-import org.robovm.rt.bro.annotation.Callback;
-import org.robovm.rt.bro.annotation.StructMember;
-import org.robovm.rt.bro.annotation.StructRet;
-import org.robovm.rt.bro.ptr.LongPtr;
-import org.robovm.rt.bro.ptr.Ptr;
+import org.junit.*;
+import org.robovm.rt.*;
+import org.robovm.rt.bro.annotation.*;
+import org.robovm.rt.bro.ptr.*;
 
 /**
  * Tests {@link Bridge} and {@link Callback} methods.
@@ -62,6 +57,21 @@ public class BridgeCallbackTest {
         public native @ByVal Point p4();
         @StructMember(3)
         public native Points p4(@ByVal Point p4);
+    }
+    
+    public static class StringMarshaler {
+        public static Object toObject(Class cls, long handle, boolean copy) {
+            BytePtr ptr = Struct.toStruct(BytePtr.class, handle);
+            return ptr.toStringAsciiZ();
+        }
+        public static void updateObject(Object o, long handle) {
+        }
+        public static long toNative(Object o) {
+            BytePtr ptr = BytePtr.toBytePtrAsciiZ((String) o);
+            return ptr.getHandle();
+        }
+        public static void updateNative(Object o, long handle) {
+        }
     }
     
     @Bridge
@@ -149,6 +159,37 @@ public class BridgeCallbackTest {
         return ps;
     }
     
+    @Bridge
+    public static native @Marshaler(StringMarshaler.class) String append(
+            @Marshaler(StringMarshaler.class) String a, 
+            @Marshaler(StringMarshaler.class) String b);
+    @Callback
+    public static @Marshaler(StringMarshaler.class) String append_cb(
+            @Marshaler(StringMarshaler.class) String a, 
+            @Marshaler(StringMarshaler.class) String b) {
+        
+        return a + b;
+    }
+    
+    @Marshaler(type = String.class, value = StringMarshaler.class)
+    public static class Inner1 {
+        @Bridge
+        public static native String append(String a, String b);
+        @Callback
+        public static String append_cb(String a, String b) {
+            return a + b;
+        }
+    }
+    @Marshalers(@Marshaler(type = String.class, value = StringMarshaler.class))
+    public static class Inner2 {
+        @Bridge
+        public static native String append(String a, String b);
+        @Callback
+        public static String append_cb(String a, String b) {
+            return a + b;
+        }
+    }
+    
     private static Method find(String name) {
         for (Method m : BridgeCallbackTest.class.getDeclaredMethods()) {
             if (m.getName().equals(name)) {
@@ -158,8 +199,8 @@ public class BridgeCallbackTest {
         return null;
     }
     
-    static {
-        for (Method m : BridgeCallbackTest.class.getDeclaredMethods()) {
+    private static void bind(Class cls) {
+        for (Method m : cls.getDeclaredMethods()) {
             if (m.getAnnotation(Bridge.class) != null) {
                 Method callbackMethod = find(m.getName() + "_cb");
                 if (callbackMethod != null) {
@@ -167,6 +208,12 @@ public class BridgeCallbackTest {
                 }
             }
         }
+    }
+    
+    static {
+        bind(BridgeCallbackTest.class);
+        bind(BridgeCallbackTest.Inner1.class);
+        bind(BridgeCallbackTest.Inner2.class);
     }
     
     @Test
@@ -284,5 +331,23 @@ public class BridgeCallbackTest {
         assertEquals(7, ps.p4().x());
         assertEquals(8, ps.p4().y());
         assertFalse(address.get() == ps.getHandle());
+    }
+    
+    @Test
+    public void testMarshalNonNativeTypeInlineMarshaler() {
+        String s = append("foo", "bar");
+        assertEquals("foobar", s);
+    }
+    
+    @Test
+    public void testMarshalNonNativeTypeMarshalerOnClass() {
+        String s = Inner1.append("foo", "bar");
+        assertEquals("foobar", s);
+    }
+    
+    @Test
+    public void testMarshalNonNativeTypeMarshalersOnClass() {
+        String s = Inner2.append("foo", "bar");
+        assertEquals("foobar", s);
     }
 }

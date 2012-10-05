@@ -114,6 +114,7 @@ public final class BytePtr extends Struct<BytePtr> {
             }
         }
         VM.memcpy(handle, VM.getArrayValuesAddress(bytes), length);
+        VM.setByte(handle + length, (byte) 0);
         return Struct.toStruct(BytePtr.class, handle);
     }
 }

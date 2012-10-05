@@ -20,26 +20,14 @@ import static org.robovm.compiler.Annotations.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import org.robovm.compiler.llvm.FunctionType;
-import org.robovm.compiler.llvm.PointerType;
-import org.robovm.compiler.llvm.StructureType;
+import org.robovm.compiler.llvm.*;
 import org.robovm.compiler.llvm.Type;
-import org.robovm.compiler.util.GenericSignatureParser;
+import org.robovm.compiler.util.*;
 
-import soot.LongType;
-import soot.PrimType;
-import soot.RefType;
-import soot.SootClass;
-import soot.SootMethod;
-import soot.SootResolver;
-import soot.VoidType;
-import soot.tagkit.AnnotationClassElem;
-import soot.tagkit.AnnotationIntElem;
-import soot.tagkit.AnnotationTag;
-import soot.tagkit.SignatureTag;
+import soot.*;
+import soot.tagkit.*;
 
 /**
  * 
@@ -68,20 +56,19 @@ public abstract class Bro {
     }
     
     public static boolean canMarshal(SootMethod method) {
-        return canMarshal(method.getReturnType());
+        if (canMarshal(method.getReturnType())) {
+            return true;
+        }
+        // Methods which have a @Marshaler set can be marshaled
+        return getMarshalerClassName(method, true) != null;            
     }
     
     public static boolean canMarshal(SootMethod method, int paramIndex) {
-        soot.Type t = method.getParameterType(paramIndex);
-        if (canMarshal(t)) {
+        if (canMarshal(method.getParameterType(paramIndex))) {
             return true;
         }
-        if (t instanceof RefType) {
-            // Parameters which have a @Marshaler set can be marshaled
-            return getMarshalerAnnotation(method, paramIndex) != null;            
-        }
-        // Nothing else can be marshaled
-        return false;
+        // Parameters which have a @Marshaler set can be marshaled
+        return getMarshalerClassName(method, paramIndex, true) != null;            
     }
     
     public static SootClass getPtrTargetClass(SootMethod method) {
@@ -126,15 +113,18 @@ public abstract class Bro {
     public static String getMarshalerClassName(SootMethod method, boolean unwrapPtr) {
         AnnotationTag annotation = getMarshalerAnnotation(method);
         if (annotation == null) {
-            SootClass paramType = ((RefType) method.getReturnType()).getSootClass();
-            if (unwrapPtr && isPtr(paramType)) {
-                // Return the marshaler for the type pointed to.
-                paramType = getPtrTargetClass(method);
+            SootClass type = ((RefType) method.getReturnType()).getSootClass();
+            if (unwrapPtr && isPtr(type)) {
+                // Search for the marshaler for the type pointed to.
+                type = getPtrTargetClass(method);
             }
-            annotation = getMarshalerAnnotation(paramType);
+            annotation = getMarshalerAnnotation(method.getDeclaringClass(), method.getReturnType());
+            if (annotation == null) {
+                annotation = getMarshalerAnnotation(type);                
+            }
         }
-        String desc = ((AnnotationClassElem) annotation.getElemAt(0)).getDesc();
-        return desc.substring(1, desc.length() - 1);
+        String desc = ((AnnotationClassElem) getElemByName(annotation, "value")).getDesc();
+        return getInternalNameFromDescriptor(desc);
     }
     
     public static String getMarshalerClassName(SootMethod method, int paramIndex, boolean unwrapPtr) {
@@ -145,10 +135,13 @@ public abstract class Bro {
                 // Return the marshaler for the type pointed to.
                 paramType = getPtrTargetClass(method, paramIndex);
             }
-            annotation = getMarshalerAnnotation(paramType);
+            annotation = getMarshalerAnnotation(method.getDeclaringClass(), method.getParameterType(paramIndex));
+            if (annotation == null) {
+                annotation = getMarshalerAnnotation(paramType);
+            }
         }
-        String desc = ((AnnotationClassElem) annotation.getElemAt(0)).getDesc();
-        return desc.substring(1, desc.length() - 1);
+        String desc = ((AnnotationClassElem) getElemByName(annotation, "value")).getDesc();
+        return getInternalNameFromDescriptor(desc);
     }
 
     public static int getStructMemberOffset(SootMethod method) {

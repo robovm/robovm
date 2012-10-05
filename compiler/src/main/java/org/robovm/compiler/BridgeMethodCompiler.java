@@ -71,12 +71,14 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
     private void validateBridgeMethod(SootMethod method) {
         if (!canMarshal(method)) {
             throw new IllegalArgumentException("No @Marshaler for return type of" 
-                    + " @Bridge annotated method " + method.getName() + " found");
+                    + " @Bridge annotated method '" + method.getDeclaration() + "' in class " 
+                    + method.getDeclaringClass() + " found");
         }
         for (int i = 0; i < method.getParameterCount(); i++) {
             if (!canMarshal(method, i)) {
                 throw new IllegalArgumentException("No @Marshaler for parameter " + (i + 1) 
-                        + " of @Bridge annotated method " + method.getName() + " found");
+                        + " of @Bridge annotated method '" + method.getDeclaration() + "' in class " 
+                        + method.getDeclaringClass() + " found");
             }            
         }
     }

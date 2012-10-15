@@ -15,9 +15,11 @@
  */
 package org.robovm.cocoatouch.foundation;
 
+import org.robovm.rt.bro.ValuedEnum;
+
 /**
  * 
  */
-public enum NSComparisonResult {
+public enum NSComparisonResult implements ValuedEnum {
 
 }

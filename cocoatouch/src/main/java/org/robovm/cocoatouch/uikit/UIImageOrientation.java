@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIImageOrientation {
+public enum UIImageOrientation implements ValuedEnum {
     Up(0),
     Down(1),
     Left(2),

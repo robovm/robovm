@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIPageViewControllerSpineLocation {
+public enum UIPageViewControllerSpineLocation implements ValuedEnum {
     None(0),
     Min(1),
     Mid(2),

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIScrollViewIndicatorStyle {
+public enum UIScrollViewIndicatorStyle implements ValuedEnum {
     Default(0),
     Black(1),
     White(2);

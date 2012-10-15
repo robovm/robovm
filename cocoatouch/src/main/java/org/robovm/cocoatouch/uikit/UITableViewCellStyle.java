@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITableViewCellStyle {
+public enum UITableViewCellStyle implements ValuedEnum {
     Default(0),
     Value1(1),
     Value2(2),

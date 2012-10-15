@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITextGranularity {
+public enum UITextGranularity implements ValuedEnum {
     Character(0),
     Word(1),
     Sentence(2),

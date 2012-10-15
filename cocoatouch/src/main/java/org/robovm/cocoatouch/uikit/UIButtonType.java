@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIButtonType {
+public enum UIButtonType implements ValuedEnum {
     Custom(0),
     RoundedRect(1),
     DetailDisclosure(2),

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIGestureRecognizerState {
+public enum UIGestureRecognizerState implements ValuedEnum {
     Possible(0),
     Began(1),
     Changed(2),

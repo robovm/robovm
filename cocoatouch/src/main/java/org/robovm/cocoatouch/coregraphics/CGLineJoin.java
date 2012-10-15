@@ -3,11 +3,13 @@
  */
 package org.robovm.cocoatouch.coregraphics;
 
+import org.robovm.rt.bro.ValuedEnum;
+
 /**
  * @author niklas
  *
  */
-public enum CGLineJoin {
+public enum CGLineJoin implements ValuedEnum {
     Miter(0),
     Round(1),
     Bevel(2);

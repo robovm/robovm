@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIRemoteNotificationType {
+public enum UIRemoteNotificationType implements ValuedEnum {
     None(0),
     Badge(1 << 0),
     Sound(1 << 1),

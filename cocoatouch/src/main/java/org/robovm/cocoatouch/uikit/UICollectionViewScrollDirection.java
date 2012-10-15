@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UICollectionViewScrollDirection {
+public enum UICollectionViewScrollDirection implements ValuedEnum {
     Vertical(0),
     Horizontal(1);
 

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIDocumentState {
+public enum UIDocumentState implements ValuedEnum {
     Normal(0),
     Closed(1 << 0),
     InConflict(1 << 1),

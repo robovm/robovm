@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIKeyboardType {
+public enum UIKeyboardType implements ValuedEnum {
     Default(0),
     ASCIICapable(1),
     NumbersAndPunctuation(2),

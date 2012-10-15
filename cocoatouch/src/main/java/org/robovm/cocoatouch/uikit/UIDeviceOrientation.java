@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIDeviceOrientation {
+public enum UIDeviceOrientation implements ValuedEnum {
     Unknown(0),
     Portrait(1),
     PortraitUpsideDown(2),

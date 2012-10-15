@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIActionSheetStyle {
+public enum UIActionSheetStyle implements ValuedEnum {
     Automatic(-1),
     Default(UIBarStyle.Default.value()),
     BlackTranslucent(UIBarStyle.BlackTranslucent.value()),

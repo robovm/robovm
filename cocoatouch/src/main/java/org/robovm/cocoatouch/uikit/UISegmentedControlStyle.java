@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UISegmentedControlStyle {
+public enum UISegmentedControlStyle implements ValuedEnum {
     Plain(0),
     Bordered(1),
     Bar(2),

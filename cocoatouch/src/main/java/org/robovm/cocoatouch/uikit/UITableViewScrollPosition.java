@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITableViewScrollPosition {
+public enum UITableViewScrollPosition implements ValuedEnum {
     None(0),
     Top(1),
     Middle(2),

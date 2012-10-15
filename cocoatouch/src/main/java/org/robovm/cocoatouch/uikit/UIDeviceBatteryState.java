@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIDeviceBatteryState {
+public enum UIDeviceBatteryState implements ValuedEnum {
     Unknown(0),
     Unplugged(1),
     Charging(2),

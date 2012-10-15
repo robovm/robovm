@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIViewAnimationCurve {
+public enum UIViewAnimationCurve implements ValuedEnum {
     EaseInOut(0),
     EaseIn(1),
     EaseOut(2),

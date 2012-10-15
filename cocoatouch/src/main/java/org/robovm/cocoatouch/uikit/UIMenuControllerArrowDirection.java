@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIMenuControllerArrowDirection {
+public enum UIMenuControllerArrowDirection implements ValuedEnum {
     Default(0),
     Up(1),
     Down(2),

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UICollectionUpdateAction {
+public enum UICollectionUpdateAction implements ValuedEnum {
     None(0),
     Insert(1),
     Delete(2),

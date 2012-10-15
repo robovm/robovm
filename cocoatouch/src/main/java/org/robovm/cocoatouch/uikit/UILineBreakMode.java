@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UILineBreakMode {
+public enum UILineBreakMode implements ValuedEnum {
     WordWrap(0),
     CharacterWrap(1),
     Clip(2),

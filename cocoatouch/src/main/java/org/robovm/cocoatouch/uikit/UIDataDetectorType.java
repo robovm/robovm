@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIDataDetectorType {
+public enum UIDataDetectorType implements ValuedEnum {
     PhoneNumber(1 << 0),
     Link(1 << 1),
     Address(1 << 2),

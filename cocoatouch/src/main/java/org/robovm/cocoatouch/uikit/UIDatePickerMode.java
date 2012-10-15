@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIDatePickerMode {
+public enum UIDatePickerMode implements ValuedEnum {
     Time(0),
     Date(1),
     DateAndTime(2),

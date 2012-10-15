@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITableViewCellAccessoryType {
+public enum UITableViewCellAccessoryType implements ValuedEnum {
     None(0),
     DisclosureIndicator(1),
     DetailDisclosureButton(2),

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIPageViewControllerTransitionStyle {
+public enum UIPageViewControllerTransitionStyle implements ValuedEnum {
     PageCurl(0);
 
     private final int n;

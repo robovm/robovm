@@ -15,11 +15,27 @@
  */
 package org.robovm.cocoatouch.foundation;
 
-import org.robovm.rt.bro.Struct;
+import org.robovm.rt.bro.*;
+import org.robovm.rt.bro.annotation.*;
 
 /**
  * 
  */
-public final class NSRange extends Struct {
+public final class NSRange extends Struct<NSRange> {
 
+    public NSRange() {}
+    public NSRange(int location, int length) {
+        location(location);
+        length(length);
+    }
+    
+    @StructMember(0)
+    public native int location();
+    @StructMember(0)
+    public native NSRange location(int location);
+    @StructMember(1)
+    public native int length();
+    @StructMember(1)
+    public native NSRange length(int length);
+    
 }

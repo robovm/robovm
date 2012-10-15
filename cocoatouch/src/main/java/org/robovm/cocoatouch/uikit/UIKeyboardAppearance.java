@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIKeyboardAppearance {
+public enum UIKeyboardAppearance implements ValuedEnum {
     Default(0),
     Alert(1);
 

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UISearchBarIcon {
+public enum UISearchBarIcon implements ValuedEnum {
     Search(0),
     Clear(1),
     Bookmark(2),

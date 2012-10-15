@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITouchPhase {
+public enum UITouchPhase implements ValuedEnum {
     Began(0),
     Moved(1),
     Stationary(2),

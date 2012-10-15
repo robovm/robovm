@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum NSLayoutAttribute {
+public enum NSLayoutAttribute implements ValuedEnum {
     Left(1),
     Right(2),
     Top(3),

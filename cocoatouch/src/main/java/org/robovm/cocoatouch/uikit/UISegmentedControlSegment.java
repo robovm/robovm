@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UISegmentedControlSegment {
+public enum UISegmentedControlSegment implements ValuedEnum {
     Any(0),
     Left(1),
     Center(2),

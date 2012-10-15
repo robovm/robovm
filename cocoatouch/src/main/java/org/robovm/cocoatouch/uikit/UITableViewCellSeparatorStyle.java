@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITableViewCellSeparatorStyle {
+public enum UITableViewCellSeparatorStyle implements ValuedEnum {
     None(0),
     SingleLine(1),
     SingleLineEtched(2);

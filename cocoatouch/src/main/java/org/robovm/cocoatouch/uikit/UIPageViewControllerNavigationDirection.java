@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIPageViewControllerNavigationDirection {
+public enum UIPageViewControllerNavigationDirection implements ValuedEnum {
     Forward(0),
     Reverse(1);
 

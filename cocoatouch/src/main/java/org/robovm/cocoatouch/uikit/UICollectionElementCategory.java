@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UICollectionElementCategory {
+public enum UICollectionElementCategory implements ValuedEnum {
     Cell(0),
     SupplementaryView(1),
     DecorationView(2);

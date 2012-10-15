@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIStatusBarAnimation {
+public enum UIStatusBarAnimation implements ValuedEnum {
     None(0),
     Fade(1),
     Slide(2);

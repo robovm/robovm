@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITextAutocapitalizationType {
+public enum UITextAutocapitalizationType implements ValuedEnum {
     None(0),
     Words(1),
     Sentences(2),

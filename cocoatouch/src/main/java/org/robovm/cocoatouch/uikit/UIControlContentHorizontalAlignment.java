@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIControlContentHorizontalAlignment {
+public enum UIControlContentHorizontalAlignment implements ValuedEnum {
     Center(0),
     Left(1),
     Right(2),

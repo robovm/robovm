@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIUserInterfaceIdiom {
+public enum UIUserInterfaceIdiom implements ValuedEnum {
     hone(0),
     ad(1);
 

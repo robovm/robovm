@@ -15,9 +15,11 @@
  */
 package org.robovm.cocoatouch.foundation;
 
+import org.robovm.rt.bro.ValuedEnum;
+
 /**
  * 
  */
-public enum NSCalendarUnit {
+public enum NSCalendarUnit implements ValuedEnum {
 
 }

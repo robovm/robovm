@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIDocumentChangeKind {
+public enum UIDocumentChangeKind implements ValuedEnum {
     Done(0),
     Undone(1),
     Redone(2),

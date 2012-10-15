@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIBarButtonSystemItem {
+public enum UIBarButtonSystemItem implements ValuedEnum {
     Done(0),
     Cancel(1),
     Edit(2),

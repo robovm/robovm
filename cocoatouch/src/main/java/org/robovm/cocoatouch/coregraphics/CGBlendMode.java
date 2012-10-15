@@ -3,11 +3,13 @@
  */
 package org.robovm.cocoatouch.coregraphics;
 
+import org.robovm.rt.bro.ValuedEnum;
+
 /**
  * @author niklas
  *
  */
-public enum CGBlendMode {
+public enum CGBlendMode implements ValuedEnum {
 
     Normal(0),
     Multiply(1),

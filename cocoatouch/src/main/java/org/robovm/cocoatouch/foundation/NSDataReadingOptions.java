@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.foundation;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum NSDataReadingOptions {
+public enum NSDataReadingOptions implements ValuedEnum {
     MappedIfSafe(1 << 0),
     Uncached(1 << 1),
     MappedAlways(1 << 3);

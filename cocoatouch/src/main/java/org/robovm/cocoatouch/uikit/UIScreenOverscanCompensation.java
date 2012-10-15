@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIScreenOverscanCompensation {
+public enum UIScreenOverscanCompensation implements ValuedEnum {
     Scale(0),
     InsetBounds(1),
     InsetApplicationFrame(2);

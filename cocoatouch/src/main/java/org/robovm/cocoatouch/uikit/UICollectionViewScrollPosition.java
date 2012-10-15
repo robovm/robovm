@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UICollectionViewScrollPosition {
+public enum UICollectionViewScrollPosition implements ValuedEnum {
     None(0),
     Top(1 << 0),
     CenteredVertically(1 << 1),

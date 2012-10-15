@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIControlState {
+public enum UIControlState implements ValuedEnum {
     Normal(0),
     Highlighted(1 << 0),
     Disabled(1 << 1),

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIUserInterfaceLayoutDirection {
+public enum UIUserInterfaceLayoutDirection implements ValuedEnum {
     LeftToRight(0),
     RightToLeft(1);
 

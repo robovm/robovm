@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITextAlignment {
+public enum UITextAlignment implements ValuedEnum {
     Left(0),
     Center(1),
     Right(2);

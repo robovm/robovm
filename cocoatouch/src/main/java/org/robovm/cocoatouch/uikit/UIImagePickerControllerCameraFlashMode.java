@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIImagePickerControllerCameraFlashMode {
+public enum UIImagePickerControllerCameraFlashMode implements ValuedEnum {
     Off(-1),
     Auto(0),
     On(1);

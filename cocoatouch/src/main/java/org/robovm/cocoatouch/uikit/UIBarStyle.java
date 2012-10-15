@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIBarStyle {
+public enum UIBarStyle implements ValuedEnum {
     Default(0),
     Black(1),
     BlackOpaque(1),

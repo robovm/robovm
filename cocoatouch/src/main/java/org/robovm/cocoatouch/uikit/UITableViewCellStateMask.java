@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITableViewCellStateMask {
+public enum UITableViewCellStateMask implements ValuedEnum {
     DefaultMask(0),
     ShowingEditControlMask(1 << 0),
     ShowingDeleteConfirmationMask(1 << 1);

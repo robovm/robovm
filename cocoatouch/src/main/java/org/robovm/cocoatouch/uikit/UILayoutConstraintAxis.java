@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UILayoutConstraintAxis {
+public enum UILayoutConstraintAxis implements ValuedEnum {
     Horizontal(0),
     Vertical(1);
 

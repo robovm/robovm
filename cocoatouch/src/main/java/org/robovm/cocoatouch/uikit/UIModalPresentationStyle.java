@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIModalPresentationStyle {
+public enum UIModalPresentationStyle implements ValuedEnum {
     FullScreen(0),
     PageSheet(1),
     FormSheet(2),

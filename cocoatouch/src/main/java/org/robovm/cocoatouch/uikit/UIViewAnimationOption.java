@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIViewAnimationOption {
+public enum UIViewAnimationOption implements ValuedEnum {
     LayoutSubviews(1 <<  0),
     AllowUserInteraction(1 <<  1),
     BeginFromCurrentState(1 <<  2),

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITextBorderStyle {
+public enum UITextBorderStyle implements ValuedEnum {
     None(0),
     Line(1),
     Bezel(2),

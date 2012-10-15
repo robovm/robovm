@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIViewAnimationTransition {
+public enum UIViewAnimationTransition implements ValuedEnum {
     None(0),
     FlipFromLeft(1),
     FlipFromRight(2),

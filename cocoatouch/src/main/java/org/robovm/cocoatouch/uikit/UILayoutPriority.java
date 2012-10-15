@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UILayoutPriority {
+public enum UILayoutPriority implements ValuedEnum {
     Required(1000),
     DefaultHigh(750),
     DefaultLow(250),

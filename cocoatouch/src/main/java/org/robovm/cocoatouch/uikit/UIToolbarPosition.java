@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIToolbarPosition {
+public enum UIToolbarPosition implements ValuedEnum {
     Any(0),
     Bottom(1),
     Top(2);

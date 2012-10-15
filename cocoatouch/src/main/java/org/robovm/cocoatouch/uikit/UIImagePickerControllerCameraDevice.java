@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIImagePickerControllerCameraDevice {
+public enum UIImagePickerControllerCameraDevice implements ValuedEnum {
     Rear(0),
     Front(1);
 

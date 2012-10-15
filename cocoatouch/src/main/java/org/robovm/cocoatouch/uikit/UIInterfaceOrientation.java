@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIInterfaceOrientation {
+public enum UIInterfaceOrientation implements ValuedEnum {
     Portrait(UIDeviceOrientation.Portrait.value()),
     PortraitUpsideDown(UIDeviceOrientation.PortraitUpsideDown.value()),
     LandscapeLeft(UIDeviceOrientation.LandscapeRight.value()),

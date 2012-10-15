@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITextFieldViewMode {
+public enum UITextFieldViewMode implements ValuedEnum {
     Never(0),
     WhileEditing(1),
     UnlessEditing(2),

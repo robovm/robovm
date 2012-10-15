@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIControlEvent {
+public enum UIControlEvent implements ValuedEnum {
     TouchDown(1 <<  0),
     TouchDownRepeat(1 <<  1),
     TouchDragInside(1 <<  2),

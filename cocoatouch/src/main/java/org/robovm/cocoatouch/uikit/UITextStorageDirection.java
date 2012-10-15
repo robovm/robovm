@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITextStorageDirection {
+public enum UITextStorageDirection implements ValuedEnum {
     Forward(0),
     Backward(1);
 

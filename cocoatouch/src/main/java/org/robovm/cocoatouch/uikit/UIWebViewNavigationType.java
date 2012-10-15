@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIWebViewNavigationType {
+public enum UIWebViewNavigationType implements ValuedEnum {
     LinkClicked(0),
     FormSubmitted(1),
     BackForward(2),

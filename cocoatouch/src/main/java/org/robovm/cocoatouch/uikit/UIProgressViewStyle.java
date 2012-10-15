@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIProgressViewStyle {
+public enum UIProgressViewStyle implements ValuedEnum {
     Default(0),
     Bar(1);
 

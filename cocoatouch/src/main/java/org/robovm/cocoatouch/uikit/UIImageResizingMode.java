@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIImageResizingMode {
+public enum UIImageResizingMode implements ValuedEnum {
     Tile(0),
     Stretch(1);
 

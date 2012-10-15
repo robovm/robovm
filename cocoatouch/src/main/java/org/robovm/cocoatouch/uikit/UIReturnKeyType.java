@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIReturnKeyType {
+public enum UIReturnKeyType implements ValuedEnum {
     Default(0),
     Go(1),
     Google(2),

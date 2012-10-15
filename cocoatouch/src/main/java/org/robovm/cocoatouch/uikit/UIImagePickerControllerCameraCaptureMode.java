@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIImagePickerControllerCameraCaptureMode {
+public enum UIImagePickerControllerCameraCaptureMode implements ValuedEnum {
     Photo(0),
     Video(1);
 

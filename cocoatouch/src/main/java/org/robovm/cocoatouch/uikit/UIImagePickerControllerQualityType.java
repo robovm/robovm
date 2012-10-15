@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIImagePickerControllerQualityType {
+public enum UIImagePickerControllerQualityType implements ValuedEnum {
     High(0),
     Medium(1),
     Low(2),

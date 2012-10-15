@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIEventType {
+public enum UIEventType implements ValuedEnum {
     Touches(0),
     Motion(1),
     RemoteControl(2);

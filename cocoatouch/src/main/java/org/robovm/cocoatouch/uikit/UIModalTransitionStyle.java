@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIModalTransitionStyle {
+public enum UIModalTransitionStyle implements ValuedEnum {
     CoverVertical(0),
     FlipHorizontal(1),
     CrossDissolve(2),

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITableViewCellSelectionStyle {
+public enum UITableViewCellSelectionStyle implements ValuedEnum {
     None(0),
     Blue(1),
     Gray(2);

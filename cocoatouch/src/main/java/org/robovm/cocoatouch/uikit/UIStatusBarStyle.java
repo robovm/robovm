@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIStatusBarStyle {
+public enum UIStatusBarStyle implements ValuedEnum {
     Default(0),
     BlackTranslucent(1),
     BlackOpaque(2);

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIDocumentSaveOperation {
+public enum UIDocumentSaveOperation implements ValuedEnum {
     Creating(0),
     Overwriting(1);
 

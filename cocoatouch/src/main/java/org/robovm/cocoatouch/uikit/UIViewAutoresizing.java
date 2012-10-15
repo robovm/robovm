@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIViewAutoresizing {
+public enum UIViewAutoresizing implements ValuedEnum {
     None(0),
     FlexibleLeftMargin(1 << 0),
     FlexibleWidth(1 << 1),

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITextLayoutDirection {
+public enum UITextLayoutDirection implements ValuedEnum {
     Right(2),
     Left(3),
     Up(4),

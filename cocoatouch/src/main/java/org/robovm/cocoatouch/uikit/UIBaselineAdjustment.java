@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIBaselineAdjustment {
+public enum UIBaselineAdjustment implements ValuedEnum {
     AlignBaselines(0),
     AlignCenters(1),
     None(2);

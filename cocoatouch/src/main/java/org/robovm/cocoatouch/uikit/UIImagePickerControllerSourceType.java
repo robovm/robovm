@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIImagePickerControllerSourceType {
+public enum UIImagePickerControllerSourceType implements ValuedEnum {
     PhotoLibrary(0),
     Camera(1),
     SavedPhotosAlbum(2);

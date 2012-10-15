@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITextAutocorrectionType {
+public enum UITextAutocorrectionType implements ValuedEnum {
     Default(0),
     No(1),
     Yes(2);

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITableViewCellEditingStyle {
+public enum UITableViewCellEditingStyle implements ValuedEnum {
     None(0),
     Delete(1),
     Insert(2);

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITabBarSystemItem {
+public enum UITabBarSystemItem implements ValuedEnum {
     More(0),
     Favorites(1),
     Featured(2),

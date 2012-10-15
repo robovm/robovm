@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIPopoverArrowDirection {
+public enum UIPopoverArrowDirection implements ValuedEnum {
     Up(1 << 0),
     Down(1 << 1),
     Left(1 << 2),

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITextWritingDirection {
+public enum UITextWritingDirection implements ValuedEnum {
     Natural(-1),
     LeftToRight(0),
     RightToLeft(1);

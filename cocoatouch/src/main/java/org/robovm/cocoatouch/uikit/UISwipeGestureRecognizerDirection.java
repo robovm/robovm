@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UISwipeGestureRecognizerDirection {
+public enum UISwipeGestureRecognizerDirection implements ValuedEnum {
     Right(1 << 0),
     Left(1 << 1),
     Up(1 << 2),

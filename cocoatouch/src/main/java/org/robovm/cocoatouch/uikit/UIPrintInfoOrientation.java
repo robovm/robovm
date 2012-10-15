@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIPrintInfoOrientation {
+public enum UIPrintInfoOrientation implements ValuedEnum {
     Portrait(0),
     Landscape(1);
 

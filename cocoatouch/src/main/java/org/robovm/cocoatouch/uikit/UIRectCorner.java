@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIRectCorner {
+public enum UIRectCorner implements ValuedEnum {
     TopLeft(1 << 0),
     TopRight(1 << 1),
     BottomLeft(1 << 2),

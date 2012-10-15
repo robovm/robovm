@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIEventSubtype {
+public enum UIEventSubtype implements ValuedEnum {
     None(0),
     MotionShake(1),
     RemoteControlPlay(100),

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UITableViewRowAnimation {
+public enum UITableViewRowAnimation implements ValuedEnum {
     Fade(0),
     Right(1),
     Left(2),

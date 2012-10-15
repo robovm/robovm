@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import java.util.*;
 
-public enum UIBarMetrics {
+public enum UIBarMetrics implements ValuedEnum {
     Default(0),
     LandscapePhone(1);
 

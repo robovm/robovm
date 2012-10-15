@@ -48,6 +48,10 @@ public abstract class Bro {
             return true;
         }
         if (t instanceof RefType) {
+            if (isEnum(t)) {
+                // Enums can always be marshaled
+                return true;
+            }
             // Classes which have a @Marshaler set (inherited) can be marshaled
             return getMarshalerAnnotation(((RefType) t).getSootClass()) != null;            
         }
@@ -121,6 +125,9 @@ public abstract class Bro {
             annotation = getMarshalerAnnotation(method.getDeclaringClass(), method.getReturnType());
             if (annotation == null) {
                 annotation = getMarshalerAnnotation(type);                
+                if (annotation == null && isEnum(type)) {
+                    return "org/robovm/rt/bro/EnumMarshaler";
+                }
             }
         }
         if (annotation == null) {
@@ -141,6 +148,9 @@ public abstract class Bro {
             annotation = getMarshalerAnnotation(method.getDeclaringClass(), method.getParameterType(paramIndex));
             if (annotation == null) {
                 annotation = getMarshalerAnnotation(paramType);
+                if (annotation == null && isEnum(paramType)) {
+                    return "org/robovm/rt/bro/EnumMarshaler";
+                }
             }
         }
         if (annotation == null) {
@@ -193,6 +203,8 @@ public abstract class Bro {
             // Only small Structs can be returned by value. How small is defined by the target ABI.
             // Larger Structs should be passed as parameters with the @StructRet annotation.
             return getStructType(sootType);
+        } else if (isEnum(sootType)) {
+            return I32;
         } else if (isNativeObject(sootType)) {
             // NativeObjects are always returned by reference.
             return I8_PTR;
@@ -234,6 +246,8 @@ public abstract class Bro {
             // call if @ByVal has been specified to get the desired pass by 
             // value semantics.
             return new PointerType(getStructType(sootType));
+        } else if (isEnum(sootType)) {
+            return I32;
         } else if (isNativeObject(sootType)) {
             // NativeObjects are always passed by reference.
             return I8_PTR;
@@ -407,6 +421,8 @@ public abstract class Bro {
                         throw new IllegalArgumentException("Struct type " + type + " refers to itself");
                     }
                 }
+            } else if (isEnum(type)) {
+                types.add(I32);
             } else if (isNativeObject(type)) {
                 types.add(I8_PTR);
             } else if (getter != null && hasPointerAnnotation(getter) || hasPointerAnnotation(setter)) {

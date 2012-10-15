@@ -59,6 +59,21 @@ public class BridgeCallbackTest {
         public native Points p4(@ByVal Point p4);
     }
     
+    public enum SimpleEnum {
+        V1, V2, V3
+    }
+    public enum TestValuedEnum implements ValuedEnum {
+        V100(100), V1000(1000), V10000(10000);
+        
+        private final int n;
+        private TestValuedEnum(int n) {
+            this.n = n;
+        }
+        public int value() {
+            return n;
+        }
+    }
+
     public static class StringMarshaler {
         public static Object toObject(Class cls, long handle, boolean copy) {
             BytePtr ptr = Struct.toStruct(BytePtr.class, handle);
@@ -188,6 +203,22 @@ public class BridgeCallbackTest {
         public static String append_cb(String a, String b) {
             return a + b;
         }
+    }
+    
+    @Bridge
+    public static native SimpleEnum marshalSimpleEnum(SimpleEnum v);
+    @Callback
+    public static SimpleEnum marshalSimpleEnum_cb(SimpleEnum v) {
+        SimpleEnum[] values = SimpleEnum.values();
+        return values[(v.ordinal() + 1) % values.length];
+    }
+    
+    @Bridge
+    public static native TestValuedEnum marshalValuedEnum(TestValuedEnum v);
+    @Callback
+    public static TestValuedEnum marshalValuedEnum_cb(TestValuedEnum v) {
+        TestValuedEnum[] values = TestValuedEnum.values();
+        return values[(v.ordinal() + 1) % values.length];
     }
     
     private static Method find(String name) {
@@ -349,5 +380,19 @@ public class BridgeCallbackTest {
     public void testMarshalNonNativeTypeMarshalersOnClass() {
         String s = Inner2.append("foo", "bar");
         assertEquals("foobar", s);
+    }
+    
+    @Test
+    public void testMarshalSimpleEnum() {
+        assertEquals(SimpleEnum.V2, marshalSimpleEnum(SimpleEnum.V1));
+        assertEquals(SimpleEnum.V3, marshalSimpleEnum(SimpleEnum.V2));
+        assertEquals(SimpleEnum.V1, marshalSimpleEnum(SimpleEnum.V3));
+    }
+
+    @Test
+    public void testMarshalValuedEnum() {
+        assertEquals(TestValuedEnum.V1000, marshalValuedEnum(TestValuedEnum.V100));
+        assertEquals(TestValuedEnum.V10000, marshalValuedEnum(TestValuedEnum.V1000));
+        assertEquals(TestValuedEnum.V100, marshalValuedEnum(TestValuedEnum.V10000));
     }
 }

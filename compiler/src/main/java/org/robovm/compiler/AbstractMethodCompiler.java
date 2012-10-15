@@ -37,6 +37,7 @@ import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.Inttoptr;
 import org.robovm.compiler.llvm.Label;
 import org.robovm.compiler.llvm.Load;
+import org.robovm.compiler.llvm.NullConstant;
 import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.Ptrtoint;
 import org.robovm.compiler.llvm.Ret;
@@ -176,49 +177,65 @@ public abstract class AbstractMethodCompiler {
             if (needsMarshaler(type)) {
                 String marshalerClassName = getMarshalerClassName(method, i, true);
 
-                if (isPassByValue(method, i)) {
-                    // Copy the arg to the stack
-                    Variable stackCopy = callbackFn.newVariable(new PointerType(arg.getType()));
-                    callbackFn.add(new Alloca(stackCopy, arg.getType()));
-                    callbackFn.add(new Store(arg, stackCopy.ref()));
-                    arg = stackCopy.ref();
-                }
-
-                Variable tmp = callbackFn.newVariable(I64);
-                callbackFn.add(new Ptrtoint(tmp, arg, I64));
-                Value handle = tmp.ref();
-                
-                if (isPtr(type)) {
-                    // Call the Marshaler's toPtr() method
-                    SootClass sootPtrTargetClass = getPtrTargetClass(method, i);
-                    Value ptrTargetClass = ldcClass(callbackFn, getInternalName(sootPtrTargetClass), env);
-                    int ptrWrapCount = getPtrWrapCount(method, i);
-                    Invokestatic invokestatic = new Invokestatic(
-                            getInternalName(method.getDeclaringClass()), marshalerClassName, 
-                            "toPtr", "(Ljava/lang/Class;JI)Lorg/robovm/rt/bro/ptr/Ptr;");
-                    trampolines.add(invokestatic);
-                    arg = call(callbackFn, invokestatic.getFunctionRef(), 
-                            env, ptrTargetClass, 
-                            handle, new IntegerConstant(ptrWrapCount));
-                } else {
-                    // Load the declared Class of the parameter
-                    String targetClassName = getInternalName(type);
-                    Value targetClass = ldcClass(callbackFn, targetClassName, env);
+                if (!isEnum(type)) {
+                    if (isPassByValue(method, i)) {
+                        // Copy the arg to the stack
+                        Variable stackCopy = callbackFn.newVariable(new PointerType(arg.getType()));
+                        callbackFn.add(new Alloca(stackCopy, arg.getType()));
+                        callbackFn.add(new Store(arg, stackCopy.ref()));
+                        arg = stackCopy.ref();
+                    }
+    
+                    Variable tmp = callbackFn.newVariable(I64);
+                    callbackFn.add(new Ptrtoint(tmp, arg, I64));
+                    Value handle = tmp.ref();
                     
-                    // Call the Marshaler's toObject() method
-                    Invokestatic invokestatic = new Invokestatic(
+                    if (isPtr(type)) {
+                        // Call the Marshaler's toPtr() method
+                        SootClass sootPtrTargetClass = getPtrTargetClass(method, i);
+                        Value ptrTargetClass = ldcClass(callbackFn, getInternalName(sootPtrTargetClass), env);
+                        int ptrWrapCount = getPtrWrapCount(method, i);
+                        Invokestatic invokestatic = new Invokestatic(
+                                getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                                "toPtr", "(Ljava/lang/Class;JI)Lorg/robovm/rt/bro/ptr/Ptr;");
+                        trampolines.add(invokestatic);
+                        arg = call(callbackFn, invokestatic.getFunctionRef(), 
+                                env, ptrTargetClass, 
+                                handle, new IntegerConstant(ptrWrapCount));
+                    } else {
+                        // Load the declared Class of the parameter
+                        String targetClassName = getInternalName(type);
+                        Value targetClass = ldcClass(callbackFn, targetClassName, env);
+                        
+                        // Call the Marshaler's toObject() method
+                        Invokestatic invokestatic = new Invokestatic(
+                                getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                                "toObject", "(Ljava/lang/Class;JZ)Ljava/lang/Object;");
+                        trampolines.add(invokestatic);
+                        arg = call(callbackFn, invokestatic.getFunctionRef(), 
+                                env, targetClass, handle, new IntegerConstant((byte) 0));
+                    }
+                    
+                    MarshaledValue marshaledValue = new MarshaledValue();
+                    marshaledValues.add(marshaledValue);
+                    marshaledValue.handle = handle;
+                    marshaledValue.paramIndex = i;
+                    marshaledValue.object = arg;
+                } else {
+                    String enumClassName = getInternalName(type);
+                    Invokestatic invokeValues = new Invokestatic(
+                            getInternalName(method.getDeclaringClass()), enumClassName, 
+                            "values", String.format("()[L%s;", enumClassName));
+                    trampolines.add(invokeValues);
+                    Value values = call(callbackFn, invokeValues.getFunctionRef(), env);
+                    
+                    Invokestatic invokeToObject = new Invokestatic(
                             getInternalName(method.getDeclaringClass()), marshalerClassName, 
-                            "toObject", "(Ljava/lang/Class;JZ)Ljava/lang/Object;");
-                    trampolines.add(invokestatic);
-                    arg = call(callbackFn, invokestatic.getFunctionRef(), 
-                            env, targetClass, handle, new IntegerConstant((byte) 0));
+                            "toObject", "([Ljava/lang/Enum;I)Ljava/lang/Enum;");
+                    trampolines.add(invokeToObject);
+                    arg = call(callbackFn, invokeToObject.getFunctionRef(), 
+                            env, values, arg);
                 }
-                
-                MarshaledValue marshaledValue = new MarshaledValue();
-                marshaledValues.add(marshaledValue);
-                marshaledValue.handle = handle;
-                marshaledValue.paramIndex = i;
-                marshaledValue.object = arg;
                 
             } else if (hasPointerAnnotation(method, i)) {
                 Variable resultI64 = callbackFn.newVariable(I64);
@@ -246,25 +263,34 @@ public abstract class AbstractMethodCompiler {
         
         // Marshal the returned value to a native value before returning
         if (needsMarshaler(method.getReturnType())) {
-            // Call the Marshaler's toNative() method
             String marshalerClassName = getMarshalerClassName(method, false);
-            Invokestatic invokestatic = new Invokestatic(
-                    getInternalName(method.getDeclaringClass()), marshalerClassName, 
-                    "toNative", "(Ljava/lang/Object;)J");
-            trampolines.add(invokestatic);
-            Value resultI64 = call(callbackFn, invokestatic.getFunctionRef(), 
-                    env, result);
-            
-            // Convert the returned long to an appropriate value
-            Variable resultVal = callbackFn.newVariable(callbackFn.getType().getReturnType());
-            if (isPassByValue(method)) {
-                Variable tmp = callbackFn.newVariable(new PointerType(resultVal.getType()));
-                callbackFn.add(new Inttoptr(tmp, resultI64, tmp.getType()));
-                callbackFn.add(new Load(resultVal, tmp.ref()));
+            // Call the Marshaler's toNative() method
+            if (!isEnum(method.getReturnType())) {
+                Invokestatic invokestatic = new Invokestatic(
+                        getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                        "toNative", "(Ljava/lang/Object;)J");
+                trampolines.add(invokestatic);
+                Value resultI64 = call(callbackFn, invokestatic.getFunctionRef(), 
+                        env, result);
+                
+                // Convert the returned long to an appropriate value
+                Variable resultVal = callbackFn.newVariable(callbackFn.getType().getReturnType());
+                if (isPassByValue(method)) {
+                    Variable tmp = callbackFn.newVariable(new PointerType(resultVal.getType()));
+                    callbackFn.add(new Inttoptr(tmp, resultI64, tmp.getType()));
+                    callbackFn.add(new Load(resultVal, tmp.ref()));
+                } else {
+                    callbackFn.add(new Inttoptr(resultVal, resultI64, resultVal.getType()));
+                }
+                result = resultVal.ref();
             } else {
-                callbackFn.add(new Inttoptr(resultVal, resultI64, resultVal.getType()));
+                Invokestatic invokestatic = new Invokestatic(
+                        getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                        "toNative", "(Ljava/lang/Enum;)I");
+                trampolines.add(invokestatic);
+                result = call(callbackFn, invokestatic.getFunctionRef(), 
+                        env, result);
             }
-            result = resultVal.ref();
         } else if (hasPointerAnnotation(method)) {
             // @Pointer long. Convert from i64 to i8*
             Variable resultI8Ptr = callbackFn.newVariable(I8_PTR);

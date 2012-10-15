@@ -164,6 +164,14 @@ public class Annotations {
                     }
                 }
             }
+            
+            for (SootClass interfaze : clazz.getInterfaces()) {
+                AnnotationTag tag = getMarshalerAnnotation(interfaze, type);
+                if (tag != null) {
+                    return tag;
+                }
+            }
+            
             clazz = clazz.getSuperclass();
         }
         return null;

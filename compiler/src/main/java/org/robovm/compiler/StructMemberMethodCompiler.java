@@ -98,50 +98,71 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
         
         VariableRef env = function.getParameterRef(0);
         if (method == pair.getGetter()) {
-            
+            soot.Type type = method.getReturnType();
             // Marshal the return value
-            if (needsMarshaler(method.getReturnType())) {
+            if (needsMarshaler(type)) {
                 Value result = null;
-                if (isPassByValue(method)) {
-                    // Return by value for Structs means that the member is a 
-                    // child struct contained in the current struct and not a 
-                    // pointer to a struct 
-                    result = memberPtr.ref();
-                } else {
-                    // Pointer
-                    Variable tmp = function.newVariable(memberType);
-                    function.add(new Load(tmp, memberPtr.ref()));
-                    result = tmp.ref();
-                }
-                Variable handle = function.newVariable(I64);
-                function.add(new Ptrtoint(handle, result, I64));
                 
                 String marshalerClassName = getMarshalerClassName(method, true);
-                if (isPtr(method.getReturnType())) {
-                    // Call the Marshaler's toPtr() method
-                    SootClass sootPtrTargetClass = getPtrTargetClass(method);
-                    Value ptrTargetClass = ldcClass(function, getInternalName(sootPtrTargetClass), env);
-                    int ptrWrapCount = getPtrWrapCount(method);
-                    Invokestatic invokestatic = new Invokestatic(
-                            getInternalName(method.getDeclaringClass()), marshalerClassName, 
-                            "toPtr", "(Ljava/lang/Class;JI)Lorg/robovm/rt/bro/ptr/Ptr;");
-                    trampolines.add(invokestatic);
-                    result = call(function, invokestatic.getFunctionRef(), 
-                            env, ptrTargetClass, 
-                            handle.ref(), new IntegerConstant(ptrWrapCount));
+                if (!isEnum(type)) {
+                    
+                    if (isPassByValue(method)) {
+                        // Return by value for Structs means that the member is a 
+                        // child struct contained in the current struct and not a 
+                        // pointer to a struct 
+                        result = memberPtr.ref();
+                    } else {
+                        // Pointer
+                        Variable tmp = function.newVariable(memberType);
+                        function.add(new Load(tmp, memberPtr.ref()));
+                        result = tmp.ref();
+                    }
+                    Variable handle = function.newVariable(I64);
+                    function.add(new Ptrtoint(handle, result, I64));
+                    
+                    if (isPtr(type)) {
+                        // Call the Marshaler's toPtr() method
+                        SootClass sootPtrTargetClass = getPtrTargetClass(method);
+                        Value ptrTargetClass = ldcClass(function, getInternalName(sootPtrTargetClass), env);
+                        int ptrWrapCount = getPtrWrapCount(method);
+                        Invokestatic invokestatic = new Invokestatic(
+                                getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                                "toPtr", "(Ljava/lang/Class;JI)Lorg/robovm/rt/bro/ptr/Ptr;");
+                        trampolines.add(invokestatic);
+                        result = call(function, invokestatic.getFunctionRef(), 
+                                env, ptrTargetClass, 
+                                handle.ref(), new IntegerConstant(ptrWrapCount));
+                    } else {
+                        // Call the Marshaler's toObject() method
+                        // Load the declared Class of the return value
+                        String targetClassName = getInternalName(type);
+                        Value returnClass = ldcClass(function, targetClassName, env);
+                    
+                        Invokestatic invokestatic = new Invokestatic(
+                                getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                                "toObject", "(Ljava/lang/Class;JZ)Ljava/lang/Object;");
+                        trampolines.add(invokestatic);
+                        result = call(function, invokestatic.getFunctionRef(), 
+                                env, returnClass, handle.ref(), 
+                                new IntegerConstant((byte) 0));
+                    }
                 } else {
-                    // Call the Marshaler's toObject() method
-                    // Load the declared Class of the return value
-                    String targetClassName = getInternalName(method.getReturnType());
-                    Value returnClass = ldcClass(function, targetClassName, env);
-                
-                    Invokestatic invokestatic = new Invokestatic(
+                    // Enum
+                    String enumClassName = getInternalName(type);
+                    Invokestatic invokeValues = new Invokestatic(
+                            getInternalName(method.getDeclaringClass()), enumClassName, 
+                            "values", String.format("()[L%s;", enumClassName));
+                    trampolines.add(invokeValues);
+                    Value values = call(function, invokeValues.getFunctionRef(), env);
+                    
+                    Invokestatic invokeToObject = new Invokestatic(
                             getInternalName(method.getDeclaringClass()), marshalerClassName, 
-                            "toObject", "(Ljava/lang/Class;JZ)Ljava/lang/Object;");
-                    trampolines.add(invokestatic);
-                    result = call(function, invokestatic.getFunctionRef(), 
-                            env, returnClass, handle.ref(), 
-                            new IntegerConstant((byte) 0));
+                            "toObject", "([Ljava/lang/Enum;I)Ljava/lang/Enum;");
+                    trampolines.add(invokeToObject);
+                    Variable tmp = function.newVariable(I32);
+                    function.add(new Load(tmp, memberPtr.ref()));
+                    result = call(function, invokeToObject.getFunctionRef(), 
+                            env, values, tmp.ref());                    
                 }
                 function.add(new Ret(result));
             } else if (hasPointerAnnotation(method)) {
@@ -160,39 +181,50 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
         } else {
             
             Value p = function.getParameterRef(2); // 'env' is parameter 0, 'this' is at 1, the value we're interested in is at index 2
-            if (needsMarshaler(method.getParameterType(0))) {
+            soot.Type type = method.getParameterType(0);
+            if (needsMarshaler(type)) {
 
-                boolean copy = !isPtr(method.getReturnType()) && isPassByValue(method, 0);
-                if (copy) {
-                    // The parameter must not be null. We assume that Structs 
-                    // never have a NULL handle so we just check that the Java
-                    // Object isn't null.
-                    call(function, CHECK_NULL, env, p);
-                }
-                
-                // Call the Marshaler's toNative() method
                 String marshalerClassName = getMarshalerClassName(method, 0, false);
-                Invokestatic invokestatic = new Invokestatic(
-                        getInternalName(method.getDeclaringClass()), marshalerClassName, 
-                        "toNative", "(Ljava/lang/Object;)J");
-                trampolines.add(invokestatic);
-                Value ptrI64 = call(function, invokestatic.getFunctionRef(), 
-                        env, p);
-
-                if (copy) {
-                    // Copy the struct by doing a Load followed by a Store
+                if (!isEnum(type)) {
+                    boolean copy = isPassByValue(method, 0);
+                    if (copy) {
+                        // The parameter must not be null. We assume that Structs 
+                        // never have a NULL handle so we just check that the Java
+                        // Object isn't null.
+                        call(function, CHECK_NULL, env, p);
+                    }
                     
-                    Variable ptr = function.newVariable(memberPtr.getType());
-                    function.add(new Inttoptr(ptr, ptrI64, ptr.getType()));
-                    
-                    Variable memberValue = function.newVariable(memberType);
-                    function.add(new Load(memberValue, ptr.ref()));
-                    function.add(new Store(memberValue.ref(), memberPtr.ref()));
+                    // Call the Marshaler's toNative() method
+                    Invokestatic invokestatic = new Invokestatic(
+                            getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                            "toNative", "(Ljava/lang/Object;)J");
+                    trampolines.add(invokestatic);
+                    Value ptrI64 = call(function, invokestatic.getFunctionRef(), 
+                            env, p);
+    
+                    if (copy) {
+                        // Copy the struct by doing a Load followed by a Store
+                        
+                        Variable ptr = function.newVariable(memberPtr.getType());
+                        function.add(new Inttoptr(ptr, ptrI64, ptr.getType()));
+                        
+                        Variable memberValue = function.newVariable(memberType);
+                        function.add(new Load(memberValue, ptr.ref()));
+                        function.add(new Store(memberValue.ref(), memberPtr.ref()));
+                    } else {
+                        // Convert the returned i64 to an i8*
+                        Variable ptr = function.newVariable(I8_PTR);
+                        function.add(new Inttoptr(ptr, ptrI64, I8_PTR));
+                        function.add(new Store(ptr.ref(), memberPtr.ref()));                    
+                    }
                 } else {
-                    // Convert the returned i64 to an i8*
-                    Variable ptr = function.newVariable(I8_PTR);
-                    function.add(new Inttoptr(ptr, ptrI64, I8_PTR));
-                    function.add(new Store(ptr.ref(), memberPtr.ref()));                    
+                    // Enum
+                    Invokestatic invokestatic = new Invokestatic(
+                            getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                            "toNative", "(Ljava/lang/Enum;)I");
+                    trampolines.add(invokestatic);
+                    Value result = call(function, invokestatic.getFunctionRef(), env, p);
+                    function.add(new Store(result, memberPtr.ref()));                    
                 }
             } else if (hasPointerAnnotation(method, 0)) {
                 // @Pointer long. Convert from i64 to i8*

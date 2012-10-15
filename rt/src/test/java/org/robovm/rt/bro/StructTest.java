@@ -29,6 +29,21 @@ import org.robovm.rt.bro.ptr.Ptr;
  */
 public class StructTest {
 
+    public enum SimpleEnum {
+        V1, V2, V3
+    }
+    public enum TestValuedEnum implements ValuedEnum {
+        V100(100), V1000(1000), V10000(10000);
+        
+        private final int n;
+        private TestValuedEnum(int n) {
+            this.n = n;
+        }
+        public int value() {
+            return n;
+        }
+    }
+    
     public static final class Point extends Struct<Point> {
         @StructMember(0)
         public native int x();
@@ -81,6 +96,16 @@ public class StructTest {
         public native Ptr<Ptr<Point>> pointPtrPtr();
         @StructMember(8)
         public native TestStruct pointPtrPtr(Ptr<Ptr<Point>> ptr);
+        
+        @StructMember(9)
+        public native SimpleEnum simpleEnum();
+        @StructMember(9)
+        public native TestStruct simpleEnum(SimpleEnum e);
+        
+        @StructMember(10)
+        public native TestValuedEnum valuedEnum();
+        @StructMember(10)
+        public native TestStruct valuedEnum(TestValuedEnum e);
     }
     
     @Test
@@ -205,5 +230,34 @@ public class StructTest {
         assertNull(s.recursive());
         s.recursive(s);
         assertEquals(s, s.recursive());
+    }
+    
+    @Test
+    public void testSimpleEnumMember() {
+        TestStruct s = new TestStruct();
+        assertEquals(SimpleEnum.V1, s.simpleEnum());
+        s.simpleEnum(SimpleEnum.V2);
+        assertEquals(SimpleEnum.V2, s.simpleEnum());
+        s.simpleEnum(SimpleEnum.V3);
+        assertEquals(SimpleEnum.V3, s.simpleEnum());
+        s.simpleEnum(SimpleEnum.V1);
+        assertEquals(SimpleEnum.V1, s.simpleEnum());
+    }
+    
+    @Test
+    public void testValuedEnumMember() {
+        TestStruct s = new TestStruct();
+        try {
+            // No constant with value 0
+            s.valuedEnum();
+            fail("IllegalArgumentException expected");
+        } catch (IllegalArgumentException e) {
+        }
+        s.valuedEnum(TestValuedEnum.V100);
+        assertEquals(TestValuedEnum.V100, s.valuedEnum());
+        s.valuedEnum(TestValuedEnum.V1000);
+        assertEquals(TestValuedEnum.V1000, s.valuedEnum());
+        s.valuedEnum(TestValuedEnum.V10000);
+        assertEquals(TestValuedEnum.V10000, s.valuedEnum());
     }
 }

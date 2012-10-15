@@ -17,6 +17,7 @@
 package org.robovm.compiler;
 
 import static org.robovm.compiler.Annotations.*;
+import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import java.nio.CharBuffer;
@@ -235,6 +236,17 @@ public class Types {
         sb.append(')');
         sb.append(getDescriptor(methodRef.returnType()));
         return sb.toString();
+    }
+    
+    public static boolean isEnum(soot.Type t) {
+        if (t instanceof RefType) {
+            return isEnum(((RefType) t).getSootClass());
+        }
+        return false;
+    }
+    
+    public static boolean isEnum(SootClass sc) {
+        return sc.hasSuperclass() && sc.getSuperclass().getName().equals("java.lang.Enum");
     }
     
     public static boolean isArray(String descriptor) {

@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIBarButtonSystemItem implements ValuedEnum {
     Done(0),
@@ -47,12 +47,4 @@ public enum UIBarButtonSystemItem implements ValuedEnum {
 
     private UIBarButtonSystemItem(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIBarButtonSystemItem fromValue(int n) {
-        for (UIBarButtonSystemItem v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIBarButtonSystemItem value: " + n);
-    }
 }

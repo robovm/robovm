@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UITextStorageDirection implements ValuedEnum {
     Forward(0),
@@ -25,12 +25,4 @@ public enum UITextStorageDirection implements ValuedEnum {
 
     private UITextStorageDirection(int n) { this.n = n; }
     public int value() { return n; }
-    public static UITextStorageDirection fromValue(int n) {
-        for (UITextStorageDirection v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UITextStorageDirection value: " + n);
-    }
 }

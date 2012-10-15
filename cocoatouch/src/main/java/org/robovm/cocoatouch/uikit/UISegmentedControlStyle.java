@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UISegmentedControlStyle implements ValuedEnum {
     Plain(0),
@@ -27,12 +27,4 @@ public enum UISegmentedControlStyle implements ValuedEnum {
 
     private UISegmentedControlStyle(int n) { this.n = n; }
     public int value() { return n; }
-    public static UISegmentedControlStyle fromValue(int n) {
-        for (UISegmentedControlStyle v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UISegmentedControlStyle value: " + n);
-    }
 }

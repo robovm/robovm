@@ -26,12 +26,4 @@ public enum UIActivityIndicatorViewStyle implements ValuedEnum {
 
     private UIActivityIndicatorViewStyle(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIActivityIndicatorViewStyle fromValue(int n) {
-        for (UIActivityIndicatorViewStyle v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIActivityIndicatorViewStyle value: " + n);
-    }
 }

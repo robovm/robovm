@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIBaselineAdjustment implements ValuedEnum {
     AlignBaselines(0),
@@ -26,12 +26,4 @@ public enum UIBaselineAdjustment implements ValuedEnum {
 
     private UIBaselineAdjustment(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIBaselineAdjustment fromValue(int n) {
-        for (UIBaselineAdjustment v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIBaselineAdjustment value: " + n);
-    }
 }

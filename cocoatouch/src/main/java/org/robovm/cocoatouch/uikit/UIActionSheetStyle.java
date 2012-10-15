@@ -27,12 +27,4 @@ public enum UIActionSheetStyle implements ValuedEnum {
 
     private UIActionSheetStyle(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIActionSheetStyle fromValue(int n) {
-        for (UIActionSheetStyle v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIActionSheetStyle value: " + n);
-    }
 }

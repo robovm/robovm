@@ -32,12 +32,4 @@ public enum NSStringCompareOptions implements ValuedEnum {
 
     private NSStringCompareOptions(int n) { this.n = n; }
     public int value() { return n; }
-    public static NSStringCompareOptions fromValue(int n) {
-        for (NSStringCompareOptions v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown NSStringCompareOptions value: " + n);
-    }
 }

@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIPrintInfoOrientation implements ValuedEnum {
     Portrait(0),
@@ -25,12 +25,4 @@ public enum UIPrintInfoOrientation implements ValuedEnum {
 
     private UIPrintInfoOrientation(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIPrintInfoOrientation fromValue(int n) {
-        for (UIPrintInfoOrientation v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIPrintInfoOrientation value: " + n);
-    }
 }

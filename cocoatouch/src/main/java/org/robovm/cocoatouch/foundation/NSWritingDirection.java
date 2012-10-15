@@ -26,12 +26,4 @@ public enum NSWritingDirection implements ValuedEnum {
 
     private NSWritingDirection(int n) { this.n = n; }
     public int value() { return n; }
-    public static NSWritingDirection fromValue(int n) {
-        for (NSWritingDirection v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown NSWritingDirection value: " + n);
-    }
 }

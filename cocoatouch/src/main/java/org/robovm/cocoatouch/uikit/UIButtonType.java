@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIButtonType implements ValuedEnum {
     Custom(0),
@@ -29,12 +29,4 @@ public enum UIButtonType implements ValuedEnum {
 
     private UIButtonType(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIButtonType fromValue(int n) {
-        for (UIButtonType v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIButtonType value: " + n);
-    }
 }

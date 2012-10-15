@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UITableViewCellAccessoryType implements ValuedEnum {
     None(0),
@@ -27,12 +27,4 @@ public enum UITableViewCellAccessoryType implements ValuedEnum {
 
     private UITableViewCellAccessoryType(int n) { this.n = n; }
     public int value() { return n; }
-    public static UITableViewCellAccessoryType fromValue(int n) {
-        for (UITableViewCellAccessoryType v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UITableViewCellAccessoryType value: " + n);
-    }
 }

@@ -35,12 +35,4 @@ public enum NSLayoutAttribute implements ValuedEnum {
 
     private NSLayoutAttribute(int n) { this.n = n; }
     public int value() { return n; }
-    public static NSLayoutAttribute fromValue(int n) {
-        for (NSLayoutAttribute v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown NSLayoutAttribute value: " + n);
-    }
 }

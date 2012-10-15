@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIViewAnimationOption implements ValuedEnum {
     LayoutSubviews(1 <<  0),
@@ -44,29 +44,4 @@ public enum UIViewAnimationOption implements ValuedEnum {
 
     private UIViewAnimationOption(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIViewAnimationOption fromValue(int n) {
-        for (UIViewAnimationOption v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIViewAnimationOption value: " + n);
-    }
-    public static EnumSet<UIViewAnimationOption> fromBits(int bits) {
-        EnumSet<UIViewAnimationOption> set = EnumSet.noneOf(UIViewAnimationOption.class);
-        for (UIViewAnimationOption v : values()) {
-            int value = v.value();
-            if ((bits & value) == value) {
-                set.add(v);
-            }
-        }
-        return set;
-    }
-    public static int toBits(EnumSet<UIViewAnimationOption> set) {
-        int bits = 0;
-        for (UIViewAnimationOption v : set) {
-            bits |= v.value();
-        }
-        return bits;
-    }
 }

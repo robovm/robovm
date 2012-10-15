@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UILayoutPriority implements ValuedEnum {
     Required(1000),
@@ -27,12 +27,4 @@ public enum UILayoutPriority implements ValuedEnum {
 
     private UILayoutPriority(int n) { this.n = n; }
     public int value() { return n; }
-    public static UILayoutPriority fromValue(int n) {
-        for (UILayoutPriority v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UILayoutPriority value: " + n);
-    }
 }

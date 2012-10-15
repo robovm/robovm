@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIScreenOverscanCompensation implements ValuedEnum {
     Scale(0),
@@ -26,12 +26,4 @@ public enum UIScreenOverscanCompensation implements ValuedEnum {
 
     private UIScreenOverscanCompensation(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIScreenOverscanCompensation fromValue(int n) {
-        for (UIScreenOverscanCompensation v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIScreenOverscanCompensation value: " + n);
-    }
 }

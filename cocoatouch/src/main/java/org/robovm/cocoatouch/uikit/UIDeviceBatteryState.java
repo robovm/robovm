@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIDeviceBatteryState implements ValuedEnum {
     Unknown(0),
@@ -27,12 +27,4 @@ public enum UIDeviceBatteryState implements ValuedEnum {
 
     private UIDeviceBatteryState(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIDeviceBatteryState fromValue(int n) {
-        for (UIDeviceBatteryState v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIDeviceBatteryState value: " + n);
-    }
 }

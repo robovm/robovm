@@ -26,12 +26,4 @@ public enum NSLayoutRelation implements ValuedEnum {
 
     private NSLayoutRelation(int n) { this.n = n; }
     public int value() { return n; }
-    public static NSLayoutRelation fromValue(int n) {
-        for (NSLayoutRelation v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown NSLayoutRelation value: " + n);
-    }
 }

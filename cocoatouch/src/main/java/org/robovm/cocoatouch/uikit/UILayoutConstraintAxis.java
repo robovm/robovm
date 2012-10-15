@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UILayoutConstraintAxis implements ValuedEnum {
     Horizontal(0),
@@ -25,12 +25,4 @@ public enum UILayoutConstraintAxis implements ValuedEnum {
 
     private UILayoutConstraintAxis(int n) { this.n = n; }
     public int value() { return n; }
-    public static UILayoutConstraintAxis fromValue(int n) {
-        for (UILayoutConstraintAxis v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UILayoutConstraintAxis value: " + n);
-    }
 }

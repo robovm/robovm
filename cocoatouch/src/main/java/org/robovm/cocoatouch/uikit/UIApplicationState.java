@@ -26,12 +26,4 @@ public enum UIApplicationState implements ValuedEnum {
 
     private UIApplicationState(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIApplicationState fromValue(int n) {
-        for (UIApplicationState v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIApplicationState value: " + n);
-    }
 }

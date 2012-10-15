@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UISwipeGestureRecognizerDirection implements ValuedEnum {
     Right(1 << 0),
@@ -27,12 +27,4 @@ public enum UISwipeGestureRecognizerDirection implements ValuedEnum {
 
     private UISwipeGestureRecognizerDirection(int n) { this.n = n; }
     public int value() { return n; }
-    public static UISwipeGestureRecognizerDirection fromValue(int n) {
-        for (UISwipeGestureRecognizerDirection v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UISwipeGestureRecognizerDirection value: " + n);
-    }
 }

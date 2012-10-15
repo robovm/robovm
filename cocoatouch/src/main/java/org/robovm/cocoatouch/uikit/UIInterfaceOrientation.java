@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIInterfaceOrientation implements ValuedEnum {
     Portrait(UIDeviceOrientation.Portrait.value()),
@@ -27,12 +27,4 @@ public enum UIInterfaceOrientation implements ValuedEnum {
 
     private UIInterfaceOrientation(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIInterfaceOrientation fromValue(int n) {
-        for (UIInterfaceOrientation v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIInterfaceOrientation value: " + n);
-    }
 }

@@ -25,12 +25,4 @@ public enum NSStringEncodingConversionOptions implements ValuedEnum {
 
     private NSStringEncodingConversionOptions(int n) { this.n = n; }
     public int value() { return n; }
-    public static NSStringEncodingConversionOptions fromValue(int n) {
-        for (NSStringEncodingConversionOptions v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown NSStringEncodingConversionOptions value: " + n);
-    }
 }

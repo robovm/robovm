@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIPageViewControllerTransitionStyle implements ValuedEnum {
     PageCurl(0);
@@ -24,12 +24,4 @@ public enum UIPageViewControllerTransitionStyle implements ValuedEnum {
 
     private UIPageViewControllerTransitionStyle(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIPageViewControllerTransitionStyle fromValue(int n) {
-        for (UIPageViewControllerTransitionStyle v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIPageViewControllerTransitionStyle value: " + n);
-    }
 }

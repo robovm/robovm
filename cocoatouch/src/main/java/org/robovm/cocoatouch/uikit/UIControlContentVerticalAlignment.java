@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIControlContentVerticalAlignment implements ValuedEnum {
     Center(0),
@@ -27,12 +27,4 @@ public enum UIControlContentVerticalAlignment implements ValuedEnum {
 
     private UIControlContentVerticalAlignment(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIControlContentVerticalAlignment fromValue(int n) {
-        for (UIControlContentVerticalAlignment v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIControlContentVerticalAlignment value: " + n);
-    }
 }

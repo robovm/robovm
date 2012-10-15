@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIBarStyle implements ValuedEnum {
     Default(0),
@@ -27,12 +27,4 @@ public enum UIBarStyle implements ValuedEnum {
 
     private UIBarStyle(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIBarStyle fromValue(int n) {
-        for (UIBarStyle v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIBarStyle value: " + n);
-    }
 }

@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UITableViewCellStyle implements ValuedEnum {
     Default(0),
@@ -27,12 +27,4 @@ public enum UITableViewCellStyle implements ValuedEnum {
 
     private UITableViewCellStyle(int n) { this.n = n; }
     public int value() { return n; }
-    public static UITableViewCellStyle fromValue(int n) {
-        for (UITableViewCellStyle v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UITableViewCellStyle value: " + n);
-    }
 }

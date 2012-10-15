@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIReturnKeyType implements ValuedEnum {
     Default(0),
@@ -34,12 +34,4 @@ public enum UIReturnKeyType implements ValuedEnum {
 
     private UIReturnKeyType(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIReturnKeyType fromValue(int n) {
-        for (UIReturnKeyType v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIReturnKeyType value: " + n);
-    }
 }

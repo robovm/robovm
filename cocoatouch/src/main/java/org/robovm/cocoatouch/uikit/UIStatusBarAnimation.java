@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIStatusBarAnimation implements ValuedEnum {
     None(0),
@@ -26,12 +26,4 @@ public enum UIStatusBarAnimation implements ValuedEnum {
 
     private UIStatusBarAnimation(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIStatusBarAnimation fromValue(int n) {
-        for (UIStatusBarAnimation v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIStatusBarAnimation value: " + n);
-    }
 }

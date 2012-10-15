@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UITextAlignment implements ValuedEnum {
     Left(0),
@@ -26,12 +26,4 @@ public enum UITextAlignment implements ValuedEnum {
 
     private UITextAlignment(int n) { this.n = n; }
     public int value() { return n; }
-    public static UITextAlignment fromValue(int n) {
-        for (UITextAlignment v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UITextAlignment value: " + n);
-    }
 }

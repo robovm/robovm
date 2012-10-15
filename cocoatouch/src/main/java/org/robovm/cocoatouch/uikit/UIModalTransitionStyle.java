@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIModalTransitionStyle implements ValuedEnum {
     CoverVertical(0),
@@ -27,12 +27,4 @@ public enum UIModalTransitionStyle implements ValuedEnum {
 
     private UIModalTransitionStyle(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIModalTransitionStyle fromValue(int n) {
-        for (UIModalTransitionStyle v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIModalTransitionStyle value: " + n);
-    }
 }

@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIEventSubtype implements ValuedEnum {
     None(0),
@@ -35,12 +35,4 @@ public enum UIEventSubtype implements ValuedEnum {
 
     private UIEventSubtype(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIEventSubtype fromValue(int n) {
-        for (UIEventSubtype v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIEventSubtype value: " + n);
-    }
 }

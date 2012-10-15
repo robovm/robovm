@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIBarMetrics implements ValuedEnum {
     Default(0),
@@ -25,12 +25,4 @@ public enum UIBarMetrics implements ValuedEnum {
 
     private UIBarMetrics(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIBarMetrics fromValue(int n) {
-        for (UIBarMetrics v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIBarMetrics value: " + n);
-    }
 }

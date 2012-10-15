@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIUserInterfaceLayoutDirection implements ValuedEnum {
     LeftToRight(0),
@@ -25,12 +25,4 @@ public enum UIUserInterfaceLayoutDirection implements ValuedEnum {
 
     private UIUserInterfaceLayoutDirection(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIUserInterfaceLayoutDirection fromValue(int n) {
-        for (UIUserInterfaceLayoutDirection v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIUserInterfaceLayoutDirection value: " + n);
-    }
 }

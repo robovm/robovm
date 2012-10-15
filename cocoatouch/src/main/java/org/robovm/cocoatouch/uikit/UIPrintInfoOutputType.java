@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIPrintInfoOutputType implements ValuedEnum {
     General(0),
@@ -26,12 +26,4 @@ public enum UIPrintInfoOutputType implements ValuedEnum {
 
     private UIPrintInfoOutputType(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIPrintInfoOutputType fromValue(int n) {
-        for (UIPrintInfoOutputType v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIPrintInfoOutputType value: " + n);
-    }
 }

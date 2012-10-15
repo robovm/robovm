@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UITextBorderStyle implements ValuedEnum {
     None(0),
@@ -27,12 +27,4 @@ public enum UITextBorderStyle implements ValuedEnum {
 
     private UITextBorderStyle(int n) { this.n = n; }
     public int value() { return n; }
-    public static UITextBorderStyle fromValue(int n) {
-        for (UITextBorderStyle v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UITextBorderStyle value: " + n);
-    }
 }

@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIDocumentState implements ValuedEnum {
     Normal(0),
@@ -28,12 +28,4 @@ public enum UIDocumentState implements ValuedEnum {
 
     private UIDocumentState(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIDocumentState fromValue(int n) {
-        for (UIDocumentState v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIDocumentState value: " + n);
-    }
 }

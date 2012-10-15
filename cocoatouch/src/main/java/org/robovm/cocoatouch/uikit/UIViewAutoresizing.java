@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIViewAutoresizing implements ValuedEnum {
     None(0),
@@ -30,29 +30,4 @@ public enum UIViewAutoresizing implements ValuedEnum {
 
     private UIViewAutoresizing(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIViewAutoresizing fromValue(int n) {
-        for (UIViewAutoresizing v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIViewAutoresizing value: " + n);
-    }
-    public static EnumSet<UIViewAutoresizing> fromBits(int bits) {
-        EnumSet<UIViewAutoresizing> set = EnumSet.noneOf(UIViewAutoresizing.class);
-        for (UIViewAutoresizing v : values()) {
-            int value = v.value();
-            if ((bits & value) == value) {
-                set.add(v);
-            }
-        }
-        return set;
-    }
-    public static int toBits(EnumSet<UIViewAutoresizing> set) {
-        int bits = 0;
-        for (UIViewAutoresizing v : set) {
-            bits |= v.value();
-        }
-        return bits;
-    }
 }

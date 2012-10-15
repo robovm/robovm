@@ -26,12 +26,4 @@ public enum UIBarButtonItemStyle implements ValuedEnum {
 
     private UIBarButtonItemStyle(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIBarButtonItemStyle fromValue(int n) {
-        for (UIBarButtonItemStyle v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIBarButtonItemStyle value: " + n);
-    }
 }

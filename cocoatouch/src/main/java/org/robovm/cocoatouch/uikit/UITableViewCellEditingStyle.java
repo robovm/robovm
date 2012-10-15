@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UITableViewCellEditingStyle implements ValuedEnum {
     None(0),
@@ -26,12 +26,4 @@ public enum UITableViewCellEditingStyle implements ValuedEnum {
 
     private UITableViewCellEditingStyle(int n) { this.n = n; }
     public int value() { return n; }
-    public static UITableViewCellEditingStyle fromValue(int n) {
-        for (UITableViewCellEditingStyle v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UITableViewCellEditingStyle value: " + n);
-    }
 }

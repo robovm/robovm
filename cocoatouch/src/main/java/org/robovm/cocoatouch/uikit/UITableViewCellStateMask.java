@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UITableViewCellStateMask implements ValuedEnum {
     DefaultMask(0),
@@ -26,29 +26,4 @@ public enum UITableViewCellStateMask implements ValuedEnum {
 
     private UITableViewCellStateMask(int n) { this.n = n; }
     public int value() { return n; }
-    public static UITableViewCellStateMask fromValue(int n) {
-        for (UITableViewCellStateMask v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UITableViewCellStateMask value: " + n);
-    }
-    public static EnumSet<UITableViewCellStateMask> fromBits(int bits) {
-        EnumSet<UITableViewCellStateMask> set = EnumSet.noneOf(UITableViewCellStateMask.class);
-        for (UITableViewCellStateMask v : values()) {
-            int value = v.value();
-            if ((bits & value) == value) {
-                set.add(v);
-            }
-        }
-        return set;
-    }
-    public static int toBits(EnumSet<UITableViewCellStateMask> set) {
-        int bits = 0;
-        for (UITableViewCellStateMask v : set) {
-            bits |= v.value();
-        }
-        return bits;
-    }
 }

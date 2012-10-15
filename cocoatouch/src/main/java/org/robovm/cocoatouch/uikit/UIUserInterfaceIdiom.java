@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIUserInterfaceIdiom implements ValuedEnum {
     hone(0),
@@ -25,12 +25,4 @@ public enum UIUserInterfaceIdiom implements ValuedEnum {
 
     private UIUserInterfaceIdiom(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIUserInterfaceIdiom fromValue(int n) {
-        for (UIUserInterfaceIdiom v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIUserInterfaceIdiom value: " + n);
-    }
 }

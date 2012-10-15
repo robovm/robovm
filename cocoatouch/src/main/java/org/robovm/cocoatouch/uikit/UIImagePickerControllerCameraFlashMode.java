@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIImagePickerControllerCameraFlashMode implements ValuedEnum {
     Off(-1),
@@ -26,12 +26,4 @@ public enum UIImagePickerControllerCameraFlashMode implements ValuedEnum {
 
     private UIImagePickerControllerCameraFlashMode(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIImagePickerControllerCameraFlashMode fromValue(int n) {
-        for (UIImagePickerControllerCameraFlashMode v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIImagePickerControllerCameraFlashMode value: " + n);
-    }
 }

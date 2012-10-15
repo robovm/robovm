@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIRemoteNotificationType implements ValuedEnum {
     None(0),
@@ -28,29 +28,4 @@ public enum UIRemoteNotificationType implements ValuedEnum {
 
     private UIRemoteNotificationType(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIRemoteNotificationType fromValue(int n) {
-        for (UIRemoteNotificationType v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIRemoteNotificationType value: " + n);
-    }
-    public static EnumSet<UIRemoteNotificationType> fromBits(int bits) {
-        EnumSet<UIRemoteNotificationType> set = EnumSet.noneOf(UIRemoteNotificationType.class);
-        for (UIRemoteNotificationType v : values()) {
-            int value = v.value();
-            if ((bits & value) == value) {
-                set.add(v);
-            }
-        }
-        return set;
-    }
-    public static int toBits(EnumSet<UIRemoteNotificationType> set) {
-        int bits = 0;
-        for (UIRemoteNotificationType v : set) {
-            bits |= v.value();
-        }
-        return bits;
-    }
 }

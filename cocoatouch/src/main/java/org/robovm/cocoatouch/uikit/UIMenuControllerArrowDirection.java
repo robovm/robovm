@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIMenuControllerArrowDirection implements ValuedEnum {
     Default(0),
@@ -28,12 +28,4 @@ public enum UIMenuControllerArrowDirection implements ValuedEnum {
 
     private UIMenuControllerArrowDirection(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIMenuControllerArrowDirection fromValue(int n) {
-        for (UIMenuControllerArrowDirection v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIMenuControllerArrowDirection value: " + n);
-    }
 }

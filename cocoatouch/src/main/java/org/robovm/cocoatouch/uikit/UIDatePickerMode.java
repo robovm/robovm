@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIDatePickerMode implements ValuedEnum {
     Time(0),
@@ -27,12 +27,4 @@ public enum UIDatePickerMode implements ValuedEnum {
 
     private UIDatePickerMode(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIDatePickerMode fromValue(int n) {
-        for (UIDatePickerMode v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIDatePickerMode value: " + n);
-    }
 }

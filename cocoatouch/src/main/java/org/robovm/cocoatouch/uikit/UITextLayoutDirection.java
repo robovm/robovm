@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UITextLayoutDirection implements ValuedEnum {
     Right(2),
@@ -27,12 +27,4 @@ public enum UITextLayoutDirection implements ValuedEnum {
 
     private UITextLayoutDirection(int n) { this.n = n; }
     public int value() { return n; }
-    public static UITextLayoutDirection fromValue(int n) {
-        for (UITextLayoutDirection v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UITextLayoutDirection value: " + n);
-    }
 }

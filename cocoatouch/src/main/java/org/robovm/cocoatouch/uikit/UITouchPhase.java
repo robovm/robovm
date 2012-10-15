@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UITouchPhase implements ValuedEnum {
     Began(0),
@@ -28,12 +28,4 @@ public enum UITouchPhase implements ValuedEnum {
 
     private UITouchPhase(int n) { this.n = n; }
     public int value() { return n; }
-    public static UITouchPhase fromValue(int n) {
-        for (UITouchPhase v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UITouchPhase value: " + n);
-    }
 }

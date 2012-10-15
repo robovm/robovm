@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIKeyboardType implements ValuedEnum {
     Default(0),
@@ -34,12 +34,4 @@ public enum UIKeyboardType implements ValuedEnum {
 
     private UIKeyboardType(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIKeyboardType fromValue(int n) {
-        for (UIKeyboardType v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIKeyboardType value: " + n);
-    }
 }

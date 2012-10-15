@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UITableViewCellSeparatorStyle implements ValuedEnum {
     None(0),
@@ -26,12 +26,4 @@ public enum UITableViewCellSeparatorStyle implements ValuedEnum {
 
     private UITableViewCellSeparatorStyle(int n) { this.n = n; }
     public int value() { return n; }
-    public static UITableViewCellSeparatorStyle fromValue(int n) {
-        for (UITableViewCellSeparatorStyle v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UITableViewCellSeparatorStyle value: " + n);
-    }
 }

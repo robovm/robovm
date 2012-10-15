@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UITextAutocapitalizationType implements ValuedEnum {
     None(0),
@@ -27,12 +27,4 @@ public enum UITextAutocapitalizationType implements ValuedEnum {
 
     private UITextAutocapitalizationType(int n) { this.n = n; }
     public int value() { return n; }
-    public static UITextAutocapitalizationType fromValue(int n) {
-        for (UITextAutocapitalizationType v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UITextAutocapitalizationType value: " + n);
-    }
 }

@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIGestureRecognizerState implements ValuedEnum {
     Possible(0),
@@ -30,12 +30,4 @@ public enum UIGestureRecognizerState implements ValuedEnum {
 
     private UIGestureRecognizerState(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIGestureRecognizerState fromValue(int n) {
-        for (UIGestureRecognizerState v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIGestureRecognizerState value: " + n);
-    }
 }

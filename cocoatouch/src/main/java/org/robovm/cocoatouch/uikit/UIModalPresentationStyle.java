@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIModalPresentationStyle implements ValuedEnum {
     FullScreen(0),
@@ -27,12 +27,4 @@ public enum UIModalPresentationStyle implements ValuedEnum {
 
     private UIModalPresentationStyle(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIModalPresentationStyle fromValue(int n) {
-        for (UIModalPresentationStyle v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIModalPresentationStyle value: " + n);
-    }
 }

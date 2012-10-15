@@ -28,12 +28,4 @@ public enum NSTextAlignment implements ValuedEnum {
 
     private NSTextAlignment(int n) { this.n = n; }
     public int value() { return n; }
-    public static NSTextAlignment fromValue(int n) {
-        for (NSTextAlignment v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown NSTextAlignment value: " + n);
-    }
 }

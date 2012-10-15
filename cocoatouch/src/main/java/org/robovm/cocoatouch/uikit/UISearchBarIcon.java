@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UISearchBarIcon implements ValuedEnum {
     Search(0),
@@ -27,12 +27,4 @@ public enum UISearchBarIcon implements ValuedEnum {
 
     private UISearchBarIcon(int n) { this.n = n; }
     public int value() { return n; }
-    public static UISearchBarIcon fromValue(int n) {
-        for (UISearchBarIcon v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UISearchBarIcon value: " + n);
-    }
 }

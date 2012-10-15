@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIImagePickerControllerSourceType implements ValuedEnum {
     PhotoLibrary(0),
@@ -26,12 +26,4 @@ public enum UIImagePickerControllerSourceType implements ValuedEnum {
 
     private UIImagePickerControllerSourceType(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIImagePickerControllerSourceType fromValue(int n) {
-        for (UIImagePickerControllerSourceType v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIImagePickerControllerSourceType value: " + n);
-    }
 }

@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIPageViewControllerNavigationOrientation implements ValuedEnum {
     Horizontal(0),
@@ -25,12 +25,4 @@ public enum UIPageViewControllerNavigationOrientation implements ValuedEnum {
 
     private UIPageViewControllerNavigationOrientation(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIPageViewControllerNavigationOrientation fromValue(int n) {
-        for (UIPageViewControllerNavigationOrientation v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIPageViewControllerNavigationOrientation value: " + n);
-    }
 }

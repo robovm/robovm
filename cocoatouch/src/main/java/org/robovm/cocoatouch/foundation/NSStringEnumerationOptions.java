@@ -31,12 +31,4 @@ public enum NSStringEnumerationOptions implements ValuedEnum {
 
     private NSStringEnumerationOptions(int n) { this.n = n; }
     public int value() { return n; }
-    public static NSStringEnumerationOptions fromValue(int n) {
-        for (NSStringEnumerationOptions v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown NSStringEnumerationOptions value: " + n);
-    }
 }

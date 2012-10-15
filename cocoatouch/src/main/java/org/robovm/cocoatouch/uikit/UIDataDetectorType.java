@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIDataDetectorType implements ValuedEnum {
     PhoneNumber(1 << 0),
@@ -29,29 +29,4 @@ public enum UIDataDetectorType implements ValuedEnum {
 
     private UIDataDetectorType(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIDataDetectorType fromValue(int n) {
-        for (UIDataDetectorType v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIDataDetectorType value: " + n);
-    }
-    public static EnumSet<UIDataDetectorType> fromBits(int bits) {
-        EnumSet<UIDataDetectorType> set = EnumSet.noneOf(UIDataDetectorType.class);
-        for (UIDataDetectorType v : values()) {
-            int value = v.value();
-            if ((bits & value) == value) {
-                set.add(v);
-            }
-        }
-        return set;
-    }
-    public static int toBits(EnumSet<UIDataDetectorType> set) {
-        int bits = 0;
-        for (UIDataDetectorType v : set) {
-            bits |= v.value();
-        }
-        return bits;
-    }
 }

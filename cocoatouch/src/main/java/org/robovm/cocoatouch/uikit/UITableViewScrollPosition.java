@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UITableViewScrollPosition implements ValuedEnum {
     None(0),
@@ -27,12 +27,4 @@ public enum UITableViewScrollPosition implements ValuedEnum {
 
     private UITableViewScrollPosition(int n) { this.n = n; }
     public int value() { return n; }
-    public static UITableViewScrollPosition fromValue(int n) {
-        for (UITableViewScrollPosition v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UITableViewScrollPosition value: " + n);
-    }
 }

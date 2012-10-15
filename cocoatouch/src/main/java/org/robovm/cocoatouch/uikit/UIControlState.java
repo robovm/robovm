@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIControlState implements ValuedEnum {
     Normal(0),
@@ -37,29 +37,4 @@ public enum UIControlState implements ValuedEnum {
 
     private UIControlState(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIControlState fromValue(int n) {
-        for (UIControlState v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIControlState value: " + n);
-    }
-    public static EnumSet<UIControlState> fromBits(int bits) {
-        EnumSet<UIControlState> set = EnumSet.noneOf(UIControlState.class);
-        for (UIControlState v : values()) {
-            int value = v.value();
-            if ((bits & value) == value) {
-                set.add(v);
-            }
-        }
-        return set;
-    }
-    public static int toBits(EnumSet<UIControlState> set) {
-        int bits = 0;
-        for (UIControlState v : set) {
-            bits |= v.value();
-        }
-        return bits;
-    }
 }

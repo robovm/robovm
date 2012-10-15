@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UITextAutocorrectionType implements ValuedEnum {
     Default(0),
@@ -26,12 +26,4 @@ public enum UITextAutocorrectionType implements ValuedEnum {
 
     private UITextAutocorrectionType(int n) { this.n = n; }
     public int value() { return n; }
-    public static UITextAutocorrectionType fromValue(int n) {
-        for (UITextAutocorrectionType v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UITextAutocorrectionType value: " + n);
-    }
 }

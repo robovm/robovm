@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UITextSpellCheckingType implements ValuedEnum {
     Default(0),
@@ -26,12 +26,4 @@ public enum UITextSpellCheckingType implements ValuedEnum {
 
     private UITextSpellCheckingType(int n) { this.n = n; }
     public int value() { return n; }
-    public static UITextSpellCheckingType fromValue(int n) {
-        for (UITextSpellCheckingType v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UITextSpellCheckingType value: " + n);
-    }
 }

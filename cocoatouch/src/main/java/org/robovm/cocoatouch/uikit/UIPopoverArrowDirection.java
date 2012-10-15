@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIPopoverArrowDirection implements ValuedEnum {
     Up(1 << 0),
@@ -29,29 +29,4 @@ public enum UIPopoverArrowDirection implements ValuedEnum {
 
     private UIPopoverArrowDirection(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIPopoverArrowDirection fromValue(int n) {
-        for (UIPopoverArrowDirection v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIPopoverArrowDirection value: " + n);
-    }
-    public static EnumSet<UIPopoverArrowDirection> fromBits(int bits) {
-        EnumSet<UIPopoverArrowDirection> set = EnumSet.noneOf(UIPopoverArrowDirection.class);
-        for (UIPopoverArrowDirection v : values()) {
-            int value = v.value();
-            if ((bits & value) == value) {
-                set.add(v);
-            }
-        }
-        return set;
-    }
-    public static int toBits(EnumSet<UIPopoverArrowDirection> set) {
-        int bits = 0;
-        for (UIPopoverArrowDirection v : set) {
-            bits |= v.value();
-        }
-        return bits;
-    }
 }

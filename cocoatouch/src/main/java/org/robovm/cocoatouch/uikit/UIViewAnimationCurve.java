@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIViewAnimationCurve implements ValuedEnum {
     EaseInOut(0),
@@ -27,12 +27,4 @@ public enum UIViewAnimationCurve implements ValuedEnum {
 
     private UIViewAnimationCurve(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIViewAnimationCurve fromValue(int n) {
-        for (UIViewAnimationCurve v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIViewAnimationCurve value: " + n);
-    }
 }

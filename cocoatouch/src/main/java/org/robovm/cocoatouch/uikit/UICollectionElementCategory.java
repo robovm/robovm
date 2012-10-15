@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UICollectionElementCategory implements ValuedEnum {
     Cell(0),
@@ -26,12 +26,4 @@ public enum UICollectionElementCategory implements ValuedEnum {
 
     private UICollectionElementCategory(int n) { this.n = n; }
     public int value() { return n; }
-    public static UICollectionElementCategory fromValue(int n) {
-        for (UICollectionElementCategory v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UICollectionElementCategory value: " + n);
-    }
 }

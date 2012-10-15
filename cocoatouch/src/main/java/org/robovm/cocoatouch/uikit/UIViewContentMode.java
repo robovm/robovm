@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIViewContentMode implements ValuedEnum {
     ScaleToFill(0),
@@ -36,12 +36,4 @@ public enum UIViewContentMode implements ValuedEnum {
 
     private UIViewContentMode(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIViewContentMode fromValue(int n) {
-        for (UIViewContentMode v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIViewContentMode value: " + n);
-    }
 }

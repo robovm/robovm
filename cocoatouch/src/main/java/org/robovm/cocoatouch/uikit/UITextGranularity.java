@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UITextGranularity implements ValuedEnum {
     Character(0),
@@ -29,12 +29,4 @@ public enum UITextGranularity implements ValuedEnum {
 
     private UITextGranularity(int n) { this.n = n; }
     public int value() { return n; }
-    public static UITextGranularity fromValue(int n) {
-        for (UITextGranularity v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UITextGranularity value: " + n);
-    }
 }

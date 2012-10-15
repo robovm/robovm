@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIRectCorner implements ValuedEnum {
     TopLeft(1 << 0),
@@ -28,29 +28,4 @@ public enum UIRectCorner implements ValuedEnum {
 
     private UIRectCorner(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIRectCorner fromValue(int n) {
-        for (UIRectCorner v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIRectCorner value: " + n);
-    }
-    public static EnumSet<UIRectCorner> fromBits(int bits) {
-        EnumSet<UIRectCorner> set = EnumSet.noneOf(UIRectCorner.class);
-        for (UIRectCorner v : values()) {
-            int value = v.value();
-            if ((bits & value) == value) {
-                set.add(v);
-            }
-        }
-        return set;
-    }
-    public static int toBits(EnumSet<UIRectCorner> set) {
-        int bits = 0;
-        for (UIRectCorner v : set) {
-            bits |= v.value();
-        }
-        return bits;
-    }
 }

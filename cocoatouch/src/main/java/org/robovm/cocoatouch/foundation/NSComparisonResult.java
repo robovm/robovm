@@ -21,5 +21,12 @@ import org.robovm.rt.bro.ValuedEnum;
  * 
  */
 public enum NSComparisonResult implements ValuedEnum {
+    Ascending(-1),
+    Same(0),
+    Descending(1);
+    
+    private final int n;
 
+    private NSComparisonResult(int n) { this.n = n; }
+    public int value() { return n; }
 }

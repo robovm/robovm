@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIToolbarPosition implements ValuedEnum {
     Any(0),
@@ -26,12 +26,4 @@ public enum UIToolbarPosition implements ValuedEnum {
 
     private UIToolbarPosition(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIToolbarPosition fromValue(int n) {
-        for (UIToolbarPosition v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIToolbarPosition value: " + n);
-    }
 }

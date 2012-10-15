@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UITableViewRowAnimation implements ValuedEnum {
     Fade(0),
@@ -31,12 +31,4 @@ public enum UITableViewRowAnimation implements ValuedEnum {
 
     private UITableViewRowAnimation(int n) { this.n = n; }
     public int value() { return n; }
-    public static UITableViewRowAnimation fromValue(int n) {
-        for (UITableViewRowAnimation v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UITableViewRowAnimation value: " + n);
-    }
 }

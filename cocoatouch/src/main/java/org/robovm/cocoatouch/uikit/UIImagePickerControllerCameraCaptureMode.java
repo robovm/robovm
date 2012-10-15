@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIImagePickerControllerCameraCaptureMode implements ValuedEnum {
     Photo(0),
@@ -25,12 +25,4 @@ public enum UIImagePickerControllerCameraCaptureMode implements ValuedEnum {
 
     private UIImagePickerControllerCameraCaptureMode(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIImagePickerControllerCameraCaptureMode fromValue(int n) {
-        for (UIImagePickerControllerCameraCaptureMode v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIImagePickerControllerCameraCaptureMode value: " + n);
-    }
 }

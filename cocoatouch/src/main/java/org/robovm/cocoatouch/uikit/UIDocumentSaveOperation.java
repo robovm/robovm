@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIDocumentSaveOperation implements ValuedEnum {
     Creating(0),
@@ -25,12 +25,4 @@ public enum UIDocumentSaveOperation implements ValuedEnum {
 
     private UIDocumentSaveOperation(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIDocumentSaveOperation fromValue(int n) {
-        for (UIDocumentSaveOperation v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIDocumentSaveOperation value: " + n);
-    }
 }

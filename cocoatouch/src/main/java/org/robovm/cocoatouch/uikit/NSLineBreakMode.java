@@ -29,12 +29,4 @@ public enum NSLineBreakMode implements ValuedEnum {
 
     private NSLineBreakMode(int n) { this.n = n; }
     public int value() { return n; }
-    public static NSLineBreakMode fromValue(int n) {
-        for (NSLineBreakMode v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown NSLineBreakMode value: " + n);
-    }
 }

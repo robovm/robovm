@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIImagePickerControllerCameraDevice implements ValuedEnum {
     Rear(0),
@@ -25,12 +25,4 @@ public enum UIImagePickerControllerCameraDevice implements ValuedEnum {
 
     private UIImagePickerControllerCameraDevice(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIImagePickerControllerCameraDevice fromValue(int n) {
-        for (UIImagePickerControllerCameraDevice v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIImagePickerControllerCameraDevice value: " + n);
-    }
 }

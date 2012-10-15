@@ -21,5 +21,25 @@ import org.robovm.rt.bro.ValuedEnum;
  * 
  */
 public enum NSCalendarUnit implements ValuedEnum {
+    Era(1 << 1),
+    Year(1 << 2),
+    Month(1 << 3),
+    Day(1 << 4),
+    Hour(1 << 5),
+    Minute(1 << 6),
+    Second(1 << 7),
+    Week(1 << 8),
+    Weekday(1 << 9),
+    WeekdayOrdinal(1 << 10),
+    Quarter(1 << 11),
+    WeekOfMonth(1 << 12),
+    WeekOfYear(1 << 13),
+    YearForWeekOfYear(1 << 14),
+    Calendar(1 << 20),
+    TimeZone(1 << 21);
+    
+    private final int n;
 
+    private NSCalendarUnit(int n) { this.n = n; }
+    public int value() { return n; }
 }

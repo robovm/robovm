@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UICollectionUpdateAction implements ValuedEnum {
     None(0),
@@ -28,12 +28,4 @@ public enum UICollectionUpdateAction implements ValuedEnum {
 
     private UICollectionUpdateAction(int n) { this.n = n; }
     public int value() { return n; }
-    public static UICollectionUpdateAction fromValue(int n) {
-        for (UICollectionUpdateAction v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UICollectionUpdateAction value: " + n);
-    }
 }

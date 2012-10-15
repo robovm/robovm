@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIControlEvent implements ValuedEnum {
     TouchDown(1 <<  0),
@@ -50,29 +50,4 @@ public enum UIControlEvent implements ValuedEnum {
 
     private UIControlEvent(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIControlEvent fromValue(int n) {
-        for (UIControlEvent v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIControlEvent value: " + n);
-    }
-    public static EnumSet<UIControlEvent> fromBits(int bits) {
-        EnumSet<UIControlEvent> set = EnumSet.noneOf(UIControlEvent.class);
-        for (UIControlEvent v : values()) {
-            int value = v.value();
-            if ((bits & value) == value) {
-                set.add(v);
-            }
-        }
-        return set;
-    }
-    public static int toBits(EnumSet<UIControlEvent> set) {
-        int bits = 0;
-        for (UIControlEvent v : set) {
-            bits |= v.value();
-        }
-        return bits;
-    }
 }

@@ -15,7 +15,7 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
 public enum UIWebViewNavigationType implements ValuedEnum {
     LinkClicked(0),
@@ -29,12 +29,4 @@ public enum UIWebViewNavigationType implements ValuedEnum {
 
     private UIWebViewNavigationType(int n) { this.n = n; }
     public int value() { return n; }
-    public static UIWebViewNavigationType fromValue(int n) {
-        for (UIWebViewNavigationType v : values()) {
-            if (n == v.value()) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("Unknown UIWebViewNavigationType value: " + n);
-    }
 }

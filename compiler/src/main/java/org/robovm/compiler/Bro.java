@@ -123,6 +123,9 @@ public abstract class Bro {
                 annotation = getMarshalerAnnotation(type);                
             }
         }
+        if (annotation == null) {
+            return null;
+        }
         String desc = ((AnnotationClassElem) getElemByName(annotation, "value")).getDesc();
         return getInternalNameFromDescriptor(desc);
     }
@@ -139,6 +142,9 @@ public abstract class Bro {
             if (annotation == null) {
                 annotation = getMarshalerAnnotation(paramType);
             }
+        }
+        if (annotation == null) {
+            return null;
         }
         String desc = ((AnnotationClassElem) getElemByName(annotation, "value")).getDesc();
         return getInternalNameFromDescriptor(desc);

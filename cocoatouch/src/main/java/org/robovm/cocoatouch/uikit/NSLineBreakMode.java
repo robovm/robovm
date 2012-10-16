@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum NSLineBreakMode implements ValuedEnum {
+public enum NSLineBreakMode implements IntValuedEnum {
     WordWrapping(0),
     CharWrapping(1),
     Clipping(2),

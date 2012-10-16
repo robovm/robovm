@@ -15,9 +15,12 @@
  */
 package org.robovm.objc.block;
 
+import org.robovm.rt.bro.annotation.Marshaler;
+
 /**
  * 
  */
+@Marshaler(VoidBooleanBlock.class)
 public class VoidBooleanBlock {
 
 }

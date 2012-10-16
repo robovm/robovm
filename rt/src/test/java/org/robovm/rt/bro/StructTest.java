@@ -32,7 +32,7 @@ public class StructTest {
     public enum SimpleEnum {
         V1, V2, V3
     }
-    public enum TestValuedEnum implements ValuedEnum {
+    public enum TestValuedEnum implements IntValuedEnum {
         V100(100), V1000(1000), V10000(10000);
         
         private final int n;

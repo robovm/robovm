@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIKeyboardType implements ValuedEnum {
+public enum UIKeyboardType implements IntValuedEnum {
     Default(0),
     ASCIICapable(1),
     NumbersAndPunctuation(2),

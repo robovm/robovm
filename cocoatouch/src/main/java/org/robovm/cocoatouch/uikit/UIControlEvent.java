@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIControlEvent implements ValuedEnum {
+public enum UIControlEvent implements IntValuedEnum {
     TouchDown(1 <<  0),
     TouchDownRepeat(1 <<  1),
     TouchDragInside(1 <<  2),

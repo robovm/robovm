@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UILayoutPriority implements ValuedEnum {
+public enum UILayoutPriority implements IntValuedEnum {
     Required(1000),
     DefaultHigh(750),
     DefaultLow(250),

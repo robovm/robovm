@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIInterfaceOrientationMask implements ValuedEnum {
+public enum UIInterfaceOrientationMask implements IntValuedEnum {
     Portrait(1 << UIInterfaceOrientation.Portrait.value()),
     LandscapeLeft(1 << UIInterfaceOrientation.LandscapeLeft.value()),
     LandscapeRight(1 << UIInterfaceOrientation.LandscapeRight.value()),

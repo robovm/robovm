@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum NSLayoutFormatOptions implements ValuedEnum {
+public enum NSLayoutFormatOptions implements IntValuedEnum {
     AlignAllLeft(NSLayoutAttribute.Left.value()),
     AlignAllRight(NSLayoutAttribute.Right.value()),
     AlignAllTop(NSLayoutAttribute.Top.value()),

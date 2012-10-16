@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIControlContentVerticalAlignment implements ValuedEnum {
+public enum UIControlContentVerticalAlignment implements IntValuedEnum {
     Center(0),
     Top(1),
     Bottom(2),

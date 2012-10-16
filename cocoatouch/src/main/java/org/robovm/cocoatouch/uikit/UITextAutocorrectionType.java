@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UITextAutocorrectionType implements ValuedEnum {
+public enum UITextAutocorrectionType implements IntValuedEnum {
     Default(0),
     No(1),
     Yes(2);

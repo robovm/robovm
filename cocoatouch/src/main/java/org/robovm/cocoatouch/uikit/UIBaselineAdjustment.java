@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIBaselineAdjustment implements ValuedEnum {
+public enum UIBaselineAdjustment implements IntValuedEnum {
     AlignBaselines(0),
     AlignCenters(1),
     None(2);

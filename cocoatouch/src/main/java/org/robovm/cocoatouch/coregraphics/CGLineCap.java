@@ -3,13 +3,13 @@
  */
 package org.robovm.cocoatouch.coregraphics;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
 /**
  * @author niklas
  *
  */
-public enum CGLineCap implements ValuedEnum {
+public enum CGLineCap implements IntValuedEnum {
     Butt(0),
     Round(1),
     Square(2);

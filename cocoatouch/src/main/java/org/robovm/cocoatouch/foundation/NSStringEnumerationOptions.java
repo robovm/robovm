@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.foundation;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum NSStringEnumerationOptions implements ValuedEnum {
+public enum NSStringEnumerationOptions implements IntValuedEnum {
     ByLines(0),
     ByParagraphs(1),
     ByComposedCharacterSequences(2),

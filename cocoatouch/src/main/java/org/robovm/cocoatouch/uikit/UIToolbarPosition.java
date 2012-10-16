@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIToolbarPosition implements ValuedEnum {
+public enum UIToolbarPosition implements IntValuedEnum {
     Any(0),
     Bottom(1),
     Top(2);

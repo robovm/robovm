@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UISwipeGestureRecognizerDirection implements ValuedEnum {
+public enum UISwipeGestureRecognizerDirection implements IntValuedEnum {
     Right(1 << 0),
     Left(1 << 1),
     Up(1 << 2),

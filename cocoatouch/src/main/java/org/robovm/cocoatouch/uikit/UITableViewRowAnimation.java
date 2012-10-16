@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UITableViewRowAnimation implements ValuedEnum {
+public enum UITableViewRowAnimation implements IntValuedEnum {
     Fade(0),
     Right(1),
     Left(2),

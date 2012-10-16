@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UITouchPhase implements ValuedEnum {
+public enum UITouchPhase implements IntValuedEnum {
     Began(0),
     Moved(1),
     Stationary(2),

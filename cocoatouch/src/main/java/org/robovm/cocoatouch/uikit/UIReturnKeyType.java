@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIReturnKeyType implements ValuedEnum {
+public enum UIReturnKeyType implements IntValuedEnum {
     Default(0),
     Go(1),
     Google(2),

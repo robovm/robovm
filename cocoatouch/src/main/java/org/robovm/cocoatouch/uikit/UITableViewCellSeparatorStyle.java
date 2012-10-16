@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UITableViewCellSeparatorStyle implements ValuedEnum {
+public enum UITableViewCellSeparatorStyle implements IntValuedEnum {
     None(0),
     SingleLine(1),
     SingleLineEtched(2);

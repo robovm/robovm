@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UITableViewCellStateMask implements ValuedEnum {
+public enum UITableViewCellStateMask implements IntValuedEnum {
     DefaultMask(0),
     ShowingEditControlMask(1 << 0),
     ShowingDeleteConfirmationMask(1 << 1);

@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIViewAnimationOption implements ValuedEnum {
+public enum UIViewAnimationOption implements IntValuedEnum {
     LayoutSubviews(1 <<  0),
     AllowUserInteraction(1 <<  1),
     BeginFromCurrentState(1 <<  2),

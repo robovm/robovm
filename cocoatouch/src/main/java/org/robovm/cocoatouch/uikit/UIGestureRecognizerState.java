@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIGestureRecognizerState implements ValuedEnum {
+public enum UIGestureRecognizerState implements IntValuedEnum {
     Possible(0),
     Began(1),
     Changed(2),

@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UICollectionUpdateAction implements ValuedEnum {
+public enum UICollectionUpdateAction implements IntValuedEnum {
     None(0),
     Insert(1),
     Delete(2),

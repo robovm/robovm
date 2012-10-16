@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIImagePickerControllerCameraCaptureMode implements ValuedEnum {
+public enum UIImagePickerControllerCameraCaptureMode implements IntValuedEnum {
     Photo(0),
     Video(1);
 

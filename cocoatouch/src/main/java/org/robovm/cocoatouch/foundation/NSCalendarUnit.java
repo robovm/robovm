@@ -15,12 +15,12 @@
  */
 package org.robovm.cocoatouch.foundation;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
 /**
  * 
  */
-public enum NSCalendarUnit implements ValuedEnum {
+public enum NSCalendarUnit implements IntValuedEnum {
     Era(1 << 1),
     Year(1 << 2),
     Month(1 << 3),

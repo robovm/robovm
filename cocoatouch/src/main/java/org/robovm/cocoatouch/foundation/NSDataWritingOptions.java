@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.foundation;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum NSDataWritingOptions implements ValuedEnum {
+public enum NSDataWritingOptions implements IntValuedEnum {
     Atomic(1 << 0),
     FileProtectionNone(0x10000000),
     FileProtectionComplete(0x20000000),

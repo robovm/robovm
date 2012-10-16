@@ -15,12 +15,12 @@
  */
 package org.robovm.cocoatouch.foundation;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
 /**
  * 
  */
-public enum NSComparisonResult implements ValuedEnum {
+public enum NSComparisonResult implements IntValuedEnum {
     Ascending(-1),
     Same(0),
     Descending(1);

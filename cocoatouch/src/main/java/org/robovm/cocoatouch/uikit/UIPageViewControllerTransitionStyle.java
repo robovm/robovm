@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIPageViewControllerTransitionStyle implements ValuedEnum {
+public enum UIPageViewControllerTransitionStyle implements IntValuedEnum {
     PageCurl(0);
 
     private final int n;

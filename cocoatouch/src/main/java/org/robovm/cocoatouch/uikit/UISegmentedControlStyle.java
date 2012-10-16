@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UISegmentedControlStyle implements ValuedEnum {
+public enum UISegmentedControlStyle implements IntValuedEnum {
     Plain(0),
     Bordered(1),
     Bar(2),

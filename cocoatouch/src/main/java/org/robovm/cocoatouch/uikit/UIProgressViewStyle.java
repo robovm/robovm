@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIProgressViewStyle implements ValuedEnum {
+public enum UIProgressViewStyle implements IntValuedEnum {
     Default(0),
     Bar(1);
 

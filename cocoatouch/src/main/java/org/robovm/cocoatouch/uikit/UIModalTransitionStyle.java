@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIModalTransitionStyle implements ValuedEnum {
+public enum UIModalTransitionStyle implements IntValuedEnum {
     CoverVertical(0),
     FlipHorizontal(1),
     CrossDissolve(2),

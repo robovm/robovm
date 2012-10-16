@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UITextSpellCheckingType implements ValuedEnum {
+public enum UITextSpellCheckingType implements IntValuedEnum {
     Default(0),
     No(1),
     Yes(2);

@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UISearchBarIcon implements ValuedEnum {
+public enum UISearchBarIcon implements IntValuedEnum {
     Search(0),
     Clear(1),
     Bookmark(2),

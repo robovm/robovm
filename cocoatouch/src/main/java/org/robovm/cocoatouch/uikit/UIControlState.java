@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIControlState implements ValuedEnum {
+public enum UIControlState implements IntValuedEnum {
     Normal(0),
     Highlighted(1 << 0),
     Disabled(1 << 1),

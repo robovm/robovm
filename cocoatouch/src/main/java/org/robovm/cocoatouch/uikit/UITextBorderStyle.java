@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UITextBorderStyle implements ValuedEnum {
+public enum UITextBorderStyle implements IntValuedEnum {
     None(0),
     Line(1),
     Bezel(2),

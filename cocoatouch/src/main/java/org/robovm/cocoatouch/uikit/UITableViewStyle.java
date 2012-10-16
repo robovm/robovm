@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UITableViewStyle implements ValuedEnum {
+public enum UITableViewStyle implements IntValuedEnum {
     Plain(0),
     Grouped(1);
 

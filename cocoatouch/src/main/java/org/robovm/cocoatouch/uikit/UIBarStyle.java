@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIBarStyle implements ValuedEnum {
+public enum UIBarStyle implements IntValuedEnum {
     Default(0),
     Black(1),
     BlackOpaque(1),

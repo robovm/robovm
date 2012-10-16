@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIImageResizingMode implements ValuedEnum {
+public enum UIImageResizingMode implements IntValuedEnum {
     Tile(0),
     Stretch(1);
 

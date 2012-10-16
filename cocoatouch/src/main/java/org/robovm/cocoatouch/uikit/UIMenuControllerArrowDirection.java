@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIMenuControllerArrowDirection implements ValuedEnum {
+public enum UIMenuControllerArrowDirection implements IntValuedEnum {
     Default(0),
     Up(1),
     Down(2),

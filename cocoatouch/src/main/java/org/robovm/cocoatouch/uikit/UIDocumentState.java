@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIDocumentState implements ValuedEnum {
+public enum UIDocumentState implements IntValuedEnum {
     Normal(0),
     Closed(1 << 0),
     InConflict(1 << 1),

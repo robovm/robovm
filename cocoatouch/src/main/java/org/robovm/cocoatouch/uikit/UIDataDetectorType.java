@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIDataDetectorType implements ValuedEnum {
+public enum UIDataDetectorType implements IntValuedEnum {
     PhoneNumber(1 << 0),
     Link(1 << 1),
     Address(1 << 2),

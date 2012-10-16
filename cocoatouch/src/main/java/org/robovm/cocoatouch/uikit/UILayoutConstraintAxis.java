@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UILayoutConstraintAxis implements ValuedEnum {
+public enum UILayoutConstraintAxis implements IntValuedEnum {
     Horizontal(0),
     Vertical(1);
 

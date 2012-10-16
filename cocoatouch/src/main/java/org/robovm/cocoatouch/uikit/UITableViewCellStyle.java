@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UITableViewCellStyle implements ValuedEnum {
+public enum UITableViewCellStyle implements IntValuedEnum {
     Default(0),
     Value1(1),
     Value2(2),

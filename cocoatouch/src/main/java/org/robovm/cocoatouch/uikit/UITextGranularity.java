@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UITextGranularity implements ValuedEnum {
+public enum UITextGranularity implements IntValuedEnum {
     Character(0),
     Word(1),
     Sentence(2),

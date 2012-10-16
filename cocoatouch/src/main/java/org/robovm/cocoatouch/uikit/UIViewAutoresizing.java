@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIViewAutoresizing implements ValuedEnum {
+public enum UIViewAutoresizing implements IntValuedEnum {
     None(0),
     FlexibleLeftMargin(1 << 0),
     FlexibleWidth(1 << 1),

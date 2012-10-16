@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIRectCorner implements ValuedEnum {
+public enum UIRectCorner implements IntValuedEnum {
     TopLeft(1 << 0),
     TopRight(1 << 1),
     BottomLeft(1 << 2),

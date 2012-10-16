@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.foundation;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum NSWritingDirection implements ValuedEnum {
+public enum NSWritingDirection implements IntValuedEnum {
     Natural(-1),
     LeftToRight(0),
     RightToLeft(1);

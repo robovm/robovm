@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UITextStorageDirection implements ValuedEnum {
+public enum UITextStorageDirection implements IntValuedEnum {
     Forward(0),
     Backward(1);
 

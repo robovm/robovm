@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import org.robovm.rt.bro.IntValuedEnum;
 
-public enum UIImagePickerControllerSourceType implements ValuedEnum {
+public enum UIImagePickerControllerSourceType implements IntValuedEnum {
     PhotoLibrary(0),
     Camera(1),
     SavedPhotosAlbum(2);

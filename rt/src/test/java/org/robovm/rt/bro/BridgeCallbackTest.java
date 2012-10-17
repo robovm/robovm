@@ -62,7 +62,7 @@ public class BridgeCallbackTest {
     public enum SimpleEnum {
         V1, V2, V3
     }
-    public enum TestValuedEnum implements IntValuedEnum {
+    public enum TestValuedEnum implements ValuedEnum {
         V100(100), V1000(1000), V10000(10000);
         
         private final int n;
@@ -81,7 +81,7 @@ public class BridgeCallbackTest {
         }
         public static void updateObject(Object o, long handle) {
         }
-        public static long toNative(Object o) {
+        public static @Pointer long toNative(Object o) {
             BytePtr ptr = BytePtr.toBytePtrAsciiZ((String) o);
             return ptr.getHandle();
         }

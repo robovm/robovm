@@ -20,8 +20,8 @@ import org.robovm.rt.bro.annotation.Marshaler;
 /**
  * Implemented by {@link Enum} classes which have an explicit integer value.
  */
-@Marshaler(IntValuedEnum.Marshaler.class)
-public interface IntValuedEnum {
+@Marshaler(ValuedEnum.AsIntMarshaler.class)
+public interface ValuedEnum {
 
     /**
      * Returns the integer value of this {@link Enum} item.
@@ -30,7 +30,7 @@ public interface IntValuedEnum {
      */
     int value();
     
-    public static class Marshaler {
+    public static class AsIntMarshaler {
         
         public static Enum<?> toObject(Enum<?>[] values, int value) {
             int length = values.length;
@@ -39,7 +39,7 @@ public interface IntValuedEnum {
             }
             for (int i = 0; i < length; i++) {
                 Enum<?> e = values[i];
-                IntValuedEnum v = (IntValuedEnum) e;
+                ValuedEnum v = (ValuedEnum) e;
                 if (v.value() == value) {
                     return e;
                 }
@@ -50,7 +50,7 @@ public interface IntValuedEnum {
         }
         
         public static int toNative(Enum<?> v) {
-            return ((IntValuedEnum) v).value();
+            return ((ValuedEnum) v).value();
         }
     }
 }

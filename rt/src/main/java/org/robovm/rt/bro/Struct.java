@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.annotation.Marshaler;
+import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.ptr.Ptr;
 import org.robovm.rt.bro.ptr.Ptr.MarshalerCallback;
 
@@ -240,7 +241,7 @@ public abstract class Struct<T extends Struct<T>> extends NativeObject implement
             Ptr.updatePtr(ptr, cls, wrapCount, MARSHALER_CALLBACK);
         }
         
-        public static long toNative(Object o) {
+        public static @Pointer long toNative(Object o) {
             if (o == null) {
                 return 0L;
             }

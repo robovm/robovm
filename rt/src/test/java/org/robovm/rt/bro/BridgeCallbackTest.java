@@ -17,12 +17,21 @@ package org.robovm.rt.bro;
 
 import static org.junit.Assert.*;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Method;
 
-import org.junit.*;
-import org.robovm.rt.*;
-import org.robovm.rt.bro.annotation.*;
-import org.robovm.rt.bro.ptr.*;
+import org.junit.Test;
+import org.robovm.rt.VM;
+import org.robovm.rt.bro.annotation.Bridge;
+import org.robovm.rt.bro.annotation.ByVal;
+import org.robovm.rt.bro.annotation.Callback;
+import org.robovm.rt.bro.annotation.Marshaler;
+import org.robovm.rt.bro.annotation.Marshalers;
+import org.robovm.rt.bro.annotation.Pointer;
+import org.robovm.rt.bro.annotation.StructMember;
+import org.robovm.rt.bro.annotation.StructRet;
+import org.robovm.rt.bro.ptr.BytePtr;
+import org.robovm.rt.bro.ptr.LongPtr;
+import org.robovm.rt.bro.ptr.Ptr;
 
 /**
  * Tests {@link Bridge} and {@link Callback} methods.
@@ -74,6 +83,28 @@ public class BridgeCallbackTest {
         }
     }
 
+    public static final class TestBits extends Bits<TestBits> {
+        public static final TestBits V1 = new TestBits(1);
+        public static final TestBits V2 = new TestBits(2);
+        public static final TestBits V4 = new TestBits(4);
+        public static final TestBits V8 = new TestBits(8);
+
+        private static final TestBits[] VALUES = _values(TestBits.class);
+        
+        private TestBits(long value) { super(value); }
+        private TestBits(long value, long mask) { super(value, mask); }
+
+        @Override
+        protected TestBits wrap(long value, long mask) {
+            return new TestBits(value, mask);
+        }
+
+        @Override
+        protected TestBits[] values() {
+            return VALUES;
+        }
+    }
+    
     public static class StringMarshaler {
         public static Object toObject(Class cls, long handle, boolean copy) {
             BytePtr ptr = Struct.toStruct(BytePtr.class, handle);
@@ -219,6 +250,19 @@ public class BridgeCallbackTest {
     public static TestValuedEnum marshalValuedEnum_cb(TestValuedEnum v) {
         TestValuedEnum[] values = TestValuedEnum.values();
         return values[(v.ordinal() + 1) % values.length];
+    }
+    
+    @Bridge
+    public static native TestBits marshalBits1(TestBits v1, TestBits v2);
+    @Callback
+    public static int marshalBits1_cb(int v1, int v2) {
+        return v1 | v2;
+    }
+    @Bridge
+    public static native int marshalBits2(int v1, int v2);
+    @Callback
+    public static TestBits marshalBits2_cb(TestBits v1, TestBits v2) {
+        return v1.set(v2);
     }
     
     private static Method find(String name) {
@@ -394,5 +438,15 @@ public class BridgeCallbackTest {
         assertEquals(TestValuedEnum.V1000, marshalValuedEnum(TestValuedEnum.V100));
         assertEquals(TestValuedEnum.V10000, marshalValuedEnum(TestValuedEnum.V1000));
         assertEquals(TestValuedEnum.V100, marshalValuedEnum(TestValuedEnum.V10000));
+    }
+    
+    @Test
+    public void testMarshalBits1() {
+        assertEquals(1 | 8, marshalBits1(TestBits.V1, TestBits.V8).value());
+    }
+    
+    @Test
+    public void testMarshalBits2() {
+        assertEquals(1 | 8, marshalBits2(1, 8));
     }
 }

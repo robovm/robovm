@@ -16,8 +16,6 @@
  */
 package org.robovm.compiler;
 
-import static org.robovm.compiler.Annotations.*;
-import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import java.nio.CharBuffer;
@@ -184,6 +182,31 @@ public class Types {
             throw new IllegalArgumentException(desc + " is not a class descriptor");
         }
         return desc.substring(1, desc.length() - 1);
+    }
+    
+    public static String getDescriptor(Type t) {
+        if (t instanceof PointerType) {
+            return "J";
+        }
+        if (t == I8) {
+            return "B";
+        }
+        if (t == I16) {
+            return "S";
+        }
+        if (t == I32) {
+            return "I";
+        }
+        if (t == I64) {
+            return "J";
+        }
+        if (t == FLOAT) {
+            return "F";
+        }
+        if (t == DOUBLE) {
+            return "D";
+        }
+        throw new IllegalArgumentException(t.toString());
     }
     
     public static String getDescriptor(soot.Type t) {

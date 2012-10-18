@@ -28,8 +28,8 @@ import static org.robovm.compiler.llvm.Type.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.robovm.compiler.llvm.Alloca;
 import org.robovm.compiler.llvm.Argument;
+import org.robovm.compiler.llvm.BasicBlockRef;
 import org.robovm.compiler.llvm.Br;
 import org.robovm.compiler.llvm.ConstantBitcast;
 import org.robovm.compiler.llvm.Function;
@@ -37,24 +37,20 @@ import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.Global;
 import org.robovm.compiler.llvm.Icmp;
 import org.robovm.compiler.llvm.Icmp.Condition;
-import org.robovm.compiler.llvm.BasicBlockRef;
 import org.robovm.compiler.llvm.IntegerConstant;
-import org.robovm.compiler.llvm.Inttoptr;
 import org.robovm.compiler.llvm.Label;
 import org.robovm.compiler.llvm.Load;
 import org.robovm.compiler.llvm.NullConstant;
 import org.robovm.compiler.llvm.ParameterAttribute;
 import org.robovm.compiler.llvm.PointerType;
-import org.robovm.compiler.llvm.Ptrtoint;
+import org.robovm.compiler.llvm.PrimitiveType;
 import org.robovm.compiler.llvm.Ret;
-import org.robovm.compiler.llvm.Store;
 import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Unreachable;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
 import org.robovm.compiler.llvm.VariableRef;
 import org.robovm.compiler.trampoline.Invokestatic;
-import org.robovm.compiler.trampoline.Invokevirtual;
 
 import soot.SootClass;
 import soot.SootMethod;
@@ -139,12 +135,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         // after the native call we get the nice side effect that neither the
         // Java objects nor the handles can be garbage collected while we're in
         // native code.
-        class MarshaledValue {
-            private Value object;
-            private Value handle;
-            private int paramIndex;
-        }
-        List<MarshaledValue> marshaledValues = new ArrayList<MarshaledValue>();
+        List<MarshaledArg> marshaledArgs = new ArrayList<MarshaledArg>();
         
         Type[] targetParameterTypes = targetFnType.getParameterTypes();
         for (int i = 0; i < sootMethod.getParameterCount(); i++) {
@@ -152,9 +143,19 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             if (needsMarshaler(type)) {
 
                 String marshalerClassName = getMarshalerClassName(method, i, false);
-                // Call the Marshaler's toNative() method
-                if (!isEnum(type)) {
-                    
+                
+                // The return type of the marshaler's toNative() method is derived from the target function type.
+                Type nativeType = targetParameterTypes[i];
+
+                if (nativeType instanceof PrimitiveType) {
+                    if (isEnum(type)) {
+                        Value nativeValue = marshalEnumObjectToNative(innerFn, marshalerClassName, nativeType, env, args.get(i).getValue());
+                        args.set(i, new Argument(nativeValue));
+                    } else {
+                        Value nativeValue = marshalValueObjectToNative(innerFn, marshalerClassName, nativeType, env, args.get(i).getValue());
+                        args.set(i, new Argument(nativeValue));
+                    }
+                } else {
                     ParameterAttribute[] parameterAttributes = new ParameterAttribute[0];
                     if (isPassByValue(method, i) || isStructRet(method, i)) {
                         // The parameter must not be null. We assume that Structs 
@@ -169,39 +170,16 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                         }
                     }
             
-                    MarshaledValue marshaledValue = new MarshaledValue();
-                    marshaledValues.add(marshaledValue);
-                    marshaledValue.object = args.get(i).getValue();
-                    marshaledValue.paramIndex = i;
-                    
-                    Invokestatic invokestatic = new Invokestatic(
-                            getInternalName(method.getDeclaringClass()), marshalerClassName, 
-                            "toNative", "(Ljava/lang/Object;)J");
-                    trampolines.add(invokestatic);
-                    Value argI64 = call(innerFn, invokestatic.getFunctionRef(), 
-                            env, args.get(i).getValue());
-    
-                    marshaledValue.handle = argI64;
-                    
-                    Variable arg = innerFn.newVariable(targetParameterTypes[i]);
-                    innerFn.add(new Inttoptr(arg, argI64, arg.getType()));
-                    args.set(i, new Argument(arg.ref(), parameterAttributes));
-                } else {
-                    // The signature for Enum marshalers look different
-                    Invokestatic invokestatic = new Invokestatic(
-                            getInternalName(method.getDeclaringClass()), marshalerClassName, 
-                            "toNative", "(Ljava/lang/Enum;)I");
-                    trampolines.add(invokestatic);
-                    Value argI32 = call(innerFn, invokestatic.getFunctionRef(), 
-                            env, args.get(i).getValue());
-                    args.set(i, new Argument(argI32));
+                    MarshaledArg marshaledArg = new MarshaledArg();
+                    marshaledArg.paramIndex = i;
+                    marshaledArgs.add(marshaledArg);
+                    Value nativeValue = marshalObjectToNative(innerFn, marshalerClassName, marshaledArg, nativeType, env, args.get(i).getValue());
+                    args.set(i, new Argument(nativeValue, parameterAttributes));
                 }
                 
             } else if (hasPointerAnnotation(method, i)) {
                 // @Pointer long. Convert from i64 to i8*
-                Variable arg = innerFn.newVariable(I8_PTR);
-                innerFn.add(new Inttoptr(arg, args.get(i).getValue(), I8_PTR));
-                args.set(i, new Argument(arg.ref()));                    
+                args.set(i, new Argument(marshalLongToPointer(innerFn, args.get(i).getValue())));                    
             }
         }        
         
@@ -217,7 +195,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
 
         // Call Marshaler.updateObject() or Marshaler.updatePtr() for each object that was marshaled before
         // the call.
-        for (MarshaledValue value : marshaledValues) {
+        for (MarshaledArg value : marshaledArgs) {
             soot.Type type = sootMethod.getParameterType(value.paramIndex);
             String marshalerClassName = getMarshalerClassName(method, value.paramIndex, true);
             if (isPtr(type)) {
@@ -246,66 +224,25 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         // Marshal the return value
         if (needsMarshaler(method.getReturnType())) {
             String marshalerClassName = getMarshalerClassName(method, true);
-            if (isPtr(method.getReturnType())) {
-                // Call the Marshaler's toPtr() method
-                SootClass sootPtrTargetClass = getPtrTargetClass(method);
-                Value ptrTargetClass = ldcClass(innerFn, getInternalName(sootPtrTargetClass), env);
-                int ptrWrapCount = getPtrWrapCount(method);
-                Invokestatic invokestatic = new Invokestatic(
-                        getInternalName(method.getDeclaringClass()), marshalerClassName, 
-                        "toPtr", "(Ljava/lang/Class;JI)Lorg/robovm/rt/bro/ptr/Ptr;");
-                trampolines.add(invokestatic);
-                Variable handle = innerFn.newVariable(I64);
-                innerFn.add(new Ptrtoint(handle, resultInner, I64));
-                resultInner = call(innerFn, invokestatic.getFunctionRef(), 
-                        env, ptrTargetClass, 
-                        handle.ref(), new IntegerConstant(ptrWrapCount));
-            } else {
-
-                // Call the Marshaler's toObject() method
-                if (!isEnum(method.getReturnType())) {
-                    // Load the declared Class of the return value
-                    String targetClassName = getInternalName(method.getReturnType());
-                    Value returnClass = ldcClass(innerFn, targetClassName, env);
-                    
-                    boolean copy = isPassByValue(method);
-                    if (copy) {
-                        // Copy the result to the stack
-                        Variable stackCopy = innerFn.newVariable(new PointerType(targetFnType.getReturnType()));
-                        innerFn.add(new Alloca(stackCopy, targetFnType.getReturnType()));
-                        innerFn.add(new Store(resultInner, stackCopy.ref()));
-                        resultInner = stackCopy.ref();
-                    }
-                    
-                    Invokestatic invokestatic = new Invokestatic(
-                            getInternalName(method.getDeclaringClass()), marshalerClassName, 
-                            "toObject", "(Ljava/lang/Class;JZ)Ljava/lang/Object;");
-                    trampolines.add(invokestatic);
-                    Variable handle = innerFn.newVariable(I64);
-                    innerFn.add(new Ptrtoint(handle, resultInner, I64));
-                    resultInner = call(innerFn, invokestatic.getFunctionRef(), 
-                            env, returnClass, handle.ref(), 
-                            new IntegerConstant((byte) (copy ? 1 : 0)));
+            String targetClassName = getInternalName(method.getReturnType());
+            
+            if (targetFnType.getReturnType() instanceof PrimitiveType) {
+                if (isEnum(method.getReturnType())) {
+                    resultInner = marshalNativeToEnumObject(innerFn, marshalerClassName, env, targetClassName, resultInner);
                 } else {
-                    String enumClassName = getInternalName(method.getReturnType());
-                    Invokestatic invokeValues = new Invokestatic(
-                            getInternalName(method.getDeclaringClass()), enumClassName, 
-                            "values", String.format("()[L%s;", enumClassName));
-                    trampolines.add(invokeValues);
-                    Value values = call(innerFn, invokeValues.getFunctionRef(), env);
-                    
-                    Invokestatic invokeToObject = new Invokestatic(
-                            getInternalName(method.getDeclaringClass()), marshalerClassName, 
-                            "toObject", "([Ljava/lang/Enum;I)Ljava/lang/Enum;");
-                    trampolines.add(invokeToObject);
-                    resultInner = call(innerFn, invokeToObject.getFunctionRef(), 
-                            env, values, resultInner);
+                    resultInner = marshalNativeToValueObject(innerFn, marshalerClassName, env, targetClassName, resultInner);
+                }
+            } else {
+                if (isPtr(method.getReturnType())) {
+                    resultInner = marshalNativeToPtr(innerFn, marshalerClassName, null, env, 
+                            getPtrTargetClass(method), resultInner, getPtrWrapCount(method));
+                } else {
+                    resultInner = marshalNativeToObject(innerFn, marshalerClassName, null, env, 
+                            targetClassName, resultInner, isPassByValue(method));
                 }
             }
         } else if (hasPointerAnnotation(method)) {
-            Variable resultI64 = innerFn.newVariable(I64);
-            innerFn.add(new Ptrtoint(resultI64, resultInner, I64));
-            resultInner = resultI64.ref();
+            resultInner = marshalPointerToLong(innerFn, resultInner);
         }
         innerFn.add(new Ret(resultInner));
         

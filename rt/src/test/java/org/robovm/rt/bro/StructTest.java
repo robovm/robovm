@@ -44,6 +44,28 @@ public class StructTest {
         }
     }
     
+    public static final class TestBits extends Bits<TestBits> {
+        public static final TestBits V1 = new TestBits(1);
+        public static final TestBits V2 = new TestBits(2);
+        public static final TestBits V4 = new TestBits(4);
+        public static final TestBits V8 = new TestBits(8);
+
+        private static final TestBits[] VALUES = _values(TestBits.class);
+        
+        private TestBits(long value) { super(value); }
+        private TestBits(long value, long mask) { super(value, mask); }
+
+        @Override
+        protected TestBits wrap(long value, long mask) {
+            return new TestBits(value, mask);
+        }
+
+        @Override
+        protected TestBits[] values() {
+            return VALUES;
+        }
+    }
+    
     public static final class Point extends Struct<Point> {
         @StructMember(0)
         public native int x();
@@ -106,6 +128,11 @@ public class StructTest {
         public native TestValuedEnum valuedEnum();
         @StructMember(10)
         public native TestStruct valuedEnum(TestValuedEnum e);
+        
+        @StructMember(11)
+        public native TestBits bits();
+        @StructMember(11)
+        public native TestStruct bits(TestBits bits);
     }
     
     @Test
@@ -259,5 +286,15 @@ public class StructTest {
         assertEquals(TestValuedEnum.V1000, s.valuedEnum());
         s.valuedEnum(TestValuedEnum.V10000);
         assertEquals(TestValuedEnum.V10000, s.valuedEnum());
+    }
+    
+    @Test
+    public void testBitsMember() {
+        TestStruct s = new TestStruct();
+        assertEquals(0, s.bits().value());
+        s.bits(TestBits.V1);
+        assertEquals(TestBits.V1, s.bits());
+        s.bits(s.bits().set(TestBits.V4));
+        assertEquals(1 | 4, s.bits().value());
     }
 }

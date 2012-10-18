@@ -20,14 +20,27 @@ import static org.robovm.compiler.Annotations.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import org.robovm.compiler.llvm.*;
+import org.robovm.compiler.llvm.FunctionType;
+import org.robovm.compiler.llvm.PointerType;
+import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Type;
-import org.robovm.compiler.util.*;
+import org.robovm.compiler.util.GenericSignatureParser;
 
-import soot.*;
-import soot.tagkit.*;
+import soot.LongType;
+import soot.PrimType;
+import soot.RefType;
+import soot.SootClass;
+import soot.SootMethod;
+import soot.SootResolver;
+import soot.VoidType;
+import soot.tagkit.AnnotationClassElem;
+import soot.tagkit.AnnotationIntElem;
+import soot.tagkit.AnnotationTag;
+import soot.tagkit.SignatureTag;
 
 /**
  * 
@@ -160,6 +173,29 @@ public abstract class Bro {
         return getInternalNameFromDescriptor(desc);
     }
 
+    public static Type getMarshalType(String marshalerClassName, soot.Type type) {
+        SootClass marshalerClass = SootResolver.v().resolveClass(marshalerClassName.replace('/', '.'), SootClass.SIGNATURES);
+        boolean isenum = isEnum(type);
+        Type defType = isenum ? I32 : I8_PTR;
+        if (marshalerClass.isPhantom()) {
+            return defType;
+        }
+        try {
+            List<?> paramTypes = Collections.singletonList(RefType.v(isenum ? "java.lang.Enum" : "java.lang.Object"));
+            SootMethod toNative = marshalerClass.getMethod("toNative", paramTypes);
+            soot.Type returnType = toNative.getReturnType();
+            if (returnType instanceof PrimType) {
+                if (!isenum && hasPointerAnnotation(toNative) && returnType == LongType.v()) {
+                    return I8_PTR;
+                }
+                return getType(returnType);
+            }
+        } catch (RuntimeException e) {
+            // Either not found or ambiguous
+        }
+        return defType;
+    }
+    
     public static int getStructMemberOffset(SootMethod method) {
         AnnotationTag annotation = getStructMemberAnnotation(method);
         if (annotation == null) {
@@ -203,13 +239,15 @@ public abstract class Bro {
             // Only small Structs can be returned by value. How small is defined by the target ABI.
             // Larger Structs should be passed as parameters with the @StructRet annotation.
             return getStructType(sootType);
-        } else if (isEnum(sootType)) {
-            return I32;
         } else if (isNativeObject(sootType)) {
             // NativeObjects are always returned by reference.
             return I8_PTR;
+        } else if (sootType instanceof PrimType || sootType == VoidType.v()) {
+            return getType(sootType);
         }
-        return getType(sootType);
+
+        String marshalerClassName = getMarshalerClassName(method, false);
+        return getMarshalType(marshalerClassName, sootType);
     }
     
     private static Type getParameterType(String anno, SootMethod method, int i) {
@@ -241,18 +279,20 @@ public abstract class Bro {
             if (isPassByValue(method, i) && "@Callback".equals(anno)) {
                 return getStructType(sootType);
             }
-            // For Callbacks Structs are always passed as pointers. The LLVM 
+            // For @Bridge methods Structs are always passed as pointers. The LLVM 
             // byval attribute  will be added to the parameter when making the 
             // call if @ByVal has been specified to get the desired pass by 
             // value semantics.
             return new PointerType(getStructType(sootType));
-        } else if (isEnum(sootType)) {
-            return I32;
         } else if (isNativeObject(sootType)) {
             // NativeObjects are always passed by reference.
             return I8_PTR;
+        } else if (sootType instanceof PrimType) {
+            return getType(sootType);
         }
-        return getType(sootType);
+        
+        String marshalerClassName = getMarshalerClassName(method, i, false);
+        return getMarshalType(marshalerClassName, sootType);
     }
 
     public static FunctionType getBridgeFunctionType(SootMethod method) {
@@ -421,14 +461,15 @@ public abstract class Bro {
                         throw new IllegalArgumentException("Struct type " + type + " refers to itself");
                     }
                 }
-            } else if (isEnum(type)) {
-                types.add(I32);
             } else if (isNativeObject(type)) {
                 types.add(I8_PTR);
             } else if (getter != null && hasPointerAnnotation(getter) || hasPointerAnnotation(setter)) {
                 types.add(I8_PTR);
-            } else {
+            } else if (type instanceof PrimType) {
                 types.add(getType(type));
+            } else {
+                String marshalerClassName = getter != null ? getMarshalerClassName(getter, false) : getMarshalerClassName(setter, 0, false);
+                types.add(getMarshalType(marshalerClassName, type));
             }
         }
         

@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIPageViewControllerSpineLocation implements IntValuedEnum {
+public enum UIPageViewControllerSpineLocation implements ValuedEnum {
     None(0),
     Min(1),
     Mid(2),

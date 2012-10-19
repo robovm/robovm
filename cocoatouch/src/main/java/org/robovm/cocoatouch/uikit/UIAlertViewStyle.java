@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIAlertViewStyle implements IntValuedEnum {
+public enum UIAlertViewStyle implements ValuedEnum {
     Default(0),
     SecureTextInput(1),
     PlainTextInput(2),

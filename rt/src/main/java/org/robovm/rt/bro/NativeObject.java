@@ -15,10 +15,17 @@
  */
 package org.robovm.rt.bro;
 
+import org.robovm.rt.VM;
+import org.robovm.rt.bro.annotation.Marshaler;
+import org.robovm.rt.bro.annotation.Pointer;
+import org.robovm.rt.bro.ptr.Ptr;
+import org.robovm.rt.bro.ptr.Ptr.MarshalerCallback;
+
 
 /**
  * Common base class for objects that wraps native objects.
  */
+@Marshaler(NativeObject.Marshaler.class)
 public abstract class NativeObject {
     private long handle;
 
@@ -57,5 +64,47 @@ public abstract class NativeObject {
             return false;
         }
         return true;
+    }
+    
+    public static class Marshaler {
+        @SuppressWarnings("rawtypes")
+        public static final MarshalerCallback MARSHALER_CALLBACK = new MarshalerCallback() {
+            public NativeObject toObject(Class cls, long handle) {
+                return (NativeObject) NativeObject.Marshaler.toObject(cls, handle, false);
+            }
+        };
+        
+        @SuppressWarnings({ "rawtypes", "unchecked" })
+        public static Object toObject(Class cls, long handle, boolean copy) {
+            if (handle == 0L) {
+                return null;
+            }
+            NativeObject o = (NativeObject) VM.allocateObject(cls);
+            o.setHandle(handle);
+            return o;
+        }
+
+        public static void updateObject(Object o, long handle) {
+        }
+        
+        @SuppressWarnings("rawtypes")
+        public static Ptr toPtr(Class cls, long handle, int wrapCount) {
+            return Ptr.toPtr(cls, handle, wrapCount, MARSHALER_CALLBACK);
+        }
+        
+        @SuppressWarnings("rawtypes")
+        public static void updatePtr(Ptr ptr, Class cls, long handle, int wrapCount) {
+            Ptr.updatePtr(ptr, cls, wrapCount, MARSHALER_CALLBACK);
+        }
+        
+        public static @Pointer long toNative(Object o) {
+            if (o == null) {
+                return 0L;
+            }
+            return ((NativeObject) o).getHandle();
+        }
+        
+        public static void updateNative(Object o, long handle) {
+        }
     }
 }

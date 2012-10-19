@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UITextLayoutDirection implements IntValuedEnum {
+public enum UITextLayoutDirection implements ValuedEnum {
     Right(2),
     Left(3),
     Up(4),

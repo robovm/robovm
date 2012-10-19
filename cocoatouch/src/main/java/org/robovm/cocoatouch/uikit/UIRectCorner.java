@@ -15,17 +15,23 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.Bits;
 
-public enum UIRectCorner implements IntValuedEnum {
-    TopLeft(1 << 0),
-    TopRight(1 << 1),
-    BottomLeft(1 << 2),
-    BottomRight(1 << 3),
-    AllCorners(~0);
+public final class UIRectCorner extends Bits<UIRectCorner> {
+    public static final UIRectCorner TopLeft = new UIRectCorner(1 << 0);
+    public static final UIRectCorner TopRight = new UIRectCorner(1 << 1);
+    public static final UIRectCorner BottomLeft = new UIRectCorner(1 << 2);
+    public static final UIRectCorner BottomRight = new UIRectCorner(1 << 3);
+    public static final UIRectCorner AllCorners = new UIRectCorner(0xffffffff);
 
-    private final int n;
-
-    private UIRectCorner(int n) { this.n = n; }
-    public int value() { return n; }
+    private static final UIRectCorner[] values = _values(UIRectCorner.class);
+    
+    private UIRectCorner(long value) { super(value); }
+    private UIRectCorner(long value, long mask) { super(value, mask); }
+    protected UIRectCorner wrap(long value, long mask) {
+        return new UIRectCorner(value, mask);
+    }
+    protected UIRectCorner[] values() {
+        return values;
+    }
 }

@@ -37,8 +37,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 4.0 and later.
  * </div>
  */
-@Protocol
-public interface /*<name>*/ UIPickerViewAccessibilityDelegate /*</name>*/ /*<implements>*/ extends UIPickerViewDelegate /*</implements>*/ {
+public interface /*<name>*/ UIPickerViewAccessibilityDelegate /*</name>*/ /*<implements>*/ extends UIPickerViewDelegate, ObjCProtocol /*</implements>*/ {
 
     /*<properties>*/
     

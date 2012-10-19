@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIViewContentMode implements IntValuedEnum {
+public enum UIViewContentMode implements ValuedEnum {
     ScaleToFill(0),
     ScaleAspectFit(1),
     ScaleAspectFill(2),

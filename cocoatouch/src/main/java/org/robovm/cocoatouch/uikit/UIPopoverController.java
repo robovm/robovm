@@ -149,24 +149,24 @@ public class /*<name>*/ UIPopoverController /*</name>*/
     }
     
     private static final Selector presentPopoverFromBarButtonItem$permittedArrowDirections$animated$ = Selector.register("presentPopoverFromBarButtonItem:permittedArrowDirections:animated:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_presentFromBarButtonItem(UIPopoverController __self__, Selector __cmd__, UIBarButtonItem item, EnumSet<UIPopoverArrowDirection> arrowDirections, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_presentFromBarButtonItemSuper(ObjCSuper __super__, UIPopoverController __self__, Selector __cmd__, UIBarButtonItem item, EnumSet<UIPopoverArrowDirection> arrowDirections, boolean animated);
+    @Bridge(symbol = "objc_msgSend") private native static void objc_presentFromBarButtonItem(UIPopoverController __self__, Selector __cmd__, UIBarButtonItem item, UIPopoverArrowDirection arrowDirections, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_presentFromBarButtonItemSuper(ObjCSuper __super__, UIPopoverController __self__, Selector __cmd__, UIBarButtonItem item, UIPopoverArrowDirection arrowDirections, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instm/UIPopoverController/presentPopoverFromBarButtonItem:permittedArrowDirections:animated:">- (void)presentPopoverFromBarButtonItem:(UIBarButtonItem *)item permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
      */
-    public void presentFromBarButtonItem(UIBarButtonItem item, EnumSet<UIPopoverArrowDirection> arrowDirections, boolean animated) {
+    public void presentFromBarButtonItem(UIBarButtonItem item, UIPopoverArrowDirection arrowDirections, boolean animated) {
         if (customClass) { objc_presentFromBarButtonItemSuper(getSuper(), this, presentPopoverFromBarButtonItem$permittedArrowDirections$animated$, item, arrowDirections, animated); } else { objc_presentFromBarButtonItem(this, presentPopoverFromBarButtonItem$permittedArrowDirections$animated$, item, arrowDirections, animated); }
     }
     
     private static final Selector presentPopoverFromRect$inView$permittedArrowDirections$animated$ = Selector.register("presentPopoverFromRect:inView:permittedArrowDirections:animated:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_presentFromRectInView(UIPopoverController __self__, Selector __cmd__, CGRect rect, UIView view, EnumSet<UIPopoverArrowDirection> arrowDirections, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_presentFromRectInViewSuper(ObjCSuper __super__, UIPopoverController __self__, Selector __cmd__, CGRect rect, UIView view, EnumSet<UIPopoverArrowDirection> arrowDirections, boolean animated);
+    @Bridge(symbol = "objc_msgSend") private native static void objc_presentFromRectInView(UIPopoverController __self__, Selector __cmd__, CGRect rect, UIView view, UIPopoverArrowDirection arrowDirections, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_presentFromRectInViewSuper(ObjCSuper __super__, UIPopoverController __self__, Selector __cmd__, CGRect rect, UIView view, UIPopoverArrowDirection arrowDirections, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instm/UIPopoverController/presentPopoverFromRect:inView:permittedArrowDirections:animated:">- (void)presentPopoverFromRect:(CGRect)rect inView:(UIView *)view permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
      */
-    public void presentFromRectInView(CGRect rect, UIView view, EnumSet<UIPopoverArrowDirection> arrowDirections, boolean animated) {
+    public void presentFromRectInView(CGRect rect, UIView view, UIPopoverArrowDirection arrowDirections, boolean animated) {
         if (customClass) { objc_presentFromRectInViewSuper(getSuper(), this, presentPopoverFromRect$inView$permittedArrowDirections$animated$, rect, view, arrowDirections, animated); } else { objc_presentFromRectInView(this, presentPopoverFromRect$inView$permittedArrowDirections$animated$, rect, view, arrowDirections, animated); }
     }
     

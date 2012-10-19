@@ -37,8 +37,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 5.0 and later.
  * </div>
  */
-@Protocol
-public interface /*<name>*/ UIAppearanceContainer /*</name>*/ /*<implements>*/ /*</implements>*/ {
+public interface /*<name>*/ UIAppearanceContainer /*</name>*/ /*<implements>*/ extends ObjCProtocol /*</implements>*/ {
 
     /*<properties>*/
     

@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UITextFieldViewMode implements IntValuedEnum {
+public enum UITextFieldViewMode implements ValuedEnum {
     Never(0),
     WhileEditing(1),
     UnlessEditing(2),

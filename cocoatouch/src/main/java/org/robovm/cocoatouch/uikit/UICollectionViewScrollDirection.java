@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UICollectionViewScrollDirection implements IntValuedEnum {
+public enum UICollectionViewScrollDirection implements ValuedEnum {
     Vertical(0),
     Horizontal(1);
 

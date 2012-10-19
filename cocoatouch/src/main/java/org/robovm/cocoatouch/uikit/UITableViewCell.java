@@ -253,13 +253,13 @@ public class /*<name>*/ UITableViewCell /*</name>*/
     /*<methods>*/
     
     private static final Selector didTransitionToState$ = Selector.register("didTransitionToState:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_didTransitionToState(UITableViewCell __self__, Selector __cmd__, EnumSet<UITableViewCellStateMask> state);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_didTransitionToStateSuper(ObjCSuper __super__, UITableViewCell __self__, Selector __cmd__, EnumSet<UITableViewCellStateMask> state);
+    @Bridge(symbol = "objc_msgSend") private native static void objc_didTransitionToState(UITableViewCell __self__, Selector __cmd__, UITableViewCellStateMask state);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_didTransitionToStateSuper(ObjCSuper __super__, UITableViewCell __self__, Selector __cmd__, UITableViewCellStateMask state);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewCell/didTransitionToState:">- (void)didTransitionToState:(UITableViewCellStateMask)state</a>
      * @since Available in iOS 3.0 and later.
      */
-    public void didTransitionToState(EnumSet<UITableViewCellStateMask> state) {
+    public void didTransitionToState(UITableViewCellStateMask state) {
         if (customClass) { objc_didTransitionToStateSuper(getSuper(), this, didTransitionToState$, state); } else { objc_didTransitionToState(this, didTransitionToState$, state); }
     }
     
@@ -308,13 +308,13 @@ public class /*<name>*/ UITableViewCell /*</name>*/
     }
     
     private static final Selector willTransitionToState$ = Selector.register("willTransitionToState:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_willTransitionToState(UITableViewCell __self__, Selector __cmd__, EnumSet<UITableViewCellStateMask> state);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_willTransitionToStateSuper(ObjCSuper __super__, UITableViewCell __self__, Selector __cmd__, EnumSet<UITableViewCellStateMask> state);
+    @Bridge(symbol = "objc_msgSend") private native static void objc_willTransitionToState(UITableViewCell __self__, Selector __cmd__, UITableViewCellStateMask state);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_willTransitionToStateSuper(ObjCSuper __super__, UITableViewCell __self__, Selector __cmd__, UITableViewCellStateMask state);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewCell/willTransitionToState:">- (void)willTransitionToState:(UITableViewCellStateMask)state</a>
      * @since Available in iOS 3.0 and later.
      */
-    public void willTransitionToState(EnumSet<UITableViewCellStateMask> state) {
+    public void willTransitionToState(UITableViewCellStateMask state) {
         if (customClass) { objc_willTransitionToStateSuper(getSuper(), this, willTransitionToState$, state); } else { objc_willTransitionToState(this, willTransitionToState$, state); }
     }
     /*</methods>*/

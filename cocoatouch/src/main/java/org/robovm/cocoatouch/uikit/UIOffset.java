@@ -21,7 +21,7 @@ import org.robovm.rt.bro.annotation.StructMember;
 /**
  * 
  */
-public class UIOffset extends Struct<UIOffset> {
+public final class UIOffset extends Struct<UIOffset> {
     public static final UIOffset Zero = new UIOffset();
 
     public UIOffset() {

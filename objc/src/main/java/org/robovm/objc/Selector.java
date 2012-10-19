@@ -18,25 +18,19 @@ package org.robovm.objc;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.robovm.rt.bro.Struct;
-import org.robovm.rt.bro.annotation.Pointer;
-import org.robovm.rt.bro.annotation.StructMember;
+import org.robovm.rt.bro.NativeObject;
 import org.robovm.rt.bro.ptr.BytePtr;
 
 /**
- * Represents an Objective-C selector. This is mapped as an opaque {@link Struct}. The actual 
- * members of the internal struct are unknown.
+ * Represents an Objective-C selector.
  */
-public class Selector extends Struct<Selector> {
+public class Selector extends NativeObject {
 
     private static final Map<String, Selector> selectors = new HashMap<String, Selector>();
 
     private Selector() {
     }
 
-    @StructMember(0)
-    private native @Pointer long value();
-    
     public String getName() {
         return ObjCRuntime.sel_getName(this).toStringAsciiZ();
     }

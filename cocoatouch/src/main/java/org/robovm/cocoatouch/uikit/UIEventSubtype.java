@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIEventSubtype implements IntValuedEnum {
+public enum UIEventSubtype implements ValuedEnum {
     None(0),
     MotionShake(1),
     RemoteControlPlay(100),

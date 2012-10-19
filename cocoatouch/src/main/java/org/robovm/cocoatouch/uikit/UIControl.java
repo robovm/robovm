@@ -123,13 +123,13 @@ public class /*<name>*/ UIControl /*</name>*/
     /*<methods>*/
     
     private static final Selector addTarget$action$forControlEvents$ = Selector.register("addTarget:action:forControlEvents:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_addTarget(UIControl __self__, Selector __cmd__, NSObject target, Selector action, EnumSet<UIControlEvent> controlEvents);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_addTargetSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, NSObject target, Selector action, EnumSet<UIControlEvent> controlEvents);
+    @Bridge(symbol = "objc_msgSend") private native static void objc_addTarget(UIControl __self__, Selector __cmd__, NSObject target, Selector action, UIControlEvents controlEvents);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_addTargetSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, NSObject target, Selector action, UIControlEvents controlEvents);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIControl/addTarget:action:forControlEvents:">- (void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents</a>
      * @since Available in iOS 2.0 and later.
      */
-    public void addTarget(NSObject target, Selector action, EnumSet<UIControlEvent> controlEvents) {
+    public void addTarget(NSObject target, Selector action, UIControlEvents controlEvents) {
         if (customClass) { objc_addTargetSuper(getSuper(), this, addTarget$action$forControlEvents$, target, action, controlEvents); } else { objc_addTarget(this, addTarget$action$forControlEvents$, target, action, controlEvents); }
     }
     
@@ -178,24 +178,24 @@ public class /*<name>*/ UIControl /*</name>*/
     }
     
     private static final Selector actionsForTarget$forControlEvent$ = Selector.register("actionsForTarget:forControlEvent:");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getActions(UIControl __self__, Selector __cmd__, NSObject target, UIControlEvent controlEvent);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getActionsSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, NSObject target, UIControlEvent controlEvent);
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getActions(UIControl __self__, Selector __cmd__, NSObject target, UIControlEvents controlEvent);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getActionsSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, NSObject target, UIControlEvents controlEvent);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIControl/actionsForTarget:forControlEvent:">- (NSArray *)actionsForTarget:(id)target forControlEvent:(UIControlEvents)controlEvent</a>
      * @since Available in iOS 2.0 and later.
      */
-    public NSArray getActions(NSObject target, UIControlEvent controlEvent) {
+    public NSArray getActions(NSObject target, UIControlEvents controlEvent) {
         if (customClass) { return objc_getActionsSuper(getSuper(), this, actionsForTarget$forControlEvent$, target, controlEvent); } else { return objc_getActions(this, actionsForTarget$forControlEvent$, target, controlEvent); }
     }
     
     private static final Selector allControlEvents = Selector.register("allControlEvents");
-    @Bridge(symbol = "objc_msgSend") private native static EnumSet<UIControlEvent> objc_getAllControlEvents(UIControl __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static EnumSet<UIControlEvent> objc_getAllControlEventsSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend") private native static UIControlEvents objc_getAllControlEvents(UIControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIControlEvents objc_getAllControlEventsSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIControl/allControlEvents">- (UIControlEvents)allControlEvents</a>
      * @since Available in iOS 2.0 and later.
      */
-    public EnumSet<UIControlEvent> getAllControlEvents() {
+    public UIControlEvents getAllControlEvents() {
         if (customClass) { return objc_getAllControlEventsSuper(getSuper(), this, allControlEvents); } else { return objc_getAllControlEvents(this, allControlEvents); }
     }
     
@@ -211,13 +211,13 @@ public class /*<name>*/ UIControl /*</name>*/
     }
     
     private static final Selector removeTarget$action$forControlEvents$ = Selector.register("removeTarget:action:forControlEvents:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_removeTarget(UIControl __self__, Selector __cmd__, NSObject target, Selector action, EnumSet<UIControlEvent> controlEvents);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_removeTargetSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, NSObject target, Selector action, EnumSet<UIControlEvent> controlEvents);
+    @Bridge(symbol = "objc_msgSend") private native static void objc_removeTarget(UIControl __self__, Selector __cmd__, NSObject target, Selector action, UIControlEvents controlEvents);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_removeTargetSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, NSObject target, Selector action, UIControlEvents controlEvents);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIControl/removeTarget:action:forControlEvents:">- (void)removeTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents</a>
      * @since Available in iOS 2.0 and later.
      */
-    public void removeTarget(NSObject target, Selector action, EnumSet<UIControlEvent> controlEvents) {
+    public void removeTarget(NSObject target, Selector action, UIControlEvents controlEvents) {
         if (customClass) { objc_removeTargetSuper(getSuper(), this, removeTarget$action$forControlEvents$, target, action, controlEvents); } else { objc_removeTarget(this, removeTarget$action$forControlEvents$, target, action, controlEvents); }
     }
     
@@ -233,13 +233,13 @@ public class /*<name>*/ UIControl /*</name>*/
     }
     
     private static final Selector sendActionsForControlEvents$ = Selector.register("sendActionsForControlEvents:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_sendControlEventsActions(UIControl __self__, Selector __cmd__, EnumSet<UIControlEvent> controlEvents);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_sendControlEventsActionsSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, EnumSet<UIControlEvent> controlEvents);
+    @Bridge(symbol = "objc_msgSend") private native static void objc_sendControlEventsActions(UIControl __self__, Selector __cmd__, UIControlEvents controlEvents);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_sendControlEventsActionsSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, UIControlEvents controlEvents);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIControl/sendActionsForControlEvents:">- (void)sendActionsForControlEvents:(UIControlEvents)controlEvents</a>
      * @since Available in iOS 2.0 and later.
      */
-    public void sendControlEventsActions(EnumSet<UIControlEvent> controlEvents) {
+    public void sendControlEventsActions(UIControlEvents controlEvents) {
         if (customClass) { objc_sendControlEventsActionsSuper(getSuper(), this, sendActionsForControlEvents$, controlEvents); } else { objc_sendControlEventsActions(this, sendActionsForControlEvents$, controlEvents); }
     }
     /*</methods>*/

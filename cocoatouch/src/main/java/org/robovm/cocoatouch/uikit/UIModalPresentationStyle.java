@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIModalPresentationStyle implements IntValuedEnum {
+public enum UIModalPresentationStyle implements ValuedEnum {
     FullScreen(0),
     PageSheet(1),
     FormSheet(2),

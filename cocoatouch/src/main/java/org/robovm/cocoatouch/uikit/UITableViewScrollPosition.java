@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UITableViewScrollPosition implements IntValuedEnum {
+public enum UITableViewScrollPosition implements ValuedEnum {
     None(0),
     Top(1),
     Middle(2),

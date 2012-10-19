@@ -36,8 +36,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 6.0 and later.
  * </div>
  */
-@Protocol
-public interface /*<name>*/ UIDataSourceModelAssociation /*</name>*/ /*<implements>*/ /*</implements>*/ {
+public interface /*<name>*/ UIDataSourceModelAssociation /*</name>*/ /*<implements>*/ extends ObjCProtocol /*</implements>*/ {
 
     /*<properties>*/
     

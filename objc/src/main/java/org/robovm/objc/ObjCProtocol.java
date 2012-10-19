@@ -13,20 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.cocoatouch.uikit;
+package org.robovm.objc;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.annotation.Marshaler;
 
-public enum UIDataDetectorType implements IntValuedEnum {
-    PhoneNumber(1 << 0),
-    Link(1 << 1),
-    Address(1 << 2),
-    CalendarEvent(1 << 3),
-    None(0),
-    All(0xFFFFFFFF);
+/**
+ *
+ */
+@Marshaler(ObjCObject.Marshaler.class)
+public interface ObjCProtocol {
 
-    private final int n;
-
-    private UIDataDetectorType(int n) { this.n = n; }
-    public int value() { return n; }
 }

@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIButtonType implements IntValuedEnum {
+public enum UIButtonType implements ValuedEnum {
     Custom(0),
     RoundedRect(1),
     DetailDisclosure(2),

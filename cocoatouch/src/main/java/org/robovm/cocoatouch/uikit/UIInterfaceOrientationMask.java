@@ -15,19 +15,25 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.Bits;
 
-public enum UIInterfaceOrientationMask implements IntValuedEnum {
-    Portrait(1 << UIInterfaceOrientation.Portrait.value()),
-    LandscapeLeft(1 << UIInterfaceOrientation.LandscapeLeft.value()),
-    LandscapeRight(1 << UIInterfaceOrientation.LandscapeRight.value()),
-    PortraitUpsideDown(1 << UIInterfaceOrientation.PortraitUpsideDown.value()),
-    Landscape(LandscapeLeft.value() | LandscapeRight.value()),
-    All(Portrait.value() | LandscapeLeft.value() | LandscapeRight.value() | PortraitUpsideDown.value()),
-    AllButUpsideDown(Portrait.value() | LandscapeLeft.value() | LandscapeRight.value());
+public final class UIInterfaceOrientationMask extends Bits<UIInterfaceOrientationMask> {
+    public static final UIInterfaceOrientationMask Portrait = new UIInterfaceOrientationMask(1 << UIInterfaceOrientation.Portrait.value());
+    public static final UIInterfaceOrientationMask LandscapeLeft = new UIInterfaceOrientationMask(1 << UIInterfaceOrientation.LandscapeLeft.value());
+    public static final UIInterfaceOrientationMask LandscapeRight = new UIInterfaceOrientationMask(1 << UIInterfaceOrientation.LandscapeRight.value());
+    public static final UIInterfaceOrientationMask PortraitUpsideDown = new UIInterfaceOrientationMask(1 << UIInterfaceOrientation.PortraitUpsideDown.value());
+    public static final UIInterfaceOrientationMask Landscape = new UIInterfaceOrientationMask(LandscapeLeft.value() | LandscapeRight.value());
+    public static final UIInterfaceOrientationMask All = new UIInterfaceOrientationMask(Portrait.value() | LandscapeLeft.value() | LandscapeRight.value() | PortraitUpsideDown.value());
+    public static final UIInterfaceOrientationMask AllButUpsideDown = new UIInterfaceOrientationMask(Portrait.value() | LandscapeLeft.value() | LandscapeRight.value());
 
-    private final int n;
-
-    private UIInterfaceOrientationMask(int n) { this.n = n; }
-    public int value() { return n; }
+    private static final UIInterfaceOrientationMask[] values = _values(UIInterfaceOrientationMask.class);
+    
+    private UIInterfaceOrientationMask(long value) { super(value); }
+    private UIInterfaceOrientationMask(long value, long mask) { super(value, mask); }
+    protected UIInterfaceOrientationMask wrap(long value, long mask) {
+        return new UIInterfaceOrientationMask(value, mask);
+    }
+    protected UIInterfaceOrientationMask[] values() {
+        return values;
+    }
 }

@@ -15,19 +15,25 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.Bits;
 
-public enum UICollectionViewScrollPosition implements IntValuedEnum {
-    None(0),
-    Top(1 << 0),
-    CenteredVertically(1 << 1),
-    Bottom(1 << 2),
-    Left(1 << 3),
-    CenteredHorizontally(1 << 4),
-    Right(1 << 5);
+public final class UICollectionViewScrollPosition extends Bits<UICollectionViewScrollPosition> {
+	public static final UICollectionViewScrollPosition None = new UICollectionViewScrollPosition(0);
+	public static final UICollectionViewScrollPosition Top = new UICollectionViewScrollPosition(1 << 0);
+	public static final UICollectionViewScrollPosition CenteredVertically = new UICollectionViewScrollPosition(1 << 1);
+	public static final UICollectionViewScrollPosition Bottom = new UICollectionViewScrollPosition(1 << 2);
+	public static final UICollectionViewScrollPosition Left = new UICollectionViewScrollPosition(1 << 3);
+	public static final UICollectionViewScrollPosition CenteredHorizontally = new UICollectionViewScrollPosition(1 << 4);
+	public static final UICollectionViewScrollPosition Right = new UICollectionViewScrollPosition(1 << 5);
 
-    private final int n;
-
-    private UICollectionViewScrollPosition(int n) { this.n = n; }
-    public int value() { return n; }
+    private static final UICollectionViewScrollPosition[] values = _values(UICollectionViewScrollPosition.class);
+    
+    private UICollectionViewScrollPosition(long value) { super(value); }
+    private UICollectionViewScrollPosition(long value, long mask) { super(value, mask); }
+    protected UICollectionViewScrollPosition wrap(long value, long mask) {
+        return new UICollectionViewScrollPosition(value, mask);
+    }
+    protected UICollectionViewScrollPosition[] values() {
+        return values;
+    }
 }

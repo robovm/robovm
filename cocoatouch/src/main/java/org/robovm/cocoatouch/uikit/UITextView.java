@@ -113,12 +113,12 @@ public class /*<name>*/ UITextView /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/dataDetectorTypes">@property(nonatomic) UIDataDetectorTypes dataDetectorTypes</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("dataDetectorTypes") public native EnumSet<UIDataDetectorType> getDataDetectorTypes();
+    @Bind("dataDetectorTypes") public native UIDataDetectorTypes getDataDetectorTypes();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/dataDetectorTypes">@property(nonatomic) UIDataDetectorTypes dataDetectorTypes</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setDataDetectorTypes:") public native void setDataDetectorTypes(EnumSet<UIDataDetectorType> v);
+    @Bind("setDataDetectorTypes:") public native void setDataDetectorTypes(UIDataDetectorTypes v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/delegate">@property(nonatomic, assign) id&amp;lt;UITextViewDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.

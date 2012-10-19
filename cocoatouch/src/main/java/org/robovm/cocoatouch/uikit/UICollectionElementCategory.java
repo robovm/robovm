@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UICollectionElementCategory implements IntValuedEnum {
+public enum UICollectionElementCategory implements ValuedEnum {
     Cell(0),
     SupplementaryView(1),
     DecorationView(2);

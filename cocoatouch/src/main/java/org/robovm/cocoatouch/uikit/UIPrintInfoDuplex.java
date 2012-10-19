@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIPrintInfoDuplex implements IntValuedEnum {
+public enum UIPrintInfoDuplex implements ValuedEnum {
     None(0),
     LongEdge(1),
     ShortEdge(2);

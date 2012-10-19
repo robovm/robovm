@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIScrollViewIndicatorStyle implements IntValuedEnum {
+public enum UIScrollViewIndicatorStyle implements ValuedEnum {
     Default(0),
     Black(1),
     White(2);

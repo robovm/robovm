@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIImagePickerControllerCameraDevice implements IntValuedEnum {
+public enum UIImagePickerControllerCameraDevice implements ValuedEnum {
     Rear(0),
     Front(1);
 

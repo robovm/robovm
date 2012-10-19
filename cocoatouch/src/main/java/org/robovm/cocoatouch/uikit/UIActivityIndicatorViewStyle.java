@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIActivityIndicatorViewStyle implements IntValuedEnum {
+public enum UIActivityIndicatorViewStyle implements ValuedEnum {
     WhiteLarge(0),
     White(1),
     Gray(2);

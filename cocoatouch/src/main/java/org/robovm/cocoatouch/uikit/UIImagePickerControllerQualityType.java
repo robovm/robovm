@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIImagePickerControllerQualityType implements IntValuedEnum {
+public enum UIImagePickerControllerQualityType implements ValuedEnum {
     High(0),
     Medium(1),
     Low(2),

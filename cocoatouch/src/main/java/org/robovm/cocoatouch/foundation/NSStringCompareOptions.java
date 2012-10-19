@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.foundation;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum NSStringCompareOptions implements IntValuedEnum {
+public enum NSStringCompareOptions implements ValuedEnum {
     CaseInsensitiveSearch(1),
     LiteralSearch(2),
     BackwardsSearch(4),

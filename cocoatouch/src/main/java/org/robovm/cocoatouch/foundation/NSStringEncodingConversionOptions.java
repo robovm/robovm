@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.foundation;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum NSStringEncodingConversionOptions implements IntValuedEnum {
+public enum NSStringEncodingConversionOptions implements ValuedEnum {
     AllowLossy(1),
     ExternalRepresentation(2);
 

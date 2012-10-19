@@ -21,15 +21,17 @@ import org.robovm.rt.bro.annotation.StructMember;
 /**
  * 
  */
-public class UIEdgeInsets extends Struct<UIEdgeInsets> {
+public final class UIEdgeInsets extends Struct<UIEdgeInsets> {
     public static final UIEdgeInsets Zero = new UIEdgeInsets();
 
     public UIEdgeInsets() {
     }
     
-    public UIEdgeInsets(float top, float left) {
+    public UIEdgeInsets(float top, float left, float bottom, float right) {
         top(top);
         left(left);
+        bottom(bottom);
+        right(right);
     }
     
     @StructMember(0)

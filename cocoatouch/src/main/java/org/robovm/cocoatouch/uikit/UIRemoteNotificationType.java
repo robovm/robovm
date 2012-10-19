@@ -15,17 +15,23 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.Bits;
 
-public enum UIRemoteNotificationType implements IntValuedEnum {
-    None(0),
-    Badge(1 << 0),
-    Sound(1 << 1),
-    Alert(1 << 2),
-    NewsstandContentAvailability(1 << 3);
+public final class UIRemoteNotificationType extends Bits<UIRemoteNotificationType> {
+    public static final UIRemoteNotificationType None = new UIRemoteNotificationType(0);
+    public static final UIRemoteNotificationType Badge = new UIRemoteNotificationType(1 << 0);
+    public static final UIRemoteNotificationType Sound = new UIRemoteNotificationType(1 << 1);
+    public static final UIRemoteNotificationType Alert = new UIRemoteNotificationType(1 << 2);
+    public static final UIRemoteNotificationType NewsstandContentAvailability = new UIRemoteNotificationType(1 << 3);
 
-    private final int n;
-
-    private UIRemoteNotificationType(int n) { this.n = n; }
-    public int value() { return n; }
+    private static final UIRemoteNotificationType[] values = _values(UIRemoteNotificationType.class);
+    
+    private UIRemoteNotificationType(long value) { super(value); }
+    private UIRemoteNotificationType(long value, long mask) { super(value, mask); }
+    protected UIRemoteNotificationType wrap(long value, long mask) {
+        return new UIRemoteNotificationType(value, mask);
+    }
+    protected UIRemoteNotificationType[] values() {
+        return values;
+    }
 }

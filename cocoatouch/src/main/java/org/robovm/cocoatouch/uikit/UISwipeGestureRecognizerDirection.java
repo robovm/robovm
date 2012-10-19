@@ -15,16 +15,22 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.Bits;
 
-public enum UISwipeGestureRecognizerDirection implements IntValuedEnum {
-    Right(1 << 0),
-    Left(1 << 1),
-    Up(1 << 2),
-    Down(1 << 3);
+public final class UISwipeGestureRecognizerDirection extends Bits<UISwipeGestureRecognizerDirection> {
+    public static final UISwipeGestureRecognizerDirection Right = new UISwipeGestureRecognizerDirection(1 << 0);
+    public static final UISwipeGestureRecognizerDirection Left = new UISwipeGestureRecognizerDirection(1 << 1);
+    public static final UISwipeGestureRecognizerDirection Up = new UISwipeGestureRecognizerDirection(1 << 2);
+    public static final UISwipeGestureRecognizerDirection Down = new UISwipeGestureRecognizerDirection(1 << 3);
 
-    private final int n;
-
-    private UISwipeGestureRecognizerDirection(int n) { this.n = n; }
-    public int value() { return n; }
+    private static final UISwipeGestureRecognizerDirection[] values = _values(UISwipeGestureRecognizerDirection.class);
+    
+    private UISwipeGestureRecognizerDirection(long value) { super(value); }
+    private UISwipeGestureRecognizerDirection(long value, long mask) { super(value, mask); }
+    protected UISwipeGestureRecognizerDirection wrap(long value, long mask) {
+        return new UISwipeGestureRecognizerDirection(value, mask);
+    }
+    protected UISwipeGestureRecognizerDirection[] values() {
+        return values;
+    }
 }

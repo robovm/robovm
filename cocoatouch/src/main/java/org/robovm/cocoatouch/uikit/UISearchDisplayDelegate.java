@@ -37,8 +37,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 3.0 and later.
  * </div>
  */
-@Protocol
-public interface /*<name>*/ UISearchDisplayDelegate /*</name>*/ /*<implements>*/ /*</implements>*/ {
+public interface /*<name>*/ UISearchDisplayDelegate /*</name>*/ /*<implements>*/ extends ObjCProtocol /*</implements>*/ {
 
     /*<properties>*/
     

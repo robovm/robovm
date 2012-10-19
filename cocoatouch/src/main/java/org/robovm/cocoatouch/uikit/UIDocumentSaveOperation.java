@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIDocumentSaveOperation implements IntValuedEnum {
+public enum UIDocumentSaveOperation implements ValuedEnum {
     Creating(0),
     Overwriting(1);
 

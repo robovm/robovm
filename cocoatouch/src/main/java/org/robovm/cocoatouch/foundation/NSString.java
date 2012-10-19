@@ -20,7 +20,6 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
-import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/

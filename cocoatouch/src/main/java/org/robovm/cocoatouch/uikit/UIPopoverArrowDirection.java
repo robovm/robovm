@@ -15,18 +15,24 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.Bits;
 
-public enum UIPopoverArrowDirection implements IntValuedEnum {
-    Up(1 << 0),
-    Down(1 << 1),
-    Left(1 << 2),
-    Right(1 << 3),
-    Any(Up.value() | Down.value() | Left.value() | Right.value()),
-    Unknown(0xFFFFFFFF);
+public final class UIPopoverArrowDirection extends Bits<UIPopoverArrowDirection> {
+    public static final UIPopoverArrowDirection Up = new UIPopoverArrowDirection(1 << 0);
+    public static final UIPopoverArrowDirection Down = new UIPopoverArrowDirection(1 << 1);
+    public static final UIPopoverArrowDirection Left = new UIPopoverArrowDirection(1 << 2);
+    public static final UIPopoverArrowDirection Right = new UIPopoverArrowDirection(1 << 3);
+    public static final UIPopoverArrowDirection Any = new UIPopoverArrowDirection(Up.value() | Down.value() | Left.value() | Right.value());
+    public static final UIPopoverArrowDirection Unknown = new UIPopoverArrowDirection(0xFFFFFFFF);
 
-    private final int n;
-
-    private UIPopoverArrowDirection(int n) { this.n = n; }
-    public int value() { return n; }
+    private static final UIPopoverArrowDirection[] values = _values(UIPopoverArrowDirection.class);
+    
+    private UIPopoverArrowDirection(long value) { super(value); }
+    private UIPopoverArrowDirection(long value, long mask) { super(value, mask); }
+    protected UIPopoverArrowDirection wrap(long value, long mask) {
+        return new UIPopoverArrowDirection(value, mask);
+    }
+    protected UIPopoverArrowDirection[] values() {
+        return values;
+    }
 }

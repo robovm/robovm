@@ -15,18 +15,24 @@
  */
 package org.robovm.cocoatouch.foundation;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.Bits;
 
-public enum NSDataWritingOptions implements IntValuedEnum {
-    Atomic(1 << 0),
-    FileProtectionNone(0x10000000),
-    FileProtectionComplete(0x20000000),
-    FileProtectionCompleteUnlessOpen(0x30000000),
-    FileProtectionCompleteUntilFirstUserAuthentication(0x40000000),
-    FileProtectionMask(0xf0000000);
+public final class NSDataWritingOptions extends Bits<NSDataWritingOptions> {
+	public static final NSDataWritingOptions Atomic = new NSDataWritingOptions(1 << 0);
+	public static final NSDataWritingOptions FileProtectionNone = new NSDataWritingOptions(0x10000000, 0xf0000000);
+	public static final NSDataWritingOptions FileProtectionComplete = new NSDataWritingOptions(0x20000000, 0xf0000000);
+	public static final NSDataWritingOptions FileProtectionCompleteUnlessOpen = new NSDataWritingOptions(0x30000000, 0xf0000000);
+	public static final NSDataWritingOptions FileProtectionCompleteUntilFirstUserAuthentication = new NSDataWritingOptions(0x40000000, 0xf0000000);
+//	public static final NSDataWritingOptions FileProtectionMask = new NSDataWritingOptions(0xf0000000);
 
-    private final int n;
-
-    private NSDataWritingOptions(int n) { this.n = n; }
-    public int value() { return n; }
+    private static final NSDataWritingOptions[] values = _values(NSDataWritingOptions.class);
+    
+    private NSDataWritingOptions(long value) { super(value); }
+    private NSDataWritingOptions(long value, long mask) { super(value, mask); }
+    protected NSDataWritingOptions wrap(long value, long mask) {
+        return new NSDataWritingOptions(value, mask);
+    }
+    protected NSDataWritingOptions[] values() {
+        return values;
+    }
 }

@@ -193,12 +193,12 @@ public class /*<name>*/ UIBezierPath /*</name>*/
     }
     
     private static final Selector bezierPathWithRoundedRect$byRoundingCorners$cornerRadii$ = Selector.register("bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:");
-    @Bridge(symbol = "objc_msgSend") private native static UIBezierPath objc_fromRoundedRect(ObjCClass __self__, Selector __cmd__, CGRect rect, EnumSet<UIRectCorner> corners, CGSize cornerRadii);
+    @Bridge(symbol = "objc_msgSend") private native static UIBezierPath objc_fromRoundedRect(ObjCClass __self__, Selector __cmd__, CGRect rect, UIRectCorner corners, CGSize cornerRadii);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/clm/UIBezierPath/bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:">+ (UIBezierPath *)bezierPathWithRoundedRect:(CGRect)rect byRoundingCorners:(UIRectCorner)corners cornerRadii:(CGSize)cornerRadii</a>
      * @since Available in iOS 3.2 and later.
      */
-    public static UIBezierPath fromRoundedRect(CGRect rect, EnumSet<UIRectCorner> corners, CGSize cornerRadii) {
+    public static UIBezierPath fromRoundedRect(CGRect rect, UIRectCorner corners, CGSize cornerRadii) {
         return objc_fromRoundedRect(objCClass, bezierPathWithRoundedRect$byRoundingCorners$cornerRadii$, rect, corners, cornerRadii);
     }
     

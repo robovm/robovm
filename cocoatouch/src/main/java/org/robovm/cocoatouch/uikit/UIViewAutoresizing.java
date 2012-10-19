@@ -15,19 +15,25 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.Bits;
 
-public enum UIViewAutoresizing implements IntValuedEnum {
-    None(0),
-    FlexibleLeftMargin(1 << 0),
-    FlexibleWidth(1 << 1),
-    FlexibleRightMargin(1 << 2),
-    FlexibleTopMargin(1 << 3),
-    FlexibleHeight(1 << 4),
-    FlexibleBottomMargin(1 << 5);
+public final class UIViewAutoresizing extends Bits<UIViewAutoresizing> {
+    public static final UIViewAutoresizing None = new UIViewAutoresizing(0);
+    public static final UIViewAutoresizing FlexibleLeftMargin = new UIViewAutoresizing(1 << 0);
+    public static final UIViewAutoresizing FlexibleWidth = new UIViewAutoresizing(1 << 1);
+    public static final UIViewAutoresizing FlexibleRightMargin = new UIViewAutoresizing(1 << 2);
+    public static final UIViewAutoresizing FlexibleTopMargin = new UIViewAutoresizing(1 << 3);
+    public static final UIViewAutoresizing FlexibleHeight = new UIViewAutoresizing(1 << 4);
+    public static final UIViewAutoresizing FlexibleBottomMargin = new UIViewAutoresizing(1 << 5);
 
-    private final int n;
-
-    private UIViewAutoresizing(int n) { this.n = n; }
-    public int value() { return n; }
+    private static final UIViewAutoresizing[] values = _values(UIViewAutoresizing.class);
+    
+    private UIViewAutoresizing(long value) { super(value); }
+    private UIViewAutoresizing(long value, long mask) { super(value, mask); }
+    protected UIViewAutoresizing wrap(long value, long mask) {
+        return new UIViewAutoresizing(value, mask);
+    }
+    protected UIViewAutoresizing[] values() {
+        return values;
+    }
 }

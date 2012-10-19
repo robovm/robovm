@@ -15,15 +15,21 @@
  */
 package org.robovm.cocoatouch.foundation;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.Bits;
 
-public enum NSDataReadingOptions implements IntValuedEnum {
-    MappedIfSafe(1 << 0),
-    Uncached(1 << 1),
-    MappedAlways(1 << 3);
+public final class NSDataReadingOptions extends Bits<NSDataReadingOptions> {
+    public static final NSDataReadingOptions MappedIfSafe = new NSDataReadingOptions(1 << 0);
+    public static final NSDataReadingOptions Uncached = new NSDataReadingOptions(1 << 1);
+    public static final NSDataReadingOptions MappedAlways = new NSDataReadingOptions(1 << 3);
 
-    private final int n;
-
-    private NSDataReadingOptions(int n) { this.n = n; }
-    public int value() { return n; }
+    private static final NSDataReadingOptions[] values = _values(NSDataReadingOptions.class);
+    
+    private NSDataReadingOptions(long value) { super(value); }
+    private NSDataReadingOptions(long value, long mask) { super(value, mask); }
+    protected NSDataReadingOptions wrap(long value, long mask) {
+        return new NSDataReadingOptions(value, mask);
+    }
+    protected NSDataReadingOptions[] values() {
+        return values;
+    }
 }

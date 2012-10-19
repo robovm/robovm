@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIPrintInfoOrientation implements IntValuedEnum {
+public enum UIPrintInfoOrientation implements ValuedEnum {
     Portrait(0),
     Landscape(1);
 

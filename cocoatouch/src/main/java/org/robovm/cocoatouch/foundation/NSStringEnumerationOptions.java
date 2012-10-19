@@ -15,20 +15,26 @@
  */
 package org.robovm.cocoatouch.foundation;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.Bits;
 
-public enum NSStringEnumerationOptions implements IntValuedEnum {
-    ByLines(0),
-    ByParagraphs(1),
-    ByComposedCharacterSequences(2),
-    ByWords(3),
-    BySentences(4),
-    Reverse(1 << 8),
-    SubstringNotRequired(1 << 9),
-    Localized(1 << 10);
+public final class NSStringEnumerationOptions extends Bits<NSStringEnumerationOptions> {
+    public static final NSStringEnumerationOptions ByLines = new NSStringEnumerationOptions(0, 0xff);
+    public static final NSStringEnumerationOptions ByParagraphs = new NSStringEnumerationOptions(1, 0xff);
+    public static final NSStringEnumerationOptions ByComposedCharacterSequences = new NSStringEnumerationOptions(2, 0xff);
+    public static final NSStringEnumerationOptions ByWords = new NSStringEnumerationOptions(3, 0xff);
+    public static final NSStringEnumerationOptions BySentences = new NSStringEnumerationOptions(4, 0xff);
+    public static final NSStringEnumerationOptions Reverse = new NSStringEnumerationOptions(1 << 8);
+    public static final NSStringEnumerationOptions SubstringNotRequired = new NSStringEnumerationOptions(1 << 9);
+    public static final NSStringEnumerationOptions Localized = new NSStringEnumerationOptions(1 << 10);
 
-    private final int n;
-
-    private NSStringEnumerationOptions(int n) { this.n = n; }
-    public int value() { return n; }
+    private static final NSStringEnumerationOptions[] values = _values(NSStringEnumerationOptions.class);
+    
+    private NSStringEnumerationOptions(long value) { super(value); }
+    private NSStringEnumerationOptions(long value, long mask) { super(value, mask); }
+    protected NSStringEnumerationOptions wrap(long value, long mask) {
+        return new NSStringEnumerationOptions(value, mask);
+    }
+    protected NSStringEnumerationOptions[] values() {
+        return values;
+    }
 }

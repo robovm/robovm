@@ -29,9 +29,6 @@ imports:
 typedefs:
     UIAccelerationValue: double
     UIBackgroundTaskIdentifier: int
-    UIControlEvents: UIControlEvent
-    UIViewAnimationOptions: UIViewAnimationOption
-    UIDataDetectorTypes: UIDataDetectorType
     CGPathRef: CGPath
     CGColorRef: CGColor
     CGImageRef: CGImage
@@ -54,7 +51,7 @@ enums:
     UIViewContentMode:
     UIViewAnimationCurve:
     UIViewAnimationTransition:
-    UIViewAnimationOption:
+    UIViewAnimationOptions:
         first: UIViewAnimationOptionLayoutSubviews
         bitmask: true
     UIApplicationState:
@@ -74,7 +71,8 @@ enums:
             - "ApplicationState6(1 << 21)"
             - "ApplicationState7(1 << 22)"
             - "ApplicationState8(1 << 23)"
-    UIControlEvent:
+    UIControlEvents:
+        first: UIControlEventTouchDown
         bitmask: true
         extra_values: 
             - "ApplicationEvent1(1 << 24)"
@@ -155,7 +153,7 @@ enums:
     UITextLayoutDirection:
     UITextWritingDirection:
     UITextGranularity:
-    UIDataDetectorType:
+    UIDataDetectorTypes:
         first: UIDataDetectorTypePhoneNumber
         bitmask: true
     UIToolbarPosition:
@@ -278,11 +276,6 @@ classes:
                 name: beginBackgroundTask
             "-enabledRemoteNotificationTypes":
                 name: getEnabledRemoteNotificationTypes
-                return_type: EnumSet<UIRemoteNotificationType>
-            "-registerForRemoteNotificationTypes:":
-                parameters:
-                    "types":
-                        type: EnumSet<UIRemoteNotificationType>
 #            "-sendAction:to:from:forEvent:":
 #                parameters:
 #                    action: 
@@ -328,9 +321,6 @@ classes:
                 name: fromRect
             "+bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:":
                 name: fromRoundedRect
-                parameters:
-                    "corners":
-                        type: EnumSet<UIRectCorner>
             "+bezierPathWithRoundedRect:cornerRadius:":
                 name: fromRoundedRect
             "-addArcWithCenter:radius:startAngle:endAngle:clockwise:":
@@ -548,13 +538,8 @@ classes:
         methods:
             "-actionsForTarget:forControlEvent:":
                 name: getActions
-            "-addTarget:action:forControlEvents:":
-                parameters:
-                    "controlEvents":
-                        type: "EnumSet<UIControlEvent>"
             "-allControlEvents":
                 name: getAllControlEvents
-                return_type: "EnumSet<UIControlEvent>"
             "-allTargets":
                 name: getAllTargets
             "-beginTrackingWithTouch:withEvent:":
@@ -565,15 +550,8 @@ classes:
                 name: continueTracking
             "-endTrackingWithTouch:withEvent:":
                 name: endTracking
-            "-removeTarget:action:forControlEvents:":
-                parameters:
-                    "controlEvents":
-                        type: "EnumSet<UIControlEvent>"
             "-sendActionsForControlEvents:":
                 name: sendControlEventsActions
-                parameters:
-                    "controlEvents":
-                        type: "EnumSet<UIControlEvent>"
     UIDatePicker:
         url: ../UIDatePicker_Class/Reference/UIDatePicker.html
     UIDevice:
@@ -886,14 +864,8 @@ classes:
                 name: dismiss
             "-presentPopoverFromBarButtonItem:permittedArrowDirections:animated:":
                 name: presentFromBarButtonItem
-                parameters:
-                    "arrowDirections":
-                        type: EnumSet<UIPopoverArrowDirection>
             "-presentPopoverFromRect:inView:permittedArrowDirections:animated:":
                 name: presentFromRectInView
-                parameters:
-                    "arrowDirections":
-                        type: EnumSet<UIPopoverArrowDirection>
     UIPrintFormatter:
         url: ../UIPrintFormatter_Class/Reference/Reference.html
         methods:
@@ -1172,15 +1144,6 @@ classes:
     UITableViewCell:
         url: ../UITableViewCell_Class/Reference/Reference.html
         protocols: []
-        methods:
-            "-didTransitionToState:":
-                parameters:
-                    "state":
-                        type: EnumSet<UITableViewCellStateMask>
-            "-willTransitionToState:":
-                parameters:
-                    "state":
-                        type: EnumSet<UITableViewCellStateMask>
     UITableViewController:
         url: ../UITableViewController_Class/Reference/Reference.html
         protocols: []
@@ -1346,9 +1309,6 @@ classes:
                 name: getSelectionRects
             "-shouldChangeTextInRange:replacementText:":
                 name: shouldChangeText
-        properties:
-            "dataDetectorTypes":
-                type: EnumSet<UIDataDetectorType>
     UIToolbar:
         url: ../UIToolbar_Class/Reference/Reference.html
         methods:
@@ -1380,19 +1340,10 @@ classes:
                 name: animate
             "+animateWithDuration:delay:options:animations:completion:":
                 name: animate
-                parameters:
-                    "options":
-                        type: EnumSet<UIViewAnimationOption>                
             "+transitionFromView:toView:duration:options:completion:":
                 name: transition
-                parameters:
-                    "options":
-                        type: EnumSet<UIViewAnimationOption>                
             "+transitionWithView:duration:options:animations:completion:":
                 name: transition
-                parameters:
-                    "options":
-                        type: EnumSet<UIViewAnimationOption>                
             "+layerClass":
                 name: getLayerClass
 #            "+setAnimationDidStopSelector:":
@@ -1471,9 +1422,6 @@ classes:
                 name: isTranslatesAutoresizingMaskIntoConstraints
             "-viewForBaselineLayout":
                 name: getBaselineLayoutView
-        properties:
-            "autoresizingMask":
-                type: EnumSet<UIViewAutoresizing>
     UIViewController:
         url: ../UIViewController_Class/Reference/Reference.html
         methods:
@@ -1493,9 +1441,6 @@ classes:
                 name: performSegue
             "-transitionFromViewController:toViewController:duration:options:animations:completion:":
                 name: transition
-                parameters:
-                    "options":
-                        type: EnumSet<UIViewAnimationOption>                
             "-willAnimateRotationToInterfaceOrientation:duration:":
                 name: willAnimateRotation
             "-willRotateToInterfaceOrientation:duration:":
@@ -1516,7 +1461,6 @@ classes:
                 name: shouldPerformSegue
             "-supportedInterfaceOrientations":
                 name: getSupportedInterfaceOrientations
-                return_type: EnumSet<UIInterfaceOrientationMask>
             "-viewControllerForUnwindSegueAction:fromViewController:withSender:":
                 name: getUnwindSegueActionViewController
         properties:
@@ -1532,9 +1476,6 @@ classes:
                 name: loadHTML
             "-stringByEvaluatingJavaScriptFromString:":
                 name: evaluateJavaScript
-        properties:
-            "dataDetectorTypes":
-                type: EnumSet<UIDataDetectorType>
     UIWindow:
         url: ../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html
         methods:

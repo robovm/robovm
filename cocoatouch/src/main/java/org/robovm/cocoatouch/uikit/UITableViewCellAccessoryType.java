@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UITableViewCellAccessoryType implements IntValuedEnum {
+public enum UITableViewCellAccessoryType implements ValuedEnum {
     None(0),
     DisclosureIndicator(1),
     DetailDisclosureButton(2),

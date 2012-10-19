@@ -15,26 +15,32 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.Bits;
 
-public enum NSLayoutFormatOptions implements IntValuedEnum {
-    AlignAllLeft(NSLayoutAttribute.Left.value()),
-    AlignAllRight(NSLayoutAttribute.Right.value()),
-    AlignAllTop(NSLayoutAttribute.Top.value()),
-    AlignAllBottom(NSLayoutAttribute.Bottom.value()),
-    AlignAllLeading(NSLayoutAttribute.Leading.value()),
-    AlignAllTrailing(NSLayoutAttribute.Trailing.value()),
-    AlignAllCenterX(NSLayoutAttribute.CenterX.value()),
-    AlignAllCenterY(NSLayoutAttribute.CenterY.value()),
-    AlignAllBaseline(NSLayoutAttribute.Baseline.value()),
-    AlignmentMask(0xFF),
-    DirectionLeadingToTrailing(0 << 8),
-    DirectionLeftToRight(1 << 8),
-    DirectionRightToLeft(2 << 8),
-    DirectionMask(0x3 << 8);
+public final class NSLayoutFormatOptions extends Bits<NSLayoutFormatOptions> {
+    public static final NSLayoutFormatOptions AlignAllLeft = new NSLayoutFormatOptions(NSLayoutAttribute.Left.value(), 0xff);
+    public static final NSLayoutFormatOptions AlignAllRight = new NSLayoutFormatOptions(NSLayoutAttribute.Right.value(), 0xff);
+    public static final NSLayoutFormatOptions AlignAllTop = new NSLayoutFormatOptions(NSLayoutAttribute.Top.value(), 0xff);
+    public static final NSLayoutFormatOptions AlignAllBottom = new NSLayoutFormatOptions(NSLayoutAttribute.Bottom.value(), 0xff);
+    public static final NSLayoutFormatOptions AlignAllLeading = new NSLayoutFormatOptions(NSLayoutAttribute.Leading.value(), 0xff);
+    public static final NSLayoutFormatOptions AlignAllTrailing = new NSLayoutFormatOptions(NSLayoutAttribute.Trailing.value(), 0xff);
+    public static final NSLayoutFormatOptions AlignAllCenterX = new NSLayoutFormatOptions(NSLayoutAttribute.CenterX.value(), 0xff);
+    public static final NSLayoutFormatOptions AlignAllCenterY = new NSLayoutFormatOptions(NSLayoutAttribute.CenterY.value(), 0xff);
+    public static final NSLayoutFormatOptions AlignAllBaseline = new NSLayoutFormatOptions(NSLayoutAttribute.Baseline.value(), 0xff);
+//    public static final NSLayoutFormatOptions AlignmentMask = new NSLayoutFormatOptions(0xFF);
+    public static final NSLayoutFormatOptions DirectionLeadingToTrailing = new NSLayoutFormatOptions(0 << 8, 0x3 << 8);
+    public static final NSLayoutFormatOptions DirectionLeftToRight = new NSLayoutFormatOptions(1 << 8, 0x3 << 8);
+    public static final NSLayoutFormatOptions DirectionRightToLeft = new NSLayoutFormatOptions(2 << 8, 0x3 << 8);
+//    public static final NSLayoutFormatOptions DirectionMask = new NSLayoutFormatOptions(0x3 << 8);
 
-    private final int n;
-
-    private NSLayoutFormatOptions(int n) { this.n = n; }
-    public int value() { return n; }
+    private static final NSLayoutFormatOptions[] values = _values(NSLayoutFormatOptions.class);
+    
+    private NSLayoutFormatOptions(long value) { super(value); }
+    private NSLayoutFormatOptions(long value, long mask) { super(value, mask); }
+    protected NSLayoutFormatOptions wrap(long value, long mask) {
+        return new NSLayoutFormatOptions(value, mask);
+    }
+    protected NSLayoutFormatOptions[] values() {
+        return values;
+    }
 }

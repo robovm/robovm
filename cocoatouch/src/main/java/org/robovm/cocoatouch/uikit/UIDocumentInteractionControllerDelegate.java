@@ -37,8 +37,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 3.2 and later.
  * </div>
  */
-@Protocol
-public interface /*<name>*/ UIDocumentInteractionControllerDelegate /*</name>*/ /*<implements>*/ /*</implements>*/ {
+public interface /*<name>*/ UIDocumentInteractionControllerDelegate /*</name>*/ /*<implements>*/ extends ObjCProtocol /*</implements>*/ {
 
     /*<properties>*/
     

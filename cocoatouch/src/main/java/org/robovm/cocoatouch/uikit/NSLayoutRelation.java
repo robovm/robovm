@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum NSLayoutRelation implements IntValuedEnum {
+public enum NSLayoutRelation implements ValuedEnum {
     LessThanOrEqual(-1),
     Equal(0),
     GreaterThanOrEqual(1);

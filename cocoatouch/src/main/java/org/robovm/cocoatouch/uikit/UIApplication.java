@@ -330,13 +330,13 @@ public class /*<name>*/ UIApplication /*</name>*/
     }
     
     private static final Selector enabledRemoteNotificationTypes = Selector.register("enabledRemoteNotificationTypes");
-    @Bridge(symbol = "objc_msgSend") private native static EnumSet<UIRemoteNotificationType> objc_getEnabledRemoteNotificationTypes(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static EnumSet<UIRemoteNotificationType> objc_getEnabledRemoteNotificationTypesSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend") private native static UIRemoteNotificationType objc_getEnabledRemoteNotificationTypes(UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIRemoteNotificationType objc_getEnabledRemoteNotificationTypesSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/enabledRemoteNotificationTypes">- (UIRemoteNotificationType)enabledRemoteNotificationTypes</a>
      * @since Available in iOS 3.0 and later.
      */
-    public EnumSet<UIRemoteNotificationType> getEnabledRemoteNotificationTypes() {
+    public UIRemoteNotificationType getEnabledRemoteNotificationTypes() {
         if (customClass) { return objc_getEnabledRemoteNotificationTypesSuper(getSuper(), this, enabledRemoteNotificationTypes); } else { return objc_getEnabledRemoteNotificationTypes(this, enabledRemoteNotificationTypes); }
     }
     
@@ -385,13 +385,13 @@ public class /*<name>*/ UIApplication /*</name>*/
     }
     
     private static final Selector registerForRemoteNotificationTypes$ = Selector.register("registerForRemoteNotificationTypes:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_registerForRemoteNotificationTypes(UIApplication __self__, Selector __cmd__, EnumSet<UIRemoteNotificationType> types);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_registerForRemoteNotificationTypesSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, EnumSet<UIRemoteNotificationType> types);
+    @Bridge(symbol = "objc_msgSend") private native static void objc_registerForRemoteNotificationTypes(UIApplication __self__, Selector __cmd__, UIRemoteNotificationType types);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_registerForRemoteNotificationTypesSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, UIRemoteNotificationType types);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/registerForRemoteNotificationTypes:">- (void)registerForRemoteNotificationTypes:(UIRemoteNotificationType)types</a>
      * @since Available in iOS 3.0 and later.
      */
-    public void registerForRemoteNotificationTypes(EnumSet<UIRemoteNotificationType> types) {
+    public void registerForRemoteNotificationTypes(UIRemoteNotificationType types) {
         if (customClass) { objc_registerForRemoteNotificationTypesSuper(getSuper(), this, registerForRemoteNotificationTypes$, types); } else { objc_registerForRemoteNotificationTypes(this, registerForRemoteNotificationTypes$, types); }
     }
     

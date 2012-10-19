@@ -37,8 +37,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 3.2 and later.
  * </div>
  */
-@Protocol
-public interface /*<name>*/ UISplitViewControllerDelegate /*</name>*/ /*<implements>*/ /*</implements>*/ {
+public interface /*<name>*/ UISplitViewControllerDelegate /*</name>*/ /*<implements>*/ extends ObjCProtocol /*</implements>*/ {
 
     /*<properties>*/
     

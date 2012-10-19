@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIViewAnimationCurve implements IntValuedEnum {
+public enum UIViewAnimationCurve implements ValuedEnum {
     EaseInOut(0),
     EaseIn(1),
     EaseOut(2),

@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIDeviceBatteryState implements IntValuedEnum {
+public enum UIDeviceBatteryState implements ValuedEnum {
     Unknown(0),
     Unplugged(1),
     Charging(2),

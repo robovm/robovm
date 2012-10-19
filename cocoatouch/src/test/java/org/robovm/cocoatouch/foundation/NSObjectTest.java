@@ -26,7 +26,8 @@ public class NSObjectTest {
 
     @Test
     public void test() {
-        fail("Not yet implemented");
+        NSObject o = new NSObject();
+        System.out.println(o.description());
     }
 
 }

@@ -15,17 +15,23 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.Bits;
 
-public enum UIDocumentState implements IntValuedEnum {
-    Normal(0),
-    Closed(1 << 0),
-    InConflict(1 << 1),
-    SavingError(1 << 2),
-    EditingDisabled(1 << 3);
+public final class UIDocumentState extends Bits<UIDocumentState> {
+    public static final UIDocumentState Normal = new UIDocumentState(0);
+    public static final UIDocumentState Closed = new UIDocumentState(1 << 0);
+    public static final UIDocumentState InConflict = new UIDocumentState(1 << 1);
+    public static final UIDocumentState SavingError = new UIDocumentState(1 << 2);
+    public static final UIDocumentState EditingDisabled = new UIDocumentState(1 << 3);
 
-    private final int n;
-
-    private UIDocumentState(int n) { this.n = n; }
-    public int value() { return n; }
+    private static final UIDocumentState[] values = _values(UIDocumentState.class);
+    
+    private UIDocumentState(long value) { super(value); }
+    private UIDocumentState(long value, long mask) { super(value, mask); }
+    protected UIDocumentState wrap(long value, long mask) {
+        return new UIDocumentState(value, mask);
+    }
+    protected UIDocumentState[] values() {
+        return values;
+    }
 }

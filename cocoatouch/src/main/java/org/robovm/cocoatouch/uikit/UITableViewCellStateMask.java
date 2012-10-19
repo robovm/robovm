@@ -15,15 +15,21 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.Bits;
 
-public enum UITableViewCellStateMask implements IntValuedEnum {
-    DefaultMask(0),
-    ShowingEditControlMask(1 << 0),
-    ShowingDeleteConfirmationMask(1 << 1);
+public final class UITableViewCellStateMask extends Bits<UITableViewCellStateMask> {
+    public static final UITableViewCellStateMask DefaultMask = new UITableViewCellStateMask(0);
+    public static final UITableViewCellStateMask ShowingEditControlMask = new UITableViewCellStateMask(1 << 0);
+    public static final UITableViewCellStateMask ShowingDeleteConfirmationMask = new UITableViewCellStateMask(1 << 1);
 
-    private final int n;
-
-    private UITableViewCellStateMask(int n) { this.n = n; }
-    public int value() { return n; }
+    private static final UITableViewCellStateMask[] values = _values(UITableViewCellStateMask.class);
+    
+    private UITableViewCellStateMask(long value) { super(value); }
+    private UITableViewCellStateMask(long value, long mask) { super(value, mask); }
+    protected UITableViewCellStateMask wrap(long value, long mask) {
+        return new UITableViewCellStateMask(value, mask);
+    }
+    protected UITableViewCellStateMask[] values() {
+        return values;
+    }
 }

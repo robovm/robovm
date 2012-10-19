@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIPrintInfoOutputType implements IntValuedEnum {
+public enum UIPrintInfoOutputType implements ValuedEnum {
     General(0),
     Photo(1),
     Grayscale(2);

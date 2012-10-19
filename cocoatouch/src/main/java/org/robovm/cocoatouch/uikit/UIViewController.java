@@ -458,13 +458,13 @@ public class /*<name>*/ UIViewController /*</name>*/
     }
     
     private static final Selector supportedInterfaceOrientations = Selector.register("supportedInterfaceOrientations");
-    @Bridge(symbol = "objc_msgSend") private native static EnumSet<UIInterfaceOrientationMask> objc_getSupportedInterfaceOrientations(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static EnumSet<UIInterfaceOrientationMask> objc_getSupportedInterfaceOrientationsSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getSupportedInterfaceOrientations(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getSupportedInterfaceOrientationsSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/supportedInterfaceOrientations">- (NSUInteger)supportedInterfaceOrientations</a>
      * @since Available in iOS 6.0 and later.
      */
-    public EnumSet<UIInterfaceOrientationMask> getSupportedInterfaceOrientations() {
+    public int getSupportedInterfaceOrientations() {
         if (customClass) { return objc_getSupportedInterfaceOrientationsSuper(getSuper(), this, supportedInterfaceOrientations); } else { return objc_getSupportedInterfaceOrientations(this, supportedInterfaceOrientations); }
     }
     
@@ -667,13 +667,13 @@ public class /*<name>*/ UIViewController /*</name>*/
     }
     
     private static final Selector transitionFromViewController$toViewController$duration$options$animations$completion$ = Selector.register("transitionFromViewController:toViewController:duration:options:animations:completion:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_transition(UIViewController __self__, Selector __cmd__, UIViewController fromViewController, UIViewController toViewController, double duration, EnumSet<UIViewAnimationOption> options, VoidBlock animations, VoidBooleanBlock completion);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_transitionSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__, UIViewController fromViewController, UIViewController toViewController, double duration, EnumSet<UIViewAnimationOption> options, VoidBlock animations, VoidBooleanBlock completion);
+    @Bridge(symbol = "objc_msgSend") private native static void objc_transition(UIViewController __self__, Selector __cmd__, UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_transitionSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__, UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/transitionFromViewController:toViewController:duration:options:animations:completion:">- (void)transitionFromViewController:(UIViewController *)fromViewController toViewController:(UIViewController *)toViewController duration:(NSTimeInterval)duration options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion</a>
      * @since Available in iOS 5.0 and later.
      */
-    public void transition(UIViewController fromViewController, UIViewController toViewController, double duration, EnumSet<UIViewAnimationOption> options, VoidBlock animations, VoidBooleanBlock completion) {
+    public void transition(UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion) {
         if (customClass) { objc_transitionSuper(getSuper(), this, transitionFromViewController$toViewController$duration$options$animations$completion$, fromViewController, toViewController, duration, options, animations, completion); } else { objc_transition(this, transitionFromViewController$toViewController$duration$options$animations$completion$, fromViewController, toViewController, duration, options, animations, completion); }
     }
     

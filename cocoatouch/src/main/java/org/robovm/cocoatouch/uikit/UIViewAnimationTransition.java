@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.uikit;
 
-import org.robovm.rt.bro.IntValuedEnum;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIViewAnimationTransition implements IntValuedEnum {
+public enum UIViewAnimationTransition implements ValuedEnum {
     None(0),
     FlipFromLeft(1),
     FlipFromRight(2),

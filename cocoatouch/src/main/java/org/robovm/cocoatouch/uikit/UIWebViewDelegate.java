@@ -37,8 +37,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
-@Protocol
-public interface /*<name>*/ UIWebViewDelegate /*</name>*/ /*<implements>*/ /*</implements>*/ {
+public interface /*<name>*/ UIWebViewDelegate /*</name>*/ /*<implements>*/ extends ObjCProtocol /*</implements>*/ {
 
     /*<properties>*/
     

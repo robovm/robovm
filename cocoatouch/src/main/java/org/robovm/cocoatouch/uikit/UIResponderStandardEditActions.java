@@ -36,8 +36,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html">UIResponderStandardEditActions Protocol Reference</a>
  * </div>
  */
-@Protocol
-public interface /*<name>*/ UIResponderStandardEditActions /*</name>*/ /*<implements>*/ /*</implements>*/ {
+public interface /*<name>*/ UIResponderStandardEditActions /*</name>*/ /*<implements>*/ extends ObjCProtocol /*</implements>*/ {
 
     /*<properties>*/
     

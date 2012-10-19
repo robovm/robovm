@@ -88,12 +88,12 @@ public class /*<name>*/ UIView /*</name>*/
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/autoresizingMask">@property(nonatomic) UIViewAutoresizing autoresizingMask</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("autoresizingMask") public native EnumSet<UIViewAutoresizing> getAutoresizingMask();
+    @Bind("autoresizingMask") public native UIViewAutoresizing getAutoresizingMask();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/autoresizingMask">@property(nonatomic) UIViewAutoresizing autoresizingMask</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAutoresizingMask:") public native void setAutoresizingMask(EnumSet<UIViewAutoresizing> v);
+    @Bind("setAutoresizingMask:") public native void setAutoresizingMask(UIViewAutoresizing v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/backgroundColor">@property(nonatomic, copy) UIColor *backgroundColor</a>
      * @since Available in iOS 2.0 and later.
@@ -308,12 +308,12 @@ public class /*<name>*/ UIView /*</name>*/
     }
     
     private static final Selector animateWithDuration$delay$options$animations$completion$ = Selector.register("animateWithDuration:delay:options:animations:completion:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_animate(ObjCClass __self__, Selector __cmd__, double duration, double delay, EnumSet<UIViewAnimationOption> options, VoidBlock animations, VoidBooleanBlock completion);
+    @Bridge(symbol = "objc_msgSend") private native static void objc_animate(ObjCClass __self__, Selector __cmd__, double duration, double delay, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/animateWithDuration:delay:options:animations:completion:">+ (void)animateWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion</a>
      * @since Available in iOS 4.0 and later.
      */
-    public static void animate(double duration, double delay, EnumSet<UIViewAnimationOption> options, VoidBlock animations, VoidBooleanBlock completion) {
+    public static void animate(double duration, double delay, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion) {
         objc_animate(objCClass, animateWithDuration$delay$options$animations$completion$, duration, delay, options, animations, completion);
     }
     
@@ -488,22 +488,22 @@ public class /*<name>*/ UIView /*</name>*/
     }
     
     private static final Selector transitionWithView$duration$options$animations$completion$ = Selector.register("transitionWithView:duration:options:animations:completion:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_transition(ObjCClass __self__, Selector __cmd__, UIView view, double duration, EnumSet<UIViewAnimationOption> options, VoidBlock animations, VoidBooleanBlock completion);
+    @Bridge(symbol = "objc_msgSend") private native static void objc_transition(ObjCClass __self__, Selector __cmd__, UIView view, double duration, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/transitionWithView:duration:options:animations:completion:">+ (void)transitionWithView:(UIView *)view duration:(NSTimeInterval)duration options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion</a>
      * @since Available in iOS 4.0 and later.
      */
-    public static void transition(UIView view, double duration, EnumSet<UIViewAnimationOption> options, VoidBlock animations, VoidBooleanBlock completion) {
+    public static void transition(UIView view, double duration, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion) {
         objc_transition(objCClass, transitionWithView$duration$options$animations$completion$, view, duration, options, animations, completion);
     }
     
     private static final Selector transitionFromView$toView$duration$options$completion$ = Selector.register("transitionFromView:toView:duration:options:completion:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_transition(ObjCClass __self__, Selector __cmd__, UIView fromView, UIView toView, double duration, EnumSet<UIViewAnimationOption> options, VoidBooleanBlock completion);
+    @Bridge(symbol = "objc_msgSend") private native static void objc_transition(ObjCClass __self__, Selector __cmd__, UIView fromView, UIView toView, double duration, UIViewAnimationOptions options, VoidBooleanBlock completion);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/transitionFromView:toView:duration:options:completion:">+ (void)transitionFromView:(UIView *)fromView toView:(UIView *)toView duration:(NSTimeInterval)duration options:(UIViewAnimationOptions)options completion:(void (^)(BOOL finished))completion</a>
      * @since Available in iOS 4.0 and later.
      */
-    public static void transition(UIView fromView, UIView toView, double duration, EnumSet<UIViewAnimationOption> options, VoidBooleanBlock completion) {
+    public static void transition(UIView fromView, UIView toView, double duration, UIViewAnimationOptions options, VoidBooleanBlock completion) {
         objc_transition(objCClass, transitionFromView$toView$duration$options$completion$, fromView, toView, duration, options, completion);
     }
     

@@ -24,7 +24,7 @@ import org.robovm.rt.bro.ptr.BytePtr;
 /**
  * Represents an Objective-C selector.
  */
-public class Selector extends NativeObject {
+public final class Selector extends NativeObject {
 
     private static final Map<String, Selector> selectors = new HashMap<String, Selector>();
 

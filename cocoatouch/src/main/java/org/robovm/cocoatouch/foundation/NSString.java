@@ -16,12 +16,11 @@
 package org.robovm.cocoatouch.foundation;
 
 /*<imports>*/
-import java.util.*;
-import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
-import org.robovm.objc.block.*;
-import org.robovm.rt.bro.annotation.*;
-import org.robovm.rt.bro.ptr.*;
+import org.robovm.objc.ObjCClass;
+import org.robovm.objc.ObjCObject;
+import org.robovm.objc.ObjCRuntime;
+import org.robovm.rt.bro.annotation.Library;
+import org.robovm.rt.bro.annotation.Pointer;
 /*</imports>*/
 
 /**
@@ -60,13 +59,14 @@ public class /*<name>*/ NSString /*</name>*/
     /*</methods>*/
 
     public static class StringMarshaler {
+        @SuppressWarnings("rawtypes")
         public static Object toObject(Class cls, long handle, boolean copy) {
             NSString o = ObjCObject.toObjCObject(NSString.class, handle);
             return o != null ? o.toString() : null;
         }
         public static void updateObject(Object o, long handle) {
         }
-        public static long toNative(Object o) {
+        public static @Pointer long toNative(Object o) {
             if (o == null) {
                 return 0L;
             }

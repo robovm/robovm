@@ -32,14 +32,13 @@ import org.robovm.rt.bro.annotation.Callback;
 import org.robovm.rt.bro.annotation.Library;
 
 @Library("objc")
-@BindClass("Class")
-public class ObjCClass extends ObjCObject {
+public final class ObjCClass extends ObjCObject {
     
     static {
         ObjCRuntime.bind();
     }
     
-    private static final Pattern KNOWN_NATIVE_CLASSES_PATTERN = Pattern.compile("org\\.nullvm\\.(objc|(cocoa\\.(foundation)))\\.[$_a-zA-Z0-9]+");
+    private static final Pattern KNOWN_NATIVE_CLASSES_PATTERN = Pattern.compile("org\\.robovm\\.(objc|cocoatouch)\\.[.$_a-zA-Z0-9]+");
     private static final Map<Class<? extends ObjCObject>, ObjCClass> typeToClass = new HashMap<Class<? extends ObjCObject>, ObjCClass>();
     private static final Map<String, ObjCClass> nameToClass = new HashMap<String, ObjCClass>();
 
@@ -48,7 +47,7 @@ public class ObjCClass extends ObjCObject {
     private final boolean custom;
     
     private ObjCClass(long handle, Class<? extends ObjCObject> type, String name, boolean custom) {
-        super(handle);
+        super(handle, false);
         this.type = type;
         this.name = name;
         this.custom = custom;
@@ -125,6 +124,7 @@ public class ObjCClass extends ObjCObject {
         if (type == null) {
             throw new NullPointerException("type");
         }
+        System.out.println("getByType: " + type.getName());
         synchronized (typeToClass) {
             ObjCClass c = typeToClass.get(type);
             if (c == null) {

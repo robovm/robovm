@@ -35,6 +35,11 @@ public final class Selector extends NativeObject {
         return ObjCRuntime.sel_getName(this).toStringAsciiZ();
     }
     
+    @Override
+    public String toString() {
+    	return getName();
+    }
+    
     public static Selector register(String name) {
         if (name == null) {
             throw new NullPointerException("name");

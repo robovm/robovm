@@ -33,14 +33,6 @@ import org.robovm.rt.bro.ptr.Ptr.MarshalerCallback;
 @Marshaler(ObjCObject.Marshaler.class)
 public abstract class ObjCObject extends NativeObject {
 
-    private static final long PEER_OBJECT_KEY = VM.getObjectAddress(ObjCObject.class);
-    private static final long CUSTOM_CLASS_OFFSET;
-    private static final long NSNUMBER_CLASS = ObjCRuntime.objc_getClass(VM.getStringUTFChars("NSNumber"));
-    private static final int OBJC_ASSOCIATION_RETAIN_NONATOMIC = 1;
-    private static final Selector alloc = Selector.register("alloc");
-    private static final Selector initWithLongLong$ = Selector.register("initWithLongLong:");
-    private static final Selector longLongValue = Selector.register("longLongValue");
-    
     static {
         ObjCRuntime.bind();
         
@@ -51,6 +43,14 @@ public abstract class ObjCObject extends NativeObject {
             throw new Error(t);
         }
     }
+	
+    private static final long PEER_OBJECT_KEY = VM.getObjectAddress(ObjCObject.class);
+    private static final long CUSTOM_CLASS_OFFSET;
+    private static final long NSNUMBER_CLASS = ObjCRuntime.objc_getClass(VM.getStringUTFChars("NSNumber"));
+    private static final int OBJC_ASSOCIATION_RETAIN_NONATOMIC = 1;
+    private static final Selector alloc = Selector.register("alloc");
+    private static final Selector initWithLongLong$ = Selector.register("initWithLongLong:");
+    private static final Selector longLongValue = Selector.register("longLongValue");
     
     private ObjCSuper zuper;
     protected final boolean customClass;
@@ -66,6 +66,12 @@ public abstract class ObjCObject extends NativeObject {
         setHandle(handle);
         setAssociatedObject(handle, PEER_OBJECT_KEY, this);
         customClass = getObjCClass().isCustom();
+    }
+    
+    ObjCObject(long handle, boolean customClass) {
+        setHandle(handle);
+        setAssociatedObject(handle, PEER_OBJECT_KEY, this);
+        this.customClass = customClass;
     }
     
     protected long alloc() {

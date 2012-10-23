@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,11 +53,17 @@ public class /*<name>*/ UIStoryboardPopoverSegue /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector popoverController = Selector.register("popoverController");
+    @Bridge(symbol = "objc_msgSend") private native static UIPopoverController objc_getPopoverController(UIStoryboardPopoverSegue __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIPopoverController objc_getPopoverControllerSuper(ObjCSuper __super__, UIStoryboardPopoverSegue __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardPopoverSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardPopoverSegue/popoverController">@property(nonatomic, retain, readonly) UIPopoverController *popoverController</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("popoverController") public native UIPopoverController getPopoverController();
+    public UIPopoverController getPopoverController() {
+        if (customClass) { return objc_getPopoverControllerSuper(getSuper(), this, popoverController); } else { return objc_getPopoverController(this, popoverController); }
+    }
     /*</properties>*/
     /*<methods>*/
     

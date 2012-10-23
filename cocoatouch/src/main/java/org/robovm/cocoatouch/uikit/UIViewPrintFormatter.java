@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,11 +53,17 @@ public class /*<name>*/ UIViewPrintFormatter /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector view = Selector.register("view");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getView(UIViewPrintFormatter __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getViewSuper(ObjCSuper __super__, UIViewPrintFormatter __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewPrintFormatter/view">@property(nonatomic, readonly) UIView *view</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("view") public native UIView getView();
+    public UIView getView() {
+        if (customClass) { return objc_getViewSuper(getSuper(), this, view); } else { return objc_getView(this, view); }
+    }
     /*</properties>*/
     /*<methods>*/
     

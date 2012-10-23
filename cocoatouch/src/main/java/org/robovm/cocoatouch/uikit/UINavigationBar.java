@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,86 +53,182 @@ public class /*<name>*/ UINavigationBar /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector backItem = Selector.register("backItem");
+    @Bridge(symbol = "objc_msgSend") private native static UINavigationItem objc_getBackItem(UINavigationBar __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UINavigationItem objc_getBackItemSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/backItem">@property(nonatomic, readonly, retain) UINavigationItem *backItem</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("backItem") public native UINavigationItem getBackItem();
+    public UINavigationItem getBackItem() {
+        if (customClass) { return objc_getBackItemSuper(getSuper(), this, backItem); } else { return objc_getBackItem(this, backItem); }
+    }
+    
+    private static final Selector barStyle = Selector.register("barStyle");
+    @Bridge(symbol = "objc_msgSend") private native static UIBarStyle objc_getBarStyle(UINavigationBar __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIBarStyle objc_getBarStyleSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/barStyle">@property(nonatomic, assign) UIBarStyle barStyle</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("barStyle") public native UIBarStyle getBarStyle();
+    public UIBarStyle getBarStyle() {
+        if (customClass) { return objc_getBarStyleSuper(getSuper(), this, barStyle); } else { return objc_getBarStyle(this, barStyle); }
+    }
+    
+    private static final Selector setBarStyle$ = Selector.register("setBarStyle:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setBarStyle(UINavigationBar __self__, Selector __cmd__, UIBarStyle barStyle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBarStyleSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__, UIBarStyle barStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/barStyle">@property(nonatomic, assign) UIBarStyle barStyle</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setBarStyle:") public native void setBarStyle(UIBarStyle v);
+    public void setBarStyle(UIBarStyle barStyle) {
+        if (customClass) { objc_setBarStyleSuper(getSuper(), this, setBarStyle$, barStyle); } else { objc_setBarStyle(this, setBarStyle$, barStyle); }
+    }
+    
+    private static final Selector delegate = Selector.register("delegate");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_getDelegate(UINavigationBar __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_getDelegateSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/delegate">@property(nonatomic, assign) id delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("delegate") public native NSObject getDelegate();
+    public NSObject getDelegate() {
+        if (customClass) { return objc_getDelegateSuper(getSuper(), this, delegate); } else { return objc_getDelegate(this, delegate); }
+    }
+    
+    private static final Selector setDelegate$ = Selector.register("setDelegate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UINavigationBar __self__, Selector __cmd__, NSObject delegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__, NSObject delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/delegate">@property(nonatomic, assign) id delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(NSObject v);
+    public void setDelegate(NSObject delegate) {
+        if (customClass) { objc_setDelegateSuper(getSuper(), this, setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
+    }
+    
+    private static final Selector items = Selector.register("items");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getItems(UINavigationBar __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getItemsSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/items">@property(nonatomic, copy) NSArray *items</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("items") public native NSArray getItems();
+    public NSArray getItems() {
+        if (customClass) { return objc_getItemsSuper(getSuper(), this, items); } else { return objc_getItems(this, items); }
+    }
+    
+    private static final Selector setItems$ = Selector.register("setItems:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setItems(UINavigationBar __self__, Selector __cmd__, NSArray items);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setItemsSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__, NSArray items);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/items">@property(nonatomic, copy) NSArray *items</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setItems:") public native void setItems(NSArray v);
+    public void setItems(NSArray items) {
+        if (customClass) { objc_setItemsSuper(getSuper(), this, setItems$, items); } else { objc_setItems(this, setItems$, items); }
+    }
+    
+    private static final Selector shadowImage = Selector.register("shadowImage");
+    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getShadowImage(UINavigationBar __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getShadowImageSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/shadowImage">@property(nonatomic,retain) UIImage *shadowImage</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("shadowImage") public native UIImage getShadowImage();
+    public UIImage getShadowImage() {
+        if (customClass) { return objc_getShadowImageSuper(getSuper(), this, shadowImage); } else { return objc_getShadowImage(this, shadowImage); }
+    }
+    
+    private static final Selector setShadowImage$ = Selector.register("setShadowImage:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setShadowImage(UINavigationBar __self__, Selector __cmd__, UIImage shadowImage);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShadowImageSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__, UIImage shadowImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/shadowImage">@property(nonatomic,retain) UIImage *shadowImage</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setShadowImage:") public native void setShadowImage(UIImage v);
+    public void setShadowImage(UIImage shadowImage) {
+        if (customClass) { objc_setShadowImageSuper(getSuper(), this, setShadowImage$, shadowImage); } else { objc_setShadowImage(this, setShadowImage$, shadowImage); }
+    }
+    
+    private static final Selector tintColor = Selector.register("tintColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getTintColor(UINavigationBar __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("tintColor") public native UIColor getTintColor();
+    public UIColor getTintColor() {
+        if (customClass) { return objc_getTintColorSuper(getSuper(), this, tintColor); } else { return objc_getTintColor(this, tintColor); }
+    }
+    
+    private static final Selector setTintColor$ = Selector.register("setTintColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTintColor(UINavigationBar __self__, Selector __cmd__, UIColor tintColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__, UIColor tintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTintColor:") public native void setTintColor(UIColor v);
+    public void setTintColor(UIColor tintColor) {
+        if (customClass) { objc_setTintColorSuper(getSuper(), this, setTintColor$, tintColor); } else { objc_setTintColor(this, setTintColor$, tintColor); }
+    }
+    
+    private static final Selector titleTextAttributes = Selector.register("titleTextAttributes");
+    @Bridge(symbol = "objc_msgSend") private native static NSDictionary objc_getTitleTextAttributes(UINavigationBar __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSDictionary objc_getTitleTextAttributesSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/titleTextAttributes">@property(nonatomic, copy) NSDictionary *titleTextAttributes</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("titleTextAttributes") public native NSDictionary getTitleTextAttributes();
+    public NSDictionary getTitleTextAttributes() {
+        if (customClass) { return objc_getTitleTextAttributesSuper(getSuper(), this, titleTextAttributes); } else { return objc_getTitleTextAttributes(this, titleTextAttributes); }
+    }
+    
+    private static final Selector setTitleTextAttributes$ = Selector.register("setTitleTextAttributes:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTitleTextAttributes(UINavigationBar __self__, Selector __cmd__, NSDictionary titleTextAttributes);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTitleTextAttributesSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__, NSDictionary titleTextAttributes);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/titleTextAttributes">@property(nonatomic, copy) NSDictionary *titleTextAttributes</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setTitleTextAttributes:") public native void setTitleTextAttributes(NSDictionary v);
+    public void setTitleTextAttributes(NSDictionary titleTextAttributes) {
+        if (customClass) { objc_setTitleTextAttributesSuper(getSuper(), this, setTitleTextAttributes$, titleTextAttributes); } else { objc_setTitleTextAttributes(this, setTitleTextAttributes$, titleTextAttributes); }
+    }
+    
+    private static final Selector topItem = Selector.register("topItem");
+    @Bridge(symbol = "objc_msgSend") private native static UINavigationItem objc_getTopItem(UINavigationBar __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UINavigationItem objc_getTopItemSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/topItem">@property(nonatomic, readonly, retain) UINavigationItem *topItem</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("topItem") public native UINavigationItem getTopItem();
+    public UINavigationItem getTopItem() {
+        if (customClass) { return objc_getTopItemSuper(getSuper(), this, topItem); } else { return objc_getTopItem(this, topItem); }
+    }
+    
+    private static final Selector isTranslucent = Selector.register("isTranslucent");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isTranslucent(UINavigationBar __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isTranslucentSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/translucent">@property(nonatomic, assign, getter=isTranslucent) BOOL translucent</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("isTranslucent") public native boolean isTranslucent();
+    public boolean isTranslucent() {
+        if (customClass) { return objc_isTranslucentSuper(getSuper(), this, isTranslucent); } else { return objc_isTranslucent(this, isTranslucent); }
+    }
+    
+    private static final Selector setTranslucent$ = Selector.register("setTranslucent:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTranslucent(UINavigationBar __self__, Selector __cmd__, boolean translucent);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTranslucentSuper(ObjCSuper __super__, UINavigationBar __self__, Selector __cmd__, boolean translucent);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/translucent">@property(nonatomic, assign, getter=isTranslucent) BOOL translucent</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setTranslucent:") public native void setTranslucent(boolean v);
+    public void setTranslucent(boolean translucent) {
+        if (customClass) { objc_setTranslucentSuper(getSuper(), this, setTranslucent$, translucent); } else { objc_setTranslucent(this, setTranslucent$, translucent); }
+    }
     /*</properties>*/
     /*<methods>*/
     

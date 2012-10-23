@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,26 +53,50 @@ public class /*<name>*/ UISwipeGestureRecognizer /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector direction = Selector.register("direction");
+    @Bridge(symbol = "objc_msgSend") private native static UISwipeGestureRecognizerDirection objc_getDirection(UISwipeGestureRecognizer __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UISwipeGestureRecognizerDirection objc_getDirectionSuper(ObjCSuper __super__, UISwipeGestureRecognizer __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwipeGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwipeGestureRecognizer/direction">@property(nonatomic) UISwipeGestureRecognizerDirection direction</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("direction") public native UISwipeGestureRecognizerDirection getDirection();
+    public UISwipeGestureRecognizerDirection getDirection() {
+        if (customClass) { return objc_getDirectionSuper(getSuper(), this, direction); } else { return objc_getDirection(this, direction); }
+    }
+    
+    private static final Selector setDirection$ = Selector.register("setDirection:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDirection(UISwipeGestureRecognizer __self__, Selector __cmd__, UISwipeGestureRecognizerDirection direction);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDirectionSuper(ObjCSuper __super__, UISwipeGestureRecognizer __self__, Selector __cmd__, UISwipeGestureRecognizerDirection direction);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwipeGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwipeGestureRecognizer/direction">@property(nonatomic) UISwipeGestureRecognizerDirection direction</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setDirection:") public native void setDirection(UISwipeGestureRecognizerDirection v);
+    public void setDirection(UISwipeGestureRecognizerDirection direction) {
+        if (customClass) { objc_setDirectionSuper(getSuper(), this, setDirection$, direction); } else { objc_setDirection(this, setDirection$, direction); }
+    }
+    
+    private static final Selector numberOfTouchesRequired = Selector.register("numberOfTouchesRequired");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getNumberOfTouchesRequired(UISwipeGestureRecognizer __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getNumberOfTouchesRequiredSuper(ObjCSuper __super__, UISwipeGestureRecognizer __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwipeGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwipeGestureRecognizer/numberOfTouchesRequired">@property(nonatomic) NSUInteger numberOfTouchesRequired</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("numberOfTouchesRequired") public native int getNumberOfTouchesRequired();
+    public int getNumberOfTouchesRequired() {
+        if (customClass) { return objc_getNumberOfTouchesRequiredSuper(getSuper(), this, numberOfTouchesRequired); } else { return objc_getNumberOfTouchesRequired(this, numberOfTouchesRequired); }
+    }
+    
+    private static final Selector setNumberOfTouchesRequired$ = Selector.register("setNumberOfTouchesRequired:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setNumberOfTouchesRequired(UISwipeGestureRecognizer __self__, Selector __cmd__, int numberOfTouchesRequired);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNumberOfTouchesRequiredSuper(ObjCSuper __super__, UISwipeGestureRecognizer __self__, Selector __cmd__, int numberOfTouchesRequired);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwipeGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwipeGestureRecognizer/numberOfTouchesRequired">@property(nonatomic) NSUInteger numberOfTouchesRequired</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setNumberOfTouchesRequired:") public native void setNumberOfTouchesRequired(int v);
+    public void setNumberOfTouchesRequired(int numberOfTouchesRequired) {
+        if (customClass) { objc_setNumberOfTouchesRequiredSuper(getSuper(), this, setNumberOfTouchesRequired$, numberOfTouchesRequired); } else { objc_setNumberOfTouchesRequired(this, setNumberOfTouchesRequired$, numberOfTouchesRequired); }
+    }
     /*</properties>*/
     /*<methods>*/
     

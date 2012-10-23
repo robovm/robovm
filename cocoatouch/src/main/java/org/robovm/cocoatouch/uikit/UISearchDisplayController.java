@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -64,71 +63,149 @@ public class /*<name>*/ UISearchDisplayController /*</name>*/
     }
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector isActive = Selector.register("isActive");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isActive(UISearchDisplayController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isActiveSuper(ObjCSuper __super__, UISearchDisplayController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/active">@property(nonatomic, getter=isActive) BOOL active</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("isActive") public native boolean isActive();
+    public boolean isActive() {
+        if (customClass) { return objc_isActiveSuper(getSuper(), this, isActive); } else { return objc_isActive(this, isActive); }
+    }
+    
+    private static final Selector setActive$ = Selector.register("setActive:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setActive(UISearchDisplayController __self__, Selector __cmd__, boolean active);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setActiveSuper(ObjCSuper __super__, UISearchDisplayController __self__, Selector __cmd__, boolean active);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/active">@property(nonatomic, getter=isActive) BOOL active</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setActive:") public native void setActive(boolean v);
+    public void setActive(boolean active) {
+        if (customClass) { objc_setActiveSuper(getSuper(), this, setActive$, active); } else { objc_setActive(this, setActive$, active); }
+    }
+    
+    private static final Selector delegate = Selector.register("delegate");
+    @Bridge(symbol = "objc_msgSend") private native static UISearchDisplayDelegate objc_getDelegate(UISearchDisplayController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UISearchDisplayDelegate objc_getDelegateSuper(ObjCSuper __super__, UISearchDisplayController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/delegate">@property(nonatomic, assign) id&amp;lt;UISearchDisplayDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("delegate") public native UISearchDisplayDelegate getDelegate();
+    public UISearchDisplayDelegate getDelegate() {
+        if (customClass) { return objc_getDelegateSuper(getSuper(), this, delegate); } else { return objc_getDelegate(this, delegate); }
+    }
+    
+    private static final Selector setDelegate$ = Selector.register("setDelegate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UISearchDisplayController __self__, Selector __cmd__, UISearchDisplayDelegate delegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, UISearchDisplayController __self__, Selector __cmd__, UISearchDisplayDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/delegate">@property(nonatomic, assign) id&amp;lt;UISearchDisplayDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(UISearchDisplayDelegate v);
+    public void setDelegate(UISearchDisplayDelegate delegate) {
+        if (customClass) { objc_setDelegateSuper(getSuper(), this, setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
+    }
+    
+    private static final Selector searchBar = Selector.register("searchBar");
+    @Bridge(symbol = "objc_msgSend") private native static UISearchBar objc_getSearchBar(UISearchDisplayController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UISearchBar objc_getSearchBarSuper(ObjCSuper __super__, UISearchDisplayController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchBar">@property(nonatomic, readonly) UISearchBar *searchBar</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("searchBar") public native UISearchBar getSearchBar();
+    public UISearchBar getSearchBar() {
+        if (customClass) { return objc_getSearchBarSuper(getSuper(), this, searchBar); } else { return objc_getSearchBar(this, searchBar); }
+    }
+    
+    private static final Selector searchContentsController = Selector.register("searchContentsController");
+    @Bridge(symbol = "objc_msgSend") private native static UIViewController objc_getSearchContentsController(UISearchDisplayController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewController objc_getSearchContentsControllerSuper(ObjCSuper __super__, UISearchDisplayController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchContentsController">@property(nonatomic, readonly) UIViewController *searchContentsController</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("searchContentsController") public native UIViewController getSearchContentsController();
+    public UIViewController getSearchContentsController() {
+        if (customClass) { return objc_getSearchContentsControllerSuper(getSuper(), this, searchContentsController); } else { return objc_getSearchContentsController(this, searchContentsController); }
+    }
+    
+    private static final Selector searchResultsDataSource = Selector.register("searchResultsDataSource");
+    @Bridge(symbol = "objc_msgSend") private native static UITableViewDataSource objc_getSearchResultsDataSource(UISearchDisplayController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITableViewDataSource objc_getSearchResultsDataSourceSuper(ObjCSuper __super__, UISearchDisplayController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDataSource">@property(nonatomic, assign) id&amp;lt;UITableViewDataSource&amp;gt; searchResultsDataSource</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("searchResultsDataSource") public native UITableViewDataSource getSearchResultsDataSource();
+    public UITableViewDataSource getSearchResultsDataSource() {
+        if (customClass) { return objc_getSearchResultsDataSourceSuper(getSuper(), this, searchResultsDataSource); } else { return objc_getSearchResultsDataSource(this, searchResultsDataSource); }
+    }
+    
+    private static final Selector setSearchResultsDataSource$ = Selector.register("setSearchResultsDataSource:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSearchResultsDataSource(UISearchDisplayController __self__, Selector __cmd__, UITableViewDataSource searchResultsDataSource);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSearchResultsDataSourceSuper(ObjCSuper __super__, UISearchDisplayController __self__, Selector __cmd__, UITableViewDataSource searchResultsDataSource);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDataSource">@property(nonatomic, assign) id&amp;lt;UITableViewDataSource&amp;gt; searchResultsDataSource</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setSearchResultsDataSource:") public native void setSearchResultsDataSource(UITableViewDataSource v);
+    public void setSearchResultsDataSource(UITableViewDataSource searchResultsDataSource) {
+        if (customClass) { objc_setSearchResultsDataSourceSuper(getSuper(), this, setSearchResultsDataSource$, searchResultsDataSource); } else { objc_setSearchResultsDataSource(this, setSearchResultsDataSource$, searchResultsDataSource); }
+    }
+    
+    private static final Selector searchResultsDelegate = Selector.register("searchResultsDelegate");
+    @Bridge(symbol = "objc_msgSend") private native static UITableViewDelegate objc_getSearchResultsDelegate(UISearchDisplayController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITableViewDelegate objc_getSearchResultsDelegateSuper(ObjCSuper __super__, UISearchDisplayController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDelegate">@property(nonatomic, assign) id&amp;lt;UITableViewDelegate&amp;gt; searchResultsDelegate</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("searchResultsDelegate") public native UITableViewDelegate getSearchResultsDelegate();
+    public UITableViewDelegate getSearchResultsDelegate() {
+        if (customClass) { return objc_getSearchResultsDelegateSuper(getSuper(), this, searchResultsDelegate); } else { return objc_getSearchResultsDelegate(this, searchResultsDelegate); }
+    }
+    
+    private static final Selector setSearchResultsDelegate$ = Selector.register("setSearchResultsDelegate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSearchResultsDelegate(UISearchDisplayController __self__, Selector __cmd__, UITableViewDelegate searchResultsDelegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSearchResultsDelegateSuper(ObjCSuper __super__, UISearchDisplayController __self__, Selector __cmd__, UITableViewDelegate searchResultsDelegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDelegate">@property(nonatomic, assign) id&amp;lt;UITableViewDelegate&amp;gt; searchResultsDelegate</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setSearchResultsDelegate:") public native void setSearchResultsDelegate(UITableViewDelegate v);
+    public void setSearchResultsDelegate(UITableViewDelegate searchResultsDelegate) {
+        if (customClass) { objc_setSearchResultsDelegateSuper(getSuper(), this, setSearchResultsDelegate$, searchResultsDelegate); } else { objc_setSearchResultsDelegate(this, setSearchResultsDelegate$, searchResultsDelegate); }
+    }
+    
+    private static final Selector searchResultsTableView = Selector.register("searchResultsTableView");
+    @Bridge(symbol = "objc_msgSend") private native static UITableView objc_getSearchResultsTableView(UISearchDisplayController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITableView objc_getSearchResultsTableViewSuper(ObjCSuper __super__, UISearchDisplayController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsTableView">@property(nonatomic, readonly) UITableView *searchResultsTableView</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("searchResultsTableView") public native UITableView getSearchResultsTableView();
+    public UITableView getSearchResultsTableView() {
+        if (customClass) { return objc_getSearchResultsTableViewSuper(getSuper(), this, searchResultsTableView); } else { return objc_getSearchResultsTableView(this, searchResultsTableView); }
+    }
+    
+    private static final Selector searchResultsTitle = Selector.register("searchResultsTitle");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getSearchResultsTitle(UISearchDisplayController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getSearchResultsTitleSuper(ObjCSuper __super__, UISearchDisplayController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsTitle">@property(nonatomic, copy) NSString *searchResultsTitle</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("searchResultsTitle") public native String getSearchResultsTitle();
+    public String getSearchResultsTitle() {
+        if (customClass) { return objc_getSearchResultsTitleSuper(getSuper(), this, searchResultsTitle); } else { return objc_getSearchResultsTitle(this, searchResultsTitle); }
+    }
+    
+    private static final Selector setSearchResultsTitle$ = Selector.register("setSearchResultsTitle:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSearchResultsTitle(UISearchDisplayController __self__, Selector __cmd__, String searchResultsTitle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSearchResultsTitleSuper(ObjCSuper __super__, UISearchDisplayController __self__, Selector __cmd__, String searchResultsTitle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsTitle">@property(nonatomic, copy) NSString *searchResultsTitle</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setSearchResultsTitle:") public native void setSearchResultsTitle(String v);
+    public void setSearchResultsTitle(String searchResultsTitle) {
+        if (customClass) { objc_setSearchResultsTitleSuper(getSuper(), this, setSearchResultsTitle$, searchResultsTitle); } else { objc_setSearchResultsTitle(this, setSearchResultsTitle$, searchResultsTitle); }
+    }
     /*</properties>*/
     /*<methods>*/
     

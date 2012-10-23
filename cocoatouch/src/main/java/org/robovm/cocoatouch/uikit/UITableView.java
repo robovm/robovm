@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -64,191 +63,413 @@ public class /*<name>*/ UITableView /*</name>*/
     }
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector allowsMultipleSelection = Selector.register("allowsMultipleSelection");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAllowsMultipleSelection(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAllowsMultipleSelectionSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/allowsMultipleSelection">@property(nonatomic) BOOL allowsMultipleSelection</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("allowsMultipleSelection") public native boolean isAllowsMultipleSelection();
+    public boolean isAllowsMultipleSelection() {
+        if (customClass) { return objc_isAllowsMultipleSelectionSuper(getSuper(), this, allowsMultipleSelection); } else { return objc_isAllowsMultipleSelection(this, allowsMultipleSelection); }
+    }
+    
+    private static final Selector setAllowsMultipleSelection$ = Selector.register("setAllowsMultipleSelection:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAllowsMultipleSelection(UITableView __self__, Selector __cmd__, boolean allowsMultipleSelection);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAllowsMultipleSelectionSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, boolean allowsMultipleSelection);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/allowsMultipleSelection">@property(nonatomic) BOOL allowsMultipleSelection</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setAllowsMultipleSelection:") public native void setAllowsMultipleSelection(boolean v);
+    public void setAllowsMultipleSelection(boolean allowsMultipleSelection) {
+        if (customClass) { objc_setAllowsMultipleSelectionSuper(getSuper(), this, setAllowsMultipleSelection$, allowsMultipleSelection); } else { objc_setAllowsMultipleSelection(this, setAllowsMultipleSelection$, allowsMultipleSelection); }
+    }
+    
+    private static final Selector allowsMultipleSelectionDuringEditing = Selector.register("allowsMultipleSelectionDuringEditing");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAllowsMultipleSelectionDuringEditing(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAllowsMultipleSelectionDuringEditingSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/allowsMultipleSelectionDuringEditing">@property(nonatomic) BOOL allowsMultipleSelectionDuringEditing</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("allowsMultipleSelectionDuringEditing") public native boolean isAllowsMultipleSelectionDuringEditing();
+    public boolean isAllowsMultipleSelectionDuringEditing() {
+        if (customClass) { return objc_isAllowsMultipleSelectionDuringEditingSuper(getSuper(), this, allowsMultipleSelectionDuringEditing); } else { return objc_isAllowsMultipleSelectionDuringEditing(this, allowsMultipleSelectionDuringEditing); }
+    }
+    
+    private static final Selector setAllowsMultipleSelectionDuringEditing$ = Selector.register("setAllowsMultipleSelectionDuringEditing:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAllowsMultipleSelectionDuringEditing(UITableView __self__, Selector __cmd__, boolean allowsMultipleSelectionDuringEditing);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAllowsMultipleSelectionDuringEditingSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, boolean allowsMultipleSelectionDuringEditing);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/allowsMultipleSelectionDuringEditing">@property(nonatomic) BOOL allowsMultipleSelectionDuringEditing</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setAllowsMultipleSelectionDuringEditing:") public native void setAllowsMultipleSelectionDuringEditing(boolean v);
+    public void setAllowsMultipleSelectionDuringEditing(boolean allowsMultipleSelectionDuringEditing) {
+        if (customClass) { objc_setAllowsMultipleSelectionDuringEditingSuper(getSuper(), this, setAllowsMultipleSelectionDuringEditing$, allowsMultipleSelectionDuringEditing); } else { objc_setAllowsMultipleSelectionDuringEditing(this, setAllowsMultipleSelectionDuringEditing$, allowsMultipleSelectionDuringEditing); }
+    }
+    
+    private static final Selector allowsSelection = Selector.register("allowsSelection");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAllowsSelection(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAllowsSelectionSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/allowsSelection">@property(nonatomic) BOOL allowsSelection</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("allowsSelection") public native boolean isAllowsSelection();
+    public boolean isAllowsSelection() {
+        if (customClass) { return objc_isAllowsSelectionSuper(getSuper(), this, allowsSelection); } else { return objc_isAllowsSelection(this, allowsSelection); }
+    }
+    
+    private static final Selector setAllowsSelection$ = Selector.register("setAllowsSelection:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAllowsSelection(UITableView __self__, Selector __cmd__, boolean allowsSelection);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAllowsSelectionSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, boolean allowsSelection);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/allowsSelection">@property(nonatomic) BOOL allowsSelection</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setAllowsSelection:") public native void setAllowsSelection(boolean v);
+    public void setAllowsSelection(boolean allowsSelection) {
+        if (customClass) { objc_setAllowsSelectionSuper(getSuper(), this, setAllowsSelection$, allowsSelection); } else { objc_setAllowsSelection(this, setAllowsSelection$, allowsSelection); }
+    }
+    
+    private static final Selector allowsSelectionDuringEditing = Selector.register("allowsSelectionDuringEditing");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAllowsSelectionDuringEditing(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAllowsSelectionDuringEditingSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/allowsSelectionDuringEditing">@property(nonatomic) BOOL allowsSelectionDuringEditing</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("allowsSelectionDuringEditing") public native boolean isAllowsSelectionDuringEditing();
+    public boolean isAllowsSelectionDuringEditing() {
+        if (customClass) { return objc_isAllowsSelectionDuringEditingSuper(getSuper(), this, allowsSelectionDuringEditing); } else { return objc_isAllowsSelectionDuringEditing(this, allowsSelectionDuringEditing); }
+    }
+    
+    private static final Selector setAllowsSelectionDuringEditing$ = Selector.register("setAllowsSelectionDuringEditing:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAllowsSelectionDuringEditing(UITableView __self__, Selector __cmd__, boolean allowsSelectionDuringEditing);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAllowsSelectionDuringEditingSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, boolean allowsSelectionDuringEditing);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/allowsSelectionDuringEditing">@property(nonatomic) BOOL allowsSelectionDuringEditing</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAllowsSelectionDuringEditing:") public native void setAllowsSelectionDuringEditing(boolean v);
+    public void setAllowsSelectionDuringEditing(boolean allowsSelectionDuringEditing) {
+        if (customClass) { objc_setAllowsSelectionDuringEditingSuper(getSuper(), this, setAllowsSelectionDuringEditing$, allowsSelectionDuringEditing); } else { objc_setAllowsSelectionDuringEditing(this, setAllowsSelectionDuringEditing$, allowsSelectionDuringEditing); }
+    }
+    
+    private static final Selector backgroundView = Selector.register("backgroundView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getBackgroundView(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getBackgroundViewSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/backgroundView">@property(nonatomic, readwrite, retain) UIView *backgroundView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("backgroundView") public native UIView getBackgroundView();
+    public UIView getBackgroundView() {
+        if (customClass) { return objc_getBackgroundViewSuper(getSuper(), this, backgroundView); } else { return objc_getBackgroundView(this, backgroundView); }
+    }
+    
+    private static final Selector setBackgroundView$ = Selector.register("setBackgroundView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setBackgroundView(UITableView __self__, Selector __cmd__, UIView backgroundView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBackgroundViewSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, UIView backgroundView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/backgroundView">@property(nonatomic, readwrite, retain) UIView *backgroundView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setBackgroundView:") public native void setBackgroundView(UIView v);
+    public void setBackgroundView(UIView backgroundView) {
+        if (customClass) { objc_setBackgroundViewSuper(getSuper(), this, setBackgroundView$, backgroundView); } else { objc_setBackgroundView(this, setBackgroundView$, backgroundView); }
+    }
+    
+    private static final Selector dataSource = Selector.register("dataSource");
+    @Bridge(symbol = "objc_msgSend") private native static UITableViewDataSource objc_getDataSource(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITableViewDataSource objc_getDataSourceSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/dataSource">@property(nonatomic, assign) id&amp;lt;UITableViewDataSource&amp;gt; dataSource</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("dataSource") public native UITableViewDataSource getDataSource();
+    public UITableViewDataSource getDataSource() {
+        if (customClass) { return objc_getDataSourceSuper(getSuper(), this, dataSource); } else { return objc_getDataSource(this, dataSource); }
+    }
+    
+    private static final Selector setDataSource$ = Selector.register("setDataSource:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDataSource(UITableView __self__, Selector __cmd__, UITableViewDataSource dataSource);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDataSourceSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, UITableViewDataSource dataSource);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/dataSource">@property(nonatomic, assign) id&amp;lt;UITableViewDataSource&amp;gt; dataSource</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDataSource:") public native void setDataSource(UITableViewDataSource v);
+    public void setDataSource(UITableViewDataSource dataSource) {
+        if (customClass) { objc_setDataSourceSuper(getSuper(), this, setDataSource$, dataSource); } else { objc_setDataSource(this, setDataSource$, dataSource); }
+    }
+    
+    private static final Selector delegate = Selector.register("delegate");
+    @Bridge(symbol = "objc_msgSend") private native static UITableViewDelegate objc_getDelegate(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITableViewDelegate objc_getDelegateSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/delegate">@property(nonatomic, assign) id&amp;lt;UITableViewDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("delegate") public native UITableViewDelegate getDelegate();
+    public UITableViewDelegate getDelegate() {
+        if (customClass) { return objc_getDelegateSuper(getSuper(), this, delegate); } else { return objc_getDelegate(this, delegate); }
+    }
+    
+    private static final Selector setDelegate$ = Selector.register("setDelegate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UITableView __self__, Selector __cmd__, UITableViewDelegate delegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, UITableViewDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/delegate">@property(nonatomic, assign) id&amp;lt;UITableViewDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(UITableViewDelegate v);
+    public void setDelegate(UITableViewDelegate delegate) {
+        if (customClass) { objc_setDelegateSuper(getSuper(), this, setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
+    }
+    
+    private static final Selector isEditing = Selector.register("isEditing");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isEditing(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isEditingSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/editing">@property(nonatomic, getter=isEditing) BOOL editing</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isEditing") public native boolean isEditing();
+    public boolean isEditing() {
+        if (customClass) { return objc_isEditingSuper(getSuper(), this, isEditing); } else { return objc_isEditing(this, isEditing); }
+    }
+    
+    private static final Selector setEditing$ = Selector.register("setEditing:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setEditing(UITableView __self__, Selector __cmd__, boolean editing);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setEditingSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, boolean editing);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/editing">@property(nonatomic, getter=isEditing) BOOL editing</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setEditing:") public native void setEditing(boolean v);
+    public void setEditing(boolean editing) {
+        if (customClass) { objc_setEditingSuper(getSuper(), this, setEditing$, editing); } else { objc_setEditing(this, setEditing$, editing); }
+    }
+    
+    private static final Selector rowHeight = Selector.register("rowHeight");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getRowHeight(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getRowHeightSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/rowHeight">@property(nonatomic) CGFloat rowHeight</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("rowHeight") public native float getRowHeight();
+    public float getRowHeight() {
+        if (customClass) { return objc_getRowHeightSuper(getSuper(), this, rowHeight); } else { return objc_getRowHeight(this, rowHeight); }
+    }
+    
+    private static final Selector setRowHeight$ = Selector.register("setRowHeight:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setRowHeight(UITableView __self__, Selector __cmd__, float rowHeight);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setRowHeightSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, float rowHeight);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/rowHeight">@property(nonatomic) CGFloat rowHeight</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setRowHeight:") public native void setRowHeight(float v);
+    public void setRowHeight(float rowHeight) {
+        if (customClass) { objc_setRowHeightSuper(getSuper(), this, setRowHeight$, rowHeight); } else { objc_setRowHeight(this, setRowHeight$, rowHeight); }
+    }
+    
+    private static final Selector sectionFooterHeight = Selector.register("sectionFooterHeight");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getSectionFooterHeight(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getSectionFooterHeightSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/sectionFooterHeight">@property(nonatomic) CGFloat sectionFooterHeight</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("sectionFooterHeight") public native float getSectionFooterHeight();
+    public float getSectionFooterHeight() {
+        if (customClass) { return objc_getSectionFooterHeightSuper(getSuper(), this, sectionFooterHeight); } else { return objc_getSectionFooterHeight(this, sectionFooterHeight); }
+    }
+    
+    private static final Selector setSectionFooterHeight$ = Selector.register("setSectionFooterHeight:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSectionFooterHeight(UITableView __self__, Selector __cmd__, float sectionFooterHeight);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSectionFooterHeightSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, float sectionFooterHeight);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/sectionFooterHeight">@property(nonatomic) CGFloat sectionFooterHeight</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setSectionFooterHeight:") public native void setSectionFooterHeight(float v);
+    public void setSectionFooterHeight(float sectionFooterHeight) {
+        if (customClass) { objc_setSectionFooterHeightSuper(getSuper(), this, setSectionFooterHeight$, sectionFooterHeight); } else { objc_setSectionFooterHeight(this, setSectionFooterHeight$, sectionFooterHeight); }
+    }
+    
+    private static final Selector sectionHeaderHeight = Selector.register("sectionHeaderHeight");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getSectionHeaderHeight(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getSectionHeaderHeightSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/sectionHeaderHeight">@property(nonatomic) CGFloat sectionHeaderHeight</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("sectionHeaderHeight") public native float getSectionHeaderHeight();
+    public float getSectionHeaderHeight() {
+        if (customClass) { return objc_getSectionHeaderHeightSuper(getSuper(), this, sectionHeaderHeight); } else { return objc_getSectionHeaderHeight(this, sectionHeaderHeight); }
+    }
+    
+    private static final Selector setSectionHeaderHeight$ = Selector.register("setSectionHeaderHeight:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSectionHeaderHeight(UITableView __self__, Selector __cmd__, float sectionHeaderHeight);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSectionHeaderHeightSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, float sectionHeaderHeight);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/sectionHeaderHeight">@property(nonatomic) CGFloat sectionHeaderHeight</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setSectionHeaderHeight:") public native void setSectionHeaderHeight(float v);
+    public void setSectionHeaderHeight(float sectionHeaderHeight) {
+        if (customClass) { objc_setSectionHeaderHeightSuper(getSuper(), this, setSectionHeaderHeight$, sectionHeaderHeight); } else { objc_setSectionHeaderHeight(this, setSectionHeaderHeight$, sectionHeaderHeight); }
+    }
+    
+    private static final Selector sectionIndexColor = Selector.register("sectionIndexColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getSectionIndexColor(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getSectionIndexColorSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/sectionIndexColor">@property(nonatomic, retain) UIColor *sectionIndexColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("sectionIndexColor") public native UIColor getSectionIndexColor();
+    public UIColor getSectionIndexColor() {
+        if (customClass) { return objc_getSectionIndexColorSuper(getSuper(), this, sectionIndexColor); } else { return objc_getSectionIndexColor(this, sectionIndexColor); }
+    }
+    
+    private static final Selector setSectionIndexColor$ = Selector.register("setSectionIndexColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSectionIndexColor(UITableView __self__, Selector __cmd__, UIColor sectionIndexColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSectionIndexColorSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, UIColor sectionIndexColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/sectionIndexColor">@property(nonatomic, retain) UIColor *sectionIndexColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setSectionIndexColor:") public native void setSectionIndexColor(UIColor v);
+    public void setSectionIndexColor(UIColor sectionIndexColor) {
+        if (customClass) { objc_setSectionIndexColorSuper(getSuper(), this, setSectionIndexColor$, sectionIndexColor); } else { objc_setSectionIndexColor(this, setSectionIndexColor$, sectionIndexColor); }
+    }
+    
+    private static final Selector sectionIndexMinimumDisplayRowCount = Selector.register("sectionIndexMinimumDisplayRowCount");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getSectionIndexMinimumDisplayRowCount(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getSectionIndexMinimumDisplayRowCountSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/sectionIndexMinimumDisplayRowCount">@property(nonatomic) NSInteger sectionIndexMinimumDisplayRowCount</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("sectionIndexMinimumDisplayRowCount") public native int getSectionIndexMinimumDisplayRowCount();
+    public int getSectionIndexMinimumDisplayRowCount() {
+        if (customClass) { return objc_getSectionIndexMinimumDisplayRowCountSuper(getSuper(), this, sectionIndexMinimumDisplayRowCount); } else { return objc_getSectionIndexMinimumDisplayRowCount(this, sectionIndexMinimumDisplayRowCount); }
+    }
+    
+    private static final Selector setSectionIndexMinimumDisplayRowCount$ = Selector.register("setSectionIndexMinimumDisplayRowCount:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSectionIndexMinimumDisplayRowCount(UITableView __self__, Selector __cmd__, int sectionIndexMinimumDisplayRowCount);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSectionIndexMinimumDisplayRowCountSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, int sectionIndexMinimumDisplayRowCount);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/sectionIndexMinimumDisplayRowCount">@property(nonatomic) NSInteger sectionIndexMinimumDisplayRowCount</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setSectionIndexMinimumDisplayRowCount:") public native void setSectionIndexMinimumDisplayRowCount(int v);
+    public void setSectionIndexMinimumDisplayRowCount(int sectionIndexMinimumDisplayRowCount) {
+        if (customClass) { objc_setSectionIndexMinimumDisplayRowCountSuper(getSuper(), this, setSectionIndexMinimumDisplayRowCount$, sectionIndexMinimumDisplayRowCount); } else { objc_setSectionIndexMinimumDisplayRowCount(this, setSectionIndexMinimumDisplayRowCount$, sectionIndexMinimumDisplayRowCount); }
+    }
+    
+    private static final Selector sectionIndexTrackingBackgroundColor = Selector.register("sectionIndexTrackingBackgroundColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getSectionIndexTrackingBackgroundColor(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getSectionIndexTrackingBackgroundColorSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/sectionIndexTrackingBackgroundColor">@property(nonatomic, retain) UIColor *sectionIndexTrackingBackgroundColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("sectionIndexTrackingBackgroundColor") public native UIColor getSectionIndexTrackingBackgroundColor();
+    public UIColor getSectionIndexTrackingBackgroundColor() {
+        if (customClass) { return objc_getSectionIndexTrackingBackgroundColorSuper(getSuper(), this, sectionIndexTrackingBackgroundColor); } else { return objc_getSectionIndexTrackingBackgroundColor(this, sectionIndexTrackingBackgroundColor); }
+    }
+    
+    private static final Selector setSectionIndexTrackingBackgroundColor$ = Selector.register("setSectionIndexTrackingBackgroundColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSectionIndexTrackingBackgroundColor(UITableView __self__, Selector __cmd__, UIColor sectionIndexTrackingBackgroundColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSectionIndexTrackingBackgroundColorSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, UIColor sectionIndexTrackingBackgroundColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/sectionIndexTrackingBackgroundColor">@property(nonatomic, retain) UIColor *sectionIndexTrackingBackgroundColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setSectionIndexTrackingBackgroundColor:") public native void setSectionIndexTrackingBackgroundColor(UIColor v);
+    public void setSectionIndexTrackingBackgroundColor(UIColor sectionIndexTrackingBackgroundColor) {
+        if (customClass) { objc_setSectionIndexTrackingBackgroundColorSuper(getSuper(), this, setSectionIndexTrackingBackgroundColor$, sectionIndexTrackingBackgroundColor); } else { objc_setSectionIndexTrackingBackgroundColor(this, setSectionIndexTrackingBackgroundColor$, sectionIndexTrackingBackgroundColor); }
+    }
+    
+    private static final Selector separatorColor = Selector.register("separatorColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getSeparatorColor(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getSeparatorColorSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/separatorColor">@property(nonatomic, retain) UIColor *separatorColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("separatorColor") public native UIColor getSeparatorColor();
+    public UIColor getSeparatorColor() {
+        if (customClass) { return objc_getSeparatorColorSuper(getSuper(), this, separatorColor); } else { return objc_getSeparatorColor(this, separatorColor); }
+    }
+    
+    private static final Selector setSeparatorColor$ = Selector.register("setSeparatorColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSeparatorColor(UITableView __self__, Selector __cmd__, UIColor separatorColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSeparatorColorSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, UIColor separatorColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/separatorColor">@property(nonatomic, retain) UIColor *separatorColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setSeparatorColor:") public native void setSeparatorColor(UIColor v);
+    public void setSeparatorColor(UIColor separatorColor) {
+        if (customClass) { objc_setSeparatorColorSuper(getSuper(), this, setSeparatorColor$, separatorColor); } else { objc_setSeparatorColor(this, setSeparatorColor$, separatorColor); }
+    }
+    
+    private static final Selector separatorStyle = Selector.register("separatorStyle");
+    @Bridge(symbol = "objc_msgSend") private native static UITableViewCellSeparatorStyle objc_getSeparatorStyle(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITableViewCellSeparatorStyle objc_getSeparatorStyleSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/separatorStyle">@property(nonatomic) UITableViewCellSeparatorStyle separatorStyle</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("separatorStyle") public native UITableViewCellSeparatorStyle getSeparatorStyle();
+    public UITableViewCellSeparatorStyle getSeparatorStyle() {
+        if (customClass) { return objc_getSeparatorStyleSuper(getSuper(), this, separatorStyle); } else { return objc_getSeparatorStyle(this, separatorStyle); }
+    }
+    
+    private static final Selector setSeparatorStyle$ = Selector.register("setSeparatorStyle:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSeparatorStyle(UITableView __self__, Selector __cmd__, UITableViewCellSeparatorStyle separatorStyle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSeparatorStyleSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, UITableViewCellSeparatorStyle separatorStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/separatorStyle">@property(nonatomic) UITableViewCellSeparatorStyle separatorStyle</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setSeparatorStyle:") public native void setSeparatorStyle(UITableViewCellSeparatorStyle v);
+    public void setSeparatorStyle(UITableViewCellSeparatorStyle separatorStyle) {
+        if (customClass) { objc_setSeparatorStyleSuper(getSuper(), this, setSeparatorStyle$, separatorStyle); } else { objc_setSeparatorStyle(this, setSeparatorStyle$, separatorStyle); }
+    }
+    
+    private static final Selector style = Selector.register("style");
+    @Bridge(symbol = "objc_msgSend") private native static UITableViewStyle objc_getStyle(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITableViewStyle objc_getStyleSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/style">@property(nonatomic, readonly) UITableViewStyle style</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("style") public native UITableViewStyle getStyle();
+    public UITableViewStyle getStyle() {
+        if (customClass) { return objc_getStyleSuper(getSuper(), this, style); } else { return objc_getStyle(this, style); }
+    }
+    
+    private static final Selector tableFooterView = Selector.register("tableFooterView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getTableFooterView(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getTableFooterViewSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/tableFooterView">@property(nonatomic, retain) UIView *tableFooterView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("tableFooterView") public native UIView getTableFooterView();
+    public UIView getTableFooterView() {
+        if (customClass) { return objc_getTableFooterViewSuper(getSuper(), this, tableFooterView); } else { return objc_getTableFooterView(this, tableFooterView); }
+    }
+    
+    private static final Selector setTableFooterView$ = Selector.register("setTableFooterView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTableFooterView(UITableView __self__, Selector __cmd__, UIView tableFooterView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTableFooterViewSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, UIView tableFooterView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/tableFooterView">@property(nonatomic, retain) UIView *tableFooterView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTableFooterView:") public native void setTableFooterView(UIView v);
+    public void setTableFooterView(UIView tableFooterView) {
+        if (customClass) { objc_setTableFooterViewSuper(getSuper(), this, setTableFooterView$, tableFooterView); } else { objc_setTableFooterView(this, setTableFooterView$, tableFooterView); }
+    }
+    
+    private static final Selector tableHeaderView = Selector.register("tableHeaderView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getTableHeaderView(UITableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getTableHeaderViewSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/tableHeaderView">@property(nonatomic, retain) UIView *tableHeaderView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("tableHeaderView") public native UIView getTableHeaderView();
+    public UIView getTableHeaderView() {
+        if (customClass) { return objc_getTableHeaderViewSuper(getSuper(), this, tableHeaderView); } else { return objc_getTableHeaderView(this, tableHeaderView); }
+    }
+    
+    private static final Selector setTableHeaderView$ = Selector.register("setTableHeaderView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTableHeaderView(UITableView __self__, Selector __cmd__, UIView tableHeaderView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTableHeaderViewSuper(ObjCSuper __super__, UITableView __self__, Selector __cmd__, UIView tableHeaderView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/tableHeaderView">@property(nonatomic, retain) UIView *tableHeaderView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTableHeaderView:") public native void setTableHeaderView(UIView v);
+    public void setTableHeaderView(UIView tableHeaderView) {
+        if (customClass) { objc_setTableHeaderViewSuper(getSuper(), this, setTableHeaderView$, tableHeaderView); } else { objc_setTableHeaderView(this, setTableHeaderView$, tableHeaderView); }
+    }
     /*</properties>*/
     /*<methods>*/
     

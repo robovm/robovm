@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,36 +53,72 @@ public class /*<name>*/ UITouch /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector gestureRecognizers = Selector.register("gestureRecognizers");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getGestureRecognizers(UITouch __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getGestureRecognizersSuper(ObjCSuper __super__, UITouch __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/gestureRecognizers">@property(nonatomic,readonly,copy) NSArray *gestureRecognizers</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("gestureRecognizers") public native NSArray getGestureRecognizers();
+    public NSArray getGestureRecognizers() {
+        if (customClass) { return objc_getGestureRecognizersSuper(getSuper(), this, gestureRecognizers); } else { return objc_getGestureRecognizers(this, gestureRecognizers); }
+    }
+    
+    private static final Selector phase = Selector.register("phase");
+    @Bridge(symbol = "objc_msgSend") private native static UITouchPhase objc_getPhase(UITouch __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITouchPhase objc_getPhaseSuper(ObjCSuper __super__, UITouch __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/phase">@property(nonatomic, readonly) UITouchPhase phase</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("phase") public native UITouchPhase getPhase();
+    public UITouchPhase getPhase() {
+        if (customClass) { return objc_getPhaseSuper(getSuper(), this, phase); } else { return objc_getPhase(this, phase); }
+    }
+    
+    private static final Selector tapCount = Selector.register("tapCount");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getTapCount(UITouch __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getTapCountSuper(ObjCSuper __super__, UITouch __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/tapCount">@property(nonatomic, readonly) NSUInteger tapCount</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("tapCount") public native int getTapCount();
+    public int getTapCount() {
+        if (customClass) { return objc_getTapCountSuper(getSuper(), this, tapCount); } else { return objc_getTapCount(this, tapCount); }
+    }
+    
+    private static final Selector timestamp = Selector.register("timestamp");
+    @Bridge(symbol = "objc_msgSend") private native static double objc_getTimestamp(UITouch __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getTimestampSuper(ObjCSuper __super__, UITouch __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/timestamp">@property(nonatomic, readonly) NSTimeInterval timestamp</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("timestamp") public native double getTimestamp();
+    public double getTimestamp() {
+        if (customClass) { return objc_getTimestampSuper(getSuper(), this, timestamp); } else { return objc_getTimestamp(this, timestamp); }
+    }
+    
+    private static final Selector view = Selector.register("view");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getView(UITouch __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getViewSuper(ObjCSuper __super__, UITouch __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/view">@property(nonatomic, readonly, retain) UIView *view</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("view") public native UIView getView();
+    public UIView getView() {
+        if (customClass) { return objc_getViewSuper(getSuper(), this, view); } else { return objc_getView(this, view); }
+    }
+    
+    private static final Selector window = Selector.register("window");
+    @Bridge(symbol = "objc_msgSend") private native static UIWindow objc_getWindow(UITouch __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIWindow objc_getWindowSuper(ObjCSuper __super__, UITouch __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/window">@property(nonatomic, readonly, retain) UIWindow *window</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("window") public native UIWindow getWindow();
+    public UIWindow getWindow() {
+        if (customClass) { return objc_getWindowSuper(getSuper(), this, window); } else { return objc_getWindow(this, window); }
+    }
     /*</properties>*/
     /*<methods>*/
     

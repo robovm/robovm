@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -64,46 +63,94 @@ public class /*<name>*/ UIDocument /*</name>*/
     }
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector documentState = Selector.register("documentState");
+    @Bridge(symbol = "objc_msgSend") private native static UIDocumentState objc_getDocumentState(UIDocument __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIDocumentState objc_getDocumentStateSuper(ObjCSuper __super__, UIDocument __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/documentState">@property(readonly) UIDocumentState documentState</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("documentState") public native UIDocumentState getDocumentState();
+    public UIDocumentState getDocumentState() {
+        if (customClass) { return objc_getDocumentStateSuper(getSuper(), this, documentState); } else { return objc_getDocumentState(this, documentState); }
+    }
+    
+    private static final Selector fileModificationDate = Selector.register("fileModificationDate");
+    @Bridge(symbol = "objc_msgSend") private native static NSDate objc_getFileModificationDate(UIDocument __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSDate objc_getFileModificationDateSuper(ObjCSuper __super__, UIDocument __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/fileModificationDate">@property(copy) NSDate *fileModificationDate</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("fileModificationDate") public native NSDate getFileModificationDate();
+    public NSDate getFileModificationDate() {
+        if (customClass) { return objc_getFileModificationDateSuper(getSuper(), this, fileModificationDate); } else { return objc_getFileModificationDate(this, fileModificationDate); }
+    }
+    
+    private static final Selector setFileModificationDate$ = Selector.register("setFileModificationDate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setFileModificationDate(UIDocument __self__, Selector __cmd__, NSDate fileModificationDate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFileModificationDateSuper(ObjCSuper __super__, UIDocument __self__, Selector __cmd__, NSDate fileModificationDate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/fileModificationDate">@property(copy) NSDate *fileModificationDate</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setFileModificationDate:") public native void setFileModificationDate(NSDate v);
+    public void setFileModificationDate(NSDate fileModificationDate) {
+        if (customClass) { objc_setFileModificationDateSuper(getSuper(), this, setFileModificationDate$, fileModificationDate); } else { objc_setFileModificationDate(this, setFileModificationDate$, fileModificationDate); }
+    }
+    
+    private static final Selector fileType = Selector.register("fileType");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getFileType(UIDocument __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getFileTypeSuper(ObjCSuper __super__, UIDocument __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/fileType">@property(readonly, copy) NSString *fileType</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("fileType") public native String getFileType();
+    public String getFileType() {
+        if (customClass) { return objc_getFileTypeSuper(getSuper(), this, fileType); } else { return objc_getFileType(this, fileType); }
+    }
+    
+    private static final Selector fileURL = Selector.register("fileURL");
+    @Bridge(symbol = "objc_msgSend") private native static NSURL objc_getFileURL(UIDocument __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSURL objc_getFileURLSuper(ObjCSuper __super__, UIDocument __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/fileURL">@property(readonly) NSURL *fileURL</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("fileURL") public native NSURL getFileURL();
+    public NSURL getFileURL() {
+        if (customClass) { return objc_getFileURLSuper(getSuper(), this, fileURL); } else { return objc_getFileURL(this, fileURL); }
+    }
+    
+    private static final Selector localizedName = Selector.register("localizedName");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getLocalizedName(UIDocument __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getLocalizedNameSuper(ObjCSuper __super__, UIDocument __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/localizedName">@property(readonly, copy) NSString *localizedName</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("localizedName") public native String getLocalizedName();
+    public String getLocalizedName() {
+        if (customClass) { return objc_getLocalizedNameSuper(getSuper(), this, localizedName); } else { return objc_getLocalizedName(this, localizedName); }
+    }
+    
+    private static final Selector undoManager = Selector.register("undoManager");
+    @Bridge(symbol = "objc_msgSend") private native static NSUndoManager objc_getUndoManager(UIDocument __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSUndoManager objc_getUndoManagerSuper(ObjCSuper __super__, UIDocument __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/undoManager">@property(retain) NSUndoManager *undoManager</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("undoManager") public native NSUndoManager getUndoManager();
+    public NSUndoManager getUndoManager() {
+        if (customClass) { return objc_getUndoManagerSuper(getSuper(), this, undoManager); } else { return objc_getUndoManager(this, undoManager); }
+    }
+    
+    private static final Selector setUndoManager$ = Selector.register("setUndoManager:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setUndoManager(UIDocument __self__, Selector __cmd__, NSUndoManager undoManager);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setUndoManagerSuper(ObjCSuper __super__, UIDocument __self__, Selector __cmd__, NSUndoManager undoManager);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/undoManager">@property(retain) NSUndoManager *undoManager</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setUndoManager:") public native void setUndoManager(NSUndoManager v);
+    public void setUndoManager(NSUndoManager undoManager) {
+        if (customClass) { objc_setUndoManagerSuper(getSuper(), this, setUndoManager$, undoManager); } else { objc_setUndoManager(this, setUndoManager$, undoManager); }
+    }
     /*</properties>*/
     /*<methods>*/
     

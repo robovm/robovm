@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,291 +53,633 @@ public class /*<name>*/ UITextView /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector allowsEditingTextAttributes = Selector.register("allowsEditingTextAttributes");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAllowsEditingTextAttributes(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAllowsEditingTextAttributesSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/allowsEditingTextAttributes">@property(nonatomic) BOOL allowsEditingTextAttributes</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("allowsEditingTextAttributes") public native boolean isAllowsEditingTextAttributes();
+    public boolean isAllowsEditingTextAttributes() {
+        if (customClass) { return objc_isAllowsEditingTextAttributesSuper(getSuper(), this, allowsEditingTextAttributes); } else { return objc_isAllowsEditingTextAttributes(this, allowsEditingTextAttributes); }
+    }
+    
+    private static final Selector setAllowsEditingTextAttributes$ = Selector.register("setAllowsEditingTextAttributes:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAllowsEditingTextAttributes(UITextView __self__, Selector __cmd__, boolean allowsEditingTextAttributes);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAllowsEditingTextAttributesSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, boolean allowsEditingTextAttributes);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/allowsEditingTextAttributes">@property(nonatomic) BOOL allowsEditingTextAttributes</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setAllowsEditingTextAttributes:") public native void setAllowsEditingTextAttributes(boolean v);
+    public void setAllowsEditingTextAttributes(boolean allowsEditingTextAttributes) {
+        if (customClass) { objc_setAllowsEditingTextAttributesSuper(getSuper(), this, setAllowsEditingTextAttributes$, allowsEditingTextAttributes); } else { objc_setAllowsEditingTextAttributes(this, setAllowsEditingTextAttributes$, allowsEditingTextAttributes); }
+    }
+    
+    private static final Selector attributedText = Selector.register("attributedText");
+    @Bridge(symbol = "objc_msgSend") private native static NSAttributedString objc_getAttributedText(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSAttributedString objc_getAttributedTextSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/attributedText">@property(nonatomic,copy) NSAttributedString *attributedText</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("attributedText") public native NSAttributedString getAttributedText();
+    public NSAttributedString getAttributedText() {
+        if (customClass) { return objc_getAttributedTextSuper(getSuper(), this, attributedText); } else { return objc_getAttributedText(this, attributedText); }
+    }
+    
+    private static final Selector setAttributedText$ = Selector.register("setAttributedText:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAttributedText(UITextView __self__, Selector __cmd__, NSAttributedString attributedText);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAttributedTextSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, NSAttributedString attributedText);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/attributedText">@property(nonatomic,copy) NSAttributedString *attributedText</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setAttributedText:") public native void setAttributedText(NSAttributedString v);
+    public void setAttributedText(NSAttributedString attributedText) {
+        if (customClass) { objc_setAttributedTextSuper(getSuper(), this, setAttributedText$, attributedText); } else { objc_setAttributedText(this, setAttributedText$, attributedText); }
+    }
+    
+    private static final Selector autocapitalizationType = Selector.register("autocapitalizationType");
+    @Bridge(symbol = "objc_msgSend") private native static UITextAutocapitalizationType objc_getAutocapitalizationType(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextAutocapitalizationType objc_getAutocapitalizationTypeSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocapitalizationType">@property(nonatomic) UITextAutocapitalizationType autocapitalizationType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("autocapitalizationType") public native UITextAutocapitalizationType getAutocapitalizationType();
+    public UITextAutocapitalizationType getAutocapitalizationType() {
+        if (customClass) { return objc_getAutocapitalizationTypeSuper(getSuper(), this, autocapitalizationType); } else { return objc_getAutocapitalizationType(this, autocapitalizationType); }
+    }
+    
+    private static final Selector setAutocapitalizationType$ = Selector.register("setAutocapitalizationType:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAutocapitalizationType(UITextView __self__, Selector __cmd__, UITextAutocapitalizationType autocapitalizationType);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAutocapitalizationTypeSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, UITextAutocapitalizationType autocapitalizationType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocapitalizationType">@property(nonatomic) UITextAutocapitalizationType autocapitalizationType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAutocapitalizationType:") public native void setAutocapitalizationType(UITextAutocapitalizationType v);
+    public void setAutocapitalizationType(UITextAutocapitalizationType autocapitalizationType) {
+        if (customClass) { objc_setAutocapitalizationTypeSuper(getSuper(), this, setAutocapitalizationType$, autocapitalizationType); } else { objc_setAutocapitalizationType(this, setAutocapitalizationType$, autocapitalizationType); }
+    }
+    
+    private static final Selector autocorrectionType = Selector.register("autocorrectionType");
+    @Bridge(symbol = "objc_msgSend") private native static UITextAutocorrectionType objc_getAutocorrectionType(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextAutocorrectionType objc_getAutocorrectionTypeSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocorrectionType">@property(nonatomic) UITextAutocorrectionType autocorrectionType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("autocorrectionType") public native UITextAutocorrectionType getAutocorrectionType();
+    public UITextAutocorrectionType getAutocorrectionType() {
+        if (customClass) { return objc_getAutocorrectionTypeSuper(getSuper(), this, autocorrectionType); } else { return objc_getAutocorrectionType(this, autocorrectionType); }
+    }
+    
+    private static final Selector setAutocorrectionType$ = Selector.register("setAutocorrectionType:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAutocorrectionType(UITextView __self__, Selector __cmd__, UITextAutocorrectionType autocorrectionType);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAutocorrectionTypeSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, UITextAutocorrectionType autocorrectionType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocorrectionType">@property(nonatomic) UITextAutocorrectionType autocorrectionType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAutocorrectionType:") public native void setAutocorrectionType(UITextAutocorrectionType v);
+    public void setAutocorrectionType(UITextAutocorrectionType autocorrectionType) {
+        if (customClass) { objc_setAutocorrectionTypeSuper(getSuper(), this, setAutocorrectionType$, autocorrectionType); } else { objc_setAutocorrectionType(this, setAutocorrectionType$, autocorrectionType); }
+    }
+    
+    private static final Selector beginningOfDocument = Selector.register("beginningOfDocument");
+    @Bridge(symbol = "objc_msgSend") private native static UITextPosition objc_getBeginningOfDocument(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextPosition objc_getBeginningOfDocumentSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/beginningOfDocument">@property(nonatomic, readonly) UITextPosition *beginningOfDocument</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("beginningOfDocument") public native UITextPosition getBeginningOfDocument();
+    public UITextPosition getBeginningOfDocument() {
+        if (customClass) { return objc_getBeginningOfDocumentSuper(getSuper(), this, beginningOfDocument); } else { return objc_getBeginningOfDocument(this, beginningOfDocument); }
+    }
+    
+    private static final Selector clearsOnInsertion = Selector.register("clearsOnInsertion");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isClearsOnInsertion(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isClearsOnInsertionSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/clearsOnInsertion">@property(nonatomic) BOOL clearsOnInsertion</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("clearsOnInsertion") public native boolean isClearsOnInsertion();
+    public boolean isClearsOnInsertion() {
+        if (customClass) { return objc_isClearsOnInsertionSuper(getSuper(), this, clearsOnInsertion); } else { return objc_isClearsOnInsertion(this, clearsOnInsertion); }
+    }
+    
+    private static final Selector setClearsOnInsertion$ = Selector.register("setClearsOnInsertion:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setClearsOnInsertion(UITextView __self__, Selector __cmd__, boolean clearsOnInsertion);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setClearsOnInsertionSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, boolean clearsOnInsertion);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/clearsOnInsertion">@property(nonatomic) BOOL clearsOnInsertion</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setClearsOnInsertion:") public native void setClearsOnInsertion(boolean v);
+    public void setClearsOnInsertion(boolean clearsOnInsertion) {
+        if (customClass) { objc_setClearsOnInsertionSuper(getSuper(), this, setClearsOnInsertion$, clearsOnInsertion); } else { objc_setClearsOnInsertion(this, setClearsOnInsertion$, clearsOnInsertion); }
+    }
+    
+    private static final Selector dataDetectorTypes = Selector.register("dataDetectorTypes");
+    @Bridge(symbol = "objc_msgSend") private native static UIDataDetectorTypes objc_getDataDetectorTypes(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIDataDetectorTypes objc_getDataDetectorTypesSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/dataDetectorTypes">@property(nonatomic) UIDataDetectorTypes dataDetectorTypes</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("dataDetectorTypes") public native UIDataDetectorTypes getDataDetectorTypes();
+    public UIDataDetectorTypes getDataDetectorTypes() {
+        if (customClass) { return objc_getDataDetectorTypesSuper(getSuper(), this, dataDetectorTypes); } else { return objc_getDataDetectorTypes(this, dataDetectorTypes); }
+    }
+    
+    private static final Selector setDataDetectorTypes$ = Selector.register("setDataDetectorTypes:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDataDetectorTypes(UITextView __self__, Selector __cmd__, UIDataDetectorTypes dataDetectorTypes);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDataDetectorTypesSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, UIDataDetectorTypes dataDetectorTypes);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/dataDetectorTypes">@property(nonatomic) UIDataDetectorTypes dataDetectorTypes</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setDataDetectorTypes:") public native void setDataDetectorTypes(UIDataDetectorTypes v);
+    public void setDataDetectorTypes(UIDataDetectorTypes dataDetectorTypes) {
+        if (customClass) { objc_setDataDetectorTypesSuper(getSuper(), this, setDataDetectorTypes$, dataDetectorTypes); } else { objc_setDataDetectorTypes(this, setDataDetectorTypes$, dataDetectorTypes); }
+    }
+    
+    private static final Selector delegate = Selector.register("delegate");
+    @Bridge(symbol = "objc_msgSend") private native static UITextViewDelegate objc_getDelegate(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextViewDelegate objc_getDelegateSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/delegate">@property(nonatomic, assign) id&amp;lt;UITextViewDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("delegate") public native UITextViewDelegate getDelegate();
+    public UITextViewDelegate getDelegate() {
+        if (customClass) { return objc_getDelegateSuper(getSuper(), this, delegate); } else { return objc_getDelegate(this, delegate); }
+    }
+    
+    private static final Selector setDelegate$ = Selector.register("setDelegate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UITextView __self__, Selector __cmd__, UITextViewDelegate delegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, UITextViewDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/delegate">@property(nonatomic, assign) id&amp;lt;UITextViewDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(UITextViewDelegate v);
+    public void setDelegate(UITextViewDelegate delegate) {
+        if (customClass) { objc_setDelegateSuper(getSuper(), this, setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
+    }
+    
+    private static final Selector isEditable = Selector.register("isEditable");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isEditable(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isEditableSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/editable">@property(nonatomic, getter=isEditable) BOOL editable</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isEditable") public native boolean isEditable();
+    public boolean isEditable() {
+        if (customClass) { return objc_isEditableSuper(getSuper(), this, isEditable); } else { return objc_isEditable(this, isEditable); }
+    }
+    
+    private static final Selector setEditable$ = Selector.register("setEditable:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setEditable(UITextView __self__, Selector __cmd__, boolean editable);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setEditableSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, boolean editable);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/editable">@property(nonatomic, getter=isEditable) BOOL editable</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setEditable:") public native void setEditable(boolean v);
+    public void setEditable(boolean editable) {
+        if (customClass) { objc_setEditableSuper(getSuper(), this, setEditable$, editable); } else { objc_setEditable(this, setEditable$, editable); }
+    }
+    
+    private static final Selector enablesReturnKeyAutomatically = Selector.register("enablesReturnKeyAutomatically");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isEnablesReturnKeyAutomatically(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isEnablesReturnKeyAutomaticallySuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/enablesReturnKeyAutomatically">@property(nonatomic) BOOL enablesReturnKeyAutomatically</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("enablesReturnKeyAutomatically") public native boolean isEnablesReturnKeyAutomatically();
+    public boolean isEnablesReturnKeyAutomatically() {
+        if (customClass) { return objc_isEnablesReturnKeyAutomaticallySuper(getSuper(), this, enablesReturnKeyAutomatically); } else { return objc_isEnablesReturnKeyAutomatically(this, enablesReturnKeyAutomatically); }
+    }
+    
+    private static final Selector setEnablesReturnKeyAutomatically$ = Selector.register("setEnablesReturnKeyAutomatically:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setEnablesReturnKeyAutomatically(UITextView __self__, Selector __cmd__, boolean enablesReturnKeyAutomatically);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setEnablesReturnKeyAutomaticallySuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, boolean enablesReturnKeyAutomatically);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/enablesReturnKeyAutomatically">@property(nonatomic) BOOL enablesReturnKeyAutomatically</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setEnablesReturnKeyAutomatically:") public native void setEnablesReturnKeyAutomatically(boolean v);
+    public void setEnablesReturnKeyAutomatically(boolean enablesReturnKeyAutomatically) {
+        if (customClass) { objc_setEnablesReturnKeyAutomaticallySuper(getSuper(), this, setEnablesReturnKeyAutomatically$, enablesReturnKeyAutomatically); } else { objc_setEnablesReturnKeyAutomatically(this, setEnablesReturnKeyAutomatically$, enablesReturnKeyAutomatically); }
+    }
+    
+    private static final Selector endOfDocument = Selector.register("endOfDocument");
+    @Bridge(symbol = "objc_msgSend") private native static UITextPosition objc_getEndOfDocument(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextPosition objc_getEndOfDocumentSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/endOfDocument">@property(nonatomic, readonly) UITextPosition *endOfDocument</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("endOfDocument") public native UITextPosition getEndOfDocument();
+    public UITextPosition getEndOfDocument() {
+        if (customClass) { return objc_getEndOfDocumentSuper(getSuper(), this, endOfDocument); } else { return objc_getEndOfDocument(this, endOfDocument); }
+    }
+    
+    private static final Selector font = Selector.register("font");
+    @Bridge(symbol = "objc_msgSend") private native static UIFont objc_getFont(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIFont objc_getFontSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/font">@property(nonatomic, retain) UIFont *font</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("font") public native UIFont getFont();
+    public UIFont getFont() {
+        if (customClass) { return objc_getFontSuper(getSuper(), this, font); } else { return objc_getFont(this, font); }
+    }
+    
+    private static final Selector setFont$ = Selector.register("setFont:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setFont(UITextView __self__, Selector __cmd__, UIFont font);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFontSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, UIFont font);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/font">@property(nonatomic, retain) UIFont *font</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setFont:") public native void setFont(UIFont v);
+    public void setFont(UIFont font) {
+        if (customClass) { objc_setFontSuper(getSuper(), this, setFont$, font); } else { objc_setFont(this, setFont$, font); }
+    }
+    
+    private static final Selector inputAccessoryView = Selector.register("inputAccessoryView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getInputAccessoryView(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getInputAccessoryViewSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/inputAccessoryView">@property (readwrite, retain) UIView *inputAccessoryView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("inputAccessoryView") public native UIView getInputAccessoryView();
+    public UIView getInputAccessoryView() {
+        if (customClass) { return objc_getInputAccessoryViewSuper(getSuper(), this, inputAccessoryView); } else { return objc_getInputAccessoryView(this, inputAccessoryView); }
+    }
+    
+    private static final Selector setInputAccessoryView$ = Selector.register("setInputAccessoryView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setInputAccessoryView(UITextView __self__, Selector __cmd__, UIView inputAccessoryView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setInputAccessoryViewSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, UIView inputAccessoryView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/inputAccessoryView">@property (readwrite, retain) UIView *inputAccessoryView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setInputAccessoryView:") public native void setInputAccessoryView(UIView v);
+    public void setInputAccessoryView(UIView inputAccessoryView) {
+        if (customClass) { objc_setInputAccessoryViewSuper(getSuper(), this, setInputAccessoryView$, inputAccessoryView); } else { objc_setInputAccessoryView(this, setInputAccessoryView$, inputAccessoryView); }
+    }
+    
+    private static final Selector inputDelegate = Selector.register("inputDelegate");
+    @Bridge(symbol = "objc_msgSend") private native static UITextInputDelegate objc_getInputDelegate(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextInputDelegate objc_getInputDelegateSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/inputDelegate">@property(nonatomic, assign) id&amp;lt;UITextInputDelegate&amp;gt; inputDelegate</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("inputDelegate") public native UITextInputDelegate getInputDelegate();
+    public UITextInputDelegate getInputDelegate() {
+        if (customClass) { return objc_getInputDelegateSuper(getSuper(), this, inputDelegate); } else { return objc_getInputDelegate(this, inputDelegate); }
+    }
+    
+    private static final Selector setInputDelegate$ = Selector.register("setInputDelegate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setInputDelegate(UITextView __self__, Selector __cmd__, UITextInputDelegate inputDelegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setInputDelegateSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, UITextInputDelegate inputDelegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/inputDelegate">@property(nonatomic, assign) id&amp;lt;UITextInputDelegate&amp;gt; inputDelegate</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setInputDelegate:") public native void setInputDelegate(UITextInputDelegate v);
+    public void setInputDelegate(UITextInputDelegate inputDelegate) {
+        if (customClass) { objc_setInputDelegateSuper(getSuper(), this, setInputDelegate$, inputDelegate); } else { objc_setInputDelegate(this, setInputDelegate$, inputDelegate); }
+    }
+    
+    private static final Selector inputView = Selector.register("inputView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getInputView(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getInputViewSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/inputView">@property (readwrite, retain) UIView *inputView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("inputView") public native UIView getInputView();
+    public UIView getInputView() {
+        if (customClass) { return objc_getInputViewSuper(getSuper(), this, inputView); } else { return objc_getInputView(this, inputView); }
+    }
+    
+    private static final Selector setInputView$ = Selector.register("setInputView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setInputView(UITextView __self__, Selector __cmd__, UIView inputView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setInputViewSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, UIView inputView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/inputView">@property (readwrite, retain) UIView *inputView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setInputView:") public native void setInputView(UIView v);
+    public void setInputView(UIView inputView) {
+        if (customClass) { objc_setInputViewSuper(getSuper(), this, setInputView$, inputView); } else { objc_setInputView(this, setInputView$, inputView); }
+    }
+    
+    private static final Selector keyboardAppearance = Selector.register("keyboardAppearance");
+    @Bridge(symbol = "objc_msgSend") private native static UIKeyboardAppearance objc_getKeyboardAppearance(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIKeyboardAppearance objc_getKeyboardAppearanceSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardAppearance">@property(nonatomic) UIKeyboardAppearance keyboardAppearance</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("keyboardAppearance") public native UIKeyboardAppearance getKeyboardAppearance();
+    public UIKeyboardAppearance getKeyboardAppearance() {
+        if (customClass) { return objc_getKeyboardAppearanceSuper(getSuper(), this, keyboardAppearance); } else { return objc_getKeyboardAppearance(this, keyboardAppearance); }
+    }
+    
+    private static final Selector setKeyboardAppearance$ = Selector.register("setKeyboardAppearance:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setKeyboardAppearance(UITextView __self__, Selector __cmd__, UIKeyboardAppearance keyboardAppearance);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setKeyboardAppearanceSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, UIKeyboardAppearance keyboardAppearance);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardAppearance">@property(nonatomic) UIKeyboardAppearance keyboardAppearance</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setKeyboardAppearance:") public native void setKeyboardAppearance(UIKeyboardAppearance v);
+    public void setKeyboardAppearance(UIKeyboardAppearance keyboardAppearance) {
+        if (customClass) { objc_setKeyboardAppearanceSuper(getSuper(), this, setKeyboardAppearance$, keyboardAppearance); } else { objc_setKeyboardAppearance(this, setKeyboardAppearance$, keyboardAppearance); }
+    }
+    
+    private static final Selector keyboardType = Selector.register("keyboardType");
+    @Bridge(symbol = "objc_msgSend") private native static UIKeyboardType objc_getKeyboardType(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIKeyboardType objc_getKeyboardTypeSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardType">@property(nonatomic) UIKeyboardType keyboardType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("keyboardType") public native UIKeyboardType getKeyboardType();
+    public UIKeyboardType getKeyboardType() {
+        if (customClass) { return objc_getKeyboardTypeSuper(getSuper(), this, keyboardType); } else { return objc_getKeyboardType(this, keyboardType); }
+    }
+    
+    private static final Selector setKeyboardType$ = Selector.register("setKeyboardType:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setKeyboardType(UITextView __self__, Selector __cmd__, UIKeyboardType keyboardType);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setKeyboardTypeSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, UIKeyboardType keyboardType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardType">@property(nonatomic) UIKeyboardType keyboardType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setKeyboardType:") public native void setKeyboardType(UIKeyboardType v);
+    public void setKeyboardType(UIKeyboardType keyboardType) {
+        if (customClass) { objc_setKeyboardTypeSuper(getSuper(), this, setKeyboardType$, keyboardType); } else { objc_setKeyboardType(this, setKeyboardType$, keyboardType); }
+    }
+    
+    private static final Selector markedTextRange = Selector.register("markedTextRange");
+    @Bridge(symbol = "objc_msgSend") private native static UITextRange objc_getMarkedTextRange(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextRange objc_getMarkedTextRangeSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextRange">@property(nonatomic, readonly) UITextRange *markedTextRange</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("markedTextRange") public native UITextRange getMarkedTextRange();
+    public UITextRange getMarkedTextRange() {
+        if (customClass) { return objc_getMarkedTextRangeSuper(getSuper(), this, markedTextRange); } else { return objc_getMarkedTextRange(this, markedTextRange); }
+    }
+    
+    private static final Selector markedTextStyle = Selector.register("markedTextStyle");
+    @Bridge(symbol = "objc_msgSend") private native static NSDictionary objc_getMarkedTextStyle(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSDictionary objc_getMarkedTextStyleSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextStyle">@property(nonatomic, copy) NSDictionary *markedTextStyle</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("markedTextStyle") public native NSDictionary getMarkedTextStyle();
+    public NSDictionary getMarkedTextStyle() {
+        if (customClass) { return objc_getMarkedTextStyleSuper(getSuper(), this, markedTextStyle); } else { return objc_getMarkedTextStyle(this, markedTextStyle); }
+    }
+    
+    private static final Selector setMarkedTextStyle$ = Selector.register("setMarkedTextStyle:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMarkedTextStyle(UITextView __self__, Selector __cmd__, NSDictionary markedTextStyle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMarkedTextStyleSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, NSDictionary markedTextStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextStyle">@property(nonatomic, copy) NSDictionary *markedTextStyle</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setMarkedTextStyle:") public native void setMarkedTextStyle(NSDictionary v);
+    public void setMarkedTextStyle(NSDictionary markedTextStyle) {
+        if (customClass) { objc_setMarkedTextStyleSuper(getSuper(), this, setMarkedTextStyle$, markedTextStyle); } else { objc_setMarkedTextStyle(this, setMarkedTextStyle$, markedTextStyle); }
+    }
+    
+    private static final Selector returnKeyType = Selector.register("returnKeyType");
+    @Bridge(symbol = "objc_msgSend") private native static UIReturnKeyType objc_getReturnKeyType(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIReturnKeyType objc_getReturnKeyTypeSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/returnKeyType">@property(nonatomic) UIReturnKeyType returnKeyType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("returnKeyType") public native UIReturnKeyType getReturnKeyType();
+    public UIReturnKeyType getReturnKeyType() {
+        if (customClass) { return objc_getReturnKeyTypeSuper(getSuper(), this, returnKeyType); } else { return objc_getReturnKeyType(this, returnKeyType); }
+    }
+    
+    private static final Selector setReturnKeyType$ = Selector.register("setReturnKeyType:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setReturnKeyType(UITextView __self__, Selector __cmd__, UIReturnKeyType returnKeyType);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setReturnKeyTypeSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, UIReturnKeyType returnKeyType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/returnKeyType">@property(nonatomic) UIReturnKeyType returnKeyType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setReturnKeyType:") public native void setReturnKeyType(UIReturnKeyType v);
+    public void setReturnKeyType(UIReturnKeyType returnKeyType) {
+        if (customClass) { objc_setReturnKeyTypeSuper(getSuper(), this, setReturnKeyType$, returnKeyType); } else { objc_setReturnKeyType(this, setReturnKeyType$, returnKeyType); }
+    }
+    
+    private static final Selector isSecureTextEntry = Selector.register("isSecureTextEntry");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isSecureTextEntry(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isSecureTextEntrySuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/secureTextEntry">@property(nonatomic, getter=isSecureTextEntry) BOOL secureTextEntry</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isSecureTextEntry") public native boolean isSecureTextEntry();
+    public boolean isSecureTextEntry() {
+        if (customClass) { return objc_isSecureTextEntrySuper(getSuper(), this, isSecureTextEntry); } else { return objc_isSecureTextEntry(this, isSecureTextEntry); }
+    }
+    
+    private static final Selector setSecureTextEntry$ = Selector.register("setSecureTextEntry:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSecureTextEntry(UITextView __self__, Selector __cmd__, boolean secureTextEntry);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSecureTextEntrySuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, boolean secureTextEntry);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/secureTextEntry">@property(nonatomic, getter=isSecureTextEntry) BOOL secureTextEntry</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setSecureTextEntry:") public native void setSecureTextEntry(boolean v);
+    public void setSecureTextEntry(boolean secureTextEntry) {
+        if (customClass) { objc_setSecureTextEntrySuper(getSuper(), this, setSecureTextEntry$, secureTextEntry); } else { objc_setSecureTextEntry(this, setSecureTextEntry$, secureTextEntry); }
+    }
+    
+    private static final Selector selectedRange = Selector.register("selectedRange");
+    @Bridge(symbol = "objc_msgSend") private native static NSRange objc_getSelectedRange(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSRange objc_getSelectedRangeSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/selectedRange">@property(nonatomic) NSRange selectedRange</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("selectedRange") public native NSRange getSelectedRange();
+    public NSRange getSelectedRange() {
+        if (customClass) { return objc_getSelectedRangeSuper(getSuper(), this, selectedRange); } else { return objc_getSelectedRange(this, selectedRange); }
+    }
+    
+    private static final Selector setSelectedRange$ = Selector.register("setSelectedRange:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSelectedRange(UITextView __self__, Selector __cmd__, NSRange selectedRange);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectedRangeSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, NSRange selectedRange);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/selectedRange">@property(nonatomic) NSRange selectedRange</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setSelectedRange:") public native void setSelectedRange(NSRange v);
+    public void setSelectedRange(NSRange selectedRange) {
+        if (customClass) { objc_setSelectedRangeSuper(getSuper(), this, setSelectedRange$, selectedRange); } else { objc_setSelectedRange(this, setSelectedRange$, selectedRange); }
+    }
+    
+    private static final Selector selectedTextRange = Selector.register("selectedTextRange");
+    @Bridge(symbol = "objc_msgSend") private native static UITextRange objc_getSelectedTextRange(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextRange objc_getSelectedTextRangeSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectedTextRange">@property(readwrite, copy) UITextRange *selectedTextRange</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("selectedTextRange") public native UITextRange getSelectedTextRange();
+    public UITextRange getSelectedTextRange() {
+        if (customClass) { return objc_getSelectedTextRangeSuper(getSuper(), this, selectedTextRange); } else { return objc_getSelectedTextRange(this, selectedTextRange); }
+    }
+    
+    private static final Selector setSelectedTextRange$ = Selector.register("setSelectedTextRange:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSelectedTextRange(UITextView __self__, Selector __cmd__, UITextRange selectedTextRange);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectedTextRangeSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, UITextRange selectedTextRange);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectedTextRange">@property(readwrite, copy) UITextRange *selectedTextRange</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setSelectedTextRange:") public native void setSelectedTextRange(UITextRange v);
+    public void setSelectedTextRange(UITextRange selectedTextRange) {
+        if (customClass) { objc_setSelectedTextRangeSuper(getSuper(), this, setSelectedTextRange$, selectedTextRange); } else { objc_setSelectedTextRange(this, setSelectedTextRange$, selectedTextRange); }
+    }
+    
+    private static final Selector selectionAffinity = Selector.register("selectionAffinity");
+    @Bridge(symbol = "objc_msgSend") private native static UITextStorageDirection objc_getSelectionAffinity(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextStorageDirection objc_getSelectionAffinitySuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectionAffinity">@property(nonatomic) UITextStorageDirection selectionAffinity</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("selectionAffinity") public native UITextStorageDirection getSelectionAffinity();
+    public UITextStorageDirection getSelectionAffinity() {
+        if (customClass) { return objc_getSelectionAffinitySuper(getSuper(), this, selectionAffinity); } else { return objc_getSelectionAffinity(this, selectionAffinity); }
+    }
+    
+    private static final Selector setSelectionAffinity$ = Selector.register("setSelectionAffinity:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSelectionAffinity(UITextView __self__, Selector __cmd__, UITextStorageDirection selectionAffinity);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectionAffinitySuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, UITextStorageDirection selectionAffinity);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectionAffinity">@property(nonatomic) UITextStorageDirection selectionAffinity</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setSelectionAffinity:") public native void setSelectionAffinity(UITextStorageDirection v);
+    public void setSelectionAffinity(UITextStorageDirection selectionAffinity) {
+        if (customClass) { objc_setSelectionAffinitySuper(getSuper(), this, setSelectionAffinity$, selectionAffinity); } else { objc_setSelectionAffinity(this, setSelectionAffinity$, selectionAffinity); }
+    }
+    
+    private static final Selector spellCheckingType = Selector.register("spellCheckingType");
+    @Bridge(symbol = "objc_msgSend") private native static UITextSpellCheckingType objc_getSpellCheckingType(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextSpellCheckingType objc_getSpellCheckingTypeSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/spellCheckingType">@property(nonatomic) UITextSpellCheckingType spellCheckingType</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("spellCheckingType") public native UITextSpellCheckingType getSpellCheckingType();
+    public UITextSpellCheckingType getSpellCheckingType() {
+        if (customClass) { return objc_getSpellCheckingTypeSuper(getSuper(), this, spellCheckingType); } else { return objc_getSpellCheckingType(this, spellCheckingType); }
+    }
+    
+    private static final Selector setSpellCheckingType$ = Selector.register("setSpellCheckingType:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSpellCheckingType(UITextView __self__, Selector __cmd__, UITextSpellCheckingType spellCheckingType);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSpellCheckingTypeSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, UITextSpellCheckingType spellCheckingType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/spellCheckingType">@property(nonatomic) UITextSpellCheckingType spellCheckingType</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setSpellCheckingType:") public native void setSpellCheckingType(UITextSpellCheckingType v);
+    public void setSpellCheckingType(UITextSpellCheckingType spellCheckingType) {
+        if (customClass) { objc_setSpellCheckingTypeSuper(getSuper(), this, setSpellCheckingType$, spellCheckingType); } else { objc_setSpellCheckingType(this, setSpellCheckingType$, spellCheckingType); }
+    }
+    
+    private static final Selector text = Selector.register("text");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getText(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getTextSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/text">@property(nonatomic, copy) NSString *text</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("text") public native String getText();
+    public String getText() {
+        if (customClass) { return objc_getTextSuper(getSuper(), this, text); } else { return objc_getText(this, text); }
+    }
+    
+    private static final Selector setText$ = Selector.register("setText:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setText(UITextView __self__, Selector __cmd__, String text);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTextSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, String text);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/text">@property(nonatomic, copy) NSString *text</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setText:") public native void setText(String v);
+    public void setText(String text) {
+        if (customClass) { objc_setTextSuper(getSuper(), this, setText$, text); } else { objc_setText(this, setText$, text); }
+    }
+    
+    private static final Selector textAlignment = Selector.register("textAlignment");
+    @Bridge(symbol = "objc_msgSend") private native static NSTextAlignment objc_getTextAlignment(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSTextAlignment objc_getTextAlignmentSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/textAlignment">@property(nonatomic) NSTextAlignment textAlignment</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("textAlignment") public native NSTextAlignment getTextAlignment();
+    public NSTextAlignment getTextAlignment() {
+        if (customClass) { return objc_getTextAlignmentSuper(getSuper(), this, textAlignment); } else { return objc_getTextAlignment(this, textAlignment); }
+    }
+    
+    private static final Selector setTextAlignment$ = Selector.register("setTextAlignment:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTextAlignment(UITextView __self__, Selector __cmd__, NSTextAlignment textAlignment);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTextAlignmentSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, NSTextAlignment textAlignment);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/textAlignment">@property(nonatomic) NSTextAlignment textAlignment</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTextAlignment:") public native void setTextAlignment(NSTextAlignment v);
+    public void setTextAlignment(NSTextAlignment textAlignment) {
+        if (customClass) { objc_setTextAlignmentSuper(getSuper(), this, setTextAlignment$, textAlignment); } else { objc_setTextAlignment(this, setTextAlignment$, textAlignment); }
+    }
+    
+    private static final Selector textColor = Selector.register("textColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getTextColor(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getTextColorSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/textColor">@property(nonatomic, retain) UIColor *textColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("textColor") public native UIColor getTextColor();
+    public UIColor getTextColor() {
+        if (customClass) { return objc_getTextColorSuper(getSuper(), this, textColor); } else { return objc_getTextColor(this, textColor); }
+    }
+    
+    private static final Selector setTextColor$ = Selector.register("setTextColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTextColor(UITextView __self__, Selector __cmd__, UIColor textColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTextColorSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, UIColor textColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/textColor">@property(nonatomic, retain) UIColor *textColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTextColor:") public native void setTextColor(UIColor v);
+    public void setTextColor(UIColor textColor) {
+        if (customClass) { objc_setTextColorSuper(getSuper(), this, setTextColor$, textColor); } else { objc_setTextColor(this, setTextColor$, textColor); }
+    }
+    
+    private static final Selector textInputView = Selector.register("textInputView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getTextInputView(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getTextInputViewSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/textInputView">@property(nonatomic, readonly) UIView *textInputView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("textInputView") public native UIView getTextInputView();
+    public UIView getTextInputView() {
+        if (customClass) { return objc_getTextInputViewSuper(getSuper(), this, textInputView); } else { return objc_getTextInputView(this, textInputView); }
+    }
+    
+    private static final Selector tokenizer = Selector.register("tokenizer");
+    @Bridge(symbol = "objc_msgSend") private native static UITextInputTokenizer objc_getTokenizer(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextInputTokenizer objc_getTokenizerSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/tokenizer">@property(nonatomic, readonly) id&amp;lt;UITextInputTokenizer&amp;gt; tokenizer</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("tokenizer") public native UITextInputTokenizer getTokenizer();
+    public UITextInputTokenizer getTokenizer() {
+        if (customClass) { return objc_getTokenizerSuper(getSuper(), this, tokenizer); } else { return objc_getTokenizer(this, tokenizer); }
+    }
+    
+    private static final Selector typingAttributes = Selector.register("typingAttributes");
+    @Bridge(symbol = "objc_msgSend") private native static NSDictionary objc_getTypingAttributes(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSDictionary objc_getTypingAttributesSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/typingAttributes">@property(nonatomic,copy) NSDictionary *typingAttributes;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("typingAttributes") public native NSDictionary getTypingAttributes();
+    public NSDictionary getTypingAttributes() {
+        if (customClass) { return objc_getTypingAttributesSuper(getSuper(), this, typingAttributes); } else { return objc_getTypingAttributes(this, typingAttributes); }
+    }
+    
+    private static final Selector setTypingAttributes$ = Selector.register("setTypingAttributes:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTypingAttributes(UITextView __self__, Selector __cmd__, NSDictionary typingAttributes);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTypingAttributesSuper(ObjCSuper __super__, UITextView __self__, Selector __cmd__, NSDictionary typingAttributes);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/typingAttributes">@property(nonatomic,copy) NSDictionary *typingAttributes;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setTypingAttributes:") public native void setTypingAttributes(NSDictionary v);
+    public void setTypingAttributes(NSDictionary typingAttributes) {
+        if (customClass) { objc_setTypingAttributesSuper(getSuper(), this, setTypingAttributes$, typingAttributes); } else { objc_setTypingAttributes(this, setTypingAttributes$, typingAttributes); }
+    }
     /*</properties>*/
     /*<methods>*/
     

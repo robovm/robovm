@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -44,67 +43,67 @@ public interface /*<name>*/ UITextInput /*</name>*/ /*<implements>*/ extends UIK
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/beginningOfDocument">@property(nonatomic, readonly) UITextPosition *beginningOfDocument</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("beginningOfDocument") UITextPosition getBeginningOfDocument();
+    UITextPosition getBeginningOfDocument();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/endOfDocument">@property(nonatomic, readonly) UITextPosition *endOfDocument</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("endOfDocument") UITextPosition getEndOfDocument();
+    UITextPosition getEndOfDocument();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/inputDelegate">@property(nonatomic, assign) id&amp;lt;UITextInputDelegate&amp;gt; inputDelegate</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("inputDelegate") UITextInputDelegate getInputDelegate();
+    UITextInputDelegate getInputDelegate();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/inputDelegate">@property(nonatomic, assign) id&amp;lt;UITextInputDelegate&amp;gt; inputDelegate</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setInputDelegate:") void setInputDelegate(UITextInputDelegate v);
+    void setInputDelegate(UITextInputDelegate v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextRange">@property(nonatomic, readonly) UITextRange *markedTextRange</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("markedTextRange") UITextRange getMarkedTextRange();
+    UITextRange getMarkedTextRange();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextStyle">@property(nonatomic, copy) NSDictionary *markedTextStyle</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("markedTextStyle") NSDictionary getMarkedTextStyle();
+    NSDictionary getMarkedTextStyle();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextStyle">@property(nonatomic, copy) NSDictionary *markedTextStyle</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setMarkedTextStyle:") void setMarkedTextStyle(NSDictionary v);
+    void setMarkedTextStyle(NSDictionary v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectedTextRange">@property(readwrite, copy) UITextRange *selectedTextRange</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("selectedTextRange") UITextRange getSelectedTextRange();
+    UITextRange getSelectedTextRange();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectedTextRange">@property(readwrite, copy) UITextRange *selectedTextRange</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setSelectedTextRange:") void setSelectedTextRange(UITextRange v);
+    void setSelectedTextRange(UITextRange v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectionAffinity">@property(nonatomic) UITextStorageDirection selectionAffinity</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("selectionAffinity") UITextStorageDirection getSelectionAffinity();
+    UITextStorageDirection getSelectionAffinity();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectionAffinity">@property(nonatomic) UITextStorageDirection selectionAffinity</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setSelectionAffinity:") void setSelectionAffinity(UITextStorageDirection v);
+    void setSelectionAffinity(UITextStorageDirection v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/textInputView">@property(nonatomic, readonly) UIView *textInputView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("textInputView") UIView getTextInputView();
+    UIView getTextInputView();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/tokenizer">@property(nonatomic, readonly) id&amp;lt;UITextInputTokenizer&amp;gt; tokenizer</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("tokenizer") UITextInputTokenizer getTokenizer();
+    UITextInputTokenizer getTokenizer();
     /*</properties>*/
     /*<methods>*/
     /**

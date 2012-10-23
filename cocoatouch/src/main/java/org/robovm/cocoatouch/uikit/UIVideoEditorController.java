@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,46 +53,94 @@ public class /*<name>*/ UIVideoEditorController /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector delegate = Selector.register("delegate");
+    @Bridge(symbol = "objc_msgSend") private native static UIVideoEditorControllerDelegate objc_getDelegate(UIVideoEditorController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIVideoEditorControllerDelegate objc_getDelegateSuper(ObjCSuper __super__, UIVideoEditorController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/delegate">@property(nonatomic,assign) id &amp;lt;UINavigationControllerDelegate, UIVideoEditorControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("delegate") public native UIVideoEditorControllerDelegate getDelegate();
+    public UIVideoEditorControllerDelegate getDelegate() {
+        if (customClass) { return objc_getDelegateSuper(getSuper(), this, delegate); } else { return objc_getDelegate(this, delegate); }
+    }
+    
+    private static final Selector setDelegate$ = Selector.register("setDelegate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIVideoEditorController __self__, Selector __cmd__, UIVideoEditorControllerDelegate delegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, UIVideoEditorController __self__, Selector __cmd__, UIVideoEditorControllerDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/delegate">@property(nonatomic,assign) id &amp;lt;UINavigationControllerDelegate, UIVideoEditorControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(UIVideoEditorControllerDelegate v);
+    public void setDelegate(UIVideoEditorControllerDelegate delegate) {
+        if (customClass) { objc_setDelegateSuper(getSuper(), this, setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
+    }
+    
+    private static final Selector videoMaximumDuration = Selector.register("videoMaximumDuration");
+    @Bridge(symbol = "objc_msgSend") private native static double objc_getVideoMaximumDuration(UIVideoEditorController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getVideoMaximumDurationSuper(ObjCSuper __super__, UIVideoEditorController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/videoMaximumDuration">@property(nonatomic) NSTimeInterval videoMaximumDuration</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("videoMaximumDuration") public native double getVideoMaximumDuration();
+    public double getVideoMaximumDuration() {
+        if (customClass) { return objc_getVideoMaximumDurationSuper(getSuper(), this, videoMaximumDuration); } else { return objc_getVideoMaximumDuration(this, videoMaximumDuration); }
+    }
+    
+    private static final Selector setVideoMaximumDuration$ = Selector.register("setVideoMaximumDuration:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setVideoMaximumDuration(UIVideoEditorController __self__, Selector __cmd__, double videoMaximumDuration);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setVideoMaximumDurationSuper(ObjCSuper __super__, UIVideoEditorController __self__, Selector __cmd__, double videoMaximumDuration);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/videoMaximumDuration">@property(nonatomic) NSTimeInterval videoMaximumDuration</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("setVideoMaximumDuration:") public native void setVideoMaximumDuration(double v);
+    public void setVideoMaximumDuration(double videoMaximumDuration) {
+        if (customClass) { objc_setVideoMaximumDurationSuper(getSuper(), this, setVideoMaximumDuration$, videoMaximumDuration); } else { objc_setVideoMaximumDuration(this, setVideoMaximumDuration$, videoMaximumDuration); }
+    }
+    
+    private static final Selector videoPath = Selector.register("videoPath");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getVideoPath(UIVideoEditorController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getVideoPathSuper(ObjCSuper __super__, UIVideoEditorController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/videoPath">@property(nonatomic, copy) NSString *videoPath</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("videoPath") public native String getVideoPath();
+    public String getVideoPath() {
+        if (customClass) { return objc_getVideoPathSuper(getSuper(), this, videoPath); } else { return objc_getVideoPath(this, videoPath); }
+    }
+    
+    private static final Selector setVideoPath$ = Selector.register("setVideoPath:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setVideoPath(UIVideoEditorController __self__, Selector __cmd__, String videoPath);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setVideoPathSuper(ObjCSuper __super__, UIVideoEditorController __self__, Selector __cmd__, String videoPath);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/videoPath">@property(nonatomic, copy) NSString *videoPath</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("setVideoPath:") public native void setVideoPath(String v);
+    public void setVideoPath(String videoPath) {
+        if (customClass) { objc_setVideoPathSuper(getSuper(), this, setVideoPath$, videoPath); } else { objc_setVideoPath(this, setVideoPath$, videoPath); }
+    }
+    
+    private static final Selector videoQuality = Selector.register("videoQuality");
+    @Bridge(symbol = "objc_msgSend") private native static UIImagePickerControllerQualityType objc_getVideoQuality(UIVideoEditorController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImagePickerControllerQualityType objc_getVideoQualitySuper(ObjCSuper __super__, UIVideoEditorController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/videoQuality">@property(nonatomic) UIImagePickerControllerQualityType videoQuality</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("videoQuality") public native UIImagePickerControllerQualityType getVideoQuality();
+    public UIImagePickerControllerQualityType getVideoQuality() {
+        if (customClass) { return objc_getVideoQualitySuper(getSuper(), this, videoQuality); } else { return objc_getVideoQuality(this, videoQuality); }
+    }
+    
+    private static final Selector setVideoQuality$ = Selector.register("setVideoQuality:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setVideoQuality(UIVideoEditorController __self__, Selector __cmd__, UIImagePickerControllerQualityType videoQuality);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setVideoQualitySuper(ObjCSuper __super__, UIVideoEditorController __self__, Selector __cmd__, UIImagePickerControllerQualityType videoQuality);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/videoQuality">@property(nonatomic) UIImagePickerControllerQualityType videoQuality</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("setVideoQuality:") public native void setVideoQuality(UIImagePickerControllerQualityType v);
+    public void setVideoQuality(UIImagePickerControllerQualityType videoQuality) {
+        if (customClass) { objc_setVideoQualitySuper(getSuper(), this, setVideoQuality$, videoQuality); } else { objc_setVideoQuality(this, setVideoQuality$, videoQuality); }
+    }
     /*</properties>*/
     /*<methods>*/
     

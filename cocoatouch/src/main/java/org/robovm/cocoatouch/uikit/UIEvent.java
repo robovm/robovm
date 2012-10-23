@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,21 +53,39 @@ public class /*<name>*/ UIEvent /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector subtype = Selector.register("subtype");
+    @Bridge(symbol = "objc_msgSend") private native static UIEventSubtype objc_getSubtype(UIEvent __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIEventSubtype objc_getSubtypeSuper(ObjCSuper __super__, UIEvent __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIEvent_Class/Reference/Reference.html#//apple_ref/occ/instp/UIEvent/subtype">@property(readonly) UIEventSubtype subtype</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("subtype") public native UIEventSubtype getSubtype();
+    public UIEventSubtype getSubtype() {
+        if (customClass) { return objc_getSubtypeSuper(getSuper(), this, subtype); } else { return objc_getSubtype(this, subtype); }
+    }
+    
+    private static final Selector timestamp = Selector.register("timestamp");
+    @Bridge(symbol = "objc_msgSend") private native static double objc_getTimestamp(UIEvent __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getTimestampSuper(ObjCSuper __super__, UIEvent __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIEvent_Class/Reference/Reference.html#//apple_ref/occ/instp/UIEvent/timestamp">@property(nonatomic, readonly) NSTimeInterval timestamp</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("timestamp") public native double getTimestamp();
+    public double getTimestamp() {
+        if (customClass) { return objc_getTimestampSuper(getSuper(), this, timestamp); } else { return objc_getTimestamp(this, timestamp); }
+    }
+    
+    private static final Selector type = Selector.register("type");
+    @Bridge(symbol = "objc_msgSend") private native static UIEventType objc_getType(UIEvent __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIEventType objc_getTypeSuper(ObjCSuper __super__, UIEvent __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIEvent_Class/Reference/Reference.html#//apple_ref/occ/instp/UIEvent/type">@property(readonly) UIEventType type</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("type") public native UIEventType getType();
+    public UIEventType getType() {
+        if (customClass) { return objc_getTypeSuper(getSuper(), this, type); } else { return objc_getType(this, type); }
+    }
     /*</properties>*/
     /*<methods>*/
     

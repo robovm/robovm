@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -64,61 +63,127 @@ public class /*<name>*/ UISegmentedControl /*</name>*/
     }
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector apportionsSegmentWidthsByContent = Selector.register("apportionsSegmentWidthsByContent");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isApportionsSegmentWidthsByContent(UISegmentedControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isApportionsSegmentWidthsByContentSuper(ObjCSuper __super__, UISegmentedControl __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/apportionsSegmentWidthsByContent">@property(nonatomic) BOOL apportionsSegmentWidthsByContent</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("apportionsSegmentWidthsByContent") public native boolean isApportionsSegmentWidthsByContent();
+    public boolean isApportionsSegmentWidthsByContent() {
+        if (customClass) { return objc_isApportionsSegmentWidthsByContentSuper(getSuper(), this, apportionsSegmentWidthsByContent); } else { return objc_isApportionsSegmentWidthsByContent(this, apportionsSegmentWidthsByContent); }
+    }
+    
+    private static final Selector setApportionsSegmentWidthsByContent$ = Selector.register("setApportionsSegmentWidthsByContent:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setApportionsSegmentWidthsByContent(UISegmentedControl __self__, Selector __cmd__, boolean apportionsSegmentWidthsByContent);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setApportionsSegmentWidthsByContentSuper(ObjCSuper __super__, UISegmentedControl __self__, Selector __cmd__, boolean apportionsSegmentWidthsByContent);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/apportionsSegmentWidthsByContent">@property(nonatomic) BOOL apportionsSegmentWidthsByContent</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setApportionsSegmentWidthsByContent:") public native void setApportionsSegmentWidthsByContent(boolean v);
+    public void setApportionsSegmentWidthsByContent(boolean apportionsSegmentWidthsByContent) {
+        if (customClass) { objc_setApportionsSegmentWidthsByContentSuper(getSuper(), this, setApportionsSegmentWidthsByContent$, apportionsSegmentWidthsByContent); } else { objc_setApportionsSegmentWidthsByContent(this, setApportionsSegmentWidthsByContent$, apportionsSegmentWidthsByContent); }
+    }
+    
+    private static final Selector segmentedControlStyle = Selector.register("segmentedControlStyle");
+    @Bridge(symbol = "objc_msgSend") private native static UISegmentedControlStyle objc_getControlStyle(UISegmentedControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UISegmentedControlStyle objc_getControlStyleSuper(ObjCSuper __super__, UISegmentedControl __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/segmentedControlStyle">@property(nonatomic) UISegmentedControlStyle segmentedControlStyle</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("segmentedControlStyle") public native UISegmentedControlStyle getControlStyle();
+    public UISegmentedControlStyle getControlStyle() {
+        if (customClass) { return objc_getControlStyleSuper(getSuper(), this, segmentedControlStyle); } else { return objc_getControlStyle(this, segmentedControlStyle); }
+    }
+    
+    private static final Selector setSegmentedControlStyle$ = Selector.register("setSegmentedControlStyle:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setControlStyle(UISegmentedControl __self__, Selector __cmd__, UISegmentedControlStyle controlStyle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setControlStyleSuper(ObjCSuper __super__, UISegmentedControl __self__, Selector __cmd__, UISegmentedControlStyle controlStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/segmentedControlStyle">@property(nonatomic) UISegmentedControlStyle segmentedControlStyle</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setSegmentedControlStyle:") public native void setControlStyle(UISegmentedControlStyle v);
+    public void setControlStyle(UISegmentedControlStyle controlStyle) {
+        if (customClass) { objc_setControlStyleSuper(getSuper(), this, setSegmentedControlStyle$, controlStyle); } else { objc_setControlStyle(this, setSegmentedControlStyle$, controlStyle); }
+    }
+    
+    private static final Selector isMomentary = Selector.register("isMomentary");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isMomentary(UISegmentedControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isMomentarySuper(ObjCSuper __super__, UISegmentedControl __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/momentary">@property(nonatomic, getter=isMomentary) BOOL momentary</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isMomentary") public native boolean isMomentary();
+    public boolean isMomentary() {
+        if (customClass) { return objc_isMomentarySuper(getSuper(), this, isMomentary); } else { return objc_isMomentary(this, isMomentary); }
+    }
+    
+    private static final Selector setMomentary$ = Selector.register("setMomentary:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMomentary(UISegmentedControl __self__, Selector __cmd__, boolean momentary);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMomentarySuper(ObjCSuper __super__, UISegmentedControl __self__, Selector __cmd__, boolean momentary);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/momentary">@property(nonatomic, getter=isMomentary) BOOL momentary</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setMomentary:") public native void setMomentary(boolean v);
+    public void setMomentary(boolean momentary) {
+        if (customClass) { objc_setMomentarySuper(getSuper(), this, setMomentary$, momentary); } else { objc_setMomentary(this, setMomentary$, momentary); }
+    }
+    
+    private static final Selector numberOfSegments = Selector.register("numberOfSegments");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getNumberOfSegments(UISegmentedControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getNumberOfSegmentsSuper(ObjCSuper __super__, UISegmentedControl __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/numberOfSegments">@property(nonatomic, readonly) NSUInteger numberOfSegments</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("numberOfSegments") public native int getNumberOfSegments();
+    public int getNumberOfSegments() {
+        if (customClass) { return objc_getNumberOfSegmentsSuper(getSuper(), this, numberOfSegments); } else { return objc_getNumberOfSegments(this, numberOfSegments); }
+    }
+    
+    private static final Selector selectedSegmentIndex = Selector.register("selectedSegmentIndex");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getSelectedSegment(UISegmentedControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getSelectedSegmentSuper(ObjCSuper __super__, UISegmentedControl __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/selectedSegmentIndex">@property(nonatomic) NSInteger selectedSegmentIndex</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("selectedSegmentIndex") public native int getSelectedSegment();
+    public int getSelectedSegment() {
+        if (customClass) { return objc_getSelectedSegmentSuper(getSuper(), this, selectedSegmentIndex); } else { return objc_getSelectedSegment(this, selectedSegmentIndex); }
+    }
+    
+    private static final Selector setSelectedSegmentIndex$ = Selector.register("setSelectedSegmentIndex:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSelectedSegment(UISegmentedControl __self__, Selector __cmd__, int selectedSegment);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectedSegmentSuper(ObjCSuper __super__, UISegmentedControl __self__, Selector __cmd__, int selectedSegment);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/selectedSegmentIndex">@property(nonatomic) NSInteger selectedSegmentIndex</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setSelectedSegmentIndex:") public native void setSelectedSegment(int v);
+    public void setSelectedSegment(int selectedSegment) {
+        if (customClass) { objc_setSelectedSegmentSuper(getSuper(), this, setSelectedSegmentIndex$, selectedSegment); } else { objc_setSelectedSegment(this, setSelectedSegmentIndex$, selectedSegment); }
+    }
+    
+    private static final Selector tintColor = Selector.register("tintColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getTintColor(UISegmentedControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, UISegmentedControl __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("tintColor") public native UIColor getTintColor();
+    public UIColor getTintColor() {
+        if (customClass) { return objc_getTintColorSuper(getSuper(), this, tintColor); } else { return objc_getTintColor(this, tintColor); }
+    }
+    
+    private static final Selector setTintColor$ = Selector.register("setTintColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTintColor(UISegmentedControl __self__, Selector __cmd__, UIColor tintColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, UISegmentedControl __self__, Selector __cmd__, UIColor tintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTintColor:") public native void setTintColor(UIColor v);
+    public void setTintColor(UIColor tintColor) {
+        if (customClass) { objc_setTintColorSuper(getSuper(), this, setTintColor$, tintColor); } else { objc_setTintColor(this, setTintColor$, tintColor); }
+    }
     /*</properties>*/
     /*<methods>*/
     

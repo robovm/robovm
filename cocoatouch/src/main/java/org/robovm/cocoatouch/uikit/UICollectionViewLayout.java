@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -53,11 +52,17 @@ public class /*<name>*/ UICollectionViewLayout /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector collectionView = Selector.register("collectionView");
+    @Bridge(symbol = "objc_msgSend") private native static UICollectionView objc_getCollectionView(UICollectionViewLayout __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UICollectionView objc_getCollectionViewSuper(ObjCSuper __super__, UICollectionViewLayout __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewLayout/collectionView">@property (nonatomic, readonly) UICollectionView *collectionView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("collectionView") public native UICollectionView getCollectionView();
+    public UICollectionView getCollectionView() {
+        if (customClass) { return objc_getCollectionViewSuper(getSuper(), this, collectionView); } else { return objc_getCollectionView(this, collectionView); }
+    }
     /*</properties>*/
     /*<methods>*/
     

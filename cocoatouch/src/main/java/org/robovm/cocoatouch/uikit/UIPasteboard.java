@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,121 +53,259 @@ public class /*<name>*/ UIPasteboard /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector URL = Selector.register("URL");
+    @Bridge(symbol = "objc_msgSend") private native static NSURL objc_getURL(UIPasteboard __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSURL objc_getURLSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/URL">@property(nonatomic, copy) NSURL *URL</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("URL") public native NSURL getURL();
+    public NSURL getURL() {
+        if (customClass) { return objc_getURLSuper(getSuper(), this, URL); } else { return objc_getURL(this, URL); }
+    }
+    
+    private static final Selector setURL$ = Selector.register("setURL:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setURL(UIPasteboard __self__, Selector __cmd__, NSURL URL);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setURLSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__, NSURL URL);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/URL">@property(nonatomic, copy) NSURL *URL</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setURL:") public native void setURL(NSURL v);
+    public void setURL(NSURL URL) {
+        if (customClass) { objc_setURLSuper(getSuper(), this, setURL$, URL); } else { objc_setURL(this, setURL$, URL); }
+    }
+    
+    private static final Selector URLs = Selector.register("URLs");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getURLs(UIPasteboard __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getURLsSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/URLs">@property(nonatomic, copy) NSArray *URLs</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("URLs") public native NSArray getURLs();
+    public NSArray getURLs() {
+        if (customClass) { return objc_getURLsSuper(getSuper(), this, URLs); } else { return objc_getURLs(this, URLs); }
+    }
+    
+    private static final Selector setURLs$ = Selector.register("setURLs:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setURLs(UIPasteboard __self__, Selector __cmd__, NSArray URLs);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setURLsSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__, NSArray URLs);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/URLs">@property(nonatomic, copy) NSArray *URLs</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setURLs:") public native void setURLs(NSArray v);
+    public void setURLs(NSArray URLs) {
+        if (customClass) { objc_setURLsSuper(getSuper(), this, setURLs$, URLs); } else { objc_setURLs(this, setURLs$, URLs); }
+    }
+    
+    private static final Selector changeCount = Selector.register("changeCount");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getChangeCount(UIPasteboard __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getChangeCountSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/changeCount">@property(readonly, nonatomic) NSInteger changeCount</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("changeCount") public native int getChangeCount();
+    public int getChangeCount() {
+        if (customClass) { return objc_getChangeCountSuper(getSuper(), this, changeCount); } else { return objc_getChangeCount(this, changeCount); }
+    }
+    
+    private static final Selector color = Selector.register("color");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getColor(UIPasteboard __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getColorSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/color">@property(nonatomic, copy) UIColor *color</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("color") public native UIColor getColor();
+    public UIColor getColor() {
+        if (customClass) { return objc_getColorSuper(getSuper(), this, color); } else { return objc_getColor(this, color); }
+    }
+    
+    private static final Selector setColor$ = Selector.register("setColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setColor(UIPasteboard __self__, Selector __cmd__, UIColor color);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setColorSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__, UIColor color);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/color">@property(nonatomic, copy) UIColor *color</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setColor:") public native void setColor(UIColor v);
+    public void setColor(UIColor color) {
+        if (customClass) { objc_setColorSuper(getSuper(), this, setColor$, color); } else { objc_setColor(this, setColor$, color); }
+    }
+    
+    private static final Selector colors = Selector.register("colors");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getColors(UIPasteboard __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getColorsSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/colors">@property(nonatomic, copy) NSArray *colors</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("colors") public native NSArray getColors();
+    public NSArray getColors() {
+        if (customClass) { return objc_getColorsSuper(getSuper(), this, colors); } else { return objc_getColors(this, colors); }
+    }
+    
+    private static final Selector setColors$ = Selector.register("setColors:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setColors(UIPasteboard __self__, Selector __cmd__, NSArray colors);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setColorsSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__, NSArray colors);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/colors">@property(nonatomic, copy) NSArray *colors</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setColors:") public native void setColors(NSArray v);
+    public void setColors(NSArray colors) {
+        if (customClass) { objc_setColorsSuper(getSuper(), this, setColors$, colors); } else { objc_setColors(this, setColors$, colors); }
+    }
+    
+    private static final Selector numberOfItems = Selector.register("numberOfItems");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getCount(UIPasteboard __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getCountSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/numberOfItems">@property(readonly, nonatomic) NSInteger numberOfItems</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("numberOfItems") public native int getCount();
+    public int getCount() {
+        if (customClass) { return objc_getCountSuper(getSuper(), this, numberOfItems); } else { return objc_getCount(this, numberOfItems); }
+    }
+    
+    private static final Selector image = Selector.register("image");
+    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getImage(UIPasteboard __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getImageSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/image">@property(nonatomic, copy) UIImage *image</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("image") public native UIImage getImage();
+    public UIImage getImage() {
+        if (customClass) { return objc_getImageSuper(getSuper(), this, image); } else { return objc_getImage(this, image); }
+    }
+    
+    private static final Selector setImage$ = Selector.register("setImage:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setImage(UIPasteboard __self__, Selector __cmd__, UIImage image);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setImageSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__, UIImage image);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/image">@property(nonatomic, copy) UIImage *image</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setImage:") public native void setImage(UIImage v);
+    public void setImage(UIImage image) {
+        if (customClass) { objc_setImageSuper(getSuper(), this, setImage$, image); } else { objc_setImage(this, setImage$, image); }
+    }
+    
+    private static final Selector images = Selector.register("images");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getImages(UIPasteboard __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getImagesSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/images">@property(nonatomic, copy) NSArray *images</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("images") public native NSArray getImages();
+    public NSArray getImages() {
+        if (customClass) { return objc_getImagesSuper(getSuper(), this, images); } else { return objc_getImages(this, images); }
+    }
+    
+    private static final Selector setImages$ = Selector.register("setImages:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setImages(UIPasteboard __self__, Selector __cmd__, NSArray images);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setImagesSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__, NSArray images);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/images">@property(nonatomic, copy) NSArray *images</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setImages:") public native void setImages(NSArray v);
+    public void setImages(NSArray images) {
+        if (customClass) { objc_setImagesSuper(getSuper(), this, setImages$, images); } else { objc_setImages(this, setImages$, images); }
+    }
+    
+    private static final Selector items = Selector.register("items");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getItems(UIPasteboard __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getItemsSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/items">@property(nonatomic,copy) NSArray *items</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("items") public native NSArray getItems();
+    public NSArray getItems() {
+        if (customClass) { return objc_getItemsSuper(getSuper(), this, items); } else { return objc_getItems(this, items); }
+    }
+    
+    private static final Selector setItems$ = Selector.register("setItems:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setItems(UIPasteboard __self__, Selector __cmd__, NSArray items);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setItemsSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__, NSArray items);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/items">@property(nonatomic,copy) NSArray *items</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setItems:") public native void setItems(NSArray v);
+    public void setItems(NSArray items) {
+        if (customClass) { objc_setItemsSuper(getSuper(), this, setItems$, items); } else { objc_setItems(this, setItems$, items); }
+    }
+    
+    private static final Selector name = Selector.register("name");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getName(UIPasteboard __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getNameSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/name">@property(readonly, nonatomic) NSString *name</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("name") public native String getName();
+    public String getName() {
+        if (customClass) { return objc_getNameSuper(getSuper(), this, name); } else { return objc_getName(this, name); }
+    }
+    
+    private static final Selector isPersistent = Selector.register("isPersistent");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isPersistent(UIPasteboard __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isPersistentSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/persistent">@property(getter=isPersistent, nonatomic) BOOL persistent</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("isPersistent") public native boolean isPersistent();
+    public boolean isPersistent() {
+        if (customClass) { return objc_isPersistentSuper(getSuper(), this, isPersistent); } else { return objc_isPersistent(this, isPersistent); }
+    }
+    
+    private static final Selector setPersistent$ = Selector.register("setPersistent:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setPersistent(UIPasteboard __self__, Selector __cmd__, boolean persistent);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPersistentSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__, boolean persistent);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/persistent">@property(getter=isPersistent, nonatomic) BOOL persistent</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setPersistent:") public native void setPersistent(boolean v);
+    public void setPersistent(boolean persistent) {
+        if (customClass) { objc_setPersistentSuper(getSuper(), this, setPersistent$, persistent); } else { objc_setPersistent(this, setPersistent$, persistent); }
+    }
+    
+    private static final Selector string = Selector.register("string");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getString(UIPasteboard __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getStringSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/string">@property(nonatomic, copy) NSString *string</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("string") public native String getString();
+    public String getString() {
+        if (customClass) { return objc_getStringSuper(getSuper(), this, string); } else { return objc_getString(this, string); }
+    }
+    
+    private static final Selector setString$ = Selector.register("setString:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setString(UIPasteboard __self__, Selector __cmd__, String string);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStringSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__, String string);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/string">@property(nonatomic, copy) NSString *string</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setString:") public native void setString(String v);
+    public void setString(String string) {
+        if (customClass) { objc_setStringSuper(getSuper(), this, setString$, string); } else { objc_setString(this, setString$, string); }
+    }
+    
+    private static final Selector strings = Selector.register("strings");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getStrings(UIPasteboard __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getStringsSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/strings">@property(nonatomic, copy) NSArray *strings</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("strings") public native NSArray getStrings();
+    public NSArray getStrings() {
+        if (customClass) { return objc_getStringsSuper(getSuper(), this, strings); } else { return objc_getStrings(this, strings); }
+    }
+    
+    private static final Selector setStrings$ = Selector.register("setStrings:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setStrings(UIPasteboard __self__, Selector __cmd__, NSArray strings);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStringsSuper(ObjCSuper __super__, UIPasteboard __self__, Selector __cmd__, NSArray strings);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/strings">@property(nonatomic, copy) NSArray *strings</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setStrings:") public native void setStrings(NSArray v);
+    public void setStrings(NSArray strings) {
+        if (customClass) { objc_setStringsSuper(getSuper(), this, setStrings$, strings); } else { objc_setStrings(this, setStrings$, strings); }
+    }
     /*</properties>*/
     /*<methods>*/
     

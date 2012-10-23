@@ -22,12 +22,13 @@ package org.robovm.foo;
  *
  * <div class="javadoc"></div>
  */
-@Protocol
 public interface /*<name>*/ TheName /*</name>*/ /*<implements>*/ extends A, B, C /*</implements>*/ {
 
     /*<properties>*/
     /*</properties>*/
     /*<methods>*/
     /*</methods>*/
+    /*<callbacks>*/
+    /*</callbacks>*/
 
 }

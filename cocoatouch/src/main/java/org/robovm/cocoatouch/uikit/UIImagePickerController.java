@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,126 +53,270 @@ public class /*<name>*/ UIImagePickerController /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector allowsEditing = Selector.register("allowsEditing");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAllowsEditing(UIImagePickerController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAllowsEditingSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/allowsEditing">@property (nonatomic) BOOL allowsEditing</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("allowsEditing") public native boolean isAllowsEditing();
+    public boolean isAllowsEditing() {
+        if (customClass) { return objc_isAllowsEditingSuper(getSuper(), this, allowsEditing); } else { return objc_isAllowsEditing(this, allowsEditing); }
+    }
+    
+    private static final Selector setAllowsEditing$ = Selector.register("setAllowsEditing:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAllowsEditing(UIImagePickerController __self__, Selector __cmd__, boolean allowsEditing);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAllowsEditingSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__, boolean allowsEditing);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/allowsEditing">@property (nonatomic) BOOL allowsEditing</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("setAllowsEditing:") public native void setAllowsEditing(boolean v);
+    public void setAllowsEditing(boolean allowsEditing) {
+        if (customClass) { objc_setAllowsEditingSuper(getSuper(), this, setAllowsEditing$, allowsEditing); } else { objc_setAllowsEditing(this, setAllowsEditing$, allowsEditing); }
+    }
+    
+    private static final Selector cameraCaptureMode = Selector.register("cameraCaptureMode");
+    @Bridge(symbol = "objc_msgSend") private native static UIImagePickerControllerCameraCaptureMode objc_getCameraCaptureMode(UIImagePickerController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImagePickerControllerCameraCaptureMode objc_getCameraCaptureModeSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraCaptureMode">@property (nonatomic) UIImagePickerControllerCameraCaptureMode cameraCaptureMode</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("cameraCaptureMode") public native UIImagePickerControllerCameraCaptureMode getCameraCaptureMode();
+    public UIImagePickerControllerCameraCaptureMode getCameraCaptureMode() {
+        if (customClass) { return objc_getCameraCaptureModeSuper(getSuper(), this, cameraCaptureMode); } else { return objc_getCameraCaptureMode(this, cameraCaptureMode); }
+    }
+    
+    private static final Selector setCameraCaptureMode$ = Selector.register("setCameraCaptureMode:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setCameraCaptureMode(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerCameraCaptureMode cameraCaptureMode);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCameraCaptureModeSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerCameraCaptureMode cameraCaptureMode);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraCaptureMode">@property (nonatomic) UIImagePickerControllerCameraCaptureMode cameraCaptureMode</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("setCameraCaptureMode:") public native void setCameraCaptureMode(UIImagePickerControllerCameraCaptureMode v);
+    public void setCameraCaptureMode(UIImagePickerControllerCameraCaptureMode cameraCaptureMode) {
+        if (customClass) { objc_setCameraCaptureModeSuper(getSuper(), this, setCameraCaptureMode$, cameraCaptureMode); } else { objc_setCameraCaptureMode(this, setCameraCaptureMode$, cameraCaptureMode); }
+    }
+    
+    private static final Selector cameraDevice = Selector.register("cameraDevice");
+    @Bridge(symbol = "objc_msgSend") private native static UIImagePickerControllerCameraDevice objc_getCameraDevice(UIImagePickerController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImagePickerControllerCameraDevice objc_getCameraDeviceSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraDevice">@property (nonatomic) UIImagePickerControllerCameraDevice cameraDevice</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("cameraDevice") public native UIImagePickerControllerCameraDevice getCameraDevice();
+    public UIImagePickerControllerCameraDevice getCameraDevice() {
+        if (customClass) { return objc_getCameraDeviceSuper(getSuper(), this, cameraDevice); } else { return objc_getCameraDevice(this, cameraDevice); }
+    }
+    
+    private static final Selector setCameraDevice$ = Selector.register("setCameraDevice:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setCameraDevice(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerCameraDevice cameraDevice);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCameraDeviceSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerCameraDevice cameraDevice);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraDevice">@property (nonatomic) UIImagePickerControllerCameraDevice cameraDevice</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("setCameraDevice:") public native void setCameraDevice(UIImagePickerControllerCameraDevice v);
+    public void setCameraDevice(UIImagePickerControllerCameraDevice cameraDevice) {
+        if (customClass) { objc_setCameraDeviceSuper(getSuper(), this, setCameraDevice$, cameraDevice); } else { objc_setCameraDevice(this, setCameraDevice$, cameraDevice); }
+    }
+    
+    private static final Selector cameraFlashMode = Selector.register("cameraFlashMode");
+    @Bridge(symbol = "objc_msgSend") private native static UIImagePickerControllerCameraFlashMode objc_getCameraFlashMode(UIImagePickerController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImagePickerControllerCameraFlashMode objc_getCameraFlashModeSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraFlashMode">@property (nonatomic) UIImagePickerControllerCameraFlashMode cameraFlashMode</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("cameraFlashMode") public native UIImagePickerControllerCameraFlashMode getCameraFlashMode();
+    public UIImagePickerControllerCameraFlashMode getCameraFlashMode() {
+        if (customClass) { return objc_getCameraFlashModeSuper(getSuper(), this, cameraFlashMode); } else { return objc_getCameraFlashMode(this, cameraFlashMode); }
+    }
+    
+    private static final Selector setCameraFlashMode$ = Selector.register("setCameraFlashMode:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setCameraFlashMode(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerCameraFlashMode cameraFlashMode);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCameraFlashModeSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerCameraFlashMode cameraFlashMode);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraFlashMode">@property (nonatomic) UIImagePickerControllerCameraFlashMode cameraFlashMode</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("setCameraFlashMode:") public native void setCameraFlashMode(UIImagePickerControllerCameraFlashMode v);
+    public void setCameraFlashMode(UIImagePickerControllerCameraFlashMode cameraFlashMode) {
+        if (customClass) { objc_setCameraFlashModeSuper(getSuper(), this, setCameraFlashMode$, cameraFlashMode); } else { objc_setCameraFlashMode(this, setCameraFlashMode$, cameraFlashMode); }
+    }
+    
+    private static final Selector cameraOverlayView = Selector.register("cameraOverlayView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getCameraOverlayView(UIImagePickerController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getCameraOverlayViewSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraOverlayView">@property (nonatomic, retain) UIView *cameraOverlayView</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("cameraOverlayView") public native UIView getCameraOverlayView();
+    public UIView getCameraOverlayView() {
+        if (customClass) { return objc_getCameraOverlayViewSuper(getSuper(), this, cameraOverlayView); } else { return objc_getCameraOverlayView(this, cameraOverlayView); }
+    }
+    
+    private static final Selector setCameraOverlayView$ = Selector.register("setCameraOverlayView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setCameraOverlayView(UIImagePickerController __self__, Selector __cmd__, UIView cameraOverlayView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCameraOverlayViewSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__, UIView cameraOverlayView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraOverlayView">@property (nonatomic, retain) UIView *cameraOverlayView</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("setCameraOverlayView:") public native void setCameraOverlayView(UIView v);
+    public void setCameraOverlayView(UIView cameraOverlayView) {
+        if (customClass) { objc_setCameraOverlayViewSuper(getSuper(), this, setCameraOverlayView$, cameraOverlayView); } else { objc_setCameraOverlayView(this, setCameraOverlayView$, cameraOverlayView); }
+    }
+    
+    private static final Selector cameraViewTransform = Selector.register("cameraViewTransform");
+    @Bridge(symbol = "objc_msgSend") private native static CGAffineTransform objc_getCameraViewTransform(UIImagePickerController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGAffineTransform objc_getCameraViewTransformSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraViewTransform">@property (nonatomic) CGAffineTransform cameraViewTransform</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("cameraViewTransform") public native CGAffineTransform getCameraViewTransform();
+    public CGAffineTransform getCameraViewTransform() {
+        if (customClass) { return objc_getCameraViewTransformSuper(getSuper(), this, cameraViewTransform); } else { return objc_getCameraViewTransform(this, cameraViewTransform); }
+    }
+    
+    private static final Selector setCameraViewTransform$ = Selector.register("setCameraViewTransform:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setCameraViewTransform(UIImagePickerController __self__, Selector __cmd__, CGAffineTransform cameraViewTransform);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCameraViewTransformSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__, CGAffineTransform cameraViewTransform);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraViewTransform">@property (nonatomic) CGAffineTransform cameraViewTransform</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("setCameraViewTransform:") public native void setCameraViewTransform(CGAffineTransform v);
+    public void setCameraViewTransform(CGAffineTransform cameraViewTransform) {
+        if (customClass) { objc_setCameraViewTransformSuper(getSuper(), this, setCameraViewTransform$, cameraViewTransform); } else { objc_setCameraViewTransform(this, setCameraViewTransform$, cameraViewTransform); }
+    }
+    
+    private static final Selector delegate = Selector.register("delegate");
+    @Bridge(symbol = "objc_msgSend") private native static UIImagePickerControllerDelegate objc_getDelegate(UIImagePickerController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImagePickerControllerDelegate objc_getDelegateSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/delegate">@property (nonatomic, assign) id&amp;lt;UINavigationControllerDelegate, UIImagePickerControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("delegate") public native UIImagePickerControllerDelegate getDelegate();
+    public UIImagePickerControllerDelegate getDelegate() {
+        if (customClass) { return objc_getDelegateSuper(getSuper(), this, delegate); } else { return objc_getDelegate(this, delegate); }
+    }
+    
+    private static final Selector setDelegate$ = Selector.register("setDelegate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerDelegate delegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/delegate">@property (nonatomic, assign) id&amp;lt;UINavigationControllerDelegate, UIImagePickerControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(UIImagePickerControllerDelegate v);
+    public void setDelegate(UIImagePickerControllerDelegate delegate) {
+        if (customClass) { objc_setDelegateSuper(getSuper(), this, setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
+    }
+    
+    private static final Selector mediaTypes = Selector.register("mediaTypes");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getMediaTypes(UIImagePickerController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getMediaTypesSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/mediaTypes">@property (nonatomic, copy) NSArray *mediaTypes</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("mediaTypes") public native NSArray getMediaTypes();
+    public NSArray getMediaTypes() {
+        if (customClass) { return objc_getMediaTypesSuper(getSuper(), this, mediaTypes); } else { return objc_getMediaTypes(this, mediaTypes); }
+    }
+    
+    private static final Selector setMediaTypes$ = Selector.register("setMediaTypes:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMediaTypes(UIImagePickerController __self__, Selector __cmd__, NSArray mediaTypes);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMediaTypesSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__, NSArray mediaTypes);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/mediaTypes">@property (nonatomic, copy) NSArray *mediaTypes</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setMediaTypes:") public native void setMediaTypes(NSArray v);
+    public void setMediaTypes(NSArray mediaTypes) {
+        if (customClass) { objc_setMediaTypesSuper(getSuper(), this, setMediaTypes$, mediaTypes); } else { objc_setMediaTypes(this, setMediaTypes$, mediaTypes); }
+    }
+    
+    private static final Selector showsCameraControls = Selector.register("showsCameraControls");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isShowsCameraControls(UIImagePickerController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isShowsCameraControlsSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/showsCameraControls">@property (nonatomic) BOOL showsCameraControls</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("showsCameraControls") public native boolean isShowsCameraControls();
+    public boolean isShowsCameraControls() {
+        if (customClass) { return objc_isShowsCameraControlsSuper(getSuper(), this, showsCameraControls); } else { return objc_isShowsCameraControls(this, showsCameraControls); }
+    }
+    
+    private static final Selector setShowsCameraControls$ = Selector.register("setShowsCameraControls:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setShowsCameraControls(UIImagePickerController __self__, Selector __cmd__, boolean showsCameraControls);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShowsCameraControlsSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__, boolean showsCameraControls);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/showsCameraControls">@property (nonatomic) BOOL showsCameraControls</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("setShowsCameraControls:") public native void setShowsCameraControls(boolean v);
+    public void setShowsCameraControls(boolean showsCameraControls) {
+        if (customClass) { objc_setShowsCameraControlsSuper(getSuper(), this, setShowsCameraControls$, showsCameraControls); } else { objc_setShowsCameraControls(this, setShowsCameraControls$, showsCameraControls); }
+    }
+    
+    private static final Selector sourceType = Selector.register("sourceType");
+    @Bridge(symbol = "objc_msgSend") private native static UIImagePickerControllerSourceType objc_getSourceType(UIImagePickerController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImagePickerControllerSourceType objc_getSourceTypeSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/sourceType">@property (nonatomic) UIImagePickerControllerSourceType sourceType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("sourceType") public native UIImagePickerControllerSourceType getSourceType();
+    public UIImagePickerControllerSourceType getSourceType() {
+        if (customClass) { return objc_getSourceTypeSuper(getSuper(), this, sourceType); } else { return objc_getSourceType(this, sourceType); }
+    }
+    
+    private static final Selector setSourceType$ = Selector.register("setSourceType:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSourceType(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerSourceType sourceType);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSourceTypeSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerSourceType sourceType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/sourceType">@property (nonatomic) UIImagePickerControllerSourceType sourceType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setSourceType:") public native void setSourceType(UIImagePickerControllerSourceType v);
+    public void setSourceType(UIImagePickerControllerSourceType sourceType) {
+        if (customClass) { objc_setSourceTypeSuper(getSuper(), this, setSourceType$, sourceType); } else { objc_setSourceType(this, setSourceType$, sourceType); }
+    }
+    
+    private static final Selector videoMaximumDuration = Selector.register("videoMaximumDuration");
+    @Bridge(symbol = "objc_msgSend") private native static double objc_getVideoMaximumDuration(UIImagePickerController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getVideoMaximumDurationSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/videoMaximumDuration">@property (nonatomic) NSTimeInterval videoMaximumDuration</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("videoMaximumDuration") public native double getVideoMaximumDuration();
+    public double getVideoMaximumDuration() {
+        if (customClass) { return objc_getVideoMaximumDurationSuper(getSuper(), this, videoMaximumDuration); } else { return objc_getVideoMaximumDuration(this, videoMaximumDuration); }
+    }
+    
+    private static final Selector setVideoMaximumDuration$ = Selector.register("setVideoMaximumDuration:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setVideoMaximumDuration(UIImagePickerController __self__, Selector __cmd__, double videoMaximumDuration);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setVideoMaximumDurationSuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__, double videoMaximumDuration);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/videoMaximumDuration">@property (nonatomic) NSTimeInterval videoMaximumDuration</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("setVideoMaximumDuration:") public native void setVideoMaximumDuration(double v);
+    public void setVideoMaximumDuration(double videoMaximumDuration) {
+        if (customClass) { objc_setVideoMaximumDurationSuper(getSuper(), this, setVideoMaximumDuration$, videoMaximumDuration); } else { objc_setVideoMaximumDuration(this, setVideoMaximumDuration$, videoMaximumDuration); }
+    }
+    
+    private static final Selector videoQuality = Selector.register("videoQuality");
+    @Bridge(symbol = "objc_msgSend") private native static UIImagePickerControllerQualityType objc_getVideoQuality(UIImagePickerController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImagePickerControllerQualityType objc_getVideoQualitySuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/videoQuality">@property (nonatomic) UIImagePickerControllerQualityType videoQuality</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("videoQuality") public native UIImagePickerControllerQualityType getVideoQuality();
+    public UIImagePickerControllerQualityType getVideoQuality() {
+        if (customClass) { return objc_getVideoQualitySuper(getSuper(), this, videoQuality); } else { return objc_getVideoQuality(this, videoQuality); }
+    }
+    
+    private static final Selector setVideoQuality$ = Selector.register("setVideoQuality:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setVideoQuality(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerQualityType videoQuality);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setVideoQualitySuper(ObjCSuper __super__, UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerQualityType videoQuality);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/videoQuality">@property (nonatomic) UIImagePickerControllerQualityType videoQuality</a>
      * @since Available in iOS 3.1 and later.
      */
-    @Bind("setVideoQuality:") public native void setVideoQuality(UIImagePickerControllerQualityType v);
+    public void setVideoQuality(UIImagePickerControllerQualityType videoQuality) {
+        if (customClass) { objc_setVideoQualitySuper(getSuper(), this, setVideoQuality$, videoQuality); } else { objc_setVideoQuality(this, setVideoQuality$, videoQuality); }
+    }
     /*</properties>*/
     /*<methods>*/
     

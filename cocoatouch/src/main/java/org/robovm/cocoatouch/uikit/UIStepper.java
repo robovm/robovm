@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,86 +53,182 @@ public class /*<name>*/ UIStepper /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector autorepeat = Selector.register("autorepeat");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAutorepeat(UIStepper __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAutorepeatSuper(ObjCSuper __super__, UIStepper __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/autorepeat">@property(nonatomic) BOOL autorepeat</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("autorepeat") public native boolean isAutorepeat();
+    public boolean isAutorepeat() {
+        if (customClass) { return objc_isAutorepeatSuper(getSuper(), this, autorepeat); } else { return objc_isAutorepeat(this, autorepeat); }
+    }
+    
+    private static final Selector setAutorepeat$ = Selector.register("setAutorepeat:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAutorepeat(UIStepper __self__, Selector __cmd__, boolean autorepeat);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAutorepeatSuper(ObjCSuper __super__, UIStepper __self__, Selector __cmd__, boolean autorepeat);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/autorepeat">@property(nonatomic) BOOL autorepeat</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setAutorepeat:") public native void setAutorepeat(boolean v);
+    public void setAutorepeat(boolean autorepeat) {
+        if (customClass) { objc_setAutorepeatSuper(getSuper(), this, setAutorepeat$, autorepeat); } else { objc_setAutorepeat(this, setAutorepeat$, autorepeat); }
+    }
+    
+    private static final Selector isContinuous = Selector.register("isContinuous");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isContinuous(UIStepper __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isContinuousSuper(ObjCSuper __super__, UIStepper __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/continuous">@property(nonatomic, getter=isContinuous) BOOL continuous</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("isContinuous") public native boolean isContinuous();
+    public boolean isContinuous() {
+        if (customClass) { return objc_isContinuousSuper(getSuper(), this, isContinuous); } else { return objc_isContinuous(this, isContinuous); }
+    }
+    
+    private static final Selector setContinuous$ = Selector.register("setContinuous:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setContinuous(UIStepper __self__, Selector __cmd__, boolean continuous);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContinuousSuper(ObjCSuper __super__, UIStepper __self__, Selector __cmd__, boolean continuous);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/continuous">@property(nonatomic, getter=isContinuous) BOOL continuous</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setContinuous:") public native void setContinuous(boolean v);
+    public void setContinuous(boolean continuous) {
+        if (customClass) { objc_setContinuousSuper(getSuper(), this, setContinuous$, continuous); } else { objc_setContinuous(this, setContinuous$, continuous); }
+    }
+    
+    private static final Selector maximumValue = Selector.register("maximumValue");
+    @Bridge(symbol = "objc_msgSend") private native static double objc_getMaximumValue(UIStepper __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getMaximumValueSuper(ObjCSuper __super__, UIStepper __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/maximumValue">@property(nonatomic) double maximumValue</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("maximumValue") public native double getMaximumValue();
+    public double getMaximumValue() {
+        if (customClass) { return objc_getMaximumValueSuper(getSuper(), this, maximumValue); } else { return objc_getMaximumValue(this, maximumValue); }
+    }
+    
+    private static final Selector setMaximumValue$ = Selector.register("setMaximumValue:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMaximumValue(UIStepper __self__, Selector __cmd__, double maximumValue);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMaximumValueSuper(ObjCSuper __super__, UIStepper __self__, Selector __cmd__, double maximumValue);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/maximumValue">@property(nonatomic) double maximumValue</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setMaximumValue:") public native void setMaximumValue(double v);
+    public void setMaximumValue(double maximumValue) {
+        if (customClass) { objc_setMaximumValueSuper(getSuper(), this, setMaximumValue$, maximumValue); } else { objc_setMaximumValue(this, setMaximumValue$, maximumValue); }
+    }
+    
+    private static final Selector minimumValue = Selector.register("minimumValue");
+    @Bridge(symbol = "objc_msgSend") private native static double objc_getMinimumValue(UIStepper __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getMinimumValueSuper(ObjCSuper __super__, UIStepper __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/minimumValue">@property(nonatomic) double minimumValue</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("minimumValue") public native double getMinimumValue();
+    public double getMinimumValue() {
+        if (customClass) { return objc_getMinimumValueSuper(getSuper(), this, minimumValue); } else { return objc_getMinimumValue(this, minimumValue); }
+    }
+    
+    private static final Selector setMinimumValue$ = Selector.register("setMinimumValue:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinimumValue(UIStepper __self__, Selector __cmd__, double minimumValue);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinimumValueSuper(ObjCSuper __super__, UIStepper __self__, Selector __cmd__, double minimumValue);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/minimumValue">@property(nonatomic) double minimumValue</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setMinimumValue:") public native void setMinimumValue(double v);
+    public void setMinimumValue(double minimumValue) {
+        if (customClass) { objc_setMinimumValueSuper(getSuper(), this, setMinimumValue$, minimumValue); } else { objc_setMinimumValue(this, setMinimumValue$, minimumValue); }
+    }
+    
+    private static final Selector stepValue = Selector.register("stepValue");
+    @Bridge(symbol = "objc_msgSend") private native static double objc_getStepValue(UIStepper __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getStepValueSuper(ObjCSuper __super__, UIStepper __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/stepValue">@property(nonatomic) double stepValue</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("stepValue") public native double getStepValue();
+    public double getStepValue() {
+        if (customClass) { return objc_getStepValueSuper(getSuper(), this, stepValue); } else { return objc_getStepValue(this, stepValue); }
+    }
+    
+    private static final Selector setStepValue$ = Selector.register("setStepValue:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setStepValue(UIStepper __self__, Selector __cmd__, double stepValue);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStepValueSuper(ObjCSuper __super__, UIStepper __self__, Selector __cmd__, double stepValue);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/stepValue">@property(nonatomic) double stepValue</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setStepValue:") public native void setStepValue(double v);
+    public void setStepValue(double stepValue) {
+        if (customClass) { objc_setStepValueSuper(getSuper(), this, setStepValue$, stepValue); } else { objc_setStepValue(this, setStepValue$, stepValue); }
+    }
+    
+    private static final Selector tintColor = Selector.register("tintColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getTintColor(UIStepper __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, UIStepper __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("tintColor") public native UIColor getTintColor();
+    public UIColor getTintColor() {
+        if (customClass) { return objc_getTintColorSuper(getSuper(), this, tintColor); } else { return objc_getTintColor(this, tintColor); }
+    }
+    
+    private static final Selector setTintColor$ = Selector.register("setTintColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTintColor(UIStepper __self__, Selector __cmd__, UIColor tintColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, UIStepper __self__, Selector __cmd__, UIColor tintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setTintColor:") public native void setTintColor(UIColor v);
+    public void setTintColor(UIColor tintColor) {
+        if (customClass) { objc_setTintColorSuper(getSuper(), this, setTintColor$, tintColor); } else { objc_setTintColor(this, setTintColor$, tintColor); }
+    }
+    
+    private static final Selector value = Selector.register("value");
+    @Bridge(symbol = "objc_msgSend") private native static double objc_getValue(UIStepper __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getValueSuper(ObjCSuper __super__, UIStepper __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/value">@property(nonatomic) double value</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("value") public native double getValue();
+    public double getValue() {
+        if (customClass) { return objc_getValueSuper(getSuper(), this, value); } else { return objc_getValue(this, value); }
+    }
+    
+    private static final Selector setValue$ = Selector.register("setValue:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setValue(UIStepper __self__, Selector __cmd__, double value);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setValueSuper(ObjCSuper __super__, UIStepper __self__, Selector __cmd__, double value);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/value">@property(nonatomic) double value</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setValue:") public native void setValue(double v);
+    public void setValue(double value) {
+        if (customClass) { objc_setValueSuper(getSuper(), this, setValue$, value); } else { objc_setValue(this, setValue$, value); }
+    }
+    
+    private static final Selector wraps = Selector.register("wraps");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isWraps(UIStepper __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isWrapsSuper(ObjCSuper __super__, UIStepper __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/wraps">@property(nonatomic) BOOL wraps</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("wraps") public native boolean isWraps();
+    public boolean isWraps() {
+        if (customClass) { return objc_isWrapsSuper(getSuper(), this, wraps); } else { return objc_isWraps(this, wraps); }
+    }
+    
+    private static final Selector setWraps$ = Selector.register("setWraps:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setWraps(UIStepper __self__, Selector __cmd__, boolean wraps);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setWrapsSuper(ObjCSuper __super__, UIStepper __self__, Selector __cmd__, boolean wraps);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/wraps">@property(nonatomic) BOOL wraps</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setWraps:") public native void setWraps(boolean v);
+    public void setWraps(boolean wraps) {
+        if (customClass) { objc_setWrapsSuper(getSuper(), this, setWraps$, wraps); } else { objc_setWraps(this, setWraps$, wraps); }
+    }
     /*</properties>*/
     /*<methods>*/
     

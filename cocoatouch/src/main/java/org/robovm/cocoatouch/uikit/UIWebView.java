@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,111 +53,237 @@ public class /*<name>*/ UIWebView /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector allowsInlineMediaPlayback = Selector.register("allowsInlineMediaPlayback");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAllowsInlineMediaPlayback(UIWebView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAllowsInlineMediaPlaybackSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/allowsInlineMediaPlayback">@property(nonatomic) BOOL allowsInlineMediaPlayback</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("allowsInlineMediaPlayback") public native boolean isAllowsInlineMediaPlayback();
+    public boolean isAllowsInlineMediaPlayback() {
+        if (customClass) { return objc_isAllowsInlineMediaPlaybackSuper(getSuper(), this, allowsInlineMediaPlayback); } else { return objc_isAllowsInlineMediaPlayback(this, allowsInlineMediaPlayback); }
+    }
+    
+    private static final Selector setAllowsInlineMediaPlayback$ = Selector.register("setAllowsInlineMediaPlayback:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAllowsInlineMediaPlayback(UIWebView __self__, Selector __cmd__, boolean allowsInlineMediaPlayback);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAllowsInlineMediaPlaybackSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__, boolean allowsInlineMediaPlayback);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/allowsInlineMediaPlayback">@property(nonatomic) BOOL allowsInlineMediaPlayback</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("setAllowsInlineMediaPlayback:") public native void setAllowsInlineMediaPlayback(boolean v);
+    public void setAllowsInlineMediaPlayback(boolean allowsInlineMediaPlayback) {
+        if (customClass) { objc_setAllowsInlineMediaPlaybackSuper(getSuper(), this, setAllowsInlineMediaPlayback$, allowsInlineMediaPlayback); } else { objc_setAllowsInlineMediaPlayback(this, setAllowsInlineMediaPlayback$, allowsInlineMediaPlayback); }
+    }
+    
+    private static final Selector canGoBack = Selector.register("canGoBack");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isCanGoBack(UIWebView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isCanGoBackSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/canGoBack">@property(nonatomic, readonly, getter=canGoBack) BOOL canGoBack</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("canGoBack") public native boolean isCanGoBack();
+    public boolean isCanGoBack() {
+        if (customClass) { return objc_isCanGoBackSuper(getSuper(), this, canGoBack); } else { return objc_isCanGoBack(this, canGoBack); }
+    }
+    
+    private static final Selector canGoForward = Selector.register("canGoForward");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isCanGoForward(UIWebView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isCanGoForwardSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/canGoForward">@property(nonatomic, readonly, getter=canGoForward) BOOL canGoForward</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("canGoForward") public native boolean isCanGoForward();
+    public boolean isCanGoForward() {
+        if (customClass) { return objc_isCanGoForwardSuper(getSuper(), this, canGoForward); } else { return objc_isCanGoForward(this, canGoForward); }
+    }
+    
+    private static final Selector dataDetectorTypes = Selector.register("dataDetectorTypes");
+    @Bridge(symbol = "objc_msgSend") private native static UIDataDetectorTypes objc_getDataDetectorTypes(UIWebView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIDataDetectorTypes objc_getDataDetectorTypesSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/dataDetectorTypes">@property(nonatomic) UIDataDetectorTypes dataDetectorTypes</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("dataDetectorTypes") public native UIDataDetectorTypes getDataDetectorTypes();
+    public UIDataDetectorTypes getDataDetectorTypes() {
+        if (customClass) { return objc_getDataDetectorTypesSuper(getSuper(), this, dataDetectorTypes); } else { return objc_getDataDetectorTypes(this, dataDetectorTypes); }
+    }
+    
+    private static final Selector setDataDetectorTypes$ = Selector.register("setDataDetectorTypes:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDataDetectorTypes(UIWebView __self__, Selector __cmd__, UIDataDetectorTypes dataDetectorTypes);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDataDetectorTypesSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__, UIDataDetectorTypes dataDetectorTypes);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/dataDetectorTypes">@property(nonatomic) UIDataDetectorTypes dataDetectorTypes</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setDataDetectorTypes:") public native void setDataDetectorTypes(UIDataDetectorTypes v);
+    public void setDataDetectorTypes(UIDataDetectorTypes dataDetectorTypes) {
+        if (customClass) { objc_setDataDetectorTypesSuper(getSuper(), this, setDataDetectorTypes$, dataDetectorTypes); } else { objc_setDataDetectorTypes(this, setDataDetectorTypes$, dataDetectorTypes); }
+    }
+    
+    private static final Selector delegate = Selector.register("delegate");
+    @Bridge(symbol = "objc_msgSend") private native static UIWebViewDelegate objc_getDelegate(UIWebView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIWebViewDelegate objc_getDelegateSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/delegate">@property(nonatomic, assign) id&amp;lt;UIWebViewDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("delegate") public native UIWebViewDelegate getDelegate();
+    public UIWebViewDelegate getDelegate() {
+        if (customClass) { return objc_getDelegateSuper(getSuper(), this, delegate); } else { return objc_getDelegate(this, delegate); }
+    }
+    
+    private static final Selector setDelegate$ = Selector.register("setDelegate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIWebView __self__, Selector __cmd__, UIWebViewDelegate delegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__, UIWebViewDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/delegate">@property(nonatomic, assign) id&amp;lt;UIWebViewDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(UIWebViewDelegate v);
+    public void setDelegate(UIWebViewDelegate delegate) {
+        if (customClass) { objc_setDelegateSuper(getSuper(), this, setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
+    }
+    
+    private static final Selector keyboardDisplayRequiresUserAction = Selector.register("keyboardDisplayRequiresUserAction");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isKeyboardDisplayRequiresUserAction(UIWebView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isKeyboardDisplayRequiresUserActionSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/keyboardDisplayRequiresUserAction">@property (nonatomic) BOOL keyboardDisplayRequiresUserAction</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("keyboardDisplayRequiresUserAction") public native boolean isKeyboardDisplayRequiresUserAction();
+    public boolean isKeyboardDisplayRequiresUserAction() {
+        if (customClass) { return objc_isKeyboardDisplayRequiresUserActionSuper(getSuper(), this, keyboardDisplayRequiresUserAction); } else { return objc_isKeyboardDisplayRequiresUserAction(this, keyboardDisplayRequiresUserAction); }
+    }
+    
+    private static final Selector setKeyboardDisplayRequiresUserAction$ = Selector.register("setKeyboardDisplayRequiresUserAction:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setKeyboardDisplayRequiresUserAction(UIWebView __self__, Selector __cmd__, boolean keyboardDisplayRequiresUserAction);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setKeyboardDisplayRequiresUserActionSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__, boolean keyboardDisplayRequiresUserAction);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/keyboardDisplayRequiresUserAction">@property (nonatomic) BOOL keyboardDisplayRequiresUserAction</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setKeyboardDisplayRequiresUserAction:") public native void setKeyboardDisplayRequiresUserAction(boolean v);
+    public void setKeyboardDisplayRequiresUserAction(boolean keyboardDisplayRequiresUserAction) {
+        if (customClass) { objc_setKeyboardDisplayRequiresUserActionSuper(getSuper(), this, setKeyboardDisplayRequiresUserAction$, keyboardDisplayRequiresUserAction); } else { objc_setKeyboardDisplayRequiresUserAction(this, setKeyboardDisplayRequiresUserAction$, keyboardDisplayRequiresUserAction); }
+    }
+    
+    private static final Selector isLoading = Selector.register("isLoading");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isLoading(UIWebView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isLoadingSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/loading">@property(nonatomic, readonly, getter=isLoading) BOOL loading</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isLoading") public native boolean isLoading();
+    public boolean isLoading() {
+        if (customClass) { return objc_isLoadingSuper(getSuper(), this, isLoading); } else { return objc_isLoading(this, isLoading); }
+    }
+    
+    private static final Selector mediaPlaybackAllowsAirPlay = Selector.register("mediaPlaybackAllowsAirPlay");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isMediaPlaybackAllowsAirPlay(UIWebView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isMediaPlaybackAllowsAirPlaySuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/mediaPlaybackAllowsAirPlay">@property(nonatomic) BOOL mediaPlaybackAllowsAirPlay</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("mediaPlaybackAllowsAirPlay") public native boolean isMediaPlaybackAllowsAirPlay();
+    public boolean isMediaPlaybackAllowsAirPlay() {
+        if (customClass) { return objc_isMediaPlaybackAllowsAirPlaySuper(getSuper(), this, mediaPlaybackAllowsAirPlay); } else { return objc_isMediaPlaybackAllowsAirPlay(this, mediaPlaybackAllowsAirPlay); }
+    }
+    
+    private static final Selector setMediaPlaybackAllowsAirPlay$ = Selector.register("setMediaPlaybackAllowsAirPlay:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMediaPlaybackAllowsAirPlay(UIWebView __self__, Selector __cmd__, boolean mediaPlaybackAllowsAirPlay);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMediaPlaybackAllowsAirPlaySuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__, boolean mediaPlaybackAllowsAirPlay);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/mediaPlaybackAllowsAirPlay">@property(nonatomic) BOOL mediaPlaybackAllowsAirPlay</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setMediaPlaybackAllowsAirPlay:") public native void setMediaPlaybackAllowsAirPlay(boolean v);
+    public void setMediaPlaybackAllowsAirPlay(boolean mediaPlaybackAllowsAirPlay) {
+        if (customClass) { objc_setMediaPlaybackAllowsAirPlaySuper(getSuper(), this, setMediaPlaybackAllowsAirPlay$, mediaPlaybackAllowsAirPlay); } else { objc_setMediaPlaybackAllowsAirPlay(this, setMediaPlaybackAllowsAirPlay$, mediaPlaybackAllowsAirPlay); }
+    }
+    
+    private static final Selector mediaPlaybackRequiresUserAction = Selector.register("mediaPlaybackRequiresUserAction");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isMediaPlaybackRequiresUserAction(UIWebView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isMediaPlaybackRequiresUserActionSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/mediaPlaybackRequiresUserAction">@property(nonatomic) BOOL mediaPlaybackRequiresUserAction</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("mediaPlaybackRequiresUserAction") public native boolean isMediaPlaybackRequiresUserAction();
+    public boolean isMediaPlaybackRequiresUserAction() {
+        if (customClass) { return objc_isMediaPlaybackRequiresUserActionSuper(getSuper(), this, mediaPlaybackRequiresUserAction); } else { return objc_isMediaPlaybackRequiresUserAction(this, mediaPlaybackRequiresUserAction); }
+    }
+    
+    private static final Selector setMediaPlaybackRequiresUserAction$ = Selector.register("setMediaPlaybackRequiresUserAction:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMediaPlaybackRequiresUserAction(UIWebView __self__, Selector __cmd__, boolean mediaPlaybackRequiresUserAction);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMediaPlaybackRequiresUserActionSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__, boolean mediaPlaybackRequiresUserAction);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/mediaPlaybackRequiresUserAction">@property(nonatomic) BOOL mediaPlaybackRequiresUserAction</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("setMediaPlaybackRequiresUserAction:") public native void setMediaPlaybackRequiresUserAction(boolean v);
+    public void setMediaPlaybackRequiresUserAction(boolean mediaPlaybackRequiresUserAction) {
+        if (customClass) { objc_setMediaPlaybackRequiresUserActionSuper(getSuper(), this, setMediaPlaybackRequiresUserAction$, mediaPlaybackRequiresUserAction); } else { objc_setMediaPlaybackRequiresUserAction(this, setMediaPlaybackRequiresUserAction$, mediaPlaybackRequiresUserAction); }
+    }
+    
+    private static final Selector request = Selector.register("request");
+    @Bridge(symbol = "objc_msgSend") private native static NSURLRequest objc_getRequest(UIWebView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSURLRequest objc_getRequestSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/request">@property(nonatomic, readonly, retain) NSURLRequest *request</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("request") public native NSURLRequest getRequest();
+    public NSURLRequest getRequest() {
+        if (customClass) { return objc_getRequestSuper(getSuper(), this, request); } else { return objc_getRequest(this, request); }
+    }
+    
+    private static final Selector scalesPageToFit = Selector.register("scalesPageToFit");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isScalesPageToFit(UIWebView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isScalesPageToFitSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/scalesPageToFit">@property(nonatomic) BOOL scalesPageToFit</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("scalesPageToFit") public native boolean isScalesPageToFit();
+    public boolean isScalesPageToFit() {
+        if (customClass) { return objc_isScalesPageToFitSuper(getSuper(), this, scalesPageToFit); } else { return objc_isScalesPageToFit(this, scalesPageToFit); }
+    }
+    
+    private static final Selector setScalesPageToFit$ = Selector.register("setScalesPageToFit:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setScalesPageToFit(UIWebView __self__, Selector __cmd__, boolean scalesPageToFit);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setScalesPageToFitSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__, boolean scalesPageToFit);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/scalesPageToFit">@property(nonatomic) BOOL scalesPageToFit</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setScalesPageToFit:") public native void setScalesPageToFit(boolean v);
+    public void setScalesPageToFit(boolean scalesPageToFit) {
+        if (customClass) { objc_setScalesPageToFitSuper(getSuper(), this, setScalesPageToFit$, scalesPageToFit); } else { objc_setScalesPageToFit(this, setScalesPageToFit$, scalesPageToFit); }
+    }
+    
+    private static final Selector scrollView = Selector.register("scrollView");
+    @Bridge(symbol = "objc_msgSend") private native static UIScrollView objc_getScrollView(UIWebView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIScrollView objc_getScrollViewSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/scrollView">@property(nonatomic, readonly, retain) UIScrollView *scrollView</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("scrollView") public native UIScrollView getScrollView();
+    public UIScrollView getScrollView() {
+        if (customClass) { return objc_getScrollViewSuper(getSuper(), this, scrollView); } else { return objc_getScrollView(this, scrollView); }
+    }
+    
+    private static final Selector suppressesIncrementalRendering = Selector.register("suppressesIncrementalRendering");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isSuppressesIncrementalRendering(UIWebView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isSuppressesIncrementalRenderingSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/suppressesIncrementalRendering">@property(nonatomic) BOOL suppressesIncrementalRendering</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("suppressesIncrementalRendering") public native boolean isSuppressesIncrementalRendering();
+    public boolean isSuppressesIncrementalRendering() {
+        if (customClass) { return objc_isSuppressesIncrementalRenderingSuper(getSuper(), this, suppressesIncrementalRendering); } else { return objc_isSuppressesIncrementalRendering(this, suppressesIncrementalRendering); }
+    }
+    
+    private static final Selector setSuppressesIncrementalRendering$ = Selector.register("setSuppressesIncrementalRendering:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSuppressesIncrementalRendering(UIWebView __self__, Selector __cmd__, boolean suppressesIncrementalRendering);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSuppressesIncrementalRenderingSuper(ObjCSuper __super__, UIWebView __self__, Selector __cmd__, boolean suppressesIncrementalRendering);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWebView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIWebView/suppressesIncrementalRendering">@property(nonatomic) BOOL suppressesIncrementalRendering</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setSuppressesIncrementalRendering:") public native void setSuppressesIncrementalRendering(boolean v);
+    public void setSuppressesIncrementalRendering(boolean suppressesIncrementalRendering) {
+        if (customClass) { objc_setSuppressesIncrementalRenderingSuper(getSuper(), this, setSuppressesIncrementalRendering$, suppressesIncrementalRendering); } else { objc_setSuppressesIncrementalRendering(this, setSuppressesIncrementalRendering$, suppressesIncrementalRendering); }
+    }
     /*</properties>*/
     /*<methods>*/
     

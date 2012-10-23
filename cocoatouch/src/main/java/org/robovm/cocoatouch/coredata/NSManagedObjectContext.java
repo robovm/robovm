@@ -19,7 +19,6 @@ package org.robovm.cocoatouch.coredata;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -44,6 +43,7 @@ public class /*<name>*/ NSManagedObjectContext /*</name>*/
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSManagedObjectContext /*</name>*/.class);
 
     /*<constructors>*/
+    protected NSManagedObjectContext(SkipInit skipInit) { super(skipInit); }
     public NSManagedObjectContext() {}
     
     /*</constructors>*/

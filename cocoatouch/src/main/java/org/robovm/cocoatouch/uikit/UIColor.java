@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -86,16 +85,28 @@ public class /*<name>*/ UIColor /*</name>*/
     }
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector CGColor = Selector.register("CGColor");
+    @Bridge(symbol = "objc_msgSend") private native static CGColor objc_getCGColor(UIColor __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGColor objc_getCGColorSuper(ObjCSuper __super__, UIColor __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instp/UIColor/CGColor">@property(nonatomic, readonly) CGColorRef CGColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("CGColor") public native CGColor getCGColor();
+    public CGColor getCGColor() {
+        if (customClass) { return objc_getCGColorSuper(getSuper(), this, CGColor); } else { return objc_getCGColor(this, CGColor); }
+    }
+    
+    private static final Selector CIColor = Selector.register("CIColor");
+    @Bridge(symbol = "objc_msgSend") private native static CIColor objc_getCIColor(UIColor __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CIColor objc_getCIColorSuper(ObjCSuper __super__, UIColor __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instp/UIColor/CIColor">@property(nonatomic, readonly) CIColor *CIColor</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("CIColor") public native CIColor getCIColor();
+    public CIColor getCIColor() {
+        if (customClass) { return objc_getCIColorSuper(getSuper(), this, CIColor); } else { return objc_getCIColor(this, CIColor); }
+    }
     /*</properties>*/
     /*<methods>*/
     

@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,111 +53,237 @@ public class /*<name>*/ UISlider /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector isContinuous = Selector.register("isContinuous");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isContinuous(UISlider __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isContinuousSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/continuous">@property(nonatomic, getter=isContinuous) BOOL continuous</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isContinuous") public native boolean isContinuous();
+    public boolean isContinuous() {
+        if (customClass) { return objc_isContinuousSuper(getSuper(), this, isContinuous); } else { return objc_isContinuous(this, isContinuous); }
+    }
+    
+    private static final Selector setContinuous$ = Selector.register("setContinuous:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setContinuous(UISlider __self__, Selector __cmd__, boolean continuous);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContinuousSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__, boolean continuous);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/continuous">@property(nonatomic, getter=isContinuous) BOOL continuous</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setContinuous:") public native void setContinuous(boolean v);
+    public void setContinuous(boolean continuous) {
+        if (customClass) { objc_setContinuousSuper(getSuper(), this, setContinuous$, continuous); } else { objc_setContinuous(this, setContinuous$, continuous); }
+    }
+    
+    private static final Selector currentMaximumTrackImage = Selector.register("currentMaximumTrackImage");
+    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getCurrentMaximumTrackImage(UISlider __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getCurrentMaximumTrackImageSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/currentMaximumTrackImage">@property(nonatomic, readonly) UIImage *currentMaximumTrackImage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("currentMaximumTrackImage") public native UIImage getCurrentMaximumTrackImage();
+    public UIImage getCurrentMaximumTrackImage() {
+        if (customClass) { return objc_getCurrentMaximumTrackImageSuper(getSuper(), this, currentMaximumTrackImage); } else { return objc_getCurrentMaximumTrackImage(this, currentMaximumTrackImage); }
+    }
+    
+    private static final Selector currentMinimumTrackImage = Selector.register("currentMinimumTrackImage");
+    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getCurrentMinimumTrackImage(UISlider __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getCurrentMinimumTrackImageSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/currentMinimumTrackImage">@property(nonatomic, readonly) UIImage *currentMinimumTrackImage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("currentMinimumTrackImage") public native UIImage getCurrentMinimumTrackImage();
+    public UIImage getCurrentMinimumTrackImage() {
+        if (customClass) { return objc_getCurrentMinimumTrackImageSuper(getSuper(), this, currentMinimumTrackImage); } else { return objc_getCurrentMinimumTrackImage(this, currentMinimumTrackImage); }
+    }
+    
+    private static final Selector currentThumbImage = Selector.register("currentThumbImage");
+    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getCurrentThumbImage(UISlider __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getCurrentThumbImageSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/currentThumbImage">@property(nonatomic, readonly) UIImage *currentThumbImage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("currentThumbImage") public native UIImage getCurrentThumbImage();
+    public UIImage getCurrentThumbImage() {
+        if (customClass) { return objc_getCurrentThumbImageSuper(getSuper(), this, currentThumbImage); } else { return objc_getCurrentThumbImage(this, currentThumbImage); }
+    }
+    
+    private static final Selector maximumTrackTintColor = Selector.register("maximumTrackTintColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getMaximumTrackTintColor(UISlider __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getMaximumTrackTintColorSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/maximumTrackTintColor">@property(nonatomic, retain) UIColor *maximumTrackTintColor</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("maximumTrackTintColor") public native UIColor getMaximumTrackTintColor();
+    public UIColor getMaximumTrackTintColor() {
+        if (customClass) { return objc_getMaximumTrackTintColorSuper(getSuper(), this, maximumTrackTintColor); } else { return objc_getMaximumTrackTintColor(this, maximumTrackTintColor); }
+    }
+    
+    private static final Selector setMaximumTrackTintColor$ = Selector.register("setMaximumTrackTintColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMaximumTrackTintColor(UISlider __self__, Selector __cmd__, UIColor maximumTrackTintColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMaximumTrackTintColorSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__, UIColor maximumTrackTintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/maximumTrackTintColor">@property(nonatomic, retain) UIColor *maximumTrackTintColor</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setMaximumTrackTintColor:") public native void setMaximumTrackTintColor(UIColor v);
+    public void setMaximumTrackTintColor(UIColor maximumTrackTintColor) {
+        if (customClass) { objc_setMaximumTrackTintColorSuper(getSuper(), this, setMaximumTrackTintColor$, maximumTrackTintColor); } else { objc_setMaximumTrackTintColor(this, setMaximumTrackTintColor$, maximumTrackTintColor); }
+    }
+    
+    private static final Selector maximumValue = Selector.register("maximumValue");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getMaximumValue(UISlider __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getMaximumValueSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/maximumValue">@property(nonatomic) float maximumValue</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("maximumValue") public native float getMaximumValue();
+    public float getMaximumValue() {
+        if (customClass) { return objc_getMaximumValueSuper(getSuper(), this, maximumValue); } else { return objc_getMaximumValue(this, maximumValue); }
+    }
+    
+    private static final Selector setMaximumValue$ = Selector.register("setMaximumValue:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMaximumValue(UISlider __self__, Selector __cmd__, float maximumValue);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMaximumValueSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__, float maximumValue);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/maximumValue">@property(nonatomic) float maximumValue</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setMaximumValue:") public native void setMaximumValue(float v);
+    public void setMaximumValue(float maximumValue) {
+        if (customClass) { objc_setMaximumValueSuper(getSuper(), this, setMaximumValue$, maximumValue); } else { objc_setMaximumValue(this, setMaximumValue$, maximumValue); }
+    }
+    
+    private static final Selector maximumValueImage = Selector.register("maximumValueImage");
+    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getMaximumValueImage(UISlider __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getMaximumValueImageSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/maximumValueImage">@property(nonatomic, retain) UIImage *maximumValueImage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("maximumValueImage") public native UIImage getMaximumValueImage();
+    public UIImage getMaximumValueImage() {
+        if (customClass) { return objc_getMaximumValueImageSuper(getSuper(), this, maximumValueImage); } else { return objc_getMaximumValueImage(this, maximumValueImage); }
+    }
+    
+    private static final Selector setMaximumValueImage$ = Selector.register("setMaximumValueImage:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMaximumValueImage(UISlider __self__, Selector __cmd__, UIImage maximumValueImage);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMaximumValueImageSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__, UIImage maximumValueImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/maximumValueImage">@property(nonatomic, retain) UIImage *maximumValueImage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setMaximumValueImage:") public native void setMaximumValueImage(UIImage v);
+    public void setMaximumValueImage(UIImage maximumValueImage) {
+        if (customClass) { objc_setMaximumValueImageSuper(getSuper(), this, setMaximumValueImage$, maximumValueImage); } else { objc_setMaximumValueImage(this, setMaximumValueImage$, maximumValueImage); }
+    }
+    
+    private static final Selector minimumTrackTintColor = Selector.register("minimumTrackTintColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getMinimumTrackTintColor(UISlider __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getMinimumTrackTintColorSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/minimumTrackTintColor">@property(nonatomic, retain) UIColor *minimumTrackTintColor</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("minimumTrackTintColor") public native UIColor getMinimumTrackTintColor();
+    public UIColor getMinimumTrackTintColor() {
+        if (customClass) { return objc_getMinimumTrackTintColorSuper(getSuper(), this, minimumTrackTintColor); } else { return objc_getMinimumTrackTintColor(this, minimumTrackTintColor); }
+    }
+    
+    private static final Selector setMinimumTrackTintColor$ = Selector.register("setMinimumTrackTintColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinimumTrackTintColor(UISlider __self__, Selector __cmd__, UIColor minimumTrackTintColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinimumTrackTintColorSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__, UIColor minimumTrackTintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/minimumTrackTintColor">@property(nonatomic, retain) UIColor *minimumTrackTintColor</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setMinimumTrackTintColor:") public native void setMinimumTrackTintColor(UIColor v);
+    public void setMinimumTrackTintColor(UIColor minimumTrackTintColor) {
+        if (customClass) { objc_setMinimumTrackTintColorSuper(getSuper(), this, setMinimumTrackTintColor$, minimumTrackTintColor); } else { objc_setMinimumTrackTintColor(this, setMinimumTrackTintColor$, minimumTrackTintColor); }
+    }
+    
+    private static final Selector minimumValue = Selector.register("minimumValue");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getMinimumValue(UISlider __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getMinimumValueSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/minimumValue">@property(nonatomic) float minimumValue</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("minimumValue") public native float getMinimumValue();
+    public float getMinimumValue() {
+        if (customClass) { return objc_getMinimumValueSuper(getSuper(), this, minimumValue); } else { return objc_getMinimumValue(this, minimumValue); }
+    }
+    
+    private static final Selector setMinimumValue$ = Selector.register("setMinimumValue:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinimumValue(UISlider __self__, Selector __cmd__, float minimumValue);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinimumValueSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__, float minimumValue);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/minimumValue">@property(nonatomic) float minimumValue</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setMinimumValue:") public native void setMinimumValue(float v);
+    public void setMinimumValue(float minimumValue) {
+        if (customClass) { objc_setMinimumValueSuper(getSuper(), this, setMinimumValue$, minimumValue); } else { objc_setMinimumValue(this, setMinimumValue$, minimumValue); }
+    }
+    
+    private static final Selector minimumValueImage = Selector.register("minimumValueImage");
+    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getMinimumValueImage(UISlider __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getMinimumValueImageSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/minimumValueImage">@property(nonatomic, retain) UIImage *minimumValueImage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("minimumValueImage") public native UIImage getMinimumValueImage();
+    public UIImage getMinimumValueImage() {
+        if (customClass) { return objc_getMinimumValueImageSuper(getSuper(), this, minimumValueImage); } else { return objc_getMinimumValueImage(this, minimumValueImage); }
+    }
+    
+    private static final Selector setMinimumValueImage$ = Selector.register("setMinimumValueImage:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinimumValueImage(UISlider __self__, Selector __cmd__, UIImage minimumValueImage);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinimumValueImageSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__, UIImage minimumValueImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/minimumValueImage">@property(nonatomic, retain) UIImage *minimumValueImage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setMinimumValueImage:") public native void setMinimumValueImage(UIImage v);
+    public void setMinimumValueImage(UIImage minimumValueImage) {
+        if (customClass) { objc_setMinimumValueImageSuper(getSuper(), this, setMinimumValueImage$, minimumValueImage); } else { objc_setMinimumValueImage(this, setMinimumValueImage$, minimumValueImage); }
+    }
+    
+    private static final Selector thumbTintColor = Selector.register("thumbTintColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getThumbTintColor(UISlider __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getThumbTintColorSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/thumbTintColor">@property(nonatomic, retain) UIColor *thumbTintColor</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("thumbTintColor") public native UIColor getThumbTintColor();
+    public UIColor getThumbTintColor() {
+        if (customClass) { return objc_getThumbTintColorSuper(getSuper(), this, thumbTintColor); } else { return objc_getThumbTintColor(this, thumbTintColor); }
+    }
+    
+    private static final Selector setThumbTintColor$ = Selector.register("setThumbTintColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setThumbTintColor(UISlider __self__, Selector __cmd__, UIColor thumbTintColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setThumbTintColorSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__, UIColor thumbTintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/thumbTintColor">@property(nonatomic, retain) UIColor *thumbTintColor</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setThumbTintColor:") public native void setThumbTintColor(UIColor v);
+    public void setThumbTintColor(UIColor thumbTintColor) {
+        if (customClass) { objc_setThumbTintColorSuper(getSuper(), this, setThumbTintColor$, thumbTintColor); } else { objc_setThumbTintColor(this, setThumbTintColor$, thumbTintColor); }
+    }
+    
+    private static final Selector value = Selector.register("value");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getValue(UISlider __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getValueSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/value">@property(nonatomic) float value</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("value") public native float getValue();
+    public float getValue() {
+        if (customClass) { return objc_getValueSuper(getSuper(), this, value); } else { return objc_getValue(this, value); }
+    }
+    
+    private static final Selector setValue$ = Selector.register("setValue:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setValue(UISlider __self__, Selector __cmd__, float value);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setValueSuper(ObjCSuper __super__, UISlider __self__, Selector __cmd__, float value);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/value">@property(nonatomic) float value</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setValue:") public native void setValue(float v);
+    public void setValue(float value) {
+        if (customClass) { objc_setValueSuper(getSuper(), this, setValue$, value); } else { objc_setValue(this, setValue$, value); }
+    }
     /*</properties>*/
     /*<methods>*/
     

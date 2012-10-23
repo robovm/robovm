@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -75,16 +74,28 @@ public class /*<name>*/ UITabBarItem /*</name>*/
     }
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector badgeValue = Selector.register("badgeValue");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getBadgeValue(UITabBarItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getBadgeValueSuper(ObjCSuper __super__, UITabBarItem __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarItem/badgeValue">@property(nonatomic, copy) NSString *badgeValue</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("badgeValue") public native String getBadgeValue();
+    public String getBadgeValue() {
+        if (customClass) { return objc_getBadgeValueSuper(getSuper(), this, badgeValue); } else { return objc_getBadgeValue(this, badgeValue); }
+    }
+    
+    private static final Selector setBadgeValue$ = Selector.register("setBadgeValue:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setBadgeValue(UITabBarItem __self__, Selector __cmd__, String badgeValue);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBadgeValueSuper(ObjCSuper __super__, UITabBarItem __self__, Selector __cmd__, String badgeValue);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarItem/badgeValue">@property(nonatomic, copy) NSString *badgeValue</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setBadgeValue:") public native void setBadgeValue(String v);
+    public void setBadgeValue(String badgeValue) {
+        if (customClass) { objc_setBadgeValueSuper(getSuper(), this, setBadgeValue$, badgeValue); } else { objc_setBadgeValue(this, setBadgeValue$, badgeValue); }
+    }
     /*</properties>*/
     /*<methods>*/
     

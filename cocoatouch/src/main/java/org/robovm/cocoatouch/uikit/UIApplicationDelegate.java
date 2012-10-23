@@ -23,14 +23,12 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
 /**
- *
  *
  * <div class="javadoc">
  *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplicationDelegate_Protocol/Reference/Reference.html">UIApplicationDelegate Protocol Reference</a>
@@ -44,12 +42,12 @@ public interface /*<name>*/ UIApplicationDelegate /*</name>*/ /*<implements>*/ e
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplicationDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UIApplicationDelegate/window">@property(nonatomic, retain) UIWindow *window</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("window") UIWindow getWindow();
+    UIWindow getWindow();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplicationDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UIApplicationDelegate/window">@property(nonatomic, retain) UIWindow *window</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setWindow:") void setWindow(UIWindow v);
+    void setWindow(UIWindow v);
     /*</properties>*/
     /*<methods>*/
     /**
@@ -193,5 +191,7 @@ public interface /*<name>*/ UIApplicationDelegate /*</name>*/ /*<implements>*/ e
      */
     void willTerminate(UIApplication application);
     /*</methods>*/
+    /*<callbacks>*/
+    /*</callbacks>*/
 
 }

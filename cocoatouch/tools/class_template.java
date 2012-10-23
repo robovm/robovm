@@ -39,5 +39,7 @@ public class /*<name>*/ TheName /*</name>*/
     /*</properties>*/
     /*<methods>*/
     /*</methods>*/
+    /*<callbacks>*/
+    /*</callbacks>*/
 
 }

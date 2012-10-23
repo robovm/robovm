@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -63,16 +62,28 @@ public class /*<name>*/ UIActivityViewController /*</name>*/
     }
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector excludedActivityTypes = Selector.register("excludedActivityTypes");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getExcludedActivityTypes(UIActivityViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getExcludedActivityTypesSuper(ObjCSuper __super__, UIActivityViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActivityViewController/excludedActivityTypes">@property(nonatomic,copy) NSArray *excludedActivityTypes</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("excludedActivityTypes") public native NSArray getExcludedActivityTypes();
+    public NSArray getExcludedActivityTypes() {
+        if (customClass) { return objc_getExcludedActivityTypesSuper(getSuper(), this, excludedActivityTypes); } else { return objc_getExcludedActivityTypes(this, excludedActivityTypes); }
+    }
+    
+    private static final Selector setExcludedActivityTypes$ = Selector.register("setExcludedActivityTypes:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setExcludedActivityTypes(UIActivityViewController __self__, Selector __cmd__, NSArray excludedActivityTypes);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setExcludedActivityTypesSuper(ObjCSuper __super__, UIActivityViewController __self__, Selector __cmd__, NSArray excludedActivityTypes);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActivityViewController/excludedActivityTypes">@property(nonatomic,copy) NSArray *excludedActivityTypes</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setExcludedActivityTypes:") public native void setExcludedActivityTypes(NSArray v);
+    public void setExcludedActivityTypes(NSArray excludedActivityTypes) {
+        if (customClass) { objc_setExcludedActivityTypesSuper(getSuper(), this, setExcludedActivityTypes$, excludedActivityTypes); } else { objc_setExcludedActivityTypes(this, setExcludedActivityTypes$, excludedActivityTypes); }
+    }
     /*</properties>*/
     /*<methods>*/
     

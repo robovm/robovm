@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -44,82 +43,82 @@ public interface /*<name>*/ UITextInputTraits /*</name>*/ /*<implements>*/ exten
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocapitalizationType">@property(nonatomic) UITextAutocapitalizationType autocapitalizationType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("autocapitalizationType") UITextAutocapitalizationType getAutocapitalizationType();
+    UITextAutocapitalizationType getAutocapitalizationType();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocapitalizationType">@property(nonatomic) UITextAutocapitalizationType autocapitalizationType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAutocapitalizationType:") void setAutocapitalizationType(UITextAutocapitalizationType v);
+    void setAutocapitalizationType(UITextAutocapitalizationType v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocorrectionType">@property(nonatomic) UITextAutocorrectionType autocorrectionType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("autocorrectionType") UITextAutocorrectionType getAutocorrectionType();
+    UITextAutocorrectionType getAutocorrectionType();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocorrectionType">@property(nonatomic) UITextAutocorrectionType autocorrectionType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAutocorrectionType:") void setAutocorrectionType(UITextAutocorrectionType v);
+    void setAutocorrectionType(UITextAutocorrectionType v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/enablesReturnKeyAutomatically">@property(nonatomic) BOOL enablesReturnKeyAutomatically</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("enablesReturnKeyAutomatically") boolean isEnablesReturnKeyAutomatically();
+    boolean isEnablesReturnKeyAutomatically();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/enablesReturnKeyAutomatically">@property(nonatomic) BOOL enablesReturnKeyAutomatically</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setEnablesReturnKeyAutomatically:") void setEnablesReturnKeyAutomatically(boolean v);
+    void setEnablesReturnKeyAutomatically(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardAppearance">@property(nonatomic) UIKeyboardAppearance keyboardAppearance</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("keyboardAppearance") UIKeyboardAppearance getKeyboardAppearance();
+    UIKeyboardAppearance getKeyboardAppearance();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardAppearance">@property(nonatomic) UIKeyboardAppearance keyboardAppearance</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setKeyboardAppearance:") void setKeyboardAppearance(UIKeyboardAppearance v);
+    void setKeyboardAppearance(UIKeyboardAppearance v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardType">@property(nonatomic) UIKeyboardType keyboardType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("keyboardType") UIKeyboardType getKeyboardType();
+    UIKeyboardType getKeyboardType();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardType">@property(nonatomic) UIKeyboardType keyboardType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setKeyboardType:") void setKeyboardType(UIKeyboardType v);
+    void setKeyboardType(UIKeyboardType v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/returnKeyType">@property(nonatomic) UIReturnKeyType returnKeyType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("returnKeyType") UIReturnKeyType getReturnKeyType();
+    UIReturnKeyType getReturnKeyType();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/returnKeyType">@property(nonatomic) UIReturnKeyType returnKeyType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setReturnKeyType:") void setReturnKeyType(UIReturnKeyType v);
+    void setReturnKeyType(UIReturnKeyType v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/secureTextEntry">@property(nonatomic, getter=isSecureTextEntry) BOOL secureTextEntry</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isSecureTextEntry") boolean isSecureTextEntry();
+    boolean isSecureTextEntry();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/secureTextEntry">@property(nonatomic, getter=isSecureTextEntry) BOOL secureTextEntry</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setSecureTextEntry:") void setSecureTextEntry(boolean v);
+    void setSecureTextEntry(boolean v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/spellCheckingType">@property(nonatomic) UITextSpellCheckingType spellCheckingType</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("spellCheckingType") UITextSpellCheckingType getSpellCheckingType();
+    UITextSpellCheckingType getSpellCheckingType();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/spellCheckingType">@property(nonatomic) UITextSpellCheckingType spellCheckingType</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setSpellCheckingType:") void setSpellCheckingType(UITextSpellCheckingType v);
+    void setSpellCheckingType(UITextSpellCheckingType v);
     /*</properties>*/
     /*<methods>*/
     

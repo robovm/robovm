@@ -282,27 +282,62 @@ class ObjCProperty
     @name = @conf['name'] || @name
     @base_java_name = @name.slice(0,1).capitalize + @name.slice(1..-1)
     @visibility = @conf['visibility'] || 'public'
+    @type = ObjCType.new(@type, @clazz.name, @clazz.typedefs, @conf['type'])
   end
   def read_only?
     @attrs['readonly']
   end
   def getter_to_java
-    jtype = objc_to_java(@type, @clazz.name, @clazz.typedefs, @conf['type'])
-    getter = @type == 'BOOL' ? "is#{@base_java_name}" : "get#{@base_java_name}"
+    getter = @type.decl == 'BOOL' ? "is#{@base_java_name}" : "get#{@base_java_name}"
+    selector_var = @getter_selector.gsub(/:/, '$')
+    java = ''
     if @clazz.is_protocol
-      "#{get_javadoc}\n@Bind(\"#{@getter_selector}\") #{jtype} #{getter}();"
+      java = "#{get_javadoc}\n#{@type.to_java} #{getter}();"
     else
-      "#{get_javadoc}\n@Bind(\"#{@getter_selector}\") #{@visibility} native #{jtype} #{getter}();"
+      java = "#{java}\nprivate static final Selector #{selector_var} = Selector.register(\"#{@getter_selector}\");"
+      sig = "#{@visibility} #{@type.to_java} #{getter}()"
+      msg_send = "objc_#{getter}"
+      msg_send_parameters_s = "#{@clazz.name} __self__, Selector __cmd__"
+      java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static #{@type.to_java} #{msg_send}(#{msg_send_parameters_s});"
+      args = "this, #{selector_var}"
+      body = ""
+      if !(@visibility.include?('private') || @visibility.include?('final'))
+        # Call objc_msgSendSuper if this is a custom class
+        java = "#{java}\n@Bridge(symbol = \"objc_msgSendSuper\") private native static #{@type.to_java} #{msg_send}Super(ObjCSuper __super__, #{msg_send_parameters_s});"
+        body = "if (customClass) { return #{msg_send}Super(getSuper(), #{args}); } else { return #{msg_send}(#{args}); }"
+      else
+        body = "return #{msg_send}(#{args});"
+      end
+      body = body.gsub(/\n/m, "\n    ")
+      java = "#{java}\n#{get_javadoc}\n#{sig} {\n    #{body}\n}"
     end
+    java
   end
   def setter_to_java
-    jtype = objc_to_java(@type, @clazz.name, @clazz.typedefs, @conf['type'])
     setter = @attrs.has_key?('setter') ? @attrs['setter'] : "set#{@base_java_name}"
+    selector_var = @setter_selector.gsub(/:/, '$')
+    java = ''
     if @clazz.is_protocol
-      "#{get_javadoc}\n@Bind(\"#{@setter_selector}\") void #{setter}(#{jtype} v);"
+      java = "#{get_javadoc}\nvoid #{setter}(#{@type.to_java} v);"
     else
-      "#{get_javadoc}\n@Bind(\"#{@setter_selector}\") #{@visibility} native void #{setter}(#{jtype} v);"
+      java = "#{java}\nprivate static final Selector #{selector_var} = Selector.register(\"#{@setter_selector}\");"
+      sig = "#{@visibility} void #{setter}(#{@type.to_java} #{@name})"
+      msg_send = "objc_#{setter}"
+      msg_send_parameters_s = "#{@clazz.name} __self__, Selector __cmd__, #{@type.to_java} #{@name}"
+      java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static void #{msg_send}(#{msg_send_parameters_s});"
+      args = "this, #{selector_var}, #{@name}"
+      body = ""
+      if !(@visibility.include?('private') || @visibility.include?('final'))
+        # Call objc_msgSendSuper if this is a custom class
+        java = "#{java}\n@Bridge(symbol = \"objc_msgSendSuper\") private native static void #{msg_send}Super(ObjCSuper __super__, #{msg_send_parameters_s});"
+        body = "if (customClass) { #{msg_send}Super(getSuper(), #{args}); } else { #{msg_send}(#{args}); }"
+      else
+        body = "#{msg_send}(#{args});"
+      end
+      body = body.gsub(/\n/m, "\n    ")
+      java = "#{java}\n#{get_javadoc}\n#{sig} {\n    #{body}\n}"
     end
+    java
   end
   def get_javadoc
     "/**\n" +
@@ -511,7 +546,6 @@ ARGV[1..-1].each do |yaml_file|
   imports = conf['imports'] || []
   imports << "java.util.*"
   imports << "org.robovm.objc.*"
-  imports << "org.robovm.objc.bind.*"
   imports << "org.robovm.objc.block.*"
   imports << "org.robovm.rt.bro.annotation.*"
   imports << "org.robovm.rt.bro.ptr.*"

@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -53,11 +52,17 @@ public class /*<name>*/ UICollectionReusableView /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector reuseIdentifier = Selector.register("reuseIdentifier");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getReuseIdentifier(UICollectionReusableView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getReuseIdentifierSuper(ObjCSuper __super__, UICollectionReusableView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionReusableView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionReusableView/reuseIdentifier">@property (nonatomic, readonly, copy) NSString *reuseIdentifier</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("reuseIdentifier") public native String getReuseIdentifier();
+    public String getReuseIdentifier() {
+        if (customClass) { return objc_getReuseIdentifierSuper(getSuper(), this, reuseIdentifier); } else { return objc_getReuseIdentifier(this, reuseIdentifier); }
+    }
     /*</properties>*/
     /*<methods>*/
     

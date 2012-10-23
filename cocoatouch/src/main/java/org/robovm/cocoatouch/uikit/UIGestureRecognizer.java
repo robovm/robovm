@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -64,66 +63,138 @@ public class /*<name>*/ UIGestureRecognizer /*</name>*/
     }
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector cancelsTouchesInView = Selector.register("cancelsTouchesInView");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isCancelsTouchesInView(UIGestureRecognizer __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isCancelsTouchesInViewSuper(ObjCSuper __super__, UIGestureRecognizer __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/cancelsTouchesInView">@property(nonatomic) BOOL cancelsTouchesInView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("cancelsTouchesInView") public native boolean isCancelsTouchesInView();
+    public boolean isCancelsTouchesInView() {
+        if (customClass) { return objc_isCancelsTouchesInViewSuper(getSuper(), this, cancelsTouchesInView); } else { return objc_isCancelsTouchesInView(this, cancelsTouchesInView); }
+    }
+    
+    private static final Selector setCancelsTouchesInView$ = Selector.register("setCancelsTouchesInView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setCancelsTouchesInView(UIGestureRecognizer __self__, Selector __cmd__, boolean cancelsTouchesInView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCancelsTouchesInViewSuper(ObjCSuper __super__, UIGestureRecognizer __self__, Selector __cmd__, boolean cancelsTouchesInView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/cancelsTouchesInView">@property(nonatomic) BOOL cancelsTouchesInView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setCancelsTouchesInView:") public native void setCancelsTouchesInView(boolean v);
+    public void setCancelsTouchesInView(boolean cancelsTouchesInView) {
+        if (customClass) { objc_setCancelsTouchesInViewSuper(getSuper(), this, setCancelsTouchesInView$, cancelsTouchesInView); } else { objc_setCancelsTouchesInView(this, setCancelsTouchesInView$, cancelsTouchesInView); }
+    }
+    
+    private static final Selector delaysTouchesBegan = Selector.register("delaysTouchesBegan");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isDelaysTouchesBegan(UIGestureRecognizer __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isDelaysTouchesBeganSuper(ObjCSuper __super__, UIGestureRecognizer __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delaysTouchesBegan">@property(nonatomic) BOOL delaysTouchesBegan</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("delaysTouchesBegan") public native boolean isDelaysTouchesBegan();
+    public boolean isDelaysTouchesBegan() {
+        if (customClass) { return objc_isDelaysTouchesBeganSuper(getSuper(), this, delaysTouchesBegan); } else { return objc_isDelaysTouchesBegan(this, delaysTouchesBegan); }
+    }
+    
+    private static final Selector setDelaysTouchesBegan$ = Selector.register("setDelaysTouchesBegan:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelaysTouchesBegan(UIGestureRecognizer __self__, Selector __cmd__, boolean delaysTouchesBegan);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelaysTouchesBeganSuper(ObjCSuper __super__, UIGestureRecognizer __self__, Selector __cmd__, boolean delaysTouchesBegan);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delaysTouchesBegan">@property(nonatomic) BOOL delaysTouchesBegan</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setDelaysTouchesBegan:") public native void setDelaysTouchesBegan(boolean v);
+    public void setDelaysTouchesBegan(boolean delaysTouchesBegan) {
+        if (customClass) { objc_setDelaysTouchesBeganSuper(getSuper(), this, setDelaysTouchesBegan$, delaysTouchesBegan); } else { objc_setDelaysTouchesBegan(this, setDelaysTouchesBegan$, delaysTouchesBegan); }
+    }
+    
+    private static final Selector delaysTouchesEnded = Selector.register("delaysTouchesEnded");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isDelaysTouchesEnded(UIGestureRecognizer __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isDelaysTouchesEndedSuper(ObjCSuper __super__, UIGestureRecognizer __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delaysTouchesEnded">@property(nonatomic) BOOL delaysTouchesEnded</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("delaysTouchesEnded") public native boolean isDelaysTouchesEnded();
+    public boolean isDelaysTouchesEnded() {
+        if (customClass) { return objc_isDelaysTouchesEndedSuper(getSuper(), this, delaysTouchesEnded); } else { return objc_isDelaysTouchesEnded(this, delaysTouchesEnded); }
+    }
+    
+    private static final Selector setDelaysTouchesEnded$ = Selector.register("setDelaysTouchesEnded:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelaysTouchesEnded(UIGestureRecognizer __self__, Selector __cmd__, boolean delaysTouchesEnded);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelaysTouchesEndedSuper(ObjCSuper __super__, UIGestureRecognizer __self__, Selector __cmd__, boolean delaysTouchesEnded);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delaysTouchesEnded">@property(nonatomic) BOOL delaysTouchesEnded</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setDelaysTouchesEnded:") public native void setDelaysTouchesEnded(boolean v);
+    public void setDelaysTouchesEnded(boolean delaysTouchesEnded) {
+        if (customClass) { objc_setDelaysTouchesEndedSuper(getSuper(), this, setDelaysTouchesEnded$, delaysTouchesEnded); } else { objc_setDelaysTouchesEnded(this, setDelaysTouchesEnded$, delaysTouchesEnded); }
+    }
+    
+    private static final Selector delegate = Selector.register("delegate");
+    @Bridge(symbol = "objc_msgSend") private native static UIGestureRecognizerDelegate objc_getDelegate(UIGestureRecognizer __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIGestureRecognizerDelegate objc_getDelegateSuper(ObjCSuper __super__, UIGestureRecognizer __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delegate">@property(nonatomic, assign) id&amp;lt;UIGestureRecognizerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("delegate") public native UIGestureRecognizerDelegate getDelegate();
+    public UIGestureRecognizerDelegate getDelegate() {
+        if (customClass) { return objc_getDelegateSuper(getSuper(), this, delegate); } else { return objc_getDelegate(this, delegate); }
+    }
+    
+    private static final Selector setDelegate$ = Selector.register("setDelegate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizerDelegate delegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizerDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delegate">@property(nonatomic, assign) id&amp;lt;UIGestureRecognizerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(UIGestureRecognizerDelegate v);
+    public void setDelegate(UIGestureRecognizerDelegate delegate) {
+        if (customClass) { objc_setDelegateSuper(getSuper(), this, setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
+    }
+    
+    private static final Selector isEnabled = Selector.register("isEnabled");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isEnabled(UIGestureRecognizer __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isEnabledSuper(ObjCSuper __super__, UIGestureRecognizer __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/enabled">@property(nonatomic, getter=isEnabled) BOOL enabled</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("isEnabled") public native boolean isEnabled();
+    public boolean isEnabled() {
+        if (customClass) { return objc_isEnabledSuper(getSuper(), this, isEnabled); } else { return objc_isEnabled(this, isEnabled); }
+    }
+    
+    private static final Selector setEnabled$ = Selector.register("setEnabled:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setEnabled(UIGestureRecognizer __self__, Selector __cmd__, boolean enabled);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setEnabledSuper(ObjCSuper __super__, UIGestureRecognizer __self__, Selector __cmd__, boolean enabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/enabled">@property(nonatomic, getter=isEnabled) BOOL enabled</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setEnabled:") public native void setEnabled(boolean v);
+    public void setEnabled(boolean enabled) {
+        if (customClass) { objc_setEnabledSuper(getSuper(), this, setEnabled$, enabled); } else { objc_setEnabled(this, setEnabled$, enabled); }
+    }
+    
+    private static final Selector state = Selector.register("state");
+    @Bridge(symbol = "objc_msgSend") private native static UIGestureRecognizerState objc_getState(UIGestureRecognizer __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIGestureRecognizerState objc_getStateSuper(ObjCSuper __super__, UIGestureRecognizer __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/state">@property(nonatomic, readonly) UIGestureRecognizerState state</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("state") public native UIGestureRecognizerState getState();
+    public UIGestureRecognizerState getState() {
+        if (customClass) { return objc_getStateSuper(getSuper(), this, state); } else { return objc_getState(this, state); }
+    }
+    
+    private static final Selector view = Selector.register("view");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getView(UIGestureRecognizer __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getViewSuper(ObjCSuper __super__, UIGestureRecognizer __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/view">@property(nonatomic, readonly) UIView *view</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("view") public native UIView getView();
+    public UIView getView() {
+        if (customClass) { return objc_getViewSuper(getSuper(), this, view); } else { return objc_getView(this, view); }
+    }
     /*</properties>*/
     /*<methods>*/
     

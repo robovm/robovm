@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,66 +53,138 @@ public class /*<name>*/ UIPageControl /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector currentPage = Selector.register("currentPage");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getCurrentPage(UIPageControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getCurrentPageSuper(ObjCSuper __super__, UIPageControl __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPage">@property(nonatomic) NSInteger currentPage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("currentPage") public native int getCurrentPage();
+    public int getCurrentPage() {
+        if (customClass) { return objc_getCurrentPageSuper(getSuper(), this, currentPage); } else { return objc_getCurrentPage(this, currentPage); }
+    }
+    
+    private static final Selector setCurrentPage$ = Selector.register("setCurrentPage:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setCurrentPage(UIPageControl __self__, Selector __cmd__, int currentPage);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCurrentPageSuper(ObjCSuper __super__, UIPageControl __self__, Selector __cmd__, int currentPage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPage">@property(nonatomic) NSInteger currentPage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setCurrentPage:") public native void setCurrentPage(int v);
+    public void setCurrentPage(int currentPage) {
+        if (customClass) { objc_setCurrentPageSuper(getSuper(), this, setCurrentPage$, currentPage); } else { objc_setCurrentPage(this, setCurrentPage$, currentPage); }
+    }
+    
+    private static final Selector currentPageIndicatorTintColor = Selector.register("currentPageIndicatorTintColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getCurrentPageIndicatorTintColor(UIPageControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getCurrentPageIndicatorTintColorSuper(ObjCSuper __super__, UIPageControl __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPageIndicatorTintColor">@property(nonatomic,retain) UIColor *currentPageIndicatorTintColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("currentPageIndicatorTintColor") public native UIColor getCurrentPageIndicatorTintColor();
+    public UIColor getCurrentPageIndicatorTintColor() {
+        if (customClass) { return objc_getCurrentPageIndicatorTintColorSuper(getSuper(), this, currentPageIndicatorTintColor); } else { return objc_getCurrentPageIndicatorTintColor(this, currentPageIndicatorTintColor); }
+    }
+    
+    private static final Selector setCurrentPageIndicatorTintColor$ = Selector.register("setCurrentPageIndicatorTintColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setCurrentPageIndicatorTintColor(UIPageControl __self__, Selector __cmd__, UIColor currentPageIndicatorTintColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCurrentPageIndicatorTintColorSuper(ObjCSuper __super__, UIPageControl __self__, Selector __cmd__, UIColor currentPageIndicatorTintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPageIndicatorTintColor">@property(nonatomic,retain) UIColor *currentPageIndicatorTintColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setCurrentPageIndicatorTintColor:") public native void setCurrentPageIndicatorTintColor(UIColor v);
+    public void setCurrentPageIndicatorTintColor(UIColor currentPageIndicatorTintColor) {
+        if (customClass) { objc_setCurrentPageIndicatorTintColorSuper(getSuper(), this, setCurrentPageIndicatorTintColor$, currentPageIndicatorTintColor); } else { objc_setCurrentPageIndicatorTintColor(this, setCurrentPageIndicatorTintColor$, currentPageIndicatorTintColor); }
+    }
+    
+    private static final Selector defersCurrentPageDisplay = Selector.register("defersCurrentPageDisplay");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isDefersCurrentPageDisplay(UIPageControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isDefersCurrentPageDisplaySuper(ObjCSuper __super__, UIPageControl __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/defersCurrentPageDisplay">@property(nonatomic) BOOL defersCurrentPageDisplay</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("defersCurrentPageDisplay") public native boolean isDefersCurrentPageDisplay();
+    public boolean isDefersCurrentPageDisplay() {
+        if (customClass) { return objc_isDefersCurrentPageDisplaySuper(getSuper(), this, defersCurrentPageDisplay); } else { return objc_isDefersCurrentPageDisplay(this, defersCurrentPageDisplay); }
+    }
+    
+    private static final Selector setDefersCurrentPageDisplay$ = Selector.register("setDefersCurrentPageDisplay:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDefersCurrentPageDisplay(UIPageControl __self__, Selector __cmd__, boolean defersCurrentPageDisplay);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDefersCurrentPageDisplaySuper(ObjCSuper __super__, UIPageControl __self__, Selector __cmd__, boolean defersCurrentPageDisplay);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/defersCurrentPageDisplay">@property(nonatomic) BOOL defersCurrentPageDisplay</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDefersCurrentPageDisplay:") public native void setDefersCurrentPageDisplay(boolean v);
+    public void setDefersCurrentPageDisplay(boolean defersCurrentPageDisplay) {
+        if (customClass) { objc_setDefersCurrentPageDisplaySuper(getSuper(), this, setDefersCurrentPageDisplay$, defersCurrentPageDisplay); } else { objc_setDefersCurrentPageDisplay(this, setDefersCurrentPageDisplay$, defersCurrentPageDisplay); }
+    }
+    
+    private static final Selector hidesForSinglePage = Selector.register("hidesForSinglePage");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isHidesForSinglePage(UIPageControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isHidesForSinglePageSuper(ObjCSuper __super__, UIPageControl __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/hidesForSinglePage">@property(nonatomic) BOOL hidesForSinglePage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("hidesForSinglePage") public native boolean isHidesForSinglePage();
+    public boolean isHidesForSinglePage() {
+        if (customClass) { return objc_isHidesForSinglePageSuper(getSuper(), this, hidesForSinglePage); } else { return objc_isHidesForSinglePage(this, hidesForSinglePage); }
+    }
+    
+    private static final Selector setHidesForSinglePage$ = Selector.register("setHidesForSinglePage:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setHidesForSinglePage(UIPageControl __self__, Selector __cmd__, boolean hidesForSinglePage);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHidesForSinglePageSuper(ObjCSuper __super__, UIPageControl __self__, Selector __cmd__, boolean hidesForSinglePage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/hidesForSinglePage">@property(nonatomic) BOOL hidesForSinglePage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setHidesForSinglePage:") public native void setHidesForSinglePage(boolean v);
+    public void setHidesForSinglePage(boolean hidesForSinglePage) {
+        if (customClass) { objc_setHidesForSinglePageSuper(getSuper(), this, setHidesForSinglePage$, hidesForSinglePage); } else { objc_setHidesForSinglePage(this, setHidesForSinglePage$, hidesForSinglePage); }
+    }
+    
+    private static final Selector numberOfPages = Selector.register("numberOfPages");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getNumberOfPages(UIPageControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getNumberOfPagesSuper(ObjCSuper __super__, UIPageControl __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/numberOfPages">@property(nonatomic) NSInteger numberOfPages</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("numberOfPages") public native int getNumberOfPages();
+    public int getNumberOfPages() {
+        if (customClass) { return objc_getNumberOfPagesSuper(getSuper(), this, numberOfPages); } else { return objc_getNumberOfPages(this, numberOfPages); }
+    }
+    
+    private static final Selector setNumberOfPages$ = Selector.register("setNumberOfPages:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setNumberOfPages(UIPageControl __self__, Selector __cmd__, int numberOfPages);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNumberOfPagesSuper(ObjCSuper __super__, UIPageControl __self__, Selector __cmd__, int numberOfPages);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/numberOfPages">@property(nonatomic) NSInteger numberOfPages</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setNumberOfPages:") public native void setNumberOfPages(int v);
+    public void setNumberOfPages(int numberOfPages) {
+        if (customClass) { objc_setNumberOfPagesSuper(getSuper(), this, setNumberOfPages$, numberOfPages); } else { objc_setNumberOfPages(this, setNumberOfPages$, numberOfPages); }
+    }
+    
+    private static final Selector pageIndicatorTintColor = Selector.register("pageIndicatorTintColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getPageIndicatorTintColor(UIPageControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getPageIndicatorTintColorSuper(ObjCSuper __super__, UIPageControl __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/pageIndicatorTintColor">@property(nonatomic,retain) UIColor *pageIndicatorTintColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("pageIndicatorTintColor") public native UIColor getPageIndicatorTintColor();
+    public UIColor getPageIndicatorTintColor() {
+        if (customClass) { return objc_getPageIndicatorTintColorSuper(getSuper(), this, pageIndicatorTintColor); } else { return objc_getPageIndicatorTintColor(this, pageIndicatorTintColor); }
+    }
+    
+    private static final Selector setPageIndicatorTintColor$ = Selector.register("setPageIndicatorTintColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setPageIndicatorTintColor(UIPageControl __self__, Selector __cmd__, UIColor pageIndicatorTintColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPageIndicatorTintColorSuper(ObjCSuper __super__, UIPageControl __self__, Selector __cmd__, UIColor pageIndicatorTintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/pageIndicatorTintColor">@property(nonatomic,retain) UIColor *pageIndicatorTintColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setPageIndicatorTintColor:") public native void setPageIndicatorTintColor(UIColor v);
+    public void setPageIndicatorTintColor(UIColor pageIndicatorTintColor) {
+        if (customClass) { objc_setPageIndicatorTintColorSuper(getSuper(), this, setPageIndicatorTintColor$, pageIndicatorTintColor); } else { objc_setPageIndicatorTintColor(this, setPageIndicatorTintColor$, pageIndicatorTintColor); }
+    }
     /*</properties>*/
     /*<methods>*/
     

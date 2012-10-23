@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -64,226 +63,490 @@ public class /*<name>*/ UIView /*</name>*/
     }
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector alpha = Selector.register("alpha");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getAlpha(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getAlphaSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/alpha">@property(nonatomic) CGFloat alpha</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("alpha") public native float getAlpha();
+    public float getAlpha() {
+        if (customClass) { return objc_getAlphaSuper(getSuper(), this, alpha); } else { return objc_getAlpha(this, alpha); }
+    }
+    
+    private static final Selector setAlpha$ = Selector.register("setAlpha:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAlpha(UIView __self__, Selector __cmd__, float alpha);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAlphaSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, float alpha);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/alpha">@property(nonatomic) CGFloat alpha</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAlpha:") public native void setAlpha(float v);
+    public void setAlpha(float alpha) {
+        if (customClass) { objc_setAlphaSuper(getSuper(), this, setAlpha$, alpha); } else { objc_setAlpha(this, setAlpha$, alpha); }
+    }
+    
+    private static final Selector autoresizesSubviews = Selector.register("autoresizesSubviews");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAutoresizesSubviews(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAutoresizesSubviewsSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/autoresizesSubviews">@property(nonatomic) BOOL autoresizesSubviews</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("autoresizesSubviews") public native boolean isAutoresizesSubviews();
+    public boolean isAutoresizesSubviews() {
+        if (customClass) { return objc_isAutoresizesSubviewsSuper(getSuper(), this, autoresizesSubviews); } else { return objc_isAutoresizesSubviews(this, autoresizesSubviews); }
+    }
+    
+    private static final Selector setAutoresizesSubviews$ = Selector.register("setAutoresizesSubviews:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAutoresizesSubviews(UIView __self__, Selector __cmd__, boolean autoresizesSubviews);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAutoresizesSubviewsSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, boolean autoresizesSubviews);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/autoresizesSubviews">@property(nonatomic) BOOL autoresizesSubviews</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAutoresizesSubviews:") public native void setAutoresizesSubviews(boolean v);
+    public void setAutoresizesSubviews(boolean autoresizesSubviews) {
+        if (customClass) { objc_setAutoresizesSubviewsSuper(getSuper(), this, setAutoresizesSubviews$, autoresizesSubviews); } else { objc_setAutoresizesSubviews(this, setAutoresizesSubviews$, autoresizesSubviews); }
+    }
+    
+    private static final Selector autoresizingMask = Selector.register("autoresizingMask");
+    @Bridge(symbol = "objc_msgSend") private native static UIViewAutoresizing objc_getAutoresizingMask(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewAutoresizing objc_getAutoresizingMaskSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/autoresizingMask">@property(nonatomic) UIViewAutoresizing autoresizingMask</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("autoresizingMask") public native UIViewAutoresizing getAutoresizingMask();
+    public UIViewAutoresizing getAutoresizingMask() {
+        if (customClass) { return objc_getAutoresizingMaskSuper(getSuper(), this, autoresizingMask); } else { return objc_getAutoresizingMask(this, autoresizingMask); }
+    }
+    
+    private static final Selector setAutoresizingMask$ = Selector.register("setAutoresizingMask:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAutoresizingMask(UIView __self__, Selector __cmd__, UIViewAutoresizing autoresizingMask);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAutoresizingMaskSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, UIViewAutoresizing autoresizingMask);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/autoresizingMask">@property(nonatomic) UIViewAutoresizing autoresizingMask</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAutoresizingMask:") public native void setAutoresizingMask(UIViewAutoresizing v);
+    public void setAutoresizingMask(UIViewAutoresizing autoresizingMask) {
+        if (customClass) { objc_setAutoresizingMaskSuper(getSuper(), this, setAutoresizingMask$, autoresizingMask); } else { objc_setAutoresizingMask(this, setAutoresizingMask$, autoresizingMask); }
+    }
+    
+    private static final Selector backgroundColor = Selector.register("backgroundColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getBackgroundColor(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getBackgroundColorSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/backgroundColor">@property(nonatomic, copy) UIColor *backgroundColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("backgroundColor") public native UIColor getBackgroundColor();
+    public UIColor getBackgroundColor() {
+        if (customClass) { return objc_getBackgroundColorSuper(getSuper(), this, backgroundColor); } else { return objc_getBackgroundColor(this, backgroundColor); }
+    }
+    
+    private static final Selector setBackgroundColor$ = Selector.register("setBackgroundColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setBackgroundColor(UIView __self__, Selector __cmd__, UIColor backgroundColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBackgroundColorSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, UIColor backgroundColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/backgroundColor">@property(nonatomic, copy) UIColor *backgroundColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setBackgroundColor:") public native void setBackgroundColor(UIColor v);
+    public void setBackgroundColor(UIColor backgroundColor) {
+        if (customClass) { objc_setBackgroundColorSuper(getSuper(), this, setBackgroundColor$, backgroundColor); } else { objc_setBackgroundColor(this, setBackgroundColor$, backgroundColor); }
+    }
+    
+    private static final Selector bounds = Selector.register("bounds");
+    @Bridge(symbol = "objc_msgSend") private native static CGRect objc_getBounds(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGRect objc_getBoundsSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/bounds">@property(nonatomic) CGRect bounds</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("bounds") public native CGRect getBounds();
+    public CGRect getBounds() {
+        if (customClass) { return objc_getBoundsSuper(getSuper(), this, bounds); } else { return objc_getBounds(this, bounds); }
+    }
+    
+    private static final Selector setBounds$ = Selector.register("setBounds:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setBounds(UIView __self__, Selector __cmd__, CGRect bounds);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBoundsSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, CGRect bounds);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/bounds">@property(nonatomic) CGRect bounds</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setBounds:") public native void setBounds(CGRect v);
+    public void setBounds(CGRect bounds) {
+        if (customClass) { objc_setBoundsSuper(getSuper(), this, setBounds$, bounds); } else { objc_setBounds(this, setBounds$, bounds); }
+    }
+    
+    private static final Selector center = Selector.register("center");
+    @Bridge(symbol = "objc_msgSend") private native static CGPoint objc_getCenter(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGPoint objc_getCenterSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/center">@property(nonatomic) CGPoint center</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("center") public native CGPoint getCenter();
+    public CGPoint getCenter() {
+        if (customClass) { return objc_getCenterSuper(getSuper(), this, center); } else { return objc_getCenter(this, center); }
+    }
+    
+    private static final Selector setCenter$ = Selector.register("setCenter:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setCenter(UIView __self__, Selector __cmd__, CGPoint center);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCenterSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, CGPoint center);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/center">@property(nonatomic) CGPoint center</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setCenter:") public native void setCenter(CGPoint v);
+    public void setCenter(CGPoint center) {
+        if (customClass) { objc_setCenterSuper(getSuper(), this, setCenter$, center); } else { objc_setCenter(this, setCenter$, center); }
+    }
+    
+    private static final Selector clearsContextBeforeDrawing = Selector.register("clearsContextBeforeDrawing");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isClearsContextBeforeDrawing(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isClearsContextBeforeDrawingSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/clearsContextBeforeDrawing">@property(nonatomic) BOOL clearsContextBeforeDrawing</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("clearsContextBeforeDrawing") public native boolean isClearsContextBeforeDrawing();
+    public boolean isClearsContextBeforeDrawing() {
+        if (customClass) { return objc_isClearsContextBeforeDrawingSuper(getSuper(), this, clearsContextBeforeDrawing); } else { return objc_isClearsContextBeforeDrawing(this, clearsContextBeforeDrawing); }
+    }
+    
+    private static final Selector setClearsContextBeforeDrawing$ = Selector.register("setClearsContextBeforeDrawing:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setClearsContextBeforeDrawing(UIView __self__, Selector __cmd__, boolean clearsContextBeforeDrawing);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setClearsContextBeforeDrawingSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, boolean clearsContextBeforeDrawing);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/clearsContextBeforeDrawing">@property(nonatomic) BOOL clearsContextBeforeDrawing</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setClearsContextBeforeDrawing:") public native void setClearsContextBeforeDrawing(boolean v);
+    public void setClearsContextBeforeDrawing(boolean clearsContextBeforeDrawing) {
+        if (customClass) { objc_setClearsContextBeforeDrawingSuper(getSuper(), this, setClearsContextBeforeDrawing$, clearsContextBeforeDrawing); } else { objc_setClearsContextBeforeDrawing(this, setClearsContextBeforeDrawing$, clearsContextBeforeDrawing); }
+    }
+    
+    private static final Selector clipsToBounds = Selector.register("clipsToBounds");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isClipsToBounds(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isClipsToBoundsSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/clipsToBounds">@property(nonatomic) BOOL clipsToBounds</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("clipsToBounds") public native boolean isClipsToBounds();
+    public boolean isClipsToBounds() {
+        if (customClass) { return objc_isClipsToBoundsSuper(getSuper(), this, clipsToBounds); } else { return objc_isClipsToBounds(this, clipsToBounds); }
+    }
+    
+    private static final Selector setClipsToBounds$ = Selector.register("setClipsToBounds:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setClipsToBounds(UIView __self__, Selector __cmd__, boolean clipsToBounds);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setClipsToBoundsSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, boolean clipsToBounds);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/clipsToBounds">@property(nonatomic) BOOL clipsToBounds</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setClipsToBounds:") public native void setClipsToBounds(boolean v);
+    public void setClipsToBounds(boolean clipsToBounds) {
+        if (customClass) { objc_setClipsToBoundsSuper(getSuper(), this, setClipsToBounds$, clipsToBounds); } else { objc_setClipsToBounds(this, setClipsToBounds$, clipsToBounds); }
+    }
+    
+    private static final Selector contentMode = Selector.register("contentMode");
+    @Bridge(symbol = "objc_msgSend") private native static UIViewContentMode objc_getContentMode(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewContentMode objc_getContentModeSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/contentMode">@property(nonatomic) UIViewContentMode contentMode</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("contentMode") public native UIViewContentMode getContentMode();
+    public UIViewContentMode getContentMode() {
+        if (customClass) { return objc_getContentModeSuper(getSuper(), this, contentMode); } else { return objc_getContentMode(this, contentMode); }
+    }
+    
+    private static final Selector setContentMode$ = Selector.register("setContentMode:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setContentMode(UIView __self__, Selector __cmd__, UIViewContentMode contentMode);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentModeSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, UIViewContentMode contentMode);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/contentMode">@property(nonatomic) UIViewContentMode contentMode</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setContentMode:") public native void setContentMode(UIViewContentMode v);
+    public void setContentMode(UIViewContentMode contentMode) {
+        if (customClass) { objc_setContentModeSuper(getSuper(), this, setContentMode$, contentMode); } else { objc_setContentMode(this, setContentMode$, contentMode); }
+    }
+    
+    private static final Selector contentScaleFactor = Selector.register("contentScaleFactor");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getContentScaleFactor(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getContentScaleFactorSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/contentScaleFactor">@property(nonatomic) CGFloat contentScaleFactor</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("contentScaleFactor") public native float getContentScaleFactor();
+    public float getContentScaleFactor() {
+        if (customClass) { return objc_getContentScaleFactorSuper(getSuper(), this, contentScaleFactor); } else { return objc_getContentScaleFactor(this, contentScaleFactor); }
+    }
+    
+    private static final Selector setContentScaleFactor$ = Selector.register("setContentScaleFactor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setContentScaleFactor(UIView __self__, Selector __cmd__, float contentScaleFactor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentScaleFactorSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, float contentScaleFactor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/contentScaleFactor">@property(nonatomic) CGFloat contentScaleFactor</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("setContentScaleFactor:") public native void setContentScaleFactor(float v);
+    public void setContentScaleFactor(float contentScaleFactor) {
+        if (customClass) { objc_setContentScaleFactorSuper(getSuper(), this, setContentScaleFactor$, contentScaleFactor); } else { objc_setContentScaleFactor(this, setContentScaleFactor$, contentScaleFactor); }
+    }
+    
+    private static final Selector isExclusiveTouch = Selector.register("isExclusiveTouch");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isExclusiveTouch(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isExclusiveTouchSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/exclusiveTouch">@property(nonatomic, getter=isExclusiveTouch) BOOL exclusiveTouch</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isExclusiveTouch") public native boolean isExclusiveTouch();
+    public boolean isExclusiveTouch() {
+        if (customClass) { return objc_isExclusiveTouchSuper(getSuper(), this, isExclusiveTouch); } else { return objc_isExclusiveTouch(this, isExclusiveTouch); }
+    }
+    
+    private static final Selector setExclusiveTouch$ = Selector.register("setExclusiveTouch:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setExclusiveTouch(UIView __self__, Selector __cmd__, boolean exclusiveTouch);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setExclusiveTouchSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, boolean exclusiveTouch);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/exclusiveTouch">@property(nonatomic, getter=isExclusiveTouch) BOOL exclusiveTouch</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setExclusiveTouch:") public native void setExclusiveTouch(boolean v);
+    public void setExclusiveTouch(boolean exclusiveTouch) {
+        if (customClass) { objc_setExclusiveTouchSuper(getSuper(), this, setExclusiveTouch$, exclusiveTouch); } else { objc_setExclusiveTouch(this, setExclusiveTouch$, exclusiveTouch); }
+    }
+    
+    private static final Selector frame = Selector.register("frame");
+    @Bridge(symbol = "objc_msgSend") private native static CGRect objc_getFrame(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGRect objc_getFrameSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/frame">@property(nonatomic) CGRect frame</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("frame") public native CGRect getFrame();
+    public CGRect getFrame() {
+        if (customClass) { return objc_getFrameSuper(getSuper(), this, frame); } else { return objc_getFrame(this, frame); }
+    }
+    
+    private static final Selector setFrame$ = Selector.register("setFrame:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setFrame(UIView __self__, Selector __cmd__, CGRect frame);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFrameSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, CGRect frame);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/frame">@property(nonatomic) CGRect frame</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setFrame:") public native void setFrame(CGRect v);
+    public void setFrame(CGRect frame) {
+        if (customClass) { objc_setFrameSuper(getSuper(), this, setFrame$, frame); } else { objc_setFrame(this, setFrame$, frame); }
+    }
+    
+    private static final Selector gestureRecognizers = Selector.register("gestureRecognizers");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getGestureRecognizers(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getGestureRecognizersSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/gestureRecognizers">@property(nonatomic, copy) NSArray *gestureRecognizers</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("gestureRecognizers") public native NSArray getGestureRecognizers();
+    public NSArray getGestureRecognizers() {
+        if (customClass) { return objc_getGestureRecognizersSuper(getSuper(), this, gestureRecognizers); } else { return objc_getGestureRecognizers(this, gestureRecognizers); }
+    }
+    
+    private static final Selector setGestureRecognizers$ = Selector.register("setGestureRecognizers:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setGestureRecognizers(UIView __self__, Selector __cmd__, NSArray gestureRecognizers);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setGestureRecognizersSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, NSArray gestureRecognizers);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/gestureRecognizers">@property(nonatomic, copy) NSArray *gestureRecognizers</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setGestureRecognizers:") public native void setGestureRecognizers(NSArray v);
+    public void setGestureRecognizers(NSArray gestureRecognizers) {
+        if (customClass) { objc_setGestureRecognizersSuper(getSuper(), this, setGestureRecognizers$, gestureRecognizers); } else { objc_setGestureRecognizers(this, setGestureRecognizers$, gestureRecognizers); }
+    }
+    
+    private static final Selector isHidden = Selector.register("isHidden");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isHidden(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isHiddenSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/hidden">@property(nonatomic, getter=isHidden) BOOL hidden</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isHidden") public native boolean isHidden();
+    public boolean isHidden() {
+        if (customClass) { return objc_isHiddenSuper(getSuper(), this, isHidden); } else { return objc_isHidden(this, isHidden); }
+    }
+    
+    private static final Selector setHidden$ = Selector.register("setHidden:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setHidden(UIView __self__, Selector __cmd__, boolean hidden);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHiddenSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, boolean hidden);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/hidden">@property(nonatomic, getter=isHidden) BOOL hidden</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setHidden:") public native void setHidden(boolean v);
+    public void setHidden(boolean hidden) {
+        if (customClass) { objc_setHiddenSuper(getSuper(), this, setHidden$, hidden); } else { objc_setHidden(this, setHidden$, hidden); }
+    }
+    
+    private static final Selector layer = Selector.register("layer");
+    @Bridge(symbol = "objc_msgSend") private native static CALayer objc_getLayer(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CALayer objc_getLayerSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/layer">@property(nonatomic, readonly, retain) CALayer *layer</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("layer") public native CALayer getLayer();
+    public CALayer getLayer() {
+        if (customClass) { return objc_getLayerSuper(getSuper(), this, layer); } else { return objc_getLayer(this, layer); }
+    }
+    
+    private static final Selector isMultipleTouchEnabled = Selector.register("isMultipleTouchEnabled");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isMultipleTouchEnabled(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isMultipleTouchEnabledSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/multipleTouchEnabled">@property(nonatomic, getter=isMultipleTouchEnabled) BOOL multipleTouchEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isMultipleTouchEnabled") public native boolean isMultipleTouchEnabled();
+    public boolean isMultipleTouchEnabled() {
+        if (customClass) { return objc_isMultipleTouchEnabledSuper(getSuper(), this, isMultipleTouchEnabled); } else { return objc_isMultipleTouchEnabled(this, isMultipleTouchEnabled); }
+    }
+    
+    private static final Selector setMultipleTouchEnabled$ = Selector.register("setMultipleTouchEnabled:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMultipleTouchEnabled(UIView __self__, Selector __cmd__, boolean multipleTouchEnabled);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMultipleTouchEnabledSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, boolean multipleTouchEnabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/multipleTouchEnabled">@property(nonatomic, getter=isMultipleTouchEnabled) BOOL multipleTouchEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setMultipleTouchEnabled:") public native void setMultipleTouchEnabled(boolean v);
+    public void setMultipleTouchEnabled(boolean multipleTouchEnabled) {
+        if (customClass) { objc_setMultipleTouchEnabledSuper(getSuper(), this, setMultipleTouchEnabled$, multipleTouchEnabled); } else { objc_setMultipleTouchEnabled(this, setMultipleTouchEnabled$, multipleTouchEnabled); }
+    }
+    
+    private static final Selector isOpaque = Selector.register("isOpaque");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isOpaque(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isOpaqueSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/opaque">@property(nonatomic, getter=isOpaque) BOOL opaque</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isOpaque") public native boolean isOpaque();
+    public boolean isOpaque() {
+        if (customClass) { return objc_isOpaqueSuper(getSuper(), this, isOpaque); } else { return objc_isOpaque(this, isOpaque); }
+    }
+    
+    private static final Selector setOpaque$ = Selector.register("setOpaque:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setOpaque(UIView __self__, Selector __cmd__, boolean opaque);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setOpaqueSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, boolean opaque);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/opaque">@property(nonatomic, getter=isOpaque) BOOL opaque</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setOpaque:") public native void setOpaque(boolean v);
+    public void setOpaque(boolean opaque) {
+        if (customClass) { objc_setOpaqueSuper(getSuper(), this, setOpaque$, opaque); } else { objc_setOpaque(this, setOpaque$, opaque); }
+    }
+    
+    private static final Selector restorationIdentifier = Selector.register("restorationIdentifier");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getRestorationIdentifier(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getRestorationIdentifierSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/restorationIdentifier">@property (nonatomic, copy) NSString *restorationIdentifier</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("restorationIdentifier") public native String getRestorationIdentifier();
+    public String getRestorationIdentifier() {
+        if (customClass) { return objc_getRestorationIdentifierSuper(getSuper(), this, restorationIdentifier); } else { return objc_getRestorationIdentifier(this, restorationIdentifier); }
+    }
+    
+    private static final Selector setRestorationIdentifier$ = Selector.register("setRestorationIdentifier:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setRestorationIdentifier(UIView __self__, Selector __cmd__, String restorationIdentifier);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setRestorationIdentifierSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, String restorationIdentifier);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/restorationIdentifier">@property (nonatomic, copy) NSString *restorationIdentifier</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setRestorationIdentifier:") public native void setRestorationIdentifier(String v);
+    public void setRestorationIdentifier(String restorationIdentifier) {
+        if (customClass) { objc_setRestorationIdentifierSuper(getSuper(), this, setRestorationIdentifier$, restorationIdentifier); } else { objc_setRestorationIdentifier(this, setRestorationIdentifier$, restorationIdentifier); }
+    }
+    
+    private static final Selector subviews = Selector.register("subviews");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getSubviews(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getSubviewsSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/subviews">@property(nonatomic, readonly, copy) NSArray *subviews</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("subviews") public native NSArray getSubviews();
+    public NSArray getSubviews() {
+        if (customClass) { return objc_getSubviewsSuper(getSuper(), this, subviews); } else { return objc_getSubviews(this, subviews); }
+    }
+    
+    private static final Selector superview = Selector.register("superview");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getSuperview(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getSuperviewSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/superview">@property(nonatomic, readonly) UIView *superview</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("superview") public native UIView getSuperview();
+    public UIView getSuperview() {
+        if (customClass) { return objc_getSuperviewSuper(getSuper(), this, superview); } else { return objc_getSuperview(this, superview); }
+    }
+    
+    private static final Selector tag = Selector.register("tag");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getTag(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getTagSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/tag">@property(nonatomic) NSInteger tag</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("tag") public native int getTag();
+    public int getTag() {
+        if (customClass) { return objc_getTagSuper(getSuper(), this, tag); } else { return objc_getTag(this, tag); }
+    }
+    
+    private static final Selector setTag$ = Selector.register("setTag:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTag(UIView __self__, Selector __cmd__, int tag);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTagSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, int tag);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/tag">@property(nonatomic) NSInteger tag</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTag:") public native void setTag(int v);
+    public void setTag(int tag) {
+        if (customClass) { objc_setTagSuper(getSuper(), this, setTag$, tag); } else { objc_setTag(this, setTag$, tag); }
+    }
+    
+    private static final Selector transform = Selector.register("transform");
+    @Bridge(symbol = "objc_msgSend") private native static CGAffineTransform objc_getTransform(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGAffineTransform objc_getTransformSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/transform">@property(nonatomic) CGAffineTransform transform</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("transform") public native CGAffineTransform getTransform();
+    public CGAffineTransform getTransform() {
+        if (customClass) { return objc_getTransformSuper(getSuper(), this, transform); } else { return objc_getTransform(this, transform); }
+    }
+    
+    private static final Selector setTransform$ = Selector.register("setTransform:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTransform(UIView __self__, Selector __cmd__, CGAffineTransform transform);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTransformSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, CGAffineTransform transform);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/transform">@property(nonatomic) CGAffineTransform transform</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTransform:") public native void setTransform(CGAffineTransform v);
+    public void setTransform(CGAffineTransform transform) {
+        if (customClass) { objc_setTransformSuper(getSuper(), this, setTransform$, transform); } else { objc_setTransform(this, setTransform$, transform); }
+    }
+    
+    private static final Selector isUserInteractionEnabled = Selector.register("isUserInteractionEnabled");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isUserInteractionEnabled(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isUserInteractionEnabledSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/userInteractionEnabled">@property(nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isUserInteractionEnabled") public native boolean isUserInteractionEnabled();
+    public boolean isUserInteractionEnabled() {
+        if (customClass) { return objc_isUserInteractionEnabledSuper(getSuper(), this, isUserInteractionEnabled); } else { return objc_isUserInteractionEnabled(this, isUserInteractionEnabled); }
+    }
+    
+    private static final Selector setUserInteractionEnabled$ = Selector.register("setUserInteractionEnabled:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setUserInteractionEnabled(UIView __self__, Selector __cmd__, boolean userInteractionEnabled);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setUserInteractionEnabledSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__, boolean userInteractionEnabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/userInteractionEnabled">@property(nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setUserInteractionEnabled:") public native void setUserInteractionEnabled(boolean v);
+    public void setUserInteractionEnabled(boolean userInteractionEnabled) {
+        if (customClass) { objc_setUserInteractionEnabledSuper(getSuper(), this, setUserInteractionEnabled$, userInteractionEnabled); } else { objc_setUserInteractionEnabled(this, setUserInteractionEnabled$, userInteractionEnabled); }
+    }
+    
+    private static final Selector window = Selector.register("window");
+    @Bridge(symbol = "objc_msgSend") private native static UIWindow objc_getWindow(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIWindow objc_getWindowSuper(ObjCSuper __super__, UIView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/window">@property(nonatomic, readonly) UIWindow *window</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("window") public native UIWindow getWindow();
+    public UIWindow getWindow() {
+        if (customClass) { return objc_getWindowSuper(getSuper(), this, window); } else { return objc_getWindow(this, window); }
+    }
     /*</properties>*/
     /*<methods>*/
     

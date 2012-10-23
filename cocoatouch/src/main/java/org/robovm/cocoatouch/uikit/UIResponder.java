@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,21 +53,39 @@ public class /*<name>*/ UIResponder /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector inputAccessoryView = Selector.register("inputAccessoryView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getInputAccessoryView(UIResponder __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getInputAccessoryViewSuper(ObjCSuper __super__, UIResponder __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instp/UIResponder/inputAccessoryView">@property (readonly, retain) UIView *inputAccessoryView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("inputAccessoryView") public native UIView getInputAccessoryView();
+    public UIView getInputAccessoryView() {
+        if (customClass) { return objc_getInputAccessoryViewSuper(getSuper(), this, inputAccessoryView); } else { return objc_getInputAccessoryView(this, inputAccessoryView); }
+    }
+    
+    private static final Selector inputView = Selector.register("inputView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getInputView(UIResponder __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getInputViewSuper(ObjCSuper __super__, UIResponder __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instp/UIResponder/inputView">@property (readonly, retain) UIView *inputView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("inputView") public native UIView getInputView();
+    public UIView getInputView() {
+        if (customClass) { return objc_getInputViewSuper(getSuper(), this, inputView); } else { return objc_getInputView(this, inputView); }
+    }
+    
+    private static final Selector undoManager = Selector.register("undoManager");
+    @Bridge(symbol = "objc_msgSend") private native static NSUndoManager objc_getUndoManager(UIResponder __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSUndoManager objc_getUndoManagerSuper(ObjCSuper __super__, UIResponder __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instp/UIResponder/undoManager">@property(readonly) NSUndoManager *undoManager</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("undoManager") public native NSUndoManager getUndoManager();
+    public NSUndoManager getUndoManager() {
+        if (customClass) { return objc_getUndoManagerSuper(getSuper(), this, undoManager); } else { return objc_getUndoManager(this, undoManager); }
+    }
     /*</properties>*/
     /*<methods>*/
     

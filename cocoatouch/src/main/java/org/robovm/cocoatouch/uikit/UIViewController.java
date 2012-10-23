@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -64,221 +63,479 @@ public class /*<name>*/ UIViewController /*</name>*/
     }
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector childViewControllers = Selector.register("childViewControllers");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getChildViewControllers(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getChildViewControllersSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/childViewControllers">@property(nonatomic, readonly) NSArray *childViewControllers</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("childViewControllers") public native NSArray getChildViewControllers();
+    public NSArray getChildViewControllers() {
+        if (customClass) { return objc_getChildViewControllersSuper(getSuper(), this, childViewControllers); } else { return objc_getChildViewControllers(this, childViewControllers); }
+    }
+    
+    private static final Selector contentSizeForViewInPopover = Selector.register("contentSizeForViewInPopover");
+    @Bridge(symbol = "objc_msgSend") private native static CGSize objc_getContentSizeForViewInPopover(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGSize objc_getContentSizeForViewInPopoverSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/contentSizeForViewInPopover">@property(nonatomic, readwrite) CGSize contentSizeForViewInPopover</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("contentSizeForViewInPopover") public native CGSize getContentSizeForViewInPopover();
+    public CGSize getContentSizeForViewInPopover() {
+        if (customClass) { return objc_getContentSizeForViewInPopoverSuper(getSuper(), this, contentSizeForViewInPopover); } else { return objc_getContentSizeForViewInPopover(this, contentSizeForViewInPopover); }
+    }
+    
+    private static final Selector setContentSizeForViewInPopover$ = Selector.register("setContentSizeForViewInPopover:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setContentSizeForViewInPopover(UIViewController __self__, Selector __cmd__, CGSize contentSizeForViewInPopover);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentSizeForViewInPopoverSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__, CGSize contentSizeForViewInPopover);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/contentSizeForViewInPopover">@property(nonatomic, readwrite) CGSize contentSizeForViewInPopover</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setContentSizeForViewInPopover:") public native void setContentSizeForViewInPopover(CGSize v);
+    public void setContentSizeForViewInPopover(CGSize contentSizeForViewInPopover) {
+        if (customClass) { objc_setContentSizeForViewInPopoverSuper(getSuper(), this, setContentSizeForViewInPopover$, contentSizeForViewInPopover); } else { objc_setContentSizeForViewInPopover(this, setContentSizeForViewInPopover$, contentSizeForViewInPopover); }
+    }
+    
+    private static final Selector definesPresentationContext = Selector.register("definesPresentationContext");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isDefinesPresentationContext(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isDefinesPresentationContextSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/definesPresentationContext">@property(nonatomic, assign) BOOL definesPresentationContext</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("definesPresentationContext") public native boolean isDefinesPresentationContext();
+    public boolean isDefinesPresentationContext() {
+        if (customClass) { return objc_isDefinesPresentationContextSuper(getSuper(), this, definesPresentationContext); } else { return objc_isDefinesPresentationContext(this, definesPresentationContext); }
+    }
+    
+    private static final Selector setDefinesPresentationContext$ = Selector.register("setDefinesPresentationContext:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDefinesPresentationContext(UIViewController __self__, Selector __cmd__, boolean definesPresentationContext);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDefinesPresentationContextSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__, boolean definesPresentationContext);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/definesPresentationContext">@property(nonatomic, assign) BOOL definesPresentationContext</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setDefinesPresentationContext:") public native void setDefinesPresentationContext(boolean v);
+    public void setDefinesPresentationContext(boolean definesPresentationContext) {
+        if (customClass) { objc_setDefinesPresentationContextSuper(getSuper(), this, setDefinesPresentationContext$, definesPresentationContext); } else { objc_setDefinesPresentationContext(this, setDefinesPresentationContext$, definesPresentationContext); }
+    }
+    
+    private static final Selector isEditing = Selector.register("isEditing");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isEditing(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isEditingSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/editing">@property(nonatomic, getter=isEditing) BOOL editing</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isEditing") public native boolean isEditing();
+    public boolean isEditing() {
+        if (customClass) { return objc_isEditingSuper(getSuper(), this, isEditing); } else { return objc_isEditing(this, isEditing); }
+    }
+    
+    private static final Selector setEditing$ = Selector.register("setEditing:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setEditing(UIViewController __self__, Selector __cmd__, boolean editing);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setEditingSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__, boolean editing);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/editing">@property(nonatomic, getter=isEditing) BOOL editing</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setEditing:") public native void setEditing(boolean v);
+    public void setEditing(boolean editing) {
+        if (customClass) { objc_setEditingSuper(getSuper(), this, setEditing$, editing); } else { objc_setEditing(this, setEditing$, editing); }
+    }
+    
+    private static final Selector hidesBottomBarWhenPushed = Selector.register("hidesBottomBarWhenPushed");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isHidesBottomBarWhenPushed(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isHidesBottomBarWhenPushedSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/hidesBottomBarWhenPushed">@property(nonatomic) BOOL hidesBottomBarWhenPushed</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("hidesBottomBarWhenPushed") public native boolean isHidesBottomBarWhenPushed();
+    public boolean isHidesBottomBarWhenPushed() {
+        if (customClass) { return objc_isHidesBottomBarWhenPushedSuper(getSuper(), this, hidesBottomBarWhenPushed); } else { return objc_isHidesBottomBarWhenPushed(this, hidesBottomBarWhenPushed); }
+    }
+    
+    private static final Selector setHidesBottomBarWhenPushed$ = Selector.register("setHidesBottomBarWhenPushed:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setHidesBottomBarWhenPushed(UIViewController __self__, Selector __cmd__, boolean hidesBottomBarWhenPushed);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHidesBottomBarWhenPushedSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__, boolean hidesBottomBarWhenPushed);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/hidesBottomBarWhenPushed">@property(nonatomic) BOOL hidesBottomBarWhenPushed</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setHidesBottomBarWhenPushed:") public native void setHidesBottomBarWhenPushed(boolean v);
+    public void setHidesBottomBarWhenPushed(boolean hidesBottomBarWhenPushed) {
+        if (customClass) { objc_setHidesBottomBarWhenPushedSuper(getSuper(), this, setHidesBottomBarWhenPushed$, hidesBottomBarWhenPushed); } else { objc_setHidesBottomBarWhenPushed(this, setHidesBottomBarWhenPushed$, hidesBottomBarWhenPushed); }
+    }
+    
+    private static final Selector interfaceOrientation = Selector.register("interfaceOrientation");
+    @Bridge(symbol = "objc_msgSend") private native static UIInterfaceOrientation objc_getInterfaceOrientation(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIInterfaceOrientation objc_getInterfaceOrientationSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/interfaceOrientation">@property(nonatomic, readonly) UIInterfaceOrientation interfaceOrientation</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("interfaceOrientation") public native UIInterfaceOrientation getInterfaceOrientation();
+    public UIInterfaceOrientation getInterfaceOrientation() {
+        if (customClass) { return objc_getInterfaceOrientationSuper(getSuper(), this, interfaceOrientation); } else { return objc_getInterfaceOrientation(this, interfaceOrientation); }
+    }
+    
+    private static final Selector isModalInPopover = Selector.register("isModalInPopover");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isModalInPopover(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isModalInPopoverSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/modalInPopover">@property(nonatomic, readwrite, getter=isModalInPopover) BOOL modalInPopover</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("isModalInPopover") public native boolean isModalInPopover();
+    public boolean isModalInPopover() {
+        if (customClass) { return objc_isModalInPopoverSuper(getSuper(), this, isModalInPopover); } else { return objc_isModalInPopover(this, isModalInPopover); }
+    }
+    
+    private static final Selector setModalInPopover$ = Selector.register("setModalInPopover:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setModalInPopover(UIViewController __self__, Selector __cmd__, boolean modalInPopover);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setModalInPopoverSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__, boolean modalInPopover);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/modalInPopover">@property(nonatomic, readwrite, getter=isModalInPopover) BOOL modalInPopover</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setModalInPopover:") public native void setModalInPopover(boolean v);
+    public void setModalInPopover(boolean modalInPopover) {
+        if (customClass) { objc_setModalInPopoverSuper(getSuper(), this, setModalInPopover$, modalInPopover); } else { objc_setModalInPopover(this, setModalInPopover$, modalInPopover); }
+    }
+    
+    private static final Selector modalPresentationStyle = Selector.register("modalPresentationStyle");
+    @Bridge(symbol = "objc_msgSend") private native static UIModalPresentationStyle objc_getModalPresentationStyle(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIModalPresentationStyle objc_getModalPresentationStyleSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/modalPresentationStyle">@property(nonatomic, assign) UIModalPresentationStyle modalPresentationStyle</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("modalPresentationStyle") public native UIModalPresentationStyle getModalPresentationStyle();
+    public UIModalPresentationStyle getModalPresentationStyle() {
+        if (customClass) { return objc_getModalPresentationStyleSuper(getSuper(), this, modalPresentationStyle); } else { return objc_getModalPresentationStyle(this, modalPresentationStyle); }
+    }
+    
+    private static final Selector setModalPresentationStyle$ = Selector.register("setModalPresentationStyle:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setModalPresentationStyle(UIViewController __self__, Selector __cmd__, UIModalPresentationStyle modalPresentationStyle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setModalPresentationStyleSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__, UIModalPresentationStyle modalPresentationStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/modalPresentationStyle">@property(nonatomic, assign) UIModalPresentationStyle modalPresentationStyle</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setModalPresentationStyle:") public native void setModalPresentationStyle(UIModalPresentationStyle v);
+    public void setModalPresentationStyle(UIModalPresentationStyle modalPresentationStyle) {
+        if (customClass) { objc_setModalPresentationStyleSuper(getSuper(), this, setModalPresentationStyle$, modalPresentationStyle); } else { objc_setModalPresentationStyle(this, setModalPresentationStyle$, modalPresentationStyle); }
+    }
+    
+    private static final Selector modalTransitionStyle = Selector.register("modalTransitionStyle");
+    @Bridge(symbol = "objc_msgSend") private native static UIModalTransitionStyle objc_getModalTransitionStyle(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIModalTransitionStyle objc_getModalTransitionStyleSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/modalTransitionStyle">@property(nonatomic, assign) UIModalTransitionStyle modalTransitionStyle</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("modalTransitionStyle") public native UIModalTransitionStyle getModalTransitionStyle();
+    public UIModalTransitionStyle getModalTransitionStyle() {
+        if (customClass) { return objc_getModalTransitionStyleSuper(getSuper(), this, modalTransitionStyle); } else { return objc_getModalTransitionStyle(this, modalTransitionStyle); }
+    }
+    
+    private static final Selector setModalTransitionStyle$ = Selector.register("setModalTransitionStyle:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setModalTransitionStyle(UIViewController __self__, Selector __cmd__, UIModalTransitionStyle modalTransitionStyle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setModalTransitionStyleSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__, UIModalTransitionStyle modalTransitionStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/modalTransitionStyle">@property(nonatomic, assign) UIModalTransitionStyle modalTransitionStyle</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setModalTransitionStyle:") public native void setModalTransitionStyle(UIModalTransitionStyle v);
+    public void setModalTransitionStyle(UIModalTransitionStyle modalTransitionStyle) {
+        if (customClass) { objc_setModalTransitionStyleSuper(getSuper(), this, setModalTransitionStyle$, modalTransitionStyle); } else { objc_setModalTransitionStyle(this, setModalTransitionStyle$, modalTransitionStyle); }
+    }
+    
+    private static final Selector navigationController = Selector.register("navigationController");
+    @Bridge(symbol = "objc_msgSend") private native static UINavigationController objc_getNavigationController(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UINavigationController objc_getNavigationControllerSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/navigationController">@property(nonatomic, readonly, retain) UINavigationController *navigationController</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("navigationController") public native UINavigationController getNavigationController();
+    public UINavigationController getNavigationController() {
+        if (customClass) { return objc_getNavigationControllerSuper(getSuper(), this, navigationController); } else { return objc_getNavigationController(this, navigationController); }
+    }
+    
+    private static final Selector navigationItem = Selector.register("navigationItem");
+    @Bridge(symbol = "objc_msgSend") private native static UINavigationItem objc_getNavigationItem(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UINavigationItem objc_getNavigationItemSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/navigationItem">@property(nonatomic, readonly, retain) UINavigationItem *navigationItem</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("navigationItem") public native UINavigationItem getNavigationItem();
+    public UINavigationItem getNavigationItem() {
+        if (customClass) { return objc_getNavigationItemSuper(getSuper(), this, navigationItem); } else { return objc_getNavigationItem(this, navigationItem); }
+    }
+    
+    private static final Selector nibBundle = Selector.register("nibBundle");
+    @Bridge(symbol = "objc_msgSend") private native static NSBundle objc_getNibBundle(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSBundle objc_getNibBundleSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/nibBundle">@property(nonatomic, readonly, retain) NSBundle *nibBundle</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("nibBundle") public native NSBundle getNibBundle();
+    public NSBundle getNibBundle() {
+        if (customClass) { return objc_getNibBundleSuper(getSuper(), this, nibBundle); } else { return objc_getNibBundle(this, nibBundle); }
+    }
+    
+    private static final Selector nibName = Selector.register("nibName");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getNibName(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getNibNameSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/nibName">@property(nonatomic, readonly, copy) NSString *nibName</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("nibName") public native String getNibName();
+    public String getNibName() {
+        if (customClass) { return objc_getNibNameSuper(getSuper(), this, nibName); } else { return objc_getNibName(this, nibName); }
+    }
+    
+    private static final Selector parentViewController = Selector.register("parentViewController");
+    @Bridge(symbol = "objc_msgSend") private native static UIViewController objc_getParentViewController(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewController objc_getParentViewControllerSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/parentViewController">@property(nonatomic, readonly) UIViewController *parentViewController</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("parentViewController") public native UIViewController getParentViewController();
+    public UIViewController getParentViewController() {
+        if (customClass) { return objc_getParentViewControllerSuper(getSuper(), this, parentViewController); } else { return objc_getParentViewController(this, parentViewController); }
+    }
+    
+    private static final Selector presentedViewController = Selector.register("presentedViewController");
+    @Bridge(symbol = "objc_msgSend") private native static UIViewController objc_getPresentedViewController(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewController objc_getPresentedViewControllerSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/presentedViewController">@property(nonatomic, readonly) UIViewController *presentedViewController</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("presentedViewController") public native UIViewController getPresentedViewController();
+    public UIViewController getPresentedViewController() {
+        if (customClass) { return objc_getPresentedViewControllerSuper(getSuper(), this, presentedViewController); } else { return objc_getPresentedViewController(this, presentedViewController); }
+    }
+    
+    private static final Selector presentingViewController = Selector.register("presentingViewController");
+    @Bridge(symbol = "objc_msgSend") private native static UIViewController objc_getPresentingViewController(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewController objc_getPresentingViewControllerSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/presentingViewController">@property(nonatomic, readonly) UIViewController *presentingViewController</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("presentingViewController") public native UIViewController getPresentingViewController();
+    public UIViewController getPresentingViewController() {
+        if (customClass) { return objc_getPresentingViewControllerSuper(getSuper(), this, presentingViewController); } else { return objc_getPresentingViewController(this, presentingViewController); }
+    }
+    
+    private static final Selector providesPresentationContextTransitionStyle = Selector.register("providesPresentationContextTransitionStyle");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isProvidesPresentationContextTransitionStyle(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isProvidesPresentationContextTransitionStyleSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/providesPresentationContextTransitionStyle">@property(nonatomic, assign) BOOL providesPresentationContextTransitionStyle</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("providesPresentationContextTransitionStyle") public native boolean isProvidesPresentationContextTransitionStyle();
+    public boolean isProvidesPresentationContextTransitionStyle() {
+        if (customClass) { return objc_isProvidesPresentationContextTransitionStyleSuper(getSuper(), this, providesPresentationContextTransitionStyle); } else { return objc_isProvidesPresentationContextTransitionStyle(this, providesPresentationContextTransitionStyle); }
+    }
+    
+    private static final Selector setProvidesPresentationContextTransitionStyle$ = Selector.register("setProvidesPresentationContextTransitionStyle:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setProvidesPresentationContextTransitionStyle(UIViewController __self__, Selector __cmd__, boolean providesPresentationContextTransitionStyle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setProvidesPresentationContextTransitionStyleSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__, boolean providesPresentationContextTransitionStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/providesPresentationContextTransitionStyle">@property(nonatomic, assign) BOOL providesPresentationContextTransitionStyle</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setProvidesPresentationContextTransitionStyle:") public native void setProvidesPresentationContextTransitionStyle(boolean v);
+    public void setProvidesPresentationContextTransitionStyle(boolean providesPresentationContextTransitionStyle) {
+        if (customClass) { objc_setProvidesPresentationContextTransitionStyleSuper(getSuper(), this, setProvidesPresentationContextTransitionStyle$, providesPresentationContextTransitionStyle); } else { objc_setProvidesPresentationContextTransitionStyle(this, setProvidesPresentationContextTransitionStyle$, providesPresentationContextTransitionStyle); }
+    }
+    
+    private static final Selector restorationClass = Selector.register("restorationClass");
+    @Bridge(symbol = "objc_msgSend") private native static ObjCClass objc_getRestorationClass(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static ObjCClass objc_getRestorationClassSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/restorationClass">@property(nonatomic, readwrite, assign) Class&amp;lt;UIViewControllerRestoration&amp;gt; restorationClass</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("restorationClass") public native ObjCClass getRestorationClass();
+    public ObjCClass getRestorationClass() {
+        if (customClass) { return objc_getRestorationClassSuper(getSuper(), this, restorationClass); } else { return objc_getRestorationClass(this, restorationClass); }
+    }
+    
+    private static final Selector setRestorationClass$ = Selector.register("setRestorationClass:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setRestorationClass(UIViewController __self__, Selector __cmd__, ObjCClass restorationClass);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setRestorationClassSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__, ObjCClass restorationClass);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/restorationClass">@property(nonatomic, readwrite, assign) Class&amp;lt;UIViewControllerRestoration&amp;gt; restorationClass</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setRestorationClass:") public native void setRestorationClass(ObjCClass v);
+    public void setRestorationClass(ObjCClass restorationClass) {
+        if (customClass) { objc_setRestorationClassSuper(getSuper(), this, setRestorationClass$, restorationClass); } else { objc_setRestorationClass(this, setRestorationClass$, restorationClass); }
+    }
+    
+    private static final Selector restorationIdentifier = Selector.register("restorationIdentifier");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getRestorationIdentifier(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getRestorationIdentifierSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/restorationIdentifier">@property(nonatomic, copy) NSString *restorationIdentifier</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("restorationIdentifier") public native String getRestorationIdentifier();
+    public String getRestorationIdentifier() {
+        if (customClass) { return objc_getRestorationIdentifierSuper(getSuper(), this, restorationIdentifier); } else { return objc_getRestorationIdentifier(this, restorationIdentifier); }
+    }
+    
+    private static final Selector setRestorationIdentifier$ = Selector.register("setRestorationIdentifier:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setRestorationIdentifier(UIViewController __self__, Selector __cmd__, String restorationIdentifier);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setRestorationIdentifierSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__, String restorationIdentifier);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/restorationIdentifier">@property(nonatomic, copy) NSString *restorationIdentifier</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setRestorationIdentifier:") public native void setRestorationIdentifier(String v);
+    public void setRestorationIdentifier(String restorationIdentifier) {
+        if (customClass) { objc_setRestorationIdentifierSuper(getSuper(), this, setRestorationIdentifier$, restorationIdentifier); } else { objc_setRestorationIdentifier(this, setRestorationIdentifier$, restorationIdentifier); }
+    }
+    
+    private static final Selector searchDisplayController = Selector.register("searchDisplayController");
+    @Bridge(symbol = "objc_msgSend") private native static UISearchDisplayController objc_getSearchDisplayController(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UISearchDisplayController objc_getSearchDisplayControllerSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/searchDisplayController">@property(nonatomic, readonly, retain) UISearchDisplayController *searchDisplayController</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("searchDisplayController") public native UISearchDisplayController getSearchDisplayController();
+    public UISearchDisplayController getSearchDisplayController() {
+        if (customClass) { return objc_getSearchDisplayControllerSuper(getSuper(), this, searchDisplayController); } else { return objc_getSearchDisplayController(this, searchDisplayController); }
+    }
+    
+    private static final Selector splitViewController = Selector.register("splitViewController");
+    @Bridge(symbol = "objc_msgSend") private native static UISplitViewController objc_getSplitViewController(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UISplitViewController objc_getSplitViewControllerSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/splitViewController">@property(nonatomic, readonly, retain) UISplitViewController *splitViewController</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("splitViewController") public native UISplitViewController getSplitViewController();
+    public UISplitViewController getSplitViewController() {
+        if (customClass) { return objc_getSplitViewControllerSuper(getSuper(), this, splitViewController); } else { return objc_getSplitViewController(this, splitViewController); }
+    }
+    
+    private static final Selector storyboard = Selector.register("storyboard");
+    @Bridge(symbol = "objc_msgSend") private native static UIStoryboard objc_getStoryboard(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIStoryboard objc_getStoryboardSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/storyboard">@property(nonatomic, readonly, retain) UIStoryboard *storyboard</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("storyboard") public native UIStoryboard getStoryboard();
+    public UIStoryboard getStoryboard() {
+        if (customClass) { return objc_getStoryboardSuper(getSuper(), this, storyboard); } else { return objc_getStoryboard(this, storyboard); }
+    }
+    
+    private static final Selector tabBarController = Selector.register("tabBarController");
+    @Bridge(symbol = "objc_msgSend") private native static UITabBarController objc_getTabBarController(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITabBarController objc_getTabBarControllerSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/tabBarController">@property(nonatomic, readonly, retain) UITabBarController *tabBarController</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("tabBarController") public native UITabBarController getTabBarController();
+    public UITabBarController getTabBarController() {
+        if (customClass) { return objc_getTabBarControllerSuper(getSuper(), this, tabBarController); } else { return objc_getTabBarController(this, tabBarController); }
+    }
+    
+    private static final Selector tabBarItem = Selector.register("tabBarItem");
+    @Bridge(symbol = "objc_msgSend") private native static UITabBarItem objc_getTabBarItem(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITabBarItem objc_getTabBarItemSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/tabBarItem">@property(nonatomic, retain) UITabBarItem *tabBarItem</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("tabBarItem") public native UITabBarItem getTabBarItem();
+    public UITabBarItem getTabBarItem() {
+        if (customClass) { return objc_getTabBarItemSuper(getSuper(), this, tabBarItem); } else { return objc_getTabBarItem(this, tabBarItem); }
+    }
+    
+    private static final Selector setTabBarItem$ = Selector.register("setTabBarItem:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTabBarItem(UIViewController __self__, Selector __cmd__, UITabBarItem tabBarItem);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTabBarItemSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__, UITabBarItem tabBarItem);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/tabBarItem">@property(nonatomic, retain) UITabBarItem *tabBarItem</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTabBarItem:") public native void setTabBarItem(UITabBarItem v);
+    public void setTabBarItem(UITabBarItem tabBarItem) {
+        if (customClass) { objc_setTabBarItemSuper(getSuper(), this, setTabBarItem$, tabBarItem); } else { objc_setTabBarItem(this, setTabBarItem$, tabBarItem); }
+    }
+    
+    private static final Selector title = Selector.register("title");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getTitle(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getTitleSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/title">@property(nonatomic, copy) NSString *title</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("title") public native String getTitle();
+    public String getTitle() {
+        if (customClass) { return objc_getTitleSuper(getSuper(), this, title); } else { return objc_getTitle(this, title); }
+    }
+    
+    private static final Selector setTitle$ = Selector.register("setTitle:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTitle(UIViewController __self__, Selector __cmd__, String title);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTitleSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__, String title);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/title">@property(nonatomic, copy) NSString *title</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTitle:") public native void setTitle(String v);
+    public void setTitle(String title) {
+        if (customClass) { objc_setTitleSuper(getSuper(), this, setTitle$, title); } else { objc_setTitle(this, setTitle$, title); }
+    }
+    
+    private static final Selector toolbarItems = Selector.register("toolbarItems");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getToolbarItems(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getToolbarItemsSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/toolbarItems">@property(nonatomic, retain) NSArray *toolbarItems</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("toolbarItems") public native NSArray getToolbarItems();
+    public NSArray getToolbarItems() {
+        if (customClass) { return objc_getToolbarItemsSuper(getSuper(), this, toolbarItems); } else { return objc_getToolbarItems(this, toolbarItems); }
+    }
+    
+    private static final Selector setToolbarItems$ = Selector.register("setToolbarItems:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setToolbarItems(UIViewController __self__, Selector __cmd__, NSArray toolbarItems);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setToolbarItemsSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__, NSArray toolbarItems);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/toolbarItems">@property(nonatomic, retain) NSArray *toolbarItems</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setToolbarItems:") public native void setToolbarItems(NSArray v);
+    public void setToolbarItems(NSArray toolbarItems) {
+        if (customClass) { objc_setToolbarItemsSuper(getSuper(), this, setToolbarItems$, toolbarItems); } else { objc_setToolbarItems(this, setToolbarItems$, toolbarItems); }
+    }
+    
+    private static final Selector view = Selector.register("view");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getView(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getViewSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/view">@property(nonatomic, retain) UIView *view</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("view") public native UIView getView();
+    public UIView getView() {
+        if (customClass) { return objc_getViewSuper(getSuper(), this, view); } else { return objc_getView(this, view); }
+    }
+    
+    private static final Selector setView$ = Selector.register("setView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setView(UIViewController __self__, Selector __cmd__, UIView view);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setViewSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/view">@property(nonatomic, retain) UIView *view</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setView:") public native void setView(UIView v);
+    public void setView(UIView view) {
+        if (customClass) { objc_setViewSuper(getSuper(), this, setView$, view); } else { objc_setView(this, setView$, view); }
+    }
+    
+    private static final Selector wantsFullScreenLayout = Selector.register("wantsFullScreenLayout");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isWantsFullScreenLayout(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isWantsFullScreenLayoutSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/wantsFullScreenLayout">@property(nonatomic, assign) BOOL wantsFullScreenLayout</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("wantsFullScreenLayout") public native boolean isWantsFullScreenLayout();
+    public boolean isWantsFullScreenLayout() {
+        if (customClass) { return objc_isWantsFullScreenLayoutSuper(getSuper(), this, wantsFullScreenLayout); } else { return objc_isWantsFullScreenLayout(this, wantsFullScreenLayout); }
+    }
+    
+    private static final Selector setWantsFullScreenLayout$ = Selector.register("setWantsFullScreenLayout:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setWantsFullScreenLayout(UIViewController __self__, Selector __cmd__, boolean wantsFullScreenLayout);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setWantsFullScreenLayoutSuper(ObjCSuper __super__, UIViewController __self__, Selector __cmd__, boolean wantsFullScreenLayout);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/wantsFullScreenLayout">@property(nonatomic, assign) BOOL wantsFullScreenLayout</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setWantsFullScreenLayout:") public native void setWantsFullScreenLayout(boolean v);
+    public void setWantsFullScreenLayout(boolean wantsFullScreenLayout) {
+        if (customClass) { objc_setWantsFullScreenLayoutSuper(getSuper(), this, setWantsFullScreenLayout$, wantsFullScreenLayout); } else { objc_setWantsFullScreenLayout(this, setWantsFullScreenLayout$, wantsFullScreenLayout); }
+    }
     /*</properties>*/
     /*<methods>*/
     

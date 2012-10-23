@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,21 +53,39 @@ public class /*<name>*/ UIPinchGestureRecognizer /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector scale = Selector.register("scale");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getScale(UIPinchGestureRecognizer __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getScaleSuper(ObjCSuper __super__, UIPinchGestureRecognizer __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPinchGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPinchGestureRecognizer/scale">@property(nonatomic) CGFloat scale</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("scale") public native float getScale();
+    public float getScale() {
+        if (customClass) { return objc_getScaleSuper(getSuper(), this, scale); } else { return objc_getScale(this, scale); }
+    }
+    
+    private static final Selector setScale$ = Selector.register("setScale:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setScale(UIPinchGestureRecognizer __self__, Selector __cmd__, float scale);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setScaleSuper(ObjCSuper __super__, UIPinchGestureRecognizer __self__, Selector __cmd__, float scale);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPinchGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPinchGestureRecognizer/scale">@property(nonatomic) CGFloat scale</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setScale:") public native void setScale(float v);
+    public void setScale(float scale) {
+        if (customClass) { objc_setScaleSuper(getSuper(), this, setScale$, scale); } else { objc_setScale(this, setScale$, scale); }
+    }
+    
+    private static final Selector velocity = Selector.register("velocity");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getVelocity(UIPinchGestureRecognizer __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getVelocitySuper(ObjCSuper __super__, UIPinchGestureRecognizer __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPinchGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPinchGestureRecognizer/velocity">@property(nonatomic, readonly) CGFloat velocity</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("velocity") public native float getVelocity();
+    public float getVelocity() {
+        if (customClass) { return objc_getVelocitySuper(getSuper(), this, velocity); } else { return objc_getVelocity(this, velocity); }
+    }
     /*</properties>*/
     /*<methods>*/
     

@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,26 +53,50 @@ public class /*<name>*/ UIPanGestureRecognizer /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector maximumNumberOfTouches = Selector.register("maximumNumberOfTouches");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getMaximumNumberOfTouches(UIPanGestureRecognizer __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getMaximumNumberOfTouchesSuper(ObjCSuper __super__, UIPanGestureRecognizer __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPanGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPanGestureRecognizer/maximumNumberOfTouches">@property(nonatomic) NSUInteger maximumNumberOfTouches</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("maximumNumberOfTouches") public native int getMaximumNumberOfTouches();
+    public int getMaximumNumberOfTouches() {
+        if (customClass) { return objc_getMaximumNumberOfTouchesSuper(getSuper(), this, maximumNumberOfTouches); } else { return objc_getMaximumNumberOfTouches(this, maximumNumberOfTouches); }
+    }
+    
+    private static final Selector setMaximumNumberOfTouches$ = Selector.register("setMaximumNumberOfTouches:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMaximumNumberOfTouches(UIPanGestureRecognizer __self__, Selector __cmd__, int maximumNumberOfTouches);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMaximumNumberOfTouchesSuper(ObjCSuper __super__, UIPanGestureRecognizer __self__, Selector __cmd__, int maximumNumberOfTouches);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPanGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPanGestureRecognizer/maximumNumberOfTouches">@property(nonatomic) NSUInteger maximumNumberOfTouches</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setMaximumNumberOfTouches:") public native void setMaximumNumberOfTouches(int v);
+    public void setMaximumNumberOfTouches(int maximumNumberOfTouches) {
+        if (customClass) { objc_setMaximumNumberOfTouchesSuper(getSuper(), this, setMaximumNumberOfTouches$, maximumNumberOfTouches); } else { objc_setMaximumNumberOfTouches(this, setMaximumNumberOfTouches$, maximumNumberOfTouches); }
+    }
+    
+    private static final Selector minimumNumberOfTouches = Selector.register("minimumNumberOfTouches");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getMinimumNumberOfTouches(UIPanGestureRecognizer __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getMinimumNumberOfTouchesSuper(ObjCSuper __super__, UIPanGestureRecognizer __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPanGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPanGestureRecognizer/minimumNumberOfTouches">@property(nonatomic) NSUInteger minimumNumberOfTouches</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("minimumNumberOfTouches") public native int getMinimumNumberOfTouches();
+    public int getMinimumNumberOfTouches() {
+        if (customClass) { return objc_getMinimumNumberOfTouchesSuper(getSuper(), this, minimumNumberOfTouches); } else { return objc_getMinimumNumberOfTouches(this, minimumNumberOfTouches); }
+    }
+    
+    private static final Selector setMinimumNumberOfTouches$ = Selector.register("setMinimumNumberOfTouches:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinimumNumberOfTouches(UIPanGestureRecognizer __self__, Selector __cmd__, int minimumNumberOfTouches);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinimumNumberOfTouchesSuper(ObjCSuper __super__, UIPanGestureRecognizer __self__, Selector __cmd__, int minimumNumberOfTouches);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPanGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPanGestureRecognizer/minimumNumberOfTouches">@property(nonatomic) NSUInteger minimumNumberOfTouches</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setMinimumNumberOfTouches:") public native void setMinimumNumberOfTouches(int v);
+    public void setMinimumNumberOfTouches(int minimumNumberOfTouches) {
+        if (customClass) { objc_setMinimumNumberOfTouchesSuper(getSuper(), this, setMinimumNumberOfTouches$, minimumNumberOfTouches); } else { objc_setMinimumNumberOfTouches(this, setMinimumNumberOfTouches$, minimumNumberOfTouches); }
+    }
     /*</properties>*/
     /*<methods>*/
     

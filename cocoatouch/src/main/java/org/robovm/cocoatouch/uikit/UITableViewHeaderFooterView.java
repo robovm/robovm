@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -63,46 +62,94 @@ public class /*<name>*/ UITableViewHeaderFooterView /*</name>*/
     }
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector backgroundView = Selector.register("backgroundView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getBackgroundView(UITableViewHeaderFooterView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getBackgroundViewSuper(ObjCSuper __super__, UITableViewHeaderFooterView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/backgroundView">@property(nonatomic, retain) UIView *backgroundView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("backgroundView") public native UIView getBackgroundView();
+    public UIView getBackgroundView() {
+        if (customClass) { return objc_getBackgroundViewSuper(getSuper(), this, backgroundView); } else { return objc_getBackgroundView(this, backgroundView); }
+    }
+    
+    private static final Selector setBackgroundView$ = Selector.register("setBackgroundView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setBackgroundView(UITableViewHeaderFooterView __self__, Selector __cmd__, UIView backgroundView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBackgroundViewSuper(ObjCSuper __super__, UITableViewHeaderFooterView __self__, Selector __cmd__, UIView backgroundView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/backgroundView">@property(nonatomic, retain) UIView *backgroundView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setBackgroundView:") public native void setBackgroundView(UIView v);
+    public void setBackgroundView(UIView backgroundView) {
+        if (customClass) { objc_setBackgroundViewSuper(getSuper(), this, setBackgroundView$, backgroundView); } else { objc_setBackgroundView(this, setBackgroundView$, backgroundView); }
+    }
+    
+    private static final Selector contentView = Selector.register("contentView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getContentView(UITableViewHeaderFooterView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getContentViewSuper(ObjCSuper __super__, UITableViewHeaderFooterView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/contentView">@property(nonatomic, readonly, retain) UIView *contentView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("contentView") public native UIView getContentView();
+    public UIView getContentView() {
+        if (customClass) { return objc_getContentViewSuper(getSuper(), this, contentView); } else { return objc_getContentView(this, contentView); }
+    }
+    
+    private static final Selector detailTextLabel = Selector.register("detailTextLabel");
+    @Bridge(symbol = "objc_msgSend") private native static UILabel objc_getDetailTextLabel(UITableViewHeaderFooterView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UILabel objc_getDetailTextLabelSuper(ObjCSuper __super__, UITableViewHeaderFooterView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/detailTextLabel">@property(nonatomic, readonly, retain) UILabel *detailTextLabel</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("detailTextLabel") public native UILabel getDetailTextLabel();
+    public UILabel getDetailTextLabel() {
+        if (customClass) { return objc_getDetailTextLabelSuper(getSuper(), this, detailTextLabel); } else { return objc_getDetailTextLabel(this, detailTextLabel); }
+    }
+    
+    private static final Selector reuseIdentifier = Selector.register("reuseIdentifier");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getReuseIdentifier(UITableViewHeaderFooterView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getReuseIdentifierSuper(ObjCSuper __super__, UITableViewHeaderFooterView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/reuseIdentifier">@property(nonatomic, readonly, copy) NSString *reuseIdentifier</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("reuseIdentifier") public native String getReuseIdentifier();
+    public String getReuseIdentifier() {
+        if (customClass) { return objc_getReuseIdentifierSuper(getSuper(), this, reuseIdentifier); } else { return objc_getReuseIdentifier(this, reuseIdentifier); }
+    }
+    
+    private static final Selector textLabel = Selector.register("textLabel");
+    @Bridge(symbol = "objc_msgSend") private native static UILabel objc_getTextLabel(UITableViewHeaderFooterView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UILabel objc_getTextLabelSuper(ObjCSuper __super__, UITableViewHeaderFooterView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/textLabel">@property(nonatomic, readonly, retain) UILabel *textLabel</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("textLabel") public native UILabel getTextLabel();
+    public UILabel getTextLabel() {
+        if (customClass) { return objc_getTextLabelSuper(getSuper(), this, textLabel); } else { return objc_getTextLabel(this, textLabel); }
+    }
+    
+    private static final Selector tintColor = Selector.register("tintColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getTintColor(UITableViewHeaderFooterView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, UITableViewHeaderFooterView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("tintColor") public native UIColor getTintColor();
+    public UIColor getTintColor() {
+        if (customClass) { return objc_getTintColorSuper(getSuper(), this, tintColor); } else { return objc_getTintColor(this, tintColor); }
+    }
+    
+    private static final Selector setTintColor$ = Selector.register("setTintColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTintColor(UITableViewHeaderFooterView __self__, Selector __cmd__, UIColor tintColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, UITableViewHeaderFooterView __self__, Selector __cmd__, UIColor tintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setTintColor:") public native void setTintColor(UIColor v);
+    public void setTintColor(UIColor tintColor) {
+        if (customClass) { objc_setTintColorSuper(getSuper(), this, setTintColor$, tintColor); } else { objc_setTintColor(this, setTintColor$, tintColor); }
+    }
     /*</properties>*/
     /*<methods>*/
     

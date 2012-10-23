@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,41 +53,83 @@ public class /*<name>*/ UIPickerView /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector dataSource = Selector.register("dataSource");
+    @Bridge(symbol = "objc_msgSend") private native static UIPickerViewDataSource objc_getDataSource(UIPickerView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIPickerViewDataSource objc_getDataSourceSuper(ObjCSuper __super__, UIPickerView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerView_Class/Reference/UIPickerView.html#//apple_ref/occ/instp/UIPickerView/dataSource">@property(nonatomic, assign) id&amp;lt;UIPickerViewDataSource&amp;gt; dataSource</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("dataSource") public native UIPickerViewDataSource getDataSource();
+    public UIPickerViewDataSource getDataSource() {
+        if (customClass) { return objc_getDataSourceSuper(getSuper(), this, dataSource); } else { return objc_getDataSource(this, dataSource); }
+    }
+    
+    private static final Selector setDataSource$ = Selector.register("setDataSource:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDataSource(UIPickerView __self__, Selector __cmd__, UIPickerViewDataSource dataSource);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDataSourceSuper(ObjCSuper __super__, UIPickerView __self__, Selector __cmd__, UIPickerViewDataSource dataSource);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerView_Class/Reference/UIPickerView.html#//apple_ref/occ/instp/UIPickerView/dataSource">@property(nonatomic, assign) id&amp;lt;UIPickerViewDataSource&amp;gt; dataSource</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDataSource:") public native void setDataSource(UIPickerViewDataSource v);
+    public void setDataSource(UIPickerViewDataSource dataSource) {
+        if (customClass) { objc_setDataSourceSuper(getSuper(), this, setDataSource$, dataSource); } else { objc_setDataSource(this, setDataSource$, dataSource); }
+    }
+    
+    private static final Selector delegate = Selector.register("delegate");
+    @Bridge(symbol = "objc_msgSend") private native static UIPickerViewDelegate objc_getDelegate(UIPickerView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIPickerViewDelegate objc_getDelegateSuper(ObjCSuper __super__, UIPickerView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerView_Class/Reference/UIPickerView.html#//apple_ref/occ/instp/UIPickerView/delegate">@property(nonatomic, assign) id&amp;lt;UIPickerViewDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("delegate") public native UIPickerViewDelegate getDelegate();
+    public UIPickerViewDelegate getDelegate() {
+        if (customClass) { return objc_getDelegateSuper(getSuper(), this, delegate); } else { return objc_getDelegate(this, delegate); }
+    }
+    
+    private static final Selector setDelegate$ = Selector.register("setDelegate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIPickerView __self__, Selector __cmd__, UIPickerViewDelegate delegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, UIPickerView __self__, Selector __cmd__, UIPickerViewDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerView_Class/Reference/UIPickerView.html#//apple_ref/occ/instp/UIPickerView/delegate">@property(nonatomic, assign) id&amp;lt;UIPickerViewDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(UIPickerViewDelegate v);
+    public void setDelegate(UIPickerViewDelegate delegate) {
+        if (customClass) { objc_setDelegateSuper(getSuper(), this, setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
+    }
+    
+    private static final Selector numberOfComponents = Selector.register("numberOfComponents");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getNumberOfComponents(UIPickerView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getNumberOfComponentsSuper(ObjCSuper __super__, UIPickerView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerView_Class/Reference/UIPickerView.html#//apple_ref/occ/instp/UIPickerView/numberOfComponents">@property(nonatomic, readonly) NSInteger numberOfComponents</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("numberOfComponents") public native int getNumberOfComponents();
+    public int getNumberOfComponents() {
+        if (customClass) { return objc_getNumberOfComponentsSuper(getSuper(), this, numberOfComponents); } else { return objc_getNumberOfComponents(this, numberOfComponents); }
+    }
+    
+    private static final Selector showsSelectionIndicator = Selector.register("showsSelectionIndicator");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isShowsSelectionIndicator(UIPickerView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isShowsSelectionIndicatorSuper(ObjCSuper __super__, UIPickerView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerView_Class/Reference/UIPickerView.html#//apple_ref/occ/instp/UIPickerView/showsSelectionIndicator">@property(nonatomic) BOOL showsSelectionIndicator</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("showsSelectionIndicator") public native boolean isShowsSelectionIndicator();
+    public boolean isShowsSelectionIndicator() {
+        if (customClass) { return objc_isShowsSelectionIndicatorSuper(getSuper(), this, showsSelectionIndicator); } else { return objc_isShowsSelectionIndicator(this, showsSelectionIndicator); }
+    }
+    
+    private static final Selector setShowsSelectionIndicator$ = Selector.register("setShowsSelectionIndicator:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setShowsSelectionIndicator(UIPickerView __self__, Selector __cmd__, boolean showsSelectionIndicator);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShowsSelectionIndicatorSuper(ObjCSuper __super__, UIPickerView __self__, Selector __cmd__, boolean showsSelectionIndicator);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerView_Class/Reference/UIPickerView.html#//apple_ref/occ/instp/UIPickerView/showsSelectionIndicator">@property(nonatomic) BOOL showsSelectionIndicator</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setShowsSelectionIndicator:") public native void setShowsSelectionIndicator(boolean v);
+    public void setShowsSelectionIndicator(boolean showsSelectionIndicator) {
+        if (customClass) { objc_setShowsSelectionIndicatorSuper(getSuper(), this, setShowsSelectionIndicator$, showsSelectionIndicator); } else { objc_setShowsSelectionIndicator(this, setShowsSelectionIndicator$, showsSelectionIndicator); }
+    }
     /*</properties>*/
     /*<methods>*/
     

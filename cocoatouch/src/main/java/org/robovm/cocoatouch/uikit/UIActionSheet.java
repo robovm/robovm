@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -53,71 +52,149 @@ public class /*<name>*/ UIActionSheet /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector actionSheetStyle = Selector.register("actionSheetStyle");
+    @Bridge(symbol = "objc_msgSend") private native static UIActionSheetStyle objc_getActionSheetStyle(UIActionSheet __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIActionSheetStyle objc_getActionSheetStyleSuper(ObjCSuper __super__, UIActionSheet __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/actionSheetStyle">@property(nonatomic) UIActionSheetStyle actionSheetStyle</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("actionSheetStyle") public native UIActionSheetStyle getActionSheetStyle();
+    public UIActionSheetStyle getActionSheetStyle() {
+        if (customClass) { return objc_getActionSheetStyleSuper(getSuper(), this, actionSheetStyle); } else { return objc_getActionSheetStyle(this, actionSheetStyle); }
+    }
+    
+    private static final Selector setActionSheetStyle$ = Selector.register("setActionSheetStyle:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setActionSheetStyle(UIActionSheet __self__, Selector __cmd__, UIActionSheetStyle actionSheetStyle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setActionSheetStyleSuper(ObjCSuper __super__, UIActionSheet __self__, Selector __cmd__, UIActionSheetStyle actionSheetStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/actionSheetStyle">@property(nonatomic) UIActionSheetStyle actionSheetStyle</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setActionSheetStyle:") public native void setActionSheetStyle(UIActionSheetStyle v);
+    public void setActionSheetStyle(UIActionSheetStyle actionSheetStyle) {
+        if (customClass) { objc_setActionSheetStyleSuper(getSuper(), this, setActionSheetStyle$, actionSheetStyle); } else { objc_setActionSheetStyle(this, setActionSheetStyle$, actionSheetStyle); }
+    }
+    
+    private static final Selector cancelButtonIndex = Selector.register("cancelButtonIndex");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getCancelButtonIndex(UIActionSheet __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getCancelButtonIndexSuper(ObjCSuper __super__, UIActionSheet __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/cancelButtonIndex">@property(nonatomic) NSInteger cancelButtonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("cancelButtonIndex") public native int getCancelButtonIndex();
+    public int getCancelButtonIndex() {
+        if (customClass) { return objc_getCancelButtonIndexSuper(getSuper(), this, cancelButtonIndex); } else { return objc_getCancelButtonIndex(this, cancelButtonIndex); }
+    }
+    
+    private static final Selector setCancelButtonIndex$ = Selector.register("setCancelButtonIndex:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setCancelButtonIndex(UIActionSheet __self__, Selector __cmd__, int cancelButtonIndex);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCancelButtonIndexSuper(ObjCSuper __super__, UIActionSheet __self__, Selector __cmd__, int cancelButtonIndex);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/cancelButtonIndex">@property(nonatomic) NSInteger cancelButtonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setCancelButtonIndex:") public native void setCancelButtonIndex(int v);
+    public void setCancelButtonIndex(int cancelButtonIndex) {
+        if (customClass) { objc_setCancelButtonIndexSuper(getSuper(), this, setCancelButtonIndex$, cancelButtonIndex); } else { objc_setCancelButtonIndex(this, setCancelButtonIndex$, cancelButtonIndex); }
+    }
+    
+    private static final Selector delegate = Selector.register("delegate");
+    @Bridge(symbol = "objc_msgSend") private native static UIActionSheetDelegate objc_getDelegate(UIActionSheet __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIActionSheetDelegate objc_getDelegateSuper(ObjCSuper __super__, UIActionSheet __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/delegate">@property(nonatomic, assign) id&amp;lt;UIActionSheetDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("delegate") public native UIActionSheetDelegate getDelegate();
+    public UIActionSheetDelegate getDelegate() {
+        if (customClass) { return objc_getDelegateSuper(getSuper(), this, delegate); } else { return objc_getDelegate(this, delegate); }
+    }
+    
+    private static final Selector setDelegate$ = Selector.register("setDelegate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIActionSheet __self__, Selector __cmd__, UIActionSheetDelegate delegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, UIActionSheet __self__, Selector __cmd__, UIActionSheetDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/delegate">@property(nonatomic, assign) id&amp;lt;UIActionSheetDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(UIActionSheetDelegate v);
+    public void setDelegate(UIActionSheetDelegate delegate) {
+        if (customClass) { objc_setDelegateSuper(getSuper(), this, setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
+    }
+    
+    private static final Selector destructiveButtonIndex = Selector.register("destructiveButtonIndex");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getDestructiveButtonIndex(UIActionSheet __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getDestructiveButtonIndexSuper(ObjCSuper __super__, UIActionSheet __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/destructiveButtonIndex">@property(nonatomic) NSInteger destructiveButtonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("destructiveButtonIndex") public native int getDestructiveButtonIndex();
+    public int getDestructiveButtonIndex() {
+        if (customClass) { return objc_getDestructiveButtonIndexSuper(getSuper(), this, destructiveButtonIndex); } else { return objc_getDestructiveButtonIndex(this, destructiveButtonIndex); }
+    }
+    
+    private static final Selector setDestructiveButtonIndex$ = Selector.register("setDestructiveButtonIndex:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDestructiveButtonIndex(UIActionSheet __self__, Selector __cmd__, int destructiveButtonIndex);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDestructiveButtonIndexSuper(ObjCSuper __super__, UIActionSheet __self__, Selector __cmd__, int destructiveButtonIndex);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/destructiveButtonIndex">@property(nonatomic) NSInteger destructiveButtonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDestructiveButtonIndex:") public native void setDestructiveButtonIndex(int v);
+    public void setDestructiveButtonIndex(int destructiveButtonIndex) {
+        if (customClass) { objc_setDestructiveButtonIndexSuper(getSuper(), this, setDestructiveButtonIndex$, destructiveButtonIndex); } else { objc_setDestructiveButtonIndex(this, setDestructiveButtonIndex$, destructiveButtonIndex); }
+    }
+    
+    private static final Selector firstOtherButtonIndex = Selector.register("firstOtherButtonIndex");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getFirstOtherButtonIndex(UIActionSheet __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getFirstOtherButtonIndexSuper(ObjCSuper __super__, UIActionSheet __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/firstOtherButtonIndex">@property(nonatomic, readonly) NSInteger firstOtherButtonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("firstOtherButtonIndex") public native int getFirstOtherButtonIndex();
+    public int getFirstOtherButtonIndex() {
+        if (customClass) { return objc_getFirstOtherButtonIndexSuper(getSuper(), this, firstOtherButtonIndex); } else { return objc_getFirstOtherButtonIndex(this, firstOtherButtonIndex); }
+    }
+    
+    private static final Selector numberOfButtons = Selector.register("numberOfButtons");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_getNumberOfButtons(UIActionSheet __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getNumberOfButtonsSuper(ObjCSuper __super__, UIActionSheet __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/numberOfButtons">@property(nonatomic, readonly) NSInteger numberOfButtons</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("numberOfButtons") public native int getNumberOfButtons();
+    public int getNumberOfButtons() {
+        if (customClass) { return objc_getNumberOfButtonsSuper(getSuper(), this, numberOfButtons); } else { return objc_getNumberOfButtons(this, numberOfButtons); }
+    }
+    
+    private static final Selector title = Selector.register("title");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getTitle(UIActionSheet __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getTitleSuper(ObjCSuper __super__, UIActionSheet __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/title">@property(nonatomic, copy) NSString *title</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("title") public native String getTitle();
+    public String getTitle() {
+        if (customClass) { return objc_getTitleSuper(getSuper(), this, title); } else { return objc_getTitle(this, title); }
+    }
+    
+    private static final Selector setTitle$ = Selector.register("setTitle:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTitle(UIActionSheet __self__, Selector __cmd__, String title);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTitleSuper(ObjCSuper __super__, UIActionSheet __self__, Selector __cmd__, String title);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/title">@property(nonatomic, copy) NSString *title</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTitle:") public native void setTitle(String v);
+    public void setTitle(String title) {
+        if (customClass) { objc_setTitleSuper(getSuper(), this, setTitle$, title); } else { objc_setTitle(this, setTitle$, title); }
+    }
+    
+    private static final Selector isVisible = Selector.register("isVisible");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isVisible(UIActionSheet __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isVisibleSuper(ObjCSuper __super__, UIActionSheet __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/visible">@property(nonatomic, readonly, getter=isVisible) BOOL visible</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isVisible") public native boolean isVisible();
+    public boolean isVisible() {
+        if (customClass) { return objc_isVisibleSuper(getSuper(), this, isVisible); } else { return objc_isVisible(this, isVisible); }
+    }
     /*</properties>*/
     /*<methods>*/
     

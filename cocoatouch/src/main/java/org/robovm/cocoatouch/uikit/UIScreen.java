@@ -23,7 +23,6 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,76 +53,160 @@ public class /*<name>*/ UIScreen /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector applicationFrame = Selector.register("applicationFrame");
+    @Bridge(symbol = "objc_msgSend") private native static CGRect objc_getApplicationFrame(UIScreen __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGRect objc_getApplicationFrameSuper(ObjCSuper __super__, UIScreen __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/applicationFrame">@property(nonatomic, readonly) CGRect applicationFrame</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("applicationFrame") public native CGRect getApplicationFrame();
+    public CGRect getApplicationFrame() {
+        if (customClass) { return objc_getApplicationFrameSuper(getSuper(), this, applicationFrame); } else { return objc_getApplicationFrame(this, applicationFrame); }
+    }
+    
+    private static final Selector availableModes = Selector.register("availableModes");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getAvailableModes(UIScreen __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getAvailableModesSuper(ObjCSuper __super__, UIScreen __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/availableModes">@property(nonatomic, readonly, copy) NSArray *availableModes</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("availableModes") public native NSArray getAvailableModes();
+    public NSArray getAvailableModes() {
+        if (customClass) { return objc_getAvailableModesSuper(getSuper(), this, availableModes); } else { return objc_getAvailableModes(this, availableModes); }
+    }
+    
+    private static final Selector bounds = Selector.register("bounds");
+    @Bridge(symbol = "objc_msgSend") private native static CGRect objc_getBounds(UIScreen __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGRect objc_getBoundsSuper(ObjCSuper __super__, UIScreen __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/bounds">@property(nonatomic, readonly) CGRect bounds</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("bounds") public native CGRect getBounds();
+    public CGRect getBounds() {
+        if (customClass) { return objc_getBoundsSuper(getSuper(), this, bounds); } else { return objc_getBounds(this, bounds); }
+    }
+    
+    private static final Selector brightness = Selector.register("brightness");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getBrightness(UIScreen __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getBrightnessSuper(ObjCSuper __super__, UIScreen __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/brightness">@property(nonatomic) CGFloat brightness</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("brightness") public native float getBrightness();
+    public float getBrightness() {
+        if (customClass) { return objc_getBrightnessSuper(getSuper(), this, brightness); } else { return objc_getBrightness(this, brightness); }
+    }
+    
+    private static final Selector setBrightness$ = Selector.register("setBrightness:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setBrightness(UIScreen __self__, Selector __cmd__, float brightness);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBrightnessSuper(ObjCSuper __super__, UIScreen __self__, Selector __cmd__, float brightness);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/brightness">@property(nonatomic) CGFloat brightness</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setBrightness:") public native void setBrightness(float v);
+    public void setBrightness(float brightness) {
+        if (customClass) { objc_setBrightnessSuper(getSuper(), this, setBrightness$, brightness); } else { objc_setBrightness(this, setBrightness$, brightness); }
+    }
+    
+    private static final Selector currentMode = Selector.register("currentMode");
+    @Bridge(symbol = "objc_msgSend") private native static UIScreenMode objc_getCurrentMode(UIScreen __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIScreenMode objc_getCurrentModeSuper(ObjCSuper __super__, UIScreen __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/currentMode">@property(nonatomic, retain) UIScreenMode *currentMode</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("currentMode") public native UIScreenMode getCurrentMode();
+    public UIScreenMode getCurrentMode() {
+        if (customClass) { return objc_getCurrentModeSuper(getSuper(), this, currentMode); } else { return objc_getCurrentMode(this, currentMode); }
+    }
+    
+    private static final Selector setCurrentMode$ = Selector.register("setCurrentMode:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setCurrentMode(UIScreen __self__, Selector __cmd__, UIScreenMode currentMode);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCurrentModeSuper(ObjCSuper __super__, UIScreen __self__, Selector __cmd__, UIScreenMode currentMode);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/currentMode">@property(nonatomic, retain) UIScreenMode *currentMode</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setCurrentMode:") public native void setCurrentMode(UIScreenMode v);
+    public void setCurrentMode(UIScreenMode currentMode) {
+        if (customClass) { objc_setCurrentModeSuper(getSuper(), this, setCurrentMode$, currentMode); } else { objc_setCurrentMode(this, setCurrentMode$, currentMode); }
+    }
+    
+    private static final Selector mirroredScreen = Selector.register("mirroredScreen");
+    @Bridge(symbol = "objc_msgSend") private native static UIScreen objc_getMirroredScreen(UIScreen __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIScreen objc_getMirroredScreenSuper(ObjCSuper __super__, UIScreen __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/mirroredScreen">@property(nonatomic, readonly, retain) UIScreen *mirroredScreen</a>
      * @since Available in iOS 4.3 and later.
      */
-    @Bind("mirroredScreen") public native UIScreen getMirroredScreen();
+    public UIScreen getMirroredScreen() {
+        if (customClass) { return objc_getMirroredScreenSuper(getSuper(), this, mirroredScreen); } else { return objc_getMirroredScreen(this, mirroredScreen); }
+    }
+    
+    private static final Selector overscanCompensation = Selector.register("overscanCompensation");
+    @Bridge(symbol = "objc_msgSend") private native static UIScreenOverscanCompensation objc_getOverscanCompensation(UIScreen __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIScreenOverscanCompensation objc_getOverscanCompensationSuper(ObjCSuper __super__, UIScreen __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/overscanCompensation">@property(nonatomic) UIScreenOverscanCompensation overscanCompensation</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("overscanCompensation") public native UIScreenOverscanCompensation getOverscanCompensation();
+    public UIScreenOverscanCompensation getOverscanCompensation() {
+        if (customClass) { return objc_getOverscanCompensationSuper(getSuper(), this, overscanCompensation); } else { return objc_getOverscanCompensation(this, overscanCompensation); }
+    }
+    
+    private static final Selector setOverscanCompensation$ = Selector.register("setOverscanCompensation:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setOverscanCompensation(UIScreen __self__, Selector __cmd__, UIScreenOverscanCompensation overscanCompensation);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setOverscanCompensationSuper(ObjCSuper __super__, UIScreen __self__, Selector __cmd__, UIScreenOverscanCompensation overscanCompensation);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/overscanCompensation">@property(nonatomic) UIScreenOverscanCompensation overscanCompensation</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setOverscanCompensation:") public native void setOverscanCompensation(UIScreenOverscanCompensation v);
+    public void setOverscanCompensation(UIScreenOverscanCompensation overscanCompensation) {
+        if (customClass) { objc_setOverscanCompensationSuper(getSuper(), this, setOverscanCompensation$, overscanCompensation); } else { objc_setOverscanCompensation(this, setOverscanCompensation$, overscanCompensation); }
+    }
+    
+    private static final Selector preferredMode = Selector.register("preferredMode");
+    @Bridge(symbol = "objc_msgSend") private native static UIScreenMode objc_getPreferredMode(UIScreen __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIScreenMode objc_getPreferredModeSuper(ObjCSuper __super__, UIScreen __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/preferredMode">@property(nonatomic, readonly, retain) UIScreenMode *preferredMode</a>
      * @since Available in iOS 4.3 and later.
      */
-    @Bind("preferredMode") public native UIScreenMode getPreferredMode();
+    public UIScreenMode getPreferredMode() {
+        if (customClass) { return objc_getPreferredModeSuper(getSuper(), this, preferredMode); } else { return objc_getPreferredMode(this, preferredMode); }
+    }
+    
+    private static final Selector scale = Selector.register("scale");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getScale(UIScreen __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getScaleSuper(ObjCSuper __super__, UIScreen __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/scale">@property(nonatomic, readonly) CGFloat scale</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("scale") public native float getScale();
+    public float getScale() {
+        if (customClass) { return objc_getScaleSuper(getSuper(), this, scale); } else { return objc_getScale(this, scale); }
+    }
+    
+    private static final Selector wantsSoftwareDimming = Selector.register("wantsSoftwareDimming");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isWantsSoftwareDimming(UIScreen __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isWantsSoftwareDimmingSuper(ObjCSuper __super__, UIScreen __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/wantsSoftwareDimming">@property(nonatomic) BOOL wantsSoftwareDimming</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("wantsSoftwareDimming") public native boolean isWantsSoftwareDimming();
+    public boolean isWantsSoftwareDimming() {
+        if (customClass) { return objc_isWantsSoftwareDimmingSuper(getSuper(), this, wantsSoftwareDimming); } else { return objc_isWantsSoftwareDimming(this, wantsSoftwareDimming); }
+    }
+    
+    private static final Selector setWantsSoftwareDimming$ = Selector.register("setWantsSoftwareDimming:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setWantsSoftwareDimming(UIScreen __self__, Selector __cmd__, boolean wantsSoftwareDimming);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setWantsSoftwareDimmingSuper(ObjCSuper __super__, UIScreen __self__, Selector __cmd__, boolean wantsSoftwareDimming);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/wantsSoftwareDimming">@property(nonatomic) BOOL wantsSoftwareDimming</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setWantsSoftwareDimming:") public native void setWantsSoftwareDimming(boolean v);
+    public void setWantsSoftwareDimming(boolean wantsSoftwareDimming) {
+        if (customClass) { objc_setWantsSoftwareDimmingSuper(getSuper(), this, setWantsSoftwareDimming$, wantsSoftwareDimming); } else { objc_setWantsSoftwareDimming(this, setWantsSoftwareDimming$, wantsSoftwareDimming); }
+    }
     /*</properties>*/
     /*<methods>*/
     

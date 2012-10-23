@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -913,5 +914,49 @@ public class /*<name>*/ UITableView /*</name>*/
         if (customClass) { objc_setEditingSuper(getSuper(), this, setEditing$animated$, editing, animate); } else { objc_setEditing(this, setEditing$animated$, editing, animate); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("beginUpdates") public static void beginUpdates(UITableView __self__, Selector __cmd__) { __self__.beginUpdates(); }
+        @Callback @BindSelector("deleteRowsAtIndexPaths:withRowAnimation:") public static void deleteRows(UITableView __self__, Selector __cmd__, NSArray indexPaths, UITableViewRowAnimation animation) { __self__.deleteRows(indexPaths, animation); }
+        @Callback @BindSelector("deleteSections:withRowAnimation:") public static void deleteSections(UITableView __self__, Selector __cmd__, NSIndexSet sections, UITableViewRowAnimation animation) { __self__.deleteSections(sections, animation); }
+        @Callback @BindSelector("dequeueReusableCellWithIdentifier:forIndexPath:") public static NSObject dequeueReusableCell(UITableView __self__, Selector __cmd__, String identifier, NSIndexPath indexPath) { return __self__.dequeueReusableCell(identifier, indexPath); }
+        @Callback @BindSelector("dequeueReusableCellWithIdentifier:") public static NSObject dequeueReusableCell(UITableView __self__, Selector __cmd__, String identifier) { return __self__.dequeueReusableCell(identifier); }
+        @Callback @BindSelector("dequeueReusableHeaderFooterViewWithIdentifier:") public static NSObject dequeueReusableHeaderFooterView(UITableView __self__, Selector __cmd__, String identifier) { return __self__.dequeueReusableHeaderFooterView(identifier); }
+        @Callback @BindSelector("deselectRowAtIndexPath:animated:") public static void deselectRow(UITableView __self__, Selector __cmd__, NSIndexPath indexPath, boolean animated) { __self__.deselectRow(indexPath, animated); }
+        @Callback @BindSelector("endUpdates") public static void endUpdates(UITableView __self__, Selector __cmd__) { __self__.endUpdates(); }
+        @Callback @BindSelector("indexPathForCell:") public static NSIndexPath getCellIndexPath(UITableView __self__, Selector __cmd__, UITableViewCell cell) { return __self__.getCellIndexPath(cell); }
+        @Callback @BindSelector("numberOfRowsInSection:") public static int getNumberOfRowsInSection(UITableView __self__, Selector __cmd__, int section) { return __self__.getNumberOfRowsInSection(section); }
+        @Callback @BindSelector("numberOfSections") public static int getNumberOfSections(UITableView __self__, Selector __cmd__) { return __self__.getNumberOfSections(); }
+        @Callback @BindSelector("cellForRowAtIndexPath:") public static UITableViewCell getRowCell(UITableView __self__, Selector __cmd__, NSIndexPath indexPath) { return __self__.getRowCell(indexPath); }
+        @Callback @BindSelector("indexPathForRowAtPoint:") public static NSIndexPath getRowIndexPath(UITableView __self__, Selector __cmd__, CGPoint point) { return __self__.getRowIndexPath(point); }
+        @Callback @BindSelector("rectForRowAtIndexPath:") public static CGRect getRowRect(UITableView __self__, Selector __cmd__, NSIndexPath indexPath) { return __self__.getRowRect(indexPath); }
+        @Callback @BindSelector("indexPathsForRowsInRect:") public static NSArray getRowsIndexPaths(UITableView __self__, Selector __cmd__, CGRect rect) { return __self__.getRowsIndexPaths(rect); }
+        @Callback @BindSelector("rectForFooterInSection:") public static CGRect getSectionFooterRect(UITableView __self__, Selector __cmd__, int section) { return __self__.getSectionFooterRect(section); }
+        @Callback @BindSelector("footerViewForSection:") public static UITableViewHeaderFooterView getSectionFooterView(UITableView __self__, Selector __cmd__, int section) { return __self__.getSectionFooterView(section); }
+        @Callback @BindSelector("rectForHeaderInSection:") public static CGRect getSectionHeaderRect(UITableView __self__, Selector __cmd__, int section) { return __self__.getSectionHeaderRect(section); }
+        @Callback @BindSelector("headerViewForSection:") public static UITableViewHeaderFooterView getSectionHeaderView(UITableView __self__, Selector __cmd__, int section) { return __self__.getSectionHeaderView(section); }
+        @Callback @BindSelector("rectForSection:") public static CGRect getSectionRect(UITableView __self__, Selector __cmd__, int section) { return __self__.getSectionRect(section); }
+        @Callback @BindSelector("indexPathForSelectedRow") public static NSIndexPath getSelectedRowIndexPath(UITableView __self__, Selector __cmd__) { return __self__.getSelectedRowIndexPath(); }
+        @Callback @BindSelector("indexPathsForSelectedRows") public static NSArray getSelectedRowsIndexPaths(UITableView __self__, Selector __cmd__) { return __self__.getSelectedRowsIndexPaths(); }
+        @Callback @BindSelector("visibleCells") public static NSArray getVisibleCells(UITableView __self__, Selector __cmd__) { return __self__.getVisibleCells(); }
+        @Callback @BindSelector("indexPathsForVisibleRows") public static NSArray getVisibleRowsIndexPaths(UITableView __self__, Selector __cmd__) { return __self__.getVisibleRowsIndexPaths(); }
+        @Callback @BindSelector("insertRowsAtIndexPaths:withRowAnimation:") public static void insertRows(UITableView __self__, Selector __cmd__, NSArray indexPaths, UITableViewRowAnimation animation) { __self__.insertRows(indexPaths, animation); }
+        @Callback @BindSelector("insertSections:withRowAnimation:") public static void insertSections(UITableView __self__, Selector __cmd__, NSIndexSet sections, UITableViewRowAnimation animation) { __self__.insertSections(sections, animation); }
+        @Callback @BindSelector("moveRowAtIndexPath:toIndexPath:") public static void moveRow(UITableView __self__, Selector __cmd__, NSIndexPath indexPath, NSIndexPath newIndexPath) { __self__.moveRow(indexPath, newIndexPath); }
+        @Callback @BindSelector("moveSection:toSection:") public static void moveSection(UITableView __self__, Selector __cmd__, int section, int newSection) { __self__.moveSection(section, newSection); }
+        @Callback @BindSelector("registerClass:forCellReuseIdentifier:") public static void registerReusableCellClass(UITableView __self__, Selector __cmd__, ObjCClass cellClass, String identifier) { __self__.registerReusableCellClass(cellClass, identifier); }
+        @Callback @BindSelector("registerNib:forCellReuseIdentifier:") public static void registerReusableCellNib(UITableView __self__, Selector __cmd__, UINib nib, String identifier) { __self__.registerReusableCellNib(nib, identifier); }
+        @Callback @BindSelector("registerClass:forHeaderFooterViewReuseIdentifier:") public static void registerReusableHeaderFooterViewClass(UITableView __self__, Selector __cmd__, ObjCClass aClass, String identifier) { __self__.registerReusableHeaderFooterViewClass(aClass, identifier); }
+        @Callback @BindSelector("registerNib:forHeaderFooterViewReuseIdentifier:") public static void registerReusableHeaderFooterViewNib(UITableView __self__, Selector __cmd__, UINib nib, String identifier) { __self__.registerReusableHeaderFooterViewNib(nib, identifier); }
+        @Callback @BindSelector("reloadData") public static void reloadData(UITableView __self__, Selector __cmd__) { __self__.reloadData(); }
+        @Callback @BindSelector("reloadRowsAtIndexPaths:withRowAnimation:") public static void reloadRows(UITableView __self__, Selector __cmd__, NSArray indexPaths, UITableViewRowAnimation animation) { __self__.reloadRows(indexPaths, animation); }
+        @Callback @BindSelector("reloadSectionIndexTitles") public static void reloadSectionIndexTitles(UITableView __self__, Selector __cmd__) { __self__.reloadSectionIndexTitles(); }
+        @Callback @BindSelector("reloadSections:withRowAnimation:") public static void reloadSections(UITableView __self__, Selector __cmd__, NSIndexSet sections, UITableViewRowAnimation animation) { __self__.reloadSections(sections, animation); }
+        @Callback @BindSelector("scrollToNearestSelectedRowAtScrollPosition:animated:") public static void scrollToNearestSelectedRow(UITableView __self__, Selector __cmd__, UITableViewScrollPosition scrollPosition, boolean animated) { __self__.scrollToNearestSelectedRow(scrollPosition, animated); }
+        @Callback @BindSelector("scrollToRowAtIndexPath:atScrollPosition:animated:") public static void scrollToRow(UITableView __self__, Selector __cmd__, NSIndexPath indexPath, UITableViewScrollPosition scrollPosition, boolean animated) { __self__.scrollToRow(indexPath, scrollPosition, animated); }
+        @Callback @BindSelector("selectRowAtIndexPath:animated:scrollPosition:") public static void selectRow(UITableView __self__, Selector __cmd__, NSIndexPath indexPath, boolean animated, UITableViewScrollPosition scrollPosition) { __self__.selectRow(indexPath, animated, scrollPosition); }
+        @Callback @BindSelector("setEditing:animated:") public static void setEditing(UITableView __self__, Selector __cmd__, boolean editing, boolean animate) { __self__.setEditing(editing, animate); }
+    }
+    /*</callbacks>*/
 
 }

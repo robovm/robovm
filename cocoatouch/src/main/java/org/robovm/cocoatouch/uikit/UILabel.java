@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -474,5 +475,11 @@ public class /*<name>*/ UILabel /*</name>*/
         if (customClass) { return objc_getTextRectSuper(getSuper(), this, textRectForBounds$limitedToNumberOfLines$, bounds, numberOfLines); } else { return objc_getTextRect(this, textRectForBounds$limitedToNumberOfLines$, bounds, numberOfLines); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("drawTextInRect:") public static void drawText(UILabel __self__, Selector __cmd__, CGRect rect) { __self__.drawText(rect); }
+        @Callback @BindSelector("textRectForBounds:limitedToNumberOfLines:") public static CGRect getTextRect(UILabel __self__, Selector __cmd__, CGRect bounds, int numberOfLines) { return __self__.getTextRect(bounds, numberOfLines); }
+    }
+    /*</callbacks>*/
 
 }

@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -429,5 +430,31 @@ public class /*<name>*/ UISegmentedControl /*</name>*/
         if (customClass) { objc_setWidthSuper(getSuper(), this, setWidth$forSegmentAtIndex$, width, segment); } else { objc_setWidth(this, setWidth$forSegmentAtIndex$, width, segment); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("backgroundImageForState:barMetrics:") public static UIImage getBackgroundImage(UISegmentedControl __self__, Selector __cmd__, UIControlState state, UIBarMetrics barMetrics) { return __self__.getBackgroundImage(state, barMetrics); }
+        @Callback @BindSelector("dividerImageForLeftSegmentState:rightSegmentState:barMetrics:") public static UIImage getDividerImage(UISegmentedControl __self__, Selector __cmd__, UIControlState leftState, UIControlState rightState, UIBarMetrics barMetrics) { return __self__.getDividerImage(leftState, rightState, barMetrics); }
+        @Callback @BindSelector("contentOffsetForSegmentAtIndex:") public static CGSize getSegmentContentOffset(UISegmentedControl __self__, Selector __cmd__, int segment) { return __self__.getSegmentContentOffset(segment); }
+        @Callback @BindSelector("contentPositionAdjustmentForSegmentType:barMetrics:") public static UIOffset getSegmentContentPositionAdjustment(UISegmentedControl __self__, Selector __cmd__, UISegmentedControlSegment leftCenterRightOrAlone, UIBarMetrics barMetrics) { return __self__.getSegmentContentPositionAdjustment(leftCenterRightOrAlone, barMetrics); }
+        @Callback @BindSelector("imageForSegmentAtIndex:") public static UIImage getSegmentImage(UISegmentedControl __self__, Selector __cmd__, int segment) { return __self__.getSegmentImage(segment); }
+        @Callback @BindSelector("titleForSegmentAtIndex:") public static String getSegmentTitle(UISegmentedControl __self__, Selector __cmd__, int segment) { return __self__.getSegmentTitle(segment); }
+        @Callback @BindSelector("widthForSegmentAtIndex:") public static float getSegmentWidth(UISegmentedControl __self__, Selector __cmd__, int segment) { return __self__.getSegmentWidth(segment); }
+        @Callback @BindSelector("titleTextAttributesForState:") public static NSDictionary getTitleTextAttributes(UISegmentedControl __self__, Selector __cmd__, UIControlState state) { return __self__.getTitleTextAttributes(state); }
+        @Callback @BindSelector("insertSegmentWithImage:atIndex:animated:") public static void insertSegment(UISegmentedControl __self__, Selector __cmd__, UIImage image, int segment, boolean animated) { __self__.insertSegment(image, segment, animated); }
+        @Callback @BindSelector("insertSegmentWithTitle:atIndex:animated:") public static void insertSegment(UISegmentedControl __self__, Selector __cmd__, String title, int segment, boolean animated) { __self__.insertSegment(title, segment, animated); }
+        @Callback @BindSelector("isEnabledForSegmentAtIndex:") public static boolean isSegmentEnabled(UISegmentedControl __self__, Selector __cmd__, int segment) { return __self__.isSegmentEnabled(segment); }
+        @Callback @BindSelector("removeAllSegments") public static void removeAllSegments(UISegmentedControl __self__, Selector __cmd__) { __self__.removeAllSegments(); }
+        @Callback @BindSelector("removeSegmentAtIndex:animated:") public static void removeSegmentAtIndex(UISegmentedControl __self__, Selector __cmd__, int segment, boolean animated) { __self__.removeSegmentAtIndex(segment, animated); }
+        @Callback @BindSelector("setBackgroundImage:forState:barMetrics:") public static void setBackgroundImage(UISegmentedControl __self__, Selector __cmd__, UIImage backgroundImage, UIControlState state, UIBarMetrics barMetrics) { __self__.setBackgroundImage(backgroundImage, state, barMetrics); }
+        @Callback @BindSelector("setContentOffset:forSegmentAtIndex:") public static void setContentOffset(UISegmentedControl __self__, Selector __cmd__, CGSize offset, int segment) { __self__.setContentOffset(offset, segment); }
+        @Callback @BindSelector("setContentPositionAdjustment:forSegmentType:barMetrics:") public static void setContentPositionAdjustment(UISegmentedControl __self__, Selector __cmd__, UIOffset adjustment, UISegmentedControlSegment leftCenterRightOrAlone, UIBarMetrics barMetrics) { __self__.setContentPositionAdjustment(adjustment, leftCenterRightOrAlone, barMetrics); }
+        @Callback @BindSelector("setDividerImage:forLeftSegmentState:rightSegmentState:barMetrics:") public static void setDividerImage(UISegmentedControl __self__, Selector __cmd__, UIImage dividerImage, UIControlState leftState, UIControlState rightState, UIBarMetrics barMetrics) { __self__.setDividerImage(dividerImage, leftState, rightState, barMetrics); }
+        @Callback @BindSelector("setEnabled:forSegmentAtIndex:") public static void setEnabled(UISegmentedControl __self__, Selector __cmd__, boolean enabled, int segment) { __self__.setEnabled(enabled, segment); }
+        @Callback @BindSelector("setImage:forSegmentAtIndex:") public static void setImage(UISegmentedControl __self__, Selector __cmd__, UIImage image, int segment) { __self__.setImage(image, segment); }
+        @Callback @BindSelector("setTitle:forSegmentAtIndex:") public static void setTitle(UISegmentedControl __self__, Selector __cmd__, String title, int segment) { __self__.setTitle(title, segment); }
+        @Callback @BindSelector("setTitleTextAttributes:forState:") public static void setTitleTextAttributes(UISegmentedControl __self__, Selector __cmd__, NSDictionary attributes, UIControlState state) { __self__.setTitleTextAttributes(attributes, state); }
+        @Callback @BindSelector("setWidth:forSegmentAtIndex:") public static void setWidth(UISegmentedControl __self__, Selector __cmd__, float width, int segment) { __self__.setWidth(width, segment); }
+    }
+    /*</callbacks>*/
 
 }

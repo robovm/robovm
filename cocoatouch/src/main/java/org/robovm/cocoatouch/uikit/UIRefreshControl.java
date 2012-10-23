@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -132,5 +133,11 @@ public class /*<name>*/ UIRefreshControl /*</name>*/
         if (customClass) { objc_endRefreshingSuper(getSuper(), this, endRefreshing); } else { objc_endRefreshing(this, endRefreshing); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("beginRefreshing") public static void beginRefreshing(UIRefreshControl __self__, Selector __cmd__) { __self__.beginRefreshing(); }
+        @Callback @BindSelector("endRefreshing") public static void endRefreshing(UIRefreshControl __self__, Selector __cmd__) { __self__.endRefreshing(); }
+    }
+    /*</callbacks>*/
 
 }

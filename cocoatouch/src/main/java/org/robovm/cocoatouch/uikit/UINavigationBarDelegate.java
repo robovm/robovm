@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -63,5 +64,13 @@ public interface /*<name>*/ UINavigationBarDelegate /*</name>*/ /*<implements>*/
      */
     boolean shouldPushItem(UINavigationBar navigationBar, UINavigationItem item);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("navigationBar:didPopItem:") public static void didPopItem(UINavigationBarDelegate __self__, Selector __cmd__, UINavigationBar navigationBar, UINavigationItem item) { __self__.didPopItem(navigationBar, item); }
+        @Callback @BindSelector("navigationBar:didPushItem:") public static void didPushItem(UINavigationBarDelegate __self__, Selector __cmd__, UINavigationBar navigationBar, UINavigationItem item) { __self__.didPushItem(navigationBar, item); }
+        @Callback @BindSelector("navigationBar:shouldPopItem:") public static boolean shouldPopItem(UINavigationBarDelegate __self__, Selector __cmd__, UINavigationBar navigationBar, UINavigationItem item) { return __self__.shouldPopItem(navigationBar, item); }
+        @Callback @BindSelector("navigationBar:shouldPushItem:") public static boolean shouldPushItem(UINavigationBarDelegate __self__, Selector __cmd__, UINavigationBar navigationBar, UINavigationItem item) { return __self__.shouldPushItem(navigationBar, item); }
+    }
+    /*</callbacks>*/
 
 }

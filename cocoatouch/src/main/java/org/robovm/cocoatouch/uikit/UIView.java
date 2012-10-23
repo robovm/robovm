@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -1463,5 +1464,72 @@ public class /*<name>*/ UIView /*</name>*/
         if (customClass) { objc_willRemoveSubviewSuper(getSuper(), this, willRemoveSubview$, subview); } else { objc_willRemoveSubview(this, willRemoveSubview$, subview); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("addConstraint:") public static void addConstraint(UIView __self__, Selector __cmd__, NSLayoutConstraint constraint) { __self__.addConstraint(constraint); }
+        @Callback @BindSelector("addConstraints:") public static void addConstraints(UIView __self__, Selector __cmd__, NSArray constraints) { __self__.addConstraints(constraints); }
+        @Callback @BindSelector("addGestureRecognizer:") public static void addGestureRecognizer(UIView __self__, Selector __cmd__, UIGestureRecognizer gestureRecognizer) { __self__.addGestureRecognizer(gestureRecognizer); }
+        @Callback @BindSelector("addSubview:") public static void addSubview(UIView __self__, Selector __cmd__, UIView view) { __self__.addSubview(view); }
+        @Callback @BindSelector("bringSubviewToFront:") public static void bringSubviewToFront(UIView __self__, Selector __cmd__, UIView view) { __self__.bringSubviewToFront(view); }
+        @Callback @BindSelector("convertPoint:fromView:") public static CGPoint convertPointFromView(UIView __self__, Selector __cmd__, CGPoint point, UIView view) { return __self__.convertPointFromView(point, view); }
+        @Callback @BindSelector("convertPoint:toView:") public static CGPoint convertPointToView(UIView __self__, Selector __cmd__, CGPoint point, UIView view) { return __self__.convertPointToView(point, view); }
+        @Callback @BindSelector("convertRect:fromView:") public static CGRect convertRectFromView(UIView __self__, Selector __cmd__, CGRect rect, UIView view) { return __self__.convertRectFromView(rect, view); }
+        @Callback @BindSelector("convertRect:toView:") public static CGRect convertRectToView(UIView __self__, Selector __cmd__, CGRect rect, UIView view) { return __self__.convertRectToView(rect, view); }
+        @Callback @BindSelector("decodeRestorableStateWithCoder:") public static void decodeRestorableState(UIView __self__, Selector __cmd__, NSCoder coder) { __self__.decodeRestorableState(coder); }
+        @Callback @BindSelector("didAddSubview:") public static void didAddSubview(UIView __self__, Selector __cmd__, UIView subview) { __self__.didAddSubview(subview); }
+        @Callback @BindSelector("didMoveToSuperview") public static void didMoveToSuperview(UIView __self__, Selector __cmd__) { __self__.didMoveToSuperview(); }
+        @Callback @BindSelector("didMoveToWindow") public static void didMoveToWindow(UIView __self__, Selector __cmd__) { __self__.didMoveToWindow(); }
+        @Callback @BindSelector("drawRect:") public static void draw(UIView __self__, Selector __cmd__, CGRect rect) { __self__.draw(rect); }
+        @Callback @BindSelector("drawRect:forViewPrintFormatter:") public static void drawRect(UIView __self__, Selector __cmd__, CGRect area, UIViewPrintFormatter formatter) { __self__.drawRect(area, formatter); }
+        @Callback @BindSelector("encodeRestorableStateWithCoder:") public static void encodeRestorableState(UIView __self__, Selector __cmd__, NSCoder coder) { __self__.encodeRestorableState(coder); }
+        @Callback @BindSelector("endEditing:") public static boolean endEditing(UIView __self__, Selector __cmd__, boolean force) { return __self__.endEditing(force); }
+        @Callback @BindSelector("exchangeSubviewAtIndex:withSubviewAtIndex:") public static void exchangeSubview(UIView __self__, Selector __cmd__, int index1, int index2) { __self__.exchangeSubview(index1, index2); }
+        @Callback @BindSelector("exerciseAmbiguityInLayout") public static void exerciseAmbiguityInLayout(UIView __self__, Selector __cmd__) { __self__.exerciseAmbiguityInLayout(); }
+        @Callback @BindSelector("gestureRecognizerShouldBegin:") public static boolean gestureRecognizerShouldBegin(UIView __self__, Selector __cmd__, UIGestureRecognizer gestureRecognizer) { return __self__.gestureRecognizerShouldBegin(gestureRecognizer); }
+        @Callback @BindSelector("frameForAlignmentRect:") public static CGRect getAlignmentRectFrame(UIView __self__, Selector __cmd__, CGRect alignmentRect) { return __self__.getAlignmentRectFrame(alignmentRect); }
+        @Callback @BindSelector("alignmentRectInsets") public static UIEdgeInsets getAlignmentRectInsets(UIView __self__, Selector __cmd__) { return __self__.getAlignmentRectInsets(); }
+        @Callback @BindSelector("viewForBaselineLayout") public static UIView getBaselineLayoutView(UIView __self__, Selector __cmd__) { return __self__.getBaselineLayoutView(); }
+        @Callback @BindSelector("constraints") public static NSArray getConstraints(UIView __self__, Selector __cmd__) { return __self__.getConstraints(); }
+        @Callback @BindSelector("constraintsAffectingLayoutForAxis:") public static NSArray getConstraintsAffectingLayout(UIView __self__, Selector __cmd__, UILayoutConstraintAxis axis) { return __self__.getConstraintsAffectingLayout(axis); }
+        @Callback @BindSelector("contentCompressionResistancePriorityForAxis:") public static UILayoutPriority getContentCompressionResistancePriority(UIView __self__, Selector __cmd__, UILayoutConstraintAxis axis) { return __self__.getContentCompressionResistancePriority(axis); }
+        @Callback @BindSelector("contentHuggingPriorityForAxis:") public static UILayoutPriority getContentHuggingPriority(UIView __self__, Selector __cmd__, UILayoutConstraintAxis axis) { return __self__.getContentHuggingPriority(axis); }
+        @Callback @BindSelector("alignmentRectForFrame:") public static CGRect getFrameAlignmentRect(UIView __self__, Selector __cmd__, CGRect frame) { return __self__.getFrameAlignmentRect(frame); }
+        @Callback @BindSelector("intrinsicContentSize") public static CGSize getIntrinsicContentSize(UIView __self__, Selector __cmd__) { return __self__.getIntrinsicContentSize(); }
+        @Callback @BindSelector("sizeThatFits:") public static CGSize getSizeThatFits(UIView __self__, Selector __cmd__, CGSize size) { return __self__.getSizeThatFits(size); }
+        @Callback @BindSelector("systemLayoutSizeFittingSize:") public static CGSize getSystemLayoutSizeFittingSize(UIView __self__, Selector __cmd__, CGSize targetSize) { return __self__.getSystemLayoutSizeFittingSize(targetSize); }
+        @Callback @BindSelector("viewPrintFormatter") public static UIViewPrintFormatter getViewPrintFormatter(UIView __self__, Selector __cmd__) { return __self__.getViewPrintFormatter(); }
+        @Callback @BindSelector("viewWithTag:") public static UIView getViewWithTag(UIView __self__, Selector __cmd__, int tag) { return __self__.getViewWithTag(tag); }
+        @Callback @BindSelector("hasAmbiguousLayout") public static boolean hasAmbiguousLayout(UIView __self__, Selector __cmd__) { return __self__.hasAmbiguousLayout(); }
+        @Callback @BindSelector("hitTest:withEvent:") public static UIView hitTest(UIView __self__, Selector __cmd__, CGPoint point, UIEvent event) { return __self__.hitTest(point, event); }
+        @Callback @BindSelector("insertSubview:atIndex:") public static void insertSubview(UIView __self__, Selector __cmd__, UIView view, int index) { __self__.insertSubview(view, index); }
+        @Callback @BindSelector("insertSubview:aboveSubview:") public static void insertSubviewAbove(UIView __self__, Selector __cmd__, UIView view, UIView siblingSubview) { __self__.insertSubviewAbove(view, siblingSubview); }
+        @Callback @BindSelector("insertSubview:belowSubview:") public static void insertSubviewBelow(UIView __self__, Selector __cmd__, UIView view, UIView siblingSubview) { __self__.insertSubviewBelow(view, siblingSubview); }
+        @Callback @BindSelector("invalidateIntrinsicContentSize") public static void invalidateIntrinsicContentSize(UIView __self__, Selector __cmd__) { __self__.invalidateIntrinsicContentSize(); }
+        @Callback @BindSelector("isDescendantOfView:") public static boolean isDescendantOf(UIView __self__, Selector __cmd__, UIView view) { return __self__.isDescendantOf(view); }
+        @Callback @BindSelector("translatesAutoresizingMaskIntoConstraints") public static boolean isTranslatesAutoresizingMaskIntoConstraints(UIView __self__, Selector __cmd__) { return __self__.isTranslatesAutoresizingMaskIntoConstraints(); }
+        @Callback @BindSelector("layoutIfNeeded") public static void layoutIfNeeded(UIView __self__, Selector __cmd__) { __self__.layoutIfNeeded(); }
+        @Callback @BindSelector("layoutSubviews") public static void layoutSubviews(UIView __self__, Selector __cmd__) { __self__.layoutSubviews(); }
+        @Callback @BindSelector("needsUpdateConstraints") public static boolean needsUpdateConstraints(UIView __self__, Selector __cmd__) { return __self__.needsUpdateConstraints(); }
+        @Callback @BindSelector("pointInside:withEvent:") public static boolean pointInside(UIView __self__, Selector __cmd__, CGPoint point, UIEvent event) { return __self__.pointInside(point, event); }
+        @Callback @BindSelector("removeConstraint:") public static void removeConstraint(UIView __self__, Selector __cmd__, NSLayoutConstraint constraint) { __self__.removeConstraint(constraint); }
+        @Callback @BindSelector("removeConstraints:") public static void removeConstraints(UIView __self__, Selector __cmd__, NSArray constraints) { __self__.removeConstraints(constraints); }
+        @Callback @BindSelector("removeFromSuperview") public static void removeFromSuperview(UIView __self__, Selector __cmd__) { __self__.removeFromSuperview(); }
+        @Callback @BindSelector("removeGestureRecognizer:") public static void removeGestureRecognizer(UIView __self__, Selector __cmd__, UIGestureRecognizer gestureRecognizer) { __self__.removeGestureRecognizer(gestureRecognizer); }
+        @Callback @BindSelector("sizeToFit") public static void resizeToFit(UIView __self__, Selector __cmd__) { __self__.resizeToFit(); }
+        @Callback @BindSelector("sendSubviewToBack:") public static void sendSubviewToBack(UIView __self__, Selector __cmd__, UIView view) { __self__.sendSubviewToBack(view); }
+        @Callback @BindSelector("setContentCompressionResistancePriority:forAxis:") public static void setContentCompressionResistancePriority(UIView __self__, Selector __cmd__, UILayoutPriority priority, UILayoutConstraintAxis axis) { __self__.setContentCompressionResistancePriority(priority, axis); }
+        @Callback @BindSelector("setContentHuggingPriority:forAxis:") public static void setContentHuggingPriority(UIView __self__, Selector __cmd__, UILayoutPriority priority, UILayoutConstraintAxis axis) { __self__.setContentHuggingPriority(priority, axis); }
+        @Callback @BindSelector("setNeedsDisplay") public static void setNeedsDisplay(UIView __self__, Selector __cmd__) { __self__.setNeedsDisplay(); }
+        @Callback @BindSelector("setNeedsDisplayInRect:") public static void setNeedsDisplay(UIView __self__, Selector __cmd__, CGRect invalidRect) { __self__.setNeedsDisplay(invalidRect); }
+        @Callback @BindSelector("setNeedsLayout") public static void setNeedsLayout(UIView __self__, Selector __cmd__) { __self__.setNeedsLayout(); }
+        @Callback @BindSelector("setNeedsUpdateConstraints") public static void setNeedsUpdateConstraints(UIView __self__, Selector __cmd__) { __self__.setNeedsUpdateConstraints(); }
+        @Callback @BindSelector("setTranslatesAutoresizingMaskIntoConstraints:") public static void setTranslatesAutoresizingMaskIntoConstraints(UIView __self__, Selector __cmd__, boolean flag) { __self__.setTranslatesAutoresizingMaskIntoConstraints(flag); }
+        @Callback @BindSelector("updateConstraints") public static void updateConstraints(UIView __self__, Selector __cmd__) { __self__.updateConstraints(); }
+        @Callback @BindSelector("updateConstraintsIfNeeded") public static void updateConstraintsIfNeeded(UIView __self__, Selector __cmd__) { __self__.updateConstraintsIfNeeded(); }
+        @Callback @BindSelector("willMoveToSuperview:") public static void willMoveToSuperview(UIView __self__, Selector __cmd__, UIView newSuperview) { __self__.willMoveToSuperview(newSuperview); }
+        @Callback @BindSelector("willMoveToWindow:") public static void willMoveToWindow(UIView __self__, Selector __cmd__, UIWindow newWindow) { __self__.willMoveToWindow(newWindow); }
+        @Callback @BindSelector("willRemoveSubview:") public static void willRemoveSubview(UIView __self__, Selector __cmd__, UIView subview) { __self__.willRemoveSubview(subview); }
+    }
+    /*</callbacks>*/
 
 }

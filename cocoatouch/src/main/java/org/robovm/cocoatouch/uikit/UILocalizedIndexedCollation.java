@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -121,5 +122,12 @@ public class /*<name>*/ UILocalizedIndexedCollation /*</name>*/
         if (customClass) { return objc_sortArraySuper(getSuper(), this, sortedArrayFromArray$collationStringSelector$, array, selector); } else { return objc_sortArray(this, sortedArrayFromArray$collationStringSelector$, array, selector); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("sectionForObject:collationStringSelector:") public static int getSectionForObject(UILocalizedIndexedCollation __self__, Selector __cmd__, NSObject object, Selector selector) { return __self__.getSectionForObject(object, selector); }
+        @Callback @BindSelector("sectionForSectionIndexTitleAtIndex:") public static int getSectionForSectionIndexTitle(UILocalizedIndexedCollation __self__, Selector __cmd__, int indexTitleIndex) { return __self__.getSectionForSectionIndexTitle(indexTitleIndex); }
+        @Callback @BindSelector("sortedArrayFromArray:collationStringSelector:") public static NSArray sortArray(UILocalizedIndexedCollation __self__, Selector __cmd__, NSArray array, Selector selector) { return __self__.sortArray(array, selector); }
+    }
+    /*</callbacks>*/
 
 }

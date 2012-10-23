@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -283,5 +284,7 @@ public class /*<name>*/ UICollectionViewLayoutAttributes /*</name>*/
         return objc_createForSupplementaryView(objCClass, layoutAttributesForSupplementaryViewOfKind$withIndexPath$, elementKind, indexPath);
     }
     /*</methods>*/
+    /*<callbacks>*/
+    /*</callbacks>*/
 
 }

@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -511,5 +512,27 @@ public class /*<name>*/ UIBezierPath /*</name>*/
         if (customClass) { objc_strokeSuper(getSuper(), this, strokeWithBlendMode$alpha$, blendMode, alpha); } else { objc_stroke(this, strokeWithBlendMode$alpha$, blendMode, alpha); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("addArcWithCenter:radius:startAngle:endAngle:clockwise:") public static void addArc(UIBezierPath __self__, Selector __cmd__, CGPoint center, float radius, float startAngle, float endAngle, boolean clockwise) { __self__.addArc(center, radius, startAngle, endAngle, clockwise); }
+        @Callback @BindSelector("addClip") public static void addClip(UIBezierPath __self__, Selector __cmd__) { __self__.addClip(); }
+        @Callback @BindSelector("addCurveToPoint:controlPoint1:controlPoint2:") public static void addCurve(UIBezierPath __self__, Selector __cmd__, CGPoint endPoint, CGPoint controlPoint1, CGPoint controlPoint2) { __self__.addCurve(endPoint, controlPoint1, controlPoint2); }
+        @Callback @BindSelector("addLineToPoint:") public static void addLine(UIBezierPath __self__, Selector __cmd__, CGPoint point) { __self__.addLine(point); }
+        @Callback @BindSelector("addQuadCurveToPoint:controlPoint:") public static void addQuadCurve(UIBezierPath __self__, Selector __cmd__, CGPoint endPoint, CGPoint controlPoint) { __self__.addQuadCurve(endPoint, controlPoint); }
+        @Callback @BindSelector("appendPath:") public static void appendPath(UIBezierPath __self__, Selector __cmd__, UIBezierPath bezierPath) { __self__.appendPath(bezierPath); }
+        @Callback @BindSelector("applyTransform:") public static void applyTransform(UIBezierPath __self__, Selector __cmd__, CGAffineTransform transform) { __self__.applyTransform(transform); }
+        @Callback @BindSelector("closePath") public static void closePath(UIBezierPath __self__, Selector __cmd__) { __self__.closePath(); }
+        @Callback @BindSelector("containsPoint:") public static boolean containsPoint(UIBezierPath __self__, Selector __cmd__, CGPoint point) { return __self__.containsPoint(point); }
+        @Callback @BindSelector("fillWithBlendMode:alpha:") public static void fill(UIBezierPath __self__, Selector __cmd__, CGBlendMode blendMode, float alpha) { __self__.fill(blendMode, alpha); }
+        @Callback @BindSelector("fill") public static void fill(UIBezierPath __self__, Selector __cmd__) { __self__.fill(); }
+        @Callback @BindSelector("getLineDash:count:phase:") public static void getLineDash(UIBezierPath __self__, Selector __cmd__, FloatPtr pattern, IntPtr count, FloatPtr phase) { __self__.getLineDash(pattern, count, phase); }
+        @Callback @BindSelector("moveToPoint:") public static void move(UIBezierPath __self__, Selector __cmd__, CGPoint point) { __self__.move(point); }
+        @Callback @BindSelector("removeAllPoints") public static void removeAllPoints(UIBezierPath __self__, Selector __cmd__) { __self__.removeAllPoints(); }
+        @Callback @BindSelector("bezierPathByReversingPath") public static UIBezierPath reverse(UIBezierPath __self__, Selector __cmd__) { return __self__.reverse(); }
+        @Callback @BindSelector("setLineDash:count:phase:") public static void setLineDash(UIBezierPath __self__, Selector __cmd__, FloatPtr pattern, int count, float phase) { __self__.setLineDash(pattern, count, phase); }
+        @Callback @BindSelector("stroke") public static void stroke(UIBezierPath __self__, Selector __cmd__) { __self__.stroke(); }
+        @Callback @BindSelector("strokeWithBlendMode:alpha:") public static void stroke(UIBezierPath __self__, Selector __cmd__, CGBlendMode blendMode, float alpha) { __self__.stroke(blendMode, alpha); }
+    }
+    /*</callbacks>*/
 
 }

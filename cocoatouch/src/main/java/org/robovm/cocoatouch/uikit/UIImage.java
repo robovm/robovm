@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -450,5 +451,17 @@ public class /*<name>*/ UIImage /*</name>*/
         if (customClass) { objc_drawAsPatternSuper(getSuper(), this, drawAsPatternInRect$, rect); } else { objc_drawAsPattern(this, drawAsPatternInRect$, rect); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("imageWithAlignmentRectInsets:") public static UIImage copyWithAlignmentRectInsets(UIImage __self__, Selector __cmd__, UIEdgeInsets alignmentInsets) { return __self__.copyWithAlignmentRectInsets(alignmentInsets); }
+        @Callback @BindSelector("resizableImageWithCapInsets:") public static UIImage copyWithCapInsets(UIImage __self__, Selector __cmd__, UIEdgeInsets capInsets) { return __self__.copyWithCapInsets(capInsets); }
+        @Callback @BindSelector("resizableImageWithCapInsets:resizingMode:") public static UIImage copyWithCapInsets(UIImage __self__, Selector __cmd__, UIEdgeInsets capInsets, UIImageResizingMode resizingMode) { return __self__.copyWithCapInsets(capInsets, resizingMode); }
+        @Callback @BindSelector("drawInRect:") public static void draw(UIImage __self__, Selector __cmd__, CGRect rect) { __self__.draw(rect); }
+        @Callback @BindSelector("drawInRect:blendMode:alpha:") public static void draw(UIImage __self__, Selector __cmd__, CGRect rect, CGBlendMode blendMode, float alpha) { __self__.draw(rect, blendMode, alpha); }
+        @Callback @BindSelector("drawAtPoint:blendMode:alpha:") public static void draw(UIImage __self__, Selector __cmd__, CGPoint point, CGBlendMode blendMode, float alpha) { __self__.draw(point, blendMode, alpha); }
+        @Callback @BindSelector("drawAtPoint:") public static void draw(UIImage __self__, Selector __cmd__, CGPoint point) { __self__.draw(point); }
+        @Callback @BindSelector("drawAsPatternInRect:") public static void drawAsPattern(UIImage __self__, Selector __cmd__, CGRect rect) { __self__.drawAsPattern(rect); }
+    }
+    /*</callbacks>*/
 
 }

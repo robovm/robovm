@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -243,5 +244,18 @@ public class /*<name>*/ UIPrintPageRenderer /*</name>*/
         if (customClass) { objc_prepareForDrawingPagesSuper(getSuper(), this, prepareForDrawingPages$, range); } else { objc_prepareForDrawingPages(this, prepareForDrawingPages$, range); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("addPrintFormatter:startingAtPageAtIndex:") public static void addPrintFormatter(UIPrintPageRenderer __self__, Selector __cmd__, UIPrintFormatter formatter, int pageIndex) { __self__.addPrintFormatter(formatter, pageIndex); }
+        @Callback @BindSelector("drawContentForPageAtIndex:inRect:") public static void drawContent(UIPrintPageRenderer __self__, Selector __cmd__, int index, CGRect contentRect) { __self__.drawContent(index, contentRect); }
+        @Callback @BindSelector("drawFooterForPageAtIndex:inRect:") public static void drawFooter(UIPrintPageRenderer __self__, Selector __cmd__, int index, CGRect footerRect) { __self__.drawFooter(index, footerRect); }
+        @Callback @BindSelector("drawHeaderForPageAtIndex:inRect:") public static void drawHeader(UIPrintPageRenderer __self__, Selector __cmd__, int index, CGRect headerRect) { __self__.drawHeader(index, headerRect); }
+        @Callback @BindSelector("drawPageAtIndex:inRect:") public static void drawPage(UIPrintPageRenderer __self__, Selector __cmd__, int index, CGRect pageRect) { __self__.drawPage(index, pageRect); }
+        @Callback @BindSelector("drawPrintFormatter:forPageAtIndex:") public static void drawPrintFormatter(UIPrintPageRenderer __self__, Selector __cmd__, UIPrintFormatter printFormatter, int index) { __self__.drawPrintFormatter(printFormatter, index); }
+        @Callback @BindSelector("numberOfPages") public static int getNumberOfPages(UIPrintPageRenderer __self__, Selector __cmd__) { return __self__.getNumberOfPages(); }
+        @Callback @BindSelector("printFormattersForPageAtIndex:") public static NSArray getPrintFormatters(UIPrintPageRenderer __self__, Selector __cmd__, int pageIndex) { return __self__.getPrintFormatters(pageIndex); }
+        @Callback @BindSelector("prepareForDrawingPages:") public static void prepareForDrawingPages(UIPrintPageRenderer __self__, Selector __cmd__, NSRange range) { __self__.prepareForDrawingPages(range); }
+    }
+    /*</callbacks>*/
 
 }

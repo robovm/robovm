@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -110,5 +111,13 @@ public class /*<name>*/ UICollectionReusableView /*</name>*/
         if (customClass) { objc_willTransitionSuper(getSuper(), this, willTransitionFromLayout$toLayout$, oldLayout, newLayout); } else { objc_willTransition(this, willTransitionFromLayout$toLayout$, oldLayout, newLayout); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("applyLayoutAttributes:") public static void applyLayoutAttributes(UICollectionReusableView __self__, Selector __cmd__, UICollectionViewLayoutAttributes layoutAttributes) { __self__.applyLayoutAttributes(layoutAttributes); }
+        @Callback @BindSelector("didTransitionFromLayout:toLayout:") public static void didTransition(UICollectionReusableView __self__, Selector __cmd__, UICollectionViewLayout oldLayout, UICollectionViewLayout newLayout) { __self__.didTransition(oldLayout, newLayout); }
+        @Callback @BindSelector("prepareForReuse") public static void prepareForReuse(UICollectionReusableView __self__, Selector __cmd__) { __self__.prepareForReuse(); }
+        @Callback @BindSelector("willTransitionFromLayout:toLayout:") public static void willTransition(UICollectionReusableView __self__, Selector __cmd__, UICollectionViewLayout oldLayout, UICollectionViewLayout newLayout) { __self__.willTransition(oldLayout, newLayout); }
+    }
+    /*</callbacks>*/
 
 }

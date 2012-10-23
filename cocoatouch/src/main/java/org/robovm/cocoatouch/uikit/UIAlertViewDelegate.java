@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -78,5 +79,16 @@ public interface /*<name>*/ UIAlertViewDelegate /*</name>*/ /*<implements>*/ ext
      */
     void willPresent(UIAlertView alertView);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("alertViewCancel:") public static void cancel(UIAlertViewDelegate __self__, Selector __cmd__, UIAlertView alertView) { __self__.cancel(alertView); }
+        @Callback @BindSelector("alertView:clickedButtonAtIndex:") public static void clicked(UIAlertViewDelegate __self__, Selector __cmd__, UIAlertView alertView, int buttonIndex) { __self__.clicked(alertView, buttonIndex); }
+        @Callback @BindSelector("alertView:didDismissWithButtonIndex:") public static void didDismiss(UIAlertViewDelegate __self__, Selector __cmd__, UIAlertView alertView, int buttonIndex) { __self__.didDismiss(alertView, buttonIndex); }
+        @Callback @BindSelector("didPresentAlertView:") public static void didPresent(UIAlertViewDelegate __self__, Selector __cmd__, UIAlertView alertView) { __self__.didPresent(alertView); }
+        @Callback @BindSelector("alertViewShouldEnableFirstOtherButton:") public static boolean shouldEnableFirstOtherButton(UIAlertViewDelegate __self__, Selector __cmd__, UIAlertView alertView) { return __self__.shouldEnableFirstOtherButton(alertView); }
+        @Callback @BindSelector("alertView:willDismissWithButtonIndex:") public static void willDismiss(UIAlertViewDelegate __self__, Selector __cmd__, UIAlertView alertView, int buttonIndex) { __self__.willDismiss(alertView, buttonIndex); }
+        @Callback @BindSelector("willPresentAlertView:") public static void willPresent(UIAlertViewDelegate __self__, Selector __cmd__, UIAlertView alertView) { __self__.willPresent(alertView); }
+    }
+    /*</callbacks>*/
 
 }

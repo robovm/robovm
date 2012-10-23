@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -199,5 +200,14 @@ public class /*<name>*/ UIToolbar /*</name>*/
         if (customClass) { objc_setShadowImageSuper(getSuper(), this, setShadowImage$forToolbarPosition$, shadowImage, topOrBottom); } else { objc_setShadowImage(this, setShadowImage$forToolbarPosition$, shadowImage, topOrBottom); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("backgroundImageForToolbarPosition:barMetrics:") public static UIImage getBackgroundImage(UIToolbar __self__, Selector __cmd__, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics) { return __self__.getBackgroundImage(topOrBottom, barMetrics); }
+        @Callback @BindSelector("shadowImageForToolbarPosition:") public static UIImage getShadowImage(UIToolbar __self__, Selector __cmd__, UIToolbarPosition topOrBottom) { return __self__.getShadowImage(topOrBottom); }
+        @Callback @BindSelector("setBackgroundImage:forToolbarPosition:barMetrics:") public static void setBackgroundImage(UIToolbar __self__, Selector __cmd__, UIImage backgroundImage, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics) { __self__.setBackgroundImage(backgroundImage, topOrBottom, barMetrics); }
+        @Callback @BindSelector("setItems:animated:") public static void setItems(UIToolbar __self__, Selector __cmd__, NSArray items, boolean animated) { __self__.setItems(items, animated); }
+        @Callback @BindSelector("setShadowImage:forToolbarPosition:") public static void setShadowImage(UIToolbar __self__, Selector __cmd__, UIImage shadowImage, UIToolbarPosition topOrBottom) { __self__.setShadowImage(shadowImage, topOrBottom); }
+    }
+    /*</callbacks>*/
 
 }

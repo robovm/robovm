@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -98,5 +99,10 @@ public class /*<name>*/ UIActivityItemProvider /*</name>*/
         if (customClass) { return objc_getItemSuper(getSuper(), this, item); } else { return objc_getItem(this, item); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("item") public static NSObject getItem(UIActivityItemProvider __self__, Selector __cmd__) { return __self__.getItem(); }
+    }
+    /*</callbacks>*/
 
 }

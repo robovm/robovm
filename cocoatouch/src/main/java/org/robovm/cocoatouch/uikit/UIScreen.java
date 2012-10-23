@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -241,5 +242,10 @@ public class /*<name>*/ UIScreen /*</name>*/
         if (customClass) { return objc_createDisplayLinkSuper(getSuper(), this, displayLinkWithTarget$selector$, target, sel); } else { return objc_createDisplayLink(this, displayLinkWithTarget$selector$, target, sel); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("displayLinkWithTarget:selector:") public static CADisplayLink createDisplayLink(UIScreen __self__, Selector __cmd__, NSObject target, Selector sel) { return __self__.createDisplayLink(target, sel); }
+    }
+    /*</callbacks>*/
 
 }

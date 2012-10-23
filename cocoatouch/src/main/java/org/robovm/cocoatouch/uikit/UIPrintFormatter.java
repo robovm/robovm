@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -199,5 +200,12 @@ public class /*<name>*/ UIPrintFormatter /*</name>*/
         if (customClass) { objc_removeFromPrintPageRendererSuper(getSuper(), this, removeFromPrintPageRenderer); } else { objc_removeFromPrintPageRenderer(this, removeFromPrintPageRenderer); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("drawInRect:forPageAtIndex:") public static void draw(UIPrintFormatter __self__, Selector __cmd__, CGRect rect, int pageIndex) { __self__.draw(rect, pageIndex); }
+        @Callback @BindSelector("rectForPageAtIndex:") public static CGRect getRectForPage(UIPrintFormatter __self__, Selector __cmd__, int pageIndex) { return __self__.getRectForPage(pageIndex); }
+        @Callback @BindSelector("removeFromPrintPageRenderer") public static void removeFromPrintPageRenderer(UIPrintFormatter __self__, Selector __cmd__) { __self__.removeFromPrintPageRenderer(); }
+    }
+    /*</callbacks>*/
 
 }

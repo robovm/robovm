@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -52,5 +53,11 @@ public interface /*<name>*/ UIActivityItemSource /*</name>*/ /*<implements>*/ ex
      */
     NSObject getPlaceholderItem(UIActivityViewController activityViewController);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("activityViewController:itemForActivityType:") public static NSObject getItem(UIActivityItemSource __self__, Selector __cmd__, UIActivityViewController activityViewController, String activityType) { return __self__.getItem(activityViewController, activityType); }
+        @Callback @BindSelector("activityViewControllerPlaceholderItem:") public static NSObject getPlaceholderItem(UIActivityItemSource __self__, Selector __cmd__, UIActivityViewController activityViewController) { return __self__.getPlaceholderItem(activityViewController); }
+    }
+    /*</callbacks>*/
 
 }

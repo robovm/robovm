@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -649,5 +650,36 @@ public class /*<name>*/ UIApplication /*</name>*/
         if (customClass) { objc_unregisterForRemoteNotificationsSuper(getSuper(), this, unregisterForRemoteNotifications); } else { objc_unregisterForRemoteNotifications(this, unregisterForRemoteNotifications); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("beginBackgroundTaskWithExpirationHandler:") public static int beginBackgroundTask(UIApplication __self__, Selector __cmd__, VoidBlock handler) { return __self__.beginBackgroundTask(handler); }
+        @Callback @BindSelector("beginIgnoringInteractionEvents") public static void beginIgnoringInteractionEvents(UIApplication __self__, Selector __cmd__) { __self__.beginIgnoringInteractionEvents(); }
+        @Callback @BindSelector("beginReceivingRemoteControlEvents") public static void beginReceivingRemoteControlEvents(UIApplication __self__, Selector __cmd__) { __self__.beginReceivingRemoteControlEvents(); }
+        @Callback @BindSelector("canOpenURL:") public static boolean canOpenURL(UIApplication __self__, Selector __cmd__, NSURL url) { return __self__.canOpenURL(url); }
+        @Callback @BindSelector("cancelAllLocalNotifications") public static void cancelAllLocalNotifications(UIApplication __self__, Selector __cmd__) { __self__.cancelAllLocalNotifications(); }
+        @Callback @BindSelector("cancelLocalNotification:") public static void cancelLocalNotification(UIApplication __self__, Selector __cmd__, UILocalNotification notification) { __self__.cancelLocalNotification(notification); }
+        @Callback @BindSelector("clearKeepAliveTimeout") public static void clearKeepAliveTimeout(UIApplication __self__, Selector __cmd__) { __self__.clearKeepAliveTimeout(); }
+        @Callback @BindSelector("completeStateRestoration") public static void completeStateRestoration(UIApplication __self__, Selector __cmd__) { __self__.completeStateRestoration(); }
+        @Callback @BindSelector("endBackgroundTask:") public static void endBackgroundTask(UIApplication __self__, Selector __cmd__, int identifier) { __self__.endBackgroundTask(identifier); }
+        @Callback @BindSelector("endIgnoringInteractionEvents") public static void endIgnoringInteractionEvents(UIApplication __self__, Selector __cmd__) { __self__.endIgnoringInteractionEvents(); }
+        @Callback @BindSelector("endReceivingRemoteControlEvents") public static void endReceivingRemoteControlEvents(UIApplication __self__, Selector __cmd__) { __self__.endReceivingRemoteControlEvents(); }
+        @Callback @BindSelector("extendStateRestoration") public static void extendStateRestoration(UIApplication __self__, Selector __cmd__) { __self__.extendStateRestoration(); }
+        @Callback @BindSelector("enabledRemoteNotificationTypes") public static UIRemoteNotificationType getEnabledRemoteNotificationTypes(UIApplication __self__, Selector __cmd__) { return __self__.getEnabledRemoteNotificationTypes(); }
+        @Callback @BindSelector("supportedInterfaceOrientationsForWindow:") public static int getSupportedInterfaceOrientations(UIApplication __self__, Selector __cmd__, UIWindow window) { return __self__.getSupportedInterfaceOrientations(window); }
+        @Callback @BindSelector("isIgnoringInteractionEvents") public static boolean isIgnoringInteractionEvents(UIApplication __self__, Selector __cmd__) { return __self__.isIgnoringInteractionEvents(); }
+        @Callback @BindSelector("openURL:") public static boolean openURL(UIApplication __self__, Selector __cmd__, NSURL url) { return __self__.openURL(url); }
+        @Callback @BindSelector("presentLocalNotificationNow:") public static void presentLocalNotificationNow(UIApplication __self__, Selector __cmd__, UILocalNotification notification) { __self__.presentLocalNotificationNow(notification); }
+        @Callback @BindSelector("registerForRemoteNotificationTypes:") public static void registerForRemoteNotificationTypes(UIApplication __self__, Selector __cmd__, UIRemoteNotificationType types) { __self__.registerForRemoteNotificationTypes(types); }
+        @Callback @BindSelector("scheduleLocalNotification:") public static void scheduleLocalNotification(UIApplication __self__, Selector __cmd__, UILocalNotification notification) { __self__.scheduleLocalNotification(notification); }
+        @Callback @BindSelector("sendAction:to:from:forEvent:") public static boolean sendAction(UIApplication __self__, Selector __cmd__, Selector action, NSObject target, NSObject sender, UIEvent event) { return __self__.sendAction(action, target, sender, event); }
+        @Callback @BindSelector("sendEvent:") public static void sendEvent(UIApplication __self__, Selector __cmd__, UIEvent event) { __self__.sendEvent(event); }
+        @Callback @BindSelector("setKeepAliveTimeout:handler:") public static boolean setKeepAliveTimeout(UIApplication __self__, Selector __cmd__, double timeout, VoidBlock keepAliveHandler) { return __self__.setKeepAliveTimeout(timeout, keepAliveHandler); }
+        @Callback @BindSelector("setNewsstandIconImage:") public static void setNewsstandIconImage(UIApplication __self__, Selector __cmd__, UIImage image) { __self__.setNewsstandIconImage(image); }
+        @Callback @BindSelector("setStatusBarHidden:withAnimation:") public static void setStatusBarHidden(UIApplication __self__, Selector __cmd__, boolean hidden, UIStatusBarAnimation animation) { __self__.setStatusBarHidden(hidden, animation); }
+        @Callback @BindSelector("setStatusBarOrientation:animated:") public static void setStatusBarOrientation(UIApplication __self__, Selector __cmd__, UIInterfaceOrientation interfaceOrientation, boolean animated) { __self__.setStatusBarOrientation(interfaceOrientation, animated); }
+        @Callback @BindSelector("setStatusBarStyle:animated:") public static void setStatusBarStyle(UIApplication __self__, Selector __cmd__, UIStatusBarStyle statusBarStyle, boolean animated) { __self__.setStatusBarStyle(statusBarStyle, animated); }
+        @Callback @BindSelector("unregisterForRemoteNotifications") public static void unregisterForRemoteNotifications(UIApplication __self__, Selector __cmd__) { __self__.unregisterForRemoteNotifications(); }
+    }
+    /*</callbacks>*/
 
 }

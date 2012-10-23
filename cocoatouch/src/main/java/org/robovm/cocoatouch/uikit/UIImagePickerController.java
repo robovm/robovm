@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -403,5 +404,12 @@ public class /*<name>*/ UIImagePickerController /*</name>*/
         if (customClass) { objc_takePictureSuper(getSuper(), this, takePicture); } else { objc_takePicture(this, takePicture); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("startVideoCapture") public static boolean startVideoCapture(UIImagePickerController __self__, Selector __cmd__) { return __self__.startVideoCapture(); }
+        @Callback @BindSelector("stopVideoCapture") public static void stopVideoCapture(UIImagePickerController __self__, Selector __cmd__) { __self__.stopVideoCapture(); }
+        @Callback @BindSelector("takePicture") public static void takePicture(UIImagePickerController __self__, Selector __cmd__) { __self__.takePicture(); }
+    }
+    /*</callbacks>*/
 
 }

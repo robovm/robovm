@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -102,5 +103,21 @@ public interface /*<name>*/ UICollectionViewDelegate /*</name>*/ /*<implements>*
      */
     boolean shouldShowMenuForItem(UICollectionView collectionView, NSIndexPath indexPath);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("collectionView:canPerformAction:forItemAtIndexPath:withSender:") public static boolean canPerformAction(UICollectionViewDelegate __self__, Selector __cmd__, UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender) { return __self__.canPerformAction(collectionView, action, indexPath, sender); }
+        @Callback @BindSelector("collectionView:didDeselectItemAtIndexPath:") public static void didDeselectItem(UICollectionViewDelegate __self__, Selector __cmd__, UICollectionView collectionView, NSIndexPath indexPath) { __self__.didDeselectItem(collectionView, indexPath); }
+        @Callback @BindSelector("collectionView:didEndDisplayingCell:forItemAtIndexPath:") public static void didEndDisplayingCell(UICollectionViewDelegate __self__, Selector __cmd__, UICollectionView collectionView, UICollectionViewCell cell, NSIndexPath indexPath) { __self__.didEndDisplayingCell(collectionView, cell, indexPath); }
+        @Callback @BindSelector("collectionView:didEndDisplayingSupplementaryView:forElementOfKind:atIndexPath:") public static void didEndDisplayingSupplementaryView(UICollectionViewDelegate __self__, Selector __cmd__, UICollectionView collectionView, UICollectionReusableView view, String elementKind, NSIndexPath indexPath) { __self__.didEndDisplayingSupplementaryView(collectionView, view, elementKind, indexPath); }
+        @Callback @BindSelector("collectionView:didHighlightItemAtIndexPath:") public static void didHighlightItem(UICollectionViewDelegate __self__, Selector __cmd__, UICollectionView collectionView, NSIndexPath indexPath) { __self__.didHighlightItem(collectionView, indexPath); }
+        @Callback @BindSelector("collectionView:didSelectItemAtIndexPath:") public static void didSelectItem(UICollectionViewDelegate __self__, Selector __cmd__, UICollectionView collectionView, NSIndexPath indexPath) { __self__.didSelectItem(collectionView, indexPath); }
+        @Callback @BindSelector("collectionView:didUnhighlightItemAtIndexPath:") public static void didUnhighlightItem(UICollectionViewDelegate __self__, Selector __cmd__, UICollectionView collectionView, NSIndexPath indexPath) { __self__.didUnhighlightItem(collectionView, indexPath); }
+        @Callback @BindSelector("collectionView:performAction:forItemAtIndexPath:withSender:") public static void performAction(UICollectionViewDelegate __self__, Selector __cmd__, UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender) { __self__.performAction(collectionView, action, indexPath, sender); }
+        @Callback @BindSelector("collectionView:shouldDeselectItemAtIndexPath:") public static boolean shouldDeselectItem(UICollectionViewDelegate __self__, Selector __cmd__, UICollectionView collectionView, NSIndexPath indexPath) { return __self__.shouldDeselectItem(collectionView, indexPath); }
+        @Callback @BindSelector("collectionView:shouldHighlightItemAtIndexPath:") public static boolean shouldHighlightItem(UICollectionViewDelegate __self__, Selector __cmd__, UICollectionView collectionView, NSIndexPath indexPath) { return __self__.shouldHighlightItem(collectionView, indexPath); }
+        @Callback @BindSelector("collectionView:shouldSelectItemAtIndexPath:") public static boolean shouldSelectItem(UICollectionViewDelegate __self__, Selector __cmd__, UICollectionView collectionView, NSIndexPath indexPath) { return __self__.shouldSelectItem(collectionView, indexPath); }
+        @Callback @BindSelector("collectionView:shouldShowMenuForItemAtIndexPath:") public static boolean shouldShowMenuForItem(UICollectionViewDelegate __self__, Selector __cmd__, UICollectionView collectionView, NSIndexPath indexPath) { return __self__.shouldShowMenuForItem(collectionView, indexPath); }
+    }
+    /*</callbacks>*/
 
 }

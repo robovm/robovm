@@ -107,6 +107,7 @@ class ObjCClass
     @methods = []
     @properties = []
     @is_protocol = is_protocol
+    @visibility = @conf['visibility'] || 'public'
   end
   def to_java(template)
     @properties = @properties.sort_by {|p| p.name}
@@ -146,6 +147,13 @@ class ObjCClass
     template = template.sub(/\/\*<properties>\*\/.*\/\*<\/properties>\*\//m, "/*<properties>*/\n    #{properties_s}\n    /*</properties>*/")
     methods_s = @methods.select {|m| !m.constructor?}.map {|m| m.to_java}.join("\n").gsub(/\n/m, "\n    ")
     template = template.sub(/\/\*<methods>\*\/.*\/\*<\/methods>\*\//m, "/*<methods>*/\n    #{methods_s}\n    /*</methods>*/")
+    if !@visibility.include?('final')
+      callbacks = @methods.map {|m| m.callbacks}.flatten
+      if !callbacks.empty?
+        callbacks_s = callbacks.join("\n").gsub(/\n/m, "\n        ")
+        template = template.sub(/\/\*<callbacks>\*\/.*\/\*<\/callbacks>\*\//m, "/*<callbacks>*/\n    static class Callbacks {\n        #{callbacks_s}\n    }\n    /*</callbacks>*/")
+      end
+    end
     template
   end
 end
@@ -236,6 +244,17 @@ class ObjCMethod
       java = "#{java}\n#{get_javadoc}\n#{sig} {\n    #{body}\n}"
     end
     java
+  end
+  def callbacks
+    if !@static && !constructor? && !(@visibility.include?('private') || @visibility.include?('final'))
+      # This method can be overridden
+      parameters_s = ["#{@clazz.name} __self__", "Selector __cmd__", @parameters.map {|p| "#{p[0].to_java} #{p[1]}"}].flatten.join(', ')
+      args = @parameters.map {|p| p[1]}.join(', ')
+      ret = @return_type.to_java != 'void' ? 'return ' : ''
+      ["@Callback @BindSelector(\"#{@selector}\") public static #{@return_type.to_java} #{@name}(#{parameters_s}) { #{ret}__self__.#{name}(#{args}); }"]
+    else
+      []
+    end
   end
   def hash
     @selector.hash
@@ -546,6 +565,7 @@ ARGV[1..-1].each do |yaml_file|
   imports = conf['imports'] || []
   imports << "java.util.*"
   imports << "org.robovm.objc.*"
+  imports << "org.robovm.objc.annotation.*"
   imports << "org.robovm.objc.block.*"
   imports << "org.robovm.rt.bro.annotation.*"
   imports << "org.robovm.rt.bro.ptr.*"

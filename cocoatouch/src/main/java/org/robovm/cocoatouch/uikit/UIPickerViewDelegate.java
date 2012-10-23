@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -73,5 +74,15 @@ public interface /*<name>*/ UIPickerViewDelegate /*</name>*/ /*<implements>*/ ex
      */
     UIView getRowView(UIPickerView pickerView, int row, int component, UIView view);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("pickerView:didSelectRow:inComponent:") public static void didSelectRow(UIPickerViewDelegate __self__, Selector __cmd__, UIPickerView pickerView, int row, int component) { __self__.didSelectRow(pickerView, row, component); }
+        @Callback @BindSelector("pickerView:attributedTitleForRow:forComponent:") public static NSAttributedString getAttributedRowTitle(UIPickerViewDelegate __self__, Selector __cmd__, UIPickerView pickerView, int row, int component) { return __self__.getAttributedRowTitle(pickerView, row, component); }
+        @Callback @BindSelector("pickerView:widthForComponent:") public static float getComponentWidth(UIPickerViewDelegate __self__, Selector __cmd__, UIPickerView pickerView, int component) { return __self__.getComponentWidth(pickerView, component); }
+        @Callback @BindSelector("pickerView:rowHeightForComponent:") public static float getRowHeight(UIPickerViewDelegate __self__, Selector __cmd__, UIPickerView pickerView, int component) { return __self__.getRowHeight(pickerView, component); }
+        @Callback @BindSelector("pickerView:titleForRow:forComponent:") public static String getRowTitle(UIPickerViewDelegate __self__, Selector __cmd__, UIPickerView pickerView, int row, int component) { return __self__.getRowTitle(pickerView, row, component); }
+        @Callback @BindSelector("pickerView:viewForRow:forComponent:reusingView:") public static UIView getRowView(UIPickerViewDelegate __self__, Selector __cmd__, UIPickerView pickerView, int row, int component, UIView view) { return __self__.getRowView(pickerView, row, component, view); }
+    }
+    /*</callbacks>*/
 
 }

@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -73,5 +74,15 @@ public interface /*<name>*/ UIActionSheetDelegate /*</name>*/ /*<implements>*/ e
      */
     void willPresent(UIActionSheet actionSheet);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("actionSheetCancel:") public static void cancel(UIActionSheetDelegate __self__, Selector __cmd__, UIActionSheet actionSheet) { __self__.cancel(actionSheet); }
+        @Callback @BindSelector("actionSheet:clickedButtonAtIndex:") public static void clicked(UIActionSheetDelegate __self__, Selector __cmd__, UIActionSheet actionSheet, int buttonIndex) { __self__.clicked(actionSheet, buttonIndex); }
+        @Callback @BindSelector("actionSheet:didDismissWithButtonIndex:") public static void didDismiss(UIActionSheetDelegate __self__, Selector __cmd__, UIActionSheet actionSheet, int buttonIndex) { __self__.didDismiss(actionSheet, buttonIndex); }
+        @Callback @BindSelector("didPresentActionSheet:") public static void didPresent(UIActionSheetDelegate __self__, Selector __cmd__, UIActionSheet actionSheet) { __self__.didPresent(actionSheet); }
+        @Callback @BindSelector("actionSheet:willDismissWithButtonIndex:") public static void willDismiss(UIActionSheetDelegate __self__, Selector __cmd__, UIActionSheet actionSheet, int buttonIndex) { __self__.willDismiss(actionSheet, buttonIndex); }
+        @Callback @BindSelector("willPresentActionSheet:") public static void willPresent(UIActionSheetDelegate __self__, Selector __cmd__, UIActionSheet actionSheet) { __self__.willPresent(actionSheet); }
+    }
+    /*</callbacks>*/
 
 }

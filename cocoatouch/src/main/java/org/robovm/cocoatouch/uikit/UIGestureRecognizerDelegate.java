@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -58,5 +59,12 @@ public interface /*<name>*/ UIGestureRecognizerDelegate /*</name>*/ /*<implement
      */
     boolean shouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("gestureRecognizerShouldBegin:") public static boolean shouldBegin(UIGestureRecognizerDelegate __self__, Selector __cmd__, UIGestureRecognizer gestureRecognizer) { return __self__.shouldBegin(gestureRecognizer); }
+        @Callback @BindSelector("gestureRecognizer:shouldReceiveTouch:") public static boolean shouldReceiveTouch(UIGestureRecognizerDelegate __self__, Selector __cmd__, UIGestureRecognizer gestureRecognizer, UITouch touch) { return __self__.shouldReceiveTouch(gestureRecognizer, touch); }
+        @Callback @BindSelector("gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:") public static boolean shouldRecognizeSimultaneously(UIGestureRecognizerDelegate __self__, Selector __cmd__, UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer) { return __self__.shouldRecognizeSimultaneously(gestureRecognizer, otherGestureRecognizer); }
+    }
+    /*</callbacks>*/
 
 }

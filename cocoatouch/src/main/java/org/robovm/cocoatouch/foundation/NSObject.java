@@ -18,6 +18,7 @@ package org.robovm.cocoatouch.foundation;
 /*<imports>*/
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -125,5 +126,12 @@ public class /*<name>*/ NSObject /*</name>*/
         if (customClass) { return objc_retainSuper(getSuper(), this, retain); } else { return objc_retain(this, retain); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("description") public static String description(NSObject __self__, Selector __cmd__) { return __self__.description(); }
+        @Callback @BindSelector("release") public static void release(NSObject __self__, Selector __cmd__) { __self__.release(); }
+        @Callback @BindSelector("retain") public static NSObject retain(NSObject __self__, Selector __cmd__) { return __self__.retain(); }
+    }
+    /*</callbacks>*/
 
 }

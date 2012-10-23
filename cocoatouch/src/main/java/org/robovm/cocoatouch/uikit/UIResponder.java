@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -265,5 +266,25 @@ public class /*<name>*/ UIResponder /*</name>*/
         if (customClass) { objc_touchesMovedSuper(getSuper(), this, touchesMoved$withEvent$, touches, event); } else { objc_touchesMoved(this, touchesMoved$withEvent$, touches, event); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("becomeFirstResponder") public static boolean becomeFirstResponder(UIResponder __self__, Selector __cmd__) { return __self__.becomeFirstResponder(); }
+        @Callback @BindSelector("canBecomeFirstResponder") public static boolean canBecomeFirstResponder(UIResponder __self__, Selector __cmd__) { return __self__.canBecomeFirstResponder(); }
+        @Callback @BindSelector("canPerformAction:withSender:") public static boolean canPerformAction(UIResponder __self__, Selector __cmd__, Selector action, NSObject sender) { return __self__.canPerformAction(action, sender); }
+        @Callback @BindSelector("canResignFirstResponder") public static boolean canResignFirstResponder(UIResponder __self__, Selector __cmd__) { return __self__.canResignFirstResponder(); }
+        @Callback @BindSelector("nextResponder") public static UIResponder getNextResponder(UIResponder __self__, Selector __cmd__) { return __self__.getNextResponder(); }
+        @Callback @BindSelector("isFirstResponder") public static boolean isFirstResponder(UIResponder __self__, Selector __cmd__) { return __self__.isFirstResponder(); }
+        @Callback @BindSelector("motionBegan:withEvent:") public static void motionBegan(UIResponder __self__, Selector __cmd__, UIEventSubtype motion, UIEvent event) { __self__.motionBegan(motion, event); }
+        @Callback @BindSelector("motionCancelled:withEvent:") public static void motionCancelled(UIResponder __self__, Selector __cmd__, UIEventSubtype motion, UIEvent event) { __self__.motionCancelled(motion, event); }
+        @Callback @BindSelector("motionEnded:withEvent:") public static void motionEnded(UIResponder __self__, Selector __cmd__, UIEventSubtype motion, UIEvent event) { __self__.motionEnded(motion, event); }
+        @Callback @BindSelector("reloadInputViews") public static void reloadInputViews(UIResponder __self__, Selector __cmd__) { __self__.reloadInputViews(); }
+        @Callback @BindSelector("remoteControlReceivedWithEvent:") public static void remoteControlReceived(UIResponder __self__, Selector __cmd__, UIEvent event) { __self__.remoteControlReceived(event); }
+        @Callback @BindSelector("resignFirstResponder") public static boolean resignFirstResponder(UIResponder __self__, Selector __cmd__) { return __self__.resignFirstResponder(); }
+        @Callback @BindSelector("touchesBegan:withEvent:") public static void touchesBegan(UIResponder __self__, Selector __cmd__, NSSet touches, UIEvent event) { __self__.touchesBegan(touches, event); }
+        @Callback @BindSelector("touchesCancelled:withEvent:") public static void touchesCancelled(UIResponder __self__, Selector __cmd__, NSSet touches, UIEvent event) { __self__.touchesCancelled(touches, event); }
+        @Callback @BindSelector("touchesEnded:withEvent:") public static void touchesEnded(UIResponder __self__, Selector __cmd__, NSSet touches, UIEvent event) { __self__.touchesEnded(touches, event); }
+        @Callback @BindSelector("touchesMoved:withEvent:") public static void touchesMoved(UIResponder __self__, Selector __cmd__, NSSet touches, UIEvent event) { __self__.touchesMoved(touches, event); }
+    }
+    /*</callbacks>*/
 
 }

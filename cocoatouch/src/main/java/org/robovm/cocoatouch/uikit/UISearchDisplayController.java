@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -220,5 +221,10 @@ public class /*<name>*/ UISearchDisplayController /*</name>*/
         if (customClass) { objc_setActiveSuper(getSuper(), this, setActive$animated$, visible, animated); } else { objc_setActive(this, setActive$animated$, visible, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("setActive:animated:") public static void setActive(UISearchDisplayController __self__, Selector __cmd__, boolean visible, boolean animated) { __self__.setActive(visible, animated); }
+    }
+    /*</callbacks>*/
 
 }

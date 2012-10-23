@@ -18,6 +18,7 @@ package org.robovm.cocoatouch.foundation;
 /*<imports>*/
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -57,6 +58,8 @@ public class /*<name>*/ NSString /*</name>*/
     /*<methods>*/
     
     /*</methods>*/
+    /*<callbacks>*/
+    /*</callbacks>*/
 
     public static class StringMarshaler {
         public static Object toObject(Class cls, long handle, boolean copy) {

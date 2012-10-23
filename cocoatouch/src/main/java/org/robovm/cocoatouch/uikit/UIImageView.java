@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -286,5 +287,12 @@ public class /*<name>*/ UIImageView /*</name>*/
         if (customClass) { objc_stopAnimatingSuper(getSuper(), this, stopAnimating); } else { objc_stopAnimating(this, stopAnimating); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("isAnimating") public static boolean isAnimating(UIImageView __self__, Selector __cmd__) { return __self__.isAnimating(); }
+        @Callback @BindSelector("startAnimating") public static void startAnimating(UIImageView __self__, Selector __cmd__) { __self__.startAnimating(); }
+        @Callback @BindSelector("stopAnimating") public static void stopAnimating(UIImageView __self__, Selector __cmd__) { __self__.stopAnimating(); }
+    }
+    /*</callbacks>*/
 
 }

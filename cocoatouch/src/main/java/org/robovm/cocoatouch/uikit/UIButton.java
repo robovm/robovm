@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -517,5 +518,25 @@ public class /*<name>*/ UIButton /*</name>*/
         if (customClass) { objc_setTitleShadowColorSuper(getSuper(), this, setTitleShadowColor$forState$, color, state); } else { objc_setTitleShadowColor(this, setTitleShadowColor$forState$, color, state); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("attributedTitleForState:") public static NSAttributedString getAttributedTitle(UIButton __self__, Selector __cmd__, UIControlState state) { return __self__.getAttributedTitle(state); }
+        @Callback @BindSelector("backgroundImageForState:") public static UIImage getBackgroundImage(UIButton __self__, Selector __cmd__, UIControlState state) { return __self__.getBackgroundImage(state); }
+        @Callback @BindSelector("backgroundRectForBounds:") public static CGRect getBackgroundRect(UIButton __self__, Selector __cmd__, CGRect bounds) { return __self__.getBackgroundRect(bounds); }
+        @Callback @BindSelector("contentRectForBounds:") public static CGRect getContentRect(UIButton __self__, Selector __cmd__, CGRect bounds) { return __self__.getContentRect(bounds); }
+        @Callback @BindSelector("imageForState:") public static UIImage getImage(UIButton __self__, Selector __cmd__, UIControlState state) { return __self__.getImage(state); }
+        @Callback @BindSelector("imageRectForContentRect:") public static CGRect getImageRect(UIButton __self__, Selector __cmd__, CGRect contentRect) { return __self__.getImageRect(contentRect); }
+        @Callback @BindSelector("titleForState:") public static String getTitle(UIButton __self__, Selector __cmd__, UIControlState state) { return __self__.getTitle(state); }
+        @Callback @BindSelector("titleColorForState:") public static UIColor getTitleColor(UIButton __self__, Selector __cmd__, UIControlState state) { return __self__.getTitleColor(state); }
+        @Callback @BindSelector("titleRectForContentRect:") public static CGRect getTitleRect(UIButton __self__, Selector __cmd__, CGRect contentRect) { return __self__.getTitleRect(contentRect); }
+        @Callback @BindSelector("titleShadowColorForState:") public static UIColor getTitleShadowColor(UIButton __self__, Selector __cmd__, UIControlState state) { return __self__.getTitleShadowColor(state); }
+        @Callback @BindSelector("setAttributedTitle:forState:") public static void setAttributedTitle(UIButton __self__, Selector __cmd__, NSAttributedString title, UIControlState state) { __self__.setAttributedTitle(title, state); }
+        @Callback @BindSelector("setBackgroundImage:forState:") public static void setBackgroundImage(UIButton __self__, Selector __cmd__, UIImage image, UIControlState state) { __self__.setBackgroundImage(image, state); }
+        @Callback @BindSelector("setImage:forState:") public static void setImage(UIButton __self__, Selector __cmd__, UIImage image, UIControlState state) { __self__.setImage(image, state); }
+        @Callback @BindSelector("setTitle:forState:") public static void setTitle(UIButton __self__, Selector __cmd__, String title, UIControlState state) { __self__.setTitle(title, state); }
+        @Callback @BindSelector("setTitleColor:forState:") public static void setTitleColor(UIButton __self__, Selector __cmd__, UIColor color, UIControlState state) { __self__.setTitleColor(color, state); }
+        @Callback @BindSelector("setTitleShadowColor:forState:") public static void setTitleShadowColor(UIButton __self__, Selector __cmd__, UIColor color, UIControlState state) { __self__.setTitleShadowColor(color, state); }
+    }
+    /*</callbacks>*/
 
 }

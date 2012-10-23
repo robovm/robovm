@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -187,5 +188,14 @@ public class /*<name>*/ UIManagedDocument /*</name>*/
         if (customClass) { return objc_writeAdditionalContentSuper(getSuper(), this, writeAdditionalContent$toURL$originalContentsURL$error$, content, absoluteURL, absoluteOriginalContentsURL, error); } else { return objc_writeAdditionalContent(this, writeAdditionalContent$toURL$originalContentsURL$error$, content, absoluteURL, absoluteOriginalContentsURL, error); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("configurePersistentStoreCoordinatorForURL:ofType:modelConfiguration:storeOptions:error:") public static boolean configurePersistentStoreCoordinator(UIManagedDocument __self__, Selector __cmd__, NSURL storeURL, String fileType, String configuration, NSDictionary storeOptions, Ptr<NSError> error) { return __self__.configurePersistentStoreCoordinator(storeURL, fileType, configuration, storeOptions, error); }
+        @Callback @BindSelector("additionalContentForURL:error:") public static NSObject getAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSURL absoluteURL, Ptr<NSError> error) { return __self__.getAdditionalContent(absoluteURL, error); }
+        @Callback @BindSelector("persistentStoreTypeForFileType:") public static String getPersistentStoreType(UIManagedDocument __self__, Selector __cmd__, String fileType) { return __self__.getPersistentStoreType(fileType); }
+        @Callback @BindSelector("readAdditionalContentFromURL:error:") public static boolean readAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSURL absoluteURL, Ptr<NSError> error) { return __self__.readAdditionalContent(absoluteURL, error); }
+        @Callback @BindSelector("writeAdditionalContent:toURL:originalContentsURL:error:") public static boolean writeAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSObject content, NSURL absoluteURL, NSURL absoluteOriginalContentsURL, Ptr<NSError> error) { return __self__.writeAdditionalContent(content, absoluteURL, absoluteOriginalContentsURL, error); }
+    }
+    /*</callbacks>*/
 
 }

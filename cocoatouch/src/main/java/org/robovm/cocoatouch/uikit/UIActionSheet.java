@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -286,5 +287,17 @@ public class /*<name>*/ UIActionSheet /*</name>*/
         if (customClass) { objc_showInViewSuper(getSuper(), this, showInView$, view); } else { objc_showInView(this, showInView$, view); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("addButtonWithTitle:") public static int addButton(UIActionSheet __self__, Selector __cmd__, String title) { return __self__.addButton(title); }
+        @Callback @BindSelector("dismissWithClickedButtonIndex:animated:") public static void dismiss(UIActionSheet __self__, Selector __cmd__, int buttonIndex, boolean animated) { __self__.dismiss(buttonIndex, animated); }
+        @Callback @BindSelector("buttonTitleAtIndex:") public static String getButtonTitle(UIActionSheet __self__, Selector __cmd__, int buttonIndex) { return __self__.getButtonTitle(buttonIndex); }
+        @Callback @BindSelector("showFromBarButtonItem:animated:") public static void showFrom(UIActionSheet __self__, Selector __cmd__, UIBarButtonItem item, boolean animated) { __self__.showFrom(item, animated); }
+        @Callback @BindSelector("showFromToolbar:") public static void showFrom(UIActionSheet __self__, Selector __cmd__, UIToolbar view) { __self__.showFrom(view); }
+        @Callback @BindSelector("showFromTabBar:") public static void showFrom(UIActionSheet __self__, Selector __cmd__, UITabBar view) { __self__.showFrom(view); }
+        @Callback @BindSelector("showFromRect:inView:animated:") public static void showFrom(UIActionSheet __self__, Selector __cmd__, CGRect rect, UIView view, boolean animated) { __self__.showFrom(rect, view, animated); }
+        @Callback @BindSelector("showInView:") public static void showInView(UIActionSheet __self__, Selector __cmd__, UIView view) { __self__.showInView(view); }
+    }
+    /*</callbacks>*/
 
 }

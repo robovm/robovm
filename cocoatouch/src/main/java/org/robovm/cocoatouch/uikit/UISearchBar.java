@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -705,5 +706,22 @@ public class /*<name>*/ UISearchBar /*</name>*/
         if (customClass) { objc_setShowsCancelButtonSuper(getSuper(), this, setShowsCancelButton$animated$, showsCancelButton, animated); } else { objc_setShowsCancelButton(this, setShowsCancelButton$animated$, showsCancelButton, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("imageForSearchBarIcon:state:") public static UIImage getImageForSearchBarIcon(UISearchBar __self__, Selector __cmd__, UISearchBarIcon icon, UIControlState state) { return __self__.getImageForSearchBarIcon(icon, state); }
+        @Callback @BindSelector("positionAdjustmentForSearchBarIcon:") public static UIOffset getPositionAdjustmentForSearchBarIcon(UISearchBar __self__, Selector __cmd__, UISearchBarIcon icon) { return __self__.getPositionAdjustmentForSearchBarIcon(icon); }
+        @Callback @BindSelector("scopeBarButtonBackgroundImageForState:") public static UIImage getScopeBarButtonBackgroundImage(UISearchBar __self__, Selector __cmd__, UIControlState state) { return __self__.getScopeBarButtonBackgroundImage(state); }
+        @Callback @BindSelector("scopeBarButtonDividerImageForLeftSegmentState:rightSegmentState:") public static UIImage getScopeBarButtonDividerImage(UISearchBar __self__, Selector __cmd__, UIControlState leftState, UIControlState rightState) { return __self__.getScopeBarButtonDividerImage(leftState, rightState); }
+        @Callback @BindSelector("scopeBarButtonTitleTextAttributesForState:") public static NSDictionary getScopeBarButtonTitleTextAttributes(UISearchBar __self__, Selector __cmd__, UIControlState state) { return __self__.getScopeBarButtonTitleTextAttributes(state); }
+        @Callback @BindSelector("searchFieldBackgroundImageForState:") public static UIImage getSearchFieldBackgroundImage(UISearchBar __self__, Selector __cmd__, UIControlState state) { return __self__.getSearchFieldBackgroundImage(state); }
+        @Callback @BindSelector("setImage:forSearchBarIcon:state:") public static void setImageForSearchBarIcon(UISearchBar __self__, Selector __cmd__, UIImage iconImage, UISearchBarIcon icon, UIControlState state) { __self__.setImageForSearchBarIcon(iconImage, icon, state); }
+        @Callback @BindSelector("setPositionAdjustment:forSearchBarIcon:") public static void setPositionAdjustmentForSearchBarIcon(UISearchBar __self__, Selector __cmd__, UIOffset adjustment, UISearchBarIcon icon) { __self__.setPositionAdjustmentForSearchBarIcon(adjustment, icon); }
+        @Callback @BindSelector("setScopeBarButtonBackgroundImage:forState:") public static void setScopeBarButtonBackgroundImage(UISearchBar __self__, Selector __cmd__, UIImage backgroundImage, UIControlState state) { __self__.setScopeBarButtonBackgroundImage(backgroundImage, state); }
+        @Callback @BindSelector("setScopeBarButtonDividerImage:forLeftSegmentState:rightSegmentState:") public static void setScopeBarButtonDividerImage(UISearchBar __self__, Selector __cmd__, UIImage dividerImage, UIControlState leftState, UIControlState rightState) { __self__.setScopeBarButtonDividerImage(dividerImage, leftState, rightState); }
+        @Callback @BindSelector("setScopeBarButtonTitleTextAttributes:forState:") public static void setScopeBarButtonTitleTextAttributes(UISearchBar __self__, Selector __cmd__, NSDictionary attributes, UIControlState state) { __self__.setScopeBarButtonTitleTextAttributes(attributes, state); }
+        @Callback @BindSelector("setSearchFieldBackgroundImage:forState:") public static void setSearchFieldBackgroundImage(UISearchBar __self__, Selector __cmd__, UIImage backgroundImage, UIControlState state) { __self__.setSearchFieldBackgroundImage(backgroundImage, state); }
+        @Callback @BindSelector("setShowsCancelButton:animated:") public static void setShowsCancelButton(UISearchBar __self__, Selector __cmd__, boolean showsCancelButton, boolean animated) { __self__.setShowsCancelButton(showsCancelButton, animated); }
+    }
+    /*</callbacks>*/
 
 }

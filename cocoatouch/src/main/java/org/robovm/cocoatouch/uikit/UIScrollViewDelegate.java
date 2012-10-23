@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -108,5 +109,22 @@ public interface /*<name>*/ UIScrollViewDelegate /*</name>*/ /*<implements>*/ ex
      */
     void willEndDragging(UIScrollView scrollView, CGPoint velocity, CGPoint targetContentOffset);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("scrollViewDidEndDecelerating:") public static void didEndDecelerating(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView) { __self__.didEndDecelerating(scrollView); }
+        @Callback @BindSelector("scrollViewDidEndDragging:willDecelerate:") public static void didEndDragging(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView, boolean decelerate) { __self__.didEndDragging(scrollView, decelerate); }
+        @Callback @BindSelector("scrollViewDidEndScrollingAnimation:") public static void didEndScrollingAnimation(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView) { __self__.didEndScrollingAnimation(scrollView); }
+        @Callback @BindSelector("scrollViewDidEndZooming:withView:atScale:") public static void didEndZooming(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView, UIView view, float scale) { __self__.didEndZooming(scrollView, view, scale); }
+        @Callback @BindSelector("scrollViewDidScroll:") public static void didScroll(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView) { __self__.didScroll(scrollView); }
+        @Callback @BindSelector("scrollViewDidScrollToTop:") public static void didScrollToTop(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView) { __self__.didScrollToTop(scrollView); }
+        @Callback @BindSelector("scrollViewDidZoom:") public static void didZoom(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView) { __self__.didZoom(scrollView); }
+        @Callback @BindSelector("viewForZoomingInScrollView:") public static UIView getViewForZooming(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView) { return __self__.getViewForZooming(scrollView); }
+        @Callback @BindSelector("scrollViewShouldScrollToTop:") public static boolean shouldScrollToTop(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView) { return __self__.shouldScrollToTop(scrollView); }
+        @Callback @BindSelector("scrollViewWillBeginDecelerating:") public static void willBeginDecelerating(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView) { __self__.willBeginDecelerating(scrollView); }
+        @Callback @BindSelector("scrollViewWillBeginDragging:") public static void willBeginDragging(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView) { __self__.willBeginDragging(scrollView); }
+        @Callback @BindSelector("scrollViewWillBeginZooming:withView:") public static void willBeginZooming(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView, UIView view) { __self__.willBeginZooming(scrollView, view); }
+        @Callback @BindSelector("scrollViewWillEndDragging:withVelocity:targetContentOffset:") public static void willEndDragging(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView, CGPoint velocity, CGPoint targetContentOffset) { __self__.willEndDragging(scrollView, velocity, targetContentOffset); }
+    }
+    /*</callbacks>*/
 
 }

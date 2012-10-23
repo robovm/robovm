@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -111,5 +112,13 @@ public class /*<name>*/ UITextInputStringTokenizer /*</name>*/
         if (customClass) { return objc_isPositionWithinTextUnitSuper(getSuper(), this, isPosition$withinTextUnit$inDirection$, position, granularity, direction); } else { return objc_isPositionWithinTextUnit(this, isPosition$withinTextUnit$inDirection$, position, granularity, direction); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("positionFromPosition:toBoundary:inDirection:") public static UITextPosition getPosition(UITextInputStringTokenizer __self__, Selector __cmd__, UITextPosition position, UITextGranularity granularity, UITextDirection direction) { return __self__.getPosition(position, granularity, direction); }
+        @Callback @BindSelector("rangeEnclosingPosition:withGranularity:inDirection:") public static UITextRange getRangeEnclosingPosition(UITextInputStringTokenizer __self__, Selector __cmd__, UITextPosition position, UITextGranularity granularity, UITextDirection direction) { return __self__.getRangeEnclosingPosition(position, granularity, direction); }
+        @Callback @BindSelector("isPosition:atBoundary:inDirection:") public static boolean isPositionAtBoundary(UITextInputStringTokenizer __self__, Selector __cmd__, UITextPosition position, UITextGranularity granularity, UITextDirection direction) { return __self__.isPositionAtBoundary(position, granularity, direction); }
+        @Callback @BindSelector("isPosition:withinTextUnit:inDirection:") public static boolean isPositionWithinTextUnit(UITextInputStringTokenizer __self__, Selector __cmd__, UITextPosition position, UITextGranularity granularity, UITextDirection direction) { return __self__.isPositionWithinTextUnit(position, granularity, direction); }
+    }
+    /*</callbacks>*/
 
 }

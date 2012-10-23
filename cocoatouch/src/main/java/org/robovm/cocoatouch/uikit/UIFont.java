@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -255,5 +256,10 @@ public class /*<name>*/ UIFont /*</name>*/
         if (customClass) { return objc_getFontWithSizeSuper(getSuper(), this, fontWithSize$, fontSize); } else { return objc_getFontWithSize(this, fontWithSize$, fontSize); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("fontWithSize:") public static UIFont getFontWithSize(UIFont __self__, Selector __cmd__, float fontSize) { return __self__.getFontWithSize(fontSize); }
+    }
+    /*</callbacks>*/
 
 }

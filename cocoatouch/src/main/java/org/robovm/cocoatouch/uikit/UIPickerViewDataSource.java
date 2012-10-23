@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -53,5 +54,11 @@ public interface /*<name>*/ UIPickerViewDataSource /*</name>*/ /*<implements>*/ 
      */
     int getNumberOfRows(UIPickerView pickerView, int component);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("numberOfComponentsInPickerView:") public static int getNumberOfComponents(UIPickerViewDataSource __self__, Selector __cmd__, UIPickerView pickerView) { return __self__.getNumberOfComponents(pickerView); }
+        @Callback @BindSelector("pickerView:numberOfRowsInComponent:") public static int getNumberOfRows(UIPickerViewDataSource __self__, Selector __cmd__, UIPickerView pickerView, int component) { return __self__.getNumberOfRows(pickerView, component); }
+    }
+    /*</callbacks>*/
 
 }

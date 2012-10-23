@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -209,5 +210,10 @@ public class /*<name>*/ UIProgressView /*</name>*/
         if (customClass) { objc_setProgressSuper(getSuper(), this, setProgress$animated$, progress, animated); } else { objc_setProgress(this, setProgress$animated$, progress, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("setProgress:animated:") public static void setProgress(UIProgressView __self__, Selector __cmd__, float progress, boolean animated) { __self__.setProgress(progress, animated); }
+    }
+    /*</callbacks>*/
 
 }

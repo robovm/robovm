@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -375,5 +376,17 @@ public class /*<name>*/ UIWebView /*</name>*/
         if (customClass) { objc_stopLoadingSuper(getSuper(), this, stopLoading); } else { objc_stopLoading(this, stopLoading); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("stringByEvaluatingJavaScriptFromString:") public static String evaluateJavaScript(UIWebView __self__, Selector __cmd__, String script) { return __self__.evaluateJavaScript(script); }
+        @Callback @BindSelector("goBack") public static void goBack(UIWebView __self__, Selector __cmd__) { __self__.goBack(); }
+        @Callback @BindSelector("goForward") public static void goForward(UIWebView __self__, Selector __cmd__) { __self__.goForward(); }
+        @Callback @BindSelector("loadData:MIMEType:textEncodingName:baseURL:") public static void loadData(UIWebView __self__, Selector __cmd__, NSData data, String MIMEType, String encodingName, NSURL baseURL) { __self__.loadData(data, MIMEType, encodingName, baseURL); }
+        @Callback @BindSelector("loadHTMLString:baseURL:") public static void loadHTML(UIWebView __self__, Selector __cmd__, String string, NSURL baseURL) { __self__.loadHTML(string, baseURL); }
+        @Callback @BindSelector("loadRequest:") public static void loadRequest(UIWebView __self__, Selector __cmd__, NSURLRequest request) { __self__.loadRequest(request); }
+        @Callback @BindSelector("reload") public static void reload(UIWebView __self__, Selector __cmd__) { __self__.reload(); }
+        @Callback @BindSelector("stopLoading") public static void stopLoading(UIWebView __self__, Selector __cmd__) { __self__.stopLoading(); }
+    }
+    /*</callbacks>*/
 
 }

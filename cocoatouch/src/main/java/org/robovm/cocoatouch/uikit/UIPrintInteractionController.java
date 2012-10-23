@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -282,5 +283,10 @@ public class /*<name>*/ UIPrintInteractionController /*</name>*/
         if (customClass) { objc_dismissSuper(getSuper(), this, dismissAnimated$, animated); } else { objc_dismiss(this, dismissAnimated$, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("dismissAnimated:") public static void dismiss(UIPrintInteractionController __self__, Selector __cmd__, boolean animated) { __self__.dismiss(animated); }
+    }
+    /*</callbacks>*/
 
 }

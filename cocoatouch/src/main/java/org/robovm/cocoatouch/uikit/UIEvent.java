@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -133,5 +134,13 @@ public class /*<name>*/ UIEvent /*</name>*/
         if (customClass) { return objc_getTouchesSuper(getSuper(), this, touchesForWindow$, window); } else { return objc_getTouches(this, touchesForWindow$, window); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("allTouches") public static NSSet getAllTouches(UIEvent __self__, Selector __cmd__) { return __self__.getAllTouches(); }
+        @Callback @BindSelector("touchesForView:") public static NSSet getTouches(UIEvent __self__, Selector __cmd__, UIView view) { return __self__.getTouches(view); }
+        @Callback @BindSelector("touchesForGestureRecognizer:") public static NSSet getTouches(UIEvent __self__, Selector __cmd__, UIGestureRecognizer gesture) { return __self__.getTouches(gesture); }
+        @Callback @BindSelector("touchesForWindow:") public static NSSet getTouches(UIEvent __self__, Selector __cmd__, UIWindow window) { return __self__.getTouches(window); }
+    }
+    /*</callbacks>*/
 
 }

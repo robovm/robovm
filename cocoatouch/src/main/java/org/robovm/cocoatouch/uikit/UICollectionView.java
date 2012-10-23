@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -527,5 +528,39 @@ public class /*<name>*/ UICollectionView /*</name>*/
         if (customClass) { objc_setCollectionViewLayoutSuper(getSuper(), this, setCollectionViewLayout$animated$, layout, animated); } else { objc_setCollectionViewLayout(this, setCollectionViewLayout$animated$, layout, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("deleteItemsAtIndexPaths:") public static void deleteItems(UICollectionView __self__, Selector __cmd__, NSArray indexPaths) { __self__.deleteItems(indexPaths); }
+        @Callback @BindSelector("deleteSections:") public static void deleteSections(UICollectionView __self__, Selector __cmd__, NSIndexSet sections) { __self__.deleteSections(sections); }
+        @Callback @BindSelector("dequeueReusableCellWithReuseIdentifier:forIndexPath:") public static NSObject dequeueReusableCell(UICollectionView __self__, Selector __cmd__, String identifier, NSIndexPath indexPath) { return __self__.dequeueReusableCell(identifier, indexPath); }
+        @Callback @BindSelector("dequeueReusableSupplementaryViewOfKind:withReuseIdentifier:forIndexPath:") public static NSObject dequeueReusableSupplementaryView(UICollectionView __self__, Selector __cmd__, String elementKind, String identifier, NSIndexPath indexPath) { return __self__.dequeueReusableSupplementaryView(elementKind, identifier, indexPath); }
+        @Callback @BindSelector("deselectItemAtIndexPath:animated:") public static void deselectItem(UICollectionView __self__, Selector __cmd__, NSIndexPath indexPath, boolean animated) { __self__.deselectItem(indexPath, animated); }
+        @Callback @BindSelector("indexPathForCell:") public static NSIndexPath getCellIndexPath(UICollectionView __self__, Selector __cmd__, UICollectionViewCell cell) { return __self__.getCellIndexPath(cell); }
+        @Callback @BindSelector("cellForItemAtIndexPath:") public static UICollectionViewCell getItemCell(UICollectionView __self__, Selector __cmd__, NSIndexPath indexPath) { return __self__.getItemCell(indexPath); }
+        @Callback @BindSelector("indexPathForItemAtPoint:") public static NSIndexPath getItemIndexPath(UICollectionView __self__, Selector __cmd__, CGPoint point) { return __self__.getItemIndexPath(point); }
+        @Callback @BindSelector("layoutAttributesForItemAtIndexPath:") public static UICollectionViewLayoutAttributes getItemLayoutAttributes(UICollectionView __self__, Selector __cmd__, NSIndexPath indexPath) { return __self__.getItemLayoutAttributes(indexPath); }
+        @Callback @BindSelector("numberOfItemsInSection:") public static int getNumberOfItemsInSection(UICollectionView __self__, Selector __cmd__, int section) { return __self__.getNumberOfItemsInSection(section); }
+        @Callback @BindSelector("numberOfSections") public static int getNumberOfSections(UICollectionView __self__, Selector __cmd__) { return __self__.getNumberOfSections(); }
+        @Callback @BindSelector("indexPathsForSelectedItems") public static NSArray getSelectedItemsIndexPaths(UICollectionView __self__, Selector __cmd__) { return __self__.getSelectedItemsIndexPaths(); }
+        @Callback @BindSelector("layoutAttributesForSupplementaryElementOfKind:atIndexPath:") public static UICollectionViewLayoutAttributes getSupplementaryElementLayoutAttributes(UICollectionView __self__, Selector __cmd__, String kind, NSIndexPath indexPath) { return __self__.getSupplementaryElementLayoutAttributes(kind, indexPath); }
+        @Callback @BindSelector("visibleCells") public static NSArray getVisibleCells(UICollectionView __self__, Selector __cmd__) { return __self__.getVisibleCells(); }
+        @Callback @BindSelector("indexPathsForVisibleItems") public static NSArray getVisibleItemsIndexPaths(UICollectionView __self__, Selector __cmd__) { return __self__.getVisibleItemsIndexPaths(); }
+        @Callback @BindSelector("insertItemsAtIndexPaths:") public static void insertItems(UICollectionView __self__, Selector __cmd__, NSArray indexPaths) { __self__.insertItems(indexPaths); }
+        @Callback @BindSelector("insertSections:") public static void insertSections(UICollectionView __self__, Selector __cmd__, NSIndexSet sections) { __self__.insertSections(sections); }
+        @Callback @BindSelector("moveItemAtIndexPath:toIndexPath:") public static void moveItem(UICollectionView __self__, Selector __cmd__, NSIndexPath indexPath, NSIndexPath newIndexPath) { __self__.moveItem(indexPath, newIndexPath); }
+        @Callback @BindSelector("moveSection:toSection:") public static void moveSection(UICollectionView __self__, Selector __cmd__, int section, int newSection) { __self__.moveSection(section, newSection); }
+        @Callback @BindSelector("performBatchUpdates:completion:") public static void performBatchUpdates(UICollectionView __self__, Selector __cmd__, VoidBlock updates, VoidBooleanBlock completion) { __self__.performBatchUpdates(updates, completion); }
+        @Callback @BindSelector("registerClass:forCellWithReuseIdentifier:") public static void registerReusableCellClass(UICollectionView __self__, Selector __cmd__, ObjCClass cellClass, String identifier) { __self__.registerReusableCellClass(cellClass, identifier); }
+        @Callback @BindSelector("registerNib:forCellWithReuseIdentifier:") public static void registerReusableCellNib(UICollectionView __self__, Selector __cmd__, UINib nib, String identifier) { __self__.registerReusableCellNib(nib, identifier); }
+        @Callback @BindSelector("registerClass:forSupplementaryViewOfKind:withReuseIdentifier:") public static void registerReusableSupplementaryViewClass(UICollectionView __self__, Selector __cmd__, ObjCClass viewClass, String elementKind, String identifier) { __self__.registerReusableSupplementaryViewClass(viewClass, elementKind, identifier); }
+        @Callback @BindSelector("registerNib:forSupplementaryViewOfKind:withReuseIdentifier:") public static void registerReusableSupplementaryViewNib(UICollectionView __self__, Selector __cmd__, UINib nib, String kind, String identifier) { __self__.registerReusableSupplementaryViewNib(nib, kind, identifier); }
+        @Callback @BindSelector("reloadData") public static void reloadData(UICollectionView __self__, Selector __cmd__) { __self__.reloadData(); }
+        @Callback @BindSelector("reloadItemsAtIndexPaths:") public static void reloadItems(UICollectionView __self__, Selector __cmd__, NSArray indexPaths) { __self__.reloadItems(indexPaths); }
+        @Callback @BindSelector("reloadSections:") public static void reloadSections(UICollectionView __self__, Selector __cmd__, NSIndexSet sections) { __self__.reloadSections(sections); }
+        @Callback @BindSelector("scrollToItemAtIndexPath:atScrollPosition:animated:") public static void scrollToItem(UICollectionView __self__, Selector __cmd__, NSIndexPath indexPath, UICollectionViewScrollPosition scrollPosition, boolean animated) { __self__.scrollToItem(indexPath, scrollPosition, animated); }
+        @Callback @BindSelector("selectItemAtIndexPath:animated:scrollPosition:") public static void selectItem(UICollectionView __self__, Selector __cmd__, NSIndexPath indexPath, boolean animated, UICollectionViewScrollPosition scrollPosition) { __self__.selectItem(indexPath, animated, scrollPosition); }
+        @Callback @BindSelector("setCollectionViewLayout:animated:") public static void setCollectionViewLayout(UICollectionView __self__, Selector __cmd__, UICollectionViewLayout layout, boolean animated) { __self__.setCollectionViewLayout(layout, animated); }
+    }
+    /*</callbacks>*/
 
 }

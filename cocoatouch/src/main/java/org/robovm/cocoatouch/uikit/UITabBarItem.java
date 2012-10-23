@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -154,5 +155,14 @@ public class /*<name>*/ UITabBarItem /*</name>*/
         if (customClass) { objc_setTitlePositionAdjustmentSuper(getSuper(), this, setTitlePositionAdjustment$, adjustment); } else { objc_setTitlePositionAdjustment(this, setTitlePositionAdjustment$, adjustment); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("finishedSelectedImage") public static UIImage getFinishedSelectedImage(UITabBarItem __self__, Selector __cmd__) { return __self__.getFinishedSelectedImage(); }
+        @Callback @BindSelector("finishedUnselectedImage") public static UIImage getFinishedUnselectedImage(UITabBarItem __self__, Selector __cmd__) { return __self__.getFinishedUnselectedImage(); }
+        @Callback @BindSelector("titlePositionAdjustment") public static UIOffset getTitlePositionAdjustment(UITabBarItem __self__, Selector __cmd__) { return __self__.getTitlePositionAdjustment(); }
+        @Callback @BindSelector("setFinishedSelectedImage:withFinishedUnselectedImage:") public static void setFinishedImages(UITabBarItem __self__, Selector __cmd__, UIImage selectedImage, UIImage unselectedImage) { __self__.setFinishedImages(selectedImage, unselectedImage); }
+        @Callback @BindSelector("setTitlePositionAdjustment:") public static void setTitlePositionAdjustment(UITabBarItem __self__, Selector __cmd__, UIOffset adjustment) { __self__.setTitlePositionAdjustment(adjustment); }
+    }
+    /*</callbacks>*/
 
 }

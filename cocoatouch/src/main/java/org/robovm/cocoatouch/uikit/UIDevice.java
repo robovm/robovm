@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -286,5 +287,12 @@ public class /*<name>*/ UIDevice /*</name>*/
         if (customClass) { objc_playInputClickSuper(getSuper(), this, playInputClick); } else { objc_playInputClick(this, playInputClick); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("beginGeneratingDeviceOrientationNotifications") public static void beginGeneratingDeviceOrientationNotifications(UIDevice __self__, Selector __cmd__) { __self__.beginGeneratingDeviceOrientationNotifications(); }
+        @Callback @BindSelector("endGeneratingDeviceOrientationNotifications") public static void endGeneratingDeviceOrientationNotifications(UIDevice __self__, Selector __cmd__) { __self__.endGeneratingDeviceOrientationNotifications(); }
+        @Callback @BindSelector("playInputClick") public static void playInputClick(UIDevice __self__, Selector __cmd__) { __self__.playInputClick(); }
+    }
+    /*</callbacks>*/
 
 }

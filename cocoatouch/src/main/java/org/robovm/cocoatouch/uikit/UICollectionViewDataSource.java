@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -62,5 +63,13 @@ public interface /*<name>*/ UICollectionViewDataSource /*</name>*/ /*<implements
      */
     UICollectionReusableView getSupplementaryElementView(UICollectionView collectionView, String kind, NSIndexPath indexPath);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("collectionView:cellForItemAtIndexPath:") public static UICollectionViewCell getItemCell(UICollectionViewDataSource __self__, Selector __cmd__, UICollectionView collectionView, NSIndexPath indexPath) { return __self__.getItemCell(collectionView, indexPath); }
+        @Callback @BindSelector("collectionView:numberOfItemsInSection:") public static int getNumberOfItemsInSection(UICollectionViewDataSource __self__, Selector __cmd__, UICollectionView collectionView, int section) { return __self__.getNumberOfItemsInSection(collectionView, section); }
+        @Callback @BindSelector("numberOfSectionsInCollectionView:") public static int getNumberOfSections(UICollectionViewDataSource __self__, Selector __cmd__, UICollectionView collectionView) { return __self__.getNumberOfSections(collectionView); }
+        @Callback @BindSelector("collectionView:viewForSupplementaryElementOfKind:atIndexPath:") public static UICollectionReusableView getSupplementaryElementView(UICollectionViewDataSource __self__, Selector __cmd__, UICollectionView collectionView, String kind, NSIndexPath indexPath) { return __self__.getSupplementaryElementView(collectionView, kind, indexPath); }
+    }
+    /*</callbacks>*/
 
 }

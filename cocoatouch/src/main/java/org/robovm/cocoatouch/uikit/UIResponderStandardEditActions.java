@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -97,5 +98,20 @@ public interface /*<name>*/ UIResponderStandardEditActions /*</name>*/ /*<implem
      */
     void toggleUnderline(NSObject sender);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("copy:") public static void copy(UIResponderStandardEditActions __self__, Selector __cmd__, NSObject sender) { __self__.copy(sender); }
+        @Callback @BindSelector("cut:") public static void cut(UIResponderStandardEditActions __self__, Selector __cmd__, NSObject sender) { __self__.cut(sender); }
+        @Callback @BindSelector("delete:") public static void delete(UIResponderStandardEditActions __self__, Selector __cmd__, NSObject sender) { __self__.delete(sender); }
+        @Callback @BindSelector("makeTextWritingDirectionLeftToRight:") public static void makeTextWritingDirectionLeftToRight(UIResponderStandardEditActions __self__, Selector __cmd__, NSObject sender) { __self__.makeTextWritingDirectionLeftToRight(sender); }
+        @Callback @BindSelector("makeTextWritingDirectionRightToLeft:") public static void makeTextWritingDirectionRightToLeft(UIResponderStandardEditActions __self__, Selector __cmd__, NSObject sender) { __self__.makeTextWritingDirectionRightToLeft(sender); }
+        @Callback @BindSelector("paste:") public static void paste(UIResponderStandardEditActions __self__, Selector __cmd__, NSObject sender) { __self__.paste(sender); }
+        @Callback @BindSelector("select:") public static void select(UIResponderStandardEditActions __self__, Selector __cmd__, NSObject sender) { __self__.select(sender); }
+        @Callback @BindSelector("selectAll:") public static void selectAll(UIResponderStandardEditActions __self__, Selector __cmd__, NSObject sender) { __self__.selectAll(sender); }
+        @Callback @BindSelector("toggleBoldface:") public static void toggleBoldface(UIResponderStandardEditActions __self__, Selector __cmd__, NSObject sender) { __self__.toggleBoldface(sender); }
+        @Callback @BindSelector("toggleItalics:") public static void toggleItalics(UIResponderStandardEditActions __self__, Selector __cmd__, NSObject sender) { __self__.toggleItalics(sender); }
+        @Callback @BindSelector("toggleUnderline:") public static void toggleUnderline(UIResponderStandardEditActions __self__, Selector __cmd__, NSObject sender) { __self__.toggleUnderline(sender); }
+    }
+    /*</callbacks>*/
 
 }

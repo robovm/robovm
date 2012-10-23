@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -309,5 +310,16 @@ public class /*<name>*/ UINavigationBar /*</name>*/
         if (customClass) { objc_setTitleVerticalPositionAdjustmentSuper(getSuper(), this, setTitleVerticalPositionAdjustment$forBarMetrics$, adjustment, barMetrics); } else { objc_setTitleVerticalPositionAdjustment(this, setTitleVerticalPositionAdjustment$forBarMetrics$, adjustment, barMetrics); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("backgroundImageForBarMetrics:") public static UIImage getBackgroundImage(UINavigationBar __self__, Selector __cmd__, UIBarMetrics barMetrics) { return __self__.getBackgroundImage(barMetrics); }
+        @Callback @BindSelector("titleVerticalPositionAdjustmentForBarMetrics:") public static float getTitleVerticalPositionAdjustment(UINavigationBar __self__, Selector __cmd__, UIBarMetrics barMetrics) { return __self__.getTitleVerticalPositionAdjustment(barMetrics); }
+        @Callback @BindSelector("popNavigationItemAnimated:") public static UINavigationItem popNavigationItem(UINavigationBar __self__, Selector __cmd__, boolean animated) { return __self__.popNavigationItem(animated); }
+        @Callback @BindSelector("pushNavigationItem:animated:") public static void pushNavigationItem(UINavigationBar __self__, Selector __cmd__, UINavigationItem item, boolean animated) { __self__.pushNavigationItem(item, animated); }
+        @Callback @BindSelector("setBackgroundImage:forBarMetrics:") public static void setBackgroundImage(UINavigationBar __self__, Selector __cmd__, UIImage backgroundImage, UIBarMetrics barMetrics) { __self__.setBackgroundImage(backgroundImage, barMetrics); }
+        @Callback @BindSelector("setItems:animated:") public static void setItems(UINavigationBar __self__, Selector __cmd__, NSArray items, boolean animated) { __self__.setItems(items, animated); }
+        @Callback @BindSelector("setTitleVerticalPositionAdjustment:forBarMetrics:") public static void setTitleVerticalPositionAdjustment(UINavigationBar __self__, Selector __cmd__, float adjustment, UIBarMetrics barMetrics) { __self__.setTitleVerticalPositionAdjustment(adjustment, barMetrics); }
+    }
+    /*</callbacks>*/
 
 }

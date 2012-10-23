@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -1365,5 +1366,50 @@ public class /*<name>*/ UITextField /*</name>*/
         if (customClass) { objc_unmarkTextSuper(getSuper(), this, unmarkText); } else { objc_unmarkText(this, unmarkText); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("clearButtonRectForBounds:") public static CGRect clearButtonRect(UITextField __self__, Selector __cmd__, CGRect bounds) { return __self__.clearButtonRect(bounds); }
+        @Callback @BindSelector("comparePosition:toPosition:") public static NSComparisonResult comparePositions(UITextField __self__, Selector __cmd__, UITextPosition position, UITextPosition other) { return __self__.comparePositions(position, other); }
+        @Callback @BindSelector("deleteBackward") public static void deleteBackward(UITextField __self__, Selector __cmd__) { __self__.deleteBackward(); }
+        @Callback @BindSelector("dictationRecognitionFailed") public static void dictationRecognitionFailed(UITextField __self__, Selector __cmd__) { __self__.dictationRecognitionFailed(); }
+        @Callback @BindSelector("dictationRecordingDidEnd") public static void dictationRecordingDidEnd(UITextField __self__, Selector __cmd__) { __self__.dictationRecordingDidEnd(); }
+        @Callback @BindSelector("drawPlaceholderInRect:") public static void drawPlaceholder(UITextField __self__, Selector __cmd__, CGRect rect) { __self__.drawPlaceholder(rect); }
+        @Callback @BindSelector("drawTextInRect:") public static void drawText(UITextField __self__, Selector __cmd__, CGRect rect) { __self__.drawText(rect); }
+        @Callback @BindSelector("baseWritingDirectionForPosition:inDirection:") public static UITextWritingDirection getBaseWritingDirection(UITextField __self__, Selector __cmd__, UITextPosition position, UITextStorageDirection direction) { return __self__.getBaseWritingDirection(position, direction); }
+        @Callback @BindSelector("borderRectForBounds:") public static CGRect getBorderRect(UITextField __self__, Selector __cmd__, CGRect bounds) { return __self__.getBorderRect(bounds); }
+        @Callback @BindSelector("caretRectForPosition:") public static CGRect getCaretRect(UITextField __self__, Selector __cmd__, UITextPosition position) { return __self__.getCaretRect(position); }
+        @Callback @BindSelector("characterOffsetOfPosition:withinRange:") public static int getCharacterOffset(UITextField __self__, Selector __cmd__, UITextPosition position, UITextRange range) { return __self__.getCharacterOffset(position, range); }
+        @Callback @BindSelector("characterRangeAtPoint:") public static UITextRange getCharacterRange(UITextField __self__, Selector __cmd__, CGPoint point) { return __self__.getCharacterRange(point); }
+        @Callback @BindSelector("characterRangeByExtendingPosition:inDirection:") public static UITextRange getCharacterRange(UITextField __self__, Selector __cmd__, UITextPosition position, UITextLayoutDirection direction) { return __self__.getCharacterRange(position, direction); }
+        @Callback @BindSelector("closestPositionToPoint:withinRange:") public static UITextPosition getClosestPosition(UITextField __self__, Selector __cmd__, CGPoint point, UITextRange range) { return __self__.getClosestPosition(point, range); }
+        @Callback @BindSelector("closestPositionToPoint:") public static UITextPosition getClosestPosition(UITextField __self__, Selector __cmd__, CGPoint point) { return __self__.getClosestPosition(point); }
+        @Callback @BindSelector("frameForDictationResultPlaceholder:") public static CGRect getDictationResultPlaceholderFrame(UITextField __self__, Selector __cmd__, NSObject placeholder) { return __self__.getDictationResultPlaceholderFrame(placeholder); }
+        @Callback @BindSelector("editingRectForBounds:") public static CGRect getEditingRect(UITextField __self__, Selector __cmd__, CGRect bounds) { return __self__.getEditingRect(bounds); }
+        @Callback @BindSelector("firstRectForRange:") public static CGRect getFirstRect(UITextField __self__, Selector __cmd__, UITextRange range) { return __self__.getFirstRect(range); }
+        @Callback @BindSelector("leftViewRectForBounds:") public static CGRect getLeftViewRect(UITextField __self__, Selector __cmd__, CGRect bounds) { return __self__.getLeftViewRect(bounds); }
+        @Callback @BindSelector("offsetFromPosition:toPosition:") public static int getOffset(UITextField __self__, Selector __cmd__, UITextPosition fromPosition, UITextPosition toPosition) { return __self__.getOffset(fromPosition, toPosition); }
+        @Callback @BindSelector("placeholderRectForBounds:") public static CGRect getPlaceholderRect(UITextField __self__, Selector __cmd__, CGRect bounds) { return __self__.getPlaceholderRect(bounds); }
+        @Callback @BindSelector("positionFromPosition:inDirection:offset:") public static UITextPosition getPosition(UITextField __self__, Selector __cmd__, UITextPosition position, UITextLayoutDirection direction, int offset) { return __self__.getPosition(position, direction, offset); }
+        @Callback @BindSelector("positionWithinRange:atCharacterOffset:") public static UITextPosition getPosition(UITextField __self__, Selector __cmd__, UITextRange range, int offset) { return __self__.getPosition(range, offset); }
+        @Callback @BindSelector("positionFromPosition:offset:") public static UITextPosition getPosition(UITextField __self__, Selector __cmd__, UITextPosition position, int offset) { return __self__.getPosition(position, offset); }
+        @Callback @BindSelector("positionWithinRange:farthestInDirection:") public static UITextPosition getPosition(UITextField __self__, Selector __cmd__, UITextRange range, UITextLayoutDirection direction) { return __self__.getPosition(range, direction); }
+        @Callback @BindSelector("rightViewRectForBounds:") public static CGRect getRightViewRect(UITextField __self__, Selector __cmd__, CGRect bounds) { return __self__.getRightViewRect(bounds); }
+        @Callback @BindSelector("selectionRectsForRange:") public static NSArray getSelectionRects(UITextField __self__, Selector __cmd__, UITextRange range) { return __self__.getSelectionRects(range); }
+        @Callback @BindSelector("textInRange:") public static String getText(UITextField __self__, Selector __cmd__, UITextRange range) { return __self__.getText(range); }
+        @Callback @BindSelector("textRangeFromPosition:toPosition:") public static UITextRange getTextRange(UITextField __self__, Selector __cmd__, UITextPosition fromPosition, UITextPosition toPosition) { return __self__.getTextRange(fromPosition, toPosition); }
+        @Callback @BindSelector("textRectForBounds:") public static CGRect getTextRect(UITextField __self__, Selector __cmd__, CGRect bounds) { return __self__.getTextRect(bounds); }
+        @Callback @BindSelector("textStylingAtPosition:inDirection:") public static NSDictionary getTextStyling(UITextField __self__, Selector __cmd__, UITextPosition position, UITextStorageDirection direction) { return __self__.getTextStyling(position, direction); }
+        @Callback @BindSelector("hasText") public static boolean hasText(UITextField __self__, Selector __cmd__) { return __self__.hasText(); }
+        @Callback @BindSelector("insertDictationResult:") public static void insertDictationResult(UITextField __self__, Selector __cmd__, NSArray dictationResult) { __self__.insertDictationResult(dictationResult); }
+        @Callback @BindSelector("insertDictationResultPlaceholder") public static NSObject insertDictationResultPlaceholder(UITextField __self__, Selector __cmd__) { return __self__.insertDictationResultPlaceholder(); }
+        @Callback @BindSelector("insertText:") public static void insertText(UITextField __self__, Selector __cmd__, String text) { __self__.insertText(text); }
+        @Callback @BindSelector("removeDictationResultPlaceholder:willInsertResult:") public static void removeDictationResultPlaceholder(UITextField __self__, Selector __cmd__, NSObject placeholder, boolean willInsertResult) { __self__.removeDictationResultPlaceholder(placeholder, willInsertResult); }
+        @Callback @BindSelector("replaceRange:withText:") public static void replaceText(UITextField __self__, Selector __cmd__, UITextRange range, String text) { __self__.replaceText(range, text); }
+        @Callback @BindSelector("setBaseWritingDirection:forRange:") public static void setBaseWritingDirection(UITextField __self__, Selector __cmd__, UITextWritingDirection writingDirection, UITextRange range) { __self__.setBaseWritingDirection(writingDirection, range); }
+        @Callback @BindSelector("setMarkedText:selectedRange:") public static void setMarkedText(UITextField __self__, Selector __cmd__, String markedText, NSRange selectedRange) { __self__.setMarkedText(markedText, selectedRange); }
+        @Callback @BindSelector("shouldChangeTextInRange:replacementText:") public static boolean shouldChangeText(UITextField __self__, Selector __cmd__, UITextRange range, String text) { return __self__.shouldChangeText(range, text); }
+        @Callback @BindSelector("unmarkText") public static void unmarkText(UITextField __self__, Selector __cmd__) { __self__.unmarkText(); }
+    }
+    /*</callbacks>*/
 
 }

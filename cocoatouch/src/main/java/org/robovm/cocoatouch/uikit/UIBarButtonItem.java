@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -418,5 +419,23 @@ public class /*<name>*/ UIBarButtonItem /*</name>*/
         if (customClass) { objc_setTitlePositionAdjustmentSuper(getSuper(), this, setTitlePositionAdjustment$forBarMetrics$, adjustment, barMetrics); } else { objc_setTitlePositionAdjustment(this, setTitlePositionAdjustment$forBarMetrics$, adjustment, barMetrics); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("backButtonBackgroundImageForState:barMetrics:") public static UIImage getBackButtonBackgroundImage(UIBarButtonItem __self__, Selector __cmd__, UIControlState state, UIBarMetrics barMetrics) { return __self__.getBackButtonBackgroundImage(state, barMetrics); }
+        @Callback @BindSelector("backButtonBackgroundVerticalPositionAdjustmentForBarMetrics:") public static float getBackButtonBackgroundVerticalPositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, UIBarMetrics barMetrics) { return __self__.getBackButtonBackgroundVerticalPositionAdjustment(barMetrics); }
+        @Callback @BindSelector("backButtonTitlePositionAdjustmentForBarMetrics:") public static UIOffset getBackButtonTitlePositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, UIBarMetrics barMetrics) { return __self__.getBackButtonTitlePositionAdjustment(barMetrics); }
+        @Callback @BindSelector("backgroundImageForState:style:barMetrics:") public static UIImage getBackgroundImage(UIBarButtonItem __self__, Selector __cmd__, UIControlState state, UIBarButtonItemStyle style, UIBarMetrics barMetrics) { return __self__.getBackgroundImage(state, style, barMetrics); }
+        @Callback @BindSelector("backgroundImageForState:barMetrics:") public static UIImage getBackgroundImage(UIBarButtonItem __self__, Selector __cmd__, UIControlState state, UIBarMetrics barMetrics) { return __self__.getBackgroundImage(state, barMetrics); }
+        @Callback @BindSelector("backgroundVerticalPositionAdjustmentForBarMetrics:") public static float getBackgroundVerticalPositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, UIBarMetrics barMetrics) { return __self__.getBackgroundVerticalPositionAdjustment(barMetrics); }
+        @Callback @BindSelector("titlePositionAdjustmentForBarMetrics:") public static UIOffset getTitlePositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, UIBarMetrics barMetrics) { return __self__.getTitlePositionAdjustment(barMetrics); }
+        @Callback @BindSelector("setBackButtonBackgroundImage:forState:barMetrics:") public static void setBackButtonBackgroundImage(UIBarButtonItem __self__, Selector __cmd__, UIImage backgroundImage, UIControlState state, UIBarMetrics barMetrics) { __self__.setBackButtonBackgroundImage(backgroundImage, state, barMetrics); }
+        @Callback @BindSelector("setBackButtonBackgroundVerticalPositionAdjustment:forBarMetrics:") public static void setBackButtonBackgroundVerticalPositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, float adjustment, UIBarMetrics barMetrics) { __self__.setBackButtonBackgroundVerticalPositionAdjustment(adjustment, barMetrics); }
+        @Callback @BindSelector("setBackButtonTitlePositionAdjustment:forBarMetrics:") public static void setBackButtonTitlePositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, UIOffset adjustment, UIBarMetrics barMetrics) { __self__.setBackButtonTitlePositionAdjustment(adjustment, barMetrics); }
+        @Callback @BindSelector("setBackgroundImage:forState:barMetrics:") public static void setBackgroundImage(UIBarButtonItem __self__, Selector __cmd__, UIImage backgroundImage, UIControlState state, UIBarMetrics barMetrics) { __self__.setBackgroundImage(backgroundImage, state, barMetrics); }
+        @Callback @BindSelector("setBackgroundImage:forState:style:barMetrics:") public static void setBackgroundImage(UIBarButtonItem __self__, Selector __cmd__, UIImage backgroundImage, UIControlState state, UIBarButtonItemStyle style, UIBarMetrics barMetrics) { __self__.setBackgroundImage(backgroundImage, state, style, barMetrics); }
+        @Callback @BindSelector("setBackgroundVerticalPositionAdjustment:forBarMetrics:") public static void setBackgroundVerticalPositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, float adjustment, UIBarMetrics barMetrics) { __self__.setBackgroundVerticalPositionAdjustment(adjustment, barMetrics); }
+        @Callback @BindSelector("setTitlePositionAdjustment:forBarMetrics:") public static void setTitlePositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, UIOffset adjustment, UIBarMetrics barMetrics) { __self__.setTitlePositionAdjustment(adjustment, barMetrics); }
+    }
+    /*</callbacks>*/
 
 }

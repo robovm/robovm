@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -539,5 +540,15 @@ public class /*<name>*/ UITableViewCell /*</name>*/
         if (customClass) { objc_willTransitionToStateSuper(getSuper(), this, willTransitionToState$, state); } else { objc_willTransitionToState(this, willTransitionToState$, state); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("didTransitionToState:") public static void didTransitionToState(UITableViewCell __self__, Selector __cmd__, UITableViewCellStateMask state) { __self__.didTransitionToState(state); }
+        @Callback @BindSelector("prepareForReuse") public static void prepareForReuse(UITableViewCell __self__, Selector __cmd__) { __self__.prepareForReuse(); }
+        @Callback @BindSelector("setEditing:animated:") public static void setEditing(UITableViewCell __self__, Selector __cmd__, boolean editing, boolean animated) { __self__.setEditing(editing, animated); }
+        @Callback @BindSelector("setHighlighted:animated:") public static void setHighlighted(UITableViewCell __self__, Selector __cmd__, boolean highlighted, boolean animated) { __self__.setHighlighted(highlighted, animated); }
+        @Callback @BindSelector("setSelected:animated:") public static void setSelected(UITableViewCell __self__, Selector __cmd__, boolean selected, boolean animated) { __self__.setSelected(selected, animated); }
+        @Callback @BindSelector("willTransitionToState:") public static void willTransitionToState(UITableViewCell __self__, Selector __cmd__, UITableViewCellStateMask state) { __self__.willTransitionToState(state); }
+    }
+    /*</callbacks>*/
 
 }

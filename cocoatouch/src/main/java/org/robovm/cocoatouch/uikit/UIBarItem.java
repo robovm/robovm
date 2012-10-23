@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -232,5 +233,11 @@ public class /*<name>*/ UIBarItem /*</name>*/
         if (customClass) { objc_setTitleTextAttributesSuper(getSuper(), this, setTitleTextAttributes$forState$, attributes, state); } else { objc_setTitleTextAttributes(this, setTitleTextAttributes$forState$, attributes, state); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("titleTextAttributesForState:") public static NSDictionary getTitleTextAttributes(UIBarItem __self__, Selector __cmd__, UIControlState state) { return __self__.getTitleTextAttributes(state); }
+        @Callback @BindSelector("setTitleTextAttributes:forState:") public static void setTitleTextAttributes(UIBarItem __self__, Selector __cmd__, NSDictionary attributes, UIControlState state) { __self__.setTitleTextAttributes(attributes, state); }
+    }
+    /*</callbacks>*/
 
 }

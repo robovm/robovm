@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -104,5 +105,21 @@ public interface /*<name>*/ UISearchDisplayDelegate /*</name>*/ /*<implements>*/
      */
     void willUnloadSearchResults(UISearchDisplayController controller, UITableView tableView);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("searchDisplayControllerDidBeginSearch:") public static void didBeginSearch(UISearchDisplayDelegate __self__, Selector __cmd__, UISearchDisplayController controller) { __self__.didBeginSearch(controller); }
+        @Callback @BindSelector("searchDisplayControllerDidEndSearch:") public static void didEndSearch(UISearchDisplayDelegate __self__, Selector __cmd__, UISearchDisplayController controller) { __self__.didEndSearch(controller); }
+        @Callback @BindSelector("searchDisplayController:didHideSearchResultsTableView:") public static void didHideSearchResults(UISearchDisplayDelegate __self__, Selector __cmd__, UISearchDisplayController controller, UITableView tableView) { __self__.didHideSearchResults(controller, tableView); }
+        @Callback @BindSelector("searchDisplayController:didLoadSearchResultsTableView:") public static void didLoadSearchResults(UISearchDisplayDelegate __self__, Selector __cmd__, UISearchDisplayController controller, UITableView tableView) { __self__.didLoadSearchResults(controller, tableView); }
+        @Callback @BindSelector("searchDisplayController:didShowSearchResultsTableView:") public static void didShowSearchResults(UISearchDisplayDelegate __self__, Selector __cmd__, UISearchDisplayController controller, UITableView tableView) { __self__.didShowSearchResults(controller, tableView); }
+        @Callback @BindSelector("searchDisplayController:shouldReloadTableForSearchScope:") public static boolean shouldReloadForSearchScope(UISearchDisplayDelegate __self__, Selector __cmd__, UISearchDisplayController controller, int searchOption) { return __self__.shouldReloadForSearchScope(controller, searchOption); }
+        @Callback @BindSelector("searchDisplayController:shouldReloadTableForSearchString:") public static boolean shouldReloadForSearchString(UISearchDisplayDelegate __self__, Selector __cmd__, UISearchDisplayController controller, String searchString) { return __self__.shouldReloadForSearchString(controller, searchString); }
+        @Callback @BindSelector("searchDisplayControllerWillBeginSearch:") public static void willBeginSearch(UISearchDisplayDelegate __self__, Selector __cmd__, UISearchDisplayController controller) { __self__.willBeginSearch(controller); }
+        @Callback @BindSelector("searchDisplayControllerWillEndSearch:") public static void willEndSearch(UISearchDisplayDelegate __self__, Selector __cmd__, UISearchDisplayController controller) { __self__.willEndSearch(controller); }
+        @Callback @BindSelector("searchDisplayController:willHideSearchResultsTableView:") public static void willHideSearchResults(UISearchDisplayDelegate __self__, Selector __cmd__, UISearchDisplayController controller, UITableView tableView) { __self__.willHideSearchResults(controller, tableView); }
+        @Callback @BindSelector("searchDisplayController:willShowSearchResultsTableView:") public static void willShowSearchResults(UISearchDisplayDelegate __self__, Selector __cmd__, UISearchDisplayController controller, UITableView tableView) { __self__.willShowSearchResults(controller, tableView); }
+        @Callback @BindSelector("searchDisplayController:willUnloadSearchResultsTableView:") public static void willUnloadSearchResults(UISearchDisplayDelegate __self__, Selector __cmd__, UISearchDisplayController controller, UITableView tableView) { __self__.willUnloadSearchResults(controller, tableView); }
+    }
+    /*</callbacks>*/
 
 }

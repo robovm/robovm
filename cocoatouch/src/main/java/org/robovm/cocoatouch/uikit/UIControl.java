@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -320,5 +321,20 @@ public class /*<name>*/ UIControl /*</name>*/
         if (customClass) { objc_sendControlEventsActionsSuper(getSuper(), this, sendActionsForControlEvents$, controlEvents); } else { objc_sendControlEventsActions(this, sendActionsForControlEvents$, controlEvents); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("addTarget:action:forControlEvents:") public static void addTarget(UIControl __self__, Selector __cmd__, NSObject target, Selector action, UIControlEvents controlEvents) { __self__.addTarget(target, action, controlEvents); }
+        @Callback @BindSelector("beginTrackingWithTouch:withEvent:") public static boolean beginTracking(UIControl __self__, Selector __cmd__, UITouch touch, UIEvent event) { return __self__.beginTracking(touch, event); }
+        @Callback @BindSelector("cancelTrackingWithEvent:") public static void cancelTracking(UIControl __self__, Selector __cmd__, UIEvent event) { __self__.cancelTracking(event); }
+        @Callback @BindSelector("continueTrackingWithTouch:withEvent:") public static boolean continueTracking(UIControl __self__, Selector __cmd__, UITouch touch, UIEvent event) { return __self__.continueTracking(touch, event); }
+        @Callback @BindSelector("endTrackingWithTouch:withEvent:") public static void endTracking(UIControl __self__, Selector __cmd__, UITouch touch, UIEvent event) { __self__.endTracking(touch, event); }
+        @Callback @BindSelector("actionsForTarget:forControlEvent:") public static NSArray getActions(UIControl __self__, Selector __cmd__, NSObject target, UIControlEvents controlEvent) { return __self__.getActions(target, controlEvent); }
+        @Callback @BindSelector("allControlEvents") public static UIControlEvents getAllControlEvents(UIControl __self__, Selector __cmd__) { return __self__.getAllControlEvents(); }
+        @Callback @BindSelector("allTargets") public static NSSet getAllTargets(UIControl __self__, Selector __cmd__) { return __self__.getAllTargets(); }
+        @Callback @BindSelector("removeTarget:action:forControlEvents:") public static void removeTarget(UIControl __self__, Selector __cmd__, NSObject target, Selector action, UIControlEvents controlEvents) { __self__.removeTarget(target, action, controlEvents); }
+        @Callback @BindSelector("sendAction:to:forEvent:") public static void sendAction(UIControl __self__, Selector __cmd__, Selector action, NSObject target, UIEvent event) { __self__.sendAction(action, target, event); }
+        @Callback @BindSelector("sendActionsForControlEvents:") public static void sendControlEventsActions(UIControl __self__, Selector __cmd__, UIControlEvents controlEvents) { __self__.sendControlEventsActions(controlEvents); }
+    }
+    /*</callbacks>*/
 
 }

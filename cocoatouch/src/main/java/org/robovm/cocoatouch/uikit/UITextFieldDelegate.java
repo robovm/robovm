@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -78,5 +79,16 @@ public interface /*<name>*/ UITextFieldDelegate /*</name>*/ /*<implements>*/ ext
      */
     boolean shouldReturn(UITextField textField);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("textFieldDidBeginEditing:") public static void didBeginEditing(UITextFieldDelegate __self__, Selector __cmd__, UITextField textField) { __self__.didBeginEditing(textField); }
+        @Callback @BindSelector("textFieldDidEndEditing:") public static void didEndEditing(UITextFieldDelegate __self__, Selector __cmd__, UITextField textField) { __self__.didEndEditing(textField); }
+        @Callback @BindSelector("textFieldShouldBeginEditing:") public static boolean shouldBeginEditing(UITextFieldDelegate __self__, Selector __cmd__, UITextField textField) { return __self__.shouldBeginEditing(textField); }
+        @Callback @BindSelector("textField:shouldChangeCharactersInRange:replacementString:") public static boolean shouldChangeCharacters(UITextFieldDelegate __self__, Selector __cmd__, UITextField textField, NSRange range, String string) { return __self__.shouldChangeCharacters(textField, range, string); }
+        @Callback @BindSelector("textFieldShouldClear:") public static boolean shouldClear(UITextFieldDelegate __self__, Selector __cmd__, UITextField textField) { return __self__.shouldClear(textField); }
+        @Callback @BindSelector("textFieldShouldEndEditing:") public static boolean shouldEndEditing(UITextFieldDelegate __self__, Selector __cmd__, UITextField textField) { return __self__.shouldEndEditing(textField); }
+        @Callback @BindSelector("textFieldShouldReturn:") public static boolean shouldReturn(UITextFieldDelegate __self__, Selector __cmd__, UITextField textField) { return __self__.shouldReturn(textField); }
+    }
+    /*</callbacks>*/
 
 }

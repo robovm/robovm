@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -199,5 +200,10 @@ public class /*<name>*/ UITabBarController /*</name>*/
         if (customClass) { objc_setViewControllersSuper(getSuper(), this, setViewControllers$animated$, viewControllers, animated); } else { objc_setViewControllers(this, setViewControllers$animated$, viewControllers, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("setViewControllers:animated:") public static void setViewControllers(UITabBarController __self__, Selector __cmd__, NSArray viewControllers, boolean animated) { __self__.setViewControllers(viewControllers, animated); }
+    }
+    /*</callbacks>*/
 
 }

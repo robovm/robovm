@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -210,5 +211,16 @@ public class /*<name>*/ UIPickerView /*</name>*/
         if (customClass) { objc_selectRowSuper(getSuper(), this, selectRow$inComponent$animated$, row, component, animated); } else { objc_selectRow(this, selectRow$inComponent$animated$, row, component, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("numberOfRowsInComponent:") public static int getNumberOfRows(UIPickerView __self__, Selector __cmd__, int component) { return __self__.getNumberOfRows(component); }
+        @Callback @BindSelector("rowSizeForComponent:") public static CGSize getRowSize(UIPickerView __self__, Selector __cmd__, int component) { return __self__.getRowSize(component); }
+        @Callback @BindSelector("viewForRow:forComponent:") public static UIView getRowView(UIPickerView __self__, Selector __cmd__, int row, int component) { return __self__.getRowView(row, component); }
+        @Callback @BindSelector("selectedRowInComponent:") public static int getSelectedRow(UIPickerView __self__, Selector __cmd__, int component) { return __self__.getSelectedRow(component); }
+        @Callback @BindSelector("reloadAllComponents") public static void reloadAllComponents(UIPickerView __self__, Selector __cmd__) { __self__.reloadAllComponents(); }
+        @Callback @BindSelector("reloadComponent:") public static void reloadComponent(UIPickerView __self__, Selector __cmd__, int component) { __self__.reloadComponent(component); }
+        @Callback @BindSelector("selectRow:inComponent:animated:") public static void selectRow(UIPickerView __self__, Selector __cmd__, int row, int component, boolean animated) { __self__.selectRow(row, component, animated); }
+    }
+    /*</callbacks>*/
 
 }

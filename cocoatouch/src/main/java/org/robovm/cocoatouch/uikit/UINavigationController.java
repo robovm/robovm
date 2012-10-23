@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -286,5 +287,16 @@ public class /*<name>*/ UINavigationController /*</name>*/
         if (customClass) { objc_setViewControllersSuper(getSuper(), this, setViewControllers$animated$, viewControllers, animated); } else { objc_setViewControllers(this, setViewControllers$animated$, viewControllers, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("popToRootViewControllerAnimated:") public static NSArray popToRootViewController(UINavigationController __self__, Selector __cmd__, boolean animated) { return __self__.popToRootViewController(animated); }
+        @Callback @BindSelector("popToViewController:animated:") public static NSArray popToViewController(UINavigationController __self__, Selector __cmd__, UIViewController viewController, boolean animated) { return __self__.popToViewController(viewController, animated); }
+        @Callback @BindSelector("popViewControllerAnimated:") public static UIViewController popViewControllerAnimated(UINavigationController __self__, Selector __cmd__, boolean animated) { return __self__.popViewControllerAnimated(animated); }
+        @Callback @BindSelector("pushViewController:animated:") public static void pushViewController(UINavigationController __self__, Selector __cmd__, UIViewController viewController, boolean animated) { __self__.pushViewController(viewController, animated); }
+        @Callback @BindSelector("setNavigationBarHidden:animated:") public static void setNavigationBarHidden(UINavigationController __self__, Selector __cmd__, boolean hidden, boolean animated) { __self__.setNavigationBarHidden(hidden, animated); }
+        @Callback @BindSelector("setToolbarHidden:animated:") public static void setToolbarHidden(UINavigationController __self__, Selector __cmd__, boolean hidden, boolean animated) { __self__.setToolbarHidden(hidden, animated); }
+        @Callback @BindSelector("setViewControllers:animated:") public static void setViewControllers(UINavigationController __self__, Selector __cmd__, NSArray viewControllers, boolean animated) { __self__.setViewControllers(viewControllers, animated); }
+    }
+    /*</callbacks>*/
 
 }

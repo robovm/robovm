@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -254,5 +255,14 @@ public class /*<name>*/ UIAlertView /*</name>*/
         if (customClass) { objc_showSuper(getSuper(), this, show); } else { objc_show(this, show); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("addButtonWithTitle:") public static int addButton(UIAlertView __self__, Selector __cmd__, String title) { return __self__.addButton(title); }
+        @Callback @BindSelector("dismissWithClickedButtonIndex:animated:") public static void dismiss(UIAlertView __self__, Selector __cmd__, int buttonIndex, boolean animated) { __self__.dismiss(buttonIndex, animated); }
+        @Callback @BindSelector("buttonTitleAtIndex:") public static String getButtonTitle(UIAlertView __self__, Selector __cmd__, int buttonIndex) { return __self__.getButtonTitle(buttonIndex); }
+        @Callback @BindSelector("textFieldAtIndex:") public static UITextField getTextField(UIAlertView __self__, Selector __cmd__, int textFieldIndex) { return __self__.getTextField(textFieldIndex); }
+        @Callback @BindSelector("show") public static void show(UIAlertView __self__, Selector __cmd__) { __self__.show(); }
+    }
+    /*</callbacks>*/
 
 }

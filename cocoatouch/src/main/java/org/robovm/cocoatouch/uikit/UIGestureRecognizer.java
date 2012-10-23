@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -352,5 +353,23 @@ public class /*<name>*/ UIGestureRecognizer /*</name>*/
         if (customClass) { objc_touchesMovedSuper(getSuper(), this, touchesMoved$withEvent$, touches, event); } else { objc_touchesMoved(this, touchesMoved$withEvent$, touches, event); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("addTarget:action:") public static void addTarget(UIGestureRecognizer __self__, Selector __cmd__, NSObject target, Selector action) { __self__.addTarget(target, action); }
+        @Callback @BindSelector("canBePreventedByGestureRecognizer:") public static boolean canBePreventedByGestureRecognizer(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizer preventingGestureRecognizer) { return __self__.canBePreventedByGestureRecognizer(preventingGestureRecognizer); }
+        @Callback @BindSelector("canPreventGestureRecognizer:") public static boolean canPreventGestureRecognizer(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizer preventedGestureRecognizer) { return __self__.canPreventGestureRecognizer(preventedGestureRecognizer); }
+        @Callback @BindSelector("locationInView:") public static CGPoint getLocation(UIGestureRecognizer __self__, Selector __cmd__, UIView view) { return __self__.getLocation(view); }
+        @Callback @BindSelector("locationOfTouch:inView:") public static CGPoint getLocation(UIGestureRecognizer __self__, Selector __cmd__, int touchIndex, UIView view) { return __self__.getLocation(touchIndex, view); }
+        @Callback @BindSelector("numberOfTouches") public static int getNumberOfTouches(UIGestureRecognizer __self__, Selector __cmd__) { return __self__.getNumberOfTouches(); }
+        @Callback @BindSelector("ignoreTouch:forEvent:") public static void ignoreTouch(UIGestureRecognizer __self__, Selector __cmd__, UITouch touch, UIEvent event) { __self__.ignoreTouch(touch, event); }
+        @Callback @BindSelector("removeTarget:action:") public static void removeTarget(UIGestureRecognizer __self__, Selector __cmd__, NSObject target, Selector action) { __self__.removeTarget(target, action); }
+        @Callback @BindSelector("requireGestureRecognizerToFail:") public static void requireGestureRecognizerToFail(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizer otherGestureRecognizer) { __self__.requireGestureRecognizerToFail(otherGestureRecognizer); }
+        @Callback @BindSelector("reset") public static void reset(UIGestureRecognizer __self__, Selector __cmd__) { __self__.reset(); }
+        @Callback @BindSelector("touchesBegan:withEvent:") public static void touchesBegan(UIGestureRecognizer __self__, Selector __cmd__, NSSet touches, UIEvent event) { __self__.touchesBegan(touches, event); }
+        @Callback @BindSelector("touchesCancelled:withEvent:") public static void touchesCancelled(UIGestureRecognizer __self__, Selector __cmd__, NSSet touches, UIEvent event) { __self__.touchesCancelled(touches, event); }
+        @Callback @BindSelector("touchesEnded:withEvent:") public static void touchesEnded(UIGestureRecognizer __self__, Selector __cmd__, NSSet touches, UIEvent event) { __self__.touchesEnded(touches, event); }
+        @Callback @BindSelector("touchesMoved:withEvent:") public static void touchesMoved(UIGestureRecognizer __self__, Selector __cmd__, NSSet touches, UIEvent event) { __self__.touchesMoved(touches, event); }
+    }
+    /*</callbacks>*/
 
 }

@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -63,5 +64,13 @@ public interface /*<name>*/ UITextInputTokenizer /*</name>*/ /*<implements>*/ ex
      */
     boolean isPositionWithinTextUnit(UITextPosition position, UITextGranularity granularity, UITextDirection direction);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("positionFromPosition:toBoundary:inDirection:") public static UITextPosition getPosition(UITextInputTokenizer __self__, Selector __cmd__, UITextPosition position, UITextGranularity granularity, UITextDirection direction) { return __self__.getPosition(position, granularity, direction); }
+        @Callback @BindSelector("rangeEnclosingPosition:withGranularity:inDirection:") public static UITextRange getRangeEnclosingPosition(UITextInputTokenizer __self__, Selector __cmd__, UITextPosition position, UITextGranularity granularity, UITextDirection direction) { return __self__.getRangeEnclosingPosition(position, granularity, direction); }
+        @Callback @BindSelector("isPosition:atBoundary:inDirection:") public static boolean isPositionAtBoundary(UITextInputTokenizer __self__, Selector __cmd__, UITextPosition position, UITextGranularity granularity, UITextDirection direction) { return __self__.isPositionAtBoundary(position, granularity, direction); }
+        @Callback @BindSelector("isPosition:withinTextUnit:inDirection:") public static boolean isPositionWithinTextUnit(UITextInputTokenizer __self__, Selector __cmd__, UITextPosition position, UITextGranularity granularity, UITextDirection direction) { return __self__.isPositionWithinTextUnit(position, granularity, direction); }
+    }
+    /*</callbacks>*/
 
 }

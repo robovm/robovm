@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -320,5 +321,17 @@ public class /*<name>*/ UIStepper /*</name>*/
         if (customClass) { objc_setIncrementImageSuper(getSuper(), this, setIncrementImage$forState$, image, state); } else { objc_setIncrementImage(this, setIncrementImage$forState$, image, state); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("backgroundImageForState:") public static UIImage getBackgroundImage(UIStepper __self__, Selector __cmd__, UIControlState state) { return __self__.getBackgroundImage(state); }
+        @Callback @BindSelector("decrementImageForState:") public static UIImage getDecrementImage(UIStepper __self__, Selector __cmd__, UIControlState state) { return __self__.getDecrementImage(state); }
+        @Callback @BindSelector("dividerImageForLeftSegmentState:rightSegmentState:") public static UIImage getDividerImage(UIStepper __self__, Selector __cmd__, UIControlState leftState, UIControlState rightState) { return __self__.getDividerImage(leftState, rightState); }
+        @Callback @BindSelector("incrementImageForState:") public static UIImage getIncrementImage(UIStepper __self__, Selector __cmd__, UIControlState state) { return __self__.getIncrementImage(state); }
+        @Callback @BindSelector("setBackgroundImage:forState:") public static void setBackgroundImage(UIStepper __self__, Selector __cmd__, UIImage image, UIControlState state) { __self__.setBackgroundImage(image, state); }
+        @Callback @BindSelector("setDecrementImage:forState:") public static void setDecrementImage(UIStepper __self__, Selector __cmd__, UIImage image, UIControlState state) { __self__.setDecrementImage(image, state); }
+        @Callback @BindSelector("setDividerImage:forLeftSegmentState:rightSegmentState:") public static void setDividerImage(UIStepper __self__, Selector __cmd__, UIImage image, UIControlState leftState, UIControlState rightState) { __self__.setDividerImage(image, leftState, rightState); }
+        @Callback @BindSelector("setIncrementImage:forState:") public static void setIncrementImage(UIStepper __self__, Selector __cmd__, UIImage image, UIControlState state) { __self__.setIncrementImage(image, state); }
+    }
+    /*</callbacks>*/
 
 }

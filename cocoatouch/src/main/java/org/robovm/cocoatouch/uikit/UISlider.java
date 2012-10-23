@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -408,5 +409,20 @@ public class /*<name>*/ UISlider /*</name>*/
         if (customClass) { objc_setValueSuper(getSuper(), this, setValue$animated$, value, animated); } else { objc_setValue(this, setValue$animated$, value, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("maximumTrackImageForState:") public static UIImage getMaximumTrackImage(UISlider __self__, Selector __cmd__, UIControlState state) { return __self__.getMaximumTrackImage(state); }
+        @Callback @BindSelector("maximumValueImageRectForBounds:") public static CGRect getMaximumValueImageRect(UISlider __self__, Selector __cmd__, CGRect bounds) { return __self__.getMaximumValueImageRect(bounds); }
+        @Callback @BindSelector("minimumTrackImageForState:") public static UIImage getMinimumTrackImage(UISlider __self__, Selector __cmd__, UIControlState state) { return __self__.getMinimumTrackImage(state); }
+        @Callback @BindSelector("minimumValueImageRectForBounds:") public static CGRect getMinimumValueImageRect(UISlider __self__, Selector __cmd__, CGRect bounds) { return __self__.getMinimumValueImageRect(bounds); }
+        @Callback @BindSelector("thumbImageForState:") public static UIImage getThumbImage(UISlider __self__, Selector __cmd__, UIControlState state) { return __self__.getThumbImage(state); }
+        @Callback @BindSelector("thumbRectForBounds:trackRect:value:") public static CGRect getThumbRect(UISlider __self__, Selector __cmd__, CGRect bounds, CGRect rect, float value) { return __self__.getThumbRect(bounds, rect, value); }
+        @Callback @BindSelector("trackRectForBounds:") public static CGRect getTrackRect(UISlider __self__, Selector __cmd__, CGRect bounds) { return __self__.getTrackRect(bounds); }
+        @Callback @BindSelector("setMaximumTrackImage:forState:") public static void setMaximumTrackImage(UISlider __self__, Selector __cmd__, UIImage image, UIControlState state) { __self__.setMaximumTrackImage(image, state); }
+        @Callback @BindSelector("setMinimumTrackImage:forState:") public static void setMinimumTrackImage(UISlider __self__, Selector __cmd__, UIImage image, UIControlState state) { __self__.setMinimumTrackImage(image, state); }
+        @Callback @BindSelector("setThumbImage:forState:") public static void setThumbImage(UISlider __self__, Selector __cmd__, UIImage image, UIControlState state) { __self__.setThumbImage(image, state); }
+        @Callback @BindSelector("setValue:animated:") public static void setValue(UISlider __self__, Selector __cmd__, float value, boolean animated) { __self__.setValue(value, animated); }
+    }
+    /*</callbacks>*/
 
 }

@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -694,5 +695,16 @@ public class /*<name>*/ UIScrollView /*</name>*/
         if (customClass) { objc_zoomToRectSuper(getSuper(), this, zoomToRect$animated$, rect, animated); } else { objc_zoomToRect(this, zoomToRect$animated$, rect, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("flashScrollIndicators") public static void flashScrollIndicators(UIScrollView __self__, Selector __cmd__) { __self__.flashScrollIndicators(); }
+        @Callback @BindSelector("scrollRectToVisible:animated:") public static void scrollRectToVisible(UIScrollView __self__, Selector __cmd__, CGRect rect, boolean animated) { __self__.scrollRectToVisible(rect, animated); }
+        @Callback @BindSelector("setContentOffset:animated:") public static void setContentOffset(UIScrollView __self__, Selector __cmd__, CGPoint contentOffset, boolean animated) { __self__.setContentOffset(contentOffset, animated); }
+        @Callback @BindSelector("setZoomScale:animated:") public static void setZoomScale(UIScrollView __self__, Selector __cmd__, float scale, boolean animated) { __self__.setZoomScale(scale, animated); }
+        @Callback @BindSelector("touchesShouldBegin:withEvent:inContentView:") public static boolean touchesShouldBegin(UIScrollView __self__, Selector __cmd__, NSSet touches, UIEvent event, UIView view) { return __self__.touchesShouldBegin(touches, event, view); }
+        @Callback @BindSelector("touchesShouldCancelInContentView:") public static boolean touchesShouldCancelInContentView(UIScrollView __self__, Selector __cmd__, UIView view) { return __self__.touchesShouldCancelInContentView(view); }
+        @Callback @BindSelector("zoomToRect:animated:") public static void zoomToRect(UIScrollView __self__, Selector __cmd__, CGRect rect, boolean animated) { __self__.zoomToRect(rect, animated); }
+    }
+    /*</callbacks>*/
 
 }

@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -457,5 +458,16 @@ public class /*<name>*/ UIColor /*</name>*/
         if (customClass) { objc_setStrokeSuper(getSuper(), this, setStroke); } else { objc_setStroke(this, setStroke); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("colorWithAlphaComponent:") public static UIColor colorWithAlpha(UIColor __self__, Selector __cmd__, float alpha) { return __self__.colorWithAlpha(alpha); }
+        @Callback @BindSelector("getHue:saturation:brightness:alpha:") public static boolean getHSBA(UIColor __self__, Selector __cmd__, FloatPtr hue, FloatPtr saturation, FloatPtr brightness, FloatPtr alpha) { return __self__.getHSBA(hue, saturation, brightness, alpha); }
+        @Callback @BindSelector("getRed:green:blue:alpha:") public static boolean getRGBA(UIColor __self__, Selector __cmd__, FloatPtr red, FloatPtr green, FloatPtr blue, FloatPtr alpha) { return __self__.getRGBA(red, green, blue, alpha); }
+        @Callback @BindSelector("getWhite:alpha:") public static boolean getWhiteAlpha(UIColor __self__, Selector __cmd__, FloatPtr white, FloatPtr alpha) { return __self__.getWhiteAlpha(white, alpha); }
+        @Callback @BindSelector("setFill") public static void setFill(UIColor __self__, Selector __cmd__) { __self__.setFill(); }
+        @Callback @BindSelector("set") public static void setFillAndStroke(UIColor __self__, Selector __cmd__) { __self__.setFillAndStroke(); }
+        @Callback @BindSelector("setStroke") public static void setStroke(UIColor __self__, Selector __cmd__) { __self__.setStroke(); }
+    }
+    /*</callbacks>*/
 
 }

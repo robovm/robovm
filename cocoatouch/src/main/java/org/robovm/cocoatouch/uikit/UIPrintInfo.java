@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -197,5 +198,10 @@ public class /*<name>*/ UIPrintInfo /*</name>*/
         if (customClass) { return objc_toDictionarySuper(getSuper(), this, dictionaryRepresentation); } else { return objc_toDictionary(this, dictionaryRepresentation); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("dictionaryRepresentation") public static NSDictionary toDictionary(UIPrintInfo __self__, Selector __cmd__) { return __self__.toDictionary(); }
+    }
+    /*</callbacks>*/
 
 }

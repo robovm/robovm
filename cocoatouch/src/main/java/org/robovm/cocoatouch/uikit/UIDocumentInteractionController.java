@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -275,5 +276,16 @@ public class /*<name>*/ UIDocumentInteractionController /*</name>*/
         if (customClass) { return objc_presentPreviewSuper(getSuper(), this, presentPreviewAnimated$, animated); } else { return objc_presentPreview(this, presentPreviewAnimated$, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("dismissMenuAnimated:") public static void dismissMenu(UIDocumentInteractionController __self__, Selector __cmd__, boolean animated) { __self__.dismissMenu(animated); }
+        @Callback @BindSelector("dismissPreviewAnimated:") public static void dismissPreview(UIDocumentInteractionController __self__, Selector __cmd__, boolean animated) { __self__.dismissPreview(animated); }
+        @Callback @BindSelector("presentOpenInMenuFromBarButtonItem:animated:") public static boolean presentOpenInMenu(UIDocumentInteractionController __self__, Selector __cmd__, UIBarButtonItem item, boolean animated) { return __self__.presentOpenInMenu(item, animated); }
+        @Callback @BindSelector("presentOpenInMenuFromRect:inView:animated:") public static boolean presentOpenInMenu(UIDocumentInteractionController __self__, Selector __cmd__, CGRect rect, UIView view, boolean animated) { return __self__.presentOpenInMenu(rect, view, animated); }
+        @Callback @BindSelector("presentOptionsMenuFromBarButtonItem:animated:") public static boolean presentOptionsMenu(UIDocumentInteractionController __self__, Selector __cmd__, UIBarButtonItem item, boolean animated) { return __self__.presentOptionsMenu(item, animated); }
+        @Callback @BindSelector("presentOptionsMenuFromRect:inView:animated:") public static boolean presentOptionsMenu(UIDocumentInteractionController __self__, Selector __cmd__, CGRect rect, UIView view, boolean animated) { return __self__.presentOptionsMenu(rect, view, animated); }
+        @Callback @BindSelector("presentPreviewAnimated:") public static boolean presentPreview(UIDocumentInteractionController __self__, Selector __cmd__, boolean animated) { return __self__.presentPreview(animated); }
+    }
+    /*</callbacks>*/
 
 }

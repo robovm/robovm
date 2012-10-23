@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -133,5 +134,12 @@ public class /*<name>*/ UIPanGestureRecognizer /*</name>*/
         if (customClass) { objc_setTranslationSuper(getSuper(), this, setTranslation$inView$, translation, view); } else { objc_setTranslation(this, setTranslation$inView$, translation, view); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("translationInView:") public static CGPoint getTranslation(UIPanGestureRecognizer __self__, Selector __cmd__, UIView view) { return __self__.getTranslation(view); }
+        @Callback @BindSelector("velocityInView:") public static CGPoint getVelocity(UIPanGestureRecognizer __self__, Selector __cmd__, UIView view) { return __self__.getVelocity(view); }
+        @Callback @BindSelector("setTranslation:inView:") public static void setTranslation(UIPanGestureRecognizer __self__, Selector __cmd__, CGPoint translation, UIView view) { __self__.setTranslation(translation, view); }
+    }
+    /*</callbacks>*/
 
 }

@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,5 +55,11 @@ public interface /*<name>*/ UIImagePickerControllerDelegate /*</name>*/ /*<imple
      */
     void didFinishPickingMedia(UIImagePickerController picker, NSDictionary info);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("imagePickerControllerDidCancel:") public static void didCancel(UIImagePickerControllerDelegate __self__, Selector __cmd__, UIImagePickerController picker) { __self__.didCancel(picker); }
+        @Callback @BindSelector("imagePickerController:didFinishPickingMediaWithInfo:") public static void didFinishPickingMedia(UIImagePickerControllerDelegate __self__, Selector __cmd__, UIImagePickerController picker, NSDictionary info) { __self__.didFinishPickingMedia(picker, info); }
+    }
+    /*</callbacks>*/
 
 }

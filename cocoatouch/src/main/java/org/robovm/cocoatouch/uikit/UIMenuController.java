@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -176,5 +177,12 @@ public class /*<name>*/ UIMenuController /*</name>*/
         if (customClass) { objc_updateSuper(getSuper(), this, update); } else { objc_update(this, update); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("setMenuVisible:animated:") public static void setMenuVisible(UIMenuController __self__, Selector __cmd__, boolean menuVisible, boolean animated) { __self__.setMenuVisible(menuVisible, animated); }
+        @Callback @BindSelector("setTargetRect:inView:") public static void setTargetRect(UIMenuController __self__, Selector __cmd__, CGRect targetRect, UIView targetView) { __self__.setTargetRect(targetRect, targetView); }
+        @Callback @BindSelector("update") public static void update(UIMenuController __self__, Selector __cmd__) { __self__.update(); }
+    }
+    /*</callbacks>*/
 
 }

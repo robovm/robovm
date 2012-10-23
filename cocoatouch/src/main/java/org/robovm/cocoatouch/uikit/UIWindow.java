@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -232,5 +233,18 @@ public class /*<name>*/ UIWindow /*</name>*/
         if (customClass) { objc_sendEventSuper(getSuper(), this, sendEvent$, event); } else { objc_sendEvent(this, sendEvent$, event); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("becomeKeyWindow") public static void becomeKeyWindow(UIWindow __self__, Selector __cmd__) { __self__.becomeKeyWindow(); }
+        @Callback @BindSelector("convertPoint:fromWindow:") public static CGPoint convertPointFromWindow(UIWindow __self__, Selector __cmd__, CGPoint point, UIWindow window) { return __self__.convertPointFromWindow(point, window); }
+        @Callback @BindSelector("convertPoint:toWindow:") public static CGPoint convertPointToWindow(UIWindow __self__, Selector __cmd__, CGPoint point, UIWindow window) { return __self__.convertPointToWindow(point, window); }
+        @Callback @BindSelector("convertRect:fromWindow:") public static CGRect convertRectFromWindow(UIWindow __self__, Selector __cmd__, CGRect rect, UIWindow window) { return __self__.convertRectFromWindow(rect, window); }
+        @Callback @BindSelector("convertRect:toWindow:") public static CGRect convertRectToWindow(UIWindow __self__, Selector __cmd__, CGRect rect, UIWindow window) { return __self__.convertRectToWindow(rect, window); }
+        @Callback @BindSelector("makeKeyAndVisible") public static void makeKeyAndVisible(UIWindow __self__, Selector __cmd__) { __self__.makeKeyAndVisible(); }
+        @Callback @BindSelector("makeKeyWindow") public static void makeKeyWindow(UIWindow __self__, Selector __cmd__) { __self__.makeKeyWindow(); }
+        @Callback @BindSelector("resignKeyWindow") public static void resignKeyWindow(UIWindow __self__, Selector __cmd__) { __self__.resignKeyWindow(); }
+        @Callback @BindSelector("sendEvent:") public static void sendEvent(UIWindow __self__, Selector __cmd__, UIEvent event) { __self__.sendEvent(event); }
+    }
+    /*</callbacks>*/
 
 }

@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -481,5 +482,21 @@ public class /*<name>*/ UIPasteboard /*</name>*/
         if (customClass) { objc_setValueSuper(getSuper(), this, setValue$forPasteboardType$, value, pasteboardType); } else { objc_setValue(this, setValue$forPasteboardType$, value, pasteboardType); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("addItems:") public static void addItems(UIPasteboard __self__, Selector __cmd__, NSArray items) { __self__.addItems(items); }
+        @Callback @BindSelector("containsPasteboardTypes:") public static boolean contains(UIPasteboard __self__, Selector __cmd__, NSArray pasteboardTypes) { return __self__.contains(pasteboardTypes); }
+        @Callback @BindSelector("containsPasteboardTypes:inItemSet:") public static boolean contains(UIPasteboard __self__, Selector __cmd__, NSArray pasteboardTypes, NSIndexSet itemSet) { return __self__.contains(pasteboardTypes, itemSet); }
+        @Callback @BindSelector("dataForPasteboardType:") public static NSData getData(UIPasteboard __self__, Selector __cmd__, String pasteboardType) { return __self__.getData(pasteboardType); }
+        @Callback @BindSelector("dataForPasteboardType:inItemSet:") public static NSArray getData(UIPasteboard __self__, Selector __cmd__, String pasteboardType, NSIndexSet itemSet) { return __self__.getData(pasteboardType, itemSet); }
+        @Callback @BindSelector("itemSetWithPasteboardTypes:") public static NSIndexSet getItemsWithTypes(UIPasteboard __self__, Selector __cmd__, NSArray pasteboardTypes) { return __self__.getItemsWithTypes(pasteboardTypes); }
+        @Callback @BindSelector("pasteboardTypes") public static NSArray getTypes(UIPasteboard __self__, Selector __cmd__) { return __self__.getTypes(); }
+        @Callback @BindSelector("pasteboardTypesForItemSet:") public static NSArray getTypes(UIPasteboard __self__, Selector __cmd__, NSIndexSet itemSet) { return __self__.getTypes(itemSet); }
+        @Callback @BindSelector("valueForPasteboardType:") public static NSObject getValue(UIPasteboard __self__, Selector __cmd__, String pasteboardType) { return __self__.getValue(pasteboardType); }
+        @Callback @BindSelector("valuesForPasteboardType:inItemSet:") public static NSArray getValues(UIPasteboard __self__, Selector __cmd__, String pasteboardType, NSIndexSet itemSet) { return __self__.getValues(pasteboardType, itemSet); }
+        @Callback @BindSelector("setData:forPasteboardType:") public static void setData(UIPasteboard __self__, Selector __cmd__, NSData data, String pasteboardType) { __self__.setData(data, pasteboardType); }
+        @Callback @BindSelector("setValue:forPasteboardType:") public static void setValue(UIPasteboard __self__, Selector __cmd__, NSObject value, String pasteboardType) { __self__.setValue(value, pasteboardType); }
+    }
+    /*</callbacks>*/
 
 }

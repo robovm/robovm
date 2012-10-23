@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -209,5 +210,10 @@ public class /*<name>*/ UISwitch /*</name>*/
         if (customClass) { objc_setOnSuper(getSuper(), this, setOn$animated$, on, animated); } else { objc_setOn(this, setOn$animated$, on, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("setOn:animated:") public static void setOn(UISwitch __self__, Selector __cmd__, boolean on, boolean animated) { __self__.setOn(on, animated); }
+    }
+    /*</callbacks>*/
 
 }

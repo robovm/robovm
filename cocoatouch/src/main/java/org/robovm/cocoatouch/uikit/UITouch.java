@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -144,5 +145,11 @@ public class /*<name>*/ UITouch /*</name>*/
         if (customClass) { return objc_getPreviousLocationSuper(getSuper(), this, previousLocationInView$, view); } else { return objc_getPreviousLocation(this, previousLocationInView$, view); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("locationInView:") public static CGPoint getLocation(UITouch __self__, Selector __cmd__, UIView view) { return __self__.getLocation(view); }
+        @Callback @BindSelector("previousLocationInView:") public static CGPoint getPreviousLocation(UITouch __self__, Selector __cmd__, UIView view) { return __self__.getPreviousLocation(view); }
+    }
+    /*</callbacks>*/
 
 }

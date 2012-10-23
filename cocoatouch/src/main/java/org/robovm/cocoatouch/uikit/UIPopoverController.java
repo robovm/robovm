@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -275,5 +276,14 @@ public class /*<name>*/ UIPopoverController /*</name>*/
         if (customClass) { objc_setPopoverContentSizeSuper(getSuper(), this, setPopoverContentSize$animated$, size, animated); } else { objc_setPopoverContentSize(this, setPopoverContentSize$animated$, size, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("dismissPopoverAnimated:") public static void dismiss(UIPopoverController __self__, Selector __cmd__, boolean animated) { __self__.dismiss(animated); }
+        @Callback @BindSelector("presentPopoverFromBarButtonItem:permittedArrowDirections:animated:") public static void presentFromBarButtonItem(UIPopoverController __self__, Selector __cmd__, UIBarButtonItem item, UIPopoverArrowDirection arrowDirections, boolean animated) { __self__.presentFromBarButtonItem(item, arrowDirections, animated); }
+        @Callback @BindSelector("presentPopoverFromRect:inView:permittedArrowDirections:animated:") public static void presentFromRectInView(UIPopoverController __self__, Selector __cmd__, CGRect rect, UIView view, UIPopoverArrowDirection arrowDirections, boolean animated) { __self__.presentFromRectInView(rect, view, arrowDirections, animated); }
+        @Callback @BindSelector("setContentViewController:animated:") public static void setContentViewController(UIPopoverController __self__, Selector __cmd__, UIViewController viewController, boolean animated) { __self__.setContentViewController(viewController, animated); }
+        @Callback @BindSelector("setPopoverContentSize:animated:") public static void setPopoverContentSize(UIPopoverController __self__, Selector __cmd__, CGSize size, boolean animated) { __self__.setPopoverContentSize(size, animated); }
+    }
+    /*</callbacks>*/
 
 }

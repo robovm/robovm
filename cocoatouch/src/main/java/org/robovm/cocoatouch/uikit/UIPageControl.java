@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -210,5 +211,11 @@ public class /*<name>*/ UIPageControl /*</name>*/
         if (customClass) { objc_updateCurrentPageDisplaySuper(getSuper(), this, updateCurrentPageDisplay); } else { objc_updateCurrentPageDisplay(this, updateCurrentPageDisplay); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("sizeForNumberOfPages:") public static CGSize getSizeForNumberOfPages(UIPageControl __self__, Selector __cmd__, int pageCount) { return __self__.getSizeForNumberOfPages(pageCount); }
+        @Callback @BindSelector("updateCurrentPageDisplay") public static void updateCurrentPageDisplay(UIPageControl __self__, Selector __cmd__) { __self__.updateCurrentPageDisplay(); }
+    }
+    /*</callbacks>*/
 
 }

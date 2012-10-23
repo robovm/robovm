@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -63,5 +64,13 @@ public interface /*<name>*/ UIWebViewDelegate /*</name>*/ /*<implements>*/ exten
      */
     boolean shouldStartLoad(UIWebView webView, NSURLRequest request, UIWebViewNavigationType navigationType);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("webView:didFailLoadWithError:") public static void didFailLoad(UIWebViewDelegate __self__, Selector __cmd__, UIWebView webView, NSError error) { __self__.didFailLoad(webView, error); }
+        @Callback @BindSelector("webViewDidFinishLoad:") public static void didFinishLoad(UIWebViewDelegate __self__, Selector __cmd__, UIWebView webView) { __self__.didFinishLoad(webView); }
+        @Callback @BindSelector("webViewDidStartLoad:") public static void didStartLoad(UIWebViewDelegate __self__, Selector __cmd__, UIWebView webView) { __self__.didStartLoad(webView); }
+        @Callback @BindSelector("webView:shouldStartLoadWithRequest:navigationType:") public static boolean shouldStartLoad(UIWebViewDelegate __self__, Selector __cmd__, UIWebView webView, NSURLRequest request, UIWebViewNavigationType navigationType) { return __self__.shouldStartLoad(webView, request, navigationType); }
+    }
+    /*</callbacks>*/
 
 }

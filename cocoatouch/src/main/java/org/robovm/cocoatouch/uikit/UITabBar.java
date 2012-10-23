@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -276,5 +277,13 @@ public class /*<name>*/ UITabBar /*</name>*/
         if (customClass) { objc_setItemsSuper(getSuper(), this, setItems$animated$, items, animated); } else { objc_setItems(this, setItems$animated$, items, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("beginCustomizingItems:") public static void beginCustomizing(UITabBar __self__, Selector __cmd__, NSArray items) { __self__.beginCustomizing(items); }
+        @Callback @BindSelector("endCustomizingAnimated:") public static boolean endCustomizing(UITabBar __self__, Selector __cmd__, boolean animated) { return __self__.endCustomizing(animated); }
+        @Callback @BindSelector("isCustomizing") public static boolean isCustomizing(UITabBar __self__, Selector __cmd__) { return __self__.isCustomizing(); }
+        @Callback @BindSelector("setItems:animated:") public static void setItems(UITabBar __self__, Selector __cmd__, NSArray items, boolean animated) { __self__.setItems(items, animated); }
+    }
+    /*</callbacks>*/
 
 }

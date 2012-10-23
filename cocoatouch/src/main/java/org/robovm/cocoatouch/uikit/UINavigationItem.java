@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -341,5 +342,14 @@ public class /*<name>*/ UINavigationItem /*</name>*/
         if (customClass) { objc_setRightBarButtonItemsSuper(getSuper(), this, setRightBarButtonItems$animated$, items, animated); } else { objc_setRightBarButtonItems(this, setRightBarButtonItems$animated$, items, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("setHidesBackButton:animated:") public static void setHidesBackButton(UINavigationItem __self__, Selector __cmd__, boolean hidesBackButton, boolean animated) { __self__.setHidesBackButton(hidesBackButton, animated); }
+        @Callback @BindSelector("setLeftBarButtonItem:animated:") public static void setLeftBarButtonItem(UINavigationItem __self__, Selector __cmd__, UIBarButtonItem item, boolean animated) { __self__.setLeftBarButtonItem(item, animated); }
+        @Callback @BindSelector("setLeftBarButtonItems:animated:") public static void setLeftBarButtonItems(UINavigationItem __self__, Selector __cmd__, NSArray items, boolean animated) { __self__.setLeftBarButtonItems(items, animated); }
+        @Callback @BindSelector("setRightBarButtonItem:animated:") public static void setRightBarButtonItem(UINavigationItem __self__, Selector __cmd__, UIBarButtonItem item, boolean animated) { __self__.setRightBarButtonItem(item, animated); }
+        @Callback @BindSelector("setRightBarButtonItems:animated:") public static void setRightBarButtonItems(UINavigationItem __self__, Selector __cmd__, NSArray items, boolean animated) { __self__.setRightBarButtonItems(items, animated); }
+    }
+    /*</callbacks>*/
 
 }

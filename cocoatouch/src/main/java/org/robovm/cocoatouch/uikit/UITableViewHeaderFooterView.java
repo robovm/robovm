@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -164,5 +165,10 @@ public class /*<name>*/ UITableViewHeaderFooterView /*</name>*/
         if (customClass) { objc_prepareForReuseSuper(getSuper(), this, prepareForReuse); } else { objc_prepareForReuse(this, prepareForReuse); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("prepareForReuse") public static void prepareForReuse(UITableViewHeaderFooterView __self__, Selector __cmd__) { __self__.prepareForReuse(); }
+    }
+    /*</callbacks>*/
 
 }

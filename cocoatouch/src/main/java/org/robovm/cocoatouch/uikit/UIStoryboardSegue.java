@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -110,5 +111,10 @@ public class /*<name>*/ UIStoryboardSegue /*</name>*/
         if (customClass) { objc_performSuper(getSuper(), this, perform); } else { objc_perform(this, perform); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("perform") public static void perform(UIStoryboardSegue __self__, Selector __cmd__) { __self__.perform(); }
+    }
+    /*</callbacks>*/
 
 }

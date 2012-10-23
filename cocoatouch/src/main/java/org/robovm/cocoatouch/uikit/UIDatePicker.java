@@ -23,6 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -265,5 +266,10 @@ public class /*<name>*/ UIDatePicker /*</name>*/
         if (customClass) { objc_setDateSuper(getSuper(), this, setDate$animated$, date, animated); } else { objc_setDate(this, setDate$animated$, date, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("setDate:animated:") public static void setDate(UIDatePicker __self__, Selector __cmd__, NSDate date, boolean animated) { __self__.setDate(date, animated); }
+    }
+    /*</callbacks>*/
 
 }

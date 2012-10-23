@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -101,5 +101,20 @@ public interface /*<name>*/ UISearchBarDelegate /*</name>*/ /*<implements>*/ ext
      */
     boolean shouldEndEditing(UISearchBar searchBar);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("searchBarBookmarkButtonClicked:") public static void bookmarkButtonClicked(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar) { __self__.bookmarkButtonClicked(searchBar); }
+        @Callback @BindSelector("searchBarCancelButtonClicked:") public static void cancelButtonClicked(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar) { __self__.cancelButtonClicked(searchBar); }
+        @Callback @BindSelector("searchBarTextDidBeginEditing:") public static void didBeginEditing(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar) { __self__.didBeginEditing(searchBar); }
+        @Callback @BindSelector("searchBar:textDidChange:") public static void didChange(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar, String searchText) { __self__.didChange(searchBar, searchText); }
+        @Callback @BindSelector("searchBarTextDidEndEditing:") public static void didEndEditing(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar) { __self__.didEndEditing(searchBar); }
+        @Callback @BindSelector("searchBarResultsListButtonClicked:") public static void resultsListButtonClicked(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar) { __self__.resultsListButtonClicked(searchBar); }
+        @Callback @BindSelector("searchBarSearchButtonClicked:") public static void searchButtonClicked(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar) { __self__.searchButtonClicked(searchBar); }
+        @Callback @BindSelector("searchBar:selectedScopeButtonIndexDidChange:") public static void selectedScopeButtonIndexDidChange(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar, int selectedScope) { __self__.selectedScopeButtonIndexDidChange(searchBar, selectedScope); }
+        @Callback @BindSelector("searchBarShouldBeginEditing:") public static boolean shouldBeginEditing(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar) { return __self__.shouldBeginEditing(searchBar); }
+        @Callback @BindSelector("searchBar:shouldChangeTextInRange:replacementText:") public static boolean shouldChange(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar, NSRange range, String text) { return __self__.shouldChange(searchBar, range, text); }
+        @Callback @BindSelector("searchBarShouldEndEditing:") public static boolean shouldEndEditing(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar) { return __self__.shouldEndEditing(searchBar); }
+    }
+    /*</callbacks>*/
 
 }

@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -145,5 +145,17 @@ public class /*<name>*/ UIActivity /*</name>*/
         if (customClass) { objc_prepareSuper(getSuper(), this, prepareWithActivityItems$, activityItems); } else { objc_prepare(this, prepareWithActivityItems$, activityItems); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("canPerformWithActivityItems:") public static boolean canPerform(UIActivity __self__, Selector __cmd__, NSArray activityItems) { return __self__.canPerform(activityItems); }
+        @Callback @BindSelector("activityDidFinish:") public static void didFinish(UIActivity __self__, Selector __cmd__, boolean completed) { __self__.didFinish(completed); }
+        @Callback @BindSelector("activityImage") public static UIImage getImage(UIActivity __self__, Selector __cmd__) { return __self__.getImage(); }
+        @Callback @BindSelector("activityTitle") public static String getTitle(UIActivity __self__, Selector __cmd__) { return __self__.getTitle(); }
+        @Callback @BindSelector("activityType") public static String getType(UIActivity __self__, Selector __cmd__) { return __self__.getType(); }
+        @Callback @BindSelector("activityViewController") public static UIViewController getViewController(UIActivity __self__, Selector __cmd__) { return __self__.getViewController(); }
+        @Callback @BindSelector("performActivity") public static void perform(UIActivity __self__, Selector __cmd__) { __self__.perform(); }
+        @Callback @BindSelector("prepareWithActivityItems:") public static void prepare(UIActivity __self__, Selector __cmd__, NSArray activityItems) { __self__.prepare(activityItems); }
+    }
+    /*</callbacks>*/
 
 }

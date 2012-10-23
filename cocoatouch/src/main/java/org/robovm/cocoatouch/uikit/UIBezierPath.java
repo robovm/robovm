@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,91 +54,193 @@ public class /*<name>*/ UIBezierPath /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector CGPath = Selector.register("CGPath");
+    @Bridge(symbol = "objc_msgSend") private native static CGPath objc_getCGPath(UIBezierPath __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGPath objc_getCGPathSuper(ObjCSuper __super__, UIBezierPath __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/CGPath">@property(nonatomic) CGPathRef CGPath</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("CGPath") public native CGPath getCGPath();
+    public CGPath getCGPath() {
+        if (customClass) { return objc_getCGPathSuper(getSuper(), this, CGPath); } else { return objc_getCGPath(this, CGPath); }
+    }
+    
+    private static final Selector setCGPath$ = Selector.register("setCGPath:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setCGPath(UIBezierPath __self__, Selector __cmd__, CGPath CGPath);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCGPathSuper(ObjCSuper __super__, UIBezierPath __self__, Selector __cmd__, CGPath CGPath);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/CGPath">@property(nonatomic) CGPathRef CGPath</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setCGPath:") public native void setCGPath(CGPath v);
+    public void setCGPath(CGPath CGPath) {
+        if (customClass) { objc_setCGPathSuper(getSuper(), this, setCGPath$, CGPath); } else { objc_setCGPath(this, setCGPath$, CGPath); }
+    }
+    
+    private static final Selector bounds = Selector.register("bounds");
+    @Bridge(symbol = "objc_msgSend") private native static CGRect objc_getBounds(UIBezierPath __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGRect objc_getBoundsSuper(ObjCSuper __super__, UIBezierPath __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/bounds">@property(nonatomic, readonly) CGRect bounds</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("bounds") public native CGRect getBounds();
+    public CGRect getBounds() {
+        if (customClass) { return objc_getBoundsSuper(getSuper(), this, bounds); } else { return objc_getBounds(this, bounds); }
+    }
+    
+    private static final Selector currentPoint = Selector.register("currentPoint");
+    @Bridge(symbol = "objc_msgSend") private native static CGPoint objc_getCurrentPoint(UIBezierPath __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGPoint objc_getCurrentPointSuper(ObjCSuper __super__, UIBezierPath __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/currentPoint">@property(nonatomic, readonly) CGPoint currentPoint</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("currentPoint") public native CGPoint getCurrentPoint();
+    public CGPoint getCurrentPoint() {
+        if (customClass) { return objc_getCurrentPointSuper(getSuper(), this, currentPoint); } else { return objc_getCurrentPoint(this, currentPoint); }
+    }
+    
+    private static final Selector isEmpty = Selector.register("isEmpty");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isEmpty(UIBezierPath __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isEmptySuper(ObjCSuper __super__, UIBezierPath __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/empty">@property(readonly, getter=isEmpty) BOOL empty</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("isEmpty") public native boolean isEmpty();
+    public boolean isEmpty() {
+        if (customClass) { return objc_isEmptySuper(getSuper(), this, isEmpty); } else { return objc_isEmpty(this, isEmpty); }
+    }
+    
+    private static final Selector flatness = Selector.register("flatness");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getFlatness(UIBezierPath __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getFlatnessSuper(ObjCSuper __super__, UIBezierPath __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/flatness">@property(nonatomic) CGFloat flatness</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("flatness") public native float getFlatness();
+    public float getFlatness() {
+        if (customClass) { return objc_getFlatnessSuper(getSuper(), this, flatness); } else { return objc_getFlatness(this, flatness); }
+    }
+    
+    private static final Selector setFlatness$ = Selector.register("setFlatness:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setFlatness(UIBezierPath __self__, Selector __cmd__, float flatness);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFlatnessSuper(ObjCSuper __super__, UIBezierPath __self__, Selector __cmd__, float flatness);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/flatness">@property(nonatomic) CGFloat flatness</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setFlatness:") public native void setFlatness(float v);
+    public void setFlatness(float flatness) {
+        if (customClass) { objc_setFlatnessSuper(getSuper(), this, setFlatness$, flatness); } else { objc_setFlatness(this, setFlatness$, flatness); }
+    }
+    
+    private static final Selector lineCapStyle = Selector.register("lineCapStyle");
+    @Bridge(symbol = "objc_msgSend") private native static CGLineCap objc_getLineCapStyle(UIBezierPath __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGLineCap objc_getLineCapStyleSuper(ObjCSuper __super__, UIBezierPath __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineCapStyle">@property(nonatomic) CGLineCap lineCapStyle</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("lineCapStyle") public native CGLineCap getLineCapStyle();
+    public CGLineCap getLineCapStyle() {
+        if (customClass) { return objc_getLineCapStyleSuper(getSuper(), this, lineCapStyle); } else { return objc_getLineCapStyle(this, lineCapStyle); }
+    }
+    
+    private static final Selector setLineCapStyle$ = Selector.register("setLineCapStyle:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setLineCapStyle(UIBezierPath __self__, Selector __cmd__, CGLineCap lineCapStyle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setLineCapStyleSuper(ObjCSuper __super__, UIBezierPath __self__, Selector __cmd__, CGLineCap lineCapStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineCapStyle">@property(nonatomic) CGLineCap lineCapStyle</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setLineCapStyle:") public native void setLineCapStyle(CGLineCap v);
+    public void setLineCapStyle(CGLineCap lineCapStyle) {
+        if (customClass) { objc_setLineCapStyleSuper(getSuper(), this, setLineCapStyle$, lineCapStyle); } else { objc_setLineCapStyle(this, setLineCapStyle$, lineCapStyle); }
+    }
+    
+    private static final Selector lineJoinStyle = Selector.register("lineJoinStyle");
+    @Bridge(symbol = "objc_msgSend") private native static CGLineJoin objc_getLineJoinStyle(UIBezierPath __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGLineJoin objc_getLineJoinStyleSuper(ObjCSuper __super__, UIBezierPath __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineJoinStyle">@property(nonatomic) CGLineJoin lineJoinStyle</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("lineJoinStyle") public native CGLineJoin getLineJoinStyle();
+    public CGLineJoin getLineJoinStyle() {
+        if (customClass) { return objc_getLineJoinStyleSuper(getSuper(), this, lineJoinStyle); } else { return objc_getLineJoinStyle(this, lineJoinStyle); }
+    }
+    
+    private static final Selector setLineJoinStyle$ = Selector.register("setLineJoinStyle:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setLineJoinStyle(UIBezierPath __self__, Selector __cmd__, CGLineJoin lineJoinStyle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setLineJoinStyleSuper(ObjCSuper __super__, UIBezierPath __self__, Selector __cmd__, CGLineJoin lineJoinStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineJoinStyle">@property(nonatomic) CGLineJoin lineJoinStyle</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setLineJoinStyle:") public native void setLineJoinStyle(CGLineJoin v);
+    public void setLineJoinStyle(CGLineJoin lineJoinStyle) {
+        if (customClass) { objc_setLineJoinStyleSuper(getSuper(), this, setLineJoinStyle$, lineJoinStyle); } else { objc_setLineJoinStyle(this, setLineJoinStyle$, lineJoinStyle); }
+    }
+    
+    private static final Selector lineWidth = Selector.register("lineWidth");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getLineWidth(UIBezierPath __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getLineWidthSuper(ObjCSuper __super__, UIBezierPath __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineWidth">@property(nonatomic) CGFloat lineWidth</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("lineWidth") public native float getLineWidth();
+    public float getLineWidth() {
+        if (customClass) { return objc_getLineWidthSuper(getSuper(), this, lineWidth); } else { return objc_getLineWidth(this, lineWidth); }
+    }
+    
+    private static final Selector setLineWidth$ = Selector.register("setLineWidth:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setLineWidth(UIBezierPath __self__, Selector __cmd__, float lineWidth);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setLineWidthSuper(ObjCSuper __super__, UIBezierPath __self__, Selector __cmd__, float lineWidth);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineWidth">@property(nonatomic) CGFloat lineWidth</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setLineWidth:") public native void setLineWidth(float v);
+    public void setLineWidth(float lineWidth) {
+        if (customClass) { objc_setLineWidthSuper(getSuper(), this, setLineWidth$, lineWidth); } else { objc_setLineWidth(this, setLineWidth$, lineWidth); }
+    }
+    
+    private static final Selector miterLimit = Selector.register("miterLimit");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getMiterLimit(UIBezierPath __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getMiterLimitSuper(ObjCSuper __super__, UIBezierPath __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/miterLimit">@property(nonatomic) CGFloat miterLimit</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("miterLimit") public native float getMiterLimit();
+    public float getMiterLimit() {
+        if (customClass) { return objc_getMiterLimitSuper(getSuper(), this, miterLimit); } else { return objc_getMiterLimit(this, miterLimit); }
+    }
+    
+    private static final Selector setMiterLimit$ = Selector.register("setMiterLimit:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMiterLimit(UIBezierPath __self__, Selector __cmd__, float miterLimit);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMiterLimitSuper(ObjCSuper __super__, UIBezierPath __self__, Selector __cmd__, float miterLimit);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/miterLimit">@property(nonatomic) CGFloat miterLimit</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setMiterLimit:") public native void setMiterLimit(float v);
+    public void setMiterLimit(float miterLimit) {
+        if (customClass) { objc_setMiterLimitSuper(getSuper(), this, setMiterLimit$, miterLimit); } else { objc_setMiterLimit(this, setMiterLimit$, miterLimit); }
+    }
+    
+    private static final Selector usesEvenOddFillRule = Selector.register("usesEvenOddFillRule");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isUsesEvenOddFillRule(UIBezierPath __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isUsesEvenOddFillRuleSuper(ObjCSuper __super__, UIBezierPath __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/usesEvenOddFillRule">@property(nonatomic) BOOL usesEvenOddFillRule</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("usesEvenOddFillRule") public native boolean isUsesEvenOddFillRule();
+    public boolean isUsesEvenOddFillRule() {
+        if (customClass) { return objc_isUsesEvenOddFillRuleSuper(getSuper(), this, usesEvenOddFillRule); } else { return objc_isUsesEvenOddFillRule(this, usesEvenOddFillRule); }
+    }
+    
+    private static final Selector setUsesEvenOddFillRule$ = Selector.register("setUsesEvenOddFillRule:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setUsesEvenOddFillRule(UIBezierPath __self__, Selector __cmd__, boolean usesEvenOddFillRule);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setUsesEvenOddFillRuleSuper(ObjCSuper __super__, UIBezierPath __self__, Selector __cmd__, boolean usesEvenOddFillRule);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/usesEvenOddFillRule">@property(nonatomic) BOOL usesEvenOddFillRule</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setUsesEvenOddFillRule:") public native void setUsesEvenOddFillRule(boolean v);
+    public void setUsesEvenOddFillRule(boolean usesEvenOddFillRule) {
+        if (customClass) { objc_setUsesEvenOddFillRuleSuper(getSuper(), this, setUsesEvenOddFillRule$, usesEvenOddFillRule); } else { objc_setUsesEvenOddFillRule(this, setUsesEvenOddFillRule$, usesEvenOddFillRule); }
+    }
     /*</properties>*/
     /*<methods>*/
     
@@ -410,5 +512,27 @@ public class /*<name>*/ UIBezierPath /*</name>*/
         if (customClass) { objc_strokeSuper(getSuper(), this, strokeWithBlendMode$alpha$, blendMode, alpha); } else { objc_stroke(this, strokeWithBlendMode$alpha$, blendMode, alpha); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("addArcWithCenter:radius:startAngle:endAngle:clockwise:") public static void addArc(UIBezierPath __self__, Selector __cmd__, CGPoint center, float radius, float startAngle, float endAngle, boolean clockwise) { __self__.addArc(center, radius, startAngle, endAngle, clockwise); }
+        @Callback @BindSelector("addClip") public static void addClip(UIBezierPath __self__, Selector __cmd__) { __self__.addClip(); }
+        @Callback @BindSelector("addCurveToPoint:controlPoint1:controlPoint2:") public static void addCurve(UIBezierPath __self__, Selector __cmd__, CGPoint endPoint, CGPoint controlPoint1, CGPoint controlPoint2) { __self__.addCurve(endPoint, controlPoint1, controlPoint2); }
+        @Callback @BindSelector("addLineToPoint:") public static void addLine(UIBezierPath __self__, Selector __cmd__, CGPoint point) { __self__.addLine(point); }
+        @Callback @BindSelector("addQuadCurveToPoint:controlPoint:") public static void addQuadCurve(UIBezierPath __self__, Selector __cmd__, CGPoint endPoint, CGPoint controlPoint) { __self__.addQuadCurve(endPoint, controlPoint); }
+        @Callback @BindSelector("appendPath:") public static void appendPath(UIBezierPath __self__, Selector __cmd__, UIBezierPath bezierPath) { __self__.appendPath(bezierPath); }
+        @Callback @BindSelector("applyTransform:") public static void applyTransform(UIBezierPath __self__, Selector __cmd__, CGAffineTransform transform) { __self__.applyTransform(transform); }
+        @Callback @BindSelector("closePath") public static void closePath(UIBezierPath __self__, Selector __cmd__) { __self__.closePath(); }
+        @Callback @BindSelector("containsPoint:") public static boolean containsPoint(UIBezierPath __self__, Selector __cmd__, CGPoint point) { return __self__.containsPoint(point); }
+        @Callback @BindSelector("fillWithBlendMode:alpha:") public static void fill(UIBezierPath __self__, Selector __cmd__, CGBlendMode blendMode, float alpha) { __self__.fill(blendMode, alpha); }
+        @Callback @BindSelector("fill") public static void fill(UIBezierPath __self__, Selector __cmd__) { __self__.fill(); }
+        @Callback @BindSelector("getLineDash:count:phase:") public static void getLineDash(UIBezierPath __self__, Selector __cmd__, FloatPtr pattern, IntPtr count, FloatPtr phase) { __self__.getLineDash(pattern, count, phase); }
+        @Callback @BindSelector("moveToPoint:") public static void move(UIBezierPath __self__, Selector __cmd__, CGPoint point) { __self__.move(point); }
+        @Callback @BindSelector("removeAllPoints") public static void removeAllPoints(UIBezierPath __self__, Selector __cmd__) { __self__.removeAllPoints(); }
+        @Callback @BindSelector("bezierPathByReversingPath") public static UIBezierPath reverse(UIBezierPath __self__, Selector __cmd__) { return __self__.reverse(); }
+        @Callback @BindSelector("setLineDash:count:phase:") public static void setLineDash(UIBezierPath __self__, Selector __cmd__, FloatPtr pattern, int count, float phase) { __self__.setLineDash(pattern, count, phase); }
+        @Callback @BindSelector("stroke") public static void stroke(UIBezierPath __self__, Selector __cmd__) { __self__.stroke(); }
+        @Callback @BindSelector("strokeWithBlendMode:alpha:") public static void stroke(UIBezierPath __self__, Selector __cmd__, CGBlendMode blendMode, float alpha) { __self__.stroke(blendMode, alpha); }
+    }
+    /*</callbacks>*/
 
 }

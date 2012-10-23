@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,396 +54,864 @@ public class /*<name>*/ UITextField /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector adjustsFontSizeToFitWidth = Selector.register("adjustsFontSizeToFitWidth");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAdjustsFontSizeToFitWidth(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAdjustsFontSizeToFitWidthSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/adjustsFontSizeToFitWidth">@property(nonatomic) BOOL adjustsFontSizeToFitWidth</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("adjustsFontSizeToFitWidth") public native boolean isAdjustsFontSizeToFitWidth();
+    public boolean isAdjustsFontSizeToFitWidth() {
+        if (customClass) { return objc_isAdjustsFontSizeToFitWidthSuper(getSuper(), this, adjustsFontSizeToFitWidth); } else { return objc_isAdjustsFontSizeToFitWidth(this, adjustsFontSizeToFitWidth); }
+    }
+    
+    private static final Selector setAdjustsFontSizeToFitWidth$ = Selector.register("setAdjustsFontSizeToFitWidth:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAdjustsFontSizeToFitWidth(UITextField __self__, Selector __cmd__, boolean adjustsFontSizeToFitWidth);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAdjustsFontSizeToFitWidthSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, boolean adjustsFontSizeToFitWidth);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/adjustsFontSizeToFitWidth">@property(nonatomic) BOOL adjustsFontSizeToFitWidth</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAdjustsFontSizeToFitWidth:") public native void setAdjustsFontSizeToFitWidth(boolean v);
+    public void setAdjustsFontSizeToFitWidth(boolean adjustsFontSizeToFitWidth) {
+        if (customClass) { objc_setAdjustsFontSizeToFitWidthSuper(getSuper(), this, setAdjustsFontSizeToFitWidth$, adjustsFontSizeToFitWidth); } else { objc_setAdjustsFontSizeToFitWidth(this, setAdjustsFontSizeToFitWidth$, adjustsFontSizeToFitWidth); }
+    }
+    
+    private static final Selector allowsEditingTextAttributes = Selector.register("allowsEditingTextAttributes");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAllowsEditingTextAttributes(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAllowsEditingTextAttributesSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/allowsEditingTextAttributes">@property(nonatomic) BOOL allowsEditingTextAttributes</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("allowsEditingTextAttributes") public native boolean isAllowsEditingTextAttributes();
+    public boolean isAllowsEditingTextAttributes() {
+        if (customClass) { return objc_isAllowsEditingTextAttributesSuper(getSuper(), this, allowsEditingTextAttributes); } else { return objc_isAllowsEditingTextAttributes(this, allowsEditingTextAttributes); }
+    }
+    
+    private static final Selector setAllowsEditingTextAttributes$ = Selector.register("setAllowsEditingTextAttributes:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAllowsEditingTextAttributes(UITextField __self__, Selector __cmd__, boolean allowsEditingTextAttributes);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAllowsEditingTextAttributesSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, boolean allowsEditingTextAttributes);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/allowsEditingTextAttributes">@property(nonatomic) BOOL allowsEditingTextAttributes</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setAllowsEditingTextAttributes:") public native void setAllowsEditingTextAttributes(boolean v);
+    public void setAllowsEditingTextAttributes(boolean allowsEditingTextAttributes) {
+        if (customClass) { objc_setAllowsEditingTextAttributesSuper(getSuper(), this, setAllowsEditingTextAttributes$, allowsEditingTextAttributes); } else { objc_setAllowsEditingTextAttributes(this, setAllowsEditingTextAttributes$, allowsEditingTextAttributes); }
+    }
+    
+    private static final Selector attributedPlaceholder = Selector.register("attributedPlaceholder");
+    @Bridge(symbol = "objc_msgSend") private native static NSAttributedString objc_getAttributedPlaceholder(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSAttributedString objc_getAttributedPlaceholderSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/attributedPlaceholder">@property(nonatomic,copy) NSAttributedString *attributedPlaceholder</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("attributedPlaceholder") public native NSAttributedString getAttributedPlaceholder();
+    public NSAttributedString getAttributedPlaceholder() {
+        if (customClass) { return objc_getAttributedPlaceholderSuper(getSuper(), this, attributedPlaceholder); } else { return objc_getAttributedPlaceholder(this, attributedPlaceholder); }
+    }
+    
+    private static final Selector setAttributedPlaceholder$ = Selector.register("setAttributedPlaceholder:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAttributedPlaceholder(UITextField __self__, Selector __cmd__, NSAttributedString attributedPlaceholder);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAttributedPlaceholderSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, NSAttributedString attributedPlaceholder);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/attributedPlaceholder">@property(nonatomic,copy) NSAttributedString *attributedPlaceholder</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setAttributedPlaceholder:") public native void setAttributedPlaceholder(NSAttributedString v);
+    public void setAttributedPlaceholder(NSAttributedString attributedPlaceholder) {
+        if (customClass) { objc_setAttributedPlaceholderSuper(getSuper(), this, setAttributedPlaceholder$, attributedPlaceholder); } else { objc_setAttributedPlaceholder(this, setAttributedPlaceholder$, attributedPlaceholder); }
+    }
+    
+    private static final Selector attributedText = Selector.register("attributedText");
+    @Bridge(symbol = "objc_msgSend") private native static NSAttributedString objc_getAttributedText(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSAttributedString objc_getAttributedTextSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/attributedText">@property(nonatomic,copy) NSAttributedString *attributedText</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("attributedText") public native NSAttributedString getAttributedText();
+    public NSAttributedString getAttributedText() {
+        if (customClass) { return objc_getAttributedTextSuper(getSuper(), this, attributedText); } else { return objc_getAttributedText(this, attributedText); }
+    }
+    
+    private static final Selector setAttributedText$ = Selector.register("setAttributedText:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAttributedText(UITextField __self__, Selector __cmd__, NSAttributedString attributedText);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAttributedTextSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, NSAttributedString attributedText);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/attributedText">@property(nonatomic,copy) NSAttributedString *attributedText</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setAttributedText:") public native void setAttributedText(NSAttributedString v);
+    public void setAttributedText(NSAttributedString attributedText) {
+        if (customClass) { objc_setAttributedTextSuper(getSuper(), this, setAttributedText$, attributedText); } else { objc_setAttributedText(this, setAttributedText$, attributedText); }
+    }
+    
+    private static final Selector autocapitalizationType = Selector.register("autocapitalizationType");
+    @Bridge(symbol = "objc_msgSend") private native static UITextAutocapitalizationType objc_getAutocapitalizationType(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextAutocapitalizationType objc_getAutocapitalizationTypeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocapitalizationType">@property(nonatomic) UITextAutocapitalizationType autocapitalizationType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("autocapitalizationType") public native UITextAutocapitalizationType getAutocapitalizationType();
+    public UITextAutocapitalizationType getAutocapitalizationType() {
+        if (customClass) { return objc_getAutocapitalizationTypeSuper(getSuper(), this, autocapitalizationType); } else { return objc_getAutocapitalizationType(this, autocapitalizationType); }
+    }
+    
+    private static final Selector setAutocapitalizationType$ = Selector.register("setAutocapitalizationType:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAutocapitalizationType(UITextField __self__, Selector __cmd__, UITextAutocapitalizationType autocapitalizationType);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAutocapitalizationTypeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UITextAutocapitalizationType autocapitalizationType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocapitalizationType">@property(nonatomic) UITextAutocapitalizationType autocapitalizationType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAutocapitalizationType:") public native void setAutocapitalizationType(UITextAutocapitalizationType v);
+    public void setAutocapitalizationType(UITextAutocapitalizationType autocapitalizationType) {
+        if (customClass) { objc_setAutocapitalizationTypeSuper(getSuper(), this, setAutocapitalizationType$, autocapitalizationType); } else { objc_setAutocapitalizationType(this, setAutocapitalizationType$, autocapitalizationType); }
+    }
+    
+    private static final Selector autocorrectionType = Selector.register("autocorrectionType");
+    @Bridge(symbol = "objc_msgSend") private native static UITextAutocorrectionType objc_getAutocorrectionType(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextAutocorrectionType objc_getAutocorrectionTypeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocorrectionType">@property(nonatomic) UITextAutocorrectionType autocorrectionType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("autocorrectionType") public native UITextAutocorrectionType getAutocorrectionType();
+    public UITextAutocorrectionType getAutocorrectionType() {
+        if (customClass) { return objc_getAutocorrectionTypeSuper(getSuper(), this, autocorrectionType); } else { return objc_getAutocorrectionType(this, autocorrectionType); }
+    }
+    
+    private static final Selector setAutocorrectionType$ = Selector.register("setAutocorrectionType:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAutocorrectionType(UITextField __self__, Selector __cmd__, UITextAutocorrectionType autocorrectionType);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAutocorrectionTypeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UITextAutocorrectionType autocorrectionType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocorrectionType">@property(nonatomic) UITextAutocorrectionType autocorrectionType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAutocorrectionType:") public native void setAutocorrectionType(UITextAutocorrectionType v);
+    public void setAutocorrectionType(UITextAutocorrectionType autocorrectionType) {
+        if (customClass) { objc_setAutocorrectionTypeSuper(getSuper(), this, setAutocorrectionType$, autocorrectionType); } else { objc_setAutocorrectionType(this, setAutocorrectionType$, autocorrectionType); }
+    }
+    
+    private static final Selector background = Selector.register("background");
+    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getBackground(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getBackgroundSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/background">@property(nonatomic, retain) UIImage *background</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("background") public native UIImage getBackground();
+    public UIImage getBackground() {
+        if (customClass) { return objc_getBackgroundSuper(getSuper(), this, background); } else { return objc_getBackground(this, background); }
+    }
+    
+    private static final Selector setBackground$ = Selector.register("setBackground:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setBackground(UITextField __self__, Selector __cmd__, UIImage background);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBackgroundSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UIImage background);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/background">@property(nonatomic, retain) UIImage *background</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setBackground:") public native void setBackground(UIImage v);
+    public void setBackground(UIImage background) {
+        if (customClass) { objc_setBackgroundSuper(getSuper(), this, setBackground$, background); } else { objc_setBackground(this, setBackground$, background); }
+    }
+    
+    private static final Selector beginningOfDocument = Selector.register("beginningOfDocument");
+    @Bridge(symbol = "objc_msgSend") private native static UITextPosition objc_getBeginningOfDocument(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextPosition objc_getBeginningOfDocumentSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/beginningOfDocument">@property(nonatomic, readonly) UITextPosition *beginningOfDocument</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("beginningOfDocument") public native UITextPosition getBeginningOfDocument();
+    public UITextPosition getBeginningOfDocument() {
+        if (customClass) { return objc_getBeginningOfDocumentSuper(getSuper(), this, beginningOfDocument); } else { return objc_getBeginningOfDocument(this, beginningOfDocument); }
+    }
+    
+    private static final Selector borderStyle = Selector.register("borderStyle");
+    @Bridge(symbol = "objc_msgSend") private native static UITextBorderStyle objc_getBorderStyle(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextBorderStyle objc_getBorderStyleSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/borderStyle">@property(nonatomic) UITextBorderStyle borderStyle</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("borderStyle") public native UITextBorderStyle getBorderStyle();
+    public UITextBorderStyle getBorderStyle() {
+        if (customClass) { return objc_getBorderStyleSuper(getSuper(), this, borderStyle); } else { return objc_getBorderStyle(this, borderStyle); }
+    }
+    
+    private static final Selector setBorderStyle$ = Selector.register("setBorderStyle:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setBorderStyle(UITextField __self__, Selector __cmd__, UITextBorderStyle borderStyle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBorderStyleSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UITextBorderStyle borderStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/borderStyle">@property(nonatomic) UITextBorderStyle borderStyle</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setBorderStyle:") public native void setBorderStyle(UITextBorderStyle v);
+    public void setBorderStyle(UITextBorderStyle borderStyle) {
+        if (customClass) { objc_setBorderStyleSuper(getSuper(), this, setBorderStyle$, borderStyle); } else { objc_setBorderStyle(this, setBorderStyle$, borderStyle); }
+    }
+    
+    private static final Selector clearButtonMode = Selector.register("clearButtonMode");
+    @Bridge(symbol = "objc_msgSend") private native static UITextFieldViewMode objc_getClearButtonMode(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextFieldViewMode objc_getClearButtonModeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearButtonMode">@property(nonatomic) UITextFieldViewMode clearButtonMode</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("clearButtonMode") public native UITextFieldViewMode getClearButtonMode();
+    public UITextFieldViewMode getClearButtonMode() {
+        if (customClass) { return objc_getClearButtonModeSuper(getSuper(), this, clearButtonMode); } else { return objc_getClearButtonMode(this, clearButtonMode); }
+    }
+    
+    private static final Selector setClearButtonMode$ = Selector.register("setClearButtonMode:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setClearButtonMode(UITextField __self__, Selector __cmd__, UITextFieldViewMode clearButtonMode);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setClearButtonModeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UITextFieldViewMode clearButtonMode);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearButtonMode">@property(nonatomic) UITextFieldViewMode clearButtonMode</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setClearButtonMode:") public native void setClearButtonMode(UITextFieldViewMode v);
+    public void setClearButtonMode(UITextFieldViewMode clearButtonMode) {
+        if (customClass) { objc_setClearButtonModeSuper(getSuper(), this, setClearButtonMode$, clearButtonMode); } else { objc_setClearButtonMode(this, setClearButtonMode$, clearButtonMode); }
+    }
+    
+    private static final Selector clearsOnBeginEditing = Selector.register("clearsOnBeginEditing");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isClearsOnBeginEditing(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isClearsOnBeginEditingSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearsOnBeginEditing">@property(nonatomic) BOOL clearsOnBeginEditing</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("clearsOnBeginEditing") public native boolean isClearsOnBeginEditing();
+    public boolean isClearsOnBeginEditing() {
+        if (customClass) { return objc_isClearsOnBeginEditingSuper(getSuper(), this, clearsOnBeginEditing); } else { return objc_isClearsOnBeginEditing(this, clearsOnBeginEditing); }
+    }
+    
+    private static final Selector setClearsOnBeginEditing$ = Selector.register("setClearsOnBeginEditing:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setClearsOnBeginEditing(UITextField __self__, Selector __cmd__, boolean clearsOnBeginEditing);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setClearsOnBeginEditingSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, boolean clearsOnBeginEditing);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearsOnBeginEditing">@property(nonatomic) BOOL clearsOnBeginEditing</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setClearsOnBeginEditing:") public native void setClearsOnBeginEditing(boolean v);
+    public void setClearsOnBeginEditing(boolean clearsOnBeginEditing) {
+        if (customClass) { objc_setClearsOnBeginEditingSuper(getSuper(), this, setClearsOnBeginEditing$, clearsOnBeginEditing); } else { objc_setClearsOnBeginEditing(this, setClearsOnBeginEditing$, clearsOnBeginEditing); }
+    }
+    
+    private static final Selector clearsOnInsertion = Selector.register("clearsOnInsertion");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isClearsOnInsertion(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isClearsOnInsertionSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearsOnInsertion">@property(nonatomic) BOOL clearsOnInsertion</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("clearsOnInsertion") public native boolean isClearsOnInsertion();
+    public boolean isClearsOnInsertion() {
+        if (customClass) { return objc_isClearsOnInsertionSuper(getSuper(), this, clearsOnInsertion); } else { return objc_isClearsOnInsertion(this, clearsOnInsertion); }
+    }
+    
+    private static final Selector setClearsOnInsertion$ = Selector.register("setClearsOnInsertion:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setClearsOnInsertion(UITextField __self__, Selector __cmd__, boolean clearsOnInsertion);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setClearsOnInsertionSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, boolean clearsOnInsertion);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearsOnInsertion">@property(nonatomic) BOOL clearsOnInsertion</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setClearsOnInsertion:") public native void setClearsOnInsertion(boolean v);
+    public void setClearsOnInsertion(boolean clearsOnInsertion) {
+        if (customClass) { objc_setClearsOnInsertionSuper(getSuper(), this, setClearsOnInsertion$, clearsOnInsertion); } else { objc_setClearsOnInsertion(this, setClearsOnInsertion$, clearsOnInsertion); }
+    }
+    
+    private static final Selector delegate = Selector.register("delegate");
+    @Bridge(symbol = "objc_msgSend") private native static UITextFieldDelegate objc_getDelegate(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextFieldDelegate objc_getDelegateSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/delegate">@property(nonatomic, assign) id&amp;lt;UITextFieldDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("delegate") public native UITextFieldDelegate getDelegate();
+    public UITextFieldDelegate getDelegate() {
+        if (customClass) { return objc_getDelegateSuper(getSuper(), this, delegate); } else { return objc_getDelegate(this, delegate); }
+    }
+    
+    private static final Selector setDelegate$ = Selector.register("setDelegate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UITextField __self__, Selector __cmd__, UITextFieldDelegate delegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UITextFieldDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/delegate">@property(nonatomic, assign) id&amp;lt;UITextFieldDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(UITextFieldDelegate v);
+    public void setDelegate(UITextFieldDelegate delegate) {
+        if (customClass) { objc_setDelegateSuper(getSuper(), this, setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
+    }
+    
+    private static final Selector disabledBackground = Selector.register("disabledBackground");
+    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getDisabledBackground(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getDisabledBackgroundSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/disabledBackground">@property(nonatomic, retain) UIImage *disabledBackground</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("disabledBackground") public native UIImage getDisabledBackground();
+    public UIImage getDisabledBackground() {
+        if (customClass) { return objc_getDisabledBackgroundSuper(getSuper(), this, disabledBackground); } else { return objc_getDisabledBackground(this, disabledBackground); }
+    }
+    
+    private static final Selector setDisabledBackground$ = Selector.register("setDisabledBackground:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDisabledBackground(UITextField __self__, Selector __cmd__, UIImage disabledBackground);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDisabledBackgroundSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UIImage disabledBackground);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/disabledBackground">@property(nonatomic, retain) UIImage *disabledBackground</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDisabledBackground:") public native void setDisabledBackground(UIImage v);
+    public void setDisabledBackground(UIImage disabledBackground) {
+        if (customClass) { objc_setDisabledBackgroundSuper(getSuper(), this, setDisabledBackground$, disabledBackground); } else { objc_setDisabledBackground(this, setDisabledBackground$, disabledBackground); }
+    }
+    
+    private static final Selector isEditing = Selector.register("isEditing");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isEditing(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isEditingSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/editing">@property(nonatomic, readonly, getter=isEditing) BOOL editing</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isEditing") public native boolean isEditing();
+    public boolean isEditing() {
+        if (customClass) { return objc_isEditingSuper(getSuper(), this, isEditing); } else { return objc_isEditing(this, isEditing); }
+    }
+    
+    private static final Selector enablesReturnKeyAutomatically = Selector.register("enablesReturnKeyAutomatically");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isEnablesReturnKeyAutomatically(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isEnablesReturnKeyAutomaticallySuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/enablesReturnKeyAutomatically">@property(nonatomic) BOOL enablesReturnKeyAutomatically</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("enablesReturnKeyAutomatically") public native boolean isEnablesReturnKeyAutomatically();
+    public boolean isEnablesReturnKeyAutomatically() {
+        if (customClass) { return objc_isEnablesReturnKeyAutomaticallySuper(getSuper(), this, enablesReturnKeyAutomatically); } else { return objc_isEnablesReturnKeyAutomatically(this, enablesReturnKeyAutomatically); }
+    }
+    
+    private static final Selector setEnablesReturnKeyAutomatically$ = Selector.register("setEnablesReturnKeyAutomatically:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setEnablesReturnKeyAutomatically(UITextField __self__, Selector __cmd__, boolean enablesReturnKeyAutomatically);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setEnablesReturnKeyAutomaticallySuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, boolean enablesReturnKeyAutomatically);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/enablesReturnKeyAutomatically">@property(nonatomic) BOOL enablesReturnKeyAutomatically</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setEnablesReturnKeyAutomatically:") public native void setEnablesReturnKeyAutomatically(boolean v);
+    public void setEnablesReturnKeyAutomatically(boolean enablesReturnKeyAutomatically) {
+        if (customClass) { objc_setEnablesReturnKeyAutomaticallySuper(getSuper(), this, setEnablesReturnKeyAutomatically$, enablesReturnKeyAutomatically); } else { objc_setEnablesReturnKeyAutomatically(this, setEnablesReturnKeyAutomatically$, enablesReturnKeyAutomatically); }
+    }
+    
+    private static final Selector endOfDocument = Selector.register("endOfDocument");
+    @Bridge(symbol = "objc_msgSend") private native static UITextPosition objc_getEndOfDocument(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextPosition objc_getEndOfDocumentSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/endOfDocument">@property(nonatomic, readonly) UITextPosition *endOfDocument</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("endOfDocument") public native UITextPosition getEndOfDocument();
+    public UITextPosition getEndOfDocument() {
+        if (customClass) { return objc_getEndOfDocumentSuper(getSuper(), this, endOfDocument); } else { return objc_getEndOfDocument(this, endOfDocument); }
+    }
+    
+    private static final Selector font = Selector.register("font");
+    @Bridge(symbol = "objc_msgSend") private native static UIFont objc_getFont(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIFont objc_getFontSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/font">@property(nonatomic, retain) UIFont *font</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("font") public native UIFont getFont();
+    public UIFont getFont() {
+        if (customClass) { return objc_getFontSuper(getSuper(), this, font); } else { return objc_getFont(this, font); }
+    }
+    
+    private static final Selector setFont$ = Selector.register("setFont:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setFont(UITextField __self__, Selector __cmd__, UIFont font);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFontSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UIFont font);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/font">@property(nonatomic, retain) UIFont *font</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setFont:") public native void setFont(UIFont v);
+    public void setFont(UIFont font) {
+        if (customClass) { objc_setFontSuper(getSuper(), this, setFont$, font); } else { objc_setFont(this, setFont$, font); }
+    }
+    
+    private static final Selector inputAccessoryView = Selector.register("inputAccessoryView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getInputAccessoryView(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getInputAccessoryViewSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/inputAccessoryView">@property (readwrite, retain) UIView *inputAccessoryView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("inputAccessoryView") public native UIView getInputAccessoryView();
+    public UIView getInputAccessoryView() {
+        if (customClass) { return objc_getInputAccessoryViewSuper(getSuper(), this, inputAccessoryView); } else { return objc_getInputAccessoryView(this, inputAccessoryView); }
+    }
+    
+    private static final Selector setInputAccessoryView$ = Selector.register("setInputAccessoryView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setInputAccessoryView(UITextField __self__, Selector __cmd__, UIView inputAccessoryView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setInputAccessoryViewSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UIView inputAccessoryView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/inputAccessoryView">@property (readwrite, retain) UIView *inputAccessoryView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setInputAccessoryView:") public native void setInputAccessoryView(UIView v);
+    public void setInputAccessoryView(UIView inputAccessoryView) {
+        if (customClass) { objc_setInputAccessoryViewSuper(getSuper(), this, setInputAccessoryView$, inputAccessoryView); } else { objc_setInputAccessoryView(this, setInputAccessoryView$, inputAccessoryView); }
+    }
+    
+    private static final Selector inputDelegate = Selector.register("inputDelegate");
+    @Bridge(symbol = "objc_msgSend") private native static UITextInputDelegate objc_getInputDelegate(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextInputDelegate objc_getInputDelegateSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/inputDelegate">@property(nonatomic, assign) id&amp;lt;UITextInputDelegate&amp;gt; inputDelegate</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("inputDelegate") public native UITextInputDelegate getInputDelegate();
+    public UITextInputDelegate getInputDelegate() {
+        if (customClass) { return objc_getInputDelegateSuper(getSuper(), this, inputDelegate); } else { return objc_getInputDelegate(this, inputDelegate); }
+    }
+    
+    private static final Selector setInputDelegate$ = Selector.register("setInputDelegate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setInputDelegate(UITextField __self__, Selector __cmd__, UITextInputDelegate inputDelegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setInputDelegateSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UITextInputDelegate inputDelegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/inputDelegate">@property(nonatomic, assign) id&amp;lt;UITextInputDelegate&amp;gt; inputDelegate</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setInputDelegate:") public native void setInputDelegate(UITextInputDelegate v);
+    public void setInputDelegate(UITextInputDelegate inputDelegate) {
+        if (customClass) { objc_setInputDelegateSuper(getSuper(), this, setInputDelegate$, inputDelegate); } else { objc_setInputDelegate(this, setInputDelegate$, inputDelegate); }
+    }
+    
+    private static final Selector inputView = Selector.register("inputView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getInputView(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getInputViewSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/inputView">@property (readwrite, retain) UIView *inputView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("inputView") public native UIView getInputView();
+    public UIView getInputView() {
+        if (customClass) { return objc_getInputViewSuper(getSuper(), this, inputView); } else { return objc_getInputView(this, inputView); }
+    }
+    
+    private static final Selector setInputView$ = Selector.register("setInputView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setInputView(UITextField __self__, Selector __cmd__, UIView inputView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setInputViewSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UIView inputView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/inputView">@property (readwrite, retain) UIView *inputView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setInputView:") public native void setInputView(UIView v);
+    public void setInputView(UIView inputView) {
+        if (customClass) { objc_setInputViewSuper(getSuper(), this, setInputView$, inputView); } else { objc_setInputView(this, setInputView$, inputView); }
+    }
+    
+    private static final Selector keyboardAppearance = Selector.register("keyboardAppearance");
+    @Bridge(symbol = "objc_msgSend") private native static UIKeyboardAppearance objc_getKeyboardAppearance(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIKeyboardAppearance objc_getKeyboardAppearanceSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardAppearance">@property(nonatomic) UIKeyboardAppearance keyboardAppearance</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("keyboardAppearance") public native UIKeyboardAppearance getKeyboardAppearance();
+    public UIKeyboardAppearance getKeyboardAppearance() {
+        if (customClass) { return objc_getKeyboardAppearanceSuper(getSuper(), this, keyboardAppearance); } else { return objc_getKeyboardAppearance(this, keyboardAppearance); }
+    }
+    
+    private static final Selector setKeyboardAppearance$ = Selector.register("setKeyboardAppearance:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setKeyboardAppearance(UITextField __self__, Selector __cmd__, UIKeyboardAppearance keyboardAppearance);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setKeyboardAppearanceSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UIKeyboardAppearance keyboardAppearance);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardAppearance">@property(nonatomic) UIKeyboardAppearance keyboardAppearance</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setKeyboardAppearance:") public native void setKeyboardAppearance(UIKeyboardAppearance v);
+    public void setKeyboardAppearance(UIKeyboardAppearance keyboardAppearance) {
+        if (customClass) { objc_setKeyboardAppearanceSuper(getSuper(), this, setKeyboardAppearance$, keyboardAppearance); } else { objc_setKeyboardAppearance(this, setKeyboardAppearance$, keyboardAppearance); }
+    }
+    
+    private static final Selector keyboardType = Selector.register("keyboardType");
+    @Bridge(symbol = "objc_msgSend") private native static UIKeyboardType objc_getKeyboardType(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIKeyboardType objc_getKeyboardTypeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardType">@property(nonatomic) UIKeyboardType keyboardType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("keyboardType") public native UIKeyboardType getKeyboardType();
+    public UIKeyboardType getKeyboardType() {
+        if (customClass) { return objc_getKeyboardTypeSuper(getSuper(), this, keyboardType); } else { return objc_getKeyboardType(this, keyboardType); }
+    }
+    
+    private static final Selector setKeyboardType$ = Selector.register("setKeyboardType:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setKeyboardType(UITextField __self__, Selector __cmd__, UIKeyboardType keyboardType);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setKeyboardTypeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UIKeyboardType keyboardType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardType">@property(nonatomic) UIKeyboardType keyboardType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setKeyboardType:") public native void setKeyboardType(UIKeyboardType v);
+    public void setKeyboardType(UIKeyboardType keyboardType) {
+        if (customClass) { objc_setKeyboardTypeSuper(getSuper(), this, setKeyboardType$, keyboardType); } else { objc_setKeyboardType(this, setKeyboardType$, keyboardType); }
+    }
+    
+    private static final Selector leftView = Selector.register("leftView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getLeftView(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getLeftViewSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/leftView">@property(nonatomic, retain) UIView *leftView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("leftView") public native UIView getLeftView();
+    public UIView getLeftView() {
+        if (customClass) { return objc_getLeftViewSuper(getSuper(), this, leftView); } else { return objc_getLeftView(this, leftView); }
+    }
+    
+    private static final Selector setLeftView$ = Selector.register("setLeftView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setLeftView(UITextField __self__, Selector __cmd__, UIView leftView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setLeftViewSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UIView leftView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/leftView">@property(nonatomic, retain) UIView *leftView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setLeftView:") public native void setLeftView(UIView v);
+    public void setLeftView(UIView leftView) {
+        if (customClass) { objc_setLeftViewSuper(getSuper(), this, setLeftView$, leftView); } else { objc_setLeftView(this, setLeftView$, leftView); }
+    }
+    
+    private static final Selector leftViewMode = Selector.register("leftViewMode");
+    @Bridge(symbol = "objc_msgSend") private native static UITextFieldViewMode objc_getLeftViewMode(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextFieldViewMode objc_getLeftViewModeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/leftViewMode">@property(nonatomic) UITextFieldViewMode leftViewMode</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("leftViewMode") public native UITextFieldViewMode getLeftViewMode();
+    public UITextFieldViewMode getLeftViewMode() {
+        if (customClass) { return objc_getLeftViewModeSuper(getSuper(), this, leftViewMode); } else { return objc_getLeftViewMode(this, leftViewMode); }
+    }
+    
+    private static final Selector setLeftViewMode$ = Selector.register("setLeftViewMode:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setLeftViewMode(UITextField __self__, Selector __cmd__, UITextFieldViewMode leftViewMode);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setLeftViewModeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UITextFieldViewMode leftViewMode);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/leftViewMode">@property(nonatomic) UITextFieldViewMode leftViewMode</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setLeftViewMode:") public native void setLeftViewMode(UITextFieldViewMode v);
+    public void setLeftViewMode(UITextFieldViewMode leftViewMode) {
+        if (customClass) { objc_setLeftViewModeSuper(getSuper(), this, setLeftViewMode$, leftViewMode); } else { objc_setLeftViewMode(this, setLeftViewMode$, leftViewMode); }
+    }
+    
+    private static final Selector markedTextRange = Selector.register("markedTextRange");
+    @Bridge(symbol = "objc_msgSend") private native static UITextRange objc_getMarkedTextRange(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextRange objc_getMarkedTextRangeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextRange">@property(nonatomic, readonly) UITextRange *markedTextRange</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("markedTextRange") public native UITextRange getMarkedTextRange();
+    public UITextRange getMarkedTextRange() {
+        if (customClass) { return objc_getMarkedTextRangeSuper(getSuper(), this, markedTextRange); } else { return objc_getMarkedTextRange(this, markedTextRange); }
+    }
+    
+    private static final Selector markedTextStyle = Selector.register("markedTextStyle");
+    @Bridge(symbol = "objc_msgSend") private native static NSDictionary objc_getMarkedTextStyle(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSDictionary objc_getMarkedTextStyleSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextStyle">@property(nonatomic, copy) NSDictionary *markedTextStyle</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("markedTextStyle") public native NSDictionary getMarkedTextStyle();
+    public NSDictionary getMarkedTextStyle() {
+        if (customClass) { return objc_getMarkedTextStyleSuper(getSuper(), this, markedTextStyle); } else { return objc_getMarkedTextStyle(this, markedTextStyle); }
+    }
+    
+    private static final Selector setMarkedTextStyle$ = Selector.register("setMarkedTextStyle:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMarkedTextStyle(UITextField __self__, Selector __cmd__, NSDictionary markedTextStyle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMarkedTextStyleSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, NSDictionary markedTextStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextStyle">@property(nonatomic, copy) NSDictionary *markedTextStyle</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setMarkedTextStyle:") public native void setMarkedTextStyle(NSDictionary v);
+    public void setMarkedTextStyle(NSDictionary markedTextStyle) {
+        if (customClass) { objc_setMarkedTextStyleSuper(getSuper(), this, setMarkedTextStyle$, markedTextStyle); } else { objc_setMarkedTextStyle(this, setMarkedTextStyle$, markedTextStyle); }
+    }
+    
+    private static final Selector minimumFontSize = Selector.register("minimumFontSize");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getMinimumFontSize(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getMinimumFontSizeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/minimumFontSize">@property(nonatomic) CGFloat minimumFontSize</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("minimumFontSize") public native float getMinimumFontSize();
+    public float getMinimumFontSize() {
+        if (customClass) { return objc_getMinimumFontSizeSuper(getSuper(), this, minimumFontSize); } else { return objc_getMinimumFontSize(this, minimumFontSize); }
+    }
+    
+    private static final Selector setMinimumFontSize$ = Selector.register("setMinimumFontSize:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinimumFontSize(UITextField __self__, Selector __cmd__, float minimumFontSize);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinimumFontSizeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, float minimumFontSize);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/minimumFontSize">@property(nonatomic) CGFloat minimumFontSize</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setMinimumFontSize:") public native void setMinimumFontSize(float v);
+    public void setMinimumFontSize(float minimumFontSize) {
+        if (customClass) { objc_setMinimumFontSizeSuper(getSuper(), this, setMinimumFontSize$, minimumFontSize); } else { objc_setMinimumFontSize(this, setMinimumFontSize$, minimumFontSize); }
+    }
+    
+    private static final Selector placeholder = Selector.register("placeholder");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getPlaceholder(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getPlaceholderSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/placeholder">@property(nonatomic, copy) NSString *placeholder</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("placeholder") public native String getPlaceholder();
+    public String getPlaceholder() {
+        if (customClass) { return objc_getPlaceholderSuper(getSuper(), this, placeholder); } else { return objc_getPlaceholder(this, placeholder); }
+    }
+    
+    private static final Selector setPlaceholder$ = Selector.register("setPlaceholder:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setPlaceholder(UITextField __self__, Selector __cmd__, String placeholder);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPlaceholderSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, String placeholder);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/placeholder">@property(nonatomic, copy) NSString *placeholder</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setPlaceholder:") public native void setPlaceholder(String v);
+    public void setPlaceholder(String placeholder) {
+        if (customClass) { objc_setPlaceholderSuper(getSuper(), this, setPlaceholder$, placeholder); } else { objc_setPlaceholder(this, setPlaceholder$, placeholder); }
+    }
+    
+    private static final Selector returnKeyType = Selector.register("returnKeyType");
+    @Bridge(symbol = "objc_msgSend") private native static UIReturnKeyType objc_getReturnKeyType(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIReturnKeyType objc_getReturnKeyTypeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/returnKeyType">@property(nonatomic) UIReturnKeyType returnKeyType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("returnKeyType") public native UIReturnKeyType getReturnKeyType();
+    public UIReturnKeyType getReturnKeyType() {
+        if (customClass) { return objc_getReturnKeyTypeSuper(getSuper(), this, returnKeyType); } else { return objc_getReturnKeyType(this, returnKeyType); }
+    }
+    
+    private static final Selector setReturnKeyType$ = Selector.register("setReturnKeyType:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setReturnKeyType(UITextField __self__, Selector __cmd__, UIReturnKeyType returnKeyType);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setReturnKeyTypeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UIReturnKeyType returnKeyType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/returnKeyType">@property(nonatomic) UIReturnKeyType returnKeyType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setReturnKeyType:") public native void setReturnKeyType(UIReturnKeyType v);
+    public void setReturnKeyType(UIReturnKeyType returnKeyType) {
+        if (customClass) { objc_setReturnKeyTypeSuper(getSuper(), this, setReturnKeyType$, returnKeyType); } else { objc_setReturnKeyType(this, setReturnKeyType$, returnKeyType); }
+    }
+    
+    private static final Selector rightView = Selector.register("rightView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getRightView(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getRightViewSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/rightView">@property(nonatomic, retain) UIView *rightView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("rightView") public native UIView getRightView();
+    public UIView getRightView() {
+        if (customClass) { return objc_getRightViewSuper(getSuper(), this, rightView); } else { return objc_getRightView(this, rightView); }
+    }
+    
+    private static final Selector setRightView$ = Selector.register("setRightView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setRightView(UITextField __self__, Selector __cmd__, UIView rightView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setRightViewSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UIView rightView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/rightView">@property(nonatomic, retain) UIView *rightView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setRightView:") public native void setRightView(UIView v);
+    public void setRightView(UIView rightView) {
+        if (customClass) { objc_setRightViewSuper(getSuper(), this, setRightView$, rightView); } else { objc_setRightView(this, setRightView$, rightView); }
+    }
+    
+    private static final Selector rightViewMode = Selector.register("rightViewMode");
+    @Bridge(symbol = "objc_msgSend") private native static UITextFieldViewMode objc_getRightViewMode(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextFieldViewMode objc_getRightViewModeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/rightViewMode">@property(nonatomic) UITextFieldViewMode rightViewMode</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("rightViewMode") public native UITextFieldViewMode getRightViewMode();
+    public UITextFieldViewMode getRightViewMode() {
+        if (customClass) { return objc_getRightViewModeSuper(getSuper(), this, rightViewMode); } else { return objc_getRightViewMode(this, rightViewMode); }
+    }
+    
+    private static final Selector setRightViewMode$ = Selector.register("setRightViewMode:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setRightViewMode(UITextField __self__, Selector __cmd__, UITextFieldViewMode rightViewMode);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setRightViewModeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UITextFieldViewMode rightViewMode);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/rightViewMode">@property(nonatomic) UITextFieldViewMode rightViewMode</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setRightViewMode:") public native void setRightViewMode(UITextFieldViewMode v);
+    public void setRightViewMode(UITextFieldViewMode rightViewMode) {
+        if (customClass) { objc_setRightViewModeSuper(getSuper(), this, setRightViewMode$, rightViewMode); } else { objc_setRightViewMode(this, setRightViewMode$, rightViewMode); }
+    }
+    
+    private static final Selector isSecureTextEntry = Selector.register("isSecureTextEntry");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isSecureTextEntry(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isSecureTextEntrySuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/secureTextEntry">@property(nonatomic, getter=isSecureTextEntry) BOOL secureTextEntry</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isSecureTextEntry") public native boolean isSecureTextEntry();
+    public boolean isSecureTextEntry() {
+        if (customClass) { return objc_isSecureTextEntrySuper(getSuper(), this, isSecureTextEntry); } else { return objc_isSecureTextEntry(this, isSecureTextEntry); }
+    }
+    
+    private static final Selector setSecureTextEntry$ = Selector.register("setSecureTextEntry:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSecureTextEntry(UITextField __self__, Selector __cmd__, boolean secureTextEntry);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSecureTextEntrySuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, boolean secureTextEntry);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/secureTextEntry">@property(nonatomic, getter=isSecureTextEntry) BOOL secureTextEntry</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setSecureTextEntry:") public native void setSecureTextEntry(boolean v);
+    public void setSecureTextEntry(boolean secureTextEntry) {
+        if (customClass) { objc_setSecureTextEntrySuper(getSuper(), this, setSecureTextEntry$, secureTextEntry); } else { objc_setSecureTextEntry(this, setSecureTextEntry$, secureTextEntry); }
+    }
+    
+    private static final Selector selectedTextRange = Selector.register("selectedTextRange");
+    @Bridge(symbol = "objc_msgSend") private native static UITextRange objc_getSelectedTextRange(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextRange objc_getSelectedTextRangeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectedTextRange">@property(readwrite, copy) UITextRange *selectedTextRange</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("selectedTextRange") public native UITextRange getSelectedTextRange();
+    public UITextRange getSelectedTextRange() {
+        if (customClass) { return objc_getSelectedTextRangeSuper(getSuper(), this, selectedTextRange); } else { return objc_getSelectedTextRange(this, selectedTextRange); }
+    }
+    
+    private static final Selector setSelectedTextRange$ = Selector.register("setSelectedTextRange:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSelectedTextRange(UITextField __self__, Selector __cmd__, UITextRange selectedTextRange);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectedTextRangeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UITextRange selectedTextRange);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectedTextRange">@property(readwrite, copy) UITextRange *selectedTextRange</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setSelectedTextRange:") public native void setSelectedTextRange(UITextRange v);
+    public void setSelectedTextRange(UITextRange selectedTextRange) {
+        if (customClass) { objc_setSelectedTextRangeSuper(getSuper(), this, setSelectedTextRange$, selectedTextRange); } else { objc_setSelectedTextRange(this, setSelectedTextRange$, selectedTextRange); }
+    }
+    
+    private static final Selector selectionAffinity = Selector.register("selectionAffinity");
+    @Bridge(symbol = "objc_msgSend") private native static UITextStorageDirection objc_getSelectionAffinity(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextStorageDirection objc_getSelectionAffinitySuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectionAffinity">@property(nonatomic) UITextStorageDirection selectionAffinity</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("selectionAffinity") public native UITextStorageDirection getSelectionAffinity();
+    public UITextStorageDirection getSelectionAffinity() {
+        if (customClass) { return objc_getSelectionAffinitySuper(getSuper(), this, selectionAffinity); } else { return objc_getSelectionAffinity(this, selectionAffinity); }
+    }
+    
+    private static final Selector setSelectionAffinity$ = Selector.register("setSelectionAffinity:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSelectionAffinity(UITextField __self__, Selector __cmd__, UITextStorageDirection selectionAffinity);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectionAffinitySuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UITextStorageDirection selectionAffinity);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectionAffinity">@property(nonatomic) UITextStorageDirection selectionAffinity</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setSelectionAffinity:") public native void setSelectionAffinity(UITextStorageDirection v);
+    public void setSelectionAffinity(UITextStorageDirection selectionAffinity) {
+        if (customClass) { objc_setSelectionAffinitySuper(getSuper(), this, setSelectionAffinity$, selectionAffinity); } else { objc_setSelectionAffinity(this, setSelectionAffinity$, selectionAffinity); }
+    }
+    
+    private static final Selector spellCheckingType = Selector.register("spellCheckingType");
+    @Bridge(symbol = "objc_msgSend") private native static UITextSpellCheckingType objc_getSpellCheckingType(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextSpellCheckingType objc_getSpellCheckingTypeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/spellCheckingType">@property(nonatomic) UITextSpellCheckingType spellCheckingType</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("spellCheckingType") public native UITextSpellCheckingType getSpellCheckingType();
+    public UITextSpellCheckingType getSpellCheckingType() {
+        if (customClass) { return objc_getSpellCheckingTypeSuper(getSuper(), this, spellCheckingType); } else { return objc_getSpellCheckingType(this, spellCheckingType); }
+    }
+    
+    private static final Selector setSpellCheckingType$ = Selector.register("setSpellCheckingType:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSpellCheckingType(UITextField __self__, Selector __cmd__, UITextSpellCheckingType spellCheckingType);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSpellCheckingTypeSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UITextSpellCheckingType spellCheckingType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/spellCheckingType">@property(nonatomic) UITextSpellCheckingType spellCheckingType</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setSpellCheckingType:") public native void setSpellCheckingType(UITextSpellCheckingType v);
+    public void setSpellCheckingType(UITextSpellCheckingType spellCheckingType) {
+        if (customClass) { objc_setSpellCheckingTypeSuper(getSuper(), this, setSpellCheckingType$, spellCheckingType); } else { objc_setSpellCheckingType(this, setSpellCheckingType$, spellCheckingType); }
+    }
+    
+    private static final Selector text = Selector.register("text");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getText(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getTextSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/text">@property(nonatomic, copy) NSString *text</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("text") public native String getText();
+    public String getText() {
+        if (customClass) { return objc_getTextSuper(getSuper(), this, text); } else { return objc_getText(this, text); }
+    }
+    
+    private static final Selector setText$ = Selector.register("setText:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setText(UITextField __self__, Selector __cmd__, String text);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTextSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, String text);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/text">@property(nonatomic, copy) NSString *text</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setText:") public native void setText(String v);
+    public void setText(String text) {
+        if (customClass) { objc_setTextSuper(getSuper(), this, setText$, text); } else { objc_setText(this, setText$, text); }
+    }
+    
+    private static final Selector textAlignment = Selector.register("textAlignment");
+    @Bridge(symbol = "objc_msgSend") private native static NSTextAlignment objc_getTextAlignment(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSTextAlignment objc_getTextAlignmentSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/textAlignment">@property(nonatomic) NSTextAlignment textAlignment</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("textAlignment") public native NSTextAlignment getTextAlignment();
+    public NSTextAlignment getTextAlignment() {
+        if (customClass) { return objc_getTextAlignmentSuper(getSuper(), this, textAlignment); } else { return objc_getTextAlignment(this, textAlignment); }
+    }
+    
+    private static final Selector setTextAlignment$ = Selector.register("setTextAlignment:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTextAlignment(UITextField __self__, Selector __cmd__, NSTextAlignment textAlignment);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTextAlignmentSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, NSTextAlignment textAlignment);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/textAlignment">@property(nonatomic) NSTextAlignment textAlignment</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTextAlignment:") public native void setTextAlignment(NSTextAlignment v);
+    public void setTextAlignment(NSTextAlignment textAlignment) {
+        if (customClass) { objc_setTextAlignmentSuper(getSuper(), this, setTextAlignment$, textAlignment); } else { objc_setTextAlignment(this, setTextAlignment$, textAlignment); }
+    }
+    
+    private static final Selector textColor = Selector.register("textColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getTextColor(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getTextColorSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/textColor">@property(nonatomic, retain) UIColor *textColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("textColor") public native UIColor getTextColor();
+    public UIColor getTextColor() {
+        if (customClass) { return objc_getTextColorSuper(getSuper(), this, textColor); } else { return objc_getTextColor(this, textColor); }
+    }
+    
+    private static final Selector setTextColor$ = Selector.register("setTextColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTextColor(UITextField __self__, Selector __cmd__, UIColor textColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTextColorSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, UIColor textColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/textColor">@property(nonatomic, retain) UIColor *textColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTextColor:") public native void setTextColor(UIColor v);
+    public void setTextColor(UIColor textColor) {
+        if (customClass) { objc_setTextColorSuper(getSuper(), this, setTextColor$, textColor); } else { objc_setTextColor(this, setTextColor$, textColor); }
+    }
+    
+    private static final Selector textInputView = Selector.register("textInputView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getTextInputView(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getTextInputViewSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/textInputView">@property(nonatomic, readonly) UIView *textInputView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("textInputView") public native UIView getTextInputView();
+    public UIView getTextInputView() {
+        if (customClass) { return objc_getTextInputViewSuper(getSuper(), this, textInputView); } else { return objc_getTextInputView(this, textInputView); }
+    }
+    
+    private static final Selector tokenizer = Selector.register("tokenizer");
+    @Bridge(symbol = "objc_msgSend") private native static UITextInputTokenizer objc_getTokenizer(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextInputTokenizer objc_getTokenizerSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/tokenizer">@property(nonatomic, readonly) id&amp;lt;UITextInputTokenizer&amp;gt; tokenizer</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("tokenizer") public native UITextInputTokenizer getTokenizer();
+    public UITextInputTokenizer getTokenizer() {
+        if (customClass) { return objc_getTokenizerSuper(getSuper(), this, tokenizer); } else { return objc_getTokenizer(this, tokenizer); }
+    }
+    
+    private static final Selector typingAttributes = Selector.register("typingAttributes");
+    @Bridge(symbol = "objc_msgSend") private native static NSDictionary objc_getTypingAttributes(UITextField __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSDictionary objc_getTypingAttributesSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/typingAttributes">@property(nonatomic,copy) NSDictionary *typingAttributes;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("typingAttributes") public native NSDictionary getTypingAttributes();
+    public NSDictionary getTypingAttributes() {
+        if (customClass) { return objc_getTypingAttributesSuper(getSuper(), this, typingAttributes); } else { return objc_getTypingAttributes(this, typingAttributes); }
+    }
+    
+    private static final Selector setTypingAttributes$ = Selector.register("setTypingAttributes:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTypingAttributes(UITextField __self__, Selector __cmd__, NSDictionary typingAttributes);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTypingAttributesSuper(ObjCSuper __super__, UITextField __self__, Selector __cmd__, NSDictionary typingAttributes);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/typingAttributes">@property(nonatomic,copy) NSDictionary *typingAttributes;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setTypingAttributes:") public native void setTypingAttributes(NSDictionary v);
+    public void setTypingAttributes(NSDictionary typingAttributes) {
+        if (customClass) { objc_setTypingAttributesSuper(getSuper(), this, setTypingAttributes$, typingAttributes); } else { objc_setTypingAttributes(this, setTypingAttributes$, typingAttributes); }
+    }
     /*</properties>*/
     /*<methods>*/
     
@@ -898,5 +1366,50 @@ public class /*<name>*/ UITextField /*</name>*/
         if (customClass) { objc_unmarkTextSuper(getSuper(), this, unmarkText); } else { objc_unmarkText(this, unmarkText); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("clearButtonRectForBounds:") public static CGRect clearButtonRect(UITextField __self__, Selector __cmd__, CGRect bounds) { return __self__.clearButtonRect(bounds); }
+        @Callback @BindSelector("comparePosition:toPosition:") public static NSComparisonResult comparePositions(UITextField __self__, Selector __cmd__, UITextPosition position, UITextPosition other) { return __self__.comparePositions(position, other); }
+        @Callback @BindSelector("deleteBackward") public static void deleteBackward(UITextField __self__, Selector __cmd__) { __self__.deleteBackward(); }
+        @Callback @BindSelector("dictationRecognitionFailed") public static void dictationRecognitionFailed(UITextField __self__, Selector __cmd__) { __self__.dictationRecognitionFailed(); }
+        @Callback @BindSelector("dictationRecordingDidEnd") public static void dictationRecordingDidEnd(UITextField __self__, Selector __cmd__) { __self__.dictationRecordingDidEnd(); }
+        @Callback @BindSelector("drawPlaceholderInRect:") public static void drawPlaceholder(UITextField __self__, Selector __cmd__, CGRect rect) { __self__.drawPlaceholder(rect); }
+        @Callback @BindSelector("drawTextInRect:") public static void drawText(UITextField __self__, Selector __cmd__, CGRect rect) { __self__.drawText(rect); }
+        @Callback @BindSelector("baseWritingDirectionForPosition:inDirection:") public static UITextWritingDirection getBaseWritingDirection(UITextField __self__, Selector __cmd__, UITextPosition position, UITextStorageDirection direction) { return __self__.getBaseWritingDirection(position, direction); }
+        @Callback @BindSelector("borderRectForBounds:") public static CGRect getBorderRect(UITextField __self__, Selector __cmd__, CGRect bounds) { return __self__.getBorderRect(bounds); }
+        @Callback @BindSelector("caretRectForPosition:") public static CGRect getCaretRect(UITextField __self__, Selector __cmd__, UITextPosition position) { return __self__.getCaretRect(position); }
+        @Callback @BindSelector("characterOffsetOfPosition:withinRange:") public static int getCharacterOffset(UITextField __self__, Selector __cmd__, UITextPosition position, UITextRange range) { return __self__.getCharacterOffset(position, range); }
+        @Callback @BindSelector("characterRangeAtPoint:") public static UITextRange getCharacterRange(UITextField __self__, Selector __cmd__, CGPoint point) { return __self__.getCharacterRange(point); }
+        @Callback @BindSelector("characterRangeByExtendingPosition:inDirection:") public static UITextRange getCharacterRange(UITextField __self__, Selector __cmd__, UITextPosition position, UITextLayoutDirection direction) { return __self__.getCharacterRange(position, direction); }
+        @Callback @BindSelector("closestPositionToPoint:withinRange:") public static UITextPosition getClosestPosition(UITextField __self__, Selector __cmd__, CGPoint point, UITextRange range) { return __self__.getClosestPosition(point, range); }
+        @Callback @BindSelector("closestPositionToPoint:") public static UITextPosition getClosestPosition(UITextField __self__, Selector __cmd__, CGPoint point) { return __self__.getClosestPosition(point); }
+        @Callback @BindSelector("frameForDictationResultPlaceholder:") public static CGRect getDictationResultPlaceholderFrame(UITextField __self__, Selector __cmd__, NSObject placeholder) { return __self__.getDictationResultPlaceholderFrame(placeholder); }
+        @Callback @BindSelector("editingRectForBounds:") public static CGRect getEditingRect(UITextField __self__, Selector __cmd__, CGRect bounds) { return __self__.getEditingRect(bounds); }
+        @Callback @BindSelector("firstRectForRange:") public static CGRect getFirstRect(UITextField __self__, Selector __cmd__, UITextRange range) { return __self__.getFirstRect(range); }
+        @Callback @BindSelector("leftViewRectForBounds:") public static CGRect getLeftViewRect(UITextField __self__, Selector __cmd__, CGRect bounds) { return __self__.getLeftViewRect(bounds); }
+        @Callback @BindSelector("offsetFromPosition:toPosition:") public static int getOffset(UITextField __self__, Selector __cmd__, UITextPosition fromPosition, UITextPosition toPosition) { return __self__.getOffset(fromPosition, toPosition); }
+        @Callback @BindSelector("placeholderRectForBounds:") public static CGRect getPlaceholderRect(UITextField __self__, Selector __cmd__, CGRect bounds) { return __self__.getPlaceholderRect(bounds); }
+        @Callback @BindSelector("positionFromPosition:inDirection:offset:") public static UITextPosition getPosition(UITextField __self__, Selector __cmd__, UITextPosition position, UITextLayoutDirection direction, int offset) { return __self__.getPosition(position, direction, offset); }
+        @Callback @BindSelector("positionWithinRange:atCharacterOffset:") public static UITextPosition getPosition(UITextField __self__, Selector __cmd__, UITextRange range, int offset) { return __self__.getPosition(range, offset); }
+        @Callback @BindSelector("positionFromPosition:offset:") public static UITextPosition getPosition(UITextField __self__, Selector __cmd__, UITextPosition position, int offset) { return __self__.getPosition(position, offset); }
+        @Callback @BindSelector("positionWithinRange:farthestInDirection:") public static UITextPosition getPosition(UITextField __self__, Selector __cmd__, UITextRange range, UITextLayoutDirection direction) { return __self__.getPosition(range, direction); }
+        @Callback @BindSelector("rightViewRectForBounds:") public static CGRect getRightViewRect(UITextField __self__, Selector __cmd__, CGRect bounds) { return __self__.getRightViewRect(bounds); }
+        @Callback @BindSelector("selectionRectsForRange:") public static NSArray getSelectionRects(UITextField __self__, Selector __cmd__, UITextRange range) { return __self__.getSelectionRects(range); }
+        @Callback @BindSelector("textInRange:") public static String getText(UITextField __self__, Selector __cmd__, UITextRange range) { return __self__.getText(range); }
+        @Callback @BindSelector("textRangeFromPosition:toPosition:") public static UITextRange getTextRange(UITextField __self__, Selector __cmd__, UITextPosition fromPosition, UITextPosition toPosition) { return __self__.getTextRange(fromPosition, toPosition); }
+        @Callback @BindSelector("textRectForBounds:") public static CGRect getTextRect(UITextField __self__, Selector __cmd__, CGRect bounds) { return __self__.getTextRect(bounds); }
+        @Callback @BindSelector("textStylingAtPosition:inDirection:") public static NSDictionary getTextStyling(UITextField __self__, Selector __cmd__, UITextPosition position, UITextStorageDirection direction) { return __self__.getTextStyling(position, direction); }
+        @Callback @BindSelector("hasText") public static boolean hasText(UITextField __self__, Selector __cmd__) { return __self__.hasText(); }
+        @Callback @BindSelector("insertDictationResult:") public static void insertDictationResult(UITextField __self__, Selector __cmd__, NSArray dictationResult) { __self__.insertDictationResult(dictationResult); }
+        @Callback @BindSelector("insertDictationResultPlaceholder") public static NSObject insertDictationResultPlaceholder(UITextField __self__, Selector __cmd__) { return __self__.insertDictationResultPlaceholder(); }
+        @Callback @BindSelector("insertText:") public static void insertText(UITextField __self__, Selector __cmd__, String text) { __self__.insertText(text); }
+        @Callback @BindSelector("removeDictationResultPlaceholder:willInsertResult:") public static void removeDictationResultPlaceholder(UITextField __self__, Selector __cmd__, NSObject placeholder, boolean willInsertResult) { __self__.removeDictationResultPlaceholder(placeholder, willInsertResult); }
+        @Callback @BindSelector("replaceRange:withText:") public static void replaceText(UITextField __self__, Selector __cmd__, UITextRange range, String text) { __self__.replaceText(range, text); }
+        @Callback @BindSelector("setBaseWritingDirection:forRange:") public static void setBaseWritingDirection(UITextField __self__, Selector __cmd__, UITextWritingDirection writingDirection, UITextRange range) { __self__.setBaseWritingDirection(writingDirection, range); }
+        @Callback @BindSelector("setMarkedText:selectedRange:") public static void setMarkedText(UITextField __self__, Selector __cmd__, String markedText, NSRange selectedRange) { __self__.setMarkedText(markedText, selectedRange); }
+        @Callback @BindSelector("shouldChangeTextInRange:replacementText:") public static boolean shouldChangeText(UITextField __self__, Selector __cmd__, UITextRange range, String text) { return __self__.shouldChangeText(range, text); }
+        @Callback @BindSelector("unmarkText") public static void unmarkText(UITextField __self__, Selector __cmd__) { __self__.unmarkText(); }
+    }
+    /*</callbacks>*/
 
 }

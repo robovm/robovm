@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -108,76 +108,160 @@ public class /*<name>*/ UIBarButtonItem /*</name>*/
     }
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector action = Selector.register("action");
+    @Bridge(symbol = "objc_msgSend") private native static Selector objc_getAction(UIBarButtonItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static Selector objc_getActionSuper(ObjCSuper __super__, UIBarButtonItem __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/action">@property(nonatomic) SEL action</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("action") public native Selector getAction();
+    public Selector getAction() {
+        if (customClass) { return objc_getActionSuper(getSuper(), this, action); } else { return objc_getAction(this, action); }
+    }
+    
+    private static final Selector setAction$ = Selector.register("setAction:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAction(UIBarButtonItem __self__, Selector __cmd__, Selector action);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setActionSuper(ObjCSuper __super__, UIBarButtonItem __self__, Selector __cmd__, Selector action);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/action">@property(nonatomic) SEL action</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAction:") public native void setAction(Selector v);
+    public void setAction(Selector action) {
+        if (customClass) { objc_setActionSuper(getSuper(), this, setAction$, action); } else { objc_setAction(this, setAction$, action); }
+    }
+    
+    private static final Selector customView = Selector.register("customView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getCustomView(UIBarButtonItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getCustomViewSuper(ObjCSuper __super__, UIBarButtonItem __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/customView">@property(nonatomic, retain) UIView *customView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("customView") public native UIView getCustomView();
+    public UIView getCustomView() {
+        if (customClass) { return objc_getCustomViewSuper(getSuper(), this, customView); } else { return objc_getCustomView(this, customView); }
+    }
+    
+    private static final Selector setCustomView$ = Selector.register("setCustomView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setCustomView(UIBarButtonItem __self__, Selector __cmd__, UIView customView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCustomViewSuper(ObjCSuper __super__, UIBarButtonItem __self__, Selector __cmd__, UIView customView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/customView">@property(nonatomic, retain) UIView *customView</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setCustomView:") public native void setCustomView(UIView v);
+    public void setCustomView(UIView customView) {
+        if (customClass) { objc_setCustomViewSuper(getSuper(), this, setCustomView$, customView); } else { objc_setCustomView(this, setCustomView$, customView); }
+    }
+    
+    private static final Selector possibleTitles = Selector.register("possibleTitles");
+    @Bridge(symbol = "objc_msgSend") private native static NSSet objc_getPossibleTitles(UIBarButtonItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSSet objc_getPossibleTitlesSuper(ObjCSuper __super__, UIBarButtonItem __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/possibleTitles">@property(nonatomic, copy) NSSet *possibleTitles</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("possibleTitles") public native NSSet getPossibleTitles();
+    public NSSet getPossibleTitles() {
+        if (customClass) { return objc_getPossibleTitlesSuper(getSuper(), this, possibleTitles); } else { return objc_getPossibleTitles(this, possibleTitles); }
+    }
+    
+    private static final Selector setPossibleTitles$ = Selector.register("setPossibleTitles:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setPossibleTitles(UIBarButtonItem __self__, Selector __cmd__, NSSet possibleTitles);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPossibleTitlesSuper(ObjCSuper __super__, UIBarButtonItem __self__, Selector __cmd__, NSSet possibleTitles);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/possibleTitles">@property(nonatomic, copy) NSSet *possibleTitles</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setPossibleTitles:") public native void setPossibleTitles(NSSet v);
+    public void setPossibleTitles(NSSet possibleTitles) {
+        if (customClass) { objc_setPossibleTitlesSuper(getSuper(), this, setPossibleTitles$, possibleTitles); } else { objc_setPossibleTitles(this, setPossibleTitles$, possibleTitles); }
+    }
+    
+    private static final Selector style = Selector.register("style");
+    @Bridge(symbol = "objc_msgSend") private native static UIBarButtonItemStyle objc_getStyle(UIBarButtonItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIBarButtonItemStyle objc_getStyleSuper(ObjCSuper __super__, UIBarButtonItem __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/style">@property(nonatomic) UIBarButtonItemStyle style</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("style") public native UIBarButtonItemStyle getStyle();
+    public UIBarButtonItemStyle getStyle() {
+        if (customClass) { return objc_getStyleSuper(getSuper(), this, style); } else { return objc_getStyle(this, style); }
+    }
+    
+    private static final Selector setStyle$ = Selector.register("setStyle:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setStyle(UIBarButtonItem __self__, Selector __cmd__, UIBarButtonItemStyle style);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStyleSuper(ObjCSuper __super__, UIBarButtonItem __self__, Selector __cmd__, UIBarButtonItemStyle style);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/style">@property(nonatomic) UIBarButtonItemStyle style</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setStyle:") public native void setStyle(UIBarButtonItemStyle v);
+    public void setStyle(UIBarButtonItemStyle style) {
+        if (customClass) { objc_setStyleSuper(getSuper(), this, setStyle$, style); } else { objc_setStyle(this, setStyle$, style); }
+    }
+    
+    private static final Selector target = Selector.register("target");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_getTarget(UIBarButtonItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_getTargetSuper(ObjCSuper __super__, UIBarButtonItem __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/target">@property(nonatomic, assign) id target</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("target") public native NSObject getTarget();
+    public NSObject getTarget() {
+        if (customClass) { return objc_getTargetSuper(getSuper(), this, target); } else { return objc_getTarget(this, target); }
+    }
+    
+    private static final Selector setTarget$ = Selector.register("setTarget:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTarget(UIBarButtonItem __self__, Selector __cmd__, NSObject target);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTargetSuper(ObjCSuper __super__, UIBarButtonItem __self__, Selector __cmd__, NSObject target);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/target">@property(nonatomic, assign) id target</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTarget:") public native void setTarget(NSObject v);
+    public void setTarget(NSObject target) {
+        if (customClass) { objc_setTargetSuper(getSuper(), this, setTarget$, target); } else { objc_setTarget(this, setTarget$, target); }
+    }
+    
+    private static final Selector tintColor = Selector.register("tintColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getTintColor(UIBarButtonItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, UIBarButtonItem __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("tintColor") public native UIColor getTintColor();
+    public UIColor getTintColor() {
+        if (customClass) { return objc_getTintColorSuper(getSuper(), this, tintColor); } else { return objc_getTintColor(this, tintColor); }
+    }
+    
+    private static final Selector setTintColor$ = Selector.register("setTintColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTintColor(UIBarButtonItem __self__, Selector __cmd__, UIColor tintColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, UIBarButtonItem __self__, Selector __cmd__, UIColor tintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setTintColor:") public native void setTintColor(UIColor v);
+    public void setTintColor(UIColor tintColor) {
+        if (customClass) { objc_setTintColorSuper(getSuper(), this, setTintColor$, tintColor); } else { objc_setTintColor(this, setTintColor$, tintColor); }
+    }
+    
+    private static final Selector width = Selector.register("width");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getWidth(UIBarButtonItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getWidthSuper(ObjCSuper __super__, UIBarButtonItem __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/width">@property(nonatomic) CGFloat width</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("width") public native float getWidth();
+    public float getWidth() {
+        if (customClass) { return objc_getWidthSuper(getSuper(), this, width); } else { return objc_getWidth(this, width); }
+    }
+    
+    private static final Selector setWidth$ = Selector.register("setWidth:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setWidth(UIBarButtonItem __self__, Selector __cmd__, float width);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setWidthSuper(ObjCSuper __super__, UIBarButtonItem __self__, Selector __cmd__, float width);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/width">@property(nonatomic) CGFloat width</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setWidth:") public native void setWidth(float v);
+    public void setWidth(float width) {
+        if (customClass) { objc_setWidthSuper(getSuper(), this, setWidth$, width); } else { objc_setWidth(this, setWidth$, width); }
+    }
     /*</properties>*/
     /*<methods>*/
     
@@ -335,5 +419,23 @@ public class /*<name>*/ UIBarButtonItem /*</name>*/
         if (customClass) { objc_setTitlePositionAdjustmentSuper(getSuper(), this, setTitlePositionAdjustment$forBarMetrics$, adjustment, barMetrics); } else { objc_setTitlePositionAdjustment(this, setTitlePositionAdjustment$forBarMetrics$, adjustment, barMetrics); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("backButtonBackgroundImageForState:barMetrics:") public static UIImage getBackButtonBackgroundImage(UIBarButtonItem __self__, Selector __cmd__, UIControlState state, UIBarMetrics barMetrics) { return __self__.getBackButtonBackgroundImage(state, barMetrics); }
+        @Callback @BindSelector("backButtonBackgroundVerticalPositionAdjustmentForBarMetrics:") public static float getBackButtonBackgroundVerticalPositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, UIBarMetrics barMetrics) { return __self__.getBackButtonBackgroundVerticalPositionAdjustment(barMetrics); }
+        @Callback @BindSelector("backButtonTitlePositionAdjustmentForBarMetrics:") public static UIOffset getBackButtonTitlePositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, UIBarMetrics barMetrics) { return __self__.getBackButtonTitlePositionAdjustment(barMetrics); }
+        @Callback @BindSelector("backgroundImageForState:style:barMetrics:") public static UIImage getBackgroundImage(UIBarButtonItem __self__, Selector __cmd__, UIControlState state, UIBarButtonItemStyle style, UIBarMetrics barMetrics) { return __self__.getBackgroundImage(state, style, barMetrics); }
+        @Callback @BindSelector("backgroundImageForState:barMetrics:") public static UIImage getBackgroundImage(UIBarButtonItem __self__, Selector __cmd__, UIControlState state, UIBarMetrics barMetrics) { return __self__.getBackgroundImage(state, barMetrics); }
+        @Callback @BindSelector("backgroundVerticalPositionAdjustmentForBarMetrics:") public static float getBackgroundVerticalPositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, UIBarMetrics barMetrics) { return __self__.getBackgroundVerticalPositionAdjustment(barMetrics); }
+        @Callback @BindSelector("titlePositionAdjustmentForBarMetrics:") public static UIOffset getTitlePositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, UIBarMetrics barMetrics) { return __self__.getTitlePositionAdjustment(barMetrics); }
+        @Callback @BindSelector("setBackButtonBackgroundImage:forState:barMetrics:") public static void setBackButtonBackgroundImage(UIBarButtonItem __self__, Selector __cmd__, UIImage backgroundImage, UIControlState state, UIBarMetrics barMetrics) { __self__.setBackButtonBackgroundImage(backgroundImage, state, barMetrics); }
+        @Callback @BindSelector("setBackButtonBackgroundVerticalPositionAdjustment:forBarMetrics:") public static void setBackButtonBackgroundVerticalPositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, float adjustment, UIBarMetrics barMetrics) { __self__.setBackButtonBackgroundVerticalPositionAdjustment(adjustment, barMetrics); }
+        @Callback @BindSelector("setBackButtonTitlePositionAdjustment:forBarMetrics:") public static void setBackButtonTitlePositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, UIOffset adjustment, UIBarMetrics barMetrics) { __self__.setBackButtonTitlePositionAdjustment(adjustment, barMetrics); }
+        @Callback @BindSelector("setBackgroundImage:forState:barMetrics:") public static void setBackgroundImage(UIBarButtonItem __self__, Selector __cmd__, UIImage backgroundImage, UIControlState state, UIBarMetrics barMetrics) { __self__.setBackgroundImage(backgroundImage, state, barMetrics); }
+        @Callback @BindSelector("setBackgroundImage:forState:style:barMetrics:") public static void setBackgroundImage(UIBarButtonItem __self__, Selector __cmd__, UIImage backgroundImage, UIControlState state, UIBarButtonItemStyle style, UIBarMetrics barMetrics) { __self__.setBackgroundImage(backgroundImage, state, style, barMetrics); }
+        @Callback @BindSelector("setBackgroundVerticalPositionAdjustment:forBarMetrics:") public static void setBackgroundVerticalPositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, float adjustment, UIBarMetrics barMetrics) { __self__.setBackgroundVerticalPositionAdjustment(adjustment, barMetrics); }
+        @Callback @BindSelector("setTitlePositionAdjustment:forBarMetrics:") public static void setTitlePositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, UIOffset adjustment, UIBarMetrics barMetrics) { __self__.setTitlePositionAdjustment(adjustment, barMetrics); }
+    }
+    /*</callbacks>*/
 
 }

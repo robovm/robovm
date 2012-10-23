@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -59,5 +59,12 @@ public interface /*<name>*/ UIKeyInput /*</name>*/ /*<implements>*/ extends UITe
      */
     void insertText(String text);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("deleteBackward") public static void deleteBackward(UIKeyInput __self__, Selector __cmd__) { __self__.deleteBackward(); }
+        @Callback @BindSelector("hasText") public static boolean hasText(UIKeyInput __self__, Selector __cmd__) { return __self__.hasText(); }
+        @Callback @BindSelector("insertText:") public static void insertText(UIKeyInput __self__, Selector __cmd__, String text) { __self__.insertText(text); }
+    }
+    /*</callbacks>*/
 
 }

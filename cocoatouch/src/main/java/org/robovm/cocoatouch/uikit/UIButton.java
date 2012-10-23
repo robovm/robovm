@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,131 +54,281 @@ public class /*<name>*/ UIButton /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector adjustsImageWhenDisabled = Selector.register("adjustsImageWhenDisabled");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAdjustsImageWhenDisabled(UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAdjustsImageWhenDisabledSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/adjustsImageWhenDisabled">@property(nonatomic) BOOL adjustsImageWhenDisabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("adjustsImageWhenDisabled") public native boolean isAdjustsImageWhenDisabled();
+    public boolean isAdjustsImageWhenDisabled() {
+        if (customClass) { return objc_isAdjustsImageWhenDisabledSuper(getSuper(), this, adjustsImageWhenDisabled); } else { return objc_isAdjustsImageWhenDisabled(this, adjustsImageWhenDisabled); }
+    }
+    
+    private static final Selector setAdjustsImageWhenDisabled$ = Selector.register("setAdjustsImageWhenDisabled:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAdjustsImageWhenDisabled(UIButton __self__, Selector __cmd__, boolean adjustsImageWhenDisabled);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAdjustsImageWhenDisabledSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__, boolean adjustsImageWhenDisabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/adjustsImageWhenDisabled">@property(nonatomic) BOOL adjustsImageWhenDisabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAdjustsImageWhenDisabled:") public native void setAdjustsImageWhenDisabled(boolean v);
+    public void setAdjustsImageWhenDisabled(boolean adjustsImageWhenDisabled) {
+        if (customClass) { objc_setAdjustsImageWhenDisabledSuper(getSuper(), this, setAdjustsImageWhenDisabled$, adjustsImageWhenDisabled); } else { objc_setAdjustsImageWhenDisabled(this, setAdjustsImageWhenDisabled$, adjustsImageWhenDisabled); }
+    }
+    
+    private static final Selector adjustsImageWhenHighlighted = Selector.register("adjustsImageWhenHighlighted");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAdjustsImageWhenHighlighted(UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAdjustsImageWhenHighlightedSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/adjustsImageWhenHighlighted">@property(nonatomic) BOOL adjustsImageWhenHighlighted</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("adjustsImageWhenHighlighted") public native boolean isAdjustsImageWhenHighlighted();
+    public boolean isAdjustsImageWhenHighlighted() {
+        if (customClass) { return objc_isAdjustsImageWhenHighlightedSuper(getSuper(), this, adjustsImageWhenHighlighted); } else { return objc_isAdjustsImageWhenHighlighted(this, adjustsImageWhenHighlighted); }
+    }
+    
+    private static final Selector setAdjustsImageWhenHighlighted$ = Selector.register("setAdjustsImageWhenHighlighted:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAdjustsImageWhenHighlighted(UIButton __self__, Selector __cmd__, boolean adjustsImageWhenHighlighted);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAdjustsImageWhenHighlightedSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__, boolean adjustsImageWhenHighlighted);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/adjustsImageWhenHighlighted">@property(nonatomic) BOOL adjustsImageWhenHighlighted</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAdjustsImageWhenHighlighted:") public native void setAdjustsImageWhenHighlighted(boolean v);
+    public void setAdjustsImageWhenHighlighted(boolean adjustsImageWhenHighlighted) {
+        if (customClass) { objc_setAdjustsImageWhenHighlightedSuper(getSuper(), this, setAdjustsImageWhenHighlighted$, adjustsImageWhenHighlighted); } else { objc_setAdjustsImageWhenHighlighted(this, setAdjustsImageWhenHighlighted$, adjustsImageWhenHighlighted); }
+    }
+    
+    private static final Selector buttonType = Selector.register("buttonType");
+    @Bridge(symbol = "objc_msgSend") private native static UIButtonType objc_getButtonType(UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIButtonType objc_getButtonTypeSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/buttonType">@property(nonatomic, readonly) UIButtonType buttonType</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("buttonType") public native UIButtonType getButtonType();
+    public UIButtonType getButtonType() {
+        if (customClass) { return objc_getButtonTypeSuper(getSuper(), this, buttonType); } else { return objc_getButtonType(this, buttonType); }
+    }
+    
+    private static final Selector contentEdgeInsets = Selector.register("contentEdgeInsets");
+    @Bridge(symbol = "objc_msgSend") private native static UIEdgeInsets objc_getContentEdgeInsets(UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIEdgeInsets objc_getContentEdgeInsetsSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/contentEdgeInsets">@property(nonatomic) UIEdgeInsets contentEdgeInsets</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("contentEdgeInsets") public native UIEdgeInsets getContentEdgeInsets();
+    public UIEdgeInsets getContentEdgeInsets() {
+        if (customClass) { return objc_getContentEdgeInsetsSuper(getSuper(), this, contentEdgeInsets); } else { return objc_getContentEdgeInsets(this, contentEdgeInsets); }
+    }
+    
+    private static final Selector setContentEdgeInsets$ = Selector.register("setContentEdgeInsets:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setContentEdgeInsets(UIButton __self__, Selector __cmd__, UIEdgeInsets contentEdgeInsets);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentEdgeInsetsSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__, UIEdgeInsets contentEdgeInsets);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/contentEdgeInsets">@property(nonatomic) UIEdgeInsets contentEdgeInsets</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setContentEdgeInsets:") public native void setContentEdgeInsets(UIEdgeInsets v);
+    public void setContentEdgeInsets(UIEdgeInsets contentEdgeInsets) {
+        if (customClass) { objc_setContentEdgeInsetsSuper(getSuper(), this, setContentEdgeInsets$, contentEdgeInsets); } else { objc_setContentEdgeInsets(this, setContentEdgeInsets$, contentEdgeInsets); }
+    }
+    
+    private static final Selector currentAttributedTitle = Selector.register("currentAttributedTitle");
+    @Bridge(symbol = "objc_msgSend") private native static NSAttributedString objc_getCurrentAttributedTitle(UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSAttributedString objc_getCurrentAttributedTitleSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/currentAttributedTitle">@property(nonatomic,readonly,retain) NSAttributedString *currentAttributedTitle</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("currentAttributedTitle") public native NSAttributedString getCurrentAttributedTitle();
+    public NSAttributedString getCurrentAttributedTitle() {
+        if (customClass) { return objc_getCurrentAttributedTitleSuper(getSuper(), this, currentAttributedTitle); } else { return objc_getCurrentAttributedTitle(this, currentAttributedTitle); }
+    }
+    
+    private static final Selector currentBackgroundImage = Selector.register("currentBackgroundImage");
+    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getCurrentBackgroundImage(UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getCurrentBackgroundImageSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/currentBackgroundImage">@property(nonatomic, readonly, retain) UIImage *currentBackgroundImage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("currentBackgroundImage") public native UIImage getCurrentBackgroundImage();
+    public UIImage getCurrentBackgroundImage() {
+        if (customClass) { return objc_getCurrentBackgroundImageSuper(getSuper(), this, currentBackgroundImage); } else { return objc_getCurrentBackgroundImage(this, currentBackgroundImage); }
+    }
+    
+    private static final Selector currentImage = Selector.register("currentImage");
+    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getCurrentImage(UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getCurrentImageSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/currentImage">@property(nonatomic, readonly, retain) UIImage *currentImage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("currentImage") public native UIImage getCurrentImage();
+    public UIImage getCurrentImage() {
+        if (customClass) { return objc_getCurrentImageSuper(getSuper(), this, currentImage); } else { return objc_getCurrentImage(this, currentImage); }
+    }
+    
+    private static final Selector currentTitle = Selector.register("currentTitle");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getCurrentTitle(UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getCurrentTitleSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/currentTitle">@property(nonatomic, readonly, retain) NSString *currentTitle</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("currentTitle") public native String getCurrentTitle();
+    public String getCurrentTitle() {
+        if (customClass) { return objc_getCurrentTitleSuper(getSuper(), this, currentTitle); } else { return objc_getCurrentTitle(this, currentTitle); }
+    }
+    
+    private static final Selector currentTitleColor = Selector.register("currentTitleColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getCurrentTitleColor(UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getCurrentTitleColorSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/currentTitleColor">@property(nonatomic, readonly, retain) UIColor *currentTitleColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("currentTitleColor") public native UIColor getCurrentTitleColor();
+    public UIColor getCurrentTitleColor() {
+        if (customClass) { return objc_getCurrentTitleColorSuper(getSuper(), this, currentTitleColor); } else { return objc_getCurrentTitleColor(this, currentTitleColor); }
+    }
+    
+    private static final Selector currentTitleShadowColor = Selector.register("currentTitleShadowColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getCurrentTitleShadowColor(UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getCurrentTitleShadowColorSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/currentTitleShadowColor">@property(nonatomic, readonly, retain) UIColor *currentTitleShadowColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("currentTitleShadowColor") public native UIColor getCurrentTitleShadowColor();
+    public UIColor getCurrentTitleShadowColor() {
+        if (customClass) { return objc_getCurrentTitleShadowColorSuper(getSuper(), this, currentTitleShadowColor); } else { return objc_getCurrentTitleShadowColor(this, currentTitleShadowColor); }
+    }
+    
+    private static final Selector imageEdgeInsets = Selector.register("imageEdgeInsets");
+    @Bridge(symbol = "objc_msgSend") private native static UIEdgeInsets objc_getImageEdgeInsets(UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIEdgeInsets objc_getImageEdgeInsetsSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/imageEdgeInsets">@property(nonatomic) UIEdgeInsets imageEdgeInsets</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("imageEdgeInsets") public native UIEdgeInsets getImageEdgeInsets();
+    public UIEdgeInsets getImageEdgeInsets() {
+        if (customClass) { return objc_getImageEdgeInsetsSuper(getSuper(), this, imageEdgeInsets); } else { return objc_getImageEdgeInsets(this, imageEdgeInsets); }
+    }
+    
+    private static final Selector setImageEdgeInsets$ = Selector.register("setImageEdgeInsets:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setImageEdgeInsets(UIButton __self__, Selector __cmd__, UIEdgeInsets imageEdgeInsets);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setImageEdgeInsetsSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__, UIEdgeInsets imageEdgeInsets);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/imageEdgeInsets">@property(nonatomic) UIEdgeInsets imageEdgeInsets</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setImageEdgeInsets:") public native void setImageEdgeInsets(UIEdgeInsets v);
+    public void setImageEdgeInsets(UIEdgeInsets imageEdgeInsets) {
+        if (customClass) { objc_setImageEdgeInsetsSuper(getSuper(), this, setImageEdgeInsets$, imageEdgeInsets); } else { objc_setImageEdgeInsets(this, setImageEdgeInsets$, imageEdgeInsets); }
+    }
+    
+    private static final Selector imageView = Selector.register("imageView");
+    @Bridge(symbol = "objc_msgSend") private native static UIImageView objc_getImageView(UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImageView objc_getImageViewSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/imageView">@property(nonatomic, readonly, retain) UIImageView *imageView</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("imageView") public native UIImageView getImageView();
+    public UIImageView getImageView() {
+        if (customClass) { return objc_getImageViewSuper(getSuper(), this, imageView); } else { return objc_getImageView(this, imageView); }
+    }
+    
+    private static final Selector reversesTitleShadowWhenHighlighted = Selector.register("reversesTitleShadowWhenHighlighted");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isReversesTitleShadowWhenHighlighted(UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isReversesTitleShadowWhenHighlightedSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/reversesTitleShadowWhenHighlighted">@property(nonatomic) BOOL reversesTitleShadowWhenHighlighted</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("reversesTitleShadowWhenHighlighted") public native boolean isReversesTitleShadowWhenHighlighted();
+    public boolean isReversesTitleShadowWhenHighlighted() {
+        if (customClass) { return objc_isReversesTitleShadowWhenHighlightedSuper(getSuper(), this, reversesTitleShadowWhenHighlighted); } else { return objc_isReversesTitleShadowWhenHighlighted(this, reversesTitleShadowWhenHighlighted); }
+    }
+    
+    private static final Selector setReversesTitleShadowWhenHighlighted$ = Selector.register("setReversesTitleShadowWhenHighlighted:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setReversesTitleShadowWhenHighlighted(UIButton __self__, Selector __cmd__, boolean reversesTitleShadowWhenHighlighted);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setReversesTitleShadowWhenHighlightedSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__, boolean reversesTitleShadowWhenHighlighted);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/reversesTitleShadowWhenHighlighted">@property(nonatomic) BOOL reversesTitleShadowWhenHighlighted</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setReversesTitleShadowWhenHighlighted:") public native void setReversesTitleShadowWhenHighlighted(boolean v);
+    public void setReversesTitleShadowWhenHighlighted(boolean reversesTitleShadowWhenHighlighted) {
+        if (customClass) { objc_setReversesTitleShadowWhenHighlightedSuper(getSuper(), this, setReversesTitleShadowWhenHighlighted$, reversesTitleShadowWhenHighlighted); } else { objc_setReversesTitleShadowWhenHighlighted(this, setReversesTitleShadowWhenHighlighted$, reversesTitleShadowWhenHighlighted); }
+    }
+    
+    private static final Selector showsTouchWhenHighlighted = Selector.register("showsTouchWhenHighlighted");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isShowsTouchWhenHighlighted(UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isShowsTouchWhenHighlightedSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/showsTouchWhenHighlighted">@property(nonatomic) BOOL showsTouchWhenHighlighted</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("showsTouchWhenHighlighted") public native boolean isShowsTouchWhenHighlighted();
+    public boolean isShowsTouchWhenHighlighted() {
+        if (customClass) { return objc_isShowsTouchWhenHighlightedSuper(getSuper(), this, showsTouchWhenHighlighted); } else { return objc_isShowsTouchWhenHighlighted(this, showsTouchWhenHighlighted); }
+    }
+    
+    private static final Selector setShowsTouchWhenHighlighted$ = Selector.register("setShowsTouchWhenHighlighted:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setShowsTouchWhenHighlighted(UIButton __self__, Selector __cmd__, boolean showsTouchWhenHighlighted);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShowsTouchWhenHighlightedSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__, boolean showsTouchWhenHighlighted);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/showsTouchWhenHighlighted">@property(nonatomic) BOOL showsTouchWhenHighlighted</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setShowsTouchWhenHighlighted:") public native void setShowsTouchWhenHighlighted(boolean v);
+    public void setShowsTouchWhenHighlighted(boolean showsTouchWhenHighlighted) {
+        if (customClass) { objc_setShowsTouchWhenHighlightedSuper(getSuper(), this, setShowsTouchWhenHighlighted$, showsTouchWhenHighlighted); } else { objc_setShowsTouchWhenHighlighted(this, setShowsTouchWhenHighlighted$, showsTouchWhenHighlighted); }
+    }
+    
+    private static final Selector tintColor = Selector.register("tintColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getTintColor(UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("tintColor") public native UIColor getTintColor();
+    public UIColor getTintColor() {
+        if (customClass) { return objc_getTintColorSuper(getSuper(), this, tintColor); } else { return objc_getTintColor(this, tintColor); }
+    }
+    
+    private static final Selector setTintColor$ = Selector.register("setTintColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTintColor(UIButton __self__, Selector __cmd__, UIColor tintColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__, UIColor tintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setTintColor:") public native void setTintColor(UIColor v);
+    public void setTintColor(UIColor tintColor) {
+        if (customClass) { objc_setTintColorSuper(getSuper(), this, setTintColor$, tintColor); } else { objc_setTintColor(this, setTintColor$, tintColor); }
+    }
+    
+    private static final Selector titleEdgeInsets = Selector.register("titleEdgeInsets");
+    @Bridge(symbol = "objc_msgSend") private native static UIEdgeInsets objc_getTitleEdgeInsets(UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIEdgeInsets objc_getTitleEdgeInsetsSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/titleEdgeInsets">@property(nonatomic) UIEdgeInsets titleEdgeInsets</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("titleEdgeInsets") public native UIEdgeInsets getTitleEdgeInsets();
+    public UIEdgeInsets getTitleEdgeInsets() {
+        if (customClass) { return objc_getTitleEdgeInsetsSuper(getSuper(), this, titleEdgeInsets); } else { return objc_getTitleEdgeInsets(this, titleEdgeInsets); }
+    }
+    
+    private static final Selector setTitleEdgeInsets$ = Selector.register("setTitleEdgeInsets:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTitleEdgeInsets(UIButton __self__, Selector __cmd__, UIEdgeInsets titleEdgeInsets);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTitleEdgeInsetsSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__, UIEdgeInsets titleEdgeInsets);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/titleEdgeInsets">@property(nonatomic) UIEdgeInsets titleEdgeInsets</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setTitleEdgeInsets:") public native void setTitleEdgeInsets(UIEdgeInsets v);
+    public void setTitleEdgeInsets(UIEdgeInsets titleEdgeInsets) {
+        if (customClass) { objc_setTitleEdgeInsetsSuper(getSuper(), this, setTitleEdgeInsets$, titleEdgeInsets); } else { objc_setTitleEdgeInsets(this, setTitleEdgeInsets$, titleEdgeInsets); }
+    }
+    
+    private static final Selector titleLabel = Selector.register("titleLabel");
+    @Bridge(symbol = "objc_msgSend") private native static UILabel objc_getTitleLabel(UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UILabel objc_getTitleLabelSuper(ObjCSuper __super__, UIButton __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/titleLabel">@property(nonatomic, readonly, retain) UILabel *titleLabel</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("titleLabel") public native UILabel getTitleLabel();
+    public UILabel getTitleLabel() {
+        if (customClass) { return objc_getTitleLabelSuper(getSuper(), this, titleLabel); } else { return objc_getTitleLabel(this, titleLabel); }
+    }
     /*</properties>*/
     /*<methods>*/
     
@@ -368,5 +518,25 @@ public class /*<name>*/ UIButton /*</name>*/
         if (customClass) { objc_setTitleShadowColorSuper(getSuper(), this, setTitleShadowColor$forState$, color, state); } else { objc_setTitleShadowColor(this, setTitleShadowColor$forState$, color, state); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("attributedTitleForState:") public static NSAttributedString getAttributedTitle(UIButton __self__, Selector __cmd__, UIControlState state) { return __self__.getAttributedTitle(state); }
+        @Callback @BindSelector("backgroundImageForState:") public static UIImage getBackgroundImage(UIButton __self__, Selector __cmd__, UIControlState state) { return __self__.getBackgroundImage(state); }
+        @Callback @BindSelector("backgroundRectForBounds:") public static CGRect getBackgroundRect(UIButton __self__, Selector __cmd__, CGRect bounds) { return __self__.getBackgroundRect(bounds); }
+        @Callback @BindSelector("contentRectForBounds:") public static CGRect getContentRect(UIButton __self__, Selector __cmd__, CGRect bounds) { return __self__.getContentRect(bounds); }
+        @Callback @BindSelector("imageForState:") public static UIImage getImage(UIButton __self__, Selector __cmd__, UIControlState state) { return __self__.getImage(state); }
+        @Callback @BindSelector("imageRectForContentRect:") public static CGRect getImageRect(UIButton __self__, Selector __cmd__, CGRect contentRect) { return __self__.getImageRect(contentRect); }
+        @Callback @BindSelector("titleForState:") public static String getTitle(UIButton __self__, Selector __cmd__, UIControlState state) { return __self__.getTitle(state); }
+        @Callback @BindSelector("titleColorForState:") public static UIColor getTitleColor(UIButton __self__, Selector __cmd__, UIControlState state) { return __self__.getTitleColor(state); }
+        @Callback @BindSelector("titleRectForContentRect:") public static CGRect getTitleRect(UIButton __self__, Selector __cmd__, CGRect contentRect) { return __self__.getTitleRect(contentRect); }
+        @Callback @BindSelector("titleShadowColorForState:") public static UIColor getTitleShadowColor(UIButton __self__, Selector __cmd__, UIControlState state) { return __self__.getTitleShadowColor(state); }
+        @Callback @BindSelector("setAttributedTitle:forState:") public static void setAttributedTitle(UIButton __self__, Selector __cmd__, NSAttributedString title, UIControlState state) { __self__.setAttributedTitle(title, state); }
+        @Callback @BindSelector("setBackgroundImage:forState:") public static void setBackgroundImage(UIButton __self__, Selector __cmd__, UIImage image, UIControlState state) { __self__.setBackgroundImage(image, state); }
+        @Callback @BindSelector("setImage:forState:") public static void setImage(UIButton __self__, Selector __cmd__, UIImage image, UIControlState state) { __self__.setImage(image, state); }
+        @Callback @BindSelector("setTitle:forState:") public static void setTitle(UIButton __self__, Selector __cmd__, String title, UIControlState state) { __self__.setTitle(title, state); }
+        @Callback @BindSelector("setTitleColor:forState:") public static void setTitleColor(UIButton __self__, Selector __cmd__, UIColor color, UIControlState state) { __self__.setTitleColor(color, state); }
+        @Callback @BindSelector("setTitleShadowColor:forState:") public static void setTitleShadowColor(UIButton __self__, Selector __cmd__, UIColor color, UIControlState state) { __self__.setTitleShadowColor(color, state); }
+    }
+    /*</callbacks>*/
 
 }

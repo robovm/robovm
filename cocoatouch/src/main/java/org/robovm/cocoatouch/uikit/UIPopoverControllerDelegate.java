@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,5 +54,11 @@ public interface /*<name>*/ UIPopoverControllerDelegate /*</name>*/ /*<implement
      */
     boolean shouldDismissPopover(UIPopoverController popoverController);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("popoverControllerDidDismissPopover:") public static void didDismissPopover(UIPopoverControllerDelegate __self__, Selector __cmd__, UIPopoverController popoverController) { __self__.didDismissPopover(popoverController); }
+        @Callback @BindSelector("popoverControllerShouldDismissPopover:") public static boolean shouldDismissPopover(UIPopoverControllerDelegate __self__, Selector __cmd__, UIPopoverController popoverController) { return __self__.shouldDismissPopover(popoverController); }
+    }
+    /*</callbacks>*/
 
 }

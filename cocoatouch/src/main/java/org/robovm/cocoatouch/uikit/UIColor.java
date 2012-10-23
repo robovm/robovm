@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -86,16 +86,28 @@ public class /*<name>*/ UIColor /*</name>*/
     }
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector CGColor = Selector.register("CGColor");
+    @Bridge(symbol = "objc_msgSend") private native static CGColor objc_getCGColor(UIColor __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGColor objc_getCGColorSuper(ObjCSuper __super__, UIColor __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instp/UIColor/CGColor">@property(nonatomic, readonly) CGColorRef CGColor</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("CGColor") public native CGColor getCGColor();
+    public CGColor getCGColor() {
+        if (customClass) { return objc_getCGColorSuper(getSuper(), this, CGColor); } else { return objc_getCGColor(this, CGColor); }
+    }
+    
+    private static final Selector CIColor = Selector.register("CIColor");
+    @Bridge(symbol = "objc_msgSend") private native static CIColor objc_getCIColor(UIColor __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CIColor objc_getCIColorSuper(ObjCSuper __super__, UIColor __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instp/UIColor/CIColor">@property(nonatomic, readonly) CIColor *CIColor</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("CIColor") public native CIColor getCIColor();
+    public CIColor getCIColor() {
+        if (customClass) { return objc_getCIColorSuper(getSuper(), this, CIColor); } else { return objc_getCIColor(this, CIColor); }
+    }
     /*</properties>*/
     /*<methods>*/
     
@@ -446,5 +458,16 @@ public class /*<name>*/ UIColor /*</name>*/
         if (customClass) { objc_setStrokeSuper(getSuper(), this, setStroke); } else { objc_setStroke(this, setStroke); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("colorWithAlphaComponent:") public static UIColor colorWithAlpha(UIColor __self__, Selector __cmd__, float alpha) { return __self__.colorWithAlpha(alpha); }
+        @Callback @BindSelector("getHue:saturation:brightness:alpha:") public static boolean getHSBA(UIColor __self__, Selector __cmd__, FloatPtr hue, FloatPtr saturation, FloatPtr brightness, FloatPtr alpha) { return __self__.getHSBA(hue, saturation, brightness, alpha); }
+        @Callback @BindSelector("getRed:green:blue:alpha:") public static boolean getRGBA(UIColor __self__, Selector __cmd__, FloatPtr red, FloatPtr green, FloatPtr blue, FloatPtr alpha) { return __self__.getRGBA(red, green, blue, alpha); }
+        @Callback @BindSelector("getWhite:alpha:") public static boolean getWhiteAlpha(UIColor __self__, Selector __cmd__, FloatPtr white, FloatPtr alpha) { return __self__.getWhiteAlpha(white, alpha); }
+        @Callback @BindSelector("setFill") public static void setFill(UIColor __self__, Selector __cmd__) { __self__.setFill(); }
+        @Callback @BindSelector("set") public static void setFillAndStroke(UIColor __self__, Selector __cmd__) { __self__.setFillAndStroke(); }
+        @Callback @BindSelector("setStroke") public static void setStroke(UIColor __self__, Selector __cmd__) { __self__.setStroke(); }
+    }
+    /*</callbacks>*/
 
 }

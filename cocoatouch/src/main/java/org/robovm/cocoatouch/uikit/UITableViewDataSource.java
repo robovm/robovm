@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -99,5 +99,20 @@ public interface /*<name>*/ UITableViewDataSource /*</name>*/ /*<implements>*/ e
      */
     void moveRow(UITableView tableView, NSIndexPath fromIndexPath, NSIndexPath toIndexPath);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("tableView:canEditRowAtIndexPath:") public static boolean canEditRow(UITableViewDataSource __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { return __self__.canEditRow(tableView, indexPath); }
+        @Callback @BindSelector("tableView:canMoveRowAtIndexPath:") public static boolean canMoveRow(UITableViewDataSource __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { return __self__.canMoveRow(tableView, indexPath); }
+        @Callback @BindSelector("tableView:commitEditingStyle:forRowAtIndexPath:") public static void commitRowEditingStyle(UITableViewDataSource __self__, Selector __cmd__, UITableView tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath indexPath) { __self__.commitRowEditingStyle(tableView, editingStyle, indexPath); }
+        @Callback @BindSelector("tableView:numberOfRowsInSection:") public static int getNumberOfRowsInSection(UITableViewDataSource __self__, Selector __cmd__, UITableView tableView, int section) { return __self__.getNumberOfRowsInSection(tableView, section); }
+        @Callback @BindSelector("numberOfSectionsInTableView:") public static int getNumberOfSections(UITableViewDataSource __self__, Selector __cmd__, UITableView tableView) { return __self__.getNumberOfSections(tableView); }
+        @Callback @BindSelector("tableView:cellForRowAtIndexPath:") public static UITableViewCell getRowCell(UITableViewDataSource __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { return __self__.getRowCell(tableView, indexPath); }
+        @Callback @BindSelector("tableView:titleForFooterInSection:") public static String getSectionFooterTitle(UITableViewDataSource __self__, Selector __cmd__, UITableView tableView, int section) { return __self__.getSectionFooterTitle(tableView, section); }
+        @Callback @BindSelector("tableView:sectionForSectionIndexTitle:atIndex:") public static int getSectionForSectionIndexTitle(UITableViewDataSource __self__, Selector __cmd__, UITableView tableView, String title, int index) { return __self__.getSectionForSectionIndexTitle(tableView, title, index); }
+        @Callback @BindSelector("tableView:titleForHeaderInSection:") public static String getSectionHeaderTitle(UITableViewDataSource __self__, Selector __cmd__, UITableView tableView, int section) { return __self__.getSectionHeaderTitle(tableView, section); }
+        @Callback @BindSelector("sectionIndexTitlesForTableView:") public static NSArray getSectionIndexTitles(UITableViewDataSource __self__, Selector __cmd__, UITableView tableView) { return __self__.getSectionIndexTitles(tableView); }
+        @Callback @BindSelector("tableView:moveRowAtIndexPath:toIndexPath:") public static void moveRow(UITableViewDataSource __self__, Selector __cmd__, UITableView tableView, NSIndexPath fromIndexPath, NSIndexPath toIndexPath) { __self__.moveRow(tableView, fromIndexPath, toIndexPath); }
+    }
+    /*</callbacks>*/
 
 }

@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -69,5 +69,14 @@ public interface /*<name>*/ UITabBarControllerDelegate /*</name>*/ /*<implements
      */
     void willEndCustomizingViewControllers(UITabBarController tabBarController, NSArray viewControllers, boolean changed);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("tabBarController:didEndCustomizingViewControllers:changed:") public static void didEndCustomizingViewControllers(UITabBarControllerDelegate __self__, Selector __cmd__, UITabBarController tabBarController, NSArray viewControllers, boolean changed) { __self__.didEndCustomizingViewControllers(tabBarController, viewControllers, changed); }
+        @Callback @BindSelector("tabBarController:didSelectViewController:") public static void didSelectViewController(UITabBarControllerDelegate __self__, Selector __cmd__, UITabBarController tabBarController, UIViewController viewController) { __self__.didSelectViewController(tabBarController, viewController); }
+        @Callback @BindSelector("tabBarController:shouldSelectViewController:") public static boolean shouldSelectViewController(UITabBarControllerDelegate __self__, Selector __cmd__, UITabBarController tabBarController, UIViewController viewController) { return __self__.shouldSelectViewController(tabBarController, viewController); }
+        @Callback @BindSelector("tabBarController:willBeginCustomizingViewControllers:") public static void willBeginCustomizingViewControllers(UITabBarControllerDelegate __self__, Selector __cmd__, UITabBarController tabBarController, NSArray viewControllers) { __self__.willBeginCustomizingViewControllers(tabBarController, viewControllers); }
+        @Callback @BindSelector("tabBarController:willEndCustomizingViewControllers:changed:") public static void willEndCustomizingViewControllers(UITabBarControllerDelegate __self__, Selector __cmd__, UITabBarController tabBarController, NSArray viewControllers, boolean changed) { __self__.willEndCustomizingViewControllers(tabBarController, viewControllers, changed); }
+    }
+    /*</callbacks>*/
 
 }

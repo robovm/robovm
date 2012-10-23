@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,5 +54,11 @@ public interface /*<name>*/ UINavigationControllerDelegate /*</name>*/ /*<implem
      */
     void willShowViewController(UINavigationController navigationController, UIViewController viewController, boolean animated);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("navigationController:didShowViewController:animated:") public static void didShowViewController(UINavigationControllerDelegate __self__, Selector __cmd__, UINavigationController navigationController, UIViewController viewController, boolean animated) { __self__.didShowViewController(navigationController, viewController, animated); }
+        @Callback @BindSelector("navigationController:willShowViewController:animated:") public static void willShowViewController(UINavigationControllerDelegate __self__, Selector __cmd__, UINavigationController navigationController, UIViewController viewController, boolean animated) { __self__.willShowViewController(navigationController, viewController, animated); }
+    }
+    /*</callbacks>*/
 
 }

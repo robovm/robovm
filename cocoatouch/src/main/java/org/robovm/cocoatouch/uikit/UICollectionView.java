@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -63,66 +63,138 @@ public class /*<name>*/ UICollectionView /*</name>*/
     }
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector allowsMultipleSelection = Selector.register("allowsMultipleSelection");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAllowsMultipleSelection(UICollectionView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAllowsMultipleSelectionSuper(ObjCSuper __super__, UICollectionView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/allowsMultipleSelection">@property (nonatomic) BOOL allowsMultipleSelection</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("allowsMultipleSelection") public native boolean isAllowsMultipleSelection();
+    public boolean isAllowsMultipleSelection() {
+        if (customClass) { return objc_isAllowsMultipleSelectionSuper(getSuper(), this, allowsMultipleSelection); } else { return objc_isAllowsMultipleSelection(this, allowsMultipleSelection); }
+    }
+    
+    private static final Selector setAllowsMultipleSelection$ = Selector.register("setAllowsMultipleSelection:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAllowsMultipleSelection(UICollectionView __self__, Selector __cmd__, boolean allowsMultipleSelection);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAllowsMultipleSelectionSuper(ObjCSuper __super__, UICollectionView __self__, Selector __cmd__, boolean allowsMultipleSelection);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/allowsMultipleSelection">@property (nonatomic) BOOL allowsMultipleSelection</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setAllowsMultipleSelection:") public native void setAllowsMultipleSelection(boolean v);
+    public void setAllowsMultipleSelection(boolean allowsMultipleSelection) {
+        if (customClass) { objc_setAllowsMultipleSelectionSuper(getSuper(), this, setAllowsMultipleSelection$, allowsMultipleSelection); } else { objc_setAllowsMultipleSelection(this, setAllowsMultipleSelection$, allowsMultipleSelection); }
+    }
+    
+    private static final Selector allowsSelection = Selector.register("allowsSelection");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAllowsSelection(UICollectionView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAllowsSelectionSuper(ObjCSuper __super__, UICollectionView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/allowsSelection">@property (nonatomic) BOOL allowsSelection</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("allowsSelection") public native boolean isAllowsSelection();
+    public boolean isAllowsSelection() {
+        if (customClass) { return objc_isAllowsSelectionSuper(getSuper(), this, allowsSelection); } else { return objc_isAllowsSelection(this, allowsSelection); }
+    }
+    
+    private static final Selector setAllowsSelection$ = Selector.register("setAllowsSelection:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAllowsSelection(UICollectionView __self__, Selector __cmd__, boolean allowsSelection);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAllowsSelectionSuper(ObjCSuper __super__, UICollectionView __self__, Selector __cmd__, boolean allowsSelection);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/allowsSelection">@property (nonatomic) BOOL allowsSelection</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setAllowsSelection:") public native void setAllowsSelection(boolean v);
+    public void setAllowsSelection(boolean allowsSelection) {
+        if (customClass) { objc_setAllowsSelectionSuper(getSuper(), this, setAllowsSelection$, allowsSelection); } else { objc_setAllowsSelection(this, setAllowsSelection$, allowsSelection); }
+    }
+    
+    private static final Selector backgroundView = Selector.register("backgroundView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getBackgroundView(UICollectionView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getBackgroundViewSuper(ObjCSuper __super__, UICollectionView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/backgroundView">@property (nonatomic, retain) UIView *backgroundView;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("backgroundView") public native UIView getBackgroundView();
+    public UIView getBackgroundView() {
+        if (customClass) { return objc_getBackgroundViewSuper(getSuper(), this, backgroundView); } else { return objc_getBackgroundView(this, backgroundView); }
+    }
+    
+    private static final Selector setBackgroundView$ = Selector.register("setBackgroundView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setBackgroundView(UICollectionView __self__, Selector __cmd__, UIView backgroundView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBackgroundViewSuper(ObjCSuper __super__, UICollectionView __self__, Selector __cmd__, UIView backgroundView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/backgroundView">@property (nonatomic, retain) UIView *backgroundView;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setBackgroundView:") public native void setBackgroundView(UIView v);
+    public void setBackgroundView(UIView backgroundView) {
+        if (customClass) { objc_setBackgroundViewSuper(getSuper(), this, setBackgroundView$, backgroundView); } else { objc_setBackgroundView(this, setBackgroundView$, backgroundView); }
+    }
+    
+    private static final Selector collectionViewLayout = Selector.register("collectionViewLayout");
+    @Bridge(symbol = "objc_msgSend") private native static UICollectionViewLayout objc_getCollectionViewLayout(UICollectionView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UICollectionViewLayout objc_getCollectionViewLayoutSuper(ObjCSuper __super__, UICollectionView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/collectionViewLayout">@property (nonatomic, retain) UICollectionViewLayout *collectionViewLayout;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("collectionViewLayout") public native UICollectionViewLayout getCollectionViewLayout();
+    public UICollectionViewLayout getCollectionViewLayout() {
+        if (customClass) { return objc_getCollectionViewLayoutSuper(getSuper(), this, collectionViewLayout); } else { return objc_getCollectionViewLayout(this, collectionViewLayout); }
+    }
+    
+    private static final Selector setCollectionViewLayout$ = Selector.register("setCollectionViewLayout:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setCollectionViewLayout(UICollectionView __self__, Selector __cmd__, UICollectionViewLayout collectionViewLayout);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCollectionViewLayoutSuper(ObjCSuper __super__, UICollectionView __self__, Selector __cmd__, UICollectionViewLayout collectionViewLayout);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/collectionViewLayout">@property (nonatomic, retain) UICollectionViewLayout *collectionViewLayout;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setCollectionViewLayout:") public native void setCollectionViewLayout(UICollectionViewLayout v);
+    public void setCollectionViewLayout(UICollectionViewLayout collectionViewLayout) {
+        if (customClass) { objc_setCollectionViewLayoutSuper(getSuper(), this, setCollectionViewLayout$, collectionViewLayout); } else { objc_setCollectionViewLayout(this, setCollectionViewLayout$, collectionViewLayout); }
+    }
+    
+    private static final Selector dataSource = Selector.register("dataSource");
+    @Bridge(symbol = "objc_msgSend") private native static UICollectionViewDataSource objc_getDataSource(UICollectionView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UICollectionViewDataSource objc_getDataSourceSuper(ObjCSuper __super__, UICollectionView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/dataSource">@property (nonatomic, assign) id &amp;lt;UICollectionViewDataSource&amp;gt; dataSource;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("dataSource") public native UICollectionViewDataSource getDataSource();
+    public UICollectionViewDataSource getDataSource() {
+        if (customClass) { return objc_getDataSourceSuper(getSuper(), this, dataSource); } else { return objc_getDataSource(this, dataSource); }
+    }
+    
+    private static final Selector setDataSource$ = Selector.register("setDataSource:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDataSource(UICollectionView __self__, Selector __cmd__, UICollectionViewDataSource dataSource);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDataSourceSuper(ObjCSuper __super__, UICollectionView __self__, Selector __cmd__, UICollectionViewDataSource dataSource);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/dataSource">@property (nonatomic, assign) id &amp;lt;UICollectionViewDataSource&amp;gt; dataSource;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setDataSource:") public native void setDataSource(UICollectionViewDataSource v);
+    public void setDataSource(UICollectionViewDataSource dataSource) {
+        if (customClass) { objc_setDataSourceSuper(getSuper(), this, setDataSource$, dataSource); } else { objc_setDataSource(this, setDataSource$, dataSource); }
+    }
+    
+    private static final Selector delegate = Selector.register("delegate");
+    @Bridge(symbol = "objc_msgSend") private native static UICollectionViewDelegate objc_getDelegate(UICollectionView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UICollectionViewDelegate objc_getDelegateSuper(ObjCSuper __super__, UICollectionView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/delegate">@property (nonatomic, assign) id &amp;lt;UICollectionViewDelegate&amp;gt; delegate;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("delegate") public native UICollectionViewDelegate getDelegate();
+    public UICollectionViewDelegate getDelegate() {
+        if (customClass) { return objc_getDelegateSuper(getSuper(), this, delegate); } else { return objc_getDelegate(this, delegate); }
+    }
+    
+    private static final Selector setDelegate$ = Selector.register("setDelegate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UICollectionView __self__, Selector __cmd__, UICollectionViewDelegate delegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, UICollectionView __self__, Selector __cmd__, UICollectionViewDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/delegate">@property (nonatomic, assign) id &amp;lt;UICollectionViewDelegate&amp;gt; delegate;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(UICollectionViewDelegate v);
+    public void setDelegate(UICollectionViewDelegate delegate) {
+        if (customClass) { objc_setDelegateSuper(getSuper(), this, setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
+    }
     /*</properties>*/
     /*<methods>*/
     
@@ -456,5 +528,39 @@ public class /*<name>*/ UICollectionView /*</name>*/
         if (customClass) { objc_setCollectionViewLayoutSuper(getSuper(), this, setCollectionViewLayout$animated$, layout, animated); } else { objc_setCollectionViewLayout(this, setCollectionViewLayout$animated$, layout, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("deleteItemsAtIndexPaths:") public static void deleteItems(UICollectionView __self__, Selector __cmd__, NSArray indexPaths) { __self__.deleteItems(indexPaths); }
+        @Callback @BindSelector("deleteSections:") public static void deleteSections(UICollectionView __self__, Selector __cmd__, NSIndexSet sections) { __self__.deleteSections(sections); }
+        @Callback @BindSelector("dequeueReusableCellWithReuseIdentifier:forIndexPath:") public static NSObject dequeueReusableCell(UICollectionView __self__, Selector __cmd__, String identifier, NSIndexPath indexPath) { return __self__.dequeueReusableCell(identifier, indexPath); }
+        @Callback @BindSelector("dequeueReusableSupplementaryViewOfKind:withReuseIdentifier:forIndexPath:") public static NSObject dequeueReusableSupplementaryView(UICollectionView __self__, Selector __cmd__, String elementKind, String identifier, NSIndexPath indexPath) { return __self__.dequeueReusableSupplementaryView(elementKind, identifier, indexPath); }
+        @Callback @BindSelector("deselectItemAtIndexPath:animated:") public static void deselectItem(UICollectionView __self__, Selector __cmd__, NSIndexPath indexPath, boolean animated) { __self__.deselectItem(indexPath, animated); }
+        @Callback @BindSelector("indexPathForCell:") public static NSIndexPath getCellIndexPath(UICollectionView __self__, Selector __cmd__, UICollectionViewCell cell) { return __self__.getCellIndexPath(cell); }
+        @Callback @BindSelector("cellForItemAtIndexPath:") public static UICollectionViewCell getItemCell(UICollectionView __self__, Selector __cmd__, NSIndexPath indexPath) { return __self__.getItemCell(indexPath); }
+        @Callback @BindSelector("indexPathForItemAtPoint:") public static NSIndexPath getItemIndexPath(UICollectionView __self__, Selector __cmd__, CGPoint point) { return __self__.getItemIndexPath(point); }
+        @Callback @BindSelector("layoutAttributesForItemAtIndexPath:") public static UICollectionViewLayoutAttributes getItemLayoutAttributes(UICollectionView __self__, Selector __cmd__, NSIndexPath indexPath) { return __self__.getItemLayoutAttributes(indexPath); }
+        @Callback @BindSelector("numberOfItemsInSection:") public static int getNumberOfItemsInSection(UICollectionView __self__, Selector __cmd__, int section) { return __self__.getNumberOfItemsInSection(section); }
+        @Callback @BindSelector("numberOfSections") public static int getNumberOfSections(UICollectionView __self__, Selector __cmd__) { return __self__.getNumberOfSections(); }
+        @Callback @BindSelector("indexPathsForSelectedItems") public static NSArray getSelectedItemsIndexPaths(UICollectionView __self__, Selector __cmd__) { return __self__.getSelectedItemsIndexPaths(); }
+        @Callback @BindSelector("layoutAttributesForSupplementaryElementOfKind:atIndexPath:") public static UICollectionViewLayoutAttributes getSupplementaryElementLayoutAttributes(UICollectionView __self__, Selector __cmd__, String kind, NSIndexPath indexPath) { return __self__.getSupplementaryElementLayoutAttributes(kind, indexPath); }
+        @Callback @BindSelector("visibleCells") public static NSArray getVisibleCells(UICollectionView __self__, Selector __cmd__) { return __self__.getVisibleCells(); }
+        @Callback @BindSelector("indexPathsForVisibleItems") public static NSArray getVisibleItemsIndexPaths(UICollectionView __self__, Selector __cmd__) { return __self__.getVisibleItemsIndexPaths(); }
+        @Callback @BindSelector("insertItemsAtIndexPaths:") public static void insertItems(UICollectionView __self__, Selector __cmd__, NSArray indexPaths) { __self__.insertItems(indexPaths); }
+        @Callback @BindSelector("insertSections:") public static void insertSections(UICollectionView __self__, Selector __cmd__, NSIndexSet sections) { __self__.insertSections(sections); }
+        @Callback @BindSelector("moveItemAtIndexPath:toIndexPath:") public static void moveItem(UICollectionView __self__, Selector __cmd__, NSIndexPath indexPath, NSIndexPath newIndexPath) { __self__.moveItem(indexPath, newIndexPath); }
+        @Callback @BindSelector("moveSection:toSection:") public static void moveSection(UICollectionView __self__, Selector __cmd__, int section, int newSection) { __self__.moveSection(section, newSection); }
+        @Callback @BindSelector("performBatchUpdates:completion:") public static void performBatchUpdates(UICollectionView __self__, Selector __cmd__, VoidBlock updates, VoidBooleanBlock completion) { __self__.performBatchUpdates(updates, completion); }
+        @Callback @BindSelector("registerClass:forCellWithReuseIdentifier:") public static void registerReusableCellClass(UICollectionView __self__, Selector __cmd__, ObjCClass cellClass, String identifier) { __self__.registerReusableCellClass(cellClass, identifier); }
+        @Callback @BindSelector("registerNib:forCellWithReuseIdentifier:") public static void registerReusableCellNib(UICollectionView __self__, Selector __cmd__, UINib nib, String identifier) { __self__.registerReusableCellNib(nib, identifier); }
+        @Callback @BindSelector("registerClass:forSupplementaryViewOfKind:withReuseIdentifier:") public static void registerReusableSupplementaryViewClass(UICollectionView __self__, Selector __cmd__, ObjCClass viewClass, String elementKind, String identifier) { __self__.registerReusableSupplementaryViewClass(viewClass, elementKind, identifier); }
+        @Callback @BindSelector("registerNib:forSupplementaryViewOfKind:withReuseIdentifier:") public static void registerReusableSupplementaryViewNib(UICollectionView __self__, Selector __cmd__, UINib nib, String kind, String identifier) { __self__.registerReusableSupplementaryViewNib(nib, kind, identifier); }
+        @Callback @BindSelector("reloadData") public static void reloadData(UICollectionView __self__, Selector __cmd__) { __self__.reloadData(); }
+        @Callback @BindSelector("reloadItemsAtIndexPaths:") public static void reloadItems(UICollectionView __self__, Selector __cmd__, NSArray indexPaths) { __self__.reloadItems(indexPaths); }
+        @Callback @BindSelector("reloadSections:") public static void reloadSections(UICollectionView __self__, Selector __cmd__, NSIndexSet sections) { __self__.reloadSections(sections); }
+        @Callback @BindSelector("scrollToItemAtIndexPath:atScrollPosition:animated:") public static void scrollToItem(UICollectionView __self__, Selector __cmd__, NSIndexPath indexPath, UICollectionViewScrollPosition scrollPosition, boolean animated) { __self__.scrollToItem(indexPath, scrollPosition, animated); }
+        @Callback @BindSelector("selectItemAtIndexPath:animated:scrollPosition:") public static void selectItem(UICollectionView __self__, Selector __cmd__, NSIndexPath indexPath, boolean animated, UICollectionViewScrollPosition scrollPosition) { __self__.selectItem(indexPath, animated, scrollPosition); }
+        @Callback @BindSelector("setCollectionViewLayout:animated:") public static void setCollectionViewLayout(UICollectionView __self__, Selector __cmd__, UICollectionViewLayout layout, boolean animated) { __self__.setCollectionViewLayout(layout, animated); }
+    }
+    /*</callbacks>*/
 
 }

@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,11 +54,17 @@ public class /*<name>*/ UITextInputMode /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector primaryLanguage = Selector.register("primaryLanguage");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getPrimaryLanguage(UITextInputMode __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getPrimaryLanguageSuper(ObjCSuper __super__, UITextInputMode __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html#//apple_ref/occ/instp/UITextInputMode/primaryLanguage">@property (nonatomic, readonly, retain) NSString *primaryLanguage</a>
      * @since Available in iOS 4.2 and later.
      */
-    @Bind("primaryLanguage") public native String getPrimaryLanguage();
+    public String getPrimaryLanguage() {
+        if (customClass) { return objc_getPrimaryLanguageSuper(getSuper(), this, primaryLanguage); } else { return objc_getPrimaryLanguage(this, primaryLanguage); }
+    }
     /*</properties>*/
     /*<methods>*/
     
@@ -82,5 +88,7 @@ public class /*<name>*/ UITextInputMode /*</name>*/
         return objc_getCurrentInputMode(objCClass, currentInputMode);
     }
     /*</methods>*/
+    /*<callbacks>*/
+    /*</callbacks>*/
 
 }

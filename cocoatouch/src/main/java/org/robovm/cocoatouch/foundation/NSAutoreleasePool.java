@@ -18,14 +18,13 @@ package org.robovm.cocoatouch.foundation;
 /*<imports>*/
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
 /**
- *
  *
  * <div class="javadoc">
  *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSAutoreleasePool_Class/Reference/Reference.html">NSAutoreleasePool Class Reference</a>
@@ -64,5 +63,10 @@ public class /*<name>*/ NSAutoreleasePool /*</name>*/
         if (customClass) { objc_drainSuper(getSuper(), this, drain); } else { objc_drain(this, drain); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("drain") public static void drain(NSAutoreleasePool __self__, Selector __cmd__) { __self__.drain(); }
+    }
+    /*</callbacks>*/
 
 }

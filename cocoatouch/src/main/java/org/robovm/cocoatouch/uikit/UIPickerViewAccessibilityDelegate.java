@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,5 +54,11 @@ public interface /*<name>*/ UIPickerViewAccessibilityDelegate /*</name>*/ /*<imp
      */
     String getAccessibilityLabel(UIPickerView pickerView, int component);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("pickerView:accessibilityHintForComponent:") public static String getAccessibilityHint(UIPickerViewAccessibilityDelegate __self__, Selector __cmd__, UIPickerView pickerView, int component) { return __self__.getAccessibilityHint(pickerView, component); }
+        @Callback @BindSelector("pickerView:accessibilityLabelForComponent:") public static String getAccessibilityLabel(UIPickerViewAccessibilityDelegate __self__, Selector __cmd__, UIPickerView pickerView, int component) { return __self__.getAccessibilityLabel(pickerView, component); }
+    }
+    /*</callbacks>*/
 
 }

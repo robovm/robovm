@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,39 +54,77 @@ public class /*<name>*/ UISplitViewController /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector delegate = Selector.register("delegate");
+    @Bridge(symbol = "objc_msgSend") private native static UISplitViewControllerDelegate objc_getDelegate(UISplitViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UISplitViewControllerDelegate objc_getDelegateSuper(ObjCSuper __super__, UISplitViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewController_class/Reference/Reference.html#//apple_ref/occ/instp/UISplitViewController/delegate">@property(nonatomic, assign) id &amp;lt;UISplitViewControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("delegate") public native UISplitViewControllerDelegate getDelegate();
+    public UISplitViewControllerDelegate getDelegate() {
+        if (customClass) { return objc_getDelegateSuper(getSuper(), this, delegate); } else { return objc_getDelegate(this, delegate); }
+    }
+    
+    private static final Selector setDelegate$ = Selector.register("setDelegate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UISplitViewController __self__, Selector __cmd__, UISplitViewControllerDelegate delegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, UISplitViewController __self__, Selector __cmd__, UISplitViewControllerDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewController_class/Reference/Reference.html#//apple_ref/occ/instp/UISplitViewController/delegate">@property(nonatomic, assign) id &amp;lt;UISplitViewControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(UISplitViewControllerDelegate v);
+    public void setDelegate(UISplitViewControllerDelegate delegate) {
+        if (customClass) { objc_setDelegateSuper(getSuper(), this, setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
+    }
+    
+    private static final Selector presentsWithGesture = Selector.register("presentsWithGesture");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isPresentsWithGesture(UISplitViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isPresentsWithGestureSuper(ObjCSuper __super__, UISplitViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewController_class/Reference/Reference.html#//apple_ref/occ/instp/UISplitViewController/presentsWithGesture">@property (nonatomic) BOOL presentsWithGesture</a>
      * @since Available in iOS 5.1 and later.
      */
-    @Bind("presentsWithGesture") public native boolean isPresentsWithGesture();
+    public boolean isPresentsWithGesture() {
+        if (customClass) { return objc_isPresentsWithGestureSuper(getSuper(), this, presentsWithGesture); } else { return objc_isPresentsWithGesture(this, presentsWithGesture); }
+    }
+    
+    private static final Selector setPresentsWithGesture$ = Selector.register("setPresentsWithGesture:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setPresentsWithGesture(UISplitViewController __self__, Selector __cmd__, boolean presentsWithGesture);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPresentsWithGestureSuper(ObjCSuper __super__, UISplitViewController __self__, Selector __cmd__, boolean presentsWithGesture);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewController_class/Reference/Reference.html#//apple_ref/occ/instp/UISplitViewController/presentsWithGesture">@property (nonatomic) BOOL presentsWithGesture</a>
      * @since Available in iOS 5.1 and later.
      */
-    @Bind("setPresentsWithGesture:") public native void setPresentsWithGesture(boolean v);
+    public void setPresentsWithGesture(boolean presentsWithGesture) {
+        if (customClass) { objc_setPresentsWithGestureSuper(getSuper(), this, setPresentsWithGesture$, presentsWithGesture); } else { objc_setPresentsWithGesture(this, setPresentsWithGesture$, presentsWithGesture); }
+    }
+    
+    private static final Selector viewControllers = Selector.register("viewControllers");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getViewControllers(UISplitViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getViewControllersSuper(ObjCSuper __super__, UISplitViewController __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewController_class/Reference/Reference.html#//apple_ref/occ/instp/UISplitViewController/viewControllers">@property(nonatomic, copy) NSArray *viewControllers</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("viewControllers") public native NSArray getViewControllers();
+    public NSArray getViewControllers() {
+        if (customClass) { return objc_getViewControllersSuper(getSuper(), this, viewControllers); } else { return objc_getViewControllers(this, viewControllers); }
+    }
+    
+    private static final Selector setViewControllers$ = Selector.register("setViewControllers:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setViewControllers(UISplitViewController __self__, Selector __cmd__, NSArray viewControllers);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setViewControllersSuper(ObjCSuper __super__, UISplitViewController __self__, Selector __cmd__, NSArray viewControllers);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewController_class/Reference/Reference.html#//apple_ref/occ/instp/UISplitViewController/viewControllers">@property(nonatomic, copy) NSArray *viewControllers</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setViewControllers:") public native void setViewControllers(NSArray v);
+    public void setViewControllers(NSArray viewControllers) {
+        if (customClass) { objc_setViewControllersSuper(getSuper(), this, setViewControllers$, viewControllers); } else { objc_setViewControllers(this, setViewControllers$, viewControllers); }
+    }
     /*</properties>*/
     /*<methods>*/
     
     /*</methods>*/
+    /*<callbacks>*/
+    /*</callbacks>*/
 
 }

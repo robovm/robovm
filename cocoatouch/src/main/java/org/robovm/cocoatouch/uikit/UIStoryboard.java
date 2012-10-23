@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -90,5 +90,11 @@ public class /*<name>*/ UIStoryboard /*</name>*/
         if (customClass) { return objc_instantiateViewControllerSuper(getSuper(), this, instantiateViewControllerWithIdentifier$, identifier); } else { return objc_instantiateViewController(this, instantiateViewControllerWithIdentifier$, identifier); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("instantiateInitialViewController") public static NSObject instantiateInitialViewController(UIStoryboard __self__, Selector __cmd__) { return __self__.instantiateInitialViewController(); }
+        @Callback @BindSelector("instantiateViewControllerWithIdentifier:") public static NSObject instantiateViewController(UIStoryboard __self__, Selector __cmd__, String identifier) { return __self__.instantiateViewController(identifier); }
+    }
+    /*</callbacks>*/
 
 }

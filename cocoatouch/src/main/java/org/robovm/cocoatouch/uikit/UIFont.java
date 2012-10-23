@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,46 +54,94 @@ public class /*<name>*/ UIFont /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector ascender = Selector.register("ascender");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getAscender(UIFont __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getAscenderSuper(ObjCSuper __super__, UIFont __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIFont_Class/Reference/Reference.html#//apple_ref/occ/instp/UIFont/ascender">@property(nonatomic, readonly) CGFloat ascender</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("ascender") public native float getAscender();
+    public float getAscender() {
+        if (customClass) { return objc_getAscenderSuper(getSuper(), this, ascender); } else { return objc_getAscender(this, ascender); }
+    }
+    
+    private static final Selector capHeight = Selector.register("capHeight");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getCapHeight(UIFont __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getCapHeightSuper(ObjCSuper __super__, UIFont __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIFont_Class/Reference/Reference.html#//apple_ref/occ/instp/UIFont/capHeight">@property(nonatomic, readonly) CGFloat capHeight</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("capHeight") public native float getCapHeight();
+    public float getCapHeight() {
+        if (customClass) { return objc_getCapHeightSuper(getSuper(), this, capHeight); } else { return objc_getCapHeight(this, capHeight); }
+    }
+    
+    private static final Selector descender = Selector.register("descender");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getDescender(UIFont __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getDescenderSuper(ObjCSuper __super__, UIFont __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIFont_Class/Reference/Reference.html#//apple_ref/occ/instp/UIFont/descender">@property(nonatomic, readonly) CGFloat descender</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("descender") public native float getDescender();
+    public float getDescender() {
+        if (customClass) { return objc_getDescenderSuper(getSuper(), this, descender); } else { return objc_getDescender(this, descender); }
+    }
+    
+    private static final Selector familyName = Selector.register("familyName");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getFamilyName(UIFont __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getFamilyNameSuper(ObjCSuper __super__, UIFont __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIFont_Class/Reference/Reference.html#//apple_ref/occ/instp/UIFont/familyName">@property(nonatomic, readonly, retain) NSString *familyName</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("familyName") public native String getFamilyName();
+    public String getFamilyName() {
+        if (customClass) { return objc_getFamilyNameSuper(getSuper(), this, familyName); } else { return objc_getFamilyName(this, familyName); }
+    }
+    
+    private static final Selector fontName = Selector.register("fontName");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getFontName(UIFont __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getFontNameSuper(ObjCSuper __super__, UIFont __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIFont_Class/Reference/Reference.html#//apple_ref/occ/instp/UIFont/fontName">@property(nonatomic, readonly, retain) NSString *fontName</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("fontName") public native String getFontName();
+    public String getFontName() {
+        if (customClass) { return objc_getFontNameSuper(getSuper(), this, fontName); } else { return objc_getFontName(this, fontName); }
+    }
+    
+    private static final Selector lineHeight = Selector.register("lineHeight");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getLineHeight(UIFont __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getLineHeightSuper(ObjCSuper __super__, UIFont __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIFont_Class/Reference/Reference.html#//apple_ref/occ/instp/UIFont/lineHeight">@property(nonatomic,readonly) CGFloat lineHeight</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("lineHeight") public native float getLineHeight();
+    public float getLineHeight() {
+        if (customClass) { return objc_getLineHeightSuper(getSuper(), this, lineHeight); } else { return objc_getLineHeight(this, lineHeight); }
+    }
+    
+    private static final Selector pointSize = Selector.register("pointSize");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getPointSize(UIFont __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getPointSizeSuper(ObjCSuper __super__, UIFont __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIFont_Class/Reference/Reference.html#//apple_ref/occ/instp/UIFont/pointSize">@property(nonatomic, readonly) CGFloat pointSize</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("pointSize") public native float getPointSize();
+    public float getPointSize() {
+        if (customClass) { return objc_getPointSizeSuper(getSuper(), this, pointSize); } else { return objc_getPointSize(this, pointSize); }
+    }
+    
+    private static final Selector xHeight = Selector.register("xHeight");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getXHeight(UIFont __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getXHeightSuper(ObjCSuper __super__, UIFont __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIFont_Class/Reference/Reference.html#//apple_ref/occ/instp/UIFont/xHeight">@property(nonatomic, readonly) CGFloat xHeight</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("xHeight") public native float getXHeight();
+    public float getXHeight() {
+        if (customClass) { return objc_getXHeightSuper(getSuper(), this, xHeight); } else { return objc_getXHeight(this, xHeight); }
+    }
     /*</properties>*/
     /*<methods>*/
     
@@ -208,5 +256,10 @@ public class /*<name>*/ UIFont /*</name>*/
         if (customClass) { return objc_getFontWithSizeSuper(getSuper(), this, fontWithSize$, fontSize); } else { return objc_getFontWithSize(this, fontWithSize$, fontSize); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("fontWithSize:") public static UIFont getFontWithSize(UIFont __self__, Selector __cmd__, float fontSize) { return __self__.getFontWithSize(fontSize); }
+    }
+    /*</callbacks>*/
 
 }

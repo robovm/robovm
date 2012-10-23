@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -99,5 +99,20 @@ public interface /*<name>*/ UIDocumentInteractionControllerDelegate /*</name>*/ 
      */
     void willPresentOptionsMenu(UIDocumentInteractionController  controller);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("documentInteractionControllerDidDismissOpenInMenu:") public static void didDismissOpenInMenu(UIDocumentInteractionControllerDelegate __self__, Selector __cmd__, UIDocumentInteractionController  controller) { __self__.didDismissOpenInMenu( controller); }
+        @Callback @BindSelector("documentInteractionControllerDidDismissOptionsMenu:") public static void didDismissOptionsMenu(UIDocumentInteractionControllerDelegate __self__, Selector __cmd__, UIDocumentInteractionController  controller) { __self__.didDismissOptionsMenu( controller); }
+        @Callback @BindSelector("documentInteractionControllerDidEndPreview:") public static void didEndPreview(UIDocumentInteractionControllerDelegate __self__, Selector __cmd__, UIDocumentInteractionController controller) { __self__.didEndPreview(controller); }
+        @Callback @BindSelector("documentInteractionController:didEndSendingToApplication:") public static void didEndSendingToApplication(UIDocumentInteractionControllerDelegate __self__, Selector __cmd__, UIDocumentInteractionController  controller, String  application) { __self__.didEndSendingToApplication( controller,  application); }
+        @Callback @BindSelector("documentInteractionControllerRectForPreview:") public static CGRect getRectForPreview(UIDocumentInteractionControllerDelegate __self__, Selector __cmd__, UIDocumentInteractionController  controller) { return __self__.getRectForPreview( controller); }
+        @Callback @BindSelector("documentInteractionControllerViewControllerForPreview:") public static UIViewController getViewControllerForPreview(UIDocumentInteractionControllerDelegate __self__, Selector __cmd__, UIDocumentInteractionController  controller) { return __self__.getViewControllerForPreview( controller); }
+        @Callback @BindSelector("documentInteractionControllerViewForPreview:") public static UIView getViewForPreview(UIDocumentInteractionControllerDelegate __self__, Selector __cmd__, UIDocumentInteractionController  controller) { return __self__.getViewForPreview( controller); }
+        @Callback @BindSelector("documentInteractionControllerWillBeginPreview:") public static void willBeginPreview(UIDocumentInteractionControllerDelegate __self__, Selector __cmd__, UIDocumentInteractionController  controller) { __self__.willBeginPreview( controller); }
+        @Callback @BindSelector("documentInteractionController:willBeginSendingToApplication:") public static void willBeginSendingToApplication(UIDocumentInteractionControllerDelegate __self__, Selector __cmd__, UIDocumentInteractionController  controller, String  application) { __self__.willBeginSendingToApplication( controller,  application); }
+        @Callback @BindSelector("documentInteractionControllerWillPresentOpenInMenu:") public static void willPresentOpenInMenu(UIDocumentInteractionControllerDelegate __self__, Selector __cmd__, UIDocumentInteractionController  controller) { __self__.willPresentOpenInMenu( controller); }
+        @Callback @BindSelector("documentInteractionControllerWillPresentOptionsMenu:") public static void willPresentOptionsMenu(UIDocumentInteractionControllerDelegate __self__, Selector __cmd__, UIDocumentInteractionController  controller) { __self__.willPresentOptionsMenu( controller); }
+    }
+    /*</callbacks>*/
 
 }

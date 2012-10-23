@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -189,5 +189,38 @@ public interface /*<name>*/ UITableViewDelegate /*</name>*/ /*<implements>*/ ext
      */
     NSIndexPath willSelectRow(UITableView tableView, NSIndexPath indexPath);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("tableView:accessoryButtonTappedForRowWithIndexPath:") public static void accessoryButtonTapped(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { __self__.accessoryButtonTapped(tableView, indexPath); }
+        @Callback @BindSelector("tableView:canPerformAction:forRowAtIndexPath:withSender:") public static boolean canPerformAction(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, Selector action, NSIndexPath indexPath, NSObject sender) { return __self__.canPerformAction(tableView, action, indexPath, sender); }
+        @Callback @BindSelector("tableView:didDeselectRowAtIndexPath:") public static void didDeselectRow(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { __self__.didDeselectRow(tableView, indexPath); }
+        @Callback @BindSelector("tableView:didEndDisplayingCell:forRowAtIndexPath:") public static void didEndDisplayingCell(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, UITableViewCell cell, NSIndexPath indexPath) { __self__.didEndDisplayingCell(tableView, cell, indexPath); }
+        @Callback @BindSelector("tableView:didEndDisplayingFooterView:forSection:") public static void didEndDisplayingFooterView(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, UIView view, int section) { __self__.didEndDisplayingFooterView(tableView, view, section); }
+        @Callback @BindSelector("tableView:didEndDisplayingHeaderView:forSection:") public static void didEndDisplayingHeaderView(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, UIView view, int section) { __self__.didEndDisplayingHeaderView(tableView, view, section); }
+        @Callback @BindSelector("tableView:didEndEditingRowAtIndexPath:") public static void didEndEditingRow(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { __self__.didEndEditingRow(tableView, indexPath); }
+        @Callback @BindSelector("tableView:didHighlightRowAtIndexPath:") public static void didHighlightRow(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { __self__.didHighlightRow(tableView, indexPath); }
+        @Callback @BindSelector("tableView:didSelectRowAtIndexPath:") public static void didSelectRow(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { __self__.didSelectRow(tableView, indexPath); }
+        @Callback @BindSelector("tableView:didUnhighlightRowAtIndexPath:") public static void didUnhighlightRow(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { __self__.didUnhighlightRow(tableView, indexPath); }
+        @Callback @BindSelector("tableView:titleForDeleteConfirmationButtonForRowAtIndexPath:") public static String getDeleteConfirmationButtonTitle(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { return __self__.getDeleteConfirmationButtonTitle(tableView, indexPath); }
+        @Callback @BindSelector("tableView:editingStyleForRowAtIndexPath:") public static UITableViewCellEditingStyle getRowEditingStyle(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { return __self__.getRowEditingStyle(tableView, indexPath); }
+        @Callback @BindSelector("tableView:heightForRowAtIndexPath:") public static float getRowHeight(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { return __self__.getRowHeight(tableView, indexPath); }
+        @Callback @BindSelector("tableView:indentationLevelForRowAtIndexPath:") public static int getRowIndentationLevel(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { return __self__.getRowIndentationLevel(tableView, indexPath); }
+        @Callback @BindSelector("tableView:heightForFooterInSection:") public static float getSectionFooterHeight(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, int section) { return __self__.getSectionFooterHeight(tableView, section); }
+        @Callback @BindSelector("tableView:viewForFooterInSection:") public static UIView getSectionFooterView(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, int section) { return __self__.getSectionFooterView(tableView, section); }
+        @Callback @BindSelector("tableView:heightForHeaderInSection:") public static float getSectionHeaderHeight(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, int section) { return __self__.getSectionHeaderHeight(tableView, section); }
+        @Callback @BindSelector("tableView:viewForHeaderInSection:") public static UIView getSectionHeaderView(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, int section) { return __self__.getSectionHeaderView(tableView, section); }
+        @Callback @BindSelector("tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:") public static NSIndexPath getTargetForMove(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath sourceIndexPath, NSIndexPath proposedDestinationIndexPath) { return __self__.getTargetForMove(tableView, sourceIndexPath, proposedDestinationIndexPath); }
+        @Callback @BindSelector("tableView:performAction:forRowAtIndexPath:withSender:") public static void performAction(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, Selector action, NSIndexPath indexPath, NSObject sender) { __self__.performAction(tableView, action, indexPath, sender); }
+        @Callback @BindSelector("tableView:shouldHighlightRowAtIndexPath:") public static boolean shouldHighlightRow(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { return __self__.shouldHighlightRow(tableView, indexPath); }
+        @Callback @BindSelector("tableView:shouldIndentWhileEditingRowAtIndexPath:") public static boolean shouldIndentWhileEditingRow(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { return __self__.shouldIndentWhileEditingRow(tableView, indexPath); }
+        @Callback @BindSelector("tableView:shouldShowMenuForRowAtIndexPath:") public static boolean shouldShowMenuForRow(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { return __self__.shouldShowMenuForRow(tableView, indexPath); }
+        @Callback @BindSelector("tableView:willBeginEditingRowAtIndexPath:") public static void willBeginEditingRow(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { __self__.willBeginEditingRow(tableView, indexPath); }
+        @Callback @BindSelector("tableView:willDeselectRowAtIndexPath:") public static NSIndexPath willDeselectRow(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { return __self__.willDeselectRow(tableView, indexPath); }
+        @Callback @BindSelector("tableView:willDisplayCell:forRowAtIndexPath:") public static void willDisplayCell(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, UITableViewCell cell, NSIndexPath indexPath) { __self__.willDisplayCell(tableView, cell, indexPath); }
+        @Callback @BindSelector("tableView:willDisplayFooterView:forSection:") public static void willDisplayFooterView(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, UIView view, int section) { __self__.willDisplayFooterView(tableView, view, section); }
+        @Callback @BindSelector("tableView:willDisplayHeaderView:forSection:") public static void willDisplayHeaderView(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, UIView view, int section) { __self__.willDisplayHeaderView(tableView, view, section); }
+        @Callback @BindSelector("tableView:willSelectRowAtIndexPath:") public static NSIndexPath willSelectRow(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { return __self__.willSelectRow(tableView, indexPath); }
+    }
+    /*</callbacks>*/
 
 }

@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -53,11 +53,17 @@ public class /*<name>*/ UICollectionViewLayout /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector collectionView = Selector.register("collectionView");
+    @Bridge(symbol = "objc_msgSend") private native static UICollectionView objc_getCollectionView(UICollectionViewLayout __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UICollectionView objc_getCollectionViewSuper(ObjCSuper __super__, UICollectionViewLayout __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewLayout/collectionView">@property (nonatomic, readonly) UICollectionView *collectionView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("collectionView") public native UICollectionView getCollectionView();
+    public UICollectionView getCollectionView() {
+        if (customClass) { return objc_getCollectionViewSuper(getSuper(), this, collectionView); } else { return objc_getCollectionView(this, collectionView); }
+    }
     /*</properties>*/
     /*<methods>*/
     
@@ -302,5 +308,30 @@ public class /*<name>*/ UICollectionViewLayout /*</name>*/
         if (customClass) { return objc_shouldInvalidateLayoutForBoundsChangeSuper(getSuper(), this, shouldInvalidateLayoutForBoundsChange$, newBounds); } else { return objc_shouldInvalidateLayoutForBoundsChange(this, shouldInvalidateLayoutForBoundsChange$, newBounds); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("finalizeAnimatedBoundsChange") public static void finalizeAnimatedBoundsChange(UICollectionViewLayout __self__, Selector __cmd__) { __self__.finalizeAnimatedBoundsChange(); }
+        @Callback @BindSelector("finalizeCollectionViewUpdates") public static void finalizeCollectionViewUpdates(UICollectionViewLayout __self__, Selector __cmd__) { __self__.finalizeCollectionViewUpdates(); }
+        @Callback @BindSelector("collectionViewContentSize") public static CGSize getCollectionViewContentSize(UICollectionViewLayout __self__, Selector __cmd__) { return __self__.getCollectionViewContentSize(); }
+        @Callback @BindSelector("finalLayoutAttributesForDisappearingDecorationElementOfKind:atIndexPath:") public static UICollectionViewLayoutAttributes getFinalLayoutAttributesForDisappearingDecorationElement(UICollectionViewLayout __self__, Selector __cmd__, String elementKind, NSIndexPath elementIndexPath) { return __self__.getFinalLayoutAttributesForDisappearingDecorationElement(elementKind, elementIndexPath); }
+        @Callback @BindSelector("finalLayoutAttributesForDisappearingItemAtIndexPath:") public static UICollectionViewLayoutAttributes getFinalLayoutAttributesForDisappearingItem(UICollectionViewLayout __self__, Selector __cmd__, NSIndexPath itemIndexPath) { return __self__.getFinalLayoutAttributesForDisappearingItem(itemIndexPath); }
+        @Callback @BindSelector("finalLayoutAttributesForDisappearingSupplementaryElementOfKind:atIndexPath:") public static UICollectionViewLayoutAttributes getFinalLayoutAttributesForDisappearingSupplementaryElement(UICollectionViewLayout __self__, Selector __cmd__, String elementKind, NSIndexPath elementIndexPath) { return __self__.getFinalLayoutAttributesForDisappearingSupplementaryElement(elementKind, elementIndexPath); }
+        @Callback @BindSelector("initialLayoutAttributesForAppearingDecorationElementOfKind:atIndexPath:") public static UICollectionViewLayoutAttributes getInitialLayoutAttributesForAppearingDecorationElement(UICollectionViewLayout __self__, Selector __cmd__, String elementKind, NSIndexPath elementIndexPath) { return __self__.getInitialLayoutAttributesForAppearingDecorationElement(elementKind, elementIndexPath); }
+        @Callback @BindSelector("initialLayoutAttributesForAppearingItemAtIndexPath:") public static UICollectionViewLayoutAttributes getInitialLayoutAttributesForAppearingItem(UICollectionViewLayout __self__, Selector __cmd__, NSIndexPath itemIndexPath) { return __self__.getInitialLayoutAttributesForAppearingItem(itemIndexPath); }
+        @Callback @BindSelector("initialLayoutAttributesForAppearingSupplementaryElementOfKind:atIndexPath:") public static UICollectionViewLayoutAttributes getInitialLayoutAttributesForAppearingSupplementaryElement(UICollectionViewLayout __self__, Selector __cmd__, String elementKind, NSIndexPath elementIndexPath) { return __self__.getInitialLayoutAttributesForAppearingSupplementaryElement(elementKind, elementIndexPath); }
+        @Callback @BindSelector("layoutAttributesForDecorationViewOfKind:atIndexPath:") public static UICollectionViewLayoutAttributes getLayoutAttributesForDecorationView(UICollectionViewLayout __self__, Selector __cmd__, String decorationViewKind, NSIndexPath indexPath) { return __self__.getLayoutAttributesForDecorationView(decorationViewKind, indexPath); }
+        @Callback @BindSelector("layoutAttributesForElementsInRect:") public static NSArray getLayoutAttributesForElements(UICollectionViewLayout __self__, Selector __cmd__, CGRect rect) { return __self__.getLayoutAttributesForElements(rect); }
+        @Callback @BindSelector("layoutAttributesForItemAtIndexPath:") public static UICollectionViewLayoutAttributes getLayoutAttributesForItem(UICollectionViewLayout __self__, Selector __cmd__, NSIndexPath indexPath) { return __self__.getLayoutAttributesForItem(indexPath); }
+        @Callback @BindSelector("layoutAttributesForSupplementaryViewOfKind:atIndexPath:") public static UICollectionViewLayoutAttributes getLayoutAttributesForSupplementaryView(UICollectionViewLayout __self__, Selector __cmd__, String kind, NSIndexPath indexPath) { return __self__.getLayoutAttributesForSupplementaryView(kind, indexPath); }
+        @Callback @BindSelector("targetContentOffsetForProposedContentOffset:withScrollingVelocity:") public static CGPoint getTargetContentOffset(UICollectionViewLayout __self__, Selector __cmd__, CGPoint proposedContentOffset, CGPoint velocity) { return __self__.getTargetContentOffset(proposedContentOffset, velocity); }
+        @Callback @BindSelector("invalidateLayout") public static void invalidateLayout(UICollectionViewLayout __self__, Selector __cmd__) { __self__.invalidateLayout(); }
+        @Callback @BindSelector("prepareForAnimatedBoundsChange:") public static void prepareForAnimatedBoundsChange(UICollectionViewLayout __self__, Selector __cmd__, CGRect oldBounds) { __self__.prepareForAnimatedBoundsChange(oldBounds); }
+        @Callback @BindSelector("prepareForCollectionViewUpdates:") public static void prepareForCollectionViewUpdates(UICollectionViewLayout __self__, Selector __cmd__, NSArray updateItems) { __self__.prepareForCollectionViewUpdates(updateItems); }
+        @Callback @BindSelector("prepareLayout") public static void prepareLayout(UICollectionViewLayout __self__, Selector __cmd__) { __self__.prepareLayout(); }
+        @Callback @BindSelector("registerClass:forDecorationViewOfKind:") public static void registerDecorationViewClass(UICollectionViewLayout __self__, Selector __cmd__, ObjCClass viewClass, String decorationViewKind) { __self__.registerDecorationViewClass(viewClass, decorationViewKind); }
+        @Callback @BindSelector("registerNib:forDecorationViewOfKind:") public static void registerDecorationViewNib(UICollectionViewLayout __self__, Selector __cmd__, UINib nib, String decorationViewKind) { __self__.registerDecorationViewNib(nib, decorationViewKind); }
+        @Callback @BindSelector("shouldInvalidateLayoutForBoundsChange:") public static boolean shouldInvalidateLayoutForBoundsChange(UICollectionViewLayout __self__, Selector __cmd__, CGRect newBounds) { return __self__.shouldInvalidateLayoutForBoundsChange(newBounds); }
+    }
+    /*</callbacks>*/
 
 }

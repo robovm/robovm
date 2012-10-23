@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -53,5 +53,11 @@ public interface /*<name>*/ UIDataSourceModelAssociation /*</name>*/ /*<implemen
      */
     String getElementModelIdentifier(NSIndexPath idx, UIView view);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("indexPathForElementWithModelIdentifier:inView:") public static NSIndexPath getElementIndexPath(UIDataSourceModelAssociation __self__, Selector __cmd__, String identifier, UIView view) { return __self__.getElementIndexPath(identifier, view); }
+        @Callback @BindSelector("modelIdentifierForElementAtIndexPath:inView:") public static String getElementModelIdentifier(UIDataSourceModelAssociation __self__, Selector __cmd__, NSIndexPath idx, UIView view) { return __self__.getElementModelIdentifier(idx, view); }
+    }
+    /*</callbacks>*/
 
 }

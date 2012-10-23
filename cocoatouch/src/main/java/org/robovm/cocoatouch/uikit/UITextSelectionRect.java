@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -53,38 +53,76 @@ public class /*<name>*/ UITextSelectionRect /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector containsEnd = Selector.register("containsEnd");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isContainsEnd(UITextSelectionRect __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isContainsEndSuper(ObjCSuper __super__, UITextSelectionRect __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextSelectionRect_class/Reference/Reference.html#//apple_ref/occ/instp/UITextSelectionRect/containsEnd">@property (nonatomic, readonly) BOOL containsEnd</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("containsEnd") public native boolean isContainsEnd();
+    public boolean isContainsEnd() {
+        if (customClass) { return objc_isContainsEndSuper(getSuper(), this, containsEnd); } else { return objc_isContainsEnd(this, containsEnd); }
+    }
+    
+    private static final Selector containsStart = Selector.register("containsStart");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isContainsStart(UITextSelectionRect __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isContainsStartSuper(ObjCSuper __super__, UITextSelectionRect __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextSelectionRect_class/Reference/Reference.html#//apple_ref/occ/instp/UITextSelectionRect/containsStart">@property (nonatomic, readonly) BOOL containsStart</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("containsStart") public native boolean isContainsStart();
+    public boolean isContainsStart() {
+        if (customClass) { return objc_isContainsStartSuper(getSuper(), this, containsStart); } else { return objc_isContainsStart(this, containsStart); }
+    }
+    
+    private static final Selector range = Selector.register("range");
+    @Bridge(symbol = "objc_msgSend") private native static UITextRange objc_getRange(UITextSelectionRect __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextRange objc_getRangeSuper(ObjCSuper __super__, UITextSelectionRect __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextSelectionRect_class/Reference/Reference.html#//apple_ref/occ/instp/UITextSelectionRect/range">@property (nonatomic, readonly) UITextRange *range</a>
      */
-    @Bind("range") public native UITextRange getRange();
+    public UITextRange getRange() {
+        if (customClass) { return objc_getRangeSuper(getSuper(), this, range); } else { return objc_getRange(this, range); }
+    }
+    
+    private static final Selector rect = Selector.register("rect");
+    @Bridge(symbol = "objc_msgSend") private native static CGRect objc_getRect(UITextSelectionRect __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGRect objc_getRectSuper(ObjCSuper __super__, UITextSelectionRect __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextSelectionRect_class/Reference/Reference.html#//apple_ref/occ/instp/UITextSelectionRect/rect">@property (nonatomic, readonly) CGRect rect</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("rect") public native CGRect getRect();
+    public CGRect getRect() {
+        if (customClass) { return objc_getRectSuper(getSuper(), this, rect); } else { return objc_getRect(this, rect); }
+    }
+    
+    private static final Selector isVertical = Selector.register("isVertical");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isVertical(UITextSelectionRect __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isVerticalSuper(ObjCSuper __super__, UITextSelectionRect __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextSelectionRect_class/Reference/Reference.html#//apple_ref/occ/instp/UITextSelectionRect/isVertical">@property (nonatomic, readonly) BOOL isVertical</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("isVertical") public native boolean isVertical();
+    public boolean isVertical() {
+        if (customClass) { return objc_isVerticalSuper(getSuper(), this, isVertical); } else { return objc_isVertical(this, isVertical); }
+    }
+    
+    private static final Selector writingDirection = Selector.register("writingDirection");
+    @Bridge(symbol = "objc_msgSend") private native static UITextWritingDirection objc_getWritingDirection(UITextSelectionRect __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextWritingDirection objc_getWritingDirectionSuper(ObjCSuper __super__, UITextSelectionRect __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextSelectionRect_class/Reference/Reference.html#//apple_ref/occ/instp/UITextSelectionRect/writingDirection">@property (nonatomic, readonly) UITextWritingDirection writingDirection</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("writingDirection") public native UITextWritingDirection getWritingDirection();
+    public UITextWritingDirection getWritingDirection() {
+        if (customClass) { return objc_getWritingDirectionSuper(getSuper(), this, writingDirection); } else { return objc_getWritingDirection(this, writingDirection); }
+    }
     /*</properties>*/
     /*<methods>*/
     
     /*</methods>*/
+    /*<callbacks>*/
+    /*</callbacks>*/
 
 }

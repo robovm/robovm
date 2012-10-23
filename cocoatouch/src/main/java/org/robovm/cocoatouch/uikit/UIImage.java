@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -130,56 +130,116 @@ public class /*<name>*/ UIImage /*</name>*/
     }
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector CGImage = Selector.register("CGImage");
+    @Bridge(symbol = "objc_msgSend") private native static CGImage objc_getCGImage(UIImage __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGImage objc_getCGImageSuper(ObjCSuper __super__, UIImage __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImage/CGImage">@property(nonatomic, readonly) CGImageRef CGImage</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("CGImage") public native CGImage getCGImage();
+    public CGImage getCGImage() {
+        if (customClass) { return objc_getCGImageSuper(getSuper(), this, CGImage); } else { return objc_getCGImage(this, CGImage); }
+    }
+    
+    private static final Selector CIImage = Selector.register("CIImage");
+    @Bridge(symbol = "objc_msgSend") private native static CIImage objc_getCIImage(UIImage __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CIImage objc_getCIImageSuper(ObjCSuper __super__, UIImage __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImage/CIImage">@property(nonatomic, readonly) CIImage *CIImage</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("CIImage") public native CIImage getCIImage();
+    public CIImage getCIImage() {
+        if (customClass) { return objc_getCIImageSuper(getSuper(), this, CIImage); } else { return objc_getCIImage(this, CIImage); }
+    }
+    
+    private static final Selector alignmentRectInsets = Selector.register("alignmentRectInsets");
+    @Bridge(symbol = "objc_msgSend") private native static UIEdgeInsets objc_getAlignmentRectInsets(UIImage __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIEdgeInsets objc_getAlignmentRectInsetsSuper(ObjCSuper __super__, UIImage __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImage/alignmentRectInsets">@property(nonatomic, readonly) UIEdgeInsets alignmentRectInsets</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("alignmentRectInsets") public native UIEdgeInsets getAlignmentRectInsets();
+    public UIEdgeInsets getAlignmentRectInsets() {
+        if (customClass) { return objc_getAlignmentRectInsetsSuper(getSuper(), this, alignmentRectInsets); } else { return objc_getAlignmentRectInsets(this, alignmentRectInsets); }
+    }
+    
+    private static final Selector capInsets = Selector.register("capInsets");
+    @Bridge(symbol = "objc_msgSend") private native static UIEdgeInsets objc_getCapInsets(UIImage __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIEdgeInsets objc_getCapInsetsSuper(ObjCSuper __super__, UIImage __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImage/capInsets">@property(nonatomic, readonly) UIEdgeInsets capInsets</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("capInsets") public native UIEdgeInsets getCapInsets();
+    public UIEdgeInsets getCapInsets() {
+        if (customClass) { return objc_getCapInsetsSuper(getSuper(), this, capInsets); } else { return objc_getCapInsets(this, capInsets); }
+    }
+    
+    private static final Selector duration = Selector.register("duration");
+    @Bridge(symbol = "objc_msgSend") private native static double objc_getDuration(UIImage __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getDurationSuper(ObjCSuper __super__, UIImage __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImage/duration">@property(nonatomic, readonly) NSTimeInterval duration</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("duration") public native double getDuration();
+    public double getDuration() {
+        if (customClass) { return objc_getDurationSuper(getSuper(), this, duration); } else { return objc_getDuration(this, duration); }
+    }
+    
+    private static final Selector images = Selector.register("images");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getImages(UIImage __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getImagesSuper(ObjCSuper __super__, UIImage __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImage/images">@property(nonatomic, readonly) NSArray *images</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("images") public native NSArray getImages();
+    public NSArray getImages() {
+        if (customClass) { return objc_getImagesSuper(getSuper(), this, images); } else { return objc_getImages(this, images); }
+    }
+    
+    private static final Selector imageOrientation = Selector.register("imageOrientation");
+    @Bridge(symbol = "objc_msgSend") private native static UIImageOrientation objc_getOrientation(UIImage __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImageOrientation objc_getOrientationSuper(ObjCSuper __super__, UIImage __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImage/imageOrientation">@property(nonatomic, readonly) UIImageOrientation imageOrientation</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("imageOrientation") public native UIImageOrientation getOrientation();
+    public UIImageOrientation getOrientation() {
+        if (customClass) { return objc_getOrientationSuper(getSuper(), this, imageOrientation); } else { return objc_getOrientation(this, imageOrientation); }
+    }
+    
+    private static final Selector resizingMode = Selector.register("resizingMode");
+    @Bridge(symbol = "objc_msgSend") private native static UIImageResizingMode objc_getResizingMode(UIImage __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImageResizingMode objc_getResizingModeSuper(ObjCSuper __super__, UIImage __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImage/resizingMode">@property(nonatomic,readonly) UIImageResizingMode resizingMode</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("resizingMode") public native UIImageResizingMode getResizingMode();
+    public UIImageResizingMode getResizingMode() {
+        if (customClass) { return objc_getResizingModeSuper(getSuper(), this, resizingMode); } else { return objc_getResizingMode(this, resizingMode); }
+    }
+    
+    private static final Selector scale = Selector.register("scale");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getScale(UIImage __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getScaleSuper(ObjCSuper __super__, UIImage __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImage/scale">@property(nonatomic, readonly) CGFloat scale</a>
      * @since Available in iOS 4.0 and later.
      */
-    @Bind("scale") public native float getScale();
+    public float getScale() {
+        if (customClass) { return objc_getScaleSuper(getSuper(), this, scale); } else { return objc_getScale(this, scale); }
+    }
+    
+    private static final Selector size = Selector.register("size");
+    @Bridge(symbol = "objc_msgSend") private native static CGSize objc_getSize(UIImage __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGSize objc_getSizeSuper(ObjCSuper __super__, UIImage __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImage/size">@property(nonatomic, readonly) CGSize size</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("size") public native CGSize getSize();
+    public CGSize getSize() {
+        if (customClass) { return objc_getSizeSuper(getSuper(), this, size); } else { return objc_getSize(this, size); }
+    }
     /*</properties>*/
     /*<methods>*/
     
@@ -391,5 +451,17 @@ public class /*<name>*/ UIImage /*</name>*/
         if (customClass) { objc_drawAsPatternSuper(getSuper(), this, drawAsPatternInRect$, rect); } else { objc_drawAsPattern(this, drawAsPatternInRect$, rect); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("imageWithAlignmentRectInsets:") public static UIImage copyWithAlignmentRectInsets(UIImage __self__, Selector __cmd__, UIEdgeInsets alignmentInsets) { return __self__.copyWithAlignmentRectInsets(alignmentInsets); }
+        @Callback @BindSelector("resizableImageWithCapInsets:") public static UIImage copyWithCapInsets(UIImage __self__, Selector __cmd__, UIEdgeInsets capInsets) { return __self__.copyWithCapInsets(capInsets); }
+        @Callback @BindSelector("resizableImageWithCapInsets:resizingMode:") public static UIImage copyWithCapInsets(UIImage __self__, Selector __cmd__, UIEdgeInsets capInsets, UIImageResizingMode resizingMode) { return __self__.copyWithCapInsets(capInsets, resizingMode); }
+        @Callback @BindSelector("drawInRect:") public static void draw(UIImage __self__, Selector __cmd__, CGRect rect) { __self__.draw(rect); }
+        @Callback @BindSelector("drawInRect:blendMode:alpha:") public static void draw(UIImage __self__, Selector __cmd__, CGRect rect, CGBlendMode blendMode, float alpha) { __self__.draw(rect, blendMode, alpha); }
+        @Callback @BindSelector("drawAtPoint:blendMode:alpha:") public static void draw(UIImage __self__, Selector __cmd__, CGPoint point, CGBlendMode blendMode, float alpha) { __self__.draw(point, blendMode, alpha); }
+        @Callback @BindSelector("drawAtPoint:") public static void draw(UIImage __self__, Selector __cmd__, CGPoint point) { __self__.draw(point); }
+        @Callback @BindSelector("drawAsPatternInRect:") public static void drawAsPattern(UIImage __self__, Selector __cmd__, CGRect rect) { __self__.drawAsPattern(rect); }
+    }
+    /*</callbacks>*/
 
 }

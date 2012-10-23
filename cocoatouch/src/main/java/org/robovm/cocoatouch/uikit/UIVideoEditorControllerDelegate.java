@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -60,5 +60,12 @@ public interface /*<name>*/ UIVideoEditorControllerDelegate /*</name>*/ /*<imple
      */
     void didSave(UIVideoEditorController editor, String editedVideoPath);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("videoEditorControllerDidCancel:") public static void didCancel(UIVideoEditorControllerDelegate __self__, Selector __cmd__, UIVideoEditorController editor) { __self__.didCancel(editor); }
+        @Callback @BindSelector("videoEditorController:didFailWithError:") public static void didFail(UIVideoEditorControllerDelegate __self__, Selector __cmd__, UIVideoEditorController editor, NSError error) { __self__.didFail(editor, error); }
+        @Callback @BindSelector("videoEditorController:didSaveEditedVideoToPath:") public static void didSave(UIVideoEditorControllerDelegate __self__, Selector __cmd__, UIVideoEditorController editor, String editedVideoPath) { __self__.didSave(editor, editedVideoPath); }
+    }
+    /*</callbacks>*/
 
 }

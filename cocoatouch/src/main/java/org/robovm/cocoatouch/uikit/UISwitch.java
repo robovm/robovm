@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -64,66 +64,138 @@ public class /*<name>*/ UISwitch /*</name>*/
     }
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector offImage = Selector.register("offImage");
+    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getOffImage(UISwitch __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getOffImageSuper(ObjCSuper __super__, UISwitch __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/offImage">@property(nonatomic, retain) UIImage *offImage</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("offImage") public native UIImage getOffImage();
+    public UIImage getOffImage() {
+        if (customClass) { return objc_getOffImageSuper(getSuper(), this, offImage); } else { return objc_getOffImage(this, offImage); }
+    }
+    
+    private static final Selector setOffImage$ = Selector.register("setOffImage:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setOffImage(UISwitch __self__, Selector __cmd__, UIImage offImage);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setOffImageSuper(ObjCSuper __super__, UISwitch __self__, Selector __cmd__, UIImage offImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/offImage">@property(nonatomic, retain) UIImage *offImage</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setOffImage:") public native void setOffImage(UIImage v);
+    public void setOffImage(UIImage offImage) {
+        if (customClass) { objc_setOffImageSuper(getSuper(), this, setOffImage$, offImage); } else { objc_setOffImage(this, setOffImage$, offImage); }
+    }
+    
+    private static final Selector isOn = Selector.register("isOn");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isOn(UISwitch __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isOnSuper(ObjCSuper __super__, UISwitch __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/on">@property(nonatomic, getter=isOn) BOOL on</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isOn") public native boolean isOn();
+    public boolean isOn() {
+        if (customClass) { return objc_isOnSuper(getSuper(), this, isOn); } else { return objc_isOn(this, isOn); }
+    }
+    
+    private static final Selector setOn$ = Selector.register("setOn:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setOn(UISwitch __self__, Selector __cmd__, boolean on);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setOnSuper(ObjCSuper __super__, UISwitch __self__, Selector __cmd__, boolean on);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/on">@property(nonatomic, getter=isOn) BOOL on</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setOn:") public native void setOn(boolean v);
+    public void setOn(boolean on) {
+        if (customClass) { objc_setOnSuper(getSuper(), this, setOn$, on); } else { objc_setOn(this, setOn$, on); }
+    }
+    
+    private static final Selector onImage = Selector.register("onImage");
+    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getOnImage(UISwitch __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getOnImageSuper(ObjCSuper __super__, UISwitch __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/onImage">@property(nonatomic, retain) UIImage *onImage</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("onImage") public native UIImage getOnImage();
+    public UIImage getOnImage() {
+        if (customClass) { return objc_getOnImageSuper(getSuper(), this, onImage); } else { return objc_getOnImage(this, onImage); }
+    }
+    
+    private static final Selector setOnImage$ = Selector.register("setOnImage:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setOnImage(UISwitch __self__, Selector __cmd__, UIImage onImage);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setOnImageSuper(ObjCSuper __super__, UISwitch __self__, Selector __cmd__, UIImage onImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/onImage">@property(nonatomic, retain) UIImage *onImage</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setOnImage:") public native void setOnImage(UIImage v);
+    public void setOnImage(UIImage onImage) {
+        if (customClass) { objc_setOnImageSuper(getSuper(), this, setOnImage$, onImage); } else { objc_setOnImage(this, setOnImage$, onImage); }
+    }
+    
+    private static final Selector onTintColor = Selector.register("onTintColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getOnTintColor(UISwitch __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getOnTintColorSuper(ObjCSuper __super__, UISwitch __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/onTintColor">@property(nonatomic, retain) UIColor *onTintColor</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("onTintColor") public native UIColor getOnTintColor();
+    public UIColor getOnTintColor() {
+        if (customClass) { return objc_getOnTintColorSuper(getSuper(), this, onTintColor); } else { return objc_getOnTintColor(this, onTintColor); }
+    }
+    
+    private static final Selector setOnTintColor$ = Selector.register("setOnTintColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setOnTintColor(UISwitch __self__, Selector __cmd__, UIColor onTintColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setOnTintColorSuper(ObjCSuper __super__, UISwitch __self__, Selector __cmd__, UIColor onTintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/onTintColor">@property(nonatomic, retain) UIColor *onTintColor</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setOnTintColor:") public native void setOnTintColor(UIColor v);
+    public void setOnTintColor(UIColor onTintColor) {
+        if (customClass) { objc_setOnTintColorSuper(getSuper(), this, setOnTintColor$, onTintColor); } else { objc_setOnTintColor(this, setOnTintColor$, onTintColor); }
+    }
+    
+    private static final Selector thumbTintColor = Selector.register("thumbTintColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getThumbTintColor(UISwitch __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getThumbTintColorSuper(ObjCSuper __super__, UISwitch __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/thumbTintColor">@property(nonatomic, retain) UIColor *thumbTintColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("thumbTintColor") public native UIColor getThumbTintColor();
+    public UIColor getThumbTintColor() {
+        if (customClass) { return objc_getThumbTintColorSuper(getSuper(), this, thumbTintColor); } else { return objc_getThumbTintColor(this, thumbTintColor); }
+    }
+    
+    private static final Selector setThumbTintColor$ = Selector.register("setThumbTintColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setThumbTintColor(UISwitch __self__, Selector __cmd__, UIColor thumbTintColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setThumbTintColorSuper(ObjCSuper __super__, UISwitch __self__, Selector __cmd__, UIColor thumbTintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/thumbTintColor">@property(nonatomic, retain) UIColor *thumbTintColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setThumbTintColor:") public native void setThumbTintColor(UIColor v);
+    public void setThumbTintColor(UIColor thumbTintColor) {
+        if (customClass) { objc_setThumbTintColorSuper(getSuper(), this, setThumbTintColor$, thumbTintColor); } else { objc_setThumbTintColor(this, setThumbTintColor$, thumbTintColor); }
+    }
+    
+    private static final Selector tintColor = Selector.register("tintColor");
+    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getTintColor(UISwitch __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, UISwitch __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("tintColor") public native UIColor getTintColor();
+    public UIColor getTintColor() {
+        if (customClass) { return objc_getTintColorSuper(getSuper(), this, tintColor); } else { return objc_getTintColor(this, tintColor); }
+    }
+    
+    private static final Selector setTintColor$ = Selector.register("setTintColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTintColor(UISwitch __self__, Selector __cmd__, UIColor tintColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, UISwitch __self__, Selector __cmd__, UIColor tintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setTintColor:") public native void setTintColor(UIColor v);
+    public void setTintColor(UIColor tintColor) {
+        if (customClass) { objc_setTintColorSuper(getSuper(), this, setTintColor$, tintColor); } else { objc_setTintColor(this, setTintColor$, tintColor); }
+    }
     /*</properties>*/
     /*<methods>*/
     
@@ -138,5 +210,10 @@ public class /*<name>*/ UISwitch /*</name>*/
         if (customClass) { objc_setOnSuper(getSuper(), this, setOn$animated$, on, animated); } else { objc_setOn(this, setOn$animated$, on, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("setOn:animated:") public static void setOn(UISwitch __self__, Selector __cmd__, boolean on, boolean animated) { __self__.setOn(on, animated); }
+    }
+    /*</callbacks>*/
 
 }

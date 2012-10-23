@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -64,5 +64,13 @@ public interface /*<name>*/ UITextInputDelegate /*</name>*/ /*<implements>*/ ext
      */
     void textWillChange(UITextInput textInput);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("selectionDidChange:") public static void selectionDidChange(UITextInputDelegate __self__, Selector __cmd__, UITextInput textInput) { __self__.selectionDidChange(textInput); }
+        @Callback @BindSelector("selectionWillChange:") public static void selectionWillChange(UITextInputDelegate __self__, Selector __cmd__, UITextInput textInput) { __self__.selectionWillChange(textInput); }
+        @Callback @BindSelector("textDidChange:") public static void textDidChange(UITextInputDelegate __self__, Selector __cmd__, UITextInput textInput) { __self__.textDidChange(textInput); }
+        @Callback @BindSelector("textWillChange:") public static void textWillChange(UITextInputDelegate __self__, Selector __cmd__, UITextInput textInput) { __self__.textWillChange(textInput); }
+    }
+    /*</callbacks>*/
 
 }

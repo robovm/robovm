@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -44,67 +44,67 @@ public interface /*<name>*/ UITextInput /*</name>*/ /*<implements>*/ extends UIK
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/beginningOfDocument">@property(nonatomic, readonly) UITextPosition *beginningOfDocument</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("beginningOfDocument") UITextPosition getBeginningOfDocument();
+    UITextPosition getBeginningOfDocument();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/endOfDocument">@property(nonatomic, readonly) UITextPosition *endOfDocument</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("endOfDocument") UITextPosition getEndOfDocument();
+    UITextPosition getEndOfDocument();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/inputDelegate">@property(nonatomic, assign) id&amp;lt;UITextInputDelegate&amp;gt; inputDelegate</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("inputDelegate") UITextInputDelegate getInputDelegate();
+    UITextInputDelegate getInputDelegate();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/inputDelegate">@property(nonatomic, assign) id&amp;lt;UITextInputDelegate&amp;gt; inputDelegate</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setInputDelegate:") void setInputDelegate(UITextInputDelegate v);
+    void setInputDelegate(UITextInputDelegate v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextRange">@property(nonatomic, readonly) UITextRange *markedTextRange</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("markedTextRange") UITextRange getMarkedTextRange();
+    UITextRange getMarkedTextRange();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextStyle">@property(nonatomic, copy) NSDictionary *markedTextStyle</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("markedTextStyle") NSDictionary getMarkedTextStyle();
+    NSDictionary getMarkedTextStyle();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextStyle">@property(nonatomic, copy) NSDictionary *markedTextStyle</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setMarkedTextStyle:") void setMarkedTextStyle(NSDictionary v);
+    void setMarkedTextStyle(NSDictionary v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectedTextRange">@property(readwrite, copy) UITextRange *selectedTextRange</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("selectedTextRange") UITextRange getSelectedTextRange();
+    UITextRange getSelectedTextRange();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectedTextRange">@property(readwrite, copy) UITextRange *selectedTextRange</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setSelectedTextRange:") void setSelectedTextRange(UITextRange v);
+    void setSelectedTextRange(UITextRange v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectionAffinity">@property(nonatomic) UITextStorageDirection selectionAffinity</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("selectionAffinity") UITextStorageDirection getSelectionAffinity();
+    UITextStorageDirection getSelectionAffinity();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectionAffinity">@property(nonatomic) UITextStorageDirection selectionAffinity</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("setSelectionAffinity:") void setSelectionAffinity(UITextStorageDirection v);
+    void setSelectionAffinity(UITextStorageDirection v);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/textInputView">@property(nonatomic, readonly) UIView *textInputView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("textInputView") UIView getTextInputView();
+    UIView getTextInputView();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/tokenizer">@property(nonatomic, readonly) id&amp;lt;UITextInputTokenizer&amp;gt; tokenizer</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("tokenizer") UITextInputTokenizer getTokenizer();
+    UITextInputTokenizer getTokenizer();
     /*</properties>*/
     /*<methods>*/
     /**
@@ -253,5 +253,38 @@ public interface /*<name>*/ UITextInput /*</name>*/ /*<implements>*/ extends UIK
      */
     void unmarkText();
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("comparePosition:toPosition:") public static NSComparisonResult comparePositions(UITextInput __self__, Selector __cmd__, UITextPosition position, UITextPosition other) { return __self__.comparePositions(position, other); }
+        @Callback @BindSelector("dictationRecognitionFailed") public static void dictationRecognitionFailed(UITextInput __self__, Selector __cmd__) { __self__.dictationRecognitionFailed(); }
+        @Callback @BindSelector("dictationRecordingDidEnd") public static void dictationRecordingDidEnd(UITextInput __self__, Selector __cmd__) { __self__.dictationRecordingDidEnd(); }
+        @Callback @BindSelector("baseWritingDirectionForPosition:inDirection:") public static UITextWritingDirection getBaseWritingDirection(UITextInput __self__, Selector __cmd__, UITextPosition position, UITextStorageDirection direction) { return __self__.getBaseWritingDirection(position, direction); }
+        @Callback @BindSelector("caretRectForPosition:") public static CGRect getCaretRect(UITextInput __self__, Selector __cmd__, UITextPosition position) { return __self__.getCaretRect(position); }
+        @Callback @BindSelector("characterOffsetOfPosition:withinRange:") public static int getCharacterOffset(UITextInput __self__, Selector __cmd__, UITextPosition position, UITextRange range) { return __self__.getCharacterOffset(position, range); }
+        @Callback @BindSelector("characterRangeAtPoint:") public static UITextRange getCharacterRange(UITextInput __self__, Selector __cmd__, CGPoint point) { return __self__.getCharacterRange(point); }
+        @Callback @BindSelector("characterRangeByExtendingPosition:inDirection:") public static UITextRange getCharacterRange(UITextInput __self__, Selector __cmd__, UITextPosition position, UITextLayoutDirection direction) { return __self__.getCharacterRange(position, direction); }
+        @Callback @BindSelector("closestPositionToPoint:") public static UITextPosition getClosestPosition(UITextInput __self__, Selector __cmd__, CGPoint point) { return __self__.getClosestPosition(point); }
+        @Callback @BindSelector("closestPositionToPoint:withinRange:") public static UITextPosition getClosestPosition(UITextInput __self__, Selector __cmd__, CGPoint point, UITextRange range) { return __self__.getClosestPosition(point, range); }
+        @Callback @BindSelector("frameForDictationResultPlaceholder:") public static CGRect getDictationResultPlaceholderFrame(UITextInput __self__, Selector __cmd__, NSObject placeholder) { return __self__.getDictationResultPlaceholderFrame(placeholder); }
+        @Callback @BindSelector("firstRectForRange:") public static CGRect getFirstRect(UITextInput __self__, Selector __cmd__, UITextRange range) { return __self__.getFirstRect(range); }
+        @Callback @BindSelector("offsetFromPosition:toPosition:") public static int getOffset(UITextInput __self__, Selector __cmd__, UITextPosition fromPosition, UITextPosition toPosition) { return __self__.getOffset(fromPosition, toPosition); }
+        @Callback @BindSelector("positionWithinRange:atCharacterOffset:") public static UITextPosition getPosition(UITextInput __self__, Selector __cmd__, UITextRange range, int offset) { return __self__.getPosition(range, offset); }
+        @Callback @BindSelector("positionWithinRange:farthestInDirection:") public static UITextPosition getPosition(UITextInput __self__, Selector __cmd__, UITextRange range, UITextLayoutDirection direction) { return __self__.getPosition(range, direction); }
+        @Callback @BindSelector("positionFromPosition:inDirection:offset:") public static UITextPosition getPosition(UITextInput __self__, Selector __cmd__, UITextPosition position, UITextLayoutDirection direction, int offset) { return __self__.getPosition(position, direction, offset); }
+        @Callback @BindSelector("positionFromPosition:offset:") public static UITextPosition getPosition(UITextInput __self__, Selector __cmd__, UITextPosition position, int offset) { return __self__.getPosition(position, offset); }
+        @Callback @BindSelector("selectionRectsForRange:") public static NSArray getSelectionRects(UITextInput __self__, Selector __cmd__, UITextRange range) { return __self__.getSelectionRects(range); }
+        @Callback @BindSelector("textInRange:") public static String getText(UITextInput __self__, Selector __cmd__, UITextRange range) { return __self__.getText(range); }
+        @Callback @BindSelector("textRangeFromPosition:toPosition:") public static UITextRange getTextRange(UITextInput __self__, Selector __cmd__, UITextPosition fromPosition, UITextPosition toPosition) { return __self__.getTextRange(fromPosition, toPosition); }
+        @Callback @BindSelector("textStylingAtPosition:inDirection:") public static NSDictionary getTextStyling(UITextInput __self__, Selector __cmd__, UITextPosition position, UITextStorageDirection direction) { return __self__.getTextStyling(position, direction); }
+        @Callback @BindSelector("insertDictationResult:") public static void insertDictationResult(UITextInput __self__, Selector __cmd__, NSArray dictationResult) { __self__.insertDictationResult(dictationResult); }
+        @Callback @BindSelector("insertDictationResultPlaceholder") public static NSObject insertDictationResultPlaceholder(UITextInput __self__, Selector __cmd__) { return __self__.insertDictationResultPlaceholder(); }
+        @Callback @BindSelector("removeDictationResultPlaceholder:willInsertResult:") public static void removeDictationResultPlaceholder(UITextInput __self__, Selector __cmd__, NSObject placeholder, boolean willInsertResult) { __self__.removeDictationResultPlaceholder(placeholder, willInsertResult); }
+        @Callback @BindSelector("replaceRange:withText:") public static void replaceText(UITextInput __self__, Selector __cmd__, UITextRange range, String text) { __self__.replaceText(range, text); }
+        @Callback @BindSelector("setBaseWritingDirection:forRange:") public static void setBaseWritingDirection(UITextInput __self__, Selector __cmd__, UITextWritingDirection writingDirection, UITextRange range) { __self__.setBaseWritingDirection(writingDirection, range); }
+        @Callback @BindSelector("setMarkedText:selectedRange:") public static void setMarkedText(UITextInput __self__, Selector __cmd__, String markedText, NSRange selectedRange) { __self__.setMarkedText(markedText, selectedRange); }
+        @Callback @BindSelector("shouldChangeTextInRange:replacementText:") public static boolean shouldChangeText(UITextInput __self__, Selector __cmd__, UITextRange range, String text) { return __self__.shouldChangeText(range, text); }
+        @Callback @BindSelector("unmarkText") public static void unmarkText(UITextInput __self__, Selector __cmd__) { __self__.unmarkText(); }
+    }
+    /*</callbacks>*/
 
 }

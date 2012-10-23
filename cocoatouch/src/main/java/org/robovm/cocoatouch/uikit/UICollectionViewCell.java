@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -53,54 +53,110 @@ public class /*<name>*/ UICollectionViewCell /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector backgroundView = Selector.register("backgroundView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getBackgroundView(UICollectionViewCell __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getBackgroundViewSuper(ObjCSuper __super__, UICollectionViewCell __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/backgroundView">@property (nonatomic, retain) UIView *backgroundView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("backgroundView") public native UIView getBackgroundView();
+    public UIView getBackgroundView() {
+        if (customClass) { return objc_getBackgroundViewSuper(getSuper(), this, backgroundView); } else { return objc_getBackgroundView(this, backgroundView); }
+    }
+    
+    private static final Selector setBackgroundView$ = Selector.register("setBackgroundView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setBackgroundView(UICollectionViewCell __self__, Selector __cmd__, UIView backgroundView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBackgroundViewSuper(ObjCSuper __super__, UICollectionViewCell __self__, Selector __cmd__, UIView backgroundView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/backgroundView">@property (nonatomic, retain) UIView *backgroundView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setBackgroundView:") public native void setBackgroundView(UIView v);
+    public void setBackgroundView(UIView backgroundView) {
+        if (customClass) { objc_setBackgroundViewSuper(getSuper(), this, setBackgroundView$, backgroundView); } else { objc_setBackgroundView(this, setBackgroundView$, backgroundView); }
+    }
+    
+    private static final Selector contentView = Selector.register("contentView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getContentView(UICollectionViewCell __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getContentViewSuper(ObjCSuper __super__, UICollectionViewCell __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/contentView">@property (nonatomic, readonly) UIView *contentView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("contentView") public native UIView getContentView();
+    public UIView getContentView() {
+        if (customClass) { return objc_getContentViewSuper(getSuper(), this, contentView); } else { return objc_getContentView(this, contentView); }
+    }
+    
+    private static final Selector isHighlighted = Selector.register("isHighlighted");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isHighlighted(UICollectionViewCell __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isHighlightedSuper(ObjCSuper __super__, UICollectionViewCell __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/highlighted">@property (nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("isHighlighted") public native boolean isHighlighted();
+    public boolean isHighlighted() {
+        if (customClass) { return objc_isHighlightedSuper(getSuper(), this, isHighlighted); } else { return objc_isHighlighted(this, isHighlighted); }
+    }
+    
+    private static final Selector setHighlighted$ = Selector.register("setHighlighted:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setHighlighted(UICollectionViewCell __self__, Selector __cmd__, boolean highlighted);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHighlightedSuper(ObjCSuper __super__, UICollectionViewCell __self__, Selector __cmd__, boolean highlighted);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/highlighted">@property (nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setHighlighted:") public native void setHighlighted(boolean v);
+    public void setHighlighted(boolean highlighted) {
+        if (customClass) { objc_setHighlightedSuper(getSuper(), this, setHighlighted$, highlighted); } else { objc_setHighlighted(this, setHighlighted$, highlighted); }
+    }
+    
+    private static final Selector isSelected = Selector.register("isSelected");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isSelected(UICollectionViewCell __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isSelectedSuper(ObjCSuper __super__, UICollectionViewCell __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/selected">@property (nonatomic, getter=isSelected) BOOL selected</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("isSelected") public native boolean isSelected();
+    public boolean isSelected() {
+        if (customClass) { return objc_isSelectedSuper(getSuper(), this, isSelected); } else { return objc_isSelected(this, isSelected); }
+    }
+    
+    private static final Selector setSelected$ = Selector.register("setSelected:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSelected(UICollectionViewCell __self__, Selector __cmd__, boolean selected);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectedSuper(ObjCSuper __super__, UICollectionViewCell __self__, Selector __cmd__, boolean selected);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/selected">@property (nonatomic, getter=isSelected) BOOL selected</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setSelected:") public native void setSelected(boolean v);
+    public void setSelected(boolean selected) {
+        if (customClass) { objc_setSelectedSuper(getSuper(), this, setSelected$, selected); } else { objc_setSelected(this, setSelected$, selected); }
+    }
+    
+    private static final Selector selectedBackgroundView = Selector.register("selectedBackgroundView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getSelectedBackgroundView(UICollectionViewCell __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getSelectedBackgroundViewSuper(ObjCSuper __super__, UICollectionViewCell __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/selectedBackgroundView">@property (nonatomic, retain) UIView *selectedBackgroundView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("selectedBackgroundView") public native UIView getSelectedBackgroundView();
+    public UIView getSelectedBackgroundView() {
+        if (customClass) { return objc_getSelectedBackgroundViewSuper(getSuper(), this, selectedBackgroundView); } else { return objc_getSelectedBackgroundView(this, selectedBackgroundView); }
+    }
+    
+    private static final Selector setSelectedBackgroundView$ = Selector.register("setSelectedBackgroundView:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setSelectedBackgroundView(UICollectionViewCell __self__, Selector __cmd__, UIView selectedBackgroundView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectedBackgroundViewSuper(ObjCSuper __super__, UICollectionViewCell __self__, Selector __cmd__, UIView selectedBackgroundView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/selectedBackgroundView">@property (nonatomic, retain) UIView *selectedBackgroundView</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setSelectedBackgroundView:") public native void setSelectedBackgroundView(UIView v);
+    public void setSelectedBackgroundView(UIView selectedBackgroundView) {
+        if (customClass) { objc_setSelectedBackgroundViewSuper(getSuper(), this, setSelectedBackgroundView$, selectedBackgroundView); } else { objc_setSelectedBackgroundView(this, setSelectedBackgroundView$, selectedBackgroundView); }
+    }
     /*</properties>*/
     /*<methods>*/
     
     /*</methods>*/
+    /*<callbacks>*/
+    /*</callbacks>*/
 
 }

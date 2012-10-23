@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,36 +54,72 @@ public class /*<name>*/ UIManagedDocument /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector managedObjectContext = Selector.register("managedObjectContext");
+    @Bridge(symbol = "objc_msgSend") private native static NSManagedObjectContext objc_getManagedObjectContext(UIManagedDocument __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSManagedObjectContext objc_getManagedObjectContextSuper(ObjCSuper __super__, UIManagedDocument __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIManagedDocument_Class/Reference/Reference.html#//apple_ref/occ/instp/UIManagedDocument/managedObjectContext">@property(nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("managedObjectContext") public native NSManagedObjectContext getManagedObjectContext();
+    public NSManagedObjectContext getManagedObjectContext() {
+        if (customClass) { return objc_getManagedObjectContextSuper(getSuper(), this, managedObjectContext); } else { return objc_getManagedObjectContext(this, managedObjectContext); }
+    }
+    
+    private static final Selector managedObjectModel = Selector.register("managedObjectModel");
+    @Bridge(symbol = "objc_msgSend") private native static NSManagedObjectModel objc_getManagedObjectModel(UIManagedDocument __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSManagedObjectModel objc_getManagedObjectModelSuper(ObjCSuper __super__, UIManagedDocument __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIManagedDocument_Class/Reference/Reference.html#//apple_ref/occ/instp/UIManagedDocument/managedObjectModel">@property(nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("managedObjectModel") public native NSManagedObjectModel getManagedObjectModel();
+    public NSManagedObjectModel getManagedObjectModel() {
+        if (customClass) { return objc_getManagedObjectModelSuper(getSuper(), this, managedObjectModel); } else { return objc_getManagedObjectModel(this, managedObjectModel); }
+    }
+    
+    private static final Selector modelConfiguration = Selector.register("modelConfiguration");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getModelConfiguration(UIManagedDocument __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getModelConfigurationSuper(ObjCSuper __super__, UIManagedDocument __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIManagedDocument_Class/Reference/Reference.html#//apple_ref/occ/instp/UIManagedDocument/modelConfiguration">@property(nonatomic, copy) NSString *modelConfiguration</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("modelConfiguration") public native String getModelConfiguration();
+    public String getModelConfiguration() {
+        if (customClass) { return objc_getModelConfigurationSuper(getSuper(), this, modelConfiguration); } else { return objc_getModelConfiguration(this, modelConfiguration); }
+    }
+    
+    private static final Selector setModelConfiguration$ = Selector.register("setModelConfiguration:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setModelConfiguration(UIManagedDocument __self__, Selector __cmd__, String modelConfiguration);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setModelConfigurationSuper(ObjCSuper __super__, UIManagedDocument __self__, Selector __cmd__, String modelConfiguration);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIManagedDocument_Class/Reference/Reference.html#//apple_ref/occ/instp/UIManagedDocument/modelConfiguration">@property(nonatomic, copy) NSString *modelConfiguration</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setModelConfiguration:") public native void setModelConfiguration(String v);
+    public void setModelConfiguration(String modelConfiguration) {
+        if (customClass) { objc_setModelConfigurationSuper(getSuper(), this, setModelConfiguration$, modelConfiguration); } else { objc_setModelConfiguration(this, setModelConfiguration$, modelConfiguration); }
+    }
+    
+    private static final Selector persistentStoreOptions = Selector.register("persistentStoreOptions");
+    @Bridge(symbol = "objc_msgSend") private native static NSDictionary objc_getPersistentStoreOptions(UIManagedDocument __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSDictionary objc_getPersistentStoreOptionsSuper(ObjCSuper __super__, UIManagedDocument __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIManagedDocument_Class/Reference/Reference.html#//apple_ref/occ/instp/UIManagedDocument/persistentStoreOptions">@property(nonatomic, copy) NSDictionary *persistentStoreOptions</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("persistentStoreOptions") public native NSDictionary getPersistentStoreOptions();
+    public NSDictionary getPersistentStoreOptions() {
+        if (customClass) { return objc_getPersistentStoreOptionsSuper(getSuper(), this, persistentStoreOptions); } else { return objc_getPersistentStoreOptions(this, persistentStoreOptions); }
+    }
+    
+    private static final Selector setPersistentStoreOptions$ = Selector.register("setPersistentStoreOptions:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setPersistentStoreOptions(UIManagedDocument __self__, Selector __cmd__, NSDictionary persistentStoreOptions);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPersistentStoreOptionsSuper(ObjCSuper __super__, UIManagedDocument __self__, Selector __cmd__, NSDictionary persistentStoreOptions);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIManagedDocument_Class/Reference/Reference.html#//apple_ref/occ/instp/UIManagedDocument/persistentStoreOptions">@property(nonatomic, copy) NSDictionary *persistentStoreOptions</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setPersistentStoreOptions:") public native void setPersistentStoreOptions(NSDictionary v);
+    public void setPersistentStoreOptions(NSDictionary persistentStoreOptions) {
+        if (customClass) { objc_setPersistentStoreOptionsSuper(getSuper(), this, setPersistentStoreOptions$, persistentStoreOptions); } else { objc_setPersistentStoreOptions(this, setPersistentStoreOptions$, persistentStoreOptions); }
+    }
     /*</properties>*/
     /*<methods>*/
     
@@ -152,5 +188,14 @@ public class /*<name>*/ UIManagedDocument /*</name>*/
         if (customClass) { return objc_writeAdditionalContentSuper(getSuper(), this, writeAdditionalContent$toURL$originalContentsURL$error$, content, absoluteURL, absoluteOriginalContentsURL, error); } else { return objc_writeAdditionalContent(this, writeAdditionalContent$toURL$originalContentsURL$error$, content, absoluteURL, absoluteOriginalContentsURL, error); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("configurePersistentStoreCoordinatorForURL:ofType:modelConfiguration:storeOptions:error:") public static boolean configurePersistentStoreCoordinator(UIManagedDocument __self__, Selector __cmd__, NSURL storeURL, String fileType, String configuration, NSDictionary storeOptions, Ptr<NSError> error) { return __self__.configurePersistentStoreCoordinator(storeURL, fileType, configuration, storeOptions, error); }
+        @Callback @BindSelector("additionalContentForURL:error:") public static NSObject getAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSURL absoluteURL, Ptr<NSError> error) { return __self__.getAdditionalContent(absoluteURL, error); }
+        @Callback @BindSelector("persistentStoreTypeForFileType:") public static String getPersistentStoreType(UIManagedDocument __self__, Selector __cmd__, String fileType) { return __self__.getPersistentStoreType(fileType); }
+        @Callback @BindSelector("readAdditionalContentFromURL:error:") public static boolean readAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSURL absoluteURL, Ptr<NSError> error) { return __self__.readAdditionalContent(absoluteURL, error); }
+        @Callback @BindSelector("writeAdditionalContent:toURL:originalContentsURL:error:") public static boolean writeAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSObject content, NSURL absoluteURL, NSURL absoluteOriginalContentsURL, Ptr<NSError> error) { return __self__.writeAdditionalContent(content, absoluteURL, absoluteOriginalContentsURL, error); }
+    }
+    /*</callbacks>*/
 
 }

@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -63,5 +63,12 @@ public interface /*<name>*/ UIPageViewControllerDelegate /*</name>*/ /*<implemen
      */
     void willTransition(UIPageViewController pageViewController, NSArray pendingViewControllers);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:") public static void didFinishAnimating(UIPageViewControllerDelegate __self__, Selector __cmd__, UIPageViewController pageViewController, boolean finished, NSArray previousViewControllers, boolean completed) { __self__.didFinishAnimating(pageViewController, finished, previousViewControllers, completed); }
+        @Callback @BindSelector("pageViewController:spineLocationForInterfaceOrientation:") public static UIPageViewControllerSpineLocation getSpineLocation(UIPageViewControllerDelegate __self__, Selector __cmd__, UIPageViewController pageViewController, UIInterfaceOrientation orientation) { return __self__.getSpineLocation(pageViewController, orientation); }
+        @Callback @BindSelector("pageViewController:willTransitionToViewControllers:") public static void willTransition(UIPageViewControllerDelegate __self__, Selector __cmd__, UIPageViewController pageViewController, NSArray pendingViewControllers) { __self__.willTransition(pageViewController, pendingViewControllers); }
+    }
+    /*</callbacks>*/
 
 }

@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,19 +54,33 @@ public class /*<name>*/ UIScreenMode /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector pixelAspectRatio = Selector.register("pixelAspectRatio");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getPixelAspectRatio(UIScreenMode __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getPixelAspectRatioSuper(ObjCSuper __super__, UIScreenMode __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreenMode_class/Reference/Reference.html#//apple_ref/occ/instp/UIScreenMode/pixelAspectRatio">@property(readonly,nonatomic) CGFloat pixelAspectRatio</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("pixelAspectRatio") public native float getPixelAspectRatio();
+    public float getPixelAspectRatio() {
+        if (customClass) { return objc_getPixelAspectRatioSuper(getSuper(), this, pixelAspectRatio); } else { return objc_getPixelAspectRatio(this, pixelAspectRatio); }
+    }
+    
+    private static final Selector size = Selector.register("size");
+    @Bridge(symbol = "objc_msgSend") private native static CGSize objc_getSize(UIScreenMode __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGSize objc_getSizeSuper(ObjCSuper __super__, UIScreenMode __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreenMode_class/Reference/Reference.html#//apple_ref/occ/instp/UIScreenMode/size">@property(readonly,nonatomic) CGSize size</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("size") public native CGSize getSize();
+    public CGSize getSize() {
+        if (customClass) { return objc_getSizeSuper(getSuper(), this, size); } else { return objc_getSize(this, size); }
+    }
     /*</properties>*/
     /*<methods>*/
     
     /*</methods>*/
+    /*<callbacks>*/
+    /*</callbacks>*/
 
 }

@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,261 +54,567 @@ public class /*<name>*/ UIScrollView /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector alwaysBounceHorizontal = Selector.register("alwaysBounceHorizontal");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAlwaysBounceHorizontal(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAlwaysBounceHorizontalSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/alwaysBounceHorizontal">@property(nonatomic) BOOL alwaysBounceHorizontal</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("alwaysBounceHorizontal") public native boolean isAlwaysBounceHorizontal();
+    public boolean isAlwaysBounceHorizontal() {
+        if (customClass) { return objc_isAlwaysBounceHorizontalSuper(getSuper(), this, alwaysBounceHorizontal); } else { return objc_isAlwaysBounceHorizontal(this, alwaysBounceHorizontal); }
+    }
+    
+    private static final Selector setAlwaysBounceHorizontal$ = Selector.register("setAlwaysBounceHorizontal:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAlwaysBounceHorizontal(UIScrollView __self__, Selector __cmd__, boolean alwaysBounceHorizontal);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAlwaysBounceHorizontalSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, boolean alwaysBounceHorizontal);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/alwaysBounceHorizontal">@property(nonatomic) BOOL alwaysBounceHorizontal</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAlwaysBounceHorizontal:") public native void setAlwaysBounceHorizontal(boolean v);
+    public void setAlwaysBounceHorizontal(boolean alwaysBounceHorizontal) {
+        if (customClass) { objc_setAlwaysBounceHorizontalSuper(getSuper(), this, setAlwaysBounceHorizontal$, alwaysBounceHorizontal); } else { objc_setAlwaysBounceHorizontal(this, setAlwaysBounceHorizontal$, alwaysBounceHorizontal); }
+    }
+    
+    private static final Selector alwaysBounceVertical = Selector.register("alwaysBounceVertical");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAlwaysBounceVertical(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAlwaysBounceVerticalSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/alwaysBounceVertical">@property(nonatomic) BOOL alwaysBounceVertical</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("alwaysBounceVertical") public native boolean isAlwaysBounceVertical();
+    public boolean isAlwaysBounceVertical() {
+        if (customClass) { return objc_isAlwaysBounceVerticalSuper(getSuper(), this, alwaysBounceVertical); } else { return objc_isAlwaysBounceVertical(this, alwaysBounceVertical); }
+    }
+    
+    private static final Selector setAlwaysBounceVertical$ = Selector.register("setAlwaysBounceVertical:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setAlwaysBounceVertical(UIScrollView __self__, Selector __cmd__, boolean alwaysBounceVertical);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAlwaysBounceVerticalSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, boolean alwaysBounceVertical);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/alwaysBounceVertical">@property(nonatomic) BOOL alwaysBounceVertical</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setAlwaysBounceVertical:") public native void setAlwaysBounceVertical(boolean v);
+    public void setAlwaysBounceVertical(boolean alwaysBounceVertical) {
+        if (customClass) { objc_setAlwaysBounceVerticalSuper(getSuper(), this, setAlwaysBounceVertical$, alwaysBounceVertical); } else { objc_setAlwaysBounceVertical(this, setAlwaysBounceVertical$, alwaysBounceVertical); }
+    }
+    
+    private static final Selector bounces = Selector.register("bounces");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isBounces(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isBouncesSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/bounces">@property(nonatomic) BOOL bounces</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("bounces") public native boolean isBounces();
+    public boolean isBounces() {
+        if (customClass) { return objc_isBouncesSuper(getSuper(), this, bounces); } else { return objc_isBounces(this, bounces); }
+    }
+    
+    private static final Selector setBounces$ = Selector.register("setBounces:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setBounces(UIScrollView __self__, Selector __cmd__, boolean bounces);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBouncesSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, boolean bounces);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/bounces">@property(nonatomic) BOOL bounces</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setBounces:") public native void setBounces(boolean v);
+    public void setBounces(boolean bounces) {
+        if (customClass) { objc_setBouncesSuper(getSuper(), this, setBounces$, bounces); } else { objc_setBounces(this, setBounces$, bounces); }
+    }
+    
+    private static final Selector bouncesZoom = Selector.register("bouncesZoom");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isBouncesZoom(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isBouncesZoomSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/bouncesZoom">@property(nonatomic) BOOL bouncesZoom</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("bouncesZoom") public native boolean isBouncesZoom();
+    public boolean isBouncesZoom() {
+        if (customClass) { return objc_isBouncesZoomSuper(getSuper(), this, bouncesZoom); } else { return objc_isBouncesZoom(this, bouncesZoom); }
+    }
+    
+    private static final Selector setBouncesZoom$ = Selector.register("setBouncesZoom:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setBouncesZoom(UIScrollView __self__, Selector __cmd__, boolean bouncesZoom);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBouncesZoomSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, boolean bouncesZoom);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/bouncesZoom">@property(nonatomic) BOOL bouncesZoom</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setBouncesZoom:") public native void setBouncesZoom(boolean v);
+    public void setBouncesZoom(boolean bouncesZoom) {
+        if (customClass) { objc_setBouncesZoomSuper(getSuper(), this, setBouncesZoom$, bouncesZoom); } else { objc_setBouncesZoom(this, setBouncesZoom$, bouncesZoom); }
+    }
+    
+    private static final Selector canCancelContentTouches = Selector.register("canCancelContentTouches");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isCanCancelContentTouches(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isCanCancelContentTouchesSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/canCancelContentTouches">@property(nonatomic) BOOL canCancelContentTouches</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("canCancelContentTouches") public native boolean isCanCancelContentTouches();
+    public boolean isCanCancelContentTouches() {
+        if (customClass) { return objc_isCanCancelContentTouchesSuper(getSuper(), this, canCancelContentTouches); } else { return objc_isCanCancelContentTouches(this, canCancelContentTouches); }
+    }
+    
+    private static final Selector setCanCancelContentTouches$ = Selector.register("setCanCancelContentTouches:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setCanCancelContentTouches(UIScrollView __self__, Selector __cmd__, boolean canCancelContentTouches);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCanCancelContentTouchesSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, boolean canCancelContentTouches);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/canCancelContentTouches">@property(nonatomic) BOOL canCancelContentTouches</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setCanCancelContentTouches:") public native void setCanCancelContentTouches(boolean v);
+    public void setCanCancelContentTouches(boolean canCancelContentTouches) {
+        if (customClass) { objc_setCanCancelContentTouchesSuper(getSuper(), this, setCanCancelContentTouches$, canCancelContentTouches); } else { objc_setCanCancelContentTouches(this, setCanCancelContentTouches$, canCancelContentTouches); }
+    }
+    
+    private static final Selector contentInset = Selector.register("contentInset");
+    @Bridge(symbol = "objc_msgSend") private native static UIEdgeInsets objc_getContentInset(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIEdgeInsets objc_getContentInsetSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/contentInset">@property(nonatomic) UIEdgeInsets contentInset</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("contentInset") public native UIEdgeInsets getContentInset();
+    public UIEdgeInsets getContentInset() {
+        if (customClass) { return objc_getContentInsetSuper(getSuper(), this, contentInset); } else { return objc_getContentInset(this, contentInset); }
+    }
+    
+    private static final Selector setContentInset$ = Selector.register("setContentInset:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setContentInset(UIScrollView __self__, Selector __cmd__, UIEdgeInsets contentInset);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentInsetSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, UIEdgeInsets contentInset);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/contentInset">@property(nonatomic) UIEdgeInsets contentInset</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setContentInset:") public native void setContentInset(UIEdgeInsets v);
+    public void setContentInset(UIEdgeInsets contentInset) {
+        if (customClass) { objc_setContentInsetSuper(getSuper(), this, setContentInset$, contentInset); } else { objc_setContentInset(this, setContentInset$, contentInset); }
+    }
+    
+    private static final Selector contentOffset = Selector.register("contentOffset");
+    @Bridge(symbol = "objc_msgSend") private native static CGPoint objc_getContentOffset(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGPoint objc_getContentOffsetSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/contentOffset">@property(nonatomic) CGPoint contentOffset</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("contentOffset") public native CGPoint getContentOffset();
+    public CGPoint getContentOffset() {
+        if (customClass) { return objc_getContentOffsetSuper(getSuper(), this, contentOffset); } else { return objc_getContentOffset(this, contentOffset); }
+    }
+    
+    private static final Selector setContentOffset$ = Selector.register("setContentOffset:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setContentOffset(UIScrollView __self__, Selector __cmd__, CGPoint contentOffset);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentOffsetSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, CGPoint contentOffset);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/contentOffset">@property(nonatomic) CGPoint contentOffset</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setContentOffset:") public native void setContentOffset(CGPoint v);
+    public void setContentOffset(CGPoint contentOffset) {
+        if (customClass) { objc_setContentOffsetSuper(getSuper(), this, setContentOffset$, contentOffset); } else { objc_setContentOffset(this, setContentOffset$, contentOffset); }
+    }
+    
+    private static final Selector contentSize = Selector.register("contentSize");
+    @Bridge(symbol = "objc_msgSend") private native static CGSize objc_getContentSize(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGSize objc_getContentSizeSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/contentSize">@property(nonatomic) CGSize contentSize</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("contentSize") public native CGSize getContentSize();
+    public CGSize getContentSize() {
+        if (customClass) { return objc_getContentSizeSuper(getSuper(), this, contentSize); } else { return objc_getContentSize(this, contentSize); }
+    }
+    
+    private static final Selector setContentSize$ = Selector.register("setContentSize:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setContentSize(UIScrollView __self__, Selector __cmd__, CGSize contentSize);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentSizeSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, CGSize contentSize);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/contentSize">@property(nonatomic) CGSize contentSize</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setContentSize:") public native void setContentSize(CGSize v);
+    public void setContentSize(CGSize contentSize) {
+        if (customClass) { objc_setContentSizeSuper(getSuper(), this, setContentSize$, contentSize); } else { objc_setContentSize(this, setContentSize$, contentSize); }
+    }
+    
+    private static final Selector isDecelerating = Selector.register("isDecelerating");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isDecelerating(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isDeceleratingSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/decelerating">@property(nonatomic, readonly, getter=isDecelerating) BOOL decelerating</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isDecelerating") public native boolean isDecelerating();
+    public boolean isDecelerating() {
+        if (customClass) { return objc_isDeceleratingSuper(getSuper(), this, isDecelerating); } else { return objc_isDecelerating(this, isDecelerating); }
+    }
+    
+    private static final Selector decelerationRate = Selector.register("decelerationRate");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getDecelerationRate(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getDecelerationRateSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/decelerationRate">@property(nonatomic) float decelerationRate</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("decelerationRate") public native float getDecelerationRate();
+    public float getDecelerationRate() {
+        if (customClass) { return objc_getDecelerationRateSuper(getSuper(), this, decelerationRate); } else { return objc_getDecelerationRate(this, decelerationRate); }
+    }
+    
+    private static final Selector setDecelerationRate$ = Selector.register("setDecelerationRate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDecelerationRate(UIScrollView __self__, Selector __cmd__, float decelerationRate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDecelerationRateSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, float decelerationRate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/decelerationRate">@property(nonatomic) float decelerationRate</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setDecelerationRate:") public native void setDecelerationRate(float v);
+    public void setDecelerationRate(float decelerationRate) {
+        if (customClass) { objc_setDecelerationRateSuper(getSuper(), this, setDecelerationRate$, decelerationRate); } else { objc_setDecelerationRate(this, setDecelerationRate$, decelerationRate); }
+    }
+    
+    private static final Selector delaysContentTouches = Selector.register("delaysContentTouches");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isDelaysContentTouches(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isDelaysContentTouchesSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/delaysContentTouches">@property(nonatomic) BOOL delaysContentTouches</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("delaysContentTouches") public native boolean isDelaysContentTouches();
+    public boolean isDelaysContentTouches() {
+        if (customClass) { return objc_isDelaysContentTouchesSuper(getSuper(), this, delaysContentTouches); } else { return objc_isDelaysContentTouches(this, delaysContentTouches); }
+    }
+    
+    private static final Selector setDelaysContentTouches$ = Selector.register("setDelaysContentTouches:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelaysContentTouches(UIScrollView __self__, Selector __cmd__, boolean delaysContentTouches);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelaysContentTouchesSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, boolean delaysContentTouches);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/delaysContentTouches">@property(nonatomic) BOOL delaysContentTouches</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDelaysContentTouches:") public native void setDelaysContentTouches(boolean v);
+    public void setDelaysContentTouches(boolean delaysContentTouches) {
+        if (customClass) { objc_setDelaysContentTouchesSuper(getSuper(), this, setDelaysContentTouches$, delaysContentTouches); } else { objc_setDelaysContentTouches(this, setDelaysContentTouches$, delaysContentTouches); }
+    }
+    
+    private static final Selector delegate = Selector.register("delegate");
+    @Bridge(symbol = "objc_msgSend") private native static UIScrollViewDelegate objc_getDelegate(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIScrollViewDelegate objc_getDelegateSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/delegate">@property(nonatomic, assign) id&amp;lt;UIScrollViewDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("delegate") public native UIScrollViewDelegate getDelegate();
+    public UIScrollViewDelegate getDelegate() {
+        if (customClass) { return objc_getDelegateSuper(getSuper(), this, delegate); } else { return objc_getDelegate(this, delegate); }
+    }
+    
+    private static final Selector setDelegate$ = Selector.register("setDelegate:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIScrollView __self__, Selector __cmd__, UIScrollViewDelegate delegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, UIScrollViewDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/delegate">@property(nonatomic, assign) id&amp;lt;UIScrollViewDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDelegate:") public native void setDelegate(UIScrollViewDelegate v);
+    public void setDelegate(UIScrollViewDelegate delegate) {
+        if (customClass) { objc_setDelegateSuper(getSuper(), this, setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
+    }
+    
+    private static final Selector isDirectionalLockEnabled = Selector.register("isDirectionalLockEnabled");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isDirectionalLockEnabled(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isDirectionalLockEnabledSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/directionalLockEnabled">@property(nonatomic, getter=isDirectionalLockEnabled) BOOL directionalLockEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isDirectionalLockEnabled") public native boolean isDirectionalLockEnabled();
+    public boolean isDirectionalLockEnabled() {
+        if (customClass) { return objc_isDirectionalLockEnabledSuper(getSuper(), this, isDirectionalLockEnabled); } else { return objc_isDirectionalLockEnabled(this, isDirectionalLockEnabled); }
+    }
+    
+    private static final Selector setDirectionalLockEnabled$ = Selector.register("setDirectionalLockEnabled:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setDirectionalLockEnabled(UIScrollView __self__, Selector __cmd__, boolean directionalLockEnabled);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDirectionalLockEnabledSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, boolean directionalLockEnabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/directionalLockEnabled">@property(nonatomic, getter=isDirectionalLockEnabled) BOOL directionalLockEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setDirectionalLockEnabled:") public native void setDirectionalLockEnabled(boolean v);
+    public void setDirectionalLockEnabled(boolean directionalLockEnabled) {
+        if (customClass) { objc_setDirectionalLockEnabledSuper(getSuper(), this, setDirectionalLockEnabled$, directionalLockEnabled); } else { objc_setDirectionalLockEnabled(this, setDirectionalLockEnabled$, directionalLockEnabled); }
+    }
+    
+    private static final Selector isDragging = Selector.register("isDragging");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isDragging(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isDraggingSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/dragging">@property(nonatomic, readonly, getter=isDragging) BOOL dragging</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isDragging") public native boolean isDragging();
+    public boolean isDragging() {
+        if (customClass) { return objc_isDraggingSuper(getSuper(), this, isDragging); } else { return objc_isDragging(this, isDragging); }
+    }
+    
+    private static final Selector indicatorStyle = Selector.register("indicatorStyle");
+    @Bridge(symbol = "objc_msgSend") private native static UIScrollViewIndicatorStyle objc_getIndicatorStyle(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIScrollViewIndicatorStyle objc_getIndicatorStyleSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/indicatorStyle">@property(nonatomic) UIScrollViewIndicatorStyle indicatorStyle</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("indicatorStyle") public native UIScrollViewIndicatorStyle getIndicatorStyle();
+    public UIScrollViewIndicatorStyle getIndicatorStyle() {
+        if (customClass) { return objc_getIndicatorStyleSuper(getSuper(), this, indicatorStyle); } else { return objc_getIndicatorStyle(this, indicatorStyle); }
+    }
+    
+    private static final Selector setIndicatorStyle$ = Selector.register("setIndicatorStyle:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setIndicatorStyle(UIScrollView __self__, Selector __cmd__, UIScrollViewIndicatorStyle indicatorStyle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setIndicatorStyleSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, UIScrollViewIndicatorStyle indicatorStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/indicatorStyle">@property(nonatomic) UIScrollViewIndicatorStyle indicatorStyle</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setIndicatorStyle:") public native void setIndicatorStyle(UIScrollViewIndicatorStyle v);
+    public void setIndicatorStyle(UIScrollViewIndicatorStyle indicatorStyle) {
+        if (customClass) { objc_setIndicatorStyleSuper(getSuper(), this, setIndicatorStyle$, indicatorStyle); } else { objc_setIndicatorStyle(this, setIndicatorStyle$, indicatorStyle); }
+    }
+    
+    private static final Selector maximumZoomScale = Selector.register("maximumZoomScale");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getMaximumZoomScale(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getMaximumZoomScaleSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/maximumZoomScale">@property(nonatomic) float maximumZoomScale</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("maximumZoomScale") public native float getMaximumZoomScale();
+    public float getMaximumZoomScale() {
+        if (customClass) { return objc_getMaximumZoomScaleSuper(getSuper(), this, maximumZoomScale); } else { return objc_getMaximumZoomScale(this, maximumZoomScale); }
+    }
+    
+    private static final Selector setMaximumZoomScale$ = Selector.register("setMaximumZoomScale:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMaximumZoomScale(UIScrollView __self__, Selector __cmd__, float maximumZoomScale);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMaximumZoomScaleSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, float maximumZoomScale);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/maximumZoomScale">@property(nonatomic) float maximumZoomScale</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setMaximumZoomScale:") public native void setMaximumZoomScale(float v);
+    public void setMaximumZoomScale(float maximumZoomScale) {
+        if (customClass) { objc_setMaximumZoomScaleSuper(getSuper(), this, setMaximumZoomScale$, maximumZoomScale); } else { objc_setMaximumZoomScale(this, setMaximumZoomScale$, maximumZoomScale); }
+    }
+    
+    private static final Selector minimumZoomScale = Selector.register("minimumZoomScale");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getMinimumZoomScale(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getMinimumZoomScaleSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/minimumZoomScale">@property(nonatomic) float minimumZoomScale</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("minimumZoomScale") public native float getMinimumZoomScale();
+    public float getMinimumZoomScale() {
+        if (customClass) { return objc_getMinimumZoomScaleSuper(getSuper(), this, minimumZoomScale); } else { return objc_getMinimumZoomScale(this, minimumZoomScale); }
+    }
+    
+    private static final Selector setMinimumZoomScale$ = Selector.register("setMinimumZoomScale:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinimumZoomScale(UIScrollView __self__, Selector __cmd__, float minimumZoomScale);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinimumZoomScaleSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, float minimumZoomScale);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/minimumZoomScale">@property(nonatomic) float minimumZoomScale</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setMinimumZoomScale:") public native void setMinimumZoomScale(float v);
+    public void setMinimumZoomScale(float minimumZoomScale) {
+        if (customClass) { objc_setMinimumZoomScaleSuper(getSuper(), this, setMinimumZoomScale$, minimumZoomScale); } else { objc_setMinimumZoomScale(this, setMinimumZoomScale$, minimumZoomScale); }
+    }
+    
+    private static final Selector isPagingEnabled = Selector.register("isPagingEnabled");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isPagingEnabled(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isPagingEnabledSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/pagingEnabled">@property(nonatomic, getter=isPagingEnabled) BOOL pagingEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isPagingEnabled") public native boolean isPagingEnabled();
+    public boolean isPagingEnabled() {
+        if (customClass) { return objc_isPagingEnabledSuper(getSuper(), this, isPagingEnabled); } else { return objc_isPagingEnabled(this, isPagingEnabled); }
+    }
+    
+    private static final Selector setPagingEnabled$ = Selector.register("setPagingEnabled:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setPagingEnabled(UIScrollView __self__, Selector __cmd__, boolean pagingEnabled);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPagingEnabledSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, boolean pagingEnabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/pagingEnabled">@property(nonatomic, getter=isPagingEnabled) BOOL pagingEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setPagingEnabled:") public native void setPagingEnabled(boolean v);
+    public void setPagingEnabled(boolean pagingEnabled) {
+        if (customClass) { objc_setPagingEnabledSuper(getSuper(), this, setPagingEnabled$, pagingEnabled); } else { objc_setPagingEnabled(this, setPagingEnabled$, pagingEnabled); }
+    }
+    
+    private static final Selector panGestureRecognizer = Selector.register("panGestureRecognizer");
+    @Bridge(symbol = "objc_msgSend") private native static UIPanGestureRecognizer objc_getPanGestureRecognizer(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIPanGestureRecognizer objc_getPanGestureRecognizerSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/panGestureRecognizer">@property(nonatomic, readonly) UIPanGestureRecognizer *panGestureRecognizer</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("panGestureRecognizer") public native UIPanGestureRecognizer getPanGestureRecognizer();
+    public UIPanGestureRecognizer getPanGestureRecognizer() {
+        if (customClass) { return objc_getPanGestureRecognizerSuper(getSuper(), this, panGestureRecognizer); } else { return objc_getPanGestureRecognizer(this, panGestureRecognizer); }
+    }
+    
+    private static final Selector pinchGestureRecognizer = Selector.register("pinchGestureRecognizer");
+    @Bridge(symbol = "objc_msgSend") private native static UIPinchGestureRecognizer objc_getPinchGestureRecognizer(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIPinchGestureRecognizer objc_getPinchGestureRecognizerSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/pinchGestureRecognizer">@property(nonatomic, readonly) UIPinchGestureRecognizer *pinchGestureRecognizer</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("pinchGestureRecognizer") public native UIPinchGestureRecognizer getPinchGestureRecognizer();
+    public UIPinchGestureRecognizer getPinchGestureRecognizer() {
+        if (customClass) { return objc_getPinchGestureRecognizerSuper(getSuper(), this, pinchGestureRecognizer); } else { return objc_getPinchGestureRecognizer(this, pinchGestureRecognizer); }
+    }
+    
+    private static final Selector isScrollEnabled = Selector.register("isScrollEnabled");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isScrollEnabled(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isScrollEnabledSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/scrollEnabled">@property(nonatomic, getter=isScrollEnabled) BOOL scrollEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isScrollEnabled") public native boolean isScrollEnabled();
+    public boolean isScrollEnabled() {
+        if (customClass) { return objc_isScrollEnabledSuper(getSuper(), this, isScrollEnabled); } else { return objc_isScrollEnabled(this, isScrollEnabled); }
+    }
+    
+    private static final Selector setScrollEnabled$ = Selector.register("setScrollEnabled:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setScrollEnabled(UIScrollView __self__, Selector __cmd__, boolean scrollEnabled);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setScrollEnabledSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, boolean scrollEnabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/scrollEnabled">@property(nonatomic, getter=isScrollEnabled) BOOL scrollEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setScrollEnabled:") public native void setScrollEnabled(boolean v);
+    public void setScrollEnabled(boolean scrollEnabled) {
+        if (customClass) { objc_setScrollEnabledSuper(getSuper(), this, setScrollEnabled$, scrollEnabled); } else { objc_setScrollEnabled(this, setScrollEnabled$, scrollEnabled); }
+    }
+    
+    private static final Selector scrollIndicatorInsets = Selector.register("scrollIndicatorInsets");
+    @Bridge(symbol = "objc_msgSend") private native static UIEdgeInsets objc_getScrollIndicatorInsets(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIEdgeInsets objc_getScrollIndicatorInsetsSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/scrollIndicatorInsets">@property(nonatomic) UIEdgeInsets scrollIndicatorInsets</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("scrollIndicatorInsets") public native UIEdgeInsets getScrollIndicatorInsets();
+    public UIEdgeInsets getScrollIndicatorInsets() {
+        if (customClass) { return objc_getScrollIndicatorInsetsSuper(getSuper(), this, scrollIndicatorInsets); } else { return objc_getScrollIndicatorInsets(this, scrollIndicatorInsets); }
+    }
+    
+    private static final Selector setScrollIndicatorInsets$ = Selector.register("setScrollIndicatorInsets:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setScrollIndicatorInsets(UIScrollView __self__, Selector __cmd__, UIEdgeInsets scrollIndicatorInsets);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setScrollIndicatorInsetsSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, UIEdgeInsets scrollIndicatorInsets);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/scrollIndicatorInsets">@property(nonatomic) UIEdgeInsets scrollIndicatorInsets</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setScrollIndicatorInsets:") public native void setScrollIndicatorInsets(UIEdgeInsets v);
+    public void setScrollIndicatorInsets(UIEdgeInsets scrollIndicatorInsets) {
+        if (customClass) { objc_setScrollIndicatorInsetsSuper(getSuper(), this, setScrollIndicatorInsets$, scrollIndicatorInsets); } else { objc_setScrollIndicatorInsets(this, setScrollIndicatorInsets$, scrollIndicatorInsets); }
+    }
+    
+    private static final Selector scrollsToTop = Selector.register("scrollsToTop");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isScrollsToTop(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isScrollsToTopSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/scrollsToTop">@property(nonatomic) BOOL scrollsToTop</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("scrollsToTop") public native boolean isScrollsToTop();
+    public boolean isScrollsToTop() {
+        if (customClass) { return objc_isScrollsToTopSuper(getSuper(), this, scrollsToTop); } else { return objc_isScrollsToTop(this, scrollsToTop); }
+    }
+    
+    private static final Selector setScrollsToTop$ = Selector.register("setScrollsToTop:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setScrollsToTop(UIScrollView __self__, Selector __cmd__, boolean scrollsToTop);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setScrollsToTopSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, boolean scrollsToTop);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/scrollsToTop">@property(nonatomic) BOOL scrollsToTop</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setScrollsToTop:") public native void setScrollsToTop(boolean v);
+    public void setScrollsToTop(boolean scrollsToTop) {
+        if (customClass) { objc_setScrollsToTopSuper(getSuper(), this, setScrollsToTop$, scrollsToTop); } else { objc_setScrollsToTop(this, setScrollsToTop$, scrollsToTop); }
+    }
+    
+    private static final Selector showsHorizontalScrollIndicator = Selector.register("showsHorizontalScrollIndicator");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isShowsHorizontalScrollIndicator(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isShowsHorizontalScrollIndicatorSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/showsHorizontalScrollIndicator">@property(nonatomic) BOOL showsHorizontalScrollIndicator</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("showsHorizontalScrollIndicator") public native boolean isShowsHorizontalScrollIndicator();
+    public boolean isShowsHorizontalScrollIndicator() {
+        if (customClass) { return objc_isShowsHorizontalScrollIndicatorSuper(getSuper(), this, showsHorizontalScrollIndicator); } else { return objc_isShowsHorizontalScrollIndicator(this, showsHorizontalScrollIndicator); }
+    }
+    
+    private static final Selector setShowsHorizontalScrollIndicator$ = Selector.register("setShowsHorizontalScrollIndicator:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setShowsHorizontalScrollIndicator(UIScrollView __self__, Selector __cmd__, boolean showsHorizontalScrollIndicator);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShowsHorizontalScrollIndicatorSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, boolean showsHorizontalScrollIndicator);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/showsHorizontalScrollIndicator">@property(nonatomic) BOOL showsHorizontalScrollIndicator</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setShowsHorizontalScrollIndicator:") public native void setShowsHorizontalScrollIndicator(boolean v);
+    public void setShowsHorizontalScrollIndicator(boolean showsHorizontalScrollIndicator) {
+        if (customClass) { objc_setShowsHorizontalScrollIndicatorSuper(getSuper(), this, setShowsHorizontalScrollIndicator$, showsHorizontalScrollIndicator); } else { objc_setShowsHorizontalScrollIndicator(this, setShowsHorizontalScrollIndicator$, showsHorizontalScrollIndicator); }
+    }
+    
+    private static final Selector showsVerticalScrollIndicator = Selector.register("showsVerticalScrollIndicator");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isShowsVerticalScrollIndicator(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isShowsVerticalScrollIndicatorSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/showsVerticalScrollIndicator">@property(nonatomic) BOOL showsVerticalScrollIndicator</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("showsVerticalScrollIndicator") public native boolean isShowsVerticalScrollIndicator();
+    public boolean isShowsVerticalScrollIndicator() {
+        if (customClass) { return objc_isShowsVerticalScrollIndicatorSuper(getSuper(), this, showsVerticalScrollIndicator); } else { return objc_isShowsVerticalScrollIndicator(this, showsVerticalScrollIndicator); }
+    }
+    
+    private static final Selector setShowsVerticalScrollIndicator$ = Selector.register("setShowsVerticalScrollIndicator:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setShowsVerticalScrollIndicator(UIScrollView __self__, Selector __cmd__, boolean showsVerticalScrollIndicator);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShowsVerticalScrollIndicatorSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, boolean showsVerticalScrollIndicator);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/showsVerticalScrollIndicator">@property(nonatomic) BOOL showsVerticalScrollIndicator</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("setShowsVerticalScrollIndicator:") public native void setShowsVerticalScrollIndicator(boolean v);
+    public void setShowsVerticalScrollIndicator(boolean showsVerticalScrollIndicator) {
+        if (customClass) { objc_setShowsVerticalScrollIndicatorSuper(getSuper(), this, setShowsVerticalScrollIndicator$, showsVerticalScrollIndicator); } else { objc_setShowsVerticalScrollIndicator(this, setShowsVerticalScrollIndicator$, showsVerticalScrollIndicator); }
+    }
+    
+    private static final Selector isTracking = Selector.register("isTracking");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isTracking(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isTrackingSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/tracking">@property(nonatomic, readonly, getter=isTracking) BOOL tracking</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isTracking") public native boolean isTracking();
+    public boolean isTracking() {
+        if (customClass) { return objc_isTrackingSuper(getSuper(), this, isTracking); } else { return objc_isTracking(this, isTracking); }
+    }
+    
+    private static final Selector isZoomBouncing = Selector.register("isZoomBouncing");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isZoomBouncing(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isZoomBouncingSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/zoomBouncing">@property(nonatomic, readonly, getter=isZoomBouncing) BOOL zoomBouncing</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isZoomBouncing") public native boolean isZoomBouncing();
+    public boolean isZoomBouncing() {
+        if (customClass) { return objc_isZoomBouncingSuper(getSuper(), this, isZoomBouncing); } else { return objc_isZoomBouncing(this, isZoomBouncing); }
+    }
+    
+    private static final Selector zoomScale = Selector.register("zoomScale");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getZoomScale(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getZoomScaleSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/zoomScale">@property(nonatomic) float zoomScale</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("zoomScale") public native float getZoomScale();
+    public float getZoomScale() {
+        if (customClass) { return objc_getZoomScaleSuper(getSuper(), this, zoomScale); } else { return objc_getZoomScale(this, zoomScale); }
+    }
+    
+    private static final Selector setZoomScale$ = Selector.register("setZoomScale:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setZoomScale(UIScrollView __self__, Selector __cmd__, float zoomScale);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setZoomScaleSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__, float zoomScale);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/zoomScale">@property(nonatomic) float zoomScale</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("setZoomScale:") public native void setZoomScale(float v);
+    public void setZoomScale(float zoomScale) {
+        if (customClass) { objc_setZoomScaleSuper(getSuper(), this, setZoomScale$, zoomScale); } else { objc_setZoomScale(this, setZoomScale$, zoomScale); }
+    }
+    
+    private static final Selector isZooming = Selector.register("isZooming");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isZooming(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isZoomingSuper(ObjCSuper __super__, UIScrollView __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/zooming">@property(nonatomic, readonly, getter=isZooming) BOOL zooming</a>
      * @since Available in iOS 2.0 and later.
      */
-    @Bind("isZooming") public native boolean isZooming();
+    public boolean isZooming() {
+        if (customClass) { return objc_isZoomingSuper(getSuper(), this, isZooming); } else { return objc_isZooming(this, isZooming); }
+    }
     /*</properties>*/
     /*<methods>*/
     
@@ -389,5 +695,16 @@ public class /*<name>*/ UIScrollView /*</name>*/
         if (customClass) { objc_zoomToRectSuper(getSuper(), this, zoomToRect$animated$, rect, animated); } else { objc_zoomToRect(this, zoomToRect$animated$, rect, animated); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("flashScrollIndicators") public static void flashScrollIndicators(UIScrollView __self__, Selector __cmd__) { __self__.flashScrollIndicators(); }
+        @Callback @BindSelector("scrollRectToVisible:animated:") public static void scrollRectToVisible(UIScrollView __self__, Selector __cmd__, CGRect rect, boolean animated) { __self__.scrollRectToVisible(rect, animated); }
+        @Callback @BindSelector("setContentOffset:animated:") public static void setContentOffset(UIScrollView __self__, Selector __cmd__, CGPoint contentOffset, boolean animated) { __self__.setContentOffset(contentOffset, animated); }
+        @Callback @BindSelector("setZoomScale:animated:") public static void setZoomScale(UIScrollView __self__, Selector __cmd__, float scale, boolean animated) { __self__.setZoomScale(scale, animated); }
+        @Callback @BindSelector("touchesShouldBegin:withEvent:inContentView:") public static boolean touchesShouldBegin(UIScrollView __self__, Selector __cmd__, NSSet touches, UIEvent event, UIView view) { return __self__.touchesShouldBegin(touches, event, view); }
+        @Callback @BindSelector("touchesShouldCancelInContentView:") public static boolean touchesShouldCancelInContentView(UIScrollView __self__, Selector __cmd__, UIView view) { return __self__.touchesShouldCancelInContentView(view); }
+        @Callback @BindSelector("zoomToRect:animated:") public static void zoomToRect(UIScrollView __self__, Selector __cmd__, CGRect rect, boolean animated) { __self__.zoomToRect(rect, animated); }
+    }
+    /*</callbacks>*/
 
 }

@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -64,5 +64,13 @@ public interface /*<name>*/ UISplitViewControllerDelegate /*</name>*/ /*<impleme
      */
     void willShowViewController(UISplitViewController svc, UIViewController aViewController, UIBarButtonItem button);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("splitViewController:shouldHideViewController:inOrientation:") public static boolean shouldHideViewController(UISplitViewControllerDelegate __self__, Selector __cmd__, UISplitViewController svc, UIViewController vc, UIInterfaceOrientation orientation) { return __self__.shouldHideViewController(svc, vc, orientation); }
+        @Callback @BindSelector("splitViewController:willHideViewController:withBarButtonItem:forPopoverController:") public static void willHideViewController(UISplitViewControllerDelegate __self__, Selector __cmd__, UISplitViewController svc, UIViewController aViewController, UIBarButtonItem barButtonItem, UIPopoverController pc) { __self__.willHideViewController(svc, aViewController, barButtonItem, pc); }
+        @Callback @BindSelector("splitViewController:popoverController:willPresentViewController:") public static void willPresentViewController(UISplitViewControllerDelegate __self__, Selector __cmd__, UISplitViewController svc, UIPopoverController pc, UIViewController aViewController) { __self__.willPresentViewController(svc, pc, aViewController); }
+        @Callback @BindSelector("splitViewController:willShowViewController:invalidatingBarButtonItem:") public static void willShowViewController(UISplitViewControllerDelegate __self__, Selector __cmd__, UISplitViewController svc, UIViewController aViewController, UIBarButtonItem button) { __self__.willShowViewController(svc, aViewController, button); }
+    }
+    /*</callbacks>*/
 
 }

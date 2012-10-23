@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -89,5 +89,10 @@ public class /*<name>*/ UINib /*</name>*/
         if (customClass) { return objc_instantiateSuper(getSuper(), this, instantiateWithOwner$options$, ownerOrNil, optionsOrNil); } else { return objc_instantiate(this, instantiateWithOwner$options$, ownerOrNil, optionsOrNil); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("instantiateWithOwner:options:") public static NSArray instantiate(UINib __self__, Selector __cmd__, NSObject ownerOrNil, NSDictionary optionsOrNil) { return __self__.instantiate(ownerOrNil, optionsOrNil); }
+    }
+    /*</callbacks>*/
 
 }

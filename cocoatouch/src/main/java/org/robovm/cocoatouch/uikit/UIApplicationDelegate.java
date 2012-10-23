@@ -23,14 +23,13 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
 /**
- *
  *
  * <div class="javadoc">
  *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplicationDelegate_Protocol/Reference/Reference.html">UIApplicationDelegate Protocol Reference</a>
@@ -44,12 +43,12 @@ public interface /*<name>*/ UIApplicationDelegate /*</name>*/ /*<implements>*/ e
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplicationDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UIApplicationDelegate/window">@property(nonatomic, retain) UIWindow *window</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("window") UIWindow getWindow();
+    UIWindow getWindow();
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplicationDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UIApplicationDelegate/window">@property(nonatomic, retain) UIWindow *window</a>
      * @since Available in iOS 5.0 and later.
      */
-    @Bind("setWindow:") void setWindow(UIWindow v);
+    void setWindow(UIWindow v);
     /*</properties>*/
     /*<methods>*/
     /**
@@ -193,5 +192,37 @@ public interface /*<name>*/ UIApplicationDelegate /*</name>*/ /*<implements>*/ e
      */
     void willTerminate(UIApplication application);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("applicationDidBecomeActive:") public static void didBecomeActive(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application) { __self__.didBecomeActive(application); }
+        @Callback @BindSelector("application:didChangeStatusBarFrame:") public static void didChangStatusBarFrame(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, CGRect oldStatusBarFrame) { __self__.didChangStatusBarFrame(application, oldStatusBarFrame); }
+        @Callback @BindSelector("application:didChangeStatusBarOrientation:") public static void didChangStatusBarOrientation(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, UIInterfaceOrientation oldStatusBarOrientation) { __self__.didChangStatusBarOrientation(application, oldStatusBarOrientation); }
+        @Callback @BindSelector("application:didDecodeRestorableStateWithCoder:") public static void didDecodeRestorableState(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, NSCoder coder) { __self__.didDecodeRestorableState(application, coder); }
+        @Callback @BindSelector("applicationDidEnterBackground:") public static void didEnterBackground(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application) { __self__.didEnterBackground(application); }
+        @Callback @BindSelector("application:didFailToRegisterForRemoteNotificationsWithError:") public static void didFailToRegisterForRemoteNotifications(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, NSError error) { __self__.didFailToRegisterForRemoteNotifications(application, error); }
+        @Callback @BindSelector("application:didFinishLaunchingWithOptions:") public static boolean didFinishLaunching(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, NSDictionary launchOptions) { return __self__.didFinishLaunching(application, launchOptions); }
+        @Callback @BindSelector("applicationDidFinishLaunching:") public static void didFinishLaunching(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application) { __self__.didFinishLaunching(application); }
+        @Callback @BindSelector("application:didReceiveLocalNotification:") public static void didReceiveLocalNotification(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, UILocalNotification notification) { __self__.didReceiveLocalNotification(application, notification); }
+        @Callback @BindSelector("applicationDidReceiveMemoryWarning:") public static void didReceiveMemoryWarning(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application) { __self__.didReceiveMemoryWarning(application); }
+        @Callback @BindSelector("application:didReceiveRemoteNotification:") public static void didReceiveRemoteNotification(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, NSDictionary userInfo) { __self__.didReceiveRemoteNotification(application, userInfo); }
+        @Callback @BindSelector("application:didRegisterForRemoteNotificationsWithDeviceToken:") public static void didRegisterForRemoteNotifications(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, NSData deviceToken) { __self__.didRegisterForRemoteNotifications(application, deviceToken); }
+        @Callback @BindSelector("application:supportedInterfaceOrientationsForWindow:") public static int getSupportedInterfaceOrientations(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, UIWindow window) { return __self__.getSupportedInterfaceOrientations(application, window); }
+        @Callback @BindSelector("application:viewControllerWithRestorationIdentifierPath:coder:") public static UIViewController getViewController(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, NSArray identifierComponents, NSCoder coder) { return __self__.getViewController(application, identifierComponents, coder); }
+        @Callback @BindSelector("application:handleOpenURL:") public static boolean handleOpenURL(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, NSURL url) { return __self__.handleOpenURL(application, url); }
+        @Callback @BindSelector("application:openURL:sourceApplication:annotation:") public static boolean openURL(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, NSURL url, String sourceApplication, NSObject annotation) { return __self__.openURL(application, url, sourceApplication, annotation); }
+        @Callback @BindSelector("applicationProtectedDataDidBecomeAvailable:") public static void protectedDataDidBecomeAvailable(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application) { __self__.protectedDataDidBecomeAvailable(application); }
+        @Callback @BindSelector("applicationProtectedDataWillBecomeUnavailable:") public static void protectedDataWillBecomeUnavailable(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application) { __self__.protectedDataWillBecomeUnavailable(application); }
+        @Callback @BindSelector("application:shouldRestoreApplicationState:") public static boolean shouldRestoreApplicationState(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, NSCoder coder) { return __self__.shouldRestoreApplicationState(application, coder); }
+        @Callback @BindSelector("application:shouldSaveApplicationState:") public static boolean shouldSaveApplicationState(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, NSCoder coder) { return __self__.shouldSaveApplicationState(application, coder); }
+        @Callback @BindSelector("applicationSignificantTimeChange:") public static void significantTimeChange(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application) { __self__.significantTimeChange(application); }
+        @Callback @BindSelector("application:willChangeStatusBarFrame:") public static void willChangeStatusBarFrame(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, CGRect newStatusBarFrame) { __self__.willChangeStatusBarFrame(application, newStatusBarFrame); }
+        @Callback @BindSelector("application:willChangeStatusBarOrientation:duration:") public static void willChangeStatusBarOrientation(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, UIInterfaceOrientation newStatusBarOrientation, double duration) { __self__.willChangeStatusBarOrientation(application, newStatusBarOrientation, duration); }
+        @Callback @BindSelector("application:willEncodeRestorableStateWithCoder:") public static void willEncodeRestorableState(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, NSCoder coder) { __self__.willEncodeRestorableState(application, coder); }
+        @Callback @BindSelector("applicationWillEnterForeground:") public static void willEnterForeground(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application) { __self__.willEnterForeground(application); }
+        @Callback @BindSelector("application:willFinishLaunchingWithOptions:") public static boolean willFinishLaunching(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, NSDictionary launchOptions) { return __self__.willFinishLaunching(application, launchOptions); }
+        @Callback @BindSelector("applicationWillResignActive:") public static void willResignActive(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application) { __self__.willResignActive(application); }
+        @Callback @BindSelector("applicationWillTerminate:") public static void willTerminate(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application) { __self__.willTerminate(application); }
+    }
+    /*</callbacks>*/
 
 }

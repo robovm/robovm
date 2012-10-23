@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -79,5 +79,16 @@ public interface /*<name>*/ UITextViewDelegate /*</name>*/ /*<implements>*/ exte
      */
     boolean shouldEndEditing(UITextView textView);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("textViewDidBeginEditing:") public static void didBeginEditing(UITextViewDelegate __self__, Selector __cmd__, UITextView textView) { __self__.didBeginEditing(textView); }
+        @Callback @BindSelector("textViewDidChange:") public static void didChange(UITextViewDelegate __self__, Selector __cmd__, UITextView textView) { __self__.didChange(textView); }
+        @Callback @BindSelector("textViewDidChangeSelection:") public static void didChangeSelection(UITextViewDelegate __self__, Selector __cmd__, UITextView textView) { __self__.didChangeSelection(textView); }
+        @Callback @BindSelector("textViewDidEndEditing:") public static void didEndEditing(UITextViewDelegate __self__, Selector __cmd__, UITextView textView) { __self__.didEndEditing(textView); }
+        @Callback @BindSelector("textViewShouldBeginEditing:") public static boolean shouldBeginEditing(UITextViewDelegate __self__, Selector __cmd__, UITextView textView) { return __self__.shouldBeginEditing(textView); }
+        @Callback @BindSelector("textView:shouldChangeTextInRange:replacementText:") public static boolean shouldChangeCharacters(UITextViewDelegate __self__, Selector __cmd__, UITextView textView, NSRange range, String text) { return __self__.shouldChangeCharacters(textView, range, text); }
+        @Callback @BindSelector("textViewShouldEndEditing:") public static boolean shouldEndEditing(UITextViewDelegate __self__, Selector __cmd__, UITextView textView) { return __self__.shouldEndEditing(textView); }
+    }
+    /*</callbacks>*/
 
 }

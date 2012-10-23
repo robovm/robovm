@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -69,5 +69,14 @@ public interface /*<name>*/ UITabBarDelegate /*</name>*/ /*<implements>*/ extend
      */
     void willEndCustomizingItems(UITabBar tabBar, NSArray items, boolean changed);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("tabBar:didBeginCustomizingItems:") public static void didBeginCustomizingItems(UITabBarDelegate __self__, Selector __cmd__, UITabBar tabBar, NSArray items) { __self__.didBeginCustomizingItems(tabBar, items); }
+        @Callback @BindSelector("tabBar:didEndCustomizingItems:changed:") public static void didEndCustomizingItems(UITabBarDelegate __self__, Selector __cmd__, UITabBar tabBar, NSArray items, boolean changed) { __self__.didEndCustomizingItems(tabBar, items, changed); }
+        @Callback @BindSelector("tabBar:didSelectItem:") public static void didSelectItem(UITabBarDelegate __self__, Selector __cmd__, UITabBar tabBar, UITabBarItem item) { __self__.didSelectItem(tabBar, item); }
+        @Callback @BindSelector("tabBar:willBeginCustomizingItems:") public static void willBeginCustomizingItems(UITabBarDelegate __self__, Selector __cmd__, UITabBar tabBar, NSArray items) { __self__.willBeginCustomizingItems(tabBar, items); }
+        @Callback @BindSelector("tabBar:willEndCustomizingItems:changed:") public static void willEndCustomizingItems(UITabBarDelegate __self__, Selector __cmd__, UITabBar tabBar, NSArray items, boolean changed) { __self__.willEndCustomizingItems(tabBar, items, changed); }
+    }
+    /*</callbacks>*/
 
 }

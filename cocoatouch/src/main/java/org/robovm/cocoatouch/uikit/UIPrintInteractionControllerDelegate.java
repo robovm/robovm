@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -84,5 +84,17 @@ public interface /*<name>*/ UIPrintInteractionControllerDelegate /*</name>*/ /*<
      */
     void willStartJob(UIPrintInteractionController printInteractionController);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("printInteractionController:choosePaper:") public static UIPrintPaper choosePaper(UIPrintInteractionControllerDelegate __self__, Selector __cmd__, UIPrintInteractionController printInteractionController, NSArray paperList) { return __self__.choosePaper(printInteractionController, paperList); }
+        @Callback @BindSelector("printInteractionControllerDidDismissPrinterOptions:") public static void didDismissPrinterOptions(UIPrintInteractionControllerDelegate __self__, Selector __cmd__, UIPrintInteractionController printInteractionController) { __self__.didDismissPrinterOptions(printInteractionController); }
+        @Callback @BindSelector("printInteractionControllerDidFinishJob:") public static void didFinishJob(UIPrintInteractionControllerDelegate __self__, Selector __cmd__, UIPrintInteractionController printInteractionController) { __self__.didFinishJob(printInteractionController); }
+        @Callback @BindSelector("printInteractionControllerDidPresentPrinterOptions:") public static void didPresentPrinterOptions(UIPrintInteractionControllerDelegate __self__, Selector __cmd__, UIPrintInteractionController printInteractionController) { __self__.didPresentPrinterOptions(printInteractionController); }
+        @Callback @BindSelector("printInteractionControllerParentViewController:") public static UIViewController getParentViewController(UIPrintInteractionControllerDelegate __self__, Selector __cmd__, UIPrintInteractionController printInteractionController) { return __self__.getParentViewController(printInteractionController); }
+        @Callback @BindSelector("printInteractionControllerWillDismissPrinterOptions:") public static void willDismissPrinterOptions(UIPrintInteractionControllerDelegate __self__, Selector __cmd__, UIPrintInteractionController printInteractionController) { __self__.willDismissPrinterOptions(printInteractionController); }
+        @Callback @BindSelector("printInteractionControllerWillPresentPrinterOptions:") public static void willPresentPrinterOptions(UIPrintInteractionControllerDelegate __self__, Selector __cmd__, UIPrintInteractionController printInteractionController) { __self__.willPresentPrinterOptions(printInteractionController); }
+        @Callback @BindSelector("printInteractionControllerWillStartJob:") public static void willStartJob(UIPrintInteractionControllerDelegate __self__, Selector __cmd__, UIPrintInteractionController printInteractionController) { __self__.willStartJob(printInteractionController); }
+    }
+    /*</callbacks>*/
 
 }

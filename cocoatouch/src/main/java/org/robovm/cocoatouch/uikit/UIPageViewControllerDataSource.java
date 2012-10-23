@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -64,5 +64,13 @@ public interface /*<name>*/ UIPageViewControllerDataSource /*</name>*/ /*<implem
      */
     UIViewController getViewControllerBefore(UIPageViewController pageViewController, UIViewController viewController);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("presentationCountForPageViewController:") public static int getPresentationCount(UIPageViewControllerDataSource __self__, Selector __cmd__, UIPageViewController pageViewController) { return __self__.getPresentationCount(pageViewController); }
+        @Callback @BindSelector("presentationIndexForPageViewController:") public static int getPresentationIndex(UIPageViewControllerDataSource __self__, Selector __cmd__, UIPageViewController pageViewController) { return __self__.getPresentationIndex(pageViewController); }
+        @Callback @BindSelector("pageViewController:viewControllerAfterViewController:") public static UIViewController getViewControllerAfter(UIPageViewControllerDataSource __self__, Selector __cmd__, UIPageViewController pageViewController, UIViewController viewController) { return __self__.getViewControllerAfter(pageViewController, viewController); }
+        @Callback @BindSelector("pageViewController:viewControllerBeforeViewController:") public static UIViewController getViewControllerBefore(UIPageViewControllerDataSource __self__, Selector __cmd__, UIPageViewController pageViewController, UIViewController viewController) { return __self__.getViewControllerBefore(pageViewController, viewController); }
+    }
+    /*</callbacks>*/
 
 }

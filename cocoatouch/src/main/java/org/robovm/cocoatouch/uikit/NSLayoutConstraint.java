@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -53,66 +53,138 @@ public class /*<name>*/ NSLayoutConstraint /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector constant = Selector.register("constant");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getConstant(NSLayoutConstraint __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getConstantSuper(ObjCSuper __super__, NSLayoutConstraint __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/constant">@property CGFloat constant</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("constant") public native float getConstant();
+    public float getConstant() {
+        if (customClass) { return objc_getConstantSuper(getSuper(), this, constant); } else { return objc_getConstant(this, constant); }
+    }
+    
+    private static final Selector setConstant$ = Selector.register("setConstant:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setConstant(NSLayoutConstraint __self__, Selector __cmd__, float constant);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setConstantSuper(ObjCSuper __super__, NSLayoutConstraint __self__, Selector __cmd__, float constant);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/constant">@property CGFloat constant</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setConstant:") public native void setConstant(float v);
+    public void setConstant(float constant) {
+        if (customClass) { objc_setConstantSuper(getSuper(), this, setConstant$, constant); } else { objc_setConstant(this, setConstant$, constant); }
+    }
+    
+    private static final Selector firstAttribute = Selector.register("firstAttribute");
+    @Bridge(symbol = "objc_msgSend") private native static NSLayoutAttribute objc_getFirstAttribute(NSLayoutConstraint __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSLayoutAttribute objc_getFirstAttributeSuper(ObjCSuper __super__, NSLayoutConstraint __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/firstAttribute">@property (readonly) NSLayoutAttribute firstAttribute</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("firstAttribute") public native NSLayoutAttribute getFirstAttribute();
+    public NSLayoutAttribute getFirstAttribute() {
+        if (customClass) { return objc_getFirstAttributeSuper(getSuper(), this, firstAttribute); } else { return objc_getFirstAttribute(this, firstAttribute); }
+    }
+    
+    private static final Selector firstItem = Selector.register("firstItem");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_getFirstItem(NSLayoutConstraint __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_getFirstItemSuper(ObjCSuper __super__, NSLayoutConstraint __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/firstItem">@property (readonly, assign) id firstItem</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("firstItem") public native NSObject getFirstItem();
+    public NSObject getFirstItem() {
+        if (customClass) { return objc_getFirstItemSuper(getSuper(), this, firstItem); } else { return objc_getFirstItem(this, firstItem); }
+    }
+    
+    private static final Selector multiplier = Selector.register("multiplier");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getMultiplier(NSLayoutConstraint __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getMultiplierSuper(ObjCSuper __super__, NSLayoutConstraint __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/multiplier">@property (readonly) CGFloat multiplier</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("multiplier") public native float getMultiplier();
+    public float getMultiplier() {
+        if (customClass) { return objc_getMultiplierSuper(getSuper(), this, multiplier); } else { return objc_getMultiplier(this, multiplier); }
+    }
+    
+    private static final Selector priority = Selector.register("priority");
+    @Bridge(symbol = "objc_msgSend") private native static UILayoutPriority objc_getPriority(NSLayoutConstraint __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UILayoutPriority objc_getPrioritySuper(ObjCSuper __super__, NSLayoutConstraint __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/priority">@property NSLayoutPriority priority;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("priority") public native UILayoutPriority getPriority();
+    public UILayoutPriority getPriority() {
+        if (customClass) { return objc_getPrioritySuper(getSuper(), this, priority); } else { return objc_getPriority(this, priority); }
+    }
+    
+    private static final Selector setPriority$ = Selector.register("setPriority:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setPriority(NSLayoutConstraint __self__, Selector __cmd__, UILayoutPriority priority);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPrioritySuper(ObjCSuper __super__, NSLayoutConstraint __self__, Selector __cmd__, UILayoutPriority priority);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/priority">@property NSLayoutPriority priority;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setPriority:") public native void setPriority(UILayoutPriority v);
+    public void setPriority(UILayoutPriority priority) {
+        if (customClass) { objc_setPrioritySuper(getSuper(), this, setPriority$, priority); } else { objc_setPriority(this, setPriority$, priority); }
+    }
+    
+    private static final Selector relation = Selector.register("relation");
+    @Bridge(symbol = "objc_msgSend") private native static NSLayoutRelation objc_getRelation(NSLayoutConstraint __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSLayoutRelation objc_getRelationSuper(ObjCSuper __super__, NSLayoutConstraint __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/relation">@property (readonly) NSLayoutRelation relation</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("relation") public native NSLayoutRelation getRelation();
+    public NSLayoutRelation getRelation() {
+        if (customClass) { return objc_getRelationSuper(getSuper(), this, relation); } else { return objc_getRelation(this, relation); }
+    }
+    
+    private static final Selector secondAttribute = Selector.register("secondAttribute");
+    @Bridge(symbol = "objc_msgSend") private native static NSLayoutAttribute objc_getSecondAttribute(NSLayoutConstraint __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSLayoutAttribute objc_getSecondAttributeSuper(ObjCSuper __super__, NSLayoutConstraint __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/secondAttribute">@property (readonly) NSLayoutAttribute secondAttribute</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("secondAttribute") public native NSLayoutAttribute getSecondAttribute();
+    public NSLayoutAttribute getSecondAttribute() {
+        if (customClass) { return objc_getSecondAttributeSuper(getSuper(), this, secondAttribute); } else { return objc_getSecondAttribute(this, secondAttribute); }
+    }
+    
+    private static final Selector secondItem = Selector.register("secondItem");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_getSecondItem(NSLayoutConstraint __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_getSecondItemSuper(ObjCSuper __super__, NSLayoutConstraint __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/secondItem">@property (readonly, assign) id secondItem</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("secondItem") public native NSObject getSecondItem();
+    public NSObject getSecondItem() {
+        if (customClass) { return objc_getSecondItemSuper(getSuper(), this, secondItem); } else { return objc_getSecondItem(this, secondItem); }
+    }
+    
+    private static final Selector shouldBeArchived = Selector.register("shouldBeArchived");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isShouldBeArchived(NSLayoutConstraint __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isShouldBeArchivedSuper(ObjCSuper __super__, NSLayoutConstraint __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/shouldBeArchived">@property BOOL shouldBeArchived;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("shouldBeArchived") public native boolean isShouldBeArchived();
+    public boolean isShouldBeArchived() {
+        if (customClass) { return objc_isShouldBeArchivedSuper(getSuper(), this, shouldBeArchived); } else { return objc_isShouldBeArchived(this, shouldBeArchived); }
+    }
+    
+    private static final Selector setShouldBeArchived$ = Selector.register("setShouldBeArchived:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setShouldBeArchived(NSLayoutConstraint __self__, Selector __cmd__, boolean shouldBeArchived);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShouldBeArchivedSuper(ObjCSuper __super__, NSLayoutConstraint __self__, Selector __cmd__, boolean shouldBeArchived);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/shouldBeArchived">@property BOOL shouldBeArchived;</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setShouldBeArchived:") public native void setShouldBeArchived(boolean v);
+    public void setShouldBeArchived(boolean shouldBeArchived) {
+        if (customClass) { objc_setShouldBeArchivedSuper(getSuper(), this, setShouldBeArchived$, shouldBeArchived); } else { objc_setShouldBeArchived(this, setShouldBeArchived$, shouldBeArchived); }
+    }
     /*</properties>*/
     /*<methods>*/
     
@@ -136,5 +208,7 @@ public class /*<name>*/ NSLayoutConstraint /*</name>*/
         return objc_fromVisualFormat(objCClass, constraintsWithVisualFormat$options$metrics$views$, format, opts, metrics, views);
     }
     /*</methods>*/
+    /*<callbacks>*/
+    /*</callbacks>*/
 
 }

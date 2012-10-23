@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -73,5 +73,15 @@ public interface /*<name>*/ UICollectionViewDelegateFlowLayout /*</name>*/ /*<im
      */
     float getSectionMinimumLineSpacing(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, int section);
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("collectionView:layout:sizeForItemAtIndexPath:") public static CGSize getItemSize(UICollectionViewDelegateFlowLayout __self__, Selector __cmd__, UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, NSIndexPath indexPath) { return __self__.getItemSize(collectionView, collectionViewLayout, indexPath); }
+        @Callback @BindSelector("collectionView:layout:referenceSizeForFooterInSection:") public static CGSize getSectionFooterReferenceSize(UICollectionViewDelegateFlowLayout __self__, Selector __cmd__, UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, int section) { return __self__.getSectionFooterReferenceSize(collectionView, collectionViewLayout, section); }
+        @Callback @BindSelector("collectionView:layout:referenceSizeForHeaderInSection:") public static CGSize getSectionHeaderReferenceSize(UICollectionViewDelegateFlowLayout __self__, Selector __cmd__, UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, int section) { return __self__.getSectionHeaderReferenceSize(collectionView, collectionViewLayout, section); }
+        @Callback @BindSelector("collectionView:layout:insetForSectionAtIndex:") public static UIEdgeInsets getSectionInset(UICollectionViewDelegateFlowLayout __self__, Selector __cmd__, UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, int section) { return __self__.getSectionInset(collectionView, collectionViewLayout, section); }
+        @Callback @BindSelector("collectionView:layout:minimumInteritemSpacingForSectionAtIndex:") public static float getSectionMinimumInteritemSpacing(UICollectionViewDelegateFlowLayout __self__, Selector __cmd__, UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, int section) { return __self__.getSectionMinimumInteritemSpacing(collectionView, collectionViewLayout, section); }
+        @Callback @BindSelector("collectionView:layout:minimumLineSpacingForSectionAtIndex:") public static float getSectionMinimumLineSpacing(UICollectionViewDelegateFlowLayout __self__, Selector __cmd__, UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, int section) { return __self__.getSectionMinimumLineSpacing(collectionView, collectionViewLayout, section); }
+    }
+    /*</callbacks>*/
 
 }

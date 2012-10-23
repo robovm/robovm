@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -63,16 +63,28 @@ public class /*<name>*/ UIActivityItemProvider /*</name>*/
     }
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector activityType = Selector.register("activityType");
+    @Bridge(symbol = "objc_msgSend") private native static String objc_getActivityType(UIActivityItemProvider __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getActivityTypeSuper(ObjCSuper __super__, UIActivityItemProvider __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityItemProvider_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActivityItemProvider/activityType">@property(nonatomic,readonly) NSString *activityType</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("activityType") public native String getActivityType();
+    public String getActivityType() {
+        if (customClass) { return objc_getActivityTypeSuper(getSuper(), this, activityType); } else { return objc_getActivityType(this, activityType); }
+    }
+    
+    private static final Selector placeholderItem = Selector.register("placeholderItem");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_getPlaceholderItem(UIActivityItemProvider __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_getPlaceholderItemSuper(ObjCSuper __super__, UIActivityItemProvider __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityItemProvider_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActivityItemProvider/placeholderItem">@property(nonatomic,retain,readonly) id placeholderItem</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("placeholderItem") public native NSObject getPlaceholderItem();
+    public NSObject getPlaceholderItem() {
+        if (customClass) { return objc_getPlaceholderItemSuper(getSuper(), this, placeholderItem); } else { return objc_getPlaceholderItem(this, placeholderItem); }
+    }
     /*</properties>*/
     /*<methods>*/
     
@@ -87,5 +99,10 @@ public class /*<name>*/ UIActivityItemProvider /*</name>*/
         if (customClass) { return objc_getItemSuper(getSuper(), this, item); } else { return objc_getItem(this, item); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("item") public static NSObject getItem(UIActivityItemProvider __self__, Selector __cmd__) { return __self__.getItem(); }
+    }
+    /*</callbacks>*/
 
 }

@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -53,39 +53,77 @@ public class /*<name>*/ NSShadow /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector shadowBlurRadius = Selector.register("shadowBlurRadius");
+    @Bridge(symbol = "objc_msgSend") private native static float objc_getShadowBlurRadius(NSShadow __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getShadowBlurRadiusSuper(ObjCSuper __super__, NSShadow __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html#//apple_ref/occ/instp/NSShadow/shadowBlurRadius">@property (nonatomic, assign) CGFloat shadowBlurRadius</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("shadowBlurRadius") public native float getShadowBlurRadius();
+    public float getShadowBlurRadius() {
+        if (customClass) { return objc_getShadowBlurRadiusSuper(getSuper(), this, shadowBlurRadius); } else { return objc_getShadowBlurRadius(this, shadowBlurRadius); }
+    }
+    
+    private static final Selector setShadowBlurRadius$ = Selector.register("setShadowBlurRadius:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setShadowBlurRadius(NSShadow __self__, Selector __cmd__, float shadowBlurRadius);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShadowBlurRadiusSuper(ObjCSuper __super__, NSShadow __self__, Selector __cmd__, float shadowBlurRadius);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html#//apple_ref/occ/instp/NSShadow/shadowBlurRadius">@property (nonatomic, assign) CGFloat shadowBlurRadius</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setShadowBlurRadius:") public native void setShadowBlurRadius(float v);
+    public void setShadowBlurRadius(float shadowBlurRadius) {
+        if (customClass) { objc_setShadowBlurRadiusSuper(getSuper(), this, setShadowBlurRadius$, shadowBlurRadius); } else { objc_setShadowBlurRadius(this, setShadowBlurRadius$, shadowBlurRadius); }
+    }
+    
+    private static final Selector shadowColor = Selector.register("shadowColor");
+    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_getShadowColor(NSShadow __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_getShadowColorSuper(ObjCSuper __super__, NSShadow __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html#//apple_ref/occ/instp/NSShadow/shadowColor">@property (nonatomic, retain) id shadowColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("shadowColor") public native NSObject getShadowColor();
+    public NSObject getShadowColor() {
+        if (customClass) { return objc_getShadowColorSuper(getSuper(), this, shadowColor); } else { return objc_getShadowColor(this, shadowColor); }
+    }
+    
+    private static final Selector setShadowColor$ = Selector.register("setShadowColor:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setShadowColor(NSShadow __self__, Selector __cmd__, NSObject shadowColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShadowColorSuper(ObjCSuper __super__, NSShadow __self__, Selector __cmd__, NSObject shadowColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html#//apple_ref/occ/instp/NSShadow/shadowColor">@property (nonatomic, retain) id shadowColor</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setShadowColor:") public native void setShadowColor(NSObject v);
+    public void setShadowColor(NSObject shadowColor) {
+        if (customClass) { objc_setShadowColorSuper(getSuper(), this, setShadowColor$, shadowColor); } else { objc_setShadowColor(this, setShadowColor$, shadowColor); }
+    }
+    
+    private static final Selector shadowOffset = Selector.register("shadowOffset");
+    @Bridge(symbol = "objc_msgSend") private native static CGSize objc_getShadowOffset(NSShadow __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGSize objc_getShadowOffsetSuper(ObjCSuper __super__, NSShadow __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html#//apple_ref/occ/instp/NSShadow/shadowOffset">@property (nonatomic, assign) CGSize shadowOffset</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("shadowOffset") public native CGSize getShadowOffset();
+    public CGSize getShadowOffset() {
+        if (customClass) { return objc_getShadowOffsetSuper(getSuper(), this, shadowOffset); } else { return objc_getShadowOffset(this, shadowOffset); }
+    }
+    
+    private static final Selector setShadowOffset$ = Selector.register("setShadowOffset:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setShadowOffset(NSShadow __self__, Selector __cmd__, CGSize shadowOffset);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShadowOffsetSuper(ObjCSuper __super__, NSShadow __self__, Selector __cmd__, CGSize shadowOffset);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html#//apple_ref/occ/instp/NSShadow/shadowOffset">@property (nonatomic, assign) CGSize shadowOffset</a>
      * @since Available in iOS 6.0 and later.
      */
-    @Bind("setShadowOffset:") public native void setShadowOffset(CGSize v);
+    public void setShadowOffset(CGSize shadowOffset) {
+        if (customClass) { objc_setShadowOffsetSuper(getSuper(), this, setShadowOffset$, shadowOffset); } else { objc_setShadowOffset(this, setShadowOffset$, shadowOffset); }
+    }
     /*</properties>*/
     /*<methods>*/
     
     /*</methods>*/
+    /*<callbacks>*/
+    /*</callbacks>*/
 
 }

@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,16 +54,28 @@ public class /*<name>*/ UILocalizedIndexedCollation /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector sectionIndexTitles = Selector.register("sectionIndexTitles");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getSectionIndexTitles(UILocalizedIndexedCollation __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getSectionIndexTitlesSuper(ObjCSuper __super__, UILocalizedIndexedCollation __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalizedIndexedCollation_Class/UILocalizedIndexedCollation.html#//apple_ref/occ/instp/UILocalizedIndexedCollation/sectionIndexTitles">@property(nonatomic, readonly) NSArray *sectionIndexTitles</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("sectionIndexTitles") public native NSArray getSectionIndexTitles();
+    public NSArray getSectionIndexTitles() {
+        if (customClass) { return objc_getSectionIndexTitlesSuper(getSuper(), this, sectionIndexTitles); } else { return objc_getSectionIndexTitles(this, sectionIndexTitles); }
+    }
+    
+    private static final Selector sectionTitles = Selector.register("sectionTitles");
+    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getSectionTitles(UILocalizedIndexedCollation __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getSectionTitlesSuper(ObjCSuper __super__, UILocalizedIndexedCollation __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UILocalizedIndexedCollation_Class/UILocalizedIndexedCollation.html#//apple_ref/occ/instp/UILocalizedIndexedCollation/sectionTitles">@property(nonatomic, readonly) NSArray *sectionTitles</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("sectionTitles") public native NSArray getSectionTitles();
+    public NSArray getSectionTitles() {
+        if (customClass) { return objc_getSectionTitlesSuper(getSuper(), this, sectionTitles); } else { return objc_getSectionTitles(this, sectionTitles); }
+    }
     /*</properties>*/
     /*<methods>*/
     
@@ -110,5 +122,12 @@ public class /*<name>*/ UILocalizedIndexedCollation /*</name>*/
         if (customClass) { return objc_sortArraySuper(getSuper(), this, sortedArrayFromArray$collationStringSelector$, array, selector); } else { return objc_sortArray(this, sortedArrayFromArray$collationStringSelector$, array, selector); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("sectionForObject:collationStringSelector:") public static int getSectionForObject(UILocalizedIndexedCollation __self__, Selector __cmd__, NSObject object, Selector selector) { return __self__.getSectionForObject(object, selector); }
+        @Callback @BindSelector("sectionForSectionIndexTitleAtIndex:") public static int getSectionForSectionIndexTitle(UILocalizedIndexedCollation __self__, Selector __cmd__, int indexTitleIndex) { return __self__.getSectionForSectionIndexTitle(indexTitleIndex); }
+        @Callback @BindSelector("sortedArrayFromArray:collationStringSelector:") public static NSArray sortArray(UILocalizedIndexedCollation __self__, Selector __cmd__, NSArray array, Selector selector) { return __self__.sortArray(array, selector); }
+    }
+    /*</callbacks>*/
 
 }

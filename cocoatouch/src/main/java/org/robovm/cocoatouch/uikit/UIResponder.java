@@ -23,7 +23,7 @@ import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
-import org.robovm.objc.bind.*;
+import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -54,21 +54,39 @@ public class /*<name>*/ UIResponder /*</name>*/
     
     /*</constructors>*/
     /*<properties>*/
+    
+    private static final Selector inputAccessoryView = Selector.register("inputAccessoryView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getInputAccessoryView(UIResponder __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getInputAccessoryViewSuper(ObjCSuper __super__, UIResponder __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instp/UIResponder/inputAccessoryView">@property (readonly, retain) UIView *inputAccessoryView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("inputAccessoryView") public native UIView getInputAccessoryView();
+    public UIView getInputAccessoryView() {
+        if (customClass) { return objc_getInputAccessoryViewSuper(getSuper(), this, inputAccessoryView); } else { return objc_getInputAccessoryView(this, inputAccessoryView); }
+    }
+    
+    private static final Selector inputView = Selector.register("inputView");
+    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getInputView(UIResponder __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getInputViewSuper(ObjCSuper __super__, UIResponder __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instp/UIResponder/inputView">@property (readonly, retain) UIView *inputView</a>
      * @since Available in iOS 3.2 and later.
      */
-    @Bind("inputView") public native UIView getInputView();
+    public UIView getInputView() {
+        if (customClass) { return objc_getInputViewSuper(getSuper(), this, inputView); } else { return objc_getInputView(this, inputView); }
+    }
+    
+    private static final Selector undoManager = Selector.register("undoManager");
+    @Bridge(symbol = "objc_msgSend") private native static NSUndoManager objc_getUndoManager(UIResponder __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSUndoManager objc_getUndoManagerSuper(ObjCSuper __super__, UIResponder __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instp/UIResponder/undoManager">@property(readonly) NSUndoManager *undoManager</a>
      * @since Available in iOS 3.0 and later.
      */
-    @Bind("undoManager") public native NSUndoManager getUndoManager();
+    public NSUndoManager getUndoManager() {
+        if (customClass) { return objc_getUndoManagerSuper(getSuper(), this, undoManager); } else { return objc_getUndoManager(this, undoManager); }
+    }
     /*</properties>*/
     /*<methods>*/
     
@@ -248,5 +266,25 @@ public class /*<name>*/ UIResponder /*</name>*/
         if (customClass) { objc_touchesMovedSuper(getSuper(), this, touchesMoved$withEvent$, touches, event); } else { objc_touchesMoved(this, touchesMoved$withEvent$, touches, event); }
     }
     /*</methods>*/
+    /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("becomeFirstResponder") public static boolean becomeFirstResponder(UIResponder __self__, Selector __cmd__) { return __self__.becomeFirstResponder(); }
+        @Callback @BindSelector("canBecomeFirstResponder") public static boolean canBecomeFirstResponder(UIResponder __self__, Selector __cmd__) { return __self__.canBecomeFirstResponder(); }
+        @Callback @BindSelector("canPerformAction:withSender:") public static boolean canPerformAction(UIResponder __self__, Selector __cmd__, Selector action, NSObject sender) { return __self__.canPerformAction(action, sender); }
+        @Callback @BindSelector("canResignFirstResponder") public static boolean canResignFirstResponder(UIResponder __self__, Selector __cmd__) { return __self__.canResignFirstResponder(); }
+        @Callback @BindSelector("nextResponder") public static UIResponder getNextResponder(UIResponder __self__, Selector __cmd__) { return __self__.getNextResponder(); }
+        @Callback @BindSelector("isFirstResponder") public static boolean isFirstResponder(UIResponder __self__, Selector __cmd__) { return __self__.isFirstResponder(); }
+        @Callback @BindSelector("motionBegan:withEvent:") public static void motionBegan(UIResponder __self__, Selector __cmd__, UIEventSubtype motion, UIEvent event) { __self__.motionBegan(motion, event); }
+        @Callback @BindSelector("motionCancelled:withEvent:") public static void motionCancelled(UIResponder __self__, Selector __cmd__, UIEventSubtype motion, UIEvent event) { __self__.motionCancelled(motion, event); }
+        @Callback @BindSelector("motionEnded:withEvent:") public static void motionEnded(UIResponder __self__, Selector __cmd__, UIEventSubtype motion, UIEvent event) { __self__.motionEnded(motion, event); }
+        @Callback @BindSelector("reloadInputViews") public static void reloadInputViews(UIResponder __self__, Selector __cmd__) { __self__.reloadInputViews(); }
+        @Callback @BindSelector("remoteControlReceivedWithEvent:") public static void remoteControlReceived(UIResponder __self__, Selector __cmd__, UIEvent event) { __self__.remoteControlReceived(event); }
+        @Callback @BindSelector("resignFirstResponder") public static boolean resignFirstResponder(UIResponder __self__, Selector __cmd__) { return __self__.resignFirstResponder(); }
+        @Callback @BindSelector("touchesBegan:withEvent:") public static void touchesBegan(UIResponder __self__, Selector __cmd__, NSSet touches, UIEvent event) { __self__.touchesBegan(touches, event); }
+        @Callback @BindSelector("touchesCancelled:withEvent:") public static void touchesCancelled(UIResponder __self__, Selector __cmd__, NSSet touches, UIEvent event) { __self__.touchesCancelled(touches, event); }
+        @Callback @BindSelector("touchesEnded:withEvent:") public static void touchesEnded(UIResponder __self__, Selector __cmd__, NSSet touches, UIEvent event) { __self__.touchesEnded(touches, event); }
+        @Callback @BindSelector("touchesMoved:withEvent:") public static void touchesMoved(UIResponder __self__, Selector __cmd__, NSSet touches, UIEvent event) { __self__.touchesMoved(touches, event); }
+    }
+    /*</callbacks>*/
 
 }

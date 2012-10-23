@@ -145,7 +145,7 @@ static void skipElementValue(void** attributes) {
         getString(attributes); // Enum constant name
         break;
     case '[':
-        length = getInt(attributes);
+        length = getChar(attributes);
         while (length > 0) {
             skipElementValue(attributes);
             length--;

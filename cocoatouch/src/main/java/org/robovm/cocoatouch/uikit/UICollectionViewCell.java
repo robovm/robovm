@@ -47,6 +47,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UICollectionViewCell /*</name>*/.class);
 
+    public UICollectionViewCell(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UICollectionViewCell(SkipInit skipInit) { super(skipInit); }
     public UICollectionViewCell() {}

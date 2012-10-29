@@ -105,6 +105,22 @@ public interface /*<name>*/ UISearchDisplayDelegate /*</name>*/ /*<implements>*/
      */
     void willUnloadSearchResults(UISearchDisplayController controller, UITableView tableView);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UISearchDisplayDelegate {
+        @NotImplemented("searchDisplayControllerDidBeginSearch:") public void didBeginSearch(UISearchDisplayController controller) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchDisplayControllerDidEndSearch:") public void didEndSearch(UISearchDisplayController controller) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchDisplayController:didHideSearchResultsTableView:") public void didHideSearchResults(UISearchDisplayController controller, UITableView tableView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchDisplayController:didLoadSearchResultsTableView:") public void didLoadSearchResults(UISearchDisplayController controller, UITableView tableView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchDisplayController:didShowSearchResultsTableView:") public void didShowSearchResults(UISearchDisplayController controller, UITableView tableView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchDisplayController:shouldReloadTableForSearchScope:") public boolean shouldReloadForSearchScope(UISearchDisplayController controller, int searchOption) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchDisplayController:shouldReloadTableForSearchString:") public boolean shouldReloadForSearchString(UISearchDisplayController controller, String searchString) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchDisplayControllerWillBeginSearch:") public void willBeginSearch(UISearchDisplayController controller) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchDisplayControllerWillEndSearch:") public void willEndSearch(UISearchDisplayController controller) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchDisplayController:willHideSearchResultsTableView:") public void willHideSearchResults(UISearchDisplayController controller, UITableView tableView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchDisplayController:willShowSearchResultsTableView:") public void willShowSearchResults(UISearchDisplayController controller, UITableView tableView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchDisplayController:willUnloadSearchResultsTableView:") public void willUnloadSearchResults(UISearchDisplayController controller, UITableView tableView) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("searchDisplayControllerDidBeginSearch:") public static void didBeginSearch(UISearchDisplayDelegate __self__, Selector __cmd__, UISearchDisplayController controller) { __self__.didBeginSearch(controller); }

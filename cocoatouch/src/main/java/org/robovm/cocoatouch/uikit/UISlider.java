@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UISlider /*</name>*/.class);
 
+    public UISlider(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UISlider(SkipInit skipInit) { super(skipInit); }
     public UISlider() {}

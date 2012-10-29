@@ -74,6 +74,16 @@ public interface /*<name>*/ UIPickerViewDelegate /*</name>*/ /*<implements>*/ ex
      */
     UIView getRowView(UIPickerView pickerView, int row, int component, UIView view);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UIPickerViewDelegate {
+        @NotImplemented("pickerView:didSelectRow:inComponent:") public void didSelectRow(UIPickerView pickerView, int row, int component) { throw new UnsupportedOperationException(); }
+        @NotImplemented("pickerView:attributedTitleForRow:forComponent:") public NSAttributedString getAttributedRowTitle(UIPickerView pickerView, int row, int component) { throw new UnsupportedOperationException(); }
+        @NotImplemented("pickerView:widthForComponent:") public float getComponentWidth(UIPickerView pickerView, int component) { throw new UnsupportedOperationException(); }
+        @NotImplemented("pickerView:rowHeightForComponent:") public float getRowHeight(UIPickerView pickerView, int component) { throw new UnsupportedOperationException(); }
+        @NotImplemented("pickerView:titleForRow:forComponent:") public String getRowTitle(UIPickerView pickerView, int row, int component) { throw new UnsupportedOperationException(); }
+        @NotImplemented("pickerView:viewForRow:forComponent:reusingView:") public UIView getRowView(UIPickerView pickerView, int row, int component, UIView view) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("pickerView:didSelectRow:inComponent:") public static void didSelectRow(UIPickerViewDelegate __self__, Selector __cmd__, UIPickerView pickerView, int row, int component) { __self__.didSelectRow(pickerView, row, component); }

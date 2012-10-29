@@ -109,6 +109,23 @@ public interface /*<name>*/ UIScrollViewDelegate /*</name>*/ /*<implements>*/ ex
      */
     void willEndDragging(UIScrollView scrollView, CGPoint velocity, CGPoint targetContentOffset);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UIScrollViewDelegate {
+        @NotImplemented("scrollViewDidEndDecelerating:") public void didEndDecelerating(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("scrollViewDidEndDragging:willDecelerate:") public void didEndDragging(UIScrollView scrollView, boolean decelerate) { throw new UnsupportedOperationException(); }
+        @NotImplemented("scrollViewDidEndScrollingAnimation:") public void didEndScrollingAnimation(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("scrollViewDidEndZooming:withView:atScale:") public void didEndZooming(UIScrollView scrollView, UIView view, float scale) { throw new UnsupportedOperationException(); }
+        @NotImplemented("scrollViewDidScroll:") public void didScroll(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("scrollViewDidScrollToTop:") public void didScrollToTop(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("scrollViewDidZoom:") public void didZoom(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("viewForZoomingInScrollView:") public UIView getViewForZooming(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("scrollViewShouldScrollToTop:") public boolean shouldScrollToTop(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("scrollViewWillBeginDecelerating:") public void willBeginDecelerating(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("scrollViewWillBeginDragging:") public void willBeginDragging(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("scrollViewWillBeginZooming:withView:") public void willBeginZooming(UIScrollView scrollView, UIView view) { throw new UnsupportedOperationException(); }
+        @NotImplemented("scrollViewWillEndDragging:withVelocity:targetContentOffset:") public void willEndDragging(UIScrollView scrollView, CGPoint velocity, CGPoint targetContentOffset) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("scrollViewDidEndDecelerating:") public static void didEndDecelerating(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView) { __self__.didEndDecelerating(scrollView); }

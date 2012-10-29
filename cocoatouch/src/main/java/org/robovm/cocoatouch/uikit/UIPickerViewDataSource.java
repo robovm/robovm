@@ -54,6 +54,12 @@ public interface /*<name>*/ UIPickerViewDataSource /*</name>*/ /*<implements>*/ 
      */
     int getNumberOfRows(UIPickerView pickerView, int component);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UIPickerViewDataSource {
+        @NotImplemented("numberOfComponentsInPickerView:") public int getNumberOfComponents(UIPickerView pickerView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("pickerView:numberOfRowsInComponent:") public int getNumberOfRows(UIPickerView pickerView, int component) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("numberOfComponentsInPickerView:") public static int getNumberOfComponents(UIPickerViewDataSource __self__, Selector __cmd__, UIPickerView pickerView) { return __self__.getNumberOfComponents(pickerView); }

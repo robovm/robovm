@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIStepper /*</name>*/.class);
 
+    public UIStepper(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UIStepper(SkipInit skipInit) { super(skipInit); }
     public UIStepper() {}

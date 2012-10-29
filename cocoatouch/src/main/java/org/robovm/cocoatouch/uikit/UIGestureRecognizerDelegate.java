@@ -59,6 +59,13 @@ public interface /*<name>*/ UIGestureRecognizerDelegate /*</name>*/ /*<implement
      */
     boolean shouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UIGestureRecognizerDelegate {
+        @NotImplemented("gestureRecognizerShouldBegin:") public boolean shouldBegin(UIGestureRecognizer gestureRecognizer) { throw new UnsupportedOperationException(); }
+        @NotImplemented("gestureRecognizer:shouldReceiveTouch:") public boolean shouldReceiveTouch(UIGestureRecognizer gestureRecognizer, UITouch touch) { throw new UnsupportedOperationException(); }
+        @NotImplemented("gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:") public boolean shouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("gestureRecognizerShouldBegin:") public static boolean shouldBegin(UIGestureRecognizerDelegate __self__, Selector __cmd__, UIGestureRecognizer gestureRecognizer) { return __self__.shouldBegin(gestureRecognizer); }

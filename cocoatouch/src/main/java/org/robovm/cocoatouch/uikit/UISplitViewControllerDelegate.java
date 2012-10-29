@@ -64,6 +64,14 @@ public interface /*<name>*/ UISplitViewControllerDelegate /*</name>*/ /*<impleme
      */
     void willShowViewController(UISplitViewController svc, UIViewController aViewController, UIBarButtonItem button);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UISplitViewControllerDelegate {
+        @NotImplemented("splitViewController:shouldHideViewController:inOrientation:") public boolean shouldHideViewController(UISplitViewController svc, UIViewController vc, UIInterfaceOrientation orientation) { throw new UnsupportedOperationException(); }
+        @NotImplemented("splitViewController:willHideViewController:withBarButtonItem:forPopoverController:") public void willHideViewController(UISplitViewController svc, UIViewController aViewController, UIBarButtonItem barButtonItem, UIPopoverController pc) { throw new UnsupportedOperationException(); }
+        @NotImplemented("splitViewController:popoverController:willPresentViewController:") public void willPresentViewController(UISplitViewController svc, UIPopoverController pc, UIViewController aViewController) { throw new UnsupportedOperationException(); }
+        @NotImplemented("splitViewController:willShowViewController:invalidatingBarButtonItem:") public void willShowViewController(UISplitViewController svc, UIViewController aViewController, UIBarButtonItem button) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("splitViewController:shouldHideViewController:inOrientation:") public static boolean shouldHideViewController(UISplitViewControllerDelegate __self__, Selector __cmd__, UISplitViewController svc, UIViewController vc, UIInterfaceOrientation orientation) { return __self__.shouldHideViewController(svc, vc, orientation); }

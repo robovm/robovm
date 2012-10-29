@@ -64,6 +64,14 @@ public interface /*<name>*/ UIWebViewDelegate /*</name>*/ /*<implements>*/ exten
      */
     boolean shouldStartLoad(UIWebView webView, NSURLRequest request, UIWebViewNavigationType navigationType);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UIWebViewDelegate {
+        @NotImplemented("webView:didFailLoadWithError:") public void didFailLoad(UIWebView webView, NSError error) { throw new UnsupportedOperationException(); }
+        @NotImplemented("webViewDidFinishLoad:") public void didFinishLoad(UIWebView webView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("webViewDidStartLoad:") public void didStartLoad(UIWebView webView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("webView:shouldStartLoadWithRequest:navigationType:") public boolean shouldStartLoad(UIWebView webView, NSURLRequest request, UIWebViewNavigationType navigationType) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("webView:didFailLoadWithError:") public static void didFailLoad(UIWebViewDelegate __self__, Selector __cmd__, UIWebView webView, NSError error) { __self__.didFailLoad(webView, error); }

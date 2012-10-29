@@ -69,6 +69,15 @@ public interface /*<name>*/ UITabBarDelegate /*</name>*/ /*<implements>*/ extend
      */
     void willEndCustomizingItems(UITabBar tabBar, NSArray items, boolean changed);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UITabBarDelegate {
+        @NotImplemented("tabBar:didBeginCustomizingItems:") public void didBeginCustomizingItems(UITabBar tabBar, NSArray items) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tabBar:didEndCustomizingItems:changed:") public void didEndCustomizingItems(UITabBar tabBar, NSArray items, boolean changed) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tabBar:didSelectItem:") public void didSelectItem(UITabBar tabBar, UITabBarItem item) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tabBar:willBeginCustomizingItems:") public void willBeginCustomizingItems(UITabBar tabBar, NSArray items) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tabBar:willEndCustomizingItems:changed:") public void willEndCustomizingItems(UITabBar tabBar, NSArray items, boolean changed) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("tabBar:didBeginCustomizingItems:") public static void didBeginCustomizingItems(UITabBarDelegate __self__, Selector __cmd__, UITabBar tabBar, NSArray items) { __self__.didBeginCustomizingItems(tabBar, items); }

@@ -59,6 +59,13 @@ public interface /*<name>*/ UIKeyInput /*</name>*/ /*<implements>*/ extends UITe
      */
     void insertText(String text);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends UITextInputTraits.Adapter implements UIKeyInput {
+        @NotImplemented("deleteBackward") public void deleteBackward() { throw new UnsupportedOperationException(); }
+        @NotImplemented("hasText") public boolean hasText() { throw new UnsupportedOperationException(); }
+        @NotImplemented("insertText:") public void insertText(String text) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("deleteBackward") public static void deleteBackward(UIKeyInput __self__, Selector __cmd__) { __self__.deleteBackward(); }

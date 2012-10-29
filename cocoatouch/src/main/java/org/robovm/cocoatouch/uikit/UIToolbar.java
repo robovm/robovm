@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIToolbar /*</name>*/.class);
 
+    public UIToolbar(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UIToolbar(SkipInit skipInit) { super(skipInit); }
     public UIToolbar() {}

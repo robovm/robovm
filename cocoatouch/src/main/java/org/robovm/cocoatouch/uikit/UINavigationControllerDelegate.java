@@ -54,6 +54,12 @@ public interface /*<name>*/ UINavigationControllerDelegate /*</name>*/ /*<implem
      */
     void willShowViewController(UINavigationController navigationController, UIViewController viewController, boolean animated);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UINavigationControllerDelegate {
+        @NotImplemented("navigationController:didShowViewController:animated:") public void didShowViewController(UINavigationController navigationController, UIViewController viewController, boolean animated) { throw new UnsupportedOperationException(); }
+        @NotImplemented("navigationController:willShowViewController:animated:") public void willShowViewController(UINavigationController navigationController, UIViewController viewController, boolean animated) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("navigationController:didShowViewController:animated:") public static void didShowViewController(UINavigationControllerDelegate __self__, Selector __cmd__, UINavigationController navigationController, UIViewController viewController, boolean animated) { __self__.didShowViewController(navigationController, viewController, animated); }

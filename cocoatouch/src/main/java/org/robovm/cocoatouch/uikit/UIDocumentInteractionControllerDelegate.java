@@ -99,6 +99,21 @@ public interface /*<name>*/ UIDocumentInteractionControllerDelegate /*</name>*/ 
      */
     void willPresentOptionsMenu(UIDocumentInteractionController  controller);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UIDocumentInteractionControllerDelegate {
+        @NotImplemented("documentInteractionControllerDidDismissOpenInMenu:") public void didDismissOpenInMenu(UIDocumentInteractionController  controller) { throw new UnsupportedOperationException(); }
+        @NotImplemented("documentInteractionControllerDidDismissOptionsMenu:") public void didDismissOptionsMenu(UIDocumentInteractionController  controller) { throw new UnsupportedOperationException(); }
+        @NotImplemented("documentInteractionControllerDidEndPreview:") public void didEndPreview(UIDocumentInteractionController controller) { throw new UnsupportedOperationException(); }
+        @NotImplemented("documentInteractionController:didEndSendingToApplication:") public void didEndSendingToApplication(UIDocumentInteractionController  controller, String  application) { throw new UnsupportedOperationException(); }
+        @NotImplemented("documentInteractionControllerRectForPreview:") public CGRect getRectForPreview(UIDocumentInteractionController  controller) { throw new UnsupportedOperationException(); }
+        @NotImplemented("documentInteractionControllerViewControllerForPreview:") public UIViewController getViewControllerForPreview(UIDocumentInteractionController  controller) { throw new UnsupportedOperationException(); }
+        @NotImplemented("documentInteractionControllerViewForPreview:") public UIView getViewForPreview(UIDocumentInteractionController  controller) { throw new UnsupportedOperationException(); }
+        @NotImplemented("documentInteractionControllerWillBeginPreview:") public void willBeginPreview(UIDocumentInteractionController  controller) { throw new UnsupportedOperationException(); }
+        @NotImplemented("documentInteractionController:willBeginSendingToApplication:") public void willBeginSendingToApplication(UIDocumentInteractionController  controller, String  application) { throw new UnsupportedOperationException(); }
+        @NotImplemented("documentInteractionControllerWillPresentOpenInMenu:") public void willPresentOpenInMenu(UIDocumentInteractionController  controller) { throw new UnsupportedOperationException(); }
+        @NotImplemented("documentInteractionControllerWillPresentOptionsMenu:") public void willPresentOptionsMenu(UIDocumentInteractionController  controller) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("documentInteractionControllerDidDismissOpenInMenu:") public static void didDismissOpenInMenu(UIDocumentInteractionControllerDelegate __self__, Selector __cmd__, UIDocumentInteractionController  controller) { __self__.didDismissOpenInMenu( controller); }

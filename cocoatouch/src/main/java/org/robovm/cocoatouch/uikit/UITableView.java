@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITableView /*</name>*/.class);
 
+    public UITableView(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UITableView(SkipInit skipInit) { super(skipInit); }
     public UITableView() {}

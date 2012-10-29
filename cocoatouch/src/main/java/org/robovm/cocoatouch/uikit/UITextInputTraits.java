@@ -124,6 +124,26 @@ public interface /*<name>*/ UITextInputTraits /*</name>*/ /*<implements>*/ exten
     /*<methods>*/
     
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UITextInputTraits {
+        @NotImplemented("autocapitalizationType") public UITextAutocapitalizationType getAutocapitalizationType() { throw new UnsupportedOperationException(); }
+        @NotImplemented("setAutocapitalizationType:") public void setAutocapitalizationType(UITextAutocapitalizationType autocapitalizationType) { throw new UnsupportedOperationException(); }
+        @NotImplemented("autocorrectionType") public UITextAutocorrectionType getAutocorrectionType() { throw new UnsupportedOperationException(); }
+        @NotImplemented("setAutocorrectionType:") public void setAutocorrectionType(UITextAutocorrectionType autocorrectionType) { throw new UnsupportedOperationException(); }
+        @NotImplemented("enablesReturnKeyAutomatically") public boolean isEnablesReturnKeyAutomatically() { throw new UnsupportedOperationException(); }
+        @NotImplemented("setEnablesReturnKeyAutomatically:") public void setEnablesReturnKeyAutomatically(boolean enablesReturnKeyAutomatically) { throw new UnsupportedOperationException(); }
+        @NotImplemented("keyboardAppearance") public UIKeyboardAppearance getKeyboardAppearance() { throw new UnsupportedOperationException(); }
+        @NotImplemented("setKeyboardAppearance:") public void setKeyboardAppearance(UIKeyboardAppearance keyboardAppearance) { throw new UnsupportedOperationException(); }
+        @NotImplemented("keyboardType") public UIKeyboardType getKeyboardType() { throw new UnsupportedOperationException(); }
+        @NotImplemented("setKeyboardType:") public void setKeyboardType(UIKeyboardType keyboardType) { throw new UnsupportedOperationException(); }
+        @NotImplemented("returnKeyType") public UIReturnKeyType getReturnKeyType() { throw new UnsupportedOperationException(); }
+        @NotImplemented("setReturnKeyType:") public void setReturnKeyType(UIReturnKeyType returnKeyType) { throw new UnsupportedOperationException(); }
+        @NotImplemented("isSecureTextEntry") public boolean isSecureTextEntry() { throw new UnsupportedOperationException(); }
+        @NotImplemented("setSecureTextEntry:") public void setSecureTextEntry(boolean secureTextEntry) { throw new UnsupportedOperationException(); }
+        @NotImplemented("spellCheckingType") public UITextSpellCheckingType getSpellCheckingType() { throw new UnsupportedOperationException(); }
+        @NotImplemented("setSpellCheckingType:") public void setSpellCheckingType(UITextSpellCheckingType spellCheckingType) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("autocapitalizationType") public static UITextAutocapitalizationType getAutocapitalizationType(UITextInputTraits __self__, Selector __cmd__) { return __self__.getAutocapitalizationType(); }

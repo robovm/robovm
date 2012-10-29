@@ -79,6 +79,17 @@ public interface /*<name>*/ UITextViewDelegate /*</name>*/ /*<implements>*/ exte
      */
     boolean shouldEndEditing(UITextView textView);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends UIScrollViewDelegate.Adapter implements UITextViewDelegate {
+        @NotImplemented("textViewDidBeginEditing:") public void didBeginEditing(UITextView textView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("textViewDidChange:") public void didChange(UITextView textView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("textViewDidChangeSelection:") public void didChangeSelection(UITextView textView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("textViewDidEndEditing:") public void didEndEditing(UITextView textView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("textViewShouldBeginEditing:") public boolean shouldBeginEditing(UITextView textView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("textView:shouldChangeTextInRange:replacementText:") public boolean shouldChangeCharacters(UITextView textView, NSRange range, String text) { throw new UnsupportedOperationException(); }
+        @NotImplemented("textViewShouldEndEditing:") public boolean shouldEndEditing(UITextView textView) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("textViewDidBeginEditing:") public static void didBeginEditing(UITextViewDelegate __self__, Selector __cmd__, UITextView textView) { __self__.didBeginEditing(textView); }

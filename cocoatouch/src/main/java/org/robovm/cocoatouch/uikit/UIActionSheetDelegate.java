@@ -31,7 +31,6 @@ import org.robovm.rt.bro.ptr.*;
 
 /**
  *
- *
  * <div class="javadoc">
  *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIModalViewDelegate_Protocol/UIActionSheetDelegate/UIActionSheetDelegate.html">UIActionSheetDelegate Protocol Reference</a>
  *   @since Available in iOS 2.0 and later.
@@ -74,6 +73,16 @@ public interface /*<name>*/ UIActionSheetDelegate /*</name>*/ /*<implements>*/ e
      */
     void willPresent(UIActionSheet actionSheet);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UIActionSheetDelegate {
+        @NotImplemented("actionSheetCancel:") public void cancel(UIActionSheet actionSheet) { throw new UnsupportedOperationException(); }
+        @NotImplemented("actionSheet:clickedButtonAtIndex:") public void clicked(UIActionSheet actionSheet, int buttonIndex) { throw new UnsupportedOperationException(); }
+        @NotImplemented("actionSheet:didDismissWithButtonIndex:") public void didDismiss(UIActionSheet actionSheet, int buttonIndex) { throw new UnsupportedOperationException(); }
+        @NotImplemented("didPresentActionSheet:") public void didPresent(UIActionSheet actionSheet) { throw new UnsupportedOperationException(); }
+        @NotImplemented("actionSheet:willDismissWithButtonIndex:") public void willDismiss(UIActionSheet actionSheet, int buttonIndex) { throw new UnsupportedOperationException(); }
+        @NotImplemented("willPresentActionSheet:") public void willPresent(UIActionSheet actionSheet) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("actionSheetCancel:") public static void cancel(UIActionSheetDelegate __self__, Selector __cmd__, UIActionSheet actionSheet) { __self__.cancel(actionSheet); }

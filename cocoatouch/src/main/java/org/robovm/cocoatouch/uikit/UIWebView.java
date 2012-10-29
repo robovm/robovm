@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIWebView /*</name>*/.class);
 
+    public UIWebView(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UIWebView(SkipInit skipInit) { super(skipInit); }
     public UIWebView() {}

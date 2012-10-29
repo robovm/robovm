@@ -189,6 +189,39 @@ public interface /*<name>*/ UITableViewDelegate /*</name>*/ /*<implements>*/ ext
      */
     NSIndexPath willSelectRow(UITableView tableView, NSIndexPath indexPath);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends UIScrollViewDelegate.Adapter implements UITableViewDelegate {
+        @NotImplemented("tableView:accessoryButtonTappedForRowWithIndexPath:") public void accessoryButtonTapped(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:canPerformAction:forRowAtIndexPath:withSender:") public boolean canPerformAction(UITableView tableView, Selector action, NSIndexPath indexPath, NSObject sender) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:didDeselectRowAtIndexPath:") public void didDeselectRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:didEndDisplayingCell:forRowAtIndexPath:") public void didEndDisplayingCell(UITableView tableView, UITableViewCell cell, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:didEndDisplayingFooterView:forSection:") public void didEndDisplayingFooterView(UITableView tableView, UIView view, int section) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:didEndDisplayingHeaderView:forSection:") public void didEndDisplayingHeaderView(UITableView tableView, UIView view, int section) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:didEndEditingRowAtIndexPath:") public void didEndEditingRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:didHighlightRowAtIndexPath:") public void didHighlightRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:didSelectRowAtIndexPath:") public void didSelectRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:didUnhighlightRowAtIndexPath:") public void didUnhighlightRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:titleForDeleteConfirmationButtonForRowAtIndexPath:") public String getDeleteConfirmationButtonTitle(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:editingStyleForRowAtIndexPath:") public UITableViewCellEditingStyle getRowEditingStyle(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:heightForRowAtIndexPath:") public float getRowHeight(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:indentationLevelForRowAtIndexPath:") public int getRowIndentationLevel(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:heightForFooterInSection:") public float getSectionFooterHeight(UITableView tableView, int section) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:viewForFooterInSection:") public UIView getSectionFooterView(UITableView tableView, int section) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:heightForHeaderInSection:") public float getSectionHeaderHeight(UITableView tableView, int section) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:viewForHeaderInSection:") public UIView getSectionHeaderView(UITableView tableView, int section) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:") public NSIndexPath getTargetForMove(UITableView tableView, NSIndexPath sourceIndexPath, NSIndexPath proposedDestinationIndexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:performAction:forRowAtIndexPath:withSender:") public void performAction(UITableView tableView, Selector action, NSIndexPath indexPath, NSObject sender) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:shouldHighlightRowAtIndexPath:") public boolean shouldHighlightRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:shouldIndentWhileEditingRowAtIndexPath:") public boolean shouldIndentWhileEditingRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:shouldShowMenuForRowAtIndexPath:") public boolean shouldShowMenuForRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:willBeginEditingRowAtIndexPath:") public void willBeginEditingRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:willDeselectRowAtIndexPath:") public NSIndexPath willDeselectRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:willDisplayCell:forRowAtIndexPath:") public void willDisplayCell(UITableView tableView, UITableViewCell cell, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:willDisplayFooterView:forSection:") public void willDisplayFooterView(UITableView tableView, UIView view, int section) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:willDisplayHeaderView:forSection:") public void willDisplayHeaderView(UITableView tableView, UIView view, int section) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:willSelectRowAtIndexPath:") public NSIndexPath willSelectRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("tableView:accessoryButtonTappedForRowWithIndexPath:") public static void accessoryButtonTapped(UITableViewDelegate __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { __self__.accessoryButtonTapped(tableView, indexPath); }

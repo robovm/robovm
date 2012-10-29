@@ -103,6 +103,22 @@ public interface /*<name>*/ UICollectionViewDelegate /*</name>*/ /*<implements>*
      */
     boolean shouldShowMenuForItem(UICollectionView collectionView, NSIndexPath indexPath);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends UIScrollViewDelegate.Adapter implements UICollectionViewDelegate {
+        @NotImplemented("collectionView:canPerformAction:forItemAtIndexPath:withSender:") public boolean canPerformAction(UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:didDeselectItemAtIndexPath:") public void didDeselectItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:didEndDisplayingCell:forItemAtIndexPath:") public void didEndDisplayingCell(UICollectionView collectionView, UICollectionViewCell cell, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:didEndDisplayingSupplementaryView:forElementOfKind:atIndexPath:") public void didEndDisplayingSupplementaryView(UICollectionView collectionView, UICollectionReusableView view, String elementKind, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:didHighlightItemAtIndexPath:") public void didHighlightItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:didSelectItemAtIndexPath:") public void didSelectItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:didUnhighlightItemAtIndexPath:") public void didUnhighlightItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:performAction:forItemAtIndexPath:withSender:") public void performAction(UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:shouldDeselectItemAtIndexPath:") public boolean shouldDeselectItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:shouldHighlightItemAtIndexPath:") public boolean shouldHighlightItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:shouldSelectItemAtIndexPath:") public boolean shouldSelectItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:shouldShowMenuForItemAtIndexPath:") public boolean shouldShowMenuForItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("collectionView:canPerformAction:forItemAtIndexPath:withSender:") public static boolean canPerformAction(UICollectionViewDelegate __self__, Selector __cmd__, UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender) { return __self__.canPerformAction(collectionView, action, indexPath, sender); }

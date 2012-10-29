@@ -47,6 +47,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITableViewHeaderFooterView /*</name>*/.class);
 
+    public UITableViewHeaderFooterView(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UITableViewHeaderFooterView(SkipInit skipInit) { super(skipInit); }
     public UITableViewHeaderFooterView() {}

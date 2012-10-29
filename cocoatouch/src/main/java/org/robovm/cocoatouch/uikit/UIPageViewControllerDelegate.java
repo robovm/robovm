@@ -63,6 +63,13 @@ public interface /*<name>*/ UIPageViewControllerDelegate /*</name>*/ /*<implemen
      */
     void willTransition(UIPageViewController pageViewController, NSArray pendingViewControllers);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UIPageViewControllerDelegate {
+        @NotImplemented("pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:") public void didFinishAnimating(UIPageViewController pageViewController, boolean finished, NSArray previousViewControllers, boolean completed) { throw new UnsupportedOperationException(); }
+        @NotImplemented("pageViewController:spineLocationForInterfaceOrientation:") public UIPageViewControllerSpineLocation getSpineLocation(UIPageViewController pageViewController, UIInterfaceOrientation orientation) { throw new UnsupportedOperationException(); }
+        @NotImplemented("pageViewController:willTransitionToViewControllers:") public void willTransition(UIPageViewController pageViewController, NSArray pendingViewControllers) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:") public static void didFinishAnimating(UIPageViewControllerDelegate __self__, Selector __cmd__, UIPageViewController pageViewController, boolean finished, NSArray previousViewControllers, boolean completed) { __self__.didFinishAnimating(pageViewController, finished, previousViewControllers, completed); }

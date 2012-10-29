@@ -98,6 +98,21 @@ public interface /*<name>*/ UIResponderStandardEditActions /*</name>*/ /*<implem
      */
     void toggleUnderline(NSObject sender);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UIResponderStandardEditActions {
+        @NotImplemented("copy:") public void copy(NSObject sender) { throw new UnsupportedOperationException(); }
+        @NotImplemented("cut:") public void cut(NSObject sender) { throw new UnsupportedOperationException(); }
+        @NotImplemented("delete:") public void delete(NSObject sender) { throw new UnsupportedOperationException(); }
+        @NotImplemented("makeTextWritingDirectionLeftToRight:") public void makeTextWritingDirectionLeftToRight(NSObject sender) { throw new UnsupportedOperationException(); }
+        @NotImplemented("makeTextWritingDirectionRightToLeft:") public void makeTextWritingDirectionRightToLeft(NSObject sender) { throw new UnsupportedOperationException(); }
+        @NotImplemented("paste:") public void paste(NSObject sender) { throw new UnsupportedOperationException(); }
+        @NotImplemented("select:") public void select(NSObject sender) { throw new UnsupportedOperationException(); }
+        @NotImplemented("selectAll:") public void selectAll(NSObject sender) { throw new UnsupportedOperationException(); }
+        @NotImplemented("toggleBoldface:") public void toggleBoldface(NSObject sender) { throw new UnsupportedOperationException(); }
+        @NotImplemented("toggleItalics:") public void toggleItalics(NSObject sender) { throw new UnsupportedOperationException(); }
+        @NotImplemented("toggleUnderline:") public void toggleUnderline(NSObject sender) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("copy:") public static void copy(UIResponderStandardEditActions __self__, Selector __cmd__, NSObject sender) { __self__.copy(sender); }

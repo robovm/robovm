@@ -45,6 +45,8 @@ public interface /*<name>*/ UIAppearance /*</name>*/ /*<implements>*/ extends NS
     /*<methods>*/
     
     /*</methods>*/
+    /*<adapter>*/
+    /*</adapter>*/
     /*<callbacks>*/
     /*</callbacks>*/
 

@@ -54,6 +54,12 @@ public interface /*<name>*/ UIPickerViewAccessibilityDelegate /*</name>*/ /*<imp
      */
     String getAccessibilityLabel(UIPickerView pickerView, int component);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends UIPickerViewDelegate.Adapter implements UIPickerViewAccessibilityDelegate {
+        @NotImplemented("pickerView:accessibilityHintForComponent:") public String getAccessibilityHint(UIPickerView pickerView, int component) { throw new UnsupportedOperationException(); }
+        @NotImplemented("pickerView:accessibilityLabelForComponent:") public String getAccessibilityLabel(UIPickerView pickerView, int component) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("pickerView:accessibilityHintForComponent:") public static String getAccessibilityHint(UIPickerViewAccessibilityDelegate __self__, Selector __cmd__, UIPickerView pickerView, int component) { return __self__.getAccessibilityHint(pickerView, component); }

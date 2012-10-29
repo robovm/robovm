@@ -53,6 +53,12 @@ public interface /*<name>*/ UIActivityItemSource /*</name>*/ /*<implements>*/ ex
      */
     NSObject getPlaceholderItem(UIActivityViewController activityViewController);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UIActivityItemSource {
+        @NotImplemented("activityViewController:itemForActivityType:") public NSObject getItem(UIActivityViewController activityViewController, String activityType) { throw new UnsupportedOperationException(); }
+        @NotImplemented("activityViewControllerPlaceholderItem:") public NSObject getPlaceholderItem(UIActivityViewController activityViewController) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("activityViewController:itemForActivityType:") public static NSObject getItem(UIActivityItemSource __self__, Selector __cmd__, UIActivityViewController activityViewController, String activityType) { return __self__.getItem(activityViewController, activityType); }

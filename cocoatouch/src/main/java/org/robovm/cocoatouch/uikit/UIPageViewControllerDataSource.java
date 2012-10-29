@@ -64,6 +64,14 @@ public interface /*<name>*/ UIPageViewControllerDataSource /*</name>*/ /*<implem
      */
     UIViewController getViewControllerBefore(UIPageViewController pageViewController, UIViewController viewController);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UIPageViewControllerDataSource {
+        @NotImplemented("presentationCountForPageViewController:") public int getPresentationCount(UIPageViewController pageViewController) { throw new UnsupportedOperationException(); }
+        @NotImplemented("presentationIndexForPageViewController:") public int getPresentationIndex(UIPageViewController pageViewController) { throw new UnsupportedOperationException(); }
+        @NotImplemented("pageViewController:viewControllerAfterViewController:") public UIViewController getViewControllerAfter(UIPageViewController pageViewController, UIViewController viewController) { throw new UnsupportedOperationException(); }
+        @NotImplemented("pageViewController:viewControllerBeforeViewController:") public UIViewController getViewControllerBefore(UIPageViewController pageViewController, UIViewController viewController) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("presentationCountForPageViewController:") public static int getPresentationCount(UIPageViewControllerDataSource __self__, Selector __cmd__, UIPageViewController pageViewController) { return __self__.getPresentationCount(pageViewController); }

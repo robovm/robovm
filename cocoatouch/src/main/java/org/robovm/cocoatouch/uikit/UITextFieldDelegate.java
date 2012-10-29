@@ -79,6 +79,17 @@ public interface /*<name>*/ UITextFieldDelegate /*</name>*/ /*<implements>*/ ext
      */
     boolean shouldReturn(UITextField textField);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UITextFieldDelegate {
+        @NotImplemented("textFieldDidBeginEditing:") public void didBeginEditing(UITextField textField) { throw new UnsupportedOperationException(); }
+        @NotImplemented("textFieldDidEndEditing:") public void didEndEditing(UITextField textField) { throw new UnsupportedOperationException(); }
+        @NotImplemented("textFieldShouldBeginEditing:") public boolean shouldBeginEditing(UITextField textField) { throw new UnsupportedOperationException(); }
+        @NotImplemented("textField:shouldChangeCharactersInRange:replacementString:") public boolean shouldChangeCharacters(UITextField textField, NSRange range, String string) { throw new UnsupportedOperationException(); }
+        @NotImplemented("textFieldShouldClear:") public boolean shouldClear(UITextField textField) { throw new UnsupportedOperationException(); }
+        @NotImplemented("textFieldShouldEndEditing:") public boolean shouldEndEditing(UITextField textField) { throw new UnsupportedOperationException(); }
+        @NotImplemented("textFieldShouldReturn:") public boolean shouldReturn(UITextField textField) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("textFieldDidBeginEditing:") public static void didBeginEditing(UITextFieldDelegate __self__, Selector __cmd__, UITextField textField) { __self__.didBeginEditing(textField); }

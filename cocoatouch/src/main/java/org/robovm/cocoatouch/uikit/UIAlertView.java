@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIAlertView /*</name>*/.class);
 
+    public UIAlertView(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UIAlertView(SkipInit skipInit) { super(skipInit); }
     public UIAlertView() {}

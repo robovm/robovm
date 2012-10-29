@@ -64,6 +64,14 @@ public interface /*<name>*/ UINavigationBarDelegate /*</name>*/ /*<implements>*/
      */
     boolean shouldPushItem(UINavigationBar navigationBar, UINavigationItem item);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UINavigationBarDelegate {
+        @NotImplemented("navigationBar:didPopItem:") public void didPopItem(UINavigationBar navigationBar, UINavigationItem item) { throw new UnsupportedOperationException(); }
+        @NotImplemented("navigationBar:didPushItem:") public void didPushItem(UINavigationBar navigationBar, UINavigationItem item) { throw new UnsupportedOperationException(); }
+        @NotImplemented("navigationBar:shouldPopItem:") public boolean shouldPopItem(UINavigationBar navigationBar, UINavigationItem item) { throw new UnsupportedOperationException(); }
+        @NotImplemented("navigationBar:shouldPushItem:") public boolean shouldPushItem(UINavigationBar navigationBar, UINavigationItem item) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("navigationBar:didPopItem:") public static void didPopItem(UINavigationBarDelegate __self__, Selector __cmd__, UINavigationBar navigationBar, UINavigationItem item) { __self__.didPopItem(navigationBar, item); }

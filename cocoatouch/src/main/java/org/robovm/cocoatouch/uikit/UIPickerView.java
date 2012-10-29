@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPickerView /*</name>*/.class);
 
+    public UIPickerView(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UIPickerView(SkipInit skipInit) { super(skipInit); }
     public UIPickerView() {}

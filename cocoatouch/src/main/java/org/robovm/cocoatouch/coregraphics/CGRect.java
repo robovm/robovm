@@ -22,6 +22,10 @@ import org.robovm.rt.bro.annotation.StructMember;
 public final class CGRect extends Struct<CGRect> {
 
     public CGRect() {}
+    public CGRect(float x, float y, float width, float height) {
+        origin().x(x).y(y);
+        size().width(width).height(height);
+    }
     public CGRect(CGPoint origin, CGSize size) {
         origin(origin);
         size(size);

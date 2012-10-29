@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UISearchBar /*</name>*/.class);
 
+    public UISearchBar(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UISearchBar(SkipInit skipInit) { super(skipInit); }
     public UISearchBar() {}

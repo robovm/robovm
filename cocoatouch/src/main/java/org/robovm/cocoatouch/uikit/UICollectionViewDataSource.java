@@ -63,6 +63,14 @@ public interface /*<name>*/ UICollectionViewDataSource /*</name>*/ /*<implements
      */
     UICollectionReusableView getSupplementaryElementView(UICollectionView collectionView, String kind, NSIndexPath indexPath);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UICollectionViewDataSource {
+        @NotImplemented("collectionView:cellForItemAtIndexPath:") public UICollectionViewCell getItemCell(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:numberOfItemsInSection:") public int getNumberOfItemsInSection(UICollectionView collectionView, int section) { throw new UnsupportedOperationException(); }
+        @NotImplemented("numberOfSectionsInCollectionView:") public int getNumberOfSections(UICollectionView collectionView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:viewForSupplementaryElementOfKind:atIndexPath:") public UICollectionReusableView getSupplementaryElementView(UICollectionView collectionView, String kind, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("collectionView:cellForItemAtIndexPath:") public static UICollectionViewCell getItemCell(UICollectionViewDataSource __self__, Selector __cmd__, UICollectionView collectionView, NSIndexPath indexPath) { return __self__.getItemCell(collectionView, indexPath); }

@@ -47,6 +47,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIActivityIndicatorView /*</name>*/.class);
 
+    public UIActivityIndicatorView(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UIActivityIndicatorView(SkipInit skipInit) { super(skipInit); }
     public UIActivityIndicatorView() {}

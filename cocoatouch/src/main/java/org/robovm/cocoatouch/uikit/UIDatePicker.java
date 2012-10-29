@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIDatePicker /*</name>*/.class);
 
+    public UIDatePicker(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UIDatePicker(SkipInit skipInit) { super(skipInit); }
     public UIDatePicker() {}

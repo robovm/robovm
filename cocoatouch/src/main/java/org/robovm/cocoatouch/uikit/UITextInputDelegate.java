@@ -64,6 +64,14 @@ public interface /*<name>*/ UITextInputDelegate /*</name>*/ /*<implements>*/ ext
      */
     void textWillChange(UITextInput textInput);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UITextInputDelegate {
+        @NotImplemented("selectionDidChange:") public void selectionDidChange(UITextInput textInput) { throw new UnsupportedOperationException(); }
+        @NotImplemented("selectionWillChange:") public void selectionWillChange(UITextInput textInput) { throw new UnsupportedOperationException(); }
+        @NotImplemented("textDidChange:") public void textDidChange(UITextInput textInput) { throw new UnsupportedOperationException(); }
+        @NotImplemented("textWillChange:") public void textWillChange(UITextInput textInput) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("selectionDidChange:") public static void selectionDidChange(UITextInputDelegate __self__, Selector __cmd__, UITextInput textInput) { __self__.selectionDidChange(textInput); }

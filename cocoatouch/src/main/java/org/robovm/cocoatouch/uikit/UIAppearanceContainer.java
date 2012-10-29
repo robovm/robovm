@@ -45,6 +45,8 @@ public interface /*<name>*/ UIAppearanceContainer /*</name>*/ /*<implements>*/ e
     /*<methods>*/
     
     /*</methods>*/
+    /*<adapter>*/
+    /*</adapter>*/
     /*<callbacks>*/
     /*</callbacks>*/
 

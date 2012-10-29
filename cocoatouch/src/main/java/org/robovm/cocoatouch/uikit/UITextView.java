@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITextView /*</name>*/.class);
 
+    public UITextView(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UITextView(SkipInit skipInit) { super(skipInit); }
     public UITextView() {}

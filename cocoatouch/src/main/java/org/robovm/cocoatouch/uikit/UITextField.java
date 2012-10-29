@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITextField /*</name>*/.class);
 
+    public UITextField(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UITextField(SkipInit skipInit) { super(skipInit); }
     public UITextField() {}

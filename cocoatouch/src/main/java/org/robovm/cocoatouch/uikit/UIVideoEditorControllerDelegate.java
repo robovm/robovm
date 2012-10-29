@@ -60,6 +60,13 @@ public interface /*<name>*/ UIVideoEditorControllerDelegate /*</name>*/ /*<imple
      */
     void didSave(UIVideoEditorController editor, String editedVideoPath);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends UINavigationControllerDelegate.Adapter implements UIVideoEditorControllerDelegate {
+        @NotImplemented("videoEditorControllerDidCancel:") public void didCancel(UIVideoEditorController editor) { throw new UnsupportedOperationException(); }
+        @NotImplemented("videoEditorController:didFailWithError:") public void didFail(UIVideoEditorController editor, NSError error) { throw new UnsupportedOperationException(); }
+        @NotImplemented("videoEditorController:didSaveEditedVideoToPath:") public void didSave(UIVideoEditorController editor, String editedVideoPath) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("videoEditorControllerDidCancel:") public static void didCancel(UIVideoEditorControllerDelegate __self__, Selector __cmd__, UIVideoEditorController editor) { __self__.didCancel(editor); }

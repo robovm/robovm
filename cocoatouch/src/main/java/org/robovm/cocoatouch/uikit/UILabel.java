@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UILabel /*</name>*/.class);
 
+    public UILabel(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UILabel(SkipInit skipInit) { super(skipInit); }
     public UILabel() {}

@@ -53,6 +53,12 @@ public interface /*<name>*/ UIDataSourceModelAssociation /*</name>*/ /*<implemen
      */
     String getElementModelIdentifier(NSIndexPath idx, UIView view);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UIDataSourceModelAssociation {
+        @NotImplemented("indexPathForElementWithModelIdentifier:inView:") public NSIndexPath getElementIndexPath(String identifier, UIView view) { throw new UnsupportedOperationException(); }
+        @NotImplemented("modelIdentifierForElementAtIndexPath:inView:") public String getElementModelIdentifier(NSIndexPath idx, UIView view) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("indexPathForElementWithModelIdentifier:inView:") public static NSIndexPath getElementIndexPath(UIDataSourceModelAssociation __self__, Selector __cmd__, String identifier, UIView view) { return __self__.getElementIndexPath(identifier, view); }

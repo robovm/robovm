@@ -149,11 +149,19 @@ class ObjCClass
     methods_s = @methods.select {|m| !m.constructor?}.map {|m| m.to_java}.join("\n").gsub(/\n/m, "\n    ")
     template = template.sub(/\/\*<methods>\*\/.*\/\*<\/methods>\*\//m, "/*<methods>*/\n    #{methods_s}\n    /*</methods>*/")
     if !@visibility.include?('final')
-      callbacks = [@properties.map {|p| p.callbacks}, @methods.map {|m| m.callbacks}.flatten].flatten
+      callbacks = [@properties.map {|p| p.callbacks}, @methods.map {|m| m.callbacks}].flatten
       if !callbacks.empty?
         callbacks_s = callbacks.join("\n").gsub(/\n/m, "\n        ")
         template = template.sub(/\/\*<callbacks>\*\/.*\/\*<\/callbacks>\*\//m, "/*<callbacks>*/\n    static class Callbacks {\n        #{callbacks_s}\n    }\n    /*</callbacks>*/")
       end
+    end
+    if @is_protocol
+        adapters = [@properties.map {|p| p.adapters}, @methods.map {|m| m.adapters}].flatten
+        if !adapters.empty?
+          super_adapter = @protocols.empty? ? 'NSObject' : "#{@protocols.first}.Adapter"
+          adapters_s = adapters.join("\n").gsub(/\n/m, "\n        ")
+          template = template.sub(/\/\*<adapter>\*\/.*\/\*<\/adapter>\*\//m, "/*<adapter>*/\n    public static class Adapter extends #{super_adapter} implements #{@name} {\n        #{adapters_s}\n    }\n    /*</adapter>*/")
+        end
     end
     template
   end
@@ -213,21 +221,31 @@ class ObjCMethod
     (@availability ? " * @since #{escape_html(@availability)}\n" : '') +
     " */"
   end
-  def to_java
+  def java_signature
     parameters_s = @parameters.map {|p| "#{p[0].to_java} #{p[1]}"}.join(', ')
+    if @clazz.is_protocol
+      (@static && 'static ' || '') + @return_type.to_java + ' ' + @name + '(' + parameters_s + ')'
+    else
+      if constructor? then
+        "#{@visibility} #{@clazz.name}" + '(' + parameters_s + ')'
+      else
+        "#{@visibility} " + (@static && 'static ' || '') + @return_type.to_java + ' ' + @name + '(' + parameters_s + ')'
+      end
+    end
+  end
+  def to_java
     selector_var = @selector.gsub(/:/, '$')
+    sig = java_signature
     java = ''
     if @clazz.is_protocol
-      java = "#{get_javadoc}\n" + (@static && 'static ' || '') + @return_type.to_java + ' ' + @name + '(' + parameters_s + ');'
+      java = "#{get_javadoc}\n#{sig};"
     else
       msg_send = "objc_#{@name}"
       msg_send_parameters_s = [@static ? 'ObjCClass __self__' : "#{@clazz.name} __self__", 'Selector __cmd__', @parameters.map {|p| "#{p[0].to_java} #{p[1]}"}].flatten.join(', ')
       java = "#{java}\nprivate static final Selector #{selector_var} = Selector.register(\"#{@selector}\");"
       if constructor? then
-        sig = "#{@visibility} #{@clazz.name}" + '(' + parameters_s + ')'
         java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static @Pointer long #{msg_send}(#{msg_send_parameters_s});"
       else
-        sig = "#{@visibility} " + (@static && 'static ' || '') + @return_type.to_java + ' ' + @name + '(' + parameters_s + ')'
         java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static #{@return_type.to_java} #{msg_send}(#{msg_send_parameters_s});"
       end
       args = [@static ? 'objCClass' : 'this', selector_var, @parameters.map {|p| p[1]}].flatten.join(', ')
@@ -254,6 +272,14 @@ class ObjCMethod
       args = @parameters.map {|p| p[1]}.join(', ')
       ret = @return_type.to_java != 'void' ? 'return ' : ''
       ["@Callback @BindSelector(\"#{@selector}\") public static #{@return_type.to_java} #{@name}(#{parameters_s}) { #{ret}__self__.#{name}(#{args}); }"]
+    else
+      []
+    end
+  end
+  def adapters
+    if !@static && !constructor? && !(@visibility.include?('private') || @visibility.include?('final'))
+      parameters_s = @parameters.map {|p| "#{p[0].to_java} #{p[1]}"}.join(', ')
+      ["@NotImplemented(\"#{@selector}\") public #{java_signature} { throw new UnsupportedOperationException(); }"]
     else
       []
     end
@@ -379,6 +405,21 @@ class ObjCProperty
       else
         setter = @attrs.has_key?('setter') ? @attrs['setter'] : "set#{@base_java_name}"
         set = "@Callback @BindSelector(\"#{@setter_selector}\") public static void #{setter}(#{@clazz.name} __self__, Selector __cmd__, #{@type.to_java} #{@name}) { __self__.#{setter}(#{@name}); }"
+        [get, set]
+      end
+    else
+      []
+    end
+  end
+  def adapters
+    if !(@visibility.include?('private') || @visibility.include?('final'))
+      getter = @type.decl == 'BOOL' ? "is#{@base_java_name}" : "get#{@base_java_name}"
+      get = "@NotImplemented(\"#{@getter_selector}\") public #{@type.to_java} #{getter}() { throw new UnsupportedOperationException(); }"
+      if read_only?
+        [get]
+      else
+        setter = @attrs.has_key?('setter') ? @attrs['setter'] : "set#{@base_java_name}"
+        set = "@NotImplemented(\"#{@setter_selector}\") public void #{setter}(#{@type.to_java} #{@name}) { throw new UnsupportedOperationException(); }"
         [get, set]
       end
     else

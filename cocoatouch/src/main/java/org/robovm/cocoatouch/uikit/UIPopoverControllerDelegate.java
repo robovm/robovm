@@ -54,6 +54,12 @@ public interface /*<name>*/ UIPopoverControllerDelegate /*</name>*/ /*<implement
      */
     boolean shouldDismissPopover(UIPopoverController popoverController);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UIPopoverControllerDelegate {
+        @NotImplemented("popoverControllerDidDismissPopover:") public void didDismissPopover(UIPopoverController popoverController) { throw new UnsupportedOperationException(); }
+        @NotImplemented("popoverControllerShouldDismissPopover:") public boolean shouldDismissPopover(UIPopoverController popoverController) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("popoverControllerDidDismissPopover:") public static void didDismissPopover(UIPopoverControllerDelegate __self__, Selector __cmd__, UIPopoverController popoverController) { __self__.didDismissPopover(popoverController); }

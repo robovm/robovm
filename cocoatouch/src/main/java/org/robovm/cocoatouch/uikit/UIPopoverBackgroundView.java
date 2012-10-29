@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPopoverBackgroundView /*</name>*/.class);
 
+    public UIPopoverBackgroundView(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UIPopoverBackgroundView(SkipInit skipInit) { super(skipInit); }
     public UIPopoverBackgroundView() {}

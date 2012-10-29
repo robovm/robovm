@@ -47,6 +47,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIActionSheet /*</name>*/.class);
 
+    public UIActionSheet(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UIActionSheet(SkipInit skipInit) { super(skipInit); }
     public UIActionSheet() {}

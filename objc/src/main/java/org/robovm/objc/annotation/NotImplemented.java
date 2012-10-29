@@ -13,24 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.foo;
+package org.robovm.objc.annotation;
 
-/*<imports>*/
-/*</imports>*/
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- *
- * <div class="javadoc"></div>
+ * 
  */
-public interface /*<name>*/ TheName /*</name>*/ /*<implements>*/ extends A, B, C /*</implements>*/ {
-
-    /*<properties>*/
-    /*</properties>*/
-    /*<methods>*/
-    /*</methods>*/
-    /*<adapter>*/
-    /*</adapter>*/
-    /*<callbacks>*/
-    /*</callbacks>*/
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface NotImplemented {
+    String value();
 }

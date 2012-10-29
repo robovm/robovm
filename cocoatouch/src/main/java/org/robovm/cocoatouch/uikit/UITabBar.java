@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITabBar /*</name>*/.class);
 
+    public UITabBar(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UITabBar(SkipInit skipInit) { super(skipInit); }
     public UITabBar() {}

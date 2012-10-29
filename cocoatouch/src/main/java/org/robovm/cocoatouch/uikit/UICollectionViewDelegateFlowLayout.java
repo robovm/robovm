@@ -73,6 +73,16 @@ public interface /*<name>*/ UICollectionViewDelegateFlowLayout /*</name>*/ /*<im
      */
     float getSectionMinimumLineSpacing(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, int section);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends UICollectionViewDelegate.Adapter implements UICollectionViewDelegateFlowLayout {
+        @NotImplemented("collectionView:layout:sizeForItemAtIndexPath:") public CGSize getItemSize(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:layout:referenceSizeForFooterInSection:") public CGSize getSectionFooterReferenceSize(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, int section) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:layout:referenceSizeForHeaderInSection:") public CGSize getSectionHeaderReferenceSize(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, int section) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:layout:insetForSectionAtIndex:") public UIEdgeInsets getSectionInset(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, int section) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:layout:minimumInteritemSpacingForSectionAtIndex:") public float getSectionMinimumInteritemSpacing(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, int section) { throw new UnsupportedOperationException(); }
+        @NotImplemented("collectionView:layout:minimumLineSpacingForSectionAtIndex:") public float getSectionMinimumLineSpacing(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, int section) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("collectionView:layout:sizeForItemAtIndexPath:") public static CGSize getItemSize(UICollectionViewDelegateFlowLayout __self__, Selector __cmd__, UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, NSIndexPath indexPath) { return __self__.getItemSize(collectionView, collectionViewLayout, indexPath); }

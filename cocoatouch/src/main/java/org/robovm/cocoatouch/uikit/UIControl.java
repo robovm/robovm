@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIControl /*</name>*/.class);
 
+    public UIControl(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UIControl(SkipInit skipInit) { super(skipInit); }
     public UIControl() {}

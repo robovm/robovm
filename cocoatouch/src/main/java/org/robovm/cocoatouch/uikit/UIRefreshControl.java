@@ -47,6 +47,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIRefreshControl /*</name>*/.class);
 
+    public UIRefreshControl(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UIRefreshControl(SkipInit skipInit) { super(skipInit); }
     public UIRefreshControl() {}

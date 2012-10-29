@@ -64,6 +64,14 @@ public interface /*<name>*/ UITextInputTokenizer /*</name>*/ /*<implements>*/ ex
      */
     boolean isPositionWithinTextUnit(UITextPosition position, UITextGranularity granularity, UITextDirection direction);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UITextInputTokenizer {
+        @NotImplemented("positionFromPosition:toBoundary:inDirection:") public UITextPosition getPosition(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { throw new UnsupportedOperationException(); }
+        @NotImplemented("rangeEnclosingPosition:withGranularity:inDirection:") public UITextRange getRangeEnclosingPosition(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { throw new UnsupportedOperationException(); }
+        @NotImplemented("isPosition:atBoundary:inDirection:") public boolean isPositionAtBoundary(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { throw new UnsupportedOperationException(); }
+        @NotImplemented("isPosition:withinTextUnit:inDirection:") public boolean isPositionWithinTextUnit(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("positionFromPosition:toBoundary:inDirection:") public static UITextPosition getPosition(UITextInputTokenizer __self__, Selector __cmd__, UITextPosition position, UITextGranularity granularity, UITextDirection direction) { return __self__.getPosition(position, granularity, direction); }

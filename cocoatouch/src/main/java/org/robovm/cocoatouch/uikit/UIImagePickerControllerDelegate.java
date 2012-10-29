@@ -55,6 +55,12 @@ public interface /*<name>*/ UIImagePickerControllerDelegate /*</name>*/ /*<imple
      */
     void didFinishPickingMedia(UIImagePickerController picker, NSDictionary info);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends UINavigationControllerDelegate.Adapter implements UIImagePickerControllerDelegate {
+        @NotImplemented("imagePickerControllerDidCancel:") public void didCancel(UIImagePickerController picker) { throw new UnsupportedOperationException(); }
+        @NotImplemented("imagePickerController:didFinishPickingMediaWithInfo:") public void didFinishPickingMedia(UIImagePickerController picker, NSDictionary info) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("imagePickerControllerDidCancel:") public static void didCancel(UIImagePickerControllerDelegate __self__, Selector __cmd__, UIImagePickerController picker) { __self__.didCancel(picker); }

@@ -99,6 +99,21 @@ public interface /*<name>*/ UITableViewDataSource /*</name>*/ /*<implements>*/ e
      */
     void moveRow(UITableView tableView, NSIndexPath fromIndexPath, NSIndexPath toIndexPath);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UITableViewDataSource {
+        @NotImplemented("tableView:canEditRowAtIndexPath:") public boolean canEditRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:canMoveRowAtIndexPath:") public boolean canMoveRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:commitEditingStyle:forRowAtIndexPath:") public void commitRowEditingStyle(UITableView tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:numberOfRowsInSection:") public int getNumberOfRowsInSection(UITableView tableView, int section) { throw new UnsupportedOperationException(); }
+        @NotImplemented("numberOfSectionsInTableView:") public int getNumberOfSections(UITableView tableView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:cellForRowAtIndexPath:") public UITableViewCell getRowCell(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:titleForFooterInSection:") public String getSectionFooterTitle(UITableView tableView, int section) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:sectionForSectionIndexTitle:atIndex:") public int getSectionForSectionIndexTitle(UITableView tableView, String title, int index) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:titleForHeaderInSection:") public String getSectionHeaderTitle(UITableView tableView, int section) { throw new UnsupportedOperationException(); }
+        @NotImplemented("sectionIndexTitlesForTableView:") public NSArray getSectionIndexTitles(UITableView tableView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tableView:moveRowAtIndexPath:toIndexPath:") public void moveRow(UITableView tableView, NSIndexPath fromIndexPath, NSIndexPath toIndexPath) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("tableView:canEditRowAtIndexPath:") public static boolean canEditRow(UITableViewDataSource __self__, Selector __cmd__, UITableView tableView, NSIndexPath indexPath) { return __self__.canEditRow(tableView, indexPath); }

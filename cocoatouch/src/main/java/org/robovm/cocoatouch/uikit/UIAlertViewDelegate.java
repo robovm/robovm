@@ -79,6 +79,17 @@ public interface /*<name>*/ UIAlertViewDelegate /*</name>*/ /*<implements>*/ ext
      */
     void willPresent(UIAlertView alertView);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UIAlertViewDelegate {
+        @NotImplemented("alertViewCancel:") public void cancel(UIAlertView alertView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("alertView:clickedButtonAtIndex:") public void clicked(UIAlertView alertView, int buttonIndex) { throw new UnsupportedOperationException(); }
+        @NotImplemented("alertView:didDismissWithButtonIndex:") public void didDismiss(UIAlertView alertView, int buttonIndex) { throw new UnsupportedOperationException(); }
+        @NotImplemented("didPresentAlertView:") public void didPresent(UIAlertView alertView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("alertViewShouldEnableFirstOtherButton:") public boolean shouldEnableFirstOtherButton(UIAlertView alertView) { throw new UnsupportedOperationException(); }
+        @NotImplemented("alertView:willDismissWithButtonIndex:") public void willDismiss(UIAlertView alertView, int buttonIndex) { throw new UnsupportedOperationException(); }
+        @NotImplemented("willPresentAlertView:") public void willPresent(UIAlertView alertView) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("alertViewCancel:") public static void cancel(UIAlertViewDelegate __self__, Selector __cmd__, UIAlertView alertView) { __self__.cancel(alertView); }

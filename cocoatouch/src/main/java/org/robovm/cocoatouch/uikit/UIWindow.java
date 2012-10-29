@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIWindow /*</name>*/.class);
 
+    public UIWindow(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UIWindow(SkipInit skipInit) { super(skipInit); }
     public UIWindow() {}

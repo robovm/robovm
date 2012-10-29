@@ -101,6 +101,21 @@ public interface /*<name>*/ UISearchBarDelegate /*</name>*/ /*<implements>*/ ext
      */
     boolean shouldEndEditing(UISearchBar searchBar);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UISearchBarDelegate {
+        @NotImplemented("searchBarBookmarkButtonClicked:") public void bookmarkButtonClicked(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchBarCancelButtonClicked:") public void cancelButtonClicked(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchBarTextDidBeginEditing:") public void didBeginEditing(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchBar:textDidChange:") public void didChange(UISearchBar searchBar, String searchText) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchBarTextDidEndEditing:") public void didEndEditing(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchBarResultsListButtonClicked:") public void resultsListButtonClicked(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchBarSearchButtonClicked:") public void searchButtonClicked(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchBar:selectedScopeButtonIndexDidChange:") public void selectedScopeButtonIndexDidChange(UISearchBar searchBar, int selectedScope) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchBarShouldBeginEditing:") public boolean shouldBeginEditing(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchBar:shouldChangeTextInRange:replacementText:") public boolean shouldChange(UISearchBar searchBar, NSRange range, String text) { throw new UnsupportedOperationException(); }
+        @NotImplemented("searchBarShouldEndEditing:") public boolean shouldEndEditing(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("searchBarBookmarkButtonClicked:") public static void bookmarkButtonClicked(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar) { __self__.bookmarkButtonClicked(searchBar); }

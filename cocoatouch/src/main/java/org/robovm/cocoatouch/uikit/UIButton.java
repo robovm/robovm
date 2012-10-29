@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIButton /*</name>*/.class);
 
+    public UIButton(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UIButton(SkipInit skipInit) { super(skipInit); }
     public UIButton() {}

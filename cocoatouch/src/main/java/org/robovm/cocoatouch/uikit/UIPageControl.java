@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPageControl /*</name>*/.class);
 
+    public UIPageControl(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UIPageControl(SkipInit skipInit) { super(skipInit); }
     public UIPageControl() {}

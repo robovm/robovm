@@ -48,6 +48,33 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIApplication /*</name>*/.class);
 
+    @Bridge private native static int UIApplicationMain(int argc, Ptr<BytePtr> argv, 
+            String principalClassName, String delegateClassName);
+    
+    public static <P extends UIApplication, D extends NSObject & UIApplicationDelegate> 
+        void main(String[] args, Class<P> principalClass, Class<D> delegateClass) {
+        
+        int argc = args.length;
+        Ptr<BytePtr> argv = null;
+        if (argc > 0) {
+            argv = Ptr.newPtr(BytePtr.class, argc);
+            for (int i = 0; i < argc; i++) {
+                // TODO: Encoding?
+                BytePtr arg = BytePtr.toBytePtrAsciiZ(args[i]);
+                argv.next(i).set(arg);
+            }
+        }
+        String principalClassName = null;
+        if (principalClass != null) {
+            principalClassName = ObjCClass.getByType(principalClass).getName();
+        }
+        String delegateClassName = null;
+        if (delegateClass != null) {
+            delegateClassName = ObjCClass.getByType(delegateClass).getName();            
+        }
+        UIApplicationMain(argc, argv, principalClassName, delegateClassName);
+    }
+    
     /*<constructors>*/
     protected UIApplication(SkipInit skipInit) { super(skipInit); }
     public UIApplication() {}

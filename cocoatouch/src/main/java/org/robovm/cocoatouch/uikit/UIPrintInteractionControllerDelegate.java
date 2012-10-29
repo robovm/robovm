@@ -84,6 +84,18 @@ public interface /*<name>*/ UIPrintInteractionControllerDelegate /*</name>*/ /*<
      */
     void willStartJob(UIPrintInteractionController printInteractionController);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UIPrintInteractionControllerDelegate {
+        @NotImplemented("printInteractionController:choosePaper:") public UIPrintPaper choosePaper(UIPrintInteractionController printInteractionController, NSArray paperList) { throw new UnsupportedOperationException(); }
+        @NotImplemented("printInteractionControllerDidDismissPrinterOptions:") public void didDismissPrinterOptions(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
+        @NotImplemented("printInteractionControllerDidFinishJob:") public void didFinishJob(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
+        @NotImplemented("printInteractionControllerDidPresentPrinterOptions:") public void didPresentPrinterOptions(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
+        @NotImplemented("printInteractionControllerParentViewController:") public UIViewController getParentViewController(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
+        @NotImplemented("printInteractionControllerWillDismissPrinterOptions:") public void willDismissPrinterOptions(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
+        @NotImplemented("printInteractionControllerWillPresentPrinterOptions:") public void willPresentPrinterOptions(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
+        @NotImplemented("printInteractionControllerWillStartJob:") public void willStartJob(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("printInteractionController:choosePaper:") public static UIPrintPaper choosePaper(UIPrintInteractionControllerDelegate __self__, Selector __cmd__, UIPrintInteractionController printInteractionController, NSArray paperList) { return __self__.choosePaper(printInteractionController, paperList); }

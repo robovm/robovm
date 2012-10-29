@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIImageView /*</name>*/.class);
 
+    public UIImageView(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected UIImageView(SkipInit skipInit) { super(skipInit); }
     public UIImageView() {}

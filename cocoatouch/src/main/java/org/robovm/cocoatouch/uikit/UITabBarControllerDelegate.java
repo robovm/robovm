@@ -69,6 +69,15 @@ public interface /*<name>*/ UITabBarControllerDelegate /*</name>*/ /*<implements
      */
     void willEndCustomizingViewControllers(UITabBarController tabBarController, NSArray viewControllers, boolean changed);
     /*</methods>*/
+    /*<adapter>*/
+    public static class Adapter extends NSObject implements UITabBarControllerDelegate {
+        @NotImplemented("tabBarController:didEndCustomizingViewControllers:changed:") public void didEndCustomizingViewControllers(UITabBarController tabBarController, NSArray viewControllers, boolean changed) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tabBarController:didSelectViewController:") public void didSelectViewController(UITabBarController tabBarController, UIViewController viewController) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tabBarController:shouldSelectViewController:") public boolean shouldSelectViewController(UITabBarController tabBarController, UIViewController viewController) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tabBarController:willBeginCustomizingViewControllers:") public void willBeginCustomizingViewControllers(UITabBarController tabBarController, NSArray viewControllers) { throw new UnsupportedOperationException(); }
+        @NotImplemented("tabBarController:willEndCustomizingViewControllers:changed:") public void willEndCustomizingViewControllers(UITabBarController tabBarController, NSArray viewControllers, boolean changed) { throw new UnsupportedOperationException(); }
+    }
+    /*</adapter>*/
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("tabBarController:didEndCustomizingViewControllers:changed:") public static void didEndCustomizingViewControllers(UITabBarControllerDelegate __self__, Selector __cmd__, UITabBarController tabBarController, NSArray viewControllers, boolean changed) { __self__.didEndCustomizingViewControllers(tabBarController, viewControllers, changed); }

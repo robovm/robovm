@@ -22,10 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.regex.Pattern;
 
-import org.robovm.objc.annotation.BindClass;
 import org.robovm.objc.annotation.BindSelector;
+import org.robovm.objc.annotation.NativeClass;
 import org.robovm.objc.annotation.TypeEncoding;
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.annotation.Callback;
@@ -38,7 +37,6 @@ public final class ObjCClass extends ObjCObject {
         ObjCRuntime.bind();
     }
     
-    private static final Pattern KNOWN_NATIVE_CLASSES_PATTERN = Pattern.compile("org\\.robovm\\.(objc|cocoatouch)\\.[.$_a-zA-Z0-9]+");
     private static final Map<Class<? extends ObjCObject>, ObjCClass> typeToClass = new HashMap<Class<? extends ObjCObject>, ObjCClass>();
     private static final Map<String, ObjCClass> nameToClass = new HashMap<String, ObjCClass>();
 
@@ -127,14 +125,16 @@ public final class ObjCClass extends ObjCObject {
         synchronized (typeToClass) {
             ObjCClass c = typeToClass.get(type);
             if (c == null) {
-                BindClass bindToClass = type.getAnnotation(BindClass.class);
+                NativeClass nativeClassAnno = type.getAnnotation(NativeClass.class);
                 String name = null;
-                if (bindToClass != null) {
-                    name = bindToClass.value();
-                } else if (KNOWN_NATIVE_CLASSES_PATTERN.matcher(type.getName()).matches()) {
-                    name = type.getSimpleName();
+                if (nativeClassAnno != null) {
+                    name = nativeClassAnno.value();
+                    name = "".equals(name) ? type.getSimpleName() : name;
                 } else {
-                    name = "Java." + type.getName();
+                    name = type.getName();
+                    if (name.indexOf('.') == -1) {
+                        name = "." + name;
+                    }
                     c = register(type, name);
                 }
                 if (c == null) {
@@ -146,6 +146,24 @@ public final class ObjCClass extends ObjCObject {
                 }
                 typeToClass.put(type, c);
                 nameToClass.put(name, c);
+            }
+            return c;
+        }
+    }
+
+    public static ObjCClass registerCustomClass(Class<? extends ObjCObject> type) {
+        if (type.getAnnotation(NativeClass.class) != null) {
+            throw new IllegalArgumentException("@NativeClass annotated class " + type.getName() 
+                    + " can not be registered as a custom class");
+        }
+        synchronized (typeToClass) {
+            ObjCClass c = typeToClass.get(type);
+            if (c != null) {
+                String name = type.getName();
+                if (name.indexOf('.') == -1) {
+                    name = "." + name;
+                }
+                c = register(type, name);
             }
             return c;
         }

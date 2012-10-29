@@ -36,7 +36,7 @@ import org.robovm.rt.VM;
  * </div>
  */
 /*<library>*/@Library("Foundation")/*</library>*/
-public class /*<name>*/ NSString /*</name>*/ 
+@NativeClass public class /*<name>*/ NSString /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

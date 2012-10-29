@@ -17,7 +17,7 @@ package org.robovm.objc;
 
 import java.lang.reflect.Field;
 
-import org.robovm.objc.annotation.BindClass;
+import org.robovm.objc.annotation.NativeClass;
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.NativeObject;
 import org.robovm.rt.bro.annotation.Library;
@@ -29,7 +29,7 @@ import org.robovm.rt.bro.ptr.Ptr.MarshalerCallback;
  *
  */
 @Library("Foundation")
-@BindClass("Object")
+@NativeClass("Object")
 @Marshaler(ObjCObject.Marshaler.class)
 public abstract class ObjCObject extends NativeObject {
 

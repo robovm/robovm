@@ -37,7 +37,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-public class /*<name>*/ NSShadow /*</name>*/ 
+@NativeClass public class /*<name>*/ NSShadow /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-public class /*<name>*/ UIPageViewController /*</name>*/ 
+@NativeClass public class /*<name>*/ UIPageViewController /*</name>*/ 
     extends /*<extends>*/ UIViewController /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

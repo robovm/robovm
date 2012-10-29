@@ -32,7 +32,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("Foundation")/*</library>*/
-public class /*<name>*/ NSUUID /*</name>*/ 
+@NativeClass public class /*<name>*/ NSUUID /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

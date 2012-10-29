@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-public class /*<name>*/ UILongPressGestureRecognizer /*</name>*/ 
+@NativeClass public class /*<name>*/ UILongPressGestureRecognizer /*</name>*/ 
     extends /*<extends>*/ UIGestureRecognizer /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

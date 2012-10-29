@@ -23,7 +23,7 @@ package org.robovm.foo;
  * <div class="javadoc"></div>
  */
 /*<library>*/@Library("Foo")/*</library>*/
-public class /*<name>*/ TheName /*</name>*/ 
+@NativeClass public class /*<name>*/ TheName /*</name>*/ 
     extends /*<extends>*/ Object /*</extends>*/ 
     /*<implements>*/ implements A, B, C /*</implements>*/ {
 

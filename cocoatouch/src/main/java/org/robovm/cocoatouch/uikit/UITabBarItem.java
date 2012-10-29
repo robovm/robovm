@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-public class /*<name>*/ UITabBarItem /*</name>*/ 
+@NativeClass public class /*<name>*/ UITabBarItem /*</name>*/ 
     extends /*<extends>*/ UIBarItem /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

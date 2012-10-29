@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-public class /*<name>*/ UIApplication /*</name>*/ 
+@NativeClass public class /*<name>*/ UIApplication /*</name>*/ 
     extends /*<extends>*/ UIResponder /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

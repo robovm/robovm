@@ -33,7 +33,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("CoreData")/*</library>*/
-public class /*<name>*/ NSManagedObjectModel /*</name>*/ 
+@NativeClass public class /*<name>*/ NSManagedObjectModel /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

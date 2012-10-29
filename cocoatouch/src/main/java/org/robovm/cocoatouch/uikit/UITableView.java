@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-public class /*<name>*/ UITableView /*</name>*/ 
+@NativeClass public class /*<name>*/ UITableView /*</name>*/ 
     extends /*<extends>*/ UIScrollView /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

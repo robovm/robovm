@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-public class /*<name>*/ UITextInputStringTokenizer /*</name>*/ 
+@NativeClass public class /*<name>*/ UITextInputStringTokenizer /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ implements UITextInputTokenizer /*</implements>*/ {
 

@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-public class /*<name>*/ UITextView /*</name>*/ 
+@NativeClass public class /*<name>*/ UITextView /*</name>*/ 
     extends /*<extends>*/ UIScrollView /*</extends>*/ 
     /*<implements>*/ implements UITextInput, UIKeyInput, UITextInputTraits /*</implements>*/ {
 

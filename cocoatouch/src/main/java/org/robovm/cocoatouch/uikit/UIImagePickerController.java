@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-public class /*<name>*/ UIImagePickerController /*</name>*/ 
+@NativeClass public class /*<name>*/ UIImagePickerController /*</name>*/ 
     extends /*<extends>*/ UINavigationController /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

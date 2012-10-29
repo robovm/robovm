@@ -37,7 +37,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-public class /*<name>*/ UICollectionViewCell /*</name>*/ 
+@NativeClass public class /*<name>*/ UICollectionViewCell /*</name>*/ 
     extends /*<extends>*/ UICollectionReusableView /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

@@ -25,6 +25,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface BindClass {
-    String value();
+public @interface NativeClass {
+    String value() default "";
 }

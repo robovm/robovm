@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-public class /*<name>*/ UIPinchGestureRecognizer /*</name>*/ 
+@NativeClass public class /*<name>*/ UIPinchGestureRecognizer /*</name>*/ 
     extends /*<extends>*/ UIGestureRecognizer /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

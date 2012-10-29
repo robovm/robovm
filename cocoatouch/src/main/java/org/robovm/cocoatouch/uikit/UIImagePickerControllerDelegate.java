@@ -37,7 +37,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
-public interface /*<name>*/ UIImagePickerControllerDelegate /*</name>*/ /*<implements>*/ extends UINavigationControllerDelegate, ObjCProtocol /*</implements>*/ {
+public interface /*<name>*/ UIImagePickerControllerDelegate /*</name>*/ /*<implements>*/ extends UINavigationControllerDelegate, NSObjectProtocol /*</implements>*/ {
 
     /*<properties>*/
     

@@ -37,7 +37,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 4.2 and later.
  * </div>
  */
-public interface /*<name>*/ UIPrintInteractionControllerDelegate /*</name>*/ /*<implements>*/ extends ObjCProtocol /*</implements>*/ {
+public interface /*<name>*/ UIPrintInteractionControllerDelegate /*</name>*/ /*<implements>*/ extends NSObjectProtocol /*</implements>*/ {
 
     /*<properties>*/
     

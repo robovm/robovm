@@ -37,7 +37,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 3.2 and later.
  * </div>
  */
-public interface /*<name>*/ UIKeyInput /*</name>*/ /*<implements>*/ extends UITextInputTraits, ObjCProtocol /*</implements>*/ {
+public interface /*<name>*/ UIKeyInput /*</name>*/ /*<implements>*/ extends UITextInputTraits, NSObjectProtocol /*</implements>*/ {
 
     /*<properties>*/
     

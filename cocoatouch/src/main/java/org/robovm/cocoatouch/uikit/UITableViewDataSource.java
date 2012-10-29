@@ -37,7 +37,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
-public interface /*<name>*/ UITableViewDataSource /*</name>*/ /*<implements>*/ extends ObjCProtocol /*</implements>*/ {
+public interface /*<name>*/ UITableViewDataSource /*</name>*/ /*<implements>*/ extends NSObjectProtocol /*</implements>*/ {
 
     /*<properties>*/
     

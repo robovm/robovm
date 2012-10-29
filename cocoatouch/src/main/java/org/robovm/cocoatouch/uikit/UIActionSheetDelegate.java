@@ -37,7 +37,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
-public interface /*<name>*/ UIActionSheetDelegate /*</name>*/ /*<implements>*/ extends ObjCProtocol /*</implements>*/ {
+public interface /*<name>*/ UIActionSheetDelegate /*</name>*/ /*<implements>*/ extends NSObjectProtocol /*</implements>*/ {
 
     /*<properties>*/
     

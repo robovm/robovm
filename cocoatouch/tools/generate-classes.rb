@@ -121,7 +121,7 @@ class ObjCClass
     end
     javadoc_s = javadoc.join("\n *   ")
 
-    protocols = @is_protocol ? [@protocols, 'ObjCProtocol'].flatten : @protocols
+    protocols = @is_protocol ? [@protocols, 'NSObjectProtocol'].flatten : @protocols
     template = template.sub(/<div class="javadoc">.*<\/div>/m, "<div class=\"javadoc\">\n *   #{javadoc_s}\n * </div>")
     template = template.gsub(/\/\*<name>\*\/.*\/\*<\/name>\*\//, "/*<name>*/ #{@name} /*</name>*/")
     template = template.sub(/\/\*<extends>\*\/.*\/\*<\/extends>\*\//, "/*<extends>*/ #{@superclass} /*</extends>*/")

@@ -37,7 +37,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 5.0 and later.
  * </div>
  */
-public interface /*<name>*/ UIPageViewControllerDelegate /*</name>*/ /*<implements>*/ extends ObjCProtocol /*</implements>*/ {
+public interface /*<name>*/ UIPageViewControllerDelegate /*</name>*/ /*<implements>*/ extends NSObjectProtocol /*</implements>*/ {
 
     /*<properties>*/
     

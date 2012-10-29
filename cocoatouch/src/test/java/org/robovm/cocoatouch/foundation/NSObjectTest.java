@@ -26,8 +26,11 @@ public class NSObjectTest {
 
     @Test
     public void test() {
+        NSAutoreleasePool pool = new NSAutoreleasePool();
         NSObject o = new NSObject();
         System.out.println(o.description());
+        System.out.println(new NSString("Hello world!!!"));
+        pool.drain();
     }
 
 }

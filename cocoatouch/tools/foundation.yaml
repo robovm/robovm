@@ -181,6 +181,18 @@ classes:
         urls: [../Classes/NSString_Class/Reference/NSString.html, ../../../../UIKit/Reference/NSString_UIKit_Additions/Reference/Reference.html]
         protocols: []
         methods:
+            "-initWithCharactersNoCopy:length:freeWhenDone:":
+                visibility: private
+                parameters:
+                    characters:
+                        type: @Pointer long
+            "-characterAtIndex:":
+            "-length":
+            "-getCharacters:range:":
+                visibility: private
+                parameters:
+                    buffer:
+                        type: @Pointer long
             "+*":
                 exclude: true
             "-*":

@@ -261,6 +261,10 @@ Object* Java_org_robovm_rt_VM_newStringUTF(Env* env, Class* c, jlong address) {
     return rvmNewStringUTF(env, (char*) LONG_TO_PTR(address), -1);
 }
 
+Object* Java_org_robovm_rt_VM_newStringNoCopy(Env* env, Class* c, CharArray* value, jint offset, jint length) {
+    return rvmNewStringNoCopy(env, value, offset, length);
+}
+
 jlong Java_org_robovm_rt_VM_getArrayValuesAddress(Env* env, Class* c, Array* array) {
     return PTR_TO_LONG(array->values);
 }

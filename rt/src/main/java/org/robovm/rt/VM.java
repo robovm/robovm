@@ -109,6 +109,7 @@ public final class VM {
     
     public native static final long getStringUTFChars(String s);
     public native static final String newStringUTF(long address);
+    public native static final String newStringNoCopy(char[] chars, int offset, int length);
     
     public native static final long getArrayValuesAddress(Object array);
     

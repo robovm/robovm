@@ -61,6 +61,11 @@ public class /*<name>*/ NSObject /*</name>*/
     
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSObject /*</name>*/.class);
 
+    @Override
+    public String toString() {
+        return description();
+    }
+    
     /*<constructors>*/
     
     /*</constructors>*/

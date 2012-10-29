@@ -141,9 +141,9 @@ static void unicodeToUtf8(char* utf8String, const jchar* unicode, jint unicodeLe
     *s = 0;
 }
 
-static Object* newString(Env* env, CharArray* value, jint length) {
+static inline Object* newString(Env* env, CharArray* value, jint offset, jint length) {
     jvalue args[3];
-    args[0].i = 0;
+    args[0].i = offset;
     args[1].i = length;
     args[2].l = (jobject) value;
     return rvmNewObjectA(env, java_lang_String, stringConstructor, args);
@@ -161,6 +161,10 @@ jboolean rvmInitStrings(Env* env) {
     return TRUE;
 }
 
+Object* rvmNewStringNoCopy(Env* env, CharArray* value, jint offset, jint length) {
+    return newString(env, value, offset, length);
+}
+
 Object* rvmNewStringAscii(Env* env, const char* s, jint length) {
     length = (length == -1) ? strlen(s) : length;
     CharArray* value = rvmNewCharArray(env, length);
@@ -169,7 +173,7 @@ Object* rvmNewStringAscii(Env* env, const char* s, jint length) {
     for (i = 0; i < length; i++) {
         value->values[i] = (jchar) (s[i] & 0xff);
     }
-    return newString(env, value, length);
+    return newString(env, value, 0, length);
 }
 
 Object* rvmNewStringUTF(Env* env, const char* s, jint length) {
@@ -178,7 +182,7 @@ Object* rvmNewStringUTF(Env* env, const char* s, jint length) {
     CharArray* value = rvmNewCharArray(env, length);
     if (!value) return NULL;
     utf8ToUnicode(value->values, s);
-    return newString(env, value, length);
+    return newString(env, value, 0, length);
 }
 
 Object* rvmNewString(Env* env, const jchar* chars, jint length) {
@@ -186,7 +190,7 @@ Object* rvmNewString(Env* env, const jchar* chars, jint length) {
     CharArray* value = rvmNewCharArray(env, length);
     if (!value) return NULL;
     memcpy(value->values, chars, sizeof(jchar) * length);
-    return newString(env, value, length);
+    return newString(env, value, 0, length);
 }
 
 Object* rvmNewInternedStringUTF(Env* env, const char* s, jint length) {
@@ -205,7 +209,7 @@ Object* rvmNewInternedStringUTF(Env* env, const char* s, jint length) {
     CharArray* value = rvmNewCharArray(env, length);
     if (!value) return NULL;
     utf8ToUnicode(value->values, s);
-    Object* string = newString(env, value, length);
+    Object* string = newString(env, value, 0, length);
     if (!string) return NULL;
 
     cacheEntry = rvmAllocateMemory(env, sizeof(CacheEntry));

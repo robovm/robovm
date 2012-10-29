@@ -15,12 +15,14 @@
  */
 package org.robovm.cocoatouch.foundation;
 
-import org.robovm.rt.bro.*;
-import org.robovm.rt.bro.annotation.*;
+import org.robovm.rt.bro.Struct;
+import org.robovm.rt.bro.annotation.ByVal;
+import org.robovm.rt.bro.annotation.StructMember;
 
 /**
  * 
  */
+@ByVal
 public final class NSRange extends Struct<NSRange> {
 
     public NSRange() {}

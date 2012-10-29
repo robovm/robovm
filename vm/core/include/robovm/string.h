@@ -17,6 +17,7 @@
 #define ROBOVM_STRING_H
 
 extern jboolean rvmInitStrings(Env* env);
+extern Object* rvmNewStringNoCopy(Env* env, CharArray* value, jint offset, jint length);
 extern Object* rvmNewString(Env* env, const jchar* chars, jint length);
 extern Object* rvmNewStringUTF(Env* env, const char* s, jint length);
 extern Object* rvmNewStringAscii(Env* env, const char* s, jint length);

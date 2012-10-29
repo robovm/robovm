@@ -36,6 +36,7 @@ def objc_to_java(type, instancetype, typedefs, overrides = nil)
   when 'CGFloat' then 'float'
   when 'CGFloat *' then 'FloatPtr'
   when 'unichar' then 'char'
+  when 'unichar *' then 'CharPtr'
   when 'void *' then 'VoidPtr'
   when 'SEL' then 'Selector'
   when /NSString\s*\*/ then 'String'
@@ -219,15 +220,16 @@ class ObjCMethod
     if @clazz.is_protocol
       java = "#{get_javadoc}\n" + (@static && 'static ' || '') + @return_type.to_java + ' ' + @name + '(' + parameters_s + ');'
     else
+      msg_send = "objc_#{@name}"
+      msg_send_parameters_s = [@static ? 'ObjCClass __self__' : "#{@clazz.name} __self__", 'Selector __cmd__', @parameters.map {|p| "#{p[0].to_java} #{p[1]}"}].flatten.join(', ')
       java = "#{java}\nprivate static final Selector #{selector_var} = Selector.register(\"#{@selector}\");"
       if constructor? then
         sig = "#{@visibility} #{@clazz.name}" + '(' + parameters_s + ')'
+        java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static @Pointer long #{msg_send}(#{msg_send_parameters_s});"
       else
         sig = "#{@visibility} " + (@static && 'static ' || '') + @return_type.to_java + ' ' + @name + '(' + parameters_s + ')'
+        java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static #{@return_type.to_java} #{msg_send}(#{msg_send_parameters_s});"
       end
-      msg_send = "objc_#{@name}"
-      msg_send_parameters_s = [@static ? 'ObjCClass __self__' : "#{@clazz.name} __self__", 'Selector __cmd__', @parameters.map {|p| "#{p[0].to_java} #{p[1]}"}].flatten.join(', ')
-      java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static #{@return_type.to_java} #{msg_send}(#{msg_send_parameters_s});"
       args = [@static ? 'objCClass' : 'this', selector_var, @parameters.map {|p| p[1]}].flatten.join(', ')
       body = ""
       ret = !constructor? && @return_type.to_java != 'void' ? 'return ' : ''
@@ -236,7 +238,7 @@ class ObjCMethod
         java = "#{java}\n@Bridge(symbol = \"objc_msgSendSuper\") private native static #{@return_type.to_java} #{msg_send}Super(ObjCSuper __super__, #{msg_send_parameters_s});"
         body = "if (customClass) { #{ret}#{msg_send}Super(getSuper(), #{args}); } else { #{ret}#{msg_send}(#{args}); }"
       elsif constructor?
-        body = "super((SkipInit) null);\n#{msg_send}(#{args});"
+        body = "super((SkipInit) null);\nsetHandle(#{msg_send}(#{args}));"
       else
         body = "#{ret}#{msg_send}(#{args});"
       end

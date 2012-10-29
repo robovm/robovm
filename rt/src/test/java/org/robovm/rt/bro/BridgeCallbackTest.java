@@ -236,6 +236,18 @@ public class BridgeCallbackTest {
         }
     }
     
+    @Marshaler(type = String.class, value = StringMarshaler.class)
+    public static class Inner3 {
+        public static class Inner4 {
+            @Bridge
+            public static native String append(String a, String b);
+            @Callback
+            public static String append_cb(String a, String b) {
+                return a + b;
+            }
+        }
+    }
+    
     @Bridge
     public static native SimpleEnum marshalSimpleEnum(SimpleEnum v);
     @Callback
@@ -289,6 +301,7 @@ public class BridgeCallbackTest {
         bind(BridgeCallbackTest.class);
         bind(BridgeCallbackTest.Inner1.class);
         bind(BridgeCallbackTest.Inner2.class);
+        bind(BridgeCallbackTest.Inner3.Inner4.class);
     }
     
     @Test
@@ -423,6 +436,12 @@ public class BridgeCallbackTest {
     @Test
     public void testMarshalNonNativeTypeMarshalersOnClass() {
         String s = Inner2.append("foo", "bar");
+        assertEquals("foobar", s);
+    }
+    
+    @Test
+    public void testMarshalerOnOuterClass() {
+        String s = Inner3.Inner4.append("foo", "bar");
         assertEquals("foobar", s);
     }
     

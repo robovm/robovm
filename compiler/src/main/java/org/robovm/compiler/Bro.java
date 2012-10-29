@@ -40,7 +40,9 @@ import soot.VoidType;
 import soot.tagkit.AnnotationClassElem;
 import soot.tagkit.AnnotationIntElem;
 import soot.tagkit.AnnotationTag;
+import soot.tagkit.InnerClassTag;
 import soot.tagkit.SignatureTag;
+import soot.tagkit.Tag;
 
 /**
  * 
@@ -127,18 +129,46 @@ public abstract class Bro {
         }
     }
     
+    private static SootClass getOuterClass(SootClass clazz) {
+        for (Tag tag : clazz.getTags()) {
+            if (tag instanceof InnerClassTag) {
+                InnerClassTag innerClassTag = (InnerClassTag) tag;
+                String inner = innerClassTag.getInnerClass();
+                String outer = innerClassTag.getOuterClass();
+                if (inner != null && inner.equals(getInternalName(clazz))) {
+                    if (outer != null) {
+                        return SootResolver.v().resolveClass(outer.replace('/', '.'), SootClass.SIGNATURES);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
     public static String getMarshalerClassName(SootMethod method, boolean unwrapPtr) {
+        // Use @Marshaler annotation on the method if there is one 
         AnnotationTag annotation = getMarshalerAnnotation(method);
         if (annotation == null) {
+            // The method has no @Marshaler annotation
             SootClass type = ((RefType) method.getReturnType()).getSootClass();
             if (unwrapPtr && isPtr(type)) {
-                // Search for the marshaler for the type pointed to.
+                // Search for a @Marshaler annotation for the target type pointed to
                 type = getPtrTargetClass(method);
             }
-            annotation = getMarshalerAnnotation(method.getDeclaringClass(), method.getReturnType());
+            // Search for a @Marshaler annotation in the class declaring the method and its superclasses
+            annotation = getMarshalerAnnotation(method.getDeclaringClass(), RefType.v(type));
             if (annotation == null) {
+                // Search for a @Marshaler annotation in the outer class of the class declaring the method
+                SootClass outerClass = getOuterClass(method.getDeclaringClass());
+                if (outerClass != null) {
+                    annotation = getMarshalerAnnotation(outerClass, RefType.v(type));                    
+                }
+            }
+            if (annotation == null) {
+                // Search the return type and its superclasses/superinterfaces
                 annotation = getMarshalerAnnotation(type);                
                 if (annotation == null && isEnum(type)) {
+                    // For enums we have a fallback
                     return "org/robovm/rt/bro/EnumMarshaler";
                 }
             }
@@ -151,17 +181,29 @@ public abstract class Bro {
     }
     
     public static String getMarshalerClassName(SootMethod method, int paramIndex, boolean unwrapPtr) {
+        // Use @Marshaler annotation on parameter at paramIndex if there is one 
         AnnotationTag annotation = getMarshalerAnnotation(method, paramIndex);
         if (annotation == null) {
+            // The parameter has no @Marshaler annotation
             SootClass paramType = ((RefType) method.getParameterType(paramIndex)).getSootClass();
             if (unwrapPtr && isPtr(paramType)) {
-                // Return the marshaler for the type pointed to.
+                // Search for a @Marshaler annotation for the target type pointed to
                 paramType = getPtrTargetClass(method, paramIndex);
             }
-            annotation = getMarshalerAnnotation(method.getDeclaringClass(), method.getParameterType(paramIndex));
+            // Search for a @Marshaler annotation in the class declaring the method and its superclasses
+            annotation = getMarshalerAnnotation(method.getDeclaringClass(), RefType.v(paramType));
             if (annotation == null) {
+                // Search for a @Marshaler annotation in the outer class of the class declaring the method
+                SootClass outerClass = getOuterClass(method.getDeclaringClass());
+                if (outerClass != null) {
+                    annotation = getMarshalerAnnotation(outerClass, RefType.v(paramType));                    
+                }
+            }
+            if (annotation == null) {
+                // Search the parameter type and its superclasses/superinterfaces
                 annotation = getMarshalerAnnotation(paramType);
                 if (annotation == null && isEnum(paramType)) {
+                    // For enums we have a fallback
                     return "org/robovm/rt/bro/EnumMarshaler";
                 }
             }

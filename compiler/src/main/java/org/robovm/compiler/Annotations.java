@@ -137,43 +137,72 @@ public class Annotations {
     }
     
     public static AnnotationTag getMarshalerAnnotation(SootClass clazz, soot.Type type) {
-        while (!clazz.isPhantom() && clazz.hasSuperclass()) {
-            List<AnnotationTag> tags = new ArrayList<AnnotationTag>();
-            AnnotationTag marshaler = getAnnotation(clazz, MARSHALER);
-            if (marshaler != null) {
-                tags.add(marshaler);
-            } else {
-                AnnotationTag marshalers = getAnnotation(clazz, MARSHALERS);
-                if (marshalers != null) {
-                    for (AnnotationElem e : ((AnnotationArrayElem) marshalers.getElemAt(0)).getValues()) {
-                        AnnotationAnnotationElem elem = (AnnotationAnnotationElem) e;
-                        tags.add(elem.getValue());
-                    }
-                }
-            }
-            
-            for (AnnotationTag tag : tags) {
-                AnnotationClassElem elem = (AnnotationClassElem) getElemByName(tag, "type");
-                if (elem == null && type == null) {
-                    return tag;
-                }
-                if (elem != null && type != null) {
-                    String desc = elem.getDesc();
-                    if (getInternalName(type).equals(getInternalNameFromDescriptor(desc))) {
-                        return tag;                    
-                    }
-                }
-            }
-            
-            for (SootClass interfaze : clazz.getInterfaces()) {
-                AnnotationTag tag = getMarshalerAnnotation(interfaze, type);
+        if (clazz.isInterface()) {
+            return getMarshalerAnnotationOnInterface(clazz, type);
+        } else {
+            return getMarshalerAnnotationOnClass(clazz, type);
+        }
+    }
+
+    private static AnnotationTag getMarshalerAnnotationOnClass(SootClass clazz, soot.Type type) {
+        if (clazz.isPhantom()) {
+            return null;
+        }
+        AnnotationTag tag = getMarshalerAnnotation0(clazz, type);
+        if (tag != null) {
+            return tag;
+        }
+        if (clazz.hasSuperclass()) {
+            return getMarshalerAnnotationOnClass(clazz.getSuperclass(), type);
+        }
+        return null;
+    }
+
+    private static AnnotationTag getMarshalerAnnotationOnInterface(SootClass rootClazz, soot.Type type) {
+        // Search super interfaces breadth first
+        LinkedList<SootClass> q = new LinkedList<SootClass>();
+        q.add(rootClazz);
+        while (!q.isEmpty()) {
+            SootClass clazz = q.removeFirst();
+            if (!clazz.isPhantom()) {
+                AnnotationTag tag = getMarshalerAnnotation0(clazz, type);
                 if (tag != null) {
                     return tag;
                 }
-            }
-            
-            clazz = clazz.getSuperclass();
+                q.addAll(clazz.getInterfaces());
+            }            
         }
+        return null;
+    }
+    
+    private static AnnotationTag getMarshalerAnnotation0(SootClass clazz, soot.Type type) {
+        List<AnnotationTag> tags = new ArrayList<AnnotationTag>();
+        AnnotationTag marshaler = getAnnotation(clazz, MARSHALER);
+        if (marshaler != null) {
+            tags.add(marshaler);
+        } else {
+            AnnotationTag marshalers = getAnnotation(clazz, MARSHALERS);
+            if (marshalers != null) {
+                for (AnnotationElem e : ((AnnotationArrayElem) marshalers.getElemAt(0)).getValues()) {
+                    AnnotationAnnotationElem elem = (AnnotationAnnotationElem) e;
+                    tags.add(elem.getValue());
+                }
+            }
+        }
+        
+        for (AnnotationTag tag : tags) {
+            AnnotationClassElem elem = (AnnotationClassElem) getElemByName(tag, "type");
+            if (elem == null && type == null) {
+                return tag;
+            }
+            if (elem != null && type != null) {
+                String desc = elem.getDesc();
+                if (getInternalName(type).equals(getInternalNameFromDescriptor(desc))) {
+                    return tag;                    
+                }
+            }
+        }
+        
         return null;
     }
 

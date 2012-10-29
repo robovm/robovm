@@ -36,6 +36,8 @@
       <includes>
         <include>org.robovm:robovm-compiler</include>
         <include>org.robovm:robovm-rt</include>
+        <include>org.robovm:robovm-objc</include>
+        <include>org.robovm:robovm-cocoatouch</include>
       </includes>
       <binaries>
         <outputDirectory>lib</outputDirectory>

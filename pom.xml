@@ -90,6 +90,8 @@
   <modules>
     <module>compiler</module>
     <module>rt</module>
+    <module>objc</module>
+    <module>cocoatouch</module>
     <module>ide</module>
     <module>dist</module>
   </modules>

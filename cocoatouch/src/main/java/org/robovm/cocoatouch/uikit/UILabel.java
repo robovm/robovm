@@ -477,6 +477,42 @@ public class /*<name>*/ UILabel /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("adjustsFontSizeToFitWidth") public static boolean isAdjustsFontSizeToFitWidth(UILabel __self__, Selector __cmd__) { return __self__.isAdjustsFontSizeToFitWidth(); }
+        @Callback @BindSelector("setAdjustsFontSizeToFitWidth:") public static void setAdjustsFontSizeToFitWidth(UILabel __self__, Selector __cmd__, boolean adjustsFontSizeToFitWidth) { __self__.setAdjustsFontSizeToFitWidth(adjustsFontSizeToFitWidth); }
+        @Callback @BindSelector("adjustsLetterSpacingToFitWidth") public static boolean isAdjustsLetterSpacingToFitWidth(UILabel __self__, Selector __cmd__) { return __self__.isAdjustsLetterSpacingToFitWidth(); }
+        @Callback @BindSelector("setAdjustsLetterSpacingToFitWidth:") public static void setAdjustsLetterSpacingToFitWidth(UILabel __self__, Selector __cmd__, boolean adjustsLetterSpacingToFitWidth) { __self__.setAdjustsLetterSpacingToFitWidth(adjustsLetterSpacingToFitWidth); }
+        @Callback @BindSelector("attributedText") public static NSAttributedString getAttributedText(UILabel __self__, Selector __cmd__) { return __self__.getAttributedText(); }
+        @Callback @BindSelector("setAttributedText:") public static void setAttributedText(UILabel __self__, Selector __cmd__, NSAttributedString attributedText) { __self__.setAttributedText(attributedText); }
+        @Callback @BindSelector("baselineAdjustment") public static UIBaselineAdjustment getBaselineAdjustment(UILabel __self__, Selector __cmd__) { return __self__.getBaselineAdjustment(); }
+        @Callback @BindSelector("setBaselineAdjustment:") public static void setBaselineAdjustment(UILabel __self__, Selector __cmd__, UIBaselineAdjustment baselineAdjustment) { __self__.setBaselineAdjustment(baselineAdjustment); }
+        @Callback @BindSelector("isEnabled") public static boolean isEnabled(UILabel __self__, Selector __cmd__) { return __self__.isEnabled(); }
+        @Callback @BindSelector("setEnabled:") public static void setEnabled(UILabel __self__, Selector __cmd__, boolean enabled) { __self__.setEnabled(enabled); }
+        @Callback @BindSelector("font") public static UIFont getFont(UILabel __self__, Selector __cmd__) { return __self__.getFont(); }
+        @Callback @BindSelector("setFont:") public static void setFont(UILabel __self__, Selector __cmd__, UIFont font) { __self__.setFont(font); }
+        @Callback @BindSelector("isHighlighted") public static boolean isHighlighted(UILabel __self__, Selector __cmd__) { return __self__.isHighlighted(); }
+        @Callback @BindSelector("setHighlighted:") public static void setHighlighted(UILabel __self__, Selector __cmd__, boolean highlighted) { __self__.setHighlighted(highlighted); }
+        @Callback @BindSelector("highlightedTextColor") public static UIColor getHighlightedTextColor(UILabel __self__, Selector __cmd__) { return __self__.getHighlightedTextColor(); }
+        @Callback @BindSelector("setHighlightedTextColor:") public static void setHighlightedTextColor(UILabel __self__, Selector __cmd__, UIColor highlightedTextColor) { __self__.setHighlightedTextColor(highlightedTextColor); }
+        @Callback @BindSelector("lineBreakMode") public static NSLineBreakMode getLineBreakMode(UILabel __self__, Selector __cmd__) { return __self__.getLineBreakMode(); }
+        @Callback @BindSelector("setLineBreakMode:") public static void setLineBreakMode(UILabel __self__, Selector __cmd__, NSLineBreakMode lineBreakMode) { __self__.setLineBreakMode(lineBreakMode); }
+        @Callback @BindSelector("minimumScaleFactor") public static float getMinimumScaleFactor(UILabel __self__, Selector __cmd__) { return __self__.getMinimumScaleFactor(); }
+        @Callback @BindSelector("setMinimumScaleFactor:") public static void setMinimumScaleFactor(UILabel __self__, Selector __cmd__, float minimumScaleFactor) { __self__.setMinimumScaleFactor(minimumScaleFactor); }
+        @Callback @BindSelector("numberOfLines") public static int getNumberOfLines(UILabel __self__, Selector __cmd__) { return __self__.getNumberOfLines(); }
+        @Callback @BindSelector("setNumberOfLines:") public static void setNumberOfLines(UILabel __self__, Selector __cmd__, int numberOfLines) { __self__.setNumberOfLines(numberOfLines); }
+        @Callback @BindSelector("preferredMaxLayoutWidth") public static float getPreferredMaxLayoutWidth(UILabel __self__, Selector __cmd__) { return __self__.getPreferredMaxLayoutWidth(); }
+        @Callback @BindSelector("setPreferredMaxLayoutWidth:") public static void setPreferredMaxLayoutWidth(UILabel __self__, Selector __cmd__, float preferredMaxLayoutWidth) { __self__.setPreferredMaxLayoutWidth(preferredMaxLayoutWidth); }
+        @Callback @BindSelector("shadowColor") public static UIColor getShadowColor(UILabel __self__, Selector __cmd__) { return __self__.getShadowColor(); }
+        @Callback @BindSelector("setShadowColor:") public static void setShadowColor(UILabel __self__, Selector __cmd__, UIColor shadowColor) { __self__.setShadowColor(shadowColor); }
+        @Callback @BindSelector("shadowOffset") public static CGSize getShadowOffset(UILabel __self__, Selector __cmd__) { return __self__.getShadowOffset(); }
+        @Callback @BindSelector("setShadowOffset:") public static void setShadowOffset(UILabel __self__, Selector __cmd__, CGSize shadowOffset) { __self__.setShadowOffset(shadowOffset); }
+        @Callback @BindSelector("text") public static String getText(UILabel __self__, Selector __cmd__) { return __self__.getText(); }
+        @Callback @BindSelector("setText:") public static void setText(UILabel __self__, Selector __cmd__, String text) { __self__.setText(text); }
+        @Callback @BindSelector("textAlignment") public static NSTextAlignment getTextAlignment(UILabel __self__, Selector __cmd__) { return __self__.getTextAlignment(); }
+        @Callback @BindSelector("setTextAlignment:") public static void setTextAlignment(UILabel __self__, Selector __cmd__, NSTextAlignment textAlignment) { __self__.setTextAlignment(textAlignment); }
+        @Callback @BindSelector("textColor") public static UIColor getTextColor(UILabel __self__, Selector __cmd__) { return __self__.getTextColor(); }
+        @Callback @BindSelector("setTextColor:") public static void setTextColor(UILabel __self__, Selector __cmd__, UIColor textColor) { __self__.setTextColor(textColor); }
+        @Callback @BindSelector("isUserInteractionEnabled") public static boolean isUserInteractionEnabled(UILabel __self__, Selector __cmd__) { return __self__.isUserInteractionEnabled(); }
+        @Callback @BindSelector("setUserInteractionEnabled:") public static void setUserInteractionEnabled(UILabel __self__, Selector __cmd__, boolean userInteractionEnabled) { __self__.setUserInteractionEnabled(userInteractionEnabled); }
         @Callback @BindSelector("drawTextInRect:") public static void drawText(UILabel __self__, Selector __cmd__, CGRect rect) { __self__.drawText(rect); }
         @Callback @BindSelector("textRectForBounds:limitedToNumberOfLines:") public static CGRect getTextRect(UILabel __self__, Selector __cmd__, CGRect bounds, int numberOfLines) { return __self__.getTextRect(bounds, numberOfLines); }
     }

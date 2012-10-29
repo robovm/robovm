@@ -53,14 +53,14 @@ public class /*<name>*/ UITableViewCell /*</name>*/
     public UITableViewCell() {}
     
     private static final Selector initWithStyle$reuseIdentifier$ = Selector.register("initWithStyle:reuseIdentifier:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithStyle(UITableViewCell __self__, Selector __cmd__, UITableViewCellStyle style, String reuseIdentifier);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithStyle(UITableViewCell __self__, Selector __cmd__, UITableViewCellStyle style, String reuseIdentifier);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewCell/initWithStyle:reuseIdentifier:">- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier</a>
      * @since Available in iOS 3.0 and later.
      */
     public UITableViewCell(UITableViewCellStyle style, String reuseIdentifier) {
         super((SkipInit) null);
-        objc_initWithStyle(this, initWithStyle$reuseIdentifier$, style, reuseIdentifier);
+        setHandle(objc_initWithStyle(this, initWithStyle$reuseIdentifier$, style, reuseIdentifier));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -542,6 +542,43 @@ public class /*<name>*/ UITableViewCell /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("accessoryType") public static UITableViewCellAccessoryType getAccessoryType(UITableViewCell __self__, Selector __cmd__) { return __self__.getAccessoryType(); }
+        @Callback @BindSelector("setAccessoryType:") public static void setAccessoryType(UITableViewCell __self__, Selector __cmd__, UITableViewCellAccessoryType accessoryType) { __self__.setAccessoryType(accessoryType); }
+        @Callback @BindSelector("accessoryView") public static UIView getAccessoryView(UITableViewCell __self__, Selector __cmd__) { return __self__.getAccessoryView(); }
+        @Callback @BindSelector("setAccessoryView:") public static void setAccessoryView(UITableViewCell __self__, Selector __cmd__, UIView accessoryView) { __self__.setAccessoryView(accessoryView); }
+        @Callback @BindSelector("backgroundView") public static UIView getBackgroundView(UITableViewCell __self__, Selector __cmd__) { return __self__.getBackgroundView(); }
+        @Callback @BindSelector("setBackgroundView:") public static void setBackgroundView(UITableViewCell __self__, Selector __cmd__, UIView backgroundView) { __self__.setBackgroundView(backgroundView); }
+        @Callback @BindSelector("contentView") public static UIView getContentView(UITableViewCell __self__, Selector __cmd__) { return __self__.getContentView(); }
+        @Callback @BindSelector("detailTextLabel") public static UILabel getDetailTextLabel(UITableViewCell __self__, Selector __cmd__) { return __self__.getDetailTextLabel(); }
+        @Callback @BindSelector("isEditing") public static boolean isEditing(UITableViewCell __self__, Selector __cmd__) { return __self__.isEditing(); }
+        @Callback @BindSelector("setEditing:") public static void setEditing(UITableViewCell __self__, Selector __cmd__, boolean editing) { __self__.setEditing(editing); }
+        @Callback @BindSelector("editingAccessoryType") public static UITableViewCellAccessoryType getEditingAccessoryType(UITableViewCell __self__, Selector __cmd__) { return __self__.getEditingAccessoryType(); }
+        @Callback @BindSelector("setEditingAccessoryType:") public static void setEditingAccessoryType(UITableViewCell __self__, Selector __cmd__, UITableViewCellAccessoryType editingAccessoryType) { __self__.setEditingAccessoryType(editingAccessoryType); }
+        @Callback @BindSelector("editingAccessoryView") public static UIView getEditingAccessoryView(UITableViewCell __self__, Selector __cmd__) { return __self__.getEditingAccessoryView(); }
+        @Callback @BindSelector("setEditingAccessoryView:") public static void setEditingAccessoryView(UITableViewCell __self__, Selector __cmd__, UIView editingAccessoryView) { __self__.setEditingAccessoryView(editingAccessoryView); }
+        @Callback @BindSelector("editingStyle") public static UITableViewCellEditingStyle getEditingStyle(UITableViewCell __self__, Selector __cmd__) { return __self__.getEditingStyle(); }
+        @Callback @BindSelector("isHighlighted") public static boolean isHighlighted(UITableViewCell __self__, Selector __cmd__) { return __self__.isHighlighted(); }
+        @Callback @BindSelector("setHighlighted:") public static void setHighlighted(UITableViewCell __self__, Selector __cmd__, boolean highlighted) { __self__.setHighlighted(highlighted); }
+        @Callback @BindSelector("imageView") public static UIImageView getImageView(UITableViewCell __self__, Selector __cmd__) { return __self__.getImageView(); }
+        @Callback @BindSelector("indentationLevel") public static int getIndentationLevel(UITableViewCell __self__, Selector __cmd__) { return __self__.getIndentationLevel(); }
+        @Callback @BindSelector("setIndentationLevel:") public static void setIndentationLevel(UITableViewCell __self__, Selector __cmd__, int indentationLevel) { __self__.setIndentationLevel(indentationLevel); }
+        @Callback @BindSelector("indentationWidth") public static float getIndentationWidth(UITableViewCell __self__, Selector __cmd__) { return __self__.getIndentationWidth(); }
+        @Callback @BindSelector("setIndentationWidth:") public static void setIndentationWidth(UITableViewCell __self__, Selector __cmd__, float indentationWidth) { __self__.setIndentationWidth(indentationWidth); }
+        @Callback @BindSelector("multipleSelectionBackgroundView") public static UIView getMultipleSelectionBackgroundView(UITableViewCell __self__, Selector __cmd__) { return __self__.getMultipleSelectionBackgroundView(); }
+        @Callback @BindSelector("setMultipleSelectionBackgroundView:") public static void setMultipleSelectionBackgroundView(UITableViewCell __self__, Selector __cmd__, UIView multipleSelectionBackgroundView) { __self__.setMultipleSelectionBackgroundView(multipleSelectionBackgroundView); }
+        @Callback @BindSelector("reuseIdentifier") public static String getReuseIdentifier(UITableViewCell __self__, Selector __cmd__) { return __self__.getReuseIdentifier(); }
+        @Callback @BindSelector("isSelected") public static boolean isSelected(UITableViewCell __self__, Selector __cmd__) { return __self__.isSelected(); }
+        @Callback @BindSelector("setSelected:") public static void setSelected(UITableViewCell __self__, Selector __cmd__, boolean selected) { __self__.setSelected(selected); }
+        @Callback @BindSelector("selectedBackgroundView") public static UIView getSelectedBackgroundView(UITableViewCell __self__, Selector __cmd__) { return __self__.getSelectedBackgroundView(); }
+        @Callback @BindSelector("setSelectedBackgroundView:") public static void setSelectedBackgroundView(UITableViewCell __self__, Selector __cmd__, UIView selectedBackgroundView) { __self__.setSelectedBackgroundView(selectedBackgroundView); }
+        @Callback @BindSelector("selectionStyle") public static UITableViewCellSelectionStyle getSelectionStyle(UITableViewCell __self__, Selector __cmd__) { return __self__.getSelectionStyle(); }
+        @Callback @BindSelector("setSelectionStyle:") public static void setSelectionStyle(UITableViewCell __self__, Selector __cmd__, UITableViewCellSelectionStyle selectionStyle) { __self__.setSelectionStyle(selectionStyle); }
+        @Callback @BindSelector("shouldIndentWhileEditing") public static boolean isShouldIndentWhileEditing(UITableViewCell __self__, Selector __cmd__) { return __self__.isShouldIndentWhileEditing(); }
+        @Callback @BindSelector("setShouldIndentWhileEditing:") public static void setShouldIndentWhileEditing(UITableViewCell __self__, Selector __cmd__, boolean shouldIndentWhileEditing) { __self__.setShouldIndentWhileEditing(shouldIndentWhileEditing); }
+        @Callback @BindSelector("showingDeleteConfirmation") public static boolean isShowingDeleteConfirmation(UITableViewCell __self__, Selector __cmd__) { return __self__.isShowingDeleteConfirmation(); }
+        @Callback @BindSelector("showsReorderControl") public static boolean isShowsReorderControl(UITableViewCell __self__, Selector __cmd__) { return __self__.isShowsReorderControl(); }
+        @Callback @BindSelector("setShowsReorderControl:") public static void setShowsReorderControl(UITableViewCell __self__, Selector __cmd__, boolean showsReorderControl) { __self__.setShowsReorderControl(showsReorderControl); }
+        @Callback @BindSelector("textLabel") public static UILabel getTextLabel(UITableViewCell __self__, Selector __cmd__) { return __self__.getTextLabel(); }
         @Callback @BindSelector("didTransitionToState:") public static void didTransitionToState(UITableViewCell __self__, Selector __cmd__, UITableViewCellStateMask state) { __self__.didTransitionToState(state); }
         @Callback @BindSelector("prepareForReuse") public static void prepareForReuse(UITableViewCell __self__, Selector __cmd__) { __self__.prepareForReuse(); }
         @Callback @BindSelector("setEditing:animated:") public static void setEditing(UITableViewCell __self__, Selector __cmd__, boolean editing, boolean animated) { __self__.setEditing(editing, animated); }

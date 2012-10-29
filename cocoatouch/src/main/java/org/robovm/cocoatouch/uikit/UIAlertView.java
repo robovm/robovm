@@ -257,6 +257,19 @@ public class /*<name>*/ UIAlertView /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("alertViewStyle") public static UIAlertViewStyle getAlertViewStyle(UIAlertView __self__, Selector __cmd__) { return __self__.getAlertViewStyle(); }
+        @Callback @BindSelector("setAlertViewStyle:") public static void setAlertViewStyle(UIAlertView __self__, Selector __cmd__, UIAlertViewStyle alertViewStyle) { __self__.setAlertViewStyle(alertViewStyle); }
+        @Callback @BindSelector("cancelButtonIndex") public static int getCancelButtonIndex(UIAlertView __self__, Selector __cmd__) { return __self__.getCancelButtonIndex(); }
+        @Callback @BindSelector("setCancelButtonIndex:") public static void setCancelButtonIndex(UIAlertView __self__, Selector __cmd__, int cancelButtonIndex) { __self__.setCancelButtonIndex(cancelButtonIndex); }
+        @Callback @BindSelector("delegate") public static UIAlertViewDelegate getDelegate(UIAlertView __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UIAlertView __self__, Selector __cmd__, UIAlertViewDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("firstOtherButtonIndex") public static int getFirstOtherButtonIndex(UIAlertView __self__, Selector __cmd__) { return __self__.getFirstOtherButtonIndex(); }
+        @Callback @BindSelector("message") public static String getMessage(UIAlertView __self__, Selector __cmd__) { return __self__.getMessage(); }
+        @Callback @BindSelector("setMessage:") public static void setMessage(UIAlertView __self__, Selector __cmd__, String message) { __self__.setMessage(message); }
+        @Callback @BindSelector("numberOfButtons") public static int getNumberOfButtons(UIAlertView __self__, Selector __cmd__) { return __self__.getNumberOfButtons(); }
+        @Callback @BindSelector("title") public static String getTitle(UIAlertView __self__, Selector __cmd__) { return __self__.getTitle(); }
+        @Callback @BindSelector("setTitle:") public static void setTitle(UIAlertView __self__, Selector __cmd__, String title) { __self__.setTitle(title); }
+        @Callback @BindSelector("isVisible") public static boolean isVisible(UIAlertView __self__, Selector __cmd__) { return __self__.isVisible(); }
         @Callback @BindSelector("addButtonWithTitle:") public static int addButton(UIAlertView __self__, Selector __cmd__, String title) { return __self__.addButton(title); }
         @Callback @BindSelector("dismissWithClickedButtonIndex:animated:") public static void dismiss(UIAlertView __self__, Selector __cmd__, int buttonIndex, boolean animated) { __self__.dismiss(buttonIndex, animated); }
         @Callback @BindSelector("buttonTitleAtIndex:") public static String getButtonTitle(UIAlertView __self__, Selector __cmd__, int buttonIndex) { return __self__.getButtonTitle(buttonIndex); }

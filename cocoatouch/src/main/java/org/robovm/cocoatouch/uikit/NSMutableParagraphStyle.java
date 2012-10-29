@@ -344,6 +344,34 @@ public class /*<name>*/ NSMutableParagraphStyle /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("alignment") public static NSTextAlignment getAlignment(NSMutableParagraphStyle __self__, Selector __cmd__) { return __self__.getAlignment(); }
+        @Callback @BindSelector("setAlignment:") public static void setAlignment(NSMutableParagraphStyle __self__, Selector __cmd__, NSTextAlignment alignment) { __self__.setAlignment(alignment); }
+        @Callback @BindSelector("baseWritingDirection") public static NSWritingDirection getBaseWritingDirection(NSMutableParagraphStyle __self__, Selector __cmd__) { return __self__.getBaseWritingDirection(); }
+        @Callback @BindSelector("setBaseWritingDirection:") public static void setBaseWritingDirection(NSMutableParagraphStyle __self__, Selector __cmd__, NSWritingDirection baseWritingDirection) { __self__.setBaseWritingDirection(baseWritingDirection); }
+        @Callback @BindSelector("firstLineHeadIndent") public static float getFirstLineHeadIndent(NSMutableParagraphStyle __self__, Selector __cmd__) { return __self__.getFirstLineHeadIndent(); }
+        @Callback @BindSelector("setFirstLineHeadIndent:") public static void setFirstLineHeadIndent(NSMutableParagraphStyle __self__, Selector __cmd__, float firstLineHeadIndent) { __self__.setFirstLineHeadIndent(firstLineHeadIndent); }
+        @Callback @BindSelector("headIndent") public static float getHeadIndent(NSMutableParagraphStyle __self__, Selector __cmd__) { return __self__.getHeadIndent(); }
+        @Callback @BindSelector("setHeadIndent:") public static void setHeadIndent(NSMutableParagraphStyle __self__, Selector __cmd__, float headIndent) { __self__.setHeadIndent(headIndent); }
+        @Callback @BindSelector("hyphenationFactor") public static float getHyphenationFactor(NSMutableParagraphStyle __self__, Selector __cmd__) { return __self__.getHyphenationFactor(); }
+        @Callback @BindSelector("setHyphenationFactor:") public static void setHyphenationFactor(NSMutableParagraphStyle __self__, Selector __cmd__, float hyphenationFactor) { __self__.setHyphenationFactor(hyphenationFactor); }
+        @Callback @BindSelector("lineBreakMode") public static NSLineBreakMode getLineBreakMode(NSMutableParagraphStyle __self__, Selector __cmd__) { return __self__.getLineBreakMode(); }
+        @Callback @BindSelector("setLineBreakMode:") public static void setLineBreakMode(NSMutableParagraphStyle __self__, Selector __cmd__, NSLineBreakMode lineBreakMode) { __self__.setLineBreakMode(lineBreakMode); }
+        @Callback @BindSelector("lineHeightMultiple") public static float getLineHeightMultiple(NSMutableParagraphStyle __self__, Selector __cmd__) { return __self__.getLineHeightMultiple(); }
+        @Callback @BindSelector("setLineHeightMultiple:") public static void setLineHeightMultiple(NSMutableParagraphStyle __self__, Selector __cmd__, float lineHeightMultiple) { __self__.setLineHeightMultiple(lineHeightMultiple); }
+        @Callback @BindSelector("lineSpacing") public static float getLineSpacing(NSMutableParagraphStyle __self__, Selector __cmd__) { return __self__.getLineSpacing(); }
+        @Callback @BindSelector("setLineSpacing:") public static void setLineSpacing(NSMutableParagraphStyle __self__, Selector __cmd__, float lineSpacing) { __self__.setLineSpacing(lineSpacing); }
+        @Callback @BindSelector("maximumLineHeight") public static float getMaximumLineHeight(NSMutableParagraphStyle __self__, Selector __cmd__) { return __self__.getMaximumLineHeight(); }
+        @Callback @BindSelector("setMaximumLineHeight:") public static void setMaximumLineHeight(NSMutableParagraphStyle __self__, Selector __cmd__, float maximumLineHeight) { __self__.setMaximumLineHeight(maximumLineHeight); }
+        @Callback @BindSelector("minimumLineHeight") public static float getMinimumLineHeight(NSMutableParagraphStyle __self__, Selector __cmd__) { return __self__.getMinimumLineHeight(); }
+        @Callback @BindSelector("setMinimumLineHeight:") public static void setMinimumLineHeight(NSMutableParagraphStyle __self__, Selector __cmd__, float minimumLineHeight) { __self__.setMinimumLineHeight(minimumLineHeight); }
+        @Callback @BindSelector("paragraphSpacing") public static float getParagraphSpacing(NSMutableParagraphStyle __self__, Selector __cmd__) { return __self__.getParagraphSpacing(); }
+        @Callback @BindSelector("setParagraphSpacing:") public static void setParagraphSpacing(NSMutableParagraphStyle __self__, Selector __cmd__, float paragraphSpacing) { __self__.setParagraphSpacing(paragraphSpacing); }
+        @Callback @BindSelector("paragraphSpacingBefore") public static float getParagraphSpacingBefore(NSMutableParagraphStyle __self__, Selector __cmd__) { return __self__.getParagraphSpacingBefore(); }
+        @Callback @BindSelector("setParagraphSpacingBefore:") public static void setParagraphSpacingBefore(NSMutableParagraphStyle __self__, Selector __cmd__, float paragraphSpacingBefore) { __self__.setParagraphSpacingBefore(paragraphSpacingBefore); }
+        @Callback @BindSelector("tailIndent") public static float getTailIndent(NSMutableParagraphStyle __self__, Selector __cmd__) { return __self__.getTailIndent(); }
+        @Callback @BindSelector("setTailIndent:") public static void setTailIndent(NSMutableParagraphStyle __self__, Selector __cmd__, float tailIndent) { __self__.setTailIndent(tailIndent); }
+    }
     /*</callbacks>*/
 
 }

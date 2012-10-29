@@ -212,6 +212,22 @@ public class /*<name>*/ UICollectionViewFlowLayout /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("footerReferenceSize") public static CGSize getFooterReferenceSize(UICollectionViewFlowLayout __self__, Selector __cmd__) { return __self__.getFooterReferenceSize(); }
+        @Callback @BindSelector("setFooterReferenceSize:") public static void setFooterReferenceSize(UICollectionViewFlowLayout __self__, Selector __cmd__, CGSize footerReferenceSize) { __self__.setFooterReferenceSize(footerReferenceSize); }
+        @Callback @BindSelector("headerReferenceSize") public static CGSize getHeaderReferenceSize(UICollectionViewFlowLayout __self__, Selector __cmd__) { return __self__.getHeaderReferenceSize(); }
+        @Callback @BindSelector("setHeaderReferenceSize:") public static void setHeaderReferenceSize(UICollectionViewFlowLayout __self__, Selector __cmd__, CGSize headerReferenceSize) { __self__.setHeaderReferenceSize(headerReferenceSize); }
+        @Callback @BindSelector("itemSize") public static CGSize getItemSize(UICollectionViewFlowLayout __self__, Selector __cmd__) { return __self__.getItemSize(); }
+        @Callback @BindSelector("setItemSize:") public static void setItemSize(UICollectionViewFlowLayout __self__, Selector __cmd__, CGSize itemSize) { __self__.setItemSize(itemSize); }
+        @Callback @BindSelector("minimumInteritemSpacing") public static float getMinimumInteritemSpacing(UICollectionViewFlowLayout __self__, Selector __cmd__) { return __self__.getMinimumInteritemSpacing(); }
+        @Callback @BindSelector("setMinimumInteritemSpacing:") public static void setMinimumInteritemSpacing(UICollectionViewFlowLayout __self__, Selector __cmd__, float minimumInteritemSpacing) { __self__.setMinimumInteritemSpacing(minimumInteritemSpacing); }
+        @Callback @BindSelector("minimumLineSpacing") public static float getMinimumLineSpacing(UICollectionViewFlowLayout __self__, Selector __cmd__) { return __self__.getMinimumLineSpacing(); }
+        @Callback @BindSelector("setMinimumLineSpacing:") public static void setMinimumLineSpacing(UICollectionViewFlowLayout __self__, Selector __cmd__, float minimumLineSpacing) { __self__.setMinimumLineSpacing(minimumLineSpacing); }
+        @Callback @BindSelector("scrollDirection") public static UICollectionViewScrollDirection getScrollDirection(UICollectionViewFlowLayout __self__, Selector __cmd__) { return __self__.getScrollDirection(); }
+        @Callback @BindSelector("setScrollDirection:") public static void setScrollDirection(UICollectionViewFlowLayout __self__, Selector __cmd__, UICollectionViewScrollDirection scrollDirection) { __self__.setScrollDirection(scrollDirection); }
+        @Callback @BindSelector("sectionInset") public static UIEdgeInsets getSectionInset(UICollectionViewFlowLayout __self__, Selector __cmd__) { return __self__.getSectionInset(); }
+        @Callback @BindSelector("setSectionInset:") public static void setSectionInset(UICollectionViewFlowLayout __self__, Selector __cmd__, UIEdgeInsets sectionInset) { __self__.setSectionInset(sectionInset); }
+    }
     /*</callbacks>*/
 
 }

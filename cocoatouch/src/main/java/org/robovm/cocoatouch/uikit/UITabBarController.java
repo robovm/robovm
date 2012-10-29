@@ -202,6 +202,18 @@ public class /*<name>*/ UITabBarController /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("customizableViewControllers") public static NSArray getCustomizableViewControllers(UITabBarController __self__, Selector __cmd__) { return __self__.getCustomizableViewControllers(); }
+        @Callback @BindSelector("setCustomizableViewControllers:") public static void setCustomizableViewControllers(UITabBarController __self__, Selector __cmd__, NSArray customizableViewControllers) { __self__.setCustomizableViewControllers(customizableViewControllers); }
+        @Callback @BindSelector("delegate") public static UITabBarControllerDelegate getDelegate(UITabBarController __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UITabBarController __self__, Selector __cmd__, UITabBarControllerDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("moreNavigationController") public static UINavigationController getMoreNavigationController(UITabBarController __self__, Selector __cmd__) { return __self__.getMoreNavigationController(); }
+        @Callback @BindSelector("selectedIndex") public static int getSelectedIndex(UITabBarController __self__, Selector __cmd__) { return __self__.getSelectedIndex(); }
+        @Callback @BindSelector("setSelectedIndex:") public static void setSelectedIndex(UITabBarController __self__, Selector __cmd__, int selectedIndex) { __self__.setSelectedIndex(selectedIndex); }
+        @Callback @BindSelector("selectedViewController") public static UIViewController getSelectedViewController(UITabBarController __self__, Selector __cmd__) { return __self__.getSelectedViewController(); }
+        @Callback @BindSelector("setSelectedViewController:") public static void setSelectedViewController(UITabBarController __self__, Selector __cmd__, UIViewController selectedViewController) { __self__.setSelectedViewController(selectedViewController); }
+        @Callback @BindSelector("tabBar") public static UITabBar getTabBar(UITabBarController __self__, Selector __cmd__) { return __self__.getTabBar(); }
+        @Callback @BindSelector("viewControllers") public static NSArray getViewControllers(UITabBarController __self__, Selector __cmd__) { return __self__.getViewControllers(); }
+        @Callback @BindSelector("setViewControllers:") public static void setViewControllers(UITabBarController __self__, Selector __cmd__, NSArray viewControllers) { __self__.setViewControllers(viewControllers); }
         @Callback @BindSelector("setViewControllers:animated:") public static void setViewControllers(UITabBarController __self__, Selector __cmd__, NSArray viewControllers, boolean animated) { __self__.setViewControllers(viewControllers, animated); }
     }
     /*</callbacks>*/

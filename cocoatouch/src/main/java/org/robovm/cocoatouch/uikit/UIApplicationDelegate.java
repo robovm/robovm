@@ -194,6 +194,8 @@ public interface /*<name>*/ UIApplicationDelegate /*</name>*/ /*<implements>*/ e
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("window") public static UIWindow getWindow(UIApplicationDelegate __self__, Selector __cmd__) { return __self__.getWindow(); }
+        @Callback @BindSelector("setWindow:") public static void setWindow(UIApplicationDelegate __self__, Selector __cmd__, UIWindow window) { __self__.setWindow(window); }
         @Callback @BindSelector("applicationDidBecomeActive:") public static void didBecomeActive(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application) { __self__.didBecomeActive(application); }
         @Callback @BindSelector("application:didChangeStatusBarFrame:") public static void didChangStatusBarFrame(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, CGRect oldStatusBarFrame) { __self__.didChangStatusBarFrame(application, oldStatusBarFrame); }
         @Callback @BindSelector("application:didChangeStatusBarOrientation:") public static void didChangStatusBarOrientation(UIApplicationDelegate __self__, Selector __cmd__, UIApplication application, UIInterfaceOrientation oldStatusBarOrientation) { __self__.didChangStatusBarOrientation(application, oldStatusBarOrientation); }

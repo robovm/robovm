@@ -101,6 +101,12 @@ public class /*<name>*/ UICollectionViewUpdateItem /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("elementKind") public static String getElementKind(UICollectionViewUpdateItem __self__, Selector __cmd__) { return __self__.getElementKind(); }
+        @Callback @BindSelector("indexPathAfterUpdate") public static NSIndexPath getIndexPathAfterUpdate(UICollectionViewUpdateItem __self__, Selector __cmd__) { return __self__.getIndexPathAfterUpdate(); }
+        @Callback @BindSelector("indexPathBeforeUpdate") public static NSIndexPath getIndexPathBeforeUpdate(UICollectionViewUpdateItem __self__, Selector __cmd__) { return __self__.getIndexPathBeforeUpdate(); }
+        @Callback @BindSelector("updateAction") public static UICollectionUpdateAction getUpdateAction(UICollectionViewUpdateItem __self__, Selector __cmd__) { return __self__.getUpdateAction(); }
+    }
     /*</callbacks>*/
 
 }

@@ -268,6 +268,9 @@ public class /*<name>*/ UIResponder /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("inputAccessoryView") public static UIView getInputAccessoryView(UIResponder __self__, Selector __cmd__) { return __self__.getInputAccessoryView(); }
+        @Callback @BindSelector("inputView") public static UIView getInputView(UIResponder __self__, Selector __cmd__) { return __self__.getInputView(); }
+        @Callback @BindSelector("undoManager") public static NSUndoManager getUndoManager(UIResponder __self__, Selector __cmd__) { return __self__.getUndoManager(); }
         @Callback @BindSelector("becomeFirstResponder") public static boolean becomeFirstResponder(UIResponder __self__, Selector __cmd__) { return __self__.becomeFirstResponder(); }
         @Callback @BindSelector("canBecomeFirstResponder") public static boolean canBecomeFirstResponder(UIResponder __self__, Selector __cmd__) { return __self__.canBecomeFirstResponder(); }
         @Callback @BindSelector("canPerformAction:withSender:") public static boolean canPerformAction(UIResponder __self__, Selector __cmd__, Selector action, NSObject sender) { return __self__.canPerformAction(action, sender); }

@@ -149,7 +149,7 @@ class ObjCClass
     methods_s = @methods.select {|m| !m.constructor?}.map {|m| m.to_java}.join("\n").gsub(/\n/m, "\n    ")
     template = template.sub(/\/\*<methods>\*\/.*\/\*<\/methods>\*\//m, "/*<methods>*/\n    #{methods_s}\n    /*</methods>*/")
     if !@visibility.include?('final')
-      callbacks = @methods.map {|m| m.callbacks}.flatten
+      callbacks = [@properties.map {|p| p.callbacks}, @methods.map {|m| m.callbacks}.flatten].flatten
       if !callbacks.empty?
         callbacks_s = callbacks.join("\n").gsub(/\n/m, "\n        ")
         template = template.sub(/\/\*<callbacks>\*\/.*\/\*<\/callbacks>\*\//m, "/*<callbacks>*/\n    static class Callbacks {\n        #{callbacks_s}\n    }\n    /*</callbacks>*/")
@@ -368,6 +368,22 @@ class ObjCProperty
   end
   def to_java
     read_only? ? [getter_to_java] : [getter_to_java, setter_to_java]
+  end
+  def callbacks
+    if !(@visibility.include?('private') || @visibility.include?('final'))
+      # This property can be overridden
+      getter = @type.decl == 'BOOL' ? "is#{@base_java_name}" : "get#{@base_java_name}"
+      get = "@Callback @BindSelector(\"#{@getter_selector}\") public static #{@type.to_java} #{getter}(#{@clazz.name} __self__, Selector __cmd__) { return __self__.#{getter}(); }"
+      if read_only?
+        [get]
+      else
+        setter = @attrs.has_key?('setter') ? @attrs['setter'] : "set#{@base_java_name}"
+        set = "@Callback @BindSelector(\"#{@setter_selector}\") public static void #{setter}(#{@clazz.name} __self__, Selector __cmd__, #{@type.to_java} #{@name}) { __self__.#{setter}(#{@name}); }"
+        [get, set]
+      end
+    else
+      []
+    end
   end
   def hash
     @objc_name.hash

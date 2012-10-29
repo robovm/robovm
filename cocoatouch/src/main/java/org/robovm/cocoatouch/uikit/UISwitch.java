@@ -53,14 +53,14 @@ public class /*<name>*/ UISwitch /*</name>*/
     public UISwitch() {}
     
     private static final Selector initWithFrame$ = Selector.register("initWithFrame:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithFrame(UISwitch __self__, Selector __cmd__, CGRect frame);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithFrame(UISwitch __self__, Selector __cmd__, CGRect frame);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instm/UISwitch/initWithFrame:">- (id)initWithFrame:(CGRect)frame</a>
      * @since Available in iOS 2.0 and later.
      */
     public UISwitch(CGRect frame) {
         super((SkipInit) null);
-        objc_initWithFrame(this, initWithFrame$, frame);
+        setHandle(objc_initWithFrame(this, initWithFrame$, frame));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -212,6 +212,18 @@ public class /*<name>*/ UISwitch /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("offImage") public static UIImage getOffImage(UISwitch __self__, Selector __cmd__) { return __self__.getOffImage(); }
+        @Callback @BindSelector("setOffImage:") public static void setOffImage(UISwitch __self__, Selector __cmd__, UIImage offImage) { __self__.setOffImage(offImage); }
+        @Callback @BindSelector("isOn") public static boolean isOn(UISwitch __self__, Selector __cmd__) { return __self__.isOn(); }
+        @Callback @BindSelector("setOn:") public static void setOn(UISwitch __self__, Selector __cmd__, boolean on) { __self__.setOn(on); }
+        @Callback @BindSelector("onImage") public static UIImage getOnImage(UISwitch __self__, Selector __cmd__) { return __self__.getOnImage(); }
+        @Callback @BindSelector("setOnImage:") public static void setOnImage(UISwitch __self__, Selector __cmd__, UIImage onImage) { __self__.setOnImage(onImage); }
+        @Callback @BindSelector("onTintColor") public static UIColor getOnTintColor(UISwitch __self__, Selector __cmd__) { return __self__.getOnTintColor(); }
+        @Callback @BindSelector("setOnTintColor:") public static void setOnTintColor(UISwitch __self__, Selector __cmd__, UIColor onTintColor) { __self__.setOnTintColor(onTintColor); }
+        @Callback @BindSelector("thumbTintColor") public static UIColor getThumbTintColor(UISwitch __self__, Selector __cmd__) { return __self__.getThumbTintColor(); }
+        @Callback @BindSelector("setThumbTintColor:") public static void setThumbTintColor(UISwitch __self__, Selector __cmd__, UIColor thumbTintColor) { __self__.setThumbTintColor(thumbTintColor); }
+        @Callback @BindSelector("tintColor") public static UIColor getTintColor(UISwitch __self__, Selector __cmd__) { return __self__.getTintColor(); }
+        @Callback @BindSelector("setTintColor:") public static void setTintColor(UISwitch __self__, Selector __cmd__, UIColor tintColor) { __self__.setTintColor(tintColor); }
         @Callback @BindSelector("setOn:animated:") public static void setOn(UISwitch __self__, Selector __cmd__, boolean on, boolean animated) { __self__.setOn(on, animated); }
     }
     /*</callbacks>*/

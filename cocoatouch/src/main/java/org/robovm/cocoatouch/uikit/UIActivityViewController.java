@@ -52,14 +52,14 @@ public class /*<name>*/ UIActivityViewController /*</name>*/
     public UIActivityViewController() {}
     
     private static final Selector initWithActivityItems$applicationActivities$ = Selector.register("initWithActivityItems:applicationActivities:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithActivityItems(UIActivityViewController __self__, Selector __cmd__, NSArray activityItems, NSArray applicationActivities);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithActivityItems(UIActivityViewController __self__, Selector __cmd__, NSArray activityItems, NSArray applicationActivities);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActivityViewController/initWithActivityItems:applicationActivities:">- (id)initWithActivityItems:(NSArray *)activityItems applicationActivities:(NSArray *)applicationActivities</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIActivityViewController(NSArray activityItems, NSArray applicationActivities) {
         super((SkipInit) null);
-        objc_initWithActivityItems(this, initWithActivityItems$applicationActivities$, activityItems, applicationActivities);
+        setHandle(objc_initWithActivityItems(this, initWithActivityItems$applicationActivities$, activityItems, applicationActivities));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -90,6 +90,10 @@ public class /*<name>*/ UIActivityViewController /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("excludedActivityTypes") public static NSArray getExcludedActivityTypes(UIActivityViewController __self__, Selector __cmd__) { return __self__.getExcludedActivityTypes(); }
+        @Callback @BindSelector("setExcludedActivityTypes:") public static void setExcludedActivityTypes(UIActivityViewController __self__, Selector __cmd__, NSArray excludedActivityTypes) { __self__.setExcludedActivityTypes(excludedActivityTypes); }
+    }
     /*</callbacks>*/
 
 }

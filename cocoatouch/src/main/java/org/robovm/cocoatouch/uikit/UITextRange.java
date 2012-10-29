@@ -92,6 +92,11 @@ public class /*<name>*/ UITextRange /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("isEmpty") public static boolean isEmpty(UITextRange __self__, Selector __cmd__) { return __self__.isEmpty(); }
+        @Callback @BindSelector("end") public static UITextPosition getEnd(UITextRange __self__, Selector __cmd__) { return __self__.getEnd(); }
+        @Callback @BindSelector("start") public static UITextPosition getStart(UITextRange __self__, Selector __cmd__) { return __self__.getStart(); }
+    }
     /*</callbacks>*/
 
 }

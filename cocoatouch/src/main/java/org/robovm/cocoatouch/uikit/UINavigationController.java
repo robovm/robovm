@@ -53,25 +53,25 @@ public class /*<name>*/ UINavigationController /*</name>*/
     public UINavigationController() {}
     
     private static final Selector initWithNavigationBarClass$toolbarClass$ = Selector.register("initWithNavigationBarClass:toolbarClass:");
-    @Bridge(symbol = "objc_msgSend") private native static UINavigationController objc_initWithNavigationBarClass(UINavigationController __self__, Selector __cmd__, ObjCClass navigationBarClass, ObjCClass toolbarClass);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithNavigationBarClass(UINavigationController __self__, Selector __cmd__, ObjCClass navigationBarClass, ObjCClass toolbarClass);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instm/UINavigationController/initWithNavigationBarClass:toolbarClass:">- (instancetype)initWithNavigationBarClass:(Class)navigationBarClass toolbarClass:(Class)toolbarClass</a>
      * @since Available in iOS 5.0 and later.
      */
     public UINavigationController(ObjCClass navigationBarClass, ObjCClass toolbarClass) {
         super((SkipInit) null);
-        objc_initWithNavigationBarClass(this, initWithNavigationBarClass$toolbarClass$, navigationBarClass, toolbarClass);
+        setHandle(objc_initWithNavigationBarClass(this, initWithNavigationBarClass$toolbarClass$, navigationBarClass, toolbarClass));
     }
     
     private static final Selector initWithRootViewController$ = Selector.register("initWithRootViewController:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithRootViewController(UINavigationController __self__, Selector __cmd__, UIViewController rootViewController);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithRootViewController(UINavigationController __self__, Selector __cmd__, UIViewController rootViewController);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instm/UINavigationController/initWithRootViewController:">- (id)initWithRootViewController:(UIViewController *)rootViewController</a>
      * @since Available in iOS 2.0 and later.
      */
     public UINavigationController(UIViewController rootViewController) {
         super((SkipInit) null);
-        objc_initWithRootViewController(this, initWithRootViewController$, rootViewController);
+        setHandle(objc_initWithRootViewController(this, initWithRootViewController$, rootViewController));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -289,6 +289,18 @@ public class /*<name>*/ UINavigationController /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("delegate") public static UINavigationControllerDelegate getDelegate(UINavigationController __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UINavigationController __self__, Selector __cmd__, UINavigationControllerDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("navigationBar") public static UINavigationBar getNavigationBar(UINavigationController __self__, Selector __cmd__) { return __self__.getNavigationBar(); }
+        @Callback @BindSelector("isNavigationBarHidden") public static boolean isNavigationBarHidden(UINavigationController __self__, Selector __cmd__) { return __self__.isNavigationBarHidden(); }
+        @Callback @BindSelector("setNavigationBarHidden:") public static void setNavigationBarHidden(UINavigationController __self__, Selector __cmd__, boolean navigationBarHidden) { __self__.setNavigationBarHidden(navigationBarHidden); }
+        @Callback @BindSelector("toolbar") public static UIToolbar getToolbar(UINavigationController __self__, Selector __cmd__) { return __self__.getToolbar(); }
+        @Callback @BindSelector("isToolbarHidden") public static boolean isToolbarHidden(UINavigationController __self__, Selector __cmd__) { return __self__.isToolbarHidden(); }
+        @Callback @BindSelector("setToolbarHidden:") public static void setToolbarHidden(UINavigationController __self__, Selector __cmd__, boolean toolbarHidden) { __self__.setToolbarHidden(toolbarHidden); }
+        @Callback @BindSelector("topViewController") public static UIViewController getTopViewController(UINavigationController __self__, Selector __cmd__) { return __self__.getTopViewController(); }
+        @Callback @BindSelector("viewControllers") public static NSArray getViewControllers(UINavigationController __self__, Selector __cmd__) { return __self__.getViewControllers(); }
+        @Callback @BindSelector("setViewControllers:") public static void setViewControllers(UINavigationController __self__, Selector __cmd__, NSArray viewControllers) { __self__.setViewControllers(viewControllers); }
+        @Callback @BindSelector("visibleViewController") public static UIViewController getVisibleViewController(UINavigationController __self__, Selector __cmd__) { return __self__.getVisibleViewController(); }
         @Callback @BindSelector("popToRootViewControllerAnimated:") public static NSArray popToRootViewController(UINavigationController __self__, Selector __cmd__, boolean animated) { return __self__.popToRootViewController(animated); }
         @Callback @BindSelector("popToViewController:animated:") public static NSArray popToViewController(UINavigationController __self__, Selector __cmd__, UIViewController viewController, boolean animated) { return __self__.popToViewController(viewController, animated); }
         @Callback @BindSelector("popViewControllerAnimated:") public static UIViewController popViewControllerAnimated(UINavigationController __self__, Selector __cmd__, boolean animated) { return __self__.popViewControllerAnimated(animated); }

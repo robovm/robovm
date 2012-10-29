@@ -157,6 +157,17 @@ public class /*<name>*/ UICollectionViewCell /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("backgroundView") public static UIView getBackgroundView(UICollectionViewCell __self__, Selector __cmd__) { return __self__.getBackgroundView(); }
+        @Callback @BindSelector("setBackgroundView:") public static void setBackgroundView(UICollectionViewCell __self__, Selector __cmd__, UIView backgroundView) { __self__.setBackgroundView(backgroundView); }
+        @Callback @BindSelector("contentView") public static UIView getContentView(UICollectionViewCell __self__, Selector __cmd__) { return __self__.getContentView(); }
+        @Callback @BindSelector("isHighlighted") public static boolean isHighlighted(UICollectionViewCell __self__, Selector __cmd__) { return __self__.isHighlighted(); }
+        @Callback @BindSelector("setHighlighted:") public static void setHighlighted(UICollectionViewCell __self__, Selector __cmd__, boolean highlighted) { __self__.setHighlighted(highlighted); }
+        @Callback @BindSelector("isSelected") public static boolean isSelected(UICollectionViewCell __self__, Selector __cmd__) { return __self__.isSelected(); }
+        @Callback @BindSelector("setSelected:") public static void setSelected(UICollectionViewCell __self__, Selector __cmd__, boolean selected) { __self__.setSelected(selected); }
+        @Callback @BindSelector("selectedBackgroundView") public static UIView getSelectedBackgroundView(UICollectionViewCell __self__, Selector __cmd__) { return __self__.getSelectedBackgroundView(); }
+        @Callback @BindSelector("setSelectedBackgroundView:") public static void setSelectedBackgroundView(UICollectionViewCell __self__, Selector __cmd__, UIView selectedBackgroundView) { __self__.setSelectedBackgroundView(selectedBackgroundView); }
+    }
     /*</callbacks>*/
 
 }

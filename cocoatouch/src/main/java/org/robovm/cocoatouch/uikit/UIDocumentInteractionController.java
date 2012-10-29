@@ -278,6 +278,18 @@ public class /*<name>*/ UIDocumentInteractionController /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("URL") public static NSURL getURL(UIDocumentInteractionController __self__, Selector __cmd__) { return __self__.getURL(); }
+        @Callback @BindSelector("setURL:") public static void setURL(UIDocumentInteractionController __self__, Selector __cmd__, NSURL URL) { __self__.setURL(URL); }
+        @Callback @BindSelector("UTI") public static String getUTI(UIDocumentInteractionController __self__, Selector __cmd__) { return __self__.getUTI(); }
+        @Callback @BindSelector("setUTI:") public static void setUTI(UIDocumentInteractionController __self__, Selector __cmd__, String UTI) { __self__.setUTI(UTI); }
+        @Callback @BindSelector("annotation") public static NSObject getAnnotation(UIDocumentInteractionController __self__, Selector __cmd__) { return __self__.getAnnotation(); }
+        @Callback @BindSelector("setAnnotation:") public static void setAnnotation(UIDocumentInteractionController __self__, Selector __cmd__, NSObject annotation) { __self__.setAnnotation(annotation); }
+        @Callback @BindSelector("delegate") public static UIDocumentInteractionControllerDelegate getDelegate(UIDocumentInteractionController __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UIDocumentInteractionController __self__, Selector __cmd__, UIDocumentInteractionControllerDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("gestureRecognizers") public static NSArray getGestureRecognizers(UIDocumentInteractionController __self__, Selector __cmd__) { return __self__.getGestureRecognizers(); }
+        @Callback @BindSelector("icons") public static NSArray getIcons(UIDocumentInteractionController __self__, Selector __cmd__) { return __self__.getIcons(); }
+        @Callback @BindSelector("name") public static String getName(UIDocumentInteractionController __self__, Selector __cmd__) { return __self__.getName(); }
+        @Callback @BindSelector("setName:") public static void setName(UIDocumentInteractionController __self__, Selector __cmd__, String name) { __self__.setName(name); }
         @Callback @BindSelector("dismissMenuAnimated:") public static void dismissMenu(UIDocumentInteractionController __self__, Selector __cmd__, boolean animated) { __self__.dismissMenu(animated); }
         @Callback @BindSelector("dismissPreviewAnimated:") public static void dismissPreview(UIDocumentInteractionController __self__, Selector __cmd__, boolean animated) { __self__.dismissPreview(animated); }
         @Callback @BindSelector("presentOpenInMenuFromBarButtonItem:animated:") public static boolean presentOpenInMenu(UIDocumentInteractionController __self__, Selector __cmd__, UIBarButtonItem item, boolean animated) { return __self__.presentOpenInMenu(item, animated); }

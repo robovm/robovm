@@ -235,6 +235,13 @@ public class /*<name>*/ UIWindow /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("isKeyWindow") public static boolean isKeyWindow(UIWindow __self__, Selector __cmd__) { return __self__.isKeyWindow(); }
+        @Callback @BindSelector("rootViewController") public static UIViewController getRootViewController(UIWindow __self__, Selector __cmd__) { return __self__.getRootViewController(); }
+        @Callback @BindSelector("setRootViewController:") public static void setRootViewController(UIWindow __self__, Selector __cmd__, UIViewController rootViewController) { __self__.setRootViewController(rootViewController); }
+        @Callback @BindSelector("screen") public static UIScreen getScreen(UIWindow __self__, Selector __cmd__) { return __self__.getScreen(); }
+        @Callback @BindSelector("setScreen:") public static void setScreen(UIWindow __self__, Selector __cmd__, UIScreen screen) { __self__.setScreen(screen); }
+        @Callback @BindSelector("windowLevel") public static float getWindowLevel(UIWindow __self__, Selector __cmd__) { return __self__.getWindowLevel(); }
+        @Callback @BindSelector("setWindowLevel:") public static void setWindowLevel(UIWindow __self__, Selector __cmd__, float windowLevel) { __self__.setWindowLevel(windowLevel); }
         @Callback @BindSelector("becomeKeyWindow") public static void becomeKeyWindow(UIWindow __self__, Selector __cmd__) { __self__.becomeKeyWindow(); }
         @Callback @BindSelector("convertPoint:fromWindow:") public static CGPoint convertPointFromWindow(UIWindow __self__, Selector __cmd__, CGPoint point, UIWindow window) { return __self__.convertPointFromWindow(point, window); }
         @Callback @BindSelector("convertPoint:toWindow:") public static CGPoint convertPointToWindow(UIWindow __self__, Selector __cmd__, CGPoint point, UIWindow window) { return __self__.convertPointToWindow(point, window); }

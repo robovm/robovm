@@ -323,6 +323,22 @@ public class /*<name>*/ UIStepper /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("autorepeat") public static boolean isAutorepeat(UIStepper __self__, Selector __cmd__) { return __self__.isAutorepeat(); }
+        @Callback @BindSelector("setAutorepeat:") public static void setAutorepeat(UIStepper __self__, Selector __cmd__, boolean autorepeat) { __self__.setAutorepeat(autorepeat); }
+        @Callback @BindSelector("isContinuous") public static boolean isContinuous(UIStepper __self__, Selector __cmd__) { return __self__.isContinuous(); }
+        @Callback @BindSelector("setContinuous:") public static void setContinuous(UIStepper __self__, Selector __cmd__, boolean continuous) { __self__.setContinuous(continuous); }
+        @Callback @BindSelector("maximumValue") public static double getMaximumValue(UIStepper __self__, Selector __cmd__) { return __self__.getMaximumValue(); }
+        @Callback @BindSelector("setMaximumValue:") public static void setMaximumValue(UIStepper __self__, Selector __cmd__, double maximumValue) { __self__.setMaximumValue(maximumValue); }
+        @Callback @BindSelector("minimumValue") public static double getMinimumValue(UIStepper __self__, Selector __cmd__) { return __self__.getMinimumValue(); }
+        @Callback @BindSelector("setMinimumValue:") public static void setMinimumValue(UIStepper __self__, Selector __cmd__, double minimumValue) { __self__.setMinimumValue(minimumValue); }
+        @Callback @BindSelector("stepValue") public static double getStepValue(UIStepper __self__, Selector __cmd__) { return __self__.getStepValue(); }
+        @Callback @BindSelector("setStepValue:") public static void setStepValue(UIStepper __self__, Selector __cmd__, double stepValue) { __self__.setStepValue(stepValue); }
+        @Callback @BindSelector("tintColor") public static UIColor getTintColor(UIStepper __self__, Selector __cmd__) { return __self__.getTintColor(); }
+        @Callback @BindSelector("setTintColor:") public static void setTintColor(UIStepper __self__, Selector __cmd__, UIColor tintColor) { __self__.setTintColor(tintColor); }
+        @Callback @BindSelector("value") public static double getValue(UIStepper __self__, Selector __cmd__) { return __self__.getValue(); }
+        @Callback @BindSelector("setValue:") public static void setValue(UIStepper __self__, Selector __cmd__, double value) { __self__.setValue(value); }
+        @Callback @BindSelector("wraps") public static boolean isWraps(UIStepper __self__, Selector __cmd__) { return __self__.isWraps(); }
+        @Callback @BindSelector("setWraps:") public static void setWraps(UIStepper __self__, Selector __cmd__, boolean wraps) { __self__.setWraps(wraps); }
         @Callback @BindSelector("backgroundImageForState:") public static UIImage getBackgroundImage(UIStepper __self__, Selector __cmd__, UIControlState state) { return __self__.getBackgroundImage(state); }
         @Callback @BindSelector("decrementImageForState:") public static UIImage getDecrementImage(UIStepper __self__, Selector __cmd__, UIControlState state) { return __self__.getDecrementImage(state); }
         @Callback @BindSelector("dividerImageForLeftSegmentState:rightSegmentState:") public static UIImage getDividerImage(UIStepper __self__, Selector __cmd__, UIControlState leftState, UIControlState rightState) { return __self__.getDividerImage(leftState, rightState); }

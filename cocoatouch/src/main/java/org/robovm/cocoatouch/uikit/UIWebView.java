@@ -378,6 +378,27 @@ public class /*<name>*/ UIWebView /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("allowsInlineMediaPlayback") public static boolean isAllowsInlineMediaPlayback(UIWebView __self__, Selector __cmd__) { return __self__.isAllowsInlineMediaPlayback(); }
+        @Callback @BindSelector("setAllowsInlineMediaPlayback:") public static void setAllowsInlineMediaPlayback(UIWebView __self__, Selector __cmd__, boolean allowsInlineMediaPlayback) { __self__.setAllowsInlineMediaPlayback(allowsInlineMediaPlayback); }
+        @Callback @BindSelector("canGoBack") public static boolean isCanGoBack(UIWebView __self__, Selector __cmd__) { return __self__.isCanGoBack(); }
+        @Callback @BindSelector("canGoForward") public static boolean isCanGoForward(UIWebView __self__, Selector __cmd__) { return __self__.isCanGoForward(); }
+        @Callback @BindSelector("dataDetectorTypes") public static UIDataDetectorTypes getDataDetectorTypes(UIWebView __self__, Selector __cmd__) { return __self__.getDataDetectorTypes(); }
+        @Callback @BindSelector("setDataDetectorTypes:") public static void setDataDetectorTypes(UIWebView __self__, Selector __cmd__, UIDataDetectorTypes dataDetectorTypes) { __self__.setDataDetectorTypes(dataDetectorTypes); }
+        @Callback @BindSelector("delegate") public static UIWebViewDelegate getDelegate(UIWebView __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UIWebView __self__, Selector __cmd__, UIWebViewDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("keyboardDisplayRequiresUserAction") public static boolean isKeyboardDisplayRequiresUserAction(UIWebView __self__, Selector __cmd__) { return __self__.isKeyboardDisplayRequiresUserAction(); }
+        @Callback @BindSelector("setKeyboardDisplayRequiresUserAction:") public static void setKeyboardDisplayRequiresUserAction(UIWebView __self__, Selector __cmd__, boolean keyboardDisplayRequiresUserAction) { __self__.setKeyboardDisplayRequiresUserAction(keyboardDisplayRequiresUserAction); }
+        @Callback @BindSelector("isLoading") public static boolean isLoading(UIWebView __self__, Selector __cmd__) { return __self__.isLoading(); }
+        @Callback @BindSelector("mediaPlaybackAllowsAirPlay") public static boolean isMediaPlaybackAllowsAirPlay(UIWebView __self__, Selector __cmd__) { return __self__.isMediaPlaybackAllowsAirPlay(); }
+        @Callback @BindSelector("setMediaPlaybackAllowsAirPlay:") public static void setMediaPlaybackAllowsAirPlay(UIWebView __self__, Selector __cmd__, boolean mediaPlaybackAllowsAirPlay) { __self__.setMediaPlaybackAllowsAirPlay(mediaPlaybackAllowsAirPlay); }
+        @Callback @BindSelector("mediaPlaybackRequiresUserAction") public static boolean isMediaPlaybackRequiresUserAction(UIWebView __self__, Selector __cmd__) { return __self__.isMediaPlaybackRequiresUserAction(); }
+        @Callback @BindSelector("setMediaPlaybackRequiresUserAction:") public static void setMediaPlaybackRequiresUserAction(UIWebView __self__, Selector __cmd__, boolean mediaPlaybackRequiresUserAction) { __self__.setMediaPlaybackRequiresUserAction(mediaPlaybackRequiresUserAction); }
+        @Callback @BindSelector("request") public static NSURLRequest getRequest(UIWebView __self__, Selector __cmd__) { return __self__.getRequest(); }
+        @Callback @BindSelector("scalesPageToFit") public static boolean isScalesPageToFit(UIWebView __self__, Selector __cmd__) { return __self__.isScalesPageToFit(); }
+        @Callback @BindSelector("setScalesPageToFit:") public static void setScalesPageToFit(UIWebView __self__, Selector __cmd__, boolean scalesPageToFit) { __self__.setScalesPageToFit(scalesPageToFit); }
+        @Callback @BindSelector("scrollView") public static UIScrollView getScrollView(UIWebView __self__, Selector __cmd__) { return __self__.getScrollView(); }
+        @Callback @BindSelector("suppressesIncrementalRendering") public static boolean isSuppressesIncrementalRendering(UIWebView __self__, Selector __cmd__) { return __self__.isSuppressesIncrementalRendering(); }
+        @Callback @BindSelector("setSuppressesIncrementalRendering:") public static void setSuppressesIncrementalRendering(UIWebView __self__, Selector __cmd__, boolean suppressesIncrementalRendering) { __self__.setSuppressesIncrementalRendering(suppressesIncrementalRendering); }
         @Callback @BindSelector("stringByEvaluatingJavaScriptFromString:") public static String evaluateJavaScript(UIWebView __self__, Selector __cmd__, String script) { return __self__.evaluateJavaScript(script); }
         @Callback @BindSelector("goBack") public static void goBack(UIWebView __self__, Selector __cmd__) { __self__.goBack(); }
         @Callback @BindSelector("goForward") public static void goForward(UIWebView __self__, Selector __cmd__) { __self__.goForward(); }

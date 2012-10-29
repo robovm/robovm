@@ -135,6 +135,15 @@ public class /*<name>*/ NSStringDrawingContext /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("actualScaleFactor") public static float getActualScaleFactor(NSStringDrawingContext __self__, Selector __cmd__) { return __self__.getActualScaleFactor(); }
+        @Callback @BindSelector("actualTrackingAdjustment") public static float getActualTrackingAdjustment(NSStringDrawingContext __self__, Selector __cmd__) { return __self__.getActualTrackingAdjustment(); }
+        @Callback @BindSelector("minimumScaleFactor") public static float getMinimumScaleFactor(NSStringDrawingContext __self__, Selector __cmd__) { return __self__.getMinimumScaleFactor(); }
+        @Callback @BindSelector("setMinimumScaleFactor:") public static void setMinimumScaleFactor(NSStringDrawingContext __self__, Selector __cmd__, float minimumScaleFactor) { __self__.setMinimumScaleFactor(minimumScaleFactor); }
+        @Callback @BindSelector("minimumTrackingAdjustment") public static float getMinimumTrackingAdjustment(NSStringDrawingContext __self__, Selector __cmd__) { return __self__.getMinimumTrackingAdjustment(); }
+        @Callback @BindSelector("setMinimumTrackingAdjustment:") public static void setMinimumTrackingAdjustment(NSStringDrawingContext __self__, Selector __cmd__, float minimumTrackingAdjustment) { __self__.setMinimumTrackingAdjustment(minimumTrackingAdjustment); }
+        @Callback @BindSelector("totalBounds") public static CGRect getTotalBounds(NSStringDrawingContext __self__, Selector __cmd__) { return __self__.getTotalBounds(); }
+    }
     /*</callbacks>*/
 
 }

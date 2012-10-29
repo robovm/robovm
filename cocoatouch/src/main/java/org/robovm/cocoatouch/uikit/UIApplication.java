@@ -652,6 +652,32 @@ public class /*<name>*/ UIApplication /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("applicationIconBadgeNumber") public static int getApplicationIconBadgeNumber(UIApplication __self__, Selector __cmd__) { return __self__.getApplicationIconBadgeNumber(); }
+        @Callback @BindSelector("setApplicationIconBadgeNumber:") public static void setApplicationIconBadgeNumber(UIApplication __self__, Selector __cmd__, int applicationIconBadgeNumber) { __self__.setApplicationIconBadgeNumber(applicationIconBadgeNumber); }
+        @Callback @BindSelector("applicationState") public static UIApplicationState getApplicationState(UIApplication __self__, Selector __cmd__) { return __self__.getApplicationState(); }
+        @Callback @BindSelector("applicationSupportsShakeToEdit") public static boolean isApplicationSupportsShakeToEdit(UIApplication __self__, Selector __cmd__) { return __self__.isApplicationSupportsShakeToEdit(); }
+        @Callback @BindSelector("setApplicationSupportsShakeToEdit:") public static void setApplicationSupportsShakeToEdit(UIApplication __self__, Selector __cmd__, boolean applicationSupportsShakeToEdit) { __self__.setApplicationSupportsShakeToEdit(applicationSupportsShakeToEdit); }
+        @Callback @BindSelector("backgroundTimeRemaining") public static double getBackgroundTimeRemaining(UIApplication __self__, Selector __cmd__) { return __self__.getBackgroundTimeRemaining(); }
+        @Callback @BindSelector("delegate") public static UIApplicationDelegate getDelegate(UIApplication __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UIApplication __self__, Selector __cmd__, UIApplicationDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("isIdleTimerDisabled") public static boolean isIdleTimerDisabled(UIApplication __self__, Selector __cmd__) { return __self__.isIdleTimerDisabled(); }
+        @Callback @BindSelector("setIdleTimerDisabled:") public static void setIdleTimerDisabled(UIApplication __self__, Selector __cmd__, boolean idleTimerDisabled) { __self__.setIdleTimerDisabled(idleTimerDisabled); }
+        @Callback @BindSelector("keyWindow") public static UIWindow getKeyWindow(UIApplication __self__, Selector __cmd__) { return __self__.getKeyWindow(); }
+        @Callback @BindSelector("isNetworkActivityIndicatorVisible") public static boolean isNetworkActivityIndicatorVisible(UIApplication __self__, Selector __cmd__) { return __self__.isNetworkActivityIndicatorVisible(); }
+        @Callback @BindSelector("setNetworkActivityIndicatorVisible:") public static void setNetworkActivityIndicatorVisible(UIApplication __self__, Selector __cmd__, boolean networkActivityIndicatorVisible) { __self__.setNetworkActivityIndicatorVisible(networkActivityIndicatorVisible); }
+        @Callback @BindSelector("isProtectedDataAvailable") public static boolean isProtectedDataAvailable(UIApplication __self__, Selector __cmd__) { return __self__.isProtectedDataAvailable(); }
+        @Callback @BindSelector("scheduledLocalNotifications") public static NSArray getScheduledLocalNotifications(UIApplication __self__, Selector __cmd__) { return __self__.getScheduledLocalNotifications(); }
+        @Callback @BindSelector("setScheduledLocalNotifications:") public static void setScheduledLocalNotifications(UIApplication __self__, Selector __cmd__, NSArray scheduledLocalNotifications) { __self__.setScheduledLocalNotifications(scheduledLocalNotifications); }
+        @Callback @BindSelector("statusBarFrame") public static CGRect getStatusBarFrame(UIApplication __self__, Selector __cmd__) { return __self__.getStatusBarFrame(); }
+        @Callback @BindSelector("isStatusBarHidden") public static boolean isStatusBarHidden(UIApplication __self__, Selector __cmd__) { return __self__.isStatusBarHidden(); }
+        @Callback @BindSelector("setStatusBarHidden:") public static void setStatusBarHidden(UIApplication __self__, Selector __cmd__, boolean statusBarHidden) { __self__.setStatusBarHidden(statusBarHidden); }
+        @Callback @BindSelector("statusBarOrientation") public static UIInterfaceOrientation getStatusBarOrientation(UIApplication __self__, Selector __cmd__) { return __self__.getStatusBarOrientation(); }
+        @Callback @BindSelector("setStatusBarOrientation:") public static void setStatusBarOrientation(UIApplication __self__, Selector __cmd__, UIInterfaceOrientation statusBarOrientation) { __self__.setStatusBarOrientation(statusBarOrientation); }
+        @Callback @BindSelector("statusBarOrientationAnimationDuration") public static double getStatusBarOrientationAnimationDuration(UIApplication __self__, Selector __cmd__) { return __self__.getStatusBarOrientationAnimationDuration(); }
+        @Callback @BindSelector("statusBarStyle") public static UIStatusBarStyle getStatusBarStyle(UIApplication __self__, Selector __cmd__) { return __self__.getStatusBarStyle(); }
+        @Callback @BindSelector("setStatusBarStyle:") public static void setStatusBarStyle(UIApplication __self__, Selector __cmd__, UIStatusBarStyle statusBarStyle) { __self__.setStatusBarStyle(statusBarStyle); }
+        @Callback @BindSelector("userInterfaceLayoutDirection") public static UIUserInterfaceLayoutDirection getUserInterfaceLayoutDirection(UIApplication __self__, Selector __cmd__) { return __self__.getUserInterfaceLayoutDirection(); }
+        @Callback @BindSelector("windows") public static NSArray getWindows(UIApplication __self__, Selector __cmd__) { return __self__.getWindows(); }
         @Callback @BindSelector("beginBackgroundTaskWithExpirationHandler:") public static int beginBackgroundTask(UIApplication __self__, Selector __cmd__, VoidBlock handler) { return __self__.beginBackgroundTask(handler); }
         @Callback @BindSelector("beginIgnoringInteractionEvents") public static void beginIgnoringInteractionEvents(UIApplication __self__, Selector __cmd__) { __self__.beginIgnoringInteractionEvents(); }
         @Callback @BindSelector("beginReceivingRemoteControlEvents") public static void beginReceivingRemoteControlEvents(UIApplication __self__, Selector __cmd__) { __self__.beginReceivingRemoteControlEvents(); }

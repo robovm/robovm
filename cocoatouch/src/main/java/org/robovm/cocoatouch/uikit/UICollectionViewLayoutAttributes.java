@@ -285,6 +285,26 @@ public class /*<name>*/ UICollectionViewLayoutAttributes /*</name>*/
     }
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("alpha") public static float getAlpha(UICollectionViewLayoutAttributes __self__, Selector __cmd__) { return __self__.getAlpha(); }
+        @Callback @BindSelector("setAlpha:") public static void setAlpha(UICollectionViewLayoutAttributes __self__, Selector __cmd__, float alpha) { __self__.setAlpha(alpha); }
+        @Callback @BindSelector("center") public static CGPoint getCenter(UICollectionViewLayoutAttributes __self__, Selector __cmd__) { return __self__.getCenter(); }
+        @Callback @BindSelector("setCenter:") public static void setCenter(UICollectionViewLayoutAttributes __self__, Selector __cmd__, CGPoint center) { __self__.setCenter(center); }
+        @Callback @BindSelector("frame") public static CGRect getFrame(UICollectionViewLayoutAttributes __self__, Selector __cmd__) { return __self__.getFrame(); }
+        @Callback @BindSelector("setFrame:") public static void setFrame(UICollectionViewLayoutAttributes __self__, Selector __cmd__, CGRect frame) { __self__.setFrame(frame); }
+        @Callback @BindSelector("isHidden") public static boolean isHidden(UICollectionViewLayoutAttributes __self__, Selector __cmd__) { return __self__.isHidden(); }
+        @Callback @BindSelector("setHidden:") public static void setHidden(UICollectionViewLayoutAttributes __self__, Selector __cmd__, boolean hidden) { __self__.setHidden(hidden); }
+        @Callback @BindSelector("indexPath") public static NSIndexPath getIndexPath(UICollectionViewLayoutAttributes __self__, Selector __cmd__) { return __self__.getIndexPath(); }
+        @Callback @BindSelector("setIndexPath:") public static void setIndexPath(UICollectionViewLayoutAttributes __self__, Selector __cmd__, NSIndexPath indexPath) { __self__.setIndexPath(indexPath); }
+        @Callback @BindSelector("representedElementCategory") public static UICollectionElementCategory getRepresentedElementCategory(UICollectionViewLayoutAttributes __self__, Selector __cmd__) { return __self__.getRepresentedElementCategory(); }
+        @Callback @BindSelector("representedElementKind") public static String getRepresentedElementKind(UICollectionViewLayoutAttributes __self__, Selector __cmd__) { return __self__.getRepresentedElementKind(); }
+        @Callback @BindSelector("size") public static CGSize getSize(UICollectionViewLayoutAttributes __self__, Selector __cmd__) { return __self__.getSize(); }
+        @Callback @BindSelector("setSize:") public static void setSize(UICollectionViewLayoutAttributes __self__, Selector __cmd__, CGSize size) { __self__.setSize(size); }
+        @Callback @BindSelector("transform3D") public static CATransform3D getTransform3D(UICollectionViewLayoutAttributes __self__, Selector __cmd__) { return __self__.getTransform3D(); }
+        @Callback @BindSelector("setTransform3D:") public static void setTransform3D(UICollectionViewLayoutAttributes __self__, Selector __cmd__, CATransform3D transform3D) { __self__.setTransform3D(transform3D); }
+        @Callback @BindSelector("zIndex") public static int getZIndex(UICollectionViewLayoutAttributes __self__, Selector __cmd__) { return __self__.getZIndex(); }
+        @Callback @BindSelector("setZIndex:") public static void setZIndex(UICollectionViewLayoutAttributes __self__, Selector __cmd__, int zIndex) { __self__.setZIndex(zIndex); }
+    }
     /*</callbacks>*/
 
 }

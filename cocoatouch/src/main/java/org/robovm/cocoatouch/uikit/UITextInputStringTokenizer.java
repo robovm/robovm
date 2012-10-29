@@ -53,14 +53,14 @@ public class /*<name>*/ UITextInputStringTokenizer /*</name>*/
     public UITextInputStringTokenizer() {}
     
     private static final Selector initWithTextInput$ = Selector.register("initWithTextInput:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithTextInput(UITextInputStringTokenizer __self__, Selector __cmd__, UITextInput textInput);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithTextInput(UITextInputStringTokenizer __self__, Selector __cmd__, UITextInput textInput);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputStringTokenizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UITextInputStringTokenizer/initWithTextInput:">- (id)initWithTextInput:(UIResponder &amp;lt; UITextInput &amp;gt; *)textInput</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextInputStringTokenizer(UITextInput textInput) {
         super((SkipInit) null);
-        objc_initWithTextInput(this, initWithTextInput$, textInput);
+        setHandle(objc_initWithTextInput(this, initWithTextInput$, textInput));
     }
     /*</constructors>*/
     /*<properties>*/

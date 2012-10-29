@@ -708,6 +708,52 @@ public class /*<name>*/ UISearchBar /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("autocapitalizationType") public static UITextAutocapitalizationType getAutocapitalizationType(UISearchBar __self__, Selector __cmd__) { return __self__.getAutocapitalizationType(); }
+        @Callback @BindSelector("setAutocapitalizationType:") public static void setAutocapitalizationType(UISearchBar __self__, Selector __cmd__, UITextAutocapitalizationType autocapitalizationType) { __self__.setAutocapitalizationType(autocapitalizationType); }
+        @Callback @BindSelector("autocorrectionType") public static UITextAutocorrectionType getAutocorrectionType(UISearchBar __self__, Selector __cmd__) { return __self__.getAutocorrectionType(); }
+        @Callback @BindSelector("setAutocorrectionType:") public static void setAutocorrectionType(UISearchBar __self__, Selector __cmd__, UITextAutocorrectionType autocorrectionType) { __self__.setAutocorrectionType(autocorrectionType); }
+        @Callback @BindSelector("backgroundImage") public static UIImage getBackgroundImage(UISearchBar __self__, Selector __cmd__) { return __self__.getBackgroundImage(); }
+        @Callback @BindSelector("setBackgroundImage:") public static void setBackgroundImage(UISearchBar __self__, Selector __cmd__, UIImage backgroundImage) { __self__.setBackgroundImage(backgroundImage); }
+        @Callback @BindSelector("barStyle") public static UIBarStyle getBarStyle(UISearchBar __self__, Selector __cmd__) { return __self__.getBarStyle(); }
+        @Callback @BindSelector("setBarStyle:") public static void setBarStyle(UISearchBar __self__, Selector __cmd__, UIBarStyle barStyle) { __self__.setBarStyle(barStyle); }
+        @Callback @BindSelector("delegate") public static UISearchBarDelegate getDelegate(UISearchBar __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UISearchBar __self__, Selector __cmd__, UISearchBarDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("inputAccessoryView") public static UIView getInputAccessoryView(UISearchBar __self__, Selector __cmd__) { return __self__.getInputAccessoryView(); }
+        @Callback @BindSelector("setInputAccessoryView:") public static void setInputAccessoryView(UISearchBar __self__, Selector __cmd__, UIView inputAccessoryView) { __self__.setInputAccessoryView(inputAccessoryView); }
+        @Callback @BindSelector("keyboardType") public static UIKeyboardType getKeyboardType(UISearchBar __self__, Selector __cmd__) { return __self__.getKeyboardType(); }
+        @Callback @BindSelector("setKeyboardType:") public static void setKeyboardType(UISearchBar __self__, Selector __cmd__, UIKeyboardType keyboardType) { __self__.setKeyboardType(keyboardType); }
+        @Callback @BindSelector("placeholder") public static String getPlaceholder(UISearchBar __self__, Selector __cmd__) { return __self__.getPlaceholder(); }
+        @Callback @BindSelector("setPlaceholder:") public static void setPlaceholder(UISearchBar __self__, Selector __cmd__, String placeholder) { __self__.setPlaceholder(placeholder); }
+        @Callback @BindSelector("prompt") public static String getPrompt(UISearchBar __self__, Selector __cmd__) { return __self__.getPrompt(); }
+        @Callback @BindSelector("setPrompt:") public static void setPrompt(UISearchBar __self__, Selector __cmd__, String prompt) { __self__.setPrompt(prompt); }
+        @Callback @BindSelector("scopeBarBackgroundImage") public static UIImage getScopeBarBackgroundImage(UISearchBar __self__, Selector __cmd__) { return __self__.getScopeBarBackgroundImage(); }
+        @Callback @BindSelector("setScopeBarBackgroundImage:") public static void setScopeBarBackgroundImage(UISearchBar __self__, Selector __cmd__, UIImage scopeBarBackgroundImage) { __self__.setScopeBarBackgroundImage(scopeBarBackgroundImage); }
+        @Callback @BindSelector("scopeButtonTitles") public static NSArray getScopeButtonTitles(UISearchBar __self__, Selector __cmd__) { return __self__.getScopeButtonTitles(); }
+        @Callback @BindSelector("setScopeButtonTitles:") public static void setScopeButtonTitles(UISearchBar __self__, Selector __cmd__, NSArray scopeButtonTitles) { __self__.setScopeButtonTitles(scopeButtonTitles); }
+        @Callback @BindSelector("searchFieldBackgroundPositionAdjustment") public static UIOffset getSearchFieldBackgroundPositionAdjustment(UISearchBar __self__, Selector __cmd__) { return __self__.getSearchFieldBackgroundPositionAdjustment(); }
+        @Callback @BindSelector("setSearchFieldBackgroundPositionAdjustment:") public static void setSearchFieldBackgroundPositionAdjustment(UISearchBar __self__, Selector __cmd__, UIOffset searchFieldBackgroundPositionAdjustment) { __self__.setSearchFieldBackgroundPositionAdjustment(searchFieldBackgroundPositionAdjustment); }
+        @Callback @BindSelector("isSearchResultsButtonSelected") public static boolean isSearchResultsButtonSelected(UISearchBar __self__, Selector __cmd__) { return __self__.isSearchResultsButtonSelected(); }
+        @Callback @BindSelector("setSearchResultsButtonSelected:") public static void setSearchResultsButtonSelected(UISearchBar __self__, Selector __cmd__, boolean searchResultsButtonSelected) { __self__.setSearchResultsButtonSelected(searchResultsButtonSelected); }
+        @Callback @BindSelector("searchTextPositionAdjustment") public static UIOffset getSearchTextPositionAdjustment(UISearchBar __self__, Selector __cmd__) { return __self__.getSearchTextPositionAdjustment(); }
+        @Callback @BindSelector("setSearchTextPositionAdjustment:") public static void setSearchTextPositionAdjustment(UISearchBar __self__, Selector __cmd__, UIOffset searchTextPositionAdjustment) { __self__.setSearchTextPositionAdjustment(searchTextPositionAdjustment); }
+        @Callback @BindSelector("selectedScopeButtonIndex") public static int getSelectedScopeButtonIndex(UISearchBar __self__, Selector __cmd__) { return __self__.getSelectedScopeButtonIndex(); }
+        @Callback @BindSelector("setSelectedScopeButtonIndex:") public static void setSelectedScopeButtonIndex(UISearchBar __self__, Selector __cmd__, int selectedScopeButtonIndex) { __self__.setSelectedScopeButtonIndex(selectedScopeButtonIndex); }
+        @Callback @BindSelector("showsBookmarkButton") public static boolean isShowsBookmarkButton(UISearchBar __self__, Selector __cmd__) { return __self__.isShowsBookmarkButton(); }
+        @Callback @BindSelector("setShowsBookmarkButton:") public static void setShowsBookmarkButton(UISearchBar __self__, Selector __cmd__, boolean showsBookmarkButton) { __self__.setShowsBookmarkButton(showsBookmarkButton); }
+        @Callback @BindSelector("showsCancelButton") public static boolean isShowsCancelButton(UISearchBar __self__, Selector __cmd__) { return __self__.isShowsCancelButton(); }
+        @Callback @BindSelector("setShowsCancelButton:") public static void setShowsCancelButton(UISearchBar __self__, Selector __cmd__, boolean showsCancelButton) { __self__.setShowsCancelButton(showsCancelButton); }
+        @Callback @BindSelector("showsScopeBar") public static boolean isShowsScopeBar(UISearchBar __self__, Selector __cmd__) { return __self__.isShowsScopeBar(); }
+        @Callback @BindSelector("setShowsScopeBar:") public static void setShowsScopeBar(UISearchBar __self__, Selector __cmd__, boolean showsScopeBar) { __self__.setShowsScopeBar(showsScopeBar); }
+        @Callback @BindSelector("showsSearchResultsButton") public static boolean isShowsSearchResultsButton(UISearchBar __self__, Selector __cmd__) { return __self__.isShowsSearchResultsButton(); }
+        @Callback @BindSelector("setShowsSearchResultsButton:") public static void setShowsSearchResultsButton(UISearchBar __self__, Selector __cmd__, boolean showsSearchResultsButton) { __self__.setShowsSearchResultsButton(showsSearchResultsButton); }
+        @Callback @BindSelector("spellCheckingType") public static UITextSpellCheckingType getSpellCheckingType(UISearchBar __self__, Selector __cmd__) { return __self__.getSpellCheckingType(); }
+        @Callback @BindSelector("setSpellCheckingType:") public static void setSpellCheckingType(UISearchBar __self__, Selector __cmd__, UITextSpellCheckingType spellCheckingType) { __self__.setSpellCheckingType(spellCheckingType); }
+        @Callback @BindSelector("text") public static String getText(UISearchBar __self__, Selector __cmd__) { return __self__.getText(); }
+        @Callback @BindSelector("setText:") public static void setText(UISearchBar __self__, Selector __cmd__, String text) { __self__.setText(text); }
+        @Callback @BindSelector("tintColor") public static UIColor getTintColor(UISearchBar __self__, Selector __cmd__) { return __self__.getTintColor(); }
+        @Callback @BindSelector("setTintColor:") public static void setTintColor(UISearchBar __self__, Selector __cmd__, UIColor tintColor) { __self__.setTintColor(tintColor); }
+        @Callback @BindSelector("isTranslucent") public static boolean isTranslucent(UISearchBar __self__, Selector __cmd__) { return __self__.isTranslucent(); }
+        @Callback @BindSelector("setTranslucent:") public static void setTranslucent(UISearchBar __self__, Selector __cmd__, boolean translucent) { __self__.setTranslucent(translucent); }
         @Callback @BindSelector("imageForSearchBarIcon:state:") public static UIImage getImageForSearchBarIcon(UISearchBar __self__, Selector __cmd__, UISearchBarIcon icon, UIControlState state) { return __self__.getImageForSearchBarIcon(icon, state); }
         @Callback @BindSelector("positionAdjustmentForSearchBarIcon:") public static UIOffset getPositionAdjustmentForSearchBarIcon(UISearchBar __self__, Selector __cmd__, UISearchBarIcon icon) { return __self__.getPositionAdjustmentForSearchBarIcon(icon); }
         @Callback @BindSelector("scopeBarButtonBackgroundImageForState:") public static UIImage getScopeBarButtonBackgroundImage(UISearchBar __self__, Selector __cmd__, UIControlState state) { return __self__.getScopeBarButtonBackgroundImage(state); }

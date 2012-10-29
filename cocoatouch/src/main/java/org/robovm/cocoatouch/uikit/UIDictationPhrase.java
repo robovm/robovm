@@ -81,6 +81,10 @@ public class /*<name>*/ UIDictationPhrase /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("alternativeInterpretations") public static NSArray getAlternativeInterpretations(UIDictationPhrase __self__, Selector __cmd__) { return __self__.getAlternativeInterpretations(); }
+        @Callback @BindSelector("text") public static String getText(UIDictationPhrase __self__, Selector __cmd__) { return __self__.getText(); }
+    }
     /*</callbacks>*/
 
 }

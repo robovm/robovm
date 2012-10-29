@@ -285,6 +285,21 @@ public class /*<name>*/ UIPrintInteractionController /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("delegate") public static UIPrintInteractionControllerDelegate getDelegate(UIPrintInteractionController __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UIPrintInteractionController __self__, Selector __cmd__, UIPrintInteractionControllerDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("printFormatter") public static UIPrintFormatter getPrintFormatter(UIPrintInteractionController __self__, Selector __cmd__) { return __self__.getPrintFormatter(); }
+        @Callback @BindSelector("setPrintFormatter:") public static void setPrintFormatter(UIPrintInteractionController __self__, Selector __cmd__, UIPrintFormatter printFormatter) { __self__.setPrintFormatter(printFormatter); }
+        @Callback @BindSelector("printInfo") public static UIPrintInfo getPrintInfo(UIPrintInteractionController __self__, Selector __cmd__) { return __self__.getPrintInfo(); }
+        @Callback @BindSelector("setPrintInfo:") public static void setPrintInfo(UIPrintInteractionController __self__, Selector __cmd__, UIPrintInfo printInfo) { __self__.setPrintInfo(printInfo); }
+        @Callback @BindSelector("printPageRenderer") public static UIPrintPageRenderer getPrintPageRenderer(UIPrintInteractionController __self__, Selector __cmd__) { return __self__.getPrintPageRenderer(); }
+        @Callback @BindSelector("setPrintPageRenderer:") public static void setPrintPageRenderer(UIPrintInteractionController __self__, Selector __cmd__, UIPrintPageRenderer printPageRenderer) { __self__.setPrintPageRenderer(printPageRenderer); }
+        @Callback @BindSelector("printPaper") public static UIPrintPaper getPrintPaper(UIPrintInteractionController __self__, Selector __cmd__) { return __self__.getPrintPaper(); }
+        @Callback @BindSelector("printingItem") public static NSObject getPrintingItem(UIPrintInteractionController __self__, Selector __cmd__) { return __self__.getPrintingItem(); }
+        @Callback @BindSelector("setPrintingItem:") public static void setPrintingItem(UIPrintInteractionController __self__, Selector __cmd__, NSObject printingItem) { __self__.setPrintingItem(printingItem); }
+        @Callback @BindSelector("printingItems") public static NSArray getPrintingItems(UIPrintInteractionController __self__, Selector __cmd__) { return __self__.getPrintingItems(); }
+        @Callback @BindSelector("setPrintingItems:") public static void setPrintingItems(UIPrintInteractionController __self__, Selector __cmd__, NSArray printingItems) { __self__.setPrintingItems(printingItems); }
+        @Callback @BindSelector("showsPageRange") public static boolean isShowsPageRange(UIPrintInteractionController __self__, Selector __cmd__) { return __self__.isShowsPageRange(); }
+        @Callback @BindSelector("setShowsPageRange:") public static void setShowsPageRange(UIPrintInteractionController __self__, Selector __cmd__, boolean showsPageRange) { __self__.setShowsPageRange(showsPageRange); }
         @Callback @BindSelector("dismissAnimated:") public static void dismiss(UIPrintInteractionController __self__, Selector __cmd__, boolean animated) { __self__.dismiss(animated); }
     }
     /*</callbacks>*/

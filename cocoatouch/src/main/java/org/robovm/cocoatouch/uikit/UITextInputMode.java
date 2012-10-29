@@ -89,6 +89,9 @@ public class /*<name>*/ UITextInputMode /*</name>*/
     }
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("primaryLanguage") public static String getPrimaryLanguage(UITextInputMode __self__, Selector __cmd__) { return __self__.getPrimaryLanguage(); }
+    }
     /*</callbacks>*/
 
 }

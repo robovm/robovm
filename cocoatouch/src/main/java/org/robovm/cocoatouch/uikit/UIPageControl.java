@@ -213,6 +213,18 @@ public class /*<name>*/ UIPageControl /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("currentPage") public static int getCurrentPage(UIPageControl __self__, Selector __cmd__) { return __self__.getCurrentPage(); }
+        @Callback @BindSelector("setCurrentPage:") public static void setCurrentPage(UIPageControl __self__, Selector __cmd__, int currentPage) { __self__.setCurrentPage(currentPage); }
+        @Callback @BindSelector("currentPageIndicatorTintColor") public static UIColor getCurrentPageIndicatorTintColor(UIPageControl __self__, Selector __cmd__) { return __self__.getCurrentPageIndicatorTintColor(); }
+        @Callback @BindSelector("setCurrentPageIndicatorTintColor:") public static void setCurrentPageIndicatorTintColor(UIPageControl __self__, Selector __cmd__, UIColor currentPageIndicatorTintColor) { __self__.setCurrentPageIndicatorTintColor(currentPageIndicatorTintColor); }
+        @Callback @BindSelector("defersCurrentPageDisplay") public static boolean isDefersCurrentPageDisplay(UIPageControl __self__, Selector __cmd__) { return __self__.isDefersCurrentPageDisplay(); }
+        @Callback @BindSelector("setDefersCurrentPageDisplay:") public static void setDefersCurrentPageDisplay(UIPageControl __self__, Selector __cmd__, boolean defersCurrentPageDisplay) { __self__.setDefersCurrentPageDisplay(defersCurrentPageDisplay); }
+        @Callback @BindSelector("hidesForSinglePage") public static boolean isHidesForSinglePage(UIPageControl __self__, Selector __cmd__) { return __self__.isHidesForSinglePage(); }
+        @Callback @BindSelector("setHidesForSinglePage:") public static void setHidesForSinglePage(UIPageControl __self__, Selector __cmd__, boolean hidesForSinglePage) { __self__.setHidesForSinglePage(hidesForSinglePage); }
+        @Callback @BindSelector("numberOfPages") public static int getNumberOfPages(UIPageControl __self__, Selector __cmd__) { return __self__.getNumberOfPages(); }
+        @Callback @BindSelector("setNumberOfPages:") public static void setNumberOfPages(UIPageControl __self__, Selector __cmd__, int numberOfPages) { __self__.setNumberOfPages(numberOfPages); }
+        @Callback @BindSelector("pageIndicatorTintColor") public static UIColor getPageIndicatorTintColor(UIPageControl __self__, Selector __cmd__) { return __self__.getPageIndicatorTintColor(); }
+        @Callback @BindSelector("setPageIndicatorTintColor:") public static void setPageIndicatorTintColor(UIPageControl __self__, Selector __cmd__, UIColor pageIndicatorTintColor) { __self__.setPageIndicatorTintColor(pageIndicatorTintColor); }
         @Callback @BindSelector("sizeForNumberOfPages:") public static CGSize getSizeForNumberOfPages(UIPageControl __self__, Selector __cmd__, int pageCount) { return __self__.getSizeForNumberOfPages(pageCount); }
         @Callback @BindSelector("updateCurrentPageDisplay") public static void updateCurrentPageDisplay(UIPageControl __self__, Selector __cmd__) { __self__.updateCurrentPageDisplay(); }
     }

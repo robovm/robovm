@@ -136,6 +136,9 @@ public class /*<name>*/ UIEvent /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("subtype") public static UIEventSubtype getSubtype(UIEvent __self__, Selector __cmd__) { return __self__.getSubtype(); }
+        @Callback @BindSelector("timestamp") public static double getTimestamp(UIEvent __self__, Selector __cmd__) { return __self__.getTimestamp(); }
+        @Callback @BindSelector("type") public static UIEventType getType(UIEvent __self__, Selector __cmd__) { return __self__.getType(); }
         @Callback @BindSelector("allTouches") public static NSSet getAllTouches(UIEvent __self__, Selector __cmd__) { return __self__.getAllTouches(); }
         @Callback @BindSelector("touchesForView:") public static NSSet getTouches(UIEvent __self__, Selector __cmd__, UIView view) { return __self__.getTouches(view); }
         @Callback @BindSelector("touchesForGestureRecognizer:") public static NSSet getTouches(UIEvent __self__, Selector __cmd__, UIGestureRecognizer gesture) { return __self__.getTouches(gesture); }

@@ -53,25 +53,25 @@ public class /*<name>*/ UITabBarItem /*</name>*/
     public UITabBarItem() {}
     
     private static final Selector initWithTabBarSystemItem$tag$ = Selector.register("initWithTabBarSystemItem:tag:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithTabBarSystemItem(UITabBarItem __self__, Selector __cmd__, UITabBarSystemItem systemItem, int tag);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithTabBarSystemItem(UITabBarItem __self__, Selector __cmd__, UITabBarSystemItem systemItem, int tag);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarItem/initWithTabBarSystemItem:tag:">- (id)initWithTabBarSystemItem:(UITabBarSystemItem)systemItem tag:(NSInteger)tag</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITabBarItem(UITabBarSystemItem systemItem, int tag) {
         super((SkipInit) null);
-        objc_initWithTabBarSystemItem(this, initWithTabBarSystemItem$tag$, systemItem, tag);
+        setHandle(objc_initWithTabBarSystemItem(this, initWithTabBarSystemItem$tag$, systemItem, tag));
     }
     
     private static final Selector initWithTitle$image$tag$ = Selector.register("initWithTitle:image:tag:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithTitle(UITabBarItem __self__, Selector __cmd__, String title, UIImage image, int tag);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithTitle(UITabBarItem __self__, Selector __cmd__, String title, UIImage image, int tag);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarItem/initWithTitle:image:tag:">- (id)initWithTitle:(NSString *)title image:(UIImage *)image tag:(NSInteger)tag</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITabBarItem(String title, UIImage image, int tag) {
         super((SkipInit) null);
-        objc_initWithTitle(this, initWithTitle$image$tag$, title, image, tag);
+        setHandle(objc_initWithTitle(this, initWithTitle$image$tag$, title, image, tag));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -157,6 +157,8 @@ public class /*<name>*/ UITabBarItem /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("badgeValue") public static String getBadgeValue(UITabBarItem __self__, Selector __cmd__) { return __self__.getBadgeValue(); }
+        @Callback @BindSelector("setBadgeValue:") public static void setBadgeValue(UITabBarItem __self__, Selector __cmd__, String badgeValue) { __self__.setBadgeValue(badgeValue); }
         @Callback @BindSelector("finishedSelectedImage") public static UIImage getFinishedSelectedImage(UITabBarItem __self__, Selector __cmd__) { return __self__.getFinishedSelectedImage(); }
         @Callback @BindSelector("finishedUnselectedImage") public static UIImage getFinishedUnselectedImage(UITabBarItem __self__, Selector __cmd__) { return __self__.getFinishedUnselectedImage(); }
         @Callback @BindSelector("titlePositionAdjustment") public static UIOffset getTitlePositionAdjustment(UITabBarItem __self__, Selector __cmd__) { return __self__.getTitlePositionAdjustment(); }

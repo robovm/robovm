@@ -323,6 +323,19 @@ public class /*<name>*/ UIControl /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("contentHorizontalAlignment") public static UIControlContentHorizontalAlignment getContentHorizontalAlignment(UIControl __self__, Selector __cmd__) { return __self__.getContentHorizontalAlignment(); }
+        @Callback @BindSelector("setContentHorizontalAlignment:") public static void setContentHorizontalAlignment(UIControl __self__, Selector __cmd__, UIControlContentHorizontalAlignment contentHorizontalAlignment) { __self__.setContentHorizontalAlignment(contentHorizontalAlignment); }
+        @Callback @BindSelector("contentVerticalAlignment") public static UIControlContentVerticalAlignment getContentVerticalAlignment(UIControl __self__, Selector __cmd__) { return __self__.getContentVerticalAlignment(); }
+        @Callback @BindSelector("setContentVerticalAlignment:") public static void setContentVerticalAlignment(UIControl __self__, Selector __cmd__, UIControlContentVerticalAlignment contentVerticalAlignment) { __self__.setContentVerticalAlignment(contentVerticalAlignment); }
+        @Callback @BindSelector("isEnabled") public static boolean isEnabled(UIControl __self__, Selector __cmd__) { return __self__.isEnabled(); }
+        @Callback @BindSelector("setEnabled:") public static void setEnabled(UIControl __self__, Selector __cmd__, boolean enabled) { __self__.setEnabled(enabled); }
+        @Callback @BindSelector("isHighlighted") public static boolean isHighlighted(UIControl __self__, Selector __cmd__) { return __self__.isHighlighted(); }
+        @Callback @BindSelector("setHighlighted:") public static void setHighlighted(UIControl __self__, Selector __cmd__, boolean highlighted) { __self__.setHighlighted(highlighted); }
+        @Callback @BindSelector("isSelected") public static boolean isSelected(UIControl __self__, Selector __cmd__) { return __self__.isSelected(); }
+        @Callback @BindSelector("setSelected:") public static void setSelected(UIControl __self__, Selector __cmd__, boolean selected) { __self__.setSelected(selected); }
+        @Callback @BindSelector("state") public static UIControlState getState(UIControl __self__, Selector __cmd__) { return __self__.getState(); }
+        @Callback @BindSelector("isTouchInside") public static boolean isTouchInside(UIControl __self__, Selector __cmd__) { return __self__.isTouchInside(); }
+        @Callback @BindSelector("isTracking") public static boolean isTracking(UIControl __self__, Selector __cmd__) { return __self__.isTracking(); }
         @Callback @BindSelector("addTarget:action:forControlEvents:") public static void addTarget(UIControl __self__, Selector __cmd__, NSObject target, Selector action, UIControlEvents controlEvents) { __self__.addTarget(target, action, controlEvents); }
         @Callback @BindSelector("beginTrackingWithTouch:withEvent:") public static boolean beginTracking(UIControl __self__, Selector __cmd__, UITouch touch, UIEvent event) { return __self__.beginTracking(touch, event); }
         @Callback @BindSelector("cancelTrackingWithEvent:") public static void cancelTracking(UIControl __self__, Selector __cmd__, UIEvent event) { __self__.cancelTracking(event); }

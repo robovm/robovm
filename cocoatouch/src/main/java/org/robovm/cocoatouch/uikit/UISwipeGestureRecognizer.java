@@ -103,6 +103,12 @@ public class /*<name>*/ UISwipeGestureRecognizer /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("direction") public static UISwipeGestureRecognizerDirection getDirection(UISwipeGestureRecognizer __self__, Selector __cmd__) { return __self__.getDirection(); }
+        @Callback @BindSelector("setDirection:") public static void setDirection(UISwipeGestureRecognizer __self__, Selector __cmd__, UISwipeGestureRecognizerDirection direction) { __self__.setDirection(direction); }
+        @Callback @BindSelector("numberOfTouchesRequired") public static int getNumberOfTouchesRequired(UISwipeGestureRecognizer __self__, Selector __cmd__) { return __self__.getNumberOfTouchesRequired(); }
+        @Callback @BindSelector("setNumberOfTouchesRequired:") public static void setNumberOfTouchesRequired(UISwipeGestureRecognizer __self__, Selector __cmd__, int numberOfTouchesRequired) { __self__.setNumberOfTouchesRequired(numberOfTouchesRequired); }
+    }
     /*</callbacks>*/
 
 }

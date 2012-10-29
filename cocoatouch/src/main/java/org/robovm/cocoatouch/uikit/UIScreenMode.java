@@ -81,6 +81,10 @@ public class /*<name>*/ UIScreenMode /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("pixelAspectRatio") public static float getPixelAspectRatio(UIScreenMode __self__, Selector __cmd__) { return __self__.getPixelAspectRatio(); }
+        @Callback @BindSelector("size") public static CGSize getSize(UIScreenMode __self__, Selector __cmd__) { return __self__.getSize(); }
+    }
     /*</callbacks>*/
 
 }

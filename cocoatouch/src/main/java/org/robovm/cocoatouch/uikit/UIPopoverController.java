@@ -53,14 +53,14 @@ public class /*<name>*/ UIPopoverController /*</name>*/
     public UIPopoverController() {}
     
     private static final Selector initWithContentViewController$ = Selector.register("initWithContentViewController:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithContentViewController(UIPopoverController __self__, Selector __cmd__, UIViewController viewController);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithContentViewController(UIPopoverController __self__, Selector __cmd__, UIViewController viewController);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instm/UIPopoverController/initWithContentViewController:">- (id)initWithContentViewController:(UIViewController *)viewController</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIPopoverController(UIViewController viewController) {
         super((SkipInit) null);
-        objc_initWithContentViewController(this, initWithContentViewController$, viewController);
+        setHandle(objc_initWithContentViewController(this, initWithContentViewController$, viewController));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -278,6 +278,20 @@ public class /*<name>*/ UIPopoverController /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("contentViewController") public static UIViewController getContentViewController(UIPopoverController __self__, Selector __cmd__) { return __self__.getContentViewController(); }
+        @Callback @BindSelector("setContentViewController:") public static void setContentViewController(UIPopoverController __self__, Selector __cmd__, UIViewController contentViewController) { __self__.setContentViewController(contentViewController); }
+        @Callback @BindSelector("delegate") public static UIPopoverControllerDelegate getDelegate(UIPopoverController __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UIPopoverController __self__, Selector __cmd__, UIPopoverControllerDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("passthroughViews") public static NSArray getPassthroughViews(UIPopoverController __self__, Selector __cmd__) { return __self__.getPassthroughViews(); }
+        @Callback @BindSelector("setPassthroughViews:") public static void setPassthroughViews(UIPopoverController __self__, Selector __cmd__, NSArray passthroughViews) { __self__.setPassthroughViews(passthroughViews); }
+        @Callback @BindSelector("popoverArrowDirection") public static UIPopoverArrowDirection getPopoverArrowDirection(UIPopoverController __self__, Selector __cmd__) { return __self__.getPopoverArrowDirection(); }
+        @Callback @BindSelector("popoverBackgroundViewClass") public static ObjCClass getPopoverBackgroundViewClass(UIPopoverController __self__, Selector __cmd__) { return __self__.getPopoverBackgroundViewClass(); }
+        @Callback @BindSelector("setPopoverBackgroundViewClass:") public static void setPopoverBackgroundViewClass(UIPopoverController __self__, Selector __cmd__, ObjCClass popoverBackgroundViewClass) { __self__.setPopoverBackgroundViewClass(popoverBackgroundViewClass); }
+        @Callback @BindSelector("popoverContentSize") public static CGSize getPopoverContentSize(UIPopoverController __self__, Selector __cmd__) { return __self__.getPopoverContentSize(); }
+        @Callback @BindSelector("setPopoverContentSize:") public static void setPopoverContentSize(UIPopoverController __self__, Selector __cmd__, CGSize popoverContentSize) { __self__.setPopoverContentSize(popoverContentSize); }
+        @Callback @BindSelector("popoverLayoutMargins") public static UIEdgeInsets getPopoverLayoutMargins(UIPopoverController __self__, Selector __cmd__) { return __self__.getPopoverLayoutMargins(); }
+        @Callback @BindSelector("setPopoverLayoutMargins:") public static void setPopoverLayoutMargins(UIPopoverController __self__, Selector __cmd__, UIEdgeInsets popoverLayoutMargins) { __self__.setPopoverLayoutMargins(popoverLayoutMargins); }
+        @Callback @BindSelector("isPopoverVisible") public static boolean isPopoverVisible(UIPopoverController __self__, Selector __cmd__) { return __self__.isPopoverVisible(); }
         @Callback @BindSelector("dismissPopoverAnimated:") public static void dismiss(UIPopoverController __self__, Selector __cmd__, boolean animated) { __self__.dismiss(animated); }
         @Callback @BindSelector("presentPopoverFromBarButtonItem:permittedArrowDirections:animated:") public static void presentFromBarButtonItem(UIPopoverController __self__, Selector __cmd__, UIBarButtonItem item, UIPopoverArrowDirection arrowDirections, boolean animated) { __self__.presentFromBarButtonItem(item, arrowDirections, animated); }
         @Callback @BindSelector("presentPopoverFromRect:inView:permittedArrowDirections:animated:") public static void presentFromRectInView(UIPopoverController __self__, Selector __cmd__, CGRect rect, UIView view, UIPopoverArrowDirection arrowDirections, boolean animated) { __self__.presentFromRectInView(rect, view, arrowDirections, animated); }

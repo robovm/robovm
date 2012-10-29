@@ -103,6 +103,12 @@ public class /*<name>*/ UITapGestureRecognizer /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("numberOfTapsRequired") public static int getNumberOfTapsRequired(UITapGestureRecognizer __self__, Selector __cmd__) { return __self__.getNumberOfTapsRequired(); }
+        @Callback @BindSelector("setNumberOfTapsRequired:") public static void setNumberOfTapsRequired(UITapGestureRecognizer __self__, Selector __cmd__, int numberOfTapsRequired) { __self__.setNumberOfTapsRequired(numberOfTapsRequired); }
+        @Callback @BindSelector("numberOfTouchesRequired") public static int getNumberOfTouchesRequired(UITapGestureRecognizer __self__, Selector __cmd__) { return __self__.getNumberOfTouchesRequired(); }
+        @Callback @BindSelector("setNumberOfTouchesRequired:") public static void setNumberOfTouchesRequired(UITapGestureRecognizer __self__, Selector __cmd__, int numberOfTouchesRequired) { __self__.setNumberOfTouchesRequired(numberOfTouchesRequired); }
+    }
     /*</callbacks>*/
 
 }

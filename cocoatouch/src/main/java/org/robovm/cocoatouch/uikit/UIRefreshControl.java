@@ -135,6 +135,11 @@ public class /*<name>*/ UIRefreshControl /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("attributedTitle") public static NSAttributedString getAttributedTitle(UIRefreshControl __self__, Selector __cmd__) { return __self__.getAttributedTitle(); }
+        @Callback @BindSelector("setAttributedTitle:") public static void setAttributedTitle(UIRefreshControl __self__, Selector __cmd__, NSAttributedString attributedTitle) { __self__.setAttributedTitle(attributedTitle); }
+        @Callback @BindSelector("isRefreshing") public static boolean isRefreshing(UIRefreshControl __self__, Selector __cmd__) { return __self__.isRefreshing(); }
+        @Callback @BindSelector("tintColor") public static UIColor getTintColor(UIRefreshControl __self__, Selector __cmd__) { return __self__.getTintColor(); }
+        @Callback @BindSelector("setTintColor:") public static void setTintColor(UIRefreshControl __self__, Selector __cmd__, UIColor tintColor) { __self__.setTintColor(tintColor); }
         @Callback @BindSelector("beginRefreshing") public static void beginRefreshing(UIRefreshControl __self__, Selector __cmd__) { __self__.beginRefreshing(); }
         @Callback @BindSelector("endRefreshing") public static void endRefreshing(UIRefreshControl __self__, Selector __cmd__) { __self__.endRefreshing(); }
     }

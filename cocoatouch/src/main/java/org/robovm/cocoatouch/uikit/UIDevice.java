@@ -289,6 +289,23 @@ public class /*<name>*/ UIDevice /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("batteryLevel") public static float getBatteryLevel(UIDevice __self__, Selector __cmd__) { return __self__.getBatteryLevel(); }
+        @Callback @BindSelector("isBatteryMonitoringEnabled") public static boolean isBatteryMonitoringEnabled(UIDevice __self__, Selector __cmd__) { return __self__.isBatteryMonitoringEnabled(); }
+        @Callback @BindSelector("setBatteryMonitoringEnabled:") public static void setBatteryMonitoringEnabled(UIDevice __self__, Selector __cmd__, boolean batteryMonitoringEnabled) { __self__.setBatteryMonitoringEnabled(batteryMonitoringEnabled); }
+        @Callback @BindSelector("batteryState") public static UIDeviceBatteryState getBatteryState(UIDevice __self__, Selector __cmd__) { return __self__.getBatteryState(); }
+        @Callback @BindSelector("isGeneratingDeviceOrientationNotifications") public static boolean isGeneratesDeviceOrientationNotifications(UIDevice __self__, Selector __cmd__) { return __self__.isGeneratesDeviceOrientationNotifications(); }
+        @Callback @BindSelector("localizedModel") public static String getLocalizedModel(UIDevice __self__, Selector __cmd__) { return __self__.getLocalizedModel(); }
+        @Callback @BindSelector("model") public static String getModel(UIDevice __self__, Selector __cmd__) { return __self__.getModel(); }
+        @Callback @BindSelector("isMultitaskingSupported") public static boolean isMultitaskingSupported(UIDevice __self__, Selector __cmd__) { return __self__.isMultitaskingSupported(); }
+        @Callback @BindSelector("name") public static String getName(UIDevice __self__, Selector __cmd__) { return __self__.getName(); }
+        @Callback @BindSelector("orientation") public static UIDeviceOrientation getOrientation(UIDevice __self__, Selector __cmd__) { return __self__.getOrientation(); }
+        @Callback @BindSelector("isProximityMonitoringEnabled") public static boolean isProximityMonitoringEnabled(UIDevice __self__, Selector __cmd__) { return __self__.isProximityMonitoringEnabled(); }
+        @Callback @BindSelector("setProximityMonitoringEnabled:") public static void setProximityMonitoringEnabled(UIDevice __self__, Selector __cmd__, boolean proximityMonitoringEnabled) { __self__.setProximityMonitoringEnabled(proximityMonitoringEnabled); }
+        @Callback @BindSelector("proximityState") public static boolean isProximityState(UIDevice __self__, Selector __cmd__) { return __self__.isProximityState(); }
+        @Callback @BindSelector("systemName") public static String getSystemName(UIDevice __self__, Selector __cmd__) { return __self__.getSystemName(); }
+        @Callback @BindSelector("systemVersion") public static String getSystemVersion(UIDevice __self__, Selector __cmd__) { return __self__.getSystemVersion(); }
+        @Callback @BindSelector("userInterfaceIdiom") public static UIUserInterfaceIdiom getUserInterfaceIdiom(UIDevice __self__, Selector __cmd__) { return __self__.getUserInterfaceIdiom(); }
+        @Callback @BindSelector("identifierForVendor") public static NSUUID getVendorIdentifier(UIDevice __self__, Selector __cmd__) { return __self__.getVendorIdentifier(); }
         @Callback @BindSelector("beginGeneratingDeviceOrientationNotifications") public static void beginGeneratingDeviceOrientationNotifications(UIDevice __self__, Selector __cmd__) { __self__.beginGeneratingDeviceOrientationNotifications(); }
         @Callback @BindSelector("endGeneratingDeviceOrientationNotifications") public static void endGeneratingDeviceOrientationNotifications(UIDevice __self__, Selector __cmd__) { __self__.endGeneratingDeviceOrientationNotifications(); }
         @Callback @BindSelector("playInputClick") public static void playInputClick(UIDevice __self__, Selector __cmd__) { __self__.playInputClick(); }

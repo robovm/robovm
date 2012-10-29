@@ -52,14 +52,14 @@ public class /*<name>*/ UIActivityIndicatorView /*</name>*/
     public UIActivityIndicatorView() {}
     
     private static final Selector initWithActivityIndicatorStyle$ = Selector.register("initWithActivityIndicatorStyle:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithActivityIndicatorStyle(UIActivityIndicatorView __self__, Selector __cmd__, UIActivityIndicatorViewStyle style);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithActivityIndicatorStyle(UIActivityIndicatorView __self__, Selector __cmd__, UIActivityIndicatorViewStyle style);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityIndicatorView_Class/Reference/UIActivityIndicatorView.html#//apple_ref/occ/instm/UIActivityIndicatorView/initWithActivityIndicatorStyle:">- (id)initWithActivityIndicatorStyle:(UIActivityIndicatorViewStyle)style</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIActivityIndicatorView(UIActivityIndicatorViewStyle style) {
         super((SkipInit) null);
-        objc_initWithActivityIndicatorStyle(this, initWithActivityIndicatorStyle$, style);
+        setHandle(objc_initWithActivityIndicatorStyle(this, initWithActivityIndicatorStyle$, style));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -167,6 +167,12 @@ public class /*<name>*/ UIActivityIndicatorView /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("activityIndicatorViewStyle") public static UIActivityIndicatorViewStyle getActivityIndicatorViewStyle(UIActivityIndicatorView __self__, Selector __cmd__) { return __self__.getActivityIndicatorViewStyle(); }
+        @Callback @BindSelector("setActivityIndicatorViewStyle:") public static void setActivityIndicatorViewStyle(UIActivityIndicatorView __self__, Selector __cmd__, UIActivityIndicatorViewStyle activityIndicatorViewStyle) { __self__.setActivityIndicatorViewStyle(activityIndicatorViewStyle); }
+        @Callback @BindSelector("color") public static UIColor getColor(UIActivityIndicatorView __self__, Selector __cmd__) { return __self__.getColor(); }
+        @Callback @BindSelector("setColor:") public static void setColor(UIActivityIndicatorView __self__, Selector __cmd__, UIColor color) { __self__.setColor(color); }
+        @Callback @BindSelector("hidesWhenStopped") public static boolean isHidesWhenStopped(UIActivityIndicatorView __self__, Selector __cmd__) { return __self__.isHidesWhenStopped(); }
+        @Callback @BindSelector("setHidesWhenStopped:") public static void setHidesWhenStopped(UIActivityIndicatorView __self__, Selector __cmd__, boolean hidesWhenStopped) { __self__.setHidesWhenStopped(hidesWhenStopped); }
         @Callback @BindSelector("isAnimating") public static boolean isAnimating(UIActivityIndicatorView __self__, Selector __cmd__) { return __self__.isAnimating(); }
         @Callback @BindSelector("startAnimating") public static void startAnimating(UIActivityIndicatorView __self__, Selector __cmd__) { __self__.startAnimating(); }
         @Callback @BindSelector("stopAnimating") public static void stopAnimating(UIActivityIndicatorView __self__, Selector __cmd__) { __self__.stopAnimating(); }

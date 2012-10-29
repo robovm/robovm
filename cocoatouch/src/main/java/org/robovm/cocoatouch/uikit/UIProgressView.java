@@ -53,14 +53,14 @@ public class /*<name>*/ UIProgressView /*</name>*/
     public UIProgressView() {}
     
     private static final Selector initWithProgressViewStyle$ = Selector.register("initWithProgressViewStyle:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithProgressViewStyle(UIProgressView __self__, Selector __cmd__, UIProgressViewStyle style);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithProgressViewStyle(UIProgressView __self__, Selector __cmd__, UIProgressViewStyle style);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIProgressView_Class/Reference/Reference.html#//apple_ref/occ/instm/UIProgressView/initWithProgressViewStyle:">- (id)initWithProgressViewStyle:(UIProgressViewStyle)style</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIProgressView(UIProgressViewStyle style) {
         super((SkipInit) null);
-        objc_initWithProgressViewStyle(this, initWithProgressViewStyle$, style);
+        setHandle(objc_initWithProgressViewStyle(this, initWithProgressViewStyle$, style));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -212,6 +212,18 @@ public class /*<name>*/ UIProgressView /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("progress") public static float getProgress(UIProgressView __self__, Selector __cmd__) { return __self__.getProgress(); }
+        @Callback @BindSelector("setProgress:") public static void setProgress(UIProgressView __self__, Selector __cmd__, float progress) { __self__.setProgress(progress); }
+        @Callback @BindSelector("progressImage") public static UIImage getProgressImage(UIProgressView __self__, Selector __cmd__) { return __self__.getProgressImage(); }
+        @Callback @BindSelector("setProgressImage:") public static void setProgressImage(UIProgressView __self__, Selector __cmd__, UIImage progressImage) { __self__.setProgressImage(progressImage); }
+        @Callback @BindSelector("progressTintColor") public static UIColor getProgressTintColor(UIProgressView __self__, Selector __cmd__) { return __self__.getProgressTintColor(); }
+        @Callback @BindSelector("setProgressTintColor:") public static void setProgressTintColor(UIProgressView __self__, Selector __cmd__, UIColor progressTintColor) { __self__.setProgressTintColor(progressTintColor); }
+        @Callback @BindSelector("progressViewStyle") public static UIProgressViewStyle getProgressViewStyle(UIProgressView __self__, Selector __cmd__) { return __self__.getProgressViewStyle(); }
+        @Callback @BindSelector("setProgressViewStyle:") public static void setProgressViewStyle(UIProgressView __self__, Selector __cmd__, UIProgressViewStyle progressViewStyle) { __self__.setProgressViewStyle(progressViewStyle); }
+        @Callback @BindSelector("trackImage") public static UIImage getTrackImage(UIProgressView __self__, Selector __cmd__) { return __self__.getTrackImage(); }
+        @Callback @BindSelector("setTrackImage:") public static void setTrackImage(UIProgressView __self__, Selector __cmd__, UIImage trackImage) { __self__.setTrackImage(trackImage); }
+        @Callback @BindSelector("trackTintColor") public static UIColor getTrackTintColor(UIProgressView __self__, Selector __cmd__) { return __self__.getTrackTintColor(); }
+        @Callback @BindSelector("setTrackTintColor:") public static void setTrackTintColor(UIProgressView __self__, Selector __cmd__, UIColor trackTintColor) { __self__.setTrackTintColor(trackTintColor); }
         @Callback @BindSelector("setProgress:animated:") public static void setProgress(UIProgressView __self__, Selector __cmd__, float progress, boolean animated) { __self__.setProgress(progress, animated); }
     }
     /*</callbacks>*/

@@ -289,6 +289,19 @@ public class /*<name>*/ UIActionSheet /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("actionSheetStyle") public static UIActionSheetStyle getActionSheetStyle(UIActionSheet __self__, Selector __cmd__) { return __self__.getActionSheetStyle(); }
+        @Callback @BindSelector("setActionSheetStyle:") public static void setActionSheetStyle(UIActionSheet __self__, Selector __cmd__, UIActionSheetStyle actionSheetStyle) { __self__.setActionSheetStyle(actionSheetStyle); }
+        @Callback @BindSelector("cancelButtonIndex") public static int getCancelButtonIndex(UIActionSheet __self__, Selector __cmd__) { return __self__.getCancelButtonIndex(); }
+        @Callback @BindSelector("setCancelButtonIndex:") public static void setCancelButtonIndex(UIActionSheet __self__, Selector __cmd__, int cancelButtonIndex) { __self__.setCancelButtonIndex(cancelButtonIndex); }
+        @Callback @BindSelector("delegate") public static UIActionSheetDelegate getDelegate(UIActionSheet __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UIActionSheet __self__, Selector __cmd__, UIActionSheetDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("destructiveButtonIndex") public static int getDestructiveButtonIndex(UIActionSheet __self__, Selector __cmd__) { return __self__.getDestructiveButtonIndex(); }
+        @Callback @BindSelector("setDestructiveButtonIndex:") public static void setDestructiveButtonIndex(UIActionSheet __self__, Selector __cmd__, int destructiveButtonIndex) { __self__.setDestructiveButtonIndex(destructiveButtonIndex); }
+        @Callback @BindSelector("firstOtherButtonIndex") public static int getFirstOtherButtonIndex(UIActionSheet __self__, Selector __cmd__) { return __self__.getFirstOtherButtonIndex(); }
+        @Callback @BindSelector("numberOfButtons") public static int getNumberOfButtons(UIActionSheet __self__, Selector __cmd__) { return __self__.getNumberOfButtons(); }
+        @Callback @BindSelector("title") public static String getTitle(UIActionSheet __self__, Selector __cmd__) { return __self__.getTitle(); }
+        @Callback @BindSelector("setTitle:") public static void setTitle(UIActionSheet __self__, Selector __cmd__, String title) { __self__.setTitle(title); }
+        @Callback @BindSelector("isVisible") public static boolean isVisible(UIActionSheet __self__, Selector __cmd__) { return __self__.isVisible(); }
         @Callback @BindSelector("addButtonWithTitle:") public static int addButton(UIActionSheet __self__, Selector __cmd__, String title) { return __self__.addButton(title); }
         @Callback @BindSelector("dismissWithClickedButtonIndex:animated:") public static void dismiss(UIActionSheet __self__, Selector __cmd__, int buttonIndex, boolean animated) { __self__.dismiss(buttonIndex, animated); }
         @Callback @BindSelector("buttonTitleAtIndex:") public static String getButtonTitle(UIActionSheet __self__, Selector __cmd__, int buttonIndex) { return __self__.getButtonTitle(buttonIndex); }

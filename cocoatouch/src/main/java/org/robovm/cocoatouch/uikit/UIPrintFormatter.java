@@ -202,6 +202,16 @@ public class /*<name>*/ UIPrintFormatter /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("contentInsets") public static UIEdgeInsets getContentInsets(UIPrintFormatter __self__, Selector __cmd__) { return __self__.getContentInsets(); }
+        @Callback @BindSelector("setContentInsets:") public static void setContentInsets(UIPrintFormatter __self__, Selector __cmd__, UIEdgeInsets contentInsets) { __self__.setContentInsets(contentInsets); }
+        @Callback @BindSelector("maximumContentHeight") public static float getMaximumContentHeight(UIPrintFormatter __self__, Selector __cmd__) { return __self__.getMaximumContentHeight(); }
+        @Callback @BindSelector("setMaximumContentHeight:") public static void setMaximumContentHeight(UIPrintFormatter __self__, Selector __cmd__, float maximumContentHeight) { __self__.setMaximumContentHeight(maximumContentHeight); }
+        @Callback @BindSelector("maximumContentWidth") public static float getMaximumContentWidth(UIPrintFormatter __self__, Selector __cmd__) { return __self__.getMaximumContentWidth(); }
+        @Callback @BindSelector("setMaximumContentWidth:") public static void setMaximumContentWidth(UIPrintFormatter __self__, Selector __cmd__, float maximumContentWidth) { __self__.setMaximumContentWidth(maximumContentWidth); }
+        @Callback @BindSelector("pageCount") public static int getPageCount(UIPrintFormatter __self__, Selector __cmd__) { return __self__.getPageCount(); }
+        @Callback @BindSelector("printPageRenderer") public static UIPrintPageRenderer getPrintPageRenderer(UIPrintFormatter __self__, Selector __cmd__) { return __self__.getPrintPageRenderer(); }
+        @Callback @BindSelector("startPage") public static int getStartPage(UIPrintFormatter __self__, Selector __cmd__) { return __self__.getStartPage(); }
+        @Callback @BindSelector("setStartPage:") public static void setStartPage(UIPrintFormatter __self__, Selector __cmd__, int startPage) { __self__.setStartPage(startPage); }
         @Callback @BindSelector("drawInRect:forPageAtIndex:") public static void draw(UIPrintFormatter __self__, Selector __cmd__, CGRect rect, int pageIndex) { __self__.draw(rect, pageIndex); }
         @Callback @BindSelector("rectForPageAtIndex:") public static CGRect getRectForPage(UIPrintFormatter __self__, Selector __cmd__, int pageIndex) { return __self__.getRectForPage(pageIndex); }
         @Callback @BindSelector("removeFromPrintPageRenderer") public static void removeFromPrintPageRenderer(UIPrintFormatter __self__, Selector __cmd__) { __self__.removeFromPrintPageRenderer(); }

@@ -1368,6 +1368,84 @@ public class /*<name>*/ UITextField /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("adjustsFontSizeToFitWidth") public static boolean isAdjustsFontSizeToFitWidth(UITextField __self__, Selector __cmd__) { return __self__.isAdjustsFontSizeToFitWidth(); }
+        @Callback @BindSelector("setAdjustsFontSizeToFitWidth:") public static void setAdjustsFontSizeToFitWidth(UITextField __self__, Selector __cmd__, boolean adjustsFontSizeToFitWidth) { __self__.setAdjustsFontSizeToFitWidth(adjustsFontSizeToFitWidth); }
+        @Callback @BindSelector("allowsEditingTextAttributes") public static boolean isAllowsEditingTextAttributes(UITextField __self__, Selector __cmd__) { return __self__.isAllowsEditingTextAttributes(); }
+        @Callback @BindSelector("setAllowsEditingTextAttributes:") public static void setAllowsEditingTextAttributes(UITextField __self__, Selector __cmd__, boolean allowsEditingTextAttributes) { __self__.setAllowsEditingTextAttributes(allowsEditingTextAttributes); }
+        @Callback @BindSelector("attributedPlaceholder") public static NSAttributedString getAttributedPlaceholder(UITextField __self__, Selector __cmd__) { return __self__.getAttributedPlaceholder(); }
+        @Callback @BindSelector("setAttributedPlaceholder:") public static void setAttributedPlaceholder(UITextField __self__, Selector __cmd__, NSAttributedString attributedPlaceholder) { __self__.setAttributedPlaceholder(attributedPlaceholder); }
+        @Callback @BindSelector("attributedText") public static NSAttributedString getAttributedText(UITextField __self__, Selector __cmd__) { return __self__.getAttributedText(); }
+        @Callback @BindSelector("setAttributedText:") public static void setAttributedText(UITextField __self__, Selector __cmd__, NSAttributedString attributedText) { __self__.setAttributedText(attributedText); }
+        @Callback @BindSelector("autocapitalizationType") public static UITextAutocapitalizationType getAutocapitalizationType(UITextField __self__, Selector __cmd__) { return __self__.getAutocapitalizationType(); }
+        @Callback @BindSelector("setAutocapitalizationType:") public static void setAutocapitalizationType(UITextField __self__, Selector __cmd__, UITextAutocapitalizationType autocapitalizationType) { __self__.setAutocapitalizationType(autocapitalizationType); }
+        @Callback @BindSelector("autocorrectionType") public static UITextAutocorrectionType getAutocorrectionType(UITextField __self__, Selector __cmd__) { return __self__.getAutocorrectionType(); }
+        @Callback @BindSelector("setAutocorrectionType:") public static void setAutocorrectionType(UITextField __self__, Selector __cmd__, UITextAutocorrectionType autocorrectionType) { __self__.setAutocorrectionType(autocorrectionType); }
+        @Callback @BindSelector("background") public static UIImage getBackground(UITextField __self__, Selector __cmd__) { return __self__.getBackground(); }
+        @Callback @BindSelector("setBackground:") public static void setBackground(UITextField __self__, Selector __cmd__, UIImage background) { __self__.setBackground(background); }
+        @Callback @BindSelector("beginningOfDocument") public static UITextPosition getBeginningOfDocument(UITextField __self__, Selector __cmd__) { return __self__.getBeginningOfDocument(); }
+        @Callback @BindSelector("borderStyle") public static UITextBorderStyle getBorderStyle(UITextField __self__, Selector __cmd__) { return __self__.getBorderStyle(); }
+        @Callback @BindSelector("setBorderStyle:") public static void setBorderStyle(UITextField __self__, Selector __cmd__, UITextBorderStyle borderStyle) { __self__.setBorderStyle(borderStyle); }
+        @Callback @BindSelector("clearButtonMode") public static UITextFieldViewMode getClearButtonMode(UITextField __self__, Selector __cmd__) { return __self__.getClearButtonMode(); }
+        @Callback @BindSelector("setClearButtonMode:") public static void setClearButtonMode(UITextField __self__, Selector __cmd__, UITextFieldViewMode clearButtonMode) { __self__.setClearButtonMode(clearButtonMode); }
+        @Callback @BindSelector("clearsOnBeginEditing") public static boolean isClearsOnBeginEditing(UITextField __self__, Selector __cmd__) { return __self__.isClearsOnBeginEditing(); }
+        @Callback @BindSelector("setClearsOnBeginEditing:") public static void setClearsOnBeginEditing(UITextField __self__, Selector __cmd__, boolean clearsOnBeginEditing) { __self__.setClearsOnBeginEditing(clearsOnBeginEditing); }
+        @Callback @BindSelector("clearsOnInsertion") public static boolean isClearsOnInsertion(UITextField __self__, Selector __cmd__) { return __self__.isClearsOnInsertion(); }
+        @Callback @BindSelector("setClearsOnInsertion:") public static void setClearsOnInsertion(UITextField __self__, Selector __cmd__, boolean clearsOnInsertion) { __self__.setClearsOnInsertion(clearsOnInsertion); }
+        @Callback @BindSelector("delegate") public static UITextFieldDelegate getDelegate(UITextField __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UITextField __self__, Selector __cmd__, UITextFieldDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("disabledBackground") public static UIImage getDisabledBackground(UITextField __self__, Selector __cmd__) { return __self__.getDisabledBackground(); }
+        @Callback @BindSelector("setDisabledBackground:") public static void setDisabledBackground(UITextField __self__, Selector __cmd__, UIImage disabledBackground) { __self__.setDisabledBackground(disabledBackground); }
+        @Callback @BindSelector("isEditing") public static boolean isEditing(UITextField __self__, Selector __cmd__) { return __self__.isEditing(); }
+        @Callback @BindSelector("enablesReturnKeyAutomatically") public static boolean isEnablesReturnKeyAutomatically(UITextField __self__, Selector __cmd__) { return __self__.isEnablesReturnKeyAutomatically(); }
+        @Callback @BindSelector("setEnablesReturnKeyAutomatically:") public static void setEnablesReturnKeyAutomatically(UITextField __self__, Selector __cmd__, boolean enablesReturnKeyAutomatically) { __self__.setEnablesReturnKeyAutomatically(enablesReturnKeyAutomatically); }
+        @Callback @BindSelector("endOfDocument") public static UITextPosition getEndOfDocument(UITextField __self__, Selector __cmd__) { return __self__.getEndOfDocument(); }
+        @Callback @BindSelector("font") public static UIFont getFont(UITextField __self__, Selector __cmd__) { return __self__.getFont(); }
+        @Callback @BindSelector("setFont:") public static void setFont(UITextField __self__, Selector __cmd__, UIFont font) { __self__.setFont(font); }
+        @Callback @BindSelector("inputAccessoryView") public static UIView getInputAccessoryView(UITextField __self__, Selector __cmd__) { return __self__.getInputAccessoryView(); }
+        @Callback @BindSelector("setInputAccessoryView:") public static void setInputAccessoryView(UITextField __self__, Selector __cmd__, UIView inputAccessoryView) { __self__.setInputAccessoryView(inputAccessoryView); }
+        @Callback @BindSelector("inputDelegate") public static UITextInputDelegate getInputDelegate(UITextField __self__, Selector __cmd__) { return __self__.getInputDelegate(); }
+        @Callback @BindSelector("setInputDelegate:") public static void setInputDelegate(UITextField __self__, Selector __cmd__, UITextInputDelegate inputDelegate) { __self__.setInputDelegate(inputDelegate); }
+        @Callback @BindSelector("inputView") public static UIView getInputView(UITextField __self__, Selector __cmd__) { return __self__.getInputView(); }
+        @Callback @BindSelector("setInputView:") public static void setInputView(UITextField __self__, Selector __cmd__, UIView inputView) { __self__.setInputView(inputView); }
+        @Callback @BindSelector("keyboardAppearance") public static UIKeyboardAppearance getKeyboardAppearance(UITextField __self__, Selector __cmd__) { return __self__.getKeyboardAppearance(); }
+        @Callback @BindSelector("setKeyboardAppearance:") public static void setKeyboardAppearance(UITextField __self__, Selector __cmd__, UIKeyboardAppearance keyboardAppearance) { __self__.setKeyboardAppearance(keyboardAppearance); }
+        @Callback @BindSelector("keyboardType") public static UIKeyboardType getKeyboardType(UITextField __self__, Selector __cmd__) { return __self__.getKeyboardType(); }
+        @Callback @BindSelector("setKeyboardType:") public static void setKeyboardType(UITextField __self__, Selector __cmd__, UIKeyboardType keyboardType) { __self__.setKeyboardType(keyboardType); }
+        @Callback @BindSelector("leftView") public static UIView getLeftView(UITextField __self__, Selector __cmd__) { return __self__.getLeftView(); }
+        @Callback @BindSelector("setLeftView:") public static void setLeftView(UITextField __self__, Selector __cmd__, UIView leftView) { __self__.setLeftView(leftView); }
+        @Callback @BindSelector("leftViewMode") public static UITextFieldViewMode getLeftViewMode(UITextField __self__, Selector __cmd__) { return __self__.getLeftViewMode(); }
+        @Callback @BindSelector("setLeftViewMode:") public static void setLeftViewMode(UITextField __self__, Selector __cmd__, UITextFieldViewMode leftViewMode) { __self__.setLeftViewMode(leftViewMode); }
+        @Callback @BindSelector("markedTextRange") public static UITextRange getMarkedTextRange(UITextField __self__, Selector __cmd__) { return __self__.getMarkedTextRange(); }
+        @Callback @BindSelector("markedTextStyle") public static NSDictionary getMarkedTextStyle(UITextField __self__, Selector __cmd__) { return __self__.getMarkedTextStyle(); }
+        @Callback @BindSelector("setMarkedTextStyle:") public static void setMarkedTextStyle(UITextField __self__, Selector __cmd__, NSDictionary markedTextStyle) { __self__.setMarkedTextStyle(markedTextStyle); }
+        @Callback @BindSelector("minimumFontSize") public static float getMinimumFontSize(UITextField __self__, Selector __cmd__) { return __self__.getMinimumFontSize(); }
+        @Callback @BindSelector("setMinimumFontSize:") public static void setMinimumFontSize(UITextField __self__, Selector __cmd__, float minimumFontSize) { __self__.setMinimumFontSize(minimumFontSize); }
+        @Callback @BindSelector("placeholder") public static String getPlaceholder(UITextField __self__, Selector __cmd__) { return __self__.getPlaceholder(); }
+        @Callback @BindSelector("setPlaceholder:") public static void setPlaceholder(UITextField __self__, Selector __cmd__, String placeholder) { __self__.setPlaceholder(placeholder); }
+        @Callback @BindSelector("returnKeyType") public static UIReturnKeyType getReturnKeyType(UITextField __self__, Selector __cmd__) { return __self__.getReturnKeyType(); }
+        @Callback @BindSelector("setReturnKeyType:") public static void setReturnKeyType(UITextField __self__, Selector __cmd__, UIReturnKeyType returnKeyType) { __self__.setReturnKeyType(returnKeyType); }
+        @Callback @BindSelector("rightView") public static UIView getRightView(UITextField __self__, Selector __cmd__) { return __self__.getRightView(); }
+        @Callback @BindSelector("setRightView:") public static void setRightView(UITextField __self__, Selector __cmd__, UIView rightView) { __self__.setRightView(rightView); }
+        @Callback @BindSelector("rightViewMode") public static UITextFieldViewMode getRightViewMode(UITextField __self__, Selector __cmd__) { return __self__.getRightViewMode(); }
+        @Callback @BindSelector("setRightViewMode:") public static void setRightViewMode(UITextField __self__, Selector __cmd__, UITextFieldViewMode rightViewMode) { __self__.setRightViewMode(rightViewMode); }
+        @Callback @BindSelector("isSecureTextEntry") public static boolean isSecureTextEntry(UITextField __self__, Selector __cmd__) { return __self__.isSecureTextEntry(); }
+        @Callback @BindSelector("setSecureTextEntry:") public static void setSecureTextEntry(UITextField __self__, Selector __cmd__, boolean secureTextEntry) { __self__.setSecureTextEntry(secureTextEntry); }
+        @Callback @BindSelector("selectedTextRange") public static UITextRange getSelectedTextRange(UITextField __self__, Selector __cmd__) { return __self__.getSelectedTextRange(); }
+        @Callback @BindSelector("setSelectedTextRange:") public static void setSelectedTextRange(UITextField __self__, Selector __cmd__, UITextRange selectedTextRange) { __self__.setSelectedTextRange(selectedTextRange); }
+        @Callback @BindSelector("selectionAffinity") public static UITextStorageDirection getSelectionAffinity(UITextField __self__, Selector __cmd__) { return __self__.getSelectionAffinity(); }
+        @Callback @BindSelector("setSelectionAffinity:") public static void setSelectionAffinity(UITextField __self__, Selector __cmd__, UITextStorageDirection selectionAffinity) { __self__.setSelectionAffinity(selectionAffinity); }
+        @Callback @BindSelector("spellCheckingType") public static UITextSpellCheckingType getSpellCheckingType(UITextField __self__, Selector __cmd__) { return __self__.getSpellCheckingType(); }
+        @Callback @BindSelector("setSpellCheckingType:") public static void setSpellCheckingType(UITextField __self__, Selector __cmd__, UITextSpellCheckingType spellCheckingType) { __self__.setSpellCheckingType(spellCheckingType); }
+        @Callback @BindSelector("text") public static String getText(UITextField __self__, Selector __cmd__) { return __self__.getText(); }
+        @Callback @BindSelector("setText:") public static void setText(UITextField __self__, Selector __cmd__, String text) { __self__.setText(text); }
+        @Callback @BindSelector("textAlignment") public static NSTextAlignment getTextAlignment(UITextField __self__, Selector __cmd__) { return __self__.getTextAlignment(); }
+        @Callback @BindSelector("setTextAlignment:") public static void setTextAlignment(UITextField __self__, Selector __cmd__, NSTextAlignment textAlignment) { __self__.setTextAlignment(textAlignment); }
+        @Callback @BindSelector("textColor") public static UIColor getTextColor(UITextField __self__, Selector __cmd__) { return __self__.getTextColor(); }
+        @Callback @BindSelector("setTextColor:") public static void setTextColor(UITextField __self__, Selector __cmd__, UIColor textColor) { __self__.setTextColor(textColor); }
+        @Callback @BindSelector("textInputView") public static UIView getTextInputView(UITextField __self__, Selector __cmd__) { return __self__.getTextInputView(); }
+        @Callback @BindSelector("tokenizer") public static UITextInputTokenizer getTokenizer(UITextField __self__, Selector __cmd__) { return __self__.getTokenizer(); }
+        @Callback @BindSelector("typingAttributes") public static NSDictionary getTypingAttributes(UITextField __self__, Selector __cmd__) { return __self__.getTypingAttributes(); }
+        @Callback @BindSelector("setTypingAttributes:") public static void setTypingAttributes(UITextField __self__, Selector __cmd__, NSDictionary typingAttributes) { __self__.setTypingAttributes(typingAttributes); }
         @Callback @BindSelector("clearButtonRectForBounds:") public static CGRect clearButtonRect(UITextField __self__, Selector __cmd__, CGRect bounds) { return __self__.clearButtonRect(bounds); }
         @Callback @BindSelector("comparePosition:toPosition:") public static NSComparisonResult comparePositions(UITextField __self__, Selector __cmd__, UITextPosition position, UITextPosition other) { return __self__.comparePositions(position, other); }
         @Callback @BindSelector("deleteBackward") public static void deleteBackward(UITextField __self__, Selector __cmd__) { __self__.deleteBackward(); }

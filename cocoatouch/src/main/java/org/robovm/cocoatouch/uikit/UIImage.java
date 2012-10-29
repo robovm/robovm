@@ -53,80 +53,80 @@ public class /*<name>*/ UIImage /*</name>*/
     public UIImage() {}
     
     private static final Selector initWithCGImage$ = Selector.register("initWithCGImage:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithCGImage(UIImage __self__, Selector __cmd__, CGImage CGImage);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithCGImage(UIImage __self__, Selector __cmd__, CGImage CGImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImage/initWithCGImage:">- (id)initWithCGImage:(CGImageRef)CGImage</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIImage(CGImage CGImage) {
         super((SkipInit) null);
-        objc_initWithCGImage(this, initWithCGImage$, CGImage);
+        setHandle(objc_initWithCGImage(this, initWithCGImage$, CGImage));
     }
     
     private static final Selector initWithCGImage$scale$orientation$ = Selector.register("initWithCGImage:scale:orientation:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithCGImage(UIImage __self__, Selector __cmd__, CGImage imageRef, float scale, UIImageOrientation orientation);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithCGImage(UIImage __self__, Selector __cmd__, CGImage imageRef, float scale, UIImageOrientation orientation);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImage/initWithCGImage:scale:orientation:">- (id)initWithCGImage:(CGImageRef)imageRef scale:(CGFloat)scale orientation:(UIImageOrientation)orientation</a>
      * @since Available in iOS 4.0 and later.
      */
     public UIImage(CGImage imageRef, float scale, UIImageOrientation orientation) {
         super((SkipInit) null);
-        objc_initWithCGImage(this, initWithCGImage$scale$orientation$, imageRef, scale, orientation);
+        setHandle(objc_initWithCGImage(this, initWithCGImage$scale$orientation$, imageRef, scale, orientation));
     }
     
     private static final Selector initWithCIImage$ = Selector.register("initWithCIImage:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithCIImage(UIImage __self__, Selector __cmd__, CIImage ciImage);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithCIImage(UIImage __self__, Selector __cmd__, CIImage ciImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImage/initWithCIImage:">- (id)initWithCIImage:(CIImage *)ciImage</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIImage(CIImage ciImage) {
         super((SkipInit) null);
-        objc_initWithCIImage(this, initWithCIImage$, ciImage);
+        setHandle(objc_initWithCIImage(this, initWithCIImage$, ciImage));
     }
     
     private static final Selector initWithCIImage$scale$orientation$ = Selector.register("initWithCIImage:scale:orientation:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithCIImage(UIImage __self__, Selector __cmd__, CIImage ciImage, float scale, UIImageOrientation orientation);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithCIImage(UIImage __self__, Selector __cmd__, CIImage ciImage, float scale, UIImageOrientation orientation);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImage/initWithCIImage:scale:orientation:">- (id)initWithCIImage:(CIImage *)ciImage scale:(CGFloat)scale orientation:(UIImageOrientation)orientation</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIImage(CIImage ciImage, float scale, UIImageOrientation orientation) {
         super((SkipInit) null);
-        objc_initWithCIImage(this, initWithCIImage$scale$orientation$, ciImage, scale, orientation);
+        setHandle(objc_initWithCIImage(this, initWithCIImage$scale$orientation$, ciImage, scale, orientation));
     }
     
     private static final Selector initWithContentsOfFile$ = Selector.register("initWithContentsOfFile:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithContentsOfFile(UIImage __self__, Selector __cmd__, String path);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithContentsOfFile(UIImage __self__, Selector __cmd__, String path);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImage/initWithContentsOfFile:">- (id)initWithContentsOfFile:(NSString *)path</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIImage(String path) {
         super((SkipInit) null);
-        objc_initWithContentsOfFile(this, initWithContentsOfFile$, path);
+        setHandle(objc_initWithContentsOfFile(this, initWithContentsOfFile$, path));
     }
     
     private static final Selector initWithData$scale$ = Selector.register("initWithData:scale:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithData(UIImage __self__, Selector __cmd__, NSData data, float scale);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithData(UIImage __self__, Selector __cmd__, NSData data, float scale);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImage/initWithData:scale:">- (id)initWithData:(NSData *)data scale:(CGFloat)scale</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIImage(NSData data, float scale) {
         super((SkipInit) null);
-        objc_initWithData(this, initWithData$scale$, data, scale);
+        setHandle(objc_initWithData(this, initWithData$scale$, data, scale));
     }
     
     private static final Selector initWithData$ = Selector.register("initWithData:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithData(UIImage __self__, Selector __cmd__, NSData data);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithData(UIImage __self__, Selector __cmd__, NSData data);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImage/initWithData:">- (id)initWithData:(NSData *)data</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIImage(NSData data) {
         super((SkipInit) null);
-        objc_initWithData(this, initWithData$, data);
+        setHandle(objc_initWithData(this, initWithData$, data));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -453,6 +453,16 @@ public class /*<name>*/ UIImage /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("CGImage") public static CGImage getCGImage(UIImage __self__, Selector __cmd__) { return __self__.getCGImage(); }
+        @Callback @BindSelector("CIImage") public static CIImage getCIImage(UIImage __self__, Selector __cmd__) { return __self__.getCIImage(); }
+        @Callback @BindSelector("alignmentRectInsets") public static UIEdgeInsets getAlignmentRectInsets(UIImage __self__, Selector __cmd__) { return __self__.getAlignmentRectInsets(); }
+        @Callback @BindSelector("capInsets") public static UIEdgeInsets getCapInsets(UIImage __self__, Selector __cmd__) { return __self__.getCapInsets(); }
+        @Callback @BindSelector("duration") public static double getDuration(UIImage __self__, Selector __cmd__) { return __self__.getDuration(); }
+        @Callback @BindSelector("images") public static NSArray getImages(UIImage __self__, Selector __cmd__) { return __self__.getImages(); }
+        @Callback @BindSelector("imageOrientation") public static UIImageOrientation getOrientation(UIImage __self__, Selector __cmd__) { return __self__.getOrientation(); }
+        @Callback @BindSelector("resizingMode") public static UIImageResizingMode getResizingMode(UIImage __self__, Selector __cmd__) { return __self__.getResizingMode(); }
+        @Callback @BindSelector("scale") public static float getScale(UIImage __self__, Selector __cmd__) { return __self__.getScale(); }
+        @Callback @BindSelector("size") public static CGSize getSize(UIImage __self__, Selector __cmd__) { return __self__.getSize(); }
         @Callback @BindSelector("imageWithAlignmentRectInsets:") public static UIImage copyWithAlignmentRectInsets(UIImage __self__, Selector __cmd__, UIEdgeInsets alignmentInsets) { return __self__.copyWithAlignmentRectInsets(alignmentInsets); }
         @Callback @BindSelector("resizableImageWithCapInsets:") public static UIImage copyWithCapInsets(UIImage __self__, Selector __cmd__, UIEdgeInsets capInsets) { return __self__.copyWithCapInsets(capInsets); }
         @Callback @BindSelector("resizableImageWithCapInsets:resizingMode:") public static UIImage copyWithCapInsets(UIImage __self__, Selector __cmd__, UIEdgeInsets capInsets, UIImageResizingMode resizingMode) { return __self__.copyWithCapInsets(capInsets, resizingMode); }

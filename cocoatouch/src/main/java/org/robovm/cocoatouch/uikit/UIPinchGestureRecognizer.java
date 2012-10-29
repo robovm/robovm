@@ -92,6 +92,11 @@ public class /*<name>*/ UIPinchGestureRecognizer /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("scale") public static float getScale(UIPinchGestureRecognizer __self__, Selector __cmd__) { return __self__.getScale(); }
+        @Callback @BindSelector("setScale:") public static void setScale(UIPinchGestureRecognizer __self__, Selector __cmd__, float scale) { __self__.setScale(scale); }
+        @Callback @BindSelector("velocity") public static float getVelocity(UIPinchGestureRecognizer __self__, Selector __cmd__) { return __self__.getVelocity(); }
+    }
     /*</callbacks>*/
 
 }

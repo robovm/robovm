@@ -53,58 +53,58 @@ public class /*<name>*/ UIBarButtonItem /*</name>*/
     public UIBarButtonItem() {}
     
     private static final Selector initWithBarButtonSystemItem$target$action$ = Selector.register("initWithBarButtonSystemItem:target:action:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithBarButtonSystemItem(UIBarButtonItem __self__, Selector __cmd__, UIBarButtonSystemItem systemItem, NSObject target, Selector action);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithBarButtonSystemItem(UIBarButtonItem __self__, Selector __cmd__, UIBarButtonSystemItem systemItem, NSObject target, Selector action);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UIBarButtonItem/initWithBarButtonSystemItem:target:action:">- (id)initWithBarButtonSystemItem:(UIBarButtonSystemItem)systemItem target:(id)target action:(SEL)action</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIBarButtonItem(UIBarButtonSystemItem systemItem, NSObject target, Selector action) {
         super((SkipInit) null);
-        objc_initWithBarButtonSystemItem(this, initWithBarButtonSystemItem$target$action$, systemItem, target, action);
+        setHandle(objc_initWithBarButtonSystemItem(this, initWithBarButtonSystemItem$target$action$, systemItem, target, action));
     }
     
     private static final Selector initWithCustomView$ = Selector.register("initWithCustomView:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithCustomView(UIBarButtonItem __self__, Selector __cmd__, UIView customView);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithCustomView(UIBarButtonItem __self__, Selector __cmd__, UIView customView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UIBarButtonItem/initWithCustomView:">- (id)initWithCustomView:(UIView *)customView</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIBarButtonItem(UIView customView) {
         super((SkipInit) null);
-        objc_initWithCustomView(this, initWithCustomView$, customView);
+        setHandle(objc_initWithCustomView(this, initWithCustomView$, customView));
     }
     
     private static final Selector initWithImage$landscapeImagePhone$style$target$action$ = Selector.register("initWithImage:landscapeImagePhone:style:target:action:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithImage(UIBarButtonItem __self__, Selector __cmd__, UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, NSObject target, Selector action);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithImage(UIBarButtonItem __self__, Selector __cmd__, UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, NSObject target, Selector action);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UIBarButtonItem/initWithImage:landscapeImagePhone:style:target:action:">- (id)initWithImage:(UIImage *)image landscapeImagePhone:(UIImage *)landscapeImagePhone style:(UIBarButtonItemStyle)style target:(id)target action:(SEL)action</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIBarButtonItem(UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, NSObject target, Selector action) {
         super((SkipInit) null);
-        objc_initWithImage(this, initWithImage$landscapeImagePhone$style$target$action$, image, landscapeImagePhone, style, target, action);
+        setHandle(objc_initWithImage(this, initWithImage$landscapeImagePhone$style$target$action$, image, landscapeImagePhone, style, target, action));
     }
     
     private static final Selector initWithImage$style$target$action$ = Selector.register("initWithImage:style:target:action:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithImage(UIBarButtonItem __self__, Selector __cmd__, UIImage image, UIBarButtonItemStyle style, NSObject target, Selector action);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithImage(UIBarButtonItem __self__, Selector __cmd__, UIImage image, UIBarButtonItemStyle style, NSObject target, Selector action);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UIBarButtonItem/initWithImage:style:target:action:">- (id)initWithImage:(UIImage *)image style:(UIBarButtonItemStyle)style target:(id)target action:(SEL)action</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIBarButtonItem(UIImage image, UIBarButtonItemStyle style, NSObject target, Selector action) {
         super((SkipInit) null);
-        objc_initWithImage(this, initWithImage$style$target$action$, image, style, target, action);
+        setHandle(objc_initWithImage(this, initWithImage$style$target$action$, image, style, target, action));
     }
     
     private static final Selector initWithTitle$style$target$action$ = Selector.register("initWithTitle:style:target:action:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithTitle(UIBarButtonItem __self__, Selector __cmd__, String title, UIBarButtonItemStyle style, NSObject target, Selector action);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithTitle(UIBarButtonItem __self__, Selector __cmd__, String title, UIBarButtonItemStyle style, NSObject target, Selector action);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UIBarButtonItem/initWithTitle:style:target:action:">- (id)initWithTitle:(NSString *)title style:(UIBarButtonItemStyle)style target:(id)target action:(SEL)action</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIBarButtonItem(String title, UIBarButtonItemStyle style, NSObject target, Selector action) {
         super((SkipInit) null);
-        objc_initWithTitle(this, initWithTitle$style$target$action$, title, style, target, action);
+        setHandle(objc_initWithTitle(this, initWithTitle$style$target$action$, title, style, target, action));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -421,6 +421,20 @@ public class /*<name>*/ UIBarButtonItem /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("action") public static Selector getAction(UIBarButtonItem __self__, Selector __cmd__) { return __self__.getAction(); }
+        @Callback @BindSelector("setAction:") public static void setAction(UIBarButtonItem __self__, Selector __cmd__, Selector action) { __self__.setAction(action); }
+        @Callback @BindSelector("customView") public static UIView getCustomView(UIBarButtonItem __self__, Selector __cmd__) { return __self__.getCustomView(); }
+        @Callback @BindSelector("setCustomView:") public static void setCustomView(UIBarButtonItem __self__, Selector __cmd__, UIView customView) { __self__.setCustomView(customView); }
+        @Callback @BindSelector("possibleTitles") public static NSSet getPossibleTitles(UIBarButtonItem __self__, Selector __cmd__) { return __self__.getPossibleTitles(); }
+        @Callback @BindSelector("setPossibleTitles:") public static void setPossibleTitles(UIBarButtonItem __self__, Selector __cmd__, NSSet possibleTitles) { __self__.setPossibleTitles(possibleTitles); }
+        @Callback @BindSelector("style") public static UIBarButtonItemStyle getStyle(UIBarButtonItem __self__, Selector __cmd__) { return __self__.getStyle(); }
+        @Callback @BindSelector("setStyle:") public static void setStyle(UIBarButtonItem __self__, Selector __cmd__, UIBarButtonItemStyle style) { __self__.setStyle(style); }
+        @Callback @BindSelector("target") public static NSObject getTarget(UIBarButtonItem __self__, Selector __cmd__) { return __self__.getTarget(); }
+        @Callback @BindSelector("setTarget:") public static void setTarget(UIBarButtonItem __self__, Selector __cmd__, NSObject target) { __self__.setTarget(target); }
+        @Callback @BindSelector("tintColor") public static UIColor getTintColor(UIBarButtonItem __self__, Selector __cmd__) { return __self__.getTintColor(); }
+        @Callback @BindSelector("setTintColor:") public static void setTintColor(UIBarButtonItem __self__, Selector __cmd__, UIColor tintColor) { __self__.setTintColor(tintColor); }
+        @Callback @BindSelector("width") public static float getWidth(UIBarButtonItem __self__, Selector __cmd__) { return __self__.getWidth(); }
+        @Callback @BindSelector("setWidth:") public static void setWidth(UIBarButtonItem __self__, Selector __cmd__, float width) { __self__.setWidth(width); }
         @Callback @BindSelector("backButtonBackgroundImageForState:barMetrics:") public static UIImage getBackButtonBackgroundImage(UIBarButtonItem __self__, Selector __cmd__, UIControlState state, UIBarMetrics barMetrics) { return __self__.getBackButtonBackgroundImage(state, barMetrics); }
         @Callback @BindSelector("backButtonBackgroundVerticalPositionAdjustmentForBarMetrics:") public static float getBackButtonBackgroundVerticalPositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, UIBarMetrics barMetrics) { return __self__.getBackButtonBackgroundVerticalPositionAdjustment(barMetrics); }
         @Callback @BindSelector("backButtonTitlePositionAdjustmentForBarMetrics:") public static UIOffset getBackButtonTitlePositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, UIBarMetrics barMetrics) { return __self__.getBackButtonTitlePositionAdjustment(barMetrics); }

@@ -53,14 +53,14 @@ public class /*<name>*/ UIView /*</name>*/
     public UIView() {}
     
     private static final Selector initWithFrame$ = Selector.register("initWithFrame:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithFrame(UIView __self__, Selector __cmd__, CGRect aRect);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithFrame(UIView __self__, Selector __cmd__, CGRect aRect);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/initWithFrame:">- (id)initWithFrame:(CGRect)aRect</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIView(CGRect aRect) {
         super((SkipInit) null);
-        objc_initWithFrame(this, initWithFrame$, aRect);
+        setHandle(objc_initWithFrame(this, initWithFrame$, aRect));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -1466,6 +1466,50 @@ public class /*<name>*/ UIView /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("alpha") public static float getAlpha(UIView __self__, Selector __cmd__) { return __self__.getAlpha(); }
+        @Callback @BindSelector("setAlpha:") public static void setAlpha(UIView __self__, Selector __cmd__, float alpha) { __self__.setAlpha(alpha); }
+        @Callback @BindSelector("autoresizesSubviews") public static boolean isAutoresizesSubviews(UIView __self__, Selector __cmd__) { return __self__.isAutoresizesSubviews(); }
+        @Callback @BindSelector("setAutoresizesSubviews:") public static void setAutoresizesSubviews(UIView __self__, Selector __cmd__, boolean autoresizesSubviews) { __self__.setAutoresizesSubviews(autoresizesSubviews); }
+        @Callback @BindSelector("autoresizingMask") public static UIViewAutoresizing getAutoresizingMask(UIView __self__, Selector __cmd__) { return __self__.getAutoresizingMask(); }
+        @Callback @BindSelector("setAutoresizingMask:") public static void setAutoresizingMask(UIView __self__, Selector __cmd__, UIViewAutoresizing autoresizingMask) { __self__.setAutoresizingMask(autoresizingMask); }
+        @Callback @BindSelector("backgroundColor") public static UIColor getBackgroundColor(UIView __self__, Selector __cmd__) { return __self__.getBackgroundColor(); }
+        @Callback @BindSelector("setBackgroundColor:") public static void setBackgroundColor(UIView __self__, Selector __cmd__, UIColor backgroundColor) { __self__.setBackgroundColor(backgroundColor); }
+        @Callback @BindSelector("bounds") public static CGRect getBounds(UIView __self__, Selector __cmd__) { return __self__.getBounds(); }
+        @Callback @BindSelector("setBounds:") public static void setBounds(UIView __self__, Selector __cmd__, CGRect bounds) { __self__.setBounds(bounds); }
+        @Callback @BindSelector("center") public static CGPoint getCenter(UIView __self__, Selector __cmd__) { return __self__.getCenter(); }
+        @Callback @BindSelector("setCenter:") public static void setCenter(UIView __self__, Selector __cmd__, CGPoint center) { __self__.setCenter(center); }
+        @Callback @BindSelector("clearsContextBeforeDrawing") public static boolean isClearsContextBeforeDrawing(UIView __self__, Selector __cmd__) { return __self__.isClearsContextBeforeDrawing(); }
+        @Callback @BindSelector("setClearsContextBeforeDrawing:") public static void setClearsContextBeforeDrawing(UIView __self__, Selector __cmd__, boolean clearsContextBeforeDrawing) { __self__.setClearsContextBeforeDrawing(clearsContextBeforeDrawing); }
+        @Callback @BindSelector("clipsToBounds") public static boolean isClipsToBounds(UIView __self__, Selector __cmd__) { return __self__.isClipsToBounds(); }
+        @Callback @BindSelector("setClipsToBounds:") public static void setClipsToBounds(UIView __self__, Selector __cmd__, boolean clipsToBounds) { __self__.setClipsToBounds(clipsToBounds); }
+        @Callback @BindSelector("contentMode") public static UIViewContentMode getContentMode(UIView __self__, Selector __cmd__) { return __self__.getContentMode(); }
+        @Callback @BindSelector("setContentMode:") public static void setContentMode(UIView __self__, Selector __cmd__, UIViewContentMode contentMode) { __self__.setContentMode(contentMode); }
+        @Callback @BindSelector("contentScaleFactor") public static float getContentScaleFactor(UIView __self__, Selector __cmd__) { return __self__.getContentScaleFactor(); }
+        @Callback @BindSelector("setContentScaleFactor:") public static void setContentScaleFactor(UIView __self__, Selector __cmd__, float contentScaleFactor) { __self__.setContentScaleFactor(contentScaleFactor); }
+        @Callback @BindSelector("isExclusiveTouch") public static boolean isExclusiveTouch(UIView __self__, Selector __cmd__) { return __self__.isExclusiveTouch(); }
+        @Callback @BindSelector("setExclusiveTouch:") public static void setExclusiveTouch(UIView __self__, Selector __cmd__, boolean exclusiveTouch) { __self__.setExclusiveTouch(exclusiveTouch); }
+        @Callback @BindSelector("frame") public static CGRect getFrame(UIView __self__, Selector __cmd__) { return __self__.getFrame(); }
+        @Callback @BindSelector("setFrame:") public static void setFrame(UIView __self__, Selector __cmd__, CGRect frame) { __self__.setFrame(frame); }
+        @Callback @BindSelector("gestureRecognizers") public static NSArray getGestureRecognizers(UIView __self__, Selector __cmd__) { return __self__.getGestureRecognizers(); }
+        @Callback @BindSelector("setGestureRecognizers:") public static void setGestureRecognizers(UIView __self__, Selector __cmd__, NSArray gestureRecognizers) { __self__.setGestureRecognizers(gestureRecognizers); }
+        @Callback @BindSelector("isHidden") public static boolean isHidden(UIView __self__, Selector __cmd__) { return __self__.isHidden(); }
+        @Callback @BindSelector("setHidden:") public static void setHidden(UIView __self__, Selector __cmd__, boolean hidden) { __self__.setHidden(hidden); }
+        @Callback @BindSelector("layer") public static CALayer getLayer(UIView __self__, Selector __cmd__) { return __self__.getLayer(); }
+        @Callback @BindSelector("isMultipleTouchEnabled") public static boolean isMultipleTouchEnabled(UIView __self__, Selector __cmd__) { return __self__.isMultipleTouchEnabled(); }
+        @Callback @BindSelector("setMultipleTouchEnabled:") public static void setMultipleTouchEnabled(UIView __self__, Selector __cmd__, boolean multipleTouchEnabled) { __self__.setMultipleTouchEnabled(multipleTouchEnabled); }
+        @Callback @BindSelector("isOpaque") public static boolean isOpaque(UIView __self__, Selector __cmd__) { return __self__.isOpaque(); }
+        @Callback @BindSelector("setOpaque:") public static void setOpaque(UIView __self__, Selector __cmd__, boolean opaque) { __self__.setOpaque(opaque); }
+        @Callback @BindSelector("restorationIdentifier") public static String getRestorationIdentifier(UIView __self__, Selector __cmd__) { return __self__.getRestorationIdentifier(); }
+        @Callback @BindSelector("setRestorationIdentifier:") public static void setRestorationIdentifier(UIView __self__, Selector __cmd__, String restorationIdentifier) { __self__.setRestorationIdentifier(restorationIdentifier); }
+        @Callback @BindSelector("subviews") public static NSArray getSubviews(UIView __self__, Selector __cmd__) { return __self__.getSubviews(); }
+        @Callback @BindSelector("superview") public static UIView getSuperview(UIView __self__, Selector __cmd__) { return __self__.getSuperview(); }
+        @Callback @BindSelector("tag") public static int getTag(UIView __self__, Selector __cmd__) { return __self__.getTag(); }
+        @Callback @BindSelector("setTag:") public static void setTag(UIView __self__, Selector __cmd__, int tag) { __self__.setTag(tag); }
+        @Callback @BindSelector("transform") public static CGAffineTransform getTransform(UIView __self__, Selector __cmd__) { return __self__.getTransform(); }
+        @Callback @BindSelector("setTransform:") public static void setTransform(UIView __self__, Selector __cmd__, CGAffineTransform transform) { __self__.setTransform(transform); }
+        @Callback @BindSelector("isUserInteractionEnabled") public static boolean isUserInteractionEnabled(UIView __self__, Selector __cmd__) { return __self__.isUserInteractionEnabled(); }
+        @Callback @BindSelector("setUserInteractionEnabled:") public static void setUserInteractionEnabled(UIView __self__, Selector __cmd__, boolean userInteractionEnabled) { __self__.setUserInteractionEnabled(userInteractionEnabled); }
+        @Callback @BindSelector("window") public static UIWindow getWindow(UIView __self__, Selector __cmd__) { return __self__.getWindow(); }
         @Callback @BindSelector("addConstraint:") public static void addConstraint(UIView __self__, Selector __cmd__, NSLayoutConstraint constraint) { __self__.addConstraint(constraint); }
         @Callback @BindSelector("addConstraints:") public static void addConstraints(UIView __self__, Selector __cmd__, NSArray constraints) { __self__.addConstraints(constraints); }
         @Callback @BindSelector("addGestureRecognizer:") public static void addGestureRecognizer(UIView __self__, Selector __cmd__, UIGestureRecognizer gestureRecognizer) { __self__.addGestureRecognizer(gestureRecognizer); }

@@ -124,6 +124,8 @@ public class /*<name>*/ UILocalizedIndexedCollation /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("sectionIndexTitles") public static NSArray getSectionIndexTitles(UILocalizedIndexedCollation __self__, Selector __cmd__) { return __self__.getSectionIndexTitles(); }
+        @Callback @BindSelector("sectionTitles") public static NSArray getSectionTitles(UILocalizedIndexedCollation __self__, Selector __cmd__) { return __self__.getSectionTitles(); }
         @Callback @BindSelector("sectionForObject:collationStringSelector:") public static int getSectionForObject(UILocalizedIndexedCollation __self__, Selector __cmd__, NSObject object, Selector selector) { return __self__.getSectionForObject(object, selector); }
         @Callback @BindSelector("sectionForSectionIndexTitleAtIndex:") public static int getSectionForSectionIndexTitle(UILocalizedIndexedCollation __self__, Selector __cmd__, int indexTitleIndex) { return __self__.getSectionForSectionIndexTitle(indexTitleIndex); }
         @Callback @BindSelector("sortedArrayFromArray:collationStringSelector:") public static NSArray sortArray(UILocalizedIndexedCollation __self__, Selector __cmd__, NSArray array, Selector selector) { return __self__.sortArray(array, selector); }

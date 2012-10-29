@@ -484,6 +484,29 @@ public class /*<name>*/ UIPasteboard /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("URL") public static NSURL getURL(UIPasteboard __self__, Selector __cmd__) { return __self__.getURL(); }
+        @Callback @BindSelector("setURL:") public static void setURL(UIPasteboard __self__, Selector __cmd__, NSURL URL) { __self__.setURL(URL); }
+        @Callback @BindSelector("URLs") public static NSArray getURLs(UIPasteboard __self__, Selector __cmd__) { return __self__.getURLs(); }
+        @Callback @BindSelector("setURLs:") public static void setURLs(UIPasteboard __self__, Selector __cmd__, NSArray URLs) { __self__.setURLs(URLs); }
+        @Callback @BindSelector("changeCount") public static int getChangeCount(UIPasteboard __self__, Selector __cmd__) { return __self__.getChangeCount(); }
+        @Callback @BindSelector("color") public static UIColor getColor(UIPasteboard __self__, Selector __cmd__) { return __self__.getColor(); }
+        @Callback @BindSelector("setColor:") public static void setColor(UIPasteboard __self__, Selector __cmd__, UIColor color) { __self__.setColor(color); }
+        @Callback @BindSelector("colors") public static NSArray getColors(UIPasteboard __self__, Selector __cmd__) { return __self__.getColors(); }
+        @Callback @BindSelector("setColors:") public static void setColors(UIPasteboard __self__, Selector __cmd__, NSArray colors) { __self__.setColors(colors); }
+        @Callback @BindSelector("numberOfItems") public static int getCount(UIPasteboard __self__, Selector __cmd__) { return __self__.getCount(); }
+        @Callback @BindSelector("image") public static UIImage getImage(UIPasteboard __self__, Selector __cmd__) { return __self__.getImage(); }
+        @Callback @BindSelector("setImage:") public static void setImage(UIPasteboard __self__, Selector __cmd__, UIImage image) { __self__.setImage(image); }
+        @Callback @BindSelector("images") public static NSArray getImages(UIPasteboard __self__, Selector __cmd__) { return __self__.getImages(); }
+        @Callback @BindSelector("setImages:") public static void setImages(UIPasteboard __self__, Selector __cmd__, NSArray images) { __self__.setImages(images); }
+        @Callback @BindSelector("items") public static NSArray getItems(UIPasteboard __self__, Selector __cmd__) { return __self__.getItems(); }
+        @Callback @BindSelector("setItems:") public static void setItems(UIPasteboard __self__, Selector __cmd__, NSArray items) { __self__.setItems(items); }
+        @Callback @BindSelector("name") public static String getName(UIPasteboard __self__, Selector __cmd__) { return __self__.getName(); }
+        @Callback @BindSelector("isPersistent") public static boolean isPersistent(UIPasteboard __self__, Selector __cmd__) { return __self__.isPersistent(); }
+        @Callback @BindSelector("setPersistent:") public static void setPersistent(UIPasteboard __self__, Selector __cmd__, boolean persistent) { __self__.setPersistent(persistent); }
+        @Callback @BindSelector("string") public static String getString(UIPasteboard __self__, Selector __cmd__) { return __self__.getString(); }
+        @Callback @BindSelector("setString:") public static void setString(UIPasteboard __self__, Selector __cmd__, String string) { __self__.setString(string); }
+        @Callback @BindSelector("strings") public static NSArray getStrings(UIPasteboard __self__, Selector __cmd__) { return __self__.getStrings(); }
+        @Callback @BindSelector("setStrings:") public static void setStrings(UIPasteboard __self__, Selector __cmd__, NSArray strings) { __self__.setStrings(strings); }
         @Callback @BindSelector("addItems:") public static void addItems(UIPasteboard __self__, Selector __cmd__, NSArray items) { __self__.addItems(items); }
         @Callback @BindSelector("containsPasteboardTypes:") public static boolean contains(UIPasteboard __self__, Selector __cmd__, NSArray pasteboardTypes) { return __self__.contains(pasteboardTypes); }
         @Callback @BindSelector("containsPasteboardTypes:inItemSet:") public static boolean contains(UIPasteboard __self__, Selector __cmd__, NSArray pasteboardTypes, NSIndexSet itemSet) { return __self__.contains(pasteboardTypes, itemSet); }

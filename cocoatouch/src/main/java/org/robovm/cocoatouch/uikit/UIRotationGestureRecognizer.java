@@ -92,6 +92,11 @@ public class /*<name>*/ UIRotationGestureRecognizer /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("rotation") public static float getRotation(UIRotationGestureRecognizer __self__, Selector __cmd__) { return __self__.getRotation(); }
+        @Callback @BindSelector("setRotation:") public static void setRotation(UIRotationGestureRecognizer __self__, Selector __cmd__, float rotation) { __self__.setRotation(rotation); }
+        @Callback @BindSelector("velocity") public static float getVelocity(UIRotationGestureRecognizer __self__, Selector __cmd__) { return __self__.getVelocity(); }
+    }
     /*</callbacks>*/
 
 }

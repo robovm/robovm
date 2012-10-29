@@ -213,6 +213,13 @@ public class /*<name>*/ UIPickerView /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("dataSource") public static UIPickerViewDataSource getDataSource(UIPickerView __self__, Selector __cmd__) { return __self__.getDataSource(); }
+        @Callback @BindSelector("setDataSource:") public static void setDataSource(UIPickerView __self__, Selector __cmd__, UIPickerViewDataSource dataSource) { __self__.setDataSource(dataSource); }
+        @Callback @BindSelector("delegate") public static UIPickerViewDelegate getDelegate(UIPickerView __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UIPickerView __self__, Selector __cmd__, UIPickerViewDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("numberOfComponents") public static int getNumberOfComponents(UIPickerView __self__, Selector __cmd__) { return __self__.getNumberOfComponents(); }
+        @Callback @BindSelector("showsSelectionIndicator") public static boolean isShowsSelectionIndicator(UIPickerView __self__, Selector __cmd__) { return __self__.isShowsSelectionIndicator(); }
+        @Callback @BindSelector("setShowsSelectionIndicator:") public static void setShowsSelectionIndicator(UIPickerView __self__, Selector __cmd__, boolean showsSelectionIndicator) { __self__.setShowsSelectionIndicator(showsSelectionIndicator); }
         @Callback @BindSelector("numberOfRowsInComponent:") public static int getNumberOfRows(UIPickerView __self__, Selector __cmd__, int component) { return __self__.getNumberOfRows(component); }
         @Callback @BindSelector("rowSizeForComponent:") public static CGSize getRowSize(UIPickerView __self__, Selector __cmd__, int component) { return __self__.getRowSize(component); }
         @Callback @BindSelector("viewForRow:forComponent:") public static UIView getRowView(UIPickerView __self__, Selector __cmd__, int row, int component) { return __self__.getRowView(row, component); }

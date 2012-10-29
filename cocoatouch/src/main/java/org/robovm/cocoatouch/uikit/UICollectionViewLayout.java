@@ -310,6 +310,7 @@ public class /*<name>*/ UICollectionViewLayout /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("collectionView") public static UICollectionView getCollectionView(UICollectionViewLayout __self__, Selector __cmd__) { return __self__.getCollectionView(); }
         @Callback @BindSelector("finalizeAnimatedBoundsChange") public static void finalizeAnimatedBoundsChange(UICollectionViewLayout __self__, Selector __cmd__) { __self__.finalizeAnimatedBoundsChange(); }
         @Callback @BindSelector("finalizeCollectionViewUpdates") public static void finalizeCollectionViewUpdates(UICollectionViewLayout __self__, Selector __cmd__) { __self__.finalizeCollectionViewUpdates(); }
         @Callback @BindSelector("collectionViewContentSize") public static CGSize getCollectionViewContentSize(UICollectionViewLayout __self__, Selector __cmd__) { return __self__.getCollectionViewContentSize(); }

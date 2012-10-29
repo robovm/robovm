@@ -53,14 +53,14 @@ public class /*<name>*/ UIMarkupTextPrintFormatter /*</name>*/
     public UIMarkupTextPrintFormatter() {}
     
     private static final Selector initWithMarkupText$ = Selector.register("initWithMarkupText:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithMarkupText(UIMarkupTextPrintFormatter __self__, Selector __cmd__, String markupText);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithMarkupText(UIMarkupTextPrintFormatter __self__, Selector __cmd__, String markupText);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMarkupTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instm/UIMarkupTextPrintFormatter/initWithMarkupText:">- (id)initWithMarkupText:(NSString *)markupText</a>
      * @since Available in iOS 4.2 and later.
      */
     public UIMarkupTextPrintFormatter(String markupText) {
         super((SkipInit) null);
-        objc_initWithMarkupText(this, initWithMarkupText$, markupText);
+        setHandle(objc_initWithMarkupText(this, initWithMarkupText$, markupText));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -91,6 +91,10 @@ public class /*<name>*/ UIMarkupTextPrintFormatter /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("markupText") public static String getMarkupText(UIMarkupTextPrintFormatter __self__, Selector __cmd__) { return __self__.getMarkupText(); }
+        @Callback @BindSelector("setMarkupText:") public static void setMarkupText(UIMarkupTextPrintFormatter __self__, Selector __cmd__, String markupText) { __self__.setMarkupText(markupText); }
+    }
     /*</callbacks>*/
 
 }

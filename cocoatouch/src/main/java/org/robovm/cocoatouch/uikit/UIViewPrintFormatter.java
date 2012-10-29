@@ -70,6 +70,9 @@ public class /*<name>*/ UIViewPrintFormatter /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("view") public static UIView getView(UIViewPrintFormatter __self__, Selector __cmd__) { return __self__.getView(); }
+    }
     /*</callbacks>*/
 
 }

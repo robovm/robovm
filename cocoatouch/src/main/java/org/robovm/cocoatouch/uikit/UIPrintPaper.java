@@ -90,6 +90,10 @@ public class /*<name>*/ UIPrintPaper /*</name>*/
     }
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("paperSize") public static CGSize getPaperSize(UIPrintPaper __self__, Selector __cmd__) { return __self__.getPaperSize(); }
+        @Callback @BindSelector("printableRect") public static CGRect getPrintableRect(UIPrintPaper __self__, Selector __cmd__) { return __self__.getPrintableRect(); }
+    }
     /*</callbacks>*/
 
 }

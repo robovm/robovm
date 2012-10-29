@@ -1049,6 +1049,63 @@ public class /*<name>*/ UITextView /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("allowsEditingTextAttributes") public static boolean isAllowsEditingTextAttributes(UITextView __self__, Selector __cmd__) { return __self__.isAllowsEditingTextAttributes(); }
+        @Callback @BindSelector("setAllowsEditingTextAttributes:") public static void setAllowsEditingTextAttributes(UITextView __self__, Selector __cmd__, boolean allowsEditingTextAttributes) { __self__.setAllowsEditingTextAttributes(allowsEditingTextAttributes); }
+        @Callback @BindSelector("attributedText") public static NSAttributedString getAttributedText(UITextView __self__, Selector __cmd__) { return __self__.getAttributedText(); }
+        @Callback @BindSelector("setAttributedText:") public static void setAttributedText(UITextView __self__, Selector __cmd__, NSAttributedString attributedText) { __self__.setAttributedText(attributedText); }
+        @Callback @BindSelector("autocapitalizationType") public static UITextAutocapitalizationType getAutocapitalizationType(UITextView __self__, Selector __cmd__) { return __self__.getAutocapitalizationType(); }
+        @Callback @BindSelector("setAutocapitalizationType:") public static void setAutocapitalizationType(UITextView __self__, Selector __cmd__, UITextAutocapitalizationType autocapitalizationType) { __self__.setAutocapitalizationType(autocapitalizationType); }
+        @Callback @BindSelector("autocorrectionType") public static UITextAutocorrectionType getAutocorrectionType(UITextView __self__, Selector __cmd__) { return __self__.getAutocorrectionType(); }
+        @Callback @BindSelector("setAutocorrectionType:") public static void setAutocorrectionType(UITextView __self__, Selector __cmd__, UITextAutocorrectionType autocorrectionType) { __self__.setAutocorrectionType(autocorrectionType); }
+        @Callback @BindSelector("beginningOfDocument") public static UITextPosition getBeginningOfDocument(UITextView __self__, Selector __cmd__) { return __self__.getBeginningOfDocument(); }
+        @Callback @BindSelector("clearsOnInsertion") public static boolean isClearsOnInsertion(UITextView __self__, Selector __cmd__) { return __self__.isClearsOnInsertion(); }
+        @Callback @BindSelector("setClearsOnInsertion:") public static void setClearsOnInsertion(UITextView __self__, Selector __cmd__, boolean clearsOnInsertion) { __self__.setClearsOnInsertion(clearsOnInsertion); }
+        @Callback @BindSelector("dataDetectorTypes") public static UIDataDetectorTypes getDataDetectorTypes(UITextView __self__, Selector __cmd__) { return __self__.getDataDetectorTypes(); }
+        @Callback @BindSelector("setDataDetectorTypes:") public static void setDataDetectorTypes(UITextView __self__, Selector __cmd__, UIDataDetectorTypes dataDetectorTypes) { __self__.setDataDetectorTypes(dataDetectorTypes); }
+        @Callback @BindSelector("delegate") public static UITextViewDelegate getDelegate(UITextView __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UITextView __self__, Selector __cmd__, UITextViewDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("isEditable") public static boolean isEditable(UITextView __self__, Selector __cmd__) { return __self__.isEditable(); }
+        @Callback @BindSelector("setEditable:") public static void setEditable(UITextView __self__, Selector __cmd__, boolean editable) { __self__.setEditable(editable); }
+        @Callback @BindSelector("enablesReturnKeyAutomatically") public static boolean isEnablesReturnKeyAutomatically(UITextView __self__, Selector __cmd__) { return __self__.isEnablesReturnKeyAutomatically(); }
+        @Callback @BindSelector("setEnablesReturnKeyAutomatically:") public static void setEnablesReturnKeyAutomatically(UITextView __self__, Selector __cmd__, boolean enablesReturnKeyAutomatically) { __self__.setEnablesReturnKeyAutomatically(enablesReturnKeyAutomatically); }
+        @Callback @BindSelector("endOfDocument") public static UITextPosition getEndOfDocument(UITextView __self__, Selector __cmd__) { return __self__.getEndOfDocument(); }
+        @Callback @BindSelector("font") public static UIFont getFont(UITextView __self__, Selector __cmd__) { return __self__.getFont(); }
+        @Callback @BindSelector("setFont:") public static void setFont(UITextView __self__, Selector __cmd__, UIFont font) { __self__.setFont(font); }
+        @Callback @BindSelector("inputAccessoryView") public static UIView getInputAccessoryView(UITextView __self__, Selector __cmd__) { return __self__.getInputAccessoryView(); }
+        @Callback @BindSelector("setInputAccessoryView:") public static void setInputAccessoryView(UITextView __self__, Selector __cmd__, UIView inputAccessoryView) { __self__.setInputAccessoryView(inputAccessoryView); }
+        @Callback @BindSelector("inputDelegate") public static UITextInputDelegate getInputDelegate(UITextView __self__, Selector __cmd__) { return __self__.getInputDelegate(); }
+        @Callback @BindSelector("setInputDelegate:") public static void setInputDelegate(UITextView __self__, Selector __cmd__, UITextInputDelegate inputDelegate) { __self__.setInputDelegate(inputDelegate); }
+        @Callback @BindSelector("inputView") public static UIView getInputView(UITextView __self__, Selector __cmd__) { return __self__.getInputView(); }
+        @Callback @BindSelector("setInputView:") public static void setInputView(UITextView __self__, Selector __cmd__, UIView inputView) { __self__.setInputView(inputView); }
+        @Callback @BindSelector("keyboardAppearance") public static UIKeyboardAppearance getKeyboardAppearance(UITextView __self__, Selector __cmd__) { return __self__.getKeyboardAppearance(); }
+        @Callback @BindSelector("setKeyboardAppearance:") public static void setKeyboardAppearance(UITextView __self__, Selector __cmd__, UIKeyboardAppearance keyboardAppearance) { __self__.setKeyboardAppearance(keyboardAppearance); }
+        @Callback @BindSelector("keyboardType") public static UIKeyboardType getKeyboardType(UITextView __self__, Selector __cmd__) { return __self__.getKeyboardType(); }
+        @Callback @BindSelector("setKeyboardType:") public static void setKeyboardType(UITextView __self__, Selector __cmd__, UIKeyboardType keyboardType) { __self__.setKeyboardType(keyboardType); }
+        @Callback @BindSelector("markedTextRange") public static UITextRange getMarkedTextRange(UITextView __self__, Selector __cmd__) { return __self__.getMarkedTextRange(); }
+        @Callback @BindSelector("markedTextStyle") public static NSDictionary getMarkedTextStyle(UITextView __self__, Selector __cmd__) { return __self__.getMarkedTextStyle(); }
+        @Callback @BindSelector("setMarkedTextStyle:") public static void setMarkedTextStyle(UITextView __self__, Selector __cmd__, NSDictionary markedTextStyle) { __self__.setMarkedTextStyle(markedTextStyle); }
+        @Callback @BindSelector("returnKeyType") public static UIReturnKeyType getReturnKeyType(UITextView __self__, Selector __cmd__) { return __self__.getReturnKeyType(); }
+        @Callback @BindSelector("setReturnKeyType:") public static void setReturnKeyType(UITextView __self__, Selector __cmd__, UIReturnKeyType returnKeyType) { __self__.setReturnKeyType(returnKeyType); }
+        @Callback @BindSelector("isSecureTextEntry") public static boolean isSecureTextEntry(UITextView __self__, Selector __cmd__) { return __self__.isSecureTextEntry(); }
+        @Callback @BindSelector("setSecureTextEntry:") public static void setSecureTextEntry(UITextView __self__, Selector __cmd__, boolean secureTextEntry) { __self__.setSecureTextEntry(secureTextEntry); }
+        @Callback @BindSelector("selectedRange") public static NSRange getSelectedRange(UITextView __self__, Selector __cmd__) { return __self__.getSelectedRange(); }
+        @Callback @BindSelector("setSelectedRange:") public static void setSelectedRange(UITextView __self__, Selector __cmd__, NSRange selectedRange) { __self__.setSelectedRange(selectedRange); }
+        @Callback @BindSelector("selectedTextRange") public static UITextRange getSelectedTextRange(UITextView __self__, Selector __cmd__) { return __self__.getSelectedTextRange(); }
+        @Callback @BindSelector("setSelectedTextRange:") public static void setSelectedTextRange(UITextView __self__, Selector __cmd__, UITextRange selectedTextRange) { __self__.setSelectedTextRange(selectedTextRange); }
+        @Callback @BindSelector("selectionAffinity") public static UITextStorageDirection getSelectionAffinity(UITextView __self__, Selector __cmd__) { return __self__.getSelectionAffinity(); }
+        @Callback @BindSelector("setSelectionAffinity:") public static void setSelectionAffinity(UITextView __self__, Selector __cmd__, UITextStorageDirection selectionAffinity) { __self__.setSelectionAffinity(selectionAffinity); }
+        @Callback @BindSelector("spellCheckingType") public static UITextSpellCheckingType getSpellCheckingType(UITextView __self__, Selector __cmd__) { return __self__.getSpellCheckingType(); }
+        @Callback @BindSelector("setSpellCheckingType:") public static void setSpellCheckingType(UITextView __self__, Selector __cmd__, UITextSpellCheckingType spellCheckingType) { __self__.setSpellCheckingType(spellCheckingType); }
+        @Callback @BindSelector("text") public static String getText(UITextView __self__, Selector __cmd__) { return __self__.getText(); }
+        @Callback @BindSelector("setText:") public static void setText(UITextView __self__, Selector __cmd__, String text) { __self__.setText(text); }
+        @Callback @BindSelector("textAlignment") public static NSTextAlignment getTextAlignment(UITextView __self__, Selector __cmd__) { return __self__.getTextAlignment(); }
+        @Callback @BindSelector("setTextAlignment:") public static void setTextAlignment(UITextView __self__, Selector __cmd__, NSTextAlignment textAlignment) { __self__.setTextAlignment(textAlignment); }
+        @Callback @BindSelector("textColor") public static UIColor getTextColor(UITextView __self__, Selector __cmd__) { return __self__.getTextColor(); }
+        @Callback @BindSelector("setTextColor:") public static void setTextColor(UITextView __self__, Selector __cmd__, UIColor textColor) { __self__.setTextColor(textColor); }
+        @Callback @BindSelector("textInputView") public static UIView getTextInputView(UITextView __self__, Selector __cmd__) { return __self__.getTextInputView(); }
+        @Callback @BindSelector("tokenizer") public static UITextInputTokenizer getTokenizer(UITextView __self__, Selector __cmd__) { return __self__.getTokenizer(); }
+        @Callback @BindSelector("typingAttributes") public static NSDictionary getTypingAttributes(UITextView __self__, Selector __cmd__) { return __self__.getTypingAttributes(); }
+        @Callback @BindSelector("setTypingAttributes:") public static void setTypingAttributes(UITextView __self__, Selector __cmd__, NSDictionary typingAttributes) { __self__.setTypingAttributes(typingAttributes); }
         @Callback @BindSelector("comparePosition:toPosition:") public static NSComparisonResult comparePositions(UITextView __self__, Selector __cmd__, UITextPosition position, UITextPosition other) { return __self__.comparePositions(position, other); }
         @Callback @BindSelector("deleteBackward") public static void deleteBackward(UITextView __self__, Selector __cmd__) { __self__.deleteBackward(); }
         @Callback @BindSelector("dictationRecognitionFailed") public static void dictationRecognitionFailed(UITextView __self__, Selector __cmd__) { __self__.dictationRecognitionFailed(); }

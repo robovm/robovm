@@ -53,36 +53,36 @@ public class /*<name>*/ UIColor /*</name>*/
     public UIColor() {}
     
     private static final Selector initWithCGColor$ = Selector.register("initWithCGColor:");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_initWithCGColor(UIColor __self__, Selector __cmd__, CGColor cgColor);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithCGColor(UIColor __self__, Selector __cmd__, CGColor cgColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/initWithCGColor:">- (UIColor *)initWithCGColor:(CGColorRef)cgColor</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIColor(CGColor cgColor) {
         super((SkipInit) null);
-        objc_initWithCGColor(this, initWithCGColor$, cgColor);
+        setHandle(objc_initWithCGColor(this, initWithCGColor$, cgColor));
     }
     
     private static final Selector initWithCIColor$ = Selector.register("initWithCIColor:");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_initWithCIColor(UIColor __self__, Selector __cmd__, CIColor ciColor);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithCIColor(UIColor __self__, Selector __cmd__, CIColor ciColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/initWithCIColor:">- (UIColor *)initWithCIColor:(CIColor *)ciColor</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIColor(CIColor ciColor) {
         super((SkipInit) null);
-        objc_initWithCIColor(this, initWithCIColor$, ciColor);
+        setHandle(objc_initWithCIColor(this, initWithCIColor$, ciColor));
     }
     
     private static final Selector initWithRed$green$blue$alpha$ = Selector.register("initWithRed:green:blue:alpha:");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_initWithRed(UIColor __self__, Selector __cmd__, float red, float green, float blue, float alpha);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithRed(UIColor __self__, Selector __cmd__, float red, float green, float blue, float alpha);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/initWithRed:green:blue:alpha:">- (UIColor *)initWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIColor(float red, float green, float blue, float alpha) {
         super((SkipInit) null);
-        objc_initWithRed(this, initWithRed$green$blue$alpha$, red, green, blue, alpha);
+        setHandle(objc_initWithRed(this, initWithRed$green$blue$alpha$, red, green, blue, alpha));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -460,6 +460,8 @@ public class /*<name>*/ UIColor /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("CGColor") public static CGColor getCGColor(UIColor __self__, Selector __cmd__) { return __self__.getCGColor(); }
+        @Callback @BindSelector("CIColor") public static CIColor getCIColor(UIColor __self__, Selector __cmd__) { return __self__.getCIColor(); }
         @Callback @BindSelector("colorWithAlphaComponent:") public static UIColor colorWithAlpha(UIColor __self__, Selector __cmd__, float alpha) { return __self__.colorWithAlpha(alpha); }
         @Callback @BindSelector("getHue:saturation:brightness:alpha:") public static boolean getHSBA(UIColor __self__, Selector __cmd__, FloatPtr hue, FloatPtr saturation, FloatPtr brightness, FloatPtr alpha) { return __self__.getHSBA(hue, saturation, brightness, alpha); }
         @Callback @BindSelector("getRed:green:blue:alpha:") public static boolean getRGBA(UIColor __self__, Selector __cmd__, FloatPtr red, FloatPtr green, FloatPtr blue, FloatPtr alpha) { return __self__.getRGBA(red, green, blue, alpha); }

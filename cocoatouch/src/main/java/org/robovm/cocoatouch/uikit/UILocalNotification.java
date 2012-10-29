@@ -301,6 +301,30 @@ public class /*<name>*/ UILocalNotification /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("alertAction") public static String getAlertAction(UILocalNotification __self__, Selector __cmd__) { return __self__.getAlertAction(); }
+        @Callback @BindSelector("setAlertAction:") public static void setAlertAction(UILocalNotification __self__, Selector __cmd__, String alertAction) { __self__.setAlertAction(alertAction); }
+        @Callback @BindSelector("alertBody") public static String getAlertBody(UILocalNotification __self__, Selector __cmd__) { return __self__.getAlertBody(); }
+        @Callback @BindSelector("setAlertBody:") public static void setAlertBody(UILocalNotification __self__, Selector __cmd__, String alertBody) { __self__.setAlertBody(alertBody); }
+        @Callback @BindSelector("alertLaunchImage") public static String getAlertLaunchImage(UILocalNotification __self__, Selector __cmd__) { return __self__.getAlertLaunchImage(); }
+        @Callback @BindSelector("setAlertLaunchImage:") public static void setAlertLaunchImage(UILocalNotification __self__, Selector __cmd__, String alertLaunchImage) { __self__.setAlertLaunchImage(alertLaunchImage); }
+        @Callback @BindSelector("applicationIconBadgeNumber") public static int getApplicationIconBadgeNumber(UILocalNotification __self__, Selector __cmd__) { return __self__.getApplicationIconBadgeNumber(); }
+        @Callback @BindSelector("setApplicationIconBadgeNumber:") public static void setApplicationIconBadgeNumber(UILocalNotification __self__, Selector __cmd__, int applicationIconBadgeNumber) { __self__.setApplicationIconBadgeNumber(applicationIconBadgeNumber); }
+        @Callback @BindSelector("fireDate") public static NSDate getFireDate(UILocalNotification __self__, Selector __cmd__) { return __self__.getFireDate(); }
+        @Callback @BindSelector("setFireDate:") public static void setFireDate(UILocalNotification __self__, Selector __cmd__, NSDate fireDate) { __self__.setFireDate(fireDate); }
+        @Callback @BindSelector("hasAction") public static boolean isHasAction(UILocalNotification __self__, Selector __cmd__) { return __self__.isHasAction(); }
+        @Callback @BindSelector("setHasAction:") public static void setHasAction(UILocalNotification __self__, Selector __cmd__, boolean hasAction) { __self__.setHasAction(hasAction); }
+        @Callback @BindSelector("repeatCalendar") public static NSCalendar getRepeatCalendar(UILocalNotification __self__, Selector __cmd__) { return __self__.getRepeatCalendar(); }
+        @Callback @BindSelector("setRepeatCalendar:") public static void setRepeatCalendar(UILocalNotification __self__, Selector __cmd__, NSCalendar repeatCalendar) { __self__.setRepeatCalendar(repeatCalendar); }
+        @Callback @BindSelector("repeatInterval") public static NSCalendarUnit getRepeatInterval(UILocalNotification __self__, Selector __cmd__) { return __self__.getRepeatInterval(); }
+        @Callback @BindSelector("setRepeatInterval:") public static void setRepeatInterval(UILocalNotification __self__, Selector __cmd__, NSCalendarUnit repeatInterval) { __self__.setRepeatInterval(repeatInterval); }
+        @Callback @BindSelector("soundName") public static String getSoundName(UILocalNotification __self__, Selector __cmd__) { return __self__.getSoundName(); }
+        @Callback @BindSelector("setSoundName:") public static void setSoundName(UILocalNotification __self__, Selector __cmd__, String soundName) { __self__.setSoundName(soundName); }
+        @Callback @BindSelector("timeZone") public static NSTimeZone getTimeZone(UILocalNotification __self__, Selector __cmd__) { return __self__.getTimeZone(); }
+        @Callback @BindSelector("setTimeZone:") public static void setTimeZone(UILocalNotification __self__, Selector __cmd__, NSTimeZone timeZone) { __self__.setTimeZone(timeZone); }
+        @Callback @BindSelector("userInfo") public static NSDictionary getUserInfo(UILocalNotification __self__, Selector __cmd__) { return __self__.getUserInfo(); }
+        @Callback @BindSelector("setUserInfo:") public static void setUserInfo(UILocalNotification __self__, Selector __cmd__, NSDictionary userInfo) { __self__.setUserInfo(userInfo); }
+    }
     /*</callbacks>*/
 
 }

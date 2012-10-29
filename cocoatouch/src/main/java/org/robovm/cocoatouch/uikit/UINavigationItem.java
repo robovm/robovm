@@ -53,14 +53,14 @@ public class /*<name>*/ UINavigationItem /*</name>*/
     public UINavigationItem() {}
     
     private static final Selector initWithTitle$ = Selector.register("initWithTitle:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithTitle(UINavigationItem __self__, Selector __cmd__, String title);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithTitle(UINavigationItem __self__, Selector __cmd__, String title);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instm/UINavigationItem/initWithTitle:">- (id)initWithTitle:(NSString *)title</a>
      * @since Available in iOS 2.0 and later.
      */
     public UINavigationItem(String title) {
         super((SkipInit) null);
-        objc_initWithTitle(this, initWithTitle$, title);
+        setHandle(objc_initWithTitle(this, initWithTitle$, title));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -344,6 +344,26 @@ public class /*<name>*/ UINavigationItem /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("backBarButtonItem") public static UIBarButtonItem getBackBarButtonItem(UINavigationItem __self__, Selector __cmd__) { return __self__.getBackBarButtonItem(); }
+        @Callback @BindSelector("setBackBarButtonItem:") public static void setBackBarButtonItem(UINavigationItem __self__, Selector __cmd__, UIBarButtonItem backBarButtonItem) { __self__.setBackBarButtonItem(backBarButtonItem); }
+        @Callback @BindSelector("hidesBackButton") public static boolean isHidesBackButton(UINavigationItem __self__, Selector __cmd__) { return __self__.isHidesBackButton(); }
+        @Callback @BindSelector("setHidesBackButton:") public static void setHidesBackButton(UINavigationItem __self__, Selector __cmd__, boolean hidesBackButton) { __self__.setHidesBackButton(hidesBackButton); }
+        @Callback @BindSelector("leftBarButtonItem") public static UIBarButtonItem getLeftBarButtonItem(UINavigationItem __self__, Selector __cmd__) { return __self__.getLeftBarButtonItem(); }
+        @Callback @BindSelector("setLeftBarButtonItem:") public static void setLeftBarButtonItem(UINavigationItem __self__, Selector __cmd__, UIBarButtonItem leftBarButtonItem) { __self__.setLeftBarButtonItem(leftBarButtonItem); }
+        @Callback @BindSelector("leftBarButtonItems") public static NSArray getLeftBarButtonItems(UINavigationItem __self__, Selector __cmd__) { return __self__.getLeftBarButtonItems(); }
+        @Callback @BindSelector("setLeftBarButtonItems:") public static void setLeftBarButtonItems(UINavigationItem __self__, Selector __cmd__, NSArray leftBarButtonItems) { __self__.setLeftBarButtonItems(leftBarButtonItems); }
+        @Callback @BindSelector("leftItemsSupplementBackButton") public static boolean isLeftItemsSupplementBackButton(UINavigationItem __self__, Selector __cmd__) { return __self__.isLeftItemsSupplementBackButton(); }
+        @Callback @BindSelector("setLeftItemsSupplementBackButton:") public static void setLeftItemsSupplementBackButton(UINavigationItem __self__, Selector __cmd__, boolean leftItemsSupplementBackButton) { __self__.setLeftItemsSupplementBackButton(leftItemsSupplementBackButton); }
+        @Callback @BindSelector("prompt") public static String getPrompt(UINavigationItem __self__, Selector __cmd__) { return __self__.getPrompt(); }
+        @Callback @BindSelector("setPrompt:") public static void setPrompt(UINavigationItem __self__, Selector __cmd__, String prompt) { __self__.setPrompt(prompt); }
+        @Callback @BindSelector("rightBarButtonItem") public static UIBarButtonItem getRightBarButtonItem(UINavigationItem __self__, Selector __cmd__) { return __self__.getRightBarButtonItem(); }
+        @Callback @BindSelector("setRightBarButtonItem:") public static void setRightBarButtonItem(UINavigationItem __self__, Selector __cmd__, UIBarButtonItem rightBarButtonItem) { __self__.setRightBarButtonItem(rightBarButtonItem); }
+        @Callback @BindSelector("rightBarButtonItems") public static NSArray getRightBarButtonItems(UINavigationItem __self__, Selector __cmd__) { return __self__.getRightBarButtonItems(); }
+        @Callback @BindSelector("setRightBarButtonItems:") public static void setRightBarButtonItems(UINavigationItem __self__, Selector __cmd__, NSArray rightBarButtonItems) { __self__.setRightBarButtonItems(rightBarButtonItems); }
+        @Callback @BindSelector("title") public static String getTitle(UINavigationItem __self__, Selector __cmd__) { return __self__.getTitle(); }
+        @Callback @BindSelector("setTitle:") public static void setTitle(UINavigationItem __self__, Selector __cmd__, String title) { __self__.setTitle(title); }
+        @Callback @BindSelector("titleView") public static UIView getTitleView(UINavigationItem __self__, Selector __cmd__) { return __self__.getTitleView(); }
+        @Callback @BindSelector("setTitleView:") public static void setTitleView(UINavigationItem __self__, Selector __cmd__, UIView titleView) { __self__.setTitleView(titleView); }
         @Callback @BindSelector("setHidesBackButton:animated:") public static void setHidesBackButton(UINavigationItem __self__, Selector __cmd__, boolean hidesBackButton, boolean animated) { __self__.setHidesBackButton(hidesBackButton, animated); }
         @Callback @BindSelector("setLeftBarButtonItem:animated:") public static void setLeftBarButtonItem(UINavigationItem __self__, Selector __cmd__, UIBarButtonItem item, boolean animated) { __self__.setLeftBarButtonItem(item, animated); }
         @Callback @BindSelector("setLeftBarButtonItems:animated:") public static void setLeftBarButtonItems(UINavigationItem __self__, Selector __cmd__, NSArray items, boolean animated) { __self__.setLeftBarButtonItems(items, animated); }

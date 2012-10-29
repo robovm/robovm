@@ -52,14 +52,14 @@ public class /*<name>*/ UICollectionView /*</name>*/
     public UICollectionView() {}
     
     private static final Selector initWithFrame$collectionViewLayout$ = Selector.register("initWithFrame:collectionViewLayout:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithFrame(UICollectionView __self__, Selector __cmd__, CGRect frame, UICollectionViewLayout layout);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithFrame(UICollectionView __self__, Selector __cmd__, CGRect frame, UICollectionViewLayout layout);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionView/initWithFrame:collectionViewLayout:">- (id)initWithFrame:(CGRect)frame  collectionViewLayout:(UICollectionViewLayout *)layout</a>
      * @since Available in iOS 6.0 and later.
      */
     public UICollectionView(CGRect frame, UICollectionViewLayout layout) {
         super((SkipInit) null);
-        objc_initWithFrame(this, initWithFrame$collectionViewLayout$, frame, layout);
+        setHandle(objc_initWithFrame(this, initWithFrame$collectionViewLayout$, frame, layout));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -530,6 +530,18 @@ public class /*<name>*/ UICollectionView /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("allowsMultipleSelection") public static boolean isAllowsMultipleSelection(UICollectionView __self__, Selector __cmd__) { return __self__.isAllowsMultipleSelection(); }
+        @Callback @BindSelector("setAllowsMultipleSelection:") public static void setAllowsMultipleSelection(UICollectionView __self__, Selector __cmd__, boolean allowsMultipleSelection) { __self__.setAllowsMultipleSelection(allowsMultipleSelection); }
+        @Callback @BindSelector("allowsSelection") public static boolean isAllowsSelection(UICollectionView __self__, Selector __cmd__) { return __self__.isAllowsSelection(); }
+        @Callback @BindSelector("setAllowsSelection:") public static void setAllowsSelection(UICollectionView __self__, Selector __cmd__, boolean allowsSelection) { __self__.setAllowsSelection(allowsSelection); }
+        @Callback @BindSelector("backgroundView") public static UIView getBackgroundView(UICollectionView __self__, Selector __cmd__) { return __self__.getBackgroundView(); }
+        @Callback @BindSelector("setBackgroundView:") public static void setBackgroundView(UICollectionView __self__, Selector __cmd__, UIView backgroundView) { __self__.setBackgroundView(backgroundView); }
+        @Callback @BindSelector("collectionViewLayout") public static UICollectionViewLayout getCollectionViewLayout(UICollectionView __self__, Selector __cmd__) { return __self__.getCollectionViewLayout(); }
+        @Callback @BindSelector("setCollectionViewLayout:") public static void setCollectionViewLayout(UICollectionView __self__, Selector __cmd__, UICollectionViewLayout collectionViewLayout) { __self__.setCollectionViewLayout(collectionViewLayout); }
+        @Callback @BindSelector("dataSource") public static UICollectionViewDataSource getDataSource(UICollectionView __self__, Selector __cmd__) { return __self__.getDataSource(); }
+        @Callback @BindSelector("setDataSource:") public static void setDataSource(UICollectionView __self__, Selector __cmd__, UICollectionViewDataSource dataSource) { __self__.setDataSource(dataSource); }
+        @Callback @BindSelector("delegate") public static UICollectionViewDelegate getDelegate(UICollectionView __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UICollectionView __self__, Selector __cmd__, UICollectionViewDelegate delegate) { __self__.setDelegate(delegate); }
         @Callback @BindSelector("deleteItemsAtIndexPaths:") public static void deleteItems(UICollectionView __self__, Selector __cmd__, NSArray indexPaths) { __self__.deleteItems(indexPaths); }
         @Callback @BindSelector("deleteSections:") public static void deleteSections(UICollectionView __self__, Selector __cmd__, NSIndexSet sections) { __self__.deleteSections(sections); }
         @Callback @BindSelector("dequeueReusableCellWithReuseIdentifier:forIndexPath:") public static NSObject dequeueReusableCell(UICollectionView __self__, Selector __cmd__, String identifier, NSIndexPath indexPath) { return __self__.dequeueReusableCell(identifier, indexPath); }

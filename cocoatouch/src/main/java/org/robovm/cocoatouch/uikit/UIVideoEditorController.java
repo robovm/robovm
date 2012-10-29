@@ -156,6 +156,16 @@ public class /*<name>*/ UIVideoEditorController /*</name>*/
     }
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("delegate") public static UIVideoEditorControllerDelegate getDelegate(UIVideoEditorController __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UIVideoEditorController __self__, Selector __cmd__, UIVideoEditorControllerDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("videoMaximumDuration") public static double getVideoMaximumDuration(UIVideoEditorController __self__, Selector __cmd__) { return __self__.getVideoMaximumDuration(); }
+        @Callback @BindSelector("setVideoMaximumDuration:") public static void setVideoMaximumDuration(UIVideoEditorController __self__, Selector __cmd__, double videoMaximumDuration) { __self__.setVideoMaximumDuration(videoMaximumDuration); }
+        @Callback @BindSelector("videoPath") public static String getVideoPath(UIVideoEditorController __self__, Selector __cmd__) { return __self__.getVideoPath(); }
+        @Callback @BindSelector("setVideoPath:") public static void setVideoPath(UIVideoEditorController __self__, Selector __cmd__, String videoPath) { __self__.setVideoPath(videoPath); }
+        @Callback @BindSelector("videoQuality") public static UIImagePickerControllerQualityType getVideoQuality(UIVideoEditorController __self__, Selector __cmd__) { return __self__.getVideoQuality(); }
+        @Callback @BindSelector("setVideoQuality:") public static void setVideoQuality(UIVideoEditorController __self__, Selector __cmd__, UIImagePickerControllerQualityType videoQuality) { __self__.setVideoQuality(videoQuality); }
+    }
     /*</callbacks>*/
 
 }

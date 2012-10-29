@@ -200,6 +200,16 @@ public class /*<name>*/ UIPrintInfo /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("duplex") public static UIPrintInfoDuplex getDuplex(UIPrintInfo __self__, Selector __cmd__) { return __self__.getDuplex(); }
+        @Callback @BindSelector("setDuplex:") public static void setDuplex(UIPrintInfo __self__, Selector __cmd__, UIPrintInfoDuplex duplex) { __self__.setDuplex(duplex); }
+        @Callback @BindSelector("jobName") public static String getJobName(UIPrintInfo __self__, Selector __cmd__) { return __self__.getJobName(); }
+        @Callback @BindSelector("setJobName:") public static void setJobName(UIPrintInfo __self__, Selector __cmd__, String jobName) { __self__.setJobName(jobName); }
+        @Callback @BindSelector("orientation") public static UIPrintInfoOrientation getOrientation(UIPrintInfo __self__, Selector __cmd__) { return __self__.getOrientation(); }
+        @Callback @BindSelector("setOrientation:") public static void setOrientation(UIPrintInfo __self__, Selector __cmd__, UIPrintInfoOrientation orientation) { __self__.setOrientation(orientation); }
+        @Callback @BindSelector("outputType") public static UIPrintInfoOutputType getOutputType(UIPrintInfo __self__, Selector __cmd__) { return __self__.getOutputType(); }
+        @Callback @BindSelector("setOutputType:") public static void setOutputType(UIPrintInfo __self__, Selector __cmd__, UIPrintInfoOutputType outputType) { __self__.setOutputType(outputType); }
+        @Callback @BindSelector("printerID") public static String getPrinterID(UIPrintInfo __self__, Selector __cmd__) { return __self__.getPrinterID(); }
+        @Callback @BindSelector("setPrinterID:") public static void setPrinterID(UIPrintInfo __self__, Selector __cmd__, String printerID) { __self__.setPrinterID(printerID); }
         @Callback @BindSelector("dictionaryRepresentation") public static NSDictionary toDictionary(UIPrintInfo __self__, Selector __cmd__) { return __self__.toDictionary(); }
     }
     /*</callbacks>*/

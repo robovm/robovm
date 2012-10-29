@@ -697,6 +697,57 @@ public class /*<name>*/ UIScrollView /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("alwaysBounceHorizontal") public static boolean isAlwaysBounceHorizontal(UIScrollView __self__, Selector __cmd__) { return __self__.isAlwaysBounceHorizontal(); }
+        @Callback @BindSelector("setAlwaysBounceHorizontal:") public static void setAlwaysBounceHorizontal(UIScrollView __self__, Selector __cmd__, boolean alwaysBounceHorizontal) { __self__.setAlwaysBounceHorizontal(alwaysBounceHorizontal); }
+        @Callback @BindSelector("alwaysBounceVertical") public static boolean isAlwaysBounceVertical(UIScrollView __self__, Selector __cmd__) { return __self__.isAlwaysBounceVertical(); }
+        @Callback @BindSelector("setAlwaysBounceVertical:") public static void setAlwaysBounceVertical(UIScrollView __self__, Selector __cmd__, boolean alwaysBounceVertical) { __self__.setAlwaysBounceVertical(alwaysBounceVertical); }
+        @Callback @BindSelector("bounces") public static boolean isBounces(UIScrollView __self__, Selector __cmd__) { return __self__.isBounces(); }
+        @Callback @BindSelector("setBounces:") public static void setBounces(UIScrollView __self__, Selector __cmd__, boolean bounces) { __self__.setBounces(bounces); }
+        @Callback @BindSelector("bouncesZoom") public static boolean isBouncesZoom(UIScrollView __self__, Selector __cmd__) { return __self__.isBouncesZoom(); }
+        @Callback @BindSelector("setBouncesZoom:") public static void setBouncesZoom(UIScrollView __self__, Selector __cmd__, boolean bouncesZoom) { __self__.setBouncesZoom(bouncesZoom); }
+        @Callback @BindSelector("canCancelContentTouches") public static boolean isCanCancelContentTouches(UIScrollView __self__, Selector __cmd__) { return __self__.isCanCancelContentTouches(); }
+        @Callback @BindSelector("setCanCancelContentTouches:") public static void setCanCancelContentTouches(UIScrollView __self__, Selector __cmd__, boolean canCancelContentTouches) { __self__.setCanCancelContentTouches(canCancelContentTouches); }
+        @Callback @BindSelector("contentInset") public static UIEdgeInsets getContentInset(UIScrollView __self__, Selector __cmd__) { return __self__.getContentInset(); }
+        @Callback @BindSelector("setContentInset:") public static void setContentInset(UIScrollView __self__, Selector __cmd__, UIEdgeInsets contentInset) { __self__.setContentInset(contentInset); }
+        @Callback @BindSelector("contentOffset") public static CGPoint getContentOffset(UIScrollView __self__, Selector __cmd__) { return __self__.getContentOffset(); }
+        @Callback @BindSelector("setContentOffset:") public static void setContentOffset(UIScrollView __self__, Selector __cmd__, CGPoint contentOffset) { __self__.setContentOffset(contentOffset); }
+        @Callback @BindSelector("contentSize") public static CGSize getContentSize(UIScrollView __self__, Selector __cmd__) { return __self__.getContentSize(); }
+        @Callback @BindSelector("setContentSize:") public static void setContentSize(UIScrollView __self__, Selector __cmd__, CGSize contentSize) { __self__.setContentSize(contentSize); }
+        @Callback @BindSelector("isDecelerating") public static boolean isDecelerating(UIScrollView __self__, Selector __cmd__) { return __self__.isDecelerating(); }
+        @Callback @BindSelector("decelerationRate") public static float getDecelerationRate(UIScrollView __self__, Selector __cmd__) { return __self__.getDecelerationRate(); }
+        @Callback @BindSelector("setDecelerationRate:") public static void setDecelerationRate(UIScrollView __self__, Selector __cmd__, float decelerationRate) { __self__.setDecelerationRate(decelerationRate); }
+        @Callback @BindSelector("delaysContentTouches") public static boolean isDelaysContentTouches(UIScrollView __self__, Selector __cmd__) { return __self__.isDelaysContentTouches(); }
+        @Callback @BindSelector("setDelaysContentTouches:") public static void setDelaysContentTouches(UIScrollView __self__, Selector __cmd__, boolean delaysContentTouches) { __self__.setDelaysContentTouches(delaysContentTouches); }
+        @Callback @BindSelector("delegate") public static UIScrollViewDelegate getDelegate(UIScrollView __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UIScrollView __self__, Selector __cmd__, UIScrollViewDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("isDirectionalLockEnabled") public static boolean isDirectionalLockEnabled(UIScrollView __self__, Selector __cmd__) { return __self__.isDirectionalLockEnabled(); }
+        @Callback @BindSelector("setDirectionalLockEnabled:") public static void setDirectionalLockEnabled(UIScrollView __self__, Selector __cmd__, boolean directionalLockEnabled) { __self__.setDirectionalLockEnabled(directionalLockEnabled); }
+        @Callback @BindSelector("isDragging") public static boolean isDragging(UIScrollView __self__, Selector __cmd__) { return __self__.isDragging(); }
+        @Callback @BindSelector("indicatorStyle") public static UIScrollViewIndicatorStyle getIndicatorStyle(UIScrollView __self__, Selector __cmd__) { return __self__.getIndicatorStyle(); }
+        @Callback @BindSelector("setIndicatorStyle:") public static void setIndicatorStyle(UIScrollView __self__, Selector __cmd__, UIScrollViewIndicatorStyle indicatorStyle) { __self__.setIndicatorStyle(indicatorStyle); }
+        @Callback @BindSelector("maximumZoomScale") public static float getMaximumZoomScale(UIScrollView __self__, Selector __cmd__) { return __self__.getMaximumZoomScale(); }
+        @Callback @BindSelector("setMaximumZoomScale:") public static void setMaximumZoomScale(UIScrollView __self__, Selector __cmd__, float maximumZoomScale) { __self__.setMaximumZoomScale(maximumZoomScale); }
+        @Callback @BindSelector("minimumZoomScale") public static float getMinimumZoomScale(UIScrollView __self__, Selector __cmd__) { return __self__.getMinimumZoomScale(); }
+        @Callback @BindSelector("setMinimumZoomScale:") public static void setMinimumZoomScale(UIScrollView __self__, Selector __cmd__, float minimumZoomScale) { __self__.setMinimumZoomScale(minimumZoomScale); }
+        @Callback @BindSelector("isPagingEnabled") public static boolean isPagingEnabled(UIScrollView __self__, Selector __cmd__) { return __self__.isPagingEnabled(); }
+        @Callback @BindSelector("setPagingEnabled:") public static void setPagingEnabled(UIScrollView __self__, Selector __cmd__, boolean pagingEnabled) { __self__.setPagingEnabled(pagingEnabled); }
+        @Callback @BindSelector("panGestureRecognizer") public static UIPanGestureRecognizer getPanGestureRecognizer(UIScrollView __self__, Selector __cmd__) { return __self__.getPanGestureRecognizer(); }
+        @Callback @BindSelector("pinchGestureRecognizer") public static UIPinchGestureRecognizer getPinchGestureRecognizer(UIScrollView __self__, Selector __cmd__) { return __self__.getPinchGestureRecognizer(); }
+        @Callback @BindSelector("isScrollEnabled") public static boolean isScrollEnabled(UIScrollView __self__, Selector __cmd__) { return __self__.isScrollEnabled(); }
+        @Callback @BindSelector("setScrollEnabled:") public static void setScrollEnabled(UIScrollView __self__, Selector __cmd__, boolean scrollEnabled) { __self__.setScrollEnabled(scrollEnabled); }
+        @Callback @BindSelector("scrollIndicatorInsets") public static UIEdgeInsets getScrollIndicatorInsets(UIScrollView __self__, Selector __cmd__) { return __self__.getScrollIndicatorInsets(); }
+        @Callback @BindSelector("setScrollIndicatorInsets:") public static void setScrollIndicatorInsets(UIScrollView __self__, Selector __cmd__, UIEdgeInsets scrollIndicatorInsets) { __self__.setScrollIndicatorInsets(scrollIndicatorInsets); }
+        @Callback @BindSelector("scrollsToTop") public static boolean isScrollsToTop(UIScrollView __self__, Selector __cmd__) { return __self__.isScrollsToTop(); }
+        @Callback @BindSelector("setScrollsToTop:") public static void setScrollsToTop(UIScrollView __self__, Selector __cmd__, boolean scrollsToTop) { __self__.setScrollsToTop(scrollsToTop); }
+        @Callback @BindSelector("showsHorizontalScrollIndicator") public static boolean isShowsHorizontalScrollIndicator(UIScrollView __self__, Selector __cmd__) { return __self__.isShowsHorizontalScrollIndicator(); }
+        @Callback @BindSelector("setShowsHorizontalScrollIndicator:") public static void setShowsHorizontalScrollIndicator(UIScrollView __self__, Selector __cmd__, boolean showsHorizontalScrollIndicator) { __self__.setShowsHorizontalScrollIndicator(showsHorizontalScrollIndicator); }
+        @Callback @BindSelector("showsVerticalScrollIndicator") public static boolean isShowsVerticalScrollIndicator(UIScrollView __self__, Selector __cmd__) { return __self__.isShowsVerticalScrollIndicator(); }
+        @Callback @BindSelector("setShowsVerticalScrollIndicator:") public static void setShowsVerticalScrollIndicator(UIScrollView __self__, Selector __cmd__, boolean showsVerticalScrollIndicator) { __self__.setShowsVerticalScrollIndicator(showsVerticalScrollIndicator); }
+        @Callback @BindSelector("isTracking") public static boolean isTracking(UIScrollView __self__, Selector __cmd__) { return __self__.isTracking(); }
+        @Callback @BindSelector("isZoomBouncing") public static boolean isZoomBouncing(UIScrollView __self__, Selector __cmd__) { return __self__.isZoomBouncing(); }
+        @Callback @BindSelector("zoomScale") public static float getZoomScale(UIScrollView __self__, Selector __cmd__) { return __self__.getZoomScale(); }
+        @Callback @BindSelector("setZoomScale:") public static void setZoomScale(UIScrollView __self__, Selector __cmd__, float zoomScale) { __self__.setZoomScale(zoomScale); }
+        @Callback @BindSelector("isZooming") public static boolean isZooming(UIScrollView __self__, Selector __cmd__) { return __self__.isZooming(); }
         @Callback @BindSelector("flashScrollIndicators") public static void flashScrollIndicators(UIScrollView __self__, Selector __cmd__) { __self__.flashScrollIndicators(); }
         @Callback @BindSelector("scrollRectToVisible:animated:") public static void scrollRectToVisible(UIScrollView __self__, Selector __cmd__, CGRect rect, boolean animated) { __self__.scrollRectToVisible(rect, animated); }
         @Callback @BindSelector("setContentOffset:animated:") public static void setContentOffset(UIScrollView __self__, Selector __cmd__, CGPoint contentOffset, boolean animated) { __self__.setContentOffset(contentOffset, animated); }

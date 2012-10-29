@@ -53,14 +53,14 @@ public class /*<name>*/ UIGestureRecognizer /*</name>*/
     public UIGestureRecognizer() {}
     
     private static final Selector initWithTarget$action$ = Selector.register("initWithTarget:action:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithTarget(UIGestureRecognizer __self__, Selector __cmd__, NSObject target, Selector action);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithTarget(UIGestureRecognizer __self__, Selector __cmd__, NSObject target, Selector action);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/initWithTarget:action:">- (id)initWithTarget:(id)target action:(SEL)action</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIGestureRecognizer(NSObject target, Selector action) {
         super((SkipInit) null);
-        objc_initWithTarget(this, initWithTarget$action$, target, action);
+        setHandle(objc_initWithTarget(this, initWithTarget$action$, target, action));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -355,6 +355,18 @@ public class /*<name>*/ UIGestureRecognizer /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("cancelsTouchesInView") public static boolean isCancelsTouchesInView(UIGestureRecognizer __self__, Selector __cmd__) { return __self__.isCancelsTouchesInView(); }
+        @Callback @BindSelector("setCancelsTouchesInView:") public static void setCancelsTouchesInView(UIGestureRecognizer __self__, Selector __cmd__, boolean cancelsTouchesInView) { __self__.setCancelsTouchesInView(cancelsTouchesInView); }
+        @Callback @BindSelector("delaysTouchesBegan") public static boolean isDelaysTouchesBegan(UIGestureRecognizer __self__, Selector __cmd__) { return __self__.isDelaysTouchesBegan(); }
+        @Callback @BindSelector("setDelaysTouchesBegan:") public static void setDelaysTouchesBegan(UIGestureRecognizer __self__, Selector __cmd__, boolean delaysTouchesBegan) { __self__.setDelaysTouchesBegan(delaysTouchesBegan); }
+        @Callback @BindSelector("delaysTouchesEnded") public static boolean isDelaysTouchesEnded(UIGestureRecognizer __self__, Selector __cmd__) { return __self__.isDelaysTouchesEnded(); }
+        @Callback @BindSelector("setDelaysTouchesEnded:") public static void setDelaysTouchesEnded(UIGestureRecognizer __self__, Selector __cmd__, boolean delaysTouchesEnded) { __self__.setDelaysTouchesEnded(delaysTouchesEnded); }
+        @Callback @BindSelector("delegate") public static UIGestureRecognizerDelegate getDelegate(UIGestureRecognizer __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizerDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("isEnabled") public static boolean isEnabled(UIGestureRecognizer __self__, Selector __cmd__) { return __self__.isEnabled(); }
+        @Callback @BindSelector("setEnabled:") public static void setEnabled(UIGestureRecognizer __self__, Selector __cmd__, boolean enabled) { __self__.setEnabled(enabled); }
+        @Callback @BindSelector("state") public static UIGestureRecognizerState getState(UIGestureRecognizer __self__, Selector __cmd__) { return __self__.getState(); }
+        @Callback @BindSelector("view") public static UIView getView(UIGestureRecognizer __self__, Selector __cmd__) { return __self__.getView(); }
         @Callback @BindSelector("addTarget:action:") public static void addTarget(UIGestureRecognizer __self__, Selector __cmd__, NSObject target, Selector action) { __self__.addTarget(target, action); }
         @Callback @BindSelector("canBePreventedByGestureRecognizer:") public static boolean canBePreventedByGestureRecognizer(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizer preventingGestureRecognizer) { return __self__.canBePreventedByGestureRecognizer(preventingGestureRecognizer); }
         @Callback @BindSelector("canPreventGestureRecognizer:") public static boolean canPreventGestureRecognizer(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizer preventedGestureRecognizer) { return __self__.canPreventGestureRecognizer(preventedGestureRecognizer); }

@@ -53,14 +53,14 @@ public class /*<name>*/ UIViewController /*</name>*/
     public UIViewController() {}
     
     private static final Selector initWithNibName$bundle$ = Selector.register("initWithNibName:bundle:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithNibName(UIViewController __self__, Selector __cmd__, String nibName, NSBundle nibBundle);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithNibName(UIViewController __self__, Selector __cmd__, String nibName, NSBundle nibBundle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/initWithNibName:bundle:">- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIViewController(String nibName, NSBundle nibBundle) {
         super((SkipInit) null);
-        objc_initWithNibName(this, initWithNibName$bundle$, nibName, nibBundle);
+        setHandle(objc_initWithNibName(this, initWithNibName$bundle$, nibName, nibBundle));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -1058,6 +1058,49 @@ public class /*<name>*/ UIViewController /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("childViewControllers") public static NSArray getChildViewControllers(UIViewController __self__, Selector __cmd__) { return __self__.getChildViewControllers(); }
+        @Callback @BindSelector("contentSizeForViewInPopover") public static CGSize getContentSizeForViewInPopover(UIViewController __self__, Selector __cmd__) { return __self__.getContentSizeForViewInPopover(); }
+        @Callback @BindSelector("setContentSizeForViewInPopover:") public static void setContentSizeForViewInPopover(UIViewController __self__, Selector __cmd__, CGSize contentSizeForViewInPopover) { __self__.setContentSizeForViewInPopover(contentSizeForViewInPopover); }
+        @Callback @BindSelector("definesPresentationContext") public static boolean isDefinesPresentationContext(UIViewController __self__, Selector __cmd__) { return __self__.isDefinesPresentationContext(); }
+        @Callback @BindSelector("setDefinesPresentationContext:") public static void setDefinesPresentationContext(UIViewController __self__, Selector __cmd__, boolean definesPresentationContext) { __self__.setDefinesPresentationContext(definesPresentationContext); }
+        @Callback @BindSelector("isEditing") public static boolean isEditing(UIViewController __self__, Selector __cmd__) { return __self__.isEditing(); }
+        @Callback @BindSelector("setEditing:") public static void setEditing(UIViewController __self__, Selector __cmd__, boolean editing) { __self__.setEditing(editing); }
+        @Callback @BindSelector("hidesBottomBarWhenPushed") public static boolean isHidesBottomBarWhenPushed(UIViewController __self__, Selector __cmd__) { return __self__.isHidesBottomBarWhenPushed(); }
+        @Callback @BindSelector("setHidesBottomBarWhenPushed:") public static void setHidesBottomBarWhenPushed(UIViewController __self__, Selector __cmd__, boolean hidesBottomBarWhenPushed) { __self__.setHidesBottomBarWhenPushed(hidesBottomBarWhenPushed); }
+        @Callback @BindSelector("interfaceOrientation") public static UIInterfaceOrientation getInterfaceOrientation(UIViewController __self__, Selector __cmd__) { return __self__.getInterfaceOrientation(); }
+        @Callback @BindSelector("isModalInPopover") public static boolean isModalInPopover(UIViewController __self__, Selector __cmd__) { return __self__.isModalInPopover(); }
+        @Callback @BindSelector("setModalInPopover:") public static void setModalInPopover(UIViewController __self__, Selector __cmd__, boolean modalInPopover) { __self__.setModalInPopover(modalInPopover); }
+        @Callback @BindSelector("modalPresentationStyle") public static UIModalPresentationStyle getModalPresentationStyle(UIViewController __self__, Selector __cmd__) { return __self__.getModalPresentationStyle(); }
+        @Callback @BindSelector("setModalPresentationStyle:") public static void setModalPresentationStyle(UIViewController __self__, Selector __cmd__, UIModalPresentationStyle modalPresentationStyle) { __self__.setModalPresentationStyle(modalPresentationStyle); }
+        @Callback @BindSelector("modalTransitionStyle") public static UIModalTransitionStyle getModalTransitionStyle(UIViewController __self__, Selector __cmd__) { return __self__.getModalTransitionStyle(); }
+        @Callback @BindSelector("setModalTransitionStyle:") public static void setModalTransitionStyle(UIViewController __self__, Selector __cmd__, UIModalTransitionStyle modalTransitionStyle) { __self__.setModalTransitionStyle(modalTransitionStyle); }
+        @Callback @BindSelector("navigationController") public static UINavigationController getNavigationController(UIViewController __self__, Selector __cmd__) { return __self__.getNavigationController(); }
+        @Callback @BindSelector("navigationItem") public static UINavigationItem getNavigationItem(UIViewController __self__, Selector __cmd__) { return __self__.getNavigationItem(); }
+        @Callback @BindSelector("nibBundle") public static NSBundle getNibBundle(UIViewController __self__, Selector __cmd__) { return __self__.getNibBundle(); }
+        @Callback @BindSelector("nibName") public static String getNibName(UIViewController __self__, Selector __cmd__) { return __self__.getNibName(); }
+        @Callback @BindSelector("parentViewController") public static UIViewController getParentViewController(UIViewController __self__, Selector __cmd__) { return __self__.getParentViewController(); }
+        @Callback @BindSelector("presentedViewController") public static UIViewController getPresentedViewController(UIViewController __self__, Selector __cmd__) { return __self__.getPresentedViewController(); }
+        @Callback @BindSelector("presentingViewController") public static UIViewController getPresentingViewController(UIViewController __self__, Selector __cmd__) { return __self__.getPresentingViewController(); }
+        @Callback @BindSelector("providesPresentationContextTransitionStyle") public static boolean isProvidesPresentationContextTransitionStyle(UIViewController __self__, Selector __cmd__) { return __self__.isProvidesPresentationContextTransitionStyle(); }
+        @Callback @BindSelector("setProvidesPresentationContextTransitionStyle:") public static void setProvidesPresentationContextTransitionStyle(UIViewController __self__, Selector __cmd__, boolean providesPresentationContextTransitionStyle) { __self__.setProvidesPresentationContextTransitionStyle(providesPresentationContextTransitionStyle); }
+        @Callback @BindSelector("restorationClass") public static ObjCClass getRestorationClass(UIViewController __self__, Selector __cmd__) { return __self__.getRestorationClass(); }
+        @Callback @BindSelector("setRestorationClass:") public static void setRestorationClass(UIViewController __self__, Selector __cmd__, ObjCClass restorationClass) { __self__.setRestorationClass(restorationClass); }
+        @Callback @BindSelector("restorationIdentifier") public static String getRestorationIdentifier(UIViewController __self__, Selector __cmd__) { return __self__.getRestorationIdentifier(); }
+        @Callback @BindSelector("setRestorationIdentifier:") public static void setRestorationIdentifier(UIViewController __self__, Selector __cmd__, String restorationIdentifier) { __self__.setRestorationIdentifier(restorationIdentifier); }
+        @Callback @BindSelector("searchDisplayController") public static UISearchDisplayController getSearchDisplayController(UIViewController __self__, Selector __cmd__) { return __self__.getSearchDisplayController(); }
+        @Callback @BindSelector("splitViewController") public static UISplitViewController getSplitViewController(UIViewController __self__, Selector __cmd__) { return __self__.getSplitViewController(); }
+        @Callback @BindSelector("storyboard") public static UIStoryboard getStoryboard(UIViewController __self__, Selector __cmd__) { return __self__.getStoryboard(); }
+        @Callback @BindSelector("tabBarController") public static UITabBarController getTabBarController(UIViewController __self__, Selector __cmd__) { return __self__.getTabBarController(); }
+        @Callback @BindSelector("tabBarItem") public static UITabBarItem getTabBarItem(UIViewController __self__, Selector __cmd__) { return __self__.getTabBarItem(); }
+        @Callback @BindSelector("setTabBarItem:") public static void setTabBarItem(UIViewController __self__, Selector __cmd__, UITabBarItem tabBarItem) { __self__.setTabBarItem(tabBarItem); }
+        @Callback @BindSelector("title") public static String getTitle(UIViewController __self__, Selector __cmd__) { return __self__.getTitle(); }
+        @Callback @BindSelector("setTitle:") public static void setTitle(UIViewController __self__, Selector __cmd__, String title) { __self__.setTitle(title); }
+        @Callback @BindSelector("toolbarItems") public static NSArray getToolbarItems(UIViewController __self__, Selector __cmd__) { return __self__.getToolbarItems(); }
+        @Callback @BindSelector("setToolbarItems:") public static void setToolbarItems(UIViewController __self__, Selector __cmd__, NSArray toolbarItems) { __self__.setToolbarItems(toolbarItems); }
+        @Callback @BindSelector("view") public static UIView getView(UIViewController __self__, Selector __cmd__) { return __self__.getView(); }
+        @Callback @BindSelector("setView:") public static void setView(UIViewController __self__, Selector __cmd__, UIView view) { __self__.setView(view); }
+        @Callback @BindSelector("wantsFullScreenLayout") public static boolean isWantsFullScreenLayout(UIViewController __self__, Selector __cmd__) { return __self__.isWantsFullScreenLayout(); }
+        @Callback @BindSelector("setWantsFullScreenLayout:") public static void setWantsFullScreenLayout(UIViewController __self__, Selector __cmd__, boolean wantsFullScreenLayout) { __self__.setWantsFullScreenLayout(wantsFullScreenLayout); }
         @Callback @BindSelector("addChildViewController:") public static void addChildViewController(UIViewController __self__, Selector __cmd__, UIViewController childController) { __self__.addChildViewController(childController); }
         @Callback @BindSelector("beginAppearanceTransition:animated:") public static void beginAppearanceTransition(UIViewController __self__, Selector __cmd__, boolean isAppearing, boolean animated) { __self__.beginAppearanceTransition(isAppearing, animated); }
         @Callback @BindSelector("canPerformUnwindSegueAction:fromViewController:withSender:") public static boolean canPerformUnwindSegueAction(UIViewController __self__, Selector __cmd__, Selector action, UIViewController fromViewController, NSObject sender) { return __self__.canPerformUnwindSegueAction(action, fromViewController, sender); }

@@ -52,14 +52,14 @@ public class /*<name>*/ UIActivityItemProvider /*</name>*/
     public UIActivityItemProvider() {}
     
     private static final Selector initWithPlaceholderItem$ = Selector.register("initWithPlaceholderItem:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithPlaceholderItem(UIActivityItemProvider __self__, Selector __cmd__, NSObject placeholderItem);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithPlaceholderItem(UIActivityItemProvider __self__, Selector __cmd__, NSObject placeholderItem);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityItemProvider_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActivityItemProvider/initWithPlaceholderItem:">- (id)initWithPlaceholderItem:(id)placeholderItem</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIActivityItemProvider(NSObject placeholderItem) {
         super((SkipInit) null);
-        objc_initWithPlaceholderItem(this, initWithPlaceholderItem$, placeholderItem);
+        setHandle(objc_initWithPlaceholderItem(this, initWithPlaceholderItem$, placeholderItem));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -101,6 +101,8 @@ public class /*<name>*/ UIActivityItemProvider /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("activityType") public static String getActivityType(UIActivityItemProvider __self__, Selector __cmd__) { return __self__.getActivityType(); }
+        @Callback @BindSelector("placeholderItem") public static NSObject getPlaceholderItem(UIActivityItemProvider __self__, Selector __cmd__) { return __self__.getPlaceholderItem(); }
         @Callback @BindSelector("item") public static NSObject getItem(UIActivityItemProvider __self__, Selector __cmd__) { return __self__.getItem(); }
     }
     /*</callbacks>*/

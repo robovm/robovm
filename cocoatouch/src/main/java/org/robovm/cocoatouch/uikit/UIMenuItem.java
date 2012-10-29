@@ -53,14 +53,14 @@ public class /*<name>*/ UIMenuItem /*</name>*/
     public UIMenuItem() {}
     
     private static final Selector initWithTitle$action$ = Selector.register("initWithTitle:action:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithTitle(UIMenuItem __self__, Selector __cmd__, String title, Selector action);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithTitle(UIMenuItem __self__, Selector __cmd__, String title, Selector action);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMenuItem_Class/Reference/MenuItem.html#//apple_ref/occ/instm/UIMenuItem/initWithTitle:action:">- (id)initWithTitle:(NSString *)title action:(SEL)action</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIMenuItem(String title, Selector action) {
         super((SkipInit) null);
-        objc_initWithTitle(this, initWithTitle$action$, title, action);
+        setHandle(objc_initWithTitle(this, initWithTitle$action$, title, action));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -113,6 +113,12 @@ public class /*<name>*/ UIMenuItem /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("action") public static Selector getAction(UIMenuItem __self__, Selector __cmd__) { return __self__.getAction(); }
+        @Callback @BindSelector("setAction:") public static void setAction(UIMenuItem __self__, Selector __cmd__, Selector action) { __self__.setAction(action); }
+        @Callback @BindSelector("title") public static String getTitle(UIMenuItem __self__, Selector __cmd__) { return __self__.getTitle(); }
+        @Callback @BindSelector("setTitle:") public static void setTitle(UIMenuItem __self__, Selector __cmd__, String title) { __self__.setTitle(title); }
+    }
     /*</callbacks>*/
 
 }

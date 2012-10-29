@@ -406,6 +406,30 @@ public class /*<name>*/ UIImagePickerController /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("allowsEditing") public static boolean isAllowsEditing(UIImagePickerController __self__, Selector __cmd__) { return __self__.isAllowsEditing(); }
+        @Callback @BindSelector("setAllowsEditing:") public static void setAllowsEditing(UIImagePickerController __self__, Selector __cmd__, boolean allowsEditing) { __self__.setAllowsEditing(allowsEditing); }
+        @Callback @BindSelector("cameraCaptureMode") public static UIImagePickerControllerCameraCaptureMode getCameraCaptureMode(UIImagePickerController __self__, Selector __cmd__) { return __self__.getCameraCaptureMode(); }
+        @Callback @BindSelector("setCameraCaptureMode:") public static void setCameraCaptureMode(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerCameraCaptureMode cameraCaptureMode) { __self__.setCameraCaptureMode(cameraCaptureMode); }
+        @Callback @BindSelector("cameraDevice") public static UIImagePickerControllerCameraDevice getCameraDevice(UIImagePickerController __self__, Selector __cmd__) { return __self__.getCameraDevice(); }
+        @Callback @BindSelector("setCameraDevice:") public static void setCameraDevice(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerCameraDevice cameraDevice) { __self__.setCameraDevice(cameraDevice); }
+        @Callback @BindSelector("cameraFlashMode") public static UIImagePickerControllerCameraFlashMode getCameraFlashMode(UIImagePickerController __self__, Selector __cmd__) { return __self__.getCameraFlashMode(); }
+        @Callback @BindSelector("setCameraFlashMode:") public static void setCameraFlashMode(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerCameraFlashMode cameraFlashMode) { __self__.setCameraFlashMode(cameraFlashMode); }
+        @Callback @BindSelector("cameraOverlayView") public static UIView getCameraOverlayView(UIImagePickerController __self__, Selector __cmd__) { return __self__.getCameraOverlayView(); }
+        @Callback @BindSelector("setCameraOverlayView:") public static void setCameraOverlayView(UIImagePickerController __self__, Selector __cmd__, UIView cameraOverlayView) { __self__.setCameraOverlayView(cameraOverlayView); }
+        @Callback @BindSelector("cameraViewTransform") public static CGAffineTransform getCameraViewTransform(UIImagePickerController __self__, Selector __cmd__) { return __self__.getCameraViewTransform(); }
+        @Callback @BindSelector("setCameraViewTransform:") public static void setCameraViewTransform(UIImagePickerController __self__, Selector __cmd__, CGAffineTransform cameraViewTransform) { __self__.setCameraViewTransform(cameraViewTransform); }
+        @Callback @BindSelector("delegate") public static UIImagePickerControllerDelegate getDelegate(UIImagePickerController __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("mediaTypes") public static NSArray getMediaTypes(UIImagePickerController __self__, Selector __cmd__) { return __self__.getMediaTypes(); }
+        @Callback @BindSelector("setMediaTypes:") public static void setMediaTypes(UIImagePickerController __self__, Selector __cmd__, NSArray mediaTypes) { __self__.setMediaTypes(mediaTypes); }
+        @Callback @BindSelector("showsCameraControls") public static boolean isShowsCameraControls(UIImagePickerController __self__, Selector __cmd__) { return __self__.isShowsCameraControls(); }
+        @Callback @BindSelector("setShowsCameraControls:") public static void setShowsCameraControls(UIImagePickerController __self__, Selector __cmd__, boolean showsCameraControls) { __self__.setShowsCameraControls(showsCameraControls); }
+        @Callback @BindSelector("sourceType") public static UIImagePickerControllerSourceType getSourceType(UIImagePickerController __self__, Selector __cmd__) { return __self__.getSourceType(); }
+        @Callback @BindSelector("setSourceType:") public static void setSourceType(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerSourceType sourceType) { __self__.setSourceType(sourceType); }
+        @Callback @BindSelector("videoMaximumDuration") public static double getVideoMaximumDuration(UIImagePickerController __self__, Selector __cmd__) { return __self__.getVideoMaximumDuration(); }
+        @Callback @BindSelector("setVideoMaximumDuration:") public static void setVideoMaximumDuration(UIImagePickerController __self__, Selector __cmd__, double videoMaximumDuration) { __self__.setVideoMaximumDuration(videoMaximumDuration); }
+        @Callback @BindSelector("videoQuality") public static UIImagePickerControllerQualityType getVideoQuality(UIImagePickerController __self__, Selector __cmd__) { return __self__.getVideoQuality(); }
+        @Callback @BindSelector("setVideoQuality:") public static void setVideoQuality(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerQualityType videoQuality) { __self__.setVideoQuality(videoQuality); }
         @Callback @BindSelector("startVideoCapture") public static boolean startVideoCapture(UIImagePickerController __self__, Selector __cmd__) { return __self__.startVideoCapture(); }
         @Callback @BindSelector("stopVideoCapture") public static void stopVideoCapture(UIImagePickerController __self__, Selector __cmd__) { __self__.stopVideoCapture(); }
         @Callback @BindSelector("takePicture") public static void takePicture(UIImagePickerController __self__, Selector __cmd__) { __self__.takePicture(); }

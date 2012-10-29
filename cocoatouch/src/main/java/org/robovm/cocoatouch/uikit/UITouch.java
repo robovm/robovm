@@ -147,6 +147,12 @@ public class /*<name>*/ UITouch /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("gestureRecognizers") public static NSArray getGestureRecognizers(UITouch __self__, Selector __cmd__) { return __self__.getGestureRecognizers(); }
+        @Callback @BindSelector("phase") public static UITouchPhase getPhase(UITouch __self__, Selector __cmd__) { return __self__.getPhase(); }
+        @Callback @BindSelector("tapCount") public static int getTapCount(UITouch __self__, Selector __cmd__) { return __self__.getTapCount(); }
+        @Callback @BindSelector("timestamp") public static double getTimestamp(UITouch __self__, Selector __cmd__) { return __self__.getTimestamp(); }
+        @Callback @BindSelector("view") public static UIView getView(UITouch __self__, Selector __cmd__) { return __self__.getView(); }
+        @Callback @BindSelector("window") public static UIWindow getWindow(UITouch __self__, Selector __cmd__) { return __self__.getWindow(); }
         @Callback @BindSelector("locationInView:") public static CGPoint getLocation(UITouch __self__, Selector __cmd__, UIView view) { return __self__.getLocation(view); }
         @Callback @BindSelector("previousLocationInView:") public static CGPoint getPreviousLocation(UITouch __self__, Selector __cmd__, UIView view) { return __self__.getPreviousLocation(view); }
     }

@@ -312,6 +312,22 @@ public class /*<name>*/ UINavigationBar /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("backItem") public static UINavigationItem getBackItem(UINavigationBar __self__, Selector __cmd__) { return __self__.getBackItem(); }
+        @Callback @BindSelector("barStyle") public static UIBarStyle getBarStyle(UINavigationBar __self__, Selector __cmd__) { return __self__.getBarStyle(); }
+        @Callback @BindSelector("setBarStyle:") public static void setBarStyle(UINavigationBar __self__, Selector __cmd__, UIBarStyle barStyle) { __self__.setBarStyle(barStyle); }
+        @Callback @BindSelector("delegate") public static NSObject getDelegate(UINavigationBar __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UINavigationBar __self__, Selector __cmd__, NSObject delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("items") public static NSArray getItems(UINavigationBar __self__, Selector __cmd__) { return __self__.getItems(); }
+        @Callback @BindSelector("setItems:") public static void setItems(UINavigationBar __self__, Selector __cmd__, NSArray items) { __self__.setItems(items); }
+        @Callback @BindSelector("shadowImage") public static UIImage getShadowImage(UINavigationBar __self__, Selector __cmd__) { return __self__.getShadowImage(); }
+        @Callback @BindSelector("setShadowImage:") public static void setShadowImage(UINavigationBar __self__, Selector __cmd__, UIImage shadowImage) { __self__.setShadowImage(shadowImage); }
+        @Callback @BindSelector("tintColor") public static UIColor getTintColor(UINavigationBar __self__, Selector __cmd__) { return __self__.getTintColor(); }
+        @Callback @BindSelector("setTintColor:") public static void setTintColor(UINavigationBar __self__, Selector __cmd__, UIColor tintColor) { __self__.setTintColor(tintColor); }
+        @Callback @BindSelector("titleTextAttributes") public static NSDictionary getTitleTextAttributes(UINavigationBar __self__, Selector __cmd__) { return __self__.getTitleTextAttributes(); }
+        @Callback @BindSelector("setTitleTextAttributes:") public static void setTitleTextAttributes(UINavigationBar __self__, Selector __cmd__, NSDictionary titleTextAttributes) { __self__.setTitleTextAttributes(titleTextAttributes); }
+        @Callback @BindSelector("topItem") public static UINavigationItem getTopItem(UINavigationBar __self__, Selector __cmd__) { return __self__.getTopItem(); }
+        @Callback @BindSelector("isTranslucent") public static boolean isTranslucent(UINavigationBar __self__, Selector __cmd__) { return __self__.isTranslucent(); }
+        @Callback @BindSelector("setTranslucent:") public static void setTranslucent(UINavigationBar __self__, Selector __cmd__, boolean translucent) { __self__.setTranslucent(translucent); }
         @Callback @BindSelector("backgroundImageForBarMetrics:") public static UIImage getBackgroundImage(UINavigationBar __self__, Selector __cmd__, UIBarMetrics barMetrics) { return __self__.getBackgroundImage(barMetrics); }
         @Callback @BindSelector("titleVerticalPositionAdjustmentForBarMetrics:") public static float getTitleVerticalPositionAdjustment(UINavigationBar __self__, Selector __cmd__, UIBarMetrics barMetrics) { return __self__.getTitleVerticalPositionAdjustment(barMetrics); }
         @Callback @BindSelector("popNavigationItemAnimated:") public static UINavigationItem popNavigationItem(UINavigationBar __self__, Selector __cmd__, boolean animated) { return __self__.popNavigationItem(animated); }

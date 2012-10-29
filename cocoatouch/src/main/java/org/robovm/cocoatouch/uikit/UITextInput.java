@@ -255,6 +255,19 @@ public interface /*<name>*/ UITextInput /*</name>*/ /*<implements>*/ extends UIK
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("beginningOfDocument") public static UITextPosition getBeginningOfDocument(UITextInput __self__, Selector __cmd__) { return __self__.getBeginningOfDocument(); }
+        @Callback @BindSelector("endOfDocument") public static UITextPosition getEndOfDocument(UITextInput __self__, Selector __cmd__) { return __self__.getEndOfDocument(); }
+        @Callback @BindSelector("inputDelegate") public static UITextInputDelegate getInputDelegate(UITextInput __self__, Selector __cmd__) { return __self__.getInputDelegate(); }
+        @Callback @BindSelector("setInputDelegate:") public static void setInputDelegate(UITextInput __self__, Selector __cmd__, UITextInputDelegate inputDelegate) { __self__.setInputDelegate(inputDelegate); }
+        @Callback @BindSelector("markedTextRange") public static UITextRange getMarkedTextRange(UITextInput __self__, Selector __cmd__) { return __self__.getMarkedTextRange(); }
+        @Callback @BindSelector("markedTextStyle") public static NSDictionary getMarkedTextStyle(UITextInput __self__, Selector __cmd__) { return __self__.getMarkedTextStyle(); }
+        @Callback @BindSelector("setMarkedTextStyle:") public static void setMarkedTextStyle(UITextInput __self__, Selector __cmd__, NSDictionary markedTextStyle) { __self__.setMarkedTextStyle(markedTextStyle); }
+        @Callback @BindSelector("selectedTextRange") public static UITextRange getSelectedTextRange(UITextInput __self__, Selector __cmd__) { return __self__.getSelectedTextRange(); }
+        @Callback @BindSelector("setSelectedTextRange:") public static void setSelectedTextRange(UITextInput __self__, Selector __cmd__, UITextRange selectedTextRange) { __self__.setSelectedTextRange(selectedTextRange); }
+        @Callback @BindSelector("selectionAffinity") public static UITextStorageDirection getSelectionAffinity(UITextInput __self__, Selector __cmd__) { return __self__.getSelectionAffinity(); }
+        @Callback @BindSelector("setSelectionAffinity:") public static void setSelectionAffinity(UITextInput __self__, Selector __cmd__, UITextStorageDirection selectionAffinity) { __self__.setSelectionAffinity(selectionAffinity); }
+        @Callback @BindSelector("textInputView") public static UIView getTextInputView(UITextInput __self__, Selector __cmd__) { return __self__.getTextInputView(); }
+        @Callback @BindSelector("tokenizer") public static UITextInputTokenizer getTokenizer(UITextInput __self__, Selector __cmd__) { return __self__.getTokenizer(); }
         @Callback @BindSelector("comparePosition:toPosition:") public static NSComparisonResult comparePositions(UITextInput __self__, Selector __cmd__, UITextPosition position, UITextPosition other) { return __self__.comparePositions(position, other); }
         @Callback @BindSelector("dictationRecognitionFailed") public static void dictationRecognitionFailed(UITextInput __self__, Selector __cmd__) { __self__.dictationRecognitionFailed(); }
         @Callback @BindSelector("dictationRecordingDidEnd") public static void dictationRecordingDidEnd(UITextInput __self__, Selector __cmd__) { __self__.dictationRecordingDidEnd(); }

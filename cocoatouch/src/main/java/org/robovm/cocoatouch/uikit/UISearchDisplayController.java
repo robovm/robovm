@@ -53,14 +53,14 @@ public class /*<name>*/ UISearchDisplayController /*</name>*/
     public UISearchDisplayController() {}
     
     private static final Selector initWithSearchBar$contentsController$ = Selector.register("initWithSearchBar:contentsController:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithSearchBar(UISearchDisplayController __self__, Selector __cmd__, UISearchBar searchBar, UIViewController viewController);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithSearchBar(UISearchDisplayController __self__, Selector __cmd__, UISearchBar searchBar, UIViewController viewController);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instm/UISearchDisplayController/initWithSearchBar:contentsController:">- (id)initWithSearchBar:(UISearchBar *)searchBar contentsController:(UIViewController *)viewController</a>
      * @since Available in iOS 3.0 and later.
      */
     public UISearchDisplayController(UISearchBar searchBar, UIViewController viewController) {
         super((SkipInit) null);
-        objc_initWithSearchBar(this, initWithSearchBar$contentsController$, searchBar, viewController);
+        setHandle(objc_initWithSearchBar(this, initWithSearchBar$contentsController$, searchBar, viewController));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -223,6 +223,19 @@ public class /*<name>*/ UISearchDisplayController /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("isActive") public static boolean isActive(UISearchDisplayController __self__, Selector __cmd__) { return __self__.isActive(); }
+        @Callback @BindSelector("setActive:") public static void setActive(UISearchDisplayController __self__, Selector __cmd__, boolean active) { __self__.setActive(active); }
+        @Callback @BindSelector("delegate") public static UISearchDisplayDelegate getDelegate(UISearchDisplayController __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UISearchDisplayController __self__, Selector __cmd__, UISearchDisplayDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("searchBar") public static UISearchBar getSearchBar(UISearchDisplayController __self__, Selector __cmd__) { return __self__.getSearchBar(); }
+        @Callback @BindSelector("searchContentsController") public static UIViewController getSearchContentsController(UISearchDisplayController __self__, Selector __cmd__) { return __self__.getSearchContentsController(); }
+        @Callback @BindSelector("searchResultsDataSource") public static UITableViewDataSource getSearchResultsDataSource(UISearchDisplayController __self__, Selector __cmd__) { return __self__.getSearchResultsDataSource(); }
+        @Callback @BindSelector("setSearchResultsDataSource:") public static void setSearchResultsDataSource(UISearchDisplayController __self__, Selector __cmd__, UITableViewDataSource searchResultsDataSource) { __self__.setSearchResultsDataSource(searchResultsDataSource); }
+        @Callback @BindSelector("searchResultsDelegate") public static UITableViewDelegate getSearchResultsDelegate(UISearchDisplayController __self__, Selector __cmd__) { return __self__.getSearchResultsDelegate(); }
+        @Callback @BindSelector("setSearchResultsDelegate:") public static void setSearchResultsDelegate(UISearchDisplayController __self__, Selector __cmd__, UITableViewDelegate searchResultsDelegate) { __self__.setSearchResultsDelegate(searchResultsDelegate); }
+        @Callback @BindSelector("searchResultsTableView") public static UITableView getSearchResultsTableView(UISearchDisplayController __self__, Selector __cmd__) { return __self__.getSearchResultsTableView(); }
+        @Callback @BindSelector("searchResultsTitle") public static String getSearchResultsTitle(UISearchDisplayController __self__, Selector __cmd__) { return __self__.getSearchResultsTitle(); }
+        @Callback @BindSelector("setSearchResultsTitle:") public static void setSearchResultsTitle(UISearchDisplayController __self__, Selector __cmd__, String searchResultsTitle) { __self__.setSearchResultsTitle(searchResultsTitle); }
         @Callback @BindSelector("setActive:animated:") public static void setActive(UISearchDisplayController __self__, Selector __cmd__, boolean visible, boolean animated) { __self__.setActive(visible, animated); }
     }
     /*</callbacks>*/

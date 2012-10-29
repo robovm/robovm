@@ -514,6 +514,23 @@ public class /*<name>*/ UIBezierPath /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("CGPath") public static CGPath getCGPath(UIBezierPath __self__, Selector __cmd__) { return __self__.getCGPath(); }
+        @Callback @BindSelector("setCGPath:") public static void setCGPath(UIBezierPath __self__, Selector __cmd__, CGPath CGPath) { __self__.setCGPath(CGPath); }
+        @Callback @BindSelector("bounds") public static CGRect getBounds(UIBezierPath __self__, Selector __cmd__) { return __self__.getBounds(); }
+        @Callback @BindSelector("currentPoint") public static CGPoint getCurrentPoint(UIBezierPath __self__, Selector __cmd__) { return __self__.getCurrentPoint(); }
+        @Callback @BindSelector("isEmpty") public static boolean isEmpty(UIBezierPath __self__, Selector __cmd__) { return __self__.isEmpty(); }
+        @Callback @BindSelector("flatness") public static float getFlatness(UIBezierPath __self__, Selector __cmd__) { return __self__.getFlatness(); }
+        @Callback @BindSelector("setFlatness:") public static void setFlatness(UIBezierPath __self__, Selector __cmd__, float flatness) { __self__.setFlatness(flatness); }
+        @Callback @BindSelector("lineCapStyle") public static CGLineCap getLineCapStyle(UIBezierPath __self__, Selector __cmd__) { return __self__.getLineCapStyle(); }
+        @Callback @BindSelector("setLineCapStyle:") public static void setLineCapStyle(UIBezierPath __self__, Selector __cmd__, CGLineCap lineCapStyle) { __self__.setLineCapStyle(lineCapStyle); }
+        @Callback @BindSelector("lineJoinStyle") public static CGLineJoin getLineJoinStyle(UIBezierPath __self__, Selector __cmd__) { return __self__.getLineJoinStyle(); }
+        @Callback @BindSelector("setLineJoinStyle:") public static void setLineJoinStyle(UIBezierPath __self__, Selector __cmd__, CGLineJoin lineJoinStyle) { __self__.setLineJoinStyle(lineJoinStyle); }
+        @Callback @BindSelector("lineWidth") public static float getLineWidth(UIBezierPath __self__, Selector __cmd__) { return __self__.getLineWidth(); }
+        @Callback @BindSelector("setLineWidth:") public static void setLineWidth(UIBezierPath __self__, Selector __cmd__, float lineWidth) { __self__.setLineWidth(lineWidth); }
+        @Callback @BindSelector("miterLimit") public static float getMiterLimit(UIBezierPath __self__, Selector __cmd__) { return __self__.getMiterLimit(); }
+        @Callback @BindSelector("setMiterLimit:") public static void setMiterLimit(UIBezierPath __self__, Selector __cmd__, float miterLimit) { __self__.setMiterLimit(miterLimit); }
+        @Callback @BindSelector("usesEvenOddFillRule") public static boolean isUsesEvenOddFillRule(UIBezierPath __self__, Selector __cmd__) { return __self__.isUsesEvenOddFillRule(); }
+        @Callback @BindSelector("setUsesEvenOddFillRule:") public static void setUsesEvenOddFillRule(UIBezierPath __self__, Selector __cmd__, boolean usesEvenOddFillRule) { __self__.setUsesEvenOddFillRule(usesEvenOddFillRule); }
         @Callback @BindSelector("addArcWithCenter:radius:startAngle:endAngle:clockwise:") public static void addArc(UIBezierPath __self__, Selector __cmd__, CGPoint center, float radius, float startAngle, float endAngle, boolean clockwise) { __self__.addArc(center, radius, startAngle, endAngle, clockwise); }
         @Callback @BindSelector("addClip") public static void addClip(UIBezierPath __self__, Selector __cmd__) { __self__.addClip(); }
         @Callback @BindSelector("addCurveToPoint:controlPoint1:controlPoint2:") public static void addCurve(UIBezierPath __self__, Selector __cmd__, CGPoint endPoint, CGPoint controlPoint1, CGPoint controlPoint2) { __self__.addCurve(endPoint, controlPoint1, controlPoint2); }

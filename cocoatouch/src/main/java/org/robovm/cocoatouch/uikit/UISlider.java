@@ -411,6 +411,27 @@ public class /*<name>*/ UISlider /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("isContinuous") public static boolean isContinuous(UISlider __self__, Selector __cmd__) { return __self__.isContinuous(); }
+        @Callback @BindSelector("setContinuous:") public static void setContinuous(UISlider __self__, Selector __cmd__, boolean continuous) { __self__.setContinuous(continuous); }
+        @Callback @BindSelector("currentMaximumTrackImage") public static UIImage getCurrentMaximumTrackImage(UISlider __self__, Selector __cmd__) { return __self__.getCurrentMaximumTrackImage(); }
+        @Callback @BindSelector("currentMinimumTrackImage") public static UIImage getCurrentMinimumTrackImage(UISlider __self__, Selector __cmd__) { return __self__.getCurrentMinimumTrackImage(); }
+        @Callback @BindSelector("currentThumbImage") public static UIImage getCurrentThumbImage(UISlider __self__, Selector __cmd__) { return __self__.getCurrentThumbImage(); }
+        @Callback @BindSelector("maximumTrackTintColor") public static UIColor getMaximumTrackTintColor(UISlider __self__, Selector __cmd__) { return __self__.getMaximumTrackTintColor(); }
+        @Callback @BindSelector("setMaximumTrackTintColor:") public static void setMaximumTrackTintColor(UISlider __self__, Selector __cmd__, UIColor maximumTrackTintColor) { __self__.setMaximumTrackTintColor(maximumTrackTintColor); }
+        @Callback @BindSelector("maximumValue") public static float getMaximumValue(UISlider __self__, Selector __cmd__) { return __self__.getMaximumValue(); }
+        @Callback @BindSelector("setMaximumValue:") public static void setMaximumValue(UISlider __self__, Selector __cmd__, float maximumValue) { __self__.setMaximumValue(maximumValue); }
+        @Callback @BindSelector("maximumValueImage") public static UIImage getMaximumValueImage(UISlider __self__, Selector __cmd__) { return __self__.getMaximumValueImage(); }
+        @Callback @BindSelector("setMaximumValueImage:") public static void setMaximumValueImage(UISlider __self__, Selector __cmd__, UIImage maximumValueImage) { __self__.setMaximumValueImage(maximumValueImage); }
+        @Callback @BindSelector("minimumTrackTintColor") public static UIColor getMinimumTrackTintColor(UISlider __self__, Selector __cmd__) { return __self__.getMinimumTrackTintColor(); }
+        @Callback @BindSelector("setMinimumTrackTintColor:") public static void setMinimumTrackTintColor(UISlider __self__, Selector __cmd__, UIColor minimumTrackTintColor) { __self__.setMinimumTrackTintColor(minimumTrackTintColor); }
+        @Callback @BindSelector("minimumValue") public static float getMinimumValue(UISlider __self__, Selector __cmd__) { return __self__.getMinimumValue(); }
+        @Callback @BindSelector("setMinimumValue:") public static void setMinimumValue(UISlider __self__, Selector __cmd__, float minimumValue) { __self__.setMinimumValue(minimumValue); }
+        @Callback @BindSelector("minimumValueImage") public static UIImage getMinimumValueImage(UISlider __self__, Selector __cmd__) { return __self__.getMinimumValueImage(); }
+        @Callback @BindSelector("setMinimumValueImage:") public static void setMinimumValueImage(UISlider __self__, Selector __cmd__, UIImage minimumValueImage) { __self__.setMinimumValueImage(minimumValueImage); }
+        @Callback @BindSelector("thumbTintColor") public static UIColor getThumbTintColor(UISlider __self__, Selector __cmd__) { return __self__.getThumbTintColor(); }
+        @Callback @BindSelector("setThumbTintColor:") public static void setThumbTintColor(UISlider __self__, Selector __cmd__, UIColor thumbTintColor) { __self__.setThumbTintColor(thumbTintColor); }
+        @Callback @BindSelector("value") public static float getValue(UISlider __self__, Selector __cmd__) { return __self__.getValue(); }
+        @Callback @BindSelector("setValue:") public static void setValue(UISlider __self__, Selector __cmd__, float value) { __self__.setValue(value); }
         @Callback @BindSelector("maximumTrackImageForState:") public static UIImage getMaximumTrackImage(UISlider __self__, Selector __cmd__, UIControlState state) { return __self__.getMaximumTrackImage(state); }
         @Callback @BindSelector("maximumValueImageRectForBounds:") public static CGRect getMaximumValueImageRect(UISlider __self__, Selector __cmd__, CGRect bounds) { return __self__.getMaximumValueImageRect(bounds); }
         @Callback @BindSelector("minimumTrackImageForState:") public static UIImage getMinimumTrackImage(UISlider __self__, Selector __cmd__, UIControlState state) { return __self__.getMinimumTrackImage(state); }

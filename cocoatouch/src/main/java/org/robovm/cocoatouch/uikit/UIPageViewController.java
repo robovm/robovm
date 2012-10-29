@@ -53,14 +53,14 @@ public class /*<name>*/ UIPageViewController /*</name>*/
     public UIPageViewController() {}
     
     private static final Selector initWithTransitionStyle$navigationOrientation$options$ = Selector.register("initWithTransitionStyle:navigationOrientation:options:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithTransitionStyle(UIPageViewController __self__, Selector __cmd__, UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, NSDictionary options);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithTransitionStyle(UIPageViewController __self__, Selector __cmd__, UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, NSDictionary options);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instm/UIPageViewController/initWithTransitionStyle:navigationOrientation:options:">- (id)initWithTransitionStyle:(UIPageViewControllerTransitionStyle)style navigationOrientation:(UIPageViewControllerNavigationOrientation)navigationOrientation options:(NSDictionary *)options</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIPageViewController(UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, NSDictionary options) {
         super((SkipInit) null);
-        objc_initWithTransitionStyle(this, initWithTransitionStyle$navigationOrientation$options$, style, navigationOrientation, options);
+        setHandle(objc_initWithTransitionStyle(this, initWithTransitionStyle$navigationOrientation$options$, style, navigationOrientation, options));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -201,6 +201,17 @@ public class /*<name>*/ UIPageViewController /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("dataSource") public static UIPageViewControllerDataSource getDataSource(UIPageViewController __self__, Selector __cmd__) { return __self__.getDataSource(); }
+        @Callback @BindSelector("setDataSource:") public static void setDataSource(UIPageViewController __self__, Selector __cmd__, UIPageViewControllerDataSource dataSource) { __self__.setDataSource(dataSource); }
+        @Callback @BindSelector("delegate") public static UIPageViewControllerDelegate getDelegate(UIPageViewController __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UIPageViewController __self__, Selector __cmd__, UIPageViewControllerDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("isDoubleSided") public static boolean isDoubleSided(UIPageViewController __self__, Selector __cmd__) { return __self__.isDoubleSided(); }
+        @Callback @BindSelector("setDoubleSided:") public static void setDoubleSided(UIPageViewController __self__, Selector __cmd__, boolean doubleSided) { __self__.setDoubleSided(doubleSided); }
+        @Callback @BindSelector("gestureRecognizers") public static NSArray getGestureRecognizers(UIPageViewController __self__, Selector __cmd__) { return __self__.getGestureRecognizers(); }
+        @Callback @BindSelector("navigationOrientation") public static UIPageViewControllerNavigationOrientation getNavigationOrientation(UIPageViewController __self__, Selector __cmd__) { return __self__.getNavigationOrientation(); }
+        @Callback @BindSelector("spineLocation") public static UIPageViewControllerSpineLocation getSpineLocation(UIPageViewController __self__, Selector __cmd__) { return __self__.getSpineLocation(); }
+        @Callback @BindSelector("transitionStyle") public static UIPageViewControllerTransitionStyle getTransitionStyle(UIPageViewController __self__, Selector __cmd__) { return __self__.getTransitionStyle(); }
+        @Callback @BindSelector("viewControllers") public static NSArray getViewControllers(UIPageViewController __self__, Selector __cmd__) { return __self__.getViewControllers(); }
         @Callback @BindSelector("setViewControllers:direction:animated:completion:") public static void setViewControllers(UIPageViewController __self__, Selector __cmd__, NSArray viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, VoidBooleanBlock completion) { __self__.setViewControllers(viewControllers, direction, animated, completion); }
     }
     /*</callbacks>*/

@@ -18,19 +18,45 @@ package org.robovm.cocoatouch.foundation;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.robovm.objc.ObjCSuper;
+import org.robovm.objc.Selector;
+import org.robovm.rt.bro.Bro;
+import org.robovm.rt.bro.annotation.Bridge;
+import org.robovm.rt.bro.annotation.Library;
 
 /**
- * 
+ * Tests {@link NSObject}.
  */
+@Library("Foundation")
 public class NSObjectTest {
 
+    static {
+        Bro.bind();
+    }
+    
     @Test
-    public void test() {
+    public void testDescription() {
         NSAutoreleasePool pool = new NSAutoreleasePool();
         NSObject o = new NSObject();
-        System.out.println(o.description());
-        System.out.println(new NSString("Hello world!!!"));
+        assertTrue(o.description().matches("<NSObject: 0x[0-9a-f]+>"));
+//        assertEquals("", new NSString("Hello world!!!").toString());
         pool.drain();
     }
 
+    private static final Selector description = Selector.register("description");
+    @Bridge(symbol = "objc_msgSend") private native static NSString objc_description(NSObject __self__, Selector __cmd__);
+    
+    public static class MyObjCClass extends NSObject {
+        @Override
+        public String description() {
+            return "FOOBAR";
+        }
+    }
+    
+    @Test
+    public void testCustomClass() throws Exception {
+        MyObjCClass o = new MyObjCClass();
+        assertTrue(o.getHandle() != 0L);
+        assertEquals("FOOBAR", objc_description(o, description).toString());
+    }
 }

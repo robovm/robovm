@@ -53,14 +53,14 @@ public class /*<name>*/ UIReferenceLibraryViewController /*</name>*/
     public UIReferenceLibraryViewController() {}
     
     private static final Selector initWithTerm$ = Selector.register("initWithTerm:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithTerm(UIReferenceLibraryViewController __self__, Selector __cmd__, String term);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithTerm(UIReferenceLibraryViewController __self__, Selector __cmd__, String term);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIReferenceLibraryViewControllerClassRef/Reference/Reference.html#//apple_ref/occ/instm/UIReferenceLibraryViewController/initWithTerm:">- (id)initWithTerm:(NSString *)term</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIReferenceLibraryViewController(String term) {
         super((SkipInit) null);
-        objc_initWithTerm(this, initWithTerm$, term);
+        setHandle(objc_initWithTerm(this, initWithTerm$, term));
     }
     /*</constructors>*/
     /*<properties>*/

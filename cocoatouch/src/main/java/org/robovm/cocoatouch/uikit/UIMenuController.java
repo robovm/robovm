@@ -179,6 +179,13 @@ public class /*<name>*/ UIMenuController /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("arrowDirection") public static UIMenuControllerArrowDirection getArrowDirection(UIMenuController __self__, Selector __cmd__) { return __self__.getArrowDirection(); }
+        @Callback @BindSelector("setArrowDirection:") public static void setArrowDirection(UIMenuController __self__, Selector __cmd__, UIMenuControllerArrowDirection arrowDirection) { __self__.setArrowDirection(arrowDirection); }
+        @Callback @BindSelector("menuFrame") public static CGRect getMenuFrame(UIMenuController __self__, Selector __cmd__) { return __self__.getMenuFrame(); }
+        @Callback @BindSelector("menuItems") public static NSArray getMenuItems(UIMenuController __self__, Selector __cmd__) { return __self__.getMenuItems(); }
+        @Callback @BindSelector("setMenuItems:") public static void setMenuItems(UIMenuController __self__, Selector __cmd__, NSArray menuItems) { __self__.setMenuItems(menuItems); }
+        @Callback @BindSelector("isMenuVisible") public static boolean isMenuVisible(UIMenuController __self__, Selector __cmd__) { return __self__.isMenuVisible(); }
+        @Callback @BindSelector("setMenuVisible:") public static void setMenuVisible(UIMenuController __self__, Selector __cmd__, boolean menuVisible) { __self__.setMenuVisible(menuVisible); }
         @Callback @BindSelector("setMenuVisible:animated:") public static void setMenuVisible(UIMenuController __self__, Selector __cmd__, boolean menuVisible, boolean animated) { __self__.setMenuVisible(menuVisible, animated); }
         @Callback @BindSelector("setTargetRect:inView:") public static void setTargetRect(UIMenuController __self__, Selector __cmd__, CGRect targetRect, UIView targetView) { __self__.setTargetRect(targetRect, targetView); }
         @Callback @BindSelector("update") public static void update(UIMenuController __self__, Selector __cmd__) { __self__.update(); }

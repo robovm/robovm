@@ -53,14 +53,14 @@ public class /*<name>*/ UISegmentedControl /*</name>*/
     public UISegmentedControl() {}
     
     private static final Selector initWithItems$ = Selector.register("initWithItems:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithItems(UISegmentedControl __self__, Selector __cmd__, NSArray items);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithItems(UISegmentedControl __self__, Selector __cmd__, NSArray items);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instm/UISegmentedControl/initWithItems:">- (id)initWithItems:(NSArray *)items</a>
      * @since Available in iOS 2.0 and later.
      */
     public UISegmentedControl(NSArray items) {
         super((SkipInit) null);
-        objc_initWithItems(this, initWithItems$, items);
+        setHandle(objc_initWithItems(this, initWithItems$, items));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -432,6 +432,17 @@ public class /*<name>*/ UISegmentedControl /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("apportionsSegmentWidthsByContent") public static boolean isApportionsSegmentWidthsByContent(UISegmentedControl __self__, Selector __cmd__) { return __self__.isApportionsSegmentWidthsByContent(); }
+        @Callback @BindSelector("setApportionsSegmentWidthsByContent:") public static void setApportionsSegmentWidthsByContent(UISegmentedControl __self__, Selector __cmd__, boolean apportionsSegmentWidthsByContent) { __self__.setApportionsSegmentWidthsByContent(apportionsSegmentWidthsByContent); }
+        @Callback @BindSelector("segmentedControlStyle") public static UISegmentedControlStyle getControlStyle(UISegmentedControl __self__, Selector __cmd__) { return __self__.getControlStyle(); }
+        @Callback @BindSelector("setSegmentedControlStyle:") public static void setControlStyle(UISegmentedControl __self__, Selector __cmd__, UISegmentedControlStyle controlStyle) { __self__.setControlStyle(controlStyle); }
+        @Callback @BindSelector("isMomentary") public static boolean isMomentary(UISegmentedControl __self__, Selector __cmd__) { return __self__.isMomentary(); }
+        @Callback @BindSelector("setMomentary:") public static void setMomentary(UISegmentedControl __self__, Selector __cmd__, boolean momentary) { __self__.setMomentary(momentary); }
+        @Callback @BindSelector("numberOfSegments") public static int getNumberOfSegments(UISegmentedControl __self__, Selector __cmd__) { return __self__.getNumberOfSegments(); }
+        @Callback @BindSelector("selectedSegmentIndex") public static int getSelectedSegment(UISegmentedControl __self__, Selector __cmd__) { return __self__.getSelectedSegment(); }
+        @Callback @BindSelector("setSelectedSegmentIndex:") public static void setSelectedSegment(UISegmentedControl __self__, Selector __cmd__, int selectedSegment) { __self__.setSelectedSegment(selectedSegment); }
+        @Callback @BindSelector("tintColor") public static UIColor getTintColor(UISegmentedControl __self__, Selector __cmd__) { return __self__.getTintColor(); }
+        @Callback @BindSelector("setTintColor:") public static void setTintColor(UISegmentedControl __self__, Selector __cmd__, UIColor tintColor) { __self__.setTintColor(tintColor); }
         @Callback @BindSelector("backgroundImageForState:barMetrics:") public static UIImage getBackgroundImage(UISegmentedControl __self__, Selector __cmd__, UIControlState state, UIBarMetrics barMetrics) { return __self__.getBackgroundImage(state, barMetrics); }
         @Callback @BindSelector("dividerImageForLeftSegmentState:rightSegmentState:barMetrics:") public static UIImage getDividerImage(UISegmentedControl __self__, Selector __cmd__, UIControlState leftState, UIControlState rightState, UIBarMetrics barMetrics) { return __self__.getDividerImage(leftState, rightState, barMetrics); }
         @Callback @BindSelector("contentOffsetForSegmentAtIndex:") public static CGSize getSegmentContentOffset(UISegmentedControl __self__, Selector __cmd__, int segment) { return __self__.getSegmentContentOffset(segment); }

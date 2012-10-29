@@ -520,6 +520,31 @@ public class /*<name>*/ UIButton /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("adjustsImageWhenDisabled") public static boolean isAdjustsImageWhenDisabled(UIButton __self__, Selector __cmd__) { return __self__.isAdjustsImageWhenDisabled(); }
+        @Callback @BindSelector("setAdjustsImageWhenDisabled:") public static void setAdjustsImageWhenDisabled(UIButton __self__, Selector __cmd__, boolean adjustsImageWhenDisabled) { __self__.setAdjustsImageWhenDisabled(adjustsImageWhenDisabled); }
+        @Callback @BindSelector("adjustsImageWhenHighlighted") public static boolean isAdjustsImageWhenHighlighted(UIButton __self__, Selector __cmd__) { return __self__.isAdjustsImageWhenHighlighted(); }
+        @Callback @BindSelector("setAdjustsImageWhenHighlighted:") public static void setAdjustsImageWhenHighlighted(UIButton __self__, Selector __cmd__, boolean adjustsImageWhenHighlighted) { __self__.setAdjustsImageWhenHighlighted(adjustsImageWhenHighlighted); }
+        @Callback @BindSelector("buttonType") public static UIButtonType getButtonType(UIButton __self__, Selector __cmd__) { return __self__.getButtonType(); }
+        @Callback @BindSelector("contentEdgeInsets") public static UIEdgeInsets getContentEdgeInsets(UIButton __self__, Selector __cmd__) { return __self__.getContentEdgeInsets(); }
+        @Callback @BindSelector("setContentEdgeInsets:") public static void setContentEdgeInsets(UIButton __self__, Selector __cmd__, UIEdgeInsets contentEdgeInsets) { __self__.setContentEdgeInsets(contentEdgeInsets); }
+        @Callback @BindSelector("currentAttributedTitle") public static NSAttributedString getCurrentAttributedTitle(UIButton __self__, Selector __cmd__) { return __self__.getCurrentAttributedTitle(); }
+        @Callback @BindSelector("currentBackgroundImage") public static UIImage getCurrentBackgroundImage(UIButton __self__, Selector __cmd__) { return __self__.getCurrentBackgroundImage(); }
+        @Callback @BindSelector("currentImage") public static UIImage getCurrentImage(UIButton __self__, Selector __cmd__) { return __self__.getCurrentImage(); }
+        @Callback @BindSelector("currentTitle") public static String getCurrentTitle(UIButton __self__, Selector __cmd__) { return __self__.getCurrentTitle(); }
+        @Callback @BindSelector("currentTitleColor") public static UIColor getCurrentTitleColor(UIButton __self__, Selector __cmd__) { return __self__.getCurrentTitleColor(); }
+        @Callback @BindSelector("currentTitleShadowColor") public static UIColor getCurrentTitleShadowColor(UIButton __self__, Selector __cmd__) { return __self__.getCurrentTitleShadowColor(); }
+        @Callback @BindSelector("imageEdgeInsets") public static UIEdgeInsets getImageEdgeInsets(UIButton __self__, Selector __cmd__) { return __self__.getImageEdgeInsets(); }
+        @Callback @BindSelector("setImageEdgeInsets:") public static void setImageEdgeInsets(UIButton __self__, Selector __cmd__, UIEdgeInsets imageEdgeInsets) { __self__.setImageEdgeInsets(imageEdgeInsets); }
+        @Callback @BindSelector("imageView") public static UIImageView getImageView(UIButton __self__, Selector __cmd__) { return __self__.getImageView(); }
+        @Callback @BindSelector("reversesTitleShadowWhenHighlighted") public static boolean isReversesTitleShadowWhenHighlighted(UIButton __self__, Selector __cmd__) { return __self__.isReversesTitleShadowWhenHighlighted(); }
+        @Callback @BindSelector("setReversesTitleShadowWhenHighlighted:") public static void setReversesTitleShadowWhenHighlighted(UIButton __self__, Selector __cmd__, boolean reversesTitleShadowWhenHighlighted) { __self__.setReversesTitleShadowWhenHighlighted(reversesTitleShadowWhenHighlighted); }
+        @Callback @BindSelector("showsTouchWhenHighlighted") public static boolean isShowsTouchWhenHighlighted(UIButton __self__, Selector __cmd__) { return __self__.isShowsTouchWhenHighlighted(); }
+        @Callback @BindSelector("setShowsTouchWhenHighlighted:") public static void setShowsTouchWhenHighlighted(UIButton __self__, Selector __cmd__, boolean showsTouchWhenHighlighted) { __self__.setShowsTouchWhenHighlighted(showsTouchWhenHighlighted); }
+        @Callback @BindSelector("tintColor") public static UIColor getTintColor(UIButton __self__, Selector __cmd__) { return __self__.getTintColor(); }
+        @Callback @BindSelector("setTintColor:") public static void setTintColor(UIButton __self__, Selector __cmd__, UIColor tintColor) { __self__.setTintColor(tintColor); }
+        @Callback @BindSelector("titleEdgeInsets") public static UIEdgeInsets getTitleEdgeInsets(UIButton __self__, Selector __cmd__) { return __self__.getTitleEdgeInsets(); }
+        @Callback @BindSelector("setTitleEdgeInsets:") public static void setTitleEdgeInsets(UIButton __self__, Selector __cmd__, UIEdgeInsets titleEdgeInsets) { __self__.setTitleEdgeInsets(titleEdgeInsets); }
+        @Callback @BindSelector("titleLabel") public static UILabel getTitleLabel(UIButton __self__, Selector __cmd__) { return __self__.getTitleLabel(); }
         @Callback @BindSelector("attributedTitleForState:") public static NSAttributedString getAttributedTitle(UIButton __self__, Selector __cmd__, UIControlState state) { return __self__.getAttributedTitle(state); }
         @Callback @BindSelector("backgroundImageForState:") public static UIImage getBackgroundImage(UIButton __self__, Selector __cmd__, UIControlState state) { return __self__.getBackgroundImage(state); }
         @Callback @BindSelector("backgroundRectForBounds:") public static CGRect getBackgroundRect(UIButton __self__, Selector __cmd__, CGRect bounds) { return __self__.getBackgroundRect(bounds); }

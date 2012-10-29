@@ -123,6 +123,14 @@ public class /*<name>*/ UITextSelectionRect /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("containsEnd") public static boolean isContainsEnd(UITextSelectionRect __self__, Selector __cmd__) { return __self__.isContainsEnd(); }
+        @Callback @BindSelector("containsStart") public static boolean isContainsStart(UITextSelectionRect __self__, Selector __cmd__) { return __self__.isContainsStart(); }
+        @Callback @BindSelector("range") public static UITextRange getRange(UITextSelectionRect __self__, Selector __cmd__) { return __self__.getRange(); }
+        @Callback @BindSelector("rect") public static CGRect getRect(UITextSelectionRect __self__, Selector __cmd__) { return __self__.getRect(); }
+        @Callback @BindSelector("isVertical") public static boolean isVertical(UITextSelectionRect __self__, Selector __cmd__) { return __self__.isVertical(); }
+        @Callback @BindSelector("writingDirection") public static UITextWritingDirection getWritingDirection(UITextSelectionRect __self__, Selector __cmd__) { return __self__.getWritingDirection(); }
+    }
     /*</callbacks>*/
 
 }

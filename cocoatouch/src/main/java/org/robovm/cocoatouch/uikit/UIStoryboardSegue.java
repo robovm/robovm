@@ -53,14 +53,14 @@ public class /*<name>*/ UIStoryboardSegue /*</name>*/
     public UIStoryboardSegue() {}
     
     private static final Selector initWithIdentifier$source$destination$ = Selector.register("initWithIdentifier:source:destination:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithIdentifier(UIStoryboardSegue __self__, Selector __cmd__, String identifier, UIViewController source, UIViewController destination);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithIdentifier(UIStoryboardSegue __self__, Selector __cmd__, String identifier, UIViewController source, UIViewController destination);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboardSegue/initWithIdentifier:source:destination:">- (id)initWithIdentifier:(NSString *)identifier source:(UIViewController *)source destination:(UIViewController *)destination</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIStoryboardSegue(String identifier, UIViewController source, UIViewController destination) {
         super((SkipInit) null);
-        objc_initWithIdentifier(this, initWithIdentifier$source$destination$, identifier, source, destination);
+        setHandle(objc_initWithIdentifier(this, initWithIdentifier$source$destination$, identifier, source, destination));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -113,6 +113,9 @@ public class /*<name>*/ UIStoryboardSegue /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("destinationViewController") public static NSObject getDestinationViewController(UIStoryboardSegue __self__, Selector __cmd__) { return __self__.getDestinationViewController(); }
+        @Callback @BindSelector("identifier") public static String getIdentifier(UIStoryboardSegue __self__, Selector __cmd__) { return __self__.getIdentifier(); }
+        @Callback @BindSelector("sourceViewController") public static NSObject getSourceViewController(UIStoryboardSegue __self__, Selector __cmd__) { return __self__.getSourceViewController(); }
         @Callback @BindSelector("perform") public static void perform(UIStoryboardSegue __self__, Selector __cmd__) { __self__.perform(); }
     }
     /*</callbacks>*/

@@ -70,6 +70,9 @@ public class /*<name>*/ UIStoryboardPopoverSegue /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("popoverController") public static UIPopoverController getPopoverController(UIStoryboardPopoverSegue __self__, Selector __cmd__) { return __self__.getPopoverController(); }
+    }
     /*</callbacks>*/
 
 }

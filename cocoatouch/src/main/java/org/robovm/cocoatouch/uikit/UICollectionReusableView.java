@@ -113,6 +113,7 @@ public class /*<name>*/ UICollectionReusableView /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("reuseIdentifier") public static String getReuseIdentifier(UICollectionReusableView __self__, Selector __cmd__) { return __self__.getReuseIdentifier(); }
         @Callback @BindSelector("applyLayoutAttributes:") public static void applyLayoutAttributes(UICollectionReusableView __self__, Selector __cmd__, UICollectionViewLayoutAttributes layoutAttributes) { __self__.applyLayoutAttributes(layoutAttributes); }
         @Callback @BindSelector("didTransitionFromLayout:toLayout:") public static void didTransition(UICollectionReusableView __self__, Selector __cmd__, UICollectionViewLayout oldLayout, UICollectionViewLayout newLayout) { __self__.didTransition(oldLayout, newLayout); }
         @Callback @BindSelector("prepareForReuse") public static void prepareForReuse(UICollectionReusableView __self__, Selector __cmd__) { __self__.prepareForReuse(); }

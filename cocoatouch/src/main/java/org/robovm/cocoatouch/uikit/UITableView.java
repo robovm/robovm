@@ -53,14 +53,14 @@ public class /*<name>*/ UITableView /*</name>*/
     public UITableView() {}
     
     private static final Selector initWithFrame$style$ = Selector.register("initWithFrame:style:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithFrame(UITableView __self__, Selector __cmd__, CGRect frame, UITableViewStyle style);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithFrame(UITableView __self__, Selector __cmd__, CGRect frame, UITableViewStyle style);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableView/initWithFrame:style:">- (id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITableView(CGRect frame, UITableViewStyle style) {
         super((SkipInit) null);
-        objc_initWithFrame(this, initWithFrame$style$, frame, style);
+        setHandle(objc_initWithFrame(this, initWithFrame$style$, frame, style));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -916,6 +916,43 @@ public class /*<name>*/ UITableView /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("allowsMultipleSelection") public static boolean isAllowsMultipleSelection(UITableView __self__, Selector __cmd__) { return __self__.isAllowsMultipleSelection(); }
+        @Callback @BindSelector("setAllowsMultipleSelection:") public static void setAllowsMultipleSelection(UITableView __self__, Selector __cmd__, boolean allowsMultipleSelection) { __self__.setAllowsMultipleSelection(allowsMultipleSelection); }
+        @Callback @BindSelector("allowsMultipleSelectionDuringEditing") public static boolean isAllowsMultipleSelectionDuringEditing(UITableView __self__, Selector __cmd__) { return __self__.isAllowsMultipleSelectionDuringEditing(); }
+        @Callback @BindSelector("setAllowsMultipleSelectionDuringEditing:") public static void setAllowsMultipleSelectionDuringEditing(UITableView __self__, Selector __cmd__, boolean allowsMultipleSelectionDuringEditing) { __self__.setAllowsMultipleSelectionDuringEditing(allowsMultipleSelectionDuringEditing); }
+        @Callback @BindSelector("allowsSelection") public static boolean isAllowsSelection(UITableView __self__, Selector __cmd__) { return __self__.isAllowsSelection(); }
+        @Callback @BindSelector("setAllowsSelection:") public static void setAllowsSelection(UITableView __self__, Selector __cmd__, boolean allowsSelection) { __self__.setAllowsSelection(allowsSelection); }
+        @Callback @BindSelector("allowsSelectionDuringEditing") public static boolean isAllowsSelectionDuringEditing(UITableView __self__, Selector __cmd__) { return __self__.isAllowsSelectionDuringEditing(); }
+        @Callback @BindSelector("setAllowsSelectionDuringEditing:") public static void setAllowsSelectionDuringEditing(UITableView __self__, Selector __cmd__, boolean allowsSelectionDuringEditing) { __self__.setAllowsSelectionDuringEditing(allowsSelectionDuringEditing); }
+        @Callback @BindSelector("backgroundView") public static UIView getBackgroundView(UITableView __self__, Selector __cmd__) { return __self__.getBackgroundView(); }
+        @Callback @BindSelector("setBackgroundView:") public static void setBackgroundView(UITableView __self__, Selector __cmd__, UIView backgroundView) { __self__.setBackgroundView(backgroundView); }
+        @Callback @BindSelector("dataSource") public static UITableViewDataSource getDataSource(UITableView __self__, Selector __cmd__) { return __self__.getDataSource(); }
+        @Callback @BindSelector("setDataSource:") public static void setDataSource(UITableView __self__, Selector __cmd__, UITableViewDataSource dataSource) { __self__.setDataSource(dataSource); }
+        @Callback @BindSelector("delegate") public static UITableViewDelegate getDelegate(UITableView __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UITableView __self__, Selector __cmd__, UITableViewDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("isEditing") public static boolean isEditing(UITableView __self__, Selector __cmd__) { return __self__.isEditing(); }
+        @Callback @BindSelector("setEditing:") public static void setEditing(UITableView __self__, Selector __cmd__, boolean editing) { __self__.setEditing(editing); }
+        @Callback @BindSelector("rowHeight") public static float getRowHeight(UITableView __self__, Selector __cmd__) { return __self__.getRowHeight(); }
+        @Callback @BindSelector("setRowHeight:") public static void setRowHeight(UITableView __self__, Selector __cmd__, float rowHeight) { __self__.setRowHeight(rowHeight); }
+        @Callback @BindSelector("sectionFooterHeight") public static float getSectionFooterHeight(UITableView __self__, Selector __cmd__) { return __self__.getSectionFooterHeight(); }
+        @Callback @BindSelector("setSectionFooterHeight:") public static void setSectionFooterHeight(UITableView __self__, Selector __cmd__, float sectionFooterHeight) { __self__.setSectionFooterHeight(sectionFooterHeight); }
+        @Callback @BindSelector("sectionHeaderHeight") public static float getSectionHeaderHeight(UITableView __self__, Selector __cmd__) { return __self__.getSectionHeaderHeight(); }
+        @Callback @BindSelector("setSectionHeaderHeight:") public static void setSectionHeaderHeight(UITableView __self__, Selector __cmd__, float sectionHeaderHeight) { __self__.setSectionHeaderHeight(sectionHeaderHeight); }
+        @Callback @BindSelector("sectionIndexColor") public static UIColor getSectionIndexColor(UITableView __self__, Selector __cmd__) { return __self__.getSectionIndexColor(); }
+        @Callback @BindSelector("setSectionIndexColor:") public static void setSectionIndexColor(UITableView __self__, Selector __cmd__, UIColor sectionIndexColor) { __self__.setSectionIndexColor(sectionIndexColor); }
+        @Callback @BindSelector("sectionIndexMinimumDisplayRowCount") public static int getSectionIndexMinimumDisplayRowCount(UITableView __self__, Selector __cmd__) { return __self__.getSectionIndexMinimumDisplayRowCount(); }
+        @Callback @BindSelector("setSectionIndexMinimumDisplayRowCount:") public static void setSectionIndexMinimumDisplayRowCount(UITableView __self__, Selector __cmd__, int sectionIndexMinimumDisplayRowCount) { __self__.setSectionIndexMinimumDisplayRowCount(sectionIndexMinimumDisplayRowCount); }
+        @Callback @BindSelector("sectionIndexTrackingBackgroundColor") public static UIColor getSectionIndexTrackingBackgroundColor(UITableView __self__, Selector __cmd__) { return __self__.getSectionIndexTrackingBackgroundColor(); }
+        @Callback @BindSelector("setSectionIndexTrackingBackgroundColor:") public static void setSectionIndexTrackingBackgroundColor(UITableView __self__, Selector __cmd__, UIColor sectionIndexTrackingBackgroundColor) { __self__.setSectionIndexTrackingBackgroundColor(sectionIndexTrackingBackgroundColor); }
+        @Callback @BindSelector("separatorColor") public static UIColor getSeparatorColor(UITableView __self__, Selector __cmd__) { return __self__.getSeparatorColor(); }
+        @Callback @BindSelector("setSeparatorColor:") public static void setSeparatorColor(UITableView __self__, Selector __cmd__, UIColor separatorColor) { __self__.setSeparatorColor(separatorColor); }
+        @Callback @BindSelector("separatorStyle") public static UITableViewCellSeparatorStyle getSeparatorStyle(UITableView __self__, Selector __cmd__) { return __self__.getSeparatorStyle(); }
+        @Callback @BindSelector("setSeparatorStyle:") public static void setSeparatorStyle(UITableView __self__, Selector __cmd__, UITableViewCellSeparatorStyle separatorStyle) { __self__.setSeparatorStyle(separatorStyle); }
+        @Callback @BindSelector("style") public static UITableViewStyle getStyle(UITableView __self__, Selector __cmd__) { return __self__.getStyle(); }
+        @Callback @BindSelector("tableFooterView") public static UIView getTableFooterView(UITableView __self__, Selector __cmd__) { return __self__.getTableFooterView(); }
+        @Callback @BindSelector("setTableFooterView:") public static void setTableFooterView(UITableView __self__, Selector __cmd__, UIView tableFooterView) { __self__.setTableFooterView(tableFooterView); }
+        @Callback @BindSelector("tableHeaderView") public static UIView getTableHeaderView(UITableView __self__, Selector __cmd__) { return __self__.getTableHeaderView(); }
+        @Callback @BindSelector("setTableHeaderView:") public static void setTableHeaderView(UITableView __self__, Selector __cmd__, UIView tableHeaderView) { __self__.setTableHeaderView(tableHeaderView); }
         @Callback @BindSelector("beginUpdates") public static void beginUpdates(UITableView __self__, Selector __cmd__) { __self__.beginUpdates(); }
         @Callback @BindSelector("deleteRowsAtIndexPaths:withRowAnimation:") public static void deleteRows(UITableView __self__, Selector __cmd__, NSArray indexPaths, UITableViewRowAnimation animation) { __self__.deleteRows(indexPaths, animation); }
         @Callback @BindSelector("deleteSections:withRowAnimation:") public static void deleteSections(UITableView __self__, Selector __cmd__, NSIndexSet sections, UITableViewRowAnimation animation) { __self__.deleteSections(sections, animation); }

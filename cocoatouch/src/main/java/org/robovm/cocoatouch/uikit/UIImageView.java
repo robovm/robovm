@@ -53,25 +53,25 @@ public class /*<name>*/ UIImageView /*</name>*/
     public UIImageView() {}
     
     private static final Selector initWithImage$ = Selector.register("initWithImage:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithImage(UIImageView __self__, Selector __cmd__, UIImage image);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithImage(UIImageView __self__, Selector __cmd__, UIImage image);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImageView/initWithImage:">- (id)initWithImage:(UIImage *)image</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIImageView(UIImage image) {
         super((SkipInit) null);
-        objc_initWithImage(this, initWithImage$, image);
+        setHandle(objc_initWithImage(this, initWithImage$, image));
     }
     
     private static final Selector initWithImage$highlightedImage$ = Selector.register("initWithImage:highlightedImage:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithImage(UIImageView __self__, Selector __cmd__, UIImage image, UIImage highlightedImage);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithImage(UIImageView __self__, Selector __cmd__, UIImage image, UIImage highlightedImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImageView/initWithImage:highlightedImage:">- (id)initWithImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage</a>
      * @since Available in iOS 3.0 and later.
      */
     public UIImageView(UIImage image, UIImage highlightedImage) {
         super((SkipInit) null);
-        objc_initWithImage(this, initWithImage$highlightedImage$, image, highlightedImage);
+        setHandle(objc_initWithImage(this, initWithImage$highlightedImage$, image, highlightedImage));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -289,6 +289,22 @@ public class /*<name>*/ UIImageView /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("animationDuration") public static double getAnimationDuration(UIImageView __self__, Selector __cmd__) { return __self__.getAnimationDuration(); }
+        @Callback @BindSelector("setAnimationDuration:") public static void setAnimationDuration(UIImageView __self__, Selector __cmd__, double animationDuration) { __self__.setAnimationDuration(animationDuration); }
+        @Callback @BindSelector("animationImages") public static NSArray getAnimationImages(UIImageView __self__, Selector __cmd__) { return __self__.getAnimationImages(); }
+        @Callback @BindSelector("setAnimationImages:") public static void setAnimationImages(UIImageView __self__, Selector __cmd__, NSArray animationImages) { __self__.setAnimationImages(animationImages); }
+        @Callback @BindSelector("animationRepeatCount") public static int getAnimationRepeatCount(UIImageView __self__, Selector __cmd__) { return __self__.getAnimationRepeatCount(); }
+        @Callback @BindSelector("setAnimationRepeatCount:") public static void setAnimationRepeatCount(UIImageView __self__, Selector __cmd__, int animationRepeatCount) { __self__.setAnimationRepeatCount(animationRepeatCount); }
+        @Callback @BindSelector("isHighlighted") public static boolean isHighlighted(UIImageView __self__, Selector __cmd__) { return __self__.isHighlighted(); }
+        @Callback @BindSelector("setHighlighted:") public static void setHighlighted(UIImageView __self__, Selector __cmd__, boolean highlighted) { __self__.setHighlighted(highlighted); }
+        @Callback @BindSelector("highlightedAnimationImages") public static NSArray getHighlightedAnimationImages(UIImageView __self__, Selector __cmd__) { return __self__.getHighlightedAnimationImages(); }
+        @Callback @BindSelector("setHighlightedAnimationImages:") public static void setHighlightedAnimationImages(UIImageView __self__, Selector __cmd__, NSArray highlightedAnimationImages) { __self__.setHighlightedAnimationImages(highlightedAnimationImages); }
+        @Callback @BindSelector("highlightedImage") public static UIImage getHighlightedImage(UIImageView __self__, Selector __cmd__) { return __self__.getHighlightedImage(); }
+        @Callback @BindSelector("setHighlightedImage:") public static void setHighlightedImage(UIImageView __self__, Selector __cmd__, UIImage highlightedImage) { __self__.setHighlightedImage(highlightedImage); }
+        @Callback @BindSelector("image") public static UIImage getImage(UIImageView __self__, Selector __cmd__) { return __self__.getImage(); }
+        @Callback @BindSelector("setImage:") public static void setImage(UIImageView __self__, Selector __cmd__, UIImage image) { __self__.setImage(image); }
+        @Callback @BindSelector("isUserInteractionEnabled") public static boolean isUserInteractionEnabled(UIImageView __self__, Selector __cmd__) { return __self__.isUserInteractionEnabled(); }
+        @Callback @BindSelector("setUserInteractionEnabled:") public static void setUserInteractionEnabled(UIImageView __self__, Selector __cmd__, boolean userInteractionEnabled) { __self__.setUserInteractionEnabled(userInteractionEnabled); }
         @Callback @BindSelector("isAnimating") public static boolean isAnimating(UIImageView __self__, Selector __cmd__) { return __self__.isAnimating(); }
         @Callback @BindSelector("startAnimating") public static void startAnimating(UIImageView __self__, Selector __cmd__) { __self__.startAnimating(); }
         @Callback @BindSelector("stopAnimating") public static void stopAnimating(UIImageView __self__, Selector __cmd__) { __self__.stopAnimating(); }

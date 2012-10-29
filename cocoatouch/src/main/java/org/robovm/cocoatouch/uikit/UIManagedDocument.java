@@ -190,6 +190,12 @@ public class /*<name>*/ UIManagedDocument /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("managedObjectContext") public static NSManagedObjectContext getManagedObjectContext(UIManagedDocument __self__, Selector __cmd__) { return __self__.getManagedObjectContext(); }
+        @Callback @BindSelector("managedObjectModel") public static NSManagedObjectModel getManagedObjectModel(UIManagedDocument __self__, Selector __cmd__) { return __self__.getManagedObjectModel(); }
+        @Callback @BindSelector("modelConfiguration") public static String getModelConfiguration(UIManagedDocument __self__, Selector __cmd__) { return __self__.getModelConfiguration(); }
+        @Callback @BindSelector("setModelConfiguration:") public static void setModelConfiguration(UIManagedDocument __self__, Selector __cmd__, String modelConfiguration) { __self__.setModelConfiguration(modelConfiguration); }
+        @Callback @BindSelector("persistentStoreOptions") public static NSDictionary getPersistentStoreOptions(UIManagedDocument __self__, Selector __cmd__) { return __self__.getPersistentStoreOptions(); }
+        @Callback @BindSelector("setPersistentStoreOptions:") public static void setPersistentStoreOptions(UIManagedDocument __self__, Selector __cmd__, NSDictionary persistentStoreOptions) { __self__.setPersistentStoreOptions(persistentStoreOptions); }
         @Callback @BindSelector("configurePersistentStoreCoordinatorForURL:ofType:modelConfiguration:storeOptions:error:") public static boolean configurePersistentStoreCoordinator(UIManagedDocument __self__, Selector __cmd__, NSURL storeURL, String fileType, String configuration, NSDictionary storeOptions, Ptr<NSError> error) { return __self__.configurePersistentStoreCoordinator(storeURL, fileType, configuration, storeOptions, error); }
         @Callback @BindSelector("additionalContentForURL:error:") public static NSObject getAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSURL absoluteURL, Ptr<NSError> error) { return __self__.getAdditionalContent(absoluteURL, error); }
         @Callback @BindSelector("persistentStoreTypeForFileType:") public static String getPersistentStoreType(UIManagedDocument __self__, Selector __cmd__, String fileType) { return __self__.getPersistentStoreType(fileType); }

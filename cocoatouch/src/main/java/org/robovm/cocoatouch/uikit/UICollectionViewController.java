@@ -52,14 +52,14 @@ public class /*<name>*/ UICollectionViewController /*</name>*/
     public UICollectionViewController() {}
     
     private static final Selector initWithCollectionViewLayout$ = Selector.register("initWithCollectionViewLayout:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithCollectionViewLayout(UICollectionViewController __self__, Selector __cmd__, UICollectionViewLayout layout);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithCollectionViewLayout(UICollectionViewController __self__, Selector __cmd__, UICollectionViewLayout layout);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewController_clas/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewController/initWithCollectionViewLayout:">- (id)initWithCollectionViewLayout:(UICollectionViewLayout *)layout</a>
      * @since Available in iOS 6.0 and later.
      */
     public UICollectionViewController(UICollectionViewLayout layout) {
         super((SkipInit) null);
-        objc_initWithCollectionViewLayout(this, initWithCollectionViewLayout$, layout);
+        setHandle(objc_initWithCollectionViewLayout(this, initWithCollectionViewLayout$, layout));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -112,6 +112,12 @@ public class /*<name>*/ UICollectionViewController /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("clearsSelectionOnViewWillAppear") public static boolean isClearsSelectionOnViewWillAppear(UICollectionViewController __self__, Selector __cmd__) { return __self__.isClearsSelectionOnViewWillAppear(); }
+        @Callback @BindSelector("setClearsSelectionOnViewWillAppear:") public static void setClearsSelectionOnViewWillAppear(UICollectionViewController __self__, Selector __cmd__, boolean clearsSelectionOnViewWillAppear) { __self__.setClearsSelectionOnViewWillAppear(clearsSelectionOnViewWillAppear); }
+        @Callback @BindSelector("collectionView") public static UICollectionView getCollectionView(UICollectionViewController __self__, Selector __cmd__) { return __self__.getCollectionView(); }
+        @Callback @BindSelector("setCollectionView:") public static void setCollectionView(UICollectionViewController __self__, Selector __cmd__, UICollectionView collectionView) { __self__.setCollectionView(collectionView); }
+    }
     /*</callbacks>*/
 
 }

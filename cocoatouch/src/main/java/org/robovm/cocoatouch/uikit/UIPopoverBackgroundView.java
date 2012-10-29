@@ -142,6 +142,12 @@ public class /*<name>*/ UIPopoverBackgroundView /*</name>*/
     }
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("arrowDirection") public static UIPopoverArrowDirection getArrowDirection(UIPopoverBackgroundView __self__, Selector __cmd__) { return __self__.getArrowDirection(); }
+        @Callback @BindSelector("setArrowDirection:") public static void setArrowDirection(UIPopoverBackgroundView __self__, Selector __cmd__, UIPopoverArrowDirection arrowDirection) { __self__.setArrowDirection(arrowDirection); }
+        @Callback @BindSelector("arrowOffset") public static float getArrowOffset(UIPopoverBackgroundView __self__, Selector __cmd__) { return __self__.getArrowOffset(); }
+        @Callback @BindSelector("setArrowOffset:") public static void setArrowOffset(UIPopoverBackgroundView __self__, Selector __cmd__, float arrowOffset) { __self__.setArrowOffset(arrowOffset); }
+    }
     /*</callbacks>*/
 
 }

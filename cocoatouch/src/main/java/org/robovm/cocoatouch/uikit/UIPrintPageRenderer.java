@@ -246,6 +246,14 @@ public class /*<name>*/ UIPrintPageRenderer /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("footerHeight") public static float getFooterHeight(UIPrintPageRenderer __self__, Selector __cmd__) { return __self__.getFooterHeight(); }
+        @Callback @BindSelector("setFooterHeight:") public static void setFooterHeight(UIPrintPageRenderer __self__, Selector __cmd__, float footerHeight) { __self__.setFooterHeight(footerHeight); }
+        @Callback @BindSelector("headerHeight") public static float getHeaderHeight(UIPrintPageRenderer __self__, Selector __cmd__) { return __self__.getHeaderHeight(); }
+        @Callback @BindSelector("setHeaderHeight:") public static void setHeaderHeight(UIPrintPageRenderer __self__, Selector __cmd__, float headerHeight) { __self__.setHeaderHeight(headerHeight); }
+        @Callback @BindSelector("paperRect") public static CGRect getPaperRect(UIPrintPageRenderer __self__, Selector __cmd__) { return __self__.getPaperRect(); }
+        @Callback @BindSelector("printFormatters") public static NSArray getPrintFormatters(UIPrintPageRenderer __self__, Selector __cmd__) { return __self__.getPrintFormatters(); }
+        @Callback @BindSelector("setPrintFormatters:") public static void setPrintFormatters(UIPrintPageRenderer __self__, Selector __cmd__, NSArray printFormatters) { __self__.setPrintFormatters(printFormatters); }
+        @Callback @BindSelector("printableRect") public static CGRect getPrintableRect(UIPrintPageRenderer __self__, Selector __cmd__) { return __self__.getPrintableRect(); }
         @Callback @BindSelector("addPrintFormatter:startingAtPageAtIndex:") public static void addPrintFormatter(UIPrintPageRenderer __self__, Selector __cmd__, UIPrintFormatter formatter, int pageIndex) { __self__.addPrintFormatter(formatter, pageIndex); }
         @Callback @BindSelector("drawContentForPageAtIndex:inRect:") public static void drawContent(UIPrintPageRenderer __self__, Selector __cmd__, int index, CGRect contentRect) { __self__.drawContent(index, contentRect); }
         @Callback @BindSelector("drawFooterForPageAtIndex:inRect:") public static void drawFooter(UIPrintPageRenderer __self__, Selector __cmd__, int index, CGRect footerRect) { __self__.drawFooter(index, footerRect); }

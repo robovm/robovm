@@ -268,6 +268,24 @@ public class /*<name>*/ UIDatePicker /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("calendar") public static NSCalendar getCalendar(UIDatePicker __self__, Selector __cmd__) { return __self__.getCalendar(); }
+        @Callback @BindSelector("setCalendar:") public static void setCalendar(UIDatePicker __self__, Selector __cmd__, NSCalendar calendar) { __self__.setCalendar(calendar); }
+        @Callback @BindSelector("countDownDuration") public static double getCountDownDuration(UIDatePicker __self__, Selector __cmd__) { return __self__.getCountDownDuration(); }
+        @Callback @BindSelector("setCountDownDuration:") public static void setCountDownDuration(UIDatePicker __self__, Selector __cmd__, double countDownDuration) { __self__.setCountDownDuration(countDownDuration); }
+        @Callback @BindSelector("date") public static NSDate getDate(UIDatePicker __self__, Selector __cmd__) { return __self__.getDate(); }
+        @Callback @BindSelector("setDate:") public static void setDate(UIDatePicker __self__, Selector __cmd__, NSDate date) { __self__.setDate(date); }
+        @Callback @BindSelector("datePickerMode") public static UIDatePickerMode getDatePickerMode(UIDatePicker __self__, Selector __cmd__) { return __self__.getDatePickerMode(); }
+        @Callback @BindSelector("setDatePickerMode:") public static void setDatePickerMode(UIDatePicker __self__, Selector __cmd__, UIDatePickerMode datePickerMode) { __self__.setDatePickerMode(datePickerMode); }
+        @Callback @BindSelector("locale") public static NSLocale getLocale(UIDatePicker __self__, Selector __cmd__) { return __self__.getLocale(); }
+        @Callback @BindSelector("setLocale:") public static void setLocale(UIDatePicker __self__, Selector __cmd__, NSLocale locale) { __self__.setLocale(locale); }
+        @Callback @BindSelector("maximumDate") public static NSDate getMaximumDate(UIDatePicker __self__, Selector __cmd__) { return __self__.getMaximumDate(); }
+        @Callback @BindSelector("setMaximumDate:") public static void setMaximumDate(UIDatePicker __self__, Selector __cmd__, NSDate maximumDate) { __self__.setMaximumDate(maximumDate); }
+        @Callback @BindSelector("minimumDate") public static NSDate getMinimumDate(UIDatePicker __self__, Selector __cmd__) { return __self__.getMinimumDate(); }
+        @Callback @BindSelector("setMinimumDate:") public static void setMinimumDate(UIDatePicker __self__, Selector __cmd__, NSDate minimumDate) { __self__.setMinimumDate(minimumDate); }
+        @Callback @BindSelector("minuteInterval") public static int getMinuteInterval(UIDatePicker __self__, Selector __cmd__) { return __self__.getMinuteInterval(); }
+        @Callback @BindSelector("setMinuteInterval:") public static void setMinuteInterval(UIDatePicker __self__, Selector __cmd__, int minuteInterval) { __self__.setMinuteInterval(minuteInterval); }
+        @Callback @BindSelector("timeZone") public static NSTimeZone getTimeZone(UIDatePicker __self__, Selector __cmd__) { return __self__.getTimeZone(); }
+        @Callback @BindSelector("setTimeZone:") public static void setTimeZone(UIDatePicker __self__, Selector __cmd__, NSTimeZone timeZone) { __self__.setTimeZone(timeZone); }
         @Callback @BindSelector("setDate:animated:") public static void setDate(UIDatePicker __self__, Selector __cmd__, NSDate date, boolean animated) { __self__.setDate(date, animated); }
     }
     /*</callbacks>*/

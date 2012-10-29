@@ -279,6 +279,22 @@ public class /*<name>*/ UITabBar /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("backgroundImage") public static UIImage getBackgroundImage(UITabBar __self__, Selector __cmd__) { return __self__.getBackgroundImage(); }
+        @Callback @BindSelector("setBackgroundImage:") public static void setBackgroundImage(UITabBar __self__, Selector __cmd__, UIImage backgroundImage) { __self__.setBackgroundImage(backgroundImage); }
+        @Callback @BindSelector("delegate") public static UITabBarDelegate getDelegate(UITabBar __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UITabBar __self__, Selector __cmd__, UITabBarDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("items") public static NSArray getItems(UITabBar __self__, Selector __cmd__) { return __self__.getItems(); }
+        @Callback @BindSelector("setItems:") public static void setItems(UITabBar __self__, Selector __cmd__, NSArray items) { __self__.setItems(items); }
+        @Callback @BindSelector("selectedImageTintColor") public static UIColor getSelectedImageTintColor(UITabBar __self__, Selector __cmd__) { return __self__.getSelectedImageTintColor(); }
+        @Callback @BindSelector("setSelectedImageTintColor:") public static void setSelectedImageTintColor(UITabBar __self__, Selector __cmd__, UIColor selectedImageTintColor) { __self__.setSelectedImageTintColor(selectedImageTintColor); }
+        @Callback @BindSelector("selectedItem") public static UITabBarItem getSelectedItem(UITabBar __self__, Selector __cmd__) { return __self__.getSelectedItem(); }
+        @Callback @BindSelector("setSelectedItem:") public static void setSelectedItem(UITabBar __self__, Selector __cmd__, UITabBarItem selectedItem) { __self__.setSelectedItem(selectedItem); }
+        @Callback @BindSelector("selectionIndicatorImage") public static UIImage getSelectionIndicatorImage(UITabBar __self__, Selector __cmd__) { return __self__.getSelectionIndicatorImage(); }
+        @Callback @BindSelector("setSelectionIndicatorImage:") public static void setSelectionIndicatorImage(UITabBar __self__, Selector __cmd__, UIImage selectionIndicatorImage) { __self__.setSelectionIndicatorImage(selectionIndicatorImage); }
+        @Callback @BindSelector("shadowImage") public static UIImage getShadowImage(UITabBar __self__, Selector __cmd__) { return __self__.getShadowImage(); }
+        @Callback @BindSelector("setShadowImage:") public static void setShadowImage(UITabBar __self__, Selector __cmd__, UIImage shadowImage) { __self__.setShadowImage(shadowImage); }
+        @Callback @BindSelector("tintColor") public static UIColor getTintColor(UITabBar __self__, Selector __cmd__) { return __self__.getTintColor(); }
+        @Callback @BindSelector("setTintColor:") public static void setTintColor(UITabBar __self__, Selector __cmd__, UIColor tintColor) { __self__.setTintColor(tintColor); }
         @Callback @BindSelector("beginCustomizingItems:") public static void beginCustomizing(UITabBar __self__, Selector __cmd__, NSArray items) { __self__.beginCustomizing(items); }
         @Callback @BindSelector("endCustomizingAnimated:") public static boolean endCustomizing(UITabBar __self__, Selector __cmd__, boolean animated) { return __self__.endCustomizing(animated); }
         @Callback @BindSelector("isCustomizing") public static boolean isCustomizing(UITabBar __self__, Selector __cmd__) { return __self__.isCustomizing(); }

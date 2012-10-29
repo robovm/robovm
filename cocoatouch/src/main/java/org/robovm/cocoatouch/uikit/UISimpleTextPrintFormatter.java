@@ -53,14 +53,14 @@ public class /*<name>*/ UISimpleTextPrintFormatter /*</name>*/
     public UISimpleTextPrintFormatter() {}
     
     private static final Selector initWithText$ = Selector.register("initWithText:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithText(UISimpleTextPrintFormatter __self__, Selector __cmd__, String text);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithText(UISimpleTextPrintFormatter __self__, Selector __cmd__, String text);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instm/UISimpleTextPrintFormatter/initWithText:">- (id)initWithText:(NSString *)text</a>
      * @since Available in iOS 4.2 and later.
      */
     public UISimpleTextPrintFormatter(String text) {
         super((SkipInit) null);
-        objc_initWithText(this, initWithText$, text);
+        setHandle(objc_initWithText(this, initWithText$, text));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -177,6 +177,18 @@ public class /*<name>*/ UISimpleTextPrintFormatter /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("color") public static UIColor getColor(UISimpleTextPrintFormatter __self__, Selector __cmd__) { return __self__.getColor(); }
+        @Callback @BindSelector("setColor:") public static void setColor(UISimpleTextPrintFormatter __self__, Selector __cmd__, UIColor color) { __self__.setColor(color); }
+        @Callback @BindSelector("font") public static UIFont getFont(UISimpleTextPrintFormatter __self__, Selector __cmd__) { return __self__.getFont(); }
+        @Callback @BindSelector("setFont:") public static void setFont(UISimpleTextPrintFormatter __self__, Selector __cmd__, UIFont font) { __self__.setFont(font); }
+        @Callback @BindSelector("lineBreakMode") public static UILineBreakMode getLineBreakMode(UISimpleTextPrintFormatter __self__, Selector __cmd__) { return __self__.getLineBreakMode(); }
+        @Callback @BindSelector("setLineBreakMode:") public static void setLineBreakMode(UISimpleTextPrintFormatter __self__, Selector __cmd__, UILineBreakMode lineBreakMode) { __self__.setLineBreakMode(lineBreakMode); }
+        @Callback @BindSelector("text") public static String getText(UISimpleTextPrintFormatter __self__, Selector __cmd__) { return __self__.getText(); }
+        @Callback @BindSelector("setText:") public static void setText(UISimpleTextPrintFormatter __self__, Selector __cmd__, String text) { __self__.setText(text); }
+        @Callback @BindSelector("textAlignment") public static UITextAlignment getTextAlignment(UISimpleTextPrintFormatter __self__, Selector __cmd__) { return __self__.getTextAlignment(); }
+        @Callback @BindSelector("setTextAlignment:") public static void setTextAlignment(UISimpleTextPrintFormatter __self__, Selector __cmd__, UITextAlignment textAlignment) { __self__.setTextAlignment(textAlignment); }
+    }
     /*</callbacks>*/
 
 }

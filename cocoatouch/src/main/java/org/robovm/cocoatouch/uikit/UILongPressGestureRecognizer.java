@@ -147,6 +147,16 @@ public class /*<name>*/ UILongPressGestureRecognizer /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("allowableMovement") public static float getAllowableMovement(UILongPressGestureRecognizer __self__, Selector __cmd__) { return __self__.getAllowableMovement(); }
+        @Callback @BindSelector("setAllowableMovement:") public static void setAllowableMovement(UILongPressGestureRecognizer __self__, Selector __cmd__, float allowableMovement) { __self__.setAllowableMovement(allowableMovement); }
+        @Callback @BindSelector("minimumPressDuration") public static double getMinimumPressDuration(UILongPressGestureRecognizer __self__, Selector __cmd__) { return __self__.getMinimumPressDuration(); }
+        @Callback @BindSelector("setMinimumPressDuration:") public static void setMinimumPressDuration(UILongPressGestureRecognizer __self__, Selector __cmd__, double minimumPressDuration) { __self__.setMinimumPressDuration(minimumPressDuration); }
+        @Callback @BindSelector("numberOfTapsRequired") public static int getNumberOfTapsRequired(UILongPressGestureRecognizer __self__, Selector __cmd__) { return __self__.getNumberOfTapsRequired(); }
+        @Callback @BindSelector("setNumberOfTapsRequired:") public static void setNumberOfTapsRequired(UILongPressGestureRecognizer __self__, Selector __cmd__, int numberOfTapsRequired) { __self__.setNumberOfTapsRequired(numberOfTapsRequired); }
+        @Callback @BindSelector("numberOfTouchesRequired") public static int getNumberOfTouchesRequired(UILongPressGestureRecognizer __self__, Selector __cmd__) { return __self__.getNumberOfTouchesRequired(); }
+        @Callback @BindSelector("setNumberOfTouchesRequired:") public static void setNumberOfTouchesRequired(UILongPressGestureRecognizer __self__, Selector __cmd__, int numberOfTouchesRequired) { __self__.setNumberOfTouchesRequired(numberOfTouchesRequired); }
+    }
     /*</callbacks>*/
 
 }

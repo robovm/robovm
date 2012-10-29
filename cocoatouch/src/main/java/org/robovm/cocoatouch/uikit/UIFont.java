@@ -258,6 +258,14 @@ public class /*<name>*/ UIFont /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("ascender") public static float getAscender(UIFont __self__, Selector __cmd__) { return __self__.getAscender(); }
+        @Callback @BindSelector("capHeight") public static float getCapHeight(UIFont __self__, Selector __cmd__) { return __self__.getCapHeight(); }
+        @Callback @BindSelector("descender") public static float getDescender(UIFont __self__, Selector __cmd__) { return __self__.getDescender(); }
+        @Callback @BindSelector("familyName") public static String getFamilyName(UIFont __self__, Selector __cmd__) { return __self__.getFamilyName(); }
+        @Callback @BindSelector("fontName") public static String getFontName(UIFont __self__, Selector __cmd__) { return __self__.getFontName(); }
+        @Callback @BindSelector("lineHeight") public static float getLineHeight(UIFont __self__, Selector __cmd__) { return __self__.getLineHeight(); }
+        @Callback @BindSelector("pointSize") public static float getPointSize(UIFont __self__, Selector __cmd__) { return __self__.getPointSize(); }
+        @Callback @BindSelector("xHeight") public static float getXHeight(UIFont __self__, Selector __cmd__) { return __self__.getXHeight(); }
         @Callback @BindSelector("fontWithSize:") public static UIFont getFontWithSize(UIFont __self__, Selector __cmd__, float fontSize) { return __self__.getFontWithSize(fontSize); }
     }
     /*</callbacks>*/

@@ -53,14 +53,14 @@ public class /*<name>*/ UIDocument /*</name>*/
     public UIDocument() {}
     
     private static final Selector initWithFileURL$ = Selector.register("initWithFileURL:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithFileURL(UIDocument __self__, Selector __cmd__, NSURL url);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithFileURL(UIDocument __self__, Selector __cmd__, NSURL url);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/initWithFileURL:">- (id)initWithFileURL:(NSURL *)url</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIDocument(NSURL url) {
         super((SkipInit) null);
-        objc_initWithFileURL(this, initWithFileURL$, url);
+        setHandle(objc_initWithFileURL(this, initWithFileURL$, url));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -410,6 +410,14 @@ public class /*<name>*/ UIDocument /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("documentState") public static UIDocumentState getDocumentState(UIDocument __self__, Selector __cmd__) { return __self__.getDocumentState(); }
+        @Callback @BindSelector("fileModificationDate") public static NSDate getFileModificationDate(UIDocument __self__, Selector __cmd__) { return __self__.getFileModificationDate(); }
+        @Callback @BindSelector("setFileModificationDate:") public static void setFileModificationDate(UIDocument __self__, Selector __cmd__, NSDate fileModificationDate) { __self__.setFileModificationDate(fileModificationDate); }
+        @Callback @BindSelector("fileType") public static String getFileType(UIDocument __self__, Selector __cmd__) { return __self__.getFileType(); }
+        @Callback @BindSelector("fileURL") public static NSURL getFileURL(UIDocument __self__, Selector __cmd__) { return __self__.getFileURL(); }
+        @Callback @BindSelector("localizedName") public static String getLocalizedName(UIDocument __self__, Selector __cmd__) { return __self__.getLocalizedName(); }
+        @Callback @BindSelector("undoManager") public static NSUndoManager getUndoManager(UIDocument __self__, Selector __cmd__) { return __self__.getUndoManager(); }
+        @Callback @BindSelector("setUndoManager:") public static void setUndoManager(UIDocument __self__, Selector __cmd__, NSUndoManager undoManager) { __self__.setUndoManager(undoManager); }
         @Callback @BindSelector("autosaveWithCompletionHandler:") public static void autoSave(UIDocument __self__, Selector __cmd__, VoidBooleanBlock completionHandler) { __self__.autoSave(completionHandler); }
         @Callback @BindSelector("changeCountTokenForSaveOperation:") public static NSObject changeCountTokenForSaveOperation(UIDocument __self__, Selector __cmd__, UIDocumentSaveOperation saveOperation) { return __self__.changeCountTokenForSaveOperation(saveOperation); }
         @Callback @BindSelector("closeWithCompletionHandler:") public static void close(UIDocument __self__, Selector __cmd__, VoidBooleanBlock completionHandler) { __self__.close(completionHandler); }

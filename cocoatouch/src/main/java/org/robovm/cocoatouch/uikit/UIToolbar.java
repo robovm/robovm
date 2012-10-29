@@ -202,6 +202,14 @@ public class /*<name>*/ UIToolbar /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("barStyle") public static UIBarStyle getBarStyle(UIToolbar __self__, Selector __cmd__) { return __self__.getBarStyle(); }
+        @Callback @BindSelector("setBarStyle:") public static void setBarStyle(UIToolbar __self__, Selector __cmd__, UIBarStyle barStyle) { __self__.setBarStyle(barStyle); }
+        @Callback @BindSelector("items") public static NSArray getItems(UIToolbar __self__, Selector __cmd__) { return __self__.getItems(); }
+        @Callback @BindSelector("setItems:") public static void setItems(UIToolbar __self__, Selector __cmd__, NSArray items) { __self__.setItems(items); }
+        @Callback @BindSelector("tintColor") public static UIColor getTintColor(UIToolbar __self__, Selector __cmd__) { return __self__.getTintColor(); }
+        @Callback @BindSelector("setTintColor:") public static void setTintColor(UIToolbar __self__, Selector __cmd__, UIColor tintColor) { __self__.setTintColor(tintColor); }
+        @Callback @BindSelector("isTranslucent") public static boolean isTranslucent(UIToolbar __self__, Selector __cmd__) { return __self__.isTranslucent(); }
+        @Callback @BindSelector("setTranslucent:") public static void setTranslucent(UIToolbar __self__, Selector __cmd__, boolean translucent) { __self__.setTranslucent(translucent); }
         @Callback @BindSelector("backgroundImageForToolbarPosition:barMetrics:") public static UIImage getBackgroundImage(UIToolbar __self__, Selector __cmd__, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics) { return __self__.getBackgroundImage(topOrBottom, barMetrics); }
         @Callback @BindSelector("shadowImageForToolbarPosition:") public static UIImage getShadowImage(UIToolbar __self__, Selector __cmd__, UIToolbarPosition topOrBottom) { return __self__.getShadowImage(topOrBottom); }
         @Callback @BindSelector("setBackgroundImage:forToolbarPosition:barMetrics:") public static void setBackgroundImage(UIToolbar __self__, Selector __cmd__, UIImage backgroundImage, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics) { __self__.setBackgroundImage(backgroundImage, topOrBottom, barMetrics); }

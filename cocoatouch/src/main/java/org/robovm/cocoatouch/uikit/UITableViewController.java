@@ -53,14 +53,14 @@ public class /*<name>*/ UITableViewController /*</name>*/
     public UITableViewController() {}
     
     private static final Selector initWithStyle$ = Selector.register("initWithStyle:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithStyle(UITableViewController __self__, Selector __cmd__, UITableViewStyle style);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithStyle(UITableViewController __self__, Selector __cmd__, UITableViewStyle style);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewController/initWithStyle:">- (id)initWithStyle:(UITableViewStyle)style</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITableViewController(UITableViewStyle style) {
         super((SkipInit) null);
-        objc_initWithStyle(this, initWithStyle$, style);
+        setHandle(objc_initWithStyle(this, initWithStyle$, style));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -135,6 +135,14 @@ public class /*<name>*/ UITableViewController /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("clearsSelectionOnViewWillAppear") public static boolean isClearsSelectionOnViewWillAppear(UITableViewController __self__, Selector __cmd__) { return __self__.isClearsSelectionOnViewWillAppear(); }
+        @Callback @BindSelector("setClearsSelectionOnViewWillAppear:") public static void setClearsSelectionOnViewWillAppear(UITableViewController __self__, Selector __cmd__, boolean clearsSelectionOnViewWillAppear) { __self__.setClearsSelectionOnViewWillAppear(clearsSelectionOnViewWillAppear); }
+        @Callback @BindSelector("refreshControl") public static UIRefreshControl getRefreshControl(UITableViewController __self__, Selector __cmd__) { return __self__.getRefreshControl(); }
+        @Callback @BindSelector("setRefreshControl:") public static void setRefreshControl(UITableViewController __self__, Selector __cmd__, UIRefreshControl refreshControl) { __self__.setRefreshControl(refreshControl); }
+        @Callback @BindSelector("tableView") public static UITableView getTableView(UITableViewController __self__, Selector __cmd__) { return __self__.getTableView(); }
+        @Callback @BindSelector("setTableView:") public static void setTableView(UITableViewController __self__, Selector __cmd__, UITableView tableView) { __self__.setTableView(tableView); }
+    }
     /*</callbacks>*/
 
 }

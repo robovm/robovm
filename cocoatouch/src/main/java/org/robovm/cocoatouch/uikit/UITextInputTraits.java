@@ -125,6 +125,24 @@ public interface /*<name>*/ UITextInputTraits /*</name>*/ /*<implements>*/ exten
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("autocapitalizationType") public static UITextAutocapitalizationType getAutocapitalizationType(UITextInputTraits __self__, Selector __cmd__) { return __self__.getAutocapitalizationType(); }
+        @Callback @BindSelector("setAutocapitalizationType:") public static void setAutocapitalizationType(UITextInputTraits __self__, Selector __cmd__, UITextAutocapitalizationType autocapitalizationType) { __self__.setAutocapitalizationType(autocapitalizationType); }
+        @Callback @BindSelector("autocorrectionType") public static UITextAutocorrectionType getAutocorrectionType(UITextInputTraits __self__, Selector __cmd__) { return __self__.getAutocorrectionType(); }
+        @Callback @BindSelector("setAutocorrectionType:") public static void setAutocorrectionType(UITextInputTraits __self__, Selector __cmd__, UITextAutocorrectionType autocorrectionType) { __self__.setAutocorrectionType(autocorrectionType); }
+        @Callback @BindSelector("enablesReturnKeyAutomatically") public static boolean isEnablesReturnKeyAutomatically(UITextInputTraits __self__, Selector __cmd__) { return __self__.isEnablesReturnKeyAutomatically(); }
+        @Callback @BindSelector("setEnablesReturnKeyAutomatically:") public static void setEnablesReturnKeyAutomatically(UITextInputTraits __self__, Selector __cmd__, boolean enablesReturnKeyAutomatically) { __self__.setEnablesReturnKeyAutomatically(enablesReturnKeyAutomatically); }
+        @Callback @BindSelector("keyboardAppearance") public static UIKeyboardAppearance getKeyboardAppearance(UITextInputTraits __self__, Selector __cmd__) { return __self__.getKeyboardAppearance(); }
+        @Callback @BindSelector("setKeyboardAppearance:") public static void setKeyboardAppearance(UITextInputTraits __self__, Selector __cmd__, UIKeyboardAppearance keyboardAppearance) { __self__.setKeyboardAppearance(keyboardAppearance); }
+        @Callback @BindSelector("keyboardType") public static UIKeyboardType getKeyboardType(UITextInputTraits __self__, Selector __cmd__) { return __self__.getKeyboardType(); }
+        @Callback @BindSelector("setKeyboardType:") public static void setKeyboardType(UITextInputTraits __self__, Selector __cmd__, UIKeyboardType keyboardType) { __self__.setKeyboardType(keyboardType); }
+        @Callback @BindSelector("returnKeyType") public static UIReturnKeyType getReturnKeyType(UITextInputTraits __self__, Selector __cmd__) { return __self__.getReturnKeyType(); }
+        @Callback @BindSelector("setReturnKeyType:") public static void setReturnKeyType(UITextInputTraits __self__, Selector __cmd__, UIReturnKeyType returnKeyType) { __self__.setReturnKeyType(returnKeyType); }
+        @Callback @BindSelector("isSecureTextEntry") public static boolean isSecureTextEntry(UITextInputTraits __self__, Selector __cmd__) { return __self__.isSecureTextEntry(); }
+        @Callback @BindSelector("setSecureTextEntry:") public static void setSecureTextEntry(UITextInputTraits __self__, Selector __cmd__, boolean secureTextEntry) { __self__.setSecureTextEntry(secureTextEntry); }
+        @Callback @BindSelector("spellCheckingType") public static UITextSpellCheckingType getSpellCheckingType(UITextInputTraits __self__, Selector __cmd__) { return __self__.getSpellCheckingType(); }
+        @Callback @BindSelector("setSpellCheckingType:") public static void setSpellCheckingType(UITextInputTraits __self__, Selector __cmd__, UITextSpellCheckingType spellCheckingType) { __self__.setSpellCheckingType(spellCheckingType); }
+    }
     /*</callbacks>*/
 
 }

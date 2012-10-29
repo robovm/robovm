@@ -220,6 +220,21 @@ public class /*<name>*/ NSParagraphStyle /*</name>*/
     }
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("alignment") public static NSTextAlignment getAlignment(NSParagraphStyle __self__, Selector __cmd__) { return __self__.getAlignment(); }
+        @Callback @BindSelector("baseWritingDirection") public static NSWritingDirection getBaseWritingDirection(NSParagraphStyle __self__, Selector __cmd__) { return __self__.getBaseWritingDirection(); }
+        @Callback @BindSelector("firstLineHeadIndent") public static float getFirstLineHeadIndent(NSParagraphStyle __self__, Selector __cmd__) { return __self__.getFirstLineHeadIndent(); }
+        @Callback @BindSelector("headIndent") public static float getHeadIndent(NSParagraphStyle __self__, Selector __cmd__) { return __self__.getHeadIndent(); }
+        @Callback @BindSelector("hyphenationFactor") public static float getHyphenationFactor(NSParagraphStyle __self__, Selector __cmd__) { return __self__.getHyphenationFactor(); }
+        @Callback @BindSelector("lineBreakMode") public static NSLineBreakMode getLineBreakMode(NSParagraphStyle __self__, Selector __cmd__) { return __self__.getLineBreakMode(); }
+        @Callback @BindSelector("lineHeightMultiple") public static float getLineHeightMultiple(NSParagraphStyle __self__, Selector __cmd__) { return __self__.getLineHeightMultiple(); }
+        @Callback @BindSelector("lineSpacing") public static float getLineSpacing(NSParagraphStyle __self__, Selector __cmd__) { return __self__.getLineSpacing(); }
+        @Callback @BindSelector("maximumLineHeight") public static float getMaximumLineHeight(NSParagraphStyle __self__, Selector __cmd__) { return __self__.getMaximumLineHeight(); }
+        @Callback @BindSelector("minimumLineHeight") public static float getMinimumLineHeight(NSParagraphStyle __self__, Selector __cmd__) { return __self__.getMinimumLineHeight(); }
+        @Callback @BindSelector("paragraphSpacing") public static float getParagraphSpacing(NSParagraphStyle __self__, Selector __cmd__) { return __self__.getParagraphSpacing(); }
+        @Callback @BindSelector("paragraphSpacingBefore") public static float getParagraphSpacingBefore(NSParagraphStyle __self__, Selector __cmd__) { return __self__.getParagraphSpacingBefore(); }
+        @Callback @BindSelector("tailIndent") public static float getTailIndent(NSParagraphStyle __self__, Selector __cmd__) { return __self__.getTailIndent(); }
+    }
     /*</callbacks>*/
 
 }

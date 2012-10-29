@@ -209,6 +209,20 @@ public class /*<name>*/ NSLayoutConstraint /*</name>*/
     }
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("constant") public static float getConstant(NSLayoutConstraint __self__, Selector __cmd__) { return __self__.getConstant(); }
+        @Callback @BindSelector("setConstant:") public static void setConstant(NSLayoutConstraint __self__, Selector __cmd__, float constant) { __self__.setConstant(constant); }
+        @Callback @BindSelector("firstAttribute") public static NSLayoutAttribute getFirstAttribute(NSLayoutConstraint __self__, Selector __cmd__) { return __self__.getFirstAttribute(); }
+        @Callback @BindSelector("firstItem") public static NSObject getFirstItem(NSLayoutConstraint __self__, Selector __cmd__) { return __self__.getFirstItem(); }
+        @Callback @BindSelector("multiplier") public static float getMultiplier(NSLayoutConstraint __self__, Selector __cmd__) { return __self__.getMultiplier(); }
+        @Callback @BindSelector("priority") public static UILayoutPriority getPriority(NSLayoutConstraint __self__, Selector __cmd__) { return __self__.getPriority(); }
+        @Callback @BindSelector("setPriority:") public static void setPriority(NSLayoutConstraint __self__, Selector __cmd__, UILayoutPriority priority) { __self__.setPriority(priority); }
+        @Callback @BindSelector("relation") public static NSLayoutRelation getRelation(NSLayoutConstraint __self__, Selector __cmd__) { return __self__.getRelation(); }
+        @Callback @BindSelector("secondAttribute") public static NSLayoutAttribute getSecondAttribute(NSLayoutConstraint __self__, Selector __cmd__) { return __self__.getSecondAttribute(); }
+        @Callback @BindSelector("secondItem") public static NSObject getSecondItem(NSLayoutConstraint __self__, Selector __cmd__) { return __self__.getSecondItem(); }
+        @Callback @BindSelector("shouldBeArchived") public static boolean isShouldBeArchived(NSLayoutConstraint __self__, Selector __cmd__) { return __self__.isShouldBeArchived(); }
+        @Callback @BindSelector("setShouldBeArchived:") public static void setShouldBeArchived(NSLayoutConstraint __self__, Selector __cmd__, boolean shouldBeArchived) { __self__.setShouldBeArchived(shouldBeArchived); }
+    }
     /*</callbacks>*/
 
 }

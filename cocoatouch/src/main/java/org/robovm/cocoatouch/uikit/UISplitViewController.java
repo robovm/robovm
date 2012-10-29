@@ -125,6 +125,14 @@ public class /*<name>*/ UISplitViewController /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("delegate") public static UISplitViewControllerDelegate getDelegate(UISplitViewController __self__, Selector __cmd__) { return __self__.getDelegate(); }
+        @Callback @BindSelector("setDelegate:") public static void setDelegate(UISplitViewController __self__, Selector __cmd__, UISplitViewControllerDelegate delegate) { __self__.setDelegate(delegate); }
+        @Callback @BindSelector("presentsWithGesture") public static boolean isPresentsWithGesture(UISplitViewController __self__, Selector __cmd__) { return __self__.isPresentsWithGesture(); }
+        @Callback @BindSelector("setPresentsWithGesture:") public static void setPresentsWithGesture(UISplitViewController __self__, Selector __cmd__, boolean presentsWithGesture) { __self__.setPresentsWithGesture(presentsWithGesture); }
+        @Callback @BindSelector("viewControllers") public static NSArray getViewControllers(UISplitViewController __self__, Selector __cmd__) { return __self__.getViewControllers(); }
+        @Callback @BindSelector("setViewControllers:") public static void setViewControllers(UISplitViewController __self__, Selector __cmd__, NSArray viewControllers) { __self__.setViewControllers(viewControllers); }
+    }
     /*</callbacks>*/
 
 }

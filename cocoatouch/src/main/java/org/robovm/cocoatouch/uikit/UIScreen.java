@@ -244,6 +244,20 @@ public class /*<name>*/ UIScreen /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("applicationFrame") public static CGRect getApplicationFrame(UIScreen __self__, Selector __cmd__) { return __self__.getApplicationFrame(); }
+        @Callback @BindSelector("availableModes") public static NSArray getAvailableModes(UIScreen __self__, Selector __cmd__) { return __self__.getAvailableModes(); }
+        @Callback @BindSelector("bounds") public static CGRect getBounds(UIScreen __self__, Selector __cmd__) { return __self__.getBounds(); }
+        @Callback @BindSelector("brightness") public static float getBrightness(UIScreen __self__, Selector __cmd__) { return __self__.getBrightness(); }
+        @Callback @BindSelector("setBrightness:") public static void setBrightness(UIScreen __self__, Selector __cmd__, float brightness) { __self__.setBrightness(brightness); }
+        @Callback @BindSelector("currentMode") public static UIScreenMode getCurrentMode(UIScreen __self__, Selector __cmd__) { return __self__.getCurrentMode(); }
+        @Callback @BindSelector("setCurrentMode:") public static void setCurrentMode(UIScreen __self__, Selector __cmd__, UIScreenMode currentMode) { __self__.setCurrentMode(currentMode); }
+        @Callback @BindSelector("mirroredScreen") public static UIScreen getMirroredScreen(UIScreen __self__, Selector __cmd__) { return __self__.getMirroredScreen(); }
+        @Callback @BindSelector("overscanCompensation") public static UIScreenOverscanCompensation getOverscanCompensation(UIScreen __self__, Selector __cmd__) { return __self__.getOverscanCompensation(); }
+        @Callback @BindSelector("setOverscanCompensation:") public static void setOverscanCompensation(UIScreen __self__, Selector __cmd__, UIScreenOverscanCompensation overscanCompensation) { __self__.setOverscanCompensation(overscanCompensation); }
+        @Callback @BindSelector("preferredMode") public static UIScreenMode getPreferredMode(UIScreen __self__, Selector __cmd__) { return __self__.getPreferredMode(); }
+        @Callback @BindSelector("scale") public static float getScale(UIScreen __self__, Selector __cmd__) { return __self__.getScale(); }
+        @Callback @BindSelector("wantsSoftwareDimming") public static boolean isWantsSoftwareDimming(UIScreen __self__, Selector __cmd__) { return __self__.isWantsSoftwareDimming(); }
+        @Callback @BindSelector("setWantsSoftwareDimming:") public static void setWantsSoftwareDimming(UIScreen __self__, Selector __cmd__, boolean wantsSoftwareDimming) { __self__.setWantsSoftwareDimming(wantsSoftwareDimming); }
         @Callback @BindSelector("displayLinkWithTarget:selector:") public static CADisplayLink createDisplayLink(UIScreen __self__, Selector __cmd__, NSObject target, Selector sel) { return __self__.createDisplayLink(target, sel); }
     }
     /*</callbacks>*/

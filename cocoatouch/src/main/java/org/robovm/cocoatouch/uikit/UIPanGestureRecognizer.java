@@ -136,6 +136,10 @@ public class /*<name>*/ UIPanGestureRecognizer /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("maximumNumberOfTouches") public static int getMaximumNumberOfTouches(UIPanGestureRecognizer __self__, Selector __cmd__) { return __self__.getMaximumNumberOfTouches(); }
+        @Callback @BindSelector("setMaximumNumberOfTouches:") public static void setMaximumNumberOfTouches(UIPanGestureRecognizer __self__, Selector __cmd__, int maximumNumberOfTouches) { __self__.setMaximumNumberOfTouches(maximumNumberOfTouches); }
+        @Callback @BindSelector("minimumNumberOfTouches") public static int getMinimumNumberOfTouches(UIPanGestureRecognizer __self__, Selector __cmd__) { return __self__.getMinimumNumberOfTouches(); }
+        @Callback @BindSelector("setMinimumNumberOfTouches:") public static void setMinimumNumberOfTouches(UIPanGestureRecognizer __self__, Selector __cmd__, int minimumNumberOfTouches) { __self__.setMinimumNumberOfTouches(minimumNumberOfTouches); }
         @Callback @BindSelector("translationInView:") public static CGPoint getTranslation(UIPanGestureRecognizer __self__, Selector __cmd__, UIView view) { return __self__.getTranslation(view); }
         @Callback @BindSelector("velocityInView:") public static CGPoint getVelocity(UIPanGestureRecognizer __self__, Selector __cmd__, UIView view) { return __self__.getVelocity(view); }
         @Callback @BindSelector("setTranslation:inView:") public static void setTranslation(UIPanGestureRecognizer __self__, Selector __cmd__, CGPoint translation, UIView view) { __self__.setTranslation(translation, view); }

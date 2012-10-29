@@ -124,6 +124,14 @@ public class /*<name>*/ NSShadow /*</name>*/
     
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("shadowBlurRadius") public static float getShadowBlurRadius(NSShadow __self__, Selector __cmd__) { return __self__.getShadowBlurRadius(); }
+        @Callback @BindSelector("setShadowBlurRadius:") public static void setShadowBlurRadius(NSShadow __self__, Selector __cmd__, float shadowBlurRadius) { __self__.setShadowBlurRadius(shadowBlurRadius); }
+        @Callback @BindSelector("shadowColor") public static NSObject getShadowColor(NSShadow __self__, Selector __cmd__) { return __self__.getShadowColor(); }
+        @Callback @BindSelector("setShadowColor:") public static void setShadowColor(NSShadow __self__, Selector __cmd__, NSObject shadowColor) { __self__.setShadowColor(shadowColor); }
+        @Callback @BindSelector("shadowOffset") public static CGSize getShadowOffset(NSShadow __self__, Selector __cmd__) { return __self__.getShadowOffset(); }
+        @Callback @BindSelector("setShadowOffset:") public static void setShadowOffset(NSShadow __self__, Selector __cmd__, CGSize shadowOffset) { __self__.setShadowOffset(shadowOffset); }
+    }
     /*</callbacks>*/
 
 }

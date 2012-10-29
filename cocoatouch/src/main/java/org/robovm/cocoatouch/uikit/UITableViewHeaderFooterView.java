@@ -52,14 +52,14 @@ public class /*<name>*/ UITableViewHeaderFooterView /*</name>*/
     public UITableViewHeaderFooterView() {}
     
     private static final Selector initWithReuseIdentifier$ = Selector.register("initWithReuseIdentifier:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_initWithReuseIdentifier(UITableViewHeaderFooterView __self__, Selector __cmd__, String reuseIdentifier);
+    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithReuseIdentifier(UITableViewHeaderFooterView __self__, Selector __cmd__, String reuseIdentifier);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewHeaderFooterView/initWithReuseIdentifier:">- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier</a>
      * @since Available in iOS 6.0 and later.
      */
     public UITableViewHeaderFooterView(String reuseIdentifier) {
         super((SkipInit) null);
-        objc_initWithReuseIdentifier(this, initWithReuseIdentifier$, reuseIdentifier);
+        setHandle(objc_initWithReuseIdentifier(this, initWithReuseIdentifier$, reuseIdentifier));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -167,6 +167,14 @@ public class /*<name>*/ UITableViewHeaderFooterView /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("backgroundView") public static UIView getBackgroundView(UITableViewHeaderFooterView __self__, Selector __cmd__) { return __self__.getBackgroundView(); }
+        @Callback @BindSelector("setBackgroundView:") public static void setBackgroundView(UITableViewHeaderFooterView __self__, Selector __cmd__, UIView backgroundView) { __self__.setBackgroundView(backgroundView); }
+        @Callback @BindSelector("contentView") public static UIView getContentView(UITableViewHeaderFooterView __self__, Selector __cmd__) { return __self__.getContentView(); }
+        @Callback @BindSelector("detailTextLabel") public static UILabel getDetailTextLabel(UITableViewHeaderFooterView __self__, Selector __cmd__) { return __self__.getDetailTextLabel(); }
+        @Callback @BindSelector("reuseIdentifier") public static String getReuseIdentifier(UITableViewHeaderFooterView __self__, Selector __cmd__) { return __self__.getReuseIdentifier(); }
+        @Callback @BindSelector("textLabel") public static UILabel getTextLabel(UITableViewHeaderFooterView __self__, Selector __cmd__) { return __self__.getTextLabel(); }
+        @Callback @BindSelector("tintColor") public static UIColor getTintColor(UITableViewHeaderFooterView __self__, Selector __cmd__) { return __self__.getTintColor(); }
+        @Callback @BindSelector("setTintColor:") public static void setTintColor(UITableViewHeaderFooterView __self__, Selector __cmd__, UIColor tintColor) { __self__.setTintColor(tintColor); }
         @Callback @BindSelector("prepareForReuse") public static void prepareForReuse(UITableViewHeaderFooterView __self__, Selector __cmd__) { __self__.prepareForReuse(); }
     }
     /*</callbacks>*/

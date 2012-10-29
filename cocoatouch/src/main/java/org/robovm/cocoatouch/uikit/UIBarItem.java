@@ -235,6 +235,20 @@ public class /*<name>*/ UIBarItem /*</name>*/
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
+        @Callback @BindSelector("isEnabled") public static boolean isEnabled(UIBarItem __self__, Selector __cmd__) { return __self__.isEnabled(); }
+        @Callback @BindSelector("setEnabled:") public static void setEnabled(UIBarItem __self__, Selector __cmd__, boolean enabled) { __self__.setEnabled(enabled); }
+        @Callback @BindSelector("image") public static UIImage getImage(UIBarItem __self__, Selector __cmd__) { return __self__.getImage(); }
+        @Callback @BindSelector("setImage:") public static void setImage(UIBarItem __self__, Selector __cmd__, UIImage image) { __self__.setImage(image); }
+        @Callback @BindSelector("imageInsets") public static UIEdgeInsets getImageInsets(UIBarItem __self__, Selector __cmd__) { return __self__.getImageInsets(); }
+        @Callback @BindSelector("setImageInsets:") public static void setImageInsets(UIBarItem __self__, Selector __cmd__, UIEdgeInsets imageInsets) { __self__.setImageInsets(imageInsets); }
+        @Callback @BindSelector("landscapeImagePhone") public static UIImage getLandscapeImagePhone(UIBarItem __self__, Selector __cmd__) { return __self__.getLandscapeImagePhone(); }
+        @Callback @BindSelector("setLandscapeImagePhone:") public static void setLandscapeImagePhone(UIBarItem __self__, Selector __cmd__, UIImage landscapeImagePhone) { __self__.setLandscapeImagePhone(landscapeImagePhone); }
+        @Callback @BindSelector("landscapeImagePhoneInsets") public static UIEdgeInsets getLandscapeImagePhoneInsets(UIBarItem __self__, Selector __cmd__) { return __self__.getLandscapeImagePhoneInsets(); }
+        @Callback @BindSelector("setLandscapeImagePhoneInsets:") public static void setLandscapeImagePhoneInsets(UIBarItem __self__, Selector __cmd__, UIEdgeInsets landscapeImagePhoneInsets) { __self__.setLandscapeImagePhoneInsets(landscapeImagePhoneInsets); }
+        @Callback @BindSelector("tag") public static int getTag(UIBarItem __self__, Selector __cmd__) { return __self__.getTag(); }
+        @Callback @BindSelector("setTag:") public static void setTag(UIBarItem __self__, Selector __cmd__, int tag) { __self__.setTag(tag); }
+        @Callback @BindSelector("title") public static String getTitle(UIBarItem __self__, Selector __cmd__) { return __self__.getTitle(); }
+        @Callback @BindSelector("setTitle:") public static void setTitle(UIBarItem __self__, Selector __cmd__, String title) { __self__.setTitle(title); }
         @Callback @BindSelector("titleTextAttributesForState:") public static NSDictionary getTitleTextAttributes(UIBarItem __self__, Selector __cmd__, UIControlState state) { return __self__.getTitleTextAttributes(state); }
         @Callback @BindSelector("setTitleTextAttributes:forState:") public static void setTitleTextAttributes(UIBarItem __self__, Selector __cmd__, NSDictionary attributes, UIControlState state) { __self__.setTitleTextAttributes(attributes, state); }
     }

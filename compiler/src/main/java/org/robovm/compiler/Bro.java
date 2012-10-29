@@ -169,7 +169,7 @@ public abstract class Bro {
                 annotation = getMarshalerAnnotation(type);                
                 if (annotation == null && isEnum(type)) {
                     // For enums we have a fallback
-                    return "org/robovm/rt/bro/EnumMarshaler";
+                    return "org/robovm/rt/bro/EnumMarshalers$AsIntMarshaler";
                 }
             }
         }
@@ -204,7 +204,7 @@ public abstract class Bro {
                 annotation = getMarshalerAnnotation(paramType);
                 if (annotation == null && isEnum(paramType)) {
                     // For enums we have a fallback
-                    return "org/robovm/rt/bro/EnumMarshaler";
+                    return "org/robovm/rt/bro/EnumMarshalers$AsIntMarshaler";
                 }
             }
         }

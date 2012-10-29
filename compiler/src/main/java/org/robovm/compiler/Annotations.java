@@ -140,7 +140,17 @@ public class Annotations {
         if (clazz.isInterface()) {
             return getMarshalerAnnotationOnInterface(clazz, type);
         } else {
-            return getMarshalerAnnotationOnClass(clazz, type);
+            AnnotationTag tag = getMarshalerAnnotationOnClass(clazz, type);
+            if (tag == null) {
+                while (clazz.hasSuperclass()) {
+                    tag = getMarshalerAnnotationOnInterface(clazz, type);
+                    if (tag != null) {
+                        break;
+                    }
+                    clazz = clazz.getSuperclass();
+                }
+            }
+            return tag;
         }
     }
 
@@ -149,13 +159,12 @@ public class Annotations {
             return null;
         }
         AnnotationTag tag = getMarshalerAnnotation0(clazz, type);
-        if (tag != null) {
-            return tag;
+        if (tag == null) {
+            if (clazz.hasSuperclass()) {
+                tag = getMarshalerAnnotationOnClass(clazz.getSuperclass(), type);
+            }
         }
-        if (clazz.hasSuperclass()) {
-            return getMarshalerAnnotationOnClass(clazz.getSuperclass(), type);
-        }
-        return null;
+        return tag;
     }
 
     private static AnnotationTag getMarshalerAnnotationOnInterface(SootClass rootClazz, soot.Type type) {
@@ -165,9 +174,11 @@ public class Annotations {
         while (!q.isEmpty()) {
             SootClass clazz = q.removeFirst();
             if (!clazz.isPhantom()) {
-                AnnotationTag tag = getMarshalerAnnotation0(clazz, type);
-                if (tag != null) {
-                    return tag;
+                if (clazz.isInterface()) {
+                    AnnotationTag tag = getMarshalerAnnotation0(clazz, type);
+                    if (tag != null) {
+                        return tag;
+                    }
                 }
                 q.addAll(clazz.getInterfaces());
             }            

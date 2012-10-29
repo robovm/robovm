@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  */
 /*<library>*/@Library("Foundation")/*</library>*/
 @Marshalers({
-    @Marshaler(type = String.class, value = NSString.StringMarshaler.class)    
+    @Marshaler(type = String.class, value = NSString.AsStringMarshaler.class)    
 })
 public class /*<name>*/ NSObject /*</name>*/ 
     extends /*<extends>*/ ObjCObject /*</extends>*/ 

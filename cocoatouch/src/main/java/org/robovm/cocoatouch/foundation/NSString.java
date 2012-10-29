@@ -61,7 +61,7 @@ public class /*<name>*/ NSString /*</name>*/
     /*<callbacks>*/
     /*</callbacks>*/
 
-    public static class StringMarshaler {
+    public static class AsStringMarshaler {
         @SuppressWarnings("rawtypes")
         public static Object toObject(Class cls, long handle, boolean copy) {
             NSString o = ObjCObject.toObjCObject(NSString.class, handle);

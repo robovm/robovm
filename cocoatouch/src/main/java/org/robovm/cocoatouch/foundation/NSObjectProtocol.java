@@ -22,7 +22,7 @@ import org.robovm.rt.bro.annotation.Marshaler;
  * Root interface for all protocol interfaces in the cocoatouch bindings. This
  * interface adds a {@link Marshaler} for {@link String}s to/from {@link NSString}.
  */
-@Marshaler(type = String.class, value = NSString.StringMarshaler.class)
+@Marshaler(type = String.class, value = NSString.AsStringMarshaler.class)
 public interface NSObjectProtocol extends ObjCProtocol {
 
 }

@@ -124,7 +124,6 @@ public final class ObjCClass extends ObjCObject {
         if (type == null) {
             throw new NullPointerException("type");
         }
-        System.out.println("getByType: " + type.getName());
         synchronized (typeToClass) {
             ObjCClass c = typeToClass.get(type);
             if (c == null) {

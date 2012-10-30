@@ -19,12 +19,14 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.robovm.objc.annotation.BindSelector;
 import org.robovm.objc.annotation.NativeClass;
+import org.robovm.objc.annotation.NotImplemented;
 import org.robovm.objc.annotation.TypeEncoding;
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.annotation.Callback;
@@ -203,13 +205,37 @@ public final class ObjCClass extends ObjCObject {
     }
     
     private static Map<String, Method> getCallbacks(Class<?> type) {
+        Map<String, Method> notImplemented = new HashMap<String, Method>();
+        findNotImplemented(type, notImplemented);
         Map<String, Method> callbacks = new HashMap<String, Method>();
         Class<?> c = type;
         while (c != null && c != Object.class) {
             findCallbacks(c, callbacks);
             c = c.getSuperclass();
         }
+        // Remove callbacks which have a corresponding @NotImplemented method
+        callbacks.keySet().removeAll(notImplemented.keySet());
         return callbacks;
+    }
+
+    private static void findNotImplemented(Class<?> type, Map<String, Method> result) {
+        if (type.getSuperclass() != null) {
+            findNotImplemented(type.getSuperclass(), result);
+        }
+        for (Method m : type.getDeclaredMethods()) {
+            NotImplemented ni = m.getAnnotation(NotImplemented.class);
+            if (ni != null) {
+                result.put(ni.value(), m);
+            } else {
+                for (Iterator<Entry<String, Method>> it = result.entrySet().iterator(); it.hasNext();) {
+                    Entry<String, Method> entry = it.next();
+                    Method m2 = entry.getValue();
+                    if (m2.getName().equals(m.getName()) && Arrays.equals(m2.getParameterTypes(), m.getParameterTypes())) {
+                        it.remove();
+                    }
+                }
+            }
+        }
     }
     
     private static void findCallbacks(Class<?> type, Map<String, Method> result) {

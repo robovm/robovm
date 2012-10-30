@@ -5,8 +5,6 @@ require 'nokogiri'
 require 'open-uri'
 require 'yaml'
 require 'fileutils'
-require 'set'
-
 IGNORED_PROTOCOLS = ['NSObject', 'NSCoding', 'NSCopying', 'NSMutableCopying', 'NSFastEnumeration']
 
 $script_name = File.basename($0, File.extname($0))
@@ -87,13 +85,16 @@ class ObjCType
     @java_type =~ /void|byte|boolean|char|short|int|long|float|double/
   end
   def by_val?
-    @clazz.structs.include?(@java_type) && @type == @java_type
+    @clazz.structs.has_key?(@java_type) && @type == @java_type
   end
   def to_java
     @java_type
   end
-  def to_java_bro
+  def to_bro
     (by_val? ? '@ByVal ' : '') + @java_type
+  end
+  def to_bro_return_type
+    (by_val? ? '@StructRet ' : '') + @java_type
   end
 end
 
@@ -250,26 +251,82 @@ class ObjCMethod
     if @clazz.is_protocol
       java = "#{get_javadoc}\n#{sig};"
     else
+      msg_send_parameters = [@static ? 'ObjCClass __self__' : "#{@clazz.name} __self__", 'Selector __cmd__', @parameters.map {|p| "#{p[0].to_bro} #{p[1]}"}].flatten
+      msg_send_super_parameters = ['ObjCSuper __super__', 'Selector __cmd__', @parameters.map {|p| "#{p[0].to_bro} #{p[1]}"}].flatten
+      msg_send_stret_parameters = ["#{@return_type.to_bro_return_type} __ret__", msg_send_parameters].flatten
+      msg_send_super_stret_parameters = ["#{@return_type.to_bro_return_type} __ret__", msg_send_super_parameters].flatten
+      msg_send_parameters_s = msg_send_parameters.join(', ')
+      msg_send_super_parameters_s = msg_send_super_parameters.join(', ')
+      msg_send_stret_parameters_s = msg_send_stret_parameters.join(', ')
+      msg_send_super_stret_parameters_s = msg_send_super_stret_parameters.join(', ')
+
+      msg_send_ret_s = constructor? ? '@Pointer long' : @return_type.to_bro
+      msg_send_super_ret_s = @return_type.to_bro
+
       msg_send = "objc_#{@name}"
-      msg_send_parameters_s = [@static ? 'ObjCClass __self__' : "#{@clazz.name} __self__", 'Selector __cmd__', @parameters.map {|p| "#{p[0].to_java_bro} #{p[1]}"}].flatten.join(', ')
-      msg_send_super_parameters_s = ['ObjCSuper __super__', 'Selector __cmd__', @parameters.map {|p| "#{p[0].to_java_bro} #{p[1]}"}].flatten.join(', ')
-      msg_send_ret_s = constructor? ? '@Pointer long' : @return_type.to_java_bro
+      msg_send_proto = "@Bridge(symbol = \"objc_msgSend\") private native static #{msg_send_ret_s} #{msg_send}(#{msg_send_parameters_s});"
+      msg_send_super = "objc_#{@name}Super"
+      msg_send_super_proto = "@Bridge(symbol = \"objc_msgSendSuper\") private native static #{@return_type.to_bro} #{msg_send_super}(#{msg_send_super_parameters_s});"
+      msg_send_stret = "objc_#{@name}_stret"
+      msg_send_stret_proto = "@Bridge(symbol = \"objc_msgSend_stret\") private native static void #{msg_send_stret}(#{msg_send_stret_parameters_s});"
+      msg_send_super_stret = "objc_#{@name}Super_stret"
+      msg_send_super_stret_proto = "@Bridge(symbol = \"objc_msgSendSuper_stret\") private native static void #{msg_send_super_stret}(#{msg_send_super_stret_parameters_s});"
+
+      args = [@static ? 'objCClass' : 'this', selector_var, @parameters.map {|p| p[1]}].flatten
+      args_super = ['getSuper()', selector_var, @parameters.map {|p| p[1]}].flatten
+      args_stret = ['__ret__', args].flatten
+      args_super_stret = ['__ret__', args_super].flatten
+      args_s = args.join(', ')
+      args_super_s = args_super.join(', ')
+      args_stret_s = args_stret.join(', ')
+      args_super_stret_s = args_super_stret.join(', ')
+
       java = "#{java}\nprivate static final Selector #{selector_var} = Selector.register(\"#{@selector}\");"
-      java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static #{msg_send_ret_s} #{msg_send}(#{msg_send_parameters_s});"
-      args = [@static ? 'objCClass' : 'this', selector_var, @parameters.map {|p| p[1]}].flatten.join(', ')
-      args_super = ['getSuper()', selector_var, @parameters.map {|p| p[1]}].flatten.join(', ')
       body = ""
-      ret = !constructor? && @return_type.to_java != 'void' ? 'return ' : ''
-      if !@static && !constructor? && !(@visibility.include?('private') || @visibility.include?('final'))
-        # Call objc_msgSendSuper if this is a custom class
-        java = "#{java}\n@Bridge(symbol = \"objc_msgSendSuper\") private native static #{@return_type.to_java_bro} #{msg_send}Super(#{msg_send_super_parameters_s});"
-        body = "if (customClass) { #{ret}#{msg_send}Super(#{args_super}); } else { #{ret}#{msg_send}(#{args}); }"
-      elsif constructor?
-        body = "super((SkipInit) null);\nsetHandle(#{msg_send}(#{args}));"
+
+      if constructor?
+        java = "#{java}\n#{msg_send_proto}"
+        body = "super((SkipInit) null);\nsetHandle(#{msg_send}(#{args_s}));"
       else
-        body = "#{ret}#{msg_send}(#{args});"
+
+        ret = @return_type.to_java != 'void' ? 'return ' : ''
+        can_override = !@static && !(@visibility.include?('private') || @visibility.include?('final'))
+        if can_override
+          body_msg_send = "if (customClass) { #{ret}#{msg_send_super}(#{args_super_s}); } else { #{ret}#{msg_send}(#{args_s}); }"
+          body_msg_send_stret = "#{@return_type.to_java} __ret__ = new #{@return_type.to_java}(); if (customClass) { #{msg_send_super_stret}(#{args_super_stret_s}); } else { #{msg_send_stret}(#{args_stret_s}); } return __ret__;"
+        else
+          body_msg_send = "#{ret}#{msg_send}(#{args_s});"
+          body_msg_send_stret = "#{@return_type.to_java} __ret__ = new #{@return_type.to_java}(); #{msg_send_stret}(#{args_stret_s}); return __ret__;"
+        end
+
+        if @return_type.by_val?
+          if @clazz.structs[@return_type.to_java]['size'] <= 8
+            java = "#{java}\n#{msg_send_proto}"
+            java = "#{java}\n#{msg_send_stret_proto}"
+            if can_override
+              java = "#{java}\n#{msg_send_super_proto}"
+              java = "#{java}\n#{msg_send_super_stret_proto}"
+            end
+            body = "if (X86) { #{body_msg_send} } else { #{body_msg_send_stret} }"
+          else
+            java = "#{java}\n#{msg_send_stret_proto}"
+            if can_override
+              java = "#{java}\n#{msg_send_super_stret_proto}"
+            end
+            body = body_msg_send_stret
+          end
+        else
+          java = "#{java}\n#{msg_send_proto}"
+          if can_override
+            java = "#{java}\n#{msg_send_super_proto}"
+          end
+          body = body_msg_send
+        end
+
       end
+
       body = body.gsub(/\n/m, "\n    ")
+
       java = "#{java}\n#{get_javadoc}\n#{sig} {\n    #{body}\n}"
     end
     java
@@ -277,10 +334,10 @@ class ObjCMethod
   def callbacks
     if !@static && !constructor? && !(@visibility.include?('private') || @visibility.include?('final'))
       # This method can be overridden
-      parameters_s = ["#{@clazz.name} __self__", "Selector __cmd__", @parameters.map {|p| "#{p[0].to_java_bro} #{p[1]}"}].flatten.join(', ')
+      parameters_s = ["#{@clazz.name} __self__", "Selector __cmd__", @parameters.map {|p| "#{p[0].to_bro} #{p[1]}"}].flatten.join(', ')
       args = @parameters.map {|p| p[1]}.join(', ')
       ret = @return_type.to_java != 'void' ? 'return ' : ''
-      ["@Callback @BindSelector(\"#{@selector}\") public static #{@return_type.to_java_bro} #{@name}(#{parameters_s}) { #{ret}__self__.#{name}(#{args}); }"]
+      ["@Callback @BindSelector(\"#{@selector}\") public static #{@return_type.to_bro} #{@name}(#{parameters_s}) { #{ret}__self__.#{name}(#{args}); }"]
     else
       []
     end
@@ -350,23 +407,69 @@ class ObjCProperty
     if @clazz.is_protocol
       java = "#{get_javadoc}\n#{@type.to_java} #{getter}();"
     else
-      java = "#{java}\nprivate static final Selector #{selector_var} = Selector.register(\"#{@getter_selector}\");"
-      sig = "#{@visibility} #{@type.to_java} #{getter}()"
-      msg_send = "objc_#{getter}"
       msg_send_parameters_s = "#{@clazz.name} __self__, Selector __cmd__"
       msg_send_super_parameters_s = "ObjCSuper __super__, Selector __cmd__"
-      java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static #{@type.to_java_bro} #{msg_send}(#{msg_send_parameters_s});"
-      args = "this, #{selector_var}"
-      args_super = "getSuper(), #{selector_var}"
-      body = ""
-      if !(@visibility.include?('private') || @visibility.include?('final'))
-        # Call objc_msgSendSuper if this is a custom class
-        java = "#{java}\n@Bridge(symbol = \"objc_msgSendSuper\") private native static #{@type.to_java_bro} #{msg_send}Super(#{msg_send_super_parameters_s});"
-        body = "if (customClass) { return #{msg_send}Super(#{args_super}); } else { return #{msg_send}(#{args}); }"
+      msg_send_stret_parameters_s = "#{@type.to_bro_return_type} __ret__, #{@clazz.name} __self__, Selector __cmd__"
+      msg_send_super_stret_parameters_s = "#{@type.to_bro_return_type} __ret__, ObjCSuper __super__, Selector __cmd__"
+
+      msg_send = "objc_#{getter}"
+      msg_send_proto = "@Bridge(symbol = \"objc_msgSend\") private native static #{@type.to_bro} #{msg_send}(#{msg_send_parameters_s});"
+      msg_send_super = "objc_#{getter}Super"
+      msg_send_super_proto = "@Bridge(symbol = \"objc_msgSendSuper\") private native static #{@type.to_bro} #{msg_send_super}(#{msg_send_super_parameters_s});"
+      msg_send_stret = "objc_#{getter}_stret"
+      msg_send_stret_proto = "@Bridge(symbol = \"objc_msgSend_stret\") private native static void #{msg_send_stret}(#{msg_send_stret_parameters_s});"
+      msg_send_super_stret = "objc_#{getter}Super_stret"
+      msg_send_super_stret_proto = "@Bridge(symbol = \"objc_msgSendSuper_stret\") private native static void #{msg_send_super_stret}(#{msg_send_super_stret_parameters_s});"
+
+      args_s = "this, #{selector_var}"
+      args_super_s = "getSuper(), #{selector_var}"
+      args_stret_s = "__ret__, this, #{selector_var}"
+      args_super_stret_s = "__ret__, getSuper(), #{selector_var}"
+
+      can_override = !(@visibility.include?('private') || @visibility.include?('final'))
+      if can_override
+        body_msg_send = "if (customClass) { return #{msg_send_super}(#{args_super_s}); } else { return #{msg_send}(#{args_s}); }"
+        body_msg_send_stret = "#{@type.to_java} __ret__ = new #{@type.to_java}(); if (customClass) { #{msg_send_super_stret}(#{args_super_stret_s}); } else { #{msg_send_stret}(#{args_stret_s}); } return __ret__;"
       else
-        body = "return #{msg_send}(#{args});"
+        body_msg_send = "return #{msg_send}(#{args_s});"
+        body_msg_send_stret = "#{@type.to_java} __ret__ = new #{@type.to_java}(); #{msg_send_stret}(#{args_stret_s}); return __ret__;"
       end
+
+      java = "#{java}\nprivate static final Selector #{selector_var} = Selector.register(\"#{@getter_selector}\");"
+      body = ""
+      if @type.by_val?
+        if @clazz.structs[@type.to_java]['size'] <= 8
+          java = "#{java}\n#{msg_send_proto}"
+          java = "#{java}\n#{msg_send_stret_proto}"
+          if can_override
+            java = "#{java}\n#{msg_send_super_proto}"
+            java = "#{java}\n#{msg_send_super_stret_proto}"
+          end
+          body = "if (X86) { #{body_msg_send} } else { #{body_msg_send_stret} }"
+        else
+          java = "#{java}\n#{msg_send_stret_proto}"
+          if can_override
+            java = "#{java}\n#{msg_send_super_stret_proto}"
+          end
+          body = body_msg_send_stret
+        end
+      else
+        java = "#{java}\n#{msg_send_proto}"
+        if can_override
+          java = "#{java}\n#{msg_send_super_proto}"
+        end
+        body = body_msg_send
+      end
+
+#      if !(@visibility.include?('private') || @visibility.include?('final'))
+#        # Call objc_msgSendSuper if this is a custom class
+#        java = "#{java}\n@Bridge(symbol = \"objc_msgSendSuper\") private native static #{@type.to_bro} #{msg_send_super}(#{msg_send_super_parameters_s});"
+#        body = "if (customClass) { return #{msg_send}Super(#{args_super}); } else { return #{msg_send}(#{args}); }"
+#      else
+#        body = "return #{msg_send}(#{args});"
+#      end
       body = body.gsub(/\n/m, "\n    ")
+      sig = "#{@visibility} #{@type.to_java} #{getter}()"
       java = "#{java}\n#{get_javadoc}\n#{sig} {\n    #{body}\n}"
     end
     java
@@ -381,8 +484,8 @@ class ObjCProperty
       java = "#{java}\nprivate static final Selector #{selector_var} = Selector.register(\"#{@setter_selector}\");"
       sig = "#{@visibility} void #{setter}(#{@type.to_java} #{@name})"
       msg_send = "objc_#{setter}"
-      msg_send_parameters_s = "#{@clazz.name} __self__, Selector __cmd__, #{@type.to_java_bro} #{@name}"
-      msg_send_super_parameters_s = "ObjCSuper __super__, Selector __cmd__, #{@type.to_java_bro} #{@name}"
+      msg_send_parameters_s = "#{@clazz.name} __self__, Selector __cmd__, #{@type.to_bro} #{@name}"
+      msg_send_super_parameters_s = "ObjCSuper __super__, Selector __cmd__, #{@type.to_bro} #{@name}"
       java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static void #{msg_send}(#{msg_send_parameters_s});"
       args = "this, #{selector_var}, #{@name}"
       args_super = "getSuper(), #{selector_var}, #{@name}"
@@ -412,12 +515,12 @@ class ObjCProperty
     if !(@visibility.include?('private') || @visibility.include?('final'))
       # This property can be overridden
       getter = @type.decl == 'BOOL' ? "is#{@base_java_name}" : "get#{@base_java_name}"
-      get = "@Callback @BindSelector(\"#{@getter_selector}\") public static #{@type.to_java_bro} #{getter}(#{@clazz.name} __self__, Selector __cmd__) { return __self__.#{getter}(); }"
+      get = "@Callback @BindSelector(\"#{@getter_selector}\") public static #{@type.to_bro} #{getter}(#{@clazz.name} __self__, Selector __cmd__) { return __self__.#{getter}(); }"
       if read_only?
         [get]
       else
         setter = @attrs.has_key?('setter') ? @attrs['setter'] : "set#{@base_java_name}"
-        set = "@Callback @BindSelector(\"#{@setter_selector}\") public static void #{setter}(#{@clazz.name} __self__, Selector __cmd__, #{@type.to_java_bro} #{@name}) { __self__.#{setter}(#{@name}); }"
+        set = "@Callback @BindSelector(\"#{@setter_selector}\") public static void #{setter}(#{@clazz.name} __self__, Selector __cmd__, #{@type.to_bro} #{@name}) { __self__.#{setter}(#{@name}); }"
         [get, set]
       end
     else
@@ -640,6 +743,7 @@ ARGV[1..-1].each do |yaml_file|
   imports << "org.robovm.objc.*"
   imports << "org.robovm.objc.annotation.*"
   imports << "org.robovm.objc.block.*"
+  imports << "org.robovm.rt.bro.*"
   imports << "org.robovm.rt.bro.annotation.*"
   imports << "org.robovm.rt.bro.ptr.*"
   imports.uniq!
@@ -648,7 +752,7 @@ ARGV[1..-1].each do |yaml_file|
   enums_conf = conf['enums'] || {}
 
   typedefs = (global['typedefs'] || {}).merge(conf['typedefs'] || {})
-  structs = Set.new(global['structs'] || []).merge(conf['structs'] || [])
+  structs = (global['structs'] || {}).merge(conf['structs'] || {})
 
   conf['classes'].keys.sort.each do |class_name|
     puts "#{class_name}..."

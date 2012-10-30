@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIButton /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIButton /*</name>*/.class);
 
     public UIButton(CGRect aRect) {
@@ -114,14 +116,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector contentEdgeInsets = Selector.register("contentEdgeInsets");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal UIEdgeInsets objc_getContentEdgeInsets(UIButton __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIEdgeInsets objc_getContentEdgeInsetsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getContentEdgeInsets_stret(@StructRet UIEdgeInsets __ret__, UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getContentEdgeInsetsSuper_stret(@StructRet UIEdgeInsets __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/contentEdgeInsets">@property(nonatomic) UIEdgeInsets contentEdgeInsets</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIEdgeInsets getContentEdgeInsets() {
-        if (customClass) { return objc_getContentEdgeInsetsSuper(getSuper(), contentEdgeInsets); } else { return objc_getContentEdgeInsets(this, contentEdgeInsets); }
+        UIEdgeInsets __ret__ = new UIEdgeInsets(); if (customClass) { objc_getContentEdgeInsetsSuper_stret(__ret__, getSuper(), contentEdgeInsets); } else { objc_getContentEdgeInsets_stret(__ret__, this, contentEdgeInsets); } return __ret__;
     }
     
     private static final Selector setContentEdgeInsets$ = Selector.register("setContentEdgeInsets:");
@@ -202,14 +204,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector imageEdgeInsets = Selector.register("imageEdgeInsets");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal UIEdgeInsets objc_getImageEdgeInsets(UIButton __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIEdgeInsets objc_getImageEdgeInsetsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getImageEdgeInsets_stret(@StructRet UIEdgeInsets __ret__, UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getImageEdgeInsetsSuper_stret(@StructRet UIEdgeInsets __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/imageEdgeInsets">@property(nonatomic) UIEdgeInsets imageEdgeInsets</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIEdgeInsets getImageEdgeInsets() {
-        if (customClass) { return objc_getImageEdgeInsetsSuper(getSuper(), imageEdgeInsets); } else { return objc_getImageEdgeInsets(this, imageEdgeInsets); }
+        UIEdgeInsets __ret__ = new UIEdgeInsets(); if (customClass) { objc_getImageEdgeInsetsSuper_stret(__ret__, getSuper(), imageEdgeInsets); } else { objc_getImageEdgeInsets_stret(__ret__, this, imageEdgeInsets); } return __ret__;
     }
     
     private static final Selector setImageEdgeInsets$ = Selector.register("setImageEdgeInsets:");
@@ -301,14 +303,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector titleEdgeInsets = Selector.register("titleEdgeInsets");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal UIEdgeInsets objc_getTitleEdgeInsets(UIButton __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIEdgeInsets objc_getTitleEdgeInsetsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getTitleEdgeInsets_stret(@StructRet UIEdgeInsets __ret__, UIButton __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getTitleEdgeInsetsSuper_stret(@StructRet UIEdgeInsets __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/titleEdgeInsets">@property(nonatomic) UIEdgeInsets titleEdgeInsets</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIEdgeInsets getTitleEdgeInsets() {
-        if (customClass) { return objc_getTitleEdgeInsetsSuper(getSuper(), titleEdgeInsets); } else { return objc_getTitleEdgeInsets(this, titleEdgeInsets); }
+        UIEdgeInsets __ret__ = new UIEdgeInsets(); if (customClass) { objc_getTitleEdgeInsetsSuper_stret(__ret__, getSuper(), titleEdgeInsets); } else { objc_getTitleEdgeInsets_stret(__ret__, this, titleEdgeInsets); } return __ret__;
     }
     
     private static final Selector setTitleEdgeInsets$ = Selector.register("setTitleEdgeInsets:");
@@ -368,25 +370,25 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector backgroundRectForBounds$ = Selector.register("backgroundRectForBounds:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getBackgroundRect(UIButton __self__, Selector __cmd__, @ByVal CGRect bounds);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getBackgroundRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getBackgroundRect_stret(@StructRet CGRect __ret__, UIButton __self__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getBackgroundRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instm/UIButton/backgroundRectForBounds:">- (CGRect)backgroundRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getBackgroundRect(CGRect bounds) {
-        if (customClass) { return objc_getBackgroundRectSuper(getSuper(), backgroundRectForBounds$, bounds); } else { return objc_getBackgroundRect(this, backgroundRectForBounds$, bounds); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getBackgroundRectSuper_stret(__ret__, getSuper(), backgroundRectForBounds$, bounds); } else { objc_getBackgroundRect_stret(__ret__, this, backgroundRectForBounds$, bounds); } return __ret__;
     }
     
     private static final Selector contentRectForBounds$ = Selector.register("contentRectForBounds:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getContentRect(UIButton __self__, Selector __cmd__, @ByVal CGRect bounds);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getContentRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getContentRect_stret(@StructRet CGRect __ret__, UIButton __self__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getContentRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instm/UIButton/contentRectForBounds:">- (CGRect)contentRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getContentRect(CGRect bounds) {
-        if (customClass) { return objc_getContentRectSuper(getSuper(), contentRectForBounds$, bounds); } else { return objc_getContentRect(this, contentRectForBounds$, bounds); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getContentRectSuper_stret(__ret__, getSuper(), contentRectForBounds$, bounds); } else { objc_getContentRect_stret(__ret__, this, contentRectForBounds$, bounds); } return __ret__;
     }
     
     private static final Selector imageForState$ = Selector.register("imageForState:");
@@ -401,14 +403,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector imageRectForContentRect$ = Selector.register("imageRectForContentRect:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getImageRect(UIButton __self__, Selector __cmd__, @ByVal CGRect contentRect);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getImageRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect contentRect);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getImageRect_stret(@StructRet CGRect __ret__, UIButton __self__, Selector __cmd__, @ByVal CGRect contentRect);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getImageRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect contentRect);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instm/UIButton/imageRectForContentRect:">- (CGRect)imageRectForContentRect:(CGRect)contentRect</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getImageRect(CGRect contentRect) {
-        if (customClass) { return objc_getImageRectSuper(getSuper(), imageRectForContentRect$, contentRect); } else { return objc_getImageRect(this, imageRectForContentRect$, contentRect); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getImageRectSuper_stret(__ret__, getSuper(), imageRectForContentRect$, contentRect); } else { objc_getImageRect_stret(__ret__, this, imageRectForContentRect$, contentRect); } return __ret__;
     }
     
     private static final Selector titleForState$ = Selector.register("titleForState:");
@@ -434,14 +436,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector titleRectForContentRect$ = Selector.register("titleRectForContentRect:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getTitleRect(UIButton __self__, Selector __cmd__, @ByVal CGRect contentRect);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getTitleRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect contentRect);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getTitleRect_stret(@StructRet CGRect __ret__, UIButton __self__, Selector __cmd__, @ByVal CGRect contentRect);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getTitleRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect contentRect);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instm/UIButton/titleRectForContentRect:">- (CGRect)titleRectForContentRect:(CGRect)contentRect</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getTitleRect(CGRect contentRect) {
-        if (customClass) { return objc_getTitleRectSuper(getSuper(), titleRectForContentRect$, contentRect); } else { return objc_getTitleRect(this, titleRectForContentRect$, contentRect); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getTitleRectSuper_stret(__ret__, getSuper(), titleRectForContentRect$, contentRect); } else { objc_getTitleRect_stret(__ret__, this, titleRectForContentRect$, contentRect); } return __ret__;
     }
     
     private static final Selector titleShadowColorForState$ = Selector.register("titleShadowColorForState:");

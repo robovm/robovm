@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIImage /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIImage /*</name>*/.class);
 
     /*<constructors>*/
@@ -154,25 +156,25 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector alignmentRectInsets = Selector.register("alignmentRectInsets");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal UIEdgeInsets objc_getAlignmentRectInsets(UIImage __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIEdgeInsets objc_getAlignmentRectInsetsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getAlignmentRectInsets_stret(@StructRet UIEdgeInsets __ret__, UIImage __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getAlignmentRectInsetsSuper_stret(@StructRet UIEdgeInsets __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImage/alignmentRectInsets">@property(nonatomic, readonly) UIEdgeInsets alignmentRectInsets</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIEdgeInsets getAlignmentRectInsets() {
-        if (customClass) { return objc_getAlignmentRectInsetsSuper(getSuper(), alignmentRectInsets); } else { return objc_getAlignmentRectInsets(this, alignmentRectInsets); }
+        UIEdgeInsets __ret__ = new UIEdgeInsets(); if (customClass) { objc_getAlignmentRectInsetsSuper_stret(__ret__, getSuper(), alignmentRectInsets); } else { objc_getAlignmentRectInsets_stret(__ret__, this, alignmentRectInsets); } return __ret__;
     }
     
     private static final Selector capInsets = Selector.register("capInsets");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal UIEdgeInsets objc_getCapInsets(UIImage __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIEdgeInsets objc_getCapInsetsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getCapInsets_stret(@StructRet UIEdgeInsets __ret__, UIImage __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getCapInsetsSuper_stret(@StructRet UIEdgeInsets __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImage/capInsets">@property(nonatomic, readonly) UIEdgeInsets capInsets</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIEdgeInsets getCapInsets() {
-        if (customClass) { return objc_getCapInsetsSuper(getSuper(), capInsets); } else { return objc_getCapInsets(this, capInsets); }
+        UIEdgeInsets __ret__ = new UIEdgeInsets(); if (customClass) { objc_getCapInsetsSuper_stret(__ret__, getSuper(), capInsets); } else { objc_getCapInsets_stret(__ret__, this, capInsets); } return __ret__;
     }
     
     private static final Selector duration = Selector.register("duration");
@@ -232,13 +234,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector size = Selector.register("size");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getSize(UIImage __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getSize_stret(@StructRet CGSize __ret__, UIImage __self__, Selector __cmd__);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getSizeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getSizeSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImage_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImage/size">@property(nonatomic, readonly) CGSize size</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGSize getSize() {
-        if (customClass) { return objc_getSizeSuper(getSuper(), size); } else { return objc_getSize(this, size); }
+        if (X86) { if (customClass) { return objc_getSizeSuper(getSuper(), size); } else { return objc_getSize(this, size); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getSizeSuper_stret(__ret__, getSuper(), size); } else { objc_getSize_stret(__ret__, this, size); } return __ret__; }
     }
     /*</properties>*/
     /*<methods>*/

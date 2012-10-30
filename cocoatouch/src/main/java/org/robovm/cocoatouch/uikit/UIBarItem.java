@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIBarItem /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIBarItem /*</name>*/.class);
 
     /*<constructors>*/
@@ -100,14 +102,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector imageInsets = Selector.register("imageInsets");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal UIEdgeInsets objc_getImageInsets(UIBarItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIEdgeInsets objc_getImageInsetsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getImageInsets_stret(@StructRet UIEdgeInsets __ret__, UIBarItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getImageInsetsSuper_stret(@StructRet UIEdgeInsets __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarItem/imageInsets">@property(nonatomic) UIEdgeInsets imageInsets</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIEdgeInsets getImageInsets() {
-        if (customClass) { return objc_getImageInsetsSuper(getSuper(), imageInsets); } else { return objc_getImageInsets(this, imageInsets); }
+        UIEdgeInsets __ret__ = new UIEdgeInsets(); if (customClass) { objc_getImageInsetsSuper_stret(__ret__, getSuper(), imageInsets); } else { objc_getImageInsets_stret(__ret__, this, imageInsets); } return __ret__;
     }
     
     private static final Selector setImageInsets$ = Selector.register("setImageInsets:");
@@ -144,14 +146,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector landscapeImagePhoneInsets = Selector.register("landscapeImagePhoneInsets");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal UIEdgeInsets objc_getLandscapeImagePhoneInsets(UIBarItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIEdgeInsets objc_getLandscapeImagePhoneInsetsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getLandscapeImagePhoneInsets_stret(@StructRet UIEdgeInsets __ret__, UIBarItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getLandscapeImagePhoneInsetsSuper_stret(@StructRet UIEdgeInsets __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarItem/landscapeImagePhoneInsets">@property(nonatomic) UIEdgeInsets landscapeImagePhoneInsets</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIEdgeInsets getLandscapeImagePhoneInsets() {
-        if (customClass) { return objc_getLandscapeImagePhoneInsetsSuper(getSuper(), landscapeImagePhoneInsets); } else { return objc_getLandscapeImagePhoneInsets(this, landscapeImagePhoneInsets); }
+        UIEdgeInsets __ret__ = new UIEdgeInsets(); if (customClass) { objc_getLandscapeImagePhoneInsetsSuper_stret(__ret__, getSuper(), landscapeImagePhoneInsets); } else { objc_getLandscapeImagePhoneInsets_stret(__ret__, this, landscapeImagePhoneInsets); } return __ret__;
     }
     
     private static final Selector setLandscapeImagePhoneInsets$ = Selector.register("setLandscapeImagePhoneInsets:");

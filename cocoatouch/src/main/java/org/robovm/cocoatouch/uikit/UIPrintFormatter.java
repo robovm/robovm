@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIPrintFormatter /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPrintFormatter /*</name>*/.class);
 
     /*<constructors>*/
@@ -56,14 +58,14 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector contentInsets = Selector.register("contentInsets");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal UIEdgeInsets objc_getContentInsets(UIPrintFormatter __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIEdgeInsets objc_getContentInsetsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getContentInsets_stret(@StructRet UIEdgeInsets __ret__, UIPrintFormatter __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getContentInsetsSuper_stret(@StructRet UIEdgeInsets __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/contentInsets">@property(nonatomic) UIEdgeInsets contentInsets</a>
      * @since Available in iOS 4.2 and later.
      */
     public UIEdgeInsets getContentInsets() {
-        if (customClass) { return objc_getContentInsetsSuper(getSuper(), contentInsets); } else { return objc_getContentInsets(this, contentInsets); }
+        UIEdgeInsets __ret__ = new UIEdgeInsets(); if (customClass) { objc_getContentInsetsSuper_stret(__ret__, getSuper(), contentInsets); } else { objc_getContentInsets_stret(__ret__, this, contentInsets); } return __ret__;
     }
     
     private static final Selector setContentInsets$ = Selector.register("setContentInsets:");
@@ -179,14 +181,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector rectForPageAtIndex$ = Selector.register("rectForPageAtIndex:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getRectForPage(UIPrintFormatter __self__, Selector __cmd__, int pageIndex);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getRectForPageSuper(ObjCSuper __super__, Selector __cmd__, int pageIndex);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getRectForPage_stret(@StructRet CGRect __ret__, UIPrintFormatter __self__, Selector __cmd__, int pageIndex);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getRectForPageSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, int pageIndex);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPrintFormatter/rectForPageAtIndex:">- (CGRect)rectForPageAtIndex:(NSIndex)pageIndex</a>
      * @since Available in iOS 4.2 and later.
      */
     public CGRect getRectForPage(int pageIndex) {
-        if (customClass) { return objc_getRectForPageSuper(getSuper(), rectForPageAtIndex$, pageIndex); } else { return objc_getRectForPage(this, rectForPageAtIndex$, pageIndex); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getRectForPageSuper_stret(__ret__, getSuper(), rectForPageAtIndex$, pageIndex); } else { objc_getRectForPage_stret(__ret__, this, rectForPageAtIndex$, pageIndex); } return __ret__;
     }
     
     private static final Selector removeFromPrintPageRenderer = Selector.register("removeFromPrintPageRenderer");

@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIScreen /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIScreen /*</name>*/.class);
 
     /*<constructors>*/
@@ -56,14 +58,14 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector applicationFrame = Selector.register("applicationFrame");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getApplicationFrame(UIScreen __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getApplicationFrameSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getApplicationFrame_stret(@StructRet CGRect __ret__, UIScreen __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getApplicationFrameSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/applicationFrame">@property(nonatomic, readonly) CGRect applicationFrame</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getApplicationFrame() {
-        if (customClass) { return objc_getApplicationFrameSuper(getSuper(), applicationFrame); } else { return objc_getApplicationFrame(this, applicationFrame); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getApplicationFrameSuper_stret(__ret__, getSuper(), applicationFrame); } else { objc_getApplicationFrame_stret(__ret__, this, applicationFrame); } return __ret__;
     }
     
     private static final Selector availableModes = Selector.register("availableModes");
@@ -78,14 +80,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector bounds = Selector.register("bounds");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getBounds(UIScreen __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getBoundsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getBounds_stret(@StructRet CGRect __ret__, UIScreen __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getBoundsSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/bounds">@property(nonatomic, readonly) CGRect bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getBounds() {
-        if (customClass) { return objc_getBoundsSuper(getSuper(), bounds); } else { return objc_getBounds(this, bounds); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getBoundsSuper_stret(__ret__, getSuper(), bounds); } else { objc_getBounds_stret(__ret__, this, bounds); } return __ret__;
     }
     
     private static final Selector brightness = Selector.register("brightness");

@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UISlider /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UISlider /*</name>*/.class);
 
     public UISlider(CGRect aRect) {
@@ -303,14 +305,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector maximumValueImageRectForBounds$ = Selector.register("maximumValueImageRectForBounds:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getMaximumValueImageRect(UISlider __self__, Selector __cmd__, @ByVal CGRect bounds);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getMaximumValueImageRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getMaximumValueImageRect_stret(@StructRet CGRect __ret__, UISlider __self__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getMaximumValueImageRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instm/UISlider/maximumValueImageRectForBounds:">- (CGRect)maximumValueImageRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getMaximumValueImageRect(CGRect bounds) {
-        if (customClass) { return objc_getMaximumValueImageRectSuper(getSuper(), maximumValueImageRectForBounds$, bounds); } else { return objc_getMaximumValueImageRect(this, maximumValueImageRectForBounds$, bounds); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getMaximumValueImageRectSuper_stret(__ret__, getSuper(), maximumValueImageRectForBounds$, bounds); } else { objc_getMaximumValueImageRect_stret(__ret__, this, maximumValueImageRectForBounds$, bounds); } return __ret__;
     }
     
     private static final Selector minimumTrackImageForState$ = Selector.register("minimumTrackImageForState:");
@@ -325,14 +327,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector minimumValueImageRectForBounds$ = Selector.register("minimumValueImageRectForBounds:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getMinimumValueImageRect(UISlider __self__, Selector __cmd__, @ByVal CGRect bounds);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getMinimumValueImageRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getMinimumValueImageRect_stret(@StructRet CGRect __ret__, UISlider __self__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getMinimumValueImageRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instm/UISlider/minimumValueImageRectForBounds:">- (CGRect)minimumValueImageRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getMinimumValueImageRect(CGRect bounds) {
-        if (customClass) { return objc_getMinimumValueImageRectSuper(getSuper(), minimumValueImageRectForBounds$, bounds); } else { return objc_getMinimumValueImageRect(this, minimumValueImageRectForBounds$, bounds); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getMinimumValueImageRectSuper_stret(__ret__, getSuper(), minimumValueImageRectForBounds$, bounds); } else { objc_getMinimumValueImageRect_stret(__ret__, this, minimumValueImageRectForBounds$, bounds); } return __ret__;
     }
     
     private static final Selector thumbImageForState$ = Selector.register("thumbImageForState:");
@@ -347,25 +349,25 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector thumbRectForBounds$trackRect$value$ = Selector.register("thumbRectForBounds:trackRect:value:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getThumbRect(UISlider __self__, Selector __cmd__, @ByVal CGRect bounds, @ByVal CGRect rect, float value);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getThumbRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds, @ByVal CGRect rect, float value);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getThumbRect_stret(@StructRet CGRect __ret__, UISlider __self__, Selector __cmd__, @ByVal CGRect bounds, @ByVal CGRect rect, float value);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getThumbRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds, @ByVal CGRect rect, float value);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instm/UISlider/thumbRectForBounds:trackRect:value:">- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getThumbRect(CGRect bounds, CGRect rect, float value) {
-        if (customClass) { return objc_getThumbRectSuper(getSuper(), thumbRectForBounds$trackRect$value$, bounds, rect, value); } else { return objc_getThumbRect(this, thumbRectForBounds$trackRect$value$, bounds, rect, value); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getThumbRectSuper_stret(__ret__, getSuper(), thumbRectForBounds$trackRect$value$, bounds, rect, value); } else { objc_getThumbRect_stret(__ret__, this, thumbRectForBounds$trackRect$value$, bounds, rect, value); } return __ret__;
     }
     
     private static final Selector trackRectForBounds$ = Selector.register("trackRectForBounds:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getTrackRect(UISlider __self__, Selector __cmd__, @ByVal CGRect bounds);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getTrackRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getTrackRect_stret(@StructRet CGRect __ret__, UISlider __self__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getTrackRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instm/UISlider/trackRectForBounds:">- (CGRect)trackRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getTrackRect(CGRect bounds) {
-        if (customClass) { return objc_getTrackRectSuper(getSuper(), trackRectForBounds$, bounds); } else { return objc_getTrackRect(this, trackRectForBounds$, bounds); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getTrackRectSuper_stret(__ret__, getSuper(), trackRectForBounds$, bounds); } else { objc_getTrackRect_stret(__ret__, this, trackRectForBounds$, bounds); } return __ret__;
     }
     
     private static final Selector setMaximumTrackImage$forState$ = Selector.register("setMaximumTrackImage:forState:");

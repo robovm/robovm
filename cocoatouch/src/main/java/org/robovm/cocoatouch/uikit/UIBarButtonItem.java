@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIBarButtonItem /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIBarButtonItem /*</name>*/.class);
 
     /*<constructors>*/
@@ -289,13 +291,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector backButtonTitlePositionAdjustmentForBarMetrics$ = Selector.register("backButtonTitlePositionAdjustmentForBarMetrics:");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal UIOffset objc_getBackButtonTitlePositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, UIBarMetrics barMetrics);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getBackButtonTitlePositionAdjustment_stret(@StructRet UIOffset __ret__, UIBarButtonItem __self__, Selector __cmd__, UIBarMetrics barMetrics);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIOffset objc_getBackButtonTitlePositionAdjustmentSuper(ObjCSuper __super__, Selector __cmd__, UIBarMetrics barMetrics);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getBackButtonTitlePositionAdjustmentSuper_stret(@StructRet UIOffset __ret__, ObjCSuper __super__, Selector __cmd__, UIBarMetrics barMetrics);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UIBarButtonItem/backButtonTitlePositionAdjustmentForBarMetrics:">- (UIOffset)backButtonTitlePositionAdjustmentForBarMetrics:(UIBarMetrics)barMetrics</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIOffset getBackButtonTitlePositionAdjustment(UIBarMetrics barMetrics) {
-        if (customClass) { return objc_getBackButtonTitlePositionAdjustmentSuper(getSuper(), backButtonTitlePositionAdjustmentForBarMetrics$, barMetrics); } else { return objc_getBackButtonTitlePositionAdjustment(this, backButtonTitlePositionAdjustmentForBarMetrics$, barMetrics); }
+        if (X86) { if (customClass) { return objc_getBackButtonTitlePositionAdjustmentSuper(getSuper(), backButtonTitlePositionAdjustmentForBarMetrics$, barMetrics); } else { return objc_getBackButtonTitlePositionAdjustment(this, backButtonTitlePositionAdjustmentForBarMetrics$, barMetrics); } } else { UIOffset __ret__ = new UIOffset(); if (customClass) { objc_getBackButtonTitlePositionAdjustmentSuper_stret(__ret__, getSuper(), backButtonTitlePositionAdjustmentForBarMetrics$, barMetrics); } else { objc_getBackButtonTitlePositionAdjustment_stret(__ret__, this, backButtonTitlePositionAdjustmentForBarMetrics$, barMetrics); } return __ret__; }
     }
     
     private static final Selector backgroundImageForState$style$barMetrics$ = Selector.register("backgroundImageForState:style:barMetrics:");
@@ -333,13 +337,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector titlePositionAdjustmentForBarMetrics$ = Selector.register("titlePositionAdjustmentForBarMetrics:");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal UIOffset objc_getTitlePositionAdjustment(UIBarButtonItem __self__, Selector __cmd__, UIBarMetrics barMetrics);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getTitlePositionAdjustment_stret(@StructRet UIOffset __ret__, UIBarButtonItem __self__, Selector __cmd__, UIBarMetrics barMetrics);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIOffset objc_getTitlePositionAdjustmentSuper(ObjCSuper __super__, Selector __cmd__, UIBarMetrics barMetrics);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getTitlePositionAdjustmentSuper_stret(@StructRet UIOffset __ret__, ObjCSuper __super__, Selector __cmd__, UIBarMetrics barMetrics);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UIBarButtonItem/titlePositionAdjustmentForBarMetrics:">- (UIOffset)titlePositionAdjustmentForBarMetrics:(UIBarMetrics)barMetrics</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIOffset getTitlePositionAdjustment(UIBarMetrics barMetrics) {
-        if (customClass) { return objc_getTitlePositionAdjustmentSuper(getSuper(), titlePositionAdjustmentForBarMetrics$, barMetrics); } else { return objc_getTitlePositionAdjustment(this, titlePositionAdjustmentForBarMetrics$, barMetrics); }
+        if (X86) { if (customClass) { return objc_getTitlePositionAdjustmentSuper(getSuper(), titlePositionAdjustmentForBarMetrics$, barMetrics); } else { return objc_getTitlePositionAdjustment(this, titlePositionAdjustmentForBarMetrics$, barMetrics); } } else { UIOffset __ret__ = new UIOffset(); if (customClass) { objc_getTitlePositionAdjustmentSuper_stret(__ret__, getSuper(), titlePositionAdjustmentForBarMetrics$, barMetrics); } else { objc_getTitlePositionAdjustment_stret(__ret__, this, titlePositionAdjustmentForBarMetrics$, barMetrics); } return __ret__; }
     }
     
     private static final Selector setBackButtonBackgroundImage$forState$barMetrics$ = Selector.register("setBackButtonBackgroundImage:forState:barMetrics:");

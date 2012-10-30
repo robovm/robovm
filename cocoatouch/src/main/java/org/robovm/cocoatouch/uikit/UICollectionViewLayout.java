@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -45,6 +46,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UICollectionViewLayout /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UICollectionViewLayout /*</name>*/.class);
 
     /*<constructors>*/
@@ -101,13 +103,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector collectionViewContentSize = Selector.register("collectionViewContentSize");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getCollectionViewContentSize(UICollectionViewLayout __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getCollectionViewContentSize_stret(@StructRet CGSize __ret__, UICollectionViewLayout __self__, Selector __cmd__);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getCollectionViewContentSizeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getCollectionViewContentSizeSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/collectionViewContentSize">- (CGSize)collectionViewContentSize</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGSize getCollectionViewContentSize() {
-        if (customClass) { return objc_getCollectionViewContentSizeSuper(getSuper(), collectionViewContentSize); } else { return objc_getCollectionViewContentSize(this, collectionViewContentSize); }
+        if (X86) { if (customClass) { return objc_getCollectionViewContentSizeSuper(getSuper(), collectionViewContentSize); } else { return objc_getCollectionViewContentSize(this, collectionViewContentSize); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getCollectionViewContentSizeSuper_stret(__ret__, getSuper(), collectionViewContentSize); } else { objc_getCollectionViewContentSize_stret(__ret__, this, collectionViewContentSize); } return __ret__; }
     }
     
     private static final Selector finalLayoutAttributesForDisappearingDecorationElementOfKind$atIndexPath$ = Selector.register("finalLayoutAttributesForDisappearingDecorationElementOfKind:atIndexPath:");
@@ -222,13 +226,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector targetContentOffsetForProposedContentOffset$withScrollingVelocity$ = Selector.register("targetContentOffsetForProposedContentOffset:withScrollingVelocity:");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_getTargetContentOffset(UICollectionViewLayout __self__, Selector __cmd__, @ByVal CGPoint proposedContentOffset, @ByVal CGPoint velocity);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getTargetContentOffset_stret(@StructRet CGPoint __ret__, UICollectionViewLayout __self__, Selector __cmd__, @ByVal CGPoint proposedContentOffset, @ByVal CGPoint velocity);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_getTargetContentOffsetSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint proposedContentOffset, @ByVal CGPoint velocity);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getTargetContentOffsetSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint proposedContentOffset, @ByVal CGPoint velocity);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/targetContentOffsetForProposedContentOffset:withScrollingVelocity:">- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGPoint getTargetContentOffset(CGPoint proposedContentOffset, CGPoint velocity) {
-        if (customClass) { return objc_getTargetContentOffsetSuper(getSuper(), targetContentOffsetForProposedContentOffset$withScrollingVelocity$, proposedContentOffset, velocity); } else { return objc_getTargetContentOffset(this, targetContentOffsetForProposedContentOffset$withScrollingVelocity$, proposedContentOffset, velocity); }
+        if (X86) { if (customClass) { return objc_getTargetContentOffsetSuper(getSuper(), targetContentOffsetForProposedContentOffset$withScrollingVelocity$, proposedContentOffset, velocity); } else { return objc_getTargetContentOffset(this, targetContentOffsetForProposedContentOffset$withScrollingVelocity$, proposedContentOffset, velocity); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_getTargetContentOffsetSuper_stret(__ret__, getSuper(), targetContentOffsetForProposedContentOffset$withScrollingVelocity$, proposedContentOffset, velocity); } else { objc_getTargetContentOffset_stret(__ret__, this, targetContentOffsetForProposedContentOffset$withScrollingVelocity$, proposedContentOffset, velocity); } return __ret__; }
     }
     
     private static final Selector invalidateLayout = Selector.register("invalidateLayout");

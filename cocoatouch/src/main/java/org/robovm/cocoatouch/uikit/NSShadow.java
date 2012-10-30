@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -45,6 +46,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ NSShadow /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSShadow /*</name>*/.class);
 
     /*<constructors>*/
@@ -100,13 +102,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector shadowOffset = Selector.register("shadowOffset");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getShadowOffset(NSShadow __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getShadowOffset_stret(@StructRet CGSize __ret__, NSShadow __self__, Selector __cmd__);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getShadowOffsetSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getShadowOffsetSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html#//apple_ref/occ/instp/NSShadow/shadowOffset">@property (nonatomic, assign) CGSize shadowOffset</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGSize getShadowOffset() {
-        if (customClass) { return objc_getShadowOffsetSuper(getSuper(), shadowOffset); } else { return objc_getShadowOffset(this, shadowOffset); }
+        if (X86) { if (customClass) { return objc_getShadowOffsetSuper(getSuper(), shadowOffset); } else { return objc_getShadowOffset(this, shadowOffset); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getShadowOffsetSuper_stret(__ret__, getSuper(), shadowOffset); } else { objc_getShadowOffset_stret(__ret__, this, shadowOffset); } return __ret__; }
     }
     
     private static final Selector setShadowOffset$ = Selector.register("setShadowOffset:");

@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIMenuController /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIMenuController /*</name>*/.class);
 
     /*<constructors>*/
@@ -78,14 +80,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector menuFrame = Selector.register("menuFrame");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getMenuFrame(UIMenuController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getMenuFrameSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getMenuFrame_stret(@StructRet CGRect __ret__, UIMenuController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getMenuFrameSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instp/UIMenuController/menuFrame">@property(nonatomic, readonly) CGRect menuFrame</a>
      * @since Available in iOS 3.0 and later.
      */
     public CGRect getMenuFrame() {
-        if (customClass) { return objc_getMenuFrameSuper(getSuper(), menuFrame); } else { return objc_getMenuFrame(this, menuFrame); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getMenuFrameSuper_stret(__ret__, getSuper(), menuFrame); } else { objc_getMenuFrame_stret(__ret__, this, menuFrame); } return __ret__;
     }
     
     private static final Selector menuItems = Selector.register("menuItems");

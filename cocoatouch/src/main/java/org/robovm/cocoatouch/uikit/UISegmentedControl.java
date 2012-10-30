@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UISegmentedControl /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UISegmentedControl /*</name>*/.class);
 
     public UISegmentedControl(CGRect aRect) {
@@ -215,24 +217,28 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector contentOffsetForSegmentAtIndex$ = Selector.register("contentOffsetForSegmentAtIndex:");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getSegmentContentOffset(UISegmentedControl __self__, Selector __cmd__, int segment);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getSegmentContentOffset_stret(@StructRet CGSize __ret__, UISegmentedControl __self__, Selector __cmd__, int segment);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getSegmentContentOffsetSuper(ObjCSuper __super__, Selector __cmd__, int segment);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getSegmentContentOffsetSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__, int segment);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instm/UISegmentedControl/contentOffsetForSegmentAtIndex:">- (CGSize)contentOffsetForSegmentAtIndex:(NSUInteger)segment</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGSize getSegmentContentOffset(int segment) {
-        if (customClass) { return objc_getSegmentContentOffsetSuper(getSuper(), contentOffsetForSegmentAtIndex$, segment); } else { return objc_getSegmentContentOffset(this, contentOffsetForSegmentAtIndex$, segment); }
+        if (X86) { if (customClass) { return objc_getSegmentContentOffsetSuper(getSuper(), contentOffsetForSegmentAtIndex$, segment); } else { return objc_getSegmentContentOffset(this, contentOffsetForSegmentAtIndex$, segment); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getSegmentContentOffsetSuper_stret(__ret__, getSuper(), contentOffsetForSegmentAtIndex$, segment); } else { objc_getSegmentContentOffset_stret(__ret__, this, contentOffsetForSegmentAtIndex$, segment); } return __ret__; }
     }
     
     private static final Selector contentPositionAdjustmentForSegmentType$barMetrics$ = Selector.register("contentPositionAdjustmentForSegmentType:barMetrics:");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal UIOffset objc_getSegmentContentPositionAdjustment(UISegmentedControl __self__, Selector __cmd__, UISegmentedControlSegment leftCenterRightOrAlone, UIBarMetrics barMetrics);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getSegmentContentPositionAdjustment_stret(@StructRet UIOffset __ret__, UISegmentedControl __self__, Selector __cmd__, UISegmentedControlSegment leftCenterRightOrAlone, UIBarMetrics barMetrics);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIOffset objc_getSegmentContentPositionAdjustmentSuper(ObjCSuper __super__, Selector __cmd__, UISegmentedControlSegment leftCenterRightOrAlone, UIBarMetrics barMetrics);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getSegmentContentPositionAdjustmentSuper_stret(@StructRet UIOffset __ret__, ObjCSuper __super__, Selector __cmd__, UISegmentedControlSegment leftCenterRightOrAlone, UIBarMetrics barMetrics);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instm/UISegmentedControl/contentPositionAdjustmentForSegmentType:barMetrics:">- (UIOffset)contentPositionAdjustmentForSegmentType:(UISegmentedControlSegment)leftCenterRightOrAlone barMetrics:(UIBarMetrics)barMetrics</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIOffset getSegmentContentPositionAdjustment(UISegmentedControlSegment leftCenterRightOrAlone, UIBarMetrics barMetrics) {
-        if (customClass) { return objc_getSegmentContentPositionAdjustmentSuper(getSuper(), contentPositionAdjustmentForSegmentType$barMetrics$, leftCenterRightOrAlone, barMetrics); } else { return objc_getSegmentContentPositionAdjustment(this, contentPositionAdjustmentForSegmentType$barMetrics$, leftCenterRightOrAlone, barMetrics); }
+        if (X86) { if (customClass) { return objc_getSegmentContentPositionAdjustmentSuper(getSuper(), contentPositionAdjustmentForSegmentType$barMetrics$, leftCenterRightOrAlone, barMetrics); } else { return objc_getSegmentContentPositionAdjustment(this, contentPositionAdjustmentForSegmentType$barMetrics$, leftCenterRightOrAlone, barMetrics); } } else { UIOffset __ret__ = new UIOffset(); if (customClass) { objc_getSegmentContentPositionAdjustmentSuper_stret(__ret__, getSuper(), contentPositionAdjustmentForSegmentType$barMetrics$, leftCenterRightOrAlone, barMetrics); } else { objc_getSegmentContentPositionAdjustment_stret(__ret__, this, contentPositionAdjustmentForSegmentType$barMetrics$, leftCenterRightOrAlone, barMetrics); } return __ret__; }
     }
     
     private static final Selector imageForSegmentAtIndex$ = Selector.register("imageForSegmentAtIndex:");

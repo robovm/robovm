@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UISearchBar /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UISearchBar /*</name>*/.class);
 
     public UISearchBar(CGRect aRect) {
@@ -302,13 +304,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector searchFieldBackgroundPositionAdjustment = Selector.register("searchFieldBackgroundPositionAdjustment");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal UIOffset objc_getSearchFieldBackgroundPositionAdjustment(UISearchBar __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getSearchFieldBackgroundPositionAdjustment_stret(@StructRet UIOffset __ret__, UISearchBar __self__, Selector __cmd__);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIOffset objc_getSearchFieldBackgroundPositionAdjustmentSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getSearchFieldBackgroundPositionAdjustmentSuper_stret(@StructRet UIOffset __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/searchFieldBackgroundPositionAdjustment">@property(nonatomic) UIOffset searchFieldBackgroundPositionAdjustment</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIOffset getSearchFieldBackgroundPositionAdjustment() {
-        if (customClass) { return objc_getSearchFieldBackgroundPositionAdjustmentSuper(getSuper(), searchFieldBackgroundPositionAdjustment); } else { return objc_getSearchFieldBackgroundPositionAdjustment(this, searchFieldBackgroundPositionAdjustment); }
+        if (X86) { if (customClass) { return objc_getSearchFieldBackgroundPositionAdjustmentSuper(getSuper(), searchFieldBackgroundPositionAdjustment); } else { return objc_getSearchFieldBackgroundPositionAdjustment(this, searchFieldBackgroundPositionAdjustment); } } else { UIOffset __ret__ = new UIOffset(); if (customClass) { objc_getSearchFieldBackgroundPositionAdjustmentSuper_stret(__ret__, getSuper(), searchFieldBackgroundPositionAdjustment); } else { objc_getSearchFieldBackgroundPositionAdjustment_stret(__ret__, this, searchFieldBackgroundPositionAdjustment); } return __ret__; }
     }
     
     private static final Selector setSearchFieldBackgroundPositionAdjustment$ = Selector.register("setSearchFieldBackgroundPositionAdjustment:");
@@ -346,13 +350,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector searchTextPositionAdjustment = Selector.register("searchTextPositionAdjustment");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal UIOffset objc_getSearchTextPositionAdjustment(UISearchBar __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getSearchTextPositionAdjustment_stret(@StructRet UIOffset __ret__, UISearchBar __self__, Selector __cmd__);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIOffset objc_getSearchTextPositionAdjustmentSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getSearchTextPositionAdjustmentSuper_stret(@StructRet UIOffset __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/searchTextPositionAdjustment">@property(nonatomic) UIOffset searchTextPositionAdjustment</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIOffset getSearchTextPositionAdjustment() {
-        if (customClass) { return objc_getSearchTextPositionAdjustmentSuper(getSuper(), searchTextPositionAdjustment); } else { return objc_getSearchTextPositionAdjustment(this, searchTextPositionAdjustment); }
+        if (X86) { if (customClass) { return objc_getSearchTextPositionAdjustmentSuper(getSuper(), searchTextPositionAdjustment); } else { return objc_getSearchTextPositionAdjustment(this, searchTextPositionAdjustment); } } else { UIOffset __ret__ = new UIOffset(); if (customClass) { objc_getSearchTextPositionAdjustmentSuper_stret(__ret__, getSuper(), searchTextPositionAdjustment); } else { objc_getSearchTextPositionAdjustment_stret(__ret__, this, searchTextPositionAdjustment); } return __ret__; }
     }
     
     private static final Selector setSearchTextPositionAdjustment$ = Selector.register("setSearchTextPositionAdjustment:");
@@ -579,13 +585,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector positionAdjustmentForSearchBarIcon$ = Selector.register("positionAdjustmentForSearchBarIcon:");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal UIOffset objc_getPositionAdjustmentForSearchBarIcon(UISearchBar __self__, Selector __cmd__, UISearchBarIcon icon);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getPositionAdjustmentForSearchBarIcon_stret(@StructRet UIOffset __ret__, UISearchBar __self__, Selector __cmd__, UISearchBarIcon icon);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIOffset objc_getPositionAdjustmentForSearchBarIconSuper(ObjCSuper __super__, Selector __cmd__, UISearchBarIcon icon);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getPositionAdjustmentForSearchBarIconSuper_stret(@StructRet UIOffset __ret__, ObjCSuper __super__, Selector __cmd__, UISearchBarIcon icon);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instm/UISearchBar/positionAdjustmentForSearchBarIcon:">- (UIOffset)positionAdjustmentForSearchBarIcon:(UISearchBarIcon)icon</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIOffset getPositionAdjustmentForSearchBarIcon(UISearchBarIcon icon) {
-        if (customClass) { return objc_getPositionAdjustmentForSearchBarIconSuper(getSuper(), positionAdjustmentForSearchBarIcon$, icon); } else { return objc_getPositionAdjustmentForSearchBarIcon(this, positionAdjustmentForSearchBarIcon$, icon); }
+        if (X86) { if (customClass) { return objc_getPositionAdjustmentForSearchBarIconSuper(getSuper(), positionAdjustmentForSearchBarIcon$, icon); } else { return objc_getPositionAdjustmentForSearchBarIcon(this, positionAdjustmentForSearchBarIcon$, icon); } } else { UIOffset __ret__ = new UIOffset(); if (customClass) { objc_getPositionAdjustmentForSearchBarIconSuper_stret(__ret__, getSuper(), positionAdjustmentForSearchBarIcon$, icon); } else { objc_getPositionAdjustmentForSearchBarIcon_stret(__ret__, this, positionAdjustmentForSearchBarIcon$, icon); } return __ret__; }
     }
     
     private static final Selector scopeBarButtonBackgroundImageForState$ = Selector.register("scopeBarButtonBackgroundImageForState:");

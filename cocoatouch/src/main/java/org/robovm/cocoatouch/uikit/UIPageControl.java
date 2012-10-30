@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIPageControl /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPageControl /*</name>*/.class);
 
     public UIPageControl(CGRect aRect) {
@@ -194,13 +196,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector sizeForNumberOfPages$ = Selector.register("sizeForNumberOfPages:");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getSizeForNumberOfPages(UIPageControl __self__, Selector __cmd__, int pageCount);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getSizeForNumberOfPages_stret(@StructRet CGSize __ret__, UIPageControl __self__, Selector __cmd__, int pageCount);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getSizeForNumberOfPagesSuper(ObjCSuper __super__, Selector __cmd__, int pageCount);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getSizeForNumberOfPagesSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__, int pageCount);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPageControl/sizeForNumberOfPages:">- (CGSize)sizeForNumberOfPages:(NSInteger)pageCount</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGSize getSizeForNumberOfPages(int pageCount) {
-        if (customClass) { return objc_getSizeForNumberOfPagesSuper(getSuper(), sizeForNumberOfPages$, pageCount); } else { return objc_getSizeForNumberOfPages(this, sizeForNumberOfPages$, pageCount); }
+        if (X86) { if (customClass) { return objc_getSizeForNumberOfPagesSuper(getSuper(), sizeForNumberOfPages$, pageCount); } else { return objc_getSizeForNumberOfPages(this, sizeForNumberOfPages$, pageCount); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getSizeForNumberOfPagesSuper_stret(__ret__, getSuper(), sizeForNumberOfPages$, pageCount); } else { objc_getSizeForNumberOfPages_stret(__ret__, this, sizeForNumberOfPages$, pageCount); } return __ret__; }
     }
     
     private static final Selector updateCurrentPageDisplay = Selector.register("updateCurrentPageDisplay");

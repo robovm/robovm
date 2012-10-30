@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIGestureRecognizer /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIGestureRecognizer /*</name>*/.class);
 
     /*<constructors>*/
@@ -234,24 +236,28 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector locationInView$ = Selector.register("locationInView:");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_getLocation(UIGestureRecognizer __self__, Selector __cmd__, UIView view);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getLocation_stret(@StructRet CGPoint __ret__, UIGestureRecognizer __self__, Selector __cmd__, UIView view);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_getLocationSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getLocationSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/locationInView:">- (CGPoint)locationInView:(UIView *)view</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGPoint getLocation(UIView view) {
-        if (customClass) { return objc_getLocationSuper(getSuper(), locationInView$, view); } else { return objc_getLocation(this, locationInView$, view); }
+        if (X86) { if (customClass) { return objc_getLocationSuper(getSuper(), locationInView$, view); } else { return objc_getLocation(this, locationInView$, view); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_getLocationSuper_stret(__ret__, getSuper(), locationInView$, view); } else { objc_getLocation_stret(__ret__, this, locationInView$, view); } return __ret__; }
     }
     
     private static final Selector locationOfTouch$inView$ = Selector.register("locationOfTouch:inView:");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_getLocation(UIGestureRecognizer __self__, Selector __cmd__, int touchIndex, UIView view);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getLocation_stret(@StructRet CGPoint __ret__, UIGestureRecognizer __self__, Selector __cmd__, int touchIndex, UIView view);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_getLocationSuper(ObjCSuper __super__, Selector __cmd__, int touchIndex, UIView view);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getLocationSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__, int touchIndex, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/locationOfTouch:inView:">- (CGPoint)locationOfTouch:(NSUInteger)touchIndex inView:(UIView *)view</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGPoint getLocation(int touchIndex, UIView view) {
-        if (customClass) { return objc_getLocationSuper(getSuper(), locationOfTouch$inView$, touchIndex, view); } else { return objc_getLocation(this, locationOfTouch$inView$, touchIndex, view); }
+        if (X86) { if (customClass) { return objc_getLocationSuper(getSuper(), locationOfTouch$inView$, touchIndex, view); } else { return objc_getLocation(this, locationOfTouch$inView$, touchIndex, view); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_getLocationSuper_stret(__ret__, getSuper(), locationOfTouch$inView$, touchIndex, view); } else { objc_getLocation_stret(__ret__, this, locationOfTouch$inView$, touchIndex, view); } return __ret__; }
     }
     
     private static final Selector numberOfTouches = Selector.register("numberOfTouches");

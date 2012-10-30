@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIPickerView /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPickerView /*</name>*/.class);
 
     public UIPickerView(CGRect aRect) {
@@ -150,13 +152,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector rowSizeForComponent$ = Selector.register("rowSizeForComponent:");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getRowSize(UIPickerView __self__, Selector __cmd__, int component);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getRowSize_stret(@StructRet CGSize __ret__, UIPickerView __self__, Selector __cmd__, int component);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getRowSizeSuper(ObjCSuper __super__, Selector __cmd__, int component);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getRowSizeSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__, int component);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerView_Class/Reference/UIPickerView.html#//apple_ref/occ/instm/UIPickerView/rowSizeForComponent:">- (CGSize)rowSizeForComponent:(NSInteger)component</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGSize getRowSize(int component) {
-        if (customClass) { return objc_getRowSizeSuper(getSuper(), rowSizeForComponent$, component); } else { return objc_getRowSize(this, rowSizeForComponent$, component); }
+        if (X86) { if (customClass) { return objc_getRowSizeSuper(getSuper(), rowSizeForComponent$, component); } else { return objc_getRowSize(this, rowSizeForComponent$, component); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getRowSizeSuper_stret(__ret__, getSuper(), rowSizeForComponent$, component); } else { objc_getRowSize_stret(__ret__, this, rowSizeForComponent$, component); } return __ret__; }
     }
     
     private static final Selector viewForRow$forComponent$ = Selector.register("viewForRow:forComponent:");

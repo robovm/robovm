@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIViewController /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIViewController /*</name>*/.class);
 
     /*<constructors>*/
@@ -78,13 +80,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector contentSizeForViewInPopover = Selector.register("contentSizeForViewInPopover");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getContentSizeForViewInPopover(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getContentSizeForViewInPopover_stret(@StructRet CGSize __ret__, UIViewController __self__, Selector __cmd__);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getContentSizeForViewInPopoverSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getContentSizeForViewInPopoverSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/contentSizeForViewInPopover">@property(nonatomic, readwrite) CGSize contentSizeForViewInPopover</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGSize getContentSizeForViewInPopover() {
-        if (customClass) { return objc_getContentSizeForViewInPopoverSuper(getSuper(), contentSizeForViewInPopover); } else { return objc_getContentSizeForViewInPopover(this, contentSizeForViewInPopover); }
+        if (X86) { if (customClass) { return objc_getContentSizeForViewInPopoverSuper(getSuper(), contentSizeForViewInPopover); } else { return objc_getContentSizeForViewInPopover(this, contentSizeForViewInPopover); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getContentSizeForViewInPopoverSuper_stret(__ret__, getSuper(), contentSizeForViewInPopover); } else { objc_getContentSizeForViewInPopover_stret(__ret__, this, contentSizeForViewInPopover); } return __ret__; }
     }
     
     private static final Selector setContentSizeForViewInPopover$ = Selector.register("setContentSizeForViewInPopover:");

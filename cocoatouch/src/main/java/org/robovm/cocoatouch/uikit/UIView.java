@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIView /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIView /*</name>*/.class);
 
     /*<constructors>*/
@@ -154,14 +156,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector bounds = Selector.register("bounds");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getBounds(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getBoundsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getBounds_stret(@StructRet CGRect __ret__, UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getBoundsSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/bounds">@property(nonatomic) CGRect bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getBounds() {
-        if (customClass) { return objc_getBoundsSuper(getSuper(), bounds); } else { return objc_getBounds(this, bounds); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getBoundsSuper_stret(__ret__, getSuper(), bounds); } else { objc_getBounds_stret(__ret__, this, bounds); } return __ret__;
     }
     
     private static final Selector setBounds$ = Selector.register("setBounds:");
@@ -177,13 +179,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector center = Selector.register("center");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_getCenter(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getCenter_stret(@StructRet CGPoint __ret__, UIView __self__, Selector __cmd__);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_getCenterSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getCenterSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/center">@property(nonatomic) CGPoint center</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint getCenter() {
-        if (customClass) { return objc_getCenterSuper(getSuper(), center); } else { return objc_getCenter(this, center); }
+        if (X86) { if (customClass) { return objc_getCenterSuper(getSuper(), center); } else { return objc_getCenter(this, center); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_getCenterSuper_stret(__ret__, getSuper(), center); } else { objc_getCenter_stret(__ret__, this, center); } return __ret__; }
     }
     
     private static final Selector setCenter$ = Selector.register("setCenter:");
@@ -308,14 +312,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector frame = Selector.register("frame");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getFrame(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getFrameSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getFrame_stret(@StructRet CGRect __ret__, UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getFrameSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/frame">@property(nonatomic) CGRect frame</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getFrame() {
-        if (customClass) { return objc_getFrameSuper(getSuper(), frame); } else { return objc_getFrame(this, frame); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getFrameSuper_stret(__ret__, getSuper(), frame); } else { objc_getFrame_stret(__ret__, this, frame); } return __ret__;
     }
     
     private static final Selector setFrame$ = Selector.register("setFrame:");
@@ -495,14 +499,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector transform = Selector.register("transform");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGAffineTransform objc_getTransform(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGAffineTransform objc_getTransformSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getTransform_stret(@StructRet CGAffineTransform __ret__, UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getTransformSuper_stret(@StructRet CGAffineTransform __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/transform">@property(nonatomic) CGAffineTransform transform</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGAffineTransform getTransform() {
-        if (customClass) { return objc_getTransformSuper(getSuper(), transform); } else { return objc_getTransform(this, transform); }
+        CGAffineTransform __ret__ = new CGAffineTransform(); if (customClass) { objc_getTransformSuper_stret(__ret__, getSuper(), transform); } else { objc_getTransform_stret(__ret__, this, transform); } return __ret__;
     }
     
     private static final Selector setTransform$ = Selector.register("setTransform:");
@@ -828,46 +832,50 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector convertPoint$fromView$ = Selector.register("convertPoint:fromView:");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_convertPointFromView(UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIView view);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_convertPointFromView_stret(@StructRet CGPoint __ret__, UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIView view);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_convertPointFromViewSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIView view);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_convertPointFromViewSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/convertPoint:fromView:">- (CGPoint)convertPoint:(CGPoint)point fromView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint convertPointFromView(CGPoint point, UIView view) {
-        if (customClass) { return objc_convertPointFromViewSuper(getSuper(), convertPoint$fromView$, point, view); } else { return objc_convertPointFromView(this, convertPoint$fromView$, point, view); }
+        if (X86) { if (customClass) { return objc_convertPointFromViewSuper(getSuper(), convertPoint$fromView$, point, view); } else { return objc_convertPointFromView(this, convertPoint$fromView$, point, view); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_convertPointFromViewSuper_stret(__ret__, getSuper(), convertPoint$fromView$, point, view); } else { objc_convertPointFromView_stret(__ret__, this, convertPoint$fromView$, point, view); } return __ret__; }
     }
     
     private static final Selector convertPoint$toView$ = Selector.register("convertPoint:toView:");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_convertPointToView(UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIView view);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_convertPointToView_stret(@StructRet CGPoint __ret__, UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIView view);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_convertPointToViewSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIView view);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_convertPointToViewSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/convertPoint:toView:">- (CGPoint)convertPoint:(CGPoint)point toView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint convertPointToView(CGPoint point, UIView view) {
-        if (customClass) { return objc_convertPointToViewSuper(getSuper(), convertPoint$toView$, point, view); } else { return objc_convertPointToView(this, convertPoint$toView$, point, view); }
+        if (X86) { if (customClass) { return objc_convertPointToViewSuper(getSuper(), convertPoint$toView$, point, view); } else { return objc_convertPointToView(this, convertPoint$toView$, point, view); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_convertPointToViewSuper_stret(__ret__, getSuper(), convertPoint$toView$, point, view); } else { objc_convertPointToView_stret(__ret__, this, convertPoint$toView$, point, view); } return __ret__; }
     }
     
     private static final Selector convertRect$fromView$ = Selector.register("convertRect:fromView:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_convertRectFromView(UIView __self__, Selector __cmd__, @ByVal CGRect rect, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_convertRectFromViewSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIView view);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_convertRectFromView_stret(@StructRet CGRect __ret__, UIView __self__, Selector __cmd__, @ByVal CGRect rect, UIView view);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_convertRectFromViewSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/convertRect:fromView:">- (CGRect)convertRect:(CGRect)rect fromView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect convertRectFromView(CGRect rect, UIView view) {
-        if (customClass) { return objc_convertRectFromViewSuper(getSuper(), convertRect$fromView$, rect, view); } else { return objc_convertRectFromView(this, convertRect$fromView$, rect, view); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_convertRectFromViewSuper_stret(__ret__, getSuper(), convertRect$fromView$, rect, view); } else { objc_convertRectFromView_stret(__ret__, this, convertRect$fromView$, rect, view); } return __ret__;
     }
     
     private static final Selector convertRect$toView$ = Selector.register("convertRect:toView:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_convertRectToView(UIView __self__, Selector __cmd__, @ByVal CGRect rect, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_convertRectToViewSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIView view);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_convertRectToView_stret(@StructRet CGRect __ret__, UIView __self__, Selector __cmd__, @ByVal CGRect rect, UIView view);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_convertRectToViewSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/convertRect:toView:">- (CGRect)convertRect:(CGRect)rect toView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect convertRectToView(CGRect rect, UIView view) {
-        if (customClass) { return objc_convertRectToViewSuper(getSuper(), convertRect$toView$, rect, view); } else { return objc_convertRectToView(this, convertRect$toView$, rect, view); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_convertRectToViewSuper_stret(__ret__, getSuper(), convertRect$toView$, rect, view); } else { objc_convertRectToView_stret(__ret__, this, convertRect$toView$, rect, view); } return __ret__;
     }
     
     private static final Selector decodeRestorableStateWithCoder$ = Selector.register("decodeRestorableStateWithCoder:");
@@ -992,25 +1000,25 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector frameForAlignmentRect$ = Selector.register("frameForAlignmentRect:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getAlignmentRectFrame(UIView __self__, Selector __cmd__, @ByVal CGRect alignmentRect);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getAlignmentRectFrameSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect alignmentRect);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getAlignmentRectFrame_stret(@StructRet CGRect __ret__, UIView __self__, Selector __cmd__, @ByVal CGRect alignmentRect);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getAlignmentRectFrameSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect alignmentRect);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/frameForAlignmentRect:">- (CGRect)frameForAlignmentRect:(CGRect)alignmentRect</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGRect getAlignmentRectFrame(CGRect alignmentRect) {
-        if (customClass) { return objc_getAlignmentRectFrameSuper(getSuper(), frameForAlignmentRect$, alignmentRect); } else { return objc_getAlignmentRectFrame(this, frameForAlignmentRect$, alignmentRect); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getAlignmentRectFrameSuper_stret(__ret__, getSuper(), frameForAlignmentRect$, alignmentRect); } else { objc_getAlignmentRectFrame_stret(__ret__, this, frameForAlignmentRect$, alignmentRect); } return __ret__;
     }
     
     private static final Selector alignmentRectInsets = Selector.register("alignmentRectInsets");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal UIEdgeInsets objc_getAlignmentRectInsets(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIEdgeInsets objc_getAlignmentRectInsetsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getAlignmentRectInsets_stret(@StructRet UIEdgeInsets __ret__, UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getAlignmentRectInsetsSuper_stret(@StructRet UIEdgeInsets __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/alignmentRectInsets">- (UIEdgeInsets)alignmentRectInsets</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIEdgeInsets getAlignmentRectInsets() {
-        if (customClass) { return objc_getAlignmentRectInsetsSuper(getSuper(), alignmentRectInsets); } else { return objc_getAlignmentRectInsets(this, alignmentRectInsets); }
+        UIEdgeInsets __ret__ = new UIEdgeInsets(); if (customClass) { objc_getAlignmentRectInsetsSuper_stret(__ret__, getSuper(), alignmentRectInsets); } else { objc_getAlignmentRectInsets_stret(__ret__, this, alignmentRectInsets); } return __ret__;
     }
     
     private static final Selector viewForBaselineLayout = Selector.register("viewForBaselineLayout");
@@ -1069,47 +1077,53 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector alignmentRectForFrame$ = Selector.register("alignmentRectForFrame:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getFrameAlignmentRect(UIView __self__, Selector __cmd__, @ByVal CGRect frame);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getFrameAlignmentRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect frame);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getFrameAlignmentRect_stret(@StructRet CGRect __ret__, UIView __self__, Selector __cmd__, @ByVal CGRect frame);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getFrameAlignmentRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect frame);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/alignmentRectForFrame:">- (CGRect)alignmentRectForFrame:(CGRect)frame</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGRect getFrameAlignmentRect(CGRect frame) {
-        if (customClass) { return objc_getFrameAlignmentRectSuper(getSuper(), alignmentRectForFrame$, frame); } else { return objc_getFrameAlignmentRect(this, alignmentRectForFrame$, frame); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getFrameAlignmentRectSuper_stret(__ret__, getSuper(), alignmentRectForFrame$, frame); } else { objc_getFrameAlignmentRect_stret(__ret__, this, alignmentRectForFrame$, frame); } return __ret__;
     }
     
     private static final Selector intrinsicContentSize = Selector.register("intrinsicContentSize");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getIntrinsicContentSize(UIView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getIntrinsicContentSize_stret(@StructRet CGSize __ret__, UIView __self__, Selector __cmd__);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getIntrinsicContentSizeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getIntrinsicContentSizeSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/intrinsicContentSize">- (CGSize)intrinsicContentSize</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGSize getIntrinsicContentSize() {
-        if (customClass) { return objc_getIntrinsicContentSizeSuper(getSuper(), intrinsicContentSize); } else { return objc_getIntrinsicContentSize(this, intrinsicContentSize); }
+        if (X86) { if (customClass) { return objc_getIntrinsicContentSizeSuper(getSuper(), intrinsicContentSize); } else { return objc_getIntrinsicContentSize(this, intrinsicContentSize); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getIntrinsicContentSizeSuper_stret(__ret__, getSuper(), intrinsicContentSize); } else { objc_getIntrinsicContentSize_stret(__ret__, this, intrinsicContentSize); } return __ret__; }
     }
     
     private static final Selector sizeThatFits$ = Selector.register("sizeThatFits:");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getSizeThatFits(UIView __self__, Selector __cmd__, @ByVal CGSize size);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getSizeThatFits_stret(@StructRet CGSize __ret__, UIView __self__, Selector __cmd__, @ByVal CGSize size);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getSizeThatFitsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize size);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getSizeThatFitsSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGSize size);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/sizeThatFits:">- (CGSize)sizeThatFits:(CGSize)size</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGSize getSizeThatFits(CGSize size) {
-        if (customClass) { return objc_getSizeThatFitsSuper(getSuper(), sizeThatFits$, size); } else { return objc_getSizeThatFits(this, sizeThatFits$, size); }
+        if (X86) { if (customClass) { return objc_getSizeThatFitsSuper(getSuper(), sizeThatFits$, size); } else { return objc_getSizeThatFits(this, sizeThatFits$, size); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getSizeThatFitsSuper_stret(__ret__, getSuper(), sizeThatFits$, size); } else { objc_getSizeThatFits_stret(__ret__, this, sizeThatFits$, size); } return __ret__; }
     }
     
     private static final Selector systemLayoutSizeFittingSize$ = Selector.register("systemLayoutSizeFittingSize:");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getSystemLayoutSizeFittingSize(UIView __self__, Selector __cmd__, @ByVal CGSize targetSize);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getSystemLayoutSizeFittingSize_stret(@StructRet CGSize __ret__, UIView __self__, Selector __cmd__, @ByVal CGSize targetSize);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getSystemLayoutSizeFittingSizeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize targetSize);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getSystemLayoutSizeFittingSizeSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGSize targetSize);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/systemLayoutSizeFittingSize:">- (CGSize)systemLayoutSizeFittingSize:(CGSize)targetSize</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGSize getSystemLayoutSizeFittingSize(CGSize targetSize) {
-        if (customClass) { return objc_getSystemLayoutSizeFittingSizeSuper(getSuper(), systemLayoutSizeFittingSize$, targetSize); } else { return objc_getSystemLayoutSizeFittingSize(this, systemLayoutSizeFittingSize$, targetSize); }
+        if (X86) { if (customClass) { return objc_getSystemLayoutSizeFittingSizeSuper(getSuper(), systemLayoutSizeFittingSize$, targetSize); } else { return objc_getSystemLayoutSizeFittingSize(this, systemLayoutSizeFittingSize$, targetSize); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getSystemLayoutSizeFittingSizeSuper_stret(__ret__, getSuper(), systemLayoutSizeFittingSize$, targetSize); } else { objc_getSystemLayoutSizeFittingSize_stret(__ret__, this, systemLayoutSizeFittingSize$, targetSize); } return __ret__; }
     }
     
     private static final Selector viewPrintFormatter = Selector.register("viewPrintFormatter");

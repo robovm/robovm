@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UITableView /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITableView /*</name>*/.class);
 
     public UITableView(CGRect aRect) {
@@ -621,14 +623,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector rectForRowAtIndexPath$ = Selector.register("rectForRowAtIndexPath:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getRowRect(UITableView __self__, Selector __cmd__, NSIndexPath indexPath);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getRowRectSuper(ObjCSuper __super__, Selector __cmd__, NSIndexPath indexPath);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getRowRect_stret(@StructRet CGRect __ret__, UITableView __self__, Selector __cmd__, NSIndexPath indexPath);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getRowRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, NSIndexPath indexPath);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableView/rectForRowAtIndexPath:">- (CGRect)rectForRowAtIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getRowRect(NSIndexPath indexPath) {
-        if (customClass) { return objc_getRowRectSuper(getSuper(), rectForRowAtIndexPath$, indexPath); } else { return objc_getRowRect(this, rectForRowAtIndexPath$, indexPath); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getRowRectSuper_stret(__ret__, getSuper(), rectForRowAtIndexPath$, indexPath); } else { objc_getRowRect_stret(__ret__, this, rectForRowAtIndexPath$, indexPath); } return __ret__;
     }
     
     private static final Selector indexPathsForRowsInRect$ = Selector.register("indexPathsForRowsInRect:");
@@ -643,14 +645,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector rectForFooterInSection$ = Selector.register("rectForFooterInSection:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getSectionFooterRect(UITableView __self__, Selector __cmd__, int section);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getSectionFooterRectSuper(ObjCSuper __super__, Selector __cmd__, int section);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getSectionFooterRect_stret(@StructRet CGRect __ret__, UITableView __self__, Selector __cmd__, int section);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getSectionFooterRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, int section);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableView/rectForFooterInSection:">- (CGRect)rectForFooterInSection:(NSInteger)section</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getSectionFooterRect(int section) {
-        if (customClass) { return objc_getSectionFooterRectSuper(getSuper(), rectForFooterInSection$, section); } else { return objc_getSectionFooterRect(this, rectForFooterInSection$, section); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getSectionFooterRectSuper_stret(__ret__, getSuper(), rectForFooterInSection$, section); } else { objc_getSectionFooterRect_stret(__ret__, this, rectForFooterInSection$, section); } return __ret__;
     }
     
     private static final Selector footerViewForSection$ = Selector.register("footerViewForSection:");
@@ -665,14 +667,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector rectForHeaderInSection$ = Selector.register("rectForHeaderInSection:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getSectionHeaderRect(UITableView __self__, Selector __cmd__, int section);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getSectionHeaderRectSuper(ObjCSuper __super__, Selector __cmd__, int section);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getSectionHeaderRect_stret(@StructRet CGRect __ret__, UITableView __self__, Selector __cmd__, int section);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getSectionHeaderRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, int section);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableView/rectForHeaderInSection:">- (CGRect)rectForHeaderInSection:(NSInteger)section</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getSectionHeaderRect(int section) {
-        if (customClass) { return objc_getSectionHeaderRectSuper(getSuper(), rectForHeaderInSection$, section); } else { return objc_getSectionHeaderRect(this, rectForHeaderInSection$, section); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getSectionHeaderRectSuper_stret(__ret__, getSuper(), rectForHeaderInSection$, section); } else { objc_getSectionHeaderRect_stret(__ret__, this, rectForHeaderInSection$, section); } return __ret__;
     }
     
     private static final Selector headerViewForSection$ = Selector.register("headerViewForSection:");
@@ -687,14 +689,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector rectForSection$ = Selector.register("rectForSection:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getSectionRect(UITableView __self__, Selector __cmd__, int section);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getSectionRectSuper(ObjCSuper __super__, Selector __cmd__, int section);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getSectionRect_stret(@StructRet CGRect __ret__, UITableView __self__, Selector __cmd__, int section);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getSectionRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, int section);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableView/rectForSection:">- (CGRect)rectForSection:(NSInteger)section</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getSectionRect(int section) {
-        if (customClass) { return objc_getSectionRectSuper(getSuper(), rectForSection$, section); } else { return objc_getSectionRect(this, rectForSection$, section); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getSectionRectSuper_stret(__ret__, getSuper(), rectForSection$, section); } else { objc_getSectionRect_stret(__ret__, this, rectForSection$, section); } return __ret__;
     }
     
     private static final Selector indexPathForSelectedRow = Selector.register("indexPathForSelectedRow");

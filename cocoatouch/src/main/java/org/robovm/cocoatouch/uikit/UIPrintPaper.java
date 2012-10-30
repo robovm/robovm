@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIPrintPaper /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPrintPaper /*</name>*/.class);
 
     /*<constructors>*/
@@ -57,24 +59,26 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector paperSize = Selector.register("paperSize");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getPaperSize(UIPrintPaper __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getPaperSize_stret(@StructRet CGSize __ret__, UIPrintPaper __self__, Selector __cmd__);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getPaperSizeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getPaperSizeSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintPaper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintPaper/paperSize">@property(readonly) CGSize paperSize</a>
      * @since Available in iOS 4.2 and later.
      */
     public CGSize getPaperSize() {
-        if (customClass) { return objc_getPaperSizeSuper(getSuper(), paperSize); } else { return objc_getPaperSize(this, paperSize); }
+        if (X86) { if (customClass) { return objc_getPaperSizeSuper(getSuper(), paperSize); } else { return objc_getPaperSize(this, paperSize); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getPaperSizeSuper_stret(__ret__, getSuper(), paperSize); } else { objc_getPaperSize_stret(__ret__, this, paperSize); } return __ret__; }
     }
     
     private static final Selector printableRect = Selector.register("printableRect");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getPrintableRect(UIPrintPaper __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getPrintableRectSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getPrintableRect_stret(@StructRet CGRect __ret__, UIPrintPaper __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getPrintableRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintPaper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintPaper/printableRect">@property(readonly) CGRect printableRect</a>
      * @since Available in iOS 4.2 and later.
      */
     public CGRect getPrintableRect() {
-        if (customClass) { return objc_getPrintableRectSuper(getSuper(), printableRect); } else { return objc_getPrintableRect(this, printableRect); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getPrintableRectSuper_stret(__ret__, getSuper(), printableRect); } else { objc_getPrintableRect_stret(__ret__, this, printableRect); } return __ret__;
     }
     /*</properties>*/
     /*<methods>*/

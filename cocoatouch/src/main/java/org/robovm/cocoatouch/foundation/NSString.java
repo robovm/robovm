@@ -20,6 +20,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -53,6 +54,7 @@ import org.robovm.rt.VM;
 
     private static String EMPTY_STRING = "";
     private static final long STRING_VALUE_OFFSET;    
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSString /*</name>*/.class);
 
     public NSString(String s) {

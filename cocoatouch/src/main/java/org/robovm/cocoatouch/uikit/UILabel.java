@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UILabel /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UILabel /*</name>*/.class);
 
     public UILabel(CGRect aRect) {
@@ -346,13 +348,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector shadowOffset = Selector.register("shadowOffset");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getShadowOffset(UILabel __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getShadowOffset_stret(@StructRet CGSize __ret__, UILabel __self__, Selector __cmd__);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getShadowOffsetSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getShadowOffsetSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/shadowOffset">@property(nonatomic) CGSize shadowOffset</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGSize getShadowOffset() {
-        if (customClass) { return objc_getShadowOffsetSuper(getSuper(), shadowOffset); } else { return objc_getShadowOffset(this, shadowOffset); }
+        if (X86) { if (customClass) { return objc_getShadowOffsetSuper(getSuper(), shadowOffset); } else { return objc_getShadowOffset(this, shadowOffset); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getShadowOffsetSuper_stret(__ret__, getSuper(), shadowOffset); } else { objc_getShadowOffset_stret(__ret__, this, shadowOffset); } return __ret__; }
     }
     
     private static final Selector setShadowOffset$ = Selector.register("setShadowOffset:");
@@ -468,14 +472,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector textRectForBounds$limitedToNumberOfLines$ = Selector.register("textRectForBounds:limitedToNumberOfLines:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getTextRect(UILabel __self__, Selector __cmd__, @ByVal CGRect bounds, int numberOfLines);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getTextRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds, int numberOfLines);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getTextRect_stret(@StructRet CGRect __ret__, UILabel __self__, Selector __cmd__, @ByVal CGRect bounds, int numberOfLines);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getTextRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds, int numberOfLines);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instm/UILabel/textRectForBounds:limitedToNumberOfLines:">- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(NSInteger)numberOfLines</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getTextRect(CGRect bounds, int numberOfLines) {
-        if (customClass) { return objc_getTextRectSuper(getSuper(), textRectForBounds$limitedToNumberOfLines$, bounds, numberOfLines); } else { return objc_getTextRect(this, textRectForBounds$limitedToNumberOfLines$, bounds, numberOfLines); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getTextRectSuper_stret(__ret__, getSuper(), textRectForBounds$limitedToNumberOfLines$, bounds, numberOfLines); } else { objc_getTextRect_stret(__ret__, this, textRectForBounds$limitedToNumberOfLines$, bounds, numberOfLines); } return __ret__;
     }
     /*</methods>*/
     /*<callbacks>*/

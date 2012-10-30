@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIPopoverController /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPopoverController /*</name>*/.class);
 
     /*<constructors>*/
@@ -166,13 +168,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector popoverContentSize = Selector.register("popoverContentSize");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getPopoverContentSize(UIPopoverController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getPopoverContentSize_stret(@StructRet CGSize __ret__, UIPopoverController __self__, Selector __cmd__);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getPopoverContentSizeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getPopoverContentSizeSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverContentSize">@property (nonatomic) CGSize popoverContentSize</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGSize getPopoverContentSize() {
-        if (customClass) { return objc_getPopoverContentSizeSuper(getSuper(), popoverContentSize); } else { return objc_getPopoverContentSize(this, popoverContentSize); }
+        if (X86) { if (customClass) { return objc_getPopoverContentSizeSuper(getSuper(), popoverContentSize); } else { return objc_getPopoverContentSize(this, popoverContentSize); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getPopoverContentSizeSuper_stret(__ret__, getSuper(), popoverContentSize); } else { objc_getPopoverContentSize_stret(__ret__, this, popoverContentSize); } return __ret__; }
     }
     
     private static final Selector setPopoverContentSize$ = Selector.register("setPopoverContentSize:");
@@ -187,14 +191,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector popoverLayoutMargins = Selector.register("popoverLayoutMargins");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal UIEdgeInsets objc_getPopoverLayoutMargins(UIPopoverController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIEdgeInsets objc_getPopoverLayoutMarginsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getPopoverLayoutMargins_stret(@StructRet UIEdgeInsets __ret__, UIPopoverController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getPopoverLayoutMarginsSuper_stret(@StructRet UIEdgeInsets __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverLayoutMargins">@property (nonatomic, readwrite) UIEdgeInsets popoverLayoutMargins</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIEdgeInsets getPopoverLayoutMargins() {
-        if (customClass) { return objc_getPopoverLayoutMarginsSuper(getSuper(), popoverLayoutMargins); } else { return objc_getPopoverLayoutMargins(this, popoverLayoutMargins); }
+        UIEdgeInsets __ret__ = new UIEdgeInsets(); if (customClass) { objc_getPopoverLayoutMarginsSuper_stret(__ret__, getSuper(), popoverLayoutMargins); } else { objc_getPopoverLayoutMargins_stret(__ret__, this, popoverLayoutMargins); } return __ret__;
     }
     
     private static final Selector setPopoverLayoutMargins$ = Selector.register("setPopoverLayoutMargins:");

@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UITextField /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITextField /*</name>*/.class);
 
     public UITextField(CGRect aRect) {
@@ -919,14 +921,14 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector clearButtonRectForBounds$ = Selector.register("clearButtonRectForBounds:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_clearButtonRect(UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_clearButtonRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_clearButtonRect_stret(@StructRet CGRect __ret__, UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_clearButtonRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/clearButtonRectForBounds:">- (CGRect)clearButtonRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect clearButtonRect(CGRect bounds) {
-        if (customClass) { return objc_clearButtonRectSuper(getSuper(), clearButtonRectForBounds$, bounds); } else { return objc_clearButtonRect(this, clearButtonRectForBounds$, bounds); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_clearButtonRectSuper_stret(__ret__, getSuper(), clearButtonRectForBounds$, bounds); } else { objc_clearButtonRect_stret(__ret__, this, clearButtonRectForBounds$, bounds); } return __ret__;
     }
     
     private static final Selector comparePosition$toPosition$ = Selector.register("comparePosition:toPosition:");
@@ -1007,25 +1009,25 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector borderRectForBounds$ = Selector.register("borderRectForBounds:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getBorderRect(UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getBorderRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getBorderRect_stret(@StructRet CGRect __ret__, UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getBorderRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/borderRectForBounds:">- (CGRect)borderRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getBorderRect(CGRect bounds) {
-        if (customClass) { return objc_getBorderRectSuper(getSuper(), borderRectForBounds$, bounds); } else { return objc_getBorderRect(this, borderRectForBounds$, bounds); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getBorderRectSuper_stret(__ret__, getSuper(), borderRectForBounds$, bounds); } else { objc_getBorderRect_stret(__ret__, this, borderRectForBounds$, bounds); } return __ret__;
     }
     
     private static final Selector caretRectForPosition$ = Selector.register("caretRectForPosition:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getCaretRect(UITextField __self__, Selector __cmd__, UITextPosition position);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getCaretRectSuper(ObjCSuper __super__, Selector __cmd__, UITextPosition position);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getCaretRect_stret(@StructRet CGRect __ret__, UITextField __self__, Selector __cmd__, UITextPosition position);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getCaretRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, UITextPosition position);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/caretRectForPosition:">- (CGRect)caretRectForPosition:(UITextPosition *)position</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGRect getCaretRect(UITextPosition position) {
-        if (customClass) { return objc_getCaretRectSuper(getSuper(), caretRectForPosition$, position); } else { return objc_getCaretRect(this, caretRectForPosition$, position); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getCaretRectSuper_stret(__ret__, getSuper(), caretRectForPosition$, position); } else { objc_getCaretRect_stret(__ret__, this, caretRectForPosition$, position); } return __ret__;
     }
     
     private static final Selector characterOffsetOfPosition$withinRange$ = Selector.register("characterOffsetOfPosition:withinRange:");
@@ -1084,47 +1086,47 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector frameForDictationResultPlaceholder$ = Selector.register("frameForDictationResultPlaceholder:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getDictationResultPlaceholderFrame(UITextField __self__, Selector __cmd__, NSObject placeholder);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getDictationResultPlaceholderFrameSuper(ObjCSuper __super__, Selector __cmd__, NSObject placeholder);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getDictationResultPlaceholderFrame_stret(@StructRet CGRect __ret__, UITextField __self__, Selector __cmd__, NSObject placeholder);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getDictationResultPlaceholderFrameSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, NSObject placeholder);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/frameForDictationResultPlaceholder:">- (CGRect)frameForDictationResultPlaceholder:(id)placeholder</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGRect getDictationResultPlaceholderFrame(NSObject placeholder) {
-        if (customClass) { return objc_getDictationResultPlaceholderFrameSuper(getSuper(), frameForDictationResultPlaceholder$, placeholder); } else { return objc_getDictationResultPlaceholderFrame(this, frameForDictationResultPlaceholder$, placeholder); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getDictationResultPlaceholderFrameSuper_stret(__ret__, getSuper(), frameForDictationResultPlaceholder$, placeholder); } else { objc_getDictationResultPlaceholderFrame_stret(__ret__, this, frameForDictationResultPlaceholder$, placeholder); } return __ret__;
     }
     
     private static final Selector editingRectForBounds$ = Selector.register("editingRectForBounds:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getEditingRect(UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getEditingRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getEditingRect_stret(@StructRet CGRect __ret__, UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getEditingRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/editingRectForBounds:">- (CGRect)editingRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getEditingRect(CGRect bounds) {
-        if (customClass) { return objc_getEditingRectSuper(getSuper(), editingRectForBounds$, bounds); } else { return objc_getEditingRect(this, editingRectForBounds$, bounds); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getEditingRectSuper_stret(__ret__, getSuper(), editingRectForBounds$, bounds); } else { objc_getEditingRect_stret(__ret__, this, editingRectForBounds$, bounds); } return __ret__;
     }
     
     private static final Selector firstRectForRange$ = Selector.register("firstRectForRange:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getFirstRect(UITextField __self__, Selector __cmd__, UITextRange range);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getFirstRectSuper(ObjCSuper __super__, Selector __cmd__, UITextRange range);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getFirstRect_stret(@StructRet CGRect __ret__, UITextField __self__, Selector __cmd__, UITextRange range);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getFirstRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, UITextRange range);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/firstRectForRange:">- (CGRect)firstRectForRange:(UITextRange *)range</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGRect getFirstRect(UITextRange range) {
-        if (customClass) { return objc_getFirstRectSuper(getSuper(), firstRectForRange$, range); } else { return objc_getFirstRect(this, firstRectForRange$, range); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getFirstRectSuper_stret(__ret__, getSuper(), firstRectForRange$, range); } else { objc_getFirstRect_stret(__ret__, this, firstRectForRange$, range); } return __ret__;
     }
     
     private static final Selector leftViewRectForBounds$ = Selector.register("leftViewRectForBounds:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getLeftViewRect(UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getLeftViewRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getLeftViewRect_stret(@StructRet CGRect __ret__, UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getLeftViewRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/leftViewRectForBounds:">- (CGRect)leftViewRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getLeftViewRect(CGRect bounds) {
-        if (customClass) { return objc_getLeftViewRectSuper(getSuper(), leftViewRectForBounds$, bounds); } else { return objc_getLeftViewRect(this, leftViewRectForBounds$, bounds); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getLeftViewRectSuper_stret(__ret__, getSuper(), leftViewRectForBounds$, bounds); } else { objc_getLeftViewRect_stret(__ret__, this, leftViewRectForBounds$, bounds); } return __ret__;
     }
     
     private static final Selector offsetFromPosition$toPosition$ = Selector.register("offsetFromPosition:toPosition:");
@@ -1139,14 +1141,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector placeholderRectForBounds$ = Selector.register("placeholderRectForBounds:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getPlaceholderRect(UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getPlaceholderRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getPlaceholderRect_stret(@StructRet CGRect __ret__, UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getPlaceholderRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/placeholderRectForBounds:">- (CGRect)placeholderRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getPlaceholderRect(CGRect bounds) {
-        if (customClass) { return objc_getPlaceholderRectSuper(getSuper(), placeholderRectForBounds$, bounds); } else { return objc_getPlaceholderRect(this, placeholderRectForBounds$, bounds); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getPlaceholderRectSuper_stret(__ret__, getSuper(), placeholderRectForBounds$, bounds); } else { objc_getPlaceholderRect_stret(__ret__, this, placeholderRectForBounds$, bounds); } return __ret__;
     }
     
     private static final Selector positionFromPosition$inDirection$offset$ = Selector.register("positionFromPosition:inDirection:offset:");
@@ -1194,14 +1196,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector rightViewRectForBounds$ = Selector.register("rightViewRectForBounds:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getRightViewRect(UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getRightViewRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getRightViewRect_stret(@StructRet CGRect __ret__, UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getRightViewRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/rightViewRectForBounds:">- (CGRect)rightViewRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getRightViewRect(CGRect bounds) {
-        if (customClass) { return objc_getRightViewRectSuper(getSuper(), rightViewRectForBounds$, bounds); } else { return objc_getRightViewRect(this, rightViewRectForBounds$, bounds); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getRightViewRectSuper_stret(__ret__, getSuper(), rightViewRectForBounds$, bounds); } else { objc_getRightViewRect_stret(__ret__, this, rightViewRectForBounds$, bounds); } return __ret__;
     }
     
     private static final Selector selectionRectsForRange$ = Selector.register("selectionRectsForRange:");
@@ -1238,14 +1240,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector textRectForBounds$ = Selector.register("textRectForBounds:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getTextRect(UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getTextRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getTextRect_stret(@StructRet CGRect __ret__, UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getTextRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/textRectForBounds:">- (CGRect)textRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getTextRect(CGRect bounds) {
-        if (customClass) { return objc_getTextRectSuper(getSuper(), textRectForBounds$, bounds); } else { return objc_getTextRect(this, textRectForBounds$, bounds); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getTextRectSuper_stret(__ret__, getSuper(), textRectForBounds$, bounds); } else { objc_getTextRect_stret(__ret__, this, textRectForBounds$, bounds); } return __ret__;
     }
     
     private static final Selector textStylingAtPosition$inDirection$ = Selector.register("textStylingAtPosition:inDirection:");

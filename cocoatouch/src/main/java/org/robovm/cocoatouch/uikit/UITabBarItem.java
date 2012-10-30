@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UITabBarItem /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITabBarItem /*</name>*/.class);
 
     /*<constructors>*/
@@ -124,13 +126,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector titlePositionAdjustment = Selector.register("titlePositionAdjustment");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal UIOffset objc_getTitlePositionAdjustment(UITabBarItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getTitlePositionAdjustment_stret(@StructRet UIOffset __ret__, UITabBarItem __self__, Selector __cmd__);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIOffset objc_getTitlePositionAdjustmentSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getTitlePositionAdjustmentSuper_stret(@StructRet UIOffset __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarItem/titlePositionAdjustment">- (UIOffset)titlePositionAdjustment</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIOffset getTitlePositionAdjustment() {
-        if (customClass) { return objc_getTitlePositionAdjustmentSuper(getSuper(), titlePositionAdjustment); } else { return objc_getTitlePositionAdjustment(this, titlePositionAdjustment); }
+        if (X86) { if (customClass) { return objc_getTitlePositionAdjustmentSuper(getSuper(), titlePositionAdjustment); } else { return objc_getTitlePositionAdjustment(this, titlePositionAdjustment); } } else { UIOffset __ret__ = new UIOffset(); if (customClass) { objc_getTitlePositionAdjustmentSuper_stret(__ret__, getSuper(), titlePositionAdjustment); } else { objc_getTitlePositionAdjustment_stret(__ret__, this, titlePositionAdjustment); } return __ret__; }
     }
     
     private static final Selector setFinishedSelectedImage$withFinishedUnselectedImage$ = Selector.register("setFinishedSelectedImage:withFinishedUnselectedImage:");

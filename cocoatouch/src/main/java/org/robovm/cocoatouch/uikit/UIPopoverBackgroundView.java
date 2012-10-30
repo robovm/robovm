@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIPopoverBackgroundView /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPopoverBackgroundView /*</name>*/.class);
 
     public UIPopoverBackgroundView(CGRect aRect) {
@@ -125,13 +127,13 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector contentViewInsets = Selector.register("contentViewInsets");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal UIEdgeInsets objc_getContentViewInsets(ObjCClass __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getContentViewInsets_stret(@StructRet UIEdgeInsets __ret__, ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverBackgroundView_class/Reference/Reference.html#//apple_ref/occ/clm/UIPopoverBackgroundView/contentViewInsets">+ (UIEdgeInsets)contentViewInsets</a>
      * @since Available in iOS 5.0 and later.
      */
     public static UIEdgeInsets getContentViewInsets() {
-        return objc_getContentViewInsets(objCClass, contentViewInsets);
+        UIEdgeInsets __ret__ = new UIEdgeInsets(); objc_getContentViewInsets_stret(__ret__, objCClass, contentViewInsets); return __ret__;
     }
     
     private static final Selector wantsDefaultContentAppearance = Selector.register("wantsDefaultContentAppearance");

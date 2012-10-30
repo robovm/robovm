@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -45,6 +46,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ NSStringDrawingContext /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSStringDrawingContext /*</name>*/.class);
 
     /*<constructors>*/
@@ -121,14 +123,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector totalBounds = Selector.register("totalBounds");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getTotalBounds(NSStringDrawingContext __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getTotalBoundsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getTotalBounds_stret(@StructRet CGRect __ret__, NSStringDrawingContext __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getTotalBoundsSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../NSStringDrawingContext_class/Reference/Reference.html#//apple_ref/occ/instp/NSStringDrawingContext/totalBounds">@property(nonatomic, readonly) CGRect totalBounds</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGRect getTotalBounds() {
-        if (customClass) { return objc_getTotalBoundsSuper(getSuper(), totalBounds); } else { return objc_getTotalBounds(this, totalBounds); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getTotalBoundsSuper_stret(__ret__, getSuper(), totalBounds); } else { objc_getTotalBounds_stret(__ret__, this, totalBounds); } return __ret__;
     }
     /*</properties>*/
     /*<methods>*/

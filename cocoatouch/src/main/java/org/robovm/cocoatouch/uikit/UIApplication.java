@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIApplication /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIApplication /*</name>*/.class);
 
     @Bridge private native static int UIApplicationMain(int argc, Ptr<BytePtr> argv, 
@@ -259,14 +261,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector statusBarFrame = Selector.register("statusBarFrame");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getStatusBarFrame(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getStatusBarFrameSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getStatusBarFrame_stret(@StructRet CGRect __ret__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getStatusBarFrameSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarFrame">@property(nonatomic, readonly) CGRect statusBarFrame</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getStatusBarFrame() {
-        if (customClass) { return objc_getStatusBarFrameSuper(getSuper(), statusBarFrame); } else { return objc_getStatusBarFrame(this, statusBarFrame); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getStatusBarFrameSuper_stret(__ret__, getSuper(), statusBarFrame); } else { objc_getStatusBarFrame_stret(__ret__, this, statusBarFrame); } return __ret__;
     }
     
     private static final Selector isStatusBarHidden = Selector.register("isStatusBarHidden");

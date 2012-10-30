@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIWindow /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIWindow /*</name>*/.class);
 
     public UIWindow(CGRect aRect) {
@@ -150,46 +152,50 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector convertPoint$fromWindow$ = Selector.register("convertPoint:fromWindow:");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_convertPointFromWindow(UIWindow __self__, Selector __cmd__, @ByVal CGPoint point, UIWindow window);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_convertPointFromWindow_stret(@StructRet CGPoint __ret__, UIWindow __self__, Selector __cmd__, @ByVal CGPoint point, UIWindow window);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_convertPointFromWindowSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIWindow window);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_convertPointFromWindowSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIWindow window);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/convertPoint:fromWindow:">- (CGPoint)convertPoint:(CGPoint)point fromWindow:(UIWindow *)window</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint convertPointFromWindow(CGPoint point, UIWindow window) {
-        if (customClass) { return objc_convertPointFromWindowSuper(getSuper(), convertPoint$fromWindow$, point, window); } else { return objc_convertPointFromWindow(this, convertPoint$fromWindow$, point, window); }
+        if (X86) { if (customClass) { return objc_convertPointFromWindowSuper(getSuper(), convertPoint$fromWindow$, point, window); } else { return objc_convertPointFromWindow(this, convertPoint$fromWindow$, point, window); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_convertPointFromWindowSuper_stret(__ret__, getSuper(), convertPoint$fromWindow$, point, window); } else { objc_convertPointFromWindow_stret(__ret__, this, convertPoint$fromWindow$, point, window); } return __ret__; }
     }
     
     private static final Selector convertPoint$toWindow$ = Selector.register("convertPoint:toWindow:");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_convertPointToWindow(UIWindow __self__, Selector __cmd__, @ByVal CGPoint point, UIWindow window);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_convertPointToWindow_stret(@StructRet CGPoint __ret__, UIWindow __self__, Selector __cmd__, @ByVal CGPoint point, UIWindow window);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_convertPointToWindowSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIWindow window);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_convertPointToWindowSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIWindow window);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/convertPoint:toWindow:">- (CGPoint)convertPoint:(CGPoint)point toWindow:(UIWindow *)window</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint convertPointToWindow(CGPoint point, UIWindow window) {
-        if (customClass) { return objc_convertPointToWindowSuper(getSuper(), convertPoint$toWindow$, point, window); } else { return objc_convertPointToWindow(this, convertPoint$toWindow$, point, window); }
+        if (X86) { if (customClass) { return objc_convertPointToWindowSuper(getSuper(), convertPoint$toWindow$, point, window); } else { return objc_convertPointToWindow(this, convertPoint$toWindow$, point, window); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_convertPointToWindowSuper_stret(__ret__, getSuper(), convertPoint$toWindow$, point, window); } else { objc_convertPointToWindow_stret(__ret__, this, convertPoint$toWindow$, point, window); } return __ret__; }
     }
     
     private static final Selector convertRect$fromWindow$ = Selector.register("convertRect:fromWindow:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_convertRectFromWindow(UIWindow __self__, Selector __cmd__, @ByVal CGRect rect, UIWindow window);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_convertRectFromWindowSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIWindow window);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_convertRectFromWindow_stret(@StructRet CGRect __ret__, UIWindow __self__, Selector __cmd__, @ByVal CGRect rect, UIWindow window);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_convertRectFromWindowSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIWindow window);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/convertRect:fromWindow:">- (CGRect)convertRect:(CGRect)rect fromWindow:(UIWindow *)window</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect convertRectFromWindow(CGRect rect, UIWindow window) {
-        if (customClass) { return objc_convertRectFromWindowSuper(getSuper(), convertRect$fromWindow$, rect, window); } else { return objc_convertRectFromWindow(this, convertRect$fromWindow$, rect, window); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_convertRectFromWindowSuper_stret(__ret__, getSuper(), convertRect$fromWindow$, rect, window); } else { objc_convertRectFromWindow_stret(__ret__, this, convertRect$fromWindow$, rect, window); } return __ret__;
     }
     
     private static final Selector convertRect$toWindow$ = Selector.register("convertRect:toWindow:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_convertRectToWindow(UIWindow __self__, Selector __cmd__, @ByVal CGRect rect, UIWindow window);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_convertRectToWindowSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIWindow window);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_convertRectToWindow_stret(@StructRet CGRect __ret__, UIWindow __self__, Selector __cmd__, @ByVal CGRect rect, UIWindow window);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_convertRectToWindowSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIWindow window);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/convertRect:toWindow:">- (CGRect)convertRect:(CGRect)rect toWindow:(UIWindow *)window</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect convertRectToWindow(CGRect rect, UIWindow window) {
-        if (customClass) { return objc_convertRectToWindowSuper(getSuper(), convertRect$toWindow$, rect, window); } else { return objc_convertRectToWindow(this, convertRect$toWindow$, rect, window); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_convertRectToWindowSuper_stret(__ret__, getSuper(), convertRect$toWindow$, rect, window); } else { objc_convertRectToWindow_stret(__ret__, this, convertRect$toWindow$, rect, window); } return __ret__;
     }
     
     private static final Selector makeKeyAndVisible = Selector.register("makeKeyAndVisible");

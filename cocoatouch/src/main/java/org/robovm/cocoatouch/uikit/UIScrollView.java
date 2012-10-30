@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIScrollView /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIScrollView /*</name>*/.class);
 
     public UIScrollView(CGRect aRect) {
@@ -169,14 +171,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector contentInset = Selector.register("contentInset");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal UIEdgeInsets objc_getContentInset(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIEdgeInsets objc_getContentInsetSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getContentInset_stret(@StructRet UIEdgeInsets __ret__, UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getContentInsetSuper_stret(@StructRet UIEdgeInsets __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/contentInset">@property(nonatomic) UIEdgeInsets contentInset</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIEdgeInsets getContentInset() {
-        if (customClass) { return objc_getContentInsetSuper(getSuper(), contentInset); } else { return objc_getContentInset(this, contentInset); }
+        UIEdgeInsets __ret__ = new UIEdgeInsets(); if (customClass) { objc_getContentInsetSuper_stret(__ret__, getSuper(), contentInset); } else { objc_getContentInset_stret(__ret__, this, contentInset); } return __ret__;
     }
     
     private static final Selector setContentInset$ = Selector.register("setContentInset:");
@@ -192,13 +194,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector contentOffset = Selector.register("contentOffset");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_getContentOffset(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getContentOffset_stret(@StructRet CGPoint __ret__, UIScrollView __self__, Selector __cmd__);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_getContentOffsetSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getContentOffsetSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/contentOffset">@property(nonatomic) CGPoint contentOffset</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint getContentOffset() {
-        if (customClass) { return objc_getContentOffsetSuper(getSuper(), contentOffset); } else { return objc_getContentOffset(this, contentOffset); }
+        if (X86) { if (customClass) { return objc_getContentOffsetSuper(getSuper(), contentOffset); } else { return objc_getContentOffset(this, contentOffset); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_getContentOffsetSuper_stret(__ret__, getSuper(), contentOffset); } else { objc_getContentOffset_stret(__ret__, this, contentOffset); } return __ret__; }
     }
     
     private static final Selector setContentOffset$ = Selector.register("setContentOffset:");
@@ -214,13 +218,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector contentSize = Selector.register("contentSize");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getContentSize(UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getContentSize_stret(@StructRet CGSize __ret__, UIScrollView __self__, Selector __cmd__);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getContentSizeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getContentSizeSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/contentSize">@property(nonatomic) CGSize contentSize</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGSize getContentSize() {
-        if (customClass) { return objc_getContentSizeSuper(getSuper(), contentSize); } else { return objc_getContentSize(this, contentSize); }
+        if (X86) { if (customClass) { return objc_getContentSizeSuper(getSuper(), contentSize); } else { return objc_getContentSize(this, contentSize); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getContentSizeSuper_stret(__ret__, getSuper(), contentSize); } else { objc_getContentSize_stret(__ret__, this, contentSize); } return __ret__; }
     }
     
     private static final Selector setContentSize$ = Selector.register("setContentSize:");
@@ -477,14 +483,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector scrollIndicatorInsets = Selector.register("scrollIndicatorInsets");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal UIEdgeInsets objc_getScrollIndicatorInsets(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIEdgeInsets objc_getScrollIndicatorInsetsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getScrollIndicatorInsets_stret(@StructRet UIEdgeInsets __ret__, UIScrollView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getScrollIndicatorInsetsSuper_stret(@StructRet UIEdgeInsets __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/scrollIndicatorInsets">@property(nonatomic) UIEdgeInsets scrollIndicatorInsets</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIEdgeInsets getScrollIndicatorInsets() {
-        if (customClass) { return objc_getScrollIndicatorInsetsSuper(getSuper(), scrollIndicatorInsets); } else { return objc_getScrollIndicatorInsets(this, scrollIndicatorInsets); }
+        UIEdgeInsets __ret__ = new UIEdgeInsets(); if (customClass) { objc_getScrollIndicatorInsetsSuper_stret(__ret__, getSuper(), scrollIndicatorInsets); } else { objc_getScrollIndicatorInsets_stret(__ret__, this, scrollIndicatorInsets); } return __ret__;
     }
     
     private static final Selector setScrollIndicatorInsets$ = Selector.register("setScrollIndicatorInsets:");

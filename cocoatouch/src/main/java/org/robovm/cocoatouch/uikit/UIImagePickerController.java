@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIImagePickerController /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIImagePickerController /*</name>*/.class);
 
     /*<constructors>*/
@@ -166,14 +168,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector cameraViewTransform = Selector.register("cameraViewTransform");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGAffineTransform objc_getCameraViewTransform(UIImagePickerController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGAffineTransform objc_getCameraViewTransformSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getCameraViewTransform_stret(@StructRet CGAffineTransform __ret__, UIImagePickerController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getCameraViewTransformSuper_stret(@StructRet CGAffineTransform __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraViewTransform">@property (nonatomic) CGAffineTransform cameraViewTransform</a>
      * @since Available in iOS 3.1 and later.
      */
     public CGAffineTransform getCameraViewTransform() {
-        if (customClass) { return objc_getCameraViewTransformSuper(getSuper(), cameraViewTransform); } else { return objc_getCameraViewTransform(this, cameraViewTransform); }
+        CGAffineTransform __ret__ = new CGAffineTransform(); if (customClass) { objc_getCameraViewTransformSuper_stret(__ret__, getSuper(), cameraViewTransform); } else { objc_getCameraViewTransform_stret(__ret__, this, cameraViewTransform); } return __ret__;
     }
     
     private static final Selector setCameraViewTransform$ = Selector.register("setCameraViewTransform:");

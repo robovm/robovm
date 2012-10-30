@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -45,6 +46,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UITextSelectionRect /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITextSelectionRect /*</name>*/.class);
 
     /*<constructors>*/
@@ -87,14 +89,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector rect = Selector.register("rect");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getRect(UITextSelectionRect __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getRectSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getRect_stret(@StructRet CGRect __ret__, UITextSelectionRect __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextSelectionRect_class/Reference/Reference.html#//apple_ref/occ/instp/UITextSelectionRect/rect">@property (nonatomic, readonly) CGRect rect</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGRect getRect() {
-        if (customClass) { return objc_getRectSuper(getSuper(), rect); } else { return objc_getRect(this, rect); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getRectSuper_stret(__ret__, getSuper(), rect); } else { objc_getRect_stret(__ret__, this, rect); } return __ret__;
     }
     
     private static final Selector isVertical = Selector.register("isVertical");

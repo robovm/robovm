@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIBezierPath /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIBezierPath /*</name>*/.class);
 
     /*<constructors>*/
@@ -78,25 +80,27 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector bounds = Selector.register("bounds");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getBounds(UIBezierPath __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getBoundsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getBounds_stret(@StructRet CGRect __ret__, UIBezierPath __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getBoundsSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/bounds">@property(nonatomic, readonly) CGRect bounds</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGRect getBounds() {
-        if (customClass) { return objc_getBoundsSuper(getSuper(), bounds); } else { return objc_getBounds(this, bounds); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getBoundsSuper_stret(__ret__, getSuper(), bounds); } else { objc_getBounds_stret(__ret__, this, bounds); } return __ret__;
     }
     
     private static final Selector currentPoint = Selector.register("currentPoint");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_getCurrentPoint(UIBezierPath __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getCurrentPoint_stret(@StructRet CGPoint __ret__, UIBezierPath __self__, Selector __cmd__);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_getCurrentPointSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getCurrentPointSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/currentPoint">@property(nonatomic, readonly) CGPoint currentPoint</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGPoint getCurrentPoint() {
-        if (customClass) { return objc_getCurrentPointSuper(getSuper(), currentPoint); } else { return objc_getCurrentPoint(this, currentPoint); }
+        if (X86) { if (customClass) { return objc_getCurrentPointSuper(getSuper(), currentPoint); } else { return objc_getCurrentPoint(this, currentPoint); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_getCurrentPointSuper_stret(__ret__, getSuper(), currentPoint); } else { objc_getCurrentPoint_stret(__ret__, this, currentPoint); } return __ret__; }
     }
     
     private static final Selector isEmpty = Selector.register("isEmpty");

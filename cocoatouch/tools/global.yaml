@@ -16,11 +16,19 @@ license: |
      */
 enums:
 structs:
-     - CATransform3D
-     - CGAffineTransform
-     - CGPoint
-     - CGRect
-     - CGSize
-     - NSRange
-     - UIEdgeInsets
-     - UIOffset
+     CATransform3D:
+          size: 64
+     CGAffineTransform:
+          size: 24
+     CGPoint:
+          size: 8
+     CGRect:
+          size: 16
+     CGSize:
+          size: 8
+     NSRange:
+          size: 8
+     UIEdgeInsets:
+          size: 16
+     UIOffset:
+          size: 8

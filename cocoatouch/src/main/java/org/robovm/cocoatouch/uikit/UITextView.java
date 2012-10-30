@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UITextView /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITextView /*</name>*/.class);
 
     public UITextView(CGRect aRect) {
@@ -489,13 +491,15 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector selectedRange = Selector.register("selectedRange");
     @Bridge(symbol = "objc_msgSend") private native static @ByVal NSRange objc_getSelectedRange(UITextView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getSelectedRange_stret(@StructRet NSRange __ret__, UITextView __self__, Selector __cmd__);
     @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal NSRange objc_getSelectedRangeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getSelectedRangeSuper_stret(@StructRet NSRange __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/selectedRange">@property(nonatomic) NSRange selectedRange</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSRange getSelectedRange() {
-        if (customClass) { return objc_getSelectedRangeSuper(getSuper(), selectedRange); } else { return objc_getSelectedRange(this, selectedRange); }
+        if (X86) { if (customClass) { return objc_getSelectedRangeSuper(getSuper(), selectedRange); } else { return objc_getSelectedRange(this, selectedRange); } } else { NSRange __ret__ = new NSRange(); if (customClass) { objc_getSelectedRangeSuper_stret(__ret__, getSuper(), selectedRange); } else { objc_getSelectedRange_stret(__ret__, this, selectedRange); } return __ret__; }
     }
     
     private static final Selector setSelectedRange$ = Selector.register("setSelectedRange:");
@@ -743,14 +747,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector caretRectForPosition$ = Selector.register("caretRectForPosition:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getCaretRect(UITextView __self__, Selector __cmd__, UITextPosition position);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getCaretRectSuper(ObjCSuper __super__, Selector __cmd__, UITextPosition position);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getCaretRect_stret(@StructRet CGRect __ret__, UITextView __self__, Selector __cmd__, UITextPosition position);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getCaretRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, UITextPosition position);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/caretRectForPosition:">- (CGRect)caretRectForPosition:(UITextPosition *)position</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGRect getCaretRect(UITextPosition position) {
-        if (customClass) { return objc_getCaretRectSuper(getSuper(), caretRectForPosition$, position); } else { return objc_getCaretRect(this, caretRectForPosition$, position); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getCaretRectSuper_stret(__ret__, getSuper(), caretRectForPosition$, position); } else { objc_getCaretRect_stret(__ret__, this, caretRectForPosition$, position); } return __ret__;
     }
     
     private static final Selector characterOffsetOfPosition$withinRange$ = Selector.register("characterOffsetOfPosition:withinRange:");
@@ -809,25 +813,25 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector frameForDictationResultPlaceholder$ = Selector.register("frameForDictationResultPlaceholder:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getDictationResultPlaceholderFrame(UITextView __self__, Selector __cmd__, NSObject placeholder);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getDictationResultPlaceholderFrameSuper(ObjCSuper __super__, Selector __cmd__, NSObject placeholder);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getDictationResultPlaceholderFrame_stret(@StructRet CGRect __ret__, UITextView __self__, Selector __cmd__, NSObject placeholder);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getDictationResultPlaceholderFrameSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, NSObject placeholder);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/frameForDictationResultPlaceholder:">- (CGRect)frameForDictationResultPlaceholder:(id)placeholder</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGRect getDictationResultPlaceholderFrame(NSObject placeholder) {
-        if (customClass) { return objc_getDictationResultPlaceholderFrameSuper(getSuper(), frameForDictationResultPlaceholder$, placeholder); } else { return objc_getDictationResultPlaceholderFrame(this, frameForDictationResultPlaceholder$, placeholder); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getDictationResultPlaceholderFrameSuper_stret(__ret__, getSuper(), frameForDictationResultPlaceholder$, placeholder); } else { objc_getDictationResultPlaceholderFrame_stret(__ret__, this, frameForDictationResultPlaceholder$, placeholder); } return __ret__;
     }
     
     private static final Selector firstRectForRange$ = Selector.register("firstRectForRange:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getFirstRect(UITextView __self__, Selector __cmd__, UITextRange range);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getFirstRectSuper(ObjCSuper __super__, Selector __cmd__, UITextRange range);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getFirstRect_stret(@StructRet CGRect __ret__, UITextView __self__, Selector __cmd__, UITextRange range);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getFirstRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, UITextRange range);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/firstRectForRange:">- (CGRect)firstRectForRange:(UITextRange *)range</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGRect getFirstRect(UITextRange range) {
-        if (customClass) { return objc_getFirstRectSuper(getSuper(), firstRectForRange$, range); } else { return objc_getFirstRect(this, firstRectForRange$, range); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getFirstRectSuper_stret(__ret__, getSuper(), firstRectForRange$, range); } else { objc_getFirstRect_stret(__ret__, this, firstRectForRange$, range); } return __ret__;
     }
     
     private static final Selector offsetFromPosition$toPosition$ = Selector.register("offsetFromPosition:toPosition:");

@@ -25,6 +25,7 @@ import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
@@ -46,6 +47,7 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIPrintPageRenderer /*</name>*/.class);
     }
 
+    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPrintPageRenderer /*</name>*/.class);
 
     /*<constructors>*/
@@ -100,14 +102,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector paperRect = Selector.register("paperRect");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getPaperRect(UIPrintPageRenderer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getPaperRectSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getPaperRect_stret(@StructRet CGRect __ret__, UIPrintPageRenderer __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getPaperRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIPrintPageRenderer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintPageRenderer/paperRect">@property(readonly) CGRect paperRect</a>
      * @since Available in iOS 4.2 and later.
      */
     public CGRect getPaperRect() {
-        if (customClass) { return objc_getPaperRectSuper(getSuper(), paperRect); } else { return objc_getPaperRect(this, paperRect); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getPaperRectSuper_stret(__ret__, getSuper(), paperRect); } else { objc_getPaperRect_stret(__ret__, this, paperRect); } return __ret__;
     }
     
     private static final Selector printFormatters = Selector.register("printFormatters");
@@ -133,14 +135,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector printableRect = Selector.register("printableRect");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getPrintableRect(UIPrintPageRenderer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getPrintableRectSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getPrintableRect_stret(@StructRet CGRect __ret__, UIPrintPageRenderer __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getPrintableRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIPrintPageRenderer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintPageRenderer/printableRect">@property(readonly) CGRect printableRect</a>
      * @since Available in iOS 4.2 and later.
      */
     public CGRect getPrintableRect() {
-        if (customClass) { return objc_getPrintableRectSuper(getSuper(), printableRect); } else { return objc_getPrintableRect(this, printableRect); }
+        CGRect __ret__ = new CGRect(); if (customClass) { objc_getPrintableRectSuper_stret(__ret__, getSuper(), printableRect); } else { objc_getPrintableRect_stret(__ret__, this, printableRect); } return __ret__;
     }
     /*</properties>*/
     /*<methods>*/
